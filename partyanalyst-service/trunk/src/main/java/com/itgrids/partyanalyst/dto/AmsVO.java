@@ -62,15 +62,8 @@ public class AmsVO implements Serializable {
 	private Long severityId;
 	private List<AmsTrackingVO> subList1 = new ArrayList<AmsTrackingVO>(0);
 	private List<AlertVO> rejinderDocList = new ArrayList<AlertVO>(0);
-	private String CategoryName;
 	
 	
-	public String getCategoryName() {
-		return CategoryName;
-	}
-	public void setCategoryName(String categoryName) {
-		CategoryName = categoryName;
-	}
 	public List<AmsAppVO> getStatusComplteInfoLst() {
 		return statusComplteInfoLst;
 	}
