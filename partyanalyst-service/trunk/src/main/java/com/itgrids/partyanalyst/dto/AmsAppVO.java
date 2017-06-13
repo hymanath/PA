@@ -87,7 +87,7 @@ public class AmsAppVO {
 	private String assignedByOfficerStr;
 	private String designation;
 	private String dueDateStr;
-	private List<AlertTrackingVO> commentList = new ArrayList<AlertTrackingVO>(0);
+	private List<AmsTrackingVO> commentList = new ArrayList<AmsTrackingVO>(0);
 	private List<Long> locationScopeIds = new ArrayList<Long>();
 	private Long categoryId=0L;
 	private String color;
@@ -538,10 +538,10 @@ public class AmsAppVO {
 	public void setDueDateStr(String dueDateStr) {
 		this.dueDateStr = dueDateStr;
 	}
-	public List<AlertTrackingVO> getCommentList() {
+	public List<AmsTrackingVO> getCommentList() {
 		return commentList;
 	}
-	public void setCommentList(List<AlertTrackingVO> commentList) {
+	public void setCommentList(List<AmsTrackingVO> commentList) {
 		this.commentList = commentList;
 	}
 	public List<Long> getLocationScopeIds() {

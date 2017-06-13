@@ -14,6 +14,7 @@ public class AmsAppLoginVO implements Serializable{
 	private String isOtp;
 	private Long alertId;
 	private String task;
+	private Long subTaskId;
 	
 	public AmsAppLoginVO(){}
 	public AmsAppLoginVO(Long userId, String userName){
@@ -70,5 +71,10 @@ public class AmsAppLoginVO implements Serializable{
 	public void setTask(String task) {
 		this.task = task;
 	}
-	
+	public Long getSubTaskId() {
+		return subTaskId;
+	}
+	public void setSubTaskId(Long subTaskId) {
+		this.subTaskId = subTaskId;
+	}
 }
