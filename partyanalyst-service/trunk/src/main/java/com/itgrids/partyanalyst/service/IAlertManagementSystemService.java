@@ -215,5 +215,5 @@ public interface IAlertManagementSystemService {
 				List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
 	 public ResultStatus uploadDocumentsForRejoinderStatus(final StringBuilder pathBuilder,final Long alertId,final Long userId);
 	 public List<AlertVO> getRejoinderDocumentsForAlert(Long alertId);
-	 public AmsVO getAllAlertDetails(AmsAppLoginVO keyVo);
+	 public AmsVO getAlertDetailsInfoForAms(AmsAppLoginVO keyVo);
 }        

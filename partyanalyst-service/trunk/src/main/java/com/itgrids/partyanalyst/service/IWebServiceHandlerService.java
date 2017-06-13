@@ -229,5 +229,5 @@ public interface IWebServiceHandlerService {
     public AmsDataVO getAmsFilterCategoryTypes(Long userId);
     public DistrictOfficeViewAlertVO getAmsAppAlertsBasicCounts(AmsDataVO vo);
     public List<AmsDataVO> getOfficerAlertDetails(AmsDataVO amsDataVO);
-    public AmsVO getAllAlertDetails(AmsAppLoginVO keyVo);
+    public AmsVO getAlertDetailsInfoForAms(AmsAppLoginVO keyVo);
 }
