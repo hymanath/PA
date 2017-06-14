@@ -7,5 +7,5 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.model.FundSanctionMatrixDetails;
 
 public interface IFundSanctionMatrixDetailsDAO extends GenericDao<FundSanctionMatrixDetails,Long> {
-	public List<Object[]> getPreviousYearDtls(Long scopeId,Long previousYearId);
+	public List<Object[]> getPreviousYearDtls(Long scopeId,Long previousYearId,String order);
 }

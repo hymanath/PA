@@ -22,7 +22,7 @@ public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 			List<Long> sourceIdsList,Date sDate,Date eDate,Long scopeId,Long searchLevlId,List<Long> searchLvlVals);
 	public List<Object[]> getLocationWiseGrantTypesFund(List<Long> financialYearIdsList,List<Long> deptIdsList,
 			List<Long> sourceIdsList,Date sDate,Date eDate,Long locationScopeId,Long locationVal,Long searchLevlId,List<Long> searchLvlVals);
-	public List<Object[]> getTotalFundAndCountDtls(List<Long> financialYrIdList,List<Long> departmentId,List<Long> sourceId,Date sDate,Date eDate,Long scopeId);
+	public List<Object[]> getTotalFundAndCountDtls(List<Long> financialYrIdList,List<Long> departmentId,List<Long> sourceId,Date sDate,Date eDate,Long scopeId,String group);
 	public List<Object[]> getTotalFundForScheme(List<Long> financialYrIdList,List<Long> departmentId,List<Long> sourceId,List<Long> schemeId,Date sDate,Date eDate);
 	public Long getTotalSchemes(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,Date sDate,Date eDate,Long searchLevlId,List<Long> searchLvlVals);
 	public List<Long> getLocationBlockLevelIds(Long locationId,Long locationLevelId,Long blockLevelId);
