@@ -373,13 +373,14 @@
 		var str='';
 		if(ajaxresp.name != null)
 		{
-			str+='<h4 class="panel-title text-capital district-name"> '+ajaxresp.name+'</h4>';
+			str+='<h4 class="panel-title text-capital district-name"> '+ajaxresp.name+'</h4>';//avgFundMandal
 		}
-		if(ajaxresp.totalAmt != null && ajaxresp.totalAmt != "0.0" && divId != 'avgFundDist' && divId != 'avgFundCons' &&  divId != 'avgFundScheme')
+		if(divId == 'avgFundDist' || divId == 'avgFundCons' || divId == 'avgFundScheme' || divId == 'avgFundMandal' || divId == 'avgFundVillage' ){
+			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.avrgeAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
+		}
+		else if(ajaxresp.totalAmt != null && ajaxresp.totalAmt != "0.0" && divId != 'avgFundDist' && divId != 'avgFundCons' &&  divId != 'avgFundScheme' && divId != 'avgFundMandal' && divId != 'avgFundVillage' )
 		{
 			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.totalAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
-		}else if(divId == 'avgFundDist' || divId == 'avgFundCons' || divId == 'avgFundScheme'){
-			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.avrgeAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
 		}
 		
 		/* if(ajaxresp.fundedLoc != null)
@@ -403,7 +404,7 @@
 					str+='</li>';
 				}
 			str+='</ul>';
-		}else if(ajaxresp.detailsVOs !=null && ajaxresp.detailsVOs.length > 0  && divId != 'avgFundDist' && divId != 'avgFundCons')
+		}else if(ajaxresp.detailsVOs !=null && ajaxresp.detailsVOs.length > 0  && divId != 'avgFundDist' && divId != 'avgFundCons' &&  divId != 'avgFundScheme' && divId != 'avgFundMandal' && divId != 'avgFundVillage')
 		{
 			str+='<ul class="list-inline">';
 				for(var i in ajaxresp.detailsVOs)
@@ -411,11 +412,11 @@
 					str+='<li class="text-center">';
 						str+='<p class="text-muted">'+ajaxresp.detailsVOs[i].name+'</p>';
 						str+='<p class="text-success"><small>'+ajaxresp.detailsVOs[i].perc+'%</small></p>';
-						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.detailsVOs[i].totalAmt+'</p>';
+						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.detailsVOs[i].avrgeAmt+'</p>';
 					str+='</li>';
 				}
 			str+='</ul>';
-		}else if(divId == 'avgFundDist' || divId == 'avgFundCons')
+		}else if(divId == 'avgFundDist' || divId == 'avgFundCons' || divId != 'avgFundScheme' || divId != 'avgFundMandal' || divId != 'avgFundVillage' )
 		{
 			str+='<ul class="list-inline">';
 				for(var i in ajaxresp.detailsVOs)
