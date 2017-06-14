@@ -34,23 +34,37 @@
 		</div>
 	</nav>
 	<section>
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-12">
 					<ul class="list-inline navbar-header-custom">
-						<li>Note: All Amount in Lakhs</li>
+						<li><label>Note: All Amount in Lakhs</label></li>
 						<li>
-							Financial Year: <select id="financialYearId" class="chosenSelect" multiple></select>
+							<div class="form-horizontal">
+								<div class="form-group form-group-sm">
+									<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
+									<div class="col-sm-8">
+										<select id="financialYearId" class="chosenSelect" multiple></select>
+									</div>
+								</div>
+							</div>
 						</li>
 						<li>
-							Department: <select id="DepartmentsId"  class="chosenSelect" multiple></select>
+							<div class="form-horizontal">
+								<div class="form-group form-group-sm">
+									<label class="col-sm-4 control-label" for="formGroupInputLarge">Department: </label>
+									<div class="col-sm-8">
+										<select id="DepartmentsId"  class="chosenSelect" multiple></select>
+									</div>
+								</div>
+							</div>
 						</li>
-						
 						<li>
-							
-							<div class="form-group has-feedback">
+							<div class="input-group">
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+								</span>
 								<input type="text" class="form-control" id="dateRangePickerAUM"/>
-								<span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
 							</div>
 						</li>
 					</ul>
