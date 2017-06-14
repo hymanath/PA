@@ -768,40 +768,6 @@ public class CommonMethodsUtilService {
 			return null;
 		}
 
-		/**
-		 * @author  raghu 
-		 * @Date 13th June,2017
-		 * @description calculate amount in words
-		 * @param Long number
-		 * @return String if contains (lenght==6) we will display in lacks other wise total amount in crores
-		 */
-		
-		/*public String calculateAmountInWords(Long number){
-			try{
-			String amountStr = number.toString();
-			int lenght = amountStr.trim().length();
-			if(lenght == 6){
-				amountStr=amountStr.substring(0,1);
-				amountStr =amountStr+" lck ";	
-			}
-			if(lenght == 7){
-				amountStr=amountStr.substring(0,2);
-				amountStr =amountStr+" lck ";
-			}
-			if(lenght > 7){
-				String amountStr2;
-				String amountStr1;
-				amountStr1=amountStr.substring(lenght-7,lenght-5);
-				amountStr2=amountStr.substring(0,lenght-7);
-		        amountStr =amountStr2+"."+amountStr1 + "cr";
-			}
-			return amountStr;	
-		}catch(Exception e){
-			LOG.error(" Exception Occured in calculateAmountInWords() , CommonMethodsUtilService class.");
-		}
-			return null;
-   }*/
-		
 		public  String calculateAmountInWords(Long number){
 		      String amountStr = number.toString();
 		      int lenght = amountStr.trim().length();
