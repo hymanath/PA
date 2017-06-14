@@ -26,6 +26,7 @@ public interface IFundManagementDashboardService {
 	public List<LocationFundDetailsVO> getAllSubLocationsBySuperLocationId(InputVO inputVO);
 	public List<LocationVO> getAllFiniancialYears();
 	public List<LocationFundDetailsVO> getAllDepartments();
+	public List<LocationVO> getLocationWiseAmountAndCountDetails(InputVO inputVO);
 	public List<FundMatrixVO> compareFundsBetweenFinancialYears(InputVO inputVO);
 	public List<LocationVO> getLocationWiseFundSanctionDetails(InputVO inputVO);
 

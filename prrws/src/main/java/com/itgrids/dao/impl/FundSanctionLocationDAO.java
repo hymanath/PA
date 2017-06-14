@@ -27,7 +27,9 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 			Date sDate,Date eDate,Long locationScopeId,List<Long> searchLvlVals,List<Long> schmeIdsList ){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select modal.fundSanction.workName" );
-		if(locationScopeId != null && locationScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID ){
+		if(locationScopeId != null  && locationScopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID ){
+			sb.append("  modal.locationAddress.state.stateId,modal.locationAddress.state.stateName ");
+		}else if(locationScopeId != null && locationScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID ){
 			sb.append(" ,modal.locationAddress.district.districtId,modal.locationAddress.district.districtName " );
 		}else if(locationScopeId != null && locationScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID ){
 			sb.append(" ,modal.locationAddress.constituency.constituencyId,modal.locationAddress.constituency.name " );
@@ -43,8 +45,9 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 		if(financialYearIdsList != null && financialYearIdsList.size() >0l ){
 			sb.append(" and modal.fundSanction.financialYearId in (:financialYearIdsList)  " );
 		}
-		
-		if(locationScopeId != null && locationScopeId.longValue() > 0l && locationScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID && searchLvlVals != null && searchLvlVals.size()>0){
+		if(locationScopeId != null && locationScopeId.longValue() > 0l && locationScopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID && searchLvlVals != null && searchLvlVals.size()>0){
+			sb.append(" and modal.locationAddress.state.stateId in (:searchLvlVals) ");
+		}else if(locationScopeId != null && locationScopeId.longValue() > 0l && locationScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID && searchLvlVals != null && searchLvlVals.size()>0){
 			sb.append(" and modal.locationAddress.district.districtId in (:searchLvlVals) ");
 		}else if(locationScopeId != null && locationScopeId.longValue() > 0l && locationScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID && searchLvlVals != null && searchLvlVals.size()>0){
 			sb.append(" and modal.locationAddress.constituency.constituencyId in (:searchLvlVals) ");
