@@ -842,4 +842,28 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		  query.setParameter("partyMeetingId", partyMeetingId);
 		  return (PartyMeetingStatus) query.uniqueResult();
 	  }
+   
+   public List<Object[]> getLocationWiseMeetings(String locationtype,Long constituencyId){
+	   
+	   //0-meetingStatus,1-levelId,2-level,3-count
+	   StringBuilder sb = new StringBuilder();
+	   
+	   sb.append(" select model.mettingStatus,model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.partyMeetingLevel.level,count(model.partyMeetingStatusId) " +
+		   		" from PartyMeetingStatus model ");
+	   
+	   if(locationtype.equalsIgnoreCase("constituency")){
+		   sb.append(" where model.partyMeeting.meetingAddress.constituency.constituencyId = :constituencyId " +
+		   		" and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (7,8,4,5,6,3) ");
+	   }
+	   
+	   sb.append(" group by model.mettingStatus,model.partyMeeting.partyMeetingLevel.partyMeetingLevelId ");
+	   
+	   Query query = getSession().createQuery(sb.toString());
+	   
+	   if(locationtype.equalsIgnoreCase("constituency")){
+		   query.setParameter("constituencyId", constituencyId);
+	   }
+	   
+	   return query.list();
+   }
 }
