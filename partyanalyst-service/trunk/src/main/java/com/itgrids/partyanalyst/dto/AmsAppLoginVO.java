@@ -20,6 +20,11 @@ public class AmsAppLoginVO implements Serializable{
 	private Long levelId;
 	private Long levelValue;
 	private Long designationId;
+	private Long statusId;
+	private String comment;
+	private Long proposalCategoryId;
+	private String proposalAmount;
+	private Long rejoinderActionId;
 	
 	public AmsAppLoginVO(){}
 	public AmsAppLoginVO(Long userId, String userName){
@@ -111,6 +116,36 @@ public class AmsAppLoginVO implements Serializable{
 	}
 	public void setDesignationId(Long designationId) {
 		this.designationId = designationId;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public Long getProposalCategoryId() {
+		return proposalCategoryId;
+	}
+	public void setProposalCategoryId(Long proposalCategoryId) {
+		this.proposalCategoryId = proposalCategoryId;
+	}
+	public String getProposalAmount() {
+		return proposalAmount;
+	}
+	public void setProposalAmount(String proposalAmount) {
+		this.proposalAmount = proposalAmount;
+	}
+	public Long getRejoinderActionId() {
+		return rejoinderActionId;
+	}
+	public void setRejoinderActionId(Long rejoinderActionId) {
+		this.rejoinderActionId = rejoinderActionId;
 	}
 	
 }
