@@ -28,7 +28,7 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select modal.fundSanction.workName" );
 		if(locationScopeId != null  && locationScopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID ){
-			sb.append("  modal.locationAddress.state.stateId,modal.locationAddress.state.stateName ");
+			sb.append("  ,modal.locationAddress.state.stateId,modal.locationAddress.state.stateName ");
 		}else if(locationScopeId != null && locationScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID ){
 			sb.append(" ,modal.locationAddress.district.districtId,modal.locationAddress.district.districtName " );
 		}else if(locationScopeId != null && locationScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID ){
