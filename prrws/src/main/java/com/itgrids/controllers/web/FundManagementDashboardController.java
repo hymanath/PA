@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.FundMatrixVO;
 import com.itgrids.dto.FundSchemeVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
@@ -149,6 +150,11 @@ public class FundManagementDashboardController {
 		public @ResponseBody List<LocationFundDetailsVO> getAllSubLocationsBySuperLocationId(@RequestBody InputVO inputVO){
 			List<LocationFundDetailsVO> locationFundDetailsVOList = fundManagementDashboardService.getAllSubLocationsBySuperLocationId(inputVO);
 			return locationFundDetailsVOList;
+		}
+		@PostMapping("/compareFundsBetweenFinancialYears")
+		public @ResponseBody List<FundMatrixVO> compareFundsBetweenFinancialYears(@RequestBody InputVO inputVO){
+			List<FundMatrixVO> fundMatrixVOList = fundManagementDashboardService.compareFundsBetweenFinancialYears(inputVO);
+			return fundMatrixVOList;
 		}
 		
 		

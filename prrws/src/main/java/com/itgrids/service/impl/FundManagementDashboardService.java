@@ -24,13 +24,17 @@ import com.itgrids.dao.IDepartmentDAO;
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.IFinancialYearDAO;
 import com.itgrids.dao.IFundSanctionDAO;
+import com.itgrids.dao.IFundSanctionMatrixDetailsDAO;
+import com.itgrids.dao.IFundSanctionMatrixRangeDAO;
 import com.itgrids.dao.IGrantTypeDAO;
 import com.itgrids.dto.AddressVO;
+import com.itgrids.dto.FundMatrixVO;
 import com.itgrids.dto.FundSchemeVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.RangeVO;
 import com.itgrids.service.IFundManagementDashboardService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.IConstants;
@@ -60,7 +64,10 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	private IFinancialYearDAO financialYearDAO;
 	@Autowired
 	private IDepartmentDAO departmentDAO;
-	
+	@Autowired
+	private IFundSanctionMatrixRangeDAO fundSanctionMatrixRangeDAO;
+	@Autowired
+	private IFundSanctionMatrixDetailsDAO fundSanctionMatrixDetailsDAO;
 
 	@Override
 	/*
@@ -1282,5 +1289,116 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	  }
 	return finalReturnList;  
 	}
-
+ 	/*
+	 * Swadhin K Lenka
+	 * (non-Javadoc)
+	 * @see com.itgrids.service.IFundManagementDashboardService#compareFundsBetweenFinancialYears(com.itgrids.dto.InputVO)
+	 */
+	@Override
+ 	public List<FundMatrixVO> compareFundsBetweenFinancialYears(InputVO inputVO){
+ 		try{
+ 			List<FundMatrixVO> finalList = new ArrayList<FundMatrixVO>();
+ 			//sort financial year id in ascending order.
+			Collections.sort(inputVO.getFinancialYrIdList());
+			if(inputVO.getFinancialYrIdList() != null && inputVO.getFinancialYrIdList().size() > 0){
+				int len = inputVO.getFinancialYrIdList().size();
+				for(int i=0; i < len-1 ; i++){
+					if(i==0){
+						//for two year comparison
+						buildCompareFundsBetweenFinancialYears(finalList,inputVO.getBlockLevelId(),inputVO.getFinancialYrIdList().get(i),inputVO.getFinancialYrIdList().get(i+1));
+					}else{
+						//for multiple year comparison						
+					}
+				}
+			}
+			return finalList;
+ 		}catch(Exception e){
+ 			LOG.error("Exception Occurred in compareFundsBetweenFinancialYears() of FundManagementDashboardService ", e);
+ 		}
+ 		return null;
+ 	}
+	
+ 	public void buildCompareFundsBetweenFinancialYears(List<FundMatrixVO> finalList, Long scopeId,Long previousYearId, Long presentYearId){
+ 		try{
+ 			List<Object[]> financialYearList = financialYearDAO.getAllFiniancialYearsByIds(new ArrayList<Long>(){{add(previousYearId);add(presentYearId);}});
+ 			//create a map for yearId and name
+ 			Map<Long,String> yearIdNameMap = new HashMap<Long,String>();
+ 			if(financialYearList != null && financialYearList.size() > 0){
+ 				for(Object[] param : financialYearList){
+ 					yearIdNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+ 				}
+ 			}
+ 			//create a template for ui
+ 			List<Object[]> fundSanctionRangeList = fundSanctionMatrixRangeDAO.getFundSanctionRangeList();
+ 			if(fundSanctionRangeList != null && fundSanctionRangeList.size() > 0){
+ 				buildTemplate(finalList,fundSanctionRangeList);
+ 			}
+ 			
+ 			//take all the location based on fund range for previous year
+ 			List<Object[]> previousYearDtls = fundSanctionMatrixDetailsDAO.getPreviousYearDtls(scopeId,previousYearId);
+ 			//create a map for rangeId and list of location
+ 			Map<Long,List<Long>> rangeIdAndLocListMap = new LinkedHashMap<Long,List<Long>>();
+ 			List<Long> locationList = null;
+ 			if(previousYearDtls != null && previousYearDtls.size() > 0){
+ 				for(Object[] param : previousYearDtls){
+ 					locationList = rangeIdAndLocListMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+ 					if(locationList == null){
+ 						locationList = new ArrayList<Long>();
+ 						rangeIdAndLocListMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationList);
+ 					}
+ 					locationList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+ 				}
+ 			}
+ 			
+ 			//push the total count in previous year range
+ 			RangeVO rangeVO = null;
+ 			if(finalList != null && finalList.size() > 0){
+ 				for(FundMatrixVO param : finalList){
+ 					rangeVO = (RangeVO)setterAndGetterUtilService.getMatchedVOfromList(param.getRangeList(), "id", "0");
+ 					if(rangeIdAndLocListMap != null && rangeIdAndLocListMap.get(param.getId()) != null && rangeIdAndLocListMap.get(param.getId()).size() > 0){
+ 						rangeVO.setValue(new Integer(rangeIdAndLocListMap.get(param.getId()).size()).toString());
+ 					}
+ 				}
+ 			}
+ 			System.out.println("hi");
+ 		}catch(Exception e){
+ 			LOG.error("Exception Occurred in buildCompareFundsBetweenFinancialYears() of FundManagementDashboardService ", e);
+ 		}
+ 	}
+ 	public void buildTemplate(List<FundMatrixVO> finalList,List<Object[]> fundSanctionRangeList){
+ 		try{
+ 			FundMatrixVO fundMatrixVO = null;
+ 			
+ 			for(Object[] param : fundSanctionRangeList){
+ 				fundMatrixVO = new FundMatrixVO();
+ 				fundMatrixVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+ 				fundMatrixVO.setRange(commonMethodsUtilService.getStringValueForObject(param[1]));
+ 				pushPresentYearRangeValue(fundMatrixVO,fundSanctionRangeList);
+ 				finalList.add(fundMatrixVO);
+ 			}
+ 		}catch(Exception e){
+ 			LOG.error("Exception Occurred in buildTemplate() of FundManagementDashboardService ", e);
+ 		}
+ 	}
+ 	public void pushPresentYearRangeValue(FundMatrixVO fundMatrixVO,List<Object[]> fundSanctionRangeList){
+ 		try{
+ 			List<RangeVO> rangeVoList = new ArrayList<RangeVO>();
+ 			RangeVO rangeVO = null;
+ 			rangeVO = new RangeVO();
+ 			rangeVO.setId(0L);
+ 			rangeVO.setName("");
+ 			rangeVO.setValue("0");
+ 			rangeVoList.add(rangeVO);
+ 			for(Object[] param : fundSanctionRangeList){
+ 				rangeVO = new RangeVO();
+ 				rangeVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+ 				rangeVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+ 				rangeVO.setValue("0");
+ 				rangeVoList.add(rangeVO);
+ 			}
+ 			fundMatrixVO.getRangeList().addAll(rangeVoList);
+ 		}catch(Exception e){
+ 			LOG.error("Exception Occurred in voidpushPresentYearRangeValue() of FundManagementDashboardService ", e);
+ 		}
+ 	}
 }

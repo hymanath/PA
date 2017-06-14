@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.FundMatrixVO;
 import com.itgrids.dto.FundSchemeVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
@@ -29,5 +30,6 @@ public interface IFundManagementDashboardService {
 	public List<LocationFundDetailsVO> getAllSubLocationsBySuperLocationId(InputVO inputVO);
 	public List<LocationVO> getAllFiniancialYears();
 	public List<LocationFundDetailsVO> getAllDepartments();
+	public List<FundMatrixVO> compareFundsBetweenFinancialYears(InputVO inputVO);
 
 }
