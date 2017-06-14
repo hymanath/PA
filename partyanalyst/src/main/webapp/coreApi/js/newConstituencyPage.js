@@ -16,6 +16,11 @@ function onLoadAjaxCalls()
 	getCasteGroupNAgeWiseVoterNCadreCounts(); */
 	getCasteNAgeWiseVoterNCadreCounts();
 	getEnrollmentYearWiseCadres();
+	
+	//meetings
+	getLocationWiseMeetingsCount();
+	
+	
 }
 function getCandidateAndPartyInfoForConstituency(){
 	$("#candidateProfile").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
@@ -650,6 +655,20 @@ function getEnrollmentYearWiseCadres(){
 	 $.ajax({
       type : "GET",
       url : "getEnrollmentYearAgeGroupWiseCadresAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+	});	
+}
+
+function getLocationWiseMeetingsCount(){
+	jsObj={
+		locationtype:"constituency",
+		constituencyId:232
+	}
+	 $.ajax({
+      type : "GET",
+      url : "getLocationWiseMeetingsCountAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
