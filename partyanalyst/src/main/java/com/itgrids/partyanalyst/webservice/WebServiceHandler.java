@@ -2839,5 +2839,101 @@ public class WebServiceHandler {
 		    return null;
 		}	
 	}
+	@GET
+	@Path("/getGovtAllDepartmentDetailsForAms")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AmsAppVO> getGovtAllDepartmentDetailsForAms()
+	{
+		try{
+			
+			return webServiceHandlerService.getGovtAllDepartmentDetailsForAms();
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getGovtAllDepartmentDetailsForAms() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
+	@POST
+	@Path("/getSubDeptsFrParentDeptForAms")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AmsAppVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.getSubDeptsFrParentDeptForAms(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getSubDeptsFrParentDeptForAms() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
+	@POST
+	@Path("/getDepartmentLevelsForAms")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AmsAppVO> getDepartmentLevelsForAms(AmsAppLoginVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.getDepartmentLevelsForAms(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getDepartmentLevelsForAms() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
+	@POST
+	@Path("/getParentLevelsOfLevelForAms")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AmsAppVO> getParentLevelsOfLevelForAms(AmsAppLoginVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.getParentLevelsOfLevelForAms(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getParentLevelsOfLevelForAms() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
+	@POST
+	@Path("/getDesignationsByDepartmentForAms")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AmsAppVO> getDesignationsByDepartmentForAms(AmsAppLoginVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.getDesignationsByDepartmentForAms(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getDesignationsByDepartmentForAms() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
+	@POST
+	@Path("/getOfficersByDesignationAndLevelForAms")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AmsAppVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.getOfficersByDesignationAndLevelForAms(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getOfficersByDesignationAndLevelForAms() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
 	
 }
