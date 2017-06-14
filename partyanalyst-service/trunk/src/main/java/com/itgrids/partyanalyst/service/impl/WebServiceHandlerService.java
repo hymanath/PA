@@ -5113,4 +5113,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return finalVOLst;
 	 }
+	 public ResultStatus updateAlertStatusCommentForAms(AmsAppLoginVO keyVo){
+		 ResultStatus resultStatus = new ResultStatus();
+		 try {
+			
+			 resultStatus = alertManagementSystemService.updateAlertStatusCommentForAms(keyVo);
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at updateAlertStatusCommentForAms", e);
+		}
+		 return resultStatus;
+	 }
 }

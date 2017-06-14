@@ -240,4 +240,5 @@ public interface IWebServiceHandlerService {
     public List<AmsAppVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo);
     public List<AmsAppVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo);
     public List<AmsAppVO> getGovtAllDepartmentDetailsForAms();
+    public ResultStatus updateAlertStatusCommentForAms(AmsAppLoginVO keyVo);
 }
