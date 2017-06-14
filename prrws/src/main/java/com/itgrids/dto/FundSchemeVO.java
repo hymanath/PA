@@ -12,9 +12,16 @@ public class FundSchemeVO implements java.io.Serializable{
 	private String perc;
 	private Long yearId;
 	private String year;
+	private String amount;
 	private AddressVO addressVO;
 	private List<FundSchemeVO> subList = new ArrayList<FundSchemeVO>(0);
 	
+	public String getAmount() {
+		return amount;
+	}
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
 	public List<FundSchemeVO> getSubList() {
 		return subList;
 	}

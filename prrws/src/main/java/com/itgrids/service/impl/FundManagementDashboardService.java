@@ -141,27 +141,27 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						
 						addressVO.setId(addressVO.getStateId());
 						addressVO.setName(addressVO.getStateName());
-					}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
 						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						
 						addressVO.setId(addressVO.getDistrictId());
 						addressVO.setName(addressVO.getDistrictName());
-					}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						
 						addressVO.setId(addressVO.getAssemblyId());
 						addressVO.setName(addressVO.getAssemblyName());
 					}
-					else if(searchScopeId != null && searchScopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+					else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 						addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						
 						addressVO.setId(addressVO.getTehsilId());
 						addressVO.setName(addressVO.getTehsilName());
 					}
-					else if(searchScopeId != null && searchScopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
+					else if(searchLevelId != null && searchLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
 						addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						
@@ -210,6 +210,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 							schemeVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 							schemeVO.setCount(commonMethodsUtilService.getLongValueForObject(param[4]));
 							schemeVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
+							schemeVO.setAmount(commonMethodsUtilService.calculateAmountInWords(schemeVO.getTotalCount()));
 							
 						schemeVO.setAddressVO(addressVO);							
 						yearVO.setAddressVO(addressVO);
@@ -225,6 +226,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 							schemeVO.setCount(commonMethodsUtilService.getLongValueForObject(param[4]));
 							schemeVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
 							
+							schemeVO.setAmount(commonMethodsUtilService.calculateAmountInWords(schemeVO.getTotalCount()));
+							
 							schemeVO.setAddressVO(addressVO);
 							yearVO.setAddressVO(addressVO);							
 							yearVO.getSubList().add(schemeVO);
@@ -232,6 +235,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						else{
 							schemeVO.setCount(schemeVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[4]));
 							schemeVO.setTotalCount(schemeVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+							
+							schemeVO.setAmount(commonMethodsUtilService.calculateAmountInWords(schemeVO.getTotalCount()));
 							
 							schemeVO.setAddressVO(addressVO);
 							yearVO.setAddressVO(addressVO);
@@ -357,33 +362,33 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					FundSchemeVO fundLocationVO = new FundSchemeVO();
 					
 					AddressVO addressVO = new AddressVO();
-					if(searchScopeId != null && searchScopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
+					if(searchLevelId != null && searchLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
 						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						
 						addressVO.setId(addressVO.getStateId());
 						addressVO.setName(addressVO.getStateName());
-					}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
 						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						
 						addressVO.setId(addressVO.getDistrictId());
 						addressVO.setName(addressVO.getDistrictName());
-					}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						
 						addressVO.setId(addressVO.getAssemblyId());
 						addressVO.setName(addressVO.getAssemblyName());
 					}
-					else if(searchScopeId != null && searchScopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+					else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 						addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						
 						addressVO.setId(addressVO.getTehsilId());
 						addressVO.setName(addressVO.getTehsilName());
 					}
-					else if(searchScopeId != null && searchScopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
+					else if(searchLevelId != null && searchLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
 						addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						
@@ -447,6 +452,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						schemeVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
 						schemeVO.setAddressVO(addressVO);
 						
+						schemeVO.setAmount(commonMethodsUtilService.calculateAmountInWords(schemeVO.getTotalCount()));
+						
 						deptsVO.getSubList().add(schemeVO);
 						yearVO.getSubList().add(deptsVO);
 						fundLocationVO.getSubList().add(yearVO);
@@ -468,6 +475,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 							schemeVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
 							schemeVO.setAddressVO(addressVO);
 							
+							schemeVO.setAmount(commonMethodsUtilService.calculateAmountInWords(schemeVO.getTotalCount()));
+							
 							deptsVO.getSubList().add(schemeVO);
 							yearVO.getSubList().add(deptsVO);
 							
@@ -484,6 +493,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 								yearVO.setAddressVO(addressVO);
 								deptsVO.setAddressVO(addressVO);
 								
+								schemeVO.setAmount(commonMethodsUtilService.calculateAmountInWords(schemeVO.getTotalCount()));
+								
 								deptsVO.getSubList().add(schemeVO);
 								
 							}
@@ -491,6 +502,9 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 								
 								schemeVO.setCount(schemeVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[4]));
 								schemeVO.setTotalCount(schemeVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+								
+								schemeVO.setAmount(commonMethodsUtilService.calculateAmountInWords(schemeVO.getTotalCount()));
+								
 								yearVO.setAddressVO(addressVO);
 							}
 							yearVO.setAddressVO(addressVO);
