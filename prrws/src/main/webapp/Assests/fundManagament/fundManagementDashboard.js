@@ -656,8 +656,12 @@
 							for(var j in result[i].subList){
 								for(var k in result[i].subList[j].subList)//hyma
 								{
+									if(levelId == '2')
+										var levelValue =1;
+									else
+										var levelValue =result[i].addressVO.districtId;
 									if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
-										table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].addressVO.districtId+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</td>';
+										table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+levelValue+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</td>';
 									}else{
 										table+='<td class="text-center no-right-border">-</td>';
 									}
@@ -765,7 +769,7 @@
 										for(var l in result[i].subList[j].subList[k].subList)
 										{
 											if(result[i].subList[j].subList[k].subList[l].count != null && result[i].subList[j].subList[k].subList[l].count > 0){
-												table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].addressVO.districtId+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="'+result[i].subList[j].subList[k].subList[l].id+'" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].subList[l].count+'</td>';
+												table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].addressVO.districtId+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_dept_id="'+result[i].subList[j].subList[k].id+'" attr_scheme_id="'+result[i].subList[j].subList[k].subList[l].id+'" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].subList[l].count+'</td>';
 											}else{
 												table+='<td class="text-center no-right-border">-</td>';
 											}
