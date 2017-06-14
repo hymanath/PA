@@ -54,6 +54,7 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationHierarchyDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerNewDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentLevelDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentRelationDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeLevelDAO;
@@ -79,9 +80,9 @@ import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
+import com.itgrids.partyanalyst.dto.AmsAppVO;
 import com.itgrids.partyanalyst.dto.AmsDataVO;
 import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
-import com.itgrids.partyanalyst.dto.AmsAppVO;
 import com.itgrids.partyanalyst.dto.AmsTrackingVO;
 import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
@@ -185,8 +186,16 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	private ICadreCommitteeService cadreCommitteeService;
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
+	private IGovtDepartmentLevelDAO govtDepartmentLevelDAO;
 	
 	
+	public IGovtDepartmentLevelDAO getGovtDepartmentLevelDAO() {
+		return govtDepartmentLevelDAO;
+	}
+	public void setGovtDepartmentLevelDAO(
+			IGovtDepartmentLevelDAO govtDepartmentLevelDAO) {
+		this.govtDepartmentLevelDAO = govtDepartmentLevelDAO;
+	}
 	public ITdpCommitteeMemberDAO getTdpCommitteeMemberDAO() {
 		return tdpCommitteeMemberDAO;
 	}
@@ -14117,4 +14126,490 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
     		}
     		return null;
     	}
+	  public ResultStatus updateAlertStatusCommentForAms(final Long alertId,final Long statusId,final String comment,final Long userId,final Long proposalCategoryId,final String proposalAmount,final Long rejoinderActionId){
+			final ResultStatus rs = new ResultStatus();
+			try {
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						
+						
+						/* here only we are updating for one assigned officer. But we can assing to multiple members . because of this we need to update present status of alert
+						 * for every assigned user. so am iterating the whole assigned officers 
+						 * Srishailam Pittala 
+						 */
+						
+						/*AlertAssignedOfficerNew aaon = alertAssignedOfficerNewDAO.getModelForAlert(alertId).get(0);
+						if(statusId == 8l || statusId == 9l)
+							aaon.setIsApproved("N");
+						aaon.setAlertStatusId(statusId);
+						aaon.setUpdatedBy(userId);
+						aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						alertAssignedOfficerNewDAO.save(aaon);
+						
+						AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
+							if(statusId == 8l || statusId == 9l)
+								aaon.setIsApproved("N");
+						aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
+						aaotn.setAlertId(aaon.getAlertId());
+						aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
+						aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
+						aaotn.setGovtAlertActionTypeId(6l);
+						if(statusId != null && statusId.longValue()>0L)
+							aaotn.setAlertStatusId(statusId);
+						
+						if(adcn != null)
+							aaotn.setAlertDepartmentCommentId(adcn.getAlertDepartmentCommentId());
+						
+						aaotn.setInsertedBy(userId);
+						aaotn.setAlertStatusId(aaon.getAlertStatusId());
+						aaotn.setUpdatedBy(userId);
+						aaotn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						aaotn.setIsApproved(aaon.getIsApproved());
+						alertAssignedOfficerTrackingNewDAO.save(aaotn);
+						*/
+						/* SMS sending while assigning a new alert to any officer */
+						
+						//List<Long> assingedIdsList = alertAssignedOfficerNewDAO.getAssignedDtls(alertId);
+						List<Long> assingedIdsList = new ArrayList<Long>(0);
+						Alert alert = alertDAO.get(alertId);
+						if(statusId == 13l){
+							GovtProposalPropertyCategory govtProposalPropertyExistingAlert = govtProposalPropertyCategoryDAO.getExistingStatusByAlertId(alertId);
+							if(govtProposalPropertyExistingAlert == null){
+								GovtProposalPropertyCategory govtProposalPropertyCategory = new GovtProposalPropertyCategory();
+								govtProposalPropertyCategory.setAlertId(alertId);
+								govtProposalPropertyCategory.setGovtProposalCategoryId(proposalCategoryId);
+								govtProposalPropertyCategory.setProposalAmount(proposalAmount);
+								govtProposalPropertyCategory.setGovtProposalStatusId(1l);
+								govtProposalPropertyCategory.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								govtProposalPropertyCategory.setInsertedBy(userId);
+								govtProposalPropertyCategory.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								govtProposalPropertyCategory.setUpdatedBy(userId);
+								govtProposalPropertyCategory.setIsDeleted("N");
+								govtProposalPropertyCategoryDAO.save(govtProposalPropertyCategory);
+							
+								AlertComment alertComment = new AlertComment();
+								alertComment.setAlertId(alertId);
+								alertComment.setComments(comment);
+								alertComment.setInsertedBy(userId);
+								alertComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								alertComment.setIsDeleted("N");
+								alertComment = alertCommentDAO.save(alertComment);
+								
+							GovtProposalPropertyCategoryTracking govtProposalPropertyCategoryTracking = new GovtProposalPropertyCategoryTracking();
+								 govtProposalPropertyCategoryTracking.setAlertId(alertId);
+								 govtProposalPropertyCategoryTracking.setGovtProposalCategoryId(proposalCategoryId);
+								 govtProposalPropertyCategoryTracking.setGovtProposalStatusId(1l);
+								 govtProposalPropertyCategoryTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								 govtProposalPropertyCategoryTracking.setInsertedBy(userId);
+								 govtProposalPropertyCategoryTracking.setIsDeleted("N");
+								 govtProposalPropertyCategoryTracking.setAlertCommentId(alertComment.getAlertCommentId());
+							     govtProposalPropertyCategoryTrackingDAO.save(govtProposalPropertyCategoryTracking);
+							     
+							     //Alert alert = alertDAO.get(alertId);
+									if(alert != null && statusId != null && statusId.longValue()>0L){
+										alert.setAlertStatusId(statusId);
+										alert.setUpdatedBy(userId);
+										alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										alertDAO.save(alert);
+									}
+									
+									AlertDepartmentCommentNew adcn = null;
+									if(comment != null && !comment.trim().isEmpty()){
+										adcn = new AlertDepartmentCommentNew();
+										adcn.setComment(comment);
+										adcn.setInsertedBy(userId);
+										adcn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+										adcn = alertDepartmentCommentNewDAO.save(adcn);
+									}
+									//List<Long> assingedIdsList = new ArrayList<Long>(0);
+									List<AlertAssignedOfficerNew> assignedOfficersList = alertAssignedOfficerNewDAO.getModelForAlert(alertId);
+									if(commonMethodsUtilService.isListOrSetValid(assignedOfficersList)){
+										
+										for (AlertAssignedOfficerNew aaon : assignedOfficersList) {
+											
+											if(statusId == 8l || statusId == 9l)
+												aaon.setIsApproved("N");
+											aaon.setAlertStatusId(statusId);
+											aaon.setUpdatedBy(userId);
+											aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+											alertAssignedOfficerNewDAO.save(aaon);
+											
+											AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
+												if(statusId == 8l || statusId == 9l)
+													aaon.setIsApproved("N");
+											aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
+											aaotn.setAlertId(aaon.getAlertId());
+											aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
+											aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
+											aaotn.setGovtAlertActionTypeId(6l);
+											if(statusId != null && statusId.longValue()>0L)
+												aaotn.setAlertStatusId(statusId);
+											
+											if(adcn != null)
+												aaotn.setAlertDepartmentCommentId(adcn.getAlertDepartmentCommentId());
+											
+											aaotn.setInsertedBy(userId);
+											aaotn.setAlertStatusId(aaon.getAlertStatusId());
+											aaotn.setUpdatedBy(userId);
+											aaotn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+											aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+											aaotn.setIsApproved(aaon.getIsApproved());
+											alertAssignedOfficerTrackingNewDAO.save(aaotn);
+											
+											assingedIdsList.add(aaon.getAlertAssignedOfficerId());
+										}
+									}
+							}else{
+								rs.setMessage("Already In ProposalStatus");
+							}
+						}else if(statusId == 10l){
+							
+							if(alert != null && statusId != null && statusId.longValue()>0L){
+								alert.setAlertStatusId(statusId);
+								alert.setUpdatedBy(userId);
+								alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								alertDAO.save(alert);
+							}
+							
+							AlertDepartmentCommentNew adcn = null;
+							if(comment != null && !comment.trim().isEmpty()){
+								adcn = new AlertDepartmentCommentNew();
+								adcn.setComment(comment);
+								adcn.setInsertedBy(userId);
+								adcn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								adcn = alertDepartmentCommentNewDAO.save(adcn);
+							}
+							//List<Long> assingedIdsList = new ArrayList<Long>(0);
+							List<AlertAssignedOfficerNew> assignedOfficersList = alertAssignedOfficerNewDAO.getModelForAlert(alertId);
+							if(commonMethodsUtilService.isListOrSetValid(assignedOfficersList)){
+								
+								for (AlertAssignedOfficerNew aaon : assignedOfficersList) {
+									
+									if(statusId == 8l || statusId == 9l)
+										aaon.setIsApproved("N");
+									aaon.setAlertStatusId(statusId);
+									aaon.setUpdatedBy(userId);
+									aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									alertAssignedOfficerNewDAO.save(aaon);
+									
+									/*String folderName = folderCreationForAlertsAttachmentNew();
+									AlertDepartmentDocumentNew addn = null;	
+									
+									if(mapfiles != null && mapfiles.size() > 0){
+										 AlertAssignedOfficerNew aaon = alertAssignedOfficerNewDAO.getModelForAlert(alertId).get(0);
+										 for (Map.Entry<File, String> entry : mapfiles.entrySet()){
+											 str = new StringBuilder();
+											 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+											 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
+											 StringBuilder pathBuilder = new StringBuilder();
+											  pathBuilder.append("alerts_attachments/").append(yearStr).append("/").append(dateStr).append("/").append(randomNumber).append(".").append(entry.getValue());
+											 str.append(randomNumber).append(".").append(entry.getValue());
+											String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
+											 
+												if(fileCpyStts.equalsIgnoreCase("error")){
+													resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+													LOG.error(" Exception Raise in copying file");
+													throw new ArithmeticException();
+												}
+												
+												addn = new AlertDepartmentDocumentNew();
+												addn.setDocument(pathBuilder.toString());
+												addn.setInsertedBy(userId);
+												addn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+												addn = alertDepartmentDocumentNewDAO.save(addn);
+									}*/
+									
+									AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
+										if(statusId == 8l || statusId == 9l)
+											aaon.setIsApproved("N");
+									aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
+									aaotn.setAlertId(aaon.getAlertId());
+									aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
+									aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
+									aaotn.setGovtAlertActionTypeId(6l);
+									if(statusId != null && statusId.longValue()>0L)
+										aaotn.setAlertStatusId(statusId);
+									
+									if(adcn != null)
+										aaotn.setAlertDepartmentCommentId(adcn.getAlertDepartmentCommentId());
+									
+									
+									aaotn.setInsertedBy(userId);
+									aaotn.setAlertStatusId(aaon.getAlertStatusId());
+									aaotn.setUpdatedBy(userId);
+									aaotn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+									aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									aaotn.setIsApproved(aaon.getIsApproved());
+									aaotn.setGovtRejoinderActionId(rejoinderActionId);
+									alertAssignedOfficerTrackingNewDAO.save(aaotn);
+									
+									assingedIdsList.add(aaon.getAlertAssignedOfficerId());
+								}
+							}
+						
+						}else{
+							//Alert alert = alertDAO.get(alertId);
+							if(alert != null && statusId != null && statusId.longValue()>0L){
+								alert.setAlertStatusId(statusId);
+								alert.setUpdatedBy(userId);
+								alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								alertDAO.save(alert);
+							}
+							
+							AlertDepartmentCommentNew adcn = null;
+							if(comment != null && !comment.trim().isEmpty()){
+								adcn = new AlertDepartmentCommentNew();
+								adcn.setComment(comment);
+								adcn.setInsertedBy(userId);
+								adcn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								adcn = alertDepartmentCommentNewDAO.save(adcn);
+							}
+							
+							List<AlertAssignedOfficerNew> assignedOfficersList = alertAssignedOfficerNewDAO.getModelForAlert(alertId);
+							if(commonMethodsUtilService.isListOrSetValid(assignedOfficersList)){
+								
+								for (AlertAssignedOfficerNew aaon : assignedOfficersList) {
+									
+									if(statusId == 8l || statusId == 9l)
+										aaon.setIsApproved("N");
+									aaon.setAlertStatusId(statusId);
+									aaon.setUpdatedBy(userId);
+									aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									alertAssignedOfficerNewDAO.save(aaon);
+									
+									AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
+										if(statusId == 8l || statusId == 9l)
+											aaon.setIsApproved("N");
+									aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
+									aaotn.setAlertId(aaon.getAlertId());
+									aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
+									aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
+									aaotn.setGovtAlertActionTypeId(6l);
+									if(statusId != null && statusId.longValue()>0L)
+										aaotn.setAlertStatusId(statusId);
+									
+									if(adcn != null)
+										aaotn.setAlertDepartmentCommentId(adcn.getAlertDepartmentCommentId());
+									
+									aaotn.setInsertedBy(userId);
+									aaotn.setAlertStatusId(aaon.getAlertStatusId());
+									aaotn.setUpdatedBy(userId);
+									aaotn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+									aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									aaotn.setIsApproved(aaon.getIsApproved());
+									alertAssignedOfficerTrackingNewDAO.save(aaotn);
+									
+									assingedIdsList.add(aaon.getAlertAssignedOfficerId());
+								}
+							}
+						}
+						
+						if(commonMethodsUtilService.isListOrSetValid(assingedIdsList)){//assingedId != null){
+							for (Long assingedId : assingedIdsList) {
+								AlertAssignedOfficerNew alertAssignedOfficer2 = alertAssignedOfficerNewDAO.get(assingedId);
+								Long designationId = alertAssignedOfficer2.getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartmentDesignationId();
+								Long govtofficerId = alertAssignedOfficer2.getGovtOfficerId();
+								
+								List<String> mobileNos = govtOfficerNewDAO.getOfficerDetailsByOfficerId(govtofficerId);
+								if(mobileNos != null && mobileNos.size() > 0 && mobileNos.get(0).trim().length() > 0 && !mobileNos.get(0).trim().isEmpty()){
+					                  sendSMSTOAlertAssignedOfficer(designationId,govtofficerId,mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),6L,userId,alertStatusDAO.get(statusId).getAlertStatus(),comment,userId);  
+					            }
+							}
+						}
+						
+						rs.setExceptionMsg("success");
+					}
+				});	
+				
+				
+			} catch (Exception e) {
+				rs.setExceptionMsg("failure");
+				LOG.error("Exception Occured in updateAlertStatusComment  ", e);
+			}
+			return rs;
+		}
+	  /*
+		 * Teja(non-Javadoc)
+		 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getGovtAllDepartmentDetailsForAms()
+		 */
+		public List<AmsAppVO> getGovtAllDepartmentDetailsForAms(){
+      		List<AmsAppVO> finalList = new ArrayList<AmsAppVO>();
+      		try {
+      			
+      			List<Object[]> list = govtDepartmentRelationDAO.getAllMainDepartments();
+      			if(list !=null && list.size()>0){
+      				for (Object[] objects : list) {							
+      					AmsAppVO vo = new AmsAppVO();
+      					vo.setId((Long)objects[0]);
+      					vo.setName(objects[1] !=null ? objects[1].toString():"");
+      					
+      					finalList.add(vo);
+					}
+      			}
+				
+			} catch (Exception e) {
+				LOG.error(" Exception Occured in getGovtAllDepartmentDetailsForAms() method, Exception - ",e);
+			}
+      		return finalList;
+      	}
+		public List<AmsAppVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo){
+			List<AmsAppVO> finalList = new ArrayList<AmsAppVO>();
+			try{
+				
+				List<Object[]> subDeptList = govtDepartmentRelationDAO.getSubDeptsForParentDept(keyVo.getParentDeptId());
+				if(subDeptList != null && subDeptList.size() > 0l){
+					for (Object[] objects : subDeptList) {
+						AmsAppVO vo = new AmsAppVO();
+						vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						finalList.add(vo);
+					}
+				}
+			}catch(Exception e){
+				LOG.error("Error occured getSubDeptsFrParentDeptForAms() method of AlertManagementSystemService{}");
+			}
+			return finalList;
+		}
+		public List<AmsAppVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo){
+			List<AmsAppVO> resultList = new ArrayList<AmsAppVO>();
+			try {						
+				List<Object[]> levelObj = govtDepartmentScopeLevelDAO.getDepartmentLevels(keyVo.getDepartmentId());
+				if(levelObj != null && levelObj.size()>0){
+					for (Object[] param : levelObj) {
+						  AmsAppVO VO = new AmsAppVO();
+						   VO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						   VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						   resultList.add(VO);
+					}				 
+				}
+			} catch (Exception e) {
+				LOG.error("Error occured getDepartmentLevelsForAms(Long departmentId) method of AlertManagementSystemService",e);
+			}
+			return resultList;
+		}
+		public List<AmsAppVO> getParentLevelsOfLevelForAms(AmsAppLoginVO keyVo){
+			
+			List<AmsAppVO> finalList = new ArrayList<AmsAppVO>(0);
+			
+			try {
+				
+				Map<Long,AmsAppVO> levelMap = new LinkedHashMap<Long, AmsAppVO>();
+				
+				
+				List<Object[]> subLevelObj = govtDepartmentScopeLevelDAO.getParentLevelsOfLevel(keyVo.getDepartmentId(),keyVo.getLevelId());
+				
+				
+				if(subLevelObj !=null && subLevelObj.size()>0){
+					Set<Long> subLevelIds = new LinkedHashSet<Long>();
+					for (Object[] param : subLevelObj) {					
+						//if(param[0] !=null && !(param[0].equals(levelId))){	
+							
+						AmsAppVO vo = new AmsAppVO();						
+							vo.setId((Long)param[0]);
+							vo.setName(param[1] !=null ? param[1].toString():"");	
+							
+							//levelList.add(vo);
+							levelMap.put((Long)param[0], vo);
+							
+							subLevelIds.add((Long)param[0]);
+						//}
+					}
+					
+					//0.levelId,1.workLocationId,2.LocationName
+					List<Object[]> objList = govtDepartmentWorkLocationDAO.getLevelWiseInfo(keyVo.getDepartmentId(),subLevelIds);
+					
+					setLocationValuesToMapForAms(objList,levelMap);
+					
+					if(levelMap !=null && levelMap.size()>0){
+						finalList.addAll(levelMap.values());
+					}
+					
+				}
+				
+				
+			} catch (Exception e) {
+				LOG.error("Error occured getParentLevelsOfLevel(Long departmentId,Long levelId) method of AlertManagementSystemService",e);
+			}
+			return finalList;
+		}
+		public void setLocationValuesToMapForAms(List<Object[]> objList,Map<Long,AmsAppVO> levelMap){
+			try {
+				
+				if(objList !=null && objList.size()>0){
+					for (Object[] obj : objList) {
+						
+						if(obj[0] !=null){
+							if((Long)obj[0] == 1l){
+								
+								AmsAppVO mainVo = levelMap.get(obj[0] !=null ? (Long)obj[0]:0l);
+								if(mainVo == null){
+									mainVo = new AmsAppVO();
+									
+									mainVo.setId((Long)obj[0]);
+									levelMap.put((Long)obj[0], mainVo);
+								}
+								
+								if(obj[1] !=null){
+									AmsAppVO subVo = new AmsAppVO();
+									
+									subVo.setId((Long)obj[1]);
+									subVo.setName(obj[2] !=null ? obj[2].toString():"");
+									
+									mainVo.getIdnameList().add(subVo);
+								}
+								
+							}
+						}
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Error occured setLocationValuesToMapForAms() method of AlertManagementSystemService",e);
+			}
+		}
+		public List<AmsAppVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo){
+			List<AmsAppVO> returnList = new ArrayList<AmsAppVO>();
+			try {
+				
+				List<Object[]> list = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationsForDepartmentAndLevelLocation(keyVo.getDepartmentId(),keyVo.getLevelId(),keyVo.getLevelValue());
+				if(list != null && !list.isEmpty()){
+					for (Object[] obj : list) {
+						AmsAppVO vo = new AmsAppVO();
+						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						vo.setName(obj[1] != null ? obj[1].toString():"");
+						returnList.add(vo);
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Error occured getDesignationsByDepartmentForAms() method of AlertManagementSystemService",e);
+			}
+			return returnList;
+		}
+		public List<AmsAppVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo){
+			List<AmsAppVO> returnList = new ArrayList<AmsAppVO>();
+			try {
+				List<Object[]> list = govtDepartmentDesignationOfficerDetailsNewDAO.getOfficersByDesignationAndLevel(keyVo.getLevelId(),keyVo.getLevelValue(),keyVo.getDesignationId());
+				if(list != null && !list.isEmpty()){
+					for (Object[] obj : list) {
+						AmsAppVO vo = new AmsAppVO();					
+						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						
+						StringBuilder str = new StringBuilder();
+						
+						String name="";
+						name = obj[1] != null ? obj[1].toString():"";
+						if(!name.toString().isEmpty())
+							name=name.concat(obj[2] !=null ? " "+" - "+obj[2].toString():"");
+						else
+							name=obj[2] !=null ? obj[2].toString():"";
+
+						vo.setName(name);
+						returnList.add(vo);
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Error occured getOfficersByDesignationAndLevelForAms() method of CccDashboardService",e);
+			}
+			return returnList;
+		}
 }

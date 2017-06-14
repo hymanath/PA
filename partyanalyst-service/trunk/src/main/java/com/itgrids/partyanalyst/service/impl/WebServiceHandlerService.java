@@ -5047,4 +5047,70 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return finalVOLst;
 	 }
+	 public List<AmsAppVO> getGovtAllDepartmentDetailsForAms(){
+		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+		 try {
+			
+			 finalVOLst = alertManagementSystemService.getGovtAllDepartmentDetailsForAms();
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at getGovtAllDepartmentDetailsForAms", e);
+		}
+		 return finalVOLst;
+	 }
+	 public List<AmsAppVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo){
+		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+		 try {
+			
+			 finalVOLst = alertManagementSystemService.getSubDeptsFrParentDeptForAms(keyVo);
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at getSubDeptsFrParentDeptForAms", e);
+		}
+		 return finalVOLst;
+	 }
+	 public List<AmsAppVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo){
+		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+		 try {
+			
+			 finalVOLst = alertManagementSystemService.getDepartmentLevelsForAms(keyVo);
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at getDepartmentLevelsForAms", e);
+		}
+		 return finalVOLst;
+	 }
+	 public List<AmsAppVO> getParentLevelsOfLevelForAms(AmsAppLoginVO keyVo){
+		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+		 try {
+			
+			 finalVOLst = alertManagementSystemService.getParentLevelsOfLevelForAms(keyVo);
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at getParentLevelsOfLevelForAms", e);
+		}
+		 return finalVOLst;
+	 }
+	 public List<AmsAppVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo){
+		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+		 try {
+			
+			 finalVOLst = alertManagementSystemService.getDesignationsByDepartmentForAms(keyVo);
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at getDesignationsByDepartmentForAms", e);
+		}
+		 return finalVOLst;
+	 }
+	 public List<AmsAppVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo){
+		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+		 try {
+			
+			 finalVOLst = alertManagementSystemService.getOfficersByDesignationAndLevelForAms(keyVo);
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at getOfficersByDesignationAndLevelForAms", e);
+		}
+		 return finalVOLst;
+	 }
 }
