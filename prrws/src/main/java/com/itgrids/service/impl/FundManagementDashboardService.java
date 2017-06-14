@@ -177,19 +177,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					addressVO.setLocalElectionBodyId(0L);
 					addressVO.setLocalElectionBodyName("");
 					
-					Long keyId=0L;
-					if(searchScopeId != null){
-						if(searchScopeId.longValue() ==IConstants.STATE_LEVEL_SCOPE_ID)
-							keyId = 1L;
-						else if(searchScopeId.longValue() ==IConstants.DISTRICT_LEVEL_SCOPE_ID)
-							keyId = addressVO.getDistrictId();
-						else if(searchScopeId.longValue() ==IConstants.CONSTITUENCY_LEVEL_SCOPE_ID)
-							keyId = addressVO.getAssemblyId();
-						else if(searchScopeId.longValue() ==IConstants.MANDAL_LEVEL_SCOPE_ID)
-							keyId = addressVO.getTehsilId();
-						else if(searchScopeId.longValue() ==IConstants.VILLAGE_LEVEL_SCOPE_ID)
-							keyId = addressVO.getPanchayatId();
-					}
+					Long keyId=addressVO.getId();
 					
 					if(locationMap.get(keyId) != null){
 						fundLocationVO = locationMap.get(keyId);
