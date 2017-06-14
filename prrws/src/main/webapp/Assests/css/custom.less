@@ -10,13 +10,19 @@
 @dark_blue_color:#3C46FF;
 @dark_yellow_color:#FFBA00;
 @roboto_font:'Roboto', sans-serif;
+@lato_font:'Lato', sans-serif;
 @transparent_color:transparent;
 @background_color_8: rgb(74, 88, 99);
+
+/*Fonts*/
+@import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i');
+
+
 body
 {
 	color:@black_color;
 	background-color:@light_ash_color;
-	font-family: @roboto_font;
+	font-family: @lato_font;
 }
 
 header
@@ -126,12 +132,23 @@ header
 	{
 		padding:2px 8px 3px 12px;
 		border-right:1px solid @dark_brown_color;
+		width:24%;
+	}
+	li:first-child
+	{
+		position: relative;
+		top: -10px;
+		display:inline-table;
+	}
+	.search-choice
+	{
+		top:0px !important;
 	}
 	li:last-child
 	{
 		padding:3px 12px;
 		border-right:0px;
-		.form-group
+		.input-group
 		{
 			margin-bottom:0px;
 			.form-control
@@ -155,10 +172,10 @@ main
 {
 	margin-top:30px;
 }
-h1,h2,h3,h4,h5,h6,p,ul
+h1,h2,h3,h4,h5,h6,p,ul,.form-group
 {
 	margin:0px !important;
-	font-family: @roboto_font;
+	font-family: @lato_font;
 }
 .panel-black
 {
@@ -400,43 +417,46 @@ h3
 		}
 	}
 }
-
-.chosen-container-single
+header
 {
-	.chosen-single
+	.chosen-container-single
 	{
-		background-color:@transparent_color !important;
-		border-top-width:0px !important;
-		border-left-width:0px !important;
-		border-right-width:0px !important;
-	}
-}
-.chosen-container-multi 
-{
-	.chosen-choices
-	{
-		background-color:@transparent_color !important;
-		border-top-width:0px !important;
-		border-left-width:0px !important;
-		border-right-width:0px !important;
-		background-image:none !important;
-	}
-}
-.chosen-container-multi
-{
-	.chosen-choices
-	{
-		li.search-choice
+		.chosen-single
 		{
-			border:0px !important;
-			border-radius:8px !important;
-			background-image:none !important;
-			background-color:@dark_brown_color !important;
-			color:@white_color !important;
+			background-color:@transparent_color !important;
+			border-top-width:0px !important;
+			border-left-width:0px !important;
+			border-right-width:0px !important;
 		}
 	}
-	
+	.chosen-container-multi 
+	{
+		.chosen-choices
+		{
+			background-color:@transparent_color !important;
+			border-top-width:0px !important;
+			border-left-width:0px !important;
+			border-right-width:0px !important;
+			background-image:none !important;
+		}
+	}
+	.chosen-container-multi
+	{
+		.chosen-choices
+		{
+			li.search-choice
+			{
+				border:0px !important;
+				border-radius:8px !important;
+				background-image:none !important;
+				background-color:@dark_brown_color !important;
+				color:@white_color !important;
+			}
+		}
+		
+	}
 }
+
 .highcharts-tooltip span {
     background-color:white;
     opacity:1;
