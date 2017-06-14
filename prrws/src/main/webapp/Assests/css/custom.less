@@ -11,6 +11,7 @@
 @dark_yellow_color:#FFBA00;
 @roboto_font:'Roboto', sans-serif;
 @transparent_color:transparent;
+@background_color_8: rgb(74, 88, 99);
 body
 {
 	color:@black_color;
@@ -440,4 +441,26 @@ h3
     background-color:white;
     opacity:1;
     z-index:9999!important
+}
+.constituencyUl {
+	li {
+		border: 1px solid #ddd;
+		padding: 2px 3px;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+}
+.activeUlCls {
+	li {
+		background: rgb(255, 255, 255);
+		border: 1px solid rgb(221, 221, 221);
+		border-radius: 4px;
+		cursor: pointer;
+		text-transform: capitalize;
+		margin: 0px 3px;
+	}
+	li.active {
+		background-color: @background_color_8;
+		color: @white_color;
+	}
 }

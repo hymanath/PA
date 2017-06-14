@@ -1,6 +1,7 @@
 	//onLoadCalls();
 	//onLoadClicks();
 	onLoadInitialisations();
+	 var globalLevelObj =  {"distLevelDistrictNames":"DISTRICT","constLevelDistNames":"DISTRICT","mandalLevelDistNames":"DISTRICT","constLevelConstNames":"CONSTITUENCY","mandalLevelConstNames":"CONSTITUENCY","mandalLevelMandalNames":"MANDAL"};
 	var glStartDate = moment().subtract(5,'years').format("DD/MM/YYYY");
 	var glEndDate = moment().add(5,'years').format("DD/MM/YYYY");
 	//var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
@@ -8,6 +9,24 @@
 	///Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations
 	function onLoadCalls()
 	{
+		
+		$("#distLevelDistrictNames_chosen").css("border","1px solid #ddd");
+		$("#distLevelDistrictNames_chosen").css("border-bottom","none");
+		
+		$("#constLevelDistNames_chosen").css("border","1px solid #ddd");
+		$("#constLevelDistNames_chosen").css("border-bottom","none");
+		
+		$("#constLevelConstNames_chosen").css("border","1px solid #ddd");
+		$("#constLevelConstNames_chosen").css("border-bottom","none");
+		
+		$("#mandalLevelDistNames_chosen").css("border","1px solid #ddd");
+		$("#mandalLevelDistNames_chosen").css("border-bottom","none");
+		
+		$("#mandalLevelConstNames_chosen").css("border","1px solid #ddd");
+		$("#mandalLevelConstNames_chosen").css("border-bottom","none");
+		
+		$("#mandalLevelMandalNames_chosen").css("border","1px solid #ddd");
+		$("#mandalLevelMandalNames_chosen").css("border-bottom","none");
 		getLocationWiseFundDetails(3,'highest','highFundDist');
 		getLocationWiseFundDetails(4,'highest','highFundCons');
 		getLocationWiseFundDetails(3,'lowest','lowFundDist');
@@ -20,11 +39,18 @@
 		getAverageFundForAnyLevel(4,'avgFundCons');
 		getAverageFundForAnyLevel(5,'avgFundMandal');
 		getAverageFundForAnyLevel(6,'avgFundVillage');
-		getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
-		getLocationWiseAmountDetails(3,'distLevlOvervw','overview');
-		getLocationWiseAmountDetails(4,'consLevlOvervw','overview');
-		getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview');
-		getAllSubLocationsBySuperLocationId(21);
+		
+		//onload overviewGraph building
+		getLocationWiseAmountDetails(2,'stateLevlOvervw','overview','','',0);
+		getLocationWiseAmountDetails(3,'distLevlOvervw','overview','name','desc',0);
+		getLocationWiseAmountDetails(4,'consLevlOvervw','overview','name','desc',0);
+		getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview','name','desc',0);
+		
+		//onload district Names building
+		getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames');
+		getAllSubLocationsBySuperLocationId(21,'constLevelDistNames');
+		getAllSubLocationsBySuperLocationId(21,'mandalLevelDistNames');
+		
 		getSchemeWiseHighestAndLowestFund('highest','highFundScheme');
 		getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme');
 		getTotalFunds('totFund');
@@ -36,52 +62,131 @@
 		 getTotalLocationsByScopeId(6,'totFundVillage');
 		
 		getAverageFundForScheme('avgFundScheme');
-		
 	}
-	
+	function getSelectedType(){
+		 var sortingType = ''; 
+		 var orderType='';
+		$('.sortingDivDistCls li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+			  sortingType = $(this).attr("attr_sorting_type");
+			  orderType=$(this).attr("attr_order_type");
+			 }
+		});
+		return {
+				sortingType:sortingType,
+				orderType:orderType
+		}
+	}
+	function getblockType(){
+		 var blockType = ''; 
+		$('.distLevelActive li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+			  blockType = $(this).attr("attr_type");
+			 }
+		});
+		return blockType;
+	}
+	function getblockTypeCons(){
+		 var blockTypeCons = ''; 
+		$('.consLevelActive li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+				blockTypeCons = $(this).attr("attr_type");
+			 }
+		});
+		return blockTypeCons;
+	}
+	function getblockTypeMandal(){
+		 var blockTypeMadal = ''; 
+		$('.mandalLevelActive li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+				blockTypeMadal = $(this).attr("attr_type");
+			 }
+		});
+		return blockTypeMadal;
+	}
 	$(document).on("click","[tab-switch] li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
 		var blockName = $(this).closest("ul").attr("tab-switch");
 		var blockType = $(this).attr("attr_type");
+		
+		var sortingType = getSelectedType().sortingType;
+		var orderType = getSelectedType().orderType;
+		
 		if(blockName == 'consLevel')
 		{
+			$("#constLevelDistNames").val(0);
+			$("#constLevelDistNames").trigger('chosen:updated');
+			
+			$("#constLevelConstNames").html('');
+			$("#constLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');
+			$("#constLevelConstNames").trigger('chosen:updated');
+			
 			if(blockType == 'overview')
 			{
-				getLocationWiseAmountDetails(4,'consLevlOvervw','overview');
+				getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,0);
 			}else if(blockType == 'scheme')
 			{
-				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme');
+				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme',sortingType,orderType,0,4);
 			}else if(blockType == 'deptscheme'){
-				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(4,'consLevlOvervw','deptscheme');
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(4,'consLevlOvervw','deptscheme',sortingType,orderType,0,4);
 			}
 		}else if(blockName == 'distLevel')
 		{
+			$("#distLevelDistrictNames").val(0);
+		    $("#distLevelDistrictNames").trigger('chosen:updated');
 			if(blockType == 'overview')
 			{
-				getLocationWiseAmountDetails(3,'distLevlOvervw','overview');
+				getLocationWiseAmountDetails(3,'distLevlOvervw','overview',sortingType,orderType,0);
 			}else if(blockType == 'scheme')
 			{
-				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','scheme');
+				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','scheme',sortingType,orderType,0,3);
 			}else if(blockType == 'deptscheme'){
-				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(3,'distLevlOvervw','deptscheme');
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(3,'distLevlOvervw','deptscheme',sortingType,orderType,0,3);
 			}
 		}else if(blockName == 'stateLevel')
 		{
 			if(blockType == 'overview')
 			{
-				getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
+				getLocationWiseAmountDetails(2,'stateLevlOvervw','overview','','',0);
 			}else if(blockType == 'scheme')
 			{
-				getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','scheme');
+				getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','scheme','','',0);
 			}else if(blockType == 'deptscheme'){
 				//getFinancialYearWiseDeptsWiseSchemeAmountDetails(2,'stateLevlOvervw','deptscheme')
 			}
+		}else if(blockName == 'mandalLevel'){
+			$("#mandalLevelDistNames").val(0);
+		    $("#mandalLevelDistNames").trigger('chosen:updated');
+			
+			$("#mandalLevelConstNames").html('');
+			$("#mandalLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');
+		    $("#mandalLevelConstNames").trigger('chosen:updated');
+			
+			$("#mandalLevelMandalNames").html('');
+			$("#mandalLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');
+		    $("#mandalLevelMandalNames").trigger('chosen:updated');
+			
+			if(blockType == 'overview'){
+				getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,0);
+			}else if(blockType == 'scheme'){
+				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','scheme',sortingType,orderType,0,5);
+			}else if(blockType == 'deptscheme'){
+				getFinancialYearWiseDeptsWiseSchemeAmountDetails(5,'mandalLevlOvervw','deptscheme',sortingType,orderType,0,5);
+			}
 		}
 	});
-	$(document).on('change','.constLevelDistNames',function(){
+	$(document).on('change','.constiLevelDistCls',function(){
 		var locationScopeId = $("#constLevelDistNames").val();
-	    getAllSubLocationsBySuperLocationId(locationScopeId);
+	    getAllSubLocationsBySuperLocationId(locationScopeId,'constLevelConstNames');
+	});
+	$(document).on('change','.mandalLevelDistCls',function(){
+		var locationScopeId = $("#mandalLevelDistNames").val();
+	    getAllSubLocationsBySuperLocationId(locationScopeId,'mandalLevelConstNames');
+	});
+	$(document).on('change','.levelmandalConstiCls',function(){
+		var locationScopeId = $("#mandalLevelConstNames").val();
+	    getAllSubLocationsBySuperLocationId(locationScopeId,'mandalLevelMandalNames');
 	});
 	function onLoadInitialisations()
 	{
@@ -107,23 +212,20 @@
 		});
 		$(".chosenSelect").chosen();
 		
-		/*$("#mainDate").daterangepicker({
-			startDate: moment().subtract(5,'years'),
-			endDate:moment().add(5,'years'),
-			format:"DD/MM/YYYY",
-			opens:'left'
-		});
-		$('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-			glStartDate = picker.startDate.format('DD/MM/YYYY')
-			glEndDate = picker.endDate.format('DD/MM/YYYY')
-			onLoadCalls();
-		});*/
 		
-		//srujna
-		$("#dateRangePicker").daterangepicker({
-		opens: 'left',
-		startDate: glStartDate,
-		endDate: glEndDate,
+		getAllDepartments();
+		getAllFiniancialYears();		
+	}
+	$(document).on("change","#financialYearId",function(){
+		$(".switch-btn li").removeClass("active");
+		$(".switch-btn li:first-child").addClass("active");
+		onLoadCalls();
+	});
+		
+	$("#dateRangePickerAUM").daterangepicker({
+			opens: 'left',
+			startDate: glStartDate,
+			endDate: glEndDate,
 		locale: {
 		  format: 'DD/MM/YYYY'
 		},
@@ -139,33 +241,22 @@
 		   'This Year': [moment().startOf('Year'), moment()]
 		}
 	});
-    var dates= $("#dateRangePicker").val();
-	var date=dates.split('-');
-	var pickerDates = date[0]+'-'+date[1]
-	//var pickerDates = glStartDate+' - '+glEndDate
+    var dates= $("#dateRangePickerAUM").val();
+	var pickerDates = glStartDate+' - '+glEndDate
 	if(dates == pickerDates)
 	{
-		$("#dateRangePicker").val('All');
+		$("#dateRangePickerAUM").val('All');
 	}
-	$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+	$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
 		    glStartDate = picker.startDate.format('DD/MM/YYYY')
 			glEndDate = picker.endDate.format('DD/MM/YYYY')
 		if(picker.chosenLabel == 'All')
 		{
-			$("#dateRangePicker").val('All');
+			$("#dateRangePickerAUM").val('All');
 		}
 		
 		onLoadCalls();
-	});  //srujna
-		
-		$(document).on("change","#financialYearId",function(){
-			$(".switch-btn li").removeClass("active");
-			$(".switch-btn li:first-child").addClass("active");
-			onLoadCalls();
-		});
-		getAllDepartments();
-		getAllFiniancialYears();		
-	}
+	});
 	
 	function highChart(divId,namesArr,DataArr)
 	{
@@ -314,7 +405,7 @@
 			str+='<h3>'+ajaxresp.totSchemes+'</h3>';
 		}
 		
-		if(ajaxresp.subList.length > 0)
+		if(ajaxresp.subList !=null && ajaxresp.subList.length > 0)
 		{
 			str+='<ul class="list-inline">';
 				for(var i in ajaxresp.subList)
@@ -326,7 +417,7 @@
 					str+='</li>';
 				}
 			str+='</ul>';
-		}else if(ajaxresp.detailsVOs.length > 0  && divId != 'avgFundDist' && divId != 'avgFundCons')
+		}else if(ajaxresp.detailsVOs !=null && ajaxresp.detailsVOs.length > 0  && divId != 'avgFundDist' && divId != 'avgFundCons')
 		{
 			str+='<ul class="list-inline">';
 				for(var i in ajaxresp.detailsVOs)
@@ -371,7 +462,7 @@
 		
 		$("#"+divId).html(str);
 	}
-	function getLocationWiseAmountDetails(levelId,divId,type){
+	function getLocationWiseAmountDetails(levelId,divId,type,sortingType,orderType,locationId){
 		$("#"+divId).html(spinner);
 		var levelValues = [];
 		var financialYrIdList = $('#financialYearId').val();
@@ -384,11 +475,12 @@
 			
 		}
 		var json = {
+			locationId :locationId,
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdList,
-			sortingType : "name",      //name,count    
-			order : "desc",   //asc,desc
+			sortingType : sortingType,      //name,count    
+			order : orderType,   //asc,desc
 			fromDateStr : glStartDate,//"01-06-2013",       
 			toDateStr : glEndDate,//"10-06-2020",
 		}
@@ -475,7 +567,7 @@
 							table+='<td>'+result[i].locationName+'</td>';
 							for(var j in result[i].locationList1){
 								table+='<td class="text-center no-right-border">'+result[i].locationList1[j].count+'</td>';
-								table+='<td class="text-center">'+result[i].locationList1[j].amount+'</td>';
+								table+='<td class="text-center">'+parseInt(result[i].locationList1[j].amunt)+'</td>';
 							}
 						table+='</tr>';
 					}
@@ -547,14 +639,14 @@
 								table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 							}else if(levelId == '5')
 							{
-								table+='<td>'+result[i].addressVO.mandalId+'</td>';
-								table+='<td>'+result[i].addressVO.mandalName+'</td>';
+								table+='<td>'+result[i].addressVO.id+'</td>';
+								table+='<td>'+result[i].addressVO.name+'</td>';
 							}
 							for(var j in result[i].subList){
 								for(var k in result[i].subList[j].subList)
 								{
 									table+='<td class="text-center no-right-border">'+result[i].subList[j].subList[k].count+'</td>';
-									table+='<td class="text-center">'+result[i].subList[j].subList[k].totalCount+'</td>';
+									table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].amount)+'</td>';
 								}
 							}
 						table+='</tr>';
@@ -643,8 +735,8 @@
 									table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 								}else if(levelId == '5')
 								{
-									table+='<td>'+result[i].addressVO.mandalId+'</td>';
-									table+='<td>'+result[i].addressVO.mandalName+'</td>';
+									table+='<td>'+result[i].addressVO.id+'</td>';
+									table+='<td>'+result[i].addressVO.name+'</td>';
 								}
 								
 								for(var j in result[i].subList)
@@ -654,7 +746,7 @@
 										for(var l in result[i].subList[j].subList[k].subList)
 										{
 											table+='<td class="text-center no-right-border">'+result[i].subList[j].subList[k].subList[l].count+'</td>';
-											table+='<td class="text-center">'+result[i].subList[j].subList[k].subList[l].totalCount+'</td>';
+											table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].subList[l].amount)+'</td>';
 										}
 									}
 								}
@@ -681,7 +773,8 @@
 						if(result[i].locationList1 !=null &&  result[i].locationList1.length>0){
 							for(var j in result[i].locationList1){
 								if(result[i].locationList1[j].financialYearId != 0){
-									mainlocationArr.push({y:result[i].locationList1[j].amount})
+									//mainlocationArr.push({y:result[i].locationList1[j].amount})
+									mainlocationArr.push({y:parseInt(result[i].locationList1[j].amunt)})
 								}
 								locationNamesArr.push("Year<br/>"+result[i].locationList1[j].financialYear);
 							}
@@ -742,9 +835,9 @@
 								},
 								formatter: function() {
 								
-									return '<span style="top:16px; position: absolute;"><br/><h3><i class="fa fa-inr"></i>: '+this.total+'</h3></span>';
+									//return '<span style="top:16px; position: absolute;"><br/><h3><i class="fa fa-inr"></i>: '+this.total+'</h3></span>';
 									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-									//return (this.total);
+									return '<span><i class="fa fa-inr"></i>: '+this.total+'</span>';
 								} 
 							
 							}
@@ -776,7 +869,7 @@
 					$(".chart"+divId).html("No Data AVailable")
 				}
 				
-			}else if(levelId == 3 || levelId == 4){
+			}else if(levelId == 3 || levelId == 4 || levelId == 5){
 				
 				if(result !=null && result.length>0){
 					var locationLevelNames=[];
@@ -789,11 +882,14 @@
 						if(result[i].locationList1 !=null && result[i].locationList1.length>0){
 							for(var j in result[i].locationList1){
 								if(result[i].locationList1[j].financialYearId==1){
-									 year1415Arr.push({"y":result[i].locationList1[j].amount}); 
+									 //year1415Arr.push({"y":result[i].locationList1[j].amount}); 
+									 year1415Arr.push({"y":parseInt(result[i].locationList1[j].amunt)}); 
 								}else if(result[i].locationList1[j].financialYearId==2){
-									 year1516Arr.push({"y":result[i].locationList1[j].amount}); 
+									 //year1516Arr.push({"y":result[i].locationList1[j].amount}); 
+									 year1516Arr.push({"y":parseInt(result[i].locationList1[j].amunt)}); 
 								}else if(result[i].locationList1[j].financialYearId==3){
-									 year1617Arr.push({"y":result[i].locationList1[j].amount}); 
+									 //year1617Arr.push({"y":result[i].locationList1[j].amount}); 
+									 year1617Arr.push({"y":parseInt(result[i].locationList1[j].amunt)}); 
 								}
 							}
 						}
@@ -914,6 +1010,7 @@
 					var RDFArr=[];
 					var MRRArr=[];
 					var FC13Arr=[]; 
+					var APDRPGRANTArr=[]; 
 					for(var i in result){
 						
 						
@@ -942,17 +1039,26 @@
 									if(countAvailable){
 										for(var k in result[i].subList[j].subList){
 											if(result[i].subList[j].subList[k].id == 1){
-												NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												//NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												NABARDArr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
 											 }else if(result[i].subList[j].subList[k].id == 2){
-												 NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 //NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 NREGPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
 											 }else if(result[i].subList[j].subList[k].id == 3){
-												 CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 //CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 CRRArr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
 											 }else if(result[i].subList[j].subList[k].id == 4){
-												 RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 //RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 RDFArr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
 											 }else if(result[i].subList[j].subList[k].id == 5){
-												 MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 //MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 MRRArr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
 											 }else if(result[i].subList[j].subList[k].id == 6){
-												 FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 //FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 FC13Arr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
+											 }else if(result[i].subList[j].subList[k].id == 7){
+												 //APDRPGRANTArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 APDRPGRANTArr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
 											 }
 										}
 									}
@@ -978,6 +1084,9 @@
 						}
 						if(FC13Arr != null && FC13Arr.length > 0){
 							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#5B5B5B"});  
+						}
+						if(APDRPGRANTArr != null && APDRPGRANTArr.length > 0){
+							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#6B6B6B"});  
 						}
 					}
 					$(".chart"+divId).highcharts({
@@ -1057,7 +1166,7 @@
 					});
 					
 				}
-			}else if(levelId == 3 || levelId == 4){
+			}else if(levelId == 3 || levelId == 4 || levelId == 5){
 				
 				if(result !=null && result.length>0){
 				
@@ -1068,6 +1177,7 @@
 					var RDFArr=[];
 					var MRRArr=[];
 					var FC13Arr=[];
+					var APDRPGRANTArr=[];
 					for(var i in result){
 						if(result[i].subList !=null && result[i].subList.length>0){
 							for(var j in result[i].subList){
@@ -1084,6 +1194,8 @@
 										assemblyShemeNameArr.push(result[i].subList[j].addressVO.districtName+"<br/>("+result[i].subList[j].year+")")
 									}else if(levelId == 4){
 										assemblyShemeNameArr.push(result[i].subList[j].addressVO.assemblyName+"<br/>("+result[i].subList[j].year+")")
+									}else if(levelId == 5){
+										assemblyShemeNameArr.push(result[i].subList[j].addressVO.name+"<br/>("+result[i].subList[j].year+")")
 									}
 								}
 								
@@ -1098,17 +1210,26 @@
 									if(countAvailable){
 										for(var k in result[i].subList[j].subList){
 											 if(result[i].subList[j].subList[k].id == 1){
-												 NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												// NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 NABARDArr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
 											 }else if(result[i].subList[j].subList[k].id == 2){
-												 NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 //NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 NREGPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
 											 }else if(result[i].subList[j].subList[k].id == 3){
-												 CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 //CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 CRRArr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
 											 }else if(result[i].subList[j].subList[k].id == 4){
-												 RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 //RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 RDFArr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
 											 }else if(result[i].subList[j].subList[k].id == 5){
-												 MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 //MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 MRRArr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
 											 }else if(result[i].subList[j].subList[k].id == 6){
-												 FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
+												//FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 FC13Arr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
+											 }else if(result[i].subList[j].subList[k].id == 7){
+												 //APDRPGRANTArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 APDRPGRANTArr.push({"y":parseInt(result[i].subList[j].subList[k].amount)})
 											 }
 											
 										}
@@ -1135,6 +1256,9 @@
 						}
 						if(FC13Arr != null && FC13Arr.length > 0){
 							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#5B5B5B"});  
+						}
+						if(APDRPGRANTArr != null && APDRPGRANTArr.length > 0){
+							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#6B6B6B"});  
 						}
 					}
 					var length = result.length
@@ -1229,7 +1353,7 @@
 				}
 			}
 		}else if(type == "deptscheme"){
-			if(levelId == 3 || levelId == 4){
+			if(levelId == 3 || levelId == 4 || levelId == 5){
 				if(result !=null && result.length>0){
 				
 					var assemblyShemeNameArr=[];
@@ -1239,6 +1363,7 @@
 					var RDFArr=[];
 					var MRRArr=[];
 					var FC13Arr=[];
+					var APDRPGRANTArr=[];
 					for(var i in result){
 						
 						
@@ -1261,6 +1386,8 @@
 												assemblyShemeNameArr.push(result[i].subList[j].subList[k].addressVO.districtName+"<br/>("+result[i].subList[j].year+":"+result[i].subList[j].subList[k].name+")")
 											}else if(levelId == 4){
 												assemblyShemeNameArr.push(result[i].subList[j].subList[k].addressVO.assemblyName+"<br/>("+result[i].subList[j].year+":"+result[i].subList[j].subList[k].name+")")
+											}else if(levelId == 5){
+												assemblyShemeNameArr.push(result[i].subList[j].subList[k].addressVO.name+"<br/>("+result[i].subList[j].year+":"+result[i].subList[j].subList[k].name+")")
 											}
 										}
 											
@@ -1274,17 +1401,26 @@
 											if(countAvailable){
 												for(var l in result[i].subList[j].subList[k].subList){
 													 if(result[i].subList[j].subList[k].subList[l].id == 1){
-														NABARDArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														//NABARDArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														NABARDArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount)})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 2){
-														 NREGPArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														//NREGPArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														 NREGPArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount)})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 3){
-														 CRRArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														 //CRRArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														 CRRArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount)})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 4){
-														 RDFArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														 //RDFArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														 RDFArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount)})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 5){
-														 MRRArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														//MRRArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														 MRRArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount)})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 6){
-														 FC13Arr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														 //FC13Arr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														 FC13Arr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount)})
+													 }else if(result[i].subList[j].subList[k].subList[l].id == 7){
+														 //APDRPGRANTArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														 APDRPGRANTArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount)})
 													 }
 												}
 											}
@@ -1315,7 +1451,9 @@
 						if(FC13Arr != null && FC13Arr.length > 0){
 							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#5B5B5B"});  
 						}
-					
+						if(APDRPGRANTArr != null && APDRPGRANTArr.length > 0){
+							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#6B6B6B"});  
+						}
 						var length = result.length
 						var height = '';
 						if(length == 0)
@@ -1459,14 +1597,12 @@
 			}
 		});
    }
-	function getSchemeWiseLocationWiseAmountDetails(levelId,divId,type){
+	function getSchemeWiseLocationWiseAmountDetails(levelId,divId,type,sortingType,orderType,locationId,locationLevelType){
 		$("#"+divId).html(spinner);
 		var levelValues = [];
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
 		var deptIdsArr = [];
-		var searchLevelId = 0;
-		var searchLevelVals = [];
 		
 		var financialYrIdArr = $('#financialYearId').val();
 		if ($.inArray('0', financialYrIdArr) != -1)
@@ -1478,18 +1614,27 @@
 			
 		}
 		
+		if(locationId == null || locationId == 0){
+			 levelValues =[];
+		 }else{
+			 var tempIdStr=""+locationId;
+			 var finalIdStr= tempIdStr.substring(1);
+			 levelValues.push(finalIdStr);
+		 }
+		 
+		
 		var json = {
-			searchLevelId:4,
+			searchLevelId:locationLevelType,
 			blockLevelId : levelId, 
-			levelValues : [11] ,
+			levelValues : levelValues,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : glStartDate,//"01-06-2013",       
 			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
 			deptIdsList:deptIdsArr,			
-			sortingType :"name",
-			order :"desc"		
+			sortingType :sortingType,
+			order :orderType		
 		}
 		$.ajax({
 			url : "getFinancialYearWiseScheameDetails",  
@@ -1509,13 +1654,12 @@
 		});
 	}
 	
-	function getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type){
+	function getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type,sortingType,orderType,locationId,locationLevelType){
 		$("#"+divId).html(spinner);
 		var levelValues = [];
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
-		var searchLevelId = 0;
-		var searchLevelVals = [];
+		
 		
 		var deptIdsArr = $("#DepartmentsId").val();
 		
@@ -1528,18 +1672,25 @@
 			financialYrIdArr.shift();
 			
 		}
+		if(locationId == null || locationId == 0){
+			 levelValues =[];
+		 }else{
+			 var tempIdStr=""+locationId;
+			 var finalIdStr= tempIdStr.substring(1);
+			 levelValues.push(finalIdStr);
+		 }
 		var json = {
-			searchLevelId:4,
+			searchLevelId:locationLevelType,
 			blockLevelId : levelId, 
-			levelValues : [11] ,
+			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : glStartDate,//"01-06-2013",       
 			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
 			deptIdsList:deptIdsArr,			
-			sortingType :"name",
-			order :"desc"		
+			sortingType :sortingType,
+			order :orderType		
 		}
 		$.ajax({
 			url : "getFinancialYearWiseDeptsWiseSchemeDetails",  
@@ -1862,7 +2013,7 @@
 				for(var i in result){
 					$("#financialYearId").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
 				}
-				$("#financialYearId").val(["1", "2"]);
+				$("#financialYearId").val(0);
 			}
 			$("#financialYearId").chosen();
 			$("#financialYearId").trigger('chosen:updated');
@@ -1871,7 +2022,8 @@
    }
    
     
-	function getAllSubLocationsBySuperLocationId(locationScopeId){
+	function getAllSubLocationsBySuperLocationId(locationScopeId,divId){
+		$("#"+divId).html('');
 		var financialYrIdList = $('#financialYearId').val();
 		var deptIdsArr = $('#DepartmentsId').val();
 		//var deptId = 0;
@@ -1903,18 +2055,157 @@
 			},
 			success : function(result){   
 				if(result !=null && result.length>0){
-					$("#distLevelDistrictNames").append('<option value="0">SELECT DISTRICT</option>');
-					$("#constLevelDistNames").append('<option value="0">SELECT DISTRICT</option>');
+					 $("#"+divId).append('<option value="0">SELECT '+globalLevelObj[divId]+'</option>');
 					for(var i in result){
-						$("#distLevelDistrictNames").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
-						$("#constLevelDistNames").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 					}
 				}
+				
+				$("#"+divId).trigger('chosen:updated');
 			}
 		});
 	}
-	$(document).on("change","#DepartmentsId,#dateRangePicker",function(){
+	$(document).on("change","#DepartmentsId,#dateRangePickerAUM",function(){
 			$(".switch-btn li").removeClass("active");
 			$(".switch-btn li:first-child").addClass("active");
 			onLoadCalls();
-		});
+	});
+	//District
+	$(document).on("click",".sortingDivDistCls li",function(){
+			$(this).closest("ul").find("li").removeClass("active");
+			$(this).addClass("active");
+			var sortingType = $(this).attr("attr_sorting_type");
+			var orderType = $(this).attr("attr_order_type");
+			var blockType = getblockType();
+			var locationId = 0;
+			var locationLevelType = 3;
+			if(blockType == 'overview'){
+				getLocationWiseAmountDetails(3,'distLevlOvervw','overview',sortingType,orderType,locationId);
+			}else if(blockType == 'scheme'){
+				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+			}else if(blockType == 'deptscheme'){
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(3,'distLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+			}
+			
+	});
+	$(document).on("change",".distLevelCls",function(){
+			var sortingType = getSelectedType().sortingType;
+			var orderType = getSelectedType().orderType;
+			var blockType = getblockType();
+			var locationId =$("#distLevelDistrictNames").val();
+			var locationLevelType = 3;
+			if(blockType == 'overview'){
+				getLocationWiseAmountDetails(3,'distLevlOvervw','overview',sortingType,orderType,locationId);
+			}else if(blockType == 'scheme'){
+				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+			}else if(blockType == 'deptscheme'){
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(3,'distLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+			}
+			
+	});	
+	//Constituency
+	$(document).on("click",".sortingDivConstCls li",function(){
+			$(this).closest("ul").find("li").removeClass("active");
+			$(this).addClass("active");
+			var sortingType = $(this).attr("attr_sorting_type");
+			var orderType = $(this).attr("attr_order_type");
+			var blockType = getblockTypeCons();
+			var locationId = 0;
+			var locationLevelType = 4;
+			if(blockType == 'overview'){
+				getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,locationId);
+			}else if(blockType == 'scheme'){
+				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+			}else if(blockType == 'deptscheme'){
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(4,'consLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+			}
+	});	
+	
+	$(document).on("change",".constiLevelDistCls",function(){
+			var sortingType = getSelectedType().sortingType;
+			var orderType = getSelectedType().orderType;
+			var blockType = getblockTypeCons();
+			var locationId =$("#constLevelDistNames").val();
+			var locationLevelType = 3;
+			if(blockType == 'overview'){
+				getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,locationId);
+			}else if(blockType == 'scheme'){
+				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+			}else if(blockType == 'deptscheme'){
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(4,'consLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+			}
+	})
+	$(document).on("change",".constiLevelCls",function(){
+			var sortingType = getSelectedType().sortingType;
+			var orderType = getSelectedType().orderType;
+			var blockType = getblockTypeCons();
+			var locationId =$("#constLevelConstNames").val();
+			var locationLevelType = 4;
+			if(blockType == 'overview'){
+				getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,locationId);
+			}else if(blockType == 'scheme'){
+				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+			}else if(blockType == 'deptscheme'){
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(4,'consLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+			}
+	});
+	
+	//Mandal
+	$(document).on("click",".sortingDivMandalCls li",function(){
+			$(this).closest("ul").find("li").removeClass("active");
+			$(this).addClass("active");
+			var sortingType = $(this).attr("attr_sorting_type");
+			var orderType = $(this).attr("attr_order_type");
+			var blockType = getblockTypeMandal();
+			var locationId = 0;
+			var locationLevelType = 5;
+			if(blockType == 'overview'){
+				getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId);
+			}else if(blockType == 'scheme'){
+				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+			}else if(blockType == 'deptscheme'){
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(5,'mandalLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+			}
+	});	
+	$(document).on("change",".mandalLevelDistCls",function(){
+			var sortingType = getSelectedType().sortingType;
+			var orderType = getSelectedType().orderType;
+			var blockType = getblockTypeMandal();
+			var locationId =$("#mandalLevelDistNames").val();
+			var locationLevelType = 3;
+			if(blockType == 'overview'){
+				getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId);
+			}else if(blockType == 'scheme'){
+				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+			}else if(blockType == 'deptscheme'){
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(5,'mandalLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+			}
+	})
+	$(document).on("change",".levelmandalConstiCls",function(){
+			var sortingType = getSelectedType().sortingType;
+			var orderType = getSelectedType().orderType;
+			var blockType = getblockTypeMandal();
+			var locationId =$("#mandalLevelConstNames").val();
+			var locationLevelType = 4;
+			if(blockType == 'overview'){
+				getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId);
+			}else if(blockType == 'scheme'){
+				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+			}else if(blockType == 'deptscheme'){
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(5,'mandalLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+			}
+	})
+	$(document).on("change",".mandalLevelCls",function(){
+			var sortingType = getSelectedType().sortingType;
+			var orderType = getSelectedType().orderType;
+			var blockType = getblockTypeMandal();
+			var locationId =$("#mandalLevelMandalNames").val();
+			var locationLevelType = 5;
+			if(blockType == 'overview'){
+				getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId);
+			}else if(blockType == 'scheme'){
+				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+			}else if(blockType == 'deptscheme'){
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(5,'mandalLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+			}
+	})

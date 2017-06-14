@@ -49,7 +49,7 @@
 						<li>
 							
 							<div class="form-group has-feedback">
-								<input type="text" class="form-control" id="dateRangePicker"/>
+								<input type="text" class="form-control" id="dateRangePickerAUM"/>
 								<span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
 							</div>
 						</li>
@@ -229,7 +229,7 @@
 									<h4 class="panel-title text-capital">district level overview</h4>
 								</div>
 								<div class="col-sm-6">
-									<ul class="switch-btn pull-right" tab-switch="distLevel">
+									<ul class="switch-btn pull-right distLevelActive" tab-switch="distLevel">
 										<li class="active" attr_type="overview">overview</li>
 										<li attr_type="scheme">Scheme level</li>
 										<li attr_type="deptscheme">Department Level</li>
@@ -249,9 +249,9 @@
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="distLevelGraph">
 										<div class="row">
-											<!--<div class="col-sm-12">
+											<div class="col-sm-12">
 												<div class="col-md-2 col-xs-12 col-sm-4">
-													<ul class="list-inline activeUlCls sortingDivDistCls">
+													<ul class="list-inline activeUlCls sortingDivDistCls constituencyUl">
 														<li class="active " attr_sorting_type="count" attr_order_type="desc">
 															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
 														</li>
@@ -267,11 +267,11 @@
 													</ul>
 												</div>
 												<div class="col-sm-3 distLevelCls" >
-													<select class="form-control" id="distLevelDistrictNames" >
+													<select class="form-control chosenSelect" id="distLevelDistrictNames" >
 													</select>
 												</div>
-											</div>-->
-											<div class="col-sm-12">
+											</div>
+											<div class="col-sm-12 m_top10">
 												<div id="distLevlOvervw"></div>
 											</div>
 										</div>
@@ -288,49 +288,7 @@
 						</div>
 					</div>
 				</div>
-				<!--<div class="col-sm-12">
-					<div class="panel panel-default panel-black">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-sm-6">
-									<h4 class="panel-title text-capital">mandal level overview</h4>
-								</div>
-								<div class="col-sm-6">
-									<ul class="switch-btn pull-right" tab-switch="mandalLevel">
-										<li class="active" attr_type="overview">overview</li>
-										<li attr_type="scheme">Scheme level</li>
-										<li attr_type="deptscheme">Department Level</li>
-									</ul>
-								</div>
-							</div>
-							
-						</div>
-						<div class="panel-body">
-							<div>
-								<ul class="nav nav-tabs pull-right" role="tablist">
-									<li role="presentation" class="active"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-									<li role="presentation"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-								</ul>
-								<div class="tab-content">
-									<div role="tabpanel" class="tab-pane active" id="mandalLevelGraph">
-										<div class="row">
-											<div class="col-sm-12">
-												<div id="mandalLevlOvervw"></div>
-											</div>
-										</div>
-									</div>
-									<div role="tabpanel" class="tab-pane" id="mandalLevelTable">
-										<div class="row">
-											<div class="col-sm-12">
-												<div id="mandalLevlOvervwTable"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>-->
+				
 				<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
@@ -339,7 +297,7 @@
 									<h4 class="panel-title text-capital">constituency level overview</h4>
 								</div>
 								<div class="col-sm-6">
-									<ul class="switch-btn pull-right" tab-switch="consLevel">
+									<ul class="switch-btn pull-right consLevelActive" tab-switch="consLevel">
 										<li class="active" attr_type="overview">overview</li>
 										<li attr_type="scheme">Scheme level</li>
 										<li attr_type="deptscheme">Department Level</li>
@@ -357,10 +315,10 @@
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="consLevelGraph">
 										<div class="row">
-											<!--<div class="col-sm-12">
+											<div class="col-sm-12">
 												<div class="col-md-2 col-xs-12 col-sm-4">
-													<ul class="list-inline activeUlCls sortingDivConstCls">
-														<li class="active " attr_sorting_type="count" attr_order_type="desc">
+													<ul class="list-inline activeUlCls sortingDivConstCls constituencyUl">
+														<li class="active" attr_sorting_type="count" attr_order_type="desc">
 															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
 														</li>
 														<li class="" attr_sorting_type="count" attr_order_type="asc">
@@ -375,14 +333,15 @@
 													</ul>
 												</div>
 												<div class="col-sm-3 constiLevelDistCls" >
-													<select class="form-control" id="constLevelDistNames" >
+													<select class="form-control chosenSelect" id="constLevelDistNames" >
+														<option value="0"> SELECT DISTRICT</option>
 													</select>
 												</div>
 												<div class="col-sm-3 constiLevelCls" >
-													<select class="form-control" id="constLevelConstNames" >
+													<select class="form-control chosenSelect" id="constLevelConstNames" >
 													</select>
 												</div>
-											</div>-->
+											</div>
 										</div>
 										<div class="row">
 											<div class="col-sm-12">
@@ -402,12 +361,88 @@
 						</div>
 					</div>
 				</div>	
+				<div class="col-sm-12">
+					<div class="panel panel-default panel-black">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-sm-6">
+									<h4 class="panel-title text-capital">mandal level overview</h4>
+								</div>
+								<div class="col-sm-6">
+									<ul class="switch-btn pull-right mandalLevelActive" tab-switch="mandalLevel">
+										<li class="active" attr_type="overview">overview</li>
+										<li attr_type="scheme">Scheme level</li>
+										<li attr_type="deptscheme">Department Level</li>
+									</ul>
+								</div>
+							</div>
+							
+						</div>
+						<div class="panel-body">
+							<div>
+								<ul class="nav nav-tabs pull-right" role="tablist">
+									<li role="presentation" class="active"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+									<li role="presentation"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
+								</ul>
+								<div class="tab-content">
+									<div role="tabpanel" class="tab-pane active" id="mandalLevelGraph">
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="col-md-2 col-xs-12 col-sm-4">
+													<ul class="list-inline activeUlCls sortingDivMandalCls constituencyUl">
+														<li class="active" attr_sorting_type="count" attr_order_type="desc">
+															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+														</li>
+														<li class="" attr_sorting_type="count" attr_order_type="asc">
+															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+														</li>
+														<li class="" attr_sorting_type="name" attr_order_type="asc">
+															A-Z
+														</li>
+														<li class="" attr_sorting_type="name" attr_order_type="desc">
+															Z-A
+														</li>
+													</ul>
+												</div>
+												<div class="col-sm-3 mandalLevelDistCls" >
+													<select class="form-control chosenSelect" id="mandalLevelDistNames" >
+														<option value="0"> SELECT DISTRICT</option>
+													</select>
+												</div>
+												<div class="col-sm-3 levelmandalConstiCls" >
+													<select class="form-control chosenSelect" id="mandalLevelConstNames" >
+													</select>
+												</div>
+												<div class="col-sm-3 mandalLevelCls" >
+													<select class="form-control chosenSelect" id="mandalLevelMandalNames" >
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="mandalLevlOvervw"></div>
+											</div>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="mandalLevelTable">
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="mandalLevlOvervwTable"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>	
 </main>
 <footer></footer>
-<script type="text/javascript" src="Assests/js/jquery-1.11.3.js"></script>
+<script type="text/javascript" src="Assests/js/jquery-1.11.3.js"></script>        
 <script type="text/javascript" src="Assests/js/bootstrap.js"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
