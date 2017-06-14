@@ -9,7 +9,7 @@
 	///Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations
 	function onLoadCalls()
 	{
-		
+		//getLocationWiseAmountAndCountDetails(3,'locationsModal','overview');
 		$("#distLevelDistrictNames_chosen").css("border","1px solid #ddd");
 		$("#distLevelDistrictNames_chosen").css("border-bottom","none");
 		
@@ -62,6 +62,7 @@
 		 getTotalLocationsByScopeId(6,'totFundVillage');
 		
 		getAverageFundForScheme('avgFundScheme');
+		
 	}
 	function getSelectedType(){
 		 var sortingType = ''; 
@@ -568,8 +569,16 @@
 							table+='<td>'+result[i].locationId+'</td>';
 							table+='<td>'+result[i].locationName+'</td>';
 							for(var j in result[i].locationList1){
-								table+='<td class="text-center no-right-border">'+result[i].locationList1[j].count+'</td>';
-								table+='<td class="text-center">'+parseInt(result[i].locationList1[j].amunt)+'</td>';
+								if(result[i].locationList1[j].count != null && result[i].locationList1[j].count > 0){
+									table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].locationId+'" attr_financial_yr_id="'+result[i].locationList1[j].financialYearId+'" attr_scheme_id="0" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].locationList1[j].count+'</td>';
+								}else{
+									table+='<td class="text-center no-right-border">-</td>';
+								}
+								if(result[i].locationList1[j].amunt != null && result[i].locationList1[j].amunt > 0){
+									table+='<td class="text-center">'+parseInt(result[i].locationList1[j].amunt)+'</td>';
+								}else{
+									table+='<td class="text-center">-</td>';
+								}
 							}
 						table+='</tr>';
 					}
@@ -645,10 +654,18 @@
 								table+='<td>'+result[i].addressVO.name+'</td>';
 							}
 							for(var j in result[i].subList){
-								for(var k in result[i].subList[j].subList)
+								for(var k in result[i].subList[j].subList)//hyma
 								{
-									table+='<td class="text-center no-right-border">'+result[i].subList[j].subList[k].count+'</td>';
-									table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].amount)+'</td>';
+									if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
+										table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].addressVO.districtId+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</td>';
+									}else{
+										table+='<td class="text-center no-right-border">-</td>';
+									}
+									if(result[i].subList[j].subList[k].amount != null && result[i].subList[j].subList[k].amountt > 0){
+										table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].amount)+'</td>';
+									}else{
+										table+='<td class="text-center">-</td>';
+									}
 								}
 							}
 						table+='</tr>';
@@ -747,8 +764,17 @@
 									{
 										for(var l in result[i].subList[j].subList[k].subList)
 										{
-											table+='<td class="text-center no-right-border">'+result[i].subList[j].subList[k].subList[l].count+'</td>';
-											table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].subList[l].amount)+'</td>';
+											if(result[i].subList[j].subList[k].subList[l].count != null && result[i].subList[j].subList[k].subList[l].count > 0){
+												table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].addressVO.districtId+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="'+result[i].subList[j].subList[k].subList[l].id+'" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].subList[l].count+'</td>';
+											}else{
+												table+='<td class="text-center no-right-border">-</td>';
+											}
+											
+											if(result[i].subList[j].subList[k].subList[l].amount != null && result[i].subList[j].subList[k].subList[l].amount > 0){
+												table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].subList[l].amount)+'</td>';
+											}else{
+												table+='<td class="text-center">-</td>';
+											}
 										}
 									}
 								}
@@ -2071,8 +2097,8 @@
 			$(".switch-btn li").removeClass("active");
 			$(".switch-btn li:first-child").addClass("active");
 			onLoadCalls();
-	});
-	//District
+		});
+		//District
 	$(document).on("click",".sortingDivDistCls li",function(){
 			$(this).closest("ul").find("li").removeClass("active");
 			$(this).addClass("active");
@@ -2230,3 +2256,210 @@
 				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(5,'mandalLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
 			}
 	})
+		function getLocationWiseAmountAndCountDetails(levelId,divId,type){
+			$("#"+divId).html("");
+		//$("#"+divId).html(spinner);
+		var levelValues = [];
+		levelValues.push(11);
+		levelValues.push(12);
+		levelValues.push(13);
+		levelValues.push(14);
+		var financialYrIdList = $('#financialYearId').val();
+		if ($.inArray('0', financialYrIdList) != -1)
+		{
+			var stringIds = "1,2,3";
+			strx   = stringIds.split(',');
+			financialYrIdList = financialYrIdList.concat(strx);
+			financialYrIdList.shift();
+			
+		}
+		var json = {
+			blockLevelId : levelId, 
+			levelValues : levelValues ,
+			financialYrIdList : financialYrIdList,
+			sortingType : "name",      //name,count    
+			order : "desc",   //asc,desc
+			fromDateStr : glStartDate,//"01-06-2013",       
+			toDateStr : glEndDate,//"10-06-2020",
+		}
+		$.ajax({
+			url : "getLocationWiseAmountAndCountDetails",  
+			data : JSON.stringify(json),
+			type : "POST",
+			dataTypa : 'json',   
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success : function(ajaxresp){
+				if(ajaxresp != null && ajaxresp.length > 0)
+				{
+					$("#locDivModal").modal('show');
+					buildLocationsAmountDetailsOverview(ajaxresp,divId,type,levelId);
+				}else{
+					$("#"+divId).html("NO DATA AVAILABLE");
+				}
+			}
+		});
+	}
+	
+	function buildLocationsAmountDetailsOverview(result,divId,type,levelId){
+		var table='';
+		if(type == 'overview')
+		{
+			table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
+				table+='<thead class="text-center">';
+					table+='<tr>';
+						table+='<th></th>';
+						table+='<th></th>';
+						for(var i in result[0].locationList1)
+						{
+							table+='<th colspan="2" class="text-center text-capital">'+result[0].locationList1[i].financialYear+'</th>';
+						}
+					table+='</tr>';
+					table+='<tr>';
+						table+='<th class="text-capital">ID</th>';
+						if(levelId == '2')
+						{
+							table+='<th class="text-capital">State</th>';
+						}else if(levelId == '3'){
+							table+='<th class="text-capital">District</th>';
+						}else if(levelId == '4')
+						{
+							table+='<th class="text-capital">Constituency</th>';
+						}else if(levelId == '5')
+						{
+							table+='<th class="text-capital">Mandal</th>';
+						}
+						
+						for(var i in result[0].locationList1)
+						{
+							table+='<th class="text-center no-right-border text-capital">No</th>';
+							table+='<th class="text-center text-capital">Amt.</th>';
+						}
+					table+='</tr>';
+				table+='</thead>';
+				table+='<tbody>';
+					for(var i in result){
+						table+='<tr>';
+							table+='<td>'+result[i].locationId+'</td>';
+							table+='<td>'+result[i].locationName+'</td>';
+							for(var j in result[i].locationList1){
+								if(result[i].locationList1[j].count != null && result[i].locationList1[j].count > 0){
+									table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].locationId+'" attr_financial_yr_id="'+result[i].locationList1[j].financialYearId+'" attr_scheme_id="0" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].locationList1[j].count+'</td>';
+								}else{
+									table+='<td class="text-center no-right-border">-</td>';
+								}
+								table+='<td class="text-center">'+result[i].locationList1[j].amount+'</td>';
+							}
+						table+='</tr>';
+					}
+					
+				table+='</tbody>';
+			table+='</table>';
+		}
+		
+		$("#"+divId).html(table);
+		$("#dataTable"+divId).dataTable();
+	}
+
+function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,deptId){ 
+     
+    $("#fundSanctionModal").html("");
+    var searchLvlVals = [];
+	searchLvlVals.push(levlValue);
+    var financialYrIdList =[];
+	financialYrIdList.push(financialYrId);
+    var schemeIdsList = [];
+	schemeIdsList.push(schemeId);
+    var deptIdsList = [];
+	deptIdsList.push(deptId);
+    
+    var json = {
+          blockLevelId : blockLvlId, 
+          searchLvlVals : searchLvlVals,
+          financialYrIdList : financialYrIdList,
+          schemeIdsList : schemeIdsList,  
+          deptIdsList : deptIdsList,       
+          fromDateStr : glStartDate,
+          toDateStr : glEndDate
+        }
+    $.ajax({ 
+      url: 'getLocationWiseFundSanctionDetails', 
+      type:'POST',  
+      data : JSON.stringify(json),
+      dataTypa : 'json',   
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+      },
+            
+    }).done(function(result){
+      if(result != null && result.length>0){
+		  $("#fundModal").modal('show');
+      buildLocationWiseFundSanctionDetails(result);
+    }
+    });
+  }
+  function buildLocationWiseFundSanctionDetails(result){
+  
+  var str = '';
+  str+='<table class="table table-condensed" id="tableId">';
+  str+='<thead>';
+    str+='<th class="text-capital">Location Name</th>';
+    str+='<th class="text-capital">Work Name</th>';
+    str+='<th class="text-capital">Department</th>'; 
+    str+='<th class="text-capital" > Scheme Name</th>';
+    str+='<th class="text-capital"> G.o</th>';
+    str+='<th class="text-capital"> Sanction Amount</th>';
+  str+='</thead>';
+  str+='<tbody>';
+  for(var i in result){
+    str+='<tr>'; 
+    if(result[i].locationName != null){
+         str+='<td>'+result[i].locationName+'</td>';
+    }else{
+         str+='<td>-</td>';
+    }
+    if(result[i].workName != null){
+         str+='<td>'+result[i].workName+'</td>';
+    }else{
+         str+='<td>-</td>';
+    }
+       if(result[i].departmentName != null){
+         str+='<td>'+result[i].departmentName+'</td>';
+    }else{
+         str+='<td>-</td>';
+    }    
+    if(result[i].schemeName != null){
+         str+='<td>'+result[i].schemeName+'</td>';
+    }else{
+         str+='<td>-</td>';
+    }  
+    if(result[i].goNoDate != null){
+         str+='<td>'+result[i].goNoDate+'</td>';
+    }else{
+         str+='<td>-</td>';
+    }
+    if(result[i].sactionAmount != null){
+         str+='<td>'+result[i].sactionAmount+'</td>';
+    }else{
+         str+='<td>-</td>';
+    }
+    str+='</tr>';     
+  }
+  str+='</tbody>';  
+  
+  $("#fundSanctionModal").html(str);   
+  $("#tableId").dataTable();    
+}
+
+$(document).on("click",".fundSanctionCls",function(){
+ var blockLvlId = $(this).attr("attr_scope_id");
+  var levlValue = $(this).attr("attr_level_value");
+  var financialYrId =$(this).attr("attr_financial_yr_id");
+  var schemeId = $(this).attr("attr_scheme_id");
+  var deptId = $(this).attr("attr_dept_id");
+  getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,deptId);
+});
+

@@ -164,6 +164,10 @@ public class FundManagementDashboardController {
 			          List<LocationVO>  finalReturnList =  fundManagementDashboardService.getLocationWiseFundSanctionDetails(inputVO);
 					return finalReturnList;
 				  }
-		
+		@PostMapping("/getLocationWiseAmountAndCountDetails")
+		public @ResponseBody List<LocationVO> getLocationWiseAmountAndCountDetails(@RequestBody InputVO inputVO){
+			List<LocationVO> locationList = fundManagementDashboardService.getLocationWiseAmountAndCountDetails(inputVO);
+			return locationList;
+		}
 		
 }

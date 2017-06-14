@@ -1307,16 +1307,17 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	  }
 	return finalReturnList;  
 	}
-	/*
+ 
+ /*
 	 * Swadhin K Lenka
 	 * (non-Javadoc)
 	 * @see com.itgrids.service.IFundManagementDashboardService#compareFundsBetweenFinancialYears(com.itgrids.dto.InputVO)
 	 */
 	@Override
- 	public List<FundMatrixVO> compareFundsBetweenFinancialYears(InputVO inputVO){
- 		try{
- 			List<FundMatrixVO> finalList = new ArrayList<FundMatrixVO>();
- 			//sort financial year id in ascending order.
+	public List<FundMatrixVO> compareFundsBetweenFinancialYears(InputVO inputVO){
+		try{
+			List<FundMatrixVO> finalList = new ArrayList<FundMatrixVO>();
+			//sort financial year id in ascending order.
 			Collections.sort(inputVO.getFinancialYrIdList());
 			if(inputVO.getFinancialYrIdList() != null && inputVO.getFinancialYrIdList().size() > 0){
 				int len = inputVO.getFinancialYrIdList().size();
@@ -1331,300 +1332,250 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				}
 			}
 			return finalList;
- 		}catch(Exception e){
- 			LOG.error("Exception Occurred in compareFundsBetweenFinancialYears() of FundManagementDashboardService ", e);
- 		}
- 		return null;
- 	}
+		}catch(Exception e){
+			LOG.error("Exception Occurred in compareFundsBetweenFinancialYears() of FundManagementDashboardService ", e);
+		}
+		return null;
+	}
 	
- 	public void buildCompareFundsBetweenFinancialYears(List<FundMatrixVO> finalList, Long scopeId,final Long previousYearId, final Long presentYearId){
- 		try{
- 			List<Object[]> financialYearList = financialYearDAO.getAllFiniancialYearsByIds(new ArrayList<Long>(){{add(previousYearId);add(presentYearId);}});
- 			//create a map for yearId and name
- 			Map<Long,String> yearIdNameMap = new HashMap<Long,String>();
- 			if(financialYearList != null && financialYearList.size() > 0){
- 				for(Object[] param : financialYearList){
- 					yearIdNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
- 				}
- 			}
- 			//create a template for ui
- 			List<Object[]> fundSanctionRangeList = fundSanctionMatrixRangeDAO.getFundSanctionRangeList();
- 			if(fundSanctionRangeList != null && fundSanctionRangeList.size() > 0){
- 				buildTemplate(finalList,fundSanctionRangeList);
- 			}
- 			
- 			//take all the location based on fund range for previous year
- 			List<Object[]> previousYearDtls = fundSanctionMatrixDetailsDAO.getPreviousYearDtls(scopeId,previousYearId,"previous");
- 			//create a map for rangeId and list of location for previous year
- 			Map<Long,List<Long>> rangeIdAndLocListMapForPrevious = new LinkedHashMap<Long,List<Long>>();
- 			List<Long> locationList = null;
- 			if(previousYearDtls != null && previousYearDtls.size() > 0){
- 				for(Object[] param : previousYearDtls){
- 					locationList = rangeIdAndLocListMapForPrevious.get(commonMethodsUtilService.getLongValueForObject(param[0]));
- 					if(locationList == null){
- 						locationList = new ArrayList<Long>();
- 						rangeIdAndLocListMapForPrevious.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationList);
- 					}
- 					locationList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
- 				}
- 			}
- 			
- 			//push the total count in previous year range
- 			RangeVO rangeVO = null;
- 			if(finalList != null && finalList.size() > 0){
- 				for(FundMatrixVO param : finalList){
- 					rangeVO = (RangeVO)setterAndGetterUtilService.getMatchedVOfromList(param.getRangeList(), "id", "0");
- 					if(rangeIdAndLocListMapForPrevious != null && rangeIdAndLocListMapForPrevious.get(param.getId()) != null && rangeIdAndLocListMapForPrevious.get(param.getId()).size() > 0){
- 						rangeVO.setValue(new Integer(rangeIdAndLocListMapForPrevious.get(param.getId()).size()).toString());
- 						rangeVO.setLocationIds(setLocationIds(rangeIdAndLocListMapForPrevious.get(param.getId())));
- 					}else{
- 						rangeVO.setValue("0");
- 						rangeVO.setLocationIds("0");
- 					}
- 				}
- 			}
- 			
- 			//take all the location based on fund range for present year
- 			List<Object[]> presentYearDtls = fundSanctionMatrixDetailsDAO.getPreviousYearDtls(scopeId,presentYearId,"present");
- 			//create a map for rangeId and list of location for present year
- 			Map<Long,List<Long>> rangeIdAndLocListMapForPresent = new LinkedHashMap<Long,List<Long>>();
- 			if(presentYearDtls != null && presentYearDtls.size() > 0){
- 				for(Object[] param : presentYearDtls){
- 					locationList = rangeIdAndLocListMapForPresent.get(commonMethodsUtilService.getLongValueForObject(param[0]));
- 					if(locationList == null){
- 						locationList = new ArrayList<Long>();
- 						rangeIdAndLocListMapForPresent.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationList);
- 					}
- 					locationList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
- 				}
- 			}
- 			List<Long> prevLoc = new ArrayList<Long>();
- 			List<Long> presLoc = new ArrayList<Long>();
- 			List<Long> commonLoc = null;
- 			//push location count in present year
- 			if(finalList != null && finalList.size() > 0){
- 				for(FundMatrixVO param : finalList){
- 					if(param.getRangeList() != null && param.getRangeList().size() > 0){
- 						prevLoc = rangeIdAndLocListMapForPrevious.get(param.getId());
- 						for(RangeVO innerParam : param.getRangeList()){
- 							if(innerParam.getId().longValue() == 0L){
- 								continue;
- 							}
- 							presLoc = rangeIdAndLocListMapForPresent.get(innerParam.getId());
- 							commonLoc = getCommonLocIds(presLoc,prevLoc);
- 							if(commonLoc != null && commonLoc.size() > 0){
- 								innerParam.setValue(new Integer(commonLoc.size()).toString());
- 								innerParam.setLocationIds(setLocationIds(commonLoc));
- 							}
- 						}
- 					}
- 				}
- 			}
- 		}catch(Exception e){
- 			LOG.error("Exception Occurred in buildCompareFundsBetweenFinancialYears() of FundManagementDashboardService ", e);
- 		}
- 	}
- 	public void pushInFinalVOList(List<FundMatrixVO> finalList, Long scopeId,final Long previousYearId, final Long presentYearId){
- 		try{
- 			List<Object[]> financialYearList = financialYearDAO.getAllFiniancialYearsByIds(new ArrayList<Long>(){{add(previousYearId);add(presentYearId);}});
- 			//create a map for yearId and name
- 			Map<Long,String> yearIdNameMap = new HashMap<Long,String>();
- 			if(financialYearList != null && financialYearList.size() > 0){
- 				for(Object[] param : financialYearList){
- 					yearIdNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
- 				}
- 			}
- 			//create a template for ui
- 			List<Object[]> fundSanctionRangeList = fundSanctionMatrixRangeDAO.getFundSanctionRangeList();
- 			if(fundSanctionRangeList != null && fundSanctionRangeList.size() > 0){
- 				addOneMorePreviourYear(finalList,fundSanctionRangeList);
- 			}
- 			
- 			//take all the location based on fund range for previous year
- 			List<Object[]> previousYearDtls = fundSanctionMatrixDetailsDAO.getPreviousYearDtls(scopeId,previousYearId,"previous");
- 			//create a map for rangeId and list of location for previous year
- 			Map<Long,List<Long>> rangeIdAndLocListMapForPrevious = new LinkedHashMap<Long,List<Long>>();
- 			List<Long> locationList = null;
- 			if(previousYearDtls != null && previousYearDtls.size() > 0){
- 				for(Object[] param : previousYearDtls){
- 					locationList = rangeIdAndLocListMapForPrevious.get(commonMethodsUtilService.getLongValueForObject(param[0]));
- 					if(locationList == null){
- 						locationList = new ArrayList<Long>();
- 						rangeIdAndLocListMapForPrevious.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationList);
- 					}
- 					locationList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
- 				}
- 			}
- 			
- 			//push the total count in previous year range
- 			RangeVO rangeVO = null;
- 			if(finalList != null && finalList.size() > 0){
- 				for(FundMatrixVO param : finalList){
- 					rangeVO = (RangeVO)setterAndGetterUtilService.getMatchedVOfromList(param.getRangeList(), "id", "0");
- 					if(rangeIdAndLocListMapForPrevious != null && rangeIdAndLocListMapForPrevious.get(param.getId()) != null && rangeIdAndLocListMapForPrevious.get(param.getId()).size() > 0){
- 						rangeVO.setValue(rangeVO.getValue()+","+new Integer(rangeIdAndLocListMapForPrevious.get(param.getId()).size()).toString());
- 						rangeVO.setLocationIds(rangeVO.getLocationIds()+"-"+setLocationIds(rangeIdAndLocListMapForPrevious.get(param.getId())));
- 					}else{
- 						rangeVO.setValue(rangeVO.getValue()+","+"0");
- 						rangeVO.setLocationIds(rangeVO.getLocationIds()+"-"+"0");
- 					}
- 				}
- 			}
- 			
- 			//take all the location based on fund range for present year
- 			List<Object[]> presentYearDtls = fundSanctionMatrixDetailsDAO.getPreviousYearDtls(scopeId,presentYearId,"present");
- 			//create a map for rangeId and list of location for present year
- 			Map<Long,List<Long>> rangeIdAndLocListMapForPresent = new LinkedHashMap<Long,List<Long>>();
- 			if(presentYearDtls != null && presentYearDtls.size() > 0){
- 				for(Object[] param : presentYearDtls){
- 					locationList = rangeIdAndLocListMapForPresent.get(commonMethodsUtilService.getLongValueForObject(param[0]));
- 					if(locationList == null){
- 						locationList = new ArrayList<Long>();
- 						rangeIdAndLocListMapForPresent.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationList);
- 					}
- 					locationList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
- 				}
- 			}
- 			List<Long> prevLoc = new ArrayList<Long>();
- 			List<Long> presLoc = new ArrayList<Long>();
- 			List<Long> commonLoc = null;
- 			//push location count in present year
- 			if(finalList != null && finalList.size() > 0){
- 				for(FundMatrixVO param : finalList){
- 					if(param.getRangeList() != null && param.getRangeList().size() > 0){
- 						prevLoc = rangeIdAndLocListMapForPrevious.get(param.getId());
- 						for(RangeVO innerParam : param.getRangeList()){
- 							if(innerParam.getId().longValue() == 0L){
- 								continue;
- 							}
- 							presLoc = rangeIdAndLocListMapForPresent.get(innerParam.getId());
- 							commonLoc = getCommonLocIds(presLoc,prevLoc);
- 							if(commonLoc != null && commonLoc.size() > 0){
- 								innerParam.setValue(innerParam.getValue()+","+new Integer(commonLoc.size()).toString());
- 								innerParam.setLocationIds(innerParam.getLocationIds()+"-"+setLocationIds(commonLoc));
- 							}else{
- 								innerParam.setValue(innerParam.getValue()+","+"0");
- 								innerParam.setLocationIds(innerParam.getLocationIds()+"-"+"0");
- 							}
- 						}
- 					}
- 				}
- 			}
- 		}catch(Exception e){
- 			LOG.error("Exception Occurred in buildCompareFundsBetweenFinancialYears() of FundManagementDashboardService ", e);
- 		}
- 	}
- 	public void buildTemplate(List<FundMatrixVO> finalList,List<Object[]> fundSanctionRangeList){
- 		try{
- 			FundMatrixVO fundMatrixVO = null;
- 			
- 			for(Object[] param : fundSanctionRangeList){
- 				fundMatrixVO = new FundMatrixVO();
- 				fundMatrixVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
- 				fundMatrixVO.setRange(commonMethodsUtilService.getStringValueForObject(param[1]));
- 				pushPresentYearRangeValue(fundMatrixVO,fundSanctionRangeList);
- 				finalList.add(fundMatrixVO);
- 			}
- 		}catch(Exception e){
- 			LOG.error("Exception Occurred in buildTemplate() of FundManagementDashboardService ", e);
- 		}
- 	}
- 	public void addOneMorePreviourYear(List<FundMatrixVO> finalList,List<Object[]> fundSanctionRangeList){
- 		try{
- 			if(finalList != null && finalList.size() > 0){
- 				for(FundMatrixVO param : finalList){
- 					param.setRange(param.getRange()+","+param.getRange());
- 				}
- 			}
- 		}catch(Exception e){
- 			LOG.error("Exception Occurred in buildTemplate() of FundManagementDashboardService ", e);
- 		}
- 	}
- 	public void pushPresentYearRangeValue(FundMatrixVO fundMatrixVO,List<Object[]> fundSanctionRangeList){
- 		try{
- 			List<RangeVO> rangeVoList = new ArrayList<RangeVO>();
- 			RangeVO rangeVO = null;
- 			rangeVO = new RangeVO();
- 			rangeVO.setId(0L);
- 			rangeVO.setName("");
- 			rangeVO.setValue("0");
- 			rangeVO.setLocationIds("0");
- 			rangeVoList.add(rangeVO);  
- 			for(Object[] param : fundSanctionRangeList){
- 				rangeVO = new RangeVO();
- 				rangeVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
- 				rangeVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
- 				rangeVO.setValue("0");
- 				rangeVO.setLocationIds("0");
- 				rangeVoList.add(rangeVO);
- 			}
- 			fundMatrixVO.getRangeList().addAll(rangeVoList);
- 		}catch(Exception e){
- 			LOG.error("Exception Occurred in voidpushPresentYearRangeValue() of FundManagementDashboardService ", e);
- 		}
- 	}
- 	public List<Long> getCommonLocIds( List<Long> presLoc, List<Long> prevLoc){
- 		try{
- 			List<Long> commonLoc = null;
- 			if(presLoc != null && prevLoc != null){
- 				commonLoc = new ArrayList<Long>(presLoc);
- 	 			commonLoc.retainAll(prevLoc);
- 			}
- 			return commonLoc;
- 		}catch(Exception e){
- 			LOG.error("Exception Occurred in getCommonLocIds() of FundManagementDashboardService ", e);
- 		}
- 		return null;
- 	}
- 	public String setLocationIds(List<Long> commonLoc){
- 		try{
- 			StringBuilder sb = new StringBuilder();
- 			int len = commonLoc.size();
- 			for(int i = 0 ; i < len ; i++){
- 				if(i==0){
- 					sb.append(commonLoc.get(i).toString());
- 				}else{
- 					sb.append(",");
- 					sb.append(commonLoc.get(i).toString());
- 				}
- 			}
- 			return sb.toString();
- 		}catch(Exception e){
- 			LOG.error("Exception Occurred in getCommonLocIds() of FundManagementDashboardService ", e);
- 		}
- 		return null;
- 	}
- 	public List<LocationVO> getLocationWiseFundSanctionDetails(InputVO inputVO){
- 		  List<LocationVO> finalReturnList= null;
- 			
- 			try{
- 				Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"MM/dd/yyyy","");
- 				Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
- 			    
- 				inputVO.setFinancialYrIdList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList()));
- 				inputVO.setDeptIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList()));
- 				inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSearchLvlVals()));
- 				inputVO.setSchemeIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSchemeIdsList()));
- 				List<Object[]> fundSanctionDetails = fundSanctionLocationDAO.getLocationWiseFundSanctionDetails(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),startDate,endDate,inputVO.getBlockLevelId(),inputVO.getSearchLvlVals(),inputVO.getSchemeIdsList());
- 				if(fundSanctionDetails != null && fundSanctionDetails.size()>0){
- 					finalReturnList = new ArrayList<LocationVO>();
- 					for(Object[] param : fundSanctionDetails){
- 						LocationVO returnVO = new LocationVO();
- 						returnVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[2]));
- 						returnVO.setWorkName(commonMethodsUtilService.getStringValueForObject(param[0]));
- 						returnVO.setDepartmentName(commonMethodsUtilService.getStringValueForObject(param[3]));
- 						returnVO.setSchemeName(commonMethodsUtilService.getStringValueForObject(param[4]));
- 						returnVO.setGoNoDate(commonMethodsUtilService.getStringValueForObject(param[5]));
- 						returnVO.setSactionAmount(commonMethodsUtilService.getLongValueForObject(param[6]));
- 						finalReturnList.add(returnVO);
- 					}
- 				}
- 				
- 			}catch(Exception e){
- 				e.printStackTrace();
- 				LOG.error(" Exception raised in getLocationWiseFundDetails (); ");
- 			}
- 			return finalReturnList;
- 		}
+	public void buildCompareFundsBetweenFinancialYears(List<FundMatrixVO> finalList, Long scopeId,final Long previousYearId, final Long presentYearId){
+		try{
+			List<Object[]> financialYearList = financialYearDAO.getAllFiniancialYearsByIds(new ArrayList<Long>(){{add(previousYearId);add(presentYearId);}});
+			//create a map for yearId and name
+			Map<Long,String> yearIdNameMap = new HashMap<Long,String>();
+			if(financialYearList != null && financialYearList.size() > 0){
+				for(Object[] param : financialYearList){
+					yearIdNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+			//create a template for ui
+			List<Object[]> fundSanctionRangeList = fundSanctionMatrixRangeDAO.getFundSanctionRangeList();
+			if(fundSanctionRangeList != null && fundSanctionRangeList.size() > 0){
+				buildTemplate(finalList,fundSanctionRangeList);
+			}
+			
+			//take all the location based on fund range for previous year
+			List<Object[]> previousYearDtls = fundSanctionMatrixDetailsDAO.getPreviousYearDtls(scopeId,previousYearId);
+			//create a map for rangeId and list of location
+			Map<Long,List<Long>> rangeIdAndLocListMap = new LinkedHashMap<Long,List<Long>>();
+			List<Long> locationList = null;
+			if(previousYearDtls != null && previousYearDtls.size() > 0){
+				for(Object[] param : previousYearDtls){
+					locationList = rangeIdAndLocListMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(locationList == null){
+						locationList = new ArrayList<Long>();
+						rangeIdAndLocListMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationList);
+					}
+					locationList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			
+			//push the total count in previous year range
+			RangeVO rangeVO = null;
+			if(finalList != null && finalList.size() > 0){
+				for(FundMatrixVO param : finalList){
+					rangeVO = (RangeVO)setterAndGetterUtilService.getMatchedVOfromList(param.getRangeList(), "id", "0");
+					if(rangeIdAndLocListMap != null && rangeIdAndLocListMap.get(param.getId()) != null && rangeIdAndLocListMap.get(param.getId()).size() > 0){
+						rangeVO.setValue(new Integer(rangeIdAndLocListMap.get(param.getId()).size()).toString());
+					}
+				}
+			}
+			System.out.println("hi");
+		}catch(Exception e){
+			LOG.error("Exception Occurred in buildCompareFundsBetweenFinancialYears() of FundManagementDashboardService ", e);
+		}
+	}
+	public void buildTemplate(List<FundMatrixVO> finalList,List<Object[]> fundSanctionRangeList){
+		try{
+			FundMatrixVO fundMatrixVO = null;
+			
+			for(Object[] param : fundSanctionRangeList){
+				fundMatrixVO = new FundMatrixVO();
+				fundMatrixVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				fundMatrixVO.setRange(commonMethodsUtilService.getStringValueForObject(param[1]));
+				pushPresentYearRangeValue(fundMatrixVO,fundSanctionRangeList);
+				finalList.add(fundMatrixVO);
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occurred in buildTemplate() of FundManagementDashboardService ", e);
+		}
+	}
+	public void pushPresentYearRangeValue(FundMatrixVO fundMatrixVO,List<Object[]> fundSanctionRangeList){
+		try{
+			List<RangeVO> rangeVoList = new ArrayList<RangeVO>();
+			RangeVO rangeVO = null;
+			rangeVO = new RangeVO();
+			rangeVO.setId(0L);
+			rangeVO.setName("");
+			rangeVO.setValue("0");
+			rangeVoList.add(rangeVO);
+			for(Object[] param : fundSanctionRangeList){
+				rangeVO = new RangeVO();
+				rangeVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				rangeVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				rangeVO.setValue("0");
+				rangeVoList.add(rangeVO);
+			}
+			fundMatrixVO.getRangeList().addAll(rangeVoList);
+		}catch(Exception e){
+			LOG.error("Exception Occurred in voidpushPresentYearRangeValue() of FundManagementDashboardService ", e);
+		}
+	}
+	public List<LocationVO> getLocationWiseFundSanctionDetails(InputVO inputVO){
+		  List<LocationVO> finalReturnList= null;
+			
+			try{
+				Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"MM/dd/yyyy","");
+				Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
+			    
+				inputVO.setFinancialYrIdList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList()));
+				inputVO.setDeptIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList()));
+				inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSearchLvlVals()));
+				inputVO.setSchemeIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSchemeIdsList()));
+				List<Object[]> fundSanctionDetails = fundSanctionLocationDAO.getLocationWiseFundSanctionDetails(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),startDate,endDate,inputVO.getBlockLevelId(),inputVO.getSearchLvlVals(),inputVO.getSchemeIdsList());
+				if(fundSanctionDetails != null && fundSanctionDetails.size()>0){
+					finalReturnList = new ArrayList<LocationVO>();
+					for(Object[] param : fundSanctionDetails){
+						LocationVO returnVO = new LocationVO();
+						returnVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[2]));
+						returnVO.setWorkName(commonMethodsUtilService.getStringValueForObject(param[0]));
+						returnVO.setDepartmentName(commonMethodsUtilService.getStringValueForObject(param[3]));
+						returnVO.setSchemeName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						returnVO.setGoNoDate(commonMethodsUtilService.getStringValueForObject(param[5]));
+						returnVO.setSactionAmount(commonMethodsUtilService.getLongValueForObject(param[6]));
+						finalReturnList.add(returnVO);
+					}
+				}
+				
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error(" Exception raised in getLocationWiseFundDetails (); ");
+			}
+			return finalReturnList;
+		}
+ 
+ /*
+	 * Date : 14/06/2017
+	 * Author :Hymavathi 
+	 */
+	@Override
+	public List<LocationVO> getLocationWiseAmountAndCountDetails(InputVO inputVO){
+		try{
+			
+			List<Long> levelValues = new ArrayList<Long>();
+			Long levelId = inputVO.getBlockLevelId();
+			
+			Date fromDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"MM/dd/yyyy","");
+			Date toDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
+			/*Long locationId = null; 
+			Long locationLevelId = null;
+			if((inputVO.getLocationId() != null && inputVO.getLocationId().longValue() > 0L)){
+				String locationIdStr = inputVO.getLocationId().toString();
+				String locationLevelIdStr = locationIdStr.substring(0, 1);
+				locationIdStr = locationIdStr.substring(1);
+				locationId = Long.parseLong(locationIdStr);
+				locationLevelId = Long.parseLong(locationLevelIdStr);
+			}*/
+			List<Object[]> amountList = null;
+			
+			List<Long> financialYearIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList());
+			List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
+			List<Long> sourceIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList());
+			
+			
+			amountList = fundSanctionDAO.getLocationWiseAmountAndCountDetails(fromDate,toDate,inputVO);
+		
+			
+			//collect all the location ids(uses to create the final list)
+			Set<Long> locationIdList = new HashSet<Long>();
+			if(amountList != null && amountList.size() > 0){
+				for(Object[] param : amountList){
+					locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}
+			
+			//create a map for financialYearId and financialyear
+			Map<Long,String> financialYearIdAndFinancialYearMap = new HashMap<Long,String>();
+			List<Object[]> financialYearList = financialYearDAO.getAllFiniancialYearsByIds(inputVO.getFinancialYrIdList());
+			if(financialYearList != null && financialYearList.size() > 0){
+				for(Object[] param : financialYearList){
+					financialYearIdAndFinancialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+			
+			//create a map for locationId and locationName
+			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
+			
+			//create a map of financialYearId and map of locationId and amount
+			Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndAmountMap = new LinkedHashMap<Long,Map<Long,Long>>();
+			Map<Long,Long> locationIdAndAmountMap = null;
+			if(amountList != null && amountList.size() > 0){
+				for(Object[] param : amountList){
+					locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getStringValueForObject(param[3]));
+					financialYearIdAndFinancialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					locationIdAndAmountMap = financialYearIdAndLocationIdAndAmountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(locationIdAndAmountMap != null){
+						locationIdAndAmountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[5]));
+					}else{
+						locationIdAndAmountMap = new HashMap<Long, Long>();
+						locationIdAndAmountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[5]));
+						financialYearIdAndLocationIdAndAmountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),locationIdAndAmountMap);
+					}
+				}
+			}
+			
+			//create a map of financialYearId and map of locationId and count 
+			Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndCountMap = new LinkedHashMap<Long,Map<Long,Long>>();
+			Map<Long,Long> locationIdAndCountMap = null;
+			if(amountList != null && amountList.size() > 0){
+				for(Object[] param : amountList){
+					locationIdAndCountMap = financialYearIdAndLocationIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(locationIdAndCountMap != null){
+						locationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+					}else{
+						locationIdAndCountMap = new HashMap<Long, Long>();
+						locationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						financialYearIdAndLocationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),locationIdAndCountMap);
+					}
+				}
+			}
+			//Now Logic for final vo
+			//iterate locationIdList and prepair final vo
+			List<LocationVO> finalList = new ArrayList<LocationVO>();
+			LocationVO locationVO = null;
+			if(locationIdList != null && locationIdList.size() > 0){
+				for(Long locId : locationIdList){
+					locationVO = new LocationVO();
+					locationVO.setLocationLevelId(levelId);
+					locationVO.setLocationId(locId);
+					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(locationIdAndNameMap.get(locId)));
+					//call this method to set the amount and count details.
+					pushCountAndAmountDetails(locationVO,financialYearIdAndLocationIdAndAmountMap,financialYearIdAndLocationIdAndCountMap,financialYearIdAndFinancialYearMap);
+					finalList.add(locationVO);
+				}
+			}
+			if(finalList != null && finalList.size() > 0){
+				if(inputVO.getSortingType().trim().equalsIgnoreCase("name")){
+					if(inputVO.getOrder().trim().equalsIgnoreCase("asc")){
+						Collections.sort(finalList, nameWiseAscOrder);
+					}else{
+						Collections.sort(finalList, nameWiseDescOrder);
+					}
+				}else if(inputVO.getSortingType().trim().equalsIgnoreCase("count")){
+					if(inputVO.getOrder().trim().equalsIgnoreCase("asc")){
+						Collections.sort(finalList, amountWiseAscOrder);
+					}else{
+						Collections.sort(finalList, amountWiseDescOrder);
+					}
+				}
+			}
+			
+			return finalList;
+		}catch(Exception e){
+			//e.printStackTrace();
+			LOG.error("Exception Occurred in getLocationWiseAmountAndCountDetails() of FundManagementDashboardService ", e);
+			return null;
+		}
+	}
 
 }

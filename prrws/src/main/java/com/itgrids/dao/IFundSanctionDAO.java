@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.dto.InputVO;
 import com.itgrids.model.FundSanction;
 
 public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
@@ -30,4 +31,5 @@ public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 	public List<Object[]> getAllConstituencyByDistrictId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptId,List<Long> sourceId,Date sDate,Date eDate);
 	public List<Object[]> getAllTehsilByConstituencyId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate);
 	public List<Object[]> getAllPanchayatByTehsilId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate);
+	public List<Object[]> getLocationWiseAmountAndCountDetails(Date fromDate,Date toDate,InputVO inputVO);
 }
