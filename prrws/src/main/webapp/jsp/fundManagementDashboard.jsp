@@ -97,10 +97,10 @@
 								<h4 class="panel-title text-muted">High Funded Village</h4>
 								<div id="highFundVillage" class="m_top5"></div>
 							</td>
-							<td>
+							<!--<td>
 								<h4 class="panel-title text-muted">High Funded Source</h4>
 								<div id="highFundSource" class="m_top5"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">High Funded Scheme</h4>
 								<div id="highFundScheme" class="m_top5"></div>
@@ -123,10 +123,10 @@
 								<h4 class="panel-title text-muted">Low Funded Village</h4>
 								<div id="lowFundVillage" class="m_top5"></div>
 							</td>
-							<td>
+							<!--<td>
 								<h4 class="panel-title text-muted">Low Funded Source</h4>
 								<div id="highFundSource" class="m_top5"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">Low Funded Scheme</h4>
 								<div id="lowFundScheme" class="m_top5"></div>
@@ -149,10 +149,10 @@
 								<h4 class="panel-title text-muted">Average Funded Village</h4>
 								<div id="avgFundVillage" class="m_top5"></div>
 							</td>
-							<td>
+							<!--<td>
 								<h4 class="panel-title text-muted">Average Funded Source</h4>
 								<div id="avgFundSource" class="m_top5"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Scheme</h4>
 								<div id="avgFundScheme" class="m_top5"></div>
@@ -175,10 +175,10 @@
 								<h4 class="panel-title text-muted">Total Funded Village</h4>
 								<div id="totFundVillage" class="m_top5"></div>
 							</td>
-							<td>
+							<!--<td>
 								<h4 class="panel-title text-muted">Total Funded Source</h4>
 								<div id="totFundSource" class="m_top5"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">Total Funded Scheme</h4>
 								<div id="totFundScheme" class="m_top5"></div>
