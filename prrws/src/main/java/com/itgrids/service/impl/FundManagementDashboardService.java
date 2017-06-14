@@ -766,6 +766,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 				locVO.setCount(totalCount);
 				locVoList.add(locVO);
 				locationVO.getLocationList1().addAll(locVoList);
+				locationVO.setAmount(totalAmount);
 			}
 		}catch(Exception e){
 			//e.printStackTrace();
@@ -1050,16 +1051,16 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 	}
 	public static Comparator<LocationVO> amountWiseAscOrder = new Comparator<LocationVO>() {
     	public int compare(LocationVO obj2, LocationVO obj1) {
-    		Long vo2 = obj2.getLocationId();
-    		Long vo1 = obj1.getLocationId();
+    		Long vo2 = obj2.getAmount();
+    		Long vo1 = obj1.getAmount();
     		//descending order of percantages.
     		return vo2.compareTo(vo1);
     	}
 	};
 	public static Comparator<LocationVO> amountWiseDescOrder = new Comparator<LocationVO>() {
     	public int compare(LocationVO obj2, LocationVO obj1) {
-    		Long vo2 = obj2.getLocationId();
-    		Long vo1 = obj1.getLocationId();
+    		Long vo2 = obj2.getAmount();
+    		Long vo1 = obj1.getAmount();
     		//descending order of percantages.
     		return vo1.compareTo(vo2);
     	}
