@@ -221,5 +221,5 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		 return Action.SUCCESS;
 	 }
 	 
-	 public String get
+	 //public String get
 }
