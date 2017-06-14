@@ -18,11 +18,11 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
-import com.itgrids.partyanalyst.dao.hibernate.CasteCategoryDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -42,8 +42,16 @@ public class LocationDashboardService implements ILocationDashboardService{
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	private IEnrollmentYearDAO enrollmentYearDAO;
 	private ICasteCategoryDAO casteCategoryDAO;
+	private IPartyMeetingStatusDAO partyMeetingStatusDAO;
 	
 	
+	public IPartyMeetingStatusDAO getPartyMeetingStatusDAO() {
+		return partyMeetingStatusDAO;
+	}
+	public void setPartyMeetingStatusDAO(
+			IPartyMeetingStatusDAO partyMeetingStatusDAO) {
+		this.partyMeetingStatusDAO = partyMeetingStatusDAO;
+	}
 	public ICasteCategoryDAO getCasteCategoryDAO() {
 		return casteCategoryDAO;
 	}
@@ -774,5 +782,82 @@ public class LocationDashboardService implements ILocationDashboardService{
 			}
 		}
 		return voList;
+	}
+	
+	public List<LocationVotersVO> getLocationWiseMeetingsCount(String locationType,Long constituencyId){
+		List<LocationVotersVO> voList = new ArrayList<LocationVotersVO>(0);
+		try {
+			Map<String,LocationVotersVO> finalMap = new LinkedHashMap<String, LocationVotersVO>();
+			
+			finalMap.put("Y", null);finalMap.put("N", null);finalMap.put("M", null);finalMap.put("NU", null);
+			
+			//0-meetingStatus,1-levelId,2-level,3-count
+			List<Object[]> objList = partyMeetingStatusDAO.getLocationWiseMeetings(locationType,constituencyId);
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					if(finalMap.get(objects[0].toString()) == null){
+						finalMap.put(objects[0].toString(),getPartyMeetingSkeleton(objects[0].toString()));
+					}
+					
+					LocationVotersVO matchedLocationVO = getMatchedLocationVO(finalMap.get(objects[0].toString()).getLocationVotersVOList(), objects[2].toString());
+					
+					if(matchedLocationVO != null){
+						matchedLocationVO.setTotalVoters((Long)objects[3]);
+					}else{
+						matchedLocationVO = new LocationVotersVO();
+						matchedLocationVO.setAgeRangeId((Long)objects[1]);
+						matchedLocationVO.setAgeRange(objects[2].toString());
+						matchedLocationVO.setTotalVoters((Long)objects[3]);
+						finalMap.get(objects[0].toString()).getLocationVotersVOList().add(matchedLocationVO);
+					}
+				}
+				
+				if(finalMap != null && finalMap.size() > 0){
+					voList.addAll(finalMap.values());
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseMeetingsCount", e);
+		}
+		return voList;
+	}
+	
+	public LocationVotersVO getMatchedLocationVO(List<LocationVotersVO> voList,String str){
+		if(voList != null && voList.size() > 0){
+			for (LocationVotersVO locationVotersVO : voList) {
+				String s[] = locationVotersVO.getAgeRange().split("/");
+				for (int i = 0; i < s.length; i++) {
+					if(s[i].equalsIgnoreCase(str))
+						return locationVotersVO;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public LocationVotersVO getPartyMeetingSkeleton(String type){
+		String type1 = type.equals("Y")?"YES":type.equals("N")?"NO":type.equals("M")?"MAYBE":type.equals("NU")?"NOT UPDATED":type;
+		
+		LocationVotersVO vo = new LocationVotersVO();
+		vo.setAgeRange(type1);
+		vo.setTotalVotersPerc(type);
+		
+		LocationVotersVO vwVO = new LocationVotersVO();
+		vwVO.setAgeRangeId(7l);
+		vwVO.setAgeRange("Village/Ward");
+		vo.getLocationVotersVOList().add(vwVO);
+		
+		LocationVotersVO mtdVO = new LocationVotersVO();
+		mtdVO.setAgeRangeId(4l);
+		mtdVO.setAgeRange("Mandal/Town/Divison");
+		vo.getLocationVotersVOList().add(mtdVO);
+		
+		LocationVotersVO constVO = new LocationVotersVO();
+		constVO.setAgeRangeId(3l);
+		constVO.setAgeRange("Constituency");
+		vo.getLocationVotersVOList().add(constVO);
+		
+		return vo;
 	}
 }

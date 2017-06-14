@@ -16,4 +16,7 @@ public interface ILocationDashboardService {
 	public List<LocationVotersVO> getCasteNAgeWiseVoterNCadreCounts(Long constituencyId,Long publicationDateId,Long casteGroupId,Long casteId);
 	public List<KeyValueVO> getEnrollmentYearWiseCadres();
 	public List<LocationVotersVO> getEnrollmentYearAgeGroupWiseCadres(Long constituencyId,Long enrollmentYearId);
+	
+	//meetings
+	public List<LocationVotersVO> getLocationWiseMeetingsCount(String locationType,Long constituencyId);
 }
