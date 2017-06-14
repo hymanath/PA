@@ -2935,5 +2935,21 @@ public class WebServiceHandler {
 		    return null;
 		}	
 	}
+	@POST
+	@Path("/updateAlertStatusCommentForAms")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ResultStatus updateAlertStatusCommentForAms(AmsAppLoginVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.updateAlertStatusCommentForAms(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in updateAlertStatusCommentForAms() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
 	
 }
