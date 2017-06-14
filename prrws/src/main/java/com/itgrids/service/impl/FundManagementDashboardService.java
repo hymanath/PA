@@ -1318,7 +1318,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  		return null;
  	}
 	
- 	public void buildCompareFundsBetweenFinancialYears(List<FundMatrixVO> finalList, Long scopeId,Long previousYearId, Long presentYearId){
+ 	public void buildCompareFundsBetweenFinancialYears(List<FundMatrixVO> finalList, Long scopeId,final Long previousYearId, final Long presentYearId){
  		try{
  			List<Object[]> financialYearList = financialYearDAO.getAllFiniancialYearsByIds(new ArrayList<Long>(){{add(previousYearId);add(presentYearId);}});
  			//create a map for yearId and name
