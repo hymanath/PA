@@ -190,7 +190,7 @@
 		</div>
 	<section>
 	<section>
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
