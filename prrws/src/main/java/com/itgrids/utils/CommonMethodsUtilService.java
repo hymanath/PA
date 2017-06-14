@@ -767,55 +767,75 @@ public class CommonMethodsUtilService {
 			}
 			return null;
 		}
-		/*public  String calculateAmountInWords(Long number){
-		      String amountStr = number.toString();
-		      int lenght = amountStr.trim().length();
-		      if(lenght == 7){
-		        amountStr=amountStr.substring(0,2);
-		       // amountStr =amountStr+" lac ";
-		        amountStr =amountStr;
-		      }
-		      if(lenght > 7){
-		        String amountStr2;
-		        String amountStr1;
-		        amountStr1=amountStr.substring(lenght-7,lenght-5);
-		        amountStr2=amountStr.substring(0,lenght-7);
-		           // amountStr =amountStr2+"."+amountStr1 + " Cr";
-		        amountStr =amountStr2+"."+amountStr1;
-		           
-		      }
-		      return amountStr;  
-		    }*/
+
+		/**
+		 * @author  raghu 
+		 * @Date 13th June,2017
+		 * @description calculate amount in words
+		 * @param Long number
+		 * @return String if contains (lenght==6) we will display in lacks other wise total amount in crores
+		 */
 		
-		public  String calculateAmountInWords(Long number){
-		      String amountStr = number.toString();
-		      int lenght = amountStr.trim().length();
-		      int maxLength=0;
-		      String tempAmount = amountStr;
-		      if(lenght>5){
-		    	 tempAmount = amountStr.substring(0, amountStr.length()-5);
-		      }
-		      amountStr = tempAmount;
-		      lenght = tempAmount.trim().length();
-		      if(amountStr.length()>3){
-		    	  String temp="";
-		    	  String temp1="";
-		    	  for (int i = 0; i < amountStr.length(); i++) {
-		    		  if(i==2){
-		    			  temp = amountStr.substring(lenght-(i+1),lenght);
-		    			  temp1=temp;
-		    		  }else if(i>2 && i%2==0 ){
-		    			  maxLength=lenght-(i+1)+2;
-		    			  temp = amountStr.substring(lenght-(i+1),maxLength)+","+temp;
-		    			  temp1 = temp1+amountStr.substring(lenght-(i+1),maxLength);
-		    		  }	else if(temp.length()>0 && temp1.length()>0 && lenght-temp1.length()==1){
-		    			  temp = amountStr.substring(0,1)+","+temp;
-		    		  }	    		  
+		/*public String calculateAmountInWords(Long number){
+			try{
+			String amountStr = number.toString();
+			int lenght = amountStr.trim().length();
+			if(lenght == 6){
+				amountStr=amountStr.substring(0,1);
+				amountStr =amountStr+" lck ";	
+			}
+			if(lenght == 7){
+				amountStr=amountStr.substring(0,2);
+				amountStr =amountStr+" lck ";
+			}
+			if(lenght > 7){
+				String amountStr2;
+				String amountStr1;
+				amountStr1=amountStr.substring(lenght-7,lenght-5);
+				amountStr2=amountStr.substring(0,lenght-7);
+		        amountStr =amountStr2+"."+amountStr1 + "cr";
+			}
+			return amountStr;	
+		}catch(Exception e){
+			LOG.error(" Exception Occured in calculateAmountInWords() , CommonMethodsUtilService class.");
+		}
+			return null;
+   }*/
+		
+	
+		 /**
+			 * @author  raghu 
+			 * @Date 14th June,2017
+			 * @description calculate amount in words
+			 * @param Long number
+			 * @return String if contains (lenght==6) we will seprate by comma
+			 */
+			public  String seperateNumberByComma(Long number) {
+				try{
+				String amountStr = number.toString();
+				int lenght = amountStr.trim().length();
+				String amountStr2;
+				String amountStr1;
+				if(lenght == 6){
+					amountStr1=amountStr.substring(lenght-5,lenght);
+					amountStr2=amountStr.substring(0, 1);
+					 amountStr =amountStr2+","+amountStr1 ;
 				}
-		    	  amountStr = temp;
-		      }
-		      return amountStr;  
-		    }
+				if(lenght >=7){
+					amountStr1=amountStr.substring(lenght-5,lenght);
+					amountStr2=amountStr.substring(0,lenght-5 );
+					 Long d =Long.parseLong(amountStr2);
+					String amountStr3=new DecimalFormat("##,##").format(d);
+					 amountStr =amountStr3+","+amountStr1 ;
+					
+				}
+				   return amountStr;
+				   
+				 }catch(Exception e){
+					LOG.error(" Exception Occured in calculateAmountInWords() , CommonMethodsUtilService class.");
+				}
+				return null;
+			}
 		
 		/*public static void main(String args[]){
 			System.out.println(calculateAmountInWords(334311143305493L));
