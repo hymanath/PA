@@ -392,19 +392,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					addressVO.setLocalElectionBodyId(0L);
 					addressVO.setLocalElectionBodyName("");
 					
-					Long keyId=0L;
-					if(searchScopeId != null){
-						if(searchScopeId.longValue() ==IConstants.STATE_LEVEL_SCOPE_ID)
-							keyId = 1L;
-						else if(searchScopeId.longValue() ==IConstants.DISTRICT_LEVEL_SCOPE_ID)
-							keyId = addressVO.getDistrictId();
-						else if(searchScopeId.longValue() ==IConstants.CONSTITUENCY_LEVEL_SCOPE_ID)
-							keyId = addressVO.getAssemblyId();
-						else if(searchScopeId.longValue() ==IConstants.MANDAL_LEVEL_SCOPE_ID)
-							keyId = addressVO.getTehsilId();
-						else if(searchScopeId.longValue() ==IConstants.VILLAGE_LEVEL_SCOPE_ID)
-							keyId = addressVO.getPanchayatId();
-					}
+					Long keyId=addressVO.getId();
 					
 					if(locationMap.get(keyId) != null){
 						fundLocationVO = locationMap.get(keyId);
@@ -548,6 +536,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					yearVO.setYear(tempVO.getYear());
 					yearVO.setCount(tempVO.getCount());
 					yearVO.setTotalCount(tempVO.getTotalCount());
+					yearVO.setAmount("0");
 					
 					if(commonMethodsUtilService.isMapValid(deptsDataMap)){
 						List<FundSchemeVO> deptList = new ArrayList<FundSchemeVO>(0);
@@ -562,6 +551,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 							deptVO.setYear(tempVO1.getYear());
 							deptVO.setCount(tempVO1.getCount());
 							deptVO.setTotalCount(tempVO1.getTotalCount());
+							deptVO.setAmount("0");
 							
 							if(commonMethodsUtilService.isMapValid(schemeDataMap)){
 								List<FundSchemeVO> schemeList = new ArrayList<FundSchemeVO>(0);
@@ -575,6 +565,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 									schemeVO.setYear(tempVO2.getYear());
 									schemeVO.setCount(tempVO2.getCount());
 									schemeVO.setTotalCount(tempVO2.getTotalCount());
+									schemeVO.setAmount("0");
 									
 									schemeList.add(schemeVO);
 									deptVO.setSubList(schemeList);
