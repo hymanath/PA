@@ -210,4 +210,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		}
 		 return Action.SUCCESS;
 	 }
+	 
+	 public String  getLocationWiseMeetingsCount(){
+		 try {
+			jObj = new JSONObject(getTask());
+			locationVotersVOList = locationDashboardService.getLocationWiseMeetingsCount(jObj.getString("locationtype"),jObj.getLong("constituencyId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseMeetingsCount", e);
+		}
+		 return Action.SUCCESS;
+	 }
+	 
+	 public String get
 }

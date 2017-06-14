@@ -4314,6 +4314,7 @@
   		<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" ></property>
   		<property name="enrollmentYearDAO" ref="enrollmentYearDAO" ></property>
   		<property name="casteCategoryDAO" ref="casteCategoryDAO" ></property>
+  		<property name="partyMeetingStatusDAO" ref="partyMeetingStatusDAO" ></property>
   </bean>
 </beans>			
 	
