@@ -24,6 +24,7 @@ import com.itgrids.dao.IDepartmentDAO;
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.IFinancialYearDAO;
 import com.itgrids.dao.IFundSanctionDAO;
+import com.itgrids.dao.IFundSanctionLocationDAO;
 import com.itgrids.dao.IFundSanctionMatrixDetailsDAO;
 import com.itgrids.dao.IFundSanctionMatrixRangeDAO;
 import com.itgrids.dao.IGrantTypeDAO;
@@ -68,6 +69,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	private IFundSanctionMatrixRangeDAO fundSanctionMatrixRangeDAO;
 	@Autowired
 	private IFundSanctionMatrixDetailsDAO fundSanctionMatrixDetailsDAO;
+	@Autowired
+	private IFundSanctionLocationDAO fundSanctionLocationDAO;
 
 	@Override
 	/*
@@ -1303,7 +1306,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	  }
 	return finalReturnList;  
 	}
- 	/*
+	/*
 	 * Swadhin K Lenka
 	 * (non-Javadoc)
 	 * @see com.itgrids.service.IFundManagementDashboardService#compareFundsBetweenFinancialYears(com.itgrids.dto.InputVO)
@@ -1415,4 +1418,37 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  			LOG.error("Exception Occurred in voidpushPresentYearRangeValue() of FundManagementDashboardService ", e);
  		}
  	}
+ 	public List<LocationVO> getLocationWiseFundSanctionDetails(InputVO inputVO){
+ 		  List<LocationVO> finalReturnList= null;
+ 			
+ 			try{
+ 				Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"MM/dd/yyyy","");
+ 				Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
+ 			    
+ 				inputVO.setFinancialYrIdList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList()));
+ 				inputVO.setDeptIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList()));
+ 				inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSearchLvlVals()));
+ 				inputVO.setSchemeIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSchemeIdsList()));
+ 				List<Object[]> fundSanctionDetails = fundSanctionLocationDAO.getLocationWiseFundSanctionDetails(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),startDate,endDate,inputVO.getBlockLevelId(),inputVO.getSearchLvlVals(),inputVO.getSchemeIdsList());
+ 				if(fundSanctionDetails != null && fundSanctionDetails.size()>0){
+ 					finalReturnList = new ArrayList<LocationVO>();
+ 					for(Object[] param : fundSanctionDetails){
+ 						LocationVO returnVO = new LocationVO();
+ 						returnVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[2]));
+ 						returnVO.setWorkName(commonMethodsUtilService.getStringValueForObject(param[0]));
+ 						returnVO.setDepartmentName(commonMethodsUtilService.getStringValueForObject(param[3]));
+ 						returnVO.setSchemeName(commonMethodsUtilService.getStringValueForObject(param[4]));
+ 						returnVO.setGoNoDate(commonMethodsUtilService.getStringValueForObject(param[5]));
+ 						returnVO.setSactionAmount(commonMethodsUtilService.getLongValueForObject(param[6]));
+ 						finalReturnList.add(returnVO);
+ 					}
+ 				}
+ 				
+ 			}catch(Exception e){
+ 				e.printStackTrace();
+ 				LOG.error(" Exception raised in getLocationWiseFundDetails (); ");
+ 			}
+ 			return finalReturnList;
+ 		}
+
 }

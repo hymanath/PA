@@ -16,6 +16,12 @@ public class LocationVO implements Serializable {
 	private List<LocationVO> locationList1;
 	private List<LocationVO> locationList2;
 	private String amunt = "0.0";
+	private String workName;
+	private String departmentName;
+	private String schemeName;
+	private String goNoDate;
+	private Long sactionAmount;
+	
 	
 	public Long getLocationLevelId() {
 		return locationLevelId;
@@ -83,6 +89,37 @@ public class LocationVO implements Serializable {
 	public void setAmunt(String amunt) {
 		this.amunt = amunt;
 	}
+	public String getWorkName() {
+		return workName;
+	}
+	public void setWorkName(String workName) {
+		this.workName = workName;
+	}
+	public String getDepartmentName() {
+		return departmentName;
+	}
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+	public String getSchemeName() {
+		return schemeName;
+	}
+	public void setSchemeName(String schemeName) {
+		this.schemeName = schemeName;
+	}
+	public String getGoNoDate() {
+		return goNoDate;
+	}
+	public void setGoNoDate(String goNoDate) {
+		this.goNoDate = goNoDate;
+	}
+	public Long getSactionAmount() {
+		return sactionAmount;
+	}
+	public void setSactionAmount(Long sactionAmount) {
+		this.sactionAmount = sactionAmount;
+	}
+	
 	
 	
 }

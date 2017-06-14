@@ -1,10 +1,6 @@
 package com.itgrids.service;
 
 import java.util.List;
-import java.util.Map;
-
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.FundMatrixVO;
 import com.itgrids.dto.FundSchemeVO;
@@ -31,5 +27,6 @@ public interface IFundManagementDashboardService {
 	public List<LocationVO> getAllFiniancialYears();
 	public List<LocationFundDetailsVO> getAllDepartments();
 	public List<FundMatrixVO> compareFundsBetweenFinancialYears(InputVO inputVO);
+	public List<LocationVO> getLocationWiseFundSanctionDetails(InputVO inputVO);
 
 }
