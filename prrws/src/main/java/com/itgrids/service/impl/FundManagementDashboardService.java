@@ -875,6 +875,7 @@ public LocationFundDetailsVO getTotalFunds(InputVO inputVO){
 		if(totalfund != null && totalfund.longValue() > 0l){
 			retusnVo.setTotalAmt(commonMethodsUtilService.calculateAmountInWords(totalfund));
 			//retusnVo.setTotalAmt(totalfund.toString());
+			retusnVo.setTtlAmt(totalfund.toString());
 		}
 		if(retusnVo.getTotalAmt() != null){
 			List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,null,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
