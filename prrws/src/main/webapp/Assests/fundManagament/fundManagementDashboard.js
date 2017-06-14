@@ -569,10 +569,18 @@
 							table+='<td>'+result[i].locationId+'</td>';
 							table+='<td>'+result[i].locationName+'</td>';
 							for(var j in result[i].locationList1){
-								if(result[i].locationList1[j].count != null && result[i].locationList1[j].count > 0){
-									table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].locationId+'" attr_financial_yr_id="'+result[i].locationList1[j].financialYearId+'" attr_scheme_id="0" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].locationList1[j].count+'</td>';
+								if(levelId != '2'){
+									if(result[i].locationList1[j].count != null && result[i].locationList1[j].count > 0){
+										table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].locationId+'" attr_financial_yr_id="'+result[i].locationList1[j].financialYearId+'" attr_scheme_id="0" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].locationList1[j].count+'</td>';
+									}else{
+										table+='<td class="text-center no-right-border">-</td>';
+									}
 								}else{
-									table+='<td class="text-center no-right-border">-</td>';
+									if(result[i].locationList1[j].count != null && result[i].locationList1[j].count > 0){
+										table+='<td class="text-center no-right-border">'+result[i].locationList1[j].count+'</td>';
+									}else{
+										table+='<td class="text-center no-right-border">-</td>';
+									}
 								}
 								if(result[i].locationList1[j].amunt != null && result[i].locationList1[j].amunt > 0){
 									table+='<td class="text-center">'+parseInt(result[i].locationList1[j].amunt)+'</td>';
@@ -661,11 +669,19 @@
 							for(var j in result[i].subList){
 								for(var k in result[i].subList[j].subList)
 								{
+									if(levelId != '2'){
 									if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
 										table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</td>';
 									}else{
 										table+='<td class="text-center no-right-border">-</td>';
 									}
+								}else{
+									if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
+										table+='<td class="text-center no-right-border">'+result[i].subList[j].subList[k].count+'</td>';
+									}else{
+										table+='<td class="text-center no-right-border">-</td>';
+									}
+								}
 									if(result[i].subList[j].subList[k].amount != null && result[i].subList[j].subList[k].amountt > 0){
 										table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].amount)+'</td>';
 									}else{
