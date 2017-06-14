@@ -1595,6 +1595,11 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  		}
  		return null;
  	}
+ 	/*
+	 * srujana J
+	 * (non-Javadoc)
+	 * @see com.itgrids.service.IFundManagementDashboardService#getLocationWiseFundSanctionDetails(com.itgrids.dto.InputVO)
+	 */
  	public List<LocationVO> getLocationWiseFundSanctionDetails(InputVO inputVO){
  		  List<LocationVO> finalReturnList= null;
  			
