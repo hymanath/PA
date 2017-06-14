@@ -637,31 +637,32 @@
 				table+='<tbody>';
 					for(var i in result){
 						table+='<tr>';
+						var lvlVal = 0;
 							if(levelId == '2')
 							{
+								lvlVal =1;
 								table+='<td>1</td>';
 								table+='<td>Andhra Pradesh</td>';
 							}else if(levelId == '3'){
+								lvlVal =result[i].addressVO.districtId;
 								table+='<td>'+result[i].addressVO.districtId+'</td>';
 								table+='<td>'+result[i].addressVO.districtName+'</td>';
 							}else if(levelId == '4')
 							{
+								lvlVal =result[i].addressVO.assemblyId;
 								table+='<td>'+result[i].addressVO.assemblyId+'</td>';
 								table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 							}else if(levelId == '5')
 							{
+								lvlVal =result[i].addressVO.id;
 								table+='<td>'+result[i].addressVO.id+'</td>';
 								table+='<td>'+result[i].addressVO.name+'</td>';
 							}
 							for(var j in result[i].subList){
-								for(var k in result[i].subList[j].subList)//hyma
+								for(var k in result[i].subList[j].subList)
 								{
-									if(levelId == '2')
-										var levelValue =1;
-									else
-										var levelValue =result[i].addressVO.districtId;
 									if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
-										table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+levelValue+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</td>';
+										table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</td>';
 									}else{
 										table+='<td class="text-center no-right-border">-</td>';
 									}
@@ -745,19 +746,24 @@
 					table+='<tbody>';
 						for(var i in result){
 							table+='<tr>';
+							var levlValId = 0;
 								if(levelId == '2')
 								{
+									levlValId= 1;
 									table+='<td>1</td>';
 									table+='<td>Andhra Pradesh</td>';
 								}else if(levelId == '3'){
+									levlValId= result[i].addressVO.districtId;
 									table+='<td>'+result[i].addressVO.districtId+'</td>';
 									table+='<td>'+result[i].addressVO.districtName+'</td>';
 								}else if(levelId == '4')
 								{
+									levlValId= result[i].addressVO.assemblyId;
 									table+='<td>'+result[i].addressVO.assemblyId+'</td>';
 									table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 								}else if(levelId == '5')
 								{
+									levlValId= result[i].addressVO.id;
 									table+='<td>'+result[i].addressVO.id+'</td>';
 									table+='<td>'+result[i].addressVO.name+'</td>';
 								}
@@ -769,7 +775,7 @@
 										for(var l in result[i].subList[j].subList[k].subList)
 										{
 											if(result[i].subList[j].subList[k].subList[l].count != null && result[i].subList[j].subList[k].subList[l].count > 0){
-												table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].addressVO.districtId+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_dept_id="'+result[i].subList[j].subList[k].id+'" attr_scheme_id="'+result[i].subList[j].subList[k].subList[l].id+'" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].subList[l].count+'</td>';
+												table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+levlValId+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_dept_id="'+result[i].subList[j].subList[k].id+'" attr_scheme_id="'+result[i].subList[j].subList[k].subList[l].id+'" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].subList[l].count+'</td>';
 											}else{
 												table+='<td class="text-center no-right-border">-</td>';
 											}
@@ -2369,7 +2375,7 @@
 
 function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,deptId){ 
      
-    $("#fundSanctionModal").html("");
+	$("#fundSanctionModal").html("");
     var searchLvlVals = [];
 	searchLvlVals.push(levlValue);
     var financialYrIdList =[];
