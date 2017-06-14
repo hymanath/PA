@@ -953,6 +953,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(sourceIdList != null && sourceIdList.size() > 0){
 			
 		}
+		sb.append("order by district.districtName asc ");
 		Query query = getSession().createQuery(sb.toString());
 		
 		if(deptIdList != null && deptIdList.size() > 0){
@@ -991,6 +992,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(sourceIdList != null && sourceIdList.size() > 0){
 			
 		}
+		sb.append("order by constituency.name asc ");
 		Query query = getSession().createQuery(sb.toString());
 		
 		query.setParameter("superLocationId", superLocationId);
@@ -1031,6 +1033,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(sourceIdList != null && sourceIdList.size() > 0){
 			
 		}
+		sb.append("order by tehsil.tehsilName asc ");
 		Query query = getSession().createQuery(sb.toString());
 		
 		query.setParameter("superLocationId", superLocationId);
@@ -1072,6 +1075,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(sourceIdList != null && sourceIdList.size() > 0){
 			
 		}
+		sb.append("order by  panchayat.panchayatName asc ");
 		Query query = getSession().createQuery(sb.toString());
 		
 		query.setParameter("superLocationId", superLocationId);
