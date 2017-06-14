@@ -2,8 +2,8 @@
 	//onLoadClicks();
 	onLoadInitialisations();
 	 var globalLevelObj =  {"distLevelDistrictNames":"DISTRICT","constLevelDistNames":"DISTRICT","mandalLevelDistNames":"DISTRICT","constLevelConstNames":"CONSTITUENCY","mandalLevelConstNames":"CONSTITUENCY","mandalLevelMandalNames":"MANDAL"};
-	var glStartDate = moment().subtract(5,'years').format("DD/MM/YYYY");
-	var glEndDate = moment().add(5,'years').format("DD/MM/YYYY");
+	var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+	var glEndDate = moment().add(10, 'years').endOf('year').format("DD/MM/YYYY");
 	//var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 	var spinner = '<h1 class="loader">  <span>L</span>  <span>O</span>  <span>A</span>  <span>D</span>  <span>I</span>  <span>N</span>  <span>G</span></h1>';
 	///Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations
@@ -237,6 +237,8 @@
 		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
 		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
+		   'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
 		   'This Month': [moment().startOf('month'), moment()],
 		   'This Year': [moment().startOf('Year'), moment()]
 		}
@@ -248,8 +250,8 @@
 		$("#dateRangePickerAUM").val('All');
 	}
 	$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
-		    glStartDate = picker.startDate.format('DD/MM/YYYY')
-			glEndDate = picker.endDate.format('DD/MM/YYYY')
+		glStartDate = picker.startDate.format('DD/MM/YYYY')
+		glEndDate = picker.endDate.format('DD/MM/YYYY')
 		if(picker.chosenLabel == 'All')
 		{
 			$("#dateRangePickerAUM").val('All');
@@ -2065,7 +2067,7 @@
 			}
 		});
 	}
-	$(document).on("change","#DepartmentsId,#dateRangePickerAUM",function(){
+	$(document).on("change","#DepartmentsId",function(){
 			$(".switch-btn li").removeClass("active");
 			$(".switch-btn li:first-child").addClass("active");
 			onLoadCalls();
@@ -2127,6 +2129,9 @@
 			var blockType = getblockTypeCons();
 			var locationId =$("#constLevelDistNames").val();
 			var locationLevelType = 3;
+			if(locationId == 0){
+				var locationLevelType = 4;
+			}
 			if(blockType == 'overview'){
 				getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,locationId);
 			}else if(blockType == 'scheme'){
@@ -2141,6 +2146,11 @@
 			var blockType = getblockTypeCons();
 			var locationId =$("#constLevelConstNames").val();
 			var locationLevelType = 4;
+			if(locationId == 0){
+				var locationId =$("#constLevelDistNames").val();
+				var locationLevelType = 3;
+			}
+			
 			if(blockType == 'overview'){
 				getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,locationId);
 			}else if(blockType == 'scheme'){
@@ -2173,6 +2183,9 @@
 			var blockType = getblockTypeMandal();
 			var locationId =$("#mandalLevelDistNames").val();
 			var locationLevelType = 3;
+			if(locationId == 0){
+				var locationLevelType = 5;
+			}
 			if(blockType == 'overview'){
 				getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId);
 			}else if(blockType == 'scheme'){
@@ -2187,6 +2200,10 @@
 			var blockType = getblockTypeMandal();
 			var locationId =$("#mandalLevelConstNames").val();
 			var locationLevelType = 4;
+			if(locationId == 0){
+				var locationId =$("#mandalLevelDistNames").val();
+				var locationLevelType = 3;
+			}
 			if(blockType == 'overview'){
 				getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId);
 			}else if(blockType == 'scheme'){
@@ -2201,6 +2218,10 @@
 			var blockType = getblockTypeMandal();
 			var locationId =$("#mandalLevelMandalNames").val();
 			var locationLevelType = 5;
+			if(locationId == 0){
+				var locationId =$("#mandalLevelConstNames").val();
+				var locationLevelType = 4;
+			}
 			if(blockType == 'overview'){
 				getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId);
 			}else if(blockType == 'scheme'){
