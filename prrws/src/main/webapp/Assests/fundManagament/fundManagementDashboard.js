@@ -30,9 +30,9 @@
 		getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview','name','desc',0);
 		
 		//onload district Names building
-		getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames');
-		getAllSubLocationsBySuperLocationId(21,'constLevelDistNames');
-		getAllSubLocationsBySuperLocationId(21,'mandalLevelDistNames');
+		getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
+		getAllSubLocationsBySuperLocationId(21,'constLevelDistNames',4);
+		getAllSubLocationsBySuperLocationId(21,'mandalLevelDistNames',5);
 		
 		getSchemeWiseHighestAndLowestFund('highest','highFundScheme');
 		getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme');
@@ -162,15 +162,15 @@
 	});
 	$(document).on('change','.constiLevelDistCls',function(){
 		var locationScopeId = $("#constLevelDistNames").val();
-	    getAllSubLocationsBySuperLocationId(locationScopeId,'constLevelConstNames');
+	    getAllSubLocationsBySuperLocationId(locationScopeId,'constLevelConstNames',4);
 	});
 	$(document).on('change','.mandalLevelDistCls',function(){
 		var locationScopeId = $("#mandalLevelDistNames").val();
-	    getAllSubLocationsBySuperLocationId(locationScopeId,'mandalLevelConstNames');
+	    getAllSubLocationsBySuperLocationId(locationScopeId,'mandalLevelConstNames',5);
 	});
 	$(document).on('change','.levelmandalConstiCls',function(){
 		var locationScopeId = $("#mandalLevelConstNames").val();
-	    getAllSubLocationsBySuperLocationId(locationScopeId,'mandalLevelMandalNames');
+	    getAllSubLocationsBySuperLocationId(locationScopeId,'mandalLevelMandalNames',5);
 	});
 	function onLoadInitialisations()
 	{
@@ -2062,7 +2062,7 @@
    }
    
     
-	function getAllSubLocationsBySuperLocationId(locationScopeId,divId){
+	function getAllSubLocationsBySuperLocationId(locationScopeId,divId,levelId){
 		$("#"+divId).html('');
 		var financialYrIdList = $('#financialYearId').val();
 		var deptIdsArr = $('#DepartmentsId').val();
@@ -2077,6 +2077,7 @@
 			
 		}
 		var json = {
+		   blockLevelId:levelId,
 		  superLocationId : locationScopeId, 
 		  deptIdsList : deptIdsArr,
 		  sourceId : sourceId,
