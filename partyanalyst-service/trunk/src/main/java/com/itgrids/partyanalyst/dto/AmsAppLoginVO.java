@@ -15,6 +15,11 @@ public class AmsAppLoginVO implements Serializable{
 	private Long alertId;
 	private String task;
 	private Long subTaskId;
+	private Long parentDeptId;
+	private Long departmentId;
+	private Long levelId;
+	private Long levelValue;
+	private Long designationId;
 	
 	public AmsAppLoginVO(){}
 	public AmsAppLoginVO(Long userId, String userName){
@@ -77,4 +82,35 @@ public class AmsAppLoginVO implements Serializable{
 	public void setSubTaskId(Long subTaskId) {
 		this.subTaskId = subTaskId;
 	}
+	public Long getParentDeptId() {
+		return parentDeptId;
+	}
+	public void setParentDeptId(Long parentDeptId) {
+		this.parentDeptId = parentDeptId;
+	}
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
+	public Long getLevelValue() {
+		return levelValue;
+	}
+	public void setLevelValue(Long levelValue) {
+		this.levelValue = levelValue;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+	
 }
