@@ -226,4 +226,5 @@ public interface IAlertManagementSystemService {
 	 public List<AmsAppVO> getParentLevelsOfLevelForAms(AmsAppLoginVO keyVo);
 	 public List<AmsAppVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo);
 	 public List<AmsAppVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo);
+	 public ResultStatus updateAlertStatusCommentForAms(final AmsAppLoginVO keyVo);
 }        
