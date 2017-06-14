@@ -234,4 +234,10 @@ public interface IWebServiceHandlerService {
     public AmsVO getAlertDetailsInfoForAms(AmsAppLoginVO keyVo);
     public List<AmsAppVO> getSubTaskAlertDetailedInfo(AmsAppLoginVO keyVo);
     public List<AmsTrackingVO> getSubTaskAlertDetails(AmsAppLoginVO keyVo);
+    public List<AmsAppVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo);
+    public List<AmsAppVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo);
+    public List<AmsAppVO> getParentLevelsOfLevelForAms(AmsAppLoginVO keyVo);
+    public List<AmsAppVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo);
+    public List<AmsAppVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo);
+    public List<AmsAppVO> getGovtAllDepartmentDetailsForAms();
 }

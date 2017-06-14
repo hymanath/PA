@@ -220,4 +220,10 @@ public interface IAlertManagementSystemService {
 	 public AmsVO getAlertDetailsInfoForAms(AmsAppLoginVO keyVo);
 	 public List<AmsTrackingVO> getSubTaskInfoForAlertForAms(AmsAppLoginVO VO);
 	 public List<AmsAppVO> getStatusCompletionInfoForSubTaskForAms(AmsAppLoginVO inputVo);
+	 public List<AmsAppVO> getGovtAllDepartmentDetailsForAms();
+	 public List<AmsAppVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo);
+	 public List<AmsAppVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo);
+	 public List<AmsAppVO> getParentLevelsOfLevelForAms(AmsAppLoginVO keyVo);
+	 public List<AmsAppVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo);
+	 public List<AmsAppVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo);
 }        
