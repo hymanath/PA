@@ -792,21 +792,23 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		return query.list();
 	}
 	@Override
-	public List<Object[]> getTotalFundAndCountDtls(List<Long> financialYrIdList,List<Long> departmentIdList,List<Long> sourceIdList,Date sDate,Date eDate,Long scopeId){
+	public List<Object[]> getTotalFundAndCountDtls(List<Long> financialYrIdList,List<Long> departmentIdList,List<Long> sourceIdList,Date sDate,Date eDate,Long scopeId,String group){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select " );
+		if(group.equalsIgnoreCase("two")){
+			sb.append(" fundSanctionLocation.fundSanction.grantType.grantTypeId, fundSanctionLocation.fundSanction.grantType.type, " );
+		}
 		
-		sb.append(" fundSanctionLocation.fundSanction.grantType.grantTypeId, fundSanctionLocation.fundSanction.grantType.type " );
 		if(scopeId != null && scopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
-			sb.append(", count(distinct fundSanctionLocation.locationAddress.district.stateId) ");
+			sb.append(" count(distinct fundSanctionLocation.locationAddress.district.stateId) ");
 		}else if(scopeId != null && scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
-			sb.append(" ,count(distinct fundSanctionLocation.locationAddress.district.districtId) ");
+			sb.append(" count(distinct fundSanctionLocation.locationAddress.district.districtId) ");
 		}else if(scopeId != null && scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
-			sb.append(" ,count(distinct fundSanctionLocation.locationAddress.constituency.constituencyId) ");
+			sb.append(" count(distinct fundSanctionLocation.locationAddress.constituency.constituencyId) ");
 		}else if(scopeId != null && scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
-			sb.append(" ,count(distinct fundSanctionLocation.locationAddress.tehsil.tehsilId) ");
+			sb.append(" count(distinct fundSanctionLocation.locationAddress.tehsil.tehsilId) ");
 		}else if(scopeId != null && scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
-			sb.append(" ,count(distinct fundSanctionLocation.locationAddress.panchayat.panchayatId) ");
+			sb.append(" count(distinct fundSanctionLocation.locationAddress.panchayat.panchayatId) ");
 		}
 		
 		sb.append(" ,sum(fundSanctionLocation.fundSanction.sactionAmount) ");
@@ -827,7 +829,23 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(sourceIdList != null && sourceIdList.size() > 0 ){
 			
 		}
-		sb.append(" group by fundSanctionLocation.fundSanction.grantType.grantTypeId ");
+		sb.append(" group by ");
+		if(group.equalsIgnoreCase("two")){
+			sb.append(" fundSanctionLocation.fundSanction.grantType.grantTypeId ");
+		}else{
+			if(scopeId != null && scopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
+				sb.append(" fundSanctionLocation.locationAddress.district.stateId ");
+			}else if(scopeId != null && scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+				sb.append(" fundSanctionLocation.locationAddress.district.districtId ");
+			}else if(scopeId != null && scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+				sb.append(" fundSanctionLocation.locationAddress.constituency.constituencyId ");
+			}else if(scopeId != null && scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+				sb.append(" fundSanctionLocation.locationAddress.tehsil.tehsilId ");
+			}else if(scopeId != null && scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
+				sb.append(" fundSanctionLocation.locationAddress.panchayat.panchayatId ");
+			}
+		}
+		
 	
 		
 		Query query = getSession().createQuery(sb.toString());

@@ -21,19 +21,23 @@ public class FundSanctionMatrixDetailsDAO extends GenericDaoHibernate<FundSancti
 		super(FundSanctionMatrixDetails.class);
 	}
 	@Override
-	public List<Object[]> getPreviousYearDtls(Long scopeId,Long previousYearId){
+	public List<Object[]> getPreviousYearDtls(Long scopeId,Long YearId,String order){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select fundSanctionMatrixDetails.fundSanctionMatrixRangeId, fundSanctionMatrixDetails.scopeValue "
 				+ " from FundSanctionMatrixDetails fundSanctionMatrixDetails "
-				+ " where "
-				+ " fundSanctionMatrixDetails.previousYearId = :previousYearId and "
-				+ " fundSanctionMatrixDetails.scopeId = :scopeId and "
+				+ " where ");
+		if(order.equalsIgnoreCase("previous")){
+			sb.append(" fundSanctionMatrixDetails.previousYearId = :YearId and ");
+		}else{
+			sb.append(" fundSanctionMatrixDetails.presentYearId = :YearId and ");
+		}
+		sb.append(" fundSanctionMatrixDetails.scopeId = :scopeId and "
 				+ " fundSanctionMatrixDetails.isDeleted = 'N' "
 				+ " order by "
 				+ " fundSanctionMatrixDetails.fundSanctionMatrixRangeId ");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("scopeId", scopeId);
-		query.setParameter("previousYearId", previousYearId);
+		query.setParameter("YearId", YearId);
 		return query.list();
 	}
 

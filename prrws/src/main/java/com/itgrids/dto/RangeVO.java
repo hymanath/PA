@@ -10,6 +10,7 @@ public class RangeVO implements Serializable {
 	private Long id;
 	private String name;
 	private String value;
+	private String locationIds;
 	public Long getId() {
 		return id;
 	}
@@ -27,6 +28,12 @@ public class RangeVO implements Serializable {
 	}
 	public void setValue(String value) {
 		this.value = value;
+	}
+	public String getLocationIds() {
+		return locationIds;
+	}
+	public void setLocationIds(String locationIds) {
+		this.locationIds = locationIds;
 	}
 	
 }
