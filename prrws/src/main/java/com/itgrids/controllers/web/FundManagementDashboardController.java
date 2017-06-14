@@ -156,6 +156,14 @@ public class FundManagementDashboardController {
 			List<FundMatrixVO> fundMatrixVOList = fundManagementDashboardService.compareFundsBetweenFinancialYears(inputVO);
 			return fundMatrixVOList;
 		}
+		@RequestMapping(value = "/getLocationWiseFundSanctionDetails", method = RequestMethod.POST,
+				produces = MediaType.APPLICATION_JSON_VALUE,
+				consumes = MediaType.APPLICATION_JSON_VALUE)
+				  public @ResponseBody List<LocationVO> getLocationWiseFundSanctionDetails(@RequestBody InputVO inputVO)
+				  {		
+			          List<LocationVO>  finalReturnList =  fundManagementDashboardService.getLocationWiseFundSanctionDetails(inputVO);
+					return finalReturnList;
+				  }
 		
 		
 }
