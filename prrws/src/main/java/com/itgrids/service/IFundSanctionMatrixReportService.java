@@ -1,5 +1,8 @@
 package com.itgrids.service;
 
-public interface IFundSanctionMatrixReportService {
+import java.util.List;
 
+public interface IFundSanctionMatrixReportService {
+	public void calculateFinancialWiseMatrxReportDetail(List<Long> financialYearIdsList, List<Long> deptIdsList,
+			List<Long> sourceIdsList,List<Long> schemeIdsList,Long searchScopeId);
 }
