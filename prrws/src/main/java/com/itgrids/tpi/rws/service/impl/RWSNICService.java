@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.service.IRuralWaterSupplyDashBoardService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
+import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -29,6 +31,8 @@ import com.sun.jersey.api.json.JSONConfiguration;
 public class RWSNICService implements IRWSNICService{
 	private static final Logger LOG = Logger.getLogger(RWSNICService.class);
 	
+	@Autowired
+	private CommonMethodsUtilService commonMethodsUtilService;
 	/*
 	 * Date : 15/06/2017
 	 * Author :Sandeep
@@ -37,11 +41,8 @@ public class RWSNICService implements IRWSNICService{
 	public List<LocationVO> getHabitationCoverageByStatusByLocationType(InputVO inputVO){
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
-			/*ClientConfig clientConfig = new DefaultClientConfig();
-			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-	        Client client = Client.create(clientConfig);
-	         
-	        WebResource webResource = client.resource("http://DomainName/Rwss/cd/getHabitationCoverageByStatusByLocationType");
+			 
+	        /*WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getHabitationCoverageByStatusByLocationType");
 	        
 	        String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
 	        System.out.println(jsonInString);
@@ -106,11 +107,8 @@ public class RWSNICService implements IRWSNICService{
 	public BasicVO getLabTestDetails(InputVO inputVO){
 		BasicVO basicVO = null;
 		try {
-			/*ClientConfig clientConfig = new DefaultClientConfig();
-			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-	        Client client = Client.create(clientConfig);
-	         
-	        WebResource webResource = client.resource("http://DomainName/Rwss/cd/getHabitationCoverageByStatusByLocationType");
+			/*
+	        WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getHabitationCoverageByStatusByLocationType");
 	        
 	        String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
 	        System.out.println(jsonInString);
@@ -146,11 +144,8 @@ public class RWSNICService implements IRWSNICService{
 		BasicVO finalVO = new BasicVO();
 		try {
 			
-			/*ClientConfig clientConfig = new DefaultClientConfig();
-			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-	        Client client = Client.create(clientConfig);
-	         
-	        WebResource webResource = client.resource("http://DomainName/Rwss/cd/gethabitationsupplyDetails");
+			/*
+	        WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/gethabitationsupplyDetails");
 
 	        String jsonInString = new ObjectMapper().writeValueAsString(VO);
 	        
@@ -186,11 +181,8 @@ public class RWSNICService implements IRWSNICService{
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		try {
 			
-			/*ClientConfig clientConfig = new DefaultClientConfig();
-			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-	        Client client = Client.create(clientConfig);
-	         
-	        WebResource webResource = client.resource("http://DomainName/Rwss/cd/getSchemesDetails");
+			/*
+	        WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getSchemesDetails");
 
 	        String jsonInString = new ObjectMapper().writeValueAsString(VO);
 	        
@@ -234,17 +226,13 @@ public class RWSNICService implements IRWSNICService{
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		try {
 			
-			/*ClientConfig clientConfig = new DefaultClientConfig();
-			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-	        Client client = Client.create(clientConfig);
-	         
-	        WebResource webResource = client.resource("http://DomainName/Rwss/cd/getSchemeWiseWorkDetails");
+			/*
+	        WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getSchemeWiseWorkDetails");
 
 	        String jsonInString = new ObjectMapper().writeValueAsString(VO);
 	        
 	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, VO);
 			
-	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	    }else{
@@ -286,24 +274,21 @@ public class RWSNICService implements IRWSNICService{
 	 * @description : getAssetsInfo
 	 */
 	public List<BasicVO> getAssetsInfo(InputVO vo) {
-		List<BasicVO> assetsList = new ArrayList<>();
+		List<BasicVO> assetsList = new ArrayList<BasicVO>(0);
 		try {
-		ClientConfig clientConfig = new DefaultClientConfig();
-		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-        Client client = Client.create(clientConfig);
-         
-        WebResource webResource = client.resource("http://DomainName/Rwss/cd/getAssetsinfo");
+		
+			/*WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getAssetsinfo");
         
-        /*String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
-        System.out.println(jsonInString);*/
+        	String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
+        	System.out.println(jsonInString);
         
-        //ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
         
-        /*if(response.getStatus() != 200){
- 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
- 	      }else{*/
- 	    	 String output = null;//response.getEntity(String.class);
- 	    	 output="[{'assetType':'DIRECT PUMPING','count':155},"
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{*/
+				String output = null;//response.getEntity(String.class);
+				output="[{'assetType':'DIRECT PUMPING','count':155},"
 							+ "{'assetType':'OPEN WELLS','count':3},"
 						    + "{'assetType':'SHALLOW HAND PUMPS','count':5},"
 							+ "{'assetType':'HANDPUMPS','count':778},"

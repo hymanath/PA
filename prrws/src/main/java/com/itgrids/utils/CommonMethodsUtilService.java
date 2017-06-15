@@ -28,6 +28,12 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
+
 
 @Service
 public class CommonMethodsUtilService {
@@ -858,5 +864,15 @@ public class CommonMethodsUtilService {
 				        camelCase.append(c);
 				    }
 				    return camelCase.toString();
+		}
+		
+		public WebResource getWebResourceObject(String url){
+			ClientConfig clientConfig = new DefaultClientConfig();
+			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	        Client client = Client.create(clientConfig);
+	         
+	        WebResource webResource = client.resource(url);
+	        
+	        return webResource;
 		}
 }
