@@ -1289,6 +1289,33 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	}
  
  /*
+	 * Date : 15/06/2017
+	 * Author :Shrinu Pittala
+	 * @description : to get FinancialYearId Sum
+	 * @return  List<LocationFundDetailsVO> 
+	 */
+ public List<LocationFundDetailsVO> getFundSactionCount(List<Long> financialYrIdList){
+	 
+	 List<LocationFundDetailsVO> finalList=new ArrayList<LocationFundDetailsVO>();
+	 LocationFundDetailsVO vo=null;
+	 List<Object[]> result=fundSanctionDAO.getFundSactionCount(financialYrIdList);
+	 
+	 if(result !=null && result.size()>0 && !result.isEmpty()){
+		 for(Object[] Obj: result){
+		 vo=new LocationFundDetailsVO();
+		 vo.setId(commonMethodsUtilService.getLongValueForObject(Obj[0]));
+		 vo.setYear(commonMethodsUtilService.getStringValueForObject(Obj[1]));
+		 vo.setSum(commonMethodsUtilService.getLongValueForObject(Obj[2]));
+		 
+		 finalList.add(vo);
+		 }
+		 return finalList;
+	 }
+	 
+	 return finalList;
+ }
+ 
+ /*
 	 * Swadhin K Lenka
 	 * (non-Javadoc)
 	 * @see com.itgrids.service.IFundManagementDashboardService#compareFundsBetweenFinancialYears(com.itgrids.dto.InputVO)

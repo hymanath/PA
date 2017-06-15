@@ -19,6 +19,9 @@ public class LocationFundDetailsVO implements Serializable{
 	private Double fundedPerc;
 	private Double nonFundedPerc;
 	private Long totSchemes;
+	private Long count;
+	private String year;
+	private Long sum;
 	private String ttlAmt="0.0";
 	private String avrgeAmt="0.0";
 	private String fundAvageAmt ="0.0";
@@ -106,6 +109,25 @@ public class LocationFundDetailsVO implements Serializable{
 		}
 		return detailsVOs;
 	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public Long getSum() {
+		return sum;
+	}
+	public void setSum(Long sum) {
+		this.sum = sum;
+	}	
+	
 	public String getTtlAmt() {
 		return ttlAmt;
 	}
