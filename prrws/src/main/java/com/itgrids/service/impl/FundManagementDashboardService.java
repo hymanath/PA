@@ -1357,7 +1357,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  				}
  			}
  			//create a template for ui
- 			List<Object[]> fundSanctionRangeList = fundSanctionMatrixRangeDAO.getFundSanctionRangeList();
+ 			List<Object[]> fundSanctionRangeList = fundSanctionMatrixRangeDAO.getFundSanctionRangeList(scopeId);
  			if(fundSanctionRangeList != null && fundSanctionRangeList.size() > 0){
  				buildTemplate(finalList,fundSanctionRangeList);
  			}
@@ -1444,7 +1444,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  				}
  			}
  			//create a template for ui
- 			List<Object[]> fundSanctionRangeList = fundSanctionMatrixRangeDAO.getFundSanctionRangeList();
+ 			List<Object[]> fundSanctionRangeList = fundSanctionMatrixRangeDAO.getFundSanctionRangeList(scopeId);
  			if(fundSanctionRangeList != null && fundSanctionRangeList.size() > 0){
  				addOneMorePreviourYear(finalList,fundSanctionRangeList);
  			}
@@ -1471,10 +1471,10 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  				for(FundMatrixVO param : finalList){
  					rangeVO = (RangeVO)setterAndGetterUtilService.getMatchedVOfromList(param.getRangeList(), "id", "0");
  					if(rangeIdAndLocListMapForPrevious != null && rangeIdAndLocListMapForPrevious.get(param.getId()) != null && rangeIdAndLocListMapForPrevious.get(param.getId()).size() > 0){
- 						rangeVO.setValue(rangeVO.getValue()+","+new Integer(rangeIdAndLocListMapForPrevious.get(param.getId()).size()).toString());
+ 						rangeVO.setValue(rangeVO.getValue()+"/"+new Integer(rangeIdAndLocListMapForPrevious.get(param.getId()).size()).toString());
  						rangeVO.setLocationIds(rangeVO.getLocationIds()+"-"+setLocationIds(rangeIdAndLocListMapForPrevious.get(param.getId())));
  					}else{
- 						rangeVO.setValue(rangeVO.getValue()+","+"0");
+ 						rangeVO.setValue(rangeVO.getValue()+"/"+"0");
  						rangeVO.setLocationIds(rangeVO.getLocationIds()+"-"+"0");
  					}
  				}
@@ -1509,10 +1509,10 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  							presLoc = rangeIdAndLocListMapForPresent.get(innerParam.getId());
  							commonLoc = getCommonLocIds(presLoc,prevLoc);
  							if(commonLoc != null && commonLoc.size() > 0){
- 								innerParam.setValue(innerParam.getValue()+","+new Integer(commonLoc.size()).toString());
+ 								innerParam.setValue(innerParam.getValue()+"/"+new Integer(commonLoc.size()).toString());
  								innerParam.setLocationIds(innerParam.getLocationIds()+"-"+setLocationIds(commonLoc));
  							}else{
- 								innerParam.setValue(innerParam.getValue()+","+"0");
+ 								innerParam.setValue(innerParam.getValue()+"/"+"0");
  								innerParam.setLocationIds(innerParam.getLocationIds()+"-"+"0");
  							}
  						}
@@ -1542,7 +1542,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  		try{
  			if(finalList != null && finalList.size() > 0){
  				for(FundMatrixVO param : finalList){
- 					param.setRange(param.getRange()+","+param.getRange());
+ 					param.setRange(param.getRange()+"/"+param.getRange());
  				}
  			}
  		}catch(Exception e){

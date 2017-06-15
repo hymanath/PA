@@ -3127,7 +3127,7 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 			   str+='</thead>';
 			   str+='<tbody>';
 				for(var i in result){
-				   var verticalRanges = result[i].range.split(',');
+				   var verticalRanges = result[i].range.split('/');
 				   str+='<tr>';
 						if(yearLen >=3){
 							str+='<td style="background-color:#EAEBFF">'+verticalRanges[0]+'</td>';
@@ -3139,14 +3139,14 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 							for(var j in result[i].rangeList){
 								var rangeValue='';
 								var locationIds='';
-								if(result[i].rangeList[j].value == null || result[i].rangeList[j].value == "0,0"){
+								if(result[i].rangeList[j].value == null || result[i].rangeList[j].value == "0/0"){
 									var emptyRangeVal = "-,-";
 									var emptyLocIds="0,0";
 									rangeValue = emptyRangeVal.split(',');
 									locationIds = emptyLocIds.split(',');
 									
 								}else{
-									rangeValue = result[i].rangeList[j].value.split(',');
+									rangeValue = result[i].rangeList[j].value.split('/');
 									locationIds = result[i].rangeList[j].locationIds.split('-');
 								}
 								if(yearLen >=3){
