@@ -2492,3 +2492,20 @@ function compareFundsBetweenFinancialYears(){
       }
     });
    }
+   
+   //getMinMaxDates();
+	function getMinMaxDates()
+	{ 
+		$.ajax({                
+			type:'POST',    
+			url: 'getMinMaxDates',
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			glStartDate = result.minDate;
+			glEndDate = result.maxDate;
+			onLoadCalls();
+		});
+   }

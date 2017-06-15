@@ -1231,5 +1231,11 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}
 		return query.list();
 	}
+	public Object[] getMinMaxDates(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select min(model.inserted_time),max(model.inserted_time) from fund_sanction model");
+		Query query = getSession().createSQLQuery(sb.toString());
+		return (Object[])query.uniqueResult();
+	}
 	
 }

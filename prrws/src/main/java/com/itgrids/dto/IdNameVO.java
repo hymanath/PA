@@ -13,8 +13,22 @@ public class IdNameVO implements Serializable{
 	private double percentage;
 	private Long count;
 	private String totl;
+	private String minDate;
+	private String maxDate;
 	
 	
+	public String getMinDate() {
+		return minDate;
+	}
+	public void setMinDate(String minDate) {
+		this.minDate = minDate;
+	}
+	public String getMaxDate() {
+		return maxDate;
+	}
+	public void setMaxDate(String maxDate) {
+		this.maxDate = maxDate;
+	}
 	public Long getCount() {
 		return count;
 	}
@@ -57,6 +71,5 @@ public class IdNameVO implements Serializable{
 	public void setTotl(String totl) {
 		this.totl = totl;
 	}
-	
 	
 }

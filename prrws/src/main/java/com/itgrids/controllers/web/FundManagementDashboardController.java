@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.FundMatrixVO;
 import com.itgrids.dto.FundSchemeVO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
@@ -169,5 +170,13 @@ public class FundManagementDashboardController {
 			List<LocationVO> locationList = fundManagementDashboardService.getLocationWiseAmountAndCountDetails(inputVO);
 			return locationList;
 		}
+		@RequestMapping(value="/getMinMaxDates", method = RequestMethod.POST,
+		        produces = MediaType.APPLICATION_JSON_VALUE,
+		        consumes = MediaType.APPLICATION_JSON_VALUE)
+		        public @ResponseBody IdNameVO getMinMaxDates(){
+			    
+		            IdNameVO  minMaxDates =fundManagementDashboardService.getMinMaxDates();
+		             return minMaxDates;
+		        }  
 		
 }
