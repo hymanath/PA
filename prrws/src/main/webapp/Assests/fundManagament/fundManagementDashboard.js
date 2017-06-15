@@ -37,7 +37,8 @@
 		getSchemeWiseHighestAndLowestFund('highest','highFundScheme');
 		getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme');
 		getTotalFunds('totFund');
-		getTotalSchemes(4,'totFundScheme');
+		getTotalSchemes(4,'totFundScheme','scheme');
+		getTotalSchemes(4,'totFundSource','grant');
 		// getSchemeWiseHighestAndLowestFund("highest");
 		// getSchemeWiseHighestAndLowestFund("lowest");
 		getTotalLocationsByScopeId(4,'totFundCons');
@@ -1893,7 +1894,7 @@
 			highChart(divId,locationNamesArr,mainJosnObjArr);
 		}
 	}
-	function getTotalSchemes(levelId,divId)
+	function getTotalSchemes(levelId,divId,type)
 	{
 		$("#"+divId).html(spinner);
 		var levelValues = [];
@@ -1922,7 +1923,8 @@
 			schemeIdsList:schemeIdsArr,
 			deptIdsList:deptIdsArr,
 			searchLevelId:searchLevelId,
-			searchLvlVals:searchLevelVals
+			searchLvlVals:searchLevelVals,
+			type : type
 		}
 		$.ajax({
 			url: 'getTotalSchemes',
@@ -2807,3 +2809,4 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 			}
 		});
 	}
+	

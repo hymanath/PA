@@ -150,7 +150,7 @@
 								<div id="avgFundVillage" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title text-muted">Average Funded Source</h4>
+								<h4 class="panel-title text-muted">Average Funded Grant Type</h4>
 								<div id="avgFundSource" class="m_top5"></div>
 							</td>
 							<td>
@@ -176,7 +176,7 @@
 								<div id="totFundVillage" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title text-muted">Total Funded Source</h4>
+								<h4 class="panel-title text-muted">Total Funded Grant Types</h4>
 								<div id="totFundSource" class="m_top5"></div>
 							</td>
 							<td>
