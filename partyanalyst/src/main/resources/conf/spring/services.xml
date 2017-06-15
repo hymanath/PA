@@ -4266,6 +4266,7 @@
 		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" ></property>
 		<property name="cadreCommitteeService" ref="cadreCommitteeService" ></property>
 		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO" ></property>		
+		<property name="alertMeekosamPetitionerDAO" ref="alertMeekosamPetitionerDAO" ></property>			  
    </bean>
    <bean name="meekosamGrievanceService" class="com.itgrids.partyanalyst.service.impl.MeekosamGrievanceService">
    		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
