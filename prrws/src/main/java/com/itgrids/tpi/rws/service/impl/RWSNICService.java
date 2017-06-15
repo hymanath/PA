@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +15,8 @@ import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.StatusVO;
-import com.itgrids.service.IRuralWaterSupplyDashBoardService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
 
 @Service
 @Transactional
@@ -78,7 +70,7 @@ public class RWSNICService implements IRWSNICService{
 	 	    					for (int j = 0; j < statusListArray.length(); j++) {
 									StatusVO statusVO = new StatusVO();
 									
-									JSONObject jobj1 = (JSONObject) statusListArray.get(i);
+									JSONObject jobj1 = (JSONObject) statusListArray.get(j);
 									statusVO.setStatus(jobj1.getString("status"));
 									statusVO.setCount(jobj1.getLong("count"));
 									statusVO.setPercentage(jobj1.getDouble("percentage"));
