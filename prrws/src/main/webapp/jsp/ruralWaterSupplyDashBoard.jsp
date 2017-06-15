@@ -4,9 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title> Rural Water Supply DashBoard</title>
 </head>
 <body>
 
+<script type="text/javascript" src="Assests/ruralWaterSupply/ruralWaterSupplyDashBoard.js"></script>
 </body>
 </html>
