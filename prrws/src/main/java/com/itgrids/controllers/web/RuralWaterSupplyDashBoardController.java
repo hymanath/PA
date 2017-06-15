@@ -23,7 +23,7 @@ public class RuralWaterSupplyDashBoardController {
 	@RequestMapping(value ="/ruralWaterSupplyDashBoard", method = RequestMethod.GET)
     public String ruralWaterSupplyDashBoardPage(ModelMap model) {
       
-		return "ruralWaterSupplyDashboard";
+		return "ruralWaterSupplyDashBoard";
     }
 	
 	/*@PostMapping("/getLocationWiseAmountDetails")
