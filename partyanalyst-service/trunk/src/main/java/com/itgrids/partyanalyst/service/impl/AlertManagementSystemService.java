@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertFeedbackStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertGovtOfficerSmsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
+import com.itgrids.partyanalyst.dao.IAlertMeekosamPetitionerDAO;
 import com.itgrids.partyanalyst.dao.IAlertSeverityDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertSubTaskStatusDAO;
@@ -187,6 +188,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private ICadreCommitteeService cadreCommitteeService;
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	private IGovtDepartmentLevelDAO govtDepartmentLevelDAO;
+	private IAlertMeekosamPetitionerDAO alertMeekosamPetitionerDAO;
 	
 	
 	public IGovtDepartmentLevelDAO getGovtDepartmentLevelDAO() {
@@ -589,6 +591,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 
 	public void setGovtRejoinderActionDAO(IGovtRejoinderActionDAO govtRejoinderActionDAO) {
 		this.govtRejoinderActionDAO = govtRejoinderActionDAO;
+	}
+	public IAlertMeekosamPetitionerDAO getAlertMeekosamPetitionerDAO() {
+		return alertMeekosamPetitionerDAO;
+	}
+
+	public void setAlertMeekosamPetitionerDAO(
+			IAlertMeekosamPetitionerDAO alertMeekosamPetitionerDAO) {
+		this.alertMeekosamPetitionerDAO = alertMeekosamPetitionerDAO;
 	}
 
 	//Business Method
@@ -1626,7 +1636,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            			if(mobileNo != null && mobileNo.trim().length()>0 && message != null && !message.isEmpty() && message.length()>0)
            				govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message); 
            			
-           			//srujana
+           		
            			if(mobileNo != null && !mobileNo.isEmpty()){
            			String[] mobileNOArr = mobileNo.split(",");
            			if(mobileNOArr != null && mobileNOArr.length>0){
@@ -1680,7 +1690,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                			if(mobileNo != null && mobileNo.trim().length()>0 && message != null && !message.isEmpty() && message.length()>0)
                				govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
                			
-               		   //srujana
+           
                			if(mobileNo != null && !mobileNo.isEmpty()){
                			String[] mobileNOArr = mobileNo.split(",");
                			if(mobileNOArr != null && mobileNOArr.length>0){
@@ -4147,7 +4157,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                			if(mobileNo != null && mobileNo.trim().length()>0 && message != null && !message.isEmpty() && message.length()>0)
                				govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message); 
                			
-               		    //srujana
+               		
                			if(mobileNo != null && !mobileNo.isEmpty()){
                			String[] mobileNOArr = mobileNo.split(",");
                			if(mobileNOArr != null && mobileNOArr.length>0){
@@ -4204,7 +4214,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                    			if(mobileNo != null && mobileNo.trim().length()>0 && message != null && !message.isEmpty() && message.length()>0)
                    				govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
                    			
-                   		   //srujana
+                   		
                    			if(mobileNo != null && !mobileNo.isEmpty()){
                    			String[] mobileNOArr = mobileNo.split(",");
                    			if(mobileNOArr != null && mobileNOArr.length>0){
@@ -8024,6 +8034,35 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			                List<String> dueDatesList = alertAssignedOfficerTrackingNewDAO.getAlertDueDate(alertId);
   			                if(commonMethodsUtilService.isListOrSetValid(dueDatesList))
   			                	vo.setDueDateStr(dueDatesList.get(0).toString());
+  			                //srujana
+  			             /* if( vo.getIdnameList().isEmpty() ){
+  			              List<Object[]> petitionerDetails = alertMeekosamPetitionerDAO.getMeekosamPetitionerDetails(alertId);
+			            	if(petitionerDetails != null && !petitionerDetails.isEmpty()){
+			            		for (Object[] param : petitionerDetails) {
+			            			IdNameVO returnVO = new IdNameVO();
+			            			returnVO.setName(commonMethodsUtilService.getStringValueForObject(param[0]));
+			        				returnVO.setRelativeName(commonMethodsUtilService.getStringValueForObject(param[1]));
+			        				returnVO.setAge(commonMethodsUtilService.getLongValueForObject(param[2]));
+			        				returnVO.setDateOfbirth(commonMethodsUtilService.getStringValueForObject(param[3]));
+			        				returnVO.setGender(commonMethodsUtilService.getStringValueForObject(param[4]));
+			        				returnVO.setHouseNo(commonMethodsUtilService.getStringValueForObject(param[5]));
+			        				returnVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[6]));
+			        				returnVO.setMeekosamOccupation(commonMethodsUtilService.getStringValueForObject(param[7]));
+			        				returnVO.setMeekosamCasteCategory(commonMethodsUtilService.getStringValueForObject(param[8]));
+			        				returnVO.setMeekosamArgeeCategory(commonMethodsUtilService.getStringValueForObject(param[9]));
+			        				returnVO.setMeekosamAnnualIncome(commonMethodsUtilService.getStringValueForObject(param[10]));
+			        				returnVO.setAdharNo(commonMethodsUtilService.getStringValueForObject(param[11]));
+			        				returnVO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(param[12]));
+			        				returnVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[13]));
+			        				returnVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[14]));
+			        				returnVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[15]));
+			        				returnVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[16]));
+			        				returnVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[17]));
+			        				returnVO.setMunicipalityName(commonMethodsUtilService.getStringValueForObject(param[18]));
+									vo.getPetitionerList().add(returnVO);
+								}
+			            	}
+  			              }*/
   			              }
   			          
   			        } catch (Exception e) {

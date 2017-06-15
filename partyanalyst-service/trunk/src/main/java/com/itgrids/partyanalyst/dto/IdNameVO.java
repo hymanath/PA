@@ -25,6 +25,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String dateStr;
 	private List<String> subList = new ArrayList<String>();
 	private List<IdNameVO> idnameList = new ArrayList<IdNameVO>();
+	private List<IdNameVO> petitionerList = new ArrayList<IdNameVO>();
 	private String mobileNo;
 	private String status;
 	private String publicRepr;
@@ -100,6 +101,23 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long childLevelId=0l;
 	private String callerName;
 	private String userType;
+	//private String relativeName;
+	private Long age;
+	private String dateOfbirth;
+	//private String gender;
+	private String houseNo;
+	private String adharNo;
+	//private String mobileNo;
+	private String meekosamOccupation;
+	private String meekosamCasteCategory;
+	private String meekosamArgeeCategory;
+	private String meekosamAnnualIncome;
+	private String voterCardNo;
+	private String stateName;
+	//private String districtName;
+	private String tehsilName;
+	private String panchayatName;
+	private String municipalityName;
 	
 	public String getCallerName() {
 		return callerName;
@@ -765,5 +783,118 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setChildLevelId(Long childLevelId) {
 		this.childLevelId = childLevelId;
 	}
+
+	public Long getAge() {
+		return age;
+	}
+
+	public void setAge(Long age) {
+		this.age = age;
+	}
+
+	public String getDateOfbirth() {
+		return dateOfbirth;
+	}
+
+	public void setDateOfbirth(String dateOfbirth) {
+		this.dateOfbirth = dateOfbirth;
+	}
+
+	public String getHouseNo() {
+		return houseNo;
+	}
+
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+
+	public String getAdharNo() {
+		return adharNo;
+	}
+
+	public void setAdharNo(String adharNo) {
+		this.adharNo = adharNo;
+	}
+
+	public String getMeekosamOccupation() {
+		return meekosamOccupation;
+	}
+
+	public void setMeekosamOccupation(String meekosamOccupation) {
+		this.meekosamOccupation = meekosamOccupation;
+	}
+
+	public String getMeekosamCasteCategory() {
+		return meekosamCasteCategory;
+	}
+
+	public void setMeekosamCasteCategory(String meekosamCasteCategory) {
+		this.meekosamCasteCategory = meekosamCasteCategory;
+	}
+
+	public String getMeekosamArgeeCategory() {
+		return meekosamArgeeCategory;
+	}
+
+	public void setMeekosamArgeeCategory(String meekosamArgeeCategory) {
+		this.meekosamArgeeCategory = meekosamArgeeCategory;
+	}
+
+	public String getMeekosamAnnualIncome() {
+		return meekosamAnnualIncome;
+	}
+
+	public void setMeekosamAnnualIncome(String meekosamAnnualIncome) {
+		this.meekosamAnnualIncome = meekosamAnnualIncome;
+	}
+
+	public String getVoterCardNo() {
+		return voterCardNo;
+	}
+
+	public void setVoterCardNo(String voterCardNo) {
+		this.voterCardNo = voterCardNo;
+	}
+
+	public List<IdNameVO> getPetitionerList() {
+		return petitionerList;
+	}
+
+	public void setPetitionerList(List<IdNameVO> petitionerList) {
+		this.petitionerList = petitionerList;
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	public String getTehsilName() {
+		return tehsilName;
+	}
+
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
+	}
+
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+
+	public String getMunicipalityName() {
+		return municipalityName;
+	}
+
+	public void setMunicipalityName(String municipalityName) {
+		this.municipalityName = municipalityName;
+	}
+		
 	
 }
