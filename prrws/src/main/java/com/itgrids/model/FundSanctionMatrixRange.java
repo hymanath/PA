@@ -27,7 +27,7 @@ public class FundSanctionMatrixRange {
 	private Long fundSanctionMatrixRangeId;	
 	private Long previousYearId;	
 	private Long presentYearId;
-	private Long ScopeId;
+	private Long scopeId;
 	private String rangeValue;
 	private String min;
 	private String max;
@@ -123,18 +123,17 @@ public class FundSanctionMatrixRange {
 	}
 	@Column(name="scope_id")
 	public Long getScopeId() {
-		return ScopeId;
+		return scopeId;
 	}
 
 	public void setScopeId(Long scopeId) {
-		ScopeId = scopeId;
+		this.scopeId = scopeId;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "scope_id", insertable = false, updatable = false)
 	public LocationScope getLocationScope() {
 		return locationScope;
 	}
-
 	public void setLocationScope(LocationScope locationScope) {
 		this.locationScope = locationScope;
 	}	
