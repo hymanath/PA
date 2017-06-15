@@ -1421,8 +1421,9 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  							}
  							presLoc = rangeIdAndLocListMapForPresent.get(innerParam.getId());
  							commonLoc = getCommonLocIds(presLoc,prevLoc);
- 							if(commonLoc != null && commonLoc.size() > 0){
- 								innerParam.setValue(new Integer(commonLoc.size()).toString());
+ 							Set<Long> tempSet = new HashSet<Long>(commonLoc);
+ 							if(tempSet != null && tempSet.size() > 0){
+ 								innerParam.setValue(new Integer(tempSet.size()).toString());
  								innerParam.setLocationIds(setLocationIds(commonLoc));
  							}
  						}
@@ -1508,8 +1509,9 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  							}
  							presLoc = rangeIdAndLocListMapForPresent.get(innerParam.getId());
  							commonLoc = getCommonLocIds(presLoc,prevLoc);
- 							if(commonLoc != null && commonLoc.size() > 0){
- 								innerParam.setValue(innerParam.getValue()+"/"+new Integer(commonLoc.size()).toString());
+ 							Set<Long> tempSet = new HashSet<Long>(commonLoc);
+ 							if(tempSet != null && tempSet.size() > 0){
+ 								innerParam.setValue(innerParam.getValue()+"/"+new Integer(tempSet.size()).toString());
  								innerParam.setLocationIds(innerParam.getLocationIds()+"-"+setLocationIds(commonLoc));
  							}else{
  								innerParam.setValue(innerParam.getValue()+"/"+"0");
