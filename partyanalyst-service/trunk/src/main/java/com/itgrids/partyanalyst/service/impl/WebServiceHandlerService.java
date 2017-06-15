@@ -71,6 +71,7 @@ import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
 import com.itgrids.partyanalyst.dto.AmsAppVO;
 import com.itgrids.partyanalyst.dto.AmsDataVO;
+import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
 import com.itgrids.partyanalyst.dto.AmsTrackingVO;
 import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
@@ -4987,6 +4988,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					 amsDataVO.getAlertCallCenterTypeIdsList(),amsDataVO.getSocailMediaTypeIdsList(),amsDataVO.getAlertSeverityIdsList(),amsDataVO.getAlertStatusIdsList(),amsDataVO.getMondayGrievanceTypeIdsList(),
 					 amsDataVO.getJanmabhoomiTypeIdsList(),amsDataVO.getSpecialGrievanceTypeIdsList(),amsDataVO.getGeneralGrievanceTypeIdsList(),
 					 amsDataVO.getGovtAlertSubTaksStatusIdsList());
+			 
 		} catch (Exception e) {
 			log.error("Exception raised at getAmsAppAlertsBasicCounts", e);
 		}
@@ -5047,8 +5049,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return finalVOLst;
 	 }
-	 public List<AmsAppVO> getGovtAllDepartmentDetailsForAms(){
-		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+	 public List<AmsKeyValueVO> getGovtAllDepartmentDetailsForAms(){
+		 List<AmsKeyValueVO> finalVOLst = new ArrayList<AmsKeyValueVO>(0);
 		 try {
 			
 			 finalVOLst = alertManagementSystemService.getGovtAllDepartmentDetailsForAms();
@@ -5058,8 +5060,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return finalVOLst;
 	 }
-	 public List<AmsAppVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo){
-		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+	 public List<AmsKeyValueVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo){
+		 List<AmsKeyValueVO> finalVOLst = new ArrayList<AmsKeyValueVO>(0);
 		 try {
 			
 			 finalVOLst = alertManagementSystemService.getSubDeptsFrParentDeptForAms(keyVo);
@@ -5069,8 +5071,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return finalVOLst;
 	 }
-	 public List<AmsAppVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo){
-		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+	 public List<AmsKeyValueVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo){
+		 List<AmsKeyValueVO> finalVOLst = new ArrayList<AmsKeyValueVO>(0);
 		 try {
 			
 			 finalVOLst = alertManagementSystemService.getDepartmentLevelsForAms(keyVo);
@@ -5091,8 +5093,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return finalVOLst;
 	 }
-	 public List<AmsAppVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo){
-		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+	 public List<AmsKeyValueVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo){
+		 List<AmsKeyValueVO> finalVOLst = new ArrayList<AmsKeyValueVO>(0);
 		 try {
 			
 			 finalVOLst = alertManagementSystemService.getDesignationsByDepartmentForAms(keyVo);
@@ -5102,8 +5104,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return finalVOLst;
 	 }
-	 public List<AmsAppVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo){
-		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+	 public List<AmsKeyValueVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo){
+		 List<AmsKeyValueVO> finalVOLst = new ArrayList<AmsKeyValueVO>(0);
 		 try {
 			
 			 finalVOLst = alertManagementSystemService.getOfficersByDesignationAndLevelForAms(keyVo);
@@ -5121,6 +5123,33 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			 
 		} catch (Exception e) {
 			log.error("Exception raised at updateAlertStatusCommentForAms", e);
+		}
+		 return resultStatus;
+	 }
+	 public List<DistrictOfficeViewAlertVO> getLocationWiseDepartmentOverviewAlertCountForAms(AmsDataVO amsDataVO){
+		 List<DistrictOfficeViewAlertVO> returnVOList = new ArrayList<DistrictOfficeViewAlertVO>(0);
+		 try {
+			 returnVOList = alertManagementSystemService.getLocationWiseDepartmentOverviewAlertCountForAms(amsDataVO.getFromDate(),amsDataVO.getToDate(),amsDataVO.getStateId(),
+					 amsDataVO.getPrintIdsLst(),amsDataVO.getElectronicIdsLst(),amsDataVO.getUserId(),amsDataVO.getDepartmentId()
+					 ,amsDataVO.getParentGovtDepartmentScopeId(),amsDataVO.getSortingType(),amsDataVO.getOrder(),amsDataVO.getAlertType(),
+					 amsDataVO.getDistrictWorkLocationId(),amsDataVO.getDivisionWorkLocationId(),amsDataVO.getSubDivisionWorkLocationId(),
+					 amsDataVO.getGroup(),amsDataVO.getCalCntrIdList(),amsDataVO.getSublevels(),amsDataVO.getFilterParentScopeId(),
+					 amsDataVO.getFilterScopeValue(),amsDataVO.getSearchType(),amsDataVO.getSocailMediaTypeIdsList(),amsDataVO.getAlertSeverityIdsList(),
+					 amsDataVO.getAlertStatusIdsList(),amsDataVO.getSubTaskAlertStatusIds(),amsDataVO.getMondayGrievanceTypeIdsList(),
+					 amsDataVO.getJanmabhoomiTypeIdsList(),amsDataVO.getSpecialGrievanceTypeIdsList(),amsDataVO.getGeneralGrievanceTypeIdsList());
+		} catch (Exception e) {
+			log.error("Exception raised at getLocationWiseDepartmentOverviewAlertCountForAms", e);
+		}
+		 return returnVOList;
+	 }
+	 public ResultStatus saveDocumentsForAlertForAms(AmsAppLoginVO keyVo){
+		 ResultStatus resultStatus = new ResultStatus();
+		 try {
+			
+			 resultStatus = alertManagementSystemService.saveDocumentsForAlertForAms(keyVo);
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at saveDocumentsForAlertForAms", e);
 		}
 		 return resultStatus;
 	 }
