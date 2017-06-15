@@ -45,7 +45,9 @@
 		 getTotalLocationsByScopeId(6,'totFundVillage');
 		
 		getAverageFundForScheme('avgFundScheme');
-		
+		compareFundsBetweenFinancialYears(3,'comparionDistLevlOvervwTable');
+		compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable');
+		compareFundsBetweenFinancialYears(5,'comparionMandalLevlOvervwTable');
 	}
 	function getSelectedType(){
 		 var sortingType = ''; 
@@ -108,11 +110,14 @@
 			
 			if(blockType == 'overview')
 			{
+				$(".comaprisionViewShow").show();
 				getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,0);
 			}else if(blockType == 'scheme')
 			{
+				$(".comaprisionViewShow").hide();
 				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme',sortingType,orderType,0,4);
 			}else if(blockType == 'deptscheme'){
+				 $(".comaprisionViewShow").hide();
 				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(4,'consLevlOvervw','deptscheme',sortingType,orderType,0,4);
 			}
 		}else if(blockName == 'distLevel')
@@ -121,12 +126,15 @@
 		    $("#distLevelDistrictNames").trigger('chosen:updated');
 			if(blockType == 'overview')
 			{
+				$(".comaprisionViewShow").show();
 				getLocationWiseAmountDetails(3,'distLevlOvervw','overview',sortingType,orderType,0);
 			}else if(blockType == 'scheme')
 			{
+				$(".comaprisionViewShow").hide();
 				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','scheme',sortingType,orderType,0,3);
 			}else if(blockType == 'deptscheme'){
-				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(3,'distLevlOvervw','deptscheme',sortingType,orderType,0,3);
+				$(".comaprisionViewShow").hide();
+				getFinancialYearWiseDeptsWiseSchemeAmountDetails(3,'distLevlOvervw','deptscheme',sortingType,orderType,0,3);
 			}
 		}else if(blockName == 'stateLevel')
 		{
@@ -152,10 +160,13 @@
 		    $("#mandalLevelMandalNames").trigger('chosen:updated');
 			
 			if(blockType == 'overview'){
+				$(".comaprisionViewShow").show();
 				getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,0);
 			}else if(blockType == 'scheme'){
+				$(".comaprisionViewShow").hide();
 				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','scheme',sortingType,orderType,0,5);
 			}else if(blockType == 'deptscheme'){
+				$(".comaprisionViewShow").hide();
 				getFinancialYearWiseDeptsWiseSchemeAmountDetails(5,'mandalLevlOvervw','deptscheme',sortingType,orderType,0,5);
 			}
 		}
@@ -559,8 +570,8 @@
 										table+='<td class="text-center no-right-border">-</td>';
 									}
 								
-								if(result[i].locationList1[j].amunt != null && result[i].locationList1[j].amunt > 0){
-									table+='<td class="text-center">'+parseInt(result[i].locationList1[j].amunt)+'</td>';
+								if(result[i].locationList1[j].amount != null && result[i].locationList1[j].amount > 0){
+									table+='<td class="text-center">'+parseInt(result[i].locationList1[j].amunt.replace(/,/g, ""))+'</td>';
 								}else{
 									table+='<td class="text-center">-</td>';
 								}
@@ -659,8 +670,8 @@
 										table+='<td class="text-center no-right-border">-</td>';
 									}
 								}
-									if(result[i].subList[j].subList[k].amount != null && result[i].subList[j].subList[k].amountt > 0){
-										table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].amount)+'</td>';
+									if(result[i].subList[j].subList[k].totalCount != null && result[i].subList[j].subList[k].totalCount > 0){
+										table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'</td>';
 									}else{
 										table+='<td class="text-center">-</td>';
 									}
@@ -773,8 +784,8 @@
 												table+='<td class="text-center no-right-border">-</td>';
 											}
 											
-											if(result[i].subList[j].subList[k].subList[l].amount != null && result[i].subList[j].subList[k].subList[l].amount > 0){
-												table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].subList[l].amount)+'</td>';
+											if(result[i].subList[j].subList[k].subList[l].totalCount != null && result[i].subList[j].subList[k].subList[l].totalCount > 0){
+												table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, ""))+'</td>';
 											}else{
 												table+='<td class="text-center">-</td>';
 											}
@@ -2029,6 +2040,8 @@
 	function getAllFiniancialYears()
 	{
 		$("#financialYearId").html('');
+		$(".compMultiFinancialYear").html('');
+		$(".compSingleFinancialYear").html('');
 		var json = {
 		}
 		$.ajax({                
@@ -2046,11 +2059,17 @@
 			if(result != null && result.length >0){
 				for(var i in result){
 					$("#financialYearId").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
+					$(".compMultiFinancialYear").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
+					$(".compSingleFinancialYear").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
 				}
 				$("#financialYearId").val(0);
+				$(".compMultiFinancialYear").val(['1','2']);
+				$(".compSingleFinancialYear").val(3);
 			}
 			$("#financialYearId").chosen();
 			$("#financialYearId").trigger('chosen:updated');
+			$(".compMultiFinancialYear").trigger('chosen:updated');
+			$(".compSingleFinancialYear").trigger('chosen:updated');
 			onLoadCalls();	
 		});
    }
@@ -2469,11 +2488,73 @@ $(document).on("click",".fundSanctionCls",function(){
   var deptId = $(this).attr("attr_dept_id");
   getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,deptId);
 });
-//compareFundsBetweenFinancialYears();
-function compareFundsBetweenFinancialYears(){
+$(document).on("click",".comapreFinancialYearCls",function(){
+	var type = $(this).attr("attr_type");
+	if(type == "distComp"){
+		compareFundsBetweenFinancialYears(3,'comparionDistLevlOvervwTable');
+	}else if(type == "constComp"){
+		compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable');
+	}else if(type == "mandalComp"){
+		compareFundsBetweenFinancialYears(5,'comparionMandalLevlOvervwTable');
+	}
+	
+});
+
+function compareFundsBetweenFinancialYears(levelId,divId){ 
+	
+	
+	
+	var multipleFinYear='';
+	var singleFinYear='';
+	var singleFinYearArr=[];
+	var financialYrIdList='';
+	
+	if(levelId == 3){
+		var disValue = $(".compMultiFinancialYear").val();
+		multipleFinYear = $(".compMultiFinancialYear").val();
+		singleFinYear = $(".compSingleFinancialYear").val();
+		singleFinYearArr.push(singleFinYear);
+		financialYrIdList = multipleFinYear;
+		financialYrIdList.push(singleFinYear)
+		
+		if(disValue.length == 3){
+		 alert("Please Select Two Financial Years");
+		 return;
+	 }
+	 
+	}else if(levelId == 4){
+		var consValue = $(".compMultiFinancialYear").val();
+		multipleFinYear = $(".compMultiFinancialYear").val();
+		singleFinYear = $(".compSingleFinancialYear").val();
+		singleFinYearArr.push(singleFinYear);
+		financialYrIdList = multipleFinYear;
+		financialYrIdList.push(singleFinYear)
+		if(consValue.length == 3){
+		 alert("Please Select Two Financial Years");
+		 return;
+	 }
+	
+	 
+	}else if(levelId == 5){
+		var mandValue = $(".compMultiFinancialYear").val();
+		multipleFinYear = $(".compMultiFinancialYear").val();
+		singleFinYear = $(".compSingleFinancialYear").val();
+		singleFinYearArr.push(singleFinYear);
+		financialYrIdList = multipleFinYear;
+		financialYrIdList.push(singleFinYear)
+		if(mandValue.length == 3){
+		 alert("Please Select Two Financial Years");
+		 return;
+	 }
+	 
+	}
+	 
+	 
+	 
+	 $("#"+divId).html(spinner);
     var json = {
-      blockLevelId : 3,
-      financialYrIdList : [1,2]
+      blockLevelId : levelId,
+      financialYrIdList : financialYrIdList
     }
     $.ajax({
       url : "compareFundsBetweenFinancialYears",     
@@ -2484,14 +2565,94 @@ function compareFundsBetweenFinancialYears(){
       xhr.setRequestHeader("Accept", "application/json");
       xhr.setRequestHeader("Content-Type", "application/json");
       },
-      success : function(ajaxresp){   
-      
+      success : function(ajaxresp){
+		$("#"+divId).html('');
+		buildCompareFundsBetweenFinancialYears(ajaxresp,financialYrIdList,multipleFinYear,singleFinYearArr,divId);
       },
       error : function(request,error){
       alert(error);
       }
     });
    }
+   
+   function buildCompareFundsBetweenFinancialYears(result,financialYrIdList,multipleFinYear,singleFinYearArr,divId){
+	   
+	   var yearLen =financialYrIdList.length;
+	    var globalYearObj =  {"1":"2014-2015","2":"2015-2016","3":"2016-2017"};
+	   if(yearLen == 2){
+		    $("#"+divId).removeClass('comparionStyle')
+			$("#"+divId).addClass('comparionStyle1')
+		}else if(yearLen == 3){
+			$("#"+divId).removeClass('comparionStyle1')
+			$("#"+divId).addClass('comparionStyle')
+		}
+	   var str='';
+	   if(result !=null && result.length>0){
+		    str+='<table class="table table-bordered">';
+		   if(result[0].rangeList !=null && result[0].rangeList.length>0){
+			    str+='<thead>';
+				str+='<tr>';
+				 if(yearLen == 2){
+					str+='<th><span class="first"> '+globalYearObj[multipleFinYear[0]]+'</span><span class="second"> '+globalYearObj[singleFinYearArr]+'</span></th>';
+				}else if(yearLen == 3){
+					str+='<th style="background-color:#EAEBFF">'+globalYearObj[multipleFinYear[1]]+'</th>';
+					str+='<th><span class="first" style="background-color:#FFF3E9">'+globalYearObj[multipleFinYear[0]]+'</span><span class="second"> '+globalYearObj[singleFinYearArr]+'</span></th>';
+				}
+			   for(var i in result[0].rangeList){
+						if(yearLen == 2){
+							str+='<th>'+result[0].rangeList[i].name+'</th>'
+						}else if(yearLen == 3){
+							str+='<th colspan="2">'+result[0].rangeList[i].name+'</th>'
+						}
+						
+						
+			   }
+			   str+='</tr>';
+			   str+='</thead>';
+			   str+='<tbody>';
+			   for(var i in result){
+				   var verticalRanges = result[i].range.split(',');
+				   str+='<tr>';
+				   if(yearLen == 2){
+					   str+='<td>'+result[i].range+'</td>';
+				   }else if(yearLen == 3){
+					   str+='<td style="background-color:#EAEBFF">'+verticalRanges[0]+'</td>';
+					   str+='<td style="background-color:#FFF3E9">'+verticalRanges[1]+'</td>';
+				   }
+					
+					if(result[i].rangeList !=null && result[i].rangeList.length>0){
+						for(var j in result[i].rangeList){
+							var rangeValue='';
+							if(result[i].rangeList[j].value == null || result[i].rangeList[j].value == "0,0"){
+								var emptyRangeVal = "-,-";
+								rangeValue = emptyRangeVal.split(',');
+							}else{
+								rangeValue = result[i].rangeList[j].value.split(',');
+							}
+							
+							 if(yearLen == 2){
+								  str+='<td>'+result[i].rangeList[j].value+'</td>';
+							 }else if(yearLen == 3){
+								 str+='<td style="background-color:#EAEBFF">'+rangeValue[0]+'</td>';
+								 str+='<td style="background-color:#FFF3E9">'+rangeValue[1]+'</td>';
+							 }
+							
+						}
+						 
+						
+					}
+					
+				str+='</tr>';
+			   }
+				
+			   str+='</tbody>';
+		   }
+			str+='</table>';
+	   }
+	   $("#"+divId).html(str)
+	   
+   }
+   
    
    //getMinMaxDates();
 	function getMinMaxDates()

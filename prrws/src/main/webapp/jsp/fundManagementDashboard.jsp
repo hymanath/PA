@@ -257,6 +257,7 @@
 								<ul class="nav nav-tabs pull-right" role="tablist">
 									<li role="presentation" class="active"><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 									<li role="presentation"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+									<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>
 								</ul>
 
 								<!-- Tab panes -->
@@ -297,6 +298,28 @@
 											</div>
 										</div>
 									</div>
+									<div role="tabpanel" class="tab-pane" id="comaprisionLevelDist">
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="row">
+													<div class="col-sm-2 pull-right">
+														<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="distComp">submit</button>
+													</div>
+													<div class="col-sm-2 pull-right">
+														<select class="form-control chosenSelect compSingleFinancialYear"  ></select>
+													</div>
+													<div class="col-sm-1 pull-right">
+													VS
+													</div>
+													<div class="col-sm-3 pull-right">
+														<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
+													</div>
+													
+												</div>
+												<div id="comparionDistLevlOvervwTable" class=""></div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -324,6 +347,7 @@
 								<ul class="nav nav-tabs pull-right" role="tablist">
 									<li role="presentation" class="active"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 									<li role="presentation"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+									<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
 								</ul>
 
 								<div class="tab-content">
@@ -370,6 +394,29 @@
 											</div>
 										</div>
 									</div>
+									<div role="tabpanel" class="tab-pane" id="comaprisionLevelConst">
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="row">
+													<div class="col-sm-2 pull-right">
+														<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="constComp">submit</button>
+													</div>
+													
+													<div class="col-sm-2 pull-right">
+														<select class="form-control chosenSelect compSingleFinancialYear"  ></select>
+													</div>
+													<div class="col-sm-1 pull-right">
+													VS
+													</div>
+													<div class="col-sm-3 pull-right">
+														<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
+													</div>
+													
+												</div>
+												<div id="comparionConstLevlOvervwTable" class=""></div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -397,6 +444,7 @@
 								<ul class="nav nav-tabs pull-right" role="tablist">
 									<li role="presentation" class="active"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 									<li role="presentation"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
+									<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
 								</ul>
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="mandalLevelGraph">
@@ -443,6 +491,27 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<div id="mandalLevlOvervwTable"></div>
+											</div>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="comaprisionLevelMandal">
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="row">
+													<div class="col-sm-2 pull-right">
+														<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="mandalComp">submit</button>
+													</div>
+													<div class="col-sm-2 pull-right">
+														<select class="form-control chosenSelect compSingleFinancialYear" ></select>
+													</div>
+													<div class="col-sm-1 pull-right">
+													VS
+													</div>
+													<div class="col-sm-3 pull-right">
+														<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
+													</div>
+												</div>
+												<div id="comparionMandalLevlOvervwTable" class=""></div>
 											</div>
 										</div>
 									</div>
