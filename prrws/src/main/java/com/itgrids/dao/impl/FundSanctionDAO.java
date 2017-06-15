@@ -752,10 +752,15 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		return query.list();
 	}
 	
-	public Long getTotalSchemes(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,Date sDate,Date eDate,Long searchLevlId,List<Long> searchLvlVals){
+	public Long getTotalSchemes(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,Date sDate,Date eDate,Long searchLevlId,List<Long> searchLvlVals,String type){
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select count(distinct modal.fundSanction.govtScheme.govtSchemeId ) " );
+		if (type != null && type.equalsIgnoreCase("scheme") ) {
+			sb.append(" select count(distinct modal.fundSanction.govtScheme.govtSchemeId ) " );
+		}
+		if (type != null && type.equalsIgnoreCase("grant") ) {
+			sb.append(" select count(distinct modal.fundSanction.grantType.grantTypeId ) " );
+		}
 		sb.append(" from FundSanctionLocation modal where modal.isDeleted='N' and modal.fundSanction.isDeleted = 'N'  ");
 		if(financialYearIdsList != null && financialYearIdsList.size() >0l ){
 			sb.append(" and modal.fundSanction.financialYearId in (:financialYearIdsList)  " );

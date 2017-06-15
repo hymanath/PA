@@ -1105,7 +1105,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		inputVO.setSourceIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList()));
 		inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSearchLvlVals()));
 		
-		Long totalSchemes = fundSanctionDAO.getTotalSchemes(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(), startDate, endDate,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
+			Long totalSchemes = fundSanctionDAO.getTotalSchemes(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(), startDate, endDate,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals(),inputVO.getType());
 		 
 		 if(totalSchemes != null && totalSchemes.longValue() >0l){
 			 retusnVo.setTotSchemes(totalSchemes);
@@ -1220,8 +1220,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 					locId = lvlIdStr.concat(locId);
 					locationFundDetailsVO.setId(Long.parseLong(locId));
 					 String nameStr=commonMethodsUtilService.getStringValueForObject(param[1]);
-					locationFundDetailsVO.setName(commonMethodsUtilService.toConvertStringToTitleCase(nameStr));
-					detailsVOs.add(locationFundDetailsVO);
+						locationFundDetailsVO.setName(commonMethodsUtilService.toConvertStringToTitleCase(nameStr));
+						detailsVOs.add(locationFundDetailsVO);
 				}
 			}
 			return detailsVOs;
