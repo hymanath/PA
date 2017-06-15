@@ -119,6 +119,7 @@ import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 import com.sun.jersey.api.client.Client;
@@ -189,8 +190,16 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	private IGovtDepartmentLevelDAO govtDepartmentLevelDAO;
 	private IAlertMeekosamPetitionerDAO alertMeekosamPetitionerDAO;
+	private ImageAndStringConverter imageAndStringConverter;
 	
 	
+	public ImageAndStringConverter getImageAndStringConverter() {
+		return imageAndStringConverter;
+	}
+	public void setImageAndStringConverter(
+			ImageAndStringConverter imageAndStringConverter) {
+		this.imageAndStringConverter = imageAndStringConverter;
+	}
 	public IGovtDepartmentLevelDAO getGovtDepartmentLevelDAO() {
 		return govtDepartmentLevelDAO;
 	}
@@ -12607,6 +12616,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,List<Long> subTaskAlertStatusIds){
   		
   		DistrictOfficeViewAlertVO returnVO = new DistrictOfficeViewAlertVO();
+  		Long subOrdinateCnt = 0l;
   		try{
   			//getDistrictOfficerAlertsCountView
   			
@@ -12614,6 +12624,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
   					alertStatusIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
   			
   			
+  			returnVO.setSubOrdinateCount(subOrdinateCnt);
   			/*Date fromDate = null;
   			Date toDate = null;
   			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -12664,7 +12675,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
   			
   		}catch(Exception e){
   			e.printStackTrace();
-  			LOG.error("Exception Occured in AlertManagementSystemService of  getIASOfficerAlertsCountMainView() ", e);
+  			LOG.error("Exception Occured in AlertManagementSystemService of  getAmsAppAlertsBasicCounts() ", e);
   		}
   		return returnVO;
   	}
@@ -13339,7 +13350,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 	List<Long> alertIds = new ArrayList<Long>();
 	try{
 		List<Object[]> docList = alertDocumentDAO.getDocumentsForAlert(alertId);
-		 List<Object[]> list = alertDAO.getAlertsData(alertId);
+		 List<Object[]> list = alertDAO.getAlertsDataForAms(alertId);
 		 List<String> dueDateList = alertAssignedOfficerTrackingNewDAO.getAlertDueDate(alertId); 
 		 Object[] sourceDtls = alertDAO.getSourceDtlsByAlertId(alertId);   
 		 String alertSource = "";
@@ -14169,14 +14180,14 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 		 * Teja(non-Javadoc)
 		 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getGovtAllDepartmentDetailsForAms()
 		 */
-		public List<AmsAppVO> getGovtAllDepartmentDetailsForAms(){
-      		List<AmsAppVO> finalList = new ArrayList<AmsAppVO>();
+		public List<AmsKeyValueVO> getGovtAllDepartmentDetailsForAms(){
+      		List<AmsKeyValueVO> finalList = new ArrayList<AmsKeyValueVO>();
       		try {
       			
       			List<Object[]> list = govtDepartmentRelationDAO.getAllMainDepartments();
       			if(list !=null && list.size()>0){
       				for (Object[] objects : list) {							
-      					AmsAppVO vo = new AmsAppVO();
+      					AmsKeyValueVO vo = new AmsKeyValueVO();
       					vo.setId((Long)objects[0]);
       					vo.setName(objects[1] !=null ? objects[1].toString():"");
       					
@@ -14189,14 +14200,14 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			}
       		return finalList;
       	}
-		public List<AmsAppVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo){
-			List<AmsAppVO> finalList = new ArrayList<AmsAppVO>();
+		public List<AmsKeyValueVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo){
+			List<AmsKeyValueVO> finalList = new ArrayList<AmsKeyValueVO>();
 			try{
 				
 				List<Object[]> subDeptList = govtDepartmentRelationDAO.getSubDeptsForParentDept(keyVo.getParentDeptId());
 				if(subDeptList != null && subDeptList.size() > 0l){
 					for (Object[] objects : subDeptList) {
-						AmsAppVO vo = new AmsAppVO();
+						AmsKeyValueVO vo = new AmsKeyValueVO();
 						vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 						finalList.add(vo);
@@ -14207,13 +14218,13 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			}
 			return finalList;
 		}
-		public List<AmsAppVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo){
-			List<AmsAppVO> resultList = new ArrayList<AmsAppVO>();
+		public List<AmsKeyValueVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo){
+			List<AmsKeyValueVO> resultList = new ArrayList<AmsKeyValueVO>();
 			try {						
 				List<Object[]> levelObj = govtDepartmentScopeLevelDAO.getDepartmentLevels(keyVo.getDepartmentId());
 				if(levelObj != null && levelObj.size()>0){
 					for (Object[] param : levelObj) {
-						  AmsAppVO VO = new AmsAppVO();
+						AmsKeyValueVO VO = new AmsKeyValueVO();
 						   VO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 						   VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 						   resultList.add(VO);
@@ -14303,14 +14314,14 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 				LOG.error("Error occured setLocationValuesToMapForAms() method of AlertManagementSystemService",e);
 			}
 		}
-		public List<AmsAppVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo){
-			List<AmsAppVO> returnList = new ArrayList<AmsAppVO>();
+		public List<AmsKeyValueVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo){
+			List<AmsKeyValueVO> returnList = new ArrayList<AmsKeyValueVO>();
 			try {
 				
 				List<Object[]> list = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationsForDepartmentAndLevelLocation(keyVo.getDepartmentId(),keyVo.getLevelId(),keyVo.getLevelValue());
 				if(list != null && !list.isEmpty()){
 					for (Object[] obj : list) {
-						AmsAppVO vo = new AmsAppVO();
+						AmsKeyValueVO vo = new AmsKeyValueVO();
 						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 						vo.setName(obj[1] != null ? obj[1].toString():"");
 						returnList.add(vo);
@@ -14321,13 +14332,13 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			}
 			return returnList;
 		}
-		public List<AmsAppVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo){
-			List<AmsAppVO> returnList = new ArrayList<AmsAppVO>();
+		public List<AmsKeyValueVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo){
+			List<AmsKeyValueVO> returnList = new ArrayList<AmsKeyValueVO>();
 			try {
 				List<Object[]> list = govtDepartmentDesignationOfficerDetailsNewDAO.getOfficersByDesignationAndLevel(keyVo.getLevelId(),keyVo.getLevelValue(),keyVo.getDesignationId());
 				if(list != null && !list.isEmpty()){
 					for (Object[] obj : list) {
-						AmsAppVO vo = new AmsAppVO();					
+						AmsKeyValueVO vo = new AmsKeyValueVO();					
 						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 						
 						StringBuilder str = new StringBuilder();
@@ -14648,4 +14659,518 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			}
 			return rs;
 		}
+		 /*
+         * Teju
+         */
+		 public List<DistrictOfficeViewAlertVO> getLocationWiseDepartmentOverviewAlertCountForAms(String fromDateStr, String toDateStr, Long stateId, 
+					List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+					Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
+					Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, 
+					String group,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,
+					Long filterScopeValue,String searchType,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> subTaskAlertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds ){
+			try{
+			
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);//Prepare Parameter
+			
+			List<Long> levelValues = new ArrayList<Long>();    
+			Long levelId = 0L;
+			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+				for(Object[] param : lvlValueAndLvlIdList){
+					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				}
+			}
+			
+			List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
+			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
+			List<Long> deptScopeIdList = new ArrayList<Long>();
+			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
+				for(Object [] param : childDeptScopeIdList){
+					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					KeyValueVO sublevel = new KeyValueVO();
+					sublevel.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+					sublevel.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					subLevels.add(sublevel);
+				}
+			}
+		    if(sublevels != null && sublevels.size() > 0){//In the case of filter data scope wise we are sending selected values
+		    	deptScopeIdList.clear();
+		    	deptScopeIdList.addAll(sublevels);
+		    }
+		
+		 
+			List<DistrictOfficeViewAlertVO> returnList = new ArrayList<DistrictOfficeViewAlertVO>();
+			List<Object[]> alertList = null; 
+			if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+				if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
+					if(alertType != null && alertType.equalsIgnoreCase("alert")){
+					alertList = alertAssignedOfficerNewDAO.getAlertDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,socialMediaTypeIds,null,null,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+					}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+					 alertList = govtAlertSubTaskDAO.getSubTaskAlertCntBasedOnDepartmentLevel(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, deptScopeIdList, group, searchType, calCntrIdList, filterParentScopeId, filterScopeValue,socialMediaTypeIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+					}
+					if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+						if(searchType != null && searchType.equalsIgnoreCase("statusWise") || searchType.equalsIgnoreCase("alertSource")){
+							prepareResultForStateForAms(alertList,returnList,sortingType,order,alertType,searchType);
+							sortStateLevelLstBasedOnScopeForAms(returnList,govtDepartmentId);
+							return returnList;
+						}
+					}
+				}
+			}
+			
+			Map<Long,String> locIdAndLocNameMap = new LinkedHashMap<Long,String>();
+			Map<Long,String> lvlIdAndLvlName = new LinkedHashMap<Long,String>();
+			Map<Long,String> lvlIdAndColor = new LinkedHashMap<Long,String>();
+			Map<Long,LinkedHashMap<Long,Long>> locIdThenLvlIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+			LinkedHashMap<Long,Long> levelIdAndAlertCountMap = null;
+			
+			Set<Long> deptScopeIds = new HashSet<Long>();
+			if(alertList != null && alertList.size() > 0){
+				for(Object[] param : alertList){
+					deptScopeIds.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+			
+			List<Object[]> deptScopeIdDtlsList = null;
+			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") && deptScopeIds != null && deptScopeIds.size() >0){
+				if(alertType != null && alertType.equalsIgnoreCase("subTask") && searchType != null && searchType.equalsIgnoreCase("statuswise")){
+					deptScopeIdDtlsList =alertSubTaskStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(deptScopeIds)); 
+				}else if(searchType != null && searchType.equalsIgnoreCase("alertSource")){
+					deptScopeIdDtlsList = alertCategoryDAO.getAlertCategoryByCategoryIds(new ArrayList<Long>(deptScopeIds));	
+				}else if(searchType != null && searchType.equalsIgnoreCase("scopewise")){
+					deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
+				}else if(searchType != null && searchType.equalsIgnoreCase("statuswise")){
+					deptScopeIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(deptScopeIds));	
+				}
+			}
+			if(deptScopeIdDtlsList != null && deptScopeIdDtlsList.size() > 0){
+				for(Object[] param : deptScopeIdDtlsList){
+					lvlIdAndLvlName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					lvlIdAndColor.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+				}  
+			}
+			
+			if(alertList != null && alertList.size() > 0){   
+				for(Object[] param : alertList){
+					locIdAndLocNameMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),commonMethodsUtilService.getStringValueForObject(param[2]));
+					levelIdAndAlertCountMap = locIdThenLvlIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(levelIdAndAlertCountMap == null){
+						levelIdAndAlertCountMap = new LinkedHashMap<Long,Long>();
+						locIdThenLvlIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[1]), levelIdAndAlertCountMap);
+					}
+					levelIdAndAlertCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			
+			DistrictOfficeViewAlertVO alertCoreDashBoardVO = null;
+			if(locIdThenLvlIdThenAlertCount != null && locIdThenLvlIdThenAlertCount.size() > 0){
+				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : locIdThenLvlIdThenAlertCount.entrySet()){
+					alertCoreDashBoardVO = new DistrictOfficeViewAlertVO();
+					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
+					alertCoreDashBoardVO.setName(locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
+					buildStatusWiseTemplateForAms(alertCoreDashBoardVO,lvlIdAndLvlName,lvlIdAndColor);
+					Long total = new Long(0L);
+					for(DistrictOfficeViewAlertVO boardVO : alertCoreDashBoardVO.getSubList()){
+						if(outerEntry.getValue() != null && outerEntry.getValue().get(boardVO.getId()) != null){
+							boardVO.setCount(outerEntry.getValue().get(boardVO.getId()));
+							total = total + outerEntry.getValue().get(boardVO.getId());
+						}
+					}
+					alertCoreDashBoardVO.setTotalCount(total);
+					returnList.add(alertCoreDashBoardVO);
+				}
+			}
+			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+				if(returnList != null && returnList.size() > 0){
+					returnList.get(0).getSubLevels().addAll(subLevels);
+					if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+						if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("Default")){
+ 						sortStateLevelLstBasedOnScopeForAms(returnList,govtDepartmentId);
+ 					}else{
+ 						if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+ 							Collections.sort(returnList.get(0).getSubList(), alertStateAscendingCountWiseSortingLvlWiseForAms);
+ 						}else{
+ 							Collections.sort(returnList.get(0).getSubList(), alertStateDescCountWiseSortingLvlWiseForAms);
+ 						}
+ 					}
+					}
+					if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+						if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+							Collections.sort(returnList.get(0).getSubList(), alphabeticalStateAscSortLvlWiseForAms);
+						}else{
+							Collections.sort(returnList.get(0).getSubList(), alphabeticalStateDescendingSortLvlWiseForAms);
+						}
+					}
+				}   
+			}else{
+				if(returnList != null && returnList.size() > 0){
+					returnList.get(0).getSubLevels().addAll(subLevels);
+					if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+						if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+							Collections.sort(returnList, alertAscendingCountWiseSortingLvlWiseForAms);
+						}else{
+							Collections.sort(returnList, alertDescCountWiseSortingLvlWiseForAms);
+						}
+					}
+					if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+						if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+							Collections.sort(returnList, alphabeticalAscSortLvlWiseForAms);
+						}else{
+							Collections.sort(returnList, alphabeticalDescendingSortLvlWiseForAms);
+						}
+					}
+				}   
+			}
+			
+			return returnList;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getLocationWiseDepartmentOverviewAlertCountForAms() method of AlertManagementSystemService",e);
+	 }
+			return null;
+	}	
+	 public void buildStatusWiseTemplateForAms(DistrictOfficeViewAlertVO alertCoreDashBoardVO,Map<Long,String> lvlIdAndLvlName,Map<Long,String> lvlIdAndColor){
+			try{
+				List<DistrictOfficeViewAlertVO> alertCoreDashBoardVOs = new ArrayList<DistrictOfficeViewAlertVO>();
+				DistrictOfficeViewAlertVO coreDashBoardVO = null;
+				if(lvlIdAndLvlName != null && lvlIdAndLvlName.size() > 0 && lvlIdAndColor != null &&  lvlIdAndColor.size() > 0){
+					for(Entry<Long,String> entry : lvlIdAndLvlName.entrySet()){
+						coreDashBoardVO = new DistrictOfficeViewAlertVO();
+						coreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(entry.getKey()));
+						coreDashBoardVO.setName(commonMethodsUtilService.getStringValueForObject(entry.getValue()));
+						coreDashBoardVO.setSevertyColor(lvlIdAndColor.get(entry.getKey()) != null ? lvlIdAndColor.get(entry.getKey()) : "");
+						alertCoreDashBoardVOs.add(coreDashBoardVO);
+					}
+					alertCoreDashBoardVO.setSubList(alertCoreDashBoardVOs);  
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+	 public void sortStateLevelLstBasedOnScopeForAms(List<DistrictOfficeViewAlertVO> resultList,Long govtDeptId){
+     	try{
+     		List<Object[]> objList = govtDepartmentScopeLevelDAO.getDeptScopeIdAndOrder(govtDeptId);
+     		 if(objList != null && objList.size() > 0){
+     			 for(Object[] param:objList){
+     				DistrictOfficeViewAlertVO matchVO = getStatusMatchVOForAMs(resultList,commonMethodsUtilService.getLongValueForObject(param[0]));
+     				  if(matchVO != null){
+     					  matchVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(param[1]));
+     				  }
+     			 }
+     		 }
+     		 if(resultList != null && resultList.size() > 0){
+     			 Collections.sort(resultList, ascendingSortingByScopeIdsForAms);	 
+     		 }
+     		 
+     	}catch(Exception e){
+     		e.printStackTrace();
+     		LOG.error("Error occured sortStateLevelLstBasedOnScope() method of AlertManagementSystemService{}");
+     	}
+     }
+	 public DistrictOfficeViewAlertVO getStatusMatchVOForAMs(List<DistrictOfficeViewAlertVO> statusList,Long id){
+			try{
+				if(statusList == null || statusList.size() ==0)
+					return null;
+				for(DistrictOfficeViewAlertVO VO:statusList){
+					if(VO.getId().equals(id))
+					{
+						return VO;
+					}
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Error occured getStatusMatchVOForAMs() method of AlertManagementSystemService{}");
+			}
+			return null;
+		}
+	 public static Comparator<DistrictOfficeViewAlertVO> ascendingSortingByScopeIdsForAms = new Comparator<DistrictOfficeViewAlertVO>() {
+        	public int compare(DistrictOfficeViewAlertVO location2, DistrictOfficeViewAlertVO location1) {
+        	Long id2 = location2.getOrderNo();
+        	Long id1 = location1.getOrderNo();
+        	//ascending order by id.
+        	 return id2.compareTo(id1);
+        	}
+      };
+     public static Comparator<DistrictOfficeViewAlertVO> alertAscendingCountWiseSortingLvlWiseForAms = new Comparator<DistrictOfficeViewAlertVO>() {
+      	public int compare(DistrictOfficeViewAlertVO location2, DistrictOfficeViewAlertVO location1) {
+      	Long count2 = location2.getTotalCount();
+      	Long count1 = location1.getTotalCount();
+      	//ascending order of percantages.
+      	 return count2.compareTo(count1);
+      	}
+     };
+     public static Comparator<DistrictOfficeViewAlertVO> alertDescCountWiseSortingLvlWiseForAms = new Comparator<DistrictOfficeViewAlertVO>() {
+        	public int compare(DistrictOfficeViewAlertVO location2, DistrictOfficeViewAlertVO location1) {
+        	Long count2 = location2.getTotalCount();
+        	Long count1 = location1.getTotalCount();
+        	//desc order of percantages.
+        	 return count1.compareTo(count2);
+        	}
+      };
+      public static Comparator<DistrictOfficeViewAlertVO> alphabeticalDescendingSortLvlWiseForAms = new Comparator<DistrictOfficeViewAlertVO>() {
+      public int compare(DistrictOfficeViewAlertVO location2, DistrictOfficeViewAlertVO location1) {
+         	String name2 = location2.getName();
+        	    String name1 = location1.getName();
+        	    //descending order of percantages.
+        	    return name1.compareTo(name2);
+      	}
+      };
+      public static Comparator<DistrictOfficeViewAlertVO> alphabeticalAscSortLvlWiseForAms = new Comparator<DistrictOfficeViewAlertVO>() {
+           	public int compare(DistrictOfficeViewAlertVO location2, DistrictOfficeViewAlertVO location1) {
+           		String name2 = location2.getName();
+           	    String name1 = location1.getName();
+           	    //descending order of percantages.
+           	    return name2.compareTo(name1);
+           	}
+           };
+           //State level soring 
+           public static Comparator<DistrictOfficeViewAlertVO> alertStateAscendingCountWiseSortingLvlWiseForAms = new Comparator<DistrictOfficeViewAlertVO>() {
+            	public int compare(DistrictOfficeViewAlertVO location2, DistrictOfficeViewAlertVO location1) {
+            	Long count2 = location2.getCount();
+            	Long count1 = location1.getCount();
+            	//ascending order of percantages.
+            	 return count2.compareTo(count1);
+            	}
+           };
+           public static Comparator<DistrictOfficeViewAlertVO> alertStateDescCountWiseSortingLvlWiseForAms = new Comparator<DistrictOfficeViewAlertVO>() {
+              	public int compare(DistrictOfficeViewAlertVO location2, DistrictOfficeViewAlertVO location1) {
+              	Long count2 = location2.getCount();
+              	Long count1 = location1.getCount();
+              	//desc order of percantages.
+              	 return count1.compareTo(count2);
+              	}
+            };
+            public static Comparator<DistrictOfficeViewAlertVO> alphabeticalStateDescendingSortLvlWiseForAms = new Comparator<DistrictOfficeViewAlertVO>() {
+            public int compare(DistrictOfficeViewAlertVO location2, DistrictOfficeViewAlertVO location1) {
+               	String name2 = location2.getName();
+              	    String name1 = location1.getName();
+              	    //descending order of percantages.
+              	    return name1.compareTo(name2);
+            	}
+            };
+            public static Comparator<DistrictOfficeViewAlertVO> alphabeticalStateAscSortLvlWiseForAms = new Comparator<DistrictOfficeViewAlertVO>() {
+                 	public int compare(DistrictOfficeViewAlertVO location2, DistrictOfficeViewAlertVO location1) {
+                 		String name2 = location2.getName();
+                 	    String name1 = location1.getName();
+                 	    //descending order of percantages.
+                 	    return name2.compareTo(name1);
+                 	}
+            };
+           
+            public List<DistrictOfficeViewAlertVO> prepareResultForStateForAms(List<Object[]> alertList,List<DistrictOfficeViewAlertVO> returnList,String sortingType,String order,String alertType,String searchType){
+            	try{
+            		
+            		Map<Long,String> lvlIdAndLvlName = new LinkedHashMap<Long,String>();
+        			Map<Long,String> statusIdAndStatusName = new LinkedHashMap<Long,String>();
+        			Map<Long,String> statusIdAndColor = new LinkedHashMap<Long,String>();    
+        			
+        			Map<Long,LinkedHashMap<Long,Long>> lvlIdThenStatusIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+        			LinkedHashMap<Long,Long> statusIdThenAlertCount = null;
+        			
+        			
+        			Set<Long> deptScopeIds = new HashSet<Long>();
+        			Set<Long> statusIds = new HashSet<Long>();//Containing status id or alert categoryId 
+        			Long stateId = 0l;
+        			if(alertList != null && alertList.size() > 0){
+        				for(Object[] param : alertList){
+        					deptScopeIds.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+        					stateId = commonMethodsUtilService.getLongValueForObject(param[1]);
+        				}
+        			}
+        			
+        			if(alertList != null && alertList.size() > 0){
+        				for(Object[] param : alertList){
+        					statusIds.add(commonMethodsUtilService.getLongValueForObject(param[4]));
+        				}
+        			}
+        			List<Object[]> statusIdDtlsList = null;
+        			if(statusIds != null && statusIds.size() > 0){
+        				if(alertType != null && alertType.equalsIgnoreCase("subTask") && searchType != null && searchType.equalsIgnoreCase("statuswise")){
+        					 statusIdDtlsList=alertSubTaskStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(statusIds));    					
+        				}else if(searchType != null && searchType.equalsIgnoreCase("alertSource")){
+        					 statusIdDtlsList = alertCategoryDAO.getAlertCategoryByCategoryIds(new ArrayList<Long>(statusIds));	
+        				}else if(searchType.equalsIgnoreCase("statuswise")){
+        					 statusIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(statusIds));
+        				}
+        			}
+        			
+        			List<Object[]> deptScopeIdDtlsList = null;
+        			if(deptScopeIds != null && deptScopeIds.size() >0){
+        				deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
+        			}
+        			
+        			
+        			
+        			if(deptScopeIdDtlsList != null && deptScopeIdDtlsList.size() > 0){
+        				for(Object[] param : deptScopeIdDtlsList){
+        					lvlIdAndLvlName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+        				}  
+        			}
+        			if(statusIdDtlsList != null && statusIdDtlsList.size() > 0){
+        				for(Object[] param : statusIdDtlsList){
+            				statusIdAndStatusName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+            				statusIdAndColor.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+        				}  
+        			}
+        			
+        			
+        			
+            		if(alertList != null && alertList.size() > 0){
+            			for(Object[] param : alertList){
+            				statusIdThenAlertCount = lvlIdThenStatusIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[3]));
+        					if(statusIdThenAlertCount == null){
+        						statusIdThenAlertCount = new LinkedHashMap<Long,Long>();
+        						lvlIdThenStatusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[3]), statusIdThenAlertCount);
+        					}
+        					statusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[5]));
+        				}
+            		}
+            		//calculate status wise total count.
+        			Map<Long,Long> statusIdAndTotalCount = new HashMap<Long,Long>();
+        			if(lvlIdThenStatusIdThenAlertCount != null && lvlIdThenStatusIdThenAlertCount.size() > 0){
+        				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : lvlIdThenStatusIdThenAlertCount.entrySet()){
+        					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){
+        						statusIdAndTotalCount.put(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()), 0L);
+        					}
+        				}
+        			}
+        			if(lvlIdThenStatusIdThenAlertCount != null && lvlIdThenStatusIdThenAlertCount.size() > 0){
+        				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : lvlIdThenStatusIdThenAlertCount.entrySet()){
+        					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){
+        						statusIdAndTotalCount.put(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()), statusIdAndTotalCount.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()))+commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
+        					}
+        				}
+        			}
+            		
+        			DistrictOfficeViewAlertVO alertCoreDashBoardVO = null;
+        			if(lvlIdThenStatusIdThenAlertCount != null && lvlIdThenStatusIdThenAlertCount.size() > 0){
+        				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : lvlIdThenStatusIdThenAlertCount.entrySet()){
+        					alertCoreDashBoardVO = new DistrictOfficeViewAlertVO();
+        					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
+        					alertCoreDashBoardVO.setName(lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
+        					buildStatusWiseTemplateForAms(alertCoreDashBoardVO,statusIdAndStatusName,statusIdAndColor);
+        					Long total = new Long(0L);
+        					for(DistrictOfficeViewAlertVO boardVO : alertCoreDashBoardVO.getSubList()){
+        						if(outerEntry.getValue() != null && outerEntry.getValue().get(boardVO.getId()) != null){
+        							boardVO.setCount(outerEntry.getValue().get(boardVO.getId()));
+        							total = total + outerEntry.getValue().get(boardVO.getId());
+        						}
+        					}
+        					alertCoreDashBoardVO.setTotalCount(total);
+        					alertCoreDashBoardVO.setStateId(stateId);
+        					returnList.add(alertCoreDashBoardVO);
+        				}
+        			}
+        			if(returnList != null && returnList.size() > 0){
+        				
+        				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+        					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("Default")){
+        					}else{
+        						if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+            						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWiseForAms);
+            					}else{
+            						Collections.sort(returnList, alertDescCountWiseSortingLvlWiseForAms);
+            					}
+            				}
+        				}
+        				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+        					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+        						Collections.sort(returnList, alphabeticalAscSortLvlWiseForAms);
+        					}else{
+        						Collections.sort(returnList, alphabeticalDescendingSortLvlWiseForAms);
+        					}
+        				}
+        			}
+        			
+        			if(statusIdAndTotalCount.size() > 0){
+        				if(returnList != null && returnList.size() > 0){
+        					DistrictOfficeViewAlertVO altCorevo = returnList.get(0);
+        					for(DistrictOfficeViewAlertVO param : altCorevo.getSubList()){
+        						if(statusIdAndTotalCount.get(param.getId()) != null){
+        							param.setGrandTotal(statusIdAndTotalCount.get(param.getId()));
+        						}
+        					}
+        				}
+        			}
+        			
+        			return returnList;
+            	}catch(Exception e){
+            		e.printStackTrace();
+            	}
+            	return null;
+        }
+       public ResultStatus saveDocumentsForAlertForAms(final AmsAppLoginVO keyVo){
+
+    			final ResultStatus resultStatus = new ResultStatus();
+    			try {
+    				
+    				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+    					public void doInTransactionWithoutResult(TransactionStatus status) {
+    			String folderName = folderCreationForAlertsAttachmentNew();
+    			CustomReport customReport = null;
+    			
+    			Calendar calendar = Calendar.getInstance();
+    			calendar.setTime(new Date());
+    			 int year = calendar.get(Calendar.YEAR);
+    			 int month = calendar.get(Calendar.MONTH);
+    			// int day = calendar.get(Calendar.DAY_OF_MONTH);
+    			 int temp = month+1;
+    			 String monthText = getMonthForInt(temp);
+    			 SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
+    			 String dateStr = sdf.format(new Date());
+    			 String yearStr = String.valueOf(year);
+    			 
+    			 StringBuilder str ;
+    			 
+    			 if(keyVo.getImages() != null && keyVo.getImages().size() > 0){
+    				 AlertAssignedOfficerNew aaon = alertAssignedOfficerNewDAO.getModelForAlert(keyVo.getAlertId()).get(0);
+    				 for (String entry : keyVo.getImages()){
+    					 str = new StringBuilder();
+    					 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+    					 String destPath = folderName+"/"+randomNumber+".jpg";
+    					 boolean statusForImage = imageAndStringConverter.convertBase64StringToImage(keyVo.getImageBase64String(),destPath);
+    					
+    					 
+    						if(statusForImage)
+							{
+    							resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+    							LOG.error(" File saveing successfully ..");
+							}
+							else
+							{
+								resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+    							LOG.error(" Exception Raise in copying file..");
+							}
+    						
+    						AlertDepartmentDocumentNew addn = new AlertDepartmentDocumentNew();
+    						addn.setDocument(destPath);
+    						addn.setInsertedBy(keyVo.getUserId());
+    						addn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+    						addn = alertDepartmentDocumentNewDAO.save(addn);
+    						
+    						//save record in tracking
+    						saveRecordIntoTracking(aaon,keyVo.getUserId(),addn.getAlertDepartmentDocumentId()+"",3l);
+    						//getAlertDetailsAndSendSMS(alertId,3L,userId);
+    				 }
+    			 }
+    			
+    			 resultStatus.setExceptionMsg("success");
+    					}
+    				});
+    			}catch (Exception e) {
+    				resultStatus.setExceptionMsg("failure");
+    				LOG.error(" Exception Occured in uploadDocumentsForAlertForAms() method, Exception - ",e);
+    			}
+    			return resultStatus;
+    		
+    		}    
 }
