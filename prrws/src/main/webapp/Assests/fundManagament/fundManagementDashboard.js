@@ -135,7 +135,7 @@
 			if(blockType == 'overview')
 			{
 				$(".comaprisionViewShow").show();
-				compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable')
+				compareFundsBetweenFinancialYears(3,'comparionConstLevlOvervwTable')
 				getLocationWiseAmountDetails(3,'distLevlOvervw','overview',sortingType,orderType,0);
 				$('#tabDis a[href="#distLevelGraph"]').trigger('click');
 			}else if(blockType == 'scheme')
@@ -173,7 +173,7 @@
 			
 			if(blockType == 'overview'){
 				$(".comaprisionViewShow").show();
-				compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable')
+				compareFundsBetweenFinancialYears(5,'comparionConstLevlOvervwTable')
 				getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,0);
 				$('#tabMan a[href="#mandalLevelGraph"]').trigger('click');
 			}else if(blockType == 'scheme'){
@@ -480,6 +480,7 @@
 		$("#"+divId).html(spinner);
 		var levelValues = [];
 		var financialYrIdList = $('#financialYearId').val();
+		var deptIdsArr = $('#DepartmentsId').val();
 		/* if ($.inArray('0', financialYrIdList) != -1)
 		{
 			var stringIds = "1,2,3";
@@ -497,6 +498,7 @@
 			order : orderType,   //asc,desc
 			fromDateStr : glStartDate,//"01-06-2013",       
 			toDateStr : glEndDate,//"10-06-2020",
+			deptIdsList:deptIdsArr
 		}
 		$.ajax({
 			url : "getLocationWiseAmountDetails",  
@@ -830,11 +832,18 @@
 					for(var i in result){
 						if(result[i].locationList1 !=null &&  result[i].locationList1.length>0){
 							for(var j in result[i].locationList1){
-								if(result[i].locationList1[j].financialYearId != 0){
+								/* if(result[i].locationList1[j].financialYearId != 0){
 									//mainlocationArr.push({y:result[i].locationList1[j].amount})
 									mainlocationArr.push({y:parseInt(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId})
+								} */
+								
+								mainlocationArr.push({y:parseInt(result[i].locationList1[j].amunt.replace(/,/g, ""))})
+								if(result[i].locationList1[j].financialYearId == 0){
+									locationNamesArr.push("OverAll");
+								}else{
+									locationNamesArr.push("Year<br/>"+result[i].locationList1[j].financialYear);
 								}
-								locationNamesArr.push("Year<br/>"+result[i].locationList1[j].financialYear);
+								
 							}
 						}
 					}
@@ -2221,6 +2230,7 @@
 		$(".switch-btn li:first-child").addClass("active");
 		onLoadCalls();
 	});
+	
 	//District
 	$(document).on("click",".sortingDivDistCls li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
@@ -2717,17 +2727,22 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 					  if(result[i].rangeList !=null && result[i].rangeList.length>0){
 							for(var j in result[i].rangeList){
 								var rangeValue='';
+								var locationIds='';
 								if(result[i].rangeList[j].value == null || result[i].rangeList[j].value == "0,0"){
 									var emptyRangeVal = "-,-";
+									var emptyLocIds="0,0";
 									rangeValue = emptyRangeVal.split(',');
+									locationIds = emptyLocIds.split(',');
+									
 								}else{
 									rangeValue = result[i].rangeList[j].value.split(',');
+									locationIds = result[i].rangeList[j].locationIds.split('-');
 								}
 								if(yearLen >=3){
-									str+='<td style="background-color:#EAEBFF">'+rangeValue[0]+'</td>';
-									 str+='<td style="background-color:#FFF3E9">'+rangeValue[1]+'</td>';
+									str+='<td style="background-color:#EAEBFF" attr_locationIds="'+locationIds[0]+'">'+rangeValue[0]+'</td>';
+									 str+='<td style="background-color:#FFF3E9" attr_locationIds="'+locationIds[0]+'">'+rangeValue[1]+'</td>';
 								}else{
-									 str+='<td>'+result[i].rangeList[j].value+'</td>';
+									 str+='<td attr_locationIds="'+result[i].rangeList[j].locationIds+'">'+result[i].rangeList[j].value+'</td>';
 								}
 							}
 							 
