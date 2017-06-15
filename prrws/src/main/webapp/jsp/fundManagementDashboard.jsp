@@ -95,14 +95,14 @@
 								<h4 class="panel-title text-muted">High Funded Mandal</h4>
 								<div id="highFundMandal" attr_id="highFundMandal" class="m_top5"></div>
 							</td>
-							<td>
+						<!--	<td>
 								<h4 class="panel-title text-muted">High Funded Village</h4>
 								<div id="highFundVillage" attr_id="highFundVillage" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">High Funded Grant Type</h4>
 								<div id="highFundSource" class="m_top5"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">High Funded Scheme</h4>
 								<div id="highFundScheme" attr_id="highFundScheme" class="m_top5"></div>
@@ -121,14 +121,14 @@
 								<h4 class="panel-title text-muted">Low Funded Mandal</h4>
 								<div id="lowFundMandal" attr_id="lowFundMandal" class="m_top5"></div>
 							</td>
-							<td>
+						<!--	<td>
 								<h4 class="panel-title text-muted">Low Funded Village</h4>
 								<div id="lowFundVillage" attr_id="lowFundVillage" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Low Funded Grant Type</h4>
 								<div id="lowFundSource" class="m_top5"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">Low Funded Scheme</h4>
 								<div id="lowFundScheme" attr_id="lowFundScheme" class="m_top5"></div>
@@ -147,14 +147,15 @@
 								<h4 class="panel-title text-muted">Average Funded Mandal</h4>
 								<div id="avgFundMandal" attr_id="avgFundMandal" class="m_top5"></div>
 							</td>
-							<td>
+						<!--	<td>
 								<h4 class="panel-title text-muted">Average Funded Village</h4>
 								<div id="avgFundVillage" attr_id="avgFundVillage" class="m_top5"></div>
 							</td>
+							
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Grant Type</h4>
 								<div id="avgFundSource" class="m_top5"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Scheme</h4>
 								<div id="avgFundScheme" attr_id="avgFundScheme" class="m_top5"></div>
@@ -173,14 +174,14 @@
 								<h4 class="panel-title text-muted">Total Funded Mandal</h4>
 								<div id="totFundMandal" attr_id="totFundMandal" class="m_top5"></div>
 							</td>
-							<td>
+							<!--<td>
 								<h4 class="panel-title text-muted">Total Funded Village</h4>
 								<div id="totFundVillage" attr_id="totFundVillage" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Total Funded Grant Types</h4>
 								<div id="totFundSource" class="m_top5"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">Total Funded Scheme</h4>
 								<div id="totFundScheme" attr_id="totFundScheme" class="m_top5"></div>
@@ -265,7 +266,7 @@
 									<ul class="nav nav-tabs pull-right" role="tablist" id="tabDis">
 										<li role="presentation" class="active"><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 										<li role="presentation"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-										<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>
+										<!--<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>-->
 									</ul>
 								</div>
 							</div>
@@ -321,7 +322,7 @@
 														VS
 														</div>
 														<div class="col-sm-3 pull-right">
-															<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
+															<select class="form-control chosenSelect compMultiFinancialYear"></select>
 														</div>
 														
 													</div>
@@ -358,7 +359,7 @@
 									<ul class="nav nav-tabs pull-right" role="tablist" id="tabCons">
 										<li role="presentation" class="active"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 										<li role="presentation"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-										<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
+										<!--<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li> -->
 									</ul>
 								</div>
 							</div>
@@ -421,7 +422,7 @@
 														VS
 														</div>
 														<div class="col-sm-3 pull-right">
-															<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
+															<select class="form-control chosenSelect compMultiFinancialYear" ></select>
 														</div>
 														
 													</div>
@@ -459,7 +460,7 @@
 										<ul class="nav nav-tabs pull-right" role="tablist" id="tabMan">
 											<li role="presentation" class="active"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 											<li role="presentation"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
-											<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelMandal" role="tab" data-toggle="tab">Comparision</a></li>
+											<!--<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelMandal" role="tab" data-toggle="tab">Comparision</a></li>-->
 										</ul>
 									</div>
 								</div>
@@ -525,7 +526,7 @@
 															VS
 															</div>
 															<div class="col-sm-3 pull-right">
-																<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
+																<select class="form-control chosenSelect compMultiFinancialYear"  ></select>
 															</div>
 														</div>
 														<div id="comparionMandalLevlOvervwTable" class=""></div>
@@ -565,7 +566,7 @@
 										<ul class="nav nav-tabs pull-right" role="tablist" id="tabVill">
 											<li role="presentation" class="active"><a href="#villageLevelGraph" aria-controls="villageLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 											<li role="presentation"><a href="#villageLevelTable" aria-controls="villageLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
-											<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelVillage" aria-controls="comaprisionLevelVillage" role="tab" data-toggle="tab">Comparision</a></li>
+											<!--<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelVillage" aria-controls="comaprisionLevelVillage" role="tab" data-toggle="tab">Comparision</a></li>-->
 										</ul>
 									</div>
 								</div>
@@ -635,7 +636,7 @@
 															VS
 															</div>
 															<div class="col-sm-3 pull-right">
-																<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
+																<select class="form-control chosenSelect compMultiFinancialYear"  ></select>
 															</div>
 														</div>
 														<div id="comparionVillageLevlOvervwTable" class=""></div>
