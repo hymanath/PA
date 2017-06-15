@@ -211,24 +211,29 @@
 							</div>
 						</div>
 						<div class="panel-body">
-							<div>
-								<ul class="nav nav-tabs pull-right" role="tablist">
-									<li role="presentation" class="active"><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-									<li role="presentation"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-								</ul>
-
-								<div class="tab-content">
-									<div role="tabpanel" class="tab-pane active" id="stateLevelGraph">
-										<div class="row">
-											<div class="col-sm-12">
-												<div id="stateLevlOvervw"></div>	
+							<div class="row">
+								<div class="col-sm-12">
+									<ul class="nav nav-tabs pull-right" role="tablist">
+										<li role="presentation" class="active"><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+										<li role="presentation"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="tab-content">
+										<div role="tabpanel" class="tab-pane active" id="stateLevelGraph">
+											<div class="row">
+												<div class="col-sm-12">
+													<div id="stateLevlOvervw"></div>	
+												</div>
 											</div>
 										</div>
-									</div>
-									<div role="tabpanel" class="tab-pane" id="stateLevelTable">
-										<div class="row">
-											<div class="col-sm-12">
-												<div id="stateLevlOvervwTable"></div>
+										<div role="tabpanel" class="tab-pane" id="stateLevelTable">
+											<div class="row">
+												<div class="col-sm-12">
+													<div id="stateLevlOvervwTable"></div>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -254,69 +259,74 @@
 							</div>
 						</div>
 						<div class="panel-body">
-							<div>
-								<!-- Nav tabs -->
-								<ul class="nav nav-tabs pull-right" role="tablist" id="tabDis">
-									<li role="presentation" class="active"><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-									<li role="presentation"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-									<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>
-								</ul>
-
-								<!-- Tab panes -->
-								<div class="tab-content">
-									<div role="tabpanel" class="tab-pane active" id="distLevelGraph">
-										<div class="row">
-											<div class="col-sm-3">
-												<ul class="list-inline activeUlCls sortingDivDistCls constituencyUl">
-													<li class="active " attr_sorting_type="count" attr_order_type="desc">
-														<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-													</li>
-													<li class="" attr_sorting_type="count" attr_order_type="asc">
-														<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-													</li>
-													<li class="" attr_sorting_type="name" attr_order_type="asc">
-														A-Z
-													</li>
-													<li class="" attr_sorting_type="name" attr_order_type="desc">
-														Z-A
-													</li>
-												</ul>
-											</div>
-											<div class="col-sm-3 distLevelCls" >
-												<select class="form-control chosenSelect" id="distLevelDistrictNames" >
-												</select>
-											</div>
-											<div class="col-sm-12 m_top10">
-												<div id="distLevlOvervw"></div>
-											</div>
-										</div>
-									</div>
-									<div role="tabpanel" class="tab-pane" id="distLevelTable">
-										<div class="row">
-											<div class="col-sm-12">
-												<div id="distLevlOvervwTable"></div>
-											</div>
-										</div>
-									</div>
-									<div role="tabpanel" class="tab-pane" id="comaprisionLevelDist">
-										<div class="row">
-											<div class="col-sm-12 m_top10">
-												<div class="row">
-													<div class="col-sm-2 pull-right">
-														<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="distComp">submit</button>
-													</div>
-													<div class="col-sm-2 pull-right">
-														<select class="form-control chosenSelect compSingleFinancialYear"  ></select>
-													</div>
-													<div class="col-sm-1 pull-right">
-													VS
-													</div>
-													<div class="col-sm-3 pull-right">
-														<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
-													</div>
-													
+							<div class="row">
+								<div class="col-sm-12">
+									<!-- Nav tabs -->
+									<ul class="nav nav-tabs pull-right" role="tablist" id="tabDis">
+										<li role="presentation" class="active"><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+										<li role="presentation"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+										<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<!-- Tab panes -->
+									<div class="tab-content">
+										<div role="tabpanel" class="tab-pane active" id="distLevelGraph">
+											<div class="row">
+												<div class="col-sm-3">
+													<ul class="list-inline activeUlCls sortingDivDistCls constituencyUl">
+														<li class="active " attr_sorting_type="count" attr_order_type="desc">
+															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+														</li>
+														<li class="" attr_sorting_type="count" attr_order_type="asc">
+															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+														</li>
+														<li class="" attr_sorting_type="name" attr_order_type="asc">
+															A-Z
+														</li>
+														<li class="" attr_sorting_type="name" attr_order_type="desc">
+															Z-A
+														</li>
+													</ul>
 												</div>
-												<div id="comparionDistLevlOvervwTable" class=""></div>
+												<div class="col-sm-3 distLevelCls" >
+													<select class="form-control chosenSelect" id="distLevelDistrictNames" >
+													</select>
+												</div>
+												<div class="col-sm-12 m_top10">
+													<div id="distLevlOvervw"></div>
+												</div>
+											</div>
+										</div>
+										<div role="tabpanel" class="tab-pane" id="distLevelTable">
+											<div class="row">
+												<div class="col-sm-12">
+													<div id="distLevlOvervwTable"></div>
+												</div>
+											</div>
+										</div>
+										<div role="tabpanel" class="tab-pane" id="comaprisionLevelDist">
+											<div class="row">
+												<div class="col-sm-12 m_top10">
+													<div class="row">
+														<div class="col-sm-2 pull-right">
+															<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="distComp">submit</button>
+														</div>
+														<div class="col-sm-2 pull-right">
+															<select class="form-control chosenSelect compSingleFinancialYear"  ></select>
+														</div>
+														<div class="col-sm-1 pull-right">
+														VS
+														</div>
+														<div class="col-sm-3 pull-right">
+															<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
+														</div>
+														
+													</div>
+													<div id="comparionDistLevlOvervwTable" class=""></div>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -343,75 +353,80 @@
 							</div>
 						</div>
 						<div class="panel-body">
-							<div>
-								<ul class="nav nav-tabs pull-right" role="tablist" id="tabCons">
-									<li role="presentation" class="active"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-									<li role="presentation"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-									<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
-								</ul>
-
-								<div class="tab-content">
-									<div role="tabpanel" class="tab-pane active" id="consLevelGraph">
-										<div class="row">
-											<div class="col-sm-3">
-												<ul class="list-inline activeUlCls sortingDivConstCls constituencyUl">
-													<li class="active" attr_sorting_type="count" attr_order_type="desc">
-														<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-													</li>
-													<li class="" attr_sorting_type="count" attr_order_type="asc">
-														<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-													</li>
-													<li class="" attr_sorting_type="name" attr_order_type="asc">
-														A-Z
-													</li>
-													<li class="" attr_sorting_type="name" attr_order_type="desc">
-														Z-A
-													</li>
-												</ul>
-											</div>
-											<div class="col-sm-3 constiLevelDistCls" >
-												<select class="form-control chosenSelect" id="constLevelDistNames" >
-													<option value="0"> SELECT DISTRICT</option>
-												</select>
-											</div>
-											<div class="col-sm-3 constiLevelCls" >
-												<select class="form-control chosenSelect" id="constLevelConstNames" >
-												</select>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-sm-12">
-												<div id="consLevlOvervw"></div>
-											</div>
-										</div>
-									</div>
-									<div role="tabpanel" class="tab-pane" id="consLevelTable">
-										<div class="row">
-											<div class="col-sm-12">
-												<div id="consLevlOvervwTable"></div>
-											</div>
-										</div>
-									</div>
-									<div role="tabpanel" class="tab-pane" id="comaprisionLevelConst">
-										<div class="row">
-											<div class="col-sm-12 m_top10">
-												<div class="row">
-													<div class="col-sm-2 pull-right">
-														<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="constComp">submit</button>
-													</div>
-													
-													<div class="col-sm-2 pull-right">
-														<select class="form-control chosenSelect compSingleFinancialYear"  ></select>
-													</div>
-													<div class="col-sm-1 pull-right">
-													VS
-													</div>
-													<div class="col-sm-3 pull-right">
-														<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
-													</div>
-													
+							<div class="row">
+								<div class="col-sm-12">
+									<ul class="nav nav-tabs pull-right" role="tablist" id="tabCons">
+										<li role="presentation" class="active"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+										<li role="presentation"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+										<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="tab-content">
+										<div role="tabpanel" class="tab-pane active" id="consLevelGraph">
+											<div class="row">
+												<div class="col-sm-3">
+													<ul class="list-inline activeUlCls sortingDivConstCls constituencyUl">
+														<li class="active" attr_sorting_type="count" attr_order_type="desc">
+															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+														</li>
+														<li class="" attr_sorting_type="count" attr_order_type="asc">
+															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+														</li>
+														<li class="" attr_sorting_type="name" attr_order_type="asc">
+															A-Z
+														</li>
+														<li class="" attr_sorting_type="name" attr_order_type="desc">
+															Z-A
+														</li>
+													</ul>
 												</div>
-												<div id="comparionConstLevlOvervwTable" class=""></div>
+												<div class="col-sm-3 constiLevelDistCls" >
+													<select class="form-control chosenSelect" id="constLevelDistNames" >
+														<option value="0"> SELECT DISTRICT</option>
+													</select>
+												</div>
+												<div class="col-sm-3 constiLevelCls" >
+													<select class="form-control chosenSelect" id="constLevelConstNames" >
+													</select>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-12">
+													<div id="consLevlOvervw"></div>
+												</div>
+											</div>
+										</div>
+										<div role="tabpanel" class="tab-pane" id="consLevelTable">
+											<div class="row">
+												<div class="col-sm-12">
+													<div id="consLevlOvervwTable"></div>
+												</div>
+											</div>
+										</div>
+										<div role="tabpanel" class="tab-pane" id="comaprisionLevelConst">
+											<div class="row">
+												<div class="col-sm-12 m_top10">
+													<div class="row">
+														<div class="col-sm-2 pull-right">
+															<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="constComp">submit</button>
+														</div>
+														
+														<div class="col-sm-2 pull-right">
+															<select class="form-control chosenSelect compSingleFinancialYear"  ></select>
+														</div>
+														<div class="col-sm-1 pull-right">
+														VS
+														</div>
+														<div class="col-sm-3 pull-right">
+															<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
+														</div>
+														
+													</div>
+													<div id="comparionConstLevlOvervwTable" class=""></div>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -439,79 +454,89 @@
 						</div>
 						<div class="panel-body">
 							<div>
-								<ul class="nav nav-tabs pull-right" role="tablist" id="tabMan">
-									<li role="presentation" class="active"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-									<li role="presentation"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
-									<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
-								</ul>
-								<div class="tab-content">
-									<div role="tabpanel" class="tab-pane active" id="mandalLevelGraph">
-										<div class="row">
-											<div class="col-sm-3">
-												<ul class="list-inline activeUlCls sortingDivMandalCls constituencyUl">
-													<li class="active" attr_sorting_type="count" attr_order_type="desc">
-														<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-													</li>
-													<li class="" attr_sorting_type="count" attr_order_type="asc">
-														<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-													</li>
-													<li class="" attr_sorting_type="name" attr_order_type="asc">
-														A-Z
-													</li>
-													<li class="" attr_sorting_type="name" attr_order_type="desc">
-														Z-A
-													</li>
-												</ul>
-											</div>
-											<div class="col-sm-3 mandalLevelDistCls" >
-												<select class="form-control chosenSelect" id="mandalLevelDistNames" >
-													<option value="0"> SELECT DISTRICT</option>
-												</select>
-											</div>
-											<div class="col-sm-3 levelmandalConstiCls" >
-												<select class="form-control chosenSelect" id="mandalLevelConstNames" >
-												</select>
-											</div>
-											<div class="col-sm-3 mandalLevelCls" >
-												<select class="form-control chosenSelect" id="mandalLevelMandalNames" >
-												</select>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-sm-12">
-												<div id="mandalLevlOvervw"></div>
-											</div>
-										</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<ul class="nav nav-tabs pull-right" role="tablist" id="tabMan">
+											<li role="presentation" class="active"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+											<li role="presentation"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
+											<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
+										</ul>
 									</div>
-									<div role="tabpanel" class="tab-pane" id="mandalLevelTable">
-										<div class="row">
-											<div class="col-sm-12">
-												<div id="mandalLevlOvervwTable"></div>
-											</div>
-										</div>
-									</div>
-									<div role="tabpanel" class="tab-pane" id="comaprisionLevelMandal">
-										<div class="row">
-											<div class="col-sm-12 m_top10">
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="tab-content">
+											<div role="tabpanel" class="tab-pane active" id="mandalLevelGraph">
 												<div class="row">
-													<div class="col-sm-2 pull-right">
-														<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="mandalComp">submit</button>
+													<div class="col-sm-3">
+														<ul class="list-inline activeUlCls sortingDivMandalCls constituencyUl">
+															<li class="active" attr_sorting_type="count" attr_order_type="desc">
+																<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+															</li>
+															<li class="" attr_sorting_type="count" attr_order_type="asc">
+																<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+															</li>
+															<li class="" attr_sorting_type="name" attr_order_type="asc">
+																A-Z
+															</li>
+															<li class="" attr_sorting_type="name" attr_order_type="desc">
+																Z-A
+															</li>
+														</ul>
 													</div>
-													<div class="col-sm-2 pull-right">
-														<select class="form-control chosenSelect compSingleFinancialYear" ></select>
+													<div class="col-sm-3 mandalLevelDistCls" >
+														<select class="form-control chosenSelect" id="mandalLevelDistNames" >
+															<option value="0"> SELECT DISTRICT</option>
+														</select>
 													</div>
-													<div class="col-sm-1 pull-right">
-													VS
+													<div class="col-sm-3 levelmandalConstiCls" >
+														<select class="form-control chosenSelect" id="mandalLevelConstNames" >
+														</select>
 													</div>
-													<div class="col-sm-3 pull-right">
-														<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
+													<div class="col-sm-3 mandalLevelCls" >
+														<select class="form-control chosenSelect" id="mandalLevelMandalNames" >
+														</select>
 													</div>
 												</div>
-												<div id="comparionMandalLevlOvervwTable" class=""></div>
+												<div class="row">
+													<div class="col-sm-12">
+														<div id="mandalLevlOvervw"></div>
+													</div>
+												</div>
+											</div>
+											<div role="tabpanel" class="tab-pane" id="mandalLevelTable">
+												<div class="row">
+													<div class="col-sm-12">
+														<div id="mandalLevlOvervwTable"></div>
+													</div>
+												</div>
+											</div>
+											<div role="tabpanel" class="tab-pane" id="comaprisionLevelMandal">
+												<div class="row">
+													<div class="col-sm-12 m_top10">
+														<div class="row">
+															<div class="col-sm-2 pull-right">
+																<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="mandalComp">submit</button>
+															</div>
+															<div class="col-sm-2 pull-right">
+																<select class="form-control chosenSelect compSingleFinancialYear" ></select>
+															</div>
+															<div class="col-sm-1 pull-right">
+															VS
+															</div>
+															<div class="col-sm-3 pull-right">
+																<select class="form-control chosenSelect compMultiFinancialYear" multiple ></select>
+															</div>
+														</div>
+														<div id="comparionMandalLevlOvervwTable" class=""></div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+								
+								
 							</div>
 						</div>
 					</div>
