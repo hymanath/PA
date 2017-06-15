@@ -4,9 +4,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FMS DASHBOARD</title>
 <link href="Assests/css/bootstrap.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/css/custom.less" type="text/less" rel="stylesheet"/>
+<link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
@@ -20,14 +22,14 @@
 	<nav>
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-1 pad_left0">
+				<div class="col-sm-1 col-xs-3 pad_left0">
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
-				<div class="col-sm-4 m_top10">
+				<div class="col-sm-4 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayati Raj & RD & RWS</h4>
 					<p>Funds Management System</p>
 				</div>
-				<div class="col-sm-1 pull-right">
+				<div class="col-sm-1 pull-right hidden-xs">
 					<img src="Assests/images/lokesh.png" class="m_top10"/>
 				</div>
 			</div>
@@ -83,19 +85,19 @@
 						<tr>
 							<td>
 								<h4 class="panel-title text-muted">High Funded District</h4>
-								<div id="highFundDist" class="m_top5"></div>
+								<div id="highFundDist" attr_id="highFundDist" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">High Funded Constituency</h4>
-								<div id="highFundCons" class="m_top5"></div>
+								<div id="highFundCons" attr_id="highFundCons" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">High Funded Mandal</h4>
-								<div id="highFundMandal" class="m_top5"></div>
+								<div id="highFundMandal" attr_id="highFundMandal" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">High Funded Village</h4>
-								<div id="highFundVillage" class="m_top5"></div>
+								<div id="highFundVillage" attr_id="highFundVillage" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">High Funded Grant Type</h4>
@@ -103,25 +105,25 @@
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">High Funded Scheme</h4>
-								<div id="highFundScheme" class="m_top5"></div>
+								<div id="highFundScheme" attr_id="highFundScheme" class="m_top5"></div>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<h4 class="panel-title text-muted">Low Funded District</h4>
-								<div id="lowFundDist" class="m_top5"></div>
+								<div id="lowFundDist" attr_id="lowFundDist" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Low Funded Costituency</h4>
-								<div id="lowFundCons" class="m_top5"></div>
+								<div id="lowFundCons" attr_id="lowFundCons" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Low Funded Mandal</h4>
-								<div id="lowFundMandal" class="m_top5"></div>
+								<div id="lowFundMandal" attr_id="lowFundMandal" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Low Funded Village</h4>
-								<div id="lowFundVillage" class="m_top5"></div>
+								<div id="lowFundVillage" attr_id="lowFundVillage" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Low Funded Grant Type</h4>
@@ -129,25 +131,25 @@
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Low Funded Scheme</h4>
-								<div id="lowFundScheme" class="m_top5"></div>
+								<div id="lowFundScheme" attr_id="lowFundScheme" class="m_top5"></div>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded District</h4>
-								<div id="avgFundDist" class="m_top5"></div>
+								<div id="avgFundDist" attr_id="avgFundDist" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Costituency</h4>
-								<div id="avgFundCons" class="m_top5"></div>
+								<div id="avgFundCons" attr_id="avgFundCons" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Mandal</h4>
-								<div id="avgFundMandal" class="m_top5"></div>
+								<div id="avgFundMandal" attr_id="avgFundMandal" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Village</h4>
-								<div id="avgFundVillage" class="m_top5"></div>
+								<div id="avgFundVillage" attr_id="avgFundVillage" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Grant Type</h4>
@@ -155,25 +157,25 @@
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Scheme</h4>
-								<div id="avgFundScheme" class="m_top5"></div>
+								<div id="avgFundScheme" attr_id="avgFundScheme" class="m_top5"></div>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<h4 class="panel-title text-muted">Total Funds</h4>
-								<div id="totFund" class="m_top5"></div>
+								<div id="totFund" attr_id="totFund" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Total Funded Costituency</h4>
-								<div id="totFundCons" class="m_top5"></div>
+								<div id="totFundCons" attr_id="totFundCons" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Total Funded Mandal</h4>
-								<div id="totFundMandal" class="m_top5"></div>
+								<div id="totFundMandal" attr_id="totFundMandal" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Total Funded Village</h4>
-								<div id="totFundVillage" class="m_top5"></div>
+								<div id="totFundVillage" attr_id="totFundVillage" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Total Funded Grant Types</h4>
@@ -181,7 +183,7 @@
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Total Funded Scheme</h4>
-								<div id="totFundScheme" class="m_top5"></div>
+								<div id="totFundScheme" attr_id="totFundScheme" class="m_top5"></div>
 							</td>
 						</tr>
 					</table>
@@ -264,27 +266,25 @@
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="distLevelGraph">
 										<div class="row">
-											<div class="col-sm-12">
-												<div class="col-md-2 col-xs-12 col-sm-4">
-													<ul class="list-inline activeUlCls sortingDivDistCls constituencyUl">
-														<li class="active " attr_sorting_type="count" attr_order_type="desc">
-															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-														</li>
-														<li class="" attr_sorting_type="count" attr_order_type="asc">
-															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-														</li>
-														<li class="" attr_sorting_type="name" attr_order_type="asc">
-															A-Z
-														</li>
-														<li class="" attr_sorting_type="name" attr_order_type="desc">
-															Z-A
-														</li>
-													</ul>
-												</div>
-												<div class="col-sm-3 distLevelCls" >
-													<select class="form-control chosenSelect" id="distLevelDistrictNames" >
-													</select>
-												</div>
+											<div class="col-sm-3">
+												<ul class="list-inline activeUlCls sortingDivDistCls constituencyUl">
+													<li class="active " attr_sorting_type="count" attr_order_type="desc">
+														<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+													</li>
+													<li class="" attr_sorting_type="count" attr_order_type="asc">
+														<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+													</li>
+													<li class="" attr_sorting_type="name" attr_order_type="asc">
+														A-Z
+													</li>
+													<li class="" attr_sorting_type="name" attr_order_type="desc">
+														Z-A
+													</li>
+												</ul>
+											</div>
+											<div class="col-sm-3 distLevelCls" >
+												<select class="form-control chosenSelect" id="distLevelDistrictNames" >
+												</select>
 											</div>
 											<div class="col-sm-12 m_top10">
 												<div id="distLevlOvervw"></div>
@@ -353,32 +353,30 @@
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="consLevelGraph">
 										<div class="row">
-											<div class="col-sm-12">
-												<div class="col-md-2 col-xs-12 col-sm-4">
-													<ul class="list-inline activeUlCls sortingDivConstCls constituencyUl">
-														<li class="active" attr_sorting_type="count" attr_order_type="desc">
-															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-														</li>
-														<li class="" attr_sorting_type="count" attr_order_type="asc">
-															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-														</li>
-														<li class="" attr_sorting_type="name" attr_order_type="asc">
-															A-Z
-														</li>
-														<li class="" attr_sorting_type="name" attr_order_type="desc">
-															Z-A
-														</li>
-													</ul>
-												</div>
-												<div class="col-sm-3 constiLevelDistCls" >
-													<select class="form-control chosenSelect" id="constLevelDistNames" >
-														<option value="0"> SELECT DISTRICT</option>
-													</select>
-												</div>
-												<div class="col-sm-3 constiLevelCls" >
-													<select class="form-control chosenSelect" id="constLevelConstNames" >
-													</select>
-												</div>
+											<div class="col-sm-3">
+												<ul class="list-inline activeUlCls sortingDivConstCls constituencyUl">
+													<li class="active" attr_sorting_type="count" attr_order_type="desc">
+														<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+													</li>
+													<li class="" attr_sorting_type="count" attr_order_type="asc">
+														<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+													</li>
+													<li class="" attr_sorting_type="name" attr_order_type="asc">
+														A-Z
+													</li>
+													<li class="" attr_sorting_type="name" attr_order_type="desc">
+														Z-A
+													</li>
+												</ul>
+											</div>
+											<div class="col-sm-3 constiLevelDistCls" >
+												<select class="form-control chosenSelect" id="constLevelDistNames" >
+													<option value="0"> SELECT DISTRICT</option>
+												</select>
+											</div>
+											<div class="col-sm-3 constiLevelCls" >
+												<select class="form-control chosenSelect" id="constLevelConstNames" >
+												</select>
 											</div>
 										</div>
 										<div class="row">
@@ -449,36 +447,34 @@
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="mandalLevelGraph">
 										<div class="row">
-											<div class="col-sm-12">
-												<div class="col-md-2 col-xs-12 col-sm-4">
-													<ul class="list-inline activeUlCls sortingDivMandalCls constituencyUl">
-														<li class="active" attr_sorting_type="count" attr_order_type="desc">
-															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-														</li>
-														<li class="" attr_sorting_type="count" attr_order_type="asc">
-															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-														</li>
-														<li class="" attr_sorting_type="name" attr_order_type="asc">
-															A-Z
-														</li>
-														<li class="" attr_sorting_type="name" attr_order_type="desc">
-															Z-A
-														</li>
-													</ul>
-												</div>
-												<div class="col-sm-3 mandalLevelDistCls" >
-													<select class="form-control chosenSelect" id="mandalLevelDistNames" >
-														<option value="0"> SELECT DISTRICT</option>
-													</select>
-												</div>
-												<div class="col-sm-3 levelmandalConstiCls" >
-													<select class="form-control chosenSelect" id="mandalLevelConstNames" >
-													</select>
-												</div>
-												<div class="col-sm-3 mandalLevelCls" >
-													<select class="form-control chosenSelect" id="mandalLevelMandalNames" >
-													</select>
-												</div>
+											<div class="col-sm-3">
+												<ul class="list-inline activeUlCls sortingDivMandalCls constituencyUl">
+													<li class="active" attr_sorting_type="count" attr_order_type="desc">
+														<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+													</li>
+													<li class="" attr_sorting_type="count" attr_order_type="asc">
+														<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+													</li>
+													<li class="" attr_sorting_type="name" attr_order_type="asc">
+														A-Z
+													</li>
+													<li class="" attr_sorting_type="name" attr_order_type="desc">
+														Z-A
+													</li>
+												</ul>
+											</div>
+											<div class="col-sm-3 mandalLevelDistCls" >
+												<select class="form-control chosenSelect" id="mandalLevelDistNames" >
+													<option value="0"> SELECT DISTRICT</option>
+												</select>
+											</div>
+											<div class="col-sm-3 levelmandalConstiCls" >
+												<select class="form-control chosenSelect" id="mandalLevelConstNames" >
+												</select>
+											</div>
+											<div class="col-sm-3 mandalLevelCls" >
+												<select class="form-control chosenSelect" id="mandalLevelMandalNames" >
+												</select>
 											</div>
 										</div>
 										<div class="row">
@@ -549,31 +545,31 @@
   </div>
 </div>
 <div class="modal fade" id="fundModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document" style="width:80%;margin:auto">
-    <div class="modal-content">
-      <div class="modal-header bg_EE">
-    <div class="row">
-      <div class="col-md-6 col-xs-12 col-sm-6">
-        <h4 class="modal-title text-capitalize" id="diptNameId">Location Wise Fund Overview</h4>
-        <h6 id="officeNameId"></h6>
-      </div>
-      <div class="col-md-3 col-md-offset-3 col-xs-12 col-sm-6">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-       
-      </div>
-    </div>
-      </div>
-      <div class="modal-body">      
-        <div class="row">
-     
-      <div class="col-md-12 col-xs-12 col-sm-12">
-        <div id="fundSanctionModal" style="height:250px"></div>
-      </div>  
-      
-    </div>
-      </div>
-    </div>
-  </div>
+	<div class="modal-dialog" role="document" style="width:80%;margin:auto">
+		<div class="modal-content">
+			<div class="modal-header bg_EE">
+				<div class="row">
+					<div class="col-md-6 col-xs-12 col-sm-6">
+						<h4 class="modal-title text-capitalize" id="diptNameId">Location Wise Fund Overview</h4>
+						<h6 id="officeNameId"></h6>
+					</div>
+					<div class="col-md-3 col-md-offset-3 col-xs-12 col-sm-6">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				   
+					</div>
+				</div>
+			</div>
+			<div class="modal-body">      
+				<div class="row">
+		 
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div id="fundSanctionModal" style="height:250px"></div>
+					</div>  
+		  
+				</div>
+			</div>
+		</div>
+	</div>
 </div>	
 </main>
 <footer></footer>
