@@ -113,14 +113,19 @@
 			if(blockType == 'overview')
 			{
 				$(".comaprisionViewShow").show();
+				compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable')
 				getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,0);
+				$('#tabCons a[href="#consLevelGraph"]').trigger('click');
 			}else if(blockType == 'scheme')
 			{
+				
 				$(".comaprisionViewShow").hide();
 				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme',sortingType,orderType,0,4);
+				$('#tabCons a[href="#consLevelGraph"]').trigger('click');
 			}else if(blockType == 'deptscheme'){
-				 $(".comaprisionViewShow").hide();
-				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(4,'consLevlOvervw','deptscheme',sortingType,orderType,0,4);
+				$(".comaprisionViewShow").hide();
+				getFinancialYearWiseDeptsWiseSchemeAmountDetails(4,'consLevlOvervw','deptscheme',sortingType,orderType,0,4);
+				$('#tabCons a[href="#consLevelGraph"]').trigger('click');
 			}
 		}else if(blockName == 'distLevel')
 		{
@@ -129,14 +134,18 @@
 			if(blockType == 'overview')
 			{
 				$(".comaprisionViewShow").show();
+				compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable')
 				getLocationWiseAmountDetails(3,'distLevlOvervw','overview',sortingType,orderType,0);
+				$('#tabDis a[href="#distLevelGraph"]').trigger('click');
 			}else if(blockType == 'scheme')
 			{
 				$(".comaprisionViewShow").hide();
 				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','scheme',sortingType,orderType,0,3);
+				$('#tabDis a[href="#distLevelGraph"]').trigger('click');
 			}else if(blockType == 'deptscheme'){
 				$(".comaprisionViewShow").hide();
 				getFinancialYearWiseDeptsWiseSchemeAmountDetails(3,'distLevlOvervw','deptscheme',sortingType,orderType,0,3);
+				$('#tabDis a[href="#distLevelGraph"]').trigger('click');
 			}
 		}else if(blockName == 'stateLevel')
 		{
@@ -163,13 +172,17 @@
 			
 			if(blockType == 'overview'){
 				$(".comaprisionViewShow").show();
+				compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable')
 				getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,0);
+				$('#tabMan a[href="#mandalLevelGraph"]').trigger('click');
 			}else if(blockType == 'scheme'){
 				$(".comaprisionViewShow").hide();
 				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','scheme',sortingType,orderType,0,5);
+				$('#tabMan a[href="#mandalLevelGraph"]').trigger('click');
 			}else if(blockType == 'deptscheme'){
 				$(".comaprisionViewShow").hide();
 				getFinancialYearWiseDeptsWiseSchemeAmountDetails(5,'mandalLevlOvervw','deptscheme',sortingType,orderType,0,5);
+				$('#tabMan a[href="#mandalLevelGraph"]').trigger('click');
 			}
 		}
 	});
@@ -346,14 +359,14 @@
 		var searchLevelId = 0;
 		var searchLevelVals = [];
 		//searchLevelVals.push(13);
-		if ($.inArray('0', financialYrIdArr) != -1)
+		/* if ($.inArray('0', financialYrIdArr) != -1)
 		{
 			var stringIds = "1,2,3";
 			strx   = stringIds.split(',');
 			financialYrIdArr = financialYrIdArr.concat(strx);
 			financialYrIdArr.shift();
 			
-		}	
+		}	 */
 		  var json = {
 			blockLevelId : locationId, 
 			levelValues : levelValues ,
@@ -466,14 +479,14 @@
 		$("#"+divId).html(spinner);
 		var levelValues = [];
 		var financialYrIdList = $('#financialYearId').val();
-		if ($.inArray('0', financialYrIdList) != -1)
+		/* if ($.inArray('0', financialYrIdList) != -1)
 		{
 			var stringIds = "1,2,3";
 			strx   = stringIds.split(',');
 			financialYrIdList = financialYrIdList.concat(strx);
 			financialYrIdList.shift();
 			
-		}
+		} */
 		var json = {
 			locationId :locationId,
 			blockLevelId : levelId, 
@@ -1625,14 +1638,14 @@
 		  var searchLevelId = 0;
 		  var searchLevelVals = [];
 		 // searchLevelVals.push(1);
-		   if ($.inArray('0', financialYrIdArr) != -1)
+		   /* if ($.inArray('0', financialYrIdArr) != -1)
 			{
 				var stringIds = "1,2,3";
 				strx   = stringIds.split(',');
 				financialYrIdArr = financialYrIdArr.concat(strx);
 				financialYrIdArr.shift();
 				
-			}
+			} */
 		  
 		  var json = {
 			
@@ -1669,14 +1682,14 @@
 		var deptIdsArr = [];
 		
 		var financialYrIdArr = $('#financialYearId').val();
-		if ($.inArray('0', financialYrIdArr) != -1)
+		/* if ($.inArray('0', financialYrIdArr) != -1)
 		{
 			var stringIds = "1,2,3";
 			strx   = stringIds.split(',');
 			financialYrIdArr = financialYrIdArr.concat(strx);
 			financialYrIdArr.shift();
 			
-		}
+		} */
 		
 		if(locationId == null || locationId == 0){
 			 levelValues =[];
@@ -1728,14 +1741,14 @@
 		var deptIdsArr = $("#DepartmentsId").val();
 		
 		var financialYrIdArr = $('#financialYearId').val();
-		if ($.inArray('0', financialYrIdArr) != -1)
+		/* if ($.inArray('0', financialYrIdArr) != -1)
 		{
 			var stringIds = "1,2,3";
 			strx   = stringIds.split(',');
 			financialYrIdArr = financialYrIdArr.concat(strx);
 			financialYrIdArr.shift();
 			
-		}
+		} */
 		if(locationId == null || locationId == 0){
 			 levelValues =[];
 		 }else{
@@ -1830,14 +1843,14 @@
 		var searchLevelId = 0;
 		var searchLevelVals = [];
 		//searchLevelVals.push(1);
-		if ($.inArray('0', financialYrIdArr) != -1)
+		/* if ($.inArray('0', financialYrIdArr) != -1)
 		{
 			var stringIds = "1,2,3";
 			strx   = stringIds.split(',');
 			financialYrIdArr = financialYrIdArr.concat(strx);
 			financialYrIdArr.shift();
 			
-		}
+		} */
 		var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
@@ -1876,14 +1889,14 @@
 		var searchLevelId = 3;
 		var searchLevelVals = [];
 		searchLevelVals.push(13);
-		if ($.inArray('0', financialYrIdArr) != -1)
+		/* if ($.inArray('0', financialYrIdArr) != -1)
 		{
 			var stringIds = "1,2,3";
 			strx   = stringIds.split(',');
 			financialYrIdArr = financialYrIdArr.concat(strx);
 			financialYrIdArr.shift();
 			
-		}
+		} */
 		var json = {
 			blockLevelId : 4, 
 			levelValues : levelValues ,
@@ -1922,14 +1935,14 @@
 		var searchLevelId = 0;
 		var searchLevelVals = [];
 		//searchLevelVals.push(13);
-		if ($.inArray('0', financialYrIdArr) != -1)
+		/* if ($.inArray('0', financialYrIdArr) != -1)
 		{
 			var stringIds = "1,2,3";
 			strx   = stringIds.split(',');
 			financialYrIdArr = financialYrIdArr.concat(strx);
 			financialYrIdArr.shift();
 			
-		}
+		} */
 		  var json = {
 			blockLevelId : locScopeId, 
 			levelValues : levelValues ,
@@ -1963,14 +1976,14 @@
 		//var deptId = 0;
 		var sourceId = 0;
 		var schemeId = 0;
-		if ($.inArray('0', financialYrIdList) != -1)
+		/* if ($.inArray('0', financialYrIdList) != -1)
 		{
 			var stringIds = "1,2,3";
 			strx   = stringIds.split(',');
 			financialYrIdList = financialYrIdList.concat(strx);
 			financialYrIdList.shift();
 			
-		}
+		} */
 		
 		var json = {
 			deptIdsList : deptIdsArr,
@@ -2000,14 +2013,14 @@
 		var financialYrIdList = $('#financialYearId').val(); 
 		var deptId = 0;
 		var sourceId = 0;
-		if ($.inArray('0', financialYrIdList) != -1)
+		/* if ($.inArray('0', financialYrIdList) != -1)
 		{
 			var stringIds = "1,2,3";
 			strx   = stringIds.split(',');
 			financialYrIdList = financialYrIdList.concat(strx);
 			financialYrIdList.shift();
 			
-		}
+		} */
 		var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
@@ -2102,14 +2115,14 @@
 		var deptIdsArr = $('#DepartmentsId').val();
 		//var deptId = 0;
 		var sourceId = 0;
-		if ($.inArray('0', financialYrIdList) != -1)
+		/* if ($.inArray('0', financialYrIdList) != -1)
 		{
 			var stringIds = "1,2,3";
 			strx   = stringIds.split(',');
 			financialYrIdList = financialYrIdList.concat(strx);
 			financialYrIdList.shift();
 			
-		}
+		} */
 		var json = {
 		   blockLevelId:levelId,
 		  superLocationId : locationScopeId, 
@@ -2312,14 +2325,14 @@
 		levelValues.push(13);
 		levelValues.push(14);
 		var financialYrIdList = $('#financialYearId').val();
-		if ($.inArray('0', financialYrIdList) != -1)
+		/* if ($.inArray('0', financialYrIdList) != -1)
 		{
 			var stringIds = "1,2,3";
 			strx   = stringIds.split(',');
 			financialYrIdList = financialYrIdList.concat(strx);
 			financialYrIdList.shift();
 			
-		}
+		} */
 		var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
@@ -2587,7 +2600,7 @@ function compareFundsBetweenFinancialYears(levelId,divId){
       xhr.setRequestHeader("Content-Type", "application/json");
       },
       success : function(ajaxresp){
-		$("#"+divId).html('');
+		
 		buildCompareFundsBetweenFinancialYears(ajaxresp,financialYrIdList,multipleFinYear,singleFinYearArr,divId);
       },
       error : function(request,error){
@@ -2600,71 +2613,66 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 	   
 	   var yearLen =financialYrIdList.length;
 	    var globalYearObj =  {"1":"2014-2015","2":"2015-2016","3":"2016-2017"};
-	   if(yearLen == 2){
-		    $("#"+divId).removeClass('comparionStyle')
-			$("#"+divId).addClass('comparionStyle1')
-		}else if(yearLen == 3){
+	   if(yearLen >=3){
 			$("#"+divId).removeClass('comparionStyle1')
 			$("#"+divId).addClass('comparionStyle')
-		}
+		 }else{
+			 $("#"+divId).removeClass('comparionStyle')
+			 $("#"+divId).addClass('comparionStyle1')
+		 }
 	   var str='';
 	   if(result !=null && result.length>0){
 		    str+='<table class="table table-bordered">';
 		   if(result[0].rangeList !=null && result[0].rangeList.length>0){
 			    str+='<thead>';
 				str+='<tr>';
-				 if(yearLen == 2){
-					str+='<th><span class="first"> '+globalYearObj[multipleFinYear[0]]+'</span><span class="second"> '+globalYearObj[singleFinYearArr]+'</span></th>';
-				}else if(yearLen == 3){
-					str+='<th style="background-color:#EAEBFF">'+globalYearObj[multipleFinYear[1]]+'</th>';
+				 if(yearLen >=3){
+					 str+='<th style="background-color:#EAEBFF">'+globalYearObj[multipleFinYear[1]]+'</th>';
 					str+='<th><span class="first" style="background-color:#FFF3E9">'+globalYearObj[multipleFinYear[0]]+'</span><span class="second"> '+globalYearObj[singleFinYearArr]+'</span></th>';
-				}
+				 }else{
+					 str+='<th><span class="first"> '+globalYearObj[multipleFinYear[0]]+'</span><span class="second"> '+globalYearObj[singleFinYearArr]+'</span></th>';
+				 }
 			   for(var i in result[0].rangeList){
-						if(yearLen == 2){
-							str+='<th>'+result[0].rangeList[i].name+'</th>'
-						}else if(yearLen == 3){
+					   if(yearLen >=3){
 							str+='<th colspan="2">'+result[0].rangeList[i].name+'</th>'
+						}else{
+							str+='<th>'+result[0].rangeList[i].name+'</th>'
 						}
-						
-						
-			   }
+				}
 			   str+='</tr>';
 			   str+='</thead>';
 			   str+='<tbody>';
-			   for(var i in result){
+				for(var i in result){
 				   var verticalRanges = result[i].range.split(',');
 				   str+='<tr>';
-				   if(yearLen == 2){
-					   str+='<td>'+result[i].range+'</td>';
-				   }else if(yearLen == 3){
-					   str+='<td style="background-color:#EAEBFF">'+verticalRanges[0]+'</td>';
-					   str+='<td style="background-color:#FFF3E9">'+verticalRanges[1]+'</td>';
-				   }
-					
-					if(result[i].rangeList !=null && result[i].rangeList.length>0){
-						for(var j in result[i].rangeList){
-							var rangeValue='';
-							if(result[i].rangeList[j].value == null || result[i].rangeList[j].value == "0,0"){
-								var emptyRangeVal = "-,-";
-								rangeValue = emptyRangeVal.split(',');
-							}else{
-								rangeValue = result[i].rangeList[j].value.split(',');
+						if(yearLen >=3){
+							str+='<td style="background-color:#EAEBFF">'+verticalRanges[0]+'</td>';
+							str+='<td style="background-color:#FFF3E9">'+verticalRanges[1]+'</td>';
+						}else{
+							  str+='<td>'+result[i].range+'</td>';
+						}
+					  if(result[i].rangeList !=null && result[i].rangeList.length>0){
+							for(var j in result[i].rangeList){
+								var rangeValue='';
+								if(result[i].rangeList[j].value == null || result[i].rangeList[j].value == "0,0"){
+									var emptyRangeVal = "-,-";
+									rangeValue = emptyRangeVal.split(',');
+								}else{
+									rangeValue = result[i].rangeList[j].value.split(',');
+								}
+								if(yearLen >=3){
+									str+='<td style="background-color:#EAEBFF">'+rangeValue[0]+'</td>';
+									 str+='<td style="background-color:#FFF3E9">'+rangeValue[1]+'</td>';
+								}else{
+									 str+='<td>'+result[i].rangeList[j].value+'</td>';
+								}
 							}
-							
-							 if(yearLen == 2){
-								  str+='<td>'+result[i].rangeList[j].value+'</td>';
-							 }else if(yearLen == 3){
-								 str+='<td style="background-color:#EAEBFF">'+rangeValue[0]+'</td>';
-								 str+='<td style="background-color:#FFF3E9">'+rangeValue[1]+'</td>';
-							 }
+							 
 							
 						}
-						 
-						
-					}
 					
-				str+='</tr>';
-			   }
+					str+='</tr>';
+				}
 				
 			   str+='</tbody>';
 		   }

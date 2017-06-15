@@ -203,7 +203,7 @@
 									<ul class="switch-btn pull-right" tab-switch="stateLevel">
 										<li class="active" attr_type="overview">overview</li>
 										<li attr_type="scheme">Scheme level</li>
-										<!--<li attr_type="deptscheme">Department Level</li>-->
+										<!--<li attr_type="deptscheme">Dept_Scheme Level</li>-->
 									</ul>
 								</div>
 							</div>
@@ -246,7 +246,7 @@
 									<ul class="switch-btn pull-right distLevelActive" tab-switch="distLevel">
 										<li class="active" attr_type="overview">overview</li>
 										<li attr_type="scheme">Scheme level</li>
-										<li attr_type="deptscheme">Department Level</li>
+										<li attr_type="deptscheme">Dept_Scheme Level</li>
 									</ul>
 								</div>
 							</div>
@@ -254,7 +254,7 @@
 						<div class="panel-body">
 							<div>
 								<!-- Nav tabs -->
-								<ul class="nav nav-tabs pull-right" role="tablist">
+								<ul class="nav nav-tabs pull-right" role="tablist" id="tabDis">
 									<li role="presentation" class="active"><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 									<li role="presentation"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
 									<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>
@@ -337,14 +337,14 @@
 									<ul class="switch-btn pull-right consLevelActive" tab-switch="consLevel">
 										<li class="active" attr_type="overview">overview</li>
 										<li attr_type="scheme">Scheme level</li>
-										<li attr_type="deptscheme">Department Level</li>
+										<li attr_type="deptscheme">Dept_Scheme Level</li>
 									</ul>
 								</div>
 							</div>
 						</div>
 						<div class="panel-body">
 							<div>
-								<ul class="nav nav-tabs pull-right" role="tablist">
+								<ul class="nav nav-tabs pull-right" role="tablist" id="tabCons">
 									<li role="presentation" class="active"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 									<li role="presentation"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
 									<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
@@ -433,7 +433,7 @@
 									<ul class="switch-btn pull-right mandalLevelActive" tab-switch="mandalLevel">
 										<li class="active" attr_type="overview">overview</li>
 										<li attr_type="scheme">Scheme level</li>
-										<li attr_type="deptscheme">Department Level</li>
+										<li attr_type="deptscheme">Dept_Scheme Level</li>
 									</ul>
 								</div>
 							</div>
@@ -441,7 +441,7 @@
 						</div>
 						<div class="panel-body">
 							<div>
-								<ul class="nav nav-tabs pull-right" role="tablist">
+								<ul class="nav nav-tabs pull-right" role="tablist" id="tabMan">
 									<li role="presentation" class="active"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 									<li role="presentation"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
 									<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
