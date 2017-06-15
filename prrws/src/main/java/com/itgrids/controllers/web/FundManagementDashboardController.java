@@ -21,6 +21,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.service.IFundManagementDashboardService;
+import com.itgrids.service.IFundSanctionMatrixReportService;
 
 @EnableAutoConfiguration
 @Controller
@@ -28,6 +29,8 @@ import com.itgrids.service.IFundManagementDashboardService;
 public class FundManagementDashboardController {
 	@Autowired
 	private IFundManagementDashboardService fundManagementDashboardService;
+	@Autowired
+	private IFundSanctionMatrixReportService fundSanctionMatrixReportService;
 	
 	
 	@RequestMapping(value ="/fundManagementDashboard", method = RequestMethod.GET)
@@ -161,6 +164,10 @@ public class FundManagementDashboardController {
 		}
 		@PostMapping("/compareFundsBetweenFinancialYears")
 		public @ResponseBody List<FundMatrixVO> compareFundsBetweenFinancialYears(@RequestBody InputVO inputVO){
+			
+			fundSanctionMatrixReportService.calculateFinancialWiseMatrxReportDetail(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),
+			inputVO.getSourceIdsList(),inputVO.getSchemeIdsList(),inputVO.getBlockLevelId());
+			
 			List<FundMatrixVO> fundMatrixVOList = fundManagementDashboardService.compareFundsBetweenFinancialYears(inputVO);
 			return fundMatrixVOList;
 		}
