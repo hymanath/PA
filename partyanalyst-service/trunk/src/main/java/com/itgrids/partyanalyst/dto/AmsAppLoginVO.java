@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AmsAppLoginVO implements Serializable{
 	
@@ -25,6 +27,9 @@ public class AmsAppLoginVO implements Serializable{
 	private Long proposalCategoryId;
 	private String proposalAmount;
 	private Long rejoinderActionId;
+	private List<String> images = new ArrayList<String>(0);
+	private String  imageBase64String;
+	
 	
 	public AmsAppLoginVO(){}
 	public AmsAppLoginVO(Long userId, String userName){
@@ -146,6 +151,18 @@ public class AmsAppLoginVO implements Serializable{
 	}
 	public void setRejoinderActionId(Long rejoinderActionId) {
 		this.rejoinderActionId = rejoinderActionId;
+	}
+	public List<String> getImages() {
+		return images;
+	}
+	public void setImages(List<String> images) {
+		this.images = images;
+	}
+	public String getImageBase64String() {
+		return imageBase64String;
+	}
+	public void setImageBase64String(String imageBase64String) {
+		this.imageBase64String = imageBase64String;
 	}
 	
 }
