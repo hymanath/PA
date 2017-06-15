@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.StatusVO;
@@ -29,18 +31,18 @@ public class RuralWaterSupplyDashBoardService implements IRuralWaterSupplyDashBo
 	public List<LocationVO> getHabitationCoverageByStatusByLocationType(InputVO inputVO){
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
-			ClientConfig clientConfig = new DefaultClientConfig();
+			/*ClientConfig clientConfig = new DefaultClientConfig();
 			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	        Client client = Client.create(clientConfig);
 	         
 	        WebResource webResource = client.resource("http://DomainName/Rwss/cd/getHabitationCoverageByStatusByLocationType");
 	        
-	        /*String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
-	        System.out.println(jsonInString);*/
+	        String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
+	        System.out.println(jsonInString);
 	        
-	        //ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 	        
-	        /*if(response.getStatus() != 200){
+	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{*/
 	 	    	 String output = null;//response.getEntity(String.class);
@@ -89,5 +91,39 @@ public class RuralWaterSupplyDashBoardService implements IRuralWaterSupplyDashBo
 		}
 		
 		return voList;
+	}
+	
+	public BasicVO getLabTestDetails(InputVO inputVO){
+		BasicVO basicVO = null;
+		try {
+			/*ClientConfig clientConfig = new DefaultClientConfig();
+			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	        Client client = Client.create(clientConfig);
+	         
+	        WebResource webResource = client.resource("http://DomainName/Rwss/cd/getHabitationCoverageByStatusByLocationType");
+	        
+	        String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
+	        System.out.println(jsonInString);
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	    }else{*/
+	 	    	 String output = null;//response.getEntity(String.class);
+	 	    	 output = "{\"physicalTestCount\":136657,\"bacterialTestCount\":27622}";
+	 	    	 
+	 	    	 if(output != null && !output.isEmpty()){
+	 	    		JSONObject jObj = new JSONObject(output);
+	 	    		 basicVO = new BasicVO();
+	 	    		basicVO.setPhysicalTestCount(jObj.getLong("physicalTestCount"));
+	 	    		basicVO.setBacterialTestCount(jObj.getLong("bacterialTestCount"));
+	 	    		 
+	 	    	 }
+			//}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLabTestDetails - RuralWaterSupplyDashBoardService service", e);
+		}
+		return basicVO;
 	}
 }
