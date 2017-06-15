@@ -56,9 +56,65 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	private String LEBName;
 	private Long pancId;
 	private String panchayatName;
+	private List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
+	
+	private List<DistrictOfficeViewAlertVO> subList = new ArrayList<DistrictOfficeViewAlertVO>(0);
+	private Set<Long> setList = new HashSet<Long>(0);
+	private String severtyColor;
+	private Long orderNo;
+	private Long totalCount=0l;
+	private Long grandTotal = 0L;
+	private Long subOrdinateCount = 0l;
 	
 	
-	
+	public Long getSubOrdinateCount() {
+		return subOrdinateCount;
+	}
+	public void setSubOrdinateCount(Long subOrdinateCount) {
+		this.subOrdinateCount = subOrdinateCount;
+	}
+	public Long getGrandTotal() {
+		return grandTotal;
+	}
+	public void setGrandTotal(Long grandTotal) {
+		this.grandTotal = grandTotal;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+	public String getSevertyColor() {
+		return severtyColor;
+	}
+	public void setSevertyColor(String severtyColor) {
+		this.severtyColor = severtyColor;
+	}
+	public List<KeyValueVO> getSubLevels() {
+		return subLevels;
+	}
+	public void setSubLevels(List<KeyValueVO> subLevels) {
+		this.subLevels = subLevels;
+	}
+	public List<DistrictOfficeViewAlertVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<DistrictOfficeViewAlertVO> subList) {
+		this.subList = subList;
+	}
+	public Set<Long> getSetList() {
+		return setList;
+	}
+	public void setSetList(Set<Long> setList) {
+		this.setList = setList;
+	}
 	public Long getStateId() {
 		return stateId;
 	}

@@ -10175,4 +10175,62 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			}
 		return query.list();   
 		}
+	 	public List<Object[]> getAlertsDataForAms(Long alertId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select model.alertId," +
+					   " model.description, " +
+					   " model.createdTime," +//2
+					   " alertType.alertType, " +
+					   " alertSource.source, " +
+					   " alertSeverity.severity, " +
+					   " model.regionScopes.regionScopesId, " +
+					   " model.regionScopes.scope," +//7
+					   " alertStatus.alertStatusId, " +
+					   " alertStatus.alertStatus");//9
+			str.append(" ,tehsil.tehsilId, " +
+					   " tehsil.tehsilName , " +
+					   " panc.panchayatId, " +
+					   " panc.panchayatName, " +
+					   " localElectionBody.localElectionBodyId, " +
+					   " localElectionBody.name, " +
+					   " district.districtId, " +
+					   " district.districtName, " +
+					   " electionType.electionType ");//18
+			str.append(" ,constituency.constituencyId, " +
+					   " constituency.name");//20
+			str.append(" ,state.stateId, " +
+					  " state.stateName");//22
+			str.append(" ,ward.constituencyId, " +
+					   " ward.name");//24
+			str.append(" ,model.title, " +  
+					  " alertImpactScope.impactScope," + //25-26
+					  " model.alertCategory.alertCategoryId, " +
+					  " model.alertCategory.category," + //27-28
+					  " model.imageUrl, " +
+					  " model.alertCategoryTypeId ");//29-30
+			str.append(",govtDepartment.departmentName,alertStatus.color,alertSeverity.alertSeverityId ");//31-32-33
+			str.append(" ,hamlet.hamletId, " +
+					   " hamlet.hamletName");//35
+			
+			str.append(" from Alert model left join model.userAddress.panchayat panc ");
+			str.append(" left join model.userAddress.tehsil tehsil ");
+			str.append(" left join model.userAddress.constituency constituency ");
+			str.append(" left join model.userAddress.localElectionBody localElectionBody ");
+			str.append(" left join model.userAddress.localElectionBody.electionType electionType ");
+			str.append(" left join model.userAddress.district district ");
+			str.append(" left join model.userAddress.state state ");
+			str.append(" left join model.userAddress.ward ward ");
+			str.append(" left join model.userAddress.hamlet hamlet ");
+			str.append(" left join model.alertType alertType ");
+			str.append(" left join model.alertSource alertSource ");
+			str.append(" left join model.alertSeverity alertSeverity ");
+			str.append(" left join model.alertStatus alertStatus" +
+						" left join model.alertImpactScope alertImpactScope " +
+						" left join model.govtDepartment govtDepartment ");
+			str.append(" where model.isDeleted ='N' and model.alertId=:alertId");
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("alertId", alertId);
+			return query.list();
+		}
 }

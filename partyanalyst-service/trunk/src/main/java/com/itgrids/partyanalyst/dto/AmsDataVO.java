@@ -19,6 +19,10 @@ public class AmsDataVO implements Serializable {
 	private List<Long> deptIdsList;
 	private List<AmsKeyValueVO> deptListNew;
 	private List<Long> deptIdsListNew;
+	private List<AmsKeyValueVO> printIdsList;
+	private List<Long> printIdsLst;
+	private List<AmsKeyValueVO> electronicIdsList;
+	private List<Long> electronicIdsLst;
 	
 	private List<AmsKeyValueVO> socailMediaTypeList;
 	private List<Long> socailMediaTypeIdsList;
@@ -100,8 +104,87 @@ public class AmsDataVO implements Serializable {
 	
 	private String countType;
 	private String alertType;
+	private Long userId;
+	private Long parentGovtDepartmentScopeId;
+	private String sortingType;
+	private String order;
+	private Long districtWorkLocationId;
+	private Long divisionWorkLocationId;
+	private Long subDivisionWorkLocationId;
+	private String group;
+	private List<Long> calCntrIdList;
+	private List<Long> sublevels;
+	private Long filterParentScopeId;
+	private Long filterScopeValue;
+	private String searchType;
+	private List<Long> subTaskAlertStatusIds;
 	
-	
+	public String getGroup() {
+		return group;
+	}
+	public void setGroup(String group) {
+		this.group = group;
+	}
+	public List<Long> getCalCntrIdList() {
+		return calCntrIdList;
+	}
+	public void setCalCntrIdList(List<Long> calCntrIdList) {
+		this.calCntrIdList = calCntrIdList;
+	}
+	public List<Long> getSublevels() {
+		return sublevels;
+	}
+	public void setSublevels(List<Long> sublevels) {
+		this.sublevels = sublevels;
+	}
+	public Long getFilterParentScopeId() {
+		return filterParentScopeId;
+	}
+	public void setFilterParentScopeId(Long filterParentScopeId) {
+		this.filterParentScopeId = filterParentScopeId;
+	}
+	public Long getDistrictWorkLocationId() {
+		return districtWorkLocationId;
+	}
+	public void setDistrictWorkLocationId(Long districtWorkLocationId) {
+		this.districtWorkLocationId = districtWorkLocationId;
+	}
+	public Long getDivisionWorkLocationId() {
+		return divisionWorkLocationId;
+	}
+	public void setDivisionWorkLocationId(Long divisionWorkLocationId) {
+		this.divisionWorkLocationId = divisionWorkLocationId;
+	}
+	public Long getSubDivisionWorkLocationId() {
+		return subDivisionWorkLocationId;
+	}
+	public void setSubDivisionWorkLocationId(Long subDivisionWorkLocationId) {
+		this.subDivisionWorkLocationId = subDivisionWorkLocationId;
+	}
+	public String getOrder() {
+		return order;
+	}
+	public void setOrder(String order) {
+		this.order = order;
+	}
+	public String getSortingType() {
+		return sortingType;
+	}
+	public void setSortingType(String sortingType) {
+		this.sortingType = sortingType;
+	}
+	public Long getParentGovtDepartmentScopeId() {
+		return parentGovtDepartmentScopeId;
+	}
+	public void setParentGovtDepartmentScopeId(Long parentGovtDepartmentScopeId) {
+		this.parentGovtDepartmentScopeId = parentGovtDepartmentScopeId;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	public List<Long> getAlertStatusIdsList() {
 		return alertStatusIdsList;
 	}
@@ -602,7 +685,47 @@ public class AmsDataVO implements Serializable {
 	public void setAlertType(String alertType) {
 		this.alertType = alertType;
 	}
-		
-	
+	public List<AmsKeyValueVO> getPrintIdsList() {
+		return printIdsList;
+	}
+	public void setPrintIdsList(List<AmsKeyValueVO> printIdsList) {
+		this.printIdsList = printIdsList;
+	}
+	public List<Long> getPrintIdsLst() {
+		return printIdsLst;
+	}
+	public void setPrintIdsLst(List<Long> printIdsLst) {
+		this.printIdsLst = printIdsLst;
+	}
+	public List<AmsKeyValueVO> getElectronicIdsList() {
+		return electronicIdsList;
+	}
+	public void setElectronicIdsList(List<AmsKeyValueVO> electronicIdsList) {
+		this.electronicIdsList = electronicIdsList;
+	}
+	public List<Long> getElectronicIdsLst() {
+		return electronicIdsLst;
+	}
+	public void setElectronicIdsLst(List<Long> electronicIdsLst) {
+		this.electronicIdsLst = electronicIdsLst;
+	}
+	public Long getFilterScopeValue() {
+		return filterScopeValue;
+	}
+	public void setFilterScopeValue(Long filterScopeValue) {
+		this.filterScopeValue = filterScopeValue;
+	}
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+	public List<Long> getSubTaskAlertStatusIds() {
+		return subTaskAlertStatusIds;
+	}
+	public void setSubTaskAlertStatusIds(List<Long> subTaskAlertStatusIds) {
+		this.subTaskAlertStatusIds = subTaskAlertStatusIds;
+	}
 	
 }
