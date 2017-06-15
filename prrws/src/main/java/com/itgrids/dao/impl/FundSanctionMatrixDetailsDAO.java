@@ -40,5 +40,10 @@ public class FundSanctionMatrixDetailsDAO extends GenericDaoHibernate<FundSancti
 		query.setParameter("YearId", YearId);
 		return query.list();
 	}
-
+	public int deleteAllRecordByScopeId(Long scopeId){
+		Query query =getSession().createQuery(" delete from FundSanctionMatrixDetails model where model.scopeId =:scopeId ");
+		query.setParameter("scopeId", scopeId);
+		return query.executeUpdate();		
+	}
+	
 }

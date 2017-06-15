@@ -16,19 +16,24 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 
 	@Autowired
 	SessionFactory sessionFactory;
-
 	public ConstituencyDAO() {
 		super(Constituency.class);
 
 	}
 	public List<Object[]> getConstituencies(Long districtId){
-	    StringBuilder sb = new StringBuilder();
-	    sb.append(" select model.constituencyId,model.name from Constituency model "+
-	               " where model.districtId=:districtId");
-	    Query query = getSession().createQuery(sb.toString());
-	    query.setParameter("districtId", districtId);
-	    return query.list(); 
-	    
-	  }
-
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.constituencyId,model.name from Constituency model "+
+				" where model.districtId=:districtId");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("districtId", districtId);
+		return query.list(); 
+	}
+	public List<Long> getConstituencyList(String districtIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.constituencyId from Constituency model "+
+				" where model.districtId in ("+districtIds+") ");
+		Query query = getSession().createQuery(sb.toString());
+		//query.setParameter("districtIds", districtIds);
+		return query.list(); 
+	}
 }

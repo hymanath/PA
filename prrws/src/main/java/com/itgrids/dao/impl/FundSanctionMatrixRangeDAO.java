@@ -32,4 +32,10 @@ public class FundSanctionMatrixRangeDAO extends GenericDaoHibernate<FundSanction
 		query.setParameter("scopeId", scopeId);
 		return query.list();
 	}
+	
+	public int deleteAllRecordByScopeId(Long scopeId){
+		Query query =getSession().createQuery(" delete from FundSanctionMatrixRange model where model.scopeId =:scopeId ");
+		query.setParameter("scopeId", scopeId);
+		return query.executeUpdate();		
+	}
 }
