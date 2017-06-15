@@ -152,6 +152,13 @@ public class FundManagementDashboardController {
 			List<LocationFundDetailsVO> locationFundDetailsVOList = fundManagementDashboardService.getAllSubLocationsBySuperLocationId(inputVO);
 			return locationFundDetailsVOList;
 		}
+		@RequestMapping(value="/getFundSactionCount", method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
+		public @ResponseBody List<LocationFundDetailsVO> getFundSactionCount(@RequestBody InputVO inputVO){
+			List<LocationFundDetailsVO> locationFundDetailsVOList = fundManagementDashboardService.getFundSactionCount(inputVO.getFinancialYrIdList());
+			return locationFundDetailsVOList;
+		}
 		@PostMapping("/compareFundsBetweenFinancialYears")
 		public @ResponseBody List<FundMatrixVO> compareFundsBetweenFinancialYears(@RequestBody InputVO inputVO){
 			List<FundMatrixVO> fundMatrixVOList = fundManagementDashboardService.compareFundsBetweenFinancialYears(inputVO);

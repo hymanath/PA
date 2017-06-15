@@ -1063,6 +1063,31 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}
 		return query.list();
 	}
+	
+	@Override
+	public List<Object[]> getFundSactionCount(List<Long> financialYrIdList){
+	    
+	    StringBuffer sb=new StringBuffer();
+	    sb.append(" select distinct fundSanctionLocation.fundSanction.fundSactionId," );
+	    sb.append(" fundSanctionLocation.fundSanction.financialYear.yearDesc,");
+	    sb.append(" sum(fundSanctionLocation.fundSanction.sactionAmount) ");
+	    sb.append(" from ");
+	    sb.append(" FundSanctionLocation fundSanctionLocation ");
+	    sb.append(" where ");
+	    sb.append(" fundSanctionLocation.fundSanction.financialYearId in(:financialYearId) and");
+	    sb.append(" fundSanctionLocation.isDeleted='N' ");
+	    if(financialYrIdList != null && !financialYrIdList.isEmpty()){
+	    sb.append(" group by fundSanctionLocation.fundSanction.financialYearId ");
+	    }
+	    Query query=getSession().createQuery(sb.toString());
+	    
+	    if(financialYrIdList != null && !financialYrIdList.isEmpty()){
+	    	query.setParameterList("financialYearId", financialYrIdList);
+	    }
+	    
+	    return query.list();
+	    
+	  }
 	@Override
 	public List<Object[]> getAllTehsilByConstituencyId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate,Long scopeId){
 		StringBuilder sb = new StringBuilder();
