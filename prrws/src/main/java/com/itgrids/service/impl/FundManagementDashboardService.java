@@ -1425,7 +1425,6 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  							if(commonLoc != null && commonLoc.size() > 0){
  								tempSet = new HashSet<Long>(commonLoc);
  							}
- 							tempSet = new HashSet<Long>(commonLoc);
  							if(tempSet != null && tempSet.size() > 0){
  								innerParam.setValue(new Integer(tempSet.size()).toString());
  								innerParam.setLocationIds(setLocationIds(commonLoc));
