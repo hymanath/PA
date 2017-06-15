@@ -44,10 +44,12 @@
 		 getTotalLocationsByScopeId(5,'totFundMandal');
 		 getTotalLocationsByScopeId(6,'totFundVillage');
 		
-		getAverageFundForScheme('avgFundScheme');
+		getAverageFundForScheme('avgFundScheme');		
 		compareFundsBetweenFinancialYears(3,'comparionDistLevlOvervwTable');
 		compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable');
 		compareFundsBetweenFinancialYears(5,'comparionMandalLevlOvervwTable');
+		getGrantTypeHighestAndLowestFund('highest','highFundSource');
+		getGrantTypeHighestAndLowestFund('lowest','lowFundSource');
 	}
 	function getSelectedType(){
 		 var sortingType = ''; 
@@ -2689,3 +2691,50 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 			onLoadCalls();
 		});
    }
+   
+   function getGrantTypeHighestAndLowestFund(type,divId)
+	{
+		$("#"+divId).html(spinner);
+		var levelValues = [];
+		var financialYrIdArr = $('#financialYearId').val();
+		var sourceIdsArr = [];
+		var schemeIdsArr = [];
+		var deptIdsArr =  $('#DepartmentsId').val();
+		var searchLevelId = 3;
+		var searchLevelVals = [];
+		searchLevelVals.push(13);
+		if ($.inArray('0', financialYrIdArr) != -1)
+		{
+			var stringIds = "1,2,3";
+			strx   = stringIds.split(',');
+			financialYrIdArr = financialYrIdArr.concat(strx);
+			financialYrIdArr.shift();
+			
+		}
+		var json = {
+			blockLevelId : 4, 
+			levelValues : levelValues ,
+			financialYrIdList : financialYrIdArr,
+			fromDateStr : glStartDate,//"01-06-2013",       
+			toDateStr : glEndDate,//"10-06-2020",
+			sourceIdsList:sourceIdsArr,
+			schemeIdsList:schemeIdsArr,
+			deptIdsList:deptIdsArr,
+			type:type,
+			searchLevelId:searchLevelId,
+			searchLvlVals:searchLevelVals
+		}
+		$.ajax({
+			url: 'getGrantTypeHighestAndLowestFund',
+			data: JSON.stringify(json),
+			type: "POST",
+			dataType: 'json', 
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success: function(ajaxresp) {
+				buildLocationWiseFundDetails(ajaxresp,divId);
+			}
+		});
+	}

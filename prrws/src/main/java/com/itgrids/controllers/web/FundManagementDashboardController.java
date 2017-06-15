@@ -185,5 +185,13 @@ public class FundManagementDashboardController {
 		            IdNameVO  minMaxDates =fundManagementDashboardService.getMinMaxDates();
 		             return minMaxDates;
 		        }  
-		
+		@RequestMapping(value = "/getGrantTypeHighestAndLowestFund", method = RequestMethod.POST,
+				produces = MediaType.APPLICATION_JSON_VALUE,
+				consumes = MediaType.APPLICATION_JSON_VALUE)
+				  public @ResponseBody LocationFundDetailsVO getGrantTypeHighestAndLowestFund(@RequestBody InputVO inputVO)
+				  {		
+					
+					LocationFundDetailsVO  returnVO = fundManagementDashboardService.getGrantTypeHighestAndLowestFund(inputVO);
+					return returnVO;
+				  }
 }

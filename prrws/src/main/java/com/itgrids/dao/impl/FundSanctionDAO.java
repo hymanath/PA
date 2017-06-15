@@ -1264,4 +1264,57 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		return (Object[])query.uniqueResult();
 	}
 	
+	public List<Object[]> getGrantTypeHighestAndLowestFund(List<Long> financialYearIdsList,List<Long> deptIdsList,
+			List<Long> sourceIdsList,Date sDate,Date eDate,String type,Long searchLevlId,List<Long> searchLvlVals){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select sum(modal.fundSanction.sactionAmount) " );
+		
+		sb.append(" ,modal.fundSanction.grantType.grantTypeId,modal.fundSanction.grantType.type " );
+		
+		sb.append(" from FundSanctionLocation modal where modal.isDeleted='N' and modal.fundSanction.isDeleted = 'N' ");
+		
+		if(financialYearIdsList != null && financialYearIdsList.size() >0l ){
+			sb.append(" and modal.fundSanction.financialYearId in (:financialYearIdsList)  " );
+		}
+		if(searchLevlId != null && searchLevlId.longValue() > 0l && searchLevlId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+			sb.append(" and  modal.locationAddress.district.districtId in (:searchLvlVals) ");
+		}else if(searchLevlId != null && searchLevlId.longValue() > 0l && searchLevlId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+			sb.append(" and modal.locationAddress.constituency.constituencyId in (:searchLvlVals) ");
+		}
+		if(deptIdsList != null && deptIdsList.size()>0)
+			sb.append(" and modal.fundSanction.department.departmentId in (:deptIdsList) ");
+		if(sourceIdsList != null && sourceIdsList.size()>0)
+			sb.append("  ");
+		if(sDate != null && eDate != null){
+			sb.append(" and date(modal.fundSanction.insertedTime) between  :sDate and :eDate " );
+		}
+		if(type != null && type.equalsIgnoreCase("highest")){
+			sb.append(" group by modal.fundSanction.grantType.grantTypeId order by sum(modal.fundSanction.sactionAmount) desc ");
+		}else if(type != null && type.equalsIgnoreCase("lowest")){
+			sb.append(" group by modal.fundSanction.grantType.grantTypeId order by sum(modal.fundSanction.sactionAmount) asc ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+		
+		if(sDate != null && eDate != null){
+			query.setDate("sDate", sDate);
+			query.setDate("eDate", eDate);
+		}
+		if(searchLevlId != null && searchLevlId.longValue() > 0l){
+			query.setParameterList("searchLvlVals", searchLvlVals);
+		}
+		if(financialYearIdsList != null && financialYearIdsList.size() >0l ){
+			query.setParameterList("financialYearIdsList", financialYearIdsList);
+		}
+		if(deptIdsList != null && deptIdsList.size()>0)
+			query.setParameterList("deptIdsList", deptIdsList);
+		if(sourceIdsList != null && sourceIdsList.size()>0)
+			;
+		return query.list();
+		
+	}
 }
