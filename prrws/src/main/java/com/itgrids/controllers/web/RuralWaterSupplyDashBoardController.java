@@ -21,17 +21,17 @@ public class RuralWaterSupplyDashBoardController {
 	private IRuralWaterSupplyDashBoardService ruralWaterSupplyDashBoardService;
 	
 	@RequestMapping(value ="/ruralWaterSupplyDashBoard", method = RequestMethod.GET)
-    public String fundManagementDashboardPage(ModelMap model) {
+    public String ruralWaterSupplyDashBoardPage(ModelMap model) {
       
 		return "ruralWaterSupplyDashboard";
     }
 	
-	@PostMapping("/getLocationWiseAmountDetails")
+	/*@PostMapping("/getLocationWiseAmountDetails")
 	public void getHabitationCoverageByStatusByLocationType(){
 		try {
 			ruralWaterSupplyDashBoardService.getHabitationCoverageByStatusByLocationType();
 		} catch (Exception e) {
 			LOG.error("Exception raised at getHabitationCoverageByStatusByLocationType - RuralWaterSupplyDashBoardController controller", e);
 		}
-	}
+	}*/
 }
