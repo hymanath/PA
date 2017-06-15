@@ -13,4 +13,5 @@ public interface IRuralWaterSupplyDashBoardService {
 	public BasicVO getHabitationSupplyDetails(InputVO vo);
 	public List<BasicVO> getSchemesDetails(InputVO VO);
 	public List<BasicVO> getSchemeWiseWorkDetails(InputVO VO);
+	public List<BasicVO> getAssetsInfo(InputVO vo);
 }
