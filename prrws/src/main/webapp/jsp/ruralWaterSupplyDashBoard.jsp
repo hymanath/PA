@@ -9,5 +9,4 @@
 <body>
 
 </body>
-<script type="text/javascript" src="Assests/ruralWaterSupply/ruralWaterSupply.js"></script>
 </html>
