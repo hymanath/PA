@@ -1786,4 +1786,31 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			 
 	   return dateVo;
    }
+   
+   /*
+	 * Date : 15/06/2017
+	 * Author :Swathi K
+	 */
+   public LocationFundDetailsVO getGrantTypeHighestAndLowestFund(InputVO inputVO ){
+   	LocationFundDetailsVO returnVO = new LocationFundDetailsVO();
+   	//SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+   	try{
+   		Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"MM/dd/yyyy","");
+   		Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
+   	     
+   		inputVO.setFinancialYrIdList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList()));
+   		inputVO.setDeptIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList()));
+   		inputVO.setSourceIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList()));
+   		inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSearchLvlVals()));
+   		
+   		Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
+   		List<Object[]> grantFund = fundSanctionDAO.getGrantTypeHighestAndLowestFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,inputVO.getType(),inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
+   		if(grantFund != null && grantFund.size() >0){
+   			setFundDetails(grantFund,returnVO,inputVO.getType(),totalfund);
+   		}
+   	}catch(Exception e){
+   		LOG.error(" Exception raised in getGrantTypeHighestAndLowestFund (); ");
+   	}
+   	return returnVO;
+   }
 }

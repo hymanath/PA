@@ -1,5 +1,6 @@
 package com.itgrids.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.dto.FundMatrixVO;
@@ -32,5 +33,5 @@ public interface IFundManagementDashboardService {
 	public List<FundMatrixVO> compareFundsBetweenFinancialYears(InputVO inputVO);
 	public List<LocationVO> getLocationWiseFundSanctionDetails(InputVO inputVO);
 	public IdNameVO getMinMaxDates();
-
+	public LocationFundDetailsVO getGrantTypeHighestAndLowestFund(InputVO inputVO);
 }
