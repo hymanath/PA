@@ -2146,7 +2146,7 @@
 		});
 	}
 	
-	function getSchemeWiseHighestAndLowestFund(type,divId,searchLevelId,searchLevelVals,blockLevelId)
+	function getSchemeWiseHighestAndLowestFund(type,divId,searchLevelId,searchLevelVal,blockLevelId)
 	{
 		$("#"+divId).html(spinner);
 		var levelValues = [];
@@ -2156,7 +2156,7 @@
 		var deptIdsArr =  $('#DepartmentsId').val();
 		var searchLevelId = searchLevelId;
 		var searchLevelVals = [];
-		searchLevelVals.push(searchLevelVals);
+		searchLevelVals.push(searchLevelVal);
 		/* if ($.inArray('0', financialYrIdArr) != -1)
 		{
 			var stringIds = "1,2,3";
