@@ -8,5 +8,8 @@ import com.itgrids.service.IRuralWaterSupplyDashBoardService;
 @Service
 @Transactional
 public class RuralWaterSupplyDashBoardService implements IRuralWaterSupplyDashBoardService{
-
+	
+	public void getHabitationCoverageByStatusByLocationType(){
+		
+	}
 }
