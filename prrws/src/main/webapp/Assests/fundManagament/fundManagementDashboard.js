@@ -28,11 +28,13 @@
 		getLocationWiseAmountDetails(3,'distLevlOvervw','overview','count','desc',0,'onLoad');
 		getLocationWiseAmountDetails(4,'consLevlOvervw','overview','count','desc',0,'onLoad');
 		getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview','count','desc',0,'onLoad');
+		getLocationWiseAmountDetails(6,'villageLevlOvervw','overview','count','desc',0,'onLoad');
 		
 		//onload district Names building
 		getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
 		getAllSubLocationsBySuperLocationId(21,'constLevelDistNames',4);
 		getAllSubLocationsBySuperLocationId(21,'mandalLevelDistNames',5);
+		getAllSubLocationsBySuperLocationId(21,'villageLevelDistNames',6);
 		
 		getSchemeWiseHighestAndLowestFund('highest','highFundScheme',0,0,3);
 		getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme',0,0,3);
@@ -92,6 +94,15 @@
 			 }
 		});
 		return blockTypeMadal;
+	}
+	function getblockTypeVillage(){
+		 var blockTypeVillage = ''; 
+		$('.villageLevelActive li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+				blockTypeVillage = $(this).attr("attr_type");
+			 }
+		});
+		return blockTypeVillage;
 	}
 	$(document).on("click","[tab-switch] li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
@@ -185,6 +196,36 @@
 				getFinancialYearWiseDeptsWiseSchemeAmountDetails(5,'mandalLevlOvervw','deptscheme',sortingType,orderType,0,5);
 				$('#tabMan a[href="#mandalLevelGraph"]').trigger('click');
 			}
+		}else if(blockName == 'villageLevel'){
+			$("#villageLevelDistNames").val(0);
+		    $("#villageLevelDistNames").trigger('chosen:updated');
+			
+			$("#villageLevelConstNames").html('');
+			$("#villageLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');
+		    $("#villageLevelConstNames").trigger('chosen:updated');
+			
+			$("#villageLevelMandalNames").html('');
+			$("#villageLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');
+		    $("#villageLevelMandalNames").trigger('chosen:updated');
+			
+			$("#villageLevelNames").html('');
+			$("#villageLevelNames").append('<option value="0">SELECT MANDAL</option>');
+		    $("#villageLevelNames").trigger('chosen:updated');
+			
+			if(blockType == 'overview'){
+				$(".comaprisionViewShow").show();
+				compareFundsBetweenFinancialYears(6,'comparionVillageLevlOvervwTable')
+				getLocationWiseAmountDetails(6,'villageLevlOvervw','overview',sortingType,orderType,0,'onLoad');
+				$('#tabVill a[href="#villageLevelGraph"]').trigger('click');
+			}else if(blockType == 'scheme'){
+				$(".comaprisionViewShow").hide();
+				getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','scheme',sortingType,orderType,0,6);
+				$('#tabVill a[href="#villageLevelGraph"]').trigger('click');
+			}else if(blockType == 'deptscheme'){
+				$(".comaprisionViewShow").hide();
+				getFinancialYearWiseDeptsWiseSchemeAmountDetails(6,'villageLevlOvervw','deptscheme',sortingType,orderType,0,6);
+				$('#tabVill a[href="#villageLevelGraph"]').trigger('click');
+			}
 		}
 	});
 	$(document).on('change','.constiLevelDistCls',function(){
@@ -199,6 +240,7 @@
 		var locationScopeId = $("#mandalLevelConstNames").val();
 	    getAllSubLocationsBySuperLocationId(locationScopeId,'mandalLevelMandalNames',5);
 	});
+	
 	function onLoadInitialisations()
 	{
 		$(document).keydown(function(event){
@@ -756,6 +798,9 @@
 						}else if(levelId == '5')
 						{
 							table+='<th>Mandal</th>';
+						}else if(levelId == '6')
+						{
+							table+='<th>Village</th>';
 						}
 						
 						for(var i in result[0].locationList1)
@@ -827,6 +872,9 @@
 						}else if(levelId == '5')
 						{
 							table+='<th>Mandal</th>';
+						}else if(levelId == '6')
+						{
+							table+='<th>Village</th>';
 						}
 						for(var i in result[0].subList)
 						{
@@ -856,6 +904,11 @@
 								table+='<td>'+result[i].addressVO.assemblyId+'</td>';
 								table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 							}else if(levelId == '5')
+							{
+								lvlVal =result[i].addressVO.id;
+								table+='<td>'+result[i].addressVO.id+'</td>';
+								table+='<td>'+result[i].addressVO.name+'</td>';
+							}else if(levelId == '6')
 							{
 								lvlVal =result[i].addressVO.id;
 								table+='<td>'+result[i].addressVO.id+'</td>';
@@ -942,6 +995,9 @@
 							}else if(levelId == '5')
 							{
 								table+='<th>Mandal</th>';
+							}else if(levelId == '6')
+							{
+								table+='<th>Village</th>';
 							}
 							for(var i in result[0].subList){
 								for(var j in result[0].subList[i].subList){
@@ -973,6 +1029,11 @@
 									table+='<td>'+result[i].addressVO.assemblyId+'</td>';
 									table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 								}else if(levelId == '5')
+								{
+									levlValId= result[i].addressVO.id;
+									table+='<td>'+result[i].addressVO.id+'</td>';
+									table+='<td>'+result[i].addressVO.name+'</td>';
+								}else if(levelId == '6')
 								{
 									levlValId= result[i].addressVO.id;
 									table+='<td>'+result[i].addressVO.id+'</td>';
@@ -1139,7 +1200,7 @@
 					$(".chart"+divId).html("No Data AVailable")
 				}
 				
-			}else if(levelId == 3 || levelId == 4 || levelId == 5){
+			}else if(levelId == 3 || levelId == 4 || levelId == 5 || levelId == 6){
 				
 				if(result !=null && result.length>0){
 					var locationLevelNames=[];
@@ -1465,7 +1526,7 @@
 					});
 					
 				}
-			}else if(levelId == 3 || levelId == 4 || levelId == 5){
+			}else if(levelId == 3 || levelId == 4 || levelId == 5 || levelId == 6){
 				
 				if(result !=null && result.length>0){
 				
@@ -1497,6 +1558,9 @@
 										locationId=result[i].subList[j].addressVO.id;
 										assemblyShemeNameArr.push(result[i].subList[j].addressVO.assemblyName+"<br/>("+result[i].subList[j].year+")")
 									}else if(levelId == 5){
+										locationId=result[i].subList[j].addressVO.id;
+										assemblyShemeNameArr.push(result[i].subList[j].addressVO.name+"<br/>("+result[i].subList[j].year+")")
+									}else if(levelId == 6){
 										locationId=result[i].subList[j].addressVO.id;
 										assemblyShemeNameArr.push(result[i].subList[j].addressVO.name+"<br/>("+result[i].subList[j].year+")")
 									}
@@ -1670,7 +1734,7 @@
 				}
 			}
 		}else if(type == "deptscheme"){
-			if(levelId == 3 || levelId == 4 || levelId == 5){
+			if(levelId == 3 || levelId == 4 || levelId == 5 || levelId == 6){
 				if(result !=null && result.length>0){
 				
 					var assemblyShemeNameArr=[];
@@ -1707,6 +1771,9 @@
 												locationId= result[i].subList[j].subList[k].addressVO.id;
 												assemblyShemeNameArr.push(result[i].subList[j].subList[k].addressVO.assemblyName+"<br/>("+result[i].subList[j].year+":"+result[i].subList[j].subList[k].name+")")
 											}else if(levelId == 5){
+												locationId= result[i].subList[j].subList[k].addressVO.id;
+												assemblyShemeNameArr.push(result[i].subList[j].subList[k].addressVO.name+"<br/>("+result[i].subList[j].year+":"+result[i].subList[j].subList[k].name+")")
+											}else if(levelId == 6){
 												locationId= result[i].subList[j].subList[k].addressVO.id;
 												assemblyShemeNameArr.push(result[i].subList[j].subList[k].addressVO.name+"<br/>("+result[i].subList[j].year+":"+result[i].subList[j].subList[k].name+")")
 											}
@@ -2602,6 +2669,96 @@
 			 getFinancialYearWiseDeptsWiseSchemeAmountDetails(5,'mandalLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
 		}
 	})
+	
+	
+	//Village
+	$(document).on("click",".sortingDivVillageCls li",function(){
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		var sortingType = $(this).attr("attr_sorting_type");
+		var orderType = $(this).attr("attr_order_type");
+		var blockType = getblockTypeVillage();
+		var locationId = 0;
+		var locationLevelType = 6;
+		if(blockType == 'overview'){
+			getLocationWiseAmountDetails(6,'villageLevlOvervw','overview',sortingType,orderType,locationId,'onLoad');
+		}else if(blockType == 'scheme'){
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+		}else if(blockType == 'deptscheme'){
+			 getFinancialYearWiseDeptsWiseSchemeAmountDetails(6,'villageLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+		}
+	});	
+	$(document).on("change",".villageLevelDistCls",function(){
+		var sortingType = getSelectedType().sortingType;
+		var orderType = getSelectedType().orderType;
+		var blockType = getblockTypeVillage();
+		var locationId =$("#villageLevelDistNames").val();
+		var locationLevelType = 3;
+		if(locationId == 0){
+			var locationLevelType = 6;
+		}
+		if(blockType == 'overview'){
+			getLocationWiseAmountDetails(6,'villageLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
+		}else if(blockType == 'scheme'){
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+		}else if(blockType == 'deptscheme'){
+			 getFinancialYearWiseDeptsWiseSchemeAmountDetails(6,'villageLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+		}
+	})
+	$(document).on("change",".villageLevelConstiCls",function(){
+		var sortingType = getSelectedType().sortingType;
+		var orderType = getSelectedType().orderType;
+		var blockType = getblockTypeVillage();
+		var locationId =$("#villageLevelConstNames").val();
+		var locationLevelType = 4;
+		if(locationId == 0){
+			var locationId =$("#villageLevelDistNames").val();
+			var locationLevelType = 3;
+		}
+		if(blockType == 'overview'){
+			getLocationWiseAmountDetails(6,'villageLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
+		}else if(blockType == 'scheme'){
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+		}else if(blockType == 'deptscheme'){
+			 getFinancialYearWiseDeptsWiseSchemeAmountDetails(6,'villageLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+		}
+	})
+	$(document).on("change",".villageLevelMandalCls",function(){
+		var sortingType = getSelectedType().sortingType;
+		var orderType = getSelectedType().orderType;
+		var blockType = getblockTypeVillage();
+		var locationId =$("#villageLevelMandalNames").val();
+		var locationLevelType = 5;
+		if(locationId == 0){
+			var locationId =$("#villageLevelConstNames").val();
+			var locationLevelType = 4;
+		}
+		if(blockType == 'overview'){
+			getLocationWiseAmountDetails(6,'villageLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
+		}else if(blockType == 'scheme'){
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+		}else if(blockType == 'deptscheme'){
+			 getFinancialYearWiseDeptsWiseSchemeAmountDetails(6,'villageLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+		}
+	})
+	$(document).on("change",".villageLevelCls",function(){
+		var sortingType = getSelectedType().sortingType;
+		var orderType = getSelectedType().orderType;
+		var blockType = getblockTypeVillage();
+		var locationId =$("#villageLevelNames").val();
+		var locationLevelType = 6;
+		if(locationId == 0){
+			var locationId =$("#villageLevelMandalNames").val();
+			var locationLevelType = 5;
+		}
+		if(blockType == 'overview'){
+			getLocationWiseAmountDetails(6,'villageLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
+		}else if(blockType == 'scheme'){
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+		}else if(blockType == 'deptscheme'){
+			 getFinancialYearWiseDeptsWiseSchemeAmountDetails(6,'villageLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+		}
+	})
 		function getLocationWiseAmountAndCountDetails(levelId,divId,type){
 			$("#"+divId).html("");
 		//$("#"+divId).html(spinner);
@@ -2816,6 +2973,8 @@ $(document).on("click",".comapreFinancialYearCls",function(){
 		compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable');
 	}else if(type == "mandalComp"){
 		compareFundsBetweenFinancialYears(5,'comparionMandalLevlOvervwTable');
+	}else if(type == "villageComp"){
+		compareFundsBetweenFinancialYears(6,'comparionVillageLevlOvervwTable');
 	}
 	
 });
@@ -2856,6 +3015,18 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 	
 	 
 	}else if(levelId == 5){
+		var mandValue = $(".compMultiFinancialYear").val();
+		multipleFinYear = $(".compMultiFinancialYear").val();
+		singleFinYear = $(".compSingleFinancialYear").val();
+		singleFinYearArr.push(singleFinYear);
+		financialYrIdList = multipleFinYear;
+		financialYrIdList.push(singleFinYear)
+		if(mandValue.length == 3){
+		 alert("Please Select Two Financial Years");
+		 return;
+	 }
+	 
+	}else if(levelId == 6){
 		var mandValue = $(".compMultiFinancialYear").val();
 		multipleFinYear = $(".compMultiFinancialYear").val();
 		singleFinYear = $(".compSingleFinancialYear").val();
