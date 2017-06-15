@@ -43,7 +43,7 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return locationVOList;
 	}
-	
+
 	@PostMapping("/getLabTestDetails")
 	public @ResponseBody BasicVO getLabTestDetails(InputVO vo){
 		BasicVO basicVO = null;
@@ -84,4 +84,18 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return null;
 	}
+
+	
+	@PostMapping("/getAssetInfoBetweenDates")
+	public @ResponseBody List<BasicVO> getAssetInfoBetweenDates(InputVO vo){
+		List<BasicVO> assetInfo = null;
+		try {
+			assetInfo = ruralWaterSupplyDashBoardService.getAssetsInfo(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAssetsInfoBetweenDates - RuralWaterSupplyDashBoardController controller", e);
+		}
+		return assetInfo;
+	}
+
 }

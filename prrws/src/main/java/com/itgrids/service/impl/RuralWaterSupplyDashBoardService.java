@@ -256,8 +256,57 @@ public class RuralWaterSupplyDashBoardService implements IRuralWaterSupplyDashBo
 		
 		return finalList;
 	}
+
+
+
+	@Override
+	public List<BasicVO> getAssetsInfo(InputVO vo) {
+		List<BasicVO> assetsList = new ArrayList<>();
+		try {
+		ClientConfig clientConfig = new DefaultClientConfig();
+		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+        Client client = Client.create(clientConfig);
+         
+        WebResource webResource = client.resource("http://DomainName/Rwss/cd/getAssetsinfo");
+        
+        /*String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
+        System.out.println(jsonInString);*/
+        
+        //ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+        
+        /*if(response.getStatus() != 200){
+ 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      }else{*/
+ 	    	 String output = null;//response.getEntity(String.class);
+ 	    	 output="[{'assetType':'DIRECT PUMPING','count':155},"
+							+ "{'assetType':'OPEN WELLS','count':3},"
+						    + "{'assetType':'SHALLOW HAND PUMPS','count':5},"
+							+ "{'assetType':'HANDPUMPS','count':778},"
+							+ "{'assetType':'PWS','count':164},"
+					        + "{'assetType':'OTHERS','count':24},"
+					        + "{'assetType':'MPWS','count':166},"
+					        + "{'assetType':'CPWS','count':17}]";
+ 	    	if(output != null && !output.isEmpty()){
+ 	    		JSONArray finalArray = new JSONArray(output);
+ 	    		if(finalArray!=null && finalArray.length()>0){
+ 	    			for(int i=0;i<finalArray.length();i++){
+ 	    				BasicVO basicVO = new BasicVO();
+ 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+ 	    				basicVO.setAssetType(jObj.getString("assetType"));
+ 	    				basicVO.setCount(jObj.getLong("count"));
+ 	    				assetsList.add(basicVO);
+ 	    			//}
+ 	    		}
+ 	    	}
+ 	    	 
+ 	    	  
+ 	      }
+        
+	} catch (Exception e) {
+		LOG.error("Exception raised at getAssetsInfoBetweenDates - RuralWaterSupplyDashBoardService service", e);
+	}
 	
-	
-	
-	
+	return assetsList;
+
+	}
 }
