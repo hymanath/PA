@@ -607,10 +607,10 @@
 						}
 						if(locationLevelId == 3 || locationLevelId == 4 || locationLevelId == 5)
 						{
-							str+='<td>';
+							/*str+='<td>';
 								str+='<h4 class="panel-title text-muted">High Funded Village</h4>';
 								str+='<div id="highFundVillage'+divId+'" attr_id="highFundVillage" class="m_top5"></div>';
-							str+='</td>';
+							str+='</td>';*/
 						}
 						if(locationLevelId == 3 || locationLevelId == 4 || locationLevelId == 5 || locationLevelId == 6)
 						{
@@ -641,10 +641,10 @@
 						}
 						if(locationLevelId == 3 || locationLevelId == 4 || locationLevelId == 5)
 						{
-							str+='<td>';
+							/*str+='<td>';
 								str+='<h4 class="panel-title text-muted">Low Funded Village</h4>';
 								str+='<div id="lowFundVillage'+divId+'" attr_id="lowFundVillage" class="m_top5"></div>';
-							str+='</td>';
+							str+='</td>';*/
 						}
 						if(locationLevelId == 3 || locationLevelId == 4 || locationLevelId == 5 || locationLevelId == 6)
 						{
@@ -675,10 +675,10 @@
 						}
 						if(locationLevelId == 3 || locationLevelId == 4 || locationLevelId == 5 )
 						{
-							str+='<td>';
+							/*str+='<td>';
 								str+='<h4 class="panel-title text-muted">Average Funded Village</h4>';
 								str+='<div id="avgFundVillage'+divId+'" attr_id="avgFundVillage" class="m_top5"></div>';
-							str+='</td>';
+							str+='</td>';*/
 						}
 						if(locationLevelId == 3 || locationLevelId == 4 || locationLevelId == 5 || locationLevelId == 6)
 						{
@@ -710,10 +710,10 @@
 						}
 						if(locationLevelId == 3 || locationLevelId == 4 || locationLevelId == 5 )
 						{
-							str+='<td>';
+							/*str+='<td>';
 								str+='<h4 class="panel-title text-muted">Total Funded Village</h4>';
 								str+='<div id="totFundVillage'+divId+'" attr_id="totFundVillage" class="m_top5"></div>';
-							str+='</td>';
+							str+='</td>';*/
 						}
 						if(locationLevelId == 3 || locationLevelId == 4 || locationLevelId == 5 || locationLevelId == 6)
 						{
@@ -1082,17 +1082,18 @@
 					for(var i in result){
 						if(result[i].locationList1 !=null &&  result[i].locationList1.length>0){
 							for(var j in result[i].locationList1){
-								/* if(result[i].locationList1[j].financialYearId != 0){
+								 if(result[i].locationList1[j].financialYearId != 0){
 									//mainlocationArr.push({y:result[i].locationList1[j].amount})
 									mainlocationArr.push({y:parseInt(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId})
-								} */
+								}
 								
-								mainlocationArr.push({y:parseInt(result[i].locationList1[j].amunt.replace(/,/g, "")),"extra":result[i].locationList1[j].count,appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId})
-								if(result[i].locationList1[j].financialYearId == 0){
+								//mainlocationArr.push({y:parseInt(result[i].locationList1[j].amunt.replace(/,/g, ""))})
+								locationNamesArr.push("Year<br/>"+result[i].locationList1[j].financialYear);
+								/* if(result[i].locationList1[j].financialYearId == 0){
 									locationNamesArr.push("OverAll");
 								}else{
 									locationNamesArr.push("Year<br/>"+result[i].locationList1[j].financialYear);
-								}
+								} */
 								
 							}
 						}
@@ -2027,7 +2028,7 @@
 		var levelValues = [];
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
-		var deptIdsArr = [];
+		var deptIdsArr =$('#DepartmentsId').val();
 		
 		var financialYrIdArr = $('#financialYearId').val();
 		/* if ($.inArray('0', financialYrIdArr) != -1)
@@ -2470,7 +2471,8 @@
 					$(".compSingleFinancialYear").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
 				}
 				$("#financialYearId").val(0);
-				$(".compMultiFinancialYear").val(['1','2']);
+				//$(".compMultiFinancialYear").val(['1','2']);
+				$(".compMultiFinancialYear").val(1);
 				$(".compSingleFinancialYear").val(3);
 			}
 			$("#financialYearId").chosen();
@@ -2900,7 +2902,7 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
     var schemeIdsList = [];
 	schemeIdsList.push(schemeId);
     var deptIdsList = [];
-	deptIdsList.push(deptId);
+	deptIdsList=$('#DepartmentsId').val();
     
     var json = {
           blockLevelId : blockLvlId, 
@@ -3010,57 +3012,67 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 	var multipleFinYear='';
 	var singleFinYear='';
 	var singleFinYearArr=[];
-	var financialYrIdList='';
+	var financialYrIdList=[];
+	var multipleArr=[];
 	
 	if(levelId == 3){
+		multipleArr=[];
 		var disValue = $(".compMultiFinancialYear").val();
 		multipleFinYear = $(".compMultiFinancialYear").val();
 		singleFinYear = $(".compSingleFinancialYear").val();
 		singleFinYearArr.push(singleFinYear);
-		financialYrIdList = multipleFinYear;
+		financialYrIdList.push(multipleFinYear);
 		financialYrIdList.push(singleFinYear)
+		multipleArr.push(multipleFinYear)
 		
-		if(disValue.length == 3){
-		 alert("Please Select Two Financial Years");
-		 return;
-	 }
+		// if(multipleArr.length == 3){
+		 // alert("Please Select Two Financial Years");
+		 // return;
+	 // }
 	 
 	}else if(levelId == 4){
+		multipleArr=[];
 		var consValue = $(".compMultiFinancialYear").val();
 		multipleFinYear = $(".compMultiFinancialYear").val();
 		singleFinYear = $(".compSingleFinancialYear").val();
 		singleFinYearArr.push(singleFinYear);
-		financialYrIdList = multipleFinYear;
+		financialYrIdList.push(multipleFinYear);
 		financialYrIdList.push(singleFinYear)
-		if(consValue.length == 3){
+		multipleArr.push(multipleFinYear)
+		
+		/* if(multipleArr.length == 3){
 		 alert("Please Select Two Financial Years");
 		 return;
-	 }
+	 } */
 	
 	 
 	}else if(levelId == 5){
+		multipleArr=[];
 		var mandValue = $(".compMultiFinancialYear").val();
 		multipleFinYear = $(".compMultiFinancialYear").val();
 		singleFinYear = $(".compSingleFinancialYear").val();
 		singleFinYearArr.push(singleFinYear);
-		financialYrIdList = multipleFinYear;
+		financialYrIdList.push(multipleFinYear);
 		financialYrIdList.push(singleFinYear)
-		if(mandValue.length == 3){
+		multipleArr.push(multipleFinYear)
+		/* if(multipleArr.length == 3){
 		 alert("Please Select Two Financial Years");
 		 return;
-	 }
+	 } */
 	 
 	}else if(levelId == 6){
+		multipleArr=[];
 		var mandValue = $(".compMultiFinancialYear").val();
 		multipleFinYear = $(".compMultiFinancialYear").val();
 		singleFinYear = $(".compSingleFinancialYear").val();
 		singleFinYearArr.push(singleFinYear);
-		financialYrIdList = multipleFinYear;
+		financialYrIdList.push(multipleFinYear);
 		financialYrIdList.push(singleFinYear)
-		if(mandValue.length == 3){
+		multipleArr.push(multipleFinYear)
+		/* if(multipleArr.length == 3){
 		 alert("Please Select Two Financial Years");
 		 return;
-	 }
+	 } */
 	 
 	}
 	 
@@ -3082,7 +3094,7 @@ function compareFundsBetweenFinancialYears(levelId,divId){
       },
       success : function(ajaxresp){
 		if(ajaxresp !=null && ajaxresp.length>0){
-			buildCompareFundsBetweenFinancialYears(ajaxresp,financialYrIdList,multipleFinYear,singleFinYearArr,divId);
+			buildCompareFundsBetweenFinancialYears(ajaxresp,financialYrIdList,multipleArr,singleFinYearArr,divId);
 		}else{
 			$("#"+divId).html("NO DATA AVAILABLE")
 		}
@@ -3094,7 +3106,7 @@ function compareFundsBetweenFinancialYears(levelId,divId){
     });
    }
    
-   function buildCompareFundsBetweenFinancialYears(result,financialYrIdList,multipleFinYear,singleFinYearArr,divId){
+   function buildCompareFundsBetweenFinancialYears(result,financialYrIdList,multipleArr,singleFinYearArr,divId){
 	   
 	   var yearLen =financialYrIdList.length;
 	    var globalYearObj =  {"1":"2014-2015","2":"2015-2016","3":"2016-2017"};
@@ -3112,10 +3124,10 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 			    str+='<thead>';
 				str+='<tr>';
 				 if(yearLen >=3){
-					 str+='<th style="background-color:#EAEBFF">'+globalYearObj[multipleFinYear[1]]+'</th>';
-					str+='<th><span class="first" style="background-color:#FFF3E9">'+globalYearObj[multipleFinYear[0]]+'</span><span class="second"> '+globalYearObj[singleFinYearArr]+'</span></th>';
+					 str+='<th style="background-color:#EAEBFF">'+globalYearObj[multipleArr[1]]+'</th>';
+					str+='<th><span class="first" style="background-color:#FFF3E9">'+globalYearObj[multipleArr[0]]+'</span><span class="second"> '+globalYearObj[singleFinYearArr]+'</span></th>';
 				 }else{
-					 str+='<th><span class="first"> '+globalYearObj[multipleFinYear[0]]+'</span><span class="second"> '+globalYearObj[singleFinYearArr]+'</span></th>';
+					 str+='<th><span class="first"> '+globalYearObj[multipleArr[0]]+'</span><span class="second"> '+globalYearObj[singleFinYearArr]+'</span></th>';
 				 }
 			   for(var i in result[0].rangeList){
 					   if(yearLen >=3){
