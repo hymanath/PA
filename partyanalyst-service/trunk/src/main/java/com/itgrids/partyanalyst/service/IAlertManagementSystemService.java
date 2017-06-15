@@ -220,11 +220,18 @@ public interface IAlertManagementSystemService {
 	 public AmsVO getAlertDetailsInfoForAms(AmsAppLoginVO keyVo);
 	 public List<AmsTrackingVO> getSubTaskInfoForAlertForAms(AmsAppLoginVO VO);
 	 public List<AmsAppVO> getStatusCompletionInfoForSubTaskForAms(AmsAppLoginVO inputVo);
-	 public List<AmsAppVO> getGovtAllDepartmentDetailsForAms();
-	 public List<AmsAppVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo);
-	 public List<AmsAppVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo);
+	 public List<AmsKeyValueVO> getGovtAllDepartmentDetailsForAms();
+	 public List<AmsKeyValueVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo);
+	 public List<AmsKeyValueVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo);
 	 public List<AmsAppVO> getParentLevelsOfLevelForAms(AmsAppLoginVO keyVo);
-	 public List<AmsAppVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo);
-	 public List<AmsAppVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo);
+	 public List<AmsKeyValueVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo);
+	 public List<AmsKeyValueVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo);
 	 public ResultStatus updateAlertStatusCommentForAms(final AmsAppLoginVO keyVo);
+	 public List<DistrictOfficeViewAlertVO> getLocationWiseDepartmentOverviewAlertCountForAms(String fromDateStr, String toDateStr, Long stateId, 
+				List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+				Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
+				Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, 
+				String group,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,
+				Long filterScopeValue,String searchType,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> subTaskAlertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds );
+	 public ResultStatus saveDocumentsForAlertForAms(final AmsAppLoginVO keyVo);
 }        
