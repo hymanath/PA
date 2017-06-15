@@ -8,4 +8,5 @@ import com.itgrids.model.FundSanctionMatrixRange;
 
 public interface IFundSanctionMatrixRangeDAO extends GenericDao<FundSanctionMatrixRange,Long> {
 	public List<Object[]> getFundSanctionRangeList(Long scopeId);
+	public int deleteAllRecordByScopeId(Long scopeId);
 }
