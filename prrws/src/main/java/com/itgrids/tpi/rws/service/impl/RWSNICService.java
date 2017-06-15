@@ -29,7 +29,11 @@ import com.sun.jersey.api.json.JSONConfiguration;
 public class RWSNICService implements IRWSNICService{
 	private static final Logger LOG = Logger.getLogger(RWSNICService.class);
 	
-	
+	/*
+	 * Date : 15/06/2017
+	 * Author :Sandeep
+	 * @description : getHabitationCoverageByStatusByLocationType
+	 */
 	public List<LocationVO> getHabitationCoverageByStatusByLocationType(InputVO inputVO){
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
@@ -94,7 +98,11 @@ public class RWSNICService implements IRWSNICService{
 		
 		return voList;
 	}
-	
+	/*
+	 * Date : 15/06/2017
+	 * Author :Sandeep
+	 * @description : getLabTestDetails
+	 */
 	public BasicVO getLabTestDetails(InputVO inputVO){
 		BasicVO basicVO = null;
 		try {
@@ -129,6 +137,11 @@ public class RWSNICService implements IRWSNICService{
 		return basicVO;
 	}
 	
+	/*
+	 * Date : 15/06/2017
+	 * Author :Balu
+	 * @description : getHabitationSupplyDetails
+	 */
 	public BasicVO getHabitationSupplyDetails(InputVO VO){
 		BasicVO finalVO = new BasicVO();
 		try {
@@ -164,6 +177,11 @@ public class RWSNICService implements IRWSNICService{
 		return finalVO;
 	}
 	
+	/*
+	 * Date : 15/06/2017
+	 * Author :Balu
+	 * @description : getSchemesDetails
+	 */
 	public List<BasicVO> getSchemesDetails(InputVO VO){
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		try {
@@ -207,6 +225,11 @@ public class RWSNICService implements IRWSNICService{
 		return finalList;
 	}
 	
+	/*
+	 * Date : 15/06/2017
+	 * Author :Balu
+	 * @description : getSchemeWiseWorkDetails
+	 */
 	public List<BasicVO> getSchemeWiseWorkDetails(InputVO VO){
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		try {
@@ -257,7 +280,11 @@ public class RWSNICService implements IRWSNICService{
 		
 		return finalList;
 	}
-	@Override
+	/*
+	 * Date : 15/06/2017
+	 * Author :Nagarjuna
+	 * @description : getAssetsInfo
+	 */
 	public List<BasicVO> getAssetsInfo(InputVO vo) {
 		List<BasicVO> assetsList = new ArrayList<>();
 		try {
@@ -300,11 +327,11 @@ public class RWSNICService implements IRWSNICService{
  	    	  
  	      }
         
-	} catch (Exception e) {
-		LOG.error("Exception raised at getAssetsInfo - RuralWaterSupplyDashBoardService service", e);
-	}
-	
-	return assetsList;
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAssetsInfo - RuralWaterSupplyDashBoardService service", e);
+		}
+		
+		return assetsList;
 
 	}
 	
