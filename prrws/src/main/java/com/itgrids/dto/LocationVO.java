@@ -24,7 +24,7 @@ public class LocationVO implements Serializable {
 	
 	private Long streetHabitationCount;
 	private Long totalCount;
-	private List<StatusVO> statusList;
+	private List<StatusVO> statusList = new ArrayList<StatusVO>(0);
 	
 	
 	public Long getLocationLevelId() {
