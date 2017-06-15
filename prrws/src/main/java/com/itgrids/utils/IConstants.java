@@ -31,7 +31,9 @@ public interface IConstants {
     public static final Long TOTAL_AP_TOTAL_CONSTITUENCIES = 175L;
     public static final Long TOTAL_AP_TOTAL_MANDALS = 664L;
     public static final Long TOTAL_AP_TOTAL_VILLAGES = 16624L;
-    public static final String TOTAL_AT_DISTRICT_IDS = "11,12,13,14,15,16,17,18,19,20,21,22,23";
+    public static final String TOTAL_AP_DISTRICT_IDS = "11,12,13,14,15,16,17,18,19,20,21,22,23";
+    
+    public static final int MATRIX_REPORT_INTERVALS = 8;
     
 	
 }

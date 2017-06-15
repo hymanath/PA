@@ -28,18 +28,11 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
-
-
 @Service
 public class CommonMethodsUtilService {
 	private static Logger LOG = Logger.getLogger(CommonMethodsUtilService.class);
 	
-	  public boolean isListOrSetValid(Collection t){
+	  public static boolean isListOrSetValid(Collection t){
 		  return t != null && t.size()>0;
 		}
 	  
@@ -73,7 +66,7 @@ public class CommonMethodsUtilService {
 		try {
 			if(param != null && !param.toString().isEmpty())
 			{
-				return Long.valueOf(param.toString().trim());
+				return Long.valueOf(param.toString().trim().replace(",", ""));
 			}
 			else
 			{
@@ -779,7 +772,9 @@ public class CommonMethodsUtilService {
 		      int lenght = amountStr.trim().length();
 		      int maxLength=0;
 		      String tempAmount = amountStr;
+		      boolean isThousand=true;
 		      if(lenght>5){
+		    	  isThousand=false;
 		    	 tempAmount = amountStr.substring(0, amountStr.length()-5);
 		      }
 		      amountStr = tempAmount;
@@ -838,8 +833,74 @@ public class CommonMethodsUtilService {
 				return null;
 			}
 		
+
+			
+			public static List<String> buildIntervals(Double amount,int intervalsCount){
+				List<String> returnList = new ArrayList<String>();
+				try {
+					List<String> intervalList = new ArrayList<String>();
+					if(intervalsCount>0){
+						Double value= amount/intervalsCount;
+						Double tempValue=0.00d;
+						for (int i = 0; i <= intervalsCount; i++) {
+							if(i==0){
+								intervalList.add(i+"-"+value);
+								tempValue =tempValue+value;
+							}else{
+								intervalList.add(tempValue+1+"-"+(tempValue+value));
+								tempValue =tempValue+value;
+							}
+						}
+					}					
+
+					if(isListOrSetValid(intervalList)){
+						for (String interval : intervalList) {
+							String[] rangeArr = interval.split("-");
+							if(rangeArr != null && rangeArr.length>0){
+								returnList.add(calculatetempAmountInWords(Double.valueOf(rangeArr[0]).longValue())+" - "+calculatetempAmountInWords(Double.valueOf(rangeArr[1]).longValue()));
+							}
+						}
+					}
+					returnList.add(0,"0-0");
+				} catch (Exception e) {
+					LOG.error(" Exception Occured in buildIntervals() , CommonMethodsUtilService class.");
+				}
+				return returnList;
+			}
+			
+			public  static String calculatetempAmountInWords(Long number){
+			      String amountStr = number.toString();
+			      int lenght = amountStr.trim().length();
+			      int maxLength=0;
+			      String tempAmount = amountStr;
+			      if(lenght>5){
+			    	 //tempAmount = amountStr.substring(0, amountStr.length()-5);
+			      }
+			      amountStr = tempAmount;
+			      lenght = tempAmount.trim().length();
+			      if(amountStr.length()>3){
+			    	  String temp="";
+			    	  String temp1="";
+			    	  for (int i = 0; i < amountStr.length(); i++) {
+			    		  if(i==2){
+			    			  temp = amountStr.substring(lenght-(i+1),lenght);
+			    			  temp1=temp;
+			    		  }else if(i>2 && i%2==0 ){
+			    			  maxLength=lenght-(i+1)+2;
+			    			  temp = amountStr.substring(lenght-(i+1),maxLength)+","+temp;
+			    			  temp1 = temp1+amountStr.substring(lenght-(i+1),maxLength);
+			    		  }	else if(temp.length()>0 && temp1.length()>0 && lenght-temp1.length()==1){
+			    			  temp = amountStr.substring(0,1)+","+temp;
+			    		  }	    		  
+					}
+			    	  amountStr = temp;
+			      }
+			      return amountStr;  
+			    }
+			
+			
 		/*public static void main(String args[]){
-			System.out.println(calculateAmountInWords(334311143305493L));
+			List<String> intervals = buildIntervals(163014.00d,8);
 		}*/
 			
 		/**
@@ -866,7 +927,7 @@ public class CommonMethodsUtilService {
 				    return camelCase.toString();
 		}
 		
-		public WebResource getWebResourceObject(String url){
+		/*public WebResource getWebResourceObject(String url){
 			ClientConfig clientConfig = new DefaultClientConfig();
 			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	        Client client = Client.create(clientConfig);
@@ -874,5 +935,5 @@ public class CommonMethodsUtilService {
 	        WebResource webResource = client.resource(url);
 	        
 	        return webResource;
-		}
+		}*/
 }
