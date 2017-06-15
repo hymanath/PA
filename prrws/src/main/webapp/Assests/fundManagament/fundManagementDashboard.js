@@ -25,9 +25,9 @@
 		
 		//onload overviewGraph building
 		getLocationWiseAmountDetails(2,'stateLevlOvervw','overview','','',0);
-		getLocationWiseAmountDetails(3,'distLevlOvervw','overview','name','desc',0);
-		getLocationWiseAmountDetails(4,'consLevlOvervw','overview','name','desc',0);
-		getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview','name','desc',0);
+		getLocationWiseAmountDetails(3,'distLevlOvervw','overview','count','desc',0);
+		getLocationWiseAmountDetails(4,'consLevlOvervw','overview','count','desc',0);
+		getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview','count','desc',0);
 		
 		//onload district Names building
 		getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
