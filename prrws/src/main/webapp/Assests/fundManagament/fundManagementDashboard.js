@@ -1,7 +1,7 @@
 	//onLoadCalls();
 	//onLoadClicks();
 	onLoadInitialisations();
-	 var globalLevelObj =  {"distLevelDistrictNames":"DISTRICT","constLevelDistNames":"DISTRICT","mandalLevelDistNames":"DISTRICT","constLevelConstNames":"CONSTITUENCY","mandalLevelConstNames":"CONSTITUENCY","mandalLevelMandalNames":"MANDAL"};
+	 var globalLevelObj =  {"distLevelDistrictNames":"DISTRICT","constLevelDistNames":"DISTRICT","mandalLevelDistNames":"DISTRICT","constLevelConstNames":"CONSTITUENCY","mandalLevelConstNames":"CONSTITUENCY","mandalLevelMandalNames":"MANDAL","villageLevelDistNames":"DISTRICT",'villageLevelConstNames':'CONSTITUENCY','villageLevelMandalNames':'MANDAL','villageLevelNames':'VILLAGE'};
 	var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 	var glEndDate = moment().add(10, 'years').endOf('year').format("DD/MM/YYYY");
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
@@ -209,7 +209,7 @@
 		    $("#villageLevelMandalNames").trigger('chosen:updated');
 			
 			$("#villageLevelNames").html('');
-			$("#villageLevelNames").append('<option value="0">SELECT MANDAL</option>');
+			$("#villageLevelNames").append('<option value="0">SELECT VILLAGE</option>');
 		    $("#villageLevelNames").trigger('chosen:updated');
 			
 			if(blockType == 'overview'){
@@ -1356,6 +1356,7 @@
 					var MRRArr=[];
 					var FC13Arr=[]; 
 					var APDRPGRANTArr=[]; 
+					var NRDWPArr=[]; 
 					for(var i in result){
 						
 						
@@ -1405,6 +1406,9 @@
 											 }else if(result[i].subList[j].subList[k].id == 7){
 												 //APDRPGRANTArr.push({"y":result[i].subList[j].subList[k].totalCount})
 												 APDRPGRANTArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id})
+											 }else if(result[i].subList[j].subList[k].id == 8){
+												 //NRDWPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 NRDWPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id})
 											 }
 										}
 									}
@@ -1433,6 +1437,8 @@
 						}
 						if(APDRPGRANTArr != null && APDRPGRANTArr.length > 0){
 							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#6B6B6B"});  
+						}if(NRDWPArr != null && NRDWPArr.length > 0){
+							mainJosnObjArr.push({name:'NRDWP',data:NRDWPArr,color:"#9C9C9C"});  
 						}
 					}
 					$(".chart"+divId).highcharts({
@@ -1538,6 +1544,7 @@
 					var MRRArr=[];
 					var FC13Arr=[];
 					var APDRPGRANTArr=[];
+					var NRDWPArr=[];
 					for(var i in result){
 						if(result[i].subList !=null && result[i].subList.length>0){
 							for(var j in result[i].subList){
@@ -1597,6 +1604,9 @@
 											 }else if(result[i].subList[j].subList[k].id == 7){
 												 //APDRPGRANTArr.push({"y":result[i].subList[j].subList[k].totalCount})
 												 APDRPGRANTArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id})
+											 }else if(result[i].subList[j].subList[k].id == 8){
+												 //NRDWPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 NRDWPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id})
 											 }
 											
 										}
@@ -1626,6 +1636,9 @@
 						}
 						if(APDRPGRANTArr != null && APDRPGRANTArr.length > 0){
 							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#6B6B6B"});  
+						}
+						if(NRDWPArr != null && NRDWPArr.length > 0){
+							mainJosnObjArr.push({name:'NRDWP',data:NRDWPArr,color:"#9C9C9C"});  
 						}
 					}
 					var length = result.length
@@ -1745,6 +1758,7 @@
 					var MRRArr=[];
 					var FC13Arr=[];
 					var APDRPGRANTArr=[];
+					var NRDWPArr=[];
 					for(var i in result){
 						
 						
@@ -1809,6 +1823,9 @@
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 7){
 														 //APDRPGRANTArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
 														 APDRPGRANTArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id})
+													 }else if(result[i].subList[j].subList[k].subList[l].id == 8){
+														 //NRDWPArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														 NRDWPArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id})
 													 }
 												}
 											}
@@ -1841,6 +1858,9 @@
 						}
 						if(APDRPGRANTArr != null && APDRPGRANTArr.length > 0){
 							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#6B6B6B"});  
+						}
+						if(NRDWPArr != null && NRDWPArr.length > 0){
+							mainJosnObjArr.push({name:'NRDWP',data:NRDWPArr,color:"#9C9C9C"});  
 						}
 						var length = result.length
 						var height = '';
@@ -2689,10 +2709,11 @@
 		}
 	});	
 	$(document).on("change",".villageLevelDistCls",function(){
+		var locationId =$("#villageLevelDistNames").val();
+	    getAllSubLocationsBySuperLocationId(locationId,'villageLevelConstNames',6);
 		var sortingType = getSelectedType().sortingType;
 		var orderType = getSelectedType().orderType;
 		var blockType = getblockTypeVillage();
-		var locationId =$("#villageLevelDistNames").val();
 		var locationLevelType = 3;
 		if(locationId == 0){
 			var locationLevelType = 6;
@@ -2710,6 +2731,7 @@
 		var orderType = getSelectedType().orderType;
 		var blockType = getblockTypeVillage();
 		var locationId =$("#villageLevelConstNames").val();
+		getAllSubLocationsBySuperLocationId(locationId,'villageLevelMandalNames',6);
 		var locationLevelType = 4;
 		if(locationId == 0){
 			var locationId =$("#villageLevelDistNames").val();
@@ -2728,6 +2750,7 @@
 		var orderType = getSelectedType().orderType;
 		var blockType = getblockTypeVillage();
 		var locationId =$("#villageLevelMandalNames").val();
+		getAllSubLocationsBySuperLocationId(locationId,'villageLevelNames',6);
 		var locationLevelType = 5;
 		if(locationId == 0){
 			var locationId =$("#villageLevelConstNames").val();
