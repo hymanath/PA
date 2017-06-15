@@ -1219,7 +1219,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 					String locId = commonMethodsUtilService.getStringValueForObject(param[0]);
 					locId = lvlIdStr.concat(locId);
 					locationFundDetailsVO.setId(Long.parseLong(locId));
-					locationFundDetailsVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					 String nameStr=commonMethodsUtilService.getStringValueForObject(param[1]);
+					locationFundDetailsVO.setName(commonMethodsUtilService.toConvertStringToTitleCase(nameStr));
 					detailsVOs.add(locationFundDetailsVO);
 				}
 			}
