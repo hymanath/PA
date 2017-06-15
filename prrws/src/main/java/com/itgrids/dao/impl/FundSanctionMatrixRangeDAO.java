@@ -21,14 +21,15 @@ public class FundSanctionMatrixRangeDAO extends GenericDaoHibernate<FundSanction
 		super(FundSanctionMatrixRange.class);
 	}
 	@Override
-	public List<Object[]> getFundSanctionRangeList(){
+	public List<Object[]> getFundSanctionRangeList(Long scopeId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select fundSanctionMatrixRange.fundSanctionMatrixRangeId, fundSanctionMatrixRange.rangeValue "
 				+ " from "
-				+ " FundSanctionMatrixRange fundSanctionMatrixRange "
+				+ " FundSanctionMatrixRange fundSanctionMatrixRange where fundSanctionMatrixRange.scopeId = :scopeId "
 				+ " order by "
 				+ " fundSanctionMatrixRange.orderNo ");
 		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("scopeId", scopeId);
 		return query.list();
 	}
 }
