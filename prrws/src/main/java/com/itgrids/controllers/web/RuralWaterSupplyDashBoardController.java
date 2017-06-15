@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,5 +54,34 @@ public class RuralWaterSupplyDashBoardController {
 			LOG.error("Exception raised at getLabTestDetails - RuralWaterSupplyDashBoardController controller", e);
 		}
 		return basicVO;
+	}
+	
+	@PostMapping("/getHabitationSupplyDetails")
+	public @ResponseBody BasicVO getHabitationSupplyDetails(@RequestBody InputVO inputVO){
+		try {
+			return ruralWaterSupplyDashBoardService.getHabitationSupplyDetails(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getHabitationSupplyDetails - RuralWaterSupplyDashBoardController controller", e);
+		}
+		return null;
+	}
+	@PostMapping("/getSchemesDetails")
+	public @ResponseBody List<BasicVO> getSchemesDetails(@RequestBody InputVO inputVO){
+		try {
+			return ruralWaterSupplyDashBoardService.getSchemesDetails(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSchemesDetails - RuralWaterSupplyDashBoardController controller", e);
+		}
+		return null;
+	}
+	@PostMapping("/getSchemeWiseWorkDetails")
+	public @ResponseBody List<BasicVO> getSchemeWiseWorkDetails(@RequestBody InputVO inputVO){
+		try {
+			return ruralWaterSupplyDashBoardService.getSchemeWiseWorkDetails(inputVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSchemeWiseWorkDetails - RuralWaterSupplyDashBoardController controller", e);
+		}
+		return null;
 	}
 }
