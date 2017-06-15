@@ -135,7 +135,7 @@
 			if(blockType == 'overview')
 			{
 				$(".comaprisionViewShow").show();
-				compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable')
+				compareFundsBetweenFinancialYears(4,'comparionDistLevlOvervwTable')
 				getLocationWiseAmountDetails(3,'distLevlOvervw','overview',sortingType,orderType,0,'onLoad');
 				$('#tabDis a[href="#distLevelGraph"]').trigger('click');
 			}else if(blockType == 'scheme')
@@ -173,7 +173,7 @@
 			
 			if(blockType == 'overview'){
 				$(".comaprisionViewShow").show();
-				compareFundsBetweenFinancialYears(5,'comparionConstLevlOvervwTable')
+				compareFundsBetweenFinancialYears(5,'comparionMandalLevlOvervwTable')
 				getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,0,'onLoad');
 				$('#tabMan a[href="#mandalLevelGraph"]').trigger('click');
 			}else if(blockType == 'scheme'){
@@ -2886,8 +2886,12 @@ function compareFundsBetweenFinancialYears(levelId,divId){
       xhr.setRequestHeader("Content-Type", "application/json");
       },
       success : function(ajaxresp){
+		if(ajaxresp !=null && ajaxresp.length>0){
+			buildCompareFundsBetweenFinancialYears(ajaxresp,financialYrIdList,multipleFinYear,singleFinYearArr,divId);
+		}else{
+			$("#"+divId).html("NO DATA AVAILABLE")
+		}
 		
-		buildCompareFundsBetweenFinancialYears(ajaxresp,financialYrIdList,multipleFinYear,singleFinYearArr,divId);
       },
       error : function(request,error){
       alert(error);
