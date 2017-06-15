@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
-import com.itgrids.service.IRuralWaterSupplyDashBoardService;
+import com.itgrids.tpi.rws.service.IRWSNICService;
 
 @EnableAutoConfiguration
 @Controller
@@ -24,7 +24,7 @@ import com.itgrids.service.IRuralWaterSupplyDashBoardService;
 public class RuralWaterSupplyDashBoardController {
 	private static final Logger LOG = Logger.getLogger(RuralWaterSupplyDashBoardController.class);
 	@Autowired
-	private IRuralWaterSupplyDashBoardService ruralWaterSupplyDashBoardService;
+	private IRWSNICService rWSNICService;
 	
 	@RequestMapping(value ="/ruralWaterSupplyDashBoard", method = RequestMethod.GET)
     public String ruralWaterSupplyDashBoardPage(ModelMap model) {
@@ -36,7 +36,7 @@ public class RuralWaterSupplyDashBoardController {
 	public @ResponseBody List<LocationVO> getHabitationCoverageByStatusByLocationType(InputVO vo){
 		List<LocationVO> locationVOList = null;
 		try {
-			locationVOList = ruralWaterSupplyDashBoardService.getHabitationCoverageByStatusByLocationType(vo);
+			locationVOList = rWSNICService.getHabitationCoverageByStatusByLocationType(vo);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getHabitationCoverageByStatusByLocationType - RuralWaterSupplyDashBoardController controller", e);
@@ -48,7 +48,7 @@ public class RuralWaterSupplyDashBoardController {
 	public @ResponseBody BasicVO getLabTestDetails(InputVO vo){
 		BasicVO basicVO = null;
 		try {
-			basicVO = ruralWaterSupplyDashBoardService.getLabTestDetails(vo);
+			basicVO = rWSNICService.getLabTestDetails(vo);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLabTestDetails - RuralWaterSupplyDashBoardController controller", e);
@@ -59,7 +59,7 @@ public class RuralWaterSupplyDashBoardController {
 	@PostMapping("/getHabitationSupplyDetails")
 	public @ResponseBody BasicVO getHabitationSupplyDetails(@RequestBody InputVO inputVO){
 		try {
-			return ruralWaterSupplyDashBoardService.getHabitationSupplyDetails(inputVO);
+			return rWSNICService.getHabitationSupplyDetails(inputVO);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getHabitationSupplyDetails - RuralWaterSupplyDashBoardController controller", e);
 		}
@@ -68,7 +68,7 @@ public class RuralWaterSupplyDashBoardController {
 	@PostMapping("/getSchemesDetails")
 	public @ResponseBody List<BasicVO> getSchemesDetails(@RequestBody InputVO inputVO){
 		try {
-			return ruralWaterSupplyDashBoardService.getSchemesDetails(inputVO);
+			return rWSNICService.getSchemesDetails(inputVO);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getSchemesDetails - RuralWaterSupplyDashBoardController controller", e);
 		}
@@ -77,7 +77,7 @@ public class RuralWaterSupplyDashBoardController {
 	@PostMapping("/getSchemeWiseWorkDetails")
 	public @ResponseBody List<BasicVO> getSchemeWiseWorkDetails(@RequestBody InputVO inputVO){
 		try {
-			return ruralWaterSupplyDashBoardService.getSchemeWiseWorkDetails(inputVO);
+			return rWSNICService.getSchemeWiseWorkDetails(inputVO);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getSchemeWiseWorkDetails - RuralWaterSupplyDashBoardController controller", e);
@@ -90,7 +90,7 @@ public class RuralWaterSupplyDashBoardController {
 	public @ResponseBody List<BasicVO> getAssetInfoBetweenDates(InputVO vo){
 		List<BasicVO> assetInfo = null;
 		try {
-			assetInfo = ruralWaterSupplyDashBoardService.getAssetsInfo(vo);
+			assetInfo = rWSNICService.getAssetsInfo(vo);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAssetsInfoBetweenDates - RuralWaterSupplyDashBoardController controller", e);
