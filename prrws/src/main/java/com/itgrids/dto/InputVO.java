@@ -23,6 +23,12 @@ public class InputVO implements Serializable {
 	private Long searchLevelId;
 	private List<Long> searchLvlVals;
 	
+	private String year;
+	private String locationType;
+	private String locationName;
+	private String filterType;
+	private String filterValue;
+	
 	
 	public String getType() {
 		return type;
@@ -133,6 +139,37 @@ public class InputVO implements Serializable {
 	public void setSearchLvlVals(List<Long> searchLvlVals) {
 		this.searchLvlVals = searchLvlVals;
 	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public String getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public String getFilterType() {
+		return filterType;
+	}
+	public void setFilterType(String filterType) {
+		this.filterType = filterType;
+	}
+	public String getFilterValue() {
+		return filterValue;
+	}
+	public void setFilterValue(String filterValue) {
+		this.filterValue = filterValue;
+	}
+	
 	
 	
 }
