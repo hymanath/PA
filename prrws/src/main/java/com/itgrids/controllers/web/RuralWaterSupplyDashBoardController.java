@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.service.IRuralWaterSupplyDashBoardService;
@@ -40,5 +41,17 @@ public class RuralWaterSupplyDashBoardController {
 			LOG.error("Exception raised at getHabitationCoverageByStatusByLocationType - RuralWaterSupplyDashBoardController controller", e);
 		}
 		return locationVOList;
+	}
+	
+	@PostMapping("/getLabTestDetails")
+	public @ResponseBody BasicVO getLabTestDetails(InputVO vo){
+		BasicVO basicVO = null;
+		try {
+			basicVO = ruralWaterSupplyDashBoardService.getLabTestDetails(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLabTestDetails - RuralWaterSupplyDashBoardController controller", e);
+		}
+		return basicVO;
 	}
 }
