@@ -740,7 +740,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 				locVO = new LocationVO();
 				locVO.setFinancialYearId(0L);
 				locVO.setFinancialYear("All Financial Year");
-				//locVO.setAmunt(commonMethodsUtilService.calculateAmountInWords(totalCount));
+				locVO.setAmunt(commonMethodsUtilService.calculateAmountInWords(totalAmount));
 				locVO.setAmount(totalAmount);
 				locVO.setCount(totalCount);
 				locVoList.add(locVO);
@@ -857,7 +857,7 @@ public LocationFundDetailsVO getTotalFunds(InputVO inputVO){
 			retusnVo.setTtlAmt(totalfund.toString());
 		}
 		if(retusnVo.getTotalAmt() != null){
-			List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,null,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
+			List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,IConstants.STATE_LEVEL_SCOPE_ID,1L,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
 			setGrantTypesToVO(locWiseGrantTypes,retusnVo);
 		}
 	}catch(Exception e){
