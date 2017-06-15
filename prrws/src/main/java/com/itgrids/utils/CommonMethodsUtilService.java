@@ -835,4 +835,28 @@ public class CommonMethodsUtilService {
 		/*public static void main(String args[]){
 			System.out.println(calculateAmountInWords(334311143305493L));
 		}*/
+			
+		/**
+			 * @author  Babu kurakula <href:kondababu.kurakula@itgrids.com >
+			 * @Date 15th June,2017
+			 * @description to convert String  in Title Case
+			 * @param String inputStr
+			 * @return String in Title case formt
+		 */
+			
+		public String toConvertStringToTitleCase(String inputStr) {
+				StringBuilder camelCase = new StringBuilder();
+		         boolean nextCamelCase = true;
+				  String inputLowerStr=inputStr.toLowerCase();
+				    for (char c : inputLowerStr.toCharArray()) {
+				        if (Character.isSpaceChar(c)) {
+				        	nextCamelCase = true;
+				        } else if (nextCamelCase) {
+				            c = Character.toTitleCase(c);
+				            nextCamelCase = false;
+				        }
+				        camelCase.append(c);
+				    }
+				    return camelCase.toString();
+		}
 }
