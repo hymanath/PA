@@ -10,4 +10,7 @@ public interface IRuralWaterSupplyDashBoardService {
 	
 	public List<LocationVO> getHabitationCoverageByStatusByLocationType(InputVO vo);
 	public BasicVO getLabTestDetails(InputVO vo);
+	public BasicVO getHabitationSupplyDetails(InputVO vo);
+	public List<BasicVO> getSchemesDetails(InputVO VO);
+	public List<BasicVO> getSchemeWiseWorkDetails(InputVO VO);
 }

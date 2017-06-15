@@ -1,5 +1,6 @@
 package com.itgrids.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,4 +127,137 @@ public class RuralWaterSupplyDashBoardService implements IRuralWaterSupplyDashBo
 		}
 		return basicVO;
 	}
+	
+	public BasicVO getHabitationSupplyDetails(InputVO VO){
+		BasicVO finalVO = new BasicVO();
+		try {
+			
+			/*ClientConfig clientConfig = new DefaultClientConfig();
+			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	        Client client = Client.create(clientConfig);
+	         
+	        WebResource webResource = client.resource("http://DomainName/Rwss/cd/gethabitationsupplyDetails");
+
+	        String jsonInString = new ObjectMapper().writeValueAsString(VO);
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, VO);
+			
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);*/
+	 	    	 
+	 	    	String output ="{'safeMLD':2.94,'unsafeMLD':0.12}";
+	 	    	 
+	 	    	 if(output != null && !output.isEmpty()){
+	 	    		JSONObject jObj = new JSONObject(output);	 	    		
+	 	    				finalVO.setSafeMLD(new BigDecimal(jObj.getString("safeMLD")));
+	 	    				finalVO.setUnsafeMLD(new BigDecimal(jObj.getString("unsafeMLD")));
+	 	    			}
+	 	    	//}
+	 	    	
+		} catch (Exception e) {
+			LOG.error("Exception raised at getHabitationSupplyDetails - RuralWaterSupplyDashBoardService service", e);
+		}
+		return finalVO;
+	}
+	
+	public List<BasicVO> getSchemesDetails(InputVO VO){
+		List<BasicVO> finalList = new ArrayList<BasicVO>();
+		try {
+			
+			/*ClientConfig clientConfig = new DefaultClientConfig();
+			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	        Client client = Client.create(clientConfig);
+	         
+	        WebResource webResource = client.resource("http://DomainName/Rwss/cd/getSchemesDetails");
+
+	        String jsonInString = new ObjectMapper().writeValueAsString(VO);
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, VO);
+			
+	        
+	       if(response.getStatus() != 200){
+	 	      throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);*/
+	 	    	 
+	 	    	String output = "[{'assetType':'PWS','count':1583},{'assetType':'CPWS','count':8},{'assetType':'SCHOOLS','count':3},{'assetType':'SUSTAINABILITY','count':26}]";
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray jsonArray = new JSONArray(output);	 	    
+		 	    		if(jsonArray !=null && jsonArray.length()>0){
+		 	    			for (int i = 0;i<jsonArray.length();i++) {		 	    				
+		 	    				JSONObject jObj = (JSONObject)jsonArray.get(i);		 	    				
+		 	    				BasicVO Vo = new BasicVO();		 	    				
+		 	    				Vo.setAssetType(jObj.getString("assetType"));
+		 	    				Vo.setCount(jObj.getLong("count"));
+		 	    				
+		 	    				finalList.add(Vo);
+							}
+		 	    		}	 	    			
+	 	    	//}
+			
+	 	      }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSchemesDetails - RuralWaterSupplyDashBoardService service", e);
+		}
+		return finalList;
+	}
+	
+	public List<BasicVO> getSchemeWiseWorkDetails(InputVO VO){
+		List<BasicVO> finalList = new ArrayList<BasicVO>();
+		try {
+			
+			/*ClientConfig clientConfig = new DefaultClientConfig();
+			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	        Client client = Client.create(clientConfig);
+	         
+	        WebResource webResource = client.resource("http://DomainName/Rwss/cd/getSchemeWiseWorkDetails");
+
+	        String jsonInString = new ObjectMapper().writeValueAsString(VO);
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, VO);
+			
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	    }else{
+	 	    	 String output = response.getEntity(String.class);*/
+	 	    	 
+	 	    	 
+			String output = "[{'assetType':'SUSTAINABILITY','workOngoingCount':10,'workComissionedCount':35,'workCompletedCount':46,'workNotGroundedCount':0},{'assetType':'SCHOOLS','workOngoingCount':6,'workComissionedCount':12,'workCompletedCount':17,'workNotGroundedCount':0},{'assetType':'PWS','workOngoingCount':162,'workComissionedCount':979,'workCompletedCount':1310,'workNotGroundedCount':0},{'assetType':'CPWS','workOngoingCount':25,'workComissionedCount':42,'workCompletedCount':51,'workNotGroundedCount':0}]";
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		
+	 	    		JSONArray jsonArray = new JSONArray(output);	 	    
+	 	    		if(jsonArray !=null && jsonArray.length()>0){
+	 	    			for (int i = 0;i<jsonArray.length();i++) {		 	    				
+	 	    				JSONObject jObj = (JSONObject)jsonArray.get(i);		 	    				
+	 	    				BasicVO Vo = new BasicVO();		 	    				
+	 	    				Vo.setAssetType(jObj.getString("assetType"));
+	 	    				Vo.setWorkOngoingCount(jObj.getLong("workOngoingCount"));
+	 	    				Vo.setWorkComissionedCount(jObj.getLong("workComissionedCount"));
+	 	    				Vo.setWorkCompletedCount(jObj.getLong("workCompletedCount"));
+	 	    				Vo.setWorkNotGroundedCount(jObj.getLong("workNotGroundedCount"));
+	 	    				
+	 	    				
+	 	    				finalList.add(Vo);
+						}
+	 	    		//}
+	 	    		
+	 	    	}
+	 	    }
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSchemeWiseWorkDetails - RuralWaterSupplyDashBoardService service", e);
+		}
+		
+		return finalList;
+	}
+	
+	
+	
+	
 }
