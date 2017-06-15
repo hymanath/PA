@@ -27,12 +27,14 @@ public class FundSanctionMatrixRange {
 	private Long fundSanctionMatrixRangeId;	
 	private Long previousYearId;	
 	private Long presentYearId;
+	private Long ScopeId;
 	private String rangeValue;
 	private String min;
 	private String max;
 	private String orderNo;
 	private FinancialYear previousYear;
-	private FinancialYear presentYear;	
+	private FinancialYear presentYear;
+	private LocationScope locationScope;
 	
 	@Id
 	@Column(name="fund_sanction_matrix_range_id")
@@ -118,7 +120,25 @@ public class FundSanctionMatrixRange {
 
 	public void setPresentYear(FinancialYear presentYear) {
 		this.presentYear = presentYear;
+	}
+	@Column(name="scope_id")
+	public Long getScopeId() {
+		return ScopeId;
+	}
+
+	public void setScopeId(Long scopeId) {
+		ScopeId = scopeId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "scope_id", insertable = false, updatable = false)
+	public LocationScope getLocationScope() {
+		return locationScope;
+	}
+
+	public void setLocationScope(LocationScope locationScope) {
+		this.locationScope = locationScope;
 	}	
+	
 	
 	
 }
