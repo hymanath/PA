@@ -1736,5 +1736,27 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			return null;
 		}
 	}
-	
+	/*
+	 * Date : 13/06/2017
+	 * Author : kota.swathi@itgrids.com
+	 * @description : to get min,max dates
+	 * @return  IdNameVO
+	 */
+   public IdNameVO getMinMaxDates(){
+	   IdNameVO dateVo = new IdNameVO();
+	   Object[]  dates =fundSanctionDAO.getMinMaxDates();	
+	   
+	   SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
+	    String minDate= formatter.format(dates[0]);  
+	    String maxDate= formatter.format(dates[1]);  
+	   if(dates != null && dates.length > 0){
+		   //dateVo.setMinDate(dates[0] != null ? dates[0].toString().substring(0, 10) : "");
+		   //dateVo.setMaxDate(dates[1] != null ? dates[1].toString().substring(0, 10) : "" );
+		   
+		   dateVo.setMinDate(dates[0] != null ? minDate : "");
+		   dateVo.setMaxDate(dates[1] != null ? maxDate : "");
+	   }   
+			 
+	   return dateVo;
+   }
 }

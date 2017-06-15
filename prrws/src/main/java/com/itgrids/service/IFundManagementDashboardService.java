@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.dto.FundMatrixVO;
 import com.itgrids.dto.FundSchemeVO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
@@ -29,5 +30,6 @@ public interface IFundManagementDashboardService {
 	public List<LocationVO> getLocationWiseAmountAndCountDetails(InputVO inputVO);
 	public List<FundMatrixVO> compareFundsBetweenFinancialYears(InputVO inputVO);
 	public List<LocationVO> getLocationWiseFundSanctionDetails(InputVO inputVO);
+	public IdNameVO getMinMaxDates();
 
 }
