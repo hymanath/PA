@@ -1629,7 +1629,9 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  						returnVO.setDepartmentName(commonMethodsUtilService.getStringValueForObject(param[3]));
  						returnVO.setSchemeName(commonMethodsUtilService.getStringValueForObject(param[4]));
  						returnVO.setGoNoDate(commonMethodsUtilService.getStringValueForObject(param[5]));
- 						returnVO.setSactionAmount(commonMethodsUtilService.getLongValueForObject(param[6]));
+ 					    returnVO.setAmount(commonMethodsUtilService.getLongValueForObject(param[6]));
+ 						Long sanctionAmount= commonMethodsUtilService.getLongValueForObject(param[6]);
+ 						returnVO.setSactionAmount(commonMethodsUtilService.calculateAmountInWords(sanctionAmount));
  						finalReturnList.add(returnVO);
  					}
  				}

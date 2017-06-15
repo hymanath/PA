@@ -20,7 +20,8 @@ public class LocationVO implements Serializable {
 	private String departmentName;
 	private String schemeName;
 	private String goNoDate;
-	private Long sactionAmount;
+	private String sactionAmount;
+	
 	
 	private Long streetHabitationCount;
 	private Long totalCount;
@@ -117,12 +118,6 @@ public class LocationVO implements Serializable {
 	public void setGoNoDate(String goNoDate) {
 		this.goNoDate = goNoDate;
 	}
-	public Long getSactionAmount() {
-		return sactionAmount;
-	}
-	public void setSactionAmount(Long sactionAmount) {
-		this.sactionAmount = sactionAmount;
-	}
 	public Long getStreetHabitationCount() {
 		return streetHabitationCount;
 	}
@@ -140,6 +135,12 @@ public class LocationVO implements Serializable {
 	}
 	public void setStatusList(List<StatusVO> statusList) {
 		this.statusList = statusList;
+	}
+	public String getSactionAmount() {
+		return sactionAmount;
+	}
+	public void setSactionAmount(String sactionAmount) {
+		this.sactionAmount = sactionAmount;
 	}
 	
 	
