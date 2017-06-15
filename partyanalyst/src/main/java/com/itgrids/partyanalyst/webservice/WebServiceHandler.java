@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
 import com.itgrids.partyanalyst.dto.AmsAppVO;
 import com.itgrids.partyanalyst.dto.AmsDataVO;
+import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
 import com.itgrids.partyanalyst.dto.AmsTrackingVO;
 import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
@@ -2843,7 +2844,7 @@ public class WebServiceHandler {
 	@Path("/getGovtAllDepartmentDetailsForAms")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<AmsAppVO> getGovtAllDepartmentDetailsForAms()
+	public List<AmsKeyValueVO> getGovtAllDepartmentDetailsForAms()
 	{
 		try{
 			
@@ -2859,7 +2860,7 @@ public class WebServiceHandler {
 	@Path("/getSubDeptsFrParentDeptForAms")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<AmsAppVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO vo)
+	public List<AmsKeyValueVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO vo)
 	{
 		try{
 			
@@ -2875,7 +2876,7 @@ public class WebServiceHandler {
 	@Path("/getDepartmentLevelsForAms")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<AmsAppVO> getDepartmentLevelsForAms(AmsAppLoginVO vo)
+	public List<AmsKeyValueVO> getDepartmentLevelsForAms(AmsAppLoginVO vo)
 	{
 		try{
 			
@@ -2907,7 +2908,7 @@ public class WebServiceHandler {
 	@Path("/getDesignationsByDepartmentForAms")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<AmsAppVO> getDesignationsByDepartmentForAms(AmsAppLoginVO vo)
+	public List<AmsKeyValueVO> getDesignationsByDepartmentForAms(AmsAppLoginVO vo)
 	{
 		try{
 			
@@ -2923,7 +2924,7 @@ public class WebServiceHandler {
 	@Path("/getOfficersByDesignationAndLevelForAms")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<AmsAppVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO vo)
+	public List<AmsKeyValueVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO vo)
 	{
 		try{
 			
@@ -2951,5 +2952,36 @@ public class WebServiceHandler {
 		    return null;
 		}	
 	}
-	
+	@POST
+	@Path("/getLocationWiseDepartmentOverviewAlertCountForAms")//for clicking on subOrdinates view
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<DistrictOfficeViewAlertVO> getLocationWiseDepartmentOverviewAlertCountForAms(AmsDataVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.getLocationWiseDepartmentOverviewAlertCountForAms(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getLocationWiseDepartmentOverviewAlertCountForAms() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
+	@POST
+	@Path("/saveDocumentsForAlertForAms")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ResultStatus saveDocumentsForAlertForAms(AmsAppLoginVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.saveDocumentsForAlertForAms(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in saveDocumentsForAlertForAms() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
 }
