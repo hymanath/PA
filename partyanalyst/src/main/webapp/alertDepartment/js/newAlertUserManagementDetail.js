@@ -1565,6 +1565,53 @@ function getStatusCompletionInfo(alertId){
 				}
 				
 			}
+			//srujana
+			/*if(result[0].petitionerList != null && result[0].petitionerList.length > 0)
+			{
+				var str='';
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-1 text-center body-icons"><i class="fa fa-volume-control-phone fa-2x"></i></div>';
+					str+='<div class="col-sm-11">';
+						str+='<h3>Petitioner Details </h3>';
+						str+='<ul class="list-inline slickSlider">';
+						for(var  j in result[0].petitionerList)
+						{
+							str+='<li style="padding:0px 8px;margin:0px 5px;border:1px solid #ddd;">';
+								str+='<table class="table table-condensed">';
+									str+='<tr>';
+										str+='<td>Name</td>';
+										str+='<td>: '+result[0].petitionerList[j].name+'</td>';
+									str+='</tr>';
+									str+='<tr>';
+										str+='<td>Relative Name</td>';
+										str+='<td>: '+result[0].petitionerList[j].relativeName+'</td>';
+									str+='</tr>';
+									str+='<tr>';
+										str+='<td>Age</td>';
+										str+='<td>: '+result[0].petitionerList[j].age+'</td>';
+									str+='</tr>';
+								str+='</table>';
+							str+='</li>';
+						}
+						str+='</ul>';
+						
+					str+='</div>';
+				str+='</div>';
+				$("#callerDetailsDIv").html(str);
+				if(result[0].idnameList.length > 3)
+				{
+					$('.slickSlider').slick({
+						slide: 'li',
+						slidesToShow: 3,
+						slidesToScroll: 1,
+						infinite: false,
+						swipe:false,
+						touchMove:false,
+						variableWidth: false
+					});
+				}
+				
+			}*/
 			
 			/* var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
 			globalUserType = buildTypeStr;
