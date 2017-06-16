@@ -2929,16 +2929,26 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
     }).done(function(result){
       if(result != null && result.length>0){
 		  $("#fundModal").modal('show');
-      buildLocationWiseFundSanctionDetails(result);
+      buildLocationWiseFundSanctionDetails(result,blockLvlId);
     }
     });
   }
-  function buildLocationWiseFundSanctionDetails(result){
+  function buildLocationWiseFundSanctionDetails(result,blockLvlId){
   
   var str = '';
   str+='<table class="table table-condensed table-bordered" id="tableId">';
   str+='<thead>';
-    str+='<th class="text-capital">Location Name</th>';
+    if(blockLvlId == 2){
+		str+='<th class="text-capital">State Name</th>';
+	}else if(blockLvlId ==3){
+		str+='<th class="text-capital">District Name</th>';
+	}else if(blockLvlId ==4){
+		str+='<th class="text-capital">Constituency Name</th>';
+	}else if(blockLvlId ==5){
+		str+='<th class="text-capital">Mandal Name</th>';
+	}else if(blockLvlId ==6){
+		str+='<th class="text-capital">Village Name</th>';
+	}
     str+='<th class="text-capital">Work Name</th>';
     str+='<th class="text-capital">Department</th>'; 
     str+='<th class="text-capital" > Scheme Name</th>';
