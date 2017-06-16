@@ -1,5 +1,7 @@
 package com.itgrids.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +35,8 @@ public class FundSanctionMatrixDetails {
 	private Long fundSanctionMatrixRangeId;
 	private String isDeleted;
 	private FundSanctionMatrixRange fundSanctionMatrixRange;
-
+	private Date insertedTime;
+	
 	@Id
 	@Column(name="fund_sanction_matrix_details_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
@@ -108,6 +111,15 @@ public class FundSanctionMatrixDetails {
 	public void setFundSanctionMatrixRange(
 			FundSanctionMatrixRange fundSanctionMatrixRange) {
 		this.fundSanctionMatrixRange = fundSanctionMatrixRange;
+	}
+
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}	
 	
 }

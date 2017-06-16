@@ -30,6 +30,13 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 	    Query query = getSession().createQuery(sb.toString());
 	    query.setParameter("stateId",stateId);
 	    return query.list();
-
-}
+	}
+	
+	public List<Long> getDistrictIdDetailsByDistrictIds(String districtIds){
+	    StringBuilder sb = new StringBuilder();
+	    sb.append(" select distinct model.districtId from District model "+
+	               " where model.districtId in ("+districtIds+")");
+	    Query query = getSession().createQuery(sb.toString());
+	    return query.list();
+	}
 }

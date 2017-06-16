@@ -8,4 +8,5 @@ import com.itgrids.model.District;
 
 public interface IDistrictDAO extends GenericDao<District,Long>{
 	public List<Object[]> getDistrictIdName(Long stateId);
+	public List<Long> getDistrictIdDetailsByDistrictIds(String districtIds);
 }
