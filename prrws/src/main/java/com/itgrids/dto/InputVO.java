@@ -1,6 +1,7 @@
 package com.itgrids.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InputVO implements Serializable {
@@ -30,6 +31,10 @@ public class InputVO implements Serializable {
 	private String filterValue;
 	private String fromDate;
 	private String toDate;
+	
+	private int startIndex;
+	private int endIndex;
+	private List<Long> statusIds = new ArrayList<>(0);
 	
 	
 	public String getFromDate() {
@@ -182,6 +187,24 @@ public class InputVO implements Serializable {
 	}
 	public void setFilterValue(String filterValue) {
 		this.filterValue = filterValue;
+	}
+	public int getStartIndex() {
+		return startIndex;
+	}
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
+	}
+	public int getEndIndex() {
+		return endIndex;
+	}
+	public void setEndIndex(int endIndex) {
+		this.endIndex = endIndex;
+	}
+	public List<Long> getStatusIds() {
+		return statusIds;
+	}
+	public void setStatusIds(List<Long> statusIds) {
+		this.statusIds = statusIds;
 	}
 	
 	
