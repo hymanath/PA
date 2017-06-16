@@ -8,14 +8,17 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.LabourBudgetOverViewVO;
 import com.itgrids.dto.NregsProjectsVO;
-import com.itgrids.service.integration.NREGSTCSService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
+import com.itgrids.service.integration.impl.INREGSTCSService;
 
 @EnableAutoConfiguration
 @Controller
@@ -28,7 +31,7 @@ public class NregsDashboardController {
 	private WebServiceUtilService webServiceUtilService;
 	
 	@Autowired
-	private NREGSTCSService nregsTcsService;
+	private INREGSTCSService nregsTcsService;
 	
 	
 	/*@RequestMapping(value ="/test", method = RequestMethod.GET)
@@ -38,19 +41,43 @@ public class NregsDashboardController {
     }*/
 
 	@RequestMapping(value ="/MGNREGSDashboard", method = RequestMethod.GET)
-    public String ruralWaterSupplyDashBoardPage(ModelMap model) {
+    public String mgnregsDashBoardPage(ModelMap model) {
       
 		return "MGNREGS";
     }
 	
 	@PostMapping("/getNREGSProjectsOverview")
-	public @ResponseBody List<NregsProjectsVO> getNREGSProjectsOverview(InputVO vo){
+	public @ResponseBody List<NregsProjectsVO> getNREGSProjectsOverview(@RequestBody InputVO vo){
 		List<NregsProjectsVO> locationVOList = null;
 		try {
 			locationVOList = nregsTcsService.getNREGSProjectsOverview(vo);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNREGSProjectsOverview - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
+	
+	@PostMapping("/getLabourBudgetOverview")
+	public @ResponseBody LabourBudgetOverViewVO getLabourBudgetOverview(@RequestBody InputVO vo){
+		LabourBudgetOverViewVO labourBudgetOverViewVO = null;
+		try {
+			labourBudgetOverViewVO = nregsTcsService.getLabourBudgetOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLabourBudgetOverview - NREGSController controller", e);
+		}
+		return labourBudgetOverViewVO;
+	}
+	
+	@PostMapping("/getLabourBudgetExpenditure")
+	public @ResponseBody List<IdNameVO> getLabourBudgetExpenditure(@RequestBody InputVO vo){
+		List<IdNameVO> locationVOList = null;
+		try {
+			locationVOList = nregsTcsService.getLabourBudgetExpenditure(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLabourBudgetExpenditure - NREGSController controller", e);
 		}
 		return locationVOList;
 	}
