@@ -3062,73 +3062,99 @@ $(document).on("click",".comapreFinancialYearCls",function(){
 function compareFundsBetweenFinancialYears(levelId,divId){ 
 	
 	
-	
-	var multipleFinYear='';
-	var singleFinYear='';
-	var singleFinYearArr=[];
-	var financialYrIdList=[];
-	var multipleArr=[];
-	
-	if(levelId == 3){
-		multipleArr=[];
-		var disValue = $(".compMultiFinancialYear").val();
-		multipleFinYear = $(".compMultiFinancialYear").val();
-		singleFinYear = $(".compSingleFinancialYear").val();
-		singleFinYearArr.push(singleFinYear);
-		financialYrIdList.push(multipleFinYear);
-		financialYrIdList.push(singleFinYear)
-		multipleArr.push(multipleFinYear)
+		var financialYrIdList=[];
+		var firstFinancialYearArr=[];
+		var secondFinancialYearArr=[];
+	   
 		
-		// if(multipleArr.length == 3){
-		 // alert("Please Select Two Financial Years");
-		 // return;
-	 // }
-	 
-	}else if(levelId == 4){
-		multipleArr=[];
-		var consValue = $(".compMultiFinancialYear").val();
-		multipleFinYear = $(".compMultiFinancialYear").val();
-		singleFinYear = $(".compSingleFinancialYear").val();
-		singleFinYearArr.push(singleFinYear);
-		financialYrIdList.push(multipleFinYear);
-		financialYrIdList.push(singleFinYear)
-		multipleArr.push(multipleFinYear)
-		
-		/* if(multipleArr.length == 3){
-		 alert("Please Select Two Financial Years");
-		 return;
-	 } */
+		var temp=0;
+		if(levelId == 3){
+			financialYrIdList=[];
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			var firstFinancialYear = $(".multiDistYearCls").val();
+			var secondFinancialYear = $(".distYearCls").val();
+			
+			if( firstFinancialYear > secondFinancialYear ){
+				temp = firstFinancialYear;
+				firstFinancialYear = secondFinancialYear;
+				secondFinancialYear = temp;
+			}
+			financialYrIdList.push(firstFinancialYear);
+			financialYrIdList.push(secondFinancialYear);
+			firstFinancialYearArr.push(firstFinancialYear);
+			secondFinancialYearArr.push(secondFinancialYear);
+			if ($.inArray(firstFinancialYear, secondFinancialYear) != -1){
+				alert("Please Select Different Year")
+				return;
+			}
+		}else if(levelId == 4){
+			financialYrIdList=[];
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			var firstFinancialYear4 = $(".multiConYearCls").val();
+			var secondFinancialYear4 = $(".conYearCls").val();
+			if( firstFinancialYear4 > secondFinancialYear4 ){
+				temp = firstFinancialYear4;
+				firstFinancialYear4 = secondFinancialYear4;
+				secondFinancialYear4 = temp;
+			}
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			financialYrIdList.push(firstFinancialYear4);
+			financialYrIdList.push(secondFinancialYear4);
+			firstFinancialYearArr.push(firstFinancialYear4);
+			secondFinancialYearArr.push(secondFinancialYear4);
+			if ($.inArray(firstFinancialYear4, secondFinancialYear4) != -1){
+				alert("Please Select Different Year")
+				return;
+			}
+		}else if(levelId == 5){
+			financialYrIdList=[];
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			var firstFinancialYear5 = $(".multiMandalYearCls").val();
+			var secondFinancialYear5 = $(".mandalYearCls").val();
+			if( firstFinancialYear5 > secondFinancialYear5 ){
+				temp = firstFinancialYear5;
+				firstFinancialYear5 = secondFinancialYear5;
+				secondFinancialYear5 = temp;
+			}
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			financialYrIdList.push(firstFinancialYear5);
+			financialYrIdList.push(secondFinancialYear5);
+			firstFinancialYearArr.push(firstFinancialYear5);
+			secondFinancialYearArr.push(secondFinancialYear5);
+			if ($.inArray(firstFinancialYear5, secondFinancialYear5) != -1){
+				alert("Please Select Different Year")
+				return;
+			}
+		}else if(levelId == 6){
+			var firstFinancialYear6 = $(".multiVillageYearCls").val();
+			var secondFinancialYear6 = $(".villageYearCls").val();
+			if( firstFinancialYear6 > secondFinancialYear6 ){
+				temp = firstFinancialYear6;
+				firstFinancialYear6 = secondFinancialYear6;
+				secondFinancialYear6 = temp;
+			}
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			financialYrIdList=[];
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			financialYrIdList.push(firstFinancialYear6);
+			financialYrIdList.push(secondFinancialYear6);
+			firstFinancialYearArr.push(firstFinancialYear6);
+			secondFinancialYearArr.push(secondFinancialYear6);
+			if ($.inArray(firstFinancialYear6, secondFinancialYear6) != -1){
+				alert("Please Select Different Year")
+				return;
+			}
+		}
 	
-	 
-	}else if(levelId == 5){
-		multipleArr=[];
-		var mandValue = $(".compMultiFinancialYear").val();
-		multipleFinYear = $(".compMultiFinancialYear").val();
-		singleFinYear = $(".compSingleFinancialYear").val();
-		singleFinYearArr.push(singleFinYear);
-		financialYrIdList.push(multipleFinYear);
-		financialYrIdList.push(singleFinYear)
-		multipleArr.push(multipleFinYear)
-		/* if(multipleArr.length == 3){
-		 alert("Please Select Two Financial Years");
-		 return;
-	 } */
-	 
-	}else if(levelId == 6){
-		multipleArr=[];
-		var mandValue = $(".compMultiFinancialYear").val();
-		multipleFinYear = $(".compMultiFinancialYear").val();
-		singleFinYear = $(".compSingleFinancialYear").val();
-		singleFinYearArr.push(singleFinYear);
-		financialYrIdList.push(multipleFinYear);
-		financialYrIdList.push(singleFinYear)
-		multipleArr.push(multipleFinYear)
-		/* if(multipleArr.length == 3){
-		 alert("Please Select Two Financial Years");
-		 return;
-	 } */
-	 
-	}
+		
+			
 	 
 	 
 	 
@@ -3148,7 +3174,7 @@ function compareFundsBetweenFinancialYears(levelId,divId){
       },
       success : function(ajaxresp){
 		if(ajaxresp !=null && ajaxresp.length>0){
-			buildCompareFundsBetweenFinancialYears(ajaxresp,financialYrIdList,multipleArr,singleFinYearArr,divId,levelId);
+			buildCompareFundsBetweenFinancialYears(ajaxresp,financialYrIdList,firstFinancialYearArr,secondFinancialYearArr,divId,levelId);
 		}else{
 			$("#"+divId).html("NO DATA AVAILABLE")
 		}
@@ -3158,34 +3184,46 @@ function compareFundsBetweenFinancialYears(levelId,divId){
     });
    }
    
-   function buildCompareFundsBetweenFinancialYears(result,financialYrIdList,multipleArr,singleFinYearArr,divId,levelId){
+   function buildCompareFundsBetweenFinancialYears(result,financialYrIdList,firstFinancialYearArr,secondFinancialYearArr,divId,levelId){
 	   
 	   var yearLen =financialYrIdList.length;
+	   
 	    var globalYearObj =  {"1":"2014-2015","2":"2015-2016","3":"2016-2017"};
-	   if(yearLen >=3){
+	   /* if(yearLen >=3){
 			$("#"+divId).removeClass('comparionStyle1')
 			$("#"+divId).addClass('comparionStyle')
 		 }else{
 			 $("#"+divId).removeClass('comparionStyle')
 			 $("#"+divId).addClass('comparionStyle1')
-		 }
+		 } */
+		 $("#"+divId).removeClass('comparionStyle')
+		 $("#"+divId).addClass('comparionStyle1')
 	   var str='';
 	   if(result !=null && result.length>0){
 		    str+='<table class="table table-bordered">';
 		   if(result[0].rangeList !=null && result[0].rangeList.length>0){
 			    str+='<thead>';
 				str+='<tr>';
-				 if(yearLen >=3){
+				 str+='<th><span class="first"> '+globalYearObj[firstFinancialYearArr]+'</span><span class="second"> '+globalYearObj[secondFinancialYearArr]+'</span></th>';
+				/*  if(yearLen >=3){
+					
 					 str+='<th style="background-color:#EAEBFF">'+globalYearObj[multipleArr[1]]+'</th>';
 					str+='<th><span class="first" style="background-color:#FFF3E9">'+globalYearObj[multipleArr[0]]+'</span><span class="second"> '+globalYearObj[singleFinYearArr]+'</span></th>';
 				 }else{
-					 str+='<th><span class="first"> '+globalYearObj[multipleArr[0]]+'</span><span class="second"> '+globalYearObj[singleFinYearArr]+'</span></th>';
-				 }
+					 alert(globalYearObj[multipleArr])
+					 alert(globalYearObj[singleFinYearArr])
+					 str+='<th><span class="first"> '+globalYearObj[multipleArr]+'</span><span class="second"> '+globalYearObj[singleFinYearArr]+'</span></th>';
+				 } */
 			   for(var i in result[0].rangeList){
 					   if(yearLen >=3){
 							str+='<th colspan="2">'+result[0].rangeList[i].name+'</th>'
 						}else{
-							str+='<th>'+result[0].rangeList[i].name+'</th>'
+							if(i == 2){
+								str+='<th> > '+result[0].rangeList[i].name+'</th>'
+							}else{
+								str+='<th>'+result[0].rangeList[i].name+'</th>'
+							}
+							
 						}
 				}
 			   str+='</tr>';
@@ -3198,7 +3236,12 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 							str+='<td style="background-color:#EAEBFF">'+verticalRanges[0]+'</td>';
 							str+='<td style="background-color:#FFF3E9">'+verticalRanges[1]+'</td>';
 						}else{
-							  str+='<td>'+result[i].range+'</td>';
+							if(i == 1){
+								 str+='<td> > '+result[i].range+'</td>';
+							}else{
+								 str+='<td>'+result[i].range+'</td>';
+							}
+							 
 						}
 					  if(result[i].rangeList !=null && result[i].rangeList.length>0){
 							for(var j in result[i].rangeList){

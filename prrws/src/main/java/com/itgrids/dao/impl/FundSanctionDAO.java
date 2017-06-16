@@ -322,6 +322,67 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 
 		return query.list();
 	}
+	/**
+	 * @author Swadhin K Lenka
+	 * @date  16th June,2017
+	 * @description  to get financial year wise fund details 
+	 * @param public List<Object[]> getFinancialYearWiseFundDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,List<Long> schemeIdsList,Long searchScopeId)
+	 * @return List<Object[]>
+	 */
+	
+	@Override
+	public List<Object[]> financialYearWiseFundDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,List<Long> schemeIdsList,Long scopeId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select "
+					  + " model.fundSanction.financialYear.financialYearId, ");
+		if(scopeId != null && scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+			queryStr.append(" model.locationAddress.district.districtId ");
+		}else if(scopeId != null && scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+			queryStr.append("model.locationAddress.constituency.constituencyId ");
+		}else if(scopeId != null && scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+			queryStr.append(" model.locationAddress.tehsil.tehsilId ");
+		}else if(scopeId != null && scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
+			queryStr.append(" model.locationAddress.panchayat.panchayatId ");
+		}
+		queryStr.append(" ,(sum(model.fundSanction.sactionAmount)/100000) ");
+		queryStr.append(" from FundSanctionLocation model ");
+		queryStr.append(" where model.fundSanction.isDeleted ='N' and model.isDeleted ='N'");
+		
+		if(deptIdsList != null && deptIdsList.size()>0)
+			queryStr.append(" and model.fundSanction.department.departmentId in (:deptIdsList) ");
+		if(sourceIdsList != null && sourceIdsList.size()>0)
+			queryStr.append("  ");
+		if(schemeIdsList != null && schemeIdsList.size()>0)
+			queryStr.append(" and model.fundSanction.govtSchemeId in (:schemeIdsList) ");
+		
+		queryStr.append(" and model.fundSanction.financialYearId in (:financialYearIdsList) ");
+		queryStr.append(" group by model.fundSanction.financialYearId, ");
+		if(scopeId != null && scopeId.longValue()>0L){
+			if(scopeId != null && scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+				queryStr.append(" model.locationAddress.district.districtId ");
+			}else if(scopeId != null && scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+				queryStr.append(" model.locationAddress.constituency.constituencyId ");
+			}else if(scopeId != null && scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+				queryStr.append(" model.locationAddress.tehsil.tehsilId ");
+			}else if(scopeId != null && scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
+				queryStr.append(" model.locationAddress.panchayat.panchayatId ");
+			}
+		}
+		
+		queryStr.append(" order by model.fundSanction.financialYearId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(deptIdsList != null && deptIdsList.size()>0)
+			query.setParameterList("deptIdsList", deptIdsList);
+		if(sourceIdsList != null && sourceIdsList.size()>0)
+			;
+		if(schemeIdsList != null && schemeIdsList.size()>0)
+			query.setParameterList("schemeIdsList", schemeIdsList);
+		
+		query.setParameterList("financialYearIdsList", financialYearIdsList);
+		return query.list();
+	}
+	
 	
 	public List<Object[]> getLocationsCountDetails(Long locatioinTypeId,List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList
 			,Long searchLevlId,List<Long> searchLvlVals,Date fromDate,Date toDate){

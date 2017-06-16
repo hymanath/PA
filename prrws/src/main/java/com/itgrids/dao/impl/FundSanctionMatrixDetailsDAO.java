@@ -23,7 +23,8 @@ public class FundSanctionMatrixDetailsDAO extends GenericDaoHibernate<FundSancti
 	@Override
 	public List<Object[]> getPreviousYearDtls(Long scopeId,Long YearId,String order){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select fundSanctionMatrixDetails.fundSanctionMatrixRangeId, fundSanctionMatrixDetails.scopeValue "
+		sb.append(" select fundSanctionMatrixDetails.fundSanctionMatrixRangeId, "
+				+ " fundSanctionMatrixDetails.scopeValue "
 				+ " from FundSanctionMatrixDetails fundSanctionMatrixDetails "
 				+ " where ");
 		if(order.equalsIgnoreCase("previous")){

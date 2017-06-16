@@ -1338,10 +1338,28 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				for(int i=0; i < len-1 ; i++){
 					if(i==0){
 						//for two year comparison
-						buildCompareFundsBetweenFinancialYears(finalList,inputVO.getBlockLevelId(),inputVO.getFinancialYrIdList().get(i),inputVO.getFinancialYrIdList().get(len-1));
+						buildCompareFundsBetweenFinancialYears(finalList,inputVO.getBlockLevelId(),inputVO.getFinancialYrIdList().get(i),inputVO.getFinancialYrIdList().get(len-1),inputVO);
 					}else{
 						//for multiple year comparison	
 						pushInFinalVOList(finalList,inputVO.getBlockLevelId(),inputVO.getFinancialYrIdList().get(i),inputVO.getFinancialYrIdList().get(len-1));
+					}
+				}
+			}
+			if(finalList != null && finalList.size() > 0){
+				for(FundMatrixVO param : finalList){
+					Long totalLoc = 0L;
+					Long collectedTotalLoc = 0L;
+					if(param.getRangeList() != null && param.getRangeList().size() > 0){
+						totalLoc = Long.parseLong(param.getRangeList().get(0).getValue());
+						int i = 0;
+						for(RangeVO innerParam : param.getRangeList()){
+							if(i==0){
+								i++;
+								continue;
+							}
+							collectedTotalLoc = collectedTotalLoc + Long.parseLong(innerParam.getValue());
+						}
+						param.getRangeList().get(1).setValue(Long.toString((totalLoc-collectedTotalLoc)));
 					}
 				}
 			}
@@ -1352,7 +1370,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		return null;
 	}
 	
-	public void buildCompareFundsBetweenFinancialYears(List<FundMatrixVO> finalList, Long scopeId,final Long previousYearId, final Long presentYearId){
+	public void buildCompareFundsBetweenFinancialYears(List<FundMatrixVO> finalList, Long scopeId,final Long previousYearId, final Long presentYearId,InputVO inputVO){
  		try{
  			List<Object[]> financialYearList = financialYearDAO.getAllFiniancialYearsByIds(new ArrayList<Long>(){{add(previousYearId);add(presentYearId);}});
  			//create a map for yearId and name
@@ -1362,14 +1380,60 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  					yearIdNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
  				}
  			}
+ 			
+ 			inputVO.setDeptIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList()));
+ 			inputVO.setSourceIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList()));
+ 			inputVO.setSchemeIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSchemeIdsList()));
+ 			//All the funds taken by in this query
+ 			List<Object[]> result =  fundSanctionDAO.financialYearWiseFundDetails(new ArrayList<Long>(){{add(previousYearId);add(presentYearId);}},inputVO.getDeptIdsList(),inputVO.getDeptIdsList(),inputVO.getSchemeIdsList(),inputVO.getBlockLevelId());
+ 			
+ 			//find out the max fund in the couple of years
+ 			double maxAmount =0.00d;
+ 			for (Object[] param : result) {
+				if(maxAmount<Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[2])))
+					maxAmount = Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[2]));
+			}
+
+			List<String> intervalsList = commonMethodsUtilService.buildIntervals(maxAmount, IConstants.MATRIX_REPORT_INTERVALS);
+			int arrSize = intervalsList.size();
  			//create a template for ui
- 			List<Object[]> fundSanctionRangeList = fundSanctionMatrixRangeDAO.getFundSanctionRangeList(scopeId);
+ 			List<Object[]> fundSanctionRangeList = new ArrayList<Object[]>();//fundSanctionMatrixRangeDAO.getFundSanctionRangeList(scopeId);
+ 			Object[] objArr = null;
+ 			if(intervalsList != null && intervalsList.size() > 0){
+ 				int i = 1;
+ 				for(String param : intervalsList){
+ 					objArr = new Object[2];
+ 					objArr[0] = new Long(i);++i;
+ 					objArr[1] = param;
+ 					fundSanctionRangeList.add(objArr);
+ 				}
+ 			}
  			if(fundSanctionRangeList != null && fundSanctionRangeList.size() > 0){
  				buildTemplate(finalList,fundSanctionRangeList);
  			}
  			
+ 			//result => return from DAO contain fund amount as third parameter of each object array, here I will replace that with its correspond range
+ 			if(result != null && result.size() > 0){
+ 				for(Object[] param : result){
+ 					param[2] = getRangeForFundAmount(fundSanctionRangeList,commonMethodsUtilService.getLongValueForObject(param[2]));
+ 				}
+ 			}
+ 			
+ 			
  			//take all the location based on fund range for previous year
- 			List<Object[]> previousYearDtls = fundSanctionMatrixDetailsDAO.getPreviousYearDtls(scopeId,previousYearId,"previous");
+ 			List<Object[]> previousYearDtls = new ArrayList<Object[]>();//fundSanctionMatrixDetailsDAO.getPreviousYearDtls(scopeId,previousYearId,"previous");
+ 			Object[] prevYear = null;
+  			//now create one list of object array, each object[] contains rangeId and location id for previous year
+ 			if(result != null && result.size() > 0){
+ 				for(Object[] param : result){
+ 					if(commonMethodsUtilService.getLongValueForObject(param[0]).longValue() == previousYearId){
+ 						prevYear = new Object[2];
+ 	 					prevYear[0] = param[2];//rangeId
+ 	 					prevYear[1] = param[1];//location id
+ 	 					previousYearDtls.add(prevYear);
+ 					}
+ 				}
+ 			}
  			//create a map for rangeId and list of location for previous year
  			Map<Long,List<Long>> rangeIdAndLocListMapForPrevious = new LinkedHashMap<Long,List<Long>>();
  			List<Long> locationList = null;
@@ -1400,7 +1464,19 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  			}
  			
  			//take all the location based on fund range for present year
- 			List<Object[]> presentYearDtls = fundSanctionMatrixDetailsDAO.getPreviousYearDtls(scopeId,presentYearId,"present");
+ 			List<Object[]> presentYearDtls = new ArrayList<Object[]>();//fundSanctionMatrixDetailsDAO.getPreviousYearDtls(scopeId,presentYearId,"present");
+ 			Object[] presYear = null;
+  			//now create one list of object array, each object[] contains rangeId and location id for previous year
+ 			if(result != null && result.size() > 0){
+ 				for(Object[] param : result){
+ 					if(commonMethodsUtilService.getLongValueForObject(param[0]).longValue() == presentYearId){
+ 						presYear = new Object[2];
+ 						presYear[0] = param[2];//rangeId
+ 						presYear[1] = param[1];//location id
+ 						presentYearDtls.add(presYear);
+ 					}
+ 				}
+ 			}
  			//create a map for rangeId and list of location for present year
  			Map<Long,List<Long>> rangeIdAndLocListMapForPresent = new LinkedHashMap<Long,List<Long>>();
  			if(presentYearDtls != null && presentYearDtls.size() > 0){
@@ -1844,5 +1920,22 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
    		LOG.error(" Exception raised in getGrantTypeHighestAndLowestFund (); ");
    	}
    	return returnVO;
+   }
+   public Object getRangeForFundAmount(List<Object[]> fundSanctionRangeList,Long fund){
+	   try{
+		   if(fundSanctionRangeList != null && fundSanctionRangeList.size() > 0 && fund != null){
+			   for(Object[] param : fundSanctionRangeList){
+				   String[] strArr = commonMethodsUtilService.getStringValueForObject(param[1]).split("-");
+				   long leftVal = Long.parseLong(strArr[0].trim());
+				   long rightVal = Long.parseLong(strArr[1].trim());
+				   if(fund.longValue() >= leftVal && fund.longValue() <= rightVal){
+					   return param[0];
+				   }
+			   }
+		   }
+	   }catch(Exception e){
+		   LOG.error("Exception Occurred in getRangeForFundAmount() of FundManagementDashboardService ", e);
+	   }
+	   return null;
    }
 }
