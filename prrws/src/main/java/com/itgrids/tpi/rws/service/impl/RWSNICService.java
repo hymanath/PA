@@ -34,7 +34,7 @@ public class RWSNICService implements IRWSNICService{
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
 			 
-	        /*WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getHabitationCoverageByStatusByLocationType");
+	        /*WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/Abstract");
 	        
 	        String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
 	        System.out.println(jsonInString);
