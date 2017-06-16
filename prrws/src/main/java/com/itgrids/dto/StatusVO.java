@@ -2,10 +2,13 @@ package com.itgrids.dto;
 
 public class StatusVO {
 	
+	private Long id;
+	private String name;
 	private String status;
 	private Long count=0l;
 	private Long stressedCount;
 	private Double percentage=0.0d;
+	private String color;
 	
 	public String getStatus() {
 		return status;
@@ -30,6 +33,24 @@ public class StatusVO {
 	}
 	public void setStressedCount(Long stressedCount) {
 		this.stressedCount = stressedCount;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
 	
