@@ -12,15 +12,11 @@
 			getSchemeWiseWorkDetails();
 			getAssetInfoBetweenDates();
 		}
-		function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip)
+		function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors)
 		{
 			'use strict';
 			$('#'+id).highcharts({
-				 colors: [
-						'#ff0000',
-						'#00ff00',
-						'#0000ff'
-					],
+				 colors: colors,
 				chart: type,
 				title: {
 					text: null
@@ -51,61 +47,137 @@
 				dataType: 'json', 
 
 			}).then(function(response) {
-				//$scope.myWelcome = response.data;
-				var dataArr = [];
-				for(var i in response.data)
-				{
-				  for(var j in response.data[i].statusList)
-				  {
-					var tempArr = [];
-					tempArr.push(response.data[i].statusList[j].status);
-					tempArr.push(parseInt(response.data[i].statusList[j].count));
-					dataArr.push(tempArr);
-				  }
+				if(response.data != null && response.data.length > 0){
+					buildChartForHabitationCoverage(response.data);
+					buildChartForHabitationCoverageStatus(response.data);
 				}
-				
-				var id = 'habitation';
-				var type = {
-					type: 'column',
-					backgroundColor:'transparent'
-				};
-				var legend = {
-					enabled: false
-				};
-				var yAxis = {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: null
-					},
-				};
-				var xAxis = {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					categories: []
-				};
-				var plotOptions ={ column: {
-						colorByPoint: true
-					}};
-				var tooltip = {
-					pointFormat: '{point.y}'
-				};
-
-				var data = [{
-					name: '',
-					data: dataArr,
-
-					dataLabels: {
-						enabled: true,
-						color: '#FFFFFF',
-						align: 'right',
-						format: '{point.y}',
-					}
-				}];
-				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 			});
+		}
+		
+		function buildChartForHabitationCoverage(response){
+			
+			var dataArr = [];
+			var pcCount = 0;
+			for(var i in response){
+				for(var j in response[i].statusList){
+					if(response[i].statusList[j].status != "NC"){
+						if(response[i].statusList[j].status == "PC1" || response[i].statusList[j].status == "PC2" || response[i].statusList[j].status == "PC3" || response[i].statusList[j].status == "PC4"){
+							pcCount = pcCount+parseInt(response[i].statusList[j].count);
+							if(response[i].statusList[j].status == "PC4"){
+								var pcArr = [];
+								pcArr.push("PC");
+								pcArr.push(parseInt(pcCount));
+								dataArr.push(pcArr);
+							}
+						}else{
+							var tempArr = [];
+							response[i].statusList[j].status == "NSS" ? tempArr.push("QA"):tempArr.push(response[i].statusList[j].status);
+							tempArr.push(parseInt(response[i].statusList[j].count));
+							dataArr.push(tempArr);
+						}
+					}
+				}
+			}
+			
+			var colors = ['#494949','#FC5049','#14BAAD']
+			var id = 'totalValues';
+			var type = {
+				type: 'column',
+				backgroundColor:'transparent'
+			};
+			var legend = {
+				enabled: false
+			};
+			var yAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+			};
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: []
+			};
+			var plotOptions ={ column: {
+					colorByPoint: true
+				}};
+			var tooltip = {
+				pointFormat: '{point.y}'
+			};
+
+			var data = [{
+				name: '',
+				data: dataArr,
+
+				dataLabels: {
+					enabled: true,
+					color: '#FFFFFF',
+					align: 'right',
+					format: '{point.y}',
+				}
+			}];
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors);
+		}
+		
+		function buildChartForHabitationCoverageStatus(response){
+			var dataArr = [];
+			for(var i in response){
+			  for(var j in response[i].statusList){
+					if(response[i].statusList[j].status != "NC"){
+						var tempArr = [];
+						tempArr.push(response[i].statusList[j].status);
+						tempArr.push(parseInt(response[i].statusList[j].count));
+						dataArr.push(tempArr);
+					}
+				}
+			}
+			var colors = ['#14BAAD']
+			var id = 'habitation';
+			var type = {
+				type: 'column',
+				backgroundColor:'transparent'
+			};
+			var legend = {
+				enabled: false
+			};
+			var yAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+			};
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: []
+			};
+			var plotOptions ={ column: {
+					colorByPoint: true
+				}};
+			var tooltip = {
+				pointFormat: '{point.y}'
+			};
+
+			var data = [{
+				name: '',
+				data: dataArr,
+
+				dataLabels: {
+					enabled: true,
+					color: '#FFFFFF',
+					align: 'right',
+					format: '{point.y}',
+				}
+			}];
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors);
+			
 		}
 		function getLabTestDetails()
 		{
@@ -118,10 +190,65 @@
 				method: "POST",
 				dataType: 'json', 
 			}).then(function(response) {
-				//$scope.myWelcome = response.data;
-				console.log(response.data);
+				if(response.data != null){
+					buildChartForLabTestDetails(response.data);
+				}
 			});
 		}
+		
+		function buildChartForLabTestDetails(response){
+			var dataArr = [];
+			var arr1 = [],arr2 = [];
+			arr1.push("physicalTestCount");
+			arr1.push(parseInt(response.physicalTestCount));
+			dataArr.push(arr1);
+			arr2.push("bacterialTestCount");
+			arr2.push(parseInt(response.bacterialTestCount));
+			dataArr.push(arr2);
+			var colors = ['#14BAAD','#FC5049']
+			var id = 'overView';
+			var type = {
+				type: 'column',
+				backgroundColor:'transparent'
+			};
+			var legend = {
+				enabled: false
+			};
+			var yAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+			};
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: []
+			};
+			var plotOptions ={ column: {
+					colorByPoint: true
+				}};
+			var tooltip = {
+				pointFormat: '{point.y}'
+			};
+
+			var data = [{
+				name: '',
+				data: dataArr,
+
+				dataLabels: {
+					enabled: true,
+					color: '#FFFFFF',
+					align: 'right',
+					format: '{point.y}',
+				}
+			}];
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors);
+		}
+		
 		function getHabitationSupplyDetails(){
 			var json = {
 				year:"2017"
