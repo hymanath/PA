@@ -7,9 +7,80 @@ function onLoadCalls()
 		$(this).addClass("active");
 		var projectDivId = $(this).attr("overview-block");
 		projectData(projectDivId)
+		if(projectDivId == 'Labout Budget')
+		{
+			
+		}
 	});
 }
 
+function projectData(divId)
+{
+	var collapse='';
+	var dataArr = ['state','district','constituency','mandal']
+	collapse+='<section>';
+		collapse+='<div class="row">';
+			collapse+='<div class="col-sm-12">';
+				for(var i in dataArr)
+				{
+					collapse+='<div class="panel-group" id="accordion'+divId+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
+						collapse+='<div class="panel panel-default panel-black">';
+							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+dataArr[i]+'">';
+								collapse+='<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion'+divId+''+dataArr[i]+'" href="#collapse'+divId+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId+''+dataArr[i]+'">';
+									collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - '+divId+'</h4>';
+								collapse+='</a>';
+							collapse+='</div>';
+							collapse+='<div id="collapse'+divId+''+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId+''+dataArr[i]+'">';
+								collapse+='<div class="panel-body">';
+									collapse+='<div id="table'+divId+''+dataArr[i]+'"></div>';
+								collapse+='</div>';
+							collapse+='</div>';
+						collapse+='</div>';
+					collapse+='</div>';
+				}
+			collapse+='</div>';
+		collapse+='</div>';
+	collapse+='</section>';
+	$("#projectData").html(collapse);
+	for(var i in dataArr)
+	{ 
+		var tableId = divId+''+dataArr[i]
+		functionName(tableId,dataArr[i])
+	}
+}
+function tableView(blockId,theadArr,result)
+{
+	var tableView='';
+	var tbodyArr = [];
+	var $windowWidth = $(window).width();
+	
+	tableView+='<table class="table table-bordered dataTable'+blockId+'">';
+		tableView+='<thead class="text-capital">';
+			for(var i in theadArr)
+			{
+				tableView+='<th>'+theadArr[i]+'</th>';
+			}
+		tableView+='</thead>';
+		tableView+='<tbody>';
+			tableView+='<tr>';
+				tableView+='<td class="text-capital">total <i class="fa fa-question-circle" attr_click="questionMark" attr_title="Modal TItle"></i></td>';
+				tableView+='<td>574 <small class="text-success">57%</small></td>';
+				tableView+='<td>574 <small class="text-success">57%</small></td>';
+				tableView+='<td>574 <small class="text-success">57%</small></td>';
+				tableView+='<td>574 <small class="text-success">57%</small></td>';
+				tableView+='<td>574 <small class="text-success">57%</small></td>';
+				tableView+='<td>574 <small class="text-success">57%</small></td>';
+				tableView+='<td>574 <small class="text-success">57%</small></td>';
+			tableView+='</tr>';
+		tableView+='</tbody>';
+	tableView+='</table>';
+	$("#"+blockId).html(tableView);	
+	$(".dataTable"+blockId).dataTable();
+	if($windowWidth < 768)
+	{
+		$(".dataTable"+blockId).wrap("<div class='table-responsive'></div>");
+	}
+}
 function getNREGSProjectsOverview()
 {
 	
@@ -28,38 +99,61 @@ function getNREGSProjectsOverview()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			
+			buildNREGSProjectsOverview(ajaxresp);
 		}
 	});
 }
-
-
-function projectData(divId)
+function buildNREGSProjectsOverview(result)
 {
-	var collapse='';
-	collapse+='<section>';
-		collapse+='<div class="row">';
-			collapse+='<div class="col-sm-12">';
-				var dataArr = ['state','district','constituency','mandal']
-				for(var i in dataArr)
+	var str='';
+	str+='<div class="row">';
+		for(var i in result)
+		{
+			str+='<div class="col-sm-2">';
+				if(result[i].percentage < 50)
 				{
-					collapse+='<div class="panel-group" id="accordion'+divId+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
-						collapse+='<div class="panel panel-default panel-black">';
-							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+dataArr[i]+'">';
-								collapse+='<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion'+divId+''+dataArr[i]+'" href="#collapse'+divId+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId+''+dataArr[i]+'">';
-									collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - '+divId+'</h4>';
-								collapse+='</a>';
-							collapse+='</div>';
-							collapse+='<div id="collapse'+divId+''+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId+''+dataArr[i]+'">';
-								collapse+='<div class="panel-body">';
-									
-								collapse+='</div>';
-							collapse+='</div>';
-						collapse+='</div>';
-					collapse+='</div>';
+					str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
+				}else if(result[i].percentage > 50 && result[i].percentage < 80)
+				{
+					str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
+				}else if(result[i].percentage > 80)
+				{
+					str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
 				}
-			collapse+='</div>';
-		collapse+='</div>';
-	collapse+='</section>';
-	$("#projectData").html(collapse);
+				
+					str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
+					str+='<small class="text-center">Achieved</small>';
+					str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+				if(result[i].percentage < 50)
+				{
+					str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+				}else if(result[i].percentage > 50 && result[i].percentage < 80)
+				{
+					str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+					
+				}else if(result[i].percentage > 80)
+				{
+					str+='<small><i class="fa fa-long-arrow-top"></i></small></h1>';
+				}
+					str+='<div class="row">';
+						str+='<div class="col-sm-6 text-center">';
+							str+='<label>Target</label>';
+							str+='<h4>'+result[i].target+'</h4>';
+						str+='</div>';
+						str+='<div class="col-sm-6 text-center">';
+							str+='<label>Generated</label>';
+							str+='<h4>'+result[i].completed+'</h4>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		}
+	str+='</div>';
+	$("#projectsOverview").html(str);
+}
+
+function functionName(tableId,dataArr[i])
+{
+	var theadArr = ['','QA','PC1','PC2','PC3','PC4','FC','TOTAL'];
+	tableView(tableId,theadArr,result)
 }
