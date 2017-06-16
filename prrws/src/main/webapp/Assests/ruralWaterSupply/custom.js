@@ -6,7 +6,7 @@ function onLoadCalls()
 	tabBlocks('consBlockId','constituency');
 	tabBlocks('mandalBlockId','mandal');
 	responsiveTabs();
-	totalValues('totalValues');
+	//totalValues('totalValues');
 	totalValues('waterSources');
 	totalValues('levelOfSupply');
 	//totalValues('habitation');
@@ -17,7 +17,7 @@ function onLoadCalls()
 	totalValues('keryPerformanceTarget');
 	totalValues('alertStatus');
 	totalValues('assets');
-	totalValues('overView');
+	//totalValues('overView');
 	totalValues('planOfAction');
 	totalValues('drinkingWater');
 	
