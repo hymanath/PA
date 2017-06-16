@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.StatusVO;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 
 @EnableAutoConfiguration
@@ -97,5 +98,26 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return assetInfo;
 	}
-
+	
+	@PostMapping("/getAlertDetailsOfCategoryByStatusWise")
+	public @ResponseBody List<StatusVO> getAlertDetailsOfCategoryByStatusWise(InputVO vo){
+		List<StatusVO> alertInfo = null;
+		try {
+			alertInfo = rWSNICService.getAlertDetailsOfCategoryByStatusWise(vo);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAlertDetailsOfCategoryByStatusWise - RuralWaterSupplyDashBoardController controller", e);
+		}
+		return alertInfo;
+	}
+	
+	@PostMapping("/getAlertFeedbackStatusDetails")
+	public @ResponseBody List<StatusVO> getAlertFeedbackStatusDetails(InputVO vo){
+		List<StatusVO> alertInfo = null;
+		try {
+			alertInfo = rWSNICService.getAlertFeedbackStatusDetails(vo);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAlertFeedbackStatusDetails - RuralWaterSupplyDashBoardController controller", e);
+		}
+		return alertInfo;
+	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 @Service
 @Transactional
@@ -312,7 +315,72 @@ public class RWSNICService implements IRWSNICService{
 
 	}
 	
+	public List<StatusVO> getAlertDetailsOfCategoryByStatusWise(InputVO inputVO){
+		List<StatusVO> voList = new ArrayList<StatusVO>(0);
+		try {
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getAlertDetailsOfCategoryByStatusWise");
+	        
+        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				
+				if(output != null && !output.isEmpty()){
+					JSONArray arr = new JSONArray(output);
+					
+					if(arr != null && arr.length() > 0){
+						for (int i = 0; i < arr.length(); i++) {
+							//id,name,color,count
+							JSONObject jobj = (JSONObject)arr.get(i);
+							StatusVO vo = new StatusVO();
+							vo.setId(jobj.getLong("id"));
+							vo.setName(jobj.getString("name"));
+							vo.setColor(jobj.getString("color"));
+							vo.setCount(jobj.getLong("count"));
+							voList.add(vo);
+						}
+					}
+				}
+ 	      	}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAlertDetailsOfCategoryByStatusWise - RuralWaterSupplyDashBoardService service", e);
+		}
+		return voList;
+	}
 	
-	
-	
+	public List<StatusVO> getAlertFeedbackStatusDetails(InputVO inputVO){
+		List<StatusVO> voList = new ArrayList<StatusVO>(0);
+		try {
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getAlertFeedbackStatusDetails");
+	        
+        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				
+				if(output != null && !output.isEmpty()){
+					JSONArray arr = new JSONArray(output);
+					
+					if(arr != null && arr.length() > 0){
+						for (int i = 0; i < arr.length(); i++) {
+							//id,name,color,count
+							JSONObject jobj = (JSONObject)arr.get(i);
+							StatusVO vo = new StatusVO();
+							vo.setId(jobj.getLong("id"));
+							vo.setName(jobj.getString("name"));
+							vo.setCount(jobj.getLong("count"));
+							voList.add(vo);
+						}
+					}
+				}
+ 	      	}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAlertFeedbackStatusDetails - RuralWaterSupplyDashBoardService service", e);
+		}
+		return voList;
+	}
 }
