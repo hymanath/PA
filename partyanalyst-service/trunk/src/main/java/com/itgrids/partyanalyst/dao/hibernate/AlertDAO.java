@@ -10175,6 +10175,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			}
 		return query.list();   
 		}
+	 	
 	 	public List<Object[]> getAlertsDataForAms(Long alertId)
 		{
 			StringBuilder str = new StringBuilder();
@@ -10233,4 +10234,147 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			query.setParameter("alertId", alertId);
 			return query.list();
 		}
+	 	
+	 	public List<Object[]> getAlertDetailsOfCategoryByStatusWise(Date fromDate , Date toDate,Long deptId,String year){
+	 		
+	 		StringBuilder queryStr = new StringBuilder();
+	 		
+	 		queryStr.append(" SELECT model.alertStatus.alertStatusId,model.alertStatus.alertStatus," +
+	 					"model.alertStatus.color,count(distinct model.alertId) " +
+	 				" FROM Alert model " +
+	 				" WHERE model.isDeleted ='N'" +
+	 					" and model.govtDepartmentId  =:deptId " +
+	 					" and model.alertTypeId  in ("+IConstants.GOVT_ALERT_TYPE_ID+") " );
+	 		
+	 		if(year !=null && !year.trim().isEmpty()){
+	 			queryStr.append(" and (year(model.createdTime) =:year) ");
+	 		}
+	 		else if(fromDate != null && toDate != null){
+				queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
+			}
+	 		queryStr.append(" GROUP BY model.alertStatus.alertStatusId order by model.alertStatus.statusOrder  ");
+	 		
+	 		Query query = getSession().createQuery(queryStr.toString());
+	 		
+	 		if(fromDate != null && toDate != null){
+	 			query.setParameter("fromDate", fromDate);
+	 			query.setParameter("toDate", toDate);
+	 		}
+	 		query.setParameter("deptId", deptId);
+	 		
+	 		return query.list();
+	 	}
+	 	public List<Long> getAlertsOfCategoryByStatusWise(Date fromDate , Date toDate,Long deptId,List<Long> statusIds,int stIndex,int endIndex,String year){
+	 		
+	 		StringBuilder queryStr = new StringBuilder();
+	 		
+	 		queryStr.append(" SELECT distinct model.alertId  " +
+	 				" FROM Alert model " +
+	 				" WHERE model.isDeleted ='N'" +
+	 					" and model.govtDepartmentId  =:deptId " +
+	 					" and model.alertTypeId  in ("+IConstants.GOVT_ALERT_TYPE_ID+") " );
+	 		
+	 		if(year !=null && !year.trim().isEmpty()){
+	 			queryStr.append(" and (year(model.createdTime) =:year) ");
+	 		}
+	 		else if(fromDate != null && toDate != null){
+				queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
+			}
+	 		
+	 		if(statusIds !=null && statusIds.size()>0){
+	 			queryStr.append(" and model.alertStatus.alertStatusId in (:statusIds) ");
+	 		}
+	 		
+	 		queryStr.append(" GROUP BY model.alertStatus.alertStatusId order by model.alertStatus.statusOrder  ");
+	 		
+	 		Query query = getSession().createQuery(queryStr.toString());
+	 		
+	 		if(fromDate != null && toDate != null){
+	 			query.setParameter("fromDate", fromDate);
+	 			query.setParameter("toDate", toDate);
+	 		}
+	 		
+	 		if(statusIds !=null && statusIds.size()>0){
+	 			query.setParameterList("statusIds", statusIds);
+	 		}
+	 		query.setParameter("deptId", deptId);
+	 		
+	 		if(endIndex !=0){
+	 			query.setFirstResult(stIndex);
+	 			query.setMaxResults(endIndex);
+	 		}
+	 		
+	 		return query.list();
+	 	}
+	 	
+	 	public List<Object[]> getAlertFeedbackStatusDetails(Date fromDate,Date toDate,Long deptId,String year){
+	 		StringBuilder queryStr = new StringBuilder();
+	 		
+	 		queryStr.append(" SELECT model.alertFeedbackStatus.alertFeedbackStatusId,model.alertFeedbackStatus.status," +
+	 					" count(distinct model.alertId) " +
+	 				" FROM Alert model " +
+	 				" WHERE model.isDeleted ='N'" +
+	 					" and model.govtDepartmentId  =:deptId " +
+	 					" and model.alertTypeId  in ("+IConstants.GOVT_ALERT_TYPE_ID+")" +
+	 					" and model.alertFeedbackStatus.isDeleted ='N' " );
+	 		if(year !=null && !year.trim().isEmpty()){
+	 			queryStr.append(" and (year(model.createdTime) =:year) ");
+	 		}else if(fromDate != null && toDate != null){
+				queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
+			}
+	 		
+	 		queryStr.append(" GROUP BY model.alertFeedbackStatus.alertFeedbackStatusId order by model.alertFeedbackStatus.orderNo   ");
+	 		
+	 		Query query = getSession().createQuery(queryStr.toString());
+	 		
+	 		if(fromDate != null && toDate != null){
+	 			query.setParameter("fromDate", fromDate);
+	 			query.setParameter("toDate", toDate);
+	 		}
+	 		
+	 		query.setParameter("deptId", deptId);
+	 		
+	 		return query.list();
+	 	}
+	 	public List<Long> getAlertsOfFeedbackStatus(Date fromDate,Date toDate,Long deptId,List<Long> statusIds,int stIndex,int endIndex,String year){
+	 		StringBuilder queryStr = new StringBuilder();
+	 		
+	 		queryStr.append(" SELECT distinct model.alertId " +
+	 				" FROM Alert model " +
+	 				" WHERE model.isDeleted ='N'" +
+	 					" and model.govtDepartmentId  =:deptId " +
+	 					" and model.alertTypeId  in ("+IConstants.GOVT_ALERT_TYPE_ID+")" +
+	 					" and model.alertFeedbackStatus.isDeleted ='N' " );
+	 		
+	 		if(year !=null && !year.trim().isEmpty()){
+	 			queryStr.append(" and (year(model.createdTime) = :year) ");
+	 		}
+	 		else if(fromDate != null && toDate != null){
+				queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
+			}
+	 		
+	 		if(statusIds !=null && statusIds.size()>0){
+	 			queryStr.append(" and model.alertFeedbackStatus.alertFeedbackStatusId in (:statusIds) ");
+	 		}
+	 		
+	 		queryStr.append(" GROUP BY model.alertFeedbackStatus.alertFeedbackStatusId order by model.alertFeedbackStatus.orderNo   ");
+	 		
+	 		Query query = getSession().createQuery(queryStr.toString());
+	 		
+	 		if(fromDate != null && toDate != null){
+	 			query.setParameter("fromDate", fromDate);
+	 			query.setParameter("toDate", toDate);
+	 		}
+	 		if(statusIds !=null && statusIds.size()>0){
+	 			query.setParameterList("statusIds", statusIds);
+	 		}
+	 		query.setParameter("deptId", deptId);
+	 		
+	 		if(endIndex !=0){
+	 			query.setFirstResult(stIndex);
+	 			query.setMaxResults(endIndex);
+	 		}
+	 		
+	 		return query.list();
+	 	}
 }

@@ -97,6 +97,7 @@ import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -5049,6 +5050,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return finalVOLst;
 	 }
+	 
+	
 	 public List<AmsKeyValueVO> getGovtAllDepartmentDetailsForAms(){
 		 List<AmsKeyValueVO> finalVOLst = new ArrayList<AmsKeyValueVO>(0);
 		 try {
@@ -5152,5 +5155,36 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			log.error("Exception raised at saveDocumentsForAlertForAms", e);
 		}
 		 return resultStatus;
+	 }
+	 
+	 public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(AlertVO VO){
+		 try {
+			 
+			return alertManagementSystemService.getAlertDetailsOfCategoryByStatusWise(VO);
+			
+		} catch (Exception e) {
+			log.error("Exception raised at getAlertDetailsOfCategoryByStatusWise", e);
+		}
+		 return null;
+	 }
+	 public List<IdNameVO> getAlertFeedbackStatusDetails(AlertVO VO){
+		 try {
+			 
+			return alertManagementSystemService.getAlertFeedbackStatusDetails(VO);
+			
+		} catch (Exception e) {
+			log.error("Exception raised at getAlertFeedbackStatusDetails", e);
+		}
+		 return null;
+	 }
+	 public List<AmsDataVO> getAlertsOfCategoryByStatusWise(AlertVO VO){
+		 try {
+			 
+			return alertManagementSystemService.getAlertsOfCategoryByStatusWise(VO);
+			
+		} catch (Exception e) {
+			log.error("Exception raised at getAlertsOfCategoryByStatusWise", e);
+		}
+		 return null;
 	 }
 }

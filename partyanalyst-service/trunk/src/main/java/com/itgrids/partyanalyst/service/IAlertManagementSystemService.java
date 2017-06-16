@@ -234,4 +234,7 @@ public interface IAlertManagementSystemService {
 				String group,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,
 				Long filterScopeValue,String searchType,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> subTaskAlertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds );
 	 public ResultStatus saveDocumentsForAlertForAms(final AmsAppLoginVO keyVo);
+	 public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(AlertVO VO);
+	 public List<IdNameVO> getAlertFeedbackStatusDetails(AlertVO VO);
+	 public List<AmsDataVO> getAlertsOfCategoryByStatusWise(AlertVO mainVo);
 }        
