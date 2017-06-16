@@ -12,6 +12,8 @@ function onLoadCalls()
 			
 		}
 	});
+	getNregsVermiOverview()
+	getNregsVermiData();
 }
 
 function projectData(divId)
@@ -156,4 +158,49 @@ function functionName(tableId,dataArr)
 {
 	var theadArr = ['','QA','PC1','PC2','PC3','PC4','FC','TOTAL'];
 	tableView(tableId,theadArr,result)
+}
+function getNregsVermiOverview()
+{
+	
+	var json = {
+			year:"2017",
+			fromDate:"2017-04-01",
+			toDate:"2017-06-30"
+		}
+	$.ajax({
+		url: 'getNregsVermiOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			
+		}
+	});
+}
+function getNregsVermiData()
+{
+	
+	var json = {
+			year:"2017",
+			fromDate:"2017-04-01",
+			toDate:"2017-06-30",
+		    locationType: "state" 
+		}
+	$.ajax({
+		url: 'getNregsVermiData',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			
+		}
+	});
 }
