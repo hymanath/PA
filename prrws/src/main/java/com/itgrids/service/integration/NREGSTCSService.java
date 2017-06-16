@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itgrids.dto.FarmPondOverviewVO;
 
 import com.google.gson.JsonObject;
 import com.itgrids.dto.IdNameVO;
@@ -17,6 +18,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
+import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
@@ -189,6 +191,108 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		
 		return voList;
+	}
+	
+	/*
+	 * Date : 16/06/2017
+	 * Author :Swapna
+	 * @description : getFarmPondOverview
+	 */
+	
+   public FarmPondOverviewVO getFarmPondOverview(InputVO inputVO){
+	FarmPondOverviewVO farmpondoverviewvO = new FarmPondOverviewVO();
+	try {
+		 
+		ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FarmPondService/FarmPondOverview", inputVO);
+        
+        if(response.getStatus() != 200){
+ 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      }else{
+ 	    	 String output = response.getEntity(String.class); 	    	 
+ 	    	if(output != null && !output.isEmpty()){
+ 	    		JSONObject jObj = new JSONObject(output); 	    		
+ 	    				//FarmPondOverviewVO 	farmpondoverviewvO =new FarmPondOverviewVO(); 	    				
+ 	    				farmpondoverviewvO.setAveragePerDistrict(jObj.getString("AVERAGEPERDISTRICT"));
+ 	    				farmpondoverviewvO.setAveragePerConstituency(jObj.getString("AVERAGEPERCONSTITUENCY"));
+ 	    				farmpondoverviewvO.setAveragePerMandal(jObj.getString("AVERAGEPERMANDAL"));
+ 	    				farmpondoverviewvO.setConstituenciesInGreen(jObj.getLong("TOTALBUDGET"));
+ 	    				farmpondoverviewvO.setConstituenciesInOrgange(jObj.getLong("CONSTITUENCIESINORANGE"));
+ 	    				farmpondoverviewvO.setConstituenciesInRed(jObj.getLong("CONSTITUENCIESINRED"));
+ 	    				farmpondoverviewvO.setDistrictsInGreen(jObj.getLong("DISTRICTSINGREEN"));
+ 	    				farmpondoverviewvO.setDistrictsInOrgange(jObj.getLong("DISTRICTSINORANGE"));
+ 	    				farmpondoverviewvO.setDistrictsInRed(jObj.getLong("DISTRICTSINRED"));
+ 	    				farmpondoverviewvO.setMandalsInGreen(jObj.getLong("MANDALSINGREEN"));
+ 	    				farmpondoverviewvO.setMandalsInOrgange(jObj.getLong("MANDALSINORANGE"));
+ 	    				farmpondoverviewvO.setMandalsInRed(jObj.getLong("MANDALSINRED"));
+ 	    				farmpondoverviewvO.setTotalAvgFarmsInConstituency(jObj.getString("TOTALAVGFARMSINCONSTITUENCY"));
+ 	    				farmpondoverviewvO.setTotalAvgFarmsInDistrict(jObj.getString("TOTALAVGFARMSINDISTRICT"));
+ 	    				farmpondoverviewvO.setTotalBudget(jObj.getLong("TOTALBUDGET"));
+ 	    				farmpondoverviewvO.setTotalDistricts(jObj.getLong("TOTALDISTRICTS"));
+ 	    				farmpondoverviewvO.setTotalMandals(jObj.getLong("TOTALMANDALS"));
+ 	    				farmpondoverviewvO.setTotalVillages(jObj.getLong("TOTALVILLAGES") );
+ 	    				farmpondoverviewvO.setVillagesInGreen(jObj.getLong("VILLAGESINGREEN"));
+ 	    				farmpondoverviewvO.setVillagesInOrgange(jObj.getLong("VILLAGESINORANGE"));
+ 	    				farmpondoverviewvO.setVillagesInRed(jObj.getLong("VILLAGESINRED"));
+ 	    				farmpondoverviewvO.setTotalAvgFarmsInMandal(jObj.getString("TOTALAVGFARMSINMANDAL"));
+ 	    				farmpondoverviewvO.setTotalConstituencies(jObj.getLong("TOTALCONSTITUENCIES"));
+ 	    				
+ 	    			}
+ 	    		} 	    	
+ 	      
+	             }
+ 	             catch (Exception e) {
+			LOG.error("Exception raised at getFarmPondOverview -FarmPondOverview service", e);
+		}
+		
+		return  farmpondoverviewvO;
+	}
+   
+   /*
+	 * Date : 16/06/2017
+	 * Author :Swapna
+	 * @description : getFarmPondData
+	 */
+      public List<NregsDataVO> getFarmPondData(InputVO inputVO){
+		List<NregsDataVO> list = new ArrayList<NregsDataVO>(0);
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FarmPondService/FarmPondData", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO nregsDataVO=new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				nregsDataVO.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				nregsDataVO.setDistrict(jObj.getString("DISTRICT"));
+	 	    				nregsDataVO.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				nregsDataVO.setMandal(jObj.getString("MANDAL"));
+	 	    				nregsDataVO.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				nregsDataVO.setTarget(jObj.getLong("TARGET"));
+	 	    				nregsDataVO.setGrounded(jObj.getString("GROUNDED"));
+	 	    				nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
+	 	    				nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
+	 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				nregsDataVO.setPercentage(jObj.getString("PERCENTAGE"));	 	    				
+	 	    				list.add(nregsDataVO);	 	    							
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    	 
+	 	    	  
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getFarmPondData - getFarmPondData service", e);
+		}
+		
+		return list;
 	}
 	/*
 	 * Date : 16/06/2017
