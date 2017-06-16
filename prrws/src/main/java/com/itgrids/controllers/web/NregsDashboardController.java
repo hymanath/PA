@@ -31,12 +31,18 @@ public class NregsDashboardController {
 	private NREGSTCSService nregsTcsService;
 	
 	
-	@RequestMapping(value ="/test", method = RequestMethod.GET)
+	/*@RequestMapping(value ="/test", method = RequestMethod.GET)
     public String fundManagementDashboardPage(ModelMap model) {
 		webServiceUtilService.testMethod();
 		return "fundManagementDashboard";
-    }
+    }*/
 
+	@RequestMapping(value ="/MGNREGSDashboard", method = RequestMethod.GET)
+    public String ruralWaterSupplyDashBoardPage(ModelMap model) {
+      
+		return "MGNREGS";
+    }
+	
 	@PostMapping("/getNREGSProjectsOverview")
 	public @ResponseBody List<NregsProjectsVO> getNREGSProjectsOverview(InputVO vo){
 		List<NregsProjectsVO> locationVOList = null;
