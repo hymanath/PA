@@ -252,9 +252,68 @@
 
 			}).then(function(response) {
 				//$scope.myWelcome = response.data;
-				console.log(response.data);
+				if(response.data !=null){
+					buildHabitationSupplyDetails(response.data);
+				}
 			});
 		}
+		
+		function buildHabitationSupplyDetails(result){
+			var dataArr = [];
+				var subDataArr1=[],subDataArr2=[];
+				
+				subDataArr1.push("SAFE");
+				subDataArr1.push(result.safeMLD);
+				dataArr.push(subDataArr1);
+				
+				subDataArr2.push("UN-SAFE");
+				subDataArr2.push(result.unsafeMLD);
+				dataArr.push(subDataArr2);
+				
+				var id = 'levelOfSupply';
+				var type = {
+					type: 'column',
+					backgroundColor:'transparent'
+				};
+				var legend = {
+					enabled: false
+				};
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+				};
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: []
+				};
+				var plotOptions ={ column: {
+						colorByPoint: true
+					}};
+				var tooltip = {
+					pointFormat: '{point.y}'
+				};
+
+				var data = {
+					name: '',
+					data: dataArr,
+
+					dataLabels: {
+						enabled: true,
+						color: '#FFFFFF',
+						align: 'right',
+						format: '{point.y}',
+					}
+				};
+				var colors = ['#14BAAD','#FC5049']
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors);
+		}
+		
 		function getSchemesDetails(){
 			var json = {
 				fromDateStr:"01-12-2016",
@@ -267,9 +326,75 @@
 				dataType: 'json', 
 
 			}).then(function(response) {
-				//$scope.myWelcome = response.data;
-				console.log(response.data);
+				if(response.data !=null && response.data.length>0){
+					buildSchemesDetails(response.data);
+				}
 			});
+		}
+		function buildSchemesDetails(result){
+			var dataArr = [];
+
+				for(var i in result)
+				  {
+					var tempArr = [];
+					
+					if(result[i].assetType == "PWS" || result[i].assetType == "CPWS")
+					{
+						if(result[i].assetType == "PWS"){
+							result[i].assetType = "SINGAL VILLAGE";
+						}else{
+							result[i].assetType = "MULTI VILLAGE";
+						}
+						tempArr.push(result[i].assetType);
+						tempArr.push(parseInt(result[i].count));
+						dataArr.push(tempArr);
+						
+					}
+					
+				  }
+				  
+				var id = 'schemes';
+				var type = {
+					type: 'column',
+					backgroundColor:'transparent'
+				};
+				var legend = {
+					enabled: false
+				};
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+				};
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: []
+				};
+				var plotOptions ={ column: {
+						colorByPoint: true
+					}};
+				var tooltip = {
+					pointFormat: '{point.y}'
+				};
+
+				var data = [{
+					name: '',
+					data: dataArr,
+
+					dataLabels: {
+						enabled: true,
+						color: '#FFFFFF',
+						align: 'right',
+						format: '{point.y}',
+					}
+				}];
+				var colors = ['#14BAAD','#FC5049']
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors);
 		}
 		function getSchemeWiseWorkDetails(){
 			var json = {
@@ -283,9 +408,75 @@
 				dataType: 'json', 
 
 			}).then(function(response) {
-				//$scope.myWelcome = response.data;
-				console.log(response.data);
+				if(response.data !=null && response.data.length>0){
+					buildSchemeWiseWorkDetails(response.data);
+				}
 			});
+		}
+		function buildSchemeWiseWorkDetails(result){
+			var dataArr = [];
+			var assetTypeArr = [];
+			var workOngoingArr = [];
+			var workNotGroundedArr = [];
+			var workCompletedArr = [];
+			var workComissionedArr = [];
+				for(var i in result)
+				  {					 
+					if(result[i].assetType == "PWS" || result[i].assetType == "CPWS")
+					{
+						assetTypeArr.push(result[i].assetType);						
+						workOngoingArr.push({"y":result[i].workOngoingCount,color:'#14BBAE'});
+						workNotGroundedArr.push({"y":result[i].workNotGroundedCount,color:'#FC5E57'});
+						workCompletedArr.push({"y":result[i].workCompletedCount,color:'#FFBF14'});
+						workComissionedArr.push({"y":result[i].workComissionedCount,color:'#465556'});						
+					}
+					
+				  }
+				  
+				var id = 'habitationWorks';
+				var type = {
+					type: 'column',
+					backgroundColor:'transparent'
+				};
+				var legend = {
+					//enabled: true
+				};
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+				};
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: assetTypeArr
+				};
+				var plotOptions ={ 
+						column: {
+						//colorByPoint: true
+					}};
+				var tooltip = {
+					pointFormat: '{point.y}'
+				};
+				var colors = []
+				var data =  [{
+								name: 'Ongoing',
+								data: workOngoingArr
+							}, {
+								name: 'Not Grounded',
+								data: workNotGroundedArr
+							}, {
+								name: 'Completed',
+								data: workCompletedArr,
+							}, {
+								name: 'Commissioned',
+								data: workComissionedArr
+							}]
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors);
 		}
 		function getAssetInfoBetweenDates(){ 
 			var json = {
