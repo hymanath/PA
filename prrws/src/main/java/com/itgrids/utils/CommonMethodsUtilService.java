@@ -772,10 +772,10 @@ public class CommonMethodsUtilService {
 		      int lenght = amountStr.trim().length();
 		      int maxLength=0;
 		      String tempAmount = amountStr;
-		      boolean isThousand=true;
 		      if(lenght>5){
-		    	  isThousand=false;
 		    	 tempAmount = amountStr.substring(0, amountStr.length()-5);
+		      }else{
+		    	  return "0."+String.valueOf(number/10000);
 		      }
 		      amountStr = tempAmount;
 		      lenght = tempAmount.trim().length();
@@ -842,7 +842,7 @@ public class CommonMethodsUtilService {
 					if(intervalsCount>0){
 						Double value= amount/intervalsCount;
 						Double tempValue=0.00d;
-						for (int i = 0; i <= intervalsCount; i++) {
+						for (int i = 0; i < intervalsCount; i++) {
 							if(i==0){
 								intervalList.add(i+"-"+value);
 								tempValue =tempValue+value;
