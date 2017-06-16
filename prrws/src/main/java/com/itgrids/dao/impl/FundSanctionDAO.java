@@ -944,11 +944,15 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object[]> getTotalFundForScheme(List<Long> financialYrIdList,List<Long> departmentIdList,List<Long> sourceIdLIst,List<Long> schemeIdList,Date sDate,Date eDate){
+	public List<Object[]> getTotalFundForScheme(List<Long> financialYrIdList,List<Long> departmentIdList,List<Long> sourceIdLIst,List<Long> schemeIdList,Date sDate,Date eDate,String type){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select count(distinct fundSanctionLocation.fundSanction.govtScheme.govtSchemeId),sum(fundSanctionLocation.fundSanction.sactionAmount) " );
-		
+		if(type != null && type.equalsIgnoreCase("scheme")){
+			sb.append(" select count(distinct fundSanctionLocation.fundSanction.govtScheme.govtSchemeId),sum(fundSanctionLocation.fundSanction.sactionAmount) " );
+		}else if(type != null && type.equalsIgnoreCase("grant")){
+			sb.append(" select count(distinct fundSanctionLocation.fundSanction.grantType.grantTypeId),sum(fundSanctionLocation.fundSanction.sactionAmount) " );
+		}
 		sb.append(" from FundSanctionLocation fundSanctionLocation where fundSanctionLocation.isDeleted='N' ");
 		sb.append(" and fundSanctionLocation.fundSanction.isDeleted='N' ");
 		if(financialYrIdList != null && financialYrIdList.size() > 0){
