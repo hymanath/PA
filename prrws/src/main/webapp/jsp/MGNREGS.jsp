@@ -19,7 +19,7 @@
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayati Raj & RD & RWS</h4>
-					<p>Funds Management System</p>
+					<p>MNREGS - AP</p>
 				</div>
 				<div class="col-sm-1 pull-right hidden-xs">
 					<img src="Assests/images/lokesh.png" class="m_top10"/>
