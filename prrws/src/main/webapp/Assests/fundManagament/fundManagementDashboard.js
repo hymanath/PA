@@ -40,14 +40,15 @@
 		getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme',0,0,3);
 		getTotalFunds('totFund');
 		getTotalSchemes(4,'totFundScheme','scheme',0,'');
-		getTotalSchemes(4,'totFundSource','grant',0,'');
+		getTotalSchemes(4,'totFundGrant','grant',0,'');
 		// getSchemeWiseHighestAndLowestFund("highest");
 		// getSchemeWiseHighestAndLowestFund("lowest");
 		getTotalLocationsByScopeId(4,'totFundCons');
-		 getTotalLocationsByScopeId(5,'totFundMandal');
-		 getTotalLocationsByScopeId(6,'totFundVillage');
+		getTotalLocationsByScopeId(5,'totFundMandal');
+		getTotalLocationsByScopeId(6,'totFundVillage');
 		
-		getAverageFundForScheme('avgFundScheme');		
+		getAverageFundForScheme('avgFundScheme','scheme');
+		getAverageFundForScheme('avgFundGrant','grant');
 		compareFundsBetweenFinancialYears(3,'comparionDistLevlOvervwTable');
 		compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable');
 		compareFundsBetweenFinancialYears(5,'comparionMandalLevlOvervwTable');
@@ -455,10 +456,10 @@
 		{
 			str+='<h4 class="panel-title text-capital district-name"> '+ajaxresp.name+'</h4>';//avgFundMandal
 		}
-		if(attrDivId == 'avgFundDist' || attrDivId == 'avgFundCons' || attrDivId == 'avgFundScheme' || attrDivId == 'avgFundMandal' || attrDivId == 'avgFundVillage' ){
+		if(attrDivId == 'avgFundDist' || attrDivId == 'avgFundCons' || attrDivId == 'avgFundScheme' || attrDivId == 'avgFundMandal' || attrDivId == 'avgFundVillage' || attrDivId == 'avgFundGrant'  ){
 			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.avrgeAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
 		}
-		else if(ajaxresp.totalAmt != null && ajaxresp.totalAmt != "0.0" && attrDivId != 'avgFundDist' && attrDivId != 'avgFundCons' &&  attrDivId != 'avgFundScheme' && attrDivId != 'avgFundMandal' && divId != 'avgFundVillage' )
+		else if(ajaxresp.totalAmt != null && ajaxresp.totalAmt != "0.0" && attrDivId != 'avgFundDist' && attrDivId != 'avgFundCons' &&  attrDivId != 'avgFundScheme' && attrDivId != 'avgFundMandal' && divId != 'avgFundVillage'  && attrDivId != 'avgFundGrant' )
 		{
 			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.totalAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
 		}
@@ -752,9 +753,10 @@
 			getTotalLocationsByScopeId(4,'totFundCons'+divId+'',locationId,locationLevelId);
 			getTotalLocationsByScopeId(5,'totFundMandal'+divId+'',locationId,locationLevelId);
 			getTotalLocationsByScopeId(6,'totFundVillage'+divId+'',locationId,locationLevelId);
-			getAverageFundForScheme('avgFundScheme'+divId+'');
+			getAverageFundForScheme('avgFundScheme'+divId+'','scheme');
+			getAverageFundForScheme('avgFundGrant'+divId+'','grant');
 			getTotalSchemes(locationLevelId,'totFundScheme'+divId+'','scheme',locationLevelId,locationId);
-			getTotalSchemes(locationLevelId,'totFundSource'+divId+'','grant',locationLevelId,locationId);
+			getTotalSchemes(locationLevelId,'totFundGrant'+divId+'','grant',locationLevelId,locationId);
 		}
 		
 		var length = result.length
@@ -2333,7 +2335,7 @@
 			}
         });
 	}	
-	function getAverageFundForScheme(divId){
+	function getAverageFundForScheme(divId,type){
 		$("#"+divId).html(spinner);
 		var financialYrIdList = $('#financialYearId').val(); 
 		var deptIdsArr = $('#DepartmentsId').val();
@@ -2356,6 +2358,7 @@
 			financialYrIdList : financialYrIdList,
 			fromDateStr : glStartDate,//"01/06/2013",       
 			toDateStr : glEndDate,//"10/06/2020",
+			type : type
 		}
 		$.ajax({
 			url : "getAverageFundForScheme",  

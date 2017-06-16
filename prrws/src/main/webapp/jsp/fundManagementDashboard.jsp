@@ -98,11 +98,11 @@
 						<!--	<td>
 								<h4 class="panel-title text-muted">High Funded Village</h4>
 								<div id="highFundVillage" attr_id="highFundVillage" class="m_top5"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">High Funded Grant Type</h4>
 								<div id="highFundSource" class="m_top5"></div>
-							</td>-->
+							</td>
 							<td>
 								<h4 class="panel-title text-muted">High Funded Scheme</h4>
 								<div id="highFundScheme" attr_id="highFundScheme" class="m_top5"></div>
@@ -124,11 +124,11 @@
 						<!--	<td>
 								<h4 class="panel-title text-muted">Low Funded Village</h4>
 								<div id="lowFundVillage" attr_id="lowFundVillage" class="m_top5"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">Low Funded Grant Type</h4>
 								<div id="lowFundSource" class="m_top5"></div>
-							</td>-->
+							</td>
 							<td>
 								<h4 class="panel-title text-muted">Low Funded Scheme</h4>
 								<div id="lowFundScheme" attr_id="lowFundScheme" class="m_top5"></div>
@@ -150,12 +150,12 @@
 						<!--	<td>
 								<h4 class="panel-title text-muted">Average Funded Village</h4>
 								<div id="avgFundVillage" attr_id="avgFundVillage" class="m_top5"></div>
-							</td>
+							</td>-->
 							
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Grant Type</h4>
-								<div id="avgFundSource" class="m_top5"></div>
-							</td>-->
+								<div id="avgFundGrant" attr_id="avgFundGrant" class="m_top5"></div>
+							</td>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Scheme</h4>
 								<div id="avgFundScheme" attr_id="avgFundScheme" class="m_top5"></div>
@@ -177,11 +177,11 @@
 							<!--<td>
 								<h4 class="panel-title text-muted">Total Funded Village</h4>
 								<div id="totFundVillage" attr_id="totFundVillage" class="m_top5"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">Total Funded Grant Types</h4>
-								<div id="totFundSource" class="m_top5"></div>
-							</td>-->
+								<div id="totFundGrant" class="m_top5"></div>
+							</td>
 							<td>
 								<h4 class="panel-title text-muted">Total Funded Scheme</h4>
 								<div id="totFundScheme" attr_id="totFundScheme" class="m_top5"></div>
