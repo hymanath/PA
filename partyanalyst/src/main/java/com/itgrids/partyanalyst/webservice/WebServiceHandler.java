@@ -63,6 +63,7 @@ import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -2984,4 +2985,43 @@ public class WebServiceHandler {
 		    return null;
 		}	
 	}
+	@POST
+	@Path("/getAlertDetailsOfCategoryByStatusWise")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(AlertVO VO){
+		try{			
+			return webServiceHandlerService.getAlertDetailsOfCategoryByStatusWise(VO);			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAlertDetailsOfCategoryByStatusWise() Method, Exception is ",e);
+			return null;
+		}
+	}
+	
+	@POST
+	@Path("/getAlertFeedbackStatusDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<IdNameVO> getAlertFeedbackStatusDetails(AlertVO VO){
+		try{			
+			return webServiceHandlerService.getAlertFeedbackStatusDetails(VO);			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAlertFeedbackStatusDetails() Method, Exception is ",e);
+			return null;
+		}
+	}
+	
+	@POST
+	@Path("/getAlertsOfCategoryByStatusWise")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AmsDataVO> getAlertsOfCategoryByStatusWise(AlertVO VO){
+		try{			
+			return webServiceHandlerService.getAlertsOfCategoryByStatusWise(VO);			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAlertsOfCategoryByStatusWise() Method, Exception is ",e);
+			return null;
+		}
+	}
+	
 }
