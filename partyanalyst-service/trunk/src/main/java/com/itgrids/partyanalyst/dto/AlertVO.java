@@ -92,7 +92,16 @@ public class AlertVO {
     private Set<Long> childDeptIds;
     private Long proposalAmount=0l;
     private Long approvedAmount = 0l;
-
+    
+    private String year;
+    private String fromDate;
+    private String toDate;
+    private Long deptId;
+    private List<Long> statusIds = new ArrayList<Long>(0);
+    private int startIndex;
+	private int endIndex;
+	private String type;
+    
 	
 	public String getCallerDuplicate() {
 		return callerDuplicate;
@@ -577,5 +586,55 @@ public class AlertVO {
 	public void setApprovedAmount(Long approvedAmount) {
 		this.approvedAmount = approvedAmount;
 	}
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+	public Long getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public List<Long> getStatusIds() {
+		return statusIds;
+	}
+	public void setStatusIds(List<Long> statusIds) {
+		this.statusIds = statusIds;
+	}
+	public int getStartIndex() {
+		return startIndex;
+	}
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
+	}
+	public int getEndIndex() {
+		return endIndex;
+	}
+	public void setEndIndex(int endIndex) {
+		this.endIndex = endIndex;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
      	
+	
+	
 }

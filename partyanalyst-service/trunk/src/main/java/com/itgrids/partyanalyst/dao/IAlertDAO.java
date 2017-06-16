@@ -180,5 +180,9 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getGeneralGrievanceTypeList();
 	public Long getPresentStatusOfAlert(Long alertId);
 	public List<Object[]> getStatusWiseLocationAlert(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String groupType,String type,Set<Long> alertStatuIds);
+	public List<Object[]> getAlertDetailsOfCategoryByStatusWise(Date fromDate , Date toDate,Long deptId,String year);
+	public List<Object[]> getAlertFeedbackStatusDetails(Date fromDate,Date toDate,Long deptId,String year);
+	public List<Long> getAlertsOfCategoryByStatusWise(Date fromDate , Date toDate,Long deptId,List<Long> statusIds,int stIndex,int endIndex,String year);
+	public List<Long> getAlertsOfFeedbackStatus(Date fromDate,Date toDate,Long deptId,List<Long> statusIds,int stIndex,int endIndex,String year);
 	public List<Object[]> getAlertsDataForAms(Long alertId);
 }

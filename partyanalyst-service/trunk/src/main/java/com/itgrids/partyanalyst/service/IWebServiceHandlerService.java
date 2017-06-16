@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -243,4 +244,7 @@ public interface IWebServiceHandlerService {
     public ResultStatus updateAlertStatusCommentForAms(AmsAppLoginVO keyVo);
     public List<DistrictOfficeViewAlertVO> getLocationWiseDepartmentOverviewAlertCountForAms(AmsDataVO amsDataVO);
     public ResultStatus saveDocumentsForAlertForAms(AmsAppLoginVO keyVo);
+    public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(AlertVO VO);
+    public List<IdNameVO> getAlertFeedbackStatusDetails(AlertVO VO);
+    public List<AmsDataVO> getAlertsOfCategoryByStatusWise(AlertVO VO);
 }

@@ -13024,7 +13024,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 					}
 			returnVo.setCategory(category);
 		 }catch (Exception e) {
-				LOG.error(" Exception Occured in getAllAlertDetails() method, Exception - ",e);
+				LOG.error(" Exception Occured in getAlertDetailsInfoForAms() method, Exception - ",e);
 		}
 		return returnVo;
 		
@@ -14173,9 +14173,13 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
   			return 	finalList;
     		}catch(Exception e){
     			e.printStackTrace();
+    			LOG.error("Error occured getStatusCompletionInfoForSubTaskForAms() method of AlertManagementSystemService");
     		}
     		return null;
     	}
+	  
+	  
+	 
 	  /*
 		 * Teja(non-Javadoc)
 		 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getGovtAllDepartmentDetailsForAms()
@@ -15172,5 +15176,112 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
     			}
     			return resultStatus;
     		
-    		}    
+    		}
+       public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(AlertVO mainVo){
+ 		  List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
+ 		  try {
+ 			  
+ 			  Date fromDate = null;
+ 				Date toDate = null;
+ 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+ 				
+ 				if(mainVo.getFromDate() != null && mainVo.getFromDate().trim().length() > 0 && mainVo.getToDate() != null && mainVo.getToDate().trim().length() > 0){
+ 					fromDate = sdf.parse(mainVo.getFromDate().trim());
+ 					toDate = sdf.parse(mainVo.getFromDate().trim());
+ 				}
+ 				
+ 			  List<Object[]> statusObj = alertDAO.getAlertDetailsOfCategoryByStatusWise(fromDate,toDate,mainVo.getDeptId(),mainVo.getYear());
+ 			  if(statusObj !=null && statusObj.size()>0){
+ 				  for (Object[] object : statusObj) {					
+ 					  IdNameVO VO = new IdNameVO();
+ 					  VO.setId(commonMethodsUtilService.getLongValueForObject(object[0]));
+ 					  VO.setName(commonMethodsUtilService.getStringValueForObject(object[1]));
+ 					  VO.setColor(commonMethodsUtilService.getStringValueForObject(object[2]));
+ 					  VO.setCount(commonMethodsUtilService.getLongValueForObject(object[3]));
+ 					  
+ 					  finalList.add(VO);					  
+ 				}
+ 			  }
+ 			
+ 		} catch (Exception e) {
+ 			e.printStackTrace();
+ 			LOG.error("Error occured getAlertDetailsOfCategoryByStatusWise() method of AlertManagementSystemService");
+ 		}
+ 		  return finalList;
+ 	  }
+ 	  
+ 	  public List<IdNameVO> getAlertFeedbackStatusDetails(AlertVO mainVo){
+ 		  List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
+ 		  try {
+ 			  
+ 			 String fromDateStr = mainVo.getFromDate();
+ 			String toDateStr = mainVo.getToDate();
+ 			  
+ 			  Date fromDate = null;
+ 				Date toDate = null;
+ 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+ 				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+ 					fromDate = sdf.parse(fromDateStr);
+ 					toDate = sdf.parse(toDateStr);
+ 				}
+ 				
+ 				List<Object[]> statusObj = alertDAO.getAlertFeedbackStatusDetails(fromDate,toDate,mainVo.getDeptId(),mainVo.getYear());
+ 				  if(statusObj !=null && statusObj.size()>0){
+ 					  for (Object[] object : statusObj) {					
+ 						  IdNameVO VO = new IdNameVO();
+ 						  VO.setId(commonMethodsUtilService.getLongValueForObject(object[0]));
+ 						  VO.setName(commonMethodsUtilService.getStringValueForObject(object[1]));
+ 						  VO.setCount(commonMethodsUtilService.getLongValueForObject(object[2]));
+ 						  
+ 						  finalList.add(VO);					  
+ 					}
+ 				  }
+ 				
+ 			
+ 		} catch (Exception e) {
+ 			e.printStackTrace();
+ 			LOG.error("Error occured getAlertFeedbackStatusDetails() method of AlertManagementSystemService");
+ 		}
+ 		  return finalList;
+ 	  }
+ 	  
+ 	  public List<AmsDataVO> getAlertsOfCategoryByStatusWise(AlertVO mainVo) {
+ 		  List<AmsDataVO> finalVoList = new ArrayList<AmsDataVO>(0);
+ 		  try {
+ 			  
+ 			  //Fields From DTO
+ 			 String fromDateStr = mainVo.getFromDate();
+ 			 String toDateStr =  mainVo.getToDate();
+ 			 int stIndex = mainVo.getStartIndex();
+ 			 int endIndex = mainVo.getEndIndex();
+ 			 String type =   mainVo.getType();
+ 			 String year = mainVo.getType();
+ 			
+ 			  Date fromDate = null;
+ 				Date toDate = null;
+ 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+ 				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+ 					fromDate = sdf.parse(fromDateStr);
+ 					toDate = sdf.parse(toDateStr);
+ 				}
+ 			  
+ 			  List<Long> alertIdList = new ArrayList<Long>(0);
+ 			  if(type !=null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("status")){
+ 				  alertIdList = alertDAO.getAlertsOfCategoryByStatusWise(fromDate , toDate,mainVo.getDeptId(),mainVo.getStatusIds(),stIndex,endIndex,year);
+ 			  }else if(type !=null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("feedback")){
+ 				  alertIdList = alertDAO.getAlertsOfFeedbackStatus(fromDate,toDate,mainVo.getDeptId(),mainVo.getStatusIds(),stIndex,endIndex,year);
+ 			  }
+ 			  
+ 			  	if(alertIdList != null && alertIdList.size() > 0){
+ 					List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdList));
+ 					setAlertDtlsForAms(finalVoList, list); 
+ 				}
+ 				//setSubListCountForAms(finalVoList, alertIdList);
+ 			
+ 		} catch (Exception e) {
+ 			e.printStackTrace();
+ 			LOG.error("Error occured getAlertsOfCategoryByStatusWise() method of AlertManagementSystemService");
+ 		}
+ 		  return finalVoList;
+ 	  }
 }
