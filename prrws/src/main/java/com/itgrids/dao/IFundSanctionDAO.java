@@ -36,4 +36,5 @@ public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 	public List<Object[]> getFundSactionCount(List<Long> financialYrIdList);
 	public List<Object[]> getGrantTypeHighestAndLowestFund(List<Long> financialYrIdList, List<Long> deptIdsList,List<Long> sourceIdsList, Date startDate, Date endDate,
 	String type, Long searchLevelId, List<Long> searchLvlVals);
+	public List<Object[]> financialYearWiseFundDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,List<Long> schemeIdsList,Long searchScopeId);
 }

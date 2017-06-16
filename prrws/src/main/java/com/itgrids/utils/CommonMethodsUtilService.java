@@ -863,7 +863,7 @@ public class CommonMethodsUtilService {
 						for (String interval : intervalList) {
 							String[] rangeArr = interval.split("-");
 							if(rangeArr != null && rangeArr.length>0){
-								returnList.add(calculatetempAmountInWords(Double.valueOf(rangeArr[0]).longValue())+" - "+calculatetempAmountInWords(Double.valueOf(rangeArr[1]).longValue()));
+								returnList.add((Double.valueOf(rangeArr[0]).longValue())+" - "+(Double.valueOf(rangeArr[1]).longValue()));
 							}
 						}
 					}
