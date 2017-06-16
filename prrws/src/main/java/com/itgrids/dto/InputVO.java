@@ -28,8 +28,22 @@ public class InputVO implements Serializable {
 	private String locationName;
 	private String filterType;
 	private String filterValue;
+	private String fromDate;
+	private String toDate;
 	
 	
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
 	public String getType() {
 		return type;
 	}
