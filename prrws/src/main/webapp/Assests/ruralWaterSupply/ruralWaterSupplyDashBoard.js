@@ -89,9 +89,6 @@
 				enabled: false
 			};
 			var yAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
 				title: {
 					text: null
 				},
@@ -145,9 +142,6 @@
 				enabled: false
 			};
 			var yAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
 				title: {
 					text: null
 				},
@@ -215,9 +209,6 @@
 				enabled: false
 			};
 			var yAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
 				title: {
 					text: null
 				},
