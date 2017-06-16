@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.JsonObject;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.NregsDataVO;
+import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
@@ -100,40 +103,40 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jObj = new JSONObject(output);
-	 	    		LabourBudgetOverViewVO vo = new LabourBudgetOverViewVO();
+	 	    		//LabourBudgetOverViewVO vo = new LabourBudgetOverViewVO();
 	 	    		
-    				vo.setTotalBudget(jObj.getString("TOTALBUDGET"));
-    				vo.setTotalLabour(jObj.getLong("TOTALLABOUR"));
-    				vo.setMaleLabour(jObj.getLong("MALELABOUR"));
-    				vo.setFemaleLabour(jObj.getLong("FEMALELABOUR"));
-    				vo.setTargettedPersonDays(jObj.getLong("TARGETTEDPERSONDAYS"));
-    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
-    				vo.setTotalExpenditure(jObj.getString("TOTALEXPENDITURE"));
-    				vo.setAvgWagePerPerson(jObj.getString("AVGWAGEPERPERSON"));
-    				vo.setTotalResponse(jObj.getLong("TOTALRESPONSE"));
-    				vo.setOnRequestWorkAllocated(jObj.getLong("ONREQUESTWORKALLOCATED"));
-    				vo.setGotWorkOccutionally(jObj.getLong("GOTWORKOCCUTIONALLY"));
-    				vo.setHaveNotGotWork(jObj.getLong("HAVENOTGOTWORK"));
-    				vo.setBudgetForLabour(jObj.getString("BUDGETFORLABOUR"));
-    				vo.setBudgetForMaterial(jObj.getString("BUDGETFORMATERIAL"));
-    				vo.setTotalDistricts(jObj.getLong("TOTALDISTRICTS"));
-    				vo.setDistrictsInRed(jObj.getLong("DISTRICTSINRED"));
-    				vo.setDistrictsInOrange(jObj.getLong("DISTRICTSINORANGE"));
-    				vo.setDistrictsInGreen(jObj.getLong("DISTRICTSINGREEN"));
-    				vo.setTotalConstituencies(jObj.getLong("TOTALCONSTITUENCIES"));
-    				vo.setConstituenciesInRed(jObj.getLong("CONSTITUENCIESINRED"));
-    				vo.setConstituenciesInOrange(jObj.getLong("CONSTITUENCIESINORANGE"));
-    				vo.setConstituenciesInGreen(jObj.getLong("CONSTITUENCIESINGREEN"));
-    				vo.setTotalMandals(jObj.getLong("TOTALMANDALS"));
-    				vo.setMandalsInRed(jObj.getLong("MANDALSINRED"));
-    				vo.setMandalsInOrange(jObj.getLong("MANDALSINORANGE"));
-    				vo.setMandalsInGreen(jObj.getLong("MANDALSINGREEN"));
-    				vo.setTotalVillages(jObj.getLong("TOTALVILLAGES"));
-    				vo.setVillagesInRed(jObj.getLong("VILLAGESINRED"));
-    				vo.setVillagesInOrange(jObj.getLong("VILLAGESINORANGE"));
-    				vo.setVillagesInGreen(jObj.getLong("VILLAGESINGREEN"));
-    				vo.setLeader(jObj.getString("LEADER"));
-    				vo.setLagger(jObj.getString("LAGGER"));
+	 	    		returnvo.setTotalBudget(jObj.getString("TOTALBUDGET"));
+	 	    		returnvo.setTotalLabour(jObj.getLong("TOTALLABOUR"));
+	 	    		returnvo.setMaleLabour(jObj.getLong("MALELABOUR"));
+	 	    		returnvo.setFemaleLabour(jObj.getLong("FEMALELABOUR"));
+	 	    		returnvo.setTargettedPersonDays(jObj.getLong("TARGETTEDPERSONDAYS"));
+	 	    		returnvo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
+	 	    		returnvo.setTotalExpenditure(jObj.getString("TOTALEXPENDITURE"));
+	 	    		returnvo.setAvgWagePerPerson(jObj.getString("AVGWAGEPERPERSON"));
+	 	    		returnvo.setTotalResponse(jObj.getLong("TOTALRESPONSE"));
+	 	    		returnvo.setOnRequestWorkAllocated(jObj.getLong("ONREQUESTWORKALLOCATED"));
+	 	    		returnvo.setGotWorkOccutionally(jObj.getLong("GOTWORKOCCUTIONALLY"));
+    				returnvo.setHaveNotGotWork(jObj.getLong("HAVENOTGOTWORK"));
+    				returnvo.setBudgetForLabour(jObj.getString("BUDGETFORLABOUR"));
+    				returnvo.setBudgetForMaterial(jObj.getString("BUDGETFORMATERIAL"));
+    				returnvo.setTotalDistricts(jObj.getLong("TOTALDISTRICTS"));
+    				returnvo.setDistrictsInRed(jObj.getLong("DISTRICTSINRED"));
+    				returnvo.setDistrictsInOrange(jObj.getLong("DISTRICTSINORANGE"));
+    				returnvo.setDistrictsInGreen(jObj.getLong("DISTRICTSINGREEN"));
+    				returnvo.setTotalConstituencies(jObj.getLong("TOTALCONSTITUENCIES"));
+    				returnvo.setConstituenciesInRed(jObj.getLong("CONSTITUENCIESINRED"));
+    				returnvo.setConstituenciesInOrange(jObj.getLong("CONSTITUENCIESINORANGE"));
+    				returnvo.setConstituenciesInGreen(jObj.getLong("CONSTITUENCIESINGREEN"));
+    				returnvo.setTotalMandals(jObj.getLong("TOTALMANDALS"));
+    				returnvo.setMandalsInRed(jObj.getLong("MANDALSINRED"));
+    				returnvo.setMandalsInOrange(jObj.getLong("MANDALSINORANGE"));
+    				returnvo.setMandalsInGreen(jObj.getLong("MANDALSINGREEN"));
+    				returnvo.setTotalVillages(jObj.getLong("TOTALVILLAGES"));
+    				returnvo.setVillagesInRed(jObj.getLong("VILLAGESINRED"));
+    				returnvo.setVillagesInOrange(jObj.getLong("VILLAGESINORANGE"));
+    				returnvo.setVillagesInGreen(jObj.getLong("VILLAGESINGREEN"));
+    				returnvo.setLeader(jObj.getString("LEADER"));
+    				returnvo.setLagger(jObj.getString("LAGGER"));
     			}
 	 	   // }
 	    } catch (Exception e) {
@@ -182,6 +185,162 @@ public class NREGSTCSService implements INREGSTCSService{
 	        
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLabourBudgetExpenditure - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	/*
+	 * Date : 16/06/2017
+	 * Author :Nandhini
+	 * @description : getIHHLOverview
+	 */
+	public NregsOverviewVO getNregaIHHLOverview(InputVO inputVO){
+		NregsOverviewVO finalVO = new NregsOverviewVO();
+		try {
+			 
+			/*ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLOverview", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{*/
+	 	    	 String output = null;//response.getEntity(String.class);
+	 	    	 output = "{\"AVERAGEPERDISTRICT\": \"1.39333846153846153846153846153846153846E04\","
+	 	    	 		+ "\"AVERAGEPERCONSTITUENCY\": \"1.17619480519480519480519480519480519481E03\","
+	 	    	 		+ "\"AVERAGEPERMANDAL\": \"2.96940983606557377049180327868852459016E02\",\"TOTALBUDGET\": \"181134\","
+	 	    	 		+ "\"TOTALAVGFARMSINDISTRICT\": \"1.39333846153846153846153846153846153846E04\","
+	 	    	 		+ "\"TOTALAVGFARMSINCONSTITUENCY\": \"1.17619480519480519480519480519480519481E03\","
+	 	    	 		+ "\"TOTALAVGFARMSINMANDAL\": \"2.96940983606557377049180327868852459016E02\",\"DISTRICTSINRED\": \"3\",\"DISTRICTSINORANGE\": \"4\","
+	 	    	 		+ "\"DISTRICTSINGREEN\": \"6\",\"TOTALDISTRICTS\": \"13\",\"CONSTITUENCIESINRED\": \"76\",\"CONSTITUENCIESINORANGE\": \"18\","
+	 	    	 		+ "\"CONSTITUENCIESINGREEN\": \"61\",\"TOTALCONSTITUENCIES\": \"155\",\"MANDALSINRED\": \"362\",\"MANDALSINORANGE\": \"46\","
+	 	    	 		+ "\"MANDALSINGREEN\": \"166\",\"TOTALMANDALS\": \"574\",\"VILLAGESINRED\": \"10045\",\"VILLAGESINORANGE\": \"121\","
+	 	    	 		+ "\"VILLAGESINGREEN\": \"617\",\"TOTALVILLAGES\": \"10783\"}";
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject Obj = new JSONObject(output);
+	 	    		if(Obj!=null && Obj.length()>0){
+	 	    				finalVO.setAveragePerDistrict(Obj.getString("AVERAGEPERDISTRICT"));
+	 	    				finalVO.setAveragePerConstituency(Obj.getString("AVERAGEPERCONSTITUENCY"));
+	 	    				finalVO.setAveragePerMandal(Obj.getString("AVERAGEPERMANDAL"));
+	 	    				finalVO.setTotalBudget(Obj.getLong("TOTALBUDGET"));
+	 	    				finalVO.setTotalAvgFarmsInDistrict(Obj.getString("TOTALAVGFARMSINDISTRICT"));
+	 	    				finalVO.setTotalAvgFarmsInConstituency(Obj.getString("TOTALAVGFARMSINCONSTITUENCY"));
+	 	    				finalVO.setTotalAvgFarmsInMandal(Obj.getString("TOTALAVGFARMSINMANDAL"));
+	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
+	 	    				finalVO.setDistrictsInOrgange(Obj.getLong("DISTRICTSINORANGE"));
+	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
+	 	    				finalVO.setTotalDistricts(Obj.getLong("TOTALDISTRICTS"));
+	 	    				finalVO.setConstituenciesInRed(Obj.getLong("CONSTITUENCIESINRED"));
+	 	    				finalVO.setConstituenciesInOrgange(Obj.getLong("CONSTITUENCIESINORANGE"));
+	 	    				finalVO.setConstituenciesInGreen(Obj.getLong("CONSTITUENCIESINGREEN"));
+	 	    				finalVO.setTotalConstituencies(Obj.getLong("TOTALCONSTITUENCIES"));
+	 	    				finalVO.setMandalsInRed(Obj.getLong("MANDALSINRED"));
+	 	    				finalVO.setMandalsInOrgange(Obj.getLong("MANDALSINORANGE"));
+	 	    				finalVO.setMandalsInGreen(Obj.getLong("MANDALSINGREEN"));
+	 	    				finalVO.setTotalMandals(Obj.getLong("TOTALMANDALS"));
+	 	    				finalVO.setVillagesInRed(Obj.getLong("VILLAGESINRED"));
+	 	    				finalVO.setVillagesInOrgange(Obj.getLong("VILLAGESINORANGE"));
+	 	    				finalVO.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
+	 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
+	 	    			}
+	 	    		}
+	 	    	//}
+	 	    	 
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSProjectsOverview - NREGSTCSService service", e);
+		}
+		
+		return finalVO;
+	}
+	
+	/*
+	 * Date : 16/06/2017
+	 * Author :Nandhini
+	 * @description : getNREGSIHHLLvelSOverview
+	 */
+	public List<NregsDataVO> getNregaLevelsOverviewForIHHL(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/Abstract", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setMandal(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTarget(jObj.getLong("TARGET"));
+	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				
+	 	    				voList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsOverviewForIHHL - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	/*
+	 * Date : 16/06/2017
+	 * Author :Sravanth
+	 * @description : getNregaLevelwiseOverviewForLabourBudgetData
+	 */
+	public List<NregsDataVO> getNregaLevelwiseOverviewForLabourBudgetData(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/LabourBudgetData", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setMandal(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTargetPersonDays(jObj.getLong("TARGETPERSONDAYS"));
+	 	    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
+	 	    				vo.setPerAppLB(jObj.getString("PER_APP_LB"));
+	 	    				vo.setAvgWageRate(jObj.getString("AVGWAGERATE"));
+	 	    				vo.setTotalExpenditure(jObj.getString("TOTALEXPENDITURE"));
+	 	    				//vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				
+	 	    				voList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelwiseOverviewForLabourBudgetData - NREGSTCSService service", e);
 		}
 		
 		return voList;
