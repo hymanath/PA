@@ -28,6 +28,8 @@ import com.itgrids.dao.IFundSanctionLocationDAO;
 import com.itgrids.dao.IFundSanctionMatrixDetailsDAO;
 import com.itgrids.dao.IFundSanctionMatrixRangeDAO;
 import com.itgrids.dao.IGrantTypeDAO;
+import com.itgrids.dao.IPanchayatDAO;
+import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.FundMatrixVO;
 import com.itgrids.dto.FundSchemeVO;
@@ -71,6 +73,10 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	private IFundSanctionMatrixDetailsDAO fundSanctionMatrixDetailsDAO;
 	@Autowired
 	private IFundSanctionLocationDAO fundSanctionLocationDAO;
+	@Autowired
+	private ITehsilDAO tehsilDAO;
+	@Autowired
+	private IPanchayatDAO panchayatDAO;
 
 	@Override
 	/*
@@ -1678,22 +1684,37 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			List<Long> financialYearIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList());
 			List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
 			List<Long> sourceIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList());
-			
-			
-			amountList = fundSanctionDAO.getLocationWiseAmountAndCountDetails(fromDate,toDate,inputVO);
+			List<Object[]> locations = null;
+			if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+				locations = districtDAO.getDistrictIdAndNameByDistrictIds(inputVO.getLevelValues());		
+			}else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+				locations = constituencyDAO.getConstIdAndNameByConstIds(inputVO.getLevelValues());	
+			}else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+				locations = tehsilDAO.getTehsilIdAndNameByIds(inputVO.getLevelValues());	
+			}else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
+				locations = panchayatDAO.getPanchayatIdAndNameByIds(inputVO.getLevelValues());	
+			}
+			amountList = fundSanctionDAO.getLocationWiseAmountAndCountDetails(fromDate,toDate,inputVO.getBlockLevelId(),financialYearIdsList,deptIdsList,sourceIdsList,inputVO.getLevelValues());
 		
 			
 			//collect all the location ids(uses to create the final list)
 			Set<Long> locationIdList = new HashSet<Long>();
-			if(amountList != null && amountList.size() > 0){
+			/*if(amountList != null && amountList.size() > 0){
 				for(Object[] param : amountList){
 					locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}*/
+			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
+			if(locations != null && locations.size() > 0){
+				for(Object[] param : locations){
+					locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
 				}
 			}
 			
 			//create a map for financialYearId and financialyear
 			Map<Long,String> financialYearIdAndFinancialYearMap = new HashMap<Long,String>();
-			List<Object[]> financialYearList = financialYearDAO.getAllFiniancialYearsByIds(inputVO.getFinancialYrIdList());
+			List<Object[]> financialYearList = financialYearDAO.getAllFiniancialYearsByIds(financialYearIdsList);
 			if(financialYearList != null && financialYearList.size() > 0){
 				for(Object[] param : financialYearList){
 					financialYearIdAndFinancialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
@@ -1701,14 +1722,14 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			}
 			
 			//create a map for locationId and locationName
-			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
+			
 			
 			//create a map of financialYearId and map of locationId and amount
 			Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndAmountMap = new LinkedHashMap<Long,Map<Long,Long>>();
 			Map<Long,Long> locationIdAndAmountMap = null;
 			if(amountList != null && amountList.size() > 0){
 				for(Object[] param : amountList){
-					locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getStringValueForObject(param[3]));
+					//locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getStringValueForObject(param[3]));
 					financialYearIdAndFinancialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
 					locationIdAndAmountMap = financialYearIdAndLocationIdAndAmountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if(locationIdAndAmountMap != null){
