@@ -23,16 +23,16 @@ function projectData(divId)
 			collapse+='<div class="col-sm-12">';
 				for(var i in dataArr)
 				{
-					collapse+='<div class="panel-group" id="accordion'+divId+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
+					collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
 						collapse+='<div class="panel panel-default panel-black">';
 							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+dataArr[i]+'">';
-								collapse+='<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion'+divId+''+dataArr[i]+'" href="#collapse'+divId+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId+''+dataArr[i]+'">';
+								collapse+='<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
 									collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - '+divId+'</h4>';
 								collapse+='</a>';
 							collapse+='</div>';
-							collapse+='<div id="collapse'+divId+''+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId+''+dataArr[i]+'">';
+							collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
 								collapse+='<div class="panel-body">';
-									collapse+='<div id="table'+divId+''+dataArr[i]+'"></div>';
+									collapse+='<div id="table'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"></div>';
 								collapse+='</div>';
 							collapse+='</div>';
 						collapse+='</div>';
@@ -44,7 +44,7 @@ function projectData(divId)
 	$("#projectData").html(collapse);
 	for(var i in dataArr)
 	{ 
-		var tableId = divId+''+dataArr[i]
+		var tableId = divId.replace(/\s+/g, '')+''+dataArr[i]
 		functionName(tableId,dataArr[i])
 	}
 }
@@ -152,7 +152,7 @@ function buildNREGSProjectsOverview(result)
 	$("#projectsOverview").html(str);
 }
 
-function functionName(tableId,dataArr[i])
+function functionName(tableId,dataArr)
 {
 	var theadArr = ['','QA','PC1','PC2','PC3','PC4','FC','TOTAL'];
 	tableView(tableId,theadArr,result)
