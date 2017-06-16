@@ -266,7 +266,7 @@
 									<ul class="nav nav-tabs pull-right" role="tablist" id="tabDis">
 										<li role="presentation" class="active"><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 										<li role="presentation"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-										<!--<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>-->
+										<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>
 									</ul>
 								</div>
 							</div>
@@ -316,17 +316,17 @@
 															<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="distComp">submit</button>
 														</div>
 														<div class="col-sm-2 pull-right">
-															<select class="form-control chosenSelect compSingleFinancialYear"  ></select>
+															<select class="form-control chosenSelect compSingleFinancialYear distYearCls"  ></select>
 														</div>
 														<div class="col-sm-1 pull-right">
 														VS
 														</div>
-														<div class="col-sm-3 pull-right">
-															<select class="form-control chosenSelect compMultiFinancialYear"></select>
+														<div class="col-sm-2 pull-right">
+															<select class="form-control chosenSelect compMultiFinancialYear multiDistYearCls"></select>
 														</div>
 														
 													</div>
-													<div id="comparionDistLevlOvervwTable" class=""></div>
+													<div id="comparionDistLevlOvervwTable" class="m_top10"></div>
 												</div>
 											</div>
 										</div>
@@ -359,7 +359,7 @@
 									<ul class="nav nav-tabs pull-right" role="tablist" id="tabCons">
 										<li role="presentation" class="active"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 										<li role="presentation"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-										<!--<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li> -->
+										<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
 									</ul>
 								</div>
 							</div>
@@ -410,23 +410,22 @@
 										<div role="tabpanel" class="tab-pane" id="comaprisionLevelConst">
 											<div class="row">
 												<div class="col-sm-12 m_top10">
-													<div class="row">
+													<div class="row"> 
 														<div class="col-sm-2 pull-right">
 															<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="constComp">submit</button>
-														</div>
-														
+														</div>													
 														<div class="col-sm-2 pull-right">
-															<select class="form-control chosenSelect compSingleFinancialYear"  ></select>
+															<select class="form-control chosenSelect compSingleFinancialYear conYearCls"  ></select>
 														</div>
 														<div class="col-sm-1 pull-right">
 														VS
 														</div>
-														<div class="col-sm-3 pull-right">
-															<select class="form-control chosenSelect compMultiFinancialYear" ></select>
+														<div class="col-sm-2 pull-right">
+															<select class="form-control chosenSelect compMultiFinancialYear multiConYearCls" ></select>
 														</div>
 														
 													</div>
-													<div id="comparionConstLevlOvervwTable" class=""></div>
+													<div id="comparionConstLevlOvervwTable" class="m_top10"></div>
 												</div>
 											</div>
 										</div>
@@ -460,8 +459,8 @@
 										<ul class="nav nav-tabs pull-right" role="tablist" id="tabMan">
 											<li role="presentation" class="active"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 											<li role="presentation"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
-											<!--<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelMandal" role="tab" data-toggle="tab">Comparision</a></li>-->
-										</ul>
+											<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelMandal" role="tab" data-toggle="tab">Comparision</a></li>   
+										</ul>      
 									</div>
 								</div>
 								<div class="row">
@@ -520,16 +519,16 @@
 																<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="mandalComp">submit</button>
 															</div>
 															<div class="col-sm-2 pull-right">
-																<select class="form-control chosenSelect compSingleFinancialYear" ></select>
+																<select class="form-control chosenSelect compSingleFinancialYear mandalYearCls" ></select>
 															</div>
 															<div class="col-sm-1 pull-right">
 															VS
 															</div>
-															<div class="col-sm-3 pull-right">
-																<select class="form-control chosenSelect compMultiFinancialYear"  ></select>
+															<div class="col-sm-2 pull-right">
+																<select class="form-control chosenSelect compMultiFinancialYear multiMandalYearCls"  ></select>
 															</div>
 														</div>
-														<div id="comparionMandalLevlOvervwTable" class=""></div>
+														<div id="comparionMandalLevlOvervwTable" class="m_top10"></div>
 													</div>
 												</div>
 											</div>
@@ -566,7 +565,7 @@
 										<ul class="nav nav-tabs pull-right" role="tablist" id="tabVill">
 											<li role="presentation" class="active"><a href="#villageLevelGraph" aria-controls="villageLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 											<li role="presentation"><a href="#villageLevelTable" aria-controls="villageLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
-											<!--<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelVillage" aria-controls="comaprisionLevelVillage" role="tab" data-toggle="tab">Comparision</a></li>-->
+											<!--<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelVillage" aria-controls="comaprisionLevelVillage" role="tab" data-toggle="tab">Comparision</a></li>  --> 
 										</ul>
 									</div>
 								</div>
@@ -630,16 +629,16 @@
 																<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="villageComp">submit</button>
 															</div>
 															<div class="col-sm-2 pull-right">
-																<select class="form-control chosenSelect compSingleFinancialYear" ></select>
+																<select class="form-control chosenSelect compSingleFinancialYear villageYearCls" ></select>
 															</div>
 															<div class="col-sm-1 pull-right">
 															VS
 															</div>
-															<div class="col-sm-3 pull-right">
-																<select class="form-control chosenSelect compMultiFinancialYear"  ></select>
+															<div class="col-sm-2 pull-right">
+																<select class="form-control chosenSelect compMultiFinancialYear multiVillageYearCls"  ></select>
 															</div>
 														</div>
-														<div id="comparionVillageLevlOvervwTable" class=""></div>
+														<div id="comparionVillageLevlOvervwTable" class="m_top10"></div>
 													</div>
 												</div>
 											</div>
@@ -696,7 +695,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal-body">      
+			<div class="modal-body">        
 				<div class="row">
 		 
 					<div class="col-md-12 col-xs-12 col-sm-12">
