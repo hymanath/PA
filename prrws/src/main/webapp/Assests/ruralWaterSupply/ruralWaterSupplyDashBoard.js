@@ -52,16 +52,19 @@
 
 			}).then(function(response) {
 				//$scope.myWelcome = response.data;
-				console.log(response.data);
+				var dataArr = [];
 				for(var i in response.data)
 				{
-					for(var j in response.data[i].statusList[j])
-					{
-						status
-						count
-					}
+				  for(var j in response.data[i].statusList)
+				  {
+					var tempArr = [];
+					tempArr.push(response.data[i].statusList[j].status);
+					tempArr.push(parseInt(response.data[i].statusList[j].count));
+					dataArr.push(tempArr);
+				  }
 				}
-				var id = id;
+				
+				var id = 'habitation';
 				var type = {
 					type: 'column',
 					backgroundColor:'transparent'
@@ -92,11 +95,7 @@
 
 				var data = [{
 					name: '',
-					data: [
-						['FC', 90],
-						['PC', 62],
-						['QA', 50],
-					],
+					data: dataArr,
 
 					dataLabels: {
 						enabled: true,
