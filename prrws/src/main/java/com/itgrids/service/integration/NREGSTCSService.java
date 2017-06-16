@@ -198,23 +198,13 @@ public class NREGSTCSService implements INREGSTCSService{
 		NregsOverviewVO finalVO = new NregsOverviewVO();
 		try {
 			 
-			/*ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLOverview", inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLOverview", inputVO);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-	 	      }else{*/
-	 	    	 String output = null;//response.getEntity(String.class);
-	 	    	 output = "{\"AVERAGEPERDISTRICT\": \"1.39333846153846153846153846153846153846E04\","
-	 	    	 		+ "\"AVERAGEPERCONSTITUENCY\": \"1.17619480519480519480519480519480519481E03\","
-	 	    	 		+ "\"AVERAGEPERMANDAL\": \"2.96940983606557377049180327868852459016E02\",\"TOTALBUDGET\": \"181134\","
-	 	    	 		+ "\"TOTALAVGFARMSINDISTRICT\": \"1.39333846153846153846153846153846153846E04\","
-	 	    	 		+ "\"TOTALAVGFARMSINCONSTITUENCY\": \"1.17619480519480519480519480519480519481E03\","
-	 	    	 		+ "\"TOTALAVGFARMSINMANDAL\": \"2.96940983606557377049180327868852459016E02\",\"DISTRICTSINRED\": \"3\",\"DISTRICTSINORANGE\": \"4\","
-	 	    	 		+ "\"DISTRICTSINGREEN\": \"6\",\"TOTALDISTRICTS\": \"13\",\"CONSTITUENCIESINRED\": \"76\",\"CONSTITUENCIESINORANGE\": \"18\","
-	 	    	 		+ "\"CONSTITUENCIESINGREEN\": \"61\",\"TOTALCONSTITUENCIES\": \"155\",\"MANDALSINRED\": \"362\",\"MANDALSINORANGE\": \"46\","
-	 	    	 		+ "\"MANDALSINGREEN\": \"166\",\"TOTALMANDALS\": \"574\",\"VILLAGESINRED\": \"10045\",\"VILLAGESINORANGE\": \"121\","
-	 	    	 		+ "\"VILLAGESINGREEN\": \"617\",\"TOTALVILLAGES\": \"10783\"}";
-	 	    	 
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject Obj = new JSONObject(output);
 	 	    		if(Obj!=null && Obj.length()>0){
@@ -243,7 +233,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
 	 	    			}
 	 	    		}
-	 	    	//}
+	 	    	}
 	 	    	 
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNREGSProjectsOverview - NREGSTCSService service", e);
@@ -261,7 +251,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
 		try {
 			 
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/Abstract", inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
