@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.BasicVO;
@@ -26,7 +26,7 @@ public class RuralWaterSupplyDashBoardController {
 	@Autowired
 	private IRWSNICService rWSNICService;
 	
-	@RequestMapping(value ="/ruralWaterSupplyDashBoard", method = RequestMethod.GET)
+	@GetMapping("/ruralWaterSupplyDashBoard")
     public String ruralWaterSupplyDashBoardPage(ModelMap model) {
       
 		return "ruralWaterSupplyDashBoard";

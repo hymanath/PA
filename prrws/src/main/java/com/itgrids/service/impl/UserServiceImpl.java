@@ -17,13 +17,13 @@ import com.itgrids.service.IUserService;
 public class UserServiceImpl implements IUserService {
 
 	@Autowired
-	private IUserDAO IuserDAO;
+	private IUserDAO userDAO;
 
 	@Override
 	public UserVO userAuthentication(String userName, String password) {
 		UserVO userVO = new UserVO();
 		if (userName != null) {
-			User user = IuserDAO.loginAuthentication(userName, password);
+			User user = userDAO.loginAuthentication(userName, password);
 
 			if (user != null) {
 				userVO.setUserId(user.getUserId());
