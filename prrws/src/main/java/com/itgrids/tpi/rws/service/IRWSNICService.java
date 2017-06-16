@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.StatusVO;
 
 public interface IRWSNICService {
 	
@@ -14,4 +15,6 @@ public interface IRWSNICService {
 	public List<BasicVO> getSchemesDetails(InputVO VO);
 	public List<BasicVO> getSchemeWiseWorkDetails(InputVO VO);
 	public List<BasicVO> getAssetsInfo(InputVO vo);
+	public List<StatusVO> getAlertDetailsOfCategoryByStatusWise(InputVO vo);
+	public List<StatusVO> getAlertFeedbackStatusDetails(InputVO vo);
 }

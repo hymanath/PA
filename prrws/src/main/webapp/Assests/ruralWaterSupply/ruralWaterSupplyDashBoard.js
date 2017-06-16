@@ -11,6 +11,8 @@
 			getSchemesDetails();
 			getSchemeWiseWorkDetails();
 			getAssetInfoBetweenDates();
+			getAlertDetailsOfCategoryByStatusWise();
+			getAlertFeedbackStatusDetails();
 		}
 		function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors)
 		{
@@ -491,22 +493,6 @@
 
 			}).then(function(response) {
 				//$scope.myWelcome = response.data;
-				console.log(response.data);
-			});
-		}
-		function getAssetInfoBetweenDates(){ 
-			var json = {
-				formDateStr:"01-12-2016",
-				toDateStr:"01-12-2017"
-			}
-			$http({
-				url: 'getAssetInfoBetweenDates',
-				data: JSON.stringify(json),
-				method: "POST",
-				dataType: 'json', 
-
-			}).then(function(response) {
-				//$scope.myWelcome = response.data;
 				
 				var dataArr = [];
 				for(var i in response.data)
@@ -561,6 +547,42 @@
 					}
 				}];
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors);
+			});
+		}
+		
+		function getAlertDetailsOfCategoryByStatusWise(){
+			var json = {
+				fromDate:dd-MM-yyyy,
+				toDate:dd-MM-yyyy,
+				deptId:Long,
+				year:String
+			}
+			$http({
+				url: 'getAlertDetailsOfCategoryByStatusWise',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
+
+			}).then(function(response) {
+				
+			});
+		}
+		
+		function getAlertFeedbackStatusDetails(){
+			var json = {
+				fromDate:dd-MM-yyyy,
+				toDate:dd-MM-yyyy,
+				deptId:Long,
+				year:String
+			}
+			$http({
+				url: 'getAlertFeedbackStatusDetails',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
+
+			}).then(function(response) {
+				
 			});
 		}
 	});
