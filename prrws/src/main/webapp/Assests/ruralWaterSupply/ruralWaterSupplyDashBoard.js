@@ -312,4 +312,73 @@
 				console.log(response.data);
 			});
 		}
+		function getAssetInfoBetweenDates(){ 
+			var json = {
+				formDateStr:"01-12-2016",
+				toDateStr:"01-12-2017"
+			}
+			$http({
+				url: 'getAssetInfoBetweenDates',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
+
+			}).then(function(response) {
+				//$scope.myWelcome = response.data;
+				
+				var dataArr = [];
+				for(var i in response.data)
+				{
+				  //console.log(response.data);
+					var tempArr = [];
+					tempArr.push(response.data[i].assetType);
+					console.log(response.data[i].assetType);
+					tempArr.push(parseInt(response.data[i].count));
+					dataArr.push(tempArr);
+				  
+				}
+				var colors = ['#14BBAE'];
+				var id = 'assets';
+				var type = {
+					type: 'column',
+					backgroundColor:'transparent'
+				};
+				var legend = {
+					enabled: false
+				};
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+				};
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: []
+				};
+				var plotOptions ={ column: {
+						colorByPoint: false
+					}};
+				var tooltip = {
+					pointFormat: '{point.y}'
+				};
+
+				var data = [{
+					name: '',
+					data: dataArr,
+
+					dataLabels: {
+						enabled: true,
+						color: '#FFFFFF',
+						align: 'right',
+						format: '{point.y}',
+					}
+				}];
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors);
+			});
+		}
 	});
