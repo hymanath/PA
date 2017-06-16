@@ -19,12 +19,12 @@ public class WebServiceUtilService {
 	private static Logger LOG = Logger.getLogger(WebServiceUtilService.class);
 	
 	@Autowired
-	private ILoggerService loggerService; 
-
+	private ILoggerService loggerService;
+	
 	public ClientResponse callWebService(String url,Object input)
 	{
 		ClientResponse response = null;
-		try{
+		try{                                                                      
 			ClientConfig clientConfig = new DefaultClientConfig();
 			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,Boolean.TRUE);
 			Client client = Client.create(clientConfig);
@@ -55,9 +55,8 @@ public class WebServiceUtilService {
 	
 	public void testMethod()
 	{
-		WebServiceUtilService service = new WebServiceUtilService();
 		String input = "{\"year\" : \"2018\",\"fromDate\" : \"2018-01-01\",\"toDate\" : \"2018-12-31\"}";
-		ClientResponse response = service.callWebService("http://dbtrd.ap.gov.in2/NregaDashBoardService/rest/CMDashBoard/Abstract", input);
+		ClientResponse response = callWebService("http://dbtrd.ap.gov.in2/NregaDashBoardService/rest/CMDashBoard/Abstract", input);
 		String output = response.getEntity(String.class);
 	    System.out.println(output);
 	}
