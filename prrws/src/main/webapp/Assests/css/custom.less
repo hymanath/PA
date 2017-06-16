@@ -3,7 +3,7 @@
 @thick_black:#595959;
 @white_color:#fff;
 @red_color:#FF0000;
-@light_ash_color : #EBEBEB;
+@light_ash_color : #E6E6E6;
 @black_border:1px solid #333;
 @light_green:#BAFAD9;
 @green_color:#00AF50;
@@ -650,10 +650,19 @@ header
 {
 	.rounded-corners(4px);
 	background-color:@white_color;
-	border:@black_border;
-	padding:8px 15px;
+	border:1px solid @light_ash_color;
+	padding:20px 15px;
 	margin-bottom:20px;
 	cursor:pointer;
+	small
+	{
+		.fa
+		{
+			position: relative;
+			top: 24px;
+			left: -9px;
+		}
+	}
 }
 .panel-block-white-low
 {
