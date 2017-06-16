@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IConstituencyDAO;
+import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.IFundSanctionDAO;
 import com.itgrids.dao.IFundSanctionMatrixDetailsDAO;
 import com.itgrids.dao.IFundSanctionMatrixRangeDAO;
@@ -22,6 +23,7 @@ import com.itgrids.model.FundSanctionMatrixDetails;
 import com.itgrids.model.FundSanctionMatrixRange;
 import com.itgrids.service.IFundSanctionMatrixReportService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
 import com.itgrids.utils.SetterAndGetterUtilService;
 
@@ -43,7 +45,8 @@ private static final Logger LOG = Logger.getLogger(FundSanctionMatrixReportServi
 	private IFundSanctionMatrixDetailsDAO fundSanctionMatrixDetailsDAO;
 	@Autowired
 	private IConstituencyDAO constituencyDAO;
-	
+	@Autowired
+	private IDistrictDAO districtDAO;
 	/**
 	 * @author Srishailam Pittala
 	 * @Date 7th June,2017
@@ -70,10 +73,13 @@ private static final Logger LOG = Logger.getLogger(FundSanctionMatrixReportServi
 					previousFinancialYearIdsList.add(yearId);
 			}
 			
-			List<Long> totalLocatinIdsList = constituencyDAO.getConstituencyList(IConstants.TOTAL_AP_DISTRICT_IDS);
+			List<Long> totalLocatinIdsList = null;
+			if(searchScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID)
+				totalLocatinIdsList=constituencyDAO.getConstituencyList(IConstants.TOTAL_AP_DISTRICT_IDS);
+			else if(searchScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID)
+				totalLocatinIdsList=districtDAO.getDistrictIdDetailsByDistrictIds(IConstants.TOTAL_AP_DISTRICT_IDS);
+			
 			List<Object[]> result =  fundSanctionDAO.getFinancialYearWiseFundDetails(financialYearIdsListList,deptIdsList,sourceIdsList,schemeIdsList,searchScopeId);
-			Map<Long,Double> previousYearWiseMaxAmountMap = new TreeMap<Long,Double>();
-			Map<Long,Double> presentYearWiseMaxAmountMap = new TreeMap<Long,Double>();
 			Map<String,List<MatrixRangeVO>> rangeWiseAreasMap = new HashMap<String,List<MatrixRangeVO>>(0);
 
 			double maxAmount =0.00d;
@@ -146,7 +152,7 @@ private static final Logger LOG = Logger.getLogger(FundSanctionMatrixReportServi
 							}
 						}
 
-						if(rangeId != null && rangeId.longValue()>0L && scopeId != null && scopeId.longValue()>0L){
+						if(rangeId != null && rangeId.longValue()>0L && searchScopeId != null && searchScopeId.longValue()>0L){
 							FundSanctionMatrixDetails fundSanctionMatrixDetails = new FundSanctionMatrixDetails();
 
 							if(presentFinancialYearIdsListmList.contains(yearId))
@@ -157,6 +163,7 @@ private static final Logger LOG = Logger.getLogger(FundSanctionMatrixReportServi
 							fundSanctionMatrixDetails.setScopeValue(locationId.toString());
 							fundSanctionMatrixDetails.setFundSanctionMatrixRangeId(rangeId);
 							fundSanctionMatrixDetails.setIsDeleted("N");
+							fundSanctionMatrixDetails.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 							fundSanctionMatrixDetailsDAO.save(fundSanctionMatrixDetails);
 						}
 						locationIdMap.put(locationId, yearIdList);
@@ -192,6 +199,7 @@ private static final Logger LOG = Logger.getLogger(FundSanctionMatrixReportServi
 												fundSanctionMatrixDetails.setScopeValue(locationId.toString());
 												fundSanctionMatrixDetails.setFundSanctionMatrixRangeId(rangeId);
 												fundSanctionMatrixDetails.setIsDeleted("N");
+												fundSanctionMatrixDetails.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 												fundSanctionMatrixDetailsDAO.save(fundSanctionMatrixDetails);
 											}
 										}
@@ -206,6 +214,7 @@ private static final Logger LOG = Logger.getLogger(FundSanctionMatrixReportServi
 											fundSanctionMatrixDetails.setScopeValue(locationId.toString());
 											fundSanctionMatrixDetails.setFundSanctionMatrixRangeId(rangeId);
 											fundSanctionMatrixDetails.setIsDeleted("N");
+											fundSanctionMatrixDetails.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 											fundSanctionMatrixDetailsDAO.save(fundSanctionMatrixDetails);
 										}
 									}
