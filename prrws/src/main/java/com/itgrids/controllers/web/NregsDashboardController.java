@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.NregsDataVO;
+import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
@@ -80,5 +82,40 @@ public class NregsDashboardController {
 			LOG.error("Exception raised at getLabourBudgetExpenditure - NREGSController controller", e);
 		}
 		return locationVOList;
+	}
+	@PostMapping("/getNregaIHHLOverview")
+	public @ResponseBody NregsOverviewVO getNregaIHHLOverview(@RequestBody InputVO vo){
+		NregsOverviewVO IhhlVO = null;
+		try {
+			IhhlVO = nregsTcsService.getNregaIHHLOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSProjectsOverview - getIHHLOverview controller", e);
+		}
+		return IhhlVO;
+	}
+	
+	@PostMapping("/getNregaLevelsOverviewForIHHL")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsOverviewForIHHL(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelsOverviewForIHHL(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSProjectsOverview - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping("/getNregaLevelwiseOverviewForLabourBudgetData")
+	public @ResponseBody List<NregsDataVO> getNregaLevelwiseOverviewForLabourBudgetData(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelwiseOverviewForLabourBudgetData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSProjectsOverview - NREGSController controller", e);
+		}
+		return levlWiseVOList;
 	}
 }
