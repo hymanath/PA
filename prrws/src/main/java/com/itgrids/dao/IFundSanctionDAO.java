@@ -31,7 +31,7 @@ public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 	public List<Object[]> getAllConstituencyByDistrictId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptId,List<Long> sourceId,Date sDate,Date eDate,Long scopeId);
 	public List<Object[]> getAllTehsilByConstituencyId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate,Long scopeId);
 	public List<Object[]> getAllPanchayatByTehsilId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate);
-	public List<Object[]> getLocationWiseAmountAndCountDetails(Date fromDate,Date toDate,InputVO inputVO);
+	public List<Object[]> getLocationWiseAmountAndCountDetails(Date fromDate,Date toDate,Long blockLevelId,List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,List<Long> levelValues);
 	public Object[] getMinMaxDates();
 	public List<Object[]> getFundSactionCount(List<Long> financialYrIdList);
 	public List<Object[]> getGrantTypeHighestAndLowestFund(List<Long> financialYrIdList, List<Long> deptIdsList,List<Long> sourceIdsList, Date startDate, Date endDate,
