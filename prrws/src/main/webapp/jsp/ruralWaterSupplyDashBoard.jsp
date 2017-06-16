@@ -1,22 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rural Water Supply Dashboard</title>
-<link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="Assests/css/custom.less" rel="stylesheet" type="text/less">
+<link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+<link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
-<link href="Assests/css/custom.less" rel="stylesheet" type="text/css">
 <script src="Assests/Plugins/Less/less.js"></script>
 </head>
-<body>
+<body ng-app="ruralWaterSupply" ng-controller="UserController">
+
 <header>
 	<nav>
 		<div class="container-fluid">
@@ -194,5 +195,6 @@
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="Assests/ruralWaterSupply/custom.js" type="text/javascript"></script>
+<script src="Assests/ruralWaterSupply/ruralWaterSupplyDashBoard.js" type="text/javascript"></script>
 </body>
 </html>

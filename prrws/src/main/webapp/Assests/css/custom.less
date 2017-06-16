@@ -615,3 +615,18 @@ header
 {
 	cursor: pointer;
 }
+.panelCollapseIcon:before {
+	/* symbol for "opening" panels */
+	font-family:'Glyphicons Halflings';
+	content:"\e260";
+	float: right;
+	font-size:10px;
+	margin-top:6px;
+	font-weight:400 !important;
+	margin-left:-4px;
+	color:#999;
+}
+.panelCollapseIcon.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\e259";
+}

@@ -1,125 +1,189 @@
-onloadCalls();
-function onloadCalls(){
-	getHabitationCoverageByStatusByLocationType();
-	getLabTestDetails();
-	getHabitationSupplyDetails();
-	getSchemesDetails();
-	getSchemeWiseWorkDetails();
-	getHabitationCoverageByStatusByLocationType();
-}
+ //Angular Start
+	var myApp = angular.module('ruralWaterSupply',[]);
+	
+	myApp.controller('UserController', function($scope, $http) {
+		onloadCalls();
 
-function getHabitationCoverageByStatusByLocationType(){
-	var json = {
-		locationType:"state",
-		year:"2017"
-	  }
-	$.ajax({
-		url: 'getHabitationCoverageByStatusByLocationType',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			
+		function onloadCalls(){
+			getHabitationCoverageByStatusByLocationType();
+			getLabTestDetails();
+			getHabitationSupplyDetails();
+			getSchemesDetails();
+			getSchemeWiseWorkDetails();
+			getAssetInfoBetweenDates();
 		}
-	});
-}
-function getLabTestDetails(){
-	var json = {
-		year:"2017"
-	}
-	$.ajax({
-		url: 'getLabTestDetails',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			
+		function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip)
+		{
+			'use strict';
+			$('#'+id).highcharts({
+				 colors: [
+						'#ff0000',
+						'#00ff00',
+						'#0000ff'
+					],
+				chart: type,
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: xAxis,
+				yAxis: yAxis,
+				tooltip: tooltip,
+				plotOptions: plotOptions,
+				legend: legend,
+				series: data
+			});
 		}
-	});
-}
+		
+		
+		function getHabitationCoverageByStatusByLocationType()
+		{
+			var json = {
+				locationType:"state",
+				year:"2017"
+			}
+			$http({
+				url: 'getHabitationCoverageByStatusByLocationType',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
 
-function getHabitationSupplyDetails(){
-	var json = {
-		year:"2017"
-	  }
-	$.ajax({
-		url: 'getHabitationSupplyDetails',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			
-		}
-	});
-}
-function getSchemesDetails(){
-	var json = {
-		fromDateStr:"01-12-2016",
-		toDateStr:"01-12-2017"
-	  }
-	$.ajax({
-		url: 'getSchemesDetails',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			
-		}
-	});
-}
-function getSchemeWiseWorkDetails(){
-	var json = {
-			formDateStr:"01-01-2016",
-			toDateStr:"01-04-2017"
-	  }
-	$.ajax({
-		url: 'getSchemeWiseWorkDetails',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			
-		}
-	});
-}
+			}).then(function(response) {
+				//$scope.myWelcome = response.data;
+				console.log(response.data);
+				for(var i in response.data)
+				{
+					for(var j in response.data[i].statusList[j])
+					{
+						status
+						count
+					}
+				}
+				var id = id;
+				var type = {
+					type: 'column',
+					backgroundColor:'transparent'
+				};
+				var legend = {
+					enabled: false
+				};
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+				};
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: []
+				};
+				var plotOptions ={ column: {
+						colorByPoint: true
+					}};
+				var tooltip = {
+					pointFormat: '{point.y}'
+				};
 
-function getHabitationCoverageByStatusByLocationType(){
-	var json = {
-		formDateStr:"01-12-2016",
-		toDateStr:"01-12-2017"
-		}
+				var data = [{
+					name: '',
+					data: [
+						['FC', 90],
+						['PC', 62],
+						['QA', 50],
+					],
 
-	$.ajax({
-		url: 'getAssetInfoBetweenDates',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			
+					dataLabels: {
+						enabled: true,
+						color: '#FFFFFF',
+						align: 'right',
+						format: '{point.y}',
+					}
+				}];
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+			});
+		}
+		function getLabTestDetails()
+		{
+			var json = {
+				year:"2017"
+			}
+			$http({
+				url: 'getLabTestDetails',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
+			}).then(function(response) {
+				//$scope.myWelcome = response.data;
+				console.log(response.data);
+			});
+		}
+		function getHabitationSupplyDetails(){
+			var json = {
+				year:"2017"
+			}
+			$http({
+				url: 'getHabitationSupplyDetails',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
+
+			}).then(function(response) {
+				//$scope.myWelcome = response.data;
+				console.log(response.data);
+			});
+		}
+		function getSchemesDetails(){
+			var json = {
+				fromDateStr:"01-12-2016",
+				toDateStr:"01-12-2017"
+			}
+			$http({
+				url: 'getSchemesDetails',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
+
+			}).then(function(response) {
+				//$scope.myWelcome = response.data;
+				console.log(response.data);
+			});
+		}
+		function getSchemeWiseWorkDetails(){
+			var json = {
+					formDateStr:"01-01-2016",
+					toDateStr:"01-04-2017"
+			}
+			$http({
+				url: 'getSchemeWiseWorkDetails',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
+
+			}).then(function(response) {
+				//$scope.myWelcome = response.data;
+				console.log(response.data);
+			});
+		}
+		function getAssetInfoBetweenDates(){ 
+			var json = {
+				formDateStr:"01-12-2016",
+				toDateStr:"01-12-2017"
+			}
+			$http({
+				url: 'getAssetInfoBetweenDates',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
+
+			}).then(function(response) {
+				//$scope.myWelcome = response.data;
+				console.log(response.data);
+			});
 		}
 	});
-}
