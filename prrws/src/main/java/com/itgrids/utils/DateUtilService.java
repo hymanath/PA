@@ -12,12 +12,15 @@ import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * This Class Provides Utility Services On Date,Time and Calander.
  * 
  * @author Kamalakar Dandu
  */
+
+@Service
 public class DateUtilService {
 
 	private static final Logger log = LoggerFactory.getLogger(DateUtilService.class);
