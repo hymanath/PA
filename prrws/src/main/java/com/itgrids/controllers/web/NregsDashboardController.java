@@ -118,4 +118,26 @@ public class NregsDashboardController {
 		}
 		return levlWiseVOList;
 	}
+	@PostMapping("/getNregsVermiOverview")
+	public @ResponseBody NregsOverviewVO getNregsVermiOverview(@RequestBody InputVO vo){
+		NregsOverviewVO finalVo = null;
+		try {
+			finalVo = nregsTcsService.getNregsVermiOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsVermiOverview - NREGSController controller", e);
+		}
+		return finalVo;
+	}
+	@PostMapping("/getNregsVermiData")
+	public @ResponseBody List<NregsDataVO> getNregsVermiData(@RequestBody InputVO vo){
+		List<NregsDataVO> vermiDataList = null;
+		try {
+			vermiDataList = nregsTcsService.getNregsVermiData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsVermiData - NREGSController controller", e);
+		}
+		return vermiDataList;
+	}
 }
