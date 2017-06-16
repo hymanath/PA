@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,7 +26,8 @@ public class LoginController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 	
-	@RequestMapping(value = "/loginPage", method = RequestMethod.GET)
+	//@RequestMapping(value = "/loginPage", method = RequestMethod.GET)
+	@GetMapping("/loginPage")
     public String viewLogin() {
         return "login";
     }
