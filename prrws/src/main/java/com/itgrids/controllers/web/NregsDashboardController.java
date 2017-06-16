@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.FarmPondOverviewVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
+import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
@@ -82,6 +84,29 @@ public class NregsDashboardController {
 			LOG.error("Exception raised at getLabourBudgetExpenditure - NREGSController controller", e);
 		}
 		return locationVOList;
+	}
+	
+	@PostMapping("/getFarmPondOverview")
+	public @ResponseBody FarmPondOverviewVO getFarmPondOverview(@RequestBody InputVO vo){
+		FarmPondOverviewVO formobject = null;
+		try {
+			formobject = nregsTcsService.getFarmPondOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSProjectsOverview - NREGSController controller", e);
+		}
+		return formobject;
+	}
+	@PostMapping("/getFarmPondData")
+	public @ResponseBody List<NregsDataVO>  getFarmPondData(@RequestBody InputVO vo){
+		List<NregsDataVO> formVOList = null;
+		try {
+			formVOList = nregsTcsService.getFarmPondData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getFarmPondData - NREGSController controller", e);
+		}
+		return formVOList;
 	}
 	@PostMapping("/getNregaIHHLOverview")
 	public @ResponseBody NregsOverviewVO getNregaIHHLOverview(@RequestBody InputVO vo){
