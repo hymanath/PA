@@ -2,20 +2,30 @@
 @light_black:#494949;
 @thick_black:#595959;
 @white_color:#fff;
+@red_color:#FF0000;
 @light_ash_color : #EBEBEB;
 @black_border:1px solid #333;
 @light_green:#BAFAD9;
+@green_color:#00AF50;
 @pink_color:#FDCDD6;
 @yellow_color:#FFF8BB;
 @blue_color:#BAB4FF;
 @dark_brown_color:#999999;
 @dark_blue_color:#3C46FF;
 @dark_yellow_color:#FFBA00;
+@linear_orange_red:#FFBA00;
+@linear_red_pink:#FFBA00;
+@linear_light_dark_green:#FFBA00;
 @roboto_font:'Roboto', sans-serif;
 @lato_font:'Lato', sans-serif;
 @transparent_color:transparent;
 @background_color_8: rgb(74, 88, 99);
-
+.rounded-corners(@radius:5px)
+{
+	-webkit-border-radius:@radius;
+	-moz-border-radius:@radius;
+	border-radius:@radius;
+}
 /*Fonts*/
 @import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i');
 
@@ -526,7 +536,7 @@ header
 			}
 			&:before
 			{
-				border-left: 1px solid #ddd;;
+				border-left: 1px solid #ddd;
 				content: "";
 				display: block;
 				height: 147px;
@@ -564,7 +574,7 @@ header
 			}
 			&:before
 			{
-				border-left: 1px solid #ddd;;
+				border-left: 1px solid #ddd;
 				content: "";
 				display: block;
 				height: 147px;
@@ -615,18 +625,156 @@ header
 {
 	cursor: pointer;
 }
-.panelCollapseIcon:before {
-	/* symbol for "opening" panels */
-	font-family:'Glyphicons Halflings';
-	content:"\e260";
-	float: right;
-	font-size:10px;
-	margin-top:6px;
-	font-weight:400 !important;
-	margin-left:-4px;
-	color:#999;
+.panelCollapseIcon
+{
+	&:before {
+		font-family:'Glyphicons Halflings';
+		content:"\2212";
+		float: right;
+		font-size:10px;
+		font-weight:400 !important;
+		margin-left:-4px;
+		color:@white_color;
+		border:1px solid @white_color;
+		padding:2px 4px;
+		.rounded-corners(4px);
+	}
 }
-.panelCollapseIcon.collapsed:before {
-    /* symbol for "collapsed" panels */
-    content:"\e259";
+.panelCollapseIcon.collapsed
+{
+	&:before {
+		content:"\002b";
+	}
+}
+.panel-block-white
+{
+	.rounded-corners(4px);
+	background-color:@white_color;
+	border:@black_border;
+	padding:8px 15px;
+	margin-bottom:20px;
+	cursor:pointer;
+}
+.panel-block-white-low
+{
+	.panel-block-white;
+	color:@black_color;
+	h1
+	{
+		color:@red_color;
+		font-size:45px;
+	}
+	small
+	{
+		color:@red_color;
+		font-size:14px;
+		vertical-align:top;
+		position:relative;
+		top:5px;
+	}
+}
+.panel-block-white-low.active
+{
+	color:@white_color;
+	background: red; /* For browsers that do not support gradients */    
+    background: -webkit-linear-gradient(35deg, #ff1c5e, #ffc012); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(35deg, #ff1c5e, #ffc012); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(35deg, #ff1c5e, #ffc012); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(35deg, #ff1c5e, #ffc012); /* Standard syntax (must be last) */
+	box-shadow:0px 0px 3px 3px rgba(0,0,0,0.4);
+	h1
+	{
+		color:@white_color;
+		font-size:45px;
+	}
+	small
+	{
+		color:@white_color;
+		font-size:14px;
+		vertical-align:top;
+		position:relative;
+		top:5px;
+	}
+}
+.panel-block-white-high
+{
+	.panel-block-white;
+	color:@black_color;
+	h1
+	{
+		color:@green_color;
+		font-size:45px;
+	}
+	small
+	{
+		color:@green_color;
+		font-size:14px;
+		vertical-align:top;
+		position:relative;
+		top:5px;
+	}
+}
+.panel-block-white-medium
+{
+	.panel-block-white;
+	color:@black_color;
+	h1
+	{
+		color:@dark_yellow_color;
+		font-size:45px;
+	}
+	small
+	{
+		color:@dark_yellow_color;
+		font-size:14px;
+		vertical-align:top;
+		position:relative;
+		top:5px;
+	}
+}
+.panel-block-white-high.active
+{
+	color:@white_color;
+	background: red; /* For browsers that do not support gradients */    
+    background: -webkit-linear-gradient(35deg, #009344, #00e303); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(35deg, #009344, #00e303); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(35deg, #009344, #00e303); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(35deg, #009344, #00e303); /* Standard syntax (must be last) */
+	box-shadow:0px 0px 3px 3px rgba(0,0,0,0.4);
+	h1
+	{
+		color:@white_color;
+		font-size:45px;
+	}
+	small
+	{
+		color:@white_color;
+		font-size:14px;
+		vertical-align:top;
+		position:relative;
+		top:5px;
+	}
+}
+.panel-block-white-medium.active
+{
+	color:@white_color;
+	background: red; /* For browsers that do not support gradients */    
+    background: -webkit-linear-gradient(180deg, #ffc012, #ff0905); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(180deg, #ffc012, #ff0905); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(180deg, #ffc012, #ff0905); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(180deg, #ffc012, #ff0905); /* Standard syntax (must be last) */
+	box-shadow:0px 0px 3px 3px rgba(0,0,0,0.4);
+	h1
+	{
+		color:@white_color;
+		font-size:45px;
+	}
+	small
+	{
+		color:@white_color;
+		font-size:14px;
+		vertical-align:top;
+		position:relative;
+		top:5px;
+	}
 }
