@@ -480,7 +480,7 @@
 		{
 			str+='<h3>'+ajaxresp.fundedLoc+'</h3>';
 		} */
-		if(ajaxresp.totSchemes != null)
+		if(ajaxresp.totSchemes != null && ajaxresp.totSchemes != 0)
 		{
 			str+='<h3>'+ajaxresp.totSchemes+'</h3>';
 		}
@@ -531,16 +531,20 @@
 		if(ajaxresp.notFundedLoc != null)
 		{
 			str+='<ul class="list-inline">';
+			if(ajaxresp.fundedPerc != 0){
 				str+='<li class="text-center">';
 					str+='<p class="text-muted">FUNDED</p>';
 					str+='<p>'+ajaxresp.fundedLoc+'</p>';
 					str+='<p class="text-success"><small>'+ajaxresp.fundedPerc+'%</small></p>';
 				str+='</li>';
+			 }
+			 if(ajaxresp.nonFundedPerc != 0){
 				str+='<li class="text-center">';
 					str+='<p class="text-muted">NOT-FUNDED</p>';
 					str+='<p class="text-muted">'+ajaxresp.notFundedLoc+'</p>';
 					str+='<p class="text-success"><small>'+ajaxresp.nonFundedPerc+'%</small></p>';
 				str+='</li>';
+			 }
 			str+='</ul>';
 		}
 		
