@@ -10256,7 +10256,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		
 	 		Query query = getSession().createQuery(queryStr.toString());
 	 		
-	 		if(fromDate != null && toDate != null){
+	 		if(year !=null && !year.trim().isEmpty()){
+	 			query.setParameter("year", Integer.parseInt(year));
+	 		}else if(fromDate != null && toDate != null){
 	 			query.setParameter("fromDate", fromDate);
 	 			query.setParameter("toDate", toDate);
 	 		}
@@ -10289,7 +10291,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		
 	 		Query query = getSession().createQuery(queryStr.toString());
 	 		
-	 		if(fromDate != null && toDate != null){
+	 		if(year !=null && !year.trim().isEmpty()){
+	 			query.setParameter("year", Integer.parseInt(year));
+	 		}else if(fromDate != null && toDate != null){
 	 			query.setParameter("fromDate", fromDate);
 	 			query.setParameter("toDate", toDate);
 	 		}
@@ -10327,7 +10331,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		
 	 		Query query = getSession().createQuery(queryStr.toString());
 	 		
-	 		if(fromDate != null && toDate != null){
+	 		if(year !=null && !year.trim().isEmpty()){
+	 			query.setParameter("year", Integer.parseInt(year));
+	 		}else if(fromDate != null && toDate != null){
 	 			query.setParameter("fromDate", fromDate);
 	 			query.setParameter("toDate", toDate);
 	 		}
@@ -10361,7 +10367,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		
 	 		Query query = getSession().createQuery(queryStr.toString());
 	 		
-	 		if(fromDate != null && toDate != null){
+	 		if(year !=null && !year.trim().isEmpty()){
+	 			query.setParameter("year", Integer.parseInt(year));
+	 		}else if(fromDate != null && toDate != null){
 	 			query.setParameter("fromDate", fromDate);
 	 			query.setParameter("toDate", toDate);
 	 		}
