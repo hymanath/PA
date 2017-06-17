@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -85,6 +84,7 @@
 						<div class="col-sm-3">
 							<div class="white-block">
 								<div class="chart" id="totalValues"></div>
+								<h3>TOTAL : <span id="totalCntTtlValues"></span></h3>
 							</div>
 						</div>
 						<div class="col-sm-3">
@@ -94,7 +94,7 @@
 						</div>
 						<div class="col-sm-3">
 							<div class="white-block">
-								<div class="chart" id="levelOfSupply"></div>
+								<div class="chart" id="levelOfSupply1"></div>
 							</div>
 						</div>
 						<div class="col-sm-3">
@@ -106,44 +106,44 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="white-block">
-								<div class="chart" id="habitation"></div>
+								<div class="chart2" id="habitation"></div>
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="white-block">
-								<div class="chart" id="habitationWorks"></div>
+								<div class="chart2" id="habitationWorks"></div>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3">
 							<div class="white-block">
-								<div class="chart" id="keryPerformance"></div>
+								<div class="chart2" id="keryPerformance"></div>
 							</div>
 						</div>
 						<div class="col-sm-3">
 							<div class="white-block">
-								<div class="chart" id="keryPerformanceTarget"></div>
+								<div class="chart2" id="keryPerformanceTarget"></div>
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="white-block">
-								<div class="chart" id="alertStatus"></div>
+								<div class="chart2" id="alertStatus"></div>
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="white-block">
-								<div class="chart" id="assets"></div>
+								<div class="chart2" id="assets"></div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="white-block">
-						<div class="chart" id="overView"></div>
+						<div class="chart2" id="overView"></div>
 					</div>
 					<div class="white-block">
-						<div class="chart" id="planOfAction" class="m_top20"></div>
+						<div class="chart2" id="planOfAction" class="m_top20"></div>
 					</div>
 					<div class="white-block">
 						<div class="chart" id="drinkingWater" class="m_top20"></div>
@@ -162,7 +162,7 @@
 					<div id="districtBlockId"></div>
 				</div>
 				<div class="col-sm-12">
-					<div id="consBlockId"></div>
+					<div id="constituencyBlockId"></div>
 				</div>
 				<div class="col-sm-12">
 					<div id="mandalBlockId"></div>
@@ -194,7 +194,7 @@
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
-<script src="Assests/ruralWaterSupply/custom.js" type="text/javascript"></script>
+<!--<script src="Assests/ruralWaterSupply/custom.js" type="text/javascript"></script>-->
 <script src="Assests/ruralWaterSupply/ruralWaterSupplyDashBoard.js" type="text/javascript"></script>
 </body>
 </html>
