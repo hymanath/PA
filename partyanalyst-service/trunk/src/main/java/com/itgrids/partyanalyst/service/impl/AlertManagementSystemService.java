@@ -15187,7 +15187,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  				
  				if(mainVo.getFromDate() != null && mainVo.getFromDate().trim().length() > 0 && mainVo.getToDate() != null && mainVo.getToDate().trim().length() > 0){
  					fromDate = sdf.parse(mainVo.getFromDate().trim());
- 					toDate = sdf.parse(mainVo.getFromDate().trim());
+ 					toDate = sdf.parse(mainVo.getToDate().trim());
  				}
  				
  			  List<Object[]> statusObj = alertDAO.getAlertDetailsOfCategoryByStatusWise(fromDate,toDate,mainVo.getDeptId(),mainVo.getYear());
