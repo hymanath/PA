@@ -2555,6 +2555,21 @@
 			},
 			success : function(result){   
 				if(result !=null && result.length>0){
+					if(divId == 'mandalLevelConstNames'){  
+		                       $("#mandalLevelMandalNames").empty();
+		                       $("#mandalLevelMandalNames").append('<option value="0">SELECT Mandal</option>');	
+		                       $("#mandalLevelMandalNames").trigger('chosen:updated');
+		                 }
+					if(divId == 'villageLevelConstNames'){  
+		                       $("#villageLevelMandalNames").empty();
+		                       $("#villageLevelMandalNames").append('<option value="0">SELECT Mandal</option>');	
+		                       $("#villageLevelMandalNames").trigger('chosen:updated');
+		                 }
+					if(divId == 'villageLevelMandalNames'){  
+		                      $("#villageLevelNames").empty();
+		                      $("#villageLevelNames").append('<option value="0">SELECT VILLAGE</option>');	
+		                      $("#villageLevelNames").trigger('chosen:updated');
+		                 }
 					 $("#"+divId).append('<option value="0">SELECT '+globalLevelObj[divId]+'</option>');
 					for(var i in result){
 						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
