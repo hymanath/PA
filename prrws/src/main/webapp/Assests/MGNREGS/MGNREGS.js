@@ -7,13 +7,9 @@ function onLoadCalls()
 		$(this).addClass("active");
 		var projectDivId = $(this).attr("overview-block");
 		projectData(projectDivId)
-		if(projectDivId == 'Labout Budget')
-		{
-			
-		}
 	});
-	getNregsVermiOverview()
-	getNregsVermiData();
+	//getNregsVermiOverview()
+	//getNregsVermiData();
 }
 
 function projectData(divId)
@@ -34,7 +30,7 @@ function projectData(divId)
 							collapse+='</div>';
 							collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
 								collapse+='<div class="panel-body">';
-									collapse+='<div id="table'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"></div>';
+									collapse+='<div id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"></div>';
 								collapse+='</div>';
 							collapse+='</div>';
 						collapse+='</div>';
@@ -45,15 +41,26 @@ function projectData(divId)
 	collapse+='</section>';
 	$("#projectData").html(collapse);
 	for(var i in dataArr)
-	{ 
-		var tableId = divId.replace(/\s+/g, '')+''+dataArr[i]
-		functionName(tableId,dataArr[i])
+	{
+		var theadArr = [dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		var tableId = divId.replace(/\s+/g, '')+''+dataArr[i];
+		if(divId == 'Labour Budget'){
+			getNREGSLabBugdtLelwiseData(tableId,dataArr[i]);
+		}
+		else if(divId == "Farm Pond"){
+			getNREGSFarmPondLelwiseData(tableId,dataArr[i],theadArr)
+		}
+		else if(divId == "IHHL"){
+			getNREGSIHHLLelwiseData(tableId,dataArr[i],theadArr)
+		}
+		else if(divId == "VERMI"){
+			getNregsVermiData(tableId,dataArr[i],theadArr);
+		}
 	}
 }
 function tableView(blockId,theadArr,result)
 {
 	var tableView='';
-	var tbodyArr = [];
 	var $windowWidth = $(window).width();
 	
 	tableView+='<table class="table table-bordered dataTable'+blockId+'">';
@@ -64,16 +71,7 @@ function tableView(blockId,theadArr,result)
 			}
 		tableView+='</thead>';
 		tableView+='<tbody>';
-			tableView+='<tr>';
-				tableView+='<td class="text-capital">total <i class="fa fa-question-circle" attr_click="questionMark" attr_title="Modal TItle"></i></td>';
-				tableView+='<td>574 <small class="text-success">57%</small></td>';
-				tableView+='<td>574 <small class="text-success">57%</small></td>';
-				tableView+='<td>574 <small class="text-success">57%</small></td>';
-				tableView+='<td>574 <small class="text-success">57%</small></td>';
-				tableView+='<td>574 <small class="text-success">57%</small></td>';
-				tableView+='<td>574 <small class="text-success">57%</small></td>';
-				tableView+='<td>574 <small class="text-success">57%</small></td>';
-			tableView+='</tr>';
+			tableView+=result;
 		tableView+='</tbody>';
 	tableView+='</table>';
 	$("#"+blockId).html(tableView);	
@@ -154,11 +152,6 @@ function buildNREGSProjectsOverview(result)
 	$("#projectsOverview").html(str);
 }
 
-function functionName(tableId,dataArr)
-{
-	var theadArr = ['','QA','PC1','PC2','PC3','PC4','FC','TOTAL'];
-	tableView(tableId,theadArr,result)
-}
 function getNregsVermiOverview()
 {
 	
@@ -181,14 +174,13 @@ function getNregsVermiOverview()
 		}
 	});
 }
-function getNregsVermiData()
+function getNregsVermiData(divIdd,locationType,theadArr)
 {
-	
 	var json = {
 			year:"2017",
 			fromDate:"2017-04-01",
 			toDate:"2017-06-30",
-		    locationType: "state" 
+		    locationType: locationType
 		}
 	$.ajax({
 		url: 'getNregsVermiData',
@@ -200,7 +192,263 @@ function getNregsVermiData()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			
+			 var str = '';
+			if(ajaxresp != null && ajaxresp.length > 0){
+				for(var i in ajaxresp){
+					str+='<tr>';
+						if(locationType == "state")
+							str+='<td class="text-capital">'+locationType+'</td>';
+						if(locationType == "district")
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						if(locationType == "constituency")
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+						if(locationType == "mandal")
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+						str+='<td>'+ajaxresp[i].target+'</td>';
+						str+='<td>'+ajaxresp[i].grounded+'</td>';
+						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+						str+='<td>'+ajaxresp[i].inProgress+'</td>';
+						str+='<td>'+ajaxresp[i].completed+'</td>';
+						str+='<td>'+ajaxresp[i].percentage+'</td>';
+					str+='</tr>';
+				}
+			}
+		  tableView(divIdd,theadArr,str);
 		}
 	});
+}
+
+function getNREGSIHHLOverview()
+{
+
+  var json = {
+    year : "2017",
+      fromDate : "2017-04-01",
+        toDate : "2017-06-30"  
+}
+  $.ajax({
+    url: 'getNregaIHHLOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+      
+    }
+  });
+}
+
+//IHHL Levelwise Data Call — Nandhini
+
+function getNREGSIHHLLelwiseData(divIdd,locationType,theadArr)
+{
+
+  var json = {
+    year : "2017",
+    fromDate : "2017-04-01",
+      toDate : "2017-06-30",
+    locationType: locationType
+}
+  $.ajax({
+    url: 'getNregaLevelsOverviewForIHHL',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+       var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
+    }
+  });
+}
+
+//LabourBudget Overview Call — Sravanth
+
+function getNREGSLabourBudgetOverview()
+{
+  var json = {
+    year : "2017",
+      fromDate : "2017-04-01",
+        toDate : "2017-06-30"  
+}
+  $.ajax({
+    url: 'getLabourBudgetOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+      
+    }
+  });
+}
+
+//LabourBudget Expenditure Call  — Sravanth
+
+function getNREGSLabourBudgetExpenditure()
+{
+  var json = {
+    year : "2017",
+      fromDate : "2017-04-01",
+        toDate : "2017-06-30"  
+}
+  $.ajax({
+    url: 'getLabourBudgetExpenditure',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+      
+    }
+  });
+}
+
+//LabourBudget LevelWise Data Call — Sravanth
+
+function getNREGSLabBugdtLelwiseData(divIdd,locationType)
+{
+	var theadArr = [locationType,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+  var json = {
+    year : "2017",
+    fromDate : "2017-04-01",
+    toDate : "2017-06-30",
+    locationType: locationType  
+}
+  $.ajax({
+    url: 'getNregaLevelwiseOverviewForLabourBudgetData',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+		var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].targetPersonDays+'</td>';
+					str+='<td>'+ajaxresp[i].generatedPersonDays+'</td>';
+					str+='<td>'+ajaxresp[i].perAppLB+'</td>';
+					str+='<td>'+ajaxresp[i].avgWageRate+'</td>';
+					str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
+    }
+  });
+}
+
+//FarmPondOverview Call — Swapna
+
+function getNREGSFarmPondOverview()
+{
+  var json = {
+    year : "2017",
+      fromDate : "2017-04-01",
+        toDate : "2017-06-30"  
+}
+  $.ajax({
+    url: 'getFarmPondOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+      
+    }
+  });
+}
+
+//FarmPond Levelwise Data Call — Swapna
+
+function getNREGSFarmPondLelwiseData(divIdd,locationType,theadArr)
+{
+
+  var json = {
+    year : "2017",
+    fromDate : "2017-04-01",
+      toDate : "2017-06-30",
+    locationType: locationType 
+}
+  $.ajax({
+    url: 'getFarmPondData',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+      var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
+    }
+  });
 }

@@ -6,6 +6,7 @@
 <title>Mahatma Gandhi National Rural EGS</title>
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
+<link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
@@ -96,6 +97,7 @@
 </main>
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/MGNREGS.js" type="text/javascript"></script>
 </body>
 </html>
