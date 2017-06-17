@@ -42,16 +42,16 @@ public class NREGSTCSService implements INREGSTCSService{
 		List<NregsProjectsVO> voList = new ArrayList<NregsProjectsVO>(0);
 		try {
 			 
-			/*ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/Abstract", inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/Abstract", inputVO);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-	 	      }else{*/
-	 	    	 String output = null;//response.getEntity(String.class);
-	 	    	 output = "[{\"PARAMETER\":\"Labour Budget\",\"TARGET\":\"135033896\",\"COMPLETED\":\"110050490\",\"PERCENTAGE\":\"81.5\"},"
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 /*output = "[{\"PARAMETER\":\"Labour Budget\",\"TARGET\":\"135033896\",\"COMPLETED\":\"110050490\",\"PERCENTAGE\":\"81.5\"},"
 	 	    	 		+ "{\"PARAMETER\":\"Farm Pond\",\"TARGET\":\"38291\",\"COMPLETED\":\"28710\",\"PERCENTAGE\":\"74.98\"},"
 	 	    	 		+ "{\"PARAMETER\":\"IHHL\",\"TARGET\":\"26709\",\"COMPLETED\":\"23310\",\"PERCENTAGE\":\"87.27\"},"
-	 	    	 		+ "{\"PARAMETER\":\"VERMI\",\"TARGET\":\"18755\",\"COMPLETED\":\"9510\",\"PERCENTAGE\":\"50.71\"}]";
+	 	    	 		+ "{\"PARAMETER\":\"VERMI\",\"TARGET\":\"18755\",\"COMPLETED\":\"9510\",\"PERCENTAGE\":\"50.71\"}]";*/
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -70,7 +70,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	}
 	 	    	 
 	 	    	  
-	 	     // }
+	 	      }
 	        
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNREGSProjectsOverview - NREGSTCSService service", e);
@@ -88,13 +88,13 @@ public class NREGSTCSService implements INREGSTCSService{
 		LabourBudgetOverViewVO returnvo = new LabourBudgetOverViewVO();
 		try {
 			 
-			/*ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/LabourBudgetOverview", inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/LabourBudgetOverview", inputVO);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-	 	      }else{*/
-	 	    	 String output = null;//response.getEntity(String.class);
-	 	    	 output = "{\"TOTALBUDGET\": \"443361.29\",\"TOTALLABOUR\": \"4980421\",\"MALELABOUR\": \"2225710\",\"FEMALELABOUR\": \"2754711\","
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 /*output = "{\"TOTALBUDGET\": \"443361.29\",\"TOTALLABOUR\": \"4980421\",\"MALELABOUR\": \"2225710\",\"FEMALELABOUR\": \"2754711\","
 	 	    	 		+ "\"TARGETTEDPERSONDAYS\": \"135033896\",\"GENERATEDPERSONDAYS\": \"109104373\",\"TOTALEXPENDITURE\": \"185762.22\","
 	 	    	 		+ "\"AVGWAGEPERPERSON\": \"138.14\",\"TOTALRESPONSE\": \"43822300\",\"ONREQUESTWORKALLOCATED\": \"43822300\","
 	 	    	 		+ "\"GOTWORKOCCUTIONALLY\": \"43822300\",\"HAVENOTGOTWORK\": \"0\",\"BUDGETFORLABOUR\": \"266016.78\","
@@ -102,7 +102,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 		+ "\"DISTRICTSINGREEN\": \"7\",\"TOTALCONSTITUENCIES\": \"157\",\"CONSTITUENCIESINRED\": \"4\",\"CONSTITUENCIESINORANGE\": \"73\","
 	 	    	 		+ "\"CONSTITUENCIESINGREEN\": \"80\",\"TOTALMANDALS\": \"661\",\"MANDALSINRED\": \"68\",\"MANDALSINORANGE\": \"253\","
 	 	    	 		+ "\"MANDALSINGREEN\": \"340\",\"TOTALVILLAGES\": \"13089\",\"VILLAGESINRED\": \"3406\",\"VILLAGESINORANGE\": \"3499\","
-	 	    	 		+ "\"VILLAGESINGREEN\": \"6184\",\"LEADER\": \"Gopalapuram\",\"LAGGER\": \"Venkatapuram\"}";
+	 	    	 		+ "\"VILLAGESINGREEN\": \"6184\",\"LEADER\": \"Gopalapuram\",\"LAGGER\": \"Venkatapuram\"}";*/
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jObj = new JSONObject(output);
@@ -141,7 +141,7 @@ public class NREGSTCSService implements INREGSTCSService{
     				returnvo.setLeader(jObj.getString("LEADER"));
     				returnvo.setLagger(jObj.getString("LAGGER"));
     			}
-	 	   // }
+	 	   }
 	    } catch (Exception e) {
 			LOG.error("Exception raised at getLabourBudgetOverview - NREGSTCSService service", e);
 		}
@@ -158,16 +158,16 @@ public class NREGSTCSService implements INREGSTCSService{
 		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
 		try {
 			 
-			/*ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/LabourBudgetExpenditure", inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/LabourBudgetExpenditure", inputVO);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-	 	      }else{*/
-	 	    	 String output = null;//response.getEntity(String.class);
-	 	    	 output = "[{\"RANGE\": \"0\",\"GPSCOUNT\": \"236\"},{\"RANGE\": \"Below 1\",\"GPSCOUNT\": \"690\"},{\"RANGE\": \"1-5\",\"GPSCOUNT\": \"2975\"},"
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 /*output = "[{\"RANGE\": \"0\",\"GPSCOUNT\": \"236\"},{\"RANGE\": \"Below 1\",\"GPSCOUNT\": \"690\"},{\"RANGE\": \"1-5\",\"GPSCOUNT\": \"2975\"},"
 	 	    	 		+ "{\"RANGE\": \"5-10\",\"GPSCOUNT\": \"2978\"},{\"RANGE\": \"10-20\",\"GPSCOUNT\": \"3986\"},{\"RANGE\": \"20-30\",\"GPSCOUNT\": \"1694\"},"
 	 	    	 		+ "{\"RANGE\": \"30-50\",\"GPSCOUNT\": \"901\"},{\"RANGE\": \"50-100\",\"GPSCOUNT\": \"286\"},{\"RANGE\": \"100-200\",\"GPSCOUNT\": \"21\"},"
-	 	    	 		+ "{\"RANGE\": \"200-300\",\"GPSCOUNT\": \"2\"},{\"RANGE\": \"300-400\",\"GPSCOUNT\": \"0\"},{\"RANGE\": \"Above 400\",\"GPSCOUNT\": \"0\"}]";
+	 	    	 		+ "{\"RANGE\": \"200-300\",\"GPSCOUNT\": \"2\"},{\"RANGE\": \"300-400\",\"GPSCOUNT\": \"0\"},{\"RANGE\": \"Above 400\",\"GPSCOUNT\": \"0\"}]";*/
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -184,7 +184,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	}
 	 	    	 
 	 	    	  
-	 	     // }
+	 	      }
 	        
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLabourBudgetExpenditure - NREGSTCSService service", e);
@@ -373,7 +373,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
 	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
-	 	    				vo.setMandal(jObj.getString("PANCHAYAT"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 	 	    				vo.setTarget(jObj.getLong("TARGET"));
 	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
 	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
@@ -420,7 +420,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
 	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
-	 	    				vo.setMandal(jObj.getString("PANCHAYAT"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 	 	    				vo.setTargetPersonDays(jObj.getLong("TARGETPERSONDAYS"));
 	 	    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
 	 	    				vo.setPerAppLB(jObj.getString("PER_APP_LB"));
