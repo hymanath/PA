@@ -465,11 +465,15 @@
 			str+='<h4 class="panel-title text-capital district-name"> '+ajaxresp.name+'</h4>';//avgFundMandal
 		}
 		if(attrDivId == 'avgFundDist' || attrDivId == 'avgFundCons' || attrDivId == 'avgFundScheme' || attrDivId == 'avgFundMandal' || attrDivId == 'avgFundVillage' || attrDivId == 'avgFundGrant'  ){
+			if(ajaxresp.avrgeAmt != 0 && ajaxresp.avrgeAmt != undefined ){
 			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.avrgeAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
+			}
 		}
 		else if(ajaxresp.totalAmt != null && ajaxresp.totalAmt != "0.0" && attrDivId != 'avgFundDist' && attrDivId != 'avgFundCons' &&  attrDivId != 'avgFundScheme' && attrDivId != 'avgFundMandal' && divId != 'avgFundVillage'  && attrDivId != 'avgFundGrant' )
 		{
+			if(ajaxresp.totalAmt != 0 && ajaxresp.totalAmt != undefined ){
 			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.totalAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
+			}
 		}
 		
 		/* if(ajaxresp.fundedLoc != null)
@@ -486,11 +490,13 @@
 			str+='<ul class="list-inline">';
 				for(var i in ajaxresp.subList)
 				{
+					 if(ajaxresp.subList[i].percentage != 0){
 					str+='<li class="text-center">';
 						str+='<p class="text-muted">'+ajaxresp.subList[i].name+'</p>';
 						str+='<p class="text-success"><small>'+ajaxresp.subList[i].percentage+'%</small></p>';
 						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.subList[i].totl+'</p>';
 					str+='</li>';
+					 }
 				}
 			str+='</ul>';
 		}else if(ajaxresp.detailsVOs !=null && ajaxresp.detailsVOs.length > 0  && attrDivId != 'avgFundDist' && attrDivId != 'avgFundCons' &&  attrDivId != 'avgFundScheme' && attrDivId != 'avgFundMandal' && attrDivId != 'avgFundVillage')
@@ -498,11 +504,13 @@
 			str+='<ul class="list-inline">';
 				for(var i in ajaxresp.detailsVOs)
 				{
+					 if(ajaxresp.detailsVOs[i].perc != 0){
 					str+='<li class="text-center">';
 						str+='<p class="text-muted">'+ajaxresp.detailsVOs[i].name+'</p>';
 						str+='<p class="text-success"><small>'+ajaxresp.detailsVOs[i].perc+'%</small></p>';
 						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.detailsVOs[i].avrgeAmt+'</p>';
 					str+='</li>';
+					 }
 				}
 			str+='</ul>';
 		}else if(attrDivId == 'avgFundDist' || attrDivId == 'avgFundCons' || attrDivId != 'avgFundScheme' || attrDivId != 'avgFundMandal' || attrDivId != 'avgFundVillage' )
@@ -510,11 +518,13 @@
 			str+='<ul class="list-inline">';
 				for(var i in ajaxresp.detailsVOs)
 				{
+					if(ajaxresp.detailsVOs[i].perc != 0){
 					str+='<li class="text-center">';
 						str+='<p class="text-muted">'+ajaxresp.detailsVOs[i].name+'</p>';
 						str+='<p class="text-success"><small>'+ajaxresp.detailsVOs[i].perc+'%</small></p>';
 						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.detailsVOs[i].fundAvageAmt+'</p>';
 					str+='</li>';
+					}
 				}
 			str+='</ul>';
 		}
