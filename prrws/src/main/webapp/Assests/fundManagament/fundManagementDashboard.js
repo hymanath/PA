@@ -540,6 +540,7 @@
 	}
 	function getLocationWiseAmountDetails(levelId,divId,type,sortingType,orderType,locationId,displayType){
 		$("#"+divId).html(spinner);
+		$("#"+divId+"Table").html("");
 		var levelValues = [];
 		var financialYrIdList = $('#financialYearId').val();
 		var deptIdsArr = $('#DepartmentsId').val();
@@ -577,6 +578,7 @@
 					buildLocationWiseAmountDetails(ajaxresp,divId,type,levelId,displayType,locationId);
 				}else{
 					$("#"+divId).html("NO DATA AVAILABLE");
+					$("#"+divId+"Table").html("NO DATA AVAILABLE");
 				}
 			}
 		});
