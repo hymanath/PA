@@ -34,7 +34,7 @@ public class RuralWaterSupplyDashBoardController {
 	}
 
 	@PostMapping("/getHabitationCoverageByStatusByLocationType")
-	public @ResponseBody List<LocationVO> getHabitationCoverageByStatusByLocationType(InputVO vo) {
+	public @ResponseBody List<LocationVO> getHabitationCoverageByStatusByLocationType(@RequestBody InputVO vo) {
 		List<LocationVO> locationVOList = null;
 		try {
 			locationVOList = rWSNICService.getHabitationCoverageByStatusByLocationType(vo);
@@ -48,7 +48,7 @@ public class RuralWaterSupplyDashBoardController {
 	}
 
 	@PostMapping("/getLabTestDetails")
-	public @ResponseBody BasicVO getLabTestDetails(InputVO vo) {
+	public @ResponseBody BasicVO getLabTestDetails(@RequestBody InputVO vo) {
 		BasicVO basicVO = null;
 		try {
 			basicVO = rWSNICService.getLabTestDetails(vo);
@@ -97,7 +97,7 @@ public class RuralWaterSupplyDashBoardController {
 	 */
 
 	@PostMapping("/getAssetInfoBetweenDates")
-	public @ResponseBody List<BasicVO> getAssetInfoBetweenDates(InputVO vo) {
+	public @ResponseBody List<BasicVO> getAssetInfoBetweenDates(@RequestBody InputVO vo) {
 		List<BasicVO> assetInfo = null;
 		try {
 			assetInfo = rWSNICService.getAssetsInfo(vo);
@@ -110,7 +110,7 @@ public class RuralWaterSupplyDashBoardController {
 	}
 
 	@PostMapping("/getAlertDetailsOfCategoryByStatusWise")
-	public @ResponseBody List<StatusVO> getAlertDetailsOfCategoryByStatusWise(InputVO vo) {
+	public @ResponseBody List<StatusVO> getAlertDetailsOfCategoryByStatusWise(@RequestBody InputVO vo) {
 		List<StatusVO> alertInfo = null;
 		try {
 			alertInfo = rWSNICService.getAlertDetailsOfCategoryByStatusWise(vo);
@@ -123,7 +123,7 @@ public class RuralWaterSupplyDashBoardController {
 	}
 
 	@PostMapping("/getAlertFeedbackStatusDetails")
-	public @ResponseBody List<StatusVO> getAlertFeedbackStatusDetails(InputVO vo) {
+	public @ResponseBody List<StatusVO> getAlertFeedbackStatusDetails(@RequestBody InputVO vo) {
 		List<StatusVO> alertInfo = null;
 		try {
 			alertInfo = rWSNICService.getAlertFeedbackStatusDetails(vo);
@@ -141,7 +141,7 @@ public class RuralWaterSupplyDashBoardController {
 	 */
 
 	@PostMapping("/getWaterSourceInfo")
-	public @ResponseBody List<StatusVO> getWaterSourceInfo(InputVO vo) {
+	public @ResponseBody List<StatusVO> getWaterSourceInfo(@RequestBody InputVO vo) {
 		List<StatusVO> waterSourceInfo = null;
 		try {
 			waterSourceInfo = rWSNICService.getWaterSourceInfo(vo);
@@ -154,7 +154,7 @@ public class RuralWaterSupplyDashBoardController {
 	}
 	
 	@PostMapping("/getKeyPerformanceIndicatorsInfo")
-	public @ResponseBody List<LocationVO> getKeyPerformanceIndicatorsInfo(InputVO vo) {
+	public @ResponseBody List<LocationVO> getKeyPerformanceIndicatorsInfo(@RequestBody InputVO vo) {
 		List<LocationVO> keyIndicatorsInfo = null;
 		try {
 			keyIndicatorsInfo = rWSNICService.getKeyPerformanceIndicatorsInfo(vo);
@@ -166,6 +166,17 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return keyIndicatorsInfo;
 	}
+	
+	@PostMapping("/getPlanofActionForStressedHabitations")
+	public @ResponseBody StatusVO getPlanofActionForStressedHabitations(@RequestBody InputVO vo) {
+		StatusVO statusVO = null;
+		try {
+			statusVO = rWSNICService.getPlanofActionForStressedHabitations(vo);
 
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPlanofActionForStressedHabitations - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return statusVO;
+	}
 
 }
