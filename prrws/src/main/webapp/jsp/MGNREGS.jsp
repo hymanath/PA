@@ -92,7 +92,10 @@
 				</div>
 			</div>
 		</section>
+		<div id="nregasAvgOverData"></div>
+		<div id="nregasOverData"></div>
 		<div id="projectData"></div>
+		
 	</div>
 </main>
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
