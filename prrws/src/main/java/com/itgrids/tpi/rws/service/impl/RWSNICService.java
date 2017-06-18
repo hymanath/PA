@@ -392,7 +392,7 @@ public class RWSNICService implements IRWSNICService{
 	public List<StatusVO> getWaterSourceInfo(InputVO vo) {
 		List<StatusVO> waterSourceInfo = new ArrayList<StatusVO>(0);
 		try{
-			/*WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getAssetsinfo");
+			/*WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getWaterSourceInfo");
 	        
         	String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
         	System.out.println(jsonInString);
@@ -427,7 +427,66 @@ public class RWSNICService implements IRWSNICService{
 		
 		
 		return waterSourceInfo;
-	
-	
+	}
+	/*
+	 * Date : 18/06/2017
+	 * Author :R Nagarjuna Gowd
+	 * @description : getKeyPerformanceIndicatorsInfo
+	 */
+	public List<LocationVO> getKeyPerformanceIndicatorsInfo(InputVO inputVO){
+		List<LocationVO> voList = new ArrayList<LocationVO>(0);
+		try {
+			 
+	        /*WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getKeyPerformanceIndicatorsInfo");
+	        
+	        String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
+	        System.out.println(jsonInString);
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{*/
+	 	    	 String output = null;//response.getEntity(String.class);
+	 	    	 output ="[{\"locationId\":\"1\",\"locationName\":\"Andhra Pradhesh\","
+	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
+	 	    	             +"{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]}]";
+	 	    	 
+	 	    	 	    		 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				LocationVO vo = new LocationVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setLocationName(jObj.getString("locationName"));
+	 	    				
+	 	    				
+	 	    				JSONArray statusListArray = jObj.getJSONArray("statusData");
+	 	    				
+	 	    				if(statusListArray != null && statusListArray.length() > 0){
+	 	    					for (int j = 0; j < statusListArray.length(); j++) {
+									StatusVO statusVO = new StatusVO();
+									
+									JSONObject jobj1 = (JSONObject) statusListArray.get(j);
+									statusVO.setStatus(jobj1.getString("key"));
+									statusVO.setTarget(jobj1.getLong("target"));
+									statusVO.setAchived(jobj1.getLong("achieved"));
+									vo.getStatusList().add(statusVO);
+								}
+	 	    				}
+	 	    				voList.add(vo);
+	 	    			//}
+	 	    		}
+	 	    	}
+	 	    	 
+	 	    	  
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getKeyPerformanceIndicatorsInfo - RuralWaterSupplyDashBoardService service", e);
+		}
+		
+		return voList;
 	}
 }

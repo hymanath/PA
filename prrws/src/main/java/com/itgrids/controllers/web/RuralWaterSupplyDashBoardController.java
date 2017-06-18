@@ -152,5 +152,20 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return waterSourceInfo;
 	}
+	
+	@PostMapping("/getKeyPerformanceIndicatorsInfo")
+	public @ResponseBody List<LocationVO> getKeyPerformanceIndicatorsInfo(InputVO vo) {
+		List<LocationVO> keyIndicatorsInfo = null;
+		try {
+			keyIndicatorsInfo = rWSNICService.getKeyPerformanceIndicatorsInfo(vo);
+
+		} catch (Exception e) {
+			LOG.error(
+					"Exception raised at getKeyPerformanceIndicatorsInfo - RuralWaterSupplyDashBoardController controller",
+					e);
+		}
+		return keyIndicatorsInfo;
+	}
+
 
 }
