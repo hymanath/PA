@@ -17,19 +17,19 @@ public class NregsOverviewVO implements Serializable{
 	  private String totalAvgFarmsInConstituency;
 	  private String totalAvgFarmsInMandal;
 	  private Long districtsInRed;
-	  private Long districtsInOrgange;
+	  private Long districtsInOrange;
 	  private Long districtsInGreen;
 	  private Long totalDistricts;
 	  private Long constituenciesInRed;
-	  private Long constituenciesInOrgange;
+	  private Long constituenciesInOrange;
 	  private Long constituenciesInGreen;
 	  private Long totalConstituencies;
 	  private Long mandalsInRed;
-	  private Long mandalsInOrgange;
+	  private Long mandalsInOrange;
 	  private Long mandalsInGreen;
 	  private Long totalMandals;
 	  private Long villagesInRed;
-	  private Long villagesInOrgange;
+	  private Long villagesInOrange;
 	  private Long villagesInGreen;
 	  private Long totalVillages;
 	  
@@ -81,12 +81,6 @@ public class NregsOverviewVO implements Serializable{
 	public void setDistrictsInRed(Long districtsInRed) {
 		this.districtsInRed = districtsInRed;
 	}
-	public Long getDistrictsInOrgange() {
-		return districtsInOrgange;
-	}
-	public void setDistrictsInOrgange(Long districtsInOrgange) {
-		this.districtsInOrgange = districtsInOrgange;
-	}
 	public Long getDistrictsInGreen() {
 		return districtsInGreen;
 	}
@@ -104,12 +98,6 @@ public class NregsOverviewVO implements Serializable{
 	}
 	public void setConstituenciesInRed(Long constituenciesInRed) {
 		this.constituenciesInRed = constituenciesInRed;
-	}
-	public Long getConstituenciesInOrgange() {
-		return constituenciesInOrgange;
-	}
-	public void setConstituenciesInOrgange(Long constituenciesInOrgange) {
-		this.constituenciesInOrgange = constituenciesInOrgange;
 	}
 	public Long getConstituenciesInGreen() {
 		return constituenciesInGreen;
@@ -129,12 +117,6 @@ public class NregsOverviewVO implements Serializable{
 	public void setMandalsInRed(Long mandalsInRed) {
 		this.mandalsInRed = mandalsInRed;
 	}
-	public Long getMandalsInOrgange() {
-		return mandalsInOrgange;
-	}
-	public void setMandalsInOrgange(Long mandalsInOrgange) {
-		this.mandalsInOrgange = mandalsInOrgange;
-	}
 	public Long getMandalsInGreen() {
 		return mandalsInGreen;
 	}
@@ -153,12 +135,6 @@ public class NregsOverviewVO implements Serializable{
 	public void setVillagesInRed(Long villagesInRed) {
 		this.villagesInRed = villagesInRed;
 	}
-	public Long getVillagesInOrgange() {
-		return villagesInOrgange;
-	}
-	public void setVillagesInOrgange(Long villagesInOrgange) {
-		this.villagesInOrgange = villagesInOrgange;
-	}
 	public Long getVillagesInGreen() {
 		return villagesInGreen;
 	}
@@ -171,6 +147,28 @@ public class NregsOverviewVO implements Serializable{
 	public void setTotalVillages(Long totalVillages) {
 		this.totalVillages = totalVillages;
 	}
-	  
-	  
+	public Long getDistrictsInOrange() {
+		return districtsInOrange;
+	}
+	public void setDistrictsInOrange(Long districtsInOrange) {
+		this.districtsInOrange = districtsInOrange;
+	}
+	public Long getConstituenciesInOrange() {
+		return constituenciesInOrange;
+	}
+	public void setConstituenciesInOrange(Long constituenciesInOrange) {
+		this.constituenciesInOrange = constituenciesInOrange;
+	}
+	public Long getMandalsInOrange() {
+		return mandalsInOrange;
+	}
+	public void setMandalsInOrange(Long mandalsInOrange) {
+		this.mandalsInOrange = mandalsInOrange;
+	}
+	public Long getVillagesInOrange() {
+		return villagesInOrange;
+	}
+	public void setVillagesInOrange(Long villagesInOrange) {
+		this.villagesInOrange = villagesInOrange;
+	}
 }
