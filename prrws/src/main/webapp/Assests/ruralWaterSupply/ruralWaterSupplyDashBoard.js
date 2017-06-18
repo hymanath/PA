@@ -17,6 +17,8 @@
 			getSchemeWiseWorkDetails();
 			getAssetInfoBetweenDates();
 			getWaterSourceInfo();
+			getKeyPerformanceIndicatorsInfo();
+			getPlanofActionForStressedHabitations();
 			/* getAlertDetailsOfCategoryByStatusWise();
 			getAlertFeedbackStatusDetails(); */
 		}
@@ -678,6 +680,24 @@
 			});
 		}
 		
+		function getPlanofActionForStressedHabitations(){
+			var json = {
+					year : "2014",
+					fromDate : "2014-01-01",
+					toDate : "2014-06-30"	
+				}
+
+			$http({
+				url: 'getPlanofActionForStressedHabitations',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
+
+			}).then(function(response) {
+				console.log(response.data);
+				
+			});
+		}
 		
 		
 		/* function getAlertDetailsOfCategoryByStatusWise(){

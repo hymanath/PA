@@ -489,4 +489,35 @@ public class RWSNICService implements IRWSNICService{
 		
 		return voList;
 	}
+	
+	public StatusVO getPlanofActionForStressedHabitations(InputVO vo){
+		StatusVO statusVO = null;
+		try {
+			/*WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getPlanofActionForStressedHabitations");
+	        
+	        String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
+	        System.out.println(jsonInString);
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{*/
+	 	    	 String output = null;//response.getEntity(String.class);
+	 	    	 output = "{\"target\":\"10000\",\"achieved\":\"9000\",\"population\":\"2592630\"}";
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject jobj = new JSONObject(output);
+	 	    		statusVO = new StatusVO();
+	 	    		statusVO.setTarget(jobj.getLong("target"));
+	 	    		statusVO.setTarget(jobj.getLong("achieved"));
+	 	    		statusVO.setTarget(jobj.getLong("population"));
+	 	    	}
+
+	 	      //}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPlanofActionForStressedHabitations - RuralWaterSupplyDashBoardService service", e);
+		}
+		return statusVO;
+	}
 }
