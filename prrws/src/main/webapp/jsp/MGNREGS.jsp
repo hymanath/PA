@@ -94,6 +94,7 @@
 		</section>
 		<div id="nregasAvgOverData"></div>
 		<div id="nregasOverData"></div>
+		<div id="projectOverviewBlock"></div>
 		<div id="projectData"></div>
 		
 	</div>
