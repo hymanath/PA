@@ -18,4 +18,5 @@ public interface IRWSNICService {
 	public List<StatusVO> getAlertDetailsOfCategoryByStatusWise(InputVO vo);
 	public List<StatusVO> getAlertFeedbackStatusDetails(InputVO vo);
 	public List<StatusVO> getWaterSourceInfo(InputVO vo);
+	public List<LocationVO> getKeyPerformanceIndicatorsInfo(InputVO inputVO);
 }

@@ -16,6 +16,7 @@
 			getSchemesDetails();
 			getSchemeWiseWorkDetails();
 			getAssetInfoBetweenDates();
+			getWaterSourceInfo();
 			/* getAlertDetailsOfCategoryByStatusWise();
 			getAlertFeedbackStatusDetails(); */
 		}
@@ -656,6 +657,27 @@
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
 			});
 		}
+		
+		function getKeyPerformanceIndicatorsInfo(){
+			var json = {
+					  year : "2014",
+					  fromDate : "2014-01-01",
+					  toDate : "2014-06-30",
+					locationType : "state"	
+					}
+
+			$http({
+				url: 'getKeyPerformanceIndicatorsInfo',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
+
+			}).then(function(response) {
+				console.log(response.data);
+				
+			});
+		}
+		
 		
 		
 		/* function getAlertDetailsOfCategoryByStatusWise(){

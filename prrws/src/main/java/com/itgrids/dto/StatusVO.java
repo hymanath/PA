@@ -9,6 +9,8 @@ public class StatusVO {
 	private Long stressedCount;
 	private Double percentage=0.0d;
 	private String color;
+	private Long target;
+	private Long achived;
 	
 	public String getStatus() {
 		return status;
@@ -51,6 +53,18 @@ public class StatusVO {
 	}
 	public void setColor(String color) {
 		this.color = color;
+	}
+	public Long getTarget() {
+		return target;
+	}
+	public void setTarget(Long target) {
+		this.target = target;
+	}
+	public Long getAchived() {
+		return achived;
+	}
+	public void setAchived(Long achived) {
+		this.achived = achived;
 	}
 	
 	
