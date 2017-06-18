@@ -583,6 +583,81 @@
 			});
 		}
 		
+		
+		function getWaterSourceInfo(){ 
+			var json = {
+					  year : "2014",
+					  fromDate : "2014-01-01",
+					  toDate : "2014-06-30"
+			}
+			$http({
+				url: 'getWaterSourceInfo',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
+
+			}).then(function(response) {
+				//$scope.myWelcome = response.data;
+				
+				var dataArr = [];
+				for(var i in response.data)
+				{
+				  //console.log(response.data);
+					var tempArr = [];
+					tempArr.push(response.data[i].name);
+					tempArr.push(parseInt(response.data[i].count));
+					dataArr.push(tempArr);
+				  
+				}
+				var colors = ['#14BBAE'];
+				var id = 'waterSources';
+				var type = {
+					type: 'column',
+					backgroundColor:'transparent'
+				};
+				var legend = {
+					enabled: false
+				};
+				var title = {
+					text: 'Assets'
+				};
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+				};
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: []
+				};
+				var plotOptions ={ column: {
+						colorByPoint: false
+					}};
+				var tooltip = {
+					pointFormat: '{point.y}'
+				};
+
+				var data = [{
+					name: '',
+					data: dataArr,
+
+					dataLabels: {
+						enabled: true,
+						color: '#FFFFFF',
+						align: 'right',
+						format: '{point.y}',
+					}
+				}];
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
+			});
+		}
+		
+		
 		/* function getAlertDetailsOfCategoryByStatusWise(){
 			var json = {
 				fromDate:dd-MM-yyyy,

@@ -26,7 +26,6 @@ public class LoginController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 	
-	//@RequestMapping(value = "/loginPage", method = RequestMethod.GET)
 	@GetMapping("/loginPage")
     public String viewLogin() {
         return "login";

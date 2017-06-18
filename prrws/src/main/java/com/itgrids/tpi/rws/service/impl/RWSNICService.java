@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -382,5 +381,53 @@ public class RWSNICService implements IRWSNICService{
 			LOG.error("Exception raised at getAlertFeedbackStatusDetails - RuralWaterSupplyDashBoardService service", e);
 		}
 		return voList;
+	}
+	
+	
+	/*
+	 * Date : 18/06/2017
+	 * Author :Nagarjuna
+	 * @description : getWaterSourceInfo
+	 */
+	public List<StatusVO> getWaterSourceInfo(InputVO vo) {
+		List<StatusVO> waterSourceInfo = new ArrayList<StatusVO>(0);
+		try{
+			/*WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getAssetsinfo");
+	        
+        	String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
+        	System.out.println(jsonInString);
+        
+        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{*/
+				String output = null;//response.getEntity(String.class);
+				output="[{'source' : 'ground','value'  : '10000'},"
+						 +"{'source' : 'surface','value'  : '10000'}]";
+ 	    	if(output != null && !output.isEmpty()){
+ 	    		JSONArray finalArray = new JSONArray(output);
+ 	    		if(finalArray!=null && finalArray.length()>0){
+ 	    			for(int i=0;i<finalArray.length();i++){
+ 	    				StatusVO statusVO = new StatusVO();
+ 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+ 	    				statusVO.setName(jObj.getString("source"));
+ 	    				statusVO.setCount(jObj.getLong("value"));
+ 	    				waterSourceInfo.add(statusVO);
+ 	    			//}
+ 	    		}
+ 	    	}
+ 	    	 
+ 	    	  
+ 	      }
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getWaterSourceInfo - RuralWaterSupplyDashBoardService service", e);
+		}
+		
+		
+		return waterSourceInfo;
+	
+	
 	}
 }
