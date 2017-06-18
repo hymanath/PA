@@ -7,9 +7,15 @@ function onLoadCalls()
 		$(this).addClass("active");
 		var projectDivId = $(this).attr("overview-block");
 		projectData(projectDivId)
+		if(projectDivId == 'Labour Budget')
+		{
+			
+		}else if(projectDivId == 'VERMI')
+		{
+			getNregsVermiOverview(projectDivId);
+		}
 	});
-	//getNregsVermiOverview()
-	//getNregsVermiData();
+	
 }
 
 function projectData(divId)
@@ -152,7 +158,7 @@ function buildNREGSProjectsOverview(result)
 	$("#projectsOverview").html(str);
 }
 
-function getNregsVermiOverview()
+function getNregsVermiOverview(projectDivId)
 {
 	
 	var json = {
@@ -169,8 +175,10 @@ function getNregsVermiOverview()
 			xhr.setRequestHeader("Accept", "application/json");
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
-		success: function(ajaxresp) {
-			
+		success: function(ajaxresp){
+			if(ajaxresp !=null ){
+				buildNregasOverViewBlock(ajaxresp,projectDivId);
+			}
 		}
 	});
 }
@@ -451,4 +459,185 @@ function getNREGSFarmPondLelwiseData(divIdd,locationType,theadArr)
       tableView(divIdd,theadArr,str);
     }
   });
+}
+
+function buildNregasOverViewBlock(result,projectDivId){
+	var str="";
+	var str1="";
+	str1+='<div class="panel panel-default panel-black">';
+		str1+='<div class="panel-heading">';
+			str1+='<h4 class="panel-title text-capital">'+projectDivId+' overview</h4>';
+		str1+='</div>';
+		str1+='<div class="panel-body">';
+			str1+='<table class="table table-bordered" >';
+				str1+='<tbody>';
+					str1+='<tr>';
+						str1+='<td>';
+							str1+='<div class="col-sm-9">';
+								str1+='<div class="media">';
+									str1+='<p class="media-body">Average Per District : '+result.averagePerDistrict+'</p>';
+								str1+='</div>';
+							str1+='</td>';
+							str1+='<td>';
+								str1+='<div class="media">';
+								str1+='<p class="media-body">Total Avg farms in District : '+result.totalAvgFarmsInDistrict+'</p>';
+									str1+='</div>';
+								/*str1+='<div class="media">';
+									str1+='<p class="media-body">Average Per Constituency : '+result.averagePerConstituency+'</p>';
+								str1+='</div>';*/
+							str1+='</td>';
+							str1+='</tr>';
+							str1+='<tr>';
+								str1+='<td>';
+									str1+='<div class="media">';
+									str1+='<p class="media-body">Average Per Constituency : '+result.averagePerConstituency+'</p>';
+								/*str1+='</div>*/
+								str1+='</td>';
+								str1+='<td>';
+									str1+='<div class="media">';
+								str1+='<p class="media-body">Total Avg farms in Constituency : '+result.totalAvgFarmsInConstituency+'</p>';
+									str1+='</div>';
+									/*str1+='<div class="media">';
+									str1+='<p class="media-body">Average Per Constituency : '+result.averagePerConstituency+'</p>';
+								str1+='</div>*/
+								str1+='</td>';
+								str1+='</tr>';
+								str1+='<tr>';
+									str1+='<td>';
+										str1+='<div class="media">';
+										str1+='<p class="media-body">Average Per Mandal : '+result.averagePerMandal+'</p>';
+										str1+='</div>';
+									str1+='</td>';
+									str1+='<td>';
+										str1+='<div class="media">';
+										str1+='<p class="media-body">Total Avg farms in Mandal: '+result.totalAvgFarmsInMandal+'</p>';
+									str1+='</div>';
+									str1+='</td>';
+								str1+='</tr>';
+							str1+='<tr>';
+								str1+'<td>';
+									str1+='<div class="col-sm-3">';
+									str1+='<p>Total Budget</p>';
+									str1+='<h4>'+result.totalBudget+'</h4>';
+									str1+='</div>';
+								str1+='</td>';
+								str1+='<td>';
+									str1+='<div class="col-sm-3">';
+									str1+='<p>Total Farms</p>';
+									str1+='<h4>0</h4>';
+									str1+='</div>';
+								str1+='</td>';
+							str1+='</tr>';
+								/*str1+='</div>';
+						str1+='</td>';
+						str1+='<td>';
+							str1+='<div class="col-sm-9">';
+								str1+='<div class="media">';
+								str1+='<p class="media-body">Total Avg farms in District : '+result.totalAvgFarmsInDistrict+'</p>';
+									str1+='</div>';
+								str1+='<div class="media">';
+								str1+='<p class="media-body">Total Avg farms in Constituency : '+result.totalAvgFarmsInConstituency+'</p>';
+									str1+='</div>';
+								str1+='<div class="media">';
+									str1+='<p class="media-body">Total Avg farms in Mandal: '+result.totalAvgFarmsInMandal+'</p>';
+								str1+='</div>';
+								
+							str1+='<div class="col-sm-3">';
+								str1+='<p>Total Farms</p>';
+								str1+='<h4>0</h4>';
+							str1+='</div>';
+							str1+='</div>';
+							
+						str1+='</td>';
+						
+					str1+='</tr>';*/
+				str1+='</tbody>';
+			str1+='</table>';
+			 str1+='<table class="table table-bordered" >';
+				str1+='<tbody>';
+					str1+='<tr>';
+						str1+='<td>';
+							str1+='<div class="col-sm-9">';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+									str1+='<p class="media-body">District in Red : '+result.districtsInRed+'</p>';
+								str1+='</div>';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+									str1+='<p class="media-body">District in Orange : '+result.districtsInOrgange+'</p>';
+								str1+='</div>';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+									str1+='<p class="media-body">District in Green : '+result.districtsInGreen+'</p>';
+								str1+='</div>';
+								str1+='<div class="col-sm-3">';
+								str1+='<p>Total District</p>';
+								str1+='<h4>'+result.totalDistricts+'</h4>';
+							str1+='</div>';
+							str1+='</div>';
+						str1+='</td>';
+						str1+='<td>';
+							str1+='<div class="col-sm-9">';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+								str1+='<p class="media-body">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+									str1+='</div>';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body">Constituencies in Orange : '+result.constituenciesInOrgange+'</p>';
+									str1+='</div>';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+								str1+='</div>';
+								
+							str1+='<div class="col-sm-3">';
+								str1+='<p>Total Constituencies</p>';
+								str1+='<h4>'+result.totalConstituencies+'</h4>';
+							str1+='</div>';
+							str1+='</div>';
+							
+						str1+='</td>';
+						str1+='<td>';
+							str1+='<div class="col-sm-9">';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p><p class="media-body">Mandals in Red : '+result.mandalsInRed+'</p>';
+									str1+='</div>';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body">Mandals in Orange : '+result.mandalsInOrgange+'</p>';
+								str1+='</div>';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body">Mandals in Green : '+result.mandalsInGreen+'</p>';
+								str1+='</div>';
+								
+							str1+='<div class="col-sm-3">';
+								str1+='<p>Total Mandals</p>';
+								str1+='<h4>'+result.totalMandals+'</h4>';
+							str1+='</div>';
+							str1+='</div>';
+						str1+='</td>';
+						str1+='<td>';
+							str1+='<div class="col-sm-9">';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p><p class="media-body">Villages in Red : '+result.villagesInRed+'</p>';
+								str1+='</div>';
+							  str1+=' <div class="media">';
+								   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body">Villages in Orange : '+result.villagesInOrgange+'</p>';
+								str1+='</div>';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body">Villages in Green : '+result.villagesInGreen+'</p>';
+								str1+='</div>';
+								
+							str1+='<div class="col-sm-3">';
+								str1+='<p>Total Villages</p>';
+								str1+='<h4>'+result.totalVillages+'</h4>';
+							str1+='</div>';
+							str1+='</div>';
+						str1+='</td>';
+					str1+='</tr>';
+				str1+='</tbody>';
+			str1+='</table>';
+		str1+='</div>';
+	str1+='</div>';		
+			
+	
+	$("#nregasAvgOverData").html(str1);
 }
