@@ -109,6 +109,9 @@ function overviewData(divId)
 	}else if(divId == "Anganwadi")
 	{
 		getNregsAnganwadiOverview(divId)
+	}else if(divId == "CC Roads")
+	{
+		getCCRoadsOverview(divId)
 	}
 	else if(divId == "Mandal buildings")
 	{
@@ -752,6 +755,28 @@ function getNregsAnganwadiData()
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp) {
+    }
+  });
+}
+function getCCRoadsOverview(projectDivId)
+{
+
+  var json = {
+		  year : "2017",
+		  fromDate : "2017-04-01",
+		  toDate : "2017-06-30"
+  }
+  $.ajax({
+    url: 'getCCRoadsOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp){
+		buildNregasOverViewBlock(ajaxresp,projectDivId);
     }
   });
 }

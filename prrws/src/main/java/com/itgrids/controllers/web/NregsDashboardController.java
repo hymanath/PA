@@ -209,6 +209,29 @@ public class NregsDashboardController {
 		}
 		return anganwadiDataList;
 	}
+
+	@PostMapping("/getCCRoadsOverview")
+	public @ResponseBody FarmPondOverviewVO getCCRoadsOverview(@RequestBody InputVO vo){
+		FarmPondOverviewVO formobject = null;
+		try {
+			formobject = nregsTcsService.getCCRoadsOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCCRoadsOverview - CCRoadsOverviewcontroller", e);
+		}
+		return formobject;
+	}
+	@PostMapping("/getCCRoadsData")
+	public @ResponseBody List<NregsDataVO>   getCCRoadsData(@RequestBody InputVO vo){
+		List<NregsDataVO> formVOList = null;
+		try {
+			formVOList = nregsTcsService. getCCRoadsData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCCRoadsData - CCRoadsDataController controller", e);
+		}
+		return formVOList;
+	}
 	@PostMapping("/getNregsMandalBuildingOverview")
 	public @ResponseBody NregsOverviewVO getNregsMandalBuildingOverview(@RequestBody InputVO vo){
 		NregsOverviewVO finalVo = null;
