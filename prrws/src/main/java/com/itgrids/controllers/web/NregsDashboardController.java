@@ -209,4 +209,25 @@ public class NregsDashboardController {
 		}
 		return anganwadiDataList;
 	}
+	@PostMapping("/getNregsMandalBuildingOverview")
+	public @ResponseBody NregsOverviewVO getNregsMandalBuildingOverview(@RequestBody InputVO vo){
+		NregsOverviewVO finalVo = null;
+		try {
+			finalVo = nregsTcsService.getNregsMandalBuildingOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsMandalBuildingOverview - NREGSController controller", e);
+		}
+		return finalVo;
+	}
+	@PostMapping("/getNregsMandalBuildingData")
+	public @ResponseBody List<NregsDataVO> getNregsMandalBuildingData(@RequestBody InputVO vo){
+		List<NregsDataVO> mandalBuildingDataList = null;
+		try {
+			mandalBuildingDataList = nregsTcsService.getNregsMandalBuildingData(vo);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsMandalBuildingData - NREGSController controller", e);
+		}
+		return mandalBuildingDataList;
+	}
 }

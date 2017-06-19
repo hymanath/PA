@@ -722,4 +722,98 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return returnList;
 	}
+	/*
+	 * Date : 16/06/2017
+	 * Author :Teja
+	 * @description :getNregsMandalBuildingOverview(Nregs anganwadi details)
+	 */
+	public NregsOverviewVO getNregsMandalBuildingOverview(InputVO inputVO){
+		NregsOverviewVO returnVo = new NregsOverviewVO();
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/MandalBuildingService/MandalBuildingOverview", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String result = response.getEntity(String.class);
+	 	    	 
+	 	    	if(result != null && !result.isEmpty()){
+	 	    		JSONObject jObj = new JSONObject(result);
+	 	    		NregsOverviewVO vo = new NregsOverviewVO();
+	 	                 
+	 	                returnVo.setAveragePerDistrict(jObj.getString("AVERAGEPERDISTRICT"));
+	 	                returnVo.setAveragePerConstituency(jObj.getString("AVERAGEPERCONSTITUENCY"));
+	 	                returnVo.setAveragePerMandal(jObj.getString("AVERAGEPERMANDAL"));
+	 	                returnVo.setTotalBudget(jObj.getLong("TOTALBUDGET"));
+	 	                returnVo.setTotalAvgFarmsInDistrict(jObj.getString("TOTALAVGFARMSINDISTRICT"));
+	 	                returnVo.setTotalAvgFarmsInConstituency(jObj.getString("TOTALAVGFARMSINCONSTITUENCY"));
+	 	                returnVo.setTotalAvgFarmsInMandal(jObj.getString("TOTALAVGFARMSINMANDAL"));
+	 	                returnVo.setDistrictsInRed(jObj.getLong("DISTRICTSINRED"));
+	 	                returnVo.setDistrictsInOrange(jObj.getLong("DISTRICTSINORANGE"));
+	 	                returnVo.setDistrictsInGreen(jObj.getLong("DISTRICTSINGREEN"));
+	 	                returnVo.setTotalDistricts(jObj.getLong("TOTALDISTRICTS"));
+	 	                returnVo.setConstituenciesInRed(jObj.getLong("CONSTITUENCIESINRED"));
+	 	                returnVo.setConstituenciesInOrange(jObj.getLong("CONSTITUENCIESINORANGE"));
+	 	                returnVo.setConstituenciesInGreen(jObj.getLong("CONSTITUENCIESINGREEN"));
+	 	                returnVo.setTotalConstituencies(jObj.getLong("TOTALCONSTITUENCIES"));
+	 	                returnVo.setMandalsInRed(jObj.getLong("MANDALSINRED"));
+	 	                returnVo.setMandalsInOrange(jObj.getLong("MANDALSINORANGE"));
+	 	                returnVo.setMandalsInGreen(jObj.getLong("MANDALSINGREEN"));
+	 	                returnVo.setTotalMandals(jObj.getLong("TOTALMANDALS"));
+	 	                returnVo.setVillagesInRed(jObj.getLong("VILLAGESINRED"));
+	 	                returnVo.setVillagesInOrange(jObj.getLong("VILLAGESINORANGE"));
+	 	                returnVo.setVillagesInGreen(jObj.getLong("VILLAGESINGREEN"));
+	 	                returnVo.setTotalVillages(jObj.getLong("TOTALVILLAGES"));
+	 	               }
+	 	            }
+				} catch (Exception e) {
+					LOG.error("Exception raised at getNregsMandalBuildingOverview - NREGSTCSService service", e);
+				}
+		return returnVo;
+	}
+	/*
+	 * Date : 16/06/2017
+	 * Author :Teja
+	 * @description : getNregsMandalBuildingData
+	 */
+	public List<NregsDataVO> getNregsMandalBuildingData(InputVO inputVO){
+		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>(0);
+		try {
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/MandalBuildingService/MandalBuildingData", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String result = response.getEntity(String.class);
+	 	    	 
+	 	    	if(result != null && !result.isEmpty()){
+	 	    		JSONArray resultArray = new JSONArray(result);
+	 	    		if(resultArray!=null && resultArray.length()>0){
+	 	    			for(int i=0;i<resultArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				
+	 	    				JSONObject jObj = (JSONObject) resultArray.get(i);
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTarget(jObj.getLong("TARGET"));
+	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				
+	 	    				returnList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	     }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsMandalBuildingData - NREGSTCSService service", e);
+		}
+		return returnList;
+	}
 }
