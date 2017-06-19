@@ -213,7 +213,7 @@ public class NREGSTCSService implements INREGSTCSService{
  	    				farmpondoverviewvO.setAveragePerDistrict(new BigDecimal(jObj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
  	    				farmpondoverviewvO.setAveragePerConstituency(new BigDecimal(jObj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
  	    				farmpondoverviewvO.setAveragePerMandal(new BigDecimal(jObj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
- 	    				farmpondoverviewvO.setConstituenciesInGreen(jObj.getLong("TOTALBUDGET"));
+ 	    				farmpondoverviewvO.setConstituenciesInGreen(jObj.getLong("CONSTITUENCIESINGREEN"));
  	    				farmpondoverviewvO.setConstituenciesInOrange(jObj.getLong("CONSTITUENCIESINORANGE"));
  	    				farmpondoverviewvO.setConstituenciesInRed(jObj.getLong("CONSTITUENCIESINRED"));
  	    				farmpondoverviewvO.setDistrictsInGreen(jObj.getLong("DISTRICTSINGREEN"));
@@ -726,7 +726,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	/*
 	 * Date : 19/06/2017
 	 * Author :Swapna
-	 * @description : getFarmPondOverview
+	 * @description : getCCRoadsOverview
 	 */
 	@Override
 	public FarmPondOverviewVO getCCRoadsOverview(InputVO inputVO) {
@@ -745,7 +745,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				farmpondoverviewvO.setAveragePerDistrict(jObj.getString("AVERAGEPERDISTRICT"));
 	 	    				farmpondoverviewvO.setAveragePerConstituency(jObj.getString("AVERAGEPERCONSTITUENCY"));
 	 	    				farmpondoverviewvO.setAveragePerMandal(jObj.getString("AVERAGEPERMANDAL"));
-	 	    				farmpondoverviewvO.setConstituenciesInGreen(jObj.getLong("TOTALBUDGET"));
+	 	    				farmpondoverviewvO.setConstituenciesInGreen(jObj.getLong("CONSTITUENCIESINGREEN"));
 	 	    				farmpondoverviewvO.setConstituenciesInOrange(jObj.getLong("CONSTITUENCIESINORANGE"));
 	 	    				farmpondoverviewvO.setConstituenciesInRed(jObj.getLong("CONSTITUENCIESINRED"));
 	 	    				farmpondoverviewvO.setDistrictsInGreen(jObj.getLong("DISTRICTSINGREEN"));
@@ -781,7 +781,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	/*
 	 * Date : 19/06/2017
 	 * Author :Swapna
-	 * @description : getFarmPondOverview
+	 * @description : getCCRoadsData
 	 */
 	
 	@Override
