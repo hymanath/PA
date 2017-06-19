@@ -100,6 +100,9 @@ function overviewData(divId)
 	}else if(divId == "NTR Jala Siri")
 	{
 		NtrsOverview(divId)
+	}else if(divId == "Anganwadi")
+	{
+		getNregsAnganwadiOverview(divId)
 	}
 }
 function tableView(blockId,theadArr,result)
@@ -687,6 +690,50 @@ function getNregsNtrsData()
   }
   $.ajax({
     url: 'getNregsNtrsData',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+    }
+  });
+}
+function getNregsAnganwadiOverview(projectDivId)
+{
+
+  var json = {
+		  year : "2017",
+		  fromDate : "2017-04-01",
+		  toDate : "2017-06-30"
+  }
+  $.ajax({
+    url: 'getNregsAnganwadiOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp){
+		buildNregasOverViewBlock(ajaxresp,projectDivId);
+    }
+  });
+}
+function getNregsAnganwadiData()
+{
+
+  var json = {
+		  year : "2017",
+		  fromDate : "2017-04-01",
+		  toDate : "2017-06-30",
+		  locationType: "state"
+  }
+  $.ajax({
+    url: 'getNregsAnganwadiData',
     data: JSON.stringify(json),
     type: "POST",
     dataType: 'json', 
