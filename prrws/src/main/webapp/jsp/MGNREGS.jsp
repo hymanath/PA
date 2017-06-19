@@ -8,7 +8,7 @@
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<script src="https://use.fontawesome.com/07d3416f74.js"></script>
+<script src="https://use.fontawesome.com/e94c241642.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
 </head>
 <body>
@@ -63,7 +63,7 @@
 			</div>
 		</div>
 	</nav>
-	<!--<section>
+	<section>
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-12">
@@ -102,7 +102,7 @@
 				</div>
 			</div>
 		</div>
-	</section>-->
+	</section>
 </header>
 <main>
 	<div class="container-fluid">
