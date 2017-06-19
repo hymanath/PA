@@ -1,5 +1,5 @@
-onLoadCalls();
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+onLoadCalls();
 function onLoadCalls()
 {
 	getNREGSProjectsOverview()
@@ -64,6 +64,29 @@ function projectData(divId)
 		else if(divId == "VERMI"){
 			getNregsVermiData(tableId,dataArr[i],theadArr);
 		}
+		else if(divId == "Gram Panchayat Buildings"){
+			getNREGSGPBuildingLelwiseData(tableId,dataArr[i],theadArr);
+		}else if(divId == "NTR Jala Siri"){
+			getNregsNtrsData(tableId,dataArr[i],theadArr);
+		}else if(divId == "CC Roads"){
+			getCCRoadsData(tableId,dataArr[i],theadArr);
+		}else if(divId == "Anganwadi"){
+			getNregsAnganwadiData(tableId,dataArr[i],theadArr);
+		}else if(divId == "Mandal buildings"){
+			getNregsMandalBuildingData(tableId,dataArr[i],theadArr);
+		}else if(divId == "NTR 90 Days"){
+			
+		}else if(divId == "Production of Bricks"){
+			
+		}else if(divId == "Mulbery"){
+			
+		}else if(divId == "Silk worm"){
+			
+		}else if(divId == "Cattle drinking water trough"){
+			
+		}else if(divId == "Raising of Perinnial Fodder"){
+			
+		}
 	}
 }
 function overviewData(divId)
@@ -93,7 +116,7 @@ function overviewData(divId)
 	
 	if(divId == 'Labour Budget')
 	{
-		getNREGSLabourBudgetOverview(divId)
+		getNREGSLabourBudgetOverview(divId);
 	}else if(divId == 'Farm Pond')
 	{
 		getNREGSFarmPondOverview(divId);
@@ -112,10 +135,12 @@ function overviewData(divId)
 	}else if(divId == "CC Roads")
 	{
 		getCCRoadsOverview(divId)
-	}
-	else if(divId == "Mandal buildings")
+	}else if(divId == "Mandal buildings")
 	{
 		getNregsMandalBuildingOverview(divId)
+	}else if(divId == "Gram Panchayat Buildings")
+	{
+		getNREGSGPBuildingOverview(divId)
 	}
 }
 function tableView(blockId,theadArr,result)
@@ -217,7 +242,7 @@ function buildNREGSProjectsOverview(result)
 
 function getNregsVermiOverview(projectDivId)
 {
-	$("#projectOvervw"+projectDivId).html(spinner);
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	var json = {
 			year:"2017",
 			fromDate:"2017-04-01",
@@ -241,7 +266,7 @@ function getNregsVermiOverview(projectDivId)
 }
 function getNregsVermiData(divIdd,locationType,theadArr)
 {
-	$(".dataTable"+divIdd).html(spinner);
+	$("#"+divIdd).html(spinner);
 	var json = {
 			year:"2017",
 			fromDate:"2017-04-01",
@@ -286,7 +311,7 @@ function getNregsVermiData(divIdd,locationType,theadArr)
 
 function getNREGSIHHLOverview(projectDivId)
 {
-	$("#projectOvervw"+projectDivId).html(spinner);
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : "2017-04-01",
@@ -311,7 +336,7 @@ function getNREGSIHHLOverview(projectDivId)
 
 function getNREGSIHHLLelwiseData(divIdd,locationType,theadArr)
 {
-	$("#projectOvervw"+projectDivId).html(spinner);
+	$("#"+divIdd).html(spinner);
   var json = {
     year : "2017",
     fromDate : "2017-04-01",
@@ -358,7 +383,7 @@ function getNREGSIHHLLelwiseData(divIdd,locationType,theadArr)
 
 function getNREGSLabourBudgetOverview(projectDivId)
 {
-	$("#projectOvervw"+projectDivId).html(spinner);
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
       fromDate : "2017-04-01",
@@ -381,8 +406,9 @@ function getNREGSLabourBudgetOverview(projectDivId)
 
 //LabourBudget Expenditure Call  — Sravanth
 
-function getNREGSLabourBudgetExpenditure()
+function getNREGSLabourBudgetExpenditure(projectDivId)
 {
+	$("#projectOvervw"+projectDivId).html(spinner);
   var json = {
     year : "2017",
       fromDate : "2017-04-01",
@@ -398,7 +424,7 @@ function getNREGSLabourBudgetExpenditure()
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp) {
-      
+      buildLabrBudgetExpBlock(ajaxresp,projectDivId)
     }
   });
 }
@@ -453,7 +479,7 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType)
 
 function getNREGSFarmPondOverview(projectDivId)
 {
-	$("#projectOvervw"+projectDivId).html(spinner);
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : "2017-04-01",
@@ -554,7 +580,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 					str1+='</td>';
 				str1+='</tr>';
 				str1+='<tr>';
-					str1+'<td>';
+					str1+='<td>';
 						str1+='<p>Total Budget</p>';
 						str1+='<h4>'+result.totalBudget+'</h4>';
 					str1+='</td>';
@@ -566,6 +592,61 @@ function buildNregasOverViewBlock(result,projectDivId){
 			str1+='</tbody>';
 		str1+='</table>';
 	}
+	if(result.maleLabour != null){
+		str1+='<table class="table table-bordered">';
+		str1+='<tbody>';
+			str1+='<tr>';
+				str1+='<td>';
+					str1+='<div class="col-sm-8">';
+						str1+='<div class="media">';
+						str1+='<p class="media-left"><img src="Assests/icons/Male.png"></p><p class="media-body">Male Labours : '+result.maleLabour+'</p>';
+							str1+='</div>';
+						str1+='<div class="media"> ';  
+						str1+='<p class="media-left">';
+							str1+='<img src="Assests/icons/Female.png"></p><p class="media-body">Female Labour : '+result.femaleLabour+'</p>';
+						str1+='</div> ';
+					str1+='</div>';
+				str1+='	<div class="col-sm-4">';
+						str1+='<p>Total labour</p>';
+						str1+='<h4><b>'+result.totalLabour+'</b></h4>';
+					str1+='</div>';
+				str1+='</td>';
+				str1+='<td>';
+					str1+='<div class="col-sm-8">';
+						str1+='<div class="media">';
+						str1+='<p class="media-left"><img src="Assests/icons/Green_Worker.png"></p><p class="media-body">On request work allocated : '+result.onRequestWorkAllocated+'</p>';
+							str1+='</div>';
+						str1+='<div class="media">';
+						str1+='<p class="media-left"><img src="Assests/icons/Orange_Worker.png"></p><p class="media-body">Got work occutionaly :'+result.gotWorkOccutionally+'</p>';
+							str1+='</div>';
+						str1+='<div class="media">';
+						str1+='<p class="media-left"><img src="Assests/icons/Red_Worker.png"></p><p class="media-body">Havent got work :'+result.haveNotGotWork+'</p>';
+						str1+='</div>';
+					str1+='</div>';
+					str1+='<div class="col-sm-4">';
+						str1+='<p>Total Response</p>';
+						str1+='<h4><b>'+result.totalResponse+'</b></h4>';
+				str1+='	</div>';
+				str1+='</td>';
+				str1+='<td>';
+					str1+='<div class="col-sm-8">';
+						str1+='<div class="media">';
+						str1+='<p class="media-left"><img src="Assests/icons/Labours_icon.png"></p><p class="media-body">Budget for Labours : '+result.budgetForLabour+'</p>';
+						str1+='</div>';
+						str1+='<div class="media">';
+						str1+='<p class="media-left"><img src="Assests/icons/Bugget_icon.png"></p><p class="media-body">Budget for Material : '+result.budgetForMaterial+'</p>';
+							str1+='</div>';
+					str1+='</div>';
+					str1+='<div class="col-sm-4">';
+						str1+='<p>Total Budget</p>';
+						str1+='<h4><b>'+result.totalBudget+'</b></h4>';
+					str1+='</div>';
+				str1+='</td>';
+			str1+='</tr>';
+			str1+='</tbody>';
+		str1+='</table>';
+	}
+	
 	str1+='<table class="table table-bordered" >';
 		str1+='<tbody>';
 			str1+='<tr>';
@@ -646,7 +727,8 @@ function buildNregasOverViewBlock(result,projectDivId){
 	str1+='</table>';
 	if(result.targettedPersonDays != null)
 	{
-		str1+='<table class="table table-bordered">';
+		str1+='<div id="projectExp'+projectDivId.replace(/\s+/g, '')+'" style="margin-top:10px;"></div>';
+		str1+='<table class="table table-bordered m_top20">';
 			str1+='<tr>';
 				str1+='<td>';
 					str1+='<p class="col-sm-9">Targeted Person days upto 31st may</p>';
@@ -666,13 +748,15 @@ function buildNregasOverViewBlock(result,projectDivId){
 				str1+='</td>';
 			str1+='</tr>';
 		str1+='</table>';
+		
+		getNREGSLabourBudgetExpenditure(projectDivId);
 	}
 	
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str1);
 }
 function NtrsOverview(projectDivId)
 {
-
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
   var json = {
 		  year : "2017",
 		  fromDate : "2017-04-01",
@@ -692,14 +776,14 @@ function NtrsOverview(projectDivId)
     }
   });
 }
-function getNregsNtrsData()
+function getNregsNtrsData(divIdd,locationType,theadArr)
 {
-
+$("#"+divIdd).html(spinner);
   var json = {
 		  year : "2017",
 		  fromDate : "2017-04-01",
 		  toDate : "2017-06-30",
-		  locationType: "state"
+		  locationType: locationType
   }
   $.ajax({
     url: 'getNregsNtrsData',
@@ -711,12 +795,34 @@ function getNregsNtrsData()
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp) {
+		 var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+		tableView(divIdd,theadArr,str);
     }
   });
 }
 function getNregsAnganwadiOverview(projectDivId)
 {
-
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
   var json = {
 		  year : "2017",
 		  fromDate : "2017-04-01",
@@ -736,14 +842,14 @@ function getNregsAnganwadiOverview(projectDivId)
     }
   });
 }
-function getNregsAnganwadiData()
+function getNregsAnganwadiData(divIdd,locationType,theadArr)
 {
-
+	$("#"+divIdd).html(spinner);
   var json = {
 		  year : "2017",
 		  fromDate : "2017-04-01",
 		  toDate : "2017-06-30",
-		  locationType: "state"
+		  locationType: locationType
   }
   $.ajax({
     url: 'getNregsAnganwadiData',
@@ -755,12 +861,34 @@ function getNregsAnganwadiData()
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp) {
+		 var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
     }
   });
 }
 function getCCRoadsOverview(projectDivId)
 {
-
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
   var json = {
 		  year : "2017",
 		  fromDate : "2017-04-01",
@@ -782,6 +910,7 @@ function getCCRoadsOverview(projectDivId)
 }
 function getNregsMandalBuildingOverview(projectDivId)
 {
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 
   var json = {
 		  year : "2017",
@@ -802,14 +931,14 @@ function getNregsMandalBuildingOverview(projectDivId)
     }
   });
 }
-function getNregsMandalBuildingData()
+function getNregsMandalBuildingData(divIdd,locationType,theadArr)
 {
 
   var json = {
 		  year : "2017",
 		  fromDate : "2017-04-01",
 		  toDate : "2017-06-30",
-		  locationType: "state"
+		  locationType:locationType
   }
   $.ajax({
     url: 'getNregsMandalBuildingData',
@@ -821,6 +950,167 @@ function getNregsMandalBuildingData()
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp) {
+		 var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
+     }
+  });
+}
+//LabourBudget Exp Builing --  Nandhini
+
+function buildLabrBudgetExpBlock(result,projectDivId){
+	var str='';
+	str+='<p class="text-center expenditure">No of Panchayaties Vs Expenditure In Lakhs</p>';
+		str+='<table class="table table-striped">';
+			str+='<tbody>';
+				 str+='<tr>';
+					 str+='<td>District Name</td>';
+					 for(var i in result){
+						 str+='<td>'+result[i].name+'</td>';
+					 }
+				  str+='</tr>';
+				str+=' <tr>';
+					str+=' <td>Grand Total</td>';
+					 for(var i in result){
+						 str+='<td>'+result[i].count+'</td>';
+					 }
+				  str+='</tr>';
+			str+='</tbody>';
+		str+='</table>';
+	$("#projectExp"+projectDivId.replace(/\s+/g, '')).html(str);
+}
+
+//getNREGSGPBuildingOverview Call -- Nandhini
+
+function getNREGSGPBuildingOverview(projectDivId)
+{
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : "2017-04-01",
+        toDate : "2017-06-30"  
+	}
+	$.ajax({
+		url: 'getNregaGPBuilingsOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildNregasOverViewBlock(ajaxresp,projectDivId);
+		}
+	});
+}
+
+//GPBuilding Levelwise Data Call — Nandhini
+
+function getNREGSGPBuildingLelwiseData(divIdd,locationType,theadArr)
+{
+	$("#"+divIdd).html(spinner);
+  var json = {
+    year : "2017",
+    fromDate : "2017-04-01",
+      toDate : "2017-06-30",
+    locationType: locationType
+}
+  $.ajax({
+    url: 'getNregaLevelsOverviewForGPBuilding',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+       var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
+    }
+  });
+}
+function getCCRoadsData(divIdd,locationType,theadArr)
+{
+	$("#"+divIdd).html(spinner);
+  var json = {
+    year : "2017",
+    fromDate : "2017-04-01",
+      toDate : "2017-06-30",
+    locationType: locationType
+}
+  $.ajax({
+    url: 'getCCRoadsData',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+       var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
     }
   });
 }
