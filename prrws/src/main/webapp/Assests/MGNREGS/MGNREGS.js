@@ -9,6 +9,9 @@ function onLoadCalls()
 		var projectDivId = $(this).attr("overview-block");
 		overviewData(projectDivId)
 		projectData(projectDivId)
+		$('html,body').animate({
+			scrollTop: $("#projectOverviewBlock").offset().top},
+        'slow');
 	});
 	$("header").on("click",".menu-cls",function(e){
 		e.stopPropagation();
@@ -185,9 +188,14 @@ function getNREGSProjectsOverview()
 		},
 		success: function(ajaxresp) {
 			buildNREGSProjectsOverview(ajaxresp);
+			
 		}
 	});
 }
+$('.log').ajaxComplete(function() { 
+    clearconsole();
+  $(this).text('Triggered ajaxComplete handler.');
+});
 function buildNREGSProjectsOverview(result)
 {
 	var str='';
@@ -220,7 +228,7 @@ function buildNREGSProjectsOverview(result)
 					
 				}else if(result[i].percentage > 80)
 				{
-					str+='<small><i class="fa fa-long-arrow-top"></i></small></h1>';
+					str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
 				}
 					str+='<div class="row">';
 						str+='<div class="col-sm-6 text-center">';
