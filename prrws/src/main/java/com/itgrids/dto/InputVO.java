@@ -34,7 +34,7 @@ public class InputVO implements Serializable {
 	
 	private int startIndex;
 	private int endIndex;
-	private List<Long> statusIds = new ArrayList<>(0);
+	private List<Long> statusIds = new ArrayList<Long>(0);
 	
 	
 	public String getFromDate() {
