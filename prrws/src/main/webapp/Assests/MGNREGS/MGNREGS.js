@@ -82,9 +82,6 @@ function onLoadCalls()
 				blockName = $(this).attr("overview-block");
 			}
 		});
-		$('[overview-block="'+blockName+'"]').removeClass("active");
-		$('[overview-block="'+blockName+'"]').addClass("active");
-		$('[overview-block="'+blockName+'"]').trigger('click');
 		glStartDate = picker.startDate.format('DD/MM/YYYY')
 		glEndDate = picker.endDate.format('DD/MM/YYYY')
 		if(picker.chosenLabel == 'All')
