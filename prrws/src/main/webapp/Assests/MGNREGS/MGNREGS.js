@@ -75,21 +75,26 @@ function onLoadCalls()
 		$("#dateRangePickerAUM").val('All');
 	}
 	$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
-		
-		$(".switch-btn li").removeClass("active");
-		$(".switch-btn li:first-child").addClass("active");
-		$('[role="tablist"] li:first-child a').trigger('click');
-		$('#tabCons a[href="#consLevelGraph"]').trigger('click');
+		var blockName = '';
+		$(".panel-block-white").each(function(){
+			if($(this).hasClass("active"))
+			{
+				blockName = $(this).attr("overview-block");
+			}
+		});
+		$('[overview-block="'+blockName+'"]').removeClass("active");
+		$('[overview-block="'+blockName+'"]').addClass("active");
+		$('[overview-block="'+blockName+'"]').trigger('click');
 		glStartDate = picker.startDate.format('DD/MM/YYYY')
 		glEndDate = picker.endDate.format('DD/MM/YYYY')
 		if(picker.chosenLabel == 'All')
 		{
 			$("#dateRangePickerAUM").val('All');
 		}
-		getNREGSProjectsOverview();
+		getNREGSProjectsOverview(blockName);
 		$("#projectOverviewBlock,#projectData").html('');
 	});
-	getNREGSProjectsOverview()
+	getNREGSProjectsOverview('')
 }
 
 function projectData(divId)
@@ -241,7 +246,7 @@ function tableView(blockId,theadArr,result)
 		$(".dataTable"+blockId).wrap("<div class='table-responsive'></div>");
 	}
 }
-function getNREGSProjectsOverview()
+function getNREGSProjectsOverview(blockName)
 {
 	$("#projectsOverview").html(spinner);
 	var json = {
@@ -259,7 +264,7 @@ function getNREGSProjectsOverview()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			buildNREGSProjectsOverview(ajaxresp);
+			buildNREGSProjectsOverview(ajaxresp,blockName);
 			
 		}
 	});
@@ -268,7 +273,7 @@ $('.log').ajaxComplete(function() {
     clearconsole();
   $(this).text('Triggered ajaxComplete handler.');
 });
-function buildNREGSProjectsOverview(result)
+function buildNREGSProjectsOverview(result,blockName)
 {
 	var str='';
 	str+='<div class="row">';
@@ -318,6 +323,13 @@ function buildNREGSProjectsOverview(result)
 	str+='</div>';
 	$("#projectsOverview").html(str);
 	$(".toolTipTitleCls").tooltip();
+	if(blockName != null)
+	{
+		$('[overview-block]').removeClass("active");
+		$('[overview-block="'+blockName+'"]').addClass("active");
+		$('[overview-block="'+blockName+'"]').trigger('click');
+	}
+	
 }
 
 function getNregsVermiOverview(projectDivId)
