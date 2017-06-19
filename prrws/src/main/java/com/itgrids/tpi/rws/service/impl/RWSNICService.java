@@ -317,7 +317,7 @@ public class RWSNICService implements IRWSNICService{
 	public List<StatusVO> getAlertDetailsOfCategoryByStatusWise(InputVO inputVO){
 		List<StatusVO> voList = new ArrayList<StatusVO>(0);
 		try {
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getAlertDetailsOfCategoryByStatusWise");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getAlertDetailsOfCategoryByStatusWise");
 	        
         	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
         
@@ -344,7 +344,8 @@ public class RWSNICService implements IRWSNICService{
 				}
  	      	}
 		} catch (Exception e) {
-			LOG.error("Exception raised at getAlertDetailsOfCategoryByStatusWise - RuralWaterSupplyDashBoardService service", e);
+			e.printStackTrace();
+			LOG.error("Exception raised at getAlertDetailsOfCategoryByStatusWise - RWSNICService service", e);
 		}
 		return voList;
 	}
@@ -352,7 +353,8 @@ public class RWSNICService implements IRWSNICService{
 	public List<StatusVO> getAlertFeedbackStatusDetails(InputVO inputVO){
 		List<StatusVO> voList = new ArrayList<StatusVO>(0);
 		try {
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getAlertFeedbackStatusDetails");
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getAlertFeedbackStatusDetails");
 	        
         	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 
@@ -378,7 +380,7 @@ public class RWSNICService implements IRWSNICService{
 				}
  	      	}
 		} catch (Exception e) {
-			LOG.error("Exception raised at getAlertFeedbackStatusDetails - RuralWaterSupplyDashBoardService service", e);
+			LOG.error("Exception raised at getAlertFeedbackStatusDetails - RWSNICService service", e);
 		}
 		return voList;
 	}
@@ -422,7 +424,7 @@ public class RWSNICService implements IRWSNICService{
  	      }
 			
 		}catch (Exception e) {
-			LOG.error("Exception raised at getWaterSourceInfo - RuralWaterSupplyDashBoardService service", e);
+			LOG.error("Exception raised at getWaterSourceInfo - RWSNICService service", e);
 		}
 		
 		
@@ -484,7 +486,7 @@ public class RWSNICService implements IRWSNICService{
 	 	      }
 	        
 		} catch (Exception e) {
-			LOG.error("Exception raised at getKeyPerformanceIndicatorsInfo - RuralWaterSupplyDashBoardService service", e);
+			LOG.error("Exception raised at getKeyPerformanceIndicatorsInfo - RWSNICService service", e);
 		}
 		
 		return voList;
@@ -565,7 +567,7 @@ public class RWSNICService implements IRWSNICService{
 
 	 	      //}
 		} catch (Exception e) {
-			LOG.error("Exception raised at getPlanofActionForStressedHabitations - RuralWaterSupplyDashBoardService service", e);
+			LOG.error("Exception raised at getPlanofActionForStressedHabitations - RWSNICService service", e);
 		}
 		return statusVO;
 	}
