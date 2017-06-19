@@ -4,7 +4,30 @@ var glEndDate = moment().add(10, 'years').endOf('year').format("DD/MM/YYYY");
 onLoadCalls();
 function onLoadCalls()
 {
-	
+	$(document).keydown(function(event){
+		if(event.keyCode==123){
+			alert("Hoo no! don't try to expose me");
+			return false;
+		}
+		else if(event.ctrlKey && event.shiftKey && event.keyCode==73){        
+			alert("Hoo no! don't try to expose me");
+			return false;  //Prevent from ctrl+shift+i
+		}
+	});
+	var width = $(window).width()
+	if(width > 767)
+	{
+		header = $('header section'),
+		$(window).scroll(function(){
+			var windowScrollTop = $(window).scrollTop();
+
+			if (windowScrollTop>50) {
+				header.addClass("header-fixed");
+			} else {
+				header.removeClass("header-fixed");
+			}
+		});
+	}
 	$(document).on('click','[overview-block]', function(){
 		$("[overview-block]").removeClass("active");
 		$(this).addClass("active");
@@ -15,6 +38,7 @@ function onLoadCalls()
 			scrollTop: $("#projectOverviewBlock").offset().top},
         'slow');
 	});
+	
 	$("header").on("click",".menu-cls",function(e){
 		e.stopPropagation();
 		$(".menu-data-cls").toggle();
