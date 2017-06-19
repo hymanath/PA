@@ -148,17 +148,17 @@ function projectData(divId)
 		}else if(divId == "Mandal buildings"){
 			getNregsMandalBuildingData(tableId,dataArr[i],theadArr);
 		}else if(divId == "NTR 90 Days"){
-			
+			$("#"+tableId).html("NO DATA");
 		}else if(divId == "Production of Bricks"){
-			
+			$("#"+tableId).html("NO DATA");
 		}else if(divId == "Mulbery"){
-			
+			$("#"+tableId).html("NO DATA");
 		}else if(divId == "Silk worm"){
-			
+			$("#"+tableId).html("NO DATA");
 		}else if(divId == "Cattle drinking water trough"){
-			
+			$("#"+tableId).html("NO DATA");
 		}else if(divId == "Raising of Perinnial Fodder"){
-			
+			$("#"+tableId).html("NO DATA");
 		}
 	}
 }
@@ -214,6 +214,8 @@ function overviewData(divId)
 	}else if(divId == "Gram Panchayat Buildings")
 	{
 		getNREGSGPBuildingOverview(divId)
+	}else{
+		$("#projectOvervw"+divId.replace(/\s+/g, '')).html("NO DATA");
 	}
 }
 function tableView(blockId,theadArr,result)
