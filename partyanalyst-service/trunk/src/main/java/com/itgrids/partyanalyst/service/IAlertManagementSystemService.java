@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
@@ -234,7 +235,7 @@ public interface IAlertManagementSystemService {
 				String group,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,
 				Long filterScopeValue,String searchType,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> subTaskAlertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds );
 	 public ResultStatus saveDocumentsForAlertForAms(final AmsAppLoginVO keyVo);
-	 public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(AlertVO VO);
-	 public List<IdNameVO> getAlertFeedbackStatusDetails(AlertVO VO);
-	 public List<AmsDataVO> getAlertsOfCategoryByStatusWise(AlertVO mainVo);
+	 public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(JalavaniVO VO);
+	 public List<IdNameVO> getAlertFeedbackStatusDetails(JalavaniVO VO);
+	 public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO mainVo);
 }        

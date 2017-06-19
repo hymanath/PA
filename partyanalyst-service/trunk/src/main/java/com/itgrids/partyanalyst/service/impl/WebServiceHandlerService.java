@@ -100,6 +100,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
+import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.MessagePropertyVO;
@@ -5157,7 +5158,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 return resultStatus;
 	 }
 	 
-	 public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(AlertVO VO){
+	 public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(JalavaniVO VO){
 		 try {
 			 
 			return alertManagementSystemService.getAlertDetailsOfCategoryByStatusWise(VO);
@@ -5167,7 +5168,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return null;
 	 }
-	 public List<IdNameVO> getAlertFeedbackStatusDetails(AlertVO VO){
+	 public List<IdNameVO> getAlertFeedbackStatusDetails(JalavaniVO VO){
 		 try {
 			 
 			return alertManagementSystemService.getAlertFeedbackStatusDetails(VO);
@@ -5177,7 +5178,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return null;
 	 }
-	 public List<AmsDataVO> getAlertsOfCategoryByStatusWise(AlertVO VO){
+	 public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO VO){
 		 try {
 			 
 			return alertManagementSystemService.getAlertsOfCategoryByStatusWise(VO);

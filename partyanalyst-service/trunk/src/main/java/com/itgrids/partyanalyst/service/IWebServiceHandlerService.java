@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
+import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVO;
@@ -244,7 +245,7 @@ public interface IWebServiceHandlerService {
     public ResultStatus updateAlertStatusCommentForAms(AmsAppLoginVO keyVo);
     public List<DistrictOfficeViewAlertVO> getLocationWiseDepartmentOverviewAlertCountForAms(AmsDataVO amsDataVO);
     public ResultStatus saveDocumentsForAlertForAms(AmsAppLoginVO keyVo);
-    public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(AlertVO VO);
-    public List<IdNameVO> getAlertFeedbackStatusDetails(AlertVO VO);
-    public List<AmsDataVO> getAlertsOfCategoryByStatusWise(AlertVO VO);
+    public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(JalavaniVO VO);
+    public List<IdNameVO> getAlertFeedbackStatusDetails(JalavaniVO VO);
+    public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO VO);
 }
