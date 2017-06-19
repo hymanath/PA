@@ -164,10 +164,6 @@ public class FundManagementDashboardController {
 		}
 		@PostMapping("/compareFundsBetweenFinancialYears")
 		public @ResponseBody List<FundMatrixVO> compareFundsBetweenFinancialYears(@RequestBody InputVO inputVO){
-			/*
-			fundSanctionMatrixReportService.calculateFinancialWiseMatrxReportDetail(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),
-			inputVO.getSourceIdsList(),inputVO.getSchemeIdsList(),inputVO.getBlockLevelId());
-			*/
 			List<FundMatrixVO> fundMatrixVOList = fundManagementDashboardService.compareFundsBetweenFinancialYears(inputVO);
 			return fundMatrixVOList;
 		}

@@ -858,16 +858,28 @@ public class CommonMethodsUtilService {
 							}
 						}
 					}					
-
+					String lhs = "";
+					String rhs = "";
+					Long lastVal = 0L;
 					if(isListOrSetValid(intervalList)){
 						for (String interval : intervalList) {
 							String[] rangeArr = interval.split("-");
 							if(rangeArr != null && rangeArr.length>0){
-								returnList.add((Double.valueOf(rangeArr[0]).longValue())+" - "+(Double.valueOf(rangeArr[1]).longValue()));
+								if(rangeArr[0].length() > 1){
+									lhs = rangeArr[0].substring(2);
+								}
+								rhs = rangeArr[1].substring(2);
+								if(lhs != null && lhs.trim().length() > 0){
+									lastVal = (Double.valueOf(rangeArr[1]).longValue())-(Double.valueOf(rhs).longValue());
+									returnList.add(((Double.valueOf(rangeArr[0]).longValue())-(Double.valueOf(lhs).longValue()))+" - "+((Double.valueOf(rangeArr[1]).longValue())-(Double.valueOf(rhs).longValue())));
+								}else{
+									returnList.add((Double.valueOf(rangeArr[0]).longValue())+" - "+((Double.valueOf(rangeArr[1]).longValue())-(Double.valueOf(rhs).longValue())));
+								}
 							}
 						}
 					}
 					returnList.add(0,"0-0");
+					returnList.add(9,lastVal.toString().trim());
 				} catch (Exception e) {
 					LOG.error(" Exception Occured in buildIntervals() , CommonMethodsUtilService class.");
 				}

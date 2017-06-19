@@ -1925,12 +1925,20 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	   try{
 		   if(fundSanctionRangeList != null && fundSanctionRangeList.size() > 0 && fund != null){
 			   for(Object[] param : fundSanctionRangeList){
-				   String[] strArr = commonMethodsUtilService.getStringValueForObject(param[1]).split("-");
-				   long leftVal = Long.parseLong(strArr[0].trim());
-				   long rightVal = Long.parseLong(strArr[1].trim());
-				   if(fund.longValue() >= leftVal && fund.longValue() <= rightVal){
-					   return param[0];
+				   if(commonMethodsUtilService.getStringValueForObject(param[1]).contains("-")){
+					   String[] strArr = commonMethodsUtilService.getStringValueForObject(param[1]).split("-");
+					   long leftVal = Long.parseLong(strArr[0].trim());
+					   long rightVal = Long.parseLong(strArr[1].trim());
+					   if(fund.longValue() >= leftVal && fund.longValue() <= rightVal){
+						   return param[0];
+					   }
+				   }else{
+					   long value = Long.parseLong(commonMethodsUtilService.getStringValueForObject(param[1]).substring(2));
+					   if(fund.longValue() > value){
+						   return param[0];
+					   }
 				   }
+				   
 			   }
 		   }
 	   }catch(Exception e){
