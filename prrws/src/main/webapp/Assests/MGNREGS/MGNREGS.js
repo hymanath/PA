@@ -161,7 +161,9 @@ function buildNREGSProjectsOverview(result)
 				{
 					str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
 				}
-				
+				if(result[i].parameter.length > 14)
+					str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
+				else
 					str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
 					str+='<small class="text-center">Achieved</small>';
 					str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
@@ -191,6 +193,7 @@ function buildNREGSProjectsOverview(result)
 		}
 	str+='</div>';
 	$("#projectsOverview").html(str);
+	$(".toolTipTitleCls").tooltip();
 }
 
 function getNregsVermiOverview(projectDivId)
