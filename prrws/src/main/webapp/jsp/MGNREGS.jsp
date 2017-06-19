@@ -6,7 +6,9 @@
 <title>Mahatma Gandhi National Rural EGS</title>
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
+<link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
@@ -74,17 +76,7 @@
 								<div class="form-group form-group-sm">
 									<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
 									<div class="col-sm-8">
-										<select id="financialYearId" class="chosenSelect"></select>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="form-horizontal">
-								<div class="form-group form-group-sm">
-									<label class="col-sm-4 control-label" for="formGroupInputLarge">Department: </label>
-									<div class="col-sm-8">
-										<select id="DepartmentsId"  class="chosenSelect"></select>
+										<select class="chosenSelect"><option>2017</option></select>
 									</div>
 								</div>
 							</div>
@@ -135,6 +127,9 @@
 </main>
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/MGNREGS.js" type="text/javascript"></script>
 </body>

@@ -1,8 +1,10 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+var glEndDate = moment().add(10, 'years').endOf('year').format("DD/MM/YYYY");
 onLoadCalls();
 function onLoadCalls()
 {
-	getNREGSProjectsOverview()
+	
 	$(document).on('click','[overview-block]', function(){
 		$("[overview-block]").removeClass("active");
 		$(this).addClass("active");
@@ -20,6 +22,50 @@ function onLoadCalls()
 	$(document).on("click",function(){
 		$(".menu-data-cls").hide();
 	});
+	$(".chosenSelect").chosen({width:'100%'})
+	$("#dateRangePickerAUM").daterangepicker({
+			opens: 'left',
+			startDate: glStartDate,
+			endDate: glEndDate,
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+			'Today' : [moment(), moment()],
+			'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+			'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+			'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+			'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+			'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
+			'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
+			'This Month': [moment().startOf('month'), moment()],
+			'This Year': [moment().startOf('Year'), moment()]
+		}
+	});
+	var dates= $("#dateRangePickerAUM").val();
+	var pickerDates = glStartDate+' - '+glEndDate
+	if(dates == pickerDates)
+	{
+		$("#dateRangePickerAUM").val('All');
+	}
+	$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
+		
+		$(".switch-btn li").removeClass("active");
+		$(".switch-btn li:first-child").addClass("active");
+		$('[role="tablist"] li:first-child a').trigger('click');
+		$('#tabCons a[href="#consLevelGraph"]').trigger('click');
+		glStartDate = picker.startDate.format('DD/MM/YYYY')
+		glEndDate = picker.endDate.format('DD/MM/YYYY')
+		if(picker.chosenLabel == 'All')
+		{
+			$("#dateRangePickerAUM").val('All');
+		}
+		getNREGSProjectsOverview();
+		$("#projectOverviewBlock,#projectData").html('');
+	});
+	getNREGSProjectsOverview()
 }
 
 function projectData(divId)
@@ -174,8 +220,8 @@ function getNREGSProjectsOverview()
 	$("#projectsOverview").html(spinner);
 	var json = {
 			year:"2017",
-			fromDate:"2017-04-01",
-			toDate:"2017-06-30"
+			fromDate:glStartDate,
+			toDate:glEndDate
 		}
 	$.ajax({
 		url: 'getNREGSProjectsOverview',
@@ -253,8 +299,8 @@ function getNregsVermiOverview(projectDivId)
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	var json = {
 			year:"2017",
-			fromDate:"2017-04-01",
-			toDate:"2017-06-30"
+			fromDate:glStartDate,
+			toDate:glEndDate
 		}
 	$.ajax({
 		url: 'getNregsVermiOverview',
@@ -277,8 +323,8 @@ function getNregsVermiData(divIdd,locationType,theadArr)
 	$("#"+divIdd).html(spinner);
 	var json = {
 			year:"2017",
-			fromDate:"2017-04-01",
-			toDate:"2017-06-30",
+			fromDate:glStartDate,
+			toDate:glEndDate,
 		    locationType: locationType
 		}
 	$.ajax({
@@ -322,8 +368,8 @@ function getNREGSIHHLOverview(projectDivId)
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
-		fromDate : "2017-04-01",
-        toDate : "2017-06-30"  
+		fromDate : glStartDate,
+        toDate : glEndDate  
 	}
 	$.ajax({
 		url: 'getNregaIHHLOverview',
@@ -347,8 +393,8 @@ function getNREGSIHHLLelwiseData(divIdd,locationType,theadArr)
 	$("#"+divIdd).html(spinner);
   var json = {
     year : "2017",
-    fromDate : "2017-04-01",
-      toDate : "2017-06-30",
+    fromDate : glStartDate,
+      toDate : glEndDate,
     locationType: locationType
 }
   $.ajax({
@@ -394,8 +440,8 @@ function getNREGSLabourBudgetOverview(projectDivId)
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
-      fromDate : "2017-04-01",
-        toDate : "2017-06-30"  
+      fromDate : glStartDate,
+        toDate : glEndDate  
 	}
 	$.ajax({
 		url: 'getLabourBudgetOverview',
@@ -419,8 +465,8 @@ function getNREGSLabourBudgetExpenditure(projectDivId)
 	$("#projectOvervw"+projectDivId).html(spinner);
   var json = {
     year : "2017",
-      fromDate : "2017-04-01",
-        toDate : "2017-06-30"  
+      fromDate : glStartDate,
+        toDate : glEndDate  
 }
   $.ajax({
     url: 'getLabourBudgetExpenditure',
@@ -444,8 +490,8 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType)
 	var theadArr = [locationType,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
 	var json = {
 		year : "2017",
-		fromDate : "2017-04-01",
-		toDate : "2017-06-30",
+		fromDate : glStartDate,
+		toDate : glEndDate,
 		locationType: locationType  
 	}
 	$.ajax({
@@ -490,8 +536,8 @@ function getNREGSFarmPondOverview(projectDivId)
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
-		fromDate : "2017-04-01",
-        toDate : "2017-06-30"  
+		fromDate : glStartDate,
+        toDate : glEndDate  
 	}
 	$.ajax({
 		url: 'getFarmPondOverview',
@@ -517,8 +563,8 @@ function getNREGSFarmPondLelwiseData(divIdd,locationType,theadArr)
 
   var json = {
     year : "2017",
-    fromDate : "2017-04-01",
-      toDate : "2017-06-30",
+    fromDate : glStartDate,
+      toDate : glEndDate,
     locationType: locationType 
 }
   $.ajax({
@@ -601,7 +647,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 		str1+='</table>';
 	}
 	if(result.maleLabour != null){
-		str1+='<table class="table table-bordered">';
+		str1+='<table class="table table-bordered m_top10">';
 		str1+='<tbody>';
 			str1+='<tr>';
 				str1+='<td>';
@@ -655,7 +701,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 		str1+='</table>';
 	}
 	
-	str1+='<table class="table table-bordered" >';
+	str1+='<table class="table table-bordered m_top10" >';
 		str1+='<tbody>';
 			str1+='<tr>';
 				str1+='<td>';
@@ -767,8 +813,8 @@ function NtrsOverview(projectDivId)
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
   var json = {
 		  year : "2017",
-		  fromDate : "2017-04-01",
-		  toDate : "2017-06-30"
+		  fromDate : glStartDate,
+		  toDate : glEndDate
   }
   $.ajax({
     url: 'getNregsNtrsOverview',
@@ -789,8 +835,8 @@ function getNregsNtrsData(divIdd,locationType,theadArr)
 $("#"+divIdd).html(spinner);
   var json = {
 		  year : "2017",
-		  fromDate : "2017-04-01",
-		  toDate : "2017-06-30",
+		  fromDate : glStartDate,
+		  toDate : glEndDate,
 		  locationType: locationType
   }
   $.ajax({
@@ -833,8 +879,8 @@ function getNregsAnganwadiOverview(projectDivId)
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
   var json = {
 		  year : "2017",
-		  fromDate : "2017-04-01",
-		  toDate : "2017-06-30"
+		  fromDate : glStartDate,
+		  toDate : glEndDate
   }
   $.ajax({
     url: 'getNregsAnganwadiOverview',
@@ -855,8 +901,8 @@ function getNregsAnganwadiData(divIdd,locationType,theadArr)
 	$("#"+divIdd).html(spinner);
   var json = {
 		  year : "2017",
-		  fromDate : "2017-04-01",
-		  toDate : "2017-06-30",
+		  fromDate : glStartDate,
+		  toDate : glEndDate,
 		  locationType: locationType
   }
   $.ajax({
@@ -899,8 +945,8 @@ function getCCRoadsOverview(projectDivId)
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
   var json = {
 		  year : "2017",
-		  fromDate : "2017-04-01",
-		  toDate : "2017-06-30"
+		  fromDate : glStartDate,
+		  toDate : glEndDate
   }
   $.ajax({
     url: 'getCCRoadsOverview',
@@ -922,8 +968,8 @@ function getNregsMandalBuildingOverview(projectDivId)
 
   var json = {
 		  year : "2017",
-		  fromDate : "2017-04-01",
-		  toDate : "2017-06-30"
+		  fromDate : glStartDate,
+		  toDate : glEndDate
   }
   $.ajax({
     url: 'getNregsMandalBuildingOverview',
@@ -944,8 +990,8 @@ function getNregsMandalBuildingData(divIdd,locationType,theadArr)
 
   var json = {
 		  year : "2017",
-		  fromDate : "2017-04-01",
-		  toDate : "2017-06-30",
+		  fromDate : glStartDate,
+		  toDate : glEndDate,
 		  locationType:locationType
   }
   $.ajax({
@@ -1014,8 +1060,8 @@ function getNREGSGPBuildingOverview(projectDivId)
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
-		fromDate : "2017-04-01",
-        toDate : "2017-06-30"  
+		fromDate : glStartDate,
+        toDate : glEndDate  
 	}
 	$.ajax({
 		url: 'getNregaGPBuilingsOverview',
@@ -1039,8 +1085,8 @@ function getNREGSGPBuildingLelwiseData(divIdd,locationType,theadArr)
 	$("#"+divIdd).html(spinner);
   var json = {
     year : "2017",
-    fromDate : "2017-04-01",
-      toDate : "2017-06-30",
+    fromDate : glStartDate,
+      toDate : glEndDate,
     locationType: locationType
 }
   $.ajax({
@@ -1083,8 +1129,8 @@ function getCCRoadsData(divIdd,locationType,theadArr)
 	$("#"+divIdd).html(spinner);
   var json = {
     year : "2017",
-    fromDate : "2017-04-01",
-      toDate : "2017-06-30",
+    fromDate : glStartDate,
+      toDate : glEndDate,
     locationType: locationType
 }
   $.ajax({
