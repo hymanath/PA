@@ -66,6 +66,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
+import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.ManualAttendanceVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
@@ -2989,7 +2990,7 @@ public class WebServiceHandler {
 	@Path("/getAlertDetailsOfCategoryByStatusWise")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(AlertVO VO){
+	public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(JalavaniVO VO){
 		try{			
 			return webServiceHandlerService.getAlertDetailsOfCategoryByStatusWise(VO);			
 		}catch(Exception e){
@@ -3002,7 +3003,7 @@ public class WebServiceHandler {
 	@Path("/getAlertFeedbackStatusDetails")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<IdNameVO> getAlertFeedbackStatusDetails(AlertVO VO){
+	public List<IdNameVO> getAlertFeedbackStatusDetails(JalavaniVO VO){
 		try{			
 			return webServiceHandlerService.getAlertFeedbackStatusDetails(VO);			
 		}catch(Exception e){
@@ -3015,7 +3016,7 @@ public class WebServiceHandler {
 	@Path("/getAlertsOfCategoryByStatusWise")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<AmsDataVO> getAlertsOfCategoryByStatusWise(AlertVO VO){
+	public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO VO){
 		try{			
 			return webServiceHandlerService.getAlertsOfCategoryByStatusWise(VO);			
 		}catch(Exception e){
