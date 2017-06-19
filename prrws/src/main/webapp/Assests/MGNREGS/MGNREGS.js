@@ -10,7 +10,13 @@ function onLoadCalls()
 		overviewData(projectDivId)
 		projectData(projectDivId)
 	});
-	
+	$("header").on("click",".menu-cls",function(e){
+		e.stopPropagation();
+		$(".menu-data-cls").toggle();
+	});
+	$(document).on("click",function(){
+		$(".menu-data-cls").hide();
+	});
 }
 
 function projectData(divId)
