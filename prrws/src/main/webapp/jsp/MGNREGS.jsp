@@ -29,7 +29,7 @@
 			</div>
 		</div>
 	</nav>
-	<section>
+	<!--<section>
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-12">
@@ -68,7 +68,7 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</section>-->
 </header>
 <main>
 	<div class="container-fluid">

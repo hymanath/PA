@@ -60,7 +60,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setParameter(jObj.getString("PARAMETER"));
 	 	    				vo.setTarget(jObj.getString("TARGET"));
 	 	    				vo.setCompleted(jObj.getString("COMPLETED"));
-	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				voList.add(vo);
 	 	    			}
@@ -106,20 +106,20 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		JSONObject jObj = new JSONObject(output);
 	 	    		//LabourBudgetOverViewVO vo = new LabourBudgetOverViewVO();
 	 	    		
-	 	    		returnvo.setTotalBudget(jObj.getString("TOTALBUDGET"));
+	 	    		returnvo.setTotalBudget(new BigDecimal(jObj.getString("TOTALBUDGET")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    		returnvo.setTotalLabour(jObj.getLong("TOTALLABOUR"));
 	 	    		returnvo.setMaleLabour(jObj.getLong("MALELABOUR"));
 	 	    		returnvo.setFemaleLabour(jObj.getLong("FEMALELABOUR"));
 	 	    		returnvo.setTargettedPersonDays(jObj.getLong("TARGETTEDPERSONDAYS"));
 	 	    		returnvo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
-	 	    		returnvo.setTotalExpenditure(jObj.getString("TOTALEXPENDITURE"));
-	 	    		returnvo.setAvgWagePerPerson(jObj.getString("AVGWAGEPERPERSON"));
+	 	    		returnvo.setTotalExpenditure(new BigDecimal(jObj.getString("TOTALEXPENDITURE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    		returnvo.setAvgWagePerPerson(new BigDecimal(jObj.getString("AVGWAGEPERPERSON")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    		returnvo.setTotalResponse(jObj.getLong("TOTALRESPONSE"));
 	 	    		returnvo.setOnRequestWorkAllocated(jObj.getLong("ONREQUESTWORKALLOCATED"));
 	 	    		returnvo.setGotWorkOccutionally(jObj.getLong("GOTWORKOCCUTIONALLY"));
     				returnvo.setHaveNotGotWork(jObj.getLong("HAVENOTGOTWORK"));
-    				returnvo.setBudgetForLabour(jObj.getString("BUDGETFORLABOUR"));
-    				returnvo.setBudgetForMaterial(jObj.getString("BUDGETFORMATERIAL"));
+    				returnvo.setBudgetForLabour(new BigDecimal(jObj.getString("BUDGETFORLABOUR")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+    				returnvo.setBudgetForMaterial(new BigDecimal(jObj.getString("BUDGETFORMATERIAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
     				returnvo.setTotalDistricts(jObj.getLong("TOTALDISTRICTS"));
     				returnvo.setDistrictsInRed(jObj.getLong("DISTRICTSINRED"));
     				returnvo.setDistrictsInOrange(jObj.getLong("DISTRICTSINORANGE"));
@@ -210,9 +210,9 @@ public class NREGSTCSService implements INREGSTCSService{
  	    	if(output != null && !output.isEmpty()){
  	    		JSONObject jObj = new JSONObject(output); 	    		
  	    				//FarmPondOverviewVO 	farmpondoverviewvO =new FarmPondOverviewVO(); 	    				
- 	    				farmpondoverviewvO.setAveragePerDistrict(jObj.getString("AVERAGEPERDISTRICT"));
- 	    				farmpondoverviewvO.setAveragePerConstituency(jObj.getString("AVERAGEPERCONSTITUENCY"));
- 	    				farmpondoverviewvO.setAveragePerMandal(jObj.getString("AVERAGEPERMANDAL"));
+ 	    				farmpondoverviewvO.setAveragePerDistrict(new BigDecimal(jObj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+ 	    				farmpondoverviewvO.setAveragePerConstituency(new BigDecimal(jObj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+ 	    				farmpondoverviewvO.setAveragePerMandal(new BigDecimal(jObj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
  	    				farmpondoverviewvO.setConstituenciesInGreen(jObj.getLong("TOTALBUDGET"));
  	    				farmpondoverviewvO.setConstituenciesInOrange(jObj.getLong("CONSTITUENCIESINORANGE"));
  	    				farmpondoverviewvO.setConstituenciesInRed(jObj.getLong("CONSTITUENCIESINRED"));
@@ -222,8 +222,8 @@ public class NREGSTCSService implements INREGSTCSService{
  	    				farmpondoverviewvO.setMandalsInGreen(jObj.getLong("MANDALSINGREEN"));
  	    				farmpondoverviewvO.setMandalsInOrange(jObj.getLong("MANDALSINORANGE"));
  	    				farmpondoverviewvO.setMandalsInRed(jObj.getLong("MANDALSINRED"));
- 	    				farmpondoverviewvO.setTotalAvgFarmsInConstituency(jObj.getString("TOTALAVGFARMSINCONSTITUENCY"));
- 	    				farmpondoverviewvO.setTotalAvgFarmsInDistrict(jObj.getString("TOTALAVGFARMSINDISTRICT"));
+ 	    				farmpondoverviewvO.setTotalAvgFarmsInConstituency(new BigDecimal(jObj.getString("TOTALAVGFARMSINCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+ 	    				farmpondoverviewvO.setTotalAvgFarmsInDistrict(new BigDecimal(jObj.getString("TOTALAVGFARMSINDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
  	    				farmpondoverviewvO.setTotalBudget(jObj.getLong("TOTALBUDGET"));
  	    				farmpondoverviewvO.setTotalDistricts(jObj.getLong("TOTALDISTRICTS"));
  	    				farmpondoverviewvO.setTotalMandals(jObj.getLong("TOTALMANDALS"));
@@ -231,7 +231,7 @@ public class NREGSTCSService implements INREGSTCSService{
  	    				farmpondoverviewvO.setVillagesInGreen(jObj.getLong("VILLAGESINGREEN"));
  	    				farmpondoverviewvO.setVillagesInOrange(jObj.getLong("VILLAGESINORANGE"));
  	    				farmpondoverviewvO.setVillagesInRed(jObj.getLong("VILLAGESINRED"));
- 	    				farmpondoverviewvO.setTotalAvgFarmsInMandal(jObj.getString("TOTALAVGFARMSINMANDAL"));
+ 	    				farmpondoverviewvO.setTotalAvgFarmsInMandal(new BigDecimal(jObj.getString("TOTALAVGFARMSINMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
  	    				farmpondoverviewvO.setTotalConstituencies(jObj.getLong("TOTALCONSTITUENCIES"));
  	    				
  	    			}
@@ -277,7 +277,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
 	 	    				nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
-	 	    				nregsDataVO.setPercentage(jObj.getString("PERCENTAGE"));	 	    				
+	 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
 	 	    				list.add(nregsDataVO);	 	    							
 	 	    			}
 	 	    		}
@@ -311,13 +311,13 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject Obj = new JSONObject(output);
 	 	    		if(Obj!=null && Obj.length()>0){
-	 	    				finalVO.setAveragePerDistrict(Obj.getString("AVERAGEPERDISTRICT"));
-	 	    				finalVO.setAveragePerConstituency(Obj.getString("AVERAGEPERCONSTITUENCY"));
-	 	    				finalVO.setAveragePerMandal(Obj.getString("AVERAGEPERMANDAL"));
+	 	    				finalVO.setAveragePerDistrict(new BigDecimal(Obj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setAveragePerConstituency(new BigDecimal(Obj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setAveragePerMandal(new BigDecimal(Obj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				finalVO.setTotalBudget(Obj.getLong("TOTALBUDGET"));
-	 	    				finalVO.setTotalAvgFarmsInDistrict(Obj.getString("TOTALAVGFARMSINDISTRICT"));
-	 	    				finalVO.setTotalAvgFarmsInConstituency(Obj.getString("TOTALAVGFARMSINCONSTITUENCY"));
-	 	    				finalVO.setTotalAvgFarmsInMandal(Obj.getString("TOTALAVGFARMSINMANDAL"));
+	 	    				finalVO.setTotalAvgFarmsInDistrict(new BigDecimal(Obj.getString("TOTALAVGFARMSINDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setTotalAvgFarmsInConstituency(new BigDecimal(Obj.getString("TOTALAVGFARMSINCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setTotalAvgFarmsInMandal(new BigDecimal(Obj.getString("TOTALAVGFARMSINMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
 	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
 	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
@@ -377,7 +377,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
 	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
-	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				voList.add(vo);
 	 	    			}
@@ -421,9 +421,9 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 	 	    				vo.setTargetPersonDays(jObj.getLong("TARGETPERSONDAYS"));
 	 	    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
-	 	    				vo.setPerAppLB(jObj.getString("PER_APP_LB"));
-	 	    				vo.setAvgWageRate(jObj.getString("AVGWAGERATE"));
-	 	    				vo.setTotalExpenditure(jObj.getString("TOTALEXPENDITURE"));
+	 	    				vo.setPerAppLB(new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				vo.setAvgWageRate(new BigDecimal(jObj.getString("AVGWAGERATE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				vo.setTotalExpenditure(new BigDecimal(jObj.getString("TOTALEXPENDITURE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				//vo.setPercentage(jObj.getString("PERCENTAGE"));
 	 	    				
 	 	    				voList.add(vo);
@@ -459,13 +459,13 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		JSONObject jObj = new JSONObject(result);
 	 	    		NregsOverviewVO vo = new NregsOverviewVO();
 	 	                 
-	 	                returnVo.setAveragePerDistrict(jObj.getString("AVERAGEPERDISTRICT"));
-	 	                returnVo.setAveragePerConstituency(jObj.getString("AVERAGEPERCONSTITUENCY"));
-	 	                returnVo.setAveragePerMandal(jObj.getString("AVERAGEPERMANDAL"));
+	 	                returnVo.setAveragePerDistrict(new BigDecimal(jObj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	                returnVo.setAveragePerConstituency(new BigDecimal(jObj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	                returnVo.setAveragePerMandal(new BigDecimal(jObj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	                returnVo.setTotalBudget(jObj.getLong("TOTALBUDGET"));
-	 	                returnVo.setTotalAvgFarmsInDistrict(jObj.getString("TOTALAVGFARMSINDISTRICT"));
-	 	                returnVo.setTotalAvgFarmsInConstituency(jObj.getString("TOTALAVGFARMSINCONSTITUENCY"));
-	 	                returnVo.setTotalAvgFarmsInMandal(jObj.getString("TOTALAVGFARMSINMANDAL"));
+	 	                returnVo.setTotalAvgFarmsInDistrict(new BigDecimal(jObj.getString("TOTALAVGFARMSINDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	                returnVo.setTotalAvgFarmsInConstituency(new BigDecimal(jObj.getString("TOTALAVGFARMSINCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	                returnVo.setTotalAvgFarmsInMandal(new BigDecimal(jObj.getString("TOTALAVGFARMSINMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	                returnVo.setDistrictsInRed(jObj.getLong("DISTRICTSINRED"));
 	 	                returnVo.setDistrictsInOrange(jObj.getLong("DISTRICTSINORANGE"));
 	 	                returnVo.setDistrictsInGreen(jObj.getLong("DISTRICTSINGREEN"));
