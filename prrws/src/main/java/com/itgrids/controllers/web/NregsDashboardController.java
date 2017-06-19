@@ -187,4 +187,26 @@ public class NregsDashboardController {
 		}
 		return ntrsDataList;
 	}
+	@PostMapping("/getNregsAnganwadiOverview")
+	public @ResponseBody NregsOverviewVO getNregsAnganwadiOverview(@RequestBody InputVO vo){
+		NregsOverviewVO finalVo = null;
+		try {
+			finalVo = nregsTcsService.getNregsAnganwadiOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsAnganwadiOverview - NREGSController controller", e);
+		}
+		return finalVo;
+	}
+	@PostMapping("/getNregsAnganwadiData")
+	public @ResponseBody List<NregsDataVO> getNregsAnganwadiData(@RequestBody InputVO vo){
+		List<NregsDataVO> anganwadiDataList = null;
+		try {
+			anganwadiDataList = nregsTcsService.getNregsAnganwadiData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsAnganwadiData - NREGSController controller", e);
+		}
+		return anganwadiDataList;
+	}
 }
