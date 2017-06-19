@@ -27,5 +27,7 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregsNtrsData(InputVO inputVO);
 	public NregsOverviewVO getNregsAnganwadiOverview(InputVO inputVO);
 	public List<NregsDataVO> getNregsAnganwadiData(InputVO inputVO);
+	public NregsOverviewVO getNregsMandalBuildingOverview(InputVO inputVO);
+	public List<NregsDataVO> getNregsMandalBuildingData(InputVO inputVO);
 	
 }

@@ -104,6 +104,10 @@ function overviewData(divId)
 	{
 		getNregsAnganwadiOverview(divId)
 	}
+	else if(divId == "Mandal buildings")
+	{
+		getNregsMandalBuildingOverview(divId)
+	}
 }
 function tableView(blockId,theadArr,result)
 {
@@ -734,6 +738,50 @@ function getNregsAnganwadiData()
   }
   $.ajax({
     url: 'getNregsAnganwadiData',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+    }
+  });
+}
+function getNregsMandalBuildingOverview(projectDivId)
+{
+
+  var json = {
+		  year : "2017",
+		  fromDate : "2017-04-01",
+		  toDate : "2017-06-30"
+  }
+  $.ajax({
+    url: 'getNregsMandalBuildingOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp){
+		buildNregasOverViewBlock(ajaxresp,projectDivId);
+    }
+  });
+}
+function getNregsMandalBuildingData()
+{
+
+  var json = {
+		  year : "2017",
+		  fromDate : "2017-04-01",
+		  toDate : "2017-06-30",
+		  locationType: "state"
+  }
+  $.ajax({
+    url: 'getNregsMandalBuildingData',
     data: JSON.stringify(json),
     type: "POST",
     dataType: 'json', 
