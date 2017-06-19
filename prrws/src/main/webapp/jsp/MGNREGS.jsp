@@ -8,6 +8,7 @@
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
@@ -28,7 +29,7 @@
 				<div class="col-sm-1 hidden-xs col-sm-offset-5">
 					<img src="Assests/images/lokesh.png" class="m_top10 pull-right"/>
 				</div>
-				<div class="col-sm-1">
+				<div class="col-sm-1 hidden-xs col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 				</div>
 				<div class="menu-data-cls">

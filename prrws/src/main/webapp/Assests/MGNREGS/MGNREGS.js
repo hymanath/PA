@@ -642,6 +642,7 @@ function getNREGSFarmPondLelwiseData(divIdd,locationType,theadArr)
 }
 
 function buildNregasOverViewBlock(result,projectDivId){
+	var $windowWidth = $(window).width();
 	var str1="";
 	if(result.averagePerDistrict != null)
 	{
@@ -845,6 +846,10 @@ function buildNregasOverViewBlock(result,projectDivId){
 	}
 	
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str1);
+	if($windowWidth < 768)
+	{
+		$(".table").wrap("<div class='table-responsive'></div>");
+	}
 }
 function NtrsOverview(projectDivId)
 {
