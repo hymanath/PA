@@ -167,6 +167,21 @@ public class RuralWaterSupplyDashBoardController {
 		return keyIndicatorsInfo;
 	}
 	
+	@PostMapping("/getStressedHabitationsInfoByLocationType")
+	public @ResponseBody List<StatusVO> getStressedHabitationsInfoByLocationType(@RequestBody InputVO vo) {
+		List<StatusVO> stressedHabitationsInfo = null;
+		try {
+			stressedHabitationsInfo = rWSNICService.getStressedHabitationsInfoByLocationType(vo);
+
+		} catch (Exception e) {
+			LOG.error(
+					"Exception raised at stressedHabitationsInfo - RuralWaterSupplyDashBoardController controller",
+					e);
+		}
+		return stressedHabitationsInfo;
+	}
+	
+	
 	@PostMapping("/getPlanofActionForStressedHabitations")
 	public @ResponseBody StatusVO getPlanofActionForStressedHabitations(@RequestBody InputVO vo) {
 		StatusVO statusVO = null;

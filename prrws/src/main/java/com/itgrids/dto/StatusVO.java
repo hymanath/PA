@@ -12,6 +12,8 @@ public class StatusVO {
 	private Long target = 0l;
 	private Long achived = 0l;
 	private Long population = 0l;
+	private Long budgetPreparedHubs;
+	private Long popInStressedHubs;
 	
 	public String getStatus() {
 		return status;
@@ -72,6 +74,18 @@ public class StatusVO {
 	}
 	public void setPopulation(Long population) {
 		this.population = population;
+	}
+	public Long getBudgetPreparedHubs() {
+		return budgetPreparedHubs;
+	}
+	public void setBudgetPreparedHubs(Long budgetPreparedHubs) {
+		this.budgetPreparedHubs = budgetPreparedHubs;
+	}
+	public Long getPopInStressedHubs() {
+		return popInStressedHubs;
+	}
+	public void setPopInStressedHubs(Long popInStressedHubs) {
+		this.popInStressedHubs = popInStressedHubs;
 	}
 	
 	

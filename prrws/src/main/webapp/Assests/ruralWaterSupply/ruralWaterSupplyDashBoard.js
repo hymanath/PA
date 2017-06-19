@@ -19,6 +19,7 @@
 			getWaterSourceInfo();
 			getKeyPerformanceIndicatorsInfo();
 			getPlanofActionForStressedHabitations();
+			getStressedHabitationsInfoByLocationType();
 			/* getAlertDetailsOfCategoryByStatusWise();
 			getAlertFeedbackStatusDetails(); */
 		}
@@ -670,6 +671,28 @@
 
 			$http({
 				url: 'getKeyPerformanceIndicatorsInfo',
+				data: JSON.stringify(json),
+				method: "POST",
+				dataType: 'json', 
+
+			}).then(function(response) {
+				console.log(response.data);
+				
+			});
+		}
+		
+		function getStressedHabitationsInfoByLocationType(){
+			var json = {
+					  year : "2014",
+					  fromDate : "2014-01-01",
+					  toDate : "2014-06-30",
+					  locationType : "district",
+					  locationId : "1"
+
+					}
+
+			$http({
+				url: 'getStressedHabitationsInfoByLocationType',
 				data: JSON.stringify(json),
 				method: "POST",
 				dataType: 'json', 

@@ -490,6 +490,55 @@ public class RWSNICService implements IRWSNICService{
 		return voList;
 	}
 	
+	/*
+	 * Date : 18/06/2017
+	 * Author :Nagarjuna
+	 * @description : getStressedHabitationsInfoByLocationType
+	 */
+	public List<StatusVO> getStressedHabitationsInfoByLocationType(InputVO vo) {
+		List<StatusVO> stressedHabitation = new ArrayList<StatusVO>(0);
+		try{
+			/*WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getStressedHabitationsInfoByLocationType");
+	        
+        	String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
+        	System.out.println(jsonInString);
+        
+        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{*/
+				String output = null;//response.getEntity(String.class);
+				output="[{'locationName' : 'Srikakulam','totalHubs'  : '1000','stressedHubs'  : '80','population' : '987654','budgetPreparedHubs' : '70','popInStressedHubs' : '8760'  },"
+                      +" {'locationName' : 'Vizianagarm','totalHubs'  : '1000','stressedHubs'  : '80','population' : '987654','budgetPreparedHubs' : '70','popInStressedHubs' : '8760' }]";
+ 	    	if(output != null && !output.isEmpty()){
+ 	    		JSONArray finalArray = new JSONArray(output);
+ 	    		if(finalArray!=null && finalArray.length()>0){
+ 	    			for(int i=0;i<finalArray.length();i++){
+ 	    				StatusVO statusVO = new StatusVO();
+ 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+ 	    				statusVO.setName(jObj.getString("locationName"));
+ 	    				statusVO.setCount(jObj.getLong("totalHubs"));
+ 	    				statusVO.setStressedCount(jObj.getLong("stressedHubs"));
+ 	    				statusVO.setPopulation(jObj.getLong("population"));
+ 	    				statusVO.setBudgetPreparedHubs(jObj.getLong("budgetPreparedHubs"));
+ 	    				statusVO.setPopInStressedHubs(jObj.getLong("popInStressedHubs"));
+ 	    				stressedHabitation.add(statusVO);
+ 	    			//}
+ 	    		}
+ 	    	}
+ 	    	 
+ 	    	  
+ 	      }
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getStressedHabitationsInfoByLocationType - RuralWaterSupplyDashBoardService service", e);
+		}
+		
+		
+		return stressedHabitation;
+	}
+	
 	public StatusVO getPlanofActionForStressedHabitations(InputVO vo){
 		StatusVO statusVO = null;
 		try {
