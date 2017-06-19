@@ -27,10 +27,44 @@
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayati Raj & RD & RWS</h4>
-					<p>Funds Management System</p>
+					<p>Fund Management System - AP</p>
 				</div>
-				<div class="col-sm-1 pull-right hidden-xs">
-					<img src="Assests/images/lokesh.png" class="m_top10"/>
+				<div class="col-sm-1 hidden-xs col-sm-offset-5">
+					<img src="Assests/images/lokesh.png" class="m_top10 pull-right"/>
+				</div>
+				<div class="col-sm-1">
+					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
+				</div>
+				<div class="menu-data-cls">
+					<div class="arrow_box_top">
+						<ul>
+							<li>
+								<a href="fundManagementDashboard">
+									<h3>FMS</h3>
+									<p>Fund Management System</p>
+								</a>
+							</li>
+							<li>
+								<a href="MGNREGSDashboard">
+									<h3>MGNREGS</h3>
+									<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+								</a>
+							</li>
+							<li>
+								<a href="ruralWaterSupplyDashBoard">
+									<h3>RWS</h3>
+									<p>rural water <br/> supply</p>
+								</a>
+							</li>
+							<li>
+								<a href="">
+									<h3>ENC</h3>
+									<p>engineering department</p>
+								</a>
+							</li>
+							
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -954,3 +954,10 @@
 			$("#"+id).addClass("active");
 			
 	});
+	$("header").on("click",".menu-cls",function(e){
+		e.stopPropagation();
+		$(".menu-data-cls").toggle();
+	});
+	$(document).on("click",function(){
+		$(".menu-data-cls").hide();
+	});

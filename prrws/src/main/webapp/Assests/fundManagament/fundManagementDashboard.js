@@ -105,6 +105,13 @@
 		});
 		return blockTypeVillage;
 	}
+	$("header").on("click",".menu-cls",function(e){
+		e.stopPropagation();
+		$(".menu-data-cls").toggle();
+	});
+	$(document).on("click",function(){
+		$(".menu-data-cls").hide();
+	});
 	$(document).on("click","[tab-switch] li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
@@ -2856,7 +2863,6 @@
 		}
 	})
 		function getLocationWiseAmountAndCountDetails(levelId,divId,type,levelValueStr){
-		//$("#"+divId).html("");
 		$("#locDivModal").modal('show');
 		$("#"+divId).html(spinner);   
 		var levelValues = [];
@@ -3367,4 +3373,3 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 			}
 		});
 	}
-	

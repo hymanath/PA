@@ -15,6 +15,9 @@
 @dark_yellow_color:#FFBA00;
 @linear_orange_red:#FFBA00;
 @linear_red_pink:#FFBA00;
+@navy_blue:#56A3C5;
+@dark_blue:#2C546C;
+@maroon_color:#88186B;
 @linear_light_dark_green:#FFBA00;
 @roboto_font:'Roboto', sans-serif;
 @lato_font:'Lato', sans-serif;
@@ -120,6 +123,119 @@ nav
 	background-color:@dark_yellow_color;
 	height:70px;
 	padding:5px 12px;
+}
+.menu-cls
+{
+	position:relative;
+	top:20px;
+	right:30px;
+	font-size:30px;
+	cursor:pointer;
+}
+.menu-data-cls
+{
+	position:absolute;
+	right:30px;
+	top:65px;
+	width:350px;
+	z-index:999;
+	display:none;
+	background-color:@white_color;
+	ul
+	{
+		
+		padding-left:0px;
+		li
+		{
+			width:47%;
+			display:inline-table;
+			background-color:@red_color;
+			padding:10px;
+			margin:2px 2px;
+			text-align:center;
+			text-transform:uppercase;
+			color:@white_color;
+			height:100px;
+			position:relative;
+			p
+			{
+				font-size:13px;
+				position:absolute;
+				bottom:10px;
+				margin:auto;
+				text-align:center;
+			}
+			h3
+			{
+				font-size:32px;
+				font-weight:bold;
+			}
+			a
+			{
+				color:@white_color;
+				text-decoration:none;
+			}
+		}
+		li:nth-child(1)
+		{
+			background-color:@dark_yellow_color;
+		}
+		li:nth-child(2)
+		{
+			background-color:@navy_blue;
+			p
+			{
+				font-size:10px;
+			}
+			h3
+			{
+				font-size:31px;
+			}
+		}
+		li:nth-child(3)
+		{
+			background-color:@dark_blue;
+			p
+			{
+				left:36px;
+			}
+		}
+		li:nth-child(4)
+		{
+			background-color:@maroon_color;
+		}
+	}
+}
+.arrow_box_top {
+	position: relative;
+	background-color:@white_color;
+	border: 1px solid @white_color;
+	box-shadow:0px 0px 3px 3px rgba(0,0,0,0.4);
+	&:before , &:after
+	{
+		bottom: 100%;
+		right: 10px;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+	&:after
+	{
+		border-color: rgba(136, 183, 213, 0);
+		border-bottom-color: @white_color;
+		border-width: 15px;
+		margin-left: -15px;
+	}
+	&:before 
+	{
+		border-color: rgba(194, 225, 245, 0);
+		border-bottom-color: @white_color;
+		border-width: 16px;
+		margin-left: -16px;
+	}
 }
 header
 {
