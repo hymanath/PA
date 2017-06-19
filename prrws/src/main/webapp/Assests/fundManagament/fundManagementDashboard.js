@@ -261,7 +261,8 @@
 				return false;  //Prevent from ctrl+shift+i
 			}
 		});
-		if($(window).width < 767)
+		var width = $(window).width()
+		if(width > 767)
 		{
 			header = $('header section'),
 			$(window).scroll(function(){
