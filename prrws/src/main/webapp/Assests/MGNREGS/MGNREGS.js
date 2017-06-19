@@ -97,6 +97,9 @@ function overviewData(divId)
 	}else if(divId == "IHHL")
 	{
 		getNREGSIHHLOverview(divId)
+	}else if(divId == "NTR Jala Siri")
+	{
+		NtrsOverview(divId)
 	}
 }
 function tableView(blockId,theadArr,result)
@@ -650,4 +653,48 @@ function buildNregasOverViewBlock(result,projectDivId){
 	}
 	
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str1);
+}
+function NtrsOverview(projectDivId)
+{
+
+  var json = {
+		  year : "2017",
+		  fromDate : "2017-04-01",
+		  toDate : "2017-06-30"
+  }
+  $.ajax({
+    url: 'getNregsNtrsOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+		buildNregasOverViewBlock(ajaxresp,projectDivId);
+    }
+  });
+}
+function getNregsNtrsData()
+{
+
+  var json = {
+		  year : "2017",
+		  fromDate : "2017-04-01",
+		  toDate : "2017-06-30",
+		  locationType: "state"
+  }
+  $.ajax({
+    url: 'getNregsNtrsData',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+    }
+  });
 }

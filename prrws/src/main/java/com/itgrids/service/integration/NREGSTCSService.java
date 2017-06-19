@@ -1,5 +1,6 @@
 package com.itgrids.service.integration;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,14 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dto.FarmPondOverviewVO;
-
-import com.google.gson.JsonObject;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
-import com.itgrids.dto.NregsDataVO;
-import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
 import com.itgrids.dto.NregsDataVO;
+import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
@@ -524,7 +522,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
 	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
-	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				returnList.add(vo);
 	 	    			}
@@ -533,6 +531,100 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	     }
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNregsVermiData - NREGSTCSService service", e);
+		}
+		return returnList;
+	}
+	/*
+	 * Date : 16/06/2017
+	 * Author :Teja
+	 * @description :getNregsVermiOverview(Nregs Vermi details)
+	 */
+	public NregsOverviewVO getNregsNtrsOverview(InputVO inputVO){
+		NregsOverviewVO returnVo = new NregsOverviewVO();
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrsService/NtrsOverview", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String result = response.getEntity(String.class);
+	 	    	 
+	 	    	if(result != null && !result.isEmpty()){
+	 	    		JSONObject jObj = new JSONObject(result);
+	 	    		NregsOverviewVO vo = new NregsOverviewVO();
+	 	                 
+	 	                returnVo.setAveragePerDistrict(jObj.getString("AVERAGEPERDISTRICT"));
+	 	                returnVo.setAveragePerConstituency(jObj.getString("AVERAGEPERCONSTITUENCY"));
+	 	                returnVo.setAveragePerMandal(jObj.getString("AVERAGEPERMANDAL"));
+	 	                returnVo.setTotalBudget(jObj.getLong("TOTALBUDGET"));
+	 	                returnVo.setTotalAvgFarmsInDistrict(jObj.getString("TOTALAVGFARMSINDISTRICT"));
+	 	                returnVo.setTotalAvgFarmsInConstituency(jObj.getString("TOTALAVGFARMSINCONSTITUENCY"));
+	 	                returnVo.setTotalAvgFarmsInMandal(jObj.getString("TOTALAVGFARMSINMANDAL"));
+	 	                returnVo.setDistrictsInRed(jObj.getLong("DISTRICTSINRED"));
+	 	                returnVo.setDistrictsInOrange(jObj.getLong("DISTRICTSINORANGE"));
+	 	                returnVo.setDistrictsInGreen(jObj.getLong("DISTRICTSINGREEN"));
+	 	                returnVo.setTotalDistricts(jObj.getLong("TOTALDISTRICTS"));
+	 	                returnVo.setConstituenciesInRed(jObj.getLong("CONSTITUENCIESINRED"));
+	 	                returnVo.setConstituenciesInOrange(jObj.getLong("CONSTITUENCIESINORANGE"));
+	 	                returnVo.setConstituenciesInGreen(jObj.getLong("CONSTITUENCIESINGREEN"));
+	 	                returnVo.setTotalConstituencies(jObj.getLong("TOTALCONSTITUENCIES"));
+	 	                returnVo.setMandalsInRed(jObj.getLong("MANDALSINRED"));
+	 	                returnVo.setMandalsInOrange(jObj.getLong("MANDALSINORANGE"));
+	 	                returnVo.setMandalsInGreen(jObj.getLong("MANDALSINGREEN"));
+	 	                returnVo.setTotalMandals(jObj.getLong("TOTALMANDALS"));
+	 	                returnVo.setVillagesInRed(jObj.getLong("VILLAGESINRED"));
+	 	                returnVo.setVillagesInOrange(jObj.getLong("VILLAGESINORANGE"));
+	 	                returnVo.setVillagesInGreen(jObj.getLong("VILLAGESINGREEN"));
+	 	                returnVo.setTotalVillages(jObj.getLong("TOTALVILLAGES"));
+	 	               }
+	 	            }
+				} catch (Exception e) {
+					LOG.error("Exception raised at getNregsNtrsOverview - NREGSTCSService service", e);
+				}
+		return returnVo;
+	}
+	/*
+	 * Date : 16/06/2017
+	 * Author :Teja
+	 * @description : 
+	 */
+	public List<NregsDataVO> getNregsNtrsData(InputVO inputVO){
+		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>(0);
+		try {
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrsService/NtrsData", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String result = response.getEntity(String.class);
+	 	    	 
+	 	    	if(result != null && !result.isEmpty()){
+	 	    		JSONArray resultArray = new JSONArray(result);
+	 	    		if(resultArray!=null && resultArray.length()>0){
+	 	    			for(int i=0;i<resultArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				
+	 	    				JSONObject jObj = (JSONObject) resultArray.get(i);
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTarget(jObj.getLong("TARGET"));
+	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				
+	 	    				returnList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	     }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsNtrsData - NREGSTCSService service", e);
 		}
 		return returnList;
 	}
