@@ -165,4 +165,26 @@ public class NregsDashboardController {
 		}
 		return vermiDataList;
 	}
+	@PostMapping("/getNregsNtrsOverview")
+	public @ResponseBody NregsOverviewVO getNregsNtrsOverview(@RequestBody InputVO vo){
+		NregsOverviewVO finalVo = null;
+		try {
+			finalVo = nregsTcsService.getNregsNtrsOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsNtrsOverview - NREGSController controller", e);
+		}
+		return finalVo;
+	}
+	@PostMapping("/getNregsNtrsData")
+	public @ResponseBody List<NregsDataVO> getNregsNtrsData(@RequestBody InputVO vo){
+		List<NregsDataVO> ntrsDataList = null;
+		try {
+			ntrsDataList = nregsTcsService.getNregsNtrsData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsNtrsData - NREGSController controller", e);
+		}
+		return ntrsDataList;
+	}
 }

@@ -23,5 +23,7 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregaLevelwiseOverviewForLabourBudgetData(InputVO inputVO);
 	public NregsOverviewVO getNregsVermiOverview(InputVO inputVO);
 	public List<NregsDataVO> getNregsVermiData(InputVO inputVO);
+	public NregsOverviewVO getNregsNtrsOverview(InputVO inputVO);
+	public List<NregsDataVO> getNregsNtrsData(InputVO inputVO);
 	
 }
