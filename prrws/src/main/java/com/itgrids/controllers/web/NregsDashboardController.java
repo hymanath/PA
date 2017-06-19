@@ -115,7 +115,7 @@ public class NregsDashboardController {
 			IhhlVO = nregsTcsService.getNregaIHHLOverview(vo);
 			
 		} catch (Exception e) {
-			LOG.error("Exception raised at getNREGSProjectsOverview - getIHHLOverview controller", e);
+			LOG.error("Exception raised at getNREGSProjectsOverview - NREGSController controller", e);
 		}
 		return IhhlVO;
 	}
@@ -252,5 +252,29 @@ public class NregsDashboardController {
 			LOG.error("Exception raised at getNregsMandalBuildingData - NREGSController controller", e);
 		}
 		return mandalBuildingDataList;
+	}
+	
+	@PostMapping("/getNregaGPBuilingsOverview")
+	public @ResponseBody NregsOverviewVO getNregaGPBuilingsOverview(@RequestBody InputVO vo){
+		NregsOverviewVO GpBuildVO = null;
+		try {
+			GpBuildVO = nregsTcsService.getNregaGPBuilingsOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaGPBuilingsOverview - NREGSController controller", e);
+		}
+		return GpBuildVO;
+	}
+	
+	@PostMapping("/getNregaLevelsOverviewForGPBuilding")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsOverviewForGPBuilding(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelsOverviewForGPBuilding(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSProjectsOverview - NREGSController controller", e);
+		}
+		return levlWiseVOList;
 	}
 }
