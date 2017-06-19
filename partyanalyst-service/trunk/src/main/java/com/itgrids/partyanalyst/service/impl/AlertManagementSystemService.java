@@ -93,6 +93,7 @@ import com.itgrids.partyanalyst.dto.GovtOfficerSmsDetailsVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -15177,7 +15178,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
     			return resultStatus;
     		
     		}
-       public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(AlertVO mainVo){
+       public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(JalavaniVO mainVo){
  		  List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
  		  try {
  			  
@@ -15210,7 +15211,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  		  return finalList;
  	  }
  	  
- 	  public List<IdNameVO> getAlertFeedbackStatusDetails(AlertVO mainVo){
+ 	  public List<IdNameVO> getAlertFeedbackStatusDetails(JalavaniVO mainVo){
  		  List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
  		  try {
  			  
@@ -15245,7 +15246,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  		  return finalList;
  	  }
  	  
- 	  public List<AmsDataVO> getAlertsOfCategoryByStatusWise(AlertVO mainVo) {
+ 	  public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO mainVo) {
  		  List<AmsDataVO> finalVoList = new ArrayList<AmsDataVO>(0);
  		  try {
  			  

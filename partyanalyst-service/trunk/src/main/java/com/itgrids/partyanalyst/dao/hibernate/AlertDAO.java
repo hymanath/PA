@@ -10252,6 +10252,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		else if(fromDate != null && toDate != null){
 				queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
 			}
+	 		
+	 		queryStr.append(" and model.alertStatus.alertStatusId !=:pendingStatusId ");
+	 		
 	 		queryStr.append(" GROUP BY model.alertStatus.alertStatusId order by model.alertStatus.statusOrder  ");
 	 		
 	 		Query query = getSession().createQuery(queryStr.toString());
@@ -10263,6 +10266,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 			query.setParameter("toDate", toDate);
 	 		}
 	 		query.setParameter("deptId", deptId);
+	 		query.setParameter("pendingStatusId", 1l);
 	 		
 	 		return query.list();
 	 	}
