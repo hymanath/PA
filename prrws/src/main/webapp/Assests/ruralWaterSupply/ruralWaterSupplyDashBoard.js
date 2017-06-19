@@ -20,8 +20,8 @@
 			getKeyPerformanceIndicatorsInfo();
 			getPlanofActionForStressedHabitations();
 			getStressedHabitationsInfoByLocationType();
-			/* getAlertDetailsOfCategoryByStatusWise();
-			getAlertFeedbackStatusDetails(); */
+			getAlertDetailsOfCategoryByStatusWise();
+			getAlertFeedbackStatusDetails();
 		}
 		function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title)
 		{
@@ -723,12 +723,12 @@
 		}
 		
 		
-		/* function getAlertDetailsOfCategoryByStatusWise(){
+		function getAlertDetailsOfCategoryByStatusWise(){
 			var json = {
-				fromDate:dd-MM-yyyy,
-				toDate:dd-MM-yyyy,
-				deptId:Long,
-				year:String
+				fromDate:"03-03-2015",
+				toDate:"03-03-2017",
+				deptId:49,
+				year:""
 			}
 			$http({
 				url: 'getAlertDetailsOfCategoryByStatusWise',
@@ -757,7 +757,7 @@
 			}).then(function(response) {
 				
 			});
-		} */
+		} 
 	
 	
 	function tabBlocks(blockId,blockName){
