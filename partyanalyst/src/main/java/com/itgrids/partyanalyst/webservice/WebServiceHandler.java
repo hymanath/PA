@@ -19,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -2990,9 +2991,19 @@ public class WebServiceHandler {
 	@Path("/getAlertDetailsOfCategoryByStatusWise")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(JalavaniVO VO){
-		try{			
-			return webServiceHandlerService.getAlertDetailsOfCategoryByStatusWise(VO);			
+	public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(JSONObject obj){
+		try{		
+			
+			
+			JalavaniVO VO = new JalavaniVO();
+			VO.setDeptId(obj.getLong("deptId"));
+			VO.setYear(obj.getString("year") !=null ? obj.getString("year"):null);
+			VO.setFromDate(obj.getString("fromDate") !=null ? obj.getString("fromDate"):null);//toDate
+			VO.setToDate(obj.getString("toDate") !=null ? obj.getString("toDate"):null);
+			
+			
+		return webServiceHandlerService.getAlertDetailsOfCategoryByStatusWise(VO);
+						
 		}catch(Exception e){
 			LOG.error("Exception Occured in getAlertDetailsOfCategoryByStatusWise() Method, Exception is ",e);
 			return null;
@@ -3003,8 +3014,15 @@ public class WebServiceHandler {
 	@Path("/getAlertFeedbackStatusDetails")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<IdNameVO> getAlertFeedbackStatusDetails(JalavaniVO VO){
-		try{			
+	public List<IdNameVO> getAlertFeedbackStatusDetails(JSONObject obj){
+		try{	
+			
+			JalavaniVO VO = new JalavaniVO();
+			VO.setDeptId(obj.getLong("deptId"));
+			VO.setYear(obj.getString("year") !=null ? obj.getString("year"):null);
+			VO.setFromDate(obj.getString("fromDate") !=null ? obj.getString("fromDate"):null);//toDate
+			VO.setToDate(obj.getString("toDate") !=null ? obj.getString("toDate"):null);
+			
 			return webServiceHandlerService.getAlertFeedbackStatusDetails(VO);			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getAlertFeedbackStatusDetails() Method, Exception is ",e);
@@ -3018,6 +3036,9 @@ public class WebServiceHandler {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO VO){
 		try{			
+			
+			
+			
 			return webServiceHandlerService.getAlertsOfCategoryByStatusWise(VO);			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getAlertsOfCategoryByStatusWise() Method, Exception is ",e);
