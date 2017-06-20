@@ -613,8 +613,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 
 	//Business Method
 	/*
-	 * Satnosh (non-Javadoc)
-	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getStatusWiseAlertOverviewcnt(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.util.List, java.lang.Long)
+	 * Santosh (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getStatusWiseAlertOverviewcnt(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.util.List, java.lang.Long, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List)
 	 */
 	public List<AlertVO> getStatusWiseAlertOverviewcnt(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 		LOG.info("Entered in getStatusWiseAlertOverviewcnt() method of AlertManagementSystemService{}");
@@ -876,12 +876,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			List<Object[]> deptObjLst = alertAssignedOfficerNewDAO.getMainDeptAndItsSubDepartment();
 			prepareParentChildDeptTemplate(deptObjLst,departmentMap);
 			
-			if(resultType != null && resultType.equalsIgnoreCase("Status") && (alertStatusIds.size() == 0l || !alertStatusIds.contains(1l))){
-				  rtrnObjLst  = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds,calCntrIdList,socialMediaTypeIds,null,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
-			}
-			if(resultType != null && resultType.equalsIgnoreCase("Department")){
-				 rtrnObjLst = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds,calCntrIdList,socialMediaTypeIds,null,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
-			}
+		    rtrnObjLst = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds,calCntrIdList,socialMediaTypeIds,null,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			
 			setDepartmentWiseAlertCnt(rtrnObjLst,departmentMap);
 			
@@ -8278,6 +8273,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                  }
                  return null;
                }
+  			 /*
+  			  * Santosh (non-Javadoc)
+  			  * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getDepartmentDetailsByDepartmentId(java.lang.Long, java.lang.Long, java.lang.String)
+  			  */
   			 public List<IdNameVO> getDepartmentDetailsByDepartmentId(Long userId,Long departmentId,String designationType){
                  try{
                    List<Object[]> deptList= alertAssignedOfficerNewDAO.getDepartmentDetaislByDeptIds(departmentId);
@@ -8460,6 +8459,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   				 }
   				 return upperLevelList;
   			 }
+			 /*
+			  * Santosh (non-Javadoc)
+			  * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getLocationBasedOnDepartmentLevel(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.lang.String, java.lang.Long)
+			  */
   	  		 public List<IdNameVO> getLocationBasedOnDepartmentLevel(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String alertType,List<Long> calCntrIdList,List<Long> subLevelIds,
   	  				 List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> subTaskAlertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,String type,Long childScopeId){
    	      		try{
@@ -8518,6 +8521,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    	      		}
    	      		return null;
    	        }
+  		 /*
+  		  * Santosh (non-Javadoc)
+  		  * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getChildLocationBasedOnParentLocation(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.lang.String, java.lang.Long)
+  		  */
 		 public List<IdNameVO> getChildLocationBasedOnParentLocation(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long parentGovtDepartmentScopeValue,Long childLevelId,String alertType ,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> subTaskAlertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,String type,Long resultLevelDeptScopeId){
       		try{
       			Date fromDate = null;
@@ -8581,6 +8588,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			 LOG.error("Error occured getChildLocationBasedOnParentLocation() method of AlertManagementSystemService",e);
       		 }
 		 }
+		 /*
+		  * Santosh (non-Javadoc)
+		  * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getLocationWiseDepartmentOverviewAlertCount(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.lang.String, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List)
+		  */
 		 //getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamicNew
 		 public List<AlertCoreDashBoardVO> getLocationWiseDepartmentOverviewAlertCount(String fromDateStr, String toDateStr, Long stateId, 
 					List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
@@ -8758,6 +8769,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	 }
 			return null;
 }	 
+	/*
+	 * Santosh	 (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getAlertDetailsBasedOnLocation(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.lang.Long)
+	 */
 	public List<AlertCoreDashBoardVO> getAlertDetailsBasedOnLocation(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long deptScopeId,List<Long> alertStatusIds,List<Long> calCntrIds,Long locationValue,String alertType,Long alertCategoryId,List<Long> subLevelList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,Long govtOfficerId){
 	      		try{
 	      			
@@ -10066,7 +10081,7 @@ public void setAlertCategoryWiseAlert(List<Object[]> objList,Map<Long,AlertVO> c
 				 Long alertStatusId = commonMethodsUtilService.getLongValueForObject(param[3]);
 				 AlertVO statusVO = getmatchedVo(categoryVO.getSubList2(),alertStatusId);
 				 if(statusVO != null){
-					 statusVO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(param[6]));//AlertCnt
+					 statusVO.setAlertCnt(statusVO.getAlertCnt()+commonMethodsUtilService.getLongValueForObject(param[6]));//AlertCnt
 				 }
 			}
 		}
@@ -10097,6 +10112,10 @@ public List<AlertVO> getAlertSttusList(List<Object[]> objList){
 	}
 	return statuList;
 }
+/*
+ * Santosh (non-Javadoc)
+ * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getAlertDtlsByAlertSource(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.util.List, java.lang.Long, java.util.List, java.lang.Long, java.lang.String, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List)
+ */
 public List<AlertCoreDashBoardVO> getAlertDtlsByAlertSource(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,Long alertCategoryId,String userType,List<Long> alertStatusIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 	LOG.info("Entered in getAlertDtlsByAlertSource() method of AlertManagementSystemService{}");
 	try{
@@ -12100,7 +12119,8 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		return result;
 	}
 	/*
-	 * Author:Santosh
+	 * Santosh (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getDepartmentWiseProposalAlertCnt(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.util.List, java.lang.Long, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List)
 	 */
 	public List<AlertVO> getDepartmentWiseProposalAlertCnt(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 		LOG.info("Entered in getFinancialAssistanceAlertCntCategoryWise() method of AlertManagementSystemService{}");
@@ -12222,7 +12242,8 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		return categoryList;
 	}
 	/*
-	 * Author:Santosh
+	 * Santosh (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getOfficerWiseAlertCntBasedOnDepartmentScopeLevel(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List)
 	 */
 	public List<AlertCoreDashBoardVO> getOfficerWiseAlertCntBasedOnDepartmentScopeLevel(String fromDateStr, String toDateStr, Long stateId,List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
 			Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,Long filterScopeValue,List<Long> socialMediaTypeIds,

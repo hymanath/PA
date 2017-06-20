@@ -6186,20 +6186,6 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			query.addScalar("alertStatusId",Hibernate.LONG);
 			query.addScalar("alertStatus",Hibernate.STRING);
 			query.addScalar("alertColor",Hibernate.STRING);
-		}else if(type.equalsIgnoreCase("alertSource")){
-			query.addScalar("alertCategoryId", Hibernate.LONG);
-			query.addScalar("category", Hibernate.STRING);
-			query.addScalar("color",Hibernate.STRING);
-			query.addScalar("alertStatusId",Hibernate.LONG);
-			query.addScalar("alertStatus",Hibernate.STRING);
-			query.addScalar("alertColor",Hibernate.STRING);
-		}else if(type.equalsIgnoreCase("alertSource")){
-			query.addScalar("alertCategoryId", Hibernate.LONG);
-			query.addScalar("category", Hibernate.STRING);
-			query.addScalar("color",Hibernate.STRING);
-			query.addScalar("alertStatusId",Hibernate.LONG);
-			query.addScalar("alertStatus",Hibernate.STRING);
-			query.addScalar("alertColor",Hibernate.STRING);
 		}
 		query.addScalar("count", Hibernate.LONG);
 		if(fromDate != null && toDate != null){
