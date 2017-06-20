@@ -15277,7 +15277,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  			 int stIndex = mainVo.getStartIndex();
  			 int endIndex = mainVo.getEndIndex();
  			 String type =   mainVo.getType();
- 			 String year = mainVo.getType();
+ 			 String year = mainVo.getYear();
  			
  			  Date fromDate = null;
  				Date toDate = null;
