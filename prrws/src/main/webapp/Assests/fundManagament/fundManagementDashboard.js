@@ -3047,6 +3047,7 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
 	}else if(blockLvlId ==6){
 		str+='<th class="text-capital">Village Name</th>';
 	}
+	str+='<th class="text-capital">Location Name</th>';
     str+='<th class="text-capital">Work Name</th>';
     str+='<th class="text-capital">Department</th>'; 
     str+='<th class="text-capital" > Scheme Name</th>';
@@ -3061,6 +3062,12 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
     }else{
          str+='<td>-</td>';
     }
+	 if(result[i].locName != null){
+         str+='<td>'+result[i].locName+'</td>';
+    }else{
+         str+='<td>-</td>';
+    }
+		 
     if(result[i].workName != null){
          str+='<td>'+result[i].workName+'</td>';
     }else{

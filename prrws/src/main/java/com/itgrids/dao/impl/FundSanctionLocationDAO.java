@@ -26,21 +26,17 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 	public List<Object[]> getLocationWiseFundSanctionDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
 			Date sDate,Date eDate,Long locationScopeId,List<Long> searchLvlVals,List<Long> schmeIdsList ){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select modal.fundSanction.workName" );
-		if(locationScopeId != null  && locationScopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID ){
-			sb.append("  ,modal.locationAddress.state.stateId,modal.locationAddress.state.stateName ");
-		}else if(locationScopeId != null && locationScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID ){
-			sb.append(" ,modal.locationAddress.district.districtId,modal.locationAddress.district.districtName " );
-		}else if(locationScopeId != null && locationScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID ){
-			sb.append(" ,modal.locationAddress.constituency.constituencyId,modal.locationAddress.constituency.name " );
-		}else if(locationScopeId != null && locationScopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID ){
-			sb.append(" ,modal.locationAddress.tehsil.tehsilId,modal.locationAddress.tehsil.tehsilName " );
-		}else if(locationScopeId != null && locationScopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID ){
-			sb.append(" ,modal.locationAddress.panchayat.panchayatId,modal.locationAddress.panchayat.panchayatName " );
-		}
+		sb.append(" select modal.fundSanction.workName,modal.locationAddress.district.districtId,modal.locationAddress.district.districtName" );
+		
 		sb.append(",modal.fundSanction.department.departmentName," +
-				" modal.fundSanction.govtScheme.schemeName,modal.fundSanction.goNoDate,modal.fundSanction.sactionAmount ");
-		sb.append(" from FundSanctionLocation modal where modal.isDeleted='N' ");		
+				" modal.fundSanction.govtScheme.schemeName,modal.fundSanction.goNoDate,modal.fundSanction.sactionAmount " +
+				" ,modal.locationValue,d.districtName,c.name,t.tehsilName,p.panchayatName,modal.locationScopeId,modal.fundSanction.fundSactionId ");
+		sb.append(" from FundSanctionLocation modal " +
+				" left outer join modal.locationAddress.district d  " +
+				" left outer join modal.locationAddress.constituency c " +
+				" left outer join modal.locationAddress.tehsil t  " +
+				" left outer join modal.locationAddress.panchayat p  " +
+				" where modal.isDeleted='N' ");		
 		
 		if(financialYearIdsList != null && financialYearIdsList.size() >0l ){
 			sb.append(" and modal.fundSanction.financialYearId in (:financialYearIdsList)  " );

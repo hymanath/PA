@@ -21,6 +21,8 @@ public class LocationVO implements Serializable {
 	private String schemeName;
 	private String goNoDate;
 	private String sactionAmount;
+	private Long fundSanctionId;
+	private StringBuilder locName;
 	
 	
 	private Long streetHabitationCount;
@@ -141,6 +143,19 @@ public class LocationVO implements Serializable {
 	}
 	public void setSactionAmount(String sactionAmount) {
 		this.sactionAmount = sactionAmount;
+	}
+	
+	public StringBuilder getLocName() {
+		return locName;
+	}
+	public void setLocName(StringBuilder locName) {
+		this.locName = locName;
+	}
+	public Long getFundSanctionId() {
+		return fundSanctionId;
+	}
+	public void setFundSanctionId(Long fundSanctionId) {
+		this.fundSanctionId = fundSanctionId;
 	}
 	
 	
