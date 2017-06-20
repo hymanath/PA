@@ -732,16 +732,13 @@ public class NREGSTCSService implements INREGSTCSService{
 	public FarmPondOverviewVO getCCRoadsOverview(InputVO inputVO) {
 		FarmPondOverviewVO farmpondoverviewvO = new FarmPondOverviewVO();
 		try {
-			 
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CCRoadsService/CCRoadsOverview", inputVO);
-	        
-	        if(response.getStatus() != 200){
+			 ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CCRoadsService/CCRoadsOverview", inputVO);
+	           if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
 	 	    	 String output = response.getEntity(String.class); 	    	 
 	 	    	if(output != null && !output.isEmpty()){
-	 	    		JSONObject jObj = new JSONObject(output); 	    		
-	 	    				  				
+	 	    		        JSONObject jObj = new JSONObject(output); 		 	    				 				
 	 	    				farmpondoverviewvO.setAveragePerDistrict(new BigDecimal(jObj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				farmpondoverviewvO.setAveragePerConstituency(new BigDecimal(jObj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				farmpondoverviewvO.setAveragePerMandal(new BigDecimal(jObj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -764,12 +761,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				farmpondoverviewvO.setVillagesInOrange(jObj.getLong("VILLAGESINORANGE"));
 	 	    				farmpondoverviewvO.setVillagesInRed(jObj.getLong("VILLAGESINRED"));
 	 	    				farmpondoverviewvO.setTotalAvgFarmsInMandal(new BigDecimal(jObj.getString("TOTALAVGFARMSINMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				farmpondoverviewvO.setTotalConstituencies(jObj.getLong("TOTALCONSTITUENCIES"));
-	 	    				
+	 	    				farmpondoverviewvO.setTotalConstituencies(jObj.getLong("TOTALCONSTITUENCIES")); 	    				
 	 	    			}
-	 	    		} 	    	
-	 	      
-		             }
+	 	    		    } 	 
+	 	                }
 	 	             catch (Exception e) {
 				LOG.error("Exception raised at getCCRoadsOverview -CCRoadsOverview service", e);
 			}
@@ -794,9 +789,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
-	 	    	 
-	 	    	if(output != null && !output.isEmpty()){
+	 	    	 String output = response.getEntity(String.class);	 	    	 
+	 	    	 if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
 	 	    			for(int i=0;i<finalArray.length();i++){
@@ -1509,4 +1503,101 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return returnList;
 	}	
+	
+	/*
+	 * Date : 19/06/2017
+	 * Author :Swapna
+	 * @description : getAHOverview
+	 */
+	@Override
+	public NregsOverviewVO getAHOverview(InputVO inputVO) {
+		NregsOverviewVO returnVo = new NregsOverviewVO();
+		try {			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AHService/AHOverview", inputVO);
+	           if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String result = response.getEntity(String.class);	 	    	 
+	 	    	if(result != null && !result.isEmpty()){
+	 	    		JSONObject jObj = new JSONObject(result); 		
+	 	                returnVo.setAveragePerDistrict(jObj.getString("AVERAGEPERDISTRICT"));
+	 	                returnVo.setAveragePerConstituency(jObj.getString("AVERAGEPERCONSTITUENCY"));
+	 	                returnVo.setAveragePerMandal(jObj.getString("AVERAGEPERMANDAL"));
+	 	                returnVo.setTotalBudget(jObj.getLong("TOTALBUDGET"));
+	 	                returnVo.setTotalAvgFarmsInDistrict(jObj.getString("TOTALAVGFARMSINDISTRICT"));
+	 	                returnVo.setTotalAvgFarmsInConstituency(jObj.getString("TOTALAVGFARMSINCONSTITUENCY"));
+	 	                returnVo.setTotalAvgFarmsInMandal(jObj.getString("TOTALAVGFARMSINMANDAL"));
+	 	                returnVo.setDistrictsInRed(jObj.getLong("DISTRICTSINRED"));
+	 	                returnVo.setDistrictsInOrange(jObj.getLong("DISTRICTSINORANGE"));
+	 	                returnVo.setDistrictsInGreen(jObj.getLong("DISTRICTSINGREEN"));
+	 	                returnVo.setTotalDistricts(jObj.getLong("TOTALDISTRICTS"));
+	 	                returnVo.setConstituenciesInRed(jObj.getLong("CONSTITUENCIESINRED"));
+	 	                returnVo.setConstituenciesInOrange(jObj.getLong("CONSTITUENCIESINORANGE"));
+	 	                returnVo.setConstituenciesInGreen(jObj.getLong("CONSTITUENCIESINGREEN"));
+	 	                returnVo.setTotalConstituencies(jObj.getLong("TOTALCONSTITUENCIES"));
+	 	                returnVo.setMandalsInRed(jObj.getLong("MANDALSINRED"));
+	 	                returnVo.setMandalsInOrange(jObj.getLong("MANDALSINORANGE"));
+	 	                returnVo.setMandalsInGreen(jObj.getLong("MANDALSINGREEN"));
+	 	                returnVo.setTotalMandals(jObj.getLong("TOTALMANDALS"));
+	 	                returnVo.setVillagesInRed(jObj.getLong("VILLAGESINRED"));
+	 	                returnVo.setVillagesInOrange(jObj.getLong("VILLAGESINORANGE"));
+	 	                returnVo.setVillagesInGreen(jObj.getLong("VILLAGESINGREEN"));
+	 	                returnVo.setTotalVillages(jObj.getLong("TOTALVILLAGES"));
+	 	               }
+	 	            }
+				} catch (Exception e) {
+					LOG.error("Exception raised at getAHOverview - AHOverviewService service", e);
+				}
+		return returnVo;
+	
+	}
+
+	/*
+	 * Date : 19/06/2017
+	 * Author :Swapna
+	 * @description : getAHData
+	 */
+
+	@Override
+	public List<NregsDataVO> getAHData(InputVO inputVO) {
+		List<NregsDataVO> list = new ArrayList<NregsDataVO>(0);
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AHService/AHData", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO nregsDataVO=new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				nregsDataVO.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				nregsDataVO.setDistrict(jObj.getString("DISTRICT"));
+	 	    				nregsDataVO.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				nregsDataVO.setMandal(jObj.getString("MANDAL"));
+	 	    				nregsDataVO.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				nregsDataVO.setTarget(jObj.getLong("TARGET"));
+	 	    				nregsDataVO.setGrounded(jObj.getString("GROUNDED"));
+	 	    				nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
+	 	    				nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
+	 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
+	 	    				list.add(nregsDataVO);	 	    							
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    	    	  
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAHData -getAHData service", e);
+		}
+		
+		return list;
+	}		
 }

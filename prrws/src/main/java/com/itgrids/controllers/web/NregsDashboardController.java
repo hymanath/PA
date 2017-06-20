@@ -391,4 +391,29 @@ public class NregsDashboardController {
 		}
 		return housingData;
 	}
+	@PostMapping("/getAHOverview")
+	public @ResponseBody NregsOverviewVO getAHOverview(@RequestBody InputVO vo){
+		NregsOverviewVO ahoObject = null;
+		try {
+			ahoObject = nregsTcsService. getAHOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAHOverview - getAHOverview controller", e);
+		}
+		return ahoObject;
+	}
+	
+	@PostMapping("/getAHData")
+	public @ResponseBody List<NregsDataVO> getAHData(@RequestBody InputVO vo){
+		List<NregsDataVO> ahoObject = null;
+		try {
+			ahoObject = nregsTcsService. getAHData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAHData -getAHData controller", e);
+		}
+		return ahoObject;
+	}
+	
+	
 }
