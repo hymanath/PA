@@ -951,17 +951,22 @@
 					  locationId : "1"
 
 					}
-
-			$http({
+			$.ajax({
 				url: 'getStressedHabitationsInfoByLocationType',
 				data: JSON.stringify(json),
-				method: "POST",
+				type: "POST",
 				dataType: 'json', 
-
-			}).then(function(response) {
-				console.log(response.data);
-				
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						
+					}
+				}
 			});
+			
 		}
 		
 		function getPlanofActionForStressedHabitations(){
