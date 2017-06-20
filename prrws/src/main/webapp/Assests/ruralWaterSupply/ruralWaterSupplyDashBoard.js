@@ -993,10 +993,10 @@
 		}
 		function getAlertDetailsOfCategoryByStatusWise(){
 			var json = {
-				fromDate:"03-03-2015",
-				toDate:"03-03-2017",
+				fromDate:"",
+				toDate:"",
 				deptId:49,
-				year:""
+				year:"2017"
 			}
 			$.ajax({
 				url: 'getAlertDetailsOfCategoryByStatusWise',
@@ -1017,10 +1017,10 @@
 		
 		function getAlertFeedbackStatusDetails(){
 			var json = {
-				fromDate:dd-MM-yyyy,
-				toDate:dd-MM-yyyy,
-				deptId:Long,
-				year:String
+				fromDate:"",
+				toDate:"",
+				deptId:49,
+				year:"2017"
 			}
 			$.ajax({
 				url: 'getAlertFeedbackStatusDetails',
