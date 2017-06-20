@@ -77,7 +77,13 @@
 								<div class="form-group form-group-sm">
 									<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
 									<div class="col-sm-8">
-										<select class="chosenSelect"><option>2017</option></select>
+										<select class="chosenSelect">
+											<option value="0">Select Financial Year</option>
+											<option value="2014">2014</option>
+											<option value="2015">2015</option>
+											<option value="2016">2016</option>
+											<option value="2017">2017</option>
+										</select>
 									</div>
 								</div>
 							</div>
