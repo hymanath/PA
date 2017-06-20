@@ -15336,7 +15336,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 						subVO.setCount((Long)objects[5]);
 						
 						voIn.getList().add(subVO);
-						
+						finalMap.put((Long)objects[1], voIn);
 					}else{
 						KeyValueVO subVO = new KeyValueVO();
 						subVO.setId((Long)objects[3]);
