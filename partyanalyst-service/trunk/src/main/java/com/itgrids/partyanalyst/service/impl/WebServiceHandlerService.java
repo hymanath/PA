@@ -5206,4 +5206,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return null;
 	 }
+	 
+	 public List<KeyValueVO> getLocationWiseAlertStatusCounts(Long departmentId,String fromDate,String toDate,String year,Long groupByValue,List<Long> locationValuesList){
+		 try {
+			return alertManagementSystemService.getLocationWiseAlertStatusCounts(departmentId,fromDate,toDate,year,groupByValue,locationValuesList);
+		} catch (Exception e) {
+			log.error("Exception raised at getAlertsOfCategoryByStatusWise", e);
+		}
+		 return null;
+	 }
 }

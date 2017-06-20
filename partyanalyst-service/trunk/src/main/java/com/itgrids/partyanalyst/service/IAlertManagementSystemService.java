@@ -238,4 +238,5 @@ public interface IAlertManagementSystemService {
 	 public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(JalavaniVO VO);
 	 public List<IdNameVO> getAlertFeedbackStatusDetails(JalavaniVO VO);
 	 public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO mainVo);
+	 public List<KeyValueVO> getLocationWiseAlertStatusCounts(Long departmentId,String fromDate,String toDate,String year,Long groupByValue,List<Long> locationValuesList);
 }        
