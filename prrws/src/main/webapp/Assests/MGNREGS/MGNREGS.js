@@ -150,15 +150,15 @@ function projectData(divId)
 		}else if(divId == "Mandal buildings"){
 			getNregsMandalBuildingData(tableId,dataArr[i],theadArr);
 		}else if(divId == "NTR 90 Days"){
-			$("#"+tableId).html("NO DATA");
+			getNregsHousingData(tableId,dataArr[i],theadArr);
 		}else if(divId == "Production of Bricks"){
 			getNregaLevelsOverviewForProductionOfBricks(tableId,dataArr[i],theadArr);
 		}else if(divId == "Mulbery"){
-			$("#"+tableId).html("NO DATA");
+			getNregsSericultureData(tableId,dataArr[i],theadArr);
 		}else if(divId == "Silk worm"){
 			getNregaLevelsOverviewForSilkWarm(tableId,dataArr[i],theadArr);
 		}else if(divId == "Cattle drinking water trough"){
-			$("#"+tableId).html("NO DATA");
+			getAHData(tableId,dataArr[i],theadArr);
 		}else if(divId == "Raising of Perinnial Fodder"){
 			getNregaLevelsOverviewForRaisingOfPerinnialFodder(tableId,dataArr[i],theadArr);
 		}
@@ -222,6 +222,15 @@ function overviewData(divId)
 	}else if(divId == "Raising of Perinnial Fodder")
 	{
 		getNregaRaisingOfPerinnialFodderOverview(divId)
+	}else if(divId == "Mulbery")
+	{
+		getNregsSericultureOverview(divId)
+	}else if(divId == "NTR 90 Days")
+	{
+		getNregsHousingOverview(divId)
+	}else if(divId == "Cattle drinking water trough")
+	{
+		getAHOverview(divId)
 	}else if(divId == "Silk worm")
 	{
 		getNregaSilkWormOverview(divId)
@@ -1421,12 +1430,12 @@ function getNregaLevelsOverviewForSilkWarm(divIdd,locationType,theadArr)
     }
   });
 }
-function getNregsSericultureOverview()
+function getNregsSericultureOverview(projectDivId)
 {
   var json = {
-		  year : "2017",
-		  fromDate : "2017-04-01",
-		  toDate : "2017-06-30"
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate 
   };
   $.ajax({
     url: 'getNregsSericultureOverview',
@@ -1438,17 +1447,18 @@ function getNregsSericultureOverview()
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp){
+		buildNregasOverViewBlock(ajaxresp,projectDivId);
     }
   });
 }
 //getNregsSericultureData();
-function getNregsSericultureData()
+function getNregsSericultureData(divIdd,locationType,theadArr)
 {
   var json = {
-		  year : "2017",
-		  fromDate : "2017-04-01",
-		  toDate : "2017-06-30",
-		  locationType: "state"
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locationType
   };
   $.ajax({
     url: 'getNregsSericultureData',
@@ -1460,16 +1470,38 @@ function getNregsSericultureData()
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp) {
+		var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
     }
   });
 }
 //getNregsHousingOverview();
-function getNregsHousingOverview()
+function getNregsHousingOverview(projectDivId)
 {
   var json = {
-		  year : "2017",
-		  fromDate : "2017-04-01",
-		  toDate : "2017-06-30"
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate 
   };
   $.ajax({
     url: 'getNregsHousingOverview',
@@ -1481,17 +1513,40 @@ function getNregsHousingOverview()
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp){
+		buildNregasOverViewBlock(ajaxresp,projectDivId);
+    }
+  });
+}
+
+function getAHOverview(projectDivId)
+{
+  var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate 
+  };
+  $.ajax({
+    url: 'getAHOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp){
+		buildNregasOverViewBlock(ajaxresp,projectDivId);
     }
   });
 }
 //getNregsHousingData();
-function getNregsHousingData()
+function getNregsHousingData(divIdd,locationType,theadArr)
 {
   var json = {
-		  year : "2017",
-		  fromDate : "2017-04-01",
-		  toDate : "2017-06-30",
-		  locationType: "district"
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate,
+		locationType: locationType
   };
   $.ajax({
     url: 'getNregsHousingData',
@@ -1503,6 +1558,72 @@ function getNregsHousingData()
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp) {
+		var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
+    }
+  });
+}
+
+function getAHData(divIdd,locationType,theadArr)
+{
+  var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate ,
+		locationType: locationType
+  };
+  $.ajax({
+    url: 'getAHData',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+		var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
     }
   });
 }
