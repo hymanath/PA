@@ -19,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -3043,4 +3044,25 @@ public class WebServiceHandler {
 		}
 	}
 	
+	@POST
+	@Path("/getLocationWiseAlertStatusCounts")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<KeyValueVO> getLocationWiseAlertStatusCounts(JSONObject jObj){
+		try{
+			List<Long> locationValuesList = new ArrayList<Long>(0);
+			JSONArray arr = jObj.getJSONArray("locationValues");
+			if(arr != null && arr.length() > 0){
+				for (int i = 0; i < arr.length(); i++) {
+					locationValuesList.add(Long.parseLong(arr.get(i)+""));
+				}
+			}
+			
+			return webServiceHandlerService.getLocationWiseAlertStatusCounts(jObj.getLong("departmentId"),jObj.getString("fromDate"),jObj.getString("toDate"),
+					jObj.getString("year"),jObj.getLong("groupByValue"),locationValuesList);			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getLocationWiseAlertStatusCounts() Method, Exception is ",e);
+			return null;
+		}
+	}
 }
