@@ -15,7 +15,7 @@
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
 </head>
-<body ng-app="ruralWaterSupply" ng-controller="UserController">
+<body>
 
 <header>
 	<nav>
@@ -117,31 +117,26 @@
 					<div class="row">
 						<div class="col-sm-3">
 							<div class="white-block">
-								<div class="row">
-									<div class="col-sm-9">
-										<div class="chart" id="totalValues"></div>
-									</div>
-									<div class="col-sm-3 m_top20">
-										<h4>TOTAL <span id="totalCntTtlValues"></span></h4>
-									</div>
-								</div>
-								
-								
+								<div class="chart" id="totalValues"></div>
+								<h5 style="text-align: center; font-weight: bold;" id="totalCntTtlValues"></h5>
 							</div>
 						</div>
-						<div class="col-sm-3">
+						<div class="col-sm-3 m_top20">
 							<div class="white-block">
 								<div class="chart" id="waterSources"></div>
+								<h5 style="text-align: center; font-weight: bold;" id="waterSourcesTtlValues"></h5>
 							</div>
 						</div>
 						<div class="col-sm-3">
 							<div class="white-block">
 								<div class="chart" id="levelOfSupply1"></div>
+								<h5 style="text-align: center; font-weight: bold;" id="levelSupplyTtlValues"></h5>
 							</div>
 						</div>
 						<div class="col-sm-3">
 							<div class="white-block">
 								<div class="chart" id="schemes"></div>
+								<h5 style="text-align: center; font-weight: bold;" id="schemesTtlValues"></h5>
 							</div>
 						</div>
 					</div>
@@ -158,14 +153,9 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-sm-3">
+						<div class="col-sm-6">
 							<div class="white-block">
-								<div class="chart2" id="keryPerformance"></div>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="white-block">
-								<div class="chart2" id="keryPerformanceTarget"></div>
+								<div class="chart2" id="keyPerformance"></div>
 							</div>
 						</div>
 						<div class="col-sm-6">
@@ -186,6 +176,7 @@
 					</div>
 					<div class="white-block">
 						<div class="chart2" id="planOfAction" class="m_top20"></div>
+						<!--<div id="datatablePlanOfAction" style="display:none"></div>-->
 					</div>
 					<div class="white-block">
 						<div class="chart" id="drinkingWater" class="m_top20"></div>
@@ -226,7 +217,7 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<script src="Assests/js/angular.js" type="text/javascript"></script>
+
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>

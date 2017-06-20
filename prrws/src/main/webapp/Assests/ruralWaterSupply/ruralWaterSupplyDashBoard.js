@@ -1,16 +1,15 @@
  //Angular Start
-	var myApp = angular.module('ruralWaterSupply',[]);
-	
-	myApp.controller('UserController', function($scope, $http) {
+		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","ground":"#14BAAD","surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
+		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049"}
+		var blocksArr = [{name:'Coverage Status Of<br/> Habitation',id:'habitation'},{name:'Key<br/> Performance',id:'performance'},{name:'Alert Status <br/>Jalavani',id:'jalavani'},{name:'Plan Of Action for Stressed Habitations <br/>Water Budget has to be prepared for all habitations',id:'planAction'}];
 		onloadCalls();
-
 		function onloadCalls(){
 			tabBlocks('stateBlockId','state');
 			tabBlocks('districtBlockId','district');
 			tabBlocks('constituencyBlockId','constituency');
 			tabBlocks('mandalBlockId','mandal');
 			responsiveTabs();
-			getHabitationCoverageByStatusByLocationType('state','');
+			getHabitationCoverageByStatusByLocationTypeForGraph('state','');
 			getLabTestDetails();
 			getHabitationSupplyDetails();
 			getSchemesDetails();
@@ -44,32 +43,57 @@
 		}
 		
 		
+		function getHabitationCoverageByStatusByLocationTypeForGraph(locationType,divId){
+			var json = {
+				locationType:locationType,
+				year:"2017"
+			}
+			$.ajax({
+				url: 'getHabitationCoverageByStatusByLocationType',
+				data: JSON.stringify(json),
+				type: "POST",
+				dataType: 'json', 
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						buildChartForHabitationCoverage(ajaxresp);
+						buildChartForHabitationCoverageStatus(ajaxresp);
+					}
+				}
+			});
+		}
 		function getHabitationCoverageByStatusByLocationType(locationType,divId)
 		{
 			var json = {
 				locationType:locationType,
 				year:"2017"
 			}
-			$http({
+			$.ajax({
 				url: 'getHabitationCoverageByStatusByLocationType',
 				data: JSON.stringify(json),
-				method: "POST",
+				type: "POST",
 				dataType: 'json', 
-
-			}).then(function(response) {
-				if(response.data != null && response.data.length > 0){
-					buildChartForHabitationCoverage(response.data);
-					buildChartForHabitationCoverageStatus(response.data);
-					buildTableForHabitationCoverage(response.data,locationType,divId);
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						buildTableForHabitationCoverage(ajaxresp,locationType,divId);
+					}
 				}
 			});
+			
 		}
-		
 		function buildChartForHabitationCoverage(response){
 			
 			var dataArr = [];
 			var pcCount = 0;
 			var totalCount=0;
+			var statusNamesArr=[];
 			for(var i in response){
 				for(var j in response[i].statusList){
 					if(response[i].statusList[j].status != "NC"){
@@ -78,13 +102,13 @@
 							totalCount =totalCount+parseInt(response[i].statusList[j].count);
 							if(response[i].statusList[j].status == "PC4"){
 								var pcArr = [];
-								pcArr.push("PC");
+								statusNamesArr.push("PC");
 								pcArr.push(parseInt(pcCount));
 								dataArr.push(pcArr);
 							}
 						}else{
 							var tempArr = [];
-							response[i].statusList[j].status == "NSS" ? tempArr.push("QA"):tempArr.push(response[i].statusList[j].status);
+							response[i].statusList[j].status == "NSS" ? statusNamesArr.push("QA"):statusNamesArr.push(response[i].statusList[j].status);
 							tempArr.push(parseInt(response[i].statusList[j].count));
 							dataArr.push(tempArr);
 							totalCount =totalCount+parseInt(response[i].statusList[j].count);
@@ -92,16 +116,22 @@
 					}
 				}
 			}
-			$("#totalCntTtlValues").html(totalCount)
+			$("#totalCntTtlValues").html("TOTAL:"+totalCount)
 			var colors = ['#494949','#FC5049','#14BAAD']
 			var id = 'totalValues';
 			var type = {
 				type: 'column',
 				backgroundColor:'transparent'
 			};
-			var title = {
-				text: 'Habitation'
+			var title = { text: ''
+				/* text: 'Habitation',
+				align:'left',
+				 style: {
+					 color: '#000',
+					 font: 'bold 16px "Lato", sans-serif'
+				  } */
 			};
+		
 			var legend = {
 				enabled: false
 			};
@@ -114,9 +144,18 @@
 				min: 0,
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,
-				categories: []
+				categories: statusNamesArr,
+				labels: {
+					useHTML:true,
+					formatter: function() {
+						return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value+'</p>';
+						
+					},
+					
+				}
 				
 			};
+			
 			var plotOptions ={ column: {
 					colorByPoint: true
 				}};
@@ -130,8 +169,8 @@
 
 				dataLabels: {
 					enabled: true,
-					color: '#FFFFFF',
-					align: 'right',
+					color: '#000',
+					align: 'center',
 					format: '{point.y}',
 				}
 			}];
@@ -159,8 +198,14 @@
 			var legend = {
 				enabled: false
 			};
+			
 			var title = {
-				text: 'Habitation Coverage Status'
+				text: 'Habitation Coverage Status',
+				align:'left',
+				 style: {
+					 color: '#000',
+					 font: 'bold 16px "Lato", sans-serif'
+				  } 
 			};
 			var yAxis = {
 				title: {
@@ -200,14 +245,19 @@
 			var json = {
 				year:"2017"
 			}
-			$http({
+			$.ajax({
 				url: 'getLabTestDetails',
 				data: JSON.stringify(json),
-				method: "POST",
+				type: "POST",
 				dataType: 'json', 
-			}).then(function(response) {
-				if(response.data != null){
-					buildChartForLabTestDetails(response.data);
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						buildChartForLabTestDetails(ajaxresp);
+					}
 				}
 			});
 		}
@@ -215,10 +265,11 @@
 		function buildChartForLabTestDetails(response){
 			var dataArr = [];
 			var arr1 = [],arr2 = [];
-			arr1.push("physicalTestCount");
+			var statusNamesArr=[];
+			statusNamesArr.push("physicalTestCount");
 			arr1.push(parseInt(response.physicalTestCount));
 			dataArr.push(arr1);
-			arr2.push("bacterialTestCount");
+			statusNamesArr.push("bacterialTestCount");
 			arr2.push(parseInt(response.bacterialTestCount));
 			dataArr.push(arr2);
 			var colors = ['#14BAAD','#FC5049']
@@ -230,8 +281,13 @@
 			var legend = {
 				enabled: false
 			};
-			var title = {
-				text: ''
+			var title = { text: ''
+				/* text: 'Habitation',
+				align:'left',
+				 style: {
+					 color: '#000',
+					 font: 'bold 16px "Lato", sans-serif'
+				  } */
 			};
 			var yAxis = {
 				title: {
@@ -242,7 +298,20 @@
 				min: 0,
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,
-				categories: []
+				categories: statusNamesArr,
+				labels: {
+					useHTML:true,
+					formatter: function() {
+						if(this.value.toString().length >= 6){
+							return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value.toString().substring(0, 6)+'..'+'</p>';
+						}else{
+							return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value+'</p>';
+						}
+						
+						
+					},
+					
+				}
 			};
 			var plotOptions ={ column: {
 					colorByPoint: true
@@ -257,8 +326,8 @@
 
 				dataLabels: {
 					enabled: true,
-					color: '#FFFFFF',
-					align: 'right',
+					color: '#000',
+					align: 'center',
 					format: '{point.y}',
 				}
 			}];
@@ -270,32 +339,38 @@
 			var json = {
 				year:"2017"
 			}
-			$http({
+			$.ajax({
 				url: 'getHabitationSupplyDetails',
 				data: JSON.stringify(json),
-				method: "POST",
+				type: "POST",
 				dataType: 'json', 
-
-			}).then(function(response) {
-				//$scope.myWelcome = response.data;
-				if(response.data !=null){
-					buildHabitationSupplyDetails(response.data);
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						buildHabitationSupplyDetails(ajaxresp);
+					}
 				}
 			});
 		}
 		
 		function buildHabitationSupplyDetails(result){
 			var dataArr = [];
-				var subDataArr1=[],subDataArr2=[];
-				
-				subDataArr1.push("SAFE");
+			var subDataArr1=[],subDataArr2=[];
+			var statusNamesArr=[];
+			var totalCount=0;	
+				statusNamesArr.push("SAFE");
 				subDataArr1.push(result.safeMLD);
 				dataArr.push(subDataArr1);
 				
-				subDataArr2.push("UN-SAFE");
+				statusNamesArr.push("UN-SAFE");
 				subDataArr2.push(result.unsafeMLD);
 				dataArr.push(subDataArr2);
+				totalCount =totalCount+result.safeMLD+result.unsafeMLD;
 				
+				$("#levelSupplyTtlValues").html("TOTAL:"+totalCount)
 				var colors = ['#14BAAD','#FC5049']
 				var id = 'levelOfSupply1';
 				var type = {
@@ -305,8 +380,13 @@
 				var legend = {
 					enabled: false
 				};
-				var title = {
-					text: 'Habitation Coverage Status'
+				var title = { 
+					 text: 'Level Of Supply (MLD)',
+					align:'left',
+					 style: {
+						 color: '#000',
+						 font: 'bold 16px "Lato", sans-serif'
+					  } 
 				};
 				var yAxis = {
 					min: 0,
@@ -320,7 +400,15 @@
 					min: 0,
 					gridLineWidth: 0,
 					minorGridLineWidth: 0,
-					categories: []
+					categories: statusNamesArr,
+					labels: {
+						useHTML:true,
+						formatter: function() {
+							return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value+'</p>';
+							
+						},
+						
+					}
 				};
 				var plotOptions ={ column: {
 						colorByPoint: true
@@ -335,8 +423,8 @@
 
 					dataLabels: {
 						enabled: true,
-						color: '#FFFFFF',
-						align: 'right',
+						color: '#000',
+						align: 'center',
 						format: '{point.y}',
 					}
 				}];
@@ -350,21 +438,27 @@
 				fromDateStr:"01-12-2016",
 				toDateStr:"01-12-2017"
 			}
-			$http({
+			$.ajax({
 				url: 'getSchemesDetails',
 				data: JSON.stringify(json),
-				method: "POST",
+				type: "POST",
 				dataType: 'json', 
-
-			}).then(function(response) {
-				if(response.data !=null && response.data.length>0){
-					buildSchemesDetails(response.data);
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						buildSchemesDetails(ajaxresp);
+					}
 				}
 			});
+			
 		}
 		function buildSchemesDetails(result){
 			var dataArr = [];
-
+			var statusNamesArr=[];
+			var totalCount=0;
 				for(var i in result)
 				  {
 					var tempArr = [];
@@ -376,14 +470,16 @@
 						}else{
 							result[i].assetType = "MULTI VILLAGE";
 						}
-						tempArr.push(result[i].assetType);
+						statusNamesArr.push(result[i].assetType);
 						tempArr.push(parseInt(result[i].count));
 						dataArr.push(tempArr);
+						totalCount=totalCount+parseInt(result[i].count);
 						
 					}
 					
 				  }
-				  
+				$("#schemesTtlValues").html("TOTAL:"+totalCount)
+				var colors = ['#14BAAD','#FC5049']
 				var id = 'schemes';
 				var type = {
 					type: 'column',
@@ -392,8 +488,13 @@
 				var legend = {
 					enabled: false
 				};
-				var title = {
-					text: 'Schemes'
+				var title = { 
+					text: 'Schemes',
+					align:'left',
+					 style: {
+						 color: '#000',
+						 font: 'bold 16px "Lato", sans-serif'
+					  } 
 				};
 				var yAxis = {
 					min: 0,
@@ -407,7 +508,21 @@
 					min: 0,
 					gridLineWidth: 0,
 					minorGridLineWidth: 0,
-					categories: []
+					categories: statusNamesArr,
+					labels: {
+						useHTML:true,
+						formatter: function() {
+							
+							if(this.value.toString().length >= 6){
+								return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value.toString().substring(0, 6)+'..'+'</p>';
+							}else{
+								return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value+'</p>';
+							}
+							
+							
+						},
+						
+					}
 				};
 				var plotOptions ={ column: {
 						colorByPoint: true
@@ -422,8 +537,8 @@
 
 					dataLabels: {
 						enabled: true,
-						color: '#FFFFFF',
-						align: 'right',
+						color: '#000',
+						align: 'center',
 						format: '{point.y}',
 					}
 				}];
@@ -435,17 +550,22 @@
 					formDateStr:"01-01-2016",
 					toDateStr:"01-04-2017"
 			}
-			$http({
+			$.ajax({
 				url: 'getSchemeWiseWorkDetails',
 				data: JSON.stringify(json),
-				method: "POST",
+				type: "POST",
 				dataType: 'json', 
-
-			}).then(function(response) {
-				if(response.data !=null && response.data.length>0){
-					buildSchemeWiseWorkDetails(response.data);
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						buildSchemeWiseWorkDetails(ajaxresp);
+					}
 				}
 			});
+			
 		}
 		function buildSchemeWiseWorkDetails(result){
 			var dataArr = [];
@@ -466,199 +586,232 @@
 					}
 					
 				  }
-				  
-				var id = 'habitationWorks';
-				var type = {
-					type: 'column',
-					backgroundColor:'transparent'
-				};
-				var legend = {
-					//enabled: true
-				};
-				var title = {
-					text: 'Works'
-				};
-				var yAxis = {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: null
+				$("#habitationWorks").highcharts({
+					chart: {
+						type: 'column'
 					},
-				};
-				var xAxis = {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					categories: assetTypeArr
-				};
-				var plotOptions ={ 
+					title: {
+						text: 'Works',
+						align:'left',
+						style: {
+							color: '#000',
+							font: 'bold 16px "Lato", sans-serif'
+						}
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: assetTypeArr
+					},
+					yAxis:{
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+							title: {
+								text: null
+							}
+					}, 
+					
+					legend: {
+						symbolHeight: 12,
+						symbolWidth: 12,
+						symbolRadius: 6,
+						enabled: true
+					},
+					tooltip: {
+						pointFormat: '{point.y}'
+					},
+					plotOptions: {
 						column: {
-						//colorByPoint: true
-					}};
-				var tooltip = {
-					pointFormat: '{point.y}'
-				};
-				var colors = []
-				var data =  [{
-								name: 'Ongoing',
-								data: workOngoingArr
-							}, {
-								name: 'Not Grounded',
-								data: workNotGroundedArr
-							}, {
-								name: 'Completed',
-								data: workCompletedArr,
-							}, {
-								name: 'Commissioned',
-								data: workComissionedArr
-							}]
-				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
+							//colorByPoint: true
+						}
+					},
+					series: [{
+							name: 'Ongoing',
+							data: workOngoingArr
+						}, {
+							name: 'Not Grounded',
+							data: workNotGroundedArr
+						}, {
+							name: 'Completed',
+							data: workCompletedArr,
+						}, {
+							name: 'Commissioned',
+							data: workComissionedArr
+						}]
+				});
+				
 		}
 		function getAssetInfoBetweenDates(){ 
 			var json = {
 				formDateStr:"01-12-2016",
 				toDateStr:"01-12-2017"
 			}
-			$http({
+			$.ajax({
 				url: 'getAssetInfoBetweenDates',
 				data: JSON.stringify(json),
-				method: "POST",
+				type: "POST",
 				dataType: 'json', 
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						var dataArr = [];
+							for(var i in ajaxresp)
+							{
+								var tempArr = [];
+								tempArr.push(ajaxresp[i].assetType);
+								tempArr.push(parseInt(ajaxresp[i].count));
+								dataArr.push(tempArr);
+							  
+							}
+							var colors = ['#14BBAE'];
+							var id = 'assets';
+							var type = {
+								type: 'column',
+								backgroundColor:'transparent'
+							};
+							var legend = {
+								enabled: false
+							};
+							var title = {
+								text: 'Assets'
+							};
+							var yAxis = {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+								title: {
+									text: null
+								},
+							};
+							var xAxis = {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+								categories: []
+							};
+							var plotOptions ={ column: {
+									colorByPoint: false
+								}};
+							var tooltip = {
+								pointFormat: '{point.y}'
+							};
 
-			}).then(function(response) {
-				//$scope.myWelcome = response.data;
-				
-				var dataArr = [];
-				for(var i in response.data)
-				{
-				  //console.log(response.data);
-					var tempArr = [];
-					tempArr.push(response.data[i].assetType);
-					tempArr.push(parseInt(response.data[i].count));
-					dataArr.push(tempArr);
-				  
-				}
-				var colors = ['#14BBAE'];
-				var id = 'assets';
-				var type = {
-					type: 'column',
-					backgroundColor:'transparent'
-				};
-				var legend = {
-					enabled: false
-				};
-				var title = {
-					text: 'Assets'
-				};
-				var yAxis = {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: null
-					},
-				};
-				var xAxis = {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					categories: []
-				};
-				var plotOptions ={ column: {
-						colorByPoint: false
-					}};
-				var tooltip = {
-					pointFormat: '{point.y}'
-				};
+							var data = [{
+								name: '',
+								data: dataArr,
 
-				var data = [{
-					name: '',
-					data: dataArr,
-
-					dataLabels: {
-						enabled: true,
-						color: '#FFFFFF',
-						align: 'right',
-						format: '{point.y}',
+								dataLabels: {
+									enabled: true,
+									color: '#FFFFFF',
+									align: 'right',
+									format: '{point.y}',
+								}
+							}];
+							highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
 					}
-				}];
-				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
+				}
 			});
 		}
 		
 		
 		function getWaterSourceInfo(){ 
 			var json = {
-					  year : "2014",
-					  fromDate : "2014-01-01",
-					  toDate : "2014-06-30"
+			  year : "2014",
+			  fromDate : "2014-01-01",
+			  toDate : "2014-06-30"
 			}
-			$http({
+			$.ajax({
 				url: 'getWaterSourceInfo',
 				data: JSON.stringify(json),
-				method: "POST",
+				type: "POST",
 				dataType: 'json', 
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+							var dataArr = [];
+							var statusNamesArr=[];
+							var totalCount=0;
+							if(ajaxresp !=null && ajaxresp.length>0){
+								for(var i in ajaxresp)
+								{
+								  var tempArr = [];
+									statusNamesArr.push(ajaxresp[i].name);
+									tempArr.push(parseInt(ajaxresp[i].count));
+									dataArr.push(tempArr);
+									totalCount =totalCount+parseInt(ajaxresp[i].count);
+								  
+								}
+							}
+							$("#waterSourcesTtlValues").html("TOTAL:"+totalCount)
+							var colors = ['#14BAAD','#FC5049']
+							var id = 'waterSources';
+							var type = {
+								type: 'column',
+								backgroundColor:'transparent'
+							};
+							var legend = {
+								enabled: false
+							};
+							var title = { 
+								text: 'Water Sources',
+								align:'left',
+								 style: {
+									 color: '#000',
+									 font: 'bold 16px "Lato", sans-serif'
+								  } 
+							};
+							var yAxis = {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+								title: {
+									text: null
+								},
+							};
+							var xAxis = {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+								categories: statusNamesArr,
+								labels: {
+									useHTML:true,
+									formatter: function() {
+										return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value+'</p>';
+										
+									},
+									
+								}
+							};
+							var plotOptions ={ column: {
+									colorByPoint: true
+								}};
+							var tooltip = {
+								pointFormat: '{point.y}'
+							};
 
-			}).then(function(response) {
-				//$scope.myWelcome = response.data;
-				
-				var dataArr = [];
-				for(var i in response.data)
-				{
-				  //console.log(response.data);
-					var tempArr = [];
-					tempArr.push(response.data[i].name);
-					tempArr.push(parseInt(response.data[i].count));
-					dataArr.push(tempArr);
-				  
-				}
-				var colors = ['#14BBAE'];
-				var id = 'waterSources';
-				var type = {
-					type: 'column',
-					backgroundColor:'transparent'
-				};
-				var legend = {
-					enabled: false
-				};
-				var title = {
-					text: 'Assets'
-				};
-				var yAxis = {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: null
-					},
-				};
-				var xAxis = {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					categories: []
-				};
-				var plotOptions ={ column: {
-						colorByPoint: false
-					}};
-				var tooltip = {
-					pointFormat: '{point.y}'
-				};
+							var data = [{
+								name: '',
+								data: dataArr,
 
-				var data = [{
-					name: '',
-					data: dataArr,
-
-					dataLabels: {
-						enabled: true,
-						color: '#FFFFFF',
-						align: 'right',
-						format: '{point.y}',
+								dataLabels: {
+									enabled: true,
+									color: '#000',
+									align: 'center',
+									format: '{point.y}',
+								}
+							}];
+							highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
 					}
-				}];
-				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
-			});
+				}
+			});	
 		}
 		
 		function getKeyPerformanceIndicatorsInfo(){
@@ -668,19 +821,127 @@
 					  toDate : "2014-06-30",
 					locationType : "state"	
 					}
-
-			$http({
+			$.ajax({
 				url: 'getKeyPerformanceIndicatorsInfo',
 				data: JSON.stringify(json),
-				method: "POST",
+				type: "POST",
 				dataType: 'json', 
-
-			}).then(function(response) {
-				console.log(response.data);
-				
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						buildKeyPerformanceIndicatorsInfo(ajaxresp)
+					}
+				}
 			});
+			
 		}
-		
+		function getKeyPerformanceIndicatorsInfoTable(locationType,divId){
+			var json = {
+					  year : "2014",
+					  fromDate : "2014-01-01",
+					  toDate : "2014-06-30",
+					  locationType : locationType	
+					}
+			$.ajax({
+				url: 'getKeyPerformanceIndicatorsInfo',
+				data: JSON.stringify(json),
+				type: "POST",
+				dataType: 'json', 
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						buildTableForHabitationCoverage(ajaxresp,locationType,divId);
+					}
+				}
+			});
+			
+		}
+		function buildKeyPerformanceIndicatorsInfo(result){
+				var keyNamesArr =[];
+				var targetArr=[];
+				var achivedArr=[];
+				if(result !=null && result.length>0){
+					for(var i in result){
+						if(result[i].statusList !=null && result[i].statusList.length>0){
+							for(var j in result[i].statusList){
+								keyNamesArr.push(result[i].statusList[j].status);
+								targetArr.push(result[i].statusList[j].target)
+								achivedArr.push(result[i].statusList[j].achived)
+							}
+						}
+					}
+				}
+				$("#keyPerformance").highcharts({
+					chart: {
+						type: 'column'
+					},
+					title: {
+						useHTML:true,
+						text: '<p style="font-size:14px;">Key Performance Indicators<br/><small>Habitations through Schemes<small></p>'
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: keyNamesArr
+					},
+					yAxis: [{
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						title: {
+							text: ''
+						}
+					}, {
+						title: {
+							text: ''
+						},
+						opposite: true
+					}],
+					legend: {
+						shadow: false
+					},
+					tooltip: {
+						shared: true
+					},
+					plotOptions: {
+						column: {
+							grouping: false,
+							shadow: false,
+							borderWidth: 0
+						}
+					},
+					series: [{
+						name: 'Target',
+						color: 'rgba(248,161,63,1)',
+						data: targetArr,
+						tooltip: {
+							valuePrefix: ' ',
+							valueSuffix: ' '
+						},
+						pointPadding: 0.3,
+						pointPlacement: 0.2,
+						yAxis: 1
+					}, {
+						name: 'Achived',
+						color: 'rgba(186,60,61,.9)',
+						data: achivedArr,
+						tooltip: {
+							valuePrefix: ' ',
+							valueSuffix: ' '
+						},
+						pointPadding: 0.4,
+						pointPlacement: 0.2,
+						yAxis: 1
+					}]
+				});
+		}
 		function getStressedHabitationsInfoByLocationType(){
 			var json = {
 					  year : "2014",
@@ -709,20 +970,27 @@
 					fromDate : "2014-01-01",
 					toDate : "2014-06-30"	
 				}
-
-			$http({
+			$.ajax({
 				url: 'getPlanofActionForStressedHabitations',
 				data: JSON.stringify(json),
-				method: "POST",
+				type: "POST",
 				dataType: 'json', 
-
-			}).then(function(response) {
-				console.log(response.data);
-				
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						buildPlanofActionForStressedHabitations(ajaxresp);
+					}
+				}
 			});
+			
 		}
 		
-		
+		function buildPlanofActionForStressedHabitations(result){
+			
+		}
 		function getAlertDetailsOfCategoryByStatusWise(){
 			var json = {
 				fromDate:"03-03-2015",
@@ -730,14 +998,20 @@
 				deptId:49,
 				year:""
 			}
-			$http({
+			$.ajax({
 				url: 'getAlertDetailsOfCategoryByStatusWise',
 				data: JSON.stringify(json),
-				method: "POST",
+				type: "POST",
 				dataType: 'json', 
-
-			}).then(function(response) {
-				
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						
+					}
+				}
 			});
 		}
 		
@@ -748,21 +1022,26 @@
 				deptId:Long,
 				year:String
 			}
-			$http({
+			$.ajax({
 				url: 'getAlertFeedbackStatusDetails',
 				data: JSON.stringify(json),
-				method: "POST",
+				type: "POST",
 				dataType: 'json', 
-
-			}).then(function(response) {
-				
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						
+					}
+				}
 			});
 		} 
 	
 	
 	function tabBlocks(blockId,blockName){
 		var tabBlock = '';
-		var blocksArr = [{name:'Coverage Status Of<br/> Habitation',id:'habitation'},{name:'Key<br/> Performance',id:'performance'},{name:'Alert Status <br/>Jalavani',id:'jalavani'},{name:'Plan Of Action for Stressed Habitations <br/>Water Budget has to be prepared for all habitations',id:'planAction'}];
 		var tableId = '';
 		tabBlock+='<div class="panel panel-black panel-default">';
 			tabBlock+='<div class="panel-heading">';
@@ -783,9 +1062,9 @@
 								{
 									if(i == 0)
 									{
-										tabBlock+='<li class="active" ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].name+'</a></li>';
+										tabBlock+='<li class="active" ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'>'+blocksArr[i].name+'</a></li>';
 									}else{
-										tabBlock+='<li ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].name+'</a></li>';
+										tabBlock+='<li ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'>'+blocksArr[i].name+'</a></li>';
 									}
 									
 								}
@@ -827,12 +1106,9 @@
 		$("#"+blockId).html(tabBlock);
 		for(var i in blocksArr)
 		{
-			if(blocksArr[i].id == "habitation"){
-				getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
-			}
+			if(blocksArr[i].id == "habitation")
+			getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
 			
-			tableId = blockId+''+blocksArr[i].id;
-			//tableView(tableId);
 		}
 		if(blockId == 'constituencyBlockId')
 		{
@@ -848,76 +1124,129 @@
 	}
 	
 		function buildTableForHabitationCoverage(result,locationType,divId){
-			
-			var theadArr=[];
-			var tbodyArr=[];
-			var totalCount=0;
-			var percArr=[];
+			var GLtbodyArr=[];
 			if(result !=null && result.length>0){
-				theadArr.push(locationType)
-				if(locationType == "state"){
-					tbodyArr.push("TOTAL")
-				}else{
-					tbodyArr.push("")
-				}
-				
-				percArr.push("")
 				for(var i in result){
-					if(result[i].statusList !=null && result[i].statusList.length>0){
-						for(var j in result[i].statusList){
-							if(result[i].statusList[j].status != 'NC'){
-								theadArr.push(result[i].statusList[j].status)
-								tbodyArr.push(result[i].statusList[j].count)
-								totalCount =totalCount+result[i].statusList[j].count;
-								percArr.push(result[i].statusList[j].percentage)
+					GLtbodyArr.push(result[i]);
+				}
+			}
+			tableView(divId,GLtbodyArr,locationType)
+		}
+		
+		function tableView(divId,GLtbodyArr,locationType)
+		{
+			
+			var $windowWidth = $(window).width();
+			 for(var k in divId){
+				 var tableView='';
+					tableView+='<table class="table table-bordered dataTable'+locationType+'">';
+						tableView+='<thead class="text-capital">';
+						tableView+='<tr>';
+						if(divId[k].id=="habitation"){
+							tableView+='<th>'+locationType+'</th>';
+						}else if(divId[k].id=="performance"){
+							tableView+='<th rowspan="2">'+locationType+'</th>';
+						}
+							if(GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
+								for(var j in GLtbodyArr[0].statusList){
+									if(divId[k].id=="habitation"){
+										if(GLtbodyArr[0].statusList[j].status != 'NC'){
+											tableView+='<th>'+GLtbodyArr[0].statusList[j].status+'</th>';
+											
+										}
+									}else if(divId[k].id=="performance"){
+											tableView+='<th colspan="3">'+GLtbodyArr[0].statusList[j].status+'</th>';
+									}
+								}
+							}
+					if(divId[k].id=="habitation"){
+						tableView+='<th>TOTAL</th>';
+					}
+					tableView+='</tr>'; 
+					tableView+='<tr>'; 
+					if(divId[k].id=="performance"){
+						if(GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
+							for(var j in GLtbodyArr[0].statusList){
+								tableView+='<th>Target</th>';
+								tableView+='<th>Achived</th>';
+								tableView+='<th>% Percentage</th>';
 							}
 						}
 						
-					}
-				}
-				theadArr.push('TOTAL')
-				tbodyArr.push(totalCount)
-				percArr.push("")
-			}
-			tableView(divId,theadArr,tbodyArr,locationType,percArr)
-		}
-		function tableView(divId,theadArr,tbodyArr,locationType,percArr)
-		{
-			var tableView='';
-			
-			var $windowWidth = $(window).width();
-			
-			tableView+='<table class="table table-bordered dataTable'+locationType+'">';
-				tableView+='<thead class="text-capital">';
-				
-					for(var i in theadArr)
-					{
-						tableView+='<th>'+theadArr[i]+'</th>';
-					}
-				tableView+='</thead>';
-				tableView+='<tbody>';
-				tableView+='<tr>';
-					 for(var i in tbodyArr)
-					{
-						
-						tableView+='<td>'+tbodyArr[i]+' <small>'+percArr[i]+'</small></td>';
-						
-					}  
+					}					
 					tableView+='</tr>'; 
-				tableView+='</tbody>';
-			tableView+='</table>';
-			 for(var i in divId){
-				if(divId[i].id == "habitation"){
-					$("#"+locationType+"BlockId"+divId[i].id).html(tableView)
-						if($windowWidth < 768){
-							$(".dataTable"+locationType).wrap("<div class='table-responsive'></div>");
-						}					
-				}
-			} 
-			
-			
+					tableView+='</thead>';
+					tableView+='<tbody>';
+						 for(var i in GLtbodyArr){
+							 var totalCount=0;
+							tableView+='<tr>';
+							tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
+							if(GLtbodyArr[i].statusList !=null && GLtbodyArr[i].statusList.length>0){
+								for(var j in GLtbodyArr[i].statusList){
+									if(divId[k].id=="habitation"){
+										if(GLtbodyArr[i].statusList[j].status != 'NC'){
+											tableView+='<td>'+GLtbodyArr[i].statusList[j].count+' <small>'+GLtbodyArr[i].statusList[j].percentage+'</small></td>';
+											totalCount += GLtbodyArr[i].statusList[j].count;
+										}
+									}else if(divId[k].id=="performance"){
+										tableView+='<td>'+GLtbodyArr[i].statusList[j].target+'</td>';
+										tableView+='<td>'+GLtbodyArr[i].statusList[j].achived+'</td>';
+										tableView+='<td>'+GLtbodyArr[i].statusList[j].percentage+'</td>';
+									}
+									
+									
+								}
+							}
+							if(divId[k].id=="habitation"){
+								tableView+='<td>'+totalCount+'</td>';
+							}
+							tableView+='</tr>';
+						}  
+						 
+					tableView+='</tbody>';
+					tableView+='</table>';	
+				$("#"+locationType+"BlockId"+divId[k].id).html(tableView)
+				
+			 }
 		}
-		function selectBox(id)
+		
+		$(document).on("click","[role='tablist'] li a",function(){
+				var id = $(this).attr('tab_id');
+				var blockName = $(this).attr('attr_block_name');
+				var blockId = $(this).attr('attr_block_id');
+				if(blockName == "state"){
+					if(id == "stateBlockIdhabitation"){
+						getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
+					}else if(id="stateBlockIdperformance"){
+						getKeyPerformanceIndicatorsInfoTable(blockName,blocksArr);
+					}
+				}else if(blockName == "district"){
+					if(id == "districtBlockIdhabitation"){
+						getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
+					}else if(id="districtBlockIdperformance"){
+						getKeyPerformanceIndicatorsInfoTable(blockName,blocksArr);
+					}
+				}else if(blockName == "constituency"){
+					if(id == "constituencyBlockIdhabitation"){
+						getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
+					}else if(id="constituencyBlockIdperformance"){
+						getKeyPerformanceIndicatorsInfoTable(blockName,blocksArr);
+					}
+				}else if(blockName == "mandal"){
+					if(id == "mandalBlockIdhabitation"){
+						getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
+					}else if(id="mandalBlockIdperformance"){
+						getKeyPerformanceIndicatorsInfoTable(blockName,blocksArr);
+					}
+				}
+		});
+	
+	
+	
+	
+	
+	
+	function selectBox(id)
 		{
 			var id = id;
 			var selectBox='';
@@ -925,8 +1254,6 @@
 			$("#"+id).html(selectBox);
 			$("#chosen"+id).chosen();
 		}
-	});
-	
 	$(".chosenSelect").chosen({width:'100%'});
 	$(window,document).on('resize', function(){
 		responsiveTabs();
@@ -961,3 +1288,4 @@
 	$(document).on("click",function(){
 		$(".menu-data-cls").hide();
 	});
+	
