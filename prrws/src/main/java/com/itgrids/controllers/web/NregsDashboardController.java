@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.FarmPondOverviewVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
-import com.itgrids.dto.NregsDataVO;
-import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
 import com.itgrids.dto.NregsDataVO;
+import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
@@ -253,7 +252,6 @@ public class NregsDashboardController {
 		}
 		return mandalBuildingDataList;
 	}
-	
 	@PostMapping("/getNregaGPBuilingsOverview")
 	public @ResponseBody NregsOverviewVO getNregaGPBuilingsOverview(@RequestBody InputVO vo){
 		NregsOverviewVO GpBuildVO = null;
@@ -348,5 +346,49 @@ public class NregsDashboardController {
 			LOG.error("Exception raised at getNregaLevelsOverviewForSilkWarm - NREGSController controller", e);
 		}
 		return levlWiseVOList;
+	}
+	@PostMapping("/getNregsSericultureOverview")
+	public @ResponseBody NregsOverviewVO getNregsSericultureOverview(@RequestBody InputVO vo){
+		NregsOverviewVO finalVo = null;
+		try {
+			finalVo = nregsTcsService.getNregsSericultureOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsSericultureOverview - NREGSController controller", e);
+		}
+		return finalVo;
+	}
+	@PostMapping("/getNregsSericultureData")
+	public @ResponseBody List<NregsDataVO> getNregsSericultureData(@RequestBody InputVO vo){
+		List<NregsDataVO> sericultureData = null;
+		try {
+			sericultureData = nregsTcsService.getNregsSericultureData(vo);
+	
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsSericultureData - NREGSController controller", e);
+		}
+		return sericultureData;
+	}
+	@PostMapping("/getNregsHousingOverview")
+	public @ResponseBody NregsOverviewVO getNregsHousingOverview(@RequestBody InputVO vo){
+		NregsOverviewVO finalVo = null;
+		try {
+			finalVo = nregsTcsService.getNregsHousingOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsHousingOverview - NREGSController controller", e);
+		}
+		return finalVo;
+	}
+	@PostMapping("/getNregsHousingData")
+	public @ResponseBody List<NregsDataVO> getNregsHousingData(@RequestBody InputVO vo){
+		List<NregsDataVO> housingData = null;
+		try {
+			housingData = nregsTcsService.getNregsHousingData(vo);
+	
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsHousingData - NREGSController controller", e);
+		}
+		return housingData;
 	}
 }
