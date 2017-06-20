@@ -793,6 +793,7 @@
 		}
 		
 		var length = result.length
+		var newYearId;
 		var height = '';
 		if(length == 0)
 		{
@@ -860,8 +861,13 @@
 							table+='<td>'+result[i].locationName+'</td>';
 							if($("#financialYearId").val().length > 1 || $("#financialYearId").val() == 0){
 								for(var j in result[i].locationList1){
+									 if(result[i].locationList1[j].financialYearId != 0){
+									      newYearId = result[i].locationList1[j].financialYearId;
+								       }else{
+										   newYearId = $("#financialYearId").val();
+									   } 
 										if(result[i].locationList1[j].count != null && result[i].locationList1[j].count > 0){
-											table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].locationId+'" attr_financial_yr_id="'+result[i].locationList1[j].financialYearId+'" attr_scheme_id="0" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].locationList1[j].count+'</td>';
+											table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].locationId+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="0" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].locationList1[j].count+'</td>';
 										}else{
 											table+='<td class="text-center no-right-border">-</td>';
 										}
@@ -874,7 +880,12 @@
 								}
 							}else{
 								if(result[i].locationList1[0].count != null && result[i].locationList1[0].count > 0){
-											table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].locationId+'" attr_financial_yr_id="'+result[i].locationList1[0].financialYearId+'" attr_scheme_id="0" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].locationList1[0].count+'</td>';
+									        if(result[i].locationList1[0].financialYearId != 0){
+									              newYearId = result[i].locationList1[0].financialYearId;
+								              }else{
+										           newYearId = $("#financialYearId").val();
+									           }
+											table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].locationId+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="0" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].locationList1[0].count+'</td>';
 										}else{
 											table+='<td class="text-center no-right-border">-</td>';
 										}
@@ -974,9 +985,14 @@
 							for(var j in result[i].subList){
 								for(var k in result[i].subList[j].subList)
 								{
+									if(result[i].subList[j].yearId != 0){
+									        newYearId = result[i].subList[j].yearId;
+								               }else{
+										    newYearId = $("#financialYearId").val();
+									       } 
 									if(levelId != '2'){
 									if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
-										table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</td>';
+										table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</td>';
 									}else{
 										table+='<td class="text-center no-right-border">-</td>';
 									}
@@ -1103,8 +1119,13 @@
 									{
 										for(var l in result[i].subList[j].subList[k].subList)
 										{
+											if(result[i].subList[j].yearId != 0){
+									        newYearId = result[i].subList[j].yearId;
+								               }else{
+										    newYearId = $("#financialYearId").val();
+									       } 
 											if(result[i].subList[j].subList[k].subList[l].count != null && result[i].subList[j].subList[k].subList[l].count > 0){
-												table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+levlValId+'" attr_financial_yr_id="'+result[i].subList[j].yearId+'" attr_dept_id="'+result[i].subList[j].subList[k].id+'" attr_scheme_id="'+result[i].subList[j].subList[k].subList[l].id+'" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].subList[l].count+'</td>';
+												table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+levlValId+'" attr_financial_yr_id="'+newYearId+'" attr_dept_id="'+result[i].subList[j].subList[k].id+'" attr_scheme_id="'+result[i].subList[j].subList[k].subList[l].id+'" style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].subList[l].count+'</td>';
 											}else{
 												table+='<td class="text-center no-right-border">-</td>';
 											}
@@ -2973,7 +2994,12 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
     var searchLvlVals = [];
 	searchLvlVals.push(levlValue);
     var financialYrIdList =[];
-	financialYrIdList.push(financialYrId);
+	var financialyr = financialYrId.split(',');
+	for(var i = 0; i < financialyr.length; i++)
+       {  
+			 financialYrIdList.push(financialyr[i]);
+       }
+
     var schemeIdsList = [];
 	schemeIdsList.push(schemeId);
     var deptIdsList = [];
