@@ -15306,4 +15306,52 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  		}
  		  return finalVoList;
  	  }
+ 	  
+ 	 public List<KeyValueVO> getLocationWiseAlertStatusCounts(Long departmentId,String fromDateStr,String toDateStr,String year,Long groupByValue,List<Long> locationValuesList){
+ 		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+ 		 try {
+ 			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+ 			 Date fromDate = null,toDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null && !toDateStr.isEmpty()){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			Map<Long,KeyValueVO> finalMap = new HashMap<Long, KeyValueVO>();
+			
+			//0-scopeId,1-locationId,2-location,3-statusId,4-status,5-count
+			List<Object[]> objList = alertAssignedOfficerNewDAO.getLocationWiseAlertStatusCounts(departmentId,fromDate,toDate,year,groupByValue,locationValuesList);
+			
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					if(finalMap.get((Long)objects[1]) == null){
+						KeyValueVO voIn = new KeyValueVO();
+						voIn.setScopeValue((Long)objects[0]);
+						voIn.setId((Long)objects[1]);
+						voIn.setName(objects[2].toString());
+						
+						KeyValueVO subVO = new KeyValueVO();
+						subVO.setId((Long)objects[3]);
+						subVO.setName(objects[4].toString());
+						subVO.setCount((Long)objects[5]);
+						
+						voIn.getList().add(subVO);
+						
+					}else{
+						KeyValueVO subVO = new KeyValueVO();
+						subVO.setId((Long)objects[3]);
+						subVO.setName(objects[4].toString());
+						subVO.setCount((Long)objects[5]);
+						
+						finalMap.get((Long)objects[1]).getList().add(subVO);
+					} 
+				}
+				
+				voList.addAll(finalMap.values());
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getLocationWiseAlertStatusCounts() method of AlertManagementSystemService",e);
+		}
+ 		 return voList;
+ 	 }
 }

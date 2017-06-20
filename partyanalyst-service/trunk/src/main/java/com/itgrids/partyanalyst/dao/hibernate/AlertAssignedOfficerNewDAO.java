@@ -7149,5 +7149,72 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	 		}
 	 		return query.list();
 	     }
-    
+
+	 public List<Object[]> getLocationWiseAlertStatusCounts(Long departmentId,Date fromDate,Date toDate,String year,Long groupByValue,List<Long> locationValues){
+		//0-scopeId,1-locationId,2-location,3-statusId,4-status,5-count
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select GDWL1.govt_department_scope_id as scopeId, " +
+		 		" GDWL1.govt_department_work_location_id as locationId, " +
+		 		" GDWL1.location_name as location, " +
+		 		" AST.alert_status_id as statusId, " +
+		 		" AST.alert_status as status, " +
+		 		" count(distinct A.alert_id) as count " +
+		 		" from alert_assigned_officer_new AAON,govt_department_designation_officer_new GDDON,govt_department_designation_new GDD,alert A,govt_user_address GUA, " +
+		 		" alert_status AST,govt_department_work_location GDWL,govt_department_work_location GDWL1 " +
+		 		" where AAON.govt_department_designation_officer_id = GDDON.govt_department_designation_officer_id " +
+		 		" and GDD.govt_department_designation_id = GDDON.govt_department_designation_id " +
+		 		" and A.alert_id = AAON.alert_id " +
+		 		" and A.is_deleted ='N' " +
+		 		" and AAON.is_deleted ='N' " +
+		 		" and GDDON.level_value = GDWL.govt_department_work_location_id " +
+		 		" and AST.alert_status_id = AAON.alert_status_id " +
+		 		" and AST.alert_status_id != :pendingStatusId " +
+		 		" and GDD.govt_department_id = :departmentId " +
+		 		" and GDWL.govt_user_address_id = GUA.user_address_id " );
+		 
+		 if(groupByValue !=null && groupByValue == 5l){
+			 sb.append(" and GDWL1.govt_department_work_location_id = GUA.district_id ");
+		 }else if(groupByValue !=null && groupByValue == 8l){
+			 sb.append(" and GDWL1.govt_department_work_location_id = GUA.tehsil_id ");
+		 }
+			
+		 
+		 if(locationValues !=null && locationValues.size()>0){
+			 sb.append(" and GDWL.govt_department_work_location_id in (:locationValues) ");
+		 }
+		 
+		 	if(year !=null && !year.trim().isEmpty()){
+	 			sb.append(" and (year(A.created_time) = :year) ");
+	 		}
+	 		else if(fromDate != null && toDate != null){
+				sb.append(" and (date(model.created_time) between :fromDate and :toDate) ");  
+			}
+		 	
+		 	sb.append(" group by GDWL1.location_name,AST.alert_status_id ");
+		 
+		 Query query = getSession().createSQLQuery(sb.toString())
+				 .addScalar("scopeId", Hibernate.LONG)
+				 .addScalar("locationId", Hibernate.LONG)
+				 .addScalar("location", Hibernate.STRING)
+				 .addScalar("statusId", Hibernate.LONG)
+				 .addScalar("status", Hibernate.STRING)
+				 .addScalar("count", Hibernate.LONG);
+		 
+		 query.setParameter("pendingStatusId", 1l);
+		 query.setParameter("departmentId", departmentId);
+		 
+		 if(year !=null && !year.trim().isEmpty()){
+ 			query.setParameter("year", year);
+ 		}
+ 		else if(fromDate != null && toDate != null){
+ 			query.setDate("fromDate", fromDate);
+ 			query.setDate("toDate", toDate);
+ 		}
+		 if(locationValues !=null && locationValues.size()>0){
+			 query.setParameterList("locationValues", locationValues);
+		 }
+		 
+		 return query.list();
+		
+	 }
 }
