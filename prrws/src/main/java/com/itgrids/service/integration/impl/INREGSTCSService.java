@@ -39,4 +39,8 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregaLevelsOverviewForProductionOfBricks(InputVO inputVO);
 	public List<NregsDataVO> getNregaLevelsOverviewForRaisingOfPerinnialFodder(InputVO inputVO);
 	public List<NregsDataVO> getNregaLevelsOverviewForSilkWarm(InputVO inputVO);
-}	
+	public NregsOverviewVO getNregsSericultureOverview(InputVO inputVO);
+	public List<NregsDataVO> getNregsSericultureData(InputVO inputVO);
+	public NregsOverviewVO getNregsHousingOverview(InputVO inputVO);
+	public List<NregsDataVO> getNregsHousingData(InputVO inputVO);
+}
