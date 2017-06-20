@@ -1216,7 +1216,7 @@ function getCCRoadsData(divIdd,locationType,theadArr)
       tableView(divIdd,theadArr,str);
     }
   });
-}
+  }
 
 function getNregaRaisingOfPerinnialFodderOverview(projectDivId)
 {
@@ -1418,6 +1418,91 @@ function getNregaLevelsOverviewForSilkWarm(divIdd,locationType,theadArr)
 			}
 		}
       tableView(divIdd,theadArr,str);
+    }
+  });
+}
+function getNregsSericultureOverview()
+{
+  var json = {
+		  year : "2017",
+		  fromDate : "2017-04-01",
+		  toDate : "2017-06-30"
+  };
+  $.ajax({
+    url: 'getNregsSericultureOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp){
+    }
+  });
+}
+//getNregsSericultureData();
+function getNregsSericultureData()
+{
+  var json = {
+		  year : "2017",
+		  fromDate : "2017-04-01",
+		  toDate : "2017-06-30",
+		  locationType: "state"
+  };
+  $.ajax({
+    url: 'getNregsSericultureData',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+    }
+  });
+}
+//getNregsHousingOverview();
+function getNregsHousingOverview()
+{
+  var json = {
+		  year : "2017",
+		  fromDate : "2017-04-01",
+		  toDate : "2017-06-30"
+  };
+  $.ajax({
+    url: 'getNregsHousingOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp){
+    }
+  });
+}
+//getNregsHousingData();
+function getNregsHousingData()
+{
+  var json = {
+		  year : "2017",
+		  fromDate : "2017-04-01",
+		  toDate : "2017-06-30",
+		  locationType: "district"
+  };
+  $.ajax({
+    url: 'getNregsHousingData',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
     }
   });
 }
