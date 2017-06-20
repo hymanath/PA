@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -659,5 +660,53 @@ public class RWSNICService implements IRWSNICService{
 			LOG.error("Exception raised at getPlanofActionForStressedHabitations - RWSNICService service", e);
 		}
 		return statusVO;
+	}
+	
+	public List<LocationVO> getLocationWiseAlertStatusCounts(InputVO inputVO){
+		List<LocationVO> voList = new ArrayList<LocationVO>(0);
+		try {
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getLocationWiseAlertStatusCounts");
+	        
+	        String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
+	        System.out.println(jsonInString);
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+				String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				LocationVO locationVO = new LocationVO();
+	 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
+	 	    				
+	 	    				locationVO.setLocationLevelId(jobj.getLong("scopeValue"));
+	 	    				locationVO.setLocationId(jobj.getLong("id"));
+	 	    				locationVO.setLocationName(jobj.getString("name"));
+	 	    				
+	 	    				JSONArray statusArr = jobj.getJSONArray("list");
+	 	    				if(statusArr != null && statusArr.length() > 0){
+	 	    					for (int j = 0; j < statusArr.length(); j++) {
+									StatusVO statusVO = new StatusVO();
+									JSONObject jobj1 = (JSONObject) statusArr.get(j);
+									statusVO.setId(jobj1.getLong("id"));
+									statusVO.setName(jobj1.getString("name"));
+									statusVO.setCount(jobj1.getLong("count"));
+									locationVO.getStatusList().add(statusVO);
+								}
+	 	    				}
+	 	    				
+	 	    				voList.add(locationVO);
+	 	    			}
+	 	    		}
+	 	    	}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseAlertStatusCounts - RWSNICService service", e);
+		}
+		return voList;
 	}
 }
