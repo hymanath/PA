@@ -47,7 +47,8 @@ public class RWSNICService implements IRWSNICService{
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{*/
 	 	    	 String output = null;//response.getEntity(String.class);
-	 	    	 output = "[{\"locationName\":\"Andhra Pradesh\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
+	 	    	 if(inputVO.getLocationType().equalsIgnoreCase("state"))
+	 	    		 output = "[{\"locationName\":\"Andhra Pradesh\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
 	 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
 	 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
 	 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
@@ -55,6 +56,57 @@ public class RWSNICService implements IRWSNICService{
 	 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
 	 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
 	 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]}]";
+	 	    	 else if(inputVO.getLocationType().equalsIgnoreCase("district"))
+	 	    		output = "[{\"locationName\":\"Nellore\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
+		 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
+		 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
+		 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
+		 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
+		 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
+		 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
+		 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]},"
+		 	    	 		+ "{\"locationName\":\"Jagtial Dist\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
+		 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
+		 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
+		 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
+		 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
+		 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
+		 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
+		 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]}]";
+	 	    	 else if(inputVO.getLocationType().equalsIgnoreCase("constituency"))
+	 	    		output = "[{\"locationName\":\"Kavali\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
+		 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
+		 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
+		 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
+		 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
+		 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
+		 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
+		 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]},"
+		 	    	 		+ "{\"locationName\":\"Karimnagar\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
+		 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
+		 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
+		 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
+		 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
+		 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
+		 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
+		 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]}]";
+	 	    	else if(inputVO.getLocationType().equalsIgnoreCase("mandal"))
+	 	    		output = "[{\"locationName\":\"Alluru\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
+		 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
+		 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
+		 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
+		 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
+		 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
+		 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
+		 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]},"
+		 	    	 		+ "{\"locationName\":\"Jagtial\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
+		 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
+		 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
+		 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
+		 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
+		 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
+		 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
+		 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]}]";
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -113,7 +165,7 @@ public class RWSNICService implements IRWSNICService{
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	    }else{*/
 	 	    	 String output = null;//response.getEntity(String.class);
-	 	    	 output = "{\"physicalTestCount\":136657,\"bacterialTestCount\":27622}";
+	 	    	 output = "{\"physicalTestCount\":13665,\"bacterialTestCount\":27622}";
 	 	    	 
 	 	    	 if(output != null && !output.isEmpty()){
 	 	    		JSONObject jObj = new JSONObject(output);
@@ -450,9 +502,46 @@ public class RWSNICService implements IRWSNICService{
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{*/
 	 	    	 String output = null;//response.getEntity(String.class);
-	 	    	 output ="[{\"locationId\":\"1\",\"locationName\":\"Andhra Pradhesh\","
+	 	    	if(inputVO.getLocationType().equalsIgnoreCase("state"))
+	 	    		output ="[{\"locationId\":\"1\",\"locationName\":\"Andhra Pradhesh\","
 	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
-	 	    	             +"{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]}]";
+	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]}]";
+	 	    	else if(inputVO.getLocationType().equalsIgnoreCase("district"))
+	 	    		output ="[{\"locationId\":\"1\",\"locationName\":\"Nellore\","
+	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
+	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]},"
+	 	    	             + "{\"locationId\":\"1\",\"locationName\":\"Jagtial Dist\","
+	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
+	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]}]";
+	 	    	else if(inputVO.getLocationType().equalsIgnoreCase("constituency"))
+	 	    		output ="[{\"locationId\":\"1\",\"locationName\":\"Kavalai\","
+	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
+	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]},"
+	 	    	             + "{\"locationId\":\"1\",\"locationName\":\"Jagtial Const\","
+	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
+	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]}]";
+	 	    	else if(inputVO.getLocationType().equalsIgnoreCase("mandal"))
+	 	    		output ="[{\"locationId\":\"1\",\"locationName\":\"Alluru\","
+	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
+	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]},"
+	 	    	             + "{\"locationId\":\"1\",\"locationName\":\"Jagtial Mandal\","
+	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
+	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
+	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]}]";
+	 	    	 
 	 	    	 
 	 	    	 	    		 	    	 
 	 	    	if(output != null && !output.isEmpty()){
@@ -555,14 +644,14 @@ public class RWSNICService implements IRWSNICService{
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{*/
 	 	    	 String output = null;//response.getEntity(String.class);
-	 	    	 output = "{\"target\":\"10000\",\"achieved\":\"9000\",\"population\":\"2592630\"}";
+	 	    	 output = "{\"target\":\"10000\",\"achieved\":\"9000\",\"population\":\"25920\"}";
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jobj = new JSONObject(output);
 	 	    		statusVO = new StatusVO();
 	 	    		statusVO.setTarget(jobj.getLong("target"));
-	 	    		statusVO.setTarget(jobj.getLong("achieved"));
-	 	    		statusVO.setTarget(jobj.getLong("population"));
+	 	    		statusVO.setAchived(jobj.getLong("achieved"));
+	 	    		statusVO.setPopulation(jobj.getLong("population"));
 	 	    	}
 
 	 	      //}
