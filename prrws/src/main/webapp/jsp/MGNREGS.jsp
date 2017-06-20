@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mahatma Gandhi National Rural EGS</title>
-<link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
-<link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
+<link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
