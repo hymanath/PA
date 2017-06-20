@@ -3034,12 +3034,9 @@ public class WebServiceHandler {
 	@Path("/getAlertsOfCategoryByStatusWise")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO VO){
+	public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JSONObject obj){
 		try{			
-			
-			
-			
-			return webServiceHandlerService.getAlertsOfCategoryByStatusWise(VO);			
+			return webServiceHandlerService.getAlertsOfCategoryByStatusWise(obj);			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getAlertsOfCategoryByStatusWise() Method, Exception is ",e);
 			return null;
