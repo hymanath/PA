@@ -1704,6 +1704,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  			try{
  				Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"MM/dd/yyyy","");
  				Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
+ 				Map<Long,LocationVO> returnMap = new HashMap<Long,LocationVO>();
  			    
  				inputVO.setFinancialYrIdList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList()));
  				inputVO.setDeptIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList()));
@@ -1713,7 +1714,49 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  				if(fundSanctionDetails != null && fundSanctionDetails.size()>0){
  					finalReturnList = new ArrayList<LocationVO>();
  					for(Object[] param : fundSanctionDetails){
- 						LocationVO returnVO = new LocationVO();
+ 						LocationVO returnVO = returnMap.get(commonMethodsUtilService.getLongValueForObject(param[13]));
+ 						
+ 						if(returnVO == null){
+ 							returnVO = new LocationVO();
+ 							StringBuilder locs = new StringBuilder();
+ 							
+ 	 						if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 3l){
+ 	 							locs.append(commonMethodsUtilService.getStringValueForObject(param[8]));
+ 	 							locs.append("  District");
+ 	 						}else if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 4l){
+ 	 							locs.append(commonMethodsUtilService.getStringValueForObject(param[9]));
+ 	 							locs.append("  Constituency");
+ 	 						}else if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 5l){
+ 	 							locs.append(commonMethodsUtilService.getStringValueForObject(param[10]));
+ 	 							locs.append("  Mandal");
+ 	 						}else if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 6l){
+ 	 							locs.append(commonMethodsUtilService.getStringValueForObject(param[11]));
+ 	 							locs.append("  Panchayat");
+ 	 						}else{
+ 	 							locs.append("");
+ 	 						}
+ 	 						returnVO.setFundSanctionId(commonMethodsUtilService.getLongValueForObject(param[13]));
+ 	 						returnVO.setLocName(locs);
+ 							returnMap.put(commonMethodsUtilService.getLongValueForObject(param[13]), returnVO);
+ 						}else{
+ 							
+ 							if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 3l){
+	 							returnVO.getLocName().append(","+commonMethodsUtilService.getStringValueForObject(param[8]));
+	 							returnVO.getLocName().append("  District");
+	 						}else if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 4l){
+	 							returnVO.getLocName().append(","+commonMethodsUtilService.getStringValueForObject(param[9]));
+	 							returnVO.getLocName().append(" Constituency");
+	 						}else if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 5l){
+	 							returnVO.getLocName().append(","+commonMethodsUtilService.getStringValueForObject(param[10]));
+	 							returnVO.getLocName().append("  Mandal");
+	 						}else if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 6l){
+	 							returnVO.getLocName().append(","+commonMethodsUtilService.getStringValueForObject(param[11]));
+	 							returnVO.getLocName().append("  Panchayat");
+	 						}else{
+	 							returnVO.getLocName().append("");
+	 						}
+ 						}
+ 						
  						returnVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[2]));
  						returnVO.setWorkName(commonMethodsUtilService.getStringValueForObject(param[0]));
  						returnVO.setDepartmentName(commonMethodsUtilService.getStringValueForObject(param[3]));
@@ -1722,8 +1765,13 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  					    returnVO.setAmount(commonMethodsUtilService.getLongValueForObject(param[6]));
  						Long sanctionAmount= commonMethodsUtilService.getLongValueForObject(param[6]);
  						returnVO.setSactionAmount(commonMethodsUtilService.calculateAmountInWords(sanctionAmount));
- 						finalReturnList.add(returnVO);
  					}
+ 				}
+ 				
+ 				if(commonMethodsUtilService.isMapValid(returnMap)){
+	 				for(Entry<Long,LocationVO> entry : returnMap.entrySet()){
+	 					finalReturnList.add(entry.getValue());
+	 				}
  				}
  				
  			}catch(Exception e){
