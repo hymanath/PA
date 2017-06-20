@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import org.codehaus.jettison.json.JSONObject;
+
 import com.itgrids.partyanalyst.dto.AccommodationVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
@@ -247,5 +249,5 @@ public interface IWebServiceHandlerService {
     public ResultStatus saveDocumentsForAlertForAms(AmsAppLoginVO keyVo);
     public List<IdNameVO> getAlertDetailsOfCategoryByStatusWise(JalavaniVO VO);
     public List<IdNameVO> getAlertFeedbackStatusDetails(JalavaniVO VO);
-    public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO VO);
+    public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JSONObject obj);
 }

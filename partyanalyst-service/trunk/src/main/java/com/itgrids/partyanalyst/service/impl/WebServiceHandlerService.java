@@ -5178,10 +5178,28 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return null;
 	 }
-	 public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO VO){
+	 public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JSONObject obj){
 		 try {
+			 JalavaniVO jalavani = new JalavaniVO();
 			 
-			return alertManagementSystemService.getAlertsOfCategoryByStatusWise(VO);
+ 			 
+ 			jalavani.setFromDate(obj.getString("fromDate") !=null && !obj.getString("fromDate").trim().isEmpty() ? obj.getString("fromDate").trim():null);
+ 			jalavani.setToDate(obj.getString("toDate") !=null && !obj.getString("toDate").trim().isEmpty() ? obj.getString("toDate").trim():null);
+ 			jalavani.setStartIndex(obj.getInt("stIndex"));
+ 			jalavani.setEndIndex(obj.getInt("endIndex"));	
+ 			jalavani.setType(obj.getString("type") !=null && !obj.getString("type").trim().isEmpty() ? obj.getString("type").trim():null);
+ 			jalavani.setYear(obj.getString("year") !=null && !obj.getString("year").trim().isEmpty() ? obj.getString("year").trim():null);
+ 			jalavani.setDeptId(obj.getLong("deptId"));
+ 			
+ 			
+ 			JSONArray statusListArray = obj.getJSONArray("statusIds");
+ 			
+ 			if(statusListArray != null && statusListArray.length() > 0){
+					for (int j = 0; j < statusListArray.length(); j++) {						
+						jalavani.getStatusIds().add(Long.parseLong(statusListArray.get(j).toString()));					
+				}
+			}
+			return alertManagementSystemService.getAlertsOfCategoryByStatusWise(jalavani);
 			
 		} catch (Exception e) {
 			log.error("Exception raised at getAlertsOfCategoryByStatusWise", e);
