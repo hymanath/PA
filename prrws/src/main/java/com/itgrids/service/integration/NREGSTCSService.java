@@ -742,9 +742,9 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jObj = new JSONObject(output); 	    		
 	 	    				  				
-	 	    				farmpondoverviewvO.setAveragePerDistrict(jObj.getString("AVERAGEPERDISTRICT"));
-	 	    				farmpondoverviewvO.setAveragePerConstituency(jObj.getString("AVERAGEPERCONSTITUENCY"));
-	 	    				farmpondoverviewvO.setAveragePerMandal(jObj.getString("AVERAGEPERMANDAL"));
+	 	    				farmpondoverviewvO.setAveragePerDistrict(new BigDecimal(jObj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				farmpondoverviewvO.setAveragePerConstituency(new BigDecimal(jObj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				farmpondoverviewvO.setAveragePerMandal(new BigDecimal(jObj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				farmpondoverviewvO.setConstituenciesInGreen(jObj.getLong("CONSTITUENCIESINGREEN"));
 	 	    				farmpondoverviewvO.setConstituenciesInOrange(jObj.getLong("CONSTITUENCIESINORANGE"));
 	 	    				farmpondoverviewvO.setConstituenciesInRed(jObj.getLong("CONSTITUENCIESINRED"));
@@ -754,8 +754,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				farmpondoverviewvO.setMandalsInGreen(jObj.getLong("MANDALSINGREEN"));
 	 	    				farmpondoverviewvO.setMandalsInOrange(jObj.getLong("MANDALSINORANGE"));
 	 	    				farmpondoverviewvO.setMandalsInRed(jObj.getLong("MANDALSINRED"));
-	 	    				farmpondoverviewvO.setTotalAvgFarmsInConstituency(jObj.getString("TOTALAVGFARMSINCONSTITUENCY"));
-	 	    				farmpondoverviewvO.setTotalAvgFarmsInDistrict(jObj.getString("TOTALAVGFARMSINDISTRICT"));
+	 	    				farmpondoverviewvO.setTotalAvgFarmsInConstituency(new BigDecimal(jObj.getString("TOTALAVGFARMSINCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				farmpondoverviewvO.setTotalAvgFarmsInDistrict(new BigDecimal(jObj.getString("TOTALAVGFARMSINDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				farmpondoverviewvO.setTotalBudget(jObj.getLong("TOTALBUDGET"));
 	 	    				farmpondoverviewvO.setTotalDistricts(jObj.getLong("TOTALDISTRICTS"));
 	 	    				farmpondoverviewvO.setTotalMandals(jObj.getLong("TOTALMANDALS"));
@@ -763,7 +763,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				farmpondoverviewvO.setVillagesInGreen(jObj.getLong("VILLAGESINGREEN"));
 	 	    				farmpondoverviewvO.setVillagesInOrange(jObj.getLong("VILLAGESINORANGE"));
 	 	    				farmpondoverviewvO.setVillagesInRed(jObj.getLong("VILLAGESINRED"));
-	 	    				farmpondoverviewvO.setTotalAvgFarmsInMandal(jObj.getString("TOTALAVGFARMSINMANDAL"));
+	 	    				farmpondoverviewvO.setTotalAvgFarmsInMandal(new BigDecimal(jObj.getString("TOTALAVGFARMSINMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				farmpondoverviewvO.setTotalConstituencies(jObj.getLong("TOTALCONSTITUENCIES"));
 	 	    				
 	 	    			}
@@ -849,13 +849,13 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		JSONObject jObj = new JSONObject(result);
 	 	    		NregsOverviewVO vo = new NregsOverviewVO();
 	 	                 
-	 	                returnVo.setAveragePerDistrict(jObj.getString("AVERAGEPERDISTRICT"));
-	 	                returnVo.setAveragePerConstituency(jObj.getString("AVERAGEPERCONSTITUENCY"));
-	 	                returnVo.setAveragePerMandal(jObj.getString("AVERAGEPERMANDAL"));
+	 	                returnVo.setAveragePerDistrict(new BigDecimal(jObj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	                returnVo.setAveragePerConstituency(new BigDecimal(jObj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	                returnVo.setAveragePerMandal(new BigDecimal(jObj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	                returnVo.setTotalBudget(jObj.getLong("TOTALBUDGET"));
-	 	                returnVo.setTotalAvgFarmsInDistrict(jObj.getString("TOTALAVGFARMSINDISTRICT"));
-	 	                returnVo.setTotalAvgFarmsInConstituency(jObj.getString("TOTALAVGFARMSINCONSTITUENCY"));
-	 	                returnVo.setTotalAvgFarmsInMandal(jObj.getString("TOTALAVGFARMSINMANDAL"));
+	 	                returnVo.setTotalAvgFarmsInDistrict(new BigDecimal(jObj.getString("TOTALAVGFARMSINDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	                returnVo.setTotalAvgFarmsInConstituency(new BigDecimal(jObj.getString("TOTALAVGFARMSINCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	                returnVo.setTotalAvgFarmsInMandal(new BigDecimal(jObj.getString("TOTALAVGFARMSINMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	                returnVo.setDistrictsInRed(jObj.getLong("DISTRICTSINRED"));
 	 	                returnVo.setDistrictsInOrange(jObj.getLong("DISTRICTSINORANGE"));
 	 	                returnVo.setDistrictsInGreen(jObj.getLong("DISTRICTSINGREEN"));
@@ -1017,6 +1017,306 @@ public class NREGSTCSService implements INREGSTCSService{
 	        
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNregaLevelsOverviewForGPBuilding - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	/*
+	 * Date : 20/06/2017
+	 * Author :Sravanth
+	 * @description : getNregaProductionOfBricksOverview
+	 */
+	public NregsOverviewVO getNregaProductionOfBricksOverview(InputVO inputVO){
+		NregsOverviewVO finalVO = new NregsOverviewVO();
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BricksService/BricksOverview", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject Obj = new JSONObject(output);
+	 	    		if(Obj!=null && Obj.length()>0){
+	 	    				finalVO.setAveragePerDistrict(new BigDecimal(Obj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setAveragePerConstituency(new BigDecimal(Obj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setAveragePerMandal(new BigDecimal(Obj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setTotalBudget(Obj.getLong("TOTALBUDGET"));
+	 	    				finalVO.setTotalAvgFarmsInDistrict(new BigDecimal(Obj.getString("TOTALAVGFARMSINDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setTotalAvgFarmsInConstituency(new BigDecimal(Obj.getString("TOTALAVGFARMSINCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setTotalAvgFarmsInMandal(new BigDecimal(Obj.getString("TOTALAVGFARMSINMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
+	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
+	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
+	 	    				finalVO.setTotalDistricts(Obj.getLong("TOTALDISTRICTS"));
+	 	    				finalVO.setConstituenciesInRed(Obj.getLong("CONSTITUENCIESINRED"));
+	 	    				finalVO.setConstituenciesInOrange(Obj.getLong("CONSTITUENCIESINORANGE"));
+	 	    				finalVO.setConstituenciesInGreen(Obj.getLong("CONSTITUENCIESINGREEN"));
+	 	    				finalVO.setTotalConstituencies(Obj.getLong("TOTALCONSTITUENCIES"));
+	 	    				finalVO.setMandalsInRed(Obj.getLong("MANDALSINRED"));
+	 	    				finalVO.setMandalsInOrange(Obj.getLong("MANDALSINORANGE"));
+	 	    				finalVO.setMandalsInGreen(Obj.getLong("MANDALSINGREEN"));
+	 	    				finalVO.setTotalMandals(Obj.getLong("TOTALMANDALS"));
+	 	    				finalVO.setVillagesInRed(Obj.getLong("VILLAGESINRED"));
+	 	    				finalVO.setVillagesInOrange(Obj.getLong("VILLAGESINORANGE"));
+	 	    				finalVO.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
+	 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    	 
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaProductionOfBricksOverview - NREGSTCSService service", e);
+		}
+		
+		return finalVO;
+	}
+	
+	/*
+	 * Date : 20/06/2017
+	 * Author :Sravanth
+	 * @description : getNregaRaisingOfPerinnialFodderOverview
+	 */
+	public NregsOverviewVO getNregaRaisingOfPerinnialFodderOverview(InputVO inputVO){
+		NregsOverviewVO finalVO = new NregsOverviewVO();
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FodderService/FodderOverview", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject Obj = new JSONObject(output);
+	 	    		if(Obj!=null && Obj.length()>0){
+	 	    				finalVO.setAveragePerDistrict(new BigDecimal(Obj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setAveragePerConstituency(new BigDecimal(Obj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setAveragePerMandal(new BigDecimal(Obj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setTotalBudget(Obj.getLong("TOTALBUDGET"));
+	 	    				finalVO.setTotalAvgFarmsInDistrict(new BigDecimal(Obj.getString("TOTALAVGFARMSINDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setTotalAvgFarmsInConstituency(new BigDecimal(Obj.getString("TOTALAVGFARMSINCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setTotalAvgFarmsInMandal(new BigDecimal(Obj.getString("TOTALAVGFARMSINMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
+	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
+	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
+	 	    				finalVO.setTotalDistricts(Obj.getLong("TOTALDISTRICTS"));
+	 	    				finalVO.setConstituenciesInRed(Obj.getLong("CONSTITUENCIESINRED"));
+	 	    				finalVO.setConstituenciesInOrange(Obj.getLong("CONSTITUENCIESINORANGE"));
+	 	    				finalVO.setConstituenciesInGreen(Obj.getLong("CONSTITUENCIESINGREEN"));
+	 	    				finalVO.setTotalConstituencies(Obj.getLong("TOTALCONSTITUENCIES"));
+	 	    				finalVO.setMandalsInRed(Obj.getLong("MANDALSINRED"));
+	 	    				finalVO.setMandalsInOrange(Obj.getLong("MANDALSINORANGE"));
+	 	    				finalVO.setMandalsInGreen(Obj.getLong("MANDALSINGREEN"));
+	 	    				finalVO.setTotalMandals(Obj.getLong("TOTALMANDALS"));
+	 	    				finalVO.setVillagesInRed(Obj.getLong("VILLAGESINRED"));
+	 	    				finalVO.setVillagesInOrange(Obj.getLong("VILLAGESINORANGE"));
+	 	    				finalVO.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
+	 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    	 
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaRaisingOfPerinnialFodderOverview - NREGSTCSService service", e);
+		}
+		
+		return finalVO;
+	}
+	
+	/*
+	 * Date : 20/06/2017
+	 * Author :Sravanth
+	 * @description : getNregaSilkWormOverview
+	 */
+	public NregsOverviewVO getNregaSilkWormOverview(InputVO inputVO){
+		NregsOverviewVO finalVO = new NregsOverviewVO();
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SilkwormService/SilkwormOverview", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject Obj = new JSONObject(output);
+	 	    		if(Obj!=null && Obj.length()>0){
+	 	    				finalVO.setAveragePerDistrict(new BigDecimal(Obj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setAveragePerConstituency(new BigDecimal(Obj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setAveragePerMandal(new BigDecimal(Obj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setTotalBudget(Obj.getLong("TOTALBUDGET"));
+	 	    				finalVO.setTotalAvgFarmsInDistrict(new BigDecimal(Obj.getString("TOTALAVGFARMSINDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setTotalAvgFarmsInConstituency(new BigDecimal(Obj.getString("TOTALAVGFARMSINCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setTotalAvgFarmsInMandal(new BigDecimal(Obj.getString("TOTALAVGFARMSINMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
+	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
+	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
+	 	    				finalVO.setTotalDistricts(Obj.getLong("TOTALDISTRICTS"));
+	 	    				finalVO.setConstituenciesInRed(Obj.getLong("CONSTITUENCIESINRED"));
+	 	    				finalVO.setConstituenciesInOrange(Obj.getLong("CONSTITUENCIESINORANGE"));
+	 	    				finalVO.setConstituenciesInGreen(Obj.getLong("CONSTITUENCIESINGREEN"));
+	 	    				finalVO.setTotalConstituencies(Obj.getLong("TOTALCONSTITUENCIES"));
+	 	    				finalVO.setMandalsInRed(Obj.getLong("MANDALSINRED"));
+	 	    				finalVO.setMandalsInOrange(Obj.getLong("MANDALSINORANGE"));
+	 	    				finalVO.setMandalsInGreen(Obj.getLong("MANDALSINGREEN"));
+	 	    				finalVO.setTotalMandals(Obj.getLong("TOTALMANDALS"));
+	 	    				finalVO.setVillagesInRed(Obj.getLong("VILLAGESINRED"));
+	 	    				finalVO.setVillagesInOrange(Obj.getLong("VILLAGESINORANGE"));
+	 	    				finalVO.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
+	 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    	 
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaSilkWormOverview - NREGSTCSService service", e);
+		}
+		
+		return finalVO;
+	}
+	
+	/*
+	 * Date : 20/06/2017
+	 * Author :Sravanth
+	 * @description : getNregaLevelsOverviewForProductionOfBricks
+	 */
+	public List<NregsDataVO> getNregaLevelsOverviewForProductionOfBricks(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BricksService/BricksData", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTarget(jObj.getLong("TARGET"));
+	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				
+	 	    				voList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsOverviewForProductionOfBricks - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	/*
+	 * Date : 20/06/2017
+	 * Author :Sravanth
+	 * @description : getNregaLevelsOverviewForRaisingOfPerinnialFodder
+	 */
+	public List<NregsDataVO> getNregaLevelsOverviewForRaisingOfPerinnialFodder(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FodderService/FodderData", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTarget(jObj.getLong("TARGET"));
+	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				
+	 	    				voList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsOverviewForRaisingOfPerinnialFodder - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	/*
+	 * Date : 20/06/2017
+	 * Author :Sravanth
+	 * @description : getNregaLevelsOverviewForSilkWarm
+	 */
+	public List<NregsDataVO> getNregaLevelsOverviewForSilkWarm(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SilkwormService/SilkwormData", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTarget(jObj.getLong("TARGET"));
+	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				
+	 	    				voList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsOverviewForSilkWarm - NREGSTCSService service", e);
 		}
 		
 		return voList;

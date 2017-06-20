@@ -277,4 +277,76 @@ public class NregsDashboardController {
 		}
 		return levlWiseVOList;
 	}
+	
+	@PostMapping("/getNregaRaisingOfPerinnialFodderOverview")
+	public @ResponseBody NregsOverviewVO getNregaRaisingOfPerinnialFodderOverview(@RequestBody InputVO vo){
+		NregsOverviewVO GpBuildVO = null;
+		try {
+			GpBuildVO = nregsTcsService.getNregaRaisingOfPerinnialFodderOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaRaisingOfPerinnialFodderOverview - NREGSController controller", e);
+		}
+		return GpBuildVO;
+	}
+	
+	@PostMapping("/getNregaProductionOfBricksOverview")
+	public @ResponseBody NregsOverviewVO getNregaProductionOfBricksOverview(@RequestBody InputVO vo){
+		NregsOverviewVO GpBuildVO = null;
+		try {
+			GpBuildVO = nregsTcsService.getNregaProductionOfBricksOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaProductionOfBricksOverview - NREGSController controller", e);
+		}
+		return GpBuildVO;
+	}
+	
+	@PostMapping("/getNregaSilkWormOverview")
+	public @ResponseBody NregsOverviewVO getNregaSilkWormOverview(@RequestBody InputVO vo){
+		NregsOverviewVO GpBuildVO = null;
+		try {
+			GpBuildVO = nregsTcsService.getNregaSilkWormOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaSilkWormOverview - NREGSController controller", e);
+		}
+		return GpBuildVO;
+	}
+	
+	@PostMapping("/getNregaLevelsOverviewForProductionOfBricks")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsOverviewForProductionOfBricks(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelsOverviewForProductionOfBricks(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsOverviewForProductionOfBricks - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping("/getNregaLevelsOverviewForRaisingOfPerinnialFodder")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsOverviewForRaisingOfPerinnialFodder(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelsOverviewForRaisingOfPerinnialFodder(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsOverviewForRaisingOfPerinnialFodder - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping("/getNregaLevelsOverviewForSilkWarm")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsOverviewForSilkWarm(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelsOverviewForSilkWarm(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsOverviewForSilkWarm - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
 }

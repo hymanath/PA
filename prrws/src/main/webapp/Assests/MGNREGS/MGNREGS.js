@@ -152,15 +152,15 @@ function projectData(divId)
 		}else if(divId == "NTR 90 Days"){
 			$("#"+tableId).html("NO DATA");
 		}else if(divId == "Production of Bricks"){
-			$("#"+tableId).html("NO DATA");
+			getNregaLevelsOverviewForProductionOfBricks(tableId,dataArr[i],theadArr);
 		}else if(divId == "Mulbery"){
 			$("#"+tableId).html("NO DATA");
 		}else if(divId == "Silk worm"){
-			$("#"+tableId).html("NO DATA");
+			getNregaLevelsOverviewForSilkWarm(tableId,dataArr[i],theadArr);
 		}else if(divId == "Cattle drinking water trough"){
 			$("#"+tableId).html("NO DATA");
 		}else if(divId == "Raising of Perinnial Fodder"){
-			$("#"+tableId).html("NO DATA");
+			getNregaLevelsOverviewForRaisingOfPerinnialFodder(tableId,dataArr[i],theadArr);
 		}
 	}
 }
@@ -216,6 +216,15 @@ function overviewData(divId)
 	}else if(divId == "Gram Panchayat Buildings")
 	{
 		getNREGSGPBuildingOverview(divId)
+	}else if(divId == "Production of Bricks")
+	{
+		getNregaProductionOfBricksOverview(divId)
+	}else if(divId == "Raising of Perinnial Fodder")
+	{
+		getNregaRaisingOfPerinnialFodderOverview(divId)
+	}else if(divId == "Silk worm")
+	{
+		getNregaSilkWormOverview(divId)
 	}else{
 		$("#projectOvervw"+divId.replace(/\s+/g, '')).html("NO DATA");
 	}
@@ -1175,6 +1184,210 @@ function getCCRoadsData(divIdd,locationType,theadArr)
 }
   $.ajax({
     url: 'getCCRoadsData',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+       var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
+    }
+  });
+}
+
+function getNregaRaisingOfPerinnialFodderOverview(projectDivId)
+{
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate  
+	}
+	$.ajax({
+		url: 'getNregaRaisingOfPerinnialFodderOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildNregasOverViewBlock(ajaxresp,projectDivId);
+		}
+	});
+}
+
+function getNregaProductionOfBricksOverview(projectDivId)
+{
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate  
+	}
+	$.ajax({
+		url: 'getNregaProductionOfBricksOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildNregasOverViewBlock(ajaxresp,projectDivId);
+		}
+	});
+}
+
+function getNregaSilkWormOverview(projectDivId)
+{
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate  
+	}
+	$.ajax({
+		url: 'getNregaSilkWormOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildNregasOverViewBlock(ajaxresp,projectDivId);
+		}
+	});
+}
+
+function getNregaLevelsOverviewForProductionOfBricks(divIdd,locationType,theadArr)
+{
+	$("#"+divIdd).html(spinner);
+  var json = {
+    year : "2017",
+    fromDate : glStartDate,
+      toDate : glEndDate,
+    locationType: locationType
+}
+  $.ajax({
+    url: 'getNregaLevelsOverviewForProductionOfBricks',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+       var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
+    }
+  });
+}
+
+function getNregaLevelsOverviewForRaisingOfPerinnialFodder(divIdd,locationType,theadArr)
+{
+	$("#"+divIdd).html(spinner);
+  var json = {
+    year : "2017",
+    fromDate : glStartDate,
+      toDate : glEndDate,
+    locationType: locationType
+}
+  $.ajax({
+    url: 'getNregaLevelsOverviewForRaisingOfPerinnialFodder',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+       var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state")
+						str+='<td class="text-capital">'+locationType+'</td>';
+					if(locationType == "district")
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					if(locationType == "constituency")
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					if(locationType == "mandal")
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
+    }
+  });
+}
+
+function getNregaLevelsOverviewForSilkWarm(divIdd,locationType,theadArr)
+{
+	$("#"+divIdd).html(spinner);
+  var json = {
+    year : "2017",
+    fromDate : glStartDate,
+      toDate : glEndDate,
+    locationType: locationType
+}
+  $.ajax({
+    url: 'getNregaLevelsOverviewForSilkWarm',
     data: JSON.stringify(json),
     type: "POST",
     dataType: 'json', 
