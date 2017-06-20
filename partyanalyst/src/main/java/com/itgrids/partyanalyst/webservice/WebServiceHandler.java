@@ -3058,7 +3058,7 @@ public class WebServiceHandler {
 				}
 			}
 			
-			return webServiceHandlerService.getLocationWiseAlertStatusCounts(jObj.getLong("departmentId"),jObj.getString("fromDate"),jObj.getString("toDate"),
+			return webServiceHandlerService.getLocationWiseAlertStatusCounts(jObj.getLong("deptId"),jObj.getString("fromDate"),jObj.getString("toDate"),
 					jObj.getString("year"),jObj.getLong("groupByValue"),locationValuesList);			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getLocationWiseAlertStatusCounts() Method, Exception is ",e);
