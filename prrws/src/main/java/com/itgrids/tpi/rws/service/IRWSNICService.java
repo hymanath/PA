@@ -21,4 +21,5 @@ public interface IRWSNICService {
 	public List<LocationVO> getKeyPerformanceIndicatorsInfo(InputVO inputVO);
 	public StatusVO getPlanofActionForStressedHabitations(InputVO vo);
 	public List<StatusVO> getStressedHabitationsInfoByLocationType(InputVO vo);
+	public List<LocationVO> getLocationWiseAlertStatusCounts(InputVO vo);
 }

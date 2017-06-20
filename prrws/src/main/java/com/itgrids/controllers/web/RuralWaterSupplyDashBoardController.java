@@ -193,5 +193,16 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return statusVO;
 	}
+	
+	@PostMapping("/getLocationWiseAlertStatusCounts")
+	public @ResponseBody List<LocationVO> getLocationWiseAlertStatusCounts(@RequestBody InputVO vo) {
+		List<LocationVO> locationVOList = null;
+		try {
+			locationVOList = rWSNICService.getLocationWiseAlertStatusCounts(vo);
 
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPlanofActionForStressedHabitations - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return locationVOList;
+	}
 }

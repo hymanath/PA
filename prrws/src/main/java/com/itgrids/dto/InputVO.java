@@ -36,7 +36,22 @@ public class InputVO implements Serializable {
 	private int endIndex;
 	private List<Long> statusIds = new ArrayList<Long>(0);
 	
+	private Long groupByValue=0l;
+	private List<Long> locationValues = new ArrayList<Long>(0);
 	
+	
+	public Long getGroupByValue() {
+		return groupByValue;
+	}
+	public void setGroupByValue(Long groupByValue) {
+		this.groupByValue = groupByValue;
+	}
+	public List<Long> getLocationValues() {
+		return locationValues;
+	}
+	public void setLocationValues(List<Long> locationValues) {
+		this.locationValues = locationValues;
+	}
 	public String getFromDate() {
 		return fromDate;
 	}
