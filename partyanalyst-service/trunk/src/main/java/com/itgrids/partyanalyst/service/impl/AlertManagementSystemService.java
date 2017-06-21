@@ -12059,6 +12059,9 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 				public Object doInTransaction(TransactionStatus status) {
 					
 					String statusRes = "success";
+					if(proposalStatusId == 3l){
+						 updateAlertStatusComment(alertId, proposalStatusId,comment, userId,null,null,null);
+					}
 					
 					AlertComment alertComment = new AlertComment();
 					alertComment.setAlertId(alertId);
