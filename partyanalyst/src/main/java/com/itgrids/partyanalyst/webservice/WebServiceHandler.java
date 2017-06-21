@@ -3065,4 +3065,17 @@ public class WebServiceHandler {
 			return null;
 		}
 	}
+	
+	@POST
+	@Path("/getHamletWiseIvrStatusCounts")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AlertVO> getHamletWiseIvrStatusCounts(JSONObject jObj){
+		try{
+			return webServiceHandlerService.getHamletWiseIvrStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getString("year"));			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getLocationWiseAlertStatusCounts() Method, Exception is ",e);
+			return null;
+		}
+	}
 }
