@@ -90,6 +90,7 @@
 							</div>
 						</li>-->
 						<li>
+							<label>FROM DATE</label>
 							<div class="input-group">
 								<span class="input-group-addon">
 									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
@@ -98,6 +99,7 @@
 							</div>
 						</li>
 						<li>
+							<label>TO DATE</label>
 							<div class="input-group">
 								<span class="input-group-addon">
 									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>

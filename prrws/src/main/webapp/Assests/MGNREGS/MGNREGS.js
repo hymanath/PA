@@ -1,6 +1,6 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var glStartDate = moment().subtract(20, 'years').startOf('year').format("MM-YYYY");
-var glEndDate = moment().add(10, 'years').endOf('year').format("MM-YYYY");
+var glStartDate = '2017-04-01'//+moment().subtract(20, 'years').startOf('year').format("YYYY-MM");
+var glEndDate = "2017-06-30"//+moment().add(10, 'years').endOf('year').format("YYYY-MM");
 onLoadCalls();
 function onLoadCalls()
 {
@@ -47,17 +47,25 @@ function onLoadCalls()
 		$(".menu-data-cls").hide();
 	});
 	$(".chosenSelect").chosen({width:'100%'})
+
+	//$("#dateRangePickerMGNF").val(moment().subtract(20, 'years').startOf('year').format("YYYY-MM"))
+	//$("#dateRangePickerMGNT").val(moment().add(10, 'years').endOf('year').format("YYYY-MM"))
+	$("#dateRangePickerMGNF").val("2017-04")
+	$("#dateRangePickerMGNT").val("2017-06")
+	
 	$("#dateRangePickerMGNF").datetimepicker({
-		format: 'MM-YYYY'
+		format: 'YYYY-MM',
+		viewMode:'years'
 	});
 	$("#dateRangePickerMGNT").datetimepicker({
-		format: 'MM-YYYY'
+		format: 'YYYY-MM',
+		viewMode:'years'
 	});
 	$('#dateRangePickerMGNF').on('dp.change', function(e){ 
-		glStartDate = '1-'+e.date.format("MM-YYYY")
+		glStartDate = '01-'+e.date.format("YYYY-MM")
 	});
 	$('#dateRangePickerMGNT').on('dp.change', function(e){ 
-		glEndDate = '31-'+e.date.format("MM-YYYY");
+		glEndDate = '31-'+e.date.format("YYYY-MM");
 		var blockName = '';
 		$(".panel-block-white").each(function(){
 			if($(this).hasClass("active"))
@@ -762,19 +770,19 @@ function buildNregasOverViewBlock(result,projectDivId){
 					str1+='<div class="col-sm-9">';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							str1+='<p class="media-body">District in Red : '+result.districtsInRed+'</p>';
+							str1+='<p class="media-body">Districts in Red : '+result.districtsInRed+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							str1+='<p class="media-body">District in Orange : '+result.districtsInOrange+'</p>';
+							str1+='<p class="media-body">Districts in Orange : '+result.districtsInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							str1+='<p class="media-body">District in Green : '+result.districtsInGreen+'</p>';
+							str1+='<p class="media-body">Districts in Green : '+result.districtsInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';
 					str1+='<div class="col-sm-3">';
-						str1+='<p>Total District</p>';
+						str1+='<p>Total Districts</p>';
 						str1+='<h4>'+result.totalDistricts+'</h4>';
 					str1+='</div>';
 				str1+='</td>';
@@ -792,7 +800,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 						str1+='</div>';
 					str1+='</div>';	
 					str1+='<div class="col-sm-3">';
-						str1+='<p>Total Constituencies</p>';
+						str1+='<p class="f_12">Total Constituencies</p>';
 						str1+='<h4>'+result.totalConstituencies+'</h4>';
 					str1+='</div>';
 				str1+='</td>';
