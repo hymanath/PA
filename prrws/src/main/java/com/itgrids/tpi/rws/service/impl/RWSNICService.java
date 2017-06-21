@@ -718,4 +718,38 @@ public class RWSNICService implements IRWSNICService{
 		}
 		return null;
 	}
+	@Override
+	public List<LocationVO> getHamletWiseIvrCounts(InputVO vo) {
+		List<LocationVO> voList = new ArrayList<LocationVO>(0);
+		try {
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getHamletWiseIvrStatusCounts");
+	        
+	        String jsonInString = new ObjectMapper().writeValueAsString(vo);
+	        System.out.println(jsonInString);
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+				String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				LocationVO locationVO = new LocationVO();
+	 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
+	 	    				
+	 	    				locationVO.setWorkName(jobj.getString("name"));
+	 	    				locationVO.setCount(jobj.getLong("count"));
+	 	    				voList.add(locationVO);
+	 	    			}
+	 	    		}
+	 	    	}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getHamletWiseIvrCounts - RWSNICService service", e);
+		}
+		return voList;
+	}
 }

@@ -218,4 +218,16 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return rangeVOList;
 	}
+	
+	@PostMapping("/getHamletWiseIvrStatusCounts")
+	public @ResponseBody List<LocationVO> getHamletWiseIvrStatusCounts(@RequestBody InputVO vo) {
+		List<LocationVO> ivrsList = null;
+		try {
+			ivrsList = rWSNICService.getHamletWiseIvrCounts(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getHamletWiseIvrStatusCounts - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return ivrsList;
+	}
 }
