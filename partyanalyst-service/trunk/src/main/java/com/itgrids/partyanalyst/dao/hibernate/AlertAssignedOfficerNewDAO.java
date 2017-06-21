@@ -7217,4 +7217,46 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 return query.list();
 		
 	 }
+	 @Override
+	 public List<Object[]> getHamletWiseIvrStatusCounts(Date fromDate,Date toDate,String year){
+		 
+		 StringBuilder str = new StringBuilder();
+		 str.append("select UA.hamlet_id as hamletId,IOP.satisfied_status as satisfiedStatus,count(distinct ISA.ivr_survey_answer_id) as count"
+				   +"from ivr_survey_entity ISE,ivr_survey_entity_type ISET,ivr_survey_answer ISA,ivr_option IOP,user_address UA,ivr_respondent_location IRL,"
+				   + " ivr_survey ISV "
+                   +"where ISET.ivr_survey_entity_type_id = ISE.ivr_survey_entity_type_id"
+                   +"and ISE.ivr_survey_id = ISA.ivr_survey_id"
+                   +"and  ISA.ivr_option_id = IOP.ivr_option_id"
+                   +"and ISA.ivr_respondent_id = IRL.ivr_respondent_id"
+                   +"and IRL.address_id = UA.user_address_id"
+                   +"and ISV.ivr_survey_id = ISA.ivr_survey_id"
+                   +"and ISA.is_deleted ='false'"
+                   +"and ISET.ivr_survey_entity_type_id=6"
+                   +"and ISET.is_deleted ='false'"
+                   +"and UA.hamlet_id is not null"
+                   +"and IOP.is_deleted ='false'"
+                   +"and ISV.is_deleted ='false'");
+		 if(year!=null && !year.trim().isEmpty()){
+			 str.append(" and year(ISV.start_date) =:year  ");
+		 }
+		 else if(fromDate!=null && toDate!=null){
+			 str.append(" and date(ISV.start_date) between :fromDate and :toDate  ");
+		 }
+		 str.append("group by UA.hamlet_id,IOP.satisfied_status;");
+		 
+		 SQLQuery query = getSession().createSQLQuery(str.toString())
+				.addScalar("hamletId",Hibernate.LONG) 
+				.addScalar("satisfiedStatus",Hibernate.STRING)
+				.addScalar("count",Hibernate.LONG);
+		 
+		 if(year!=null && !year.trim().isEmpty()){
+			 query.setParameter("year", Integer.parseInt(year));
+		 }
+		 else if(fromDate!=null && toDate!=null){
+			 query.setParameter("fromDate", fromDate);
+			 query.setParameter("toDate", toDate);
+		 }
+		
+		return query.list();
+	 }
 }

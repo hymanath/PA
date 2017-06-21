@@ -101,8 +101,10 @@ public class AlertVO {
     private int startIndex;
 	private int endIndex;
 	private String type;
-    
 	
+	private Long satisfiedCount;
+	private Long unSatisfiedCount;
+    
 	public String getCallerDuplicate() {
 		return callerDuplicate;
 	}
@@ -390,6 +392,18 @@ public class AlertVO {
 	}
 	public Long getCount() {
 		return count;
+	}
+	public Long getSatisfiedCount() {
+		return satisfiedCount;
+	}
+	public void setSatisfiedCount(Long satisfiedCount) {
+		this.satisfiedCount = satisfiedCount;
+	}
+	public Long getUnSatisfiedCount() {
+		return unSatisfiedCount;
+	}
+	public void setUnSatisfiedCount(Long unSatisfiedCount) {
+		this.unSatisfiedCount = unSatisfiedCount;
 	}
 	public void setCount(Long count) {
 		this.count = count;

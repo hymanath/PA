@@ -5215,4 +5215,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return null;
 	 }
+	 
+	 public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDate,String toDate,String year){
+		 try {
+			return alertManagementSystemService.getHamletWiseIvrStatusCounts(fromDate,toDate,year);
+		} catch (Exception e) {
+			log.error("Exception raised at getHamletWiseIvrStatusCounts", e);
+		}
+		 return null;
+	 }
 }
