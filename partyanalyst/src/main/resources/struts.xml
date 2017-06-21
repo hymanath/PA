@@ -17603,6 +17603,23 @@
 			<param name="root">locationVotersVOList</param>       
 		</result> 
 	</action>
-	
+	<action name="updateMobileNoAction" class="alertManagementSystemAction" method="loadUpdateMobileNoJsp">
+		<result name="success">/jsp/updateMobileNo.jsp</result>
+	</action> 
+	<action name="generateAndSendOTPSmsAction" class="alertManagementSystemAction" method="generateAndSendOTPSms">
+		<result type="json" name="success">    
+			<param name="root">successMsg</param>       
+		</result> 
+	</action> 
+	<action name="validateOTPAction" class="alertManagementSystemAction" method="validateOTP">
+		<result type="json" name="success">    
+			<param name="root">successMsg</param>       
+		</result> 
+	</action> 
+	<action name="updateOfficerMobileNoAction" class="alertManagementSystemAction" method="updateMobileNo">
+		<result type="json" name="success">    
+			<param name="root">successMsg</param>       
+		</result> 
+	</action> 
  </package>
 </struts>
