@@ -1527,3 +1527,28 @@
 			}
 		});
 	}
+	
+	function getHamletWiseIvrStatusCounts(){
+		var json = {
+			fromDate:"",
+			toDate:"",
+			year:2017
+		}
+		
+		$.ajax({
+			url: 'getHamletWiseIvrStatusCounts',
+			data: JSON.stringify(json),
+			type: "POST",
+			dataType: 'json', 
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success: function(ajaxresp){
+				console.log(ajaxresp.data);
+			}
+		});
+	}
+	
+	
+	

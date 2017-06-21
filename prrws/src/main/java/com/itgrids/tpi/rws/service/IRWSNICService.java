@@ -24,4 +24,5 @@ public interface IRWSNICService {
 	public List<StatusVO> getStressedHabitationsInfoByLocationType(InputVO vo);
 	public List<LocationVO> getLocationWiseAlertStatusCounts(InputVO vo);
 	public List<RangeVO> getLocationBasedOnSelection(InputVO vo);
+	public List<LocationVO> getHamletWiseIvrCounts(InputVO vo);
 }
