@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.JsonObject;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
@@ -22,6 +23,7 @@ import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import springfox.documentation.spring.web.json.Json;
 import sun.misc.BASE64Encoder;
 
 @Service
@@ -60,6 +62,7 @@ public class RWSNICService implements IRWSNICService{
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		if(inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("mandal")){
 	 	    			//build mandal level data
+	 	    			buildHabitationCoverageByStatusMandalWise(output,voList);
 	 	    		}else{
 	 	    			JSONArray finalArray = new JSONArray(output);
 		 	    		if(finalArray!=null && finalArray.length()>0){
@@ -97,6 +100,44 @@ public class RWSNICService implements IRWSNICService{
 		}
 		
 		return voList;
+	}
+	
+	public void buildHabitationCoverageByStatusMandalWise(String output,List<LocationVO> voList){
+		try {
+			JSONArray finalArray = new JSONArray(output);
+			if(finalArray!=null && finalArray.length()>0){
+	 			for(int i=0;i<finalArray.length();i++){
+	 				JSONObject distObj = (JSONObject)finalArray.get(i);
+	 				if(distObj != null&& distObj.length() > 0 && distObj.getJSONArray("subList") != null && distObj.getJSONArray("subList").length() > 0){
+		 				JSONArray mandalArr = distObj.getJSONArray("subList");
+		 				for (int j = 0; j < mandalArr.length(); j++) {
+		 					JSONObject mandalObj = (JSONObject) mandalArr.get(j);
+		 					LocationVO vo = new LocationVO();
+	 	    				vo.setLocationName(mandalObj.getString("locationName"));
+		 	    			vo.setStreetHabitationCount(mandalObj.getLong("stressedHabitationCount"));
+		 	    			vo.setTotalCount(mandalObj.getLong("totalCount"));
+		 	    			vo.setParentLocationId(distObj.getLong("districtId"));
+		 	    			JSONArray statusListArray = mandalObj.getJSONArray("statusList");
+		 	    				
+		 	    			if(statusListArray != null && statusListArray.length() > 0){
+		 	    				for (int s = 0; s < statusListArray.length(); s++) {
+									StatusVO statusVO = new StatusVO();
+									
+									JSONObject jobj1 = (JSONObject) statusListArray.get(s);
+									statusVO.setStatus(jobj1.getString("status"));
+									statusVO.setCount(jobj1.getLong("count"));
+									statusVO.setPercentage(jobj1.getDouble("percentage"));
+									vo.getStatusList().add(statusVO);
+								}
+		 	    			}
+		 	    			voList.add(vo);
+						}
+		 			}
+	 			}
+	 		}
+		} catch (Exception e) {
+			LOG.error("Exceptionr aised while building the data mandal wise habitation status counts", e);
+		}
 	}
 	/*
 	 * Date : 15/06/2017
