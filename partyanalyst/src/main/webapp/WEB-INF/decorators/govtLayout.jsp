@@ -135,6 +135,9 @@ globalValue = resultValue[resultValue.length-1];
 					<li>
 						<a href="locationWiseGrivenceReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Location Wise Report</span></a>
 					</li>
+					<li>
+						<a href="updateMobileNoAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Update Mobile Number</span></a>
+					</li>
 			</c:if>
 			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICER_ENTITLEMENT_NEW')}">
 					<li>
@@ -143,6 +146,9 @@ globalValue = resultValue[resultValue.length-1];
 					<li>
 						<a href="officerWiseAlertReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Officer Location Report</span></a>
 					</li>
+					<li>
+						<a href="updateMobileNoAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Update Mobile Number</span></a>
+					</li>
 			</c:if>
 			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICE_ENTITLEMENT_NEW')}">
 					<li>
@@ -150,6 +156,9 @@ globalValue = resultValue[resultValue.length-1];
 					</li>
 					<li>
 						<a href="officerWiseAlertReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Officer Location Report</span></a>
+					</li>
+					<li>
+						<a href="updateMobileNoAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Update Mobile Number</span></a>
 					</li>
 			</c:if>
 			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICER_ENTITLEMENT_NEW')}">

@@ -42,7 +42,6 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -103,6 +102,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<IdAndNameVO> janmabhoomiTypeList;
 	private List<IdAndNameVO> specialGrievanceTypeList;
 	private List<IdAndNameVO> generalGrievanceTypeList;
+	private String officerMobileNo;
 	
 	
 	public List<IdAndNameVO> getMondayGrievanceTypeList() {
@@ -440,6 +440,13 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	public void setGovtAlertSubTaksStatusList(
 			List<IdAndNameVO> govtAlertSubTaksStatusList) {
 		this.govtAlertSubTaksStatusList = govtAlertSubTaksStatusList;
+	}
+	public String getOfficerMobileNo() {
+		return officerMobileNo;
+	}
+
+	public void setOfficerMobileNo(String officerMobileNo) {
+		this.officerMobileNo = officerMobileNo;
 	}
 
 	public String execute(){
@@ -6280,5 +6287,52 @@ public String getAlertSourceWiseAlert(){
 		return Action.SUCCESS;	
 	
 	}
-	
+	 public String loadUpdateMobileNoJsp(){
+		    Long userId = 0l;
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo!=null && regVo.getRegistrationID()!=null){
+				userId = regVo.getRegistrationID();
+			}
+		    officerMobileNo = alertManagementSystemService.getOfficerMobilenNo(userId);
+	    	return Action.SUCCESS;
+	 }	
+	 public String generateAndSendOTPSms(){
+		 try{
+			 jObj = new JSONObject(getTask());
+			 successMsg = alertManagementSystemService.generatingAndSavingOTPDetails(jObj.getString("mobileNo"));
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in generateAndSendOTPSms() method, Exception - ",e);
+			 successMsg = "failure";
+		 }
+		 return Action.SUCCESS;
+	 }
+	 public String validateOTP(){
+		 try{
+			 jObj = new JSONObject(getTask());
+			 String mobileNo = jObj.getString("mobileNo").trim();
+			 String otp = jObj.getString("otp").trim();
+			 successMsg  = alertManagementSystemService.validateOTP(mobileNo,otp);
+		 }catch(Exception e){
+			 successMsg = "failure";
+			 LOG.error("Exception Occured in validateOTP() method, Exception - ",e);
+		 }
+		 return Action.SUCCESS;
+	 }
+	 public String updateMobileNo(){
+		 try{
+			 Long userId = 0l;
+			  RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+				if(regVo!=null && regVo.getRegistrationID()!=null){
+					userId = regVo.getRegistrationID();
+				}
+				jObj = new JSONObject(getTask());
+				String otp = jObj.getString("otp").trim();
+				String mobileNo = jObj.getString("mobileNo").trim();
+				successMsg = alertManagementSystemService.updateMobileNo(userId,otp,mobileNo);
+		 }catch(Exception e){
+			 successMsg = "failure";
+			 LOG.error("Exception Occured in updateMobileNo() method, Exception - ",e);
+		 }
+		 return Action.SUCCESS;
+	 }
 }
