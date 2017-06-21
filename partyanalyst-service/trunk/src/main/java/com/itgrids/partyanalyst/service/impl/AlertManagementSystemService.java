@@ -111,6 +111,7 @@ import com.itgrids.partyanalyst.model.CustomReport;
 import com.itgrids.partyanalyst.model.GovtAlertSubTask;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerNew;
 import com.itgrids.partyanalyst.model.GovtDepartmentWorkLocation;
+import com.itgrids.partyanalyst.model.GovtOfficerNew;
 import com.itgrids.partyanalyst.model.GovtOfficerSubTaskTracking;
 import com.itgrids.partyanalyst.model.GovtProposalPropertyCategory;
 import com.itgrids.partyanalyst.model.GovtProposalPropertyCategoryTracking;
@@ -15311,50 +15312,124 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  	  }
  	  
  	 public List<KeyValueVO> getLocationWiseAlertStatusCounts(Long departmentId,String fromDateStr,String toDateStr,String year,Long groupByValue,List<Long> locationValuesList){
- 		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
- 		 try {
- 			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
- 			 Date fromDate = null,toDate = null;
-			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null && !toDateStr.isEmpty()){
-				fromDate = sdf.parse(fromDateStr);
-				toDate = sdf.parse(toDateStr);
-			}
-			
-			Map<Long,KeyValueVO> finalMap = new HashMap<Long, KeyValueVO>();
-			
-			//0-scopeId,1-locationId,2-location,3-statusId,4-status,5-count
-			List<Object[]> objList = alertAssignedOfficerNewDAO.getLocationWiseAlertStatusCounts(departmentId,fromDate,toDate,year,groupByValue,locationValuesList);
-			
-			if(objList != null && objList.size() > 0){
-				for (Object[] objects : objList) {
-					if(finalMap.get((Long)objects[1]) == null){
-						KeyValueVO voIn = new KeyValueVO();
-						voIn.setScopeValue((Long)objects[0]);
-						voIn.setId((Long)objects[1]);
-						voIn.setName(objects[2].toString());
-						
-						KeyValueVO subVO = new KeyValueVO();
-						subVO.setId((Long)objects[3]);
-						subVO.setName(objects[4].toString());
-						subVO.setCount((Long)objects[5]);
-						
-						voIn.getList().add(subVO);
-						finalMap.put((Long)objects[1], voIn);
-					}else{
-						KeyValueVO subVO = new KeyValueVO();
-						subVO.setId((Long)objects[3]);
-						subVO.setName(objects[4].toString());
-						subVO.setCount((Long)objects[5]);
-						
-						finalMap.get((Long)objects[1]).getList().add(subVO);
-					} 
+  		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+  		 try {
+  			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+  			 Date fromDate = null,toDate = null;
+ 			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null && !toDateStr.isEmpty()){
+ 				fromDate = sdf.parse(fromDateStr);
+ 				toDate = sdf.parse(toDateStr);
+ 			}
+ 			
+ 			Map<Long,KeyValueVO> finalMap = new HashMap<Long, KeyValueVO>();
+ 			
+ 			//0-scopeId,1-locationId,2-location,3-statusId,4-status,5-count
+ 			List<Object[]> objList = alertAssignedOfficerNewDAO.getLocationWiseAlertStatusCounts(departmentId,fromDate,toDate,year,groupByValue,locationValuesList);
+ 			
+ 			if(objList != null && objList.size() > 0){
+ 				for (Object[] objects : objList) {
+ 					if(finalMap.get((Long)objects[1]) == null){
+ 						KeyValueVO voIn = new KeyValueVO();
+ 						voIn.setScopeValue((Long)objects[0]);
+ 						voIn.setId((Long)objects[1]);
+ 						voIn.setName(objects[2].toString());
+ 						
+ 						KeyValueVO subVO = new KeyValueVO();
+ 						subVO.setId((Long)objects[3]);
+ 						subVO.setName(objects[4].toString());
+ 						subVO.setCount((Long)objects[5]);
+ 						
+ 						voIn.getList().add(subVO);
+ 						finalMap.put((Long)objects[1], voIn);
+ 					}else{
+ 						KeyValueVO subVO = new KeyValueVO();
+ 						subVO.setId((Long)objects[3]);
+ 						subVO.setName(objects[4].toString());
+ 						subVO.setCount((Long)objects[5]);
+ 						
+ 						finalMap.get((Long)objects[1]).getList().add(subVO);
+ 					} 
+ 				}
+ 				
+ 				voList.addAll(finalMap.values());
+ 			}
+ 		} catch (Exception e) {
+ 			LOG.error("Error occured getLocationWiseAlertStatusCounts() method of AlertManagementSystemService",e);
+ 		}
+  		 return voList;
+  	 }
+ 	/**
+ 	 * @param  String mobileNo
+ 	 * @param String otp
+ 	 * @return String status
+ 	 * @author Santosh 
+ 	 * @Description :This Service Method is used to validate OTP. 
+ 	 * @since 20-JUNE-2017
+ 	 */
+	public String validateOTP(final String mobileNo, final String otp) {
+		String status = "failure";
+		try {
+			Date currentTime = dateUtilService.getCurrentDateAndTime();
+			List<Object[]> existingOTPDtls = amsOfficerOtpDetailsDAO.isExistOTPDetails(mobileNo, currentTime);
+			if (existingOTPDtls != null && existingOTPDtls.size() > 0L) {
+				Object[] obj = existingOTPDtls.get(existingOTPDtls.size() - 1);
+				Long tabDetsId = commonMethodsUtilService.getLongValueForObject(obj[3]);
+				String originalotp = commonMethodsUtilService.getStringValueForObject(obj[0]);
+				if (originalotp != null && originalotp.toString().trim().equalsIgnoreCase(otp.toString().trim()) && tabDetsId != null && tabDetsId.longValue() > 0l) {
+					status = "success";
 				}
-				
-				voList.addAll(finalMap.values());
 			}
 		} catch (Exception e) {
-			LOG.error("Error occured getLocationWiseAlertStatusCounts() method of AlertManagementSystemService",e);
+			status = "failure";
+			LOG.error("Exception Occured in validateOTP() in AlertManagementSystemService class.",e);
 		}
- 		 return voList;
- 	 }
+		return status;
+	}
+	/**
+	 * @param Long userId
+ 	 * @param  String mobileNo
+ 	 * @param String otp
+ 	 * @return String status
+ 	 * @author Santosh 
+ 	 * @Description :This Service Method is used to update mobile number. 
+ 	 * @since 20-JUNE-2017
+ 	 */
+	public String updateMobileNo(final Long userId, final String otp,final String mobileNo) {
+		String status = null;
+		try {
+			status = (String) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					Date currentTime = dateUtilService.getCurrentDateAndTime();
+
+					List<Object[]> existingOTPDtls = amsOfficerOtpDetailsDAO.isExistOTPDetails(mobileNo,currentTime);
+					if (existingOTPDtls != null && existingOTPDtls.size() > 0L) {
+						Object[] obj = existingOTPDtls.get(existingOTPDtls.size() - 1);
+						Long tabDetsId = commonMethodsUtilService.getLongValueForObject(obj[3]);
+						String originalotp = commonMethodsUtilService.getStringValueForObject(obj[0]);
+						// update otp
+						if (originalotp.toString().trim().equalsIgnoreCase(otp.toString().trim()) && tabDetsId != null && tabDetsId.longValue() > 0l) {
+							AmsOfficerOtpDetails amsOfficerOtpDetails = amsOfficerOtpDetailsDAO.get(tabDetsId);
+							amsOfficerOtpDetails.setIsValid("N");
+							amsOfficerOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							amsOfficerOtpDetails = amsOfficerOtpDetailsDAO.save(amsOfficerOtpDetails);
+
+							// update mobile number
+							List<Object[]> officerDtlsObjLst = govtDepartmentDesignationOfficerDetailsNewDAO.getOfficerDesingationDetails(userId);
+							if (officerDtlsObjLst != null && officerDtlsObjLst.size() > 0) {
+								Long officerId = (Long) officerDtlsObjLst.get(0)[1];
+								GovtOfficerNew govtOfficerNew = govtOfficerNewDAO.get(officerId);
+								govtOfficerNew.setMobileNo(mobileNo);
+								govtOfficerNewDAO.save(govtOfficerNew);
+							}
+						}
+					}
+					return "success";
+				}
+			});
+		} catch (Exception e) {
+			status = "failure";
+			LOG.error("Exception Occured in updateMobileNo() in AlertManagementSystemService class.",e);
+		}
+		return status;
+	}
 }

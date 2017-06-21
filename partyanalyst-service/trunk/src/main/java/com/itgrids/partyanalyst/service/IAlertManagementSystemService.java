@@ -239,4 +239,6 @@ public interface IAlertManagementSystemService {
 	 public List<IdNameVO> getAlertFeedbackStatusDetails(JalavaniVO VO);
 	 public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO mainVo);
 	 public List<KeyValueVO> getLocationWiseAlertStatusCounts(Long departmentId,String fromDate,String toDate,String year,Long groupByValue,List<Long> locationValuesList);
+	 public String validateOTP(String mobileNo,String otp);
+	 public String updateMobileNo(final Long userId, final String otp,final String mobileNo);
 }        
