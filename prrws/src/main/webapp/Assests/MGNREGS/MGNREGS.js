@@ -55,11 +55,11 @@ function onLoadCalls()
 	
 	$("#dateRangePickerMGNF").datetimepicker({
 		format: 'YYYY-MM',
-		viewMode:'years'
+		viewMode:'months'
 	});
 	$("#dateRangePickerMGNT").datetimepicker({
 		format: 'YYYY-MM',
-		viewMode:'years'
+		viewMode:'months'
 	});
 	$('#dateRangePickerMGNF').on('dp.change', function(e){ 
 		glStartDate = '01-'+e.date.format("YYYY-MM")
