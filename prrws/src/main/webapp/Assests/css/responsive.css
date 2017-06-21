@@ -11,6 +11,16 @@
 		border-right:0px !important;
 		border-bottom:1px solid #333 !important;
 	}
+	.menu-cls 
+	{
+		top:0px;
+		right:0px;
+	}
+	.menu-data-cls
+	{
+		top: 120px;
+		right: 0;
+	}
 }
 @media (min-width: 500px) and (max-width:767px) 
 {
@@ -24,6 +34,16 @@
 		width:100% !important;
 		border-right:0px !important;
 		border-bottom:1px solid #333 !important;
+	}
+	.menu-cls 
+	{
+		top:0px;
+		right:0px;
+	}
+	.menu-data-cls
+	{
+		top: 120px;
+		right: 0;
 	}
 }
 @media (min-width:769px) and  (max-width:991px){
