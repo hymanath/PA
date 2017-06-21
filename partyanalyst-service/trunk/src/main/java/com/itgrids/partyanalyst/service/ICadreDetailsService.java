@@ -158,4 +158,5 @@ public interface ICadreDetailsService {
 	
 	public List<QuestionAnswerVO> getSurveysOnCandidateDetailsNew(Long candidateId,Long cadreId,Long stateId,Long districtId,Long constituencyId,
 			Long mandalId,Long lebId,Long panchayatId,Long wardId);
+	public String calculatePercentage(Long totalVoters,Long count);
 }

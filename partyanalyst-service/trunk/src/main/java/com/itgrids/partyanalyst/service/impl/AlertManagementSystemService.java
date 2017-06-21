@@ -118,6 +118,7 @@ import com.itgrids.partyanalyst.model.GovtProposalPropertyCategoryTracking;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -194,7 +195,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IAlertMeekosamPetitionerDAO alertMeekosamPetitionerDAO;
 	private ImageAndStringConverter imageAndStringConverter;
 	
+	private ICadreDetailsService cadreDetailsService;
 	
+	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
+		this.cadreDetailsService = cadreDetailsService;
+	}
 	public ImageAndStringConverter getImageAndStringConverter() {
 		return imageAndStringConverter;
 	}
@@ -15432,4 +15437,81 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 		}
 		return status;
 	}
+	public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDateStr,String toDateStr,String year){
+ 		List<AlertVO> finalList = new ArrayList<AlertVO>();
+ 		try{
+ 			Date frmDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				frmDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+ 			//Map<String,Long> ivrFinalMap = new HashMap<String, Long>();
+			Map<String,AlertVO> ivrFinalMap = new HashMap<String, AlertVO>();
+ 			Map<Long,AlertVO> hamletMap = new HashMap<Long, AlertVO>();
+ 			//0-hamlet_id,1-satisfied_status,2-answers_count
+ 			List<Object[]> ivrCounts = alertAssignedOfficerNewDAO.getHamletWiseIvrStatusCounts(frmDate, toDate, year);
+ 			for (Object[] objects : ivrCounts) {
+ 				AlertVO vo = hamletMap.get(objects[0]);
+ 				if(vo==null){
+ 					vo = new AlertVO();
+ 					vo.setId((Long) objects[0]);
+ 					hamletMap.put((Long) objects[0], vo);
+ 				}
+ 					if(objects[1]!=null && objects[1].toString().equalsIgnoreCase("Y")){
+ 						vo.setSatisfiedCount(objects[2] !=null ? (Long)objects[2]:0l);
+ 						
+ 					}else if(objects[1]!=null && objects[1].toString().equalsIgnoreCase("N")){
+ 						vo.setUnSatisfiedCount(objects[2] !=null ? (Long)objects[2]:0l);
+ 					}
+ 					hamletMap.put((Long)objects[0], vo);
+ 			}	
+ 			
+ 			if(hamletMap!=null && hamletMap.size()>0){
+ 				
+ 				Long greenHamletCount=0l;
+ 				Long orangeHamletCount=0l;
+ 				Long redHamletCount=0l;
+ 				for (Entry<Long, AlertVO> objects : hamletMap.entrySet()) {
+ 					
+ 					AlertVO vo = objects.getValue();
+ 					
+ 					vo.setCount(vo.getSatisfiedCount()+vo.getUnSatisfiedCount());
+ 					
+ 					String perc = cadreDetailsService.calculatePercentage(vo.getCount(),vo.getSatisfiedCount());
+ 					if(perc !=null && perc !="0" && !perc.trim().isEmpty()){
+ 						vo.setPercentage(Double.parseDouble(perc));
+ 						
+ 						if(vo.getPercentage()>70){
+ 							greenHamletCount++;
+ 						}else if(vo.getPercentage()<70 && vo.getPercentage()>50){
+ 							orangeHamletCount++;
+ 						}else if(vo.getPercentage()<50){
+ 							redHamletCount++;
+ 						}
+ 					}
+				}
+ 				
+ 				AlertVO green = new AlertVO(); 
+ 				green.setName("green");
+ 				green.setCount(greenHamletCount);
+ 				AlertVO orange = new AlertVO(); 
+ 				orange.setName("orange");
+ 				orange.setCount(orangeHamletCount);
+ 				AlertVO red = new AlertVO();
+ 				red.setName("red");
+ 				red.setCount(redHamletCount);
+ 				
+ 					ivrFinalMap.put("Green", green);
+					ivrFinalMap.put("Orange",orange);
+					ivrFinalMap.put("Red",red);					 					
+ 					finalList.add((AlertVO) ivrFinalMap.values());
+ 			}
+ 			
+ 		}catch (Exception e) {
+			e.printStackTrace();
+		}
+ 		return finalList;
+	 }
 }

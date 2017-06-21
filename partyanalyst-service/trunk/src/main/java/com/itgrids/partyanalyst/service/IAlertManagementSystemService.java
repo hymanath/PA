@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -241,4 +242,5 @@ public interface IAlertManagementSystemService {
 	 public List<KeyValueVO> getLocationWiseAlertStatusCounts(Long departmentId,String fromDate,String toDate,String year,Long groupByValue,List<Long> locationValuesList);
 	 public String validateOTP(String mobileNo,String otp);
 	 public String updateMobileNo(final Long userId, final String otp,final String mobileNo);
+	 public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDate,String toDate,String year);
 }        
