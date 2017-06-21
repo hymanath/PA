@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 
@@ -204,5 +205,17 @@ public class RuralWaterSupplyDashBoardController {
 			LOG.error("Exception raised at getPlanofActionForStressedHabitations - RuralWaterSupplyDashBoardController controller",e);
 		}
 		return locationVOList;
+	}
+	
+	@PostMapping("/getLocationBasedOnSelection")
+	public @ResponseBody List<RangeVO> getLocationBasedOnSelection(@RequestBody InputVO vo) {
+		List<RangeVO> rangeVOList = null;
+		try {
+			rangeVOList = rWSNICService.getLocationBasedOnSelection(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationBasedOnSelection - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return rangeVOList;
 	}
 }

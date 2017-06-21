@@ -38,8 +38,15 @@ public class InputVO implements Serializable {
 	
 	private Long groupByValue=0l;
 	private List<Long> locationValues = new ArrayList<Long>(0);
+	private Long stressedHabitationYear;
 	
 	
+	public Long getStressedHabitationYear() {
+		return stressedHabitationYear;
+	}
+	public void setStressedHabitationYear(Long stressedHabitationYear) {
+		this.stressedHabitationYear = stressedHabitationYear;
+	}
 	public Long getGroupByValue() {
 		return groupByValue;
 	}

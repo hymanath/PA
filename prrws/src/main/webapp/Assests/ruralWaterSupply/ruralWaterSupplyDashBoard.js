@@ -21,6 +21,7 @@
 			getStressedHabitationsInfoByLocationType();
 			getAlertDetailsOfCategoryByStatusWise();
 			getAlertFeedbackStatusDetails();
+			getLocationBasedOnSelection();//get dist/const/mandal
 		}
 		function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title)
 		{
@@ -46,7 +47,10 @@
 		function getHabitationCoverageByStatusByLocationTypeForGraph(locationType,divId){
 			var json = {
 				locationType:locationType,
-				year:"2017"
+				year:2017,
+				stressedHabitationYear:2017,
+				filterType:"",
+				filterValue:""
 			}
 			$.ajax({
 				url: 'getHabitationCoverageByStatusByLocationType',
@@ -69,7 +73,10 @@
 		{
 			var json = {
 				locationType:locationType,
-				year:"2017"
+				year:"2017",
+				stressedHabitationYear:2017,
+				filterType:"",
+				filterValue:""
 			}
 			$.ajax({
 				url: 'getHabitationCoverageByStatusByLocationType',
@@ -1500,3 +1507,23 @@
 		$(".menu-data-cls").hide();
 	});
 	
+	function getLocationBasedOnSelection(){
+		var json = {
+			locationType:"district",
+			year:2017
+		}
+		
+		$.ajax({
+			url: 'getLocationBasedOnSelection',
+			data: JSON.stringify(json),
+			type: "POST",
+			dataType: 'json', 
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success: function(ajaxresp){
+				
+			}
+		});
+	}
