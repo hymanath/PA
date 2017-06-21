@@ -1,6 +1,6 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
-var glEndDate = moment().add(10, 'years').endOf('year').format("DD/MM/YYYY");
+var glStartDate = moment().subtract(20, 'years').startOf('year').format("MM-YYYY");
+var glEndDate = moment().add(10, 'years').endOf('year').format("MM-YYYY");
 onLoadCalls();
 function onLoadCalls()
 {
@@ -47,34 +47,34 @@ function onLoadCalls()
 		$(".menu-data-cls").hide();
 	});
 	$(".chosenSelect").chosen({width:'100%'})
-	$("#dateRangePickerAUM").daterangepicker({
-			opens: 'left',
-			startDate: glStartDate,
-			endDate: glEndDate,
-		locale: {
-		  format: 'DD/MM/YYYY'
-		},
-		ranges: {
-			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
-			'Today' : [moment(), moment()],
-			'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-			'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-			'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-			'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-			'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-			'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
-			'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
-			'This Month': [moment().startOf('month'), moment()],
-			'This Year': [moment().startOf('Year'), moment()]
-		}
+	$("#dateRangePickerMGNF").datetimepicker({
+		format: 'MM-YYYY'
 	});
-	var dates= $("#dateRangePickerAUM").val();
+	$("#dateRangePickerMGNT").datetimepicker({
+		format: 'MM-YYYY'
+	});
+	$('#dateRangePickerMGNF').on('dp.change', function(e){ 
+		glStartDate = '1-'+e.date.format("MM-YYYY")
+	});
+	$('#dateRangePickerMGNT').on('dp.change', function(e){ 
+		glEndDate = '31-'+e.date.format("MM-YYYY");
+		var blockName = '';
+		$(".panel-block-white").each(function(){
+			if($(this).hasClass("active"))
+			{
+				blockName = $(this).attr("overview-block");
+			}
+		});
+		$("#projectOverviewBlock,#projectData").html('');
+		getNREGSProjectsOverview(blockName);
+	});
+	/* var dates= $("#dateRangePickerMGNF").val();
 	var pickerDates = glStartDate+' - '+glEndDate
 	if(dates == pickerDates)
 	{
-		$("#dateRangePickerAUM").val('All');
+		$("#dateRangePickerMGNF").val('All');
 	}
-	$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
+	$('#dateRangePickerMGNF').on('apply.daterangepicker', function(ev, picker) {
 		var blockName = '';
 		$(".panel-block-white").each(function(){
 			if($(this).hasClass("active"))
@@ -86,11 +86,11 @@ function onLoadCalls()
 		glEndDate = picker.endDate.format('DD/MM/YYYY')
 		if(picker.chosenLabel == 'All')
 		{
-			$("#dateRangePickerAUM").val('All');
+			$("#dateRangePickerMGNF").val('All');
 		}
 		getNREGSProjectsOverview(blockName);
 		$("#projectOverviewBlock,#projectData").html('');
-	});
+	}); */
 	getNREGSProjectsOverview('')
 }
 

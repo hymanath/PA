@@ -32,7 +32,7 @@
 				<div class="col-sm-1 hidden-xs col-sm-offset-5">
 					<img src="Assests/images/lokesh.png" class="m_top10 pull-right"/>
 				</div>
-				<div class="col-sm-1">
+				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 				</div>
 				<div class="menu-data-cls">

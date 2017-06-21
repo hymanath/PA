@@ -6,13 +6,14 @@
 <title>Mahatma Gandhi National Rural EGS</title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
-<link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
-<link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
+<script src="Assests/Plugins/Less/less.js"></script>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
-<script src="Assests/Plugins/Less/less.js"></script>
+
 </head>
 <body>
 <header>
@@ -29,7 +30,7 @@
 				<div class="col-sm-1 hidden-xs col-sm-offset-5">
 					<img src="Assests/images/lokesh.png" class="m_top10 pull-right"/>
 				</div>
-				<div class="col-sm-1 hidden-xs col-xs-12">
+				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 				</div>
 				<div class="menu-data-cls">
@@ -72,7 +73,7 @@
 				<div class="col-sm-12">
 					<ul class="list-inline navbar-header-custom">
 						<li><label>Note: All Amount in Lakhs</label></li>
-						<li>
+						<!--<li>
 							<div class="form-horizontal">
 								<div class="form-group form-group-sm">
 									<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
@@ -87,17 +88,24 @@
 									</div>
 								</div>
 							</div>
+						</li>-->
+						<li>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+								</span>
+								<input type="text" class="form-control" id="dateRangePickerMGNF"/>
+							</div>
 						</li>
 						<li>
 							<div class="input-group">
 								<span class="input-group-addon">
 									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 								</span>
-								<input type="text" class="form-control" id="dateRangePickerAUM"/>
+								<input type="text" class="form-control" id="dateRangePickerMGNT"/>
 							</div>
 						</li>
 					</ul>
-					
 				</div>
 			</div>
 		</div>
@@ -136,7 +144,7 @@
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
-<script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DateTime/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/MGNREGS.js" type="text/javascript"></script>
 </body>

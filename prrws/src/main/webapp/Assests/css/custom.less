@@ -256,31 +256,11 @@ header
 .navbar-header-custom
 {
 	padding:8px 12px;
-	li
+	>li
 	{
 		padding:2px 8px 3px 12px;
 		border-right:1px solid @dark_brown_color;
 		width:24%;
-	}
-	li:first-child
-	{
-		position: relative;
-		top: -10px;
-		display:inline-table;
-		width:18%;
-	}
-	li:nth-child(2)
-	{
-		width:30%;
-	}
-	.search-choice
-	{
-		top:0px !important;
-	}
-	li:last-child
-	{
-		padding:3px 12px;
-		border-right:0px;
 		.input-group
 		{
 			margin-bottom:0px;
@@ -289,6 +269,27 @@ header
 				background-color:@light_ash_color;
 			}
 		}
+	}
+	>li:first-child
+	{
+		position: relative;
+		top: -10px;
+		display:inline-table;
+		width:18%;
+	}
+	>li:nth-child(2)
+	{
+		width:30%;
+	}
+	.search-choice
+	{
+		top:0px !important;
+	}
+	>li:last-child
+	{
+		padding:3px 12px;
+		border-right:0px;
+		
 	}
 	
 	select
@@ -918,4 +919,3 @@ header
    width: 10px;
    margin-top:5px
 }
-
