@@ -24,7 +24,7 @@ public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 	public List<Object[]> getLocationWiseGrantTypesFund(List<Long> financialYearIdsList,List<Long> deptIdsList,
 			List<Long> sourceIdsList,Date sDate,Date eDate,Long locationScopeId,Long locationVal,Long searchLevlId,List<Long> searchLvlVals);
 	public List<Object[]> getTotalFundAndCountDtls(List<Long> financialYrIdList,List<Long> departmentId,List<Long> sourceId,Date sDate,Date eDate,Long scopeId,String group,Long searchLevlId,List<Long> searchLvlVals);
-	public List<Object[]> getTotalFundForScheme(List<Long> financialYrIdList,List<Long> departmentId,List<Long> sourceId,List<Long> schemeId,Date sDate,Date eDate,String type);
+	public List<Object[]> getTotalFundForScheme(List<Long> financialYrIdList,List<Long> departmentId,List<Long> sourceId,List<Long> schemeId,Date sDate,Date eDate,String type,Long searchLevlId,List<Long> searchLvlVals);
 	public Long getTotalSchemes(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,Date sDate,Date eDate,Long searchLevlId,List<Long> searchLvlVals,String type);
 	public List<Long> getLocationBlockLevelIds(Long locationId,Long locationLevelId,Long blockLevelId);
 	public List<Object[]> getAllDistrictByStateId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptId,List<Long> sourceId,Date sDate,Date eDate,Long scopeId);
