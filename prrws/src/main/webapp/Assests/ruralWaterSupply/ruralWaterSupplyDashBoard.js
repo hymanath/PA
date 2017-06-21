@@ -1,6 +1,6 @@
  //Angular Start
 		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","ground":"#14BAAD","surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
-		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049"}
+		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049","Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00"}
 		var blocksArr = [{name:'Coverage Status Of<br/> Habitation',id:'habitation'},{name:'Key<br/> Performance',id:'performance'},{name:'Alert Status <br/>Jalavani',id:'jalavani'},{name:'Plan Of Action for Stressed Habitations <br/>Water Budget has to be prepared for all habitations',id:'planAction'}];
 		onloadCalls();
 		function onloadCalls(){
@@ -200,7 +200,7 @@
 			};
 			
 			var title = {
-				text: 'Habitation Coverage Status',
+				text: '',
 				align:'left',
 				 style: {
 					 color: '#000',
@@ -232,8 +232,8 @@
 
 				dataLabels: {
 					enabled: true,
-					color: '#FFFFFF',
-					align: 'right',
+					color: '#000',
+					align: 'canter',
 					format: '{point.y}',
 				}
 			}];
@@ -381,7 +381,7 @@
 					enabled: false
 				};
 				var title = { 
-					 text: 'Level Of Supply (MLD)',
+					 text: '',
 					align:'left',
 					 style: {
 						 color: '#000',
@@ -489,7 +489,7 @@
 					enabled: false
 				};
 				var title = { 
-					text: 'Schemes',
+					text: '',
 					align:'left',
 					 style: {
 						 color: '#000',
@@ -591,7 +591,7 @@
 						type: 'column'
 					},
 					title: {
-						text: 'Works',
+						text: '',
 						align:'left',
 						style: {
 							color: '#000',
@@ -678,7 +678,7 @@
 								enabled: false
 							};
 							var title = {
-								text: 'Assets'
+								text: ''
 							};
 							var yAxis = {
 								min: 0,
@@ -707,8 +707,8 @@
 
 								dataLabels: {
 									enabled: true,
-									color: '#FFFFFF',
-									align: 'right',
+									color: '#000',
+									align: 'center',
 									format: '{point.y}',
 								}
 							}];
@@ -761,7 +761,7 @@
 								enabled: false
 							};
 							var title = { 
-								text: 'Water Sources',
+								text: '',
 								align:'left',
 								 style: {
 									 color: '#000',
@@ -883,7 +883,7 @@
 					},
 					title: {
 						useHTML:true,
-						text: '<p style="font-size:14px;">Key Performance Indicators<br/><small>Habitations through Schemes<small></p>'
+						text: ''
 					},
 					xAxis: {
 						min: 0,
@@ -905,6 +905,9 @@
 						opposite: true
 					}],
 					legend: {
+						symbolHeight: 12,
+						symbolWidth: 12,
+						symbolRadius: 6,
 						shadow: false
 					},
 					tooltip: {
@@ -919,25 +922,25 @@
 					},
 					series: [{
 						name: 'Target',
-						color: 'rgba(248,161,63,1)',
+						color: '#FC5049',
 						data: targetArr,
 						tooltip: {
 							valuePrefix: ' ',
 							valueSuffix: ' '
 						},
-						pointPadding: 0.3,
-						pointPlacement: 0.2,
+						pointPadding: 0.2,
+						pointPlacement: 0.1,
 						yAxis: 1
 					}, {
 						name: 'Achived',
-						color: 'rgba(186,60,61,.9)',
+						color: '#14BAAD',
 						data: achivedArr,
 						tooltip: {
 							valuePrefix: ' ',
 							valueSuffix: ' '
 						},
-						pointPadding: 0.4,
-						pointPlacement: 0.2,
+						pointPadding: 0.3,
+						pointPlacement: 0.1,
 						yAxis: 1
 					}]
 				});
@@ -994,7 +997,64 @@
 		}
 		
 		function buildPlanofActionForStressedHabitations(result){
-			
+			var targetArr=[];
+			var achivedArr=[];
+			if(result !=null){
+				targetArr.push({"y":result.target,color:"#14BAAD"})
+				achivedArr.push({"y":result.achived,color:"#FC5049"})
+			}
+			$("#planOfAction").highcharts({
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: '',
+					align:'left',
+					style: {
+						color: '#000',
+						font: 'bold 16px "Lato", sans-serif'
+					}
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: ['Habitations']
+				},
+				yAxis:{
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					labels: {
+						enabled: false
+					},
+					title: {
+						text: null
+					}
+				}, 
+				
+				legend: {
+					symbolHeight: 12,
+					symbolWidth: 12,
+					symbolRadius: 6,
+					enabled: true
+				},
+				tooltip: {
+					 pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b>'
+				},
+				plotOptions: {
+					column: {
+						//colorByPoint: true
+					}
+				},
+				series: [{
+						name: 'Target',
+						data: targetArr
+					}, {
+						name: 'Achived',
+						data: achivedArr
+					}]
+			});
 		}
 		function getAlertDetailsOfCategoryByStatusWise(){
 			var json = {
@@ -1013,13 +1073,86 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
-					if(ajaxresp !=null ){
-						
+					if(ajaxresp !=null && ajaxresp.length>0){
+						buildAlertDetailsOfCategoryByStatusWise(ajaxresp);
 					}
 				}
 			});
 		}
 		
+		function buildAlertDetailsOfCategoryByStatusWise(result){
+			
+			if(result !=null && result.length>0){
+				var statusCountArr = [];
+				var CompleteClosedCount=0;
+				var othersCount=0;	
+				for(var i in result){
+					
+					 if(result[i].id==2){
+						statusCountArr.push(result[i].count);
+					}else if(result[i].id==13){
+						statusCountArr.push(result[i].count);
+					}else if(result[i].id==3){
+						 statusCountArr.push(result[i].count);
+					}else if(result[i].id==4 ||  result[i].id == 12){
+						 CompleteClosedCount =CompleteClosedCount+result[i].count;
+					}else{
+						 othersCount =othersCount+result[i].count;
+					} 
+				}
+				statusCountArr.push(CompleteClosedCount);
+				statusCountArr.push(othersCount);
+				var colors = ['#FC5049']
+				var id = 'alertStatus';
+				var type = {
+					type: 'column',
+					backgroundColor:'transparent'
+				};
+				var legend = {
+					enabled: false
+				};
+				
+				var title = {
+					text: '',
+					align:'left',
+					 style: {
+						 color: '#000',
+						 font: 'bold 16px "Lato", sans-serif'
+					  } 
+				};
+				var yAxis = {
+					title: {
+						text: null
+					},
+				};
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: ['Notified','Action In Progess','Proposal','Completed & Closed','Others']
+					
+				};
+				var plotOptions ={ column: {
+						colorByPoint: true
+					}};
+				var tooltip = {
+					pointFormat: '{point.y}'
+				};
+
+				var data = [{
+					name: '',
+					data: statusCountArr,
+
+					dataLabels: {
+						enabled: true,
+						color: '#000',
+						align: 'center',
+						format: '{point.y}',
+					}
+				}];
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
+			}
+		}
 		function getAlertFeedbackStatusDetails(){
 			var json = {
 				fromDate:"",
@@ -1037,13 +1170,86 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
-					if(ajaxresp !=null ){
-						
+					if(ajaxresp !=null && ajaxresp.length>0){
+						buildAlertFeedbackStatusDetails(ajaxresp);
 					}
 				}
 			});
 		} 
 	
+		function buildAlertFeedbackStatusDetails(result){
+			
+			var statusNamesArr=[];
+			var statusCountArr=[];
+			if(result !=null && result.length>0){
+				for(var i in result){
+					statusNamesArr.push(result[i].name)
+					statusCountArr.push(result[i].count)
+				}
+			}
+			var colors = ['#0FBE08','#FF0909','#FFBA00']
+			var id = 'drinkingWater';
+			var type = {
+				type: 'column',
+				backgroundColor:'transparent'
+			};
+			var title = { text: ''
+				/* text: 'Habitation',
+				align:'left',
+				 style: {
+					 color: '#000',
+					 font: 'bold 16px "Lato", sans-serif'
+				  } */
+			};
+		
+			var legend = {
+				enabled: false
+			};
+			var yAxis = {
+				title: {
+					text: null
+				},
+			};
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: statusNamesArr,
+				labels: {
+					useHTML:true,
+					formatter: function() {
+						if(this.value.toString().length >= 3){
+							return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value.toString().substring(0, 3)+'..'+'</p>';
+						}else{
+							return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value+'</p>';
+						}
+					},
+					
+				}
+				
+			};
+			
+			var plotOptions ={ column: {
+					colorByPoint: true
+				}};
+			var tooltip = {
+				pointFormat: '{point.y}'
+			};
+
+			var data = [{
+				name: '',
+				data: statusCountArr,
+
+				dataLabels: {
+					enabled: true,
+					color: '#000',
+					align: 'center',
+					format: '{point.y}',
+				}
+			}];
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
+			
+		}
 	
 	function tabBlocks(blockId,blockName){
 		var tabBlock = '';
