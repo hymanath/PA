@@ -1534,7 +1534,7 @@
 							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#5B5B5B"});  
 						}
 						if(APDRPGRANTArr != null && APDRPGRANTArr.length > 0){
-							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#6B6B6B"});  
+							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#46306A"});  
 						}if(NRDWPArr != null && NRDWPArr.length > 0){
 							mainJosnObjArr.push({name:'NRDWP',data:NRDWPArr,color:"#9C9C9C"});  
 						}
@@ -1739,7 +1739,7 @@
 							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#5B5B5B"});  
 						}
 						if(APDRPGRANTArr != null && APDRPGRANTArr.length > 0){
-							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#6B6B6B"});  
+							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#46306A"});  
 						}
 						if(NRDWPArr != null && NRDWPArr.length > 0){
 							mainJosnObjArr.push({name:'NRDWP',data:NRDWPArr,color:"#9C9C9C"});  
@@ -1962,7 +1962,7 @@
 							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#5B5B5B"});  
 						}
 						if(APDRPGRANTArr != null && APDRPGRANTArr.length > 0){
-							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#6B6B6B"});  
+							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#46306A"});  
 						}
 						if(NRDWPArr != null && NRDWPArr.length > 0){
 							mainJosnObjArr.push({name:'NRDWP',data:NRDWPArr,color:"#9C9C9C"});  
