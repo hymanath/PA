@@ -1614,7 +1614,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
                                                              Long ageRangeTypeId,Long deptmentId,Long corptionId,
                                                              String genderType,List<Long> postStatusIds,Long locationId,String type){
 	         StringBuilder sb = new StringBuilder();
-	         sb.append(" select model2.nominationPostCandidateId," +
+	         sb.append(" select distinct model2.nominationPostCandidateId," +
 	                 " model2.candidateName," +
 			         " model2.mobileNo,"+
 	                 " tc.relativename," +
@@ -1636,7 +1636,8 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	         if(postStatusIds != null && !postStatusIds.isEmpty()){
 	        	  
 	        	  if(type.toString().equalsIgnoreCase("candidate")){
-	        		  sb.append(" , model.nominatedPost.nominatedPostStatus.nominatedPostStatusId, model.nominatedPost.nominatedPostStatus.status ");
+	        		  //sb.append(" , model.nominatedPost.nominatedPostStatus.nominatedPostStatusId, model.nominatedPost.nominatedPostStatus.status ");
+	        		  sb.append(" , NP.nominatedPostStatus.nominatedPostStatusId, NP.nominatedPostStatus.status ");
 	        	  }else if(type.toString().equalsIgnoreCase("application")){
 	        		  sb.append(" , model.applicationStatus.applicationStatusId, model.applicationStatus.status ");
 	        	  }
@@ -1651,7 +1652,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	         //}
 	         
 	         
-	                 sb.append(" from NominatedPostFinal model , NominationPostCandidate model2 left join model2.tdpCadre tc");
+	                 sb.append(" from NominatedPost NP,NominatedPostFinal model , NominationPostCandidate model2 left join model2.tdpCadre tc");
 	                 /*if(type.toString().equalsIgnoreCase("candidate")){
 	                	 sb.append(" left join model2.tdpCadre tc " +
 			         " left join tc.userAddress addr left join addr.constituency const ");
@@ -1668,13 +1669,14 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	        	  sb.append(" and  model2.nominatedPostAgeRange.nominatedPostAgeRangeId is not null  ");
 	          }
 	          sb.append(" and  model.isDeleted='N' and model2.isDeleted='N'" +
-	   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and  " +
-	   	          	   " model.nominationPostCandidate.nominationPostCandidateId = model2.nominationPostCandidateId ");
+	   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N'   " +
+	        		  " and NP.nominatedPostId = model.nominatedPost.nominatedPostId " +
+	   	          	  " and NP.nominationPostCandidate.nominationPostCandidateId = model2.nominationPostCandidateId ");
 	         // sb.append(" and tc.enrollmentYear = 2014 and tc.isDeleted = 'N' " );  
 	          if(postStatusIds != null && !postStatusIds.isEmpty()){
 	        	  //sb.append(" and model.applicationStatus.applicationStatusId in(:postStatusIds)");
 	        	  if(type.toString().equalsIgnoreCase("candidate")){
-	        		  sb.append(" and model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in(:postStatusIds)");
+	        		  sb.append(" and NP.nominatedPostStatus.nominatedPostStatusId in(:postStatusIds)");
 	        	  }else if(type.toString().equalsIgnoreCase("application")){
 	        		  sb.append(" and model.applicationStatus.applicationStatusId in(:postStatusIds)");
 	        	  }
