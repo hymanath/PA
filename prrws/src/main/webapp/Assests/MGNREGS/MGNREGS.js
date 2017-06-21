@@ -133,6 +133,10 @@ function projectData(divId)
 	for(var i in dataArr)
 	{
 		var theadArr = [dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		if(dataArr[i] == "constituency")
+			theadArr = ["district",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		else if(dataArr[i] == "mandal")
+			theadArr = ["district","constituency",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 		var tableId = divId.replace(/\s+/g, '')+''+dataArr[i];
 		$("#"+tableId).html(spinner);
 		if(divId == 'Labour Budget'){
@@ -402,14 +406,21 @@ function getNregsVermiData(divIdd,locationType,theadArr)
 			if(ajaxresp != null && ajaxresp.length > 0){
 				for(var i in ajaxresp){
 					str+='<tr>';
-						if(locationType == "state")
+						if(locationType == "state"){
 							str+='<td class="text-capital">'+locationType+'</td>';
-						if(locationType == "district")
+						}
+						else if(locationType == "district"){
 							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-						if(locationType == "constituency")
+						}
+						else if(locationType == "constituency"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-						if(locationType == "mandal")
+						}
+						else if(locationType == "mandal"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+						}
 						str+='<td>'+ajaxresp[i].target+'</td>';
 						str+='<td>'+ajaxresp[i].grounded+'</td>';
 						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -472,14 +483,21 @@ function getNREGSIHHLLelwiseData(divIdd,locationType,theadArr)
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -569,14 +587,22 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType)
 			if(ajaxresp != null && ajaxresp.length > 0){
 				for(var i in ajaxresp){
 					str+='<tr>';
-						if(locationType == "state")
+						if(locationType == "state"){
 							str+='<td class="text-capital">'+locationType+'</td>';
-						if(locationType == "district")
+						}
+						else if(locationType == "district"){
 							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-						if(locationType == "constituency")
+						}
+						else if(locationType == "constituency"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-						if(locationType == "mandal")
+						}
+						else if(locationType == "mandal"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+						}
+							
 						str+='<td>'+ajaxresp[i].targetPersonDays+'</td>';
 						str+='<td>'+ajaxresp[i].generatedPersonDays+'</td>';
 						str+='<td>'+ajaxresp[i].perAppLB+'</td>';
@@ -642,14 +668,21 @@ function getNREGSFarmPondLelwiseData(divIdd,locationType,theadArr)
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -919,14 +952,21 @@ $("#"+divIdd).html(spinner);
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -985,14 +1025,21 @@ function getNregsAnganwadiData(divIdd,locationType,theadArr)
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -1074,14 +1121,21 @@ function getNregsMandalBuildingData(divIdd,locationType,theadArr)
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -1169,14 +1223,21 @@ function getNREGSGPBuildingLelwiseData(divIdd,locationType,theadArr)
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -1213,14 +1274,21 @@ function getCCRoadsData(divIdd,locationType,theadArr)
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -1327,14 +1395,21 @@ function getNregaLevelsOverviewForProductionOfBricks(divIdd,locationType,theadAr
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -1372,14 +1447,21 @@ function getNregaLevelsOverviewForRaisingOfPerinnialFodder(divIdd,locationType,t
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -1417,14 +1499,21 @@ function getNregaLevelsOverviewForSilkWarm(divIdd,locationType,theadArr)
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -1482,14 +1571,21 @@ function getNregsSericultureData(divIdd,locationType,theadArr)
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -1570,14 +1666,21 @@ function getNregsHousingData(divIdd,locationType,theadArr)
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -1614,14 +1717,21 @@ function getAHData(divIdd,locationType,theadArr)
 		if(ajaxresp != null && ajaxresp.length > 0){
 			for(var i in ajaxresp){
 				str+='<tr>';
-					if(locationType == "state")
+					if(locationType == "state"){
 						str+='<td class="text-capital">'+locationType+'</td>';
-					if(locationType == "district")
+					}
+					else if(locationType == "district"){
 						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					if(locationType == "constituency")
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					if(locationType == "mandal")
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
 					str+='<td>'+ajaxresp[i].target+'</td>';
 					str+='<td>'+ajaxresp[i].grounded+'</td>';
 					str+='<td>'+ajaxresp[i].notGrounded+'</td>';

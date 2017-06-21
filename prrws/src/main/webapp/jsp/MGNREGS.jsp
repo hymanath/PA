@@ -90,21 +90,21 @@
 							</div>
 						</li>-->
 						<li>
-							<label>FROM DATE</label>
-							<div class="input-group">
+							<label>FROM MONTH</label>
+							<div class="input-group inline-block">
 								<span class="input-group-addon">
 									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 								</span>
-								<input type="text" class="form-control" id="dateRangePickerMGNF"/>
+								<input type="text" class="form-control" id="dateRangePickerMGNF" style="width: 200px;"/>
 							</div>
 						</li>
 						<li>
-							<label>TO DATE</label>
-							<div class="input-group">
+							<label>TO MONTH</label>
+							<div class="input-group inline-block">
 								<span class="input-group-addon">
 									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 								</span>
-								<input type="text" class="form-control" id="dateRangePickerMGNT"/>
+								<input type="text" class="form-control" id="dateRangePickerMGNT" style="width: 200px;"/>
 							</div>
 						</li>
 					</ul>
