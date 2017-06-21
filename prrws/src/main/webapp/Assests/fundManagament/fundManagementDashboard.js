@@ -3036,17 +3036,7 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
   var str = '';
   str+='<table class="table table-condensed table-bordered" id="tableId">';
   str+='<thead>';
-    if(blockLvlId == 2){
-		str+='<th class="text-capital">State Name</th>';
-	}else if(blockLvlId ==3){
-		str+='<th class="text-capital">District Name</th>';
-	}else if(blockLvlId ==4){
-		str+='<th class="text-capital">Constituency Name</th>';
-	}else if(blockLvlId ==5){
-		str+='<th class="text-capital">Mandal Name</th>';
-	}else if(blockLvlId ==6){
-		str+='<th class="text-capital">Village Name</th>';
-	}
+    str+='<th class="text-capital">District Name</th>';
 	str+='<th class="text-capital">Location Name</th>';
     str+='<th class="text-capital">Work Name</th>';
     str+='<th class="text-capital">Department</th>'; 
@@ -3073,7 +3063,7 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
     }else{
          str+='<td>-</td>';
     }
-       if(result[i].departmentName != null){
+    if(result[i].departmentName != null){
          str+='<td>'+result[i].departmentName+'</td>';
     }else{
          str+='<td>-</td>';
