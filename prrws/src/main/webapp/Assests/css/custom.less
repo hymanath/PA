@@ -241,7 +241,7 @@ header
 {
 	section.header-fixed
 	{
-		height: 70px;
+		height: 90px;
 		position: fixed;
 		top: 0px;
 		left:0px;
@@ -255,7 +255,7 @@ header
 }
 .navbar-header-custom
 {
-	padding:8px 12px;
+	padding:0px 12px 8px 12px;
 	>li
 	{
 		padding:2px 8px 3px 12px;
@@ -272,14 +272,15 @@ header
 	}
 	>li:first-child
 	{
+		display: inline-table;
+		padding: 20px;
 		position: relative;
-		top: -10px;
-		display:inline-table;
-		width:18%;
+		top: 14px;
+		width: 18%;
 	}
 	>li:nth-child(2)
 	{
-		width:30%;
+		width:20%;
 	}
 	.search-choice
 	{
@@ -767,6 +768,10 @@ header
 		content:"\002b";
 	}
 }
+.f_12
+{
+	font-size:12px;
+}
 .panel-block-white
 {
 	.rounded-corners(4px);
@@ -778,6 +783,10 @@ header
 	h1
 	{
 		position: relative;
+	}
+	h4
+	{
+		font-size:14px !important;
 	}
 	small
 	{
