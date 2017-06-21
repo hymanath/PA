@@ -2509,6 +2509,7 @@
 			 var finalIdStr= tempIdStr.substring(1);
 			 searchLevelVals.push(finalIdStr);
 		}
+		var deptIdsArr = $('#DepartmentsId').val();
 		var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
@@ -2516,7 +2517,8 @@
 			fromDateStr : glStartDate,//"01/06/2013",       
 			toDateStr : glEndDate,//"10/06/2020", 
 			searchLevelId:searchLevelId,
-			searchLvlVals:searchLevelVals
+			searchLvlVals:searchLevelVals,
+			deptIdsList : deptIdsArr
 		}
 		$.ajax({
 			url : "getAverageFundForAnyLevel",  
