@@ -2,6 +2,7 @@
 		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","ground":"#14BAAD","surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
 		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049","Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00"}
 		var blocksArr = [{name:'Coverage Status Of<br/> Habitation',id:'habitation'},{name:'Key<br/> Performance',id:'performance'},{name:'Alert Status <br/>Jalavani',id:'jalavani'},{name:'Plan Of Action for Stressed Habitations <br/>Water Budget has to be prepared for all habitations',id:'planAction'}];
+		var alertStatusBlockArr = [{name:'Alert Status Jalavani',id:'alertStatus'},{name:'Drinking Water Satisfaction Levels',id:'drinking'}];
 		onloadCalls();
 		function onloadCalls(){
 			tabBlocks('stateBlockId','state');
@@ -9,17 +10,17 @@
 			tabBlocks('constituencyBlockId','constituency');
 			tabBlocks('mandalBlockId','mandal');
 			responsiveTabs();
-			getHabitationCoverageByStatusByLocationTypeForGraph('state','');
+			getHabitationCoverageByStatusByLocationType('state','','graph');
 			getLabTestDetails();
 			getHabitationSupplyDetails();
 			getSchemesDetails();
 			getSchemeWiseWorkDetails();
 			getAssetInfoBetweenDates();
 			getWaterSourceInfo();
-			getKeyPerformanceIndicatorsInfo();
+			getKeyPerformanceIndicatorsInfo('state','','graph');
 			getPlanofActionForStressedHabitations();
 			getStressedHabitationsInfoByLocationType();
-			getAlertDetailsOfCategoryByStatusWise();
+			getAlertDetailsOfCategoryByStatusWise('graph','','');
 			getAlertFeedbackStatusDetails();
 			getLocationBasedOnSelection();//get dist/const/mandal
 		}
@@ -43,33 +44,7 @@
 			});
 		}
 		
-		
-		function getHabitationCoverageByStatusByLocationTypeForGraph(locationType,divId){
-			var json = {
-				locationType:locationType,
-				year:2017,
-				stressedHabitationYear:2017,
-				filterType:"",
-				filterValue:""
-			}
-			$.ajax({
-				url: 'getHabitationCoverageByStatusByLocationType',
-				data: JSON.stringify(json),
-				type: "POST",
-				dataType: 'json', 
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader("Accept", "application/json");
-					xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success: function(ajaxresp){
-					if(ajaxresp !=null ){
-						buildChartForHabitationCoverage(ajaxresp);
-						buildChartForHabitationCoverageStatus(ajaxresp);
-					}
-				}
-			});
-		}
-		function getHabitationCoverageByStatusByLocationType(locationType,divId)
+		function getHabitationCoverageByStatusByLocationType(locationType,divId,type)
 		{
 			var json = {
 				locationType:locationType,
@@ -89,7 +64,14 @@
 				},
 				success: function(ajaxresp){
 					if(ajaxresp !=null ){
-						buildTableForHabitationCoverage(ajaxresp,locationType,divId);
+						if(type == "graph"){
+							buildChartForHabitationCoverage(ajaxresp);
+							buildChartForHabitationCoverageStatus(ajaxresp);
+						}else{
+							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations');
+						}
+						
+						
 					}
 				}
 			});
@@ -821,12 +803,12 @@
 			});	
 		}
 		
-		function getKeyPerformanceIndicatorsInfo(){
+		function getKeyPerformanceIndicatorsInfo(locationType,divId,type){
 			var json = {
 					  year : "2014",
 					  fromDate : "2014-01-01",
 					  toDate : "2014-06-30",
-					locationType : "state"	
+					 locationType : locationType	
 					}
 			$.ajax({
 				url: 'getKeyPerformanceIndicatorsInfo',
@@ -839,31 +821,12 @@
 				},
 				success: function(ajaxresp){
 					if(ajaxresp !=null ){
-						buildKeyPerformanceIndicatorsInfo(ajaxresp)
-					}
-				}
-			});
-			
-		}
-		function getKeyPerformanceIndicatorsInfoTable(locationType,divId){
-			var json = {
-					  year : "2014",
-					  fromDate : "2014-01-01",
-					  toDate : "2014-06-30",
-					  locationType : locationType	
-					}
-			$.ajax({
-				url: 'getKeyPerformanceIndicatorsInfo',
-				data: JSON.stringify(json),
-				type: "POST",
-				dataType: 'json', 
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader("Accept", "application/json");
-					xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success: function(ajaxresp){
-					if(ajaxresp !=null ){
-						buildTableForHabitationCoverage(ajaxresp,locationType,divId);
+						if(type=="graph"){
+							buildKeyPerformanceIndicatorsInfo(ajaxresp)
+						}else{
+							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations');
+						}
+						
 					}
 				}
 			});
@@ -1063,7 +1026,7 @@
 					}]
 			});
 		}
-		function getAlertDetailsOfCategoryByStatusWise(){
+		function getAlertDetailsOfCategoryByStatusWise(type,divId,locationType){
 			var json = {
 				fromDate:"",
 				toDate:"",
@@ -1081,7 +1044,13 @@
 				},
 				success: function(ajaxresp){
 					if(ajaxresp !=null && ajaxresp.length>0){
-						buildAlertDetailsOfCategoryByStatusWise(ajaxresp);
+						if(type=="graph"){
+							buildAlertDetailsOfCategoryByStatusWise(ajaxresp);
+						}else if(type=="table"){
+							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'alertStatus')
+						}
+						
+						
 					}
 				}
 			});
@@ -1313,9 +1282,25 @@
 					{
 						if(i == 0)
 						{
-							tabBlock+='<div role="tabpanel" class="tab-pane active" id="'+blockId+''+blocksArr[i].id+'"></div>';	
+							 if(blocksArr[i].id == "jalavani"){
+								 tabBlock+='<div >';
+									 tabBlock+='<div role="tabpanel" class="tab-pane active" id="alertStatus'+blockId+'"></div>';
+									 tabBlock+='<div role="tabpanel" class="tab-pane active" id="drinking'+blockId+'"></div>';
+								 tabBlock+='</div>';
+							 }else{
+								 tabBlock+='<div role="tabpanel" class="tab-pane active" id="'+blockId+''+blocksArr[i].id+'"></div>';
+							 }
+								//tabBlock+='<div role="tabpanel" class="tab-pane active" id="'+blockId+''+blocksArr[i].id+'"></div>';
 						}else{
-							tabBlock+='<div role="tabpanel" class="tab-pane" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
+							 if(blocksArr[i].id == "jalavani"){
+								tabBlock+='<div >';
+									tabBlock+='<div  role="tabpanel" class="tab-pane" id="alertStatus'+blockId+'"></div>';
+									tabBlock+='<div  role="tabpanel" class="tab-pane" id="drinking'+blockId+'"></div>';
+								tabBlock+='</div>';
+							}else{
+								tabBlock+='<div role="tabpanel" class="tab-pane" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
+							} 
+							//tabBlock+='<div role="tabpanel" class="tab-pane" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
 						}
 					}
 				tabBlock+='</div>';
@@ -1325,7 +1310,7 @@
 		for(var i in blocksArr)
 		{
 			if(blocksArr[i].id == "habitation")
-			getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
+			getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
 			
 		}
 		if(blockId == 'constituencyBlockId')
@@ -1341,91 +1326,224 @@
 		
 	}
 	
-		function buildTableForHabitationCoverage(result,locationType,divId){
-			var GLtbodyArr=[];
-			if(result !=null && result.length>0){
-				for(var i in result){
-					GLtbodyArr.push(result[i]);
-				}
-			}
-			tableView(divId,GLtbodyArr,locationType)
-		}
-		
-		function tableView(divId,GLtbodyArr,locationType)
-		{
-			
-			var $windowWidth = $(window).width();
-			 for(var k in divId){
-				 var tableView='';
-					tableView+='<table class="table table-bordered dataTable'+locationType+'">';
-						tableView+='<thead class="text-capital">';
-						tableView+='<tr>';
-						if(divId[k].id=="habitation"){
-							tableView+='<th>'+locationType+'</th>';
-						}else if(divId[k].id=="performance"){
-							tableView+='<th rowspan="2">'+locationType+'</th>';
-						}
-							if(GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
-								for(var j in GLtbodyArr[0].statusList){
-									if(divId[k].id=="habitation"){
-										if(GLtbodyArr[0].statusList[j].status != 'NC'){
-											tableView+='<th>'+GLtbodyArr[0].statusList[j].status+'</th>';
-											
-										}
-									}else if(divId[k].id=="performance"){
-											tableView+='<th colspan="3">'+GLtbodyArr[0].statusList[j].status+'</th>';
-									}
-								}
-							}
-					if(divId[k].id=="habitation"){
-						tableView+='<th>TOTAL</th>';
+		function buildTableForHabitationCoverage(result,locationType,divId,type){
+			if(type =="alertStatus"){
+				var GLtbodyAlertArr=[];
+				if(result !=null && result.length>0){
+					for(var i in result){
+						GLtbodyAlertArr.push(result[i]);
 					}
-					tableView+='</tr>'; 
+				}
+				tableViewAlertStatus(divId,GLtbodyAlertArr,locationType)
+			}else{
+				var GLtbodyArr=[];
+				if(result !=null && result.length>0){
+					for(var i in result){
+						GLtbodyArr.push(result[i]);
+					}
+				}
+				tableView(divId,GLtbodyArr,locationType)
+			}
+			
+		}
+		function tableViewAlertStatus(divId,GLtbodyAlertArr,locationType){
+			
+			for(var k in divId){
+				var $windowWidth = $(window).width();
+				var tableView='';
+					if(divId[k].id=="alertStatus"){
+					tableView+='<table class="table table-bordered dataTable'+locationType+divId[k].id+'">';
+					tableView+='<thead class="text-capital">';
 					tableView+='<tr>'; 
-					if(divId[k].id=="performance"){
-						if(GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
-							for(var j in GLtbodyArr[0].statusList){
-								tableView+='<th>Target</th>';
-								tableView+='<th>Achived</th>';
-								tableView+='<th>% Percentage</th>';
-							}
-						}
-						
-					}					
+					tableView+='<th> </th>';
+					tableView+='<th>Notified</th>';
+					tableView+='<th>Praposal</th>';
+					tableView+='<th>Action in Progress</th>';
+					tableView+='<th>Completed & Closed</th>';
+					tableView+='<th>Others</th>';
+					tableView+='<th>Total</th>';
 					tableView+='</tr>'; 
 					tableView+='</thead>';
 					tableView+='<tbody>';
-						 for(var i in GLtbodyArr){
-							 var totalCount=0;
-							tableView+='<tr>';
-							tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
-							if(GLtbodyArr[i].statusList !=null && GLtbodyArr[i].statusList.length>0){
-								for(var j in GLtbodyArr[i].statusList){
-									if(divId[k].id=="habitation"){
-										if(GLtbodyArr[i].statusList[j].status != 'NC'){
-											tableView+='<td>'+GLtbodyArr[i].statusList[j].count+' <small>'+GLtbodyArr[i].statusList[j].percentage+'</small></td>';
-											totalCount += GLtbodyArr[i].statusList[j].count;
-										}
-									}else if(divId[k].id=="performance"){
-										tableView+='<td>'+GLtbodyArr[i].statusList[j].target+'</td>';
-										tableView+='<td>'+GLtbodyArr[i].statusList[j].achived+'</td>';
-										tableView+='<td>'+GLtbodyArr[i].statusList[j].percentage+'</td>';
-									}
-									
-									
+					tableView+='<tr>'; 
+					var CompleteClosedCount=0;
+					var othersCount=0;	
+					var totalCount=0;
+					var notifiedCount=0;	
+					var proposalCount=0;	
+					var actionInProgress=0;	
+					var completeClosed=0;	
+					var others=0;	
+					tableView+='<td> </td>';
+						for(var i in GLtbodyAlertArr){
+							if(GLtbodyAlertArr[i].id==2){
+								if(GLtbodyAlertArr[i].count !=null && GLtbodyAlertArr[i].count>0){
+									tableView+='<td>'+GLtbodyAlertArr[i].count+'</td>';
+									notifiedCount =GLtbodyAlertArr[i].count
+								}else{
+									tableView+='<td> - </td>';
+								}
+								
+							}else if(GLtbodyAlertArr[i].id==13){
+								if(GLtbodyAlertArr[i].count !=null && GLtbodyAlertArr[i].count>0){
+									tableView+='<td>'+GLtbodyAlertArr[i].count+'</td>';
+									proposalCount =GLtbodyAlertArr[i].count
+								}else{
+									tableView+='<td> - </td>';
+								}
+							}else if(GLtbodyAlertArr[i].id==3){
+								if(GLtbodyAlertArr[i].count !=null && GLtbodyAlertArr[i].count>0){
+									tableView+='<td>'+GLtbodyAlertArr[i].count+'</td>';
+									actionInProgress =GLtbodyAlertArr[i].count
+								}else{
+									tableView+='<td> - </td>';
+								}
+							}else if(GLtbodyAlertArr[i].id==4 ||  GLtbodyAlertArr[i].id == 12){
+								if(GLtbodyAlertArr[i].count !=null && GLtbodyAlertArr[i].count>0){
+									CompleteClosedCount =CompleteClosedCount+GLtbodyAlertArr[i].count;
+									completeClosed =CompleteClosedCount;
+								}
+							}else{
+								if(GLtbodyAlertArr[i].count !=null && GLtbodyAlertArr[i].count>0){
+									 othersCount =othersCount+GLtbodyAlertArr[i].count;
+									others =othersCount
 								}
 							}
-							if(divId[k].id=="habitation"){
-								tableView+='<td>'+totalCount+'</td>';
-							}
-							tableView+='</tr>';
-						}  
-						 
+						}
+						totalCount =notifiedCount+proposalCount+actionInProgress+completeClosed+others;
+						if(CompleteClosedCount >0){
+							tableView+='<td>'+CompleteClosedCount+'</td>';
+						}else{
+							tableView+='<td> - </td>';
+						}
+						if(totalCount >0){
+							tableView+='<td>'+othersCount+'</td>';
+						}else{
+							tableView+='<td> - </td>';
+						}
+						if(totalCount >0){
+							tableView+='<td>'+totalCount+'</td>';
+						}else{
+							tableView+='<td> - </td>';
+						}
+						tableView+='</tr>'; 
 					tableView+='</tbody>';
-					tableView+='</table>';	
-				$("#"+locationType+"BlockId"+divId[k].id).html(tableView)
-				
-			 }
+					tableView+='</table>';
+				}
+				$("#"+divId[k].id+locationType).html(tableView);
+				$(".dataTable"+locationType+divId[k].id).dataTable();
+				if($windowWidth < 768){
+					$(".dataTable"+locationType+divId[k].id).wrap("<div class='table-responsive'></div>");
+				}
+			}
+			
+		}
+		function tableView(divId,GLtbodyArr,locationType)
+		{
+				 for(var k in divId){
+					 var $windowWidth = $(window).width();
+					 if(GLtbodyArr !=null && GLtbodyArr.length>0){
+						var tableView='';
+						tableView+='<table class="table table-bordered" id="dataTable'+locationType+divId[k].id+'">';
+							tableView+='<thead class="text-capital">';
+							tableView+='<tr>';
+							if(divId[k].id=="habitation"){
+								tableView+='<th>'+locationType+'</th>';
+							} else if(divId[k].id=="performance"){
+								tableView+='<th rowspan="2">'+locationType+'</th>';
+							}
+								if(GLtbodyArr[0] !=null && GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
+									for(var j in GLtbodyArr[0].statusList){
+										if(divId[k].id=="habitation"){
+											if(GLtbodyArr[0].statusList[j].status != 'NC'){
+												tableView+='<th>'+GLtbodyArr[0].statusList[j].status+'</th>';
+												
+											}
+										}else if(divId[k].id=="performance"){
+												tableView+='<th colspan="3">'+GLtbodyArr[0].statusList[j].status+'</th>';
+										} 
+									}
+								}
+						if(divId[k].id=="habitation"){
+							tableView+='<th>TOTAL</th>';
+						}
+						tableView+='</tr>'; 
+						 if(divId[k].id=="performance"){
+							 tableView+='<tr>'; 
+							if(GLtbodyArr[0] !=null && GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
+								for(var j in GLtbodyArr[0].statusList){
+									tableView+='<th>Target</th>';
+									tableView+='<th>Achived</th>';
+									tableView+='<th>% Percentage</th>';
+								}
+							}
+							tableView+='</tr>'; 
+						}	 			
+						tableView+='</thead>';
+						tableView+='<tbody>';
+							 for(var i in GLtbodyArr){
+								 var totalCount=0;
+								tableView+='<tr>';
+								tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
+								if(GLtbodyArr[i].statusList !=null && GLtbodyArr[i].statusList.length>0){
+									for(var j in GLtbodyArr[i].statusList){
+										if(divId[k].id=="habitation"){
+											if(GLtbodyArr[i].statusList[j].status != 'NC'){
+												if(GLtbodyArr[i].statusList[j].count !=null && GLtbodyArr[i].statusList[j].count>0){
+													tableView+='<td>'+GLtbodyArr[i].statusList[j].count+' <small style="color:#0FBE08">'+GLtbodyArr[i].statusList[j].percentage+' %</small></td>';
+												}else{
+													tableView+='<td> - </td>';
+												}
+												
+												totalCount += GLtbodyArr[i].statusList[j].count;
+											}
+										} else if(divId[k].id=="performance"){
+											if(GLtbodyArr[i].statusList[j].target !=null && GLtbodyArr[i].statusList[j].target>0){
+												tableView+='<td>'+GLtbodyArr[i].statusList[j].target+'</td>';
+											}else{
+												tableView+='<td> - </td>';
+											}
+											if(GLtbodyArr[i].statusList[j].target !=null && GLtbodyArr[i].statusList[j].target>0){
+												tableView+='<td>'+GLtbodyArr[i].statusList[j].achived+'</td>';
+											}else{
+												tableView+='<td> - </td>';
+											}
+											if(GLtbodyArr[i].statusList[j].target !=null && GLtbodyArr[i].statusList[j].target>0){
+												tableView+='<td>'+GLtbodyArr[i].statusList[j].percentage+'</td>';
+											}else{
+												tableView+='<td> - </td>';
+											}
+										} 
+									}
+								}
+								if(divId[k].id=="habitation"){
+									tableView+='<td>'+totalCount+'</td>';
+								}
+								tableView+='</tr>';
+							}  
+							 
+						tableView+='</tbody>';
+						tableView+='</table>';	
+					if(divId[k].id !=="jalavani"){
+						$("#"+locationType+"BlockId"+divId[k].id).html(tableView);
+						if(divId[k].id=="habitation"){
+							$("#dataTable"+locationType+divId[k].id).dataTable();
+							if($windowWidth < 768){
+								$("#dataTable"+divId[k].id).wrap("<div class='table-responsive'></div>");
+							}
+						}else if(divId[k].id=="performance"){
+							$("#dataTable"+locationType+divId[k].id).dataTable();
+							if($windowWidth < 768){
+								$("#dataTable"+divId[k].id).wrap("<div class='table-responsive'></div>");
+							}
+						}
+						
+					}	
+				 }else{
+					 $("#"+locationType+"BlockId"+divId[k].id).html("No DATA AVAILABLE")
+				 }
+			}
+			
 		}
 		
 		$(document).on("click","[role='tablist'] li a",function(){
@@ -1433,122 +1551,151 @@
 				var blockName = $(this).attr('attr_block_name');
 				var blockId = $(this).attr('attr_block_id');
 				if(blockName == "state"){
+					emptyCheckState();
 					if(id == "stateBlockIdhabitation"){
-						getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
-					}else if(id="stateBlockIdperformance"){
-						getKeyPerformanceIndicatorsInfoTable(blockName,blocksArr);
+						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+					}else if(id == "stateBlockIdperformance"){
+						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+					}else if(id == "stateBlockIdjalavani"){
+						getAlertDetailsOfCategoryByStatusWise('table',alertStatusBlockArr,'stateBlockId');
 					}
 				}else if(blockName == "district"){
+					emptyCheckDistrict();
 					if(id == "districtBlockIdhabitation"){
-						getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
-					}else if(id="districtBlockIdperformance"){
-						getKeyPerformanceIndicatorsInfoTable(blockName,blocksArr);
+						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+					}else if(id == "districtBlockIdperformance"){
+						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+					}else if(id == "districtBlockIdjalavani"){
+						
 					}
 				}else if(blockName == "constituency"){
+					emptyCheckConstituency();
 					if(id == "constituencyBlockIdhabitation"){
-						getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
-					}else if(id="constituencyBlockIdperformance"){
-						getKeyPerformanceIndicatorsInfoTable(blockName,blocksArr);
+						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+					}else if(id=="constituencyBlockIdperformance"){
+						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+					}else if(id=="districtBlockIdjalavani"){
+						
 					}
 				}else if(blockName == "mandal"){
+					emptyCheckMandal();
 					if(id == "mandalBlockIdhabitation"){
-						getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
-					}else if(id="mandalBlockIdperformance"){
-						getKeyPerformanceIndicatorsInfoTable(blockName,blocksArr);
+						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+					}else if(id=="mandalBlockIdperformance"){
+						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+					}else if(id=="districtBlockIdjalavani"){
+						
 					}
 				}
 		});
-	
-	
-	
-	
-	
-	
-	function selectBox(id)
-		{
+		function emptyCheckState(){
+			$("#stateBlockIdhabitation").html('');
+			$("#stateBlockIdperformance").html('');
+			$("#alertStatusstateBlockId").html('');
+			$("#drinkingstateBlockId").html('');
+		}
+		function emptyCheckDistrict(){
+			$("#districtBlockIdhabitation").html('');
+			$("#districtBlockIdperformance").html('');
+			$("#alertStatusdistrictBlockId").html('');
+			$("#drinkingdistrictBlockId").html('');
+		}
+		function emptyCheckConstituency(){
+			$("#constituencyBlockIdhabitation").html('');
+			$("#constituencyBlockIdperformance").html('');
+			$("#alertStatusconstituencyBlockId").html('');
+			$("#drinkingconstituencyBlockId").html('');
+		}
+		function emptyCheckMandal(){
+			$("#mandalBlockIdhabitation").html('');
+			$("#mandalBlockIdperformance").html('');
+			$("#alertStatusmandalBlockId").html('');
+			$("#drinkingmandalBlockId").html('');
+		}
+		function selectBox(id){
 			var id = id;
 			var selectBox='';
 			selectBox+='<select class="chosen" id="chosen'+id+'"><option>ss</option></select>';
 			$("#"+id).html(selectBox);
 			$("#chosen"+id).chosen();
 		}
-	$(".chosenSelect").chosen({width:'100%'});
-	$(window,document).on('resize', function(){
-		responsiveTabs();
-	});
-	$(document).on('click','[attr_click="questionMark"]', function(){
-		$("#modalDivId").modal('show');
-		$("#modalHeadingId").html($(this).attr("attr_title"));
-		tableView('modalTable');
-	});
-	function responsiveTabs(){
-		var $this = $(this);
-		var $windowWidth = $(window).width();
-		if($windowWidth < 768)
-		{
-			$('[role="tabListMobile"]').show();
-			$('[role="tablist"]').hide();
-		}else{
-			$('[role="tabListMobile"]').hide();
-			$('[role="tablist"]').show();
+		$(".chosenSelect").chosen({width:'100%'});
+		$(window,document).on('resize', function(){
+			responsiveTabs();
+		});
+		$(document).on('click','[attr_click="questionMark"]', function(){
+			$("#modalDivId").modal('show');
+			$("#modalHeadingId").html($(this).attr("attr_title"));
+			tableView('modalTable');
+		});
+		function responsiveTabs(){
+			var $this = $(this);
+			var $windowWidth = $(window).width();
+			if($windowWidth < 768)
+			{
+				$('[role="tabListMobile"]').show();
+				$('[role="tablist"]').hide();
+			}else{
+				$('[role="tabListMobile"]').hide();
+				$('[role="tablist"]').show();
+			}
 		}
-	}
-	$(document).on("change","[role='tabListMobile']",function(){
-			var id = $('option:selected', this).attr('tab_id');
-			$("#"+id).closest(".tab-content").find("[role='tabpanel']").removeClass("active");
-			$("#"+id).addClass("active");
-			
-	});
-	$("header").on("click",".menu-cls",function(e){
-		e.stopPropagation();
-		$(".menu-data-cls").toggle();
-	});
-	$(document).on("click",function(){
-		$(".menu-data-cls").hide();
-	});
-	
-	function getLocationBasedOnSelection(){
-		var json = {
-			locationType:"district",
-			year:2017
-		}
-		
-		$.ajax({
-			url: 'getLocationBasedOnSelection',
-			data: JSON.stringify(json),
-			type: "POST",
-			dataType: 'json', 
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			},
-			success: function(ajaxresp){
+		$(document).on("change","[role='tabListMobile']",function(){
+				var id = $('option:selected', this).attr('tab_id');
+				$("#"+id).closest(".tab-content").find("[role='tabpanel']").removeClass("active");
+				$("#"+id).addClass("active");
 				
-			}
 		});
-	}
-	
-	function getHamletWiseIvrStatusCounts(){
-		var json = {
-			fromDate:"",
-			toDate:"",
-			year:2017
+		$("header").on("click",".menu-cls",function(e){
+			e.stopPropagation();
+			$(".menu-data-cls").toggle();
+		});
+		$(document).on("click",function(){
+			$(".menu-data-cls").hide();
+		});
+		
+		function getLocationBasedOnSelection(){
+			var json = {
+				locationType:"district",
+				year:2017
+			}
+			
+			$.ajax({
+				url: 'getLocationBasedOnSelection',
+				data: JSON.stringify(json),
+				type: "POST",
+				dataType: 'json', 
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					
+				}
+			});
 		}
 		
-		$.ajax({
-			url: 'getHamletWiseIvrStatusCounts',
-			data: JSON.stringify(json),
-			type: "POST",
-			dataType: 'json', 
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			},
-			success: function(ajaxresp){
-				console.log(ajaxresp.data);
+		function getHamletWiseIvrStatusCounts(){
+			var json = {
+				fromDate:"",
+				toDate:"",
+				year:2017
 			}
-		});
-	}
+			
+			$.ajax({
+				url: 'getHamletWiseIvrStatusCounts',
+				data: JSON.stringify(json),
+				type: "POST",
+				dataType: 'json', 
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					console.log(ajaxresp.data);
+				}
+			});
+		}
 	
 	
 	
