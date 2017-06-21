@@ -373,11 +373,14 @@ function onLoadClicks()
 	});
 	$(document).on("click",".alertStatusAmountCls",function(){
 		alertStatusGlobalId= $(this).attr("attr_id");
-		if(alertStatusGlobalId == 3){
-			$(".alertStatusAmountInputCls").show();
-		}else{
-			$(".alertStatusAmountInputCls").hide();
+		if(globalPrposalCategoryId == 1){
+			if(alertStatusGlobalId == 3){
+				$(".alertStatusAmountInputCls").show();
+			}else{
+				$(".alertStatusAmountInputCls").hide();
+			}
 		}
+		
 	});
 	
 	$(document).on("click","#updateStatusChange",function(){
@@ -1042,7 +1045,7 @@ function onLoadClicks()
 							$("[expanded-block='block1']").show().css("transition"," ease-in, width 0.7s ease-in-out");
 						},750);
 				}else if(result.message != null && result.message == "Already In ProposalStatus"){
-					alert("This Alert Already In ProposalStatus.Just Update Proposal Status");
+					alert("This Alert Already In ProposalStatus");
 				}else{
 					alert("try again");
 				}
@@ -3011,6 +3014,7 @@ function getCommentsForAlert(alertId){
 }
  var globalPropCategory;
 var	globalPropReqAunt;	
+var	globalPrposalCategoryId;	
 function buildCommentsForAlert(result)
 {
 	/*var str='';
@@ -3089,8 +3093,6 @@ function buildCommentsForAlert(result)
 			str+='<li>';
 			str+='<span class="alert-history-date"  style="background-color: lightpink;padding: 3px;border-radius: 5px;" >'+result[i][0].trackingDate+'</span>';
 			for(var j in result[i]){
-				     globalPropCategory = result[i][j].category;
-					 globalPropReqAunt = result[i][j].amount;
 					if(result[i][j].actionType == 'Assigning'){     
 						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
 						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Assigned BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>    </p>';
@@ -3132,7 +3134,10 @@ function buildCommentsForAlert(result)
 						if(result[i][j].status == 'Proposal'){
 							str+=''+result[i][j].status+'';
 								str+='<p class="text-capital myfontStyle m_top5"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Status </span> :'+result[i][j].proposalStatus+'</p>';
+								globalPrposalCategoryId = result[i][j].categoryId;
 							 if(result[i][j].categoryId == 1 ){
+								 globalPropCategory = result[i][j].category;
+								globalPropReqAunt = result[i][j].amount;
 								str+='<p class="text-capital myfontStyle m_top5"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'';
 								if(result[i][j].proposalStatus == 'Proposal Accept'){
 									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Amount </span> :'+result[i][j].amount+'/-';
@@ -3141,6 +3146,8 @@ function buildCommentsForAlert(result)
 									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Amount </span> :'+result[i][j].amount+'/- </p>';
 								}
 							}else{
+								globalPropCategory = result[i][j].category;
+								globalPropReqAunt = result[i][j].amount;
 								str+='<p class="text-capital myfontStyle m_top5"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'</p>';
 							}
 						}else if(result[i][j].status == 'Rejoinder'){
@@ -4657,7 +4664,6 @@ function alertStatusHistory(result,alertId)
 				$(".changeStateCls").show();
 			}
 		}else{
-			
 			if(globalProposalStatus == 'Proposal Pending'){
 				$(".propStatusChangeCls").show();
 				$(".changeStateCls").hide();
@@ -4816,7 +4822,7 @@ function alertStatus(result,alertId)
 			if(globalPropCategory != null){
 				str+='<p><strong>Proposal Category </strong>:'+globalPropCategory+'</p>';
 			}
-			if(globalPropReqAunt != null){
+			if(globalPropReqAunt != null && globalPropReqAunt.length > 0){
 				str+='<p class="m_top5"><strong>Requested Amount </strong>:'+globalPropReqAunt+'/- </p>';
 			}
 			str+='</div>';	
@@ -5576,54 +5582,93 @@ $(document).on("click","#updatePrposalStatsId",function(){
 		alert("Please Select Status");
 		return;
 	}
-	if(alertStatusGlobalId == 3){
-		if(approvedAmount != null && approvedAmount==0){
-		alert("Please Enter Approved Amount");
-		return;
-	 }
-	 var numericExpression = /^[0-9]+$/;
-		if(!$('#approvedAmountId').val().match(numericExpression)){
-			$("#errMsgAprAmuntId").html('<span style="color:red">Please Enter Numeric Value Only.....</span>');
+	if(globalPrposalCategoryId == 1){
+		if(alertStatusGlobalId == 3){
+			if(approvedAmount != null && approvedAmount==0){
+			alert("Please Enter Approved Amount");
 			return;
-		}else{
-			$("#errMsgAprAmuntId").html('');
+		 }
+		 var numericExpression = /^[0-9]+$/;
+			if(!$('#approvedAmountId').val().match(numericExpression)){
+				$("#errMsgAprAmuntId").html('<span style="color:red">Please Enter Numeric Value Only.....</span>');
+				return;
+			}else{
+				$("#errMsgAprAmuntId").html('');
+			}
 		}
 	}
+	
 	if(comment != null && comment==0){
 		alert("Please Enter Comment");
 		return;
 	}
 	$("#updatePrposalStatsId").hide();
-	var jsObj={
-		alertId : alertId,
-		proposalStatusId : alertStatusGlobalId,
-		comment : comment,
-		approvedAmount : approvedAmount
-	}	
+	if(alertStatusGlobalId == 3){
+		var cnfRes = confirm("This Alert Is  Proposal Accepted .Then it will be moved to Action In Progress Status also. ");
+		if(cnfRes == true){
+			var jsObj={
+				alertId : alertId,
+				proposalStatusId : alertStatusGlobalId,
+				comment : comment,
+				approvedAmount : approvedAmount
+			}	
 	
-	$.ajax({   
-		type:'GET',
-		url:'updateProposalStatusFrAlertAction.action',  
-		dataType: 'json',
-		data: {task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null && result == "success"){
-			alert("Proposal Status Updated Successfully");
-			getCommentsForAlert(alertId);
-			setTimeout(function(){
-					//$("#commentPostingSpinner").html(" ");
-					//$("#updateStatusChangeMsg").html("status not updated successfully,Pls try again");
-					$('#alertManagementPopup1').modal('hide');
-					
-				},1500);
-				rightSideExpandView(alertId);
-					setTimeout(function(){
-						$("[expanded-block='block1']").show().css("transition"," ease-in, width 0.7s ease-in-out");
-					},750);
-			}else{
-				alert("try again");
-			}
-	});
+		$.ajax({   
+			type:'GET',
+			url:'updateProposalStatusFrAlertAction.action',  
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result == "success"){
+				alert("Proposal Status Updated Successfully");
+				getCommentsForAlert(alertId);
+				setTimeout(function(){
+						//$("#commentPostingSpinner").html(" ");
+						//$("#updateStatusChangeMsg").html("status not updated successfully,Pls try again");
+						$('#alertManagementPopup1').modal('hide');
+						
+					},1500);
+					rightSideExpandView(alertId);
+						setTimeout(function(){
+							$("[expanded-block='block1']").show().css("transition"," ease-in, width 0.7s ease-in-out");
+						},750);
+				}else{
+					alert("try again");
+				}
+			});
+		  }
+		}else{
+			var jsObj={
+					alertId : alertId,
+					proposalStatusId : alertStatusGlobalId,
+					comment : comment,
+					approvedAmount : approvedAmount
+			}	
+	
+		$.ajax({   
+			type:'GET',
+			url:'updateProposalStatusFrAlertAction.action',  
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result == "success"){
+				alert("Proposal Status Updated Successfully");
+				getCommentsForAlert(alertId);
+				setTimeout(function(){
+						//$("#commentPostingSpinner").html(" ");
+						//$("#updateStatusChangeMsg").html("status not updated successfully,Pls try again");
+						$('#alertManagementPopup1').modal('hide');
+						
+					},1500);
+					rightSideExpandView(alertId);
+						setTimeout(function(){
+							$("[expanded-block='block1']").show().css("transition"," ease-in, width 0.7s ease-in-out");
+						},750);
+				}else{
+					alert("try again");
+				}
+		});
+	}
 });
 var globalDeprtStatus;
 function alertDeptmentExistInLogin(alertId){
