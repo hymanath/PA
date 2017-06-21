@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.StatusVO;
 
 public interface IRWSNICService {
@@ -22,4 +23,5 @@ public interface IRWSNICService {
 	public StatusVO getPlanofActionForStressedHabitations(InputVO vo);
 	public List<StatusVO> getStressedHabitationsInfoByLocationType(InputVO vo);
 	public List<LocationVO> getLocationWiseAlertStatusCounts(InputVO vo);
+	public List<RangeVO> getLocationBasedOnSelection(InputVO vo);
 }

@@ -15,11 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+
+import sun.misc.BASE64Encoder;
 
 @Service
 @Transactional
@@ -37,107 +40,56 @@ public class RWSNICService implements IRWSNICService{
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
 			 
-	        /*WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://DomainName/Rwss/cd/getHabitationCoverageByStatusByLocationType");
+	        WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getHabitationCoverageByStatusByLocationType");
 	        
-	        String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
-	        System.out.println(jsonInString);
+	        /*String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
+	        System.out.println(jsonInString);*/
 	        
-	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+	        String name = "admin";
+	        String password = "admin@123";
+	        String authString = name + ":" + password;
+	        String authStringEnc = new BASE64Encoder().encode(authString.getBytes());
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-	 	      }else{*/
-	 	    	 String output = null;//response.getEntity(String.class);
-	 	    	 if(inputVO.getLocationType().equalsIgnoreCase("state"))
-	 	    		 output = "[{\"locationName\":\"Andhra Pradesh\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
-	 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
-	 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
-	 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
-	 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
-	 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
-	 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
-	 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]}]";
-	 	    	 else if(inputVO.getLocationType().equalsIgnoreCase("district"))
-	 	    		output = "[{\"locationName\":\"Nellore\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
-		 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
-		 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
-		 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
-		 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
-		 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
-		 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
-		 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]},"
-		 	    	 		+ "{\"locationName\":\"Jagtial Dist\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
-		 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
-		 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
-		 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
-		 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
-		 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
-		 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
-		 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]}]";
-	 	    	 else if(inputVO.getLocationType().equalsIgnoreCase("constituency"))
-	 	    		output = "[{\"locationName\":\"Kavali\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
-		 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
-		 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
-		 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
-		 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
-		 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
-		 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
-		 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]},"
-		 	    	 		+ "{\"locationName\":\"Karimnagar\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
-		 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
-		 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
-		 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
-		 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
-		 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
-		 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
-		 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]}]";
-	 	    	else if(inputVO.getLocationType().equalsIgnoreCase("mandal"))
-	 	    		output = "[{\"locationName\":\"Alluru\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
-		 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
-		 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
-		 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
-		 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
-		 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
-		 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
-		 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]},"
-		 	    	 		+ "{\"locationName\":\"Jagtial\",\"streedHabitationCount\":25412,\"totalCount\":48363,"
-		 	    	 		+ "\"statusList\":[{\"status\":\"NSS\",\"count\":479,\"percentage\":0.99},"
-		 	    	 		+ "{\"status\":\"PC1\",\"count\":3061,\"percentage\":6.33},"
-		 	    	 		+ "{\"status\":\"PC2\",\"count\":5855,\"percentage\":12.11},"
-		 	    	 		+ "{\"status\":\"PC3\",\"count\":7002,\"percentage\":14.48},"
-		 	    	 		+ "{\"status\":\"PC4\",\"count\":8157,\"percentage\":16.87},"
-		 	    	 		+ "{\"status\":\"FC\",\"count\":23480,\"percentage\":48.55},"
-		 	    	 		+ "{\"status\":\"NC\",\"count\":329,\"percentage\":0.68}]}]";
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);//null;
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
-	 	    		JSONArray finalArray = new JSONArray(output);
-	 	    		if(finalArray!=null && finalArray.length()>0){
-	 	    			for(int i=0;i<finalArray.length();i++){
-	 	    				LocationVO vo = new LocationVO();
-	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-	 	    				vo.setLocationName(jObj.getString("locationName"));
-	 	    				vo.setStreetHabitationCount(jObj.getLong("streedHabitationCount"));
-	 	    				vo.setTotalCount(jObj.getLong("totalCount"));
-	 	    				
-	 	    				JSONArray statusListArray = jObj.getJSONArray("statusList");
-	 	    				
-	 	    				if(statusListArray != null && statusListArray.length() > 0){
-	 	    					for (int j = 0; j < statusListArray.length(); j++) {
-									StatusVO statusVO = new StatusVO();
-									
-									JSONObject jobj1 = (JSONObject) statusListArray.get(j);
-									statusVO.setStatus(jobj1.getString("status"));
-									statusVO.setCount(jobj1.getLong("count"));
-									statusVO.setPercentage(jobj1.getDouble("percentage"));
-									vo.getStatusList().add(statusVO);
-								}
-	 	    				}
-	 	    				voList.add(vo);
-	 	    			//}
+	 	    		if(inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("mandal")){
+	 	    			//build mandal level data
+	 	    		}else{
+	 	    			JSONArray finalArray = new JSONArray(output);
+		 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    			for(int i=0;i<finalArray.length();i++){
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				if(jObj.length() > 0){
+		 	    					LocationVO vo = new LocationVO();
+		 	    					vo.setLocationName(jObj.getString("locationName"));
+			 	    				vo.setStreetHabitationCount(jObj.getLong("stressedHabitationCount"));
+			 	    				vo.setTotalCount(jObj.getLong("totalCount"));
+			 	    				
+			 	    				JSONArray statusListArray = jObj.getJSONArray("statusList");
+			 	    				
+			 	    				if(statusListArray != null && statusListArray.length() > 0){
+			 	    					for (int j = 0; j < statusListArray.length(); j++) {
+											StatusVO statusVO = new StatusVO();
+											
+											JSONObject jobj1 = (JSONObject) statusListArray.get(j);
+											statusVO.setStatus(jobj1.getString("status"));
+											statusVO.setCount(jobj1.getLong("count"));
+											statusVO.setPercentage(jobj1.getDouble("percentage"));
+											vo.getStatusList().add(statusVO);
+										}
+			 	    				}
+			 	    				voList.add(vo);
+		 	    				}
+		 	    			}
+		 	    		}
 	 	    		}
 	 	    	}
-	 	    	 
-	 	    	  
 	 	      }
 	        
 		} catch (Exception e) {
@@ -708,5 +660,43 @@ public class RWSNICService implements IRWSNICService{
 			LOG.error("Exception raised at getLocationWiseAlertStatusCounts - RWSNICService service", e);
 		}
 		return voList;
+	}
+	
+	public List<RangeVO> getLocationBasedOnSelection(InputVO inputVO){
+		List<RangeVO> rangeVOList = new ArrayList<RangeVO>(0);
+		try {
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getLocationBasedOnSelection");
+	        
+	       /* String jsonInString = new ObjectMapper().writeValueAsString(inputVO);
+	        System.out.println(jsonInString);*/
+			String name = "admin";
+	        String password = "admin@123";
+	        String authString = name + ":" + password;
+	        String authStringEnc = new BASE64Encoder().encode(authString.getBytes());
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	    }else{
+				String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					JSONArray finalArray = new JSONArray(output);
+					for(int i=0;i<finalArray.length();i++){
+						RangeVO vo = new RangeVO();
+						JSONObject jobj = (JSONObject)finalArray.get(i);
+						
+						vo.setId(jobj.getLong("locationId"));
+						vo.setName(jobj.getString("locationName"));
+						
+						rangeVOList.add(vo);
+					}
+				}
+	 	    }
+					
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationBasedOnSelection - RWSNICService service", e);
+		}
+		return rangeVOList;
 	}
 }
