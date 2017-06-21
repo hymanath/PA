@@ -1449,6 +1449,7 @@
 					var FC13Arr=[]; 
 					var APDRPGRANTArr=[]; 
 					var NRDWPArr=[]; 
+					var SDPArr=[];
 					var totalCountArr = [];
 					var totalCount2 = '';
 					for(var i in result){
@@ -1505,6 +1506,9 @@
 											 }else if(result[i].subList[j].subList[k].id == 8){
 												 //NRDWPArr.push({"y":result[i].subList[j].subList[k].totalCount})
 												 NRDWPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+											 }else if(result[i].subList[j].subList[k].id == 9){
+												 //NRDWPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 SDPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }
 										}
 										 totalCountArr.push(totalCount2);
@@ -1536,6 +1540,8 @@
 							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#46306A"});  
 						}if(NRDWPArr != null && NRDWPArr.length > 0){
 							mainJosnObjArr.push({name:'NRDWP',data:NRDWPArr,color:"#9C9C9C"});  
+						}if(SDPArr != null && SDPArr.length > 0){
+							mainJosnObjArr.push({name:'SDP',data:SDPArr,color:"#14BAAD"});  
 						}
 					}
 					$(".chart"+divId).highcharts({
@@ -1643,6 +1649,7 @@
 					var FC13Arr=[];
 					var APDRPGRANTArr=[];
 					var NRDWPArr=[];
+					var SDPArr=[];
 					var totalCountArr = [];
                     var totalCount2 = '';
 					for(var i in result){
@@ -1709,6 +1716,9 @@
 											 }else if(result[i].subList[j].subList[k].id == 8){
 												 //NRDWPArr.push({"y":result[i].subList[j].subList[k].totalCount})
 												 NRDWPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+											 }else if(result[i].subList[j].subList[k].id == 9){
+												 //NRDWPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 SDPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }
 											
 										}
@@ -1742,6 +1752,8 @@
 						}
 						if(NRDWPArr != null && NRDWPArr.length > 0){
 							mainJosnObjArr.push({name:'NRDWP',data:NRDWPArr,color:"#9C9C9C"});  
+						}if(SDPArr != null && SDPArr.length > 0){
+							mainJosnObjArr.push({name:'SDP',data:SDPArr,color:"#14BAAD"});  
 						}
 					}
 					var length = result.length
@@ -1863,6 +1875,7 @@
 					var FC13Arr=[];
 					var APDRPGRANTArr=[];
 					var NRDWPArr=[];
+					var SDPArr=[];
 					var qTotalArr = [];
 					var qTotal = '';
 					for(var i in result){
@@ -1932,6 +1945,9 @@
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 8){
 														 //NRDWPArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
 														 NRDWPArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+													 }else if(result[i].subList[j].subList[k].subList[l].id == 9){
+														 //SDPArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+														 SDPArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 													 }
 												}
 												qTotalArr.push(qTotal);
@@ -1968,6 +1984,8 @@
 						}
 						if(NRDWPArr != null && NRDWPArr.length > 0){
 							mainJosnObjArr.push({name:'NRDWP',data:NRDWPArr,color:"#9C9C9C"});  
+						}if(SDPArr != null && SDPArr.length > 0){
+							mainJosnObjArr.push({name:'SDP',data:SDPArr,color:"#14BAAD"});  
 						}
 						var length = result.length
 						var height = '';
