@@ -1160,9 +1160,12 @@
 				if(result !=null && result.length>0){
 					var locationNamesArr=[];
 					var mainlocationArr =[];
+					var totalCountArr = [];
+					var totalCount2 = '';
 					for(var i in result){
 						if(result[i].locationList1 !=null &&  result[i].locationList1.length>0){
 							for(var j in result[i].locationList1){
+								totalCount2 =  result[i].locationList1[j].count;
 								 if(result[i].locationList1[j].financialYearId != 0){
 									//mainlocationArr.push({y:result[i].locationList1[j].amount})
 									mainlocationArr.push({y:parseInt(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId,"extra":result[i].locationList1[j].count})
@@ -1175,8 +1178,8 @@
 								}else{
 									locationNamesArr.push("Year<br/>"+result[i].locationList1[j].financialYear);
 								} */
-								
-							}
+								totalCountArr.push(totalCount2);
+							}	
 						}
 					}
 					var length = result.length
@@ -1227,6 +1230,7 @@
 							stackLabels: {
 								useHTML: true,
 								align: 'left',
+								qTotals: totalCountArr,
 								enabled: true,
 								style: {
 									fontWeight: 'bold',
@@ -1236,7 +1240,7 @@
 								
 									//return '<span style="top:16px; position: absolute;"><br/><h3><i class="fa fa-inr"></i>: '+this.total+'</h3></span>';
 									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-									return '<span><i class="fa fa-inr"></i>: '+this.total+'</span>';
+									return '<span><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
 								} 
 							
 							}
@@ -1290,11 +1294,15 @@
 					var year1415Arr=[];
 					var year1516Arr=[];
 					var year1617Arr=[];
-					
+					var totalCountArr = [];
+					var totalCount2 = '';
 					for(var i in result){
 						locationLevelNames.push(result[i].locationName);
-						if(result[i].locationList1 !=null && result[i].locationList1.length>0){
+						if(result[i].locationList1 !=null && result[i].locationList1.length>0){					
 							for(var j in result[i].locationList1){
+								//alert(totalCount);
+								totalCount2 = 0;
+								totalCount2 =totalCount2+result[i].locationList1[j].count;
 								if(result[i].locationList1[j].financialYearId==1){
 									 //year1415Arr.push({"y":result[i].locationList1[j].amount}); 
 									 year1415Arr.push({"y":parseInt(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId,"extra":result[i].locationList1[j].count}); 
@@ -1307,6 +1315,7 @@
 								}
 							}
 						}
+						totalCountArr.push(totalCount2);
 						var mainJosnObjLocArr = [];
 						   if(year1415Arr != null && year1415Arr.length > 0){
 							mainJosnObjLocArr.push({name:'2014-2015',data:year1415Arr,color:"#FE6603"});  
@@ -1363,12 +1372,13 @@
 								useHTML: true,
 								//align: 'left',
 								enabled: true,
+								qTotals: totalCountArr,
 								style: {
 									fontWeight: 'bold',
 									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 								},
-								formatter: function() {
-									return '<span><i class="fa fa-inr"></i>: '+this.total+'</span>';
+								formatter: function() { 
+									return '<span><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
 									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
 									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
 									//return (this.total);
@@ -1440,6 +1450,8 @@
 					var FC13Arr=[]; 
 					var APDRPGRANTArr=[]; 
 					var NRDWPArr=[]; 
+					var totalCountArr = [];
+					var totalCount2 = '';
 					for(var i in result){
 						
 						
@@ -1467,7 +1479,9 @@
 									}
 									var locationId= 1;
 									if(countAvailable){
+										totalCount2 = 0;
 										for(var k in result[i].subList[j].subList){
+                                            totalCount2 =totalCount2+result[i].subList[j].subList[k].count;
 											if(result[i].subList[j].subList[k].id == 1){
 												//NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
 												NABARDArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
@@ -1494,6 +1508,7 @@
 												 NRDWPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }
 										}
+										 totalCountArr.push(totalCount2);
 									}
 									
 								}	
@@ -1556,12 +1571,13 @@
 								useHTML: true,
 								//align: 'left',
 								enabled: true,
+								qTotals: totalCountArr,
 								style: {
 									fontWeight: 'bold',
 									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 								},
 								formatter: function() {
-									return '<span><i class="fa fa-inr"></i>: '+this.total+'</span>';
+									return '<span><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
 									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
 									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
 									//return (this.total);
@@ -1628,6 +1644,8 @@
 					var FC13Arr=[];
 					var APDRPGRANTArr=[];
 					var NRDWPArr=[];
+					var totalCountArr = [];
+                    var totalCount2 = '';
 					for(var i in result){
 						if(result[i].subList !=null && result[i].subList.length>0){
 							for(var j in result[i].subList){
@@ -1665,7 +1683,9 @@
 										}
 									}
 									if(countAvailable){
+										 totalCount2 = 0;
 										for(var k in result[i].subList[j].subList){
+                                             totalCount2 =totalCount2+result[i].subList[j].subList[k].count;
 											 if(result[i].subList[j].subList[k].id == 1){
 												// NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
 												 NABARDArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
@@ -1693,6 +1713,7 @@
 											 }
 											
 										}
+										totalCountArr.push(totalCount2);
 									}
 									
 								}
@@ -1769,12 +1790,13 @@
 								useHTML: true,
 								//align: 'left',
 								enabled: true,
+								qTotals: totalCountArr,
 								style: {
 									fontWeight: 'bold',
 									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 								},
 								formatter: function() {
-									return '<span><i class="fa fa-inr"></i>: '+this.total+'</span>';
+									return '<span><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
 									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
 									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
 									//return (this.total);
