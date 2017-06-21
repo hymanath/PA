@@ -1007,7 +1007,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object[]> getTotalFundForScheme(List<Long> financialYrIdList,List<Long> departmentIdList,List<Long> sourceIdLIst,List<Long> schemeIdList,Date sDate,Date eDate,String type){
+	public List<Object[]> getTotalFundForScheme(List<Long> financialYrIdList,List<Long> departmentIdList,List<Long> sourceIdLIst,List<Long> schemeIdList,Date sDate,Date eDate,String type
+			,Long searchLevlId,List<Long> searchLvlVals){
 		StringBuilder sb = new StringBuilder();
 		if(type != null && type.equalsIgnoreCase("scheme")){
 			sb.append(" select count(distinct fundSanctionLocation.fundSanction.govtScheme.govtSchemeId),sum(fundSanctionLocation.fundSanction.sactionAmount) " );
@@ -1031,6 +1032,15 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(sDate != null && eDate != null){
 			sb.append(" and date(fundSanctionLocation.fundSanction.insertedTime) between  :sDate and :eDate " );
 		}
+		if(searchLevlId != null && searchLevlId.longValue() > 0l && searchLevlId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+			sb.append(" and fundSanctionLocation.locationAddress.district.districtId in (:searchLvlVals) ");
+		}else if(searchLevlId != null && searchLevlId.longValue() > 0l && searchLevlId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+			sb.append(" and fundSanctionLocation.locationAddress.constituency.constituencyId in (:searchLvlVals) ");
+		}else if(searchLevlId != null && searchLevlId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID ){
+			sb.append(" and fundSanctionLocation.locationAddress.tehsil.tehsilId in (:searchLvlVals) " );
+		}else if(searchLevlId != null && searchLevlId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID ){
+			sb.append(" and fundSanctionLocation.locationAddress.panchayat.panchayatId in (:searchLvlVals) " );
+		}
 		Query query = getSession().createQuery(sb.toString());
 		if(financialYrIdList != null && financialYrIdList.size() > 0){
 			query.setParameterList("financialYrIdList", financialYrIdList);
@@ -1045,6 +1055,9 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}
 		if(departmentIdList != null && departmentIdList.size() > 0){
 			query.setParameterList("departmentIdList", departmentIdList);
+		}
+		if(searchLevlId != null && searchLevlId.longValue() > 0l){
+			query.setParameterList("searchLvlVals", searchLvlVals);
 		}
 		return query.list();
 	}

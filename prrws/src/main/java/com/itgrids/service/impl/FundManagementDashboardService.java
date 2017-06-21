@@ -996,7 +996,8 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 			List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
 			List<Long> sourceIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList());
 			List<Long> schemeIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSchemeIdsList());
-			List<Object[]> totalFundForSchemeList = fundSanctionDAO.getTotalFundForScheme(inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,schemeIdsList,sDate,eDate,inputVO.getType());
+			List<Long> searchValList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSearchLvlVals());
+			List<Object[]> totalFundForSchemeList = fundSanctionDAO.getTotalFundForScheme(inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,schemeIdsList,sDate,eDate,inputVO.getType(),inputVO.getSearchLevelId(),searchValList);
 			
 			if(totalFundForSchemeList != null && totalFundForSchemeList.size() > 0){    
 				if(!commonMethodsUtilService.getStringValueForObject(totalFundForSchemeList.get(0)[1]).equalsIgnoreCase("0")){
