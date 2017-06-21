@@ -1045,7 +1045,7 @@ function onLoadClicks()
 							$("[expanded-block='block1']").show().css("transition"," ease-in, width 0.7s ease-in-out");
 						},750);
 				}else if(result.message != null && result.message == "Already In ProposalStatus"){
-					alert("This Alert Already In ProposalStatus");
+					alert("This Alert Already Have ProposalStatus");
 				}else{
 					alert("try again");
 				}
