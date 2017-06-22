@@ -20,6 +20,7 @@ public class InputVO implements Serializable {
 	private String order;
 	private String type;
 	private Long locationId;
+	private Long locationTypeId;
 	private Long superLocationId;
 	private Long searchLevelId;
 	private List<Long> searchLvlVals;
@@ -228,7 +229,11 @@ public class InputVO implements Serializable {
 	public void setStatusIds(List<Long> statusIds) {
 		this.statusIds = statusIds;
 	}
-	
-	
+	public Long getLocationTypeId() {
+		return locationTypeId;
+	}
+	public void setLocationTypeId(Long locationTypeId) {
+		this.locationTypeId = locationTypeId;
+	}
 	
 }
