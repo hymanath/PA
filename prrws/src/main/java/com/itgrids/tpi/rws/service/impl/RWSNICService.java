@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.gson.JsonObject;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.KPIVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.StatusVO;
@@ -23,7 +22,6 @@ import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-import springfox.documentation.spring.web.json.Json;
 import sun.misc.BASE64Encoder;
 
 @Service
@@ -459,97 +457,55 @@ public class RWSNICService implements IRWSNICService{
 	 * Author :R Nagarjuna Gowd
 	 * @description : getKeyPerformanceIndicatorsInfo
 	 */
-	public List<LocationVO> getKeyPerformanceIndicatorsInfo(InputVO inputVO){
-		List<LocationVO> voList = new ArrayList<LocationVO>(0);
+	public KPIVO getKeyPerformanceIndicatorsInfo(InputVO inputVO){
+		KPIVO vo = new KPIVO();
 		try {
 			 
-			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getKeyPerformanceIndicatorsInfo");	        
-		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
-		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getKpiDeatils");	        
+		    String authStringEnc = getAuthenticationString("admin","admin@123");	        
+		    ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
 			
 	      
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-	 	      }else{
+	 	    }else{
 	 	    	 String output = response.getEntity(String.class);
-	 	    	/*if(inputVO.getLocationType().equalsIgnoreCase("state"))
-	 	    		output ="[{\"locationId\":\"1\",\"locationName\":\"Andhra Pradhesh\","
-	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
-	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]}]";
-	 	    	else if(inputVO.getLocationType().equalsIgnoreCase("district"))
-	 	    		output ="[{\"locationId\":\"1\",\"locationName\":\"Nellore\","
-	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
-	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]},"
-	 	    	             + "{\"locationId\":\"1\",\"locationName\":\"Jagtial Dist\","
-	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
-	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]}]";
-	 	    	else if(inputVO.getLocationType().equalsIgnoreCase("constituency"))
-	 	    		output ="[{\"locationId\":\"1\",\"locationName\":\"Kavalai\","
-	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
-	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]},"
-	 	    	             + "{\"locationId\":\"1\",\"locationName\":\"Jagtial Const\","
-	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
-	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]}]";
-	 	    	else if(inputVO.getLocationType().equalsIgnoreCase("mandal"))
-	 	    		output ="[{\"locationId\":\"1\",\"locationName\":\"Alluru\","
-	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
-	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]},"
-	 	    	             + "{\"locationId\":\"1\",\"locationName\":\"Jagtial Mandal\","
-	 	    	             +"\"statusData\":[{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\"  : \"8000\"},"
-	 	    	             + "{\"key\" : \"Partially Covered\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Community Treatment Plants\",\"target\"  : \"10000\",\"achieved\" : \"8000\"},"
-	 	    	             + "{\"key\" : \"Chronic kidney Diseses\",\"target\"  : \"10000\",\"achieved\" : \"8000\"}]}]";*/
-	 	    	 
-	 	    	 
-	 	    	 	    		 	    	 
 	 	    	if(output != null && !output.isEmpty()){
-	 	    		JSONArray finalArray = new JSONArray(output);
-	 	    		if(finalArray!=null && finalArray.length()>0){
-	 	    			for(int i=0;i<finalArray.length();i++){
-	 	    				LocationVO vo = new LocationVO();
-	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-	 	    				vo.setLocationName(jObj.getString("locationName"));
-	 	    				
-	 	    				
-	 	    				JSONArray statusListArray = jObj.getJSONArray("statusData");
-	 	    				
-	 	    				if(statusListArray != null && statusListArray.length() > 0){
-	 	    					for (int j = 0; j < statusListArray.length(); j++) {
-									StatusVO statusVO = new StatusVO();
-									
-									JSONObject jobj1 = (JSONObject) statusListArray.get(j);
-									statusVO.setStatus(jobj1.getString("key"));
-									statusVO.setTarget(jobj1.getLong("target"));
-									statusVO.setAchived(jobj1.getLong("achieved"));
-									vo.getStatusList().add(statusVO);
-								}
+	 	    		JSONObject jobj = new JSONObject(output);
+	 	    		
+	 	    		if(jobj.getJSONArray("stateLevelAcheieveMentsData") != null && jobj.getJSONArray("stateLevelAcheieveMentsData").length() > 0){
+	 	    			JSONArray acheieveMentArr = jobj.getJSONArray("stateLevelAcheieveMentsData");
+	 	    			for (int i = 0; i < acheieveMentArr.length(); i++) {
+	 	    				JSONArray indiArr = (JSONArray) acheieveMentArr.get(i);
+	 	    				if(indiArr.get(0).toString().equalsIgnoreCase("NSS") || indiArr.get(0).toString().equalsIgnoreCase("NC")){
+	 	    					vo.setQualityAffectedAchivement(vo.getQualityAffectedAchivement()+Long.parseLong(indiArr.get(1)+""));
+	 	    				}else if(indiArr.get(0).toString().equalsIgnoreCase("PC1") || indiArr.get(0).toString().equalsIgnoreCase("PC2") 
+	 	    						|| indiArr.get(0).toString().equalsIgnoreCase("PC3") || indiArr.get(0).toString().equalsIgnoreCase("PC4")){
+	 	    					vo.setPartiallyCoveredAchivement(vo.getPartiallyCoveredAchivement()+Long.parseLong(indiArr.get(1)+""));
 	 	    				}
-	 	    				voList.add(vo);
+						}
+	 	    			
+	 	    		}
+	 	    		
+	 	    		if(jobj.getJSONArray("stateLevelTargetData") != null && jobj.getJSONArray("stateLevelTargetData").length() > 0){
+	 	    			JSONArray targetDataArr = jobj.getJSONArray("stateLevelTargetData");
+	 	    			for (int i = 0; i < targetDataArr.length(); i++) {
+	 	    				JSONArray indiArr = (JSONArray) targetDataArr.get(i);
+	 	    				if(indiArr.get(0).toString().equalsIgnoreCase("NSS") || indiArr.get(0).toString().equalsIgnoreCase("NC")){
+	 	    					vo.setQualityAffectedTarget(vo.getQualityAffectedTarget()+Long.parseLong(indiArr.get(1)+""));
+	 	    				}else if(indiArr.get(0).toString().equalsIgnoreCase("PC1") || indiArr.get(0).toString().equalsIgnoreCase("PC2") 
+	 	    						|| indiArr.get(0).toString().equalsIgnoreCase("PC3") || indiArr.get(0).toString().equalsIgnoreCase("PC4")){
+	 	    					vo.setPartiallyCoveredTarget(vo.getPartiallyCoveredTarget()+Long.parseLong(indiArr.get(1)+""));
+	 	    				}
 	 	    			}
 	 	    		}
 	 	    	}
-	 	    	 
-	 	    	  
-	 	      }
-	        
+	 	    }
 		} catch (Exception e) {
 			LOG.error("Exception raised at getKeyPerformanceIndicatorsInfo - RWSNICService service", e);
 		}
 		
-		return voList;
+		return vo;
 	}
 	
 	/*

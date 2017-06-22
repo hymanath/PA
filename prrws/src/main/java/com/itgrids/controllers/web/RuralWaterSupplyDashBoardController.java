@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.KPIVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.StatusVO;
@@ -155,17 +156,17 @@ public class RuralWaterSupplyDashBoardController {
 	}
 	
 	@PostMapping("/getKeyPerformanceIndicatorsInfo")
-	public @ResponseBody List<LocationVO> getKeyPerformanceIndicatorsInfo(@RequestBody InputVO vo) {
-		List<LocationVO> keyIndicatorsInfo = null;
+	public @ResponseBody KPIVO getKeyPerformanceIndicatorsInfo(@RequestBody InputVO vo) {
+		KPIVO kpiVo = null;
 		try {
-			keyIndicatorsInfo = rWSNICService.getKeyPerformanceIndicatorsInfo(vo);
+			kpiVo = rWSNICService.getKeyPerformanceIndicatorsInfo(vo);
 
 		} catch (Exception e) {
 			LOG.error(
 					"Exception raised at getKeyPerformanceIndicatorsInfo - RuralWaterSupplyDashBoardController controller",
 					e);
 		}
-		return keyIndicatorsInfo;
+		return kpiVo;
 	}
 	
 	@PostMapping("/getStressedHabitationsInfoByLocationType")

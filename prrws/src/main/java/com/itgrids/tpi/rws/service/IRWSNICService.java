@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.KPIVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.StatusVO;
@@ -19,7 +20,7 @@ public interface IRWSNICService {
 	public List<StatusVO> getAlertDetailsOfCategoryByStatusWise(InputVO vo);
 	public List<StatusVO> getAlertFeedbackStatusDetails(InputVO vo);
 	public List<StatusVO> getWaterSourceInfo(InputVO vo);
-	public List<LocationVO> getKeyPerformanceIndicatorsInfo(InputVO inputVO);
+	public KPIVO getKeyPerformanceIndicatorsInfo(InputVO inputVO);
 	public StatusVO getPlanofActionForStressedHabitations(InputVO vo);
 	public List<StatusVO> getStressedHabitationsInfoByLocationType(InputVO vo);
 	public List<LocationVO> getLocationWiseAlertStatusCounts(InputVO vo);
