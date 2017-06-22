@@ -80,8 +80,12 @@ IDelimitationConstituencyDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<Constituency> getLatestConstituenciesForDistrict(Long districtId){
-		return getHibernateTemplate().find("select model.constituency from DelimitationConstituency model where " +
-				"model.constituency.district.districtId =? and model.year =(Select max(model.year) from DelimitationConstituency model) order by model.constituency.name",districtId);
+		if(districtId != null && (districtId.longValue() == 517L || districtId.longValue() == 518L)){
+			return getHibernateTemplate().find(" select distinct model.constituency from DistrictConstituencies model where model.districtId=?   order by model.constituency.name ",districtId);
+		}else{
+			return getHibernateTemplate().find("select distinct model.constituency from DelimitationConstituency model where " +
+					"model.constituency.district.districtId =? and model.year =(Select max(model.year) from DelimitationConstituency model) order by model.constituency.name",districtId);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
