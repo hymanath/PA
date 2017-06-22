@@ -304,29 +304,22 @@ public class RWSNICService implements IRWSNICService{
  	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
  	      	}else{
 				String output =response.getEntity(String.class);
-//				output="[{'assetType':'DIRECT PUMPING','count':155},"
-//							+ "{'assetType':'OPEN WELLS','count':3},"
-//						    + "{'assetType':'SHALLOW HAND PUMPS','count':5},"
-//							+ "{'assetType':'HANDPUMPS','count':778},"
-//							+ "{'assetType':'PWS','count':164},"
-//					        + "{'assetType':'OTHERS','count':24},"
-//					        + "{'assetType':'MPWS','count':166},"
-//					        + "{'assetType':'CPWS','count':17}]";
- 	    	if(output != null && !output.isEmpty()){
- 	    		JSONArray finalArray = new JSONArray(output);
- 	    		if(finalArray!=null && finalArray.length()>0){
- 	    			for(int i=0;i<finalArray.length();i++){
- 	    				BasicVO basicVO = new BasicVO();
- 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
- 	    				basicVO.setAssetType(jObj.getString("assetType"));
- 	    				basicVO.setCount(jObj.getLong("count"));
- 	    				assetsList.add(basicVO);
- 	    			}
- 	    		}
- 	    	}
- 	    	 
- 	    	  
- 	      }
+				if(output != null && !output.isEmpty()){
+	 	    		JSONObject jobj = new JSONObject(output);
+	 	    		
+	 	    		if(jobj.getJSONArray("assetTypeList") != null && jobj.getJSONArray("assetTypeList").length() > 0){
+	 	    			JSONArray finalArray = jobj.getJSONArray("assetTypeList");
+	 	 	    		for(int i=0;i<finalArray.length();i++){
+	 	 	    			BasicVO basicVO = new BasicVO();
+	 	 	    			JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	 	    			basicVO.setAssetType(jObj.getString("assetType"));
+	 	 	    			basicVO.setCount(jObj.getLong("count"));
+	 	 	    			assetsList.add(basicVO);
+	 	 	    		}
+	 	    		}
+ 	    		
+				}
+ 	      	}
         
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAssetsInfo - RuralWaterSupplyDashBoardService service", e);
