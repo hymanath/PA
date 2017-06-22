@@ -7218,45 +7218,101 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		
 	 }
 	 @Override
-	 public List<Object[]> getHamletWiseIvrStatusCounts(Date fromDate,Date toDate,String year){
-		 
-		 StringBuilder str = new StringBuilder();
-		 str.append(" select UA.hamlet_id as hamletId,IOP.satisfied_status as satisfiedStatus,count(distinct ISA.ivr_survey_answer_id) as count "
-				   +" from ivr_survey_entity ISE,ivr_survey_entity_type ISET,ivr_survey_answer ISA,ivr_option IOP,user_address UA,ivr_respondent_location IRL,"
-				   + " ivr_survey ISV "
-                   +" where ISET.ivr_survey_entity_type_id = ISE.ivr_survey_entity_type_id "
-                   +" and ISE.ivr_survey_id = ISA.ivr_survey_id"
-                   +" and  ISA.ivr_option_id = IOP.ivr_option_id"
-                   +" and ISA.ivr_respondent_id = IRL.ivr_respondent_id"
-                   +" and IRL.address_id = UA.user_address_id"
-                   +" and ISV.ivr_survey_id = ISA.ivr_survey_id"
-                   +" and ISA.is_deleted ='false'"
-                   +" and ISET.ivr_survey_entity_type_id=6"
-                   +" and ISET.is_deleted ='false'"
-                   +" and UA.hamlet_id is not null"
-                   +" and IOP.is_deleted ='false'"
-                   +" and ISV.is_deleted ='false'");
-		 if(year!=null && !year.trim().isEmpty()){
-			 str.append(" and year(ISV.start_date) =:year  ");
-		 }
-		 else if(fromDate!=null && toDate!=null){
-			 str.append(" and date(ISV.start_date) between :fromDate and :toDate  ");
-		 }
-		 str.append(" group by UA.hamlet_id,IOP.satisfied_status ");
-		 
-		 Query query = getSession().createSQLQuery(str.toString())
-				.addScalar("hamletId",Hibernate.LONG) 
-				.addScalar("satisfiedStatus",Hibernate.STRING)
-				.addScalar("count",Hibernate.LONG);
-		 
-		 if(year!=null && !year.trim().isEmpty()){
-			 query.setParameter("year", Integer.parseInt(year));
-		 }
-		 else if(fromDate!=null && toDate!=null){
-			 query.setParameter("fromDate", fromDate);
-			 query.setParameter("toDate", toDate);
-		 }
-		
-		return query.list();
+	 public List<Object[]> getHamletWiseIvrStatusCounts(Date fromDate,Date toDate,String year,List<Long> locationValues,Long locationTypeId){
+		   StringBuilder sb = new StringBuilder();
+	       StringBuilder sbm = new StringBuilder();
+	       StringBuilder sbe = new StringBuilder();
+	       StringBuilder sbg = new StringBuilder();
+	       
+	       sb.append(" SELECT ");
+	       
+	       sbm.append(" FROM ivr_survey_entity ISE,ivr_survey_entity_type ISET,ivr_survey_answer ISA,ivr_option IOP,user_address UA,ivr_respondent_location IRL,"
+	             + " ivr_survey ISV ");
+	       
+	       sbe.append(" WHERE ISET.ivr_survey_entity_type_id = ISE.ivr_survey_entity_type_id "
+	                     +" and ISE.ivr_survey_id = ISA.ivr_survey_id"
+	                     +" and  ISA.ivr_option_id = IOP.ivr_option_id"
+	                     +" and ISA.ivr_respondent_id = IRL.ivr_respondent_id"
+	                     +" and IRL.address_id = UA.user_address_id"
+	                     +" and ISV.ivr_survey_id = ISA.ivr_survey_id"
+	                     +" and ISA.is_deleted ='false'"
+	                     +" and ISET.ivr_survey_entity_type_id=6"
+	                     +" and ISET.is_deleted ='false'"
+	                     +" and UA.hamlet_id is not null"
+	                     +" and IOP.is_deleted ='false'"
+	                     +" and ISV.is_deleted ='false'");
+	       
+	       if(year!=null && !year.trim().isEmpty()){
+	         sbe.append(" and year(ISV.start_date) =:year  ");
+	       }
+	       else if(fromDate!=null && toDate!=null){
+	         sbe.append(" and date(ISV.start_date) between :fromDate and :toDate  ");
+	       }
+	       
+	       sbg.append(" GROUP BY ");
+	       
+	       if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValues !=null && locationValues.size()>0){
+	         if(locationTypeId ==2l){
+	           sb.append( "  UA.state_id as typeId,S.state_name as type " );
+	           sbm.append( "  ,state S  " );          
+	           sbe.append( "  and S.state_id = UA.state_id  " );
+	           sbe.append(" and S.state_id in (:locationValues) ");
+	           sbg.append(" UA.state_id ");
+	         }else if(locationTypeId ==3l){
+	           
+	           sb.append( "  UA.district_id as typeId,D.district_name as type  " );
+	           sbm.append( "  ,district D  " );           
+	           sbe.append( "  and D.district_id = UA.district_id  " );
+	           sbe.append(" and D.district_id in (:locationValues) ");
+	           sbg.append(" UA.district_id ");
+	           
+	         }else if(locationTypeId ==4l){
+	           sb.append( "  UA.constituency_id as typeId,C.name as type " );
+	           sbm.append( "  ,constituency C  " );
+	           sbe.append( "  and C.constituency_id = UA.constituency_id  " );
+	           sbe.append(" and C.constituency_id in (:locationValues) ");
+	           sbg.append(" UA.constituency_id ");         
+	           
+	         }else if(locationTypeId ==5l){
+	           sb.append( "  UA.tehsil_id as typeId,T.tehsil_name as type " );
+	           sbm.append( "  ,tehsil T  " );           
+	           sbe.append( "  and T.tehsil_id = UA.tehsil_id  " );
+	           sbe.append(" and T.tehsil_id  in (:locationValues) ");
+	           sbg.append(" UA.tehsil_id ");  
+	         }else if(locationTypeId ==6l){
+	           sb.append( "  UA.panchayat_id as typeId,P.panchayat_name as type " );
+	           sbm.append( "  ,panchayat P  " );
+	           sbe.append( "  and P.panchayat_id =  UA.panchayat_id  " );
+	           sbe.append( "  and P.panchayat_id in  (:locationValues)  " );
+	           sbg.append(" UA.panchayat_id "); 
+	         }
+	       }
+	       
+	       sb.append(" ,UA.hamlet_id as hamletId,IOP.satisfied_status as satisfiedStatus,count(distinct ISA.ivr_survey_answer_id) as count ");
+	       
+	       sbg.append(" ,UA.hamlet_id,IOP.satisfied_status ");
+	       
+	       sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());  
+	       
+	       Query query = getSession().createSQLQuery(sb.toString())
+	           .addScalar("typeId",Hibernate.LONG) 
+	           .addScalar("type",Hibernate.LONG) 
+	             .addScalar("hamletId",Hibernate.LONG) 
+	             .addScalar("satisfiedStatus",Hibernate.STRING)
+	             .addScalar("count",Hibernate.LONG);
+				 if(year!=null && !year.trim().isEmpty()){
+	         query.setParameter("year", Integer.parseInt(year));
+	       }
+	       else if(fromDate!=null && toDate!=null){
+	         query.setParameter("fromDate", fromDate);
+	         query.setParameter("toDate", toDate);
+	       }
+	      
+	      if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValues !=null && locationValues.size()>0){
+	        query.setParameterList("locationValues", locationValues);
+	      }
+	      
+	      
+	      return query.list();
 	 }
 }
