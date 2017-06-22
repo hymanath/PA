@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -680,8 +681,8 @@ public class RWSNICService implements IRWSNICService{
 		try {
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getHamletWiseIvrStatusCounts");
 	        
-	        String jsonInString = new ObjectMapper().writeValueAsString(vo);
-	        System.out.println(jsonInString);
+	        /*String jsonInString = new ObjectMapper().writeValueAsString(vo);
+	        System.out.println(jsonInString);*/
 	        
 	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
 	        
