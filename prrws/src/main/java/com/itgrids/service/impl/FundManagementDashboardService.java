@@ -1349,9 +1349,12 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			if(finalList != null && finalList.size() > 0){
 				for(FundMatrixVO param : finalList){
 					Long totalLoc = 0L;
+					List<Long> totalLocIds = null;
 					Long collectedTotalLoc = 0L;
+					List<Long> collectedLocIds = null;
 					if(param.getRangeList() != null && param.getRangeList().size() > 0){
 						totalLoc = Long.parseLong(param.getRangeList().get(0).getValue());
+						totalLocIds = param.getRangeList().get(0).getNonFundLocIds();
 						int i = 0;
 						for(RangeVO innerParam : param.getRangeList()){
 							if(i==0){
@@ -1359,8 +1362,13 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 								continue;
 							}
 							collectedTotalLoc = collectedTotalLoc + Long.parseLong(innerParam.getValue());
+							if(innerParam.getNonFundLocIds() != null){
+								collectedLocIds = new ArrayList<Long>();
+								collectedLocIds.addAll(innerParam.getNonFundLocIds());
+							}
 						}
 						param.getRangeList().get(1).setValue(Long.toString((totalLoc-collectedTotalLoc)));
+						param.getRangeList().get(1).setLocationIds(setLocationIds(getNonFundedLocIds( totalLocIds,  collectedLocIds)));
 					}
 				}
 			}
@@ -1369,6 +1377,25 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			LOG.error("Exception Occurred in compareFundsBetweenFinancialYears() of FundManagementDashboardService ", e);
 		}
 		return null;
+	}
+	
+	public List<Long> getNonFundedLocIds(List<Long> totalLocIds,List<Long>  collectedLocIds){
+		
+		try{
+			if(collectedLocIds != null && collectedLocIds.size() > 0 && totalLocIds != null){
+				for(Long locId :collectedLocIds){
+					if(totalLocIds.contains(locId)){
+						totalLocIds.remove(locId);
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occurred in getNonFundedLocIds() of FundManagementDashboardService ", e);
+		}
+		return totalLocIds;
+		
 	}
 	
 	public void buildCompareFundsBetweenFinancialYears(List<FundMatrixVO> finalList, Long scopeId,final Long previousYearId, final Long presentYearId,InputVO inputVO){
@@ -1445,6 +1472,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  						locationList = new ArrayList<Long>();
  						rangeIdAndLocListMapForPrevious.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationList);
  					}
+ 					if(commonMethodsUtilService.getLongValueForObject(param[1]) > 0l)
  					locationList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
  				}
  			}
@@ -1457,9 +1485,10 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  					if(rangeIdAndLocListMapForPrevious != null && rangeIdAndLocListMapForPrevious.get(param.getId()) != null && rangeIdAndLocListMapForPrevious.get(param.getId()).size() > 0){
  						rangeVO.setValue(new Integer(rangeIdAndLocListMapForPrevious.get(param.getId()).size()).toString());
  						rangeVO.setLocationIds(setLocationIds(rangeIdAndLocListMapForPrevious.get(param.getId())));
+ 						rangeVO.setNonFundLocIds(rangeIdAndLocListMapForPrevious.get(param.getId()));
  					}else{
  						rangeVO.setValue("0");
- 						rangeVO.setLocationIds("0");
+ 						rangeVO.setLocationIds("");
  					}
  				}
  			}
@@ -1487,6 +1516,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  						locationList = new ArrayList<Long>();
  						rangeIdAndLocListMapForPresent.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationList);
  					}
+ 					if(commonMethodsUtilService.getLongValueForObject(param[1]) > 0l)
  					locationList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
  				}
  			}
@@ -1511,6 +1541,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  							if(tempSet != null && tempSet.size() > 0){
  								innerParam.setValue(new Integer(tempSet.size()).toString());
  								innerParam.setLocationIds(setLocationIds(commonLoc));
+ 								innerParam.setNonFundLocIds(commonLoc);
  							}
  						}
  					}
@@ -1548,6 +1579,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  						locationList = new ArrayList<Long>();
  						rangeIdAndLocListMapForPrevious.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationList);
  					}
+ 					if(commonMethodsUtilService.getLongValueForObject(param[1]) > 0l)
  					locationList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
  				}
  			}
@@ -1578,6 +1610,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  						locationList = new ArrayList<Long>();
  						rangeIdAndLocListMapForPresent.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationList);
  					}
+ 					if(commonMethodsUtilService.getLongValueForObject(param[1]) > 0l)
  					locationList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
  				}
  			}
@@ -1679,14 +1712,16 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  	public String setLocationIds(List<Long> commonLoc){
  		try{
  			StringBuilder sb = new StringBuilder();
- 			int len = commonLoc.size();
- 			for(int i = 0 ; i < len ; i++){
- 				if(i==0){
- 					sb.append(commonLoc.get(i).toString());
- 				}else{
- 					sb.append(",");
- 					sb.append(commonLoc.get(i).toString());
- 				}
+ 			if(commonLoc != null && commonLoc.size()>0){
+	 			int len = commonLoc.size();
+	 			for(int i = 0 ; i < len ; i++){
+	 				if(i==0){
+	 					sb.append(commonLoc.get(i).toString());
+	 				}else{
+	 					sb.append(",");
+	 					sb.append(commonLoc.get(i).toString());
+	 				}
+	 			}
  			}
  			return sb.toString();
  		}catch(Exception e){
