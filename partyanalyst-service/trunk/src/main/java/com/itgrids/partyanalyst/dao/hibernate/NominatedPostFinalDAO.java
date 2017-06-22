@@ -980,9 +980,11 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		   		           " model.nominationPostCandidate.casteState.caste.casteName," +
 		   	          	   " model.nominatedPostMember.nominatedPostPosition.position.positionId," +
 		   	          	   " model.nominatedPostMember.nominatedPostPosition.position.positionName," +
-		   	          	   " count(distinct model.nominationPostCandidate.nominationPostCandidateId) " +
-		   	          	   " from NominatedPostFinal model " +
-		   	          	   " where " +
+		   	          	   " count(model1.nominatedPostId) " +
+		   	          	   
+		   	          	   //" count(distinct model.nominationPostCandidate.nominationPostCandidateId) " +
+		   	          	   " from NominatedPostFinal model,NominatedPost model1 " +
+		   	          	   " where model.nominatedPost.nominatedPostId = model1.nominatedPostId and " +
 		   	          	   " model.isDeleted='N' and model.nominationPostCandidate.isDeleted='N'" +
 		   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " +
 		   	          	   " and model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in ("+IConstants.NOMINATED_POST_FINALIZED_GOISSUED_STATUS+") " +
