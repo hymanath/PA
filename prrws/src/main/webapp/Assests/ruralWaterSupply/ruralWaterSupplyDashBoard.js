@@ -16,10 +16,10 @@
 			getSchemesDetails();
 			getSchemeWiseWorkDetails();
 			getAssetInfoBetweenDates();
-			getWaterSourceInfo();
+			//getWaterSourceInfo();
 			getKeyPerformanceIndicatorsInfo('state','','graph');
-			getPlanofActionForStressedHabitations();
-			getStressedHabitationsInfoByLocationType();
+			//getPlanofActionForStressedHabitations();
+			getStressedHabitationsInfoByLocationType();//on click ? call
 			getAlertDetailsOfCategoryByStatusWise('graph','','');
 			getAlertFeedbackStatusDetails();
 			getLocationBasedOnSelection();//get dist/const/mandal
@@ -916,11 +916,11 @@
 		}
 		function getStressedHabitationsInfoByLocationType(){
 			var json = {
-					  year : "2014",
-					  fromDate : "2014-01-01",
-					  toDate : "2014-06-30",
-					  locationType : "district",
-					  locationId : "1"
+						locationType:"constituency",
+						year:"2017",
+						filterType:"constituency",
+						stressedHabitationYear:"2017",
+						filterValue:"120"
 
 					}
 			$.ajax({
