@@ -475,7 +475,6 @@ public class RWSNICService implements IRWSNICService{
 	 	    					vo.setPartiallyCoveredAchivement(vo.getPartiallyCoveredAchivement()+Long.parseLong(indiArr.get(1)+""));
 	 	    				}
 						}
-	 	    			
 	 	    		}
 	 	    		
 	 	    		if(jobj.getJSONArray("stateLevelTargetData") != null && jobj.getJSONArray("stateLevelTargetData").length() > 0){
@@ -489,6 +488,13 @@ public class RWSNICService implements IRWSNICService{
 	 	    					vo.setPartiallyCoveredTarget(vo.getPartiallyCoveredTarget()+Long.parseLong(indiArr.get(1)+""));
 	 	    				}
 	 	    			}
+	 	    		}
+	 	    		
+	 	    		if(vo.getPartiallyCoveredTarget() != null && vo.getPartiallyCoveredTarget() > 0l){
+	 	    			vo.setPartiallyCoveredPerc(((vo.getPartiallyCoveredAchivement()/vo.getPartiallyCoveredTarget())*100)+"");
+	 	    		}
+	 	    		if(vo.getQualityAffectedTarget() != null && vo.getQualityAffectedTarget() > 0l){
+	 	    			vo.setQualityAffectedPerc(((vo.getQualityAffectedAchivement()/vo.getQualityAffectedTarget())/100)+"");
 	 	    		}
 	 	    	}
 	 	    }
