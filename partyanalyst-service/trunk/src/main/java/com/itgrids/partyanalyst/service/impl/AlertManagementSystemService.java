@@ -15456,7 +15456,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  				Map<Long,AlertVO> hamletMap = typeMap.get((Long)objects[0]);
  				if(hamletMap==null){
  					hamletMap = new HashMap<Long, AlertVO>();
- 					typeMap.put((Long) objects[0], hamletMap);
+ 					typeMap.put((Long)objects[0], hamletMap);
  				}
  				
  				AlertVO vo = hamletMap.get((Long)objects[2]);
@@ -15491,15 +15491,17 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  					String locationName=null;
  					if(hamletList!=null && hamletList.size()>0){
  						for (AlertVO alertVO : hamletList) {
+ 							
  							Long satisfyCount = alertVO.getSatisfiedCount() !=null ? alertVO.getSatisfiedCount():0l;
  		 					Long unSatisfyCount = alertVO.getUnSatisfiedCount()!=null ? alertVO.getUnSatisfiedCount():0l;
+ 		 					
  		 					alertVO.setCount(satisfyCount+unSatisfyCount);
- 		 					locationName = alertVO.getName();
+ 		 					
  		 					String perc = cadreDetailsService.calculatePercentage(alertVO.getCount(),satisfyCount);
  		 					if(perc !=null && perc !="0" && !perc.trim().isEmpty()){
  		 						alertVO.setPercentage(Double.parseDouble(perc));
  		 						
- 		 						if(alertVO.getPercentage()>70){
+ 		 						if(alertVO.getPercentage()>=70){
  		 							greenHamletCount++;
  		 						}else if(alertVO.getPercentage()<70 && alertVO.getPercentage()>50){
  		 							orangeHamletCount++;
@@ -15508,6 +15510,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  		 						}
  		 					}
 						}
+ 						typeVO.setName(hamletList.get(0).getName());
  					}
  					
  					AlertVO green = new AlertVO(); 
@@ -15520,7 +15523,6 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  	 				red.setName("red");
  	 				red.setCount(redHamletCount);
  	 				
- 	 				typeVO.setName(locationName);
  	 				typeVO.getSubList1().add(green);
  	 				typeVO.getSubList1().add(orange);
  	 				typeVO.getSubList1().add(red);
