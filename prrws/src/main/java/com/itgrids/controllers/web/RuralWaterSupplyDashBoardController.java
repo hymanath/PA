@@ -156,17 +156,17 @@ public class RuralWaterSupplyDashBoardController {
 	}
 	
 	@PostMapping("/getKeyPerformanceIndicatorsInfo")
-	public @ResponseBody KPIVO getKeyPerformanceIndicatorsInfo(@RequestBody InputVO vo) {
-		KPIVO kpiVo = null;
+	public @ResponseBody List<KPIVO> getKeyPerformanceIndicatorsInfo(@RequestBody InputVO vo) {
+		List<KPIVO> kpiVoList = null;
 		try {
-			kpiVo = rWSNICService.getKeyPerformanceIndicatorsInfo(vo);
+			kpiVoList = rWSNICService.getKeyPerformanceIndicatorsInfo(vo);
 
 		} catch (Exception e) {
 			LOG.error(
 					"Exception raised at getKeyPerformanceIndicatorsInfo - RuralWaterSupplyDashBoardController controller",
 					e);
 		}
-		return kpiVo;
+		return kpiVoList;
 	}
 	
 	@PostMapping("/getStressedHabitationsInfoByLocationType")
