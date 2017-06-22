@@ -10,8 +10,22 @@ public class KPIVO {
 	private Long qualityAffectedAchivement = 0l;
 	private Long qualityAffectedTarget = 0l;
 	private List<Long> kpiVoList = new ArrayList<Long>(0);
+	private String partiallyCoveredPerc = "", qualityAffectedPerc = "";
 	
 	
+	
+	public String getPartiallyCoveredPerc() {
+		return partiallyCoveredPerc;
+	}
+	public void setPartiallyCoveredPerc(String partiallyCoveredPerc) {
+		this.partiallyCoveredPerc = partiallyCoveredPerc;
+	}
+	public String getQualityAffectedPerc() {
+		return qualityAffectedPerc;
+	}
+	public void setQualityAffectedPerc(String qualityAffectedPerc) {
+		this.qualityAffectedPerc = qualityAffectedPerc;
+	}
 	public Long getPartiallyCoveredAchivement() {
 		return partiallyCoveredAchivement;
 	}
