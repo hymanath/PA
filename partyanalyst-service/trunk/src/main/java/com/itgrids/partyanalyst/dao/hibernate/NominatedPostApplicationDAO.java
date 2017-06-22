@@ -2424,7 +2424,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		 int count = query.executeUpdate();
 		 return count;
 	}
-	public Long nominatedPostAppPostionDetails(Long boardLevelId,Long locationValue,Long deptId,Long boardId,Long positionId,Long postTypeId,Long nominationCandidateId ){
+	public Long nominatedPostAppPostionDetails(Long boardLevelId,Long locationValue,Long deptId,Long boardId,Long positionId,Long postTypeId,Long nominationCandidateId,Long statusId ){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.nominatedPostApplicationId from NominatedPostApplication model ");
 		queryStr.append(" where " );
@@ -2449,6 +2449,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 			if(nominationCandidateId != null && nominationCandidateId.longValue()>0){
 				queryStr.append(" and model.nominationPostCandidate.nominationPostCandidateId =:nominationCandidateId ");
 			}
+			queryStr.append(" and model.applicationStatus.applicationStatusId not in(2,4,8) ");
 			queryStr.append(" and model.isDeleted ='N' and  model.isExpired ='N' ");
 		Query query = getSession().createQuery(queryStr.toString());
 		
