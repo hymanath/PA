@@ -5,50 +5,37 @@ import java.util.List;
 
 public class KPIVO {
 	
-	private Long partiallyCoveredAchivement = 0l;
-	private Long partiallyCoveredTarget = 0l;
-	private Long qualityAffectedAchivement = 0l;
-	private Long qualityAffectedTarget = 0l;
 	private List<Long> kpiVoList = new ArrayList<Long>(0);
-	private String partiallyCoveredPerc = "", qualityAffectedPerc = "";
+	private String type="";
+	private Long targetCount = 0l,achivmentCount = 0l;
+	private String perc = "";
 	
 	
 	
-	public String getPartiallyCoveredPerc() {
-		return partiallyCoveredPerc;
+	public String getType() {
+		return type;
 	}
-	public void setPartiallyCoveredPerc(String partiallyCoveredPerc) {
-		this.partiallyCoveredPerc = partiallyCoveredPerc;
+	public void setType(String type) {
+		this.type = type;
 	}
-	public String getQualityAffectedPerc() {
-		return qualityAffectedPerc;
+	
+	public Long getTargetCount() {
+		return targetCount;
 	}
-	public void setQualityAffectedPerc(String qualityAffectedPerc) {
-		this.qualityAffectedPerc = qualityAffectedPerc;
+	public void setTargetCount(Long targetCount) {
+		this.targetCount = targetCount;
 	}
-	public Long getPartiallyCoveredAchivement() {
-		return partiallyCoveredAchivement;
+	public Long getAchivmentCount() {
+		return achivmentCount;
 	}
-	public void setPartiallyCoveredAchivement(Long partiallyCoveredAchivement) {
-		this.partiallyCoveredAchivement = partiallyCoveredAchivement;
+	public void setAchivmentCount(Long achivmentCount) {
+		this.achivmentCount = achivmentCount;
 	}
-	public Long getPartiallyCoveredTarget() {
-		return partiallyCoveredTarget;
+	public String getPerc() {
+		return perc;
 	}
-	public void setPartiallyCoveredTarget(Long partiallyCoveredTarget) {
-		this.partiallyCoveredTarget = partiallyCoveredTarget;
-	}
-	public Long getQualityAffectedAchivement() {
-		return qualityAffectedAchivement;
-	}
-	public void setQualityAffectedAchivement(Long qualityAffectedAchivement) {
-		this.qualityAffectedAchivement = qualityAffectedAchivement;
-	}
-	public Long getQualityAffectedTarget() {
-		return qualityAffectedTarget;
-	}
-	public void setQualityAffectedTarget(Long qualityAffectedTarget) {
-		this.qualityAffectedTarget = qualityAffectedTarget;
+	public void setPerc(String perc) {
+		this.perc = perc;
 	}
 	public List<Long> getKpiVoList() {
 		return kpiVoList;
