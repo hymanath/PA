@@ -23,6 +23,7 @@
 			getAlertDetailsOfCategoryByStatusWise('graph','','');
 			getAlertFeedbackStatusDetails();
 			getLocationBasedOnSelection();//get dist/const/mandal
+			getHamletWiseIvrStatusCounts();
 		}
 		function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title)
 		{
@@ -1678,6 +1679,8 @@
 			var json = {
 				fromDate:"",
 				toDate:"",
+				locationValues:[1],
+				locationTypeId:2,
 				year:2017
 			}
 			
@@ -1696,5 +1699,6 @@
 			});
 		}
 	
+		
 	
 	
