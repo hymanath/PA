@@ -1120,13 +1120,13 @@ str+='</table>';
 	 str+='<i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;" title="Update Cadre MobileNo And Caste"></i>';*/
 	str+='<div id="uc'+result[i].id+'" class="pull-right updateCadreClass" style="margin-left:3px;cursor:pointer;" attr_cadre_id='+result[i].id+' attr_mobile_no ="'+result[i].mobileNo+'" attr_caste_name ="'+result[i].casteName+'" attr_cadre_name ="'+result[i].name+'"><i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;" title="Update Cadre MobileNo And Caste"></i></div>';
 	 </c:if>
-	  if(basicCmmtyId == 1){
+	  //if(basicCmmtyId == 1){
 	 if(result[i].role!=null){
 		 str+='<br>'+result[i].role+'';
 	 }else{
 		 str+='';
 	 }
-	 }	 
+	// }	 
 	 
 	  str+=' </td>';	  
 	// str+='<td style="padding-top: 15px; padding-left: 15px;width:281px;">'+result[i].name+'</td>';
@@ -1164,13 +1164,13 @@ str+='</table>';
 	
 	 str+='<td> '+result[i].name+'';
 	   str+=' </td>';
-	  if(basicCmmtyId == 1){
+	 // if(basicCmmtyId == 1){
 	 if(result[i].role!=null){
 		 str+=' <td> '+result[i].role+'</td>';
 	 }else{
 		 str+='<td></td>';
 	 }
-	 }	 
+	 //}	 
 		  
 	// str+='<td style="padding-top: 15px; padding-left: 15px;width:281px;">'+result[i].name+'</td>';
 	 //str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].membershipNo+'</td>';
