@@ -1730,12 +1730,7 @@ public class SchedulerService implements ISchedulerService{
 				message.addRecipient(Message.RecipientType.TO, new InternetAddress("accounts@telugudesam.org")); 
 				message.addRecipient(Message.RecipientType.TO, new InternetAddress("a.dakavaram@itgrids.com"));  
 				message.addRecipient(Message.RecipientType.TO, new InternetAddress("swadhin.lenka@itgrids.com"));    
-				/*List<Object[]> emailList = reportEmailDAO.getEmailList(1l);
-				for(Object[] emailArr : emailList){
-					if(emailArr[1]==null)
-						continue;//accounts@telugudesam.org//a.dakavaram@itgrids.com
-					message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailArr[1].toString()));  */
-				
+	
 			}else if(area.equalsIgnoreCase("dept")){
 				List<Object[]> emailList = userEmailDAO.getEmailList(emailAttributesVO.getEmailId());
 				for(Object[] emailArr : emailList){ 
