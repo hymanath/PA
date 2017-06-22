@@ -15477,9 +15477,12 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  					
  					AlertVO vo = objects.getValue();
  					
- 					vo.setCount(vo.getSatisfiedCount()+vo.getUnSatisfiedCount());
+ 					Long satisfyCount = vo.getSatisfiedCount() !=null ? vo.getSatisfiedCount():0l;
+ 					Long unSatisfyCount = vo.getUnSatisfiedCount()!=null ? vo.getUnSatisfiedCount():0l;
  					
- 					String perc = cadreDetailsService.calculatePercentage(vo.getCount(),vo.getSatisfiedCount());
+ 					vo.setCount(satisfyCount+unSatisfyCount);
+ 					
+ 					String perc = cadreDetailsService.calculatePercentage(vo.getCount(),satisfyCount);
  					if(perc !=null && perc !="0" && !perc.trim().isEmpty()){
  						vo.setPercentage(Double.parseDouble(perc));
  						
@@ -15505,8 +15508,9 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  				
  					ivrFinalMap.put("Green", green);
 					ivrFinalMap.put("Orange",orange);
-					ivrFinalMap.put("Red",red);					 					
- 					finalList.add((AlertVO) ivrFinalMap.values());
+					ivrFinalMap.put("Red",red);					
+					
+ 					finalList.addAll(ivrFinalMap.values());
  			}
  			
  		}catch (Exception e) {
