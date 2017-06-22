@@ -62,10 +62,10 @@ function onLoadCalls()
 		viewMode:'months'
 	});
 	$('#dateRangePickerMGNF').on('dp.change', function(e){ 
-		glStartDate = '01-'+e.date.format("YYYY-MM")
+		glStartDate = e.date.format("YYYY-MM")+"-01";
 	});
 	$('#dateRangePickerMGNT').on('dp.change', function(e){ 
-		glEndDate = '31-'+e.date.format("YYYY-MM");
+		glEndDate = e.date.format("YYYY-MM")+"-31";
 		var blockName = '';
 		$(".panel-block-white").each(function(){
 			if($(this).hasClass("active"))
@@ -1157,7 +1157,7 @@ function buildLabrBudgetExpBlock(result,projectDivId){
 		str+='<table class="table table-striped">';
 			str+='<tbody>';
 				 str+='<tr>';
-					 str+='<td>District Name</td>';
+					 str+='<td></td>';
 					 for(var i in result){
 						 str+='<td>'+result[i].name+'</td>';
 					 }
