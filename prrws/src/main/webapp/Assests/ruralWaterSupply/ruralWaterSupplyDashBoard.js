@@ -804,11 +804,10 @@
 		}
 		
 		function getKeyPerformanceIndicatorsInfo(locationType,divId,type){
-			var json = {
-					  year : "2014",
-					  fromDate : "2014-01-01",
-					  toDate : "2014-06-30",
-					 locationType : locationType	
+			var json={
+						fromDateStr:"01-12-2016",
+						toDateStr:"01-12-2017",
+						locationType:"state"
 					}
 			$.ajax({
 				url: 'getKeyPerformanceIndicatorsInfo',
