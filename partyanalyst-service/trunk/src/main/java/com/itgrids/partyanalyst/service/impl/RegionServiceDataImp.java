@@ -525,15 +525,19 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(517L);// vishakapattanam urban
 				else if(districtID.longValue() == 1L) // Adilabad 
 					constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(518L); // manchirial
-				
-				for(Constituency constituency:constituencies)
-					constituencyIdsList.add(constituency.getConstituencyId());
+				if(commonMethodsUtilService.isListOrSetValid(constituencies)){
+					for(Constituency constituency:constituencies)
+						constituencyIdsList.add(constituency.getConstituencyId());
+				}
 			}
 			List<Constituency> constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(districtID);
-			for(Constituency constituency:constituencies){
-				if(!constituencyIdsList.contains(constituency.getConstituencyId()))
-					constituencyNames.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));
+			if(commonMethodsUtilService.isListOrSetValid(constituencies)){
+				for(Constituency constituency:constituencies){
+					if(!constituencyIdsList.contains(constituency.getConstituencyId()))
+						constituencyNames.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));
+				}
 			}
+			
 		} catch (Exception e) {
 			log.error("Exception arised while getConstituenciesByDistrictID() RegionServiceDataImp class.");
 		}
