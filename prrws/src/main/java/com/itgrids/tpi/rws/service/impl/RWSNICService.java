@@ -448,8 +448,8 @@ public class RWSNICService implements IRWSNICService{
 	 * Author :R Nagarjuna Gowd
 	 * @description : getKeyPerformanceIndicatorsInfo
 	 */
-	public KPIVO getKeyPerformanceIndicatorsInfo(InputVO inputVO){
-		KPIVO vo = new KPIVO();
+	public List<KPIVO> getKeyPerformanceIndicatorsInfo(InputVO inputVO){
+		List<KPIVO> voList = new ArrayList<KPIVO>(0);
 		try {
 			 
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getKpiDeatils");	        
@@ -462,6 +462,7 @@ public class RWSNICService implements IRWSNICService{
 	 	    }else{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
+	 	    		Long pcAchivement=0l,pcTarget=0l,qaAchivement=0l,qaTarget=0l;
 	 	    		JSONObject jobj = new JSONObject(output);
 	 	    		
 	 	    		if(jobj.getJSONArray("stateLevelAcheieveMentsData") != null && jobj.getJSONArray("stateLevelAcheieveMentsData").length() > 0){
@@ -469,10 +470,10 @@ public class RWSNICService implements IRWSNICService{
 	 	    			for (int i = 0; i < acheieveMentArr.length(); i++) {
 	 	    				JSONArray indiArr = (JSONArray) acheieveMentArr.get(i);
 	 	    				if(indiArr.get(0).toString().equalsIgnoreCase("NSS") || indiArr.get(0).toString().equalsIgnoreCase("NC")){
-	 	    					vo.setQualityAffectedAchivement(vo.getQualityAffectedAchivement()+Long.parseLong(indiArr.get(1)+""));
+	 	    					qaAchivement = qaAchivement+Long.parseLong(indiArr.get(1)+"");
 	 	    				}else if(indiArr.get(0).toString().equalsIgnoreCase("PC1") || indiArr.get(0).toString().equalsIgnoreCase("PC2") 
 	 	    						|| indiArr.get(0).toString().equalsIgnoreCase("PC3") || indiArr.get(0).toString().equalsIgnoreCase("PC4")){
-	 	    					vo.setPartiallyCoveredAchivement(vo.getPartiallyCoveredAchivement()+Long.parseLong(indiArr.get(1)+""));
+	 	    					pcAchivement = pcAchivement+Long.parseLong(indiArr.get(1)+"");
 	 	    				}
 						}
 	 	    		}
@@ -482,27 +483,46 @@ public class RWSNICService implements IRWSNICService{
 	 	    			for (int i = 0; i < targetDataArr.length(); i++) {
 	 	    				JSONArray indiArr = (JSONArray) targetDataArr.get(i);
 	 	    				if(indiArr.get(0).toString().equalsIgnoreCase("NSS") || indiArr.get(0).toString().equalsIgnoreCase("NC")){
-	 	    					vo.setQualityAffectedTarget(vo.getQualityAffectedTarget()+Long.parseLong(indiArr.get(1)+""));
+	 	    					qaTarget = qaTarget + Long.parseLong(indiArr.get(1)+"");
 	 	    				}else if(indiArr.get(0).toString().equalsIgnoreCase("PC1") || indiArr.get(0).toString().equalsIgnoreCase("PC2") 
 	 	    						|| indiArr.get(0).toString().equalsIgnoreCase("PC3") || indiArr.get(0).toString().equalsIgnoreCase("PC4")){
-	 	    					vo.setPartiallyCoveredTarget(vo.getPartiallyCoveredTarget()+Long.parseLong(indiArr.get(1)+""));
+	 	    					pcTarget = pcTarget+Long.parseLong(indiArr.get(1)+"");
 	 	    				}
 	 	    			}
 	 	    		}
 	 	    		
-	 	    		if(vo.getPartiallyCoveredTarget() != null && vo.getPartiallyCoveredTarget() > 0l){
-	 	    			vo.setPartiallyCoveredPerc(((vo.getPartiallyCoveredAchivement()/vo.getPartiallyCoveredTarget())*100)+"");
+	 	    		KPIVO pcVO = new KPIVO();
+	 	    		pcVO.setType("PARTIALLY COVERED");
+	 	    		if(pcTarget > 0l){
+	 	    			pcVO.setTargetCount(pcTarget);
+	 	    			pcVO.setAchivmentCount(pcAchivement);
+	 	    			pcVO.setPerc(((pcAchivement/pcTarget)/100)+"");
 	 	    		}
-	 	    		if(vo.getQualityAffectedTarget() != null && vo.getQualityAffectedTarget() > 0l){
-	 	    			vo.setQualityAffectedPerc(((vo.getQualityAffectedAchivement()/vo.getQualityAffectedTarget())/100)+"");
+	 	    		
+	 	    		voList.add(pcVO);
+	 	    		
+	 	    		KPIVO qaVO = new KPIVO();
+	 	    		qaVO.setType("QUALITY AFFECTED");
+	 	    		if(pcTarget > 0l){
+	 	    			qaVO.setTargetCount(qaTarget);
+	 	    			qaVO.setAchivmentCount(qaAchivement);
+	 	    			qaVO.setPerc(((qaAchivement/qaTarget)/100)+"");
 	 	    		}
+	 	    		
+	 	    		voList.add(qaVO);
+	 	    		
 	 	    	}
+	 	    	
+	 	    	
+	 	    	
+	 	    	
+	 	    	
 	 	    }
 		} catch (Exception e) {
 			LOG.error("Exception raised at getKeyPerformanceIndicatorsInfo - RWSNICService service", e);
 		}
 		
-		return vo;
+		return voList;
 	}
 	
 	/*
