@@ -170,17 +170,16 @@ public class RuralWaterSupplyDashBoardController {
 	}
 	
 	@PostMapping("/getStressedHabitationsInfoByLocationType")
-	public @ResponseBody List<StatusVO> getStressedHabitationsInfoByLocationType(@RequestBody InputVO vo) {
-		List<StatusVO> stressedHabitationsInfo = null;
+	public @ResponseBody StatusVO getStressedHabitationsInfoByLocationType(@RequestBody InputVO vo) {
 		try {
-			stressedHabitationsInfo = rWSNICService.getStressedHabitationsInfoByLocationType(vo);
+			return  rWSNICService.getStressedHabitationsInfoByLocationType(vo);
 
 		} catch (Exception e) {
 			LOG.error(
 					"Exception raised at stressedHabitationsInfo - RuralWaterSupplyDashBoardController controller",
 					e);
 		}
-		return stressedHabitationsInfo;
+		return null;
 	}
 	
 	
