@@ -22,7 +22,7 @@ public interface IRWSNICService {
 	public List<StatusVO> getWaterSourceInfo(InputVO vo);
 	public List<KPIVO> getKeyPerformanceIndicatorsInfo(InputVO inputVO);
 	public StatusVO getPlanofActionForStressedHabitations(InputVO vo);
-	public List<StatusVO> getStressedHabitationsInfoByLocationType(InputVO vo);
+	public StatusVO getStressedHabitationsInfoByLocationType(InputVO vo);
 	public List<LocationVO> getLocationWiseAlertStatusCounts(InputVO vo);
 	public List<RangeVO> getLocationBasedOnSelection(InputVO vo);
 	public List<LocationVO> getHamletWiseIvrCounts(InputVO vo);

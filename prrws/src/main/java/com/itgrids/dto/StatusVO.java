@@ -1,5 +1,8 @@
 package com.itgrids.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StatusVO {
 	
 	private Long id;
@@ -15,6 +18,15 @@ public class StatusVO {
 	private Long budgetPreparedHubs;
 	private Long popInStressedHubs;
 	
+	private List<StatusVO> statusVOList = new ArrayList<StatusVO>(0);
+	
+	
+	public List<StatusVO> getStatusVOList() {
+		return statusVOList;
+	}
+	public void setStatusVOList(List<StatusVO> statusVOList) {
+		this.statusVOList = statusVOList;
+	}
 	public String getStatus() {
 		return status;
 	}

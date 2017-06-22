@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import sun.misc.BASE64Encoder;
 
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
@@ -22,8 +23,6 @@ import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-
-import sun.misc.BASE64Encoder;
 
 @Service
 @Transactional
@@ -530,8 +529,8 @@ public class RWSNICService implements IRWSNICService{
 	 * Author :Nagarjuna
 	 * @description : getStressedHabitationsInfoByLocationType
 	 */
-	public List<StatusVO> getStressedHabitationsInfoByLocationType(InputVO vo) {
-		List<StatusVO> stressedHabitation = new ArrayList<StatusVO>(0);
+	public StatusVO getStressedHabitationsInfoByLocationType(InputVO vo) {
+		StatusVO statusVO = new StatusVO();
 		try{
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getStressedHabitationInfoInALocation");	        
@@ -545,20 +544,27 @@ public class RWSNICService implements IRWSNICService{
 				String output = response.getEntity(String.class);
 				
  	    	if(output != null && !output.isEmpty()){
- 	    		JSONArray finalArray = new JSONArray(output);
- 	    		if(finalArray!=null && finalArray.length()>0){
- 	    			for(int i=0;i<finalArray.length();i++){
- 	    				StatusVO statusVO = new StatusVO();
- 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
- 	    				statusVO.setName(jObj.getString("locationName"));
- 	    				statusVO.setCount(jObj.getLong("totalHubs"));
- 	    				statusVO.setStressedCount(jObj.getLong("stressedHubs"));
- 	    				statusVO.setPopulation(jObj.getLong("population"));
- 	    				statusVO.setBudgetPreparedHubs(jObj.getLong("budgetPreparedHubs"));
- 	    				statusVO.setPopInStressedHubs(jObj.getLong("popInStressedHubs"));
- 	    				stressedHabitation.add(statusVO);
+ 	    		
+ 	    		JSONObject maonJObj = new JSONObject(output);
+ 	    		
+ 	    		statusVO.setId(maonJObj.getLong("locationId"));
+ 	    		statusVO.setName(maonJObj.getString("locationName"));
+ 	    		
+ 	    		JSONArray statusArray = maonJObj.getJSONArray("statusList");
+ 	    		
+ 	    		if(statusArray!=null && statusArray.length()>0){
+ 	    			for(int i=0;i<statusArray.length();i++){
+ 	    				StatusVO subVO = new StatusVO();
+ 	    				JSONObject jObj = (JSONObject) statusArray.get(i);
+ 	    				subVO.setName(jObj.getString("status"));
+ 	    				subVO.setCount(jObj.getLong("count"));//All Habs
+ 	    				subVO.setStressedCount(jObj.getLong("stressedHabitationCount"));
+ 	    				subVO.setPercentage(jObj.getDouble("percentage"));
+ 	    				
+ 	    				statusVO.getStatusVOList().add(subVO);
  	    			}
  	    		}
+ 	    		
  	    	}
  	    	 
  	    	  
@@ -567,9 +573,8 @@ public class RWSNICService implements IRWSNICService{
 		}catch (Exception e) {
 			LOG.error("Exception raised at getStressedHabitationsInfoByLocationType - RuralWaterSupplyDashBoardService service", e);
 		}
-		
-		
-		return stressedHabitation;
+
+		return statusVO;
 	}
 	
 	public StatusVO getPlanofActionForStressedHabitations(InputVO vo){
