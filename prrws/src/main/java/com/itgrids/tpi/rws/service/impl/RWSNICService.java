@@ -324,9 +324,7 @@ public class RWSNICService implements IRWSNICService{
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAssetsInfo - RuralWaterSupplyDashBoardService service", e);
 		}
-		
 		return assetsList;
-
 	}
 	
 	public List<StatusVO> getAlertDetailsOfCategoryByStatusWise(InputVO inputVO){
@@ -415,7 +413,6 @@ public class RWSNICService implements IRWSNICService{
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getWaterSourceInfo");	        
 		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
-			
 			
         	if(response.getStatus() != 200){
  	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -511,7 +508,7 @@ public class RWSNICService implements IRWSNICService{
 		List<StatusVO> stressedHabitation = new ArrayList<StatusVO>(0);
 		try{
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getStressedHabitationsInfoByLocationType");	        
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getStressedHabitationInfoInALocation");	        
 		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
 			
@@ -520,8 +517,7 @@ public class RWSNICService implements IRWSNICService{
  	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
  	      	}else{
 				String output = response.getEntity(String.class);
-				/*output="[{'locationName' : 'Srikakulam','totalHubs'  : '1000','stressedHubs'  : '80','population' : '987654','budgetPreparedHubs' : '70','popInStressedHubs' : '8760'  },"
-                      +" {'locationName' : 'Vizianagarm','totalHubs'  : '1000','stressedHubs'  : '80','population' : '987654','budgetPreparedHubs' : '70','popInStressedHubs' : '8760' }]";*/
+				
  	    	if(output != null && !output.isEmpty()){
  	    		JSONArray finalArray = new JSONArray(output);
  	    		if(finalArray!=null && finalArray.length()>0){
@@ -562,7 +558,6 @@ public class RWSNICService implements IRWSNICService{
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
 	 	    	 String output = response.getEntity(String.class);
-	 	    	/* output = "{\"target\":\"10000\",\"achieved\":\"9000\",\"population\":\"25920\"}";*/
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jobj = new JSONObject(output);
