@@ -28,8 +28,8 @@ public class LocationFundDetailsVO implements Serializable{
 	
 	private List<IdNameVO> subList = new ArrayList<IdNameVO>();
 	private List<LocationFundDetailsVO> detailsVOs;	
-	
-	
+	private List<LocationFundDetailsVO> fundDetailsVOs;
+	private List<LocationFundDetailsVO> schemeDetailsVOs;
 	
 	public Long getTotSchemes() {
 		return totSchemes;
@@ -108,6 +108,18 @@ public class LocationFundDetailsVO implements Serializable{
 			detailsVOs = new ArrayList<LocationFundDetailsVO>();
 		}
 		return detailsVOs;
+	}
+	public List<LocationFundDetailsVO> getFundDetailsVOs() {
+		if(fundDetailsVOs == null){
+			fundDetailsVOs = new ArrayList<LocationFundDetailsVO>();
+		}
+		return fundDetailsVOs;
+	}
+	public List<LocationFundDetailsVO> getSchemeDetailsVOs() {
+		if(schemeDetailsVOs == null){
+			schemeDetailsVOs = new ArrayList<LocationFundDetailsVO>();
+		}
+		return schemeDetailsVOs;
 	}
 	public Long getCount() {
 		return count;

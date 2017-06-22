@@ -34,6 +34,9 @@ public interface IConstants {
     public static final String TOTAL_AP_DISTRICT_IDS = "11,12,13,14,15,16,17,18,19,20,21,22,23";
     
     public static final int MATRIX_REPORT_INTERVALS = 8;
-    
+    public static final Long[] FUND_TYPE_IDS = {1L,2L,3L,4L};
+    public static final String[] FUND_TYPE = {"PLAIN","SCP","TSP","SCSP"};
+    public static final Long[] SCHEME_TYPE_IDS = {5L,6L,7L,9L};  
+    public static final String[] SCHEME_TYPE = {"SVS","SOLAR","CWTP","MVS"};  
 	
 }
