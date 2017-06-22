@@ -1637,7 +1637,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		nominatedPostApplication.setIsExpired("N");
 		nominatedPostApplication.setApplicationStatusId(1l);
 		nominatedPostApplication.setAddressId(nominatedPostAddress.getUserAddressId());
-		Long nominatedPostApplicationId =nominatedPostApplicationDAO.nominatedPostAppPostionDetails(nominatedPostApplication.getBoardLevelId(),nominatedPostApplication.getLocationValue(),nominatedPostApplication.getDepartmentId(),nominatedPostApplication.getBoardId(),nominatedPostApplication.getPositionId(),nominatedPostApplication.getPostTypeId(),nominatedPostApplication.getNominationPostCandidateId());
+		Long nominatedPostApplicationId =nominatedPostApplicationDAO.nominatedPostAppPostionDetails(nominatedPostApplication.getBoardLevelId(),nominatedPostApplication.getLocationValue(),nominatedPostApplication.getDepartmentId(),nominatedPostApplication.getBoardId(),nominatedPostApplication.getPositionId(),nominatedPostApplication.getPostTypeId(),nominatedPostApplication.getNominationPostCandidateId(),nominatedPostApplication.getApplicationStatusId());
 		if(nominatedPostApplicationId == null)
 		nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 		saveApplicationDocuments(nominatedPostApplication.getNominatedPostApplicationId(),nominatedPostCandi,mapfiles);
