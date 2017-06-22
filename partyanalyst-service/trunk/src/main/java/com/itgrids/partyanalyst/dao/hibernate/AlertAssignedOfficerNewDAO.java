@@ -7296,13 +7296,13 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	       
 	       Query query = getSession().createSQLQuery(sb.toString())
 	           .addScalar("typeId",Hibernate.LONG) 
-	           .addScalar("type",Hibernate.LONG) 
+	           .addScalar("type",Hibernate.STRING) 
 	             .addScalar("hamletId",Hibernate.LONG) 
 	             .addScalar("satisfiedStatus",Hibernate.STRING)
 	             .addScalar("count",Hibernate.LONG);
 				 if(year!=null && !year.trim().isEmpty()){
-	         query.setParameter("year", Integer.parseInt(year));
-	       }
+					 query.setParameter("year", Integer.parseInt(year));
+				 }
 	       else if(fromDate!=null && toDate!=null){
 	         query.setParameter("fromDate", fromDate);
 	         query.setParameter("toDate", toDate);
