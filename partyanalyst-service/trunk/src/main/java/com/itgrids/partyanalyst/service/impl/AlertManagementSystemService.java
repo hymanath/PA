@@ -15437,10 +15437,104 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 		}
 		return status;
 	}
-	public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDateStr,String toDateStr,String year){
+	public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDateStr,String toDateStr,String year,List<Long> locationValues,Long LocationTypeId){
  		List<AlertVO> finalList = new ArrayList<AlertVO>();
+ 		
  		try{
  			Date frmDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				frmDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			Map<Long,Map<Long,AlertVO>> typeMap = new HashMap<Long,Map<Long,AlertVO>>();
+			
+ 			//0-locationId,1-locationName,2-hamlet_id,3-satisfied_status,4-answers_count
+ 			List<Object[]> ivrCounts = alertAssignedOfficerNewDAO.getHamletWiseIvrStatusCounts(frmDate, toDate, year, locationValues,LocationTypeId);
+ 			for (Object[] objects : ivrCounts) {
+ 				Map<Long,AlertVO> hamletMap = typeMap.get((Long)objects[0]);
+ 				if(hamletMap==null){
+ 					hamletMap = new HashMap<Long, AlertVO>();
+ 					typeMap.put((Long) objects[0], hamletMap);
+ 				}
+ 				
+ 				AlertVO vo = hamletMap.get((Long)objects[2]);
+ 				if(vo==null){
+ 					vo = new AlertVO();
+ 					vo.setId((Long)objects[2]);
+ 					hamletMap.put((Long)objects[2], vo);
+ 				}
+ 					vo.setName(objects[1] !=null ? objects[1].toString():null);//locationName
+ 				
+ 					if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("Y")){
+ 						vo.setSatisfiedCount(objects[4] !=null ? (Long)objects[4]:0l);
+ 						
+ 					}else if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("N")){
+ 						vo.setUnSatisfiedCount(objects[4] !=null ? (Long)objects[4]:0l);
+ 					}
+ 			}	
+ 			
+ 			if(typeMap!=null && typeMap.size()>0){
+ 				for (Entry<Long, Map<Long, AlertVO>> objects : typeMap.entrySet()) {
+ 					
+ 					Long greenHamletCount=0l;
+ 	 				Long orangeHamletCount=0l;
+ 	 				Long redHamletCount=0l;
+ 					
+ 					AlertVO typeVO = new AlertVO();
+ 					typeVO.setId(objects.getKey());
+ 					Map<Long, AlertVO> hamletMap = objects.getValue();
+ 					
+ 					List<AlertVO> hamletList = new  ArrayList<AlertVO>(hamletMap.values());
+ 					
+ 					String locationName=null;
+ 					if(hamletList!=null && hamletList.size()>0){
+ 						for (AlertVO alertVO : hamletList) {
+ 							Long satisfyCount = alertVO.getSatisfiedCount() !=null ? alertVO.getSatisfiedCount():0l;
+ 		 					Long unSatisfyCount = alertVO.getUnSatisfiedCount()!=null ? alertVO.getUnSatisfiedCount():0l;
+ 		 					alertVO.setCount(satisfyCount+unSatisfyCount);
+ 		 					locationName = alertVO.getName();
+ 		 					String perc = cadreDetailsService.calculatePercentage(alertVO.getCount(),satisfyCount);
+ 		 					if(perc !=null && perc !="0" && !perc.trim().isEmpty()){
+ 		 						alertVO.setPercentage(Double.parseDouble(perc));
+ 		 						
+ 		 						if(alertVO.getPercentage()>70){
+ 		 							greenHamletCount++;
+ 		 						}else if(alertVO.getPercentage()<70 && alertVO.getPercentage()>50){
+ 		 							orangeHamletCount++;
+ 		 						}else if(alertVO.getPercentage()<50){
+ 		 							redHamletCount++;
+ 		 						}
+ 		 					}
+						}
+ 					}
+ 					
+ 					AlertVO green = new AlertVO(); 
+ 	 				green.setName("green");
+ 	 				green.setCount(greenHamletCount);
+ 	 				AlertVO orange = new AlertVO(); 
+ 	 				orange.setName("orange");
+ 	 				orange.setCount(orangeHamletCount);
+ 	 				AlertVO red = new AlertVO();
+ 	 				red.setName("red");
+ 	 				red.setCount(redHamletCount);
+ 	 				
+ 	 				typeVO.setName(locationName);
+ 	 				typeVO.getSubList1().add(green);
+ 	 				typeVO.getSubList1().add(orange);
+ 	 				typeVO.getSubList1().add(red);
+ 					
+ 	 				finalList.add(typeVO);
+				}
+ 			}
+ 			
+ 		}catch (Exception e) {
+			e.printStackTrace();
+		}
+ 		return finalList;
+ 		}
+ 	/*		Date frmDate = null;
 			Date toDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
@@ -15450,8 +15544,9 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  			//Map<String,Long> ivrFinalMap = new HashMap<String, Long>();
 			Map<String,AlertVO> ivrFinalMap = new HashMap<String, AlertVO>();
  			Map<Long,AlertVO> hamletMap = new HashMap<Long, AlertVO>();
- 			//0-hamlet_id,1-satisfied_status,2-answers_count
- 			List<Object[]> ivrCounts = alertAssignedOfficerNewDAO.getHamletWiseIvrStatusCounts(frmDate, toDate, year);
+ 			// need to delete 0-hamlet_id,1-satisfied_status,2-answers_count
+ 			//0-locationId,1-locationName,2-hamlet_id,3-satisfied_status,4-answers_count
+ 			List<Object[]> ivrCounts = alertAssignedOfficerNewDAO.getHamletWiseIvrStatusCounts(frmDate, toDate, year, locationValues,LocationTypeId);
  			for (Object[] objects : ivrCounts) {
  				AlertVO vo = hamletMap.get(objects[0]);
  				if(vo==null){
@@ -15516,6 +15611,5 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  		}catch (Exception e) {
 			e.printStackTrace();
 		}
- 		return finalList;
-	 }
+ 		return finalList;*/
 }
