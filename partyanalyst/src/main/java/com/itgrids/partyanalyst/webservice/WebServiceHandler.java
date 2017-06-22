@@ -3072,9 +3072,16 @@ public class WebServiceHandler {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public List<AlertVO> getHamletWiseIvrStatusCounts(JSONObject jObj){
 		try{
-			return webServiceHandlerService.getHamletWiseIvrStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getString("year"));			
+			List<Long> locationValuesList = new ArrayList<Long>(0);
+			JSONArray arr = jObj.getJSONArray("locationValues");
+			if(arr != null && arr.length() > 0){
+				for (int i = 0; i < arr.length(); i++) {
+					locationValuesList.add(Long.parseLong(arr.get(i)+""));
+				}
+			}
+			return webServiceHandlerService.getHamletWiseIvrStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getString("year"),locationValuesList,jObj.getLong("locationTypeId"));			
 		}catch(Exception e){
-			LOG.error("Exception Occured in getLocationWiseAlertStatusCounts() Method, Exception is ",e);
+			LOG.error("Exception Occured in getHamletWiseIvrStatusCounts() Method, Exception is ",e);
 			return null;
 		}
 	}
