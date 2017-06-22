@@ -1,6 +1,7 @@
 package com.itgrids.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class RangeVO implements Serializable {
 	/**
@@ -11,6 +12,7 @@ public class RangeVO implements Serializable {
 	private String name;
 	private String value;
 	private String locationIds;
+	private List<Long> nonFundLocIds;
 	public Long getId() {
 		return id;
 	}
@@ -35,5 +37,13 @@ public class RangeVO implements Serializable {
 	public void setLocationIds(String locationIds) {
 		this.locationIds = locationIds;
 	}
+	public List<Long> getNonFundLocIds() {
+		return nonFundLocIds;
+	}
+	public void setNonFundLocIds(List<Long> nonFundLocIds) {
+		this.nonFundLocIds = nonFundLocIds;
+	}
+	
+	
 	
 }
