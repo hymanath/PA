@@ -882,7 +882,12 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			List<Object[]> deptObjLst = alertAssignedOfficerNewDAO.getMainDeptAndItsSubDepartment();
 			prepareParentChildDeptTemplate(deptObjLst,departmentMap);
 			
-		    rtrnObjLst = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds,calCntrIdList,socialMediaTypeIds,null,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+			if(resultType != null && resultType.equalsIgnoreCase("Status") && (alertStatusIds.size() == 0l || !alertStatusIds.contains(1l))){
+				  rtrnObjLst  = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds,calCntrIdList,socialMediaTypeIds,null,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+			}
+			if(resultType != null && resultType.equalsIgnoreCase("Department")){
+				 rtrnObjLst = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds,calCntrIdList,socialMediaTypeIds,null,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+			}
 			
 			setDepartmentWiseAlertCnt(rtrnObjLst,departmentMap);
 			
@@ -2219,12 +2224,21 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			status = (String)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
 					
-					
+					Long oldDeptId = null;
+					Long oldAlertStatusId = null;
 					//Alert Status Updation
 					Alert alert = alertDAO.get(inputvo.getAlertId());
+					
+					oldDeptId = alert.getGovtDepartmentId();
+					oldAlertStatusId = alert.getAlertStatusId();
+					
 					alert.setAlertStatusId(2l);
 					alert.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 					alert.setUpdatedBy(inputvo.getUserId());
+					if(inputvo.getMainDepartmentId() !=null){
+						alert.setGovtDepartmentId(inputvo.getMainDepartmentId());
+					}
+					
 					alert = alertDAO.save(alert);
 					
 					//Get Department Designation Officer Ids
@@ -2269,13 +2283,31 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							alertAssignedOfficer2.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 							alertAssignedOfficer2.setAlertStatusId(2l);// setting present status of alert 
 							alertAssignedOfficer2.setIsDeleted("N");
-							alertAssignedOfficer2.setIsApproved("Y");  
+							alertAssignedOfficer2.setIsApproved("Y");  							
+							alertAssignedOfficer2.setGovtDepartmentId(govtDepartmentDesignationOfficerList !=null && 
+									govtDepartmentDesignationOfficerList.size()>0 ? govtDepartmentDesignationOfficerList.get(0).getGovtDepartmentDesignation().getGovtDepartmentId():null);
+							
 							alertAssignedOfficer2 = alertAssignedOfficerNewDAO.save(alertAssignedOfficer2);
 							
 							//alertAssignedOfficer2.getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartmentDesignationId();
 							
 							alertAssignedOfficerNew = alertAssignedOfficer2;
 						}
+
+						if(oldAlertStatusId !=null && oldAlertStatusId == 8l || oldAlertStatusId == 9l && 
+								alert.getAlertCategoryId() !=null && alert.getAlertCategoryId() == 2l || alert.getAlertCategoryId() == 3l){
+							
+							Long cnpOldDeptId = govtDepartmentDAO.getCNPGovtDepartmentIdForGovtDepartment(oldDeptId);
+							Long cnpChangedDeptId = govtDepartmentDAO.getCNPGovtDepartmentIdForGovtDepartment(inputvo.getMainDepartmentId());
+							
+							try{
+								String articleStatus = changeCNPDepartment(alert.getAlertCategoryId(),alert.getAlertCategoryTypeId(),cnpChangedDeptId,cnpOldDeptId);
+							}catch (Exception e) {
+								e.printStackTrace();
+							}
+								
+						}
+						
 					}else{
 						alertAssignedOfficerNew = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
 					}
