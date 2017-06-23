@@ -2,7 +2,10 @@ package com.itgrids.tpi.rws.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -452,8 +455,8 @@ public class RWSNICService implements IRWSNICService{
 	public List<KPIVO> getKeyPerformanceIndicatorsInfo(InputVO inputVO){
 		List<KPIVO> voList = new ArrayList<KPIVO>(0);
 		try {
-			 
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getKpiDeatils");	        
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getKpiDeatils");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.207:8442/rwscore/cd/getKpiDeatils");
 		    String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		    ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
 			
@@ -463,66 +466,81 @@ public class RWSNICService implements IRWSNICService{
 	 	    }else{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
-	 	    		Long pcAchivement=0l,pcTarget=0l,qaAchivement=0l,qaTarget=0l;
 	 	    		JSONObject jobj = new JSONObject(output);
 	 	    		
+	 	    		Map<String,KPIVO> finalMap = new HashMap<String, KPIVO>();
+	 	    		
 	 	    		if(jobj.getJSONArray("stateLevelAcheieveMentsData") != null && jobj.getJSONArray("stateLevelAcheieveMentsData").length() > 0){
-	 	    			JSONArray acheieveMentArr = jobj.getJSONArray("stateLevelAcheieveMentsData");
-	 	    			for (int i = 0; i < acheieveMentArr.length(); i++) {
-	 	    				JSONArray indiArr = (JSONArray) acheieveMentArr.get(i);
-	 	    				if(indiArr.get(0).toString().equalsIgnoreCase("NSS") || indiArr.get(0).toString().equalsIgnoreCase("NC")){
-	 	    					qaAchivement = qaAchivement+Long.parseLong(indiArr.get(1)+"");
-	 	    				}else if(indiArr.get(0).toString().equalsIgnoreCase("PC1") || indiArr.get(0).toString().equalsIgnoreCase("PC2") 
-	 	    						|| indiArr.get(0).toString().equalsIgnoreCase("PC3") || indiArr.get(0).toString().equalsIgnoreCase("PC4")){
-	 	    					pcAchivement = pcAchivement+Long.parseLong(indiArr.get(1)+"");
-	 	    				}
+	 	    			JSONArray acvhiementArr = jobj.getJSONArray("stateLevelAcheieveMentsData");
+	 	    			for (int i = 0; i < acvhiementArr.length(); i++) {
+							JSONArray indiArr = acvhiementArr.getJSONArray(i);
+							if(finalMap.get(indiArr.get(0).toString()) == null){
+								KPIVO vo = new KPIVO();
+								vo.setLocationId(indiArr.get(0).toString());
+								vo.setLocationName(indiArr.get(1).toString());
+								if(indiArr.get(2).toString().equalsIgnoreCase("NSS") || indiArr.get(2).toString().equalsIgnoreCase("NC")){
+									vo.setQaAchivement(Long.parseLong(indiArr.get(3)+""));
+								}else if(indiArr.get(2).toString().equalsIgnoreCase("PC1") || indiArr.get(2).toString().equalsIgnoreCase("PC2") 
+										|| indiArr.get(2).toString().equalsIgnoreCase("PC3") || indiArr.get(2).toString().equalsIgnoreCase("PC4")){
+									vo.setPcAchivement(Long.parseLong(indiArr.get(3)+""));
+								}
+								finalMap.put(indiArr.get(0).toString(),vo);
+							}else{
+								KPIVO vo = finalMap.get(indiArr.get(0).toString());
+								if(indiArr.get(2).toString().equalsIgnoreCase("NSS") || indiArr.get(2).toString().equalsIgnoreCase("NC")){
+									vo.setQaAchivement(vo.getQaAchivement()+Long.parseLong(indiArr.get(3)+""));
+								}else if(indiArr.get(2).toString().equalsIgnoreCase("PC1") || indiArr.get(2).toString().equalsIgnoreCase("PC2") 
+										|| indiArr.get(2).toString().equalsIgnoreCase("PC3") || indiArr.get(2).toString().equalsIgnoreCase("PC4")){
+									vo.setPcAchivement(vo.getPcAchivement()+Long.parseLong(indiArr.get(3)+""));
+								}
+							}
 						}
 	 	    		}
 	 	    		
 	 	    		if(jobj.getJSONArray("stateLevelTargetData") != null && jobj.getJSONArray("stateLevelTargetData").length() > 0){
-	 	    			JSONArray targetDataArr = jobj.getJSONArray("stateLevelTargetData");
-	 	    			for (int i = 0; i < targetDataArr.length(); i++) {
-	 	    				JSONArray indiArr = (JSONArray) targetDataArr.get(i);
-	 	    				if(indiArr.get(0).toString().equalsIgnoreCase("NSS") || indiArr.get(0).toString().equalsIgnoreCase("NC")){
-	 	    					qaTarget = qaTarget + Long.parseLong(indiArr.get(1)+"");
-	 	    				}else if(indiArr.get(0).toString().equalsIgnoreCase("PC1") || indiArr.get(0).toString().equalsIgnoreCase("PC2") 
-	 	    						|| indiArr.get(0).toString().equalsIgnoreCase("PC3") || indiArr.get(0).toString().equalsIgnoreCase("PC4")){
-	 	    					pcTarget = pcTarget+Long.parseLong(indiArr.get(1)+"");
-	 	    				}
-	 	    			}
+	 	    			JSONArray targetArr = jobj.getJSONArray("stateLevelTargetData");
+	 	    			for (int i = 0; i < targetArr.length(); i++) {
+							JSONArray indiArr = targetArr.getJSONArray(i);
+							if(finalMap.get(indiArr.get(0).toString()) == null){
+								KPIVO vo = new KPIVO();
+								vo.setLocationId(indiArr.get(0).toString());
+								vo.setLocationName(indiArr.get(1).toString());
+								if(indiArr.get(2).toString().equalsIgnoreCase("NSS") || indiArr.get(2).toString().equalsIgnoreCase("NC")){
+									vo.setQaTarget(Long.parseLong(indiArr.get(3)+""));
+								}else if(indiArr.get(2).toString().equalsIgnoreCase("PC1") || indiArr.get(2).toString().equalsIgnoreCase("PC2") 
+										|| indiArr.get(2).toString().equalsIgnoreCase("PC3") || indiArr.get(2).toString().equalsIgnoreCase("PC4")){
+									vo.setPcTarget(Long.parseLong(indiArr.get(3)+""));
+								}
+								finalMap.put(indiArr.get(0).toString(),vo);
+							}else{
+								KPIVO vo = finalMap.get(indiArr.get(0).toString());
+								if(indiArr.get(2).toString().equalsIgnoreCase("NSS") || indiArr.get(2).toString().equalsIgnoreCase("NC")){
+									vo.setQaTarget(vo.getQaTarget()+Long.parseLong(indiArr.get(3)+""));
+								}else if(indiArr.get(2).toString().equalsIgnoreCase("PC1") || indiArr.get(2).toString().equalsIgnoreCase("PC2") 
+										|| indiArr.get(2).toString().equalsIgnoreCase("PC3") || indiArr.get(2).toString().equalsIgnoreCase("PC4")){
+									vo.setPcTarget(vo.getPcTarget()+Long.parseLong(indiArr.get(3)+""));
+								}
+							}
+						}
 	 	    		}
 	 	    		
-	 	    		KPIVO pcVO = new KPIVO();
-	 	    		pcVO.setType("PARTIALLY COVERED");
-	 	    		if(pcTarget > 0l){
-	 	    			pcVO.setTargetCount(pcTarget);
-	 	    			pcVO.setAchivmentCount(pcAchivement);
-	 	    			pcVO.setPerc(((pcAchivement/pcTarget)*100)+"");
+	 	    		if(finalMap != null && finalMap.size() > 0){
+	 	    			for (Entry<String, KPIVO> entry : finalMap.entrySet()) {
+							if(entry.getValue().getPcTarget() > 0l){
+								entry.getValue().setPcPercentage((entry.getValue().getPcAchivement()/entry.getValue().getPcTarget())*100.00);
+							}
+							
+							if(entry.getValue().getQaTarget() > 0l){
+								entry.getValue().setQaPercentage((entry.getValue().getQaAchivement()/entry.getValue().getQaTarget())*100.00);
+							}
+						}
+	 	    			voList.addAll(finalMap.values());
 	 	    		}
-	 	    		
-	 	    		voList.add(pcVO);
-	 	    		
-	 	    		KPIVO qaVO = new KPIVO();
-	 	    		qaVO.setType("QUALITY AFFECTED");
-	 	    		if(pcTarget > 0l){
-	 	    			qaVO.setTargetCount(qaTarget);
-	 	    			qaVO.setAchivmentCount(qaAchivement);
-	 	    			qaVO.setPerc(((qaAchivement/qaTarget)*100)+"");
-	 	    		}
-	 	    		
-	 	    		voList.add(qaVO);
-	 	    		
 	 	    	}
-	 	    	
-	 	    	
-	 	    	
-	 	    	
-	 	    	
 	 	    }
 		} catch (Exception e) {
 			LOG.error("Exception raised at getKeyPerformanceIndicatorsInfo - RWSNICService service", e);
 		}
-		
 		return voList;
 	}
 	
