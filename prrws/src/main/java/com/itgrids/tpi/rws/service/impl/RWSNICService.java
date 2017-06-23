@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sun.misc.BASE64Encoder;
-
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
@@ -23,6 +21,8 @@ import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+
+import sun.misc.BASE64Encoder;
 
 @Service
 @Transactional
@@ -344,6 +344,7 @@ public class RWSNICService implements IRWSNICService{
 					JSONArray arr = new JSONArray(output);
 					
 					if(arr != null && arr.length() > 0){
+						StatusVO statusVO = new StatusVO();
 						for (int i = 0; i < arr.length(); i++) {
 							//id,name,color,count
 							JSONObject jobj = (JSONObject)arr.get(i);
@@ -352,8 +353,9 @@ public class RWSNICService implements IRWSNICService{
 							vo.setName(jobj.getString("name"));
 							vo.setColor(jobj.getString("color"));
 							vo.setCount(jobj.getLong("count"));
-							voList.add(vo);
+							statusVO.getStatusList().add(vo);
 						}
+						voList.add(statusVO);
 					}
 				}
  	      	}
@@ -495,7 +497,7 @@ public class RWSNICService implements IRWSNICService{
 	 	    		if(pcTarget > 0l){
 	 	    			pcVO.setTargetCount(pcTarget);
 	 	    			pcVO.setAchivmentCount(pcAchivement);
-	 	    			pcVO.setPerc(((pcAchivement/pcTarget)/100)+"");
+	 	    			pcVO.setPerc(((pcAchivement/pcTarget)*100)+"");
 	 	    		}
 	 	    		
 	 	    		voList.add(pcVO);
@@ -505,7 +507,7 @@ public class RWSNICService implements IRWSNICService{
 	 	    		if(pcTarget > 0l){
 	 	    			qaVO.setTargetCount(qaTarget);
 	 	    			qaVO.setAchivmentCount(qaAchivement);
-	 	    			qaVO.setPerc(((qaAchivement/qaTarget)/100)+"");
+	 	    			qaVO.setPerc(((qaAchivement/qaTarget)*100)+"");
 	 	    		}
 	 	    		
 	 	    		voList.add(qaVO);
@@ -530,7 +532,7 @@ public class RWSNICService implements IRWSNICService{
 	 * @description : getStressedHabitationsInfoByLocationType
 	 */
 	public StatusVO getStressedHabitationsInfoByLocationType(InputVO vo) {
-		StatusVO statusVO = new StatusVO();
+		StatusVO statusVO = new StatusVO();					
 		try{
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getStressedHabitationInfoInALocation");	        
@@ -561,7 +563,7 @@ public class RWSNICService implements IRWSNICService{
  	    				subVO.setStressedCount(jObj.getLong("stressedHabitationCount"));
  	    				subVO.setPercentage(jObj.getDouble("percentage"));
  	    				
- 	    				statusVO.getStatusVOList().add(subVO);
+ 	    				statusVO.getStatusList().add(subVO);
  	    			}
  	    		}
  	    		
@@ -609,10 +611,10 @@ public class RWSNICService implements IRWSNICService{
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getLocationWiseAlertStatusCounts");	        
-		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
-		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
-			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getLocationWiseAlertStatusCounts");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getLocationWiseAlertStatusCounts");
+		     ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+		     
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
@@ -698,7 +700,8 @@ public class RWSNICService implements IRWSNICService{
 	public List<StatusVO> getHamletWiseIvrCounts(InputVO vo) {
 		List<StatusVO> voList = new ArrayList<StatusVO>(0);
 		try {
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getHamletWiseIvrStatusCounts");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getHamletWiseIvrStatusCounts");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getHamletWiseIvrStatusCounts");
 	        
 	        /*String jsonInString = new ObjectMapper().writeValueAsString(vo);
 	        System.out.println(jsonInString);*/
@@ -725,12 +728,12 @@ public class RWSNICService implements IRWSNICService{
 	 	    				if(subListArr!=null && subListArr.length()>0){
 	 		 	    			for(int j=0;j<subListArr.length();j++){
 	 		 	    				
-	 		 	    				JSONObject colorJobj = (JSONObject)subListArr.get(i);
+	 		 	    				JSONObject colorJobj = (JSONObject)subListArr.get(j);
 	 		 	    				 StatusVO colorVO = new StatusVO();
 	 		 	    				colorVO.setName(colorJobj.getString("name"));
 	 		 	    				colorVO.setCount(colorJobj.getLong("count"));
 	 		 	    				
-	 		 	    				statusVo.getStatusVOList().add(colorVO);
+	 		 	    				statusVo.getStatusList().add(colorVO);
 	 		 	    				
 	 		 	    			}
 	 		 	    		}	 	    				
