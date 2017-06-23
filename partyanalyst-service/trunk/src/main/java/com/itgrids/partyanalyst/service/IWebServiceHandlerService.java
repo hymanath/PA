@@ -251,5 +251,6 @@ public interface IWebServiceHandlerService {
     public List<IdNameVO> getAlertFeedbackStatusDetails(JalavaniVO VO);
     public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JSONObject obj);
     public List<KeyValueVO> getLocationWiseAlertStatusCounts(Long departmentId,String fromDate,String toDate,String year,Long groupByValue,List<Long> locationValuesList);
-    public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDate,String toDate,String year,List<Long> locationValues,Long locationTypeId);
+    public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDate,String toDate,String year,List<Long> locationValues,Long locationTypeIdm,
+    		Long searchLevelId,List<Long> searchLevelValues);
 }

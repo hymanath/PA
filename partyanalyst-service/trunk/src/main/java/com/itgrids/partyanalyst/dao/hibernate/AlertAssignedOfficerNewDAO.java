@@ -7217,8 +7217,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 return query.list();
 		
 	 }
-	 @Override
-	 public List<Object[]> getHamletWiseIvrStatusCounts(Date fromDate,Date toDate,String year,List<Long> locationValues,Long locationTypeId){
+	 public List<Object[]> getHamletWiseIvrStatusCounts(Date fromDate,Date toDate,String year,List<Long> locationValues,Long locationTypeId,
+			 Long searchlevelId,List<Long> searchLevelValues){
 		   StringBuilder sb = new StringBuilder();
 	       StringBuilder sbm = new StringBuilder();
 	       StringBuilder sbe = new StringBuilder();
@@ -7251,42 +7251,80 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	       
 	       sbg.append(" GROUP BY ");
 	       
-	       if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValues !=null && locationValues.size()>0){
+	       if(locationTypeId !=null && locationTypeId.longValue()>0l){
 	         if(locationTypeId ==2l){
 	           sb.append( "  UA.state_id as typeId,S.state_name as type " );
 	           sbm.append( "  ,state S  " );          
 	           sbe.append( "  and S.state_id = UA.state_id  " );
-	           sbe.append(" and S.state_id in (:locationValues) ");
 	           sbg.append(" UA.state_id ");
+	           
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append(" and S.state_id in (:locationValues) ");
+	           }
+	         	 
+	           
 	         }else if(locationTypeId ==3l){
 	           
 	           sb.append( "  UA.district_id as typeId,D.district_name as type  " );
 	           sbm.append( "  ,district D  " );           
-	           sbe.append( "  and D.district_id = UA.district_id  " );
-	           sbe.append(" and D.district_id in (:locationValues) ");
+	           sbe.append( "  and D.district_id = UA.district_id  " );	           
 	           sbg.append(" UA.district_id ");
+	           
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append(" and D.district_id in (:locationValues) ");
+	           }
 	           
 	         }else if(locationTypeId ==4l){
 	           sb.append( "  UA.constituency_id as typeId,C.name as type " );
 	           sbm.append( "  ,constituency C  " );
 	           sbe.append( "  and C.constituency_id = UA.constituency_id  " );
-	           sbe.append(" and C.constituency_id in (:locationValues) ");
+	           
 	           sbg.append(" UA.constituency_id ");         
+	           
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append(" and C.constituency_id in (:locationValues) ");
+	           }
 	           
 	         }else if(locationTypeId ==5l){
 	           sb.append( "  UA.tehsil_id as typeId,T.tehsil_name as type " );
 	           sbm.append( "  ,tehsil T  " );           
 	           sbe.append( "  and T.tehsil_id = UA.tehsil_id  " );
-	           sbe.append(" and T.tehsil_id  in (:locationValues) ");
+	           
 	           sbg.append(" UA.tehsil_id ");  
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append(" and T.tehsil_id  in (:locationValues) ");
+	           }
+	           
 	         }else if(locationTypeId ==6l){
 	           sb.append( "  UA.panchayat_id as typeId,P.panchayat_name as type " );
 	           sbm.append( "  ,panchayat P  " );
 	           sbe.append( "  and P.panchayat_id =  UA.panchayat_id  " );
-	           sbe.append( "  and P.panchayat_id in  (:locationValues)  " );
+	           
 	           sbg.append(" UA.panchayat_id "); 
+	           
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append( "  and P.panchayat_id in  (:locationValues)  " );
+	           }	           
 	         }
+	         
 	       }
+	       
+	       
+	       if(searchlevelId !=null && searchlevelId.longValue()>0l && searchLevelValues !=null && searchLevelValues.size()>0){
+		         if(searchlevelId ==2l){
+		           sbe.append("  and UA.state_id in (:searchLevelValues)  ");
+		         }else if(searchlevelId ==3l){
+		           sbe.append(" and UA.district_id in (:searchLevelValues) ");		           
+		         }else if(searchlevelId ==4l){
+		           sbe.append(" and UA.constituency_id in (:searchLevelValues) ");		           
+		         }else if(searchlevelId ==5l){
+		           sbe.append(" and UA.tehsil_id  in (:searchLevelValues) ");
+		         }else if(searchlevelId ==6l){
+		           sbe.append( " and UA.panchayat_id in  (:searchLevelValues)  " );
+		         }
+		    }
+	       
+	       
 	       
 	       sb.append(" ,UA.hamlet_id as hamletId,IOP.satisfied_status as satisfiedStatus,count(distinct ISA.ivr_survey_answer_id) as count ");
 	       
@@ -7311,7 +7349,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	      if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValues !=null && locationValues.size()>0){
 	        query.setParameterList("locationValues", locationValues);
 	      }
-	      
+	      if(searchlevelId !=null && searchlevelId.longValue()>0l && searchLevelValues !=null && searchLevelValues.size()>0){
+	    	  query.setParameterList("searchLevelValues", searchLevelValues);
+	      }
 	      
 	      return query.list();
 	 }
