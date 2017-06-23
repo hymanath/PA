@@ -717,7 +717,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 						str1+='<p>Average Per District : '+result.averagePerDistrict+'</p>';
 					str1+='</td>';
 					str1+='<td>';
-						str1+='<p>Total Avg farms in District : '+result.totalAvgFarmsInDistrict+'</p>';
+						str1+='<p>Total Avg '+projectDivId+' in District : '+result.totalAvgFarmsInDistrict+'</p>';
 					str1+='</td>';
 				str1+='</tr>';
 				str1+='<tr>';
@@ -725,7 +725,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 						str1+='<p>Average Per Constituency : '+result.averagePerConstituency+'</p>';
 					str1+='</td>';
 					str1+='<td>';
-						str1+='<p>Total Avg farms in Constituency : '+result.totalAvgFarmsInConstituency+'</p>';
+						str1+='<p>Total Avg '+projectDivId+' in Constituency : '+result.totalAvgFarmsInConstituency+'</p>';
 					str1+='</td>';
 				str1+='</tr>';
 				str1+='<tr>';
@@ -733,7 +733,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 						str1+='<p>Average Per Mandal : '+result.averagePerMandal+'</p>';
 					str1+='</td>';
 					str1+='<td>';
-						str1+='<p>Total Avg farms in Mandal: '+result.totalAvgFarmsInMandal+'</p>';
+						str1+='<p>Total Avg '+projectDivId+' in Mandal: '+result.totalAvgFarmsInMandal+'</p>';
 					str1+='</td>';
 				str1+='</tr>';
 				str1+='<tr>';
@@ -742,7 +742,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 						str1+='<h4>'+result.totalBudget+'</h4>';
 					str1+='</td>';
 					str1+='<td>';
-						str1+='<p>Total Farms</p>';
+						str1+='<p>Total '+projectDivId+'</p>';
 						str1+='<h4>0</h4>';
 					str1+='</td>';
 				str1+='</tr>';
