@@ -732,7 +732,7 @@ public class RWSNICService implements IRWSNICService{
 	 		 	    				 StatusVO colorVO = new StatusVO();
 	 		 	    				colorVO.setName(colorJobj.getString("name"));
 	 		 	    				colorVO.setCount(colorJobj.getLong("count"));
-	 		 	    				
+	 		 	    				colorVO.setPercentage(colorJobj.getDouble("percentage"));
 	 		 	    				statusVo.getStatusList().add(colorVO);
 	 		 	    				
 	 		 	    			}
