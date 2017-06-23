@@ -242,5 +242,6 @@ public interface IAlertManagementSystemService {
 	 public List<KeyValueVO> getLocationWiseAlertStatusCounts(Long departmentId,String fromDate,String toDate,String year,Long groupByValue,List<Long> locationValuesList);
 	 public String validateOTP(String mobileNo,String otp);
 	 public String updateMobileNo(final Long userId, final String otp,final String mobileNo);
-	 public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDate,String toDate,String year,List<Long> locationValues,Long LocationTypeId);
+	 public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDate,String toDate,String year,List<Long> locationValues,Long locationTypeId,
+			 Long searchLevelId,List<Long> searchLevelValues);
 }        

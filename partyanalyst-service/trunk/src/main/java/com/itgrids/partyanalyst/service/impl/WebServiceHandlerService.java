@@ -5216,9 +5216,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 return null;
 	 }
 	 
-	 public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDate,String toDate,String year,List<Long> locationValues,Long locationTypeId){
+	 public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDate,String toDate,String year,List<Long> locationValues,Long locationTypeId,
+			 Long searchLevelId,List<Long> searchLevelValues){
 		 try {
-			return alertManagementSystemService.getHamletWiseIvrStatusCounts(fromDate,toDate,year,locationValues,locationTypeId);
+			return alertManagementSystemService.getHamletWiseIvrStatusCounts(fromDate,toDate,year,locationValues,locationTypeId,searchLevelId,searchLevelValues);
 		} catch (Exception e) {
 			log.error("Exception raised at getHamletWiseIvrStatusCounts", e);
 		}

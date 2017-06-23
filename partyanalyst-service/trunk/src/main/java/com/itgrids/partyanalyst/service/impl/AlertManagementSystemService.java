@@ -15469,7 +15469,8 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 		}
 		return status;
 	}
-	public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDateStr,String toDateStr,String year,List<Long> locationValues,Long LocationTypeId){
+	public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDateStr,String toDateStr,String year,List<Long> locationValues,Long locationTypeId,
+			Long serchLevelId,List<Long> searchLevelValues){
  		List<AlertVO> finalList = new ArrayList<AlertVO>();
  		
  		try{
@@ -15483,7 +15484,8 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			Map<Long,Map<Long,AlertVO>> typeMap = new HashMap<Long,Map<Long,AlertVO>>();
 			
  			//0-locationId,1-locationName,2-hamlet_id,3-satisfied_status,4-answers_count
- 			List<Object[]> ivrCounts = alertAssignedOfficerNewDAO.getHamletWiseIvrStatusCounts(frmDate, toDate, year, locationValues,LocationTypeId);
+ 			List<Object[]> ivrCounts = alertAssignedOfficerNewDAO.getHamletWiseIvrStatusCounts(frmDate, toDate, year, locationValues,locationTypeId,
+ 					serchLevelId, searchLevelValues);
  			for (Object[] objects : ivrCounts) {
  				Map<Long,AlertVO> hamletMap = typeMap.get((Long)objects[0]);
  				if(hamletMap==null){
