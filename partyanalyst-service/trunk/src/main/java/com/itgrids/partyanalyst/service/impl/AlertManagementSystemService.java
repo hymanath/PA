@@ -105,6 +105,7 @@ import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertDepartmentCommentNew;
 import com.itgrids.partyanalyst.model.AlertDepartmentDocumentNew;
 import com.itgrids.partyanalyst.model.AlertGovtOfficerSmsDetails;
+import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertSubTaskStatus;
 import com.itgrids.partyanalyst.model.AmsOfficerOtpDetails;
 import com.itgrids.partyanalyst.model.CustomReport;
@@ -15360,32 +15361,28 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  			
  			Map<Long,KeyValueVO> finalMap = new HashMap<Long, KeyValueVO>();
  			
+ 			List<AlertStatus> allStatus = alertStatusDAO.getAll();
+ 			
  			//0-scopeId,1-locationId,2-location,3-statusId,4-status,5-count
  			List<Object[]> objList = alertAssignedOfficerNewDAO.getLocationWiseAlertStatusCounts(departmentId,fromDate,toDate,year,groupByValue,locationValuesList);
  			
  			if(objList != null && objList.size() > 0){
  				for (Object[] objects : objList) {
+ 					
  					if(finalMap.get((Long)objects[1]) == null){
  						KeyValueVO voIn = new KeyValueVO();
  						voIn.setScopeValue((Long)objects[0]);
  						voIn.setId((Long)objects[1]);
  						voIn.setName(objects[2].toString());
  						
- 						KeyValueVO subVO = new KeyValueVO();
- 						subVO.setId((Long)objects[3]);
- 						subVO.setName(objects[4].toString());
- 						subVO.setCount((Long)objects[5]);
- 						
- 						voIn.getList().add(subVO);
+ 						getAlertStatusSkelton(allStatus,voIn,(Long)objects[3],(Long)objects[5]);
  						finalMap.put((Long)objects[1], voIn);
  					}else{
- 						KeyValueVO subVO = new KeyValueVO();
- 						subVO.setId((Long)objects[3]);
- 						subVO.setName(objects[4].toString());
- 						subVO.setCount((Long)objects[5]);
- 						
- 						finalMap.get((Long)objects[1]).getList().add(subVO);
+ 						KeyValueVO matchedStatusVO = getMatchedStatusVO(finalMap.get((Long)objects[1]).getList(),(Long)objects[3]);
+ 						matchedStatusVO.setCount((Long)objects[5]);
  					} 
+ 					
+ 					
  				}
  				
  				voList.addAll(finalMap.values());
@@ -15395,6 +15392,30 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  		}
   		 return voList;
   	 }
+ 	 
+ 	 public KeyValueVO getMatchedStatusVO(List<KeyValueVO> statusList,Long statusId){
+ 		 if(statusList != null && statusList.size() > 0){
+ 			for ( KeyValueVO  kvVO : statusList) {
+ 				if(kvVO.getId().equals(statusId))
+ 					return kvVO;
+ 			} 
+ 		 }
+ 		 return null;
+ 	 }
+ 	 
+ 	 public void getAlertStatusSkelton(List<AlertStatus> allStatus,KeyValueVO vo,Long statusId,Long count){
+ 		 for (AlertStatus alertStatus : allStatus) {
+			if(alertStatus.getAlertStatusId() > 1l){
+				KeyValueVO subVO = new KeyValueVO();
+				subVO.setId(alertStatus.getAlertStatusId());
+				subVO.setName(alertStatus.getAlertStatus());
+				if(alertStatus.getAlertStatusId().equals(statusId))
+					subVO.setCount(count);
+				vo.getList().add(subVO);
+			}
+		}
+ 	 }
+ 	 
  	/**
  	 * @param  String mobileNo
  	 * @param String otp
