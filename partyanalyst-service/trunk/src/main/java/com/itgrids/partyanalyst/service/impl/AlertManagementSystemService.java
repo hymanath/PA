@@ -15568,15 +15568,24 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  						typeVO.setName(hamletList.get(0).getName());
  					}
  					
+ 					Long total = greenHamletCount+orangeHamletCount+redHamletCount;
+ 		            double greenPer = (Double.parseDouble(cadreDetailsService.calculatePercentage(total, greenHamletCount)));
+ 		            double orangePer = (Double.parseDouble(cadreDetailsService.calculatePercentage(total, orangeHamletCount)));
+ 		            double redPer = (Double.parseDouble(cadreDetailsService.calculatePercentage(total, redHamletCount)));
+ 					
+ 					
  					AlertVO green = new AlertVO(); 
  	 				green.setName("green");
  	 				green.setCount(greenHamletCount);
+ 	 				green.setPercentage(greenPer);
  	 				AlertVO orange = new AlertVO(); 
  	 				orange.setName("orange");
  	 				orange.setCount(orangeHamletCount);
+ 	 				orange.setPercentage(orangePer);
  	 				AlertVO red = new AlertVO();
  	 				red.setName("red");
  	 				red.setCount(redHamletCount);
+ 	 				red.setPercentage(redPer);
  	 				
  	 				typeVO.getSubList1().add(green);
  	 				typeVO.getSubList1().add(orange);
