@@ -18,14 +18,14 @@ public class StatusVO {
 	private Long budgetPreparedHubs;
 	private Long popInStressedHubs;
 	
-	private List<StatusVO> statusVOList = new ArrayList<StatusVO>(0);
+	private List<StatusVO> statusList = new ArrayList<StatusVO>(0);
 	
 	
-	public List<StatusVO> getStatusVOList() {
-		return statusVOList;
+	public List<StatusVO> getStatusList() {
+		return statusList;
 	}
-	public void setStatusVOList(List<StatusVO> statusVOList) {
-		this.statusVOList = statusVOList;
+	public void setStatusList(List<StatusVO> statusList) {
+		this.statusList = statusList;
 	}
 	public String getStatus() {
 		return status;

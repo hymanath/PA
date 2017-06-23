@@ -168,6 +168,12 @@
 								<div class="chart2" id="assets"></div>
 							</div>
 						</div>
+						<div class="col-sm-6">
+							<div class="white-block">
+								<h5 style="padding:5px"><span class="chartTitleAlign">Stressed Habitations<small>Water Budget has to be prepared for all Habitations</small></span></h5>
+								<div class="chart2" id="planOfAction" class="m_top20"></div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -176,13 +182,12 @@
 						<div class="chart2" id="overView"></div>
 					</div>
 					<div class="white-block">
-						<h5 style="padding:5px"><span class="chartTitleAlign">Stressed Habitations<br/><small>Water Budget has to be prepared for all Habitations</small></span></h5>
-						<div class="chart2" id="planOfAction" class="m_top20"></div>
-						
+						<h5 style="padding:5px"><span class="chartTitleAlign">Water&nbsp;Satisfaction&nbsp;Level</span></h5>
+						<div class="chart2" id="drinkingWater" class="m_top20"></div>
 					</div>
 					<div class="white-block">
-						<h5 style="padding:5px"><span class="chartTitleAlign">Water&nbsp;Satisfaction&nbsp;Level</span></h5>
-						<div class="chart" id="drinkingWater" class="m_top20"></div>
+						<h5 style="padding:5px"><span class="chartTitleAlign">feedback&nbsp;Level</span></h5>
+						<div class="chart" id="feedbackId" class="m_top20"></div>
 					</div>
 				</div>
 			</div>
