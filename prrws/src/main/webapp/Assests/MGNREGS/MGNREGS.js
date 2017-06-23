@@ -806,54 +806,59 @@ function buildNregasOverViewBlock(result,projectDivId){
 			str1+='<tr>';
 				str1+='<td>';
 					str1+='<div class="col-sm-12">';
-						str1+='<h4 class="overviewPopupCls" style="cursor:pointer;"><strong>Total Districts : '+result.totalDistricts+'</strong></h4>';
+						str1+='<h4 class="overviewPopupCls" attr_locationType="district" attr_type="total" style="cursor:pointer;"><strong>Total Districts : '+result.totalDistricts+'</strong></h4>';
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							str1+='<p class="media-body overviewPopupCls" style="cursor:pointer;">Districts in Red : '+result.districtsInRed+'</p>';
+							str1+='<p class="media-body overviewPopupCls" attr_locationType="district" attr_type="red" style="cursor:pointer;">Districts in Red : '+result.districtsInRed+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							str1+='<p class="media-body overviewPopupCls" style="cursor:pointer;">Districts in Orange : '+result.districtsInOrange+'</p>';
+							str1+='<p class="media-body overviewPopupCls" attr_locationType="district" attr_type="orange" style="cursor:pointer;">Districts in Orange : '+result.districtsInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							str1+='<p class="media-body overviewPopupCls" style="cursor:pointer;">Districts in Green : '+result.districtsInGreen+'</p>';
+							str1+='<p class="media-body overviewPopupCls" attr_locationType="district" attr_type="green" style="cursor:pointer;">Districts in Green : '+result.districtsInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';
 				str1+='</td>';
 				str1+='<td>';
 					str1+='<div class="col-sm-12">';
-						str1+='<h4 class="overviewPopupCls" style="cursor:pointer;"><strong>Total Constituencies : '+result.totalConstituencies+'</strong></h4>';
+						str1+='<h4 class="overviewPopupCls" attr_locationType="constituency" attr_type="total" style="cursor:pointer;"><strong>Total Constituencies : '+result.totalConstituencies+'</strong></h4>';
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
 						str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-						str1+='<p class="media-body overviewPopupCls" style="cursor:pointer;">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+						str1+='<p class="media-body overviewPopupCls" attr_locationType="constituency" attr_type="red" style="cursor:pointer;">Constituencies in Red : '+result.constituenciesInRed+'</p>';
 							str1+='</div>';
 						str1+='<div class="media">';
-						str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body overviewPopupCls" style="cursor:pointer;">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+						str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+						str1+='<p class="media-body overviewPopupCls" attr_locationType="constituency" attr_type="orange" style="cursor:pointer;">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
 							str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body overviewPopupCls" style="cursor:pointer;">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+							str1+='<p class="media-body overviewPopupCls" attr_locationType="constituency" attr_type="green" style="cursor:pointer;">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';	
 					
 				str1+='</td>';
 				str1+='<td>';
 					str1+='<div class="col-sm-12">';
-						str1+='<h4 class="overviewPopupCls" style="cursor:pointer;"><strong>Total Mandals : '+result.totalMandals+'</strong></h4>';
+						str1+='<h4 class="overviewPopupCls" attr_locationType="mandal" attr_type="total" style="cursor:pointer;"><strong>Total Mandals : '+result.totalMandals+'</strong></h4>';
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p><p class="media-body overviewPopupCls" style="cursor:pointer;">Mandals in Red : '+result.mandalsInRed+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+							str1+='<p class="media-body overviewPopupCls" attr_locationType="mandal" attr_type="red" style="cursor:pointer;">Mandals in Red : '+result.mandalsInRed+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body overviewPopupCls" style="cursor:pointer;">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+							str1+='<p class="media-body overviewPopupCls" attr_locationType="mandal" attr_type="orange" style="cursor:pointer;">Mandals in Orange : '+result.mandalsInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body overviewPopupCls"  style="cursor:pointer;">Mandals in Green : '+result.mandalsInGreen+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+							str1+='<p class="media-body overviewPopupCls" attr_locationType="mandal" attr_type="green" style="cursor:pointer;">Mandals in Green : '+result.mandalsInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';	
 				str1+='</td>';
@@ -1789,16 +1794,16 @@ function buildDistrictsPopupDetails(result){
 	$("#projectDetails").html(str);
 }
 
-getNREGSIHHLConsCuntData()
-function getNREGSIHHLConsCuntData()
+//getNREGSIHHLConsCuntData()
+function getNREGSConsCuntData(locationType,type)
 {
 	//$("#"+divIdd).html(spinner);
   var json = {
     year : "2017",
     fromDate : "2017-04-01",
 	toDate : "2017-06-30",
-    locationType: "district",
-	type  : "total"
+    locationType: locationType,
+	type  : type
 }
   $.ajax({
     url: 'getMGNregsDistrWiseCount',
@@ -1814,55 +1819,64 @@ function getNREGSIHHLConsCuntData()
     }
   });
 }
+
+$(document).on("click",".detailsCls",function(){
+	var locationType = $(this).attr("attr_locationType");
+	var type = $(this).attr("attr_type");
+	getNREGSConsCuntData(locationType,type);
+});
+
 $(document).on("click",".overviewPopupCls",function(){
+	var locationType = $(this).attr("attr_locationType");
+	var type = $(this).attr("attr_type");
+	
 	$("#nregsConsitenModalId").modal("show");
 	$("#modalHeadingDivId").html(globalDivName +'&nbsp;Project Districts Overview');
-	 if(globalDivName == 'Farm Pond')
-	{
+	 if(globalDivName == 'Farm Pond'){
 		getFarmPondClickingOverview();
-	}else if(globalDivName == 'VERMI')
-	{
+	}
+	else if(globalDivName == 'VERMI'){
 		getVermiClickingOverview();
-	}else if(globalDivName == "IHHL")
-	{
+	}
+	else if(globalDivName == "IHHL"){
 		getIHHLClickingOverview()
-	}else if(globalDivName == "NTR Jala Siri")
-	{
+	}
+	else if(globalDivName == "NTR Jala Siri"){
 		NtrsClickingOverview()
-	}else if(globalDivName == "Anganwadi")
-	{
+	}
+	else if(globalDivName == "Anganwadi"){
 		getAnganwadiClickingOverview();
-	}else if(globalDivName == "CC Roads")
-	{
+	}
+	else if(globalDivName == "CC Roads"){
 		getCCRoadsClickingOverview();
-	}else if(globalDivName == "Mandal buildings")
-	{
+	}
+	else if(globalDivName == "Mandal buildings"){
 		getMandalBuildingClickOverview();
-	}else if(globalDivName == "Gram Panchayat Buildings")
-	{
+	}
+	else if(globalDivName == "Gram Panchayat Buildings"){
 		getGPBuildingClickOverview();
-	}else if(globalDivName == "Production of Bricks")
-	{
+	}
+	else if(globalDivName == "Production of Bricks"){
 		getProductionOfBricksClickOverview();
-	}else if(globalDivName == "Raising of Perinnial Fodder")
-	{
+	}
+	else if(globalDivName == "Raising of Perinnial Fodder"){
 		getRaisingOfPerinnialFodderClickOverview();
-	}else if(globalDivName == "Mulbery")
-	{
+	}
+	else if(globalDivName == "Mulbery"){
 		getSericultureClickOverview();
-	}else if(globalDivName == "NTR 90 Days")
-	{
+	}
+	else if(globalDivName == "NTR 90 Days"){
 		getHousingClickingOverview();
-	}else if(globalDivName == "Cattle drinking water trough")
-	{
+	}
+	else if(globalDivName == "Cattle drinking water trough"){
 		getAHClickingOverview();
-	}else if(globalDivName == "Silk worm")
-	{
+	}
+	else if(globalDivName == "Silk worm"){
 		getSilkWormClickingOverview();
 	}else{
 		$("#nregsOverviewBodyId").html("NO DATA");
 	}
-
+	getNREGSConsCuntData(locationType,type);
 });
 
 //PopupOverview clicking Block 
@@ -1875,19 +1889,19 @@ function buildPopupOverviewBlock(result,projectDivId){
 					str1+='<div class="col-sm-9">';
 						str1+='<div class="media">';
 							str1+='<p>Total Districts</p>';
-							str1+='<h4>'+result.totalDistricts+'</h4>';
+							str1+='<h4 class="detailsCls" attr_location="district" attr_type="total">'+result.totalDistricts+'</h4>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							str1+='<p class="media-body">Districts in Red : '+result.districtsInRed+'</p>';
+							str1+='<p class="media-body detailsCls" attr_location="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							str1+='<p class="media-body">Districts in Orange : '+result.districtsInOrange+'</p>';
+							str1+='<p class="media-body detailsCls" attr_location="district" attr_type="orange">Districts in Orange : '+result.districtsInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							str1+='<p class="media-body">Districts in Green : '+result.districtsInGreen+'</p>';
+							str1+='<p class="media-body detailsCls" attr_location="district" attr_type="green">Districts in Green : '+result.districtsInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';
 				str1+='</td>';
@@ -1895,17 +1909,19 @@ function buildPopupOverviewBlock(result,projectDivId){
 					str1+='<div class="col-sm-9">';
 						str1+='<div class="media">';
 							str1+='<p class="f_12">Total Constituencies</p>';
-							str1+='<h4>'+result.totalConstituencies+'</h4>';
+							str1+='<h4 class="detailsCls" attr_location="constituency" attr_type="total">'+result.totalConstituencies+'</h4>';
 						str1+='</div>';
 						str1+='<div class="media">';
 						str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-						str1+='<p class="media-body">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+						str1+='<p class="media-body detailsCls" attr_location="constituency" attr_type="red">Constituencies in Red : '+result.constituenciesInRed+'</p>';
 							str1+='</div>';
 						str1+='<div class="media">';
-						str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+						str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+						str1+='<p class="media-body detailsCls" attr_location="constituency" attr_type="orange">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
 							str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+							str1+='<p class="media-body detailsCls" attr_location="constituency" attr_type="green">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';	
 				str1+='</td>';
@@ -1913,16 +1929,19 @@ function buildPopupOverviewBlock(result,projectDivId){
 					str1+='<div class="col-sm-9">';
 						str1+='<div class="media">';
 							str1+='<p>Total Mandals</p>';
-							str1+='<h4>'+result.totalMandals+'</h4>';
+							str1+='<h4 class="detailsCls" attr_location="mandal" attr_type="total">'+result.totalMandals+'</h4>';
 						str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p><p class="media-body">Mandals in Red : '+result.mandalsInRed+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+							str1+='<p class="media-body detailsCls" attr_location="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+							str1+='<p class="media-body detailsCls" attr_location="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body">Mandals in Green : '+result.mandalsInGreen+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+							str1+='<p class="media-body detailsCls" attr_location="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';	
 				str1+='</td>';
