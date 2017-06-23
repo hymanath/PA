@@ -284,7 +284,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
 	 	    				list.add(nregsDataVO);	 
-	 	    				getDistrictsDetails(list,inputVO.getType());
+	 	    				getDistrictsConstitByType(list,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -386,7 +386,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				voList.add(vo);
-	 	    				getDistrictsDetails(voList,inputVO.getType());
+	 	    				getDistrictsConstitByType(voList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -433,7 +433,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setTotalExpenditure(new BigDecimal(jObj.getString("TOTALEXPENDITURE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				//vo.setPercentage(jObj.getString("PERCENTAGE"));
 	 	    				voList.add(vo);
-	 	    				getDistrictsDetails(voList,inputVO.getType());
+	 	    				getDistrictsConstitByType(voList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -532,7 +532,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				returnList.add(vo);
-	 	    				getDistrictsDetails(returnList,inputVO.getType());
+	 	    				getDistrictsConstitByType(returnList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -625,8 +625,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    					 returnList.add(vo);
-	 	    					getDistrictsDetails(returnList,inputVO.getType());
+ 	    					returnList.add(vo);
+ 	    					getDistrictsConstitByType(returnList,inputVO.getType());
 	 	    					 	    				
 	 	    			}
 	 	    		}
@@ -720,9 +720,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				
 	 	    				returnList.add(vo);
-	 	    				getDistrictsDetails(returnList,inputVO.getType());
+	 	    				getDistrictsConstitByType(returnList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -818,7 +817,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
 	 	    				list.add(nregsDataVO);	 	 
-	 	    				getDistrictsDetails(list,inputVO.getType());
+	 	    				getDistrictsConstitByType(list,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -917,9 +916,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				
 	 	    				returnList.add(vo);
-	 	    				getDistrictsDetails(returnList,inputVO.getType());
+	 	    				getDistrictsConstitByType(returnList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -1268,9 +1266,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				
 	 	    				voList.add(vo);
-	 	    				getDistrictsDetails(voList,inputVO.getType());
+	 	    				getDistrictsConstitByType(voList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -1316,9 +1313,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				
 	 	    				voList.add(vo);
-	 	    				getDistrictsDetails(voList,inputVO.getType());
+	 	    				getDistrictsConstitByType(voList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -1414,7 +1410,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				returnList.add(vo);
-	 	    				getDistrictsDetails(returnList,inputVO.getType());
+	 	    				getDistrictsConstitByType(returnList,inputVO.getType());
 	 	    		
 	 	    			}
 	 	    		}
@@ -1606,7 +1602,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
 	 	    				list.add(nregsDataVO);	 
-	 	    				getDistrictsDetails(list,inputVO.getType());
+	 	    				getDistrictsConstitByType(list,inputVO.getType());
 	 	    				     
 	 	    			
 	 	    			}
@@ -1706,7 +1702,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    		}
 		 	    	}
 		 	    	
-		 	    	list = getDistrictsDetails(list,inputVO.getType());
+		 	    	list = getDistrictsConstitByType(list,inputVO.getType());
 		 	    	Map<String,NregsDataVO> distConstMap = new LinkedHashMap<String,NregsDataVO>();
 		 	    	
 		 	    	if(list != null && !list.isEmpty()){
@@ -1718,39 +1714,65 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    	 }
 		 	    	List<NregsDataVO> disConslist = null;
 		 	    	List<NregsDataVO> disMandallist = null;
-		 	    	
-		 	    	inputVO.setLocationType("constituency");
-		 	    	ClientResponse constResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
-		 	    	if(constResponse.getStatus() != 200){
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ constResponse.getStatus());
-			 	      }else{
-			 	    	 String constOutput = constResponse.getEntity(String.class);
-			 	    	 
-			 	    	 disConslist = getNregsConstCuntDetails(constOutput,distConstMap);
-			 	      }
-		 	    	
-		 	    	distConstMap.clear();
-		 	    	if(list != null && !list.isEmpty()){
-		 	    		 for (NregsDataVO nregsDataVO : list) {
-		 	    			 NregsDataVO filterVo = new NregsDataVO();
-		 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
-							distConstMap.put(nregsDataVO.getDistrict(),filterVo);
-						}
-		 	    	 }
-		 	    	inputVO.setLocationType("mandal");
-		 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
-		 	    	if(mandalResponse.getStatus() != 200){
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
-			 	      }else{
-			 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
-			 	    	 
-			 	    	  disMandallist = getNregsMandalsCuntFrDistrict(mandalOutput,distConstMap);
-			 	      }
-		 	    	
-		 	    	finalVO.getDistConsCuntList().addAll(disConslist);
-		 	    	finalVO.getDistMandalCuntList().addAll(disMandallist);
-		 	    	finalVO.getDistList().addAll(list);
-	 	    	    	  
+		 	    	List<NregsDataVO> consMandallist = null;
+		 	    	if(inputVO.getLocationType().trim().equalsIgnoreCase("district")){
+		 	    		inputVO.setLocationType("constituency");
+			 	    	ClientResponse constResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
+			 	    	if(constResponse.getStatus() != 200){
+				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ constResponse.getStatus());
+				 	      }else{
+				 	    	 String constOutput = constResponse.getEntity(String.class);
+				 	    	 
+				 	    	 disConslist = getNregsConstCuntDetails(constOutput,distConstMap);
+				 	      }
+			 	    	
+			 	    	distConstMap.clear();
+			 	    	if(list != null && !list.isEmpty()){
+			 	    		 for (NregsDataVO nregsDataVO : list) {
+			 	    			 NregsDataVO filterVo = new NregsDataVO();
+			 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
+								distConstMap.put(nregsDataVO.getDistrict(),filterVo);
+							}
+			 	    	 }
+			 	    	inputVO.setLocationType("mandal");
+			 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
+			 	    	if(mandalResponse.getStatus() != 200){
+				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
+				 	      }else{
+				 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
+				 	    	 
+				 	    	  disMandallist = getNregsMandalsCuntFrDistrict(mandalOutput,distConstMap);
+				 	      }
+			 	    	
+			 	    	finalVO.getDistConsCuntList().addAll(disConslist);
+			 	    	finalVO.getDistMandalCuntList().addAll(disMandallist);
+			 	    	finalVO.getDistList().addAll(list);
+		 	    	}else if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+		 	    		Map<String,NregsDataVO> constMandMap = new LinkedHashMap<String,NregsDataVO>();
+			 	    	
+			 	    	if(list != null && !list.isEmpty()){
+			 	    		 for (NregsDataVO nregsDataVO : list) {
+			 	    			 NregsDataVO filterVo = new NregsDataVO();
+			 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
+			 	    			constMandMap.put(nregsDataVO.getConstituency(),filterVo);
+							}
+			 	    	 }
+			 	    	
+		 	    		inputVO.setLocationType("mandal");
+			 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
+			 	    	if(mandalResponse.getStatus() != 200){
+				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
+				 	      }else{
+				 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
+				 	    	 
+				 	    	consMandallist = getNregsMandalsCuntFrConstituncies(mandalOutput,constMandMap);
+				 	      }
+			 	    	
+			 	    	finalVO.getDistMandalCuntList().addAll(consMandallist);
+			 	    	finalVO.getDistList().addAll(list);
+		 	    	  }else if(inputVO.getLocationType().trim().equalsIgnoreCase("mandal")){
+			 	    		finalVO.getDistList().addAll(list);
+			 	    }  
 	 	      }
 		} catch (Exception e) {
 			LOG.error("Exception raised at getMGNregsDistrWiseConsti -NREGSTCSService service", e);
@@ -1810,10 +1832,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 */
 
 	@Override
-	public List<NregsDataVO> getNregsMandalsCuntFrConstituncies(String output){
+	public List<NregsDataVO> getNregsMandalsCuntFrConstituncies(String output,Map<String,NregsDataVO> cntMap){
 		List<NregsDataVO> retVOList = new ArrayList<>(0);
 		try{
-			Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
+			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
 			if(output != null && !output.isEmpty()){
 	    		JSONArray finalArray = new JSONArray(output);
 	    		if(finalArray!=null && finalArray.length()>0){
@@ -1822,18 +1844,8 @@ public class NREGSTCSService implements INREGSTCSService{
 		    			String constName = jObj.getString("CONSTITUENCY");
 						NregsDataVO vo = cntMap.get(constName);
 		    			String percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
-		    				if(vo == null){
-		    					vo = new NregsDataVO();
-		    					if(Double.valueOf(percValue)  < 50){
-		    						vo.setMandalsInRed(vo.getMandalsInRed());
-		    					}else if(Double.valueOf(percValue)  >50 && Double.valueOf(percValue) <80){
-		    						vo.setMandalsInOrange(vo.getMandalsInOrange());
-	    						}else if(Double.valueOf(percValue)  >80){
-		    						vo.setMandalsInGreen(vo.getMandalsInGreen());
-		    					}
-		    					cntMap.put(constName, vo);
-			    			}
-		    				else {
+		    				if(vo != null)
+		    				{
 			    				if(Double.valueOf(percValue)  < 50){
 		    						vo.setMandalsInRed(vo.getMandalsInRed()+1l);
 		    					}else if(Double.valueOf(percValue)  >50 && Double.valueOf(percValue) <80){
@@ -1841,24 +1853,15 @@ public class NREGSTCSService implements INREGSTCSService{
 	    						}else if(Double.valueOf(percValue)  >80){
 		    						vo.setMandalsInGreen(vo.getMandalsInGreen()+1l);
 		    					}
-		    					cntMap.put(constName, vo);
+			    				vo.setTotal(vo.getTotal()+1l);
+			    				vo.setDistrict(constName);
 			    			}
 	    				}   	    							
 	    			}
     			}
 			
 					if(cntMap != null){
-						for(java.util.Map.Entry<String, NregsDataVO> entry : cntMap.entrySet()){
-							String constituName = entry.getKey();
-							NregsDataVO vo = entry.getValue();
-							NregsDataVO nregsDataVO = new NregsDataVO();
-							nregsDataVO.setConstituency(constituName);
-							nregsDataVO.setMandalsInRed(vo.getMandalsInRed());
-							nregsDataVO.setMandalsInOrange(vo.getMandalsInOrange());
-							nregsDataVO.setMandalsInGreen(vo.getMandalsInGreen());
-							nregsDataVO.setTotal(vo.getMandalsInRed()+vo.getMandalsInOrange()+vo.getMandalsInGreen());
-							retVOList.add(nregsDataVO);
-						}
+						retVOList = new ArrayList<NregsDataVO>(cntMap.values());
 					}
 								
 				}catch(Exception e){
@@ -1871,11 +1874,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	/*
 	 * Date : 23/06/2017
 	 * Author :Swapna
-	 * @description : getDistrictsDetails
+	 * @description : getDistrictsConstitByType
 	 */
    
 	@Override
-	public List<NregsDataVO> getDistrictsDetails(List<NregsDataVO> returnList,String type)
+	public List<NregsDataVO> getDistrictsConstitByType(List<NregsDataVO> returnList,String type)
 	{
 		
 	try{
@@ -1890,16 +1893,17 @@ public class NREGSTCSService implements INREGSTCSService{
 				else if(type.trim().equalsIgnoreCase("green") && Double.valueOf(nregsDataVO.getPercentage()) >= 80)
 					filterList.add(nregsDataVO);
 				}
-		   }
+		     }
     	   }
-	   	if(filterList != null && !filterList.isEmpty()){
-    		returnList.clear();
-    		returnList.addAll(filterList);
-    	}
-	}
+			   	if(filterList != null && !filterList.isEmpty()){
+		    		returnList.clear();
+		    		returnList.addAll(filterList);
+		    	}
+			}
 	   	catch (Exception e) {
-			LOG.error("Exception raised at getDistrictsDetails -getDistrictsDetails service", e);
+			LOG.error("Exception raised at getDistrictsConstitByType -getDistrictsDetails service", e);
 		}
 		return returnList;
-		}
 	}
+	
+}
