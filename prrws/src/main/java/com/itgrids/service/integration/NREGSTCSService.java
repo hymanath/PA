@@ -281,7 +281,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
-	 	    				list.add(nregsDataVO);	 	    							
+	 	    				list.add(nregsDataVO);	 
+	 	    				getDistrictsDetails(list,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -383,6 +384,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				voList.add(vo);
+	 	    				getDistrictsDetails(voList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -428,8 +430,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setAvgWageRate(new BigDecimal(jObj.getString("AVGWAGERATE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				vo.setTotalExpenditure(new BigDecimal(jObj.getString("TOTALEXPENDITURE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				//vo.setPercentage(jObj.getString("PERCENTAGE"));
-	 	    				
 	 	    				voList.add(vo);
+	 	    				getDistrictsDetails(voList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -528,6 +530,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				returnList.add(vo);
+	 	    				getDistrictsDetails(returnList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -620,8 +623,9 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				
-	 	    				returnList.add(vo);
+	 	    					 returnList.add(vo);
+	 	    					getDistrictsDetails(returnList,inputVO.getType());
+	 	    					 	    				
 	 	    			}
 	 	    		}
 	 	    	}
@@ -716,6 +720,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				returnList.add(vo);
+	 	    				getDistrictsDetails(returnList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -810,7 +815,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
-	 	    				list.add(nregsDataVO);	 	    							
+	 	    				list.add(nregsDataVO);	 	 
+	 	    				getDistrictsDetails(list,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -911,6 +917,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				returnList.add(vo);
+	 	    				getDistrictsDetails(returnList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -1007,6 +1014,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				voList.add(vo);
+	 	    				
 	 	    			}
 	 	    		}
 	 	    	}
@@ -1260,6 +1268,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				voList.add(vo);
+	 	    				getDistrictsDetails(voList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -1307,6 +1316,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				voList.add(vo);
+	 	    				getDistrictsDetails(voList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -1375,7 +1385,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 */
 	public List<NregsDataVO> getNregsSericultureData(InputVO inputVO){
 		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>(0);
-		try {
+		try {	
+			
 			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SericultureService/SericultureData", inputVO);
 	        
 	        if(response.getStatus() != 200){
@@ -1387,8 +1398,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		JSONArray resultArray = new JSONArray(result);
 	 	    		if(resultArray!=null && resultArray.length()>0){
 	 	    			for(int i=0;i<resultArray.length();i++){
-	 	    				NregsDataVO vo = new NregsDataVO();
-	 	    				
+	 	    				NregsDataVO vo = new NregsDataVO();	 	    				
 	 	    				JSONObject jObj = (JSONObject) resultArray.get(i);
 	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
 	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
@@ -1401,13 +1411,15 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				
 	 	    				returnList.add(vo);
+	 	    				getDistrictsDetails(returnList,inputVO.getType());
+	 	    		
 	 	    			}
 	 	    		}
 	 	    	}
-	 	     }
-		} catch (Exception e) {
+	 	      }
+	 	    	
+		} 	catch (Exception e) {
 			LOG.error("Exception raised at getNregsSericultureData - NREGSTCSService service", e);
 		}
 		return returnList;
@@ -1417,6 +1429,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 * Author :Swathi
 	 * @description :getNregsHousingOverview
 	 */
+ 
 	public NregsOverviewVO getNregsHousingOverview(InputVO inputVO){
 		NregsOverviewVO returnVo = new NregsOverviewVO();
 		try {
@@ -1467,6 +1480,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 * Author :Swathi
 	 * @description : getNregsHousingData
 	 */
+	@Override
 	public List<NregsDataVO> getNregsHousingData(InputVO inputVO){
 		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>(0);
 		try {
@@ -1571,8 +1585,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
-	 	    	 
+	 	    	 String output = response.getEntity(String.class);	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
@@ -1590,7 +1603,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
-	 	    				list.add(nregsDataVO);	 	    							
+	 	    				list.add(nregsDataVO);	 
+	 	    				getDistrictsDetails(list,inputVO.getType());
+	 	    				     
+	 	    			
 	 	    			}
 	 	    		}
 	 	    	}
@@ -1602,8 +1618,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		
 		return list;
-	}		
-
+	}
 	/*
 	 * Date : 22/06/2017
 	 * Author :Nandhini
@@ -1696,4 +1711,40 @@ public class NREGSTCSService implements INREGSTCSService{
 		return list;
 	}
 		
-}
+
+	/*
+	 * Date : 23/06/2017
+	 * Author :Swapna
+	 * @description : getDistrictsDetails
+	 */
+   
+	@Override
+	public List<NregsDataVO> getDistrictsDetails(List<NregsDataVO>  returnList,String type)
+	{
+		
+	try{
+		List<NregsDataVO> filterList = new ArrayList<NregsDataVO>();
+		InputVO inputVO=new InputVO();
+    	if(returnList != null && !returnList.isEmpty()){
+    		for (NregsDataVO nregsDataVO : returnList) {
+			if(type != null && !type.trim().equalsIgnoreCase("total")){
+				if(type.trim().equalsIgnoreCase("red") && Double.valueOf(nregsDataVO.getPercentage()) < 50)
+					filterList.add(nregsDataVO);
+				else if(type.trim().equalsIgnoreCase("orange") && Double.valueOf(nregsDataVO.getPercentage()) < 80 && Double.valueOf(nregsDataVO.getPercentage()) >= 50)
+					filterList.add(nregsDataVO);
+				else if(type.trim().equalsIgnoreCase("green") && Double.valueOf(nregsDataVO.getPercentage()) >= 80)
+					filterList.add(nregsDataVO);
+				}
+		   }
+    	   }
+	   	if(filterList != null && !filterList.isEmpty()){
+    		returnList.clear();
+    		returnList.addAll(filterList);
+    	}
+	}
+	   	catch (Exception e) {
+			LOG.error("Exception raised at getDistrictsDetails -getDistrictsDetails service", e);
+		}
+		return returnList;
+		}
+	}
