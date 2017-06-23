@@ -1,6 +1,7 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var glStartDate = '2017-04-01'//+moment().subtract(20, 'years').startOf('year').format("YYYY-MM");
 var glEndDate = "2017-06-30"//+moment().add(10, 'years').endOf('year').format("YYYY-MM");
+var globalDivName;
 onLoadCalls();
 function onLoadCalls()
 {
@@ -32,6 +33,7 @@ function onLoadCalls()
 		$("[overview-block]").removeClass("active");
 		$(this).addClass("active");
 		var projectDivId = $(this).attr("overview-block");
+		globalDivName = projectDivId;
 		overviewData(projectDivId)
 		projectData(projectDivId)
 		$('html,body').animate({
@@ -816,7 +818,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 					str1+='</div>';
 					str1+='<div class="col-sm-3">';
 						str1+='<p>Total Districts</p>';
-						str1+='<h4>'+result.totalDistricts+'</h4>';
+						str1+='<h4><span class="overviewPopupCls">'+result.totalDistricts+'</span></h4>';
 					str1+='</div>';
 				str1+='</td>';
 				str1+='<td>';
@@ -1745,3 +1747,75 @@ function getAHData(divIdd,locationType,theadArr)
     }
   });
 }
+//DistrictConst Call -- Nandhini
+function buildDistrictsPopupDetails(result){
+	var str = '';
+	var redTotal = 0;
+	var orangeTotal = 0;
+	var greenTotal = 0;
+	var totalConsi = 0;
+	str+='<table class="table table-bordered m_top10">';
+		str+='<thead>';
+			str+='<tr>';
+				str+='<th>District Name </th>';
+				str+='<th style="color:red;">Constituencies In Red </th>';
+				str+='<th style="color:orange;">Constituencies In Orange </th>';
+				str+='<th style="color:green;">Constituencies In Green </th>';
+				str+='<th>Total </th>';
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+			for(var i in result){
+				redTotal = redTotal+result[i].constiInRed;
+				orangeTotal = orangeTotal+result[i].constiInOrange;
+				greenTotal = greenTotal+result[i].constiInGreen;
+				totalConsi =redTotal+ orangeTotal+greenTotal;
+				str+='<tr>';
+					str+='<td>'+result[i].district+'</td>';
+					str+='<td style="color:red;">'+result[i].constiInRed+'</td>';
+					str+='<td style="color:orange;">'+result[i].constiInOrange+'</td>';
+					str+='<td style="color:green;">'+result[i].constiInGreen+'</td>';
+					str+='<td>'+result[i].total+'</td>';
+				str+='</tr>';	
+			}
+			str+='<tr>';
+			str+='<td>Total</td>';
+			str+='<td>'+redTotal+'</td>';
+			str+='<td>'+orangeTotal+'</td>';
+			str+='<td>'+greenTotal+'</td>';
+			str+='<td>'+totalConsi+'</td>';
+		str+='</tbody>';
+	str+='</table>';
+	$("#projectDetails").html(str);
+}
+
+getNREGSIHHLConsCuntData()
+function getNREGSIHHLConsCuntData()
+{
+	//$("#"+divIdd).html(spinner);
+  var json = {
+    year : "2017",
+    fromDate : "2017-04-01",
+	toDate : "2017-06-30",
+    locationType: "constituency"
+}
+  $.ajax({
+    url: 'getMGNregsDistrWiseConsti',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+       buildDistrictsPopupDetails(ajaxresp)
+    }
+  });
+}
+$(document).on("click",".overviewPopupCls",function(){
+	$("#nregsConsitenModalId").modal("show");
+
+});
+
+

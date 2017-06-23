@@ -415,5 +415,16 @@ public class NregsDashboardController {
 		return ahoObject;
 	}
 	
+	@PostMapping("/getMGNregsDistrWiseConsti")
+	public @ResponseBody List<NregsDataVO> getMGNregsDistrWiseConsti(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getMGNregsDistrWiseConsti(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMGNregsDistrWiseConsti - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
 	
 }

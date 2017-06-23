@@ -139,8 +139,26 @@
 		<div id="nregasOverData"></div>
 		<div id="projectOverviewBlock"></div>
 		<div id="projectData"></div>
+		<div id="projectDetails"></div>
 		
 	</div>
+	<div class="modal fade" tabindex="-1" id="nregsConsitenModalId" role="dialog" style="z-index:99999;">
+		<div class="modal-dialog" style="width:70%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title"></h4>  
+				</div>
+				<div class="modal-body">
+					<div id="nregsConsitenBodyId"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
+				</div>
+			</div><!--  /.modal-content -->  
+		</div><!--  /.modal-dialog -->
+	</div>	
+	
 </main>
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>

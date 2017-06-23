@@ -45,4 +45,6 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregsSericultureData(InputVO inputVO);
 	public NregsOverviewVO getNregsHousingOverview(InputVO inputVO);
 	public List<NregsDataVO> getNregsHousingData(InputVO inputVO);
+	public List<NregsDataVO> getNregsConstCuntDetails(String output);
+	public List<NregsDataVO> getMGNregsDistrWiseConsti(InputVO inputVO);
 }
