@@ -22,7 +22,7 @@
 			getStressedHabitationsInfoByLocationType();
 			getAlertDetailsOfCategoryByStatusWise();
 			getAlertFeedbackStatusDetails();
-			getLocationBasedOnSelection();//get dist/const/mandal
+			getLocationBasedOnSelection("district",2017,"","","");//get dist/const/mandal
 			getHamletWiseIvrStatusCounts();
 		
 		}
@@ -1503,7 +1503,7 @@
 		{
 			var id = id;
 			var selectBox='';
-			selectBox+='<select class="chosen" id="chosen'+id+'"><option>ss</option></select>';
+			selectBox+='<select class="chosen" id="chosen'+id+'"></select>';
 			$("#"+id).html(selectBox);
 			$("#chosen"+id).chosen();
 		}
@@ -1542,10 +1542,13 @@
 		$(".menu-data-cls").hide();
 	});
 	
-	function getLocationBasedOnSelection(){
+	function getLocationBasedOnSelection(locationType,year,filterType,filterValue,districtValue){
 		var json = {
-			locationType:"district",
-			year:2017
+				locationType:locationType,
+				year:year,
+				filterType:filterType,
+				filterValue:filterValue,
+				districtValue:districtValue
 		}
 		
 		$.ajax({
@@ -1558,7 +1561,24 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success: function(ajaxresp){
+				var str = "";
+				str+='<option value="0">ALL</option>';
+				if(ajaxresp != null && ajaxresp.length > 0){
+					for(var i in ajaxresp){
+						str+='<option value="'+ajaxresp[i].id+'">'+ajaxresp[i].name+'</option>';
+					}
+				}
 				
+				if(locationType == "district"){
+					$("#chosendistrictSelectmandalBlockId").html(str);
+					$("#chosendistrictSelectmandalBlockId").trigger("chosen:updated");
+				}else if(locationType == "constituency"){
+					$("#chosenconstituencySelectmandalBlockId").html(str);
+					$("#chosenconstituencySelectmandalBlockId").trigger("chosen:updated");
+				}else if(locationType == "mandal"){
+					$("#chosenmandalSelectmandalBlockId").html(str);
+					$("#chosenmandalSelectmandalBlockId").trigger("chosen:updated");
+				}
 			}
 		});
 	}
@@ -1671,5 +1691,23 @@
 		});
    }
 	
+  $(document).on("change","#chosendistrictSelectmandalBlockId",function(){
+		var distId = $("#chosendistrictSelectmandalBlockId").val();
+		if(distId == 0){
+			$("#chosenconstituencySelectmandalBlockId,#chosenmandalSelectmandalBlockId").html('');
+		}else{
+			distId = distId < 9?"0"+distId:distId;
+			getLocationBasedOnSelection("constituency",2017,"district",distId,"");
+		} 	
+	});
 	
+	$(document).on("change","#chosenconstituencySelectmandalBlockId",function(){
+		var constId = $("#chosenconstituencySelectmandalBlockId").val();
+		var distId = $("#chosendistrictSelectmandalBlockId").val()<9?"0"+$("#chosendistrictSelectmandalBlockId").val():$("#chosendistrictSelectmandalBlockId").val();
+		if(constId == 0){
+			$("#chosenmandalSelectmandalBlockId").html('');
+		}else{
+			getLocationBasedOnSelection("mandal",2017,"constituency",constId,distId);
+		}
+	});
 	
