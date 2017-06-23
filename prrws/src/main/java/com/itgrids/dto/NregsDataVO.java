@@ -1,6 +1,8 @@
 package com.itgrids.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NregsDataVO implements Serializable{
 
@@ -25,6 +27,13 @@ public class NregsDataVO implements Serializable{
 	private Long constiInRed = 0l;
 	private Long constiInOrange = 0l;
 	private Long constiInGreen = 0l;
+	private Long mandalsInRed = 0l;
+	private Long mandalsInOrange = 0l;
+	private Long mandalsInGreen = 0l;
+	
+	private List<NregsDataVO> distConsCuntList = new ArrayList<NregsDataVO>(0);
+	private List<NregsDataVO> distMandalCuntList = new ArrayList<NregsDataVO>(0);
+	private List<NregsDataVO> distList = new ArrayList<NregsDataVO>(0);
 	
 	
 	public Long getUniqueId() {
@@ -146,6 +155,42 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setTotal(Long total) {
 		this.total = total;
+	}
+	public Long getMandalsInRed() {
+		return mandalsInRed;
+	}
+	public void setMandalsInRed(Long mandalsInRed) {
+		this.mandalsInRed = mandalsInRed;
+	}
+	public Long getMandalsInOrange() {
+		return mandalsInOrange;
+	}
+	public void setMandalsInOrange(Long mandalsInOrange) {
+		this.mandalsInOrange = mandalsInOrange;
+	}
+	public Long getMandalsInGreen() {
+		return mandalsInGreen;
+	}
+	public void setMandalsInGreen(Long mandalsInGreen) {
+		this.mandalsInGreen = mandalsInGreen;
+	}
+	public List<NregsDataVO> getDistConsCuntList() {
+		return distConsCuntList;
+	}
+	public void setDistConsCuntList(List<NregsDataVO> distConsCuntList) {
+		this.distConsCuntList = distConsCuntList;
+	}
+	public List<NregsDataVO> getDistMandalCuntList() {
+		return distMandalCuntList;
+	}
+	public void setDistMandalCuntList(List<NregsDataVO> distMandalCuntList) {
+		this.distMandalCuntList = distMandalCuntList;
+	}
+	public List<NregsDataVO> getDistList() {
+		return distList;
+	}
+	public void setDistList(List<NregsDataVO> distList) {
+		this.distList = distList;
 	}
 	
 }

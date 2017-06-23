@@ -149,9 +149,10 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title"></h4>  
+					<h4 class="modal-title" id="modalHeadingDivId"></h4>  
 				</div>
 				<div class="modal-body">
+					<div id="nregsOverviewBodyId"></div>
 					<div id="nregsConsitenBodyId"></div>
 				</div>
 				<div class="modal-footer">

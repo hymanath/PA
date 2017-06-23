@@ -1,6 +1,7 @@
 package com.itgrids.service.integration.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.dto.FarmPondOverviewVO;
 import com.itgrids.dto.IdNameVO;
@@ -45,8 +46,9 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregsSericultureData(InputVO inputVO);
 	public NregsOverviewVO getNregsHousingOverview(InputVO inputVO);
 	public List<NregsDataVO> getNregsHousingData(InputVO inputVO);
-	public List<NregsDataVO> getNregsConstCuntDetails(String output);
-	public List<NregsDataVO> getMGNregsDistrWiseConsti(InputVO inputVO);
+	public List<NregsDataVO> getNregsConstCuntDetails(String output,Map<String,NregsDataVO> cntMap);
+	public NregsDataVO getMGNregsDistrWiseConsti(InputVO inputVO);
 	public List<NregsDataVO> getDistrictsDetails(List<NregsDataVO>  returnList,String type);
-
+	public List<NregsDataVO> getNregsMandalsCuntFrDistrict(String output,Map<String,NregsDataVO> cntMap);
+	public List<NregsDataVO> getNregsMandalsCuntFrConstituncies(String output);
 }

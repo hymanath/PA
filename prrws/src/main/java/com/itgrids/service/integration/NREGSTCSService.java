@@ -3,6 +3,8 @@ package com.itgrids.service.integration;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -1626,10 +1628,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 */
 
 	@Override
-	public List<NregsDataVO> getNregsConstCuntDetails(String output){
+	public List<NregsDataVO> getNregsConstCuntDetails(String output,Map<String,NregsDataVO> cntMap){
 		List<NregsDataVO> retVOList = new ArrayList<>(0);
 		try{
-			Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
+			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
 			if(output != null && !output.isEmpty()){
 	    		JSONArray finalArray = new JSONArray(output);
 	    		if(finalArray!=null && finalArray.length()>0){
@@ -1638,18 +1640,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		    			String distrName = jObj.getString("DISTRICT");
 						NregsDataVO vo = cntMap.get(distrName);
 		    			String percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
-		    				if(vo == null){
-		    					vo = new NregsDataVO();
-		    					if(Double.valueOf(percValue)  < 50){
-		    						vo.setConstiInRed(vo.getConstiInRed());
-		    					}else if(Double.valueOf(percValue)  >50 && Double.valueOf(percValue) <80){
-		    						vo.setConstiInOrange(vo.getConstiInOrange());
-	    						}else if(Double.valueOf(percValue)  >80){
-		    						vo.setConstiInGreen(vo.getConstiInGreen());
-		    					}
-		    					cntMap.put(distrName, vo);
-			    			}
-		    				else {
+		    				if(vo != null){
 			    				if(Double.valueOf(percValue)  < 50){
 		    						vo.setConstiInRed(vo.getConstiInRed()+1l);
 		    					}else if(Double.valueOf(percValue)  >50 && Double.valueOf(percValue) <80){
@@ -1657,24 +1648,15 @@ public class NREGSTCSService implements INREGSTCSService{
 	    						}else if(Double.valueOf(percValue)  >80){
 		    						vo.setConstiInGreen(vo.getConstiInGreen()+1l);
 		    					}
-		    					cntMap.put(distrName, vo);
-			    			}
+			    				vo.setTotal(vo.getTotal()+1l);
+			    				vo.setDistrict(distrName);
+		    				}
 	    				}   	    							
 	    			}
     			}
 			
 					if(cntMap != null){
-						for(java.util.Map.Entry<String, NregsDataVO> entry : cntMap.entrySet()){
-							String distrctName = entry.getKey();
-							NregsDataVO vo = entry.getValue();
-							NregsDataVO nregsDataVO = new NregsDataVO();
-							nregsDataVO.setDistrict(distrctName);
-							nregsDataVO.setConstiInRed(vo.getConstiInRed());
-							nregsDataVO.setConstiInOrange(vo.getConstiInOrange());
-							nregsDataVO.setConstiInGreen(vo.getConstiInGreen());
-							nregsDataVO.setTotal(vo.getConstiInRed()+vo.getConstiInOrange()+vo.getConstiInGreen());
-							retVOList.add(nregsDataVO);
-						}
+						retVOList = new ArrayList<NregsDataVO>(cntMap.values());
 					}
 								
 				}catch(Exception e){
@@ -1690,26 +1672,200 @@ public class NREGSTCSService implements INREGSTCSService{
 	 */
 
 	@Override
-	public List<NregsDataVO> getMGNregsDistrWiseConsti(InputVO inputVO) {
-		List<NregsDataVO> list = new ArrayList<NregsDataVO>(0);
+	public NregsDataVO getMGNregsDistrWiseConsti(InputVO inputVO) {
+		NregsDataVO finalVO = new NregsDataVO();
 		try {
+			
+			List<NregsDataVO> list = new ArrayList<NregsDataVO>(0);
 			 
 			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
-	        
-	        if(response.getStatus() != 200){
+	       
+			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
 	 	    	 String output = response.getEntity(String.class);
-	 	    	 
-	 	    	list = getNregsConstCuntDetails(output);
+		 	    	if(output != null && !output.isEmpty()){
+		 	    		JSONArray finalArray = new JSONArray(output);
+		 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    			for(int i=0;i<finalArray.length();i++){
+		 	    				NregsDataVO nregsDataVO=new NregsDataVO();
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				nregsDataVO.setUniqueId(jObj.getLong("UNIQUEID"));
+		 	    				nregsDataVO.setDistrict(jObj.getString("DISTRICT"));
+		 	    				nregsDataVO.setConstituency(jObj.getString("CONSTITUENCY"));
+		 	    				nregsDataVO.setMandal(jObj.getString("MANDAL"));
+		 	    				nregsDataVO.setPanchayat(jObj.getString("PANCHAYAT"));
+		 	    				nregsDataVO.setTarget(jObj.getLong("TARGET"));
+		 	    				nregsDataVO.setGrounded(jObj.getString("GROUNDED"));
+		 	    				nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
+		 	    				nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
+		 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
+		 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
+		 	    				list.add(nregsDataVO);	 
+		 	    			}
+		 	    		}
+		 	    	}
+		 	    	
+		 	    	list = getDistrictsDetails(list,inputVO.getType());
+		 	    	Map<String,NregsDataVO> distConstMap = new LinkedHashMap<String,NregsDataVO>();
+		 	    	
+		 	    	if(list != null && !list.isEmpty()){
+		 	    		 for (NregsDataVO nregsDataVO : list) {
+		 	    			 NregsDataVO filterVo = new NregsDataVO();
+		 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
+							distConstMap.put(nregsDataVO.getDistrict(),filterVo);
+						}
+		 	    	 }
+		 	    	List<NregsDataVO> disConslist = null;
+		 	    	List<NregsDataVO> disMandallist = null;
+		 	    	
+		 	    	inputVO.setLocationType("constituency");
+		 	    	ClientResponse constResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
+		 	    	if(constResponse.getStatus() != 200){
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ constResponse.getStatus());
+			 	      }else{
+			 	    	 String constOutput = constResponse.getEntity(String.class);
+			 	    	 
+			 	    	 disConslist = getNregsConstCuntDetails(constOutput,distConstMap);
+			 	      }
+		 	    	
+		 	    	distConstMap.clear();
+		 	    	if(list != null && !list.isEmpty()){
+		 	    		 for (NregsDataVO nregsDataVO : list) {
+		 	    			 NregsDataVO filterVo = new NregsDataVO();
+		 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
+							distConstMap.put(nregsDataVO.getDistrict(),filterVo);
+						}
+		 	    	 }
+		 	    	inputVO.setLocationType("mandal");
+		 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
+		 	    	if(mandalResponse.getStatus() != 200){
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
+			 	      }else{
+			 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
+			 	    	 
+			 	    	  disMandallist = getNregsMandalsCuntFrDistrict(mandalOutput,distConstMap);
+			 	      }
+		 	    	
+		 	    	finalVO.getDistConsCuntList().addAll(disConslist);
+		 	    	finalVO.getDistMandalCuntList().addAll(disMandallist);
+		 	    	finalVO.getDistList().addAll(list);
 	 	    	    	  
 	 	      }
 		} catch (Exception e) {
-			LOG.error("Exception raised at getAHData -getAHData service", e);
+			LOG.error("Exception raised at getMGNregsDistrWiseConsti -NREGSTCSService service", e);
 		}
 		
-		return list;
+		return finalVO;
 	}
+	
+	/*
+	 * Date : 23/06/2017
+	 * Author :Nandhini
+	 * @description : getNregsMandalsCuntFrDistrict 
+	 */
+
+	@Override
+	public List<NregsDataVO> getNregsMandalsCuntFrDistrict(String output,Map<String,NregsDataVO> cntMap){
+		List<NregsDataVO> retVOList = new ArrayList<>(0);
+		try{
+			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
+			if(output != null && !output.isEmpty()){
+	    		JSONArray finalArray = new JSONArray(output);
+	    		if(finalArray!=null && finalArray.length()>0){
+	    			for(int i=0;i<finalArray.length();i++){
+	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		    			String distrName = jObj.getString("DISTRICT");
+						NregsDataVO vo = cntMap.get(distrName);
+		    			String percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+		    				if(vo != null) {
+			    				if(Double.valueOf(percValue)  < 50){
+		    						vo.setMandalsInRed(vo.getMandalsInRed()+1l);
+		    					}else if(Double.valueOf(percValue)  >50 && Double.valueOf(percValue) <80){
+		    						vo.setMandalsInOrange(vo.getMandalsInOrange()+1l);
+	    						}else if(Double.valueOf(percValue)  >80){
+		    						vo.setMandalsInGreen(vo.getMandalsInGreen()+1l);
+		    					}
+			    				vo.setTotal(vo.getTotal()+1l);
+			    				vo.setDistrict(distrName);
+			    			}
+	    				}   	    							
+	    			}
+    			}
+			
+					if(cntMap != null){
+						retVOList = new ArrayList<NregsDataVO>(cntMap.values());
+					}
+								
+				}catch(Exception e){
+					LOG.error("Exception raised at getNregsMandalsCuntFrDistrict -NREGSTCSService service", e);
+				}
+			return retVOList;
+	 }
+	
+	/*
+	 * Date : 23/06/2017
+	 * Author :Nandhini
+	 * @description : getNregsMandalsCuntFrConstituncies 
+	 */
+
+	@Override
+	public List<NregsDataVO> getNregsMandalsCuntFrConstituncies(String output){
+		List<NregsDataVO> retVOList = new ArrayList<>(0);
+		try{
+			Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
+			if(output != null && !output.isEmpty()){
+	    		JSONArray finalArray = new JSONArray(output);
+	    		if(finalArray!=null && finalArray.length()>0){
+	    			for(int i=0;i<finalArray.length();i++){
+	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		    			String constName = jObj.getString("CONSTITUENCY");
+						NregsDataVO vo = cntMap.get(constName);
+		    			String percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+		    				if(vo == null){
+		    					vo = new NregsDataVO();
+		    					if(Double.valueOf(percValue)  < 50){
+		    						vo.setMandalsInRed(vo.getMandalsInRed());
+		    					}else if(Double.valueOf(percValue)  >50 && Double.valueOf(percValue) <80){
+		    						vo.setMandalsInOrange(vo.getMandalsInOrange());
+	    						}else if(Double.valueOf(percValue)  >80){
+		    						vo.setMandalsInGreen(vo.getMandalsInGreen());
+		    					}
+		    					cntMap.put(constName, vo);
+			    			}
+		    				else {
+			    				if(Double.valueOf(percValue)  < 50){
+		    						vo.setMandalsInRed(vo.getMandalsInRed()+1l);
+		    					}else if(Double.valueOf(percValue)  >50 && Double.valueOf(percValue) <80){
+		    						vo.setMandalsInOrange(vo.getMandalsInOrange()+1l);
+	    						}else if(Double.valueOf(percValue)  >80){
+		    						vo.setMandalsInGreen(vo.getMandalsInGreen()+1l);
+		    					}
+		    					cntMap.put(constName, vo);
+			    			}
+	    				}   	    							
+	    			}
+    			}
+			
+					if(cntMap != null){
+						for(java.util.Map.Entry<String, NregsDataVO> entry : cntMap.entrySet()){
+							String constituName = entry.getKey();
+							NregsDataVO vo = entry.getValue();
+							NregsDataVO nregsDataVO = new NregsDataVO();
+							nregsDataVO.setConstituency(constituName);
+							nregsDataVO.setMandalsInRed(vo.getMandalsInRed());
+							nregsDataVO.setMandalsInOrange(vo.getMandalsInOrange());
+							nregsDataVO.setMandalsInGreen(vo.getMandalsInGreen());
+							nregsDataVO.setTotal(vo.getMandalsInRed()+vo.getMandalsInOrange()+vo.getMandalsInGreen());
+							retVOList.add(nregsDataVO);
+						}
+					}
+								
+				}catch(Exception e){
+					LOG.error("Exception raised at getNregsMandalsCuntFrConstituncies -NREGSTCSService service", e);
+				}
+			return retVOList;
+	 }
 		
 
 	/*
@@ -1719,13 +1875,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	 */
    
 	@Override
-	public List<NregsDataVO> getDistrictsDetails(List<NregsDataVO>  returnList,String type)
+	public List<NregsDataVO> getDistrictsDetails(List<NregsDataVO> returnList,String type)
 	{
 		
 	try{
 		List<NregsDataVO> filterList = new ArrayList<NregsDataVO>();
-		InputVO inputVO=new InputVO();
-    	if(returnList != null && !returnList.isEmpty()){
+		if(returnList != null && !returnList.isEmpty()){
     		for (NregsDataVO nregsDataVO : returnList) {
 			if(type != null && !type.trim().equalsIgnoreCase("total")){
 				if(type.trim().equalsIgnoreCase("red") && Double.valueOf(nregsDataVO.getPercentage()) < 50)
