@@ -2,29 +2,62 @@
 		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","ground":"#14BAAD","surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
 		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049","Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00"}
 		var blocksArr = [{name:'Coverage Status Of<br/> Habitation',id:'habitation'},{name:'Key<br/> Performance',id:'performance'},{name:'Alert Status <br/>Jalavani',id:'jalavani'},{name:'Plan Of Action for Stressed Habitations <br/>Water Budget has to be prepared for all habitations',id:'planAction'}];
-		var alertStatusBlockArr = [{name:'Alert Status Jalavani',id:'alertStatus'},{name:'Drinking Water Satisfaction Levels',id:'drinking'}];
 		onloadCalls();
+		onLoadInitialisations();
 		function onloadCalls(){
 			tabBlocks('stateBlockId','state');
 			tabBlocks('districtBlockId','district');
 			tabBlocks('constituencyBlockId','constituency');
 			tabBlocks('mandalBlockId','mandal');
 			responsiveTabs();
-			getHabitationCoverageByStatusByLocationType('state','','graph');
+			getHabitationCoverageByStatusByLocationTypeForGraph('state','');
 			getLabTestDetails();
 			getHabitationSupplyDetails();
 			getSchemesDetails();
 			getSchemeWiseWorkDetails();
 			getAssetInfoBetweenDates();
-			//getWaterSourceInfo();
-			getKeyPerformanceIndicatorsInfo('state','','graph');
-			//getPlanofActionForStressedHabitations();
-			getStressedHabitationsInfoByLocationType();//on click ? call
-			getAlertDetailsOfCategoryByStatusWise('graph','','');
+			getWaterSourceInfo();
+			getKeyPerformanceIndicatorsInfo();
+			getPlanofActionForStressedHabitations();
+			getStressedHabitationsInfoByLocationType();
+			getAlertDetailsOfCategoryByStatusWise();
 			getAlertFeedbackStatusDetails();
 			getLocationBasedOnSelection();//get dist/const/mandal
 			getHamletWiseIvrStatusCounts();
+		
 		}
+		function onLoadInitialisations()
+	{
+		$(document).keydown(function(event){
+			if(event.keyCode==123){
+				alert("Hoo no! don't try to expose me");
+				return false;
+			}
+			else if(event.ctrlKey && event.shiftKey && event.keyCode==73){        
+				alert("Hoo no! don't try to expose me");
+				return false;  //Prevent from ctrl+shift+i
+			}
+		});
+		var width = $(window).width()
+		if(width > 767)
+		{
+			header = $('header section'),
+			$(window).scroll(function(){
+				var windowScrollTop = $(window).scrollTop();
+
+				if (windowScrollTop>50) {
+					header.addClass("header-fixed");
+				} else {
+					header.removeClass("header-fixed");
+				}
+			});
+		}
+		$(".chosenSelect").chosen();
+		
+		
+		getAllFiniancialYears();		
+	}
+		
 		function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title)
 		{
 			
@@ -45,7 +78,33 @@
 			});
 		}
 		
-		function getHabitationCoverageByStatusByLocationType(locationType,divId,type)
+		
+		function getHabitationCoverageByStatusByLocationTypeForGraph(locationType,divId){
+			var json = {
+				locationType:locationType,
+				year:2017,
+				stressedHabitationYear:2017,
+				filterType:"",
+				filterValue:""
+			}
+			$.ajax({
+				url: 'getHabitationCoverageByStatusByLocationType',
+				data: JSON.stringify(json),
+				type: "POST",
+				dataType: 'json', 
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						buildChartForHabitationCoverage(ajaxresp);
+						buildChartForHabitationCoverageStatus(ajaxresp);
+					}
+				}
+			});
+		}
+		function getHabitationCoverageByStatusByLocationType(locationType,divId)
 		{
 			var json = {
 				locationType:locationType,
@@ -65,14 +124,7 @@
 				},
 				success: function(ajaxresp){
 					if(ajaxresp !=null ){
-						if(type == "graph"){
-							buildChartForHabitationCoverage(ajaxresp);
-							buildChartForHabitationCoverageStatus(ajaxresp);
-						}else{
-							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations');
-						}
-						
-						
+						buildTableForHabitationCoverage(ajaxresp,locationType,divId);
 					}
 				}
 			});
@@ -804,11 +856,12 @@
 			});	
 		}
 		
-		function getKeyPerformanceIndicatorsInfo(locationType,divId,type){
-			var json={
-						fromDateStr:"01-12-2016",
-						toDateStr:"01-12-2017",
-						locationType:"state"
+		function getKeyPerformanceIndicatorsInfo(){
+			var json = {
+					  year : "2014",
+					  fromDate : "2014-01-01",
+					  toDate : "2014-06-30",
+					locationType : "state"	
 					}
 			$.ajax({
 				url: 'getKeyPerformanceIndicatorsInfo',
@@ -821,12 +874,31 @@
 				},
 				success: function(ajaxresp){
 					if(ajaxresp !=null ){
-						if(type=="graph"){
-							buildKeyPerformanceIndicatorsInfo(ajaxresp)
-						}else{
-							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations');
-						}
-						
+						buildKeyPerformanceIndicatorsInfo(ajaxresp)
+					}
+				}
+			});
+			
+		}
+		function getKeyPerformanceIndicatorsInfoTable(locationType,divId){
+			var json = {
+					  year : "2014",
+					  fromDate : "2014-01-01",
+					  toDate : "2014-06-30",
+					  locationType : locationType	
+					}
+			$.ajax({
+				url: 'getKeyPerformanceIndicatorsInfo',
+				data: JSON.stringify(json),
+				type: "POST",
+				dataType: 'json', 
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success: function(ajaxresp){
+					if(ajaxresp !=null ){
+						buildTableForHabitationCoverage(ajaxresp,locationType,divId);
 					}
 				}
 			});
@@ -917,11 +989,11 @@
 		}
 		function getStressedHabitationsInfoByLocationType(){
 			var json = {
-						locationType:"constituency",
-						year:"2017",
-						filterType:"constituency",
-						stressedHabitationYear:"2017",
-						filterValue:"120"
+					  year : "2014",
+					  fromDate : "2014-01-01",
+					  toDate : "2014-06-30",
+					  locationType : "district",
+					  locationId : "1"
 
 					}
 			$.ajax({
@@ -1026,7 +1098,7 @@
 					}]
 			});
 		}
-		function getAlertDetailsOfCategoryByStatusWise(type,divId,locationType){
+		function getAlertDetailsOfCategoryByStatusWise(){
 			var json = {
 				fromDate:"",
 				toDate:"",
@@ -1044,13 +1116,7 @@
 				},
 				success: function(ajaxresp){
 					if(ajaxresp !=null && ajaxresp.length>0){
-						if(type=="graph"){
-							buildAlertDetailsOfCategoryByStatusWise(ajaxresp);
-						}else if(type=="table"){
-							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'alertStatus')
-						}
-						
-						
+						buildAlertDetailsOfCategoryByStatusWise(ajaxresp);
 					}
 				}
 			});
@@ -1282,25 +1348,9 @@
 					{
 						if(i == 0)
 						{
-							 if(blocksArr[i].id == "jalavani"){
-								 tabBlock+='<div >';
-									 tabBlock+='<div role="tabpanel" class="tab-pane active" id="alertStatus'+blockId+'"></div>';
-									 tabBlock+='<div role="tabpanel" class="tab-pane active" id="drinking'+blockId+'"></div>';
-								 tabBlock+='</div>';
-							 }else{
-								 tabBlock+='<div role="tabpanel" class="tab-pane active" id="'+blockId+''+blocksArr[i].id+'"></div>';
-							 }
-								//tabBlock+='<div role="tabpanel" class="tab-pane active" id="'+blockId+''+blocksArr[i].id+'"></div>';
+							tabBlock+='<div role="tabpanel" class="tab-pane active" id="'+blockId+''+blocksArr[i].id+'"></div>';	
 						}else{
-							 if(blocksArr[i].id == "jalavani"){
-								tabBlock+='<div >';
-									tabBlock+='<div  role="tabpanel" class="tab-pane" id="alertStatus'+blockId+'"></div>';
-									tabBlock+='<div  role="tabpanel" class="tab-pane" id="drinking'+blockId+'"></div>';
-								tabBlock+='</div>';
-							}else{
-								tabBlock+='<div role="tabpanel" class="tab-pane" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
-							} 
-							//tabBlock+='<div role="tabpanel" class="tab-pane" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
+							tabBlock+='<div role="tabpanel" class="tab-pane" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
 						}
 					}
 				tabBlock+='</div>';
@@ -1310,7 +1360,7 @@
 		for(var i in blocksArr)
 		{
 			if(blocksArr[i].id == "habitation")
-			getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+			getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
 			
 		}
 		if(blockId == 'constituencyBlockId')
@@ -1326,224 +1376,91 @@
 		
 	}
 	
-		function buildTableForHabitationCoverage(result,locationType,divId,type){
-			if(type =="alertStatus"){
-				var GLtbodyAlertArr=[];
-				if(result !=null && result.length>0){
-					for(var i in result){
-						GLtbodyAlertArr.push(result[i]);
-					}
-				}
-				tableViewAlertStatus(divId,GLtbodyAlertArr,locationType)
-			}else{
-				var GLtbodyArr=[];
-				if(result !=null && result.length>0){
-					for(var i in result){
-						GLtbodyArr.push(result[i]);
-					}
-				}
-				tableView(divId,GLtbodyArr,locationType)
-			}
-			
-		}
-		function tableViewAlertStatus(divId,GLtbodyAlertArr,locationType){
-			
-			for(var k in divId){
-				var $windowWidth = $(window).width();
-				var tableView='';
-					if(divId[k].id=="alertStatus"){
-					tableView+='<table class="table table-bordered dataTable'+locationType+divId[k].id+'">';
-					tableView+='<thead class="text-capital">';
-					tableView+='<tr>'; 
-					tableView+='<th> </th>';
-					tableView+='<th>Notified</th>';
-					tableView+='<th>Praposal</th>';
-					tableView+='<th>Action in Progress</th>';
-					tableView+='<th>Completed & Closed</th>';
-					tableView+='<th>Others</th>';
-					tableView+='<th>Total</th>';
-					tableView+='</tr>'; 
-					tableView+='</thead>';
-					tableView+='<tbody>';
-					tableView+='<tr>'; 
-					var CompleteClosedCount=0;
-					var othersCount=0;	
-					var totalCount=0;
-					var notifiedCount=0;	
-					var proposalCount=0;	
-					var actionInProgress=0;	
-					var completeClosed=0;	
-					var others=0;	
-					tableView+='<td> </td>';
-						for(var i in GLtbodyAlertArr){
-							if(GLtbodyAlertArr[i].id==2){
-								if(GLtbodyAlertArr[i].count !=null && GLtbodyAlertArr[i].count>0){
-									tableView+='<td>'+GLtbodyAlertArr[i].count+'</td>';
-									notifiedCount =GLtbodyAlertArr[i].count
-								}else{
-									tableView+='<td> - </td>';
-								}
-								
-							}else if(GLtbodyAlertArr[i].id==13){
-								if(GLtbodyAlertArr[i].count !=null && GLtbodyAlertArr[i].count>0){
-									tableView+='<td>'+GLtbodyAlertArr[i].count+'</td>';
-									proposalCount =GLtbodyAlertArr[i].count
-								}else{
-									tableView+='<td> - </td>';
-								}
-							}else if(GLtbodyAlertArr[i].id==3){
-								if(GLtbodyAlertArr[i].count !=null && GLtbodyAlertArr[i].count>0){
-									tableView+='<td>'+GLtbodyAlertArr[i].count+'</td>';
-									actionInProgress =GLtbodyAlertArr[i].count
-								}else{
-									tableView+='<td> - </td>';
-								}
-							}else if(GLtbodyAlertArr[i].id==4 ||  GLtbodyAlertArr[i].id == 12){
-								if(GLtbodyAlertArr[i].count !=null && GLtbodyAlertArr[i].count>0){
-									CompleteClosedCount =CompleteClosedCount+GLtbodyAlertArr[i].count;
-									completeClosed =CompleteClosedCount;
-								}
-							}else{
-								if(GLtbodyAlertArr[i].count !=null && GLtbodyAlertArr[i].count>0){
-									 othersCount =othersCount+GLtbodyAlertArr[i].count;
-									others =othersCount
-								}
-							}
-						}
-						totalCount =notifiedCount+proposalCount+actionInProgress+completeClosed+others;
-						if(CompleteClosedCount >0){
-							tableView+='<td>'+CompleteClosedCount+'</td>';
-						}else{
-							tableView+='<td> - </td>';
-						}
-						if(totalCount >0){
-							tableView+='<td>'+othersCount+'</td>';
-						}else{
-							tableView+='<td> - </td>';
-						}
-						if(totalCount >0){
-							tableView+='<td>'+totalCount+'</td>';
-						}else{
-							tableView+='<td> - </td>';
-						}
-						tableView+='</tr>'; 
-					tableView+='</tbody>';
-					tableView+='</table>';
-				}
-				$("#"+divId[k].id+locationType).html(tableView);
-				$(".dataTable"+locationType+divId[k].id).dataTable();
-				if($windowWidth < 768){
-					$(".dataTable"+locationType+divId[k].id).wrap("<div class='table-responsive'></div>");
+		function buildTableForHabitationCoverage(result,locationType,divId){
+			var GLtbodyArr=[];
+			if(result !=null && result.length>0){
+				for(var i in result){
+					GLtbodyArr.push(result[i]);
 				}
 			}
-			
+			tableView(divId,GLtbodyArr,locationType)
 		}
+		
 		function tableView(divId,GLtbodyArr,locationType)
 		{
-				 for(var k in divId){
-					 var $windowWidth = $(window).width();
-					 if(GLtbodyArr !=null && GLtbodyArr.length>0){
-						var tableView='';
-						tableView+='<table class="table table-bordered" id="dataTable'+locationType+divId[k].id+'">';
-							tableView+='<thead class="text-capital">';
-							tableView+='<tr>';
-							if(divId[k].id=="habitation"){
-								tableView+='<th>'+locationType+'</th>';
-							} else if(divId[k].id=="performance"){
-								tableView+='<th rowspan="2">'+locationType+'</th>';
-							}
-								if(GLtbodyArr[0] !=null && GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
-									for(var j in GLtbodyArr[0].statusList){
-										if(divId[k].id=="habitation"){
-											if(GLtbodyArr[0].statusList[j].status != 'NC'){
-												tableView+='<th>'+GLtbodyArr[0].statusList[j].status+'</th>';
-												
-											}
-										}else if(divId[k].id=="performance"){
-												tableView+='<th colspan="3">'+GLtbodyArr[0].statusList[j].status+'</th>';
-										} 
-									}
-								}
+			
+			var $windowWidth = $(window).width();
+			 for(var k in divId){
+				 var tableView='';
+					tableView+='<table class="table table-bordered dataTable'+locationType+'">';
+						tableView+='<thead class="text-capital">';
+						tableView+='<tr>';
 						if(divId[k].id=="habitation"){
-							tableView+='<th>TOTAL</th>';
-						}
-						tableView+='</tr>'; 
-						 if(divId[k].id=="performance"){
-							 tableView+='<tr>'; 
-							if(GLtbodyArr[0] !=null && GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
-								for(var j in GLtbodyArr[0].statusList){
-									tableView+='<th>Target</th>';
-									tableView+='<th>Achived</th>';
-									tableView+='<th>% Percentage</th>';
-								}
-							}
-							tableView+='</tr>'; 
-						}	 			
-						tableView+='</thead>';
-						tableView+='<tbody>';
-							 for(var i in GLtbodyArr){
-								 var totalCount=0;
-								tableView+='<tr>';
-								tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
-								if(GLtbodyArr[i].statusList !=null && GLtbodyArr[i].statusList.length>0){
-									for(var j in GLtbodyArr[i].statusList){
-										if(divId[k].id=="habitation"){
-											if(GLtbodyArr[i].statusList[j].status != 'NC'){
-												if(GLtbodyArr[i].statusList[j].count !=null && GLtbodyArr[i].statusList[j].count>0){
-													tableView+='<td>'+GLtbodyArr[i].statusList[j].count+' <small style="color:#0FBE08">'+GLtbodyArr[i].statusList[j].percentage+' %</small></td>';
-												}else{
-													tableView+='<td> - </td>';
-												}
-												
-												totalCount += GLtbodyArr[i].statusList[j].count;
-											}
-										} else if(divId[k].id=="performance"){
-											if(GLtbodyArr[i].statusList[j].target !=null && GLtbodyArr[i].statusList[j].target>0){
-												tableView+='<td>'+GLtbodyArr[i].statusList[j].target+'</td>';
-											}else{
-												tableView+='<td> - </td>';
-											}
-											if(GLtbodyArr[i].statusList[j].target !=null && GLtbodyArr[i].statusList[j].target>0){
-												tableView+='<td>'+GLtbodyArr[i].statusList[j].achived+'</td>';
-											}else{
-												tableView+='<td> - </td>';
-											}
-											if(GLtbodyArr[i].statusList[j].target !=null && GLtbodyArr[i].statusList[j].target>0){
-												tableView+='<td>'+GLtbodyArr[i].statusList[j].percentage+'</td>';
-											}else{
-												tableView+='<td> - </td>';
-											}
-										} 
-									}
-								}
-								if(divId[k].id=="habitation"){
-									tableView+='<td>'+totalCount+'</td>';
-								}
-								tableView+='</tr>';
-							}  
-							 
-						tableView+='</tbody>';
-						tableView+='</table>';	
-					if(divId[k].id !=="jalavani"){
-						$("#"+locationType+"BlockId"+divId[k].id).html(tableView);
-						if(divId[k].id=="habitation"){
-							$("#dataTable"+locationType+divId[k].id).dataTable();
-							if($windowWidth < 768){
-								$("#dataTable"+divId[k].id).wrap("<div class='table-responsive'></div>");
-							}
+							tableView+='<th>'+locationType+'</th>';
 						}else if(divId[k].id=="performance"){
-							$("#dataTable"+locationType+divId[k].id).dataTable();
-							if($windowWidth < 768){
-								$("#dataTable"+divId[k].id).wrap("<div class='table-responsive'></div>");
+							tableView+='<th rowspan="2">'+locationType+'</th>';
+						}
+							if(GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
+								for(var j in GLtbodyArr[0].statusList){
+									if(divId[k].id=="habitation"){
+										if(GLtbodyArr[0].statusList[j].status != 'NC'){
+											tableView+='<th>'+GLtbodyArr[0].statusList[j].status+'</th>';
+											
+										}
+									}else if(divId[k].id=="performance"){
+											tableView+='<th colspan="3">'+GLtbodyArr[0].statusList[j].status+'</th>';
+									}
+								}
+							}
+					if(divId[k].id=="habitation"){
+						tableView+='<th>TOTAL</th>';
+					}
+					tableView+='</tr>'; 
+					tableView+='<tr>'; 
+					if(divId[k].id=="performance"){
+						if(GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
+							for(var j in GLtbodyArr[0].statusList){
+								tableView+='<th>Target</th>';
+								tableView+='<th>Achived</th>';
+								tableView+='<th>% Percentage</th>';
 							}
 						}
 						
-					}	
-				 }else{
-					 $("#"+locationType+"BlockId"+divId[k].id).html("No DATA AVAILABLE")
-				 }
-			}
-			
+					}					
+					tableView+='</tr>'; 
+					tableView+='</thead>';
+					tableView+='<tbody>';
+						 for(var i in GLtbodyArr){
+							 var totalCount=0;
+							tableView+='<tr>';
+							tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
+							if(GLtbodyArr[i].statusList !=null && GLtbodyArr[i].statusList.length>0){
+								for(var j in GLtbodyArr[i].statusList){
+									if(divId[k].id=="habitation"){
+										if(GLtbodyArr[i].statusList[j].status != 'NC'){
+											tableView+='<td>'+GLtbodyArr[i].statusList[j].count+' <small>'+GLtbodyArr[i].statusList[j].percentage+'</small></td>';
+											totalCount += GLtbodyArr[i].statusList[j].count;
+										}
+									}else if(divId[k].id=="performance"){
+										tableView+='<td>'+GLtbodyArr[i].statusList[j].target+'</td>';
+										tableView+='<td>'+GLtbodyArr[i].statusList[j].achived+'</td>';
+										tableView+='<td>'+GLtbodyArr[i].statusList[j].percentage+'</td>';
+									}
+									
+									
+								}
+							}
+							if(divId[k].id=="habitation"){
+								tableView+='<td>'+totalCount+'</td>';
+							}
+							tableView+='</tr>';
+						}  
+						 
+					tableView+='</tbody>';
+					tableView+='</table>';	
+				$("#"+locationType+"BlockId"+divId[k].id).html(tableView)
+				
+			 }
 		}
 		
 		$(document).on("click","[role='tablist'] li a",function(){
@@ -1551,154 +1468,208 @@
 				var blockName = $(this).attr('attr_block_name');
 				var blockId = $(this).attr('attr_block_id');
 				if(blockName == "state"){
-					emptyCheckState();
 					if(id == "stateBlockIdhabitation"){
-						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
-					}else if(id == "stateBlockIdperformance"){
-						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
-					}else if(id == "stateBlockIdjalavani"){
-						getAlertDetailsOfCategoryByStatusWise('table',alertStatusBlockArr,'stateBlockId');
+						getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
+					}else if(id="stateBlockIdperformance"){
+						getKeyPerformanceIndicatorsInfoTable(blockName,blocksArr);
 					}
 				}else if(blockName == "district"){
-					emptyCheckDistrict();
 					if(id == "districtBlockIdhabitation"){
-						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
-					}else if(id == "districtBlockIdperformance"){
-						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
-					}else if(id == "districtBlockIdjalavani"){
-						
+						getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
+					}else if(id="districtBlockIdperformance"){
+						getKeyPerformanceIndicatorsInfoTable(blockName,blocksArr);
 					}
 				}else if(blockName == "constituency"){
-					emptyCheckConstituency();
 					if(id == "constituencyBlockIdhabitation"){
-						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
-					}else if(id=="constituencyBlockIdperformance"){
-						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
-					}else if(id=="districtBlockIdjalavani"){
-						
+						getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
+					}else if(id="constituencyBlockIdperformance"){
+						getKeyPerformanceIndicatorsInfoTable(blockName,blocksArr);
 					}
 				}else if(blockName == "mandal"){
-					emptyCheckMandal();
 					if(id == "mandalBlockIdhabitation"){
-						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
-					}else if(id=="mandalBlockIdperformance"){
-						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
-					}else if(id=="districtBlockIdjalavani"){
-						
+						getHabitationCoverageByStatusByLocationType(blockName,blocksArr);
+					}else if(id="mandalBlockIdperformance"){
+						getKeyPerformanceIndicatorsInfoTable(blockName,blocksArr);
 					}
 				}
 		});
-		function emptyCheckState(){
-			$("#stateBlockIdhabitation").html('');
-			$("#stateBlockIdperformance").html('');
-			$("#alertStatusstateBlockId").html('');
-			$("#drinkingstateBlockId").html('');
-		}
-		function emptyCheckDistrict(){
-			$("#districtBlockIdhabitation").html('');
-			$("#districtBlockIdperformance").html('');
-			$("#alertStatusdistrictBlockId").html('');
-			$("#drinkingdistrictBlockId").html('');
-		}
-		function emptyCheckConstituency(){
-			$("#constituencyBlockIdhabitation").html('');
-			$("#constituencyBlockIdperformance").html('');
-			$("#alertStatusconstituencyBlockId").html('');
-			$("#drinkingconstituencyBlockId").html('');
-		}
-		function emptyCheckMandal(){
-			$("#mandalBlockIdhabitation").html('');
-			$("#mandalBlockIdperformance").html('');
-			$("#alertStatusmandalBlockId").html('');
-			$("#drinkingmandalBlockId").html('');
-		}
-		function selectBox(id){
+	
+	
+	
+	
+	
+	
+	function selectBox(id)
+		{
 			var id = id;
 			var selectBox='';
 			selectBox+='<select class="chosen" id="chosen'+id+'"><option>ss</option></select>';
 			$("#"+id).html(selectBox);
 			$("#chosen"+id).chosen();
 		}
-		$(".chosenSelect").chosen({width:'100%'});
-		$(window,document).on('resize', function(){
-			responsiveTabs();
-		});
-		$(document).on('click','[attr_click="questionMark"]', function(){
-			$("#modalDivId").modal('show');
-			$("#modalHeadingId").html($(this).attr("attr_title"));
-			tableView('modalTable');
-		});
-		function responsiveTabs(){
-			var $this = $(this);
-			var $windowWidth = $(window).width();
-			if($windowWidth < 768)
-			{
-				$('[role="tabListMobile"]').show();
-				$('[role="tablist"]').hide();
-			}else{
-				$('[role="tabListMobile"]').hide();
-				$('[role="tablist"]').show();
-			}
+	$(".chosenSelect").chosen({width:'100%'});
+	$(window,document).on('resize', function(){
+		responsiveTabs();
+	});
+	$(document).on('click','[attr_click="questionMark"]', function(){
+		$("#modalDivId").modal('show');
+		$("#modalHeadingId").html($(this).attr("attr_title"));
+		tableView('modalTable');
+	});
+	function responsiveTabs(){
+		var $this = $(this);
+		var $windowWidth = $(window).width();
+		if($windowWidth < 768)
+		{
+			$('[role="tabListMobile"]').show();
+			$('[role="tablist"]').hide();
+		}else{
+			$('[role="tabListMobile"]').hide();
+			$('[role="tablist"]').show();
 		}
-		$(document).on("change","[role='tabListMobile']",function(){
-				var id = $('option:selected', this).attr('tab_id');
-				$("#"+id).closest(".tab-content").find("[role='tabpanel']").removeClass("active");
-				$("#"+id).addClass("active");
-				
-		});
-		$("header").on("click",".menu-cls",function(e){
-			e.stopPropagation();
-			$(".menu-data-cls").toggle();
-		});
-		$(document).on("click",function(){
-			$(".menu-data-cls").hide();
-		});
-		
-		function getLocationBasedOnSelection(){
-			var json = {
-				locationType:"district",
-				year:2017
-			}
+	}
+	$(document).on("change","[role='tabListMobile']",function(){
+			var id = $('option:selected', this).attr('tab_id');
+			$("#"+id).closest(".tab-content").find("[role='tabpanel']").removeClass("active");
+			$("#"+id).addClass("active");
 			
-			$.ajax({
-				url: 'getLocationBasedOnSelection',
-				data: JSON.stringify(json),
-				type: "POST",
-				dataType: 'json', 
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader("Accept", "application/json");
-					xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success: function(ajaxresp){
-					
-				}
-			});
-		}
-		
-		function getHamletWiseIvrStatusCounts(){
-			var json = {
-				fromDate:"",
-				toDate:"",
-				locationValues:[1],
-				locationTypeId:2,
-				year:2017
-			}
-			
-			$.ajax({
-				url: 'getHamletWiseIvrStatusCounts',
-				data: JSON.stringify(json),
-				type: "POST",
-				dataType: 'json', 
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader("Accept", "application/json");
-					xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success: function(ajaxresp){
-					console.log(ajaxresp.data);
-				}
-			});
-		}
+	});
+	$("header").on("click",".menu-cls",function(e){
+		e.stopPropagation();
+		$(".menu-data-cls").toggle();
+	});
+	$(document).on("click",function(){
+		$(".menu-data-cls").hide();
+	});
 	
+	function getLocationBasedOnSelection(){
+		var json = {
+			locationType:"district",
+			year:2017
+		}
 		
+		$.ajax({
+			url: 'getLocationBasedOnSelection',
+			data: JSON.stringify(json),
+			type: "POST",
+			dataType: 'json', 
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success: function(ajaxresp){
+				
+			}
+		});
+	}
+	
+	function getHamletWiseIvrStatusCounts(){
+		var json = {
+			fromDate:"",
+			toDate:"",
+			locationValues:[1],
+			locationTypeId:2,
+			year:2017
+		}
+		
+		$.ajax({
+			url: 'getHamletWiseIvrStatusCounts',
+			data: JSON.stringify(json),
+			type: "POST",
+			dataType: 'json', 
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success: function(ajaxresp){
+				console.log(ajaxresp.data);
+			}
+		});
+	}
+	
+	var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+  var glEndDate = moment().add(10, 'years').endOf('year').format("DD/MM/YYYY");
+  $("#dateRangePickerAUM").daterangepicker({
+      opens: 'left',
+      startDate: glStartDate,
+      endDate: glEndDate,
+    locale: {
+      format: 'DD/MM/YYYY'
+    },
+    ranges: {
+      'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+      'Today' : [moment(), moment()],
+       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+       'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+       'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+       'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+       'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
+       'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
+       'This Month': [moment().startOf('month'), moment()],
+       'This Year': [moment().startOf('Year'), moment()]
+    }
+  });
+    var dates= $("#dateRangePickerAUM").val();
+  var pickerDates = glStartDate+' - '+glEndDate
+  if(dates == pickerDates)
+  {
+    $("#dateRangePickerAUM").val('All');
+  }
+  $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
+    
+    $(".switch-btn li").removeClass("active");
+    $(".switch-btn li:first-child").addClass("active");
+    $('[role="tablist"] li:first-child a').trigger('click');
+    $('#tabCons a[href="#consLevelGraph"]').trigger('click');
+    glStartDate = picker.startDate.format('DD/MM/YYYY')
+    glEndDate = picker.endDate.format('DD/MM/YYYY')
+    if(picker.chosenLabel == 'All')
+    {
+      $("#dateRangePickerAUM").val('All');
+    }
+    
+    
+  });
+  
+  function getAllFiniancialYears()
+	{
+		alert("ghhnm");
+		$("#financialYearId").html('');
+		$(".compMultiFinancialYear").html('');
+		$(".compSingleFinancialYear").html('');
+		var json = {
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllFiniancialYears',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			//$("#financialYearId").find('option').remove();
+			$("#financialYearId").append("<option value='0'>All</option>");
+			if(result != null && result.length >0){
+				for(var i in result){
+					$("#financialYearId").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
+					$(".compMultiFinancialYear").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
+					$(".compSingleFinancialYear").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
+				}
+				$("#financialYearId").val(0);
+				//$(".compMultiFinancialYear").val(['1','2']);
+				$(".compMultiFinancialYear").val(1);
+				$(".compSingleFinancialYear").val(3);
+			}
+			$("#financialYearId").chosen();
+			$("#financialYearId").trigger('chosen:updated');
+			$(".compMultiFinancialYear").trigger('chosen:updated');
+			$(".compSingleFinancialYear").trigger('chosen:updated');
+			onLoadCalls();	
+		});
+   }
+	
 	
 	
