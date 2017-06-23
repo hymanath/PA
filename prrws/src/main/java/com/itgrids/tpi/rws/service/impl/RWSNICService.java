@@ -695,8 +695,8 @@ public class RWSNICService implements IRWSNICService{
 		return null;
 	}
 	@Override
-	public List<LocationVO> getHamletWiseIvrCounts(InputVO vo) {
-		List<LocationVO> voList = new ArrayList<LocationVO>(0);
+	public List<StatusVO> getHamletWiseIvrCounts(InputVO vo) {
+		List<StatusVO> voList = new ArrayList<StatusVO>(0);
 		try {
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getHamletWiseIvrStatusCounts");
 	        
@@ -709,19 +709,36 @@ public class RWSNICService implements IRWSNICService{
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
 				String output = response.getEntity(String.class);
+				
 				if(output != null && !output.isEmpty()){
-					JSONArray finalArray = new JSONArray(output);
+					JSONArray finalArray = new JSONArray(output);//Type Array
 	 	    		if(finalArray!=null && finalArray.length()>0){
 	 	    			for(int i=0;i<finalArray.length();i++){
-	 	    				LocationVO locationVO = new LocationVO();
+	 	    				StatusVO statusVo = new StatusVO();
 	 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
 	 	    				
-	 	    				locationVO.setWorkName(jobj.getString("name"));
-	 	    				locationVO.setCount(jobj.getLong("count"));
-	 	    				voList.add(locationVO);
+	 	    				statusVo.setId(jobj.getLong("id"));
+	 	    				statusVo.setName(jobj.getString("name"));
+	 	    				
+	 	    				JSONArray subListArr  = jobj.getJSONArray("subList1"); // Color Array
+	 	    				
+	 	    				if(subListArr!=null && subListArr.length()>0){
+	 		 	    			for(int j=0;j<subListArr.length();j++){
+	 		 	    				
+	 		 	    				JSONObject colorJobj = (JSONObject)subListArr.get(i);
+	 		 	    				 StatusVO colorVO = new StatusVO();
+	 		 	    				colorVO.setName(colorJobj.getString("name"));
+	 		 	    				colorVO.setCount(colorJobj.getLong("count"));
+	 		 	    				
+	 		 	    				statusVo.getStatusVOList().add(colorVO);
+	 		 	    				
+	 		 	    			}
+	 		 	    		}	 	    				
+	 	    				voList.add(statusVo);
 	 	    			}
 	 	    		}
 	 	    	}
+				
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getHamletWiseIvrCounts - RWSNICService service", e);
