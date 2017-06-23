@@ -139,6 +139,7 @@ function projectData(divId)
 			theadArr = ["district",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 		else if(dataArr[i] == "mandal")
 			theadArr = ["district","constituency",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		
 		var tableId = divId.replace(/\s+/g, '')+''+dataArr[i];
 		$("#"+tableId).html(spinner);
 		if(divId == 'Labour Budget'){
@@ -569,6 +570,11 @@ function getNREGSLabourBudgetExpenditure(projectDivId)
 function getNREGSLabBugdtLelwiseData(divIdd,locationType)
 {
 	var theadArr = [locationType,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+	if(locationType == "constituency")
+		theadArr = ["district",locationType,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+	else if(locationType == "mandal")
+		theadArr = ["district","constituency",locationType,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+	
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
