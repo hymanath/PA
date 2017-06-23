@@ -73,27 +73,18 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<ul class="list-inline navbar-header-custom">
-						<li><label>Note: All Amount in Lakhs</label></li>
 						<li>
 							<div class="form-horizontal">
 								<div class="form-group form-group-sm">
 									<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
 									<div class="col-sm-8">
-										<select id="financialYearId" class="chosenSelect" multiple></select>
+										<select id="financialYearId" class="chosenSelect" ></select>
 									</div>
 								</div>
 							</div>
 						</li>
 						<li>
-							<div class="form-horizontal">
-								<div class="form-group form-group-sm">
-									<label class="col-sm-4 control-label" for="formGroupInputLarge">Department: </label>
-									<div class="col-sm-8">
-										<select id="DepartmentsId"  class="chosenSelect" multiple></select>
-									</div>
-								</div>
-							</div>
-						</li>
+							</li>
 						<li>
 							<div class="input-group">
 								<span class="input-group-addon">
