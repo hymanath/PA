@@ -808,7 +808,7 @@
 		function getKeyPerformanceIndicatorsInfo(locationType,divId,type){
 			var json={
 						fromDateStr:"01-12-2016",
-						toDateStr:"01-12-2017",
+						toDateStr:"01-12-2030",
 						locationType:locationType
 					}
 			$.ajax({
@@ -1949,7 +1949,6 @@
   
   function getAllFiniancialYears()
 	{
-		alert("ghhnm");
 		$("#financialYearId").html('');
 		$(".compMultiFinancialYear").html('');
 		$(".compSingleFinancialYear").html('');
