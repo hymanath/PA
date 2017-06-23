@@ -40,7 +40,7 @@ public class InputVO implements Serializable {
 	private Long groupByValue=0l;
 	private List<Long> locationValues = new ArrayList<Long>(0);
 	private Long stressedHabitationYear;
-	
+	private String divType;
 	
 	public Long getStressedHabitationYear() {
 		return stressedHabitationYear;
@@ -234,6 +234,12 @@ public class InputVO implements Serializable {
 	}
 	public void setLocationTypeId(Long locationTypeId) {
 		this.locationTypeId = locationTypeId;
+	}
+	public String getDivType() {
+		return divType;
+	}
+	public void setDivType(String divType) {
+		this.divType = divType;
 	}
 	
 }

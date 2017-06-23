@@ -2,7 +2,9 @@ package com.itgrids.service.integration;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Multiset.Entry;
 import com.itgrids.dto.FarmPondOverviewVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
@@ -1600,4 +1603,97 @@ public class NREGSTCSService implements INREGSTCSService{
 		
 		return list;
 	}		
+
+	/*
+	 * Date : 22/06/2017
+	 * Author :Nandhini
+	 * @description : getNregsConstCuntDetails 
+	 */
+
+	@Override
+	public List<NregsDataVO> getNregsConstCuntDetails(String output){
+		List<NregsDataVO> retVOList = new ArrayList<>(0);
+		try{
+			Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
+			if(output != null && !output.isEmpty()){
+	    		JSONArray finalArray = new JSONArray(output);
+	    		if(finalArray!=null && finalArray.length()>0){
+	    			for(int i=0;i<finalArray.length();i++){
+	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		    			String distrName = jObj.getString("DISTRICT");
+						NregsDataVO vo = cntMap.get(distrName);
+		    			String percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+		    				if(vo == null){
+		    					vo = new NregsDataVO();
+		    					if(Double.valueOf(percValue)  < 50){
+		    						vo.setConstiInRed(vo.getConstiInRed());
+		    					}else if(Double.valueOf(percValue)  >50 && Double.valueOf(percValue) <80){
+		    						vo.setConstiInOrange(vo.getConstiInOrange());
+	    						}else if(Double.valueOf(percValue)  >80){
+		    						vo.setConstiInGreen(vo.getConstiInGreen());
+		    					}
+		    					cntMap.put(distrName, vo);
+			    			}
+		    				else {
+			    				if(Double.valueOf(percValue)  < 50){
+		    						vo.setConstiInRed(vo.getConstiInRed()+1l);
+		    					}else if(Double.valueOf(percValue)  >50 && Double.valueOf(percValue) <80){
+		    						vo.setConstiInOrange(vo.getConstiInOrange()+1l);
+	    						}else if(Double.valueOf(percValue)  >80){
+		    						vo.setConstiInGreen(vo.getConstiInGreen()+1l);
+		    					}
+		    					cntMap.put(distrName, vo);
+			    			}
+	    				}   	    							
+	    			}
+    			}
+			
+					if(cntMap != null){
+						for(java.util.Map.Entry<String, NregsDataVO> entry : cntMap.entrySet()){
+							String distrctName = entry.getKey();
+							NregsDataVO vo = entry.getValue();
+							NregsDataVO nregsDataVO = new NregsDataVO();
+							nregsDataVO.setDistrict(distrctName);
+							nregsDataVO.setConstiInRed(vo.getConstiInRed());
+							nregsDataVO.setConstiInOrange(vo.getConstiInOrange());
+							nregsDataVO.setConstiInGreen(vo.getConstiInGreen());
+							nregsDataVO.setTotal(vo.getConstiInRed()+vo.getConstiInOrange()+vo.getConstiInGreen());
+							retVOList.add(nregsDataVO);
+						}
+					}
+								
+				}catch(Exception e){
+					LOG.error("Exception raised at getNregsConstCuntDetails -NREGSTCSService service", e);
+				}
+			return retVOList;
+	 }
+	
+	/*
+	 * Date : 22/06/2017
+	 * Author :Nandhini
+	 * @description : getMGNregsDistrWiseConsti
+	 */
+
+	@Override
+	public List<NregsDataVO> getMGNregsDistrWiseConsti(InputVO inputVO) {
+		List<NregsDataVO> list = new ArrayList<NregsDataVO>(0);
+		try {
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	list = getNregsConstCuntDetails(output);
+	 	    	    	  
+	 	      }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAHData -getAHData service", e);
+		}
+		
+		return list;
+	}
+		
 }

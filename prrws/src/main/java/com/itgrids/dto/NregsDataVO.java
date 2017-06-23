@@ -21,6 +21,10 @@ public class NregsDataVO implements Serializable{
 	private Long inProgress;
 	private Long completed;
 	private String percentage;
+	private Long total = 0l;
+	private Long constiInRed = 0l;
+	private Long constiInOrange = 0l;
+	private Long constiInGreen = 0l;
 	
 	
 	public Long getUniqueId() {
@@ -119,4 +123,29 @@ public class NregsDataVO implements Serializable{
 	public void setPercentage(String percentage) {
 		this.percentage = percentage;
 	}
+	public Long getConstiInRed() {
+		return constiInRed;
+	}
+	public void setConstiInRed(Long constiInRed) {
+		this.constiInRed = constiInRed;
+	}
+	public Long getConstiInOrange() {
+		return constiInOrange;
+	}
+	public void setConstiInOrange(Long constiInOrgange) {
+		this.constiInOrange = constiInOrgange;
+	}
+	public Long getConstiInGreen() {
+		return constiInGreen;
+	}
+	public void setConstiInGreen(Long constiInGreen) {
+		this.constiInGreen = constiInGreen;
+	}
+	public Long getTotal() {
+		return total;
+	}
+	public void setTotal(Long total) {
+		this.total = total;
+	}
+	
 }
