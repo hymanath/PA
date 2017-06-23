@@ -806,54 +806,54 @@ function buildNregasOverViewBlock(result,projectDivId){
 			str1+='<tr>';
 				str1+='<td>';
 					str1+='<div class="col-sm-12">';
-						str1+='<h4><strong>Total Districts : '+result.totalDistricts+'</strong></h4>';
+						str1+='<h4 class="overviewPopupCls" style="cursor:pointer;"><strong>Total Districts : '+result.totalDistricts+'</strong></h4>';
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							str1+='<p class="media-body">Districts in Red : '+result.districtsInRed+'</p>';
+							str1+='<p class="media-body overviewPopupCls" style="cursor:pointer;">Districts in Red : '+result.districtsInRed+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							str1+='<p class="media-body">Districts in Orange : '+result.districtsInOrange+'</p>';
+							str1+='<p class="media-body overviewPopupCls" style="cursor:pointer;">Districts in Orange : '+result.districtsInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							str1+='<p class="media-body">Districts in Green : '+result.districtsInGreen+'</p>';
+							str1+='<p class="media-body overviewPopupCls" style="cursor:pointer;">Districts in Green : '+result.districtsInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';
 				str1+='</td>';
 				str1+='<td>';
 					str1+='<div class="col-sm-12">';
-						str1+='<h4><strong>Total Constituencies : '+result.totalConstituencies+'</strong></h4>';
+						str1+='<h4 class="overviewPopupCls" style="cursor:pointer;"><strong>Total Constituencies : '+result.totalConstituencies+'</strong></h4>';
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
 						str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-						str1+='<p class="media-body">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+						str1+='<p class="media-body overviewPopupCls" style="cursor:pointer;">Constituencies in Red : '+result.constituenciesInRed+'</p>';
 							str1+='</div>';
 						str1+='<div class="media">';
-						str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+						str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body overviewPopupCls" style="cursor:pointer;">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
 							str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body overviewPopupCls" style="cursor:pointer;">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';	
 					
 				str1+='</td>';
 				str1+='<td>';
 					str1+='<div class="col-sm-12">';
-						str1+='<h4><strong>Total Mandals : '+result.totalMandals+'</strong></h4>';
+						str1+='<h4 class="overviewPopupCls" style="cursor:pointer;"><strong>Total Mandals : '+result.totalMandals+'</strong></h4>';
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p><p class="media-body">Mandals in Red : '+result.mandalsInRed+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p><p class="media-body overviewPopupCls" style="cursor:pointer;">Mandals in Red : '+result.mandalsInRed+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body overviewPopupCls" style="cursor:pointer;">Mandals in Orange : '+result.mandalsInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body">Mandals in Green : '+result.mandalsInGreen+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body overviewPopupCls"  style="cursor:pointer;">Mandals in Green : '+result.mandalsInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';	
 				str1+='</td>';
@@ -1797,10 +1797,11 @@ function getNREGSIHHLConsCuntData()
     year : "2017",
     fromDate : "2017-04-01",
 	toDate : "2017-06-30",
-    locationType: "constituency"
+    locationType: "district",
+	type  : "total"
 }
   $.ajax({
-    url: 'getMGNregsDistrWiseConsti',
+    url: 'getMGNregsDistrWiseCount',
     data: JSON.stringify(json),
     type: "POST",
     dataType: 'json', 
@@ -1809,13 +1810,457 @@ function getNREGSIHHLConsCuntData()
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp) {
-       buildDistrictsPopupDetails(ajaxresp)
+       //buildDistrictsPopupDetails(ajaxresp)
     }
   });
 }
 $(document).on("click",".overviewPopupCls",function(){
 	$("#nregsConsitenModalId").modal("show");
+	$("#modalHeadingDivId").html(globalDivName +'&nbsp;Project Districts Overview');
+	 if(globalDivName == 'Farm Pond')
+	{
+		getFarmPondClickingOverview();
+	}else if(globalDivName == 'VERMI')
+	{
+		getVermiClickingOverview();
+	}else if(globalDivName == "IHHL")
+	{
+		getIHHLClickingOverview()
+	}else if(globalDivName == "NTR Jala Siri")
+	{
+		NtrsClickingOverview()
+	}else if(globalDivName == "Anganwadi")
+	{
+		getAnganwadiClickingOverview();
+	}else if(globalDivName == "CC Roads")
+	{
+		getCCRoadsClickingOverview();
+	}else if(globalDivName == "Mandal buildings")
+	{
+		getMandalBuildingClickOverview();
+	}else if(globalDivName == "Gram Panchayat Buildings")
+	{
+		getGPBuildingClickOverview();
+	}else if(globalDivName == "Production of Bricks")
+	{
+		getProductionOfBricksClickOverview();
+	}else if(globalDivName == "Raising of Perinnial Fodder")
+	{
+		getRaisingOfPerinnialFodderClickOverview();
+	}else if(globalDivName == "Mulbery")
+	{
+		getSericultureClickOverview();
+	}else if(globalDivName == "NTR 90 Days")
+	{
+		getHousingClickingOverview();
+	}else if(globalDivName == "Cattle drinking water trough")
+	{
+		getAHClickingOverview();
+	}else if(globalDivName == "Silk worm")
+	{
+		getSilkWormClickingOverview();
+	}else{
+		$("#nregsOverviewBodyId").html("NO DATA");
+	}
 
 });
+
+//PopupOverview clicking Block 
+function buildPopupOverviewBlock(result,projectDivId){
+	var str1='';
+	str1+='<table class="table table-bordered m_top10" >';
+		str1+='<tbody>';
+			str1+='<tr>';
+				str1+='<td>';
+					str1+='<div class="col-sm-9">';
+						str1+='<div class="media">';
+							str1+='<p>Total Districts</p>';
+							str1+='<h4>'+result.totalDistricts+'</h4>';
+						str1+='</div>';
+						str1+='<div class="media">';
+							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+							str1+='<p class="media-body">Districts in Red : '+result.districtsInRed+'</p>';
+						str1+='</div>';
+						str1+='<div class="media">';
+							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+							str1+='<p class="media-body">Districts in Orange : '+result.districtsInOrange+'</p>';
+						str1+='</div>';
+						str1+='<div class="media">';
+							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+							str1+='<p class="media-body">Districts in Green : '+result.districtsInGreen+'</p>';
+						str1+='</div>';
+					str1+='</div>';
+				str1+='</td>';
+				str1+='<td>';
+					str1+='<div class="col-sm-9">';
+						str1+='<div class="media">';
+							str1+='<p class="f_12">Total Constituencies</p>';
+							str1+='<h4>'+result.totalConstituencies+'</h4>';
+						str1+='</div>';
+						str1+='<div class="media">';
+						str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+						str1+='<p class="media-body">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+							str1+='</div>';
+						str1+='<div class="media">';
+						str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+							str1+='</div>';
+						str1+='<div class="media">';
+							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+						str1+='</div>';
+					str1+='</div>';	
+				str1+='</td>';
+				str1+='<td>';
+					str1+='<div class="col-sm-9">';
+						str1+='<div class="media">';
+							str1+='<p>Total Mandals</p>';
+							str1+='<h4>'+result.totalMandals+'</h4>';
+						str1+='</div>';
+						str1+='<div class="media">';
+							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p><p class="media-body">Mandals in Red : '+result.mandalsInRed+'</p>';
+						str1+='</div>';
+						str1+='<div class="media">';
+							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+						str1+='</div>';
+						str1+='<div class="media">';
+							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body">Mandals in Green : '+result.mandalsInGreen+'</p>';
+						str1+='</div>';
+					str1+='</div>';	
+				str1+='</td>';
+				str1+='<td>';
+					str1+='<div class="col-sm-9">';
+						str1+='<div class="media">';
+							str1+='<p>Total Villages</p>';
+							str1+='<h4>'+result.totalVillages+'</h4>';
+						str1+='</div>';
+						str1+='<div class="media">';
+							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p><p class="media-body">Villages in Red : '+result.villagesInRed+'</p>';
+						str1+='</div>';
+						str1+=' <div class="media">';
+						   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body">Villages in Orange : '+result.villagesInOrange+'</p>';
+						str1+='</div>';
+						str1+='<div class="media">';
+							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body">Villages in Green : '+result.villagesInGreen+'</p>';
+						str1+='</div>';
+					str1+='</div>';	
+				str1+='</td>';
+			str1+='</tr>';
+		str1+='</tbody>';
+	str1+='</table>';
+	$("#nregsOverviewBodyId").html(str1);
+} 
+
+function getVermiClickingOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+	var json = {
+			year:"2017",
+			fromDate:glStartDate,
+			toDate:glEndDate
+		}
+	$.ajax({
+		url: 'getNregsVermiOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp){
+			if(ajaxresp !=null ){
+				buildPopupOverviewBlock(ajaxresp);
+			}
+		}
+	});
+}
+function getFarmPondClickingOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate  
+	}
+	$.ajax({
+		url: 'getFarmPondOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			if(ajaxresp !=null ){
+				buildPopupOverviewBlock(ajaxresp);
+			}
+		}
+	});
+}
+function getIHHLClickingOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate  
+	}
+	$.ajax({
+		url: 'getNregaIHHLOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildPopupOverviewBlock(ajaxresp);
+		}
+	});
+}
+function NtrsClickingOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+  var json = {
+		  year : "2017",
+		  fromDate : glStartDate,
+		  toDate : glEndDate
+  }
+  $.ajax({
+    url: 'getNregsNtrsOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+		buildPopupOverviewBlock(ajaxresp);
+    }
+  });
+}
+function getAnganwadiClickingOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+  var json = {
+		  year : "2017",
+		  fromDate : glStartDate,
+		  toDate : glEndDate
+  }
+  $.ajax({
+    url: 'getNregsAnganwadiOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp){
+		buildPopupOverviewBlock(ajaxresp);
+    }
+  });
+}
+function getCCRoadsClickingOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+  var json = {
+		  year : "2017",
+		  fromDate : glStartDate,
+		  toDate : glEndDate
+  }
+  $.ajax({
+    url: 'getCCRoadsOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp){
+		buildPopupOverviewBlock(ajaxresp);
+    }
+  });
+}
+function getMandalBuildingClickOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+
+  var json = {
+		  year : "2017",
+		  fromDate : glStartDate,
+		  toDate : glEndDate
+  }
+  $.ajax({
+    url: 'getNregsMandalBuildingOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp){
+		buildPopupOverviewBlock(ajaxresp);
+    }
+  });
+}
+function getGPBuildingClickOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate  
+	}
+	$.ajax({
+		url: 'getNregaGPBuilingsOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildPopupOverviewBlock(ajaxresp);
+		}
+	});
+}
+function getProductionOfBricksClickOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate  
+	}
+	$.ajax({
+		url: 'getNregaProductionOfBricksOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildPopupOverviewBlock(ajaxresp);
+		}
+	});
+}
+function getRaisingOfPerinnialFodderClickOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate  
+	}
+	$.ajax({
+		url: 'getNregaRaisingOfPerinnialFodderOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildPopupOverviewBlock(ajaxresp);
+		}
+	});
+}
+function getSericultureClickOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+  var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate 
+  };
+  $.ajax({
+    url: 'getNregsSericultureOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp){
+		buildPopupOverviewBlock(ajaxresp);
+    }
+  });
+}
+function getHousingClickingOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+  var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate 
+  };
+  $.ajax({
+    url: 'getNregsHousingOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp){
+		buildPopupOverviewBlock(ajaxresp);
+    }
+  });
+}
+function getAHClickingOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+  var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate 
+  };
+  $.ajax({
+    url: 'getAHOverview',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp){
+		buildPopupOverviewBlock(ajaxresp);
+    }
+  });
+}
+function getSilkWormClickingOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+        toDate : glEndDate  
+	}
+	$.ajax({
+		url: 'getNregaSilkWormOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildPopupOverviewBlock(ajaxresp);
+		}
+	});
+}
 
 
