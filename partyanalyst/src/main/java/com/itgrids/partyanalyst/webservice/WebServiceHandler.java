@@ -3080,14 +3080,14 @@ public class WebServiceHandler {
 					locationValuesList.add(Long.parseLong(arr.get(i)+""));
 				}
 			}
-			JSONArray searchArr = jObj.getJSONArray("searchLevelValues");
+			JSONArray searchArr = jObj.getJSONArray("levelValues");
 			if(searchArr != null && searchArr.length() > 0){
 				for (int i = 0; i < searchArr.length(); i++) {
 					searchValuesList.add(Long.parseLong(searchArr.get(i)+""));
 				}
 			}
 			return webServiceHandlerService.getHamletWiseIvrStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getString("year"),locationValuesList,jObj.getLong("locationTypeId"),
-					jObj.getLong("searchlevelId"),searchValuesList);			
+					jObj.getLong("blockLevelId"),searchValuesList);			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getHamletWiseIvrStatusCounts() Method, Exception is ",e);
 			return null;
