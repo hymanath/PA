@@ -37,6 +37,15 @@ public class AlertAssigningVO {
 	
 	private Long alertAssignedOfficerId;
 	
+	private Long mainDepartmentId;
+	
+	
+	public Long getMainDepartmentId() {
+		return mainDepartmentId;
+	}
+	public void setMainDepartmentId(Long mainDepartmentId) {
+		this.mainDepartmentId = mainDepartmentId;
+	}
 	public String getDueDate() {
 		return dueDate;
 	}
