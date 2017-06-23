@@ -37,6 +37,9 @@ public interface IConstants {
     public static final Long[] FUND_TYPE_IDS = {1L,2L,3L,4L};
     public static final String[] FUND_TYPE = {"PLAIN","SCP","TSP","SCSP"};
     public static final Long[] SCHEME_TYPE_IDS = {5L,6L,7L,9L};  
-    public static final String[] SCHEME_TYPE = {"SVS","SOLAR","CWTP","MVS"};  
+    public static final String[] SCHEME_TYPE = {"SVS","SOLAR","CWTP","MVS"}; 
+    
+    public static final String STATUS_SUCCESS = "Success";
+    public static final String STATUS_FAIL = "Fail";
 	
 }
