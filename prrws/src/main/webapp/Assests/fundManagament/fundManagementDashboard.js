@@ -3413,9 +3413,8 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
 		var deptIdsArr =  $('#DepartmentsId').val();
-		var searchLevelId = 3;
+		var searchLevelId = 0;
 		var searchLevelVals = [];
-		searchLevelVals.push(13);
 		if ($.inArray('0', financialYrIdArr) != -1)
 		{
 			var stringIds = "1,2,3";
