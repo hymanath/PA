@@ -72,39 +72,41 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<ul class="list-inline navbar-header-custom">
-						<li><label>Note: All Amount in Lakhs</label></li>
-						<!--<li>
-							<div class="form-horizontal">
-								<div class="form-group form-group-sm">
-									<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
-									<div class="col-sm-8">
-										<select class="chosenSelect">
-											<option value="0">Select Financial Year</option>
-											<option value="2014">2014</option>
-											<option value="2015">2015</option>
-											<option value="2016">2016</option>
-											<option value="2017">2017</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</li>-->
 						<li>
-							<label>FROM MONTH</label>
-							<div class="input-group inline-block">
-								<span class="input-group-addon">
-									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-								</span>
-								<input type="text" class="form-control" id="dateRangePickerMGNF" style="width: 200px;"/>
+							<div class="row">
+								<div class="col-sm-12">
+									<label>Note: All Amount in Lakhs</label>
+								</div>
 							</div>
 						</li>
 						<li>
-							<label>TO MONTH</label>
-							<div class="input-group inline-block">
-								<span class="input-group-addon">
-									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-								</span>
-								<input type="text" class="form-control" id="dateRangePickerMGNT" style="width: 200px;"/>
+							<div class="row">
+								<div class="col-sm-4">
+									<label>FROM DATE</label>
+								</div>
+								<div class="col-sm-8">
+									<div class="input-group inline-block">
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+										</span>
+										<input type="text" class="form-control" id="dateRangePickerMGNF"/>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="row">
+								<div class="col-sm-4">
+									<label>TO DATE</label>
+								</div>
+								<div class="col-sm-8">
+									<div class="input-group inline-block">
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+										</span>
+										<input type="text" class="form-control" id="dateRangePickerMGNT" style="width: 200px;"/>
+									</div>
+								</div>
 							</div>
 						</li>
 					</ul>
@@ -143,7 +145,7 @@
 		
 	</div>
 	<div class="modal fade" tabindex="-1" id="nregsConsitenModalId" role="dialog" style="z-index:99999;">
-		<div class="modal-dialog" style="width:70%;">
+		<div class="modal-dialog" style="width:90%;">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
