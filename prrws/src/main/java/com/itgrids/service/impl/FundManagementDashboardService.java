@@ -952,9 +952,10 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 				}
 			}
 			
-			retusnVo.setTotalAmt(commonMethodsUtilService.getStringValueForObject(ttl));
-			retusnVo.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(ttl))/Double.valueOf(new Integer(len).toString()))));
-			avagecount = commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(ttl))/Double.valueOf(new Integer(len).toString()))).longValue();
+			Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),sDate,eDate,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
+			retusnVo.setTotalAmt(commonMethodsUtilService.getStringValueForObject(totalfund));
+			retusnVo.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalfund))/Double.valueOf(new Integer(len).toString()))));
+			avagecount = commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalfund))/Double.valueOf(new Integer(len).toString()))).longValue();
 			retusnVo.setAvrgeAmt(commonMethodsUtilService.calculateAmountInWords(avagecount));
 			retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),Long.parseLong(retusnVo.getTotalAmt())));
 			
@@ -966,10 +967,10 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 				for(Object[] param : totalFundAndCountGrantWiseList){
 					fundDetailsVO = (LocationFundDetailsVO)setterAndGetterUtilService.getMatchedVOfromList(retusnVo.getDetailsVOs(), "id", commonMethodsUtilService.getStringValueForObject(param[0]));
 					fundDetailsVO.setTotalAmt(commonMethodsUtilService.getStringValueForObject(param[3]));
-					fundDetailsVO.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[2])))));
-					avagecount1 = commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[2])))).longValue();
+					fundDetailsVO.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/Double.valueOf(new Integer(len).toString()))));
+					avagecount1 = commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/Double.valueOf(new Integer(len).toString()))).longValue();
 					fundDetailsVO.setFundAvageAmt(commonMethodsUtilService.calculateAmountInWords(avagecount1));
-					fundDetailsVO.setPerc(commonMethodsUtilService.calculatePercantage(fundDetailsVO.getAverageAmt().longValue(),Long.parseLong(fundDetailsVO.getTotalAmt())));
+					fundDetailsVO.setPerc(commonMethodsUtilService.calculatePercantage(fundDetailsVO.getAverageAmt().longValue(),retusnVo.getAverageAmt().longValue()));
 				}
 			}
 			setFundAndSchemeToVo(retusnVo);
