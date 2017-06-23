@@ -835,6 +835,7 @@ function onLoadClicks()
 	$(document).on("click","[expand-icon]",function(){
         var expandBlockName = $(this).attr("expand-icon");
 		var alertId = $(this).attr("attr_alertId");
+		//var statusId = $(this).attr("attr_statusId");
 		$("[expand-icon]").closest("li").removeClass("active");
 		$("[expand-icon]").removeClass("text-primary");
 		$(this).addClass("text-primary");
@@ -1738,9 +1739,9 @@ function rightSideExpandView(alertId)
 							str+='<div class="col-sm-8 pull-right" style="">';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
 									
-									str+='<li data-toggle="tooltip" data-placement="top" title="Departments" id="departDivId" style="display:none;">';
+									/*  str+='<li data-toggle="tooltip" data-placement="top" title="Departments" id="departDivId" style="display:none;">';
 										str+='<span class=""></span><span id="mainDeprtmntId" attr_alert_id="'+alertId+'"><i class="fa fa-empire" aria-hidden="true"></i></span>';
-									str+='</li>';
+									str+='</li>'; */
 									
 									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId" style="display:none;" > ';
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId">Pending</span>';
@@ -4067,9 +4068,10 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 								str+='<td>';
 									if(result[i].subList[j].id != null && result[i].subList[j].id > 0)
 									{
-										str+='<span class="arrow-icon pull-right" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block1">';
+										str+='<span class="arrow-icon pull-right alertIdCls" attr_statusId="'+result[i].subList[j].statusId+'" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block1">';
 											str+='<i class="glyphicon glyphicon-menu-right"></i>';
 										str+='</span>';
+
 									}else{
 										str+='-';
 									}
@@ -4231,7 +4233,15 @@ function buildAssignedOfficersDetailsForAlert(result)
 }
 
 $(document).on("click","#displayAssignIconId",function(){
-	$('.assign-user-body').show();       
+	$('.assign-user-body').show();
+	var alertId = $(this).attr("attr_alertId");
+	//var statusId = $("[attr_alertid="+alertId+"]").attr("attr_statusid");
+	var statusId =$(".alertIdCls").attr("attr_statusid");
+	
+	if(statusId == 8 || statusId == 9)
+	{
+		getAllMainDepartments('assignDepartmentId');
+	}
 });
 
 function assignUser(alertId)
@@ -4239,7 +4249,7 @@ function assignUser(alertId)
 	var str='';
 	str+='<div class="assign-user">';
 		str+='<ul class="list-icons list-inline">';
-			str+='<li id="displayAssignIconId" style="display:none;">';
+			str+='<li id="displayAssignIconId" attr_alertId="'+alertId+'" style="display:none;">';
 				str+='<i class="glyphicon glyphicon-user"></i>Click To Assignee  ';
 			str+='</li>';
 		str+='</ul>';
@@ -4253,7 +4263,7 @@ function assignUser(alertId)
 							str+='</div>';
 							str+='<div class="col-sm-6">';
 								str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
-								str+='<select class="chosenSelect" id="assignDepartmentId">';
+								str+='<select class="chosenSelect" id="assignDepartmentId" name="alertAssigningVO.mainDepartmentId">';
 									str+='<option value="0">Select Department</option>';
 									//str+='<option value="49">RWS</option>';
 								str+='</select>';
@@ -5486,10 +5496,10 @@ function buildMainDepartmentsPopup(alertId){
 		//str+='<button class="btn btn-sm saveBtnCls" attr_alert_id="'+alertId+'">SAVE</button>';
 	//str+='</div>';
 	$("#alertDepartmentsPopupBody").html(str);
-	getAllMainDepartments();
+	getAllMainDepartments('newDepartmentId');
 }
 
-function getAllMainDepartments()
+function getAllMainDepartments(divId)
 {
 	var jsObj={
 	}
@@ -5505,9 +5515,9 @@ function getAllMainDepartments()
 				for(var i in result){
 				    newStr+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 				}
-				$("#newDepartmentId").html(newStr);
-				$("#newDepartmentId").chosen();
-				$("#newDepartmentId").trigger("chosen:updated");
+				$("#"+divId).html(newStr);
+				$("#"+divId).chosen();
+				$("#"+divId).trigger("chosen:updated");
 			}
 		
 	});
@@ -5702,4 +5712,3 @@ $(document).on("click",".rejoinderCheckbox",function(){
 		$(".rejoinderCheckbox").prop("checked",false);
 		$(this).prop("checked",true);
 });
- 

@@ -999,10 +999,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			if(statusId != null && statusId.longValue() == 1L){//pending
 				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
-				List<AlertCoreDashBoardVO> pendingAlertList = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);//taking pending alert from alert Assigned officer new
+				/*List<AlertCoreDashBoardVO> pendingAlertList = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);//taking pending alert from alert Assigned officer new
 				 if(pendingAlertList != null && pendingAlertList.size() > 0){
 					 alertCoreDashBoardVOs.addAll(pendingAlertList);
-				 }
+				 }*/
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}else if(statusId != null && statusId.longValue() > 1L){//other than pending
 				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
@@ -1212,10 +1212,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			if(statusId != null && statusId.longValue() == 1L){//pending
 				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
-				List<AlertCoreDashBoardVO> pendingAlertList = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);//taking pending alert from alert assigned officer new 
+				/*List<AlertCoreDashBoardVO> pendingAlertList = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);//taking pending alert from alert assigned officer new 
 				if(pendingAlertList != null && pendingAlertList.size() > 0){
 					alertCoreDashBoardVOs.addAll(pendingAlertList);	
-				}
+				}*/
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}else if(statusId != null && statusId.longValue() > 1L){//other than pending
 				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
