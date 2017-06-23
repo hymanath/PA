@@ -44,7 +44,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 					  + " model.fundSanction.govtScheme.schemeName, "//1
 					  + " model.fundSanction.financialYear.financialYearId, "//2
 					  + " model.fundSanction.financialYear.yearDesc, "//3
-					  + " count(model.fundSanction.govtSchemeId), "//4
+					  + " count( distinct model.fundSanction.fundSactionId), "//4
 					  + " sum(model.fundSanction.sactionAmount), ");//5
 		if(searchLevelId != null && searchLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
 			queryStr.append(" model.locationAddress.district.stateId, "//6
@@ -139,7 +139,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 				+ " model.fundSanction.govtScheme.schemeName, "//1
 				+ " model.fundSanction.financialYear.financialYearId, "//2
 				+ " model.fundSanction.financialYear.yearDesc, "//3
-				+ " count(model.fundSanction.govtSchemeId), "//4
+				+ " count(distinct model.fundSanction.fundSactionId), "//4
 				+ " sum(model.fundSanction.sactionAmount), ");//5
 		if(searchLevelId != null && searchLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
 			queryStr.append(" model.locationAddress.district.stateId, "//6
@@ -458,23 +458,23 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
 			sb.append(" ,fundSanctionLocation.locationAddress.district.stateId "//2
 					+ " ,'Andhra Pradesh' "//3
-					+ " ,count(fundSanctionLocation.locationAddress.district.stateId) ");//4
+					+ " ,count(distinct fundSanctionLocation.fundSanction.fundSactionId) ");//4
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
 			sb.append(" ,fundSanctionLocation.locationAddress.district.districtId "//2
 					+ " ,fundSanctionLocation.locationAddress.district.districtName "//3
-					+ " ,count(fundSanctionLocation.locationAddress.district.districtId) ");//4
+					+ " ,count(distinct fundSanctionLocation.fundSanction.fundSactionId) ");//4
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			sb.append(" ,fundSanctionLocation.locationAddress.constituency.constituencyId "//2
 					+ " ,fundSanctionLocation.locationAddress.constituency.name"//3
-					+ " ,count(fundSanctionLocation.locationAddress.constituency.constituencyId) ");//4
+					+ " ,count(distinct fundSanctionLocation.fundSanction.fundSactionId) ");//4
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 			sb.append(" ,fundSanctionLocation.locationAddress.tehsil.tehsilId "//2
 					+ " ,fundSanctionLocation.locationAddress.tehsil.tehsilName"//3
-					+ " ,count(fundSanctionLocation.locationAddress.tehsil.tehsilId) ");//4
+					+ " ,count(distinct fundSanctionLocation.fundSanction.fundSactionId) ");//4
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
 			sb.append(" ,fundSanctionLocation.locationAddress.panchayat.panchayatId "//2
 					+ " ,fundSanctionLocation.locationAddress.panchayat.panchayatName"//3
-					+ " ,count(fundSanctionLocation.locationAddress.panchayat.panchayatId) ");//4
+					+ " ,count(distinct fundSanctionLocation.fundSanction.fundSactionId) ");//4
 		}
 		
 		sb.append(" ,sum(fundSanctionLocation.fundSanction.sactionAmount) "//5
@@ -1299,23 +1299,23 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(blockLevelId != null && blockLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
 			sb.append(" ,fundSanctionLocation.locationAddress.district.stateId "//2
 					+ " ,'Andhra Pradesh' "//3
-					+ " ,count(fundSanctionLocation.locationAddress.district.stateId) ");//4
+					+ " ,count(distinct fundSanctionLocation.fundSanction.fundSactionId) ");//4
 		}else if(blockLevelId != null && blockLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
 			sb.append(" ,fundSanctionLocation.locationAddress.district.districtId "//2
 					+ " ,fundSanctionLocation.locationAddress.district.districtName "//3
-					+ " ,count(fundSanctionLocation.locationAddress.district.districtId) ");//4
+					+ " ,count(distinct fundSanctionLocation.fundSanction.fundSactionId) ");//4
 		}else if(blockLevelId != null && blockLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			sb.append(" ,fundSanctionLocation.locationAddress.constituency.constituencyId "//2
 					+ " ,fundSanctionLocation.locationAddress.constituency.name"//3
-					+ " ,count(fundSanctionLocation.locationAddress.constituency.constituencyId) ");//4
+					+ " ,count(distinct fundSanctionLocation.fundSanction.fundSactionId) ");//4
 		}else if(blockLevelId != null && blockLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 			sb.append(" ,fundSanctionLocation.locationAddress.tehsil.tehsilId "//2
 					+ " ,fundSanctionLocation.locationAddress.tehsil.tehsilName"//3
-					+ " ,count(fundSanctionLocation.locationAddress.tehsil.tehsilId) ");//4
+					+ " ,count(distinct fundSanctionLocation.fundSanction.fundSactionId) ");//4
 		}else if(blockLevelId != null && blockLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
 			sb.append(" ,fundSanctionLocation.locationAddress.panchayat.panchayatId "//2
 					+ " ,fundSanctionLocation.locationAddress.panchayat.panchayatName"//3
-					+ " ,count(fundSanctionLocation.locationAddress.panchayat.panchayatId) ");//4
+					+ " ,count(distinct fundSanctionLocation.fundSanction.fundSactionId) ");//4
 		}
 		
 		sb.append(" ,sum(fundSanctionLocation.fundSanction.sactionAmount) "//5
