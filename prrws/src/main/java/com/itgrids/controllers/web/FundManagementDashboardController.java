@@ -32,6 +32,10 @@ public class FundManagementDashboardController {
 	@Autowired
 	private IFundSanctionMatrixReportService fundSanctionMatrixReportService;
 	
+	@RequestMapping(value ="/", method = RequestMethod.GET)
+    public String indexPage(ModelMap model) {
+		return "fundManagementDashboard";
+    }
 	
 	@RequestMapping(value ="/fundManagementDashboard", method = RequestMethod.GET)
     public String fundManagementDashboardPage(ModelMap model) {
