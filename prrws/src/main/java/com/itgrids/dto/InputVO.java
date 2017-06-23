@@ -6,7 +6,7 @@ import java.util.List;
 
 public class InputVO implements Serializable {
 	private Long blockLevelId;
-	private List<Long> levelValues;
+	private List<Long> levelValues = new ArrayList<Long>(0);
 	private List<Long> financialYrIdList;
 	private List<Long> deptIdsList;
 	private List<Long> sourceIdsList;
