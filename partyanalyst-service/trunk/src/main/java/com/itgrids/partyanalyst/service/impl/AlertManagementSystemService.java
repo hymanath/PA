@@ -15378,7 +15378,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  						getAlertStatusSkelton(allStatus,voIn,(Long)objects[3],(Long)objects[5]);
  						finalMap.put((Long)objects[1], voIn);
  					}else{
- 						KeyValueVO matchedStatusVO = getMatchedStatusVO(finalMap.get((Long)objects[1]).getList(),(Long)objects[3]);
+ 						KeyValueVO matchedStatusVO = getMatchedStatusVONew(finalMap.get((Long)objects[1]).getList(),(Long)objects[3]);
  						matchedStatusVO.setCount((Long)objects[5]);
  					} 
  					
@@ -15393,7 +15393,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
   		 return voList;
   	 }
  	 
- 	 public KeyValueVO getMatchedStatusVO(List<KeyValueVO> statusList,Long statusId){
+ 	 public KeyValueVO getMatchedStatusVONew(List<KeyValueVO> statusList,Long statusId){
  		 if(statusList != null && statusList.size() > 0){
  			for ( KeyValueVO  kvVO : statusList) {
  				if(kvVO.getId().equals(statusId))
