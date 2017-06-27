@@ -80,48 +80,47 @@
 			</div>
 		</div>
 	</nav>
-	<section>
+	<section class="navbar-section">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-12">
-					<ul class="list-inline navbar-header-custom">
-						<li>
-							<div class="row">
-								<div class="col-sm-12">
-									<label>Note: All Amount in Lakhs</label>
-								</div>
+				<div class="col-sm-2 border_right m_top5">
+					Note: All Amount in Lakhs
+				</div>
+				<div class="col-sm-3 border_right">
+					<div class="row">
+						<div class="col-sm-4 m_top5">
+							<label>FROM DATE</label>
+						</div>
+						<div class="col-sm-8">
+							<div class="input-group inline-block">
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+								</span>
+								<input type="text" class="form-control" id="dateRangePickerMGNF"/>
 							</div>
-						</li>
-						<li>
-							<div class="row">
-								<div class="col-sm-4">
-									<label>FROM DATE</label>
-								</div>
-								<div class="col-sm-8">
-									<div class="input-group inline-block">
-										<span class="input-group-addon">
-											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-										</span>
-										<input type="text" class="form-control" id="dateRangePickerMGNF"/>
-									</div>
-								</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3 border_right">
+					<div class="row">
+						<div class="col-sm-4 m_top5">
+							<label>TO DATE</label>
+						</div>
+						<div class="col-sm-8">
+							<div class="input-group inline-block">
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+								</span>
+								<input type="text" class="form-control" id="dateRangePickerMGNT" style="width: 200px;"/>
 							</div>
-						</li>
-						<li>
-							<div class="row">
-								<div class="col-sm-4">
-									<label>TO DATE</label>
-								</div>
-								<div class="col-sm-8">
-									<div class="input-group inline-block">
-										<span class="input-group-addon">
-											<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-										</span>
-										<input type="text" class="form-control" id="dateRangePickerMGNT" style="width: 200px;"/>
-									</div>
-								</div>
-							</div>
-						</li>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3 m_top5">
+					<ul class="list-inline">
+						<li><span class="color-label color-label-success"></span> 80% and above</li>
+						<li><span class="color-label color-label-default"></span> 50% - 79%</li>
+						<li><span class="color-label color-label-danger"></span> 0% - 49%</li>
 					</ul>
 				</div>
 			</div>
