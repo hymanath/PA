@@ -1832,7 +1832,10 @@ $(document).on("click",".overviewPopupCls",function(){
 	
 	$("#nregsConsitenModalId").modal("show");
 	$("#modalHeadingDivId").html(globalDivName +'&nbsp;Project Districts Overview');
-	 if(globalDivName == 'Farm Pond'){
+	if(globalDivName == 'Labour Budget')
+	{
+		getLabourBudgetClickingOverview();
+	}else if(globalDivName == 'Farm Pond'){
 		getFarmPondClickingOverview();
 	}
 	else if(globalDivName == 'VERMI'){
@@ -2282,4 +2285,26 @@ function getSilkWormClickingOverview()
 	});
 }
 
+function getLabourBudgetClickingOverview()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+	var json = {
+		year : "2017",
+      fromDate : glStartDate,
+        toDate : glEndDate  
+	}
+	$.ajax({
+		url: 'getLabourBudgetOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildPopupOverviewBlock(ajaxresp);
+		}
+	});
+}
 
