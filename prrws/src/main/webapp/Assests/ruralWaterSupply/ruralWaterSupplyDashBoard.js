@@ -7,7 +7,7 @@
 						 {name:'Alert Status Jalavani',id:'jalavani',img:'alert_status.png'},
 						 {name:'Plan Of Action for Stressed Habitations Water Budget has to be prepared for all habitations',id:'planAction',img:'plan_action.png'}];
 		var alertStatusBlockArr = [{name:'Alert Status Jalavani',id:'alertStatus'},{name:'Drinking Water Satisfaction Levels',id:'drinking'}];
-		//getAllFiniancialYears();
+		var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 		onloadCalls();
 		function onloadCalls(){
 			tabBlocks('stateBlockId','state');
@@ -52,6 +52,7 @@
 		
 		function getHabitationCoverageByStatusByLocationType(locationType,divId,type)
 		{
+			$("#totalValues,#habitation").html(spinner);
 			var json = {
 				locationType:locationType,
 				year:"2017",
@@ -237,6 +238,7 @@
 		}
 		function getLabTestDetails()
 		{
+			$("#overView").html(spinner);
 			var json = {
 				year:"2017"
 			}
@@ -331,6 +333,7 @@
 		}
 		
 		function getHabitationSupplyDetails(){
+			$("#levelOfSupply1").html(spinner);
 			var json = {
 				year:"2017"
 			}
@@ -429,6 +432,7 @@
 		}
 		
 		function getSchemesDetails(){
+			$("#schemes").html(spinner);
 			var json = {
 				year:2017
 			}
@@ -540,6 +544,7 @@
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
 		}
 		function getSchemeWiseWorkDetails(){
+			$("#habitationWorks").html(spinner);
 			var json = {
 					year:2017
 			}
@@ -637,6 +642,7 @@
 				
 		}
 		function getAssetInfoBetweenDates(){ 
+			$("#assets").html(spinner);
 			var json = {
 				formDateStr:"01-04-2016",
 				toDateStr:"01-12-2017"
@@ -713,6 +719,7 @@
 		
 		
 		function getWaterSourceInfo(){ 
+			$("#waterSources").html(spinner);
 			$.ajax({
 				url: 'getWaterSourceInfo',
 				type: "GET",
@@ -798,6 +805,7 @@
 		}
 		
 		function getKeyPerformanceIndicatorsInfo(locationType,divId,type){
+			$("#keyPerformance").html(spinner);
 			var json={
 						fromDateStr:"01-04-2016",
 						toDateStr:"01-12-2030",
@@ -1096,6 +1104,7 @@
 			});
 		}
 		function getAlertDetailsOfCategoryByStatusWise(type,divId,locationType){
+			$("#alertStatus").html(spinner);
 			var json = {
 				fromDate:"",
 				toDate:"",
@@ -1201,6 +1210,7 @@
 			}
 		}
 		function getAlertFeedbackStatusDetails(){
+			$("#feedbackId").html(spinner);
 			var json = {
 				fromDate:"",
 				toDate:"",
@@ -1842,6 +1852,7 @@
 		}
 		
 		function getHamletWiseIvrStatusCounts(type,divId,locationType){
+			$("#drinkingWater").html(spinner);
 			var searchlevelId='';
 			var searchLevelValues=[];
 			

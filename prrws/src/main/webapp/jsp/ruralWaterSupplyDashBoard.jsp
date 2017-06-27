@@ -190,7 +190,7 @@
 					</div>
 					<div class="white-block">
 						<h5 style="padding:5px"><span class="chartTitleAlign">feedback&nbsp;Level</span></h5>
-						<div class="chart" id="feedbackId" class="m_top20"></div>
+						<div class="chart2" id="feedbackId" class="m_top20"></div>
 					</div>
 				</div>
 			</div>
