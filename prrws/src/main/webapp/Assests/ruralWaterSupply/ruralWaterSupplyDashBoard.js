@@ -426,8 +426,7 @@
 		
 		function getSchemesDetails(){
 			var json = {
-				fromDateStr:"01-12-2016",
-				toDateStr:"01-12-2017"
+				year:2017
 			}
 			$.ajax({
 				url: 'getSchemesDetails',
@@ -538,8 +537,7 @@
 		}
 		function getSchemeWiseWorkDetails(){
 			var json = {
-					formDateStr:"01-01-2016",
-					toDateStr:"01-04-2017"
+					year:2017
 			}
 			$.ajax({
 				url: 'getSchemeWiseWorkDetails',
