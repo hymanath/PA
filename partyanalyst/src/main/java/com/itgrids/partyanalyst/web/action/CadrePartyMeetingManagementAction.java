@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
-import com.itgrids.partyanalyst.meeting.service.ICadrePartyMeetingManagementService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+
 public class CadrePartyMeetingManagementAction extends ActionSupport implements
 		ServletRequestAware {
 	private static final long serialVersionUID = 1L;
@@ -40,6 +40,7 @@ public class CadrePartyMeetingManagementAction extends ActionSupport implements
 	}
 
 	public String execute() {
+	
 		return Action.SUCCESS;
 	}
 
