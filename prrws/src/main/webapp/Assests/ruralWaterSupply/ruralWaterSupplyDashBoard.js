@@ -2,7 +2,10 @@
 		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","Ground":"#14BAAD","Surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
 		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049",
 		"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","SOSO":"#FFBA00","NOT SATISFIED":"#FF0909"}
-		var blocksArr = [{name:'Coverage Status Of<br/> Habitation',id:'habitation'},{name:'Key<br/> Performance',id:'performance'},{name:'Alert Status <br/>Jalavani',id:'jalavani'},{name:'Plan Of Action for Stressed Habitations <br/>Water Budget has to be prepared for all habitations',id:'planAction'}];
+		var blocksArr = [{name:'Coverage Status Of Habitation',id:'habitation',img:'coverage_status.png'},
+						 {name:'Key Performance',id:'performance',img:'key_performance.png'},
+						 {name:'Alert Status Jalavani',id:'jalavani',img:'alert_status.png'},
+						 {name:'Plan Of Action for Stressed Habitations Water Budget has to be prepared for all habitations',id:'planAction',img:'plan_action.png'}];
 		var alertStatusBlockArr = [{name:'Alert Status Jalavani',id:'alertStatus'},{name:'Drinking Water Satisfaction Levels',id:'drinking'}];
 		onloadCalls();
 		function onloadCalls(){
@@ -1243,9 +1246,9 @@
 								{
 									if(i == 0)
 									{
-										tabBlock+='<li class="active" ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'>'+blocksArr[i].name+'</a></li>';
+										tabBlock+='<li class="active" ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
 									}else{
-										tabBlock+='<li ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'>'+blocksArr[i].name+'</a></li>';
+										tabBlock+='<li ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
 									}
 									
 								}
@@ -1359,10 +1362,15 @@
 						tableView+='<tr>'; 
 							tableView+='<th>'+locationType+'</th>';
 							tableView+='<th>Notified</th>';
+							tableView+='<th></th>';
 							tableView+='<th>Praposal</th>';
+							tableView+='<th></th>';
 							tableView+='<th>Action in Progress</th>';
+							tableView+='<th></th>';
 							tableView+='<th>Completed & Closed</th>';
+							tableView+='<th></th>';
 							tableView+='<th>Others</th>';
+							tableView+='<th></th>';
 							tableView+='<th>Total</th>';
 						tableView+='</tr>'; 
 					tableView+='</thead>';
@@ -1412,28 +1420,38 @@
 							othersPerc = (others/totalCount*100).toFixed(2) + "%";
 							
 							if(notifiedCount >0){
-								tableView+='<td>'+notifiedCount+' <small style="color:#0FBE08">'+notifiedPerc+' %</small> </td>';
+								tableView+='<td>'+notifiedCount+'</td>'; 
+								tableView+='<td><small style="color:#0FBE08">'+notifiedPerc+' %</small> </td>';
 							}else{
+								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(proposalCount >0){
-								tableView+='<td>'+proposalCount+' <small style="color:#0FBE08">'+proposalPerc+' %</small> </td>';
+								tableView+='<td>'+proposalCount+'</td>'; 
+								tableView+='<td><small style="color:#0FBE08">'+proposalPerc+' %</small> </td>';
 							}else{
+								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(actionInProgress >0){
-								tableView+='<td>'+actionInProgress+' <small style="color:#0FBE08">'+actionPerc+' %</small></td>';
+								tableView+='<td>'+actionInProgress+'</td>';
+								tableView+='<td><small style="color:#0FBE08">'+actionPerc+' %</small></td>';
 							}else{
+								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(CompleteClosedCount >0){
-								tableView+='<td>'+CompleteClosedCount+' <small style="color:#0FBE08">'+completeClosedPerc+' %</small> </td>';
+								tableView+='<td>'+CompleteClosedCount+'</td>';
+								tableView+='<td><small style="color:#0FBE08">'+completeClosedPerc+' %</small> </td>';
 							}else{
+								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(othersCount >0){
-								tableView+='<td>'+othersCount+' <small style="color:#0FBE08">'+othersPerc+' %</small> </td>';
+								tableView+='<td>'+othersCount+'</td>'; 
+								tableView+='<td><small style="color:#0FBE08">'+othersPerc+' %</small> </td>';
 							}else{
+								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(totalCount >0){
@@ -1508,6 +1526,7 @@
 										if(divId[k].id=="habitation"){
 											if(GLtbodyArr[0].statusList[j].status != 'NC'){
 												tableView+='<th>'+GLtbodyArr[0].statusList[j].status+'</th>';
+												tableView+='<th></th>';
 												
 											}
 										}
@@ -1539,8 +1558,10 @@
 										for(var j in GLtbodyArr[i].statusList){
 										if(GLtbodyArr[i].statusList[j].status != 'NC'){
 												if(GLtbodyArr[i].statusList[j].count !=null && GLtbodyArr[i].statusList[j].count>0){
-													tableView+='<td>'+GLtbodyArr[i].statusList[j].count+' <small style="color:#0FBE08">'+GLtbodyArr[i].statusList[j].percentage+' %</small></td>';
+													tableView+='<td>'+GLtbodyArr[i].statusList[j].count+'</td>';
+													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].statusList[j].percentage+' %</small></td>';
 												}else{
+													tableView+='<td> - </td>';
 													tableView+='<td> - </td>';
 												}
 												totalCount += GLtbodyArr[i].statusList[j].count;

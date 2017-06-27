@@ -16,6 +16,19 @@
 
 </head>
 <body>
+<!-- 
+<sidebar>
+<div class="rightNavigationMenu">
+	<div class="backgroundBlock"></div>
+	<ul style="display:none"></ul>
+	<button class="rightNavigationMenuRes">
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	</button>
+</div>
+</sidebar>
+-->
 <header>
 	<nav>
 		<div class="container-fluid">

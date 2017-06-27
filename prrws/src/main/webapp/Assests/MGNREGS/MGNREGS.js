@@ -3,6 +3,7 @@ var glStartDate = '2017-04-01'//+moment().subtract(20, 'years').startOf('year').
 var glEndDate = "2017-06-30"//+moment().add(10, 'years').endOf('year').format("YYYY-MM");
 var globalDivName;
 onLoadCalls();
+
 function onLoadCalls()
 {
 	$(document).keydown(function(event){
@@ -31,8 +32,10 @@ function onLoadCalls()
 	}
 	$(document).on('click','[overview-block]', function(){
 		$("[overview-block]").removeClass("active");
-		$(this).addClass("active");
 		var projectDivId = $(this).attr("overview-block");
+		$("[overview-block='"+projectDivId+"']").addClass("active");
+		$(".rightNavigationMenuRes").toggleClass("active");
+		$(".rightNavigationMenu ul,.backgroundBlock").toggle();
 		globalDivName = projectDivId;
 		overviewData(projectDivId)
 		projectData(projectDivId)
@@ -40,7 +43,10 @@ function onLoadCalls()
 			scrollTop: $("#projectOverviewBlock").offset().top},
         'slow');
 	});
-	
+	$(document).on("click",".rightNavigationMenuRes",function(){
+		$(this).toggleClass("active");
+		$(".rightNavigationMenu ul,.backgroundBlock").toggle();
+	});
 	$("header").on("click",".menu-cls",function(e){
 		e.stopPropagation();
 		$(".menu-data-cls").toggle();
@@ -103,7 +109,29 @@ function onLoadCalls()
 	}); */
 	getNREGSProjectsOverview('')
 }
+function minimise(Id,count)
+{
+	var id = Id;
+	var minimized_elements = $(id);
+	minimized_elements.each(function(){    
+		var t = $(this).text();        
+		if(t.length < count) return;
 
+		$(this).html(
+			'<span class="less">'+t.slice(0,count)+'..</span>'+
+			'<span style="display:none;" class="more text-capitalize">'+t+'</span>'
+		);
+
+	}); 
+	$(document).on("mouseover",id,function(){
+		$(this).find('span').hide();
+		$(this).find('span.more').show();
+	});
+	$(document).on("mouseout",id,function(){
+		$(this).find('span.less').show();
+		$(this).find('span.more').hide();
+	});	
+}
 function projectData(divId)
 {
 	var collapse='';
@@ -306,6 +334,7 @@ $('.log').ajaxComplete(function() {
 function buildNREGSProjectsOverview(result,blockName)
 {
 	var str='';
+	var sidebarMenu='';
 	str+='<div class="row">';
 		for(var i in result)
 		{
@@ -349,9 +378,12 @@ function buildNREGSProjectsOverview(result,blockName)
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
+			sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
 		}
 	str+='</div>';
 	$("#projectsOverview").html(str);
+	$(".rightNavigationMenu ul").html(sidebarMenu);
+	minimise(".rightNavigationMenu li",8)
 	$(".toolTipTitleCls").tooltip();
 	if(blockName != null)
 	{
@@ -2515,3 +2547,4 @@ function getLabourBudgetClickingOverview()
 		}
 	});
 }
+
