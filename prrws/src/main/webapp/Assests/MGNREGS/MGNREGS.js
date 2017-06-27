@@ -1902,7 +1902,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 					str+='<tr>';
 						for(var i in theadArr)
 						{
-							str+='<th>'+theadArr[i]+'</th>';
+							str+='<th class="text-capitalize">'+theadArr[i]+'</th>';
 						}
 					str+='</tr>';
 				str+='</thead>';
