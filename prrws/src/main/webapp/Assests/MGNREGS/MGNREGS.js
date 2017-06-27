@@ -1753,72 +1753,214 @@ function getAHData(divIdd,locationType,theadArr)
   });
 }
 //DistrictConst Call -- Nandhini
-function buildDistrictsPopupDetails(result){
+function buildDistrictsPopupDetails(result,dataArr){
 	var str = '';
-	var redTotal = 0;
-	var orangeTotal = 0;
-	var greenTotal = 0;
-	var totalConsi = 0;
-	str+='<table class="table table-bordered m_top10">';
-		str+='<thead>';
-			str+='<tr>';
-				str+='<th>District Name </th>';
-				str+='<th style="color:red;">Constituencies In Red </th>';
-				str+='<th style="color:orange;">Constituencies In Orange </th>';
-				str+='<th style="color:green;">Constituencies In Green </th>';
-				str+='<th>Total </th>';
-			str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-			for(var i in result){
-				redTotal = redTotal+result[i].constiInRed;
-				orangeTotal = orangeTotal+result[i].constiInOrange;
-				greenTotal = greenTotal+result[i].constiInGreen;
-				totalConsi =redTotal+ orangeTotal+greenTotal;
-				str+='<tr>';
-					str+='<td>'+result[i].district+'</td>';
-					str+='<td style="color:red;">'+result[i].constiInRed+'</td>';
-					str+='<td style="color:orange;">'+result[i].constiInOrange+'</td>';
-					str+='<td style="color:green;">'+result[i].constiInGreen+'</td>';
-					str+='<td>'+result[i].total+'</td>';
-				str+='</tr>';	
+	str+='<div class="panel panel-default">';
+		str+='<div class="panel-heading">';
+			str+='<h4 class="panel-title">Constituencies in Districts</h4>';
+		str+='</div>';
+		str+='<div class="panel-body">';
+			str+='<table class="table table-bordered m_top10">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>District Name </th>';
+						str+='<th style="color:red;">Constituencies In Red </th>';
+						str+='<th style="color:orange;">Constituencies In Orange </th>';
+						str+='<th style="color:green;">Constituencies In Green </th>';
+						str+='<th>Total </th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+				var redTotalCons = 0;
+				var orangeTotalCons = 0;
+				var greenTotalCons = 0;
+				var totalConsiCons = 0;
+					for(var i in result.distConsCuntList){
+						redTotalCons = redTotalCons+result.distConsCuntList[i].constiInRed;
+						orangeTotalCons = orangeTotalCons+result.distConsCuntList[i].constiInOrange;
+						greenTotalCons = greenTotalCons+result.distConsCuntList[i].constiInGreen;
+						totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+						str+='<tr>';
+							str+='<td>'+result.distConsCuntList[i].district+'</td>';
+							str+='<td style="color:red;">'+result.distConsCuntList[i].constiInRed+'</td>';
+							str+='<td style="color:orange;">'+result.distConsCuntList[i].constiInOrange+'</td>';
+							str+='<td style="color:green;">'+result.distConsCuntList[i].constiInGreen+'</td>';
+							str+='<td>'+result.distConsCuntList[i].total+'</td>';
+						str+='</tr>';	
+					}
+					str+='<tr>';
+						str+='<td>Total</td>';
+						str+='<td>'+redTotalCons+'</td>';
+						str+='<td>'+orangeTotalCons+'</td>';
+						str+='<td>'+greenTotalCons+'</td>';
+						str+='<td>'+totalConsiCons+'</td>';
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+	str+='</div>';
+	str+='<div class="panel panel-default">';
+		str+='<div class="panel-heading">';
+			str+='<h4 class="panel-title">Mandals in Districts</h4>';
+		str+='</div>';
+		str+='<div class="panel-body">';
+			str+='<table class="table table-bordered m_top10">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>District Name </th>';
+						str+='<th style="color:red;">Mandals In Red </th>';
+						str+='<th style="color:orange;">Mandals In Orange </th>';
+						str+='<th style="color:green;">Mandals In Green </th>';
+						str+='<th>Total </th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+				redTotalCons = 0;
+				orangeTotalCons = 0;
+				greenTotalCons = 0;
+				totalConsiCons = 0;
+					for(var i in result.distMandalCuntList){
+						redTotalCons = redTotalCons+result.distMandalCuntList[i].mandalsInRed;
+						orangeTotalCons = orangeTotalCons+result.distMandalCuntList[i].mandalsInOrange;
+						greenTotalCons = greenTotalCons+result.distMandalCuntList[i].mandalsInGreen;
+						totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+						str+='<tr>';
+							str+='<td>'+result.distConsCuntList[i].district+'</td>';
+							str+='<td style="color:red;">'+result.distMandalCuntList[i].mandalsInRed+'</td>';
+							str+='<td style="color:orange;">'+result.distMandalCuntList[i].mandalsInOrange+'</td>';
+							str+='<td style="color:green;">'+result.distMandalCuntList[i].mandalsInGreen+'</td>';
+							str+='<td>'+result.distMandalCuntList[i].total+'</td>';
+						str+='</tr>';	
+					}
+					str+='<tr>';
+						str+='<td>Total</td>';
+						str+='<td>'+redTotalCons+'</td>';
+						str+='<td>'+orangeTotalCons+'</td>';
+						str+='<td>'+greenTotalCons+'</td>';
+						str+='<td>'+totalConsiCons+'</td>';
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+	str+='</div>';
+	str+='<div class="panel panel-default">';
+		str+='<div class="panel-heading">';
+			str+='<h4 class="panel-title">District Details</h4>';
+		str+='</div>';
+		str+='<div class="panel-body">';
+			var theadArr = [dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			if(dataArr == "constituency")
+				theadArr = ["district",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			else if(dataArr == "mandal")
+				theadArr = ["district","constituency",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			if(globalDivName != 'Labour Budget'){
+				str+='<table class="table table-bordered m_top10">';
+					str+='<thead>';
+						str+='<tr>';
+							for(var i in theadArr)
+							{
+								str+='<th>'+theadArr[i]+'</th>';
+							}
+						str+='</tr>';
+					str+='</thead>';
+				str+='<tbody>';
+				
+						for(var i in result.distList){
+							str+='<tr>';
+								if(dataArr == "district"){
+									str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+								}
+								else if(dataArr == "constituency"){
+									str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+									str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+								}
+								else if(dataArr == "mandal"){
+									str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+									str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+									str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+								}
+								str+='<td>'+result.distList[i].target+'</td>';
+								str+='<td>'+result.distList[i].grounded+'</td>';
+								str+='<td>'+result.distList[i].notGrounded+'</td>';
+								str+='<td>'+result.distList[i].inProgress+'</td>';
+								str+='<td>'+result.distList[i].completed+'</td>';
+								str+='<td>'+result.distList[i].percentage+'</td>';
+							str+='</tr>';
+						}
+					str+='</tbody>';
+				str+='</table>';
 			}
-			str+='<tr>';
-			str+='<td>Total</td>';
-			str+='<td>'+redTotal+'</td>';
-			str+='<td>'+orangeTotal+'</td>';
-			str+='<td>'+greenTotal+'</td>';
-			str+='<td>'+totalConsi+'</td>';
-		str+='</tbody>';
-	str+='</table>';
-	$("#projectDetails").html(str);
+			else{
+				theadArr = [dataArr,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+				if(dataArr == "constituency")
+					theadArr = ["district",dataArr,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+				else if(dataArr == "mandal")
+					theadArr = ["district","constituency",dataArr,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+				
+				str+='<table class="table table-bordered m_top10">';
+				str+='<thead>';
+					str+='<tr>';
+						for(var i in theadArr)
+						{
+							str+='<th>'+theadArr[i]+'</th>';
+						}
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+			
+				for(var i in result.distList){
+					str+='<tr>';
+						if(dataArr == "district"){
+							str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+						}
+						else if(dataArr == "constituency"){
+							str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+							str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+						}
+						else if(dataArr == "mandal"){
+							str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+							str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+							str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+						}
+							
+						str+='<td>'+result.distList[i].targetPersonDays+'</td>';
+						str+='<td>'+result.distList[i].generatedPersonDays+'</td>';
+						str+='<td>'+result.distList[i].perAppLB+'</td>';
+						str+='<td>'+result.distList[i].avgWageRate+'</td>';
+						str+='<td>'+result.distList[i].totalExpenditure+'</td>';
+					str+='</tr>';
+				}
+			}
+		str+='</div>';
+	str+='</div>';
+	$("#nregsConsitenBodyId").html(str);
 }
 
 //getNREGSIHHLConsCuntData()
 function getNREGSConsCuntData(locationType,type,globalDivName)
 {
-	//$("#"+divIdd).html(spinner);
-  var json = {
-    year : "2017",
-    fromDate : "2017-04-01",
-	toDate : "2017-06-30",
-    locationType: locationType,
-	type  : type,
-	divType : globalDivName
-}
-  $.ajax({
-    url: 'getMGNregsDistrWiseCount',
-    data: JSON.stringify(json),
-    type: "POST",
-    dataType: 'json', 
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Content-Type", "application/json");
-    },
-    success: function(ajaxresp) {
-       //buildDistrictsPopupDetails(ajaxresp)
-    }
-  });
+	$("#nregsConsitenBodyId").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : "2017-04-01",
+		toDate : "2017-06-30",
+		locationType: locationType,
+		type  : type,
+		divType : globalDivName
+	}
+	$.ajax({
+		url: 'getMGNregsDistrWiseCount',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildDistrictsPopupDetails(ajaxresp,locationType)
+		}
+	});
 }
 
 $(document).on("click",".detailsCls",function(){
@@ -2308,4 +2450,3 @@ function getLabourBudgetClickingOverview()
 		}
 	});
 }
-
