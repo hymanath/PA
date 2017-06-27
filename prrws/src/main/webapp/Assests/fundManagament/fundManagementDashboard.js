@@ -3051,8 +3051,9 @@
 	}
 
 function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,deptId){ 
-     
-	$("#fundSanctionModal").html("");
+	$("#fundModal").modal('show');
+	$("#diptNameId").html('Location Wise Fund Overview');
+	$("#fundSanctionModal").html(spinner);
     var searchLvlVals = [];
 	searchLvlVals.push(levlValue);
     var financialYrIdList =[];
@@ -3088,7 +3089,6 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
             
     }).done(function(result){
       if(result != null && result.length>0){
-		  $("#fundModal").modal('show');
       buildLocationWiseFundSanctionDetails(result,blockLvlId);
     }
     });
