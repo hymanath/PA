@@ -15,7 +15,6 @@ public class CadrePartyMeetingManagementAction extends ActionSupport implements
 	private static Logger LOG = Logger
 			.getLogger(CadrePartyMeetingManagementAction.class);
 	private HttpServletRequest request;
-    private ICadrePartyMeetingManagementService cadrePartyMeetingManagementService;
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -27,16 +26,6 @@ public class CadrePartyMeetingManagementAction extends ActionSupport implements
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 
-	}
-
-	
-	public ICadrePartyMeetingManagementService getCadrePartyMeetingManagementService() {
-		return cadrePartyMeetingManagementService;
-	}
-
-	public void setCadrePartyMeetingManagementService(
-			ICadrePartyMeetingManagementService cadrePartyMeetingManagementService) {
-		this.cadrePartyMeetingManagementService = cadrePartyMeetingManagementService;
 	}
 
 	public String execute() {
