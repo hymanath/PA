@@ -1116,7 +1116,7 @@ function getNominatedPostApplication(startIndex)
  		str +='</ul>';	
 			$("#cadreSearchDtls").html(str);
 			var length = $("#cadreSearchDtls").find("li").length;
-			$("#membersCountId").html("<p id='memberCountSpanId'>Search Results <span class='font_weight'>"+length+"</span> Members</p>")
+			$("#membersCountId").html("<p id='memberCountSpanId'>Search Results <span class='font_weight'>"+result.length+"</span> Members</p>")
 			if(result.length>3)
 			{
 			$(".best-matched-profile").slick({
