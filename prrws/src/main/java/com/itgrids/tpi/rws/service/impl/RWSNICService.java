@@ -410,13 +410,13 @@ public class RWSNICService implements IRWSNICService{
 	 * Author :Nagarjuna
 	 * @description : getWaterSourceInfo
 	 */
-	public List<StatusVO> getWaterSourceInfo(InputVO vo) {
-		List<StatusVO> waterSourceInfo = new ArrayList<StatusVO>(0);
+	public StatusVO getWaterSourceInfo() {
+		StatusVO waterSourceInfo =new StatusVO();
 		try{
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getWaterSourceInfo");	        
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getWaterSourceDeatils");	        
 		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
-		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
+		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).get(ClientResponse.class);
 			
         	if(response.getStatus() != 200){
  	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -425,21 +425,18 @@ public class RWSNICService implements IRWSNICService{
 				/*output="[{'source' : 'ground','value'  : '10000'},"
 						 +"{'source' : 'surface','value'  : '10000'}]";*/
  	    	if(output != null && !output.isEmpty()){
- 	    		JSONArray finalArray = new JSONArray(output);
- 	    		if(finalArray!=null && finalArray.length()>0){
- 	    			for(int i=0;i<finalArray.length();i++){
- 	    				StatusVO statusVO = new StatusVO();
- 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
- 	    				statusVO.setName(jObj.getString("source"));
- 	    				statusVO.setCount(jObj.getLong("value"));
- 	    				waterSourceInfo.add(statusVO);
- 	    			}
+ 	    		
+ 	    				JSONObject jObj = new JSONObject(output);
+ 	    		
+ 	    				if(jObj !=null){
+	 	    				waterSourceInfo.setName(jObj.getString("status"));
+	 	    				waterSourceInfo.setGroundWaterSourceTotalMlpdCount(jObj.getLong("groundWaterSourceTotalMlpdCount"));
+	 	    				waterSourceInfo.setSurfaceWaterSourceTotalMlpdCount(jObj.getLong("surfaceWaterSourceTotalMlpdCount"));
+	 	    				
+ 	    				}
  	    		}
  	    	}
- 	    	 
- 	    	  
- 	      }
-			
+ 	    	
 		}catch (Exception e) {
 			LOG.error("Exception raised at getWaterSourceInfo - RWSNICService service", e);
 		}

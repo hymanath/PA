@@ -20,7 +20,25 @@ public class StatusVO {
 	
 	private List<StatusVO> statusList = new ArrayList<StatusVO>(0);
 	
+	private Long groundWaterSourceTotalMlpdCount;
+	private Long surfaceWaterSourceTotalMlpdCount;
 	
+	
+	
+	public Long getGroundWaterSourceTotalMlpdCount() {
+		return groundWaterSourceTotalMlpdCount;
+	}
+	public void setGroundWaterSourceTotalMlpdCount(
+			Long groundWaterSourceTotalMlpdCount) {
+		this.groundWaterSourceTotalMlpdCount = groundWaterSourceTotalMlpdCount;
+	}
+	public Long getSurfaceWaterSourceTotalMlpdCount() {
+		return surfaceWaterSourceTotalMlpdCount;
+	}
+	public void setSurfaceWaterSourceTotalMlpdCount(
+			Long surfaceWaterSourceTotalMlpdCount) {
+		this.surfaceWaterSourceTotalMlpdCount = surfaceWaterSourceTotalMlpdCount;
+	}
 	public List<StatusVO> getStatusList() {
 		return statusList;
 	}
