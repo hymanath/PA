@@ -1755,9 +1755,9 @@ function getAHData(divIdd,locationType,theadArr)
 //DistrictConst Call -- Nandhini
 function buildDistrictsPopupDetails(result,dataArr){
 	var str = '';
-	str+='<div class="panel panel-default">';
+	str+='<div class="panel panel-default panel-black m_top10">';
 		str+='<div class="panel-heading">';
-			str+='<h4 class="panel-title">Constituencies in Districts</h4>';
+			str+='<h4 class="panel-title text-capital">Constituencies in Districts</h4>';
 		str+='</div>';
 		str+='<div class="panel-body">';
 			str+='<table class="table table-bordered m_top10">';
@@ -1799,9 +1799,9 @@ function buildDistrictsPopupDetails(result,dataArr){
 			str+='</table>';
 		str+='</div>';
 	str+='</div>';
-	str+='<div class="panel panel-default">';
+	str+='<div class="panel panel-default panel-black m_top10">';
 		str+='<div class="panel-heading">';
-			str+='<h4 class="panel-title">Mandals in Districts</h4>';
+			str+='<h4 class="panel-title text-capital">Mandals in Districts</h4>';
 		str+='</div>';
 		str+='<div class="panel-body">';
 			str+='<table class="table table-bordered m_top10">';
@@ -1843,9 +1843,9 @@ function buildDistrictsPopupDetails(result,dataArr){
 			str+='</table>';
 		str+='</div>';
 	str+='</div>';
-	str+='<div class="panel panel-default">';
+	str+='<div class="panel panel-default panel-black m_top10">';
 		str+='<div class="panel-heading">';
-			str+='<h4 class="panel-title">District Details</h4>';
+			str+='<h4 class="panel-title text-capital">District Details</h4>';
 		str+='</div>';
 		str+='<div class="panel-body">';
 			var theadArr = [dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
@@ -1966,15 +1966,17 @@ function getNREGSConsCuntData(locationType,type,globalDivName)
 $(document).on("click",".detailsCls",function(){
 	var locationType = $(this).attr("attr_location");
 	var type = $(this).attr("attr_type");
+	var heading = $(this).html();
+	$("#modalHeadingDivId").html(heading);
 	getNREGSConsCuntData(locationType,type,globalDivName);
 });
 
 $(document).on("click",".overviewPopupCls",function(){
 	var locationType = $(this).attr("attr_locationType");
 	var type = $(this).attr("attr_type");
-	
+	var heading = $(this).html();
 	$("#nregsConsitenModalId").modal("show");
-	$("#modalHeadingDivId").html(globalDivName +'&nbsp;Project Districts Overview');
+	$("#modalHeadingDivId").html(heading);
 	if(globalDivName == 'Labour Budget')
 	{
 		getLabourBudgetClickingOverview();
@@ -2450,3 +2452,4 @@ function getLabourBudgetClickingOverview()
 		}
 	});
 }
+
