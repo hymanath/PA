@@ -240,7 +240,7 @@ public interface IWebServiceHandlerService {
     public List<AmsTrackingVO> getSubTaskAlertDetails(AmsAppLoginVO keyVo);
     public List<AmsKeyValueVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo);
     public List<AmsKeyValueVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo);
-    public List<AmsAppVO> getParentLevelsOfLevelForAms(AmsAppLoginVO keyVo);
+    public List<AmsKeyValueVO> getParentLevelsOfLevelForAms(AmsAppLoginVO keyVo);
     public List<AmsKeyValueVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo);
     public List<AmsKeyValueVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo);
     public List<AmsKeyValueVO> getGovtAllDepartmentDetailsForAms();
@@ -253,4 +253,6 @@ public interface IWebServiceHandlerService {
     public List<KeyValueVO> getLocationWiseAlertStatusCounts(Long departmentId,String fromDate,String toDate,String year,Long groupByValue,List<Long> locationValuesList);
     public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDate,String toDate,String year,List<Long> locationValues,Long locationTypeIdm,
     		Long searchLevelId,List<Long> searchLevelValues);
+    public AmsKeyValueVO getDistrictWiseInfoForAms(AmsAppLoginVO keyVo);
+    public List<DistrictOfficeViewAlertVO> getTotalAlertByOtherStatusForAMS(AmsDataVO keyVo);
 }
