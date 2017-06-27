@@ -16,7 +16,7 @@ public class ServiceProvider implements Serializable{
 	private static final long serialVersionUID = -4074964122846729503L;
 	
 	private Long serviceProviderId;
-	private Long providerName;
+	private String providerName;
 	
 	@Id
 	@Column(name="service_provider_id")
@@ -30,11 +30,11 @@ public class ServiceProvider implements Serializable{
 	}
 
 	@Column(name="provider_name")
-	public Long getProviderName() {
+	public String getProviderName() {
 		return providerName;
 	}
 
-	public void setProviderName(Long providerName) {
+	public void setProviderName(String providerName) {
 		this.providerName = providerName;
 	}
 	

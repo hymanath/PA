@@ -2,11 +2,13 @@ package com.itgrids.service.integration;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -15,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.Multiset.Entry;
+import com.itgrids.dao.IWebserviceCallDetailsDAO;
 import com.itgrids.dto.FarmPondOverviewVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
@@ -23,8 +25,10 @@ import com.itgrids.dto.LabourBudgetOverViewVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
+import com.itgrids.dto.WebserviceDetailsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
+import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 
 @Service
@@ -35,7 +39,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	
 	@Autowired
 	private WebServiceUtilService webServiceUtilService;
-	
+	@Autowired
+	private IWebserviceCallDetailsDAO webserviceCallDetailsDAO;
+	@Autowired
+	private CommonMethodsUtilService commonMethodsUtilService;
 	/*
 	 * Date : 16/06/2017
 	 * Author :Sravanth
@@ -1936,6 +1943,117 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at getDistrictsConstitByType -getDistrictsDetails service", e);
 		}
 		return returnList;
+		}
+	/*
+	 * Date : 19/06/2017
+	 * Author :Swadhin
+	 * @description : returns webservice details
+	 */
+	@Override
+	public List<WebserviceDetailsVO> getWebserviceHealthDetails(InputVO inputVO){
+		try{
+			Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDate(),"dd/MM/yyyy","");
+			Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDate(),"dd/MM/yyyy","");
+			//get webservice details here 
+			List<Object[]> detailsList = webserviceCallDetailsDAO.getWebserviceHealthDetails(startDate, endDate);
+			//create a map for webserviceId and providerId
+			Map<Long,Long> webserviceIdAndProviderIdMap = new HashMap<Long,Long>();
+			//create a map for providerId and providerName map
+			Map<Long,String> providerIdAndProviderNameMap = new HashMap<Long,String>();      
+			//create a map for webserviceId and moduleId
+			Map<Long,Long> webserviceIdAndModuleIdMap = new HashMap<Long,Long>();
+			//create a map for moduleId and module name map
+			Map<Long,String> moduleIdAndModuleNameMap = new HashMap<Long,String>();
+			//create a map for webserviceId and name
+			Map<Long,String> webserviceIdAndNameMap = new HashMap<Long,String>();
+			//create a map for webserviceId and total call count map
+			Map<Long,Long> webserviceIdAneTotalCallCountMap = new HashMap<Long,Long>();
+			//create a map for webserviceId and total time taken map
+			Map<Long,Long> webserviceIdAndTotalTimeTakenMap = new HashMap<Long,Long>();
+			//create  a map for webserviceId and Map for status and total call count map
+			Map<Long,Map<String,Long>> webserviceIdAndStatusAndTotalCallCountMap = new HashMap<Long,Map<String,Long>>();
+			Map<String,Long> statusAndTotalCallCountMap = null;
+			//create a map for webserviceId and Map for status and total time taken map
+			Map<Long,Map<String,Long>> webserviceIdAndStatusAndTotalTimeTakenMap = new HashMap<Long,Map<String,Long>>();
+			Map<String,Long> statusAndTotalTimeTakenMap = null;
+			
+			if(detailsList != null && detailsList.size() > 0){
+				for(Object[] param : detailsList){
+					//create a map for webserviceId and providerId
+					webserviceIdAndProviderIdMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[0]));
+					
+					//create a map for providerId and providerName map
+					providerIdAndProviderNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					
+					//create a map for webserviceId and moduleId
+					webserviceIdAndModuleIdMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[2]));
+					
+					//create a map for moduleId and module name map
+					moduleIdAndModuleNameMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getStringValueForObject(param[3]));
+					
+					//create a map for webserviceId and name
+					webserviceIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getStringValueForObject(param[5]));
+					
+					//create a map for webserviceId and total call count map
+					webserviceIdAneTotalCallCountMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), (commonMethodsUtilService.getLongValueForObject(webserviceIdAneTotalCallCountMap.get(commonMethodsUtilService.getLongValueForObject(param[4])))+commonMethodsUtilService.getLongValueForObject(param[7])));
+					
+					//create a map for webserviceId and total time taken map
+					webserviceIdAndTotalTimeTakenMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), (commonMethodsUtilService.getLongValueForObject(webserviceIdAndTotalTimeTakenMap.get(commonMethodsUtilService.getLongValueForObject(param[4])))+commonMethodsUtilService.getLongValueForObject(param[8])));
+					
+					//create  a map for webserviceId and Map for status and total call count map
+					statusAndTotalCallCountMap = webserviceIdAndStatusAndTotalCallCountMap.get(commonMethodsUtilService.getLongValueForObject(param[4]));
+					if(statusAndTotalCallCountMap == null){
+						statusAndTotalCallCountMap = new HashMap<String,Long>();
+						statusAndTotalCallCountMap.put(commonMethodsUtilService.getStringValueForObject(param[6]), commonMethodsUtilService.getLongValueForObject(param[7]));
+						webserviceIdAndStatusAndTotalCallCountMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), statusAndTotalCallCountMap);
+					}
+					statusAndTotalCallCountMap.put(commonMethodsUtilService.getStringValueForObject(param[6]), commonMethodsUtilService.getLongValueForObject(param[7]));
+					
+					//create a map for webserviceId and Map for status and total time taken map
+					statusAndTotalTimeTakenMap = webserviceIdAndStatusAndTotalTimeTakenMap.get(commonMethodsUtilService.getLongValueForObject(param[4]));
+					if(statusAndTotalTimeTakenMap == null){
+						statusAndTotalTimeTakenMap = new HashMap<String,Long>();
+						statusAndTotalTimeTakenMap.put(commonMethodsUtilService.getStringValueForObject(param[6]), commonMethodsUtilService.getLongValueForObject(param[8]));
+						webserviceIdAndStatusAndTotalTimeTakenMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), statusAndTotalTimeTakenMap);
+					}
+					statusAndTotalTimeTakenMap.put(commonMethodsUtilService.getStringValueForObject(param[6]), commonMethodsUtilService.getLongValueForObject(param[8]));
+					
+				}
+			}
+			
+			//create VO object for UI
+			List<WebserviceDetailsVO> detailsVOs = new ArrayList<WebserviceDetailsVO>();
+			WebserviceDetailsVO detailsVO = null;
+			
+			if(webserviceIdAndStatusAndTotalCallCountMap != null && webserviceIdAndStatusAndTotalCallCountMap.size() > 0){
+				for(Entry<Long,Map<String,Long>> param : webserviceIdAndStatusAndTotalCallCountMap.entrySet()){
+					if(param.getValue() != null && param.getValue().size() > 0){
+						detailsVO = new WebserviceDetailsVO();
+						detailsVO.setWebserviceId(param.getKey());
+						detailsVO.setWebserviceName(webserviceIdAndNameMap.get(param.getKey()));
+						detailsVO.setProviderId(webserviceIdAndProviderIdMap.get(param.getKey()));
+						detailsVO.setProviderName(providerIdAndProviderNameMap.get(webserviceIdAndProviderIdMap.get(param.getKey())));
+						detailsVO.setModuleId(webserviceIdAndModuleIdMap.get(param.getKey()));
+						detailsVO.setModuleName(moduleIdAndModuleNameMap.get(webserviceIdAndModuleIdMap.get(param.getKey())));
+						detailsVO.setTotalCalls(webserviceIdAneTotalCallCountMap.get(param.getKey()));
+						if(param.getValue() != null){
+							if(param.getValue().get("Success") != null){
+								detailsVO.setTotalSuccess(param.getValue().get("Success"));
+							}
+							if(param.getValue().get("Fail") != null){
+								detailsVO.setTotalFail(param.getValue().get("Fail"));
+							}
+						}
+						detailsVO.setTotalTime(commonMethodsUtilService.roundUptoThreeDecimalPoint(webserviceIdAndTotalTimeTakenMap.get(param.getKey()).doubleValue()/1000.0D));
+						detailsVO.setAverageTime(commonMethodsUtilService.roundUptoThreeDecimalPoint((webserviceIdAndTotalTimeTakenMap.get(param.getKey()).doubleValue()/webserviceIdAneTotalCallCountMap.get(param.getKey()).doubleValue())/1000.0D));
+						detailsVOs.add(detailsVO);
+					}
+				}
+			}
+			return detailsVOs;
+		}catch(Exception e){   
+			LOG.error("Exception raised at getWebserviceHealthDetails() -NREGSTCSService service", e);
+		}
+		return null;
 	}
-	
 }
