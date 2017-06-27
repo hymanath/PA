@@ -40,7 +40,6 @@ public class CadrePartyMeetingManagementAction extends ActionSupport implements
 	}
 
 	public String execute() {
-		cadrePartyMeetingManagementService.test();
 		return Action.SUCCESS;
 	}
 
