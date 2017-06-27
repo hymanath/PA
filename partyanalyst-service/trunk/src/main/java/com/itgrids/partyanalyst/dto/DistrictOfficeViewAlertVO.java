@@ -65,7 +65,20 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	private Long totalCount=0l;
 	private Long grandTotal = 0L;
 	private Long subOrdinateCount = 0l;
-	
+	private Long subTaskCount = 0l;
+	private String createdDate;
+	private String updatedDate;
+	private Long statusId;
+	private String status;
+	private String statusColor;
+	private String relatedTo;
+	private String problem;
+	private Long interval;
+	private String title;
+	private String location;
+	private String source;
+	private String alertLevel;
+	private List<AmsKeyValueVO> userAccessLst = new ArrayList<AmsKeyValueVO>();
 	
 	public Long getSubOrdinateCount() {
 		return subOrdinateCount;
@@ -386,6 +399,88 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	public void setGovtOfficerId(Long govtOfficerId) {
 		this.govtOfficerId = govtOfficerId;
 	}
-	
-	
+	public Long getSubTaskCount() {
+		return subTaskCount;
+	}
+	public void setSubTaskCount(Long subTaskCount) {
+		this.subTaskCount = subTaskCount;
+	}
+	public String getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+	public String getUpdatedDate() {
+		return updatedDate;
+	}
+	public void setUpdatedDate(String updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getStatusColor() {
+		return statusColor;
+	}
+	public void setStatusColor(String statusColor) {
+		this.statusColor = statusColor;
+	}
+	public String getRelatedTo() {
+		return relatedTo;
+	}
+	public void setRelatedTo(String relatedTo) {
+		this.relatedTo = relatedTo;
+	}
+	public String getProblem() {
+		return problem;
+	}
+	public void setProblem(String problem) {
+		this.problem = problem;
+	}
+	public Long getInterval() {
+		return interval;
+	}
+	public void setInterval(Long interval) {
+		this.interval = interval;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
+	}
+	public String getAlertLevel() {
+		return alertLevel;
+	}
+	public void setAlertLevel(String alertLevel) {
+		this.alertLevel = alertLevel;
+	}
+	public List<AmsKeyValueVO> getUserAccessLst() {
+		return userAccessLst;
+	}
+	public void setUserAccessLst(List<AmsKeyValueVO> userAccessLst) {
+		this.userAccessLst = userAccessLst;
+	}
 }

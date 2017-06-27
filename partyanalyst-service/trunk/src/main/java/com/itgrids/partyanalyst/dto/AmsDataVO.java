@@ -118,6 +118,7 @@ public class AmsDataVO implements Serializable {
 	private Long filterScopeValue;
 	private String searchType;
 	private List<Long> subTaskAlertStatusIds;
+	private List<Long> impactLevelList;
 	
 	public String getGroup() {
 		return group;
