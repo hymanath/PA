@@ -22,9 +22,22 @@ public class StatusVO {
 	
 	private Long groundWaterSourceTotalMlpdCount;
 	private Long surfaceWaterSourceTotalMlpdCount;
+	private Long targetPopulation = 0l,achivedPopulation=0l;
 	
 	
 	
+	public Long getTargetPopulation() {
+		return targetPopulation;
+	}
+	public void setTargetPopulation(Long targetPopulation) {
+		this.targetPopulation = targetPopulation;
+	}
+	public Long getAchivedPopulation() {
+		return achivedPopulation;
+	}
+	public void setAchivedPopulation(Long achivedPopulation) {
+		this.achivedPopulation = achivedPopulation;
+	}
 	public Long getGroundWaterSourceTotalMlpdCount() {
 		return groundWaterSourceTotalMlpdCount;
 	}
