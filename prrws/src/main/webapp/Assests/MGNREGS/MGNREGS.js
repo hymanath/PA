@@ -806,59 +806,86 @@ function buildNregasOverViewBlock(result,projectDivId){
 			str1+='<tr>';
 				str1+='<td>';
 					str1+='<div class="col-sm-12">';
-						str1+='<h4 attr_locationType="district" attr_type="total" style="cursor:pointer;"><strong>Total Districts : '+result.totalDistricts+'</strong></h4>';
+						str1+='<h4 attr_locationType="district" attr_type="total"><strong>Total Districts : '+result.totalDistricts+'</strong></h4>';
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							str1+='<p class="media-body overviewPopupCls" attr_locationType="district" attr_type="red" style="cursor:pointer;">Districts in Red : '+result.districtsInRed+'</p>';
+							if(result.districtsInRed != null && result.districtsInRed > 0)
+								str1+='<p class="media-body overviewPopupCls" attr_locationType="district" attr_type="red" style="cursor:pointer;">Districts in Red : '+result.districtsInRed+'</p>';
+							else
+								str1+='<p class="media-body" attr_locationType="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							str1+='<p class="media-body overviewPopupCls" attr_locationType="district" attr_type="orange" style="cursor:pointer;">Districts in Orange : '+result.districtsInOrange+'</p>';
+							if(result.districtsInOrange != null && result.districtsInOrange > 0)
+								str1+='<p class="media-body overviewPopupCls" attr_locationType="district" attr_type="orange" style="cursor:pointer;">Districts in Orange : '+result.districtsInOrange+'</p>';
+							else
+								str1+='<p class="media-body" attr_locationType="district" attr_type="orange" >Districts in Orange : '+result.districtsInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							str1+='<p class="media-body overviewPopupCls" attr_locationType="district" attr_type="green" style="cursor:pointer;">Districts in Green : '+result.districtsInGreen+'</p>';
+							if(result.districtsInGreen != null && result.districtsInGreen > 0)
+								str1+='<p class="media-body overviewPopupCls" attr_locationType="district" attr_type="green" style="cursor:pointer;">Districts in Green : '+result.districtsInGreen+'</p>';
+							else
+								str1+='<p class="media-body" attr_locationType="district" attr_type="green" >Districts in Green : '+result.districtsInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';
 				str1+='</td>';
 				str1+='<td>';
 					str1+='<div class="col-sm-12">';
-						str1+='<h4 attr_locationType="constituency" attr_type="total" style="cursor:pointer;"><strong>Total Constituencies : '+result.totalConstituencies+'</strong></h4>';
+						str1+='<h4 attr_locationType="constituency" attr_type="total"><strong>Total Constituencies : '+result.totalConstituencies+'</strong></h4>';
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
 						str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-						str1+='<p class="media-body overviewPopupCls" attr_locationType="constituency" attr_type="red" style="cursor:pointer;">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+						if(result.constituenciesInRed != null && result.constituenciesInRed > 0)
+							str1+='<p class="media-body overviewPopupCls" attr_locationType="constituency" attr_type="red" style="cursor:pointer;">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+						else
+							str1+='<p class="media-body" attr_locationType="constituency" attr_type="red" >Constituencies in Red : '+result.constituenciesInRed+'</p>';
 							str1+='</div>';
 						str1+='<div class="media">';
 						str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-						str1+='<p class="media-body overviewPopupCls" attr_locationType="constituency" attr_type="orange" style="cursor:pointer;">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+						if(result.constituenciesInOrange != null && result.constituenciesInOrange > 0)
+							str1+='<p class="media-body overviewPopupCls" attr_locationType="constituency" attr_type="orange" style="cursor:pointer;">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+						else
+							str1+='<p class="media-body" attr_locationType="constituency" attr_type="orange" >Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
 							str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							str1+='<p class="media-body overviewPopupCls" attr_locationType="constituency" attr_type="green" style="cursor:pointer;">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+							if(result.constituenciesInGreen != null && result.constituenciesInGreen > 0)
+								str1+='<p class="media-body overviewPopupCls" attr_locationType="constituency" attr_type="green" style="cursor:pointer;">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+							else
+								str1+='<p class="media-body" attr_locationType="constituency" attr_type="green" >Constituencies in Green : '+result.constituenciesInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';	
 					
 				str1+='</td>';
 				str1+='<td>';
 					str1+='<div class="col-sm-12">';
-						str1+='<h4 attr_locationType="mandal" attr_type="total" style="cursor:pointer;"><strong>Total Mandals : '+result.totalMandals+'</strong></h4>';
+						str1+='<h4 attr_locationType="mandal" attr_type="total"><strong>Total Mandals : '+result.totalMandals+'</strong></h4>';
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							str1+='<p class="media-body overviewPopupCls" attr_locationType="mandal" attr_type="red" style="cursor:pointer;">Mandals in Red : '+result.mandalsInRed+'</p>';
+							if(result.mandalsInRed != null && result.mandalsInRed > 0)
+								str1+='<p class="media-body overviewPopupCls" attr_locationType="mandal" attr_type="red" style="cursor:pointer;">Mandals in Red : '+result.mandalsInRed+'</p>';
+							else
+								str1+='<p class="media-body" attr_locationType="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							str1+='<p class="media-body overviewPopupCls" attr_locationType="mandal" attr_type="orange" style="cursor:pointer;">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+							if(result.mandalsInOrange != null && result.mandalsInOrange > 0)
+								str1+='<p class="media-body overviewPopupCls" attr_locationType="mandal" attr_type="orange" style="cursor:pointer;">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+							else
+								str1+='<p class="media-body" attr_locationType="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							str1+='<p class="media-body overviewPopupCls" attr_locationType="mandal" attr_type="green" style="cursor:pointer;">Mandals in Green : '+result.mandalsInGreen+'</p>';
+							if(result.mandalsInGreen != null && result.mandalsInGreen > 0)
+								str1+='<p class="media-body overviewPopupCls" attr_locationType="mandal" attr_type="green" style="cursor:pointer;">Mandals in Green : '+result.mandalsInGreen+'</p>';
+							else
+								str1+='<p class="media-body" attr_locationType="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';	
 				str1+='</td>';
@@ -2053,15 +2080,24 @@ function buildPopupOverviewBlock(result,projectDivId){
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							str1+='<p class="media-body detailsCls" attr_location="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
+							if(result.districtsInRed != null && result.districtsInRed > 0)
+								str1+='<p class="media-body detailsCls" attr_location="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
+							else
+								str1+='<p class="media-body" attr_location="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							str1+='<p class="media-body detailsCls" attr_location="district" attr_type="orange">Districts in Orange : '+result.districtsInOrange+'</p>';
+							if(result.districtsInOrange != null && result.districtsInOrange > 0)
+								str1+='<p class="media-body detailsCls" attr_location="district" attr_type="orange">Districts in Orange : '+result.districtsInOrange+'</p>';
+							else
+								str1+='<p class="media-body" attr_location="district" attr_type="orange">Districts in Orange : '+result.districtsInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							str1+='<p class="media-body detailsCls" attr_location="district" attr_type="green">Districts in Green : '+result.districtsInGreen+'</p>';
+							if(result.districtsInGreen != null && result.districtsInGreen > 0)
+								str1+='<p class="media-body detailsCls" attr_location="district" attr_type="green">Districts in Green : '+result.districtsInGreen+'</p>';
+							else
+								str1+='<p class="media-body" attr_location="district" attr_type="green">Districts in Green : '+result.districtsInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';
 				str1+='</td>';
@@ -2072,15 +2108,24 @@ function buildPopupOverviewBlock(result,projectDivId){
 						str1+='</div>';
 						str1+='<div class="media">';
 						str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-						str1+='<p class="media-body detailsCls" attr_location="constituency" attr_type="red">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+						if(result.constituenciesInRed != null && result.constituenciesInRed > 0)
+							str1+='<p class="media-body detailsCls" attr_location="constituency" attr_type="red">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+						else
+							str1+='<p class="media-body" attr_location="constituency" attr_type="red">Constituencies in Red : '+result.constituenciesInRed+'</p>';
 							str1+='</div>';
 						str1+='<div class="media">';
 						str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-						str1+='<p class="media-body detailsCls" attr_location="constituency" attr_type="orange">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+						if(result.constituenciesInOrange != null && result.constituenciesInOrange > 0)
+							str1+='<p class="media-body detailsCls" attr_location="constituency" attr_type="orange">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+						else
+							str1+='<p class="media-body" attr_location="constituency" attr_type="orange">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
 							str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							str1+='<p class="media-body detailsCls" attr_location="constituency" attr_type="green">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+							if(result.constituenciesInGreen != null && result.constituenciesInGreen > 0)
+								str1+='<p class="media-body detailsCls" attr_location="constituency" attr_type="green">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+							else
+								str1+='<p class="media-body" attr_location="constituency" attr_type="green">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';	
 				str1+='</td>';
@@ -2091,15 +2136,24 @@ function buildPopupOverviewBlock(result,projectDivId){
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							str1+='<p class="media-body detailsCls" attr_location="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
+							if(result.mandalsInRed != null && result.mandalsInRed > 0)
+								str1+='<p class="media-body detailsCls" attr_location="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
+							else
+								str1+='<p class="media-body" attr_location="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							str1+='<p class="media-body detailsCls" attr_location="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+							if(result.mandalsInOrange != null && result.mandalsInOrange > 0)
+								str1+='<p class="media-body detailsCls" attr_location="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+							else
+								str1+='<p class="media-body" attr_location="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							str1+='<p class="media-body detailsCls" attr_location="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
+							if(result.mandalsInGreen != null && result.mandalsInGreen > 0)
+								str1+='<p class="media-body detailsCls" attr_location="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
+							else
+								str1+='<p class="media-body" attr_location="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';	
 				str1+='</td>';
