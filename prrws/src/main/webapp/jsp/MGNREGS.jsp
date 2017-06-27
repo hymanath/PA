@@ -7,6 +7,7 @@
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
+<link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
@@ -121,6 +122,13 @@
 						<li><span class="color-label color-label-success"></span> 80% and above</li>
 						<li><span class="color-label color-label-default"></span> 50% - 79%</li>
 						<li><span class="color-label color-label-danger"></span> 0% - 49%</li>
+						<li>
+							<div class="row">  
+								<div class="col-sm-12">
+									<button type="button" class="btn btn-primary btn-sm pull-right" id="getWebserviceDetailsId">Webservice Details</button>  
+								</div>
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -156,6 +164,33 @@
 		<div id="projectDetails"></div>
 		
 	</div>
+	<div class="modal fade" id="webserviceDetailsModalDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document" style="width:80%;margin:auto">
+			<div class="modal-content">    
+				<div class="modal-header bg_EE">          
+					<div class="row">
+						<div class="col-md-8 col-xs-12 col-sm-4">
+							<h4 class="modal-title text-capitalize" id="">Web Service Status Details</h4>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-4">  
+							<div class="input-group">
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+								</span>
+								<input type="text" class="form-control" id="dateRangePickerAUM"/>
+							</div>
+						</div>
+						<div class="col-md-1 col-xs-12 col-sm-4">       
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>    
+						</div>        
+					</div>
+				</div>
+				<div class="modal-body">
+					<div id="webserviceDetailsModalId"></div>
+				</div>  
+			</div>
+		</div>
+	</div>        
 	<div class="modal fade" tabindex="-1" id="nregsConsitenModalId" role="dialog" style="z-index:99999;">
 		<div class="modal-dialog" style="width:90%;">
 			<div class="modal-content">
@@ -180,6 +215,7 @@
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DateTime/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/MGNREGS.js" type="text/javascript"></script>
 </body>

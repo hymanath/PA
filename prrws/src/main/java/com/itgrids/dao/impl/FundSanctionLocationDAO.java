@@ -26,11 +26,25 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 	public List<Object[]> getLocationWiseFundSanctionDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
 			Date sDate,Date eDate,Long locationScopeId,List<Long> searchLvlVals,List<Long> schmeIdsList ){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select modal.fundSanction.workName,d.districtId,d.districtName" );
-		
-		sb.append(",dep.departmentName," +
-				" gs.schemeName,modal.fundSanction.goNoDate,sum(modal.fundSanction.sactionAmount) " +
-				" ,modal.locationValue,d.districtName,c.name,t.tehsilName,p.panchayatName,modal.locationScopeId,modal.fundSanction.fundSactionId ");
+		sb.append(" select " 
+				+ " modal.fundSanction.workName, "//0
+				+ " d.districtId, "//1
+				+ " d.districtName ,"//2
+				+ " dep.departmentName, "//3
+				+ " gs.schemeName, "//4
+				+ " modal.fundSanction.goNoDate, "//5
+				+ " sum(modal.fundSanction.sactionAmount), "//6
+				+ " modal.locationValue, "//7
+				+ " d.districtName, "//8
+				+ " c.name, "//9
+				+ " t.tehsilName, "//10
+				+ " p.panchayatName, "//11
+				+ " modal.locationScopeId, "//12
+				+ " modal.fundSanction.fundSactionId, "//13
+				+ " govtOrder.govtOrderId, "//14
+				+ " govtOrder.goNumber, "//15
+				+ " govtOrder.issueDate, "//16
+				+ " govtOrder.filePath ");//17  
 		sb.append(" from FundSanctionLocation modal " +
 				" left outer join modal.locationAddress.district d  " +
 				" left outer join modal.locationAddress.constituency c " +
@@ -38,6 +52,7 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 				" left outer join modal.locationAddress.panchayat p " +
 				" left outer join modal.fundSanction.govtScheme gs " +
 				" left outer join modal.fundSanction.department dep " +
+				" left outer join modal.fundSanction.govtOrder  govtOrder" +
 				" where modal.isDeleted='N' ");		
 		
 		if(financialYearIdsList != null && financialYearIdsList.size() >0l ){

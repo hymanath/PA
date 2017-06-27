@@ -32,11 +32,13 @@ public class FundSanction{
 	private Date updatedTime;
 	private String isDeleted;
 	private Long departmentId;
+	private Long govtOrderId;
 	
 	private FinancialYear financialYear;
 	private GrantType grantType;
 	private GovtScheme govtScheme;
 	private Department department;
+	private GovtOrder govtOrder;
 
 	@Id
 	@Column(name="fund_sanction_id")
@@ -177,6 +179,21 @@ public class FundSanction{
 	}
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+	@Column(name="govt_order_id")
+	public Long getGovtOrderId() {
+		return govtOrderId;
+	}
+	public void setGovtOrderId(Long govtOrderId) {
+		this.govtOrderId = govtOrderId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_order_id", insertable = false, updatable = false)
+	public GovtOrder getGovtOrder() {
+		return govtOrder;
+	}
+	public void setGovtOrder(GovtOrder govtOrder) {
+		this.govtOrder = govtOrder;
 	}
 	
 	

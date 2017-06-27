@@ -24,6 +24,10 @@ public class LocationVO implements Serializable {
 	private Long fundSanctionId;
 	private StringBuilder locName;
 	private Long parentLocationId;
+	private Long govtOrderId;
+	private String goNumber;
+	private String issueDate;
+	private String filePath;
 	
 	
 	private Long streetHabitationCount;
@@ -164,7 +168,28 @@ public class LocationVO implements Serializable {
 	public void setFundSanctionId(Long fundSanctionId) {
 		this.fundSanctionId = fundSanctionId;
 	}
-	
-	
-	
+	public Long getGovtOrderId() {
+		return govtOrderId;
+	}
+	public void setGovtOrderId(Long govtOrderId) {
+		this.govtOrderId = govtOrderId;
+	}
+	public String getGoNumber() {
+		return goNumber;
+	}
+	public void setGoNumber(String goNumber) {
+		this.goNumber = goNumber;
+	}
+	public String getIssueDate() {
+		return issueDate;
+	}
+	public void setIssueDate(String issueDate) {
+		this.issueDate = issueDate;
+	}
+	public String getFilePath() {
+		return filePath;
+	}
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
 }
