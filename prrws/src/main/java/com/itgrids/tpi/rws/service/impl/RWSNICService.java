@@ -467,8 +467,8 @@ public class RWSNICService implements IRWSNICService{
 	 	    		
 	 	    		Map<String,KPIVO> finalMap = new HashMap<String, KPIVO>();
 	 	    		
-	 	    		if(jobj.getJSONArray("stateLevelAcheieveMentsData") != null && jobj.getJSONArray("stateLevelAcheieveMentsData").length() > 0){
-	 	    			JSONArray acvhiementArr = jobj.getJSONArray("stateLevelAcheieveMentsData");
+	 	    		if(jobj.getJSONArray("acheieveMentsData") != null && jobj.getJSONArray("acheieveMentsData").length() > 0){
+	 	    			JSONArray acvhiementArr = jobj.getJSONArray("acheieveMentsData");
 	 	    			for (int i = 0; i < acvhiementArr.length(); i++) {
 							JSONArray indiArr = acvhiementArr.getJSONArray(i);
 							if(finalMap.get(indiArr.get(0).toString()) == null){
@@ -494,8 +494,8 @@ public class RWSNICService implements IRWSNICService{
 						}
 	 	    		}
 	 	    		
-	 	    		if(jobj.getJSONArray("stateLevelTargetData") != null && jobj.getJSONArray("stateLevelTargetData").length() > 0){
-	 	    			JSONArray targetArr = jobj.getJSONArray("stateLevelTargetData");
+	 	    		if(jobj.getJSONArray("targetData") != null && jobj.getJSONArray("targetData").length() > 0){
+	 	    			JSONArray targetArr = jobj.getJSONArray("targetData");
 	 	    			for (int i = 0; i < targetArr.length(); i++) {
 							JSONArray indiArr = targetArr.getJSONArray(i);
 							if(finalMap.get(indiArr.get(0).toString()) == null){
@@ -598,7 +598,7 @@ public class RWSNICService implements IRWSNICService{
 		StatusVO statusVO = null;
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getPlanofActionForStressedHabitations");	        
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getStressedKPIDeatils");	        
 		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
 			

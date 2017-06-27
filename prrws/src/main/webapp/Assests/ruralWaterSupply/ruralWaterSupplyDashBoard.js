@@ -19,7 +19,7 @@
 			getAssetInfoBetweenDates();
 			getWaterSourceInfo();
 			getKeyPerformanceIndicatorsInfo('state','','graph');
-			//getPlanofActionForStressedHabitations();
+			getPlanofActionForStressedHabitations();
 			getStressedHabitationsInfoByLocationType();//on click ? call
 			getAlertDetailsOfCategoryByStatusWise('graph','','');
 			getAlertFeedbackStatusDetails();
@@ -634,7 +634,7 @@
 		}
 		function getAssetInfoBetweenDates(){ 
 			var json = {
-				formDateStr:"01-12-2016",
+				formDateStr:"01-04-2016",
 				toDateStr:"01-12-2017"
 			}
 			$.ajax({
@@ -795,7 +795,7 @@
 		
 		function getKeyPerformanceIndicatorsInfo(locationType,divId,type){
 			var json={
-						fromDateStr:"01-12-2016",
+						fromDateStr:"01-04-2016",
 						toDateStr:"01-12-2030",
 						locationType:locationType
 					}
@@ -826,12 +826,17 @@
 				var targetArr=[];
 				var achivedArr=[];
 				if(result !=null && result.length>0){
-					for(var i in result){
+					/* for(var i in result){
 							keyNamesArr.push(result[i].type);
 							targetArr.push(result[i].targetCount)
 							achivedArr.push(result[i].achivmentCount)
-							
-					}
+					} */
+					keyNamesArr.push("Partially Covered");
+					targetArr.push(result[0].pcTarget);
+					achivedArr.push(result[0].pcAchivement);
+					keyNamesArr.push("Quality Affected");	
+					targetArr.push(result[0].qaTarget);
+					achivedArr.push(result[0].qaAchivement);
 				}
 				$("#keyPerformance").highcharts({
 					chart: {
@@ -930,10 +935,11 @@
 		
 		function getPlanofActionForStressedHabitations(){
 			var json = {
-					year : "2014",
-					fromDate : "2014-01-01",
-					toDate : "2014-06-30"	
-				}
+					fromDateStr:"01-04-2016",
+					toDateStr:"01-12-2017",
+					locationType:"state",
+					stressedHabitationYear:"2017"
+					}
 			$.ajax({
 				url: 'getPlanofActionForStressedHabitations',
 				data: JSON.stringify(json),
@@ -1599,7 +1605,7 @@
 					if(id == "stateBlockIdhabitation"){
 						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
 					}else if(id == "stateBlockIdperformance"){
-						//getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
 					}else if(id == "stateBlockIdjalavani"){
 						getAlertDetailsOfCategoryByStatusWise('table',alertStatusBlockArr,'state');
 						getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'state');
@@ -1609,7 +1615,7 @@
 					if(id == "districtBlockIdhabitation"){
 						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
 					}else if(id == "districtBlockIdperformance"){
-						//getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
 					}else if(id == "districtBlockIdjalavani"){
 						getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'district');
 						getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'district');
@@ -1619,7 +1625,7 @@
 					if(id == "constituencyBlockIdhabitation"){
 						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
 					}else if(id=="constituencyBlockIdperformance"){
-						//getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
 					}else if(id=="districtBlockIdjalavani"){
 						
 					}
@@ -1628,7 +1634,7 @@
 					if(id == "mandalBlockIdhabitation"){
 						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
 					}else if(id=="mandalBlockIdperformance"){
-						//getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
 					}else if(id=="districtBlockIdjalavani"){
 						
 					}
