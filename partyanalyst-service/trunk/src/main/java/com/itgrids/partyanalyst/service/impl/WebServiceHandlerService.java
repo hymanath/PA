@@ -5086,8 +5086,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return finalVOLst;
 	 }
-	 public List<AmsAppVO> getParentLevelsOfLevelForAms(AmsAppLoginVO keyVo){
-		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+	 public List<AmsKeyValueVO> getParentLevelsOfLevelForAms(AmsAppLoginVO keyVo){
+		 List<AmsKeyValueVO> finalVOLst = new ArrayList<AmsKeyValueVO>(0);
 		 try {
 			
 			 finalVOLst = alertManagementSystemService.getParentLevelsOfLevelForAms(keyVo);
@@ -5224,5 +5224,30 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			log.error("Exception raised at getHamletWiseIvrStatusCounts", e);
 		}
 		 return null;
+	 }
+	 public AmsKeyValueVO getDistrictWiseInfoForAms(AmsAppLoginVO keyVo){
+		 AmsKeyValueVO finalVO = new AmsKeyValueVO();
+		 try {
+			
+			 finalVO = alertManagementSystemService.getDistrictWiseInfoForAms(keyVo.getDepartmentId(),keyVo.getLevelId(),keyVo.getLevelValue());
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at getDistrictWiseInfoForAms", e);
+		}
+		 return finalVO;
+	 }
+	 public List<DistrictOfficeViewAlertVO> getTotalAlertByOtherStatusForAMS(AmsDataVO keyVo){
+		 List<DistrictOfficeViewAlertVO> returnVOList = new ArrayList<DistrictOfficeViewAlertVO>(0);
+		 try {
+			 returnVOList = alertManagementSystemService.getTotalAlertByOtherStatusForAMS(keyVo.getFromDate(),keyVo.getToDate(),
+					 keyVo.getStateId(),keyVo.getPrintIdsLst(),keyVo.getElectronicIdsLst(),keyVo.getDeptIdsList(),keyVo.getStatusId(),
+					 keyVo.getUserId(),keyVo.getParentGovtDepartmentScopeId(),keyVo.getDepartmentId(),keyVo.getCalCntrIdList(),keyVo.getAlertSeverityIdsList(),
+					 keyVo.getAlertStatusIdsList(),keyVo.getAlertCallCenterTypeIdsList(),keyVo.getNewsPaperIdsList(),keyVo.getChanelIdsList(),
+					 keyVo.getSocailMediaTypeIdsList(),keyVo.getMondayGrievanceTypeIdsList(),keyVo.getJanmabhoomiTypeIdsList(),keyVo.getSpecialGrievanceTypeIdsList(),
+					 keyVo.getGeneralGrievanceTypeIdsList());
+		} catch (Exception e) {
+			log.error("Exception raised at getTotalAlertByOtherStatusForAMS", e);
+		}
+		 return returnVOList;
 	 }
 }
