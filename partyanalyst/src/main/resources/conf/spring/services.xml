@@ -4319,5 +4319,8 @@
   		<property name="casteCategoryDAO" ref="casteCategoryDAO" ></property>
   		<property name="partyMeetingStatusDAO" ref="partyMeetingStatusDAO" ></property>
   </bean>
+  <bean name="cadrePartyMeetingManagementService" class="com.itgrids.partyanalyst.meeting.service.impl.CadrePartyMeetingManagementService" >
+  
+  </bean>
 </beans>			
 	

@@ -17621,5 +17621,10 @@
 			<param name="root">successMsg</param>       
 		</result> 
 	</action> 
+	<action name="saveMeetingDetailsAction" class="cadrePartyMeetingManagementAction" method="execute"> <!-- saveMeetingDetails -->
+		<result type="json" name="success">    
+		<param name="root">successMsg</param>
+		</result>        
+	</action> 
  </package>
 </struts>
