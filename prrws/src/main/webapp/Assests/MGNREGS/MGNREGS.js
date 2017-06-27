@@ -806,7 +806,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 			str1+='<tr>';
 				str1+='<td>';
 					str1+='<div class="col-sm-12">';
-						str1+='<h4 class="overviewPopupCls" attr_locationType="district" attr_type="total" style="cursor:pointer;"><strong>Total Districts : '+result.totalDistricts+'</strong></h4>';
+						str1+='<h4 attr_locationType="district" attr_type="total" style="cursor:pointer;"><strong>Total Districts : '+result.totalDistricts+'</strong></h4>';
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
@@ -825,7 +825,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 				str1+='</td>';
 				str1+='<td>';
 					str1+='<div class="col-sm-12">';
-						str1+='<h4 class="overviewPopupCls" attr_locationType="constituency" attr_type="total" style="cursor:pointer;"><strong>Total Constituencies : '+result.totalConstituencies+'</strong></h4>';
+						str1+='<h4 attr_locationType="constituency" attr_type="total" style="cursor:pointer;"><strong>Total Constituencies : '+result.totalConstituencies+'</strong></h4>';
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
@@ -845,7 +845,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 				str1+='</td>';
 				str1+='<td>';
 					str1+='<div class="col-sm-12">';
-						str1+='<h4 class="overviewPopupCls" attr_locationType="mandal" attr_type="total" style="cursor:pointer;"><strong>Total Mandals : '+result.totalMandals+'</strong></h4>';
+						str1+='<h4 attr_locationType="mandal" attr_type="total" style="cursor:pointer;"><strong>Total Mandals : '+result.totalMandals+'</strong></h4>';
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
@@ -1755,185 +1755,198 @@ function getAHData(divIdd,locationType,theadArr)
 //DistrictConst Call -- Nandhini
 function buildDistrictsPopupDetails(result,dataArr){
 	var str = '';
-	str+='<div class="panel panel-default panel-black m_top10">';
-		str+='<div class="panel-heading">';
-			str+='<h4 class="panel-title text-capital">Constituencies in Districts</h4>';
-		str+='</div>';
-		str+='<div class="panel-body">';
-			str+='<table class="table table-bordered m_top10">';
-				str+='<thead>';
-					str+='<tr>';
-						str+='<th>District Name </th>';
-						str+='<th style="color:red;">Constituencies In Red </th>';
-						str+='<th style="color:orange;">Constituencies In Orange </th>';
-						str+='<th style="color:green;">Constituencies In Green </th>';
-						str+='<th>Total </th>';
-					str+='</tr>';
-				str+='</thead>';
-				str+='<tbody>';
-				var redTotalCons = 0;
-				var orangeTotalCons = 0;
-				var greenTotalCons = 0;
-				var totalConsiCons = 0;
-					for(var i in result.distConsCuntList){
-						redTotalCons = redTotalCons+result.distConsCuntList[i].constiInRed;
-						orangeTotalCons = orangeTotalCons+result.distConsCuntList[i].constiInOrange;
-						greenTotalCons = greenTotalCons+result.distConsCuntList[i].constiInGreen;
-						totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+	if(result.distConsCuntList != null && result.distConsCuntList.length > 0 )
+	{
+		str+='<div class="panel panel-default panel-black m_top10">';
+			str+='<div class="panel-heading">';
+				str+='<h4 class="panel-title text-capital">Constituencies in Districts</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+				str+='<table class="table table-bordered m_top10 dataTableCls">';
+					str+='<thead>';
 						str+='<tr>';
-							str+='<td>'+result.distConsCuntList[i].district+'</td>';
-							str+='<td style="color:red;">'+result.distConsCuntList[i].constiInRed+'</td>';
-							str+='<td style="color:orange;">'+result.distConsCuntList[i].constiInOrange+'</td>';
-							str+='<td style="color:green;">'+result.distConsCuntList[i].constiInGreen+'</td>';
-							str+='<td>'+result.distConsCuntList[i].total+'</td>';
-						str+='</tr>';	
-					}
-					str+='<tr>';
-						str+='<td>Total</td>';
-						str+='<td>'+redTotalCons+'</td>';
-						str+='<td>'+orangeTotalCons+'</td>';
-						str+='<td>'+greenTotalCons+'</td>';
-						str+='<td>'+totalConsiCons+'</td>';
-					str+='</tr>';
-				str+='</tbody>';
-			str+='</table>';
-		str+='</div>';
-	str+='</div>';
-	str+='<div class="panel panel-default panel-black m_top10">';
-		str+='<div class="panel-heading">';
-			str+='<h4 class="panel-title text-capital">Mandals in Districts</h4>';
-		str+='</div>';
-		str+='<div class="panel-body">';
-			str+='<table class="table table-bordered m_top10">';
-				str+='<thead>';
-					str+='<tr>';
-						str+='<th>District Name </th>';
-						str+='<th style="color:red;">Mandals In Red </th>';
-						str+='<th style="color:orange;">Mandals In Orange </th>';
-						str+='<th style="color:green;">Mandals In Green </th>';
-						str+='<th>Total </th>';
-					str+='</tr>';
-				str+='</thead>';
-				str+='<tbody>';
-				redTotalCons = 0;
-				orangeTotalCons = 0;
-				greenTotalCons = 0;
-				totalConsiCons = 0;
-					for(var i in result.distMandalCuntList){
-						redTotalCons = redTotalCons+result.distMandalCuntList[i].mandalsInRed;
-						orangeTotalCons = orangeTotalCons+result.distMandalCuntList[i].mandalsInOrange;
-						greenTotalCons = greenTotalCons+result.distMandalCuntList[i].mandalsInGreen;
-						totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+							str+='<th>District Name </th>';
+							str+='<th style="color:red;">Constituencies In Red </th>';
+							str+='<th style="color:orange;">Constituencies In Orange </th>';
+							str+='<th style="color:green;">Constituencies In Green </th>';
+							str+='<th>Total </th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+					var redTotalCons = 0;
+					var orangeTotalCons = 0;
+					var greenTotalCons = 0;
+					var totalConsiCons = 0;
+						for(var i in result.distConsCuntList){
+							redTotalCons = redTotalCons+result.distConsCuntList[i].constiInRed;
+							orangeTotalCons = orangeTotalCons+result.distConsCuntList[i].constiInOrange;
+							greenTotalCons = greenTotalCons+result.distConsCuntList[i].constiInGreen;
+							totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+							str+='<tr>';
+								str+='<td>'+result.distConsCuntList[i].district+'</td>';
+								str+='<td style="color:red;">'+result.distConsCuntList[i].constiInRed+'</td>';
+								str+='<td style="color:orange;">'+result.distConsCuntList[i].constiInOrange+'</td>';
+								str+='<td style="color:green;">'+result.distConsCuntList[i].constiInGreen+'</td>';
+								str+='<td>'+result.distConsCuntList[i].total+'</td>';
+							str+='</tr>';	
+						}
 						str+='<tr>';
-							str+='<td>'+result.distConsCuntList[i].district+'</td>';
-							str+='<td style="color:red;">'+result.distMandalCuntList[i].mandalsInRed+'</td>';
-							str+='<td style="color:orange;">'+result.distMandalCuntList[i].mandalsInOrange+'</td>';
-							str+='<td style="color:green;">'+result.distMandalCuntList[i].mandalsInGreen+'</td>';
-							str+='<td>'+result.distMandalCuntList[i].total+'</td>';
-						str+='</tr>';	
-					}
-					str+='<tr>';
-						str+='<td>Total</td>';
-						str+='<td>'+redTotalCons+'</td>';
-						str+='<td>'+orangeTotalCons+'</td>';
-						str+='<td>'+greenTotalCons+'</td>';
-						str+='<td>'+totalConsiCons+'</td>';
-					str+='</tr>';
-				str+='</tbody>';
-			str+='</table>';
+							str+='<td>Total</td>';
+							str+='<td>'+redTotalCons+'</td>';
+							str+='<td>'+orangeTotalCons+'</td>';
+							str+='<td>'+greenTotalCons+'</td>';
+							str+='<td>'+totalConsiCons+'</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
 		str+='</div>';
-	str+='</div>';
-	str+='<div class="panel panel-default panel-black m_top10">';
-		str+='<div class="panel-heading">';
-			str+='<h4 class="panel-title text-capital">District Details</h4>';
+	}
+	
+	if(result.distMandalCuntList != null && result.distMandalCuntList.length > 0 )
+	{
+		str+='<div class="panel panel-default panel-black m_top10">';
+			str+='<div class="panel-heading">';
+				str+='<h4 class="panel-title text-capital">Mandals in '+dataArr+'s</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+				str+='<table class="table table-bordered m_top10 dataTableCls">';
+					str+='<thead class="text-capital">';
+						str+='<tr>';
+							str+='<th>District Name </th>';
+							str+='<th style="color:red;">Mandals In Red </th>';
+							str+='<th style="color:orange;">Mandals In Orange </th>';
+							str+='<th style="color:green;">Mandals In Green </th>';
+							str+='<th>Total </th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+					redTotalCons = 0;
+					orangeTotalCons = 0;
+					greenTotalCons = 0;
+					totalConsiCons = 0;
+						for(var i in result.distMandalCuntList){
+							redTotalCons = redTotalCons+result.distMandalCuntList[i].mandalsInRed;
+							orangeTotalCons = orangeTotalCons+result.distMandalCuntList[i].mandalsInOrange;
+							greenTotalCons = greenTotalCons+result.distMandalCuntList[i].mandalsInGreen;
+							totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+							str+='<tr>';
+								str+='<td>'+result.distMandalCuntList[i].district+'</td>';
+								str+='<td style="color:red;">'+result.distMandalCuntList[i].mandalsInRed+'</td>';
+								str+='<td style="color:orange;">'+result.distMandalCuntList[i].mandalsInOrange+'</td>';
+								str+='<td style="color:green;">'+result.distMandalCuntList[i].mandalsInGreen+'</td>';
+								str+='<td>'+result.distMandalCuntList[i].total+'</td>';
+							str+='</tr>';	
+						}
+						str+='<tr>';
+							str+='<td>Total</td>';
+							str+='<td>'+redTotalCons+'</td>';
+							str+='<td>'+orangeTotalCons+'</td>';
+							str+='<td>'+greenTotalCons+'</td>';
+							str+='<td>'+totalConsiCons+'</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
 		str+='</div>';
-		str+='<div class="panel-body">';
-			var theadArr = [dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-			if(dataArr == "constituency")
-				theadArr = ["district",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-			else if(dataArr == "mandal")
-				theadArr = ["district","constituency",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-			if(globalDivName != 'Labour Budget'){
-				str+='<table class="table table-bordered m_top10">';
+	}
+	
+	if(result.distList != null && result.distList.length > 0 )
+	{
+		str+='<div class="panel panel-default panel-black m_top10">';
+			str+='<div class="panel-heading">';
+				str+='<h4 class="panel-title text-capital">'+dataArr+' Details</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+				var theadArr = [dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				if(dataArr == "constituency")
+					theadArr = ["district",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				else if(dataArr == "mandal")
+					theadArr = ["district","constituency",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				if(globalDivName != 'Labour Budget'){
+					str+='<table class="table table-bordered m_top10 dataTableCls">';
+						str+='<thead>';
+							str+='<tr>';
+								for(var i in theadArr)
+								{
+									str+='<th class="text-capital">'+theadArr[i]+'</th>';
+								}
+							str+='</tr>';
+						str+='</thead>';
+					str+='<tbody>';
+					
+							for(var i in result.distList){
+								str+='<tr>';
+									if(dataArr == "district"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+									}
+									else if(dataArr == "constituency"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+									}
+									else if(dataArr == "mandal"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+									}
+									str+='<td>'+result.distList[i].target+'</td>';
+									str+='<td>'+result.distList[i].grounded+'</td>';
+									str+='<td>'+result.distList[i].notGrounded+'</td>';
+									str+='<td>'+result.distList[i].inProgress+'</td>';
+									str+='<td>'+result.distList[i].completed+'</td>';
+									str+='<td>'+result.distList[i].percentage+'</td>';
+								str+='</tr>';
+							}
+						str+='</tbody>';
+					str+='</table>';
+				}
+				else{
+					theadArr = [dataArr,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+					if(dataArr == "constituency")
+						theadArr = ["district",dataArr,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+					else if(dataArr == "mandal")
+						theadArr = ["district","constituency",dataArr,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+					
+					str+='<table class="table table-bordered m_top10 dataTableCls">';
 					str+='<thead>';
 						str+='<tr>';
 							for(var i in theadArr)
 							{
-								str+='<th>'+theadArr[i]+'</th>';
+								str+='<th class="text-capital">'+theadArr[i]+'</th>';
 							}
 						str+='</tr>';
 					str+='</thead>';
-				str+='<tbody>';
+					str+='<tbody>';
 				
-						for(var i in result.distList){
-							str+='<tr>';
-								if(dataArr == "district"){
-									str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-								}
-								else if(dataArr == "constituency"){
-									str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-									str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-								}
-								else if(dataArr == "mandal"){
-									str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-									str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-									str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-								}
-								str+='<td>'+result.distList[i].target+'</td>';
-								str+='<td>'+result.distList[i].grounded+'</td>';
-								str+='<td>'+result.distList[i].notGrounded+'</td>';
-								str+='<td>'+result.distList[i].inProgress+'</td>';
-								str+='<td>'+result.distList[i].completed+'</td>';
-								str+='<td>'+result.distList[i].percentage+'</td>';
-							str+='</tr>';
-						}
-					str+='</tbody>';
-				str+='</table>';
-			}
-			else{
-				theadArr = [dataArr,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
-				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
-				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
-				
-				str+='<table class="table table-bordered m_top10">';
-				str+='<thead>';
-					str+='<tr>';
-						for(var i in theadArr)
-						{
-							str+='<th class="text-capitalize">'+theadArr[i]+'</th>';
-						}
-					str+='</tr>';
-				str+='</thead>';
-				str+='<tbody>';
-			
-				for(var i in result.distList){
-					str+='<tr>';
-						if(dataArr == "district"){
-							str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-						}
-						else if(dataArr == "constituency"){
-							str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-							str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-						}
-						else if(dataArr == "mandal"){
-							str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-							str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-							str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-						}
-							
-						str+='<td>'+result.distList[i].targetPersonDays+'</td>';
-						str+='<td>'+result.distList[i].generatedPersonDays+'</td>';
-						str+='<td>'+result.distList[i].perAppLB+'</td>';
-						str+='<td>'+result.distList[i].avgWageRate+'</td>';
-						str+='<td>'+result.distList[i].totalExpenditure+'</td>';
-					str+='</tr>';
+					for(var i in result.distList){
+						str+='<tr>';
+							if(dataArr == "district"){
+								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+							}
+							else if(dataArr == "constituency"){
+								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+								str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+							}
+							else if(dataArr == "mandal"){
+								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+								str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+								str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+							}
+								
+							str+='<td>'+result.distList[i].targetPersonDays+'</td>';
+							str+='<td>'+result.distList[i].generatedPersonDays+'</td>';
+							str+='<td>'+result.distList[i].perAppLB+'</td>';
+							str+='<td>'+result.distList[i].avgWageRate+'</td>';
+							str+='<td>'+result.distList[i].totalExpenditure+'</td>';
+						str+='</tr>';
+					}
 				}
-			}
+			str+='</div>';
 		str+='</div>';
-	str+='</div>';
+	}
+	
 	$("#nregsConsitenBodyId").html(str);
+	$(".dataTableCls").dataTable();
 }
 
 //getNREGSIHHLConsCuntData()
@@ -2036,8 +2049,7 @@ function buildPopupOverviewBlock(result,projectDivId){
 				str1+='<td>';
 					str1+='<div class="col-sm-9">';
 						str1+='<div class="media">';
-							str1+='<p>Total Districts</p>';
-							str1+='<h4 class="detailsCls" attr_location="district" attr_type="total">'+result.totalDistricts+'</h4>';
+							str1+='<h4 attr_location="district" attr_type="total">Total Districts : '+result.totalDistricts+'</h4>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
@@ -2056,8 +2068,7 @@ function buildPopupOverviewBlock(result,projectDivId){
 				str1+='<td>';
 					str1+='<div class="col-sm-9">';
 						str1+='<div class="media">';
-							str1+='<p class="f_12">Total Constituencies</p>';
-							str1+='<h4 class="detailsCls" attr_location="constituency" attr_type="total">'+result.totalConstituencies+'</h4>';
+							str1+='<h4 attr_location="constituency" attr_type="total">Total Constituencies : '+result.totalConstituencies+'</h4>';
 						str1+='</div>';
 						str1+='<div class="media">';
 						str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
@@ -2076,8 +2087,7 @@ function buildPopupOverviewBlock(result,projectDivId){
 				str1+='<td>';
 					str1+='<div class="col-sm-9">';
 						str1+='<div class="media">';
-							str1+='<p>Total Mandals</p>';
-							str1+='<h4 class="detailsCls" attr_location="mandal" attr_type="total">'+result.totalMandals+'</h4>';
+							str1+='<h4 attr_location="mandal" attr_type="total">Total Mandals : '+result.totalMandals+'</h4>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
@@ -2096,8 +2106,7 @@ function buildPopupOverviewBlock(result,projectDivId){
 				str1+='<td>';
 					str1+='<div class="col-sm-9">';
 						str1+='<div class="media">';
-							str1+='<p>Total Villages</p>';
-							str1+='<h4>'+result.totalVillages+'</h4>';
+							str1+='<h4>Total Villages : '+result.totalVillages+'</h4>';
 						str1+='</div>';
 						str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p><p class="media-body">Villages in Red : '+result.villagesInRed+'</p>';
@@ -2452,4 +2461,3 @@ function getLabourBudgetClickingOverview()
 		}
 	});
 }
-
