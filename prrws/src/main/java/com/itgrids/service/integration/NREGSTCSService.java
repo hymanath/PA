@@ -1610,8 +1610,6 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
 	 	    				list.add(nregsDataVO);	 
 	 	    				//getDistrictsConstitByType(list,inputVO.getType());
-	 	    				     
-	 	    			
 	 	    			}
 	 	    		}
 	 	    	}
@@ -1631,10 +1629,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	 */
 
 	@Override
-	public List<NregsDataVO> getNregsConstCuntDetails(String output,Map<String,NregsDataVO> cntMap){
+	public List<NregsDataVO> getNregsConstCuntDetails(String output,Map<String,NregsDataVO> cntMap,String divType){
 		List<NregsDataVO> retVOList = new ArrayList<>(0);
 		try{
 			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
+			String percValue = null;
 			if(output != null && !output.isEmpty()){
 	    		JSONArray finalArray = new JSONArray(output);
 	    		if(finalArray!=null && finalArray.length()>0){
@@ -1642,7 +1641,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 		    			String distrName = jObj.getString("DISTRICT");
 						NregsDataVO vo = cntMap.get(distrName);
-		    			String percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						if(divType != null && divType.trim().equalsIgnoreCase("Labour Budget")){
+							percValue = new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						}else{
+							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						}
+						
 		    				if(vo != null){
 			    				if(Double.valueOf(percValue)  < 50){
 		    						vo.setConstiInRed(vo.getConstiInRed()+1l);
@@ -1722,21 +1726,40 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    	if(output != null && !output.isEmpty()){
 		 	    		JSONArray finalArray = new JSONArray(output);
 		 	    		if(finalArray!=null && finalArray.length()>0){
-		 	    			for(int i=0;i<finalArray.length();i++){
-		 	    				NregsDataVO nregsDataVO=new NregsDataVO();
-		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-		 	    				nregsDataVO.setUniqueId(jObj.getLong("UNIQUEID"));
-		 	    				nregsDataVO.setDistrict(jObj.getString("DISTRICT"));
-		 	    				nregsDataVO.setConstituency(jObj.getString("CONSTITUENCY"));
-		 	    				nregsDataVO.setMandal(jObj.getString("MANDAL"));
-		 	    				nregsDataVO.setPanchayat(jObj.getString("PANCHAYAT"));
-		 	    				nregsDataVO.setTarget(jObj.getLong("TARGET"));
-		 	    				nregsDataVO.setGrounded(jObj.getString("GROUNDED"));
-		 	    				nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
-		 	    				nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
-		 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
-		 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
-		 	    				list.add(nregsDataVO);	 
+		 	    			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Labour Budget")){
+		 	    				for(int i=0;i<finalArray.length();i++){
+		 	    					NregsDataVO vo = new NregsDataVO();
+			 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+			 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+			 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+			 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+			 	    				vo.setMandal(jObj.getString("MANDAL"));
+			 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+			 	    				vo.setTargetPersonDays(jObj.getLong("TARGETPERSONDAYS"));
+			 	    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
+			 	    				vo.setPerAppLB(new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    				vo.setAvgWageRate(new BigDecimal(jObj.getString("AVGWAGERATE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    				vo.setTotalExpenditure(new BigDecimal(jObj.getString("TOTALEXPENDITURE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    				vo.setPercentage(new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    				list.add(vo);	
+			 	    			}
+		 	    			}else{
+		 	    				for(int i=0;i<finalArray.length();i++){
+			 	    				NregsDataVO nregsDataVO=new NregsDataVO();
+			 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+			 	    				nregsDataVO.setUniqueId(jObj.getLong("UNIQUEID"));
+			 	    				nregsDataVO.setDistrict(jObj.getString("DISTRICT"));
+			 	    				nregsDataVO.setConstituency(jObj.getString("CONSTITUENCY"));
+			 	    				nregsDataVO.setMandal(jObj.getString("MANDAL"));
+			 	    				nregsDataVO.setPanchayat(jObj.getString("PANCHAYAT"));
+			 	    				nregsDataVO.setTarget(jObj.getLong("TARGET"));
+			 	    				nregsDataVO.setGrounded(jObj.getString("GROUNDED"));
+			 	    				nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
+			 	    				nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
+			 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
+			 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
+			 	    				list.add(nregsDataVO);	 
+			 	    			}
 		 	    			}
 		 	    		}
 		 	    	}
@@ -1762,7 +1785,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	      }else{
 				 	    	 String constOutput = constResponse.getEntity(String.class);
 				 	    	 
-				 	    	 disConslist = getNregsConstCuntDetails(constOutput,distConstMap);
+				 	    	 disConslist = getNregsConstCuntDetails(constOutput,distConstMap,inputVO.getDivType());
 				 	      }
 			 	    	
 			 	    	distConstMap.clear();
@@ -1780,7 +1803,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	      }else{
 				 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
 				 	    	 
-				 	    	  disMandallist = getNregsMandalsCuntFrDistrict(mandalOutput,distConstMap);
+				 	    	  disMandallist = getNregsMandalsCuntFrDistrict(mandalOutput,distConstMap,inputVO.getDivType());
 				 	      }
 			 	    	
 			 	    	finalVO.getDistConsCuntList().addAll(disConslist);
@@ -1804,7 +1827,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	      }else{
 				 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
 				 	    	 
-				 	    	consMandallist = getNregsMandalsCuntFrConstituncies(mandalOutput,constMandMap);
+				 	    	consMandallist = getNregsMandalsCuntFrConstituncies(mandalOutput,constMandMap,inputVO.getDivType());
 				 	      }
 			 	    	
 			 	    	finalVO.getDistMandalCuntList().addAll(consMandallist);
@@ -1827,10 +1850,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	 */
 
 	@Override
-	public List<NregsDataVO> getNregsMandalsCuntFrDistrict(String output,Map<String,NregsDataVO> cntMap){
+	public List<NregsDataVO> getNregsMandalsCuntFrDistrict(String output,Map<String,NregsDataVO> cntMap,String divType){
 		List<NregsDataVO> retVOList = new ArrayList<>(0);
 		try{
 			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
+			String percValue = null;
 			if(output != null && !output.isEmpty()){
 	    		JSONArray finalArray = new JSONArray(output);
 	    		if(finalArray!=null && finalArray.length()>0){
@@ -1838,7 +1862,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 		    			String distrName = jObj.getString("DISTRICT");
 						NregsDataVO vo = cntMap.get(distrName);
-		    			String percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						if(divType != null && divType.trim().equalsIgnoreCase("Labour Budget")){
+							percValue = new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						}else{
+							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						} 
 		    				if(vo != null) {
 			    				if(Double.valueOf(percValue)  < 50){
 		    						vo.setMandalsInRed(vo.getMandalsInRed()+1l);
@@ -1871,10 +1899,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	 */
 
 	@Override
-	public List<NregsDataVO> getNregsMandalsCuntFrConstituncies(String output,Map<String,NregsDataVO> cntMap){
+	public List<NregsDataVO> getNregsMandalsCuntFrConstituncies(String output,Map<String,NregsDataVO> cntMap,String divType){
 		List<NregsDataVO> retVOList = new ArrayList<>(0);
 		try{
 			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
+			String percValue = null;
 			if(output != null && !output.isEmpty()){
 	    		JSONArray finalArray = new JSONArray(output);
 	    		if(finalArray!=null && finalArray.length()>0){
@@ -1882,7 +1911,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 		    			String constName = jObj.getString("CONSTITUENCY");
 						NregsDataVO vo = cntMap.get(constName);
-		    			String percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						if(divType != null && divType.trim().equalsIgnoreCase("Labour Budget")){
+							percValue = new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						}else{
+							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						} 
 		    				if(vo != null)
 		    				{
 			    				if(Double.valueOf(percValue)  < 50){
@@ -1927,9 +1960,9 @@ public class NREGSTCSService implements INREGSTCSService{
 			if(type != null && !type.trim().equalsIgnoreCase("total")){
 				if(type.trim().equalsIgnoreCase("red") && Double.valueOf(nregsDataVO.getPercentage()) < 50)
 					filterList.add(nregsDataVO);
-				else if(type.trim().equalsIgnoreCase("orange") && Double.valueOf(nregsDataVO.getPercentage()) < 80 && Double.valueOf(nregsDataVO.getPercentage()) >= 50)
+				else if(type.trim().equalsIgnoreCase("orange") && Double.valueOf(nregsDataVO.getPercentage()) < 80 && Double.valueOf(nregsDataVO.getPercentage()) > 50)
 					filterList.add(nregsDataVO);
-				else if(type.trim().equalsIgnoreCase("green") && Double.valueOf(nregsDataVO.getPercentage()) >= 80)
+				else if(type.trim().equalsIgnoreCase("green") && Double.valueOf(nregsDataVO.getPercentage()) > 80)
 					filterList.add(nregsDataVO);
 				}
 		     }
