@@ -68,33 +68,36 @@
 			</div>
 		</div>
 	</nav>
-	<section>
+	<section class="navbar-section">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-12">
-					<ul class="list-inline navbar-header-custom">
-						<li>
-							<div class="form-horizontal">
-								<div class="form-group form-group-sm">
-									<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
-									<div class="col-sm-8">
-										<select id="financialYearId" class="chosenSelect" ></select>
-									</div>
-								</div>
+				<div class="col-sm-2 border_right">
+					Note: All Amount in Lakhs
+				</div>
+				<div class="col-sm-4 border_right">
+					<div class="form-horizontal">
+						<div class="form-group form-group-sm">
+							<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
+							<div class="col-sm-8">
+								<select id="financialYearId" class="chosenSelect" multiple></select>
 							</div>
-						</li>
-						<li>
-							</li>
-						<li>
-							<div class="input-group">
-								<span class="input-group-addon">
-									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-								</span>
-								<input type="text" class="form-control" id="dateRangePickerAUM"/>
-							</div>
-						</li>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<ul class="list-inline">
+						<li><span class="color-label color-label-success"></span> 80% and above</li>
+						<li><span class="color-label color-label-default"></span> 50% - 79%</li>
+						<li><span class="color-label color-label-danger"></span> 0% - 49%</li>
 					</ul>
-					
+				</div>
+				<div class="col-sm-3">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</span>
+						<input type="text" class="form-control" id="dateRangePickerAUM"/>
+					</div>
 				</div>
 			</div>
 		</div>
