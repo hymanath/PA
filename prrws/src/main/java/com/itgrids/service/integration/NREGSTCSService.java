@@ -124,6 +124,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		returnvo.setFemaleLabour(jObj.getLong("FEMALELABOUR"));
 	 	    		returnvo.setTargettedPersonDays(jObj.getLong("TARGETTEDPERSONDAYS"));
 	 	    		returnvo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
+	 	    		returnvo.setAchievementPerc(new BigDecimal(jObj.getLong("GENERATEDPERSONDAYS")*100.0/jObj.getLong("TARGETTEDPERSONDAYS")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    		returnvo.setTotalExpenditure(new BigDecimal(jObj.getString("TOTALEXPENDITURE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    		returnvo.setAvgWagePerPerson(new BigDecimal(jObj.getString("AVGWAGEPERPERSON")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    		returnvo.setTotalResponse(jObj.getLong("TOTALRESPONSE"));
@@ -179,6 +180,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 		+ "{\"RANGE\": \"30-50\",\"GPSCOUNT\": \"901\"},{\"RANGE\": \"50-100\",\"GPSCOUNT\": \"286\"},{\"RANGE\": \"100-200\",\"GPSCOUNT\": \"21\"},"
 	 	    	 		+ "{\"RANGE\": \"200-300\",\"GPSCOUNT\": \"2\"},{\"RANGE\": \"300-400\",\"GPSCOUNT\": \"0\"},{\"RANGE\": \"Above 400\",\"GPSCOUNT\": \"0\"}]";*/
 	 	    	 
+	 	    	 Long totalCount = 0l;
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
@@ -187,14 +189,22 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 	 	    				vo.setName(jObj.getString("RANGE"));
 	 	    				vo.setCount(jObj.getLong("GPSCOUNT"));
+	 	    				totalCount = totalCount+vo.getCount();
 	 	    				
 	 	    				voList.add(vo);
 	 	    			}
 	 	    		}
+	 	    		
+	 	    		if(voList != null && !voList.isEmpty()){
+	 	    			for (IdNameVO vo : voList) {
+	 	    				if(vo.getCount() != null && vo.getCount() > 0)
+	 	    					vo.setTotl(new BigDecimal(vo.getCount()*100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				else
+	 	    					vo.setTotl("0.00");
+						}
+	 	    		}
 	 	    	}
-	 	    	 
-	 	    	  
-	 	      }
+	 	    }
 	        
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLabourBudgetExpenditure - NREGSTCSService service", e);

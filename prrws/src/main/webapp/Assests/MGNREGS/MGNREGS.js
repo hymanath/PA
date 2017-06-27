@@ -601,11 +601,11 @@ function getNREGSLabourBudgetExpenditure(projectDivId)
 
 function getNREGSLabBugdtLelwiseData(divIdd,locationType)
 {
-	var theadArr = [locationType,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+	var theadArr = [locationType,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+		theadArr = ["district",locationType,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+		theadArr = ["district","constituency",locationType,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
 	
 	var json = {
 		year : "2017",
@@ -946,19 +946,19 @@ function buildNregasOverViewBlock(result,projectDivId){
 		str1+='<table class="table table-bordered m_top20">';
 			str1+='<tr>';
 				str1+='<td>';
-					str1+='<p class="col-sm-9">Targeted Person days upto 31st may</p>';
+					str1+='<p class="col-sm-9">Targeted Person days</p>';
 					str1+='<p class="col-sm-3 text-center">'+result.targettedPersonDays+'</p>';
 					str1+='<p class="col-sm-9">Generated person days</p>';
 					str1+='<p class="col-sm-3 text-center">'+result.generatedPersonDays+'</p>';
-					str1+='<p class="col-sm-9">(%) Acheivement Vs Approved Labour Budget Days</p>';
-					str1+='<p class="col-sm-3 bg-danger text-danger text-center"></p>';
+					str1+='<p class="col-sm-9">Acheivement Percentage</p>';
+					str1+='<p class="col-sm-3 bg-danger text-danger text-center">'+result.achievementPerc+'</p>';
 				str1+='</td>';
 				str1+='<td>';
-					str1+='<p class="col-sm-9">(%) of Labour reported over target</p>';
-					str1+='<p class="col-sm-3 bg-success text-success text-center"></p>';
+					//str1+='<p class="col-sm-9">(%) of Labour reported over target</p>';
+					//str1+='<p class="col-sm-3 bg-success text-success text-center"></p>';
 					str1+='<p class="col-sm-9">Average Wage Per Person: Rs</p>';
 					str1+='<p class="col-sm-3 bg-danger text-danger text-center">'+result.avgWagePerPerson+'</p>';
-					str1+='<p class="col-sm-9">Total Expenditure (In Crs): Rs</p>';
+					str1+='<p class="col-sm-9">Total Expenditure: Rs</p>';
 					str1+='<p class="col-sm-3 text-center">'+result.totalExpenditure+'</p>';
 				str1+='</td>';
 			str1+='</tr>';
@@ -1230,10 +1230,16 @@ function buildLabrBudgetExpBlock(result,projectDivId){
 				  str+='</tr>';
 				str+=' <tr>';
 					str+=' <td>Grand Total</td>';
-					 for(var i in result){
-						 str+='<td>'+result[i].count+'</td>';
-					 }
-				  str+='</tr>';
+					for(var i in result){
+						str+='<td>'+result[i].count+'</td>';
+					}
+				str+='</tr>';
+				str+=' <tr>';
+					str+=' <td>Percentage</td>';
+					for(var i in result){
+						str+='<td>'+result[i].totl+'</td>';
+					}
+				str+='</tr>';
 			str+='</tbody>';
 		str+='</table>';
 	$("#projectExp"+projectDivId.replace(/\s+/g, '')).html(str);
