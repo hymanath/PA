@@ -15565,9 +15565,9 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  		 					if(perc !=null && perc !="0" && !perc.trim().isEmpty()){
  		 						alertVO.setPercentage(Double.parseDouble(perc));
  		 						
- 		 						if(alertVO.getPercentage()>=70){
+ 		 						if(alertVO.getPercentage()>=80){
  		 							greenHamletCount++;
- 		 						}else if(alertVO.getPercentage()<70 && alertVO.getPercentage()>50){
+ 		 						}else if(alertVO.getPercentage()<80 && alertVO.getPercentage()>=50){
  		 							orangeHamletCount++;
  		 						}else if(alertVO.getPercentage()<50){
  		 							redHamletCount++;
