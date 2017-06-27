@@ -225,7 +225,7 @@ public interface IAlertManagementSystemService {
 	 public List<AmsKeyValueVO> getGovtAllDepartmentDetailsForAms();
 	 public List<AmsKeyValueVO> getSubDeptsFrParentDeptForAms(AmsAppLoginVO keyVo);
 	 public List<AmsKeyValueVO> getDepartmentLevelsForAms(AmsAppLoginVO keyVo);
-	 public List<AmsAppVO> getParentLevelsOfLevelForAms(AmsAppLoginVO keyVo);
+	 public List<AmsKeyValueVO> getParentLevelsOfLevelForAms(AmsAppLoginVO keyVo);
 	 public List<AmsKeyValueVO> getDesignationsByDepartmentForAms(AmsAppLoginVO keyVo);
 	 public List<AmsKeyValueVO> getOfficersByDesignationAndLevelForAms(AmsAppLoginVO keyVo);
 	 public ResultStatus updateAlertStatusCommentForAms(final AmsAppLoginVO keyVo);
@@ -244,4 +244,11 @@ public interface IAlertManagementSystemService {
 	 public String updateMobileNo(final Long userId, final String otp,final String mobileNo);
 	 public List<AlertVO> getHamletWiseIvrStatusCounts(String fromDate,String toDate,String year,List<Long> locationValues,Long locationTypeId,
 			 Long searchLevelId,List<Long> searchLevelValues);
+	 public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Long levelValue);
+	 public List<DistrictOfficeViewAlertVO> getTotalAlertByOtherStatusForAMS(String fromDateStr, String toDateStr, Long stateId,
+			 List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,Long userId,Long govtDeptScopeId,
+			 Long deptId,List<Long> calCntrIdList,List<Long> impactLevelIdList,List<Long> priorityIdList,
+			 List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,List<Long> socialMediaTypeIds,
+			 List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,
+			 List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
 }        
