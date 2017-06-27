@@ -73,15 +73,17 @@ public class RWSNICService implements IRWSNICService{
 			 	    				JSONArray statusListArray = jObj.getJSONArray("statusList");
 			 	    				
 			 	    				if(statusListArray != null && statusListArray.length() > 0){
+			 	    					List<StatusVO> tempList =getStatusSkeleton();
 			 	    					for (int j = 0; j < statusListArray.length(); j++) {
-											StatusVO statusVO = new StatusVO();
+			 	    						JSONObject jobj1 = (JSONObject) statusListArray.get(j);
+											StatusVO statusVO = getMatchedStatusVO(tempList,jobj1.getString("status"));
 											
-											JSONObject jobj1 = (JSONObject) statusListArray.get(j);
-											statusVO.setStatus(jobj1.getString("status"));
-											statusVO.setCount(jobj1.getLong("count"));
-											statusVO.setPercentage(jobj1.getDouble("percentage"));
-											vo.getStatusList().add(statusVO);
+											if(statusVO != null){
+												statusVO.setCount(jobj1.getLong("count"));
+												statusVO.setPercentage(jobj1.getDouble("percentage"));
+											}
 										}
+			 	    					vo.setStatusList(tempList);
 			 	    				}
 			 	    				voList.add(vo);
 		 	    				}
@@ -96,6 +98,40 @@ public class RWSNICService implements IRWSNICService{
 		}
 		
 		return voList;
+	}
+	
+	public StatusVO getMatchedStatusVO(List<StatusVO> voList,String status){
+		if(voList != null && voList.size() > 0){
+			for (StatusVO statusVO : voList) {
+				if(statusVO.getStatus().equalsIgnoreCase(status))
+					return statusVO;
+			}
+		}
+		return null;
+	}
+	
+	public List<StatusVO> getStatusSkeleton(){
+		List<StatusVO> tempList = new ArrayList<StatusVO>(0);
+		StatusVO FCVO = new StatusVO();
+		FCVO.setStatus("FC");
+		tempList.add(0,FCVO);
+		
+		StatusVO pc4VO = new StatusVO();
+		pc4VO.setStatus("PC4");
+		tempList.add(1,pc4VO);
+		StatusVO pc3VO = new StatusVO();
+		pc3VO.setStatus("PC3");
+		tempList.add(2,pc3VO);
+		StatusVO pc2VO = new StatusVO();
+		pc2VO.setStatus("PC2");
+		tempList.add(3,pc2VO);
+		StatusVO pc1VO = new StatusVO();
+		pc1VO.setStatus("PC1");
+		tempList.add(4,pc1VO);
+		StatusVO nssVO = new StatusVO();
+		nssVO.setStatus("NSS");
+		tempList.add(5,nssVO);
+		return tempList;
 	}
 	
 	public void buildHabitationCoverageByStatusMandalWise(String output,List<LocationVO> voList){
@@ -116,16 +152,19 @@ public class RWSNICService implements IRWSNICService{
 		 	    			JSONArray statusListArray = mandalObj.getJSONArray("statusList");
 		 	    				
 		 	    			if(statusListArray != null && statusListArray.length() > 0){
-		 	    				for (int s = 0; s < statusListArray.length(); s++) {
-									StatusVO statusVO = new StatusVO();
+	 	    					List<StatusVO> tempList =getStatusSkeleton();
+	 	    					for (int s = 0; s < statusListArray.length(); s++) {
+	 	    						JSONObject jobj1 = (JSONObject) statusListArray.get(s);
+									StatusVO statusVO = getMatchedStatusVO(tempList,jobj1.getString("status"));
 									
-									JSONObject jobj1 = (JSONObject) statusListArray.get(s);
-									statusVO.setStatus(jobj1.getString("status"));
-									statusVO.setCount(jobj1.getLong("count"));
-									statusVO.setPercentage(jobj1.getDouble("percentage"));
-									vo.getStatusList().add(statusVO);
+									if(statusVO != null){
+										statusVO.setCount(jobj1.getLong("count"));
+										statusVO.setPercentage(jobj1.getDouble("percentage"));
+									}
 								}
-		 	    			}
+	 	    					vo.setStatusList(tempList);
+	 	    				}
+		 	    			
 		 	    			voList.add(vo);
 						}
 		 			}
@@ -594,8 +633,8 @@ public class RWSNICService implements IRWSNICService{
 		return statusVO;
 	}
 	
-	public StatusVO getPlanofActionForStressedHabitations(InputVO vo){
-		StatusVO statusVO = null;
+	public List<StatusVO> getPlanofActionForStressedHabitations(InputVO vo){
+		List<StatusVO> statusVOList = new ArrayList<StatusVO>(0);
 		try {
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getStressedKPIDeatils");	        
@@ -609,17 +648,65 @@ public class RWSNICService implements IRWSNICService{
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jobj = new JSONObject(output);
-	 	    		statusVO = new StatusVO();
-	 	    		statusVO.setTarget(jobj.getLong("target"));
-	 	    		statusVO.setAchived(jobj.getLong("achieved"));
-	 	    		statusVO.setPopulation(jobj.getLong("population"));
+	 	    		if(jobj.getString("status").equalsIgnoreCase("Success")){
+	 	    			 Map<String,StatusVO> locationsMap = new HashMap<String, StatusVO>(0);
+	 	    			if(jobj.getJSONArray("stressedHabtationTargetData") != null && jobj.getJSONArray("stressedHabtationTargetData").length() > 0){
+	 	    				JSONArray targetArr = jobj.getJSONArray("stressedHabtationTargetData");
+	 	    				for(int i=0;i<targetArr.length();i++){
+	 	    					JSONArray indiArr = targetArr.getJSONArray(i);
+	 	    					StatusVO locationVO = null;
+	 	    					if(locationsMap.get(indiArr.getString(0)) == null){
+	 	    						locationVO = new StatusVO();
+	 	    						locationVO.setStatus(indiArr.getString(0));
+	 	    						locationVO.setName(indiArr.getString(1));
+	 	    						locationVO.setTarget(indiArr.getLong(3));
+	 	    						if(vo.getLocationType().equalsIgnoreCase("state"))
+	 	    							locationVO.setTargetPopulation(indiArr.getLong(4));
+	 	    						locationsMap.put(indiArr.getString(0),locationVO);
+	 	    					}else{
+	 	    						locationVO = locationsMap.get(indiArr.getString(0));
+	 	    						locationVO.setTarget(locationVO.getTarget()+indiArr.getLong(3));
+	 	    						if(vo.getLocationType().equalsIgnoreCase("state"))
+	 	    							locationVO.setTargetPopulation(locationVO.getTargetPopulation()+indiArr.getLong(4));
+	 	    					}
+	 	    					
+	 	    				}
+	 	    			}
+	 	    			
+	 	    			if(jobj.getJSONArray("stressedHabtationAcheieveMentsData") != null && jobj.getJSONArray("stressedHabtationAcheieveMentsData").length() > 0){
+	 	    				JSONArray achivemntArr = jobj.getJSONArray("stressedHabtationAcheieveMentsData");
+	 	    				for(int i=0;i<achivemntArr.length();i++){
+	 	    					JSONArray indiArr = achivemntArr.getJSONArray(i);
+	 	    					StatusVO locationVO = null;
+	 	    					if(locationsMap.get(indiArr.getString(0)) == null){
+	 	    						locationVO = new StatusVO();
+	 	    						locationVO.setStatus(indiArr.getString(0));
+	 	    						locationVO.setName(indiArr.getString(1));
+	 	    						locationVO.setAchived(indiArr.getLong(3));
+	 	    						if(vo.getLocationType().equalsIgnoreCase("state"))
+	 	    							locationVO.setAchivedPopulation(indiArr.getLong(4));
+	 	    						locationsMap.put(indiArr.getString(0),locationVO);
+	 	    					}else{
+	 	    						locationVO = locationsMap.get(indiArr.getString(0));
+	 	    						locationVO.setAchived(locationVO.getAchived()+indiArr.getLong(3));
+	 	    						if(vo.getLocationType().equalsIgnoreCase("state"))
+	 	    							locationVO.setAchivedPopulation(locationVO.getAchivedPopulation()+indiArr.getLong(4));
+	 	    					}
+	 	    					
+	 	    				}
+	 	    			}
+	 	    			
+	 	    			if(locationsMap != null && locationsMap.size() > 0){
+	 	    				statusVOList.addAll(locationsMap.values());
+	 	    			}
+	 	    		}
 	 	    	}
 
 	 	      }
 		} catch (Exception e) {
 			LOG.error("Exception raised at getPlanofActionForStressedHabitations - RWSNICService service", e);
 		}
-		return statusVO;
+		return statusVOList;
 	}
 	
 	public List<LocationVO> getLocationWiseAlertStatusCounts(InputVO inputVO){

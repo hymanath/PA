@@ -187,15 +187,15 @@ public class RuralWaterSupplyDashBoardController {
 	
 	
 	@PostMapping("/getPlanofActionForStressedHabitations")
-	public @ResponseBody StatusVO getPlanofActionForStressedHabitations(@RequestBody InputVO vo) {
-		StatusVO statusVO = null;
+	public @ResponseBody List<StatusVO> getPlanofActionForStressedHabitations(@RequestBody InputVO vo) {
+		List<StatusVO> statusVOList = null;
 		try {
-			statusVO = rWSNICService.getPlanofActionForStressedHabitations(vo);
+			statusVOList = rWSNICService.getPlanofActionForStressedHabitations(vo);
 
 		} catch (Exception e) {
 			LOG.error("Exception raised at getPlanofActionForStressedHabitations - RuralWaterSupplyDashBoardController controller",e);
 		}
-		return statusVO;
+		return statusVOList;
 	}
 	
 	@PostMapping("/getLocationWiseAlertStatusCounts")
