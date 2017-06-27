@@ -227,47 +227,54 @@
 		</div>
 	<section>
 	<section>
-		<div class="container-fluid">
-			<div class="row">
+		<div class="container-fluid m_top20">
+			<div class="row" id="accordion">
 				<div class="col-sm-12">
-					<div class="panel panel-default panel-black">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-sm-6">
-									<h4 class="panel-title text-capital">State level overview</h4>
+					<div class="panel panel-default panel-black" >
+					 	<div class="panel-heading">
+								<div class="row">
+									<div class="col-sm-4" >
+										 <h4 class="panel-title text-capital">State level overview</h4>
+										
+									</div>
+									<div class="col-sm-6">
+										<ul class="switch-btn pull-right" tab-switch="stateLevel">
+											<li class="active" attr_type="overview">overview</li>
+											<li attr_type="scheme">Scheme level</li>
+											<li attr_type="deptscheme">Dept_Scheme Level</li>
+										</ul>
+									</div>
+									<div class="col-sm-2">
+										<a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+										</a>
+									</div>
 								</div>
-								<div class="col-sm-6">
-									<ul class="switch-btn pull-right" tab-switch="stateLevel">
-										<li class="active" attr_type="overview">overview</li>
-										<li attr_type="scheme">Scheme level</li>
-										<!--<li attr_type="deptscheme">Dept_Scheme Level</li>-->
-									</ul>
-								</div>
-							</div>
 						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-sm-12">
-									<ul class="nav nav-tabs pull-right" role="tablist">
-										<li role="presentation" class="active"><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-										<li role="presentation"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-									</ul>
+						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-sm-12">
+										<ul class="nav nav-tabs pull-right" role="tablist" id="tabSt">
+											<li role="presentation" ><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+											<li role="presentation" class="active"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+										</ul>
+									</div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-12">
-									<div class="tab-content">
-										<div role="tabpanel" class="tab-pane active" id="stateLevelGraph">
-											<div class="row">
-												<div class="col-sm-12">
-													<div id="stateLevlOvervw"></div>	
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="tab-content">
+											<div role="tabpanel" class="tab-pane " id="stateLevelGraph">
+												<div class="row">
+													<div class="col-sm-12">
+														<div id="stateLevlOvervw"></div>	
+													</div>
 												</div>
 											</div>
-										</div>
-										<div role="tabpanel" class="tab-pane" id="stateLevelTable">
-											<div class="row">
-												<div class="col-sm-12">
-													<div id="stateLevlOvervwTable"></div>
+											<div role="tabpanel" class="tab-pane active" id="stateLevelTable">
+												<div class="row">
+													<div class="col-sm-12">
+														<div id="stateLevlOvervwTable"></div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -278,10 +285,11 @@
 					</div>
 				</div>
 				<div class="col-sm-12">
-					<div class="panel panel-default panel-black">
+					<div class="panel panel-default panel-black" id="headingTwo">
 						<div class="panel-heading">
+							
 							<div class="row">
-								<div class="col-sm-6">
+								<div class="col-sm-4">
 									<h4 class="panel-title text-capital">district level overview</h4>
 								</div>
 								<div class="col-sm-6">
@@ -291,76 +299,81 @@
 										<li attr_type="deptscheme">Dept_Scheme Level</li>
 									</ul>
 								</div>
-							</div>
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-sm-12">
-									<!-- Nav tabs -->
-									<ul class="nav nav-tabs pull-right" role="tablist" id="tabDis">
-										<li role="presentation" class="active"><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-										<li role="presentation"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-										<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>
-									</ul>
+								<div class="col-sm-2">
+									<a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"></a>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-sm-12">
-									<!-- Tab panes -->
-									<div class="tab-content">
-										<div role="tabpanel" class="tab-pane active" id="distLevelGraph">
-											<div class="row">
-												<div class="col-sm-3">
-													<ul class="list-inline activeUlCls sortingDivDistCls constituencyUl">
-														<li class="active " attr_sorting_type="count" attr_order_type="desc">
-															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-														</li>
-														<li class="" attr_sorting_type="count" attr_order_type="asc">
-															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-														</li>
-														<li class="" attr_sorting_type="name" attr_order_type="asc">
-															A-Z
-														</li>
-														<li class="" attr_sorting_type="name" attr_order_type="desc">
-															Z-A
-														</li>
-													</ul>
-												</div>
-												<div class="col-sm-3 distLevelCls" >
-													<select class="form-control chosenSelect" id="distLevelDistrictNames" >
-													</select>
-												</div>
-												<div class="col-sm-12 m_top10">
-													<div id="distLevlOvervw"></div>
-												</div>
-											</div>
-										</div>
-										<div role="tabpanel" class="tab-pane" id="distLevelTable">
-											<div class="row">
-												<div class="col-sm-12">
-													<div id="distLevlOvervwTable"></div>
-												</div>
-											</div>
-										</div>
-										<div role="tabpanel" class="tab-pane" id="comaprisionLevelDist">
-											<div class="row">
-												<div class="col-sm-12 m_top10">
-													<div class="row">
-														<div class="col-sm-2 pull-right">
-															<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="distComp">submit</button>
-														</div>
-														<div class="col-sm-2 pull-right">
-															<select class="form-control chosenSelect compSingleFinancialYear distYearCls"  ></select>
-														</div>
-														<div class="col-sm-1 pull-right">
-														VS
-														</div>
-														<div class="col-sm-2 pull-right">
-															<select class="form-control chosenSelect compMultiFinancialYear multiDistYearCls"></select>
-														</div>
-														
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse in " role="tabpanel" aria-labelledby="headingTwo">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-sm-12">
+										<!-- Nav tabs -->
+										<ul class="nav nav-tabs pull-right" role="tablist" id="tabDis">
+											<li role="presentation" ><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+											<li role="presentation" class="active"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+											<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<!-- Tab panes -->
+										<div class="tab-content">
+											<div role="tabpanel" class="tab-pane " id="distLevelGraph">
+												<div class="row">
+													<div class="col-sm-3">
+														<ul class="list-inline activeUlCls sortingDivDistCls constituencyUl">
+															<li class="active " attr_sorting_type="count" attr_order_type="desc">
+																<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>
+															</li>
+															<li class="" attr_sorting_type="count" attr_order_type="asc">
+																<i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
+															</li>
+															<li class="" attr_sorting_type="name" attr_order_type="asc">
+																A-Z
+															</li>
+															<li class="" attr_sorting_type="name" attr_order_type="desc">
+																Z-A
+															</li>
+														</ul>
 													</div>
-													<div id="comparionDistLevlOvervwTable" class="m_top10"></div>
+													<div class="col-sm-3 distLevelCls" >
+														<select class="form-control chosenSelect" id="distLevelDistrictNames" >
+														</select>
+													</div>
+													<div class="col-sm-12 m_top10">
+														<div id="distLevlOvervw"></div>
+													</div>
+												</div>
+											</div>
+											<div role="tabpanel" class="tab-pane active" id="distLevelTable">
+												<div class="row">
+													<div class="col-sm-12">
+														<div id="distLevlOvervwTable"></div>
+													</div>
+												</div>
+											</div>
+											<div role="tabpanel" class="tab-pane" id="comaprisionLevelDist">
+												<div class="row">
+													<div class="col-sm-12 m_top10">
+														<div class="row">
+															<div class="col-sm-2 pull-right">
+																<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="distComp">submit</button>
+															</div>
+															<div class="col-sm-2 pull-right">
+																<select class="form-control chosenSelect compSingleFinancialYear distYearCls"  ></select>
+															</div>
+															<div class="col-sm-1 pull-right">
+															VS
+															</div>
+															<div class="col-sm-2 pull-right">
+																<select class="form-control chosenSelect compMultiFinancialYear multiDistYearCls"></select>
+															</div>
+															
+														</div>
+														<div id="comparionDistLevlOvervwTable" class="m_top10"></div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -372,10 +385,10 @@
 				</div>
 				
 				<div class="col-sm-12">
-					<div class="panel panel-default panel-black">
+					<div class="panel panel-default panel-black" id="headingThree">
 						<div class="panel-heading">
-							<div class="row">
-								<div class="col-sm-6">
+						 	<div class="row">
+								<div class="col-sm-4">
 									<h4 class="panel-title text-capital">constituency level overview</h4>
 								</div>
 								<div class="col-sm-6">
@@ -385,81 +398,86 @@
 										<li attr_type="deptscheme">Dept_Scheme Level</li>
 									</ul>
 								</div>
-							</div>
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-sm-12">
-									<ul class="nav nav-tabs pull-right" role="tablist" id="tabCons">
-										<li role="presentation" class="active"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-										<li role="presentation"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-										<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
-									</ul>
+								<div class="col-sm-2">
+									 <a class="panelCollapseIcon"  role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"></a>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-sm-12">
-									<div class="tab-content">
-										<div role="tabpanel" class="tab-pane active" id="consLevelGraph">
-											<div class="row">
-												<div class="col-sm-3">
-													<ul class="list-inline activeUlCls sortingDivConstCls constituencyUl">
-														<li class="active" attr_sorting_type="count" attr_order_type="desc">
-															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-														</li>
-														<li class="" attr_sorting_type="count" attr_order_type="asc">
-															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-														</li>
-														<li class="" attr_sorting_type="name" attr_order_type="asc">
-															A-Z
-														</li>
-														<li class="" attr_sorting_type="name" attr_order_type="desc">
-															Z-A
-														</li>
-													</ul>
-												</div>
-												<div class="col-sm-3 constiLevelDistCls" >
-													<select class="form-control chosenSelect" id="constLevelDistNames" >
-														<option value="0"> SELECT DISTRICT</option>
-													</select>
-												</div>
-												<div class="col-sm-3 constiLevelCls" >
-													<select class="form-control chosenSelect" id="constLevelConstNames" >
-													</select>
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-sm-12">
-													<div id="consLevlOvervw"></div>
-												</div>
-											</div>
-										</div>
-										<div role="tabpanel" class="tab-pane" id="consLevelTable">
-											<div class="row">
-												<div class="col-sm-12">
-													<div id="consLevlOvervwTable"></div>
-												</div>
-											</div>
-										</div>
-										<div role="tabpanel" class="tab-pane" id="comaprisionLevelConst">
-											<div class="row">
-												<div class="col-sm-12 m_top10">
-													<div class="row"> 
-														<div class="col-sm-2 pull-right">
-															<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="constComp">submit</button>
-														</div>													
-														<div class="col-sm-2 pull-right">
-															<select class="form-control chosenSelect compSingleFinancialYear conYearCls"  ></select>
-														</div>
-														<div class="col-sm-1 pull-right">
-														VS
-														</div>
-														<div class="col-sm-2 pull-right">
-															<select class="form-control chosenSelect compMultiFinancialYear multiConYearCls" ></select>
-														</div>
-														
+						</div>
+						 <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-sm-12">
+										<ul class="nav nav-tabs pull-right" role="tablist" id="tabCons">
+											<li role="presentation" ><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+											<li role="presentation" class="active"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+											<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="tab-content">
+											<div role="tabpanel" class="tab-pane " id="consLevelGraph">
+												<div class="row">
+													<div class="col-sm-3">
+														<ul class="list-inline activeUlCls sortingDivConstCls constituencyUl">
+															<li class="active" attr_sorting_type="count" attr_order_type="desc">
+																<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>
+															</li>
+															<li class="" attr_sorting_type="count" attr_order_type="asc">
+																<i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
+															</li>
+															<li class="" attr_sorting_type="name" attr_order_type="asc">
+																A-Z
+															</li>
+															<li class="" attr_sorting_type="name" attr_order_type="desc">
+																Z-A
+															</li>
+														</ul>
 													</div>
-													<div id="comparionConstLevlOvervwTable" class="m_top10"></div>
+													<div class="col-sm-3 constiLevelDistCls" >
+														<select class="form-control chosenSelect" id="constLevelDistNames" >
+															<option value="0"> SELECT DISTRICT</option>
+														</select>
+													</div>
+													<div class="col-sm-3 constiLevelCls" >
+														<select class="form-control chosenSelect" id="constLevelConstNames" >
+														</select>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-12">
+														<div id="consLevlOvervw"></div>
+													</div>
+												</div>
+											</div>
+											<div role="tabpanel" class="tab-pane active" id="consLevelTable">
+												<div class="row">
+													<div class="col-sm-12">
+														<div id="consLevlOvervwTable"></div>
+													</div>
+												</div>
+											</div>
+											<div role="tabpanel" class="tab-pane" id="comaprisionLevelConst">
+												<div class="row">
+													<div class="col-sm-12 m_top10">
+														<div class="row"> 
+															<div class="col-sm-2 pull-right">
+																<button type="button" class="btn btn-sm btn-success comapreFinancialYearCls" attr_type="constComp">submit</button>
+															</div>													
+															<div class="col-sm-2 pull-right">
+																<select class="form-control chosenSelect compSingleFinancialYear conYearCls"  ></select>
+															</div>
+															<div class="col-sm-1 pull-right">
+															VS
+															</div>
+															<div class="col-sm-2 pull-right">
+																<select class="form-control chosenSelect compMultiFinancialYear multiConYearCls" ></select>
+															</div>
+															
+														</div>
+														<div id="comparionConstLevlOvervwTable" class="m_top10"></div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -470,10 +488,11 @@
 					</div>
 				</div>	
 				<div class="col-sm-12">
-					<div class="panel panel-default panel-black">
+					<div class="panel panel-default panel-black" id="headingFour">
 						<div class="panel-heading">
+						
 							<div class="row">
-								<div class="col-sm-6">
+								<div class="col-sm-4">
 									<h4 class="panel-title text-capital">mandal level overview</h4>
 								</div>
 								<div class="col-sm-6">
@@ -483,16 +502,19 @@
 										<li attr_type="deptscheme">Dept_Scheme Level</li>
 									</ul>
 								</div>
+								<div class="col-sm-2">
+									 <a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour"></a>
+								</div>
 							</div>
-							
 						</div>
+						 <div id="collapseFour" class="panel-collapse collapse in " role="tabpanel" aria-labelledby="headingFour">
 						<div class="panel-body">
 							<div>
 								<div class="row">
 									<div class="col-sm-12">
 										<ul class="nav nav-tabs pull-right" role="tablist" id="tabMan">
-											<li role="presentation" class="active"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-											<li role="presentation"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
+											<li role="presentation" ><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+											<li role="presentation" class="active"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
 											<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelMandal" role="tab" data-toggle="tab">Comparision</a></li>   
 										</ul>      
 									</div>
@@ -500,15 +522,15 @@
 								<div class="row">
 									<div class="col-sm-12">
 										<div class="tab-content">
-											<div role="tabpanel" class="tab-pane active" id="mandalLevelGraph">
+											<div role="tabpanel" class="tab-pane " id="mandalLevelGraph">
 												<div class="row">
 													<div class="col-sm-3">
 														<ul class="list-inline activeUlCls sortingDivMandalCls constituencyUl">
 															<li class="active" attr_sorting_type="count" attr_order_type="desc">
-																<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+																<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>
 															</li>
 															<li class="" attr_sorting_type="count" attr_order_type="asc">
-																<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+																<i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
 															</li>
 															<li class="" attr_sorting_type="name" attr_order_type="asc">
 																A-Z
@@ -538,7 +560,7 @@
 													</div>
 												</div>
 											</div>
-											<div role="tabpanel" class="tab-pane" id="mandalLevelTable">
+											<div role="tabpanel" class="tab-pane active" id="mandalLevelTable">
 												<div class="row">
 													<div class="col-sm-12">
 														<div id="mandalLevlOvervwTable"></div>
@@ -571,15 +593,16 @@
 								</div>
 							</div>
 						</div>
+						</div>
 					</div>
 				</div>
 				
 				
 				<div class="col-sm-12">
-					<div class="panel panel-default panel-black">
+					<div class="panel panel-default panel-black" id="headingFive">
 						<div class="panel-heading">
 							<div class="row">
-								<div class="col-sm-6">
+								<div class="col-sm-4">
 									<h4 class="panel-title text-capital">Village level overview</h4>
 								</div>
 								<div class="col-sm-6">
@@ -589,16 +612,19 @@
 										<li attr_type="deptscheme">Dept & Scheme Level</li>
 									</ul>
 								</div>
+								<div class="col-sm-2">
+									 <a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive"></a>
+								</div>
 							</div>
-							
 						</div>
+						<div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
 						<div class="panel-body">
 							<div>
 								<div class="row">
 									<div class="col-sm-12">
 										<ul class="nav nav-tabs pull-right" role="tablist" id="tabVill">
-											<li role="presentation" class="active"><a href="#villageLevelGraph" aria-controls="villageLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-											<li role="presentation"><a href="#villageLevelTable" aria-controls="villageLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
+											<li role="presentation" ><a href="#villageLevelGraph" aria-controls="villageLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+											<li role="presentation" class="active"><a href="#villageLevelTable" aria-controls="villageLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
 											<!--<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelVillage" aria-controls="comaprisionLevelVillage" role="tab" data-toggle="tab">Comparision</a></li>  --> 
 										</ul>
 									</div>
@@ -606,15 +632,15 @@
 								<div class="row">
 									<div class="col-sm-12">
 										<div class="tab-content">
-											<div role="tabpanel" class="tab-pane active" id="villageLevelGraph">
+											<div role="tabpanel" class="tab-pane " id="villageLevelGraph">
 												<div class="row">
 													<div class="col-sm-3">
 														<ul class="list-inline activeUlCls sortingDivVillageCls constituencyUl">
 															<li class="active" attr_sorting_type="count" attr_order_type="desc">
-																<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+																<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>
 															</li>
 															<li class="" attr_sorting_type="count" attr_order_type="asc">
-																<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+																<i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
 															</li>
 															<li class="" attr_sorting_type="name" attr_order_type="asc">
 																A-Z
@@ -648,7 +674,7 @@
 													</div>
 												</div>
 											</div>
-											<div role="tabpanel" class="tab-pane" id="villageLevelTable">
+											<div role="tabpanel" class="tab-pane active" id="villageLevelTable">
 												<div class="row">
 													<div class="col-sm-12">
 														<div id="villageLevlOvervwTable"></div>
@@ -680,6 +706,7 @@
 									</div>
 								</div>
 							</div>
+						</div>
 						</div>
 					</div>
 				</div>
