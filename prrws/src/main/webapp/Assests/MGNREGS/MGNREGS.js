@@ -1795,7 +1795,7 @@ function buildDistrictsPopupDetails(result){
 }
 
 //getNREGSIHHLConsCuntData()
-function getNREGSConsCuntData(locationType,type)
+function getNREGSConsCuntData(locationType,type,globalDivName)
 {
 	//$("#"+divIdd).html(spinner);
   var json = {
@@ -1803,7 +1803,8 @@ function getNREGSConsCuntData(locationType,type)
     fromDate : "2017-04-01",
 	toDate : "2017-06-30",
     locationType: locationType,
-	type  : type
+	type  : type,
+	divType : globalDivName
 }
   $.ajax({
     url: 'getMGNregsDistrWiseCount',
@@ -1821,9 +1822,9 @@ function getNREGSConsCuntData(locationType,type)
 }
 
 $(document).on("click",".detailsCls",function(){
-	var locationType = $(this).attr("attr_locationType");
+	var locationType = $(this).attr("attr_location");
 	var type = $(this).attr("attr_type");
-	getNREGSConsCuntData(locationType,type);
+	getNREGSConsCuntData(locationType,type,globalDivName);
 });
 
 $(document).on("click",".overviewPopupCls",function(){
@@ -1879,7 +1880,7 @@ $(document).on("click",".overviewPopupCls",function(){
 	}else{
 		$("#nregsOverviewBodyId").html("NO DATA");
 	}
-	getNREGSConsCuntData(locationType,type);
+	getNREGSConsCuntData(locationType,type,globalDivName);
 });
 
 //PopupOverview clicking Block 

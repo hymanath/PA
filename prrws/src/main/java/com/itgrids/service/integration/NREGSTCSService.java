@@ -1671,10 +1671,42 @@ public class NREGSTCSService implements INREGSTCSService{
 	public NregsDataVO getMGNregsDistrWiseConsti(InputVO inputVO) {
 		NregsDataVO finalVO = new NregsDataVO();
 		try {
-			
+			String webServiceUrl = null;
 			List<NregsDataVO> list = new ArrayList<NregsDataVO>(0);
+			
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Labour Budget"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/LabourBudgetData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Farm Pond"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FarmPondService/FarmPondData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("IHHL"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("VERMI"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/VermiService/VermiData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Gram Panchayat Buildings"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GPBuildingService/GPBuildingData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Jala Siri"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrsService/NtrsData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CC Roads"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CCRoadsService/CCRoadsData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Anganwadi"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnganwadiService/AnganwadiData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mandal buildings"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/MandalBuildingService/MandalBuildingData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR 90 Days"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/HousingService/HousingData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Production of Bricks"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BricksService/BricksData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SericultureService/SericultureData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worm"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SilkwormService/SilkwormData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle drinking water trough"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AHService/AHData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising of Perinnial Fodder"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FodderService/FodderData";
+			
 			 
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
 	       
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1717,7 +1749,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    	List<NregsDataVO> consMandallist = null;
 		 	    	if(inputVO.getLocationType().trim().equalsIgnoreCase("district")){
 		 	    		inputVO.setLocationType("constituency");
-			 	    	ClientResponse constResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
+			 	    	ClientResponse constResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
 			 	    	if(constResponse.getStatus() != 200){
 				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ constResponse.getStatus());
 				 	      }else{
@@ -1735,7 +1767,7 @@ public class NREGSTCSService implements INREGSTCSService{
 							}
 			 	    	 }
 			 	    	inputVO.setLocationType("mandal");
-			 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
+			 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
 			 	    	if(mandalResponse.getStatus() != 200){
 				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
 				 	      }else{
@@ -1759,7 +1791,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    	 }
 			 	    	
 		 	    		inputVO.setLocationType("mandal");
-			 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData", inputVO);
+			 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
 			 	    	if(mandalResponse.getStatus() != 200){
 				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
 				 	      }else{
