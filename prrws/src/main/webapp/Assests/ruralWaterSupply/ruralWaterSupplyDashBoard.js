@@ -1,5 +1,5 @@
  //Angular Start
-		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","ground":"#14BAAD","surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
+		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","Ground":"#14BAAD","Surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
 		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049",
 		"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","SOSO":"#FFBA00","NOT SATISFIED":"#FF0909"}
 		var blocksArr = [{name:'Coverage Status Of<br/> Habitation',id:'habitation'},{name:'Key<br/> Performance',id:'performance'},{name:'Alert Status <br/>Jalavani',id:'jalavani'},{name:'Plan Of Action for Stressed Habitations <br/>Water Budget has to be prepared for all habitations',id:'planAction'}];
@@ -719,20 +719,16 @@
 				},
 				success: function(ajaxresp){
 					if(ajaxresp !=null ){
-							var dataArr = [];
-							var statusNamesArr=[];
-							var totalCount=0;
-							if(ajaxresp !=null && ajaxresp.length>0){
-								for(var i in ajaxresp)
-								{
-								  var tempArr = [];
-									statusNamesArr.push(ajaxresp[i].name);
-									tempArr.push(parseInt(ajaxresp[i].count));
-									dataArr.push(tempArr);
-									totalCount =totalCount+parseInt(ajaxresp[i].count);
-								  
-								}
-							}
+						var dataArr = [];
+						var groundDataArr1=[],surfaceArrArr2=[];
+						var totalCount=0;	
+							groundDataArr1.push(parseInt(ajaxresp.groundWaterSourceTotalMlpdCount));
+							dataArr.push(groundDataArr1);
+							
+							surfaceArrArr2.push(parseInt(ajaxresp.surfaceWaterSourceTotalMlpdCount));
+							dataArr.push(surfaceArrArr2);
+							totalCount =totalCount+parseInt(ajaxresp.groundWaterSourceTotalMlpdCount)+parseInt(ajaxresp.surfaceWaterSourceTotalMlpdCount);
+							
 							$("#waterSourcesTtlValues").html("TOTAL:"+totalCount)
 							var colors = ['#14BAAD','#FC5049']
 							var id = 'waterSources';
@@ -763,7 +759,7 @@
 								min: 0,
 								gridLineWidth: 0,
 								minorGridLineWidth: 0,
-								categories: statusNamesArr,
+								categories: ['Ground','Surface'],
 								labels: {
 									useHTML:true,
 									formatter: function() {
