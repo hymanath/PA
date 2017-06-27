@@ -1,6 +1,8 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var glStartDate = '2017-04-01'//+moment().subtract(20, 'years').startOf('year').format("YYYY-MM");
 var glEndDate = "2017-06-30"//+moment().add(10, 'years').endOf('year').format("YYYY-MM");
+var glStartDateForWebservice = moment().format("DD/MM/YYYY");
+var glEndDateForWebservice = moment().format("DD/MM/YYYY");
 var globalDivName;
 onLoadCalls();
 
@@ -108,7 +110,98 @@ function onLoadCalls()
 		$("#projectOverviewBlock,#projectData").html('');
 	}); */
 	getNREGSProjectsOverview('')
+	
+	$(document).on('click','#getWebserviceDetailsId', function(){
+		getWebserviceHealthDetails(glStartDateForWebservice,glEndDateForWebservice);
+	});         
 }
+$("#dateRangePickerAUM").daterangepicker({   
+			opens: 'left',
+			startDate: glStartDateForWebservice,
+			endDate: glEndDateForWebservice,   
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+			'Today' : [moment(), moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
+		   'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()]
+		}
+	});
+	$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
+		
+		$(".switch-btn li").removeClass("active");
+		$(".switch-btn li:first-child").addClass("active");
+		$('[role="tablist"] li:first-child a').trigger('click');
+		$('#tabCons a[href="#consLevelGraph"]').trigger('click');
+		glStartDateForWebservice = picker.startDate.format('DD/MM/YYYY')
+		glEndDateForWebservice = picker.endDate.format('DD/MM/YYYY')
+		getWebserviceHealthDetails(glStartDateForWebservice,glEndDateForWebservice);
+	});
+function getWebserviceHealthDetails(fromDate,toDate){
+	$("#webserviceDetailsModalDivId").modal('show');
+	$("#webserviceDetailsModalId").html(spinner);    
+	var json = {
+					fromDate : fromDate,    
+					toDate : toDate, 
+				};
+	$.ajax({
+			url : "getWebserviceHealthDetails",             
+			data : JSON.stringify(json),
+			type : "POST",
+			dataTypa : 'json',   
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success : function(ajaxresp){
+				buildWebserviceHealthDetails(ajaxresp);
+			}
+		});
+	}
+	function buildWebserviceHealthDetails(ajaxresp){
+		var str = "";
+		str+='<table id="webserviceHealthDetailsTableId" class="table table-bordered">';
+		str+='<thead>';
+		str+='<tr>';
+		str+='<th>Provider</th>';
+		str+='<th>Module</th>';
+		str+='<th>Service Name</th>';
+		str+='<th>No of Call</th>';
+		str+='<th>Success</th>';
+		str+='<th>Fail</th>';
+		str+='<th>Total time taken</th>';
+		str+='<th>Average time taken</th>';
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		for (var i in ajaxresp){  
+			str+='<tr>';
+			str+='<td>'+ajaxresp[i].providerName+'</td>';
+			str+='<td>'+ajaxresp[i].moduleName+'</td>';
+			str+='<td>'+ajaxresp[i].webserviceName+'</td>';
+			str+='<td>'+ajaxresp[i].totalCalls+'</td>';
+			str+='<td>'+ajaxresp[i].totalSuccess+'</td>';
+			str+='<td>'+ajaxresp[i].totalFail+'</td>';
+			str+='<td>'+ajaxresp[i].totalTime+'</td>';
+			str+='<td>'+ajaxresp[i].averageTime+'</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+		str+='</table>';
+		$("#webserviceDetailsModalId").html(str);
+		$("#webserviceHealthDetailsTableId").dataTable();
+		
+	}
+	
 function minimise(Id,count)
 {
 	var id = Id;
