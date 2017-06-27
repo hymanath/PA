@@ -122,14 +122,10 @@
 						<li><span class="color-label color-label-success"></span> 80% and above</li>
 						<li><span class="color-label color-label-default"></span> 50% - 79%</li>
 						<li><span class="color-label color-label-danger"></span> 0% - 49%</li>
-						<li>
-							<div class="row">  
-								<div class="col-sm-12">
-									<button type="button" class="btn btn-primary btn-sm pull-right" id="getWebserviceDetailsId">Webservice Details</button>  
-								</div>
-							</div>
-						</li>
-					</ul>
+					</ul>  
+				</div>
+				<div class="col-sm-1 m_top5"> 
+					<button type="button" class="btn btn-primary btn-sm" id="getWebserviceDetailsId">Webservice Details</button> 
 				</div>
 			</div>
 		</div>
