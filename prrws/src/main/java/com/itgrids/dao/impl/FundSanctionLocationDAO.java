@@ -29,7 +29,7 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 		sb.append(" select modal.fundSanction.workName,d.districtId,d.districtName" );
 		
 		sb.append(",dep.departmentName," +
-				" gs.schemeName,modal.fundSanction.goNoDate,modal.fundSanction.sactionAmount " +
+				" gs.schemeName,modal.fundSanction.goNoDate,sum(modal.fundSanction.sactionAmount) " +
 				" ,modal.locationValue,d.districtName,c.name,t.tehsilName,p.panchayatName,modal.locationScopeId,modal.fundSanction.fundSactionId ");
 		sb.append(" from FundSanctionLocation modal " +
 				" left outer join modal.locationAddress.district d  " +
