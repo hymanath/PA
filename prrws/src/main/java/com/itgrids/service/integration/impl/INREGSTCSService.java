@@ -48,9 +48,9 @@ public interface INREGSTCSService {
 	public NregsOverviewVO getNregsHousingOverview(InputVO inputVO);
 	public List<NregsDataVO> getNregsHousingData(InputVO inputVO);
 	public List<WebserviceDetailsVO> getWebserviceHealthDetails(InputVO inputVO);
-	public List<NregsDataVO> getNregsConstCuntDetails(String output,Map<String,NregsDataVO> cntMap);
+	public List<NregsDataVO> getNregsConstCuntDetails(String output,Map<String,NregsDataVO> cntMap,String divType);
 	public NregsDataVO getMGNregsDistrWiseConsti(InputVO inputVO);
 	public List<NregsDataVO> getDistrictsConstitByType(List<NregsDataVO>  returnList,String type);
-	public List<NregsDataVO> getNregsMandalsCuntFrDistrict(String output,Map<String,NregsDataVO> cntMap);
-	public List<NregsDataVO> getNregsMandalsCuntFrConstituncies(String output,Map<String,NregsDataVO> cntMap);
+	public List<NregsDataVO> getNregsMandalsCuntFrDistrict(String output,Map<String,NregsDataVO> cntMap,String divType);
+	public List<NregsDataVO> getNregsMandalsCuntFrConstituncies(String output,Map<String,NregsDataVO> cntMap,String divType);
 }
