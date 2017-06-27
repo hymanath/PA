@@ -239,6 +239,48 @@ nav
 }
 header
 {
+	section.navbar-section
+	{
+		padding:12px 10px;
+		.color-label
+		{
+			padding:4px;
+			height:15px;
+			width:15px;
+			display:inline-block;
+			border-radius:50%;
+			margin-right:5px;
+			position:relative;
+			top:3px;
+		}
+		.color-label-success
+		{
+			.color-label;
+			background-color:@green_color !important;
+		}
+		.color-label-danger
+		{
+			.color-label;
+			background-color:@red_color !important;
+		}
+		.color-label-default
+		{
+			.color-label;
+			background-color:@dark_yellow_color;
+		}
+	}
+	.input-group
+	{
+		margin-bottom:0px;
+		.form-control
+		{
+			background-color:@light_ash_color;
+		}
+	}
+	.border_right
+	{
+		border-right:1px solid @dark_brown_color;
+	}
 	section.header-fixed
 	{
 		height: 70px;
@@ -261,14 +303,7 @@ header
 		padding:2px 8px 3px 12px;
 		border-right:1px solid @dark_brown_color;
 		width:24%;
-		.input-group
-		{
-			margin-bottom:0px;
-			.form-control
-			{
-				background-color:@light_ash_color;
-			}
-		}
+		
 	}
 	>li:first-child
 	{
@@ -932,4 +967,3 @@ header
     font-weight: bold;
     padding: 5px;
 }
-
