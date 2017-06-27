@@ -291,7 +291,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
 	 	    				list.add(nregsDataVO);	 
-	 	    				getDistrictsConstitByType(list,inputVO.getType());
+	 	    				//getDistrictsConstitByType(list,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -393,7 +393,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				voList.add(vo);
-	 	    				getDistrictsConstitByType(voList,inputVO.getType());
+	 	    				//getDistrictsConstitByType(voList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -440,7 +440,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setTotalExpenditure(new BigDecimal(jObj.getString("TOTALEXPENDITURE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				voList.add(vo);
-	 	    				getDistrictsConstitByType(voList,inputVO.getType());
+	 	    				//getDistrictsConstitByType(voList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -539,7 +539,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				
 	 	    				returnList.add(vo);
-	 	    				getDistrictsConstitByType(returnList,inputVO.getType());
+	 	    				//getDistrictsConstitByType(returnList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -633,7 +633,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
  	    					returnList.add(vo);
- 	    					getDistrictsConstitByType(returnList,inputVO.getType());
+ 	    					//getDistrictsConstitByType(returnList,inputVO.getType());
 	 	    					 	    				
 	 	    			}
 	 	    		}
@@ -728,7 +728,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				returnList.add(vo);
-	 	    				getDistrictsConstitByType(returnList,inputVO.getType());
+	 	    				//getDistrictsConstitByType(returnList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -824,7 +824,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
 	 	    				list.add(nregsDataVO);	 	 
-	 	    				getDistrictsConstitByType(list,inputVO.getType());
+	 	    				//getDistrictsConstitByType(list,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -924,7 +924,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				returnList.add(vo);
-	 	    				getDistrictsConstitByType(returnList,inputVO.getType());
+	 	    				//getDistrictsConstitByType(returnList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -1274,7 +1274,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				voList.add(vo);
-	 	    				getDistrictsConstitByType(voList,inputVO.getType());
+	 	    				//getDistrictsConstitByType(voList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -1321,7 +1321,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				voList.add(vo);
-	 	    				getDistrictsConstitByType(voList,inputVO.getType());
+	 	    				//getDistrictsConstitByType(voList,inputVO.getType());
 	 	    			}
 	 	    		}
 	 	    	}
@@ -1417,7 +1417,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				returnList.add(vo);
-	 	    				getDistrictsConstitByType(returnList,inputVO.getType());
+	 	    				//getDistrictsConstitByType(returnList,inputVO.getType());
 	 	    		
 	 	    			}
 	 	    		}
@@ -1609,7 +1609,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
 	 	    				list.add(nregsDataVO);	 
-	 	    				getDistrictsConstitByType(list,inputVO.getType());
+	 	    				//getDistrictsConstitByType(list,inputVO.getType());
 	 	    				     
 	 	    			
 	 	    			}
