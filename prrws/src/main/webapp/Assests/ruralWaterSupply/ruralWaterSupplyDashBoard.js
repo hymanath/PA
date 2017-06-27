@@ -954,19 +954,92 @@
 				},
 				success: function(ajaxresp){
 					if(ajaxresp !=null ){
-						buildPlanofActionForStressedHabitations(ajaxresp);
+						//buildPlanofActionForStressedHabitations(ajaxresp);
+						buildPlanofActionForStressedHabitationsNew(ajaxresp);
 					}
 				}
 			});
 			
 		}
 		
+		function buildPlanofActionForStressedHabitationsNew(result){
+			if(result !=null && result[0] !=null){
+				var dataArr = [];
+				var stressedArr = [];
+				var achievedHabitationArr = [];
+				var targetHabitationArr = [];
+				
+				/* var stressedArrOne = [];
+				var achievedPopulationArrOne = [];
+				var targetPopulationArrOne = []; */
+
+				stressedArr.push("Habitations");						
+				achievedHabitationArr.push({"y":result[0].achivedPopulation,color:'#14BBAE'});
+				targetHabitationArr.push({"y":result[0].targetPopulation,color:'#FC5E57'});
+				
+				stressedArr.push("Population");						
+				achievedHabitationArr.push({"y":result[0].achived,color:'#14BBAE'});
+				targetHabitationArr.push({"y":result[0].target,color:'#FC5E57'});
+								
+				
+				$("#planOfAction").highcharts({
+					chart: {
+						type: 'column'
+					},
+					title: {
+						text: '',
+						align:'left',
+						style: {
+							color: '#000',
+							font: 'bold 16px "Lato", sans-serif'
+						}
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: stressedArr
+					},
+					yAxis:{
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+							title: {
+								text: null
+							}
+					}, 
+					
+					legend: {
+						symbolHeight: 12,
+						symbolWidth: 12,
+						symbolRadius: 6,
+						enabled: true
+					},
+					tooltip: {
+						pointFormat: '{point.y}'
+					},
+					plotOptions: {
+						column: {
+							//colorByPoint: true
+						}
+					},
+					series: [{
+							name: 'Target',
+							data: targetHabitationArr
+						}, {
+							name: 'Achieved',
+							data: achievedHabitationArr
+						}]
+				});
+			}
+		}
+		
 		function buildPlanofActionForStressedHabitations(result){
 			var targetArr=[];
 			var achivedArr=[];
-			if(result !=null){
-				targetArr.push({"y":result.target,color:"#14BAAD"})
-				achivedArr.push({"y":result.achived,color:"#FC5049"})
+			if(result !=null && result[0] !=null){
+				targetArr.push({"y":result[0].achivedPopulation,color:"#14BAAD"})
+				achivedArr.push({"y":result[0].targetPopulation,color:"#FC5049"})
 			}
 			$("#planOfAction").highcharts({
 				chart: {
