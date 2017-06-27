@@ -17,7 +17,7 @@
 			getSchemesDetails();
 			getSchemeWiseWorkDetails();
 			getAssetInfoBetweenDates();
-			//getWaterSourceInfo();
+			getWaterSourceInfo();
 			getKeyPerformanceIndicatorsInfo('state','','graph');
 			//getPlanofActionForStressedHabitations();
 			getStressedHabitationsInfoByLocationType();//on click ? call
@@ -711,15 +711,9 @@
 		
 		
 		function getWaterSourceInfo(){ 
-			var json = {
-			  year : "2014",
-			  fromDate : "2014-01-01",
-			  toDate : "2014-06-30"
-			}
 			$.ajax({
 				url: 'getWaterSourceInfo',
-				data: JSON.stringify(json),
-				type: "POST",
+				type: "GET",
 				dataType: 'json', 
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader("Accept", "application/json");

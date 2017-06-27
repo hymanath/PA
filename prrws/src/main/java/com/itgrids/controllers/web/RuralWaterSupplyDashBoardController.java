@@ -5,12 +5,14 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.BasicVO;
@@ -142,17 +144,18 @@ public class RuralWaterSupplyDashBoardController {
 	 * 
 	 */
 
-	@PostMapping("/getWaterSourceInfo")
-	public @ResponseBody List<StatusVO> getWaterSourceInfo(@RequestBody InputVO vo) {
-		List<StatusVO> waterSourceInfo = null;
+	@RequestMapping(value = "/getWaterSourceInfo", method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody StatusVO getWaterSourceInfo() {
 		try {
-			waterSourceInfo = rWSNICService.getWaterSourceInfo(vo);
+			return rWSNICService.getWaterSourceInfo();
 
 		} catch (Exception e) {
-			LOG.error("Exception raised at getAssetsInfoBetweenDates - RuralWaterSupplyDashBoardController controller",
+			LOG.error("Exception raised at getWaterSourceInfo - RuralWaterSupplyDashBoardController controller",
 					e);
 		}
-		return waterSourceInfo;
+		return null;
 	}
 	
 	@PostMapping("/getKeyPerformanceIndicatorsInfo")
