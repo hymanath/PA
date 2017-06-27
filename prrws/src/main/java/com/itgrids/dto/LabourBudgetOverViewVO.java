@@ -36,8 +36,15 @@ public class LabourBudgetOverViewVO implements Serializable{
 	private Long villagesInRed;
 	private Long villagesInOrange;
 	private Long villagesInGreen;
+	private String achievementPerc;
 	
 	
+	public String getAchievementPerc() {
+		return achievementPerc;
+	}
+	public void setAchievementPerc(String achievementPerc) {
+		this.achievementPerc = achievementPerc;
+	}
 	public String getTotalBudget() {
 		return totalBudget;
 	}
