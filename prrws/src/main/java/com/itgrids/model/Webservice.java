@@ -21,6 +21,7 @@ public class Webservice implements Serializable{
 	
 	private Long webserviceId;
 	private String url;
+	private String serviceName;
 	private ServiceProvider serviceProvider;
 	private ServiceModule serviceModule;
 
@@ -63,5 +64,13 @@ public class Webservice implements Serializable{
 	public void setServiceModule(ServiceModule serviceModule) {
 		this.serviceModule = serviceModule;
 	}
+	@Column(name="service_name")
+	public String getServiceName() {
+		return serviceName;
+	}
 
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+	
 }

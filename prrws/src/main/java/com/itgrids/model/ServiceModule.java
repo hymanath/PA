@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "constituency")
+@Table(name = "service_module")
 public class ServiceModule implements Serializable{
 
 	private static final long serialVersionUID = -360465960029008718L;

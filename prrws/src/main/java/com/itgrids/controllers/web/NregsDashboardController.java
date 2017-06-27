@@ -20,6 +20,7 @@ import com.itgrids.dto.LabourBudgetOverViewVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
+import com.itgrids.dto.WebserviceDetailsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
 
@@ -414,6 +415,16 @@ public class NregsDashboardController {
 		}
 		return ahoObject;
 	}
+	@PostMapping("/getWebserviceHealthDetails")
+	public @ResponseBody List<WebserviceDetailsVO> getWebserviceHealthDetails(@RequestBody InputVO vo){
+		try{
+			List<WebserviceDetailsVO> detailsVOs = nregsTcsService.getWebserviceHealthDetails(vo);
+			return detailsVOs;
+		}catch(Exception e){
+			LOG.error("Exception raised at getWebserviceHealthDetails - getAHOverview controller", e);
+		}
+		return null;
+	}
 	
 	@PostMapping("/getMGNregsDistrWiseCount")
 	public @ResponseBody NregsDataVO getMGNregsDistrWiseConsti(@RequestBody InputVO vo){
@@ -426,5 +437,4 @@ public class NregsDashboardController {
 		}
 		return levlWiseVO;
 	}
-	
 }

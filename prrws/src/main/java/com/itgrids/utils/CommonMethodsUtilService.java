@@ -772,7 +772,26 @@ public class CommonMethodsUtilService {
 			}
 			return null;
 		}
-
+		/**
+		 * @author  Swadhin Lenka 
+		 * @Date 9th June,2017
+		 * @description we need to keep three decimal place
+		 * @param List<Long>
+		 * @return if argument is not null java.lang.Double else 0.0
+		 */
+		public Double roundUptoThreeDecimalPoint(Double value){
+			try{
+				 DecimalFormat df = new DecimalFormat("##.000");
+				if(value != null && value.doubleValue() > 0){
+					return Double.parseDouble(df.format(value));
+				}else{
+					return 0.0d;
+				}
+			}catch(Exception e){
+				LOG.error(" Exception Occured in roundUptoTwoDecimalPoint() , CommonMethodsUtilService class.");
+			}
+			return null;
+		}
 		public  String calculateAmountInWords(Long number){
 		      String amountStr = number.toString();
 		      int lenght = amountStr.trim().length();

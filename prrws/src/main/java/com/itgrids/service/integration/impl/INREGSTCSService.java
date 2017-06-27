@@ -11,6 +11,7 @@ import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
+import com.itgrids.dto.WebserviceDetailsVO;
 
 public interface INREGSTCSService {
 
@@ -46,6 +47,7 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregsSericultureData(InputVO inputVO);
 	public NregsOverviewVO getNregsHousingOverview(InputVO inputVO);
 	public List<NregsDataVO> getNregsHousingData(InputVO inputVO);
+	public List<WebserviceDetailsVO> getWebserviceHealthDetails(InputVO inputVO);
 	public List<NregsDataVO> getNregsConstCuntDetails(String output,Map<String,NregsDataVO> cntMap);
 	public NregsDataVO getMGNregsDistrWiseConsti(InputVO inputVO);
 	public List<NregsDataVO> getDistrictsConstitByType(List<NregsDataVO>  returnList,String type);

@@ -1,6 +1,10 @@
 package com.itgrids.dao.impl;
 
+import java.util.Date;
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IWebserviceCallDetailsDAO;
@@ -12,5 +16,30 @@ public class WebserviceCallDetailsDAO extends GenericDaoHibernate<WebserviceCall
 	public WebserviceCallDetailsDAO()
 	{
 		super(WebserviceCallDetails.class);
+	}
+	@Override
+	public List<Object[]> getWebserviceHealthDetails(Date startDate, Date endDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select "
+				+ " webserviceCallDetails.webservice.serviceProvider.serviceProviderId, "//0
+				+ " webserviceCallDetails.webservice.serviceProvider.providerName, "//1
+				+ " webserviceCallDetails.webservice.serviceModule.serviceModuleId, "//2
+				+ " webserviceCallDetails.webservice.serviceModule.moduleName, "//3
+				+ " webserviceCallDetails.webservice.webserviceId, "//4
+				+ " webserviceCallDetails.webservice.serviceName, "//5
+				+ " webserviceCallDetails.status, "//6
+				+ " count(webserviceCallDetails.status), "//7
+				+ " sum(webserviceCallDetails.timeTaken) "//8
+				+ " from "
+				+ " WebserviceCallDetails webserviceCallDetails "
+				+ " where "
+				+ " (date(webserviceCallDetails.callTime) between :startDate and :endDate) "
+				+ " group by "
+				+ " webserviceCallDetails.webservice.webserviceId, "
+				+ " webserviceCallDetails.status ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		return query.list();  
 	}
 }
