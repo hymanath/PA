@@ -74,7 +74,7 @@
 				<div class="col-sm-2 border_right">
 					Note: All Amount in Lakhs
 				</div>
-				<div class="col-sm-4 border_right">
+				<!--<div class="col-sm-4 border_right">
 					<div class="form-horizontal">
 						<div class="form-group form-group-sm">
 							<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
@@ -83,22 +83,22 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-sm-3">
+				</div>-->
+				<div class="col-sm-6">
 					<ul class="list-inline">
 						<li><span class="color-label color-label-success"></span> 80% and above</li>
 						<li><span class="color-label color-label-default"></span> 50% - 79%</li>
 						<li><span class="color-label color-label-danger"></span> 0% - 49%</li>
 					</ul>
 				</div>
-				<div class="col-sm-3">
+				<!--<div class="col-sm-3">
 					<div class="input-group">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
 						<input type="text" class="form-control" id="dateRangePickerAUM"/>
 					</div>
-				</div>
+				</div>-->
 			</div>
 		</div>
 	</section>
@@ -141,7 +141,7 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="white-block">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Habitation Coverage Status</span><p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#14BAAD"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p></h5>
+								<h5 style="padding:5px"><span class="chartTitleAlign">Habitation Coverage Status</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#14BAAD"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
 								<div class="chart2" id="habitation"></div>
 							</div>
 						</div>
@@ -161,13 +161,13 @@
 						</div>
 						<div class="col-sm-6">
 							<div class="white-block">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Alert Status - Jalavani</span><p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#FC5049"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p></h5>
+								<h5 style="padding:5px"><span class="chartTitleAlign">Alert Status - Jalavani</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#FC5049"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
 								<div class="chart2" id="alertStatus"></div>
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="white-block">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Assets</span><p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#14BAAD"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p></h5>
+								<h5 style="padding:5px"><span class="chartTitleAlign">Assets</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#14BAAD"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
 								<div class="chart2" id="assets"></div>
 							</div>
 						</div>

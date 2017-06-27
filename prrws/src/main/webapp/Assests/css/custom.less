@@ -1137,3 +1137,25 @@ header
 	width:100%;
 	background-color:rgba(0,0,0,0.4);
 }
+.panelCollapseIconChange
+{
+	&:before {
+		font-family:'Glyphicons Halflings';
+		content:"\2212";
+		float: right;
+		font-size:10px;
+		font-weight:400 !important;
+		margin-left:-4px;
+		color:@black_color;
+		border:1px solid @black_color;
+		padding:2px 4px;
+		.rounded-corners(4px);
+		margin-top: -27px;
+	}
+}
+.panelCollapseIconChange.collapsed
+{
+	&:before {
+		content:"\002b";
+	}
+}
