@@ -7,6 +7,7 @@
 						 {name:'Alert Status Jalavani',id:'jalavani',img:'alert_status.png'},
 						 {name:'Plan Of Action for Stressed Habitations Water Budget has to be prepared for all habitations',id:'planAction',img:'plan_action.png'}];
 		var alertStatusBlockArr = [{name:'Alert Status Jalavani',id:'alertStatus'},{name:'Drinking Water Satisfaction Levels',id:'drinking'}];
+		//getAllFiniancialYears();
 		onloadCalls();
 		function onloadCalls(){
 			tabBlocks('stateBlockId','state');
@@ -1494,28 +1495,28 @@
 							
 							if(notifiedCount >0){
 								tableView+='<td>'+notifiedCount+'</td>'; 
-								tableView+='<td><small style="color:#0FBE08">'+notifiedPerc+' %</small> </td>';
+								tableView+='<td><small style="color:#0FBE08">'+notifiedPerc+' </small> </td>';
 							}else{
 								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(proposalCount >0){
 								tableView+='<td>'+proposalCount+'</td>'; 
-								tableView+='<td><small style="color:#0FBE08">'+proposalPerc+' %</small> </td>';
+								tableView+='<td><small style="color:#0FBE08">'+proposalPerc+' </small> </td>';
 							}else{
 								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(actionInProgress >0){
 								tableView+='<td>'+actionInProgress+'</td>';
-								tableView+='<td><small style="color:#0FBE08">'+actionPerc+' %</small></td>';
+								tableView+='<td><small style="color:#0FBE08">'+actionPerc+' </small></td>';
 							}else{
 								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(CompleteClosedCount >0){
 								tableView+='<td>'+CompleteClosedCount+'</td>';
-								tableView+='<td><small style="color:#0FBE08">'+completeClosedPerc+' %</small> </td>';
+								tableView+='<td><small style="color:#0FBE08">'+completeClosedPerc+'</small> </td>';
 							}else{
 								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
@@ -1554,6 +1555,7 @@
 					if(GLtbodyAlertArr[0].statusList !=null && GLtbodyAlertArr[0].statusList.length>0){
 						for(var j in GLtbodyAlertArr[0].statusList){
 								tableView+='<th>'+GLtbodyAlertArr[0].statusList[j].name+'</th>';
+								tableView+='<th></th>';
 						}
 					}
 				tableView+='</tr>'; 
@@ -1570,6 +1572,7 @@
 						if(GLtbodyAlertArr[i].statusList !=null && GLtbodyAlertArr[i].statusList.length>0){
 							for(var j in GLtbodyAlertArr[i].statusList){
 									tableView+='<td>'+GLtbodyAlertArr[i].statusList[j].count+'</td>';
+									tableView+='<td>'+GLtbodyAlertArr[i].statusList[j].percentage+'</td>';
 							}
 						}
 						tableView+='</tr>'; 
@@ -1591,8 +1594,9 @@
 						var tableView='';
 						tableView+='<table class="table table-bordered" id="dataTable'+locationType+divId[k].id+'">';
 							tableView+='<thead class="text-capital">';
-							tableView+='<tr>';
+							
 							if(divId[k].id=="habitation"){
+								tableView+='<tr>';
 								tableView+='<th>'+locationType+'</th>';
 								if(GLtbodyArr[0] !=null && GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
 									for(var j in GLtbodyArr[0].statusList){
@@ -1606,20 +1610,23 @@
 									}
 								}
 								tableView+='<th>TOTAL</th>';
+								tableView+='</tr>'; 
 							}else if(divId[k].id=="performance"){
+								tableView+='<tr>';
 								tableView+='<th rowspan="2">'+locationType+'</th>';
-								for(var p in GLtbodyArr){
-									tableView+='<th colspan="3">'+GLtbodyArr[p].type+'</th>';
-								}
+								tableView+='<th colspan="3">Partially Covered<br/>Habitations Through Schemes</th>';
+								tableView+='<th colspan="3">Quality Affected<br/>Habitations Through Schemes</th>';
+								tableView+='</tr>'; 
 								tableView+='<tr>'; 
-								for(var p in GLtbodyArr){
-									tableView+='<th>Target</th>';
-									tableView+='<th>Achived</th>';
-									tableView+='<th>% Percentage</th>';
-								}
+								tableView+='<th>Target</th>';
+								tableView+='<th>Achived</th>';
+								tableView+='<th>% Percentage</th>';
+								tableView+='<th>Target</th>';
+								tableView+='<th>Achived</th>';
+								tableView+='<th>% Percentage</th>';
 								tableView+='</tr>'; 
 							}
-						tableView+='</tr>'; 
+						
 						tableView+='</thead>';
 						tableView+='<tbody>';
 							if(divId[k].id=="habitation"){
@@ -1645,26 +1652,23 @@
 									tableView+='</tr>';
 								}
 							}else if(divId[k].id=="performance"){
-								tableView+='<tr>';
-								tableView+='<td>Andhra Pradesh</td>';
+								
 								for(var i in GLtbodyArr){
-									if(GLtbodyArr[i].targetCount !=null  && GLtbodyArr[i].targetCount >0){
-										tableView+='<td>'+GLtbodyArr[i].targetCount+'</td>';
+									tableView+='<tr>';
+									if(locationType == "state"){
+										tableView+='<td>Andhra Pradesh</td>';
 									}else{
-										tableView+='<td> - </td>';
+										tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
 									}
-									if(GLtbodyArr[i].achivmentCount !=null  && GLtbodyArr[i].achivmentCount >0){
-										tableView+='<td>'+GLtbodyArr[i].achivmentCount+'</td>';
-									}else{
-										tableView+='<td> - </td>';
-									}
-									if(GLtbodyArr[i].perc !=null  && GLtbodyArr[i].perc >0){
-										tableView+='<td>'+GLtbodyArr[i].perc+'</td>';
-									}else{
-										tableView+='<td> - </td>';
-									}
+									tableView+='<td>'+GLtbodyArr[i].pcTarget+'</td>';
+									tableView+='<td>'+GLtbodyArr[i].pcAchivement+'</td>';
+									tableView+='<td>'+GLtbodyArr[i].pcPercentage+'</td>';
+									tableView+='<td>'+GLtbodyArr[i].qaTarget+'</td>';
+									tableView+='<td>'+GLtbodyArr[i].qaAchivement+'</td>';
+									tableView+='<td>'+GLtbodyArr[i].qaPercentage+'</td>';
+									tableView+='</tr>';
 								}
-								tableView+='</tr>';
+								
 							} 
 						tableView+='</tbody>';
 						tableView+='</table>';	
@@ -2038,8 +2042,7 @@
   function getAllFiniancialYears()
 	{
 		$("#financialYearId").html('');
-		$(".compMultiFinancialYear").html('');
-		$(".compSingleFinancialYear").html('');
+		
 		var json = {
 		}
 		$.ajax({                
@@ -2057,18 +2060,13 @@
 			if(result != null && result.length >0){
 				for(var i in result){
 					$("#financialYearId").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
-					$(".compMultiFinancialYear").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
-					$(".compSingleFinancialYear").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
+					
 				}
 				$("#financialYearId").val(0);
-				//$(".compMultiFinancialYear").val(['1','2']);
-				$(".compMultiFinancialYear").val(1);
-				$(".compSingleFinancialYear").val(3);
+				
 			}
 			$("#financialYearId").chosen();
 			$("#financialYearId").trigger('chosen:updated');
-			$(".compMultiFinancialYear").trigger('chosen:updated');
-			$(".compSingleFinancialYear").trigger('chosen:updated');
 			onLoadCalls();	
 		});
    }

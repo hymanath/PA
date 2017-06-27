@@ -79,7 +79,7 @@
 						<div class="form-group form-group-sm">
 							<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
 							<div class="col-sm-8">
-								<select id="financialYearId" class="chosenSelect" multiple></select>
+								<select id="financialYearId" class="chosenSelect" multiple data-placeholder="Select Financial Year"></select>
 							</div>
 						</div>
 					</div>
