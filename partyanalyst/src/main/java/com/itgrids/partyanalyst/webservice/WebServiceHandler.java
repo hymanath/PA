@@ -2896,7 +2896,7 @@ public class WebServiceHandler {
 	@Path("/getParentLevelsOfLevelForAms")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<AmsAppVO> getParentLevelsOfLevelForAms(AmsAppLoginVO vo)
+	public List<AmsKeyValueVO> getParentLevelsOfLevelForAms(AmsAppLoginVO vo)
 	{
 		try{
 			
@@ -3092,5 +3092,36 @@ public class WebServiceHandler {
 			LOG.error("Exception Occured in getHamletWiseIvrStatusCounts() Method, Exception is ",e);
 			return null;
 		}
+	}
+	@POST
+	@Path("/getDistrictAndMandalWiseInfoForAms")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public AmsKeyValueVO getDistrictWiseInfoForAms(AmsAppLoginVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.getDistrictWiseInfoForAms(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getDistrictWiseInfoForAms() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
+	@POST
+	@Path("/getTotalAlertByOtherStatusForAMS")//for clicking on subOrdinates view in locationWise data
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<DistrictOfficeViewAlertVO> getTotalAlertByOtherStatusForAMS(AmsDataVO vo)
+	{
+		try{
+			return webServiceHandlerService.getTotalAlertByOtherStatusForAMS(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getTotalAlertByOtherStatusForAMS() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
 	}
 }
