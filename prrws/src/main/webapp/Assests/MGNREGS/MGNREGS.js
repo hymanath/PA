@@ -1840,7 +1840,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<table class="table table-bordered m_top10 dataTableCls">';
 					str+='<thead class="text-capital">';
 						str+='<tr>';
-							str+='<th>District Name </th>';
+							str+='<th>'+dataArr+'</th>';
 							str+='<th style="color:red;">Mandals In Red </th>';
 							str+='<th style="color:orange;">Mandals In Orange </th>';
 							str+='<th style="color:green;">Mandals In Green </th>';
