@@ -112,20 +112,18 @@
 								<span class="input-group-addon">
 									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 								</span>
-								<input type="text" class="form-control" id="dateRangePickerMGNT" style="width: 200px;"/>
+								<input type="text" class="form-control" id="dateRangePickerMGNT"/>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-3 m_top5">
+				<div class="col-sm-4 m_top5">
 					<ul class="list-inline">
 						<li><span class="color-label color-label-success"></span> 80% and above</li>
 						<li><span class="color-label color-label-default"></span> 50% - 79%</li>
-						<li><span class="color-label color-label-danger"></span> 0% - 49%</li>
+						<li><span class="color-label color-label-danger"></span> 0% - 49%&nbsp;&nbsp;&nbsp;</li>
+						<li><button type="button" class="btn btn-primary btn-xs" title="Webservice Details" id="getWebserviceDetailsId">WS Details</button> </li>
 					</ul>  
-				</div>
-				<div class="col-sm-1 m_top5"> 
-					<button type="button" class="btn btn-primary btn-sm" id="getWebserviceDetailsId">Webservice Details</button> 
 				</div>
 			</div>
 		</div>

@@ -54,6 +54,10 @@
 		function getHabitationCoverageByStatusByLocationType(locationType,divId,type)
 		{
 			$("#totalValues,#habitation").html(spinner);
+			for(var k in divId){
+				
+				$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
+			}
 			var json = {
 				locationType:locationType,
 				year:"2017",
@@ -114,7 +118,7 @@
 				}
 			}
 			$("#totalCntTtlValues").html("TOTAL:"+totalCount)
-			var colors = ['#494949','#FC5049','#14BAAD']
+			var colors = ['#14BAAD','#FC5049','#494949']
 			var id = 'totalValues';
 			var type = {
 				type: 'column',
@@ -578,10 +582,10 @@
 					if(result[i].assetType == "PWS" || result[i].assetType == "CPWS")
 					{
 						assetTypeArr.push(result[i].assetType);						
-						workOngoingArr.push({"y":result[i].workOngoingCount,color:'#14BBAE'});
-						workNotGroundedArr.push({"y":result[i].workNotGroundedCount,color:'#FC5E57'});
-						workCompletedArr.push({"y":result[i].workCompletedCount,color:'#FFBF14'});
-						workComissionedArr.push({"y":result[i].workComissionedCount,color:'#465556'});						
+						workOngoingArr.push({"y":result[i].workOngoingCount});
+						workNotGroundedArr.push({"y":result[i].workNotGroundedCount});
+						workCompletedArr.push({"y":result[i].workCompletedCount});
+						workComissionedArr.push({"y":result[i].workComissionedCount});						
 					}
 					
 				  }
@@ -609,7 +613,7 @@
 						minorGridLineWidth: 0,
 							title: {
 								text: null
-							}
+							},
 					}, 
 					
 					legend: {
@@ -619,25 +623,38 @@
 						enabled: true
 					},
 					tooltip: {
-						pointFormat: '{point.y}'
+						formatter: function () {
+							return '<b>' + this.x + '</b><br/>' +
+								this.series.name + ': ' + this.y;
+						}
 					},
 					plotOptions: {
 						column: {
 							//colorByPoint: true
+							dataLabels: {
+								enabled: true,
+								formatter: function () {
+									return this.y;
+								}
+							}
 						}
 					},
 					series: [{
 							name: 'Ongoing',
-							data: workOngoingArr
+							data: workOngoingArr,
+							color:'#14BBAE'
 						}, {
 							name: 'Not Grounded',
-							data: workNotGroundedArr
+							data: workNotGroundedArr,
+							color:'#FC5E57'
 						}, {
 							name: 'Completed',
 							data: workCompletedArr,
+							color:'#FFBF14'
 						}, {
 							name: 'Commissioned',
-							data: workComissionedArr
+							data: workComissionedArr,
+							color:'#465556'
 						}]
 				});
 				
@@ -807,6 +824,10 @@
 		
 		function getKeyPerformanceIndicatorsInfo(locationType,divId,type){
 			$("#keyPerformance").html(spinner);
+			for(var k in divId){
+				
+				$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
+			}
 			var json={
 						fromDateStr:"01-04-2016",
 						toDateStr:"01-12-2030",
@@ -1026,11 +1047,20 @@
 						enabled: true
 					},
 					tooltip: {
-						pointFormat: '{point.y}'
+						formatter: function () {
+							return '<b>' + this.x + '</b><br/>' +
+								this.series.name + ': ' + this.y;
+						}
 					},
 					plotOptions: {
 						column: {
 							//colorByPoint: true
+							dataLabels: {
+								enabled: true,
+								formatter: function () {
+									return this.y;
+								}
+							}
 						}
 					},
 					series: [{
@@ -1106,6 +1136,10 @@
 		}
 		function getAlertDetailsOfCategoryByStatusWise(type,divId,locationType){
 			$("#alertStatus").html(spinner);
+			for(var k in divId){
+				
+				$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
+			}
 			var json = {
 				fromDate:"",
 				toDate:"",

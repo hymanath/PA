@@ -8,6 +8,7 @@ onLoadCalls();
 
 function onLoadCalls()
 {
+	$("#getWebserviceDetailsId").tooltip();
 	$(document).keydown(function(event){
 		if(event.keyCode==123){
 			alert("Hoo no! don't try to expose me");

@@ -24,7 +24,7 @@
 		getAverageFundForAnyLevel(6,'avgFundVillage',0,0);
 		
 		//onload overviewGraph building
-		getLocationWiseAmountDetails(2,'stateLevlOvervw','overview','','',0,'onLoad');
+		 getLocationWiseAmountDetails(2,'stateLevlOvervw','overview','','',0,'onLoad');
 		getLocationWiseAmountDetails(3,'distLevlOvervw','overview','count','desc',0,'onLoad');
 		getLocationWiseAmountDetails(4,'consLevlOvervw','overview','count','desc',0,'onLoad');
 		getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview','count','desc',0,'onLoad');
@@ -53,7 +53,7 @@
 		compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable');
 		compareFundsBetweenFinancialYears(5,'comparionMandalLevlOvervwTable');
 		getGrantTypeHighestAndLowestFund('highest','highFundSource');
-		getGrantTypeHighestAndLowestFund('lowest','lowFundSource');
+		getGrantTypeHighestAndLowestFund('lowest','lowFundSource'); 
 	}
 	function getSelectedType(){
 		 var sortingType = ''; 
@@ -285,10 +285,18 @@
 		getAllFiniancialYears();		
 	}
 	$(document).on("change","#financialYearId",function(){
-		
+		//$(".search-choice-close").attr("data-option-array-index","0").addClass("clicked")
 		$(".switch-btn li").removeClass("active");
 		$(".switch-btn li:first-child").addClass("active");
 		$('[role="tablist"] li:first-child a').trigger('click');
+		var length =$(this).val().length;
+		var financialYrIdArr = $('#financialYearId').val();
+		
+		if(length >=2){
+			if ($.inArray('0', financialYrIdArr) != -1){
+				$(".clicked").trigger('click');
+			}
+		}
 		if($(this).val() != null)
 		onLoadCalls();
 	});
@@ -633,40 +641,104 @@
 			var tempIdStr = "" + locationId;
 			var locationLevelId= tempIdStr.substring(0,1);
 		}
-		if(levelId ==3){
-			str+='<h4 class="m_top10">District - '+districtName+'</h4>';
-			
-		}else if(levelId ==4){
-			if(constLevelConstName =="SELECT CONSTITUENCY"){
-				str+='<h4 class="m_top10">District - '+constLevelDistName+'</h4>';
-			}else{
-				str+='<h4 class="m_top10">District - <i>'+constLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+constLevelConstName+'</i></h4>';
-			}
-			
-		}else if(levelId ==5){
-			if(mandalLevelConstName =="SELECT CONSTITUENCY" && mandalLevelManName =="SELECT MANDAL"){
-				str+='<h4 class="m_top10">District - '+mandalLevelDistName+'</h4>';
-			}else if(mandalLevelManName =="SELECT MANDAL"){
-				str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i></h4>';
-			}else{
-				str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+mandalLevelManName+'</i></h4>';
-			}
-		}else if(levelId ==6){
-			if(villageLevelConstName =="SELECT CONSTITUENCY" && villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
-				str+='<h4 class="m_top10">District - '+villageLevelDistName+'</h4>';
-			}else if(villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
-				str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i></h4>';
-			}else if(villageLevelVillName == "SELECT VILLAGE"){
-				str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i></h4>';
-			}else{
-				str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Village - <i>'+villageLevelVillName+'</i></h4>';
+		if(type == 'scheme' || type == 'deptscheme'){
+				if(levelId ==3){
+					if(districtName != "SELECT DISTRICT"){
+						str+='<h4 class="m_top10">District - '+districtName+'</h4>';
+					}
+				
+				
+			}else if(levelId ==4){
+				if(constLevelConstName =="SELECT CONSTITUENCY"){
+					if(constLevelDistName != "SELECT DISTRICT"){
+					str+='<h4 class="m_top10">District - '+constLevelDistName+'</h4>';
+					}
+					
+				}else{
+					str+='<h4 class="m_top10">District - <i>'+constLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+constLevelConstName+'</i></h4>';
+				}
+				
+			}else if(levelId ==5){
+				if(mandalLevelConstName =="SELECT CONSTITUENCY" && mandalLevelManName =="SELECT MANDAL"){
+					if(mandalLevelDistName != "SELECT DISTRICT"){
+					str+='<h4 class="m_top10">District - '+mandalLevelDistName+'</h4>';
+					}
+					
+				}else if(mandalLevelManName =="SELECT MANDAL"){
+					str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i></h4>';
+				}else{
+					str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+mandalLevelManName+'</i></h4>';
+				}
+			}else if(levelId ==6){
+				if(villageLevelConstName =="SELECT CONSTITUENCY" && villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
+					if(villageLevelDistName != "SELECT DISTRICT"){
+					str+='<h4 class="m_top10">District - '+villageLevelDistName+'</h4>';
+					}
+					
+				}else if(villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
+					str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i></h4>';
+				}else if(villageLevelVillName == "SELECT VILLAGE"){
+					str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i></h4>';
+				}else{
+					str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Village - <i>'+villageLevelVillName+'</i></h4>';
+				}
 			}
 		}
+		
 		if(displayType == 'selectBox')
 		{
-			str+='<div id="overviewTable'+divId+'">';
-		
-				str+='<table class="table table-bordered table-overview m_top20">';
+			if(type == 'overview'){
+					if(levelId ==3){
+						if(districtName != "SELECT DISTRICT"){
+							str+='<h4 class="m_top10">District - '+districtName+'</h4>';
+						}
+					
+					
+				}else if(levelId ==4){
+					if(constLevelConstName =="SELECT CONSTITUENCY"){
+						if(constLevelDistName != "SELECT DISTRICT"){
+						str+='<h4 class="m_top10">District - '+constLevelDistName+'</h4>';
+						}
+						
+					}else{
+						str+='<h4 class="m_top10">District - <i>'+constLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+constLevelConstName+'</i></h4>';
+					}
+					
+				}else if(levelId ==5){
+					if(mandalLevelConstName =="SELECT CONSTITUENCY" && mandalLevelManName =="SELECT MANDAL"){
+						if(mandalLevelDistName != "SELECT DISTRICT"){
+						str+='<h4 class="m_top10">District - '+mandalLevelDistName+'</h4>';
+						}
+						
+					}else if(mandalLevelManName =="SELECT MANDAL"){
+						str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i></h4>';
+					}else{
+						str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+mandalLevelManName+'</i></h4>';
+					}
+				}else if(levelId ==6){
+					if(villageLevelConstName =="SELECT CONSTITUENCY" && villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
+						if(villageLevelDistName != "SELECT DISTRICT"){
+						str+='<h4 class="m_top10">District - '+villageLevelDistName+'</h4>';
+						}
+						
+					}else if(villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
+						str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i></h4>';
+					}else if(villageLevelVillName == "SELECT VILLAGE"){
+						str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i></h4>';
+					}else{
+						str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Village - <i>'+villageLevelVillName+'</i></h4>';
+					}
+				}
+			}
+			str+='<div id="accordion'+divId+'">';
+			
+				str+='<div class="col-sm-2 pull-right">';
+						str+='<a class="panelCollapseIconChange" role="button" data-toggle="collapse" data-parent="#accordion'+divId+'" href="#collapse'+divId+'" aria-expanded="true" aria-controls="collapse'+divId+'">';
+						str+='</a>';
+					str+='</div>';
+				str+='<div id="collapse'+divId+'" class="panel-collapse collapse in m_top20" role="tabpanel" aria-labelledby="heading'+divId+'">';
+				str+='<div id="overviewTable'+divId+'">';				
+				str+='<table class="table table-bordered table-overview">';
 					str+='<tr>';
 						/*str+='<td>';
 							str+='<h4 class="panel-title text-muted">High Funded District</h4>';
@@ -806,10 +878,12 @@
 					str+='</tr>';
 				str+='</table>';
 			str+='</div>';
+			str+='</div>';
 		}
 		
 		str+='<div class="scroller'+divId+'">';
 			str+='<div class="chart'+divId+'"></div>';
+		str+='</div>';
 		str+='</div>';
 		$("#"+divId).html(str);
 		if(displayType == 'selectBox')
@@ -2460,11 +2534,15 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success : function(ajaxresp){
-				if(ajaxresp != null && ajaxresp.length>0)
+				if(ajaxresp != null && ajaxresp.length>0){
 					buildLocationWiseAmountDetails(ajaxresp,divId,type,levelId);
-				else
+				}
+					
+				else{
 					$("#"+divId).html("NO DATA AVAILABLE");
 					$("#"+divId+"Table").html("NO DATA AVAILABLE");
+				}
+					
 			}
 		});
 	}
@@ -2854,7 +2932,9 @@
 			}
 			$("#DepartmentsId").val(0)
 			$("#DepartmentsId").trigger("chosen:updated");
+			$("#DepartmentsId_chosen").find(".search-choice-close").attr("data-option-array-index","0").addClass("deptclicked");
 		});
+		
 	}
 	function getAllFiniancialYears()
 	{
@@ -2890,7 +2970,9 @@
 			$("#financialYearId").trigger('chosen:updated');
 			$(".compMultiFinancialYear").trigger('chosen:updated');
 			$(".compSingleFinancialYear").trigger('chosen:updated');
+			$("#financialYearId_chosen").find(".search-choice-close").attr("data-option-array-index","0").addClass("clicked")
 			onLoadCalls();	
+			
 		});
    }
    
@@ -2958,6 +3040,16 @@
 		$(".switch-btn li").removeClass("active");
 		$(".switch-btn li:first-child").addClass("active");
 		$('[role="tablist"] li:first-child a').trigger('click');
+		 var length =$(this).val().length;
+		var departmentIds = $('#DepartmentsId').val();
+		var stringIds = "1,2,3,4";
+			strx   = stringIds.split(',');
+			financialYrIdArr = financialYrIdArr.concat(strx);
+		if(length >=2){
+			if ($.inArray('0', departmentIds) != -1){
+				$(".deptclicked").trigger('click');
+			}
+		}
 		if($(this).val() != null)
 		onLoadCalls();
 	});
