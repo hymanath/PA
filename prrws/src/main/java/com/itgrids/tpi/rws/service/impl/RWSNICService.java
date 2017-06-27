@@ -563,11 +563,11 @@ public class RWSNICService implements IRWSNICService{
 	 	    		if(finalMap != null && finalMap.size() > 0){
 	 	    			for (Entry<String, KPIVO> entry : finalMap.entrySet()) {
 							if(entry.getValue().getPcTarget() > 0l){
-								entry.getValue().setPcPercentage((entry.getValue().getPcAchivement()/entry.getValue().getPcTarget())*100.00);
+								entry.getValue().setPcPercentage((entry.getValue().getPcAchivement()*100.00)/entry.getValue().getPcTarget());
 							}
 							
 							if(entry.getValue().getQaTarget() > 0l){
-								entry.getValue().setQaPercentage((entry.getValue().getQaAchivement()/entry.getValue().getQaTarget())*100.00);
+								entry.getValue().setQaPercentage((entry.getValue().getQaAchivement()*100.00)/entry.getValue().getQaTarget());
 							}
 						}
 	 	    			voList.addAll(finalMap.values());
