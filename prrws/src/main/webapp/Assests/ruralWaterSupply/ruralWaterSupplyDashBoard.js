@@ -8,6 +8,7 @@
 						 {name:'Plan Of Action for Stressed Habitations Water Budget has to be prepared for all habitations',id:'planAction',img:'plan_action.png'}];
 		var alertStatusBlockArr = [{name:'Alert Status Jalavani',id:'alertStatus'},{name:'Drinking Water Satisfaction Levels',id:'drinking'}];
 		var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+		//getAllFiniancialYears();
 		onloadCalls();
 		function onloadCalls(){
 			tabBlocks('stateBlockId','state');
@@ -1330,9 +1331,28 @@
 								{
 									if(i == 0)
 									{
-										tabBlock+='<li class="active" ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+										if(blockName == "constituency" || blockName == "mandal"){
+											if(blocksArr[i].id == "jalavani"){
+												tabBlock+='<li class="active" style="display:none"><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+											}else{
+												tabBlock+='<li class="active" ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+											}
+										}else{
+											tabBlock+='<li class="active" ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+										}
+										
 									}else{
-										tabBlock+='<li ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+										if(blockName == "constituency" || blockName == "mandal"){
+											if(blocksArr[i].id == "jalavani"){
+												tabBlock+='<li style="display:none"><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+											}else{
+												tabBlock+='<li ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+											}
+											
+										}else{
+											tabBlock+='<li ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+										}
+										
 									}
 									
 								}
@@ -1670,12 +1690,36 @@
 									}else{
 										tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
 									}
-									tableView+='<td>'+GLtbodyArr[i].pcTarget+'</td>';
-									tableView+='<td>'+GLtbodyArr[i].pcAchivement+'</td>';
-									tableView+='<td>'+GLtbodyArr[i].pcPercentage+'</td>';
-									tableView+='<td>'+GLtbodyArr[i].qaTarget+'</td>';
-									tableView+='<td>'+GLtbodyArr[i].qaAchivement+'</td>';
-									tableView+='<td>'+GLtbodyArr[i].qaPercentage+'</td>';
+									if(GLtbodyArr[i].pcTarget !=null && GLtbodyArr[i].pcTarget >0){
+										tableView+='<td>'+GLtbodyArr[i].pcTarget+'</td>';
+									}else{
+										tableView+='<td> - </td>';
+									}
+									if(GLtbodyArr[i].pcAchivement !=null && GLtbodyArr[i].pcAchivement >0){
+										tableView+='<td>'+GLtbodyArr[i].pcAchivement+'</td>';
+									}else{
+										tableView+='<td> - </td>';
+									}
+									if(GLtbodyArr[i].pcPercentage !=null && GLtbodyArr[i].pcPercentage >0){
+										tableView+='<td>'+GLtbodyArr[i].pcPercentage.toFixed(2)+'</td>';
+									}else{
+										tableView+='<td> - </td>';
+									}
+									if(GLtbodyArr[i].qaTarget !=null && GLtbodyArr[i].qaTarget >0){
+										tableView+='<td>'+GLtbodyArr[i].qaTarget+'</td>';
+									}else{
+										tableView+='<td> - </td>';
+									}
+									if(GLtbodyArr[i].qaAchivement !=null && GLtbodyArr[i].qaAchivement >0){
+										tableView+='<td>'+GLtbodyArr[i].qaAchivement+'</td>';
+									}else{
+										tableView+='<td> - </td>';
+									}
+									if(GLtbodyArr[i].qaPercentage !=null && GLtbodyArr[i].qaPercentage >0){
+										tableView+='<td>'+GLtbodyArr[i].qaPercentage.toFixed(2)+'</td>';
+									}else{
+										tableView+='<td> - </td>';
+									}
 									tableView+='</tr>';
 								}
 								
