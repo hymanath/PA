@@ -3495,7 +3495,11 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
          str+='<td>-</td>';
     }  
     if(result[i].goNoDate != null){
-         str+='<td>'+result[i].goNoDate+'</td>';
+		if(result[i].filePath != null && result[i].filePath.length > 1){
+			str+='<td style="cursor:pointer;" class="viewPdfCls" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get govt order document." attr_filePath="'+result[i].filePath+'"><a>'+result[i].goNoDate+'</a></td>';
+		}else{
+			str+='<td>'+result[i].goNoDate+'</td>';
+		}
     }else{
          str+='<td>-</td>';
     }
@@ -3817,3 +3821,24 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 			}
 		});
 	}
+	$(document).on('click','.viewPdfCls',function(){
+		var dbFilePath = $(this).attr("attr_filePath");         
+		var str = ''; 
+		var fileNameArr = dbFilePath.split(".");
+		var extName = fileNameArr[1];
+		if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+			$("#govtOrderDocumentId").modal("hide");
+			window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		}else{
+			if(extName.trim()=="pdf" || extName.trim()=="PDF"){
+				$('#govtOrderDocumentId').modal({
+					show: true,
+					keyboard: false,
+					backdrop: 'static'
+				});
+				str += '<iframe src="http://www.mydepartments.in/PRRWS/Govt_Orders/'+dbFilePath+'" width="100%" height="800">';    
+				str += '</iframe>';
+			}         
+			$("#govtOrderDocumentBodyId").html(str);       
+		}      
+	});
