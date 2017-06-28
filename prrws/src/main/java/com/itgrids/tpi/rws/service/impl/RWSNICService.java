@@ -314,6 +314,13 @@ public class RWSNICService implements IRWSNICService{
 	 	    				Vo.setWorkComissionedCount(jObj.getLong("workComissionedCount"));
 	 	    				Vo.setWorkCompletedCount(jObj.getLong("workCompletedCount"));
 	 	    				Vo.setWorkNotGroundedCount(jObj.getLong("workNotGroundedCount"));
+	 	    				Vo.setCount(Vo.getWorkOngoingCount()+Vo.getWorkComissionedCount()+Vo.getWorkCompletedCount()+Vo.getWorkNotGroundedCount());
+	 	    				if(Vo.getCount() > 0l){
+	 	    					Vo.setPercentageOne((Vo.getWorkOngoingCount()*100.00)/Vo.getCount());
+		 	    				Vo.setPercentageTwo((Vo.getWorkComissionedCount()*100.00)/Vo.getCount());
+		 	    				Vo.setPercentageThree((Vo.getWorkCompletedCount()*100.00)/Vo.getCount());
+		 	    				Vo.setPercentageFour((Vo.getWorkNotGroundedCount()*100.00)/Vo.getCount());
+	 	    				}
 	 	    				
 	 	    				finalList.add(Vo);
 						}
@@ -350,12 +357,20 @@ public class RWSNICService implements IRWSNICService{
 	 	    		
 	 	    		if(jobj.getJSONArray("assetTypeList") != null && jobj.getJSONArray("assetTypeList").length() > 0){
 	 	    			JSONArray finalArray = jobj.getJSONArray("assetTypeList");
+	 	    			Long totalAssets = 0l;
 	 	 	    		for(int i=0;i<finalArray.length();i++){
 	 	 	    			BasicVO basicVO = new BasicVO();
 	 	 	    			JSONObject jObj = (JSONObject) finalArray.get(i);
 	 	 	    			basicVO.setAssetType(jObj.getString("assetType"));
 	 	 	    			basicVO.setCount(jObj.getLong("count"));
+	 	 	    			totalAssets = totalAssets + jObj.getLong("count");
 	 	 	    			assetsList.add(basicVO);
+	 	 	    		}
+	 	 	    		
+	 	 	    		if(totalAssets > 0l){
+	 	 	    			for (BasicVO basicVO : assetsList) {
+	 	 	    				basicVO.setPercentageOne((basicVO.getCount()*100.00)/totalAssets);
+							}
 	 	 	    		}
 	 	    		}
  	    		
@@ -697,6 +712,15 @@ public class RWSNICService implements IRWSNICService{
 	 	    			}
 	 	    			
 	 	    			if(locationsMap != null && locationsMap.size() > 0){
+	 	    				for (Entry<String, StatusVO> entry : locationsMap.entrySet()) {
+								Long totalHab = entry.getValue().getTarget()+entry.getValue().getAchived(),
+										totalPop = entry.getValue().getTargetPopulation()+entry.getValue().getAchivedPopulation();
+								
+								entry.getValue().setPercentageOne((entry.getValue().getTarget()*100.00)/totalHab);
+								entry.getValue().setAchivedHabPerc((entry.getValue().getAchived()*100.00)/totalHab);
+								entry.getValue().setTargetPopPerc((entry.getValue().getTargetPopulation()*100.00)/totalPop);
+								entry.getValue().setAchivedPopPerc((entry.getValue().getAchivedPopulation()*100.00)/totalPop);
+							}
 	 	    				statusVOList.addAll(locationsMap.values());
 	 	    			}
 	 	    		}

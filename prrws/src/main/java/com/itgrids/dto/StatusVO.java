@@ -24,7 +24,7 @@ public class StatusVO {
 	private Long surfaceWaterSourceTotalMlpdCount;
 	private Long targetPopulation = 0l,achivedPopulation=0l;
 	
-	private Double percentageOne=0.0d;
+	private Double percentageOne=0.0d,achivedHabPerc=0.0d,targetPopPerc=0.0d,achivedPopPerc=0.0d;
 	
 	
 	public Double getPercentageOne() {
@@ -32,6 +32,24 @@ public class StatusVO {
 	}
 	public void setPercentageOne(Double percentageOne) {
 		this.percentageOne = percentageOne;
+	}
+	public Double getAchivedHabPerc() {
+		return achivedHabPerc;
+	}
+	public void setAchivedHabPerc(Double achivedHabPerc) {
+		this.achivedHabPerc = achivedHabPerc;
+	}
+	public Double getTargetPopPerc() {
+		return targetPopPerc;
+	}
+	public void setTargetPopPerc(Double targetPopPerc) {
+		this.targetPopPerc = targetPopPerc;
+	}
+	public Double getAchivedPopPerc() {
+		return achivedPopPerc;
+	}
+	public void setAchivedPopPerc(Double achivedPopPerc) {
+		this.achivedPopPerc = achivedPopPerc;
 	}
 	public Long getTargetPopulation() {
 		return targetPopulation;
