@@ -748,12 +748,32 @@ header
 .nav-tabs-custom
 {
 	background-color:@light_black;
-	li.active a , li:hover.active a, li:focus.active a
+	li.active a
 	{
 		background-color: @thick_black !important;
 		color: @white_color !important;
 		border-radius: 0px !important;
 		border:1px solid @thick_black;
+	}
+	li a{
+		&:hover{
+			background-color: @thick_black !important;
+			color: @white_color !important;
+			border-radius: 0px !important;
+			border:1px solid @thick_black;
+		}
+		&:hover.active{
+			background-color: @thick_black !important;
+			color: @white_color !important;
+			border-radius: 0px !important;
+			border:1px solid @thick_black;
+		}
+		&:focus.active{
+			background-color: @thick_black !important;
+			color: @white_color !important;
+			border-radius: 0px !important;
+			border:1px solid @thick_black;
+		}
 	}
 	li a
 	{
