@@ -25,8 +25,15 @@ public class StatusVO {
 	private Long targetPopulation = 0l,achivedPopulation=0l;
 	
 	private Double percentageOne=0.0d,achivedHabPerc=0.0d,targetPopPerc=0.0d,achivedPopPerc=0.0d;
+	private Long total =0l;
 	
 	
+	public Long getTotal() {
+		return total;
+	}
+	public void setTotal(Long total) {
+		this.total = total;
+	}
 	public Double getPercentageOne() {
 		return percentageOne;
 	}

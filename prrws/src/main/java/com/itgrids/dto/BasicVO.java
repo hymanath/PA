@@ -16,6 +16,7 @@ public class BasicVO {
 	 private Long workNotGroundedCount=0l;
 	 
 	 private Long total=0l;
+	 private Double percentage=0.0d;	 
 	 private Double percentageOne = 0.0d,percentageTwo = 0.0d,percentageThree = 0.0d,percentageFour = 0.0d;
 	 
 	 
@@ -24,6 +25,12 @@ public class BasicVO {
 	}
 	public void setPercentageOne(Double percentageOne) {
 		this.percentageOne = percentageOne;
+	}
+	public Double getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(Double percentage) {
+		this.percentage = percentage;
 	}
 	public Double getPercentageTwo() {
 		return percentageTwo;
