@@ -994,7 +994,7 @@
 										}
 									
 									if(result[i].locationList1[j].amount != null && result[i].locationList1[j].amount > 0){
-										table+='<td class="text-center">'+parseInt(result[i].locationList1[j].amunt.replace(/,/g, ""))+'</td>';
+										table+='<td class="text-center">'+parseFloat(result[i].locationList1[j].amunt.replace(/,/g, ""))+'</td>';
 									}else{
 										table+='<td class="text-center">-</td>';
 									}
@@ -1012,7 +1012,7 @@
 										}
 									
 									if(result[i].locationList1[0].amount != null && result[i].locationList1[0].amount > 0){
-										table+='<td class="text-center">'+parseInt(result[i].locationList1[0].amunt.replace(/,/g, ""))+'</td>';
+										table+='<td class="text-center">'+parseFloat(result[i].locationList1[0].amunt.replace(/,/g, ""))+'</td>';
 									}else{
 										table+='<td class="text-center">-</td>';
 									}
@@ -1125,7 +1125,7 @@
 									}
 								}
 									if(result[i].subList[j].subList[k].totalCount != null && result[i].subList[j].subList[k].totalCount > 0){
-										table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'</td>';
+										table+='<td class="text-center">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'</td>';
 									}else{
 										table+='<td class="text-center">-</td>';
 									}
@@ -1252,7 +1252,7 @@
 											}
 											
 											if(result[i].subList[j].subList[k].subList[l].totalCount != null && result[i].subList[j].subList[k].subList[l].totalCount > 0){
-												table+='<td class="text-center">'+parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, ""))+'</td>';
+												table+='<td class="text-center">'+parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, ""))+'</td>';
 											}else{
 												table+='<td class="text-center">-</td>';
 											}
@@ -1289,7 +1289,7 @@
 								totalCount2 =  result[i].locationList1[j].count;
 								 if(result[i].locationList1[j].financialYearId != 0){
 									//mainlocationArr.push({y:result[i].locationList1[j].amount})
-									mainlocationArr.push({y:parseInt(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId,"extra":result[i].locationList1[j].count})
+									mainlocationArr.push({y:parseFloat(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId,"extra":result[i].locationList1[j].count})
 								}
 								
 								//mainlocationArr.push({y:parseInt(result[i].locationList1[j].amunt.replace(/,/g, ""))})
@@ -1426,16 +1426,16 @@
 								totalCount2 =totalCount2+result[i].locationList1[j].count;
 								if(result[i].locationList1[j].financialYearId==1){
 									 //year1415Arr.push({"y":result[i].locationList1[j].amount}); 
-									 year1415Arr.push({"y":parseInt(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId,"extra":result[i].locationList1[j].count}); 
+									 year1415Arr.push({"y":parseFloat(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId,"extra":result[i].locationList1[j].count}); 
 								}else if(result[i].locationList1[j].financialYearId==2){
 									 //year1516Arr.push({"y":result[i].locationList1[j].amount}); 
-									 year1516Arr.push({"y":parseInt(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId,"extra":result[i].locationList1[j].count}); 
+									 year1516Arr.push({"y":parseFloat(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId,"extra":result[i].locationList1[j].count}); 
 								}else if(result[i].locationList1[j].financialYearId==3){
 									 //year1617Arr.push({"y":result[i].locationList1[j].amount}); 
-									 year1617Arr.push({"y":parseInt(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId,"extra":result[i].locationList1[j].count}); 
+									 year1617Arr.push({"y":parseFloat(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId,"extra":result[i].locationList1[j].count}); 
 								}else if(result[i].locationList1[j].financialYearId==4){
 									 //year1718Arr.push({"y":result[i].locationList1[j].amount}); 
-									 year1718Arr.push({"y":parseInt(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId,"extra":result[i].locationList1[j].count}); 
+									 year1718Arr.push({"y":parseFloat(result[i].locationList1[j].amunt.replace(/,/g, "")),appData:result[i].locationLevelId+"-"+result[i].locationId+"-"+result[i].locationList1[j].financialYearId,"extra":result[i].locationList1[j].count}); 
 								}
 							}
 						}
@@ -1612,31 +1612,31 @@
                                             totalCount2 =totalCount2+result[i].subList[j].subList[k].count;
 											if(result[i].subList[j].subList[k].id == 1){
 												//NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												NABARDArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												NABARDArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 2){
 												 //NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 NREGPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 NREGPArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 3){
 												 //CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 CRRArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 CRRArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 4){
 												 //RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 RDFArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 RDFArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 5){
 												 //MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 MRRArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 MRRArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 6){
 												 //FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 FC13Arr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 FC13Arr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 7){
 												 //APDRPGRANTArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 APDRPGRANTArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 APDRPGRANTArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 8){
 												 //NRDWPArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 NRDWPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 NRDWPArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 9){
 												 //NRDWPArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 SDPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 SDPArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }
 										}
 										 totalCountArr.push(totalCount2);
@@ -1822,31 +1822,31 @@
                                              totalCount2 =totalCount2+result[i].subList[j].subList[k].count;
 											 if(result[i].subList[j].subList[k].id == 1){
 												// NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 NABARDArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 NABARDArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 2){
 												 //NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 NREGPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 NREGPArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 3){
 												 //CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 CRRArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 CRRArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 4){
 												 //RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 RDFArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 RDFArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 5){
 												 //MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 MRRArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 MRRArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 6){
 												//FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 FC13Arr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 FC13Arr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 7){
 												 //APDRPGRANTArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 APDRPGRANTArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 APDRPGRANTArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 8){
 												 //NRDWPArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 NRDWPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 NRDWPArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 9){
 												 //NRDWPArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 SDPArr.push({"y":parseInt(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 SDPArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }
 											
 										}
@@ -2043,23 +2043,23 @@
 								  qTotal =parseInt(qTotal+result[i].subList[j].subList[k].subList[l].count);
 								  
 								   if(result[i].subList[j].subList[k].subList[l].id == 1){
-									NABARDArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+									NABARDArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 								   }else if(result[i].subList[j].subList[k].subList[l].id == 2){
-									 NREGPArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+									 NREGPArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 								   }else if(result[i].subList[j].subList[k].subList[l].id == 3){
-									 CRRArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+									 CRRArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 								   }else if(result[i].subList[j].subList[k].subList[l].id == 4){
-									 RDFArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+									 RDFArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 									 }else if(result[i].subList[j].subList[k].subList[l].id == 5){
-									 MRRArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+									 MRRArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 								   }else if(result[i].subList[j].subList[k].subList[l].id == 6){
-									 FC13Arr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+									 FC13Arr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 								   }else if(result[i].subList[j].subList[k].subList[l].id == 7){
-									 APDRPGRANTArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+									 APDRPGRANTArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 								   }else if(result[i].subList[j].subList[k].subList[l].id == 8){
-									 NRDWPArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+									 NRDWPArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 								   }else if(result[i].subList[j].subList[k].subList[l].id == 9){
-									 SDPArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+									 SDPArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 								   }
 								}
 								qTotalArr.push(qTotal);
@@ -2260,31 +2260,31 @@
 													
 													 if(result[i].subList[j].subList[k].subList[l].id == 1){
 														//NABARDArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-														NABARDArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+														NABARDArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 2){
 														//NREGPArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-														 NREGPArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+														 NREGPArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 3){
 														 //CRRArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-														 CRRArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+														 CRRArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 4){
 														 //RDFArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-														 RDFArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+														 RDFArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 5){
 														//MRRArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-														 MRRArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+														 MRRArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 6){
 														 //FC13Arr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-														 FC13Arr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+														 FC13Arr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 7){
 														 //APDRPGRANTArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-														 APDRPGRANTArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+														 APDRPGRANTArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 8){
 														 //NRDWPArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-														 NRDWPArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+														 NRDWPArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 													 }else if(result[i].subList[j].subList[k].subList[l].id == 9){
 														 //SDPArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-														 SDPArr.push({"y":parseInt(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
+														 SDPArr.push({"y":parseFloat(result[i].subList[j].subList[k].subList[l].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+result[i].subList[j].subList[k].subList[l].id,"extra":result[i].subList[j].subList[k].subList[l].count})
 													 }
 												}
 												qTotalArr.push(qTotal);
@@ -2437,7 +2437,7 @@
 		
 	}
 	
-	function getTotalFunds(divId)
+	function getTotalFunds(divId)      
 	{
 		$("#"+divId).html(spinner);
 		  var levelValues = [];
