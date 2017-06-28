@@ -53,4 +53,5 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getDistrictsConstitByType(List<NregsDataVO>  returnList,String type);
 	public List<NregsDataVO> getNregsMandalsCuntFrDistrict(String output,Map<String,NregsDataVO> cntMap,String divType);
 	public List<NregsDataVO> getNregsMandalsCuntFrConstituncies(String output,Map<String,NregsDataVO> cntMap,String divType);
+	public List<NregsDataVO> getNregaLevelsWiseData(InputVO inputVO);
 }

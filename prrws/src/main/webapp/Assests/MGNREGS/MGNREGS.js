@@ -229,7 +229,7 @@ function minimise(Id,count)
 function projectData(divId)
 {
 	var collapse='';
-	var dataArr = ['state','district','constituency','mandal']
+	var dataArr = ['state','district','constituency','mandal','panchayat']
 	collapse+='<section>';
 		collapse+='<div class="row">';
 			collapse+='<div class="col-sm-12">';
@@ -261,13 +261,17 @@ function projectData(divId)
 			theadArr = ["district",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 		else if(dataArr[i] == "mandal")
 			theadArr = ["district","constituency",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		else if(dataArr[i] == "panchayat")
+			theadArr = ["district","constituency","mandal",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 		
 		var tableId = divId.replace(/\s+/g, '')+''+dataArr[i];
 		$("#"+tableId).html(spinner);
 		if(divId == 'Labour Budget'){
 			getNREGSLabBugdtLelwiseData(tableId,dataArr[i]);
 		}
-		else if(divId == "Farm Pond"){
+		else
+			getNregaLevelsWiseData(tableId,dataArr[i],theadArr);
+		/*else if(divId == "Farm Pond"){
 			getNREGSFarmPondLelwiseData(tableId,dataArr[i],theadArr)
 		}
 		else if(divId == "IHHL"){
@@ -298,7 +302,7 @@ function projectData(divId)
 			getAHData(tableId,dataArr[i],theadArr);
 		}else if(divId == "Raising of Perinnial Fodder"){
 			getNregaLevelsOverviewForRaisingOfPerinnialFodder(tableId,dataArr[i],theadArr);
-		}
+		}*/
 	}
 }
 function overviewData(divId)
@@ -430,50 +434,155 @@ function buildNREGSProjectsOverview(result,blockName)
 	var str='';
 	var sidebarMenu='';
 	str+='<div class="row">';
-		for(var i in result)
-		{
-			str+='<div class="col-sm-2">';
-				if(result[i].percentage < 50)
+		str+='<div class="col-sm-4 bg_color" style="border: 5px solid #fff;">';
+				str+='<h4 class="text-center m_top10"><b>NON-CONVERGENCE</b></h4>';
+				for(var i in result)
 				{
-					str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
-				}else if(result[i].percentage > 50 && result[i].percentage < 80)
-				{
-					str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
-				}else if(result[i].percentage > 80)
-				{
-					str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
-				}
-				if(result[i].parameter.length > 14)
-					str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
-				else
-					str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
-					str+='<small class="text-center">Achieved</small>';
-					str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
-				if(result[i].percentage < 50)
-				{
-					str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
-				}else if(result[i].percentage > 50 && result[i].percentage < 80)
-				{
-					str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
-					
-				}else if(result[i].percentage > 80)
-				{
-					str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
-				}
-					str+='<div class="row">';
-						str+='<div class="col-sm-6 text-center">';
-							str+='<label>Target</label>';
-							str+='<h4>'+result[i].target+'</h4>';
+					if(result[i].parameter == "Labour Budget" || result[i].parameter == "Farm Pond" || result[i].parameter == "IHHL" || result[i].parameter == "VERMI" || result[i].parameter == "NTR Jala Siri"){
+						str+='<div class="col-sm-6 m_top10">';
+							if(result[i].percentage < 50)
+							{
+								str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
+							}else if(result[i].percentage > 50 && result[i].percentage < 80)
+							{
+								str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
+							}else if(result[i].percentage > 80)
+							{
+								str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
+							}
+							if(result[i].parameter.length > 14)
+								str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
+							else
+								str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
+								str+='<small class="text-center">Achieved</small>';
+								str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+							if(result[i].percentage < 50)
+							{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}else if(result[i].percentage > 50 && result[i].percentage < 80)
+							{
+								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+								
+							}else if(result[i].percentage > 80)
+							{
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}
+								str+='<div class="row">';
+									str+='<div class="col-sm-6 text-center">';
+										str+='<label>Target</label>';
+										str+='<h4>'+result[i].target+'</h4>';
+									str+='</div>';
+									str+='<div class="col-sm-6 text-center">';
+										str+='<label>Generated</label>';
+										str+='<h4>'+result[i].completed+'</h4>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
 						str+='</div>';
-						str+='<div class="col-sm-6 text-center">';
-							str+='<label>Generated</label>';
-							str+='<h4>'+result[i].completed+'</h4>';
+					sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+					}
+				}
+		str+='</div>';
+		
+		str+='<div class="col-sm-4 bg_color" style="border: 5px solid #fff;">';
+				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-PR DEPTS</b></h4>';
+				for(var i in result)
+				{
+					if(result[i].parameter == "CC Roads" || result[i].parameter == "Anganwadi" || result[i].parameter == "Gram Panchayat Buildings" || result[i].parameter == "Mandal buildings"){
+						str+='<div class="col-sm-6 m_top10">';
+							if(result[i].percentage < 50)
+							{
+								str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
+							}else if(result[i].percentage > 50 && result[i].percentage < 80)
+							{
+								str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
+							}else if(result[i].percentage > 80)
+							{
+								str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
+							}
+							if(result[i].parameter.length > 14)
+								str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
+							else
+								str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
+								str+='<small class="text-center">Achieved</small>';
+								str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+							if(result[i].percentage < 50)
+							{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}else if(result[i].percentage > 50 && result[i].percentage < 80)
+							{
+								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+								
+							}else if(result[i].percentage > 80)
+							{
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}
+								str+='<div class="row">';
+									str+='<div class="col-sm-6 text-center">';
+										str+='<label>Target</label>';
+										str+='<h4>'+result[i].target+'</h4>';
+									str+='</div>';
+									str+='<div class="col-sm-6 text-center">';
+										str+='<label>Generated</label>';
+										str+='<h4>'+result[i].completed+'</h4>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
 						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-			str+='</div>';
-			sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
-		}
+					sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+					}
+				}
+		str+='</div>';
+		
+		str+='<div class="col-sm-4 bg_color" style="border: 5px solid #fff;">';
+				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-OTHER DEPTS</b></h4>';
+				for(var i in result)
+				{
+					if(result[i].parameter == "NTR 90 Days" || result[i].parameter == "Production of Bricks" || result[i].parameter == "Mulbery" || result[i].parameter == "Silk worm" || result[i].parameter == "Cattle drinking water trough" || result[i].parameter == "Raising of Perinnial Fodder"){
+						str+='<div class="col-sm-6 m_top10">';
+							if(result[i].percentage < 50)
+							{
+								str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
+							}else if(result[i].percentage > 50 && result[i].percentage < 80)
+							{
+								str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
+							}else if(result[i].percentage > 80)
+							{
+								str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
+							}
+							if(result[i].parameter.length > 14)
+								str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
+							else
+								str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
+								str+='<small class="text-center">Achieved</small>';
+								str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+							if(result[i].percentage < 50)
+							{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}else if(result[i].percentage > 50 && result[i].percentage < 80)
+							{
+								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+								
+							}else if(result[i].percentage > 80)
+							{
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}
+								str+='<div class="row">';
+									str+='<div class="col-sm-6 text-center">';
+										str+='<label>Target</label>';
+										str+='<h4>'+result[i].target+'</h4>';
+									str+='</div>';
+									str+='<div class="col-sm-6 text-center">';
+										str+='<label>Generated</label>';
+										str+='<h4>'+result[i].completed+'</h4>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+					}
+				}
+		str+='</div>';
 	str+='</div>';
 	$("#projectsOverview").html(str);
 	$(".rightNavigationMenu ul").html(sidebarMenu);
@@ -1966,7 +2075,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 		var total = 0;
 		str+='<div class="panel panel-default panel-black m_top10">';
 			str+='<div class="panel-heading">';
-				str+='<h4 class="panel-title text-capital">Constituencies in Districts</h4>';
+				str+='<h4 class="panel-title text-capital">District Wise Constituencies</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
 				str+='<table class="table table-bordered m_top10 dataTableCls">';
@@ -1998,7 +2107,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 		var total = 0;
 		str+='<div class="panel panel-default panel-black m_top10">';
 			str+='<div class="panel-heading">';
-				str+='<h4 class="panel-title text-capital">Mandals in Districts</h4>';
+				str+='<h4 class="panel-title text-capital">District Wise Mandals</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
 				str+='<table class="table table-bordered m_top10 dataTableCls">';
@@ -2030,13 +2139,13 @@ function buildDistrictsPopupDetails(result,dataArr){
 		var total = 0;
 		str+='<div class="panel panel-default panel-black m_top10">';
 			str+='<div class="panel-heading">';
-				str+='<h4 class="panel-title text-capital">Mandals in Constitencies</h4>';
+				str+='<h4 class="panel-title text-capital">Constituency Wise Mandals</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
 				str+='<table class="table table-bordered m_top10 dataTableCls">';
 					str+='<thead>';
 						str+='<tr>';
-							str+='<th>District Name </th>';
+							str+='<th>Constituency Name </th>';
 							str+='<th>Count</th>';
 						str+='</tr>';
 					str+='</thead>';
@@ -2741,4 +2850,63 @@ function getLabourBudgetClickingOverview()
 			buildPopupOverviewBlock(ajaxresp);
 		}
 	});
+}
+
+function getNregaLevelsWiseData(divIdd,locationType,theadArr)
+{
+	$("#"+divIdd).html(spinner);
+  var json = {
+    year : "2017",
+    fromDate : glStartDate,
+    toDate : glEndDate,
+    locationType: locationType,
+	divType : globalDivName
+}
+  $.ajax({
+    url: 'getNregaLevelsWiseData',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    },
+    success: function(ajaxresp) {
+       var str = '';
+		if(ajaxresp != null && ajaxresp.length > 0){
+			for(var i in ajaxresp){
+				str+='<tr>';
+					if(locationType == "state"){
+						str+='<td class="text-capital">'+locationType+'</td>';
+					}
+					else if(locationType == "district"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+					}
+					else if(locationType == "constituency"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+					}
+					else if(locationType == "mandal"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+					}
+					else if(locationType == "panchayat"){
+						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+						str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+					}
+					str+='<td>'+ajaxresp[i].target+'</td>';
+					str+='<td>'+ajaxresp[i].grounded+'</td>';
+					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+					str+='<td>'+ajaxresp[i].inProgress+'</td>';
+					str+='<td>'+ajaxresp[i].completed+'</td>';
+					str+='<td>'+ajaxresp[i].percentage+'</td>';
+				str+='</tr>';
+			}
+		}
+      tableView(divIdd,theadArr,str);
+    }
+  });
 }
