@@ -24,7 +24,7 @@ public class StatusVO {
 	private Long surfaceWaterSourceTotalMlpdCount;
 	private Long targetPopulation = 0l,achivedPopulation=0l;
 	
-	
+	private Double percentageOne=0.0d;
 	
 	public Long getTargetPopulation() {
 		return targetPopulation;
