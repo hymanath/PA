@@ -1821,6 +1821,23 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    	finalVO.getDistList().addAll(list);
 		 	    	}else if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
 		 	    		Map<String,NregsDataVO> constMandMap = new LinkedHashMap<String,NregsDataVO>();
+		 	    		Map<String,NregsDataVO> consCuntMap  = new LinkedHashMap<String,NregsDataVO>();
+			 	    		//distConstMap.clear();
+		 	    		if(list != null && !list.isEmpty()){
+			 	    		 for (NregsDataVO nregsDataVO : list) {
+			 	    			String  distrName = nregsDataVO.getDistrict();
+			 	    			NregsDataVO vo  = consCuntMap.get(distrName);
+			 	    			if(vo == null ){
+			 	    				vo = new NregsDataVO();
+			 	    				vo.setDistrict(distrName);
+			 	    				vo.setCount(vo.getCount() +1);
+			 	    				consCuntMap.put(distrName,vo);
+			 	    			}else{
+			 	    				vo.setCount(vo.getCount()+1);
+			 	    				consCuntMap.put(distrName,vo);
+			 	    			}
+							}
+			 	    	 }
 			 	    	
 			 	    	if(list != null && !list.isEmpty()){
 			 	    		 for (NregsDataVO nregsDataVO : list) {
@@ -1840,10 +1857,47 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    	consMandallist = getNregsMandalsCuntFrConstituncies(mandalOutput,constMandMap,inputVO.getDivType());
 				 	      }
 			 	    	
+			 	    	finalVO.getCountList().addAll(new ArrayList<NregsDataVO>(consCuntMap.values()));
 			 	    	finalVO.getDistMandalCuntList().addAll(consMandallist);
 			 	    	finalVO.getDistList().addAll(list);
 		 	    	  }else if(inputVO.getLocationType().trim().equalsIgnoreCase("mandal")){
-			 	    		finalVO.getDistList().addAll(list);
+		 	    		 Map<String,NregsDataVO> disMandalCuntMap  = new LinkedHashMap<String,NregsDataVO>();
+		 	    		 Map<String,NregsDataVO> consMandalCuntMap  = new LinkedHashMap<String,NregsDataVO>();
+		 	    		 
+		 	    		 if(list != null && !list.isEmpty()){
+			 	    		 for (NregsDataVO nregsDataVO : list) {
+			 	    			String  distrName = nregsDataVO.getDistrict();
+			 	    			NregsDataVO vo  = disMandalCuntMap.get(distrName);
+			 	    			if(vo == null ){
+			 	    				vo = new NregsDataVO();
+			 	    				vo.setDistrict(distrName);
+			 	    				vo.setCount(vo.getCount() +1);
+			 	    				disMandalCuntMap.put(distrName,vo);
+			 	    			}else{
+			 	    				vo.setCount(vo.getCount()+1);
+			 	    				//disMandalCuntMap.put(distrName,vo);
+			 	    			}
+							}
+			 	    	 }
+		 	    		 
+		 	    		if(list != null && !list.isEmpty()){
+			 	    		 for (NregsDataVO nregsDataVO : list) {
+			 	    			String  constName = nregsDataVO.getConstituency();
+			 	    			NregsDataVO vo  = consMandalCuntMap.get(constName);
+			 	    			if(vo == null ){
+			 	    				vo = new NregsDataVO();
+			 	    				vo.setConstituency(constName);
+			 	    				vo.setCount(vo.getCount() +1);
+			 	    				consMandalCuntMap.put(constName,vo);
+			 	    			}else{
+			 	    				vo.setCount(vo.getCount()+1);
+			 	    				//disMandalCuntMap.put(constName,vo);
+			 	    			}
+							}
+			 	    	 }
+		 	    		finalVO.getDistMandalList().addAll(new ArrayList<NregsDataVO>(disMandalCuntMap.values()));
+		 	    		finalVO.getConsMandalList().addAll(new ArrayList<NregsDataVO>(consMandalCuntMap.values()));
+			 	    	finalVO.getDistList().addAll(list);
 			 	    }  
 	 	      }
 		} catch (Exception e) {

@@ -1961,7 +1961,102 @@ function buildDistrictsPopupDetails(result,dataArr){
 			str+='</div>';
 		str+='</div>';
 	}
-	
+	if(result.countList != null && result.countList.length > 0 )
+	{
+		var total = 0;
+		str+='<div class="panel panel-default panel-black m_top10">';
+			str+='<div class="panel-heading">';
+				str+='<h4 class="panel-title text-capital">Constituencies in Districts</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+				str+='<table class="table table-bordered m_top10 dataTableCls">';
+					str+='<thead>';
+						str+='<tr>';
+							str+='<th>District Name </th>';
+							str+='<th>Count</th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						for(var i in result.countList){
+							total = total +result.countList[i].count;
+							str+='<tr>';
+								str+='<td>'+result.countList[i].district+'</td>';
+								str+='<td>'+result.countList[i].count+'</td>';
+							str+='</tr>';	
+						}
+						str+='<tr>';
+							str+='<td>Total</td>';
+							str+='<td>'+total+'</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+	}
+	if(result.distMandalList != null && result.distMandalList.length > 0 )
+	{
+		var total = 0;
+		str+='<div class="panel panel-default panel-black m_top10">';
+			str+='<div class="panel-heading">';
+				str+='<h4 class="panel-title text-capital">Mandals in Districts</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+				str+='<table class="table table-bordered m_top10 dataTableCls">';
+					str+='<thead>';
+						str+='<tr>';
+							str+='<th>District Name </th>';
+							str+='<th>Count</th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						for(var i in result.distMandalList){
+							total = total +result.distMandalList[i].count;
+							str+='<tr>';
+								str+='<td>'+result.distMandalList[i].district+'</td>';
+								str+='<td>'+result.distMandalList[i].count+'</td>';
+							str+='</tr>';	
+						}
+						str+='<tr>';
+							str+='<td>Total</td>';
+							str+='<td>'+total+'</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+	}
+	if(result.consMandalList != null && result.consMandalList.length > 0 )
+	{
+		var total = 0;
+		str+='<div class="panel panel-default panel-black m_top10">';
+			str+='<div class="panel-heading">';
+				str+='<h4 class="panel-title text-capital">Mandals in Constitencies</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+				str+='<table class="table table-bordered m_top10 dataTableCls">';
+					str+='<thead>';
+						str+='<tr>';
+							str+='<th>District Name </th>';
+							str+='<th>Count</th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						for(var i in result.consMandalList){
+							total = total +result.consMandalList[i].count;
+							str+='<tr>';
+								str+='<td>'+result.consMandalList[i].constituency+'</td>';
+								str+='<td>'+result.consMandalList[i].count+'</td>';
+							str+='</tr>';	
+						}
+						str+='<tr>';
+							str+='<td>Total</td>';
+							str+='<td>'+total+'</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+	}
 	if(result.distMandalCuntList != null && result.distMandalCuntList.length > 0 )
 	{
 		str+='<div class="panel panel-default panel-black m_top10">';
