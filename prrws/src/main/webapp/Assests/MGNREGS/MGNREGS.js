@@ -2155,11 +2155,11 @@ function buildDistrictsPopupDetails(result,dataArr){
 					str+='</table>';
 				}
 				else{
-					theadArr = [dataArr,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+					theadArr = [dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
 					if(dataArr == "constituency")
-						theadArr = ["district",dataArr,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+						theadArr = ["district",dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
 					else if(dataArr == "mandal")
-						theadArr = ["district","constituency",dataArr,'Target Person days upto 31st May','Generated Person days','(%) Achivement Vs Approved Labour Budget days','Average Wage rate','Total Expanditure( in Crs)'];
+						theadArr = ["district","constituency",dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
 					
 					str+='<table class="table table-bordered m_top10 dataTableCls">';
 					str+='<thead>';
@@ -2742,4 +2742,3 @@ function getLabourBudgetClickingOverview()
 		}
 	});
 }
-
