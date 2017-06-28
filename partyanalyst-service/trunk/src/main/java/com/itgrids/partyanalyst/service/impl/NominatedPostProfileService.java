@@ -3900,7 +3900,11 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						finalList.add(vo);
 					}
 				}
-				
+				Collections.sort(finalList, new Comparator<IdNameVO>() {
+					public int compare(IdNameVO o1, IdNameVO o2) {
+						return o1.getName().compareTo(o2.getName());
+					}
+				});
 				return finalList;
 			}
 			else if(task !=null && task.trim().equalsIgnoreCase("Total")){
@@ -5469,6 +5473,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					  setOpenCntToResultLst(rtrnOpenCntOblLst,fnlCnddtCuntLst);
 				}
 			 }
+			  Collections.sort(fnlCnddtCuntLst, new Comparator<IdNameVO>() {
+					public int compare(IdNameVO o1, IdNameVO o2) {
+						return o1.getName().compareTo(o2.getName());
+					}
+				});
+			  
 		 }catch(Exception e) {
 			 LOG.error("Exceptionr riased at getFinalReviewCandidateCountLocationWise in NominatedPostProfileService class", e); 
 		 }
