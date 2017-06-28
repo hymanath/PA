@@ -2850,4 +2850,25 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getLocationWiseCommittees(String locationType,Long locationId,Long enrollmentId){
+		
+		//0-tdp_base_comitteeId,1-levelId,2-levelName,3-committeeConfrimed,4-start Date,5-completed Date
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("select model.tdpBasicCommitteeId,model.tdpCommitteeLevelId,model.tdpCommitteeLevel.tdpCommitteeLevel,model.isCommitteeConfirmed,model.startedDate,model.completedDate"
+				+ " from TdpCommittee model "
+				+ " where model.tdpCommitteeEnrollmentId= :enrollmentId ");
+		
+		if(locationType.equalsIgnoreCase("constituency")){
+			sb.append(" and model.userAddress.constituency.constituencyId=:locationId");
+		}else if(locationType.equalsIgnoreCase("district")){
+			sb.append(" and model.userAddress.district.districtId=:locationId");
+		}
+		sb.append(" order by model.tdpCommitteeId ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("enrollmentId", enrollmentId);
+		query.setParameter("locationId", locationId);
+		return query.list();
+	}
 }
