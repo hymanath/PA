@@ -850,4 +850,19 @@ public class RWSNICService implements IRWSNICService{
 		}
 		return voList;
 	}
+	
+	public String calculatePercentage(Long total,Long count)
+	{
+		try{
+			if(total != null && total.longValue() > 0l && count != null && count.longValue()>0L)
+			  return (new BigDecimal((count * 100.0)/total.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+			else{
+				return "0";
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in calculatePercentage() method, Exception - ",e);
+		}
+		return null;
+	}
 }
