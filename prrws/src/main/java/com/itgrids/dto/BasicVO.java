@@ -14,7 +14,16 @@ public class BasicVO {
 	 private Long workComissionedCount=0l ;
 	 private Long workCompletedCount=0l;
 	 private Long workNotGroundedCount=0l;
+	 
+	 private Long total=0l;
 		
+	 
+	public Long getTotal() {
+		return total;
+	}
+	public void setTotal(Long total) {
+		this.total = total;
+	}
 	public BigDecimal getSafeMLD() {
 		return safeMLD;
 	}
