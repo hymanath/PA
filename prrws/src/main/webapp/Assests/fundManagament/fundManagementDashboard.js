@@ -288,11 +288,15 @@
 	var financialArrGlob=[];
 	financialArrGlob.push("0");
 	//console.log("glob -- "+financialArrGlob);
-	$(document).on("change","#financialYearId",function(){
+	$(document).on("change","#financialYearId",function(){//ara
 		$(".switch-btn li").removeClass("active");
 		$(".switch-btn li:first-child").addClass("active");
 		$('[role="tablist"] li:first-child a').trigger('click');
-		
+		$('#tabVill a[href="#villageLevelTable"]').trigger('click');
+		$('#tabMan a[href="#mandalLevelTable"]').trigger('click');
+		$('#tabSt a[href="#stateLevelTable"]').trigger('click');
+		$('#tabDis a[href="#distLevelTable"]').trigger('click');
+		$('#tabCons a[href="#consLevelTable"]').trigger('click');	
 		var values = $(this).val();//debugger;
 		
 		if(values != null && values.length > 0){
@@ -703,9 +707,9 @@
 				}else if(villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
 					str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i></h4>';
 				}else if(villageLevelVillName == "SELECT VILLAGE"){
-					str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i></h4>';
+					str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i></h4>';
 				}else{
-					str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Village - <i>'+villageLevelVillName+'</i></h4>';
+					str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Village - <i>'+villageLevelVillName+'</i></h4>';
 				}
 			}
 		}
@@ -749,9 +753,9 @@
 					}else if(villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
 						str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i></h4>';
 					}else if(villageLevelVillName == "SELECT VILLAGE"){
-						str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i></h4>';
+						str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i></h4>';
 					}else{
-						str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Village - <i>'+villageLevelVillName+'</i></h4>';
+						str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Village - <i>'+villageLevelVillName+'</i></h4>';
 					}
 				}
 			}
@@ -1433,7 +1437,7 @@
 					$(".chart"+divId).html("No Data AVailable")
 				}
 				
-			}else if(levelId == 3 || levelId == 4 || levelId == 5 || levelId == 6){
+			}else if(levelId == 3 || levelId == 4 || levelId == 5){
 				
 				if(result !=null && result.length>0){
 					var locationLevelNames=[];
@@ -1561,20 +1565,20 @@
 								pointWidth: 30,
 								gridLineWidth: 15
 							},series: {
-							cursor: 'pointer',
-							point: {
-							events: {
-									click: function () {   //hyma
-										var value = (this.appData).split("-");
-										var blockLvlId = value[0];
-										var levlValue = value[1];
-										var financialYrId = value[2];
-									
-										getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,0,0);
+								cursor: 'pointer',
+								point: {
+									events: {
+											click: function () {   //hyma
+												var value = (this.appData).split("-");
+												var blockLvlId = value[0];
+												var levlValue = value[1];
+												var financialYrId = value[2];
+											
+												getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,0,0);
+											}
+										}
 									}
-								}
 							}
-				        }
 						},
 						legend: {
 							verticalAlign:'top',
@@ -1789,7 +1793,7 @@
 					});
 					
 				}
-			}else if(levelId == 3 || levelId == 4 || levelId == 5 || levelId == 6){
+			}else if(levelId == 3 || levelId == 4 || levelId == 5){
 				
 				if(result !=null && result.length>0){
 				
@@ -2225,7 +2229,7 @@
 				
 			}
 		
-			else if(levelId == 3 || levelId == 4 || levelId == 5 || levelId == 6){
+			else if(levelId == 3 || levelId == 4 || levelId == 5){
 				if(result !=null && result.length>0){
 				
 					var assemblyShemeNameArr=[];
@@ -3069,7 +3073,11 @@
 		$(".switch-btn li").removeClass("active");
 		$(".switch-btn li:first-child").addClass("active");
 		$('[role="tablist"] li:first-child a').trigger('click');
-		
+		$('#tabVill a[href="#villageLevelTable"]').trigger('click');
+		$('#tabMan a[href="#mandalLevelTable"]').trigger('click');
+		$('#tabSt a[href="#stateLevelTable"]').trigger('click');
+		$('#tabDis a[href="#distLevelTable"]').trigger('click');
+		$('#tabCons a[href="#consLevelTable"]').trigger('click');
 		
 		var values = $(this).val();//debugger;
 		
