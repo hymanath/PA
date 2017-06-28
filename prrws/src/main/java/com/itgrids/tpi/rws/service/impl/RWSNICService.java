@@ -2,6 +2,8 @@ package com.itgrids.tpi.rws.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sun.misc.BASE64Encoder;
+
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
@@ -24,8 +28,6 @@ import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-
-import sun.misc.BASE64Encoder;
 
 @Service
 @Transactional
@@ -199,7 +201,13 @@ public class RWSNICService implements IRWSNICService{
 	 	    		 basicVO = new BasicVO();
 	 	    		basicVO.setPhysicalTestCount(jObj.getLong("physicalTestCount"));
 	 	    		basicVO.setBacterialTestCount(jObj.getLong("bacterialTestCount"));
-	 	    		 
+	 	    		
+	 	    		basicVO.setTotal((basicVO.getPhysicalTestCount() !=null ? basicVO.getPhysicalTestCount():0l) + (basicVO.getBacterialTestCount() !=null ? basicVO.getBacterialTestCount():0l));
+	 	    		
+	 	    		basicVO.setPercentage(calculatePercentage(basicVO.getTotal(), basicVO.getPhysicalTestCount()) !=null ?
+	 	    				Double.parseDouble(calculatePercentage(basicVO.getTotal(), basicVO.getPhysicalTestCount())):0.0d);//PhysicalTestCount Percentage
+	 	    		basicVO.setPercentageOne(calculatePercentage(basicVO.getTotal(), basicVO.getBacterialTestCount()) !=null ? 
+	 	    				Double.parseDouble(calculatePercentage(basicVO.getTotal(), basicVO.getBacterialTestCount())):0.0d);//BacterialTestCount Percentage
 	 	    	 }
 			}
 		} catch (Exception e) {
@@ -265,14 +273,24 @@ public class RWSNICService implements IRWSNICService{
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray jsonArray = new JSONArray(output);	 	    
 		 	    		if(jsonArray !=null && jsonArray.length()>0){
+		 	    			Long total  = 0l;
 		 	    			for (int i = 0;i<jsonArray.length();i++) {		 	    				
 		 	    				JSONObject jObj = (JSONObject)jsonArray.get(i);		 	    				
-		 	    				BasicVO Vo = new BasicVO();		 	    				
-		 	    				Vo.setAssetType(jObj.getString("assetType"));
-		 	    				Vo.setCount(jObj.getLong("count"));
+		 	    				BasicVO Vo = new BasicVO();	
 		 	    				
+		 	    				Vo.setAssetType(jObj.getString("assetType"));
+		 	    				Vo.setCount(jObj.getLong("count"));		 	    						 	    				 	    			
 		 	    				finalList.add(Vo);
+		 	    				
+		 	    				total = total + jObj.getLong("count");				 	    				
 							}
+		 	    			
+		 	    			finalList.get(0).setTotal(total);
+		 	    			
+		 	    			for (BasicVO basicVO : finalList) {								
+		 	    				basicVO.setPercentage(Double.parseDouble(calculatePercentage(total, basicVO.getCount())));		 	    				
+							}
+		 	    			
 		 	    		}	 	    			
 	 	    	}
 			
@@ -402,6 +420,9 @@ public class RWSNICService implements IRWSNICService{
 					
 					if(arr != null && arr.length() > 0){
 						StatusVO statusVO = new StatusVO();
+						
+						Long total =0l;
+						
 						for (int i = 0; i < arr.length(); i++) {
 							//id,name,color,count
 							JSONObject jobj = (JSONObject)arr.get(i);
@@ -410,8 +431,20 @@ public class RWSNICService implements IRWSNICService{
 							vo.setName(jobj.getString("name"));
 							vo.setColor(jobj.getString("color"));
 							vo.setCount(jobj.getLong("count"));
+							
+							total = total + vo.getCount();
+							
 							statusVO.getStatusList().add(vo);
 						}
+						
+						Collections.sort(statusVO.getStatusList(), statusAscendingOrder);
+						
+						statusVO.getStatusList().get(0).setTotal(total);
+						
+						for (StatusVO statusVO2 : statusVO.getStatusList()) {
+							statusVO2.setPercentage(calculatePercentage(total, statusVO2.getCount()) !=null ? Double.parseDouble(calculatePercentage(total, statusVO2.getCount())):0.0d );
+						}
+						
 						voList.add(statusVO);
 					}
 				}
@@ -422,6 +455,13 @@ public class RWSNICService implements IRWSNICService{
 		}
 		return voList;
 	}
+	public static Comparator<StatusVO> statusAscendingOrder = new Comparator<StatusVO>() {
+     	public int compare(StatusVO vo2, StatusVO vo1) {
+     	Long id2 = vo2.getId();
+     	Long id1 = vo1.getId();
+     	 return id2.compareTo(id1);
+     	}
+      };
 	
 	public List<StatusVO> getAlertFeedbackStatusDetails(InputVO inputVO){
 		List<StatusVO> voList = new ArrayList<StatusVO>(0);
@@ -439,7 +479,8 @@ public class RWSNICService implements IRWSNICService{
 				if(output != null && !output.isEmpty()){
 					JSONArray arr = new JSONArray(output);
 					
-					if(arr != null && arr.length() > 0){
+					if(arr != null && arr.length() > 0){						
+						Long total=0l;						
 						for (int i = 0; i < arr.length(); i++) {
 							//id,name,color,count
 							JSONObject jobj = (JSONObject)arr.get(i);
@@ -448,7 +489,16 @@ public class RWSNICService implements IRWSNICService{
 							vo.setName(jobj.getString("name"));
 							vo.setCount(jobj.getLong("count"));
 							voList.add(vo);
+							total = total + vo.getCount() ;
 						}
+						
+						voList.get(0).setTotal(total);
+						
+						for (StatusVO statusVO : voList) {
+							statusVO.setPercentage(calculatePercentage(total, statusVO.getCount()) !=null ? Double.parseDouble(calculatePercentage(total, statusVO.getCount())):0.0d);
+						}
+						
+						
 					}
 				}
  	      	}
@@ -487,6 +537,15 @@ public class RWSNICService implements IRWSNICService{
 	 	    				waterSourceInfo.setGroundWaterSourceTotalMlpdCount(jObj.getLong("groundWaterSourceTotalMlpdCount"));
 	 	    				waterSourceInfo.setSurfaceWaterSourceTotalMlpdCount(jObj.getLong("surfaceWaterSourceTotalMlpdCount"));
 	 	    				
+	 	    				Long total = waterSourceInfo.getGroundWaterSourceTotalMlpdCount() + waterSourceInfo.getSurfaceWaterSourceTotalMlpdCount();
+	 	    				
+	 	    				waterSourceInfo.setPercentage(calculatePercentage(total, waterSourceInfo.getGroundWaterSourceTotalMlpdCount())
+	 	    						 !=null ? Double.parseDouble(calculatePercentage(total, waterSourceInfo.getGroundWaterSourceTotalMlpdCount())):0.0 );//Ground Percentage
+	 	    				
+	 	    				waterSourceInfo.setPercentageOne(calculatePercentage(total, waterSourceInfo.getSurfaceWaterSourceTotalMlpdCount())
+	 	    						 !=null ? Double.parseDouble(calculatePercentage(total, waterSourceInfo.getSurfaceWaterSourceTotalMlpdCount())):0.0 );//Surface Percentage
+	 	    				
+	 	    				waterSourceInfo.setCount(total);//total
  	    				}
  	    		}
  	    	}
