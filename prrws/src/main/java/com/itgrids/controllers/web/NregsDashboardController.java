@@ -437,4 +437,16 @@ public class NregsDashboardController {
 		}
 		return levlWiseVO;
 	}
+	
+	@PostMapping("/getNregaLevelsWiseData")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsWiseData(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelsWiseData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseData - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
 }

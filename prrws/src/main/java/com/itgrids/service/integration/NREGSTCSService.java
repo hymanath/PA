@@ -369,6 +369,107 @@ public class NREGSTCSService implements INREGSTCSService{
 	}
 	
 	/*
+	 * Date : 28/06/2017
+	 * Author :Sravanth
+	 * @description : getNregaLevelsWiseData
+	 */
+	public List<NregsDataVO> getNregaLevelsWiseData(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			String webServiceUrl = null;
+			
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Farm Pond"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FarmPondService/FarmPondData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("IHHL"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("VERMI"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/VermiService/VermiData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Gram Panchayat Buildings"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GPBuildingService/GPBuildingData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Jala Siri"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrsService/NtrsData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CC Roads"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CCRoadsService/CCRoadsData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Anganwadi"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnganwadiService/AnganwadiData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mandal buildings"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/MandalBuildingService/MandalBuildingData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR 90 Days"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/HousingService/HousingData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Production of Bricks"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BricksService/BricksData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SericultureService/SericultureData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worm"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SilkwormService/SilkwormData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle drinking water trough"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AHService/AHData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising of Perinnial Fodder"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FodderService/FodderData";
+			 
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			//if(inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("panchayat")){
+	 	    				for(int i=0;i<finalArray.length();i++){
+		 	    				NregsDataVO vo = new NregsDataVO();
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+		 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+		 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+		 	    				vo.setMandal(jObj.getString("MANDAL"));
+		 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+		 	    				vo.setTarget(jObj.getLong("TARGET"));
+		 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+		 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+		 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+		 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				
+		 	    				voList.add(vo);
+		 	    				//getDistrictsConstitByType(voList,inputVO.getType());
+		 	    			}
+	 	    			/*}
+	 	    			else{
+	 	    				for(int i=0;i<finalArray.length();i++){
+		 	    				NregsDataVO vo = new NregsDataVO();
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				vo.setUniqueId(jObj.getLong("PID"));
+		 	    				vo.setDistrict(jObj.getString("DNAME"));
+		 	    				vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
+		 	    				vo.setMandal(jObj.getString("MNAME"));
+		 	    				vo.setPanchayat(jObj.getString("PNAME"));
+		 	    				vo.setTarget(jObj.getLong("TARGET"));
+		 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+		 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+		 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+		 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				
+		 	    				voList.add(vo);
+		 	    				//getDistrictsConstitByType(voList,inputVO.getType());
+		 	    			}
+	 	    			}*/
+	 	    		}
+	 	    	}
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseData - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	
+	/*
 	 * Date : 16/06/2017
 	 * Author :Nandhini
 	 * @description : getNREGSIHHLLvelSOverview
