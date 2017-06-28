@@ -53,7 +53,7 @@
 		compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable');
 		compareFundsBetweenFinancialYears(5,'comparionMandalLevlOvervwTable');
 		getGrantTypeHighestAndLowestFund('highest','highFundSource');
-		getGrantTypeHighestAndLowestFund('lowest','lowFundSource'); 
+		getGrantTypeHighestAndLowestFund('lowest','lowFundSource');
 	}
 	function getSelectedType(){
 		 var sortingType = ''; 
@@ -284,23 +284,48 @@
 		getAllDepartments();
 		getAllFiniancialYears();		
 	}
+	
+	var financialArrGlob=[];
+	financialArrGlob.push("0");
+	//console.log("glob -- "+financialArrGlob);
 	$(document).on("change","#financialYearId",function(){
-		//$(".search-choice-close").attr("data-option-array-index","0").addClass("clicked")
 		$(".switch-btn li").removeClass("active");
 		$(".switch-btn li:first-child").addClass("active");
 		$('[role="tablist"] li:first-child a').trigger('click');
-		var length =$(this).val().length;
-		var financialYrIdArr = $('#financialYearId').val();
 		
-		if(length >=2){
-			if ($.inArray('0', financialYrIdArr) != -1){
-				$(".clicked").trigger('click');
-			}
-		}
-		if($(this).val() != null)
-		onLoadCalls();
+		var values = $(this).val();//debugger;
+		
+		if(values != null && values.length > 0){
+			for(var i=0; i<values.length; i++) {
+			//console.log(values[i]+" -- "+financialArrGlob+" -- "+$.inArray(values[i], financialArrGlob));
+				if($.inArray(values[i], financialArrGlob) == -1){
+					if(values[i] == 0){values=[];values.push("0");
+						$('#financialYearId').find($('option')).attr('selected',false)
+						$("#financialYearId").val(0);
+						$("#financialYearId").trigger('chosen:updated');
+						financialArrGlob = [];
+						financialArrGlob.push("0");
+					}else{
+						$('#financialYearId option:selected').each(function (index, option) { 
+							if($(this).val()==0){
+								$(option).attr('selected',false); 
+								$("#financialYearId").trigger('chosen:updated');
+							}
+							financialArrGlob=[];
+							financialArrGlob.push($(this).val());
+						});
+					}
+				}
+				
+			 }
+			 
+		 onLoadCalls();
+		}console.log(financialArrGlob +" ---- "+ values);
+		//financialArrGlob = values;
+		
 	});
-		
+	
+	
 	$("#dateRangePickerAUM").daterangepicker({
 			opens: 'left',
 			startDate: glStartDate,
@@ -2817,14 +2842,14 @@
 		//var deptId = 0;
 		var sourceId = 0;
 		var schemeId = 0;
-		if ($.inArray('0', financialYrIdList) != -1)
+		/* if ($.inArray('0', financialYrIdList) != -1)
 		{
 			var stringIds = "1,2,3";
 			strx   = stringIds.split(',');
 			financialYrIdList = financialYrIdList.concat(strx);
 			financialYrIdList.shift();
 			
-		}
+		} */
 		var searchLevelVals = [];
 		if(locationId == null || locationId == 0){
 			 searchLevelVals =[];
@@ -2930,9 +2955,11 @@
 					$("#DepartmentsId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
 				}
 			}
+			
 			$("#DepartmentsId").val(0)
 			$("#DepartmentsId").trigger("chosen:updated");
-			$("#DepartmentsId_chosen").find(".search-choice-close").attr("data-option-array-index","0").addClass("deptclicked");
+			//$("#DepartmentsId_chosen").find(".search-choice-close").attr("data-option-array-index","0").addClass("deptclicked");
+			
 		});
 		
 	}
@@ -3036,22 +3063,42 @@
 			}
 		});
 	}
-	$(document).on("change","#DepartmentsId",function(){
+	var departmentArrGlob =[];
+	departmentArrGlob.push("0");
+	$(document).on("change","#DepartmentsId",function(){//ara1
 		$(".switch-btn li").removeClass("active");
 		$(".switch-btn li:first-child").addClass("active");
 		$('[role="tablist"] li:first-child a').trigger('click');
-		 var length =$(this).val().length;
-		var departmentIds = $('#DepartmentsId').val();
-		var stringIds = "1,2,3,4";
-			strx   = stringIds.split(',');
-			financialYrIdArr = financialYrIdArr.concat(strx);
-		if(length >=2){
-			if ($.inArray('0', departmentIds) != -1){
-				$(".deptclicked").trigger('click');
-			}
+		
+		
+		var values = $(this).val();//debugger;
+		
+		if(values != null && values.length > 0){
+			for(var i=0; i<values.length; i++) {
+			//console.log(values[i]+" -- "+financialArrGlob+" -- "+$.inArray(values[i], financialArrGlob));
+				if($.inArray(values[i], departmentArrGlob) == -1){
+					if(values[i] == 0){values=[];values.push("0");
+						$('#DepartmentsId').find($('option')).attr('selected',false)
+						$("#DepartmentsId").val(0);
+						$("#DepartmentsId").trigger('chosen:updated');
+						departmentArrGlob = [];
+						departmentArrGlob.push("0");
+					}else{
+						$('#DepartmentsId option:selected').each(function (index, option) { 
+							if($(this).val()==0){
+								$(option).attr('selected',false); 
+								$("#DepartmentsId").trigger('chosen:updated');
+							}
+							departmentArrGlob=[];
+							departmentArrGlob.push($(this).val());
+						});
+					}
+				}
+				
+			 }
+			 
+		 onLoadCalls();
 		}
-		if($(this).val() != null)
-		onLoadCalls();
 	});
 	
 	//District

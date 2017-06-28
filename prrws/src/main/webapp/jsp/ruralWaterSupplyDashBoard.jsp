@@ -74,31 +74,31 @@
 				<div class="col-sm-2 border_right">
 					Note: All Amount in Lakhs
 				</div>
-				<!--<div class="col-sm-4 border_right">
+				<div class="col-sm-3 border_right">
 					<div class="form-horizontal">
 						<div class="form-group form-group-sm">
 							<label class="col-sm-4 control-label" for="formGroupInputLarge">Financial Year: </label>
 							<div class="col-sm-8">
-								<select id="financialYearId" class="chosenSelect" multiple data-placeholder="Select Financial Year"></select>
+								<select id="financialYearId" class="chosenSelect"></select>
 							</div>
 						</div>
 					</div>
-				</div>-->
-				<div class="col-sm-6">
+				</div>
+				<!--<div class="col-sm-6">
 					<ul class="list-inline">
 						<li><span class="color-label color-label-success"></span> 80% and above</li>
 						<li><span class="color-label color-label-default"></span> 50% - 79%</li>
 						<li><span class="color-label color-label-danger"></span> 0% - 49%</li>
 					</ul>
-				</div>
-				<!--<div class="col-sm-3">
+				</div>-->
+				<div class="col-sm-3">
 					<div class="input-group">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
-						<input type="text" class="form-control" id="dateRangePickerAUM"/>
+						<input type="text" class="form-control" id="dateRangePickerAUM" style="width: 200px;"/>
 					</div>
-				</div>-->
+				</div>
 			</div>
 		</div>
 	</section>
