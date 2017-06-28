@@ -15552,7 +15552,6 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  					
  					List<AlertVO> hamletList = new  ArrayList<AlertVO>(hamletMap.values());
  					
- 					String locationName=null;
  					if(hamletList!=null && hamletList.size()>0){
  						for (AlertVO alertVO : hamletList) {
  							
