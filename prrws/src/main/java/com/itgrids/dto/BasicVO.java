@@ -7,13 +7,13 @@ public class BasicVO {
 	 private BigDecimal safeMLD;
 	 private BigDecimal unsafeMLD;
 	 private String assetType;
-	 private Long physicalTestCount ;
-	 private Long bacterialTestCount ;
-	 private Long count;
-	 private Long workOngoingCount;
-	 private Long workComissionedCount ;
-	 private Long workCompletedCount;
-	 private Long workNotGroundedCount;
+	 private Long physicalTestCount =0l;
+	 private Long bacterialTestCount =0l;
+	 private Long count=0l;
+	 private Long workOngoingCount=0l;
+	 private Long workComissionedCount=0l ;
+	 private Long workCompletedCount=0l;
+	 private Long workNotGroundedCount=0l;
 		
 	public BigDecimal getSafeMLD() {
 		return safeMLD;
