@@ -1,4 +1,6 @@
  //Angular Start
+		var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY");
+		var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
 		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","Ground":"#14BAAD","Surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
 		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049",
 		"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","SOSO":"#FFBA00","NOT SATISFIED":"#FF0909"}
@@ -8,8 +10,7 @@
 						 {name:'Plan Of Action for Stressed Habitations <br><small>Water Budget has to be prepared for all habitations</small>',id:'planAction',img:'plan_action.png'}];
 		var alertStatusBlockArr = [{name:'Alert Status Jalavani',id:'alertStatus'},{name:'Drinking Water Satisfaction Levels',id:'drinking'}];
 		var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-		//getAllFiniancialYears();
-		onloadCalls();
+		getAllFiniancialYears();
 		function onloadCalls(){
 			tabBlocks('stateBlockId','state');
 			tabBlocks('districtBlockId','district');
@@ -62,10 +63,13 @@
 				}
 			}
 			
+			var financialVal =$("#financialYearId").val();
 			var json = {
+				fromDateStr:glStartDate,
+				toDateStr:glEndDate,
 				locationType:locationType,
-				year:"2017",
-				stressedHabitationYear:2017,
+				year:financialVal,
+				stressedHabitationYear:financialVal,
 				filterType:"",
 				filterValue:""
 			}
@@ -248,8 +252,11 @@
 		function getLabTestDetails()
 		{
 			$("#overView").html(spinner);
+			var financialVal =$("#financialYearId").val();
 			var json = {
-				year:"2017"
+				fromDateStr:glStartDate,
+				toDateStr:glEndDate,
+				year:financialVal
 			}
 			$.ajax({
 				url: 'getLabTestDetails',
@@ -343,8 +350,11 @@
 		
 		function getHabitationSupplyDetails(){
 			$("#levelOfSupply1").html(spinner);
+			var financialVal =$("#financialYearId").val();
 			var json = {
-				year:"2017"
+				fromDateStr:glStartDate,
+				toDateStr:glEndDate,
+				year:financialVal
 			}
 			$.ajax({
 				url: 'getHabitationSupplyDetails',
@@ -442,8 +452,11 @@
 		
 		function getSchemesDetails(){
 			$("#schemes").html(spinner);
+			var financialVal =$("#financialYearId").val();
 			var json = {
-				year:2017
+				fromDateStr:glStartDate,
+				toDateStr:glEndDate,
+				year:financialVal
 			}
 			$.ajax({
 				url: 'getSchemesDetails',
@@ -554,8 +567,11 @@
 		}
 		function getSchemeWiseWorkDetails(){
 			$("#habitationWorks").html(spinner);
+			var financialVal =$("#financialYearId").val();
 			var json = {
-					year:2017
+					fromDateStr:glStartDate,
+					toDateStr:glEndDate,
+					year:financialVal
 			}
 			$.ajax({
 				url: 'getSchemeWiseWorkDetails',
@@ -663,11 +679,11 @@
 				});
 				
 		}
-		function getAssetInfoBetweenDates(){ 
+		function getAssetInfoBetweenDates(){//ara1
 			$("#assets").html(spinner);
 			var json = {
-				formDateStr:"01-04-2016",
-				toDateStr:"01-12-2017"
+				fromDateStr:glStartDate,
+				toDateStr:glEndDate,
 			}
 			$.ajax({
 				url: 'getAssetInfoBetweenDates',
@@ -740,12 +756,16 @@
 		}
 		
 		
-		function getWaterSourceInfo(){ 
+		function getWaterSourceInfo(){//ara1 
 			$("#waterSources").html(spinner);
+			var json = {
+				fromDateStr:glStartDate,
+				toDateStr:glEndDate,
+			}
 			$.ajax({
 				url: 'getWaterSourceInfo',
 				type: "GET",
-				dataType: 'json', 
+				data: JSON.stringify(json),
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.setRequestHeader("Content-Type", "application/json");
@@ -826,7 +846,7 @@
 			});	
 		}
 		
-		function getKeyPerformanceIndicatorsInfo(locationType,divId,type){
+		function getKeyPerformanceIndicatorsInfo(locationType,divId,type){//ara1
 			if(type=="graph"){
 				$("#keyPerformance").html(spinner);
 			}else{
@@ -836,8 +856,8 @@
 			}
 			
 			var json={
-						fromDateStr:"01-04-2016",
-						toDateStr:"01-12-2030",
+						fromDateStr:glStartDate,
+						toDateStr:glEndDate,
 						locationType:locationType
 					}
 			$.ajax({
@@ -948,11 +968,14 @@
 				});
 		}
 		function getStressedHabitationsInfoByLocationType(){
+			var financialVal =$("#financialYearId").val();
 			var json = {
+						fromDateStr:glStartDate,
+						toDateStr:glEndDate,
 						locationType:"constituency",
-						year:"2017",
+						year:financialVal,
 						filterType:"constituency",
-						stressedHabitationYear:"2017",
+						stressedHabitationYear:financialVal,
 						filterValue:"120"
 
 					}
@@ -975,11 +998,12 @@
 		}
 		
 		function getPlanofActionForStressedHabitations(){
+			var financialVal =$("#financialYearId").val();
 			var json = {
-					fromDateStr:"01-04-2016",
-					toDateStr:"01-12-2017",
+					fromDateStr:glStartDate,
+					toDateStr:glEndDate,
 					locationType:"state",
-					stressedHabitationYear:"2017"
+					stressedHabitationYear:financialVal
 					}
 			$.ajax({
 				url: 'getPlanofActionForStressedHabitations',
@@ -1150,12 +1174,12 @@
 				$("#alertStatus"+locationType).html(spinner);
 				$("#drinking"+locationType).html(spinner);
 			}
-			
+			var financialVal =$("#financialYearId").val();
 			var json = {
-				fromDate:"",
-				toDate:"",
+				fromDate:glStartDate,
+				toDate:glEndDate,
 				deptId:49,
-				year:"2017"
+				year:financialVal
 			}
 			$.ajax({
 				url: 'getAlertDetailsOfCategoryByStatusWise',
@@ -1257,11 +1281,12 @@
 		}
 		function getAlertFeedbackStatusDetails(){
 			$("#feedbackId").html(spinner);
+			var financialVal =$("#financialYearId").val();
 			var json = {
-				fromDate:"",
-				toDate:"",
+				fromDate:glStartDate,
+				toDate:glEndDate,
 				deptId:49,
-				year:"2017"
+				year:financialVal
 			}
 			$.ajax({
 				url: 'getAlertFeedbackStatusDetails',
@@ -1917,6 +1942,8 @@
 		
 		function getLocationBasedOnSelection(locationType,year,filterType,filterValue,districtValue){
 			var json = {
+				fromDateStr:glStartDate,
+				toDateStr:glEndDate,
 				locationType:locationType,
 				year:year,
 				filterType:filterType,
@@ -1980,14 +2007,15 @@
 				locationTypeId=3;
 				
 			}
+			var financialVal =$("#financialYearId").val();
 			var json = {
-				fromDate:"",
-				toDate:"",
+				fromDate:glStartDate,
+				toDate:glEndDate,
 				blockLevelId:searchlevelId,
 				levelValues:searchLevelValues,
 				locationTypeId:locationTypeId,
 				locationValues:locationValues,
-				year:2017
+				year:financialVal
 				
 				
 			}
@@ -2014,11 +2042,12 @@
 	
 	function getLocationWiseAlertStatusCounts(type,divId,locationType){
 		var arr = [];
+		var financialVal =$("#financialYearId").val();
 		var json = {
 		  deptId:49,
-		  fromDate:"",
-		  toDate:"",
-		  year:"2017",
+		  fromDate:glStartDate,
+		  toDate:glEndDate,
+		  year:financialVal,
 		  groupByValue:5,
 		  locationValues:arr
 		}
@@ -2110,31 +2139,27 @@
 		
 	}
 	
-  var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
-  var glEndDate = moment().add(10, 'years').endOf('year').format("DD/MM/YYYY");
   $("#dateRangePickerAUM").daterangepicker({
       opens: 'left',
       startDate: glStartDate,
       endDate: glEndDate,
     locale: {
-      format: 'DD/MM/YYYY'
+      format: 'DD-MM-YYYY'
     },
     ranges: {
-      'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
-      'Today' : [moment(), moment()],
-       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-       'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-       'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-       'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-       'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
-       'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
-       'This Month': [moment().startOf('month'), moment()],
-       'This Year': [moment().startOf('Year'), moment()]
+        'All':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"), moment().add(10, 'years').endOf('year').format("DD-MM-YYYY")],
+        'Today' : [moment(), moment()],
+		'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+        'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+        'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
+        'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
+        'This Month': [moment().startOf('month'), moment()],
+        'This Year': [moment().startOf('Year'), moment()]
     }
   });
     var dates= $("#dateRangePickerAUM").val();
-  var pickerDates = glStartDate+' - '+glEndDate
+    var pickerDates = glStartDate+' - '+glEndDate
   if(dates == pickerDates)
   {
     $("#dateRangePickerAUM").val('All');
@@ -2145,16 +2170,15 @@
     $(".switch-btn li:first-child").addClass("active");
     $('[role="tablist"] li:first-child a').trigger('click');
     $('#tabCons a[href="#consLevelGraph"]').trigger('click');
-    glStartDate = picker.startDate.format('DD/MM/YYYY')
-    glEndDate = picker.endDate.format('DD/MM/YYYY')
+    glStartDate = picker.startDate.format('DD-MM-YYYY')
+    glEndDate = picker.endDate.format('DD-MM-YYYY')
     if(picker.chosenLabel == 'All')
     {
       $("#dateRangePickerAUM").val('All');
     }
-    
+    onloadCalls();
     
   });
-  
   function getAllFiniancialYears()
 	{
 		$("#financialYearId").html('');
@@ -2171,38 +2195,40 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			//$("#financialYearId").find('option').remove();
-			$("#financialYearId").append("<option value='0'>All</option>");
+			$("#financialYearId").append("<option value='0'>Select Financial Year</option>");
 			if(result != null && result.length >0){
 				for(var i in result){
-					$("#financialYearId").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
+					var value = result[i].financialYear.split('-');
+					$("#financialYearId").append("<option value="+value[1]+">"+result[i].financialYear+"</option>");
 					
 				}
-				$("#financialYearId").val(0);
-				
+				$("#financialYearId").val('2017');
 			}
+			
 			$("#financialYearId").chosen();
 			$("#financialYearId").trigger('chosen:updated');
-			onLoadCalls();	
+			onloadCalls();	
 		});
    }
 	
   $(document).on("change","#chosendistrictSelectmandalBlockId",function(){
 		var distId = $("#chosendistrictSelectmandalBlockId").val();
+		var financialVal =$("#financialYearId").val();
 		if(distId == 0){
 			$("#chosenconstituencySelectmandalBlockId,#chosenmandalSelectmandalBlockId").html('');
 		}else{
 			distId = distId < 9?"0"+distId:distId;
-			getLocationBasedOnSelection("constituency",2017,"district",distId,"");
+			getLocationBasedOnSelection("constituency",financialVal,"district",distId,"");
 		} 	
 	});
 	
 	$(document).on("change","#chosenconstituencySelectmandalBlockId",function(){
 		var constId = $("#chosenconstituencySelectmandalBlockId").val();
+		var financialVal =$("#financialYearId").val();
 		var distId = $("#chosendistrictSelectmandalBlockId").val()<9?"0"+$("#chosendistrictSelectmandalBlockId").val():$("#chosendistrictSelectmandalBlockId").val();
 		if(constId == 0){
 			$("#chosenmandalSelectmandalBlockId").html('');
 		}else{
-			getLocationBasedOnSelection("mandal",2017,"constituency",constId,distId);
+			getLocationBasedOnSelection("mandal",financialVal,"constituency",constId,distId);
 		}
 	});
