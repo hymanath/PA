@@ -26,6 +26,13 @@ public class StatusVO {
 	
 	private Double percentageOne=0.0d;
 	
+	
+	public Double getPercentageOne() {
+		return percentageOne;
+	}
+	public void setPercentageOne(Double percentageOne) {
+		this.percentageOne = percentageOne;
+	}
 	public Long getTargetPopulation() {
 		return targetPopulation;
 	}
