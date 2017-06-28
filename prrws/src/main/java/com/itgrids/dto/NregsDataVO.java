@@ -30,10 +30,14 @@ public class NregsDataVO implements Serializable{
 	private Long mandalsInRed = 0l;
 	private Long mandalsInOrange = 0l;
 	private Long mandalsInGreen = 0l;
+	private Long count = 0l;
 	
 	private List<NregsDataVO> distConsCuntList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> distMandalCuntList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> distList = new ArrayList<NregsDataVO>(0);
+	private List<NregsDataVO> countList = new ArrayList<NregsDataVO>(0);
+	private List<NregsDataVO> distMandalList = new ArrayList<NregsDataVO>(0);
+	private List<NregsDataVO> consMandalList = new ArrayList<NregsDataVO>(0);
 	
 	
 	public Long getUniqueId() {
@@ -191,6 +195,30 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setDistList(List<NregsDataVO> distList) {
 		this.distList = distList;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public List<NregsDataVO> getCountList() {
+		return countList;
+	}
+	public void setCountList(List<NregsDataVO> countList) {
+		this.countList = countList;
+	}
+	public List<NregsDataVO> getDistMandalList() {
+		return distMandalList;
+	}
+	public void setDistMandalList(List<NregsDataVO> distMandalList) {
+		this.distMandalList = distMandalList;
+	}
+	public List<NregsDataVO> getConsMandalList() {
+		return consMandalList;
+	}
+	public void setConsMandalList(List<NregsDataVO> consMandalList) {
+		this.consMandalList = consMandalList;
 	}
 	
 }
