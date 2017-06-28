@@ -17,6 +17,7 @@ import org.codehaus.jettison.json.JSONObject;
 import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dao.IActivityTabRequestBackupDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentTimeSlotDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -87,6 +88,7 @@ import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
+import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
@@ -148,6 +150,7 @@ import com.itgrids.partyanalyst.model.MobileAppUserSmsDetails;
 import com.itgrids.partyanalyst.model.MobileAppUserSmsStatus;
 import com.itgrids.partyanalyst.model.MobileAppUserVoter;
 import com.itgrids.partyanalyst.model.SurveyUserAuth;
+import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 import com.itgrids.partyanalyst.model.UnionTabUser;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
@@ -258,6 +261,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     
     private IMobileAppUserAccessLocationDAO mobileAppUserAccessLocationDAO;
     private ISmsGatewayService smsGatewayService;
+    private ILocationDashboardService locationDashboardService;
+    
     
     private IUnionTabUserDAO unionTabUserDAO;
     private ITdpMemberUnionTabUserRelationDAO tdpMemberUnionTabUserRelationDAO;
@@ -280,7 +285,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private ICccDashboardService cccDashboardService;
    
     
-    
+	public void setLocationDashboardService(ILocationDashboardService locationDashboardService) {
+		this.locationDashboardService = locationDashboardService;
+	}
+
 	public void setCccDashboardService(ICccDashboardService cccDashboardService) {
 		this.cccDashboardService = cccDashboardService;
 	}
@@ -5249,5 +5257,22 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			log.error("Exception raised at getTotalAlertByOtherStatusForAMS", e);
 		}
 		 return returnVOList;
+	 }
+	 public CommitteeBasicVO getLocationWiseCommitteesCount(String locationType, Long locationId,Long enrollmentId){
+		 try{
+			 return locationDashboardService.getLocationWiseCommitteesCount(locationType, locationId, enrollmentId);
+		 }catch(Exception e){
+			 log.error("Exception raised at getLocationWiseCommitteesCount", e);
+		 }
+		 return null;
+	 }
+	 
+	 public List<TdpCommitteeEnrollment> getEnrollments(){
+		 try{
+			 return locationDashboardService.getEnrollmentIds();
+		 }catch(Exception e){
+			 log.error("Exception raised at getEnrollments", e);
+		 }
+		return null;
 	 }
 }

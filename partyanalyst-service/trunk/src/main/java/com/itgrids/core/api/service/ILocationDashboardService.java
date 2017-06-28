@@ -2,10 +2,11 @@ package com.itgrids.core.api.service;
 
 import java.util.List;
 
-import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
+import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
+import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 
 
 public interface ILocationDashboardService {
@@ -19,4 +20,9 @@ public interface ILocationDashboardService {
 	
 	//meetings
 	public List<LocationVotersVO> getLocationWiseMeetingsCount(String locationType,Long constituencyId);
+	
+	//committees
+	public CommitteeBasicVO getLocationWiseCommitteesCount(String locationType,Long locationId,Long enrollmentId);
+	
+	public List<TdpCommitteeEnrollment> getEnrollmentIds();
 }

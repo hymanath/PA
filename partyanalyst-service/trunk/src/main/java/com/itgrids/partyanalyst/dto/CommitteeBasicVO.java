@@ -11,14 +11,107 @@ public class CommitteeBasicVO {
 	private Long affiCommStartedCount= 0l;
 	private Long affiCommCompletedCount= 0l;
 	private Long affiCommTotalMembers= 0l;
+	
+	
 	private String locationType;
 	private String areaType="";
 	
 	private Long mainCommNotYetStarted =0l;
+	private Long mainCommVillageNotStarted = 0l;
+	private Long affiCommMandalNotStarted = 0l;
+	private Long affiCommVillageNotStarted = 0l;
+	private Long mainMandalTotal = 0l;
+	private Long mainVillageTotal = 0l;
+	private Long affMandalTotal = 0l;
+	private Long affVillageTotal = 0l;
 	private String commiteeName;
+	private double mainMandalCompletePer = 0.0;
+	private double mainVillageCompletePer = 0.0;
+	private double mainMandalStartPer = 0.0;
+	private double mainVillageStartPer = 0.0;
+	private double mainMandalNotPer = 0.0;
+	private double mainVillageNotPer = 0.0;
+	private double affMandalCompletePer = 0.0;
+	private double affVillageCompletePer = 0.0;
+	private double affMandalStartPer = 0.0;
+	private double affVillageStartPer = 0.0;
+	private double affMandalNotPer = 0.0;
+	private double affVillageNotPer = 0.0;
 	
 	
 	
+	public double getMainMandalNotPer() {
+		return mainMandalNotPer;
+	}
+	public void setMainMandalNotPer(double mainMandalNotPer) {
+		this.mainMandalNotPer = mainMandalNotPer;
+	}
+	public double getMainVillageNotPer() {
+		return mainVillageNotPer;
+	}
+	public void setMainVillageNotPer(double mainVillageNotPer) {
+		this.mainVillageNotPer = mainVillageNotPer;
+	}
+	public double getAffMandalNotPer() {
+		return affMandalNotPer;
+	}
+	public void setAffMandalNotPer(double affMandalNotPer) {
+		this.affMandalNotPer = affMandalNotPer;
+	}
+	public double getAffVillageNotPer() {
+		return affVillageNotPer;
+	}
+	public void setAffVillageNotPer(double affVillageNotPer) {
+		this.affVillageNotPer = affVillageNotPer;
+	}
+	public double getMainMandalCompletePer() {
+		return mainMandalCompletePer;
+	}
+	public void setMainMandalCompletePer(double mainMandalCompletePer) {
+		this.mainMandalCompletePer = mainMandalCompletePer;
+	}
+	public double getMainVillageCompletePer() {
+		return mainVillageCompletePer;
+	}
+	public void setMainVillageCompletePer(double mainVillageCompletePer) {
+		this.mainVillageCompletePer = mainVillageCompletePer;
+	}
+	public double getMainMandalStartPer() {
+		return mainMandalStartPer;
+	}
+	public void setMainMandalStartPer(double mainMandalStartPer) {
+		this.mainMandalStartPer = mainMandalStartPer;
+	}
+	public double getMainVillageStartPer() {
+		return mainVillageStartPer;
+	}
+	public void setMainVillageStartPer(double mainVillageStartPer) {
+		this.mainVillageStartPer = mainVillageStartPer;
+	}
+	public double getAffMandalCompletePer() {
+		return affMandalCompletePer;
+	}
+	public void setAffMandalCompletePer(double affMandalCompletePer) {
+		this.affMandalCompletePer = affMandalCompletePer;
+	}
+	public double getAffVillageCompletePer() {
+		return affVillageCompletePer;
+	}
+	public void setAffVillageCompletePer(double affVillageCompletePer) {
+		this.affVillageCompletePer = affVillageCompletePer;
+	}
+	public double getAffMandalStartPer() {
+		return affMandalStartPer;
+	}
+	public void setAffMandalStartPer(double affMandalStartPer) {
+		this.affMandalStartPer = affMandalStartPer;
+	}
+	public double getAffVillageStartPer() {
+		return affVillageStartPer;
+	}
+	public void setAffVillageStartPer(double affVillageStartPer) {
+		this.affVillageStartPer = affVillageStartPer;
+	}
 	public Long getMainCommNotYetStarted() {
 		return mainCommNotYetStarted;
 	}
@@ -91,7 +184,48 @@ public class CommitteeBasicVO {
 	public void setAreaType(String areaType) {
 		this.areaType = areaType;
 	}
-	
+	public Long getMainCommVillageNotStarted() {
+		return mainCommVillageNotStarted;
+	}
+	public void setMainCommVillageNotStarted(Long mainCommVillageNotStarted) {
+		this.mainCommVillageNotStarted = mainCommVillageNotStarted;
+	}
+	public Long getAffiCommMandalNotStarted() {
+		return affiCommMandalNotStarted;
+	}
+	public void setAffiCommMandalNotStarted(Long affiCommMandalNotStarted) {
+		this.affiCommMandalNotStarted = affiCommMandalNotStarted;
+	}
+	public Long getAffiCommVillageNotStarted() {
+		return affiCommVillageNotStarted;
+	}
+	public void setAffiCommVillageNotStarted(Long affiCommVillageNotStarted) {
+		this.affiCommVillageNotStarted = affiCommVillageNotStarted;
+	}
+	public Long getMainMandalTotal() {
+		return mainMandalTotal;
+	}
+	public void setMainMandalTotal(Long mainMandalTotal) {
+		this.mainMandalTotal = mainMandalTotal;
+	}
+	public Long getMainVillageTotal() {
+		return mainVillageTotal;
+	}
+	public void setMainVillageTotal(Long mainVillageTotal) {
+		this.mainVillageTotal = mainVillageTotal;
+	}
+	public Long getAffMandalTotal() {
+		return affMandalTotal;
+	}
+	public void setAffMandalTotal(Long affMandalTotal) {
+		this.affMandalTotal = affMandalTotal;
+	}
+	public Long getAffVillageTotal() {
+		return affVillageTotal;
+	}
+	public void setAffVillageTotal(Long affVillageTotal) {
+		this.affVillageTotal = affVillageTotal;
+	}
 	
 	
 }

@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
+import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.GISIssuesVO;
@@ -69,6 +70,7 @@ import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
+import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 
@@ -255,4 +257,6 @@ public interface IWebServiceHandlerService {
     		Long searchLevelId,List<Long> searchLevelValues);
     public AmsKeyValueVO getDistrictWiseInfoForAms(AmsAppLoginVO keyVo);
     public List<DistrictOfficeViewAlertVO> getTotalAlertByOtherStatusForAMS(AmsDataVO keyVo);
+    public CommitteeBasicVO getLocationWiseCommitteesCount(String locationType, Long locationId,Long enrollmentId);
+    public List<TdpCommitteeEnrollment> getEnrollments();
 }
