@@ -768,6 +768,22 @@
 		</div>
 	</div>
 </div>	
+<!-- Document Model -->
+<div class="modal fade" tabindex="-1" id="govtOrderDocumentId" role="dialog" style="z-index:99999;">
+	<div class="modal-dialog" style="width:70%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Govt Order Document</h4>  
+			</div>
+			<div class="modal-body" id="govtOrderDocumentBodyId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
+			</div>
+		</div><!--  /.modal-content -->  
+	</div><!--  /.modal-dialog -->  
+</div><!--  /.modal -->
 </main>
 <footer></footer>
 <script type="text/javascript" src="Assests/js/jquery-1.11.3.js"></script>        
