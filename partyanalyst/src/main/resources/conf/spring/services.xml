@@ -2437,6 +2437,7 @@
 	   <property name="alertsNewsPortalService" ref="alertsNewsPortalService"/>   
 	   <property name="alertManagementSystemService" ref="alertManagementSystemService"/>
 	   <property name="cccDashboardService" ref="cccDashboardService"/>
+	   <property name="locationDashboardService" ref="locationDashboardService"/>
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
@@ -4318,6 +4319,10 @@
   		<property name="enrollmentYearDAO" ref="enrollmentYearDAO" ></property>
   		<property name="casteCategoryDAO" ref="casteCategoryDAO" ></property>
   		<property name="partyMeetingStatusDAO" ref="partyMeetingStatusDAO" ></property>
+  		<property name="tdpCommitteeDAO" ref="tdpCommitteeDAO" ></property>
+  		<property name="cadreDetailsService" ref="cadreDetailsService" ></property>
+  		<property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO" ></property>
+  		
   </bean>
   <bean name="cadrePartyMeetingManagementService" class="com.itgrids.partyanalyst.meeting.service.impl.CadrePartyMeetingManagementService" >
   

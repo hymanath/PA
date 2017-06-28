@@ -57,6 +57,7 @@ import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
+import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.GISIssuesVO;
@@ -98,6 +99,7 @@ import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
+import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
@@ -3124,4 +3126,31 @@ public class WebServiceHandler {
 		    return null;
 		}	
 	}
+	
+	@POST
+	@Path("/getLocationWiseCommitteesCount")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CommitteeBasicVO getLocationWiseCommitteesCount(JSONObject jObj){
+		try{			
+			return webServiceHandlerService.getLocationWiseCommitteesCount(jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("enrollmentId"));		
+		}catch(Exception e){
+			LOG.error("Exception Occured in getLocationWiseCommitteesCount() Method, Exception is ",e);
+			return null;
+		}
+	}
+	
+	@POST
+	@Path("/getEnrollments")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<TdpCommitteeEnrollment> getEnrollments(){
+		try{			
+			return webServiceHandlerService.getEnrollments();		
+		}catch(Exception e){
+			LOG.error("Exception Occured in getEnrollments Method, Exception is ",e);
+			return null;
+		}
+	}
+	
 }
