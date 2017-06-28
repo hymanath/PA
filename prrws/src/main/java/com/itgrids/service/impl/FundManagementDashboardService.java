@@ -175,8 +175,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						
-						addressVO.setId(addressVO.getAssemblyId());
-						addressVO.setName(addressVO.getAssemblyName());
+						addressVO.setId(addressVO.getPanchayatId());
+						addressVO.setName(addressVO.getPanchayatName());
 					}
 					
 					addressVO.setTehsilId(0L);
@@ -941,6 +941,7 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 			inputVO.setFinancialYrIdList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList()));
 			List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
 			List<Long> sourceIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList());
+			inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSearchLvlVals()));
 			//scope wise count and amount dtls
 			List<Object[]> totalFundAndCountDtls= fundSanctionDAO.getTotalFundAndCountDtls(inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate,inputVO.getBlockLevelId(),"one",inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
 			Long ttl = 0L;
@@ -952,13 +953,18 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 				}
 			}
 			
-			Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),sDate,eDate,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
+			Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
 			retusnVo.setTotalAmt(commonMethodsUtilService.getStringValueForObject(totalfund));
-			retusnVo.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalfund))/Double.valueOf(new Integer(len).toString()))));
-			avagecount = commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalfund))/Double.valueOf(new Integer(len).toString()))).longValue();
-			retusnVo.setAvrgeAmt(commonMethodsUtilService.calculateAmountInWords(avagecount));
+			if(totalfund != null ){
+				retusnVo.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalfund))/Double.valueOf(new Integer(len).toString()))));
+				avagecount = commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalfund))/Double.valueOf(new Integer(len).toString()))).longValue();
+			}
+			if(avagecount != null){
+				retusnVo.setAvrgeAmt(commonMethodsUtilService.calculateAmountInWords(avagecount));
+			}
+			if(retusnVo.getAverageAmt() != null && retusnVo.getTotalAmt() != null && retusnVo.getTotalAmt() != ""){
 			retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),Long.parseLong(retusnVo.getTotalAmt())));
-			
+			}
 			List<Object[]> grantTypeDtlsList = grantTypeDAO.getGrandTypeDtls();
 			setGrantTypeToVo(retusnVo,grantTypeDtlsList);
 			//grant wise then scope wise count and amount dtls
