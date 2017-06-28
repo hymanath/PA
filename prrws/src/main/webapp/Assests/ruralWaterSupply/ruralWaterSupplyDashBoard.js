@@ -1749,7 +1749,7 @@
 								for(var i in GLtbodyArr){
 									var totalCount=0;
 									tableView+='<tr>';
-									tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
+									tableView+='<td>'+GLtbodyArr[i].locationName+'&nbsp;&nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"></i></td>';
 									if(GLtbodyArr[i].statusList !=null && GLtbodyArr[i].statusList.length>0){
 										for(var j in GLtbodyArr[i].statusList){
 										if(GLtbodyArr[i].statusList[j].status != 'NC'){
@@ -1984,7 +1984,12 @@
 		}
 		
 		function getHamletWiseIvrStatusCounts(type,divId,locationType){
-			$("#drinkingWater").html(spinner);
+			if(type == "graph"){
+				$("#drinkingWater").html(spinner);
+			}else{
+				$("#drinkingWater"+locationType).html(spinner);
+			}
+			
 			var searchlevelId='';
 			var searchLevelValues=[];
 			
