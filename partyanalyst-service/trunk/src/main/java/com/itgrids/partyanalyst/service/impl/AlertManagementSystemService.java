@@ -15506,7 +15506,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  		try{
  			Date frmDate = null;
 			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 				frmDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
