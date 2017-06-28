@@ -797,8 +797,12 @@ public class CommonMethodsUtilService {
 		      int lenght = amountStr.trim().length();
 		      int maxLength=0;
 		      String tempAmount = amountStr;
+		      String decAmount = "";
 		      if(lenght>5){
 		    	 tempAmount = amountStr.substring(0, amountStr.length()-5);
+		    	 //decimal point is required
+		    	 int len = amountStr.length()-5;
+		    	 decAmount = amountStr.substring(len,len+2);
 		      }else{
 		    	  return "0."+String.valueOf(number/10000);
 		      }
@@ -821,7 +825,7 @@ public class CommonMethodsUtilService {
 				}
 		    	  amountStr = temp;
 		      }
-		      return amountStr;  
+		      return amountStr+"."+decAmount;  
 		    }
 	
 		 /**
