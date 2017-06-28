@@ -188,9 +188,14 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					
 					if(locationMap.get(keyId) != null){
 						fundLocationVO = locationMap.get(keyId);
+						if(fundLocationVO.getTotalCount() != null && fundLocationVO.getTotalCount().longValue()>0L)
+							fundLocationVO.setTotalCount(fundLocationVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+						else
+							fundLocationVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
 					}else{
 						List<FundSchemeVO> yearsList = buildData(yearsMap,schemesMap,null);
-						fundLocationVO.setSubList(yearsList);;
+						fundLocationVO.setSubList(yearsList);
+						fundLocationVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
 					}
 					
 					for (FundSchemeVO yearVO : fundLocationVO.getSubList()){
@@ -255,13 +260,13 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						}else{
 							Collections.sort(returnList, nameWiseDescendingOrder);
 						}
-					}/*else if(sortingType.trim().equalsIgnoreCase("count")){
+					}else if(sortingType.trim().equalsIgnoreCase("count")){
 						if(order.trim().equalsIgnoreCase("asc")){
 							Collections.sort(returnList, amountWiseAscendingOrder);
 						}else{
 							Collections.sort(returnList, amountWiseDescendingOrder);
 						}
-					}*/
+					}
 				}
 			}
 			
@@ -287,16 +292,14 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	
 	
 	public static Comparator<FundSchemeVO> amountWiseAscendingOrder = new Comparator<FundSchemeVO>() {
-		public int compare(FundSchemeVO location2, FundSchemeVO location1) {
-			return 0;
+		public int compare(FundSchemeVO o1, FundSchemeVO o2) {
+			return o1.getTotalCount().compareTo(o2.getTotalCount());
 		}
 	};
 	
 	public static Comparator<FundSchemeVO> amountWiseDescendingOrder = new Comparator<FundSchemeVO>() {
-      @Override
 		public int compare(FundSchemeVO o1, FundSchemeVO o2) {
-			// TODO Auto-generated method stub
-			return 0;
+    	  return o2.getTotalCount().compareTo(o1.getTotalCount());
 		}
 	};
 	
@@ -403,9 +406,14 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					
 					if(locationMap.get(keyId) != null){
 						fundLocationVO = locationMap.get(keyId);
+						if(fundLocationVO.getTotalCount() != null && fundLocationVO.getTotalCount().longValue()>0L)
+							fundLocationVO.setTotalCount(fundLocationVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+						else
+							fundLocationVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
 					}else{
 						List<FundSchemeVO> yearsList = buildData(yearsMap,deptsMap,schemesMap);
-						fundLocationVO.setSubList(yearsList);;
+						fundLocationVO.setSubList(yearsList);
+						fundLocationVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
 					}
 					
 					for (FundSchemeVO yearVO : fundLocationVO.getSubList()){
@@ -513,13 +521,13 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						}else{
 							Collections.sort(returnList, nameWiseDescendingOrder);
 						}
-					}/*else if(sortingType.trim().equalsIgnoreCase("count")){
+					}else if(sortingType.trim().equalsIgnoreCase("count")){
 						if(order.trim().equalsIgnoreCase("asc")){
 							Collections.sort(returnList, amountWiseAscendingOrder);
 						}else{
 							Collections.sort(returnList, amountWiseDescendingOrder);
 						}
-					}*/
+					}
 				}
 			}
 			
