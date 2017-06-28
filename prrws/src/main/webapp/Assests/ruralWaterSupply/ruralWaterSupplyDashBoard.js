@@ -4,8 +4,8 @@
 		"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","SOSO":"#FFBA00","NOT SATISFIED":"#FF0909"}
 		var blocksArr = [{name:'Coverage Status Of Habitation',id:'habitation',img:'coverage_status.png'},
 						 {name:'Key Performance',id:'performance',img:'key_performance.png'},
-						 {name:'Alert Status Jalavani',id:'jalavani',img:'alert_status.png'},
-						 {name:'Plan Of Action for Stressed Habitations Water Budget has to be prepared for all habitations',id:'planAction',img:'plan_action.png'}];
+						 {name:'<p><span><img src="Assests/icons/alert_status.png"/> Alert Status Jalavani</span> <span style="margin-left:6px;">&</span> <span style="margin-left:6px;"><img src="Assests/icons/driking.png"/ style="margin-top: -15px;"> <span style="margin-left: 2px;"> Drinking Water Satisfaction Levels</span></span></p>',id:'jalavani',img:'alert_status.png'},
+						 {name:'Plan Of Action for Stressed Habitations <br><small>Water Budget has to be prepared for all habitations</small>',id:'planAction',img:'plan_action.png'}];
 		var alertStatusBlockArr = [{name:'Alert Status Jalavani',id:'alertStatus'},{name:'Drinking Water Satisfaction Levels',id:'drinking'}];
 		var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 		//getAllFiniancialYears();
@@ -53,11 +53,15 @@
 		
 		function getHabitationCoverageByStatusByLocationType(locationType,divId,type)
 		{
-			$("#totalValues,#habitation").html(spinner);
-			for(var k in divId){
-				
-				$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
+			if(type=="graph"){
+				$("#totalValues").html(spinner);
+				$("#habitation").html(spinner);
+			}else{
+				for(var k in divId){
+					$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
+				}
 			}
+			
 			var json = {
 				locationType:locationType,
 				year:"2017",
@@ -823,11 +827,14 @@
 		}
 		
 		function getKeyPerformanceIndicatorsInfo(locationType,divId,type){
-			$("#keyPerformance").html(spinner);
-			for(var k in divId){
-				
-				$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
+			if(type=="graph"){
+				$("#keyPerformance").html(spinner);
+			}else{
+				for(var k in divId){
+					$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
+				}
 			}
+			
 			var json={
 						fromDateStr:"01-04-2016",
 						toDateStr:"01-12-2030",
@@ -1005,12 +1012,12 @@
 				var targetPopulationArrOne = []; */
 
 				stressedArr.push("Habitations");						
-				achievedHabitationArr.push({"y":result[0].achivedPopulation,color:'#14BBAE'});
-				targetHabitationArr.push({"y":result[0].targetPopulation,color:'#FC5E57'});
+				achievedHabitationArr.push({"y":result[0].achivedPopulation,});
+				targetHabitationArr.push({"y":result[0].targetPopulation});
 				
 				stressedArr.push("Population");						
-				achievedHabitationArr.push({"y":result[0].achived,color:'#14BBAE'});
-				targetHabitationArr.push({"y":result[0].target,color:'#FC5E57'});
+				achievedHabitationArr.push({"y":result[0].achived});
+				targetHabitationArr.push({"y":result[0].target});
 								
 				
 				$("#planOfAction").highcharts({
@@ -1065,10 +1072,12 @@
 					},
 					series: [{
 							name: 'Target',
-							data: targetHabitationArr
+							data: targetHabitationArr,
+							color:'#FC5E57'
 						}, {
 							name: 'Achieved',
-							data: achievedHabitationArr
+							data: achievedHabitationArr,
+							color:'#14BBAE'
 						}]
 				});
 			}
@@ -1135,11 +1144,13 @@
 			});
 		}
 		function getAlertDetailsOfCategoryByStatusWise(type,divId,locationType){
-			$("#alertStatus").html(spinner);
-			for(var k in divId){
-				
-				$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
+			if(type=="graph"){
+				$("#alertStatus").html(spinner);
+			}else{
+				$("#alertStatus"+locationType).html(spinner);
+				$("#drinking"+locationType).html(spinner);
 			}
+			
 			var json = {
 				fromDate:"",
 				toDate:"",
@@ -1369,10 +1380,15 @@
 											if(blocksArr[i].id == "jalavani"){
 												tabBlock+='<li class="active" style="display:none"><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
 											}else{
-												tabBlock+='<li class="active" ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+												tabBlock+='<li class="active" ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
 											}
 										}else{
-											tabBlock+='<li class="active" ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+											if(blocksArr[i].id == "jalavani"){
+												tabBlock+='<li class="active" ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><span>'+blocksArr[i].name+'</span></a></li>';
+											}else{
+												tabBlock+='<li class="active" ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+											}
+											
 										}
 										
 									}else{
@@ -1384,7 +1400,12 @@
 											}
 											
 										}else{
-											tabBlock+='<li ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+											if(blocksArr[i].id == "jalavani"){
+												tabBlock+='<li ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><span>'+blocksArr[i].name+'</span></a></li>';
+											}else{
+												tabBlock+='<li ><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
+											}
+											
 										}
 										
 									}
@@ -1442,6 +1463,7 @@
 			tabBlock+='</div>';
 		tabBlock+='</div>';
 		$("#"+blockId).html(tabBlock);
+		$(".nav-tabs-custom li:last-child a").removeAttr("style");
 		for(var i in blocksArr)
 		{
 			if(blocksArr[i].id == "habitation")
@@ -1495,20 +1517,21 @@
 			
 				var $windowWidth = $(window).width();
 				var tableView='';
+				tableView+='<h5 style="padding:5px"><span class="chartTitleAlign"><img src="Assests/icons/alert_status.png"> <span style="margin-left:5px;">Alert Status Jalavani</span></span></h5>';
 					tableView+='<table class="table table-bordered dataTableAlert'+locationType+'">';
 					tableView+='<thead class="text-capital">';
 						tableView+='<tr>'; 
 							tableView+='<th>'+locationType+'</th>';
 							tableView+='<th>Notified</th>';
-							tableView+='<th></th>';
+							tableView+='<th>%</th>';
 							tableView+='<th>Praposal</th>';
-							tableView+='<th></th>';
+							tableView+='<th>%</th>';
 							tableView+='<th>Action in Progress</th>';
-							tableView+='<th></th>';
+							tableView+='<th>%</th>';
 							tableView+='<th>Completed & Closed</th>';
-							tableView+='<th></th>';
+							tableView+='<th>%</th>';
 							tableView+='<th>Others</th>';
-							tableView+='<th></th>';
+							tableView+='<th>%</th>';
 							tableView+='<th>Total</th>';
 						tableView+='</tr>'; 
 					tableView+='</thead>';
@@ -1551,11 +1574,11 @@
 								}
 							}
 							totalCount =notifiedCount+proposalCount+actionInProgress+completeClosed+others;
-							notifiedPerc = (notifiedCount/totalCount*100).toFixed(2) + "%";
-							proposalPerc = (proposalCount/totalCount*100).toFixed(2) + "%";
-							actionPerc = (actionInProgress/totalCount*100).toFixed(2) + "%";
-							completeClosedPerc = (completeClosed/totalCount*100).toFixed(2) + "%";
-							othersPerc = (others/totalCount*100).toFixed(2) + "%";
+							notifiedPerc = (notifiedCount/totalCount*100).toFixed(2);
+							proposalPerc = (proposalCount/totalCount*100).toFixed(2);
+							actionPerc = (actionInProgress/totalCount*100).toFixed(2);
+							completeClosedPerc = (completeClosed/totalCount*100).toFixed(2);
+							othersPerc = (others/totalCount*100).toFixed(2);
 							
 							if(notifiedCount >0){
 								tableView+='<td>'+notifiedCount+'</td>'; 
@@ -1610,44 +1633,48 @@
 		}
 		function tableViewWaterStatus(divId,GLtbodyAlertArr,locationType){
 			
-			var $windowWidth = $(window).width();
-				var tableView='';
-				tableView+='<table class="table table-bordered dataTableDrinking'+locationType+'">';
-				tableView+='<thead class="text-capital">';
-				tableView+='<tr>'; 
-				tableView+='<th>'+locationType+'</th>';
-					if(GLtbodyAlertArr[0].statusList !=null && GLtbodyAlertArr[0].statusList.length>0){
-						for(var j in GLtbodyAlertArr[0].statusList){
-								tableView+='<th>'+GLtbodyAlertArr[0].statusList[j].name+'</th>';
-								tableView+='<th></th>';
-						}
-					}
-				tableView+='</tr>'; 
-				tableView+='</thead>';
-				tableView+='<tbody>';	
-				
-					for(var i in GLtbodyAlertArr){
-						tableView+='<tr>'; 
-						if(locationType == "state"){
-							tableView+='<td>Andhra Pradesh</td>';
-						}else{
-							tableView+='<td>'+GLtbodyAlertArr[i].name+'</td>';
-						}	
-						if(GLtbodyAlertArr[i].statusList !=null && GLtbodyAlertArr[i].statusList.length>0){
-							for(var j in GLtbodyAlertArr[i].statusList){
-									tableView+='<td>'+GLtbodyAlertArr[i].statusList[j].count+'</td>';
-									tableView+='<td>'+GLtbodyAlertArr[i].statusList[j].percentage+'</td>';
+			if(GLtbodyAlertArr !=null && GLtbodyAlertArr.length>0){
+				var $windowWidth = $(window).width();
+					var tableView='';
+					tableView+='<h5 style="padding:5px"><span class="chartTitleAlign"><img src="Assests/icons/driking.png"> <span style="margin-left:5px;">Drinking Water Satisfaction Levels</span></span></h5>';
+					tableView+='<table class="table table-bordered dataTableDrinking'+locationType+'">';
+					tableView+='<thead class="text-capital">';
+					tableView+='<tr>'; 
+					tableView+='<th>'+locationType+'</th>';
+						if(GLtbodyAlertArr[0] !=null && GLtbodyAlertArr[0].statusList !=null && GLtbodyAlertArr[0].statusList.length>0){
+							for(var j in GLtbodyAlertArr[0].statusList){
+									tableView+='<th>'+GLtbodyAlertArr[0].statusList[j].name+'</th>';
+									tableView+='<th>%</th>';
 							}
 						}
-						tableView+='</tr>'; 
+					tableView+='</tr>'; 
+					tableView+='</thead>';
+					tableView+='<tbody>';	
+					
+						for(var i in GLtbodyAlertArr){
+							tableView+='<tr>'; 
+							if(locationType == "state"){
+								tableView+='<td>Andhra Pradesh</td>';
+							}else{
+								tableView+='<td>'+GLtbodyAlertArr[i].name+'</td>';
+							}	
+							if(GLtbodyAlertArr[i].statusList !=null && GLtbodyAlertArr[i].statusList.length>0){
+								for(var j in GLtbodyAlertArr[i].statusList){
+										tableView+='<td>'+GLtbodyAlertArr[i].statusList[j].count+'</td>';
+										tableView+='<td>'+GLtbodyAlertArr[i].statusList[j].percentage+'</td>';
+								}
+							}
+							tableView+='</tr>'; 
+						}
+					tableView+='</tbody>';
+					tableView+='</table>';
+				$("#drinking"+locationType).html(tableView);
+				$(".dataTableDrinking"+locationType).dataTable();
+					if($windowWidth < 768){
+						$(".dataTableDrinking"+locationType).wrap("<div class='table-responsive'></div>");
 					}
-				tableView+='</tbody>';
-				tableView+='</table>';
-			$("#drinking"+locationType).html(tableView);
-			$(".dataTableDrinking"+locationType).dataTable();
-				if($windowWidth < 768){
-					$(".dataTableDrinking"+locationType).wrap("<div class='table-responsive'></div>");
-				}
+			}
+			
 			
 		}
 		function tableViewHabitationStatus(divId,GLtbodyArr,locationType)
@@ -1667,7 +1694,7 @@
 										if(divId[k].id=="habitation"){
 											if(GLtbodyArr[0].statusList[j].status != 'NC'){
 												tableView+='<th>'+GLtbodyArr[0].statusList[j].status+'</th>';
-												tableView+='<th></th>';
+												tableView+='<th>%</th>';
 												
 											}
 										}
@@ -1703,7 +1730,7 @@
 										if(GLtbodyArr[i].statusList[j].status != 'NC'){
 												if(GLtbodyArr[i].statusList[j].count !=null && GLtbodyArr[i].statusList[j].count>0){
 													tableView+='<td>'+GLtbodyArr[i].statusList[j].count+'</td>';
-													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].statusList[j].percentage+' %</small></td>';
+													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].statusList[j].percentage+'</small></td>';
 												}else{
 													tableView+='<td> - </td>';
 													tableView+='<td> - </td>';
