@@ -393,8 +393,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[6]));
 						addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						
-						addressVO.setId(addressVO.getAssemblyId());
-						addressVO.setName(addressVO.getAssemblyName());
+						addressVO.setId(addressVO.getPanchayatId());
+						addressVO.setName(addressVO.getPanchayatName());
 					}
 					
 					addressVO.setTehsilId(0L);
