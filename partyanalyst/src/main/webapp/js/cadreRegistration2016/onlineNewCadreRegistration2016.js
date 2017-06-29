@@ -68,7 +68,7 @@
 			for(var i in result){
 			   if(result[i].id == 0){
 				  $("#constituencyId").append('<option value='+result[i].id+'>Select Constituency</option>');
-			   }else{
+			   }else if(result[i].id == 262){
 				  $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
 			}
@@ -304,7 +304,7 @@
 					data : {task:JSON.stringify(jsObj)} 
 				}).done(function(result){
 					//$("#boothDivIdImg").hide();
-					
+					$("#boothDivIdImg").hide();
 					if(id==1){
 					  for(var i in result){					 
 							if(mandalSubStrId==1){
@@ -489,7 +489,7 @@ $("#boothsList").trigger("chosen:updated");
 			 for(var i in result){
 			   if(result[i].id == 0){
 				  $("#districtId").append('<option value='+result[i].id+'>Select District</option>');
-			   }else{
+			   }else if(result[i].id == 21){
 				  $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
 			 }
