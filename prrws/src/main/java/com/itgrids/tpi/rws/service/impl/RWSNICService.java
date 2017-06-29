@@ -239,10 +239,13 @@ public class RWSNICService implements IRWSNICService{
 	 	    	//String output ="{'safeMLD':2.94,'unsafeMLD':0.12}";
 	 	    	 
 	 	    	 if(output != null && !output.isEmpty()){
-	 	    		JSONObject jObj = new JSONObject(output);	 	    		
+	 	    		JSONObject jObj = new JSONObject(output);	 	  
+	 	    			if(!jObj.getString("status").equalsIgnoreCase("Failure")){
 	 	    				finalVO.setSafeMLD(new BigDecimal(jObj.getString("safeMLD")));
 	 	    				finalVO.setUnsafeMLD(new BigDecimal(jObj.getString("unsafeMLD")));
 	 	    			}
+	 	    				
+	 	    		}
 	 	    	}
 	 	    	
 		} catch (Exception e) {
@@ -677,22 +680,24 @@ public class RWSNICService implements IRWSNICService{
  	    		
  	    		JSONObject maonJObj = new JSONObject(output);
  	    		
- 	    		statusVO.setId(maonJObj.getLong("locationId"));
- 	    		statusVO.setName(maonJObj.getString("locationName"));
- 	    		
- 	    		JSONArray statusArray = maonJObj.getJSONArray("statusList");
- 	    		
- 	    		if(statusArray!=null && statusArray.length()>0){
- 	    			for(int i=0;i<statusArray.length();i++){
- 	    				StatusVO subVO = new StatusVO();
- 	    				JSONObject jObj = (JSONObject) statusArray.get(i);
- 	    				subVO.setName(jObj.getString("status"));
- 	    				subVO.setCount(jObj.getLong("count"));//All Habs
- 	    				subVO.setStressedCount(jObj.getLong("stressedHabitationCount"));
- 	    				subVO.setPercentage(jObj.getDouble("percentage"));
- 	    				
- 	    				statusVO.getStatusList().add(subVO);
- 	    			}
+ 	    		if(!maonJObj.getString("status").equalsIgnoreCase("Failure")){
+ 	    			statusVO.setId(maonJObj.getLong("locationId"));
+ 	 	    		statusVO.setName(maonJObj.getString("locationName"));
+ 	 	    		
+ 	 	    		JSONArray statusArray = maonJObj.getJSONArray("statusList");
+ 	 	    		
+ 	 	    		if(statusArray!=null && statusArray.length()>0){
+ 	 	    			for(int i=0;i<statusArray.length();i++){
+ 	 	    				StatusVO subVO = new StatusVO();
+ 	 	    				JSONObject jObj = (JSONObject) statusArray.get(i);
+ 	 	    				subVO.setName(jObj.getString("status"));
+ 	 	    				subVO.setCount(jObj.getLong("count"));//All Habs
+ 	 	    				subVO.setStressedCount(jObj.getLong("stressedHabitationCount"));
+ 	 	    				subVO.setPercentage(jObj.getDouble("percentage"));
+ 	 	    				
+ 	 	    				statusVO.getStatusList().add(subVO);
+ 	 	    			}
+ 	 	    		}
  	    		}
  	    		
  	    	}

@@ -83,14 +83,26 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
-					if(ajaxresp !=null ){
+					if(ajaxresp !=null && ajaxresp.length>0){
 						if(type == "graph"){
+							$("#totalCntTtlValues").show()
 							buildChartForHabitationCoverage(ajaxresp);
 							buildChartForHabitationCoverageStatus(ajaxresp);
 						}else{
 							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations');
 						}
 						
+						
+					}else{
+						if(type == "graph"){
+							$("#totalValues").html("No Data Available");
+							$("#habitation").html("No Data Available");
+							$("#totalCntTtlValues").hide()
+						}else{
+							for(var k in divId){
+								$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
+							}
+						}
 						
 					}
 				}
@@ -100,21 +112,15 @@
 		function buildChartForHabitationCoverage(response){
 			
 			var dataArr = [];
-			var pcCount = 0;
 			var totalCount=0;
 			var statusNamesArr=[];
+			var pcCount = 0;
 			for(var i in response){
 				for(var j in response[i].statusList){
 					if(response[i].statusList[j].status != "NC"){
 						if(response[i].statusList[j].status == "PC1" || response[i].statusList[j].status == "PC2" || response[i].statusList[j].status == "PC3" || response[i].statusList[j].status == "PC4"){
 							pcCount = pcCount+parseInt(response[i].statusList[j].count);
 							totalCount =totalCount+parseInt(response[i].statusList[j].count);
-							if(response[i].statusList[j].status == "PC4"){
-								var pcArr = [];
-								statusNamesArr.push("PC");
-								pcArr.push(parseInt(pcCount));
-								dataArr.push(pcArr);
-							}
 						}else{
 							var tempArr = [];
 							response[i].statusList[j].status == "NSS" ? statusNamesArr.push("QA"):statusNamesArr.push(response[i].statusList[j].status);
@@ -124,9 +130,14 @@
 						}
 					}
 				}
+				var pcArr = [];
+				statusNamesArr.push("PC");
+				pcArr.push(pcCount);
+				dataArr.push(pcArr);
 			}
+			
 			$("#totalCntTtlValues").html("TOTAL:"+totalCount)
-			var colors = ['#14BAAD','#FC5049','#494949']
+			var colors = ['#14BAAD','#494949','#FC5049']
 			var id = 'totalValues';
 			var type = {
 				type: 'column',
@@ -169,7 +180,12 @@
 					colorByPoint: true
 				}};
 			var tooltip = {
-				pointFormat: '{point.y}'
+				useHTML:true,
+				formatter: function () {
+					var pcnt = (this.y / totalCount) * 100;
+					return '<b>' + this.x + '</b><br/>' +
+						this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+				}
 			};
 
 			var data = [{
@@ -177,10 +193,14 @@
 				data: dataArr,
 
 				dataLabels: {
+					useHTML:true,
 					enabled: true,
 					color: '#000',
 					align: 'center',
-					format: '{point.y}',
+					formatter: function() {
+							var pcnt = (this.y / totalCount) * 100;
+							return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+					} 
 				}
 			}];
 			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
@@ -188,13 +208,16 @@
 		
 		function buildChartForHabitationCoverageStatus(response){
 			var dataArr = [];
+			var totalCount=0;
+			var statusNamesArr=[];
 			for(var i in response){
 			  for(var j in response[i].statusList){
 					if(response[i].statusList[j].status != "NC"){
 						var tempArr = [];
-						tempArr.push(response[i].statusList[j].status);
+						statusNamesArr.push(response[i].statusList[j].status);
 						tempArr.push(parseInt(response[i].statusList[j].count));
 						dataArr.push(tempArr);
+						totalCount=totalCount+parseInt(response[i].statusList[j].count);
 					}
 				}
 			}
@@ -225,14 +248,19 @@
 				min: 0,
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,
-				categories: []
+				categories: statusNamesArr
 				
 			};
 			var plotOptions ={ column: {
 					colorByPoint: true
 				}};
 			var tooltip = {
-				pointFormat: '{point.y}'
+				useHTML:true,
+				formatter: function () {
+					var pcnt = (this.y / totalCount) * 100;
+					return '<b>' + this.x + '</b><br/>' +
+						this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+				}
 			};
 
 			var data = [{
@@ -243,7 +271,10 @@
 					enabled: true,
 					color: '#000',
 					align: 'canter',
-					format: '{point.y}',
+					formatter: function() {
+							var pcnt = (this.y / totalCount) * 100;
+							return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+					} 
 				}
 			}];
 			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
@@ -270,6 +301,8 @@
 				success: function(ajaxresp){
 					if(ajaxresp !=null ){
 						buildChartForLabTestDetails(ajaxresp);
+					}else{
+						$("#overView").html("No Data Available");
 					}
 				}
 			});
@@ -279,12 +312,14 @@
 			var dataArr = [];
 			var arr1 = [],arr2 = [];
 			var statusNamesArr=[];
+			var totalCount=0;
 			statusNamesArr.push("physicalTestCount");
 			arr1.push(parseInt(response.physicalTestCount));
 			dataArr.push(arr1);
 			statusNamesArr.push("bacterialTestCount");
 			arr2.push(parseInt(response.bacterialTestCount));
 			dataArr.push(arr2);
+			totalCount =parseInt(response.physicalTestCount)+parseInt(response.bacterialTestCount);
 			var colors = ['#14BAAD','#FC5049']
 			var id = 'overView';
 			var type = {
@@ -330,7 +365,12 @@
 					colorByPoint: true
 				}};
 			var tooltip = {
-				pointFormat: '{point.y}'
+				useHTML:true,
+				formatter: function () {
+					var pcnt = (this.y / totalCount) * 100;
+					return '<b>' + this.x + '</b><br/>' +
+						this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+				}
 			};
 
 			var data = [{
@@ -341,7 +381,10 @@
 					enabled: true,
 					color: '#000',
 					align: 'center',
-					format: '{point.y}',
+					formatter: function() {
+						var pcnt = (this.y / totalCount) * 100;
+						return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+					}
 				}
 			}];
 			
@@ -367,7 +410,17 @@
 				},
 				success: function(ajaxresp){
 					if(ajaxresp !=null ){
-						buildHabitationSupplyDetails(ajaxresp);
+						if(ajaxresp.safeMLD !=null && ajaxresp.safeMLD >0 && ajaxresp.unsafeMLD !=null && ajaxresp.unsafeMLD >0){
+							$("#levelSupplyTtlValues").show()
+							buildHabitationSupplyDetails(ajaxresp);
+						}else{
+							$("#levelSupplyTtlValues").hide()
+							$("#levelOfSupply1").html("No Data Available");
+						}
+						
+					}else{
+						$("#levelSupplyTtlValues").hide()
+						$("#levelOfSupply1").html("No Data Available");
 					}
 				}
 			});
@@ -385,7 +438,7 @@
 				statusNamesArr.push("UN-SAFE");
 				subDataArr2.push(result.unsafeMLD);
 				dataArr.push(subDataArr2);
-				totalCount =totalCount+result.safeMLD+result.unsafeMLD;
+				totalCount = result.safeMLD+result.unsafeMLD;
 				
 				$("#levelSupplyTtlValues").html("TOTAL:"+totalCount)
 				var colors = ['#14BAAD','#FC5049']
@@ -431,7 +484,12 @@
 						colorByPoint: true
 					}};
 				var tooltip = {
-					pointFormat: '{point.y}'
+					useHTML:true,
+					formatter: function () {
+						var pcnt = (this.y / totalCount) * 100;
+						return '<b>' + this.x + '</b><br/>' +
+							this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+					}
 				};
 
 				var data = [{
@@ -442,7 +500,10 @@
 						enabled: true,
 						color: '#000',
 						align: 'center',
-						format: '{point.y}',
+						formatter: function() {
+							var pcnt = (this.y / totalCount) * 100;
+							return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+						} 
 					}
 				}];
 				
@@ -468,8 +529,12 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
-					if(ajaxresp !=null ){
+					if(ajaxresp !=null && ajaxresp.length>0){
+						$("#schemesTtlValues").show()
 						buildSchemesDetails(ajaxresp);
+					}else{
+						$("#schemesTtlValues").hide()
+						$("#schemes").html("No Data Available");
 					}
 				}
 			});
@@ -548,7 +613,12 @@
 						colorByPoint: true
 					}};
 				var tooltip = {
-					pointFormat: '{point.y}'
+					useHTML:true,
+					formatter: function () {
+					var pcnt = (this.y / totalCount) * 100;
+					return '<b>' + this.x + '</b><br/>' +
+						this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+				}
 				};
 
 				var data = [{
@@ -559,7 +629,10 @@
 						enabled: true,
 						color: '#000',
 						align: 'center',
-						format: '{point.y}',
+						formatter: function() {
+							var pcnt = (this.y / totalCount) * 100;
+							return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+						}
 					}
 				}];
 				var colors = ['#14BAAD','#FC5049']
@@ -583,8 +656,10 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
-					if(ajaxresp !=null ){
+					if(ajaxresp !=null && ajaxresp.length>0){
 						buildSchemeWiseWorkDetails(ajaxresp);
+					}else{
+						$("#habitationWorks").html("No Data Available");
 					}
 				}
 			});
@@ -602,10 +677,10 @@
 					if(result[i].assetType == "PWS" || result[i].assetType == "CPWS")
 					{
 						assetTypeArr.push(result[i].assetType);						
-						workOngoingArr.push({"y":result[i].workOngoingCount});
-						workNotGroundedArr.push({"y":result[i].workNotGroundedCount});
-						workCompletedArr.push({"y":result[i].workCompletedCount});
-						workComissionedArr.push({"y":result[i].workComissionedCount});						
+						workOngoingArr.push({"y":result[i].workOngoingCount,"extra":result[i].percentageOne.toFixed(1)});
+						workNotGroundedArr.push({"y":result[i].workNotGroundedCount,"extra":result[i].percentageFour.toFixed(1)});
+						workCompletedArr.push({"y":result[i].workCompletedCount,"extra":result[i].percentageThree.toFixed(1)});
+						workComissionedArr.push({"y":result[i].workComissionedCount,"extra":result[i].percentageTwo.toFixed(1)});						
 					}
 					
 				  }
@@ -643,18 +718,25 @@
 						enabled: true
 					},
 					tooltip: {
+						useHTML:true,
 						formatter: function () {
 							return '<b>' + this.x + '</b><br/>' +
-								this.series.name + ': ' + this.y;
+								this.series.name + ': ' + this.y+"-"+((this.point.extra))+'%';
 						}
 					},
 					plotOptions: {
 						column: {
 							//colorByPoint: true
 							dataLabels: {
+								useHTML:true,
 								enabled: true,
-								formatter: function () {
-									return this.y;
+								formatter: function() {
+									if(this.y == 0){
+										return null;
+									}else{
+										return '<span>'+this.y+'<br>('+(this.point.extra)+'%)</span>';
+									}
+									
 								}
 							}
 						}
@@ -695,14 +777,17 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
-					if(ajaxresp !=null ){
+					if(ajaxresp !=null && ajaxresp.length>0){
 						var dataArr = [];
+						var totalCount=0;
+						var statusNamesArr=[];
 							for(var i in ajaxresp)
 							{
 								var tempArr = [];
-								tempArr.push(ajaxresp[i].assetType);
+								statusNamesArr.push(ajaxresp[i].assetType);
 								tempArr.push(parseInt(ajaxresp[i].count));
 								dataArr.push(tempArr);
+								totalCount=totalCount+parseInt(ajaxresp[i].count);
 							  
 							}
 							var colors = ['#14BBAE'];
@@ -729,13 +814,18 @@
 								min: 0,
 								gridLineWidth: 0,
 								minorGridLineWidth: 0,
-								categories: []
+								categories: statusNamesArr
 							};
 							var plotOptions ={ column: {
 									colorByPoint: false
 								}};
 							var tooltip = {
-								pointFormat: '{point.y}'
+								useHTML:true,
+								formatter: function () {
+									var pcnt = (this.y / totalCount) * 100;
+									return '<b>' + this.x + '</b><br/>' +
+										this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+								}
 							};
 
 							var data = [{
@@ -746,10 +836,15 @@
 									enabled: true,
 									color: '#000',
 									align: 'center',
-									format: '{point.y}',
+									formatter: function() {
+										var pcnt = (this.y / totalCount) * 100;
+										return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+									}
 								}
 							}];
 							highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
+					}else{
+						$("#assets").html("No Data Available");
 					}
 				}
 			});
@@ -769,6 +864,7 @@
 				},
 				success: function(ajaxresp){
 					if(ajaxresp !=null ){
+						$("#waterSourcesTtlValues").show()
 						var dataArr = [];
 						var groundDataArr1=[],surfaceArrArr2=[];
 						var totalCount=0;	
@@ -823,7 +919,12 @@
 									colorByPoint: true
 								}};
 							var tooltip = {
-								pointFormat: '{point.y}'
+								useHTML:true,
+								formatter: function () {
+									var pcnt = (this.y / totalCount) * 100;
+									return '<b>' + this.x + '</b><br/>' +
+										this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+								}
 							};
 
 							var data = [{
@@ -834,10 +935,16 @@
 									enabled: true,
 									color: '#000',
 									align: 'center',
-									format: '{point.y}',
+									formatter: function() {
+										var pcnt = (this.y / totalCount) * 100;
+										return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+									} 
 								}
 							}];
 							highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
+					}else{
+						$("#waterSourcesTtlValues").hide()
+						$("#waterSources").html("No Data Available");
 					}
 				}
 			});	
@@ -867,13 +974,21 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
-					if(ajaxresp !=null ){
+					if(ajaxresp !=null && ajaxresp.length>0){
 						if(type=="graph"){
 							buildKeyPerformanceIndicatorsInfo(ajaxresp)
 						}else{
 							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations');
 						}
 						
+					}else{
+						if(type=="graph"){
+							$("#keyPerformance").html("No Data Available");
+						}else{
+							for(var k in divId){
+								$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
+							}
+						}
 					}
 				}
 			});
@@ -890,11 +1005,11 @@
 							achivedArr.push(result[i].achivmentCount)
 					} */
 					keyNamesArr.push("Partially Covered");
-					targetArr.push(result[0].pcTarget);
-					achivedArr.push(result[0].pcAchivement);
+					targetArr.push({"y":result[0].pcTarget});
+					achivedArr.push({"y":result[0].pcAchivement});
 					keyNamesArr.push("Quality Affected");	
-					targetArr.push(result[0].qaTarget);
-					achivedArr.push(result[0].qaAchivement);
+					targetArr.push({"y":result[0].qaTarget});
+					achivedArr.push({"y":result[0].qaAchivement});
 				}
 				$("#keyPerformance").highcharts({
 					chart: {
@@ -937,6 +1052,7 @@
 							grouping: false,
 							shadow: false,
 							borderWidth: 0
+							
 						}
 					},
 					series: [{
@@ -995,6 +1111,7 @@
 		}
 		
 		function getPlanofActionForStressedHabitations(){
+			$("#planOfAction").html(spinner)
 			var financialVal =$("#financialYearId").val();
 			var json = {
 					fromDateStr:glStartDate,
@@ -1012,9 +1129,11 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
-					if(ajaxresp !=null ){
+					if(ajaxresp !=null && ajaxresp.length>0){
 						//buildPlanofActionForStressedHabitations(ajaxresp);
 						buildPlanofActionForStressedHabitationsNew(ajaxresp);
+					}else{
+						$("#planOfAction").html("No Data Available")
 					}
 				}
 			});
@@ -1033,12 +1152,12 @@
 				var targetPopulationArrOne = []; */
 
 				stressedArr.push("Habitations");						
-				achievedHabitationArr.push({"y":result[0].achivedPopulation,});
-				targetHabitationArr.push({"y":result[0].targetPopulation});
+				achievedHabitationArr.push({"y":result[0].achivedPopulation,"extra":result[0].percentageOne.toFixed(1)});
+				targetHabitationArr.push({"y":result[0].targetPopulation,"extra":result[0].achivedHabPerc.toFixed(1)});
 				
 				stressedArr.push("Population");						
-				achievedHabitationArr.push({"y":result[0].achived});
-				targetHabitationArr.push({"y":result[0].target});
+				achievedHabitationArr.push({"y":result[0].achived,"extra":result[0].targetPopPerc.toFixed(1)});
+				targetHabitationArr.push({"y":result[0].target,"extra":result[0].achivedPopPerc.toFixed(1)});
 								
 				
 				$("#planOfAction").highcharts({
@@ -1075,6 +1194,7 @@
 						enabled: true
 					},
 					tooltip: {
+						useHTML:true,
 						formatter: function () {
 							return '<b>' + this.x + '</b><br/>' +
 								this.series.name + ': ' + this.y;
@@ -1085,8 +1205,13 @@
 							//colorByPoint: true
 							dataLabels: {
 								enabled: true,
-								formatter: function () {
-									return this.y;
+								formatter: function() {
+									if(this.y == 0){
+										return null;
+									}else{
+										return '<span>'+this.y+'<br>('+(this.point.extra)+'%)</span>';
+									}
+									
 								}
 							}
 						}
@@ -1190,12 +1315,22 @@
 				success: function(ajaxresp){
 					if(ajaxresp !=null && ajaxresp.length>0){
 						if(type=="graph"){
+							$("#alertStatus").html('');
 							buildAlertDetailsOfCategoryByStatusWise(ajaxresp);
 						}else if(type=="table"){
+							$("#alertStatus"+locationType).html('');
+							$("#drinking"+locationType).html('');
 							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'alertStatus')
 						}
 						
 						
+					}else{
+						if(type=="graph"){
+							$("#alertStatus").html('No Data Available');
+						}else if(type=="table"){
+							$("#alertStatus"+locationType).html('No Data Available');
+							$("#drinking"+locationType).html('No Data Available');
+						}
 					}
 				}
 			});
@@ -1205,24 +1340,33 @@
 			
 			if(result !=null && result.length>0){
 				var statusCountArr = [];
+				var totalCount=0;
 				for(var i in result){
 					var CompleteClosedCount=0;
-					var othersCount=0;	
+					var othersCount=0;
+					var notifiedCnt=0;
+					var actionPgress=0;
+					var propasalCnt=0;
 					for(var j in result[i].statusList){
 						 if(result[i].statusList[j].id==2){
 							statusCountArr.push(result[i].statusList[j].count);
+							notifiedCnt=result[i].statusList[j].count;
 						}else if(result[i].statusList[j].id==13){
 							statusCountArr.push(result[i].statusList[j].count);
+							actionPgress=result[i].statusList[j].count;
 						}else if(result[i].statusList[j].id==3){
 							 statusCountArr.push(result[i].statusList[j].count);
+							 propasalCnt=result[i].statusList[j].count;
 						}else if(result[i].statusList[j].id==4 ||  result[i].statusList[j].id == 12){
 							 CompleteClosedCount =CompleteClosedCount+result[i].statusList[j].count;
 						}else{
 							 othersCount =othersCount+result[i].statusList[j].count;
-						} 
+						}
+							
 					}
 					
 				}
+				totalCount =notifiedCnt+actionPgress+propasalCnt+CompleteClosedCount+othersCount;
 				statusCountArr.push(CompleteClosedCount);
 				statusCountArr.push(othersCount);
 				var colors = ['#FC5049']
@@ -1259,7 +1403,12 @@
 						colorByPoint: true
 					}};
 				var tooltip = {
-					pointFormat: '{point.y}'
+					useHTML:true,
+					formatter: function () {
+						var pcnt = (this.y / totalCount) * 100;
+						return '<b>' + this.x + '</b><br/>' +
+							this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+					}
 				};
 
 				var data = [{
@@ -1270,7 +1419,10 @@
 						enabled: true,
 						color: '#000',
 						align: 'center',
-						format: '{point.y}',
+						formatter: function() {
+							var pcnt = (this.y / totalCount) * 100;
+							return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+						}
 					}
 				}];
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
@@ -1297,6 +1449,8 @@
 				success: function(ajaxresp){
 					if(ajaxresp !=null && ajaxresp.length>0){
 						buildAlertFeedbackStatusDetails(ajaxresp);
+					}else{
+						$("#feedbackId").html("No Data Available");
 					}
 				}
 			});
@@ -1306,10 +1460,12 @@
 			
 			var statusNamesArr=[];
 			var statusCountArr=[];
+			var totalCount=0;
 			if(result !=null && result.length>0){
 				for(var i in result){
 					statusNamesArr.push(result[i].name)
 					statusCountArr.push(result[i].count)
+					totalCount=totalCount+result[i].count;
 				}
 			}
 			var colors = ['#0FBE08','#FF0909','#FFBA00']
@@ -1358,7 +1514,12 @@
 					colorByPoint: true
 				}};
 			var tooltip = {
-				pointFormat: '{point.y}'
+				useHTML:true,
+				formatter: function () {
+					var pcnt = (this.y / totalCount) * 100;
+					return '<b>' + this.x + '</b><br/>' +
+						this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+				}
 			};
 
 			var data = [{
@@ -1369,7 +1530,10 @@
 					enabled: true,
 					color: '#000',
 					align: 'center',
-					format: '{point.y}',
+					formatter: function() {
+						var pcnt = (this.y / totalCount) * 100;
+						return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+					}
 				}
 			}];
 			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
@@ -1746,7 +1910,8 @@
 								for(var i in GLtbodyArr){
 									var totalCount=0;
 									tableView+='<tr>';
-									tableView+='<td>'+GLtbodyArr[i].locationName+'&nbsp;&nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"></i></td>';
+									tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
+									//&nbsp;&nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"></i>
 									if(GLtbodyArr[i].statusList !=null && GLtbodyArr[i].statusList.length>0){
 										for(var j in GLtbodyArr[i].statusList){
 										if(GLtbodyArr[i].statusList[j].status != 'NC'){
@@ -2032,17 +2197,28 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
-					if(type == "graph"){
-						buildHamletWiseIvrStatusCounts(ajaxresp);
-					}else if(type == "table"){
-						buildTableForHabitationCoverage(ajaxresp,locationType,divId,'drinking')
+					if(ajaxresp !=null && ajaxresp.length>0){
+						if(type == "graph"){
+							buildHamletWiseIvrStatusCounts(ajaxresp);
+						}else if(type == "table"){
+							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'drinking')
+						}
+					}else{
+						if(type == "graph"){
+							$("#drinkingWater").html("No Data Available");
+						}else if(type == "table"){
+							$("#drinkingWater"+locationType).html("No Data Available");
+						}
 					}
+						
 					
 				}
 			});
 		}
 	
 	function getLocationWiseAlertStatusCounts(type,divId,locationType){
+		$("#alertStatus"+locationType).html(spinner);
+		$("#drinking"+locationType).html(spinner);
 		var arr = [];
 		var financialVal =$("#financialYearId").val();
 		var json = {
@@ -2063,7 +2239,13 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success: function(ajaxresp){
-				buildTableForHabitationCoverage(ajaxresp,locationType,divId,'alertStatus')
+				if(ajaxresp !=null && ajaxresp.length>0){
+					buildTableForHabitationCoverage(ajaxresp,locationType,divId,'alertStatus')
+				}else{
+					$("#alertStatus"+locationType).html("No Data Available");
+					$("#drinking"+locationType).html("No Data Available");
+				}
+				
 			}
 		});
 	}
@@ -2072,10 +2254,12 @@
 		
 		if(result !=null && result.length>0){
 			var dataArr=[];
+			var totalCount=0;
 			for(var i in result){
 				if(result[i].statusList !=null && result[i].statusList.length>0){
 					for(var j in result[i].statusList){
 						dataArr.push(result[i].statusList[j].count)
+						totalCount=totalCount+result[i].statusList[j].count;
 					}
 				}
 			}
@@ -2122,7 +2306,12 @@
 				colorByPoint: true
 			}};
 		var tooltip = {
-			pointFormat: '{point.y}'
+			useHTML:true,
+			formatter: function () {
+					var pcnt = (this.y / totalCount) * 100;
+					return '<b>' + this.x + '</b><br/>' +
+						this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+				}
 		};
 
 		var data = [{
@@ -2133,7 +2322,10 @@
 				enabled: true,
 				color: '#000',
 				align: 'center',
-				format: '{point.y}',
+				formatter: function() {
+					var pcnt = (this.y / totalCount) * 100;
+					return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+				}
 			}
 		}];
 		highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
@@ -2212,7 +2404,6 @@
 			onloadCalls();	
 		});
    }
-	
   $(document).on("change","#chosendistrictSelectmandalBlockId",function(){
 		var distId = $("#chosendistrictSelectmandalBlockId").val();
 		var financialVal =$("#financialYearId").val();
@@ -2233,4 +2424,7 @@
 		}else{
 			getLocationBasedOnSelection("mandal",financialVal,"constituency",constId,distId);
 		}
+	});
+	$(document).on("change","#financialYearId",function(){
+		onloadCalls();
 	});
