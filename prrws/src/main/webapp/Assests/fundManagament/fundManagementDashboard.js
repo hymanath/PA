@@ -3746,7 +3746,9 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 					   if(yearLen >=3){
 							str+='<th colspan="2">'+result[0].rangeList[i].name+'</th>'
 						}else{
-							if(i == 1){
+							if(i == 0){
+								str+='<th>Total</th>'
+							}else if(i == 1){
 								str+='<th>'+result[0].rangeList[i].name+'</th>'
 							}else if(result[0].rangeList[i].name == ""){
 								str+='<th>'+result[0].rangeList[i].name+'</th>'
