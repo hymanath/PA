@@ -1888,95 +1888,204 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    	List<NregsDataVO> disConslist = null;
 		 	    	List<NregsDataVO> disMandallist = null;
 		 	    	List<NregsDataVO> consMandallist = null;
-		 	    	if(inputVO.getLocationType().trim().equalsIgnoreCase("district")){
-		 	    		inputVO.setLocationType("constituency");
-			 	    	ClientResponse constResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
-			 	    	if(constResponse.getStatus() != 200){
-				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ constResponse.getStatus());
-				 	      }else{
-				 	    	 String constOutput = constResponse.getEntity(String.class);
-				 	    	 
-				 	    	 disConslist = getNregsConstCuntDetails(constOutput,distConstMap,inputVO.getDivType());
-				 	      }
-			 	    	
-			 	    	distConstMap.clear();
-			 	    	if(list != null && !list.isEmpty()){
-			 	    		 for (NregsDataVO nregsDataVO : list) {
-			 	    			 NregsDataVO filterVo = new NregsDataVO();
-			 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
-								distConstMap.put(nregsDataVO.getDistrict(),filterVo);
-							}
-			 	    	 }
-			 	    	inputVO.setLocationType("mandal");
-			 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
-			 	    	if(mandalResponse.getStatus() != 200){
-				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
-				 	      }else{
-				 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
-				 	    	 
-				 	    	  disMandallist = getNregsMandalsCuntFrDistrict(mandalOutput,distConstMap,inputVO.getDivType());
-				 	      }
-			 	    	
-			 	    	finalVO.getDistConsCuntList().addAll(disConslist);
-			 	    	finalVO.getDistMandalCuntList().addAll(disMandallist);
-			 	    	finalVO.getDistList().addAll(list);
-		 	    	}else if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
-		 	    		Map<String,NregsDataVO> constMandMap = new LinkedHashMap<String,NregsDataVO>();
-		 	    		Map<String,NregsDataVO> consCuntMap  = new LinkedHashMap<String,NregsDataVO>();
-			 	    		//distConstMap.clear();
-		 	    		if(list != null && !list.isEmpty()){
-			 	    		 for (NregsDataVO nregsDataVO : list) {
-			 	    			String  distrName = nregsDataVO.getDistrict();
-			 	    			NregsDataVO vo  = consCuntMap.get(distrName);
-			 	    			if(vo == null ){
-			 	    				vo = new NregsDataVO();
-			 	    				vo.setDistrict(distrName);
-			 	    				vo.setCount(vo.getCount() +1);
-			 	    				consCuntMap.put(distrName,vo);
-			 	    			}else{
-			 	    				vo.setCount(vo.getCount()+1);
-			 	    				consCuntMap.put(distrName,vo);
-			 	    			}
-							}
-			 	    	 }
-			 	    	
-			 	    	if(list != null && !list.isEmpty()){
-			 	    		 for (NregsDataVO nregsDataVO : list) {
-			 	    			 NregsDataVO filterVo = new NregsDataVO();
-			 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
-			 	    			constMandMap.put(nregsDataVO.getConstituency(),filterVo);
-							}
-			 	    	 }
-			 	    	
-		 	    		inputVO.setLocationType("mandal");
-			 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
-			 	    	if(mandalResponse.getStatus() != 200){
-				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
-				 	      }else{
-				 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
-				 	    	 
-				 	    	consMandallist = getNregsMandalsCuntFrConstituncies(mandalOutput,constMandMap,inputVO.getDivType());
-				 	      }
-			 	    	
-			 	    	finalVO.getCountList().addAll(new ArrayList<NregsDataVO>(consCuntMap.values()));
-			 	    	finalVO.getDistMandalCuntList().addAll(consMandallist);
-			 	    	finalVO.getDistList().addAll(list);
-		 	    	  }else if(inputVO.getLocationType().trim().equalsIgnoreCase("mandal")){
-		 	    		 Map<String,NregsDataVO> disMandalCuntMap  = new LinkedHashMap<String,NregsDataVO>();
-		 	    		 Map<String,NregsDataVO> consMandalCuntMap  = new LinkedHashMap<String,NregsDataVO>();
+		 	    	List<NregsDataVO> disVillageslist = null;
+		 	    	List<NregsDataVO> consVillagelist = null;
+		 	    	List<NregsDataVO> mandalVillagelist = null;
+		 	    	
+		 	    	if(inputVO.getLocationType().trim().equalsIgnoreCase("district"))
+		 	    	{
+			 	    		inputVO.setLocationType("constituency");
+				 	    	ClientResponse constResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+				 	    	if(constResponse.getStatus() != 200){
+					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ constResponse.getStatus());
+					 	      }else{
+					 	    	 String constOutput = constResponse.getEntity(String.class);
+					 	    	 
+					 	    	 disConslist = getNregsConstCuntDetails(constOutput,distConstMap,inputVO.getDivType());
+					 	      }
+				 	    	
+				 	    	distConstMap.clear();
+				 	    	if(list != null && !list.isEmpty()){
+				 	    		 for (NregsDataVO nregsDataVO : list) {
+				 	    			 NregsDataVO filterVo = new NregsDataVO();
+				 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
+									distConstMap.put(nregsDataVO.getDistrict(),filterVo);
+								}
+				 	    	 }
+				 	    	inputVO.setLocationType("mandal");
+				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+				 	    	if(mandalResponse.getStatus() != 200){
+					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
+					 	      }else{
+					 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
+					 	    	 
+					 	    	  disMandallist = getNregsMandalsCuntFrDistrict(mandalOutput,distConstMap,inputVO.getDivType());
+					 	      }
+				 	    	
+				 	    	distConstMap.clear();
+				 	    	if(list != null && !list.isEmpty()){
+				 	    		 for (NregsDataVO nregsDataVO : list) {
+				 	    			 NregsDataVO filterVo = new NregsDataVO();
+				 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
+									distConstMap.put(nregsDataVO.getDistrict(),filterVo);
+								}
+				 	    	 }
+				 	    	inputVO.setLocationType("panchayat");
+				 	    	ClientResponse panchayatResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+				 	    	if(panchayatResponse.getStatus() != 200){
+					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ panchayatResponse.getStatus());
+					 	      }else{
+					 	    	 String panchayatOutput = panchayatResponse.getEntity(String.class);
+					 	    	 
+					 	    	disVillageslist = getNregsVillageCuntFrDistrict(panchayatOutput,distConstMap,inputVO.getDivType());
+					 	      }
+				 	    	
+				 	    	
+				 	    	finalVO.getDistConsCuntList().addAll(disConslist);//How many Consti Contain red,Green,Orange In Districts
+				 	    	finalVO.getDistMandalCuntList().addAll(disMandallist);//How many Mandals Contain red,Green,Orange In Districts
+				 	    	finalVO.getDistMandalList().addAll(disVillageslist);//How many Panchayts Contain red,Green,Orange In Districts
+				 	    	finalVO.getDistList().addAll(list);//District Details
+				 	    	
+		 	    	}else if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
+		 	    	{
+			 	    		Map<String,NregsDataVO> constMandMap = new LinkedHashMap<String,NregsDataVO>();
+			 	    		Map<String,NregsDataVO> consCuntMap  = new LinkedHashMap<String,NregsDataVO>();
+				 	    		//distConstMap.clear();
+			 	    		if(list != null && !list.isEmpty()){
+				 	    		 for (NregsDataVO nregsDataVO : list) {
+				 	    			String  distrName = nregsDataVO.getDistrict();
+				 	    			NregsDataVO vo  = consCuntMap.get(distrName);
+				 	    			if(vo == null ){
+				 	    				vo = new NregsDataVO();
+				 	    				vo.setDistrict(distrName);
+				 	    				vo.setCount(vo.getCount() +1);
+				 	    				consCuntMap.put(distrName,vo);
+				 	    			}else{
+				 	    				vo.setCount(vo.getCount()+1);
+				 	    				consCuntMap.put(distrName,vo);
+				 	    			}
+								}
+				 	    	 }
+				 	    	
+				 	    	if(list != null && !list.isEmpty()){
+				 	    		 for (NregsDataVO nregsDataVO : list) {
+				 	    			 NregsDataVO filterVo = new NregsDataVO();
+				 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
+				 	    			constMandMap.put(nregsDataVO.getConstituency(),filterVo);
+								}
+				 	    	 }
+				 	    	
+			 	    		inputVO.setLocationType("mandal");
+				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+				 	    	if(mandalResponse.getStatus() != 200){
+					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
+					 	      }else{
+					 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
+					 	    	 
+					 	    	consMandallist = getNregsMandalsCuntFrConstituncies(mandalOutput,constMandMap,inputVO.getDivType());
+					 	      }
+				 	    	constMandMap.clear();
+				 	    	if(list != null && !list.isEmpty()){
+				 	    		 for (NregsDataVO nregsDataVO : list) {
+				 	    			 NregsDataVO filterVo = new NregsDataVO();
+				 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
+				 	    			constMandMap.put(nregsDataVO.getConstituency(),filterVo);
+								}
+				 	    	 }
+				 	    	inputVO.setLocationType("panchayat");
+				 	    	ClientResponse panchaytResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+				 	    	if(panchaytResponse.getStatus() != 200){
+					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ panchaytResponse.getStatus());
+					 	      }else{
+					 	    	 String panchaytOutput = panchaytResponse.getEntity(String.class);
+					 	    	 
+					 	    	consVillagelist = getNregsVillagesCuntFrConstituncies(panchaytOutput,constMandMap,inputVO.getDivType());
+					 	      }
+				 	    	
+				 	    	
+				 	    	finalVO.getCountList().addAll(new ArrayList<NregsDataVO>(consCuntMap.values()));// Consti  In Districts
+				 	    	finalVO.getDistMandalCuntList().addAll(consMandallist);// How many Mandals Contain red,Green,Orange In Constituencies
+				 	    	finalVO.getDistMandalList().addAll(consVillagelist);//How many Panchayt Contain red,Green,Orange In Constituencies
+				 	    	finalVO.getDistList().addAll(list);//Constuency Details
+				 	    	
+		 	    	  }else if(inputVO.getLocationType().trim().equalsIgnoreCase("mandal"))
+		 	    	  	{
+			 	    		 Map<String,NregsDataVO> disMandalCuntMap  = new LinkedHashMap<String,NregsDataVO>();
+			 	    		 Map<String,NregsDataVO> consMandalCuntMap  = new LinkedHashMap<String,NregsDataVO>();
+			 	    		 Map<String,NregsDataVO> mandalVillaMap  = new LinkedHashMap<String,NregsDataVO>();
+			 	    		 
+			 	    		 if(list != null && !list.isEmpty()){
+				 	    		 for (NregsDataVO nregsDataVO : list) {
+				 	    			String  distrName = nregsDataVO.getDistrict();
+				 	    			NregsDataVO vo  = disMandalCuntMap.get(distrName);
+				 	    			if(vo == null ){
+				 	    				vo = new NregsDataVO();
+				 	    				vo.setDistrict(distrName);
+				 	    				vo.setCount(vo.getCount() +1);
+				 	    				disMandalCuntMap.put(distrName,vo);
+				 	    			}else{
+				 	    				vo.setCount(vo.getCount()+1);
+				 	    			}
+								}
+				 	    	 }
+			 	    		 
+			 	    		if(list != null && !list.isEmpty()){
+				 	    		 for (NregsDataVO nregsDataVO : list) {
+				 	    			String  constName = nregsDataVO.getConstituency();
+				 	    			NregsDataVO vo  = consMandalCuntMap.get(constName);
+				 	    			if(vo == null ){
+				 	    				vo = new NregsDataVO();
+				 	    				vo.setConstituency(constName);
+				 	    				vo.setCount(vo.getCount() +1);
+				 	    				consMandalCuntMap.put(constName,vo);
+				 	    			}else{
+				 	    				vo.setCount(vo.getCount()+1);
+				 	    				//disMandalCuntMap.put(constName,vo);
+				 	    			}
+								}
+				 	    	 }
+			 	    		
+			 	    		if(list != null && !list.isEmpty()){
+				 	    		 for (NregsDataVO nregsDataVO : list) {
+				 	    			 NregsDataVO filterVo = new NregsDataVO();
+				 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
+				 	    			mandalVillaMap.put(nregsDataVO.getMandal(),filterVo);
+								}
+				 	    	 }
+				 	    	
+			 	    		inputVO.setLocationType("panchayat");
+				 	    	ClientResponse panchayResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+				 	    	if(panchayResponse.getStatus() != 200){
+					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ panchayResponse.getStatus());
+					 	      }else{
+					 	    	 String panchayOutput = panchayResponse.getEntity(String.class);
+					 	    	 
+					 	    	mandalVillagelist = getNregsVillagesCuntFrMandals(panchayOutput,mandalVillaMap,inputVO.getDivType());
+					 	      }
+				 	    	
+				 	    	
+			 	    		finalVO.getCountList().addAll(new ArrayList<NregsDataVO>(disMandalCuntMap.values()));// Mandals  In Districts
+			 	    		finalVO.getConsMandalList().addAll(new ArrayList<NregsDataVO>(consMandalCuntMap.values()));//Mandals In Constituency
+			 	    		finalVO.getDistMandalList().addAll(mandalVillagelist);//How many Panchayt Contain red,Green,Orange In Mandals
+				 	    	finalVO.getDistList().addAll(list);//Mandal Details
+				 	    	
+			 	    }else if(inputVO.getLocationType().trim().equalsIgnoreCase("panchayat"))
+			 	    {
+		 	    		 Map<String,NregsDataVO> disPanchyCuntMap  = new LinkedHashMap<String,NregsDataVO>();
+		 	    		 Map<String,NregsDataVO> consPanchaytCuntMap  = new LinkedHashMap<String,NregsDataVO>();
+		 	    		 Map<String,NregsDataVO> mandalPanchaytCuntMap  = new LinkedHashMap<String,NregsDataVO>();
 		 	    		 
 		 	    		 if(list != null && !list.isEmpty()){
 			 	    		 for (NregsDataVO nregsDataVO : list) {
 			 	    			String  distrName = nregsDataVO.getDistrict();
-			 	    			NregsDataVO vo  = disMandalCuntMap.get(distrName);
+			 	    			NregsDataVO vo  = disPanchyCuntMap.get(distrName);
 			 	    			if(vo == null ){
 			 	    				vo = new NregsDataVO();
 			 	    				vo.setDistrict(distrName);
 			 	    				vo.setCount(vo.getCount() +1);
-			 	    				disMandalCuntMap.put(distrName,vo);
+			 	    				disPanchyCuntMap.put(distrName,vo);
 			 	    			}else{
 			 	    				vo.setCount(vo.getCount()+1);
-			 	    				//disMandalCuntMap.put(distrName,vo);
 			 	    			}
 							}
 			 	    	 }
@@ -1984,21 +2093,38 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    		if(list != null && !list.isEmpty()){
 			 	    		 for (NregsDataVO nregsDataVO : list) {
 			 	    			String  constName = nregsDataVO.getConstituency();
-			 	    			NregsDataVO vo  = consMandalCuntMap.get(constName);
+			 	    			NregsDataVO vo  = consPanchaytCuntMap.get(constName);
 			 	    			if(vo == null ){
 			 	    				vo = new NregsDataVO();
 			 	    				vo.setConstituency(constName);
 			 	    				vo.setCount(vo.getCount() +1);
-			 	    				consMandalCuntMap.put(constName,vo);
+			 	    				consPanchaytCuntMap.put(constName,vo);
 			 	    			}else{
 			 	    				vo.setCount(vo.getCount()+1);
-			 	    				//disMandalCuntMap.put(constName,vo);
 			 	    			}
 							}
 			 	    	 }
-		 	    		finalVO.getDistMandalList().addAll(new ArrayList<NregsDataVO>(disMandalCuntMap.values()));
-		 	    		finalVO.getConsMandalList().addAll(new ArrayList<NregsDataVO>(consMandalCuntMap.values()));
-			 	    	finalVO.getDistList().addAll(list);
+		 	    		
+		 	    		if(list != null && !list.isEmpty()){
+			 	    		 for (NregsDataVO nregsDataVO : list) {
+			 	    			String  mandalName = nregsDataVO.getMandal();
+			 	    			NregsDataVO vo  = mandalPanchaytCuntMap.get(mandalName);
+			 	    			if(vo == null ){
+			 	    				vo = new NregsDataVO();
+			 	    				vo.setMandal(mandalName);
+			 	    				vo.setCount(vo.getCount() +1);
+			 	    				mandalPanchaytCuntMap.put(mandalName,vo);
+			 	    			}else{
+			 	    				vo.setCount(vo.getCount()+1);
+			 	    			}
+							}
+			 	    	 }
+			 	    	
+			 	    	
+		 	    		finalVO.getCountList().addAll(new ArrayList<NregsDataVO>(disPanchyCuntMap.values()));// Panchayats  In Districts
+		 	    		finalVO.getConsMandalList().addAll(new ArrayList<NregsDataVO>(consPanchaytCuntMap.values()));// Panchayats  In Constituency
+		 	    		finalVO.getMandalVillageList().addAll(new ArrayList<NregsDataVO>(mandalPanchaytCuntMap.values()));// Panchayats  In Mandals
+			 	    	finalVO.getDistList().addAll(list);//Panchayat details
 			 	    }  
 	 	      }
 		} catch (Exception e) {
@@ -2254,4 +2380,153 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return null;
 	}
+	
+	/*
+	 * Date : 28/06/2017
+	 * Author :Nandhini
+	 * @description : getNregsVillageCuntFrDistrict 
+	 */
+
+	@Override
+	public List<NregsDataVO> getNregsVillageCuntFrDistrict(String output,Map<String,NregsDataVO> cntMap,String divType){
+		List<NregsDataVO> retVOList = new ArrayList<>(0);
+		try{
+			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
+			String percValue = null;
+			if(output != null && !output.isEmpty()){
+	    		JSONArray finalArray = new JSONArray(output);
+	    		if(finalArray!=null && finalArray.length()>0){
+	    			for(int i=0;i<finalArray.length();i++){
+	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		    			String distrName = jObj.getString("DISTRICT");
+						NregsDataVO vo = cntMap.get(distrName);
+						if(divType != null && divType.trim().equalsIgnoreCase("Labour Budget")){
+							percValue = new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						}else{
+							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						} 
+		    				if(vo != null) {
+			    				if(Double.valueOf(percValue)  < 50){
+		    						vo.setVillagesInRed(vo.getVillagesInRed()+1l);
+		    					}else if(Double.valueOf(percValue)  >50 && Double.valueOf(percValue) <80){
+		    						vo.setVillagesInOrange(vo.getVillagesInOrange()+1l);
+	    						}else if(Double.valueOf(percValue)  >80){
+		    						vo.setVillagesInGreen(vo.getVillagesInGreen()+1l);
+		    					}
+			    				vo.setTotal(vo.getTotal()+1l);
+			    				vo.setDistrict(distrName);
+			    			}
+	    				}   	    							
+	    			}
+    			}
+			
+					if(cntMap != null){
+						retVOList = new ArrayList<NregsDataVO>(cntMap.values());
+					}
+								
+				}catch(Exception e){
+					LOG.error("Exception raised at getNregsVillageCuntFrDistrict -NREGSTCSService service", e);
+				}
+			return retVOList;
+	 }
+	
+	/*
+	 * Date : 23/06/2017
+	 * Author :Nandhini
+	 * @description : getNregsVillagesCuntFrConstituncies 
+	 */
+
+	@Override
+	public List<NregsDataVO> getNregsVillagesCuntFrConstituncies(String output,Map<String,NregsDataVO> cntMap,String divType){
+		List<NregsDataVO> retVOList = new ArrayList<>(0);
+		try{
+			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
+			String percValue = null;
+			if(output != null && !output.isEmpty()){
+	    		JSONArray finalArray = new JSONArray(output);
+	    		if(finalArray!=null && finalArray.length()>0){
+	    			for(int i=0;i<finalArray.length();i++){
+	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		    			String constName = jObj.getString("CONSTITUENCY");
+						NregsDataVO vo = cntMap.get(constName);
+						if(divType != null && divType.trim().equalsIgnoreCase("Labour Budget")){
+							percValue = new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						}else{
+							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						} 
+		    				if(vo != null)
+		    				{
+			    				if(Double.valueOf(percValue)  < 50){
+		    						vo.setVillagesInRed(vo.getVillagesInRed()+1l);
+		    					}else if(Double.valueOf(percValue)  >50 && Double.valueOf(percValue) <80){
+		    						vo.setVillagesInOrange(vo.getVillagesInOrange()+1l);
+	    						}else if(Double.valueOf(percValue)  >80){
+		    						vo.setVillagesInGreen(vo.getVillagesInGreen()+1l);
+		    					}
+			    				vo.setTotal(vo.getTotal()+1l);
+			    				vo.setDistrict(constName);
+			    			}
+	    				}   	    							
+	    			}
+    			}
+			
+					if(cntMap != null){
+						retVOList = new ArrayList<NregsDataVO>(cntMap.values());
+					}
+								
+				}catch(Exception e){
+					LOG.error("Exception raised at getNregsVillagesCuntFrConstituncies -NREGSTCSService service", e);
+				}
+			return retVOList;
+	 }
+	
+	/*
+	 * Date : 23/06/2017
+	 * Author :Nandhini
+	 * @description : getNregsVillagesCuntFrMandals 
+	 */
+
+	@Override
+	public List<NregsDataVO> getNregsVillagesCuntFrMandals(String output,Map<String,NregsDataVO> cntMap,String divType){
+		List<NregsDataVO> retVOList = new ArrayList<>(0);
+		try{
+			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
+			String percValue = null;
+			if(output != null && !output.isEmpty()){
+	    		JSONArray finalArray = new JSONArray(output);
+	    		if(finalArray!=null && finalArray.length()>0){
+	    			for(int i=0;i<finalArray.length();i++){
+	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		    			String mandalName = jObj.getString("MANDAL");
+						NregsDataVO vo = cntMap.get(mandalName);
+						if(divType != null && divType.trim().equalsIgnoreCase("Labour Budget")){
+							percValue = new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						}else{
+							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						} 
+		    				if(vo != null)
+		    				{
+			    				if(Double.valueOf(percValue)  < 50){
+		    						vo.setVillagesInRed(vo.getVillagesInRed()+1l);
+		    					}else if(Double.valueOf(percValue)  >50 && Double.valueOf(percValue) <80){
+		    						vo.setVillagesInOrange(vo.getVillagesInOrange()+1l);
+	    						}else if(Double.valueOf(percValue)  >80){
+		    						vo.setVillagesInGreen(vo.getVillagesInGreen()+1l);
+		    					}
+			    				vo.setTotal(vo.getTotal()+1l);
+			    				vo.setDistrict(mandalName);
+			    			}
+	    				}   	    							
+	    			}
+    			}
+			
+					if(cntMap != null){
+						retVOList = new ArrayList<NregsDataVO>(cntMap.values());
+					}
+								
+				}catch(Exception e){
+					LOG.error("Exception raised at getNregsVillagesCuntFrMandals -NREGSTCSService service", e);
+				}
+			return retVOList;
+	 }
 }
