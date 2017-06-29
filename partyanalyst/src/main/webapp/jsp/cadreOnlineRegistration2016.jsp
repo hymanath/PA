@@ -376,7 +376,7 @@ textarea {
 						  <select id="statesDivId" onchange="getDistrictsForStates(this.value,1);" class="select">
 							<option value="0">Select State</option>
 							<option value="1">AndhraPradesh</option>
-							<option value="36">Telangana</option>
+							<!--<option value="36">Telangana</option>-->
 						  </select>
 						 
                         </div>
