@@ -2227,7 +2227,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 				else if(dataArr == "mandal")
 					theadArr = ["district","constituency",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				if(globalDivName != 'Labour Budget'){
-					str+='<table class="table table-bordered m_top10 dataTableCls">';
+					str+='<table class="table table-bordered m_top10 dataTableClsDist">';
 						str+='<thead>';
 							str+='<tr>';
 								for(var i in theadArr)
@@ -2270,7 +2270,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 					else if(dataArr == "mandal")
 						theadArr = ["district","constituency",dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
 					
-					str+='<table class="table table-bordered m_top10 dataTableCls">';
+					str+='<table class="table table-bordered m_top10 dataTableClsDist">';
 					str+='<thead>';
 						str+='<tr>';
 							for(var i in theadArr)
@@ -2309,7 +2309,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 	}
 	
 	$("#nregsConsitenBodyId").html(str);
-	$(".dataTableCls").dataTable();
+	$(".dataTableCls").dataTable({
+		"order": [[ 1, "asc" ]]
+	});
+	$(".dataTableClsDist").dataTable();
 }
 
 //getNREGSIHHLConsCuntData()
