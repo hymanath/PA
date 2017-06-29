@@ -683,7 +683,7 @@
 			$("#assets").html(spinner);
 			var json = {
 				fromDateStr:glStartDate,
-				toDateStr:glEndDate,
+				toDateStr:glEndDate
 			}
 			$.ajax({
 				url: 'getAssetInfoBetweenDates',
@@ -758,14 +758,11 @@
 		
 		function getWaterSourceInfo(){//ara1 
 			$("#waterSources").html(spinner);
-			var json = {
-				fromDateStr:glStartDate,
-				toDateStr:glEndDate,
-			}
+			
 			$.ajax({
 				url: 'getWaterSourceInfo',
 				type: "GET",
-				data: JSON.stringify(json),
+				data: 'json', 
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.setRequestHeader("Content-Type", "application/json");
@@ -2200,7 +2197,7 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$("#financialYearId").append("<option value='0'>Select Financial Year</option>");
+			//$("#financialYearId").append("<option value='0'>Select Financial Year</option>");
 			if(result != null && result.length >0){
 				for(var i in result){
 					var value = result[i].financialYear.split('-');
