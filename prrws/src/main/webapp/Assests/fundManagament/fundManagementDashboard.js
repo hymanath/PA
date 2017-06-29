@@ -3368,7 +3368,10 @@
 			levelValues = levelValues.concat(strx);
 			
 		var financialYrIdList = $('#financialYearId').val();
-		
+		if(divId == 'locationsModal'){ 
+		   financialYrIdList.length = 0;//remove all items 
+		   financialYrIdList.push($(".multiDistYearCls").val());
+		}
 		var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
