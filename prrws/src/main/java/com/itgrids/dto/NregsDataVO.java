@@ -31,6 +31,9 @@ public class NregsDataVO implements Serializable{
 	private Long mandalsInOrange = 0l;
 	private Long mandalsInGreen = 0l;
 	private Long count = 0l;
+	private Long villagesInRed = 0l;
+	private Long villagesInOrange = 0l;
+	private Long VillagesInGreen = 0l;
 	
 	private List<NregsDataVO> distConsCuntList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> distMandalCuntList = new ArrayList<NregsDataVO>(0);
@@ -38,6 +41,7 @@ public class NregsDataVO implements Serializable{
 	private List<NregsDataVO> countList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> distMandalList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> consMandalList = new ArrayList<NregsDataVO>(0);
+	private List<NregsDataVO> mandalVillageList = new ArrayList<NregsDataVO>(0);
 	
 	
 	public Long getUniqueId() {
@@ -219,6 +223,30 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setConsMandalList(List<NregsDataVO> consMandalList) {
 		this.consMandalList = consMandalList;
+	}
+	public Long getVillagesInRed() {
+		return villagesInRed;
+	}
+	public void setVillagesInRed(Long villagesInRed) {
+		this.villagesInRed = villagesInRed;
+	}
+	public Long getVillagesInOrange() {
+		return villagesInOrange;
+	}
+	public void setVillagesInOrange(Long villagesInOrange) {
+		this.villagesInOrange = villagesInOrange;
+	}
+	public Long getVillagesInGreen() {
+		return VillagesInGreen;
+	}
+	public void setVillagesInGreen(Long villagesInGreen) {
+		VillagesInGreen = villagesInGreen;
+	}
+	public List<NregsDataVO> getMandalVillageList() {
+		return mandalVillageList;
+	}
+	public void setMandalVillageList(List<NregsDataVO> mandalVillageList) {
+		this.mandalVillageList = mandalVillageList;
 	}
 	
 }

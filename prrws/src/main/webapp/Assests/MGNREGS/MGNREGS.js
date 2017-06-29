@@ -1130,13 +1130,25 @@ function buildNregasOverViewBlock(result,projectDivId){
 					str1+='</div>';
 					str1+='<div class="col-sm-12 m_top10">';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p><p class="media-body">Villages in Red : '+result.villagesInRed+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+							if(result.villagesInRed != null && result.villagesInRed > 0)
+								str1+='<p class="media-body overviewPopupCls" attr_locationType="panchayat" attr_type="red" style="cursor:pointer;">Villages in Red : '+result.villagesInRed+'</p>';
+							else
+								str1+='<p class="media-body" attr_locationType="panchayat" attr_type="red" style="cursor:pointer;"">Villages in Red : '+result.villagesInRed+'</p>';
 						str1+='</div>';
 						str1+=' <div class="media">';
-						   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body">Villages in Orange : '+result.villagesInOrange+'</p>';
+						   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+						   if(result.villagesInOrange != null && result.villagesInOrange > 0)
+								str1+='<p class="media-body overviewPopupCls" attr_locationType="panchayat" attr_type="orange" style="cursor:pointer;">Villages in Orange : '+result.villagesInOrange+'</p>';
+							else
+								str1+='<p class="media-body" attr_locationType="panchayat" attr_type="orange" style="cursor:pointer;">Villages in Orange : '+result.villagesInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body">Villages in Green : '+result.villagesInGreen+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+							if(result.villagesInGreen != null && result.villagesInGreen > 0)
+								str1+='<p class="media-body overviewPopupCls" attr_locationType="panchayat" attr_type="green" style="cursor:pointer;">Villages in Green : '+result.villagesInGreen+'</p>';
+							else
+								str1+='<p class="media-body" attr_locationType="panchayat" attr_type="green" style="cursor:pointer;">Villages in Green : '+result.villagesInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';	
 				str1+='</td>';
@@ -2075,7 +2087,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 		var total = 0;
 		str+='<div class="panel panel-default panel-black m_top10">';
 			str+='<div class="panel-heading">';
-				str+='<h4 class="panel-title text-capital">District Wise Constituencies</h4>';
+				str+='<h4 class="panel-title text-capital">'+dataArr+'s in Districts</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
 				str+='<table class="table table-bordered m_top10 dataTableCls">';
@@ -2102,44 +2114,13 @@ function buildDistrictsPopupDetails(result,dataArr){
 			str+='</div>';
 		str+='</div>';
 	}
-	if(result.distMandalList != null && result.distMandalList.length > 0 )
-	{
-		var total = 0;
-		str+='<div class="panel panel-default panel-black m_top10">';
-			str+='<div class="panel-heading">';
-				str+='<h4 class="panel-title text-capital">District Wise Mandals</h4>';
-			str+='</div>';
-			str+='<div class="panel-body">';
-				str+='<table class="table table-bordered m_top10 dataTableCls">';
-					str+='<thead>';
-						str+='<tr>';
-							str+='<th>District Name </th>';
-							str+='<th>Count</th>';
-						str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>';
-						for(var i in result.distMandalList){
-							total = total +result.distMandalList[i].count;
-							str+='<tr>';
-								str+='<td>'+result.distMandalList[i].district+'</td>';
-								str+='<td>'+result.distMandalList[i].count+'</td>';
-							str+='</tr>';	
-						}
-						str+='<tr>';
-							str+='<td>Total</td>';
-							str+='<td>'+total+'</td>';
-						str+='</tr>';
-					str+='</tbody>';
-				str+='</table>';
-			str+='</div>';
-		str+='</div>';
-	}
+	
 	if(result.consMandalList != null && result.consMandalList.length > 0 )
 	{
 		var total = 0;
 		str+='<div class="panel panel-default panel-black m_top10">';
 			str+='<div class="panel-heading">';
-				str+='<h4 class="panel-title text-capital">Constituency Wise Mandals</h4>';
+				str+='<h4 class="panel-title text-capital">'+dataArr+'s in Constitencies</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
 				str+='<table class="table table-bordered m_top10 dataTableCls">';
@@ -2155,6 +2136,38 @@ function buildDistrictsPopupDetails(result,dataArr){
 							str+='<tr>';
 								str+='<td>'+result.consMandalList[i].constituency+'</td>';
 								str+='<td>'+result.consMandalList[i].count+'</td>';
+							str+='</tr>';	
+						}
+						str+='<tr>';
+							str+='<td>Total</td>';
+							str+='<td>'+total+'</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+	}
+	if(result.mandalVillageList != null && result.mandalVillageList.length > 0 )
+	{
+		var total = 0;
+		str+='<div class="panel panel-default panel-black m_top10">';
+			str+='<div class="panel-heading">';
+				str+='<h4 class="panel-title text-capital">Panchayats in Mandals</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+				str+='<table class="table table-bordered m_top10 dataTableCls">';
+					str+='<thead>';
+						str+='<tr>';
+							str+='<th>Mandal Name </th>';
+							str+='<th>Count</th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						for(var i in result.mandalVillageList){
+							total = total +result.mandalVillageList[i].count;
+							str+='<tr>';
+								str+='<td>'+result.mandalVillageList[i].mandal+'</td>';
+								str+='<td>'+result.mandalVillageList[i].count+'</td>';
 							str+='</tr>';	
 						}
 						str+='<tr>';
@@ -2213,7 +2226,53 @@ function buildDistrictsPopupDetails(result,dataArr){
 			str+='</div>';
 		str+='</div>';
 	}
-	
+	if(result.distMandalList != null && result.distMandalList.length > 0 )
+	{
+		str+='<div class="panel panel-default panel-black m_top10">';
+			str+='<div class="panel-heading">';
+				str+='<h4 class="panel-title text-capital">Villages in '+dataArr+'s</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+				str+='<table class="table table-bordered m_top10 dataTableCls">';
+					str+='<thead class="text-capital">';
+						str+='<tr>';
+							str+='<th>'+dataArr+'</th>';
+							str+='<th style="color:red;">Villages In Red </th>';
+							str+='<th style="color:orange;">Villages In Orange </th>';
+							str+='<th style="color:green;">Villages In Green </th>';
+							str+='<th>Total </th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+					redTotalCons = 0;
+					orangeTotalCons = 0;
+					greenTotalCons = 0;
+					totalConsiCons = 0;
+						for(var i in result.distMandalList){
+							redTotalCons = redTotalCons+result.distMandalList[i].villagesInRed;
+							orangeTotalCons = orangeTotalCons+result.distMandalList[i].villagesInOrange;
+							greenTotalCons = greenTotalCons+result.distMandalList[i].villagesInGreen;
+							totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+							str+='<tr>';
+								str+='<td>'+result.distMandalList[i].district+'</td>';
+								str+='<td style="color:red;">'+result.distMandalList[i].villagesInRed+'</td>';
+								str+='<td style="color:orange;">'+result.distMandalList[i].villagesInOrange+'</td>';
+								str+='<td style="color:green;">'+result.distMandalList[i].villagesInGreen+'</td>';
+								str+='<td>'+result.distMandalList[i].total+'</td>';
+							str+='</tr>';	
+						}
+						str+='<tr>';
+							str+='<td>Total</td>';
+							str+='<td>'+redTotalCons+'</td>';
+							str+='<td>'+orangeTotalCons+'</td>';
+							str+='<td>'+greenTotalCons+'</td>';
+							str+='<td>'+totalConsiCons+'</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+	}
 	if(result.distList != null && result.distList.length > 0 )
 	{
 		str+='<div class="panel panel-default panel-black m_top10">';
@@ -2226,6 +2285,9 @@ function buildDistrictsPopupDetails(result,dataArr){
 					theadArr = ["district",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				else if(dataArr == "mandal")
 					theadArr = ["district","constituency",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				else if(dataArr == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				str+='<div class="table-responsive">';
 				if(globalDivName != 'Labour Budget'){
 					str+='<table class="table table-bordered m_top10 dataTableClsDist">';
 						str+='<thead>';
@@ -2252,6 +2314,12 @@ function buildDistrictsPopupDetails(result,dataArr){
 										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
 										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
 									}
+									else if(dataArr == "panchayat"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+									}
 									str+='<td>'+result.distList[i].target+'</td>';
 									str+='<td>'+result.distList[i].grounded+'</td>';
 									str+='<td>'+result.distList[i].notGrounded+'</td>';
@@ -2262,6 +2330,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 							}
 						str+='</tbody>';
 					str+='</table>';
+					
 				}
 				else{
 					theadArr = [dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
@@ -2304,6 +2373,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 						str+='</tr>';
 					}
 				}
+				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	}
@@ -2502,13 +2572,25 @@ function buildPopupOverviewBlock(result,projectDivId){
 							str1+='<h4>Total Villages : '+result.totalVillages+'</h4>';
 						str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p><p class="media-body">Villages in Red : '+result.villagesInRed+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+							if(result.villagesInRed != null && result.villagesInRed > 0)
+								str1+='<p class="media-body detailsCls" attr_location="panchayat" attr_type="red">Villages in Red : '+result.villagesInRed+'</p>';
+							else
+								str1+='<p class="media-body" attr_location="panchayat" attr_type="red">Villages in Red : '+result.villagesInRed+'</p>';
 						str1+='</div>';
 						str1+=' <div class="media">';
-						   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p><p class="media-body">Villages in Orange : '+result.villagesInOrange+'</p>';
+						   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+						   if(result.villagesInOrange != null && result.villagesInOrange > 0)
+								str1+='<p class="media-body detailsCls" attr_location="panchayat" attr_type="orange">Villages in Orange : '+result.villagesInOrange+'</p>';
+							else
+								str1+='<p class="media-body " attr_location="panchayat" attr_type="orange">Villages in Orange : '+result.villagesInOrange+'</p>';
 						str1+='</div>';
 						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p><p class="media-body">Villages in Green : '+result.villagesInGreen+'</p>';
+							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+							if(result.villagesInGreen != null && result.villagesInGreen > 0)
+								str1+='<p class="media-body detailsCls" attr_location="panchayat" attr_type="green">Villages in Green : '+result.villagesInGreen+'</p>';
+							else
+								str1+='<p class="media-body" attr_location="panchayat" attr_type="green">Villages in Green : '+result.villagesInGreen+'</p>';
 						str1+='</div>';
 					str1+='</div>';	
 				str1+='</td>';
