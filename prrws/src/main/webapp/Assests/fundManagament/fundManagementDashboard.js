@@ -4157,7 +4157,7 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 					});
 					str+='<object data="http://www.mydepartments.in/PRRWS/Govt_Orders/'+dbFilePath+'" type="application/pdf" width="100%" height="400px;" internalinstanceid="3" title=""></object>';
 					//str+='<iframe src="http://www.mydepartments.in/PRRWS/Govt_Orders/'+dbFilePath+'" width="100%" height="800"></iframe>';
-						 
+					$("#govtOrderDocumentId").find(".modal-title").html(dbFilePath);
 				$("#govtOrderDocumentBodyId").html(str);       
 			}   
 		}		
