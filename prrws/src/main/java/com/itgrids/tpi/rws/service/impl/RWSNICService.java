@@ -68,7 +68,11 @@ public class RWSNICService implements IRWSNICService{
 		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 		 	    				if(jObj.length() > 0){
 		 	    					LocationVO vo = new LocationVO();
-		 	    					vo.setGoNumber(jObj.getString("locationId"));
+		 	    					if(inputVO.getLocationType().equalsIgnoreCase("state"))
+		 	    						vo.setGoNumber("01");
+		 	    					else
+		 	    						vo.setGoNumber(jObj.getString("locationId"));
+		 	    					
 		 	    					vo.setLocationName(jObj.getString("locationName"));
 			 	    				vo.setStreetHabitationCount(jObj.getLong("stressedHabitationCount"));
 			 	    				vo.setTotalCount(jObj.getLong("totalCount"));
