@@ -120,6 +120,10 @@
 								<h4 class="panel-title text-muted">High Funded District</h4>
 								<div id="highFundDist" attr_id="highFundDist" class="m_top5"></div>
 							</td>
+							<!--<td>
+								<h4 class="panel-title text-muted">High Funded Parliament</h4>
+								<div id="highFundParlmnt" attr_id="highFundParlmnt" class="m_top5"></div>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">High Funded Constituency</h4>
 								<div id="highFundCons" attr_id="highFundCons" class="m_top5"></div>
@@ -146,6 +150,10 @@
 								<h4 class="panel-title text-muted">Low Funded District</h4>
 								<div id="lowFundDist" attr_id="lowFundDist" class="m_top5"></div>
 							</td>
+							<!--<td>
+								<h4 class="panel-title text-muted">Low Funded Parliament</h4>
+								<div id="lowFundParliament" attr_id="lowFundParliament" class="m_top5"></div>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">Low Funded Costituency</h4>
 								<div id="lowFundCons" attr_id="lowFundCons" class="m_top5"></div>
