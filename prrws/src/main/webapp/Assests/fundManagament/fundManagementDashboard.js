@@ -764,7 +764,11 @@
 						str+='</a>';
 					str+='</div>';
 				str+='<div id="collapse'+divId+'" class="panel-collapse collapse in m_top20" role="tabpanel" aria-labelledby="heading'+divId+'">';
-				str+='<div id="overviewTable'+divId+'">';				
+				str+='<div id="overviewTable'+divId+'">';	
+				if($windowWidth < 768)
+				{
+					str+='<div class="table-responsive">';
+				}
 				str+='<table class="table table-bordered table-overview">';
 					str+='<tr>';
 						/*str+='<td>';
@@ -904,6 +908,10 @@
 						}
 					str+='</tr>';
 				str+='</table>';
+				if($windowWidth < 768)
+				{
+					str+='</div>';
+				}
 			str+='</div>';
 			str+='</div>';
 		}
@@ -913,10 +921,7 @@
 		str+='</div>';
 		str+='</div>';
 		$("#"+divId).html(str);
-		if($windowWidth < 768)
-		{
-			$("#"+divId).wrap("<div class='table-responsive'></div>");
-		}
+		
 		if(displayType == 'selectBox')
 		{
 			
@@ -1173,7 +1178,11 @@
 			}	
 		}else if(type == 'deptscheme')
 		{
-			table+='<div class="table-responsive">';
+			
+				if($windowWidth < 768)
+				{
+					table+='<div class="table-responsive">';
+				}
 				table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
 					table+='<thead class="text-center">';
 						table+='<tr>';
@@ -1296,6 +1305,10 @@
 						
 					table+='</tbody>';
 				table+='</table>';
+				if($windowWidth < 768)
+				{
+					table+='</div>';
+				}
 			table+='</div>';
 				
 		}
@@ -1305,10 +1318,6 @@
 			"iDisplayLength": 15,
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		});
-		if($windowWidth < 768)
-		{
-			$("#"+divId+"Table").wrap("<div class='table-responsive'></div>");
-		}
 		
 		if(type == 'overview')
 		{
@@ -3413,6 +3422,10 @@
 		var table='';
 		if(type == 'overview')
 		{
+			if($windowWidth < 768)
+			{
+				table+='<div class="table-responsive">';
+			}
 			table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
 				table+='<thead class="text-center">';
 					table+='<tr>';
@@ -3463,6 +3476,10 @@
 					
 				table+='</tbody>';
 			table+='</table>';
+			if($windowWidth < 768)
+			{
+				table+='</div>';
+			}
 		}
 		
 		$("#"+divId).html(table);
@@ -3471,10 +3488,7 @@
 			"iDisplayLength": 15,
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		});
-		if($windowWidth < 768)
-		{
-			$("#"+divId).wrap("<div class='table-responsive'></div>");
-		}
+		
 	}
 
 function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,deptId){ 
@@ -3523,6 +3537,10 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
   function buildLocationWiseFundSanctionDetails(result,blockLvlId){
   
   var str = '';
+	if($windowWidth < 768)
+	{
+		str+='<div class="table-responsive">';
+	}
 	str+='<table class="table table-condensed table-bordered" id="tableId">';
 		str+='<thead>';
 			str+='<th class="text-capital">District Name</th>';
@@ -3579,16 +3597,16 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
 		str+='</tr>';     
 	}
 	str+='</tbody>';  
-  
+	str+='</table>';  
+	if($windowWidth < 768)
+	{
+		str+='</div>';
+	}
 	$("#fundSanctionModal").html(str);   
 	$("#tableId").dataTable({
 		"iDisplayLength": 15,
 		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 	});  
-	if($windowWidth < 768)
-	{
-		$("#"+divId).wrap("<div class='table-responsive'></div>");
-	}	
 }
 
 $(document).on("click",".compClickCls",function(){
@@ -3754,6 +3772,10 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 		 $("#"+divId).addClass('comparionStyle1')
 	   var str='';
 	   if(result !=null && result.length>0){
+			if($windowWidth < 768)
+			{
+				str+='<div class="table-responsive">';
+			}
 		    str+='<table class="table table-bordered">';
 			if(result[0].rangeList !=null && result[0].rangeList.length>0){
 			    str+='<thead>';
@@ -3827,12 +3849,12 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 			   str+='</tbody>';
 		   }
 			str+='</table>';
+			if($windowWidth < 768)
+			{
+				str+='</div>';
+			}
 		}
 		$("#"+divId).html(str)
-		if($windowWidth < 768)
-		{
-			$("#"+divId).wrap("<div class='table-responsive'></div>");
-		}
 	}
    
    
