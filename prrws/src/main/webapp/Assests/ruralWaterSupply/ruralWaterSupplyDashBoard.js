@@ -1551,12 +1551,7 @@
 				tabBlock+='<div class="row">';
 					tabBlock+='<div class="col-sm-12">';
 						tabBlock+='<div>';
-							tabBlock+='<select class="form-control" role="tabListMobile">';
-								for(var i in blocksArr)
-								{
-									tabBlock+='<option tab_id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].name+'</option>';
-								}
-							tabBlock+='</select>';
+							
 							tabBlock+='<ul class="nav nav-tabs nav-tabs-custom" role="tablist">';
 								for(var i in blocksArr)
 								{
@@ -1603,6 +1598,12 @@
 				tabBlock+='</div>';
 			tabBlock+='</div>';
 			tabBlock+='<div class="panel-body">';
+				tabBlock+='<select class="form-control" role="tabListMobile">';
+					for(var i in blocksArr)
+					{
+						tabBlock+='<option  attr_block_name='+blockName+' attr_block_id='+blockId+' tab_id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].name+'</option>';
+					}
+				tabBlock+='</select>';
 				tabBlock+='<div class="tab-content">';
 					
 					if(blockId == 'consBlockId')
@@ -1856,9 +1857,9 @@
 					tableView+='</table>';
 				$("#drinking"+locationType).html(tableView);
 				$(".dataTableDrinking"+locationType).dataTable();
-					if($windowWidth < 768){
-						$(".dataTableDrinking"+locationType).wrap("<div class='table-responsive'></div>");
-					}
+				if($windowWidth < 768){
+					$(".dataTableDrinking"+locationType).wrap("<div class='table-responsive'></div>");
+				}
 			}
 			
 			
@@ -1869,7 +1870,11 @@
 					 var $windowWidth = $(window).width();
 					 if(GLtbodyArr !=null && GLtbodyArr.length>0){
 						var tableView='';
-						tableView+='<table class="table table-bordered" id="dataTable'+locationType+divId[k].id+'">';
+						if(divId[k].id=="habitation"){
+							tableView+='<table class="table table-bordered" id="dataTable1'+locationType+divId[k].id+'">';
+						}else if(divId[k].id=="performance"){
+							tableView+='<table class="table table-bordered" id="dataTable'+locationType+divId[k].id+'">';
+						}
 							tableView+='<thead class="text-capital">';
 							
 							if(divId[k].id=="habitation"){
@@ -1977,14 +1982,14 @@
 					if(divId[k].id !=="jalavani"){
 						$("#"+locationType+"BlockId"+divId[k].id).html(tableView);
 						if(divId[k].id=="habitation"){
-							$("#dataTable"+locationType+divId[k].id).dataTable();
+							$("#dataTable1"+locationType+divId[k].id).dataTable();
 							if($windowWidth < 768){
-								$("#dataTable"+divId[k].id).wrap("<div class='table-responsive'></div>");
+								$("#dataTable1"+locationType+divId[k].id).wrap("<div class='table-responsive'></div>");
 							}
 						}else if(divId[k].id=="performance"){
 							$("#dataTable"+locationType+divId[k].id).dataTable();
 							if($windowWidth < 768){
-								$("#dataTable"+divId[k].id).wrap("<div class='table-responsive'></div>");
+								$("#dataTable"+locationType+divId[k].id).wrap("<div class='table-responsive'></div>");
 							}
 						}
 						
@@ -1997,48 +2002,48 @@
 		}
 		
 		$(document).on("click","[role='tablist'] li a",function(){
-				var id = $(this).attr('tab_id');
-				var blockName = $(this).attr('attr_block_name');
-				var blockId = $(this).attr('attr_block_id');
-				if(blockName == "state"){
-					emptyCheckState();
-					if(id == "stateBlockIdhabitation"){
-						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
-					}else if(id == "stateBlockIdperformance"){
-						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
-					}else if(id == "stateBlockIdjalavani"){
-						getAlertDetailsOfCategoryByStatusWise('table',alertStatusBlockArr,'state');
-						getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'state');
-					}
-				}else if(blockName == "district"){
-					emptyCheckDistrict();
-					if(id == "districtBlockIdhabitation"){
-						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
-					}else if(id == "districtBlockIdperformance"){
-						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
-					}else if(id == "districtBlockIdjalavani"){
-						getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'district');
-						getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'district');
-					}
-				}else if(blockName == "constituency"){
-					emptyCheckConstituency();
-					if(id == "constituencyBlockIdhabitation"){
-						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
-					}else if(id=="constituencyBlockIdperformance"){
-						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
-					}else if(id=="districtBlockIdjalavani"){
-						
-					}
-				}else if(blockName == "mandal"){
-					emptyCheckMandal();
-					if(id == "mandalBlockIdhabitation"){
-						getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
-					}else if(id=="mandalBlockIdperformance"){
-						getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
-					}else if(id=="districtBlockIdjalavani"){
-						
-					}
+			var id = $(this).attr('tab_id');
+			var blockName = $(this).attr('attr_block_name');
+			var blockId = $(this).attr('attr_block_id');
+			if(blockName == "state"){
+				emptyCheckState();
+				if(id == "stateBlockIdhabitation"){
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+				}else if(id == "stateBlockIdperformance"){
+					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+				}else if(id == "stateBlockIdjalavani"){
+					getAlertDetailsOfCategoryByStatusWise('table',alertStatusBlockArr,'state');
+					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'state');
 				}
+			}else if(blockName == "district"){
+				emptyCheckDistrict();
+				if(id == "districtBlockIdhabitation"){
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+				}else if(id == "districtBlockIdperformance"){
+					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+				}else if(id == "districtBlockIdjalavani"){
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'district');
+					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'district');
+				}
+			}else if(blockName == "constituency"){
+				emptyCheckConstituency();
+				if(id == "constituencyBlockIdhabitation"){
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+				}else if(id=="constituencyBlockIdperformance"){
+					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+				}else if(id=="districtBlockIdjalavani"){
+					
+				}
+			}else if(blockName == "mandal"){
+				emptyCheckMandal();
+				if(id == "mandalBlockIdhabitation"){
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+				}else if(id=="mandalBlockIdperformance"){
+					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+				}else if(id=="districtBlockIdjalavani"){
+					
+				}
+			}
 		});
 		function emptyCheckState(){
 			$("#stateBlockIdhabitation").html('');
@@ -2089,10 +2094,50 @@
 			}
 		}
 		$(document).on("change","[role='tabListMobile']",function(){
-				var id = $('option:selected', this).attr('tab_id');
-				$("#"+id).closest(".tab-content").find("[role='tabpanel']").removeClass("active");
-				$("#"+id).addClass("active");
-				
+			var id = $('option:selected', this).attr('tab_id');
+			$("#"+id).closest(".tab-content").find("[role='tabpanel']").removeClass("active");
+			$("#"+id).addClass("active");
+			var blockName = $('option:selected', this).attr('attr_block_name');
+			var blockId = $('option:selected', this).attr('attr_block_id');
+			if(blockName == "state"){
+				emptyCheckState();
+				if(id == "stateBlockIdhabitation"){
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+				}else if(id == "stateBlockIdperformance"){
+					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+				}else if(id == "stateBlockIdjalavani"){
+					getAlertDetailsOfCategoryByStatusWise('table',alertStatusBlockArr,'state');
+					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'state');
+				}
+			}else if(blockName == "district"){
+				emptyCheckDistrict();
+				if(id == "districtBlockIdhabitation"){
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+				}else if(id == "districtBlockIdperformance"){
+					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+				}else if(id == "districtBlockIdjalavani"){
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'district');
+					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'district');
+				}
+			}else if(blockName == "constituency"){
+				emptyCheckConstituency();
+				if(id == "constituencyBlockIdhabitation"){
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+				}else if(id=="constituencyBlockIdperformance"){
+					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+				}else if(id=="districtBlockIdjalavani"){
+					
+				}
+			}else if(blockName == "mandal"){
+				emptyCheckMandal();
+				if(id == "mandalBlockIdhabitation"){
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+				}else if(id=="mandalBlockIdperformance"){
+					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
+				}else if(id=="districtBlockIdjalavani"){
+					
+				}
+			}
 		});
 		$("header").on("click",".menu-cls",function(e){
 			e.stopPropagation();

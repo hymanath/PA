@@ -62,7 +62,6 @@
 									<p>engineering department</p>
 								</a>
 							</li>
-							
 						</ul>
 					</div>
 				</div>
