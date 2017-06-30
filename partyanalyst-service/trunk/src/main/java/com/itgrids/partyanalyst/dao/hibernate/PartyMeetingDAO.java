@@ -4167,4 +4167,42 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	}
 	    	return query.list();
 	    } 
+	 public List<Object[]> getCadrePartyMeetngDeatils(Date fromDate,Date toDate,Long meetigLevelId){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select model.partyMeetingId,");	//0  meeting Id
+		 sb.append("model.meetingName," ); 				//1  meeting name
+		 sb.append("model.partyMeetingLevel.level," );	//2   meeting level
+		 sb.append("model.partyMeetingType.type,");     //3   meeting type
+		 sb.append("TRIM( '00:00:00.0' from model.startDate ) " );          		//4	  meeting start time
+		sb.append(",model.meetingAddress.district.districtName ");  //5  district name
+		 if(meetigLevelId !=null && (meetigLevelId.longValue()==0L || meetigLevelId.longValue()==3L ||meetigLevelId.longValue()==4L || meetigLevelId.longValue()==5L 
+				 ||meetigLevelId.longValue()==6L || meetigLevelId.longValue()==7L || meetigLevelId.longValue()==8L)){
+		 sb.append(	",model.meetingAddress.constituency.name " );   //6  constituency name
+		 }
+		 if(meetigLevelId !=null && (meetigLevelId.longValue()==0L || meetigLevelId.longValue()==4L || meetigLevelId.longValue()==5L 
+				 ||meetigLevelId.longValue()==6L || meetigLevelId.longValue()==7L || meetigLevelId.longValue()==8L)){
+		 sb.append(",model.meetingAddress.tehsil.tehsilName ");  	 //7  mandal name
+		 }
+		 if(meetigLevelId !=null &&( meetigLevelId.longValue()==0L || meetigLevelId.longValue()==5L 
+				 ||meetigLevelId.longValue()==6L || meetigLevelId.longValue()==7L || meetigLevelId.longValue()==8L)){
+		 sb.append(",model.meetingAddress.panchayat.panchayatName ");	//8 village name
+		 }
+		 sb.append(" from PartyMeeting model where model.isActive='Y' ");
+		
+		 if(fromDate!=null && toDate!=null){
+			sb.append(" and (date (model.startDate) between :fromDate and :toDate) " );
+	        }
+		 if(meetigLevelId !=null && meetigLevelId.longValue() > 0L){
+			 sb.append("and  model.partyMeetingLevelId=:meetigLevelId");
+		 }
+		 Query query = getSession().createQuery(sb.toString());
+		 if(fromDate != null && toDate != null){
+				query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+			}
+		 if(meetigLevelId !=null && meetigLevelId.longValue() > 0L){
+			 query.setParameter("meetigLevelId",meetigLevelId);
+		 }
+		 return query.list();
+	 }
  }

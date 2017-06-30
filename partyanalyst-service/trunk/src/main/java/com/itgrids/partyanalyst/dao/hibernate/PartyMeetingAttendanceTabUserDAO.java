@@ -24,4 +24,20 @@ public class PartyMeetingAttendanceTabUserDAO extends GenericDaoHibernate<PartyM
 		query.setParameter("attendanceTabUserId",attendanceTabUserId);
 		return query.list(); 
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartyMeetingsTabUserNameByDistrict(Long districtId){
+		StringBuilder sb=new StringBuilder();
+		sb.append("select distinct model.attendanceTabUser.attendanceTabUserId," +
+				" model.attendanceTabUser.firstname,model.attendanceTabUser.lastname,"); 
+		sb.append("model.attendanceTabUser.mobile from PartyMeetingAttendanceTabUser model  ");
+		sb.append(" where model.attendanceTabUser.isEnabled='Y' ");
+		if(districtId !=null && districtId.longValue() > 0L){
+		sb.append("and model.partyMeeting.meetingAddress.district.districtId=:districtId ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(districtId !=null && districtId.longValue() > 0L){
+		query.setParameter("districtId",districtId);
+		}
+		return query.list(); 
+	}
 }
