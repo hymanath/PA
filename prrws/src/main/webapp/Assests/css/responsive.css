@@ -21,6 +21,11 @@
 		top: 120px;
 		right: 0;
 	}
+	.switch-btn
+	{
+		margin-top:10px !important;
+		margin-bottom:10px !important;
+	}
 }
 @media (min-width: 500px) and (max-width:767px) 
 {
@@ -44,6 +49,11 @@
 	{
 		top: 120px;
 		right: 0;
+	}
+	.switch-btn
+	{
+		margin-top:10px !important;
+		margin-bottom:10px !important;
 	}
 }
 @media (min-width:769px) and  (max-width:991px){

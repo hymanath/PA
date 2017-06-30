@@ -22,17 +22,16 @@
 	background-color : #ddd;
 }
 </style>
-<sidebar>
+<aside>
 	<div class="rightNavigationMenu">
-		
 		<ul style="display:none"></ul>
-		<button class="rightNavigationMenuRes">
+		<button class="rightNavigationMenuRes hidden-xs">
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
 	</div>
-</sidebar>
+</aside>
 <header>
 	<nav>
 		<div class="container-fluid">
