@@ -911,7 +911,8 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 			 totalLocations =IConstants.TOTAL_AP_TOTAL_MANDALS;
 		else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID)
 			 totalLocations =IConstants.TOTAL_AP_TOTAL_VILLAGES;
-		 
+		else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID)
+			 totalLocations = 25L;
 		 if(commonMethodsUtilService.isListOrSetValid(locations)){
 			 for(Object[] obj :locations){
 				 retusnVo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));

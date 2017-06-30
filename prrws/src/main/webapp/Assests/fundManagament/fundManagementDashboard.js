@@ -20,6 +20,7 @@
 		getAverageFundForAnyLevel(4,'avgFundCons',0,0);
 		getAverageFundForAnyLevel(5,'avgFundMandal',0,0);
 		getAverageFundForAnyLevel(6,'avgFundVillage',0,0);
+		getAverageFundForAnyLevel(10,'avgFundparlment',0,0);
 		
 		//onload overviewGraph building
 		 getLocationWiseAmountDetails(2,'stateLevlOvervw','overview','','',0,'onLoad');
@@ -44,6 +45,7 @@
 		getTotalLocationsByScopeId(4,'totFundCons');
 		getTotalLocationsByScopeId(5,'totFundMandal');
 		getTotalLocationsByScopeId(6,'totFundVillage');
+		getTotalLocationsByScopeId(10,'totFundParliament');
 		
 		getAverageFundForScheme('avgFundScheme','scheme',0,0);
 		getAverageFundForScheme('avgFundGrant','grant',0,0);
@@ -510,12 +512,12 @@
 		{
 			str+='<h4 class="panel-title text-capital district-name"> '+ajaxresp.name+'</h4>';//avgFundMandal
 		}
-		if(attrDivId == 'avgFundDist' || attrDivId == 'avgFundCons' || attrDivId == 'avgFundScheme' || attrDivId == 'avgFundMandal' || attrDivId == 'avgFundVillage' || attrDivId == 'avgFundGrant'  ){
+		if(attrDivId == 'avgFundDist' || attrDivId == 'avgFundCons' || attrDivId == 'avgFundScheme' || attrDivId == 'avgFundMandal' || attrDivId == 'avgFundVillage' || attrDivId == 'avgFundGrant' || attrDivId == 'avgFundparlment' ){
 			if(ajaxresp.avrgeAmt != 0 && ajaxresp.avrgeAmt != undefined ){
 			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.avrgeAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
 			}
 		}
-		else if(ajaxresp.totalAmt != null && ajaxresp.totalAmt != "0.0" && attrDivId != 'avgFundDist' && attrDivId != 'avgFundCons' &&  attrDivId != 'avgFundScheme' && attrDivId != 'avgFundMandal' && divId != 'avgFundVillage'  && attrDivId != 'avgFundGrant' )
+		else if(ajaxresp.totalAmt != null && ajaxresp.totalAmt != "0.0" && attrDivId != 'avgFundDist' && attrDivId != 'avgFundCons' &&  attrDivId != 'avgFundScheme' && attrDivId != 'avgFundMandal' && divId != 'avgFundVillage'  && attrDivId != 'avgFundGrant' &&  attrDivId != 'avgFundparlment')
 		{
 			if(ajaxresp.totalAmt != 0 && ajaxresp.totalAmt != undefined ){
 			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.totalAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
@@ -545,7 +547,7 @@
 					 }
 				}
 			str+='</ul>';
-		}else if(ajaxresp.detailsVOs !=null && ajaxresp.detailsVOs.length > 0  && attrDivId != 'avgFundDist' && attrDivId != 'avgFundCons' &&  attrDivId != 'avgFundScheme' && attrDivId != 'avgFundMandal' && attrDivId != 'avgFundVillage')
+		}else if(ajaxresp.detailsVOs !=null && ajaxresp.detailsVOs.length > 0  && attrDivId != 'avgFundDist' && attrDivId != 'avgFundCons' &&  attrDivId != 'avgFundScheme' && attrDivId != 'avgFundMandal' && attrDivId != 'avgFundVillage' &&attrDivId != 'avgFundparlment')
 		{
 			str+='<ul class="list-inline">';
 				for(var i in ajaxresp.detailsVOs)
@@ -559,7 +561,7 @@
 					 }
 				}
 			str+='</ul>';
-		}else if(attrDivId == 'avgFundDist' || attrDivId == 'avgFundCons' || attrDivId != 'avgFundScheme' || attrDivId != 'avgFundMandal' || attrDivId != 'avgFundVillage' )
+		}else if(attrDivId == 'avgFundDist' || attrDivId == 'avgFundCons' || attrDivId != 'avgFundScheme' || attrDivId != 'avgFundMandal' || attrDivId != 'avgFundVillage'  || attrDivId != 'avgFundparlment')
 		{
 			str+='<ul class="list-inline">';
 				for(var i in ajaxresp.detailsVOs)
