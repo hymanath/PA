@@ -977,8 +977,32 @@
 			table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
 				table+='<thead class="text-center">';
 					table+='<tr>';
-						table+='<th></th>';
-						table+='<th></th>';
+						if(levelId == '2')
+						{
+							//table+='<th></th>';
+							table+='<th></th>';
+						}else if(levelId == '3'){
+							//table+='<th></th>';
+							table+='<th></th>';
+						}else if(levelId == '4')
+						{
+							//table+='<th></th>';
+							table+='<th></th>';
+							table+='<th></th>';
+						}else if(levelId == '5')
+						{
+							//table+='<th></th>';
+							table+='<th></th>';
+							table+='<th></th>';
+							table+='<th></th>';
+						}else if(levelId == '6')
+						{
+							//table+='<th></th>';
+							table+='<th></th>';
+							table+='<th></th>';
+							table+='<th></th>';
+							table+='<th></th>';
+						}
 						if($("#financialYearId").val().length > 1 || $("#financialYearId").val() == 0 ){
 							for(var i in result[0].locationList1)
 							{
@@ -989,7 +1013,7 @@
 						}
 					table+='</tr>';
 					table+='<tr>';
-						table+='<th>ID</th>';
+						//table+='<th>ID</th>';
 						if(levelId == '2')
 						{
 							table+='<th>State</th>';
@@ -997,12 +1021,18 @@
 							table+='<th>District</th>';
 						}else if(levelId == '4')
 						{
+							table+='<th>District</th>';
 							table+='<th>Constituency</th>';
 						}else if(levelId == '5')
 						{
+							table+='<th>District</th>';
+							table+='<th>Constituency</th>';
 							table+='<th>Mandal</th>';
 						}else if(levelId == '6')
 						{
+							table+='<th>District</th>';
+							table+='<th>Constituency</th>';
+							table+='<th>Mandal</th>';
 							table+='<th>Village</th>';
 						}
 						if($("#financialYearId").val().length > 1 || $("#financialYearId").val() == 0){
@@ -1020,8 +1050,35 @@
 				table+='<tbody>';
 					for(var i in result){
 						table+='<tr>';
-							table+='<td>'+result[i].locationId+'</td>';
-							table+='<td>'+result[i].locationName+'</td>';
+							//table+='<td>'+result[i].locationId+'</td>';
+							if(levelId == '2')
+							{
+								
+								//table+='<td>1</td>';
+								table+='<td>Andhra Pradesh</td>';
+							}else if(levelId == '3'){
+								//table+='<td>'+result[i].addressVO.districtId+'</td>';
+								table+='<td>'+result[i].addressVO.districtName+'</td>';
+							}else if(levelId == '4')
+							{
+								//table+='<td>'+result[i].addressVO.assemblyId+'</td>';
+								table+='<td>'+result[i].addressVO.districtName+'</td>';
+								table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+							}else if(levelId == '5')
+							{
+								//table+='<td>'+result[i].addressVO.id+'</td>';
+								table+='<td>'+result[i].addressVO.districtName+'</td>';
+								table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+								table+='<td>'+result[i].addressVO.tehsilName+'</td>';
+							}else if(levelId == '6')
+							{
+								//table+='<td>'+result[i].addressVO.id+'</td>';
+								table+='<td>'+result[i].addressVO.districtName+'</td>';
+								table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+								table+='<td>'+result[i].addressVO.tehsilName+'</td>';
+								table+='<td>'+result[i].addressVO.panchayatName+'</td>';
+							}
+							
 							if($("#financialYearId").val().length > 1 || $("#financialYearId").val() == 0){
 								for(var j in result[i].locationList1){
 									 if(result[i].locationList1[j].financialYearId != 0){
