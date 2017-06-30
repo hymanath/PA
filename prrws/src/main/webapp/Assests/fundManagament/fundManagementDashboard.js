@@ -1307,7 +1307,7 @@
 				table+='</table>';
 				if($windowWidth < 768)
 				{
-					table+='</div>';
+					str+='</div>';
 				}
 			table+='</div>';
 				
@@ -3132,6 +3132,9 @@
 		var orderType = $(this).attr("attr_order_type");
 		var blockType = getblockType();
 		var locationId = 0;
+		
+		$("#distLevelDistrictNames").val(0)
+		$("#distLevelDistrictNames").trigger("chosen:updated");
 		var locationLevelType = 3;
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(3,'distLevlOvervw','overview',sortingType,orderType,locationId,'onLoad');
@@ -3163,6 +3166,8 @@
 		$(this).addClass("active");
 		var sortingType = $(this).attr("attr_sorting_type");
 		var orderType = $(this).attr("attr_order_type");
+		$("#constLevelDistNames,#constLevelConstNames").val(0)
+		$("#constLevelDistNames,#constLevelConstNames").trigger("chosen:updated");
 		var blockType = getblockTypeCons();
 		var locationId = 0;
 		var locationLevelType = 4;
@@ -3221,6 +3226,8 @@
 		var blockType = getblockTypeMandal();
 		var locationId = 0;
 		var locationLevelType = 5;
+		$("#mandalLevelDistNames,#mandalLevelConstNames,#mandalLevelMandalNames").val(0)
+		$("#mandalLevelDistNames,#mandalLevelConstNames,#mandalLevelMandalNames").trigger("chosen:updated");
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId,'onLoad');
 		}else if(blockType == 'scheme'){
@@ -3478,7 +3485,7 @@
 			table+='</table>';
 			if($windowWidth < 768)
 			{
-				table+='</div>';
+				str+='</div>';
 			}
 		}
 		
