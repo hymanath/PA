@@ -783,8 +783,7 @@
 				<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">Govt Order Document</h4>  
 			</div>
-			<div class="modal-body" id="govtOrderDocumentBodyId">
-			</div>
+			<div class="modal-body" id="govtOrderDocumentBodyId"></div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
 			</div>
