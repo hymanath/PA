@@ -55,6 +55,9 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			queryStr.append(" constituency.constituencyId, "//6
 					  + " constituency.name ");//7
+		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+			queryStr.append(" parliament.constituencyId, "//6
+					  + " parliament.name ");//7
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 			queryStr.append(" tehsil.tehsilId, "//6
 					  + " tehsil.tehsilName ");//7
@@ -64,14 +67,14 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 					  + " panchayat.panchayatName ");//7
 		}
 		queryStr.append(", state.stateId, state.stateName , district.districtId, district.districtName,constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName, "
-				+ "  panchayat.panchayatId,  panchayat.panchayatName ");
+				+ "  panchayat.panchayatId,  panchayat.panchayatName,parliament.constituencyId,parliament.name ");
 		
 		queryStr.append(" from FundSanctionLocation model "
 				+ " left join model.locationAddress locationAddress "
 				+ " left join locationAddress.district district "
 				+ " left join locationAddress.state state "
 				+ " left join locationAddress.constituency constituency "
-			//	+ " left join locationAddress.parliament parliament "
+				+ " left join locationAddress.parliament parliament "
 				+ " left join locationAddress.tehsil  tehsil "
 				+ " left join locationAddress.panchayat panchayat "
 				
@@ -85,6 +88,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 				queryStr.append("  and district.districtId in (:searchScopeValuesList) ");//7
 			}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 				queryStr.append(" and  constituency.constituencyId in (:searchScopeValuesList) ");//7
+			}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+				queryStr.append(" and  parliament.constituencyId in (:searchScopeValuesList) ");//7
 			}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 				queryStr.append("  and tehsil.tehsilId in (:searchScopeValuesList) ");//7
 			}
@@ -112,6 +117,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			queryStr.append(" district.districtId, ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			queryStr.append(" constituency.constituencyId, ");
+		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+			queryStr.append(" parliament.constituencyId, ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 			queryStr.append(" tehsil.tehsilId, ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
@@ -126,6 +133,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			queryStr.append(" district.districtId, ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			queryStr.append(" constituency.constituencyId, ");
+		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+			queryStr.append(" parliament.constituencyId, ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 			queryStr.append(" tehsil.tehsilId, ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
@@ -175,6 +184,9 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			queryStr.append(" constituency.constituencyId, "//6
 					  + " constituency.name ");//7
+		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+			queryStr.append(" parliament.constituencyId, "//6
+					  + " parliament.name ");//7
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 			queryStr.append(" tehsil.tehsilId, "//6
 					  + " tehsil.tehsilName ");//7
@@ -187,14 +199,14 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		queryStr.append(" ,model.fundSanction.department.departmentId, "//8
 				+ " model.fundSanction.department.departmentName ");//9
 		queryStr.append(", state.stateId, state.stateName , district.districtId, district.districtName,constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName, "
-				+ "  panchayat.panchayatId,  panchayat.panchayatName ");
+				+ "  panchayat.panchayatId,  panchayat.panchayatName,parliament.constituencyId,parliament.name ");
 		
 		queryStr.append(" from FundSanctionLocation model "
 				+ " left join model.locationAddress locationAddress "
 				+ " left join locationAddress.district district "
 				+ " left join locationAddress.state state "
 				+ " left join locationAddress.constituency constituency "
-			//	+ " left join locationAddress.parliament parliament "
+				+ " left join locationAddress.parliament parliament "
 				+ " left join locationAddress.tehsil  tehsil "
 				+ " left join locationAddress.panchayat panchayat "
 				
@@ -208,6 +220,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 				queryStr.append(" and  district.districtId in (:searchScopeValuesList) ");//7
 			}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 				queryStr.append("  and constituency.constituencyId in (:searchScopeValuesList) ");//7
+			}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+				queryStr.append("  and parliament.constituencyId in (:searchScopeValuesList) ");//7
 			}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 				queryStr.append("  and tehsil.tehsilId in (:searchScopeValuesList) ");//7
 			}
@@ -241,6 +255,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			queryStr.append(" district.districtId, ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			queryStr.append(" constituency.constituencyId, ");
+		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+			queryStr.append(" parliament.constituencyId, ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 			queryStr.append(" tehsil.tehsilId, ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
@@ -256,6 +272,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			queryStr.append(" district.districtId, ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			queryStr.append(" constituency.constituencyId, ");
+		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+			queryStr.append(" parliament.constituencyId, ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 			queryStr.append(" tehsil.tehsilId, ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
@@ -524,6 +542,9 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			sb.append(" ,constituency.constituencyId "//2
 					+ " ,constituency.name" );//3
+		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+			sb.append(" ,parliament.constituencyId "//2
+					+ " ,parliament.name" );//3
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 			sb.append(" ,tehsil.tehsilId "//2
 					+ " ,tehsil.tehsilName"); //3
@@ -535,14 +556,14 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" ,count(distinct fundSanctionLocation.fundSanction.fundSactionId) ");//4
 		sb.append(" ,sum(fundSanctionLocation.fundSanction.sactionAmount) ");//5
 		sb.append(", state.stateId, state.stateName , district.districtId, district.districtName,constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName, "
-				+ "  panchayat.panchayatId,  panchayat.panchayatName ");
+				+ "  panchayat.panchayatId,  panchayat.panchayatName,parliament.constituencyId,parliament.name ");
 		
 		sb.append(" from FundSanctionLocation fundSanctionLocation "
 				+ " left join fundSanctionLocation.locationAddress locationAddress "
 				+ " left join locationAddress.district district "
 				+ " left join locationAddress.state state "
 				+ " left join locationAddress.constituency constituency "
-			//	+ " left join locationAddress.parliament parliament "
+				+ " left join locationAddress.parliament parliament "
 				+ " left join locationAddress.tehsil  tehsil "
 				+ " left join locationAddress.panchayat panchayat "
 				);
@@ -555,9 +576,17 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			if(locationLevelId != null && locationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
 				sb.append(" and district.districtId = :locationId ");
 			}
+		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+			if(locationLevelId != null && locationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
+				sb.append(" and district.districtId = :locationId ");
+			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
+				sb.append(" and parliament.constituencyId = :locationId ");
+			}
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			if(locationLevelId != null && locationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
 				sb.append(" and district.districtId = :locationId ");
+			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
+				sb.append(" and parliament.constituencyId = :locationId ");
 			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
 				sb.append(" and constituency.constituencyId = :locationId ");
 			}
@@ -566,12 +595,16 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 				sb.append(" and district.districtId = :locationId ");
 			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
 				sb.append(" and constituency.constituencyId = :locationId ");
+			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
+				sb.append(" and parliament.constituencyId = :locationId ");
 			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
 				sb.append(" and tehsil.tehsilId = :locationId ");
 			}
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
 			if(locationLevelId != null && locationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
 				sb.append(" and district.districtId = :locationId ");
+			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
+				sb.append(" and parliament.constituencyId = :locationId ");
 			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
 				sb.append(" and constituency.constituencyId = :locationId ");
 			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID && locationId != null && locationId.longValue() > 0L){
@@ -596,6 +629,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			sb.append(" ,district.districtId ");
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			sb.append(" ,constituency.constituencyId ");
+		}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID ){
+			sb.append(" , parliament.constituencyId  ");
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 			sb.append(" ,tehsil.tehsilId ");
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
