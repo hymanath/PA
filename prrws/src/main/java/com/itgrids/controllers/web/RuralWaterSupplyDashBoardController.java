@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
@@ -229,6 +230,16 @@ public class RuralWaterSupplyDashBoardController {
 
 		} catch (Exception e) {
 			LOG.error("Exception raised at getHamletWiseIvrStatusCounts - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
+	@PostMapping("/getAlertsOfCategoryByStatusWise")
+	public @ResponseBody List<AmsVO> getAlertsOfCategoryByStatusWise(InputVO vo){
+		try {
+			return rWSNICService.getAlertsOfCategoryByStatusWise(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAlertsOfCategoryByStatusWise - RuralWaterSupplyDashBoardController controller",e);
 		}
 		return null;
 	}

@@ -2,6 +2,7 @@ package com.itgrids.tpi.rws.service;
 
 import java.util.List;
 
+import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
@@ -26,4 +27,5 @@ public interface IRWSNICService {
 	public List<LocationVO> getLocationWiseAlertStatusCounts(InputVO vo);
 	public List<RangeVO> getLocationBasedOnSelection(InputVO vo);
 	public List<StatusVO> getHamletWiseIvrCounts(InputVO vo);
+	public List<AmsVO> getAlertsOfCategoryByStatusWise(InputVO vo);
 }
