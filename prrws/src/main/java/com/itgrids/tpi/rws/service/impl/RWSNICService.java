@@ -68,6 +68,7 @@ public class RWSNICService implements IRWSNICService{
 		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 		 	    				if(jObj.length() > 0){
 		 	    					LocationVO vo = new LocationVO();
+		 	    					vo.setGoNumber(jObj.getString("locationId"));
 		 	    					vo.setLocationName(jObj.getString("locationName"));
 			 	    				vo.setStreetHabitationCount(jObj.getLong("stressedHabitationCount"));
 			 	    				vo.setTotalCount(jObj.getLong("totalCount"));
@@ -147,6 +148,7 @@ public class RWSNICService implements IRWSNICService{
 		 				for (int j = 0; j < mandalArr.length(); j++) {
 		 					JSONObject mandalObj = (JSONObject) mandalArr.get(j);
 		 					LocationVO vo = new LocationVO();
+		 					vo.setGoNumber(mandalObj.getString("locationId"));
 	 	    				vo.setLocationName(mandalObj.getString("locationName"));
 		 	    			vo.setStreetHabitationCount(mandalObj.getLong("stressedHabitationCount"));
 		 	    			vo.setTotalCount(mandalObj.getLong("totalCount"));
