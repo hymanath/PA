@@ -172,6 +172,10 @@
 								<h4 class="panel-title text-muted">Average Funded District</h4>
 								<div id="avgFundDist" attr_id="avgFundDist" class="m_top5"></div>
 							</td>
+							<!--<td>
+								<h4 class="panel-title text-muted">Average Funded Parliament</h4>
+								<div id="avgFundparlment" attr_id="avgFundparlment" class="m_top5"></div>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Costituency</h4>
 								<div id="avgFundCons" attr_id="avgFundCons" class="m_top5"></div>
@@ -199,6 +203,10 @@
 								<h4 class="panel-title text-muted">Total Funds</h4>
 								<div id="totFund" attr_id="totFund" class="m_top5"></div>
 							</td>
+							<!--<td>
+								<h4 class="panel-title text-muted">Total Funded Parliament</h4>
+								<div id="totFundParliament" attr_id="totFundParliament" class="m_top5"></div>
+							</td>-->
 							<td>
 								<h4 class="panel-title text-muted">Total Funded Costituency</h4>
 								<div id="totFundCons" attr_id="totFundCons" class="m_top5"></div>
