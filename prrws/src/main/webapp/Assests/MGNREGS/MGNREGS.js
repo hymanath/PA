@@ -689,7 +689,7 @@ function buildNregasOverViewBlock(result,projectDivId){
 					str1+='</td>';
 					str1+='<td>';
 						str1+='<p>Total '+projectDivId+'</p>';
-						str1+='<h4>0</h4>';
+						str1+='<h4>'+result.totalBudget+'</h4>';
 					str1+='</td>';
 				str1+='</tr>';
 			str1+='</tbody>';
