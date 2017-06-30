@@ -217,10 +217,10 @@
 	</section>
 </main>
 <div class="modal fade" id="modalDivId" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document" style="width: 90%;">
+  <div class="modal-dialog" role="document" style="width: 95%;">
     <div class="modal-content modal-custom">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#fff">&times;</span></button>
         <h4 class="modal-title" id="modalHeadingId">Modal title</h4>
       </div>
       <div class="modal-body">
