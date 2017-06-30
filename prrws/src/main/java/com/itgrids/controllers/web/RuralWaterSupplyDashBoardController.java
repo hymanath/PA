@@ -21,6 +21,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.RangeVO;
+import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 
@@ -240,6 +241,50 @@ public class RuralWaterSupplyDashBoardController {
 
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAlertsOfCategoryByStatusWise - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getOnclickWorkDetails")
+	public @ResponseBody List<RwsClickVO> getOnclickWorkDetails(InputVO vo){
+		try {
+			return rWSNICService.getOnclickWorkDetails(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getOnclickWorkDetails - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getOnclickTargetsAcheievementsDetails")
+	public @ResponseBody List<RwsClickVO> getOnclickTargetsAcheievementsDetails(InputVO vo){
+		try {
+			return rWSNICService.getOnclickTargetsAcheievementsDetails(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getOnclickTargetsAcheievementsDetails - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
+	//
+	@PostMapping("/getOnclickStressedTargetsAcheievementsDetails")
+	public @ResponseBody List<RwsClickVO> getOnclickStressedTargetsAcheievementsDetails(InputVO vo){
+		try {
+			return rWSNICService.getOnclickStressedTargetsAcheievementsDetails(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getOnclickStressedTargetsAcheievementsDetails - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getOnclickHabitationsupplyDetails")
+	public @ResponseBody List<RwsClickVO> getOnclickHabitationsupplyDetails(InputVO vo){
+		try {
+			return rWSNICService.getOnclickHabitationsupplyDetails(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getOnclickHabitationsupplyDetails - RuralWaterSupplyDashBoardController controller",e);
 		}
 		return null;
 	}

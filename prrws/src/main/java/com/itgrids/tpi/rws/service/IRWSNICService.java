@@ -8,6 +8,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.RangeVO;
+import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
 
 public interface IRWSNICService {
@@ -28,4 +29,8 @@ public interface IRWSNICService {
 	public List<RangeVO> getLocationBasedOnSelection(InputVO vo);
 	public List<StatusVO> getHamletWiseIvrCounts(InputVO vo);
 	public List<AmsVO> getAlertsOfCategoryByStatusWise(InputVO vo);
+	public List<RwsClickVO> getOnclickWorkDetails(InputVO vo);
+	public List<RwsClickVO> getOnclickTargetsAcheievementsDetails(InputVO vo);
+	public List<RwsClickVO> getOnclickStressedTargetsAcheievementsDetails(InputVO vo);
+	public List<RwsClickVO> getOnclickHabitationsupplyDetails(InputVO vo);
 }

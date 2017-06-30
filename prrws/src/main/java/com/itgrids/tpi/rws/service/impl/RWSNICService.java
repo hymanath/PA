@@ -24,6 +24,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.RangeVO;
+import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
@@ -1012,6 +1013,234 @@ public class RWSNICService implements IRWSNICService{
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Exception Occured in getAlertsOfCategoryByStatusWise() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	
+	public List<RwsClickVO> getOnclickWorkDetails(InputVO vo){
+		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
+		try {
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getOnclickWorkDetails");
+			//String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				
+				if(output != null && !output.isEmpty()){
+					
+					JSONObject jsonObj = new JSONObject(output);
+					
+					if(jsonObj.getString("status") !="null" && !jsonObj.getString("status").trim().isEmpty() && 
+							jsonObj.getString("status").trim().equalsIgnoreCase("Success")){
+						
+						JSONArray onClickWorksArray =  jsonObj.getJSONArray("onClickWorksList");//Type Array
+						
+		 	    		if(onClickWorksArray!=null && onClickWorksArray.length()>0){
+		 	    			for(int i=0;i<onClickWorksArray.length();i++){
+		 	    				
+		 	    				RwsClickVO subVo = new RwsClickVO();
+		 	    				
+		 	    				JSONObject jobj = (JSONObject)onClickWorksArray.get(i);
+		 	    				
+		 	    				subVo.setMandalName(jobj.getString("mandalName"));
+		 	    				subVo.setConstituencyName(jobj.getString("districtName"));
+		 	    				subVo.setDistrictCode(jobj.getString("districtCode"));
+		 	    				subVo.setDistrictName(jobj.getString("districtName"));
+		 	    				subVo.setSacntionedAmount(jobj.getString("sacntionedAmount"));
+		 	    				subVo.setWorkName(jobj.getString("workName"));
+		 	    				subVo.setWorkId(jobj.getString("workId"));
+		 	    				subVo.setSourceCount(jobj.getString("sourceCount"));
+		 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));
+		 	    				subVo.setMandalCode(jobj.getString("mandalCode"));
+		 	    				subVo.setHabitationName(jobj.getString("habitationName"));
+		 	    				subVo.setCompletionDate(jobj.getString("habitationCode"));
+		 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
+		 	    				
+		 	    				finalList.add(subVo);
+		 	    			}
+		 	    		}
+						
+					}
+				}
+				
+ 	      	}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getOnclickWorkDetails() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	
+	public List<RwsClickVO> getOnclickTargetsAcheievementsDetails(InputVO vo){
+		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
+		try {
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getOnclickTargetsAcheievementsDetails");
+	        //String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				
+				if(output != null && !output.isEmpty()){
+					
+					JSONObject jsonObj = new JSONObject(output);
+					
+					if(jsonObj.getString("status") !="null" && !jsonObj.getString("status").trim().isEmpty() && 
+							jsonObj.getString("status").trim().equalsIgnoreCase("Success")){
+						
+						JSONArray onClickWorksArray =  jsonObj.getJSONArray("onClickWorksList");//Type Array
+						
+		 	    		if(onClickWorksArray!=null && onClickWorksArray.length()>0){
+		 	    			for(int i=0;i<onClickWorksArray.length();i++){
+		 	    				
+		 	    				RwsClickVO subVo = new RwsClickVO();
+		 	    				
+		 	    				JSONObject jobj = (JSONObject)onClickWorksArray.get(i);
+		 	    				
+		 	    				subVo.setMandalName(jobj.getString("mandalName"));
+		 	    				subVo.setConstituencyName(jobj.getString("districtName"));
+		 	    				subVo.setSourceCount(jobj.getString("sourceCount"));
+		 	    				subVo.setDistrictCode(jobj.getString("districtCode"));
+		 	    				subVo.setDistrictName(jobj.getString("districtName"));
+		 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));
+		 	    				subVo.setMandalCode(jobj.getString("mandalCode"));
+		 	    				subVo.setHabitationName(jobj.getString("habitationName"));
+		 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
+		 	    				subVo.setTotalCount(jobj.getString("totalCount"));
+    				
+		 	    				
+		 	    				finalList.add(subVo);
+		 	    			}
+		 	    		}
+						
+					}
+				}
+				
+ 	      	}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getOnclickTargetsAcheievementsDetails() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	
+	public List<RwsClickVO> getOnclickStressedTargetsAcheievementsDetails(InputVO vo){
+		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
+		try {
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getOnclickStressedTargetsAcheievementsDetails");
+	        //String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				
+				if(output != null && !output.isEmpty()){
+					
+					JSONObject jsonObj = new JSONObject(output);
+					
+					if(jsonObj.getString("status") !="null" && !jsonObj.getString("status").trim().isEmpty() && 
+							jsonObj.getString("status").trim().equalsIgnoreCase("Success")){
+						
+						JSONArray onClickWorksArray =  jsonObj.getJSONArray("onClickWorksList");//Type Array
+						
+		 	    		if(onClickWorksArray!=null && onClickWorksArray.length()>0){
+		 	    			for(int i=0;i<onClickWorksArray.length();i++){
+		 	    				
+		 	    				RwsClickVO subVo = new RwsClickVO();
+		 	    				
+		 	    				JSONObject jobj = (JSONObject)onClickWorksArray.get(i);
+		 	    		
+		 	    				subVo.setMandalName(jobj.getString("mandalName"));
+		 	    				subVo.setConstituencyName(jobj.getString("constituencyName"));
+		 	    				subVo.setToatlPorpualtionCovered(jobj.getString("toatlPorpualtionCovered"));
+		 	    				subVo.setDistrictCode(jobj.getString("districtCode"));
+		 	    				subVo.setDistrictName(jobj.getString("districtName"));
+		 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));
+		 	    				subVo.setMandalCode(jobj.getString("mandalCode"));
+		 	    				subVo.setHabitationName(jobj.getString("habitationName"));
+		 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
+		 	    				
+		 	    				finalList.add(subVo);
+		 	    			}
+		 	    		}						
+					}
+					
+					
+				}
+				
+ 	      	}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getOnclickStressedTargetsAcheievementsDetails() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	
+	public List<RwsClickVO> getOnclickHabitationsupplyDetails(InputVO vo){
+		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
+		try {
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getOnclickHabitationsupplyDetails");
+	        //String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				
+				if(output != null && !output.isEmpty()){
+					
+					JSONObject jsonObj = new JSONObject(output);
+					
+					if(jsonObj.getString("status") !="null" && !jsonObj.getString("status").trim().isEmpty() && 
+							jsonObj.getString("status").trim().equalsIgnoreCase("Success")){
+						
+						JSONArray onClickWorksArray =  jsonObj.getJSONArray("onClickWorksList");//Type Array
+						
+		 	    		if(onClickWorksArray!=null && onClickWorksArray.length()>0){
+		 	    			for(int i=0;i<onClickWorksArray.length();i++){
+		 	    				
+		 	    				RwsClickVO subVo = new RwsClickVO();
+		 	    				
+		 	    				JSONObject jobj = (JSONObject)onClickWorksArray.get(i);
+		 	    		
+		 	    				subVo.setMandalName(jobj.getString("mandalName"));
+		 	    				subVo.setConstituencyName(jobj.getString("constituencyName"));		 	    				
+		 	    				subVo.setDistrictCode(jobj.getString("districtCode"));
+		 	    				subVo.setDistrictName(jobj.getString("districtName"));
+		 	    				subVo.setLpcd(jobj.getString("lpcd"));
+		 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));
+		 	    				subVo.setMandalCode(jobj.getString("mandalCode"));		 	    			
+		 	    				subVo.setHabitationName(jobj.getString("habitationName"));
+		 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
+		 	    				
+		 	    				finalList.add(subVo);
+		 	    			}
+		 	    		}
+					}
+					
+					
+				}
+				
+ 	      	}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getOnclickHabitationsupplyDetails() method, Exception - ",e);
 		}
 		return finalList;
 	}
