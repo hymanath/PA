@@ -1,11 +1,9 @@
-	//onLoadCalls();
-	//onLoadClicks();
 	onLoadInitialisations();
-	 var globalLevelObj =  {"distLevelDistrictNames":"DISTRICT","constLevelDistNames":"DISTRICT","mandalLevelDistNames":"DISTRICT","constLevelConstNames":"CONSTITUENCY","mandalLevelConstNames":"CONSTITUENCY","mandalLevelMandalNames":"MANDAL","villageLevelDistNames":"DISTRICT",'villageLevelConstNames':'CONSTITUENCY','villageLevelMandalNames':'MANDAL','villageLevelNames':'VILLAGE'};
+	var globalLevelObj =  {"distLevelDistrictNames":"DISTRICT","constLevelDistNames":"DISTRICT","mandalLevelDistNames":"DISTRICT","constLevelConstNames":"CONSTITUENCY","mandalLevelConstNames":"CONSTITUENCY","mandalLevelMandalNames":"MANDAL","villageLevelDistNames":"DISTRICT",'villageLevelConstNames':'CONSTITUENCY','villageLevelMandalNames':'MANDAL','villageLevelNames':'VILLAGE'};
 	var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 	var glEndDate = moment().add(10, 'years').endOf('year').format("DD/MM/YYYY");
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-	//var spinner = '<h1 class="loader">  <span>L</span>  <span>O</span>  <span>A</span>  <span>D</span>  <span>I</span>  <span>N</span>  <span>G</span></h1>';
+	var $windowWidth = $(window).width();
 	///Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations
 	function onLoadCalls()
 	{
@@ -915,6 +913,10 @@
 		str+='</div>';
 		str+='</div>';
 		$("#"+divId).html(str);
+		if($windowWidth < 768)
+		{
+			$("#"+divId).wrap("<div class='table-responsive'></div>");
+		}
 		if(displayType == 'selectBox')
 		{
 			
@@ -1300,9 +1302,13 @@
 		$("#"+divId+"Table").html("");
 		$("#"+divId+"Table").html(table);
 		$("#dataTable"+divId).dataTable({
-					"iDisplayLength": 15,
-					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
-				 });
+			"iDisplayLength": 15,
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
+		if($windowWidth < 768)
+		{
+			$("#"+divId+"Table").wrap("<div class='table-responsive'></div>");
+		}
 		
 		if(type == 'overview')
 		{
@@ -3462,9 +3468,13 @@
 		$("#"+divId).html(table);
 		
 		$("#dataTable"+divId).dataTable({
-					"iDisplayLength": 15,
-					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
-				 });
+			"iDisplayLength": 15,
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
+		if($windowWidth < 768)
+		{
+			$("#"+divId).wrap("<div class='table-responsive'></div>");
+		}
 	}
 
 function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,deptId){ 
@@ -3513,68 +3523,72 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
   function buildLocationWiseFundSanctionDetails(result,blockLvlId){
   
   var str = '';
-  str+='<table class="table table-condensed table-bordered" id="tableId">';
-  str+='<thead>';
-    str+='<th class="text-capital">District Name</th>';
-	str+='<th class="text-capital">Location Name</th>';
-    str+='<th class="text-capital">Work Name</th>';
-    str+='<th class="text-capital">Department</th>'; 
-    str+='<th class="text-capital" > Scheme Name</th>';
-    str+='<th class="text-capital"> G.o</th>';
-    str+='<th class="text-capital"> Sanction Amount</th>';
-  str+='</thead>';
-  str+='<tbody>';
-  for(var i in result){
-    str+='<tr>'; 
-    if(result[i].locationName != null){
-         str+='<td>'+result[i].locationName+'</td>';
-    }else{
-         str+='<td>-</td>';
-    }
-	 if(result[i].locName != null){
-         str+='<td>'+result[i].locName+'</td>';
-    }else{
-         str+='<td>-</td>';
-    }
-		 
-    if(result[i].workName != null){
-         str+='<td>'+result[i].workName+'</td>';
-    }else{
-         str+='<td>-</td>';
-    }
-    if(result[i].departmentName != null){
-         str+='<td>'+result[i].departmentName+'</td>';
-    }else{
-         str+='<td>-</td>';
-    }    
-    if(result[i].schemeName != null){
-         str+='<td>'+result[i].schemeName+'</td>';
-    }else{
-         str+='<td>-</td>';
-    }  
-    if(result[i].goNoDate != null){
-		if(result[i].filePath != null && result[i].filePath.length > 1){
-			str+='<td style="cursor:pointer;" class="viewPdfCls" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get govt order document." attr_filePath="'+result[i].filePath+'"><a>'+result[i].goNoDate+'</a></td>';
+	str+='<table class="table table-condensed table-bordered" id="tableId">';
+		str+='<thead>';
+			str+='<th class="text-capital">District Name</th>';
+			str+='<th class="text-capital">Location Name</th>';
+			str+='<th class="text-capital">Work Name</th>';
+			str+='<th class="text-capital">Department</th>'; 
+			str+='<th class="text-capital" > Scheme Name</th>';
+			str+='<th class="text-capital"> G.o</th>';
+			str+='<th class="text-capital"> Sanction Amount</th>';
+		str+='</thead>';
+		str+='<tbody>';
+	for(var i in result){
+		str+='<tr>'; 
+		if(result[i].locationName != null){
+			 str+='<td>'+result[i].locationName+'</td>';
 		}else{
-			str+='<td>'+result[i].goNoDate+'</td>';
+			 str+='<td>-</td>';
 		}
-    }else{
-         str+='<td>-</td>';
-    }
-    if(result[i].sactionAmount != null){
-         str+='<td>'+result[i].sactionAmount+'</td>';
-    }else{
-         str+='<td>-</td>';
-    }
-    str+='</tr>';     
-  }
-  str+='</tbody>';  
+		 if(result[i].locName != null){
+			 str+='<td>'+result[i].locName+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+			 
+		if(result[i].workName != null){
+			 str+='<td>'+result[i].workName+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+		if(result[i].departmentName != null){
+			 str+='<td>'+result[i].departmentName+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}    
+		if(result[i].schemeName != null){
+			 str+='<td>'+result[i].schemeName+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}  
+		if(result[i].goNoDate != null){
+			if(result[i].filePath != null && result[i].filePath.length > 1){
+				str+='<td style="cursor:pointer;" class="viewPdfCls" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get govt order document." attr_filePath="'+result[i].filePath+'"><a>'+result[i].goNoDate+'</a></td>';
+			}else{
+				str+='<td>'+result[i].goNoDate+'</td>';
+			}
+		}else{
+			 str+='<td>-</td>';
+		}
+		if(result[i].sactionAmount != null){
+			 str+='<td>'+result[i].sactionAmount+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		}
+		str+='</tr>';     
+	}
+	str+='</tbody>';  
   
-  $("#fundSanctionModal").html(str);   
-  $("#tableId").dataTable({
-					"iDisplayLength": 15,
-					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
-				 });    
+	$("#fundSanctionModal").html(str);   
+	$("#tableId").dataTable({
+		"iDisplayLength": 15,
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+	});  
+	if($windowWidth < 768)
+	{
+		$("#"+divId).wrap("<div class='table-responsive'></div>");
+	}	
 }
 
 $(document).on("click",".compClickCls",function(){
@@ -3741,7 +3755,7 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 	   var str='';
 	   if(result !=null && result.length>0){
 		    str+='<table class="table table-bordered">';
-		   if(result[0].rangeList !=null && result[0].rangeList.length>0){
+			if(result[0].rangeList !=null && result[0].rangeList.length>0){
 			    str+='<thead>';
 				str+='<tr>';
 				 str+='<th><span class="first"> '+globalYearObj[firstFinancialYearArr]+'</span><span class="second"> '+globalYearObj[secondFinancialYearArr]+'</span></th>';
@@ -3813,10 +3827,13 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 			   str+='</tbody>';
 		   }
 			str+='</table>';
-	   }
-	   $("#"+divId).html(str)
-	   
-   }
+		}
+		$("#"+divId).html(str)
+		if($windowWidth < 768)
+		{
+			$("#"+divId).wrap("<div class='table-responsive'></div>");
+		}
+	}
    
    
    //getMinMaxDates();
