@@ -26,7 +26,6 @@
 			getWaterSourceInfo();
 			getKeyPerformanceIndicatorsInfo('state','','graph');
 			getPlanofActionForStressedHabitations();
-			getStressedHabitationsInfoByLocationType();//on click ? call
 			getAlertDetailsOfCategoryByStatusWise('graph','','');
 			getAlertFeedbackStatusDetails();
 			getLocationBasedOnSelection("district",2017,"","","");//get dist/const/mandal
@@ -1080,16 +1079,20 @@
 					}]
 				});
 		}
-		function getStressedHabitationsInfoByLocationType(){
+		function getStressedHabitationsInfoByLocationType(locationType,levelId,levelName){
+			$("#modalTable").html(spinner);
 			var financialVal =$("#financialYearId").val();
+			var districtValue ="";
+			if(locationType == "mandal"){
+				districtValue = "03";
+			}
 			var json = {
-						fromDateStr:glStartDate,
-						toDateStr:glEndDate,
-						locationType:"constituency",
-						year:financialVal,
-						filterType:"constituency",
-						stressedHabitationYear:financialVal,
-						filterValue:"120"
+					locationType:locationType,
+					year:financialVal,
+					stressedHabitationYear:financialVal,
+					filterType:locationType,
+					filterValue:levelId,
+					districtValue:districtValue
 
 					}
 			$.ajax({
@@ -1102,8 +1105,8 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
-					if(ajaxresp !=null ){
-						
+					if(ajaxresp !=null){
+						buildgetStressedHabitationsInfoByLocationType(ajaxresp,levelName,locationType);
 					}
 				}
 			});
@@ -1929,8 +1932,12 @@
 								for(var i in GLtbodyArr){
 									var totalCount=0;
 									tableView+='<tr>';
-									tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
-									//&nbsp;&nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"></i>
+									if(locationType =="state"){
+										tableView+='<td>'+GLtbodyArr[i].locationName+'&nbsp;&nbsp;&nbsp;<i class="fa fa-question-circle getDetailsCls" aria-hidden="true" attr_location_type="'+locationType+'" attr_level_id="" attr_level_name="'+GLtbodyArr[i].locationName+'"></i></td>';
+									}else{
+										tableView+='<td>'+GLtbodyArr[i].locationName+'&nbsp;&nbsp;&nbsp;<i class="fa fa-question-circle getDetailsCls" aria-hidden="true" attr_location_type="'+locationType+'" attr_level_id="'+GLtbodyArr[i].goNumber+'" attr_level_name="'+GLtbodyArr[i].locationName+'"></i></td>';
+									}
+									
 									if(GLtbodyArr[i].statusList !=null && GLtbodyArr[i].statusList.length>0){
 										for(var j in GLtbodyArr[i].statusList){
 										if(GLtbodyArr[i].statusList[j].status != 'NC'){
@@ -2087,11 +2094,7 @@
 		$(window,document).on('resize', function(){
 			responsiveTabs();
 		});
-		$(document).on('click','[attr_click="questionMark"]', function(){
-			$("#modalDivId").modal('show');
-			$("#modalHeadingId").html($(this).attr("attr_title"));
-			tableView('modalTable');
-		});
+		
 		function responsiveTabs(){
 			var $this = $(this);
 			var $windowWidth = $(window).width();
@@ -2484,3 +2487,63 @@
 	$(document).on("change","#financialYearId",function(){
 		onloadCalls();
 	});
+	$(document).on("click",".getDetailsCls",function(){
+		$("#modalTable").html('');
+		
+		var locationType = $(this).attr("attr_location_type");
+		var levelId = $(this).attr("attr_level_id");
+		var levelName=$(this).attr("attr_level_name");
+		$("#modalDivId").modal('show');
+		$("#modalHeadingId").html(levelName+ "Stresseed Habitations");
+		
+		getStressedHabitationsInfoByLocationType(locationType,levelId,levelName);//on click ? call
+		
+	});
+	function buildgetStressedHabitationsInfoByLocationType(result,levelName,locationType){
+		
+		if(result.statusList !=null && result.statusList.length>0){
+			var str='';
+			var totalStressCount=0;
+			var totalAllHabsCount=0;
+			str+='<table class="table table-bordered">';
+								str+='<thead>';
+								str+='<tr>';
+								str+='<th rowspan="2"></th>';
+								for(var i in result.statusList){
+									totalStressCount =totalStressCount+result.statusList[i].stressedCount;
+									totalAllHabsCount =totalAllHabsCount+result.statusList[i].count;
+										str+='<th colspan="2">'+result.statusList[i].name+'</th>';
+										
+								}
+								str+='<th colspan="2">TOTAL</th>';
+								str+='</tr>';
+								str+='<tr>';
+								for(var i in result.statusList){
+										str+='<th>Stressed Habs</th>';
+										str+='<th>ALL Habs</th>';
+										
+								}
+								str+='<th>Stressed Habs</th>';
+								str+='<th>ALL Habs</th>';
+								str+='</tr>';
+								
+							str+='</thead>';
+							str+='<tbody>';
+								str+='<tr>';
+								str+='<td>TOTAL</td>';
+								for(var i in result.statusList){
+									str+='<td>'+result.statusList[i].stressedCount+' <small style="color:#0FBE08">'+result.statusList[i].percentage+' %</small></td>';
+									str+='<td>'+result.statusList[i].count+'</td>';
+								}
+								str+='<td>'+totalStressCount+'</td>';
+								str+='<td>'+totalAllHabsCount+'</td>';
+								str+='</tr>';
+							str+='</tbody>';
+					
+			str+='</table>';
+			$("#modalTable").html(str);
+		}else{
+			$("#modalTable").html("No Data Available");
+		}
+		
+	}

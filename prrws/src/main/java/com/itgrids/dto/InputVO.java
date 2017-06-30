@@ -41,7 +41,16 @@ public class InputVO implements Serializable {
 	private List<Long> locationValues = new ArrayList<Long>(0);
 	private Long stressedHabitationYear;
 	private String divType;
+	private Long districtValue=0l;
 	
+	
+	
+	public Long getDistrictValue() {
+		return districtValue;
+	}
+	public void setDistrictValue(Long districtValue) {
+		this.districtValue = districtValue;
+	}
 	public Long getStressedHabitationYear() {
 		return stressedHabitationYear;
 	}

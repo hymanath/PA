@@ -1077,16 +1077,65 @@
 			table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
 				table+='<thead class="text-center">';
 					table+='<tr>';
+					if(levelId == '2')
+					{
+						//table+='<th></th>';
+						table+='<th></th>';
+					}else if(levelId == '3'){
+						//table+='<th></th>';
+						table+='<th></th>';
+					}else if(levelId == '4')
+					{
+						//table+='<th></th>';
 						table+='<th></th>';
 						table+='<th></th>';
+					}else if(levelId == '5')
+					{
+						//table+='<th></th>';
+						table+='<th></th>';
+						table+='<th></th>';
+						table+='<th></th>';
+					}else if(levelId == '6')
+					{
+						//table+='<th></th>';
+						table+='<th></th>';
+						table+='<th></th>';
+						table+='<th></th>';
+						table+='<th></th>';
+					}
+						
 						for(var j in result[0].subList)
 						{
 							table+='<th class="text-center" colspan="'+((result[0].subList[0].subList.length)*2)+'">'+result[0].subList[j].year+'</th>';
 						}
 					table+='</tr>';
 					table+='<tr>';
-						table+='<th></th>';
-						table+='<th></th>';
+						if(levelId == '2')
+						{
+							//table+='<th></th>';
+							table+='<th></th>';
+						}else if(levelId == '3'){
+							//table+='<th></th>';
+							table+='<th></th>';
+						}else if(levelId == '4')
+						{
+							//table+='<th></th>';
+							table+='<th></th>';
+							table+='<th></th>';
+						}else if(levelId == '5')
+						{
+							//table+='<th></th>';
+							table+='<th></th>';
+							table+='<th></th>';
+							table+='<th></th>';
+						}else if(levelId == '6')
+						{
+							//table+='<th></th>';
+							table+='<th></th>';
+							table+='<th></th>';
+							table+='<th></th>';
+							table+='<th></th>';
+						}
 						for(var i in result[0].subList)
 						{
 							for(var j in result[0].subList[0].subList){
@@ -1095,7 +1144,7 @@
 						}
 					table+='</tr>';
 					table+='<tr>';
-						table+='<th>ID</th>';
+						//table+='<th>ID</th>';
 						if(levelId == '2')
 						{
 							table+='<th>State</th>';
@@ -1103,12 +1152,18 @@
 							table+='<th>District</th>';
 						}else if(levelId == '4')
 						{
+							table+='<th>District</th>';
 							table+='<th>Constituency</th>';
 						}else if(levelId == '5')
 						{
+							table+='<th>District</th>';
+							table+='<th>Constituency</th>';
 							table+='<th>Mandal</th>';
 						}else if(levelId == '6')
 						{
+							table+='<th>District</th>';
+							table+='<th>Constituency</th>';
+							table+='<th>Mandal</th>';
 							table+='<th>Village</th>';
 						}
 						for(var i in result[0].subList)
@@ -1127,27 +1182,33 @@
 							if(levelId == '2')
 							{
 								lvlVal =1;
-								table+='<td>1</td>';
+								//table+='<td>1</td>';
 								table+='<td>Andhra Pradesh</td>';
 							}else if(levelId == '3'){
 								lvlVal =result[i].addressVO.districtId;
-								table+='<td>'+result[i].addressVO.districtId+'</td>';
+								//table+='<td>'+result[i].addressVO.districtId+'</td>';
 								table+='<td>'+result[i].addressVO.districtName+'</td>';
 							}else if(levelId == '4')
 							{
 								lvlVal =result[i].addressVO.assemblyId;
-								table+='<td>'+result[i].addressVO.assemblyId+'</td>';
+								//table+='<td>'+result[i].addressVO.assemblyId+'</td>';
+								table+='<td>'+result[i].addressVO.districtName+'</td>';
 								table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 							}else if(levelId == '5')
 							{
 								lvlVal =result[i].addressVO.id;
-								table+='<td>'+result[i].addressVO.id+'</td>';
-								table+='<td>'+result[i].addressVO.name+'</td>';
+								//table+='<td>'+result[i].addressVO.id+'</td>';
+								table+='<td>'+result[i].addressVO.districtName+'</td>';
+								table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+								table+='<td>'+result[i].addressVO.tehsilName+'</td>';
 							}else if(levelId == '6')
 							{
 								lvlVal =result[i].addressVO.id;
-								table+='<td>'+result[i].addressVO.id+'</td>';
-								table+='<td>'+result[i].addressVO.name+'</td>';
+								//table+='<td>'+result[i].addressVO.id+'</td>';
+								table+='<td>'+result[i].addressVO.districtName+'</td>';
+								table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+								table+='<td>'+result[i].addressVO.tehsilName+'</td>';
+								table+='<td>'+result[i].addressVO.panchayatName+'</td>';
 							}
 							for(var j in result[i].subList){
 								for(var k in result[i].subList[j].subList)
@@ -1189,23 +1250,71 @@
 		}else if(type == 'deptscheme')
 		{
 			
-				if($windowWidth < 768)
+				if($windowWidth < 768 || result[0].subList.length > 2)
 				{
 					table+='<div class="table-responsive">';
 				}
 				table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
 					table+='<thead class="text-center">';
 						table+='<tr>';
-							table+='<th></th>';
-							table+='<th></th>';
+							if(levelId == '2')
+							{
+								//table+='<th></th>';
+								table+='<th></th>';
+							}else if(levelId == '3'){
+								//table+='<th></th>';
+								table+='<th></th>';
+							}else if(levelId == '4')
+							{
+								//table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+							}else if(levelId == '5')
+							{
+								//table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+							}else if(levelId == '6')
+							{
+								//table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+							}
 							for(var j in result[0].subList)
 							{
 								table+='<th class="text-center" colspan="'+(((result[0].subList[0].subList[0].subList.length)*(result[0].subList[0].subList.length))*2)+'">'+result[0].subList[j].year+'</th>';
 							}
 						table+='</tr>';
 						table+='<tr>';
-							table+='<th></th>';
-							table+='<th></th>';
+							if(levelId == '2')
+							{
+								//table+='<th></th>';
+								table+='<th></th>';
+							}else if(levelId == '3'){
+								//table+='<th></th>';
+								table+='<th></th>';
+							}else if(levelId == '4')
+							{
+								//table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+							}else if(levelId == '5')
+							{
+								//table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+							}else if(levelId == '6')
+							{
+								//table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+							}
 							for(var i in result[0].subList){
 								for(var j in result[0].subList[i].subList)
 								{
@@ -1215,8 +1324,32 @@
 							
 						table+='</tr>';
 						table+='<tr>';
-							table+='<th></th>';
-							table+='<th></th>';
+							if(levelId == '2')
+							{
+								//table+='<th></th>';
+								table+='<th></th>';
+							}else if(levelId == '3'){
+								//table+='<th></th>';
+								table+='<th></th>';
+							}else if(levelId == '4')
+							{
+								//table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+							}else if(levelId == '5')
+							{
+								//table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+							}else if(levelId == '6')
+							{
+								//table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+								table+='<th></th>';
+							}
 							for(var i in result[0].subList){
 								for(var j in result[0].subList[i].subList){
 									for(var k in result[0].subList[i].subList[j].subList)
@@ -1227,7 +1360,7 @@
 							}	
 						table+='</tr>';
 						table+='<tr>';
-							table+='<th>ID</th>';
+							//table+='<th>ID</th>';
 							if(levelId == '2')
 							{
 								table+='<th>State</th>';
@@ -1235,12 +1368,18 @@
 								table+='<th>District</th>';
 							}else if(levelId == '4')
 							{
+								table+='<th>District</th>';
 								table+='<th>Constituency</th>';
 							}else if(levelId == '5')
 							{
+								table+='<th>District</th>';
+								table+='<th>Constituency</th>';
 								table+='<th>Mandal</th>';
 							}else if(levelId == '6')
 							{
+								table+='<th>District</th>';
+								table+='<th>Constituency</th>';
+								table+='<th>Mandal</th>';
 								table+='<th>Village</th>';
 							}
 							for(var i in result[0].subList){
@@ -1261,27 +1400,33 @@
 								if(levelId == '2')
 								{
 									levlValId= 1;
-									table+='<td>1</td>';
+									//table+='<td>1</td>';
 									table+='<td>Andhra Pradesh</td>';
 								}else if(levelId == '3'){
 									levlValId= result[i].addressVO.districtId;
-									table+='<td>'+result[i].addressVO.districtId+'</td>';
+									//table+='<td>'+result[i].addressVO.districtId+'</td>';
 									table+='<td>'+result[i].addressVO.districtName+'</td>';
 								}else if(levelId == '4')
 								{
 									levlValId= result[i].addressVO.assemblyId;
-									table+='<td>'+result[i].addressVO.assemblyId+'</td>';
+									//table+='<td>'+result[i].addressVO.assemblyId+'</td>';
+									table+='<td>'+result[i].addressVO.districtName+'</td>';
 									table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 								}else if(levelId == '5')
 								{
 									levlValId= result[i].addressVO.id;
-									table+='<td>'+result[i].addressVO.id+'</td>';
-									table+='<td>'+result[i].addressVO.name+'</td>';
+									//table+='<td>'+result[i].addressVO.id+'</td>';
+									table+='<td>'+result[i].addressVO.districtName+'</td>';
+									table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+									table+='<td>'+result[i].addressVO.tehsilName+'</td>';
 								}else if(levelId == '6')
 								{
 									levlValId= result[i].addressVO.id;
-									table+='<td>'+result[i].addressVO.id+'</td>';
-									table+='<td>'+result[i].addressVO.name+'</td>';
+									//table+='<td>'+result[i].addressVO.id+'</td>';
+									table+='<td>'+result[i].addressVO.districtName+'</td>';
+									table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+									table+='<td>'+result[i].addressVO.tehsilName+'</td>';
+									table+='<td>'+result[i].addressVO.panchayatName+'</td>';
 								}
 								
 								for(var j in result[i].subList)
@@ -1315,7 +1460,7 @@
 						
 					table+='</tbody>';
 				table+='</table>';
-				if($windowWidth < 768)
+				if($windowWidth < 768 || result[0].subList.length > 2)
 				{
 					str+='</div>';
 				}
