@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sun.misc.BASE64Encoder;
 
+import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
@@ -959,4 +960,60 @@ public class RWSNICService implements IRWSNICService{
 		}
 		return null;
 	}
+	
+	/*
+	 * Date : 30/06/2017
+	 * Author :Balu
+	 * @description : getStressedHabitationsInfoByLocationType
+	 */
+	public List<AmsVO> getAlertsOfCategoryByStatusWise(InputVO vo) {
+		List<AmsVO> finalList = new ArrayList<AmsVO>();
+		try {
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getAlertsOfCategoryByStatusWise");
+	        
+        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				
+				if(output != null && !output.isEmpty()){
+					JSONArray finalArray = new JSONArray(output);//Type Array
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				AmsVO amsVo = new AmsVO();
+	 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
+	 	    				
+	 	    				amsVo.setId(jobj.getLong("id"));
+	 	    				amsVo.setTitle(jobj.getString("title"));
+	 	    				amsVo.setAlertLevel(jobj.getString("alertLevel"));
+	 	    				amsVo.setCreatedDate(jobj.getString("createdDate"));
+	 	    				amsVo.setUpdatedDate(jobj.getString("updatedDate"));
+	 	    				amsVo.setStatusId(jobj.getLong("statusId"));
+	 	    				amsVo.setStatus(jobj.getString("status"));
+	 	    				amsVo.setSevertyColor(jobj.getString("severtyColor"));
+	 	    				amsVo.setStatusColor(jobj.getString("statusColor"));
+	 	    				amsVo.setProblem(jobj.getString("problem"));
+	 	    				amsVo.setRelatedTo(jobj.getString("relatedTo"));
+	 	    				amsVo.setSource(jobj.getString("source"));
+	 	    				amsVo.setSubTaskCount(jobj.getLong("subTaskCount"));
+	 	    				
+	 	    				finalList.add(amsVo);
+	 	    				
+	 	    			}
+	 	    		}
+				}
+				
+ 	      	}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getAlertsOfCategoryByStatusWise() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	
 }
