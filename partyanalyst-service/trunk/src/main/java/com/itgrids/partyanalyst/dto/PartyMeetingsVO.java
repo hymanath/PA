@@ -21,6 +21,7 @@ public class PartyMeetingsVO implements Serializable{
 	private String meetingType;
 	private String conductedDate;
 	private String remarks;
+	private String tesilName;
 	
 	private Long plannedCount = 0l;
 	private Long conductedCount = 0l;
@@ -398,6 +399,12 @@ public class PartyMeetingsVO implements Serializable{
 	}
 	public void setNoCount(Long noCount) {
 		this.noCount = noCount;
+	}
+	public String getTesilName() {
+		return tesilName;
+	}
+	public void setTesilName(String tesilName) {
+		this.tesilName = tesilName;
 	}
 	
 }
