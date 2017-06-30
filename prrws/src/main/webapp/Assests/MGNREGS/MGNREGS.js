@@ -4,6 +4,7 @@ var glEndDate = "2017-06-30"//+moment().add(10, 'years').endOf('year').format("Y
 var glStartDateForWebservice = moment().format("DD/MM/YYYY");
 var glEndDateForWebservice = moment().format("DD/MM/YYYY");
 var globalDivName;
+var $windowWidth = $(window).width();
 onLoadCalls();
 
 function onLoadCalls()
@@ -316,7 +317,7 @@ function overviewData(divId)
 function tableView(blockId,theadArr,result)
 {
 	var tableView='';
-	var $windowWidth = $(window).width();
+	
 	if($windowWidth < 768)
 	{
 		tableView+='<div class="table-responsive">';
@@ -551,8 +552,8 @@ function getNREGSLabourBudgetOverview(projectDivId)
 		type: "POST",
 		dataType: 'json', 
 		beforeSend: function(xhr) {
-		  xhr.setRequestHeader("Accept", "application/json");
-		  xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
 			buildNregasOverViewBlock(ajaxresp,projectDivId)
@@ -565,11 +566,11 @@ function getNREGSLabourBudgetOverview(projectDivId)
 function getNREGSLabourBudgetExpenditure(projectDivId)
 {
 	$("#projectOvervw"+projectDivId).html(spinner);
-  var json = {
-    year : "2017",
-      fromDate : glStartDate,
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
         toDate : glEndDate  
-}
+	}
   $.ajax({
     url: 'getLabourBudgetExpenditure',
     data: JSON.stringify(json),
@@ -580,7 +581,7 @@ function getNREGSLabourBudgetExpenditure(projectDivId)
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp) {
-      buildLabrBudgetExpBlock(ajaxresp,projectDivId)
+		buildLabrBudgetExpBlock(ajaxresp,projectDivId)
     }
   });
 }
@@ -646,7 +647,7 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType)
 					str+='</tr>';
 				}
 			}
-		  tableView(divIdd,theadArr,str);
+			tableView(divIdd,theadArr,str);
 		}
 	});
 }
@@ -656,6 +657,10 @@ function buildNregasOverViewBlock(result,projectDivId){
 	var str1="";
 	if(result.averagePerDistrict != null)
 	{
+		if($windowWidth < 768)
+		{
+			str1+='<div class="table-responsive">';
+		}
 		str1+='<table class="table table-bordered" >';
 			str1+='<tbody>';
 				str1+='<tr>';
@@ -694,8 +699,16 @@ function buildNregasOverViewBlock(result,projectDivId){
 				str1+='</tr>';
 			str1+='</tbody>';
 		str1+='</table>';
+		if($windowWidth < 768)
+		{
+			str1+='</div>';
+		}
 	}
 	if(result.maleLabour != null){
+		if($windowWidth < 768)
+		{
+			str1+='<div class="table-responsive">';
+		}
 		str1+='<table class="table table-bordered m_top10">';
 		str1+='<tbody>';
 			str1+='<tr>';
@@ -745,8 +758,15 @@ function buildNregasOverViewBlock(result,projectDivId){
 			str1+='</tr>';
 			str1+='</tbody>';
 		str1+='</table>';
+		if($windowWidth < 768)
+		{
+			str1+='</div>';
+		}
 	}
-	
+	if($windowWidth < 768)
+	{
+		str1+='<div class="table-responsive">';
+	}
 	str1+='<table class="table table-bordered m_top10" >';
 		str1+='<tbody>';
 			str1+='<tr>';
@@ -866,6 +886,10 @@ function buildNregasOverViewBlock(result,projectDivId){
 			str1+='</tr>';
 		str1+='</tbody>';
 	str1+='</table>';
+	if($windowWidth < 768)
+	{
+		str1+='</div>';
+	}
 	if(result.targettedPersonDays != null)
 	{
 		str1+='<div id="projectExp'+projectDivId.replace(/\s+/g, '')+'" style="margin-top:10px;"></div>';
@@ -908,6 +932,10 @@ function buildNregasOverViewBlock(result,projectDivId){
 function buildLabrBudgetExpBlock(result,projectDivId){
 	var str='';
 	str+='<p class="text-center expenditure"><strong>No of Panchayaties Vs Expenditure In Lakhs</strong></p>';
+		if($windowWidth < 768)
+		{
+			str+='<div class="table-responsive">';
+		}
 		str+='<table class="table table-striped table-bordered m_top10">';
 			str+='<tbody>';
 				 str+='<tr>';
@@ -930,6 +958,10 @@ function buildLabrBudgetExpBlock(result,projectDivId){
 				str+='</tr>';
 			str+='</tbody>';
 		str+='</table>';
+		if($windowWidth < 768)
+		{
+			str+='</div>';
+		}
 	$("#projectExp"+projectDivId.replace(/\s+/g, '')).html(str);
 }
 
@@ -943,6 +975,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<h4 class="panel-title text-capital">Constituencies in Districts</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
+				if($windowWidth < 768)
+				{
+					str+='<div class="table-responsive">';
+				}
 				str+='<table class="table table-bordered m_top10 dataTableCls">';
 					str+='<thead>';
 						str+='<tr>';
@@ -980,6 +1016,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 						str+='</tr>';
 					str+='</tbody>';
 				str+='</table>';
+				if($windowWidth < 768)
+				{
+					str+='</div>';
+				}
 			str+='</div>';
 		str+='</div>';
 	}
@@ -991,6 +1031,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<h4 class="panel-title text-capital">'+dataArr+'s in Districts</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
+				if($windowWidth < 768)
+				{
+					str+='<div class="table-responsive">';
+				}
 				str+='<table class="table table-bordered m_top10 dataTableCls">';
 					str+='<thead>';
 						str+='<tr>';
@@ -1012,6 +1056,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 						str+='</tr>';
 					str+='</tbody>';
 				str+='</table>';
+				if($windowWidth < 768)
+				{
+					str+='</div>';
+				}
 			str+='</div>';
 		str+='</div>';
 	}
@@ -1024,6 +1072,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<h4 class="panel-title text-capital">'+dataArr+'s in Constitencies</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
+				if($windowWidth < 768)
+				{
+					str+='<div class="table-responsive">';
+				}
 				str+='<table class="table table-bordered m_top10 dataTableCls">';
 					str+='<thead>';
 						str+='<tr>';
@@ -1045,6 +1097,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 						str+='</tr>';
 					str+='</tbody>';
 				str+='</table>';
+				if($windowWidth < 768)
+				{
+					str+='</div>';
+				}
 			str+='</div>';
 		str+='</div>';
 	}
@@ -1056,6 +1112,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<h4 class="panel-title text-capital">Panchayats in Mandals</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
+				if($windowWidth < 768)
+				{
+					str+='<div class="table-responsive">';
+				}
 				str+='<table class="table table-bordered m_top10 dataTableCls">';
 					str+='<thead>';
 						str+='<tr>';
@@ -1077,6 +1137,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 						str+='</tr>';
 					str+='</tbody>';
 				str+='</table>';
+				if($windowWidth < 768)
+				{
+					str+='</div>';
+				}
 			str+='</div>';
 		str+='</div>';
 	}
@@ -1087,6 +1151,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<h4 class="panel-title text-capital">Mandals in '+dataArr+'s</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
+				if($windowWidth < 768)
+				{
+					str+='<div class="table-responsive">';
+				}
 				str+='<table class="table table-bordered m_top10 dataTableCls">';
 					str+='<thead class="text-capital">';
 						str+='<tr>';
@@ -1124,6 +1192,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 						str+='</tr>';
 					str+='</tbody>';
 				str+='</table>';
+				if($windowWidth < 768)
+				{
+					str+='</div>';
+				}
 			str+='</div>';
 		str+='</div>';
 	}
@@ -1134,6 +1206,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<h4 class="panel-title text-capital">Villages in '+dataArr+'s</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
+				if($windowWidth < 768)
+				{
+					str+='<div class="table-responsive">';
+				}
 				str+='<table class="table table-bordered m_top10 dataTableCls">';
 					str+='<thead class="text-capital">';
 						str+='<tr>';
@@ -1171,6 +1247,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 						str+='</tr>';
 					str+='</tbody>';
 				str+='</table>';
+				if($windowWidth < 768)
+				{
+					str+='</div>';
+				}
 			str+='</div>';
 		str+='</div>';
 	}
@@ -1190,6 +1270,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				str+='<div class="table-responsive">';
 				if(globalDivName != 'Labour Budget'){
+					if($windowWidth < 768)
+					{
+						str+='<div class="table-responsive">';
+					}
 					str+='<table class="table table-bordered m_top10 dataTableClsDist">';
 						str+='<thead>';
 							str+='<tr>';
@@ -1231,6 +1315,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 							}
 						str+='</tbody>';
 					str+='</table>';
+					if($windowWidth < 768)
+					{
+						str+='</div>';
+					}
 					
 				}
 				else{
@@ -1503,60 +1591,60 @@ function getLabourBudgetClickingOverview()
 function getNregaLevelsWiseData(divIdd,locationType,theadArr)
 {
 	$("#"+divIdd).html(spinner);
-  var json = {
-    year : "2017",
-    fromDate : glStartDate,
-    toDate : glEndDate,
-    locationType: locationType,
-	divType : globalDivName
-}
-  $.ajax({
-    url: 'getNregaLevelsWiseData',
-    data: JSON.stringify(json),
-    type: "POST",
-    dataType: 'json', 
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Content-Type", "application/json");
-    },
-    success: function(ajaxresp) {
-       var str = '';
-		if(ajaxresp != null && ajaxresp.length > 0){
-			for(var i in ajaxresp){
-				str+='<tr>';
-					if(locationType == "state"){
-						str+='<td class="text-capital">'+locationType+'</td>';
-					}
-					else if(locationType == "district"){
-						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-					}
-					else if(locationType == "constituency"){
-						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-					}
-					else if(locationType == "mandal"){
-						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-					}
-					else if(locationType == "panchayat"){
-						str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-						str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-						str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-						str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
-					}
-					str+='<td>'+ajaxresp[i].target+'</td>';
-					str+='<td>'+ajaxresp[i].grounded+'</td>';
-					str+='<td>'+ajaxresp[i].notGrounded+'</td>';
-					str+='<td>'+ajaxresp[i].inProgress+'</td>';
-					str+='<td>'+ajaxresp[i].completed+'</td>';
-					str+='<td>'+ajaxresp[i].percentage+'</td>';
-				str+='</tr>';
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locationType,
+		divType : globalDivName
+	}
+	$.ajax({
+		url: 'getNregaLevelsWiseData',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			var str = '';
+			if(ajaxresp != null && ajaxresp.length > 0){
+				for(var i in ajaxresp){
+					str+='<tr>';
+						if(locationType == "state"){
+							str+='<td class="text-capital">'+locationType+'</td>';
+						}
+						else if(locationType == "district"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						}
+						else if(locationType == "constituency"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+						}
+						else if(locationType == "mandal"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+						}
+						else if(locationType == "panchayat"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+						}
+						str+='<td>'+ajaxresp[i].target+'</td>';
+						str+='<td>'+ajaxresp[i].grounded+'</td>';
+						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+						str+='<td>'+ajaxresp[i].inProgress+'</td>';
+						str+='<td>'+ajaxresp[i].completed+'</td>';
+						str+='<td>'+ajaxresp[i].percentage+'</td>';
+					str+='</tr>';
+				}
 			}
+			tableView(divIdd,theadArr,str);
 		}
-      tableView(divIdd,theadArr,str);
-    }
-  });
+	});
 }
 
 function getNregasOverview(projectDivId)
