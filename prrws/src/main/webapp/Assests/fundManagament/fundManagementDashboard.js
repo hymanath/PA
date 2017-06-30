@@ -968,6 +968,10 @@
 		var table='';
 		if(type == 'overview')
 		{
+			if($windowWidth < 768)
+			{
+				table+='<div class="table-responsive">';
+			}	
 			table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
 				table+='<thead class="text-center">';
 					table+='<tr>';
@@ -1058,9 +1062,13 @@
 					
 				table+='</tbody>';
 			table+='</table>';
+			if($windowWidth < 768)
+			{
+				table+='</div>';
+			}	
 		}else if(type == 'scheme')
 		{
-			if(result[0].subList.length >= 2)
+			if(result[0].subList.length >= 2 || $windowWidth < 768)
 			{
 				table+='<div class="table-responsive">';
 			}	
@@ -1172,7 +1180,7 @@
 					
 				table+='</tbody>';
 			table+='</table>';
-			if(result[0].subList.length >= 2)
+			if(result[0].subList.length >= 2 || $windowWidth < 768)
 			{
 				table+='</div>';
 			}	
