@@ -1,6 +1,8 @@
 package com.itgrids.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RwsClickVO implements Serializable{
 
@@ -9,17 +11,44 @@ public class RwsClickVO implements Serializable{
 	
 	private String mandalName;
 	private String constituencyName;
-	private Long districtCode;
+	private String districtCode;
 	private String districtName;
-	private Long sacntionedAmount;
+	private String sacntionedAmount;
 	private String workName;
-	private Long workId;
-	private Long sourceCount;
-	private Long constituencyCode;
-	private Long mandalCode;
+	private String workId;
+	private String sourceCount;
+	private String constituencyCode;
+	private String mandalCode;
 	private String habitationName;
 	private String completionDate;
 	private String habitationCode;
+	
+	private String status;
+	private String totalCount;
+	private String  toatlPorpualtionCovered;
+	private String lpcd;
+	
+	
+	public String getLpcd() {
+		return lpcd;
+	}
+	public void setLpcd(String lpcd) {
+		this.lpcd = lpcd;
+	}
+	public String getToatlPorpualtionCovered() {
+		return toatlPorpualtionCovered;
+	}
+	public void setToatlPorpualtionCovered(String toatlPorpualtionCovered) {
+		this.toatlPorpualtionCovered = toatlPorpualtionCovered;
+	}
+	public String getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(String totalCount) {
+		this.totalCount = totalCount;
+	}
+	private List<RwsClickVO> rwsClickList = new ArrayList<RwsClickVO>();
+	
 	public Long getId() {
 		return id;
 	}
@@ -45,10 +74,11 @@ public class RwsClickVO implements Serializable{
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
 	}
-	public Long getDistrictCode() {
+	
+	public String getDistrictCode() {
 		return districtCode;
 	}
-	public void setDistrictCode(Long districtCode) {
+	public void setDistrictCode(String districtCode) {
 		this.districtCode = districtCode;
 	}
 	public String getDistrictName() {
@@ -57,10 +87,11 @@ public class RwsClickVO implements Serializable{
 	public void setDistrictName(String districtName) {
 		this.districtName = districtName;
 	}
-	public Long getSacntionedAmount() {
+	
+	public String getSacntionedAmount() {
 		return sacntionedAmount;
 	}
-	public void setSacntionedAmount(Long sacntionedAmount) {
+	public void setSacntionedAmount(String sacntionedAmount) {
 		this.sacntionedAmount = sacntionedAmount;
 	}
 	public String getWorkName() {
@@ -69,28 +100,32 @@ public class RwsClickVO implements Serializable{
 	public void setWorkName(String workName) {
 		this.workName = workName;
 	}
-	public Long getWorkId() {
+	
+	public String getWorkId() {
 		return workId;
 	}
-	public void setWorkId(Long workId) {
+	public void setWorkId(String workId) {
 		this.workId = workId;
 	}
-	public Long getSourceCount() {
+	
+	public String getSourceCount() {
 		return sourceCount;
 	}
-	public void setSourceCount(Long sourceCount) {
+	public void setSourceCount(String sourceCount) {
 		this.sourceCount = sourceCount;
 	}
-	public Long getConstituencyCode() {
+	
+	public String getConstituencyCode() {
 		return constituencyCode;
 	}
-	public void setConstituencyCode(Long constituencyCode) {
+	public void setConstituencyCode(String constituencyCode) {
 		this.constituencyCode = constituencyCode;
 	}
-	public Long getMandalCode() {
+	
+	public String getMandalCode() {
 		return mandalCode;
 	}
-	public void setMandalCode(Long mandalCode) {
+	public void setMandalCode(String mandalCode) {
 		this.mandalCode = mandalCode;
 	}
 	public String getHabitationName() {
@@ -110,6 +145,18 @@ public class RwsClickVO implements Serializable{
 	}
 	public void setHabitationCode(String habitationCode) {
 		this.habitationCode = habitationCode;
+	}
+	public List<RwsClickVO> getRwsClickList() {
+		return rwsClickList;
+	}
+	public void setRwsClickList(List<RwsClickVO> rwsClickList) {
+		this.rwsClickList = rwsClickList;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	
