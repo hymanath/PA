@@ -23,12 +23,14 @@ public class LocationAddress{
 	private Long tehsilId;
 	private Long panchayatId;
 	private Long stateId;
+	private Long parliamentId;
 	
 	private Constituency constituency;
 	private District district;
 	private Tehsil tehsil;
 	private Panchayat panchayat;
 	private State state;
+	private Constituency parliament;
 
 	@Id
 	@Column(name="location_address_id")
@@ -123,6 +125,23 @@ public class LocationAddress{
 	}
 	public void setState(State state) {
 		this.state = state;
+	}
+	
+	@Column(name="parliament_id")
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "parliament_id", insertable = false, updatable = false)
+	public Constituency getParliament() {
+		return parliament;
+	}
+	public void setParliament(Constituency parliament) {
+		this.parliament = parliament;
 	}
 	
 	
