@@ -4144,19 +4144,21 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 		var str = ''; 
 		var fileNameArr = dbFilePath.split(".");
 		var extName = fileNameArr[1];
-		if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
-			$("#govtOrderDocumentId").modal("hide");
-			window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
-		}else{
-			if(extName.trim()=="pdf" || extName.trim()=="PDF"){
-				$('#govtOrderDocumentId').modal({
-					show: true,
-					keyboard: false,
-					backdrop: 'static'
-				});
-				str += '<iframe src="http://www.mydepartments.in/PRRWS/Govt_Orders/'+dbFilePath+'" width="100%" height="800">';    
-				str += '</iframe>';
-			}         
-			$("#govtOrderDocumentBodyId").html(str);       
-		}      
+		if(extName.trim()=="pdf" || extName.trim()=="PDF"){
+			if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i)) || navigator.userAgent.match(/Mobile|Windows Phone|Lumia|Android|webOS|iPhone|iPod|Blackberry|PlayBook|BB10|Opera Mini|\bCrMo\/|Opera Mobi/i)) {
+				$("#govtOrderDocumentId").modal("hide");
+				window.open('http://www.mydepartments.in/PRRWS/Govt_Orders/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			}else{
+				
+					$('#govtOrderDocumentId').modal({
+						show: true,
+						keyboard: false,
+						backdrop: 'static'
+					});
+					str+='<object data="http://www.mydepartments.in/PRRWS/Govt_Orders/'+dbFilePath+'" type="application/pdf" width="100%" height="400px;" internalinstanceid="3" title=""></object>';
+					//str+='<iframe src="http://www.mydepartments.in/PRRWS/Govt_Orders/'+dbFilePath+'" width="100%" height="800"></iframe>';
+						 
+				$("#govtOrderDocumentBodyId").html(str);       
+			}   
+		}		
 	});
