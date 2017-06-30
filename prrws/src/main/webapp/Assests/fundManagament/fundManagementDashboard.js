@@ -771,7 +771,7 @@
 				{
 					str+='<div class="table-responsive">';
 				}
-				str+='<table class="table table-bordered table-overview">';
+				str+='<table class="table table-bordered table-striped table-overview">';
 					str+='<tr>';
 						/*str+='<td>';
 							str+='<h4 class="panel-title text-muted">High Funded District</h4>';
@@ -974,7 +974,7 @@
 			{
 				table+='<div class="table-responsive">';
 			}	
-			table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
+			table+='<table class="table table-bordered table-striped table-condensed" id="dataTable'+divId+'" style="width:100%;">';
 				table+='<thead class="text-center">';
 					table+='<tr>';
 						if(levelId == '2')
@@ -1131,7 +1131,7 @@
 			{
 				table+='<div class="table-responsive">';
 			}	
-			table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
+			table+='<table class="table table-bordered table-striped table-condensed" id="dataTable'+divId+'" style="width:100%;">';
 				table+='<thead class="text-center">';
 					table+='<tr>';
 					if(levelId == '2')
@@ -1311,7 +1311,7 @@
 				{
 					table+='<div class="table-responsive">';
 				}
-				table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
+				table+='<table class="table table-bordered table-striped table-condensed" id="dataTable'+divId+'" style="width:100%;">';
 					table+='<thead class="text-center">';
 						table+='<tr>';
 							if(levelId == '2')
@@ -3645,7 +3645,7 @@
 			{
 				table+='<div class="table-responsive">';
 			}
-			table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
+			table+='<table class="table table-bordered table-striped table-condensed" id="dataTable'+divId+'" style="width:100%;">';
 				table+='<thead class="text-center">';
 					table+='<tr>';
 						table+='<th></th>';
@@ -3760,7 +3760,7 @@ function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,s
 	{
 		str+='<div class="table-responsive">';
 	}
-	str+='<table class="table table-condensed table-bordered" id="tableId">';
+	str+='<table class="table table-condensed table-bordered table-striped" id="tableId">';
 		str+='<thead>';
 			str+='<th class="text-capital">District Name</th>';
 			str+='<th class="text-capital">Location Name</th>';
@@ -3995,7 +3995,7 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 			{
 				str+='<div class="table-responsive">';
 			}
-		    str+='<table class="table table-bordered">';
+		    str+='<table class="table table-bordered table-striped">';
 			if(result[0].rangeList !=null && result[0].rangeList.length>0){
 			    str+='<thead>';
 				str+='<tr>';
