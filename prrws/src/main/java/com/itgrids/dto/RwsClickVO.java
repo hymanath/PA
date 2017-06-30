@@ -8,6 +8,7 @@ public class RwsClickVO implements Serializable{
 	private String name;
 	
 	private String mandalName;
+	private String constituencyName;
 	private Long districtCode;
 	private String districtName;
 	private Long sacntionedAmount;
@@ -36,6 +37,13 @@ public class RwsClickVO implements Serializable{
 	}
 	public void setMandalName(String mandalName) {
 		this.mandalName = mandalName;
+	}
+	
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
 	}
 	public Long getDistrictCode() {
 		return districtCode;
