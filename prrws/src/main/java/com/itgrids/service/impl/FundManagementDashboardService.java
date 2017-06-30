@@ -697,13 +697,30 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			}
 			
 			//create a map for locationId and locationName
-			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
+			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>(0);
+			Map<Long,AddressVO> locationAddressMap = new HashMap<Long,AddressVO>(0);
 			
 			//create a map of financialYearId and map of locationId and amount
 			Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndAmountMap = new LinkedHashMap<Long,Map<Long,Long>>();
 			Map<Long,Long> locationIdAndAmountMap = null;
 			if(amountList != null && amountList.size() > 0){
 				for(Object[] param : amountList){
+					
+					AddressVO addressVO = new AddressVO();
+					
+					addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[6]));
+					addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[8]));
+					addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[9]));
+					addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[10]));
+					addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[11]));
+					addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[12]));
+					addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[13]));
+					addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[14]));
+					addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[15]));
+					
+					locationAddressMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), addressVO);
+					
 					locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getStringValueForObject(param[3]));
 					financialYearIdAndFinancialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
 					locationIdAndAmountMap = financialYearIdAndLocationIdAndAmountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
@@ -742,6 +759,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					locationVO.setLocationLevelId(levelId);
 					locationVO.setLocationId(locId);
 					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(locationIdAndNameMap.get(locId)));
+					locationVO.setAddressVO(locationAddressMap.get(locId));
 					//call this method to set the amount and count details.
 					pushCountAndAmountDetails(locationVO,financialYearIdAndLocationIdAndAmountMap,financialYearIdAndLocationIdAndCountMap,financialYearIdAndFinancialYearMap);
 					finalList.add(locationVO);
