@@ -1705,6 +1705,10 @@
 				var $windowWidth = $(window).width();
 				var tableView='';
 				tableView+='<h5 style="padding:5px"><span class="chartTitleAlign"><img src="Assests/icons/alert_status.png"> <span style="margin-left:5px;">Alert Status Jalavani</span></span></h5>';
+				if($windowWidth < 768)
+				{
+					tableView+='<div class="table-responsive">';
+				}
 					tableView+='<table class="table table-bordered dataTableAlert'+locationType+'">';
 					tableView+='<thead class="text-capital">';
 						tableView+='<tr>'; 
@@ -1811,11 +1815,12 @@
 						}
 					tableView+='</tbody>';
 					tableView+='</table>';
+					if($windowWidth < 768)
+					{
+						tableView+='</div>';
+					}
 				$("#alertStatus"+locationType).html(tableView);
 				$(".dataTableAlert"+locationType).dataTable();
-				if($windowWidth < 768){
-					$(".dataTableAlert"+locationType).wrap("<div class='table-responsive'></div>");
-				}
 			
 		}
 		function tableViewWaterStatus(divId,GLtbodyAlertArr,locationType){
@@ -1824,6 +1829,10 @@
 				var $windowWidth = $(window).width();
 					var tableView='';
 					tableView+='<h5 style="padding:5px"><span class="chartTitleAlign"><img src="Assests/icons/driking.png"> <span style="margin-left:5px;">Drinking Water Satisfaction Levels</span></span></h5>';
+				if($windowWidth < 768)
+				{
+					tableView+='<div class="table-responsive">';
+				}
 					tableView+='<table class="table table-bordered dataTableDrinking'+locationType+'">';
 					tableView+='<thead class="text-capital">';
 					tableView+='<tr>'; 
@@ -1855,11 +1864,12 @@
 						}
 					tableView+='</tbody>';
 					tableView+='</table>';
+				if($windowWidth < 768)
+				{
+					tableView+='</div>';
+				}
 				$("#drinking"+locationType).html(tableView);
 				$(".dataTableDrinking"+locationType).dataTable();
-				if($windowWidth < 768){
-					$(".dataTableDrinking"+locationType).wrap("<div class='table-responsive'></div>");
-				}
 			}
 			
 			
@@ -1870,6 +1880,10 @@
 					 var $windowWidth = $(window).width();
 					 if(GLtbodyArr !=null && GLtbodyArr.length>0){
 						var tableView='';
+						if($windowWidth < 768)
+						{
+							tableView+='<div class="table-responsive">';
+						}
 						if(divId[k].id=="habitation"){
 							tableView+='<table class="table table-bordered" id="dataTable1'+locationType+divId[k].id+'">';
 						}else if(divId[k].id=="performance"){
@@ -1979,20 +1993,17 @@
 							} 
 						tableView+='</tbody>';
 						tableView+='</table>';	
+						if($windowWidth < 768)
+						{
+							tableView+='</div>';
+						}
 					if(divId[k].id !=="jalavani"){
 						$("#"+locationType+"BlockId"+divId[k].id).html(tableView);
 						if(divId[k].id=="habitation"){
 							$("#dataTable1"+locationType+divId[k].id).dataTable();
-							if($windowWidth < 768){
-								$("#dataTable1"+locationType+divId[k].id).wrap("<div class='table-responsive'></div>");
-							}
 						}else if(divId[k].id=="performance"){
 							$("#dataTable"+locationType+divId[k].id).dataTable();
-							if($windowWidth < 768){
-								$("#dataTable"+locationType+divId[k].id).wrap("<div class='table-responsive'></div>");
-							}
 						}
-						
 					}	
 				 }else{
 					 $("#"+locationType+"BlockId"+divId[k].id).html("No DATA AVAILABLE")

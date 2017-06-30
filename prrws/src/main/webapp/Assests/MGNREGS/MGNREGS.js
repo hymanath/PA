@@ -317,7 +317,10 @@ function tableView(blockId,theadArr,result)
 {
 	var tableView='';
 	var $windowWidth = $(window).width();
-	
+	if($windowWidth < 768)
+	{
+		tableView+='<div class="table-responsive">';
+	}
 	tableView+='<table class="table table-bordered dataTable'+blockId+'">';
 		tableView+='<thead class="text-capital">';
 			for(var i in theadArr)
@@ -329,12 +332,13 @@ function tableView(blockId,theadArr,result)
 			tableView+=result;
 		tableView+='</tbody>';
 	tableView+='</table>';
-	$("#"+blockId).html(tableView);	
-	$(".dataTable"+blockId).dataTable();
 	if($windowWidth < 768)
 	{
-		$(".dataTable"+blockId).wrap("<div class='table-responsive'></div>");
+		tableView+='</div>';
 	}
+	$("#"+blockId).html(tableView);	
+	$(".dataTable"+blockId).dataTable();
+	
 }
 function getNREGSProjectsOverview(blockName)
 {
@@ -865,6 +869,10 @@ function buildNregasOverViewBlock(result,projectDivId){
 	if(result.targettedPersonDays != null)
 	{
 		str1+='<div id="projectExp'+projectDivId.replace(/\s+/g, '')+'" style="margin-top:10px;"></div>';
+		if($windowWidth < 768)
+		{
+			str1+='<div class="table-responsive">';
+		}
 		str1+='<table class="table table-bordered m_top20">';
 			str1+='<tr>';
 				str1+='<td>';
@@ -885,15 +893,15 @@ function buildNregasOverViewBlock(result,projectDivId){
 				str1+='</td>';
 			str1+='</tr>';
 		str1+='</table>';
-		
+		if($windowWidth < 768)
+		{
+			str1+='</div>';
+		}
 		getNREGSLabourBudgetExpenditure(projectDivId);
 	}
 	
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str1);
-	if($windowWidth < 768)
-	{
-		$(".table").wrap("<div class='table-responsive'></div>");
-	}
+	
 }
 //LabourBudget Exp Builing --  Nandhini
 
@@ -1231,7 +1239,10 @@ function buildDistrictsPopupDetails(result,dataArr){
 						theadArr = ["district",dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
 					else if(dataArr == "mandal")
 						theadArr = ["district","constituency",dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
-					
+					if($windowWidth < 768)
+					{
+						str+='<div class="table-responsive">';
+					}
 					str+='<table class="table table-bordered m_top10 dataTableClsDist">';
 					str+='<thead>';
 						str+='<tr>';
@@ -1265,6 +1276,12 @@ function buildDistrictsPopupDetails(result,dataArr){
 							str+='<td>'+result.distList[i].totalExpenditure+'</td>';
 						str+='</tr>';
 					}
+					str+='</tbody>';
+					str+='</table>';
+					if($windowWidth < 768)
+					{
+						str+='</div>';
+					}
 				}
 				str+='</div>';
 			str+='</div>';
@@ -1276,6 +1293,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 		"order": [[ 1, "asc" ]]
 	});
 	$(".dataTableClsDist").dataTable();
+	
 }
 
 //getNREGSIHHLConsCuntData()
@@ -1329,6 +1347,10 @@ $(document).on("click",".overviewPopupCls",function(){
 //PopupOverview clicking Block 
 function buildPopupOverviewBlock(result,projectDivId){
 	var str1='';
+	if($windowWidth < 768)
+	{
+		str1+='<div class="table-responsive">';
+	}
 	str1+='<table class="table table-bordered m_top10" >';
 		str1+='<tbody>';
 			str1+='<tr>';
@@ -1447,7 +1469,12 @@ function buildPopupOverviewBlock(result,projectDivId){
 			str1+='</tr>';
 		str1+='</tbody>';
 	str1+='</table>';
+	if($windowWidth < 768)
+	{
+		str1+='</div>';
+	}
 	$("#nregsOverviewBodyId").html(str1);
+	
 } 
 
 function getLabourBudgetClickingOverview()
