@@ -33,8 +33,14 @@ public class LocationVO implements Serializable {
 	private Long streetHabitationCount;
 	private Long totalCount;
 	private List<StatusVO> statusList = new ArrayList<StatusVO>(0);
+	private AddressVO addressVO = new AddressVO();
 	
-	
+	public AddressVO getAddressVO() {
+		return addressVO;
+	}
+	public void setAddressVO(AddressVO addressVO) {
+		this.addressVO = addressVO;
+	}
 	public Long getParentLocationId() {
 		return parentLocationId;
 	}
