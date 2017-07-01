@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,6 +84,7 @@ import com.itgrids.partyanalyst.dao.hibernate.AppointmentCommentDAO;
 import com.itgrids.partyanalyst.dto.AppHistoryVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
+import com.itgrids.partyanalyst.dto.AppointmentCountDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountsVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
@@ -8641,6 +8643,66 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  			}
  			return status;
  		}
+ 	
+ 	public AppointmentCountDetailsVO getAppointmentCandidateCountDeatils(Long userId){
+ 		 AppointmentCountDetailsVO  returnVo =null; 
+ 	  try{
+ 		 Date insertedDate = dateUtilService.getCurrentDateAndTime();
+ 		 Long todayCount = appointmentCandidateDAO.todayAppointmentCandidateCount(userId,insertedDate,insertedDate);
+ 		 Calendar date = Calendar.getInstance();
+         date.set(Calendar.DAY_OF_MONTH, 1);
+       DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+           Date fromDate =null;
+          String startDateStr = df.format(date.getTime());
+          if(startDateStr !=null ){
+				fromDate = df.parse(startDateStr);
+			}
+          Long totalCount =appointmentCandidateDAO.todayAppointmentCandidateCount(userId,insertedDate,fromDate);
+          returnVo = new AppointmentCountDetailsVO();
+           if(todayCount != null && todayCount>0l){
+        	   returnVo.setTodayCount(todayCount); 
+           }
+           if(totalCount != null && totalCount>0l){
+        	   returnVo.setMonthCount(totalCount);
+           }
+     
+ 		}catch(Exception e){
+ 			LOG.error("Exception raised at getAppointmentCandidateCountDeatils() method of AppointmentService", e);
+ 		}
+ 		
+ 		return returnVo;
+ 	}
+ 	
+ 	public List<AppointmentCountDetailsVO> getAppointmentCandidateDetails(String fromDateStr,String toDateStr,Long userId){
+ 		List<AppointmentCountDetailsVO> returnVo=null;
+ 		try{
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			 Date fromDate =null;
+			 Date toDate =null;
+			if(fromDateStr !=null && toDateStr !=null){
+				fromDate = format.parse(fromDateStr);
+				toDate = format.parse(toDateStr);
+			}
+			List<Object[]> candidateDetails =appointmentCandidateDAO.appointmentCandidateDetails(fromDate,toDate,userId);
+			if(candidateDetails != null && candidateDetails.size()>0){
+				CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+				returnVo =new ArrayList<AppointmentCountDetailsVO>();
+				for(Object[] param : candidateDetails){
+					AppointmentCountDetailsVO detailsVO = new AppointmentCountDetailsVO();
+					 detailsVO.setAppointmentId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 detailsVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					 detailsVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[2]));
+					 detailsVO.setImage("httP://www.mytdp.com/"+commonMethodsUtilService.getStringValueForObject(param[3]));
+					 returnVo.add(detailsVO);
+				}
+			}
+ 			
+ 		}catch(Exception e){
+ 			LOG.error("Exception raised at getAppointmentCandidateDetails() method of AppointmentService", e);
+ 		}
+		return returnVo;
+ 		
+ 	}
  }
 
 

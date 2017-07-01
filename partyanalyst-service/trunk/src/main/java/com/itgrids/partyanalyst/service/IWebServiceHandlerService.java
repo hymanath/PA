@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.AmsDataVO;
 import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
 import com.itgrids.partyanalyst.dto.AmsTrackingVO;
 import com.itgrids.partyanalyst.dto.AmsVO;
+import com.itgrids.partyanalyst.dto.AppointmentCountDetailsVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -259,4 +260,6 @@ public interface IWebServiceHandlerService {
     public List<DistrictOfficeViewAlertVO> getTotalAlertByOtherStatusForAMS(AmsDataVO keyVo);
     public CommitteeBasicVO getLocationWiseCommitteesCount(String locationType, Long locationId,Long enrollmentId);
     public List<TdpCommitteeEnrollment> getEnrollments();
+    public AppointmentCountDetailsVO getAppointmentCandidateCountDeatils(Long userId);
+    public List<AppointmentCountDetailsVO> getAppointmentCandidateDetails(String fromDateStr,String toDateStr,Long userId);
 }

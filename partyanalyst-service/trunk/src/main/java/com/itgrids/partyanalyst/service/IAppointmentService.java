@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.AppHistoryVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
+import com.itgrids.partyanalyst.dto.AppointmentCountDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountsVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
@@ -110,4 +111,6 @@ public interface IAppointmentService {
 	public  List<AppointmentCandidateVO> searchRequestedMembers(String searchType,String searchValue);
 	public List<AppointmentCandidateVO> getNewCadreSearchBySearchType(String searchType,Long searchValue,String locationType,Long locationVal,String gender);
 	public String savingAppointCandRelaDetails(Long appointmntId,Long appntCandidateId);
+	public List<AppointmentCountDetailsVO> getAppointmentCandidateDetails(String fromDateStr,String toDateStr,Long userId);
+	public AppointmentCountDetailsVO getAppointmentCandidateCountDeatils(Long userId);
 }
