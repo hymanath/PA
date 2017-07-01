@@ -545,8 +545,8 @@ public class RWSNICService implements IRWSNICService{
  	    		
  	    				if(jObj !=null){
 	 	    				waterSourceInfo.setName(jObj.getString("status"));
-	 	    				waterSourceInfo.setGroundWaterSourceTotalMlpdCount(jObj.getLong("groundWaterSourceTotalMlpdCount"));
-	 	    				waterSourceInfo.setSurfaceWaterSourceTotalMlpdCount(jObj.getLong("surfaceWaterSourceTotalMlpdCount"));
+	 	    				waterSourceInfo.setGroundWaterSourceTotalMlpdCount(jObj.getLong("groundWaterSourceCount"));
+	 	    				waterSourceInfo.setSurfaceWaterSourceTotalMlpdCount(jObj.getLong("surfaceWaterSourceCount"));
 	 	    				
 	 	    				Long total = waterSourceInfo.getGroundWaterSourceTotalMlpdCount() + waterSourceInfo.getSurfaceWaterSourceTotalMlpdCount();
 	 	    				
