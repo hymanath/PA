@@ -27,8 +27,44 @@ public class RwsClickVO implements Serializable{
 	private String totalCount;
 	private String  toatlPorpualtionCovered;
 	private String lpcd;
+	private String assetType;
+	
+	private String coverageStatus;
+	private String assestCode;
+	private String assestName;
+	private String assestCost;
 	
 	
+	public String getAssestCode() {
+		return assestCode;
+	}
+	public void setAssestCode(String assestCode) {
+		this.assestCode = assestCode;
+	}
+	public String getAssestName() {
+		return assestName;
+	}
+	public void setAssestName(String assestName) {
+		this.assestName = assestName;
+	}
+	public String getAssestCost() {
+		return assestCost;
+	}
+	public void setAssestCost(String assestCost) {
+		this.assestCost = assestCost;
+	}
+	public String getCoverageStatus() {
+		return coverageStatus;
+	}
+	public void setCoverageStatus(String coverageStatus) {
+		this.coverageStatus = coverageStatus;
+	}
+	public String getAssetType() {
+		return assetType;
+	}
+	public void setAssetType(String assetType) {
+		this.assetType = assetType;
+	}
 	public String getLpcd() {
 		return lpcd;
 	}
