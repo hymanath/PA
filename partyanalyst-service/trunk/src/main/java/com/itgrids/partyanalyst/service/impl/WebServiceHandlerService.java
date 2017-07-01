@@ -5276,6 +5276,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 }
 		return null;
 	 }
+	 
 	 public AppointmentCountDetailsVO getAppointmentCandidateCountDeatils(Long userId){
 		 AppointmentCountDetailsVO finalVO = new AppointmentCountDetailsVO();
 		 try {
@@ -5296,4 +5297,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return returnVOList;
 	 } 
+	 
+	 public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(String fromDate, String toDate, Long locationId,Long locationValue){
+		 try{
+			 return locationDashboardService.getLevelWiseMeetingStatusCounts(fromDate, toDate, locationId, locationValue);
+		 }catch(Exception e){
+			 log.error("Exception raised at getLevelWiseMeetingStatusCounts", e);
+		 }
+		return null;
+		 
+	 }
 }

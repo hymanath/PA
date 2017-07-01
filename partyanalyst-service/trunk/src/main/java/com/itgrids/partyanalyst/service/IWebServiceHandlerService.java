@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jettison.json.JSONObject;
@@ -262,4 +263,5 @@ public interface IWebServiceHandlerService {
     public List<TdpCommitteeEnrollment> getEnrollments();
     public AppointmentCountDetailsVO getAppointmentCandidateCountDeatils(Long userId);
     public List<AppointmentCountDetailsVO> getAppointmentCandidateDetails(String fromDateStr,String toDateStr,Long userId);
+    public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(String fromDate, String toDate, Long locationId,Long locationValue);
 }

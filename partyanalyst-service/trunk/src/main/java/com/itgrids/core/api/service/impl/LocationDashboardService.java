@@ -1,6 +1,9 @@
 package com.itgrids.core.api.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -11,6 +14,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
@@ -25,12 +29,12 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeEnrollmentDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
+import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
-import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.model.CasteCategory;
 import com.itgrids.partyanalyst.model.EnrollmentYear;
 import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
@@ -1057,5 +1061,119 @@ public class LocationDashboardService implements ILocationDashboardService {
 	public List<TdpCommitteeEnrollment> getEnrollmentIds() {
 		List<TdpCommitteeEnrollment> TdpCommitteeEnrollment = tdpCommitteeEnrollmentDAO.getAll();
 		return TdpCommitteeEnrollment;
+	}
+	
+	@Override
+	public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(String fromDateStr, String toDateStr, Long locationId,
+			Long locationValue) {
+		List<List<AlertOverviewVO>> meetingStatusCounts = new ArrayList<List<AlertOverviewVO>>();
+		List<AlertOverviewVO> vwStatusCountsList = new ArrayList<AlertOverviewVO>();
+		List<AlertOverviewVO> mtdStatusCountsList = new ArrayList<AlertOverviewVO>();
+		List<AlertOverviewVO> cStatusCountsList = new ArrayList<AlertOverviewVO>();
+		AlertOverviewVO vwStatus = new AlertOverviewVO();
+		AlertOverviewVO mtdStatus = new AlertOverviewVO();
+		AlertOverviewVO cStatus = new AlertOverviewVO();
+		Date frmDate = null;
+		Date toDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+			try {
+				frmDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		// 0-partyMeetingLevelId,1-LevelName,2-meeting Status,3-Meetings Count
+		List<Object[]> objList = partyMeetingStatusDAO.getLevelWiseMeetingStatusCount(frmDate, toDate, locationId,
+				locationValue);
+		try {
+			
+			//village/ward variables
+			Long vwYesCount = 0l;
+			Long vwNoCount = 0l;
+			Long vwMayBeCount = 0l;
+			Long vwNotUpCount = 0l;
+			
+			//mandal/town/division variables
+			Long mtdYesCount = 0l;
+			Long mtdNoCount = 0l;
+			Long mtdMayBeCount = 0l;
+			Long mtdNotUpCount = 0l;
+			
+			//constituency variables   
+			Long cYesCount = 0l;
+			Long cNoCount = 0l;
+			Long cMayBeCount = 0l;
+			Long cNotUpCount = 0l;
+
+			if (objList != null) {
+				for (Object[] objects : objList) {
+					if ((Long)objects[0] == 7l || (Long)objects[0] == 8l) {
+                         
+						if (objects[2].toString().trim().equalsIgnoreCase("Y")) {
+							vwYesCount = vwYesCount + (Long)objects[3];
+						} else if (objects[2].toString().trim().equalsIgnoreCase("N")) {
+							vwNoCount = vwNoCount + (Long)objects[3];
+						} else if (objects[2].toString().trim().equalsIgnoreCase("NU")) {
+							vwNotUpCount = vwNotUpCount + (Long)objects[3];
+						} else if (objects[2].toString().trim().equalsIgnoreCase("M")) {
+							vwMayBeCount = vwMayBeCount+(Long)objects[3];
+						}
+					} else if ((Long)objects[0] == 4l || (Long)objects[0] == 5l || (Long)objects[0] == 6l) {
+						if (objects[2].toString().trim().equalsIgnoreCase("Y")) {
+							mtdYesCount = mtdYesCount+(Long)objects[3];
+						} else if (objects[2].toString().trim().equalsIgnoreCase("N")) {
+							mtdNoCount = mtdNoCount+(Long)objects[3];
+						} else if (objects[2].toString().trim().equalsIgnoreCase("NU")) {
+							mtdNotUpCount = mtdNotUpCount+(Long)objects[3];
+						} else if (objects[2].toString().trim().equalsIgnoreCase("M")) {
+							mtdMayBeCount =mtdMayBeCount+(Long)objects[3];
+						}
+					} else if ((Long)objects[0] == 3l) {
+						if (objects[2].toString().trim().equalsIgnoreCase("Y")) {
+							cYesCount = cYesCount+(Long)objects[3];
+						} else if (objects[2].toString().trim().equalsIgnoreCase("N")) {
+							cNoCount = cNoCount+(Long)objects[3];
+						} else if (objects[2].toString().trim().equalsIgnoreCase("NU")) {
+							cNotUpCount = cNotUpCount+(Long)objects[3];
+						} else if (objects[2].toString().trim().equalsIgnoreCase("M")) {
+							cMayBeCount = cMayBeCount+(Long)objects[3];
+						}
+					}
+
+					
+					//here set the village/ward status counts
+					vwStatus.setCompletedCnt(vwYesCount);
+					vwStatus.setPendingCnt(vwNoCount);
+					vwStatus.setNotifiedCnt(vwMayBeCount);
+					vwStatus.setUnabletoResolveCnt(vwNotUpCount);
+					
+					//here set mandal/town/division status counts
+					mtdStatus.setCompletedCnt(mtdYesCount);
+					mtdStatus.setPendingCnt(mtdNoCount);
+					mtdStatus.setNotifiedCnt(mtdNotUpCount);
+					mtdStatus.setUnabletoResolveCnt(mtdMayBeCount);
+					
+					//here set the constituency status counts
+					cStatus.setCompletedCnt(cYesCount);
+					cStatus.setPendingCnt(cNoCount);
+					cStatus.setNotifiedCnt(cNotUpCount);
+					cStatus.setUnabletoResolveCnt(cMayBeCount);
+				}
+				vwStatusCountsList.add(vwStatus);
+				mtdStatusCountsList.add(mtdStatus);
+				cStatusCountsList.add(cStatus);
+				meetingStatusCounts.add(vwStatusCountsList);
+				meetingStatusCounts.add(mtdStatusCountsList);
+				meetingStatusCounts.add(cStatusCountsList);
+
+			}
+		} catch (Exception e) {
+            Log.error("Exception raised in meetings method"+e);
+		}
+		return meetingStatusCounts;
 	}
 }
