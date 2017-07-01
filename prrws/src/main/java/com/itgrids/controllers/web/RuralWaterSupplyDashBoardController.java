@@ -235,7 +235,7 @@ public class RuralWaterSupplyDashBoardController {
 		return null;
 	}
 	@PostMapping("/getAlertsOfCategoryByStatusWise")
-	public @ResponseBody List<AmsVO> getAlertsOfCategoryByStatusWise(InputVO vo){
+	public @ResponseBody List<AmsVO> getAlertsOfCategoryByStatusWise(@RequestBody InputVO vo){
 		try {
 			return rWSNICService.getAlertsOfCategoryByStatusWise(vo);
 
@@ -246,7 +246,7 @@ public class RuralWaterSupplyDashBoardController {
 	}
 	
 	@PostMapping("/getOnclickWorkDetails")
-	public @ResponseBody List<RwsClickVO> getOnclickWorkDetails(InputVO vo){
+	public @ResponseBody List<RwsClickVO> getOnclickWorkDetails(@RequestBody InputVO vo){
 		try {
 			return rWSNICService.getOnclickWorkDetails(vo);
 
@@ -257,7 +257,7 @@ public class RuralWaterSupplyDashBoardController {
 	}
 	
 	@PostMapping("/getOnclickTargetsAcheievementsDetails")
-	public @ResponseBody List<RwsClickVO> getOnclickTargetsAcheievementsDetails(InputVO vo){
+	public @ResponseBody List<RwsClickVO> getOnclickTargetsAcheievementsDetails(@RequestBody InputVO vo){
 		try {
 			return rWSNICService.getOnclickTargetsAcheievementsDetails(vo);
 
@@ -268,7 +268,7 @@ public class RuralWaterSupplyDashBoardController {
 	}
 	//
 	@PostMapping("/getOnclickStressedTargetsAcheievementsDetails")
-	public @ResponseBody List<RwsClickVO> getOnclickStressedTargetsAcheievementsDetails(InputVO vo){
+	public @ResponseBody List<RwsClickVO> getOnclickStressedTargetsAcheievementsDetails(@RequestBody InputVO vo){
 		try {
 			return rWSNICService.getOnclickStressedTargetsAcheievementsDetails(vo);
 
@@ -279,7 +279,7 @@ public class RuralWaterSupplyDashBoardController {
 	}
 	
 	@PostMapping("/getOnclickHabitationsupplyDetails")
-	public @ResponseBody List<RwsClickVO> getOnclickHabitationsupplyDetails(InputVO vo){
+	public @ResponseBody List<RwsClickVO> getOnclickHabitationsupplyDetails(@RequestBody InputVO vo){
 		try {
 			return rWSNICService.getOnclickHabitationsupplyDetails(vo);
 

@@ -44,9 +44,23 @@ public class InputVO implements Serializable {
 	private String districtValue;
 	private String workStatus; 
 	private String assetType;
+	private String endValue;
+	private String startValue;
 	
 	
 	
+	public String getEndValue() {
+		return endValue;
+	}
+	public void setEndValue(String endValue) {
+		this.endValue = endValue;
+	}
+	public String getStartValue() {
+		return startValue;
+	}
+	public void setStartValue(String startValue) {
+		this.startValue = startValue;
+	}
 	public String getAssetType() {
 		return assetType;
 	}
