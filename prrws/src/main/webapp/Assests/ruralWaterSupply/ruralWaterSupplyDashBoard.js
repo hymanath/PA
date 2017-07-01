@@ -2561,7 +2561,7 @@
 			workStatus:"completed",
 			assetType:"PWS",
 			filterType:"mandal",
-			filteValue:"25",
+			filterValue:"25",
 			districtValue:"01"
 		}
 		$.ajax({                
