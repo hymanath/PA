@@ -764,7 +764,8 @@
 			$("#assets").html(spinner);
 			var json = {
 				fromDateStr:glStartDate,
-				toDateStr:glEndDate
+				toDateStr:glEndDate,
+				year:$("#financialYearId").val()
 			}
 			$.ajax({
 				url: 'getAssetInfoBetweenDates',
@@ -2547,3 +2548,102 @@
 		}
 		
 	}
+	
+	//onclick calls
+	getOnclickWorkDetails();
+	getOnclickTargetsAcheievementsDetails();
+	getOnclickStressedTargetsAcheievementsDetails();
+	getOnclickHabitationsupplyDetails();
+	function getOnclickWorkDetails(){
+		var json = {
+			fromDateStr:"01-04-2016",
+			toDateStr:"01-04-2018",
+			workStatus:"completed",
+			assetType:"PWS",
+			filterType:"mandal",
+			filteValue:"25",
+			districtValue:"01"
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getOnclickWorkDetails',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+		});
+	}
+	
+	function getOnclickTargetsAcheievementsDetails(){
+		var json = {
+			fromDateStr:"01-04-2016",
+			toDateStr:"01-04-2018",
+			workStatus:"targets",
+			filterType:"mandal",
+			filterValue:"25",
+			districtValue:"01",
+			assetType:"PC"
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getOnclickTargetsAcheievementsDetails',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+		});
+	}
+	
+	function getOnclickStressedTargetsAcheievementsDetails(){
+		var json = {
+			fromDateStr:"01-01-1997",
+			toDateStr:"01-04-2018",
+			workStatus:"targets",
+			stressedHabitationYear:"2017"
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getOnclickStressedTargetsAcheievementsDetails',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+		});
+	}
+	
+	function getOnclickHabitationsupplyDetails(){
+		var json = {
+			year:"2017",
+			type:"safe",//or "un-safe"
+			startValue:"1",
+			endValue:"100",
+			filterType:"mandal",
+			filterValue:"25",
+			districtValue:"01"
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getOnclickHabitationsupplyDetails',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+		});
+	}
+	
