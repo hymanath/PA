@@ -483,7 +483,7 @@
 			 searchLevelVals.push(finalIdStr);
 		}
 		
-		searchLevelVals.push(locationId);
+		//searchLevelVals.push(locationId);
 		/* if ($.inArray('0', financialYrIdArr) != -1)
 		{
 			var stringIds = "1,2,3";
@@ -960,8 +960,8 @@
 			getLocationWiseFundDetails(6,'highest','highFundVillage'+divId+'',locationId,locationLevelId);
 			getLocationWiseFundDetails(5,'lowest','lowFundMandal'+divId+'',locationId,locationLevelId);
 			getLocationWiseFundDetails(6,'lowest','lowFundVillage'+divId+'',locationId,locationLevelId);
-			getLocationWiseFundDetails(10,'lowest','lowFundParliament'+divId+'',locationId,locationLevelId);
-			getLocationWiseFundDetails(10,'highest','highFundParlmnt'+divId+'',locationId,locationLevelId);
+			//getLocationWiseFundDetails(4,'lowest','lowFundParliament'+divId+'',locationId,locationLevelId);
+			//getLocationWiseFundDetails(4,'highest','highFundParlmnt'+divId+'',locationId,locationLevelId);
 			
 			getSchemeWiseHighestAndLowestFund('highest','highFundScheme'+divId+'',locationLevelId,locationId,3);
 			getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme'+divId+'',locationLevelId,locationId,3);
@@ -969,12 +969,12 @@
 			getAverageFundForAnyLevel(4,'avgFundCons'+divId+'',locationLevelId,locationId);
 			getAverageFundForAnyLevel(5,'avgFundMandal'+divId+'',locationLevelId,locationId);
 			getAverageFundForAnyLevel(6,'avgFundVillage'+divId+'',locationLevelId,locationId);
-			getAverageFundForAnyLevel(10,'avgFundparlment'+divId+'',locationLevelId,locationId);
+			//getAverageFundForAnyLevel(10,'avgFundparlment'+divId+'',locationLevelId,locationId);
 			getTotalFunds('totFund'+divId+'');
 			getTotalLocationsByScopeId(4,'totFundCons'+divId+'',locationId,locationLevelId);
 			getTotalLocationsByScopeId(5,'totFundMandal'+divId+'',locationId,locationLevelId);
 			getTotalLocationsByScopeId(6,'totFundVillage'+divId+'',locationId,locationLevelId);
-			getTotalLocationsByScopeId(10,'totFundParliament'+divId+'',locationId,locationLevelId);
+			//getTotalLocationsByScopeId(10,'totFundParliament'+divId+'',locationId,locationLevelId);
 			getAverageFundForScheme('avgFundScheme'+divId+'','scheme',locationLevelId,locationId);
 			getAverageFundForScheme('avgFundGrant'+divId+'','grant',locationLevelId,locationId);
 			getTotalSchemes(4,'totFundScheme'+divId+'','scheme',locationLevelId,locationId);
