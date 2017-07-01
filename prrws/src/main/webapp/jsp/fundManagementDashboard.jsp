@@ -29,42 +29,40 @@
 					<h4 class="text-capital">Panchayati Raj & RD & RWS</h4>
 					<p>Fund Management System - AP</p>
 				</div>
-				<div class="col-sm-1 hidden-xs col-sm-offset-5">
-					<img src="Assests/images/lokesh.png" class="m_top10 pull-right"/>
-				</div>
-				<div class="col-sm-1 col-xs-12">
+				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
-				</div>
-				<div class="menu-data-cls">
-					<div class="arrow_box_top">
-						<ul>
-							<li>
-								<a href="fundManagementDashboard">
-									<h3>FMS</h3>
-									<p>Fund Management System</p>
-								</a>
-							</li>
-							<li>
-								<a href="MGNREGSDashboard">
-									<h3>MGNREGS</h3>
-									<p>Mahatma Gandhi Rural employement guarantee scheme</p>
-								</a>
-							</li>
-							<li>
-								<a href="ruralWaterSupplyDashBoard">
-									<h3>RWS</h3>
-									<p>rural water <br/> supply</p>
-								</a>
-							</li>
-							<li>
-								<a href="">
-									<h3>ENC</h3>
-									<p>engineering department</p>
-								</a>
-							</li>
-						</ul>
+					<div class="menu-data-cls">
+						<div class="arrow_box_top">
+							<ul>
+								<li>
+									<a href="fundManagementDashboard">
+										<h3>FMS</h3>
+										<p>Fund Management System</p>
+									</a>
+								</li>
+								<li>
+									<a href="MGNREGSDashboard">
+										<h3>MGNREGS</h3>
+										<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+									</a>
+								</li>
+								<li>
+									<a href="ruralWaterSupplyDashBoard">
+										<h3>RWS</h3>
+										<p>rural water <br/> supply</p>
+									</a>
+								</li>
+								<li>
+									<a href="">
+										<h3>ENC</h3>
+										<p>engineering department</p>
+									</a>
+								</li>
+							</ul>
+						</div>
 					</div>
 				</div>
+				
 			</div>
 		</div>
 	</nav>
@@ -117,7 +115,7 @@
 					<table class="table table-bordered table-overview">
 						<tr>
 							<td>
-								<h4 class="panel-title text-muted">High Funded District</h4>
+								<h4 class="panel-title text-muted"><strong>High Funded District</strong></h4>
 								<div id="highFundDist" attr_id="highFundDist" class="m_top5"></div>
 							</td>
 							<!--<td>
@@ -125,11 +123,11 @@
 								<div id="highFundParlmnt" attr_id="highFundParlmnt" class="m_top5"></div>
 							</td>-->
 							<td>
-								<h4 class="panel-title text-muted">High Funded Constituency</h4>
+								<h4 class="panel-title text-muted"><strong>High Funded Constituency</strong></h4>
 								<div id="highFundCons" attr_id="highFundCons" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title text-muted">High Funded Mandal</h4>
+								<h4 class="panel-title text-muted"><strong>High Funded Mandal</strong></h4>
 								<div id="highFundMandal" attr_id="highFundMandal" class="m_top5"></div>
 							</td>
 						<!--	<td>
@@ -137,17 +135,17 @@
 								<div id="highFundVillage" attr_id="highFundVillage" class="m_top5"></div>
 							</td>-->
 							<td>
-								<h4 class="panel-title text-muted">High Funded Grant Type</h4>
+								<h4 class="panel-title text-muted"><strong>High Funded Grant Type</strong></h4>
 								<div id="highFundSource" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title text-muted">High Funded Scheme</h4>
+								<h4 class="panel-title text-muted"><strong>High Funded Scheme</strong></h4>
 								<div id="highFundScheme" attr_id="highFundScheme" class="m_top5"></div>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<h4 class="panel-title text-muted">Low Funded District</h4>
+								<h4 class="panel-title text-muted"><strong>Low Funded District</strong></h4>
 								<div id="lowFundDist" attr_id="lowFundDist" class="m_top5"></div>
 							</td>
 							<!--<td>
@@ -155,11 +153,11 @@
 								<div id="lowFundParliament" attr_id="lowFundParliament" class="m_top5"></div>
 							</td>-->
 							<td>
-								<h4 class="panel-title text-muted">Low Funded Costituency</h4>
+								<h4 class="panel-title text-muted"><strong>Low Funded Costituency</strong></h4>
 								<div id="lowFundCons" attr_id="lowFundCons" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title text-muted">Low Funded Mandal</h4>
+								<h4 class="panel-title text-muted"><strong>Low Funded Mandal</strong></h4>
 								<div id="lowFundMandal" attr_id="lowFundMandal" class="m_top5"></div>
 							</td>
 						<!--	<td>
@@ -167,17 +165,17 @@
 								<div id="lowFundVillage" attr_id="lowFundVillage" class="m_top5"></div>
 							</td>-->
 							<td>
-								<h4 class="panel-title text-muted">Low Funded Grant Type</h4>
+								<h4 class="panel-title text-muted"><strong>Low Funded Grant Type</strong></h4>
 								<div id="lowFundSource" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title text-muted">Low Funded Scheme</h4>
+								<h4 class="panel-title text-muted"><strong>Low Funded Scheme</strong></h4>
 								<div id="lowFundScheme" attr_id="lowFundScheme" class="m_top5"></div>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<h4 class="panel-title text-muted">Average Funded District</h4>
+								<h4 class="panel-title text-muted"><strong>Average Funded District</strong></h4>
 								<div id="avgFundDist" attr_id="avgFundDist" class="m_top5"></div>
 							</td>
 							<!--<td>
@@ -185,11 +183,11 @@
 								<div id="avgFundparlment" attr_id="avgFundparlment" class="m_top5"></div>
 							</td>-->
 							<td>
-								<h4 class="panel-title text-muted">Average Funded Costituency</h4>
+								<h4 class="panel-title text-muted"><strong>Average Funded Costituency</strong></h4>
 								<div id="avgFundCons" attr_id="avgFundCons" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title text-muted">Average Funded Mandal</h4>
+								<h4 class="panel-title text-muted"><strong>Average Funded Mandal</strong></h4>
 								<div id="avgFundMandal" attr_id="avgFundMandal" class="m_top5"></div>
 							</td>
 						<!--	<td>
@@ -198,17 +196,17 @@
 							</td>-->
 							
 							<td>
-								<h4 class="panel-title text-muted">Average Funded Grant Type</h4>
+								<h4 class="panel-title text-muted"><strong>Average Funded Grant Type</strong></h4>
 								<div id="avgFundGrant" attr_id="avgFundGrant" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title text-muted">Average Funded Scheme</h4>
+								<h4 class="panel-title text-muted"><strong>Average Funded Scheme</strong></h4>
 								<div id="avgFundScheme" attr_id="avgFundScheme" class="m_top5"></div>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<h4 class="panel-title text-muted">Total Funds</h4>
+								<h4 class="panel-title text-muted"><strong>Total Funds</strong></h4>
 								<div id="totFund" attr_id="totFund" class="m_top5"></div>
 							</td>
 							<!--<td>
@@ -216,11 +214,11 @@
 								<div id="totFundParliament" attr_id="totFundParliament" class="m_top5"></div>
 							</td>-->
 							<td>
-								<h4 class="panel-title text-muted">Total Funded Costituency</h4>
+								<h4 class="panel-title text-muted"><strong>Total Funded Costituency</strong></h4>
 								<div id="totFundCons" attr_id="totFundCons" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title text-muted">Total Funded Mandal</h4>
+								<h4 class="panel-title text-muted"><strong>Total Funded Mandal</strong></h4>
 								<div id="totFundMandal" attr_id="totFundMandal" class="m_top5"></div>
 							</td>
 							<!--<td>
@@ -228,11 +226,11 @@
 								<div id="totFundVillage" attr_id="totFundVillage" class="m_top5"></div>
 							</td>-->
 							<td>
-								<h4 class="panel-title text-muted">Total Funded Grant Types</h4>
+								<h4 class="panel-title text-muted"><strong>Total Funded Grant Types</strong></h4>
 								<div id="totFundGrant" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title text-muted">Total Funded Scheme</h4>
+								<h4 class="panel-title text-muted"><strong>Total Funded Scheme</strong></h4>
 								<div id="totFundScheme" attr_id="totFundScheme" class="m_top5"></div>
 							</td>
 						</tr>
@@ -248,19 +246,9 @@
 					<div class="panel panel-default panel-black" >
 					 	<div class="panel-heading">
 								<div class="row">
-									<div class="col-sm-4" >
-										 <h4 class="panel-title text-capital">State level overview</h4>
-										
-									</div>
-									<div class="col-sm-6">
-										<ul class="switch-btn pull-right" tab-switch="stateLevel">
-											<li class="active" attr_type="overview">overview</li>
-											<li attr_type="scheme">Scheme level</li>
-											<li attr_type="deptscheme">Dept_Scheme Level</li>
-										</ul>
-									</div>
-									<div class="col-sm-2">
+									<div class="col-sm-12" >
 										<a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+											<h4 class="panel-title text-capital">State level overview</h4>
 										</a>
 									</div>
 								</div>
@@ -269,13 +257,18 @@
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-sm-12">
+										<ul class="switch-btn" tab-switch="stateLevel">
+											<li class="active" attr_type="overview">overview</li>
+											<li attr_type="scheme">Scheme level</li>
+											<li attr_type="deptscheme">Dept_Scheme Level</li>
+										</ul>
 										<ul class="nav nav-tabs pull-right" role="tablist" id="tabSt">
 											<li role="presentation" ><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 											<li role="presentation" class="active"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
 										</ul>
 									</div>
 								</div>
-								<div class="row">
+								<div class="row m_top20">
 									<div class="col-sm-12">
 										<div class="tab-content">
 											<div role="tabpanel" class="tab-pane " id="stateLevelGraph">
@@ -304,25 +297,22 @@
 						<div class="panel-heading">
 							
 							<div class="row">
-								<div class="col-sm-4">
-									<h4 class="panel-title text-capital">district level overview</h4>
-								</div>
-								<div class="col-sm-6">
-									<ul class="switch-btn pull-right distLevelActive" tab-switch="distLevel">
-										<li class="active" attr_type="overview">overview</li>
-										<li attr_type="scheme">Scheme level</li>
-										<li attr_type="deptscheme">Dept_Scheme Level</li>
-									</ul>
-								</div>
-								<div class="col-sm-2">
-									<a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"></a>
+								<div class="col-sm-12">
+									<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+										<h4 class="panel-title text-capital">district level overview</h4>
+									</a>
 								</div>
 							</div>
 						</div>
-						<div id="collapseTwo" class="panel-collapse collapse in " role="tabpanel" aria-labelledby="headingTwo">
+						<div id="collapseTwo" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingTwo">
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-sm-12">
+										<ul class="switch-btn distLevelActive" tab-switch="distLevel">
+											<li class="active" attr_type="overview">overview</li>
+											<li attr_type="scheme">Scheme level</li>
+											<li attr_type="deptscheme">Dept_Scheme Level</li>
+										</ul>
 										<!-- Nav tabs -->
 										<ul class="nav nav-tabs pull-right" role="tablist" id="tabDis">
 											<li role="presentation" ><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
@@ -403,25 +393,22 @@
 					<div class="panel panel-default panel-black" id="headingThree">
 						<div class="panel-heading">
 						 	<div class="row">
-								<div class="col-sm-4">
-									<h4 class="panel-title text-capital">constituency level overview</h4>
-								</div>
-								<div class="col-sm-6">
-									<ul class="switch-btn pull-right consLevelActive" tab-switch="consLevel">
-										<li class="active" attr_type="overview">overview</li>
-										<li attr_type="scheme">Scheme level</li>
-										<li attr_type="deptscheme">Dept_Scheme Level</li>
-									</ul>
-								</div>
-								<div class="col-sm-2">
-									 <a class="panelCollapseIcon"  role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"></a>
+								<div class="col-sm-12">
+									<a class="panelCollapseIcon collapsed"  role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+										<h4 class="panel-title text-capital">constituency level overview</h4>
+									</a>
 								</div>
 							</div>
 						</div>
-						 <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+						 <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-sm-12">
+										<ul class="switch-btn consLevelActive" tab-switch="consLevel">
+											<li class="active" attr_type="overview">overview</li>
+											<li attr_type="scheme">Scheme level</li>
+											<li attr_type="deptscheme">Dept_Scheme Level</li>
+										</ul>
 										<ul class="nav nav-tabs pull-right" role="tablist" id="tabCons">
 											<li role="presentation" ><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 											<li role="presentation" class="active"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
@@ -511,26 +498,23 @@
 						<div class="panel-heading">
 						
 							<div class="row">
-								<div class="col-sm-4">
-									<h4 class="panel-title text-capital">mandal level overview</h4>
-								</div>
-								<div class="col-sm-6">
-									<ul class="switch-btn pull-right mandalLevelActive" tab-switch="mandalLevel">
-										<li class="active" attr_type="overview">overview</li>
-										<li attr_type="scheme">Scheme level</li>
-										<li attr_type="deptscheme">Dept_Scheme Level</li>
-									</ul>
-								</div>
-								<div class="col-sm-2">
-									 <a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour"></a>
+								<div class="col-sm-12">
+									<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+										<h4 class="panel-title text-capital">mandal level overview</h4>
+									</a>
 								</div>
 							</div>
 						</div>
-						 <div id="collapseFour" class="panel-collapse collapse in " role="tabpanel" aria-labelledby="headingFour">
+						 <div id="collapseFour" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingFour">
 						<div class="panel-body">
 							<div>
 								<div class="row">
 									<div class="col-sm-12">
+										<ul class="switch-btn mandalLevelActive" tab-switch="mandalLevel">
+											<li class="active" attr_type="overview">overview</li>
+											<li attr_type="scheme">Scheme level</li>
+											<li attr_type="deptscheme">Dept_Scheme Level</li>
+										</ul>
 										<ul class="nav nav-tabs pull-right" role="tablist" id="tabMan">
 											<li role="presentation" ><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 											<li role="presentation" class="active"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
@@ -625,26 +609,23 @@
 					<div class="panel panel-default panel-black" id="headingFive">
 						<div class="panel-heading">
 							<div class="row">
-								<div class="col-sm-4">
-									<h4 class="panel-title text-capital">Village level overview</h4>
-								</div>
-								<div class="col-sm-6">
-									<ul class="switch-btn pull-right villageLevelActive" tab-switch="villageLevel">
-										<li class="active" attr_type="overview">overview</li>
-										<li attr_type="scheme">Scheme level</li>
-										<li attr_type="deptscheme">Dept & Scheme Level</li>
-									</ul>
-								</div>
-								<div class="col-sm-2">
-									 <a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive"></a>
+								<div class="col-sm-12">
+									<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+										<h4 class="panel-title text-capital">Village level overview</h4>
+									</a>
 								</div>
 							</div>
 						</div>
-						<div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
+						<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
 						<div class="panel-body">
 							<div>
 								<div class="row">
 									<div class="col-sm-12">
+										<ul class="switch-btn villageLevelActive" tab-switch="villageLevel">
+											<li class="active" attr_type="overview">overview</li>
+											<li attr_type="scheme">Scheme level</li>
+											<li attr_type="deptscheme">Dept & Scheme Level</li>
+										</ul>
 										<ul class="nav nav-tabs pull-right" role="tablist" id="tabVill">
 											<!--<li role="presentation" ><a href="#villageLevelGraph" aria-controls="villageLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>-->
 											<li role="presentation" class="active"><a href="#villageLevelTable" aria-controls="villageLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>

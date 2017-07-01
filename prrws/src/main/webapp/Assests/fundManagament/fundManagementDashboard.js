@@ -556,7 +556,7 @@
 				{
 					 if(ajaxresp.subList[i].percentage != 0){
 					str+='<li class="text-center">';
-						str+='<p class="text-muted">'+ajaxresp.subList[i].name+'</p>';
+						str+='<p class="text-muted"><strong>'+ajaxresp.subList[i].name+'</strong></p>';
 						str+='<p class="text-success"><small>'+ajaxresp.subList[i].percentage+'%</small></p>';
 						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.subList[i].totl+'</p>';
 					str+='</li>';
@@ -570,7 +570,7 @@
 				{
 					 if(ajaxresp.detailsVOs[i].perc != 0){
 					str+='<li class="text-center">';
-						str+='<p class="text-muted">'+ajaxresp.detailsVOs[i].name+'</p>';
+						str+='<p class="text-muted"><strong>'+ajaxresp.detailsVOs[i].name+'</strong></p>';
 						str+='<p class="text-success"><small>'+ajaxresp.detailsVOs[i].perc+'%</small></p>';
 						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.detailsVOs[i].avrgeAmt+'</p>';
 					str+='</li>';
@@ -584,7 +584,7 @@
 				{
 					if(ajaxresp.detailsVOs[i].perc != 0){
 					str+='<li class="text-center">';
-						str+='<p class="text-muted">'+ajaxresp.detailsVOs[i].name+'</p>';
+						str+='<p class="text-muted"><strong>'+ajaxresp.detailsVOs[i].name+'</strong></p>';
 						str+='<p class="text-success"><small>'+ajaxresp.detailsVOs[i].perc+'%</small></p>';
 						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.detailsVOs[i].fundAvageAmt+'</p>';
 					str+='</li>';
@@ -597,14 +597,14 @@
 			str+='<ul class="list-inline">';
 			if(ajaxresp.fundedPerc != 0){
 				str+='<li class="text-center">';
-					str+='<p class="text-muted">FUNDED</p>';
+					str+='<p class="text-muted"><strong>FUNDED</strong></p>';
 					str+='<p>'+ajaxresp.fundedLoc+'</p>';
 					str+='<p class="text-success"><small>'+ajaxresp.fundedPerc+'%</small></p>';
 				str+='</li>';
 			 }
 			 if(ajaxresp.nonFundedPerc != 0){
 				str+='<li class="text-center">';
-					str+='<p class="text-muted">NOT-FUNDED</p>';
+					str+='<p class="text-muted"><strong>NOT-FUNDED</strong></p>';
 					str+='<p class="text-muted">'+ajaxresp.notFundedLoc+'</p>';
 					str+='<p class="text-success"><small>'+ajaxresp.nonFundedPerc+'%</small></p>';
 				str+='</li>';
@@ -1009,32 +1009,27 @@
 					table+='<tr>';
 						if(levelId == '2')
 						{
-							//table+='<th></th>';
-							table+='<th></th>';
+							table+='<th rowspan="2" class="text-center">State</th>';
 						}else if(levelId == '3'){
-							//table+='<th></th>';
-							table+='<th></th>';
+							table+='<th rowspan="2" class="text-center">District</th>';
 						}else if(levelId == '4')
 						{
-							//table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
+							table+='<th rowspan="2" class="text-center">District</th>';
+							table+='<th rowspan="2" class="text-center">Parliament</th>';
+							table+='<th rowspan="2" class="text-center">Constituency</th>';
 						}else if(levelId == '5')
 						{
-							//table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
+							table+='<th rowspan="2" class="text-center">District</th>';
+							table+='<th rowspan="2" class="text-center">Parliament</th>';
+							table+='<th rowspan="2" class="text-center">Constituency</th>';
+							table+='<th rowspan="2" class="text-center">Mandal</th>';
 						}else if(levelId == '6')
 						{
-							//table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
+							table+='<th rowspan="2" class="text-center">District</th>';
+							table+='<th rowspan="2" class="text-center">Parliament</th>';
+							table+='<th rowspan="2" class="text-center">Constituency</th>';
+							table+='<th rowspan="2" class="text-center">Mandal</th>';
+							table+='<th rowspan="2" class="text-center">Village</th>';
 						}
 						if($("#financialYearId").val().length > 1 || $("#financialYearId").val() == 0 ){
 							for(var i in result[0].locationList1)
@@ -1047,30 +1042,7 @@
 					table+='</tr>';
 					table+='<tr>';
 						//table+='<th>ID</th>';
-						if(levelId == '2')
-						{
-							table+='<th>State</th>';
-						}else if(levelId == '3'){
-							table+='<th>District</th>';
-						}else if(levelId == '4')
-						{
-							table+='<th>District</th>';
-							table+='<th>Parliament</th>';
-							table+='<th>Constituency</th>';
-						}else if(levelId == '5')
-						{
-							table+='<th>District</th>';
-							table+='<th>Parliament</th>';
-							table+='<th>Constituency</th>';
-							table+='<th>Mandal</th>';
-						}else if(levelId == '6')
-						{
-							table+='<th>District</th>';
-							table+='<th>Parliament</th>';
-							table+='<th>Constituency</th>';
-							table+='<th>Mandal</th>';
-							table+='<th>Village</th>';
-						}
+						
 						if($("#financialYearId").val().length > 1 || $("#financialYearId").val() == 0){
 							for(var i in result[0].locationList1)
 							{
@@ -1175,32 +1147,27 @@
 					table+='<tr>';
 					if(levelId == '2')
 					{
-						//table+='<th></th>';
-						table+='<th></th>';
+						table+='<th rowspan="3" class="text-center">State</th>';
 					}else if(levelId == '3'){
-						//table+='<th></th>';
-						table+='<th></th>';
+						table+='<th rowspan="3" class="text-center">District</th>';
 					}else if(levelId == '4')
 					{
-						//table+='<th></th>';
-						table+='<th></th>';
-						table+='<th></th>';
-						table+='<th></th>';
+						table+='<th rowspan="3" class="text-center">District</th>';
+						table+='<th rowspan="3" class="text-center">Parliament</th>';
+						table+='<th rowspan="3" class="text-center">Constituency</th>';
 					}else if(levelId == '5')
 					{
-						//table+='<th></th>';
-						table+='<th></th>';
-						table+='<th></th>';
-						table+='<th></th>';
-						table+='<th></th>';
+						table+='<th rowspan="3" class="text-center">District</th>';
+						table+='<th rowspan="3" class="text-center">Parliament</th>';
+						table+='<th rowspan="3" class="text-center">Constituency</th>';
+						table+='<th rowspan="3" class="text-center">Mandal</th>';
 					}else if(levelId == '6')
 					{
-						//table+='<th></th>';
-						table+='<th></th>';
-						table+='<th></th>';
-						table+='<th></th>';
-						table+='<th></th>';
-						table+='<th></th>';
+						table+='<th rowspan="3" class="text-center">District</th>';
+						table+='<th rowspan="3" class="text-center">Parliament</th>';
+						table+='<th rowspan="3" class="text-center">Constituency</th>';
+						table+='<th rowspan="3" class="text-center">Mandal</th>';
+						table+='<th rowspan="3" class="text-center">Village</th>';
 					}
 						
 						for(var j in result[0].subList)
@@ -1209,35 +1176,6 @@
 						}
 					table+='</tr>';
 					table+='<tr>';
-						if(levelId == '2')
-						{
-							//table+='<th></th>';
-							table+='<th></th>';
-						}else if(levelId == '3'){
-							//table+='<th></th>';
-							table+='<th></th>';
-						}else if(levelId == '4')
-						{
-							//table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-						}else if(levelId == '5')
-						{
-							//table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-						}else if(levelId == '6')
-						{
-							//table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-							table+='<th></th>';
-						}
 						for(var i in result[0].subList)
 						{
 							for(var j in result[0].subList[0].subList){
@@ -1247,30 +1185,7 @@
 					table+='</tr>';
 					table+='<tr>';
 						//table+='<th>ID</th>';
-						if(levelId == '2')
-						{
-							table+='<th>State</th>';
-						}else if(levelId == '3'){
-							table+='<th>District</th>';
-						}else if(levelId == '4')
-						{
-							table+='<th>District</th>';
-							table+='<th>Parliament</th>';
-							table+='<th>Constituency</th>';
-						}else if(levelId == '5')
-						{
-							table+='<th>District</th>';
-							table+='<th>Parliament</th>';
-							table+='<th>Constituency</th>';
-							table+='<th>Mandal</th>';
-						}else if(levelId == '6')
-						{
-							table+='<th>District</th>';
-							table+='<th>Parliament</th>';
-							table+='<th>Constituency</th>';
-							table+='<th>Mandal</th>';
-							table+='<th>Village</th>';
-						}
+						
 						for(var i in result[0].subList)
 						{
 							for(var j in result[0].subList[0].subList){
@@ -1367,68 +1282,36 @@
 						table+='<tr>';
 							if(levelId == '2')
 							{
-								//table+='<th></th>';
-								table+='<th></th>';
+								table+='<th rowspan="4" class="text-center">State</th>';
 							}else if(levelId == '3'){
-								//table+='<th></th>';
-								table+='<th></th>';
+								table+='<th rowspan="4" class="text-center">District</th>';
 							}else if(levelId == '4')
 							{
-								//table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
+								table+='<th rowspan="4" class="text-center">District</th>';
+								table+='<th rowspan="4" class="text-center">Parliament</th>';
+								table+='<th rowspan="4" class="text-center">Constituency</th>';
 							}else if(levelId == '5')
 							{
-								//table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
+								table+='<th rowspan="4" class="text-center">District</th>';
+								table+='<th rowspan="4" class="text-center">Parliament</th>';
+								table+='<th rowspan="4" class="text-center">Constituency</th>';
+								table+='<th rowspan="4" class="text-center">Mandal</th>';
 							}else if(levelId == '6')
 							{
-								//table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
+								table+='<th rowspan="4" class="text-center">District</th>';
+								table+='<th rowspan="4" class="text-center">Parliament</th>';
+								table+='<th rowspan="4" class="text-center">Constituency</th>';
+								table+='<th rowspan="4" class="text-center">Mandal</th>';
+								table+='<th rowspan="4" class="text-center">Village</th>';
 							}
+						
 							for(var j in result[0].subList)
 							{
 								table+='<th class="text-center" colspan="'+(((result[0].subList[0].subList[0].subList.length)*(result[0].subList[0].subList.length))*2)+'">'+result[0].subList[j].year+'</th>';
 							}
 						table+='</tr>';
 						table+='<tr>';
-							if(levelId == '2')
-							{
-								//table+='<th></th>';
-								table+='<th></th>';
-							}else if(levelId == '3'){
-								//table+='<th></th>';
-								table+='<th></th>';
-							}else if(levelId == '4')
-							{
-								//table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-							}else if(levelId == '5')
-							{
-								//table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-							}else if(levelId == '6')
-							{
-								//table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-							}
+						
 							for(var i in result[0].subList){
 								for(var j in result[0].subList[i].subList)
 								{
@@ -1438,35 +1321,7 @@
 							
 						table+='</tr>';
 						table+='<tr>';
-							if(levelId == '2')
-							{
-								//table+='<th></th>';
-								table+='<th></th>';
-							}else if(levelId == '3'){
-								//table+='<th></th>';
-								table+='<th></th>';
-							}else if(levelId == '4')
-							{
-								//table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-							}else if(levelId == '5')
-							{
-								//table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-							}else if(levelId == '6')
-							{
-								//table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-								table+='<th></th>';
-							}
+						
 							for(var i in result[0].subList){
 								for(var j in result[0].subList[i].subList){
 									for(var k in result[0].subList[i].subList[j].subList)
@@ -1478,30 +1333,7 @@
 						table+='</tr>';
 						table+='<tr>';
 							//table+='<th>ID</th>';
-							if(levelId == '2')
-							{
-								table+='<th>State</th>';
-							}else if(levelId == '3'){
-								table+='<th>District</th>';
-							}else if(levelId == '4')
-							{
-								table+='<th>District</th>';
-								table+='<th>Parliament</th>';
-								table+='<th>Constituency</th>';
-							}else if(levelId == '5')
-							{
-								table+='<th>District</th>';
-								table+='<th>Parliament</th>';
-								table+='<th>Constituency</th>';
-								table+='<th>Mandal</th>';
-							}else if(levelId == '6')
-							{
-								table+='<th>District</th>';
-								table+='<th>Parliament</th>';
-								table+='<th>Constituency</th>';
-								table+='<th>Mandal</th>';
-								table+='<th>Village</th>';
-							}
+							
 							for(var i in result[0].subList){
 								for(var j in result[0].subList[i].subList){
 									for(var k in result[0].subList[i].subList[j].subList)
@@ -1592,10 +1424,14 @@
 		}
 		$("#"+divId+"Table").html("");
 		$("#"+divId+"Table").html(table);
-		$("#dataTable"+divId).dataTable({
-			"iDisplayLength": 15,
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
-		});
+		if(levelId == 4 || levelId == 5 || levelId == 6)
+		{
+			$("#dataTable"+divId).dataTable({
+				"iDisplayLength": 15,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			});
+		}
 		
 		if(type == 'overview')
 		{
@@ -4232,6 +4068,11 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 			}
 		});
 	}
+	$(document).on('click','.closeShowPdfCls',function(){
+		setTimeout(function(){
+			$("body").addClass("modal-open");
+		},400);
+	});
 	$(document).on('click','.viewPdfCls',function(){
 		var dbFilePath = $(this).attr("attr_filePath");         
 		var str = ''; 
@@ -4250,7 +4091,7 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 					});
 					str+='<object data="http://www.mydepartments.in/PRRWS/Govt_Orders/'+dbFilePath+'" type="application/pdf" width="100%" height="400px;" internalinstanceid="3" title=""></object>';
 					//str+='<iframe src="http://www.mydepartments.in/PRRWS/Govt_Orders/'+dbFilePath+'" width="100%" height="800"></iframe>';
-					$("#govtOrderDocumentId").find(".modal-title").html(dbFilePath);
+					$("#govtOrderDocumentId").find(".modal-title").html($(this).html());
 				$("#govtOrderDocumentBodyId").html(str);       
 			}   
 		}		

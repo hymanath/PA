@@ -22,16 +22,6 @@
 	background-color : #ddd;
 }
 </style>
-<aside>
-	<div class="rightNavigationMenu">
-		<ul style="display:none"></ul>
-		<button class="rightNavigationMenuRes hidden-xs">
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button>
-	</div>
-</aside>
 <header>
 	<nav>
 		<div class="container-fluid">
@@ -43,41 +33,38 @@
 					<h4 class="text-capital">Panchayati Raj & RD & RWS</h4>
 					<p>MNREGS - AP</p>
 				</div>
-				<div class="col-sm-1 hidden-xs col-sm-offset-5">
-					<img src="Assests/images/lokesh.png" class="m_top10 pull-right"/>
-				</div>
-				<div class="col-sm-1 col-xs-12">
+				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
-				</div>
-				<div class="menu-data-cls">
-					<div class="arrow_box_top">
-						<ul>
-							<li>
-								<a href="fundManagementDashboard">
-									<h3>FMS</h3>
-									<p>Fund Management System</p>
-								</a>
-							</li>
-							<li>
-								<a href="MGNREGSDashboard">
-									<h3>MGNREGS</h3>
-									<p>Mahatma Gandhi Rural employement guarantee scheme</p>
-								</a>
-							</li>
-							<li>
-								<a href="ruralWaterSupplyDashBoard">
-									<h3>RWS</h3>
-									<p>rural water <br/> supply</p>
-								</a>
-							</li>
-							<li>
-								<a href="">
-									<h3>ENC</h3>
-									<p>engineering department</p>
-								</a>
-							</li>
-							
-						</ul>
+					<div class="menu-data-cls">
+						<div class="arrow_box_top">
+							<ul>
+								<li>
+									<a href="fundManagementDashboard">
+										<h3>FMS</h3>
+										<p>Fund Management System</p>
+									</a>
+								</li>
+								<li>
+									<a href="MGNREGSDashboard">
+										<h3>MGNREGS</h3>
+										<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+									</a>
+								</li>
+								<li>
+									<a href="ruralWaterSupplyDashBoard">
+										<h3>RWS</h3>
+										<p>rural water <br/> supply</p>
+									</a>
+								</li>
+								<li>
+									<a href="">
+										<h3>ENC</h3>
+										<p>engineering department</p>
+									</a>
+								</li>
+								
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
