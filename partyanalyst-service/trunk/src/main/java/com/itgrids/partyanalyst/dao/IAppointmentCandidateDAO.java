@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -27,5 +28,7 @@ public interface IAppointmentCandidateDAO extends GenericDao<AppointmentCandidat
  public List<Object[]>  getCommitteeMemROleWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId,Long aptUserId,Long levelId);
  public Long appointmntCandExist(String memberShipNo);
  public Long appointmntCandExistForVtrId(String voterId);
+ public Long todayAppointmentCandidateCount(Long userId,Date insertedDate,Date endDate);
+ public List<Object[]> appointmentCandidateDetails(Date fromDate,Date toDate,Long userId);
  
 }

@@ -1,7 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
-
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -604,6 +604,41 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		  Query query = getSession().createQuery(sb.toString());
 			query.setParameter("voterId", voterId);
 			return (Long) query.uniqueResult();	
+		
+	}
+	public Long todayAppointmentCandidateCount(Long userId,Date insertedDate,Date endDate){
+		StringBuilder sb = new StringBuilder();
+		  sb.append("select count(model.appointmentCandidateId)" +
+		  		" from AppointmentCandidate model" +
+		  		" where model.createdBy = :userId");
+		  if(insertedDate != null && endDate != null)
+			  sb.append(" and ( date(model.insertedTime) between :endDate and :insertedDate) ");
+		  sb.append(" group by model.createdBy ");
+		  Query query = getSession().createQuery(sb.toString());
+			query.setParameter("userId", userId);
+			 if(insertedDate != null && endDate != null){
+				 query.setDate("insertedDate", insertedDate); 
+				 query.setDate("endDate", endDate); 
+			 }
+		return (Long) query.uniqueResult();	
+	}
+	public List<Object[]> appointmentCandidateDetails(Date fromDate,Date toDate,Long userId){
+		StringBuilder sb = new StringBuilder();
+		  sb.append("select model.appointmentCandidateId,model.name," +
+		  		" d.designation,model.imageURL " +
+		  		" from AppointmentCandidate model " +
+		  		" left join model.candidateDesignation d" +
+		  		" where model.createdBy = :userId");
+		  if(fromDate != null && toDate != null)
+			  sb.append(" and ( date(model.insertedTime) between :fromDate and :toDate) ");
+		  Query query = getSession().createQuery(sb.toString());
+			if(fromDate != null && toDate != null){
+				query.setDate("fromDate", fromDate); 
+			    query.setDate("toDate", toDate);
+			 }
+			query.setParameter("userId", userId);
+			//sb.append(" group by model.createdBy ");
+		return query.list();
 		
 	}
 	

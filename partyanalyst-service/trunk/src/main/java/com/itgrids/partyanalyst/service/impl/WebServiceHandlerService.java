@@ -75,6 +75,7 @@ import com.itgrids.partyanalyst.dto.AmsDataVO;
 import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
 import com.itgrids.partyanalyst.dto.AmsTrackingVO;
 import com.itgrids.partyanalyst.dto.AmsVO;
+import com.itgrids.partyanalyst.dto.AppointmentCountDetailsVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -5275,4 +5276,24 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 }
 		return null;
 	 }
+	 public AppointmentCountDetailsVO getAppointmentCandidateCountDeatils(Long userId){
+		 AppointmentCountDetailsVO finalVO = new AppointmentCountDetailsVO();
+		 try {
+			
+			 finalVO = appointmentService.getAppointmentCandidateCountDeatils(userId);
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at getAppointmentCandidateCountDeatils", e);
+		}
+		 return finalVO;
+	 }
+	 public List<AppointmentCountDetailsVO> getAppointmentCandidateDetails(String fromDateStr,String toDateStr,Long userId){
+		 List<AppointmentCountDetailsVO> returnVOList = new ArrayList<AppointmentCountDetailsVO>(0);
+		 try {
+			 returnVOList = appointmentService.getAppointmentCandidateDetails(fromDateStr,toDateStr,userId);
+		} catch (Exception e) {
+			log.error("Exception raised at getAppointmentCandidateDetails", e);
+		}
+		 return returnVOList;
+	 } 
 }
