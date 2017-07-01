@@ -288,4 +288,48 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return null;
 	}
+	
+	@PostMapping("/getSchemeDetailsByTypeOfAssestName")
+	public @ResponseBody List<RwsClickVO> getSchemeDetailsByTypeOfAssestName(@RequestBody InputVO vo){
+		try {
+			return rWSNICService.getSchemeDetailsByTypeOfAssestName(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSchemeDetailsByTypeOfAssestName - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getAssetDetailsByAssetType")
+	public @ResponseBody List<RwsClickVO> getAssetDetailsByAssetType(@RequestBody InputVO vo){
+		try {
+			return rWSNICService.getAssetDetailsByAssetType(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAssetDetailsByAssetType - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getHabitationDetailsByStatusByLocationType")
+	public @ResponseBody List<RwsClickVO> getHabitationDetailsByStatusByLocationType(@RequestBody InputVO vo){
+		try {
+			return rWSNICService.getHabitationDetailsByStatusByLocationType(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getHabitationDetailsByStatusByLocationType - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getWaterSourceDeatilsLocationWise")
+	public @ResponseBody List<RwsClickVO> getWaterSourceDeatilsLocationWise(@RequestBody InputVO vo){
+		try {
+			return rWSNICService.getWaterSourceDeatilsLocationWise(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getWaterSourceDeatilsLocationWise - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
 }
