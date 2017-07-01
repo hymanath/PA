@@ -22,6 +22,7 @@ public interface IConstants {
     public static final Long MUNICIPAL_CORP_GMC_LEVEL_SCOPE_ID = 7L;
     public static final Long WARD_LEVEL_SCOPE_ID = 8L;
     public static final Long BOOTH_LEVEL_SCOPE_ID = 9L;
+    public static final Long TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID = 9L;
     public static final Long PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID = 10L;
     public static final Long HAMLET_LEVEL_SCOPE_ID = 11L;
     public static final Long URBAN_LOCALITY_LEVEL_SCOPE_ID = 12L;
