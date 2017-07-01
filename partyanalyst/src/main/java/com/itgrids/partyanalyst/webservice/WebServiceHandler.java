@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dto.AmsDataVO;
 import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
 import com.itgrids.partyanalyst.dto.AmsTrackingVO;
 import com.itgrids.partyanalyst.dto.AmsVO;
+import com.itgrids.partyanalyst.dto.AppointmentCountDetailsVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
@@ -3152,5 +3153,33 @@ public class WebServiceHandler {
 			return null;
 		}
 	}
-	
+
+	@POST
+	@Path("/getAppointmentCandidateCountDeatils")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public AppointmentCountDetailsVO getAppointmentCandidateCountDeatils(JSONObject jObj){
+		try{
+			
+			return webServiceHandlerService.getAppointmentCandidateCountDeatils(jObj.getLong("userId"));			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAppointmentCandidateCountDeatils() Method, Exception is ",e);
+			return null;
+		}
+	}
+	@POST
+	@Path("/getAppointmentCandidateDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AppointmentCountDetailsVO> getAppointmentCandidateDetails(JSONObject jObj)
+	{
+		try{
+			return webServiceHandlerService.getAppointmentCandidateDetails(jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("userId"));
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in appointmentCandidateDetails() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
 }
