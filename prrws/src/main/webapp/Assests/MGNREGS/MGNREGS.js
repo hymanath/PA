@@ -41,15 +41,21 @@ function onLoadCalls()
 		$(".rightNavigationMenuRes").removeClass("active");
 		$(".rightNavigationMenu ul,.backgroundBlock").hide();
 		globalDivName = projectDivId;
-		overviewData(projectDivId)
-		projectData(projectDivId)
+		overviewData(projectDivId);
+		projectData(projectDivId);
 		$('html,body').animate({
 			scrollTop: $("#projectOverviewBlock").offset().top},
         'slow');
 	});
 	$(document).on("click",".rightNavigationMenuRes",function(){
-		$(this).addClass("active");
-		$(".rightNavigationMenu ul,.backgroundBlock").show();
+		if($(this).hasClass("active")){
+			$(this).removeClass("active");
+			$(".rightNavigationMenu ul,.backgroundBlock").hide();
+		}
+		else{
+			$(this).addClass("active");
+			$(".rightNavigationMenu ul,.backgroundBlock").show();
+		}
 	});
 	$("header").on("click",".menu-cls",function(e){
 		e.stopPropagation();
@@ -88,29 +94,6 @@ function onLoadCalls()
 		$("#projectOverviewBlock,#projectData").html('');
 		getNREGSProjectsOverview(blockName);
 	});
-	/* var dates= $("#dateRangePickerMGNF").val();
-	var pickerDates = glStartDate+' - '+glEndDate
-	if(dates == pickerDates)
-	{
-		$("#dateRangePickerMGNF").val('All');
-	}
-	$('#dateRangePickerMGNF').on('apply.daterangepicker', function(ev, picker) {
-		var blockName = '';
-		$(".panel-block-white").each(function(){
-			if($(this).hasClass("active"))
-			{
-				blockName = $(this).attr("overview-block");
-			}
-		});
-		glStartDate = picker.startDate.format('DD/MM/YYYY')
-		glEndDate = picker.endDate.format('DD/MM/YYYY')
-		if(picker.chosenLabel == 'All')
-		{
-			$("#dateRangePickerMGNF").val('All');
-		}
-		getNREGSProjectsOverview(blockName);
-		$("#projectOverviewBlock,#projectData").html('');
-	}); */
 	getNREGSProjectsOverview('')
 	
 	$(document).on('click','#getWebserviceDetailsId', function(){
@@ -543,7 +526,6 @@ function buildNREGSProjectsOverview(result,blockName)
 }
 
 //LabourBudget Overview Call — Sravanth
-
 function getNREGSLabourBudgetOverview(projectDivId)
 {
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
@@ -568,7 +550,6 @@ function getNREGSLabourBudgetOverview(projectDivId)
 }
 
 //LabourBudget Expenditure Call  — Sravanth
-
 function getNREGSLabourBudgetExpenditure(projectDivId)
 {
 	$("#projectOvervw"+projectDivId).html(spinner);
@@ -593,7 +574,6 @@ function getNREGSLabourBudgetExpenditure(projectDivId)
 }
 
 //LabourBudget LevelWise Data Call — Sravanth
-
 function getNREGSLabBugdtLelwiseData(divIdd,locationType)
 {
 	var theadArr = [locationType,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
@@ -933,8 +913,8 @@ function buildNregasOverViewBlock(result,projectDivId){
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str1);
 	
 }
-//LabourBudget Exp Builing --  Nandhini
 
+//LabourBudget Exp Builing --  Nandhini
 function buildLabrBudgetExpBlock(result,projectDivId){
 	var str='';
 	str+='<p class="text-center expenditure"><strong>No of Panchayaties Vs Expenditure In Lakhs</strong></p>';
@@ -1390,7 +1370,6 @@ function buildDistrictsPopupDetails(result,dataArr){
 	
 }
 
-//getNREGSIHHLConsCuntData()
 function getNREGSConsCuntData(locationType,type,globalDivName)
 {
 	$("#nregsConsitenBodyId").html(spinner);
