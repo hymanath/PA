@@ -455,6 +455,10 @@
 															<option value="0"> SELECT DISTRICT</option>
 														</select>
 													</div>
+													<div class="col-sm-3 parlaiLevelDistCls" >
+														<select class="form-control chosenSelect" id="constLevelParliaNames" >
+														</select>
+													</div>
 													<div class="col-sm-3 constiLevelCls" >
 														<select class="form-control chosenSelect" id="constLevelConstNames" >
 														</select>
@@ -558,6 +562,10 @@
 													<div class="col-sm-3 mandalLevelDistCls" >
 														<select class="form-control chosenSelect" id="mandalLevelDistNames" >
 															<option value="0"> SELECT DISTRICT</option>
+														</select>
+													</div>
+													<div class="col-sm-3 levelparliamentConstiCls" >
+														<select class="form-control chosenSelect" id="parliamentLevelConstNames" >
 														</select>
 													</div>
 													<div class="col-sm-3 levelmandalConstiCls" >

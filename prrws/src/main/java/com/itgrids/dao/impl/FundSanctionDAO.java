@@ -629,7 +629,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			sb.append(" ,district.districtId ");
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			sb.append(" ,constituency.constituencyId ");
-		}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID ){
+		}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
 			sb.append(" , parliament.constituencyId  ");
 		}else if(BlocklevelId != null && BlocklevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 			sb.append(" ,tehsil.tehsilId ");
@@ -1262,17 +1262,24 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		return query.list();
 	}
 	@Override
-	public List<Object[]> getAllConstituencyByDistrictId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate,Long scopeId){
+	public List<Object[]> getAllConstituencyByDistrictId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate,Long scopeId,Long superLocationLevelId){
 		StringBuilder sb = new StringBuilder();
+		if(superLocationLevelId == 10){
 		sb.append(" select distinct constituency.constituencyId, constituency.name ");
-		
+		}else if(superLocationLevelId == 3){
+			sb.append("select distinct locationAddress.parliament.constituencyId, locationAddress.parliament.name ");
+		}
 		sb.append(" from "
 				+ " FundSanctionLocation fundSanctionLocation "
 				+ " left outer join fundSanctionLocation.locationAddress locationAddress "
 				+ " left outer join locationAddress.district district "
 				+ " left outer join locationAddress.constituency constituency ");
-		sb.append(" where fundSanctionLocation.isDeleted='N' "
-				+ " and district.districtId = :superLocationId ");
+		sb.append(" where fundSanctionLocation.isDeleted='N' ");
+		if(superLocationLevelId == 3){
+			sb.append( " and district.districtId = :superLocationId ");
+		}else if(superLocationLevelId == 10){
+			sb.append( " and locationAddress.parliament.constituencyId = :superLocationId ");
+		}
 		if(financialYrIdList != null && financialYrIdList.size() > 0){
 			sb.append(" and fundSanctionLocation.fundSanction.financialYearId in (:financialYrIdList)  " );
 		}
@@ -1292,8 +1299,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}
 		sb.append("order by constituency.name asc ");
 		Query query = getSession().createQuery(sb.toString());
-		
-		query.setParameter("superLocationId", superLocationId);
+		if(superLocationLevelId != null)
+			query.setParameter("superLocationId", superLocationId);
 		if(deptIdList != null && deptIdList.size() > 0){
 			query.setParameterList("deptIdList", deptIdList);
 		}
