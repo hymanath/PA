@@ -46,9 +46,29 @@ public class InputVO implements Serializable {
 	private String assetType;
 	private String endValue;
 	private String startValue;
+	private List<String> assetTypeList;
+	private List<String> statusList;
+	private String status;
 	
 	
-	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public List<String> getStatusList() {
+		return statusList;
+	}
+	public void setStatusList(List<String> statusList) {
+		this.statusList = statusList;
+	}
+	public List<String> getAssetTypeList() {
+		return assetTypeList;
+	}
+	public void setAssetTypeList(List<String> assetTypeList) {
+		this.assetTypeList = assetTypeList;
+	}
 	public String getEndValue() {
 		return endValue;
 	}

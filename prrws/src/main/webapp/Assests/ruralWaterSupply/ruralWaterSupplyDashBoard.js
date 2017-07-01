@@ -2554,6 +2554,10 @@
 	getOnclickTargetsAcheievementsDetails();
 	getOnclickStressedTargetsAcheievementsDetails();
 	getOnclickHabitationsupplyDetails();
+	getSchemeDetailsByTypeOfAssestName();
+	getAssetDetailsByAssetType();
+	getHabitationDetailsByStatusByLocationType();
+	getWaterSourceDeatilsLocationWise();
 	function getOnclickWorkDetails(){
 		var json = {
 			fromDateStr:"01-04-2016",
@@ -2647,3 +2651,97 @@
 		});
 	}
 	
+	function getSchemeDetailsByTypeOfAssestName(){
+		var assetTypeArr = [];
+		assetTypeArr.push("CPWS");
+		assetTypeArr.push("PWS");
+		var json = {
+			fromDateStr:"01-01-2016",
+			toDateStr:"01-04-2017",
+			assetTypeList:assetTypeArr,
+			startValue:"0",
+			endValue:"10",
+			year:"2017"
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getSchemeDetailsByTypeOfAssestName',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+		});
+	}
+	
+	function getAssetDetailsByAssetType(){
+		var json = {
+			assetType:"OPEN WELLS",
+			fromDateStr:"01-12-1997",
+			toDateStr:"31-12-2027",
+			startValue:"0",
+			endValue:"10",
+			filterType:"constituency",
+			filterValue:"128",
+			year:"2017"
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAssetDetailsByAssetType',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+		});
+	}
+	
+	function getHabitationDetailsByStatusByLocationType(){
+		var statusArr = [];
+		statusArr.push("FC");
+		var json = {
+			statusList:statusArr,
+			year:"2017",
+			startValue:"30",
+			endValue:"10",
+			districtValue:"01",
+			filterType:"mandal",
+			filterValue:"02"
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getHabitationDetailsByStatusByLocationType',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+		});
+	}
+	
+	function getWaterSourceDeatilsLocationWise(){
+		var json = {
+			status:"surface"
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getWaterSourceDeatilsLocationWise',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+		});
+	}
