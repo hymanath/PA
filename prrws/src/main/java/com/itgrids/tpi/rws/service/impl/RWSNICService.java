@@ -1285,8 +1285,9 @@ public class RWSNICService implements IRWSNICService{
 			 	    				subVo.setMandalCode(jobj.getString("mandalCode"));	
 			 	    				subVo.setMandalName(jobj.getString("mandalName"));
 			 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
-			 	    				subVo.setHabitationName(jobj.getString("habitationName")); 	    
-			 	    				subVo.setTotalCount(jobj.getString("totalCount"));
+			 	    				subVo.setHabitationName(jobj.getString("habitationName"));
+			 	    				if(i==0)
+			 	    					subVo.setTotalCount(jobj.getString("totalCount"));
 			 	    				subVo.setWorkId(jobj.getString("workId"));
 			 	    				subVo.setWorkName(jobj.getString("workName"));
 			 	    				subVo.setAssetType(jobj.getString("assestType"));
@@ -1348,8 +1349,9 @@ public class RWSNICService implements IRWSNICService{
 			 	    				subVo.setMandalName(jobj.getString("mandalName"));
 			 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
 			 	    				subVo.setHabitationName(jobj.getString("habitationName")); 	    
-			 	    				subVo.setCoverageStatus(jobj.getString("coverageStatus"));			 	    				
-			 	    				subVo.setTotalCount(jobj.getString("totalCount"));
+			 	    				subVo.setCoverageStatus(jobj.getString("coverageStatus"));	
+			 	    				if(i == 0)
+			 	    					subVo.setTotalCount(jobj.getString("totalCount"));
 			 	    				subVo.setAssestCode(jobj.getString("assestCode"));
 			 	    				subVo.setAssestName(jobj.getString("assestName"));
 			 	    				subVo.setAssestCost(jobj.getString("assestCost"));
