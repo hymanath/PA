@@ -42,9 +42,23 @@ public class InputVO implements Serializable {
 	private Long stressedHabitationYear;
 	private String divType;
 	private String districtValue;
+	private String workStatus; 
+	private String assetType;
 	
 	
 	
+	public String getAssetType() {
+		return assetType;
+	}
+	public void setAssetType(String assetType) {
+		this.assetType = assetType;
+	}
+	public String getWorkStatus() {
+		return workStatus;
+	}
+	public void setWorkStatus(String workStatus) {
+		this.workStatus = workStatus;
+	}
 	public String getDistrictValue() {
 		return districtValue;
 	}
