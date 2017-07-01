@@ -1055,7 +1055,7 @@ public class RWSNICService implements IRWSNICService{
 		 	    				subVo.setMandalCode(jobj.getString("mandalCode"));
 		 	    				subVo.setHabitationName(jobj.getString("habitationName"));
 		 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
-		 	    				subVo.setCompletionDate(jobj.getString("habitationCode"));
+		 	    				subVo.setCompletionDate(jobj.getString("completionDate"));
 		 	    				subVo.setWorkName(jobj.getString("workName"));		 	    				
 		 	    				subVo.setWorkId(jobj.getString("workId"));
 		 	    				//subVo.setSourceCount(jobj.getString("sourceCount"));
