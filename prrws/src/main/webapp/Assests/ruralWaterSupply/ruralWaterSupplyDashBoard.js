@@ -1080,12 +1080,21 @@
 					}]
 				});
 		}
-		function getStressedHabitationsInfoByLocationType(locationType,levelId,levelName){
+		function getStressedHabitationsInfoByLocationType(locationType,levelId,levelName,parentLocId){
 			$("#modalTable").html(spinner);
 			var financialVal =$("#financialYearId").val();
+			
+			if(locationType == "state"){
+				levelId ="";
+			}
 			var districtValue ="";
 			if(locationType == "mandal"){
-				districtValue = "03";
+				if(parentLocId < 9){
+					districtValue = "0"+parentLocId;
+				}else{
+					districtValue = parentLocId;
+				}
+				
 			}
 			var json = {
 					locationType:locationType,
@@ -1610,7 +1619,7 @@
 				tabBlock+='</select>';
 				tabBlock+='<div class="tab-content">';
 					
-					if(blockId == 'consBlockId')
+					/* if(blockId == 'consBlockId')
 					{
 						tabBlock+='<div class="row">';
 							tabBlock+='<div class="col-sm-3"><div id="districtSelect'+blockId+'"></div></div>';
@@ -1623,7 +1632,7 @@
 							tabBlock+='<div class="col-sm-3"><div id="constituencySelect'+blockId+'"></div></div>';
 							tabBlock+='<div class="col-sm-3"><div id="mandalSelect'+blockId+'"></div></div>';
 						tabBlock+='</div>';
-					}
+					} */
 					
 					for(var i in blocksArr)
 					{
@@ -1637,7 +1646,6 @@
 							 }else{
 								 tabBlock+='<div role="tabpanel" class="tab-pane active" id="'+blockId+''+blocksArr[i].id+'"></div>';
 							 }
-								//tabBlock+='<div role="tabpanel" class="tab-pane active" id="'+blockId+''+blocksArr[i].id+'"></div>';
 						}else{
 							 if(blocksArr[i].id == "jalavani"){
 								tabBlock+='<div >';
@@ -1647,7 +1655,6 @@
 							}else{
 								tabBlock+='<div role="tabpanel" class="tab-pane" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
 							} 
-							//tabBlock+='<div role="tabpanel" class="tab-pane" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
 						}
 					}
 				tabBlock+='</div>';
@@ -1824,7 +1831,9 @@
 						tableView+='</div>';
 					}
 				$("#alertStatus"+locationType).html(tableView);
-				$(".dataTableAlert"+locationType).dataTable();
+				if(locationType !="state" || locationType !="district"){
+					$(".dataTableAlert"+locationType).dataTable();
+				}
 			
 		}
 		function tableViewWaterStatus(divId,GLtbodyAlertArr,locationType){
@@ -1832,6 +1841,7 @@
 			if(GLtbodyAlertArr !=null && GLtbodyAlertArr.length>0){
 				var $windowWidth = $(window).width();
 					var tableView='';
+					var totalCount=0;
 					tableView+='<h5 style="padding:5px"><span class="chartTitleAlign"><img src="Assests/icons/driking.png"> <span style="margin-left:5px;">Drinking Water Satisfaction Levels</span></span></h5>';
 				if($windowWidth < 768)
 				{
@@ -1847,6 +1857,7 @@
 									tableView+='<th>%</th>';
 							}
 						}
+					tableView+='<th>Total Hamlets</th>';	
 					tableView+='</tr>'; 
 					tableView+='</thead>';
 					tableView+='<tbody>';	
@@ -1862,8 +1873,10 @@
 								for(var j in GLtbodyAlertArr[i].statusList){
 										tableView+='<td>'+GLtbodyAlertArr[i].statusList[j].count+'</td>';
 										tableView+='<td>'+GLtbodyAlertArr[i].statusList[j].percentage+'</td>';
+										totalCount =totalCount+GLtbodyAlertArr[i].statusList[j].count;
 								}
 							}
+							tableView+='<td>'+totalCount+'</td>';
 							tableView+='</tr>'; 
 						}
 					tableView+='</tbody>';
@@ -1873,7 +1886,10 @@
 					tableView+='</div>';
 				}
 				$("#drinking"+locationType).html(tableView);
-				$(".dataTableDrinking"+locationType).dataTable();
+				if(locationType !="state" || locationType !="district"){
+					$(".dataTableDrinking"+locationType).dataTable();
+				}
+				
 			}
 			
 			
@@ -1914,8 +1930,8 @@
 							}else if(divId[k].id=="performance"){
 								tableView+='<tr>';
 								tableView+='<th rowspan="2">'+locationType+'</th>';
-								tableView+='<th colspan="3">Partially Covered<br/>Habitations Through Schemes</th>';
-								tableView+='<th colspan="3">Quality Affected<br/>Habitations Through Schemes</th>';
+								tableView+='<th colspan="3" style="text-align: center;">Partially Covered<br/>Habitations Through Schemes</th>';
+								tableView+='<th colspan="3" style="text-align: center;">Quality Affected<br/>Habitations Through Schemes</th>';
 								tableView+='</tr>'; 
 								tableView+='<tr>'; 
 								tableView+='<th>Target</th>';
@@ -1933,11 +1949,7 @@
 								for(var i in GLtbodyArr){
 									var totalCount=0;
 									tableView+='<tr>';
-									if(locationType =="state"){
-										tableView+='<td>'+GLtbodyArr[i].locationName+'&nbsp;&nbsp;&nbsp;<i class="fa fa-question-circle getDetailsCls" aria-hidden="true" attr_location_type="'+locationType+'" attr_level_id="" attr_level_name="'+GLtbodyArr[i].locationName+'"></i></td>';
-									}else{
-										tableView+='<td>'+GLtbodyArr[i].locationName+'&nbsp;&nbsp;&nbsp;<i class="fa fa-question-circle getDetailsCls" aria-hidden="true" attr_location_type="'+locationType+'" attr_level_id="'+GLtbodyArr[i].goNumber+'" attr_level_name="'+GLtbodyArr[i].locationName+'"></i></td>';
-									}
+										tableView+='<td>'+GLtbodyArr[i].locationName+'&nbsp;&nbsp;&nbsp;<i class="fa fa-question-circle getDetailsCls" aria-hidden="true" attr_location_type="'+locationType+'" attr_level_id="'+GLtbodyArr[i].goNumber+'" attr_level_name="'+GLtbodyArr[i].locationName+'" attr_parent_locationId="'+GLtbodyArr[i].parentLocationId+'"></i></td>';
 									
 									if(GLtbodyArr[i].statusList !=null && GLtbodyArr[i].statusList.length>0){
 										for(var j in GLtbodyArr[i].statusList){
@@ -1976,7 +1988,12 @@
 										tableView+='<td> - </td>';
 									}
 									if(GLtbodyArr[i].pcPercentage !=null && GLtbodyArr[i].pcPercentage >0){
-										tableView+='<td>'+GLtbodyArr[i].pcPercentage.toFixed(2)+'</td>';
+										if(GLtbodyArr[i].pcPercentage < 100){
+											tableView+='<td style="background-color:#FFE296">'+GLtbodyArr[i].pcPercentage.toFixed(2)+'</td>';
+										}else{
+											tableView+='<td style="background-color:#C7F0C5;">'+GLtbodyArr[i].pcPercentage.toFixed(2)+'</td>';
+										}
+										
 									}else{
 										tableView+='<td> - </td>';
 									}
@@ -1991,7 +2008,11 @@
 										tableView+='<td> - </td>';
 									}
 									if(GLtbodyArr[i].qaPercentage !=null && GLtbodyArr[i].qaPercentage >0){
-										tableView+='<td>'+GLtbodyArr[i].qaPercentage.toFixed(2)+'</td>';
+										if(GLtbodyArr[i].qaPercentage < 100){
+											tableView+='<td style="background-color:#FFE296">'+GLtbodyArr[i].qaPercentage.toFixed(2)+'</td>';
+										}else{
+											tableView+='<td style="background-color:#C7F0C5;">'+GLtbodyArr[i].qaPercentage.toFixed(2)+'</td>';
+										}
 									}else{
 										tableView+='<td> - </td>';
 									}
@@ -2008,9 +2029,14 @@
 					if(divId[k].id !=="jalavani"){
 						$("#"+locationType+"BlockId"+divId[k].id).html(tableView);
 						if(divId[k].id=="habitation"){
-							$("#dataTable1"+locationType+divId[k].id).dataTable();
+							if(locationType !="state" && locationType !="district"){
+								$("#dataTable1"+locationType+divId[k].id).dataTable();
+							}
+							
 						}else if(divId[k].id=="performance"){
-							$("#dataTable"+locationType+divId[k].id).dataTable();
+							if(locationType !="state" && locationType !="district"){
+								$("#dataTable"+locationType+divId[k].id).dataTable();
+							}
 						}
 					}	
 				 }else{
@@ -2494,10 +2520,11 @@
 		var locationType = $(this).attr("attr_location_type");
 		var levelId = $(this).attr("attr_level_id");
 		var levelName=$(this).attr("attr_level_name");
+		var parentLocId=$(this).attr("attr_parent_locationId");
 		$("#modalDivId").modal('show');
 		$("#modalHeadingId").html(levelName+ "Stresseed Habitations");
 		
-		getStressedHabitationsInfoByLocationType(locationType,levelId,levelName);//on click ? call
+		getStressedHabitationsInfoByLocationType(locationType,levelId,levelName,parentLocId);//on click ? call
 		
 	});
 	function buildgetStressedHabitationsInfoByLocationType(result,levelName,locationType){
