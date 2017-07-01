@@ -1340,28 +1340,37 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  			Date eDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
  			
  			inputVO.setFinancialYrIdList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList()));
-			
+ 			String superLocationLevelIdStr = "";
  			String superLocationIdStr = inputVO.getSuperLocationId().toString();
-			String superLocationLevelIdStr = superLocationIdStr.substring(0, 1);
+ 			
+ 			superLocationLevelIdStr = superLocationIdStr.substring(0, 1);
+ 			
 			superLocationIdStr = superLocationIdStr.substring(1);
 			Long superLocationId = Long.parseLong(superLocationIdStr);
 			Long superLocationLevelId = Long.parseLong(superLocationLevelIdStr);
+			
+			if(superLocationLevelId.longValue()== 9L){
+				superLocationLevelId = 10L;
+			}
 			
 			List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
 			List<Long> sourceIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList());
 			if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){//get districtIds
 				locationList = fundSanctionDAO.getAllDistrictByStateId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate,inputVO.getBlockLevelId());
 				lvlIdStr = IConstants.DISTRICT_LEVEL_SCOPE_ID.toString();
-			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){//get constituencyIds
-				locationList = fundSanctionDAO.getAllConstituencyByDistrictId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate,inputVO.getBlockLevelId());
-				lvlIdStr = IConstants.CONSTITUENCY_LEVEL_SCOPE_ID.toString();
+			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){//get parlaiamentIds
+				locationList = fundSanctionDAO.getAllConstituencyByDistrictId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate,inputVO.getBlockLevelId(),superLocationLevelId);
+					lvlIdStr = "9";
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){//get tehsilIds
 				locationList = fundSanctionDAO.getAllTehsilByConstituencyId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate,inputVO.getBlockLevelId());
 				lvlIdStr = IConstants.MANDAL_LEVEL_SCOPE_ID.toString();
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){//get panchayatIds
 				locationList = fundSanctionDAO.getAllPanchayatByTehsilId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate);
 				lvlIdStr = IConstants.VILLAGE_LEVEL_SCOPE_ID.toString();
-			}
+			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){//get constituencyIds
+				locationList = fundSanctionDAO.getAllConstituencyByDistrictId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate,inputVO.getBlockLevelId(),superLocationLevelId);
+				lvlIdStr = IConstants.CONSTITUENCY_LEVEL_SCOPE_ID.toString();
+			}	
 			if(locationList != null && locationList.size() > 0){
 				for(Object[] param : locationList){
 					locationFundDetailsVO = new LocationFundDetailsVO();

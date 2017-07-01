@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.dto.InputVO;
 import com.itgrids.model.FundSanction;
 
 public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
@@ -28,7 +27,7 @@ public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 	public Long getTotalSchemes(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,Date sDate,Date eDate,Long searchLevlId,List<Long> searchLvlVals,String type);
 	public List<Long> getLocationBlockLevelIds(Long locationId,Long locationLevelId,Long blockLevelId);
 	public List<Object[]> getAllDistrictByStateId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptId,List<Long> sourceId,Date sDate,Date eDate,Long scopeId);
-	public List<Object[]> getAllConstituencyByDistrictId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptId,List<Long> sourceId,Date sDate,Date eDate,Long scopeId);
+	public List<Object[]> getAllConstituencyByDistrictId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptId,List<Long> sourceId,Date sDate,Date eDate,Long scopeId,Long superLocationLevelId);
 	public List<Object[]> getAllTehsilByConstituencyId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate,Long scopeId);
 	public List<Object[]> getAllPanchayatByTehsilId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate);
 	public List<Object[]> getLocationWiseAmountAndCountDetails(Date fromDate,Date toDate,Long blockLevelId,List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,List<Long> levelValues);
