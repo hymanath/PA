@@ -3182,4 +3182,17 @@ public class WebServiceHandler {
 		    return null;
 		}	
 	}
+	@POST
+	@Path("/getLocationWiseMeetingStatusCount")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(JSONObject jObj){
+		try{			
+			return webServiceHandlerService.getLevelWiseMeetingStatusCounts(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("locationId"),jObj.getLong("locationValue"));		
+		}catch(Exception e){
+			LOG.error("Exception Occured in getLocationWiseCommitteesCount() Method, Exception is ",e);
+			return null;
+		}
+	}
+	
 }
