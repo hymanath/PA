@@ -33,4 +33,9 @@ public interface IRWSNICService {
 	public List<RwsClickVO> getOnclickTargetsAcheievementsDetails(InputVO vo);
 	public List<RwsClickVO> getOnclickStressedTargetsAcheievementsDetails(InputVO vo);
 	public List<RwsClickVO> getOnclickHabitationsupplyDetails(InputVO vo);
+	
+	public List<RwsClickVO> getSchemeDetailsByTypeOfAssestName(InputVO vo);
+	public List<RwsClickVO> getAssetDetailsByAssetType(InputVO vo);
+	public List<RwsClickVO> getHabitationDetailsByStatusByLocationType(InputVO vo);
+	public List<RwsClickVO> getWaterSourceDeatilsLocationWise(InputVO vo);
 }
