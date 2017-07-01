@@ -3173,6 +3173,19 @@
 		                      $("#villageLevelNames").append('<option value="0">SELECT VILLAGE</option>');	
 		                      $("#villageLevelNames").trigger('chosen:updated');
 		                 }
+					if(divId == 'constLevelParliaNames'){ 
+						       $("#constLevelConstNames").empty();
+		                       $("#constLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+		                       $("#constLevelConstNames").trigger('chosen:updated');
+					}
+					if(divId == 'parliamentLevelConstNames'){
+							   $("#mandalLevelConstNames").empty();
+		                       $("#mandalLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+		                       $("#mandalLevelConstNames").trigger('chosen:updated');
+							    $("#mandalLevelMandalNames").empty();
+		                       $("#mandalLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
+		                       $("#mandalLevelMandalNames").trigger('chosen:updated'); 
+					}
 					 $("#"+divId).append('<option value="0">SELECT '+globalLevelObj[divId]+'</option>');
 					for(var i in result){
 						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
