@@ -5,6 +5,7 @@
 @red_color:#FF0000;
 @light_ash_color : #E6E6E6;
 @black_border:1px solid #333;
+@light_ash:#f3f3f3;
 @light_green:#BAFAD9;
 @green_color:#00AF50;
 @pink_color:#FDCDD6;
@@ -465,7 +466,7 @@ h3
 .switch-btn
 {
 	padding: 3px;
-    background-color: @white_color;
+    background-color: @black_color;
     display: inline-block;
 	border-radius: 14px;
 	li
@@ -475,11 +476,11 @@ h3
 		padding: 4px 8px;
 		cursor: pointer;
 		text-transform: uppercase;
-		color:@black_color;
+		color:@white_color;
 		&:hover
 		{
-			background-color: @black_color;
-			color: @white_color;
+			background-color: @white_color;
+			color: @black_color;
 			border-radius: 14px;
 			transition: 0.5s all ease-out;
 			-webkit-transition: 0.5s all ease-out;
@@ -487,8 +488,8 @@ h3
 		}
 		&:focus
 		{
-			background-color: @black_color;
-			color: @white_color;
+			background-color: @white_color;
+			color: @black_color;
 			border-radius: 14px;
 			transition: 0.5s all ease-out;
 			-webkit-transition: 0.5s all ease-out;
@@ -497,8 +498,8 @@ h3
 	}
 	li.active
 	{
-			background-color: @black_color;
-			color: @white_color;
+			background-color: @white_color;
+			color: @black_color;
 			border-radius: 14px;
 			transition: 0.5s all ease-out;
 			-webkit-transition: 0.5s all ease-out;
@@ -1177,5 +1178,24 @@ header
 {
 	&:before {
 		content:"\002b";
+	}
+}
+.table
+{
+	thead
+	{
+		th
+		{
+			background-color:@light_ash;
+		}
+		th[rowspan='2'] , th[rowspan='3'] , th[rowspan='4']
+		{
+			background-color:@light_ash;
+			vertical-align:middle;
+			&:after	
+			{
+				top:35% !important;
+			}
+		}
 	}
 }

@@ -314,7 +314,7 @@ function overviewData(divId)
 	else
 		getNregasOverview(divId);
 }
-function tableView(blockId,theadArr,result)
+function tableView(blockId,theadArr,result,locationType)
 {
 	var tableView='';
 	
@@ -338,7 +338,13 @@ function tableView(blockId,theadArr,result)
 		tableView+='</div>';
 	}
 	$("#"+blockId).html(tableView);	
-	$(".dataTable"+blockId).dataTable();
+	if(locationType == 'constituency' || locationType == 'mandal' || locationType == 'panchayat')
+	{
+		$(".dataTable"+blockId).dataTable();
+	}
+	
+	
+	
 	
 }
 function getNREGSProjectsOverview(blockName)
@@ -647,7 +653,7 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType)
 					str+='</tr>';
 				}
 			}
-			tableView(divIdd,theadArr,str);
+			tableView(divIdd,theadArr,str,locationType);
 		}
 	});
 }
@@ -1642,7 +1648,7 @@ function getNregaLevelsWiseData(divIdd,locationType,theadArr)
 					str+='</tr>';
 				}
 			}
-			tableView(divIdd,theadArr,str);
+			tableView(divIdd,theadArr,str,locationType);
 		}
 	});
 }
