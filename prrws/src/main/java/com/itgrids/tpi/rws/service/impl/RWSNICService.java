@@ -1050,15 +1050,16 @@ public class RWSNICService implements IRWSNICService{
 		 	    				subVo.setConstituencyName(jobj.getString("districtName"));
 		 	    				subVo.setDistrictCode(jobj.getString("districtCode"));
 		 	    				subVo.setDistrictName(jobj.getString("districtName"));
+		 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));		 	    				
 		 	    				subVo.setSacntionedAmount(jobj.getString("sacntionedAmount"));
-		 	    				subVo.setWorkName(jobj.getString("workName"));
-		 	    				subVo.setWorkId(jobj.getString("workId"));
-		 	    				subVo.setSourceCount(jobj.getString("sourceCount"));
-		 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));
 		 	    				subVo.setMandalCode(jobj.getString("mandalCode"));
 		 	    				subVo.setHabitationName(jobj.getString("habitationName"));
-		 	    				subVo.setCompletionDate(jobj.getString("habitationCode"));
 		 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
+		 	    				subVo.setCompletionDate(jobj.getString("habitationCode"));
+		 	    				subVo.setWorkName(jobj.getString("workName"));		 	    				
+		 	    				subVo.setWorkId(jobj.getString("workId"));
+		 	    				//subVo.setSourceCount(jobj.getString("sourceCount"));
+		 	    				
 		 	    				
 		 	    				finalList.add(subVo);
 		 	    			}
@@ -1369,5 +1370,118 @@ public class RWSNICService implements IRWSNICService{
 		}
 		return finalList;
 	}
+	
+	public List<RwsClickVO> getHabitationDetailsByStatusByLocationType(InputVO vo){
+		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
+		try {
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getHabitationDetailsByStatusByLocationType");
+	        String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				
+				if(output != null && !output.isEmpty()){
+					
+					JSONArray finalArray = new JSONArray(output);
+					
+				
+		 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    			
+		 	    			JSONObject firstObj = (JSONObject)finalArray.get(0);
+		 	    			
+		 	    			if(firstObj.getString("status") !="null" && !firstObj.getString("status").trim().isEmpty() && 
+									firstObj.getString("status").trim().equalsIgnoreCase("Success")){
+		 	    				
+		 	    				for(int i=0;i<finalArray.length();i++){
+			 	    				
+			 	    				RwsClickVO subVo = new RwsClickVO();
+			 	    				
+			 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
+			 	    				
+			 	    		        subVo.setDistrictCode(jobj.getString("districtCode"));
+			 	    				subVo.setDistrictName(jobj.getString("districtName"));
+			 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));
+			 	    				subVo.setConstituencyName(jobj.getString("constituencyName"));
+			 	    				subVo.setMandalCode(jobj.getString("mandalCode"));	
+			 	    				subVo.setMandalName(jobj.getString("mandalName"));
+			 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
+			 	    				subVo.setHabitationName(jobj.getString("habitationName")); 	    
+			 	    				subVo.setCoverageStatus(jobj.getString("coverageStatus"));			 	    				
+			 	    				
+			 	    				finalList.add(subVo);
+			 	    			}		 	    				
+		 	    			}		 	    		
+		 	    		}
+					
+				}
+				
+ 	      	}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getAssetDetailsByAssetType() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	
+	public List<RwsClickVO> getWaterSourceDeatilsLocationWise(InputVO vo){
+		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
+		try {
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getWaterSourceDeatilsLocationWise");
+	        String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				
+				if(output != null && !output.isEmpty()){
+					
+					JSONArray finalArray = new JSONArray(output);
+					
+				
+		 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    			
+		 	    			JSONObject firstObj = (JSONObject)finalArray.get(0);
+		 	    			
+		 	    			if(firstObj.getString("status") !="null" && !firstObj.getString("status").trim().isEmpty() && 
+									firstObj.getString("status").trim().equalsIgnoreCase("Success")){
+		 	    				
+		 	    				for(int i=0;i<finalArray.length();i++){
+			 	    				
+			 	    				RwsClickVO subVo = new RwsClickVO();
+			 	    				
+			 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
+			 	    				
+			 	    		        subVo.setDistrictCode(jobj.getString("districtCode"));
+			 	    				subVo.setDistrictName(jobj.getString("districtName"));
+			 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));
+			 	    				subVo.setConstituencyName(jobj.getString("constituencyName"));
+			 	    				subVo.setMandalCode(jobj.getString("mandalCode"));	
+			 	    				subVo.setMandalName(jobj.getString("mandalName"));    
+			 	    				subVo.setSourceCount(jobj.getString("sourceCount"));			 	    				
+			 	    				
+			 	    				finalList.add(subVo);
+			 	    			}		 	    				
+		 	    			}		 	    		
+		 	    		}
+					
+				}
+				
+ 	      	}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getWaterSourceDeatilsLocationWise() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	
 	
 }
