@@ -249,6 +249,14 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AHService/AHOverview";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising of Perinnial Fodder"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FodderService/FodderOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Solid Waste Management"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SWMService/SWMOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Play Fields"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFields/PlayFieldsOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial Ground"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialService/BurialOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgriService/AgriOverview";
 			 
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
 	        
@@ -332,6 +340,14 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AHService/AHData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising of Perinnial Fodder"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FodderService/FodderData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Solid Waste Management"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SWMService/SWMData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Play Fields"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFields/PlayFieldsData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial Ground"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialService/BurialData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgriService/AgriData";
 			 
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
 	        
@@ -534,6 +550,14 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AHService/AHData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising of Perinnial Fodder"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FodderService/FodderData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Solid Waste Management"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SWMService/SWMData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Play Fields"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFields/PlayFieldsData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial Ground"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialService/BurialData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgriService/AgriData";
 			
 			 
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);

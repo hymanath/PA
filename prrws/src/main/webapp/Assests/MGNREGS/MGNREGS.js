@@ -383,7 +383,7 @@ function buildNREGSProjectsOverview(result,blockName)
 				str+='<h4 class="text-center m_top10"><b>NON-CONVERGENCE</b></h4>';
 				for(var i in result)
 				{
-					if(result[i].parameter == "Labour Budget" || result[i].parameter == "Farm Pond" || result[i].parameter == "IHHL" || result[i].parameter == "VERMI" || result[i].parameter == "NTR Jala Siri"){
+					if(result[i].parameter == "Labour Budget" || result[i].parameter == "Farm Pond" || result[i].parameter == "IHHL" || result[i].parameter == "VERMI" || result[i].parameter == "NTR Jala Siri" || result[i].parameter == "Solid Waste Management" || result[i].parameter == "Play fields" || result[i].parameter == "Burial Ground" || result[i].parameter == "Agriculture"){
 						str+='<div class="col-sm-6 m_top10">';
 							if(result[i].percentage < 50)
 							{
@@ -433,7 +433,7 @@ function buildNREGSProjectsOverview(result,blockName)
 				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-PR DEPTS</b></h4>';
 				for(var i in result)
 				{
-					if(result[i].parameter == "CC Roads" || result[i].parameter == "Anganwadi" || result[i].parameter == "Gram Panchayat Buildings" || result[i].parameter == "Mandal buildings" || result[i].parameter == "Solid Waste Management" || result[i].parameter == "Play fields" || result[i].parameter == "Burial Ground" || result[i].parameter == "Agriculture"){
+					if(result[i].parameter == "CC Roads" || result[i].parameter == "Anganwadi" || result[i].parameter == "Gram Panchayat Buildings" || result[i].parameter == "Mandal buildings"){
 						str+='<div class="col-sm-6 m_top10">';
 							if(result[i].percentage < 50)
 							{
