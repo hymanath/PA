@@ -1108,7 +1108,7 @@ public class RWSNICService implements IRWSNICService{
 		 	    				
 		 	    				subVo.setMandalName(jobj.getString("mandalName"));
 		 	    				subVo.setConstituencyName(jobj.getString("districtName"));
-		 	    				subVo.setSourceCount(jobj.getString("sourceCount"));
+		 	    				//subVo.setSourceCount(jobj.getString("sourceCount"));
 		 	    				subVo.setDistrictCode(jobj.getString("districtCode"));
 		 	    				subVo.setDistrictName(jobj.getString("districtName"));
 		 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));
