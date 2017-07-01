@@ -1022,8 +1022,8 @@ public class RWSNICService implements IRWSNICService{
 		try {
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getOnclickWorkDetails");
-			//String authStringEnc = getAuthenticationString("admin","admin@123");
-        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+			String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
         
         	if(response.getStatus() != 200){
  	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1081,8 +1081,8 @@ public class RWSNICService implements IRWSNICService{
 		try {
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getOnclickTargetsAcheievementsDetails");
-	        //String authStringEnc = getAuthenticationString("admin","admin@123");
-        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+	        String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
         
         	if(response.getStatus() != 200){
  	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1138,8 +1138,8 @@ public class RWSNICService implements IRWSNICService{
 		try {
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getOnclickStressedTargetsAcheievementsDetails");
-	        //String authStringEnc = getAuthenticationString("admin","admin@123");
-        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+	        String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
         
         	if(response.getStatus() != 200){
  	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1194,8 +1194,8 @@ public class RWSNICService implements IRWSNICService{
 		try {
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getOnclickHabitationsupplyDetails");
-	        //String authStringEnc = getAuthenticationString("admin","admin@123");
-        	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+	        String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
         
         	if(response.getStatus() != 200){
  	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1241,6 +1241,131 @@ public class RWSNICService implements IRWSNICService{
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Exception Occured in getOnclickHabitationsupplyDetails() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	//01-07-2017 
+	
+	public List<RwsClickVO> getSchemeDetailsByTypeOfAssestName(InputVO vo){
+		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
+		try {
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getSchemeDetailsByTypeOfAssestName");
+	        String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				
+				if(output != null && !output.isEmpty()){
+					
+					JSONArray finalArray = new JSONArray(output);
+					
+				
+		 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    			
+		 	    			JSONObject firstObj = (JSONObject)finalArray.get(0);
+		 	    			
+		 	    			if(firstObj.getString("status") !="null" && !firstObj.getString("status").trim().isEmpty() && 
+									firstObj.getString("status").trim().equalsIgnoreCase("Success")){
+		 	    				
+		 	    				for(int i=0;i<finalArray.length();i++){
+			 	    				
+			 	    				RwsClickVO subVo = new RwsClickVO();
+			 	    				
+			 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
+			 	    			
+			 	    		        subVo.setDistrictCode(jobj.getString("districtCode"));
+			 	    				subVo.setDistrictName(jobj.getString("districtName"));
+			 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));
+			 	    				subVo.setConstituencyName(jobj.getString("constituencyName"));
+			 	    				subVo.setMandalCode(jobj.getString("mandalCode"));	
+			 	    				subVo.setMandalName(jobj.getString("mandalName"));
+			 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
+			 	    				subVo.setHabitationName(jobj.getString("habitationName")); 	    
+			 	    				subVo.setTotalCount(jobj.getString("totalCount"));
+			 	    				subVo.setWorkId(jobj.getString("workId"));
+			 	    				subVo.setWorkName(jobj.getString("workName"));
+			 	    				subVo.setAssetType(jobj.getString("assestType"));
+			 	    				
+			 	    				finalList.add(subVo);
+			 	    			}
+		 	    				
+		 	    			}
+		 	    			
+		 	    		}
+					
+				}
+				
+ 	      	}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getSchemeDetailsByTypeOfAssestName() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	
+	public List<RwsClickVO> getAssetDetailsByAssetType(InputVO vo){
+		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
+		try {
+			
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getAssetDetailsByAssetType");
+	        String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				
+				if(output != null && !output.isEmpty()){
+					
+					JSONArray finalArray = new JSONArray(output);
+					
+				
+		 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    			
+		 	    			JSONObject firstObj = (JSONObject)finalArray.get(0);
+		 	    			
+		 	    			if(firstObj.getString("status") !="null" && !firstObj.getString("status").trim().isEmpty() && 
+									firstObj.getString("status").trim().equalsIgnoreCase("Success")){
+		 	    				
+		 	    				for(int i=0;i<finalArray.length();i++){
+			 	    				
+			 	    				RwsClickVO subVo = new RwsClickVO();
+			 	    				
+			 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
+			 	    			
+			 	    		        subVo.setDistrictCode(jobj.getString("districtCode"));
+			 	    				subVo.setDistrictName(jobj.getString("districtName"));
+			 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));
+			 	    				subVo.setConstituencyName(jobj.getString("constituencyName"));
+			 	    				subVo.setMandalCode(jobj.getString("mandalCode"));	
+			 	    				subVo.setMandalName(jobj.getString("mandalName"));
+			 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
+			 	    				subVo.setHabitationName(jobj.getString("habitationName")); 	    
+			 	    				subVo.setCoverageStatus(jobj.getString("coverageStatus"));			 	    				
+			 	    				subVo.setTotalCount(jobj.getString("totalCount"));
+			 	    				subVo.setAssestCode(jobj.getString("assestCode"));
+			 	    				subVo.setAssestName(jobj.getString("assestName"));
+			 	    				subVo.setAssestCost(jobj.getString("assestCost"));
+			 	    				subVo.setAssetType(jobj.getString("assestType"));
+			 	    				
+			 	    				finalList.add(subVo);
+			 	    			}		 	    				
+		 	    			}		 	    		
+		 	    		}
+					
+				}
+				
+ 	      	}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getAssetDetailsByAssetType() method, Exception - ",e);
 		}
 		return finalList;
 	}
