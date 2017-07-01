@@ -362,12 +362,13 @@ function buildNREGSProjectsOverview(result,blockName)
 	var str='';
 	var sidebarMenu='';
 	str+='<div class="row">';
-		str+='<div class="col-sm-4 bg_color" style="border: 5px solid #fff;">';
-				str+='<h4 class="text-center m_top10"><b>NON-CONVERGENCE</b></h4>';
+		str+='<div class="col-sm-12 bg_color" style="border: 5px solid #fff;">';
+			str+='<h4 class="text-center m_top10"><b>NON-CONVERGENCE</b></h4>';
+			str+='<div class="row">';
 				for(var i in result)
 				{
 					if(result[i].parameter == "Labour Budget" || result[i].parameter == "Farm Pond" || result[i].parameter == "IHHL" || result[i].parameter == "VERMI" || result[i].parameter == "NTR Jala Siri" || result[i].parameter == "Solid Waste Management" || result[i].parameter == "Play fields" || result[i].parameter == "Burial Ground" || result[i].parameter == "Agriculture"){
-						str+='<div class="col-sm-6 m_top10">';
+						str+='<div class="col-sm-2 m_top10">';
 							if(result[i].percentage < 50)
 							{
 								str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
@@ -410,14 +411,16 @@ function buildNREGSProjectsOverview(result,blockName)
 					sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
 					}
 				}
+			str+='</div>';
 		str+='</div>';
 		
-		str+='<div class="col-sm-4 bg_color" style="border: 5px solid #fff;">';
-				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-PR DEPTS</b></h4>';
+		str+='<div class="col-sm-12 bg_color" style="border: 5px solid #fff;">';
+			str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-PR DEPTS</b></h4>';
+			str+='<div class="row">';
 				for(var i in result)
 				{
 					if(result[i].parameter == "CC Roads" || result[i].parameter == "Anganwadi" || result[i].parameter == "Gram Panchayat Buildings" || result[i].parameter == "Mandal buildings"){
-						str+='<div class="col-sm-6 m_top10">';
+						str+='<div class="col-sm-2 m_top10">';
 							if(result[i].percentage < 50)
 							{
 								str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
@@ -460,56 +463,175 @@ function buildNREGSProjectsOverview(result,blockName)
 					sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
 					}
 				}
+			str+='</div>';
 		str+='</div>';
 		
-		str+='<div class="col-sm-4 bg_color" style="border: 5px solid #fff;">';
-				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-OTHER DEPTS</b></h4>';
-				for(var i in result)
-				{
-					if(result[i].parameter == "NTR 90 Days" || result[i].parameter == "Production of Bricks" || result[i].parameter == "Mulbery" || result[i].parameter == "Silk worm" || result[i].parameter == "Cattle drinking water trough" || result[i].parameter == "Raising of Perinnial Fodder"){
-						str+='<div class="col-sm-6 m_top10">';
-							if(result[i].percentage < 50)
+		str+='<div class="col-sm-12 bg_color" style="border: 5px solid #fff;">';
+			str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-OTHER DEPTS</b></h4>';
+			str+='<div class="row">';
+				str+='<div class="col-sm-4">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-danger">Housing</h5>';
+						str+='<div class="row">';	
+							for(var i in result)
 							{
-								str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
-							}else if(result[i].percentage > 50 && result[i].percentage < 80)
-							{
-								str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
-							}else if(result[i].percentage > 80)
-							{
-								str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
-							}
-							if(result[i].parameter.length > 14)
-								str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
-							else
-								str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
-								str+='<small class="text-center">Achieved</small>';
-								str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
-							if(result[i].percentage < 50)
-							{
-								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
-							}else if(result[i].percentage > 50 && result[i].percentage < 80)
-							{
-								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+								if(result[i].parameter == "NTR 90 Days" || result[i].parameter == "Production of Bricks"){
+									str+='<div class="col-sm-6 m_top10">';
+										if(result[i].percentage < 50)
+										{
+											str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
+										}else if(result[i].percentage > 50 && result[i].percentage < 80)
+										{
+											str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
+										}else if(result[i].percentage > 80)
+										{
+											str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
+										}
+										if(result[i].parameter.length > 14)
+											str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
+										else
+											str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
+											str+='<small class="text-center">Achieved</small>';
+											str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+										if(result[i].percentage < 50)
+										{
+											str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+										}else if(result[i].percentage > 50 && result[i].percentage < 80)
+										{
+											str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+											
+										}else if(result[i].percentage > 80)
+										{
+											str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+										}
+											str+='<div class="row">';
+												str+='<div class="col-sm-6 text-center">';
+													str+='<label>Target</label>';
+													str+='<h4>'+result[i].target+'</h4>';
+												str+='</div>';
+												str+='<div class="col-sm-6 text-center">';
+													str+='<label>Generated</label>';
+													str+='<h4>'+result[i].completed+'</h4>';
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+								}
 								
-							}else if(result[i].percentage > 80)
-							{
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
 							}
-								str+='<div class="row">';
-									str+='<div class="col-sm-6 text-center">';
-										str+='<label>Target</label>';
-										str+='<h4>'+result[i].target+'</h4>';
-									str+='</div>';
-									str+='<div class="col-sm-6 text-center">';
-										str+='<label>Generated</label>';
-										str+='<h4>'+result[i].completed+'</h4>';
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
 						str+='</div>';
-					sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
-					}
-				}
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-4">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-danger">Seri Culture</h5>';
+						str+='<div class="row">';	
+							for(var i in result)
+							{
+								if(result[i].parameter == "Mulbery" || result[i].parameter == "Silk worm" ){
+									str+='<div class="col-sm-6 m_top10">';
+										if(result[i].percentage < 50)
+										{
+											str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
+										}else if(result[i].percentage > 50 && result[i].percentage < 80)
+										{
+											str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
+										}else if(result[i].percentage > 80)
+										{
+											str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
+										}
+										if(result[i].parameter.length > 14)
+											str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
+										else
+											str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
+											str+='<small class="text-center">Achieved</small>';
+											str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+										if(result[i].percentage < 50)
+										{
+											str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+										}else if(result[i].percentage > 50 && result[i].percentage < 80)
+										{
+											str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+											
+										}else if(result[i].percentage > 80)
+										{
+											str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+										}
+											str+='<div class="row">';
+												str+='<div class="col-sm-6 text-center">';
+													str+='<label>Target</label>';
+													str+='<h4>'+result[i].target+'</h4>';
+												str+='</div>';
+												str+='<div class="col-sm-6 text-center">';
+													str+='<label>Generated</label>';
+													str+='<h4>'+result[i].completed+'</h4>';
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+								}
+								
+							}
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-4">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-danger">Animal Husbendary</h5>';
+						str+='<div class="row">';	
+							for(var i in result)
+							{
+								if(result[i].parameter == "Cattle drinking water trough" || result[i].parameter == "Raising of Perinnial Fodder"){
+									str+='<div class="col-sm-6 m_top10">';
+										if(result[i].percentage < 50)
+										{
+											str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
+										}else if(result[i].percentage > 50 && result[i].percentage < 80)
+										{
+											str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
+										}else if(result[i].percentage > 80)
+										{
+											str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
+										}
+										if(result[i].parameter.length > 14)
+											str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
+										else
+											str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
+											str+='<small class="text-center">Achieved</small>';
+											str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+										if(result[i].percentage < 50)
+										{
+											str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+										}else if(result[i].percentage > 50 && result[i].percentage < 80)
+										{
+											str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+											
+										}else if(result[i].percentage > 80)
+										{
+											str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+										}
+											str+='<div class="row">';
+												str+='<div class="col-sm-6 text-center">';
+													str+='<label>Target</label>';
+													str+='<h4>'+result[i].target+'</h4>';
+												str+='</div>';
+												str+='<div class="col-sm-6 text-center">';
+													str+='<label>Generated</label>';
+													str+='<h4>'+result[i].completed+'</h4>';
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+								}
+								
+							}
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	$("#projectsOverview").html(str);
