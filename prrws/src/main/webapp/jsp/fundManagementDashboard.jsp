@@ -321,7 +321,13 @@
 										</ul>
 									</div>
 								</div>
-								<div class="row">
+								<div class="row selectboxsShowHide m_top10">
+									<div class="col-sm-3 distLevelCls" >
+										<select class="form-control chosenSelect" id="distLevelDistrictNames" >
+										</select>
+									</div>
+								</div>
+								<div class="row m_top10">
 									<div class="col-sm-12">
 										<!-- Tab panes -->
 										<div class="tab-content">
@@ -343,11 +349,7 @@
 															</li>
 														</ul>
 													</div>
-													<div class="col-sm-3 distLevelCls" >
-														<select class="form-control chosenSelect" id="distLevelDistrictNames" >
-														</select>
-													</div>
-													<div class="col-sm-12 m_top10">
+													<div class="col-sm-12 m_top10 ">
 														<div id="distLevlOvervw"></div>
 													</div>
 												</div>
@@ -375,7 +377,6 @@
 															<div class="col-sm-2 pull-right">
 																<select class="form-control chosenSelect compMultiFinancialYear multiDistYearCls"></select>
 															</div>
-															
 														</div>
 														<div id="comparionDistLevlOvervwTable" class="m_top10"></div>
 													</div>
@@ -416,7 +417,22 @@
 										</ul>
 									</div>
 								</div>
-								<div class="row">
+								<div class="row selectboxsShowHide m_top10">
+										<div class="col-sm-3 constiLevelDistCls" >
+											<select class="form-control chosenSelect" id="constLevelDistNames" >
+												<option value="0"> SELECT DISTRICT</option>
+											</select>
+										</div>
+										<div class="col-sm-3 parlaiLevelDistCls" >
+											<select class="form-control chosenSelect" id="constLevelParliaNames" >
+											</select>
+										</div>
+										<div class="col-sm-3 constiLevelCls" >
+											<select class="form-control chosenSelect" id="constLevelConstNames" >
+											</select>
+										</div>
+								</div>
+								<div class="row m_top10">
 									<div class="col-sm-12">
 										<div class="tab-content">
 											<div role="tabpanel" class="tab-pane " id="consLevelGraph">
@@ -436,19 +452,6 @@
 																Z-A
 															</li>
 														</ul>
-													</div>
-													<div class="col-sm-3 constiLevelDistCls" >
-														<select class="form-control chosenSelect" id="constLevelDistNames" >
-															<option value="0"> SELECT DISTRICT</option>
-														</select>
-													</div>
-													<div class="col-sm-3 parlaiLevelDistCls" >
-														<select class="form-control chosenSelect" id="constLevelParliaNames" >
-														</select>
-													</div>
-													<div class="col-sm-3 constiLevelCls" >
-														<select class="form-control chosenSelect" id="constLevelConstNames" >
-														</select>
 													</div>
 												</div>
 												<div class="row">
@@ -522,7 +525,26 @@
 										</ul>      
 									</div>
 								</div>
-								<div class="row">
+								<div class="row selectboxsShowHide m_top10">
+									<div class="col-sm-3 mandalLevelDistCls" >
+										<select class="form-control chosenSelect" id="mandalLevelDistNames" >
+											<option value="0"> SELECT DISTRICT</option>
+										</select>
+									</div>
+									<div class="col-sm-3 levelparliamentConstiCls" >
+										<select class="form-control chosenSelect" id="parliamentLevelConstNames" >
+										</select>
+									</div>
+									<div class="col-sm-3 levelmandalConstiCls" >
+										<select class="form-control chosenSelect" id="mandalLevelConstNames" >
+										</select>
+									</div>
+									<div class="col-sm-3 mandalLevelCls" >
+										<select class="form-control chosenSelect" id="mandalLevelMandalNames" >
+										</select>
+									</div>
+								</div>
+								<div class="row m_top10">
 									<div class="col-sm-12">
 										<div class="tab-content">
 											<div role="tabpanel" class="tab-pane " id="mandalLevelGraph">
@@ -542,23 +564,6 @@
 																Z-A
 															</li>
 														</ul>
-													</div>
-													<div class="col-sm-3 mandalLevelDistCls" >
-														<select class="form-control chosenSelect" id="mandalLevelDistNames" >
-															<option value="0"> SELECT DISTRICT</option>
-														</select>
-													</div>
-													<div class="col-sm-3 levelparliamentConstiCls" >
-														<select class="form-control chosenSelect" id="parliamentLevelConstNames" >
-														</select>
-													</div>
-													<div class="col-sm-3 levelmandalConstiCls" >
-														<select class="form-control chosenSelect" id="mandalLevelConstNames" >
-														</select>
-													</div>
-													<div class="col-sm-3 mandalLevelCls" >
-														<select class="form-control chosenSelect" id="mandalLevelMandalNames" >
-														</select>
 													</div>
 												</div>
 												<div class="row">
@@ -633,7 +638,30 @@
 										</ul>
 									</div>
 								</div>
-								<div class="row">
+								<div class="row selectboxsShowHide m_top10">
+									<div class="col-sm-2 villageLevelDistCls" >
+										<select class="form-control chosenSelect" id="villageLevelDistNames" >
+											<option value="0"> SELECT DISTRICT</option>
+										</select>
+									</div>
+									<div class="col-sm-2 villageLevelParliCls" >
+										<select class="form-control chosenSelect" id="villageLeveParliNames" >
+										</select>
+									</div>
+									<div class="col-sm-2 villageLevelConstiCls" >
+										<select class="form-control chosenSelect" id="villageLevelConstNames" >
+										</select>
+									</div>
+									<div class="col-sm-2 villageLevelMandalCls" >
+										<select class="form-control chosenSelect" id="villageLevelMandalNames" >
+										</select>
+									</div>
+									<div class="col-sm-2 villageLevelCls" >
+										<select class="form-control chosenSelect" id="villageLevelNames" >
+										</select>
+									</div>
+								</div>
+								<div class="row m_top10">
 									<div class="col-sm-12">
 										<div class="tab-content">
 											<div role="tabpanel" class="tab-pane " id="villageLevelGraph">
@@ -653,23 +681,6 @@
 																Z-A
 															</li>
 														</ul>
-													</div>
-													<div class="col-sm-2 villageLevelDistCls" >
-														<select class="form-control chosenSelect" id="villageLevelDistNames" >
-															<option value="0"> SELECT DISTRICT</option>
-														</select>
-													</div>
-													<div class="col-sm-2 villageLevelConstiCls" >
-														<select class="form-control chosenSelect" id="villageLevelConstNames" >
-														</select>
-													</div>
-													<div class="col-sm-2 villageLevelMandalCls" >
-														<select class="form-control chosenSelect" id="villageLevelMandalNames" >
-														</select>
-													</div>
-													<div class="col-sm-2 villageLevelCls" >
-														<select class="form-control chosenSelect" id="villageLevelNames" >
-														</select>
 													</div>
 												</div>
 												<div class="row">
