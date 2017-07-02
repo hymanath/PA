@@ -17,7 +17,7 @@
 			tabBlocks('constituencyBlockId','constituency');
 			tabBlocks('mandalBlockId','mandal');
 			responsiveTabs();
-			getHabitationCoverageByStatusByLocationType('state','','graph');
+			getHabitationCoverageByStatusByLocationType('state','','graph',"","","");
 			getLabTestDetails();
 			getHabitationSupplyDetails();
 			getSchemesDetails();
@@ -51,7 +51,7 @@
 			});
 		}
 		
-		function getHabitationCoverageByStatusByLocationType(locationType,divId,type)
+		function getHabitationCoverageByStatusByLocationType(locationType,divId,type,filterType,filterValue,districtValue)
 		{
 			if(type=="graph"){
 				$("#totalValues").html(spinner);
@@ -69,8 +69,9 @@
 				locationType:locationType,
 				year:financialVal,
 				stressedHabitationYear:financialVal,
-				filterType:"",
-				filterValue:""
+				filterType:filterType,
+				filterValue:filterValue,
+				districtValue:districtValue
 			}
 			$.ajax({
 				url: 'getHabitationCoverageByStatusByLocationType',
@@ -1665,7 +1666,7 @@
 		for(var i in blocksArr)
 		{
 			if(blocksArr[i].id == "habitation")
-			getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+			getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 			
 		}
 		if(blockId == 'constituencyBlockId')
@@ -2053,7 +2054,7 @@
 			if(blockName == "state"){
 				emptyCheckState();
 				if(id == "stateBlockIdhabitation"){
-					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 				}else if(id == "stateBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
 				}else if(id == "stateBlockIdjalavani"){
@@ -2063,7 +2064,7 @@
 			}else if(blockName == "district"){
 				emptyCheckDistrict();
 				if(id == "districtBlockIdhabitation"){
-					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 				}else if(id == "districtBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
 				}else if(id == "districtBlockIdjalavani"){
@@ -2073,7 +2074,7 @@
 			}else if(blockName == "constituency"){
 				emptyCheckConstituency();
 				if(id == "constituencyBlockIdhabitation"){
-					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 				}else if(id=="constituencyBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
 				}else if(id=="districtBlockIdjalavani"){
@@ -2082,7 +2083,7 @@
 			}else if(blockName == "mandal"){
 				emptyCheckMandal();
 				if(id == "mandalBlockIdhabitation"){
-					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 				}else if(id=="mandalBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
 				}else if(id=="districtBlockIdjalavani"){
@@ -2143,7 +2144,7 @@
 			if(blockName == "state"){
 				emptyCheckState();
 				if(id == "stateBlockIdhabitation"){
-					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 				}else if(id == "stateBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
 				}else if(id == "stateBlockIdjalavani"){
@@ -2153,7 +2154,7 @@
 			}else if(blockName == "district"){
 				emptyCheckDistrict();
 				if(id == "districtBlockIdhabitation"){
-					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 				}else if(id == "districtBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
 				}else if(id == "districtBlockIdjalavani"){
@@ -2163,7 +2164,7 @@
 			}else if(blockName == "constituency"){
 				emptyCheckConstituency();
 				if(id == "constituencyBlockIdhabitation"){
-					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 				}else if(id=="constituencyBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
 				}else if(id=="districtBlockIdjalavani"){
@@ -2172,7 +2173,7 @@
 			}else if(blockName == "mandal"){
 				emptyCheckMandal();
 				if(id == "mandalBlockIdhabitation"){
-					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table');
+					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 				}else if(id=="mandalBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table');
 				}else if(id=="districtBlockIdjalavani"){
@@ -2188,7 +2189,7 @@
 			$(".menu-data-cls").hide();
 		});
 		
-		function getLocationBasedOnSelection(locationType,year,filterType,filterValue,districtValue){
+		function getLocationBasedOnSelection(locationType,year,filterType,filterValue,districtValue,callFrom){
 			var json = {
 				fromDateStr:glStartDate,
 				toDateStr:glEndDate,
@@ -2218,11 +2219,17 @@
 				}
 				
 				if(locationType == "district"){
-					$("#chosendistrictSelectmandalBlockId").html(str);
-					$("#chosendistrictSelectmandalBlockId").trigger("chosen:updated");
+					$("#chosendistrictSelectmandalBlockId,#chosendistrictSelectconstituencyBlockId").html(str);
+					$("#chosendistrictSelectmandalBlockId,#chosendistrictSelectconstituencyBlockId").trigger("chosen:updated");
 				}else if(locationType == "constituency"){
-					$("#chosenconstituencySelectmandalBlockId").html(str);
-					$("#chosenconstituencySelectmandalBlockId").trigger("chosen:updated");
+					if(callFrom == "const"){
+						$("#chosenconstituencySelectconstituencyBlockId").html(str);
+						$("#chosenconstituencySelectconstituencyBlockId").trigger("chosen:updated");
+					}else if(callFrom == "mandal"){
+						$("#chosenconstituencySelectmandalBlockId").html(str);
+						$("#chosenconstituencySelectmandalBlockId").trigger("chosen:updated");
+					}
+					
 				}else if(locationType == "mandal"){
 					$("#chosenmandalSelectmandalBlockId").html(str);
 					$("#chosenmandalSelectmandalBlockId").trigger("chosen:updated");
@@ -2490,14 +2497,42 @@
 			onloadCalls();	
 		});
    }
-  $(document).on("change","#chosendistrictSelectmandalBlockId",function(){
+   
+	$(document).on("change","#chosendistrictSelectconstituencyBlockId",function(){
+	   var distId = $(this).val();
+	   var financialVal =$("#financialYearId").val();
+	   if(distId == 0){
+		   $("#chosenconstituencySelectconstituencyBlockId").html("");
+		   $("#chosenconstituencySelectconstituencyBlockId").trigger("chosen:updated");
+		   getHabitationCoverageByStatusByLocationType('constituency',blocksArr,'table',"","","");
+	   }else{
+		   distId = distId < 9?"0"+distId:distId;
+		   getLocationBasedOnSelection("constituency",financialVal,"district",distId,"","const");
+			getHabitationCoverageByStatusByLocationType('constituency',blocksArr,'table',"district",distId,"");
+	   }
+	});
+	
+	$(document).on("change","#chosenconstituencySelectconstituencyBlockId",function(){
+		var	constId = $(this).val();
+		var distId = $("#chosendistrictSelectconstituencyBlockId").val()<9?"0"+$("#chosendistrictSelectconstituencyBlockId").val():$("#chosendistrictSelectconstituencyBlockId").val();
+		if(constId == 0){
+			getHabitationCoverageByStatusByLocationType('constituency',blocksArr,'table',"district",distId,"");
+		}else{
+			getHabitationCoverageByStatusByLocationType('constituency',blocksArr,'table',"constituency",constId,"");
+		}
+	});
+	
+	$(document).on("change","#chosendistrictSelectmandalBlockId",function(){
 		var distId = $("#chosendistrictSelectmandalBlockId").val();
 		var financialVal =$("#financialYearId").val();
 		if(distId == 0){
 			$("#chosenconstituencySelectmandalBlockId,#chosenmandalSelectmandalBlockId").html('');
+			$("#chosenconstituencySelectmandalBlockId,#chosenmandalSelectmandalBlockId").trigger("chosen:updated");
+			getHabitationCoverageByStatusByLocationType('mandal',blocksArr,'table',"","","");
 		}else{
 			distId = distId < 9?"0"+distId:distId;
-			getLocationBasedOnSelection("constituency",financialVal,"district",distId,"");
+			getLocationBasedOnSelection("constituency",financialVal,"district",distId,"","mandal");
+			getHabitationCoverageByStatusByLocationType('mandal',blocksArr,'table',"district",distId,"");
 		} 	
 	});
 	
@@ -2507,10 +2542,26 @@
 		var distId = $("#chosendistrictSelectmandalBlockId").val()<9?"0"+$("#chosendistrictSelectmandalBlockId").val():$("#chosendistrictSelectmandalBlockId").val();
 		if(constId == 0){
 			$("#chosenmandalSelectmandalBlockId").html('');
+			$("#chosenmandalSelectmandalBlockId").trigger("chosen:updated");
+			getHabitationCoverageByStatusByLocationType('mandal',blocksArr,'table',"district",distId,"");
 		}else{
-			getLocationBasedOnSelection("mandal",financialVal,"constituency",constId,distId);
+			getLocationBasedOnSelection("mandal",financialVal,"constituency",constId,distId,"mandal");
+			getHabitationCoverageByStatusByLocationType('mandal',blocksArr,'table',"constituency",constId,"");
 		}
 	});
+	
+	$(document).on("change","#chosenmandalSelectmandalBlockId",function(){
+		var mandalId = $(this).val();
+		var constId = $("#chosenconstituencySelectmandalBlockId").val();
+		var distId = $("#chosendistrictSelectmandalBlockId").val()<9?"0"+$("#chosendistrictSelectmandalBlockId").val():$("#chosendistrictSelectmandalBlockId").val();
+		if(mandalId == 0){
+			getHabitationCoverageByStatusByLocationType('mandal',blocksArr,'table',"constituency",constId,"");
+		}else{
+			getHabitationCoverageByStatusByLocationType('mandal',blocksArr,'table',"mandal",mandalId,distId);
+		}
+		
+	});
+	
 	$(document).on("change","#financialYearId",function(){
 		onloadCalls();
 	});
