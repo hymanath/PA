@@ -1,5 +1,5 @@
 	onLoadInitialisations();
-	var globalLevelObj =  {"distLevelDistrictNames":"DISTRICT","constLevelDistNames":"DISTRICT","mandalLevelDistNames":"DISTRICT","constLevelConstNames":"CONSTITUENCY","mandalLevelConstNames":"CONSTITUENCY","mandalLevelMandalNames":"MANDAL","villageLevelDistNames":"DISTRICT",'villageLevelConstNames':'CONSTITUENCY','villageLevelMandalNames':'MANDAL','villageLevelNames':'VILLAGE','constLevelParliaNames':'PARLIAMENT','parliamentLevelConstNames':'PARLIAMENT'};
+	var globalLevelObj =  {"distLevelDistrictNames":"DISTRICT","constLevelDistNames":"DISTRICT","mandalLevelDistNames":"DISTRICT","constLevelConstNames":"CONSTITUENCY","mandalLevelConstNames":"CONSTITUENCY","mandalLevelMandalNames":"MANDAL","villageLevelDistNames":"DISTRICT",'villageLevelConstNames':'CONSTITUENCY','villageLevelMandalNames':'MANDAL','villageLevelNames':'VILLAGE','constLevelParliaNames':'PARLIAMENT','parliamentLevelConstNames':'PARLIAMENT','villageLeveParliNames':'PARLIAMENT'};
 	var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 	var glEndDate = moment().add(10, 'years').endOf('year').format("DD/MM/YYYY");
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
@@ -132,6 +132,10 @@
 			$("#constLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');
 			$("#constLevelConstNames").trigger('chosen:updated');
 			
+			$("#constLevelParliaNames").html('');
+			$("#constLevelParliaNames").append('<option value="0">SELECT PARLIAMENT</option>');
+			$("#constLevelParliaNames").trigger('chosen:updated');
+			
 			if(blockType == 'overview')
 			{
 				$(".comaprisionViewShow").show();
@@ -195,6 +199,10 @@
 			$("#mandalLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');
 		    $("#mandalLevelMandalNames").trigger('chosen:updated');
 			
+			$("#parliamentLevelConstNames").html(''); 
+			$("#parliamentLevelConstNames").append('<option value="0">SELECT PARLIAMENT</option>');
+		    $("#parliamentLevelConstNames").trigger('chosen:updated');
+			
 			if(blockType == 'overview'){
 				$(".comaprisionViewShow").show();
 				compareFundsBetweenFinancialYears(5,'comparionMandalLevlOvervwTable')
@@ -225,6 +233,10 @@
 			$("#villageLevelNames").append('<option value="0">SELECT VILLAGE</option>');
 		    $("#villageLevelNames").trigger('chosen:updated');
 			
+			$("#villageLeveParliNames").html(''); 
+			$("#villageLeveParliNames").append('<option value="0">SELECT PARLIAMENT</option>');
+		    $("#villageLeveParliNames").trigger('chosen:updated');
+			
 			if(blockType == 'overview'){
 				$(".comaprisionViewShow").show();
 				compareFundsBetweenFinancialYears(6,'comparionVillageLevlOvervwTable')
@@ -241,26 +253,8 @@
 			}
 		}
 	});
-	$(document).on('change','.constiLevelDistCls',function(){
-		var locationScopeId = $("#constLevelDistNames").val();
-	    getAllSubLocationsBySuperLocationId(locationScopeId,'constLevelParliaNames',4);
-	});
-	$(document).on('change','.parlaiLevelDistCls',function(){
-		var locationScopeId = $("#constLevelParliaNames").val();
-	    getAllSubLocationsBySuperLocationId(locationScopeId,'constLevelConstNames',4);
-	});
-	$(document).on('change','.mandalLevelDistCls',function(){
-		var locationScopeId = $("#mandalLevelDistNames").val();
-	    getAllSubLocationsBySuperLocationId(locationScopeId,'parliamentLevelConstNames',5);
-	});
-	$(document).on('change','.levelparliamentConstiCls',function(){
-		var locationScopeId = $("#parliamentLevelConstNames").val();
-	    getAllSubLocationsBySuperLocationId(locationScopeId,'mandalLevelConstNames',5);
-	});
-	$(document).on('change','.levelmandalConstiCls',function(){
-		var locationScopeId = $("#mandalLevelConstNames").val();
-	    getAllSubLocationsBySuperLocationId(locationScopeId,'mandalLevelMandalNames',5);
-	});
+	
+	
 	/*$(document).on('change','.levelmandalConstiCls',function(){
 		var locationScopeId = $("#mandalLevelConstNames").val();
 	    getAllSubLocationsBySuperLocationId(locationScopeId,'mandalLevelMandalNames',5);
@@ -681,6 +675,7 @@
 		var villageLevelConstName = $("#villageLevelConstNames").find('option:selected').text();
 		var villageLevelManName = $("#villageLevelMandalNames").find('option:selected').text();
 		var villageLevelVillName = $("#villageLevelNames").find('option:selected').text();
+		var villageLevelparliName = $("#villageLeveParliNames").find('option:selected').text();
 		
 		if(locationId == null || locationId == 0){
 			levelValues =[];
@@ -689,49 +684,50 @@
 			var locationLevelId= tempIdStr.substring(0,1);
 		}
 		if(type == 'scheme' || type == 'deptscheme'){
-				if(levelId ==3){
-					if(districtName != "SELECT DISTRICT"){
-						str+='<h4 class="m_top10">District - '+districtName+'</h4>';
-					}
-				
-				
-			}else if(levelId ==4){
-				if(constLevelParliamentName == "SELECT PARLIAMENT" || constLevelConstName =="SELECT CONSTITUENCY"){
-					if(constLevelDistName != "SELECT DISTRICT"){
-					str+='<h4 class="m_top10">District - '+constLevelDistName+'</h4>';
-					}
+					if(levelId ==3){
+						if(districtName != "SELECT DISTRICT"){
+							str+='<h4 class="m_top10">District - '+districtName+'</h4>';
+						}
+					}else if(levelId ==4){
 					
-				}else if(constLevelConstName =="SELECT CONSTITUENCY"){
-					str+='<h4 class="m_top10">District - <i>'+constLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+constLevelParliamentName+'</i></h4>';
-				}else{
-					str+='<h4 class="m_top10">District - <i>'+constLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+constLevelParliamentName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+constLevelConstName+'</i></h4>';
-				}
-				
-			}else if(levelId ==5){
-				if(mandalLevelConstName =="SELECT CONSTITUENCY" && mandalLevelManName =="SELECT MANDAL"){
-					if(mandalLevelDistName != "SELECT DISTRICT"){
-					str+='<h4 class="m_top10">District - '+mandalLevelDistName+'</h4>';
+						if(constLevelParliamentName == "SELECT PARLIAMENT" && constLevelConstName =="SELECT CONSTITUENCY"){
+							if(constLevelDistName != "SELECT DISTRICT"){
+							str+='<h4 class="m_top10">District - '+constLevelDistName+'</h4>';
+							}
+							
+						}else if(constLevelConstName == "SELECT CONSTITUENCY"){
+							str+='<h4 class="m_top10">District - <i>'+constLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+constLevelParliamentName+'</i></h4>';
+						}else{
+							str+='<h4 class="m_top10">District - <i>'+constLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+constLevelParliamentName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+constLevelConstName+'</i></h4>';
+						}
+						
+					}else if(levelId ==5){
+						if(mandalLevelParliamentName == "SELECT PARLIAMENT" &&  mandalLevelConstName =="SELECT CONSTITUENCY" && mandalLevelManName =="SELECT MANDAL"){
+							if(mandalLevelDistName != "SELECT DISTRICT"){
+								str+='<h4 class="m_top10">District - '+mandalLevelDistName+'</h4>';
+							}
+						}else if(mandalLevelConstName =="SELECT CONSTITUENCY" && mandalLevelManName =="SELECT MANDAL"){
+								str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+mandalLevelParliamentName+'</i></h4>';
+						}else if(mandalLevelManName == "SELECT MANDAL"){
+								str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+mandalLevelParliamentName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>Constituency - <i>'+mandalLevelConstName+'</i></h4>';
+						}else{
+								str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+mandalLevelParliamentName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>Constituency - <i>'+mandalLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+mandalLevelManName+'</i></h4>';
+						}
+					}else if(levelId ==6){
+						if(villageLevelparliName == "SELECT PARLIAMENT" && villageLevelConstName =="SELECT CONSTITUENCY" && villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
+							if(villageLevelDistName != "SELECT DISTRICT"){
+							str+='<h4 class="m_top10">District - '+villageLevelDistName+'</h4>';
+							}
+							
+						}else if(villageLevelConstName =="SELECT CONSTITUENCY" && villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
+							str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+villageLevelparliName+'</i></h4>';
+						}else if(villageLevelVillName == "SELECT VILLAGE"){
+							str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+villageLevelparliName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;constituency - <i>'+villageLevelConstName+'</i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i></h4>';
+						}
+						else{
+							str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+villageLevelparliName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Village - <i>'+villageLevelVillName+'</i></h4>';
+						}
 					}
-					
-				}else if(mandalLevelManName =="SELECT MANDAL"){
-					str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i></h4>';
-				}else{
-					str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+mandalLevelManName+'</i></h4>';
-				}
-			}else if(levelId ==6){
-				if(villageLevelConstName =="SELECT CONSTITUENCY" && villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
-					if(villageLevelDistName != "SELECT DISTRICT"){
-					str+='<h4 class="m_top10">District - '+villageLevelDistName+'</h4>';
-					}
-					
-				}else if(villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
-					str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i></h4>';
-				}else if(villageLevelVillName == "SELECT VILLAGE"){
-					str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i></h4>';
-				}else{
-					str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Village - <i>'+villageLevelVillName+'</i></h4>';
-				}
-			}
 		}
 		
 		if(displayType == 'selectBox')
@@ -741,43 +737,46 @@
 						if(districtName != "SELECT DISTRICT"){
 							str+='<h4 class="m_top10">District - '+districtName+'</h4>';
 						}
-					
-					
-				}else if(levelId ==4){
-					if(constLevelConstName =="SELECT CONSTITUENCY"){
-						if(constLevelDistName != "SELECT DISTRICT"){
-						str+='<h4 class="m_top10">District - '+constLevelDistName+'</h4>';
+					}else if(levelId ==4){
+				
+						if(constLevelParliamentName == "SELECT PARLIAMENT" && constLevelConstName =="SELECT CONSTITUENCY"){
+							if(constLevelDistName != "SELECT DISTRICT"){
+							str+='<h4 class="m_top10">District - '+constLevelDistName+'</h4>';
+							}
+							
+						}else if(constLevelConstName == "SELECT CONSTITUENCY"){
+							str+='<h4 class="m_top10">District - <i>'+constLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+constLevelParliamentName+'</i></h4>';
+						}else{
+							str+='<h4 class="m_top10">District - <i>'+constLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+constLevelParliamentName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+constLevelConstName+'</i></h4>';
 						}
-						
-					}else{
-						str+='<h4 class="m_top10">District - <i>'+constLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+constLevelConstName+'</i></h4>';
-					}
 					
-				}else if(levelId ==5){
-					if(mandalLevelConstName =="SELECT CONSTITUENCY" && mandalLevelManName =="SELECT MANDAL"){
-						if(mandalLevelDistName != "SELECT DISTRICT"){
-						str+='<h4 class="m_top10">District - '+mandalLevelDistName+'</h4>';
+					}else if(levelId ==5){
+						if(mandalLevelParliamentName == "SELECT PARLIAMENT" &&  mandalLevelConstName =="SELECT CONSTITUENCY" && mandalLevelManName =="SELECT MANDAL"){
+							if(mandalLevelDistName != "SELECT DISTRICT"){
+								str+='<h4 class="m_top10">District - '+mandalLevelDistName+'</h4>';
+							}
+						}else if(mandalLevelConstName =="SELECT CONSTITUENCY" && mandalLevelManName =="SELECT MANDAL"){
+								str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+mandalLevelParliamentName+'</i></h4>';
+						}else if(mandalLevelManName == "SELECT MANDAL"){
+								str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+mandalLevelParliamentName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>Constituency - <i>'+mandalLevelConstName+'</i></h4>';
+						}else{
+								str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+mandalLevelParliamentName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>Constituency - <i>'+mandalLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+mandalLevelManName+'</i></h4>';
 						}
-						
-					}else if(mandalLevelManName =="SELECT MANDAL"){
-						str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i></h4>';
-					}else{
-						str+='<h4 class="m_top10">District - <i>'+mandalLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+mandalLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+mandalLevelManName+'</i></h4>';
-					}
-				}else if(levelId ==6){
-					if(villageLevelConstName =="SELECT CONSTITUENCY" && villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
-						if(villageLevelDistName != "SELECT DISTRICT"){
-						str+='<h4 class="m_top10">District - '+villageLevelDistName+'</h4>';
+					}else if(levelId ==6){
+							if(villageLevelparliName == "SELECT PARLIAMENT" && villageLevelConstName =="SELECT CONSTITUENCY" && villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
+								if(villageLevelDistName != "SELECT DISTRICT"){
+								str+='<h4 class="m_top10">District - '+villageLevelDistName+'</h4>';
+								}
+								
+							}else if(villageLevelConstName =="SELECT CONSTITUENCY" && villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
+								str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+villageLevelparliName+'</i></h4>';
+							}else if(villageLevelVillName == "SELECT VILLAGE"){
+								str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+villageLevelparliName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;constituency - <i>'+villageLevelConstName+'</i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i></h4>';
+							}
+						else{
+							str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Parliament - <i>'+villageLevelparliName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Village - <i>'+villageLevelVillName+'</i></h4>';
 						}
-						
-					}else if(villageLevelManName =="SELECT MANDAL" && villageLevelVillName == "SELECT VILLAGE"){
-						str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i></h4>';
-					}else if(villageLevelVillName == "SELECT VILLAGE"){
-						str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i></h4>';
-					}else{
-						str+='<h4 class="m_top10">District - <i>'+villageLevelDistName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Constituency - <i>'+villageLevelConstName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Mandal - <i>'+villageLevelManName+'</i><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;Village - <i>'+villageLevelVillName+'</i></h4>';
 					}
-				}
 			}
 			str+='<div id="accordion'+divId+'">';
 			
@@ -1655,7 +1654,7 @@
 							},
 							stackLabels: {
 								useHTML: true,
-								//align: 'left',
+								align: 'left',
 								enabled: true,
 								qTotals: totalCountArr,
 								style: {
@@ -1663,8 +1662,8 @@
 									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 								},
 								formatter: function() { 
-									return '<span><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
-									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+									return '<span style="top:30px; position: absolute;"><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
+									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.qTotals[this.x]+'%'+' '+'('+this.total+')</span>';
 									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
 									//return (this.total);
 								} 
@@ -1860,7 +1859,7 @@
 							},
 							stackLabels: {
 								useHTML: true,
-								//align: 'left',
+								align: 'left',
 								enabled: true,
 								qTotals: totalCountArr,
 								style: {
@@ -1868,7 +1867,7 @@
 									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 								},
 								formatter: function() {
-									return '<span><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
+									return '<span style="top:30px; position: absolute;"><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
 									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
 									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
 									//return (this.total);
@@ -2085,7 +2084,7 @@
 							},
 							stackLabels: {
 								useHTML: true,
-								//align: 'left',
+								align: 'left',
 								enabled: true,
 								qTotals: totalCountArr,
 								style: {
@@ -2093,7 +2092,7 @@
 									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 								},
 								formatter: function() {
-									return '<span><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
+									return '<span style="top:30px; position: absolute;"><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
 									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
 									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
 									//return (this.total);
@@ -2301,7 +2300,7 @@
 						},
 						stackLabels: {
 						  useHTML: true,
-						  //align: 'left',
+						  align: 'left',
 						  qTotals: qTotalArr,
 						  enabled: true,
 						  style: {
@@ -2309,7 +2308,7 @@
 							color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 						  },
 						  formatter: function() {
-							return '<span><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
+							return '<span style="top:30px; position: absolute;"><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
 							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
 							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
 							//return (this.total);
@@ -2526,7 +2525,7 @@
 								},
 								stackLabels: {
 									useHTML: true,
-									//align: 'left',
+									align: 'left',
 									qTotals: qTotalArr,
 									enabled: true,
 									style: {
@@ -2534,7 +2533,7 @@
 										color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 									},
 									formatter: function() {
-										return '<span><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
+										return '<span style="top:30px; position: absolute;"><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
 										//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
 										//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
 										//return (this.total);
@@ -3158,34 +3157,6 @@
 			},
 			success : function(result){   
 				if(result !=null && result.length>0){
-					if(divId == 'mandalLevelConstNames'){  
-		                       $("#mandalLevelMandalNames").empty();
-		                       $("#mandalLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
-		                       $("#mandalLevelMandalNames").trigger('chosen:updated');
-		                 }
-					if(divId == 'villageLevelConstNames'){  
-		                       $("#villageLevelMandalNames").empty();
-		                       $("#villageLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
-		                       $("#villageLevelMandalNames").trigger('chosen:updated');
-		                 }
-					if(divId == 'villageLevelMandalNames'){  
-		                      $("#villageLevelNames").empty();
-		                      $("#villageLevelNames").append('<option value="0">SELECT VILLAGE</option>');	
-		                      $("#villageLevelNames").trigger('chosen:updated');
-		                 }
-					if(divId == 'constLevelParliaNames'){ 
-						       $("#constLevelConstNames").empty();
-		                       $("#constLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
-		                       $("#constLevelConstNames").trigger('chosen:updated');
-					}
-					if(divId == 'parliamentLevelConstNames'){
-							   $("#mandalLevelConstNames").empty();
-		                       $("#mandalLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
-		                       $("#mandalLevelConstNames").trigger('chosen:updated');
-							    $("#mandalLevelMandalNames").empty();
-		                       $("#mandalLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
-		                       $("#mandalLevelMandalNames").trigger('chosen:updated'); 
-					}
 					 $("#"+divId).append('<option value="0">SELECT '+globalLevelObj[divId]+'</option>');
 					for(var i in result){
 						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
@@ -3245,13 +3216,13 @@
 		var sortingType = $(this).attr("attr_sorting_type");
 		var orderType = $(this).attr("attr_order_type");
 		var blockType = getblockType();
-		var locationId = 0;
-		
+		var locationId = $("#distLevelDistrictNames").val();
+		/* 
 		$("#distLevelDistrictNames").val(0)
-		$("#distLevelDistrictNames").trigger("chosen:updated");
+		$("#distLevelDistrictNames").trigger("chosen:updated"); */
 		var locationLevelType = 3;
 		if(blockType == 'overview'){
-			getLocationWiseAmountDetails(3,'distLevlOvervw','overview',sortingType,orderType,locationId,'onLoad');
+			getLocationWiseAmountDetails(3,'distLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
 		}else if(blockType == 'scheme'){
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
 		}else if(blockType == 'deptscheme'){
@@ -3280,13 +3251,29 @@
 		$(this).addClass("active");
 		var sortingType = $(this).attr("attr_sorting_type");
 		var orderType = $(this).attr("attr_order_type");
-		$("#constLevelDistNames,#constLevelConstNames").val(0)
-		$("#constLevelDistNames,#constLevelConstNames").trigger("chosen:updated");
+		var districtId = $("#constLevelDistNames").val();
+		var parliamentId = $("#constLevelParliaNames").val();
+		var constituencyId = $("#constLevelConstNames").val();
+		
 		var blockType = getblockTypeCons();
 		var locationId = 0;
-		var locationLevelType = 4;
+		var locationLevelType = 0;
+		if(districtId !=0 && parliamentId == 0 && constituencyId == 0){
+			locationId = districtId;
+			locationLevelType =3;
+		}else if(districtId != 0 && parliamentId != 0 && constituencyId == 0){
+			locationId = parliamentId;
+			locationLevelType =9;
+		}else if(districtId != 0 && parliamentId != 0 && constituencyId != 0){
+			locationId = constituencyId;
+			locationLevelType =4;
+		}else if(districtId ==0 && parliamentId == 0 && constituencyId == 0){
+			locationLevelType =4;
+		}
+		
+		
 		if(blockType == 'overview'){
-			getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,locationId,'onLoad');
+			getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
 		}else if(blockType == 'scheme'){
 			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
 		}else if(blockType == 'deptscheme'){
@@ -3299,10 +3286,22 @@
 		var orderType = getSelectedType().orderType;
 		var blockType = getblockTypeCons();
 		var locationId =$("#constLevelDistNames").val();
-		var locationLevelType = 3;
-		if(locationId == 0){
-			var locationLevelType = 4;
+		 getAllSubLocationsBySuperLocationId(locationId,'constLevelParliaNames',4);
+		 var constituencyId =$("#constLevelConstNames").val();
+		if(constituencyId !=0 || constituencyId == 0){
+			$("#constLevelConstNames").empty();
+			$("#constLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+			$("#constLevelConstNames").trigger('chosen:updated');
 		}
+		var districtId = $("#constLevelDistNames").val();
+		var parliamentId = $("#constLevelParliaNames").val();
+		var locationLevelType = 0;
+		if(districtId !=0 && parliamentId == 0  || parliamentId == null && constituencyId == 0){
+			locationLevelType = 3;
+		}else{
+			locationLevelType = 4;
+		}
+		
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
 		}else if(blockType == 'scheme'){
@@ -3316,10 +3315,19 @@
 		var orderType = getSelectedType().orderType;
 		var blockType = getblockTypeCons();
 		var locationId =$("#constLevelParliaNames").val();
-		var locationLevelType = 10;
-		if(locationId == 0){
-			var locationLevelType = 4;
+		 getAllSubLocationsBySuperLocationId(locationId,'constLevelConstNames',4);
+		 
+		var districtId = $("#constLevelDistNames").val();
+		var parliamentId = $("#constLevelParliaNames").val();
+		var constituencyId = $("#constLevelConstNames").val();
+		var locationLevelType = 0;
+		
+		if(districtId != 0 && parliamentId != 0 && constituencyId == 0 || constituencyId == null){
+			locationLevelType = 9;
+		}else{
+			locationLevelType = 4;
 		}
+		
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
 		}else if(blockType == 'scheme'){
@@ -3334,11 +3342,6 @@
 		var blockType = getblockTypeCons();
 		var locationId =$("#constLevelConstNames").val();
 		var locationLevelType = 4;
-		if(locationId == 0){
-			var locationId =$("#constLevelDistNames").val();
-			var locationLevelType = 3;
-		}
-		
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(4,'consLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
 		}else if(blockType == 'scheme'){
@@ -3355,12 +3358,32 @@
 		var sortingType = $(this).attr("attr_sorting_type");
 		var orderType = $(this).attr("attr_order_type");
 		var blockType = getblockTypeMandal();
+		var districtId =  $("#mandalLevelDistNames").val();
+		var parliamentId =  $("#parliamentLevelConstNames").val();
+		var constituencyId = $("#mandalLevelConstNames").val();
+		var mandalId = $("#mandalLevelMandalNames").val();
+		
 		var locationId = 0;
-		var locationLevelType = 5;
-		$("#mandalLevelDistNames,#mandalLevelConstNames,#mandalLevelMandalNames").val(0)
-		$("#mandalLevelDistNames,#mandalLevelConstNames,#mandalLevelMandalNames").trigger("chosen:updated");
+		var locationLevelType = 0;
+		if(districtId !=0 && parliamentId == 0 && constituencyId == 0 && mandalId == 0){
+			locationId = districtId;
+			locationLevelType =3;
+		}else if(districtId != 0 && parliamentId != 0 && constituencyId == 0 && mandalId == 0){
+			locationId = parliamentId;
+			locationLevelType =9;
+		}else if(districtId != 0 && parliamentId != 0 && constituencyId != 0 && mandalId == 0){
+			locationId = constituencyId;
+			locationLevelType =4;
+		}else if(districtId != 0 && parliamentId != 0 && constituencyId != 0 && mandalId != 0){
+			locationId = mandalId;
+			locationLevelType =5;
+		}else if(districtId == 0 && parliamentId == 0 && constituencyId == 0 && mandalId == 0){
+			locationLevelType =5;
+		}
+		
+		
 		if(blockType == 'overview'){
-			getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId,'onLoad');
+			getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
 		}else if(blockType == 'scheme'){
 			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
 		}else if(blockType == 'deptscheme'){
@@ -3372,10 +3395,29 @@
 		var orderType = getSelectedType().orderType;
 		var blockType = getblockTypeMandal();
 		var locationId =$("#mandalLevelDistNames").val();
-		var locationLevelType = 3;
-		if(locationId == 0){
-			var locationLevelType = 5;
+		getAllSubLocationsBySuperLocationId(locationId,'parliamentLevelConstNames',5);
+		
+		var districtId =  $("#mandalLevelDistNames").val();
+		var parliamentId =  $("#parliamentLevelConstNames").val();
+		var constituencyId = $("#mandalLevelConstNames").val();
+		var mandalId = $("#mandalLevelMandalNames").val();
+		
+		if(constituencyId !=0 || constituencyId == 0){
+			$("#mandalLevelConstNames").empty();
+			$("#mandalLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+			$("#mandalLevelConstNames").trigger('chosen:updated');
 		}
+		if(mandalId !=0 || mandalId == 0){
+			$("#mandalLevelMandalNames").empty();
+			$("#mandalLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
+			$("#mandalLevelMandalNames").trigger('chosen:updated');
+		}
+		
+		var locationLevelType = 0;
+		if(districtId !=0 && parliamentId == null || parliamentId == 0 && constituencyId == 0 && mandalId == 0){
+			locationLevelType =3;
+		}
+		
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
 		}else if(blockType == 'scheme'){
@@ -3389,9 +3431,22 @@
 		var orderType = getSelectedType().orderType;
 		var blockType = getblockTypeMandal();
 		var locationId =$("#parliamentLevelConstNames").val();
-		var locationLevelType = 10;
-		if(locationId == 0){
-			var locationLevelType = 5;
+		getAllSubLocationsBySuperLocationId(locationId,'mandalLevelConstNames',5);
+		
+		var districtId =  $("#mandalLevelDistNames").val();
+		var parliamentId =  $("#parliamentLevelConstNames").val();
+		var constituencyId = $("#mandalLevelConstNames").val();
+		var mandalId = $("#mandalLevelMandalNames").val();
+		
+		if(mandalId !=0 || mandalId == 0){
+			$("#mandalLevelMandalNames").empty();
+			$("#mandalLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
+			$("#mandalLevelMandalNames").trigger('chosen:updated');
+		}
+		
+		var locationLevelType = 0;
+		if(districtId !=0 && parliamentId != 0 && constituencyId == null || constituencyId == 0 && mandalId == 0){
+			locationLevelType =9;
 		}
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
@@ -3406,11 +3461,18 @@
 		var orderType = getSelectedType().orderType;
 		var blockType = getblockTypeMandal();
 		var locationId =$("#mandalLevelConstNames").val();
-		var locationLevelType = 4;
-		if(locationId == 0){
-			var locationId =$("#mandalLevelDistNames").val();
-			var locationLevelType = 3;
+		getAllSubLocationsBySuperLocationId(locationId,'mandalLevelMandalNames',5);
+		
+		var districtId =  $("#mandalLevelDistNames").val();
+		var parliamentId =  $("#parliamentLevelConstNames").val();
+		var constituencyId = $("#mandalLevelConstNames").val();
+		var mandalId = $("#mandalLevelMandalNames").val();
+		
+		var locationLevelType = 0;
+		if(districtId !=0 && parliamentId != 0 && constituencyId != 0 && mandalId == null || mandalId == 0){
+			locationLevelType =4;
 		}
+		
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
 		}else if(blockType == 'scheme'){
@@ -3425,10 +3487,7 @@
 		var blockType = getblockTypeMandal();
 		var locationId =$("#mandalLevelMandalNames").val();
 		var locationLevelType = 5;
-		if(locationId == 0){
-			var locationId =$("#mandalLevelConstNames").val();
-			var locationLevelType = 4;
-		}
+		
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
 		}else if(blockType == 'scheme'){
@@ -3446,8 +3505,35 @@
 		var sortingType = $(this).attr("attr_sorting_type");
 		var orderType = $(this).attr("attr_order_type");
 		var blockType = getblockTypeVillage();
+		
+		var districtId =  $("#villageLevelDistNames").val();
+		var parliamentId =  $("#villageLeveParliNames").val();
+		var constituencyId = $("#villageLevelConstNames").val();
+		var mandalId = $("#villageLevelMandalNames").val();
+		var villageId = $("#villageLevelNames").val();
+		
 		var locationId = 0;
-		var locationLevelType = 6;
+		var locationLevelType = 0;
+		if(districtId !=0 && parliamentId == 0 && constituencyId == 0 && mandalId == 0 && villageId == 0){
+			locationId = districtId;
+			locationLevelType=3;
+		}else if(districtId != 0 && parliamentId != 0 && constituencyId == 0 && mandalId == 0 && villageId == 0){
+			locationId = parliamentId;
+			locationLevelType=9;
+		}else if(districtId != 0 && parliamentId != 0 && constituencyId != 0 && mandalId == 0 && villageId == 0){
+			locationId = constituencyId;
+			locationLevelType=4;
+		}else if(districtId != 0 && parliamentId != 0 && constituencyId != 0 && mandalId != 0 && villageId == 0){
+			locationId = mandalId;
+			locationLevelType=5;
+		}else if(districtId != 0 && parliamentId != 0 && constituencyId != 0 && mandalId != 0 && villageId != 0){
+			locationId = villageId;
+			locationLevelType=6;
+		}else if(districtId == 0 && parliamentId == 0 && constituencyId == 0 && mandalId != 0 == villageId != 0){
+			locationLevelType=6;
+		}
+		
+		
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(6,'villageLevlOvervw','overview',sortingType,orderType,locationId,'onLoad');
 		}else if(blockType == 'scheme'){
@@ -3458,14 +3544,74 @@
 	});	
 	$(document).on("change",".villageLevelDistCls",function(){
 		var locationId =$("#villageLevelDistNames").val();
-	    getAllSubLocationsBySuperLocationId(locationId,'villageLevelConstNames',6);
+	    getAllSubLocationsBySuperLocationId(locationId,'villageLeveParliNames',6);
 		var sortingType = getSelectedType().sortingType;
 		var orderType = getSelectedType().orderType;
 		var blockType = getblockTypeVillage();
-		var locationLevelType = 3;
-		if(locationId == 0){
-			var locationLevelType = 6;
+		
+		var districtId =  $("#villageLevelDistNames").val();
+		var parliamentId =  $("#villageLeveParliNames").val();
+		var constituencyId = $("#villageLevelConstNames").val();
+		var mandalId = $("#villageLevelMandalNames").val();
+		var villageId = $("#villageLevelNames").val();
+		
+		if(constituencyId !=0 || constituencyId == 0){
+			$("#villageLevelConstNames").empty();
+			$("#villageLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+			$("#villageLevelConstNames").trigger('chosen:updated');
 		}
+		if(mandalId !=0 || mandalId == 0){
+			$("#villageLevelMandalNames").empty();
+			$("#villageLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
+			$("#villageLevelMandalNames").trigger('chosen:updated');
+		}
+		if(villageId !=0 || villageId == 0){
+			$("#villageLevelNames").empty();
+			$("#villageLevelNames").append('<option value="0">SELECT VILLAGE</option>');	
+			$("#villageLevelNames").trigger('chosen:updated');
+		}
+		
+		var locationLevelType =0;
+		if(districtId !=0 &&  parliamentId == null || parliamentId == 0 && constituencyId == 0 && mandalId == 0 && villageId == 0){
+			locationLevelType=3;
+		}
+		
+		if(blockType == 'overview'){
+			getLocationWiseAmountDetails(6,'villageLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
+		}else if(blockType == 'scheme'){
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','scheme',sortingType,orderType,locationId,locationLevelType);
+		}else if(blockType == 'deptscheme'){
+			 getFinancialYearWiseDeptsWiseSchemeAmountDetails(6,'villageLevlOvervw','deptscheme',sortingType,orderType,locationId,locationLevelType);
+		}
+	})
+	$(document).on("change",".villageLevelParliCls",function(){
+		var sortingType = getSelectedType().sortingType;
+		var orderType = getSelectedType().orderType;
+		var blockType = getblockTypeVillage();
+		var locationId =$("#villageLeveParliNames").val();
+		getAllSubLocationsBySuperLocationId(locationId,'villageLevelConstNames',6);
+		
+		var districtId =  $("#villageLevelDistNames").val();
+		var parliamentId =  $("#villageLeveParliNames").val();
+		var constituencyId = $("#villageLevelConstNames").val();
+		var mandalId = $("#villageLevelMandalNames").val();
+		var villageId = $("#villageLevelNames").val();
+		
+		if(mandalId !=0 || mandalId == 0){
+			$("#villageLevelMandalNames").empty();
+			$("#villageLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
+			$("#villageLevelMandalNames").trigger('chosen:updated');
+		}
+		if(villageId !=0 || villageId == 0){
+			$("#villageLevelNames").empty();
+			$("#villageLevelNames").append('<option value="0">SELECT VILLAGE</option>');	
+			$("#villageLevelNames").trigger('chosen:updated');
+		}
+		
+		if(districtId !=0 && parliamentId != 0 && constituencyId == null || constituencyId == 0 && mandalId == 0 && villageId == 0){
+			locationLevelType=9;
+		}
+		
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(6,'villageLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
 		}else if(blockType == 'scheme'){
@@ -3480,10 +3626,20 @@
 		var blockType = getblockTypeVillage();
 		var locationId =$("#villageLevelConstNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'villageLevelMandalNames',6);
-		var locationLevelType = 4;
-		if(locationId == 0){
-			var locationId =$("#villageLevelDistNames").val();
-			var locationLevelType = 3;
+		
+		var districtId =  $("#villageLevelDistNames").val();
+		var parliamentId =  $("#villageLeveParliNames").val();
+		var constituencyId = $("#villageLevelConstNames").val();
+		var mandalId = $("#villageLevelMandalNames").val();
+		var villageId = $("#villageLevelNames").val();
+		
+		if(villageId !=0 || villageId == 0){
+			$("#villageLevelNames").empty();
+			$("#villageLevelNames").append('<option value="0">SELECT VILLAGE</option>');	
+			$("#villageLevelNames").trigger('chosen:updated');
+		}
+		if(districtId !=0 && parliamentId != 0 && constituencyId != 0 && mandalId == null || mandalId == 0 && villageId == 0){
+			locationLevelType=4;
 		}
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(6,'villageLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
@@ -3499,10 +3655,15 @@
 		var blockType = getblockTypeVillage();
 		var locationId =$("#villageLevelMandalNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'villageLevelNames',6);
-		var locationLevelType = 5;
-		if(locationId == 0){
-			var locationId =$("#villageLevelConstNames").val();
-			var locationLevelType = 4;
+		
+		var districtId =  $("#villageLevelDistNames").val();
+		var parliamentId =  $("#villageLeveParliNames").val();
+		var constituencyId = $("#villageLevelConstNames").val();
+		var mandalId = $("#villageLevelMandalNames").val();
+		var villageId = $("#villageLevelNames").val();
+		
+		if(districtId !=0 && parliamentId != 0 && constituencyId != 0 && mandalId != 0 && villageId == null || villageId == 0){
+			locationLevelType=5;
 		}
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(6,'villageLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
@@ -3518,10 +3679,7 @@
 		var blockType = getblockTypeVillage();
 		var locationId =$("#villageLevelNames").val();
 		var locationLevelType = 6;
-		if(locationId == 0){
-			var locationId =$("#villageLevelMandalNames").val();
-			var locationLevelType = 5;
-		}
+		
 		if(blockType == 'overview'){
 			getLocationWiseAmountDetails(6,'villageLevlOvervw','overview',sortingType,orderType,locationId,'selectBox');
 		}else if(blockType == 'scheme'){
@@ -4108,4 +4266,13 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 				$("#govtOrderDocumentBodyId").html(str);       
 			}   
 		}		
+	});
+	$(document).on("click","[role='tablist'] a",function(){
+		var value = $(this).html();
+		if(value == 'Comparision')
+		{
+		  $(this).closest("[role='tabpanel']").find(".selectboxsShowHide").hide();
+		}else{
+			 $(this).closest("[role='tabpanel']").find(".selectboxsShowHide").show();
+		}
 	});
