@@ -1619,7 +1619,7 @@
 				tabBlock+='</select>';
 				tabBlock+='<div class="tab-content">';
 					
-					/* if(blockId == 'consBlockId')
+					if(blockId == 'constituencyBlockId')
 					{
 						tabBlock+='<div class="row">';
 							tabBlock+='<div class="col-sm-3"><div id="districtSelect'+blockId+'"></div></div>';
@@ -1632,7 +1632,7 @@
 							tabBlock+='<div class="col-sm-3"><div id="constituencySelect'+blockId+'"></div></div>';
 							tabBlock+='<div class="col-sm-3"><div id="mandalSelect'+blockId+'"></div></div>';
 						tabBlock+='</div>';
-					} */
+					}
 					
 					for(var i in blocksArr)
 					{
