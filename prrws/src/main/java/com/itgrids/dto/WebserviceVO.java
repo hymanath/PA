@@ -11,7 +11,7 @@ public class WebserviceVO implements Serializable{
 	private Long statusCode;
 	private Date callTime;
 	private Long timeTaken;
-	
+	private Long webserviceTrackId;
 	private String status;
 
 	public String getUrl() {
@@ -52,6 +52,14 @@ public class WebserviceVO implements Serializable{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Long getWebserviceTrackId() {
+		return webserviceTrackId;
+	}
+
+	public void setWebserviceTrackId(Long webserviceTrackId) {
+		this.webserviceTrackId = webserviceTrackId;
 	}
 	
 }
