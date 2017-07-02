@@ -57,6 +57,7 @@ public class WebServiceUtilService {
 			webserviceVO.setUrl(url);
 			startTime = dateUtilService.getCurrentDateAndTime();
 			webserviceVO.setCallTime(startTime);
+			webserviceVO.setWebserviceTrackId(saveWebserviceCallDetails(webserviceVO));
 			
 			response = resource.accept(javax.ws.rs.core.MediaType.APPLICATION_JSON).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(ClientResponse.class,input);
 			
@@ -99,7 +100,7 @@ public class WebServiceUtilService {
 		}
 		
 		webserviceVO.setStatusCode(response != null ? new Long(response.getStatus()) : null);
-		saveWebserviceCallDetails(webserviceVO);
+		updateWebserviceCallDetails(webserviceVO);
 		return response;
 	}
 	
@@ -111,7 +112,7 @@ public class WebServiceUtilService {
 	    System.out.println(output);
 	}
 	
-	public void saveWebserviceCallDetails(WebserviceVO webserviceVO)
+	private Long saveWebserviceCallDetails(WebserviceVO webserviceVO)
 	{
 		try{
 			
@@ -121,10 +122,27 @@ public class WebServiceUtilService {
 			{
 				List<Long> list = webserviceDAO.getWebserviceIdByUrl(webserviceVO.getUrl().trim());
 				
-				if(list != null && list.size() > 0)
+				if(list != null && !list.isEmpty())
 					webserviceCallDetails.setWebserviceId(list.get(0));
 			}
 			webserviceCallDetails.setCallTime(webserviceVO.getCallTime());
+			webserviceCallDetails = webserviceCallDetailsDAO.save(webserviceCallDetails);
+			
+			return webserviceCallDetails.getWebserviceCallDetailsId();
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occred in saveWebserviceCallDetails Method - ",e);
+		}
+		return null;
+	}
+	
+	private void updateWebserviceCallDetails(WebserviceVO webserviceVO)
+	{
+		try{
+			if(webserviceVO.getWebserviceTrackId() == null)
+				return;
+			
+			WebserviceCallDetails webserviceCallDetails = webserviceCallDetailsDAO.get(webserviceVO.getWebserviceTrackId());
 			webserviceCallDetails.setStatus(webserviceVO.getStatus());
 			webserviceCallDetails.setStatusCode(webserviceVO.getStatusCode());
 			webserviceCallDetails.setTimeTaken(webserviceVO.getTimeTaken());
