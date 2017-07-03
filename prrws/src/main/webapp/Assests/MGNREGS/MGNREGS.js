@@ -367,7 +367,7 @@ function buildNREGSProjectsOverview(result,blockName)
 			str+='<div class="row">';
 				for(var i in result)
 				{
-					if(result[i].parameter == "Labour Budget" || result[i].parameter == "Farm Pond" || result[i].parameter == "IHHL" || result[i].parameter == "VERMI" || result[i].parameter == "NTR Jala Siri" || result[i].parameter == "Solid Waste Management" || result[i].parameter == "Play fields" || result[i].parameter == "Burial Ground" || result[i].parameter == "Agriculture"){
+					if(result[i].parameter == "Labour Budget" || result[i].parameter == "Farm Pond" || result[i].parameter == "IHHL" || result[i].parameter == "VERMI" || result[i].parameter == "NTR Jala Siri" || result[i].parameter == "Solid Waste Management" || result[i].parameter == "Play fields" || result[i].parameter == "Burial Ground" || result[i].parameter == "Agriculture" || result[i].parameter == "Avg Wage" || result[i].parameter == "Avg days of emp per HH" || result[i].parameter == "HH Comp 100 days" || result[i].parameter == "Timely Payments"){
 						str+='<div class="col-sm-2 m_top10">';
 							if(result[i].percentage < 50)
 							{

@@ -257,6 +257,14 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialService/BurialOverview";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgriService/AgriOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg Wage"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AverageWageService/AvgWageOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg days of emp per HH"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AverageDaysService/AvgDaysOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Comp 100 days"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AP100DaysService/AP100DaysOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payments"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/TimePaymentService/TPOverview";
 			 
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
 	        
@@ -348,6 +356,14 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialService/BurialData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgriService/AgriData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg Wage"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AverageWageService/AvgWageData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg days of emp per HH"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AverageDaysService/AvgDaysData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Comp 100 days"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AP100DaysService/AP100DaysData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payments"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/TimePaymentService/TPData";
 			 
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
 	        
@@ -558,6 +574,14 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialService/BurialData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgriService/AgriData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg Wage"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AverageWageService/AvgWageData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg days of emp per HH"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AverageDaysService/AvgDaysData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Comp 100 days"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AP100DaysService/AP100DaysData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payments"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/TimePaymentService/TPData";
 			
 			 
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
