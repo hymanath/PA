@@ -3860,23 +3860,15 @@
 							
 							for(var j in result[i].locationList1){
 								if(result[i].locationList1[j].financialYearId != 0){
-									      newYearId = result[i].locationList1[j].financialYearId;
-								       }else{
-										   //newYearId = $(".multiConYearCls ").val();
-										 var financialYrIdList=[];
-										  var firstFinancialYearArr=[];
-										  var secondFinancialYearArr=[];
-                                          var firstFinancialYear = $(".multiDistYearCls").val();
-										  var secondFinancialYear = $(".distYearCls").val();
-									if( firstFinancialYear > secondFinancialYear ){
-											temp = firstFinancialYear;
-										firstFinancialYear = secondFinancialYear;
-										secondFinancialYear = temp;
-			                            }
-									financialYrIdList.push(firstFinancialYear);
-									financialYrIdList.push(secondFinancialYear); 
-                                     newYearId=financialYrIdList;
-									   } 
+									newYearId = result[i].locationList1[j].financialYearId;
+								}else{
+                                    newYearId=result[i].locationList1[0].financialYearId;
+									var len = result[i].locationList1.length;
+									len = len - 1;
+									for(var k=1 ; k < len ; k++){
+										newYearId = newYearId+","+result[i].locationList1[k].financialYearId;
+									}      
+								} 
 								if(result[i].locationList1[j].count != null && result[i].locationList1[j].count > 0){
 									table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].locationId+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="0" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].locationList1[j].count+'</td>';
 								}else{
@@ -3886,7 +3878,6 @@
 							}
 						table+='</tr>';
 					}
-					
 				table+='</tbody>';
 			table+='</table>';
 			if($windowWidth < 768)
@@ -4180,7 +4171,7 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 	   
 	   var yearLen =financialYrIdList.length;
 	   
-	    var globalYearObj =  {"1":"2014-2015","2":"2015-2016","3":"2016-2017"};
+	    var globalYearObj =  {"1":"2014-2015","2":"2015-2016","3":"2016-2017","4":"2017-2018"};
 		 $("#"+divId).removeClass('comparionStyle')
 		 $("#"+divId).addClass('comparionStyle1')
 	   var str='';
