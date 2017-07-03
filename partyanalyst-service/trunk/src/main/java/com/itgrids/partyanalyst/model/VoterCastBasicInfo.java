@@ -36,6 +36,7 @@ public class VoterCastBasicInfo extends BaseModel implements Serializable{
 	private Long bcVoters;
 	private Long scVoters;
 	private Long stVoters;
+	private Long minorityVoters;
 	private Long publicationDateId;
 	private Constituency constituency;
 	
@@ -183,6 +184,15 @@ public class VoterCastBasicInfo extends BaseModel implements Serializable{
 
 	public void setConstituency(Constituency constituency) {
 		this.constituency = constituency;
+	}
+
+	@Column(name = "minority_voters", length = 15)
+	public Long getMinorityVoters() {
+		return minorityVoters;
+	}
+
+	public void setMinorityVoters(Long minorityVoters) {
+		this.minorityVoters = minorityVoters;
 	}
 
 	

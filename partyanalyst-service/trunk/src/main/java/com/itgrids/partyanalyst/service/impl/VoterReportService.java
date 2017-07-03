@@ -1322,6 +1322,7 @@ public class VoterReportService implements IVoterReportService{
 									castCategoryWiseList.add(new SelectOptionVO(voterCastBasicInfo.getOcVoters(),"OC"));
 									castCategoryWiseList.add(new SelectOptionVO(voterCastBasicInfo.getScVoters(),"SC"));
 									castCategoryWiseList.add(new SelectOptionVO(voterCastBasicInfo.getStVoters(),"ST "));
+									castCategoryWiseList.add(new SelectOptionVO(voterCastBasicInfo.getMinorityVoters(),"MINORITY"));
 							}
 							voterCastInfoVO.setCastCategoryWiseVotersList(castCategoryWiseList);
 							
