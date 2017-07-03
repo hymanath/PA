@@ -71,7 +71,7 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<ul class="list-inline navbar-header-custom">
-						<li><label>Note: All Amount in Lakhs</label></li>
+						<li><label>Note: All Amount in Crore</label></li>
 						<li>
 							<div class="form-horizontal">
 								<div class="form-group form-group-sm">
