@@ -810,7 +810,7 @@ public class RWSNICService implements IRWSNICService{
 		try {
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getLocationWiseAlertStatusCounts");
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getLocationWiseAlertStatusCounts");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.123:8080/PartyAnalyst/WebService/getLocationWiseAlertStatusCounts");
 		     ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 		     
 	        if(response.getStatus() != 200){
