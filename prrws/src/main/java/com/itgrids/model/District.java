@@ -21,6 +21,9 @@ public class District{
 	private String districtName;
 	private Long stateId;
 	private String nameLocal;
+	
+	private State state;
+	
 
 	@Id
 	@Column(name="district_id")
@@ -56,6 +59,17 @@ public class District{
 	public void setNameLocal(String nameLocal) {
 		this.nameLocal = nameLocal;
 	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "state_id", insertable = false, updatable = false)
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+	
 	
 	
 }

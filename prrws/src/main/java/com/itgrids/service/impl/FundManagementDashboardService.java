@@ -30,6 +30,7 @@ import com.itgrids.dao.IFundSanctionMatrixDetailsDAO;
 import com.itgrids.dao.IFundSanctionMatrixRangeDAO;
 import com.itgrids.dao.IGrantTypeDAO;
 import com.itgrids.dao.IPanchayatDAO;
+import com.itgrids.dao.ITehsilConstituencyDAO;
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.FundMatrixVO;
@@ -78,6 +79,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	private ITehsilDAO tehsilDAO;
 	@Autowired
 	private IPanchayatDAO panchayatDAO;
+	@Autowired
+	private ITehsilConstituencyDAO tehsilConstituencyDAO;
 
 	@Override
 	/*
@@ -245,6 +248,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 				}
 			}
 			
+			setNonFundedLocations( locationMap , searchLevelId, yearsMap, schemesMap,null);
+			
 			if(commonMethodsUtilService.isMapValid(locationMap)){
 				returnList.addAll(locationMap.values());
 				
@@ -288,15 +293,114 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	
 	public static Comparator<FundSchemeVO> amountWiseAscendingOrder = new Comparator<FundSchemeVO>() {
 		public int compare(FundSchemeVO o1, FundSchemeVO o2) {
-			return o1.getTotalCount().compareTo(o2.getTotalCount());
+			if(o1.getTotalCount() != null && o2.getTotalCount() != null){
+				return o1.getTotalCount().compareTo(o2.getTotalCount());
+			}
+			return 0;
 		}
 	};
 	
 	public static Comparator<FundSchemeVO> amountWiseDescendingOrder = new Comparator<FundSchemeVO>() {
 		public int compare(FundSchemeVO o1, FundSchemeVO o2) {
-    	  return o2.getTotalCount().compareTo(o1.getTotalCount());
+			if(o2.getTotalCount() != null && o1.getTotalCount() != null){
+				return o2.getTotalCount().compareTo(o1.getTotalCount());
+			}
+			return 0;
 		}
 	};
+	
+	public void setNonFundedLocations(Map<Long,FundSchemeVO> locationMap ,Long searchLevelId,Map<Long,FundSchemeVO> yearsMap,Map<Long,FundSchemeVO> schemesMap,Map<Long,FundSchemeVO> deptsMap){
+		
+		try{
+			Set<Long> keysList = locationMap.keySet();
+			if(commonMethodsUtilService.isListOrSetValid(keysList)){
+				List<Object[]> notFundedLocs = tehsilConstituencyDAO.getNonFundedLocations(keysList,searchLevelId);
+				
+				for(Object[] param :notFundedLocs){
+					
+					AddressVO addressVO = new AddressVO();
+					
+					if(searchLevelId != null && searchLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
+						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						
+						addressVO.setId(addressVO.getStateId());
+						addressVO.setName(addressVO.getStateName());
+					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[3]));
+						
+						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						
+						addressVO.setId(addressVO.getDistrictId());
+						addressVO.setName(addressVO.getDistrictName());
+					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[7]));
+						
+						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[3]));
+						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[5]));
+						
+						addressVO.setId(addressVO.getAssemblyId());
+						addressVO.setName(addressVO.getAssemblyName());
+					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[5]));
+						
+						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[3]));
+						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[7]));
+						
+						addressVO.setId(addressVO.getParliamentId());
+						addressVO.setName(addressVO.getParliamentName());
+					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+						addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[8]));
+						addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[9]));
+						
+						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[3]));
+						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[5]));
+						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[7]));
+						
+						addressVO.setId(addressVO.getTehsilId());
+						addressVO.setName(addressVO.getTehsilName());
+					}
+					
+					Long keyId=addressVO.getId();
+					FundSchemeVO fundLocationVO = locationMap.get(keyId);
+					
+					if(fundLocationVO == null){
+						fundLocationVO = new FundSchemeVO();
+						List<FundSchemeVO> yearsList = null;
+						if(commonMethodsUtilService.isMapValid(deptsMap)){
+							 yearsList = buildData(yearsMap,deptsMap,schemesMap);
+						}else{
+							 yearsList = buildData(yearsMap,schemesMap,null);
+						}
+						fundLocationVO.setSubList(yearsList);
+						fundLocationVO.setAddressVO(addressVO);
+						locationMap.put(keyId, fundLocationVO);
+					}
+					
+				}
+				
+			}
+		}catch(Exception e){
+			
+		}
+	}
 	
 	/*
 	 * Date : 08/06/2017
@@ -503,6 +607,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 				}
 			}
 			
+			setNonFundedLocations( locationMap , searchLevelId, yearsMap, schemesMap,deptsMap);
 			if(commonMethodsUtilService.isMapValid(locationMap)){
 				returnList.addAll(locationMap.values());
 				
@@ -708,6 +813,34 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(locationIdAndNameMap.get(locId)));
 					locationVO.setAddressVO(locationAddressMap.get(locId));
 					//call this method to set the amount and count details.
+					pushCountAndAmountDetails(locationVO,financialYearIdAndLocationIdAndAmountMap,financialYearIdAndLocationIdAndCountMap,financialYearIdAndFinancialYearMap);
+					finalList.add(locationVO);
+				}
+			}
+			List<Object[]> nonFundedLocs  = null;
+			if(commonMethodsUtilService.isListOrSetValid(locationIdList)){
+				  nonFundedLocs = tehsilConstituencyDAO.getNonFundedLocations(locationIdList, levelId);
+			}
+			if(nonFundedLocs != null && nonFundedLocs.size() > 0){
+				for(Object[] param :nonFundedLocs){
+					AddressVO addressVO = new AddressVO();
+					
+					addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[2]));
+					addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[4]));
+					addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[5]));
+					addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[6]));
+					addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[8]));
+					addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[9]));
+					//addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[14]));
+					//addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[15]));
+					
+					locationVO = new LocationVO();
+					locationVO.setLocationLevelId(levelId);
+					locationVO.setAddressVO(addressVO);
 					pushCountAndAmountDetails(locationVO,financialYearIdAndLocationIdAndAmountMap,financialYearIdAndLocationIdAndCountMap,financialYearIdAndFinancialYearMap);
 					finalList.add(locationVO);
 				}
