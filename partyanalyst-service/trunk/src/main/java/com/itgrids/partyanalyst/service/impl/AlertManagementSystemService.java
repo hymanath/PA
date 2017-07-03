@@ -15349,7 +15349,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  					List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdList));
  					setAlertDtlsForAms(finalVoList, list); 
  				}
- 				//setSubListCountForAms(finalVoList, alertIdList);
+ 				setSubListCountForAms(finalVoList, alertIdList);
  			
  		} catch (Exception e) {
  			e.printStackTrace();
@@ -15358,12 +15358,13 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  		  return finalVoList;
  	  }
  	  
- 	 public List<KeyValueVO> getLocationWiseAlertStatusCounts(Long departmentId,String fromDateStr,String toDateStr,String year,Long groupByValue,List<Long> locationValuesList){
+ 	 public List<KeyValueVO> getLocationWiseAlertStatusCounts(Long departmentId,String fromDateStr,String toDateStr,String year,Long locationTypeId,
+ 			 List<Long> locationValues,Long searchLevelId,List<Long> searchLevelValues){
   		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
   		 try {
   			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
   			 Date fromDate = null,toDate = null;
- 			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null && !toDateStr.isEmpty()){
+ 			if(fromDateStr != null && !fromDateStr.trim().isEmpty() && toDateStr != null && !toDateStr.trim().isEmpty()){
  				fromDate = sdf.parse(fromDateStr);
  				toDate = sdf.parse(toDateStr);
  			}
@@ -15372,30 +15373,26 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  			
  			List<AlertStatus> allStatus = alertStatusDAO.getAll();
  			
- 			//0-scopeId,1-locationId,2-location,3-statusId,4-status,5-count
- 			List<Object[]> objList = alertAssignedOfficerNewDAO.getLocationWiseAlertStatusCounts(departmentId,fromDate,toDate,year,groupByValue,locationValuesList);
+ 			//0-locationId,1-location,2-statusId,3-status,4.color,5-count
+ 			List<Object[]> objList = alertDAO.getLocationWiseAlertStatusCountsNew(fromDate,toDate,departmentId,year,locationTypeId,locationValues,searchLevelId,searchLevelValues);
  			
  			if(objList != null && objList.size() > 0){
- 				for (Object[] objects : objList) {
- 					
- 					if(finalMap.get((Long)objects[1]) == null){
+ 				for (Object[] objects : objList) { 					
+ 					if(finalMap.get((Long)objects[0]) == null){
  						KeyValueVO voIn = new KeyValueVO();
- 						voIn.setScopeValue((Long)objects[0]);
- 						voIn.setId((Long)objects[1]);
- 						voIn.setName(objects[2].toString());
+ 						voIn.setId((Long)objects[0]);
+ 						voIn.setName(objects[1].toString());
  						
- 						getAlertStatusSkelton(allStatus,voIn,(Long)objects[3],(Long)objects[5]);
- 						finalMap.put((Long)objects[1], voIn);
+ 						getAlertStatusSkelton(allStatus,voIn,(Long)objects[2],(Long)objects[5]);
+ 						finalMap.put((Long)objects[0], voIn);
  					}else{
- 						KeyValueVO matchedStatusVO = getMatchedStatusVONew(finalMap.get((Long)objects[1]).getList(),(Long)objects[3]);
+ 						KeyValueVO matchedStatusVO = getMatchedStatusVONew(finalMap.get((Long)objects[0]).getList(),(Long)objects[2]);
  						matchedStatusVO.setCount((Long)objects[5]);
  					} 
- 					
- 					
- 				}
- 				
+ 				} 				
  				voList.addAll(finalMap.values());
  			}
+ 			
  		} catch (Exception e) {
  			LOG.error("Error occured getLocationWiseAlertStatusCounts() method of AlertManagementSystemService",e);
  		}
