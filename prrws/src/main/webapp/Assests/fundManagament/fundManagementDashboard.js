@@ -1423,13 +1423,25 @@
 		}
 		$("#"+divId+"Table").html("");
 		$("#"+divId+"Table").html(table);
-		if(levelId == 4 || levelId == 5 || levelId == 6)
+		if(levelId == 3 || levelId == 4 || levelId == 5 || levelId == 6)
 		{
-			$("#dataTable"+divId).dataTable({
-				"iDisplayLength": 15,
-				"aaSorting": [],
-				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
-			});
+			if(levelId != 3){
+				$("#dataTable"+divId).dataTable({
+					"iDisplayLength": 15,
+					"aaSorting": [],
+					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+				});
+			}else{
+				$("#dataTable"+divId).dataTable({
+					"paging":   false,
+					"info":     false,
+					"searching": false,
+					"autoWidth": true,
+					"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+					"order": [ 0, 'desc' ]
+				});
+			}
+			
 		}
 		
 		if(type == 'overview')
