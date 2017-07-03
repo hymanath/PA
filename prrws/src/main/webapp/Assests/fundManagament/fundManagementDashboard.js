@@ -3696,9 +3696,78 @@
 			levelValues = levelValues.concat(strx);
 			
 		var financialYrIdList = $('#financialYearId').val();
-		if(divId == 'locationsModal'){ 
+		/*if(divId == 'locationsModal'){ 
 		   financialYrIdList.length = 0;//remove all items 
 		   financialYrIdList.push($(".multiDistYearCls").val());
+		}*/
+		
+		var financialYrIdList=[];
+		var firstFinancialYearArr=[];
+		var secondFinancialYearArr=[];
+	   var deptIds =$("#DepartmentsId").val();
+		
+		var temp=0;
+		if(divId == 'locationsModal'){ 
+		if(levelId == 3){
+			financialYrIdList=[];
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			var firstFinancialYear = $(".multiDistYearCls").val();
+			var secondFinancialYear = $(".distYearCls").val();
+			
+			if( firstFinancialYear > secondFinancialYear ){
+				temp = firstFinancialYear;
+				firstFinancialYear = secondFinancialYear;
+				secondFinancialYear = temp;
+			}
+			financialYrIdList.push(firstFinancialYear);
+			financialYrIdList.push(secondFinancialYear);
+		}else if(levelId == 4){
+			financialYrIdList=[];
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			var firstFinancialYear4 = $(".multiConYearCls").val();
+			var secondFinancialYear4 = $(".conYearCls").val();
+			if( firstFinancialYear4 > secondFinancialYear4 ){
+				temp = firstFinancialYear4;
+				firstFinancialYear4 = secondFinancialYear4;
+				secondFinancialYear4 = temp;
+			}
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			financialYrIdList.push(firstFinancialYear4);
+			financialYrIdList.push(secondFinancialYear4);
+		}else if(levelId == 5){
+			financialYrIdList=[];
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			var firstFinancialYear5 = $(".multiMandalYearCls").val();
+			var secondFinancialYear5 = $(".mandalYearCls").val();
+			if( firstFinancialYear5 > secondFinancialYear5 ){
+				temp = firstFinancialYear5;
+				firstFinancialYear5 = secondFinancialYear5;
+				secondFinancialYear5 = temp;
+			}
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			financialYrIdList.push(firstFinancialYear5);
+			financialYrIdList.push(secondFinancialYear5);
+		}else if(levelId == 6){
+			var firstFinancialYear6 = $(".multiVillageYearCls").val();
+			var secondFinancialYear6 = $(".villageYearCls").val();
+			if( firstFinancialYear6 > secondFinancialYear6 ){
+				temp = firstFinancialYear6;
+				firstFinancialYear6 = secondFinancialYear6;
+				secondFinancialYear6 = temp;
+			}
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			financialYrIdList=[];
+			firstFinancialYearArr=[];
+			secondFinancialYearArr=[];
+			financialYrIdList.push(firstFinancialYear6);
+			financialYrIdList.push(secondFinancialYear6);
+		}
 		}
 		var json = {
 			blockLevelId : levelId, 
@@ -3781,7 +3850,20 @@
 								if(result[i].locationList1[j].financialYearId != 0){
 									      newYearId = result[i].locationList1[j].financialYearId;
 								       }else{
-										   newYearId = $(".multiConYearCls ").val();
+										   //newYearId = $(".multiConYearCls ").val();
+										 var financialYrIdList=[];
+										  var firstFinancialYearArr=[];
+										  var secondFinancialYearArr=[];
+                                          var firstFinancialYear = $(".multiDistYearCls").val();
+										  var secondFinancialYear = $(".distYearCls").val();
+									if( firstFinancialYear > secondFinancialYear ){
+											temp = firstFinancialYear;
+										firstFinancialYear = secondFinancialYear;
+										secondFinancialYear = temp;
+			                            }
+									financialYrIdList.push(firstFinancialYear);
+									financialYrIdList.push(secondFinancialYear); 
+                                     newYearId=financialYrIdList;
 									   } 
 								if(result[i].locationList1[j].count != null && result[i].locationList1[j].count > 0){
 									table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].locationId+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="0" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].locationList1[j].count+'</td>';
