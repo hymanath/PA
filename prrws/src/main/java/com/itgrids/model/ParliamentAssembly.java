@@ -1,10 +1,14 @@
 package com.itgrids.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +21,9 @@ public class ParliamentAssembly{
 	private Long parliamentId;
 	
 	private Long assemblyId;
+	
+	private Constituency parliament;
+	private Constituency assembly;
 
 	@Id
 	@Column(name="parliament_assembly_id")
@@ -43,5 +50,24 @@ public class ParliamentAssembly{
 	public void setAssemblyId(Long assemblyId) {
 		this.assemblyId = assemblyId;
 	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "parliament_id", insertable = false, updatable = false)
+	public Constituency getParliament() {
+		return parliament;
+	}
+	public void setParliament(Constituency parliament) {
+		this.parliament = parliament;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "assembly_id", insertable = false, updatable = false)
+	public Constituency getAssembly() {
+		return assembly;
+	}
+	public void setAssembly(Constituency assembly) {
+		this.assembly = assembly;
+	}
+	
 	
 }
