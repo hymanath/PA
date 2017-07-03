@@ -3054,15 +3054,22 @@ public class WebServiceHandler {
 	public List<KeyValueVO> getLocationWiseAlertStatusCounts(JSONObject jObj){
 		try{
 			List<Long> locationValuesList = new ArrayList<Long>(0);
+			List<Long> searchlevelValues = new ArrayList<Long>(0);
 			JSONArray arr = jObj.getJSONArray("locationValues");
 			if(arr != null && arr.length() > 0){
 				for (int i = 0; i < arr.length(); i++) {
 					locationValuesList.add(Long.parseLong(arr.get(i)+""));
 				}
 			}
+			JSONArray searchArr = jObj.getJSONArray("searchLvlVals");
+			if(searchArr != null && searchArr.length() > 0){
+				for (int i = 0; i < searchArr.length(); i++) {
+					searchlevelValues.add(Long.parseLong(searchArr.get(i)+""));
+				}
+			}
 			
 			return webServiceHandlerService.getLocationWiseAlertStatusCounts(jObj.getLong("deptId"),jObj.getString("fromDate"),jObj.getString("toDate"),
-					jObj.getString("year"),jObj.getLong("groupByValue"),locationValuesList);			
+					jObj.getString("year"),jObj.getLong("locationTypeId"),locationValuesList,jObj.getLong("searchLevelId"),searchlevelValues);			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getLocationWiseAlertStatusCounts() Method, Exception is ",e);
 			return null;
