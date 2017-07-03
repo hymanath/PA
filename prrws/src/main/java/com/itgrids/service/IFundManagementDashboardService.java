@@ -34,4 +34,5 @@ public interface IFundManagementDashboardService {
 	public List<LocationVO> getLocationWiseFundSanctionDetails(InputVO inputVO);
 	public IdNameVO getMinMaxDates();
 	public LocationFundDetailsVO getGrantTypeHighestAndLowestFund(InputVO inputVO);
+	public List<LocationFundDetailsVO> getAllSubLocations(InputVO inputVO);
 }

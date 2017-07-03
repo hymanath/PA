@@ -730,6 +730,14 @@
 				
 			</div>
 		</div>
+		<!-- srujana-->
+		<!--<div class="row selectboxsShowHide m_top10">
+									<div class="col-sm-3 distCls" >
+										<select class="form-control chosenSelect" id="distNames" >
+											<option value="0"> SELECT DISTRICT</option>
+										</select>
+									</div>
+								</div>-->
 	</section>
 <div class="modal fade" id="locDivModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="width:80%;margin:auto">
@@ -810,7 +818,7 @@
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/fundManagament/fundManagementDashboard.js"></script>
-
+<script type="text/javascript" src="js/locationHierarchy.js"></script>
 <!--Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations-->
 </body>
 </html>

@@ -201,4 +201,9 @@ public class FundManagementDashboardController {
 					LocationFundDetailsVO  returnVO = fundManagementDashboardService.getGrantTypeHighestAndLowestFund(inputVO);
 					return returnVO;
 				  }
+		@PostMapping("/getAllSubLocations")
+		public @ResponseBody List<LocationFundDetailsVO> getAllSubLocations(@RequestBody InputVO inputVO){
+			List<LocationFundDetailsVO> locationFundDetailsVOList = fundManagementDashboardService.getAllSubLocations(inputVO);
+			return locationFundDetailsVOList;
+		}
 }
