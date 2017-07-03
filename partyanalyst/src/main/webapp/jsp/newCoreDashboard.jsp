@@ -2308,7 +2308,7 @@
 									   <c:if test="${basicCommittee.id == 1}">
 										<li>
 											<label class="checkbox-inline">
-												<input type="checkbox"  class="districtCommitteecheckBoxClass" value="${basicCommittee.id}"><!--checked-->
+												<input type="checkbox"  class="districtCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
 												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 										   </label>
 										</li>	
