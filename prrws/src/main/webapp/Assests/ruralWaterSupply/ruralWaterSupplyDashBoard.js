@@ -2313,14 +2313,17 @@
 		$("#alertStatus"+locationType).html(spinner);
 		$("#drinking"+locationType).html(spinner);
 		var arr = [];
+		var searchArr=[1];
 		var financialVal =$("#financialYearId").val();
 		var json = {
 		  deptId:49,
 		  fromDate:glStartDate,
 		  toDate:glEndDate,
 		  year:financialVal,
-		  groupByValue:5,
-		  locationValues:arr
+		  locationTypeId:3,
+		  locationValues:arr,
+		  searchLevelId:2,
+		  searchLvlVals:searchArr
 		}
 		$.ajax({
 			url: 'getLocationWiseAlertStatusCounts',
