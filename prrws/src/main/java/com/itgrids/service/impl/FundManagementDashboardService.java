@@ -145,78 +145,36 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					FundSchemeVO fundLocationVO = new FundSchemeVO();
 					
 					AddressVO addressVO = new AddressVO();
-					if(searchScopeId != null && searchScopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
-						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
+					addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[8]));
+					addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[9]));
+					addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[10]));
+					addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[11]));
+					addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[12]));
+					addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[13]));
+					addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[14]));
+					addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[15]));
+					addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[16]));
+					addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[17]));
+					addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[18]));
+					addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[19]));
+					
+					if(searchScopeId != null && searchScopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){						
 						addressVO.setId(addressVO.getStateId());
 						addressVO.setName(addressVO.getStateName());
 					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
-						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
-						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[8]));
-						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[9]));
-						
 						addressVO.setId(addressVO.getDistrictId());
 						addressVO.setName(addressVO.getDistrictName());
 					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
-						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
-						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[8]));
-						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[9]));
-						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[10]));
-						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[11]));
-						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[18]));
-						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[19]));
-						
 						addressVO.setId(addressVO.getAssemblyId());
 						addressVO.setName(addressVO.getAssemblyName());
 					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
-						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
-						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[8]));
-						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[9]));
-						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[10]));
-						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[11]));
-						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[18]));
-						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[19]));
-						
 						addressVO.setId(addressVO.getAssemblyId());
 						addressVO.setName(addressVO.getAssemblyName());
-					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
-						addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
-						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[8]));
-						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[9]));
-						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[10]));
-						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[11]));
-						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[12]));
-						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[13]));
-						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[18]));
-						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[19]));
-						
+					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){						
 						addressVO.setId(addressVO.getTehsilId());
 						addressVO.setName(addressVO.getTehsilName());
 					}
 					else if(searchLevelId != null && searchLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
-						addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
-						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[8]));
-						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[9]));
-						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[10]));
-						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[11]));
-						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[12]));
-						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[13]));
-						addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[14]));
-						addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[15]));
-						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[18]));
-						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[19]));
-						
 						addressVO.setId(addressVO.getPanchayatId());
 						addressVO.setName(addressVO.getPanchayatName());
 					}
@@ -400,79 +358,38 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					FundSchemeVO fundLocationVO = new FundSchemeVO();
 					
 					AddressVO addressVO = new AddressVO();
+					
+					addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[10]));
+					addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[11]));
+					addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[12]));
+					addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[13]));
+					addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[14]));
+					addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[15]));
+					addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[16]));
+					addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[17]));
+					addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[20]));
+					addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[21]));
+					addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[18]));
+					addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[19]));
+					
 					if(searchScopeId != null && searchScopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
-						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
 						addressVO.setId(addressVO.getStateId());
 						addressVO.setName(addressVO.getStateName());
-					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
-						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
-						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[8]));
-						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[9]));
-						
+					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){						
 						addressVO.setId(addressVO.getDistrictId());
 						addressVO.setName(addressVO.getDistrictName());
 					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
-						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
-						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[8]));
-						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[9]));
-						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[10]));
-						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[11]));
-						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[20]));
-						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[21]));
-						
 						addressVO.setId(addressVO.getAssemblyId());
 						addressVO.setName(addressVO.getAssemblyName());
-					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
-						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
-						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[8]));
-						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[9]));
-						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[10]));
-						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[11]));
-						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[20]));
-						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[21]));
-						
+					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){						
 						addressVO.setId(addressVO.getAssemblyId());
 						addressVO.setName(addressVO.getAssemblyName());
 					}
-					else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
-						addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
-						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[8]));
-						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[9]));
-						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[10]));
-						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[11]));
-						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[12]));
-						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[13]));
-						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[20]));
-						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[21]));
-						
+					else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){						
 						addressVO.setId(addressVO.getTehsilId());
 						addressVO.setName(addressVO.getTehsilName());
 					}
-					else if(searchLevelId != null && searchLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
-						addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[6]));
-						addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[7]));
-						
-						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[8]));
-						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[9]));
-						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[10]));
-						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[11]));
-						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[12]));
-						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[13]));
-						addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[14]));
-						addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[15]));
-						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[20]));
-						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[21]));
-						
+					else if(searchLevelId != null && searchLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){						
 						addressVO.setId(addressVO.getPanchayatId());
 						addressVO.setName(addressVO.getPanchayatName());
 					}
