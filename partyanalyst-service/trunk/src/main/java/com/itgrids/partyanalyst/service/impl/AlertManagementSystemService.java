@@ -945,6 +945,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			
 			calculatePer(finalAlertVOs);
+			//sort list based on alphabetical order
+			if(finalAlertVOs.size()>0){
+				Collections.sort(finalAlertVOs, alphabeticalOrderWiseSorting);
+			}
 			return finalAlertVOs; 
 		}catch(Exception e){
 			e.printStackTrace();
@@ -952,6 +956,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}
 		return null;
 	}
+	public static Comparator<AlertVO> alphabeticalOrderWiseSorting = new Comparator<AlertVO>() {
+		@Override
+		public int compare(AlertVO obj1, AlertVO ojb2) {
+			return obj1.getName().compareTo(ojb2.getName());
+		}
+    	
+     };
 	public void calculatePer(List<AlertVO> finalList){
 		try{
 			Long totalAlertCnt = 0l;
