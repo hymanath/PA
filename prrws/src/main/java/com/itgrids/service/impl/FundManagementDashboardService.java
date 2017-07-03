@@ -30,6 +30,7 @@ import com.itgrids.dao.IFundSanctionMatrixDetailsDAO;
 import com.itgrids.dao.IFundSanctionMatrixRangeDAO;
 import com.itgrids.dao.IGrantTypeDAO;
 import com.itgrids.dao.IPanchayatDAO;
+import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.ITehsilConstituencyDAO;
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dto.AddressVO;
@@ -76,12 +77,13 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	@Autowired
 	private IFundSanctionLocationDAO fundSanctionLocationDAO;
 	@Autowired
-	private ITehsilDAO tehsilDAO;
+	private ITehsilDAO tehsilDAO;  
 	@Autowired
-	private IPanchayatDAO panchayatDAO;
+	private IPanchayatDAO panchayatDAO; 
 	@Autowired
 	private ITehsilConstituencyDAO tehsilConstituencyDAO;
-
+	@Autowired
+	private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	@Override
 	/*
 	 * Date : 05/06/2017
@@ -2274,5 +2276,42 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		   LOG.error("Exception Occurred in setFundAndSchemeToVo() of FundManagementDashboardService ", e);
 	   }
    }
+   public List<LocationFundDetailsVO> getAllSubLocations(InputVO inputVO){
+		try{
+			List<LocationFundDetailsVO> detailsVOs = new ArrayList<LocationFundDetailsVO>();
+			LocationFundDetailsVO locationFundDetailsVO = null;
+			List<Object[]> locationList = null;
+			//Long superLocationLevelId=0L;
+			Long levelId =inputVO.getSearchLevelId();
+			Long locationId =inputVO.getSearchLevelValue();
+			if(levelId != null && levelId == IConstants.STATE_LEVEL_SCOPE_ID){//get districtIds
+				locationList = districtDAO.getDistrictIdName(locationId);
+			}else if(levelId != null && levelId == IConstants.DISTRICT_LEVEL_SCOPE_ID){//get constituencyIds
+				if(inputVO.getType() != null && inputVO.getType().equalsIgnoreCase("constituency"))
+				 locationList= constituencyDAO.getConstituencies(locationId);
+				else
+				 locationList =parliamentAssemblyDAO.getParliamentIdAndName(locationId);
+			}else if(levelId != null && levelId == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){//get tehsilIds
+				locationList = tehsilConstituencyDAO.getTehsilIdAndName(locationId);
+			}else if(levelId != null && levelId == IConstants.MANDAL_LEVEL_SCOPE_ID){//get panchayatIds
+				locationList = panchayatDAO.getPanchayatIdAndName(locationId);
+			}else if(levelId != null && levelId == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){//get  parlaiamentIds
+				//locationList =parliamentAssemblyDAO.getParliamentIdAndName(locationId);
+				locationList =parliamentAssemblyDAO.getParliamentByConstIdAndName(locationId);
+			}	
+			if(locationList != null && locationList.size() > 0){
+				for(Object[] param : locationList){
+					locationFundDetailsVO = new LocationFundDetailsVO();
+					    locationFundDetailsVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						locationFundDetailsVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						detailsVOs.add(locationFundDetailsVO);
+				}
+			}
+			return detailsVOs;
+		}catch(Exception e){
+			LOG.error("Exception Occurred in getAllSubLocations() of FundManagementDashboardService ", e);
+			return null;
+		}
+	}
   
 }

@@ -23,6 +23,7 @@ public class InputVO implements Serializable {
 	private Long locationTypeId;
 	private Long superLocationId;
 	private Long searchLevelId;
+	private Long searchLevelValue;
 	private List<Long> searchLvlVals;
 	
 	private String year;
@@ -298,5 +299,12 @@ public class InputVO implements Serializable {
 	public void setDivType(String divType) {
 		this.divType = divType;
 	}
+	public Long getSearchLevelValue() {
+		return searchLevelValue;
+	}
+	public void setSearchLevelValue(Long searchLevelValue) {
+		this.searchLevelValue = searchLevelValue;
+	}
+	
 	
 }

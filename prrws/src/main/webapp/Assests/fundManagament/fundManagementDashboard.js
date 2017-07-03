@@ -56,6 +56,7 @@
 		compareFundsBetweenFinancialYears(5,'comparionMandalLevlOvervwTable');
 		getGrantTypeHighestAndLowestFund('highest','highFundSource');
 		getGrantTypeHighestAndLowestFund('lowest','lowFundSource');
+		//getAllSubLocations('distNames',3);
 	}
 	function getSelectedType(){
 		 var sortingType = ''; 

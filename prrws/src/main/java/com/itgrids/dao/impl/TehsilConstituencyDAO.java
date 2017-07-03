@@ -60,4 +60,19 @@ public class TehsilConstituencyDAO  extends GenericDaoHibernate<TehsilConstituen
 	      
 	}
 
+	public List<Object[]> getTehsilIdAndName(Long constId){
+	    StringBuilder sb = new StringBuilder();
+	    sb.append(" select distinct model.tehsil.tehsilId,model.tehsil.tehsilName from TehsilConstituency model ");
+	    		if(constId != null && constId.longValue()>0){
+	    	    	sb.append(" where model.constituency.constituencyId =:constId ");
+	    	    }
+	    	    Query query = getSession().createQuery(sb.toString());
+	    	    
+	    	   if(constId != null && constId.longValue()>0){
+	    		   query.setParameter("constId", constId);
+	    	   }
+	    	   
+	    	   return query.list();
+	}
+
 }
