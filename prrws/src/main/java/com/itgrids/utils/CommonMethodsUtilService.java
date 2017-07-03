@@ -792,7 +792,7 @@ public class CommonMethodsUtilService {
 			}
 			return null;
 		}
-		public  String calculateAmountInWords(Long number){
+		/*public  String calculateAmountInWords(Long number){
 		      String amountStr = number.toString();
 		      int lenght = amountStr.trim().length();
 		      int maxLength=0;
@@ -826,7 +826,7 @@ public class CommonMethodsUtilService {
 		    	  amountStr = temp;
 		      }
 		      return amountStr+"."+decAmount;  
-		    }
+		    }*/
 	
 		 /**
 			 * @author  raghu 
@@ -977,4 +977,41 @@ public class CommonMethodsUtilService {
 	        
 	        return webResource;
 		}
+		public  String calculateAmountInWords(Long number){
+			String amountStr = number.toString();
+		      int lenght = amountStr.trim().length();
+		      int maxLength=0;
+		      String tempAmount = amountStr;
+		      String decAmount = "";
+		      if(lenght>7){
+		    	 tempAmount = amountStr.substring(0, amountStr.length()-7);
+		    	 //decimal point is required
+		    	 int len = amountStr.length()-7;
+		    	 decAmount = amountStr.substring(len,len+2);
+		      }else{
+		    	  return "0."+String.valueOf(number/1000000);
+		      }
+		      amountStr = tempAmount;
+		      lenght = tempAmount.trim().length();
+		      if(amountStr.length()>3){
+		    	  String temp="";
+		    	  String temp1="";
+		    	  for (int i = 0; i < amountStr.length(); i++) {
+		    		  if(i==2){
+		    			  temp = amountStr.substring(lenght-(i+1),lenght);
+		    			  temp1=temp;
+		    		  }else if(i>2 && i%2==0 ){
+		    			  maxLength=lenght-(i+1)+2;
+		    			  temp = amountStr.substring(lenght-(i+1),maxLength)+","+temp;
+		    			  temp1 = temp1+amountStr.substring(lenght-(i+1),maxLength);
+		    		  }	else if(temp.length()>0 && temp1.length()>0 && lenght-temp1.length()==1){
+		    			  temp = amountStr.substring(0,1)+","+temp;
+		    		  }	    		  
+				}
+		    	  amountStr = temp;
+		      }
+		      System.out.println(amountStr+"."+decAmount);
+		      return amountStr+"."+decAmount;  
+		     
+		    }
 }
