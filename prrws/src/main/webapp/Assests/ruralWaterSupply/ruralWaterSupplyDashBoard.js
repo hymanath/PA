@@ -417,17 +417,10 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
+					$("#levelOfSupply1").html('');//ara3
 					if(ajaxresp !=null ){
-						if(ajaxresp.safeMLD !=null && ajaxresp.safeMLD >0 && ajaxresp.unsafeMLD !=null && ajaxresp.unsafeMLD >0){
-							$("#levelSupplyTtlValues").show()
-							buildHabitationSupplyDetails(ajaxresp);
-						}else{
-							$("#levelSupplyTtlValues").hide()
-							$("#levelOfSupply1").html("No Data Available");
-						}
-						
+						buildHabitationSupplyDetails(ajaxresp);
 					}else{
-						$("#levelSupplyTtlValues").hide()
 						$("#levelOfSupply1").html("No Data Available");
 					}
 				}
@@ -435,88 +428,82 @@
 		}
 		
 		function buildHabitationSupplyDetails(result){
-			var dataArr = [];
-			var subDataArr1=[],subDataArr2=[];
-			var statusNamesArr=[];
-			var totalCount=0;	
-				statusNamesArr.push("SAFE");
-				subDataArr1.push(result.safeMLD);
-				dataArr.push(subDataArr1);
+				var groundArr=[];
+				var surfaceArr=[];
+					groundArr.push(result.groundWaterSafeMLD)
+					groundArr.push(result.groundWaterUnSafeMLD)
+					surfaceArr.push(result.surfaceWaterSafeMLD)
+					surfaceArr.push(result.surfaceWaterUnSafeMLD)
 				
-				statusNamesArr.push("UN-SAFE");
-				subDataArr2.push(result.unsafeMLD);
-				dataArr.push(subDataArr2);
-				totalCount = result.safeMLD+result.unsafeMLD;
-				
-				$("#levelSupplyTtlValues").html("TOTAL:"+totalCount)
-				var colors = ['#14BAAD','#FC5049']
-				var id = 'levelOfSupply1';
-				var type = {
-					type: 'column',
-					backgroundColor:'transparent'
-				};
-				var legend = {
-					enabled: false
-				};
-				var title = { 
-					 text: '',
-					align:'left',
-					 style: {
-						 color: '#000',
-						 font: 'bold 16px "Lato", sans-serif'
-					  } 
-				};
-				var yAxis = {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: null
+				//$("#levelSupplyTtlValues").html("TOTAL:"+totalCount)
+				$("#levelOfSupply1").highcharts({
+					chart: {
+						type: 'column'
 					},
-				};
-				var xAxis = {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					categories: statusNamesArr,
-					labels: {
+					title: {
+						text: '',
+						align:'left',
+						style: {
+							color: '#000',
+							font: 'bold 16px "Lato", sans-serif'
+						}
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: ['GROUND','SURFACE']
+					},
+					yAxis:{
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+							title: {
+								text: null
+							},
+					}, 
+					
+					legend: {
+						symbolHeight: 12,
+						symbolWidth: 12,
+						symbolRadius: 6,
+						enabled: true
+					},
+					tooltip: {
 						useHTML:true,
-						formatter: function() {
-							return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value+'</p>';
-							
-						},
-						
-					}
-				};
-				var plotOptions ={ column: {
-						colorByPoint: true
-					}};
-				var tooltip = {
-					useHTML:true,
-					formatter: function () {
-						var pcnt = (this.y / totalCount) * 100;
-						return '<b>' + this.x + '</b><br/>' +
-							this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
-					}
-				};
-
-				var data = [{
-					name: '',
-					data:dataArr,
-
-					dataLabels: {
-						enabled: true,
-						color: '#000',
-						align: 'center',
-						formatter: function() {
-							var pcnt = (this.y / totalCount) * 100;
-							return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
-						} 
-					}
-				}];
-				
-				
-				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
+						formatter: function () {
+							return '<b>' + this.x + '</b><br/>' +
+								this.series.name + ': ' + this.y;
+						}
+					},
+					plotOptions: {
+						column: {
+							stacking: 'percent',
+							//colorByPoint: true
+							dataLabels: {
+								useHTML:true,
+								enabled: true,
+								formatter: function() {
+									if(this.y == 0){
+										return null;
+									}else{
+										return '<span>'+this.y+'</span>';
+									}
+									
+								}
+							}
+						}
+					},
+					series: [{
+							name: 'SAFE',
+							data: groundArr,
+							color:'#14BBAE'
+						}, {
+							name: 'UNSAFE',
+							data: surfaceArr,
+							color:'#FC5E57'
+						}]
+				});
 		}
 		
 		function getSchemesDetails(){
@@ -876,85 +863,82 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
-					if(ajaxresp !=null ){
+					if(ajaxresp !=null ){//ara4
 						$("#waterSourcesTtlValues").show()
-						var dataArr = [];
-						var groundDataArr1=[],surfaceArrArr2=[];
-						var totalCount=0;	
-							groundDataArr1.push(parseInt(ajaxresp.groundWaterSourceTotalMlpdCount));
-							dataArr.push(groundDataArr1);
-							
-							surfaceArrArr2.push(parseInt(ajaxresp.surfaceWaterSourceTotalMlpdCount));
-							dataArr.push(surfaceArrArr2);
-							totalCount =totalCount+parseInt(ajaxresp.groundWaterSourceTotalMlpdCount)+parseInt(ajaxresp.surfaceWaterSourceTotalMlpdCount);
-							
-							$("#waterSourcesTtlValues").html("TOTAL:"+totalCount)
-							var colors = ['#14BAAD','#FC5049']
-							var id = 'waterSources';
-							var type = {
-								type: 'column',
-								backgroundColor:'transparent'
-							};
-							var legend = {
-								enabled: false
-							};
-							var title = { 
-								text: '',
-								align:'left',
-								 style: {
-									 color: '#000',
-									 font: 'bold 16px "Lato", sans-serif'
-								  } 
-							};
-							var yAxis = {
-								min: 0,
-								gridLineWidth: 0,
-								minorGridLineWidth: 0,
-								title: {
-									text: null
+						var safeArr = [];
+						var unSafeArr = [];
+						safeArr.push({"y":ajaxresp.safeGroundWaterSourceCount})
+						safeArr.push({"y":ajaxresp.safeSurfaceWaterSourceCount})
+						unSafeArr.push({"y":ajaxresp.unSafeGroundWaterSourceCount})
+						unSafeArr.push({"y":ajaxresp.unSafeSurfaceWaterSourceCount})
+						//$("#waterSourcesTtlValues").html("TOTAL:"+ajaxresp.totalGroundWaterSourceCount)
+						$("#waterSources").highcharts({
+								chart: {
+									type: 'column'
 								},
-							};
-							var xAxis = {
-								min: 0,
-								gridLineWidth: 0,
-								minorGridLineWidth: 0,
-								categories: ['Ground','Surface'],
-								labels: {
+								title: {
+									text: '',
+									align:'left',
+									style: {
+										color: '#000',
+										font: 'bold 16px "Lato", sans-serif'
+									}
+								},
+								xAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+									categories: ['GROUND','SURFACE']
+								},
+								yAxis:{
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+										title: {
+											text: null
+										},
+								}, 
+								
+								legend: {
+									symbolHeight: 12,
+									symbolWidth: 12,
+									symbolRadius: 6,
+									enabled: true
+								},
+								tooltip: {
 									useHTML:true,
-									formatter: function() {
-										return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value+'</p>';
-										
-									},
-									
-								}
-							};
-							var plotOptions ={ column: {
-									colorByPoint: true
-								}};
-							var tooltip = {
-								useHTML:true,
-								formatter: function () {
-									var pcnt = (this.y / totalCount) * 100;
-									return '<b>' + this.x + '</b><br/>' +
-										this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
-								}
-							};
-
-							var data = [{
-								name: '',
-								data: dataArr,
-
-								dataLabels: {
-									enabled: true,
-									color: '#000',
-									align: 'center',
-									formatter: function() {
-										var pcnt = (this.y / totalCount) * 100;
-										return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
-									} 
-								}
-							}];
-							highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
+									formatter: function () {
+										return '<b>' + this.x + '</b><br/>' +
+											this.series.name + ': ' + this.y;
+									}
+								},
+								plotOptions: {
+									column: {
+										//colorByPoint: true
+										dataLabels: {
+											useHTML:true,
+											enabled: true,
+											formatter: function() {
+												if(this.y == 0){
+													return null;
+												}else{
+													return '<span>'+this.y+'</span>';
+												}
+												
+											}
+										}
+									}
+								},
+								series: [{
+										name: 'SAFE',
+										data: safeArr,
+										color:'#14BBAE'
+									}, {
+										name: 'UNSAFE',
+										data: unSafeArr,
+										color:'#FC5E57'
+									}]
+							});
 					}else{
 						$("#waterSourcesTtlValues").hide()
 						$("#waterSources").html("No Data Available");
