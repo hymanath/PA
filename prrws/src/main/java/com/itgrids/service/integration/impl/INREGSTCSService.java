@@ -30,4 +30,5 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregsVillageCuntFrDistrict(String output,Map<String,NregsDataVO> cntMap,String divType);
 	public List<NregsDataVO> getNregaLevelsWiseDataFrNewCalls(InputVO inputVO);
 	public List<NregsDataVO> getNregaLevelsWiseDataFrAgriculture(InputVO inputVO);
+	public List<NregsDataVO> getNregaLevelsWiseDataFrSERP(InputVO inputVO);
 }

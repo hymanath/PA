@@ -265,8 +265,10 @@ function projectData(divId)
 			getNREGSLabBugdtLelwiseData(tableId,dataArr[i]);
 		else if(divId == "Agriculture")
 			getNregaLevelsWiseDataFrAgriculture(tableId,dataArr[i]);
-		else if(divId == "Avg Wage" || divId == "Avg days of emp per HH" || divId == "HH Comp 100 days" || divId == "Timely Payments")
+		else if(divId == "Avg Wage" || divId == "Avg days of emp per HH" || divId == "HH Comp 100 days" || divId == "Timely Payments" || divId == "Nurseries")
 			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[i]);
+		else if(divId == "Horticulture" || divId == "Avenue")
+			getNregaLevelsWiseDataFrSERP(tableId,dataArr[i]);
 		else
 			getNregaLevelsWiseData(tableId,dataArr[i],theadArr);
 	}
@@ -1242,6 +1244,233 @@ function buildLabrBudgetExpBlock(result,projectDivId){
 //DistrictConst Call -- Nandhini
 function buildDistrictsPopupDetails(result,dataArr){
 	var str = '';
+	if(result.distList != null && result.distList.length > 0 )
+	{
+		var theadArr;
+		str+='<div class="panel panel-default panel-black m_top10">';
+			str+='<div class="panel-heading">';
+				str+='<h4 class="panel-title text-capital">'+dataArr+' Details</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+			
+			if(globalDivName == "Avg Wage" || globalDivName == "Avg days of emp per HH" || globalDivName == "HH Comp 100 days" || globalDivName == "Timely Payments"){
+				theadArr = [dataArr,'TARGET','Achivement','Percentage'];
+				if(dataArr == "constituency")
+					theadArr = ["district",dataArr,'TARGET','Achivement','Percentage'];
+				else if(dataArr == "mandal")
+					theadArr = ["district","constituency",dataArr,'TARGET','Achivement','Percentage'];
+				else if(dataArr == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Achivement','Percentage'];
+			}else if(globalDivName == "Agriculture"){
+				theadArr = [dataArr,'TARGET','Completed','Achivement'];
+				if(dataArr == "constituency")
+					theadArr = ["district",dataArr,'TARGET','Completed','Achivement'];
+				else if(dataArr == "mandal")
+					theadArr = ["district","constituency",dataArr,'TARGET','Completed','Achivement'];
+				else if(dataArr == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Completed','Achivement'];
+			}else if(globalDivName == "Horticulture" || globalDivName == "Avenue"){
+				theadArr = [dataArr,'TARGET','Pits Planted','Plants Planted','Percentage'];
+				if(dataArr == "constituency")
+					theadArr = ["district",dataArr,'TARGET','Pits Planted','Plants Planted','Percentage'];
+				else if(dataArr == "mandal")
+					theadArr = ["district","constituency",dataArr,'TARGET','Pits Planted','Plants Planted','Percentage'];
+				else if(dataArr == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Pits Planted','Plants Planted','Percentage'];
+			}else{
+				theadArr = [dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				if(dataArr == "constituency")
+					theadArr = ["district",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				else if(dataArr == "mandal")
+					theadArr = ["district","constituency",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				else if(dataArr == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			}
+				 
+				str+='<div class="table-responsive">';
+				if(globalDivName != 'Labour Budget'){
+					if($windowWidth < 768)
+					{
+						str+='<div class="table-responsive">';
+					}
+					str+='<table class="table table-bordered m_top10 dataTableClsDist">';
+						str+='<thead>';
+							str+='<tr>';
+								for(var i in theadArr)
+								{
+									str+='<th class="text-capital">'+theadArr[i]+'</th>';
+								}
+							str+='</tr>';
+						str+='</thead>';
+					str+='<tbody>';
+					
+							for(var i in result.distList){
+								if(globalDivName == "Avg Wage" || globalDivName == "Avg days of emp per HH" || globalDivName == "HH Comp 100 days" || globalDivName == "Timely Payments"){
+									str+='<tr>';
+									if(dataArr == "district"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+									}
+									else if(dataArr == "constituency"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+									}
+									else if(dataArr == "mandal"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+									}
+									else if(dataArr == "panchayat"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+									}
+									str+='<td>'+result.distList[i].target+'</td>';
+									str+='<td>'+result.distList[i].achivement+'</td>';
+									str+='<td>'+result.distList[i].percentage+'</td>';
+								str+='</tr>';
+								}else if(globalDivName == "Agriculture"){
+									str+='<tr>';
+									if(dataArr == "district"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+									}
+									else if(dataArr == "constituency"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+									}
+									else if(dataArr == "mandal"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+									}
+									else if(dataArr == "panchayat"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+									}
+									str+='<td>'+result.distList[i].target+'</td>';
+									str+='<td>'+result.distList[i].completed+'</td>';
+									str+='<td>'+result.distList[i].achivement+'</td>';
+								str+='</tr>';
+								}else if(globalDivName == "Horticulture" || globalDivName == "Avenue"){
+									str+='<tr>';
+									if(dataArr == "district"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+									}
+									else if(dataArr == "constituency"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+									}
+									else if(dataArr == "mandal"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+									}
+									else if(dataArr == "panchayat"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+									}
+									str+='<td>'+result.distList[i].target+'</td>';
+									str+='<td>'+result.distList[i].pitsPlanted+'</td>';
+									str+='<td>'+result.distList[i].plantsPlanted+'</td>';
+									str+='<td>'+result.distList[i].percentage+'</td>';
+								str+='</tr>';
+								}else{
+									str+='<tr>';
+									if(dataArr == "district"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+									}
+									else if(dataArr == "constituency"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+									}
+									else if(dataArr == "mandal"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+									}
+									else if(dataArr == "panchayat"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+									}
+									str+='<td>'+result.distList[i].target+'</td>';
+									str+='<td>'+result.distList[i].grounded+'</td>';
+									str+='<td>'+result.distList[i].notGrounded+'</td>';
+									str+='<td>'+result.distList[i].inProgress+'</td>';
+									str+='<td>'+result.distList[i].completed+'</td>';
+									str+='<td>'+result.distList[i].percentage+'</td>';
+								str+='</tr>';
+								}
+							}
+						str+='</tbody>';
+					str+='</table>';
+					if($windowWidth < 768)
+					{
+						str+='</div>';
+					}
+					
+				}
+				else{
+					globalDivName
+					theadArr = [dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
+					if(dataArr == "constituency")
+						theadArr = ["district",dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
+					else if(dataArr == "mandal")
+						theadArr = ["district","constituency",dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
+					if($windowWidth < 768)
+					{
+						str+='<div class="table-responsive">';
+					}
+					str+='<table class="table table-bordered m_top10 dataTableClsDist">';
+					str+='<thead>';
+						str+='<tr>';
+							for(var i in theadArr)
+							{
+								str+='<th class="text-capital">'+theadArr[i]+'</th>';
+							}
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+				
+					for(var i in result.distList){
+						str+='<tr>';
+							if(dataArr == "district"){
+								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+							}
+							else if(dataArr == "constituency"){
+								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+								str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+							}
+							else if(dataArr == "mandal"){
+								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+								str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+								str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+							}
+								
+							str+='<td>'+result.distList[i].targetPersonDays+'</td>';
+							str+='<td>'+result.distList[i].generatedPersonDays+'</td>';
+							str+='<td>'+result.distList[i].perAppLB+'</td>';
+							str+='<td>'+result.distList[i].avgWageRate+'</td>';
+							str+='<td>'+result.distList[i].totalExpenditure+'</td>';
+						str+='</tr>';
+					}
+					str+='</tbody>';
+					str+='</table>';
+					if($windowWidth < 768)
+					{
+						str+='</div>';
+					}
+				}
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	}
+	
 	if(result.distConsCuntList != null && result.distConsCuntList.length > 0 )
 	{
 		str+='<div class="panel panel-default panel-black m_top10">';
@@ -1528,168 +1757,6 @@ function buildDistrictsPopupDetails(result,dataArr){
 			str+='</div>';
 		str+='</div>';
 	}
-	if(result.distList != null && result.distList.length > 0 )
-	{
-		var theadArr;
-		str+='<div class="panel panel-default panel-black m_top10">';
-			str+='<div class="panel-heading">';
-				str+='<h4 class="panel-title text-capital">'+dataArr+' Details</h4>';
-			str+='</div>';
-			str+='<div class="panel-body">';
-			
-			if(globalDivName == "Avg Wage" || globalDivName == "Avg days of emp per HH" || globalDivName == "HH Comp 100 days" || globalDivName == "Timely Payments"){
-				theadArr = [dataArr,'TARGET','Achivement','Percentage'];
-				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'TARGET','Achivement','Percentage'];
-				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'TARGET','Achivement','Percentage'];
-				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Achivement','Percentage'];
-			}else{
-				theadArr = [dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-			}
-				 
-				str+='<div class="table-responsive">';
-				if(globalDivName != 'Labour Budget'){
-					if($windowWidth < 768)
-					{
-						str+='<div class="table-responsive">';
-					}
-					str+='<table class="table table-bordered m_top10 dataTableClsDist">';
-						str+='<thead>';
-							str+='<tr>';
-								for(var i in theadArr)
-								{
-									str+='<th class="text-capital">'+theadArr[i]+'</th>';
-								}
-							str+='</tr>';
-						str+='</thead>';
-					str+='<tbody>';
-					
-							for(var i in result.distList){
-								if(globalDivName == "Avg Wage" || globalDivName == "Avg days of emp per HH" || globalDivName == "HH Comp 100 days" || globalDivName == "Timely Payments"){
-									str+='<tr>';
-									if(dataArr == "district"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-									}
-									else if(dataArr == "constituency"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-									}
-									else if(dataArr == "mandal"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-									}
-									else if(dataArr == "panchayat"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
-									}
-									str+='<td>'+result.distList[i].target+'</td>';
-									str+='<td>'+result.distList[i].achivement+'</td>';
-									str+='<td>'+result.distList[i].percentage+'</td>';
-								str+='</tr>';
-								}else{
-									str+='<tr>';
-									if(dataArr == "district"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-									}
-									else if(dataArr == "constituency"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-									}
-									else if(dataArr == "mandal"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-									}
-									else if(dataArr == "panchayat"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
-									}
-									str+='<td>'+result.distList[i].target+'</td>';
-									str+='<td>'+result.distList[i].grounded+'</td>';
-									str+='<td>'+result.distList[i].notGrounded+'</td>';
-									str+='<td>'+result.distList[i].inProgress+'</td>';
-									str+='<td>'+result.distList[i].completed+'</td>';
-									str+='<td>'+result.distList[i].percentage+'</td>';
-								str+='</tr>';
-								}
-							}
-						str+='</tbody>';
-					str+='</table>';
-					if($windowWidth < 768)
-					{
-						str+='</div>';
-					}
-					
-				}
-				else{
-					globalDivName
-					theadArr = [dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
-					if(dataArr == "constituency")
-						theadArr = ["district",dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
-					else if(dataArr == "mandal")
-						theadArr = ["district","constituency",dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
-					if($windowWidth < 768)
-					{
-						str+='<div class="table-responsive">';
-					}
-					str+='<table class="table table-bordered m_top10 dataTableClsDist">';
-					str+='<thead>';
-						str+='<tr>';
-							for(var i in theadArr)
-							{
-								str+='<th class="text-capital">'+theadArr[i]+'</th>';
-							}
-						str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>';
-				
-					for(var i in result.distList){
-						str+='<tr>';
-							if(dataArr == "district"){
-								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-							}
-							else if(dataArr == "constituency"){
-								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-								str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-							}
-							else if(dataArr == "mandal"){
-								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-								str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-								str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-							}
-								
-							str+='<td>'+result.distList[i].targetPersonDays+'</td>';
-							str+='<td>'+result.distList[i].generatedPersonDays+'</td>';
-							str+='<td>'+result.distList[i].perAppLB+'</td>';
-							str+='<td>'+result.distList[i].avgWageRate+'</td>';
-							str+='<td>'+result.distList[i].totalExpenditure+'</td>';
-						str+='</tr>';
-					}
-					str+='</tbody>';
-					str+='</table>';
-					if($windowWidth < 768)
-					{
-						str+='</div>';
-					}
-				}
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-	}
-	
 	$("#nregsConsitenBodyId").html(str);
 	$(".dataTableCls").dataTable({
 		"order": [[ 1, "asc" ]]
@@ -2128,6 +2195,76 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType)
 						str+='<td>'+ajaxresp[i].target+'</td>';
 						str+='<td>'+ajaxresp[i].completed+'</td>';
 						str+='<td>'+ajaxresp[i].achivement+'</td>';
+					str+='</tr>';
+				}
+			}
+			tableView(divIdd,theadArr,str,locationType);
+		}
+	});
+}
+
+function getNregaLevelsWiseDataFrSERP(divIdd,locationType)
+{
+	$("#"+divIdd).html(spinner);
+	 var theadArr = [locationType,'Target','Achivement','Percentage'];
+	if(locationType == "constituency")
+		theadArr = ["district",locationType,'Target','Pits Planted','Plants Planted','Percentage'];
+	else if(locationType == "mandal")
+		theadArr = ["district","constituency",locationType,'Target','Pits Planted','Plants Planted','Percentage'];
+	else if(locationType == "panchayat")
+		theadArr = ["district","constituency","mandal",locationType,'Target','Pits Planted','Plants Planted','Percentage'];
+	
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locationType,
+		divType : globalDivName
+	}
+	$.ajax({
+		url: 'getNregaLevelsWiseDataFrSERP',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			var str = '';
+			if(ajaxresp != null && ajaxresp.length > 0){
+				for(var i in ajaxresp){
+					str+='<tr>';
+						if(locationType == "state"){
+							str+='<td class="text-capital">'+locationType+'</td>';
+						}
+						else if(locationType == "district"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						}
+						else if(locationType == "constituency"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+						}
+						else if(locationType == "mandal"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+						}
+						else if(locationType == "panchayat"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+						}
+						str+='<td>'+ajaxresp[i].target+'</td>';
+						if(locationType == "state")
+							str+='<td>'+ajaxresp[i].achivement+'</td>';
+						else{
+							str+='<td>'+ajaxresp[i].pitsPlanted+'</td>';
+							str+='<td>'+ajaxresp[i].plantsPlanted+'</td>';
+							
+						}
+						str+='<td>'+ajaxresp[i].percentage+'</td>';
 					str+='</tr>';
 				}
 			}
