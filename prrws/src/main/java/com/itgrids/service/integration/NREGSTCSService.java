@@ -71,12 +71,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setTarget(jObj.getString("TARGET"));
 	 	    				vo.setCompleted(jObj.getString("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				if(vo.getParameter() != null && vo.getParameter().equalsIgnoreCase("Labour Budget")){
+	 	    				/*if(vo.getParameter() != null && vo.getParameter().equalsIgnoreCase("Labour Budget")){
 	 	    					vo.setTarget(new BigDecimal(Double.valueOf(vo.getTarget())/10000000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    					vo.setTarget(vo.getTarget()+" Cr");
 	 	    					vo.setCompleted(new BigDecimal(Double.valueOf(vo.getCompleted())/10000000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    					vo.setCompleted(vo.getCompleted()+" Cr");
-	 	    				}
+	 	    				}*/
 	 	    				
 	 	    				voList.add(vo);
 	 	    			}
@@ -1340,6 +1340,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AP100DaysService/AP100DaysData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payments"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/TimePaymentService/TPData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NurseriesService/Nurseries";
 			
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
 	        
@@ -1366,7 +1368,10 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    						vo.setTarget(jObj.getLong("TARGET"));
 		 	    				else
 		 	    					vo.setTarget(jObj.getLong("TARGET"));
-		 	    				vo.setAchivement(new BigDecimal(jObj.getString("ACHIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries"))
+		 	    					vo.setAchivement(new BigDecimal(jObj.getString("COMPLETED")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				else
+		 	    					vo.setAchivement(new BigDecimal(jObj.getString("ACHIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    				voList.add(vo);
 		 	    			}
@@ -1436,6 +1441,62 @@ public class NREGSTCSService implements INREGSTCSService{
 	        
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNregaLevelsWiseDataFrAgriculture - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	/*
+	 * Date : 04/07/2017
+	 * Author :Sravanth
+	 * @description : getNregaLevelsWiseDataFrSERP
+	 */
+	public List<NregsDataVO> getNregaLevelsWiseDataFrSERP(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			String webServiceUrl = null;
+			
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Horticulture"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/HorticultureService/HorticultureData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avenue"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AvenueService/AvenueData";
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTarget(jObj.getLong("TARGET"));
+	 	    				if(inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("state")){
+	 	    					vo.setAchivement(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				}
+	 	    				else{
+	 	    					vo.setPitsPlanted(jObj.getString("PITS_PLANTED"));
+	 	    					vo.setPlantsPlanted(jObj.getString("PLANTS_PLANTED"));
+	 	    				}
+	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				voList.add(vo);
+	 	    				
+	 	    			}
+	 	    		}
+	 	    	}
+	 	   }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataFrSERP - NREGSTCSService service", e);
 		}
 		
 		return voList;
