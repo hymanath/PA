@@ -210,6 +210,7 @@
 			var dataArr = [];
 			var totalCount=0;
 			var statusNamesArr=[];
+			var colors = []
 			for(var i in response){
 			  for(var j in response[i].statusList){
 					if(response[i].statusList[j].status != "NC"){
@@ -218,10 +219,17 @@
 						tempArr.push(parseInt(response[i].statusList[j].count));
 						dataArr.push(tempArr);
 						totalCount=totalCount+parseInt(response[i].statusList[j].count);
+						
+						if(response[i].statusList[j].status == "FC"){
+							colors.push('#14BAAD')
+						}else if(response[i].statusList[j].status == "NSS"){
+							colors.push('#FC5049')
+						}else{
+							colors.push('#FFBF14')
+						}
 					}
 				}
 			}
-			var colors = ['#14BAAD']
 			var id = 'habitation';
 			var type = {
 				type: 'column',
@@ -235,8 +243,8 @@
 				text: '',
 				align:'left',
 				 style: {
-					 color: '#000',
-					 font: 'bold 16px "Lato", sans-serif'
+					 color: '#777',
+					 font: 'bold 8px "Lato", sans-serif'
 				  } 
 			};
 			var yAxis = {
