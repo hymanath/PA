@@ -1313,4 +1313,5 @@ public interface IConstants {
 	public static String FCM_URL = "https://fcm.googleapis.com/fcm/send";
 	public static final String FEEDBACK_ALERT_CATEGORY_ID="4,5";
 	public static final Long MAHANADU_EVENT_ID = 51L;
+	public static final List<Long> IMPACT_IDS = Arrays.asList(3l,5l,6l,9l,12l);
 }

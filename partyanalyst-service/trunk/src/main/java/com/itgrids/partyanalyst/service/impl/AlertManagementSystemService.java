@@ -14487,8 +14487,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 						aaotn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 						aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						aaotn.setIsApproved(aaon.getIsApproved());
-						alertAssignedOfficerTrackingNewDAO.save(aaotn);
-						*/
+						alertAssignedOfficerTrackingNewDAO.save(aaotn);						*/
 						/* SMS sending while assigning a new alert to any officer */
 						
 						//List<Long> assingedIdsList = alertAssignedOfficerNewDAO.getAssignedDtls(alertId);
@@ -15816,7 +15815,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 	public List<AmsKeyValueVO> getUserAccessedDepartmentsForAMS(Long userId){
 		List<AmsKeyValueVO> returnList = new ArrayList<AmsKeyValueVO>();
 		try {
-			
+									
 			List<Object[]> list = govtAlertDepartmentLocationNewDAO.getDeptIdAndNameForUserAccessLevel(userId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
@@ -15830,5 +15829,239 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			LOG.error("Error occured getUserAccessedDepartmentsForAMS() method of AlertManagementSystemService",e);
 		}
 		return returnList;
+	}
+	  /*
+	   * Date : 23/06/2017
+	   * Author :Teja
+	   * @description : getTotalAlertDetailsForConstituencyInfo(Getting Alert details for constituency page)
+	   */
+	public  List<AlertVO> getTotalAlertDetailsForConstituencyInfo(String fromDateStr ,String toDateStr,Long constituencyId,List<Long> alertTypeIds){
+		List<AlertVO> finalVoList = new ArrayList<AlertVO>();
+		List<IdNameVO> totalList = new ArrayList<IdNameVO>();
+		List<IdNameVO> involvedList = new ArrayList<IdNameVO>();
+		List<IdNameVO> assignList = new ArrayList<IdNameVO>();
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Object[]> alertImpactLevelLst = alertDAO.getAlertImpactLevelWiseDetailsForConstituencyInfo(fromDate, toDate, constituencyId, alertTypeIds);
+			setImpactLevelData(alertImpactLevelLst,finalVoList);
+			
+			List<Object[]> alertStatusLst = alertDAO.getAlertStatusWiseDetailsForConstituencyInfo(fromDate, toDate, constituencyId, alertTypeIds);
+			setStatusWiseData(alertStatusLst,finalVoList);
+			
+			List<Object[]> totalAlertCnt = alertDAO.getTotalAlertDetailsCount(fromDate, toDate, constituencyId, alertTypeIds);
+			setAlertData(totalAlertCnt,totalList);
+			
+			List<Object[]> involvedMembersList = alertCandidateDAO.getInvolvedMemberAlertDetails(fromDate, toDate, constituencyId, alertTypeIds);
+			setAlertData(involvedMembersList,involvedList);
+			
+			List<Object[]> assignMembersList = alertAssignedOfficerNewDAO.getAssignedMemberAlertDetails(fromDate, toDate, constituencyId, alertTypeIds);
+			setAlertData(assignMembersList,assignList);
+			
+			finalVoList.get(0).getIdNamesList().addAll(totalList);
+			finalVoList.get(0).getDocList().addAll(involvedList);
+			finalVoList.get(0).getAssignList().addAll(assignList);
+			
+
+			if(finalVoList != null && finalVoList.size() > 0){
+				for (AlertVO finalVo : finalVoList){
+					if(finalVo.getSubList1() != null && finalVo.getSubList1().size() >0){
+						Long totalCount= 0l;
+						for (AlertVO subVo : finalVo.getSubList1()) {
+							totalCount = totalCount+subVo.getCount()+subVo.getAlertCnt();
+						}
+						finalVo.setSatisfiedCount(totalCount);
+					}
+				}
+			}
+			
+			if(finalVoList != null && finalVoList.size() > 0){
+				Long statusCount= 0l;
+				for (AlertVO finalVo : finalVoList){
+					if(finalVo.getSubList2() != null && finalVo.getSubList2().size() >0){
+						Long totalCount= 0l;
+						for (AlertVO subVo : finalVo.getSubList2()) {
+							totalCount = totalCount+subVo.getCount()+subVo.getAlertCnt();
+							statusCount = statusCount+totalCount;
+						}
+						finalVo.setLocationCnt(totalCount);
+					}
+					finalVo.setStatusCount(statusCount);
+					if(finalVo.getStatusCount() > 0){
+						finalVo.setPercentage(caclPercantage(finalVo.getLocationCnt(),finalVo.getStatusCount()));
+					}
+				}
+			}
+			if(finalVoList != null && finalVoList.size() > 0){
+				Long totalCount1 = 0l;
+				for (AlertVO finalVo : finalVoList){
+					if(finalVo.getIdNamesList() != null && finalVo.getIdNamesList().size() > 0){
+						for (IdNameVO subVo :finalVo.getIdNamesList()) {
+							totalCount1 = totalCount1+subVo.getCount()+subVo.getActualCount();
+						}
+					}
+					finalVo.setNoOfDays(totalCount1);
+				}
+			}
+			if(finalVoList != null && finalVoList.size() > 0){
+				Long totalCot = 0l;
+				for (AlertVO finalVo : finalVoList){
+					if(finalVo.getDocList() != null && finalVo.getDocList().size() > 0){
+						for (IdNameVO subVo :finalVo.getDocList()) {
+							totalCot = totalCot+subVo.getCount()+subVo.getActualCount();
+						}
+					}
+					finalVo.setProposalAmount(totalCot);
+				}
+			}
+			if(finalVoList != null && finalVoList.size() > 0){
+				Long totalCont = 0l;
+				for (AlertVO finalVo : finalVoList){
+					if(finalVo.getAssignList() != null && finalVo.getAssignList().size() > 0){
+						for (IdNameVO subVo :finalVo.getAssignList()) {
+							totalCont = totalCont+subVo.getCount()+subVo.getActualCount();
+						}
+					}
+					finalVo.setApprovedAmount(totalCont);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getTotalAlertDetailsForConstituencyInfo() method of AlertManagementSystemService",e);
+		}
+		return finalVoList;
+	}
+	public void setAlertData(List<Object[]> objList,List<IdNameVO> dataLst){
+		if(objList != null && objList.size() > 0){
+			for (Object[] objects : objList){
+				IdNameVO totalVo = new IdNameVO();
+				totalVo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				totalVo.setTitle(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				if(commonMethodsUtilService.getLongValueForObject(objects[0]) == 1l){
+					totalVo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+				}else{
+					totalVo.setActualCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+				}
+				dataLst.add(totalVo);
+			}
+		}
+	}
+	public void setImpactLevelData(List<Object[]> objList,List<AlertVO> finalVOList){
+		if(objList != null && objList.size() > 0){
+			for (Object[] objects : objList) {
+				AlertVO matchedVO = getmatchedAlertVo(finalVOList,(Long)objects[0]);
+				if(matchedVO == null){
+					matchedVO = new AlertVO();
+					matchedVO.setId((Long)objects[0]);
+					matchedVO.setStatus(objects[1].toString());
+					
+					AlertVO alertTypeVo = new AlertVO();
+						alertTypeVo.setId((Long)objects[2]);
+						alertTypeVo.setStatus(objects[3].toString());
+					
+					if((Long)objects[2] == 1l){
+						alertTypeVo.setCount((Long)objects[4]);//For party
+					}
+					else if((Long)objects[2] == 2l){
+						alertTypeVo.setAlertCnt((Long)objects[4]);//For Govt
+					}
+					matchedVO.getSubList1().add(alertTypeVo);
+					finalVOList.add(matchedVO);
+				}else{
+					AlertVO alertTypeVo = getmatchedAlertVo(matchedVO.getSubList1(),(Long)objects[0]);
+					if( alertTypeVo == null){
+						alertTypeVo = new AlertVO();
+						alertTypeVo.setId((Long)objects[2]);
+						alertTypeVo.setStatus(objects[3].toString());
+							if((Long)objects[2] == 1l){
+								alertTypeVo.setCount((Long)objects[4]);//For party
+							}
+							else if((Long)objects[2] == 2l){
+								alertTypeVo.setAlertCnt((Long)objects[4]);//For Govt
+							}
+							matchedVO.getSubList1().add(alertTypeVo);
+					}else{
+						if((Long)objects[2] == 1l){
+							alertTypeVo.setCount((Long)objects[4]);//For Party
+						}
+						else if((Long)objects[2] == 2l){
+							alertTypeVo.setAlertCnt((Long)objects[4]);//For Govt
+						}
+					}
+					
+						
+				}
+			}
+		}
+	}
+	//0-statusId,1-status,2-color,3-impactScopeId,4-impactScope,5-alertTypeId,alertType-6,7-count
+	public void setStatusWiseData(List<Object[]> objList,List<AlertVO> finalVOList){
+		if(objList != null && objList.size() > 0){
+			for (Object[] objects : objList) {
+				AlertVO matchedLocationVO = getmatchedAlertVo(finalVOList,(Long)objects[3]);
+				if(matchedLocationVO == null){
+					matchedLocationVO = new AlertVO();
+					matchedLocationVO.setId((Long)objects[3]);
+					matchedLocationVO.setStatus(objects[4].toString());
+					
+					AlertVO statusWiseVO =  new AlertVO();
+					statusWiseVO.setId((Long)objects[0]);
+					statusWiseVO.setStatus(objects[1].toString());
+					statusWiseVO.setColor(objects[2].toString());
+					statusWiseVO.setAlertTypeId((Long)objects[5]);
+					statusWiseVO.setAlertTypeName(objects[6].toString());
+					if((Long)objects[5] == 1l){
+						statusWiseVO.setCount((Long)objects[7]);
+					}else if((Long)objects[5] == 2l){
+						statusWiseVO.setAlertCnt((Long)objects[7]);
+					}
+					
+					matchedLocationVO.getSubList2().add(statusWiseVO);
+					finalVOList.add(matchedLocationVO);
+				}else{
+					
+					AlertVO matchedStatusWiseVO =  getmatchedAlertVo(matchedLocationVO.getSubList2(),(Long)objects[3]);
+					if(matchedStatusWiseVO == null){
+						matchedStatusWiseVO = new AlertVO();
+						matchedStatusWiseVO.setId((Long)objects[0]);
+						matchedStatusWiseVO.setStatus(objects[1].toString());
+						matchedStatusWiseVO.setColor(objects[2].toString());
+						matchedStatusWiseVO.setAlertTypeId((Long)objects[5]);
+						matchedStatusWiseVO.setAlertTypeName(objects[6].toString());
+						if((Long)objects[5] == 1l){
+							matchedStatusWiseVO.setCount((Long)objects[7]);
+						}else if((Long)objects[5] == 2l){
+							matchedStatusWiseVO.setAlertCnt((Long)objects[7]);
+						}
+						
+						matchedLocationVO.getSubList2().add(matchedStatusWiseVO);
+					}else{
+						if((Long)objects[5] == 1l){
+							matchedStatusWiseVO.setCount((Long)objects[7]);
+						}else if((Long)objects[5] == 2l){
+							matchedStatusWiseVO.setAlertCnt((Long)objects[7]);
+						}
+					}
+				}
+			}
+		}
+	}
+	public AlertVO getmatchedAlertVo(List<AlertVO> finalVOList,Long orgId){
+		if(finalVOList != null && finalVOList.size() > 0){
+			for (AlertVO vo : finalVOList) {
+				if(vo.getId() != null && vo.getId().equals(orgId)){
+					return vo;
+				}
+			}
+		}
+		return null;
+	}
+	public Double caclPercantage(Long subCount,Long totalCount){
+		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		return d;
 	}
 }
