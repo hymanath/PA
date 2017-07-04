@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
+import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -38,6 +39,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
 	private List<LocationVotersVO> locationVotersVOList;
 	private List<KeyValueVO> keyValueVOList;
+	private List<ToursBasicVO> tourDesignationList;
 	
 	
 	public List<KeyValueVO> getKeyValueVOList() {
@@ -129,7 +131,13 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	{
 		return Action.SUCCESS;
 	} 
-	 public String getCandidateAndPartyInfoForConstituency(){
+	public List<ToursBasicVO> getTourDesignationList() {
+		return tourDesignationList;
+	}
+	public void setTourDesignationList(List<ToursBasicVO> tourDesignationList) {
+		this.tourDesignationList = tourDesignationList;
+	}
+	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
 			  jObj=new JSONObject(getTask());
 			  Long constituencyId = jObj.getLong("constituencyId");
@@ -220,6 +228,18 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		}
 		 return Action.SUCCESS;
 	 }
-	 
+	 public String  getLocationWiseTourMembersComplainceDtls(){
+		 try {
+			 jObj = new JSONObject(getTask());
+			 String locationType = jObj.getString("locationType");
+			 Long locationValue = jObj.getLong("locationValue");
+			 String fromDateStr = jObj.getString("fromDate");
+			 String toDateStr = jObj.getString("toDate");
+			 tourDesignationList = locationDashboardService.getLocationWiseTourMembersComplainceDtls(locationType,locationValue,fromDateStr,toDateStr);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseTourMembersComplainceDtls in LocationDashboardAction class", e);
+		}
+		 return Action.SUCCESS;
+	 }
 	 //public String get
 }
