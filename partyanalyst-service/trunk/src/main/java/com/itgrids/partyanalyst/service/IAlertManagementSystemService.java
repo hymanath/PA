@@ -252,4 +252,5 @@ public interface IAlertManagementSystemService {
 			 List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,List<Long> socialMediaTypeIds,
 			 List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,
 			 List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
+	 public  List<AlertVO> getTotalAlertDetailsForConstituencyInfo(String fromDateStr ,String toDateStr,Long constituencyId,List<Long> alertTypeIds);
 }        
