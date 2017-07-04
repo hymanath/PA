@@ -4323,6 +4323,11 @@
   		<property name="cadreDetailsService" ref="cadreDetailsService" ></property>
   		<property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO" ></property>
   		
+  		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+  		<property name="selfAppraisalCandidateLocationNewDAO" ref="selfAppraisalCandidateLocationNewDAO" ></property>
+  		<property name="selfAppraisalDesignationTargetDAO" ref="selfAppraisalDesignationTargetDAO" ></property>
+  		<property name="selfAppraisalCandidateDetailsNewDAO" ref="selfAppraisalCandidateDetailsNewDAO" ></property>
+  		<property name="selfAppraisalToursMonthDAO" ref="selfAppraisalToursMonthDAO"></property>
   </bean>
   <bean name="cadrePartyMeetingManagementService" class="com.itgrids.partyanalyst.meeting.service.impl.CadrePartyMeetingManagementService" >
   

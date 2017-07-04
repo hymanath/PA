@@ -19,6 +19,9 @@ function onLoadAjaxCalls()
 	
 	//meetings
 	getLocationWiseMeetingsCount();
+
+	//tour
+	//getLocationWiseTourMembersComplainceDtls();
 	
 	
 }
@@ -672,5 +675,22 @@ function getLocationWiseMeetingsCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
+	});	
+}
+
+function getLocationWiseTourMembersComplainceDtls(){
+	jsObj={
+		locationType:"constituency",
+		locationValue:272,
+		fromDate:"01/06/2017",
+		 toDate:"30/06/2017"
+	}
+	 $.ajax({
+      type : "GET",
+      url : "getLocationWiseTourMembersComplainceDtlsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+	console.log(result);
 	});	
 }
