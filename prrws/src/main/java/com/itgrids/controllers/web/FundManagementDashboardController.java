@@ -206,4 +206,14 @@ public class FundManagementDashboardController {
 			List<LocationFundDetailsVO> locationFundDetailsVOList = fundManagementDashboardService.getAllSubLocations(inputVO);
 			return locationFundDetailsVOList;
 		}
+		
+		@RequestMapping(value = "/getALlProgramesAmountDetails", method = RequestMethod.POST,
+				produces = MediaType.APPLICATION_JSON_VALUE,
+				consumes = MediaType.APPLICATION_JSON_VALUE)
+				  public @ResponseBody List<LocationFundDetailsVO> getALlProgramesAmountDetails(@RequestBody InputVO inputVO)
+				  {		
+					
+					List<LocationFundDetailsVO>  returnList = fundManagementDashboardService.getALlProgramesAmountDetails(inputVO);
+					return returnList;
+				  }
 }
