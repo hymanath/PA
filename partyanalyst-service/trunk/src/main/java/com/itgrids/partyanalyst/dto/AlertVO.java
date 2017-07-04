@@ -104,6 +104,8 @@ public class AlertVO {
 	
 	private Long satisfiedCount;
 	private Long unSatisfiedCount;
+	private Long locationCnt=0l;
+	private Long statusCount=0l;
     
 	public String getCallerDuplicate() {
 		return callerDuplicate;
@@ -648,7 +650,17 @@ public class AlertVO {
 	public void setType(String type) {
 		this.type = type;
 	}
-     	
-	
+	public Long getLocationCnt() {
+		return locationCnt;
+	}
+	public void setLocationCnt(Long locationCnt) {
+		this.locationCnt = locationCnt;
+	}
+	public Long getStatusCount() {
+		return statusCount;
+	}
+	public void setStatusCount(Long statusCount) {
+		this.statusCount = statusCount;
+	}
 	
 }
