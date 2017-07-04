@@ -393,12 +393,15 @@ public class RWSNICService implements IRWSNICService{
 	 	    			JSONArray finalArray = jobj.getJSONArray("assetTypeList");
 	 	    			Long totalAssets = 0l;
 	 	 	    		for(int i=0;i<finalArray.length();i++){
-	 	 	    			BasicVO basicVO = new BasicVO();
 	 	 	    			JSONObject jObj = (JSONObject) finalArray.get(i);
-	 	 	    			basicVO.setAssetType(jObj.getString("assetType"));
-	 	 	    			basicVO.setCount(jObj.getLong("count"));
-	 	 	    			totalAssets = totalAssets + jObj.getLong("count");
-	 	 	    			assetsList.add(basicVO);
+	 	 	    			if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+	 	 	    				BasicVO basicVO = new BasicVO();
+		 	 	    			basicVO.setAssetType(jObj.getString("assetType"));
+		 	 	    			basicVO.setCount(jObj.getLong("count"));
+		 	 	    			totalAssets = totalAssets + jObj.getLong("count");
+		 	 	    			assetsList.add(basicVO);
+	 	 	    			}
+	 	 	    			
 	 	 	    		}
 	 	 	    		
 	 	 	    		if(totalAssets > 0l){
@@ -553,9 +556,9 @@ public class RWSNICService implements IRWSNICService{
 							waterSourceInfo.setSafeSurfaceWaterSourceCount(jObj.getLong("safeSurfaceWaterSourceCount"));
 							waterSourceInfo.setTotalGroundWaterSourceCount(jObj.getLong("totalGroundWaterSourceCount"));
 							waterSourceInfo.setUnSafeGroundWaterSourceCount(jObj.getLong("unSafeGroundWaterSourceCount"));
-							waterSourceInfo.setSafeSurfaceWaterSourceCount(jObj.getLong("safeSurfaceWaterSourceCount"));
-							waterSourceInfo.setSafeSurfaceWaterSourceCount(jObj.getLong("safeSurfaceWaterSourceCount"));
-							waterSourceInfo.setSafeSurfaceWaterSourceCount(jObj.getLong("safeSurfaceWaterSourceCount"));
+							waterSourceInfo.setSafeGroundWaterSourceCount(jObj.getLong("safeGroundWaterSourceCount"));
+							waterSourceInfo.setUnSafeSurfaceWaterSourceCount(jObj.getLong("unSafeSurfaceWaterSourceCount"));
+							waterSourceInfo.setTotalSurfaceWaterSourceCount(jObj.getLong("totalSurfaceWaterSourceCount"));
 						}	
 	 	    				/*waterSourceInfo.setName(jObj.getString("status"));
 	 	    				waterSourceInfo.setGroundWaterSourceTotalMlpdCount(jObj.getLong("groundWaterSourceCount"));
