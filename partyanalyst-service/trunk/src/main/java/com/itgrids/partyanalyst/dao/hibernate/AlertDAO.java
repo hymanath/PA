@@ -10499,4 +10499,86 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		
 	 		return query.list();
 	 	}
+	 	public List<Object[]> getTotalAlertDetailsCount(Date fromDate,Date toDate,Long constituencyId,List<Long> alertTypeIds){
+	 		StringBuilder queryStr = new StringBuilder();
+	 			queryStr.append(" SELECT model.alertType.alertTypeId,model.alertType.alertType,count(distinct model.alertId) " +
+	 				" FROM Alert model " +
+	 				" WHERE model.isDeleted ='N'" +
+	 				" and model.alertType.alertTypeId  in (:alertTypeIds) " );
+	 		
+	 		if(fromDate != null && toDate != null){
+				queryStr.append(" and date(model.createdTime) between :fromDate and :toDate ");  
+			}
+	 			queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
+	 			queryStr.append(" GROUP BY model.alertTypeId " +
+	 					" order by model.alertStatus.statusOrder  ");
+	 		Query query = getSession().createQuery(queryStr.toString());
+	 		query.setParameterList("alertTypeIds", alertTypeIds);
+			 if(fromDate != null && toDate != null){
+				query.setParameter("fromDate", fromDate);
+	 			query.setParameter("toDate", toDate);
+			 }
+			 query.setParameter("constituencyId",constituencyId);
+	 		return  query.list();
+	 	}
+      public List<Object[]> getAlertStatusWiseDetailsForConstituencyInfo(Date fromDate , Date toDate,Long constituencyId,List<Long> alertTypeIds){
+	 		StringBuilder queryStr = new StringBuilder();
+	 			queryStr.append(" SELECT model.alertStatus.alertStatusId,model.alertStatus.alertStatus," +
+	 					" model.alertStatus.color,model.alertImpactScope.alertImpactScopeId,model.alertImpactScope.impactScope," +
+	 					" model.alertType.alertTypeId,model.alertType.alertType, " +
+	 					" count(distinct model.alertId) " +
+	 				    " FROM Alert model " +
+	 				    " WHERE model.isDeleted ='N' " +
+	 					" and model.alertType.alertTypeId  in (:alertTypeIds) " );
+	 		
+	 	    if(fromDate != null && toDate != null){
+				queryStr.append(" and date(model.createdTime) between :fromDate and :toDate ");  
+			}
+	 	        queryStr.append(" and model.alertImpactScope.alertImpactScopeId in(:impactScopeIds) ");
+	 	   
+	 	    	queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
+	 	    	
+	 		
+	 	    	queryStr.append(" GROUP BY model.alertStatus.alertStatusId,model.alertImpactScope.alertImpactScopeId," +
+	 	    			" model.alertType.alertTypeId ");
+	 	    	
+	 	    	queryStr.append(" order by model.alertStatus.statusOrder  ");
+	 		
+	 		Query query = getSession().createQuery(queryStr.toString());
+	 		query.setParameterList("alertTypeIds", alertTypeIds);
+			 if(fromDate != null && toDate != null){
+				query.setParameter("fromDate", fromDate);
+	 			query.setParameter("toDate", toDate);
+			 }
+			 query.setParameter("constituencyId",constituencyId);
+			 query.setParameterList("impactScopeIds", IConstants.IMPACT_IDS);
+	 		return query.list();
+	 	}
+      public List<Object[]> getAlertImpactLevelWiseDetailsForConstituencyInfo(Date fromDate , Date toDate,Long constituencyId,List<Long> alertTypeIds){
+	 		StringBuilder queryStr = new StringBuilder();
+	 			queryStr.append(" SELECT model.alertImpactScope.alertImpactScopeId,model.alertImpactScope.impactScope," +
+	 					" model.alertType.alertTypeId,model.alertType.alertType, " +
+	 				    " count(distinct model.alertId) " +
+	 				    " FROM Alert model " +
+	 				    " WHERE model.isDeleted ='N' " +
+	 					" and model.alertTypeId  in (:alertTypeIds) " );
+	 		
+	 	    if(fromDate != null && toDate != null){
+				queryStr.append(" and date(model.createdTime) between :fromDate and :toDate ");  
+			}
+	 	    	queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
+	 		
+	 	    	queryStr.append(" GROUP BY model.alertImpactScope.alertImpactScopeId," +
+	 	    			" model.alertType.alertTypeId " +
+	 	    			" order by model.alertImpactScope.orderNo  ");
+	 	    	
+	 		Query query = getSession().createQuery(queryStr.toString());
+	 			query.setParameterList("alertTypeIds", alertTypeIds);
+	 			 if(fromDate != null && toDate != null){
+	 				query.setParameter("fromDate", fromDate);
+		 			query.setParameter("toDate", toDate);
+	 			 }
+	 			 query.setParameter("constituencyId",constituencyId);
+	 		return query.list();
+      }
 }
