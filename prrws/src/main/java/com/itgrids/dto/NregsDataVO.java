@@ -43,7 +43,22 @@ public class NregsDataVO implements Serializable{
 	private List<NregsDataVO> consMandalList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> mandalVillageList = new ArrayList<NregsDataVO>(0);
 	private String achivement;
+	private String pitsPlanted;
+	private String plantsPlanted;
 	
+	
+	public String getPitsPlanted() {
+		return pitsPlanted;
+	}
+	public void setPitsPlanted(String pitsPlanted) {
+		this.pitsPlanted = pitsPlanted;
+	}
+	public String getPlantsPlanted() {
+		return plantsPlanted;
+	}
+	public void setPlantsPlanted(String plantsPlanted) {
+		this.plantsPlanted = plantsPlanted;
+	}
 	public Long getUniqueId() {
 		return uniqueId;
 	}

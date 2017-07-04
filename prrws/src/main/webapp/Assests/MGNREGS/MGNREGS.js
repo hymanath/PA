@@ -635,6 +635,168 @@ function buildNREGSProjectsOverview(result,blockName)
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
+				str+='<div class="col-sm-4">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-danger">SERP</h5>';
+						str+='<div class="row">';	
+							for(var i in result)
+							{
+								if(result[i].parameter == "Horticulture" || result[i].parameter == "Avenue"){
+									str+='<div class="col-sm-6 m_top10">';
+										if(result[i].percentage < 50)
+										{
+											str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
+										}else if(result[i].percentage > 50 && result[i].percentage < 80)
+										{
+											str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
+										}else if(result[i].percentage > 80)
+										{
+											str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
+										}
+										if(result[i].parameter.length > 14)
+											str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
+										else
+											str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
+											str+='<small class="text-center">Achieved</small>';
+											str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+										if(result[i].percentage < 50)
+										{
+											str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+										}else if(result[i].percentage > 50 && result[i].percentage < 80)
+										{
+											str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+											
+										}else if(result[i].percentage > 80)
+										{
+											str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+										}
+											str+='<div class="row">';
+												str+='<div class="col-sm-6 text-center">';
+													str+='<label>Target</label>';
+													str+='<h4>'+result[i].target+'</h4>';
+												str+='</div>';
+												str+='<div class="col-sm-6 text-center">';
+													str+='<label>Generated</label>';
+													str+='<h4>'+result[i].completed+'</h4>';
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+								}
+								
+							}
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-4">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-danger">Fisheries</h5>';
+						str+='<div class="row">';	
+							for(var i in result)
+							{
+								if(result[i].parameter == "Fish Drying Platforms" || result[i].parameter == "Fish Ponds"){
+									str+='<div class="col-sm-6 m_top10">';
+										if(result[i].percentage < 50)
+										{
+											str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
+										}else if(result[i].percentage > 50 && result[i].percentage < 80)
+										{
+											str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
+										}else if(result[i].percentage > 80)
+										{
+											str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
+										}
+										if(result[i].parameter.length > 14)
+											str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
+										else
+											str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
+											str+='<small class="text-center">Achieved</small>';
+											str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+										if(result[i].percentage < 50)
+										{
+											str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+										}else if(result[i].percentage > 50 && result[i].percentage < 80)
+										{
+											str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+											
+										}else if(result[i].percentage > 80)
+										{
+											str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+										}
+											str+='<div class="row">';
+												str+='<div class="col-sm-6 text-center">';
+													str+='<label>Target</label>';
+													str+='<h4>'+result[i].target+'</h4>';
+												str+='</div>';
+												str+='<div class="col-sm-6 text-center">';
+													str+='<label>Generated</label>';
+													str+='<h4>'+result[i].completed+'</h4>';
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+								}
+								
+							}
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-4">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-danger">Forest</h5>';
+						str+='<div class="row">';	
+							for(var i in result)
+							{
+								if(result[i].parameter == "Nurseries" || result[i].parameter == "Soil"){
+									str+='<div class="col-sm-6 m_top10">';
+										if(result[i].percentage < 50)
+										{
+											str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
+										}else if(result[i].percentage > 50 && result[i].percentage < 80)
+										{
+											str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
+										}else if(result[i].percentage > 80)
+										{
+											str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
+										}
+										if(result[i].parameter.length > 14)
+											str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
+										else
+											str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
+											str+='<small class="text-center">Achieved</small>';
+											str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+										if(result[i].percentage < 50)
+										{
+											str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+										}else if(result[i].percentage > 50 && result[i].percentage < 80)
+										{
+											str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+											
+										}else if(result[i].percentage > 80)
+										{
+											str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+										}
+											str+='<div class="row">';
+												str+='<div class="col-sm-6 text-center">';
+													str+='<label>Target</label>';
+													str+='<h4>'+result[i].target+'</h4>';
+												str+='</div>';
+												str+='<div class="col-sm-6 text-center">';
+													str+='<label>Generated</label>';
+													str+='<h4>'+result[i].completed+'</h4>';
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+								}
+								
+							}
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
