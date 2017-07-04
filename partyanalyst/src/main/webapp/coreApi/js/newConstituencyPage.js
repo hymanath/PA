@@ -19,9 +19,11 @@ function onLoadAjaxCalls()
 	
 	//meetings
 	getLocationWiseMeetingsCount();
-
 	//tour
 	//getLocationWiseTourMembersComplainceDtls();
+	//Benefit
+	//getGovtSchemeWiseBenefitMembersCount();
+	//getMandalWiseBenefitMembersCount();
 	
 	
 }
@@ -683,14 +685,43 @@ function getLocationWiseTourMembersComplainceDtls(){
 		locationType:"constituency",
 		locationValue:272,
 		fromDate:"01/06/2017",
-		 toDate:"30/06/2017"
+		toDate:"30/06/2017"
 	}
 	 $.ajax({
-      type : "GET",
+      type : "POST",
       url : "getLocationWiseTourMembersComplainceDtlsAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-	console.log(result);
+    	console.log(result);
+	});	
+}
+function getGovtSchemeWiseBenefitMembersCount(){
+	jsObj={
+		locationType:"constituency",
+		locationValue:272
+	}
+	 $.ajax({
+      type : "POST",
+      url : "getGovtSchemeWiseBenefitMembersCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	console.log(result);
+	});	
+}
+function getMandalWiseBenefitMembersCount(){
+	jsObj={
+		locationType:"constituency",
+		locationValue:272,
+		govtSchemeId:1
+	}
+	 $.ajax({
+      type : "POST",
+      url : "getMandalWiseBenefitMembersCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	console.log(result);
 	});	
 }

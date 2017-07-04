@@ -17641,5 +17641,15 @@
 			<param name="root">tourDesignationList</param>       
 		</result> 
 	</action>
+	<action name="getGovtSchemeWiseBenefitMembersCountAction" class="locationDashboardAction"  method="getGovtSchemeWiseBenefitMembersCount">
+		<result type="json" name="success">    
+			<param name="root">govtSchemeMemberBenefitList</param>       
+		</result> 
+	</action>
+	<action name="getMandalWiseBenefitMembersCountAction" class="locationDashboardAction"  method="getMandalWiseBenefitMembersCount">
+		<result type="json" name="success">    
+			<param name="root">govtSchemeMemberBenefitList</param>       
+		</result> 
+	</action>
  </package>
 </struts>
