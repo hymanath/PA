@@ -534,4 +534,26 @@ public List<String> getCategoryListForAlertAndDepartment(Long alertId,Long cnpDe
 		
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getInvolvedMemberAlertDetails(Date fromDate,Date toDate,Long constituencyId,List<Long> alertTypeIds){
+ 		StringBuilder queryStr = new StringBuilder();
+ 			queryStr.append(" SELECT model.alert.alertType.alertTypeId,model.alert.alertType.alertType,count(distinct model.alert.alertId) " +
+ 				" FROM AlertCandidate model " +
+ 				" WHERE model.alert.isDeleted ='N' " +
+ 				" and model.alert.alertTypeId  in (:alertTypeIds) ");
+ 		
+ 		if(fromDate != null && toDate != null){
+			queryStr.append(" and date(model.alert.createdTime) between :fromDate and :toDate ");  
+		}
+ 		    queryStr.append(" and model.alert.userAddress.constituency.constituencyId =:constituencyId ");
+ 		   queryStr.append(" group by  model.alert.alertType.alertTypeId ");
+ 		Query query = getSession().createQuery(queryStr.toString());
+ 		query.setParameterList("alertTypeIds", alertTypeIds);
+		 if(fromDate != null && toDate != null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		 }
+		 query.setParameter("constituencyId",constituencyId);
+ 		return  query.list();
+ 	}
 }
