@@ -295,6 +295,7 @@ function onLoadInitialisations()
 	$(".chosenSelect").chosen({width:'100%'});
 	$(document).on("click",".getDtlsCls",function(){
 		$("#totalAlertsModalTabId").html(spinner);
+		$("#alertManagementPopup h4.modal-title").html(" ")
 		$("#alertManagementPopup").modal({
 			show: true,
 			keyboard: false,
@@ -312,6 +313,7 @@ function onLoadInitialisations()
 	});
 	$(document).on("click",".getTotalAlertBylocationLvl",function(){
 		$("#totalAlertsModalTabId").html(spinner);
+		$("#alertManagementPopup h4.modal-title").html(" ")
 		$("#alertManagementPopup").modal({
 			show: true,
 			keyboard: false,
@@ -325,6 +327,7 @@ function onLoadInitialisations()
 	});
 	$(document).on("click",".totalAlertCls",function(){
 		$("#totalAlertsModalTabId").html(spinner);
+		$("#alertManagementPopup h4.modal-title").html(" ")
 		$("#alertManagementPopup").modal({
 			show: true,
 			keyboard: false,
@@ -366,6 +369,7 @@ function onLoadInitialisations()
 			buildSubLevelDepartment(childDepts,departmentId,"department",statusId);
 		}else{
 			$("#totalAlertsModalTabId").html(spinner);
+			$("#alertManagementPopup h4.modal-title").html(" ")
 			$("#alertManagementPopup").modal({
 				show: true,
 				keyboard: false,
@@ -408,6 +412,7 @@ function onLoadInitialisations()
 			buildSubLevelDepartment(childDepts,departmentId,"status",statusId);
 		}else{
 			$("#totalAlertsModalTabId").html(spinner);
+			$("#alertManagementPopup h4.modal-title").html(" ")
 			$("#alertManagementPopup").modal({
 				show: true,
 				keyboard: false,
@@ -431,6 +436,7 @@ function onLoadInitialisations()
 		var departmentId = $(this).attr("attr_department_id");
 		
 			$("#totalAlertsModalTabId").html(spinner);
+			$("#alertManagementPopup h4.modal-title").html(" ")
 			$("#alertManagementPopup").modal({
 				show: true,
 				keyboard: false,
@@ -457,6 +463,7 @@ function onLoadInitialisations()
 		var statuscount = $(this).attr("attr_status_count");
 		var departmentId = $(this).attr("attr_department_id");
 			$("#totalAlertsModalTabId").html(spinner);
+			$("#alertManagementPopup h4.modal-title").html(" ")
 			$("#alertManagementPopup").modal({
 				show: true,
 				keyboard: false,
@@ -2531,7 +2538,7 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 function getAlertDetailsBasedOnLocation(departmentId,levelId,statusId,statusName,totalCount,locationValue,parentGovtDepartmentScopeId,alertCategoryId,locationLevelId,multipleIds){
 	
 	$("#alertManagementPopupBody").html('')
-	
+		$("#alertManagementPopup h4.modal-title").html(" ")
 		$("#alertManagementPopup").modal({
 			show: true,
 			keyboard: false,
@@ -3022,6 +3029,7 @@ function buildAlertSouceWiseDetails(result)
 function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertStatusId,alertSourceType,statusIdsMulti)
 {
 	$("#alertManagementPopupBody").html('')
+	$("#alertManagementPopup h4.modal-title").html(" ")
 	$("#alertManagementPopup").modal({
 		show: true,
 		keyboard: false,
@@ -3432,7 +3440,7 @@ function getFinancialAssistanceAlertCntDtls(statusName,totalCount,categoryId,sta
 {
 	 
 		$("#alertManagementPopupBody").html('')
-	
+		$("#alertManagementPopup h4.modal-title").html(" ")
 		$("#alertManagementPopup").modal({
 			show: true,
 			keyboard: false,
