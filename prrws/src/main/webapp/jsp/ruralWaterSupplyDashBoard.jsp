@@ -105,7 +105,79 @@
 <main>
 	<section>
 		<div class="container-fluid">
-			<div class="row">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-4 pad_lR_5">
+						<div class="white-block">
+							<h5 style="padding:5px"><span class="chartTitleAlign">Habitation Coverage Status</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#14BAAD"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
+							<div class="chart" id="habitation"></div>
+						</div>
+					</div>
+					<div class="col-sm-5 pad_lR_5">
+						<div class="white-block">
+							<h5 style="padding:5px"><span class="chartTitleAlign">Water Source</span></h5>
+							<div class="chart" id="waterSources"></div>
+							<h5 style="text-align: center; font-weight: bold;" id="waterSourcesTtlValues"></h5>
+						</div>
+					</div>
+					<div class="col-sm-3 pad_lR_5">
+						<div class="white-block">
+							<h5 style="padding:5px"><span class="chartTitleAlign">Level Of Supply (MLD)</span></h5>
+							<div class="chart" id="levelOfSupply1"></div>
+							<h5 style="text-align: center; font-weight: bold;" id="levelSupplyTtlValues"></h5>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3 pad_lR_5">
+						<div class="white-block">
+							<h5 style="padding:5px"><span class="chartTitleAlign">Key Performance Indicators<br/><small style="margin-left:30px;">Habitations through Schemes</small></span></h5>
+							<div class="chart2" id="keyPerformance"></div>
+						</div>
+					</div>
+					<div class="col-sm-3 pad_lR_5">
+						<div class="white-block">
+							<h5 style="padding:5px"><span class="chartTitleAlign">Plan of Action For Stressed Habitations<br/><small style="margin-left:30px;">Water Budget has to be prepared for all Habitations</small></span></h5>
+							<div class="chart2" id="planOfAction" class="m_top20"></div>
+						</div>
+					</div>
+					<div class="col-sm-2 pad_lR_5">
+						<div class="white-block">
+							<h5 style="padding:5px"><span class="chartTitleAlign">Lab Test Water Sources</span></h5>
+							<div class="chart2" id="overView"></div>
+						</div>
+					</div>
+					<div class="col-sm-4 pad_lR_5">
+						<div class="white-block">
+							<h5 style="padding:5px"><span class="chartTitleAlign">Works</span></h5>
+							<div class="chart2" id="habitationWorks"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-5 pad_lR_5">
+						<div class="white-block">
+							<h5 style="padding:5px"><span class="chartTitleAlign">Alert Status - Jalavani</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#FC5049"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
+							<div class="chart2" id="alertStatus"></div>
+						</div>
+					</div>
+					<div class="col-sm-2 pad_lR_5">
+						<div class="white-block">
+							<h5 style="padding:5px"><span class="chartTitleAlign">feedback&nbsp;Level</span></h5>
+							<div class="chart2" id="feedbackId" class="m_top20"></div>
+						</div>
+					</div>
+					<div class="col-sm-5 pad_lR_5">
+						<div class="white-block">
+							<h5 style="padding:5px"><span class="chartTitleAlign">Assets</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#14BAAD"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
+							<div class="chart2" id="assets"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+			<!--<div class="row">
 				<div class="col-sm-10">
 					<div class="row">
 						<div class="col-sm-3">
@@ -140,7 +212,7 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="white-block">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Habitation Coverage Status</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#14BAAD"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
+								<h5 style="padding:5px"><span class="chartTitleAlign">Habitation Coverage Status</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#14BAAD"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p></h5>
 								<div class="chart2" id="habitation"></div>
 							</div>
 						</div>
@@ -160,13 +232,13 @@
 						</div>
 						<div class="col-sm-6">
 							<div class="white-block">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Alert Status - Jalavani</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#FC5049"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
+								<h5 style="padding:5px"><span class="chartTitleAlign">Alert Status - Jalavani</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#FC5049"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p></h5>
 								<div class="chart2" id="alertStatus"></div>
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="white-block">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Assets</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#14BAAD"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
+								<h5 style="padding:5px"><span class="chartTitleAlign">Assets</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#14BAAD"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p></h5>
 								<div class="chart2" id="assets"></div>
 							</div>
 						</div>
@@ -192,7 +264,7 @@
 						<div class="chart2" id="feedbackId" class="m_top20"></div>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 	</section>
 	<section>
