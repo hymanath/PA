@@ -863,10 +863,14 @@
 		function getWaterSourceInfo(){//ara1 
 			$("#waterSources").html(spinner);
 			
+			var json = {
+				locationType:""
+			}
 			$.ajax({
 				url: 'getWaterSourceInfo',
-				type: "GET",
-				data: 'json', 
+				data: JSON.stringify(json),
+				type: "POST",
+				dataType: 'json', 
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.setRequestHeader("Content-Type", "application/json");

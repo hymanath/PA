@@ -4,8 +4,7 @@ import java.math.BigDecimal;
 
 public class BasicVO {
 	
-	 private BigDecimal safeMLD;
-	 private BigDecimal unsafeMLD;
+	 private BigDecimal surfaceWaterSafeMLD,surfaceWaterUnSafeMLD,groundWaterUnSafeMLD,groundWaterSafeMLD,totalUnSafeWaterInMLD,totalSafeWaterInMLD;
 	 private String assetType;
 	 private Long physicalTestCount =0l;
 	 private Long bacterialTestCount =0l;
@@ -20,6 +19,43 @@ public class BasicVO {
 	 private Double percentageOne = 0.0d,percentageTwo = 0.0d,percentageThree = 0.0d,percentageFour = 0.0d;
 	 
 	 
+	 
+	public BigDecimal getTotalUnSafeWaterInMLD() {
+		return totalUnSafeWaterInMLD;
+	}
+	public void setTotalUnSafeWaterInMLD(BigDecimal totalUnSafeWaterInMLD) {
+		this.totalUnSafeWaterInMLD = totalUnSafeWaterInMLD;
+	}
+	public BigDecimal getTotalSafeWaterInMLD() {
+		return totalSafeWaterInMLD;
+	}
+	public void setTotalSafeWaterInMLD(BigDecimal totalSafeWaterInMLD) {
+		this.totalSafeWaterInMLD = totalSafeWaterInMLD;
+	}
+	public BigDecimal getSurfaceWaterSafeMLD() {
+		return surfaceWaterSafeMLD;
+	}
+	public void setSurfaceWaterSafeMLD(BigDecimal surfaceWaterSafeMLD) {
+		this.surfaceWaterSafeMLD = surfaceWaterSafeMLD;
+	}
+	public BigDecimal getSurfaceWaterUnSafeMLD() {
+		return surfaceWaterUnSafeMLD;
+	}
+	public void setSurfaceWaterUnSafeMLD(BigDecimal surfaceWaterUnSafeMLD) {
+		this.surfaceWaterUnSafeMLD = surfaceWaterUnSafeMLD;
+	}
+	public BigDecimal getGroundWaterUnSafeMLD() {
+		return groundWaterUnSafeMLD;
+	}
+	public void setGroundWaterUnSafeMLD(BigDecimal groundWaterUnSafeMLD) {
+		this.groundWaterUnSafeMLD = groundWaterUnSafeMLD;
+	}
+	public BigDecimal getGroundWaterSafeMLD() {
+		return groundWaterSafeMLD;
+	}
+	public void setGroundWaterSafeMLD(BigDecimal groundWaterSafeMLD) {
+		this.groundWaterSafeMLD = groundWaterSafeMLD;
+	}
 	public Double getPercentageOne() {
 		return percentageOne;
 	}
@@ -55,18 +91,6 @@ public class BasicVO {
 	}
 	public void setTotal(Long total) {
 		this.total = total;
-	}
-	public BigDecimal getSafeMLD() {
-		return safeMLD;
-	}
-	public void setSafeMLD(BigDecimal safeMLD) {
-		this.safeMLD = safeMLD;
-	}
-	public BigDecimal getUnsafeMLD() {
-		return unsafeMLD;
-	}
-	public void setUnsafeMLD(BigDecimal unsafeMLD) {
-		this.unsafeMLD = unsafeMLD;
 	}
 	public String getAssetType() {
 		return assetType;

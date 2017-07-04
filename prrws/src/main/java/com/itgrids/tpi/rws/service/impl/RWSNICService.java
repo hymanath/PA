@@ -26,6 +26,7 @@ import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
+import com.itgrids.dto.WaterSourceVO;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
@@ -232,9 +233,8 @@ public class RWSNICService implements IRWSNICService{
 	public BasicVO getHabitationSupplyDetails(InputVO VO){
 		BasicVO finalVO = new BasicVO();
 		try {
-			
-			
-			 WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/gethabitationsupplyDetails");	        
+			 //WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/gethabitationsupplyDetails");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/gethabitationWatersupplyDetails");
 		        String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		        ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, VO);
 		        
@@ -249,8 +249,13 @@ public class RWSNICService implements IRWSNICService{
 	 	    	 if(output != null && !output.isEmpty()){
 	 	    		JSONObject jObj = new JSONObject(output);	 	  
 	 	    			if(!jObj.getString("status").equalsIgnoreCase("Failure")){
-	 	    				finalVO.setSafeMLD(new BigDecimal(jObj.getString("safeMLD")));
-	 	    				finalVO.setUnsafeMLD(new BigDecimal(jObj.getString("unsafeMLD")));
+	 	    				finalVO.setSurfaceWaterSafeMLD(new BigDecimal(jObj.getString("surfaceWaterSafeMLD")));
+	 	    				finalVO.setGroundWaterUnSafeMLD(new BigDecimal(jObj.getString("groundWaterUnSafeMLD")));
+	 	    				finalVO.setGroundWaterSafeMLD(new BigDecimal(jObj.getString("groundWaterSafeMLD")));
+	 	    				finalVO.setSurfaceWaterUnSafeMLD(new BigDecimal(jObj.getString("surfaceWaterUnSafeMLD")));
+	 	    				finalVO.setTotalUnSafeWaterInMLD(new BigDecimal(jObj.getString("totalUnSafeWaterInMLD")));
+	 	    				finalVO.setTotalSafeWaterInMLD(new BigDecimal(jObj.getString("totalSafeWaterInMLD")));
+	 	    				
 	 	    			}
 	 	    				
 	 	    		}
@@ -461,7 +466,6 @@ public class RWSNICService implements IRWSNICService{
 				}
  	      	}
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOG.error("Exception raised at getAlertDetailsOfCategoryByStatusWise - RWSNICService service", e);
 		}
 		return voList;
@@ -525,13 +529,13 @@ public class RWSNICService implements IRWSNICService{
 	 * Author :Nagarjuna
 	 * @description : getWaterSourceInfo
 	 */
-	public StatusVO getWaterSourceInfo() {
-		StatusVO waterSourceInfo =new StatusVO();
+	public WaterSourceVO getWaterSourceInfo(InputVO inputVO) {
+		WaterSourceVO waterSourceInfo =new WaterSourceVO();
 		try{
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getWaterSourceDeatils");	        
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getWaterSourceDeatils");	        
 		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
-		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).get(ClientResponse.class);
+		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
 			
         	if(response.getStatus() != 200){
  	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -539,12 +543,21 @@ public class RWSNICService implements IRWSNICService{
 				String output = response.getEntity(String.class);
 				/*output="[{'source' : 'ground','value'  : '10000'},"
 						 +"{'source' : 'surface','value'  : '10000'}]";*/
- 	    	if(output != null && !output.isEmpty()){
+				if(output != null && !output.isEmpty()){
  	    		
- 	    				JSONObject jObj = new JSONObject(output);
+					JSONObject jObj = new JSONObject(output);
  	    		
- 	    				if(jObj !=null){
-	 	    				waterSourceInfo.setName(jObj.getString("status"));
+					if(jObj !=null){
+ 	    				
+						if(jObj.getString("status").equalsIgnoreCase("Success")){
+							waterSourceInfo.setSafeSurfaceWaterSourceCount(jObj.getLong("safeSurfaceWaterSourceCount"));
+							waterSourceInfo.setTotalGroundWaterSourceCount(jObj.getLong("totalGroundWaterSourceCount"));
+							waterSourceInfo.setUnSafeGroundWaterSourceCount(jObj.getLong("unSafeGroundWaterSourceCount"));
+							waterSourceInfo.setSafeSurfaceWaterSourceCount(jObj.getLong("safeSurfaceWaterSourceCount"));
+							waterSourceInfo.setSafeSurfaceWaterSourceCount(jObj.getLong("safeSurfaceWaterSourceCount"));
+							waterSourceInfo.setSafeSurfaceWaterSourceCount(jObj.getLong("safeSurfaceWaterSourceCount"));
+						}	
+	 	    				/*waterSourceInfo.setName(jObj.getString("status"));
 	 	    				waterSourceInfo.setGroundWaterSourceTotalMlpdCount(jObj.getLong("groundWaterSourceCount"));
 	 	    				waterSourceInfo.setSurfaceWaterSourceTotalMlpdCount(jObj.getLong("surfaceWaterSourceCount"));
 	 	    				
@@ -556,9 +569,9 @@ public class RWSNICService implements IRWSNICService{
 	 	    				waterSourceInfo.setPercentageOne(calculatePercentage(total, waterSourceInfo.getSurfaceWaterSourceTotalMlpdCount())
 	 	    						 !=null ? Double.parseDouble(calculatePercentage(total, waterSourceInfo.getSurfaceWaterSourceTotalMlpdCount())):0.0 );//Surface Percentage
 	 	    				
-	 	    				waterSourceInfo.setCount(total);//total
- 	    				}
- 	    		}
+	 	    				waterSourceInfo.setCount(total);//total*/
+					}
+				}
  	    	}
  	    	
 		}catch (Exception e) {
@@ -1011,7 +1024,6 @@ public class RWSNICService implements IRWSNICService{
 			
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOG.error("Exception Occured in getAlertsOfCategoryByStatusWise() method, Exception - ",e);
 		}
 		return finalList;
@@ -1071,7 +1083,6 @@ public class RWSNICService implements IRWSNICService{
  	      	}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOG.error("Exception Occured in getOnclickWorkDetails() method, Exception - ",e);
 		}
 		return finalList;
@@ -1128,7 +1139,6 @@ public class RWSNICService implements IRWSNICService{
  	      	}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOG.error("Exception Occured in getOnclickTargetsAcheievementsDetails() method, Exception - ",e);
 		}
 		return finalList;
@@ -1184,7 +1194,6 @@ public class RWSNICService implements IRWSNICService{
  	      	}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOG.error("Exception Occured in getOnclickStressedTargetsAcheievementsDetails() method, Exception - ",e);
 		}
 		return finalList;
@@ -1240,7 +1249,6 @@ public class RWSNICService implements IRWSNICService{
  	      	}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOG.error("Exception Occured in getOnclickHabitationsupplyDetails() method, Exception - ",e);
 		}
 		return finalList;
@@ -1304,7 +1312,6 @@ public class RWSNICService implements IRWSNICService{
  	      	}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOG.error("Exception Occured in getSchemeDetailsByTypeOfAssestName() method, Exception - ",e);
 		}
 		return finalList;
@@ -1367,7 +1374,6 @@ public class RWSNICService implements IRWSNICService{
  	      	}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOG.error("Exception Occured in getAssetDetailsByAssetType() method, Exception - ",e);
 		}
 		return finalList;
@@ -1424,7 +1430,6 @@ public class RWSNICService implements IRWSNICService{
  	      	}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOG.error("Exception Occured in getAssetDetailsByAssetType() method, Exception - ",e);
 		}
 		return finalList;
@@ -1479,11 +1484,9 @@ public class RWSNICService implements IRWSNICService{
  	      	}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOG.error("Exception Occured in getWaterSourceDeatilsLocationWise() method, Exception - ",e);
 		}
 		return finalList;
 	}
-	
 	
 }
