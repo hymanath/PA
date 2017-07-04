@@ -187,4 +187,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getAlertsDataForAms(Long alertId);
 	public List<Object[]> getLocationWiseAlertStatusCountsNew(Date fromDate , Date toDate,Long deptId,String year,Long locationTypeId,List<Long> locationValues,
  			Long searchLevelId,List<Long> searchLevelValues);
+	public List<Object[]> getAlertImpactLevelWiseDetailsForConstituencyInfo(Date fromDate , Date toDate,Long constituencyId,List<Long> alertTypeIds);
+	public List<Object[]> getAlertStatusWiseDetailsForConstituencyInfo(Date fromDate , Date toDate,Long constituencyId,List<Long> alertTypeIds);
+	public List<Object[]> getTotalAlertDetailsCount(Date fromDate,Date toDate,Long constituencyId,List<Long> alertTypeIds);
 }
