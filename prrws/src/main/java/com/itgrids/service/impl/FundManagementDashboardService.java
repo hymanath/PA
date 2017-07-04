@@ -32,6 +32,7 @@ import com.itgrids.dao.IGovtSchemeDAO;
 import com.itgrids.dao.IGrantTypeDAO;
 import com.itgrids.dao.IPanchayatDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
+import com.itgrids.dao.ISubProgramDAO;
 import com.itgrids.dao.ITehsilConstituencyDAO;
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dto.AddressVO;
@@ -88,7 +89,9 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	@Autowired
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	@Autowired
-	private IGovtSchemeDAO govtSchemeDAO; 
+	private IGovtSchemeDAO govtSchemeDAO;
+	@Autowired
+	private ISubProgramDAO subProgramDAO;
 	@Override
 	/*
 	 * Date : 05/06/2017
@@ -2318,6 +2321,60 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			return null;
 		}
 	}
+   
+   /*
+	 * Date : 04/07/2017
+	 * Author : Shrinu
+	 * @description : To get GovtSchemesDetails
+	 * @return  List<LocationFundDetailsVO>
+	 */
+   public List<LocationFundDetailsVO> getGovtSchemesDetails(){
+		  List<LocationFundDetailsVO> finalReturnList= null;
+		  try{
+			finalReturnList=new ArrayList<LocationFundDetailsVO>();
+		    List<Object[]> GovtSchemesObjs =govtSchemeDAO.getGovtSchemesDetails();
+		    if(GovtSchemesObjs != null && GovtSchemesObjs.size()>0 && !GovtSchemesObjs.isEmpty()){
+		    	for(Object[] Obj: GovtSchemesObjs){
+		    		LocationFundDetailsVO vo=new LocationFundDetailsVO();
+		    		vo.setId(commonMethodsUtilService.getLongValueForObject(Obj[0]));
+		    		vo.setName(commonMethodsUtilService.getStringValueForObject(Obj[1]));
+		    		finalReturnList.add(vo);
+		    	}
+		    }
+
+		  }catch(Exception e){
+		   // e.printStackTrace();
+		    LOG.error(" Exception raised in getConstituencies (); ");
+		  }
+		return finalReturnList;  
+		}
+   
+   /*
+	 * Date : 04/07/2017
+	 * Author : Shrinu
+	 * @description : To get GovtSubProgramsDetails
+	 * @return  List<LocationFundDetailsVO>
+	 */
+   public List<LocationFundDetailsVO> getGovtSubProgramsDetails(Long govtSchemesId){
+		  List<LocationFundDetailsVO> finalReturnList= null;
+		  try{
+			finalReturnList=new ArrayList<LocationFundDetailsVO>();
+		    List<Object[]> govtSubPrgrmObjs =subProgramDAO.getGovtSubProgramsDetails(govtSchemesId);
+		    if(govtSubPrgrmObjs != null && govtSubPrgrmObjs.size()>0 && !govtSubPrgrmObjs.isEmpty()){
+		    	for(Object[] Obj: govtSubPrgrmObjs){
+		    		LocationFundDetailsVO vo=new LocationFundDetailsVO();
+		    		vo.setId(commonMethodsUtilService.getLongValueForObject(Obj[0]));
+		    		vo.setName(commonMethodsUtilService.getStringValueForObject(Obj[1]));
+		    		finalReturnList.add(vo);
+		    	}
+		    }
+
+		  }catch(Exception e){
+		   // e.printStackTrace();
+		    LOG.error(" Exception raised in getConstituencies (); ");
+		  }
+		return finalReturnList;  
+		}
    /*
 	 * Date : 04/07/2017
 	 * Author : Hymavathi
