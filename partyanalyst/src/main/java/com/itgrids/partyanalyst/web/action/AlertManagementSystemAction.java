@@ -6335,4 +6335,29 @@ public String getAlertSourceWiseAlert(){
 		 }
 		 return Action.SUCCESS;
 	 }
+	 public String getTotalAlertDetailsForConstituencyInfo(){
+		 try{
+			  RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+				if(regVo!=null && regVo.getRegistrationID()!=null){
+					Long userId = regVo.getRegistrationID();
+				}
+				jObj = new JSONObject(getTask());
+				String fromDateStr = jObj.getString("fromDateStr");
+				String toDateStr = jObj.getString("toDateStr");
+				Long constituencyId = jObj.getLong("copnstituencyId");
+				JSONArray alertTypeIdsStr = jObj.getJSONArray("alertTypeIdsStr");  
+				List<Long> alertTypeIds = new ArrayList<Long>();
+				if(alertTypeIdsStr != null && alertTypeIdsStr.length() > 0){
+					for (int i = 0; i < alertTypeIdsStr.length(); i++){
+						alertTypeIds.add(Long.parseLong(alertTypeIdsStr.getString(i)));        
+					} 
+				}
+				alertVOs = alertManagementSystemService.getTotalAlertDetailsForConstituencyInfo(fromDateStr,toDateStr,constituencyId,alertTypeIds);
+				
+		 }catch(Exception e){
+			 successMsg = "failure";
+			 LOG.error("Exception Occured in updateMobileNo() method, Exception - ",e);
+		 }
+		 return Action.SUCCESS;
+	 }
 }
