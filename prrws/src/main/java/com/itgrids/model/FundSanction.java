@@ -33,12 +33,14 @@ public class FundSanction{
 	private String isDeleted;
 	private Long departmentId;
 	private Long govtOrderId;
+	private Long subProgramId;
 	
 	private FinancialYear financialYear;
 	private GrantType grantType;
 	private GovtScheme govtScheme;
 	private Department department;
 	private GovtOrder govtOrder;
+	private SubProgram subProgram;
 
 	@Id
 	@Column(name="fund_sanction_id")
@@ -194,6 +196,21 @@ public class FundSanction{
 	}
 	public void setGovtOrder(GovtOrder govtOrder) {
 		this.govtOrder = govtOrder;
+	}
+	@Column(name="sub_program_id")
+	public Long getSubProgramId() {
+		return subProgramId;
+	}
+	public void setSubProgramId(Long subProgramId) {
+		this.subProgramId = subProgramId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "sub_program_id", insertable = false, updatable = false)
+	public SubProgram getSubProgram() {
+		return subProgram;
+	}
+	public void setSubProgram(SubProgram subProgram) {
+		this.subProgram = subProgram;
 	}
 	
 	
