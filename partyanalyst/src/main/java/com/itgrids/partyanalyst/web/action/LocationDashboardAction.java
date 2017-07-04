@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
+import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
@@ -40,6 +41,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<LocationVotersVO> locationVotersVOList;
 	private List<KeyValueVO> keyValueVOList;
 	private List<ToursBasicVO> tourDesignationList;
+	private List<BenefitCandidateVO> govtSchemeMemberBenefitList;
 	
 	
 	public List<KeyValueVO> getKeyValueVOList() {
@@ -136,6 +138,13 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	}
 	public void setTourDesignationList(List<ToursBasicVO> tourDesignationList) {
 		this.tourDesignationList = tourDesignationList;
+	}
+	public List<BenefitCandidateVO> getGovtSchemeMemberBenefitList() {
+		return govtSchemeMemberBenefitList;
+	}
+	public void setGovtSchemeMemberBenefitList(
+			List<BenefitCandidateVO> govtSchemeMemberBenefitList) {
+		this.govtSchemeMemberBenefitList = govtSchemeMemberBenefitList;
 	}
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
@@ -238,6 +247,29 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			 tourDesignationList = locationDashboardService.getLocationWiseTourMembersComplainceDtls(locationType,locationValue,fromDateStr,toDateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseTourMembersComplainceDtls in LocationDashboardAction class", e);
+		}
+		 return Action.SUCCESS;
+	 }
+	 public String  getGovtSchemeWiseBenefitMembersCount(){
+		 try {
+			 jObj = new JSONObject(getTask());
+			 String locationType = jObj.getString("locationType");
+			 Long locationValue = jObj.getLong("locationValue");
+			 govtSchemeMemberBenefitList = locationDashboardService.getGovtSchemeWiseBenefitMembersCount(locationType,locationValue);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getGovtSchemeWiseBenefitMembersCount in LocationDashboardAction class", e);
+		}
+		 return Action.SUCCESS;
+	 }
+	 public String  getMandalWiseBenefitMembersCount(){
+		 try {
+			 jObj = new JSONObject(getTask());
+			 String locationType = jObj.getString("locationType");
+			 Long locationValue = jObj.getLong("locationValue");
+			 Long govtSchemeId = jObj.getLong("govtSchemeId");
+			 govtSchemeMemberBenefitList = locationDashboardService.getMandalWiseBenefitMembersCount(locationType,locationValue,govtSchemeId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMandalWiseBenefitMembersCount in LocationDashboardAction class", e);
 		}
 		 return Action.SUCCESS;
 	 }
