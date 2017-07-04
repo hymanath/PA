@@ -143,4 +143,28 @@ public class NregsDashboardController {
 		}
 		return overViewVO;
 	}
+	
+	@PostMapping("/getNregaLevelsWiseDataFrNewCalls")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsWiseDataFrNewCalls(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelsWiseDataFrNewCalls(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataFrNewCalls - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping("/getNregaLevelsWiseDataFrAgriculture")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsWiseDataFrAgriculture(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelsWiseDataFrAgriculture(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataFrAgriculture - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
 }

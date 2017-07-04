@@ -263,6 +263,10 @@ function projectData(divId)
 		$("#"+tableId).html(spinner);
 		if(divId == 'Labour Budget')
 			getNREGSLabBugdtLelwiseData(tableId,dataArr[i]);
+		else if(divId == "Agriculture")
+			getNregaLevelsWiseDataFrAgriculture(tableId,dataArr[i]);
+		else if(divId == "Avg Wage" || divId == "Avg days of emp per HH" || divId == "HH Comp 100 days" || divId == "Timely Payments")
+			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[i]);
 		else
 			getNregaLevelsWiseData(tableId,dataArr[i],theadArr);
 	}
@@ -1364,18 +1368,31 @@ function buildDistrictsPopupDetails(result,dataArr){
 	}
 	if(result.distList != null && result.distList.length > 0 )
 	{
+		var theadArr;
 		str+='<div class="panel panel-default panel-black m_top10">';
 			str+='<div class="panel-heading">';
 				str+='<h4 class="panel-title text-capital">'+dataArr+' Details</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
-				var theadArr = [dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			
+			if(globalDivName == "Avg Wage" || globalDivName == "Avg days of emp per HH" || globalDivName == "HH Comp 100 days" || globalDivName == "Timely Payments"){
+				theadArr = [dataArr,'TARGET','Achivement','Percentage'];
+				if(dataArr == "constituency")
+					theadArr = ["district",dataArr,'TARGET','Achivement','Percentage'];
+				else if(dataArr == "mandal")
+					theadArr = ["district","constituency",dataArr,'TARGET','Achivement','Percentage'];
+				else if(dataArr == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Achivement','Percentage'];
+			}else{
+				theadArr = [dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				if(dataArr == "constituency")
 					theadArr = ["district",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				else if(dataArr == "mandal")
 					theadArr = ["district","constituency",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			}
+				 
 				str+='<div class="table-responsive">';
 				if(globalDivName != 'Labour Budget'){
 					if($windowWidth < 768)
@@ -1394,7 +1411,32 @@ function buildDistrictsPopupDetails(result,dataArr){
 					str+='<tbody>';
 					
 							for(var i in result.distList){
-								str+='<tr>';
+								if(globalDivName == "Avg Wage" || globalDivName == "Avg days of emp per HH" || globalDivName == "HH Comp 100 days" || globalDivName == "Timely Payments"){
+									str+='<tr>';
+									if(dataArr == "district"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+									}
+									else if(dataArr == "constituency"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+									}
+									else if(dataArr == "mandal"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+									}
+									else if(dataArr == "panchayat"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+									}
+									str+='<td>'+result.distList[i].target+'</td>';
+									str+='<td>'+result.distList[i].achivement+'</td>';
+									str+='<td>'+result.distList[i].percentage+'</td>';
+								str+='</tr>';
+								}else{
+									str+='<tr>';
 									if(dataArr == "district"){
 										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
 									}
@@ -1420,6 +1462,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 									str+='<td>'+result.distList[i].completed+'</td>';
 									str+='<td>'+result.distList[i].percentage+'</td>';
 								str+='</tr>';
+								}
 							}
 						str+='</tbody>';
 					str+='</table>';
@@ -1430,6 +1473,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 					
 				}
 				else{
+					globalDivName
 					theadArr = [dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
 					if(dataArr == "constituency")
 						theadArr = ["district",dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
@@ -1798,6 +1842,134 @@ function getNregasPopupOverview()
 		},
 		success: function(ajaxresp) {
 			buildPopupOverviewBlock(ajaxresp);
+		}
+	});
+}
+
+function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType)
+{
+	$("#"+divIdd).html(spinner);
+	var theadArr = [locationType,'Target','Achivement','Percentage'];
+	if(locationType == "constituency")
+		theadArr = ["district",locationType,'Target','Achivement','Percentage'];
+	else if(locationType == "mandal")
+		theadArr = ["district","constituency",locationType,'Target','Achivement','Percentage'];
+	else if(locationType == "panchayat")
+		theadArr = ["district","constituency","mandal",locationType,'Target','Achivement','Percentage'];
+	
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locationType,
+		divType : globalDivName
+	}
+	$.ajax({
+		url: 'getNregaLevelsWiseDataFrNewCalls',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			var str = '';
+			if(ajaxresp != null && ajaxresp.length > 0){
+				for(var i in ajaxresp){
+					str+='<tr>';
+						if(locationType == "state"){
+							str+='<td class="text-capital">'+locationType+'</td>';
+						}
+						else if(locationType == "district"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						}
+						else if(locationType == "constituency"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+						}
+						else if(locationType == "mandal"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+						}
+						else if(locationType == "panchayat"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+						}
+						str+='<td>'+ajaxresp[i].target+'</td>';
+						str+='<td>'+ajaxresp[i].achivement+'</td>';
+						str+='<td>'+ajaxresp[i].percentage+'</td>';
+					str+='</tr>';
+				}
+			}
+			tableView(divIdd,theadArr,str,locationType);
+		}
+	});
+}
+
+function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType)
+{
+	$("#"+divIdd).html(spinner);
+	var theadArr = [locationType,'Target','Completed','Achivement'];
+	if(locationType == "constituency")
+		theadArr = ["district",locationType,'Target','Completed','Achivement'];
+	else if(locationType == "mandal")
+		theadArr = ["district","constituency",locationType,'Target','Completed','Achivement'];
+	else if(locationType == "panchayat")
+		theadArr = ["district","constituency","mandal",locationType,'Target','Completed','Achivement'];
+	
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locationType,
+		divType : globalDivName
+	}
+	$.ajax({
+		url: 'getNregaLevelsWiseDataFrAgriculture',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			var str = '';
+			if(ajaxresp != null && ajaxresp.length > 0){
+				for(var i in ajaxresp){
+					str+='<tr>';
+						if(locationType == "state"){
+							str+='<td class="text-capital">'+locationType+'</td>';
+						}
+						else if(locationType == "district"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						}
+						else if(locationType == "constituency"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+						}
+						else if(locationType == "mandal"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+						}
+						else if(locationType == "panchayat"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+						}
+						str+='<td>'+ajaxresp[i].target+'</td>';
+						str+='<td>'+ajaxresp[i].completed+'</td>';
+						str+='<td>'+ajaxresp[i].achivement+'</td>';
+					str+='</tr>';
+				}
+			}
+			tableView(divIdd,theadArr,str,locationType);
 		}
 	});
 }
