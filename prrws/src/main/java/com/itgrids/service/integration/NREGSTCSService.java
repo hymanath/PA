@@ -71,6 +71,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setTarget(jObj.getString("TARGET"));
 	 	    				vo.setCompleted(jObj.getString("COMPLETED"));
 	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				if(vo.getParameter() != null && vo.getParameter().equalsIgnoreCase("Labour Budget")){
+	 	    					vo.setTarget(new BigDecimal(Double.valueOf(vo.getTarget())/10000000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    					vo.setTarget(vo.getTarget()+" Cr");
+	 	    					vo.setCompleted(new BigDecimal(Double.valueOf(vo.getCompleted())/10000000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    					vo.setCompleted(vo.getCompleted()+" Cr");
+	 	    				}
 	 	    				
 	 	    				voList.add(vo);
 	 	    			}
