@@ -34,6 +34,8 @@ public interface IFundManagementDashboardService {
 	public IdNameVO getMinMaxDates();
 	public LocationFundDetailsVO getGrantTypeHighestAndLowestFund(InputVO inputVO);
 	public List<LocationFundDetailsVO> getAllSubLocations(InputVO inputVO);
+	public List<LocationFundDetailsVO> getGovtSchemesDetails();
+	public List<LocationFundDetailsVO> getGovtSubProgramsDetails(Long govtSchemesId);
 	 public List<LocationFundDetailsVO> getALlProgramesAmountDetails(InputVO inputVO);
 	 //public List<LocationFundDetailsVO> getSchemeWiseOverviewDetails(InputVO inputVO);
 }

@@ -207,6 +207,24 @@ public class FundManagementDashboardController {
 			return locationFundDetailsVOList;
 		}
 		
+		@RequestMapping(value="/getGovtSchemesDetails", method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
+        public @ResponseBody List<LocationFundDetailsVO> getGovtSchemesDetails(){
+	    
+             List<LocationFundDetailsVO>  govtSchemesList=fundManagementDashboardService.getGovtSchemesDetails();
+             return govtSchemesList;
+        } 
+		
+		@RequestMapping(value="/getGovtSubProgramsDetails", method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
+        public @ResponseBody List<LocationFundDetailsVO> getGovtSubProgramsDetails(@RequestBody Map<String,Long> map){
+	    
+             List<LocationFundDetailsVO>  govtSubProgramsList=fundManagementDashboardService.getGovtSubProgramsDetails(map.get("govtSchemesId"));
+             return govtSubProgramsList;
+        } 
+		
 		@RequestMapping(value = "/getALlProgramesAmountDetails", method = RequestMethod.POST,
 				produces = MediaType.APPLICATION_JSON_VALUE,
 				consumes = MediaType.APPLICATION_JSON_VALUE)

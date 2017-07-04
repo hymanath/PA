@@ -4362,3 +4362,49 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 			 $(this).closest("[role='tabpanel']").find(".selectboxsShowHide").show();
 		}
 	});
+	
+	getGovtSchemesDetails();
+	function getGovtSchemesDetails(){
+		var json = {
+		}
+		$.ajax({                
+			  type:'POST',    
+			  url: 'getGovtSchemesDetails',  
+			  dataType: 'json',
+		  data : JSON.stringify(json),
+		  beforeSend :   function(xhr){
+				  xhr.setRequestHeader("Accept", "application/json");
+				  xhr.setRequestHeader("Content-Type", "application/json");
+		}  
+		}).done(function(result){
+		  if(result != null && result.length > 0){
+			//alert("success")
+			//$("#GovtSchemesDetailsId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
+		  }  
+		});
+	  }
+	  
+	  function getGovtSubProgramsDetails(){
+		  //var GovtSchemesId = $('#GovtSchemesDetailsId').val();
+		  
+		var json = {
+			govtSchemesId:GovtSchemesId,
+		}
+		$.ajax({                
+			  type:'POST',    
+			  url: 'getGovtSubProgramsDetails',  
+			  dataType: 'json',
+		  data : JSON.stringify(json),
+		  beforeSend :   function(xhr){
+				  xhr.setRequestHeader("Accept", "application/json");
+				  xhr.setRequestHeader("Content-Type", "application/json");
+		}  
+		}).done(function(result){
+		  if(result != null && result.length > 0){
+			//alert("success")
+			//$("#GovtSubProgramsDetailsId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
+		  }  
+		});
+	  }
+	  
+	
