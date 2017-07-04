@@ -42,7 +42,7 @@ public class NregsDataVO implements Serializable{
 	private List<NregsDataVO> distMandalList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> consMandalList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> mandalVillageList = new ArrayList<NregsDataVO>(0);
-	
+	private String achivement;
 	
 	public Long getUniqueId() {
 		return uniqueId;
@@ -247,6 +247,12 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setMandalVillageList(List<NregsDataVO> mandalVillageList) {
 		this.mandalVillageList = mandalVillageList;
+	}
+	public String getAchivement() {
+		return achivement;
+	}
+	public void setAchivement(String achivement) {
+		this.achivement = achivement;
 	}
 	
 }

@@ -282,6 +282,25 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject Obj = new JSONObject(output);
 	 	    		if(Obj!=null && Obj.length()>0){
+	 	    			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg Wage") || inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg days of emp per HH")
+	 	    					 || inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Comp 100 days") || inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payments")){
+	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
+	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
+	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
+	 	    				finalVO.setTotalDistricts(Obj.getLong("TOTALDISTRICTS"));
+	 	    				finalVO.setConstituenciesInRed(Obj.getLong("CONSTITUENCIESINRED"));
+	 	    				finalVO.setConstituenciesInOrange(Obj.getLong("CONSTITUENCIESINORANGE"));
+	 	    				finalVO.setConstituenciesInGreen(Obj.getLong("CONSTITUENCIESINGREEN"));
+	 	    				finalVO.setTotalConstituencies(Obj.getLong("TOTALCONSTITUENCIES"));
+	 	    				finalVO.setMandalsInRed(Obj.getLong("MANDALSINRED"));
+	 	    				finalVO.setMandalsInOrange(Obj.getLong("MANDALSINORANGE"));
+	 	    				finalVO.setMandalsInGreen(Obj.getLong("MANDALSINGREEN"));
+	 	    				finalVO.setTotalMandals(Obj.getLong("TOTALMANDALS"));
+	 	    				finalVO.setVillagesInRed(Obj.getLong("VILLAGESINRED"));
+	 	    				finalVO.setVillagesInOrange(Obj.getLong("VILLAGESINORANGE"));
+	 	    				finalVO.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
+	 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
+	 	    			}else{
 	 	    				finalVO.setAveragePerDistrict(new BigDecimal(Obj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				finalVO.setAveragePerConstituency(new BigDecimal(Obj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				finalVO.setAveragePerMandal(new BigDecimal(Obj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -305,6 +324,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				finalVO.setVillagesInOrange(Obj.getLong("VILLAGESINORANGE"));
 	 	    				finalVO.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
 	 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
+	 	    			}
+	 	    				
 	 	    			}
 	 	    		}
 	 	    	}
@@ -362,14 +383,6 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialService/BurialData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgriService/AgriData";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg Wage"))
-				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AverageWageService/AvgWageData";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg days of emp per HH"))
-				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AverageDaysService/AvgDaysData";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Comp 100 days"))
-				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AP100DaysService/AP100DaysData";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payments"))
-				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/TimePaymentService/TPData";
 			 
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
 	        
@@ -616,6 +629,23 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				vo.setPercentage(new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			 	    				list.add(vo);	
 			 	    			}
+		 	    			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg Wage") || 
+		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg days of emp per HH") ||
+		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Comp 100 days") || 
+		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payments")){
+			 	    				for(int i=0;i<finalArray.length();i++){
+				 	    				NregsDataVO vo = new NregsDataVO();
+				 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+				 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+				 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+				 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+				 	    				vo.setMandal(jObj.getString("MANDAL"));
+				 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+				 	    				vo.setTarget(jObj.getLong("TARGET"));
+				 	    				vo.setAchivement(new BigDecimal(jObj.getString("ACHIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    				list.add(vo);
+				 	    		}
 		 	    			}else{
 		 	    				for(int i=0;i<finalArray.length();i++){
 			 	    				NregsDataVO nregsDataVO=new NregsDataVO();
@@ -1291,4 +1321,123 @@ public class NREGSTCSService implements INREGSTCSService{
 				}
 			return retVOList;
 	 }
+	
+	/*
+	 * Date : 03/07/2017
+	 * Author :Nandhini
+	 * @description : getNregaLevelsWiseDataFrNewCalls
+	 */
+	public List<NregsDataVO> getNregaLevelsWiseDataFrNewCalls(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			String webServiceUrl = null;
+			
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg Wage"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AverageWageService/AvgWageData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg days of emp per HH"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AverageDaysService/AvgDaysData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Comp 100 days"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AP100DaysService/AP100DaysData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payments"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/TimePaymentService/TPData";
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    				for(int i=0;i<finalArray.length();i++){
+		 	    				NregsDataVO vo = new NregsDataVO();
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+		 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+		 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+		 	    				vo.setMandal(jObj.getString("MANDAL"));
+		 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Comp 100 days"))
+		 	    					if(inputVO.getLocationType().trim().equalsIgnoreCase("state"))
+		 	    						vo.setTarget(jObj.getLong("TERGET"));
+		 	    					else
+		 	    						vo.setTarget(jObj.getLong("TARGET"));
+		 	    				else
+		 	    					vo.setTarget(jObj.getLong("TARGET"));
+		 	    				vo.setAchivement(new BigDecimal(jObj.getString("ACHIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				voList.add(vo);
+		 	    			}
+	 	    			}
+	 	    		}
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataFrNewCalls - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	/*
+	 * Date : 03/07/2017
+	 * Author :Nandhini
+	 * @description : getNregaLevelsWiseDataFrAgriculture
+	 */
+	public List<NregsDataVO> getNregaLevelsWiseDataFrAgriculture(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+		
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgriService/AgriData", inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state")){
+	 	    				for(int i=0;i<finalArray.length();i++){
+		 	    				NregsDataVO vo = new NregsDataVO();
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+		 	    				vo.setTarget(jObj.getLong("TARGET"));
+		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+		 	    				vo.setAchivement(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				vo.setPercentage(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				voList.add(vo);
+		 	    				
+		 	    			}
+	 	    			}else{
+	 	    				for(int i=0;i<finalArray.length();i++){
+		 	    				NregsDataVO vo = new NregsDataVO();
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+		 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+		 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+		 	    				vo.setMandal(jObj.getString("MANDAL"));
+		 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+		 	    				vo.setTarget(jObj.getLong("TARGET"));
+		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+		 	    				vo.setAchivement(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				vo.setPercentage(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				voList.add(vo);
+		 	    				
+		 	    			}
+	 	    			}
+	 	    				
+	 	    		}
+	 	    	}
+	 	   }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataFrAgriculture - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
 }
