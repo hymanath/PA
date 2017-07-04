@@ -159,4 +159,67 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 		
 		return query.list();
 	}
+
+	public List<Object[]> getGovtSchemeWiseBenefitMemberCount(String locationType, Long locationValue) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.govtSchemes.govtSchemesId," +
+						" model.govtSchemes.schemeName," +
+				        " count(model.govtSchemeBeneficiaryDetailsId) " +
+				        " from " +
+				        " GovtSchemeBeneficiaryDetails model " +
+				        " where " +
+				        " model.isDeleted='N' ");
+		
+		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
+			if (locationType.equalsIgnoreCase("District")) {
+				queryStr.append(" and model.userAddress.district.districtId=:locationValue ");
+			} else if (locationType.equalsIgnoreCase("ParliamentConstituency")) {
+				queryStr.append(" and model.userAddress.parliamentConstituency.constituencyId=:locationValue ");
+			} else if (locationType.equalsIgnoreCase("Constituency")) {
+				queryStr.append(" and model.userAddress.constituency.constituencyId=:locationValue ");
+			}
+		}
+		queryStr.append(" group by model.govtSchemesId");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if (locationValue != null && locationValue.longValue() > 0l) {
+			query.setParameter("locationValue", locationValue);
+		}
+		return query.list();
+	}
+	public List<Object[]> getMandalWiseBenefitMemberCountByGovtScheme(String locationType, Long locationValue,Long govtSchemeId) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.userAddress.tehsil.tehsilId," +
+						" model.userAddress.tehsil.tehsilName," +
+				        " count(model.govtSchemeBeneficiaryDetailsId) " +
+				        " from " +
+				        " GovtSchemeBeneficiaryDetails model " +
+				        " where " +
+				        " model.isDeleted='N' ");
+		
+		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
+			if (locationType.equalsIgnoreCase("District")) {
+				queryStr.append(" and model.userAddress.district.districtId=:locationValue ");
+			} else if (locationType.equalsIgnoreCase("ParliamentConstituency")) {
+				queryStr.append(" and model.userAddress.parliamentConstituency.constituencyId=:locationValue ");
+			} else if (locationType.equalsIgnoreCase("Constituency")) {
+				queryStr.append(" and model.userAddress.constituency.constituencyId=:locationValue ");
+			}
+		}
+		if (govtSchemeId != null && govtSchemeId.longValue() > 0){
+			queryStr.append(" and model.govtSchemes.govtSchemesId=:govtSchemeId");
+		}
+		queryStr.append(" group by model.userAddress.tehsil.tehsilId");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if (locationValue != null && locationValue.longValue() > 0l) {
+			query.setParameter("locationValue", locationValue);
+		}
+		if (govtSchemeId != null && govtSchemeId.longValue() > 0){
+			query.setParameter("govtSchemeId", govtSchemeId);
+		}
+		return query.list();
+	}
 }

@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
+import com.itgrids.partyanalyst.dao.IGovtSchemeBeneficiaryDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsNewDAO;
@@ -35,6 +36,7 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
+import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
@@ -70,6 +72,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private ISelfAppraisalCandidateDetailsNewDAO selfAppraisalCandidateDetailsNewDAO;
 	private ISelfAppraisalToursMonthDAO selfAppraisalToursMonthDAO;
 	
+	private IGovtSchemeBeneficiaryDetailsDAO govtSchemeBeneficiaryDetailsDAO;
+
 
 	public void setTdpCommitteeEnrollmentDAO(ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO) {
 		this.tdpCommitteeEnrollmentDAO = tdpCommitteeEnrollmentDAO;
@@ -194,6 +198,10 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
+   public void setGovtSchemeBeneficiaryDetailsDAO(
+		IGovtSchemeBeneficiaryDetailsDAO govtSchemeBeneficiaryDetailsDAO) {
+	this.govtSchemeBeneficiaryDetailsDAO = govtSchemeBeneficiaryDetailsDAO;
+}
 
 	@SuppressWarnings("unchecked")
 	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId) {
@@ -1290,7 +1298,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			  }
 			  
 		}catch(Exception e){
-			Log.error("Exception Occured at getLocationWiseTourMembersComplainceDtls() in LocationDashboardService class"+ e);
+			Log.error("Exception Occured at getLocationWiseTourMembersComplainceDtls() in LocationDashboardService class",e);
 		}
 		return resultList;
 	}
@@ -1350,7 +1358,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				 }
 			 }
 		 }catch(Exception e){
-			 LOG.error("Exception Occured in setMonthWiseComplainceDetails() in CoreDashboardToursService  : ",e);	 
+			 LOG.error("Exception Occured in setMonthWiseComplainceDetails() in LocationDashboardService  : ",e);	 
 		 }
 	 }
 	public void setDesignationWiseTarget(List<Object[]> objLst,Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap,Map<String,String> categoryIdNameMap,String type){
@@ -1630,8 +1638,62 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 		}catch(Exception e){
-			Log.error("Exception Occured at getRequiredData() in LocationDashboardService class"+e);
+			Log.error("Exception Occured at getRequiredData() in LocationDashboardService class",e);
 		}
 		return vo;
+	}
+	/**
+	  * @param String locationType
+	  * @param String locationValue
+	  * @return List<BenefitCandidateVO>
+	  * @author Santosh 
+	  * @Description :This Service Method is used for getting government scheme wise benefit member count 
+	  *  @since 7-JULY-2017
+	  */
+	public List<BenefitCandidateVO> getGovtSchemeWiseBenefitMembersCount(final String locationType, final Long locationValue) {
+		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
+		try {
+			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getGovtSchemeWiseBenefitMemberCount(locationType,locationValue);
+			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst);
+		} catch (Exception e) {
+			Log.error("Exception Occured at getGovtSchemeWiseBenefitMembersCount() in LocationDashboardService class",e);
+		}
+		return resultList;
+	}
+	/**
+	  * @param String locationType
+	  * @param String locationValue
+	  * @return List<BenefitCandidateVO>
+	  * @author Santosh 
+	  * @Description :This Service Method is used for getting mandal wise benefit member count 
+	  *  @since 7-JULY-2017
+	  */
+	public List<BenefitCandidateVO> getMandalWiseBenefitMembersCount(final String locationType, final Long locationValue,final Long govtSchemeId) {
+		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
+		try {
+			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getMandalWiseBenefitMemberCountByGovtScheme(locationType,locationValue, govtSchemeId);
+			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst);
+		} catch (Exception e) {
+			Log.error("Exception Occured at getMandalWiseBenefitMembersCount() in LocationDashboardService class",e);
+		}
+		return resultList;
+	}
+
+	public List<BenefitCandidateVO> getGovtSchemeBenefitMemberDlstList(List<Object[]> objList) {
+		List<BenefitCandidateVO> returnList = new ArrayList<BenefitCandidateVO>(0);
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					BenefitCandidateVO vo = new BenefitCandidateVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					vo.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception Occured at getGovtSchemeBenefitMemberDlstList() in LocationDashboardService class",e);
+		}
+		return returnList;
 	}
 }
