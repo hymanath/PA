@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IFundSanctionLocationDAO;
+import com.itgrids.dto.InputVO;
 import com.itgrids.model.FundSanctionLocation;
 import com.itgrids.utils.IConstants;
 
@@ -98,6 +99,59 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 		}
 		return query.list();
 		
+	}
+	
+	public List<Object[]> getALlProgramesAmountDetails(InputVO inputVO,Date sDate,Date eDate){
+		 StringBuilder sb = new StringBuilder();
+		 
+		 sb.append(" select sum(modal.fundSanction.sactionAmount),modal.fundSanction.govtScheme.govtSchemeId,modal.fundSanction.grantType.grantTypeId  " +
+		 		"from FundSanctionLocation modal where modal.isDeleted = 'N' and modal.fundSanction.isDeleted = 'N' ");
+		 
+		 if(inputVO.getFinancialYrIdList() != null && inputVO.getFinancialYrIdList().size() >0){
+			 sb.append(" and modal.fundSanction.financialYear.financialYearId in (:financialYrIds) ");
+		 }
+		 if(inputVO.getSearchLevelId() != null && inputVO.getSearchLevelId().longValue() > 0l && inputVO.getSearchLevelId().longValue() == IConstants.STATE_LEVEL_SCOPE_ID && inputVO.getSearchLvlVals() != null && inputVO.getSearchLvlVals().size()>0){
+				sb.append(" and modal.locationAddress.state.stateId in (:searchLvlVals) ");
+			}else if(inputVO.getSearchLevelId() != null && inputVO.getSearchLevelId().longValue() > 0l && inputVO.getSearchLevelId().longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID && inputVO.getSearchLvlVals() != null && inputVO.getSearchLvlVals().size()>0){
+				sb.append(" and modal.locationAddress.district.districtId in (:searchLvlVals) ");
+			}else if(inputVO.getSearchLevelId() != null && inputVO.getSearchLevelId().longValue() > 0l && inputVO.getSearchLevelId().longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID && inputVO.getSearchLvlVals() != null && inputVO.getSearchLvlVals().size()>0){
+				sb.append(" and modal.locationAddress.constituency.constituencyId in (:searchLvlVals) ");
+			}else if(inputVO.getSearchLevelId() != null && inputVO.getSearchLevelId().longValue() > 0l && inputVO.getSearchLevelId().longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID && inputVO.getSearchLvlVals() != null && inputVO.getSearchLvlVals().size()>0){
+				sb.append("  and modal.locationAddress.tehsil.tehsilId in (:searchLvlVals) " );
+			}else if(inputVO.getSearchLevelId() != null && inputVO.getSearchLevelId().longValue() > 0l && inputVO.getSearchLevelId().longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID && inputVO.getSearchLvlVals() != null && inputVO.getSearchLvlVals().size()>0){
+				sb.append("  and modal.locationAddress.panchayat.panchayatId in(:searchLvlVals) " );
+			}
+			
+			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size()>0)
+				sb.append(" and modal.fundSanction.department.departmentId in (:deptIdsList) ");
+			
+			if(sDate != null && eDate != null){
+				sb.append(" and (date(modal.fundSanction.insertedTime) between  :sDate and :eDate) " );
+			}
+			if(inputVO.getSourceIdsList() != null && inputVO.getSourceIdsList().size()>0)
+				sb.append(" and modal.fundSanction.govtScheme.govtSchemeId in (:schmeIdsList) ");
+			
+			sb.append(" group by modal.fundSanction.govtScheme.govtSchemeId,modal.fundSanction.grantType.grantTypeId ");
+			
+		 Query query = getSession().createQuery(sb.toString());
+		 
+		 if(inputVO.getFinancialYrIdList() != null && inputVO.getFinancialYrIdList().size() >0l ){
+				query.setParameterList("financialYrIds", inputVO.getFinancialYrIdList());
+			}
+		 
+		 	if(sDate != null && eDate != null){
+				query.setDate("sDate", sDate);
+				query.setDate("eDate", eDate);
+			}
+		 	if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size()>0)
+				query.setParameterList("deptIdsList", inputVO.getDeptIdsList());
+			if(inputVO.getSourceIdsList() != null && inputVO.getSourceIdsList().size()>0)
+				query.setParameterList("schmeIdsList", inputVO.getSourceIdsList());
+			if(inputVO.getSearchLevelId() != null && inputVO.getSearchLevelId().longValue() > 0l && inputVO.getSearchLvlVals() != null && inputVO.getSearchLvlVals().size()>0){
+				query.setParameterList("searchLvlVals", inputVO.getSearchLvlVals());
+			}
+		 
+		 return query.list();
 	}
 
 }
