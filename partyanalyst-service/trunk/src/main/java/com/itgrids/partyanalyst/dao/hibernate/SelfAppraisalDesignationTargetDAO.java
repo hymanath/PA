@@ -255,7 +255,7 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
     		query.setParameterList("monthYearStrList", monthYearStrList);
     	return query.list();
     }
- 
+    //This Dao used multiple place in (tour application,cadre profile,constituency page)
     public List<Object[]> getCategoryWiseTargetCnt(List<Long> monthYearsIds,String type,List<Long> desinationIds){
         StringBuilder queryStr = new StringBuilder();
         queryStr.append(" select model.selfAppraisalDesignation.selfAppraisalDesignationId," +

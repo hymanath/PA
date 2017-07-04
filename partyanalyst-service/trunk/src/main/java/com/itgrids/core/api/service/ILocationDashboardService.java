@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
+import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 
 
@@ -29,4 +30,6 @@ public interface ILocationDashboardService {
 	public List<TdpCommitteeEnrollment> getEnrollmentIds();
 	
 	public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(String fromDate,String toDate,Long locationId,Long locationValue);
+	
+	public List<ToursBasicVO> getLocationWiseTourMembersComplainceDtls(final String locationType,final Long locationValue,final String fromDateStr,final String toDateStr);
 }

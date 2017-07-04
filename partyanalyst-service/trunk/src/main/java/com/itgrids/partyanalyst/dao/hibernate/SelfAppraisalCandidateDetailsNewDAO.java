@@ -264,6 +264,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	                return query.list();
 	 
  }
+ //This dao is used multiple place (tour application,cadreProfile,constituencyPage)
  public List<Object[]> getCategoryWiseLeaderTourSubmittedCnt(String type,List<Long> monthYearIds,List<Long> designationIds,List<Long> candiateIds){
 	 StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select " +
