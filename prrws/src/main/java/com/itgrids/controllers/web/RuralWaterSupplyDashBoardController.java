@@ -23,6 +23,7 @@ import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
+import com.itgrids.dto.WaterSourceVO;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 
 @EnableAutoConfiguration
@@ -146,16 +147,13 @@ public class RuralWaterSupplyDashBoardController {
 	 * 
 	 */
 
-	@RequestMapping(value = "/getWaterSourceInfo", method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody StatusVO getWaterSourceInfo() {
+	@PostMapping("/getWaterSourceInfo")
+	public @ResponseBody WaterSourceVO getWaterSourceInfo(@RequestBody InputVO vo) {
 		try {
-			return rWSNICService.getWaterSourceInfo();
+			return rWSNICService.getWaterSourceInfo(vo);
 
 		} catch (Exception e) {
-			LOG.error("Exception raised at getWaterSourceInfo - RuralWaterSupplyDashBoardController controller",
-					e);
+			LOG.error("Exception raised at getWaterSourceInfo - RuralWaterSupplyDashBoardController controller",e);
 		}
 		return null;
 	}

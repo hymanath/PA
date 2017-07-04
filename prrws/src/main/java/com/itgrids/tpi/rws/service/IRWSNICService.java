@@ -10,6 +10,7 @@ import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
+import com.itgrids.dto.WaterSourceVO;
 
 public interface IRWSNICService {
 	
@@ -21,7 +22,7 @@ public interface IRWSNICService {
 	public List<BasicVO> getAssetsInfo(InputVO vo);
 	public List<StatusVO> getAlertDetailsOfCategoryByStatusWise(InputVO vo);
 	public List<StatusVO> getAlertFeedbackStatusDetails(InputVO vo);
-	public StatusVO getWaterSourceInfo();
+	public WaterSourceVO getWaterSourceInfo(InputVO vo);
 	public List<KPIVO> getKeyPerformanceIndicatorsInfo(InputVO inputVO);
 	public List<StatusVO> getPlanofActionForStressedHabitations(InputVO vo);
 	public StatusVO getStressedHabitationsInfoByLocationType(InputVO vo);
