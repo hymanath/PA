@@ -31,7 +31,7 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 		     		
 		     		queryStr.append(" from SelfAppraisalCandidateLocationNew model " +
 		     		        " where " +
-		     		        " model.selfAppraisalCandidate.isActive='Y' " +
+		     		        " model.selfAppraisalCandidate.isActive='Y' and model.isDeleted='N' " +
 		     		        " and model.selfAppraisalCandidate.selfAppraisalDesignation.isActive='Y' ");
 			     if(stateId != null && stateId.longValue() > 0){
 							queryStr.append(" and model.userAddress.state.stateId =:stateId ");
@@ -94,7 +94,7 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 		   		   		" from " +
 				   		" SelfAppraisalCandidateLocationNew SACL " +
 				   		" where " +
-				   		" SACL.selfAppraisalCandidate.isActive = 'Y' and " +  
+				   		" SACL.selfAppraisalCandidate.isActive = 'Y' and SACL.isDeleted='N' and " +  
 				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and " +
 				   		" SACL.userAddress.state.stateId = :stateId ");
 		   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -218,4 +218,50 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
   				query.setParameter("cadreId", cadreId);
   			return query.list();    	       	  
        }
+	//Constituency Page Query
+	public List<Object[]> getLocationWiseTourMemberDetails(Long userAccessLevelId,String locationType,Long locationValue){
+		   StringBuilder queryStr = new StringBuilder();
+		   queryStr.append(" select  " +
+		   				" SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
+		   				" SACL.selfAppraisalCandidate.selfAppraisalDesignation.designation," +//1
+		   				" SACL.selfAppraisalCandidate.selfAppraisalCandidateId," +//2
+		   				" SACL.selfAppraisalCandidate.tdpCadre.firstname," +//3 
+		   				" SACL.locationScopeId," +//4
+		   				" SACL.locationValue " +//5
+		   		   		" from " +
+				   		" SelfAppraisalCandidateLocationNew SACL " +
+				   		" where " +
+				   		" SACL.selfAppraisalCandidate.isActive = 'Y' and SACL.isDeleted='N' and " +  
+				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y'");
+		   
+		   if(locationType != null && locationType.trim().length() > 0 && locationValue != null){
+			   
+			    if(locationType.equalsIgnoreCase("District")){
+				   queryStr.append(" and SACL.userAddress.district.districtId in (:locationValue)");  
+			    }else if(locationType.equalsIgnoreCase("Parliament")){
+				   queryStr.append(" and SACL.userAddress.parliamentConstituency.constituencyId in (:locationValue) ");  
+			    }else if(locationType.equalsIgnoreCase("Constituency")){
+				   queryStr.append(" and SACL.userAddress.constituency.constituencyId in (:locationValue) ");  
+			    }   
+		   }
+		   
+		   if(userAccessLevelId != null && userAccessLevelId.longValue()  > 0){
+			   queryStr.append(" and SACL.locationScopeId=:userAccessLevelId");
+		   }
+		   
+		   queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
+		   				  " SACL.selfAppraisalCandidate.selfAppraisalCandidateId, " +
+		   				  " SACL.locationScopeId");   
+		   queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
+		   
+		   Query query = getSession().createQuery(queryStr.toString());	
+		   
+		   if(locationValue != null && locationValue.longValue() > 0){
+			   query.setParameter("locationValue", locationValue);
+		   }
+		   if(userAccessLevelId != null && userAccessLevelId.longValue()  > 0){
+			   query.setParameter("userAccessLevelId", userAccessLevelId);
+		   }
+		   return query.list();  
+	   }
 }

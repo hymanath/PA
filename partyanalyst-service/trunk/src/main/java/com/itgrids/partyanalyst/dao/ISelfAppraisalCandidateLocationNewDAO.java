@@ -6,7 +6,6 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocationNew;
-import com.itgrids.partyanalyst.model.UserAddress;
 
 public interface ISelfAppraisalCandidateLocationNewDAO extends GenericDao<SelfAppraisalCandidateLocationNew, Long> {
  public List<Object[]> getNoOfLdrsCntDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long userTypeId,String type);
@@ -15,5 +14,7 @@ public interface ISelfAppraisalCandidateLocationNewDAO extends GenericDao<SelfAp
  public List<Object[]> getLocationValuesOfCandidate(Long candidateId,Long categoryId);
  public List<Object[]> getLocationWiseCandidate(Long cadreId);
  public List<Object[]> getLocationValuesOfCandidate1(Long candidateId,Long categoryId,Long tourTypeId);
+ //constituency page
+ public List<Object[]> getLocationWiseTourMemberDetails(Long userAccessLevelId,String locationType,Long locationValue);
  
 }

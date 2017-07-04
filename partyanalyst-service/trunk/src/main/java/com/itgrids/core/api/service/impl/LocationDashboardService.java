@@ -1,5 +1,6 @@
 package com.itgrids.core.api.service.impl;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +24,10 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
+import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsNewDAO;
+import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationNewDAO;
+import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationTargetDAO;
+import com.itgrids.partyanalyst.dao.ISelfAppraisalToursMonthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeEnrollmentDAO;
@@ -35,13 +40,15 @@ import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
+import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.model.CasteCategory;
 import com.itgrids.partyanalyst.model.EnrollmentYear;
 import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
-public class LocationDashboardService implements ILocationDashboardService {
+public class LocationDashboardService  implements ILocationDashboardService  {
 	private final static Logger LOG = Logger.getLogger(LocationDashboardService.class);
 	private INominationDAO nominationDAO;
 	private IConstituencyDAO constituencyDAO;
@@ -56,7 +63,12 @@ public class LocationDashboardService implements ILocationDashboardService {
 	private ITdpCommitteeDAO tdpCommitteeDAO;
 	private ICadreDetailsService cadreDetailsService;
 	private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
-
+	private CommonMethodsUtilService commonMethodsUtilService;
+    //tour daos
+	private ISelfAppraisalCandidateLocationNewDAO selfAppraisalCandidateLocationNewDAO;
+	private ISelfAppraisalDesignationTargetDAO selfAppraisalDesignationTargetDAO;
+	private ISelfAppraisalCandidateDetailsNewDAO selfAppraisalCandidateDetailsNewDAO;
+	private ISelfAppraisalToursMonthDAO selfAppraisalToursMonthDAO;
 	
 
 	public void setTdpCommitteeEnrollmentDAO(ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO) {
@@ -158,6 +170,29 @@ public class LocationDashboardService implements ILocationDashboardService {
 
 	public void setNominationDAO(INominationDAO nominationDAO) {
 		this.nominationDAO = nominationDAO;
+	}
+    public void setSelfAppraisalCandidateLocationNewDAO(
+			ISelfAppraisalCandidateLocationNewDAO selfAppraisalCandidateLocationNewDAO) {
+		this.selfAppraisalCandidateLocationNewDAO = selfAppraisalCandidateLocationNewDAO;
+	}
+
+	public void setSelfAppraisalDesignationTargetDAO(
+			ISelfAppraisalDesignationTargetDAO selfAppraisalDesignationTargetDAO) {
+		this.selfAppraisalDesignationTargetDAO = selfAppraisalDesignationTargetDAO;
+	}
+
+	public void setSelfAppraisalCandidateDetailsNewDAO(
+			ISelfAppraisalCandidateDetailsNewDAO selfAppraisalCandidateDetailsNewDAO) {
+		this.selfAppraisalCandidateDetailsNewDAO = selfAppraisalCandidateDetailsNewDAO;
+	}
+
+	public void setSelfAppraisalToursMonthDAO(
+			ISelfAppraisalToursMonthDAO selfAppraisalToursMonthDAO) {
+		this.selfAppraisalToursMonthDAO = selfAppraisalToursMonthDAO;
+	}
+   public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1175,5 +1210,428 @@ public class LocationDashboardService implements ILocationDashboardService {
             Log.error("Exception raised in meetings method"+e);
 		}
 		return meetingStatusCounts;
+	}
+	/**
+	  * @param String fromDateStr
+	  * @param String toDateStr
+	  * @param String locationType
+	  * @param String locationValue
+	  * @return List<ToursBasicVO>
+	  * @author Santosh 
+	  * @Description :This Service Method is used to get tour leader over all complaince details designation wise. 
+	  *  @since 7-JULY-2017
+	  */
+	public List<ToursBasicVO> getLocationWiseTourMembersComplainceDtls(final String locationType,final Long locationValue,final String fromDateStr,final String toDateStr){
+		List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>(0);
+		Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String,List<ToursBasicVO>>>(0);
+	    Map<String,String> categoryIdNameMap = new HashMap<String, String>(0);
+	    Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>(0);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    Date fromDate=null;
+		Date toDate=null;
+		
+		try{
+			LOG.info("Entered into getLocationWiseTourMembersComplainceDtls() in LocationDashboardService class");
+			
+			if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				 fromDate = sdf.parse(fromDateStr);
+				 toDate = sdf.parse(toDateStr);
+			 }
+			
+			 //Get month year in string format based on fromDate and toDate
+			 List<String> monthYear = selfAppraisalToursMonthDAO.getMonthAndYear(fromDate, toDate);
+			 //Get month year ids based on month year 
+			 List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
+			 
+			 List<Object[]> rtrnCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getLocationWiseTourMemberDetails(getUserAccessLevel(locationType), locationType, locationValue);
+			 //getting designation wise target
+			 ToursBasicVO basicDtlsVO = getRequiredData(rtrnCandiateObjLst);
+			  if(monthyearIds != null && monthyearIds.size() > 0 && basicDtlsVO.getComplaincandidateIdsSet() != null && basicDtlsVO.getNoNComplaincandidateIdsSet() != null){
+				  List<Object[]> dsgntnWsTurCtgryTrgtObjLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds, "tourCategory", new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds
+				  setDesignationWiseTarget(dsgntnWsTurCtgryTrgtObjLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
+				  List<Object[]> dsgntnWsTurTypeTrgtObjLst  = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds, "tourType", new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds
+				  setDesignationWiseTarget(dsgntnWsTurTypeTrgtObjLst,designationWiseTargetMap,categoryIdNameMap,"tourType");
+			  }
+			  //setting candidate wise target
+			  setCandidateDtls(rtrnCandiateObjLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap);
+			  //getting tour submitted details candidate wise
+			  if(monthyearIds != null && monthyearIds.size() > 0 && basicDtlsVO.getComplaincandidateIdsSet() != null && basicDtlsVO.getNoNComplaincandidateIdsSet() != null){
+				  List<Object[]> tourSubmittedDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourCategory", monthyearIds,  new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()),  new ArrayList<Long>(basicDtlsVO.getNoNComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds and getNoNComplaincandidateIdsSet() contains candidate ids
+				  setMonthWiseComplainceDetails(tourSubmittedDtlsObjLst,candiateDtlsMap,"tourCategory");
+				  List<Object[]> rtrnGovtDaysToursObjLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourType", monthyearIds,  new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()),  new ArrayList<Long>(basicDtlsVO.getNoNComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds and getNoNComplaincandidateIdsSet() contains candidate ids
+				  setMonthWiseComplainceDetails(rtrnGovtDaysToursObjLst,candiateDtlsMap,"tourType");
+			  }
+			  
+			  //Calculating Category wise complaince
+			  calculateCategoryWiseComplaince(candiateDtlsMap);
+			  //Calculating OverAll percentage
+			  calculatteOverAllPercentage(candiateDtlsMap);
+			  
+			  //Preparing final list
+			  if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
+				  for(Entry<Long,Map<Long,ToursBasicVO>> entry:candiateDtlsMap.entrySet()){
+					  ToursBasicVO designationVO = new ToursBasicVO();  
+					  designationVO.setDesignationId(entry.getKey());
+					  if(basicDtlsVO != null){
+						  designationVO.setDesignation(basicDtlsVO.getSubMap().get(entry.getKey()));  
+					  }
+					  designationVO.setIsComplaince("False");
+					  if(entry.getValue() != null && entry.getValue().size() > 0){
+						  for(Entry<Long,ToursBasicVO> candiateEntry:entry.getValue().entrySet()){
+							  if(candiateEntry.getValue().getComplaincePer()>=100d){
+								  designationVO.setComplainceCnt(designationVO.getComplainceCnt()+1);
+								  designationVO.setIsComplaince("True");
+							  }
+							  designationVO.getSubList().add(candiateEntry.getValue());
+						  }
+					  }
+					  resultList.add(designationVO);
+				  }
+			  }
+			  
+		}catch(Exception e){
+			Log.error("Exception Occured at getLocationWiseTourMembersComplainceDtls() in LocationDashboardService class"+ e);
+		}
+		return resultList;
+	}
+	public void setMonthWiseComplainceDetails(List<Object[]> objList, Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap,String type){
+		 try{
+			 if(objList != null && objList.size() > 0){
+				 for(Object[] param:objList){
+					 Long designationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					 Long candidateId = commonMethodsUtilService.getLongValueForObject(param[2]);
+					 String idStr = commonMethodsUtilService.getStringValueForObject(param[3]);//categoryId or tourTypeId 
+					   if(type.equalsIgnoreCase("tourType")){
+							 idStr = "0"+idStr;/* We are appending 0 before tourTypeId for Identification purpose because in single list
+		                      					i am sending tour category and tour type which both has same id */ 
+					   }
+					  Long monthId = commonMethodsUtilService.getLongValueForObject(param[4]);
+					  Long tourDaysCntPerMonth = commonMethodsUtilService.getLongValueForObject(param[5]);
+					  
+					  if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
+						  
+						    Map<Long,ToursBasicVO> candiateMap = candiateDtlsMap.get(designationId);
+						      
+							 if(candiateMap != null && candiateMap.size() > 0){
+								 
+								   ToursBasicVO candiateVO = candiateMap.get(candidateId); 
+								   
+								   if(candiateVO != null ){
+									   
+									   ToursBasicVO categoryVO = getCategoryMatchVO(candiateVO.getSubList3(),idStr);
+									   
+										 if(categoryVO != null){
+											 
+											  ToursBasicVO monthVO = getMonthMatchVO(categoryVO.getMonthList(),monthId);
+											  
+											   if(monthVO != null){
+												   
+												   if(tourDaysCntPerMonth >= monthVO.getTargetDays()){
+												    	
+												    	monthVO.setComplainceDays(tourDaysCntPerMonth);
+												    	Double complaincePer = calculatePercantage(monthVO.getComplainceDays(),monthVO.getTargetDays());
+													 if(complaincePer > 100d){
+														 monthVO.setComplaincePer(100d);
+													 }else{
+														 monthVO.setComplaincePer(complaincePer);	 
+													 }
+												 }else{
+													 
+													 monthVO.setComplainceDays(tourDaysCntPerMonth);
+													 Double complaincePer = calculatePercantage(monthVO.getComplainceDays(),monthVO.getTargetDays());
+													 monthVO.setComplaincePer(complaincePer);	 
+												}
+										 }
+							       }	    
+								 }
+								
+							}  
+					  }
+				 }
+			 }
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in setMonthWiseComplainceDetails() in CoreDashboardToursService  : ",e);	 
+		 }
+	 }
+	public void setDesignationWiseTarget(List<Object[]> objLst,Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap,Map<String,String> categoryIdNameMap,String type){
+		 try{
+			 if(objLst != null && objLst.size() > 0){
+				 for(Object[] param:objLst){
+					  Map<String,List<ToursBasicVO>> categoryMap = designationWiseTargetMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 	if(categoryMap == null){
+					 		categoryMap = new LinkedHashMap<String, List<ToursBasicVO>>(0);
+					 		designationWiseTargetMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), categoryMap);
+					 	}
+					 	 String idStr = commonMethodsUtilService.getStringValueForObject(param[2]);
+						 if(type.equalsIgnoreCase("tourType")){
+							 idStr = "0"+idStr;/* We are appending 0 before tourTypeId for Identification purpose because in single list
+							                      i am sending tour category and tour type which both has same id */ 
+						 }
+					 	  List<ToursBasicVO> monthList = categoryMap.get(idStr);
+					 	  if(monthList == null){
+					 		 monthList = new ArrayList<ToursBasicVO>();
+					 		 categoryIdNameMap.put(idStr, commonMethodsUtilService.getStringValueForObject(param[3]));
+					 		 categoryMap.put(idStr, monthList);
+					 	  }
+					 	ToursBasicVO monthVO = new ToursBasicVO();
+					 	monthVO.setId(commonMethodsUtilService.getLongValueForObject(param[4]));//monthId
+					 	String year = commonMethodsUtilService.getStringValueForObject(param[7]);
+					 	monthVO.setName(commonMethodsUtilService.getStringValueForObject(param[5]).substring(0, 3)+"-"+year.substring(year.length()-2));//monthName & Year
+					 	monthVO.setYear(commonMethodsUtilService.getLongValueForObject(param[7]));
+					 	monthVO.setTargetDays(commonMethodsUtilService.getLongValueForObject(param[6]));
+					 	monthList.add(monthVO);
+				 }
+			 }
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in setDesignationWiseTarget() in LocationDashboardService  : ",e);
+		 }
+	 }
+	public void setCandidateDtls(List<Object[]> rtrnMemberDtls,Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap, Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap, Map<String,String> categoryIdNameMap){
+		 try{
+			 if(rtrnMemberDtls != null && rtrnMemberDtls.size() > 0){
+				 for(Object[] param:rtrnMemberDtls){
+					 Long designationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					 Map<Long,ToursBasicVO> candidateMap = candiateDtlsMap.get(designationId);
+					 if(candidateMap == null ){
+						 candidateMap = new LinkedHashMap<Long,ToursBasicVO>();
+						 candiateDtlsMap.put(designationId, candidateMap);
+					 }
+					 ToursBasicVO candiateVO = candidateMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));//candiateId
+					 if(candiateVO == null ){
+						 candiateVO = new ToursBasicVO();
+						 candiateVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						 candiateVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
+						 candiateVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						 candiateVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+						 candiateVO.setLocationScopeId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						 List<ToursBasicVO> categoryList = setRequiredTargetDesignationWise(candiateVO.getDesignationId(),designationWiseTargetMap,categoryIdNameMap);
+						 if(categoryList != null && categoryList.size() > 0){
+							 candiateVO.setSubList3(new ArrayList<ToursBasicVO>(categoryList));
+						 }
+						 candidateMap.put(candiateVO.getId(), candiateVO);
+					 }
+					 candiateVO.getLocationSet().add(commonMethodsUtilService.getLongValueForObject(param[5]));//location value
+				 }
+			 }
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in setCandidateDtls() in LocationDashboardService  : ",e);
+		 }
+	 }
+	public List<ToursBasicVO> setRequiredTargetDesignationWise(Long designationId,Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap,Map<String,String> categoryIdNameMap){
+		 try{
+			 if(designationWiseTargetMap != null && designationWiseTargetMap.size() > 0){
+				 
+				 List<ToursBasicVO> categoryList = new ArrayList<ToursBasicVO>();
+				 
+				 Map<String,List<ToursBasicVO>> categroyMap = designationWiseTargetMap.get(designationId);
+				 
+				 if(categroyMap != null && categroyMap.size() > 0){
+					 
+					 for(Entry<String, List<ToursBasicVO>> entry:categroyMap.entrySet()){
+						 
+						 ToursBasicVO categoryVO = new ToursBasicVO();
+						 categoryVO.setIdStr(entry.getKey());
+						 if(categoryIdNameMap != null && categoryIdNameMap.size() > 0){
+							 categoryVO.setName(categoryIdNameMap.get(entry.getKey()));	 
+						 }
+						 if(entry.getValue() != null && entry.getValue().size() > 0){
+							 for(ToursBasicVO mntVO:entry.getValue()){
+								ToursBasicVO monthVO = new ToursBasicVO(); 
+								monthVO.setId(mntVO.getId());
+								monthVO.setName(mntVO.getName());
+								monthVO.setYear(mntVO.getYear());
+								monthVO.setTargetDays(mntVO.getTargetDays());
+							   categoryVO.getMonthList().add(monthVO);
+							 }
+						 }
+						 categoryList.add(categoryVO);
+					 }
+				 }
+			    return categoryList;
+			 } 
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in setRequiredTargetDesignationWise() in LocationDashboardService  : ",e);	 
+		 }
+		 return null;
+	 }
+	public void calculateCategoryWiseComplaince(Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap){
+		 try{
+			 if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
+				 
+				 for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:candiateDtlsMap.entrySet()){
+					 
+					 if(designationEntry.getValue() != null && designationEntry.getValue().size() > 0){
+						 
+						 for(Entry<Long,ToursBasicVO> candiateEntry:designationEntry.getValue().entrySet()){
+							 
+							 ToursBasicVO candiateVO = candiateEntry.getValue();
+							 
+							 if(candiateVO != null){
+								 
+								 if(candiateVO.getSubList3() != null && candiateVO.getSubList3().size() > 0){
+									 
+									 for(ToursBasicVO categoryVO:candiateVO.getSubList3()){
+										 
+										 List<ToursBasicVO> monthList = categoryVO.getMonthList();
+										 
+										 if(monthList != null && monthList.size() > 0){
+											 
+											   Double totalPer= 0.0d;
+											   Long targetDays =0l;
+											   Long complainceDays =0l;
+											   
+											   for(ToursBasicVO monthVO:monthList){
+												   
+												   totalPer = totalPer+monthVO.getComplaincePer();
+												   targetDays = targetDays + monthVO.getTargetDays();
+												   complainceDays = complainceDays + monthVO.getComplainceDays();
+											   }
+											   
+											   Integer totalCount =0;
+											   
+											   if(monthList != null && monthList.size() > 0){
+												   
+												    totalCount = monthList.size() * 100;   
+											   }
+											   
+										       Double percentage = calculatePercantageBasedOnDouble(totalPer,totalCount.doubleValue());
+										       if(percentage > 100){
+										    	   categoryVO.setComplaincePer(100d);
+										       }else{
+										    	   categoryVO.setComplaincePer(percentage);   
+										       }
+										       categoryVO.setTargetDays(targetDays);
+										       categoryVO.setComplainceDays(complainceDays);
+									 }
+								 }	 
+							}
+						 }
+					 }
+				 }
+				 }
+			 }
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in calculateCategoryWiseComplaince() in LocationDashboardService  : ",e); 
+		 }
+	 }
+	public void calculatteOverAllPercentage(Map<Long,Map<Long,ToursBasicVO>> memberDtlsMap){
+		 try{
+			 if(memberDtlsMap != null && memberDtlsMap.size() > 0){
+				 
+				  for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:memberDtlsMap.entrySet()){
+					  
+					  if(designationEntry != null && designationEntry.getValue().size() >0){
+						  
+						  for(Entry<Long,ToursBasicVO> candiateEntry:designationEntry.getValue().entrySet()){
+							  
+							  List<ToursBasicVO> categoryList = candiateEntry.getValue().getSubList3();
+							  
+							   if(categoryList != null && categoryList.size() > 0){
+								   
+								   Double totalPer =0.0d;
+								   Long complainceDays=0l;
+								   for(ToursBasicVO VO:categoryList){
+									   totalPer = totalPer+VO.getComplaincePer(); 
+									   complainceDays = complainceDays +VO.getComplainceDays();
+								   }
+								   Integer totalCount =0;
+								   if(categoryList != null && categoryList.size() > 0){
+									    totalCount = categoryList.size() * 100;   
+								   }
+								   
+								   Double percentage = calculatePercantageBasedOnDouble(totalPer,totalCount.doubleValue());
+								   candiateEntry.getValue().setComplainceDays(complainceDays);
+								   if(percentage > 100d){
+									   candiateEntry.getValue().setComplaincePer(100d);
+								   }else{
+									   candiateEntry.getValue().setComplaincePer(percentage);  
+								   }
+							   }
+						  }
+					  }
+				  }
+			  }	 
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in calculatteOverAllPercentage() in LocationDashboardService  : ",e);	 
+		 }
+	 }
+	public ToursBasicVO getCategoryMatchVO(List<ToursBasicVO> categoryList,String id){
+		 try{
+			 if(categoryList == null || categoryList.size() == 0)
+				 return null;
+			 for(ToursBasicVO vo:categoryList){
+				 if(vo.getIdStr().equalsIgnoreCase(id.trim())){
+					 return vo;
+				 }
+			 }
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in getCategoryMatchVO() in LocationDashboardService  : ",e);	 
+		 }
+		 return null;
+	 }
+	 public ToursBasicVO getMonthMatchVO(List<ToursBasicVO> monthList,Long id){
+		 try{
+			 if(monthList == null || monthList.size() == 0)
+				 return null;
+			 for(ToursBasicVO vo:monthList){
+				 if(vo.getId().equals(id)){
+					 return vo;
+				 }
+			 }
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in getCategoryMatchVO() in LocationDashboardService  : ",e);	 
+		 }
+		 return null;
+	 }
+	 public Double calculatePercantage(Long subCount,Long totalCount){
+			Double d=0.0d;
+			if(subCount.longValue()>0l && totalCount.longValue()==0l)
+			LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
+
+			if(totalCount.longValue() > 0l){
+				 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
+			}
+			return d;
+	 }
+	 public Double calculatePercantageBasedOnDouble(Double subCount,Double totalCount){
+			Double d=0.0d;
+			if(subCount.longValue()>0l && totalCount.longValue()==0l)
+			LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
+
+			if(totalCount.longValue() > 0l){
+				 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
+			}
+			return d;
+	 }
+	public Long getUserAccessLevel(String locationType){
+		Long userAccessLevelId=0l;
+		if(locationType != null){
+			if(locationType.equalsIgnoreCase("District")){
+				userAccessLevelId = 3l;
+			}else if(locationType.equalsIgnoreCase("ParliamentConstituency")){
+				userAccessLevelId = 10l;
+			}else if(locationType.equalsIgnoreCase("Constituency")){
+				userAccessLevelId = 4l;
+			}
+		}
+		return userAccessLevelId;
+	}
+	public ToursBasicVO getRequiredData(List<Object[]> objList){
+		ToursBasicVO vo = new ToursBasicVO();
+		try{
+			if(objList != null && objList.size() > 0){
+				vo.setComplaincandidateIdsSet(new java.util.HashSet<Long>(0));//adding designationIds
+				vo.setNoNComplaincandidateIdsSet(new java.util.HashSet<Long>(0));//adding candidateIds
+				vo.setSubMap(new HashMap<Long, String>(0));
+				for (Object[] param : objList) {
+					vo.getSubMap().put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					vo.getComplaincandidateIdsSet().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.getNoNComplaincandidateIdsSet().add(commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}
+		}catch(Exception e){
+			Log.error("Exception Occured at getRequiredData() in LocationDashboardService class"+e);
+		}
+		return vo;
 	}
 }

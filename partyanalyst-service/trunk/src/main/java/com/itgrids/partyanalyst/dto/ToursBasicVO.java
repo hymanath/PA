@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class ToursBasicVO {
@@ -116,6 +117,7 @@ public class ToursBasicVO {
 	private List<IdNameVO> manTowDivList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> panWardList = new ArrayList<IdNameVO>(0);
 	private Long toursMonthId;
+	private Map<Long,String> subMap=null;
 	
 	public ToursBasicVO() {
 		super();
@@ -728,5 +730,10 @@ public class ToursBasicVO {
 	public void setMidDayMealComplaincePer(Double midDayMealComplaincePer) {
 		this.midDayMealComplaincePer = midDayMealComplaincePer;
 	}
-   
+	public Map<Long, String> getSubMap() {
+		return subMap;
+	}
+	public void setSubMap(Map<Long, String> subMap) {
+		this.subMap = subMap;
+	}
 }
