@@ -31,10 +31,10 @@ public class PrisSurveyDashBoardController {
 	@Autowired
 	private IPrisSurveyDashBaordService surveyDashBaordService;
 	
-	@GetMapping("/SurveyDashBoard")
+	@GetMapping("/surveyDashBoard")
 	public String SurveyDashBoardPage(ModelMap model) {
 
-		return "SurveyDashBoard";
+		return "surveyDashBoard";
 	}
 	
 	@PostMapping("/getPrisSurveyBasicData")
@@ -47,13 +47,13 @@ public class PrisSurveyDashBoardController {
 		}
 		return returnVo;
 	}
-	@PostMapping("/getPrisLocationWiseOverview")
-	public @ResponseBody PrisOverviewVo getPrisLocationWiseOverview(@RequestBody InputVO inputVO){
+	@PostMapping("/getPIRSSurveyInfo")
+	public @ResponseBody PrisOverviewVo getPIRSSurveyInfo(@RequestBody InputVO inputVO){
 		PrisOverviewVo returnVo = null;
 		try {
-			returnVo = surveyDashBaordService.getPrisLocationWiseOverview(inputVO);
+			returnVo = surveyDashBaordService.getPIRSSurveyInfo(inputVO);
 		} catch (Exception e){
-			LOG.error("Exception raised at getPrisLocationWiseOverview - PrisSurveyDashBoardController controller", e);
+			LOG.error("Exception raised at getPIRSSurveyInfo - PrisSurveyDashBoardController controller", e);
 		}
 		return returnVo;
 	}
