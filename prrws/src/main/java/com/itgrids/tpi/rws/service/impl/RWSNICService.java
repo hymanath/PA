@@ -338,7 +338,8 @@ public class RWSNICService implements IRWSNICService{
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		try {
 			
-			 WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getSchemeWiseWorkDetails");	        
+			// WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getSchemeWiseWorkDetails");
+			 WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getSchemeWiseWorkDetails");
 		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, VO);
 			
@@ -350,27 +351,50 @@ public class RWSNICService implements IRWSNICService{
 			//String output = "[{'assetType':'SUSTAINABILITY','workOngoingCount':10,'workComissionedCount':35,'workCompletedCount':46,'workNotGroundedCount':0},{'assetType':'SCHOOLS','workOngoingCount':6,'workComissionedCount':12,'workCompletedCount':17,'workNotGroundedCount':0},{'assetType':'PWS','workOngoingCount':162,'workComissionedCount':979,'workCompletedCount':1310,'workNotGroundedCount':0},{'assetType':'CPWS','workOngoingCount':25,'workComissionedCount':42,'workCompletedCount':51,'workNotGroundedCount':0}]";
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
-	 	    		JSONArray jsonArray = new JSONArray(output);	 	    
-	 	    		if(jsonArray !=null && jsonArray.length()>0){
-	 	    			for (int i = 0;i<jsonArray.length();i++) {		 	    				
-	 	    				JSONObject jObj = (JSONObject)jsonArray.get(i);		 	    				
-	 	    				BasicVO Vo = new BasicVO();		 	    				
-	 	    				Vo.setAssetType(jObj.getString("assetType"));
-	 	    				Vo.setWorkOngoingCount(jObj.getLong("workOngoingCount"));
-	 	    				Vo.setWorkComissionedCount(jObj.getLong("workComissionedCount"));
-	 	    				Vo.setWorkCompletedCount(jObj.getLong("workCompletedCount"));
-	 	    				Vo.setWorkNotGroundedCount(jObj.getLong("workNotGroundedCount"));
-	 	    				Vo.setCount(Vo.getWorkOngoingCount()+Vo.getWorkComissionedCount()+Vo.getWorkCompletedCount()+Vo.getWorkNotGroundedCount());
-	 	    				if(Vo.getCount() > 0l){
-	 	    					Vo.setPercentageOne((Vo.getWorkOngoingCount()*100.00)/Vo.getCount());
-		 	    				Vo.setPercentageTwo((Vo.getWorkComissionedCount()*100.00)/Vo.getCount());
-		 	    				Vo.setPercentageThree((Vo.getWorkCompletedCount()*100.00)/Vo.getCount());
-		 	    				Vo.setPercentageFour((Vo.getWorkNotGroundedCount()*100.00)/Vo.getCount());
-	 	    				}
-	 	    				
-	 	    				finalList.add(Vo);
-						}
-	 	    		}	 	    		
+	 	    		if(VO.getType() !=null&& !VO.getType().trim().isEmpty() && VO.getType().trim().equalsIgnoreCase("graph")){
+	 	    			setStateSchemeWiseWorkDetails(output,finalList);
+	 	    		}else if(VO.getLocationType() !=null&& !VO.getLocationType().trim().isEmpty() && VO.getLocationType().trim().equalsIgnoreCase("mandal")){
+	 	    			setMandalSchemeWiseWorkDetails(output,finalList);
+	 	    		}else{
+	 	    			
+	 	    			JSONArray jsonArrayMain = new JSONArray(output);	 
+	 	    			if(jsonArrayMain !=null && jsonArrayMain.length()>0){
+		 	   				for(int j = 0;j<jsonArrayMain.length();j++){
+		 	   					JSONObject jObjMain = (JSONObject)jsonArrayMain.get(j);
+		 	   					JSONArray jsonArray = jObjMain.getJSONArray("subList");//type
+		 	   					
+		 	   					BasicVO mainVO = new BasicVO();
+		 	   					
+		 	   					mainVO.setLocationId(jObjMain.getLong("locationId"));
+		 	   					mainVO.setLocationName(jObjMain.getString("locationName"));
+		 	   					
+		 	   					if(jsonArray !=null && jsonArray.length()>0){
+		 	   						for (int i = 0;i<jsonArray.length();i++){		
+		 	   							JSONObject jObj = (JSONObject)jsonArray.get(i);	
+		 	   							BasicVO Vo = new BasicVO();
+			 	   						Vo.setAssetType(jObj.getString("assetType"));
+				 	    				Vo.setWorkOngoingCount(jObj.getLong("workOngoingCount"));
+				 	    				Vo.setWorkComissionedCount(jObj.getLong("workComissionedCount"));
+				 	    				Vo.setWorkCompletedCount(jObj.getLong("workCompletedCount"));
+				 	    				Vo.setWorkNotGroundedCount(jObj.getLong("workNotGroundedCount"));
+				 	    				Vo.setCount(Vo.getWorkOngoingCount()+Vo.getWorkComissionedCount()+Vo.getWorkCompletedCount()+Vo.getWorkNotGroundedCount());
+				 	    				if(Vo.getCount() > 0l){
+				 	    					Vo.setPercentageOne((Vo.getWorkOngoingCount()*100.00)/Vo.getCount());
+					 	    				Vo.setPercentageTwo((Vo.getWorkComissionedCount()*100.00)/Vo.getCount());
+					 	    				Vo.setPercentageThree((Vo.getWorkCompletedCount()*100.00)/Vo.getCount());
+					 	    				Vo.setPercentageFour((Vo.getWorkNotGroundedCount()*100.00)/Vo.getCount());
+				 	    				}
+		 	   							
+				 	    				mainVO.getBasicList().add(Vo);
+				 	    				
+									}
+		 	   					}
+		 	   					finalList.add(mainVO);
+		 	   					
+		 	   				}
+	 	    			}
+	 	    			
+	 	    		}	
 	 	    	}
 	 	    	
 	 	    }
@@ -381,6 +405,103 @@ public class RWSNICService implements IRWSNICService{
 		
 		return finalList;
 	}
+	public  List<BasicVO> setStateSchemeWiseWorkDetails(String output,List<BasicVO> finalList){
+		try {
+			JSONArray jsonArray = new JSONArray(output);	 	    
+	    		if(jsonArray !=null && jsonArray.length()>0){
+	    			for (int i = 0;i<jsonArray.length();i++) {		 	    				
+	    				JSONObject jObjMain = (JSONObject)jsonArray.get(i);	
+	    				
+	    				JSONArray jsonArr = jObjMain.getJSONArray("subList");
+	    				
+	    				if(jsonArr !=null && jsonArr.length()>0){
+			    			for (int j = 0;j<jsonArr.length();j++) {		 	    				
+			    				JSONObject jObj = (JSONObject)jsonArr.get(j);	
+			    				BasicVO Vo = new BasicVO();		 	    				
+			    				Vo.setAssetType(jObj.getString("assetType"));
+			    				Vo.setWorkOngoingCount(jObj.getLong("workOngoingCount"));
+			    				Vo.setWorkComissionedCount(jObj.getLong("workComissionedCount"));
+			    				Vo.setWorkCompletedCount(jObj.getLong("workCompletedCount"));
+			    				Vo.setWorkNotGroundedCount(jObj.getLong("workNotGroundedCount"));
+			    				Vo.setCount(Vo.getWorkOngoingCount()+Vo.getWorkComissionedCount()+Vo.getWorkCompletedCount()+Vo.getWorkNotGroundedCount());
+			    				if(Vo.getCount() > 0l){
+			    					Vo.setPercentageOne((Vo.getWorkOngoingCount()*100.00)/Vo.getCount());
+		 	    				Vo.setPercentageTwo((Vo.getWorkComissionedCount()*100.00)/Vo.getCount());
+		 	    				Vo.setPercentageThree((Vo.getWorkCompletedCount()*100.00)/Vo.getCount());
+		 	    				Vo.setPercentageFour((Vo.getWorkNotGroundedCount()*100.00)/Vo.getCount());
+			    				}
+			    				finalList.add(Vo);
+		    				}		    				
+	    				}
+	    			}
+	    		}	
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at setStateSchemeWiseWorkDetails - RuralWaterSupplyDashBoardService service", e);
+		}
+		return finalList;
+	}
+	public List<BasicVO> setMandalSchemeWiseWorkDetails(String output,List<BasicVO> finalList){
+		try {
+			JSONArray jsonArrayMain = new JSONArray(output);	 
+			if(jsonArrayMain !=null && jsonArrayMain.length()>0){
+				for(int j = 0;j<jsonArrayMain.length();j++){
+					JSONObject jObjMain = (JSONObject)jsonArrayMain.get(j);
+					JSONArray jsonArray = jObjMain.getJSONArray("subList");//mandal
+					
+					if(jsonArray !=null && jsonArray.length()>0){
+			    			for (int k = 0;k<jsonArray.length();k++) {		 	    				
+			    				JSONObject jObjSub = (JSONObject)jsonArray.get(k);	
+			    				
+			    				JSONArray jsonSubArray = jObjSub.getJSONArray("subList");//types
+			    				
+			    				BasicVO mainVo = new BasicVO();
+			    				mainVo.setId(jObjMain.getLong("locationId"));//district			    				
+			    				mainVo.setName(jObjSub.getString("name"));//distName
+			    				mainVo.setLocationId(jObjSub.getLong("locationId"));//mandalId
+			    				mainVo.setLocationName(jObjSub.getString("locationName"));//mandalName
+			    				
+			    				finalList.add(mainVo);
+			    				
+			    				if(jsonSubArray !=null && jsonSubArray.length()>0){			    					
+			    					for (int i = 0; i < jsonSubArray.length(); i++) {			    						
+			    						JSONObject jObj = (JSONObject)jsonSubArray.get(i);				    						
+			    						BasicVO Vo = new BasicVO();		 	    				
+					    				Vo.setAssetType(jObj.getString("assetType"));
+					    				Vo.setWorkOngoingCount(jObj.getLong("workOngoingCount"));
+					    				Vo.setWorkComissionedCount(jObj.getLong("workComissionedCount"));
+					    				Vo.setWorkCompletedCount(jObj.getLong("workCompletedCount"));
+					    				Vo.setWorkNotGroundedCount(jObj.getLong("workNotGroundedCount"));
+					    				Vo.setCount(Vo.getWorkOngoingCount()+Vo.getWorkComissionedCount()+Vo.getWorkCompletedCount()+Vo.getWorkNotGroundedCount());
+					    				if(Vo.getCount() > 0l){ 
+					    					Vo.setPercentageOne(new Double(calculatePercentage(Vo.getCount(),Vo.getWorkOngoingCount())));
+						    				Vo.setPercentageTwo(new Double(calculatePercentage(Vo.getCount(),Vo.getWorkComissionedCount())));
+						    				Vo.setPercentageThree(new Double(calculatePercentage(Vo.getCount(),Vo.getWorkCompletedCount())));
+						    				Vo.setPercentageFour(new Double(calculatePercentage(Vo.getCount(),Vo.getWorkNotGroundedCount())));
+					    				}
+					    				mainVo.getBasicList().add(Vo);
+									}
+			    				}
+			    				
+			    				
+			    			}
+						}
+					
+				}
+			}
+			
+			
+    			
+    		
+    		
+    		
+		
+	} catch (Exception e) {
+			LOG.error("Exception raised at setMandalSchemeWiseWorkDetails - RuralWaterSupplyDashBoardService service", e);
+		}
+		return finalList;
+	}
+	
 	/*
 	 * Date : 15/06/2017
 	 * Author :Nagarjuna
