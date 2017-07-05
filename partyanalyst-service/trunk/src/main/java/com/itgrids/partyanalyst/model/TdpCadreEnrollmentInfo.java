@@ -36,6 +36,9 @@ public class TdpCadreEnrollmentInfo implements Serializable{
 	private Long  renewalCadre;
 	private Long  newCadre;
 	private EnrollmentYear enrollmentYear;
+	private Long locationScopeId;
+	private Long locationValue;
+	private RegionScopes regionScopes;
 	
 	
 	@Id
@@ -111,6 +114,30 @@ public class TdpCadreEnrollmentInfo implements Serializable{
 	}
 	public void setEnrollmentYear(EnrollmentYear enrollmentYear) {
 		this.enrollmentYear = enrollmentYear;
+	}
+	@Column(name = "location_scope_id")
+	public Long getLocationScopeId() {
+		return locationScopeId;
+	}
+	public void setLocationScopeId(Long locationScopeId) {
+		this.locationScopeId = locationScopeId;
+	}
+	@Column(name = "location_value")
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "location_scope_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public RegionScopes getRegionScopes() {
+		return regionScopes;
+	}
+	public void setRegionScopes(RegionScopes regionScopes) {
+		this.regionScopes = regionScopes;
 	}
 	
 
