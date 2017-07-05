@@ -1,6 +1,8 @@
 package com.itgrids.dto;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BasicVO {
 	
@@ -18,8 +20,19 @@ public class BasicVO {
 	 private Double percentage=0.0d;	 
 	 private Double percentageOne = 0.0d,percentageTwo = 0.0d,percentageThree = 0.0d,percentageFour = 0.0d;
 	 
+	 private Long id;
+	 private String name;
+	 private Long locationId;
+	 private String locationName;
+	 private List<BasicVO> basicList = new ArrayList<BasicVO>();
 	 
 	 
+	public List<BasicVO> getBasicList() {
+		return basicList;
+	}
+	public void setBasicList(List<BasicVO> basicList) {
+		this.basicList = basicList;
+	}
 	public BigDecimal getTotalUnSafeWaterInMLD() {
 		return totalUnSafeWaterInMLD;
 	}
@@ -140,6 +153,30 @@ public class BasicVO {
 	}
 	public void setWorkNotGroundedCount(Long workNotGroundedCount) {
 		this.workNotGroundedCount = workNotGroundedCount;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
 	}
 	
 
