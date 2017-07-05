@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,16 +31,11 @@ public class PrisSurveyDashBoardController {
 	@Autowired
 	private IPrisSurveyDashBaordService surveyDashBaordService;
 	
-	/*@RequestMapping(value ="/", method = RequestMethod.GET)
-    public String indexPage(ModelMap model) {
-		return "fundManagementDashboard";
-    }
-	
-	@RequestMapping(value ="/fundManagementDashboard", method = RequestMethod.GET)
-    public String fundManagementDashboardPage(ModelMap model) {
-      
-		return "fundManagementDashboard";
-    }*/
+	@GetMapping("/SurveyDashBoard")
+	public String SurveyDashBoardPage(ModelMap model) {
+
+		return "SurveyDashBoard";
+	}
 	
 	@PostMapping("/getPrisSurveyBasicData")
 	public @ResponseBody PrisDataVo getPrisSurveyBasicData(@RequestBody InputVO inputVO){
