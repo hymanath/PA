@@ -229,9 +229,23 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						schemeVO.setAddressVO(addressVO);							
 						yearVO.setAddressVO(addressVO);
 						yearVO.getSubList().add(schemeVO);
+						
+						if(yearVO.getTotalCount() != null && yearVO.getTotalCount().longValue()>0L)
+							yearVO.setTotalCount(yearVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+						else
+							yearVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
+						yearVO.setAmount(commonMethodsUtilService.calculateAmountInWords(yearVO.getTotalCount()));
+						
 						fundLocationVO.getSubList().add(yearVO);
 						
 					}else{
+						
+						if(yearVO.getTotalCount() != null && yearVO.getTotalCount().longValue()>0L)
+							yearVO.setTotalCount(yearVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+						else
+							yearVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
+						yearVO.setAmount(commonMethodsUtilService.calculateAmountInWords(yearVO.getTotalCount()));
+						
 						FundSchemeVO schemeVO = (FundSchemeVO) setterAndGetterUtilService.getMatchedVOfromList(yearVO.getSubList(), "id", commonMethodsUtilService.getLongValueForObject(param[0]).toString());
 						if(schemeVO == null){
 							schemeVO = new FundSchemeVO();					
@@ -563,9 +577,23 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						schemeVO.setAmount(commonMethodsUtilService.calculateAmountInWords(schemeVO.getTotalCount()));
 						
 						deptsVO.getSubList().add(schemeVO);
+						
+						if(yearVO.getTotalCount() != null && yearVO.getTotalCount().longValue()>0L)
+							yearVO.setTotalCount(yearVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+						else
+							yearVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
+						yearVO.setAmount(commonMethodsUtilService.calculateAmountInWords(yearVO.getTotalCount()));
+						
 						yearVO.getSubList().add(deptsVO);
 						fundLocationVO.getSubList().add(yearVO);
 					}else{
+						
+						if(yearVO.getTotalCount() != null && yearVO.getTotalCount().longValue()>0L)
+							yearVO.setTotalCount(yearVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
+						else
+							yearVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
+						yearVO.setAmount(commonMethodsUtilService.calculateAmountInWords(yearVO.getTotalCount()));
+						
 						FundSchemeVO deptsVO = (FundSchemeVO) setterAndGetterUtilService.getMatchedVOfromList(yearVO.getSubList(), "id", commonMethodsUtilService.getLongValueForObject(param[8]).toString());
 						if(deptsVO == null){
 							deptsVO = new FundSchemeVO();					
