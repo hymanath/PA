@@ -81,6 +81,10 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO;
 	private IInsuranceStatusDAO insuranceStatusDAO;
 
+	public void setInsuranceStatusDAO(IInsuranceStatusDAO insuranceStatusDAO) {
+		this.insuranceStatusDAO = insuranceStatusDAO;
+	}
+
 	public void setTdpCommitteeEnrollmentDAO(ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO) {
 		this.tdpCommitteeEnrollmentDAO = tdpCommitteeEnrollmentDAO;
 	}
@@ -207,11 +211,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
    public void setGovtSchemeBeneficiaryDetailsDAO(
 		IGovtSchemeBeneficiaryDetailsDAO govtSchemeBeneficiaryDetailsDAO) {
 	this.govtSchemeBeneficiaryDetailsDAO = govtSchemeBeneficiaryDetailsDAO;
-  }
-  	public void setTdpCadreEnrollmentInfoDAO(
-		ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO) {
-	this.tdpCadreEnrollmentInfoDAO = tdpCadreEnrollmentInfoDAO;
-}
+   }
+   public void setTdpCadreEnrollmentInfoDAO(
+			ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO) {
+		this.tdpCadreEnrollmentInfoDAO = tdpCadreEnrollmentInfoDAO;
+	}
 
 	@SuppressWarnings("unchecked")
 	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId) {
@@ -1008,7 +1012,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 		return vo;
 	}
-
+	/* @param String locationType
+	 * @param Long locationId
+	 * @param Long enrollmentId
+	 * @author R Nagarjuna Gowd
+	 * @return CommitteeBasicVO object
+	 * (non-Javadoc)
+	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLocationWiseCommitteesCount(java.lang.String, java.lang.Long, java.lang.Long)
+	 */
 	@Override
 	public CommitteeBasicVO getLocationWiseCommitteesCount(String locationType, Long locationId,
 			Long enrollmentId) {
@@ -1109,13 +1120,27 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 		return committeeCounts;
 	}
-
+    /*
+     * @author R Nagarjuna Gowd
+     * @return List<TdpCommitteeEnrollment> list contains enrollmentIds and Years
+     * (non-Javadoc)
+     * @see com.itgrids.core.api.service.ILocationDashboardService#getEnrollmentIds()
+     */
 	@Override
 	public List<TdpCommitteeEnrollment> getEnrollmentIds() {
 		List<TdpCommitteeEnrollment> TdpCommitteeEnrollment = tdpCommitteeEnrollmentDAO.getAll();
 		return TdpCommitteeEnrollment;
 	}
-	
+	/*
+	 * @param String fromDateStr
+	 * @param String toDateStr
+	 * @param Long locationType
+	 * @param Long locationValue
+	 * @author R Nagarjuna Gowd
+	 * @return List<List<AlertOverviewVO>> we have three list in final list 1.village/ward counts 2.mandal/town/division list 3.Constituency counts list
+	 * (non-Javadoc)
+	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLevelWiseMeetingStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
+	 */
 	@Override
 	public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(String fromDateStr, String toDateStr, Long locationId,
 			Long locationValue) {
@@ -1706,7 +1731,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return returnList;
 	}
-
+	
 	@Override
 	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr, String toDateStr, Long locationId,Long locationValue) {
 		InsuranceStatusCountsVO insuranceStatusCounts = new InsuranceStatusCountsVO();
@@ -1718,51 +1743,43 @@ public class LocationDashboardService  implements ILocationDashboardService  {
  				fromDate = sdf.parse(fromDateStr);
  				toDate = sdf.parse(toDateStr);
  			}
- 			Long waitingDocs = 0l;
- 			Long submittedInParty = 0l;
- 			Long  foreadedInsu = 0l;
- 			Long closedAtInsu = 0l;
- 			Long closedAtParty = 0l;
- 			Long approved = 0l;
- 			Long closedLetters = 0l;
- 			Long accountsRejected = 0l;
  			//0-locationValue(DIstrict or ConstituencyId),1-locationName,2-Status,3-StatusId,4-Count
  			List<Object[]> insuranceStatus = insuranceStatusDAO.getConstituencyWiseInsuranceStatusCounts(fromDate, toDate, locationId, locationValue);
  			if(insuranceStatus!=null){
  				for (Object[] objects : insuranceStatus) {
  					if((Long)objects[3]==1){
- 						waitingDocs= (Long)objects[4];
+ 						insuranceStatusCounts.setWaitingForDocs(insuranceStatusCounts.getWaitingForDocs()+(Long)objects[4]);
  					}else if((Long)objects[3]==2){
- 						submittedInParty=(Long)objects[4];
+ 						insuranceStatusCounts.setSubmittedInparty(insuranceStatusCounts.getSubmittedInparty()+(Long)objects[4]);
  					}else if((Long)objects[3]==3){
- 						foreadedInsu=(Long)objects[4];
+ 						insuranceStatusCounts.setForeadedToInsurance(insuranceStatusCounts.getForeadedToInsurance()+(Long)objects[4]);
  					}else if((Long)objects[3]==4){
- 						closedAtInsu = (Long)objects[4];
+ 						insuranceStatusCounts.setClosedAtInsurance(insuranceStatusCounts.getClosedAtInsurance()+(Long)objects[4]);
  					}else if((Long)objects[3]==5){
- 						closedAtParty = (Long)objects[4];
+ 						insuranceStatusCounts.setClosedAtParty(insuranceStatusCounts.getClosedAtParty()+(Long)objects[4]);
  					}else if((Long)objects[3]==6){
- 						approved= (Long)objects[4];
+ 						insuranceStatusCounts.setApproved(insuranceStatusCounts.getApproved()+(Long)objects[4]);
  					}else if((Long)objects[3]==7){
- 						closedLetters = (Long)objects[4];
+ 						insuranceStatusCounts.setClosedLetters(insuranceStatusCounts.getClosedLetters()+(Long)objects[4]);
  					}else if((Long)objects[3]==8){
- 						accountsRejected = (Long)objects[4];
+ 						insuranceStatusCounts.setAccountRejected(insuranceStatusCounts.getAccountRejected()+(Long)objects[4]);
  					}
 				}
- 				insuranceStatusCounts.setWaitingForDocs(waitingDocs);
- 				insuranceStatusCounts.setSubmittedInparty(submittedInParty);
- 				insuranceStatusCounts.setForeadedToInsurance(foreadedInsu);
- 				insuranceStatusCounts.setClosedAtInsurance(closedAtInsu);
- 				insuranceStatusCounts.setClosedAtParty(closedAtParty);
- 				insuranceStatusCounts.setApproved(approved);
- 				insuranceStatusCounts.setClosedLetters(closedLetters);
- 				insuranceStatusCounts.setAccountRejected(accountsRejected);
  			}
 		}catch(Exception e){
 			Log.error("Exception raised at insurance status counts service"+e);
 		}
 		return insuranceStatusCounts;
 	}
-
+    /* @param String fromDateStr
+	 * @param String toDateStr
+	 * @param Long locationId
+	 * @param Long locationValue
+	 * @author R Nagarjuna Gowd
+	 * @return List<List<GrivenceStatusVO>> we have two lists in final list 1.Grivence counts(Govt,party,welfare),2.Trust counts
+     * (non-Javadoc)
+     * @see com.itgrids.core.api.service.ILocationDashboardService#getGrivenceTrustStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
+     */
 	@Override
 	public List<List<GrivenceStatusVO>> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationId, Long locationValue) {
 		List<List<GrivenceStatusVO>> finalList = new ArrayList<List<GrivenceStatusVO>>();
@@ -1778,21 +1795,6 @@ public class LocationDashboardService  implements ILocationDashboardService  {
  				fromDate = sdf.parse(fromDateStr);
  				toDate = sdf.parse(toDateStr);
  			}
- 			//grivence counts
- 			Long gnotVerified = 0l;
- 			Long ginProgress = 0l;
- 			Long gnotEligible = 0l;
- 			Long gnotPossible = 0l;
- 			Long gapproves = 0l;
- 			Long gcompleted = 0l;
- 			
- 			//trust counts
- 			Long tnotVerified = 0l;
- 			Long tinProgress = 0l;
- 			Long tnotEligible = 0l;
- 			Long tnotPossible = 0l;
- 			Long tapproves = 0l;
- 			Long tcompleted = 0l;
  			//0-consId,1-Status,2-typeOfIssue,3-count
  			List<Object[]> grivenceTrustList = insuranceStatusDAO.getGrivenceTrustStatusCounts(fromDate, toDate, locationId, locationValue);
  			if(grivenceTrustList!=null){
@@ -1800,47 +1802,37 @@ public class LocationDashboardService  implements ILocationDashboardService  {
  					if(objects[2].toString().trim().equalsIgnoreCase("Govt") || objects[2].toString().trim().equalsIgnoreCase("Party")  || 
  							objects[2].toString().trim().equalsIgnoreCase("Welfare")){
  						if(objects[1].toString().trim().equalsIgnoreCase("Not Verified") ){
- 							gnotVerified = gnotVerified+(Long)objects[3];
+ 							grivenceStatusCount.setNotVerified(grivenceStatusCount.getNotVerified()+(Long)objects[3] );
  						}else if(objects[1].toString().trim().equalsIgnoreCase("in progress")){
- 							ginProgress = ginProgress+(Long)objects[3];
+ 							grivenceStatusCount.setInProgress(grivenceStatusCount.getInProgress()+(Long)objects[3]);
  						}else if(objects[1].toString().trim().equalsIgnoreCase("Not Eligible")){
- 							gnotEligible = gnotEligible+(Long)objects[3];
+ 							grivenceStatusCount.setNotEligible(grivenceStatusCount.getNotEligible()+(Long)objects[3]);
  						}else if(objects[1].toString().trim().equalsIgnoreCase("not possible")){
- 							gnotPossible = gnotPossible+(Long)objects[3];
+ 							grivenceStatusCount.setNotPossible(grivenceStatusCount.getNotPossible()+(Long)objects[3]);
  						}else if(objects[1].toString().trim().equalsIgnoreCase("approved")){
- 							gapproves = gapproves+(Long)objects[3];
+ 							grivenceStatusCount.setApproves(grivenceStatusCount.getApproves()+(Long)objects[3]);
  						}else if(objects[1].toString().trim().equalsIgnoreCase("completed")){
- 							gcompleted = gcompleted+(Long)objects[3];
+ 							grivenceStatusCount.setCompleted(grivenceStatusCount.getCompleted()+(Long)objects[3]);
  						}
- 					}else if(objects[2].toString().trim().equalsIgnoreCase("Trust Education Support")){
+ 						
+ 					}
+ 					else if(objects[2].toString().trim().equalsIgnoreCase("Trust Education Support"))
+ 					{
  						if(objects[1].toString().trim().equalsIgnoreCase("Not Verified") ){
- 							tnotVerified = tnotVerified+(Long)objects[3];
+ 							trustStatusCount.setNotVerified(trustStatusCount.getNotVerified()+(Long)objects[3]);
  						}else if(objects[1].toString().trim().equalsIgnoreCase("in progress")){
- 							tinProgress = tinProgress+(Long)objects[3];
+ 							trustStatusCount.setInProgress(trustStatusCount.getInProgress()+(Long)objects[3]);
  						}else if(objects[1].toString().trim().equalsIgnoreCase("Not Eligible")){
- 							tnotEligible = tnotEligible+(Long)objects[3];
+ 							trustStatusCount.setNotEligible(trustStatusCount.getNotEligible()+(Long)objects[3]);
  						}else if(objects[1].toString().trim().equalsIgnoreCase("not possible")){
- 							tnotPossible = tnotPossible+(Long)objects[3];
+ 							trustStatusCount.setNotPossible(trustStatusCount.getNotPossible()+(Long)objects[3]);
  						}else if(objects[1].toString().trim().equalsIgnoreCase("approved")){
- 							tapproves = tapproves+(Long)objects[3];
+ 							trustStatusCount.setApproves(trustStatusCount.getApproves()+(Long)objects[3]);
  						}else if(objects[1].toString().trim().equalsIgnoreCase("completed")){
- 							tcompleted = tcompleted+(Long)objects[3];
+ 							trustStatusCount.setCompleted(trustStatusCount.getCompleted()+(Long)objects[3]);
  						}
  					}
 				}
- 				grivenceStatusCount.setNotVerified(gnotVerified);
- 				grivenceStatusCount.setInProgress(ginProgress);
- 				grivenceStatusCount.setNotEligible(gnotEligible);
- 				grivenceStatusCount.setNotPossible(gnotPossible);
- 				grivenceStatusCount.setApproves(gapproves);
- 				grivenceStatusCount.setCompleted(gcompleted);
- 				
- 				trustStatusCount.setNotVerified(tnotVerified);
- 				trustStatusCount.setInProgress(tinProgress);
- 				trustStatusCount.setNotEligible(tnotEligible);
- 				trustStatusCount.setNotPossible(tnotPossible);
- 				trustStatusCount.setApproves(tapproves);
- 				trustStatusCount.setCompleted(tcompleted);
  			}
  			grivenceList.add(grivenceStatusCount);
  			trustList.add(trustStatusCount);

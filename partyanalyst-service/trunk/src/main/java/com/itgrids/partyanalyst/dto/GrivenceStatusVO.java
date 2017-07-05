@@ -2,12 +2,12 @@ package com.itgrids.partyanalyst.dto;
 
 public class GrivenceStatusVO {
 	
-	private Long notVerified;
-	private Long inProgress;
-	private Long notEligible;
-	private Long notPossible;
-	private Long approves;
-	private Long completed;
+	private Long notVerified=0l;
+	private Long inProgress=0l;
+	private Long notEligible=0l;
+	private Long notPossible=0l;
+	private Long approves=0l;
+	private Long completed=0l;
 	
 	public Long getNotVerified() {
 		return notVerified;
