@@ -9,4 +9,5 @@ import com.itgrids.model.Tehsil;
 public interface ITehsilDAO extends GenericDao<Tehsil,Long>  {
 
 	public List<Object[]> getTehsilIdAndNameByIds(List<Long> tehsilIds);
+	public List<Object[]> getTehsilsForConstituency(Long constId);
 }

@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
+import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
@@ -39,4 +41,7 @@ public interface IRWSNICService {
 	public List<RwsClickVO> getAssetDetailsByAssetType(InputVO vo);
 	public List<RwsClickVO> getHabitationDetailsByStatusByLocationType(InputVO vo);
 	public List<RwsClickVO> getWaterSourceDeatilsLocationWise(InputVO vo);
+	public List<KeyValueVO> getAllPrrwsDistricts();
+	public List<KeyValueVO> getConstituenciesForDistrict(IdNameVO idNameVO);
+	public List<KeyValueVO> getTehsilsForConstituency(IdNameVO idNameVO);
 }

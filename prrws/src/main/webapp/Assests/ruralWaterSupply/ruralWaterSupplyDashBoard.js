@@ -2822,3 +2822,58 @@
 			
 		});
 	}
+	getAllPrrwsDistricts();
+	getConstituenciesForDistrict();
+	getTehsilsForConstituency();
+	function getAllPrrwsDistricts(){
+		var json = {
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllPrrwsDistricts',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+		});
+	}
+	
+	function getConstituenciesForDistrict(){
+		var json = {
+			id:11
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getConstituenciesForDistrict',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+		});
+	}
+	
+	function getTehsilsForConstituency(){
+		var json = {
+			id:108
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getTehsilsForConstituency',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+		});
+	}

@@ -18,15 +18,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sun.misc.BASE64Encoder;
 
+import com.itgrids.dao.IConstituencyDAO;
+import com.itgrids.dao.IDistrictDAO;
+import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
+import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.dto.WaterSourceVO;
+import com.itgrids.model.District;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
@@ -39,6 +45,12 @@ public class RWSNICService implements IRWSNICService{
 	
 	@Autowired
 	private CommonMethodsUtilService commonMethodsUtilService;
+	@Autowired
+	private IDistrictDAO districtDAO;
+	@Autowired
+	private IConstituencyDAO constituencyDAO;
+	@Autowired
+	private ITehsilDAO tehsilDAO;
 	/*
 	 * Date : 15/06/2017
 	 * Author :Sandeep
@@ -1490,6 +1502,64 @@ public class RWSNICService implements IRWSNICService{
 			LOG.error("Exception Occured in getWaterSourceDeatilsLocationWise() method, Exception - ",e);
 		}
 		return finalList;
+	}
+	
+	public List<KeyValueVO> getAllPrrwsDistricts(){
+		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+		try {
+			List<Object[]> districts = districtDAO.getAllDistricts();
+			
+			if(districts != null && districts.size() > 0){
+				for (Object[] objects: districts) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey((Long)objects[0]);
+					vo.setValue(objects[1].toString());
+					voList.add(vo);
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getAllPrrwsDistricts() method, Exception - ",e);
+		}
+		return voList;
+	}
+	
+	public List<KeyValueVO> getConstituenciesForDistrict(IdNameVO idNameVO){
+		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+		try {
+			List<Object[]> constituencies = constituencyDAO.getConstituencies(idNameVO.getId());
+			
+			if(constituencies != null && constituencies.size() > 0){
+				for (Object[] objects : constituencies) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey((Long)objects[0]);
+					vo.setValue(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getConstituenciesForDistrict() method, Exception - ",e);
+		}
+		return voList;
+	}
+	
+	public List<KeyValueVO> getTehsilsForConstituency(IdNameVO idNameVO){
+		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+		try {
+			List<Object[]> tehsils = tehsilDAO.getTehsilsForConstituency(idNameVO.getId());
+			if(tehsils != null && tehsils.size() > 0){
+				for (Object[] objects : tehsils) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey((Long)objects[0]);
+					vo.setValue(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getTehsilsForConstituency() method, Exception - ",e);
+		}
+		return voList;
 	}
 	
 }

@@ -54,4 +54,9 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 	    
 	    return query.list();
 	}
+	
+	public List<Object[]> getAllDistricts(){
+		Query query = getSession().createQuery(" select distinct model.districtId,model.districtName from District model ");
+		return query.list();
+	}
 }
