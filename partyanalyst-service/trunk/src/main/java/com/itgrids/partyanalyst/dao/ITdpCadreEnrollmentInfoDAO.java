@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.TdpCadreEnrollmentInfo;
 
 public interface ITdpCadreEnrollmentInfoDAO extends GenericDao<TdpCadreEnrollmentInfo, Long>{
 	public Long getTotalConstituencyForCdrRegStarted(Long stateId);
+	public List<Object[]> getLocationTypeWiseCadreCount(final String locationType,final Long locationValue);
 }

@@ -1098,4 +1098,44 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			
 			return query.list();
 		}
+		public List<Object[]> getAgeGenerAndCasteGroupWiseCadresCount(String locationType,Long locationValue,Long enrollmentYearId){
+			StringBuilder  queryStr = new StringBuilder();
+			
+			queryStr.append(" select " +
+					" model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange," +
+					" model.tdpCadre.gender,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+					" model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName," +
+					" count(distinct model.tdpCadreId) " +
+					" from TdpCadreEnrollmentYear model " +
+					" where " +
+					" model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' " +
+					" and model.tdpCadre.enrollmentYear = 2014 " +
+					" and model.enrollmentYearId = :enrollmentYearId "); 
+			
+			        if(locationType != null && locationValue != null && locationValue.longValue()>0l){
+			        	if(locationType.equalsIgnoreCase("District")){
+			        		queryStr.append(" and model.tdpCadre.userAddress.district.districtId = :locationValue ");
+			        	}else if(locationType.equalsIgnoreCase("ParliamentConstitueny")){
+			        		queryStr.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId = :locationValue ");
+			        	}else if(locationType.equalsIgnoreCase("Constituency")){
+			        		queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationValue ");	
+			        	}
+			        }
+					
+			        queryStr.append(" group by " +
+					" model.tdpCadre.voterAgeRange.voterAgeRangeId," +
+					" model.tdpCadre.gender," +
+					" model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId " +
+					" order by " +
+					" model.tdpCadre.voterAgeRange.voterAgeRangeId," +
+					" model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+			
+			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameter("enrollmentYearId", enrollmentYearId);
+			if(locationValue != null && locationValue.longValue() > 0){
+				query.setParameter("locationValue", locationValue);	
+			}
+			
+			return query.list();
+	 }
 }
