@@ -2297,7 +2297,6 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			List<LocationFundDetailsVO> detailsVOs = new ArrayList<LocationFundDetailsVO>();
 			LocationFundDetailsVO locationFundDetailsVO = null;
 			List<Object[]> locationList = null;
-			//Long superLocationLevelId=0L;
 			Long levelId =inputVO.getSearchLevelId();
 			Long locationId =inputVO.getSearchLevelValue();
 			if(levelId != null && levelId == IConstants.STATE_LEVEL_SCOPE_ID){//get districtIds
