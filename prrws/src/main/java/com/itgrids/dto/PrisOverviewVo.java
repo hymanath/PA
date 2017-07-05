@@ -19,11 +19,8 @@ public class PrisOverviewVo implements Serializable{
 	private Long achieved;
 	private String achievedPercentage;
 	
-	private List<PrisOverviewVo> distList = new ArrayList<PrisOverviewVo>(0);
-	private List<PrisOverviewVo> consList = new ArrayList<PrisOverviewVo>(0);
-	private List<PrisOverviewVo> distOverviewList = new ArrayList<PrisOverviewVo>(0);
-	private List<PrisOverviewVo> consOverviewList = new ArrayList<PrisOverviewVo>(0);
-	private List<PrisOverviewVo> mandalOverviewList = new ArrayList<PrisOverviewVo>(0);
+	private List<PrisOverviewVo> voList = new ArrayList<PrisOverviewVo>(0);
+	private List<PrisOverviewVo> subList = new ArrayList<PrisOverviewVo>(0);
 	public Long getId() {
 		return id;
 	}
@@ -60,34 +57,17 @@ public class PrisOverviewVo implements Serializable{
 	public void setAchievedPercentage(String achievedPercentage) {
 		this.achievedPercentage = achievedPercentage;
 	}
-	public List<PrisOverviewVo> getDistList() {
-		return distList;
+	public List<PrisOverviewVo> getVoList() {
+		return voList;
 	}
-	public void setDistList(List<PrisOverviewVo> distList) {
-		this.distList = distList;
+	public void setVoList(List<PrisOverviewVo> voList) {
+		this.voList = voList;
 	}
-	public List<PrisOverviewVo> getConsList() {
-		return consList;
+	public List<PrisOverviewVo> getSubList() {
+		return subList;
 	}
-	public void setConsList(List<PrisOverviewVo> consList) {
-		this.consList = consList;
+	public void setSubList(List<PrisOverviewVo> subList) {
+		this.subList = subList;
 	}
-	public List<PrisOverviewVo> getDistOverviewList() {
-		return distOverviewList;
-	}
-	public void setDistOverviewList(List<PrisOverviewVo> distOverviewList) {
-		this.distOverviewList = distOverviewList;
-	}
-	public List<PrisOverviewVo> getConsOverviewList() {
-		return consOverviewList;
-	}
-	public void setConsOverviewList(List<PrisOverviewVo> consOverviewList) {
-		this.consOverviewList = consOverviewList;
-	}
-	public List<PrisOverviewVo> getMandalOverviewList() {
-		return mandalOverviewList;
-	}
-	public void setMandalOverviewList(List<PrisOverviewVo> mandalOverviewList) {
-		this.mandalOverviewList = mandalOverviewList;
-	}
+	
 }
