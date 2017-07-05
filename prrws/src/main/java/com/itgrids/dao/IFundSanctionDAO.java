@@ -9,7 +9,8 @@ import com.itgrids.model.FundSanction;
 
 public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 	public List<Long> getLocationValues(Long scopeId);
-	public List<Object[]> getFinancialYearWiseScheameDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,List<Long> schemeIdsList,Date startDate,Date endDate,Long searchScopeId,List<Long> searchScopeValuesList,Long searchLevelId);
+	public List<Object[]> getFinancialYearWiseScheameDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,List<Long> schemeIdsList,Date startDate,Date endDate,Long searchScopeId,List<Long> searchScopeValuesList,Long searchLevelId,List<Long> govtSchmeIdsList,List<Long> subProgramIdsList,
+			Long glSearchLevelId,List<Long> glSearchLevelValue);
 	public List<Object[]> getFinancialYearWiseFundDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,List<Long> schemeIdsList,Long searchScopeId);
 	public List<Object[]> getLocationWiseAmount(Long levelId, Long locationId, Long locationLevelId,Date fromDate,Date toDate,List<Long> financialYrIdList,List<Long> deptId,List<Long> sourceId);
 	public List<Object[]> getFinancialYearWiseDeptsWiseScheameDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,List<Long> schemeIdsList,Date startDate,Date endDate,Long searchScopeId,List<Long> searchScopeValuesList,Long searchLevelId);
@@ -36,4 +37,5 @@ public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 	public List<Object[]> getGrantTypeHighestAndLowestFund(List<Long> financialYrIdList, List<Long> deptIdsList,List<Long> sourceIdsList, Date startDate, Date endDate,
 	String type, Long searchLevelId, List<Long> searchLvlVals);
 	public List<Object[]> financialYearWiseFundDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,List<Long> schemeIdsList,Long searchScopeId);
+	public List<Object[]> getAllConstituencyByDistrictIds(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate,Long scopeId);
 }

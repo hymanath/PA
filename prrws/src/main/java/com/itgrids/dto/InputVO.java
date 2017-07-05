@@ -50,6 +50,10 @@ public class InputVO implements Serializable {
 	private List<String> assetTypeList;
 	private List<String> statusList;
 	private String status;
+	private List<Long> govtSchmeIdsList;
+	private List<Long> subProgramIdsList;
+	private Long glSearchLevelId;
+	private List<Long> glSearchLevelValue;
 	
 	
 	public String getStatus() {
@@ -304,6 +308,30 @@ public class InputVO implements Serializable {
 	}
 	public void setSearchLevelValue(Long searchLevelValue) {
 		this.searchLevelValue = searchLevelValue;
+	}
+	public List<Long> getGovtSchmeIdsList() {
+		return govtSchmeIdsList;
+	}
+	public void setGovtSchmeIdsList(List<Long> govtSchmeIdsList) {
+		this.govtSchmeIdsList = govtSchmeIdsList;
+	}
+	public List<Long> getSubProgramIdsList() {
+		return subProgramIdsList;
+	}
+	public void setSubProgramIdsList(List<Long> subProgramIdsList) {
+		this.subProgramIdsList = subProgramIdsList;
+	}
+	public Long getGlSearchLevelId() {
+		return glSearchLevelId;
+	}
+	public void setGlSearchLevelId(Long glSearchLevelId) {
+		this.glSearchLevelId = glSearchLevelId;
+	}
+	public List<Long> getGlSearchLevelValue() {
+		return glSearchLevelValue;
+	}
+	public void setGlSearchLevelValue(List<Long> glSearchLevelValue) {
+		this.glSearchLevelValue = glSearchLevelValue;
 	}
 	
 	

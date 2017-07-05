@@ -8,7 +8,7 @@ public class FundSchemeVO implements java.io.Serializable{
 	private Long id;
 	private String name;
 	private Long count;
-	private Long totalCount;
+	private Long totalCount=0L;
 	private String perc;
 	private Long yearId;
 	private String year;

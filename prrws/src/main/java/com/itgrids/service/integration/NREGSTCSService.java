@@ -519,7 +519,7 @@ public class NREGSTCSService implements INREGSTCSService{
 
 	@Override
 	public List<NregsDataVO> getNregsConstCuntDetails(String output,Map<String,NregsDataVO> cntMap,String divType){
-		List<NregsDataVO> retVOList = new ArrayList<>(0);
+		List<NregsDataVO> retVOList = new ArrayList<NregsDataVO>(0);
 		try{
 			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
 			String percValue = null;
@@ -997,7 +997,7 @@ public class NREGSTCSService implements INREGSTCSService{
 
 	@Override
 	public List<NregsDataVO> getNregsMandalsCuntFrDistrict(String output,Map<String,NregsDataVO> cntMap,String divType){
-		List<NregsDataVO> retVOList = new ArrayList<>(0);
+		List<NregsDataVO> retVOList = new ArrayList<NregsDataVO>(0);
 		try{
 			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
 			String percValue = null;
@@ -1048,7 +1048,7 @@ public class NREGSTCSService implements INREGSTCSService{
 
 	@Override
 	public List<NregsDataVO> getNregsMandalsCuntFrConstituncies(String output,Map<String,NregsDataVO> cntMap,String divType){
-		List<NregsDataVO> retVOList = new ArrayList<>(0);
+		List<NregsDataVO> retVOList = new ArrayList<NregsDataVO>(0);
 		try{
 			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
 			String percValue = null;
@@ -1248,7 +1248,7 @@ public class NREGSTCSService implements INREGSTCSService{
 
 	@Override
 	public List<NregsDataVO> getNregsVillageCuntFrDistrict(String output,Map<String,NregsDataVO> cntMap,String divType){
-		List<NregsDataVO> retVOList = new ArrayList<>(0);
+		List<NregsDataVO> retVOList = new ArrayList<NregsDataVO>(0);
 		try{
 			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
 			String percValue = null;
@@ -1299,7 +1299,7 @@ public class NREGSTCSService implements INREGSTCSService{
 
 	@Override
 	public List<NregsDataVO> getNregsVillagesCuntFrConstituncies(String output,Map<String,NregsDataVO> cntMap,String divType){
-		List<NregsDataVO> retVOList = new ArrayList<>(0);
+		List<NregsDataVO> retVOList = new ArrayList<NregsDataVO>(0);
 		try{
 			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
 			String percValue = null;
@@ -1351,7 +1351,7 @@ public class NREGSTCSService implements INREGSTCSService{
 
 	@Override
 	public List<NregsDataVO> getNregsVillagesCuntFrMandals(String output,Map<String,NregsDataVO> cntMap,String divType){
-		List<NregsDataVO> retVOList = new ArrayList<>(0);
+		List<NregsDataVO> retVOList = new ArrayList<NregsDataVO>(0);
 		try{
 			//Map<String,NregsDataVO> cntMap = new HashMap<String,NregsDataVO>(0);
 			String percValue = null;

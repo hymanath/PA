@@ -110,7 +110,8 @@ public class FundManagementDashboardController {
 		consumes = MediaType.APPLICATION_JSON_VALUE)
 		public @ResponseBody List<FundSchemeVO> getFinancialYearWiseScheameDetails(@RequestBody InputVO inputVO){
 			List<FundSchemeVO> ajaxResult = fundManagementDashboardService.getFinancialYearWiseSchemeDetails(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),inputVO.getSchemeIdsList(),
-					inputVO.getFromDateStr(),inputVO.getToDateStr(),inputVO.getSearchLevelId(),inputVO.getLevelValues(),inputVO.getOrder(),inputVO.getSortingType(),inputVO.getBlockLevelId());
+					inputVO.getFromDateStr(),inputVO.getToDateStr(),inputVO.getSearchLevelId(),inputVO.getLevelValues(),inputVO.getOrder(),inputVO.getSortingType(),inputVO.getBlockLevelId(),inputVO.getGovtSchmeIdsList(),
+					inputVO.getSubProgramIdsList(),inputVO.getGlSearchLevelId(),inputVO.getGlSearchLevelValue());
 			return ajaxResult;
 		}	
 		
@@ -208,30 +209,35 @@ public class FundManagementDashboardController {
 		}
 		
 		@RequestMapping(value="/getGovtSchemesDetails", method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
-        public @ResponseBody List<LocationFundDetailsVO> getGovtSchemesDetails(){
-	    
-             List<LocationFundDetailsVO>  govtSchemesList=fundManagementDashboardService.getGovtSchemesDetails();
-             return govtSchemesList;
-        } 
-		
-		@RequestMapping(value="/getGovtSubProgramsDetails", method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
-        public @ResponseBody List<LocationFundDetailsVO> getGovtSubProgramsDetails(@RequestBody Map<String,Long> map){
-	    
-             List<LocationFundDetailsVO>  govtSubProgramsList=fundManagementDashboardService.getGovtSubProgramsDetails(map.get("govtSchemesId"));
-             return govtSubProgramsList;
-        } 
-		
-		@RequestMapping(value = "/getALlProgramesAmountDetails", method = RequestMethod.POST,
-				produces = MediaType.APPLICATION_JSON_VALUE,
-				consumes = MediaType.APPLICATION_JSON_VALUE)
-				  public @ResponseBody List<LocationFundDetailsVO> getALlProgramesAmountDetails(@RequestBody InputVO inputVO)
-				  {		
-					
-					List<LocationFundDetailsVO>  returnList = fundManagementDashboardService.getALlProgramesAmountDetails(inputVO);
-					return returnList;
-				  }
+		        produces = MediaType.APPLICATION_JSON_VALUE,
+		        consumes = MediaType.APPLICATION_JSON_VALUE)
+		        public @ResponseBody List<LocationFundDetailsVO> getGovtSchemesDetails(){
+			    
+		             List<LocationFundDetailsVO>  govtSchemesList=fundManagementDashboardService.getGovtSchemesDetails();
+		             return govtSchemesList;
+		        } 
+				
+				@RequestMapping(value="/getGovtSubProgramsDetails", method = RequestMethod.POST,
+		        produces = MediaType.APPLICATION_JSON_VALUE,
+		        consumes = MediaType.APPLICATION_JSON_VALUE)
+		        public @ResponseBody List<LocationFundDetailsVO> getGovtSubProgramsDetails(@RequestBody Map<String,Long> map){
+			    
+		             List<LocationFundDetailsVO>  govtSubProgramsList=fundManagementDashboardService.getGovtSubProgramsDetails(map.get("govtSchemesId"));
+		             return govtSubProgramsList;
+		        } 
+				
+				@RequestMapping(value = "/getALlProgramesAmountDetails", method = RequestMethod.POST,
+						produces = MediaType.APPLICATION_JSON_VALUE,
+						consumes = MediaType.APPLICATION_JSON_VALUE)
+						  public @ResponseBody List<LocationFundDetailsVO> getALlProgramesAmountDetails(@RequestBody InputVO inputVO)
+						  {		
+							
+							List<LocationFundDetailsVO>  returnList = fundManagementDashboardService.getALlProgramesAmountDetails(inputVO);
+							return returnList;
+						  }
+		@PostMapping("/getAllSubLocationsOnsuperLocation")
+		public @ResponseBody List<LocationFundDetailsVO> getAllSubLocationsOnsuperLocation(@RequestBody InputVO inputVO){
+			List<LocationFundDetailsVO> locationFundDetailsVOList = fundManagementDashboardService.getAllSubLocationsOnsuperLocation(inputVO);
+			return locationFundDetailsVOList;
+		}
 }

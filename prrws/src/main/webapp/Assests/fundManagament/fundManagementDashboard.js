@@ -31,6 +31,11 @@
 		getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview','count','desc',0,'onLoad');
 		getLocationWiseAmountDetails(6,'villageLevlOvervw','overview','count','desc',0,'onLoad');
 		
+		//onload Parliament Names building
+		getAllSubLocationsBySuperLocationId(30,'constLevelParliaNames',4);
+		getAllSubLocationsBySuperLocationId(30,'parliamentLevelConstNames',5);
+		getAllSubLocationsBySuperLocationId(30,'villageLeveParliNames',6);
+		
 		//onload district Names building
 		getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
 		getAllSubLocationsBySuperLocationId(21,'constLevelDistNames',4);
@@ -145,7 +150,7 @@
 				$('#tabCons a[href="#consLevelTable"]').trigger('click');				
 			}else if(blockType == 'scheme')
 			{
-				
+			
 				$(".comaprisionViewShow").hide();
 				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme',sortingType,orderType,0,4);
 				$('#tabCons a[href="#consLevelTable"]').trigger('click');
@@ -2692,7 +2697,11 @@
 			schemeIdsList:schemeIdsArr,
 			deptIdsList:deptIdsArr,			
 			sortingType :sortingType,
-			order :orderType		
+			order :orderType,
+			govtSchmeIdsList :[],
+			subProgramIdsList :[],
+			glSearchLevelValue :[],
+			glSearchLevelId :1
 		}
 		$.ajax({
 			url : "getFinancialYearWiseScheameDetails",  
