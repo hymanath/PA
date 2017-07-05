@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
+import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -42,6 +43,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<KeyValueVO> keyValueVOList;
 	private List<ToursBasicVO> tourDesignationList;
 	private List<BenefitCandidateVO> govtSchemeMemberBenefitList;
+	private List<ConstituencyCadreVO> cadreDtlsList;
 	
 	
 	public List<KeyValueVO> getKeyValueVOList() {
@@ -145,6 +147,12 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setGovtSchemeMemberBenefitList(
 			List<BenefitCandidateVO> govtSchemeMemberBenefitList) {
 		this.govtSchemeMemberBenefitList = govtSchemeMemberBenefitList;
+	}
+	public List<ConstituencyCadreVO> getCadreDtlsList() {
+		return cadreDtlsList;
+	}
+	public void setCadreDtlsList(List<ConstituencyCadreVO> cadreDtlsList) {
+		this.cadreDtlsList = cadreDtlsList;
 	}
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
@@ -273,5 +281,23 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		}
 		 return Action.SUCCESS;
 	 }
-	 //public String get
+	 public String  getLocationTypeWiseCadreCount(){
+		 try {
+			jObj = new JSONObject(getTask());
+			cadreDtlsList = locationDashboardService.getLocationTypeWiseCadreCount(jObj.getString("locationType"),jObj.getLong("locationValue"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationTypeWiseCadreCount in LocationDashboardAction class", e);
+		}
+		 return Action.SUCCESS;
+	 }
+	 public String  getAgeRangeGenerAndCasteGroupByCadreCount(){
+		 try {
+			jObj = new JSONObject(getTask());
+			cadreDtlsList = locationDashboardService.getAgeRangeGenerAndCasteGroupByCadreCount(jObj.getString("locationType"),jObj.getLong("locationValue"),jObj.getLong("enrollmentYearId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAgeRangeGenerAndCasteGroupByCadreCount in LocationDashboardAction class", e);
+		}
+		 return Action.SUCCESS;
+	 }
+	 
 }

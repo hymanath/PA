@@ -17651,5 +17651,17 @@
 			<param name="root">govtSchemeMemberBenefitList</param>       
 		</result> 
 	</action>
+	<action name="getLocationTypeWiseCadreCountAction" class="locationDashboardAction"  method="getLocationTypeWiseCadreCount">
+		<result type="json" name="success">    
+			<param name="root">cadreDtlsList</param>       
+		</result> 
+	</action>
+	
+	<action name="getAgeRangeGenerAndCasteGroupByCadreCountAction" class="locationDashboardAction"  method="getAgeRangeGenerAndCasteGroupByCadreCount">
+		<result type="json" name="success">    
+			<param name="root">cadreDtlsList</param>       
+		</result> 
+	</action>
+	
  </package>
 </struts>

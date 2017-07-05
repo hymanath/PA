@@ -19,6 +19,9 @@ function onLoadAjaxCalls()
 	
 	//meetings
 	getLocationWiseMeetingsCount();
+	//cadre
+	// getLocationTypeWiseCadreCount();
+	// getAgeRangeGenerAndCasteGroupByCadreCount();
 	//tour
 	//getLocationWiseTourMembersComplainceDtls();
 	//Benefit
@@ -723,5 +726,35 @@ function getMandalWiseBenefitMembersCount(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	console.log(result);
+	});	
+}
+function getLocationTypeWiseCadreCount(){
+	jsObj={
+		locationType:"constituency",
+		locationValue:232
+	}
+	 $.ajax({
+      type : "POST",
+      url : "getLocationTypeWiseCadreCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+	console.log(result);
+	});	
+}
+
+function getAgeRangeGenerAndCasteGroupByCadreCount(){
+	jsObj={
+		locationType:"constituency",
+		locationValue:232,
+		enrollmentYearId:4
+	}
+	 $.ajax({
+      type : "POST",
+      url : "getAgeRangeGenerAndCasteGroupByCadreCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+	console.log(result);
 	});	
 }
