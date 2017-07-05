@@ -1010,7 +1010,7 @@ public class CommonMethodsUtilService {
 				}
 		    	  amountStr = temp;
 		      }
-		      System.out.println(amountStr+"."+decAmount);
+		    //  System.out.println(amountStr+"."+decAmount);
 		      return amountStr+"."+decAmount;  
 		     
 		    }
