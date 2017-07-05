@@ -412,7 +412,7 @@ function buildNREGSProjectsOverview(result,blockName)
 														str+='<h4>'+result[i].target+'</h4>';
 													str+='</div>';
 													str+='<div class="col-sm-6 text-center">';
-														str+='<label>Converted</label>';
+														str+='<label>Completed</label>';
 														str+='<h4>'+result[i].completed+'</h4>';
 													str+='</div>';
 												str+='</div>';
@@ -462,7 +462,7 @@ function buildNREGSProjectsOverview(result,blockName)
 										str+='<h4>'+result[i].target+'</h4>';
 									str+='</div>';
 									str+='<div class="col-sm-6 text-center">';
-										str+='<label>Converted</label>';
+										str+='<label>Completed</label>';
 										str+='<h4>'+result[i].completed+'</h4>';
 									str+='</div>';
 								str+='</div>';
@@ -514,7 +514,7 @@ function buildNREGSProjectsOverview(result,blockName)
 										str+='<h4>'+result[i].target+'</h4>';
 									str+='</div>';
 									str+='<div class="col-sm-6 text-center">';
-										str+='<label>Converted</label>';
+										str+='<label>Completed</label>';
 										str+='<h4>'+result[i].completed+'</h4>';
 									str+='</div>';
 								str+='</div>';
@@ -570,7 +570,7 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4>'+result[i].target+'</h4>';
 												str+='</div>';
 												str+='<div class="col-sm-6 text-center">';
-													str+='<label>Converted</label>';
+													str+='<label>Completed</label>';
 													str+='<h4>'+result[i].completed+'</h4>';
 												str+='</div>';
 											str+='</div>';
@@ -624,7 +624,7 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4>'+result[i].target+'</h4>';
 												str+='</div>';
 												str+='<div class="col-sm-6 text-center">';
-													str+='<label>Converted</label>';
+													str+='<label>Completed</label>';
 													str+='<h4>'+result[i].completed+'</h4>';
 												str+='</div>';
 											str+='</div>';
@@ -678,7 +678,7 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4>'+result[i].target+'</h4>';
 												str+='</div>';
 												str+='<div class="col-sm-6 text-center">';
-													str+='<label>Converted</label>';
+													str+='<label>Completed</label>';
 													str+='<h4>'+result[i].completed+'</h4>';
 												str+='</div>';
 											str+='</div>';
@@ -734,7 +734,7 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4>'+result[i].target+'</h4>';
 												str+='</div>';
 												str+='<div class="col-sm-6 text-center">';
-													str+='<label>Converted</label>';
+													str+='<label>Completed</label>';
 													str+='<h4>'+result[i].completed+'</h4>';
 												str+='</div>';
 											str+='</div>';
@@ -788,7 +788,7 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4>'+result[i].target+'</h4>';
 												str+='</div>';
 												str+='<div class="col-sm-6 text-center">';
-													str+='<label>Converted</label>';
+													str+='<label>Completed</label>';
 													str+='<h4>'+result[i].completed+'</h4>';
 												str+='</div>';
 											str+='</div>';
@@ -842,7 +842,7 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4>'+result[i].target+'</h4>';
 												str+='</div>';
 												str+='<div class="col-sm-6 text-center">';
-													str+='<label>Converted</label>';
+													str+='<label>Completed</label>';
 													str+='<h4>'+result[i].completed+'</h4>';
 												str+='</div>';
 											str+='</div>';
