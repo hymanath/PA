@@ -1110,26 +1110,35 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	@Override
 	public List<Object[]> getConstituencyWiseInsuranceStatusCounts(Date fromDate, Date toDate, Long locationId,Long locationValue) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(" SELECT C.constituency_id as constituncyId,C.name as constituncyName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count "
-				+ " FROM complaint_master CM,grievance_insurance_status GIS,district D,constituency C "
-				+ " WHERE CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id AND "
+		StringBuilder sbm = new StringBuilder();
+		StringBuilder sbe = new StringBuilder();
+		StringBuilder sbg = new StringBuilder();
+		sb.append(" SELECT ");
+		sbm.append(" FROM complaint_master CM,grievance_insurance_status GIS,district D,constituency C ");
+		sbe.append("WHERE CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id AND "
 				+ " CM.district_id = D.district_id AND "
 				+ " CM.assembly_id = C.constituency_id AND "
 				+ " CM.type_of_issue = 'Insurance' AND "
 				+ " CM.delete_status IS NULL AND "
-				+ " (CM.Subject IS NOT NULL OR CM.Subject != '') ");
+				+ " (CM.Subject IS NOT NULL OR CM.Subject != '')  ");
+		sbg.append(" GROUP BY ");
 		if(locationId!=null && locationId==3l && locationValue.longValue()>0 && locationValue!=null){
-			sb.append(" AND CM.district_id=:locationValue");
+			sb.append(" D.district_id as typeId,D.district_name as typeName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count");
+			sbe.append(" AND CM.district_id=:locationValue");
+			sbg.append(" D.district_id ");
 		}else if(locationId!=null && locationId==4l && locationValue.longValue()>0 && locationValue!=null){
-			sb.append(" AND CM.assembly_id=:locationValue");
+			sb.append(" C.constituency_id as typeId,C.name as typeName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count ");
+			sbe.append(" AND CM.assembly_id=:locationValue");
+			sbg.append(" C.constituency_id");
 		}
 		if(fromDate !=null && toDate !=null){
 	   		sb.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate )");
 	   	}
-		sb.append(" GROUP BY C.constituency_id,GIS.grievance_insurance_status_id; ");
+		sbg.append("  ,GIS.grievance_insurance_status_id; ");
+		sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
 		Query query = getSession().createSQLQuery(sb.toString())
-				.addScalar("constituncyId",Hibernate.LONG)
-				.addScalar("constituncyName",Hibernate.STRING)
+				.addScalar("typeId",Hibernate.LONG)
+				.addScalar("typeName",Hibernate.STRING)
 				.addScalar("status",Hibernate.STRING)
 				.addScalar("statusId",Hibernate.LONG)
 				.addScalar("count",Hibernate.LONG);
@@ -1146,22 +1155,30 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	@Override
 	public List<Object[]> getGrivenceTrustStatusCounts(Date fromDate, Date toDate, Long locationId,Long locationValue) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(" SELECT C.constituency_id as consId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count "
-				+ " FROM complaint_master CM,district D,constituency C "
-				+ " WHERE CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND "
-				+ " CM.type_of_issue IN('Govt','Party','Welfare','Trust Education Support') and "
-				+ " CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '')");
-		if(locationId!=null && locationId==3l && locationValue.longValue()>0 && locationValue!=null){
-			sb.append(" AND CM.district_id=:locationValue");
+		StringBuilder sbm = new StringBuilder();
+		StringBuilder sbe = new StringBuilder();
+		StringBuilder sbg = new StringBuilder();
+		sb.append(" SELECT");
+		sbm.append(" FROM complaint_master CM,district D,constituency C ");
+		sbe.append(" WHERE  CM.type_of_issue IN('Govt','Party','Welfare','Trust Education Support') and "
+				+ " CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '') ");
+		sbg.append(" GROUP BY ");
+		if(locationId!=null && locationId==3l  && locationId.longValue()>0 && locationValue!=null){
+			sb.append(" D.district_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count ");
+			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.district_id=:locationValue");
+			sbg.append(" D.district_id ");
 		}else if(locationId!=null && locationId==4l && locationValue.longValue()>0 && locationValue!=null){
-			sb.append(" AND CM.assembly_id=:locationValue");
+			sb.append( " C.constituency_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
+			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.assembly_id=:locationValue");
+			sbg.append(" C.constituency_id ");
 		}
 		if(fromDate !=null && toDate !=null){
-	   		sb.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate ) ");
+	   		sbe.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate ) ");
 	   	}
-		sb.append(" GROUP BY C.constituency_id,CM.type_of_issue,CM.Completed_Status; ");
+		sbg.append("  ,CM.type_of_issue,CM.Completed_Status; ");
+		sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
 		Query query = getSession().createSQLQuery(sb.toString())
-				.addScalar("consId",Hibernate.LONG)
+				.addScalar("typeId",Hibernate.LONG)
 				.addScalar("status",Hibernate.STRING)
 				.addScalar("typeOfIssue",Hibernate.STRING)
 				.addScalar("count",Hibernate.LONG);

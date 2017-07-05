@@ -2,14 +2,14 @@ package com.itgrids.partyanalyst.dto;
 
 public class InsuranceStatusCountsVO {
 	
-	private Long waitingForDocs;
-	private Long submittedInparty;
-	private Long foreadedToInsurance;
-	private Long closedAtInsurance;
-	private Long closedAtParty;
-	private Long approved;
-	private Long closedLetters;
-	private Long accountRejected;
+	private Long waitingForDocs=0l;
+	private Long submittedInparty=0l;
+	private Long foreadedToInsurance=0l;
+	private Long closedAtInsurance=0l;
+	private Long closedAtParty=0l;
+	private Long approved=0l;
+	private Long closedLetters=0l;
+	private Long accountRejected=0l;
 	public Long getWaitingForDocs() {
 		return waitingForDocs;
 	}
