@@ -31,10 +31,10 @@ public class PrisSurveyDashBoardController {
 	@Autowired
 	private IPrisSurveyDashBaordService surveyDashBaordService;
 	
-	@GetMapping("/surveyDashBoard")
+	@GetMapping("/prisDashBoard")
 	public String SurveyDashBoardPage(ModelMap model) {
 
-		return "surveyDashBoard";
+		return "prisDashBoard";
 	}
 	
 	@PostMapping("/getPrisSurveyBasicData")
