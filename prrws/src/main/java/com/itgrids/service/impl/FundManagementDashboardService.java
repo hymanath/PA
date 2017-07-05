@@ -201,6 +201,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 							fundLocationVO.setTotalCount(fundLocationVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
 						else
 							fundLocationVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
+						fundLocationVO.setAmount(commonMethodsUtilService.calculateAmountInWords(fundLocationVO.getTotalCount()));
 					}else{
 						List<FundSchemeVO> yearsList = buildData(yearsMap,schemesMap,null);
 						fundLocationVO.setSubList(yearsList);
@@ -521,6 +522,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 							fundLocationVO.setTotalCount(fundLocationVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
 						else
 							fundLocationVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
+						fundLocationVO.setAmount(commonMethodsUtilService.calculateAmountInWords(fundLocationVO.getTotalCount()));
 					}else{
 						List<FundSchemeVO> yearsList = buildData(yearsMap,deptsMap,schemesMap);
 						fundLocationVO.setSubList(yearsList);
