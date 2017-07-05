@@ -1,6 +1,6 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var glStartDate = '2017-04-01'//+moment().subtract(20, 'years').startOf('year').format("YYYY-MM");
-var glEndDate = "2017-06-30"//+moment().add(10, 'years').endOf('year').format("YYYY-MM");
+var glStartDate = moment().startOf('year').format("YYYY-MM")+'-1';
+var glEndDate = moment().format("YYYY-MM")+'-30';
 var glStartDateForWebservice = moment().format("DD/MM/YYYY");
 var glEndDateForWebservice = moment().format("DD/MM/YYYY");
 var globalDivName;
@@ -65,11 +65,10 @@ function onLoadCalls()
 		$(".menu-data-cls").hide();
 	});
 	$(".chosenSelect").chosen({width:'100%'})
-
-	//$("#dateRangePickerMGNF").val(moment().subtract(20, 'years').startOf('year').format("YYYY-MM"))
-	//$("#dateRangePickerMGNT").val(moment().add(10, 'years').endOf('year').format("YYYY-MM"))
-	$("#dateRangePickerMGNF").val("2017-04")
-	$("#dateRangePickerMGNT").val("2017-06")
+	
+	$("#dateRangePickerMGNF").val(moment().startOf('year').format("YYYY-MM")+'-1');
+	$("#dateRangePickerMGNT").val(moment().format("YYYY-MM")+'-30');
+	
 	
 	$("#dateRangePickerMGNF").datetimepicker({
 		format: 'YYYY-MM',
@@ -366,14 +365,69 @@ $('.log').ajaxComplete(function() {
 function buildNREGSProjectsOverview(result,blockName)
 {
 	var str='';
-	var sidebarMenu='';
+	
 	str+='<div class="row">';
 		str+='<div class="col-sm-12 bg_color" style="border: 5px solid #fff;">';
 			str+='<h4 class="text-center m_top10"><b>NON-CONVERGENCE</b></h4>';
-			str+='<div class="row">';
+				str+='<div class="row">';
+					str+='<div class="col-sm-12">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Labour Budget</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									if(result[i].parameter == "Labour Budget" || result[i].parameter == "Avg Wage" || result[i].parameter == "Avg days of emp per HH" || result[i].parameter == "HH Comp 100 days" || result[i].parameter == "Timely Payments")
+									{
+										str+='<div class="col-sm-2 m_top10">';
+											if(result[i].percentage < 50)
+											{
+												str+='<div class="panel-block-white panel-block-white-low text-center" overview-block="'+result[i].parameter+'">';
+											}else if(result[i].percentage > 50 && result[i].percentage < 80)
+											{
+												str+='<div class="panel-block-white panel-block-white-medium text-center" overview-block="'+result[i].parameter+'">';
+											}else if(result[i].percentage > 80)
+											{
+												str+='<div class="panel-block-white panel-block-white-high text-center" overview-block="'+result[i].parameter+'">';	
+											}
+											if(result[i].parameter.length > 14)
+												str+='<h4 class="panel-block-white-title toolTipTitleCls text-capitalize text-center" title="'+result[i].parameter+'">'+result[i].parameter.substr(0,10)+'...</h4>';
+											else
+												str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].parameter+'</h4>';
+												str+='<small class="text-center">Achieved</small>';
+												str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+											if(result[i].percentage < 50)
+											{
+												str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+											}else if(result[i].percentage > 50 && result[i].percentage < 80)
+											{
+												str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+												
+											}else if(result[i].percentage > 80)
+											{
+												str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+											}
+												str+='<div class="row">';
+													str+='<div class="col-sm-6 text-center">';
+														str+='<label>Target</label>';
+														str+='<h4>'+result[i].target+'</h4>';
+													str+='</div>';
+													str+='<div class="col-sm-6 text-center">';
+														str+='<label>Converted</label>';
+														str+='<h4>'+result[i].completed+'</h4>';
+													str+='</div>';
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
+									}
+								}
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="row">';
 				for(var i in result)
 				{
-					if(result[i].parameter == "Labour Budget" || result[i].parameter == "Farm Pond" || result[i].parameter == "IHHL" || result[i].parameter == "VERMI" || result[i].parameter == "NTR Jala Siri" || result[i].parameter == "Solid Waste Management" || result[i].parameter == "Play fields" || result[i].parameter == "Burial Ground" || result[i].parameter == "Agriculture" || result[i].parameter == "Avg Wage" || result[i].parameter == "Avg days of emp per HH" || result[i].parameter == "HH Comp 100 days" || result[i].parameter == "Timely Payments"){
+					if(result[i].parameter == "Farm Pond" || result[i].parameter == "IHHL" || result[i].parameter == "VERMI" || result[i].parameter == "Solid Waste Management" || result[i].parameter == "Play fields" || result[i].parameter == "Burial Ground" || result[i].parameter == "Agriculture"){
 						str+='<div class="col-sm-2 m_top10">';
 							if(result[i].percentage < 50)
 							{
@@ -408,14 +462,14 @@ function buildNREGSProjectsOverview(result,blockName)
 										str+='<h4>'+result[i].target+'</h4>';
 									str+='</div>';
 									str+='<div class="col-sm-6 text-center">';
-										str+='<label>Generated</label>';
+										str+='<label>Converted</label>';
 										str+='<h4>'+result[i].completed+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
-					sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
 					}
+					
 				}
 			str+='</div>';
 		str+='</div>';
@@ -460,13 +514,13 @@ function buildNREGSProjectsOverview(result,blockName)
 										str+='<h4>'+result[i].target+'</h4>';
 									str+='</div>';
 									str+='<div class="col-sm-6 text-center">';
-										str+='<label>Generated</label>';
+										str+='<label>Converted</label>';
 										str+='<h4>'+result[i].completed+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
-					sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+					
 					}
 				}
 			str+='</div>';
@@ -474,7 +528,7 @@ function buildNREGSProjectsOverview(result,blockName)
 		
 		str+='<div class="col-sm-12 bg_color" style="border: 5px solid #fff;">';
 			str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-OTHER DEPTS</b></h4>';
-			str+='<div class="row">';
+			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-4">';
 					str+='<div class="block-border">';
 						str+='<h5 class="text-danger">Housing</h5>';
@@ -516,13 +570,13 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4>'+result[i].target+'</h4>';
 												str+='</div>';
 												str+='<div class="col-sm-6 text-center">';
-													str+='<label>Generated</label>';
+													str+='<label>Converted</label>';
 													str+='<h4>'+result[i].completed+'</h4>';
 												str+='</div>';
 											str+='</div>';
 										str+='</div>';
 									str+='</div>';
-								sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+								
 								}
 								
 							}
@@ -570,13 +624,13 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4>'+result[i].target+'</h4>';
 												str+='</div>';
 												str+='<div class="col-sm-6 text-center">';
-													str+='<label>Generated</label>';
+													str+='<label>Converted</label>';
 													str+='<h4>'+result[i].completed+'</h4>';
 												str+='</div>';
 											str+='</div>';
 										str+='</div>';
 									str+='</div>';
-								sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+								
 								}
 								
 							}
@@ -624,19 +678,21 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4>'+result[i].target+'</h4>';
 												str+='</div>';
 												str+='<div class="col-sm-6 text-center">';
-													str+='<label>Generated</label>';
+													str+='<label>Converted</label>';
 													str+='<h4>'+result[i].completed+'</h4>';
 												str+='</div>';
 											str+='</div>';
 										str+='</div>';
 									str+='</div>';
-								sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+								
 								}
 								
 							}
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
+			str+='</div>';
+			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-4">';
 					str+='<div class="block-border">';
 						str+='<h5 class="text-danger">SERP</h5>';
@@ -678,13 +734,13 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4>'+result[i].target+'</h4>';
 												str+='</div>';
 												str+='<div class="col-sm-6 text-center">';
-													str+='<label>Generated</label>';
+													str+='<label>Converted</label>';
 													str+='<h4>'+result[i].completed+'</h4>';
 												str+='</div>';
 											str+='</div>';
 										str+='</div>';
 									str+='</div>';
-								sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+								
 								}
 								
 							}
@@ -732,13 +788,13 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4>'+result[i].target+'</h4>';
 												str+='</div>';
 												str+='<div class="col-sm-6 text-center">';
-													str+='<label>Generated</label>';
+													str+='<label>Converted</label>';
 													str+='<h4>'+result[i].completed+'</h4>';
 												str+='</div>';
 											str+='</div>';
 										str+='</div>';
 									str+='</div>';
-								sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+								
 								}
 								
 							}
@@ -786,13 +842,13 @@ function buildNREGSProjectsOverview(result,blockName)
 													str+='<h4>'+result[i].target+'</h4>';
 												str+='</div>';
 												str+='<div class="col-sm-6 text-center">';
-													str+='<label>Generated</label>';
+													str+='<label>Converted</label>';
 													str+='<h4>'+result[i].completed+'</h4>';
 												str+='</div>';
 											str+='</div>';
 										str+='</div>';
 									str+='</div>';
-								sidebarMenu+='<li overview-block="'+result[i].parameter+'">'+result[i].parameter+'</li>';
+								
 								}
 								
 							}
@@ -803,7 +859,7 @@ function buildNREGSProjectsOverview(result,blockName)
 		str+='</div>';
 	str+='</div>';
 	$("#projectsOverview").html(str);
-	$(".rightNavigationMenu ul").html(sidebarMenu);
+
 	minimise(".rightNavigationMenu li",8)
 	$(".toolTipTitleCls").tooltip();
 	if(blockName != null)
