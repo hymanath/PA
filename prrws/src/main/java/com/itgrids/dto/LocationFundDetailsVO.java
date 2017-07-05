@@ -30,6 +30,7 @@ public class LocationFundDetailsVO implements Serializable{
 	private List<LocationFundDetailsVO> detailsVOs;	
 	private List<LocationFundDetailsVO> fundDetailsVOs;
 	private List<LocationFundDetailsVO> schemeDetailsVOs;
+	private List<FundVO> fundList = new ArrayList<FundVO>();
 	
 	public Long getTotSchemes() {
 		return totSchemes;
@@ -157,6 +158,12 @@ public class LocationFundDetailsVO implements Serializable{
 	}
 	public void setFundAvageAmt(String fundAvageAmt) {
 		this.fundAvageAmt = fundAvageAmt;
+	}
+	public List<FundVO> getFundList() {
+		return fundList;
+	}
+	public void setFundList(List<FundVO> fundList) {
+		this.fundList = fundList;
 	}
 	
 	
