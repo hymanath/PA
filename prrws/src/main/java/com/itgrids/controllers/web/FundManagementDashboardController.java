@@ -240,4 +240,13 @@ public class FundManagementDashboardController {
 			List<LocationFundDetailsVO> locationFundDetailsVOList = fundManagementDashboardService.getAllSubLocationsOnsuperLocation(inputVO);
 			return locationFundDetailsVOList;
 		}
+		
+				@RequestMapping(value = "/getSchemeWiseOverviewDetails", method = RequestMethod.POST,
+				produces = MediaType.APPLICATION_JSON_VALUE,
+				consumes = MediaType.APPLICATION_JSON_VALUE)
+				  public @ResponseBody LocationFundDetailsVO getSchemeWiseOverviewDetails(@RequestBody InputVO inputVO)
+				  {		
+					LocationFundDetailsVO  returnVO = fundManagementDashboardService.getSchemeWiseOverviewDetails(inputVO);
+					return returnVO;
+				  }
 }

@@ -4416,4 +4416,57 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 		});
 	  }
 	  
+	  //getSchemeWiseOverviewDetails(4);
+	//getSchemeWiseOverviewDetails(3);
+	function getSchemeWiseOverviewDetails(subProgId){
+		var financialYearIdsList =[];
+		financialYearIdsList.push(1);
+		financialYearIdsList.push(3);
+		financialYearIdsList.push(2);
+		var deptIdsList=[];
+		var sourceIdsList=[];
+		var fromDateStr="01/01/1997";
+		var toDateStr="01/01/2027";
+		var glSearchLevelId=0;
+		var glSearchLevelValue=[];
+		var schemeIdsList = [];
+		//schemeIdsList.push(1);
+		//schemeIdsList.push(2);
+		//schemeIdsList.push(3);
+		//schemeIdsList.push(4);
+		var subProgIds = [];
+		subProgIds.push(subProgId);
+		
+		var json = {
+		  financialYrIdList:financialYearIdsList,
+		  deptIdsList : deptIdsList,
+          sourceIdsList : sourceIdsList,
+		  fromDateStr:fromDateStr,
+		  toDateStr:toDateStr,
+		  schemeIdsList:schemeIdsList,
+		  subProgIds:subProgIds,
+		  searchLevelId:glSearchLevelId,
+		  searchLvlVals:glSearchLevelValue
+		}
+		$.ajax({
+			url : "getSchemeWiseOverviewDetails",     
+			data : JSON.stringify(json),
+			type : "POST",  
+			dataTypa : 'json',   
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success : function(result){   
+				if(result !=null && result.length>0){
+					 $("#distNames").append('<option value="0">SELECT district</option>');
+					for(var i in result){
+						$("#distNames").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					}
+				}
+				$("#distNames").trigger('chosen:updated');
+			}
+		});
+	}
+	  
 	
