@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.IGovtSchemeBeneficiaryDetailsDAO;
+import com.itgrids.partyanalyst.dao.IInsuranceStatusDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsNewDAO;
@@ -40,6 +41,8 @@ import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
+import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
+import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
@@ -73,6 +76,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private ISelfAppraisalToursMonthDAO selfAppraisalToursMonthDAO;
 	
 	private IGovtSchemeBeneficiaryDetailsDAO govtSchemeBeneficiaryDetailsDAO;
+	
+	private IInsuranceStatusDAO insuranceStatusDAO;
 
 
 	public void setTdpCommitteeEnrollmentDAO(ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO) {
@@ -1695,5 +1700,150 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			Log.error("Exception Occured at getGovtSchemeBenefitMemberDlstList() in LocationDashboardService class",e);
 		}
 		return returnList;
+	}
+	
+	@Override
+	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr, String toDateStr, Long locationId,Long locationValue) {
+		InsuranceStatusCountsVO insuranceStatusCounts = new InsuranceStatusCountsVO();
+		try{
+			Date fromDate = null;
+ 			Date toDate = null;
+ 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+ 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+ 				fromDate = sdf.parse(fromDateStr);
+ 				toDate = sdf.parse(toDateStr);
+ 			}
+ 			Long waitingDocs = 0l;
+ 			Long submittedInParty = 0l;
+ 			Long  foreadedInsu = 0l;
+ 			Long closedAtInsu = 0l;
+ 			Long closedAtParty = 0l;
+ 			Long approved = 0l;
+ 			Long closedLetters = 0l;
+ 			Long accountsRejected = 0l;
+ 			//0-locationValue(DIstrict or ConstituencyId),1-locationName,2-Status,3-StatusId,4-Count
+ 			List<Object[]> insuranceStatus = insuranceStatusDAO.getConstituencyWiseInsuranceStatusCounts(fromDate, toDate, locationId, locationValue);
+ 			if(insuranceStatus!=null){
+ 				for (Object[] objects : insuranceStatus) {
+ 					if((Long)objects[3]==1){
+ 						waitingDocs= (Long)objects[4];
+ 					}else if((Long)objects[3]==2){
+ 						submittedInParty=(Long)objects[4];
+ 					}else if((Long)objects[3]==3){
+ 						foreadedInsu=(Long)objects[4];
+ 					}else if((Long)objects[3]==4){
+ 						closedAtInsu = (Long)objects[4];
+ 					}else if((Long)objects[3]==5){
+ 						closedAtParty = (Long)objects[4];
+ 					}else if((Long)objects[3]==6){
+ 						approved= (Long)objects[4];
+ 					}else if((Long)objects[3]==7){
+ 						closedLetters = (Long)objects[4];
+ 					}else if((Long)objects[3]==8){
+ 						accountsRejected = (Long)objects[4];
+ 					}
+				}
+ 				insuranceStatusCounts.setWaitingForDocs(waitingDocs);
+ 				insuranceStatusCounts.setSubmittedInparty(submittedInParty);
+ 				insuranceStatusCounts.setForeadedToInsurance(foreadedInsu);
+ 				insuranceStatusCounts.setClosedAtInsurance(closedAtInsu);
+ 				insuranceStatusCounts.setClosedAtParty(closedAtParty);
+ 				insuranceStatusCounts.setApproved(approved);
+ 				insuranceStatusCounts.setClosedLetters(closedLetters);
+ 				insuranceStatusCounts.setAccountRejected(accountsRejected);
+ 			}
+		}catch(Exception e){
+			Log.error("Exception raised at insurance status counts service"+e);
+		}
+		return insuranceStatusCounts;
+	}
+
+	@Override
+	public List<List<GrivenceStatusVO>> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationId, Long locationValue) {
+		List<List<GrivenceStatusVO>> finalList = new ArrayList<List<GrivenceStatusVO>>();
+		List<GrivenceStatusVO> grivenceList = new ArrayList<GrivenceStatusVO>();
+		List<GrivenceStatusVO> trustList = new ArrayList<GrivenceStatusVO>();
+		GrivenceStatusVO grivenceStatusCount = new GrivenceStatusVO();
+		GrivenceStatusVO trustStatusCount = new GrivenceStatusVO();
+		try{
+			Date fromDate = null;
+ 			Date toDate = null;
+ 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+ 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+ 				fromDate = sdf.parse(fromDateStr);
+ 				toDate = sdf.parse(toDateStr);
+ 			}
+ 			//grivence counts
+ 			Long gnotVerified = 0l;
+ 			Long ginProgress = 0l;
+ 			Long gnotEligible = 0l;
+ 			Long gnotPossible = 0l;
+ 			Long gapproves = 0l;
+ 			Long gcompleted = 0l;
+ 			
+ 			//trust counts
+ 			Long tnotVerified = 0l;
+ 			Long tinProgress = 0l;
+ 			Long tnotEligible = 0l;
+ 			Long tnotPossible = 0l;
+ 			Long tapproves = 0l;
+ 			Long tcompleted = 0l;
+ 			//0-consId,1-Status,2-typeOfIssue,3-count
+ 			List<Object[]> grivenceTrustList = insuranceStatusDAO.getGrivenceTrustStatusCounts(fromDate, toDate, locationId, locationValue);
+ 			if(grivenceTrustList!=null){
+ 				for (Object[] objects : grivenceTrustList) {
+ 					if(objects[2].toString().trim().equalsIgnoreCase("Govt") || objects[2].toString().trim().equalsIgnoreCase("Party")  || 
+ 							objects[2].toString().trim().equalsIgnoreCase("Welfare")){
+ 						if(objects[1].toString().trim().equalsIgnoreCase("Not Verified") ){
+ 							gnotVerified = gnotVerified+(Long)objects[3];
+ 						}else if(objects[1].toString().trim().equalsIgnoreCase("in progress")){
+ 							ginProgress = ginProgress+(Long)objects[3];
+ 						}else if(objects[1].toString().trim().equalsIgnoreCase("Not Eligible")){
+ 							gnotEligible = gnotEligible+(Long)objects[3];
+ 						}else if(objects[1].toString().trim().equalsIgnoreCase("not possible")){
+ 							gnotPossible = gnotPossible+(Long)objects[3];
+ 						}else if(objects[1].toString().trim().equalsIgnoreCase("approved")){
+ 							gapproves = gapproves+(Long)objects[3];
+ 						}else if(objects[1].toString().trim().equalsIgnoreCase("completed")){
+ 							gcompleted = gcompleted+(Long)objects[3];
+ 						}
+ 					}else if(objects[2].toString().trim().equalsIgnoreCase("Trust Education Support")){
+ 						if(objects[1].toString().trim().equalsIgnoreCase("Not Verified") ){
+ 							tnotVerified = tnotVerified+(Long)objects[3];
+ 						}else if(objects[1].toString().trim().equalsIgnoreCase("in progress")){
+ 							tinProgress = tinProgress+(Long)objects[3];
+ 						}else if(objects[1].toString().trim().equalsIgnoreCase("Not Eligible")){
+ 							tnotEligible = tnotEligible+(Long)objects[3];
+ 						}else if(objects[1].toString().trim().equalsIgnoreCase("not possible")){
+ 							tnotPossible = tnotPossible+(Long)objects[3];
+ 						}else if(objects[1].toString().trim().equalsIgnoreCase("approved")){
+ 							tapproves = tapproves+(Long)objects[3];
+ 						}else if(objects[1].toString().trim().equalsIgnoreCase("completed")){
+ 							tcompleted = tcompleted+(Long)objects[3];
+ 						}
+ 					}
+				}
+ 				grivenceStatusCount.setNotVerified(gnotVerified);
+ 				grivenceStatusCount.setInProgress(ginProgress);
+ 				grivenceStatusCount.setNotEligible(gnotEligible);
+ 				grivenceStatusCount.setNotPossible(gnotPossible);
+ 				grivenceStatusCount.setApproves(gapproves);
+ 				grivenceStatusCount.setCompleted(gcompleted);
+ 				
+ 				trustStatusCount.setNotVerified(tnotVerified);
+ 				trustStatusCount.setInProgress(tinProgress);
+ 				trustStatusCount.setNotEligible(tnotEligible);
+ 				trustStatusCount.setNotPossible(tnotPossible);
+ 				trustStatusCount.setApproves(tapproves);
+ 				trustStatusCount.setCompleted(tcompleted);
+ 			}
+ 			grivenceList.add(grivenceStatusCount);
+ 			trustList.add(trustStatusCount);
+ 			finalList.add(grivenceList);
+ 			finalList.add(trustList);
+		}catch(Exception e){
+			Log.error("Exception raised at grivence and trust counts service"+e);
+		}
+		return finalList;
 	}
 }

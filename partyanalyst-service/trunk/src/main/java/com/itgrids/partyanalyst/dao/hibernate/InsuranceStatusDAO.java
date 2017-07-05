@@ -1106,4 +1106,72 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 }
 		 return query.list();
 	 }
+
+	@Override
+	public List<Object[]> getConstituencyWiseInsuranceStatusCounts(Date fromDate, Date toDate, Long locationId,Long locationValue) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT C.constituency_id as constituncyId,C.name as constituncyName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count "
+				+ " FROM complaint_master CM,grievance_insurance_status GIS,district D,constituency C "
+				+ " WHERE CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id AND "
+				+ " CM.district_id = D.district_id AND "
+				+ " CM.assembly_id = C.constituency_id AND "
+				+ " CM.type_of_issue = 'Insurance' AND "
+				+ " CM.delete_status IS NULL AND "
+				+ " (CM.Subject IS NOT NULL OR CM.Subject != '') ");
+		if(locationId!=null && locationId==3l && locationValue.longValue()>0 && locationValue!=null){
+			sb.append(" AND CM.district_id=:locationValue");
+		}else if(locationId!=null && locationId==4l && locationValue.longValue()>0 && locationValue!=null){
+			sb.append(" AND CM.assembly_id=:locationValue");
+		}
+		if(fromDate !=null && toDate !=null){
+	   		sb.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate )");
+	   	}
+		sb.append(" GROUP BY C.constituency_id,GIS.grievance_insurance_status_id; ");
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("constituncyId",Hibernate.LONG)
+				.addScalar("constituncyName",Hibernate.STRING)
+				.addScalar("status",Hibernate.STRING)
+				.addScalar("statusId",Hibernate.LONG)
+				.addScalar("count",Hibernate.LONG);
+		if(locationId!=null && locationId.longValue()>0){
+			query.setParameter("locationValue", locationValue);
+		}
+		if(fromDate !=null && toDate !=null){
+   		query.setDate("startDate", fromDate);
+   		query.setDate("endDate", toDate);
+   	}
+		return query.list();
+	}
+
+	@Override
+	public List<Object[]> getGrivenceTrustStatusCounts(Date fromDate, Date toDate, Long locationId,Long locationValue) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT C.constituency_id as consId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count "
+				+ " FROM complaint_master CM,district D,constituency C "
+				+ " WHERE CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND "
+				+ " CM.type_of_issue IN('Govt','Party','Welfare','Trust Education Support') and "
+				+ " CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '')");
+		if(locationId!=null && locationId==3l && locationValue.longValue()>0 && locationValue!=null){
+			sb.append(" AND CM.district_id=:locationValue");
+		}else if(locationId!=null && locationId==4l && locationValue.longValue()>0 && locationValue!=null){
+			sb.append(" AND CM.assembly_id=:locationValue");
+		}
+		if(fromDate !=null && toDate !=null){
+	   		sb.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate ) ");
+	   	}
+		sb.append(" GROUP BY C.constituency_id,CM.type_of_issue,CM.Completed_Status; ");
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("consId",Hibernate.LONG)
+				.addScalar("status",Hibernate.STRING)
+				.addScalar("typeOfIssue",Hibernate.STRING)
+				.addScalar("count",Hibernate.LONG);
+		if(locationId!=null && locationId.longValue()>0){
+			query.setParameter("locationValue", locationValue);
+		}
+		if(fromDate !=null && toDate !=null){
+   		query.setDate("startDate", fromDate);
+   		query.setDate("endDate", toDate);
+   	}
+		return query.list();
+	}
 }

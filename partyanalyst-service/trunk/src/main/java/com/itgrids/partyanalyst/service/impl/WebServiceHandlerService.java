@@ -102,6 +102,7 @@ import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
+import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -135,6 +136,7 @@ import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.dto.WebServiceBaseVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
+import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.model.ActivityTabRequestBackup;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Event;
@@ -5309,4 +5311,22 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return null;
 		 
 	 }
+	 
+	 public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue){
+		 try{
+			 return locationDashboardService.getLocationWiseInsuranceStatusCounts(fromDateStr,toDateStr,locationId,locationValue);
+		 }catch(Exception e){
+			 log.error("Exception raised at getLocationWiseInsuranceStatusCounts", e);
+		 }
+		return null;
+	 }
+
+	@Override
+	public List<List<GrivenceStatusVO>> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationId, Long locationValue) {
+		try{
+			return locationDashboardService.getGrivenceTrustStatusCounts(fromDateStr, toDateStr, locationId, locationValue);
+		}catch(Exception e){	
+			log.error("Exception raised at getLocationWiseGrivenceStatusCounts", e);
+		}return null;
+	}
 }
