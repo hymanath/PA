@@ -6,5 +6,5 @@ import com.itgrids.dto.PrisOverviewVo;
 
 public interface IPrisSurveyDashBaordService{
 	public PrisDataVo getPrisSurveyBasicData(InputVO inputVO);
-	public PrisOverviewVo getPrisLocationWiseOverview(InputVO inputVO);
+	public PrisOverviewVo getPIRSSurveyInfo(InputVO inputVO);
 }
