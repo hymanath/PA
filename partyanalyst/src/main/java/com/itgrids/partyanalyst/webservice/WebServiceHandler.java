@@ -66,9 +66,11 @@ import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
+import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
+import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -3202,4 +3204,30 @@ public class WebServiceHandler {
 		}
 	}
 	
+	@POST
+	@Path("/getLocationWiseInsuranceStatusCount")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(JSONObject jObj){
+		try{			
+			return webServiceHandlerService.getLocationWiseInsuranceStatusCounts(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("locationId"),jObj.getLong("locationValue"));		
+		}catch(Exception e){
+			LOG.error("Exception Occured in getLocationWiseInsuranceCount() Method, Exception is ",e);
+			return null;
+		}
+	}
+	
+	
+	@POST
+	@Path("/getLocationWiseGrivanceTrustStatusCounts")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<List<GrivenceStatusVO>> getLocationWiseGrivenceTurstStatusCounts(JSONObject jObj){
+		try{			
+			return webServiceHandlerService.getGrivenceTrustStatusCounts(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("locationId"),jObj.getLong("locationValue"));		
+		}catch(Exception e){
+			LOG.error("Exception Occured in getLocationWiseInsuranceCount() Method, Exception is ",e);
+			return null;
+		}
+	}
 }

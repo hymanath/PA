@@ -4329,6 +4329,7 @@
   		<property name="selfAppraisalToursMonthDAO" ref="selfAppraisalToursMonthDAO"></property>
   		<property name="govtSchemeBeneficiaryDetailsDAO" ref="govtSchemeBeneficiaryDetailsDAO"></property>
   		<property name="tdpCadreEnrollmentInfoDAO" ref="tdpCadreEnrollmentInfoDAO" ></property>
+  		<property name="insuranceStatusDAO" ref="insuranceStatusDAO"></property>
   </bean>
   <bean name="cadrePartyMeetingManagementService" class="com.itgrids.partyanalyst.meeting.service.impl.CadrePartyMeetingManagementService" >
   
