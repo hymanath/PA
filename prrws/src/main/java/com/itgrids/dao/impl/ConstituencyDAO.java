@@ -23,10 +23,9 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 	public List<Object[]> getConstituencies(Long districtId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.constituencyId,model.name from Constituency model ");
-		sb.append(" where" );
 		if(districtId !=null && districtId.longValue()>0){
-			sb.append(" model.districtId=:districtId ");
-			}
+			sb.append(" where model.districtId=:districtId ");
+		}
 		Query query = getSession().createQuery(sb.toString());
 		if(districtId !=null && districtId.longValue()>0){
 		    query.setParameter("districtId", districtId);

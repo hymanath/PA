@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
+import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
@@ -327,6 +329,39 @@ public class RuralWaterSupplyDashBoardController {
 
 		} catch (Exception e) {
 			LOG.error("Exception raised at getWaterSourceDeatilsLocationWise - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getAllPrrwsDistricts")
+	public @ResponseBody List<KeyValueVO> getAllPrrwsDistricts(@RequestBody IdNameVO vo){
+		try {
+			return rWSNICService.getAllPrrwsDistricts();
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllPrrwsDistricts - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getConstituenciesForDistrict")
+	public @ResponseBody List<KeyValueVO> getConstituenciesForDistrict(@RequestBody IdNameVO vo){
+		try {
+			return rWSNICService.getConstituenciesForDistrict(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getConstituenciesForDistrict - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getTehsilsForConstituency")
+	public @ResponseBody List<KeyValueVO> getTehsilsForConstituency(@RequestBody IdNameVO vo){
+		try {
+			return rWSNICService.getTehsilsForConstituency(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTehsilsForConstituency - RuralWaterSupplyDashBoardController controller",e);
 		}
 		return null;
 	}
