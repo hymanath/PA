@@ -1893,7 +1893,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		try {
 			List<Object[]> rtrnCaderObjLst = tdpCadreEnrollmentYearDAO.getAgeGenerAndCasteGroupWiseCadresCount(locationType,locationValue, enrollmentYearId);
 
-			Map<Long, ConstituencyCadreVO> ageRangeMap = new HashMap<Long, ConstituencyCadreVO>(0);
+			Map<Long, ConstituencyCadreVO> ageRangeMap = new LinkedHashMap<Long, ConstituencyCadreVO>(0);
 
 			if (rtrnCaderObjLst != null && rtrnCaderObjLst.size() > 0) {
 				List<Object[]> casteCategoryObjLst = casteCategoryDAO.getAllCasteCategoryDetails();
