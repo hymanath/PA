@@ -5,13 +5,19 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="tdp_cadre_enrollment_info")
@@ -29,6 +35,7 @@ public class TdpCadreEnrollmentInfo implements Serializable{
 	private Long  totalCadre;
 	private Long  renewalCadre;
 	private Long  newCadre;
+	private EnrollmentYear enrollmentYear;
 	
 	
 	@Id
@@ -95,5 +102,16 @@ public class TdpCadreEnrollmentInfo implements Serializable{
 	public void setNewCadre(Long newCadre) {
 		this.newCadre = newCadre;
 	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "enrollment_year_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public EnrollmentYear getEnrollmentYear() {
+		return enrollmentYear;
+	}
+	public void setEnrollmentYear(EnrollmentYear enrollmentYear) {
+		this.enrollmentYear = enrollmentYear;
+	}
+	
 
 }

@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationTargetDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalToursMonthDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeEnrollmentDAO;
@@ -43,6 +44,7 @@ import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
@@ -76,9 +78,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private ISelfAppraisalToursMonthDAO selfAppraisalToursMonthDAO;
 	
 	private IGovtSchemeBeneficiaryDetailsDAO govtSchemeBeneficiaryDetailsDAO;
-	
+	private ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO;
 	private IInsuranceStatusDAO insuranceStatusDAO;
-
 
 	public void setTdpCommitteeEnrollmentDAO(ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO) {
 		this.tdpCommitteeEnrollmentDAO = tdpCommitteeEnrollmentDAO;
@@ -206,6 +207,10 @@ public class LocationDashboardService  implements ILocationDashboardService  {
    public void setGovtSchemeBeneficiaryDetailsDAO(
 		IGovtSchemeBeneficiaryDetailsDAO govtSchemeBeneficiaryDetailsDAO) {
 	this.govtSchemeBeneficiaryDetailsDAO = govtSchemeBeneficiaryDetailsDAO;
+  }
+  	public void setTdpCadreEnrollmentInfoDAO(
+		ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO) {
+	this.tdpCadreEnrollmentInfoDAO = tdpCadreEnrollmentInfoDAO;
 }
 
 	@SuppressWarnings("unchecked")
@@ -1701,7 +1706,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return returnList;
 	}
-	
+
 	@Override
 	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr, String toDateStr, Long locationId,Long locationValue) {
 		InsuranceStatusCountsVO insuranceStatusCounts = new InsuranceStatusCountsVO();
@@ -1846,4 +1851,126 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return finalList;
 	}
+	/**
+	 * @param  String locationType
+	 * @param  Long locationValue
+	 * @return List<ConstituencyCadreVO>
+	 * @author Santosh 
+	 * @Description :This Service Method is used to location type cadre count details 
+	 *  @since 27-JUNE-2017
+	 */
+	public List<ConstituencyCadreVO> getLocationTypeWiseCadreCount(final String locationType,final Long locationValue){
+		List<ConstituencyCadreVO> resultList = new ArrayList<ConstituencyCadreVO>(0);
+		try{
+			List<Object[]> rtrnCaderCountObjLst = tdpCadreEnrollmentInfoDAO.getLocationTypeWiseCadreCount(locationType, locationValue);
+			if(rtrnCaderCountObjLst != null && rtrnCaderCountObjLst.size() > 0){
+				for (Object[] param : rtrnCaderCountObjLst) {
+					  ConstituencyCadreVO enrollmentYearVO = new ConstituencyCadreVO();
+					  enrollmentYearVO.setEnrollmentYearId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					  enrollmentYearVO.setEnrollmentYear(commonMethodsUtilService.getStringValueForObject(param[1]));
+					  enrollmentYearVO.setToalCadreCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					  enrollmentYearVO.setNewCaderCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+					  enrollmentYearVO.setRenewalCadreCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+					  resultList.add(enrollmentYearVO);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getLocationTypeWiseCadreCount in LocationDashboardService class", e);
+		}
+		return resultList;
+	}
+	/**
+	 * @param  String locationType
+	 * @param  Long locationValue
+	 * @param Long enrollmentYearId
+	 * @return List<ConstituencyCadreVO>
+	 * @author Santosh 
+	 * @Description :This Service Method is for getting ageRange,gender,caste group by cadre count. 
+	 *  @since 5-JULY-2017
+	 */
+	public List<ConstituencyCadreVO> getAgeRangeGenerAndCasteGroupByCadreCount(final String locationType, final Long locationValue,final Long enrollmentYearId) {
+		List<ConstituencyCadreVO> resultList = new ArrayList<ConstituencyCadreVO>(0);
+		try {
+			List<Object[]> rtrnCaderObjLst = tdpCadreEnrollmentYearDAO.getAgeGenerAndCasteGroupWiseCadresCount(locationType,locationValue, enrollmentYearId);
+
+			Map<Long, ConstituencyCadreVO> ageRangeMap = new HashMap<Long, ConstituencyCadreVO>(0);
+
+			if (rtrnCaderObjLst != null && rtrnCaderObjLst.size() > 0) {
+				List<Object[]> casteCategoryObjLst = casteCategoryDAO.getAllCasteCategoryDetails();
+				// 0-ageRangeId,1-ageRange,2-gener,3-casteCategoryId,4-casteCategory,5-totalCount
+				for (Object[] param : rtrnCaderObjLst) {
+					Long totalCadreCount = commonMethodsUtilService.getLongValueForObject(param[5]);
+					if (!ageRangeMap.containsKey(commonMethodsUtilService.getLongValueForObject(param[0]))) {
+						ConstituencyCadreVO ageRangeVO = new ConstituencyCadreVO();
+						ageRangeVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						ageRangeVO.setName(commonMethodsUtilService.getStringValueForObject(param[1])+ " "+"Years");
+						ageRangeVO.setCasteGroupList(getCasteCategoryList(casteCategoryObjLst));
+						ageRangeMap.put(ageRangeVO.getId(), ageRangeVO);
+					}
+
+					ConstituencyCadreVO ageRangeVO = ageRangeMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if (ageRangeVO != null) {
+						ageRangeVO.setToalCadreCount(ageRangeVO.getToalCadreCount() + totalCadreCount);
+						if (commonMethodsUtilService.getStringValueForObject(param[2]).equalsIgnoreCase("M")) {
+							ageRangeVO.setMaleCount(ageRangeVO.getMaleCount()+ totalCadreCount);
+						} else if (commonMethodsUtilService.getStringValueForObject(param[2]).equalsIgnoreCase("F")) {
+							ageRangeVO.setFemaleCount(ageRangeVO.getFemaleCount() + totalCadreCount);
+						}
+						ConstituencyCadreVO casteCategoryVO = getCasteCategoryMatchVO(ageRangeVO.getCasteGroupList(), commonMethodsUtilService.getLongValueForObject(param[3]));
+						if (casteCategoryVO != null) {
+							casteCategoryVO.setToalCadreCount(casteCategoryVO.getToalCadreCount()+totalCadreCount);
+						}
+					}
+				}
+			}
+			// Calculating Percentage
+			if (ageRangeMap.size() > 0) {
+				for (Entry<Long, ConstituencyCadreVO> entry : ageRangeMap.entrySet()) {
+					entry.getValue().setMalePercentage(calculatePercantage(entry.getValue().getMaleCount(), entry.getValue().getToalCadreCount()));
+					entry.getValue().setFemalePercentage(calculatePercantage(entry.getValue().getFemaleCount(), entry.getValue().getToalCadreCount()));
+					if (entry.getValue() != null && entry.getValue().getCasteGroupList() != null) {
+						for (ConstituencyCadreVO casteCategoryVO : entry.getValue().getCasteGroupList()) {
+							casteCategoryVO.setPercentage(calculatePercantage(casteCategoryVO.getToalCadreCount(), entry.getValue().getToalCadreCount()));
+						}
+					}
+				}
+			}
+			resultList.addAll(ageRangeMap.values());
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationTypeWiseCadreCount in getAgeRangeGenerAndCasteGroupByCadreCount class",e);
+		}
+		return resultList;
+	}
+	public ConstituencyCadreVO getCasteCategoryMatchVO(List<ConstituencyCadreVO> categoryList,Long id){
+		 try{
+			 if(categoryList == null || categoryList.size() == 0)
+				 return null;
+			 for(ConstituencyCadreVO vo:categoryList){
+				 if(vo.getId().equals(id)){
+					 return vo;
+				 }
+			 }
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in getCasteCategoryMatchVO() in LocationDashboardService  : ",e);	 
+		 }
+		 return null;
+	 }
+	public List<ConstituencyCadreVO> getCasteCategoryList(List<Object[]> objList) {
+		List<ConstituencyCadreVO> casteCategoryList = new ArrayList<ConstituencyCadreVO>(0);
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					ConstituencyCadreVO casteCategoryVO = new ConstituencyCadreVO();
+					casteCategoryVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					casteCategoryVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					casteCategoryList.add(casteCategoryVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCasteCategoryList in getCasteCategoryList class",e);
+		}
+		return casteCategoryList;
+	}
+	
+	
 }

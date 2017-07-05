@@ -55,6 +55,19 @@ public class TdpCadreEnrollmentInfoDAO extends GenericDaoHibernate<TdpCadreEnrol
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("stateId", stateId);
 		return (Long) query.uniqueResult();
-	}//select  count(distinct constituency_id) from tdp_cadre_enrollment_info TCEI where TCEI.state_id = 1;
+	}
 	
+	public List<Object[]> getLocationTypeWiseCadreCount(final String locationType,final Long locationValue){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append("select model.enrollmentYear.enrollmentYearId,model.enrollmentYear.description,sum(model.totalCadre),sum(model.newCadre),sum(model.renewalCadre) from TdpCadreEnrollmentInfo model");
+		 if(locationType != null && locationValue!= null && locationType.equalsIgnoreCase("Constituency")){
+		  queryStr.append(" where model.constituencyId =:locationValue ");	 
+		 }
+		 queryStr.append(" group by model.enrollmentYear.enrollmentYearId order by model.enrollmentYear.orderNo");
+		 Query query = getSession().createQuery(queryStr.toString());
+		 if(locationValue != null){
+			query.setParameter("locationValue", locationValue); 
+		 }
+		 return query.list();	
+	}
 }
