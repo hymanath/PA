@@ -16,10 +16,10 @@ public class SubProgramDAO extends GenericDaoHibernate<SubProgram, Long> impleme
 	
 	public List<Object[]> getGovtSubProgramsDetails(Long govtSchemesId){
 	    StringBuilder sb = new StringBuilder();
-	    sb.append(" select model.subProgramId,model.programName from SubProgram model "+
-	               " where isDeleted= 'N' ");
+	    sb.append(" select distinct model.subProgramId,model.programName from SubProgram model "+
+	               " where isDeleted= 'N' order by model.orderNo asc  ");
 	    Query query = getSession().createQuery(sb.toString());
-	    query.setParameter("govtSchemesId",govtSchemesId);
+	    //query.setParameter("govtSchemesId",govtSchemesId);
 	    return query.list(); 
 	    
 	  }

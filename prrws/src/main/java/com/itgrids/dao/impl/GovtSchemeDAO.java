@@ -23,7 +23,7 @@ public class GovtSchemeDAO extends GenericDaoHibernate<GovtScheme, Long> impleme
 	
 	public List<Object[]> getGovtSchemesDetails(){
 	    StringBuilder sb = new StringBuilder();
-	    sb.append(" select model.govtSchemeId,model.schemeName from GovtScheme model ");
+	    sb.append(" select distinct model.govtSchemeId,model.schemeName from GovtScheme model ");
 	    Query query = getSession().createQuery(sb.toString());
 	    return query.list(); 
 	    
