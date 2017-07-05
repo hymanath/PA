@@ -43,6 +43,12 @@ public class FundManagementDashboardController {
 		return "fundManagementDashboard";
     }
 	
+	@RequestMapping(value ="/newfundManagementDashboard", method = RequestMethod.GET)
+    public String newfundManagementDashboard(ModelMap model) {
+      
+    return "newfundManagementDashboard";
+    }
+	
 	@PostMapping("/getLocationWiseAmountDetails")
 	public @ResponseBody List<LocationVO> getLocationWiseAmountDetails(@RequestBody InputVO inputVO){
 		List<LocationVO> locationList = fundManagementDashboardService.getLocationWiseAmountDetails(inputVO);
