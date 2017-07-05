@@ -22,10 +22,15 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 	}
 	public List<Object[]> getConstituencies(Long districtId){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select model.constituencyId,model.name from Constituency model "+
-				" where model.districtId=:districtId");
+		sb.append(" select model.constituencyId,model.name from Constituency model ");
+		sb.append(" where" );
+		if(districtId !=null && districtId.longValue()>0){
+			sb.append(" model.districtId=:districtId ");
+			}
 		Query query = getSession().createQuery(sb.toString());
-		query.setParameter("districtId", districtId);
+		if(districtId !=null && districtId.longValue()>0){
+		    query.setParameter("districtId", districtId);
+		}
 		return query.list(); 
 	}
 	public List<Long> getConstituencyList(String districtIds){
