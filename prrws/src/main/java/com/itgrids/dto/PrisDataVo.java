@@ -1,6 +1,8 @@
 package com.itgrids.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 	/*
 	 * Date : 04/07/2017
@@ -10,13 +12,17 @@ import java.io.Serializable;
 public class PrisDataVo implements Serializable{
 	private Long totalHouseHolds;
 	private Long targetOverall;
-	private String targetOverallPercent;
+	private Double targetOverallPercent;
 	private Long achievedOverall;
-	private String achievedOverallpercent;
+	private Double achievedOverallpercent;
 	private Long subTarget;
-	private String subTargetPercentage;
+	private Double subTargetPercentage;
 	private Long subAchieved;
-	private String subAchievedPercentage;
+	private Double subAchievedPercentage;
+	private Long subTotal;
+	
+	private List<PrisDataVo> totalList = new ArrayList<PrisDataVo>(0);
+	private List<PrisDataVo> subTotalList = new ArrayList<PrisDataVo>(0);
 	public Long getTotalHouseHolds() {
 		return totalHouseHolds;
 	}
@@ -29,10 +35,10 @@ public class PrisDataVo implements Serializable{
 	public void setTargetOverall(Long targetOverall) {
 		this.targetOverall = targetOverall;
 	}
-	public String getTargetOverallPercent() {
+	public Double getTargetOverallPercent() {
 		return targetOverallPercent;
 	}
-	public void setTargetOverallPercent(String targetOverallPercent) {
+	public void setTargetOverallPercent(Double targetOverallPercent) {
 		this.targetOverallPercent = targetOverallPercent;
 	}
 	public Long getAchievedOverall() {
@@ -41,10 +47,10 @@ public class PrisDataVo implements Serializable{
 	public void setAchievedOverall(Long achievedOverall) {
 		this.achievedOverall = achievedOverall;
 	}
-	public String getAchievedOverallpercent() {
+	public Double getAchievedOverallpercent() {
 		return achievedOverallpercent;
 	}
-	public void setAchievedOverallpercent(String achievedOverallpercent) {
+	public void setAchievedOverallpercent(Double achievedOverallpercent) {
 		this.achievedOverallpercent = achievedOverallpercent;
 	}
 	public Long getSubTarget() {
@@ -53,10 +59,10 @@ public class PrisDataVo implements Serializable{
 	public void setSubTarget(Long subTarget) {
 		this.subTarget = subTarget;
 	}
-	public String getSubTargetPercentage() {
+	public Double getSubTargetPercentage() {
 		return subTargetPercentage;
 	}
-	public void setSubTargetPercentage(String subTargetPercentage) {
+	public void setSubTargetPercentage(Double subTargetPercentage) {
 		this.subTargetPercentage = subTargetPercentage;
 	}
 	public Long getSubAchieved() {
@@ -65,10 +71,29 @@ public class PrisDataVo implements Serializable{
 	public void setSubAchieved(Long subAchieved) {
 		this.subAchieved = subAchieved;
 	}
-	public String getSubAchievedPercentage() {
+	public Double getSubAchievedPercentage() {
 		return subAchievedPercentage;
 	}
-	public void setSubAchievedPercentage(String subAchievedPercentage) {
+	public void setSubAchievedPercentage(Double subAchievedPercentage) {
 		this.subAchievedPercentage = subAchievedPercentage;
 	}
+	public List<PrisDataVo> getTotalList() {
+		return totalList;
+	}
+	public void setTotalList(List<PrisDataVo> totalList) {
+		this.totalList = totalList;
+	}
+	public List<PrisDataVo> getSubTotalList() {
+		return subTotalList;
+	}
+	public void setSubTotalList(List<PrisDataVo> subTotalList) {
+		this.subTotalList = subTotalList;
+	}
+	public Long getSubTotal() {
+		return subTotal;
+	}
+	public void setSubTotal(Long subTotal) {
+		this.subTotal = subTotal;
+	}
+	
 }
