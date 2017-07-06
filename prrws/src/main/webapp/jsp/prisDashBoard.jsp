@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mahatma Gandhi National Rural EGS</title>
+<title>PRIS Survey Dashboard</title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
@@ -35,6 +35,45 @@
 					<h4 class="text-capital">PRIS Survey</h4>
 					<p>DASHBOARD</p>
 				</div>
+				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
+					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
+					<div class="menu-data-cls">
+						<div class="arrow_box_top">
+							<ul>
+								<li>
+									<a href="fundManagementDashboard">
+										<h3>FMS</h3>
+										<p>Fund Management System</p>
+									</a>
+								</li>
+								<li>
+									<a href="MGNREGSDashboard">
+										<h3>MGNREGS</h3>
+										<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+									</a>
+								</li>
+								<li>
+									<a href="ruralWaterSupplyDashBoard">
+										<h3>RWS</h3>
+										<p>rural water <br/> supply</p>
+									</a>
+								</li>
+								<li>
+									<a href="prisDashBoard">
+										<h3>PRIS</h3>
+										<p>PRIS <br/>Survey DashBoard</p>
+									</a>
+								</li>
+								<li>
+									<a href="">
+										<h3>ENC</h3>
+										<p>engineering department</p>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</nav>
@@ -43,14 +82,14 @@
 			<div class="row navbar_section_whitebk">
 				<div class="col-sm-12 m_top5 ">
 					<ul class="list-inline pull-right calendar_active_cls">
-						<li><img src="Assests/icons/Overall_icon.png"/>&nbsp;&nbsp;<b>Overall</b></li>
-						<li><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b>Today</b></li>
-						<li><img src="Assests/icons/Week_icon.png"/>&nbsp;&nbsp;<b> Week</b></li>
-						<li class="active"><img src="Assests/icons/Month_icon.png"/>&nbsp;&nbsp;<b>Month</b></li>
-						<li><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b>3Months</b></li>
-						<li><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b>6Months</b></li>
-						<li><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b>Year</b></li>
-						<li id="singleDateRangePicker"><img src="Assests/icons/CustomRange_icon.png"/>&nbsp;&nbsp;<b>Custom Range</b></li>
+						<li attr_val="Overall"><img src="Assests/icons/Overall_icon.png"/>&nbsp;&nbsp;<b><span>Overall</span></b></li>
+						<li attr_val="Today"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Today</span></b></li>
+						<li attr_val="Week"><img src="Assests/icons/Week_icon.png"/>&nbsp;&nbsp;<b><span> Week</span></b></li>
+						<li class="active" attr_val="Month"><img src="Assests/icons/Month_icon.png"/>&nbsp;&nbsp;<b><span>Month</span></b></li>
+						<li attr_val="3Months"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>3Months</span></b></li>
+						<li attr_val="6Months"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>6Months</span></b></li>
+						<li attr_val="Year"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Year</span></b></li>
+						<li attr_val="custom" id="singleDateRangePicker"><img src="Assests/icons/CustomRange_icon.png"/>&nbsp;&nbsp;<b>Custom Range</b></li>
 						</li>
 					</ul>  
 				</div>
@@ -71,7 +110,7 @@
 							  </div>
 							  <div class="media-body">
 								<h4 class="">TOTAL HOUSEHOLDS</h4>
-								<h4 class="m_top10 title_align">985932445</h4>
+								<h4 class="m_top10 title_align" id="totalHouseHolds"></h4>
 							  </div>
 							</div>
 						</div>
@@ -83,9 +122,9 @@
 								  <img class="media-object" src="Assests/icons/Target_icon.png" alt="Target_icon">
 							  </div>
 							  <div class="media-body">
-								<h4 class="">TARGET <span class="pull-right color_Tlabel">30%</span></h4>
+								<h4 class="">TARGET <span class="pull-right color_Tlabel" id="targetOverallPercent"></span></h4>
 								<small>Overall</small>
-								<h4 class="m_top10 title_align">985932445</h4>
+								<h4 class="m_top10 title_align" id="targetOverall"></h4>
 							  </div>
 							</div>
 						</div>
@@ -97,9 +136,9 @@
 								  <img class="media-object" src="Assests/icons/Achived_icon.png" alt="Achived_icon">
 							  </div>
 							  <div class="media-body">
-								<h4 class="">ACHIVED <span class="pull-right color_Alabel">30%</span></h4>
+								<h4 class="">ACHIVED <span class="pull-right color_Alabel" id="achievedOverallpercent"></span></h4>
 								<small>Overall</small>
-								<h4 class="m_top10 title_align">9859324452</h4>
+								<h4 class="m_top10 title_align" id="achievedOverall"></h4>
 							  </div>
 							</div>
 						</div>
@@ -111,15 +150,15 @@
 								<div class="row m_top5">
 									<div class="col-sm-6">
 										<img class="img_width" src="Assests/icons/Target_icon.png" alt="Achived_icon">
-										<span class="pull-right color_Tlabel">30%</span>
+										<span class="pull-right color_Tlabel" id="subTargetPercentage"></span>
 										<h5>TARGET</h5>
-										<h4 class="m_top5"><b>985656</b></h4>
+										<h4 class="m_top5"><b id="subTarget"></b></h4>
 									</div>
 									<div class="col-sm-6 border_right border_adjust_align">
 										<img  class="img_width" src="Assests/icons/Achived_icon.png" alt="Achived_icon">
-										<span class="pull-right color_Alabel">30%</span>
+										<span class="pull-right color_Alabel" id="subAchievedPercentage"></span>
 										<h5>ACHIVED</h5>
-										<h4 class="m_top5"><b>9856565</b></h4>
+										<h4 class="m_top5"><b id="subAchieved"></b></h4>
 									</div>
 								</div>
 							</div>
