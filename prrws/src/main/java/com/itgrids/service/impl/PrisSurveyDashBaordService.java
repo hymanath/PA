@@ -94,14 +94,12 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    		}
 	 	    	}
 	 	      }
-	        finalVo.setTotalList(totalList);
-	        finalVo.setSubTotalList(subTotalList);
 	        
-	        if(finalVo.getTotalList() != null && finalVo.getTotalList().size() > 0){
+	        if(totalList != null && totalList.size() > 0){
 	        	Long total = 0l;
 	        	Long target = 0l;
 	        	Long achieved = 0l;
-	        	for (PrisDataVo returnVo : finalVo.getTotalList()) {
+	        	for (PrisDataVo returnVo : totalList) {
 	        		total = total+returnVo.getTotalHouseHolds();
 	        		target = target+returnVo.getTargetOverall();
 	        		achieved =achieved+returnVo.getAchievedOverall();
@@ -112,11 +110,11 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
         		finalVo.setTargetOverallPercent(caclPercantage(target,total));
         		finalVo.setAchievedOverallpercent(caclPercantage(achieved,total));
 	        }
-	        if(finalVo.getSubTotalList() != null && finalVo.getSubTotalList().size() >0){
+	        if(subTotalList != null && subTotalList.size() >0){
 	        	Long total1 = 0l;
 	        	Long target1 = 0l;
 	        	Long achieved1 = 0l;
-	        	for (PrisDataVo returnVo1 : finalVo.getSubTotalList()) {
+	        	for (PrisDataVo returnVo1 : subTotalList) {
 	        		total1 = total1+returnVo1.getSubTotal();
 	        		target1 = target1+returnVo1.getSubTarget();
 	        		achieved1 =achieved1+returnVo1.getSubAchieved();
@@ -131,6 +129,9 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 			LOG.error("Exception raised at getPrisSurveyBasicData - SurveyDashBaordService service", e);
 		}
 		return finalVo;
+		
+		
+		
 	  }
 	/*
 	 * Date : 07/07/2017
@@ -165,6 +166,7 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    				distOverViewLst.add(vo);
 	 	    			}
 	 	    		}
+	 	    		
 	 	    	}
  	      }
 	        if(distOverViewLst != null && distOverViewLst.size() > 0){
