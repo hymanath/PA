@@ -24,7 +24,7 @@ public class BasicVO {
 	 private String name;
 	 private Long locationId;
 	 private String locationName;
-	 private List<BasicVO> basicList = new ArrayList<BasicVO>();
+	 private List<BasicVO> basicList = new ArrayList<BasicVO>(0);
 	 
 	 
 	public List<BasicVO> getBasicList() {
