@@ -46,10 +46,13 @@ public class LoginController {
 		
 		madelMap.addAttribute("code", code);
 		if(inputVO.getToPage() != null && inputVO.getToPage().equalsIgnoreCase("FMS") )//toPage checking
-			resultStatus = "fundManagementDashboard"; //jsp
-		else if(inputVO.getToPage() != null && inputVO.getToPage().equalsIgnoreCase("PR"))
-			resultStatus = "Prjsp";
-		//return "fundManagementDashboard"; 
+			resultStatus = "fundManagementDashboard"+" "+code; //jsp
+		else if(inputVO.getToPage() != null && inputVO.getToPage().equalsIgnoreCase("MGNREGS"))
+			resultStatus = "MGNREGS"+" "+code;
+		else if(inputVO.getToPage() != null && inputVO.getToPage().equalsIgnoreCase("RWS"))
+			resultStatus = "ruralWaterSupplyDashBoard"+" "+code;
+		else if(inputVO.getToPage() != null && inputVO.getToPage().equalsIgnoreCase("ENC"))
+			resultStatus = "prisSurveyDashBoard"+" "+code;
 		return resultStatus;
 	}
 	
