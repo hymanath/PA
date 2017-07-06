@@ -1,10 +1,9 @@
-function getAllSubLocations(divId,levelId,locationScopeId){
+function getAllSubLocations(divId,levelId,locationScopeId,type){
 	//var type = 'constituency' //district to constituency (only consider type like this)
-	alert(1);
 	var json = {
 		searchLevelId		: levelId,
 		searchLevelValue	: locationScopeId,
-		type 				: ""		  
+		type 				: type		  
 	}
 	$.ajax({
 		url : "getAllSubLocations",     
@@ -22,39 +21,55 @@ function getAllSubLocations(divId,levelId,locationScopeId){
 }
 function collapseMenu(id,resultArr,buildId)
 {
+	if(id == 2)
+	{
+		levelIdValue = 3
+	}else if(id == 3)
+	{
+		levelIdValue = 4
+	}
 	var collapse = '';
 	collapse+='<div class="panel-group dashedBorder" id="accordion'+id+'" role="tablist" aria-multiselectable="true">';
 	for(var i in resultArr)
 	{
-		
 		collapse+='<div class="panel panel-default panelExpand">';
-			collapse+='<div class="panel-heading" role="tab" id="heading'+i+''+resultArr[i]+'">';
+			collapse+='<div class="panel-heading" role="tab" id="heading'+i+''+resultArr[i].id+'">';
 				collapse+='<h4 class="panel-title">';
-					if(i == 0)
-					{
-						collapse+='<a role="button" attr_targetId="collapseMenu'+resultArr[i]+'Id'+i+'" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion'+[id]+'" href="#collapse'+i+''+resultArr[i]+'" aria-expanded="true" aria-controls="collapse'+i+''+resultArr[i]+'">';
-					}else
-					{
-						collapse+='<a role="button" attr_targetId="collapseMenu'+resultArr[i]+'Id'+i+'"  class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordion'+[id]+'" href="#collapse'+i+''+resultArr[i]+'" aria-expanded="true" aria-controls="collapse'+i+''+resultArr[i]+'">';
-					}
-					
-						collapse+='<span style="padding-left:20px;">'+resultArr[i]+'</span>';
+					collapse+='<a role="button" attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].id+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id'+i+'"  class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordion'+[id]+'" href="#collapse'+i+''+resultArr[i].id+'" aria-expanded="true" aria-controls="collapse'+i+''+resultArr[i].id+'">';
+						collapse+='<span style="padding-left:20px;">'+resultArr[i].name+'</span>';
 					collapse+='</a>';
 				collapse+='</h4>';
 			collapse+='</div>';
-			if(i == 0)
-			{
-				collapse+='<div id="collapse'+i+''+resultArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+''+resultArr[i]+'">';
-			}else{
-				collapse+='<div id="collapse'+i+''+resultArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+''+resultArr[i]+'">';
-			}
+			collapse+='<div id="collapse'+i+''+resultArr[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+''+resultArr[i].id+'">';
 				collapse+='<div class="panel-body">';
-					collapse+='<div class="collapseMenu'+resultArr[i]+'Id'+i+'"></div>';
+					collapse+='<div class="collapseMenu'+resultArr[i].id+'Id'+i+'"></div>';
 				collapse+='</div>';
 			collapse+='</div>';
 		collapse+='</div>';
-		
 	}
 	collapse+='</div>';
-	$("#"+buildId).html(collapse);
+	$("."+buildId).html(collapse);
 }
+
+$(document).on("click",".panelCollapseIcon",function(e){
+	e.stopPropagation();
+	var buildId = $(this).attr("attr_targetId");
+	var locationScopeId = $(this).attr("attr_id");
+	var levelId = $(this).attr("attr_levelIdValue");
+	$("#selectedName").html($(this).find("span").html())
+	var type = '';
+	if(levelId == 4)
+	{
+		type='';
+		locationScopeId = 308;
+	}
+	getAllSubLocations(buildId,levelId,locationScopeId,type)
+});
+$(".multi-level-selection-menu").hide();
+$(document).on("click",function(){
+	$(".multi-level-selection-menu").hide();
+});
+$(document).on("click","#selectedName",function(e){
+	e.stopPropagation();
+	$(".multi-level-selection-menu").show();
+});
