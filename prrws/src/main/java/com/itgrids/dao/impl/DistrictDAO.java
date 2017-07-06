@@ -59,4 +59,29 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 		Query query = getSession().createQuery(" select distinct model.districtId,model.districtName from District model ");
 		return query.list();
 	}
+	public String getAssignedSearchIdByDistrictId(Long searchLevelValue){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select model.prDistrict.districtCode from District model ");
+		 if(searchLevelValue != null && searchLevelValue.longValue()>0){
+			 sb.append(" where model.districtId =:searchLevelValue ");
+		 }
+		 Query query = getSession().createQuery(sb.toString());
+		 if(searchLevelValue != null && searchLevelValue.longValue()>0){
+			 query.setParameter("searchLevelValue", searchLevelValue);
+		 }
+		return (String)query.uniqueResult();	
+	}
+	public String getAssignedSearchDistrictId(Long searchLevelValue){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select model.prDistrictId from District model ");
+		 if(searchLevelValue != null && searchLevelValue.longValue()>0){
+			 sb.append(" where model.prDistrict.districtCode =:searchLevelValue ");
+		 }
+		 Query query = getSession().createQuery(sb.toString());
+		 if(searchLevelValue != null && searchLevelValue.longValue()>0){
+			 query.setParameter("searchLevelValue", searchLevelValue);
+		 }
+		return (String)query.uniqueResult();
+		
+	}
 }

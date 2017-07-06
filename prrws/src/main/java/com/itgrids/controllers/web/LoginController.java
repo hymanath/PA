@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.InputVO;
 import com.itgrids.dto.UserVO;
 import com.itgrids.model.User;
 import com.itgrids.service.IUserService;
@@ -23,6 +25,8 @@ public class LoginController {
 	
 	@Autowired 
 	private IUserService iUserService;
+	@Autowired 
+	private IUserService userServiceImpl;
 
 	private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 	
@@ -35,5 +39,20 @@ public class LoginController {
 	public @ResponseBody UserVO userAuthentication(@RequestBody User user) {
 		return iUserService.userAuthentication(user.getUsername(), user.getPasswordHashText());
 	}
+	@RequestMapping(value = "/getAssignedSearchIdByTypeId", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody String getAssignedSearchIdByTypeId(@RequestBody InputVO inputVO,ModelMap madelMap) {
+		String resultStatus = "";
+		String code = userServiceImpl.getAssignedSearchIdByTypeId(inputVO.getSearchLevelId(),inputVO.getSearchLevelValue(),inputVO.getFromPage(),inputVO.getToPage());
+		
+		madelMap.addAttribute("code", code);
+		if(inputVO.getToPage() != null && inputVO.getToPage().equalsIgnoreCase("FMS") )//toPage checking
+			resultStatus = "fundManagementDashboard"; //jsp
+		else if(inputVO.getToPage() != null && inputVO.getToPage().equalsIgnoreCase("PR"))
+			resultStatus = "Prjsp";
+		//return "fundManagementDashboard"; 
+		return resultStatus;
+	}
+	
+	
 	
 }
