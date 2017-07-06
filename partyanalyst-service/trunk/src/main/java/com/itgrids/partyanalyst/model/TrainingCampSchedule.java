@@ -34,6 +34,8 @@ private Long updatedBy;
 private Date insertedTime;
 private Date updatedTime;
 private String status;
+private Long enrollmentYearId;
+private EnrollmentYear enrollmentYear;
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
 @Column(name="training_camp_schedule_id", unique=true, nullable=false)
@@ -135,6 +137,21 @@ public String getStatus() {
 }
 public void setStatus(String status) {
 	this.status = status;
+}
+@Column(name = "enrollment_year_id")
+public Long getEnrollmentYearId() {
+	return enrollmentYearId;
+}
+public void setEnrollmentYearId(Long enrollmentYearId) {
+	this.enrollmentYearId = enrollmentYearId;
+}
+@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+@JoinColumn(name = "enrollment_year_id",insertable =false,updatable = false)
+public EnrollmentYear getEnrollmentYear() {
+	return enrollmentYear;
+}
+public void setEnrollmentYear(EnrollmentYear enrollmentYear) {
+	this.enrollmentYear = enrollmentYear;
 }
 
 
