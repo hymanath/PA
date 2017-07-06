@@ -56,6 +56,9 @@ public class InputVO implements Serializable {
 	private List<Long> glSearchLevelValue;
 	private String fromPage;
 	private String toPage;
+	private Long filterId;
+	private Long subFilterId;
+	private String subFilterType;
 	
 	
 	public String getStatus() {
@@ -347,6 +350,23 @@ public class InputVO implements Serializable {
 	public void setToPage(String toPage) {
 		this.toPage = toPage;
 	}
-	
+	public Long getFilterId() {
+		return filterId;
+	}
+	public void setFilterId(Long filterId) {
+		this.filterId = filterId;
+	}
+	public Long getSubFilterId() {
+		return subFilterId;
+	}
+	public void setSubFilterId(Long subFilterId) {
+		this.subFilterId = subFilterId;
+	}
+	public String getSubFilterType() {
+		return subFilterType;
+	}
+	public void setSubFilterType(String subFilterType) {
+		this.subFilterType = subFilterType;
+	}
 	
 }
