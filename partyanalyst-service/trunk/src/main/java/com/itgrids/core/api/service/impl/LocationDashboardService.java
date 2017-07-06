@@ -1399,7 +1399,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			//push data into template.
 			if(finalList != null && finalList.size() > 0){
 				for(KeyValueVO param : finalList){
-					keyValueVO = getMatchedVO(keyValueVOs,param.getId());
+					keyValueVO = getMatchedVO1(keyValueVOs,param.getId());
 					if(keyValueVO != null){
 						param.setCount(keyValueVO.getCount());
 					}
@@ -1461,7 +1461,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			Log.error("Exception raised in buildTemplate method of LocationDashboardService"+e);
 		}
 	}
-	public KeyValueVO getMatchedVO(List<KeyValueVO> keyValueVOs,Long id){
+	public KeyValueVO getMatchedVO1(List<KeyValueVO> keyValueVOs,Long id){
 		try{
 			if(keyValueVOs != null && keyValueVOs.size() > 0){
 				for(KeyValueVO param : keyValueVOs){
@@ -1471,7 +1471,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 			}
 		}catch(Exception e){
-			Log.error("Exception raised in getMatchedVO method of LocationDashboardService"+e);
+			Log.error("Exception raised in getMatchedVO1 method of LocationDashboardService"+e);
 		}
 		return null;
 	}
