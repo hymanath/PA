@@ -47,7 +47,7 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 		
 		try {
 			 
-			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			List<Date> datesList = dateUtilService.getDatesOfCurrentMonth();
 			String fromDate = sdf.format(datesList.get(0)); 
 			String toDate = sdf.format(datesList.get(datesList.size()-1));
