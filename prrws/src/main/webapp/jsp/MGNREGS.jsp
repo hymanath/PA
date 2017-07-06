@@ -57,6 +57,12 @@
 									</a>
 								</li>
 								<li>
+									<a href="prisDashBoard">
+										<h3>PRIS</h3>
+										<p>PRIS <br/>Survey DashBoard</p>
+									</a>
+								</li>
+								<li>
 									<a href="">
 										<h3>ENC</h3>
 										<p>engineering department</p>
