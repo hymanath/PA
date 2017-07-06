@@ -8,7 +8,6 @@
 	
 	function onLoadCalls()
 	{
-		getAllSubLocations('multi-level-selection-menu',2,1,'');
 		getLocationWiseFundDetails(3,'highest','highFundDist',0,0);
 		getLocationWiseFundDetails(4,'highest','highFundCons',0,0);
 		getLocationWiseFundDetails(3,'lowest','lowFundDist',0,0);

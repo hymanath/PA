@@ -71,7 +71,10 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<ul class="list-inline navbar-header-custom">
-						<li><label>Note: All Amount in Crore</label></li>
+						<li style="position:relative;top:-13px;">
+							<span id="selectedName">Andhra Pradesh</span>
+							<div class="multi-level-selection-menu arrow_box_top"></div>
+						</li>
 						<li>
 							<div class="form-horizontal">
 								<div class="form-group form-group-sm">
@@ -817,8 +820,8 @@
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
+<script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
 <script type="text/javascript" src="Assests/fundManagament/fundManagementDashboard.js"></script>
-<script type="text/javascript" src="js/locationHierarchy.js"></script>
 <!--Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations-->
 </body>
 </html>
