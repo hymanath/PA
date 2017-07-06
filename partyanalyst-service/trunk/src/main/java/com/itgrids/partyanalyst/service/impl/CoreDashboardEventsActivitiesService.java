@@ -1517,7 +1517,7 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 				    }
 			   }
 	          if(userTypeId != null && userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID ||  userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue() ==IConstants.SECRETARY_USER_TYPE_ID
-				|| userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID){
+				|| userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID || userTypeId.longValue()==IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
 				    if(accessLevelMap != null && accessLevelMap.size() > 0){
 				    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
 				    		 
@@ -1556,7 +1556,7 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 			   }
 	           if(userTypeId != null && userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue() ==IConstants.SECRETARY_USER_TYPE_ID
 			   || userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ||
-					   userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+					   userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID || userTypeId.longValue()==IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
 						    if(accessLevelMap != null && accessLevelMap.size() > 0){
 						    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
 						    		 List<Object[]> rtrnEventMndlInviteeObjList = new ArrayList<Object[]>(0);
@@ -1726,7 +1726,7 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 				    }
 			   }
 	          if(userTypeId != null && userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID ||  userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue() ==IConstants.SECRETARY_USER_TYPE_ID
-				|| userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID){
+				|| userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID || userTypeId.longValue()==IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
 				    if(accessLevelMap != null && accessLevelMap.size() > 0){
 				    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
 				    		 List<Object[]> rtrnEventInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
@@ -1743,7 +1743,7 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 			   }
 	           if(userTypeId != null && userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue() ==IConstants.SECRETARY_USER_TYPE_ID
 			   || userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ||
-					   userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+					   userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID || userTypeId.longValue()==IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
 						    if(accessLevelMap != null && accessLevelMap.size() > 0){
 						    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
 						    		 List<Object[]> rtrnEventMndlInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
