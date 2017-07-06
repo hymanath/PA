@@ -180,3 +180,24 @@ function getDistrictOverview(){
 			
 		});
 	}
+	getBasicCountBlock();
+	function getBasicCountBlock(){
+		var json = {
+			fromDate:"",
+			toDate:"",
+			locationId:0,
+			locationType:"district"
+			}
+		$.ajax({                
+			type:'POST',    
+			url: 'getPrisSurveyBasicData',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+		});
+	}
