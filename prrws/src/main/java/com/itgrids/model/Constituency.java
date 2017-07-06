@@ -24,8 +24,11 @@ public class Constituency{
 	private Long districtId;
 	private String areaType;
 	private String nameLocal;
+	private Long prConstituencyId;
 	private ElectionScope electionScope;
 	private District district;
+	private PrConstituency prConstituency;
+	
 
 	@Id
 	@Column(name="constituency_id")
@@ -99,6 +102,21 @@ public class Constituency{
 	}
 	public void setDistrict(District district) {
 		this.district = district;
+	}
+	@Column(name="pr_constituency_id")
+	public Long getPrConstituencyId() {
+		return prConstituencyId;
+	}
+	public void setPrConstituencyId(Long prConstituencyId) {
+		this.prConstituencyId = prConstituencyId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pr_constituency_id", insertable = false, updatable = false)
+	public PrConstituency getPrConstituency() {
+		return prConstituency;
+	}
+	public void setPrConstituency(PrConstituency prConstituency) {
+		this.prConstituency = prConstituency;
 	}
 		
 }

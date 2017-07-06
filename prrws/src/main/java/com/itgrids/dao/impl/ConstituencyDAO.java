@@ -69,4 +69,32 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 	    	   
 	    	   return query.list();
 	}
+	public String getAssignedSearchIdByConstituencyId(Long searchLevelValue){
+		 StringBuilder sb = new StringBuilder();
+		    sb.append(" select model.prConstituency.constituencyCode from Constituency model ");
+		    		if(searchLevelValue != null && searchLevelValue.longValue()>0){
+		    	    	sb.append(" where model.constituencyId =: searchLevelValue ");
+		    	    }
+		    	    Query query = getSession().createQuery(sb.toString());
+		    	    
+		    	   if(searchLevelValue != null && searchLevelValue.longValue()>0){
+		    		   query.setParameter("searchLevelValue", searchLevelValue);
+		    	   }
+		return (String)query.uniqueResult();
+		
+		
+	}
+	public String getAssignedSearchConstituencyId(Long searchLevelValue){
+		 StringBuilder sb = new StringBuilder();
+		    sb.append(" select model.prConstituencyId from Constituency model ");
+		    		if(searchLevelValue != null && searchLevelValue.longValue()>0){
+		    	    	sb.append(" where model.prConstituency.constituencyCode  =: searchLevelValue ");
+		    	    }
+		    	    Query query = getSession().createQuery(sb.toString());
+		    	    
+		    	   if(searchLevelValue != null && searchLevelValue.longValue()>0){
+		    		   query.setParameter("searchLevelValue", searchLevelValue);
+		    	   }
+		return (String)query.uniqueResult();
+	}
 }

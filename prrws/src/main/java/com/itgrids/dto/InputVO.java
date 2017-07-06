@@ -54,6 +54,8 @@ public class InputVO implements Serializable {
 	private List<Long> subProgramIdsList;
 	private Long glSearchLevelId;
 	private List<Long> glSearchLevelValue;
+	private String fromPage;
+	private String toPage;
 	
 	
 	public String getStatus() {
@@ -332,6 +334,18 @@ public class InputVO implements Serializable {
 	}
 	public void setGlSearchLevelValue(List<Long> glSearchLevelValue) {
 		this.glSearchLevelValue = glSearchLevelValue;
+	}
+	public String getFromPage() {
+		return fromPage;
+	}
+	public void setFromPage(String fromPage) {
+		this.fromPage = fromPage;
+	}
+	public String getToPage() {
+		return toPage;
+	}
+	public void setToPage(String toPage) {
+		this.toPage = toPage;
 	}
 	
 	
