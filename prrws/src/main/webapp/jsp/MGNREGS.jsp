@@ -74,7 +74,8 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-2 border_right m_top5">
-					Note: All Amount in Lakhs
+					<span id="selectedName">Andhra Pradesh</span>
+					<div class="multi-level-selection-menu arrow_box_top"></div>
 				</div>
 				<div class="col-sm-3 border_right">
 					<div class="row">
@@ -200,6 +201,7 @@
 <script src="Assests/Plugins/DateTime/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
 <script src="Assests/MGNREGS/MGNREGS.js" type="text/javascript"></script>
 </body>
 </html>

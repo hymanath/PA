@@ -2271,11 +2271,11 @@ function getNregaLevelsWiseDataFrSERP(divIdd,locationType)
 		theadArr = ["district","constituency","mandal",locationType,'Target','Pits Planted','Plants Planted','Percentage'];
 	
 	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-		toDate : glEndDate,
+		year 		: "2017",
+		fromDate 	: glStartDate,
+		toDate 		: glEndDate,
 		locationType: locationType,
-		divType : globalDivName
+		divType 	: globalDivName
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataFrSERP',
