@@ -1154,6 +1154,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		Date frmDate = null;
 		Date toDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		//Here converting string to date formatte
 		if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 			try {
 				frmDate = sdf.parse(fromDateStr);
@@ -1168,78 +1169,40 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		List<Object[]> objList = partyMeetingStatusDAO.getLevelWiseMeetingStatusCount(frmDate, toDate, locationId,
 				locationValue);
 		try {
-			
-			//village/ward variables
-			Long vwYesCount = 0l;
-			Long vwNoCount = 0l;
-			Long vwMayBeCount = 0l;
-			Long vwNotUpCount = 0l;
-			
-			//mandal/town/division variables
-			Long mtdYesCount = 0l;
-			Long mtdNoCount = 0l;
-			Long mtdMayBeCount = 0l;
-			Long mtdNotUpCount = 0l;
-			
-			//constituency variables   
-			Long cYesCount = 0l;
-			Long cNoCount = 0l;
-			Long cMayBeCount = 0l;
-			Long cNotUpCount = 0l;
-
 			if (objList != null) {
 				for (Object[] objects : objList) {
 					if ((Long)objects[0] == 7l || (Long)objects[0] == 8l) {
                          
 						if (objects[2].toString().trim().equalsIgnoreCase("Y")) {
-							vwYesCount = vwYesCount + (Long)objects[3];
+							vwStatus.setCompletedCnt(vwStatus.getCompletedCnt()+(Long)objects[3]);
 						} else if (objects[2].toString().trim().equalsIgnoreCase("N")) {
-							vwNoCount = vwNoCount + (Long)objects[3];
+							vwStatus.setPendingCnt(vwStatus.getPendingCnt()+(Long)objects[3]);
 						} else if (objects[2].toString().trim().equalsIgnoreCase("NU")) {
-							vwNotUpCount = vwNotUpCount + (Long)objects[3];
+							vwStatus.setNotifiedCnt(vwStatus.getNotifiedCnt()+(Long)objects[3]);
 						} else if (objects[2].toString().trim().equalsIgnoreCase("M")) {
-							vwMayBeCount = vwMayBeCount+(Long)objects[3];
+							vwStatus.setUnabletoResolveCnt(vwStatus.getUnabletoResolveCnt()+(Long)objects[3]);
 						}
 					} else if ((Long)objects[0] == 4l || (Long)objects[0] == 5l || (Long)objects[0] == 6l) {
 						if (objects[2].toString().trim().equalsIgnoreCase("Y")) {
-							mtdYesCount = mtdYesCount+(Long)objects[3];
+							mtdStatus.setCompletedCnt(mtdStatus.getCompletedCnt()+(Long)objects[3]);
 						} else if (objects[2].toString().trim().equalsIgnoreCase("N")) {
-							mtdNoCount = mtdNoCount+(Long)objects[3];
+							mtdStatus.setPendingCnt(mtdStatus.getPendingCnt()+(Long)objects[3]);
 						} else if (objects[2].toString().trim().equalsIgnoreCase("NU")) {
-							mtdNotUpCount = mtdNotUpCount+(Long)objects[3];
+							mtdStatus.setNotifiedCnt(mtdStatus.getNotifiedCnt()+(Long)objects[3]);
 						} else if (objects[2].toString().trim().equalsIgnoreCase("M")) {
-							mtdMayBeCount =mtdMayBeCount+(Long)objects[3];
+							mtdStatus.setUnabletoResolveCnt(mtdStatus.getUnabletoResolveCnt()+(Long)objects[3]);
 						}
 					} else if ((Long)objects[0] == 3l) {
 						if (objects[2].toString().trim().equalsIgnoreCase("Y")) {
-							cYesCount = cYesCount+(Long)objects[3];
+							cStatus.setCompletedCnt(cStatus.getCompletedCnt()+(Long)objects[3]);
 						} else if (objects[2].toString().trim().equalsIgnoreCase("N")) {
-							cNoCount = cNoCount+(Long)objects[3];
+							cStatus.setPendingCnt(cStatus.getPendingCnt()+(Long)objects[3]);
 						} else if (objects[2].toString().trim().equalsIgnoreCase("NU")) {
-							cNotUpCount = cNotUpCount+(Long)objects[3];
+							cStatus.setNotifiedCnt(cStatus.getNotifiedCnt()+(Long)objects[3]);
 						} else if (objects[2].toString().trim().equalsIgnoreCase("M")) {
-							cMayBeCount = cMayBeCount+(Long)objects[3];
+							cStatus.setUnabletoResolveCnt(cStatus.getUnabletoResolveCnt()+(Long)objects[3]);
 						}
 					}
-
-					
-					//here set the village/ward status counts
-					vwStatus.setCompletedCnt(vwYesCount);
-					vwStatus.setPendingCnt(vwNoCount);
-					vwStatus.setNotifiedCnt(vwMayBeCount);
-					vwStatus.setUnabletoResolveCnt(vwNotUpCount);
-					
-					//here set mandal/town/division status counts
-					mtdStatus.setCompletedCnt(mtdYesCount);
-					mtdStatus.setPendingCnt(mtdNoCount);
-					mtdStatus.setNotifiedCnt(mtdNotUpCount);
-					mtdStatus.setUnabletoResolveCnt(mtdMayBeCount);
-					
-					//here set the constituency status counts
-					cStatus.setCompletedCnt(cYesCount);
-					cStatus.setPendingCnt(cNoCount);
-					cStatus.setNotifiedCnt(cNotUpCount);
-					cStatus.setUnabletoResolveCnt(cMayBeCount);
 				}
 				vwStatusCountsList.add(vwStatus);
 				mtdStatusCountsList.add(mtdStatus);
@@ -1731,7 +1694,16 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return returnList;
 	}
-	
+	/*
+	 * @param String fromDateStr
+	 * @param String toDateStr
+	 * @param Long locationId
+	 * @param Long locationValue
+	 * @author R Nagarjuna Gowd
+	 * @return InsuranceStatusCountsVO object with status counts
+	 * (non-Javadoc)
+	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLocationWiseInsuranceStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
+	 */
 	@Override
 	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr, String toDateStr, Long locationId,Long locationValue) {
 		InsuranceStatusCountsVO insuranceStatusCounts = new InsuranceStatusCountsVO();
@@ -1739,6 +1711,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			Date fromDate = null;
  			Date toDate = null;
  			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+ 			// Here converting stirng to date formatte 
  			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
  				fromDate = sdf.parse(fromDateStr);
  				toDate = sdf.parse(toDateStr);
@@ -1746,6 +1719,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
  			//0-locationValue(DIstrict or ConstituencyId),1-locationName,2-Status,3-StatusId,4-Count
  			List<Object[]> insuranceStatus = insuranceStatusDAO.getConstituencyWiseInsuranceStatusCounts(fromDate, toDate, locationId, locationValue);
  			if(insuranceStatus!=null){
+ 				//Here set the values for object 
  				for (Object[] objects : insuranceStatus) {
  					if((Long)objects[3]==1){
  						insuranceStatusCounts.setWaitingForDocs(insuranceStatusCounts.getWaitingForDocs()+(Long)objects[4]);
@@ -1776,7 +1750,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @param Long locationId
 	 * @param Long locationValue
 	 * @author R Nagarjuna Gowd
-	 * @return List<List<GrivenceStatusVO>> we have two lists in final list 1.Grivence counts(Govt,party,welfare),2.Trust counts
+	 * @return List<List<GrivenceStatusVO>> we have two lists in final list 1.Grivence counts(Govt,party,welfare) 2.Trust counts
      * (non-Javadoc)
      * @see com.itgrids.core.api.service.ILocationDashboardService#getGrivenceTrustStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
      */
@@ -1791,6 +1765,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			Date fromDate = null;
  			Date toDate = null;
  			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+ 		    // Here converting stirng to date formatte
  			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
  				fromDate = sdf.parse(fromDateStr);
  				toDate = sdf.parse(toDateStr);
@@ -1798,6 +1773,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
  			//0-consId,1-Status,2-typeOfIssue,3-count
  			List<Object[]> grivenceTrustList = insuranceStatusDAO.getGrivenceTrustStatusCounts(fromDate, toDate, locationId, locationValue);
  			if(grivenceTrustList!=null){
+ 				//  Here set the Grivence values for object
  				for (Object[] objects : grivenceTrustList) {
  					if(objects[2].toString().trim().equalsIgnoreCase("Govt") || objects[2].toString().trim().equalsIgnoreCase("Party")  || 
  							objects[2].toString().trim().equalsIgnoreCase("Welfare")){
@@ -1816,6 +1792,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
  						}
  						
  					}
+ 				     //  Here set the Trust values for object
  					else if(objects[2].toString().trim().equalsIgnoreCase("Trust Education Support"))
  					{
  						if(objects[1].toString().trim().equalsIgnoreCase("Not Verified") ){
