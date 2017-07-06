@@ -537,6 +537,36 @@ public class RWSNICService implements IRWSNICService{
      	return assetsList;
      }
 	
+	public List<BasicVO> getAssetsSkeleton(JSONArray distinctAssetsList){
+		List<BasicVO> voList = new ArrayList<BasicVO>(0);
+		try {
+			if(distinctAssetsList != null && distinctAssetsList.length() > 0){
+				for (int i = 0; i < distinctAssetsList.length(); i++) {
+					if(!distinctAssetsList.getString(i).equalsIgnoreCase("SCHOOLS") && !distinctAssetsList.getString(i).equalsIgnoreCase("LAB")){
+						BasicVO invo = new BasicVO();
+						invo.setAssetType(distinctAssetsList.getString(i));
+						voList.add(invo);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAssetsSkeleton - RuralWaterSupplyDashBoardService service", e);
+		}
+		
+		return voList;
+	}
+	
+	public BasicVO getMatchedAssetVO(List<BasicVO> voList,String assetType){
+		if(voList != null && voList.size() > 0){
+			for (BasicVO basicVO : voList) {
+				if(basicVO.getAssetType().equalsIgnoreCase(assetType)){
+					return basicVO;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public void buildAssetsDataForMandalLevel(JSONObject jobj,List<BasicVO> assetsList){
 		try {
 			Map<Long,Map<Long,BasicVO>> finalMap = new HashMap<Long, Map<Long,BasicVO>>(0);//Map<distId,Map<mandalId,BasicVO>>
@@ -550,12 +580,16 @@ public class RWSNICService implements IRWSNICService{
 					vo.setId(jObj.getLong("locationId"));
 					vo.setName(jObj.getString("locationName"));
 					
-					if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+					vo.setBasicList(getAssetsSkeleton(jobj.getJSONArray("distinctAssetsList")));
+					BasicVO matchedAssetVO =  getMatchedAssetVO(vo.getBasicList(),jObj.getString("assetType"));
+					if(matchedAssetVO != null)
+						matchedAssetVO.setCount(jObj.getLong("count"));
+					/*if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
 	   					BasicVO basicVO = new BasicVO();
 	   					basicVO.setAssetType(jObj.getString("assetType"));
 	   					basicVO.setCount(jObj.getLong("count"));
 	   					vo.getBasicList().add(basicVO);
-	   				}
+	   				}*/
 					
 					inMap.put(jObj.getLong("locationId"), vo);
 					finalMap.put(jObj.getLong("districtId"),inMap);
@@ -568,21 +602,28 @@ public class RWSNICService implements IRWSNICService{
 						vo.setId(jObj.getLong("locationId"));
 						vo.setName(jObj.getString("locationName"));
 						
-						if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+						vo.setBasicList(getAssetsSkeleton(jobj.getJSONArray("distinctAssetsList")));
+						BasicVO matchedAssetVO =  getMatchedAssetVO(vo.getBasicList(),jObj.getString("assetType"));
+						if(matchedAssetVO != null)
+							matchedAssetVO.setCount(jObj.getLong("count"));
+						/*if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
 		   					BasicVO basicVO = new BasicVO();
 		   					basicVO.setAssetType(jObj.getString("assetType"));
 		   					basicVO.setCount(jObj.getLong("count"));
 		   					vo.getBasicList().add(basicVO);
-		   				}
+		   				}*/
 						finalMap.get(jObj.getLong("districtId")).put(jObj.getLong("locationId"), vo);
 						
 					}else{
-						if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+						BasicVO matchedAssetVO =  getMatchedAssetVO(distMap.get(jObj.getLong("locationId")).getBasicList(),jObj.getString("assetType"));
+						if(matchedAssetVO != null)
+							matchedAssetVO.setCount(jObj.getLong("count"));
+						/*if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
 		   					BasicVO basicVO = new BasicVO();
 		   					basicVO.setAssetType(jObj.getString("assetType"));
 		   					basicVO.setCount(jObj.getLong("count"));
 		   					distMap.get(jObj.getLong("locationId")).getBasicList().add(basicVO);
-		   				}
+		   				}*/
 					}
 				}
 			}
@@ -615,21 +656,29 @@ public class RWSNICService implements IRWSNICService{
 	   				inVO.setId(jObj.getLong("locationId"));
 	   				inVO.setName(jObj.getString("locationName"));
 	             
-	   				if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+	   				inVO.setBasicList(getAssetsSkeleton(jobj.getJSONArray("distinctAssetsList")));
+					BasicVO matchedAssetVO =  getMatchedAssetVO(inVO.getBasicList(),jObj.getString("assetType"));
+					if(matchedAssetVO != null)
+						matchedAssetVO.setCount(jObj.getLong("count"));
+					
+	   				/*if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
 	   					BasicVO basicVO = new BasicVO();
 	   					basicVO.setAssetType(jObj.getString("assetType"));
 	   					basicVO.setCount(jObj.getLong("count"));
 	   					inVO.getBasicList().add(basicVO);
-	   				}
+	   				}*/
 	   						
 	   				finalMap.put(jObj.getLong("locationId"), inVO);
 	   			}else{
-	   				if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+	   				BasicVO matchedAssetVO =  getMatchedAssetVO(finalMap.get(jObj.getLong("locationId")).getBasicList(),jObj.getString("assetType"));
+					if(matchedAssetVO != null)
+						matchedAssetVO.setCount(jObj.getLong("count"));
+	   				/*if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
 	   					BasicVO basicVO = new BasicVO();
 	   					basicVO.setAssetType(jObj.getString("assetType"));
 	   					basicVO.setCount(jObj.getLong("count"));
 	   					finalMap.get(jObj.getLong("locationId")).getBasicList().add(basicVO);
-	   				}
+	   				}*/
 	   			}
 
 	   		}
