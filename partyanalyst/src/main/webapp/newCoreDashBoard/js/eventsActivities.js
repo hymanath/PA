@@ -1545,7 +1545,7 @@ function buildEventPoorPerformanceLocationRslt(result,userTypeId,selectedUserNam
 		resultListFirst = result.districtList;
 		resultListSecond = result.constituencyList;
 	  }
-	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
+	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6 || userTypeId==12 || userTypeId==14){
 		str+='<p class="text-capital">Constituencies<span style="margin-left:240px">Invitees Attended(%)</span></p>';  
 		resultListFirst = result.constituencyList;
 		resultListSecond = result.mandalTwnDivisionList;  
@@ -1587,7 +1587,7 @@ function buildEventPoorPerformanceLocationRslt(result,userTypeId,selectedUserNam
 	   if(userTypeId!= null && userTypeId==3 || userTypeId==2 || userTypeId==1){
 		str+='<p class="text-capital">Constituencies<span style="margin-left:240px">Invitees Attended(%)</span></p>';  
 	  }
-	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
+	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6 || userTypeId==12 || userTypeId==14){
 		 str+='<p class="text-capital">Mandal/Town/Division<span style="margin-left:180px">Invitees Attended(%)</span></p>';  
 	  }
 	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
@@ -4660,7 +4660,7 @@ function buildActivityPoorPerformanceLocationRslt(result,userTypeId,selectedUser
 		resultListFirst = result.districtList;
 		resultListSecond = result.constituencyList;
 	  }
-	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
+	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6 || userTypeId==12 || userTypeId==14){
 		str+='<p class="text-capital">Constituencies<span style="margin-left:240px">Conducted (%)</span></p>';  
 		resultListFirst = result.constituencyList;
 		resultListSecond = result.mandalTwnDivisionList;  
@@ -4702,7 +4702,7 @@ function buildActivityPoorPerformanceLocationRslt(result,userTypeId,selectedUser
 	   if(userTypeId!= null && userTypeId==3 || userTypeId==2 || userTypeId==1){
 		str+='<p class="text-capital">Constituencies<span style="margin-left:240px">Conducted (%)</span></p>';  
 	  }
-	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
+	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6 || userTypeId==12 || userTypeId==14){
 		 str+='<p class="text-capital">Mandal/Town/Division<span style="margin-left:180px">Conducted (%)</span></p>';  
 	  }
 	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
