@@ -2477,5 +2477,27 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		 return (Long) query.uniqueResult();
 		
 	}
-	
+	public List<Object[]> getNominatedPostApplicationStatusWiseCount(Long constituencyId,Date startDate, Date endDate){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select " +
+		 		   " nominatedPostApplication.applicationStatus.applicationStatusId, " +
+		 		   " nominatedPostApplication.applicationStatus.status, " +
+		 		   " count(distinct nominatedPostApplication.nominatedPostApplicationId) " +
+		 		   " from NominatedPostApplication nominatedPostApplication where " +
+				   " nominatedPostApplication.address.constituency.constituencyId = :constituencyId " +
+				   " and nominatedPostApplication.isDeleted = 'N' " +
+				   " and nominatedPostApplication.isExpired = 'N' ");
+		 if(startDate != null && endDate != null){
+			 sb.append(" and (date(nominatedPostApplication.updatedTime) between :startDate and :endDate) ");
+		 }
+		 sb.append(" group by nominatedPostApplication.applicationStatus.applicationStatusId ");
+		 sb.append(" order by nominatedPostApplication.applicationStatus.applicationStatusId ");
+		 Query query = getSession().createQuery(sb.toString());
+		 query.setParameter("constituencyId",constituencyId);
+		 if(startDate != null && endDate != null){
+			 query.setDate("startDate",startDate);
+			 query.setDate("endDate",endDate);
+		 }
+		 return query.list();
+	 }
 }
