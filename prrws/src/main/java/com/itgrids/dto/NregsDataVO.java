@@ -43,21 +43,146 @@ public class NregsDataVO implements Serializable{
 	private List<NregsDataVO> consMandalList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> mandalVillageList = new ArrayList<NregsDataVO>(0);
 	private String achivement;
-	private String pitsPlanted;
-	private String plantsPlanted;
+	
+	private String targetKMS;
+	private String sanctionedAmount;
+	private String sanctionedKMS;
+	private String sanctionedPerventage;
+	private String expenditureAmount;
+	private String completedKMS;
+	
+	private String targetACRES;
+	private String sanctionedACRES;
+	private String pittingArea;
+	private String plantingArea;
+	private String pencentageOfPlanting;
+	
+	private String pittingKMS;
+	private String plantingKMS;
+	
+	private String sanctionedTarget;
+	
+	private String achivementPercentage;
+	private String wageExpenditure;
+	private String materialExpenditure;
+	private String materialExpenditurePerc;
+	
+	private String argicultureExpenditure;
 	
 	
-	public String getPitsPlanted() {
-		return pitsPlanted;
+	public String getArgicultureExpenditure() {
+		return argicultureExpenditure;
 	}
-	public void setPitsPlanted(String pitsPlanted) {
-		this.pitsPlanted = pitsPlanted;
+	public void setArgicultureExpenditure(String argicultureExpenditure) {
+		this.argicultureExpenditure = argicultureExpenditure;
 	}
-	public String getPlantsPlanted() {
-		return plantsPlanted;
+	public String getAchivementPercentage() {
+		return achivementPercentage;
 	}
-	public void setPlantsPlanted(String plantsPlanted) {
-		this.plantsPlanted = plantsPlanted;
+	public void setAchivementPercentage(String achivementPercentage) {
+		this.achivementPercentage = achivementPercentage;
+	}
+	public String getWageExpenditure() {
+		return wageExpenditure;
+	}
+	public void setWageExpenditure(String wageExpenditure) {
+		this.wageExpenditure = wageExpenditure;
+	}
+	public String getMaterialExpenditure() {
+		return materialExpenditure;
+	}
+	public void setMaterialExpenditure(String materialExpenditure) {
+		this.materialExpenditure = materialExpenditure;
+	}
+	public String getMaterialExpenditurePerc() {
+		return materialExpenditurePerc;
+	}
+	public void setMaterialExpenditurePerc(String materialExpenditurePerc) {
+		this.materialExpenditurePerc = materialExpenditurePerc;
+	}
+	public String getSanctionedTarget() {
+		return sanctionedTarget;
+	}
+	public void setSanctionedTarget(String sanctionedTarget) {
+		this.sanctionedTarget = sanctionedTarget;
+	}
+	public String getPittingKMS() {
+		return pittingKMS;
+	}
+	public void setPittingKMS(String pittingKMS) {
+		this.pittingKMS = pittingKMS;
+	}
+	public String getPlantingKMS() {
+		return plantingKMS;
+	}
+	public void setPlantingKMS(String plantingKMS) {
+		this.plantingKMS = plantingKMS;
+	}
+	public String getTargetACRES() {
+		return targetACRES;
+	}
+	public void setTargetACRES(String targetACRES) {
+		this.targetACRES = targetACRES;
+	}
+	public String getSanctionedACRES() {
+		return sanctionedACRES;
+	}
+	public void setSanctionedACRES(String sanctionedACRES) {
+		this.sanctionedACRES = sanctionedACRES;
+	}
+	public String getPittingArea() {
+		return pittingArea;
+	}
+	public void setPittingArea(String pittingArea) {
+		this.pittingArea = pittingArea;
+	}
+	public String getPlantingArea() {
+		return plantingArea;
+	}
+	public void setPlantingArea(String plantingArea) {
+		this.plantingArea = plantingArea;
+	}
+	public String getPencentageOfPlanting() {
+		return pencentageOfPlanting;
+	}
+	public void setPencentageOfPlanting(String pencentageOfPlanting) {
+		this.pencentageOfPlanting = pencentageOfPlanting;
+	}
+	public String getTargetKMS() {
+		return targetKMS;
+	}
+	public void setTargetKMS(String targetKMS) {
+		this.targetKMS = targetKMS;
+	}
+	public String getSanctionedAmount() {
+		return sanctionedAmount;
+	}
+	public void setSanctionedAmount(String sanctionedAmount) {
+		this.sanctionedAmount = sanctionedAmount;
+	}
+	public String getSanctionedKMS() {
+		return sanctionedKMS;
+	}
+	public void setSanctionedKMS(String sanctionedKMS) {
+		this.sanctionedKMS = sanctionedKMS;
+	}
+	public String getSanctionedPerventage() {
+		return sanctionedPerventage;
+	}
+	public void setSanctionedPerventage(String sanctionedPerventage) {
+		this.sanctionedPerventage = sanctionedPerventage;
+	}
+	public String getExpenditureAmount() {
+		return expenditureAmount;
+	}
+	public void setExpenditureAmount(String expenditureAmount) {
+		this.expenditureAmount = expenditureAmount;
+	}
+	public String getCompletedKMS() {
+		return completedKMS;
+	}
+	public void setCompletedKMS(String completedKMS) {
+		this.completedKMS = completedKMS;
 	}
 	public Long getUniqueId() {
 		return uniqueId;

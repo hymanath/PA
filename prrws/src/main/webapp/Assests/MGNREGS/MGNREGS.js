@@ -258,6 +258,12 @@ function projectData(divId)
 		else if(dataArr[i] == "panchayat")
 			theadArr = ["district","constituency","mandal",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 		
+		if((divId == 'Mulbery' || divId == 'Silk worm' || divId == 'Cattle drinking water trough' || divId == 'Raising of Perinnial Fodder') && dataArr[i] == "state")
+			theadArr = [dataArr[i],'TARGET','sanctioned Target','sanctioned Percentage','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		
+		if((divId == 'Fish Ponds' || divId == 'Fish Drying Platforms') && (dataArr[i] == "state" || dataArr[i] == "district"))
+			theadArr = [dataArr[i],'TARGET','sanctioned Target','sanctioned Percentage','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		
 		var tableId = divId.replace(/\s+/g, '')+''+dataArr[i];
 		$("#"+tableId).html(spinner);
 		if(divId == 'Labour Budget')
@@ -266,8 +272,12 @@ function projectData(divId)
 			getNregaLevelsWiseDataFrAgriculture(tableId,dataArr[i]);
 		else if(divId == "Avg Wage" || divId == "Avg days of emp per HH" || divId == "HH Comp 100 days" || divId == "Timely Payments" || divId == "Nurseries")
 			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[i]);
-		else if(divId == "Horticulture" || divId == "Avenue")
-			getNregaLevelsWiseDataFrSERP(tableId,dataArr[i]);
+		else if(divId == "Horticulture")//
+			getNregaLevelsWiseDataFrHorticulture(tableId,dataArr[i]);
+		else if(divId == "Avenue")//
+			getNregaLevelsWiseDataFrAvenue(tableId,dataArr[i]);
+		else if(divId == "CC Roads")//
+			getNregaLevelsWiseDataForCCRoads(tableId,dataArr[i]);
 		else
 			getNregaLevelsWiseData(tableId,dataArr[i],theadArr);
 	}
@@ -330,10 +340,6 @@ function tableView(blockId,theadArr,result,locationType)
 	{
 		$(".dataTable"+blockId).dataTable();
 	}
-	
-	
-	
-	
 }
 function getNREGSProjectsOverview(blockName)
 {
@@ -2070,6 +2076,14 @@ function getNregaLevelsWiseData(divIdd,locationType,theadArr)
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}
 						str+='<td>'+ajaxresp[i].target+'</td>';
+						if((globalDivName == 'Mulbery' || globalDivName == 'Silk worm' || globalDivName == 'Cattle drinking water trough' || globalDivName == 'Raising of Perinnial Fodder') && locationType == "state"){
+							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
+							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+						}
+						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms') && (locationType == "state" || locationType == "district")){
+							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
+							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+						}
 						str+='<td>'+ajaxresp[i].grounded+'</td>';
 						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
 						str+='<td>'+ajaxresp[i].inProgress+'</td>';
@@ -2259,26 +2273,26 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType)
 	});
 }
 
-function getNregaLevelsWiseDataFrSERP(divIdd,locationType)
+function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType)
 {
 	$("#"+divIdd).html(spinner);
-	 var theadArr = [locationType,'Target','Achivement','Percentage'];
+	 var theadArr = [locationType,'Target','Sanctioned Area (in Acres)','Sanctioned Percentage','Pitting  Area (in Acres)','Planting  Area (in Acres)','Achievement Percentage'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Target','Pits Planted','Plants Planted','Percentage'];
+		theadArr = ["district",locationType,'Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Achievement Percentage'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Target','Pits Planted','Plants Planted','Percentage'];
+		theadArr = ["district","constituency",locationType,'Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Achievement Percentage'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Target','Pits Planted','Plants Planted','Percentage'];
+		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Achievement Percentage'];
 	
 	var json = {
-		year 		: "2017",
-		fromDate 	: glStartDate,
-		toDate 		: glEndDate,
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
 		locationType: locationType,
-		divType 	: globalDivName
+		divType : globalDivName
 	}
 	$.ajax({
-		url: 'getNregaLevelsWiseDataFrSERP',
+		url: 'getNregaLevelsWiseDataFrHorticulture',
 		data: JSON.stringify(json),
 		type: "POST",
 		dataType: 'json', 
@@ -2312,14 +2326,184 @@ function getNregaLevelsWiseDataFrSERP(divIdd,locationType)
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}
-						str+='<td>'+ajaxresp[i].target+'</td>';
-						if(locationType == "state")
-							str+='<td>'+ajaxresp[i].achivement+'</td>';
-						else{
-							str+='<td>'+ajaxresp[i].pitsPlanted+'</td>';
-							str+='<td>'+ajaxresp[i].plantsPlanted+'</td>';
-							
+						if(locationType == "state" || locationType == "district")
+							str+='<td>'+ajaxresp[i].targetACRES+'</td>';
+						str+='<td>'+ajaxresp[i].sanctionedACRES+'</td>';
+						if(locationType == "state" || locationType == "district")
+							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+						str+='<td>'+ajaxresp[i].pittingArea+'</td>';
+						str+='<td>'+ajaxresp[i].plantingArea+'</td>';
+						str+='<td>'+ajaxresp[i].pencentageOfPlanting+'</td>';
+					str+='</tr>';
+				}
+			}
+			tableView(divIdd,theadArr,str,locationType);
+		}
+	});
+}
+
+function getNregaLevelsWiseDataFrAvenue(divIdd,locationType)
+{
+	$("#"+divIdd).html(spinner);
+	 var theadArr = [locationType,'Target','Sanctioned Area (in Kms)','Sanctioned Percentage','Pitting  Area (in Kms)','Planting  Area (in Kms)','Achievement Percentage'];
+	if(locationType == "constituency")
+		theadArr = ["district",locationType,'Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Achievement Percentage'];
+	else if(locationType == "mandal")
+		theadArr = ["district","constituency",locationType,'Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Achievement Percentage'];
+	else if(locationType == "panchayat")
+		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Achievement Percentage'];
+	
+	var json = {
+		year 		: "2017",
+		fromDate 	: glStartDate,
+		toDate 		: glEndDate,
+		locationType: locationType,
+		divType 	: globalDivName
+	}
+	$.ajax({
+		url: 'getNregaLevelsWiseDataFrAvenue',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			var str = '';
+			if(ajaxresp != null && ajaxresp.length > 0){
+				for(var i in ajaxresp){
+					str+='<tr>';
+						if(locationType == "state"){
+							str+='<td class="text-capital">'+locationType+'</td>';
 						}
+						else if(locationType == "district"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						}
+						else if(locationType == "constituency"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+						}
+						else if(locationType == "mandal"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+						}
+						else if(locationType == "panchayat"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+						}
+						if(locationType == "state" || locationType == "district")
+							str+='<td>'+ajaxresp[i].targetKMS+'</td>';
+						str+='<td>'+ajaxresp[i].sanctionedKMS+'</td>';
+						if(locationType == "state" || locationType == "district")
+							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+						str+='<td>'+ajaxresp[i].pittingKMS+'</td>';
+						str+='<td>'+ajaxresp[i].plantingKMS+'</td>';
+						str+='<td>'+ajaxresp[i].pencentageOfPlanting+'</td>';
+					str+='</tr>';
+				}
+			}
+			tableView(divIdd,theadArr,str,locationType);
+		}
+	});
+}
+
+
+var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','CC Roads','Anganwadi','Gram Panchayat Buildings','Mandal buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk worm','Cattle drinking water trough','Raising of Perinnial Fodder','Solid Waste Management','Play Fields','Burial Grounds','Fish Drying Platforms','Fish Ponds','Agriculture Activities','Average Wage','Avg days of emp per HH','HH Comp 100 days','Timely Payments','Horticulture','Avenue'];
+
+/*for(var i in overViewArr){
+	getNREGSProjectsOverviewArr(overViewArr[i]);
+}
+
+function getNREGSProjectsOverviewArr(parameter)
+{
+	$("#projectsOverview").html(spinner);
+	var json = {
+			year:"2017",
+			fromDate:glStartDate,
+			toDate:glEndDate,
+			parameter : parameter
+		}
+	$.ajax({
+		url: 'getNREGSProjectsOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildNREGSProjectsOverview(ajaxresp,'');
+			
+		}
+	});
+}*/
+
+function getNregaLevelsWiseDataForCCRoads(divIdd,locationType)
+{
+	$("#"+divIdd).html(spinner);
+	var theadArr = [locationType,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+	if(locationType == "constituency")
+		theadArr = ["district",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+	else if(locationType == "mandal")
+		theadArr = ["district","constituency",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+	else if(locationType == "panchayat")
+		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+	
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locationType,
+		divType : globalDivName
+	}
+	$.ajax({
+		url: 'getNregaLevelsWiseDataForCCRoads',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			var str = '';
+			if(ajaxresp != null && ajaxresp.length > 0){
+				for(var i in ajaxresp){
+					str+='<tr>';
+						if(locationType == "state"){
+							str+='<td class="text-capital">'+locationType+'</td>';
+						}
+						else if(locationType == "district"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						}
+						else if(locationType == "constituency"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+						}
+						else if(locationType == "mandal"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+						}
+						else if(locationType == "panchayat"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+						}
+						if(locationType == "state" || locationType == "district")
+							str+='<td>'+ajaxresp[i].targetKMS+'</td>';
+						str+='<td>'+ajaxresp[i].sanctionedAmount+'</td>';
+						str+='<td>'+ajaxresp[i].sanctionedKMS+'</td>';
+						if(locationType == "state" || locationType == "district")
+							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+						str+='<td>'+ajaxresp[i].expenditureAmount+'</td>';
+						str+='<td>'+ajaxresp[i].completedKMS+'</td>';
 						str+='<td>'+ajaxresp[i].percentage+'</td>';
 					str+='</tr>';
 				}

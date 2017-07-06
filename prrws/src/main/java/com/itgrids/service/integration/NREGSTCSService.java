@@ -372,8 +372,6 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GPBuildingService/GPBuildingData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Jala Siri"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrsService/NtrsData";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CC Roads"))
-				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CCRoadsService/CCRoadsData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Anganwadi"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnganwadiService/AnganwadiData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mandal buildings"))
@@ -413,46 +411,39 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
-	 	    			//if(inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("panchayat")){
-	 	    				for(int i=0;i<finalArray.length();i++){
-		 	    				NregsDataVO vo = new NregsDataVO();
-		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-		 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
-		 	    				vo.setDistrict(jObj.getString("DISTRICT"));
-		 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
-		 	    				vo.setMandal(jObj.getString("MANDAL"));
-		 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
-		 	    				vo.setTarget(jObj.getLong("TARGET"));
-		 	    				vo.setGrounded(jObj.getString("GROUNDED"));
-		 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
-		 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
-		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
-		 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-		 	    				
-		 	    				voList.add(vo);
-		 	    				//getDistrictsConstitByType(voList,inputVO.getType());
-		 	    			}
-	 	    			/*}
-	 	    			else{
-	 	    				for(int i=0;i<finalArray.length();i++){
-		 	    				NregsDataVO vo = new NregsDataVO();
-		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-		 	    				vo.setUniqueId(jObj.getLong("PID"));
-		 	    				vo.setDistrict(jObj.getString("DNAME"));
-		 	    				vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
-		 	    				vo.setMandal(jObj.getString("MNAME"));
-		 	    				vo.setPanchayat(jObj.getString("PNAME"));
-		 	    				vo.setTarget(jObj.getLong("TARGET"));
-		 	    				vo.setGrounded(jObj.getString("GROUNDED"));
-		 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
-		 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
-		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
-		 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-		 	    				
-		 	    				voList.add(vo);
-		 	    				//getDistrictsConstitByType(voList,inputVO.getType());
-		 	    			}
-	 	    			}*/
+ 	    				for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUEID") != " " ? jObj.getString("UNIQUEID") : "1")));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTarget(jObj.getLong("TARGET"));
+	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery")
+	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worm")
+	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle drinking water trough")
+	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising of Perinnial Fodder"))
+	 	    							&& inputVO.getLocationType().trim().toString().equalsIgnoreCase("state")){
+	 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
+	 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
+	 	    				}
+	 	    				
+	 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Ponds")
+	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Drying Platforms"))
+	 	    						&& (inputVO.getLocationType().trim().toString().equalsIgnoreCase("state")
+	 	    								|| inputVO.getLocationType().trim().toString().equalsIgnoreCase("district"))){
+	 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
+	 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
+	 	    				}
+	 	    				
+	 	    				voList.add(vo);
+	 	    			}
 	 	    		}
 	 	    	}
 	 	      }
@@ -704,8 +695,8 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				vo.setMandal(jObj.getString("MANDAL"));
 			 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 			 	    				vo.setTarget(jObj.getLong("TARGET"));
-			 	    				vo.setPitsPlanted(jObj.getString("PITS_PLANTED"));
-			 	    				vo.setPlantsPlanted(jObj.getString("PLANTS_PLANTED"));
+			 	    				//vo.setPitsPlanted(jObj.getString("PITS_PLANTED"));
+			 	    				//vo.setPlantsPlanted(jObj.getString("PLANTS_PLANTED"));
 			 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			 	    				list.add(vo);
 			 	    			}
@@ -1520,18 +1511,68 @@ public class NREGSTCSService implements INREGSTCSService{
 	}
 	
 	/*
-	 * Date : 04/07/2017
+	 * Date : 06/07/2017
 	 * Author :Sravanth
-	 * @description : getNregaLevelsWiseDataFrSERP
+	 * @description : getNregaLevelsWiseDataFrHorticulture
 	 */
-	public List<NregsDataVO> getNregaLevelsWiseDataFrSERP(InputVO inputVO){
+	public List<NregsDataVO> getNregaLevelsWiseDataFrHorticulture(InputVO inputVO){
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
 		try {
 			String webServiceUrl = null;
 			
 			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Horticulture"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/HorticultureService/HorticultureData";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avenue"))
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				if(inputVO.getLocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getLocationType().trim().toString().equalsIgnoreCase("district")){
+	 	    					vo.setTargetACRES(jObj.getString("TARGETACRES"));
+		 	    				vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
+	 	    				}
+	 	    				vo.setSanctionedACRES(jObj.getString("SANCTIONEDACRES"));
+	 	    				vo.setPittingArea(jObj.getString("PITTINGAREA"));
+	 	    				vo.setPlantingArea(jObj.getString("PLANTINGAREA"));
+	 	    				vo.setPencentageOfPlanting(jObj.getString("PERCENTAGEOFPLANTING"));
+	 	    				voList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	   }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataFrHorticulture - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	/*
+	 * Date : 06/07/2017
+	 * Author :Sravanth
+	 * @description : getNregaLevelsWiseDataFrAvenue
+	 */
+	public List<NregsDataVO> getNregaLevelsWiseDataFrAvenue(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			String webServiceUrl = null;
+			
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avenue"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AvenueService/AvenueData";
 			
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
@@ -1552,24 +1593,79 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
-	 	    				vo.setTarget(jObj.getLong("TARGET"));
-	 	    				if(inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("state")){
-	 	    					vo.setAchivement(new BigDecimal(jObj.getString("ACHIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				if(inputVO.getLocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getLocationType().trim().toString().equalsIgnoreCase("district")){
+	 	    					vo.setTargetKMS(jObj.getString("TARGETKMS"));
+		 	    				vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
 	 	    				}
-	 	    				else{
-	 	    					vo.setPitsPlanted(jObj.getString("PITS_PLANTED"));
-	 	    					vo.setPlantsPlanted(jObj.getString("PLANTS_PLANTED"));
-	 	    				}
-	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				vo.setSanctionedKMS(jObj.getString("SANCTIONEDKMS"));
+	 	    				vo.setPittingKMS(jObj.getString("PITTINGKMS"));
+	 	    				vo.setPlantingKMS(jObj.getString("PLANTINGKMS"));
+	 	    				vo.setPencentageOfPlanting(jObj.getString("PERCENTAGEOFPLANTING"));
 	 	    				voList.add(vo);
-	 	    				
 	 	    			}
 	 	    		}
 	 	    	}
 	 	   }
 	        
 		} catch (Exception e) {
-			LOG.error("Exception raised at getNregaLevelsWiseDataFrSERP - NREGSTCSService service", e);
+			LOG.error("Exception raised at getNregaLevelsWiseDataFrAvenue - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	/*
+	 * Date : 06/07/2017
+	 * Author :Sravanth
+	 * @description : getNregaLevelsWiseDataForCCRoads
+	 */
+	public List<NregsDataVO> getNregaLevelsWiseDataForCCRoads(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			String webServiceUrl = null;
+			
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CC Roads"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CCRoadsService/CCRoadsData";
+			 
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+ 	    				for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				if(inputVO.getLocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getLocationType().trim().toString().equalsIgnoreCase("district")){
+	 	    					vo.setTargetKMS(jObj.getString("TARGETKMS"));
+	 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
+	 	    				}
+	 	    				if(inputVO.getLocationType().trim().toString().equalsIgnoreCase("mandal") || inputVO.getLocationType().trim().toString().equalsIgnoreCase("panchayat"))
+	 	    					vo.setSanctionedAmount(jObj.getString("SANCTIONED_AMOUNT"));
+	 	    				else
+	 	    					vo.setSanctionedAmount(jObj.getString("SANCTIONEDAMOUNT"));
+	 	    				vo.setSanctionedKMS(jObj.getString("SANCTIONEDKMS"));
+	 	    				vo.setExpenditureAmount(jObj.getString("EXPENDITUREAMOUNT"));
+	 	    				vo.setCompletedKMS(jObj.getString("COMPLETEDKMS"));
+	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				
+	 	    				voList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataForCCRoads - NREGSTCSService service", e);
 		}
 		
 		return voList;
