@@ -5,9 +5,10 @@
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 	var $windowWidth = $(window).width();
 	///Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations
+	
 	function onLoadCalls()
 	{
-	
+		getAllSubLocations('multi-level-selection-menu',2,1,'');
 		getLocationWiseFundDetails(3,'highest','highFundDist',0,0);
 		getLocationWiseFundDetails(4,'highest','highFundCons',0,0);
 		getLocationWiseFundDetails(3,'lowest','lowFundDist',0,0);
@@ -4415,7 +4416,7 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 		  }  
 		});
 	  }
-	  
+	 	  
 	  //getSchemeWiseOverviewDetails(4);
 	//getSchemeWiseOverviewDetails(3);
 	function getSchemeWiseOverviewDetails(subProgId){
@@ -4469,4 +4470,4 @@ function compareFundsBetweenFinancialYears(levelId,divId){
 		});
 	}
 	  
-	
+	 
