@@ -4322,6 +4322,9 @@
   		<property name="tdpCommitteeDAO" ref="tdpCommitteeDAO" ></property>
   		<property name="cadreDetailsService" ref="cadreDetailsService" ></property>
   		<property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO" ></property>
+  		<property name="nominatedPostDAO" ref="nominatedPostDAO" ></property>
+  		<property name="nominatedPostApplicationDAO" ref="nominatedPostApplicationDAO" ></property>
+  		<property name="boardLevelDAO" ref="boardLevelDAO" ></property>
   		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
   		<property name="selfAppraisalCandidateLocationNewDAO" ref="selfAppraisalCandidateLocationNewDAO" ></property>
   		<property name="selfAppraisalDesignationTargetDAO" ref="selfAppraisalDesignationTargetDAO" ></property>

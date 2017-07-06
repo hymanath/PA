@@ -300,4 +300,32 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		 return Action.SUCCESS;
 	 }
 	 
+	 public String getNominatedPostStatusWiseCount(){
+		 try{
+			 jObj = new JSONObject(getTask());
+			 keyValueVOList = locationDashboardService.getNominatedPostStatusWiseCount(jObj.getLong("constituencyId"),jObj.getString("fromDateStr"),jObj.getString("toDateStr"));
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getNominatedPostStatusWiseCount() of LocationDashboardAction{}", e);
+		 }
+		 return Action.SUCCESS;
+	 }
+	 public String getNominatedPostApplicationStatusWiseCount(){
+		 try{
+			 jObj = new JSONObject(getTask());
+			 keyValueVOList = locationDashboardService.getNominatedPostApplicationStatusWiseCount(jObj.getLong("constituencyId"),jObj.getString("fromDateStr"),jObj.getString("toDateStr"));
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getNominatedPostApplicationStatusWiseCount() of LocationDashboardAction{}", e);
+		 }
+		 return Action.SUCCESS;
+	 }
+	 public String getPositionWiseMemberCount(){
+		 try{
+			 jObj = new JSONObject(getTask());
+			 keyValueVOList = locationDashboardService.getPositionWiseMemberCount(jObj.getLong("constituencyId"),jObj.getString("fromDateStr"),jObj.getString("toDateStr"));
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getPositionWiseMemberCount() of LocationDashboardAction{}", e);
+		 }
+		 return Action.SUCCESS;
+	 }
+	 
 }
