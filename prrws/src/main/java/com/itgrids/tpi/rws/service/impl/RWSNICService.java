@@ -519,49 +519,128 @@ public class RWSNICService implements IRWSNICService{
            	}else{
            		String output =response.getEntity(String.class);
            		if(output != null && !output.isEmpty()){
-           			Map<Long,BasicVO> finalMap = new HashMap<Long,BasicVO>(0);
            			JSONObject jobj = new JSONObject(output);
               
-           			if(jobj.getJSONArray("assetTypeList") != null && jobj.getJSONArray("assetTypeList").length() > 0){
-           				JSONArray finalArray = jobj.getJSONArray("assetTypeList");
-                
-           				for(int i=0;i<finalArray.length();i++){
-           					JSONObject jObj = (JSONObject) finalArray.get(i);
-           					if(finalMap.get(jObj.getLong("locationId")) == null){
-           						BasicVO inVO = new BasicVO();
-           						inVO.setId(jObj.getLong("locationId"));
-           						inVO.setName(jObj.getString("locationName"));
-                     
-           						if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
-           							BasicVO basicVO = new BasicVO();
-           							basicVO.setAssetType(jObj.getString("assetType"));
-           							basicVO.setCount(jObj.getLong("count"));
-           							inVO.getBasicList().add(basicVO);
-           						}
-           						
-           						finalMap.put(jObj.getLong("locationId"), inVO);
-           					}else{
-           						if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
-           							BasicVO basicVO = new BasicVO();
-           							basicVO.setAssetType(jObj.getString("assetType"));
-           							basicVO.setCount(jObj.getLong("count"));
-           							finalMap.get(jObj.getLong("locationId")).getBasicList().add(basicVO);
-           						}
-           					}
-
+           			if(jobj.getString("status").equalsIgnoreCase("Success") && jobj.getJSONArray("assetTypeList") != null && jobj.getJSONArray("assetTypeList").length() > 0){
+           				if(vo.getLocationType().equalsIgnoreCase("mandal")){
+           					buildAssetsDataForMandalLevel(jobj,assetsList);
+           				}else{
+           					buildAssetsData(jobj,assetsList);
            				}
+           				
            			}
-              		if(finalMap.size() > 0)
-              			assetsList.addAll(finalMap.values());
-         		}
-            }
-         
-     	} catch (Exception e) {
+           		}
+           	}
+     	}catch (Exception e) {
      		LOG.error("Exception raised at getAssetsInfo - RuralWaterSupplyDashBoardService service", e);
      	}
      	return assetsList;
      }
 	
+	public void buildAssetsDataForMandalLevel(JSONObject jobj,List<BasicVO> assetsList){
+		try {
+			Map<Long,Map<Long,BasicVO>> finalMap = new HashMap<Long, Map<Long,BasicVO>>(0);//Map<distId,Map<mandalId,BasicVO>>
+			JSONArray finalArray = jobj.getJSONArray("assetTypeList");
+			for(int i=0;i<finalArray.length();i++){
+				JSONObject jObj = (JSONObject) finalArray.get(i);
+				if(finalMap.get(jObj.getLong("districtId")) == null){
+					Map<Long,BasicVO> inMap = new HashMap<Long, BasicVO>(0);
+					BasicVO vo = new BasicVO();
+					vo.setParentLocationId(jObj.getLong("districtId"));
+					vo.setId(jObj.getLong("locationId"));
+					vo.setName(jObj.getString("locationName"));
+					
+					if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+	   					BasicVO basicVO = new BasicVO();
+	   					basicVO.setAssetType(jObj.getString("assetType"));
+	   					basicVO.setCount(jObj.getLong("count"));
+	   					vo.getBasicList().add(basicVO);
+	   				}
+					
+					inMap.put(jObj.getLong("locationId"), vo);
+					finalMap.put(jObj.getLong("districtId"),inMap);
+				}else{
+					Map<Long, BasicVO> distMap = finalMap.get(jObj.getLong("districtId"));
+					
+					if(distMap.get(jObj.getLong("locationId")) == null){
+						BasicVO vo = new BasicVO();
+						vo.setParentLocationId(jObj.getLong("districtId"));
+						vo.setId(jObj.getLong("locationId"));
+						vo.setName(jObj.getString("locationName"));
+						
+						if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+		   					BasicVO basicVO = new BasicVO();
+		   					basicVO.setAssetType(jObj.getString("assetType"));
+		   					basicVO.setCount(jObj.getLong("count"));
+		   					vo.getBasicList().add(basicVO);
+		   				}
+						finalMap.get(jObj.getLong("districtId")).put(jObj.getLong("locationId"), vo);
+						
+					}else{
+						if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+		   					BasicVO basicVO = new BasicVO();
+		   					basicVO.setAssetType(jObj.getString("assetType"));
+		   					basicVO.setCount(jObj.getLong("count"));
+		   					distMap.get(jObj.getLong("locationId")).getBasicList().add(basicVO);
+		   				}
+					}
+				}
+			}
+			
+			if(finalMap != null && finalMap.size() > 0){
+				for (Entry<Long, Map<Long, BasicVO>> distEntry : finalMap.entrySet()) {
+					Map<Long, BasicVO> manMap = distEntry.getValue();
+					if(manMap != null && manMap.size() > 0){
+						for (Entry<Long, BasicVO> manEntry : manMap.entrySet()) {
+							assetsList.add(manEntry.getValue());
+						}
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at buildAssetsDataForMandalLevel - RuralWaterSupplyDashBoardService service", e);
+		}
+	}
+	
+	public void buildAssetsData(JSONObject jobj,List<BasicVO> assetsList){
+		try {
+			Map<Long,BasicVO> finalMap = new HashMap<Long,BasicVO>(0);
+			JSONArray finalArray = jobj.getJSONArray("assetTypeList");
+	                
+	   		for(int i=0;i<finalArray.length();i++){
+	   			JSONObject jObj = (JSONObject) finalArray.get(i);
+	   			if(finalMap.get(jObj.getLong("locationId")) == null){
+	   				BasicVO inVO = new BasicVO();
+	   				inVO.setId(jObj.getLong("locationId"));
+	   				inVO.setName(jObj.getString("locationName"));
+	             
+	   				if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+	   					BasicVO basicVO = new BasicVO();
+	   					basicVO.setAssetType(jObj.getString("assetType"));
+	   					basicVO.setCount(jObj.getLong("count"));
+	   					inVO.getBasicList().add(basicVO);
+	   				}
+	   						
+	   				finalMap.put(jObj.getLong("locationId"), inVO);
+	   			}else{
+	   				if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+	   					BasicVO basicVO = new BasicVO();
+	   					basicVO.setAssetType(jObj.getString("assetType"));
+	   					basicVO.setCount(jObj.getLong("count"));
+	   					finalMap.get(jObj.getLong("locationId")).getBasicList().add(basicVO);
+	   				}
+	   			}
+
+	   		}
+	   			
+	   		if(finalMap.size() > 0)
+	   			assetsList.addAll(finalMap.values());
+		}catch (Exception e) {
+			LOG.error("Exception raised at buildAssetsData - RuralWaterSupplyDashBoardService service", e);
+		}		
+ 	}
+		
 	public List<StatusVO> getAlertDetailsOfCategoryByStatusWise(InputVO inputVO){
 		List<StatusVO> voList = new ArrayList<StatusVO>(0);
 		try {
