@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -862,7 +863,7 @@ public class RWSNICService implements IRWSNICService{
 	public List<KPIVO> getKeyPerformanceIndicatorsInfo(InputVO inputVO){
 		List<KPIVO> voList = new ArrayList<KPIVO>(0);
 		try {
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getKpiDeatils");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getKpiDeatils");
 			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.207:8442/rwscore/cd/getKpiDeatils");
 		    String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		    ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
@@ -874,81 +875,219 @@ public class RWSNICService implements IRWSNICService{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jobj = new JSONObject(output);
-	 	    		
-	 	    		Map<String,KPIVO> finalMap = new HashMap<String, KPIVO>();
-	 	    		
-	 	    		if(jobj.getJSONArray("acheieveMentsData") != null && jobj.getJSONArray("acheieveMentsData").length() > 0){
-	 	    			JSONArray acvhiementArr = jobj.getJSONArray("acheieveMentsData");
-	 	    			for (int i = 0; i < acvhiementArr.length(); i++) {
-							JSONArray indiArr = acvhiementArr.getJSONArray(i);
-							if(finalMap.get(indiArr.get(0).toString()) == null){
-								KPIVO vo = new KPIVO();
-								vo.setLocationId(indiArr.get(0).toString());
-								vo.setLocationName(indiArr.get(1).toString());
-								if(indiArr.get(2).toString().equalsIgnoreCase("NSS") || indiArr.get(2).toString().equalsIgnoreCase("NC")){
-									vo.setQaAchivement(Long.parseLong(indiArr.get(3)+""));
-								}else if(indiArr.get(2).toString().equalsIgnoreCase("PC1") || indiArr.get(2).toString().equalsIgnoreCase("PC2") 
-										|| indiArr.get(2).toString().equalsIgnoreCase("PC3") || indiArr.get(2).toString().equalsIgnoreCase("PC4")){
-									vo.setPcAchivement(Long.parseLong(indiArr.get(3)+""));
-								}
-								finalMap.put(indiArr.get(0).toString(),vo);
-							}else{
-								KPIVO vo = finalMap.get(indiArr.get(0).toString());
-								if(indiArr.get(2).toString().equalsIgnoreCase("NSS") || indiArr.get(2).toString().equalsIgnoreCase("NC")){
-									vo.setQaAchivement(vo.getQaAchivement()+Long.parseLong(indiArr.get(3)+""));
-								}else if(indiArr.get(2).toString().equalsIgnoreCase("PC1") || indiArr.get(2).toString().equalsIgnoreCase("PC2") 
-										|| indiArr.get(2).toString().equalsIgnoreCase("PC3") || indiArr.get(2).toString().equalsIgnoreCase("PC4")){
-									vo.setPcAchivement(vo.getPcAchivement()+Long.parseLong(indiArr.get(3)+""));
-								}
-							}
-						}
+	 	    		if(jobj.getString("status").equalsIgnoreCase("Success")){
+	 	    			if(inputVO.getLocationType().equalsIgnoreCase("mandal")){
+	 	    				buildKPIMandalResult(jobj,voList);
+	 	    			}else{
+	 	    				buildKPIResult(jobj,voList);
+	 	    			}
 	 	    		}
 	 	    		
-	 	    		if(jobj.getJSONArray("targetData") != null && jobj.getJSONArray("targetData").length() > 0){
-	 	    			JSONArray targetArr = jobj.getJSONArray("targetData");
-	 	    			for (int i = 0; i < targetArr.length(); i++) {
-							JSONArray indiArr = targetArr.getJSONArray(i);
-							if(finalMap.get(indiArr.get(0).toString()) == null){
-								KPIVO vo = new KPIVO();
-								vo.setLocationId(indiArr.get(0).toString());
-								vo.setLocationName(indiArr.get(1).toString());
-								if(indiArr.get(2).toString().equalsIgnoreCase("NSS") || indiArr.get(2).toString().equalsIgnoreCase("NC")){
-									vo.setQaTarget(Long.parseLong(indiArr.get(3)+""));
-								}else if(indiArr.get(2).toString().equalsIgnoreCase("PC1") || indiArr.get(2).toString().equalsIgnoreCase("PC2") 
-										|| indiArr.get(2).toString().equalsIgnoreCase("PC3") || indiArr.get(2).toString().equalsIgnoreCase("PC4")){
-									vo.setPcTarget(Long.parseLong(indiArr.get(3)+""));
-								}
-								finalMap.put(indiArr.get(0).toString(),vo);
-							}else{
-								KPIVO vo = finalMap.get(indiArr.get(0).toString());
-								if(indiArr.get(2).toString().equalsIgnoreCase("NSS") || indiArr.get(2).toString().equalsIgnoreCase("NC")){
-									vo.setQaTarget(vo.getQaTarget()+Long.parseLong(indiArr.get(3)+""));
-								}else if(indiArr.get(2).toString().equalsIgnoreCase("PC1") || indiArr.get(2).toString().equalsIgnoreCase("PC2") 
-										|| indiArr.get(2).toString().equalsIgnoreCase("PC3") || indiArr.get(2).toString().equalsIgnoreCase("PC4")){
-									vo.setPcTarget(vo.getPcTarget()+Long.parseLong(indiArr.get(3)+""));
-								}
-							}
-						}
-	 	    		}
 	 	    		
-	 	    		if(finalMap != null && finalMap.size() > 0){
-	 	    			for (Entry<String, KPIVO> entry : finalMap.entrySet()) {
-							if(entry.getValue().getPcTarget() > 0l){
-								entry.getValue().setPcPercentage((entry.getValue().getPcAchivement()*100.00)/entry.getValue().getPcTarget());
-							}
-							
-							if(entry.getValue().getQaTarget() > 0l){
-								entry.getValue().setQaPercentage((entry.getValue().getQaAchivement()*100.00)/entry.getValue().getQaTarget());
-							}
-						}
-	 	    			voList.addAll(finalMap.values());
-	 	    		}
 	 	    	}
 	 	    }
 		} catch (Exception e) {
 			LOG.error("Exception raised at getKeyPerformanceIndicatorsInfo - RWSNICService service", e);
 		}
 		return voList;
+	}
+	
+	public void buildKPIMandalResult(JSONObject jobj,List<KPIVO> voList){
+		try {
+			Map<Long,Map<Long,KPIVO>> finalMap = new HashMap<Long, Map<Long,KPIVO>>(0);
+			
+			if(jobj.getJSONArray("acheieveMentsData") != null && jobj.getJSONArray("acheieveMentsData").length() > 0){
+				JSONArray acvhiementArr = jobj.getJSONArray("acheieveMentsData");
+				for (int i = 0; i < acvhiementArr.length(); i++) {
+					JSONArray indiArr = acvhiementArr.getJSONArray(i);
+					if(finalMap.get(indiArr.getLong(5)) == null){
+						KPIVO vo = new KPIVO();
+						vo.setParentLocationId(indiArr.getLong(5));
+						vo.setLocationId(indiArr.getString(0));
+						vo.setLocationName(indiArr.getString(1));
+						
+						if(indiArr.getString(2).equalsIgnoreCase("NSS") || indiArr.getString(2).equalsIgnoreCase("NC")){
+							vo.setQaAchivement(Long.parseLong(indiArr.getString(3)));
+						}else if(indiArr.getString(2).equalsIgnoreCase("PC1") || indiArr.getString(2).equalsIgnoreCase("PC2") 
+								|| indiArr.getString(2).equalsIgnoreCase("PC3") || indiArr.getString(2).equalsIgnoreCase("PC4")){
+							vo.setPcAchivement(indiArr.getLong(3));
+						}
+						
+						Map<Long,KPIVO> mandalMap = new HashMap<Long, KPIVO>(0);
+						mandalMap.put(indiArr.getLong(0), vo);
+						finalMap.put(indiArr.getLong(5), mandalMap);
+					}else{
+						Map<Long, KPIVO> mandlMap = finalMap.get(indiArr.getLong(5));
+						if(mandlMap.get(indiArr.getLong(0)) == null){
+							KPIVO vo = new KPIVO();
+							vo.setParentLocationId(indiArr.getLong(5));
+							vo.setLocationId(indiArr.getString(0));
+							vo.setLocationName(indiArr.getString(1));
+							
+							if(indiArr.getString(2).equalsIgnoreCase("NSS") || indiArr.getString(2).equalsIgnoreCase("NC")){
+								vo.setQaAchivement(Long.parseLong(indiArr.getString(3)));
+							}else if(indiArr.getString(2).equalsIgnoreCase("PC1") || indiArr.getString(2).equalsIgnoreCase("PC2") 
+									|| indiArr.getString(2).equalsIgnoreCase("PC3") || indiArr.getString(2).equalsIgnoreCase("PC4")){
+								vo.setPcAchivement(indiArr.getLong(3));
+							}
+							
+							//Map<Long,KPIVO> mandalMap = new HashMap<Long, KPIVO>(0);
+							mandlMap.put(indiArr.getLong(0), vo);
+						}else{
+							KPIVO vo = mandlMap.get(indiArr.getLong(0));
+							if(indiArr.getString(2).equalsIgnoreCase("NSS") || indiArr.getString(2).equalsIgnoreCase("NC")){
+								vo.setQaAchivement(Long.parseLong(indiArr.getString(3)));
+							}else if(indiArr.getString(2).equalsIgnoreCase("PC1") || indiArr.getString(2).equalsIgnoreCase("PC2") 
+									|| indiArr.getString(2).equalsIgnoreCase("PC3") || indiArr.getString(2).equalsIgnoreCase("PC4")){
+								vo.setPcAchivement(indiArr.getLong(3));
+							}
+						}
+					}
+				}
+			}
+			
+			
+			///
+			if(jobj.getJSONArray("targetData") != null && jobj.getJSONArray("targetData").length() > 0){
+				JSONArray acvhiementArr = jobj.getJSONArray("targetData");
+				for (int i = 0; i < acvhiementArr.length(); i++) {
+					JSONArray indiArr = acvhiementArr.getJSONArray(i);
+					if(finalMap.get(indiArr.getLong(5)) == null){
+						KPIVO vo = new KPIVO();
+						vo.setParentLocationId(indiArr.getLong(5));
+						vo.setLocationId(indiArr.getString(0));
+						vo.setLocationName(indiArr.getString(1));
+						
+						if(indiArr.getString(2).equalsIgnoreCase("NSS") || indiArr.getString(2).equalsIgnoreCase("NC")){
+							vo.setQaAchivement(Long.parseLong(indiArr.getString(3)));
+						}else if(indiArr.getString(2).equalsIgnoreCase("PC1") || indiArr.getString(2).equalsIgnoreCase("PC2") 
+								|| indiArr.getString(2).equalsIgnoreCase("PC3") || indiArr.getString(2).equalsIgnoreCase("PC4")){
+							vo.setPcAchivement(indiArr.getLong(3));
+						}
+						
+						Map<Long,KPIVO> mandalMap = new HashMap<Long, KPIVO>(0);
+						mandalMap.put(indiArr.getLong(0), vo);
+						finalMap.put(indiArr.getLong(5), mandalMap);
+					}else{
+						Map<Long, KPIVO> mandlMap = finalMap.get(indiArr.getLong(5));
+						if(mandlMap.get(indiArr.getLong(0)) == null){
+							KPIVO vo = new KPIVO();
+							vo.setParentLocationId(indiArr.getLong(5));
+							vo.setLocationId(indiArr.getString(0));
+							vo.setLocationName(indiArr.getString(1));
+							
+							if(indiArr.getString(2).equalsIgnoreCase("NSS") || indiArr.getString(2).equalsIgnoreCase("NC")){
+								vo.setQaAchivement(Long.parseLong(indiArr.getString(3)));
+							}else if(indiArr.getString(2).equalsIgnoreCase("PC1") || indiArr.getString(2).equalsIgnoreCase("PC2") 
+									|| indiArr.getString(2).equalsIgnoreCase("PC3") || indiArr.getString(2).equalsIgnoreCase("PC4")){
+								vo.setPcAchivement(indiArr.getLong(3));
+							}
+							
+							Map<Long,KPIVO> mandalMap = new HashMap<Long, KPIVO>(0);
+							mandalMap.put(indiArr.getLong(0), vo);
+						}else{
+							KPIVO vo = mandlMap.get(indiArr.getLong(0));
+							if(indiArr.getString(2).equalsIgnoreCase("NSS") || indiArr.getString(2).equalsIgnoreCase("NC")){
+								vo.setQaAchivement(Long.parseLong(indiArr.getString(3)));
+							}else if(indiArr.getString(2).equalsIgnoreCase("PC1") || indiArr.getString(2).equalsIgnoreCase("PC2") 
+									|| indiArr.getString(2).equalsIgnoreCase("PC3") || indiArr.getString(2).equalsIgnoreCase("PC4")){
+								vo.setPcAchivement(indiArr.getLong(3));
+							}
+						}
+					}
+				}
+			}
+			
+			if(finalMap != null && finalMap.size() > 0){
+				for (Entry<Long, Map<Long, KPIVO>> dist : finalMap.entrySet()) {
+					Map<Long, KPIVO>  distMap = dist.getValue();
+					if(distMap != null && distMap.size() > 0){
+						for (Entry<Long, KPIVO> mandalMap : distMap.entrySet()) {
+							voList.add(mandalMap.getValue());
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at buildKPIMandalResult - RWSNICService service", e);
+		}
+	}
+	
+	public void buildKPIResult(JSONObject jobj,List<KPIVO> voList){
+		try {
+			Map<String,KPIVO> finalMap = new HashMap<String, KPIVO>(0);
+	  		
+	  		if(jobj.getJSONArray("acheieveMentsData") != null && jobj.getJSONArray("acheieveMentsData").length() > 0){
+	  			JSONArray acvhiementArr = jobj.getJSONArray("acheieveMentsData");
+	  			for (int i = 0; i < acvhiementArr.length(); i++) {
+						JSONArray indiArr = acvhiementArr.getJSONArray(i);
+						if(finalMap.get(indiArr.get(0).toString()) == null){
+							KPIVO vo = new KPIVO();
+							vo.setLocationId(indiArr.get(0).toString());
+							vo.setLocationName(indiArr.get(1).toString());
+							if(indiArr.get(2).toString().equalsIgnoreCase("NSS") || indiArr.get(2).toString().equalsIgnoreCase("NC")){
+								vo.setQaAchivement(Long.parseLong(indiArr.get(3)+""));
+							}else if(indiArr.get(2).toString().equalsIgnoreCase("PC1") || indiArr.get(2).toString().equalsIgnoreCase("PC2") 
+									|| indiArr.get(2).toString().equalsIgnoreCase("PC3") || indiArr.get(2).toString().equalsIgnoreCase("PC4")){
+								vo.setPcAchivement(Long.parseLong(indiArr.get(3)+""));
+							}
+							finalMap.put(indiArr.get(0).toString(),vo);
+						}else{
+							KPIVO vo = finalMap.get(indiArr.get(0).toString());
+							if(indiArr.get(2).toString().equalsIgnoreCase("NSS") || indiArr.get(2).toString().equalsIgnoreCase("NC")){
+								vo.setQaAchivement(vo.getQaAchivement()+Long.parseLong(indiArr.get(3)+""));
+							}else if(indiArr.get(2).toString().equalsIgnoreCase("PC1") || indiArr.get(2).toString().equalsIgnoreCase("PC2") 
+									|| indiArr.get(2).toString().equalsIgnoreCase("PC3") || indiArr.get(2).toString().equalsIgnoreCase("PC4")){
+								vo.setPcAchivement(vo.getPcAchivement()+Long.parseLong(indiArr.get(3)+""));
+							}
+						}
+					}
+	  		}
+	  		
+	  		if(jobj.getJSONArray("targetData") != null && jobj.getJSONArray("targetData").length() > 0){
+	  			JSONArray targetArr = jobj.getJSONArray("targetData");
+	  			for (int i = 0; i < targetArr.length(); i++) {
+						JSONArray indiArr = targetArr.getJSONArray(i);
+						if(finalMap.get(indiArr.get(0).toString()) == null){
+							KPIVO vo = new KPIVO();
+							vo.setLocationId(indiArr.get(0).toString());
+							vo.setLocationName(indiArr.get(1).toString());
+							if(indiArr.get(2).toString().equalsIgnoreCase("NSS") || indiArr.get(2).toString().equalsIgnoreCase("NC")){
+								vo.setQaTarget(Long.parseLong(indiArr.get(3)+""));
+							}else if(indiArr.get(2).toString().equalsIgnoreCase("PC1") || indiArr.get(2).toString().equalsIgnoreCase("PC2") 
+									|| indiArr.get(2).toString().equalsIgnoreCase("PC3") || indiArr.get(2).toString().equalsIgnoreCase("PC4")){
+								vo.setPcTarget(Long.parseLong(indiArr.get(3)+""));
+							}
+							finalMap.put(indiArr.get(0).toString(),vo);
+						}else{
+							KPIVO vo = finalMap.get(indiArr.get(0).toString());
+							if(indiArr.get(2).toString().equalsIgnoreCase("NSS") || indiArr.get(2).toString().equalsIgnoreCase("NC")){
+								vo.setQaTarget(vo.getQaTarget()+Long.parseLong(indiArr.get(3)+""));
+							}else if(indiArr.get(2).toString().equalsIgnoreCase("PC1") || indiArr.get(2).toString().equalsIgnoreCase("PC2") 
+									|| indiArr.get(2).toString().equalsIgnoreCase("PC3") || indiArr.get(2).toString().equalsIgnoreCase("PC4")){
+								vo.setPcTarget(vo.getPcTarget()+Long.parseLong(indiArr.get(3)+""));
+							}
+						}
+					}
+	  		}
+	  		
+	  		if(finalMap != null && finalMap.size() > 0){
+	  			for (Entry<String, KPIVO> entry : finalMap.entrySet()) {
+						if(entry.getValue().getPcTarget() > 0l){
+							entry.getValue().setPcPercentage((entry.getValue().getPcAchivement()*100.00)/entry.getValue().getPcTarget());
+						}
+						
+						if(entry.getValue().getQaTarget() > 0l){
+							entry.getValue().setQaPercentage((entry.getValue().getQaAchivement()*100.00)/entry.getValue().getQaTarget());
+						}
+					}
+	  			voList.addAll(finalMap.values());
+	  		}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at buildKPIResult - RWSNICService service", e);
+		}
+
 	}
 	
 	/*
