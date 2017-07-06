@@ -32,6 +32,9 @@ public interface ILocationDashboardService {
 	public List<TdpCommitteeEnrollment> getEnrollmentIds();
 	
 	public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(String fromDate,String toDate,Long locationId,Long locationValue);
+	public List<KeyValueVO> getNominatedPostStatusWiseCount(Long constituencyId,String fromDateStr, String toDateStr);
+	public List<KeyValueVO> getNominatedPostApplicationStatusWiseCount(Long constituencyId,String fromDateStr, String toDateStr);
+	public List<KeyValueVO> getPositionWiseMemberCount(Long constituencyId,String fromDateStr, String toDateStr);
 	public List<ToursBasicVO> getLocationWiseTourMembersComplainceDtls(final String locationType,final Long locationValue,final String fromDateStr,final String toDateStr);
 	public List<BenefitCandidateVO> getGovtSchemeWiseBenefitMembersCount(final String locationType, final Long locationValue);
 	public List<BenefitCandidateVO> getMandalWiseBenefitMembersCount(final String locationType, final Long locationValue,final Long govtSchemeId);
