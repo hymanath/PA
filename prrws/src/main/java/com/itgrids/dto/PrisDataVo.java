@@ -21,8 +21,6 @@ public class PrisDataVo implements Serializable{
 	private Double subAchievedPercentage;
 	private Long subTotal;
 	
-	private List<PrisDataVo> totalList = new ArrayList<PrisDataVo>(0);
-	private List<PrisDataVo> subTotalList = new ArrayList<PrisDataVo>(0);
 	public Long getTotalHouseHolds() {
 		return totalHouseHolds;
 	}
@@ -76,18 +74,6 @@ public class PrisDataVo implements Serializable{
 	}
 	public void setSubAchievedPercentage(Double subAchievedPercentage) {
 		this.subAchievedPercentage = subAchievedPercentage;
-	}
-	public List<PrisDataVo> getTotalList() {
-		return totalList;
-	}
-	public void setTotalList(List<PrisDataVo> totalList) {
-		this.totalList = totalList;
-	}
-	public List<PrisDataVo> getSubTotalList() {
-		return subTotalList;
-	}
-	public void setSubTotalList(List<PrisDataVo> subTotalList) {
-		this.subTotalList = subTotalList;
 	}
 	public Long getSubTotal() {
 		return subTotal;
