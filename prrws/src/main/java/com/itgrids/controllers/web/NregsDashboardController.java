@@ -168,14 +168,38 @@ public class NregsDashboardController {
 		return levlWiseVOList;
 	}
 	
-	@PostMapping("/getNregaLevelsWiseDataFrSERP")
-	public @ResponseBody List<NregsDataVO> getNregaLevelsWiseDataFrSERP(@RequestBody InputVO vo){
+	@PostMapping("/getNregaLevelsWiseDataFrHorticulture")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsWiseDataFrHorticulture(@RequestBody InputVO vo){
 		List<NregsDataVO> levlWiseVOList = null;
 		try {
-			levlWiseVOList = nregsTcsService.getNregaLevelsWiseDataFrSERP(vo);
+			levlWiseVOList = nregsTcsService.getNregaLevelsWiseDataFrHorticulture(vo);
 			
 		} catch (Exception e) {
-			LOG.error("Exception raised at getNregaLevelsWiseDataFrSERP - NREGSController controller", e);
+			LOG.error("Exception raised at getNregaLevelsWiseDataFrHorticulture - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping("/getNregaLevelsWiseDataForCCRoads")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsWiseDataForCCRoads(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelsWiseDataForCCRoads(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataForCCRoads - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping("/getNregaLevelsWiseDataFrAvenue")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsWiseDataFrAvenue(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelsWiseDataFrAvenue(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataFrAvenue - NREGSController controller", e);
 		}
 		return levlWiseVOList;
 	}
