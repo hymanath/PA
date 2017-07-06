@@ -3,6 +3,33 @@ package com.itgrids.dto;
 public class WaterSourceVO {
 	private Long  safeSurfaceWaterSourceCount=0l,totalGroundWaterSourceCount=0l,unSafeGroundWaterSourceCount=0l,
 			safeGroundWaterSourceCount=0l,unSafeSurfaceWaterSourceCount=0l,totalSurfaceWaterSourceCount=0l;
+	private Long locationId,parentLocationId;
+	private String locationName;
+
+	
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
+	public Long getParentLocationId() {
+		return parentLocationId;
+	}
+
+	public void setParentLocationId(Long parentLocationId) {
+		this.parentLocationId = parentLocationId;
+	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 
 	public Long getSafeSurfaceWaterSourceCount() {
 		return safeSurfaceWaterSourceCount;
