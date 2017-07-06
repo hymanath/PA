@@ -1329,7 +1329,6 @@
 	
 	function buildgetUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(result){
 		$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('');
-		
 		if(result != null && result.length > 0){
 			for(var i in result){
 				
@@ -1338,8 +1337,16 @@
 				var candidateNameNotStartedCountArray =[];
 				var candidateNameArray=[];
 				var countVar = 0;
+				var completedper = 0;
+				var strtdPerc = 0;
+				var ntStrtedPrc = 0;
 				if(result[i] !=null && result[i].length  >0){
 					for(var j = result[i].length -1; j >= 0; j--){
+						
+						completedper = result[i][j].completedPerc;
+						strtdPerc = result[i][j].startedPerc;
+						ntStrtedPrc = result[i][j].notStartedPerc;
+						
 						 var obj1 = {
 								name: result[i][j].name,
 								y: result[i][j].completedPerc
@@ -1363,7 +1370,7 @@
 					}
 				}
 			  		
-				if( result[i][j].completedPerc !=0){
+				if( completedper !=0 || strtdPerc !=0 || ntStrtedPrc !=0){
 					var str='';
 					
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
