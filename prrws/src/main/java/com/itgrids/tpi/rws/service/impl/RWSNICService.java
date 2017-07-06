@@ -1959,4 +1959,87 @@ public class RWSNICService implements IRWSNICService{
 		return voList;
 	}
 	
+	public List<WaterSourceVO> getWaterSourceDeatils2(InputVO inputVO){
+		List<WaterSourceVO> waterSourceVOList = new ArrayList<WaterSourceVO>(0); 
+		try {
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getWaterSourceDeatils2");
+	        String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
+        
+        	if(response.getStatus() != 200){
+ 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      	}else{
+				String output = response.getEntity(String.class);
+				
+				if(output != null && !output.isEmpty()){
+					JSONArray mainArr = new JSONArray(output);
+					
+					if(mainArr != null && mainArr.length() > 0){
+						JSONObject jobj = (JSONObject)mainArr.get(0);
+						if(jobj.getString("status").equalsIgnoreCase("Success")){
+							if(inputVO.getLocationType().equalsIgnoreCase("mandal")){
+								buildWaterSourceMandalTableData(mainArr,waterSourceVOList);
+							}else{
+								buildWaterSourceTableData(mainArr,waterSourceVOList);
+							}
+						}
+					}
+				}
+ 	      	}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getWaterSourceDeatils2 - RuralWaterSupplyDashBoardService service", e);
+		}
+		return waterSourceVOList;
+	} 
+	
+	public void buildWaterSourceMandalTableData(JSONArray jsonArr,List<WaterSourceVO> voList){
+		try {
+			if(jsonArr != null && jsonArr.length() > 0){
+				for (int i = 0; i < jsonArr.length(); i++) {
+					JSONObject mainObj = jsonArr.getJSONObject(i);
+					if(mainObj.getJSONArray("subList") != null && mainObj.getJSONArray("subList").length() > 0){
+						for (int j = 0; j < mainObj.getJSONArray("subList").length(); j++) {
+							JSONObject jobj = mainObj.getJSONArray("subList").getJSONObject(j);
+							WaterSourceVO vo = new WaterSourceVO();
+							vo.setLocationId(jobj.getLong("locationId"));
+							vo.setLocationName(jobj.getString("locationName"));
+							vo.setSafeSurfaceWaterSourceCount(jobj.getLong("safeSurfaceCount"));
+							vo.setUnSafeSurfaceWaterSourceCount(jobj.getLong("unSafeSurfaceCount"));
+							vo.setSafeGroundWaterSourceCount(jobj.getLong("safeGroundCount"));
+							vo.setUnSafeGroundWaterSourceCount(jobj.getLong("unSafeGroundCount"));
+							vo.setTotalSurfaceWaterSourceCount(jobj.getLong("surfaceTotalCount"));
+							vo.setTotalGroundWaterSourceCount(jobj.getLong("groundTotalCount"));
+							vo.setParentLocationId(mainObj.getLong("locationId"));
+							voList.add(vo);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at buildWaterSourceMandalTableData - RuralWaterSupplyDashBoardService service", e);
+		}
+	}
+	
+	public void buildWaterSourceTableData(JSONArray jsonArr,List<WaterSourceVO> voList){
+		try {
+			if(jsonArr != null && jsonArr.length() > 0){
+				for (int i = 0; i < jsonArr.length(); i++) {
+					JSONObject jobj = (JSONObject)jsonArr.get(i);
+					WaterSourceVO vo = new WaterSourceVO();
+					vo.setLocationId(jobj.getLong("locationId"));
+					vo.setLocationName(jobj.getString("locationName"));
+					vo.setSafeSurfaceWaterSourceCount(jobj.getLong("safeSurfaceCount"));
+					vo.setUnSafeSurfaceWaterSourceCount(jobj.getLong("unSafeSurfaceCount"));
+					vo.setSafeGroundWaterSourceCount(jobj.getLong("safeGroundCount"));
+					vo.setUnSafeGroundWaterSourceCount(jobj.getLong("unSafeGroundCount"));
+					vo.setTotalSurfaceWaterSourceCount(jobj.getLong("surfaceTotalCount"));
+					vo.setTotalGroundWaterSourceCount(jobj.getLong("groundTotalCount"));
+					voList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at buildWaterSourceTableData - RuralWaterSupplyDashBoardService service", e);
+		}
+	}
 }

@@ -365,4 +365,15 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return null;
 	}
+	
+	@PostMapping("/getWaterSourceDeatils2")
+	public @ResponseBody List<WaterSourceVO> getWaterSourceDeatils2(@RequestBody InputVO vo){
+		try {
+			return rWSNICService.getWaterSourceDeatils2(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTehsilsForConstituency - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
 }

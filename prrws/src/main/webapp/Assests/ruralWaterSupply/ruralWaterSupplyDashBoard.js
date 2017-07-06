@@ -3323,3 +3323,28 @@
 			$("#"+divId).trigger('chosen:updated');
 		});
 	}
+	
+	getWaterSourceDeatils2();
+	function getWaterSourceDeatils2(){
+		var json = {
+			year:"2017",
+			locationType:"state",
+			fromDateStr:"01-12-1997",
+			toDateStr:"31-07-2017",
+			filterType:"",
+			filterValue:"",
+			districtValue:""
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getWaterSourceDeatils2',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(ajaxresp){
+				
+		});
+	}
