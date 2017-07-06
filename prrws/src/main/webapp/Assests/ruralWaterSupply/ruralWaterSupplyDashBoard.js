@@ -22,8 +22,8 @@
 			getLabTestDetails();
 			getHabitationSupplyDetails();
 			getSchemesDetails();
-			getSchemeWiseWorkDetails('graph','state',"");
-			getAssetInfoBetweenDates('graph','state',"");
+			getSchemeWiseWorkDetails('graph','state',"","","","");
+			getAssetInfoBetweenDates('graph','state',"","","","");
 			getWaterSourceInfo();
 			getKeyPerformanceIndicatorsInfo('state','','graph',"","","");
 			getPlanofActionForStressedHabitations();
@@ -679,7 +679,7 @@
 				var colors = ['#14BAAD','#FC5049']
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
 		}
-		function getSchemeWiseWorkDetails(type,locationType,divId){
+		function getSchemeWiseWorkDetails(type,locationType,divId,filterType,filterValue,districtValue){
 			var typeVal="";
 			if(type =="graph"){
 				$("#habitationWorks").html(spinner);
@@ -697,9 +697,9 @@
 				  year:financialVal,
 				  locationType:locationType,
 				  type:typeVal,
-				  filterType:"",
-				  filterValue:"",
-				  districtValue:""
+				  filterType:filterType,
+				  filterValue:filterValue,
+				  districtValue:districtValue
 			  }
 			$.ajax({
 				url: 'getSchemeWiseWorkDetails',
@@ -828,7 +828,7 @@
 				});
 				
 		}
-		function getAssetInfoBetweenDates(type,locationType,divId){//ara1
+		function getAssetInfoBetweenDates(type,locationType,divId,filterType,filterValue,districtValue){//ara1
 			if(type =="graph"){
 				$("#assets").html(spinner);
 			}else{
@@ -841,9 +841,9 @@
 				fromDateStr:glStartDate,
 				toDateStr:glEndDate,
 				year:$("#financialYearId").val(),
-				filterType:"",
-				filterValue:"",
-				districtValue:"",
+				filterType:filterType,
+				filterValue:filterValue,
+				districtValue:districtValue,
 				locationType:locationType
 			}
 			$.ajax({
@@ -1900,10 +1900,13 @@
 					{
 						tableView+='</div>';
 					}
+				
 				$("#alertStatus"+locationType).html(tableView);
 				if(locationType !="state" || locationType !="district"){
 					$(".dataTableAlert"+locationType).dataTable();
 				}
+				
+				
 			
 		}
 		function tableViewWaterStatus(divId,GLtbodyAlertArr,locationType){
@@ -1955,11 +1958,11 @@
 				{
 					tableView+='</div>';
 				}
+				
 				$("#drinking"+locationType).html(tableView);
 				if(locationType !="state" || locationType !="district"){
 					$(".dataTableDrinking"+locationType).dataTable();
 				}
-				
 			}
 			
 			
@@ -2220,9 +2223,9 @@
 					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'state',"","",2);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'state',"","",2);
 				}else if(id == "stateBlockIdassestsId"){
-					getAssetInfoBetweenDates('table','state',blocksArr);
+					getAssetInfoBetweenDates('table','state',blocksArr,"","","");
 				}else if(id == "stateBlockIdschemeId"){
-					getSchemeWiseWorkDetails('table','state',blocksArr);
+					getSchemeWiseWorkDetails('table','state',blocksArr,"","","");
 				}
 			}else if(blockName == "district"){
 				emptyCheckDistrict();
@@ -2234,9 +2237,9 @@
 					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'district',"","",2);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'district',"","",2);
 				}else if(id == "districtBlockIdassestsId"){
-					getAssetInfoBetweenDates('table','district',blocksArr);
+					getAssetInfoBetweenDates('table','district',blocksArr,"","","");
 				}else if(id == "districtBlockIdschemeId"){
-					getSchemeWiseWorkDetails('table','district',blocksArr);
+					getSchemeWiseWorkDetails('table','district',blocksArr,"","","");
 				}
 			}else if(blockName == "constituency"){
 				emptyCheckConstituency();
@@ -2251,9 +2254,11 @@
 					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'constituency',"","",3);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',"","",3);
 				}else if(id == "constituencyBlockIdassestsId"){
-					getAssetInfoBetweenDates('table','constituency',blocksArr);
+					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					getAssetInfoBetweenDates('table','constituency',blocksArr,"","","");
 				}else if(id == "constituencyBlockIdschemeId"){
-					getSchemeWiseWorkDetails('table','constituency',blocksArr);
+					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","");
 				}
 			}else if(blockName == "mandal"){
 				emptyCheckMandal();
@@ -2268,9 +2273,11 @@
 					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'mandal',"","",3);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',"","",3);
 				}else if(id == "mandalBlockIdassestsId"){
-					getAssetInfoBetweenDates('table','mandal',blocksArr);
+					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+					getAssetInfoBetweenDates('table','mandal',blocksArr,"","","");
 				}else if(id == "mandalBlockIdschemeId"){
-					getSchemeWiseWorkDetails('table','mandal',blocksArr);
+					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","");
 				}
 			}
 		});
@@ -2724,6 +2731,11 @@
 				}else if(tabId == "constituencyBlockIdjalavani"){
 					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'constituency',"","",searchLevelId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',"","",searchLevelId);
+				}else if(tabId == "#constituencyBlockIdassestsId"){
+					getAssetInfoBetweenDates('table','constituency',blocksArr,"","","");
+				}else if(tabId == "#constituencyBlockIdschemeId"){
+					getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","");
+					
 				}
 			}else{
 				 
@@ -2738,6 +2750,13 @@
 					getConstituenciesForDistrict(distId,"chosenconstValconstituencyBlockId");
 					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'constituency',distId,"",searchLevelId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',distId,"",searchLevelId);
+				}else if(tabId == "constituencyBlockIdassestsId"){
+					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
+					getAssetInfoBetweenDates('table','constituency',blocksArr,"district",distId,"");
+				}else if(tabId == "constituencyBlockIdschemeId"){
+					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
+					getSchemeWiseWorkDetails('table','constituency',blocksArr,"district",distId,"");
+					
 				}
 			}
 		}
@@ -2780,6 +2799,20 @@
 					
 				}
 				
+			}else if(tabId == "constituencyBlockIdassestsId"){
+				if(constId == 0){
+					getAssetInfoBetweenDates('table','constituency',blocksArr,"district",distId);
+				}else{
+					getAssetInfoBetweenDates('table','constituency',blocksArr,"constituency",constId,"");
+				}
+				
+			}else if(tabId == "constituencyBlockIdschemeId"){
+				if(constId == 0){
+					getSchemeWiseWorkDetails('table','constituency',blocksArr,"district",distId,"");
+				}else{
+					getSchemeWiseWorkDetails('table','constituency',blocksArr,"constituency",constId,"");
+				}
+				
 			}
 		}
 	});
@@ -2807,6 +2840,11 @@
 				}else if(tabIdM == "mandalBlockIdjalavani"){
 					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'mandal',"","",searchLevelDistId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',"","",searchLevelDistId);
+				}else if(tabIdM == "mandalBlockIdassestsId"){
+					getAssetInfoBetweenDates('table','mandal',blocksArr,"","","");
+				}else if(tabIdM == "mandalBlockIdschemeId"){
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","");
+					
 				}
 			}else{
 				 if(tabIdM == "mandalBlockIdhabitation"){
@@ -2819,6 +2857,13 @@
 					getConstituenciesForDistrict(distId,"chosenconstValmandalBlockId");
 					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'mandal',distId,"",searchLevelDistId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',distId,"",searchLevelDistId);
+				}else if(tabIdM == "mandalBlockIdassestsId"){
+					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
+					getAssetInfoBetweenDates('table','mandal',blocksArr,"district",distId,"");
+				}else if(tabIdM == "mandalBlockIdschemeId"){
+					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
+					 getSchemeWiseWorkDetails('table','mandal',blocksArr,"district",distId,"");
+					
 				}
 			}
 		}
@@ -2864,6 +2909,22 @@
 					
 				}
 				
+			}else if(tabIdM == "mandalBlockIdassestsId"){
+				getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
+				if(constId == 0){
+					getAssetInfoBetweenDates('table','mandal',blocksArr,"district",distId,"");
+				}else{
+					getAssetInfoBetweenDates('table','mandal',blocksArr,"constituency",constId,"");
+				}
+				
+			}else if(tabIdM == "mandalBlockIdschemeId"){
+				getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
+				if(constId == 0){
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"district",distId,"");
+				}else{
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"constituency",constId,"");
+				}
+				
 			}
 		}
 	});
@@ -2906,6 +2967,20 @@
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',constId,mandalId,searchLevelConstId);
 				}
 				
+				
+			}else if(tabIdM == "mandalBlockIdassestsId"){
+				if(mandalId == 0){
+					getAssetInfoBetweenDates('table','mandal',blocksArr,"constituency",constId,"");
+				}else{
+					getAssetInfoBetweenDates('table','mandal',blocksArr,"mandal",mandalId,distId);
+				}
+				
+			}else if(tabIdM == "mandalBlockIdschemeId"){
+				if(mandalId == 0){
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"constituency",constId,"");
+				}else{
+					getSchemeWiseWorkDetails('table','mandal',blocksArr,"mandal",mandalId,distId);
+				}
 				
 			}
 		}
