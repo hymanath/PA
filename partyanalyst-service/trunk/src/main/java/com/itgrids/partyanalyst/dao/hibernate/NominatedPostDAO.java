@@ -2060,4 +2060,52 @@ return (Long) query.uniqueResult();
 		query.setParameter("positionId", positionId);
 		return  query.list();
 	}
+ public List<Object[]> getNominatedPostStatusWiseCount(Long constituencyId,Date startDate, Date endDate){
+	 StringBuilder sb = new StringBuilder();
+	 sb.append(" select " +
+	 		   " nominatedPost.nominatedPostStatus.nominatedPostStatusId, " +
+	 		   " nominatedPost.nominatedPostStatus.status, " +
+	 		   " count(distinct nominatedPost.nominatedPostId) " +
+	 		   " from NominatedPost nominatedPost where " +
+			   " nominatedPost.nominatedPostMember.address.constituency.constituencyId = :constituencyId " +
+			   " and nominatedPost.isDeleted = 'N' " +
+			   " and nominatedPost.isExpired = 'N' " +
+			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' ");
+	 if(startDate != null && endDate != null){
+		 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
+	 }
+	 sb.append(" group by nominatedPost.nominatedPostStatus.nominatedPostStatusId "); 
+	 sb.append(" order by nominatedPost.nominatedPostStatus.nominatedPostStatusId ");
+	 Query query = getSession().createQuery(sb.toString());
+	 query.setParameter("constituencyId",constituencyId);
+	 if(startDate != null && endDate != null){
+		 query.setDate("startDate",startDate);
+		 query.setDate("endDate",endDate);
+	 }
+	 return query.list();
+ }
+ public List<Object[]> getPositionWiseMemberCount(Long constituencyId,Date startDate, Date endDate){
+	 StringBuilder sb = new StringBuilder();
+	 sb.append(" select " +
+	 		   " nominatedPost.nominatedPostMember.boardLevel.boardLevelId, " +
+	 		   " nominatedPost.nominatedPostMember.boardLevel.level, " +
+	 		   " count(distinct nominatedPost.nominatedPostMember.nominatedPostMemberId) " +
+	 		   " from NominatedPost nominatedPost where " +
+			   " nominatedPost.nominatedPostMember.address.constituency.constituencyId = :constituencyId " +
+			   " and nominatedPost.isDeleted = 'N' " +
+			   " and nominatedPost.isExpired = 'N' " +
+			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' ");
+	 if(startDate != null && endDate != null){
+		 sb.append(" and (date(nominatedPost.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
+	 }
+	 sb.append(" group by nominatedPost.nominatedPostMember.boardLevel.boardLevelId ");
+	 sb.append(" order by nominatedPost.nominatedPostMember.boardLevel.boardLevelId ");
+	 Query query = getSession().createQuery(sb.toString());
+	 query.setParameter("constituencyId",constituencyId);
+	 if(startDate != null && endDate != null){
+		 query.setDate("startDate",startDate);
+		 query.setDate("endDate",endDate);
+	 }
+	 return query.list();
+ }
 }
