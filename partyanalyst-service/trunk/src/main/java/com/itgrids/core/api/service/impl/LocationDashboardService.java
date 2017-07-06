@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -12,16 +14,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
+import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.IGovtSchemeBeneficiaryDetailsDAO;
 import com.itgrids.partyanalyst.dao.IInsuranceStatusDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
@@ -80,11 +86,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IGovtSchemeBeneficiaryDetailsDAO govtSchemeBeneficiaryDetailsDAO;
 	private ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO;
 	private IInsuranceStatusDAO insuranceStatusDAO;
-
+	private INominatedPostDAO nominatedPostDAO;
+	private INominatedPostApplicationDAO nominatedPostApplicationDAO;
+	private IBoardLevelDAO boardLevelDAO;
 	public void setInsuranceStatusDAO(IInsuranceStatusDAO insuranceStatusDAO) {
 		this.insuranceStatusDAO = insuranceStatusDAO;
 	}
-
 	public void setTdpCommitteeEnrollmentDAO(ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO) {
 		this.tdpCommitteeEnrollmentDAO = tdpCommitteeEnrollmentDAO;
 	}
@@ -185,6 +192,21 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public void setNominationDAO(INominationDAO nominationDAO) {
 		this.nominationDAO = nominationDAO;
 	}
+	
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+	public INominatedPostDAO getNominatedPostDAO() {
+		return nominatedPostDAO;
+	}
+
+	public void setNominatedPostDAO(INominatedPostDAO nominatedPostDAO) {
+		this.nominatedPostDAO = nominatedPostDAO;
+	}
+
+	public INominatedPostApplicationDAO getNominatedPostApplicationDAO() {
+		return nominatedPostApplicationDAO;
+	}
     public void setSelfAppraisalCandidateLocationNewDAO(
 			ISelfAppraisalCandidateLocationNewDAO selfAppraisalCandidateLocationNewDAO) {
 		this.selfAppraisalCandidateLocationNewDAO = selfAppraisalCandidateLocationNewDAO;
@@ -215,6 +237,19 @@ public class LocationDashboardService  implements ILocationDashboardService  {
    public void setTdpCadreEnrollmentInfoDAO(
 			ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO) {
 		this.tdpCadreEnrollmentInfoDAO = tdpCadreEnrollmentInfoDAO;
+	}
+
+	public void setNominatedPostApplicationDAO(
+			INominatedPostApplicationDAO nominatedPostApplicationDAO) {
+		this.nominatedPostApplicationDAO = nominatedPostApplicationDAO;
+	}
+	
+	public IBoardLevelDAO getBoardLevelDAO() {
+		return boardLevelDAO;
+	}
+
+	public void setBoardLevelDAO(IBoardLevelDAO boardLevelDAO) {
+		this.boardLevelDAO = boardLevelDAO;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1216,6 +1251,229 @@ public class LocationDashboardService  implements ILocationDashboardService  {
             Log.error("Exception raised in meetings method"+e);
 		}
 		return meetingStatusCounts;
+	} 
+	/*
+	 * Swadhin K Lenka
+	 */
+	@Override
+	public List<KeyValueVO> getNominatedPostStatusWiseCount(Long constituencyId,String fromDateStr, String toDateStr){
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			
+			Date startDate = null;
+			Date endDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostStatusWiseCount(constituencyId,startDate,endDate);
+			List<KeyValueVO> keyValueVOs = new ArrayList<KeyValueVO>();
+			KeyValueVO keyValueVO = null;
+			if(nominatedPostList != null && nominatedPostList.size() > 0){
+				for(Object[] param : nominatedPostList){
+					keyValueVO = new KeyValueVO();
+					keyValueVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					keyValueVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					keyValueVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					keyValueVOs.add(keyValueVO);
+				}
+			}
+			return keyValueVOs;
+		}catch(Exception e){
+			Log.error("Exception raised in getNominatedPostStatusWiseCount method of LocationDashboardService"+e);
+		}
+		return null;
+	}
+	/*
+	 * Swadhin K Lenka
+	 */
+	@Override
+	public List<KeyValueVO> getNominatedPostApplicationStatusWiseCount(Long constituencyId,String fromDateStr, String toDateStr){
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			
+			Date startDate = null;
+			Date endDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			List<Object[]> nominatedPostApplicationList = nominatedPostApplicationDAO.getNominatedPostApplicationStatusWiseCount(constituencyId,startDate,endDate);
+			List<KeyValueVO> keyValueVOs = new CopyOnWriteArrayList<KeyValueVO>();
+			KeyValueVO keyValueVO = null;
+			if(nominatedPostApplicationList != null && nominatedPostApplicationList.size() > 0){
+				for(Object[] param : nominatedPostApplicationList){
+					keyValueVO = new KeyValueVO();
+					keyValueVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					keyValueVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					keyValueVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					keyValueVOs.add(keyValueVO);
+				}
+			}
+			//combine :Rejected,Rejected in Final Review,Rejected in Finalized
+			if(keyValueVOs != null && keyValueVOs.size() > 0){
+				keyValueVO = new KeyValueVO();
+				keyValueVO.setId(2L);
+				keyValueVO.setName("Rejected");
+				for(KeyValueVO param : keyValueVOs){
+					if(param.getId().longValue() == 2L || param.getId().longValue() == 4L || param.getId().longValue() == 8L){
+						keyValueVO.setCount(keyValueVO.getCount()+param.getCount());
+						keyValueVOs.remove(param);
+					}
+				}
+				keyValueVOs.add(keyValueVO);
+			}
+			ArrayList<KeyValueVO> tempArray = null;
+			if(keyValueVOs != null && keyValueVOs.size() > 0){
+				tempArray = new ArrayList<KeyValueVO>(keyValueVOs);
+				Collections.sort(tempArray, new Comparator<KeyValueVO>(){
+					@Override
+					public int compare(KeyValueVO obj1,KeyValueVO obj2) {
+						return obj1.getId().compareTo(obj2.getId());
+					}
+				});
+			}
+			return tempArray;
+		}catch(Exception e){
+			Log.error("Exception raised in getNominatedPostApplicationStatusWiseCount method of LocationDashboardService"+e);
+		}
+		return null;
+	}
+	/*
+	 * Swadhin K Lenka
+	 */
+	@Override
+	public List<KeyValueVO> getPositionWiseMemberCount(Long constituencyId,String fromDateStr, String toDateStr){
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			
+			Date startDate = null;
+			Date endDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			//build a template
+			List<Object[]> list = boardLevelDAO.getBoardLevels();
+			List<KeyValueVO> finalList = new CopyOnWriteArrayList<KeyValueVO>();
+			buildTemplate(list,finalList);
+			List<Object[]> positionList = nominatedPostDAO.getPositionWiseMemberCount(constituencyId,startDate,endDate);
+			List<KeyValueVO> keyValueVOs = new CopyOnWriteArrayList<KeyValueVO>();
+			KeyValueVO keyValueVO = null;
+			if(positionList != null && positionList.size() > 0){
+				for(Object[] param : positionList){
+					keyValueVO = new KeyValueVO();
+					keyValueVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					keyValueVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					keyValueVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					keyValueVOs.add(keyValueVO);
+				}
+			}
+			//combine :Mandal,Muncipality/Corporation
+			if(keyValueVOs != null && keyValueVOs.size() > 0){
+				keyValueVO = new KeyValueVO();
+				keyValueVO.setId(5L);
+				keyValueVO.setName("Mandal/Muncipality/Corporation");
+				for(KeyValueVO param : keyValueVOs){
+					if(param.getId().longValue() == 5L || param.getId().longValue() == 6L){
+						keyValueVO.setCount(keyValueVO.getCount()+param.getCount());
+						keyValueVOs.remove(param);
+					}
+				}
+				keyValueVOs.add(keyValueVO);
+			}
+			
+			//combine :Village,Ward
+			if(keyValueVOs != null && keyValueVOs.size() > 0){
+				keyValueVO = new KeyValueVO();
+				keyValueVO.setId(7L);
+				keyValueVO.setName("Panchayat/Ward/Division");
+				for(KeyValueVO param : keyValueVOs){
+					if(param.getId().longValue() == 7L || param.getId().longValue() == 8L){
+						keyValueVO.setCount(keyValueVO.getCount()+param.getCount());
+						keyValueVOs.remove(param);
+					}
+				}
+				keyValueVOs.add(keyValueVO);
+			}
+			//push data into template.
+			if(finalList != null && finalList.size() > 0){
+				for(KeyValueVO param : finalList){
+					keyValueVO = getMatchedVO(keyValueVOs,param.getId());
+					if(keyValueVO != null){
+						param.setCount(keyValueVO.getCount());
+					}
+				}
+			}
+			if(finalList != null && finalList.size() > 0){
+				ArrayList<KeyValueVO> tempArray = new ArrayList<KeyValueVO>(finalList);
+				Collections.sort(tempArray, new Comparator<KeyValueVO>(){
+					@Override
+					public int compare(KeyValueVO obj1,KeyValueVO obj2) {
+						return obj1.getId().compareTo(obj2.getId());
+					}
+					
+				});
+			}
+			return finalList;
+		}catch(Exception e){
+			Log.error("Exception raised in getPositionWiseMemberCount method of LocationDashboardService"+e);
+		}
+		return null;
+	}
+	public void buildTemplate(List<Object[]> list,List<KeyValueVO> finalList){
+		try{
+			KeyValueVO keyValueVO= null;
+			if(list != null && list.size() > 0){
+				for(Object[] param : list){
+					keyValueVO = new KeyValueVO();
+					keyValueVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					keyValueVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(keyValueVO);
+				}
+			}
+			//combine :Mandal,Muncipality/Corporation
+			if(finalList != null && finalList.size() > 0){
+				keyValueVO = new KeyValueVO();
+				keyValueVO.setId(5L);
+				keyValueVO.setName("Mandal/Muncipality/Corporation");
+				for(KeyValueVO param : finalList){
+					if(param.getId().longValue() == 5L || param.getId().longValue() == 6L){
+						finalList.remove(param);
+					}
+				}
+				finalList.add(keyValueVO);
+			}
+			
+			//combine :Village,Ward
+			if(finalList != null && finalList.size() > 0){
+				keyValueVO = new KeyValueVO();
+				keyValueVO.setId(7L);
+				keyValueVO.setName("Mandal/Muncipality/Corporation");
+				for(KeyValueVO param : finalList){
+					if(param.getId().longValue() == 7L || param.getId().longValue() == 8L){
+						finalList.remove(param);
+					}
+				}
+				finalList.add(keyValueVO);
+			}
+		}catch(Exception e){
+			Log.error("Exception raised in buildTemplate method of LocationDashboardService"+e);
+		}
+	}
+	public KeyValueVO getMatchedVO(List<KeyValueVO> keyValueVOs,Long id){
+		try{
+			if(keyValueVOs != null && keyValueVOs.size() > 0){
+				for(KeyValueVO param : keyValueVOs){
+					if(param.getId().longValue() == id){
+						return param;
+					}
+				}
+			}
+		}catch(Exception e){
+			Log.error("Exception raised in getMatchedVO method of LocationDashboardService"+e);
+		}
+		return null;
 	}
 	/**
 	  * @param String fromDateStr
