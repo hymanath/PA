@@ -25,8 +25,16 @@ public class BasicVO {
 	 private Long locationId;
 	 private String locationName;
 	 private List<BasicVO> basicList = new ArrayList<BasicVO>(0);
+	 private Long parentLocationId;
 	 
 	 
+	 
+	public Long getParentLocationId() {
+		return parentLocationId;
+	}
+	public void setParentLocationId(Long parentLocationId) {
+		this.parentLocationId = parentLocationId;
+	}
 	public List<BasicVO> getBasicList() {
 		return basicList;
 	}
