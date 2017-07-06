@@ -51,15 +51,15 @@ public class UserServiceImpl implements IUserService {
 		try{
 			if(!fromPage.equalsIgnoreCase("FMS")){
 				if(searchLevelId != null && searchLevelId == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
-					code = constituencyDAO.getAssignedSearchIdByConstituencyId(searchLevelValue);
+					code = constituencyDAO.getAssignedSearchIdByConstituencyId(searchLevelValue,fromPage);
 				}else if(searchLevelId != null && searchLevelId == IConstants.DISTRICT_LEVEL_SCOPE_ID ){
-					code = districtDAO.getAssignedSearchIdByDistrictId(searchLevelValue);
+					code = districtDAO.getAssignedSearchIdByDistrictId(searchLevelValue,fromPage);
 				}
 			}else{
 				if(searchLevelId != null && searchLevelId == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
-					code = constituencyDAO.getAssignedSearchConstituencyId(searchLevelValue);
+					code = constituencyDAO.getAssignedSearchConstituencyId(searchLevelValue,fromPage);
 				}else if(searchLevelId != null && searchLevelId == IConstants.DISTRICT_LEVEL_SCOPE_ID ){
-					code = districtDAO.getAssignedSearchDistrictId(searchLevelValue);
+					code = districtDAO.getAssignedSearchDistrictId(searchLevelValue,fromPage);
 				}
 			}
 			

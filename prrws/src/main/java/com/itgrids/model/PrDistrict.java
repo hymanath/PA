@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
-@Table(name = "district_code")
+@Table(name = "pr_district")
 public class PrDistrict implements Serializable {
 	private Long prDistrictId;
 	private String districtName;
