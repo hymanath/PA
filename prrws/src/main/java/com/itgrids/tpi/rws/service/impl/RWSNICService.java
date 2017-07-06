@@ -32,7 +32,6 @@ import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.dto.WaterSourceVO;
-import com.itgrids.model.District;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
@@ -510,48 +509,58 @@ public class RWSNICService implements IRWSNICService{
 	public List<BasicVO> getAssetsInfo(InputVO vo) {
 		List<BasicVO> assetsList = new ArrayList<BasicVO>(0);
 		try {
-			
-			 WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getAssetsinfo");	        
-		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
-		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
-			
-        	if(response.getStatus() != 200){
- 	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
- 	      	}else{
-				String output =response.getEntity(String.class);
-				if(output != null && !output.isEmpty()){
-	 	    		JSONObject jobj = new JSONObject(output);
-	 	    		
-	 	    		if(jobj.getJSONArray("assetTypeList") != null && jobj.getJSONArray("assetTypeList").length() > 0){
-	 	    			JSONArray finalArray = jobj.getJSONArray("assetTypeList");
-	 	    			Long totalAssets = 0l;
-	 	 	    		for(int i=0;i<finalArray.length();i++){
-	 	 	    			JSONObject jObj = (JSONObject) finalArray.get(i);
-	 	 	    			if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
-	 	 	    				BasicVO basicVO = new BasicVO();
-		 	 	    			basicVO.setAssetType(jObj.getString("assetType"));
-		 	 	    			basicVO.setCount(jObj.getLong("count"));
-		 	 	    			totalAssets = totalAssets + jObj.getLong("count");
-		 	 	    			assetsList.add(basicVO);
-	 	 	    			}
-	 	 	    			
-	 	 	    		}
-	 	 	    		
-	 	 	    		if(totalAssets > 0l){
-	 	 	    			for (BasicVO basicVO : assetsList) {
-	 	 	    				basicVO.setPercentageOne((basicVO.getCount()*100.00)/totalAssets);
-							}
-	 	 	    		}
-	 	    		}
- 	    		
-				}
- 	      	}
         
-		} catch (Exception e) {
-			LOG.error("Exception raised at getAssetsInfo - RuralWaterSupplyDashBoardService service", e);
-		}
-		return assetsList;
-	}
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getAssetsinfo");          
+			String authStringEnc = getAuthenticationString("admin","admin@123");          
+			ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
+       
+			if(response.getStatus() != 200){
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+           	}else{
+           		String output =response.getEntity(String.class);
+           		if(output != null && !output.isEmpty()){
+           			Map<Long,BasicVO> finalMap = new HashMap<Long,BasicVO>(0);
+           			JSONObject jobj = new JSONObject(output);
+              
+           			if(jobj.getJSONArray("assetTypeList") != null && jobj.getJSONArray("assetTypeList").length() > 0){
+           				JSONArray finalArray = jobj.getJSONArray("assetTypeList");
+                
+           				for(int i=0;i<finalArray.length();i++){
+           					JSONObject jObj = (JSONObject) finalArray.get(i);
+           					if(finalMap.get(jObj.getLong("locationId")) == null){
+           						BasicVO inVO = new BasicVO();
+           						inVO.setId(jObj.getLong("locationId"));
+           						inVO.setName(jObj.getString("locationName"));
+                     
+           						if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+           							BasicVO basicVO = new BasicVO();
+           							basicVO.setAssetType(jObj.getString("assetType"));
+           							basicVO.setCount(jObj.getLong("count"));
+           							inVO.getBasicList().add(basicVO);
+           						}
+           						
+           						finalMap.put(jObj.getLong("locationId"), inVO);
+           					}else{
+           						if(!jObj.getString("assetType").equalsIgnoreCase("SCHOOLS") && !jObj.getString("assetType").equalsIgnoreCase("LAB")){
+           							BasicVO basicVO = new BasicVO();
+           							basicVO.setAssetType(jObj.getString("assetType"));
+           							basicVO.setCount(jObj.getLong("count"));
+           							finalMap.get(jObj.getLong("locationId")).getBasicList().add(basicVO);
+           						}
+           					}
+
+           				}
+           			}
+              		if(finalMap.size() > 0)
+              			assetsList.addAll(finalMap.values());
+         		}
+            }
+         
+     	} catch (Exception e) {
+     		LOG.error("Exception raised at getAssetsInfo - RuralWaterSupplyDashBoardService service", e);
+     	}
+     	return assetsList;
+     }
 	
 	public List<StatusVO> getAlertDetailsOfCategoryByStatusWise(InputVO inputVO){
 		List<StatusVO> voList = new ArrayList<StatusVO>(0);
