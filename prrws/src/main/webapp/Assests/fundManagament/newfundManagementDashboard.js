@@ -52,9 +52,21 @@ var $windowWidth = $(window).width();
 		getGovtSchemesDetails("programNamesDistrict");		
 		getGovtSchemesDetails("programNamesConst");		
 		getGovtSchemesDetails("programNamesMandal");		
-		getGovtSchemesDetails("programNamesVillage");		
+		getGovtSchemesDetails("programNamesVillage");
+
+		 getGovtSubProgramsDetails(0,"subProgramNamesState");
+		getGovtSubProgramsDetails(0,"subProgramNamesDistrict");
+		getGovtSubProgramsDetails(0,"subProgramNamesConst");
+		getGovtSubProgramsDetails(0,"subProgramNamesMandal");
+		getGovtSubProgramsDetails(0,"subProgramNamesVillage");	
 	}
-	
+	$("header").on("click",".menu-cls",function(e){
+		e.stopPropagation();
+		$(".menu-data-cls").toggle();
+	});
+	$(document).on("click",function(){
+		$(".menu-data-cls").hide();
+	});
 	function getblockType(){
 		 var blockType = ''; 
 		$('.distLevelActive li').each(function(i, obj){
@@ -120,7 +132,7 @@ var $windowWidth = $(window).width();
 		}  
 		}).done(function(result){
 		  if(result !=null && result.length>0){
-				 $("#"+divId).append('<option value="0">Select Program</option>');
+				 $("#"+divId).append('<option value="0">ALL PROGRAMMES </option>');
 				for(var i in result){
 					$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
@@ -134,7 +146,7 @@ var $windowWidth = $(window).width();
 	$(document).on("change","#programNamesState",function(){
 	  var programId = $(this).val();
 	  var subProgramId =0;
-	  getGovtSubProgramsDetails(programId,"subProgramNamesState");
+	 // getGovtSubProgramsDetails(programId,"subProgramNamesState");
 	  getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',0,0,programId,subProgramId)
 	  
 	  
@@ -142,7 +154,7 @@ var $windowWidth = $(window).width();
 	$(document).on("change","#programNamesDistrict",function(){
 	  var programId = $(this).val();
 	  var subProgramId =0;
-	 getGovtSubProgramsDetails(programId,"subProgramNamesDistrict");
+	 //getGovtSubProgramsDetails(programId,"subProgramNamesDistrict");
 	 getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',0,3,programId,subProgramId);
 		
 	});
@@ -156,11 +168,11 @@ var $windowWidth = $(window).width();
 	  var id = $("#constLevelConstNames").val();
 	  if(id>0){
 		  $("#constLevelConstNames").html('');
-		  $("#constLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+		  $("#constLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		  $("#constLevelConstNames").trigger("chosen:updated");
 	  }
 	  
-	 getGovtSubProgramsDetails(programId,"subProgramNamesConst");
+	 //getGovtSubProgramsDetails(programId,"subProgramNamesConst");
 	 getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',0,4,programId,subProgramId);
 		
 	});
@@ -174,16 +186,16 @@ var $windowWidth = $(window).width();
 	  var id = $("#mandalLevelConstNames").val();
 	  if(id>0){
 		  $("#mandalLevelConstNames").html('');
-		  $("#mandalLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+		  $("#mandalLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		  $("#mandalLevelConstNames").trigger("chosen:updated");
 	  }
 	  var id1 = $("#mandalLevelMandalNames").val();
 	  if(id1>0){
 		  $("#mandalLevelMandalNames").html('');
-		  $("#mandalLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
+		  $("#mandalLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
 		  $("#mandalLevelMandalNames").trigger("chosen:updated");
 	  }
-	 getGovtSubProgramsDetails(programId,"subProgramNamesMandal");
+	 //getGovtSubProgramsDetails(programId,"subProgramNamesMandal");
 	 getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',0,5,programId,subProgramId);
 		
 	});
@@ -197,22 +209,22 @@ var $windowWidth = $(window).width();
 	  var id = $("#villageLevelConstNames").val();
 	  if(id>0){
 		  $("#villageLevelConstNames").html('');
-		  $("#villageLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+		  $("#villageLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		  $("#villageLevelConstNames").trigger("chosen:updated");
 	  }
 	  var id1 = $("#villageLevelMandalNames").val();
 	  if(id1>0){
 		  $("#villageLevelMandalNames").html('');
-		  $("#villageLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
+		  $("#villageLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
 		  $("#villageLevelMandalNames").trigger("chosen:updated");
 	  }
 	  var id2 = $("#villageLevelNames").val();
 	  if(id2>0){
 		  $("#villageLevelNames").html('');
-		  $("#villageLevelNames").append('<option value="0">SELECT VILLAGE</option>');	
+		  $("#villageLevelNames").append('<option value="0">ALL VILLAGE</option>');	
 		  $("#villageLevelNames").trigger("chosen:updated");
 	  }
-	 getGovtSubProgramsDetails(programId,"subProgramNamesVillage");
+	 //getGovtSubProgramsDetails(programId,"subProgramNamesVillage");
 	 getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',0,6,programId,subProgramId);
 	});
 
@@ -237,7 +249,7 @@ var $windowWidth = $(window).width();
 	  var id = $("#constLevelConstNames").val();
 	  if(id>0){
 		  $("#constLevelConstNames").html('');
-		  $("#constLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+		  $("#constLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		  $("#constLevelConstNames").trigger("chosen:updated");
 	  }
 	 getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',0,4,programId,subProgramId);
@@ -252,13 +264,13 @@ var $windowWidth = $(window).width();
 	  var id = $("#mandalLevelConstNames").val();
 	  if(id>0){
 		  $("#mandalLevelConstNames").html('');
-		  $("#mandalLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+		  $("#mandalLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		  $("#mandalLevelConstNames").trigger("chosen:updated");
 	  }
 	  var id1 = $("#mandalLevelMandalNames").val();
 	  if(id1>0){
 		  $("#mandalLevelMandalNames").html('');
-		  $("#mandalLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
+		  $("#mandalLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
 		  $("#mandalLevelMandalNames").trigger("chosen:updated");
 	  }
 	  getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',0,5,programId,subProgramId);
@@ -273,20 +285,20 @@ var $windowWidth = $(window).width();
 	  var id = $("#villageLevelConstNames").val();
 	  if(id>0){
 		  $("#villageLevelConstNames").html('');
-		  $("#villageLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+		  $("#villageLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		  $("#villageLevelConstNames").trigger("chosen:updated");
 	  }
 	  var id1 = $("#villageLevelMandalNames").val();
 	  if(id1>0){
 		  $("#villageLevelMandalNames").html('');
-		  $("#villageLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
+		  $("#villageLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
 		  $("#villageLevelMandalNames").trigger("chosen:updated");
 		  
 	  }
 	  var id2 = $("#villageLevelNames").val();
 	  if(id2>0){
 		  $("#villageLevelNames").html('');
-		  $("#villageLevelNames").append('<option value="0">SELECT VILLAGE</option>');	
+		  $("#villageLevelNames").append('<option value="0">ALL VILLAGE</option>');	
 		  $("#villageLevelNames").trigger("chosen:updated");
 		  
 	  }
@@ -296,43 +308,43 @@ var $windowWidth = $(window).width();
 		$("#programNamesDistrict").val(0);
 		$("#programNamesDistrict").trigger('chosen:updated');
 		$("#subProgramNamesDistrict").empty();
-		$("#subProgramNamesDistrict").append('<option value="0">Select SubProgram</option>');	
+		$("#subProgramNamesDistrict").append('<option value="0">ALL SUB PROGRAMMES </option>');	
 		$("#subProgramNamesDistrict").trigger('chosen:updated');
 	}
 	function emptyProgramSubProgramConstVal(){
 		$("#programNamesConst").val(0);
 		$("#programNamesConst").trigger('chosen:updated');
 		$("#subProgramNamesConst").empty();
-		$("#subProgramNamesConst").append('<option value="0">Select SubProgram</option>');	
+		$("#subProgramNamesConst").append('<option value="0">ALL SUB PROGRAMMES</option>');	
 		$("#subProgramNamesConst").trigger('chosen:updated');
 	}
 	function emptyProgramSubProgramVillageVal(){
 		$("#programNamesVillage").val(0);
 		$("#programNamesVillage").trigger('chosen:updated');
 		$("#subProgramNamesVillage").empty();
-		$("#subProgramNamesVillage").append('<option value="0">Select SubProgram</option>');	
+		$("#subProgramNamesVillage").append('<option value="0">ALL SUB PROGRAMMES</option>');	
 		$("#subProgramNamesVillage").trigger('chosen:updated');
 		$("#villageLevelNames").html('');
-		$("#villageLevelNames").append('<option value="0">SELECT VILLAGE</option>');	
+		$("#villageLevelNames").append('<option value="0">ALL VILLAGE</option>');	
 		$("#villageLevelNames").trigger("chosen:updated");
 		$("#villageLevelMandalNames").html('');
-		$("#villageLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
+		$("#villageLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
 		$("#villageLevelMandalNames").trigger("chosen:updated");
 		$("#villageLevelConstNames").html('');
-		$("#villageLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+		$("#villageLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		$("#villageLevelConstNames").trigger("chosen:updated");
 	}
 	function emptyProgramSubProgramMandalVal(){
 		$("#programNamesMandal").val(0);
 		$("#programNamesMandal").trigger('chosen:updated');
 		$("#subProgramNamesMandal").empty();
-		$("#subProgramNamesMandal").append('<option value="0">Select SubProgram</option>');	
+		$("#subProgramNamesMandal").append('<option value="0">ALL SubProgram</option>');	
 		$("#subProgramNamesMandal").trigger('chosen:updated');
 		$("#mandalLevelMandalNames").html('');
-	    $("#mandalLevelMandalNames").append('<option value="0">SELECT MANDAL</option>');	
+	    $("#mandalLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
 	    $("#mandalLevelMandalNames").trigger("chosen:updated");
 	    $("#mandalLevelConstNames").html('');
-	    $("#mandalLevelConstNames").append('<option value="0">SELECT CONSTITUENCY</option>');	
+	    $("#mandalLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 	    $("#mandalLevelConstNames").trigger("chosen:updated");
 	}
 	$(document).on("click","[tab-switch] li",function(){
@@ -426,7 +438,7 @@ var $windowWidth = $(window).width();
 		}  
 		}).done(function(result){
 		  if(result !=null && result.length>0){
-				 $("#"+divId).append('<option value="0">Select Sub Program</option>');
+				 $("#"+divId).append('<option value="0">ALL SUB PROGRAMMES</option>');
 				for(var i in result){
 					$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
@@ -747,6 +759,12 @@ var $windowWidth = $(window).width();
 		str+='</div>';
 		$("#"+divId).html(str);
 		
+		if(result[0].subList == null || result[0].subList.length == 0){
+			$("#"+divId+"Table").html("");
+			$("#"+divId+"Table").html('<span style="font-weight:bold;"> NO DATA AVAILABLE...</span>');
+			return;
+		}
+			
 		var table='';
 		if(result[0].subList.length >= 2 || $windowWidth < 768)
 			{
@@ -764,15 +782,18 @@ var $windowWidth = $(window).width();
 						}else if(levelId == '4')
 						{
 							table+='<th>DISTRICT</th>';
+							table+='<th>PARLIAMENT</th>';
 							table+='<th>CONSTITUENCY</th>';
 						}else if(levelId == '5')
 						{
 							table+='<th>DISTRICT</th>';
+							table+='<th>PARLIAMENT</th>';
 							table+='<th>CONSTITUENCY</th>';
 							table+='<th>MANDAL</th>';
 						}else if(levelId == '6')
 						{
 							table+='<th>DISTRICT</th>';
+							table+='<th>PARLIAMENT</th>';
 							table+='<th>CONSTITUENCY</th>';
 							table+='<th>MANDAL</th>';
 							table+='<th>VILLAGE</th>';
@@ -805,12 +826,14 @@ var $windowWidth = $(window).width();
 							lvlVal =result[i].addressVO.assemblyId;
 							table+='<td>'+result[i].addressVO.districtName+'</td>';
 							table+='<td>'+result[i].addressVO.parliamentName+'</td>';
+							table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 						}else if(levelId == '5')
 						{
 							lvlVal =result[i].addressVO.id;
 							table+='<td>'+result[i].addressVO.districtName+'</td>';
 							table+='<td>'+result[i].addressVO.parliamentName+'</td>';
 							table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+							table+='<td>'+result[i].addressVO.tehsilName+'</td>';
 						}else if(levelId == '6')
 						{
 							lvlVal =result[i].addressVO.id;
@@ -818,6 +841,7 @@ var $windowWidth = $(window).width();
 							table+='<td>'+result[i].addressVO.parliamentName+'</td>';
 							table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 							table+='<td>'+result[i].addressVO.tehsilName+'</td>';
+							table+='<td>'+result[i].addressVO.panchayatName+'</td>';
 						}
 						table+='<td class="text-center">'+result[0].subList[j].year+'</td>';
 						for(var k in result[i].subList[j].subList)
@@ -829,13 +853,13 @@ var $windowWidth = $(window).width();
 							} 
 							if(levelId != '2'){
 								if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
-									table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" ><span style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</span> <small>'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'</small></td>';
+									table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" >'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<small title="No of times amount sanctioned..." class="toolltipCls">&nbsp;&nbsp;(<u><span style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</span> </u>)</small></td>';
 								}else{
 									table+='<td class="text-center no-right-border">-</td>';
 								}
 							}else{
 								if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
-									table+='<td class="text-center no-right-border">'+result[i].subList[j].subList[k].count+' <small>'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'</small></td>';
+									table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<small title="No of times amount sanctioned..." class="toolltipCls" >&nbsp;&nbsp;('+result[i].subList[j].subList[k].count+')</small></td>';
 								}else{
 									table+='<td class="text-center no-right-border">-</td>';
 								}
@@ -852,6 +876,9 @@ var $windowWidth = $(window).width();
 			}	
 		$("#"+divId+"Table").html("");
 		$("#"+divId+"Table").html(table);
+		
+		$('.toolltipCls').tooltip();
+		
 		if(levelId == 3 || levelId == 4 || levelId == 5 || levelId == 6)
 		{
 			$("#dataTable"+divId).dataTable({
@@ -1358,7 +1385,7 @@ var $windowWidth = $(window).width();
 			},
 			success : function(result){   
 				if(result !=null && result.length>0){
-					 $("#"+divId).append('<option value="0">SELECT '+globalLevelObj[divId]+'</option>');
+					 $("#"+divId).append('<option value="0">ALL '+globalLevelObj[divId]+'</option>');
 					for(var i in result){
 						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 					}
