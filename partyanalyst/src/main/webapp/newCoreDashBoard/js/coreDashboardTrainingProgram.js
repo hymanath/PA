@@ -29,11 +29,14 @@ var getDocumentWidth = $(document).width();
 	 $("#villageWardTblId").html(' ');
 	 $("#mdlTwnDvsnTabId").html(' ');
 	 var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	  var enrollmentYrIds = [];
+         enrollmentYrIds.push($("#tdpTriningYearId").val());
 		var jsObj ={ 
 		             userAccessLevelId : globalUserAccessLevelId,
 					 userAccessLevelValuesArray : globalUserAccessLevelValues,
 					 stateId : globalStateId,
-					 dateStr : dateStr
+					 dateStr : dateStr,
+					 enrollmentYearIdsList :enrollmentYrIds
 				  }
 		$.ajax({
 			type : 'POST',
@@ -150,13 +153,16 @@ var getDocumentWidth = $(document).width();
  function getTrainingCampProgramsDetailsCntByUserType(){
 		$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		 var dateStr = $("#dateRangeIdForTrainingCamp").val();
+		 var enrollmentYrIds = [];
+         enrollmentYrIds.push($("#tdpTriningYearId").val());
 		var jsObj ={ 
 		             userAccessLevelId : globalUserAccessLevelId,
 					 userAccessLevelValuesArray : globalUserAccessLevelValues,
 					 stateId : globalStateId,
 					 dateStr : dateStr,
 					 userTypeId : globalUserTypeId,
-					 activityMemberId : globalActivityMemberId
+					 activityMemberId : globalActivityMemberId,
+					 enrollmentYearIdsList :enrollmentYrIds
 				  }
 		  
 		$.ajax({
@@ -290,13 +296,16 @@ var globalUserWiseMemberRslt;
 	 	$("#clickInfoId").hide();
 	$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	   var enrollmentYrIds = [];
+         enrollmentYrIds.push($("#tdpTriningYearId").val());
 	 var jsObj ={
 			          userAccessLevelId:globalUserAccessLevelId,
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
 					  activityMemberId : globalActivityMemberId,
 					  userTypeId : globalUserTypeId,
 					  stateId : globalStateId,
-					  dateStr : dateStr
+					  dateStr : dateStr,
+					  enrollmentYearIdsList :enrollmentYrIds
 				}
 		
 		$.ajax({
@@ -1032,6 +1041,8 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 	  var parentActivityMemberId = globalActivityMemberId;
 	  var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
 	  var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	  var enrollmentYrIds = [];
+         enrollmentYrIds.push($("#tdpTriningYearId").val());
 	  var jsObj ={ 
 	               parentActivityMemberId : parentActivityMemberId,
 				   childUserTypeIdsArray : childUserTypeIdsArray,
@@ -1039,7 +1050,8 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 				   userAccessLevelValuesArray : globalUserAccessLevelValues,
 				   reportType :"selectedUserType",
 				   stateId : globalStateId,
-				   dateStr : dateStr
+				   dateStr : dateStr,
+				   enrollmentYearIdsList :enrollmentYrIds
 				 }
 	  $.ajax({
 			type : 'POST',
@@ -1233,11 +1245,14 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 	  var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	  var childUserTypeIdsArray=[];
 	             childUserTypeIdsArray.push(userTypeId);
+				 var enrollmentYrIds = [];
+         enrollmentYrIds.push($("#tdpTriningYearId").val());
 	  var jsObj ={  activityMemberId : activityMemberId,
 			         childUserTypeIdsArray : childUserTypeIdsArray,
 					 reportType : "directChild",
 					 stateId : globalStateId,
-					 dateStr : dateStr
+					 dateStr : dateStr,
+					 enrollmentYearIdsList :enrollmentYrIds
 				  }
 	   	$.ajax({
 			type : 'POST',
@@ -1315,11 +1330,14 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 function getTrainingProgramBasicCnt(){
 	$("#programsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	 var enrollmentYrIds = [];
+         enrollmentYrIds.push($("#tdpTriningYearId").val());
  	  var jsObj ={ 
 	               userAccessLevelId : globalUserAccessLevelId,
 				   userAccessLevelValuesArray : globalUserAccessLevelValues,
 				    stateId : globalStateId,
-					dateStr : dateStr
+					dateStr : dateStr,
+					enrollmentYearIdsList :enrollmentYrIds
 				 }
 	  $.ajax({
 			type : 'POST',
@@ -1478,11 +1496,14 @@ function buildTrainingProgramRslt(result){
 	 function getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedUserName,userType){
     $("#poorPerformancTrainingPrograLocationsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 	  var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	   var enrollmentYrIds = [];
+         enrollmentYrIds.push($("#tdpTriningYearId").val());
 		var jsObj ={ 
 		              userTypeId : userTypeId,
 					  activityMemberId:activityMemberId,
 					  stateId : globalStateId,
-					  dateStr : dateStr
+					  dateStr : dateStr,
+					  enrollmentYearIdsList :enrollmentYrIds
 				  }
 		
 		$.ajax({
