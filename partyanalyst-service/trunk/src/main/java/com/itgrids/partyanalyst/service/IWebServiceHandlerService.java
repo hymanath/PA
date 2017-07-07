@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jettison.json.JSONObject;
@@ -269,4 +268,6 @@ public interface IWebServiceHandlerService {
     public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(String fromDate, String toDate, Long locationId,Long locationValue);
     public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue);
     public List<List<GrivenceStatusVO>> getGrivenceTrustStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue);
+    public ResultStatus checkMemberWalkInForToday( String memberShipId, String date ,  String uniqueId, Long loginUserId,Long tabPrimaryKey);
+    
 }

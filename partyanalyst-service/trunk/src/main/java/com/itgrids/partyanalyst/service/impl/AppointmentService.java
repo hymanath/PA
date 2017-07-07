@@ -125,6 +125,7 @@ import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
@@ -8644,6 +8645,7 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  			return status;
  		}
  	
+
  	public AppointmentCountDetailsVO getAppointmentCandidateCountDeatils(Long userId){
  		 AppointmentCountDetailsVO  returnVo =null; 
  	  try{
@@ -8703,6 +8705,189 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 		return returnVo;
  		
  	}
+ 	
+ 	public ResultStatus checkMemberWalkInForToday(final String memberShipId,final String date , final String uniqueId,final Long loginUserId,final Long tabPrimaryKey){
+		 ResultStatus status = new ResultStatus();
+		try {
+			 //saveApptDetailsInFatalLog(appointmentVO);
+			 
+			status = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					
+					 ResultStatus rs = new ResultStatus();
+					 
+		        	List<String> membershipNoList = new ArrayList<String>(0);
+	        		
+	        		membershipNoList.add(memberShipId);
+	        		
+	        		if(membershipNoList!=null && membershipNoList.size() >0 ){
+	        			
+	        			boolean apptCreationFlag = checkisEligibleForAppt(membershipNoList,2l);
+			        	if(apptCreationFlag){
+			        		
+			        		rs.setExceptionMsg("Not Eligible To Create Appointment.");
+			    			rs.setResultCode(2);
+			    			rs.setTabPrimaryKey(tabPrimaryKey);
+			        		return rs;
+			        	}
+	        		}
+	        		//SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+	        		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		        	
+		        	Date fromDate =null;
+	        		if(date !=null && date !=null){
+	    				try {
+							fromDate = sdf1.parse(date);
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	    			}
+		        	Appointment appointment = new Appointment();
+		        	appointment.setAppointmentUserId(2l);
+		        	
+		        	appointment.setAppointmentPriorityId(1l);
+		        			 
+		        	//appointment.setReason(appointmentVO.getReason());
+		        	
+		        	
+		        	appointment.setAppointmentStatusId(IConstants.APPOINTMENT_STATUS_WAITING);
+		        	
+		        	appointment.setAppointmentPreferableTimeId(4l);
+		        	
+		        	
+		        	appointment.setCreatedBy(loginUserId);
+		        	appointment.setUpdatedBy(loginUserId);
+		        	appointment.setInsertedTime(fromDate);
+		        	appointment.setUpdatedTime(fromDate);
+		        	appointment.setIsDeleted("N");
+		        	appointment.setIsLabelled("N");
+		        	appointment = appointmentDAO.save(appointment);
+		        	
+		        	
+		        	if( appointment != null && appointment.getAppointmentId() != null && appointment.getAppointmentId()>0l){
+		        		String temp = "NL";
+		        		appointmentDAO.updateUniquesIdForAppointment(temp+"_"+appointment.getAppointmentId(),appointment.getAppointmentId());
+		        	}
+		        	
+		        	//dates
+		        	List<Date> datesList = new ArrayList<Date>(0);
+		        	
+		        	appointment.setAppointmentPreferableTimeId(4l);
+		        		datesList = dateUtilService.getDatesOfCurrentWeek();
+		        	
+		        	
+		        	/*if(datesList != null && datesList.size() > 0){
+		        		Long order = 1l;
+		        		for (Date date : datesList) {*/
+		        			AppointmentPreferableDate appointmentPreferableDate = new AppointmentPreferableDate();
+		        			
+		        			appointmentPreferableDate.setAppointmentId(appointment.getAppointmentId());
+		        			appointmentPreferableDate.setAppointmentDate(fromDate);
+		        			appointmentPreferableDate.setOrderNo(1l);
+		        			
+		        			appointmentPreferableDate = appointmentPreferableDateDAO.save(appointmentPreferableDate);
+		        			/*order++;
+						}
+		        	}*/
+		        	
+		        	//gettdpcadre Ids for membership nums
+		        		
+		        		Map<String,Object[]> cadreIdsMap = new HashMap<String, Object[]>(0);
+		        		if(membershipNoList != null && membershipNoList.size() > 0){
+		        			List<Object[]> cadreIdsObjList = tdpCadreDAO.getTdpCadreDetailsByMemberShipId(membershipNoList);
+		        			if(cadreIdsObjList != null && cadreIdsObjList.size() > 0){
+		        				for (Object[] objects : cadreIdsObjList) {
+		        					cadreIdsMap.put(objects[1].toString(),objects);
+								}
+		        			}
+		        		}
+		        		
+		        		
+		        		AppointmentCandidate appCandi =null;
+			        				if(memberShipId !=null && !memberShipId.isEmpty()){		        					
+			        					List<AppointmentCandidate> aptModelList = appointmentCandidateDAO.getAppointmentCandidateObjByMemship(memberShipId);	
+			        					
+			        					if(aptModelList !=null && aptModelList.size()>0){
+			        						appCandi = aptModelList.get(0);
+			        					}	
+			        					
+			        					if(appCandi ==null){//Saving
+			        						appCandi = new AppointmentCandidate();
+			        					}
+			        					
+			        					//saving && Updation
+			        					appCandi = appointmentCandidateDetailsSaving(appCandi,cadreIdsMap,loginUserId,memberShipId,fromDate);
+			        					AppointmentCandidateRelation acr = new AppointmentCandidateRelation();
+					        			acr.setAppointmentId(appointment.getAppointmentId());
+					        			acr.setAppointmentCandidateId(appCandi.getAppointmentCandidateId());
+					        			appointmentCandidateRelationDAO.save(acr);
+				        			
+							            saveAppointmentTrackingDetails(appointment.getAppointmentId(),IConstants.APPOINTMENT_ACTION_STATUS_CHANGE,null,
+							            		IConstants.APPOINTMENT_STATUS_WAITING,loginUserId,null);
+							        	rs.setExceptionMsg("success");
+										rs.setResultCode(0);
+										rs.setTabPrimaryKey(tabPrimaryKey);
+			        				}
+			        				
+				        			
+					return rs;
+				}
+		    });
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveAppointment", e);
+			status.setExceptionClass(e.getMessage());
+			status.setExceptionMsg("failure");
+			status.setResultCode(1);
+			status.setTabPrimaryKey(tabPrimaryKey);
+		}
+		return status;
+	}
+ 	
+ 	public AppointmentCandidate appointmentCandidateDetailsSaving(AppointmentCandidate appCandi,Map<String,Object[]> cadreIdsMap,Long loggerUserId,String memberShipId,Date fromDate){
+		
+		try{
+			
+			Object[] obj = cadreIdsMap.get(memberShipId);
+			
+			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+			appCandi.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));
+			
+			//appCandi.setDesignationId(commonMethodsUtilService.getLongValueForObject(obj[3]));
+			
+			appCandi.setMobileNo(commonMethodsUtilService.getStringValueForObject(obj[4]));
+			 
+			UserAddress userAddress = userAddressDAO.get(commonMethodsUtilService.getLongValueForObject(obj[5]));
+			if(userAddress !=null)
+			{
+				appCandi.setAddressId(commonMethodsUtilService.getLongValueForObject(obj[5]));
+			}
+			
+			if(obj[6] !=null && obj[7] != null){
+				appCandi.setVoterIdCardNo(commonMethodsUtilService.getStringValueForObject(obj[7]));
+				appCandi.setVoterId(commonMethodsUtilService.getLongValueForObject(obj[6]));
+			}else if(obj[8] !=null && obj[9] != null){
+				appCandi.setVoterIdCardNo(commonMethodsUtilService.getStringValueForObject(obj[9]));
+				appCandi.setVoterId(commonMethodsUtilService.getLongValueForObject(obj[8]));
+			}
+			appCandi.setMembershipId(commonMethodsUtilService.getStringValueForObject(obj[1]));
+			appCandi.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+			appCandi.setImageURL("images/cadre_images/"+commonMethodsUtilService.getStringValueForObject(obj[10]));
+			appCandi.setAppointmentCandidateTypeId(3l);
+			
+			appCandi.setCreatedBy(loggerUserId);
+			appCandi.setUpdatedBy(loggerUserId);
+			appCandi.setInsertedTime(fromDate);
+			appCandi.setUpdatedTime(fromDate);
+			
+			appCandi = appointmentCandidateDAO.save(appCandi);
+			
+		}catch (Exception e) {
+			LOG.error("Error occured  in appointmentCandidateDetailsSaving() method of AppointmentService",e);
+		}
+		return appCandi;
+	}
  }
 
 

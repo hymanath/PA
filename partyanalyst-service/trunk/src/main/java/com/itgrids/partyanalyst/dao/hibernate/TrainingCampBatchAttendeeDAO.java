@@ -554,29 +554,40 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   
 	   return query.list();
    }
-   public List<Object[]> getTotalInvitedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate){  
+   public List<Object[]> getTotalInvitedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds){  
 		StringBuilder queryString = new StringBuilder();
 		queryString.append(" select TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
 						   " TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName, " +
 						   " count(distinct TC.tdpCadreId) from TrainingCampBatchAttendee TCBA, TdpCadre TC " +  
 						   " where " +
-						   " TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and " +
 						   " date(TCBA.trainingCampBatch.fromDate) <= (:toDate) and" );    
 		if(stateId.longValue() == 1){
 			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 23 and ");
 		}else{
 			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 10 and ");
 		}
+		if(programIdList != null && programIdList.size() >0){
+			queryString.append(" TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and " );
+		}
+		if(enrollYrIds != null && enrollYrIds.size() >0){
+			queryString.append(" TCBA.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollYrIds)  and " );
+		}
 		queryString.append(" TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId and TCBA.isDeleted = 'false' " +
 						   " group by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId " +
 						   " order by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");
 		Query query = getSession().createQuery(queryString.toString());
-		query.setParameterList("programIdList", programIdList);
+		if(programIdList != null && programIdList.size() >0){
+			query.setParameterList("programIdList", programIdList);
+		}
 		query.setDate("toDate", toDate); 
+		
+		if(enrollYrIds != null && enrollYrIds.size() >0){
+			query.setParameterList("enrollYrIds", enrollYrIds);
+		}
 		return query.list();       
 		
 	}
-   public List<Object[]> getStateDistrictTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate){
+   public List<Object[]> getStateDistrictTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds){
 	   StringBuilder queryString = new StringBuilder();
 	   queryString.append(" select " +
 	   					  " TCL.tdp_committee_level_id as id, " +
@@ -597,16 +608,22 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 			   			  " where  "+
 			   			  " TCBA.training_camp_batch_id = TCB.training_camp_batch_id and  "+
 			   			  " TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and  "+
-			   			  " TCS.training_camp_program_id in (:programIdList) and  "+
 			   			  " TCBA.tdp_cadre_id = TDP.tdp_cadre_id and  " +
 			   			  " TDP.address_id = UA.user_address_id and " +  
 			   			  " UA.district_id = D.district_id and " +
 			   			  " date(TCB.from_date) <= (:toDate) and ");
+	   if(programIdList != null && programIdList.size() > 0){
+		   queryString.append(" TCS.training_camp_program_id in (:programIdList) and  ");
+	   }
 	   if(stateId == 1l){
 		   queryString.append(" (D.district_id between 1 and 23) and ");
 	   }else{  
 		   queryString.append(" (D.district_id between 1 and 10) and ");
 	   }
+	   
+	   if(enrollYrIds != null && enrollYrIds.size() >0){
+			queryString.append(" TCS.enrollment_year_id in (:enrollYrIds)  and " );
+		}
 	   queryString.append(" TCM.tdp_committee_role_id = TCR.tdp_committee_role_id and  "+
 			   			  " TCR.tdp_committee_id = TC.tdp_committee_id and  "+
 			   			  " TC.tdp_committee_level_id = TCL.tdp_committee_level_id and  "+
@@ -615,11 +632,16 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 			   			  " TCL.tdp_committee_level_id ");
 	  SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("level", Hibernate.STRING).addScalar("total", Hibernate.LONG);
 	  //query.setParameter("campId", campId);
-	  query.setParameterList("programIdList", programIdList);
-	  query.setDate("toDate", toDate);  
+	  if(programIdList != null && programIdList.size() > 0){
+		  query.setParameterList("programIdList", programIdList);
+	  }
+	  query.setDate("toDate", toDate);
+	  if(enrollYrIds != null && enrollYrIds.size() >0){
+			query.setParameterList("enrollYrIds", enrollYrIds);
+		}
 	  return query.list();
    }
-   public List<Object[]> getMlaMpInchargeTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate){
+   public List<Object[]> getMlaMpInchargeTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds){
 	   StringBuilder queryString = new StringBuilder();
 	   queryString.append(" select " +
 	   					  " PRT.public_representative_type_id as id, " +
@@ -641,7 +663,6 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   					  " TCBA.training_camp_batch_id = TCB.training_camp_batch_id and "+
 	   					  " TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
 	   					  //" TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+ 
-	   					  " TCS.training_camp_program_id in (:programIdList) and "+ 
 	   					  " TCBA.tdp_cadre_id = TDP.tdp_cadre_id and "+
 	   					  " TCC.candidate_id = CND.candidate_id and "+
 	   					  " PR.candidate_id = CND.candidate_id and "+
@@ -650,19 +671,30 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   					  " TDP.address_id = UA.user_address_id and " +  
 			   			  " UA.district_id = D.district_id and " +
 			   			  " date(TCB.from_date) <= (:toDate) and ");
+	   if(programIdList != null && programIdList.size() >0){
+		   queryString.append(" TCS.training_camp_program_id in (:programIdList) and ");
+	   }
 	   if(stateId == 1l){
 		   queryString.append(" (D.district_id between 1 and 23) ");
 	   }else{  
 		   queryString.append(" (D.district_id between 1 and 10) ");
 	   }
+	   if(enrollYrIds != null && enrollYrIds.size() >0){
+			queryString.append(" and TCS.enrollment_year_id in (:enrollYrIds)   " );
+		}
 	   queryString.append(" group by PRT.public_representative_type_id" );
 	   SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("position", Hibernate.STRING).addScalar("total", Hibernate.LONG);
 	   //query.setParameter("campId", campId);
-	   query.setParameterList("programIdList", programIdList);  
-	   query.setDate("toDate", toDate);  
+	   if(programIdList != null && programIdList.size() >0){
+		   query.setParameterList("programIdList", programIdList); 
+	   }
+	   query.setDate("toDate", toDate); 
+	   if(enrollYrIds != null && enrollYrIds.size() >0){
+			query.setParameterList("enrollYrIds", enrollYrIds);
+		}
 	   return query.list(); 
    }
-   public List<Object[]> getDistWiseInvitedMembers(List<Long> programIdList,Long stateId,Date toDate){
+   public List<Object[]> getDistWiseInvitedMembers(List<Long> programIdList,Long stateId,Date toDate,List<Long> enrollYrIds){
 	   StringBuilder queryString = new StringBuilder();
 	   queryString.append(" select " +
 	   					  " TCP.training_camp_program_id as programId,TCP.program_name as programName,D.district_id as id, D.district_name as name, " +
@@ -675,23 +707,32 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 			   			  " TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and " +
 			   			  " TCS.training_camp_program_id = TCP.training_camp_program_id and "+
 			   			  //" TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
-			   			  " TCP.training_camp_program_id in (:programIdList) and "+
 			   			  " TCBA.tdp_cadre_id = TDP.tdp_cadre_id and "+
 			   			  " TDP.address_id = UA.user_address_id and " +
 			   			  " UA.district_id = D.district_id and " +
 			   			  " date(TCB.from_date) <= (:toDate) and ");  
+	   if(programIdList != null && programIdList.size() >0){
+		   queryString.append(" TCP.training_camp_program_id in (:programIdList) and ");
+	   }
 	   if(stateId == 1l){
 		   queryString.append(" (D.district_id BETWEEN 1 and 23) ");
 	   }else{
 		   queryString.append(" (D.district_id BETWEEN 1 and 10) ");
 	   }
-	  
+	   if(enrollYrIds != null && enrollYrIds.size() >0){
+			queryString.append(" and TCS.enrollment_year_id in (:enrollYrIds)   " );
+		}
 			   			
 	   queryString.append(" group by TCP.training_camp_program_id,D.district_id order by TCP.training_camp_program_id,D.district_id ");
 	   SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("programId", Hibernate.LONG).addScalar("programName", Hibernate.STRING).addScalar("id", Hibernate.LONG).addScalar("name", Hibernate.STRING).addScalar("total", Hibernate.LONG);
 	   //query.setParameter("campId", campId);
-	   query.setParameterList("programIdList", programIdList);   
-	   query.setDate("toDate", toDate);    
+	   if(programIdList != null && programIdList.size() >0){
+		   query.setParameterList("programIdList", programIdList); 
+	   }
+	   query.setDate("toDate", toDate);  
+	   if(enrollYrIds != null && enrollYrIds.size() >0){
+			query.setParameterList("enrollYrIds", enrollYrIds);
+		}
 	  
 	   return query.list();  
    }

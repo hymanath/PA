@@ -37,10 +37,10 @@ public interface ITrainingCampBatchAttendeeDAO extends GenericDao<TrainingCampBa
 	public List<Long> getTodaySpeakersDetails(Date todayDate);
 	public Long getInvitedCountByLocation(Long id,String searchType);
 	public List<Long> getInvitedCadreIdsByLocation(Long id,String searchType);
-	public List<Object[]> getTotalInvitedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate);
-	public List<Object[]> getStateDistrictTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate);  
-	public List<Object[]> getMlaMpInchargeTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate);
-	public List<Object[]> getDistWiseInvitedMembers(List<Long> programIdList, Long stateId, Date toDate);
+	public List<Object[]> getTotalInvitedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds);
+	public List<Object[]> getStateDistrictTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds);  
+	public List<Object[]> getMlaMpInchargeTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds);
+	public List<Object[]> getDistWiseInvitedMembers(List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds);
     public List<Object[]> getInvitedMemberCadreId(Long distId, Long programId);
     public List<Object[]> getStDistTrainingPrgInvitedDtlsCmtLvL(Long campId, List<Long> programIdList, Long stateId, Date toDate, List<Long> designationIdList);
     public List<Object[]> getMlaMpInchargeTrngPrgInvitedDtlsPubRep(Long campId, List<Long> programIdList, Long stateId, Date toDate, List<Long> designationIdList);
