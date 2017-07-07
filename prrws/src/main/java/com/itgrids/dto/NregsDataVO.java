@@ -74,6 +74,91 @@ public class NregsDataVO implements Serializable{
 	
 	private String argicultureExpenditure;
 	
+	private String ftoNotGenCnt;
+	private String ftoNotGenAmt;
+	private String ftoNotUploadCnt;
+	private String ftoNotUploadAmt;
+	private String ftoNotSentCnt;
+	private String ftoNotSentAmt;
+	private String rejectCnt;
+	private String rejectAmt;
+	private String pendingResponseCnt;
+	private String pendingResponseAmt;
+	private String dId;
+	private String mId;
+	
+	public String getmId() {
+		return mId;
+	}
+	public void setmId(String mId) {
+		this.mId = mId;
+	}
+	public String getdId() {
+		return dId;
+	}
+	public void setdId(String dId) {
+		this.dId = dId;
+	}
+	public String getFtoNotGenCnt() {
+		return ftoNotGenCnt;
+	}
+	public void setFtoNotGenCnt(String ftoNotGenCnt) {
+		this.ftoNotGenCnt = ftoNotGenCnt;
+	}
+	public String getFtoNotGenAmt() {
+		return ftoNotGenAmt;
+	}
+	public void setFtoNotGenAmt(String ftoNotGenAmt) {
+		this.ftoNotGenAmt = ftoNotGenAmt;
+	}
+	public String getFtoNotUploadCnt() {
+		return ftoNotUploadCnt;
+	}
+	public void setFtoNotUploadCnt(String ftoNotUploadCnt) {
+		this.ftoNotUploadCnt = ftoNotUploadCnt;
+	}
+	public String getFtoNotUploadAmt() {
+		return ftoNotUploadAmt;
+	}
+	public void setFtoNotUploadAmt(String ftoNotUploadAmt) {
+		this.ftoNotUploadAmt = ftoNotUploadAmt;
+	}
+	public String getFtoNotSentCnt() {
+		return ftoNotSentCnt;
+	}
+	public void setFtoNotSentCnt(String ftoNotSentCnt) {
+		this.ftoNotSentCnt = ftoNotSentCnt;
+	}
+	public String getFtoNotSentAmt() {
+		return ftoNotSentAmt;
+	}
+	public void setFtoNotSentAmt(String ftoNotSentAmt) {
+		this.ftoNotSentAmt = ftoNotSentAmt;
+	}
+	public String getRejectCnt() {
+		return rejectCnt;
+	}
+	public void setRejectCnt(String rejectCnt) {
+		this.rejectCnt = rejectCnt;
+	}
+	public String getRejectAmt() {
+		return rejectAmt;
+	}
+	public void setRejectAmt(String rejectAmt) {
+		this.rejectAmt = rejectAmt;
+	}
+	public String getPendingResponseCnt() {
+		return pendingResponseCnt;
+	}
+	public void setPendingResponseCnt(String pendingResponseCnt) {
+		this.pendingResponseCnt = pendingResponseCnt;
+	}
+	public String getPendingResponseAmt() {
+		return pendingResponseAmt;
+	}
+	public void setPendingResponseAmt(String pendingResponseAmt) {
+		this.pendingResponseAmt = pendingResponseAmt;
+	}
 	public String getArgicultureExpenditure() {
 		return argicultureExpenditure;
 	}

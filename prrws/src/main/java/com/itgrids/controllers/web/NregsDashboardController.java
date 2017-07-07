@@ -215,6 +215,18 @@ public class NregsDashboardController {
 		}
 		return locationVOList;
 	}
+	
+	@PostMapping("/getNregaLevelsWiseDataForTimelyPayments")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsWiseDataForTimelyPayments(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelsWiseDataForTimelyPayments(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataForTimelyPayments - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
 	/*@PostMapping("/getNregaParliamentData")
 	public @ResponseBody List<NregsDataVO> getNregaParliamentData(@RequestBody InputVO vo){
 		List<NregsDataVO> levlWiseVOList = null;
