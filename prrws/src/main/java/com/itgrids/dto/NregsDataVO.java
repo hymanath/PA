@@ -43,6 +43,11 @@ public class NregsDataVO implements Serializable{
 	private List<NregsDataVO> consMandalList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> mandalVillageList = new ArrayList<NregsDataVO>(0);
 	private String achivement;
+	private Long parliamentId;
+	private String parliamentName;
+	private String sanctionedKms;
+	private String sanctionedpercentage;
+	private String completedKms;
 	
 	private String targetKMS;
 	private String sanctionedAmount;
@@ -68,7 +73,6 @@ public class NregsDataVO implements Serializable{
 	private String materialExpenditurePerc;
 	
 	private String argicultureExpenditure;
-	
 	
 	public String getArgicultureExpenditure() {
 		return argicultureExpenditure;
@@ -393,6 +397,36 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setAchivement(String achivement) {
 		this.achivement = achivement;
+	}
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+	public String getParliamentName() {
+		return parliamentName;
+	}
+	public void setParliamentName(String parliamentName) {
+		this.parliamentName = parliamentName;
+	}
+	public String getSanctionedKms() {
+		return sanctionedKms;
+	}
+	public void setSanctionedKms(String sanctionedKms) {
+		this.sanctionedKms = sanctionedKms;
+	}
+	public String getSanctionedpercentage() {
+		return sanctionedpercentage;
+	}
+	public void setSanctionedpercentage(String sanctionedpercentage) {
+		this.sanctionedpercentage = sanctionedpercentage;
+	}
+	public String getCompletedKms() {
+		return completedKms;
+	}
+	public void setCompletedKms(String completedKms) {
+		this.completedKms = completedKms;
 	}
 	
 }

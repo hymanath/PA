@@ -215,4 +215,27 @@ public class NregsDashboardController {
 		}
 		return locationVOList;
 	}
+	/*@PostMapping("/getNregaParliamentData")
+	public @ResponseBody List<NregsDataVO> getNregaParliamentData(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaParliamentData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaParliamentData - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}*/
+	
+	@PostMapping("/getNREGSProjectsAbstractNew")
+	public @ResponseBody List<NregsProjectsVO> getNREGSProjectsAbstractNew(@RequestBody InputVO vo){
+		List<NregsProjectsVO> projectVOList = null;
+		try {
+			projectVOList = nregsTcsService.getNREGSProjectsAbstractNew(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSProjectsAbstractNew - NREGSController controller", e);
+		}
+		return projectVOList;
+	}
 }

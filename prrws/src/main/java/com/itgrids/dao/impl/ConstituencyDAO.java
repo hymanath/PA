@@ -97,4 +97,20 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 		    	   }
 		return (String)query.uniqueResult();
 	}
+	public List<Object[]> getParlmentNames(List<Long> parlIds){
+		StringBuilder sb = new StringBuilder();
+	    sb.append(" select distinct model.constituencyId,model.name from Constituency model ");
+		if(parlIds != null && parlIds.size() >0){
+	    	sb.append(" where model.constituencyId in (:parlIds) ");
+	    }
+	    	sb.append(" and model.electionScope.electionScopeId = 1");
+		
+	    Query query = getSession().createQuery(sb.toString());
+	    
+	    if(parlIds != null && parlIds.size() >0){
+		   query.setParameterList("parlIds", parlIds);
+	   }
+	   
+	   return query.list();
+	}
 }
