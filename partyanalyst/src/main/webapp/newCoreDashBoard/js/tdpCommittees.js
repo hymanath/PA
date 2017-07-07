@@ -280,7 +280,7 @@
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
 	   var committeeEnrollmentYearArray = new Array();
 		   committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
-		  //  alert(555);
+		  
 	   var jsObj ={  activityMemberId : activityMemberId,
 			         userTypeId : userTypeId,
 					 state:state,
@@ -307,7 +307,7 @@
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
 	   var committeeEnrollmentYearArray = new Array();
 		committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
-		// alert(666);
+		
 	   var jsObj ={  activityMemberId : activityMemberId,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
@@ -334,7 +334,7 @@
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
 	    var committeeEnrollmentYearArray = new Array();
 		committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
-		// alert(777);
+		
 	   var jsObj ={  activityMemberId : activityMemberId,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
@@ -623,8 +623,8 @@
 			for(var i = length; i >= 0; i--){
 				if(result[i].id !=10){
 					if(result[i].subList !=null && result[i].subList.length > 0){
-						str+='<li class="customLi">';
 						var properName = getProperLocationLevelName(result[i].name);
+						str+='<li class="customLi" attr_committee_level_name="'+properName+'">';
 						if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 							locationLevelNameArray.push(properName);
 							str+='<h4>'+properName+' Level</h4>';
@@ -984,6 +984,7 @@
 			 str+='<th>Designation</th>';
 			 str+='<th>Location</th>';
 			 str+='<th>Total</th>';
+			 //str+='<th>Yet To Start</th>';
 			 str+='<th>Started</th>';
 			 str+='<th>Completed</th>';
 			 str+='<th>%</th>';
@@ -1001,6 +1002,11 @@
 			}else{
 				str+='<td> - </td>';
 			}
+			/* if( result[i].notStartedCount != null && result[i].notStartedCount >0){
+					str+='<td>'+result[i].notStartedCount+'</td>';
+			}else{
+				str+='<td> - </td>';
+			} */
 			if(result[i].startedCount !=null && result[i].startedCount >0){
 				str+='<td>'+result[i].startedCount+'</td>';
 			}else{
@@ -1549,7 +1555,7 @@
 						str+='<th>Designation</th>';
 						str+='<th>Name</th>';
 						str+='<th>total</th>';
-						str+='<th>yet to start</th>';
+						str+='<th>Yet To Start</th>';
 						str+='<th>started</th>';
 						str+='<th>completed</th>';
 						str+='<th>%</th>';
@@ -1805,28 +1811,42 @@
 	// DETAILD BLOCK : clicked on '... dots' and 'detailed block' or 'click on slick' START
 	
 	//... dots.
+	var isCommitteeMoreBlockExpand = false;
+	var isCommitteeMoreBlockClosed= false;
 	$(document).on("click",".moreBlocksIcon",function(){
+		isCommitteeMoreBlockExpand = true;
+		isCommitteeMoreBlockClosed = false;
 		$(this).addClass("unExpandBlock");
 		$(".moreBlocks").show();
 		$(".moreBlocksDetailAndComp").show();
 		$(".moreBlocks1").hide();
 		$(".committeeSeetingBlock").show();
 		customBuildGraph();
-		if($(this).hasClass("unExpandBlock")){
+		$("#levelWiseBasicCommittees").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		setTimeout(function(){ defaultCall(); }, 1000);
+		/* if($(this).hasClass("unExpandBlock")){
 			getLevelWiseBasicCommitteesCountReport();
-		}
-		
+		} */
 		
 	});
 	$(document).on("click",".unExpandBlock",function(){
 		$(this).removeClass("unExpandBlock");
+		isCommitteeMoreBlockClosed = true;
 		$(".moreBlocks").hide();
 		$(".moreBlocks1").hide();
 		$(".moreBlocksDetailAndComp").hide();
 		$(".committeeSeetingBlock").hide();
+		$(".moreBlocksDistrictlevel").hide();
 		$(".comparisionBlock").removeClass("active");
 		$(".detailedBlock").addClass("active");
 	});
+	
+	function defaultCall(){
+		if(isCommitteeMoreBlockExpand==true && isCommitteeMoreBlockClosed==false){
+			getLevelWiseBasicCommitteesCountReport();
+		}	
+	}
+	
 	$(document).on("click",".detailedBlock",function(){
 		$(".moreBlocks1").hide();
 		$(".moreBlocks").show();
@@ -1848,7 +1868,8 @@
 	});
 	
 	$("#levelWiseBasicCommittees").on("click",".slick-next,.slick-prev",function(){
-		var currentSliderLevel = $(".slick-current").find("h4").html();
+		//var currentSliderLevel = $(".slick-current").find("h4").html();
+		var currentSliderLevel = $(".customLi.slick-current").attr("attr_committee_level_name");
 		
 		var tdpCommitteeLevelIdsClickedArray = [];
 		
