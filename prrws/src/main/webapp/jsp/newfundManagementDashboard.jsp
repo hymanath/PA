@@ -141,6 +141,16 @@
 											<li attr_type="scheme">Scheme level</li>
 											<li attr_type="deptscheme">Dept_Scheme Level</li>
 										</ul>-->
+										<ul class="list-inline">
+											<li class="col-sm-2">
+												<select class="form-control chosenSelect" id="programNamesState" >
+												</select>
+											</li>
+											<li class="col-sm-2">
+												<select class="form-control chosenSelect" id="subProgramNamesState" >
+												</select>
+											</li>
+										</ul>
 										<ul class="nav nav-tabs pull-right" role="tablist" id="tabSt">
 											<li role="presentation" ><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 											<li role="presentation" class="active"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
@@ -192,17 +202,43 @@
 											<li attr_type="scheme">Scheme level</li>
 											<li attr_type="deptscheme">Dept_Scheme Level</li>
 										</ul>-->
-										<!-- Nav tabs -->
-										<ul class="nav nav-tabs pull-right" role="tablist" id="tabDis">
-											<li role="presentation" ><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-											<li role="presentation" class="active"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-											<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>
-										</ul>
+										<div class="row">
+											<div class="col-sm-2">
+												<ul class="switch-btn-New distLevelActive" tab-switch="distLevel">
+													<li class="active" attr_type="districtType">District</li>
+													<li attr_type="parliamentType">Parliament</li>
+												</ul>
+											</div>
+											<div class="col-sm-5">
+												<ul class="list-inline">
+													<li class="col-sm-4">
+														<select class="form-control chosenSelect" id="programNamesDistrict" >
+														</select>
+													</li>
+													<li class="col-sm-5">
+														<select class="form-control chosenSelect" id="subProgramNamesDistrict" >
+														</select>
+													</li>
+												</ul>
+											</div>
+											<div class="col-sm-5">
+												<!-- Nav tabs -->
+												<ul class="nav nav-tabs pull-right" role="tablist" id="tabDis">
+													<li role="presentation" ><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+													<li role="presentation" class="active"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+													<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>
+												</ul>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="row selectboxsShowHide m_top10">
-									<div class="col-sm-3 distLevelCls" >
+									<div class="col-sm-3 distLevelCls distLevelCls1" >
 										<select class="form-control chosenSelect" id="distLevelDistrictNames" >
+										</select>
+									</div>
+									<div class="col-sm-3 distLevelparliamentCls distLevelCls1" style="display:none;">
+										<select class="form-control chosenSelect" id="distLevelParliamentNames" >
 										</select>
 									</div>
 								</div>
@@ -289,24 +325,47 @@
 											<li attr_type="scheme">Scheme level</li>
 											<li attr_type="deptscheme">Dept_Scheme Level</li>
 										</ul>-->
-										<ul class="nav nav-tabs pull-right" role="tablist" id="tabCons">
-											<li role="presentation" ><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-											<li role="presentation" class="active"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-											<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
-										</ul>
+										<div class="row">
+											<div class="col-sm-2">
+												<ul class="switch-btn-New consLevelActive" tab-switch="consLevel">
+													<li class="active" attr_type="districtType">District</li>
+													<li attr_type="parliamentType">Parliament</li>
+												</ul>
+											</div>
+											<div class="col-sm-5">
+												<ul class="list-inline">
+													<li class="col-sm-4">
+														<select class="form-control chosenSelect" id="programNamesConst" >
+														</select>
+													</li>
+													<li class="col-sm-4">
+														<select class="form-control chosenSelect" id="subProgramNamesConst" >
+														</select>
+													</li>
+												</ul>
+											</div>
+											<div class="col-sm-5">
+												<!-- Nav tabs -->
+												<ul class="nav nav-tabs pull-right" role="tablist" id="tabCons">
+													<li role="presentation" ><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+													<li role="presentation" class="active"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+													<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
+												</ul>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="row selectboxsShowHide m_top10">
-										<div class="col-sm-3 constiLevelDistCls" >
-											<select class="form-control chosenSelect" id="constLevelDistNames" >
+										<div class="col-sm-3 constiLevelDistCls " >
+											<select class="form-control chosenSelect " id="constLevelDistNames" >
 												<option value="0"> SELECT DISTRICT</option>
 											</select>
 										</div>
-										<div class="col-sm-3 parlaiLevelDistCls" >
+										<div class="col-sm-3 parlaiLevelDistCls " style="display:none;">
 											<select class="form-control chosenSelect" id="constLevelParliaNames" >
 											</select>
 										</div>
-										<div class="col-sm-3 constiLevelCls" >
+										<div class="col-sm-3 constiLevelCls " >
 											<select class="form-control chosenSelect" id="constLevelConstNames" >
 											</select>
 										</div>
@@ -397,11 +456,34 @@
 											<li attr_type="scheme">Scheme level</li>
 											<li attr_type="deptscheme">Dept_Scheme Level</li>
 										</ul>-->
-										<ul class="nav nav-tabs pull-right" role="tablist" id="tabMan">
-											<li role="presentation" ><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-											<li role="presentation" class="active"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
-											<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelMandal" role="tab" data-toggle="tab">Comparision</a></li>   
-										</ul>      
+										<div class="row">
+											<div class="col-sm-2">
+												<ul class="switch-btn-New mandalLevelActive" tab-switch="mandalLevel">
+													<li class="active" attr_type="districtType">District</li>
+													<li attr_type="parliamentType">Parliament</li>
+												</ul>
+											</div>
+											<div class="col-sm-5">
+												<ul class="list-inline">
+													<li class="col-sm-2">
+														<select class="form-control chosenSelect" id="programNamesMandal" >
+														</select>
+													</li>
+													<li class="col-sm-2">
+														<select class="form-control chosenSelect" id="subProgramNamesMandal" >
+														</select>
+													</li>
+												</ul>
+											</div>
+											<div class="col-sm-5">
+												<!-- Nav tabs -->
+												<ul class="nav nav-tabs pull-right" role="tablist" id="tabMan">
+													<li role="presentation" ><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+													<li role="presentation" class="active"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
+													<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelMandal" role="tab" data-toggle="tab">Comparision</a></li>   
+												</ul>  
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="row selectboxsShowHide m_top10">
@@ -410,7 +492,7 @@
 											<option value="0"> SELECT DISTRICT</option>
 										</select>
 									</div>
-									<div class="col-sm-3 levelparliamentConstiCls" >
+									<div class="col-sm-3 levelparliamentConstiCls" style="display:none">
 										<select class="form-control chosenSelect" id="parliamentLevelConstNames" >
 										</select>
 									</div>
@@ -510,11 +592,34 @@
 											<li  attr_type="scheme">Scheme level</li>
 											<li attr_type="deptscheme">Dept & Scheme Level</li>
 										</ul>-->
-										<ul class="nav nav-tabs pull-right" role="tablist" id="tabVill">
-											<!--<li role="presentation" ><a href="#villageLevelGraph" aria-controls="villageLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>-->
-											<li role="presentation" class="active"><a href="#villageLevelTable" aria-controls="villageLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
-											<!--<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelVillage" aria-controls="comaprisionLevelVillage" role="tab" data-toggle="tab">Comparision</a></li>  --> 
-										</ul>
+										<div class="row">
+											<div class="col-sm-2">
+												<ul class="switch-btn-New villageLevelActive" tab-switch="villageLevel">
+													<li class="active" attr_type="districtType">District</li>
+													<li attr_type="parliamentType">Parliament</li>
+												</ul>
+											</div>
+											<div class="col-sm-5">
+												<ul class="list-inline">
+													<li class="col-sm-2">
+														<select class="form-control chosenSelect" id="programNamesVillage" >
+														</select>
+													</li>
+													<li class="col-sm-2">
+														<select class="form-control chosenSelect" id="subProgramNamesVillage" >
+														</select>
+													</li>
+												</ul>
+											</div>
+											<div class="col-sm-5">
+												<!-- Nav tabs -->
+												<ul class="nav nav-tabs pull-right" role="tablist" id="tabVill">
+													<!--<li role="presentation" ><a href="#villageLevelGraph" aria-controls="villageLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>-->
+													<li role="presentation" class="active"><a href="#villageLevelTable" aria-controls="villageLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
+													<!--<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelVillage" aria-controls="comaprisionLevelVillage" role="tab" data-toggle="tab">Comparision</a></li>  --> 
+												</ul>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="row selectboxsShowHide m_top10">
@@ -523,7 +628,7 @@
 											<option value="0"> SELECT DISTRICT</option>
 										</select>
 									</div>
-									<div class="col-sm-2 villageLevelParliCls" >
+									<div class="col-sm-2 villageLevelParliCls" style="display:none">
 										<select class="form-control chosenSelect" id="villageLeveParliNames" >
 										</select>
 									</div>
