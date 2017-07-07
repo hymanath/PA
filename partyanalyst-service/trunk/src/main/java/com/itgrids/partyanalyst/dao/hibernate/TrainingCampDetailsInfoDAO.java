@@ -14,20 +14,24 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
 	public TrainingCampDetailsInfoDAO() {
 		super(TrainingCampDetailsInfo.class);
 	}
-      public List<Object[]> getTrainingCampProgramEligibleAndAttendedDetails(Long locationScopeId,List<Long> locationValues,Date toDate){
+      public List<Object[]> getTrainingCampProgramEligibleAndAttendedDetails(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds){
     	  StringBuilder queryStr = new StringBuilder();
     	  queryStr.append(" select model.trainingCampProgram.trainingCampProgramId," +//0
     	  				 "  model.trainingCampProgram.programName," +//1
     	  				 " sum(model.eligible)," +//2
     	  				 " sum(model.attended)," +//3
     	  				 " sum(model.yetToTrain)  " +//4
-    	  				 " from TrainingCampDetailsInfo model " +
-    	  				 " where model.trainingCampProgram.trainingCampProgramId=1");//and model.tdpCommitteeLevelId is null
+    	  				 " from TrainingCampDetailsInfo model,TrainingCampSchedule model1 " +
+    	  				 " where model.trainingCampProgram.trainingCampProgramId=1 " +
+    	  				 " and model.trainingCampProgramId = model1.trainingCampProgramId ");//and model.tdpCommitteeLevelId is null
     	  if(locationScopeId != null && locationScopeId.longValue() > 0){
     		  queryStr.append(" and model.locationScopeId =:locationScopeId");
     	  }
     	  if(locationValues != null && locationValues.size() > 0){
     		  queryStr.append(" and model.locationValue in (:locationValues)");
+    	  }
+    	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+    		  queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
     	  }
     	  queryStr.append(" group by model.trainingCampProgram.trainingCampProgramId ");
     	 Query query = getSession().createQuery(queryStr.toString());
@@ -37,21 +41,27 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  if(locationValues != null && locationValues.size() > 0){
     		  query.setParameterList("locationValues", locationValues);  
     	  }
+    	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+    		  query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+    	  }
     	 return query.list();
     }
-      public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(Long locationScopeId,List<Long> locationValues,Date toDate){
+      public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds){
     	  StringBuilder queryStr = new StringBuilder();
     	  queryStr.append(" select model.tdpCommitteeLevelId," +//0
     	  				  " sum(model.eligible)," +//1
     	  				  " sum(model.attended)," +//2
     	  				  " sum(model.yetToTrain)  " +//3
-    	  				  " from TrainingCampDetailsInfo model " +
-    	  				  " where model.trainingCampProgramId=1 ");//and model.tdpCommitteeLevelId is not null
+    	  				  " from TrainingCampDetailsInfo model,TrainingCampSchedule model1 " +
+    	  				  " where model.trainingCampProgramId=1 and model.trainingCampProgramId = model1.trainingCampProgramId ");//and model.tdpCommitteeLevelId is not null
     	  if(locationScopeId != null && locationScopeId.longValue() > 0){
     		  queryStr.append(" and model.locationScopeId =:locationScopeId");
     	  }
     	  if(locationValues != null && locationValues.size() > 0){
     		  queryStr.append(" and model.locationValue in (:locationValues)");
+    	  }
+    	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+    		  queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
     	  }
     	  queryStr.append(" group by model.tdpCommitteeLevelId ");
     	 Query query = getSession().createQuery(queryStr.toString());
@@ -61,15 +71,18 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  if(locationValues != null && locationValues.size() > 0){
     		  query.setParameterList("locationValues", locationValues);  
     	  }
+    	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+    		  query.setParameterList("enrollmentYearIds", enrollmentYearIds);  
+    	  }
     	 return query.list();
     }
-     public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberLocationWise(Long locationScopeId,List<Long> locationValues,Date toDate){
+     public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberLocationWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds){
     	  StringBuilder queryStr = new StringBuilder();
     	  queryStr.append(" select model.locationValue," +//0
     	  				  " sum(model.eligible)," +//1
     	  				  " sum(model.attended)," +//2
     	  				  " sum(model.yetToTrain)  " +//3
-    	  				  " from TrainingCampDetailsInfo model " +
+    	  				  " from TrainingCampDetailsInfo model,TrainingCampSchedule model1 " +
     	  				  " where model.trainingCampProgramId=1 ");
     	  if(locationScopeId != null && locationScopeId.longValue() > 0){
     		  queryStr.append(" and model.locationScopeId =:locationScopeId");
@@ -77,6 +90,9 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  if(locationValues != null && locationValues.size() > 0){
     		  queryStr.append(" and model.locationValue in (:locationValues)");
     	  }
+    	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+    		  queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+    	        }
     	  queryStr.append(" group by model.locationValue ");
     	 Query query = getSession().createQuery(queryStr.toString());
     	  if(locationScopeId != null && locationScopeId.longValue() > 0){
@@ -84,6 +100,9 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  }
     	  if(locationValues != null && locationValues.size() > 0){
     		  query.setParameterList("locationValues", locationValues);  
+    	  }
+    	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+    		  query.setParameterList("enrollmentYearIds", enrollmentYearIds);
     	  }
     	 return query.list();
     }

@@ -1079,7 +1079,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		 return query.list();  
   		}
   	
-	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByLocationType(Long userAccessLevelId,List<Long> userAccessLevelValues,String locationType,Long stateId,Date toDate){
+	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByLocationType(Long userAccessLevelId,List<Long> userAccessLevelValues,String locationType,Long stateId,Date toDate,List<Long> enrollmentYearIds){
 
 	     StringBuilder queryStr= new StringBuilder();
 		  
@@ -1142,6 +1142,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 	      queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 	}
+	if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  queryStr.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	    }
    if(locationType != null && locationType.equalsIgnoreCase("District")){
 	         queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId asc"); //1
    } 
@@ -1170,6 +1173,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  if(toDate!=null){
 	   query.setDate("toDate", toDate);    
   }
+   if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+	  }
 		  return query.list();    
   }
 	public List<Object[]> getTotalAttendedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate, List<Date> dateList, String option){   
@@ -1449,7 +1455,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		   return query.list();   
 	}*/
 	// attended count query
-	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate, String status, Long locationId,String locationType,Long userType,String levelType){
+	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate, String status, Long locationId,String locationType,Long userType,String levelType,List<Long> enrollmentYearIds){
 
 		  StringBuilder queryStr= new StringBuilder();
 			  
@@ -1535,6 +1541,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 		      queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 		}
+		 if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			 queryStr.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in(:enrollmentYearIds) ");
+		 }
 		if(status.equalsIgnoreCase("leadership")){
 			queryStr.append(" group by model.trainingCampProgram.trainingCampProgramId");
 			 if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
@@ -1566,7 +1575,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 	if(toDate!=null){
 			  query.setDate("toDate", toDate);  
 	 	}
-
+	 	if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+	 		query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+	 	}
 		  return query.list();  
 	}
 	public Date getLastUpdatedTime()
