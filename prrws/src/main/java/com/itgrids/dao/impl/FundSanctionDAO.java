@@ -40,8 +40,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			List<Long> sourceIdsList,List<Long> schemeIdsList,Date startDate,Date endDate,Long searchScopeId,List<Long> searchScopeValuesList,Long searchLevelId,List<Long> govtSchmeIdsList,List<Long> subProgramIdsList,Long glSearchLevelId,List<Long> glSearchLevelValue){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct  "
-					  + " model.fundSanction.govtSchemeId, "//0
-					  + " model.fundSanction.govtScheme.schemeName, "//1
+					  + " model.fundSanction.subProgramId, "//0
+					  + " model.fundSanction.subProgram.programName, "//1
 					  + " model.fundSanction.financialYear.financialYearId, "//2
 					  + " model.fundSanction.financialYear.yearDesc, "//3
 					  + " count( distinct model.fundSanction.fundSactionId), "//4
