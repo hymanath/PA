@@ -490,10 +490,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 	 	    				vo.setTargetPersonDays(jObj.getLong("TARGETPERSONDAYS"));
 	 	    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
-	 	    				vo.setPerAppLB(new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				vo.setAvgWageRate(new BigDecimal(jObj.getString("AVGWAGERATE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				vo.setTotalExpenditure(new BigDecimal(jObj.getString("TOTALEXPENDITURE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				vo.setPercentage(new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				vo.setPerAppLB(jObj.getString("PER_APP_LB"));
+	 	    				vo.setWageExpenditure(jObj.getString("WAGEEXPENDITURE"));
+	 	    				vo.setMaterialExpenditure(jObj.getString("MATERIALEXPENDITURE"));
+	 	    				vo.setTotalExpenditure(jObj.getString("TOTALEXPENDITURE"));
+	 	    				vo.setMaterialExpenditurePerc(jObj.getString("MATPERCENTAGE"));
+	 	    				//vo.setPercentage(new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				voList.add(vo);
 	 	    				//getDistrictsConstitByType(voList,inputVO.getType());
 	 	    			}
