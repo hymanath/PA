@@ -23,19 +23,21 @@ public class TehsilConstituencyDAO  extends GenericDaoHibernate<TehsilConstituen
 		super(TehsilConstituency.class);
 	}
 	
-	public List<Object[]> getNonFundedLocations(Set<Long> keysList,Long searchLevelId){
+	public List<Object[]> getNonFundedLocations(Set<Long> keysList,Long searchLevelId,Long searchScopeId,List<Long> searchScopeValuesList){
 		
 		StringBuilder  sb = new StringBuilder();
 		
 		sb.append(" select state.stateId,state.stateName,district.districtId,district.districtName," +
-				"parliamentAssm.assemblyId,parliamentAssm.parliament.name," +
-				"constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName from ParliamentAssembly parliamentAssm," +
-				"TehsilConstituency modal " +
-				" left join modal.tehsil tehsil " +
-				" left join modal.constituency constituency" +
-				" left join constituency.district district" +
-				" left join district.state state  " +
-				"  where  parliamentAssm.assemblyId = modal.constituency.constituencyId ");
+				"parliamentAssm.constituencyId,parliamentAssm.name," +
+				"constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName "
+				+ " from " +
+				"   LocationAddress modal " +
+				" 	left join modal.tehsil tehsil " + 
+				" 	left join modal.constituency constituency " +
+				" 	left join modal.parliament parliamentAssm " +
+				" 	left join constituency.district district " +
+				" 	left join district.state state  " +
+				" 	where  state.stateId is not null ");
 		
 		if(keysList != null && keysList.size() > 0){
 			if(searchLevelId != null && searchLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
@@ -45,16 +47,47 @@ public class TehsilConstituencyDAO  extends GenericDaoHibernate<TehsilConstituen
 			}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 				sb.append(" and constituency.constituencyId not in (:keysList) ");
 			}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
-				sb.append(" and parliamentAssm.assemblyId not in (:keysList) ");
+				sb.append(" and parliamentAssm.constituencyId not in (:keysList) ");
 			}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 				sb.append(" and tehsil.tehsilId not in (:keysList)  ");
 			}
+		}
+		
+		if(searchScopeValuesList != null && searchScopeValuesList.size()>0){
+			if(searchScopeId != null && searchScopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
+				sb.append(" and state.stateId in (:searchScopeValuesList) ");
+			}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+				sb.append(" and district.districtId  in (:searchScopeValuesList) ");
+			}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+				sb.append(" and constituency.constituencyId in (:searchScopeValuesList) ");
+			}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+				sb.append(" and parliamentAssm.constituencyId in (:searchScopeValuesList) ");
+			}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+				sb.append(" and tehsil.tehsilId in (:searchScopeValuesList)  ");
+			}
+		}
+		
+		sb.append("  group by ");
+		if(searchLevelId != null && searchLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
+			sb.append(" state.stateId  ");
+		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+			sb.append(" district.districtId ");
+		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+			sb.append(" constituency.constituencyId ");
+		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+			sb.append(" parliamentAssm.constituencyId  ");
+		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+			sb.append(" tehsil.tehsilId  ");
 		}
 		
 		Query query = getSession().createQuery(sb.toString());
 		
 		if(keysList != null && keysList.size() > 0){
 			query.setParameterList("keysList", keysList);
+		}
+		
+		if(searchScopeValuesList != null && searchScopeValuesList.size() > 0){
+			query.setParameterList("searchScopeValuesList", searchScopeValuesList);
 		}
 		return query.list(); 
 	      

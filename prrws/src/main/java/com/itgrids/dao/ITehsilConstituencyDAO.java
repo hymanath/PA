@@ -10,5 +10,5 @@ import com.itgrids.model.TehsilConstituency;
 public interface ITehsilConstituencyDAO extends GenericDao<TehsilConstituency,Long> {
 	public List<Object[]> getTehsilIdAndName(Long constId);
 
-	public List<Object[]> getNonFundedLocations(Set<Long> keysList,Long searchLevelId);
+	public List<Object[]> getNonFundedLocations(Set<Long> keysList,Long searchLevelId,Long searchScopeId,List<Long> searchScopeValuesList);
 }
