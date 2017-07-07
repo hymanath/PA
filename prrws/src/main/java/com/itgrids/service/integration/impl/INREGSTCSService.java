@@ -33,4 +33,5 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregaLevelsWiseDataFrHorticulture(InputVO inputVO);
 	public List<NregsDataVO> getNregaLevelsWiseDataForCCRoads(InputVO inputVO);
 	public List<NregsDataVO> getNregaLevelsWiseDataFrAvenue(InputVO inputVO);
+	public List<NregsProjectsVO> getNREGSAbstractDataByType(InputVO inputVO);
 }

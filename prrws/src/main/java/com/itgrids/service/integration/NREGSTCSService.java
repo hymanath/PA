@@ -1671,4 +1671,35 @@ public class NREGSTCSService implements INREGSTCSService{
 		
 		return voList;
 	}
+	
+	public List<NregsProjectsVO> getNREGSAbstractDataByType(InputVO inputVO){
+		List<NregsProjectsVO> returnList = new ArrayList<>();
+		try {
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", inputVO);
+			
+			if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	    				for(int i=0;i<finalArray.length();i++){
+	    					NregsProjectsVO vo = new NregsProjectsVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setParameter(jObj.getString("PARAMETER"));
+	 	    				vo.setTarget(jObj.getString("TARGET"));
+	 	    				vo.setCompleted(jObj.getString("COMPLETED"));
+	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				returnList.add(vo);
+	    				}
+	 	    		}
+	 	    	}
+	 	    }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSAbstractDataByType - NREGSTCSService service", e);
+		}
+		return returnList;
+	}
 }
