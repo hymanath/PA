@@ -3230,4 +3230,19 @@ public class WebServiceHandler {
 			return null;
 		}
 	}
+	
+	@POST
+	@Path("/checkMemberWalkInForToday")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ResultStatus checkMemberWalkInForToday(JSONObject jObj){
+		try{			
+			return webServiceHandlerService.checkMemberWalkInForToday(jObj.getString("membershipId"),jObj.getString("dateStr"),jObj.getString("uniqueId"),jObj.getLong("loginUserId"),
+					jObj.getLong("tabPrimaryKey"));		
+		}catch(Exception e){
+			LOG.error("Exception Occured in checkMemberWalkInForToday() Method, Exception is ",e);
+			return null;
+		}
+	}
+	
 }

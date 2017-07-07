@@ -10,6 +10,11 @@ var customStartDate1 = moment().format('DD/MM/YYYY');
 	getTrainingCampBasicDetailsCntOverview();
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
 });
+$("#tdpTriningYearId").on('change', function() {
+	stateLevelCampDetails();
+	getTrainingCampBasicDetailsCntOverview();
+	getUserTypeWiseTotalEligibleAndAttendedCnt();
+});
  function initialiseDatePickerForTrainingProgram(){
 		$("#dateRangeIdForTrainingCamp").daterangepicker({
 			singleDatePicker: true,
@@ -297,7 +302,7 @@ var globalUserWiseMemberRslt;
 	$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	   var enrollmentYrIds = [];
-         enrollmentYrIds.push($("#tdpTriningYearId").val());
+	   enrollmentYrIds.push($("#tdpTriningYearId").val());
 	 var jsObj ={
 			          userAccessLevelId:globalUserAccessLevelId,
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
@@ -305,7 +310,7 @@ var globalUserWiseMemberRslt;
 					  userTypeId : globalUserTypeId,
 					  stateId : globalStateId,
 					  dateStr : dateStr,
-					  enrollmentYearIdsList :enrollmentYrIds
+					  enrollmentYrIds:enrollmentYrIds
 				}
 		
 		$.ajax({
@@ -589,10 +594,13 @@ function stateLevelCampDetails(){
 	if(dateStr == undefined || dateStr== null){ // Stopping default call when user has no training access.
 		return;
 	}
+	var enrollmentYrIds = [];
+	 enrollmentYrIds.push($("#tdpTriningYearId").val());
 	var jsObj={
 		programIdArr : programIdArr,
 		stateId : globalStateId,
 		dateStr : dateStr,
+		enrollmentYrIds:enrollmentYrIds,
 		option : "total" 
 	}
 	$.ajax({
@@ -1870,10 +1878,17 @@ function getStateLevelCampCount(programIdArr){
 	$("#programsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	//var programIdArr = [6]; 
 	var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	var enrollmentYrIds = [];
+	enrollmentYrIds.push($("#tdpTriningYearId").val());
+	var progIds = [];
+	if(programIdArr != "" && programIdArr.length > 0){
+		progIds=programIdArr;
+	}
 	var jsObj={  
-		programIdArr : programIdArr,
+		programIdArr : progIds,
 		stateId : globalStateId,
 		dateStr : dateStr,
+		enrollmentYrIds:enrollmentYrIds,
 		option : "dayWise"   
 	} 
 	$.ajax({
@@ -2120,11 +2135,18 @@ function buildStateLevelCampDetails(result,programIdArr){
 	function stateLevelCampMembersDistWise(programIdArr){
 	$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$("#districtWiseProgramsCntDivId").html(" ");
-	//var programIdArr = [6]; 
+	var enrollmentYrIds = [];
+	 enrollmentYrIds.push($("#tdpTriningYearId").val());
+	//var programIdArr = [6];
+	var progIds = [];
+	if(programIdArr != "" && programIdArr.length > 0){
+		progIds=programIdArr;
+	}	
 	var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	var jsObj={  
-		programIdArr : programIdArr,      
+		programIdArr : progIds,      
 		stateId : globalStateId,
+		enrollmentYrIds:enrollmentYrIds,
 		dateStr : dateStr
 	} 
 		$.ajax({
@@ -2584,10 +2606,17 @@ function stateLevelCampDetailsRepresentativeWise(programIdArr){
 	$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('');  
 	$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');   
 	var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	var progIds = [];
+	if(programIdArr != "" && programIdArr.length > 0){
+		progIds=programIdArr;
+	}	
+	var enrollmentYrIds = [];
+	 enrollmentYrIds.push($("#tdpTriningYearId").val());
 	var jsObj={  
-	programIdArr : programIdArr,         
+	programIdArr : progIds,         
 	stateId : globalStateId,
-	dateStr : dateStr
+	dateStr : dateStr,
+	enrollmentYrIds:enrollmentYrIds
 	} 
 	$.ajax({
 		type : 'GET',
