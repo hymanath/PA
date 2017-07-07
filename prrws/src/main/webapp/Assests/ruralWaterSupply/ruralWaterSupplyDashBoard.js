@@ -115,7 +115,7 @@
 				toDateStr:glEndDate,
 				locationType:locationType,
 				year:yearVal,
-				stressedHabitationYear:yearVal,
+				//stressedHabitationYear:yearVal,
 				filterType:filterType,
 				filterValue:filterValue,
 				districtValue:districtValue,
@@ -1230,10 +1230,12 @@
 			var json = {
 					locationType:locationType,
 					year:yearVal,
-					stressedHabitationYear:yearVal,
+					//stressedHabitationYear:yearVal,
 					filterType:locationType,
 					filterValue:levelId,
-					districtValue:districtValue
+					districtValue:districtValue,
+					fromDateStr:glStartDate,
+					toDateStr:glEndDate
 
 					}
 			$.ajax({
@@ -1265,7 +1267,7 @@
 					fromDateStr:glStartDate,
 					toDateStr:glEndDate,
 					locationType:"state",
-					stressedHabitationYear:financialVal,
+					//stressedHabitationYear:financialVal,
 					year:financialVal
 					}
 			$.ajax({
@@ -3411,7 +3413,7 @@
 			fromDateStr:"01-01-1997",
 			toDateStr:"01-04-2018",
 			workStatus:"targets",
-			stressedHabitationYear:"2017"
+			//stressedHabitationYear:"2017"
 		}
 		$.ajax({                
 			type:'POST',    
