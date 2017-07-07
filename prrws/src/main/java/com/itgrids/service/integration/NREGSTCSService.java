@@ -1688,10 +1688,50 @@ public class NREGSTCSService implements INREGSTCSService{
 	    				for(int i=0;i<finalArray.length();i++){
 	    					NregsProjectsVO vo = new NregsProjectsVO();
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				
 	 	    				vo.setParameter(jObj.getString("PARAMETER"));
-	 	    				vo.setTarget(jObj.getString("TARGET"));
-	 	    				vo.setCompleted(jObj.getString("COMPLETED"));
-	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")){
+	 	    					vo.setTarget(jObj.getString("MAX(T.AVG_WAGE_TARGET)"));
+		 	    				vo.setCompleted(jObj.getString("AVG_WAGE"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")){
+	 	    					vo.setTarget(jObj.getString("MAX(T.AVG_DAYS_TARGET)"));
+		 	    				vo.setCompleted(jObj.getString("AVG_DAYS"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("HH Completed 100 Days")){
+	 	    					vo.setTarget(jObj.getString("ROUND(NVL(SUM(HH_WORKING)*0.2,0),0)"));
+		 	    				vo.setCompleted(jObj.getString("COMP_100"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Timely Payment")){
+	 	    					vo.setTarget(jObj.getString("MAX(T.UPLOAD_5_TARGET)"));
+		 	    				vo.setCompleted(jObj.getString("UPLOAD_5"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Timely Payment")){
+	 	    					vo.setTarget(jObj.getString("MAX(T.UPLOAD_5_TARGET)"));
+		 	    				vo.setCompleted(jObj.getString("UPLOAD_5"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue")){
+	 	    					vo.setTarget(jObj.getString("TARGET"));
+		 	    				vo.setCompleted(jObj.getString("ACHIVEMENT"));
+	 	    				}
+	 	    				else{
+	 	    					vo.setTarget(jObj.getString("TARGET"));
+		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
+	 	    				}
+	 	    				
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("IHHL") || inputVO.getType().toString().trim().equalsIgnoreCase("Vermi Compost")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Agriculture Activities"))
+	 	    					vo.setPercentage(jObj.getString("PERC"));
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("HH Completed 100 Days")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Timely Payment")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue"))
+	 	    					vo.setPercentage(jObj.getString("PER"));
+	 	    				else
+	 	    					vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				
 	 	    				returnList.add(vo);
 	    				}
 	 	    		}
