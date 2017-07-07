@@ -2951,6 +2951,10 @@
 							<span class="trainingIconExpand pull-right" expand-icon="training">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
+							<span><select id="tdpTriningYearId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;">
+							    <option value="4" selected="selected">2016-2018</option>
+                                <option value="3">2014-2016</option>
+							</select></span>
 							<span class="input-group pull-right dateRangePickerClsForTraining hide" expand-block-date="training" style="display:none;">
 								<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
 								<span class="input-group-addon">
@@ -5103,7 +5107,7 @@ function manageHeader(){
 		$(".navbarHeader").show();  
 		$(".eventsheader").hide();
 	}else {
-
+	
 		$(".eventsheader").show();
 		$(".navbarHeader").hide();
 	}
