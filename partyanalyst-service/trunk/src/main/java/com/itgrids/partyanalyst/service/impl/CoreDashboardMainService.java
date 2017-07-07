@@ -216,7 +216,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	public void setBoothInchargeDAO(IBoothInchargeDAO boothInchargeDAO) {
 		this.boothInchargeDAO = boothInchargeDAO;
 	}
-	//santosh
+	
 	/**
 	  * @param  Long userAccessLevelId
 	  * @param  List<Long> userAccessLevelValues
@@ -1088,6 +1088,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		     List<String> statusList = new ArrayList<String>();
 		     statusList.add("completed");
 		     statusList.add("started");
+		     statusList.add("notStarted");
 		     committeeBO.setStatusList(statusList);
 		     Map<String,UserTypeVO> locationLevelCountsMap = getCommitteesCountByLocationLevelIdAndLevelValues(locationLevelIdsMap,committeeBO);
 		     Map<String,String>     nameForLocationMap  = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
