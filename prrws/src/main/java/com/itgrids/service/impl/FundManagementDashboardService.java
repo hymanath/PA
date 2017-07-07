@@ -275,7 +275,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 				}
 			}
 			
-			setNonFundedLocations( locationMap , searchLevelId, yearsMap, schemesMap,null);
+			setNonFundedLocations( locationMap , searchLevelId, yearsMap, schemesMap,null,searchScopeId,searchScopeValuesList);
 			
 			if(commonMethodsUtilService.isMapValid(locationMap)){
 				returnList.addAll(locationMap.values());
@@ -340,12 +340,13 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 		}
 	};
 	
-	public void setNonFundedLocations(Map<Long,FundSchemeVO> locationMap ,Long searchLevelId,Map<Long,FundSchemeVO> yearsMap,Map<Long,FundSchemeVO> schemesMap,Map<Long,FundSchemeVO> deptsMap){
+	public void setNonFundedLocations(Map<Long,FundSchemeVO> locationMap ,Long searchLevelId,Map<Long,FundSchemeVO> yearsMap,Map<Long,FundSchemeVO> schemesMap,Map<Long,FundSchemeVO> deptsMap,
+			Long searchScopeId,List<Long> searchScopeValuesList){
 		
 		try{
 			Set<Long> keysList = locationMap.keySet();
-			if(commonMethodsUtilService.isListOrSetValid(keysList)){
-				List<Object[]> notFundedLocs = tehsilConstituencyDAO.getNonFundedLocations(keysList,searchLevelId);
+			//if(commonMethodsUtilService.isListOrSetValid(keysList)){
+				List<Object[]> notFundedLocs = tehsilConstituencyDAO.getNonFundedLocations(keysList,searchLevelId,searchScopeId,searchScopeValuesList);
 				
 				for(Object[] param :notFundedLocs){
 					
@@ -426,8 +427,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					}
 					
 				}
-				
-			}
+			//}
 		}catch(Exception e){
 			
 		}
@@ -653,7 +653,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 				}
 			}
 			
-			setNonFundedLocations( locationMap , searchLevelId, yearsMap, schemesMap,deptsMap);
+			setNonFundedLocations( locationMap , searchLevelId, yearsMap, schemesMap,deptsMap,null,null);
 			if(commonMethodsUtilService.isMapValid(locationMap)){
 				returnList.addAll(locationMap.values());
 				
@@ -865,7 +865,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			}
 			List<Object[]> nonFundedLocs  = null;
 			if(commonMethodsUtilService.isListOrSetValid(locationIdList)){
-				  nonFundedLocs = tehsilConstituencyDAO.getNonFundedLocations(locationIdList, levelId);
+				  nonFundedLocs = tehsilConstituencyDAO.getNonFundedLocations(locationIdList, levelId,null,null);
 			}
 			if(nonFundedLocs != null && nonFundedLocs.size() > 0){
 				for(Object[] param :nonFundedLocs){
