@@ -67,17 +67,17 @@ public class TehsilConstituencyDAO  extends GenericDaoHibernate<TehsilConstituen
 			}
 		}
 		
-		sb.append("  group by ");
+		
 		if(searchLevelId != null && searchLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
-			sb.append(" state.stateId  ");
+			sb.append(" group by state.stateId  ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
-			sb.append(" district.districtId ");
+			sb.append("  group by district.districtId ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
-			sb.append(" constituency.constituencyId ");
+			sb.append("  group by constituency.constituencyId ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
-			sb.append(" parliamentAssm.constituencyId  ");
+			sb.append("  group by parliamentAssm.constituencyId  ");
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
-			sb.append(" tehsil.tehsilId  ");
+			sb.append(" group by  tehsil.tehsilId  ");
 		}
 		
 		Query query = getSession().createQuery(sb.toString());
