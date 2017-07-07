@@ -984,7 +984,7 @@
 			 str+='<th>Designation</th>';
 			 str+='<th>Location</th>';
 			 str+='<th>Total</th>';
-			 //str+='<th>Yet To Start</th>';
+			 str+='<th>Yet To Start</th>';
 			 str+='<th>Started</th>';
 			 str+='<th>Completed</th>';
 			 str+='<th>%</th>';
@@ -1002,11 +1002,11 @@
 			}else{
 				str+='<td> - </td>';
 			}
-			/* if( result[i].notStartedCount != null && result[i].notStartedCount >0){
+			if( result[i].notStartedCount != null && result[i].notStartedCount >0){
 					str+='<td>'+result[i].notStartedCount+'</td>';
 			}else{
 				str+='<td> - </td>';
-			} */
+			} 
 			if(result[i].startedCount !=null && result[i].startedCount >0){
 				str+='<td>'+result[i].startedCount+'</td>';
 			}else{
