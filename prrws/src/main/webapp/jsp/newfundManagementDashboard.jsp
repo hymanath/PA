@@ -53,6 +53,12 @@
 									</a>
 								</li>
 								<li>
+									<a href="prisDashBoard">
+										<h3>PRIS</h3>
+										<p>PRIS <br/>Survey DashBoard</p>
+									</a>
+								</li>
+								<li>
 									<a href="">
 										<h3>ENC</h3>
 										<p>engineering department</p>
@@ -203,12 +209,12 @@
 											<li attr_type="deptscheme">Dept_Scheme Level</li>
 										</ul>-->
 										<div class="row">
-											<div class="col-sm-2">
+											<!-- <div class="col-sm-2">
 												<ul class="switch-btn-New distLevelActive" tab-switch="distLevel">
 													<li class="active" attr_type="districtType">District</li>
 													<li attr_type="parliamentType">Parliament</li>
 												</ul>
-											</div>
+											</div>-->
 											<div class="col-sm-5">
 												<ul class="list-inline">
 													<li class="col-sm-4">
