@@ -1178,7 +1178,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  }
 		  return query.list();    
   }
-	public List<Object[]> getTotalAttendedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate, List<Date> dateList, String option){   
+	public List<Object[]> getTotalAttendedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate, List<Date> dateList, String option,List<Long> enrollYrIds){   
 		StringBuilder queryString = new StringBuilder();
 		queryString.append(" select " +
 						   " TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
@@ -1187,13 +1187,17 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			queryString.append(" date(TCA.attendance.attendedTime), ");     
 		}
 		queryString.append(" count(distinct ATT.tdpCadre.tdpCadreId) from " +
-						   " TrainingCampAttendance TCA, Attendance ATT, TdpCadre TC, TrainingCampBatchAttendee TCBA where " +
-				        
-				           " TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and ");  
+						   " TrainingCampAttendance TCA, Attendance ATT, TdpCadre TC, TrainingCampBatchAttendee TCBA where  ");  
+		if(programIdList != null && programIdList.size()>0){
+			queryString.append(" TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and ");  
+		}
 		if(option.equalsIgnoreCase("dayWise") && programIdList.size() == 1 && programIdList.get(0) != 6){
 			queryString.append(" date(TCA.attendance.attendedTime) in (:dateList) and ");  
 		}else{
 			queryString.append(" date(TCA.attendance.attendedTime) <= (:toDate) and ");  
+		}
+		if(enrollYrIds != null && enrollYrIds.size() >0){
+			queryString.append(" TCA.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollYrIds)  and " );
 		}
 		if(stateId.longValue() == 1){
 			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 23 and ");
@@ -1212,16 +1216,20 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		}
 				    
 		Query query = getSession().createQuery(queryString.toString()); 
-		query.setParameterList("programIdList", programIdList);
+		if(programIdList != null && programIdList.size()>0){
+			query.setParameterList("programIdList", programIdList);
+		}
 		if(option.equalsIgnoreCase("dayWise") && programIdList.size() == 1 && programIdList.get(0) != 6){
 			query.setParameterList("dateList", dateList);
 		}else{
 			query.setDate("toDate", toDate);  
 		}
-		
+		if(enrollYrIds != null && enrollYrIds.size() >0){
+			query.setParameterList("enrollYrIds", enrollYrIds);
+		}
 		return  query.list();
 	}
-	public List<Object[]> getStateDistrictTrainingProgramAttendedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate){
+	public List<Object[]> getStateDistrictTrainingProgramAttendedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds){
 		StringBuilder queryString = new StringBuilder();
 		queryString.append(" select " +
 						   " TCL.tdp_committee_level_id as id, " +
@@ -1242,7 +1250,6 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 						   " district D "+    
 						   " where "+
 						   " TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
-						   " TCS.training_camp_program_id in (:programIdList) and "+
 						   " TCA.attendance_id = A.attendance_id and " +
 						   " date(A.attended_time) <= (:toDate) and "+  
 						   " TDP.tdp_cadre_id = A.tdp_cadre_id and " +
@@ -1255,20 +1262,32 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 						   " TCM.tdp_cadre_id = TDP.tdp_cadre_id and TDP.enrollment_year = 2014 and " +
 						   " TDP.address_id = UA.user_address_id and " +
 						   " UA.district_id = D.district_id and ");
+		if(programIdList != null && programIdList.size() >0){
+			queryString.append("  TCS.training_camp_program_id in (:programIdList) and ");
+		}
 		if(stateId == 1l){
 			queryString.append(" (D.district_id BETWEEN 1 and 23) ");
 		}else{
 			queryString.append(" (D.district_id BETWEEN 1 and 10) ");
-		}	   		  
+		}	
+		
+		if(enrollYrIds != null && enrollYrIds.size() >0){
+			queryString.append(" and TCS.enrollment_year_id in (:enrollYrIds)  " );
+		}
 		queryString.append(" group by "+
 						   " TCL.tdp_committee_level_id ");
 		SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("level", Hibernate.STRING).addScalar("total", Hibernate.LONG);  
 		//query.setParameter("campId", campId);
 		query.setDate("toDate", toDate);  
-		query.setParameterList("programIdList", programIdList);
+		if(programIdList != null && programIdList.size() >0){
+			query.setParameterList("programIdList", programIdList);
+		}
+		if(enrollYrIds != null && enrollYrIds.size() >0){
+			query.setParameterList("enrollYrIds", enrollYrIds);
+		}
 		return query.list();
 	}
-	 public List<Object[]> getMlaMpInchargeTrainingProgramAttendedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate){
+	 public List<Object[]> getMlaMpInchargeTrainingProgramAttendedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds){
 		 StringBuilder queryString = new StringBuilder();
 		 queryString.append(" select " +
 		 					" PRT.public_representative_type_id as id," +
@@ -1292,7 +1311,6 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		   					" TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and "+  
 				 			" TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
 				 			//" TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
-				 			" TCS.training_camp_program_id in (:programIdList) and "+
 				 			" TCA.attendance_id = A.attendance_id and " +
 				 			" date(A.attended_time) <= (:toDate) and "+
 				 			" TDP.tdp_cadre_id = A.tdp_cadre_id and " +
@@ -1303,19 +1321,31 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				 			" TCC.tdp_cadre_id = TDP.tdp_cadre_id and TDP.enrollment_year = 2014 and " +
 				 			" TDP.address_id = UA.user_address_id and " +
 				 			" UA.district_id = D.district_id and ");
+		 if(programIdList != null && programIdList.size() >0){
+			 queryString.append(" TCS.training_camp_program_id in (:programIdList) and ");
+		 }
 		 if(stateId == 1l){
 				queryString.append(" (D.district_id BETWEEN 1 and 23) ");
 		}else{
 				queryString.append(" (D.district_id BETWEEN 1 and 10) ");
-		}	   		  
+		}	
+		 
+		 if(enrollYrIds != null && enrollYrIds.size() >0){
+				queryString.append(" and TCS.enrollment_year_id in (:enrollYrIds)   " );
+			}
 		 queryString.append(" group by PRT.public_representative_type_id ");  
 		 SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("position", Hibernate.STRING).addScalar("total", Hibernate.LONG);
 		 //query.setParameter("campId", campId);
-		 query.setParameterList("programIdList", programIdList);
-		 query.setDate("toDate", toDate);  
+		 if(programIdList != null && programIdList.size() >0){
+			 query.setParameterList("programIdList", programIdList);
+		 }
+		 query.setDate("toDate", toDate); 
+		 if(enrollYrIds != null && enrollYrIds.size() >0){
+				query.setParameterList("enrollYrIds", enrollYrIds);
+			}
 		 return query.list();
 	 }
-	 public List<Object[]> getDestWiseAttendedMembers(List<Long> programIdList, Long stateId, Date toDate){
+	 public List<Object[]> getDestWiseAttendedMembers(List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds){
 		 StringBuilder queryString = new StringBuilder();
 		 queryString.append(" select TCP.training_camp_program_id as programId,TCP.program_name as programName," +
 		 					" D.district_id as id,D.district_name as name, count(distinct A.tdp_cadre_id) as total " +
@@ -1327,7 +1357,6 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				   			  " TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and " +
 				   			  " TCS.training_camp_program_id = TCP.training_camp_program_id and "+
 				   			  //" TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
-				   			  " TCP.training_camp_program_id in (:programIdList) and "+
 				   			  " TCA.attendance_id = A.attendance_id and "+
 				   			  " TC.tdp_cadre_id = A.tdp_cadre_id and TCBA.tdp_cadre_id = TC.tdp_cadre_id and " +
 				   			  " TCBA.training_camp_batch_id = TCB.training_camp_batch_id and " +
@@ -1335,16 +1364,29 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				   			  " TC.address_id = UA.user_address_id and " +  
 				   			  " UA.district_id = D.district_id and " + 
 				   			  " date(A.attended_time) <= (:toDate) and ");
+		 
+		 if(programIdList != null && programIdList.size() >0){
+			 queryString.append(" TCP.training_camp_program_id in (:programIdList) and ");  
+		 }
 		 if(stateId == 1l){
 			   queryString.append(" (D.district_id BETWEEN 1 and 23) ");  
 		 }else{
 			   queryString.append(" (D.district_id BETWEEN 1 and 10) ");
 		 }
+		 
+		 if(enrollYrIds != null && enrollYrIds.size() >0){
+				queryString.append(" and TCS.enrollment_year_id in (:enrollYrIds)   " );
+			}
 		 queryString.append(" group by TCP.training_camp_program_id,D.district_id order by D.district_id ");
 		 SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("programId", Hibernate.LONG).addScalar("programName", Hibernate.STRING).addScalar("id", Hibernate.LONG).addScalar("name", Hibernate.STRING).addScalar("total", Hibernate.LONG);
 		 //query.setParameter("campId", campId);
-		 query.setParameterList("programIdList", programIdList);  
-		 query.setDate("toDate", toDate);  
+		 if(programIdList != null && programIdList.size() >0){
+			 query.setParameterList("programIdList", programIdList);  
+		 }
+		 query.setDate("toDate", toDate);
+		 if(enrollYrIds != null && enrollYrIds.size() >0){
+				query.setParameterList("enrollYrIds", enrollYrIds);
+			}
 		 return query.list();
 	}
 	

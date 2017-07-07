@@ -5302,6 +5302,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 return returnVOList;
 	 } 
 	 
+
 	 public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(String fromDate, String toDate, Long locationId,Long locationValue){
 		 try{
 			 return locationDashboardService.getLevelWiseMeetingStatusCounts(fromDate, toDate, locationId, locationValue);
@@ -5311,7 +5312,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return null;
 		 
 	 }
-	 
+
 	 public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue){
 		 try{
 			 return locationDashboardService.getLocationWiseInsuranceStatusCounts(fromDateStr,toDateStr,locationId,locationValue);
@@ -5329,4 +5330,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			log.error("Exception raised at getLocationWiseGrivenceStatusCounts", e);
 		}return null;
 	}
+	 
+	 public ResultStatus checkMemberWalkInForToday( String memberShipId, String date ,  String uniqueId, Long loginUserId,Long tabPrimaryKey){
+		 try{
+			 return appointmentService.checkMemberWalkInForToday(memberShipId, date, uniqueId,loginUserId,tabPrimaryKey);
+		 }catch(Exception e){
+			 log.error("Exception raised at checkMemberWalkInForToday", e);
+		 }
+		 return null;
+	 }
+	 
 }

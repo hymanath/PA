@@ -24,7 +24,7 @@ public interface ICoreDashboardMainService {
 	//Training 
 	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverview(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String dateStr,List<Long> enrollmentYearIds);
 	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String dateStr);
-	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String dateStr,List<Long> enrollmentYearIds);
+	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String dateStr,List<Long> enrollmentYrIds);
 	public List<UserTypeVO> getSelectedChildTypeMembersForTrainingProgram(Long parentActivityMemberId,List<Long> childUserTypeIds,Long locationLevelId,List<Long> locationLevelValues,String reportType,Long stateId,String dateStr,List<Long> enrollmentYearIds);
 	public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userTypeId,Long activityMemberId,Long stateId,String dateStr,List<Long> enrollmentYearIds);
 	public List<TrainingCampProgramVO> getTrainingCampProgramsBasicCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String dateStr,List<Long> enrollmentYearIds);
@@ -37,9 +37,9 @@ public interface ICoreDashboardMainService {
 	public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,String endDateStr,String state);
 	public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,String endDateStr,String state);
 	public List<UserDataVO> getbasicCommitteeDetails();
-	public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,Long stateId,String dateStr,String option);
-	public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> programIdList, Long stateId, String dateStr);
-	public List<List<IdNameVO>> getDistrictWiseCampAttendedMembers(List<Long> programIdList, Long stateId, String dateStr);
+	public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,Long stateId,String dateStr,String option,List<Long> enrollYrIds);
+	public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> programIdList, Long stateId, String dateStr,List<Long> enrollYrIds);
+	public List<List<IdNameVO>> getDistrictWiseCampAttendedMembers(List<Long> programIdList, Long stateId, String dateStr,List<Long> enrollmentYrIds);
 	public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,String endDateStr,List<Long> roles,String state);
 	public List<IdNameVO> getDebateRolesNew();
 	public List<IdNameVO> getCandidateDtlsPerDist(Long distId, Long programId, Long stateId, String strDate);   //,String dateStr

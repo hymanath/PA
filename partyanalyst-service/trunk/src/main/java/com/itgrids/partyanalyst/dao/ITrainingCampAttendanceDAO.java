@@ -55,10 +55,10 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate, String status, Long distId);
 	public List<Object[]> getUserWiseTotalAttenedCadresCntForTrainingProgram(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate);
 	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByLocationType(Long userAccessLevelId,List<Long> userAccessLevelValues,String locationType,Long stateId,Date toDate,List<Long> enrollmentYearIds);
-	public List<Object[]> getTotalAttendedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate, List<Date> dateList, String option);
-	public List<Object[]> getStateDistrictTrainingProgramAttendedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate);
-	public List<Object[]> getMlaMpInchargeTrainingProgramAttendedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate);  
-	public List<Object[]> getDestWiseAttendedMembers(List<Long> programIdList, Long stateId, Date toDate);   
+	public List<Object[]> getTotalAttendedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate, List<Date> dateList, String option,List<Long> enrollmentYrIds);
+	public List<Object[]> getStateDistrictTrainingProgramAttendedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds);
+	public List<Object[]> getMlaMpInchargeTrainingProgramAttendedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds);  
+	public List<Object[]> getDestWiseAttendedMembers(List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds);   
 	public List<Object[]> getAttendedMemberCadreId(Long distId,Long programId,List<Date> datesList);
 	public List<Object[]> getMembersDetails(List<Long> attendedCadreIds);
 	public List<Object[]> getAttendedMemberCadreOverview(Long distId,Long programId);

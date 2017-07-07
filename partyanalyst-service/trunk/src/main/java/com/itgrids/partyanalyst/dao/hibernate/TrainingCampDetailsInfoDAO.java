@@ -83,16 +83,18 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  				  " sum(model.attended)," +//2
     	  				  " sum(model.yetToTrain)  " +//3
     	  				  " from TrainingCampDetailsInfo model,TrainingCampSchedule model1 " +
-    	  				  " where model.trainingCampProgramId=1 ");
+    	  				  " where model.trainingCampProgramId=1 " +
+    	  				  "and model1.trainingCampProgram.trainingCampProgramId = model.trainingCampProgram.trainingCampProgramId ");
     	  if(locationScopeId != null && locationScopeId.longValue() > 0){
     		  queryStr.append(" and model.locationScopeId =:locationScopeId");
     	  }
     	  if(locationValues != null && locationValues.size() > 0){
     		  queryStr.append(" and model.locationValue in (:locationValues)");
     	  }
-    	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-    		  queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
-    	        }
+    	  
+    	  if(enrollmentYearIds != null && enrollmentYearIds.size() >0){
+    		  queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)   " );
+  		}
     	  queryStr.append(" group by model.locationValue ");
     	 Query query = getSession().createQuery(queryStr.toString());
     	  if(locationScopeId != null && locationScopeId.longValue() > 0){
@@ -101,9 +103,9 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  if(locationValues != null && locationValues.size() > 0){
     		  query.setParameterList("locationValues", locationValues);  
     	  }
-    	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-    		  query.setParameterList("enrollmentYearIds", enrollmentYearIds);
-    	  }
+    	  if(enrollmentYearIds != null && enrollmentYearIds.size() >0){
+  			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+  		}
     	 return query.list();
     }
    public List<Object[]> getLocationWiseReportBasedOnUserType(Long locationScopeId,List<Long> locationValues,Long stateId,Long userTypeId,Long activityMemberId){

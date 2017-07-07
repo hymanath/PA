@@ -9650,5 +9650,40 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		  query.setParameter("membershipId", membershipId);
 		  return query.list();
 	  }
+	  
+	  public List<Object[]> getTdpCadreDetailsByMemberShipId(List<String> membershipNoList){
+			StringBuilder sb = new StringBuilder();
+			sb.append("select model.tdpCadre.tdpCadreId," +		//0
+							" model.tdpCadre.memberShipNo," +	//1
+							" model.tdpCadre.firstname," +		//2
+							" designation.designationId," +	//3
+							" model.tdpCadre.mobileNo," +	//4
+							" userAddress.userAddressId," +		//5
+							" model1.voterId," +				//6
+							" model1.voterIDCardNo," +			//7
+							" model2.voterId," +				//8
+							" model2.voterIDCardNo," +			//9
+							" model.tdpCadre.image " +			//10
+							" from TdpCadreEnrollmentYear model" +	
+							" left join model.tdpCadre.voter model1" +
+							" left join model.tdpCadre.familyVoter model2" +
+							" left join model.tdpCadre.designation designation" +
+							" left join model.tdpCadre.userAddress userAddress " +
+							" where model.tdpCadre.isDeleted = 'N'" +
+							" and model.isDeleted = 'N'  ");
+			
+			
+			if(membershipNoList != null && membershipNoList.size() > 0)
+				sb.append(" and model.tdpCadre.memberShipNo in (:membershipNoList) ");
+			
+			sb.append(" order by model.enrollmentYear.enrollmentYearId");
+			
+			Query query = getSession().createQuery(sb.toString());
+			
+			if(membershipNoList != null && membershipNoList.size() > 0)
+				query.setParameterList("membershipNoList", membershipNoList);
+			
+			return query.list();
+		}
 	   
 }
