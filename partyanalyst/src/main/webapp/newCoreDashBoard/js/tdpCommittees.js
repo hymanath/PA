@@ -1823,7 +1823,7 @@
 		$(".committeeSeetingBlock").show();
 		customBuildGraph();
 		$("#levelWiseBasicCommittees").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		setTimeout(function(){ defaultCall(); }, 1000);
+		setTimeout(function(){ committeeDetailsBlockdefaultCall(); }, 1000);
 		/* if($(this).hasClass("unExpandBlock")){
 			getLevelWiseBasicCommitteesCountReport();
 		} */
@@ -1841,7 +1841,7 @@
 		$(".detailedBlock").addClass("active");
 	});
 	
-	function defaultCall(){
+	function committeeDetailsBlockdefaultCall(){
 		if(isCommitteeMoreBlockExpand==true && isCommitteeMoreBlockClosed==false){
 			getLevelWiseBasicCommitteesCountReport();
 		}	
