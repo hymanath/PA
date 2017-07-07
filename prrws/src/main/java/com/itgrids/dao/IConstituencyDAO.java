@@ -12,4 +12,5 @@ public interface IConstituencyDAO extends GenericDao<Constituency,Long>{
 	public List<Object[]> getConstIdAndNameByConstIds(List<Long> constIds);
 	public String getAssignedSearchIdByConstituencyId(Long searchLevelValue,String fromPage);
 	public String getAssignedSearchConstituencyId(Long searchLevelValue,String fromPage);
+	public List<Object[]> getParlmentNames(List<Long> parlIds);
 }
