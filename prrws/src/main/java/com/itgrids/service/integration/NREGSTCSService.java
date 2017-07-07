@@ -1498,7 +1498,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payment"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/TimePaymentService/TPData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries"))
-				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NurseriesService/Nurseries";
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NurseriesService/NurseriesData";
 			
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
 	        
