@@ -203,4 +203,16 @@ public class NregsDashboardController {
 		}
 		return levlWiseVOList;
 	}
+	
+	@PostMapping("/getNREGSAbstractDataByType")
+	public @ResponseBody List<NregsProjectsVO> getNREGSAbstractDataByType(@RequestBody InputVO vo){
+		List<NregsProjectsVO> locationVOList = null;
+		try {
+			locationVOList = nregsTcsService.getNREGSAbstractDataByType(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSAbstractDataByType - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
 }
