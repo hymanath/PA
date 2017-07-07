@@ -1651,16 +1651,17 @@ public String getTopPoorPerformancecommittees(){
 					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
 				}
 			}
-			Long stateId = jObj.getLong("stateId");
-			String dateStr = jObj.getString("dateStr");
-			List<Long> enrollmentYearIds=new ArrayList<Long>();
-			JSONArray enrollmentYearIdsArray=jObj.getJSONArray("enrollmentYearIdsList");
-			if(enrollmentYearIdsArray!=null &&  enrollmentYearIdsArray.length()>0){
-				for( int i=0;i<enrollmentYearIdsArray.length();i++){
-					enrollmentYearIds.add(Long.valueOf(enrollmentYearIdsArray.getString(i)));
+			
+			List<Long> enrollmentYrIds=new ArrayList<Long>();
+			JSONArray enrollmentYrIdsArray=jObj.getJSONArray("enrollmentYrIds");
+			if(enrollmentYrIdsArray!=null &&  enrollmentYrIdsArray.length()>0){
+				for( int i=0;i<enrollmentYrIdsArray.length();i++){
+					enrollmentYrIds.add(Long.valueOf(enrollmentYrIdsArray.getString(i)));
 				}
 			}
-			userTypeVOList = coreDashboardMainService.getUserTypeWiseTotalEligibleAndAttendedCnt(userId,userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues,stateId,dateStr,enrollmentYearIds);
+			Long stateId = jObj.getLong("stateId");
+			String dateStr = jObj.getString("dateStr");
+			userTypeVOList = coreDashboardMainService.getUserTypeWiseTotalEligibleAndAttendedCnt(userId,userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues,stateId,dateStr,enrollmentYrIds);
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getUserTypeWiseTotalEligibleAndAttendedCnt() method of CoreDashBoardAction", e); 
 	 }
@@ -1913,7 +1914,15 @@ public String getRoleBasedPerformanceCohort(){
 					programIdList.add(Long.valueOf(programIdArr.getString(i))); 
 				}
 			}
-			idNameVOsList = coreDashboardMainService.getDistrictWiseCampAttendedMembers(programIdList,stateId,dateStr);
+			
+			List<Long> enrollmentYrIds = new ArrayList<Long>();
+			JSONArray enrollmentYrIdsArr=jObj.getJSONArray("enrollmentYrIds");
+			if(enrollmentYrIdsArr!=null &&  enrollmentYrIdsArr.length()>0){
+				for( int i=0;i<enrollmentYrIdsArr.length();i++){
+					enrollmentYrIds.add(Long.valueOf(enrollmentYrIdsArr.getString(i))); 
+				}
+			}
+			idNameVOsList = coreDashboardMainService.getDistrictWiseCampAttendedMembers(programIdList,stateId,dateStr,enrollmentYrIds);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDistrictWiseCampAttendedMembers", e);
 		}
@@ -3481,9 +3490,17 @@ public String getStateLevelCampAttendedDetails(){
 				programIdList.add(Long.valueOf(programIdArr.getString(i)));
 			}
 		}
+		
+		List<Long> enrollYrIds = new ArrayList<Long>();
+		JSONArray enrollmntYrIdArr=jObj.getJSONArray("enrollmentYrIds");  
+		if(enrollmntYrIdArr!=null &&  enrollmntYrIdArr.length()>0){
+			for( int i=0;i<enrollmntYrIdArr.length();i++){
+				enrollYrIds.add(Long.valueOf(enrollmntYrIdArr.getString(i)));
+			}
+		}
 		String option = jObj.getString("option");
 		
-		idNameVoList = coreDashboardMainService.getStateLevelCampAttendedDetails(programIdList,stateId,dateStr,option);   
+		idNameVoList = coreDashboardMainService.getStateLevelCampAttendedDetails(programIdList,stateId,dateStr,option,enrollYrIds);   
 		
 	} catch (Exception e) {
 		LOG.error("Exception raised at getStateLevelCampAttendedDetails", e);   
@@ -3502,7 +3519,14 @@ public String getStateLevelCampDetailsRepresentative(){
 				programIdList.add(Long.valueOf(programIdArr.getString(i))); 
 			}
 		}
-		idNameVOsList = coreDashboardMainService.getStateLevelCampDetailsRepresentative(programIdList,stateId,dateStr);
+		List<Long> enrollYrIds = new ArrayList<Long>();
+		JSONArray enrollmntYrIdArr=jObj.getJSONArray("enrollmentYrIds");  
+		if(enrollmntYrIdArr!=null &&  enrollmntYrIdArr.length()>0){
+			for( int i=0;i<enrollmntYrIdArr.length();i++){
+				enrollYrIds.add(Long.valueOf(enrollmntYrIdArr.getString(i)));
+			}
+		}
+		idNameVOsList = coreDashboardMainService.getStateLevelCampDetailsRepresentative(programIdList,stateId,dateStr,enrollYrIds);
 	}catch(Exception e){
 		LOG.error("Exception raised at getStateLevelCampAttendedDetails", e);
 	}
