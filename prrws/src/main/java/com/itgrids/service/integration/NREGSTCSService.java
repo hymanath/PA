@@ -414,7 +414,8 @@ public class NREGSTCSService implements INREGSTCSService{
  	    				for(int i=0;i<finalArray.length();i++){
 	 	    				NregsDataVO vo = new NregsDataVO();
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-	 	    				vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUEID") != " " ? jObj.getString("UNIQUEID") : "1")));
+	 	    				//vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUEID") != " " ? jObj.getString("UNIQUEID") : "1").toString()));
+	 	    				vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUEID").toString().trim().length() > 0 ? jObj.getString("UNIQUEID") : "1").toString()));
 	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
 	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
