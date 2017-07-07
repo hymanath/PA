@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
@@ -20,6 +22,7 @@ import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.dto.WebserviceDetailsVO;
+import com.itgrids.service.IUserService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
 
@@ -35,8 +38,9 @@ public class NregsDashboardController {
 	
 	@Autowired
 	private INREGSTCSService nregsTcsService;
-	
-	
+	@Autowired
+	private IUserService userServiceImpl;
+		
 	/*@RequestMapping(value ="/test", method = RequestMethod.GET)
     public String fundManagementDashboardPage(ModelMap model) {
 		webServiceUtilService.testMethod();
@@ -44,8 +48,9 @@ public class NregsDashboardController {
     }*/
 
 	@RequestMapping(value ="/MGNREGSDashboard", method = RequestMethod.GET)
-    public String mgnregsDashBoardPage(ModelMap model) {
-      
+    public String mgnregsDashBoardPage(ModelMap model,@RequestParam Long li,@RequestParam String lv,@RequestParam String fp,@RequestParam String tp) {
+		AddressVO addressVO = userServiceImpl.getOriginalLocationIdForTempId(li,lv,fp,tp);
+		model.addAttribute("addressVO", addressVO);
 		return "MGNREGS";
     }
 	

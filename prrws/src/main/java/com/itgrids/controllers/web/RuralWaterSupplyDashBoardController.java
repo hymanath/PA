@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.IdNameVO;
@@ -26,6 +28,7 @@ import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.dto.WaterSourceVO;
+import com.itgrids.service.IUserService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 
 @EnableAutoConfiguration
@@ -35,10 +38,13 @@ public class RuralWaterSupplyDashBoardController {
 	private static final Logger LOG = Logger.getLogger(RuralWaterSupplyDashBoardController.class);
 	@Autowired
 	private IRWSNICService rWSNICService;
-
+	@Autowired
+	private IUserService userServiceImpl;
+	
 	@GetMapping("/ruralWaterSupplyDashBoard")
-	public String ruralWaterSupplyDashBoardPage(ModelMap model) {
-
+	public String ruralWaterSupplyDashBoardPage(ModelMap model,@RequestParam Long li,@RequestParam String lv,@RequestParam String fp,@RequestParam String tp) {
+		AddressVO addressVO = userServiceImpl.getOriginalLocationIdForTempId(li,lv,fp,tp);
+		model.addAttribute("addressVO", addressVO);
 		return "ruralWaterSupplyDashBoard";
 	}
 

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.FundMatrixVO;
 import com.itgrids.dto.FundSchemeVO;
 import com.itgrids.dto.IdNameVO;
@@ -22,6 +24,7 @@ import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.service.IFundManagementDashboardService;
 import com.itgrids.service.IFundSanctionMatrixReportService;
+import com.itgrids.service.IUserService;
 
 @EnableAutoConfiguration
 @Controller
@@ -31,6 +34,8 @@ public class FundManagementDashboardController {
 	private IFundManagementDashboardService fundManagementDashboardService;
 	@Autowired
 	private IFundSanctionMatrixReportService fundSanctionMatrixReportService;
+	@Autowired 
+	private IUserService userServiceImpl;
 	
 	@RequestMapping(value ="/", method = RequestMethod.GET)
     public String indexPage(ModelMap model) {
@@ -39,14 +44,14 @@ public class FundManagementDashboardController {
 	
 	@RequestMapping(value ="/fundManagementDashboard", method = RequestMethod.GET)
     public String fundManagementDashboardPage(ModelMap model) {
-      
 		return "fundManagementDashboard";
     }
 	
 	@RequestMapping(value ="/newfundManagementDashboard", method = RequestMethod.GET)
-    public String newfundManagementDashboard(ModelMap model) {
-      
-    return "newfundManagementDashboard";
+	 public String newfundManagementDashboardPage(ModelMap model,@RequestParam Long li,@RequestParam String lv,@RequestParam String fp,@RequestParam String tp){
+			AddressVO addressVO = userServiceImpl.getOriginalLocationIdForTempId(li,lv,fp,tp);
+			model.addAttribute("addressVO", addressVO);
+		return "newfundManagementDashboard";
     }
 	
 	@PostMapping("/getLocationWiseAmountDetails")
