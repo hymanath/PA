@@ -7,7 +7,7 @@ var maxHeight = 0;
 $(".blockHeights").each(function(){
    if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 });
-
+$(".chosen-select").chosen();
 var width = $(window).width()
 	if(width > 767){
 		$(".border_adjust_align").removeClass("border_top")
@@ -34,7 +34,7 @@ $("header").on("click",".menu-cls",function(e){
 	$(document).on("click",function(){
 		$(".menu-data-cls").hide();
 	});
-
+$(".chosenSelect").chosen({width:'100%'});
 $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	
 	
@@ -145,8 +145,10 @@ function buildLevelWiseDetailsBlock(){
 					getDistrictOverview(blockNameArr[i].id,blockNameArr[i].name);
 				}else if(blockNameArr[i].id == 4){
 					getConstituencyOverview(blockNameArr[i].id,blockNameArr[i].name);
+					
 				}else if(blockNameArr[i].id == 5){
 					getMandalOverview(blockNameArr[i].id,blockNameArr[i].name);
+					
 				}	
 				
 			}
@@ -154,12 +156,28 @@ function buildLevelWiseDetailsBlock(){
 }
 function buildTableData(result,blockId,blockName){
 	
-		
 		var tableView='';
 		tableView+='<div class="row">';
 			tableView+='<div class="col-sm-12">';
-				
-					tableView+='<table class="table dataTable'+blockId+' ">';
+					tableView+='<div class="row">';
+						tableView+='<div class="col-sm-6">';
+							tableView+='<div class="col-sm-6">';
+								tableView+='<ul class="nav navbar-nav tableMenu">';
+									tableView+='<li class="active" id="showDistrictData">Districts</li>';
+									tableView+='<li id="showParliamentData">Parliament</li>';
+								tableView+='</ul>';
+							tableView+='</div>';
+							if(blockId == '4' || blockId == '5'){
+								tableView+='<div class="col-sm-3">';
+									tableView+='<div id="chosen'+blockId+'">';
+										
+									tableView+='</div>';
+								tableView+='</div>';
+							}
+							
+						tableView+='</div>';
+					tableView+='</div>';
+					tableView+='<table class="table dataTable'+blockId+'">';
 							tableView+='<thead>';
 							if(blockId == 3){
 								tableView+='<th>District</th>';
@@ -191,10 +209,20 @@ function buildTableData(result,blockId,blockName){
 			tableView+='</div>';
 		tableView+='</div>';
 		$("#"+blockName+'_'+blockId).html(tableView);
+		//$("#chosen"+blockName)
 		if(blockId == '4' || blockId == '5'){
 			$(".dataTable"+blockId).dataTable();
-			}
-	
+		}
+		$(".tableMenu li").on('click',function(){
+			$(this).closest("ul").find("li").removeClass("active");
+			$(this).addClass("active");
+		});
+		if(blockId == '4'){
+			selectBox("chosen"+blockId);
+		}
+		if(blockId == '5'){
+			selectBox("chosen"+blockId);			
+		}
 }
 function getConstituencyOverview(blockId,blockName){
 		$("#"+blockName+'_'+blockId).html(spinner);
@@ -250,6 +278,7 @@ function getConstituencyOverview(blockId,blockName){
 			}else{
 				$("#"+blockName+'_'+blockId).html("No Data Available");
 			}
+			
 		});
 	}
 	getBasicCountBlock();
@@ -283,4 +312,15 @@ function getConstituencyOverview(blockId,blockName){
 		$("#subTargetPercentage").append(result.subTargetPercentage);
 		$("#subAchieved").append(result.achievedOverall);
 		$("#subAchievedPercentage").append(result.achievedOverallpercent);
+}
+function selectBox(id)
+{
+	
+	var id = id;
+	var selectBox='';
+	selectBox+='<select class="chosen" id="chosen'+id+'">';
+		selectBox+='<option></option>';
+	selectBox+='</select>';
+	$("#"+id).html(selectBox);
+	$("#chosen"+id).chosen();
 }
