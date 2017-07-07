@@ -60,7 +60,7 @@ public class RWSNICService implements IRWSNICService{
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
 			 
-	        WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getHabitationCoverageByStatusByLocationType");
+	        WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getHabitationCoverageByStatusByLocationType");
 	        
 	        
 	        String authStringEnc = getAuthenticationString("admin","admin@123");
@@ -246,7 +246,7 @@ public class RWSNICService implements IRWSNICService{
 		BasicVO finalVO = new BasicVO();
 		try {
 			 //WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/gethabitationsupplyDetails");
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/gethabitationWatersupplyDetails");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/gethabitationWatersupplyDetails");
 		        String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		        ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, VO);
 		        
@@ -339,7 +339,7 @@ public class RWSNICService implements IRWSNICService{
 		try {
 			
 			// WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getSchemeWiseWorkDetails");
-			 WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getSchemeWiseWorkDetails");
+			 WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getSchemeWiseWorkDetails");
 		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, VO);
 			
@@ -511,7 +511,7 @@ public class RWSNICService implements IRWSNICService{
 		List<BasicVO> assetsList = new ArrayList<BasicVO>(0);
 		try {
         
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getAssetsinfo");          
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getAssetsinfo");          
 			String authStringEnc = getAuthenticationString("admin","admin@123");          
 			ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
        
@@ -696,7 +696,7 @@ public class RWSNICService implements IRWSNICService{
 		try {
 			
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getAlertDetailsOfCategoryByStatusWise");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getAlertDetailsOfCategoryByStatusWise");
 	        
         	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
         
@@ -807,7 +807,7 @@ public class RWSNICService implements IRWSNICService{
 		WaterSourceVO waterSourceInfo =new WaterSourceVO();
 		try{
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getWaterSourceDeatils");	        
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getWaterSourceDeatils");	        
 		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
 			
@@ -863,7 +863,7 @@ public class RWSNICService implements IRWSNICService{
 	public List<KPIVO> getKeyPerformanceIndicatorsInfo(InputVO inputVO){
 		List<KPIVO> voList = new ArrayList<KPIVO>(0);
 		try {
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getKpiDeatils");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getKpiDeatils");
 			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.207:8442/rwscore/cd/getKpiDeatils");
 		    String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		    ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
@@ -1099,7 +1099,7 @@ public class RWSNICService implements IRWSNICService{
 		StatusVO statusVO = new StatusVO();					
 		try{
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getStressedHabitationInfoInALocation");	        
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getStressedHabitationInfoInALocation");	        
 		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
 			
@@ -1234,8 +1234,8 @@ public class RWSNICService implements IRWSNICService{
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getLocationWiseAlertStatusCounts");
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.123:8080/PartyAnalyst/WebService/getLocationWiseAlertStatusCounts");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getLocationWiseAlertStatusCounts");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getLocationWiseAlertStatusCounts");
 		     ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 		     
 	        if(response.getStatus() != 200){
@@ -1445,7 +1445,7 @@ public class RWSNICService implements IRWSNICService{
 		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getOnclickWorkDetails");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getOnclickWorkDetails");
 			String authStringEnc = getAuthenticationString("admin","admin@123");
         	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
         
@@ -1504,7 +1504,7 @@ public class RWSNICService implements IRWSNICService{
 		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getOnclickTargetsAcheievementsDetails");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getOnclickTargetsAcheievementsDetails");
 	        String authStringEnc = getAuthenticationString("admin","admin@123");
         	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
         
@@ -1560,7 +1560,7 @@ public class RWSNICService implements IRWSNICService{
 		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getOnclickStressedTargetsAcheievementsDetails");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getOnclickStressedTargetsAcheievementsDetails");
 	        String authStringEnc = getAuthenticationString("admin","admin@123");
         	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
         
@@ -1615,7 +1615,7 @@ public class RWSNICService implements IRWSNICService{
 		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getOnclickHabitationsupplyDetails");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getOnclickHabitationsupplyDetails");
 	        String authStringEnc = getAuthenticationString("admin","admin@123");
         	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
         
@@ -1671,7 +1671,7 @@ public class RWSNICService implements IRWSNICService{
 		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getSchemeDetailsByTypeOfAssestName");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getSchemeDetailsByTypeOfAssestName");
 	        String authStringEnc = getAuthenticationString("admin","admin@123");
         	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
         
@@ -1733,7 +1733,7 @@ public class RWSNICService implements IRWSNICService{
 		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getAssetDetailsByAssetType");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getAssetDetailsByAssetType");
 	        String authStringEnc = getAuthenticationString("admin","admin@123");
         	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
         
@@ -1795,7 +1795,7 @@ public class RWSNICService implements IRWSNICService{
 		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getHabitationDetailsByStatusByLocationType");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getHabitationDetailsByStatusByLocationType");
 	        String authStringEnc = getAuthenticationString("admin","admin@123");
         	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
         
@@ -1851,7 +1851,7 @@ public class RWSNICService implements IRWSNICService{
 		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getWaterSourceDeatilsLocationWise");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getWaterSourceDeatilsLocationWise");
 	        String authStringEnc = getAuthenticationString("admin","admin@123");
         	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
         
@@ -1962,7 +1962,7 @@ public class RWSNICService implements IRWSNICService{
 	public List<WaterSourceVO> getWaterSourceDeatils2(InputVO inputVO){
 		List<WaterSourceVO> waterSourceVOList = new ArrayList<WaterSourceVO>(0); 
 		try {
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8070/rwscore/cd/getWaterSourceDeatils2");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getWaterSourceDeatils2");
 	        String authStringEnc = getAuthenticationString("admin","admin@123");
         	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
         
