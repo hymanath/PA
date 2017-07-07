@@ -88,7 +88,16 @@ function onLoadCalls()
 			}
 		});
 		$("#projectOverviewBlock,#projectData").html('');
-		getNREGSProjectsOverview(blockName);
+		buildNREGSProjectsOverview(overViewArr,'');
+		for(var i in overViewArr)
+		{
+			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
+			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+				getNREGSProjectsAbstractNew(overViewArr[i],'state',0,'');
+			else
+				getNREGSAbstractDataByType(overViewArr[i],'state',0,'');
+		}
+		//getNREGSProjectsOverview(blockName);
 	});
 	//getNREGSProjectsOverview('')
 	
@@ -398,7 +407,7 @@ function buildNREGSProjectsOverview(result,blockName)
 				str+='<div class="row">';
 				for(var i in result)
 				{
-					if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "Solid Waste Management" || result[i] == "Play fields" || result[i] == "Burial Ground" || result[i] == "Agriculture Activities" || result[i] == "Payments"){
+					if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "Solid Waste Management" || result[i] == "Play Fields" || result[i] == "Burial Grounds" || result[i] == "Agriculture Activities" || result[i] == "Payments"){
 						str+='<div class="col-sm-2 m_top10">';
 							str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 								str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
@@ -599,13 +608,13 @@ function getNREGSLabourBudgetExpenditure(projectDivId)
 //LabourBudget LevelWise Data Call — Sravanth
 function getNREGSLabBugdtLelwiseData(divIdd,locationType)
 {
-	var theadArr = [locationType,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
+	var theadArr = [locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
+		theadArr = ["district",locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
+		theadArr = ["district","constituency",locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
+		theadArr = ["district","constituency","mandal",locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
 	
 	var json = {
 		year : "2017",
@@ -651,8 +660,10 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType)
 						str+='<td>'+ajaxresp[i].targetPersonDays+'</td>';
 						str+='<td>'+ajaxresp[i].generatedPersonDays+'</td>';
 						str+='<td>'+ajaxresp[i].perAppLB+'</td>';
-						str+='<td>'+ajaxresp[i].avgWageRate+'</td>';
+						str+='<td>'+ajaxresp[i].wageExpenditure+'</td>';
+						str+='<td>'+ajaxresp[i].materialExpenditure+'</td>';
 						str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
+						str+='<td>'+ajaxresp[i].materialExpenditurePerc+'</td>';
 					str+='</tr>';
 				}
 			}
