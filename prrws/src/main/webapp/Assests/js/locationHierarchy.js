@@ -69,6 +69,10 @@ $(document).on("click",".panelCollapseIcon",function(e){
 		type='';
 		locationScopeId = locationScopeId;
 	}
+	if(levelId == "3" || levelId == 3)
+	{
+		type='constituency';
+	}
 	getAllSubLocations(buildId,levelId,locationScopeId,type)
 });
 $(".multi-level-selection-menu").hide();
