@@ -13,11 +13,6 @@
 		var levelNamesArr=[{name:'state',id:'2'},{name:'district',id:'3'},{name:'constituency',id:'4'},{name:'mandal',id:'5'}];
 		getAllFiniancialYears();
 		function onloadCalls(){
-			tabBlocks('stateBlockId','state');
-			tabBlocks('districtBlockId','district');
-			tabBlocks('constituencyBlockId','constituency');
-			tabBlocks('mandalBlockId','mandal');
-			responsiveTabs();
 			getHabitationCoverageByStatusByLocationType('state','','graph',"","","");
 			getLabTestDetails();
 			getHabitationSupplyDetails();
@@ -35,7 +30,11 @@
 			//locationType,filterType,filterValue,districtValue,divId
 			getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
 			getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
-			
+			tabBlocks('stateBlockId','state');
+			tabBlocks('districtBlockId','district');
+			tabBlocks('constituencyBlockId','constituency');
+			tabBlocks('mandalBlockId','mandal');
+			responsiveTabs();
 		}
 		function getSelectedType(){
 			for(var i in levelNamesArr){
@@ -1088,7 +1087,8 @@
 						locationType:locationType,
 						filterType:filterType,
 						filterValue:filterValue,
-						districtValue:districtValue
+						districtValue:districtValue,
+						year:$("#financialYearId").val()==0?"":$("#financialYearId").val()
 						
 					}
 			$.ajax({
@@ -1256,16 +1256,17 @@
 		
 		function getPlanofActionForStressedHabitations(){
 			$("#planOfAction").html(spinner)
-			var yearVal="";
-			var financialVal =$("#financialYearId").val();
-			if(financialVal != 0){
-				 yearVal=financialVal;
+			
+			var financialVal ="";
+			if($("#financialYearId").val() != 0){
+				 financialVal=$("#financialYearId").val();
 			}
 			var json = {
 					fromDateStr:glStartDate,
 					toDateStr:glEndDate,
 					locationType:"state",
-					stressedHabitationYear:yearVal
+					stressedHabitationYear:financialVal,
+					year:financialVal
 					}
 			$.ajax({
 				url: 'getPlanofActionForStressedHabitations',
@@ -2932,18 +2933,17 @@
     $("#dateRangePickerAUM").val('All');
   }
   $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
-    
-    $(".switch-btn li").removeClass("active");
-    $(".switch-btn li:first-child").addClass("active");
-    $('[role="tablist"] li:first-child a').trigger('click');
-    $('#tabCons a[href="#consLevelGraph"]').trigger('click');
     glStartDate = picker.startDate.format('DD-MM-YYYY')
     glEndDate = picker.endDate.format('DD-MM-YYYY')
     if(picker.chosenLabel == 'All')
     {
       $("#dateRangePickerAUM").val('All');
     }
-    onloadCalls();
+	$("#financialYearId").val(0);
+	$("#financialYearId").trigger('chosen:updated');
+	
+	setTimeout(function(){  onloadCalls(); }, 1000);
+   
     
   });
   function getAllFiniancialYears()
@@ -2969,7 +2969,7 @@
 					$("#financialYearId").append("<option value="+value[1]+">"+result[i].financialYear+"</option>");
 					
 				}
-				//$("#financialYearId").val('2017');
+				$("#financialYearId").val('2017');
 			}
 			
 			$("#financialYearId").chosen();
@@ -3283,6 +3283,8 @@
 		}
 	});
 	$(document).on("change","#financialYearId",function(){
+		glStartDate="";
+		glEndDate="";
 		onloadCalls();
 	});
 	$(document).on("click",".getDetailsCls",function(){

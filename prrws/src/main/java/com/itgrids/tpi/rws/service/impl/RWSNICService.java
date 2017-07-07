@@ -1149,7 +1149,7 @@ public class RWSNICService implements IRWSNICService{
 		List<StatusVO> statusVOList = new ArrayList<StatusVO>(0);
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getStressedKPIDeatils");	        
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.102:8442/rwscore/cd/getStressedKPIDeatils");	        
 		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
 			
