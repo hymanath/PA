@@ -761,7 +761,7 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLo
 	});
 }
 
-function buildNregasOverViewBlock(ajaxresp,projectDivId,menuLocationType,menuLocationId){
+function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocationId){
 	var $windowWidth = $(window).width();
 	var str1="";
 	if(result.averagePerDistrict != null)
