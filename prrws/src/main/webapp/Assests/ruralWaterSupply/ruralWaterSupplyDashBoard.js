@@ -969,7 +969,7 @@
 					highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
 			}
 		}else{
-			$("#assets").ht,l("No Data Available")
+			$("#assets").html("No Data Available")
 		}
 	}
 		function getWaterSourceInfo(){//ara1 
@@ -1217,7 +1217,11 @@
 			
 			if(locationType == "state"){
 				levelId ="";
+			}else if(locationType == "district"){
+				levelId = levelId <= 9 ? "0"+levelId:levelId;
 			}
+			
+			
 			var districtValue ="";
 			if(locationType == "mandal"){
 				if(parentLocId < 9){
