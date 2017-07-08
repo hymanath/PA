@@ -162,6 +162,7 @@ function getWebserviceHealthDetails(fromDate,toDate){
 	}
 	function buildWebserviceHealthDetails(ajaxresp){
 		var str = "";
+		str+='<div class="table-responsive">';
 		str+='<table id="webserviceHealthDetailsTableId" class="table table-bordered">';
 		str+='<thead>';
 		str+='<tr>';
@@ -190,6 +191,7 @@ function getWebserviceHealthDetails(fromDate,toDate){
 		}
 		str+='</tbody>';
 		str+='</table>';
+		str+='</div>';
 		$("#webserviceDetailsModalId").html(str);
 		$("#webserviceHealthDetailsTableId").dataTable();
 		
@@ -361,25 +363,19 @@ function tableView(blockId,theadArr,result,locationType)
 {
 	var tableView='';
 	
-	if($windowWidth < 768)
-	{
-		tableView+='<div class="table-responsive">';
-	}
-	tableView+='<table class="table table-bordered dataTable'+blockId+'">';
-		tableView+='<thead class="text-capital">';
-			for(var i in theadArr)
-			{
-				tableView+='<th>'+theadArr[i]+'</th>';
-			}
-		tableView+='</thead>';
-		tableView+='<tbody>';
-			tableView+=result;
-		tableView+='</tbody>';
-	tableView+='</table>';
-	if($windowWidth < 768)
-	{
-		tableView+='</div>';
-	}
+	tableView+='<div class="table-responsive">';
+		tableView+='<table class="table table-bordered dataTable'+blockId+'">';
+			tableView+='<thead class="text-capital">';
+				for(var i in theadArr)
+				{
+					tableView+='<th>'+theadArr[i]+'</th>';
+				}
+			tableView+='</thead>';
+			tableView+='<tbody>';
+				tableView+=result;
+			tableView+='</tbody>';
+		tableView+='</table>';
+	tableView+='</div>';
 	$("#"+blockId).html(tableView);	
 	if(locationType == 'constituency' || locationType == 'mandal' || locationType == 'panchayat' || locationType == 'district')
 	{
@@ -770,270 +766,249 @@ function buildNregasOverViewBlock(ajaxresp,projectDivId,menuLocationType,menuLoc
 	var str1="";
 	if(result.averagePerDistrict != null)
 	{
-		if($windowWidth < 768)
-		{
-			str1+='<div class="table-responsive">';
-		}
-		str1+='<table class="table table-bordered" >';
+		str1+='<div class="table-responsive">';
+			str1+='<table class="table table-bordered" >';
+				str1+='<tbody>';
+					str1+='<tr>';
+						str1+='<td>';
+							str1+='<p>Average Per District : '+result.averagePerDistrict+'</p>';
+						str1+='</td>';
+						str1+='<td>';
+							str1+='<p>Total Avg '+projectDivId+' in District : '+result.totalAvgFarmsInDistrict+'</p>';
+						str1+='</td>';
+					str1+='</tr>';
+					str1+='<tr>';
+						str1+='<td>';
+							str1+='<p>Average Per Constituency : '+result.averagePerConstituency+'</p>';
+						str1+='</td>';
+						str1+='<td>';
+							str1+='<p>Total Avg '+projectDivId+' in Constituency : '+result.totalAvgFarmsInConstituency+'</p>';
+						str1+='</td>';
+					str1+='</tr>';
+					str1+='<tr>';
+						str1+='<td>';
+							str1+='<p>Average Per Mandal : '+result.averagePerMandal+'</p>';
+						str1+='</td>';
+						str1+='<td>';
+							str1+='<p>Total Avg '+projectDivId+' in Mandal: '+result.totalAvgFarmsInMandal+'</p>';
+						str1+='</td>';
+					str1+='</tr>';
+					str1+='<tr>';
+						str1+='<td>';
+							str1+='<p>Total Budget</p>';
+							str1+='<h4>'+result.totalBudget+'</h4>';
+						str1+='</td>';
+						str1+='<td>';
+							str1+='<p>Total '+projectDivId+'</p>';
+							str1+='<h4>'+result.totalBudget+'</h4>';
+						str1+='</td>';
+					str1+='</tr>';
+				str1+='</tbody>';
+			str1+='</table>';
+		str1+='</div>';
+	}
+	if(result.maleLabour != null){
+		str1+='<div class="table-responsive">';
+			str1+='<table class="table table-bordered m_top10">';
+				str1+='<tbody>';
+					str1+='<tr>';
+						str1+='<td>';
+							str1+='	<div class="col-sm-12">';
+								str1+='<h4><b>Total labour : '+result.totalLabour+'</b></h4>';
+							str1+='</div>';
+							str1+='<div class="col-sm-12 m_top10">';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Male.png"></p><p class="media-body">Male Labours : '+result.maleLabour+'</p>';
+								str1+='</div>';
+								str1+='<div class="media"> ';  
+								str1+='<p class="media-left">';
+									str1+='<img src="Assests/icons/Female.png"></p><p class="media-body">Female Labour : '+result.femaleLabour+'</p>';
+								str1+='</div> ';
+							str1+='</div>';
+						str1+='</td>';
+						str1+='<td>';
+							str1+='<div class="col-sm-12">';
+								str1+='<h4><b>Total Response : '+result.totalResponse+'</b></h4>';
+							str1+='	</div>';
+							str1+='<div class="col-sm-12 m_top10">';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green_Worker.png"></p><p class="media-body">On request work allocated : '+result.onRequestWorkAllocated+'</p>';
+									str1+='</div>';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Orange_Worker.png"></p><p class="media-body">Got work occutionaly :'+result.gotWorkOccutionally+'</p>';
+									str1+='</div>';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Red_Worker.png"></p><p class="media-body">Havent got work :'+result.haveNotGotWork+'</p>';
+								str1+='</div>';
+							str1+='</div>';
+						str1+='</td>';
+						str1+='<td>';
+							str1+='<div class="col-sm-12">';
+								str1+='<h4><b>Total Budget : '+result.totalBudget+'</b></h4>';
+							str1+='</div>';
+							str1+='<div class="col-sm-12 m_top10">';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Labours_icon.png"></p><p class="media-body">Budget for Labours : '+result.budgetForLabour+'</p>';
+								str1+='</div>';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Bugget_icon.png"></p><p class="media-body">Budget for Material : '+result.budgetForMaterial+'</p>';
+									str1+='</div>';
+							str1+='</div>';
+						str1+='</td>';
+					str1+='</tr>';
+				str1+='</tbody>';
+			str1+='</table>';
+		str1+='</div>';
+		
+	}
+	str1+='<div class="table-responsive">';
+		str1+='<table class="table table-bordered m_top10" >';
 			str1+='<tbody>';
 				str1+='<tr>';
 					str1+='<td>';
-						str1+='<p>Average Per District : '+result.averagePerDistrict+'</p>';
+						str1+='<div class="col-sm-12">';
+							str1+='<h4 attr_locationType="district" attr_type="total"><strong>Total Districts : '+result.totalDistricts+'</strong></h4>';
+						str1+='</div>';
+						str1+='<div class="col-sm-12 m_top10">';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+								if(result.districtsInRed != null && result.districtsInRed > 0)
+									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_locationType="district" attr_type="red" style="cursor:pointer;">Districts in Red : '+result.districtsInRed+'</p>';
+								else
+									str1+='<p class="media-body" attr_locationType="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+								if(result.districtsInOrange != null && result.districtsInOrange > 0)
+									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="district" attr_type="orange" style="cursor:pointer;">Districts in Orange : '+result.districtsInOrange+'</p>';
+								else
+									str1+='<p class="media-body" attr_locationType="district" attr_type="orange" >Districts in Orange : '+result.districtsInOrange+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+								if(result.districtsInGreen != null && result.districtsInGreen > 0)
+									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="district" attr_type="green" style="cursor:pointer;">Districts in Green : '+result.districtsInGreen+'</p>';
+								else
+									str1+='<p class="media-body" attr_locationType="district" attr_type="green" >Districts in Green : '+result.districtsInGreen+'</p>';
+							str1+='</div>';
+						str1+='</div>';
 					str1+='</td>';
 					str1+='<td>';
-						str1+='<p>Total Avg '+projectDivId+' in District : '+result.totalAvgFarmsInDistrict+'</p>';
+						str1+='<div class="col-sm-12">';
+							str1+='<h4 attr_locationType="constituency" attr_type="total"><strong>Total Constituencies : '+result.totalConstituencies+'</strong></h4>';
+						str1+='</div>';
+						str1+='<div class="col-sm-12 m_top10">';
+							str1+='<div class="media">';
+							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+							if(result.constituenciesInRed != null && result.constituenciesInRed > 0)
+								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="red" style="cursor:pointer;">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+							else
+								str1+='<p class="media-body" attr_locationType="constituency" attr_type="red" >Constituencies in Red : '+result.constituenciesInRed+'</p>';
+								str1+='</div>';
+							str1+='<div class="media">';
+							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+							if(result.constituenciesInOrange != null && result.constituenciesInOrange > 0)
+								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="orange" style="cursor:pointer;">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+							else
+								str1+='<p class="media-body" attr_locationType="constituency" attr_type="orange" >Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+								str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+								if(result.constituenciesInGreen != null && result.constituenciesInGreen > 0)
+									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="green" style="cursor:pointer;">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+								else
+									str1+='<p class="media-body" attr_locationType="constituency" attr_type="green" >Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+							str1+='</div>';
+						str1+='</div>';	
+						
 					str1+='</td>';
-				str1+='</tr>';
-				str1+='<tr>';
 					str1+='<td>';
-						str1+='<p>Average Per Constituency : '+result.averagePerConstituency+'</p>';
+						str1+='<div class="col-sm-12">';
+							str1+='<h4 attr_locationType="mandal" attr_type="total"><strong>Total Mandals : '+result.totalMandals+'</strong></h4>';
+						str1+='</div>';
+						str1+='<div class="col-sm-12 m_top10">';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+								if(result.mandalsInRed != null && result.mandalsInRed > 0)
+									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="red" style="cursor:pointer;">Mandals in Red : '+result.mandalsInRed+'</p>';
+								else
+									str1+='<p class="media-body" attr_locationType="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+								if(result.mandalsInOrange != null && result.mandalsInOrange > 0)
+									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="orange" style="cursor:pointer;">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+								else
+									str1+='<p class="media-body" attr_locationType="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+								if(result.mandalsInGreen != null && result.mandalsInGreen > 0)
+									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="green" style="cursor:pointer;">Mandals in Green : '+result.mandalsInGreen+'</p>';
+								else
+									str1+='<p class="media-body" attr_locationType="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
+							str1+='</div>';
+						str1+='</div>';	
 					str1+='</td>';
 					str1+='<td>';
-						str1+='<p>Total Avg '+projectDivId+' in Constituency : '+result.totalAvgFarmsInConstituency+'</p>';
-					str1+='</td>';
-				str1+='</tr>';
-				str1+='<tr>';
-					str1+='<td>';
-						str1+='<p>Average Per Mandal : '+result.averagePerMandal+'</p>';
-					str1+='</td>';
-					str1+='<td>';
-						str1+='<p>Total Avg '+projectDivId+' in Mandal: '+result.totalAvgFarmsInMandal+'</p>';
-					str1+='</td>';
-				str1+='</tr>';
-				str1+='<tr>';
-					str1+='<td>';
-						str1+='<p>Total Budget</p>';
-						str1+='<h4>'+result.totalBudget+'</h4>';
-					str1+='</td>';
-					str1+='<td>';
-						str1+='<p>Total '+projectDivId+'</p>';
-						str1+='<h4>'+result.totalBudget+'</h4>';
+						str1+='<div class="col-sm-12">';
+							str1+='<h4><strong>Total Villages : '+result.totalVillages+'</strong></h4>';
+						str1+='</div>';
+						str1+='<div class="col-sm-12 m_top10">';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+								if(result.villagesInRed != null && result.villagesInRed > 0)
+									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="red" style="cursor:pointer;">Villages in Red : '+result.villagesInRed+'</p>';
+								else
+									str1+='<p class="media-body" attr_locationType="panchayat" attr_type="red" style="cursor:pointer;"">Villages in Red : '+result.villagesInRed+'</p>';
+							str1+='</div>';
+							str1+=' <div class="media">';
+							   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+							   if(result.villagesInOrange != null && result.villagesInOrange > 0)
+									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="orange" style="cursor:pointer;">Villages in Orange : '+result.villagesInOrange+'</p>';
+								else
+									str1+='<p class="media-body" attr_locationType="panchayat" attr_type="orange" style="cursor:pointer;">Villages in Orange : '+result.villagesInOrange+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+								if(result.villagesInGreen != null && result.villagesInGreen > 0)
+									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="green" style="cursor:pointer;">Villages in Green : '+result.villagesInGreen+'</p>';
+								else
+									str1+='<p class="media-body" attr_locationType="panchayat" attr_type="green" style="cursor:pointer;">Villages in Green : '+result.villagesInGreen+'</p>';
+							str1+='</div>';
+						str1+='</div>';	
 					str1+='</td>';
 				str1+='</tr>';
 			str1+='</tbody>';
 		str1+='</table>';
-		if($windowWidth < 768)
-		{
-			str1+='</div>';
-		}
-	}
-	if(result.maleLabour != null){
-		if($windowWidth < 768)
-		{
-			str1+='<div class="table-responsive">';
-		}
-		str1+='<table class="table table-bordered m_top10">';
-		str1+='<tbody>';
-			str1+='<tr>';
-				str1+='<td>';
-					str1+='	<div class="col-sm-12">';
-						str1+='<h4><b>Total labour : '+result.totalLabour+'</b></h4>';
-					str1+='</div>';
-					str1+='<div class="col-sm-12 m_top10">';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Male.png"></p><p class="media-body">Male Labours : '+result.maleLabour+'</p>';
-						str1+='</div>';
-						str1+='<div class="media"> ';  
-						str1+='<p class="media-left">';
-							str1+='<img src="Assests/icons/Female.png"></p><p class="media-body">Female Labour : '+result.femaleLabour+'</p>';
-						str1+='</div> ';
-					str1+='</div>';
-				str1+='</td>';
-				str1+='<td>';
-					str1+='<div class="col-sm-12">';
-						str1+='<h4><b>Total Response : '+result.totalResponse+'</b></h4>';
-					str1+='	</div>';
-					str1+='<div class="col-sm-12 m_top10">';
-						str1+='<div class="media">';
-						str1+='<p class="media-left"><img src="Assests/icons/Green_Worker.png"></p><p class="media-body">On request work allocated : '+result.onRequestWorkAllocated+'</p>';
-							str1+='</div>';
-						str1+='<div class="media">';
-						str1+='<p class="media-left"><img src="Assests/icons/Orange_Worker.png"></p><p class="media-body">Got work occutionaly :'+result.gotWorkOccutionally+'</p>';
-							str1+='</div>';
-						str1+='<div class="media">';
-						str1+='<p class="media-left"><img src="Assests/icons/Red_Worker.png"></p><p class="media-body">Havent got work :'+result.haveNotGotWork+'</p>';
-						str1+='</div>';
-					str1+='</div>';
-				str1+='</td>';
-				str1+='<td>';
-					str1+='<div class="col-sm-12">';
-						str1+='<h4><b>Total Budget : '+result.totalBudget+'</b></h4>';
-					str1+='</div>';
-					str1+='<div class="col-sm-12 m_top10">';
-						str1+='<div class="media">';
-						str1+='<p class="media-left"><img src="Assests/icons/Labours_icon.png"></p><p class="media-body">Budget for Labours : '+result.budgetForLabour+'</p>';
-						str1+='</div>';
-						str1+='<div class="media">';
-						str1+='<p class="media-left"><img src="Assests/icons/Bugget_icon.png"></p><p class="media-body">Budget for Material : '+result.budgetForMaterial+'</p>';
-							str1+='</div>';
-					str1+='</div>';
-				str1+='</td>';
-			str1+='</tr>';
-			str1+='</tbody>';
-		str1+='</table>';
-		if($windowWidth < 768)
-		{
-			str1+='</div>';
-		}
-	}
-	if($windowWidth < 768)
-	{
-		str1+='<div class="table-responsive">';
-	}
-	str1+='<table class="table table-bordered m_top10" >';
-		str1+='<tbody>';
-			str1+='<tr>';
-				str1+='<td>';
-					str1+='<div class="col-sm-12">';
-						str1+='<h4 attr_locationType="district" attr_type="total"><strong>Total Districts : '+result.totalDistricts+'</strong></h4>';
-					str1+='</div>';
-					str1+='<div class="col-sm-12 m_top10">';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							if(result.districtsInRed != null && result.districtsInRed > 0)
-								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_locationType="district" attr_type="red" style="cursor:pointer;">Districts in Red : '+result.districtsInRed+'</p>';
-							else
-								str1+='<p class="media-body" attr_locationType="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
-						str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							if(result.districtsInOrange != null && result.districtsInOrange > 0)
-								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="district" attr_type="orange" style="cursor:pointer;">Districts in Orange : '+result.districtsInOrange+'</p>';
-							else
-								str1+='<p class="media-body" attr_locationType="district" attr_type="orange" >Districts in Orange : '+result.districtsInOrange+'</p>';
-						str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							if(result.districtsInGreen != null && result.districtsInGreen > 0)
-								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="district" attr_type="green" style="cursor:pointer;">Districts in Green : '+result.districtsInGreen+'</p>';
-							else
-								str1+='<p class="media-body" attr_locationType="district" attr_type="green" >Districts in Green : '+result.districtsInGreen+'</p>';
-						str1+='</div>';
-					str1+='</div>';
-				str1+='</td>';
-				str1+='<td>';
-					str1+='<div class="col-sm-12">';
-						str1+='<h4 attr_locationType="constituency" attr_type="total"><strong>Total Constituencies : '+result.totalConstituencies+'</strong></h4>';
-					str1+='</div>';
-					str1+='<div class="col-sm-12 m_top10">';
-						str1+='<div class="media">';
-						str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-						if(result.constituenciesInRed != null && result.constituenciesInRed > 0)
-							str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="red" style="cursor:pointer;">Constituencies in Red : '+result.constituenciesInRed+'</p>';
-						else
-							str1+='<p class="media-body" attr_locationType="constituency" attr_type="red" >Constituencies in Red : '+result.constituenciesInRed+'</p>';
-							str1+='</div>';
-						str1+='<div class="media">';
-						str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-						if(result.constituenciesInOrange != null && result.constituenciesInOrange > 0)
-							str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="orange" style="cursor:pointer;">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
-						else
-							str1+='<p class="media-body" attr_locationType="constituency" attr_type="orange" >Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
-							str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							if(result.constituenciesInGreen != null && result.constituenciesInGreen > 0)
-								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="green" style="cursor:pointer;">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
-							else
-								str1+='<p class="media-body" attr_locationType="constituency" attr_type="green" >Constituencies in Green : '+result.constituenciesInGreen+'</p>';
-						str1+='</div>';
-					str1+='</div>';	
-					
-				str1+='</td>';
-				str1+='<td>';
-					str1+='<div class="col-sm-12">';
-						str1+='<h4 attr_locationType="mandal" attr_type="total"><strong>Total Mandals : '+result.totalMandals+'</strong></h4>';
-					str1+='</div>';
-					str1+='<div class="col-sm-12 m_top10">';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							if(result.mandalsInRed != null && result.mandalsInRed > 0)
-								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="red" style="cursor:pointer;">Mandals in Red : '+result.mandalsInRed+'</p>';
-							else
-								str1+='<p class="media-body" attr_locationType="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
-						str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							if(result.mandalsInOrange != null && result.mandalsInOrange > 0)
-								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="orange" style="cursor:pointer;">Mandals in Orange : '+result.mandalsInOrange+'</p>';
-							else
-								str1+='<p class="media-body" attr_locationType="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
-						str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							if(result.mandalsInGreen != null && result.mandalsInGreen > 0)
-								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="green" style="cursor:pointer;">Mandals in Green : '+result.mandalsInGreen+'</p>';
-							else
-								str1+='<p class="media-body" attr_locationType="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
-						str1+='</div>';
-					str1+='</div>';	
-				str1+='</td>';
-				str1+='<td>';
-					str1+='<div class="col-sm-12">';
-						str1+='<h4><strong>Total Villages : '+result.totalVillages+'</strong></h4>';
-					str1+='</div>';
-					str1+='<div class="col-sm-12 m_top10">';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							if(result.villagesInRed != null && result.villagesInRed > 0)
-								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="red" style="cursor:pointer;">Villages in Red : '+result.villagesInRed+'</p>';
-							else
-								str1+='<p class="media-body" attr_locationType="panchayat" attr_type="red" style="cursor:pointer;"">Villages in Red : '+result.villagesInRed+'</p>';
-						str1+='</div>';
-						str1+=' <div class="media">';
-						   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-						   if(result.villagesInOrange != null && result.villagesInOrange > 0)
-								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="orange" style="cursor:pointer;">Villages in Orange : '+result.villagesInOrange+'</p>';
-							else
-								str1+='<p class="media-body" attr_locationType="panchayat" attr_type="orange" style="cursor:pointer;">Villages in Orange : '+result.villagesInOrange+'</p>';
-						str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							if(result.villagesInGreen != null && result.villagesInGreen > 0)
-								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="green" style="cursor:pointer;">Villages in Green : '+result.villagesInGreen+'</p>';
-							else
-								str1+='<p class="media-body" attr_locationType="panchayat" attr_type="green" style="cursor:pointer;">Villages in Green : '+result.villagesInGreen+'</p>';
-						str1+='</div>';
-					str1+='</div>';	
-				str1+='</td>';
-			str1+='</tr>';
-		str1+='</tbody>';
-	str1+='</table>';
-	if($windowWidth < 768)
-	{
-		str1+='</div>';
-	}
+	str1+='</div>';
+
 	if(result.targettedPersonDays != null)
 	{
 		str1+='<div id="projectExp'+projectDivId.replace(/\s+/g, '')+'" style="margin-top:10px;"></div>';
-		if($windowWidth < 768)
-		{
-			str1+='<div class="table-responsive">';
-		}
-		str1+='<table class="table table-bordered m_top20">';
-			str1+='<tr>';
-				str1+='<td>';
-					str1+='<p class="col-sm-9">Targeted Person days</p>';
-					str1+='<p class="col-sm-3 text-center">'+result.targettedPersonDays+'</p>';
-					str1+='<p class="col-sm-9">Generated person days</p>';
-					str1+='<p class="col-sm-3 text-center">'+result.generatedPersonDays+'</p>';
-					str1+='<p class="col-sm-9">Acheivement Percentage</p>';
-					str1+='<p class="col-sm-3 bg-danger text-danger text-center">'+result.achievementPerc+'</p>';
-				str1+='</td>';
-				str1+='<td>';
-					//str1+='<p class="col-sm-9">(%) of Labour reported over target</p>';
-					//str1+='<p class="col-sm-3 bg-success text-success text-center"></p>';
-					str1+='<p class="col-sm-9">Average Wage Per Person: Rs</p>';
-					str1+='<p class="col-sm-3 bg-danger text-danger text-center">'+result.avgWagePerPerson+'</p>';
-					str1+='<p class="col-sm-9">Total Expenditure: Rs</p>';
-					str1+='<p class="col-sm-3 text-center">'+result.totalExpenditure+'</p>';
-				str1+='</td>';
-			str1+='</tr>';
-		str1+='</table>';
-		if($windowWidth < 768)
-		{
-			str1+='</div>';
-		}
+		str1+='<div class="table-responsive">';
+		
+			str1+='<table class="table table-bordered m_top20">';
+				str1+='<tr>';
+					str1+='<td>';
+						str1+='<p class="col-sm-9">Targeted Person days</p>';
+						str1+='<p class="col-sm-3 text-center">'+result.targettedPersonDays+'</p>';
+						str1+='<p class="col-sm-9">Generated person days</p>';
+						str1+='<p class="col-sm-3 text-center">'+result.generatedPersonDays+'</p>';
+						str1+='<p class="col-sm-9">Acheivement Percentage</p>';
+						str1+='<p class="col-sm-3 bg-danger text-danger text-center">'+result.achievementPerc+'</p>';
+					str1+='</td>';
+					str1+='<td>';
+						//str1+='<p class="col-sm-9">(%) of Labour reported over target</p>';
+						//str1+='<p class="col-sm-3 bg-success text-success text-center"></p>';
+						str1+='<p class="col-sm-9">Average Wage Per Person: Rs</p>';
+						str1+='<p class="col-sm-3 bg-danger text-danger text-center">'+result.avgWagePerPerson+'</p>';
+						str1+='<p class="col-sm-9">Total Expenditure: Rs</p>';
+						str1+='<p class="col-sm-3 text-center">'+result.totalExpenditure+'</p>';
+					str1+='</td>';
+				str1+='</tr>';
+			str1+='</table>';
+		str1+='</div>';
 		getNREGSLabourBudgetExpenditure(projectDivId);
 	}
 	
@@ -1045,36 +1020,30 @@ function buildNregasOverViewBlock(ajaxresp,projectDivId,menuLocationType,menuLoc
 function buildLabrBudgetExpBlock(result,projectDivId){
 	var str='';
 	str+='<p class="text-center expenditure"><strong>No of Panchayaties Vs Expenditure In Lakhs</strong></p>';
-		if($windowWidth < 768)
-		{
-			str+='<div class="table-responsive">';
-		}
-		str+='<table class="table table-striped table-bordered m_top10">';
-			str+='<tbody>';
-				 str+='<tr>';
-					 str+='<td></td>';
-					 for(var i in result){
-						 str+='<td>'+result[i].name+'</td>';
-					 }
-				  str+='</tr>';
-				str+=' <tr>';
-					str+=' <td>Grand Total</td>';
-					for(var i in result){
-						str+='<td>'+result[i].count+'</td>';
-					}
-				str+='</tr>';
-				str+=' <tr>';
-					str+=' <td>Percentage</td>';
-					for(var i in result){
-						str+='<td>'+result[i].totl+'</td>';
-					}
-				str+='</tr>';
-			str+='</tbody>';
-		str+='</table>';
-		if($windowWidth < 768)
-		{
-			str+='</div>';
-		}
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-striped table-bordered m_top10">';
+				str+='<tbody>';
+					 str+='<tr>';
+						 str+='<td></td>';
+						 for(var i in result){
+							 str+='<td>'+result[i].name+'</td>';
+						 }
+					  str+='</tr>';
+					str+=' <tr>';
+						str+=' <td>Grand Total</td>';
+						for(var i in result){
+							str+='<td>'+result[i].count+'</td>';
+						}
+					str+='</tr>';
+					str+=' <tr>';
+						str+=' <td>Percentage</td>';
+						for(var i in result){
+							str+='<td>'+result[i].totl+'</td>';
+						}
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
 	$("#projectExp"+projectDivId.replace(/\s+/g, '')).html(str);
 }
 
@@ -1158,259 +1127,252 @@ function buildDistrictsPopupDetails(result,dataArr){
 				 
 				str+='<div class="table-responsive">';
 				if(globalDivName != 'Labour Budget'){
-					if($windowWidth < 768)
-					{
-						str+='<div class="table-responsive">';
-					}
-					str+='<table class="table table-bordered m_top10 dataTableClsDist">';
-						str+='<thead>';
-							str+='<tr>';
-								for(var i in theadArr)
-								{
-									str+='<th class="text-capital">'+theadArr[i]+'</th>';
+					str+='<div class="table-responsive">';
+						str+='<table class="table table-bordered m_top10 dataTableClsDist">';
+							str+='<thead>';
+								str+='<tr>';
+									for(var i in theadArr)
+									{
+										str+='<th class="text-capital">'+theadArr[i]+'</th>';
+									}
+								str+='</tr>';
+							str+='</thead>';
+						str+='<tbody>';
+						
+								for(var i in result.distList){
+									if(globalDivName == "Average Wage" || globalDivName == "Average Days of Employment" || globalDivName == "HH Completed 100 Days" || globalDivName == "Timely Payment"){
+										str+='<tr>';
+										if(dataArr == "district"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										}
+										else if(dataArr == "constituency"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										}
+										else if(dataArr == "mandal"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										}
+										else if(dataArr == "panchayat"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+										}
+										str+='<td>'+result.distList[i].target+'</td>';
+										str+='<td>'+result.distList[i].achivement+'</td>';
+										str+='<td>'+result.distList[i].percentage+'</td>';
+									str+='</tr>';
+									}else if(globalDivName == "Agriculture Activities"){
+										str+='<tr>';
+										if(dataArr == "district"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										}
+										else if(dataArr == "constituency"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										}
+										else if(dataArr == "mandal"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										}
+										else if(dataArr == "panchayat"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+										}
+										str+='<td>'+result.distList[i].target+'</td>';
+										str+='<td>'+result.distList[i].completed+'</td>';
+										str+='<td>'+result.distList[i].achivement+'</td>';
+									str+='</tr>';
+									}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds"){
+										str+='<tr>';
+										if(dataArr == "district"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										}
+										else if(dataArr == "constituency"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										}
+										else if(dataArr == "mandal"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										}
+										else if(dataArr == "panchayat"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+										}
+										str+='<td>'+result.distList[i].target+'</td>';
+										if(dataArr == "district"){
+											str+='<td>'+result.distList[i].sanctionedTarget+'</td>';
+											str+='<td>'+result.distList[i].sanctionedPerventage+'</td>';
+										}
+										str+='<td>'+result.distList[i].grounded+'</td>';
+										str+='<td>'+result.distList[i].notGrounded+'</td>';
+										str+='<td>'+result.distList[i].inProgress+'</td>';
+										str+='<td>'+result.distList[i].completed+'</td>';
+										str+='<td>'+result.distList[i].percentage+'</td>';
+									str+='</tr>';
+									}else if(globalDivName == "CC Roads"){
+										str+='<tr>';
+										if(dataArr == "district"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										}
+										else if(dataArr == "constituency"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										}
+										else if(dataArr == "mandal"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										}
+										else if(dataArr == "panchayat"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+										}
+										//str+='<td>'+result.distList[i].target+'</td>';
+										if(dataArr == "district")
+											str+='<td>'+result.distList[i].targetKMS+'</td>';
+											
+										str+='<td>'+result.distList[i].sanctionedAmount+'</td>';
+										str+='<td>'+result.distList[i].sanctionedKMS+'</td>';
+										
+										if(dataArr == "district")
+											str+='<td>'+result.distList[i].sanctionedPerventage+'</td>';
+										
+										str+='<td>'+result.distList[i].expenditureAmount+'</td>';
+										str+='<td>'+result.distList[i].completedKMS+'</td>';
+										str+='<td>'+result.distList[i].percentage+'</td>';
+									str+='</tr>';
+									}else if(globalDivName == "Horticulture"){
+										str+='<tr>';
+										if(dataArr == "district"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										}
+										else if(dataArr == "constituency"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										}
+										else if(dataArr == "mandal"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										}
+										else if(dataArr == "panchayat"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+										}
+										//str+='<td>'+result.distList[i].target+'</td>';
+										if(dataArr == "district")
+											str+='<td>'+result.distList[i].targetACRES+'</td>';
+											
+										str+='<td>'+result.distList[i].sanctionedACRES+'</td>';
+										if(dataArr == "district")
+											str+='<td>'+result.distList[i].sanctionedPerventage+'</td>';
+										
+										str+='<td>'+result.distList[i].pittingArea+'</td>';
+										str+='<td>'+result.distList[i].plantingArea+'</td>';
+										str+='<td>'+result.distList[i].pencentageOfPlanting+'</td>';
+									str+='</tr>';
+									}else if(globalDivName == "Avenue"){
+										str+='<tr>';
+										if(dataArr == "district"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										}
+										else if(dataArr == "constituency"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										}
+										else if(dataArr == "mandal"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										}
+										else if(dataArr == "panchayat"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+										}
+										//str+='<td>'+result.distList[i].target+'</td>';
+										if(dataArr == "district")
+											str+='<td>'+result.distList[i].targetKMS+'</td>';
+											
+										str+='<td>'+result.distList[i].sanctionedKMS+'</td>';
+										if(dataArr == "district")
+											str+='<td>'+result.distList[i].sanctionedPerventage+'</td>';
+										
+										str+='<td>'+result.distList[i].pittingKMS+'</td>';
+										str+='<td>'+result.distList[i].plantingKMS+'</td>';
+										str+='<td>'+result.distList[i].pencentageOfPlanting+'</td>';
+									str+='</tr>';
+									}else if(globalDivName == "Nurseries"){
+										str+='<tr>';
+										if(dataArr == "district"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										}
+										else if(dataArr == "constituency"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										}
+										else if(dataArr == "mandal"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										}
+										else if(dataArr == "panchayat"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+										}
+										str+='<td>'+result.distList[i].target+'</td>';
+										str+='<td>'+result.distList[i].completed+'</td>';
+										str+='<td>'+result.distList[i].percentage+'</td>';
+									str+='</tr>';
+									}else{
+										str+='<tr>';
+										if(dataArr == "district"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										}
+										else if(dataArr == "constituency"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										}
+										else if(dataArr == "mandal"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										}
+										else if(dataArr == "panchayat"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+										}
+										str+='<td>'+result.distList[i].target+'</td>';
+										str+='<td>'+result.distList[i].grounded+'</td>';
+										str+='<td>'+result.distList[i].notGrounded+'</td>';
+										str+='<td>'+result.distList[i].inProgress+'</td>';
+										str+='<td>'+result.distList[i].completed+'</td>';
+										str+='<td>'+result.distList[i].percentage+'</td>';
+									str+='</tr>';
+									}
 								}
-							str+='</tr>';
-						str+='</thead>';
-					str+='<tbody>';
-					
-							for(var i in result.distList){
-								if(globalDivName == "Average Wage" || globalDivName == "Average Days of Employment" || globalDivName == "HH Completed 100 Days" || globalDivName == "Timely Payment"){
-									str+='<tr>';
-									if(dataArr == "district"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-									}
-									else if(dataArr == "constituency"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-									}
-									else if(dataArr == "mandal"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-									}
-									else if(dataArr == "panchayat"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
-									}
-									str+='<td>'+result.distList[i].target+'</td>';
-									str+='<td>'+result.distList[i].achivement+'</td>';
-									str+='<td>'+result.distList[i].percentage+'</td>';
-								str+='</tr>';
-								}else if(globalDivName == "Agriculture Activities"){
-									str+='<tr>';
-									if(dataArr == "district"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-									}
-									else if(dataArr == "constituency"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-									}
-									else if(dataArr == "mandal"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-									}
-									else if(dataArr == "panchayat"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
-									}
-									str+='<td>'+result.distList[i].target+'</td>';
-									str+='<td>'+result.distList[i].completed+'</td>';
-									str+='<td>'+result.distList[i].achivement+'</td>';
-								str+='</tr>';
-								}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds"){
-									str+='<tr>';
-									if(dataArr == "district"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-									}
-									else if(dataArr == "constituency"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-									}
-									else if(dataArr == "mandal"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-									}
-									else if(dataArr == "panchayat"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
-									}
-									str+='<td>'+result.distList[i].target+'</td>';
-									if(dataArr == "district"){
-										str+='<td>'+result.distList[i].sanctionedTarget+'</td>';
-										str+='<td>'+result.distList[i].sanctionedPerventage+'</td>';
-									}
-									str+='<td>'+result.distList[i].grounded+'</td>';
-									str+='<td>'+result.distList[i].notGrounded+'</td>';
-									str+='<td>'+result.distList[i].inProgress+'</td>';
-									str+='<td>'+result.distList[i].completed+'</td>';
-									str+='<td>'+result.distList[i].percentage+'</td>';
-								str+='</tr>';
-								}else if(globalDivName == "CC Roads"){
-									str+='<tr>';
-									if(dataArr == "district"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-									}
-									else if(dataArr == "constituency"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-									}
-									else if(dataArr == "mandal"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-									}
-									else if(dataArr == "panchayat"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
-									}
-									//str+='<td>'+result.distList[i].target+'</td>';
-									if(dataArr == "district")
-										str+='<td>'+result.distList[i].targetKMS+'</td>';
-										
-									str+='<td>'+result.distList[i].sanctionedAmount+'</td>';
-									str+='<td>'+result.distList[i].sanctionedKMS+'</td>';
-									
-									if(dataArr == "district")
-										str+='<td>'+result.distList[i].sanctionedPerventage+'</td>';
-									
-									str+='<td>'+result.distList[i].expenditureAmount+'</td>';
-									str+='<td>'+result.distList[i].completedKMS+'</td>';
-									str+='<td>'+result.distList[i].percentage+'</td>';
-								str+='</tr>';
-								}else if(globalDivName == "Horticulture"){
-									str+='<tr>';
-									if(dataArr == "district"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-									}
-									else if(dataArr == "constituency"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-									}
-									else if(dataArr == "mandal"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-									}
-									else if(dataArr == "panchayat"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
-									}
-									//str+='<td>'+result.distList[i].target+'</td>';
-									if(dataArr == "district")
-										str+='<td>'+result.distList[i].targetACRES+'</td>';
-										
-									str+='<td>'+result.distList[i].sanctionedACRES+'</td>';
-									if(dataArr == "district")
-										str+='<td>'+result.distList[i].sanctionedPerventage+'</td>';
-									
-									str+='<td>'+result.distList[i].pittingArea+'</td>';
-									str+='<td>'+result.distList[i].plantingArea+'</td>';
-									str+='<td>'+result.distList[i].pencentageOfPlanting+'</td>';
-								str+='</tr>';
-								}else if(globalDivName == "Avenue"){
-									str+='<tr>';
-									if(dataArr == "district"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-									}
-									else if(dataArr == "constituency"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-									}
-									else if(dataArr == "mandal"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-									}
-									else if(dataArr == "panchayat"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
-									}
-									//str+='<td>'+result.distList[i].target+'</td>';
-									if(dataArr == "district")
-										str+='<td>'+result.distList[i].targetKMS+'</td>';
-										
-									str+='<td>'+result.distList[i].sanctionedKMS+'</td>';
-									if(dataArr == "district")
-										str+='<td>'+result.distList[i].sanctionedPerventage+'</td>';
-									
-									str+='<td>'+result.distList[i].pittingKMS+'</td>';
-									str+='<td>'+result.distList[i].plantingKMS+'</td>';
-									str+='<td>'+result.distList[i].pencentageOfPlanting+'</td>';
-								str+='</tr>';
-								}else if(globalDivName == "Nurseries"){
-									str+='<tr>';
-									if(dataArr == "district"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-									}
-									else if(dataArr == "constituency"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-									}
-									else if(dataArr == "mandal"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-									}
-									else if(dataArr == "panchayat"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
-									}
-									str+='<td>'+result.distList[i].target+'</td>';
-									str+='<td>'+result.distList[i].completed+'</td>';
-									str+='<td>'+result.distList[i].percentage+'</td>';
-								str+='</tr>';
-								}else{
-									str+='<tr>';
-									if(dataArr == "district"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-									}
-									else if(dataArr == "constituency"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-									}
-									else if(dataArr == "mandal"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-									}
-									else if(dataArr == "panchayat"){
-										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
-									}
-									str+='<td>'+result.distList[i].target+'</td>';
-									str+='<td>'+result.distList[i].grounded+'</td>';
-									str+='<td>'+result.distList[i].notGrounded+'</td>';
-									str+='<td>'+result.distList[i].inProgress+'</td>';
-									str+='<td>'+result.distList[i].completed+'</td>';
-									str+='<td>'+result.distList[i].percentage+'</td>';
-								str+='</tr>';
-								}
-							}
-						str+='</tbody>';
-					str+='</table>';
-					if($windowWidth < 768)
-					{
-						str+='</div>';
-					}
-					
+							str+='</tbody>';
+						str+='</table>';
+					str+='</div>';
 				}
 				else{
 					globalDivName
@@ -1421,57 +1383,52 @@ function buildDistrictsPopupDetails(result,dataArr){
 						theadArr = ["district","constituency",dataArr,'Target Person days','Generated','Achivement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
 					else if(dataArr == "panchayat")
 						theadArr = ["district","constituency","mandal",dataArr,'Target Person days','Generated','Achivement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
-					if($windowWidth < 768)
-					{
-						str+='<div class="table-responsive">';
-					}
-					str+='<table class="table table-bordered m_top10 dataTableClsDist">';
-					str+='<thead>';
-						str+='<tr>';
-							for(var i in theadArr)
-							{
-								str+='<th class="text-capital">'+theadArr[i]+'</th>';
-							}
-						str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>';
-				
-					for(var i in result.distList){
-						str+='<tr>';
-							if(dataArr == "district"){
-								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-							}
-							else if(dataArr == "constituency"){
-								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-								str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-							}
-							else if(dataArr == "mandal"){
-								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-								str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-								str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-							}
-							else if(dataArr == "panchayat"){
-								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
-								str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
-								str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
-								str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
-							}
-								
-							str+='<td>'+result.distList[i].targetPersonDays+'</td>';
-							str+='<td>'+result.distList[i].generatedPersonDays+'</td>';
-							str+='<td>'+result.distList[i].perAppLB+'</td>';
-							str+='<td>'+result.distList[i].wageExpenditure+'</td>';
-							str+='<td>'+result.distList[i].materialExpenditure+'</td>';
-							str+='<td>'+result.distList[i].totalExpenditure+'</td>';
-							str+='<td>'+result.distList[i].materialExpenditurePerc+'</td>';
-						str+='</tr>';
-					}
-					str+='</tbody>';
-					str+='</table>';
-					if($windowWidth < 768)
-					{
-						str+='</div>';
-					}
+					str+='<div class="table-responsive">';
+						str+='<table class="table table-bordered m_top10 dataTableClsDist">';
+						str+='<thead>';
+							str+='<tr>';
+								for(var i in theadArr)
+								{
+									str+='<th class="text-capital">'+theadArr[i]+'</th>';
+								}
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+					
+						for(var i in result.distList){
+							str+='<tr>';
+								if(dataArr == "district"){
+									str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+								}
+								else if(dataArr == "constituency"){
+									str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+									str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+								}
+								else if(dataArr == "mandal"){
+									str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+									str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+									str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+								}
+								else if(dataArr == "panchayat"){
+									str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+									str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+									str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+									str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+								}
+									
+								str+='<td>'+result.distList[i].targetPersonDays+'</td>';
+								str+='<td>'+result.distList[i].generatedPersonDays+'</td>';
+								str+='<td>'+result.distList[i].perAppLB+'</td>';
+								str+='<td>'+result.distList[i].wageExpenditure+'</td>';
+								str+='<td>'+result.distList[i].materialExpenditure+'</td>';
+								str+='<td>'+result.distList[i].totalExpenditure+'</td>';
+								str+='<td>'+result.distList[i].materialExpenditurePerc+'</td>';
+							str+='</tr>';
+						}
+						str+='</tbody>';
+						str+='</table>';
+					str+='</div>';
+					
 				}
 				str+='</div>';
 			str+='</div>';
@@ -1485,51 +1442,45 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<h4 class="panel-title text-capital">Constituencies in Districts</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
-				if($windowWidth < 768)
-				{
-					str+='<div class="table-responsive">';
-				}
-				str+='<table class="table table-bordered m_top10 dataTableCls">';
-					str+='<thead>';
-						str+='<tr>';
-							str+='<th>District Name </th>';
-							str+='<th style="color:red;">Constituencies In Red </th>';
-							str+='<th style="color:orange;">Constituencies In Orange </th>';
-							str+='<th style="color:green;">Constituencies In Green </th>';
-							str+='<th>Total </th>';
-						str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>';
-					var redTotalCons = 0;
-					var orangeTotalCons = 0;
-					var greenTotalCons = 0;
-					var totalConsiCons = 0;
-						for(var i in result.distConsCuntList){
-							redTotalCons = redTotalCons+result.distConsCuntList[i].constiInRed;
-							orangeTotalCons = orangeTotalCons+result.distConsCuntList[i].constiInOrange;
-							greenTotalCons = greenTotalCons+result.distConsCuntList[i].constiInGreen;
-							totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+				str+='<div class="table-responsive">';
+					str+='<table class="table table-bordered m_top10 dataTableCls">';
+						str+='<thead>';
 							str+='<tr>';
-								str+='<td>'+result.distConsCuntList[i].district+'</td>';
-								str+='<td style="color:red;">'+result.distConsCuntList[i].constiInRed+'</td>';
-								str+='<td style="color:orange;">'+result.distConsCuntList[i].constiInOrange+'</td>';
-								str+='<td style="color:green;">'+result.distConsCuntList[i].constiInGreen+'</td>';
-								str+='<td>'+result.distConsCuntList[i].total+'</td>';
-							str+='</tr>';	
-						}
-						str+='<tr>';
-							str+='<td>Total</td>';
-							str+='<td>'+redTotalCons+'</td>';
-							str+='<td>'+orangeTotalCons+'</td>';
-							str+='<td>'+greenTotalCons+'</td>';
-							str+='<td>'+totalConsiCons+'</td>';
-						str+='</tr>';
-					str+='</tbody>';
-				str+='</table>';
-				if($windowWidth < 768)
-				{
-					str+='</div>';
-				}
+								str+='<th>District Name </th>';
+								str+='<th style="color:red;">Constituencies In Red </th>';
+								str+='<th style="color:orange;">Constituencies In Orange </th>';
+								str+='<th style="color:green;">Constituencies In Green </th>';
+								str+='<th>Total </th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						var redTotalCons = 0;
+						var orangeTotalCons = 0;
+						var greenTotalCons = 0;
+						var totalConsiCons = 0;
+							for(var i in result.distConsCuntList){
+								redTotalCons = redTotalCons+result.distConsCuntList[i].constiInRed;
+								orangeTotalCons = orangeTotalCons+result.distConsCuntList[i].constiInOrange;
+								greenTotalCons = greenTotalCons+result.distConsCuntList[i].constiInGreen;
+								totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+								str+='<tr>';
+									str+='<td>'+result.distConsCuntList[i].district+'</td>';
+									str+='<td style="color:red;">'+result.distConsCuntList[i].constiInRed+'</td>';
+									str+='<td style="color:orange;">'+result.distConsCuntList[i].constiInOrange+'</td>';
+									str+='<td style="color:green;">'+result.distConsCuntList[i].constiInGreen+'</td>';
+									str+='<td>'+result.distConsCuntList[i].total+'</td>';
+								str+='</tr>';	
+							}
+							str+='<tr>';
+								str+='<td>Total</td>';
+								str+='<td>'+redTotalCons+'</td>';
+								str+='<td>'+orangeTotalCons+'</td>';
+								str+='<td>'+greenTotalCons+'</td>';
+								str+='<td>'+totalConsiCons+'</td>';
+							str+='</tr>';
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	}
@@ -1541,35 +1492,29 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<h4 class="panel-title text-capital">'+dataArr+'s in Districts</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
-				if($windowWidth < 768)
-				{
-					str+='<div class="table-responsive">';
-				}
-				str+='<table class="table table-bordered m_top10 dataTableCls">';
-					str+='<thead>';
-						str+='<tr>';
-							str+='<th>District Name </th>';
-							str+='<th>Count</th>';
-						str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>';
-						for(var i in result.countList){
-							total = total +result.countList[i].count;
+				str+='<div class="table-responsive">';
+					str+='<table class="table table-bordered m_top10 dataTableCls">';
+						str+='<thead>';
 							str+='<tr>';
-								str+='<td>'+result.countList[i].district+'</td>';
-								str+='<td>'+result.countList[i].count+'</td>';
-							str+='</tr>';	
-						}
-						str+='<tr>';
-							str+='<td>Total</td>';
-							str+='<td>'+total+'</td>';
-						str+='</tr>';
-					str+='</tbody>';
-				str+='</table>';
-				if($windowWidth < 768)
-				{
-					str+='</div>';
-				}
+								str+='<th>District Name </th>';
+								str+='<th>Count</th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+							for(var i in result.countList){
+								total = total +result.countList[i].count;
+								str+='<tr>';
+									str+='<td>'+result.countList[i].district+'</td>';
+									str+='<td>'+result.countList[i].count+'</td>';
+								str+='</tr>';	
+							}
+							str+='<tr>';
+								str+='<td>Total</td>';
+								str+='<td>'+total+'</td>';
+							str+='</tr>';
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	}
@@ -1582,35 +1527,29 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<h4 class="panel-title text-capital">'+dataArr+'s in Constitencies</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
-				if($windowWidth < 768)
-				{
-					str+='<div class="table-responsive">';
-				}
-				str+='<table class="table table-bordered m_top10 dataTableCls">';
-					str+='<thead>';
-						str+='<tr>';
-							str+='<th>Constituency Name </th>';
-							str+='<th>Count</th>';
-						str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>';
-						for(var i in result.consMandalList){
-							total = total +result.consMandalList[i].count;
+				str+='<div class="table-responsive">';
+					str+='<table class="table table-bordered m_top10 dataTableCls">';
+						str+='<thead>';
 							str+='<tr>';
-								str+='<td>'+result.consMandalList[i].constituency+'</td>';
-								str+='<td>'+result.consMandalList[i].count+'</td>';
-							str+='</tr>';	
-						}
-						str+='<tr>';
-							str+='<td>Total</td>';
-							str+='<td>'+total+'</td>';
-						str+='</tr>';
-					str+='</tbody>';
-				str+='</table>';
-				if($windowWidth < 768)
-				{
-					str+='</div>';
-				}
+								str+='<th>Constituency Name </th>';
+								str+='<th>Count</th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+							for(var i in result.consMandalList){
+								total = total +result.consMandalList[i].count;
+								str+='<tr>';
+									str+='<td>'+result.consMandalList[i].constituency+'</td>';
+									str+='<td>'+result.consMandalList[i].count+'</td>';
+								str+='</tr>';	
+							}
+							str+='<tr>';
+								str+='<td>Total</td>';
+								str+='<td>'+total+'</td>';
+							str+='</tr>';
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	}
@@ -1622,35 +1561,29 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<h4 class="panel-title text-capital">Panchayats in Mandals</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
-				if($windowWidth < 768)
-				{
-					str+='<div class="table-responsive">';
-				}
-				str+='<table class="table table-bordered m_top10 dataTableCls">';
-					str+='<thead>';
-						str+='<tr>';
-							str+='<th>Mandal Name </th>';
-							str+='<th>Count</th>';
-						str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>';
-						for(var i in result.mandalVillageList){
-							total = total +result.mandalVillageList[i].count;
+				str+='<div class="table-responsive">';
+					str+='<table class="table table-bordered m_top10 dataTableCls">';
+						str+='<thead>';
 							str+='<tr>';
-								str+='<td>'+result.mandalVillageList[i].mandal+'</td>';
-								str+='<td>'+result.mandalVillageList[i].count+'</td>';
-							str+='</tr>';	
-						}
-						str+='<tr>';
-							str+='<td>Total</td>';
-							str+='<td>'+total+'</td>';
-						str+='</tr>';
-					str+='</tbody>';
-				str+='</table>';
-				if($windowWidth < 768)
-				{
-					str+='</div>';
-				}
+								str+='<th>Mandal Name </th>';
+								str+='<th>Count</th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+							for(var i in result.mandalVillageList){
+								total = total +result.mandalVillageList[i].count;
+								str+='<tr>';
+									str+='<td>'+result.mandalVillageList[i].mandal+'</td>';
+									str+='<td>'+result.mandalVillageList[i].count+'</td>';
+								str+='</tr>';	
+							}
+							str+='<tr>';
+								str+='<td>Total</td>';
+								str+='<td>'+total+'</td>';
+							str+='</tr>';
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	}
@@ -1661,51 +1594,45 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<h4 class="panel-title text-capital">Mandals in '+dataArr+'s</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
-				if($windowWidth < 768)
-				{
-					str+='<div class="table-responsive">';
-				}
-				str+='<table class="table table-bordered m_top10 dataTableCls">';
-					str+='<thead class="text-capital">';
-						str+='<tr>';
-							str+='<th>'+dataArr+'</th>';
-							str+='<th style="color:red;">Mandals In Red </th>';
-							str+='<th style="color:orange;">Mandals In Orange </th>';
-							str+='<th style="color:green;">Mandals In Green </th>';
-							str+='<th>Total </th>';
-						str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>';
-					redTotalCons = 0;
-					orangeTotalCons = 0;
-					greenTotalCons = 0;
-					totalConsiCons = 0;
-						for(var i in result.distMandalCuntList){
-							redTotalCons = redTotalCons+result.distMandalCuntList[i].mandalsInRed;
-							orangeTotalCons = orangeTotalCons+result.distMandalCuntList[i].mandalsInOrange;
-							greenTotalCons = greenTotalCons+result.distMandalCuntList[i].mandalsInGreen;
-							totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+				str+='<div class="table-responsive">';
+					str+='<table class="table table-bordered m_top10 dataTableCls">';
+						str+='<thead class="text-capital">';
 							str+='<tr>';
-								str+='<td>'+result.distMandalCuntList[i].district+'</td>';
-								str+='<td style="color:red;">'+result.distMandalCuntList[i].mandalsInRed+'</td>';
-								str+='<td style="color:orange;">'+result.distMandalCuntList[i].mandalsInOrange+'</td>';
-								str+='<td style="color:green;">'+result.distMandalCuntList[i].mandalsInGreen+'</td>';
-								str+='<td>'+result.distMandalCuntList[i].total+'</td>';
-							str+='</tr>';	
-						}
-						str+='<tr>';
-							str+='<td>Total</td>';
-							str+='<td>'+redTotalCons+'</td>';
-							str+='<td>'+orangeTotalCons+'</td>';
-							str+='<td>'+greenTotalCons+'</td>';
-							str+='<td>'+totalConsiCons+'</td>';
-						str+='</tr>';
-					str+='</tbody>';
-				str+='</table>';
-				if($windowWidth < 768)
-				{
-					str+='</div>';
-				}
+								str+='<th>'+dataArr+'</th>';
+								str+='<th style="color:red;">Mandals In Red </th>';
+								str+='<th style="color:orange;">Mandals In Orange </th>';
+								str+='<th style="color:green;">Mandals In Green </th>';
+								str+='<th>Total </th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						redTotalCons = 0;
+						orangeTotalCons = 0;
+						greenTotalCons = 0;
+						totalConsiCons = 0;
+							for(var i in result.distMandalCuntList){
+								redTotalCons = redTotalCons+result.distMandalCuntList[i].mandalsInRed;
+								orangeTotalCons = orangeTotalCons+result.distMandalCuntList[i].mandalsInOrange;
+								greenTotalCons = greenTotalCons+result.distMandalCuntList[i].mandalsInGreen;
+								totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+								str+='<tr>';
+									str+='<td>'+result.distMandalCuntList[i].district+'</td>';
+									str+='<td style="color:red;">'+result.distMandalCuntList[i].mandalsInRed+'</td>';
+									str+='<td style="color:orange;">'+result.distMandalCuntList[i].mandalsInOrange+'</td>';
+									str+='<td style="color:green;">'+result.distMandalCuntList[i].mandalsInGreen+'</td>';
+									str+='<td>'+result.distMandalCuntList[i].total+'</td>';
+								str+='</tr>';	
+							}
+							str+='<tr>';
+								str+='<td>Total</td>';
+								str+='<td>'+redTotalCons+'</td>';
+								str+='<td>'+orangeTotalCons+'</td>';
+								str+='<td>'+greenTotalCons+'</td>';
+								str+='<td>'+totalConsiCons+'</td>';
+							str+='</tr>';
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	}
@@ -1716,51 +1643,45 @@ function buildDistrictsPopupDetails(result,dataArr){
 				str+='<h4 class="panel-title text-capital">Villages in '+dataArr+'s</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
-				if($windowWidth < 768)
-				{
-					str+='<div class="table-responsive">';
-				}
-				str+='<table class="table table-bordered m_top10 dataTableCls">';
-					str+='<thead class="text-capital">';
-						str+='<tr>';
-							str+='<th>'+dataArr+'</th>';
-							str+='<th style="color:red;">Villages In Red </th>';
-							str+='<th style="color:orange;">Villages In Orange </th>';
-							str+='<th style="color:green;">Villages In Green </th>';
-							str+='<th>Total </th>';
-						str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>';
-					redTotalCons = 0;
-					orangeTotalCons = 0;
-					greenTotalCons = 0;
-					totalConsiCons = 0;
-						for(var i in result.distMandalList){
-							redTotalCons = redTotalCons+result.distMandalList[i].villagesInRed;
-							orangeTotalCons = orangeTotalCons+result.distMandalList[i].villagesInOrange;
-							greenTotalCons = greenTotalCons+result.distMandalList[i].villagesInGreen;
-							totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+				str+='<div class="table-responsive">';
+					str+='<table class="table table-bordered m_top10 dataTableCls">';
+						str+='<thead class="text-capital">';
 							str+='<tr>';
-								str+='<td>'+result.distMandalList[i].district+'</td>';
-								str+='<td style="color:red;">'+result.distMandalList[i].villagesInRed+'</td>';
-								str+='<td style="color:orange;">'+result.distMandalList[i].villagesInOrange+'</td>';
-								str+='<td style="color:green;">'+result.distMandalList[i].villagesInGreen+'</td>';
-								str+='<td>'+result.distMandalList[i].total+'</td>';
-							str+='</tr>';	
-						}
-						str+='<tr>';
-							str+='<td>Total</td>';
-							str+='<td>'+redTotalCons+'</td>';
-							str+='<td>'+orangeTotalCons+'</td>';
-							str+='<td>'+greenTotalCons+'</td>';
-							str+='<td>'+totalConsiCons+'</td>';
-						str+='</tr>';
-					str+='</tbody>';
-				str+='</table>';
-				if($windowWidth < 768)
-				{
-					str+='</div>';
-				}
+								str+='<th>'+dataArr+'</th>';
+								str+='<th style="color:red;">Villages In Red </th>';
+								str+='<th style="color:orange;">Villages In Orange </th>';
+								str+='<th style="color:green;">Villages In Green </th>';
+								str+='<th>Total </th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						redTotalCons = 0;
+						orangeTotalCons = 0;
+						greenTotalCons = 0;
+						totalConsiCons = 0;
+							for(var i in result.distMandalList){
+								redTotalCons = redTotalCons+result.distMandalList[i].villagesInRed;
+								orangeTotalCons = orangeTotalCons+result.distMandalList[i].villagesInOrange;
+								greenTotalCons = greenTotalCons+result.distMandalList[i].villagesInGreen;
+								totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
+								str+='<tr>';
+									str+='<td>'+result.distMandalList[i].district+'</td>';
+									str+='<td style="color:red;">'+result.distMandalList[i].villagesInRed+'</td>';
+									str+='<td style="color:orange;">'+result.distMandalList[i].villagesInOrange+'</td>';
+									str+='<td style="color:green;">'+result.distMandalList[i].villagesInGreen+'</td>';
+									str+='<td>'+result.distMandalList[i].total+'</td>';
+								str+='</tr>';	
+							}
+							str+='<tr>';
+								str+='<td>Total</td>';
+								str+='<td>'+redTotalCons+'</td>';
+								str+='<td>'+orangeTotalCons+'</td>';
+								str+='<td>'+greenTotalCons+'</td>';
+								str+='<td>'+totalConsiCons+'</td>';
+							str+='</tr>';
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	}
@@ -1804,6 +1725,8 @@ $(document).on("click",".detailsCls",function(){
 	var locationType = $(this).attr("attr_location");
 	var type = $(this).attr("attr_type");
 	var heading = $(this).html();
+	var menuLocationType = $(this).attr("attr_menuLocationType");
+	var menuLocationId = $(this).attr("attr_menuLocationId");
 	$("#modalHeadingDivId").html(heading);
 	getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,menuLocationId);
 });
@@ -1814,147 +1737,143 @@ $(document).on("click",".overviewPopupCls",function(){
 	var heading = $(this).html();
 	$("#nregsConsitenModalId").modal("show");
 	$("#modalHeadingDivId").html(heading);
+	var menuLocationType = $(this).attr("attr_menuLocationType");
+	var menuLocationId = $(this).attr("attr_menuLocationId");
 	if(globalDivName == 'Labour Budget')
-		getLabourBudgetClickingOverview();
+		getLabourBudgetClickingOverview(menuLocationType,menuLocationId);
 	else
 		getNregasPopupOverview();
 	getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,menuLocationId);
 });
 
 //PopupOverview clicking Block 
-function buildPopupOverviewBlock(result,projectDivId){
+function buildPopupOverviewBlock(result,menuLocationType,menuLocationId){
 	var str1='';
-	if($windowWidth < 768)
-	{
-		str1+='<div class="table-responsive">';
-	}
-	str1+='<table class="table table-bordered m_top10" >';
-		str1+='<tbody>';
-			str1+='<tr>';
-				str1+='<td>';
-					str1+='<div class="col-sm-9">';
-						str1+='<div class="media">';
-							str1+='<h4 attr_location="district" attr_type="total">Total Districts : '+result.totalDistricts+'</h4>';
-						str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							if(result.districtsInRed != null && result.districtsInRed > 0)
-								str1+='<p class="media-body detailsCls" attr_location="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
-							else
-								str1+='<p class="media-body" attr_location="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
-						str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							if(result.districtsInOrange != null && result.districtsInOrange > 0)
-								str1+='<p class="media-body detailsCls" attr_location="district" attr_type="orange">Districts in Orange : '+result.districtsInOrange+'</p>';
-							else
-								str1+='<p class="media-body" attr_location="district" attr_type="orange">Districts in Orange : '+result.districtsInOrange+'</p>';
-						str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							if(result.districtsInGreen != null && result.districtsInGreen > 0)
-								str1+='<p class="media-body detailsCls" attr_location="district" attr_type="green">Districts in Green : '+result.districtsInGreen+'</p>';
-							else
-								str1+='<p class="media-body" attr_location="district" attr_type="green">Districts in Green : '+result.districtsInGreen+'</p>';
-						str1+='</div>';
-					str1+='</div>';
-				str1+='</td>';
-				str1+='<td>';
-					str1+='<div class="col-sm-9">';
-						str1+='<div class="media">';
-							str1+='<h4 attr_location="constituency" attr_type="total">Total Constituencies : '+result.totalConstituencies+'</h4>';
-						str1+='</div>';
-						str1+='<div class="media">';
-						str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-						if(result.constituenciesInRed != null && result.constituenciesInRed > 0)
-							str1+='<p class="media-body detailsCls" attr_location="constituency" attr_type="red">Constituencies in Red : '+result.constituenciesInRed+'</p>';
-						else
-							str1+='<p class="media-body" attr_location="constituency" attr_type="red">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+	str1+='<div class="table-responsive">';
+		str1+='<table class="table table-bordered m_top10" >';
+			str1+='<tbody>';
+				str1+='<tr>';
+					str1+='<td>';
+						str1+='<div class="col-sm-9">';
+							str1+='<div class="media">';
+								str1+='<h4 attr_location="district" attr_type="total">Total Districts : '+result.totalDistricts+'</h4>';
 							str1+='</div>';
-						str1+='<div class="media">';
-						str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-						if(result.constituenciesInOrange != null && result.constituenciesInOrange > 0)
-							str1+='<p class="media-body detailsCls" attr_location="constituency" attr_type="orange">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
-						else
-							str1+='<p class="media-body" attr_location="constituency" attr_type="orange">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+								if(result.districtsInRed != null && result.districtsInRed > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
 							str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							if(result.constituenciesInGreen != null && result.constituenciesInGreen > 0)
-								str1+='<p class="media-body detailsCls" attr_location="constituency" attr_type="green">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
-							else
-								str1+='<p class="media-body" attr_location="constituency" attr_type="green">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+								if(result.districtsInOrange != null && result.districtsInOrange > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="district" attr_type="orange">Districts in Orange : '+result.districtsInOrange+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="district" attr_type="orange">Districts in Orange : '+result.districtsInOrange+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+								if(result.districtsInGreen != null && result.districtsInGreen > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="district" attr_type="green">Districts in Green : '+result.districtsInGreen+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="district" attr_type="green">Districts in Green : '+result.districtsInGreen+'</p>';
+							str1+='</div>';
 						str1+='</div>';
-					str1+='</div>';	
-				str1+='</td>';
-				str1+='<td>';
-					str1+='<div class="col-sm-9">';
-						str1+='<div class="media">';
-							str1+='<h4 attr_location="mandal" attr_type="total">Total Mandals : '+result.totalMandals+'</h4>';
-						str1+='</div>';
-						str1+='<div class="media">';
+					str1+='</td>';
+					str1+='<td>';
+						str1+='<div class="col-sm-9">';
+							str1+='<div class="media">';
+								str1+='<h4 attr_location="constituency" attr_type="total">Total Constituencies : '+result.totalConstituencies+'</h4>';
+							str1+='</div>';
+							str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							if(result.mandalsInRed != null && result.mandalsInRed > 0)
-								str1+='<p class="media-body detailsCls" attr_location="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
+							if(result.constituenciesInRed != null && result.constituenciesInRed > 0)
+								str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="constituency" attr_type="red">Constituencies in Red : '+result.constituenciesInRed+'</p>';
 							else
-								str1+='<p class="media-body" attr_location="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
-						str1+='</div>';
-						str1+='<div class="media">';
+								str1+='<p class="media-body" attr_location="constituency" attr_type="red">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+								str1+='</div>';
+							str1+='<div class="media">';
 							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							if(result.mandalsInOrange != null && result.mandalsInOrange > 0)
-								str1+='<p class="media-body detailsCls" attr_location="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+							if(result.constituenciesInOrange != null && result.constituenciesInOrange > 0)
+								str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="constituency" attr_type="orange">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
 							else
-								str1+='<p class="media-body" attr_location="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
-						str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							if(result.mandalsInGreen != null && result.mandalsInGreen > 0)
-								str1+='<p class="media-body detailsCls" attr_location="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
-							else
-								str1+='<p class="media-body" attr_location="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
-						str1+='</div>';
-					str1+='</div>';	
-				str1+='</td>';
-				str1+='<td>';
-					str1+='<div class="col-sm-9">';
-						str1+='<div class="media">';
-							str1+='<h4>Total Villages : '+result.totalVillages+'</h4>';
-						str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							if(result.villagesInRed != null && result.villagesInRed > 0)
-								str1+='<p class="media-body detailsCls" attr_location="panchayat" attr_type="red">Villages in Red : '+result.villagesInRed+'</p>';
-							else
-								str1+='<p class="media-body" attr_location="panchayat" attr_type="red">Villages in Red : '+result.villagesInRed+'</p>';
-						str1+='</div>';
-						str1+=' <div class="media">';
-						   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-						   if(result.villagesInOrange != null && result.villagesInOrange > 0)
-								str1+='<p class="media-body detailsCls" attr_location="panchayat" attr_type="orange">Villages in Orange : '+result.villagesInOrange+'</p>';
-							else
-								str1+='<p class="media-body " attr_location="panchayat" attr_type="orange">Villages in Orange : '+result.villagesInOrange+'</p>';
-						str1+='</div>';
-						str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-							if(result.villagesInGreen != null && result.villagesInGreen > 0)
-								str1+='<p class="media-body detailsCls" attr_location="panchayat" attr_type="green">Villages in Green : '+result.villagesInGreen+'</p>';
-							else
-								str1+='<p class="media-body" attr_location="panchayat" attr_type="green">Villages in Green : '+result.villagesInGreen+'</p>';
-						str1+='</div>';
-					str1+='</div>';	
-				str1+='</td>';
-			str1+='</tr>';
-		str1+='</tbody>';
-	str1+='</table>';
-	if($windowWidth < 768)
-	{
-		str1+='</div>';
-	}
+								str1+='<p class="media-body" attr_location="constituency" attr_type="orange">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+								str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+								if(result.constituenciesInGreen != null && result.constituenciesInGreen > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="constituency" attr_type="green">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="constituency" attr_type="green">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+							str1+='</div>';
+						str1+='</div>';	
+					str1+='</td>';
+					str1+='<td>';
+						str1+='<div class="col-sm-9">';
+							str1+='<div class="media">';
+								str1+='<h4 attr_location="mandal" attr_type="total">Total Mandals : '+result.totalMandals+'</h4>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+								if(result.mandalsInRed != null && result.mandalsInRed > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+								if(result.mandalsInOrange != null && result.mandalsInOrange > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+								if(result.mandalsInGreen != null && result.mandalsInGreen > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
+							str1+='</div>';
+						str1+='</div>';	
+					str1+='</td>';
+					str1+='<td>';
+						str1+='<div class="col-sm-9">';
+							str1+='<div class="media">';
+								str1+='<h4>Total Villages : '+result.totalVillages+'</h4>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+								if(result.villagesInRed != null && result.villagesInRed > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="panchayat" attr_type="red">Villages in Red : '+result.villagesInRed+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="panchayat" attr_type="red">Villages in Red : '+result.villagesInRed+'</p>';
+							str1+='</div>';
+							str1+=' <div class="media">';
+							   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+							   if(result.villagesInOrange != null && result.villagesInOrange > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="panchayat" attr_type="orange">Villages in Orange : '+result.villagesInOrange+'</p>';
+								else
+									str1+='<p class="media-body " attr_location="panchayat" attr_type="orange">Villages in Orange : '+result.villagesInOrange+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+								if(result.villagesInGreen != null && result.villagesInGreen > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="panchayat" attr_type="green">Villages in Green : '+result.villagesInGreen+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="panchayat" attr_type="green">Villages in Green : '+result.villagesInGreen+'</p>';
+							str1+='</div>';
+						str1+='</div>';	
+					str1+='</td>';
+				str1+='</tr>';
+			str1+='</tbody>';
+		str1+='</table>';
+	str1+='</div>';
 	$("#nregsOverviewBodyId").html(str1);
 	
 } 
 
-function getLabourBudgetClickingOverview()
+function getLabourBudgetClickingOverview(menuLocationType,menuLocationId)
 {
 	$("#nregsOverviewBodyId").html(spinner);
 	var json = {
@@ -1974,7 +1893,7 @@ function getLabourBudgetClickingOverview()
 		  xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			buildPopupOverviewBlock(ajaxresp);
+			buildPopupOverviewBlock(ajaxresp,menuLocationType,menuLocationId);
 		}
 	});
 }
@@ -2095,7 +2014,7 @@ function getNregasPopupOverview()
 		  xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			buildPopupOverviewBlock(ajaxresp);
+			buildPopupOverviewBlock(ajaxresp,menuLocationType,menuLocationId);
 		}
 	});
 }
