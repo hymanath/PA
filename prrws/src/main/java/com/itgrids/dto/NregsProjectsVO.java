@@ -9,7 +9,43 @@ public class NregsProjectsVO implements Serializable{
 	private String completed;
 	private String percentage;
 	
+	private String FTONOTGENCNT;
+	private String FTONOTUPLOADCNT;
+	private String FTONOTSENTCNT;
+	private String REJECTCNT;
+	private String PENDINGRESPONSECNT;
 	
+	
+	public String getFTONOTGENCNT() {
+		return FTONOTGENCNT;
+	}
+	public void setFTONOTGENCNT(String fTONOTGENCNT) {
+		FTONOTGENCNT = fTONOTGENCNT;
+	}
+	public String getFTONOTUPLOADCNT() {
+		return FTONOTUPLOADCNT;
+	}
+	public void setFTONOTUPLOADCNT(String fTONOTUPLOADCNT) {
+		FTONOTUPLOADCNT = fTONOTUPLOADCNT;
+	}
+	public String getFTONOTSENTCNT() {
+		return FTONOTSENTCNT;
+	}
+	public void setFTONOTSENTCNT(String fTONOTSENTCNT) {
+		FTONOTSENTCNT = fTONOTSENTCNT;
+	}
+	public String getREJECTCNT() {
+		return REJECTCNT;
+	}
+	public void setREJECTCNT(String rEJECTCNT) {
+		REJECTCNT = rEJECTCNT;
+	}
+	public String getPENDINGRESPONSECNT() {
+		return PENDINGRESPONSECNT;
+	}
+	public void setPENDINGRESPONSECNT(String pENDINGRESPONSECNT) {
+		PENDINGRESPONSECNT = pENDINGRESPONSECNT;
+	}
 	public String getParameter() {
 		return parameter;
 	}
