@@ -189,14 +189,16 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  }
 	  return query.list();
  }
-  public Long getAttendedCountByBatch(Long batchId,Date fromDate,Date toDate){
+  public Long getAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,Long enrollmentYearId){
 	  StringBuilder sb=new StringBuilder();
 	  sb.append(" select count(distinct model.attendance.tdpCadre.tdpCadreId) " +
 				" from TrainingCampAttendance model " +
 				" where model.trainingCampBatch.trainingCampBatchId =:batchId and model.trainingCampBatch.attendeeTypeId=1 and  model.trainingCampBatch.isCancelled ='false' ");
 	  if(fromDate!=null && toDate!=null){
-		  sb.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate");
+		  sb.append(" and (date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate) ");
 	  }
+	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+		   sb.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
 	  
 		Query query = getSession().createQuery(sb.toString());
 		if(fromDate!=null && toDate!=null){
@@ -204,6 +206,8 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			query.setParameter("toDate", toDate);
 		}
 		query.setParameter("batchId", batchId);
+		 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+			   query.setParameter("enrollmentYearId",enrollmentYearId);
 		return (Long)query.uniqueResult();
   }
   
@@ -353,16 +357,21 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 query.setParameter("campId",campId);
 	 return (Long)query.uniqueResult();
  }
- public List<Object[]> getDateWiseAttendedAndAbsentCandidates(Long batchId){
-	 
+ public List<Object[]> getDateWiseAttendedAndAbsentCandidates(Long batchId ,Long enrollmentYearId ){
+	  StringBuilder queryStr = new StringBuilder();
+		queryStr.append("");
+		 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+			 queryStr.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
 	 Query query=getSession().createQuery(" select distinct model.attendance.tdpCadre.tdpCadreId,date(model.attendance.attendedTime) " +
 	 		" from TrainingCampAttendance model " +
 	 		" where" +
 	 		" model.trainingCampBatch.trainingCampBatchId = :batchId" +
 	 		" and date(model.attendance.attendedTime) between date(model.trainingCampBatch.fromDate) and date(model.trainingCampBatch.toDate) " +
-	 		" and model.trainingCampBatch.attendeeTypeId=1 ");
+	 		" and model.trainingCampBatch.attendeeTypeId=1 "+queryStr.toString()+" ");
 	 
 	 query.setParameter("batchId", batchId);
+	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+		   query.setParameter("enrollmentYearId",enrollmentYearId);
 	 return query.list();
  }
  public List<Object[]> getAttendedCountOfCadreProgramWise(Long cadreId){
@@ -401,14 +410,21 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		return (List<Long>)query.list();
 }
  
- public List<Object[]> getCompletedCountsForABatch(Long batchId,List<Date> dates){
-		Query query = getSession().createQuery(" select distinct model.attendance.tdpCadre.tdpCadreId,date(model.attendance.attendedTime)  " +
+ public List<Object[]> getCompletedCountsForABatch(Long batchId,List<Date> dates,Long enrollmentYearId){
+	 StringBuilder sb = new StringBuilder();
+	 sb.append(" select distinct model.attendance.tdpCadre.tdpCadreId,date(model.attendance.attendedTime)  " +
 				" from TrainingCampAttendance model " +
 				" where model.trainingCampBatch.trainingCampBatchId=:batchId and date(model.attendance.attendedTime) in (:dates)" +
-				" and model.trainingCampBatch.attendeeTypeId=1  ");
-		query.setParameter("batchId", batchId);
-		query.setParameterList("dates", dates);
-		return query.list();
+				" and model.trainingCampBatch.attendeeTypeId=1 ");
+	 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+		sb.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+	Query query = getSession().createQuery(sb.toString());
+	query.setParameter("batchId", batchId);
+	query.setParameterList("dates", dates);
+	if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+		query.setParameter("enrollmentYearId",enrollmentYearId);
+	
+	return query.list();
 }
  
   /*public List<Object[]> getInviteeAttendedCounts(List<Long> batchIds,Date fromDate,Date toDate){
@@ -686,51 +702,80 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  return query.list();
   }
   
-  public List<Object[]> getDayWiseInviteeCountsForBatch(Long batchId){
-	  Query query = getSession().createQuery(" select count(distinct tcba.tdpCadreId),date(tca.insertedTime) " +
-	  									" from TrainingCampAttendance tca,TrainingCampBatchAttendee tcba " +
-	  									" where " +
-	  									" tca.trainingCampBatchId = tcba.trainingCampBatchId and " +
-	  									" tca.trainingCampBatchId=:batchId and tca.attendance.tdpCadreId=tcba.tdpCadreId and tcba.isDeleted='false' " +
-	  									" and tca.trainingCampBatch.attendeeTypeId=1  " +
-	  									" group by date(tca.insertedTime) ");
+  public List<Object[]> getDayWiseInviteeCountsForBatch(Long batchId,Long enrollmentYearId){
+	  StringBuilder sb = new StringBuilder();
+	  sb.append("  select count(distinct tcba.tdpCadreId),date(tca.insertedTime) " +
+					" from TrainingCampAttendance tca,TrainingCampBatchAttendee tcba " +
+					" where " +
+					" tca.trainingCampBatchId = tcba.trainingCampBatchId and " +
+					" tca.trainingCampBatchId=:batchId and tca.attendance.tdpCadreId=tcba.tdpCadreId and tcba.isDeleted='false' " +
+					" and tca.trainingCampBatch.attendeeTypeId=1 ");
+	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+		  sb.append(" and tcba.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+	  sb.append("  group by date(tca.insertedTime) ");
+	  Query query = getSession().createQuery(sb.toString());
+	  
 	  query.setParameter("batchId", batchId);
+	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+		   query.setParameter("enrollmentYearId",enrollmentYearId);
 	  return query.list();
   }
 
-  public List<Long> getInviteeCadreIdsForADay(Long batchId,Date date){
-	  Query query = getSession().createQuery(" select distinct model.attendance.tdpCadre.tdpCadreId " +
+  public List<Long> getInviteeCadreIdsForADay(Long batchId,Date date,Long enrollmentYearId){
+	  StringBuilder sb = new StringBuilder();
+	  sb.append("  select distinct model.attendance.tdpCadre.tdpCadreId " +
 	  		" from TrainingCampAttendance model " +
-	  		" where model.trainingCampBatch.trainingCampBatchId=:batchId " +
-	  		" and date(model.attendance.attendedTime)=:date and model.trainingCampBatch.attendeeTypeId=1 ");
+	  		" where model.trainingCampBa tch.trainingCampBatchId=:batchId " +
+	  		" and date(model.attendance.attendedTime)=:date and model.trainingCampBatch.attendeeTypeId=1  ");
+	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+		   sb.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+	  Query query = getSession().createQuery(sb.toString());
 	  query.setParameter("batchId", batchId);
 	  query.setParameter("date", date);
+	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+		   query.setParameter("enrollmentYearId",enrollmentYearId);
 	  return query.list();
   }
   
-  public List<Long> getNonInviteesNoDaysCount(Long batchId){
-	  Query query = getSession().createQuery("select  a.tdpCadreId from TrainingCampAttendance tca,Attendance a " +
+  public List<Long> getNonInviteesNoDaysCount(Long batchId,Long enrollmentYearId){
+	  
+	  StringBuilder sb = new StringBuilder();
+	  sb.append("  select  a.tdpCadreId from TrainingCampAttendance tca,Attendance a " +
 	  		"where tca.attendance.attendanceId=a.attendanceId and " +
 	  		"a.tdpCadreId not in (select tdpCadreId from TrainingCampBatchAttendee where isDeleted='false' and trainingCampBatchId=:batchId) " +
-	  		"and tca.trainingCampBatchId=:batchId and tca.trainingCampBatch.attendeeTypeId=1 group by date(a.attendedTime),a.tdpCadreId");
+	  		"and tca.trainingCampBatchId=:batchId and tca.trainingCampBatch.attendeeTypeId=1 ");
+	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+		   sb.append(" and tca.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+	   sb.append(" group by date(a.attendedTime),a.tdpCadreId");
+	  Query query = getSession().createQuery(sb.toString());
 	 /* Query query = getSession().createSQLQuery("select  a.tdp_cadre_id from training_camp_attendance tca,attendance a " +
 	  		"where tca.attendance_id=a.attendance_id and " +
 	  		"a.tdp_cadre_id not in (select tdp_cadre_id from training_camp_batch_attendee where is_deleted='false' and training_camp_batch_id=:batchId) " +
 	  		"and tca.training_camp_batch_id=:batchId group by date(a.attended_time),a.tdp_cadre_id");*/
 	  query.setParameter("batchId",batchId);
+	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+		   query.setParameter("enrollmentYearId",enrollmentYearId);
 	  return query.list();
   }
   
-  public List<Object[]> getNonInviteesCadreBtBatch(Long batchId){
+  public List<Object[]> getNonInviteesCadreBtBatch(Long batchId,Long enrollmentYearId ){
+	  StringBuilder queryStr = new StringBuilder();
+		queryStr.append("");
+		 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+			 queryStr.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+		 
 	  Query query = getSession().createQuery("select distinct model.attendance.tdpCadre.tdpCadreId,model.attendance.tdpCadre.memberShipNo," +
 	   		" model.attendance.tdpCadre.firstname,model.attendance.tdpCadre.mobileNo,model.attendance.tdpCadre.image," +
 	   		"model.attendance.tdpCadre.userAddress.constituency.constituencyId," +
 	   		" model.attendance.tdpCadre.userAddress.constituency.name " +
 	  		" from TrainingCampAttendance model " +
-	  		" where model.trainingCampBatchId=:batchId and model.trainingCampBatch.attendeeTypeId=1 " +
+	  		" where model.trainingCampBatchId=:batchId and model.trainingCampBatch.attendeeTypeId=1 "+queryStr.toString()+" " +
 	  		" and model.attendance.tdpCadre.tdpCadreId not in (select model1.tdpCadre.tdpCadreId from TrainingCampBatchAttendee model1 " +
 	  		"	where model1.trainingCampBatchId=:batchId and model1.isDeleted='false' )  ");
 	  query.setParameter("batchId",batchId);
+	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+		   query.setParameter("enrollmentYearId",enrollmentYearId);
+	  
 	  return query.list();
   }
   

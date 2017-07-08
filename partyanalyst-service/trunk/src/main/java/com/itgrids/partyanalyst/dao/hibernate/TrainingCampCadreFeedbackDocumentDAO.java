@@ -17,20 +17,34 @@ public class TrainingCampCadreFeedbackDocumentDAO extends GenericDaoHibernate<Tr
 	}
 
 	
-	public List<Object[]> getFeedbackDocuments(Long tdpCadreId)
+	public List<Object[]> getFeedbackDocuments(Long tdpCadreId,Long enrollmentYearId)
 	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("");
+		 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+			 queryStr.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+		 
 		Query query = getSession().createQuery("select model.filePath,model.trainingCampCadreFeedbackDocumentId from TrainingCampCadreFeedbackDocument model" +
-				" where model.tdpCadreId =:tdpCadreId and model.isDeleted = 'N' and model.trainingCampBatch.attendeeTypeId=1 ");
+				" where model.tdpCadreId =:tdpCadreId and model.isDeleted = 'N' and model.trainingCampBatch.attendeeTypeId=1 "+queryStr.toString()+" ");
 		query.setParameter("tdpCadreId", tdpCadreId);
+		if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+			   query.setParameter("enrollmentYearId",enrollmentYearId);
 		return query.list();
 		
 	}
-	public List<Object[]> getDocumentsCountForCadreWise(List<Long> tdpCadreIds){
+	public List<Object[]> getDocumentsCountForCadreWise(List<Long> tdpCadreIds,Long enrollmentYearId){
+		 StringBuilder queryStr = new StringBuilder();
+			queryStr.append("");
+			 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+				 queryStr.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+			 
 		Query query = getSession().createQuery(" select count(model.filePath),model.tdpCadreId " +
 				" from TrainingCampCadreFeedbackDocument model " +
 				" where model.tdpCadreId in (:tdpCadreIds) and model.isDeleted='N'" +
-				"  and model.trainingCampBatch.attendeeTypeId=1  group by model.tdpCadreId ");
+				"  and model.trainingCampBatch.attendeeTypeId=1 "+queryStr.toString()+" group by model.tdpCadreId ");
 		query.setParameterList("tdpCadreIds",tdpCadreIds);
+		 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+			   query.setParameter("enrollmentYearId",enrollmentYearId);
 		return query.list();
 	}
 	

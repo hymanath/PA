@@ -14,14 +14,22 @@ public class TrainingCampCadreAchievementDAO extends GenericDaoHibernate<Trainin
 		super(TrainingCampCadreAchievement.class);
 	}
 	
-	public List<Object[]> getAchievmentDetailsforCadre(Long tdpCadreId,Long batchId){
+	public List<Object[]> getAchievmentDetailsforCadre(Long tdpCadreId,Long batchId,Long enrollmentYearId){
+		 StringBuilder queryStr = new StringBuilder();
+			queryStr.append("");
+			 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+				 queryStr.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+			 
+			 
 		Query query=getSession().createQuery("" +
 		" select model.trainingCampCadreAchievementId,model.achievement " +
 		" from TrainingCampCadreAchievement model " +
 		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.achievement is not null and " +
-		" model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled ='false' ");
+		" model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled ='false' "+queryStr.toString()+"");
 		query.setParameter("tdpCadreId",tdpCadreId);
 		query.setParameter("trainingCampBatchId",batchId);
+		 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+			   query.setParameter("enrollmentYearId",enrollmentYearId);
 		return query.list();
 	}
 	public Long checkAchievementsForCadreBycadreAndBatch(Long tdpCadreId,Long batchId){

@@ -16,16 +16,22 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 		super(TrainingCampCadreFeedbackDetails.class);
 	}
 	
-	public Object[] getFeedBackDetailsforCadre(Long tdpCadreId,Long batchId){
-		
+	public Object[] getFeedBackDetailsforCadre(Long tdpCadreId,Long batchId,Long enrollmentYearId){
+		 StringBuilder queryStr = new StringBuilder();
+			queryStr.append("");
+			 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+				 queryStr.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+			 
 		Query query=getSession().createQuery("" +
 		" select model.cadreLeadershipLevelId,model.cadreComminicationSkillsStatusId,model.cadreLeadershipSkillsStatusId,model.cadreHealthStatusId,model.remarks," +
 		"        model.smartPhoneExist,model.watsappUsing,model.watsappShare,model.facebookUsing " +
 		" from TrainingCampCadreFeedbackDetails model " +
 		" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId=:trainingCampBatchId " +
-		" and model.trainingCampBatch.attendeeTypeId=1 ");
+		" and model.trainingCampBatch.attendeeTypeId=1 "+queryStr.toString()+" ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		query.setParameter("trainingCampBatchId", batchId);
+		 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+			   query.setParameter("enrollmentYearId",enrollmentYearId);
 		return (Object[])query.uniqueResult();
 	}
     public Long  checkFeedBackForCadreBycadreAndBatch(Long tdpCadreId,Long batchId){
