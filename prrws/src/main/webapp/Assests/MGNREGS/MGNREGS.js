@@ -1052,6 +1052,14 @@ function buildDistrictsPopupDetails(result,dataArr){
 					theadArr = ["district","constituency",dataArr,'Sanctioned Area[IN KMS]','Pitting Area[In KMS]','Planting Area[In KMS]','Achivement Percentage'];
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Area[IN KMS]','Pitting Area[In KMS]','Planting Area[In KMS]','Achivement Percentage'];
+			}else if(globalDivName == "Nurseries"){
+				theadArr = [dataArr,'TARGET','Completed','Percentage'];
+				if(dataArr == "constituency")
+					theadArr = ["district",dataArr,'TARGET','Completed','Percentage'];
+				else if(dataArr == "mandal")
+					theadArr = ["district","constituency",dataArr,'TARGET','Completed','Percentage'];
+				else if(dataArr == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Completed','Percentage'];
 			}else{
 				theadArr = [dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				if(dataArr == "constituency")
@@ -1257,6 +1265,30 @@ function buildDistrictsPopupDetails(result,dataArr){
 									str+='<td>'+result.distList[i].plantingKMS+'</td>';
 									str+='<td>'+result.distList[i].pencentageOfPlanting+'</td>';
 								str+='</tr>';
+								}else if(globalDivName == "Nurseries"){
+									str+='<tr>';
+									if(dataArr == "district"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+									}
+									else if(dataArr == "constituency"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+									}
+									else if(dataArr == "mandal"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+									}
+									else if(dataArr == "panchayat"){
+										str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+									}
+									str+='<td>'+result.distList[i].target+'</td>';
+									str+='<td>'+result.distList[i].completed+'</td>';
+									str+='<td>'+result.distList[i].percentage+'</td>';
+								str+='</tr>';
 								}else{
 									str+='<tr>';
 									if(dataArr == "district"){
@@ -1296,11 +1328,13 @@ function buildDistrictsPopupDetails(result,dataArr){
 				}
 				else{
 					globalDivName
-					theadArr = [dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
+					theadArr = [dataArr,'Target Person days','Generated','Achivement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
 					if(dataArr == "constituency")
-						theadArr = ["district",dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
+						theadArr = ["district",dataArr,'Target Person days','Generated','Achivement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
 					else if(dataArr == "mandal")
-						theadArr = ["district","constituency",dataArr,'Target Person days','Generated','Achivement Percentage','Avg Wage rate','Total Expanditure'];
+						theadArr = ["district","constituency",dataArr,'Target Person days','Generated','Achivement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
+					else if(dataArr == "panchayat")
+						theadArr = ["district","constituency","mandal",dataArr,'Target Person days','Generated','Achivement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
 					if($windowWidth < 768)
 					{
 						str+='<div class="table-responsive">';
@@ -1330,12 +1364,20 @@ function buildDistrictsPopupDetails(result,dataArr){
 								str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
 								str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
 							}
+							else if(dataArr == "panchayat"){
+								str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+								str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+								str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+								str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+							}
 								
 							str+='<td>'+result.distList[i].targetPersonDays+'</td>';
 							str+='<td>'+result.distList[i].generatedPersonDays+'</td>';
 							str+='<td>'+result.distList[i].perAppLB+'</td>';
-							str+='<td>'+result.distList[i].avgWageRate+'</td>';
+							str+='<td>'+result.distList[i].wageExpenditure+'</td>';
+							str+='<td>'+result.distList[i].materialExpenditure+'</td>';
 							str+='<td>'+result.distList[i].totalExpenditure+'</td>';
+							str+='<td>'+result.distList[i].materialExpenditurePerc+'</td>';
 						str+='</tr>';
 					}
 					str+='</tbody>';
@@ -1644,16 +1686,18 @@ function buildDistrictsPopupDetails(result,dataArr){
 	
 }
 
-function getNREGSConsCuntData(locationType,type,globalDivName)
+function getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,menuLocationId)
 {
 	$("#nregsConsitenBodyId").html(spinner);
 	var json = {
 		year : "2017",
-		fromDate : "2017-04-01",
-		toDate : "2017-06-30",
-		locationType: locationType,
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: menuLocationType,
+		divType : globalDivName,
 		type  : type,
-		divType : globalDivName
+		locationId : menuLocationId,
+		sublocaType : locationType
 	}
 	$.ajax({
 		url: 'getMGNregsDistrWiseCount',
@@ -1675,7 +1719,7 @@ $(document).on("click",".detailsCls",function(){
 	var type = $(this).attr("attr_type");
 	var heading = $(this).html();
 	$("#modalHeadingDivId").html(heading);
-	getNREGSConsCuntData(locationType,type,globalDivName);
+	getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,menuLocationId);
 });
 
 $(document).on("click",".overviewPopupCls",function(){
@@ -1688,7 +1732,7 @@ $(document).on("click",".overviewPopupCls",function(){
 		getLabourBudgetClickingOverview();
 	else
 		getNregasPopupOverview();
-	getNREGSConsCuntData(locationType,type,globalDivName);
+	getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,menuLocationId);
 });
 
 //PopupOverview clicking Block 
