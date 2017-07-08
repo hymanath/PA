@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import = "java.io.*,java.util.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -121,6 +122,25 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div id="overviewBlock"></div>
+			</div>
+			<div class="row m_top20">
+				<div class="col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<table class="table">
+								<thead>
+									<th><select id="overviewSelect"></select></th>
+									<th><i class="rounded-circle fa fa-inr"></i><p class="text-capital">total amount</p></th>
+									<th><i class="rounded-circle">D</i><p class="text-capital">district</p></th>
+									<th><i class="rounded-circle">C</i><p class="text-capital">constituency</p></th>
+									<th><i class="rounded-circle">M</i><p class="text-capital">Mandal</p></th>
+								</thead>
+								<tbody id="overViewTableId"></tbody>
+							</table>
+						</div>
+					</div>
+					
+				</div>
 			</div>
 		</div>
 	</section>
@@ -785,6 +805,13 @@
 		</div><!--  /.modal-content -->  
 	</div><!--  /.modal-dialog -->  
 </div><!--  /.modal -->
+
+<form id="menuselectionFormId" name="menuselectionFormId">
+	<input type="hidden" value="2" id="searchLevelId" name="searchLevelId" />
+	<input type="hidden" value="1" id="searchLevelValue" name="searchLevelValue" />
+	<input type="hidden" value="RWS" id="fromPage" name="fromPage" />
+	<input type="hidden" value="RWS" id="toPage" name="toPage" />	
+</form>
 <footer></footer>
 <script type="text/javascript" src="Assests/js/jquery-1.11.3.js"></script>        
 <script type="text/javascript" src="Assests/js/bootstrap.js"></script>
@@ -798,5 +825,13 @@
 <script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
 <script type="text/javascript" src="Assests/fundManagament/newfundManagementDashboard.js"></script>
 <!--Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations-->
+
+<script>
+var glSearchLevelId =2;
+var glSearchLevelValue ="1";
+var glFromPage="FMS";
+var glToPage="";
+</script>
+
 </body>
 </html>
