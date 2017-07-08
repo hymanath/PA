@@ -23,10 +23,17 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		return query.list();
 	}
 	
-	public List<Object[]> getAnswresCountForCadreWise(List<Long> tdpCadreIds){
+	public List<Object[]> getAnswresCountForCadreWise(List<Long> tdpCadreIds,Long enrollmentYearId){
+		 StringBuilder queryStr = new StringBuilder();
+			queryStr.append("");
+			 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+				 queryStr.append(" and model.trainingCampFeedbackCategory.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+			 
 		Query query = getSession().createQuery(" select count(distinct model.trainingCampFeedbackCategoryId),model.tdpCadreId " +
-				" from TrainingCampFeedbackAnswer model where model.tdpCadreId in (:tdpCadreIds) and model.isDeleted='N' group by model.tdpCadreId ");
+				" from TrainingCampFeedbackAnswer model where model.tdpCadreId in (:tdpCadreIds) and model.isDeleted='N' "+queryStr.toString()+" group by model.tdpCadreId ");
 		query.setParameterList("tdpCadreIds", tdpCadreIds);
+		 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+			   query.setParameter("enrollmentYearId",enrollmentYearId);
 		return query.list();
 	}
 	

@@ -16,11 +16,18 @@ public class TrainingCampCadreFeedbackHealthCardDAO extends GenericDaoHibernate<
 	}
 
 	
-	public List<Object[]> getHealthCardAttachments(Long tdpCadreId)
+	public List<Object[]> getHealthCardAttachments(Long tdpCadreId,Long enrollmentYearId)
 	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("");
+		 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+			 queryStr.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+		 
 		Query query = getSession().createQuery("select model.healthCardAttachment,model.trainingCampCadreFeedbackHealthCardId from  TrainingCampCadreFeedbackHealthCard model" +
-				" where model.trainingCampCadreFeedbackDetails.tdpCadreId =:tdpCadreId");
+				" where model.trainingCampCadreFeedbackDetails.tdpCadreId =:tdpCadreId "+queryStr.toString()+"");
 		query.setParameter("tdpCadreId", tdpCadreId);
+		if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+			   query.setParameter("enrollmentYearId",enrollmentYearId);
 		return query.list();
 		
 	}
