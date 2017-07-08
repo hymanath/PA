@@ -3195,7 +3195,7 @@
 										<div id="insuranceCompanyWiseOverviewAndStatusDetails"></div>
 									</div>
 								</div>
-								<div class="panel panel-default panelNew">
+								<div class="panel panel-default panelNew" id="apDistrictBlockId">
 									<div class="panel-heading">
 										<label class="radio-inline">
 											<input checked type="radio" attr_status="category" class="cadeInsuranceCat" name="cadeInsuranceCat" value="category"/>Show Category Wise (Death & Hospital)
@@ -3287,7 +3287,7 @@
 										</div>  
 									</div>
 								</div>
-								<div class="panel panel-default panelNew">
+								<div class="panel panel-default panelNew" id="apConstBlockId">
 									<div class="panel-heading">     
 										<div class="row">
 											<div class="col-md-12 col-xs-12 col-sm-12">  
@@ -3353,7 +3353,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="panel panel-default panelNew">
+								<div class="panel panel-default panelNew" id="tsDistrictBlockId">
 									<div class="panel-heading">
 										<label class="radio-inline">
 											<input checked type="radio" attr_status="category" value="category" class="cadeInsuranceCatTs" name="cadeInsuranceCatTs"/>Show Category Wise (Death & Hospital)
@@ -3433,7 +3433,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="panel panel-default panelNew">
+								<div class="panel panel-default panelNew" id="tsConstBlockId">
 									<div class="panel-heading">
 										<div class="row">
 											<div class="col-md-12 col-xs-12 col-sm-12">  
