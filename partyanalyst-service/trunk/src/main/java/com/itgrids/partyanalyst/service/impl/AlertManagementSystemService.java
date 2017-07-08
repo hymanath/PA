@@ -15328,7 +15328,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  		  return finalList;
  	  }
  	  
- 	  public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO mainVo) {
+ 	 /* public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO mainVo) {
  		  List<AmsDataVO> finalVoList = new ArrayList<AmsDataVO>(0);
  		  try {
  			  
@@ -15366,13 +15366,13 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  			LOG.error("Error occured getAlertsOfCategoryByStatusWise() method of AlertManagementSystemService");
  		}
  		  return finalVoList;
- 	  }
+ 	  }*/
  	  
  	 public List<KeyValueVO> getLocationWiseAlertStatusCounts(Long departmentId,String fromDateStr,String toDateStr,String year,Long locationTypeId,
  			 List<Long> locationValues,Long searchLevelId,List<Long> searchLevelValues){
   		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
   		 try {
-  			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+  			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
   			 Date fromDate = null,toDate = null;
  			if(fromDateStr != null && !fromDateStr.trim().isEmpty() && toDateStr != null && !toDateStr.trim().isEmpty()){
  				fromDate = sdf.parse(fromDateStr);
@@ -15408,6 +15408,43 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  		}
   		 return voList;
   	 }
+ 	 
+ 	public List<AmsDataVO> getAlertsOfCategoryByStatusWise(JalavaniVO mainVo){
+ 		//Long departmentId,String fromDateStr,String toDateStr,String year,Long locationTypeId,
+		 //List<Long> locationValues,List<Long> statusIds ,int startIndex,int endIndex
+ 		 List<AmsDataVO> finalVoList = new ArrayList<AmsDataVO>(0);
+ 		 try {
+ 			 
+ 			 String fromDateStr = mainVo.getFromDate();
+ 			 String toDateStr =  mainVo.getToDate();
+ 			 int stIndex = mainVo.getStartIndex();
+ 			 int endIndex = mainVo.getEndIndex();
+ 			 String type =   mainVo.getType();
+ 			 String year = mainVo.getYear();
+ 			 
+ 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+ 			 Date fromDate = null,toDate = null;
+			if(fromDateStr != null && !fromDateStr.trim().isEmpty() && toDateStr != null && !toDateStr.trim().isEmpty()){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			//0-locationId,1-location,2-statusId,3-status,4.color,5-count
+			List<Long> alertIdList = alertDAO.getLocationWiseAlertStatusDetailsInfo(fromDate,toDate,mainVo.getDeptId(),year,mainVo.getLocationId(),mainVo.getLevelValues(),mainVo.getStatusIds(),
+					stIndex,endIndex);
+			
+			if(alertIdList != null && alertIdList.size() > 0){
+					List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdList));
+					setAlertDtlsForAms(finalVoList, list); 
+				}
+				setSubListCountForAms(finalVoList, alertIdList);
+			
+				
+		} catch (Exception e) {
+			LOG.error("Error occured getLocationWiseAlertStatusDetailsInfo() method of AlertManagementSystemService",e);
+		}
+ 		 return finalVoList;
+ 	 }
  	 
  	 public KeyValueVO getMatchedStatusVONew(List<KeyValueVO> statusList,Long statusId){
  		 if(statusList != null && statusList.size() > 0){

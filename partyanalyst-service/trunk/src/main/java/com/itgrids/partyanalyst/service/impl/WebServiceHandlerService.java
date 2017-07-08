@@ -5196,12 +5196,20 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
  			 
  			jalavani.setFromDate(obj.getString("fromDate") !=null && !obj.getString("fromDate").trim().isEmpty() ? obj.getString("fromDate").trim():null);
  			jalavani.setToDate(obj.getString("toDate") !=null && !obj.getString("toDate").trim().isEmpty() ? obj.getString("toDate").trim():null);
- 			jalavani.setStartIndex(obj.getInt("stIndex"));
+ 			jalavani.setStartIndex(obj.getInt("startIndex"));
  			jalavani.setEndIndex(obj.getInt("endIndex"));	
- 			jalavani.setType(obj.getString("type") !=null && !obj.getString("type").trim().isEmpty() ? obj.getString("type").trim():null);
+ 			//jalavani.setType(obj.getString("type") !=null && !obj.getString("type").trim().isEmpty() ? obj.getString("type").trim():null);//need to remove
  			jalavani.setYear(obj.getString("year") !=null && !obj.getString("year").trim().isEmpty() ? obj.getString("year").trim():null);
  			jalavani.setDeptId(obj.getLong("deptId"));
+ 			jalavani.setLocationId(obj.getLong("locationTypeId"));//locationValues
  			
+ 			JSONArray locationArr = obj.getJSONArray("locationValues");
+ 			
+ 			if(locationArr != null && locationArr.length() > 0){
+					for (int j = 0; j < locationArr.length(); j++) {						
+						jalavani.getLevelValues().add(Long.parseLong(locationArr.get(j).toString()));					
+				}
+			}
  			
  			JSONArray statusListArray = obj.getJSONArray("statusIds");
  			
@@ -5210,6 +5218,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 						jalavani.getStatusIds().add(Long.parseLong(statusListArray.get(j).toString()));					
 				}
 			}
+			
 			return alertManagementSystemService.getAlertsOfCategoryByStatusWise(jalavani);
 			
 		} catch (Exception e) {
