@@ -254,6 +254,10 @@ function projectData(divId)
 		collapse+='</div>';
 	collapse+='</section>';
 	$("#projectData").html(collapse);
+	//From Menu
+	var menuLocationId = "-1";
+	var menuLocationType = "state";
+	
 	for(var i in dataArr)
 	{
 		var theadArr = [dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
@@ -287,7 +291,7 @@ function projectData(divId)
 		else if(divId == "Payments")//
 			getNregaLevelsWiseDataForTimelyPayments(tableId,dataArr[i]);
 		else
-			getNregaLevelsWiseData(tableId,dataArr[i],theadArr);
+			getNregaLevelsWiseData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId);
 	}
 }
 function overviewData(divId)
@@ -314,11 +318,14 @@ function overviewData(divId)
 		collapse+='</div>';
 	collapse+='</section>';
 	$("#projectOverviewBlock").html(collapse);
+	//For Menu
+	var menuLocationId = "-1";
+	var menuLocationType = "state";
 	
 	if(divId == 'Labour Budget')
 		getNREGSLabourBudgetOverview(divId);
 	else
-		getNregasOverview(divId);
+		getNregasOverview(divId,menuLocationType,menuLocationId);
 }
 function tableView(blockId,theadArr,result,locationType)
 {
@@ -1840,15 +1847,17 @@ function getLabourBudgetClickingOverview()
 	});
 }
 
-function getNregaLevelsWiseData(divIdd,locationType,theadArr)
+function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		locationType: locationType,
-		divType : globalDivName
+		locationType: menuLocationType,
+		divType : globalDivName,
+		locationId : menuLocationId,
+		sublocaType : locationTypeNew
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseData',
@@ -1864,33 +1873,33 @@ function getNregaLevelsWiseData(divIdd,locationType,theadArr)
 			if(ajaxresp != null && ajaxresp.length > 0){
 				for(var i in ajaxresp){
 					str+='<tr>';
-						if(locationType == "state"){
-							str+='<td class="text-capital">'+locationType+'</td>';
+						if(locationTypeNew == "state"){
+							str+='<td class="text-capital">'+locationTypeNew+'</td>';
 						}
-						else if(locationType == "district"){
+						else if(locationTypeNew == "district"){
 							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						}
-						else if(locationType == "constituency"){
+						else if(locationTypeNew == "constituency"){
 							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 						}
-						else if(locationType == "mandal"){
+						else if(locationTypeNew == "mandal"){
 							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 						}
-						else if(locationType == "panchayat"){
+						else if(locationTypeNew == "panchayat"){
 							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}
 						str+='<td>'+ajaxresp[i].target+'</td>';
-						if((globalDivName == 'Mulbery' || globalDivName == 'Silk worm' || globalDivName == 'Cattle drinking water trough' || globalDivName == 'Raising of Perinnial Fodder') && locationType == "state"){
+						if((globalDivName == 'Mulbery' || globalDivName == 'Silk worm' || globalDivName == 'Cattle drinking water trough' || globalDivName == 'Raising of Perinnial Fodder') && locationTypeNew == "state"){
 							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 						}
-						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms') && (locationType == "state" || locationType == "district")){
+						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms') && (locationTypeNew == "state" || locationTypeNew == "district")){
 							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 						}
@@ -1902,19 +1911,21 @@ function getNregaLevelsWiseData(divIdd,locationType,theadArr)
 					str+='</tr>';
 				}
 			}
-			tableView(divIdd,theadArr,str,locationType);
+			tableView(divIdd,theadArr,str,locationTypeNew);
 		}
 	});
 }
 
-function getNregasOverview(projectDivId)
+function getNregasOverview(projectDivId,menuLocationType,menuLocationId)
 {
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
         toDate : glEndDate,
-		divType : globalDivName
+		divType : globalDivName,
+		locationType : menuLocationType,
+		locationId : menuLocationId
 	}
 	$.ajax({
 		url: 'getNregasOverview',

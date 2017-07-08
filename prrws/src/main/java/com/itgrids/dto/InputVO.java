@@ -60,7 +60,22 @@ public class InputVO implements Serializable {
 	private Long subFilterId;
 	private String subFilterType;
 	
+	private String sublocaType;
+	private String SublocationType;
+
 	
+	public String getSublocaType() {
+		return sublocaType;
+	}
+	public void setSublocaType(String sublocaType) {
+		this.sublocaType = sublocaType;
+	}
+	public String getSublocationType() {
+		return SublocationType;
+	}
+	public void setSublocationType(String sublocationType) {
+		SublocationType = sublocationType;
+	}
 	public String getStatus() {
 		return status;
 	}

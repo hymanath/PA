@@ -49,12 +49,17 @@ public class NregsDashboardController {
 		return "fundManagementDashboard";
     }*/
 
-	@RequestMapping(value ="/MGNREGSDashboard", method = RequestMethod.GET)
+	/*@RequestMapping(value ="/MGNREGSDashboard", method = RequestMethod.GET)
     public String mgnregsDashBoardPage(ModelMap model,HttpSession session){
 		if (null != session.getAttribute("locationTypeId")  && !session.getAttribute("locationTypeId").equals("")){
 			AddressVO addressVO = userServiceImpl.getOriginalLocationIdForTempId(Long.valueOf(session.getAttribute("locationTypeId").toString()),session.getAttribute("locationValue").toString(),session.getAttribute("fromPage").toString(),session.getAttribute("toPage").toString());
 			model.addAttribute("addressVO", addressVO);
 		}
+		return "MGNREGS";
+    }*/
+	
+	@RequestMapping(value ="/MGNREGSDashboard", method = RequestMethod.GET)
+    public String mgnregsDashBoardPage(ModelMap model) {
 		return "MGNREGS";
     }
 	
