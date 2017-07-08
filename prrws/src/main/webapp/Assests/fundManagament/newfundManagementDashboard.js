@@ -156,17 +156,31 @@ getAllDepartments();
 			{
 				$("#overviewSelect").chosen();
 				var overviewTable = '';
+					overviewTable+='<tr>';
+						overviewTable+='<td class="text-capital"><h4>ALL </h4></td>';
+						overviewTable+='<td class="total0"></td>';
+						overviewTable+='<td class="district0"></td>';
+						overviewTable+='<td class="constituency0"></td>';
+						overviewTable+='<td class="mandal0"></td>';
+					overviewTable+='</tr>';
+					getSchemeWiseOverviewDetails(0,0);
 				for(var i in result)
 				{
 					var subprogramId = result[i].id
 					getSchemeWiseOverviewDetails(subprogramId,subprogramId);
+				}
+				
+				var k = 1;
+				for(var i in result)
+				{
 					overviewTable+='<tr>';
 						overviewTable+='<td class="text-capital"><h4>'+result[i].name+'</h4></td>';
-						overviewTable+='<td class="total'+i+'"></td>';
-						overviewTable+='<td class="district'+i+'"></td>';
-						overviewTable+='<td class="constituency'+i+'"></td>';
-						overviewTable+='<td class="mandal'+i+'"></td>';
+						overviewTable+='<td class="total'+k+'"></td>';
+						overviewTable+='<td class="district'+k+'"></td>';
+						overviewTable+='<td class="constituency'+k+'"></td>';
+						overviewTable+='<td class="mandal'+k+'"></td>';
 					overviewTable+='</tr>';
+					k = k +1;
 				}
 				$("#overViewTableId").html(overviewTable);
 			}
@@ -1385,33 +1399,33 @@ getAllDepartments();
 		var glSearchLevelValue=[];
 		var schemeIdsList = [];
 			schemeIdsList.push(schemes);
-		//schemeIdsList.push(2);
-		//schemeIdsList.push(3);
-		//schemeIdsList.push(4);
+			//schemeIdsList.push(2);
+			//schemeIdsList.push(3);
+			//schemeIdsList.push(4);
 		var subProgIds = [];
 			subProgIds.push(subProgId);
 		
 		var json = {
-		  financialYrIdList:financialYearIdsList,
-		  deptIdsList : deptIdsList,
-          sourceIdsList : sourceIdsList,
-		  fromDateStr:fromDateStr,
-		  toDateStr:toDateStr,
-		  schemeIdsList:schemeIdsList,
-		  subProgIds:subProgIds,
-		  searchLevelId:glSearchLevelId,
-		  searchLvlVals:glSearchLevelValue
+			financialYrIdList:financialYearIdsList,
+			deptIdsList : deptIdsList,
+			sourceIdsList : sourceIdsList,
+			fromDateStr:fromDateStr,
+			toDateStr:toDateStr,
+			schemeIdsList:schemeIdsList,
+			subProgIds:subProgIds,
+			searchLevelId:glSearchLevelId,
+			searchLvlVals:glSearchLevelValue
 		}
 		$.ajax({
 			url : "getSchemeWiseOverviewDetails",     
 			data : JSON.stringify(json),
 			type : "POST",  
 			dataTypa : 'json',   
-			beforeSend: function(xhr) {
+			beforeSend: function(xhr){
 				xhr.setRequestHeader("Accept", "application/json");
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
-			success : function(result){   
+			success : function(result){
 				buildSchemeWiseOverviewDetails(result,schemes);
 			}
 		});
