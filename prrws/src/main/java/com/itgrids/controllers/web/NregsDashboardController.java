@@ -2,8 +2,6 @@ package com.itgrids.controllers.web;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -13,13 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
+import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
@@ -263,5 +260,11 @@ public class NregsDashboardController {
 			LOG.error("Exception raised at getNREGSProjectsAbstractNew - NREGSController controller", e);
 		}
 		return projectVOList;
+	}
+	
+	@PostMapping("/getAllNregaSubLocationDetails")
+	public @ResponseBody List<LocationFundDetailsVO> getAllSubLocations(@RequestBody InputVO inputVO){
+		List<LocationFundDetailsVO> locationFundDetailsVOList = nregsTcsService.getAllNregaSubLocationDetails(inputVO);
+		return locationFundDetailsVOList;
 	}
 }
