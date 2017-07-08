@@ -281,13 +281,13 @@ function projectData(divId)
 		else if(divId == "Agriculture Activities")
 			getNregaLevelsWiseDataFrAgriculture(tableId,dataArr[i]);
 		else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries" || divId == "Timely Payment")
-			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[i]);
+			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else if(divId == "Horticulture")//
 			getNregaLevelsWiseDataFrHorticulture(tableId,dataArr[i]);
 		else if(divId == "Avenue")//
 			getNregaLevelsWiseDataFrAvenue(tableId,dataArr[i]);
 		else if(divId == "CC Roads")//
-			getNregaLevelsWiseDataForCCRoads(tableId,dataArr[i]);
+			getNregaLevelsWiseDataForCCRoads(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else if(divId == "Payments")//
 			getNregaLevelsWiseDataForTimelyPayments(tableId,dataArr[i]);
 		else
@@ -1966,7 +1966,7 @@ function getNregasPopupOverview()
 	});
 }
 
-function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType)
+function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Target','Achivement','Percentage'];
@@ -1981,8 +1981,10 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType)
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		locationType: locationType,
-		divType : globalDivName
+		locationType: menuLocationType,
+		divType : globalDivName,
+		locationId : menuLocationId,
+		sublocaType : locationType
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataFrNewCalls',
@@ -2273,7 +2275,7 @@ function getNREGSProjectsOverviewArr(parameter)
 	});
 }*/
 
-function getNregaLevelsWiseDataForCCRoads(divIdd,locationType)
+function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
@@ -2288,8 +2290,10 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType)
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		locationType: locationType,
-		divType : globalDivName
+		locationType: menuLocationType,
+		divType : globalDivName,
+		locationId : menuLocationId,
+		sublocaType : locationType
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataForCCRoads',
