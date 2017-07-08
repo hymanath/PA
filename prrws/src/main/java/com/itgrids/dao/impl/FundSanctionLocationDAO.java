@@ -78,7 +78,7 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 			sb.append(" and (date(modal.fundSanction.insertedTime) between  :sDate and :eDate) " );
 		}
 		if(schmeIdsList != null && schmeIdsList.size()>0)
-			sb.append(" and modal.fundSanction.govtScheme.govtSchemeId in (:schmeIdsList) ");
+			sb.append(" and modal.fundSanction.subProgramId in (:schmeIdsList) ");
 		
 		sb.append(" group by modal.fundSanction.fundSactionId ");
 		

@@ -1985,8 +1985,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  		  List<LocationVO> finalReturnList= null;
  			
  			try{
- 				Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"MM/dd/yyyy","");
- 				Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
+ 				Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"dd/MM/yyyy","");
+ 				Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"dd/dd/yyyy","");
  				Map<Long,LocationVO> returnMap = new HashMap<Long,LocationVO>();
  			    
  				inputVO.setFinancialYrIdList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList()));
