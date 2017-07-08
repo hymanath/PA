@@ -48,6 +48,7 @@ var $windowWidth = $(window).width();
 		getAllSubLocationsBySuperLocationId(21,'villageLevelDistNames',6);
 		
 		
+		getGovtSchemesDetails("overviewSelect");
 		getGovtSchemesDetails("programNamesState");
 		getGovtSchemesDetails("programNamesDistrict");		
 		getGovtSchemesDetails("programNamesConst");		
@@ -139,6 +140,25 @@ var $windowWidth = $(window).width();
 			}
 		
 			$("#"+divId).trigger('chosen:updated');
+			
+			if(divId == 'overviewSelect')
+			{
+				$("#overviewSelect").chosen();
+				var overviewTable = '';
+				for(var i in result)
+				{
+					var subprogramId = result[i].id
+					getSchemeWiseOverviewDetails(subprogramId,subprogramId);
+					overviewTable+='<tr>';
+						overviewTable+='<td class="text-capital"><h4>'+result[i].name+'</h4></td>';
+						overviewTable+='<td class="total'+i+'"></td>';
+						overviewTable+='<td class="district'+i+'"></td>';
+						overviewTable+='<td class="constituency'+i+'"></td>';
+						overviewTable+='<td class="mandal'+i+'"></td>';
+					overviewTable+='</tr>';
+				}
+				$("#overViewTableId").html(overviewTable);
+			}
 		});
 	  }
 	  
@@ -613,6 +633,7 @@ var $windowWidth = $(window).width();
    }
    
    function getALlProgramesAmountDetails(){
+	   $("#overviewBlock").html(spinner);
 		var financialYrIdList = $('#financialYearId').val();
 		var deptIdsArr = $('#DepartmentsId').val();
 		
@@ -1313,12 +1334,16 @@ var $windowWidth = $(window).width();
 				}
 			}
 	}
-	getSchemeWiseOverviewDetails(0);
-	function getSchemeWiseOverviewDetails(subProgId){
+	
+	function getSchemeWiseOverviewDetails(subProgId,schemes){
+		$(".total"+schemes).html(spinner);
+		$(".district"+schemes).html(spinner);
+		$(".constituency"+schemes).html(spinner);
+		$(".mandal"+schemes).html(spinner);
 		var financialYearIdsList =[];
-		financialYearIdsList.push(1);
-		financialYearIdsList.push(3);
-		financialYearIdsList.push(2);
+			financialYearIdsList.push(1);
+			financialYearIdsList.push(3);
+			financialYearIdsList.push(2);
 		var deptIdsList=[];
 		var sourceIdsList=[];
 		var fromDateStr="01/01/1997";
@@ -1326,12 +1351,12 @@ var $windowWidth = $(window).width();
 		var glSearchLevelId=0;
 		var glSearchLevelValue=[];
 		var schemeIdsList = [];
-		schemeIdsList.push(1);
+			schemeIdsList.push(schemes);
 		//schemeIdsList.push(2);
 		//schemeIdsList.push(3);
 		//schemeIdsList.push(4);
 		var subProgIds = [];
-		//subProgIds.push(subProgId);
+			subProgIds.push(subProgId);
 		
 		var json = {
 		  financialYrIdList:financialYearIdsList,
@@ -1354,11 +1379,50 @@ var $windowWidth = $(window).width();
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success : function(result){   
-				
-		}
-	});
+				buildSchemeWiseOverviewDetails(result,schemes);
+			}
+		});
 	}
-	
+	function buildSchemeWiseOverviewDetails(result,schemes)
+	{
+		var total = '';
+		var district = '';
+		var constituency = '';
+		var mandal = '';
+		total+='<h3>'+result.totalAmt+'</h3>';
+		total+='<ul class="list-inline">';
+			for(var i in result.subList)
+			{
+				total+='<li>';
+					total+='<p>'+result.subList[i].name+'</p>';
+					total+='<p>'+result.subList[i].totl+'</p>';
+				total+='</li>';
+			}
+		total+='</ul>';
+		if(result.fundList.length > 0)
+		{
+			district+='<p class="text-primary"><i class="rounded-circle fa fa-inr"></i>'+result.fundList[0].highLocName+'-'+result.fundList[0].highCroreAmt+'</p>';
+			district+='<p class="text-warning"><i class="rounded-circle fa fa-inr"></i>'+result.fundList[0].avgCroreAmt+'</p>';
+			district+='<p class="text-danger"><i class="rounded-circle fa fa-inr"></i>'+result.fundList[0].lowLocName+'-'+result.fundList[0].lowCroreAmt+'</p>';
+		}
+		if(result.fundList.length > 1)
+		{
+			constituency+='<p class="text-primary"><i class="rounded-circle fa fa-inr"></i>'+result.fundList[1].highLocName+'-'+result.fundList[1].highCroreAmt+'</p>';
+			constituency+='<p class="text-warning"><i class="rounded-circle fa fa-inr"></i>'+result.fundList[1].avgCroreAmt+'</p>';
+			constituency+='<p class="text-danger"><i class="rounded-circle fa fa-inr"></i>'+result.fundList[1].lowLocName+'-'+result.fundList[1].lowCroreAmt+'</p>';
+		}
+		if(result.fundList.length > 2)
+		{
+			mandal+='<p class="text-primary"><i class="rounded-circle fa fa-inr"></i>'+result.fundList[2].highLocName+'-'+result.fundList[2].highCroreAmt+'</p>';
+			mandal+='<p class="text-warning"><i class="rounded-circle fa fa-inr"></i>'+result.fundList[2].avgCroreAmt+'</p>';
+			mandal+='<p class="text-danger"><i class="rounded-circle fa fa-inr"></i>'+result.fundList[2].lowLocName+'-'+result.fundList[2].lowCroreAmt+'</p>';
+		}
+		
+		$(".total"+schemes).html(total);
+		$(".district"+schemes).html(district);
+		$(".constituency"+schemes).html(constituency);
+		$(".mandal"+schemes).html(mandal);
+	}
 	function getAllSubLocationsBySuperLocationId(locationScopeId,divId,levelId){
 		$("#"+divId).html('');
 		var financialYrIdList = $('#financialYearId').val();
