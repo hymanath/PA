@@ -8,7 +8,7 @@ import com.itgrids.partyanalyst.model.TrainingCampCadreGoal;
 
 public interface ITrainingCampCadreGoalDAO extends GenericDao<TrainingCampCadreGoal, Long>{
     
-	public List<Object[]> getGoalsDetailsforCadre(Long tdpCadreId,Long batchId);
+	public List<Object[]> getGoalsDetailsforCadre(Long tdpCadreId,Long batchId,Long enrollmentYearId);
 	public Long checkGoalsForCadreBycadreAndBatch(Long tdpCadreId,Long batchId);
 	public int deleteGoalsforACadre(Long tdpCadreId,Long batchId);
 	public List<Long> trainingCampCadreGoalIds(Long tdpCadreId,Long batchId);

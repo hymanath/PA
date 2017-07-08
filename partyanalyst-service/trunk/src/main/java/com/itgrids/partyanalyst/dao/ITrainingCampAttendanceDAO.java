@@ -15,16 +15,16 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Object[]> getCompletedCounts(List<Long> batchIds);
 	
 	public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate,Date currDate,String callFrom);
-	public Long getAttendedCountByBatch(Long batchId,Date fromDate,Date todate);
+	public Long getAttendedCountByBatch(Long batchId,Date fromDate,Date todate,Long enrollmentYearId);
 	public List<Object[]> getDateWiseCountsByBatch(Long batchId,Date fromDate,Date toDate);
 	public List<Object[]> getCampWiseAttendedCountByProgram(Long programId,Date fromDate,Date toDate);
 	public Long getAttendedCountByCamp(Long programId,Long campId,Date fromDate,Date toDate);
-	public List<Object[]> getDateWiseAttendedAndAbsentCandidates(Long batchId);
+	public List<Object[]> getDateWiseAttendedAndAbsentCandidates(Long batchId,Long enrollmentYearId);
 	public List<Object[]> getInviteeCountsinAttendedCounts(List<Long> batchIds,String type);
 	public List<Object[]> getAttendedCountOfCadreProgramWise(Long cadreId);
 	public List<Object[]> getAttendedTrainingCampBatchDetailsOfCadre(Long programId,Long cadreId);
 	public List<Long> getCompletedCountsForADay(Long batchId,Date date);
-	public List<Object[]> getCompletedCountsForABatch(Long batchId,List<Date> dates);
+	public List<Object[]> getCompletedCountsForABatch(Long batchId,List<Date> dates,Long enrollmentYearId);
 	public List<Object[]> getCompletedCountDetails(List<Long> batchIds);
 	//public List<Object[]> getInviteeAttendedCounts(List<Long> batchIds,Date fromDate,Date toDate);
 	//public List<Object[]> getInviteeAttendedDetails(List<Long> batchIds,Date fromDate,Date toDate);
@@ -34,10 +34,10 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Object[]> getSpeakersAttendedAreaDetailsForCenter(Long centerId,Long programId,Date fromDate,Date toDate);
 	public List<Object[]> getProgramCampBatchDetailsForAMemberBasedOnCadreId(List<Long> cadreIdList,Date fromDate,Date toDate);
 	public List<Object[]> getTodaySpeakersAttendedDetails(Date toDayDate);
-	public List<Object[]> getDayWiseInviteeCountsForBatch(Long batchId);
-	public List<Long> getInviteeCadreIdsForADay(Long batchId,Date date);
-	public List<Long> getNonInviteesNoDaysCount(Long batchId);
-	public List<Object[]> getNonInviteesCadreBtBatch(Long batchId);
+	public List<Object[]> getDayWiseInviteeCountsForBatch(Long batchId,Long enrollmentYearId);
+	public List<Long> getInviteeCadreIdsForADay(Long batchId,Date date,Long enrollmentYearId);
+	public List<Long> getNonInviteesNoDaysCount(Long batchId,Long enrollmentYearId);
+	public List<Object[]> getNonInviteesCadreBtBatch(Long batchId,Long enrollmentYearId);
 	public List<Object[]> getInviteeAttendedCountsForCenterAndProgram(Date fromDate,Date toDate,List<Long> cadreIdsList);
 	public List<Object[]> getInviteeAttendedDetailsForCenterAndProgram(Date fromDate,Date toDate,List<Long> cadreIdsList);
 	public List<Long> getInviteeCadreIds(List<Long> batchIds);

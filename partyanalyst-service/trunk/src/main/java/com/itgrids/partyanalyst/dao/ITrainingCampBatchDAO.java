@@ -17,11 +17,11 @@ public interface ITrainingCampBatchDAO extends GenericDao<TrainingCampBatch,Long
 	public List<Object[]> getCompletedBatchIds(Date currDate,String type,List<Long> batchIds);
 	public Long getMaxNumbersForBacth(Long batchId);
 	public List<Object[]> getCampDistrictsByBatchId(Long batchId);
-	public Object[] getBatchDates(Long batchId,Date fromDate,Date toDate);
+	public Object[] getBatchDates(Long batchId,Date fromDate,Date toDate,Long enrollmentYearId);
 	public List<Object[]> getCentersAndBatchCountByProgram(Long programId,Date fromDate,Date toDate);
 	public Object[] getBatchCountByCamp(Long programId,Long campId,Date fromDate,Date toDate);
 	public List<Long> getBatchIds(Date startDate,Date endDate,Long stateId);
-	public Object[] getBatchDatesWithOutDates(Long batchId);
+	public Object[] getBatchDatesWithOutDates(Long batchId,Long enrollmentYearId);
 	public List<Object[]> getBatchesInfoByProgramAndCamp(Long programId,Long campId);
 	public List<TrainingCampBatch> getAllRecordsByBatchId(Long batchId);
 	public List<Object[]> getCampConstsByBatchId(Long batchId);
