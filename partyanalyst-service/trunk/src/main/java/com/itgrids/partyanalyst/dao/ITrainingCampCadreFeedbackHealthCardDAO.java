@@ -7,5 +7,5 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackHealthCard;
 
 public interface ITrainingCampCadreFeedbackHealthCardDAO extends GenericDao<TrainingCampCadreFeedbackHealthCard, Long>{
-	public List<Object[]> getHealthCardAttachments(Long tdpCadreId);
+	public List<Object[]> getHealthCardAttachments(Long tdpCadreId,Long enrollmentYearId);
 }

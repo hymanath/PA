@@ -13,6 +13,6 @@ public interface ITrainingCampScheduleDAO extends GenericDao<TrainingCampSchedul
 	public List<Object[]> getSchedules(Long campId);
 	public List<Object[]> getCampsForProgram(Long programId);
 	public List<Long> getAllUpcomingTrainingCampSchedules(Date fromDate,Date toDate,String type,Date todayDate);
-	public List<Long> getSchedulesByProgramAndCenter(Long programId, Long centerId);
+	public List<Long> getSchedulesByProgramAndCenter(Long programId, Long centerId,Long enrollmentYearId);
 	public List<TrainingCampSchedule> getAllRecordsByScheduleId(Long scheduleId);
 }
