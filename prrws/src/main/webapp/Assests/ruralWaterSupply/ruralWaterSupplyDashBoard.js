@@ -22,7 +22,8 @@
 			getWaterSourceInfo();
 			getKeyPerformanceIndicatorsInfo('state','','graph',"","","");
 			getPlanofActionForStressedHabitations();
-			getAlertDetailsOfCategoryByStatusWise();
+			//getAlertDetailsOfCategoryByStatusWise();
+			getLocationWiseAlertStatusCounts('graph',"",'state',"","",2);
 			getAlertFeedbackStatusDetails();
 			
 			getHamletWiseIvrStatusCounts('graph','','state',"","",2);
@@ -1445,7 +1446,7 @@
 			});
 		}
 		function getAlertDetailsOfCategoryByStatusWise(){
-			$("#alertStatus").html(spinner);
+			//$("#alertStatus").html(spinner);
 			var yearVal="";
 			var financialVal =$("#financialYearId").val();
 			if(financialVal != 0){
@@ -1467,11 +1468,11 @@
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(ajaxresp){
-					if(ajaxresp !=null && ajaxresp.length>0){
+					/* if(ajaxresp !=null && ajaxresp.length>0){
 						buildAlertDetailsOfCategoryByStatusWise(ajaxresp);
 					}else{
 						$("#alertStatus").html('No Data Available');
-					}
+					} */
 				}
 			});
 		}
@@ -2378,7 +2379,7 @@
 				}else if(id == "stateBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table',"","","");
 				}else if(id == "stateBlockIdjalavani"){
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'state',"","",2);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'state',"","",2);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'state',"","",2);
 				}else if(id == "stateBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','state',blocksArr,"","","");
@@ -2394,7 +2395,7 @@
 				}else if(id == "districtBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table',"","","");
 				}else if(id == "districtBlockIdjalavani"){
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'district',"","",2);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'district',"","",2);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'district',"","",2);
 				}else if(id == "districtBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','district',blocksArr,"","","");
@@ -2413,7 +2414,7 @@
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table',"","","");
 				}else if(id=="constituencyBlockIdjalavani"){
 					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'constituency',"","",3);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'constituency',"","",3);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',"","",3);
 				}else if(id == "constituencyBlockIdassestsId"){
 					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
@@ -2435,7 +2436,7 @@
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table',"","","");
 				}else if(id=="mandalBlockIdjalavani"){
 					getAllPrrwsDistricts("chosendistValmandalBlockId");
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'mandal',"","",3);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'mandal',"","",3);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',"","",3);
 				}else if(id == "mandalBlockIdassestsId"){
 					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
@@ -2518,7 +2519,7 @@
 				}else if(id == "stateBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table',"","","");
 				}else if(id == "stateBlockIdjalavani"){
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'state',"","",2);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'state',"","",2);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'state',"","",2);
 				}else if(id == "stateBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','state',blocksArr,"","","");
@@ -2534,7 +2535,7 @@
 				}else if(id == "districtBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table',"","","");
 				}else if(id == "districtBlockIdjalavani"){
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'district',"","",2);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'district',"","",2);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'district',"","",2);
 				}else if(id == "districtBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','district',blocksArr,"","","");
@@ -2553,7 +2554,7 @@
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table',"","","");
 				}else if(id=="constituencyBlockIdjalavani"){
 					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'constituency',"","",3);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'constituency',"","",3);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',"","",3);
 				}else if(id == "constituencyBlockIdassestsId"){
 					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
@@ -2575,7 +2576,7 @@
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table',"","","");
 				}else if(id=="mandalBlockIdjalavani"){
 					getAllPrrwsDistricts("chosendistValmandalBlockId");
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'mandal',"","",3);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'mandal',"","",3);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',"","",3);
 				}else if(id == "mandalBlockIdassestsId"){
 					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
@@ -2741,9 +2742,14 @@
 			});
 		}
 	
-	function getLocationWiseAlertStatusCounts(divId,locationType,searchLevelValue,locationValue,searchlevelVal){
-		$("#alertStatus"+locationType).html(spinner);
-		$("#drinking"+locationType).html(spinner);
+	function getLocationWiseAlertStatusCounts(type,divId,locationType,searchLevelValue,locationValue,searchlevelVal){
+		if(type == "graph"){//araa
+			$("#alertStatus").html(spinner);
+		}else{
+			$("#alertStatus"+locationType).html(spinner);
+			$("#drinking"+locationType).html(spinner);
+		}
+		
 		
 		var searchlevelId =searchlevelVal;
 		var searchLevelValues=[];
@@ -2820,10 +2826,20 @@
 			},
 			success: function(ajaxresp){
 				if(ajaxresp !=null && ajaxresp.length>0){
-					buildTableForHabitationCoverage(ajaxresp,locationType,divId,'alertStatus')
+					if(type == "graph"){
+						buildAlertDetailsOfCategoryByStatusWise(ajaxresp);
+					}else{
+						buildTableForHabitationCoverage(ajaxresp,locationType,divId,'alertStatus')
+					}
+					
 				}else{
-					$("#alertStatus"+locationType).html("No Data Available");
-					$("#drinking"+locationType).html("No Data Available");
+					if(type == "graph"){
+						$("#alertStatus").html("No Data Available");
+					}else{
+						$("#alertStatus"+locationType).html("No Data Available");
+						$("#drinking"+locationType).html("No Data Available");
+					}
+					
 				}
 				
 			}
@@ -3003,7 +3019,7 @@
 				}else if(tabId == "constituencyBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo('constituency',blocksArr,'table',"","","");
 				}else if(tabId == "constituencyBlockIdjalavani"){
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'constituency',"","",searchLevelId);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'constituency',"","",searchLevelId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',"","",searchLevelId);
 				}else if(tabId == "#constituencyBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','constituency',blocksArr,"","","");
@@ -3024,7 +3040,7 @@
 				}else if(tabId == "constituencyBlockIdjalavani"){
 					
 					getConstituenciesForDistrict(distId,"chosenconstValconstituencyBlockId");
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'constituency',distId,"",searchLevelId);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'constituency',distId,"",searchLevelId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',distId,"",searchLevelId);
 				}else if(tabId == "constituencyBlockIdassestsId"){
 					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
@@ -3069,10 +3085,10 @@
 			}else if(tabId == "constituencyBlockIdjalavani"){
 			
 				if(constId == 0){
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'constituency',distId,"",searchLevelDistId);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'constituency',distId,"",searchLevelDistId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',distId,"",searchLevelDistId);
 				}else{
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'constituency',distId,constId,searchLevelDistId);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'constituency',distId,constId,searchLevelDistId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',distId,constId,searchLevelDistId);
 					
 				}
@@ -3123,7 +3139,7 @@
 				}else if(tabIdM == "mandalBlockIdperformance"){
 					getKeyPerformanceIndicatorsInfo('mandal',blocksArr,'table',"","","");
 				}else if(tabIdM == "mandalBlockIdjalavani"){
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'mandal',"","",searchLevelDistId);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'mandal',"","",searchLevelDistId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',"","",searchLevelDistId);
 				}else if(tabIdM == "mandalBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','mandal',blocksArr,"","","");
@@ -3141,7 +3157,7 @@
 					getKeyPerformanceIndicatorsInfo('mandal',blocksArr,'table',"district",distId,"");
 				}else if(tabIdM == "mandalBlockIdjalavani"){
 					getConstituenciesForDistrict(distId,"chosenconstValmandalBlockId");
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'mandal',distId,"",searchLevelDistId);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'mandal',distId,"",searchLevelDistId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',distId,"",searchLevelDistId);
 				}else if(tabIdM == "mandalBlockIdassestsId"){
 					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
@@ -3189,10 +3205,10 @@
 			}else if(tabIdM == "mandalBlockIdjalavani"){
 				getTehsilsForConstituency(constId,"chosenmandalValmandalBlockId");
 				if(constId == 0){
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'mandal',distId,"",searchLevelDistId);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'mandal',distId,"",searchLevelDistId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',distId,"",searchLevelDistId);
 				}else{
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'mandal',constId,"",searchLevelConstId);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'mandal',constId,"",searchLevelConstId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',constId,"",searchLevelConstId);
 					
 				}
@@ -3256,10 +3272,10 @@
 				}
 			}else if(tabIdM == "mandalBlockIdjalavani"){
 				if(mandalId == 0){
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'mandal',constId,"",searchLevelConstId);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'mandal',constId,"",searchLevelConstId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',constId,"",searchLevelConstId);
 				}else{
-					getLocationWiseAlertStatusCounts(alertStatusBlockArr,'mandal',constId,mandalId,searchLevelConstId);
+					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'mandal',constId,mandalId,searchLevelConstId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',constId,mandalId,searchLevelConstId);
 				}
 				
