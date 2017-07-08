@@ -2,6 +2,8 @@ package com.itgrids.controllers.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -48,9 +50,11 @@ public class NregsDashboardController {
     }*/
 
 	@RequestMapping(value ="/MGNREGSDashboard", method = RequestMethod.GET)
-    public String mgnregsDashBoardPage(ModelMap model,@RequestParam Long li,@RequestParam String lv,@RequestParam String fp,@RequestParam String tp) {
-		AddressVO addressVO = userServiceImpl.getOriginalLocationIdForTempId(li,lv,fp,tp);
-		model.addAttribute("addressVO", addressVO);
+    public String mgnregsDashBoardPage(ModelMap model,HttpSession session){
+		if (null != session.getAttribute("locationTypeId")  && !session.getAttribute("locationTypeId").equals("")){
+			AddressVO addressVO = userServiceImpl.getOriginalLocationIdForTempId(Long.valueOf(session.getAttribute("locationTypeId").toString()),session.getAttribute("locationValue").toString(),session.getAttribute("fromPage").toString(),session.getAttribute("toPage").toString());
+			model.addAttribute("addressVO", addressVO);
+		}
 		return "MGNREGS";
     }
 	

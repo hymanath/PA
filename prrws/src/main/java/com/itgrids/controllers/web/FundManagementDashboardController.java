@@ -3,6 +3,8 @@ package com.itgrids.controllers.web;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.AddressVO;
@@ -47,10 +48,12 @@ public class FundManagementDashboardController {
 		return "fundManagementDashboard";
     }
 	
-	@RequestMapping(value ="/newfundManagementDashboard", method = RequestMethod.GET)
-	 public String newfundManagementDashboardPage(ModelMap model,@RequestParam Long li,@RequestParam String lv,@RequestParam String fp,@RequestParam String tp){
-			AddressVO addressVO = userServiceImpl.getOriginalLocationIdForTempId(li,lv,fp,tp);
+	@RequestMapping(value ="/newfundManagementDashboard", method = RequestMethod.POST)
+	 public String newfundManagementDashboardPage(ModelMap model,HttpSession session){
+		if (null != session.getAttribute("locationTypeId")  && !session.getAttribute("locationTypeId").equals("")){
+			AddressVO addressVO = userServiceImpl.getOriginalLocationIdForTempId(Long.valueOf(session.getAttribute("locationTypeId").toString()),session.getAttribute("locationValue").toString(),session.getAttribute("fromPage").toString(),session.getAttribute("toPage").toString());
 			model.addAttribute("addressVO", addressVO);
+		}
 		return "newfundManagementDashboard";
     }
 	
