@@ -126,6 +126,15 @@ color: red !important;
                                 </div>
                           </div>
 						<div class="row m_top10">
+						<div class="col-md-3">
+								<label>Enrollment Year : </label>
+								<select class="form-control" id="enrollmentId" onchange="rebuildProgrammesDetails(this.value)">
+									<option value="0">Select Enrollment Year</option>
+									<option value="4" selected>2016-2018</option>
+									<!--<option value="3">2014-2016</option>-->
+								</select>
+								<div class="mandatory" id="enrollmentSelErrDivId"></div>
+							</div>
 							<div class="col-md-3">
 								<label>Program</label>
 								<div id="programSelDivId"></div>
@@ -1351,7 +1360,8 @@ function exportToExcel()
 	  {
 		 programId:programId,
 		 centerId:centerId,
-		 batchId:batchId
+		 batchId:batchId,
+		 enrollmentYearId:$('#enrollmentId').val()		 
 	  }
 	  
 	 $.ajax({
@@ -1383,7 +1393,8 @@ function exportToExcel()
 				str+='<option value="0">Select Program</option>';
 				if(result.simpleVOList1!=null &&result.simpleVOList1.length>0){
                  for(var i in result.simpleVOList1){
-                    str+='<option value="'+result.simpleVOList1[i].id+'">'+result.simpleVOList1[i].name+'</option>';
+					 if(parseInt(result.simpleVOList1[i].id) == 8)
+						str+='<option value="'+result.simpleVOList1[i].id+'">'+result.simpleVOList1[i].name+'</option>';
                   }
                 }
                str+='</select>';				
@@ -1403,7 +1414,8 @@ function exportToExcel()
 				str+='<option value="0">Select Program</option>';
 				if(result.simpleVOList1!=null &&result.simpleVOList1.length>0){
                  for(var i in result.simpleVOList1){
-                    str+='<option value="'+result.simpleVOList1[i].id+'">'+result.simpleVOList1[i].name+'</option>';
+					 	 if(parseInt(result.simpleVOList1[i].id) == 8)
+							str+='<option value="'+result.simpleVOList1[i].id+'">'+result.simpleVOList1[i].name+'</option>';
                   }
                 }
                str+='</select>';				
@@ -1499,7 +1511,8 @@ function exportToExcel()
 		  getDayWiseAttendnenceForBatch();
 		  
 		  var jsObj={
-			  batchId : batchId
+			  batchId : batchId,
+			  enrollmentYearId:$('#enrollmentId').val()	
 		  }
 		  $.ajax({
 		    type:'POST',
@@ -1707,7 +1720,8 @@ function getDayWiseAttendnenceForBatch(){
 	   $("#dayWiseAttendDivId").show();
 	 
 	 var jsObj={
-		 batchId : batchId
+		 batchId : batchId,
+		 enrollmentYearId:$('#enrollmentId').val()
 	 }
 	  $.ajax({
 		    type:'POST',
@@ -1791,9 +1805,18 @@ function buildDayWiseAttendnenceForBatch(result,center){
 		   var campId=$("#centerId").val();
 		    var programId=$("#programId").val();
 			
-		var redirectWindow=window.open('updateLeaderShipAction.action?cadreId='+cadreId+'&batchId='+batchId+'&campId='+campId+'&programId='+programId+'','_blank');
+		var redirectWindow=window.open('updateLeaderShipAction.action?cadreId='+cadreId+'&batchId='+batchId+'&campId='+campId+'&programId='+programId+'&enrollmentYearId='+$('#enrollmentId').val()+'','_blank');
 	});
 	
+	function rebuildProgrammesDetails(enrollmentYearId){
+		$('#programId').find('option').remove();
+		$('#programId').append('<option value="0"> Select Program </option>');
+		if(enrollmentYearId == 4){
+			$('#programId').append('<option value="8"> Leadership Skills - 2016 - 18 </option>');
+		}else if(enrollmentYearId == 3){
+			$('#programId').append('<option value="1"> Leadership Skills - 2014 - 16 </option>');
+		} 
+	}
 	</script>
 	<script>
 var tableToExcel = (function() {

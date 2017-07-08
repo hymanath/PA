@@ -270,12 +270,18 @@ getLeaderShipDetails();
 function getLeaderShipDetails()
 {
 	
-	var str ='';
+	var glenrollmentYearId = '${enrollmentYearId}';
+	var tempEnrollmentYearId = $('#enrollmentId').val();
 	
+	if (typeof(myVariable) != "undefined"){
+		glenrollmentYearId = tempEnrollmentYearId;
+	}
+	
+	var str ='';
 	var jObj = {
 		tdpCadreId : cadreId,
 		batchId : batchId,
-		
+		enrollmentYearId:glenrollmentYearId			
 	}
 		$.ajax({
 	          type:'POST',
@@ -295,7 +301,13 @@ function getLeaderShipDetails()
    str+='<div id="popupdivId">';
 		str+='<div class="panel panel-default">';
 			str+='<div class="panel-heading">';	
-				str+='<h4 class="panel-title" style="text-transform:uppercase;">'+results.name+'</h4>';
+				str+='<h4 class="panel-title" style="text-transform:uppercase;">'+results.name+' ';
+				str+=' <span class="pull-right" > Enrollment Year : <select class="pull-right" id="enrollmentId" onchange="rebuildProgrammesDetails(this.value)">';
+				//str+='<option value="0">Select Enrollment Year</option>';
+				str+='<option value="4" selected>2016-2018</option>';
+				//str+='<!--<option value="3">2014-2016</option>-->';
+				str+='</select> </span>';
+				str+='</h4>';
 			str+='</div>';
 		str+='<div class="panel-body">';
 		str+='<div class="row">'
