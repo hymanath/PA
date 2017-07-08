@@ -39,14 +39,13 @@ function collapseMenu(id,resultArr,buildId)
 	for(var i in resultArr)
 	{
 		collapse+='<div class="panel panel-default panelExpand">';
-			collapse+='<div class="panel-heading" role="tab" id="heading'+i+''+resultArr[i].id+'">';
+			collapse+='<div class="panel-heading" role="tab" id="heading'+resultArr[i].id+'">';
 				collapse+='<h4 class="panel-title">';
-					collapse+='<a role="button" attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].id+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id"  class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordion'+[id]+'" href="#collapse'+i+''+resultArr[i].id+'" aria-expanded="true" aria-controls="collapse'+i+''+resultArr[i].id+'">';
-						collapse+='<span style="padding-left:20px;">'+resultArr[i].name+'</span>';
-					collapse+='</a>';
+					collapse+='<a role="button" style="height:10px;width:10px;display:inline-block;" attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].id+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id"  class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordion'+[id]+'" href="#collapse'+resultArr[i].id+'" aria-expanded="true" aria-controls="collapse'+resultArr[i].id+'">&nbsp;</a>';
+					collapse+='<span style="padding-left:10px;cursor:pointer;" class="menuDataCollapse"  attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].id+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id" >'+resultArr[i].name+'</span>';
 				collapse+='</h4>';
 			collapse+='</div>';
-			collapse+='<div id="collapse'+i+''+resultArr[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+''+resultArr[i].id+'">';
+			collapse+='<div id="collapse'+resultArr[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+resultArr[i].id+'">';
 				collapse+='<div class="panel-body">';
 					collapse+='<div class="collapseMenu'+resultArr[i].id+'Id"></div>';
 				collapse+='</div>';
@@ -62,7 +61,7 @@ $(document).on("click",".panelCollapseIcon",function(e){
 	var buildId = $(this).attr("attr_targetId");
 	var locationScopeId = $(this).attr("attr_id");
 	var levelId = $(this).attr("attr_levelIdValue");
-	$("#selectedName").html($(this).find("span").html())
+	
 	var type = '';
 	if(levelId == 4)
 	{
