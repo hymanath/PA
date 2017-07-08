@@ -2145,7 +2145,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	    					NregsProjectsVO vo = new NregsProjectsVO();
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 	 	    				
-	 	    				vo.setParameter(jObj.getString("PARAMETER"));
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Nurseries"))
+	 	    					vo.setParameter(jObj.getString("NURSERIES"));
+	 	    				else
+	 	    					vo.setParameter(jObj.getString("PARAMETER"));
 	 	    				
 	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")){
 	 	    					vo.setTarget(jObj.getString("MAX(T.AVG_WAGE_TARGET)"));
