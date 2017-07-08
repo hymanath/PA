@@ -127,8 +127,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private BenefitVO benefitVO;
 	private List<BenefitCandidateVO> benefitCandidateVOList;
 	private ToursBasicVO tourDetailsVO;
+	private Long enrollmentYearId ;
 	
 	
+	public Long getEnrollmentYearId() {
+		return enrollmentYearId;
+	}
+	public void setEnrollmentYearId(Long enrollmentYearId) {
+		this.enrollmentYearId = enrollmentYearId;
+	}
 	public List<BenefitCandidateVO> getBenefitCandidateVOList() {
 		return benefitCandidateVOList;
 	}

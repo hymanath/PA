@@ -1920,8 +1920,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			jObj = new JSONObject(getTask());
 			Long tdpCadreId = jObj.getLong("tdpCadreId");
 			Long batchId = jObj.getLong("batchId");
-			
-			cadreDetailsVO= trainingCampService.getDetailsForACadre(tdpCadreId,batchId);
+			Long enrollmentYearId = jObj.getLong("enrollmentYearId");
+			cadreDetailsVO= trainingCampService.getDetailsForACadre(tdpCadreId,batchId,enrollmentYearId);
 			
 		}catch(Exception e) {
 			LOG.error("Exception Occured in getTdpCadreDetailsforASchedule() method, Exception - ",e);
@@ -2171,8 +2171,9 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		Long programId = jObj.getLong("programId");
     		Long centerId = jObj.getLong("centerId");
     		Long batchId = jObj.getLong("batchId");
+    		Long enrollmentYearId = jObj.getLong("enrollmentYearId");
     		
-    		finalList = trainingCampService.getSchedulesListByProgramAndCenter(programId,centerId,batchId);
+    		finalList = trainingCampService.getSchedulesListByProgramAndCenter(programId,centerId,batchId,enrollmentYearId);
     		
     	}catch(Exception e){
     		LOG.error("Exception Occured in getAllBatchesByProgramAndCenter() method, Exception - ",e);
@@ -2489,7 +2490,8 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	try{
     		jObj = new JSONObject(getTask());
     		Long batchId = jObj.getLong("batchId");
-    		cadreVoList = trainingCampService.getDateWiseAttendedAndAbsentCandidates(batchId);
+    		Long enrollmentYearId = jObj.getLong("enrollmentYearId");
+    		cadreVoList = trainingCampService.getDateWiseAttendedAndAbsentCandidates(batchId,enrollmentYearId);
     	}
     	catch(Exception e){
     		LOG.error("Exception Occured in getDateWiseAttendedAndAbsentCandidates() method, Exception - ",e);
@@ -2592,8 +2594,9 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			jObj=new JSONObject(getTask());
 			
 			Long selDate = jObj.getLong("batchId");
+			Long enrollmentYearId = jObj.getLong("enrollmentYearId");
 			
-			simpleVO=trainingCampService.getDayWiseAttendnenceForBatch(selDate);
+			simpleVO=trainingCampService.getDayWiseAttendnenceForBatch(selDate,enrollmentYearId);
 			
 			
 		} catch (Exception e) {
