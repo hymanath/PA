@@ -80,15 +80,15 @@ public interface ITrainingCampService {
 	public List<TraingCampCallerVO> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId,String type);
 	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId,String accesstype,String accessValue);
 	public String saveFilePaths(Long partyMeetingId,String fileType, String documentType, String filePath, Long userId, String fileName);
-	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(List<Long> schedulesList,Long batchId);
+	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(List<Long> schedulesList,Long batchId,Long enrollmentYearId);
 	public TrainingCampVO getAdminCallersWiseOverView(Long userId,Long campId,Long programId,Long scheduleId,Long batchId,boolean isAdmin);
 	public TrainingCampVO getCallerWiseOverView(List<Long> callerIdsList);
 	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType,String accessType,String accessValue);
-	public CadreDetailsVO getDetailsForACadre(Long tdpCadreId,Long batchId);
+	public CadreDetailsVO getDetailsForACadre(Long tdpCadreId,Long batchId,Long enrollmentYearId );
 	public CadreDetailsVO getAllStatusForCadre();
 	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final List<String> healthAttachments,final List<String> docs,final List<SimpleVO> feedBackCategories);
 	
-	public List<CadreDetailsVO> getSchedulesListByProgramAndCenter(Long programId, Long centerId,Long batchId);
+	public List<CadreDetailsVO> getSchedulesListByProgramAndCenter(Long programId, Long centerId,Long batchId,Long enrollmentYearId );
 	public SimpleVO getProgramsByUser(Long userId);
 	public SimpleVO getAllProgramsAndCamps();
 	public List<IdNameVO> getCampsByProgramAndUser(Long campProgramId,Long userId);
@@ -103,7 +103,7 @@ public interface ITrainingCampService {
 	public SimpleVO getProgramSummary(Long programId,String fromdate,String todate);
 	public SimpleVO getCampSummary(Long programId,Long campId,String fromDate,String toDate);
 	public SimpleVO getProgCampBatchNames(Long programId,Long campId,Long batchId);
-	public List<CadreVo> getDateWiseAttendedAndAbsentCandidates(Long batchId);
+	public List<CadreVo> getDateWiseAttendedAndAbsentCandidates(Long batchId,Long enrollmentYearId);
 	public List<IdNameVO> getBatchesForCentre(Long programId,Long campId);
 	public TrainingMemberVO getMaxNumberForBatch(Long batchId,Long sttatusId,String callPurpose);
 	public List<TrainingCampVO> getCallBackLaterMembersCount(Long campId, String startDateStr, String endDateStr);
@@ -112,7 +112,7 @@ public interface ITrainingCampService {
 	public SimpleVO getAttendedTrainingCampBatchDetailsOfCadre(Long programId,Long cadreId);
 	public List<SimpleVO> getRemarkSOfCadreByCallPurpose(Long programId,Long cadreId);
 	public List<SimpleVO> getDayWiseCountsForRunningBatches(String startDateString,String endDateString,Long stateId);
-	public SimpleVO getDayWiseAttendnenceForBatch(Long batchId);
+	public SimpleVO getDayWiseAttendnenceForBatch(Long batchI,Long enrollmentYearId);
 	public List<SimpleVO> getAttendenceForTrainers(String type,String searchType);
 	public List<CategoryFeedbackVO> getCategoryFeedBackAnswerForCadre(Long cadreId);
 	public List<IdNameVO> getFeedbackCategoriesForTraining(Long programId,Long campId,Long batchId);
