@@ -695,8 +695,8 @@ public class RWSNICService implements IRWSNICService{
 		List<StatusVO> voList = new ArrayList<StatusVO>(0);
 		try {
 			
-			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getAlertDetailsOfCategoryByStatusWise");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getAlertDetailsOfCategoryByStatusWise");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getAlertDetailsOfCategoryByStatusWise");
 	        
         	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
         
@@ -1234,8 +1234,8 @@ public class RWSNICService implements IRWSNICService{
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
 			
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getLocationWiseAlertStatusCounts");
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getLocationWiseAlertStatusCounts");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getLocationWiseAlertStatusCounts");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getLocationWiseAlertStatusCounts");
 		     ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 		     
 	        if(response.getStatus() != 200){
