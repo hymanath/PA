@@ -116,7 +116,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	
 	public List<FundSchemeVO> getFinancialYearWiseSchemeDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
 			List<Long> sourceIdsList,List<Long> schemeIdsList,String startDateStr,String endDateStr,Long searchScopeId,List<Long> searchScopeValuesList,String order,String sortingType,Long searchLevelId,
-			List<Long> govtSchmeIdsList,List<Long> subProgramIdsList,Long glSearchLevelId,List<Long> glSearchLevelValue){
+			List<Long> govtSchmeIdsList,List<Long> subProgramIdsList,Long glSearchLevelId,List<Long> glSearchLevelValue,String viewType){
 		List<FundSchemeVO> returnList = new ArrayList<FundSchemeVO>(0);
 		try {
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"MM/dd/yyyy","");
@@ -300,10 +300,111 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 		} catch (Exception e) {
 			LOG.error(" Exception occured in FundManagementDashboardService ,getFinancialYearWiseScheameDetails() ",e);
 		}
+		if(viewType != null && viewType.trim().equalsIgnoreCase("cumulative")){
+			if(returnList != null && returnList.size() > 0){
+				returnList = prepareCumulativeView(returnList);
+				updateAmountAndCount(returnList);
+			}
+		}
+		
 		return returnList;
 	}
-	
-	
+	public List<FundSchemeVO> prepareCumulativeView(List<FundSchemeVO> inputList){
+		try{
+			List<FundSchemeVO> finalList = new ArrayList<FundSchemeVO>();
+			List<FundSchemeVO> tempList = null;
+			List<FundSchemeVO> innerList = null;
+			FundSchemeVO fundSchemeVO = null;
+			FundSchemeVO middlefundSchemeVO = null;
+			FundSchemeVO innerfundSchemeVO = null;
+			for(FundSchemeVO param : inputList){
+				innerList = new ArrayList<FundSchemeVO>();
+				fundSchemeVO = new FundSchemeVO();
+				fundSchemeVO.setAddressVO(param.getAddressVO());
+				fundSchemeVO.setTotalCount(param.getTotalCount());
+				fundSchemeVO.setAmount(param.getAmount());
+				// create custom year range e.i if year range is like this 14-15,15-16,16-17,17-18 
+				// then take the first part of first pair and second part of last pair and create the year range as 14-18
+				tempList = param.getSubList();
+				if(tempList != null && tempList.size() > 0){
+					String[] yearArrFirst = tempList.get(0).getYear().split("-");
+					String[] yearArrLast = tempList.get(tempList.size()-1).getYear().split("-");
+					middlefundSchemeVO = new FundSchemeVO();
+					middlefundSchemeVO.setYearId(0L);
+					middlefundSchemeVO.setYear(yearArrFirst[0]+"-"+yearArrLast[1]);
+					middlefundSchemeVO.setAddressVO(param.getAddressVO());
+					
+					if(tempList.get(0) != null && tempList.get(0).getSubList() != null && tempList.get(0).getSubList().size() > 0){
+						for(FundSchemeVO innerParam : tempList.get(0).getSubList()){
+							innerfundSchemeVO = new FundSchemeVO();
+							innerfundSchemeVO.setId(innerParam.getId());
+							innerfundSchemeVO.setName(innerParam.getName());
+							innerfundSchemeVO.setCount(0L);
+							innerfundSchemeVO.setAmount("0.0");
+							innerList.add(innerfundSchemeVO);
+						}
+					}
+					
+					double amountTotal = 0.0d;
+					for(FundSchemeVO middleParam : tempList){
+						middlefundSchemeVO.setTotalCount(middlefundSchemeVO.getTotalCount() + middleParam.getTotalCount());
+						String amountStr = middleParam.getAmount();
+						double amountDouble = Double.parseDouble(amountStr);
+						amountTotal = amountTotal + amountDouble;
+						if(middleParam != null && middleParam.getSubList() != null && middleParam.getSubList().size() > 0){
+							for(FundSchemeVO innerParam : middleParam.getSubList()){
+								updateInnerList(innerList,innerParam);
+							}
+						}
+					}
+					middlefundSchemeVO.setAmount(new Double(amountTotal).toString());
+					middlefundSchemeVO.setSubList(innerList);
+					fundSchemeVO.getSubList().add(middlefundSchemeVO);
+				}
+				finalList.add(fundSchemeVO);
+			}
+			return finalList;
+		}catch(Exception e){
+			LOG.error(" Exception occured in FundManagementDashboardService ,prepareCumulativeView() ",e);
+		}
+		return null;
+	}
+	public void updateInnerList(List<FundSchemeVO> innerList,FundSchemeVO innerParam){
+		try{
+			FundSchemeVO fundSchemeVO = (FundSchemeVO) setterAndGetterUtilService.getMatchedVOfromList(innerList, "id", innerParam.getId().toString());
+			if(fundSchemeVO != null){
+				fundSchemeVO.setCount(fundSchemeVO.getCount()+innerParam.getCount());
+				fundSchemeVO.setTotalCount(fundSchemeVO.getTotalCount()+innerParam.getTotalCount());
+				String amountStr1 = fundSchemeVO.getAmount();
+				double amountDouble1 = Double.parseDouble(amountStr1);
+				String amountStr2 = innerParam.getAmount();
+				double amountDouble2 = Double.parseDouble(amountStr2);
+				fundSchemeVO.setAmount(commonMethodsUtilService.roundUptoTwoDecimalPoint(new Double(amountDouble1+amountDouble2)).toString());
+			}
+		}catch(Exception e){
+			LOG.error(" Exception occured in FundManagementDashboardService ,updateInnerList() ",e);
+		}
+	}
+	public void updateAmountAndCount(List<FundSchemeVO> inputList){
+		try{
+			for(FundSchemeVO param : inputList){
+				param.setCount(0L);
+				param.setAmount("0.0");
+				if(param != null && param.getSubList() != null && param.getSubList().get(0) != null && param.getSubList().get(0).getSubList() != null && param.getSubList().get(0).getSubList().size() > 0){
+					for(FundSchemeVO innerParam : param.getSubList().get(0).getSubList()){
+						param.setCount(param.getCount()+innerParam.getCount());
+						String amountStr1 = param.getAmount();
+						double amountDouble1 = Double.parseDouble(amountStr1);
+						String amountStr2 = innerParam.getAmount();
+						double amountDouble2 = Double.parseDouble(amountStr2);
+						param.setAmount(commonMethodsUtilService.roundUptoTwoDecimalPoint(new Double(amountDouble1+amountDouble2)).toString());
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error(" Exception occured in FundManagementDashboardService ,updateAmountAndCount() ",e);
+		}
+	}
 	public static Comparator<FundSchemeVO> nameWiseAscendingOrder = new Comparator<FundSchemeVO>() {
     	public int compare(FundSchemeVO o1, FundSchemeVO o2) {
     		//descending order of percantages.

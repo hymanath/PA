@@ -62,7 +62,7 @@ public class InputVO implements Serializable {
 	
 	private String sublocaType;
 	private String SublocationType;
-
+	private String viewType;
 	
 	public String getSublocaType() {
 		return sublocaType;
@@ -382,6 +382,12 @@ public class InputVO implements Serializable {
 	}
 	public void setSubFilterType(String subFilterType) {
 		this.subFilterType = subFilterType;
+	}
+	public String getViewType() {
+		return viewType;
+	}
+	public void setViewType(String viewType) {
+		this.viewType = viewType;
 	}
 	
 }
