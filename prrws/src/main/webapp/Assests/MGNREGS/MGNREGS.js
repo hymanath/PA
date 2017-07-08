@@ -1742,7 +1742,7 @@ $(document).on("click",".overviewPopupCls",function(){
 	if(globalDivName == 'Labour Budget')
 		getLabourBudgetClickingOverview(menuLocationType,menuLocationId);
 	else
-		getNregasPopupOverview();
+		getNregasPopupOverview(menuLocationType,menuLocationId);
 	getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,menuLocationId);
 });
 
@@ -1993,7 +1993,7 @@ function getNregasOverview(projectDivId,menuLocationType,menuLocationId)
 	});
 }
 
-function getNregasPopupOverview()
+function getNregasPopupOverview(menuLocationType,menuLocationId)
 {
 	$("#nregsOverviewBodyId").html(spinner);
 	var json = {
@@ -2001,8 +2001,8 @@ function getNregasPopupOverview()
 		fromDate : glStartDate,
         toDate : glEndDate,
 		divType : globalDivName,
-		locationType : "state",
-		locationId : "-1"
+		locationType : menuLocationType,
+		locationId : menuLocationId
 	}
 	$.ajax({
 		url: 'getNregasOverview',
@@ -2638,27 +2638,33 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 	$("[overview-block='"+type+"']").attr("attr_locationId",locId);
 	if(result[0].parameter == 'Payments')
 	{
-		str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
-			if(type.length > 12)
-			{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-			}else{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
-			}
-			str+='<div class="row">';
-				str+='<div class="col-sm-6">';
-					str+='<small>Payment Response Count</small> <h2>'+result[0].pendingresponsecnt+'</h2>';
-					str+='<small>FTO Not Uploaded Count</small> <h2>'+result[0].ftonotuploadcnt+'</h2>';
-				str+='</div>';
-				str+='<div class="col-sm-6">';
-					str+='<small>FTO Not Generated Count</small> <h2>'+result[0].ftonotgencnt+'</h2>';
-					str+='<small>FTO Not Sent Count</small> <h2>'+result[0].ftonotsentcnt+'</h2>';
-				str+='</div>';
-				str+='<div class="col-sm-12">';
-					str+='<small>Reject Count '+result[0].rejectcnt+'</small>';
+		if(locType != 'district')
+		{
+			str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+				if(type.length > 12)
+				{
+					str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+				}else{
+					str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+				}
+				str+='<div class="row">';
+					str+='<div class="col-sm-6">';
+						str+='<small>Payment Response Count</small> <h2>'+result[0].pendingresponsecnt+'</h2>';
+						str+='<small>FTO Not Uploaded Count</small> <h2>'+result[0].ftonotuploadcnt+'</h2>';
+					str+='</div>';
+					str+='<div class="col-sm-6">';
+						str+='<small>FTO Not Generated Count</small> <h2>'+result[0].ftonotgencnt+'</h2>';
+						str+='<small>FTO Not Sent Count</small> <h2>'+result[0].ftonotsentcnt+'</h2>';
+					str+='</div>';
+					str+='<div class="col-sm-12">';
+						str+='<small>Reject Count '+result[0].rejectcnt+'</small>';
+					str+='</div>';
 				str+='</div>';
 			str+='</div>';
-		str+='</div>';
+		}else{
+			str+='<div></div>';
+		}
+		
 		//$("[overview-block='Payments'']").closest(".col-sm-2").removeClass("col-sm-2").addClass("col-sm-4");
 	}
 	if(result[0] != null && result[0].parameter != 'Payments')
