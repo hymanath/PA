@@ -18,10 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
+import com.itgrids.dao.IPrDistrictDAO;
 import com.itgrids.dao.IWebserviceCallDetailsDAO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
+import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
@@ -29,6 +31,7 @@ import com.itgrids.dto.WebserviceDetailsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
 
 @Service
@@ -47,6 +50,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	private IConstituencyDAO constituencyDAO;
 	@Autowired
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
+	@Autowired
+	private IPrDistrictDAO prDistrictDAO;
 	/*
 	 * Date : 16/06/2017
 	 * Author :Sravanth
@@ -498,7 +503,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setMaterialExpenditure(jObj.getString("MATERIALEXPENDITURE"));
 	 	    				vo.setTotalExpenditure(jObj.getString("TOTALEXPENDITURE"));
 	 	    				vo.setMaterialExpenditurePerc(jObj.getString("MATPERCENTAGE"));
-	 	    				//vo.setPercentage(new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				//vo.setPercentage(jObj.getString("MATPERCENTAGE"));
 	 	    				voList.add(vo);
 	 	    				//getDistrictsConstitByType(voList,inputVO.getType());
 	 	    			}
@@ -649,7 +654,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    		if(finalArray!=null && finalArray.length()>0){
 		 	    			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Labour Budget")){
 		 	    				for(int i=0;i<finalArray.length();i++){
-		 	    					NregsDataVO vo = new NregsDataVO();
+			 	    				NregsDataVO vo = new NregsDataVO();
 			 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 			 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
 			 	    				vo.setDistrict(jObj.getString("DISTRICT"));
@@ -658,17 +663,18 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 			 	    				vo.setTargetPersonDays(jObj.getLong("TARGETPERSONDAYS"));
 			 	    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
-			 	    				vo.setPerAppLB(new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-			 	    				vo.setAvgWageRate(new BigDecimal(jObj.getString("AVGWAGERATE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-			 	    				vo.setTotalExpenditure(new BigDecimal(jObj.getString("TOTALEXPENDITURE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-			 	    				vo.setPercentage(new BigDecimal(jObj.getString("PER_APP_LB")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-			 	    				list.add(vo);	
+			 	    				vo.setPerAppLB(jObj.getString("PER_APP_LB"));
+			 	    				vo.setWageExpenditure(jObj.getString("WAGEEXPENDITURE"));
+			 	    				vo.setMaterialExpenditure(jObj.getString("MATERIALEXPENDITURE"));
+			 	    				vo.setTotalExpenditure(jObj.getString("TOTALEXPENDITURE"));
+			 	    				vo.setMaterialExpenditurePerc(jObj.getString("MATPERCENTAGE"));
+			 	    				vo.setPercentage(jObj.getString("PER_APP_LB"));
+			 	    				list.add(vo);
 			 	    			}
 		 	    			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Average Wage") || 
 		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg days of emp per HH") ||
 		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Comp 100 days") || 
-		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payments") ||
-		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries")){
+		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payments")){
 			 	    				for(int i=0;i<finalArray.length();i++){
 				 	    				NregsDataVO vo = new NregsDataVO();
 				 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
@@ -682,7 +688,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				 	    				list.add(vo);
 				 	    		}
-		 	    			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture Activities")){
+		 	    			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture Activities") ||
+		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries")){
 		 	    				for(int i=0;i<finalArray.length();i++){
 				 	    				NregsDataVO vo = new NregsDataVO();
 				 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
@@ -693,8 +700,12 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 				 	    				vo.setTarget(jObj.getLong("TARGET"));
 				 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
-				 	    				vo.setAchivement(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-				 	    				vo.setPercentage(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture Activities")){
+				 	    					vo.setAchivement(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    					vo.setPercentage(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    				}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries")){
+				 	    					vo.setPercentage(jObj.getString("PERCENTAGE"));
+				 	    				}
 				 	    				list.add(vo);
 				 	    			}
 		 	    			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Horticulture")){
@@ -2264,5 +2275,44 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		
 		return voList;
+	}
+	/*
+	 * Date : 08/07/2017
+	 * Author :Nandhini
+	 * @description : getAllNregaSubLocationDetails
+	 */
+	public List<LocationFundDetailsVO> getAllNregaSubLocationDetails(InputVO inputVO){
+		List<LocationFundDetailsVO> detailsVOs = new ArrayList<LocationFundDetailsVO>();
+		try{
+			List<Object[]> locationList = null;
+			Long levelId = inputVO.getSearchLevelId();
+			Long locationId =inputVO.getSearchLevelValue();
+			if(levelId != null && levelId == IConstants.STATE_LEVEL_SCOPE_ID){//get districtIds
+				locationList = prDistrictDAO.getAllDistrictsFrState();
+			}/*else if(levelId != null && levelId == IConstants.DISTRICT_LEVEL_SCOPE_ID){//get constituencyIds
+				if(inputVO.getType() != null && inputVO.getType().equalsIgnoreCase("constituency"))
+				 locationList= constituencyDAO.getConstituencies(locationId);
+				else
+				 locationList =parliamentAssemblyDAO.getParliamentIdAndName(locationId);
+			}*//*else if(levelId != null && levelId == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){//get tehsilIds
+				locationList = tehsilConstituencyDAO.getTehsilIdAndName(locationId);
+			}else if(levelId != null && levelId == IConstants.MANDAL_LEVEL_SCOPE_ID){//get panchayatIds
+				locationList = panchayatDAO.getPanchayatIdAndName(locationId);
+			}else if(levelId != null && levelId == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){//get  parlaiamentIds
+				//locationList =parliamentAssemblyDAO.getParliamentIdAndName(locationId);
+				locationList =parliamentAssemblyDAO.getParliamentByConstIdAndName(locationId);
+			}*/	
+			if(commonMethodsUtilService.isListOrSetValid(locationList)){
+				for(Object[] objects : locationList){
+					LocationFundDetailsVO locationFundDetailsVO = new LocationFundDetailsVO();
+					    locationFundDetailsVO.setType(commonMethodsUtilService.getStringValueForObject(objects[0]));//District_code
+						locationFundDetailsVO.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						detailsVOs.add(locationFundDetailsVO);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occurred in getAllNregaSubLocationDetails() of FundManagementDashboardService ", e);
+		}
+		return detailsVOs;
 	}
 }

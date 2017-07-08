@@ -6,6 +6,7 @@ import java.util.Map;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
+import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
@@ -37,4 +38,5 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregaLevelsWiseDataForTimelyPayments(InputVO inputVO);
 	//public List<NregsDataVO> getNregaParliamentData(InputVO inputVO);
 	public List<NregsProjectsVO> getNREGSProjectsAbstractNew(InputVO inputVO);
+	public List<LocationFundDetailsVO> getAllNregaSubLocationDetails(InputVO inputVO);
 }
