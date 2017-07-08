@@ -30,6 +30,33 @@
 	{
 		margin-top:10px;
 	}
+	.input-group .form-control
+	{
+		margin-top:0px;
+	}
+	.panel-block-white-high h1,
+	.panel-block-white-low h1,
+	.panel-block-white-medium h1,
+	.panel-block-white-high.active h1,
+	.panel-block-white-low.active h1,
+	.panel-block-white-medium.active h1
+	{
+		font-size:25px;
+	}
+	.panel-black-white label
+	{
+		font-size:12px;
+	}
+	.panel-block-white-high small,
+	.panel-block-white-low small,
+	.panel-block-white-medium small,
+	.panel-block-white-high.active small,
+	.panel-block-white-low.active small,
+	.panel-block-white-medium.active small
+	{
+		font-size:12px;
+		top:0px;
+	}
 }
 @media (min-width: 500px) and (max-width:767px) 
 {
@@ -63,6 +90,23 @@
 	{
 		margin-top:10px;
 	}
+	.input-group .form-control
+	{
+		margin-top:0px;
+	}
+	.panel-block-white-high h1,
+	.panel-block-white-low h1,
+	.panel-block-white-medium h1,
+	.panel-block-white-high.active h1,
+	.panel-block-white-low.active h1,
+	.panel-block-white-medium.active h1
+	{
+		font-size:25px;
+	}
+	.panel-black-white label
+	{
+		font-size:12px;
+	}
 }
 @media (min-width:769px) and  (max-width:991px){
 	.table-overview tr td
@@ -85,11 +129,35 @@
 /* Ipad Only STYLES START*/
 @media only screen and (device-width: 768px) 
 {
-	
+	.panel-block-white-high h1,
+	.panel-block-white-low h1,
+	.panel-block-white-medium h1,
+	.panel-block-white-high.active h1,
+	.panel-block-white-low.active h1,
+	.panel-block-white-medium.active h1
+	{
+		font-size:25px;
+	}
+	.panel-black-white label
+	{
+		font-size:12px;
+	}
 }
 @media only screen and (device-width: 1024px) 
 {
-	
+	.panel-block-white-high h1,
+	.panel-block-white-low h1,
+	.panel-block-white-medium h1,
+	.panel-block-white-high.active h1,
+	.panel-block-white-low.active h1,
+	.panel-block-white-medium.active h1
+	{
+		font-size:25px;
+	}
+	.panel-black-white label
+	{
+		font-size:12px;
+	}
 }
 
 /* Ipad Only STYLES END */
