@@ -48,7 +48,7 @@ public class FundManagementDashboardController {
 		return "fundManagementDashboard";
     }
 	
-	@RequestMapping(value ="/newfundManagementDashboard", method = RequestMethod.POST)
+	@RequestMapping(value ="/newfundManagementDashboard", method = RequestMethod.GET)
 	 public String newfundManagementDashboardPage(ModelMap model,HttpSession session){
 		if (null != session.getAttribute("locationTypeId")  && !session.getAttribute("locationTypeId").equals("")){
 			AddressVO addressVO = userServiceImpl.getOriginalLocationIdForTempId(Long.valueOf(session.getAttribute("locationTypeId").toString()),session.getAttribute("locationValue").toString(),session.getAttribute("fromPage").toString(),session.getAttribute("toPage").toString());
