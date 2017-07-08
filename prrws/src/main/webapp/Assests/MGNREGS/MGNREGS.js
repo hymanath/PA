@@ -277,19 +277,19 @@ function projectData(divId)
 		var tableId = divId.replace(/\s+/g, '')+''+dataArr[i];
 		$("#"+tableId).html(spinner);
 		if(divId == 'Labour Budget')
-			getNREGSLabBugdtLelwiseData(tableId,dataArr[i]);
+			getNREGSLabBugdtLelwiseData(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else if(divId == "Agriculture Activities")
-			getNregaLevelsWiseDataFrAgriculture(tableId,dataArr[i]);
+			getNregaLevelsWiseDataFrAgriculture(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries" || divId == "Timely Payment")
 			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else if(divId == "Horticulture")//
-			getNregaLevelsWiseDataFrHorticulture(tableId,dataArr[i]);
+			getNregaLevelsWiseDataFrHorticulture(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else if(divId == "Avenue")//
-			getNregaLevelsWiseDataFrAvenue(tableId,dataArr[i]);
+			getNregaLevelsWiseDataFrAvenue(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else if(divId == "CC Roads")//
 			getNregaLevelsWiseDataForCCRoads(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else if(divId == "Payments")//
-			getNregaLevelsWiseDataForTimelyPayments(tableId,dataArr[i]);
+			getNregaLevelsWiseDataForTimelyPayments(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else
 			getNregaLevelsWiseData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId);
 	}
@@ -323,7 +323,7 @@ function overviewData(divId)
 	var menuLocationType = "state";
 	
 	if(divId == 'Labour Budget')
-		getNREGSLabourBudgetOverview(divId);
+		getNREGSLabourBudgetOverview(divId,menuLocationType,menuLocationId);
 	else
 		getNregasOverview(divId,menuLocationType,menuLocationId);
 }
@@ -565,13 +565,16 @@ function buildNREGSProjectsOverview(result,blockName)
 }
 
 //LabourBudget Overview Call — Sravanth
-function getNREGSLabourBudgetOverview(projectDivId)
+function getNREGSLabourBudgetOverview(projectDivId,menuLocationType,menuLocationId)
 {
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
-      fromDate : glStartDate,
-        toDate : glEndDate  
+		fromDate : glStartDate,
+        toDate : glEndDate,
+		divType : globalDivName,
+		locationType : menuLocationType,
+		locationId : menuLocationId
 	}
 	$.ajax({
 		url: 'getLabourBudgetOverview',
@@ -595,7 +598,9 @@ function getNREGSLabourBudgetExpenditure(projectDivId)
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
-        toDate : glEndDate  
+        toDate : glEndDate,
+        locationType : "state",
+        locationId : "-1"
 	}
   $.ajax({
     url: 'getLabourBudgetExpenditure',
@@ -613,7 +618,7 @@ function getNREGSLabourBudgetExpenditure(projectDivId)
 }
 
 //LabourBudget LevelWise Data Call — Sravanth
-function getNREGSLabBugdtLelwiseData(divIdd,locationType)
+function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLocationId)
 {
 	var theadArr = [locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
 	if(locationType == "constituency")
@@ -627,7 +632,10 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType)
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		locationType: locationType  
+		locationType: menuLocationType,
+		divType : globalDivName,
+		locationId : menuLocationId,
+		sublocaType : locationType 
 	}
 	$.ajax({
 		url: 'getNregaLevelwiseOverviewForLabourBudgetData',
@@ -1873,8 +1881,10 @@ function getLabourBudgetClickingOverview()
 	$("#nregsOverviewBodyId").html(spinner);
 	var json = {
 		year : "2017",
-      fromDate : glStartDate,
-        toDate : glEndDate  
+		fromDate : glStartDate,
+        toDate : glEndDate,
+        locationType : "state",
+        locationId : "-1"
 	}
 	$.ajax({
 		url: 'getLabourBudgetOverview',
@@ -1993,7 +2003,9 @@ function getNregasPopupOverview()
 		year : "2017",
 		fromDate : glStartDate,
         toDate : glEndDate,
-		divType : globalDivName
+		divType : globalDivName,
+		locationType : "state",
+		locationId : "-1"
 	}
 	$.ajax({
 		url: 'getNregasOverview',
@@ -2076,7 +2088,7 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 	});
 }
 
-function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType)
+function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Total Expenditure','Expenditure on Agriculture & Allied Activities','ACHIVEMENT PERCENTAGE'];
@@ -2091,8 +2103,10 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType)
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		locationType: locationType,
-		divType : globalDivName
+		locationType: menuLocationType,
+		divType : globalDivName,
+		locationId : menuLocationId,
+		sublocaType : locationType
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataFrAgriculture',
@@ -2140,7 +2154,7 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType)
 	});
 }
 
-function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType)
+function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
 	 var theadArr = [locationType,'Target','Sanctioned Area (in Acres)','Sanctioned Percentage','Pitting  Area (in Acres)','Planting  Area (in Acres)','Achievement Percentage'];
@@ -2155,8 +2169,10 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType)
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		locationType: locationType,
-		divType : globalDivName
+		locationType: menuLocationType,
+		divType : globalDivName,
+		locationId : menuLocationId,
+		sublocaType : locationType
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataFrHorticulture',
@@ -2209,7 +2225,7 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType)
 	});
 }
 
-function getNregaLevelsWiseDataFrAvenue(divIdd,locationType)
+function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
 	 var theadArr = [locationType,'Target','Sanctioned Area (in Kms)','Sanctioned Percentage','Pitting  Area (in Kms)','Planting  Area (in Kms)','Achievement Percentage'];
@@ -2221,11 +2237,13 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType)
 		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Achievement Percentage'];
 	
 	var json = {
-		year 		: "2017",
-		fromDate 	: glStartDate,
-		toDate 		: glEndDate,
-		locationType: locationType,
-		divType 	: globalDivName
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: menuLocationType,
+		divType : globalDivName,
+		locationId : menuLocationId,
+		sublocaType : locationType
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataFrAvenue',
@@ -2391,7 +2409,7 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 	});
 }
 
-function getNregaLevelsWiseDataForTimelyPayments(divIdd,locationType)
+function getNregaLevelsWiseDataForTimelyPayments(divIdd,locationType,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'FTO_NOT_GEN_CNT','FTO_NOT_GEN_AMT','FTO_NOT_UPLOAD_CNT','FTO_NOT_UPLOAD_AMT','FTO_NOT_SENT_CNT','FTO_NOT_SENT_AMT','REJECT_CNT','REJECT_AMT','PENDING_RESPONSE_CNT','PENDING_RESPONSE_AMT'];
@@ -2406,8 +2424,10 @@ function getNregaLevelsWiseDataForTimelyPayments(divIdd,locationType)
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		locationType: locationType,
-		divType : globalDivName
+		locationType: menuLocationType,
+		divType : globalDivName,
+		locationId : menuLocationId,
+		sublocaType : locationType
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataForTimelyPayments',
