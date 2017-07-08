@@ -2146,7 +2146,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 	 	    				
 	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Nurseries"))
-	 	    					vo.setParameter(jObj.getString("NURSERIES"));
+	 	    					vo.setParameter(jObj.getString("'NURSERIES'"));
 	 	    				else
 	 	    					vo.setParameter(jObj.getString("PARAMETER"));
 	 	    				
