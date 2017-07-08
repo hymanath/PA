@@ -124,23 +124,7 @@
 				<div id="overviewBlock"></div>
 			</div>
 			<div class="row m_top20">
-				<div class="col-sm-12">
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<table class="table">
-								<thead>
-									<th><select id="overviewSelect"></select></th>
-									<th><i class="rounded-circle fa fa-inr"></i><p class="text-capital">total amount</p></th>
-									<th><i class="rounded-circle">D</i><p class="text-capital">district</p></th>
-									<th><i class="rounded-circle">C</i><p class="text-capital">constituency</p></th>
-									<th><i class="rounded-circle">M</i><p class="text-capital">Mandal</p></th>
-								</thead>
-								<tbody id="overViewTableId"></tbody>
-							</table>
-						</div>
-					</div>
-					
-				</div>
+				<div id="overViewTableId"></div>
 			</div>
 		</div>
 	</section>
@@ -152,7 +136,7 @@
 					 	<div class="panel-heading">
 								<div class="row">
 									<div class="col-sm-12" >
-										<a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+										<a class="panelCollapseIcon collapseActiveStateCls" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 											<h4 class="panel-title text-capital">State level overview</h4>
 										</a>
 									</div>
@@ -161,12 +145,12 @@
 						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 							<div class="panel-body">
 								<div class="row">
-									<div class="col-sm-12">
-										<!--<ul class="switch-btn" tab-switch="stateLevel">
-											<li class="active" attr_type="overview">overview</li>
+									<div class="col-sm-12 panalActiveCls">
+										<ul class="" tab-switch="stateLevel" attr_switch = "stateLevel">
+											<!--<li class="active" attr_type="overview">overview</li>
 											<li attr_type="scheme">Scheme level</li>
-											<li attr_type="deptscheme">Dept_Scheme Level</li>
-										</ul>-->
+											<li attr_type="deptscheme">Dept_Scheme Level</li>-->
+										</ul>
 										<ul class="list-inline">
 											<li class="col-sm-2">
 												<select class="form-control chosenSelect" id="programNamesState" >
@@ -213,7 +197,7 @@
 							
 							<div class="row">
 								<div class="col-sm-12">
-									<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+									<a class="panelCollapseIcon collapsed collapseActiveDistCls" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
 										<h4 class="panel-title text-capital">district level overview</h4>
 									</a>
 								</div>
@@ -223,18 +207,18 @@
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-sm-12">
-										<!--<ul class="switch-btn distLevelActive" tab-switch="distLevel">
+										<!--<ul class="switch-btn distLevelActive" tab-switch="distLevel" >
 											<li class="active" attr_type="overview">overview</li>
 											<li attr_type="scheme">Scheme level</li>
 											<li attr_type="deptscheme">Dept_Scheme Level</li>
 										</ul>-->
 										<div class="row">
-											<!-- <div class="col-sm-2">
-												<ul class="switch-btn-New distLevelActive" tab-switch="distLevel">
-													<li class="active" attr_type="districtType">District</li>
-													<li attr_type="parliamentType">Parliament</li>
+											<div class="col-sm-2 panalActiveCls">
+												<ul class="distLevelActive " tab-switch="distLevel" attr_switch = "distLevel">
+													<!-- <li class="active" attr_type="districtType">District</li>
+													<li attr_type="parliamentType">Parliament</li>-->
 												</ul>
-											</div>-->
+											</div>
 											<div class="col-sm-6 ">
 												<ul class="list-inline selectboxsShowHide">
 													<li class="col-sm-4">
@@ -247,7 +231,7 @@
 													</li>
 												</ul>
 											</div>
-											<div class="col-sm-6">
+											<div class="col-sm-4">
 												<!-- Nav tabs -->
 												<ul class="nav nav-tabs pull-right" role="tablist" id="tabDis">
 													<li role="presentation" ><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
@@ -336,13 +320,13 @@
 						<div class="panel-heading">
 						 	<div class="row">
 								<div class="col-sm-12">
-									<a class="panelCollapseIcon collapsed"  role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+									<a class="panelCollapseIcon collapsed collapseActiveConstCls"  role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
 										<h4 class="panel-title text-capital">constituency level overview</h4>
 									</a>
 								</div>
 							</div>
 						</div>
-						 <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+						 <div id="collapseThree" class="panel-collapse collapse collapseActiveCls" role="tabpanel" aria-labelledby="headingThree">
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-sm-12">
@@ -352,8 +336,8 @@
 											<li attr_type="deptscheme">Dept_Scheme Level</li>
 										</ul>-->
 										<div class="row">
-											<div class="col-sm-2">
-												<ul class="switch-btn-New consLevelActive selectboxsShowHide" tab-switch="consLevel">
+											<div class="col-sm-2 panalActiveCls">
+												<ul class="switch-btn-New consLevelActive selectboxsShowHide" tab-switch="consLevel" attr_switch = "consLevel">
 													<li class="active" attr_type="districtType">District</li>
 													<li attr_type="parliamentType">Parliament</li>
 												</ul>
@@ -466,7 +450,7 @@
 						
 							<div class="row">
 								<div class="col-sm-12">
-									<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+									<a class="panelCollapseIcon collapsed collapseActiveMandalCls" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
 										<h4 class="panel-title text-capital">mandal level overview</h4>
 									</a>
 								</div>
@@ -483,8 +467,8 @@
 											<li attr_type="deptscheme">Dept_Scheme Level</li>
 										</ul>-->
 										<div class="row">
-											<div class="col-sm-2">
-												<ul class="switch-btn-New mandalLevelActive selectboxsShowHide" tab-switch="mandalLevel">
+											<div class="col-sm-2 panalActiveCls">
+												<ul class="switch-btn-New mandalLevelActive selectboxsShowHide" tab-switch="mandalLevel" attr_switch = "mandalLevel">
 													<li class="active" attr_type="districtType">District</li>
 													<li attr_type="parliamentType">Parliament</li>
 												</ul>
@@ -602,7 +586,7 @@
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-sm-12">
-									<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+									<a class="panelCollapseIcon collapsed collapseActiveVillageCls" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
 										<h4 class="panel-title text-capital">Village level overview</h4>
 									</a>
 								</div>
@@ -619,8 +603,8 @@
 											<li attr_type="deptscheme">Dept & Scheme Level</li>
 										</ul>-->
 										<div class="row">
-											<div class="col-sm-2">
-												<ul class="switch-btn-New villageLevelActive selectboxsShowHide" tab-switch="villageLevel">
+											<div class="col-sm-2 panalActiveCls">
+												<ul class="switch-btn-New villageLevelActive selectboxsShowHide" tab-switch="villageLevel" attr_switch = "villageLevel">
 													<li class="active" attr_type="districtType">District</li>
 													<li attr_type="parliamentType">Parliament</li>
 												</ul>
