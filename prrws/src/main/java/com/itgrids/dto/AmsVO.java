@@ -20,8 +20,7 @@ public class AmsVO implements Serializable{
 	private Long subTaskCount = 0L;
 	private String statusColor;
 	
-	private String relatedTo;
-	private String problem;
+	private String officer;
 	
 	public Long getId() {
 		return id;
@@ -107,18 +106,13 @@ public class AmsVO implements Serializable{
 	public void setStatusColor(String statusColor) {
 		this.statusColor = statusColor;
 	}
-	public String getRelatedTo() {
-		return relatedTo;
+	public String getOfficer() {
+		return officer;
 	}
-	public void setRelatedTo(String relatedTo) {
-		this.relatedTo = relatedTo;
+	public void setOfficer(String officer) {
+		this.officer = officer;
 	}
-	public String getProblem() {
-		return problem;
-	}
-	public void setProblem(String problem) {
-		this.problem = problem;
-	}
+	
 	
 	
 	

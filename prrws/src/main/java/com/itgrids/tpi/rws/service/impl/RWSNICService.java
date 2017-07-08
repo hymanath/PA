@@ -1414,18 +1414,15 @@ public class RWSNICService implements IRWSNICService{
 	 	    				
 	 	    				amsVo.setId(jobj.getLong("id"));
 	 	    				amsVo.setTitle(jobj.getString("title"));
-	 	    				amsVo.setAlertLevel(jobj.getString("alertLevel"));
+	 	    				amsVo.setAlertLevel(jobj.getString("alertLevel"));//impact Scope
 	 	    				amsVo.setCreatedDate(jobj.getString("createdDate"));
 	 	    				amsVo.setUpdatedDate(jobj.getString("updatedDate"));
 	 	    				amsVo.setStatusId(jobj.getLong("statusId"));
 	 	    				amsVo.setStatus(jobj.getString("status"));
 	 	    				amsVo.setSevertyColor(jobj.getString("severtyColor"));
 	 	    				amsVo.setStatusColor(jobj.getString("statusColor"));
-	 	    				amsVo.setProblem(jobj.getString("problem"));
-	 	    				amsVo.setRelatedTo(jobj.getString("relatedTo"));
 	 	    				amsVo.setSource(jobj.getString("source"));
-	 	    				amsVo.setSubTaskCount(jobj.getLong("subTaskCount"));
-	 	    				
+	 	    				amsVo.setOfficer(jobj.getString("problem"));
 	 	    				finalList.add(amsVo);
 	 	    				
 	 	    			}
