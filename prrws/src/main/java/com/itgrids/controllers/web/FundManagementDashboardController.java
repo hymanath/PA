@@ -40,7 +40,7 @@ public class FundManagementDashboardController {
 	
 	@RequestMapping(value ="/", method = RequestMethod.GET)
     public String indexPage(ModelMap model) {
-		return "fundManagementDashboard";
+		return "newfundManagementDashboard";
     }
 	
 	@RequestMapping(value ="/fundManagementDashboard", method = RequestMethod.GET)
