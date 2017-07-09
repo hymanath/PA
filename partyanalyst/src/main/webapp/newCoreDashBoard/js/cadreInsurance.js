@@ -1,4 +1,5 @@
     var globalStateIdForCadreInsurance=0;
+	var globalApStateIdForInsuranceComparisonBlock=1;
 	var cadreInsuranceFDate = moment().subtract(20,'years').startOf("year").format('DD-MM-YYYY');
 	var cadreInsuranceTDate = moment().format('DD-MM-YYYY');
 	var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
@@ -293,8 +294,8 @@
 				$(".cadreInsuranceDetailedblock").hide();
 			}
 		});
-		$(document).on("click",".cadeInsuranceCat",function(){			
-			if($(this).is(':checked')){
+		 $(document).on("click",".cadeInsuranceCat",function(){	
+           if($(this).is(':checked')){
 				//alert(1111);
 				//alert(2222);
 				var status = $(this).attr("attr_status");
@@ -682,13 +683,13 @@
 	}
 	
 	
-	  //getUserTypeWiseTotalCadreInsuranceComplainctCnt();
+	  
 	function getUserTypeWiseTotalCadreInsuranceComplainctCnt(date,getCadreval){
 		$("#userTypeWiseTotalCadreInsuranceComplainctCnt").html(spinner);
 		var jsObj ={ 
-				activityMemberId : globalActivityMemberId,//globalActivityMemberId
-				userTypeId : globalUserTypeId,//globalUserTypeId
-				stateId : globalStateIdForCadreInsurance,
+				activityMemberId : globalActivityMemberId,
+				userTypeId : globalUserTypeId,
+				stateId : globalApStateIdForInsuranceComparisonBlock,
 				fromDate : cadreInsuranceFDate,
 				toDate : cadreInsuranceTDate,
 				cadreEnrollmentYearId :getCadreval
@@ -1621,16 +1622,17 @@
 	   $("#userTypeWiseChildDtlsTabForCadreInsuranceDivId").html(spinner);
 	   $("#candidateWiseCadreInsuranceDeathDtlsDivId").html(spinner);
 	   $("#candidateWiseCadreInsuranceHospDtlsDivId").html(spinner);
+	   var yearId = getCadreYearVal();
 	  var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
 	  var parentActivityMemberId = globalActivityMemberId;
         var jsObj = { 
 					   parentActivityMemberId : parentActivityMemberId,
 					   childUserTypeIdsArray : childUserTypeIdsArray,
 					   reportType :"selectedUserType",
-					   stateId : globalStateIdForCadreInsurance,           
+					   stateId : globalApStateIdForInsuranceComparisonBlock,           
 					   fromDate: cadreInsuranceFDate,        
 					   toDate :	cadreInsuranceTDate,
-					   cadreEnrollmentYearId : 0
+					   cadreEnrollmentYearId : yearId
 				  }
 	  $.ajax({
 			type : 'POST',
@@ -1756,15 +1758,16 @@ function getDirectChildMemberCadreInsuranceComplainctCnt(activityMemberId,userTy
       $("#"+childActivityMemberDivId).html(spinner);
 	  var childUserTypeIdsArray = [];
 	   childUserTypeIdsArray.push(userTypeId);
+	   var yearId = getCadreYearVal();
 	   var parentActivityMemberId = activityMemberId;
         var jsObj = { 
 					   parentActivityMemberId : parentActivityMemberId,
 					   childUserTypeIdsArray : childUserTypeIdsArray,
 					   reportType :"directChild",
-					   stateId : globalStateIdForCadreInsurance,           
+					   stateId : globalApStateIdForInsuranceComparisonBlock,           
 					   fromDate: cadreInsuranceFDate,        
 					   toDate :	cadreInsuranceTDate,
-					   cadreEnrollmentYearId : 0
+					   cadreEnrollmentYearId : yearId
 				  }
 	  $.ajax({
 			type : 'POST',
@@ -1896,12 +1899,13 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 			$("#HospitalizationHeadingId").hide();
 	        $("#candidateWiseCadreInsuranceDeathDtlsDivId").html(spinner);
 			$("#candidateWiseCadreInsuranceHospDtlsDivId").html(spinner);
+			var yearId = getCadreYearVal();
 	        var jsObj = { 
 					   activityMemberId : activityMemberId,
-					   stateId : globalStateIdForCadreInsurance,           
+					   stateId : globalApStateIdForInsuranceComparisonBlock,           
 					   fromDate: cadreInsuranceFDate,        
 					   toDate :	cadreInsuranceTDate,
-					   cadreEnrollmentYearId : 0
+					   cadreEnrollmentYearId : yearId
 				  }
 	  $.ajax({
 			type : 'POST',
