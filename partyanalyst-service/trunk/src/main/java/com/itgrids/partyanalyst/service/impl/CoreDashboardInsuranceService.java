@@ -2906,12 +2906,6 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						}
 					}
 				}
-				
-				
-				
-				
-				
-				System.out.println("hi");
 				return coreDashboardInsuranceVOs;
 			}catch(Exception e){
 				LOG.error("Error occured at getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS() in CoreDashboardInsuranceService class",e);
