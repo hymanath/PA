@@ -60,8 +60,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsProjectsVO> getNREGSProjectsOverview(InputVO inputVO){
 		List<NregsProjectsVO> voList = new ArrayList<NregsProjectsVO>(0);
 		try {
-			 String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/Abstract", str);
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/Abstract", inputVO);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -112,8 +112,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	public LabourBudgetOverViewVO getLabourBudgetOverview(InputVO inputVO){
 		LabourBudgetOverViewVO returnvo = new LabourBudgetOverViewVO();
 		try {
-			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetOverviewNew", str);
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetOverviewNew", inputVO);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -183,8 +183,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<IdNameVO> getLabourBudgetExpenditure(InputVO inputVO){
 		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
 		try {
-			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetExpenditureNew", str);
+			 
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetExpenditureNew", inputVO);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -237,7 +237,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		NregsOverviewVO finalVO = new NregsOverviewVO();
 		try {
 			String webServiceUrl = null;
-			String str = convertingInputVOToString(inputVO);
+			
 			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Farm Ponds"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FarmPondService_new/FarmPondOverview_new";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FarmPondService/FarmPondOverview
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("IHHL"))
@@ -293,7 +293,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Ponds"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FishPondServiceNew/FishPondOverviewNew";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FishPondsService/FishPondsOverview
 			 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -366,10 +366,6 @@ public class NREGSTCSService implements INREGSTCSService{
 	public String convertingInputVOToString(InputVO inputVO){
 		String str = "";
 		try {
-			if(inputVO.getLocationId() != null && inputVO.getLocationId().longValue() > 0l){
-				if(inputVO.getLocationId().longValue() < 9l && inputVO.getLocationId().longValue() > 0l)
-					inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
-			}
 			str = "{";
 			
 			if(inputVO.getFromDate() != null )
@@ -380,8 +376,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				str += "\"year\" : \""+inputVO.getYear()+"\",";
 			if(inputVO.getLocationType() != null)
 				str += "\"locationType\" : \""+inputVO.getLocationType()+"\",";
-			if(inputVO.getLocationIdStr() != null)
-				str += "\"locationId\" : \""+inputVO.getLocationIdStr()+"\",";
+			if(inputVO.getLocationId() != null)
+				str += "\"locationId\" : \""+inputVO.getLocationId()+"\",";
 			if(inputVO.getSublocationType() != null)
 				str += "\"SublocationType\" : \""+inputVO.getSublocationType()+"\",";
 			if(inputVO.getFromRange() != null)
@@ -408,7 +404,6 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsDataVO> getNregaLevelsWiseData(InputVO inputVO){
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
 		try {
-			
 			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
@@ -2156,8 +2151,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		List<NregsProjectsVO> voList = new ArrayList<NregsProjectsVO>(0);
 		try {
 			String projectType = null;
-			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", inputVO);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -2215,9 +2209,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsProjectsVO> getNREGSAbstractDataByType(InputVO inputVO){
 		List<NregsProjectsVO> returnList = new ArrayList<>();
 		try {
-			
-			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", inputVO);
 			
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
