@@ -22,7 +22,8 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 
 	public List<Object[]> getStatusAndInsuranceCompanyWiseComplaints(Long locationId,Set<Long> locationValuesSet,Long stateId,Long cadreYearId,Date fromDate,Date toDate){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select gis.grievance_insurance_status_id as statusId," +
+		sb.append("select " +
+					" gis.grievance_insurance_status_id as statusId," +
 					" gic.grievance_insurance_company_id as comapnyId," +
 					" gic.company_name as compantName," +
 					" cm.issue_type as issueType," +
@@ -43,8 +44,8 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		
 		if(stateId != null && stateId > 0l)
 			sb.append("and cm.state_id_cmp IN (:stateId)");
-		//else
-			//sb.append(" and cm.state_id_cmp IN (1,2)");
+		else
+			sb.append(" and cm.state_id_cmp IN (1,2)");
 		
 		if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 2L)
     		//sb.append(" and cm.state_id_cmp IN (:locationValuesSet) ");
@@ -984,6 +985,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 
 		 return query.list();
 	 }
+	 //swadhin
 	 public List<Object[]> getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId, Long cadreEnrollmentYearId, Long locationId, List<Long> statusIdList, String category, Date fromDate, Date toDate, String type, String locationType,String filter){
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append("select");
