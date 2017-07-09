@@ -66,7 +66,7 @@ function onLoadCalls()
 	});
 	$(".chosenSelect").chosen({width:'100%'})
 	
-	$("#dateRangePickerMGNF").val(moment().startOf('year').format("YYYY-MM")+'-1');
+	$("#dateRangePickerMGNF").val('2017-04-01');
 	$("#dateRangePickerMGNT").val(moment().format("YYYY-MM")+'-30');
 	
 	
@@ -78,11 +78,9 @@ function onLoadCalls()
 		format: 'YYYY-MM',
 		viewMode:'months'
 	});
-	$('#dateRangePickerMGNF').on('dp.change', function(e){ 
-		glStartDate = e.date.format("YYYY-MM")+"-01";
-	});
-	$('#dateRangePickerMGNT').on('dp.change', function(e){ 
+	$('#dateRangePickerMGNT,#dateRangePickerMGNF').on('dp.change', function(e){ 
 		glEndDate = e.date.format("YYYY-MM")+"-31";
+		glStartDate = e.date.format("YYYY-MM")+"-01";
 		var blockName = '';
 		$(".panel-block-white").each(function(){
 			if($(this).hasClass("active"))
@@ -377,10 +375,16 @@ function tableView(blockId,theadArr,result,locationType)
 		tableView+='</table>';
 	tableView+='</div>';
 	$("#"+blockId).html(tableView);	
-	if(locationType == 'constituency' || locationType == 'mandal' || locationType == 'panchayat' || locationType == 'district')
+	if(locationType == 'constituency' || locationType == 'mandal' || locationType == 'panchayat')
 	{
 		$(".dataTable"+blockId).dataTable();
+	}else if(locationType == 'district')
+	{
+		$(".dataTable"+blockId).dataTable({
+			"pageLength": 20
+		});
 	}
+	
 }
 function getNREGSProjectsOverview(blockName)
 {
@@ -2637,33 +2641,36 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 	
 	$("[overview-block='"+type+"']").attr("attr_levelId",levelId);
 	$("[overview-block='"+type+"']").attr("attr_locationId",locId);
-	if(result[0].parameter == 'Payments')
+	if(result != null && result.length > 0)
 	{
-		if(locType != 'district')
+		if(result[0].parameter == 'Payments')
 		{
-			str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
-				if(type.length > 12)
-				{
-					str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-				}else{
-					str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
-				}
-				str+='<div class="row">';
-					str+='<div class="col-sm-6">';
-						str+='<small>Payment Response Count</small> <h2>'+result[0].pendingresponsecnt+'</h2>';
-						str+='<small>FTO Not Uploaded Count</small> <h2>'+result[0].ftonotuploadcnt+'</h2>';
-					str+='</div>';
-					str+='<div class="col-sm-6">';
-						str+='<small>FTO Not Generated Count</small> <h2>'+result[0].ftonotgencnt+'</h2>';
-						str+='<small>FTO Not Sent Count</small> <h2>'+result[0].ftonotsentcnt+'</h2>';
-					str+='</div>';
-					str+='<div class="col-sm-12">';
-						str+='<small>Reject Count '+result[0].rejectcnt+'</small>';
+			if(locType != 'district')
+			{
+				str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+					if(type.length > 12)
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+					}else{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+					}
+					str+='<div class="row">';
+						str+='<div class="col-sm-6">';
+							str+='<small>Payment Response Count</small> <h2>'+result[0].pendingresponsecnt+'</h2>';
+							str+='<small>FTO Not Uploaded Count</small> <h2>'+result[0].ftonotuploadcnt+'</h2>';
+						str+='</div>';
+						str+='<div class="col-sm-6">';
+							str+='<small>FTO Not Generated Count</small> <h2>'+result[0].ftonotgencnt+'</h2>';
+							str+='<small>FTO Not Sent Count</small> <h2>'+result[0].ftonotsentcnt+'</h2>';
+						str+='</div>';
+						str+='<div class="col-sm-12">';
+							str+='<small>Reject Count '+result[0].rejectcnt+'</small>';
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-			str+='</div>';
-		}else{
-			str+='<div></div>';
+			}else{
+				str+='<div></div>';
+			}
 		}
 		
 		//$("[overview-block='Payments'']").closest(".col-sm-2").removeClass("col-sm-2").addClass("col-sm-4");
@@ -2730,7 +2737,10 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
-	}else if(result[0].parameter != 'Payments'){
+	}else if(result[0] != null && result[0].parameter == 'Payments')
+	{
+		str+='<div></div>';
+	}else{
 		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 			if(type.length > 12)
 			{
@@ -2795,8 +2805,8 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 }
 $(document).on("click",".menuDataCollapse",function(){
 	$(".multi-level-selection-menu").css("display","none");
-	$(".arrowIconChanged").find('i').removeClass("fa-chevron-up");
-	$(".arrowIconChanged").find('i').addClass("fa-chevron-down");
+	$(".arrowIconChanged").find('i.fa').removeClass("fa-chevron-up");
+	$(".arrowIconChanged").find('i.fa').addClass("fa-chevron-down");
 	$("#projectData,#projectOverviewBlock").html('');
 	var blockName = '';
 	$(".panel-block-white").each(function(){
@@ -2811,13 +2821,24 @@ $(document).on("click",".menuDataCollapse",function(){
 	var levelId = $(this).attr("attr_levelIdValue");
 	if(levelId == 3)
 	{
+		
 		for(var i in overViewArr)
 		{
-			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
+			if(overViewArr[i] != 'Payments')
+			{
+				$("[overview-block='"+overViewArr[i]+"']").html(spinner);
+			}else{
+				$("[overview-block='"+overViewArr[i]+"']").html(' ');
+			}
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+			{
+
 				getNREGSProjectsAbstractNew(overViewArr[i],'district',locId,blockName,levelId);
-			else
+			}
+			else if(overViewArr[i] != 'Payments'){
 				getNREGSAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId);
+			}
+				
 		}
 	}else if(levelId == 2)
 	{
@@ -2918,6 +2939,7 @@ $(document).on("click","#selectedName",function(e){
 	$(".multi-level-selection-menu").show();
 });
 
+
 $(document).on("click",".cuntCls",function(){
 	$("#nregsPanExpModalId").modal("show");
 	var range = $(this).attr("attr_range");
@@ -2992,4 +3014,4 @@ $(document).on("click","#selectedName",function(){
 	$(".arrowIconChanged").parent().find('i').removeClass("fa-chevron-down");
 	$(".arrowIconChanged").parent().find('i').addClass("fa-chevron-up");
 
-});	
+});
