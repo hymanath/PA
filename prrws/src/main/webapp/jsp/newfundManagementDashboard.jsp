@@ -36,7 +36,7 @@
 						<div class="arrow_box_top">
 							<ul>
 								<li>
-									<a href="fundManagementDashboard">
+									<a href="newfundManagementDashboard">
 										<h3>FMS</h3>
 										<p>Fund Management System</p>
 									</a>
