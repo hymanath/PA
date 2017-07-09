@@ -36,7 +36,7 @@
 						<div class="arrow_box_top">
 							<ul>
 								<li>
-									<a href="newfundManagementDashboard">
+									<a href="fundManagementDashboard">
 										<h3>FMS</h3>
 										<p>Fund Management System</p>
 									</a>
@@ -78,8 +78,8 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<ul class="list-inline navbar-header-custom">
-						<li style="position:relative;top:-13px;">
-							<span id="selectedName">Andhra Pradesh</span>
+						<li style="position:relative;top:-13px;cursor: pointer;">
+							<h4 class="arrowIconChanged"><span id="selectedName" style="text-transform: uppercase;cursor:pointer;">Andhra Pradesh </span>&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-down" aria-hidden="true"></i></h4>
 							<div class="multi-level-selection-menu arrow_box_top"></div>
 						</li>
 						<li>
@@ -120,6 +120,7 @@
 <main>
 	<section>
 		<div class="container-fluid">
+			<p class="text-danger">Note: Amount in crores</p>
 			<div class="row">
 				<div id="overviewBlock"></div>
 			</div>
