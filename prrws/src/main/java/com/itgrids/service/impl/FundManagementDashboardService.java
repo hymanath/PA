@@ -1156,6 +1156,8 @@ public LocationFundDetailsVO getTotalFunds(InputVO inputVO){
 		inputVO.setDeptIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList()));
 		inputVO.setSourceIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList()));
 		inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSearchLvlVals()));
+		inputVO.setSchemeIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSchemeIdsList()));
+		inputVO.setSubProgramIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSubProgramIdsList()));
 		
 		Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals(),inputVO.getSchemeIdsList(),inputVO.getSubProgramIdsList());
 
@@ -1681,7 +1683,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		try{
 			List<FundMatrixVO> finalList = new ArrayList<FundMatrixVO>();
 			//sort financial year id in ascending order.
-			Collections.sort(inputVO.getFinancialYrIdList());
+			if(commonMethodsUtilService.isListOrSetValid(inputVO.getFinancialYrIdList()))
+				Collections.sort(inputVO.getFinancialYrIdList());
 			if(inputVO.getFinancialYrIdList() != null && inputVO.getFinancialYrIdList().size() > 0){
 				int len = inputVO.getFinancialYrIdList().size();
 				for(int i=0; i < len-1 ; i++){
@@ -2651,12 +2654,19 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	   LocationFundDetailsVO returnVO = null;
 	   try{
 		   
-		    Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"MM/dd/yyyy","");
-			Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
+		    Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"dd/MM/yyyy","");
+			Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"dd/MM/yyyy","");
 			returnVO =getTotalFunds(inputVO);
 		   Long avagecount = 0l;
+		    
+		   inputVO.setFinancialYrIdList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList()));
+		   inputVO.setDeptIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList()));
+		   inputVO.setSourceIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList()));
+		   inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSearchLvlVals()));
+		   inputVO.setSchemeIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSchemeIdsList()));
+		   inputVO.setSubProgramIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSubProgramIdsList()));
 		   
-		   List<Object[]> distFund = fundSanctionDAO.getLocationWiseFundHighAndLow(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,3l,"highest",inputVO.getSearchLevelId(),inputVO.getSearchLvlVals(),inputVO.getSchemeIdsList(),inputVO.getSubProgramIdsList());
+		  List<Object[]> distFund = fundSanctionDAO.getLocationWiseFundHighAndLow(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,3l,"highest",inputVO.getSearchLevelId(),inputVO.getSearchLvlVals(),inputVO.getSchemeIdsList(),inputVO.getSubProgramIdsList());
 		   
 		   String totalfund = returnVO.getTtlAmt().toString();
 			if(distFund != null && distFund.size() >0){

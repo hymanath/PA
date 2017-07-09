@@ -76,13 +76,13 @@ public class UserServiceImpl implements IUserService {
 			List<Object[]> resultList = getAssignedSearchIdByTypeId(searchLevelId,searchLevelValue,fromPage,toPage);
 			if(resultList != null && resultList.size()>0){
 				for (Object[] param : resultList) {
-					addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[1]));
-					addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[2]));
-					addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[3]));
-					addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[4]));
-					addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[5]));
-					addressVO.setHamletId(commonMethodsUtilService.getLongValueForObject(param[6]));
+					addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[0]));
+					addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[4]));
+					addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[5]));
+					addressVO.setHamletName(commonMethodsUtilService.getStringValueForObject(param[6]));
 				}
 			}
 		} catch (Exception e) {
