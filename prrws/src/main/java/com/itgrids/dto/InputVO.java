@@ -63,7 +63,18 @@ public class InputVO implements Serializable {
 	private String sublocaType;
 	private String SublocationType;
 	private String viewType;
+	private Long fromRange;
+	private Long toRange;
 	
+	private String locationIdStr;
+	
+	
+	public String getLocationIdStr() {
+		return locationIdStr;
+	}
+	public void setLocationIdStr(String locationIdStr) {
+		this.locationIdStr = locationIdStr;
+	}
 	public String getSublocaType() {
 		return sublocaType;
 	}
@@ -388,6 +399,18 @@ public class InputVO implements Serializable {
 	}
 	public void setViewType(String viewType) {
 		this.viewType = viewType;
+	}
+	public Long getFromRange() {
+		return fromRange;
+	}
+	public void setFromRange(Long fromRange) {
+		fromRange = fromRange;
+	}
+	public Long getToRange() {
+		return toRange;
+	}
+	public void setToRange(Long toRange) {
+		toRange = toRange;
 	}
 	
 }

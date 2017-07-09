@@ -666,7 +666,7 @@ function getNREGSLabourBudgetOverview(projectDivId,menuLocationType,menuLocation
 }
 
 //LabourBudget Expenditure Call  — Sravanth
-function getNREGSLabourBudgetExpenditure(projectDivId)
+function getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId)
 {
 	$("#projectOvervw"+projectDivId).html(spinner);
 	var json = {
@@ -686,7 +686,7 @@ function getNREGSLabourBudgetExpenditure(projectDivId)
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp) {
-		buildLabrBudgetExpBlock(ajaxresp,projectDivId)
+		buildLabrBudgetExpBlock(ajaxresp,projectDivId,menuLocationType,menuLocationId)
     }
   });
 }
@@ -1009,7 +1009,7 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 				str1+='</tr>';
 			str1+='</table>';
 		str1+='</div>';
-		getNREGSLabourBudgetExpenditure(projectDivId);
+		getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId);
 	}
 	
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str1);
@@ -1017,7 +1017,7 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 }
 
 //LabourBudget Exp Builing --  Nandhini
-function buildLabrBudgetExpBlock(result,projectDivId){
+function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocationId){
 	var str='';
 	str+='<p class="text-center expenditure"><strong>No of Panchayaties Vs Expenditure In Lakhs</strong></p>';
 		str+='<div class="table-responsive">';
@@ -1032,7 +1032,7 @@ function buildLabrBudgetExpBlock(result,projectDivId){
 					str+=' <tr>';
 						str+=' <td>Grand Total</td>';
 						for(var i in result){
-							str+='<td>'+result[i].count+'</td>';
+							str+='<td class="cuntCls" style="cursor:pointer;" attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'">'+result[i].count+'</td>';
 						}
 					str+='</tr>';
 					str+=' <tr>';
@@ -2603,6 +2603,7 @@ function getNREGSProjectsAbstractNew(type,locType,locId,blockName,levelId)
 }
 function getNREGSAbstractDataByType(type,locType,locId,blockName,levelId)
 {
+
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
@@ -2914,3 +2915,74 @@ $(document).on("click","#selectedName,.multi-level-selection-menu",function(e){
 	e.stopPropagation();
 	$(".multi-level-selection-menu").show();
 });
+
+$(document).on("click",".cuntCls",function(){
+	$("#nregsPanExpModalId").modal("show");
+	var range = $(this).attr("attr_range");
+	var locationType = $(this).attr("attr_location_type");
+	var locationId = $(this).attr("attr_loaction_id");
+	var rangeArr;
+	var fromRange;
+	var toRange;
+	if(range == "Below 1"){
+		 fromRange = 0;
+		 toRange = 0;
+	}else if(range == "Above 400"){
+		fromRange = 400;
+		 toRange = 5000;
+	}else{
+		rangeArr = range.split("-");
+		 fromRange = rangeArr[0];
+		 toRange = rangeArr[1];
+	}
+		
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locationType,
+		locationId : locationId,
+		fromRange : fromRange,
+		toRange : toRange
+		
+	}
+	$.ajax({
+		url : "getNregaLabourBudgetPanchatVsExpData",     
+		data : JSON.stringify(json),
+		type : "POST",  
+		dataTypa : 'json',   
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success : function(result){   
+			buildLabourBudgetPanExpData(result)
+		}
+	});
+});
+
+function buildLabourBudgetPanExpData(result){
+	var str='';
+	str+='<table class="table table-bordered">';
+		str+='<thead>';
+			str+='<th>District<th>';
+			str+='<th>Assembly<th>';
+			str+='<th>Mandal<th>';
+			str+='<th>Panchayat<th>';
+			str+='<th>Total Expenditure<th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+				str+='<td>'+result[i].district+'</td>';
+				str+='<td>'+result[i].constituency+'</td>';
+				str+='<td>'+result[i].mandal+'</td>';
+				str+='<td>'+result[i].panchayat+'</td>';
+				str+='<td>'+result[i].totalExpenditure+'</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
+	$("#LabBudgtPanExBodyId").html(str);
+}
+
