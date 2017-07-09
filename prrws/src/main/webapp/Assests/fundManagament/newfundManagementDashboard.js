@@ -180,7 +180,7 @@ getAllDepartments();
 						overviewTable+='<div class="panel-body">';
 							overviewTable+='<table class="table">';
 								overviewTable+='<thead>';
-									overviewTable+='<th><select id="overviewSelect">';
+									overviewTable+='<th><select id="overviewSelect" >';
 										overviewTable+='<option value="0">ALL PROGRAMMES </option>';
 										for(var i in result){
 											overviewTable+='<option value="'+result[i].id+'">'+result[i].name+' </option>';
@@ -193,21 +193,21 @@ getAllDepartments();
 								overviewTable+='</thead>';
 								overviewTable+='<tbody>';
 									overviewTable+='<tr>';
-										overviewTable+='<td class="text-capital"><h4>ALL </h4></td>';
-										overviewTable+='<td class="total0"></td>';
-										overviewTable+='<td class="district0"></td>';
-										overviewTable+='<td class="constituency0"></td>';
-										overviewTable+='<td class="mandal0"></td>';
+										overviewTable+='<td class="text-capital clearCls"><h4>ALL </h4></td>';
+										overviewTable+='<td class="total0 text-center clearCls"></td>';
+										overviewTable+='<td class="district0 clearCls"></td>';
+										overviewTable+='<td class="constituency0 clearCls"></td>';
+										overviewTable+='<td class="mandal0 clearCls"></td>';
 									overviewTable+='</tr>';
 					var k = 1;					
 					for(var i in result)
 					{
 						overviewTable+='<tr id="fffff">';
-							overviewTable+='<td class="text-capital"><h4>'+result[i].name+'</h4></td>';
-							overviewTable+='<td class="total'+k+' text-center"></td>';
-							overviewTable+='<td class="district'+k+'"></td>';
-							overviewTable+='<td class="constituency'+k+'"></td>';
-							overviewTable+='<td class="mandal'+k+'"></td>';
+							overviewTable+='<td class="text-capital clearCls"><h4>'+result[i].name+'</h4></td>';
+							overviewTable+='<td class="total'+k+' text-center clearCls"></td>';
+							overviewTable+='<td class="district'+k+' clearCls"></td>';
+							overviewTable+='<td class="constituency'+k+' clearCls"></td>';
+							overviewTable+='<td class="mandal'+k+' clearCls"></td>';
 						overviewTable+='</tr>';
 						k = k +1;
 					}
@@ -224,7 +224,6 @@ getAllDepartments();
 						var subprogramId = result[i].id
 						getSchemeWiseOverviewDetails(subprogramId,subprogramId);
 					} 
-				
 			}
 		});
 	  }
@@ -1483,6 +1482,13 @@ getAllDepartments();
 			},
 			success : function(result){
 				buildSchemeWiseOverviewDetails(result,schemes);
+				
+				/* if(result !=null && result.length>0){
+					buildSchemeWiseOverviewDetails(result,schemes);
+				}else{
+					//$(".clearCls").remove();
+				} */
+				
 			}
 		});
 	}
@@ -2443,4 +2449,34 @@ $(document).on('click','.closeShowPdfCls',function(){
 		}else{
 			 $(this).closest("[role='tabpanel']").find(".selectboxsShowHide").show();
 		}
+	});
+	
+	$(document).on("change","#overviewSelect",function(){
+		$(".clearCls").html(spinner)
+		var programId = $(this).val();
+		var json = {
+			govtSchemesId:programId,
+		}
+		$.ajax({                
+			  type:'POST',    
+			  url: 'getGovtSubProgramsDetails',  
+			  dataType: 'json',
+		  data : JSON.stringify(json),
+		  beforeSend :   function(xhr){
+				  xhr.setRequestHeader("Accept", "application/json");
+				  xhr.setRequestHeader("Content-Type", "application/json");
+		}  
+		}).done(function(result){
+			$(".clearCls").html('');	
+			getSchemeWiseOverviewDetails(0,programId);
+		  if(result !=null && result.length>0){	
+					  
+			
+			for(var i in result)
+			{
+				getSchemeWiseOverviewDetails(result[i].id,programId);
+			} 
+		  }
+		});
+		
 	});
