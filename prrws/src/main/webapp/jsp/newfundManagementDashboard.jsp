@@ -120,7 +120,7 @@
 <main>
 	<section>
 		<div class="container-fluid">
-			<p class="text-danger">Note: Amount in crores</p>
+			<p class="text-danger">Note: Amount in Crores</p>
 			<div class="row">
 				<div id="overviewBlock"></div>
 			</div>
@@ -162,9 +162,10 @@
 												</select>
 											</li>
 										</ul>
-										<ul class="nav nav-tabs pull-right" role="tablist" id="tabSt">
-											<li role="presentation" ><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-											<li role="presentation" class="active"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+										<ul class="nav nav-tabs pull-right tabTypeStateCls" role="tablist" id="tabSt">
+											<li role="presentation" attr_tab_type = "stateGraph"><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+											<li role="presentation" class="active" attr_tab_type = "stateTable"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+											<li role="presentation" class="" attr_tab_type = "stateCummulative"><a href="#stateLevelCummulative" aria-controls="stateLevelCummulative" role="tab" data-toggle="tab">Cummulative</a></li>
 										</ul>
 									</div>
 								</div>
@@ -182,6 +183,13 @@
 												<div class="row">
 													<div class="col-sm-12">
 														<div id="stateLevlOvervwTable"></div>
+													</div>
+												</div>
+											</div>
+											<div role="tabpanel" class="tab-pane " id="stateLevelCummulative">
+												<div class="row">
+													<div class="col-sm-12">
+														<div id="stateLevelCummulativeOvervw"></div>
 													</div>
 												</div>
 											</div>
@@ -215,9 +223,9 @@
 										</ul>-->
 										<div class="row">
 											<div class="col-sm-2 panalActiveCls">
-												<ul class="distLevelActive " tab-switch="distLevel" attr_switch = "distLevel">
-													<!-- <li class="active" attr_type="districtType">District</li>
-													<li attr_type="parliamentType">Parliament</li>-->
+												<ul class="switch-btn-New distLevelActive " tab-switch="distLevel" attr_switch = "distLevel">
+													<li class="active" attr_type="districtType">District</li>
+													<!-- <li attr_type="parliamentType">Parliament</li>-->
 												</ul>
 											</div>
 											<div class="col-sm-6 ">
@@ -234,10 +242,11 @@
 											</div>
 											<div class="col-sm-4">
 												<!-- Nav tabs -->
-												<ul class="nav nav-tabs pull-right" role="tablist" id="tabDis">
-													<li role="presentation" ><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-													<li role="presentation" class="active"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-													<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>
+												<ul class="nav nav-tabs pull-right tabTypeDistCls" role="tablist" id="tabDis">
+													<li role="presentation" attr_tab_type="distGraph"><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+													<li role="presentation" class="active" attr_tab_type="distTable"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+													<li role="presentation" class="comaprisionViewShow" attr_tab_type="distcompar"><a href="#comaprisionLevelDist" aria-controls="comaprisionLevelDist" role="tab" data-toggle="tab">Comparision</a></li>
+													<li role="presentation" class="" attr_tab_type="distCummulative"><a href="#distLevelCummulative" aria-controls="distLevelCummulative" role="tab" data-toggle="tab">Cummulative</a></li>
 												</ul>
 											</div>
 										</div>
@@ -308,6 +317,13 @@
 													</div>
 												</div>
 											</div>
+											<div role="tabpanel" class="tab-pane " id="distLevelCummulative">
+												<div class="row">
+													<div class="col-sm-12">
+														<div id="distLevelCummulativeOvervw"></div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -357,10 +373,11 @@
 											</div>
 											<div class="col-sm-5">
 												<!-- Nav tabs -->
-												<ul class="nav nav-tabs pull-right" role="tablist" id="tabCons">
-													<li role="presentation" ><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-													<li role="presentation" class="active"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-													<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
+												<ul class="nav nav-tabs pull-right tabTypeConsCls" role="tablist" id="tabCons">
+													<li role="presentation" attr_tab_type="consGraph"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+													<li role="presentation" class="active" attr_tab_type="consTable"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+													<li role="presentation" class="comaprisionViewShow" attr_tab_type="consCompar"><a href="#comaprisionLevelConst" aria-controls="comaprisionLevelConst" role="tab" data-toggle="tab">Comparision</a></li>
+													<li role="presentation" class="" attr_tab_type="consCummulative"><a href="#consLevelCummulative" aria-controls="consLevelCummulative" role="tab" data-toggle="tab">Cummulative</a></li>
 												</ul>
 											</div>
 										</div>
@@ -438,6 +455,13 @@
 													</div>
 												</div>
 											</div>
+											<div role="tabpanel" class="tab-pane " id="consLevelCummulative">
+												<div class="row">
+													<div class="col-sm-12">
+														<div id="consLevelCummulativeOvervw"></div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -488,10 +512,11 @@
 											</div>
 											<div class="col-sm-5">
 												<!-- Nav tabs -->
-												<ul class="nav nav-tabs pull-right" role="tablist" id="tabMan">
-													<li role="presentation" ><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
-													<li role="presentation" class="active"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
-													<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelMandal" role="tab" data-toggle="tab">Comparision</a></li>   
+												<ul class="nav nav-tabs pull-right tabTypeMandalCls" role="tablist" id="tabMan">
+													<li role="presentation" attr_tab_type="mandalGraph"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+													<li role="presentation" class="active" attr_tab_type="mandalTable"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
+													<li role="presentation" class="comaprisionViewShow" attr_tab_type="mandalComp"><a href="#comaprisionLevelMandal" aria-controls="comaprisionLevelMandal" role="tab" data-toggle="tab">Comparision</a></li>
+													<li role="presentation" class="" attr_tab_type="mandalCummulative"><a href="#mandalLevelCummulative" aria-controls="mandalLevelCummulative" role="tab" data-toggle="tab">Cummulative</a></li>	
 												</ul>  
 											</div>
 										</div>
@@ -572,6 +597,13 @@
 													</div>
 												</div>
 											</div>
+											<div role="tabpanel" class="tab-pane " id="mandalLevelCummulative">
+												<div class="row">
+													<div class="col-sm-12">
+														<div id="mandalLevelCummulativeOvervw"></div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -624,10 +656,11 @@
 											</div>
 											<div class="col-sm-5">
 												<!-- Nav tabs -->
-												<ul class="nav nav-tabs pull-right" role="tablist" id="tabVill">
+												<ul class="nav nav-tabs pull-right tabTypeVillageCls" role="tablist" id="tabVill">
 													<!--<li role="presentation" ><a href="#villageLevelGraph" aria-controls="villageLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>-->
-													<li role="presentation" class="active"><a href="#villageLevelTable" aria-controls="villageLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
-													<li role="presentation" class="comaprisionViewShow"><a href="#comaprisionLevelVillage" aria-controls="comaprisionLevelVillage" role="tab" data-toggle="tab">Comparision</a></li>
+													<li role="presentation" class="active" attr_tab_type="villageTable"><a href="#villageLevelTable" aria-controls="villageLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table "></i></a></li>
+													<li role="presentation" class="comaprisionViewShow" attr_tab_type="villageComp"><a href="#comaprisionLevelVillage" aria-controls="comaprisionLevelVillage" role="tab" data-toggle="tab">Comparision</a></li>
+													<li role="presentation" class="" attr_tab_type="villageCummulative"><a href="#villageLevelCummulative" aria-controls="villageLevelCummulative" role="tab" data-toggle="tab">Cummulative</a></li>	
 												</ul>
 											</div>
 										</div>
@@ -709,6 +742,13 @@
 															</div>
 														</div>
 														<div id="comparionVillageLevlOvervwTable" class="m_top10"></div>
+													</div>
+												</div>
+											</div>
+											<div role="tabpanel" class="tab-pane " id="villageLevelCummulative">
+												<div class="row">
+													<div class="col-sm-12">
+														<div id="villageLevelCummulativeOvervw"></div>
 													</div>
 												</div>
 											</div>
