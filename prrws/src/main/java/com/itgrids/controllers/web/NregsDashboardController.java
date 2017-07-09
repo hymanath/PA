@@ -267,4 +267,16 @@ public class NregsDashboardController {
 		List<LocationFundDetailsVO> locationFundDetailsVOList = nregsTcsService.getAllNregaSubLocationDetails(inputVO);
 		return locationFundDetailsVOList;
 	}
+	
+	@PostMapping("/getNregaLabourBudgetPanchatVsExpData")
+	public @ResponseBody List<NregsDataVO> getNregaPanchatVsExpData(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaPanchatVsExpData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaPanchatVsExpData - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
 }

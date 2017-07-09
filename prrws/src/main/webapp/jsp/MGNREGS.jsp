@@ -200,6 +200,23 @@
 				</div>
 			</div><!--  /.modal-content -->  
 		</div><!--  /.modal-dialog -->
+	</div>
+   <!-- PopUp For LabourBudget PanchayatExp -->
+	<div class="modal fade" tabindex="-1" id="nregsPanExpModalId" role="dialog" style="z-index:99999;">
+		<div class="modal-dialog" style="width:90%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title"></h4>  
+				</div>
+				<div class="modal-body">
+					<div id="LabBudgtPanExBodyId"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
+				</div>
+			</div><!--  /.modal-content -->  
+		</div><!--  /.modal-dialog -->
 	</div>	
 	
 </main>
