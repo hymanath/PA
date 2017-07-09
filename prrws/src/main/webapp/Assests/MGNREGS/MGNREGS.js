@@ -2794,7 +2794,9 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 	}
 }
 $(document).on("click",".menuDataCollapse",function(){
-	$(".multi-level-selection-menu").hide();
+	$(".multi-level-selection-menu").css("display","none");
+	$(".arrowIconChanged").find('i').removeClass("fa-chevron-up");
+	$(".arrowIconChanged").find('i').addClass("fa-chevron-down");
 	$("#projectData,#projectOverviewBlock").html('');
 	var blockName = '';
 	$(".panel-block-white").each(function(){
@@ -2834,7 +2836,7 @@ $(document).on("click",".menuDataCollapse",function(){
 var stateArr = [{'name':'Andhra Pradesh','id':1}];
 collapseMenu(1,stateArr,'multi-level-selection-menu');
 function getAllNregaSubLocationDetails(divId,levelId,locationScopeId,type){
-	
+	$("."+divId).html(spinner);
 	//var type = 'constituency' //district to constituency (only consider type like this)
 	var json = {
 		searchLevelId		: levelId,
@@ -2911,7 +2913,7 @@ $(".multi-level-selection-menu").hide();
 $(document).on("click",function(){
 	$(".multi-level-selection-menu").hide();
 });
-$(document).on("click","#selectedName,.multi-level-selection-menu",function(e){
+$(document).on("click","#selectedName",function(e){
 	e.stopPropagation();
 	$(".multi-level-selection-menu").show();
 });
@@ -2986,3 +2988,8 @@ function buildLabourBudgetPanExpData(result){
 	$("#LabBudgtPanExBodyId").html(str);
 }
 
+$(document).on("click","#selectedName",function(){
+	$(".arrowIconChanged").parent().find('i').removeClass("fa-chevron-down");
+	$(".arrowIconChanged").parent().find('i').addClass("fa-chevron-up");
+
+});	

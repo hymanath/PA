@@ -80,7 +80,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-2 border_right m_top5">
-					<span id="selectedName" style="cursor:pointer;" title="Location Level">Andhra Pradesh</span>
+					<h4 class="arrowIconChanged"><span id="selectedName" style="text-transform: uppercase;cursor:pointer;" title="Location Level">Andhra Pradesh </span><i class="fa fa-chevron-down" aria-hidden="true"></i></h4>
 					<div class="multi-level-selection-menu arrow_box_top"></div>
 				</div>
 				<div class="col-sm-3 border_right">

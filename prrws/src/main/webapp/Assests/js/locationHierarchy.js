@@ -1,7 +1,7 @@
 var stateArr = [{'name':'Andhra Pradesh','id':1}];
 collapseMenu(1,stateArr,'multi-level-selection-menu');
 function getAllSubLocations(divId,levelId,locationScopeId,type){
-	
+	$("."+divId).html(spinner);
 	//var type = 'constituency' //district to constituency (only consider type like this)
 	var json = {
 		searchLevelId		: levelId,
@@ -78,7 +78,7 @@ $(".multi-level-selection-menu").hide();
 $(document).on("click",function(){
 	$(".multi-level-selection-menu").hide();
 });
-$(document).on("click","#selectedName,.multi-level-selection-menu",function(e){
+$(document).on("click","#selectedName",function(e){
 	e.stopPropagation();
-	$(".multi-level-selection-menu").show();
+	$(".multi-level-selection-menu").toggle();
 });
