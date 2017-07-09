@@ -15,12 +15,22 @@ public class SubProgramDAO extends GenericDaoHibernate<SubProgram, Long> impleme
 	}
 	
 	public List<Object[]> getGovtSubProgramsDetails(Long govtSchemesId){
-	    StringBuilder sb = new StringBuilder();
-	    sb.append(" select distinct model.subProgramId,model.programName from SubProgram model "+
-	               " where isDeleted= 'N' order by model.orderNo asc  ");
-	    Query query = getSession().createQuery(sb.toString());
-	    //query.setParameter("govtSchemesId",govtSchemesId);
-	    return query.list(); 
-	    
+		
+		if(govtSchemesId == null || govtSchemesId.longValue() == 0L){
+			  StringBuilder sb = new StringBuilder();
+			    sb.append(" select distinct model.subProgramId,model.programName from SubProgram model "+
+			               " where isDeleted= 'N' order by model.orderNo asc  ");
+			    Query query = getSession().createQuery(sb.toString());
+			    return query.list(); 
+		}
+		else if (govtSchemesId.longValue() > 0L){
+			StringBuilder sb = new StringBuilder();
+		    sb.append(" select distinct model.subProgram.subProgramId,model.subProgram.programName from FundSanction model "+
+		               " where isDeleted= 'N' and model.govtSchemeId =:govtSchemesId order by model.subProgram.orderNo asc  ");
+		    Query query = getSession().createQuery(sb.toString());
+		    query.setParameter("govtSchemesId",govtSchemesId);
+		    return query.list(); 
+		}
+		return null;
 	  }
 }

@@ -29,7 +29,7 @@ public class TehsilConstituencyDAO  extends GenericDaoHibernate<TehsilConstituen
 		
 		sb.append(" select state.stateId,state.stateName,district.districtId,district.districtName," +
 				"parliamentAssm.constituencyId,parliamentAssm.name," +
-				"constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName "
+				"constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName,panchayat.panchayatId,panchayat.panchayatName "
 				+ " from " +
 				"   LocationAddress modal " +
 				" 	left join modal.tehsil tehsil " + 
@@ -37,6 +37,7 @@ public class TehsilConstituencyDAO  extends GenericDaoHibernate<TehsilConstituen
 				" 	left join modal.parliament parliamentAssm " +
 				" 	left join constituency.district district " +
 				" 	left join district.state state  " +
+				" 	left join modal.panchayat panchayat  " +
 				" 	where  state.stateId is not null ");
 		
 		if(keysList != null && keysList.size() > 0){
@@ -50,6 +51,8 @@ public class TehsilConstituencyDAO  extends GenericDaoHibernate<TehsilConstituen
 				sb.append(" and parliamentAssm.constituencyId not in (:keysList) ");
 			}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
 				sb.append(" and tehsil.tehsilId not in (:keysList)  ");
+			}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
+				sb.append(" and panchayat.panchayatId not in (:keysList)  ");
 			}
 		}
 		

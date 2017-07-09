@@ -250,7 +250,7 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model.stateId, model.prDistrict.districtCode,0,0,0,0,0 from District model where model.districtId = :searchLevelValue");
 		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameter("searchLevelValue", searchLevelValue);
+		query.setParameter("searchLevelValue", Long.valueOf(searchLevelValue));
 		return query.list();
 	}
 	
