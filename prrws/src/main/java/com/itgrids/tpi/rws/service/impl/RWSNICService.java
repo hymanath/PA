@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -16,8 +15,6 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import sun.misc.BASE64Encoder;
 
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
@@ -38,6 +35,8 @@ import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+
+import sun.misc.BASE64Encoder;
 
 @Service
 @Transactional
@@ -2041,7 +2040,7 @@ public class RWSNICService implements IRWSNICService{
 
 	@Override
 	public List<RwsClickVO> getHamletWiseIvrStatusList(InputVO vo) {
-    List<RwsClickVO> ivraHamletList = new ArrayList<>();
+    List<RwsClickVO> ivraHamletList = new ArrayList<RwsClickVO>(0);
     try{
     	WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getHamletWiseIvrStatusList");
     	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
