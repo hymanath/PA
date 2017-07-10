@@ -156,6 +156,7 @@ getAllDepartments();
 		});
 		return blockTypeVillage;
 	}
+	var overviewSelectBoxData = '';
 	function getGovtSchemesDetails(divId){
 		$("#"+divId).html('');
 		if(divId == 'overviewSelect'){
@@ -173,6 +174,7 @@ getAllDepartments();
 				  xhr.setRequestHeader("Content-Type", "application/json");
 		}  
 		}).done(function(result){
+			overviewSelectBoxData = result;
 		  if(result !=null && result.length>0){
 				 $("#"+divId).append('<option value="0">ALL PROGRAMMES </option>');
 				for(var i in result){
@@ -2752,6 +2754,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 	
 	$(document).on("change","#overviewSelect",function(){
 		$(".clearCls").html(spinner)
+		var selectedHtml = $(this).html();
 		var programId = $(this).val();
 		var json = {
 			govtSchemesId:programId,
@@ -2767,15 +2770,48 @@ $(document).on('click','.closeShowPdfCls',function(){
 		}  
 		}).done(function(result){
 			$(".clearCls").html('');	
+			console.log(overviewSelectBoxData);
+			//getSchemeWiseOverviewDetails(0,programId);
+		
+			var overviewTable = '';
+			var selectedValueData = '';
+			overviewTable+='<div class="col-sm-12">';
+				overviewTable+='<div class="panel panel-default">';
+					overviewTable+='<div class="panel-body">';
+						overviewTable+='<table class="table">';
+							overviewTable+='<thead>';
+								overviewTable+='<th><select id="overviewSelect" >';
+									overviewTable+='<option value="0">ALL PROGRAMMES </option>';
+									for(var i in overviewSelectBoxData){
+										if(overviewSelectBoxData[i].id == programId)
+										{
+											selectedValueData = overviewSelectBoxData[i].name;
+											overviewTable+='<option value="'+overviewSelectBoxData[i].id+'" selected>'+overviewSelectBoxData[i].name+' </option>';
+										}else{
+											overviewTable+='<option value="'+overviewSelectBoxData[i].id+'">'+overviewSelectBoxData[i].name+' </option>';
+										}
+										
+									}
+								overviewTable+='</select></th>';
+								overviewTable+='<th class="text-center"><i class="rounded-circle fa fa-inr"></i><p class="text-capital">total amount</p></th>';
+								overviewTable+='<th class="text-center"><i class="rounded-circle">D</i><p class="text-capital m_top10">district</p></th>';
+								overviewTable+='<th class="text-center"><i class="rounded-circle">C</i><p class="text-capital m_top10">constituency</p></th>';
+								overviewTable+='<th class="text-center"><i class="rounded-circle">M</i><p class="text-capital m_top10">Mandal</p></th>';
+							overviewTable+='</thead>';
+							overviewTable+='<tr id="fffff">';
+								overviewTable+='<td class="text-capital clearCls"><h4>'+selectedValueData+'</h4></td>';
+								overviewTable+='<td class="total'+programId+' text-center clearCls"></td>';
+								overviewTable+='<td class="district'+programId+' clearCls"></td>';
+								overviewTable+='<td class="constituency'+programId+' clearCls"></td>';
+								overviewTable+='<td class="mandal'+programId+' clearCls"></td>';
+							overviewTable+='</tr>';
+						overviewTable+='</table>';
+					overviewTable+='</div>';
+				overviewTable+='</div>';
+			overviewTable+='</div>';
+			$("#overViewTableId").html(overviewTable);
+			$("#overviewSelect").chosen();
 			getSchemeWiseOverviewDetails(0,programId);
-		  if(result !=null && result.length>0){	
-					  
-			
-			for(var i in result)
-			{
-				getSchemeWiseOverviewDetails(result[i].id,programId);
-			} 
-		  }
 		});
 		
 	});

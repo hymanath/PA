@@ -80,6 +80,15 @@ function onLoadCalls()
 	});
 	$('#dateRangePickerMGNT').on('dp.change', function(e){ 
 		glEndDate = e.date.format("YYYY-MM")+"-31";
+		var levelId = $("#selectedName").attr("attr_levelId");
+		var locType = '';
+		if(levelId == 2)
+		{
+			locType = 'state'
+		}else if(levelId == 3)
+		{
+			locType = 'district'
+		}
 		var blockName = '';
 		$(".panel-block-white").each(function(){
 			if($(this).hasClass("active"))
@@ -87,19 +96,29 @@ function onLoadCalls()
 				blockName = $(this).attr("overview-block");
 			}
 		});
+		
 		$("#projectOverviewBlock,#projectData").html('');
 		buildNREGSProjectsOverview(overViewArr,'');
 		for(var i in overViewArr)
 		{
 			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
-				getNREGSProjectsAbstractNew(overViewArr[i],'state',0,'','2');
+				getNREGSProjectsAbstractNew(overViewArr[i],locType,0,'',levelId);
 			else
-				getNREGSAbstractDataByType(overViewArr[i],'state',0,'','2');
+				getNREGSAbstractDataByType(overViewArr[i],locType,0,'',levelId);
 		}
 	});
 	$('#dateRangePickerMGNF').on('dp.change', function(e){ 
 		glStartDate = e.date.format("YYYY-MM")+"-01";
+		var levelId = $("#selectedName").attr("attr_levelId");
+		var locType = '';
+		if(levelId == 2)
+		{
+			locType = 'state'
+		}else if(levelId == 3)
+		{
+			locType = 'district'
+		}
 		var blockName = '';
 		$(".panel-block-white").each(function(){
 			if($(this).hasClass("active"))
@@ -108,14 +127,15 @@ function onLoadCalls()
 			}
 		});
 		$("#projectOverviewBlock,#projectData").html('');
+		
 		buildNREGSProjectsOverview(overViewArr,'');
 		for(var i in overViewArr)
 		{
 			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
-				getNREGSProjectsAbstractNew(overViewArr[i],'state',0,'','2');
+				getNREGSProjectsAbstractNew(overViewArr[i],locType,0,'',levelId);
 			else
-				getNREGSAbstractDataByType(overViewArr[i],'state',0,'','2');
+				getNREGSAbstractDataByType(overViewArr[i],locType,0,'',levelId);
 		}
 		//getNREGSProjectsOverview(blockName);
 	});
@@ -771,7 +791,17 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLo
 						}	
 						str+='<td>'+ajaxresp[i].targetPersonDays+'</td>';
 						str+='<td>'+ajaxresp[i].generatedPersonDays+'</td>';
-						str+='<td>'+ajaxresp[i].perAppLB+'</td>';
+						if(ajaxresp[i].perAppLB < 50)
+						{
+							str+='<td style="background-color:#FF0000">'+ajaxresp[i].perAppLB+'</td>';
+						}else if(ajaxresp[i].perAppLB >= 50 && ajaxresp[i].perAppLB < 80)
+						{
+							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].perAppLB+'</td>';
+						}else if(ajaxresp[i].perAppLB >= 80)
+						{
+							str+='<td style="background-color:#00AF50">'+ajaxresp[i].perAppLB+'</td>';
+						}
+						
 						str+='<td>'+ajaxresp[i].wageExpenditure+'</td>';
 						str+='<td>'+ajaxresp[i].materialExpenditure+'</td>';
 						str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
@@ -1985,7 +2015,15 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
 						str+='<td>'+ajaxresp[i].inProgress+'</td>';
 						str+='<td>'+ajaxresp[i].completed+'</td>';
-						str+='<td>'+ajaxresp[i].percentage+'</td>';
+						if(ajaxresp[i].percentage < 50){
+							str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 80)
+						{
+							str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
+						}
+						//str+='<td>'+ajaxresp[i].percentage+'</td>';
 					str+='</tr>';
 				}
 			}
@@ -2103,7 +2141,14 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 						}
 						str+='<td>'+ajaxresp[i].target+'</td>';
 						str+='<td>'+ajaxresp[i].achivement+'</td>';
-						str+='<td>'+ajaxresp[i].percentage+'</td>';
+						if(ajaxresp[i].percentage < 50){
+							str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 80)
+						{
+							str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
+						}
 					str+='</tr>';
 				}
 			}
@@ -2169,7 +2214,14 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 						}
 						str+='<td>'+ajaxresp[i].target+'</td>';
 						str+='<td>'+ajaxresp[i].completed+'</td>';
-						str+='<td>'+ajaxresp[i].achivement+'</td>';
+						if(ajaxresp[i].achivement < 50){
+							str+='<td style="background-color:#FF0000">'+ajaxresp[i].achivement+'</td>';
+						}else if(ajaxresp[i].achivement >= 50 && ajaxresp[i].achivement < 80){
+							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].achivement+'</td>';
+						}else if(ajaxresp[i].achivement >= 80)
+						{
+							str+='<td style="background-color:#00AF50">'+ajaxresp[i].achivement+'</td>';
+						}
 					str+='</tr>';
 				}
 			}
@@ -2240,7 +2292,15 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 						str+='<td>'+ajaxresp[i].pittingArea+'</td>';
 						str+='<td>'+ajaxresp[i].plantingArea+'</td>';
-						str+='<td>'+ajaxresp[i].pencentageOfPlanting+'</td>';
+						if(ajaxresp[i].pencentageOfPlanting < 50){
+							str+='<td style="background-color:#FF0000">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+						}else if(ajaxresp[i].pencentageOfPlanting >= 50 && ajaxresp[i].pencentageOfPlanting < 80){
+							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+						}else if(ajaxresp[i].pencentageOfPlanting >= 80)
+						{
+							str+='<td style="background-color:#00AF50">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+						}
+						//str+='<td>'+ajaxresp[i].pencentageOfPlanting+'</td>';
 					str+='</tr>';
 				}
 			}
@@ -2311,7 +2371,14 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 						str+='<td>'+ajaxresp[i].pittingKMS+'</td>';
 						str+='<td>'+ajaxresp[i].plantingKMS+'</td>';
-						str+='<td>'+ajaxresp[i].pencentageOfPlanting+'</td>';
+						if(ajaxresp[i].pencentageOfPlanting < 50){
+							str+='<td style="background-color:#FF0000">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+						}else if(ajaxresp[i].pencentageOfPlanting >= 50 && ajaxresp[i].pencentageOfPlanting < 80){
+							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+						}else if(ajaxresp[i].pencentageOfPlanting >= 80)
+						{
+							str+='<td style="background-color:#00AF50">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+						}
 					str+='</tr>';
 				}
 			}
@@ -2424,7 +2491,14 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 						str+='<td>'+ajaxresp[i].expenditureAmount+'</td>';
 						str+='<td>'+ajaxresp[i].completedKMS+'</td>';
-						str+='<td>'+ajaxresp[i].percentage+'</td>';
+						if(ajaxresp[i].percentage < 50){
+							str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 80)
+						{
+							str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
+						}
 					str+='</tr>';
 				}
 			}
@@ -2795,11 +2869,11 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 			if(result[1].percentage < 50)
 			{
 				str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-			}else if(result[1].percentage > 50 && result[1].percentage < 80)
+			}else if(result[1].percentage >= 50 && result[1].percentage < 80)
 			{
 				str+='<div class="panel-black-white panel-block-white-medium text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 				
-			}else if(result[1].percentage > 80)
+			}else if(result[1].percentage >= 80)
 			{
 				str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 			}
@@ -2842,6 +2916,7 @@ $(document).on("click",".menuDataCollapse",function(){
 	var locId = $(this).attr("attr_id");
 	$("#selectedName").html($(this).html())
 	var levelId = $(this).attr("attr_levelIdValue");
+	$("#selectedName").attr("attr_levelid",levelId)
 	if(levelId == 3)
 	{
 		
