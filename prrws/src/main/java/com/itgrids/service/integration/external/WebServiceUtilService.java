@@ -24,7 +24,6 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
 @Service
-@Transactional
 public class WebServiceUtilService {
 	
 	private static Logger LOG = Logger.getLogger(WebServiceUtilService.class);
@@ -51,6 +50,8 @@ public class WebServiceUtilService {
 			ClientConfig clientConfig = new DefaultClientConfig();
 			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,Boolean.TRUE);
 			Client client = Client.create(clientConfig);
+			client.setConnectTimeout(1000*60*2);
+		    client.setReadTimeout(1000*60*3);
 			WebResource resource = client.resource(url);
 			
 			webserviceVO = new WebserviceVO();
@@ -112,6 +113,7 @@ public class WebServiceUtilService {
 	    System.out.println(output);
 	}
 	
+	@Transactional
 	private Long saveWebserviceCallDetails(WebserviceVO webserviceVO)
 	{
 		try{
@@ -124,6 +126,8 @@ public class WebServiceUtilService {
 				
 				if(list != null && !list.isEmpty())
 					webserviceCallDetails.setWebserviceId(list.get(0));
+				else
+					webserviceCallDetails.setUrl(webserviceVO.getUrl().trim());
 			}
 			webserviceCallDetails.setCallTime(webserviceVO.getCallTime());
 			webserviceCallDetails = webserviceCallDetailsDAO.save(webserviceCallDetails);
@@ -136,6 +140,7 @@ public class WebServiceUtilService {
 		return null;
 	}
 	
+	@Transactional
 	private void updateWebserviceCallDetails(WebserviceVO webserviceVO)
 	{
 		try{

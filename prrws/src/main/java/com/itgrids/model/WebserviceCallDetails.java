@@ -26,6 +26,7 @@ public class WebserviceCallDetails implements Serializable{
 	private Date callTime;
 	private Long timeTaken;
 	private String status;
+	private String url;
 
 	private Long webserviceId;
 
@@ -93,6 +94,15 @@ public class WebserviceCallDetails implements Serializable{
 
 	public void setWebserviceId(Long webserviceId) {
 		this.webserviceId = webserviceId;
+	}
+
+	@Column(name="url")
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 }
