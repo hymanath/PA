@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +131,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			
 			List<Object[]> result =  fundSanctionDAO.getFinancialYearWiseScheameDetails(financialYearIdsList,deptIdsList,sourceIdsList, schemeIdsList,startDate,endDate,searchScopeId,searchScopeValuesList,searchLevelId,govtSchmeIdsList,subProgramIdsList,glSearchLevelId,glSearchLevelValue);
 			Map<Long,FundSchemeVO> locationMap = new HashMap<Long,FundSchemeVO>(0);
-			Map<Long,FundSchemeVO> yearsMap = new HashMap<Long,FundSchemeVO>(0);
+			Map<Long,FundSchemeVO> yearsMap = new TreeMap<Long,FundSchemeVO>();
 			//Map<Long,FundSchemeVO> deptsMap = new HashMap<Long,FundSchemeVO>(0);
 			Map<Long,FundSchemeVO> schemesMap = new HashMap<Long,FundSchemeVO>(0);
 			
