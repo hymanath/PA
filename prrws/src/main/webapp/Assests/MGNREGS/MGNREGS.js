@@ -342,7 +342,7 @@ function projectData(divId,levelId,locationId)
 		else if(divId == "Agriculture Activities")
 			getNregaLevelsWiseDataFrAgriculture(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries" || divId == "Timely Payment")
-			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[i],menuLocationType,menuLocationId);
+			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
 		else if(divId == "Horticulture")//
 			getNregaLevelsWiseDataFrHorticulture(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else if(divId == "Avenue")//
@@ -418,11 +418,17 @@ function tableView(blockId,theadArr,result,locationType)
 	$("#"+blockId).html(tableView);	
 	if(locationType == 'constituency' || locationType == 'mandal' || locationType == 'panchayat')
 	{
-		$(".dataTable"+blockId).dataTable();
+		$(".dataTable"+blockId).dataTable({
+			"iDisplayLength": 15,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
 	}else if(locationType == 'district')
 	{
 		$(".dataTable"+blockId).dataTable({
-			"pageLength": 20
+			"iDisplayLength": 20,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		});
 	}
 	
@@ -791,8 +797,14 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLo
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}	
-						str+='<td>'+ajaxresp[i].targetPersonDays+'</td>';
-						str+='<td>'+ajaxresp[i].generatedPersonDays+'</td>';
+						if(locationType == "state"){
+							str+='<td>'+ajaxresp[i].targetPersonDays+'L</td>';
+							str+='<td>'+ajaxresp[i].generatedPersonDays+'L</td>';
+						}else{
+							str+='<td>'+ajaxresp[i].targetPersonDays+'</td>';
+							str+='<td>'+ajaxresp[i].generatedPersonDays+'</td>';
+						}
+						
 						if(ajaxresp[i].perAppLB < 50)
 						{
 							str+='<td style="background-color:#FF0000">'+ajaxresp[i].perAppLB+'</td>';
@@ -869,44 +881,44 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 					str1+='<tr>';
 						str1+='<td>';
 							str1+='	<div class="col-sm-12">';
-								str1+='<h4><b>Total labour : '+result.totalLabour+'</b></h4>';
+								str1+='<h4><b>Total labour : '+result.totalLabour+'L</b></h4>';
 							str1+='</div>';
 							str1+='<div class="col-sm-12 m_top10">';
 								str1+='<div class="media">';
-									str1+='<p class="media-left"><img src="Assests/icons/Male.png"></p><p class="media-body">Male Labours : '+result.maleLabour+'</p>';
+									str1+='<p class="media-left"><img src="Assests/icons/Male.png"></p><p class="media-body">Male Labours : '+result.maleLabour+'L</p>';
 								str1+='</div>';
 								str1+='<div class="media"> ';  
 								str1+='<p class="media-left">';
-									str1+='<img src="Assests/icons/Female.png"></p><p class="media-body">Female Labour : '+result.femaleLabour+'</p>';
+									str1+='<img src="Assests/icons/Female.png"></p><p class="media-body">Female Labour : '+result.femaleLabour+'L</p>';
 								str1+='</div> ';
 							str1+='</div>';
 						str1+='</td>';
 						str1+='<td>';
 							str1+='<div class="col-sm-12">';
-								str1+='<h4><b>Total Response : '+result.totalResponse+'</b></h4>';
+								str1+='<h4><b>Total Response : '+result.totalResponse+'L</b></h4>';
 							str1+='	</div>';
 							str1+='<div class="col-sm-12 m_top10">';
 								str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Green_Worker.png"></p><p class="media-body">On request work allocated : '+result.onRequestWorkAllocated+'</p>';
+								str1+='<p class="media-left"><img src="Assests/icons/Green_Worker.png"></p><p class="media-body">On request work allocated : '+result.onRequestWorkAllocated+'L</p>';
 									str1+='</div>';
 								str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Orange_Worker.png"></p><p class="media-body">Got work occutionaly :'+result.gotWorkOccutionally+'</p>';
+								str1+='<p class="media-left"><img src="Assests/icons/Orange_Worker.png"></p><p class="media-body">Got work occutionaly :'+result.gotWorkOccutionally+'L</p>';
 									str1+='</div>';
 								str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Red_Worker.png"></p><p class="media-body">Havent got work :'+result.haveNotGotWork+'</p>';
+								str1+='<p class="media-left"><img src="Assests/icons/Red_Worker.png"></p><p class="media-body">Havent got work :'+result.haveNotGotWork+'L</p>';
 								str1+='</div>';
 							str1+='</div>';
 						str1+='</td>';
 						str1+='<td>';
 							str1+='<div class="col-sm-12">';
-								str1+='<h4><b>Total Budget : '+result.totalBudget+'</b></h4>';
+								str1+='<h4><b>Total Budget : <i class="fa fa-inr"></i>'+result.totalBudget+'</b></h4>';
 							str1+='</div>';
 							str1+='<div class="col-sm-12 m_top10">';
 								str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Labours_icon.png"></p><p class="media-body">Budget for Labours : '+result.budgetForLabour+'</p>';
+								str1+='<p class="media-left"><img src="Assests/icons/Labours_icon.png"></p><p class="media-body">Budget for Labours : <i class="fa fa-inr"></i>'+result.budgetForLabour+'</p>';
 								str1+='</div>';
 								str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Bugget_icon.png"></p><p class="media-body">Budget for Material : '+result.budgetForMaterial+'</p>';
+								str1+='<p class="media-left"><img src="Assests/icons/Bugget_icon.png"></p><p class="media-body">Budget for Material : <i class="fa fa-inr"></i>'+result.budgetForMaterial+'</p>';
 									str1+='</div>';
 							str1+='</div>';
 						str1+='</td>';
@@ -1118,12 +1130,20 @@ function buildDistrictsPopupDetails(result,dataArr){
 			str+='</div>';
 			str+='<div class="panel-body">';
 			
-			if(globalDivName == "Average Wage" || globalDivName == "Average Days of Employment" || globalDivName == "HH Completed 100 Days" || globalDivName == "Timely Payment"){
+			if(globalDivName == "Average Wage" || globalDivName == "Average Days of Employment" || globalDivName == "HH Completed 100 Days"){
 				theadArr = [dataArr,'TARGET','Achivement','Percentage'];
 				if(dataArr == "constituency")
 					theadArr = ["district",dataArr,'TARGET','Achivement','Percentage'];
 				else if(dataArr == "mandal")
 					theadArr = ["district","constituency",dataArr,'TARGET','Achivement','Percentage'];
+				else if(dataArr == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Achivement','Percentage'];
+			}else if(globalDivName == "Timely Payment"){
+				theadArr = [dataArr,'TARGET Percentage','Achivement Percentage','Achieved Percentage'];
+				if(dataArr == "constituency")
+					theadArr = ["district",dataArr,'TARGET Percentage','Achivement Percentage','Achieved Percentage'];
+				else if(dataArr == "mandal")
+					theadArr = ["district","constituency",dataArr,'TARGET Percentage','Achivement Percentage','Achieved Percentage'];
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Achivement','Percentage'];
 			}else if(globalDivName == "Agriculture Activities"){
@@ -1276,7 +1296,15 @@ function buildDistrictsPopupDetails(result,dataArr){
 										str+='<td>'+result.distList[i].notGrounded+'</td>';
 										str+='<td>'+result.distList[i].inProgress+'</td>';
 										str+='<td>'+result.distList[i].completed+'</td>';
-										str+='<td>'+result.distList[i].percentage+'</td>';
+										if(result.distList[i].percentage < 50){
+											str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
+											str+='<td style="background-color:#FFBA00">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 80)
+										{
+											str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
+										}
+										//str+='<td>'+result.distList[i].percentage+'</td>';
 									str+='</tr>';
 									}else if(globalDivName == "CC Roads"){
 										str+='<tr>';
@@ -1310,7 +1338,15 @@ function buildDistrictsPopupDetails(result,dataArr){
 										
 										str+='<td>'+result.distList[i].expenditureAmount+'</td>';
 										str+='<td>'+result.distList[i].completedKMS+'</td>';
-										str+='<td>'+result.distList[i].percentage+'</td>';
+										if(result.distList[i].percentage < 50){
+											str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
+											str+='<td style="background-color:#FFBA00">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 80)
+										{
+											str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
+										}
+										//str+='<td>'+result.distList[i].percentage+'</td>';
 									str+='</tr>';
 									}else if(globalDivName == "Horticulture"){
 										str+='<tr>';
@@ -1342,7 +1378,15 @@ function buildDistrictsPopupDetails(result,dataArr){
 										
 										str+='<td>'+result.distList[i].pittingArea+'</td>';
 										str+='<td>'+result.distList[i].plantingArea+'</td>';
-										str+='<td>'+result.distList[i].pencentageOfPlanting+'</td>';
+										if(result.distList[i].pencentageOfPlanting < 50){
+											str+='<td style="background-color:#FF0000">'+result.distList[i].pencentageOfPlanting+'</td>';
+										}else if(result.distList[i].pencentageOfPlanting >= 50 && result.distList[i].pencentageOfPlanting < 80){
+											str+='<td style="background-color:#FFBA00">'+result.distList[i].pencentageOfPlanting+'</td>';
+										}else if(result.distList[i].pencentageOfPlanting >= 80)
+										{
+											str+='<td style="background-color:#00AF50">'+result.distList[i].pencentageOfPlanting+'</td>';
+										}
+										//str+='<td>'+result.distList[i].pencentageOfPlanting+'</td>';
 									str+='</tr>';
 									}else if(globalDivName == "Avenue"){
 										str+='<tr>';
@@ -1374,7 +1418,15 @@ function buildDistrictsPopupDetails(result,dataArr){
 										
 										str+='<td>'+result.distList[i].pittingKMS+'</td>';
 										str+='<td>'+result.distList[i].plantingKMS+'</td>';
-										str+='<td>'+result.distList[i].pencentageOfPlanting+'</td>';
+										if(result.distList[i].pencentageOfPlanting < 50){
+											str+='<td style="background-color:#FF0000">'+result.distList[i].pencentageOfPlanting+'</td>';
+										}else if(result.distList[i].pencentageOfPlanting >= 50 && result.distList[i].pencentageOfPlanting < 80){
+											str+='<td style="background-color:#FFBA00">'+result.distList[i].pencentageOfPlanting+'</td>';
+										}else if(result.distList[i].pencentageOfPlanting >= 80)
+										{
+											str+='<td style="background-color:#00AF50">'+result.distList[i].pencentageOfPlanting+'</td>';
+										}
+										//str+='<td>'+result.distList[i].pencentageOfPlanting+'</td>';
 									str+='</tr>';
 									}else if(globalDivName == "Nurseries"){
 										str+='<tr>';
@@ -1398,7 +1450,15 @@ function buildDistrictsPopupDetails(result,dataArr){
 										}
 										str+='<td>'+result.distList[i].target+'</td>';
 										str+='<td>'+result.distList[i].completed+'</td>';
-										str+='<td>'+result.distList[i].percentage+'</td>';
+										if(result.distList[i].percentage < 50){
+											str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
+											str+='<td style="background-color:#FFBA00">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 80)
+										{
+											str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
+										}
+										//str+='<td>'+result.distList[i].percentage+'</td>';
 									str+='</tr>';
 									}else{
 										str+='<tr>';
@@ -1425,7 +1485,15 @@ function buildDistrictsPopupDetails(result,dataArr){
 										str+='<td>'+result.distList[i].notGrounded+'</td>';
 										str+='<td>'+result.distList[i].inProgress+'</td>';
 										str+='<td>'+result.distList[i].completed+'</td>';
-										str+='<td>'+result.distList[i].percentage+'</td>';
+										if(result.distList[i].percentage < 50){
+											str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
+											str+='<td style="background-color:#FFBA00">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 80)
+										{
+											str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
+										}
+										//str+='<td>'+result.distList[i].percentage+'</td>';
 									str+='</tr>';
 									}
 								}
@@ -2086,16 +2154,28 @@ function getNregasPopupOverview(menuLocationType,menuLocationId)
 	});
 }
 
-function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,menuLocationId)
+function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,menuLocationId,divId)
 {
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Target','Achivement','Percentage'];
-	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Target','Achivement','Percentage'];
-	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Target','Achivement','Percentage'];
-	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Target','Achivement','Percentage'];
+	if(divId == 'Timely Payment')
+	{
+		theadArr = [locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+		if(locationType == "constituency")
+			theadArr = ["district",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+		else if(locationType == "mandal")
+			theadArr = ["district","constituency",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+		else if(locationType == "panchayat")
+			theadArr = ["district","constituency","mandal",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+	}else{
+		if(locationType == "constituency")
+			theadArr = ["district",locationType,'Target','Achivement','Percentage'];
+		else if(locationType == "mandal")
+			theadArr = ["district","constituency",locationType,'Target','Achivement','Percentage'];
+		else if(locationType == "panchayat")
+			theadArr = ["district","constituency","mandal",locationType,'Target','Achivement','Percentage'];
+	}
+	
 	
 	var json = {
 		year : "2017",
@@ -2819,7 +2899,15 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 					str+='<label>Target</label>';
 					if(result[0].target != null && result[0].target.length > 0)
 					{
-						str+='<h4>'+result[0].target+'</h4>';
+						if(result[0].parameter == 'Labour Budget' && locType != 'district')
+						{
+							str+='<h4>'+result[0].target+'L</h4>';
+						}else if(result[0].parameter == 'Timely Payments'){
+							str+='<h4>'+result[0].target+'%</h4>';
+						}else{
+							str+='<h4>'+result[0].target+'</h4>';
+						}
+						
 					}else{
 						str+='<h4>0</h4>';
 					}
@@ -2829,7 +2917,15 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 					str+='<label>Completed</label>';
 					if(result[0].completed != null && result[0].completed.length > 0)
 					{
-						str+='<h4>'+result[0].completed+'</h4>';
+						if(result[0].parameter == 'Labour Budget' && locType != 'district')
+						{
+							str+='<h4>'+result[0].completed+'L</h4>';
+						}else if(result[0].parameter == 'Timely Payments'){
+							str+='<h4>'+result[0].completed+'%</h4>';
+						}else{
+							str+='<h4>'+result[0].completed+'</h4>';
+						}
+						
 					}else{
 						str+='<h4>0</h4>';
 					}
@@ -2904,8 +3000,8 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 }
 $(document).on("click",".menuDataCollapse",function(){
 	$(".multi-level-selection-menu").css("display","none");
-	$(".arrowIconChanged").find('i.fa').removeClass("fa-chevron-up");
-	$(".arrowIconChanged").find('i.fa').addClass("fa-chevron-down");
+	$(".arrowIconChanged").find('.fa').removeClass("fa-chevron-up");
+	$(".arrowIconChanged").find('.fa').addClass("fa-chevron-down");
 	$("#projectData,#projectOverviewBlock").html('');
 	var blockName = '';
 	$(".panel-block-white").each(function(){
@@ -3118,7 +3214,6 @@ function buildLabourBudgetPanExpData(result){
 }
 
 $(document).on("click","#selectedName",function(){
-	$(".arrowIconChanged").parent().find('i').removeClass("fa-chevron-down");
-	$(".arrowIconChanged").parent().find('i').addClass("fa-chevron-up");
-
+	$(".arrowIconChanged").parent().find('i.fa').removeClass("fa-chevron-down");
+	$(".arrowIconChanged").parent().find('i.fa').addClass("fa-chevron-up");
 });
