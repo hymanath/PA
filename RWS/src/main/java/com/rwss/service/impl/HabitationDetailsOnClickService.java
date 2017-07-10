@@ -287,10 +287,14 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 		List<HabitationDetailsVO> resultList = new ArrayList<HabitationDetailsVO>(0);
 		try {
 			LOG.info("Entered into getHabitationDetailsByStatusByLocationType() in HabitationDetailsService class");
-
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			if (inputVO != null && inputVO.getYear() != null && inputVO.getYear().trim().length() > 0) {
 				inputVO.setYear(inputVO.getYear().substring(inputVO.getYear().length() - 2));// taking last 2 digit from year
+			}else if(inputVO.getFromDateStr() != null && !inputVO.getFromDateStr().trim().isEmpty() && inputVO.getToDateStr() != null && !inputVO.getToDateStr().trim().isEmpty()){
+				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
+				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
 			}
+			
 			List<Object[]> rtrnHabDtsObjLst = rwsMinHabViewDAO.getHabitationDetailsByStatusByLocationType(inputVO);
 			if (rtrnHabDtsObjLst != null && rtrnHabDtsObjLst.size() > 0) {
 				for (Object[] param : rtrnHabDtsObjLst) {
@@ -465,10 +469,14 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 		jsonObj = new JSONObject();
 		try {
 			LOG.info("Entered into getOnclickHabitationsupplyDetails() in HabitationDetailsService class");
-
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			if (inputVO != null && inputVO.getYear() != null && inputVO.getYear().trim().length() > 0) {
 				inputVO.setYear(inputVO.getYear().substring(inputVO.getYear().length() - 2));// taking last 2 digit from year
+			}else if(inputVO.getFromDateStr() != null && !inputVO.getFromDateStr().trim().isEmpty() && inputVO.getToDateStr() != null && !inputVO.getToDateStr().trim().isEmpty()){
+				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
+				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
 			}
+			
 			if(inputVO.getType()!=null && inputVO.getType().trim().length()>0 && inputVO.getStartValue()!= null && inputVO.getEndValue()!= null ){
 				List<Object[]> object=rwsMinHabViewDAO.getOnclickHabitationsupplyDetails(inputVO);
 				
