@@ -345,7 +345,6 @@ function getConstDateForAssemblyInfo(){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			buildBasicBlock(result);
 		});
 	}
 	function getMandalDateForAssemblyInfo(){
@@ -366,6 +365,5 @@ function getConstDateForAssemblyInfo(){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			buildBasicBlock(result);
 		});
 	}
