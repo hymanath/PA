@@ -3,6 +3,7 @@ var globalToDate = moment().format('DD-MM-YYYY');
 var blockNameArr=[{name:'District',id:'3'},{name:'Constituency',id:'4'},{name:'Mandal',id:'5'}]
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 buildLevelWiseDetailsBlock();
+getBasicCountBlock();
 var maxHeight = 0;
 $(".blockHeights").each(function(){
    if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
@@ -16,6 +17,7 @@ var width = $(window).width()
 	}else{
 		$(".border_adjust_align").removeClass("border_right")
 		$(".border_adjust_align").addClass("border_top");
+		
 		
 		
 	}
@@ -42,6 +44,7 @@ $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	globalToDate = picker.endDate.format('DD-MM-YYYY')
 	
 	buildLevelWiseDetailsBlock();
+	getBasicCountBlock();
 });
 $(document).on('click','.calendar_active_cls li', function(){
 	var date = $(this).attr("attr_val");
@@ -73,6 +76,7 @@ $(document).on('click','.calendar_active_cls li', function(){
 	$(this).addClass("active");
 	if(date != "custom"){
 		buildLevelWiseDetailsBlock();
+		getBasicCountBlock();
 	}
 	
 });
@@ -145,7 +149,6 @@ function buildLevelWiseDetailsBlock(){
 					getDistrictOverview(blockNameArr[i].id,blockNameArr[i].name);
 				}else if(blockNameArr[i].id == 4){
 					getConstituencyOverview(blockNameArr[i].id,blockNameArr[i].name);
-					
 				}else if(blockNameArr[i].id == 5){
 					getMandalOverview(blockNameArr[i].id,blockNameArr[i].name);
 					
@@ -190,7 +193,7 @@ function buildTableData(result,blockId,blockName){
 								tableView+='<th><img class="img_widthTable" src="Assests/icons/house_icon.png" alt="house_icon"><br/>TOTAL</th>';
 								tableView+='<th><img class="img_widthTable" src="Assests/icons/Target_icon.png" alt="Target_icon"><br/>TARGET</th>';
 								tableView+='<th><img class="img_widthTable" src="Assests/icons/Achived_icon.png" alt="Achived_icon"><br/>ACHIVED</th>';
-								tableView+='<th><img class="img_widthTable" src="Assests/icons/Achived_%_Icon.png" alt="Achived_icon"><br/>ACHIVED %</th>';
+								tableView+='<th><img class="img_widthTable" src="Assests/icons/Achived_Perc_Icon.png" alt="Achived_%_Icon"><br/>ACHIVED %</th>';
 							tableView+='</thead>';
 							
 							tableView+='<tbody>';
@@ -259,7 +262,7 @@ function getConstituencyOverview(blockId,blockName){
 		var json = {
 			fromDate:globalFromDate,
 			toDate:globalToDate,
-			locationId:447,
+			locationId:0,
 			locationType:"mandal"
 			}
 		$.ajax({                
@@ -281,7 +284,6 @@ function getConstituencyOverview(blockId,blockName){
 			
 		});
 	}
-	getBasicCountBlock();
 	function getBasicCountBlock(){
 		var json = {
 			fromDate:"",
@@ -324,3 +326,46 @@ function selectBox(id)
 	$("#"+id).html(selectBox);
 	$("#chosen"+id).chosen();
 }
+getConstDateForAssemblyInfo();
+getMandalDateForAssemblyInfo();
+function getConstDateForAssemblyInfo(){
+		var json = {
+			fromDate:globalFromDate,
+			toDate:globalToDate,
+			locationId:0,
+			locationType:"assembly"
+			}
+		$.ajax({                
+			type:'POST',    
+			url: 'getPIRSSurveyInfo',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			buildBasicBlock(result);
+		});
+	}
+	function getMandalDateForAssemblyInfo(){
+
+		var json = {
+			fromDate:globalFromDate,
+			toDate:globalToDate,
+			locationId:0,
+			locationType:"mandal"
+			}
+		$.ajax({                
+			type:'POST',    
+			url: 'getPIRSSurveyInfo',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			buildBasicBlock(result);
+		});
+	}
