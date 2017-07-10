@@ -24,6 +24,7 @@ public class AlertVO {
 	private Long tehsilId;
 	private Long localBodyId;
 	private Long panchayatId;
+	private Long hamletId;
 	private Long wardId;
 	
 	
@@ -661,6 +662,12 @@ public class AlertVO {
 	}
 	public void setStatusCount(Long statusCount) {
 		this.statusCount = statusCount;
+	}
+	public Long getHamletId() {
+		return hamletId;
+	}
+	public void setHamletId(Long hamletId) {
+		this.hamletId = hamletId;
 	}
 	
 }

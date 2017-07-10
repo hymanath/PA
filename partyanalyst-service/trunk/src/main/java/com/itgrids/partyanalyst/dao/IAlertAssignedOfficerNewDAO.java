@@ -132,4 +132,5 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
     public List<Object[]> getHamletWiseIvrStatusCounts(Date fromDate,Date toDate,String year,List<Long> locationValues,Long LocationTypeId,
 			 Long searchlevelId,List<Long> searchLevelValues);
     public List<Object[]> getAssignedMemberAlertDetails(Date fromDate,Date toDate,Long constituencyId,List<Long> alertTypeIds);
+    public List<Object[]> getHamletWiseIvrStatusList(Date fromDate,Date toDate,String year,List<Long> locationValues,Long locationTypeId);
 }

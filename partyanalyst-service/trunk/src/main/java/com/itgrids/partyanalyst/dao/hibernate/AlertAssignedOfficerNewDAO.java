@@ -7378,4 +7378,108 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 			 query.setParameter("constituencyId",constituencyId);
 	 		return query.list();
 	 	}
+	@Override
+	public List<Object[]> getHamletWiseIvrStatusList(Date fromDate, Date toDate, String year, List<Long> locationValues,
+			Long locationTypeId) {
+		   StringBuilder sb = new StringBuilder();
+	       StringBuilder sbm = new StringBuilder();
+	       StringBuilder sbe = new StringBuilder();
+	       StringBuilder sbg = new StringBuilder();
+	       
+	       sb.append(" SELECT UA.state_id as sId,S.state_name as sName,UA.district_id as dId,D.district_name as dName,UA.constituency_id cId,C.name as cName"
+	       		+ " ,UA.tehsil_id as tId,T.tehsil_name as tName,P.panchayat_id as pId,P.panchayat_name as pName,UA.hamlet_id as hId,"
+	    		   + " H.hamlet_name as hName,IOP.satisfied_status as status,"
+	    		   + " count(distinct ISA.ivr_survey_answer_id) as count ");
+	       
+	       sbm.append(" FROM ivr_survey_entity ISE,ivr_survey_entity_type ISET,"
+	       		+ "  ivr_survey_answer ISA,ivr_option IOP,user_address UA,ivr_respondent_location IRL,state S,district D,"
+	       		+ "  constituency C,tehsil T,panchayat P,hamlet H ");
+	       
+	       sbe.append(" WHERE ISET.ivr_survey_entity_type_id = ISE.ivr_survey_entity_type_id"
+	       		+ " and ISE.ivr_survey_id = ISA.ivr_survey_id"
+	       		+ " and  ISA.ivr_option_id = IOP.ivr_option_id"
+	       		+ "	and ISA.ivr_respondent_id = IRL.ivr_respondent_id"
+	       		+ "	and IRL.address_id = UA.user_address_id"
+	       		+ "	and UA.state_id = S.state_id"
+	       		+ "	and UA.district_id = D.district_id"
+	       		+ "	and UA.constituency_id = C.constituency_id"
+	       		+ "	and UA.tehsil_id = T.tehsil_id"
+	       		+ "	and UA.panchayat_id = P.panchayat_id"
+	       		+ " and UA.hamlet_id = H.hamlet_id	"
+	       		+ " and ISA.is_deleted ='false'"
+	       		+ " and ISET.ivr_survey_entity_type_id=6"
+	       		+ " and ISET.is_deleted ='false'"
+	       		+ " and UA.hamlet_id is not null"
+	       		+ " and IOP.is_deleted ='false'");       
+	       if(year!=null && !year.trim().isEmpty()){
+	         sbe.append(" and year(ISV.start_date) =:year  ");
+	       }
+	       else if(fromDate!=null && toDate!=null){
+	         sbe.append(" and date(ISV.start_date) between :fromDate and :toDate  ");
+	       }
+	       
+	       sbg.append(" GROUP BY  UA.state_id,UA.district_id,UA.constituency_id,UA.tehsil_id,UA.panchayat_id,UA.hamlet_id,IOP.satisfied_status;");
+	       
+	       if(locationTypeId !=null && locationTypeId.longValue()>0l){
+	         if(locationTypeId ==2l){
+	           
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append(" and S.state_id in (:locationValues) ");
+	           }
+	           
+	         }else if(locationTypeId ==3l){
+	           
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append(" and D.district_id in (:locationValues) ");
+	           }
+	           
+	         }else if(locationTypeId ==4l){
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append(" and C.constituency_id in (:locationValues) ");
+	           }
+	           
+	         }else if(locationTypeId ==5l){
+	           
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append(" and T.tehsil_id  in (:locationValues) ");
+	           }
+	           
+	         }else if(locationTypeId ==6l){
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append( "  and P.panchayat_id in  (:locationValues)  " );
+	           }	           
+	         }
+	         
+	       }
+	       sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());  
+	       
+	       Query query = getSession().createSQLQuery(sb.toString())
+	           .addScalar("sId",Hibernate.LONG) 
+	           .addScalar("sName",Hibernate.STRING) 
+	           .addScalar("dId",Hibernate.LONG)
+	           .addScalar("dName",Hibernate.STRING)
+	           .addScalar("cId",Hibernate.LONG)
+	           .addScalar("cName",Hibernate.STRING)
+	           .addScalar("tId",Hibernate.LONG)
+	           .addScalar("tName",Hibernate.STRING)
+	           .addScalar("pId",Hibernate.LONG)
+	           .addScalar("pName",Hibernate.STRING)
+	             .addScalar("hId",Hibernate.LONG) 
+	             .addScalar("hName",Hibernate.STRING)
+	             .addScalar("Status",Hibernate.STRING)
+	             .addScalar("count",Hibernate.LONG);
+				 if(year!=null && !year.trim().isEmpty()){
+					 query.setParameter("year", Integer.parseInt(year));
+				 }
+	       else if(fromDate!=null && toDate!=null){
+	         query.setParameter("fromDate", fromDate);
+	         query.setParameter("toDate", toDate);
+	       }
+	      
+	      if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValues !=null && locationValues.size()>0){
+	        query.setParameterList("locationValues", locationValues);
+	      }
+	      return query.list();
+	
+	}
 }

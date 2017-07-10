@@ -253,4 +253,5 @@ public interface IAlertManagementSystemService {
 			 List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,
 			 List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
 	 public  List<AlertVO> getTotalAlertDetailsForConstituencyInfo(String fromDateStr ,String toDateStr,Long constituencyId,List<Long> alertTypeIds);
+	 public List<AlertVO> getHamletWiseIvrStatusList(String fromDateStr,String toDateStr,String year,List<Long> locationValues,Long locationTypeId,String statusType);
 }        

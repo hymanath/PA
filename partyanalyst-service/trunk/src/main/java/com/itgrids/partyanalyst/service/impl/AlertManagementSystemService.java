@@ -16101,4 +16101,97 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		return d;
 	}
+	/*
+	 * @Param String fromDateStr
+	 * @Param String toDateStr
+	 * @Param String year
+	 * @Param List<Long> locationValues
+	 * @Param Long locationTypeId
+	 * @Param String statusType
+	 * @author R Nagarjuna Gowd
+	 * @return List<AlertVO>
+	 * @Description This Method implements the get location wise hamlet details based on green,orange and red status type.
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getHamletWiseIvrStatusList(java.lang.String, java.lang.String, java.lang.String, java.util.List, java.lang.Long, java.lang.String)
+	 */
+	@Override
+	public List<AlertVO> getHamletWiseIvrStatusList(String fromDateStr, String toDateStr, String year,List<Long> locationValues, Long locationTypeId,String statusType) {
+        List<AlertVO> finalList = new ArrayList<AlertVO>();
+        AlertVO vo = new AlertVO();
+ 		try{
+ 			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			//0-stateId,1-stateName,2-districtId,3-districtName,4-conId,5-consName,6-mandalId,7-mandalName,8-panchayatId,9-panchayatName,10-hamletId,11-hamletName,12-status,13-count
+			List<Object[]> ivrList = alertAssignedOfficerNewDAO.getHamletWiseIvrStatusList(fromDate, toDate, year, locationValues, locationTypeId);
+			
+			if(ivrList !=null && ivrList.size()>0){
+				for (Object[] objects : ivrList) {
+					Long yCount = 0l;
+		            Long nCount = 0l;
+		            //Here get and set the ivrs ans counts based on ivrs satifaction status
+					if(objects[12]!=null && objects[12].toString().equalsIgnoreCase("Y")){
+						yCount = (objects[13] !=null ? (Long)objects[13]:0l);
+ 						
+ 					}else if(objects[12]!=null && objects[12].toString().equalsIgnoreCase("N")){
+ 						nCount = (objects[13] !=null ? (Long)objects[13]:0l);
+ 					}
+					// Calculate the percentage for hamlet ivrs answers count
+					String perc = cadreDetailsService.calculatePercentage(yCount+nCount,yCount);
+					//Here set the object status type is green(green means ivrs answers percentage is >=80)
+					if(statusType.equalsIgnoreCase("green") && statusType!=null && perc!=null && perc!="0" && (Double.parseDouble(perc)>=80)){
+						vo.setStateId(objects[0] !=null ? (Long)objects[0]:0l);
+						vo.setState(objects[1] !=null ? objects[1].toString():null);
+						vo.setDistrictId(objects[2] !=null ? (Long)objects[2]:0l);
+						vo.setDistrict(objects[3] !=null ? objects[3].toString():null);
+						vo.setConstituencyId(objects[4] !=null ? (Long)objects[4]:0l);
+						vo.setConstituency(objects[5] !=null ? objects[5].toString():null);
+						vo.setTehsilId(objects[6] !=null ? (Long)objects[6]:0l);
+						vo.setTehsil(objects[7] !=null ? objects[7].toString():null);
+						vo.setPanchayatId(objects[8] !=null ? (Long)objects[8]:0l);
+						vo.setPanchayat(objects[9] !=null ? objects[9].toString():null);
+						vo.setHamletId(objects[10] !=null ? (Long)objects[10]:0l);
+						vo.setHamlet(objects[11] !=null ? objects[11].toString():null);
+						//Here set the object status type is orange(orange means ivrs answers percentage is >=50 and <80)
+					}else if(statusType.equalsIgnoreCase("orange") && statusType!=null && perc!=null && perc!="0" && (Double.parseDouble(perc)>=50 && (Double.parseDouble(perc)<80))){
+						vo.setStateId(objects[0] !=null ? (Long)objects[0]:0l);
+						vo.setState(objects[1] !=null ? objects[1].toString():null);
+						vo.setDistrictId(objects[2] !=null ? (Long)objects[2]:0l);
+						vo.setDistrict(objects[3] !=null ? objects[3].toString():null);
+						vo.setConstituencyId(objects[4] !=null ? (Long)objects[4]:0l);
+						vo.setConstituency(objects[5] !=null ? objects[5].toString():null);
+						vo.setTehsilId(objects[6] !=null ? (Long)objects[6]:0l);
+						vo.setTehsil(objects[7] !=null ? objects[7].toString():null);
+						vo.setPanchayatId(objects[8] !=null ? (Long)objects[8]:0l);
+						vo.setPanchayat(objects[9] !=null ? objects[9].toString():null);
+						vo.setHamletId(objects[10] !=null ? (Long)objects[10]:0l);
+						vo.setHamlet(objects[11] !=null ? objects[11].toString():null);
+						//Here set the object status type is red(red means ivrs answers percentage is <50)
+					}else if(statusType.equalsIgnoreCase("red") && statusType!=null && perc!=null && perc!="0" && (Double.parseDouble(perc)<50)){
+						vo.setStateId(objects[0] !=null ? (Long)objects[0]:0l);
+						vo.setState(objects[1] !=null ? objects[1].toString():null);
+						vo.setDistrictId(objects[2] !=null ? (Long)objects[2]:0l);
+						vo.setDistrict(objects[3] !=null ? objects[3].toString():null);
+						vo.setConstituencyId(objects[4] !=null ? (Long)objects[4]:0l);
+						vo.setConstituency(objects[5] !=null ? objects[5].toString():null);
+						vo.setTehsilId(objects[6] !=null ? (Long)objects[6]:0l);
+						vo.setTehsil(objects[7] !=null ? objects[7].toString():null);
+						vo.setPanchayatId(objects[8] !=null ? (Long)objects[8]:0l);
+						vo.setPanchayat(objects[9] !=null ? objects[9].toString():null);
+						vo.setHamletId(objects[10] !=null ? (Long)objects[10]:0l);
+						vo.setHamlet(objects[11] !=null ? objects[11].toString():null);
+					}
+					finalList.add(vo);
+				}
+				
+			}
+ 		}catch (Exception e) {
+			e.printStackTrace();
+		}
+ 		return finalList;
+	}
+ 	
 }
