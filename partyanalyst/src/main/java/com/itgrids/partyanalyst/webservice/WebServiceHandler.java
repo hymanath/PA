@@ -3230,7 +3230,6 @@ public class WebServiceHandler {
 			return null;
 		}
 	}
-	
 	@POST
 	@Path("/checkMemberWalkInForToday")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -3245,4 +3244,23 @@ public class WebServiceHandler {
 		}
 	}
 	
+	@POST
+	@Path("/getHamletWiseIvrStatusList")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AlertVO> getHamletWiseIvrStatusList(JSONObject jObj){
+		try{
+			List<Long> locationValuesList = new ArrayList<Long>(0);
+			JSONArray arr = jObj.getJSONArray("locationValues");
+			if(arr != null && arr.length() > 0){
+				for (int i = 0; i < arr.length(); i++) {
+					locationValuesList.add(Long.parseLong(arr.get(i)+""));
+				}
+			}
+			return webServiceHandlerService.getHamletWiseIvrStatusList(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getString("year"),locationValuesList,jObj.getLong("locationTypeId"),jObj.getString("statusType"));			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getHamletWiseIvrStatusList() Method, Exception is ",e);
+			return null;
+		}
+	}
 }
