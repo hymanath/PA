@@ -268,7 +268,10 @@ public class RwsMinHabViewDAO extends GenericDaoHibernate<RwsMinHabView,String> 
 			
 		if (inputVo.getYear() != null && inputVo.getYear().trim().length() > 0) {
 			queryStr.append(" and  TO_CHAR(model.statusDate,'YY') =:year ");
+		}else if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
+			queryStr.append(" and  date(model.statusDate) between :fromDate and :toDate ");
 		}
+		
 		if (inputVo.getStatusList() != null && inputVo.getStatusList().size() > 0) {
 			queryStr.append(" and trim(model.coverageStatus) in (:statusValues)");
 		}
@@ -292,6 +295,9 @@ public class RwsMinHabViewDAO extends GenericDaoHibernate<RwsMinHabView,String> 
 
 		if (inputVo.getYear() != null && inputVo.getYear().trim().length() > 0) {
 			query.setParameter("year", inputVo.getYear().trim());
+		}else if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
+			query.setDate("fromDate", inputVo.getFromDate());
+			query.setDate("toDate", inputVo.getToDate());
 		}
 		if (inputVo.getFilterValue() != null && inputVo.getFilterValue().trim().length() > 0) {
 			query.setParameter("locationValue", inputVo.getFilterValue());
@@ -326,6 +332,8 @@ public class RwsMinHabViewDAO extends GenericDaoHibernate<RwsMinHabView,String> 
 		
 		if (inputVO.getYear() != null && inputVO.getYear().trim().length() > 0) {
 			queryStr.append(" and TO_CHAR(model.statusDate,'YY') =:year ");
+		}else if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+			queryStr.append(" and date(model.statusDate) between :fromDate and :toDate ");
 		}
 		if (inputVO.getDistrictValue() != null && inputVO.getDistrictValue().trim().length() > 0) {
 			queryStr.append(" and model.dCode =:districtValue ");
@@ -351,6 +359,9 @@ public class RwsMinHabViewDAO extends GenericDaoHibernate<RwsMinHabView,String> 
 		Query query = getSession().createQuery(queryStr.toString());
 		if (inputVO.getYear() != null && inputVO.getYear().trim().length() > 0) {
 			query.setParameter("year", inputVO.getYear().trim());
+		}else if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+			query.setDate("fromDate", inputVO.getFromDate());
+			query.setDate("toDate", inputVO.getToDate());
 		}
 		if (inputVO.getFilterValue() != null && inputVO.getFilterValue().trim().length() > 0) {
 			query.setParameter("locationValue", inputVO.getFilterValue().trim());
