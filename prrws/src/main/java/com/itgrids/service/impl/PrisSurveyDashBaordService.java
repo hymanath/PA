@@ -144,7 +144,13 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 		List<PrisOverviewVo> distOverViewLst = new ArrayList<PrisOverviewVo>(0);
 		List<PrisOverviewVo> distLst = new ArrayList<PrisOverviewVo>(0);
 		try {
-			response = webServiceUtilService.callWebService("http://130.211.128.117/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate(), inputVO);
+			 Long  totalHouseHolds = 0l;
+			 Long distId;
+			 String distName="";
+			 Long constId=0l;
+			 String constName="";
+			//response = webServiceUtilService.callWebService("http://130.211.128.117/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate(), inputVO);
+			response = webServiceUtilService.callWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&subFilterType="+inputVO.getSubFilterType(), inputVO);
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
@@ -158,10 +164,44 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 	 	    				vo.setId(jObj.getLong("id"));
 	 	    				vo.setName(jObj.getString("name"));
-	 	    				vo.setTotal(jObj.getLong("totalHouseHolds"));
+	 	    				if (jObj.isNull("totalHouseHolds")){
+	 	    					totalHouseHolds = 0l;
+	 	    				} else {
+	 	    					totalHouseHolds = jObj.getLong("totalHouseHolds");
+	 	    				}
+	 	    				
+	 	    				if (jObj.isNull("districtId")){
+	 	    					distId = 0l;
+	 	    				} else {
+	 	    					distId = jObj.getLong("districtId");
+	 	    				}
+	 	    				
+	 	    				if (jObj.isNull("districtName")){
+	 	    					distName = "";
+	 	    				} else {
+	 	    					distName = jObj.getString("districtName");
+	 	    				}
+	 	    				
+	 	    				if (jObj.isNull("constituencyId")){
+	 	    					constId = 0l;
+	 	    				} else {
+	 	    					constId = jObj.getLong("constituencyId");
+	 	    				}
+	 	    				
+	 	    				if (jObj.isNull("constituencyName")){
+	 	    					constName = "";
+	 	    				} else {
+	 	    					constName = jObj.getString("constituencyName");
+	 	    				}
+	 	    				
+	 	    				vo.setTotal(totalHouseHolds);
 	 	    				vo.setTarget(jObj.getLong("target"));
 	 	    				vo.setAchieved(jObj.getLong("achived"));
 	 	    				vo.setAchievedPercentage(new BigDecimal(jObj.getString("percentage")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				vo.setDistrictId(constId);
+	 	    				vo.setDistrictName(distName);
+	 	    				vo.setConstituencyId(constId);
+	 	    				vo.setConstituencyName(constName);
 	 	    				
 	 	    				distOverViewLst.add(vo);
 	 	    			}
@@ -190,4 +230,78 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		return d;
 	}
+	/*public PrisOverviewVo getPIRSSurveyInfoForAssembly(InputVO inputVO){
+		PrisOverviewVo finalVo = new PrisOverviewVo();
+		ClientResponse response = null;
+		List<PrisOverviewVo> overViewLst = new ArrayList<PrisOverviewVo>(0);
+		List<PrisOverviewVo> Lst = new ArrayList<PrisOverviewVo>(0);
+		try {
+			 Long  totalHouseHolds = 0l;
+			 Long districtId=0l;
+			 String dtsrictName ="";
+			response = webServiceUtilService.callWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&subFilterType="+inputVO.getSubFilterType(), inputVO);
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				PrisOverviewVo vo = new PrisOverviewVo();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setId(jObj.getLong("id"));
+	 	    				vo.setName(jObj.getString("name"));
+	 	    				
+	 	    				if (jObj.isNull("totalHouseHolds")){
+	 	    					totalHouseHolds = 0l;
+	 	    				} else {
+	 	    					totalHouseHolds = jObj.getLong("totalHouseHolds");
+	 	    				}
+	 	    				
+	 	    				if (jObj.isNull("districtId")){
+	 	    					districtId = 0l;
+	 	    				} else {
+	 	    					districtId = jObj.getLong("districtId");
+	 	    				}
+	 	    				if (jObj.isNull("districtId")){
+	 	    					districtId = 0l;
+	 	    				} else {
+	 	    					districtId = jObj.getLong("districtId");
+	 	    				}
+	 	    				vo.setTotal(totalHouseHolds);
+	 	    				vo.setTarget(jObj.getLong("target"));
+	 	    				vo.setAchieved(jObj.getLong("achived"));
+	 	    				vo.setAchievedPercentage(new BigDecimal(jObj.getString("percentage")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				if (jObj.isNull("totalHouseHolds")){
+	 	    					totalHouseHolds = 0l;
+	 	    				} else {
+	 	    					totalHouseHolds = jObj.getLong("totalHouseHolds");
+	 	    				}
+	 	    				vo.setDistrictId(districtId);
+	 	    				vo.setDistrictName(districtName);
+	 	    				overViewLst.add(vo);
+	 	    			}
+	 	    		}
+	 	    		
+	 	    	}
+ 	      }
+	        if(overViewLst != null && overViewLst.size() > 0){
+	        	for (PrisOverviewVo prisOverviewVo : overViewLst) {
+	        		PrisOverviewVo vo = new PrisOverviewVo();
+	        		vo.setId(prisOverviewVo.getId());
+	        		vo.setName(prisOverviewVo.getName());
+	        		
+	        		distLst.add(vo);
+				}
+	        }
+	      
+	        finalVo.setSubList(distOverViewLst);
+	        finalVo.setVoList(distLst);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPIRSSurveyInfo - SurveyDashBaordService service", e);
+		}
+		return finalVo;
+	}*/
 }
