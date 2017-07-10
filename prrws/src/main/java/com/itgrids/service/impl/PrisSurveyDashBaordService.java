@@ -198,7 +198,7 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    				vo.setTarget(jObj.getLong("target"));
 	 	    				vo.setAchieved(jObj.getLong("achived"));
 	 	    				vo.setAchievedPercentage(new BigDecimal(jObj.getString("percentage")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				vo.setDistrictId(constId);
+	 	    				vo.setDistrictId(distId);
 	 	    				vo.setDistrictName(distName);
 	 	    				vo.setConstituencyId(constId);
 	 	    				vo.setConstituencyName(constName);
