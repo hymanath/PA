@@ -35,6 +35,10 @@
 			tabBlocks('districtBlockId','district');
 			tabBlocks('constituencyBlockId','constituency');
 			tabBlocks('mandalBlockId','mandal');
+			
+			//hamlet detail List
+			getLocationWiseHamletIvrList();
+			
 			responsiveTabs();
 		}
 		function getSelectedType(){
