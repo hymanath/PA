@@ -60,13 +60,13 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
     		sb.append(" and tcey.enrollment_year_id = :cadreYearId");
     	if(fromDate != null && toDate != null)
     		sb.append(" and date(cm.Raised_Date) between :fromDate and :toDate");
-    	if(cadreYearId != null && cadreYearId.longValue() == 2l){
+    	/*if(cadreYearId != null && cadreYearId.longValue() == 2l){
     		sb.append(" and year(cm.date_of_incident) between '2012' and '2014'"); 
     	}else if(cadreYearId != null && cadreYearId.longValue() == 3l){
     		sb.append(" and year(cm.date_of_incident) between '2014' and '2016'"); 
     	}else if(cadreYearId != null && cadreYearId.longValue() == 4l){
     		sb.append(" and year(cm.date_of_incident) between '2016' and '2018'"); 
-    	}
+    	}*/
     	
     	sb.append(" group by gis.grievance_insurance_status_id,gic.grievance_insurance_company_id,cm.issue_type");
     	
@@ -140,13 +140,13 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
     		sb.append(" and gic.grievance_insurance_company_id = :companyId");
     	if(issueType != null && issueType.trim().length() > 0)
     		sb.append(" and cm.issue_type = :issueType");
-    	if(cadreYearId != null && cadreYearId.longValue() == 2l){
+    	/*if(cadreYearId != null && cadreYearId.longValue() == 2l){
     		sb.append(" and year(cm.date_of_incident) between '2012' and '2014'"); 
     	}else if(cadreYearId != null && cadreYearId.longValue() == 3l){
     		sb.append(" and year(cm.date_of_incident) between '2014' and '2016'"); 
     	}else if(cadreYearId != null && cadreYearId.longValue() == 4l){
     		sb.append(" and year(cm.date_of_incident) between '2016' and '2018'"); 
-    	}
+    	}*/
     	
     	Query query = getSession().createSQLQuery(sb.toString()).addScalar("complaintId", Hibernate.LONG);
     	
