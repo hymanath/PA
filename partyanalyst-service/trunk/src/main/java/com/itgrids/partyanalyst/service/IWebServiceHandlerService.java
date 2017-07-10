@@ -269,5 +269,5 @@ public interface IWebServiceHandlerService {
     public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue);
     public List<List<GrivenceStatusVO>> getGrivenceTrustStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue);
     public ResultStatus checkMemberWalkInForToday( String memberShipId, String date ,  String uniqueId, Long loginUserId,Long tabPrimaryKey);
-    
+    public List<AlertVO> getHamletWiseIvrStatusList(String fromDateStr,String toDateStr,String year,List<Long> locationValues,Long locationTypeId,String statusType);
 }

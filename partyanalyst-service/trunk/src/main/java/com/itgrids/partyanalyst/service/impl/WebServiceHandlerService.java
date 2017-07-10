@@ -5339,8 +5339,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			log.error("Exception raised at getLocationWiseGrivenceStatusCounts", e);
 		}return null;
 	}
-	 
-	 public ResultStatus checkMemberWalkInForToday( String memberShipId, String date ,  String uniqueId, Long loginUserId,Long tabPrimaryKey){
+
+	public ResultStatus checkMemberWalkInForToday( String memberShipId, String date ,  String uniqueId, Long loginUserId,Long tabPrimaryKey){
 		 try{
 			 return appointmentService.checkMemberWalkInForToday(memberShipId, date, uniqueId,loginUserId,tabPrimaryKey);
 		 }catch(Exception e){
@@ -5348,5 +5348,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 }
 		 return null;
 	 }
-	 
+	
+	@Override
+	public List<AlertVO> getHamletWiseIvrStatusList(String fromDateStr, String toDateStr, String year,
+			List<Long> locationValues, Long locationTypeId, String statusType) {
+		try{
+			return alertManagementSystemService.getHamletWiseIvrStatusList(fromDateStr, toDateStr, year, locationValues, locationTypeId, statusType);
+		}catch(Exception e){
+			log.error("Exception raised at getHamletWiseIvrStatusList", e);
+		}
+		return null;
+	}
 }
