@@ -12,7 +12,7 @@ public class NregsOverviewVO implements Serializable{
 	  private String averagePerDistrict;
 	  private String averagePerConstituency;
 	  private String averagePerMandal;
-	  private Long totalBudget;
+	  private String totalBudget;
 	  private String totalAvgFarmsInDistrict;
 	  private String totalAvgFarmsInConstituency;
 	  private String totalAvgFarmsInMandal;
@@ -50,12 +50,6 @@ public class NregsOverviewVO implements Serializable{
 	}
 	public void setAveragePerMandal(String averagePerMandal) {
 		this.averagePerMandal = averagePerMandal;
-	}
-	public Long getTotalBudget() {
-		return totalBudget;
-	}
-	public void setTotalBudget(Long totalBudget) {
-		this.totalBudget = totalBudget;
 	}
 	public String getTotalAvgFarmsInDistrict() {
 		return totalAvgFarmsInDistrict;
@@ -170,5 +164,11 @@ public class NregsOverviewVO implements Serializable{
 	}
 	public void setVillagesInOrange(Long villagesInOrange) {
 		this.villagesInOrange = villagesInOrange;
+	}
+	public String getTotalBudget() {
+		return totalBudget;
+	}
+	public void setTotalBudget(String totalBudget) {
+		this.totalBudget = totalBudget;
 	}
 }

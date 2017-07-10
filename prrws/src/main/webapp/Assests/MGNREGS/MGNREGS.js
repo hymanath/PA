@@ -1,5 +1,5 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var glStartDate = moment().startOf('year').format("YYYY-MM")+'-1';
+var glStartDate = '2017-04-01'//moment().startOf('year').format("YYYY-MM")+'-1';
 var glEndDate = moment().format("YYYY-MM")+'-30';
 var glStartDateForWebservice = moment().format("DD/MM/YYYY");
 var glEndDateForWebservice = moment().format("DD/MM/YYYY");
@@ -78,8 +78,27 @@ function onLoadCalls()
 		format: 'YYYY-MM',
 		viewMode:'months'
 	});
-	$('#dateRangePickerMGNT,#dateRangePickerMGNF').on('dp.change', function(e){ 
+	$('#dateRangePickerMGNT').on('dp.change', function(e){ 
 		glEndDate = e.date.format("YYYY-MM")+"-31";
+		var blockName = '';
+		$(".panel-block-white").each(function(){
+			if($(this).hasClass("active"))
+			{
+				blockName = $(this).attr("overview-block");
+			}
+		});
+		$("#projectOverviewBlock,#projectData").html('');
+		buildNREGSProjectsOverview(overViewArr,'');
+		for(var i in overViewArr)
+		{
+			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
+			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+				getNREGSProjectsAbstractNew(overViewArr[i],'state',0,'','2');
+			else
+				getNREGSAbstractDataByType(overViewArr[i],'state',0,'','2');
+		}
+	});
+	$('#dateRangePickerMGNF').on('dp.change', function(e){ 
 		glStartDate = e.date.format("YYYY-MM")+"-01";
 		var blockName = '';
 		$(".panel-block-white").each(function(){
@@ -2425,7 +2444,7 @@ function getNregaLevelsWiseDataForTimelyPayments(divIdd,locationType,menuLocatio
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		locationType: menuLocationType,
+		locationType: locationType,
 		divType : globalDivName,
 		locationId : menuLocationId,
 		sublocaType : locationType
