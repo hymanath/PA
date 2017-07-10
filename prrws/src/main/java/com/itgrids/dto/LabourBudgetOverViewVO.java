@@ -11,15 +11,15 @@ public class LabourBudgetOverViewVO implements Serializable{
 	private String budgetForMaterial;
 	private String leader;
 	private String lagger;
-	private Long totalLabour;
-	private Long maleLabour;
-	private Long femaleLabour;
-	private Long targettedPersonDays;
-	private Long generatedPersonDays;
-	private Long totalResponse;
-	private Long onRequestWorkAllocated;
-	private Long gotWorkOccutionally;
-	private Long haveNotGotWork;
+	private String totalLabour;
+	private String maleLabour;
+	private String femaleLabour;
+	private String targettedPersonDays;
+	private String generatedPersonDays;
+	private String totalResponse;
+	private String onRequestWorkAllocated;
+	private String gotWorkOccutionally;
+	private String haveNotGotWork;
 	private Long totalDistricts;
 	private Long districtsInRed;
 	private Long districtsInOrange;
@@ -86,60 +86,6 @@ public class LabourBudgetOverViewVO implements Serializable{
 	}
 	public void setLagger(String lagger) {
 		this.lagger = lagger;
-	}
-	public Long getTotalLabour() {
-		return totalLabour;
-	}
-	public void setTotalLabour(Long totalLabour) {
-		this.totalLabour = totalLabour;
-	}
-	public Long getMaleLabour() {
-		return maleLabour;
-	}
-	public void setMaleLabour(Long maleLabour) {
-		this.maleLabour = maleLabour;
-	}
-	public Long getFemaleLabour() {
-		return femaleLabour;
-	}
-	public void setFemaleLabour(Long femaleLabour) {
-		this.femaleLabour = femaleLabour;
-	}
-	public Long getTargettedPersonDays() {
-		return targettedPersonDays;
-	}
-	public void setTargettedPersonDays(Long targettedPersonDays) {
-		this.targettedPersonDays = targettedPersonDays;
-	}
-	public Long getGeneratedPersonDays() {
-		return generatedPersonDays;
-	}
-	public void setGeneratedPersonDays(Long generatedPersonDays) {
-		this.generatedPersonDays = generatedPersonDays;
-	}
-	public Long getTotalResponse() {
-		return totalResponse;
-	}
-	public void setTotalResponse(Long totalResponse) {
-		this.totalResponse = totalResponse;
-	}
-	public Long getOnRequestWorkAllocated() {
-		return onRequestWorkAllocated;
-	}
-	public void setOnRequestWorkAllocated(Long onRequestWorkAllocated) {
-		this.onRequestWorkAllocated = onRequestWorkAllocated;
-	}
-	public Long getGotWorkOccutionally() {
-		return gotWorkOccutionally;
-	}
-	public void setGotWorkOccutionally(Long gotWorkOccutionally) {
-		this.gotWorkOccutionally = gotWorkOccutionally;
-	}
-	public Long getHaveNotGotWork() {
-		return haveNotGotWork;
-	}
-	public void setHaveNotGotWork(Long haveNotGotWork) {
-		this.haveNotGotWork = haveNotGotWork;
 	}
 	public Long getTotalDistricts() {
 		return totalDistricts;
@@ -236,5 +182,59 @@ public class LabourBudgetOverViewVO implements Serializable{
 	}
 	public void setVillagesInGreen(Long villagesInGreen) {
 		this.villagesInGreen = villagesInGreen;
+	}
+	public String getTotalLabour() {
+		return totalLabour;
+	}
+	public void setTotalLabour(String totalLabour) {
+		this.totalLabour = totalLabour;
+	}
+	public String getMaleLabour() {
+		return maleLabour;
+	}
+	public void setMaleLabour(String maleLabour) {
+		this.maleLabour = maleLabour;
+	}
+	public String getFemaleLabour() {
+		return femaleLabour;
+	}
+	public void setFemaleLabour(String femaleLabour) {
+		this.femaleLabour = femaleLabour;
+	}
+	public String getTargettedPersonDays() {
+		return targettedPersonDays;
+	}
+	public void setTargettedPersonDays(String targettedPersonDays) {
+		this.targettedPersonDays = targettedPersonDays;
+	}
+	public String getGeneratedPersonDays() {
+		return generatedPersonDays;
+	}
+	public void setGeneratedPersonDays(String generatedPersonDays) {
+		this.generatedPersonDays = generatedPersonDays;
+	}
+	public String getTotalResponse() {
+		return totalResponse;
+	}
+	public void setTotalResponse(String totalResponse) {
+		this.totalResponse = totalResponse;
+	}
+	public String getOnRequestWorkAllocated() {
+		return onRequestWorkAllocated;
+	}
+	public void setOnRequestWorkAllocated(String onRequestWorkAllocated) {
+		this.onRequestWorkAllocated = onRequestWorkAllocated;
+	}
+	public String getGotWorkOccutionally() {
+		return gotWorkOccutionally;
+	}
+	public void setGotWorkOccutionally(String gotWorkOccutionally) {
+		this.gotWorkOccutionally = gotWorkOccutionally;
+	}
+	public String getHaveNotGotWork() {
+		return haveNotGotWork;
+	}
+	public void setHaveNotGotWork(String haveNotGotWork) {
+		this.haveNotGotWork = haveNotGotWork;
 	}
 }

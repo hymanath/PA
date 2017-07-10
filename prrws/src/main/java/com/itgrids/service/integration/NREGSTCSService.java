@@ -134,18 +134,18 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		//LabourBudgetOverViewVO vo = new LabourBudgetOverViewVO();
 	 	    		
 	 	    		returnvo.setTotalBudget(new BigDecimal(jObj.getString("TOTALBUDGET")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    		returnvo.setTotalLabour(jObj.getLong("TOTALLABOUR"));
-	 	    		returnvo.setMaleLabour(jObj.getLong("MALELABOUR"));
-	 	    		returnvo.setFemaleLabour(jObj.getLong("FEMALELABOUR"));
-	 	    		returnvo.setTargettedPersonDays(jObj.getLong("TARGETTEDPERSONDAYS"));
-	 	    		returnvo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
+	 	    		returnvo.setTotalLabour(jObj.getString("TOTALLABOUR"));
+	 	    		returnvo.setMaleLabour(jObj.getString("MALELABOUR"));
+	 	    		returnvo.setFemaleLabour(jObj.getString("FEMALELABOUR"));
+	 	    		returnvo.setTargettedPersonDays(jObj.getString("TARGETTEDPERSONDAYS"));
+	 	    		returnvo.setGeneratedPersonDays(jObj.getString("GENERATEDPERSONDAYS"));
 	 	    		returnvo.setAchievementPerc(new BigDecimal(jObj.getLong("GENERATEDPERSONDAYS")*100.0/jObj.getLong("TARGETTEDPERSONDAYS")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    		returnvo.setTotalExpenditure(new BigDecimal(jObj.getString("TOTALEXPENDITURE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    		returnvo.setAvgWagePerPerson(new BigDecimal(jObj.getString("AVGWAGEPERPERSON")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    		returnvo.setTotalResponse(jObj.getLong("TOTALRESPONSE"));
-	 	    		returnvo.setOnRequestWorkAllocated(jObj.getLong("ONREQUESTWORKALLOCATED"));
-	 	    		returnvo.setGotWorkOccutionally(jObj.getLong("GOTWORKOCCUTIONALLY"));
-    				returnvo.setHaveNotGotWork(jObj.getLong("HAVENOTGOTWORK"));
+	 	    		returnvo.setTotalResponse(jObj.getString("TOTALRESPONSE"));
+	 	    		returnvo.setOnRequestWorkAllocated(jObj.getString("ONREQUESTWORKALLOCATED"));
+	 	    		returnvo.setGotWorkOccutionally(jObj.getString("GOTWORKOCCUTIONALLY"));
+    				returnvo.setHaveNotGotWork(jObj.getString("HAVENOTGOTWORK"));
     				returnvo.setBudgetForLabour(new BigDecimal(jObj.getString("BUDGETFORLABOUR")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
     				returnvo.setBudgetForMaterial(new BigDecimal(jObj.getString("BUDGETFORMATERIAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
     				returnvo.setTotalDistricts(jObj.getLong("TOTALDISTRICTS"));
@@ -330,7 +330,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				finalVO.setAveragePerDistrict(new BigDecimal(Obj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				finalVO.setAveragePerConstituency(new BigDecimal(Obj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				finalVO.setAveragePerMandal(new BigDecimal(Obj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				finalVO.setTotalBudget(Obj.getLong("TOTALBUDGET"));
+	 	    				finalVO.setTotalBudget(Obj.getString("TOTALBUDGET"));
 	 	    				finalVO.setTotalAvgFarmsInDistrict(new BigDecimal(Obj.getString("TOTALAVGFARMSINDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				finalVO.setTotalAvgFarmsInConstituency(new BigDecimal(Obj.getString("TOTALAVGFARMSINCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				finalVO.setTotalAvgFarmsInMandal(new BigDecimal(Obj.getString("TOTALAVGFARMSINMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -2330,11 +2330,11 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				vo.setRejectAmt(jObj.getString("REJECT_AMT"));
 		 	    				vo.setPendingResponseCnt(jObj.getString("PENDING_RESPONSE_CNT"));
 		 	    				vo.setPendingResponseAmt(jObj.getString("PENDING_RESPONSE_AMT"));
-		 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
+		 	    				if(inputVO.getLocationType().trim().toString().equalsIgnoreCase("district")){
 		 	    					vo.setdId(jObj.getString("DID"));
 		 	    					vo.setDistrict(jObj.getString("DNAME"));
 		 	    				}
-		 	    				else if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("mandal")){
+		 	    				else if(inputVO.getLocationType().trim().toString().equalsIgnoreCase("mandal")){
 		 	    					vo.setmId(jObj.getString("MID"));
 		 	    					vo.setMandal(jObj.getString("MANDAL_DESCRIPTION"));
 		 	    				}
