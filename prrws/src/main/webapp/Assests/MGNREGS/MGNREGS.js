@@ -1937,8 +1937,8 @@ function getLabourBudgetClickingOverview(menuLocationType,menuLocationId)
 		year : "2017",
 		fromDate : glStartDate,
         toDate : glEndDate,
-        locationType : "state",
-        locationId : "-1"
+        locationType : menuLocationType,
+        locationId : menuLocationId
 	}
 	$.ajax({
 		url: 'getLabourBudgetOverview',
