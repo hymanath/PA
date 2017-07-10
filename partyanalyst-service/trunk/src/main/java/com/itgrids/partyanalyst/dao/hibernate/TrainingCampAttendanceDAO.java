@@ -1226,38 +1226,36 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	public List<Object[]> getTotalAttendedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate, List<Date> dateList, String option,List<Long> enrollYrIds){   
 		StringBuilder queryString = new StringBuilder();
 		queryString.append(" select " +
-						   " TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
-						   " TCA.trainingCampSchedule.trainingCampProgram.programName ,");
+						   " TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
+						   " TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName ,");
 		if(option.equalsIgnoreCase("dayWise") && programIdList.size() == 1 && programIdList.get(0) != 6){
-			queryString.append(" date(TCA.attendance.attendedTime), ");     
+			queryString.append(" date(TCBA.attendedTime), ");     
 		}
-		queryString.append(" count(distinct ATT.tdpCadre.tdpCadreId) from " +
-						   " TrainingCampAttendance TCA, Attendance ATT, TdpCadre TC, TrainingCampBatchAttendee TCBA where  ");  
+		queryString.append(" count(distinct TC.tdpCadreId) from " +
+						   " TdpCadre TC, TrainingCampBatchAttendee TCBA where  ");  
 		if(programIdList != null && programIdList.size()>0){
-			queryString.append(" TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and ");  
+			queryString.append(" TCBA.trainingCampBatch.isCancelled='false' and  TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and ");  
 		}
 		if(option.equalsIgnoreCase("dayWise") && programIdList.size() == 1 && programIdList.get(0) != 6){
-			queryString.append(" date(TCA.attendance.attendedTime) in (:dateList) and ");  
+			queryString.append(" date(TCBA.attendedTime) in (:dateList) and ");  
 		}else{
-			queryString.append(" date(TCA.attendance.attendedTime) <= (:toDate) and ");  
+			queryString.append(" date(TCBA.attendedTime) <= (:toDate) and ");  
 		}
 		if(enrollYrIds != null && enrollYrIds.size() >0){
-			queryString.append(" TCA.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollYrIds)  and " );
+			queryString.append(" TCBA.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollYrIds)  and " );
 		}
-		if(stateId.longValue() == 1){
-			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 23 and ");
+		if(stateId.longValue() == 1L){
+			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") and ");
 		}else{
-			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 10 and ");
+			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") and ");
 		}
-		queryString.append(" TCA.attendance.attendanceId = ATT.attendanceId and " +
-				           " ATT.tdpCadre.tdpCadreId = TC.tdpCadreId and " +    
-				           " TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId and TC.enrollmentYear = 2014 ");
+		queryString.append(" TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId and TC.enrollmentYear = 2014 and TC.isDeleted='N' ");
 		if(option.equalsIgnoreCase("dayWise") && programIdList.size() == 1 && programIdList.get(0) != 6){
-			queryString.append("group by TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, date(TCA.attendance.attendedTime) " +
-							   " order by TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, date(TCA.attendance.attendedTime) ");
+			queryString.append("group by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, date(TCBA.trainingCampBatch.attendedTime) " +
+							   " order by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, date(TCBA.trainingCampBatch.attendedTime) ");
 		}else{
-			queryString.append(" group by TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId " +
-			           		   " order by TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");
+			queryString.append(" group by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId " +
+			           		   " order by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");
 		}
 				    
 		Query query = getSession().createQuery(queryString.toString()); 

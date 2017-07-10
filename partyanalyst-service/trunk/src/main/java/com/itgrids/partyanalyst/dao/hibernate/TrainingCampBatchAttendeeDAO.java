@@ -10,6 +10,7 @@ import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.model.TrainingCampBatchAttendee;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCampBatchAttendee, Long> implements ITrainingCampBatchAttendeeDAO{
 
@@ -598,13 +599,13 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 		StringBuilder queryString = new StringBuilder();
 		queryString.append(" select TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
 						   " TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName, " +
-						   " count(distinct TC.tdpCadreId) from TrainingCampBatchAttendee TCBA, TdpCadre TC " +  
+						   " count(distinct TCBA.tdpCadreId) from TrainingCampBatchAttendee TCBA, TdpCadre TC " +  
 						   " where " +
 						   " date(TCBA.trainingCampBatch.fromDate) <= (:toDate) and" );    
-		if(stateId.longValue() == 1){
-			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 23 and ");
+		if(stateId.longValue() == 1L){
+			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") and ");
 		}else{
-			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 10 and ");
+			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") and ");
 		}
 		if(programIdList != null && programIdList.size() >0){
 			queryString.append(" TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and " );
@@ -612,7 +613,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 		if(enrollYrIds != null && enrollYrIds.size() >0){
 			queryString.append(" TCBA.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollYrIds)  and " );
 		}
-		queryString.append(" TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId and TCBA.isDeleted = 'false' " +
+		queryString.append(" TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId and TCBA.isDeleted = 'false' and TCBA.trainingCampBatch.isCancelled='false' " +
 						   " group by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId " +
 						   " order by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");
 		Query query = getSession().createQuery(queryString.toString());

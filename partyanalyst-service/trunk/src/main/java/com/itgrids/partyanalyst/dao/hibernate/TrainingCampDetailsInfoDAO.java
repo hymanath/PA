@@ -21,9 +21,9 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  				 " sum(model.eligible)," +//2
     	  				 " sum(model.attended)," +//3
     	  				 " sum(model.yetToTrain)  " +//4
-    	  				 " from TrainingCampDetailsInfo model,TrainingCampSchedule model1 " +
-    	  				 " where model.trainingCampProgram.trainingCampProgramId=1 " +
-    	  				 " and model.trainingCampProgramId = model1.trainingCampProgramId ");//and model.tdpCommitteeLevelId is null
+    	  				 " from TrainingCampDetailsInfo model " +
+    	  				 " where model.trainingCampProgram.trainingCampProgramId=8 ");
+    	  				// " and model.trainingCampProgramId = model1.trainingCampProgramId ");//and model.tdpCommitteeLevelId is null
     	  if(locationScopeId != null && locationScopeId.longValue() > 0){
     		  queryStr.append(" and model.locationScopeId =:locationScopeId");
     	  }
@@ -31,7 +31,7 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     		  queryStr.append(" and model.locationValue in (:locationValues)");
     	  }
     	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-    		  queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+    		 // queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
     	  }
     	  queryStr.append(" group by model.trainingCampProgram.trainingCampProgramId ");
     	 Query query = getSession().createQuery(queryStr.toString());
@@ -42,7 +42,7 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     		  query.setParameterList("locationValues", locationValues);  
     	  }
     	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-    		  query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+    		 // query.setParameterList("enrollmentYearIds", enrollmentYearIds);
     	  }
     	 return query.list();
     }
@@ -52,8 +52,8 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  				  " sum(model.eligible)," +//1
     	  				  " sum(model.attended)," +//2
     	  				  " sum(model.yetToTrain)  " +//3
-    	  				  " from TrainingCampDetailsInfo model,TrainingCampSchedule model1 " +
-    	  				  " where model.trainingCampProgramId=1 and model.trainingCampProgramId = model1.trainingCampProgramId ");//and model.tdpCommitteeLevelId is not null
+    	  				  " from TrainingCampDetailsInfo model  " +
+    	  				  " where model.trainingCampProgramId=8  ");//and model.tdpCommitteeLevelId is not null
     	  if(locationScopeId != null && locationScopeId.longValue() > 0){
     		  queryStr.append(" and model.locationScopeId =:locationScopeId");
     	  }
@@ -61,7 +61,7 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     		  queryStr.append(" and model.locationValue in (:locationValues)");
     	  }
     	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-    		  queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+    		//  queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
     	  }
     	  queryStr.append(" group by model.tdpCommitteeLevelId ");
     	 Query query = getSession().createQuery(queryStr.toString());
@@ -72,7 +72,7 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     		  query.setParameterList("locationValues", locationValues);  
     	  }
     	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-    		  query.setParameterList("enrollmentYearIds", enrollmentYearIds);  
+    		  //query.setParameterList("enrollmentYearIds", enrollmentYearIds);  
     	  }
     	 return query.list();
     }
@@ -82,9 +82,10 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  				  " sum(model.eligible)," +//1
     	  				  " sum(model.attended)," +//2
     	  				  " sum(model.yetToTrain)  " +//3
-    	  				  " from TrainingCampDetailsInfo model,TrainingCampSchedule model1 " +
-    	  				  " where model.trainingCampProgramId=1 " +
-    	  				  "and model1.trainingCampProgram.trainingCampProgramId = model.trainingCampProgram.trainingCampProgramId ");
+    	  				  " from TrainingCampDetailsInfo model "+
+    	  				//  " from TrainingCampDetailsInfo model,TrainingCampSchedule model1 " +
+    	  				  " where model.trainingCampProgramId=8 ");
+    	  				//  "and model1.trainingCampProgram.trainingCampProgramId = model.trainingCampProgram.trainingCampProgramId ");
     	  if(locationScopeId != null && locationScopeId.longValue() > 0){
     		  queryStr.append(" and model.locationScopeId =:locationScopeId");
     	  }
@@ -93,7 +94,7 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  }
     	  
     	  if(enrollmentYearIds != null && enrollmentYearIds.size() >0){
-    		  queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)   " );
+    		 // queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)   " );
   		}
     	  queryStr.append(" group by model.locationValue ");
     	 Query query = getSession().createQuery(queryStr.toString());
@@ -104,7 +105,7 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     		  query.setParameterList("locationValues", locationValues);  
     	  }
     	  if(enrollmentYearIds != null && enrollmentYearIds.size() >0){
-  			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+  			//query.setParameterList("enrollmentYearIds", enrollmentYearIds);
   		}
     	 return query.list();
     }
@@ -144,7 +145,7 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
       }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
          	  queryStr.append(" ,ParliamentAssembly model3 where model3.assemblyId = model.locationValue and model.locationScopeId=4 ");	 
       }
-         queryStr.append(" and model.trainingCampProgramId=1 ");
+         queryStr.append(" and model.trainingCampProgramId=8 ");
         if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
         	if(stateId != null && stateId.longValue() == 1){
         		queryStr.append(" and model2.districtId > 10 and model2.state.stateId=1 ");
@@ -218,7 +219,7 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
 	  		   queryStr.append(",Constituency model1 where model1.constituencyId = model.locationValue and model1.electionScope.electionScopeId=2 and model.locationScopeId=4 and model1.deformDate is null ");   
 	  	   }
 	      }
-	       queryStr.append(" and model.trainingCampProgramId=1 ");
+	       queryStr.append(" and model.trainingCampProgramId=8 ");
         if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
 	     	  if(locationValues != null && locationValues.size() > 0){
 	   	      queryStr.append("  and model1.district.districtId in (:locationValues) ");	
