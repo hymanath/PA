@@ -81,6 +81,7 @@ function onLoadCalls()
 	$('#dateRangePickerMGNT').on('dp.change', function(e){ 
 		glEndDate = e.date.format("YYYY-MM")+"-31";
 		var levelId = $("#selectedName").attr("attr_levelId");
+		var locId = $("#selectedName").attr("attr_id");
 		var locType = '';
 		if(levelId == 2)
 		{
@@ -103,14 +104,15 @@ function onLoadCalls()
 		{
 			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
-				getNREGSProjectsAbstractNew(overViewArr[i],locType,"0",'',levelId);
+				getNREGSProjectsAbstractNew(overViewArr[i],locType,locId,'',levelId);
 			else
-				getNREGSAbstractDataByType(overViewArr[i],locType,"0",'',levelId);
+				getNREGSAbstractDataByType(overViewArr[i],locType,locId,'',levelId);
 		}
 	});
 	$('#dateRangePickerMGNF').on('dp.change', function(e){ 
 		glStartDate = e.date.format("YYYY-MM")+"-01";
 		var levelId = $("#selectedName").attr("attr_levelId");
+		var locId = $("#selectedName").attr("attr_id");
 		var locType = '';
 		if(levelId == 2)
 		{
@@ -133,9 +135,9 @@ function onLoadCalls()
 		{
 			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
-				getNREGSProjectsAbstractNew(overViewArr[i],locType,"0",'',levelId);
+				getNREGSProjectsAbstractNew(overViewArr[i],locType,locId,'',levelId);
 			else
-				getNREGSAbstractDataByType(overViewArr[i],locType,"0",'',levelId);
+				getNREGSAbstractDataByType(overViewArr[i],locType,locId,'',levelId);
 		}
 		//getNREGSProjectsOverview(blockName);
 	});
@@ -716,8 +718,8 @@ function getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocat
 		year : "2017",
 		fromDate : glStartDate,
         toDate : glEndDate,
-        locationType : "state",
-        locationId : "-1"
+        locationType : menuLocationType,
+        locationId : menuLocationId
 	}
   $.ajax({
     url: 'getLabourBudgetExpenditure',
@@ -2916,7 +2918,8 @@ $(document).on("click",".menuDataCollapse",function(){
 	var locId = $(this).attr("attr_id");
 	$("#selectedName").html($(this).html())
 	var levelId = $(this).attr("attr_levelIdValue");
-	$("#selectedName").attr("attr_levelid",levelId)
+	$("#selectedName").attr("attr_levelid",levelId);
+	$("#selectedName").attr("attr_id",locId)
 	if(levelId == 3)
 	{
 		
