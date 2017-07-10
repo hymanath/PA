@@ -463,7 +463,6 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    			for(int i=0;i<finalArray.length();i++){
 	 	    				NregsDataVO vo = new NregsDataVO();
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-	 	    				//vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUEID") != " " ? jObj.getString("UNIQUEID") : "1").toString()));
 	 	    				vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUEID").toString().trim().length() > 0 ? jObj.getString("UNIQUEID") : "1").toString()));
 	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
 	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
@@ -471,7 +470,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 	 	    				vo.setTarget(jObj.getLong("TARGET"));
 	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
-	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+	 	    				if(jObj.getString("NOTGROUNDED").trim().contains("-"))
+	 	    					vo.setNotGrounded("0");
+	 	    				else
+	 	    					vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
 	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
@@ -626,6 +628,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String webServiceUrl = null;
 			List<NregsDataVO> list = new ArrayList<NregsDataVO>(0);
+			String str = null;
 			
 			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Labour Budget"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew";
@@ -684,7 +687,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Ponds"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FishPondServiceNew/FishPondDataNew";
 			
-			String str = convertingInputVOToString(inputVO);
+			 str = convertingInputVOToString(inputVO);
 			 
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
 	       
@@ -715,9 +718,9 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				list.add(vo);
 			 	    			}
 		 	    			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Average Wage") || 
-		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avg days of emp per HH") ||
-		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Comp 100 days") || 
-		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payments")){
+		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Average Days of Employment") ||
+		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Completed 100 Days") || 
+		 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payment")){
 			 	    				for(int i=0;i<finalArray.length();i++){
 				 	    				NregsDataVO vo = new NregsDataVO();
 				 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
@@ -783,7 +786,11 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				nregsDataVO.setPanchayat(jObj.getString("PANCHAYAT"));
 				 	    				nregsDataVO.setTarget(jObj.getLong("TARGET"));
 				 	    				nregsDataVO.setGrounded(jObj.getString("GROUNDED"));
-				 	    				nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
+				 	    				//nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
+				 	    				if(jObj.getString("NOTGROUNDED").trim().contains("-"))
+				 	    					nregsDataVO.setNotGrounded("0");
+				 	    				else
+				 	    					nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
 				 	    				nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
 				 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
 				 	    				
@@ -851,7 +858,10 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				nregsDataVO.setPanchayat(jObj.getString("PANCHAYAT"));
 			 	    				nregsDataVO.setTarget(jObj.getLong("TARGET"));
 			 	    				nregsDataVO.setGrounded(jObj.getString("GROUNDED"));
-			 	    				nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
+			 	    				if(jObj.getString("NOTGROUNDED").trim().contains("-"))
+			 	    					nregsDataVO.setNotGrounded("0");
+			 	    				else
+			 	    					nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
 			 	    				nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
 			 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
 			 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
@@ -880,8 +890,10 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    	
 		 	    	if(inputVO.getSublocationType().trim().equalsIgnoreCase("district"))
 		 	    	{
-			 	    		inputVO.setLocationType("constituency");
-				 	    	ClientResponse constResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+			 	    		inputVO.setSublocationType("constituency");
+			 	    		
+			 	    		str = convertingInputVOToString(inputVO);
+				 	    	ClientResponse constResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
 				 	    	if(constResponse.getStatus() != 200){
 					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ constResponse.getStatus());
 					 	      }else{
@@ -898,8 +910,9 @@ public class NREGSTCSService implements INREGSTCSService{
 									distConstMap.put(nregsDataVO.getDistrict(),filterVo);
 								}
 				 	    	 }
-				 	    	inputVO.setLocationType("mandal");
-				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+				 	    	inputVO.setSublocationType("mandal");
+				 	    	str = convertingInputVOToString(inputVO);
+				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
 				 	    	if(mandalResponse.getStatus() != 200){
 					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
 					 	      }else{
@@ -916,8 +929,9 @@ public class NREGSTCSService implements INREGSTCSService{
 									distConstMap.put(nregsDataVO.getDistrict(),filterVo);
 								}
 				 	    	 }
-				 	    	inputVO.setLocationType("panchayat");
-				 	    	ClientResponse panchayatResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+				 	    	inputVO.setSublocationType("panchayat");
+				 	    	str = convertingInputVOToString(inputVO);
+				 	    	ClientResponse panchayatResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
 				 	    	if(panchayatResponse.getStatus() != 200){
 					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ panchayatResponse.getStatus());
 					 	      }else{
@@ -961,8 +975,9 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 				 	    	 }
 				 	    	
-			 	    		inputVO.setLocationType("mandal");
-				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+			 	    		inputVO.setSublocationType("mandal");
+			 	    		str = convertingInputVOToString(inputVO);
+				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
 				 	    	if(mandalResponse.getStatus() != 200){
 					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
 					 	      }else{
@@ -978,8 +993,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    			constMandMap.put(nregsDataVO.getConstituency(),filterVo);
 								}
 				 	    	 }
-				 	    	inputVO.setLocationType("panchayat");
-				 	    	ClientResponse panchaytResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+				 	    	inputVO.setSublocationType("panchayat");
+				 	    	str = convertingInputVOToString(inputVO);
+				 	    	ClientResponse panchaytResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
 				 	    	if(panchaytResponse.getStatus() != 200){
 					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ panchaytResponse.getStatus());
 					 	      }else{
@@ -1039,8 +1055,9 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 				 	    	 }
 				 	    	
-			 	    		inputVO.setLocationType("panchayat");
-				 	    	ClientResponse panchayResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), inputVO);
+			 	    		inputVO.setSublocationType("panchayat");
+			 	    		str = convertingInputVOToString(inputVO);
+				 	    	ClientResponse panchayResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
 				 	    	if(panchayResponse.getStatus() != 200){
 					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ panchayResponse.getStatus());
 					 	      }else{
