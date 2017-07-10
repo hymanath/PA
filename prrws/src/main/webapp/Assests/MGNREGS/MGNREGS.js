@@ -103,9 +103,9 @@ function onLoadCalls()
 		{
 			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
-				getNREGSProjectsAbstractNew(overViewArr[i],locType,0,'',levelId);
+				getNREGSProjectsAbstractNew(overViewArr[i],locType,"0",'',levelId);
 			else
-				getNREGSAbstractDataByType(overViewArr[i],locType,0,'',levelId);
+				getNREGSAbstractDataByType(overViewArr[i],locType,"0",'',levelId);
 		}
 	});
 	$('#dateRangePickerMGNF').on('dp.change', function(e){ 
@@ -133,9 +133,9 @@ function onLoadCalls()
 		{
 			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
-				getNREGSProjectsAbstractNew(overViewArr[i],locType,0,'',levelId);
+				getNREGSProjectsAbstractNew(overViewArr[i],locType,"0",'',levelId);
 			else
-				getNREGSAbstractDataByType(overViewArr[i],locType,0,'',levelId);
+				getNREGSAbstractDataByType(overViewArr[i],locType,"0",'',levelId);
 		}
 		//getNREGSProjectsOverview(blockName);
 	});
@@ -347,7 +347,7 @@ function projectData(divId,levelId,locationId)
 			getNregaLevelsWiseDataFrAvenue(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else if(divId == "CC Roads")//
 			getNregaLevelsWiseDataForCCRoads(tableId,dataArr[i],menuLocationType,menuLocationId);
-		else if(divId == "Payments")//
+		else if(divId == "Payments" && (dataArr[i] == "state" || dataArr[i] == "district" || dataArr[i] == "mandal"))//
 			getNregaLevelsWiseDataForTimelyPayments(tableId,dataArr[i],menuLocationType,menuLocationId);
 		else
 			getNregaLevelsWiseData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId);
@@ -393,7 +393,7 @@ function overviewData(divId,levelId,locationId)
 	
 	if(divId == 'Labour Budget')
 		getNREGSLabourBudgetOverview(divId,menuLocationType,menuLocationId);
-	else
+	else if(divId != 'Payments')
 		getNregasOverview(divId,menuLocationType,menuLocationId);
 }
 function tableView(blockId,theadArr,result,locationType)
@@ -2395,9 +2395,9 @@ for(var i in overViewArr)
 {
 	$("[overview-block='"+overViewArr[i]+"']").append(spinner);
 	if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
-		getNREGSProjectsAbstractNew(overViewArr[i],'state',0,'',2);
+		getNREGSProjectsAbstractNew(overViewArr[i],'state',"0",'',2);
 	else
-		getNREGSAbstractDataByType(overViewArr[i],'state',0,'',2);
+		getNREGSAbstractDataByType(overViewArr[i],'state',"0",'',2);
 }
 /*for(var i in overViewArr){
 	getNREGSProjectsOverviewArr(overViewArr[i]);
@@ -2944,9 +2944,9 @@ $(document).on("click",".menuDataCollapse",function(){
 		{
 			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
-				getNREGSProjectsAbstractNew(overViewArr[i],'state',0,blockName,levelId);
+				getNREGSProjectsAbstractNew(overViewArr[i],'state',"0",blockName,levelId);
 			else
-				getNREGSAbstractDataByType(overViewArr[i],'state',0,blockName,levelId);
+				getNREGSAbstractDataByType(overViewArr[i],'state',"0",blockName,levelId);
 		}
 	}
 	
