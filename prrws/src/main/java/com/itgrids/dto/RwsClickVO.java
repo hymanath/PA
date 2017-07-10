@@ -22,6 +22,8 @@ public class RwsClickVO implements Serializable{
 	private String habitationName;
 	private String completionDate;
 	private String habitationCode;
+	private Long panchayatId;
+	private String panchayat;
 	
 	private String status;
 	private String totalCount;
@@ -35,6 +37,20 @@ public class RwsClickVO implements Serializable{
 	private String assestCost;
 	
 	
+	
+	
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public String getPanchayat() {
+		return panchayat;
+	}
+	public void setPanchayat(String panchayat) {
+		this.panchayat = panchayat;
+	}
 	public String getAssestCode() {
 		return assestCode;
 	}

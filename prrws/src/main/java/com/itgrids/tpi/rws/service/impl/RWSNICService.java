@@ -2037,4 +2037,49 @@ public class RWSNICService implements IRWSNICService{
 			LOG.error("Exception raised at buildWaterSourceTableData - RuralWaterSupplyDashBoardService service", e);
 		}
 	}
+	
+
+	@Override
+	public List<RwsClickVO> getHamletWiseIvrStatusList(InputVO vo) {
+    List<RwsClickVO> ivraHamletList = new ArrayList<>();
+    try{
+    	WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getHamletWiseIvrStatusList");
+    	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+        
+        if(response.getStatus() != 200){
+ 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+ 	      }else{
+			String output = response.getEntity(String.class);
+			
+			if(output != null && !output.isEmpty()){
+				JSONArray finalArray = new JSONArray(output);//Type Array
+ 	    		if(finalArray!=null && finalArray.length()>0){
+ 	    			for(int i=0;i<finalArray.length();i++){
+ 	    				RwsClickVO hamletList = new RwsClickVO();
+ 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
+ 	    				
+ 	    				hamletList.setId(jobj.getLong("stateId"));
+ 	    				hamletList.setName(jobj.getString("state"));
+ 	    				hamletList.setDistrictCode(jobj.getString("districtId"));
+ 	    				hamletList.setDistrictName(jobj.getString("district"));
+ 	    				hamletList.setConstituencyCode(jobj.getString("constituencyId"));
+ 	    				hamletList.setConstituencyName(jobj.getString("constituency"));
+ 	    				hamletList.setMandalCode(jobj.getString("tehsilId"));
+ 	    				hamletList.setMandalName(jobj.getString("tehsil"));
+ 	    				hamletList.setPanchayatId(jobj.getLong("panchayatId"));
+ 	    				hamletList.setPanchayat(jobj.getString("panchayat"));
+ 	    				hamletList.setHabitationCode(jobj.getString("hamletId"));
+ 	    				hamletList.setHabitationName(jobj.getString("hamlet"));
+ 	    				
+ 	    				ivraHamletList.add(hamletList);
+ 	    			}
+ 	    		}
+ 	    	}
+			
+		}
+	}catch(Exception e){
+    	
+    }
+		return ivraHamletList;
+	}
 }
