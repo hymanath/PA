@@ -934,10 +934,10 @@ public class RWSNICService implements IRWSNICService{
 						}else{
 							KPIVO vo = mandlMap.get(indiArr.getLong(0));
 							if(indiArr.getString(2).equalsIgnoreCase("NSS") || indiArr.getString(2).equalsIgnoreCase("NC")){
-								vo.setQaAchivement(Long.parseLong(indiArr.getString(3)));
+								vo.setQaAchivement(vo.getQaAchivement()+Long.parseLong(indiArr.getString(3)));
 							}else if(indiArr.getString(2).equalsIgnoreCase("PC1") || indiArr.getString(2).equalsIgnoreCase("PC2") 
 									|| indiArr.getString(2).equalsIgnoreCase("PC3") || indiArr.getString(2).equalsIgnoreCase("PC4")){
-								vo.setPcAchivement(indiArr.getLong(3));
+								vo.setPcAchivement(vo.getPcAchivement()+indiArr.getLong(3));
 							}
 						}
 					}
@@ -957,10 +957,10 @@ public class RWSNICService implements IRWSNICService{
 						vo.setLocationName(indiArr.getString(1));
 						
 						if(indiArr.getString(2).equalsIgnoreCase("NSS") || indiArr.getString(2).equalsIgnoreCase("NC")){
-							vo.setQaAchivement(Long.parseLong(indiArr.getString(3)));
+							vo.setQaTarget(Long.parseLong(indiArr.getString(3)));
 						}else if(indiArr.getString(2).equalsIgnoreCase("PC1") || indiArr.getString(2).equalsIgnoreCase("PC2") 
 								|| indiArr.getString(2).equalsIgnoreCase("PC3") || indiArr.getString(2).equalsIgnoreCase("PC4")){
-							vo.setPcAchivement(indiArr.getLong(3));
+							vo.setPcTarget(indiArr.getLong(3));
 						}
 						
 						Map<Long,KPIVO> mandalMap = new HashMap<Long, KPIVO>(0);
@@ -975,10 +975,10 @@ public class RWSNICService implements IRWSNICService{
 							vo.setLocationName(indiArr.getString(1));
 							
 							if(indiArr.getString(2).equalsIgnoreCase("NSS") || indiArr.getString(2).equalsIgnoreCase("NC")){
-								vo.setQaAchivement(Long.parseLong(indiArr.getString(3)));
+								vo.setQaTarget(Long.parseLong(indiArr.getString(3)));
 							}else if(indiArr.getString(2).equalsIgnoreCase("PC1") || indiArr.getString(2).equalsIgnoreCase("PC2") 
 									|| indiArr.getString(2).equalsIgnoreCase("PC3") || indiArr.getString(2).equalsIgnoreCase("PC4")){
-								vo.setPcAchivement(indiArr.getLong(3));
+								vo.setPcTarget(indiArr.getLong(3));
 							}
 							
 							Map<Long,KPIVO> mandalMap = new HashMap<Long, KPIVO>(0);
@@ -986,10 +986,10 @@ public class RWSNICService implements IRWSNICService{
 						}else{
 							KPIVO vo = mandlMap.get(indiArr.getLong(0));
 							if(indiArr.getString(2).equalsIgnoreCase("NSS") || indiArr.getString(2).equalsIgnoreCase("NC")){
-								vo.setQaAchivement(Long.parseLong(indiArr.getString(3)));
+								vo.setQaTarget(vo.getQaTarget()+Long.parseLong(indiArr.getString(3)));
 							}else if(indiArr.getString(2).equalsIgnoreCase("PC1") || indiArr.getString(2).equalsIgnoreCase("PC2") 
 									|| indiArr.getString(2).equalsIgnoreCase("PC3") || indiArr.getString(2).equalsIgnoreCase("PC4")){
-								vo.setPcAchivement(indiArr.getLong(3));
+								vo.setPcTarget(vo.getPcTarget()+indiArr.getLong(3));
 							}
 						}
 					}
