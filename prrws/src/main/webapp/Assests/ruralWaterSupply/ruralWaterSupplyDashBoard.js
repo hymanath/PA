@@ -1,4 +1,4 @@
- //Angular Start
+ //Angular Start  getAlertsOfCategoryByStatusWise()
 		var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY");
 		var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
 		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","Ground":"#14BAAD","Surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
@@ -37,7 +37,7 @@
 			tabBlocks('mandalBlockId','mandal');
 			
 			//hamlet detail List
-			getLocationWiseHamletIvrList();
+			//getLocationWiseHamletIvrList();
 			
 			responsiveTabs();
 		}
@@ -2153,7 +2153,7 @@
 										for(var j in GLtbodyArr[i].statusList){
 										if(GLtbodyArr[i].statusList[j].status != 'NC'){
 												if(GLtbodyArr[i].statusList[j].count !=null && GLtbodyArr[i].statusList[j].count>0){
-													tableView+='<td>'+GLtbodyArr[i].statusList[j].count+'</td>';
+													tableView+='<td class="hablitationClickView" attr_status="'+GLtbodyArr[i].statusList[j].status+'" attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].goNumber+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].statusList[j].count+'</td>';
 													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].statusList[j].percentage+'</small></td>';
 												}else{
 													tableView+='<td> - </td>';
@@ -3382,7 +3382,7 @@
 	getOnclickHabitationsupplyDetails();
 	getSchemeDetailsByTypeOfAssestName();
 	getAssetDetailsByAssetType();
-	getHabitationDetailsByStatusByLocationType();
+	
 	getWaterSourceDeatilsLocationWise();
 	function getOnclickWorkDetails(){
 		var json = {
@@ -3528,17 +3528,38 @@
 		});
 	}
 	
-	function getHabitationDetailsByStatusByLocationType(){
+	function getHabitationDetailsByStatusByLocationType(status,filterValue,filterType,districtVal){
+		
+		$("#modalHablitationTable").html(spinner);
 		var statusArr = [];
-		statusArr.push("FC");
+		statusArr.push(status);
+		var yearVal="";
+			var financialVal =$("#financialYearId").val();
+			if(financialVal != 0){
+				 yearVal=financialVal;
+			}
+		var filterVal = '';	
+		var locationType = '';	
+		if(filterType == "state"){
+			filterVal = "";
+			locationType="";
+		}else{
+			filterVal = filterValue < 9?"0"+filterValue:filterValue;
+			locationType = filterType;
+		}	
+		var districtValStr="";	
+		if(filterType == "mandal"){
+			districtValStr = districtVal < 9?"0"+districtVal:districtVal;
+			
+		}		
 		var json = {
 			statusList:statusArr,
-			year:"2017",
-			startValue:"30",
-			endValue:"10",
-			districtValue:"01",
-			filterType:"mandal",
-			filterValue:"02"
+			year:yearVal,
+			startValue:"0",
+			endValue:"50",
+			districtValue:districtValStr,
+			filterType:locationType,
+			filterValue:filterVal
 		}
 		$.ajax({                
 			type:'POST',    
@@ -3550,10 +3571,55 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
+			if(result !=null && result.length>0){
+				buildHabitationDetailsByStatusByLocationType(result);
+			}else{
+				$("#modalHablitationTable").html('No Data Available');
+			}
 			
 		});
 	}
-	
+	function buildHabitationDetailsByStatusByLocationType(result){
+		
+		var tableView='';
+		tableView+='<table class="table table-bordered" id="dataTableHablitation">';
+			tableView+='<thead>';
+				tableView+='<tr>';
+					tableView+='<th>DISTRICT</th>';
+					tableView+='<th>CONSTITUENCY</th>';
+					tableView+='<th>MANDAL</th>';
+					tableView+='<th>HABITATIONS NAME</th>';
+					tableView+='<th>HABITATIONS CODE</th>';
+				tableView+='</tr>';
+			tableView+='</thead>';
+			tableView+='<tbody>';
+			for(var i in result){
+				tableView+='<tr>';
+					tableView+='<td>'+result[i].districtName+'</td>';
+					tableView+='<td>'+result[i].constituencyName+'</td>';
+					tableView+='<td>'+result[i].mandalName+'</td>';
+					tableView+='<td>'+result[i].habitationName+'</td>';
+					tableView+='<td>'+result[i].habitationCode+'</td>';
+				tableView+='</tr>';
+			}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#modalHablitationTable").html(tableView);
+		$("#dataTableHablitation").dataTable();
+	}
+	$(document).on("click",".hablitationClickView",function(){
+		$("#modalHablitationTable").html('');
+		
+		var status = $(this).attr("attr_status");
+		var filterValue = $(this).attr("attr_filter_value");
+		var filterType=$(this).attr("attr_location_type");
+		var districtVal=$(this).attr("attr_district_val");
+		$("#modalHablitationDivId").modal('show');
+		$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		getHabitationDetailsByStatusByLocationType(status,filterValue,filterType,districtVal);
+		
+		
+	});
 	function getWaterSourceDeatilsLocationWise(){
 		var json = {
 			status:"surface"
@@ -3685,7 +3751,7 @@
 	}
 	
 	function getLocationWiseHamletIvrList(){
-		jsObj={
+		var jsObj={
 				fromDateStr:"",
 				toDateStr:"",
 				year:"",
@@ -3702,3 +3768,36 @@
 	    	console.log(result);
 		});	
 	}
+	
+	function getAlertsOfCategoryByStatusWise(){
+		var statusIds=[];
+		var json = {
+		  deptId:49,
+		  fromDate:glStartDate,
+		  toDate:glEndDate,
+		  year:yearVal,
+		  locationTypeId:locationTypeId,
+		  locationValues:locationValues,
+		  statusIds : [],
+		  startIndex:startIndex,
+		  endIndex:endIndex
+		 
+		}
+		$.ajax({
+			url: 'getLocationWiseAlertStatusCounts',
+			data: JSON.stringify(json),
+			type: "POST",
+			dataType: 'json', 
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success: function(ajaxresp){
+				
+				
+			}
+		});
+	}
+	
+	
+	

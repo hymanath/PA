@@ -305,7 +305,19 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<div class="modal fade" id="modalHablitationDivId" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width: 95%;">
+    <div class="modal-content modal-custom">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#fff">&times;</span></button>
+        <h4 class="modal-title" id="modalHabliHeadingId">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <div id="modalHablitationTable"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
