@@ -45,4 +45,5 @@ public interface IRWSNICService {
 	public List<KeyValueVO> getConstituenciesForDistrict(IdNameVO idNameVO);
 	public List<KeyValueVO> getTehsilsForConstituency(IdNameVO idNameVO);
 	public List<WaterSourceVO> getWaterSourceDeatils2(InputVO vo);
+	public List<RwsClickVO> getHamletWiseIvrStatusList(InputVO vo);
 }

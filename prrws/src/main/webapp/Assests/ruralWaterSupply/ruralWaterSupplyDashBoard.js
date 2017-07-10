@@ -3679,3 +3679,22 @@
 				}
 		});
 	}
+	
+	function getLocationWiseHamletIvrList(){
+		jsObj={
+				fromDateStr:"",
+				toDateStr:"",
+				year:"",
+				locationTypeId:"4",
+				locationValues:[232],
+				status:"green"
+		}
+		 $.ajax({
+	      type : "POST",
+	      url : "getLocationHamletIvrStatusList",
+	      dataType : 'json',
+	      data : {task :JSON.stringify(jsObj)}
+	    }).done(function(result){  
+	    	console.log(result);
+		});	
+	}
