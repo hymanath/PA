@@ -14,13 +14,17 @@ public class PrisOverviewVo implements Serializable{
 	
 	private Long id;
 	private String name;
-	private Long total;
-	private Long target;
-	private Long achieved;
+	private Long total =0l;
+	private Long target =0l;
+	private Long achieved =0l;
 	private String achievedPercentage;
 	
 	private List<PrisOverviewVo> voList = new ArrayList<PrisOverviewVo>(0);
 	private List<PrisOverviewVo> subList = new ArrayList<PrisOverviewVo>(0);
+	private Long districtId;
+	private String districtName;
+	private Long constituencyId;
+	private String constituencyName;
 	public Long getId() {
 		return id;
 	}
@@ -68,6 +72,30 @@ public class PrisOverviewVo implements Serializable{
 	}
 	public void setSubList(List<PrisOverviewVo> subList) {
 		this.subList = subList;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
 	}
 	
 }
