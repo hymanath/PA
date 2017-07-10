@@ -1055,7 +1055,11 @@ function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocati
 					str+=' <tr>';
 						str+=' <td>Grand Total</td>';
 						for(var i in result){
-							str+='<td class="cuntCls" style="cursor:pointer;" attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'">'+result[i].count+'</td>';
+							if(result[i].count != null && result[i].count != 0){
+								str+='<td class="cuntCls" style="cursor:pointer;" attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'">'+result[i].count+'</td>';
+							}else{
+								str+='<td attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'">'+result[i].count+'</td>';
+							}
 						}
 					str+='</tr>';
 					str+=' <tr>';
@@ -2960,7 +2964,9 @@ $(document).on("click","#selectedName",function(e){
 
 
 $(document).on("click",".cuntCls",function(){
+	$("#LabBudgtPanExBodyId").html('');
 	$("#nregsPanExpModalId").modal("show");
+	$("#LabBudgtPanExBodyId").html(spinner);
 	var range = $(this).attr("attr_range");
 	var locationType = $(this).attr("attr_location_type");
 	var locationId = $(this).attr("attr_loaction_id");
@@ -2969,16 +2975,19 @@ $(document).on("click",".cuntCls",function(){
 	var toRange;
 	if(range == "Below 1"){
 		 fromRange = 0;
-		 toRange = 0;
+		 toRange = 1;
 	}else if(range == "Above 400"){
 		fromRange = 400;
 		 toRange = 5000;
+	}else if(range == "0"){
+		fromRange = 0;
+		 toRange = 0;
 	}else{
 		rangeArr = range.split("-");
 		 fromRange = rangeArr[0];
 		 toRange = rangeArr[1];
 	}
-		
+		$("#larBudExpHeadingId").html('No of Panchayaties Vs Expenditure In Lakhs('+range+')');
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
@@ -2999,20 +3008,20 @@ $(document).on("click",".cuntCls",function(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success : function(result){   
-			buildLabourBudgetPanExpData(result)
+			buildLabourBudgetPanExpData(result);
 		}
 	});
 });
 
 function buildLabourBudgetPanExpData(result){
 	var str='';
-	str+='<table class="table table-bordered">';
+	str+='<table class="table table-bordered" id="larBudExpTableId">';
 		str+='<thead>';
-			str+='<th>District<th>';
-			str+='<th>Assembly<th>';
-			str+='<th>Mandal<th>';
-			str+='<th>Panchayat<th>';
-			str+='<th>Total Expenditure<th>';
+			str+='<th>District</th>';
+			str+='<th>Assembly</th>';
+			str+='<th>Mandal</th>';
+			str+='<th>Panchayat</th>';
+			str+='<th>Total Expenditure</th>';
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result){
@@ -3027,6 +3036,7 @@ function buildLabourBudgetPanExpData(result){
 		str+='</tbody>';
 	str+='</table>';
 	$("#LabBudgtPanExBodyId").html(str);
+	$("#larBudExpTableId").dataTable();
 }
 
 $(document).on("click","#selectedName",function(){

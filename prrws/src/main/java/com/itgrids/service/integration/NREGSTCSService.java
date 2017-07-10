@@ -2422,8 +2422,6 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    			}
 	 	    		}
 	 	    	}
-	 	    	 
-	 	    	  
 	 	      }
 	        
 		} catch (Exception e) {

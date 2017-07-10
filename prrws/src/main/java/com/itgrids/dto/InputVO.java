@@ -404,13 +404,13 @@ public class InputVO implements Serializable {
 		return fromRange;
 	}
 	public void setFromRange(Long fromRange) {
-		fromRange = fromRange;
+		this.fromRange = fromRange;
 	}
 	public Long getToRange() {
 		return toRange;
 	}
 	public void setToRange(Long toRange) {
-		toRange = toRange;
+		this.toRange = toRange;
 	}
 	
 }
