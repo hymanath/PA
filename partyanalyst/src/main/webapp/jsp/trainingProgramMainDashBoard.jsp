@@ -572,6 +572,8 @@ function buildAttendedCountByFeedBacks(result)
 
 function getAttendedCountSummaryByBatch(){
 	$("#titleSummary").html('BATCH WISE ATTENDANCE SUMMARY');
+	var enrollmentYrIds =[];
+     enrollmentYrIds.push($("#enrlmntYrId").val());
 	$("#programSummaryDivId").html('');
 	
 	var jsObj = {
@@ -579,7 +581,8 @@ function getAttendedCountSummaryByBatch(){
 		campId:campId,
 		batchId:batchId,
 		callFrom:callFrom,
-		dates:dates
+		dates:dates,
+		enrollmentYearIdsList : enrollmentYrIds
 	}
 	
 	$.ajax({
