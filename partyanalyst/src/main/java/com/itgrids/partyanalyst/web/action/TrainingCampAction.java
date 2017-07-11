@@ -2394,14 +2394,27 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		if(batchId==0l){
     			batchId=null;
     		}
-    		
+    		List<Long> enrollmentYrIds = new ArrayList<Long>(0);
+    		JSONArray enrollmentYrIdsArr = jObj.getJSONArray("enrollmentYrIds");
+    		if(enrollmentYrIdsArr != null && enrollmentYrIdsArr.length() > 0)
+    		{
+    			for(int i=0;i<enrollmentYrIdsArr.length();i++)
+    				enrollmentYrIds.add(new Long(enrollmentYrIdsArr.get(i).toString()));
+    		}
+    		List<Long> programIds = new ArrayList<Long>(0);
+    		JSONArray programIdsArr = jObj.getJSONArray("programIds");
+    		if(programIdsArr != null && programIdsArr.length() > 0)
+    		{
+    			for(int i=0;i<programIdsArr.length();i++)
+    				programIds.add(new Long(programIdsArr.get(i).toString()));
+    		}
     		String callFrom = jObj.getString("callFrom");
     		
     		String dates[] = jObj.getString("dates").split("-");
     		if(dates.length>1){
-    			finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId,dates[0].trim(),dates[1].trim(),callFrom);
+    			finalVO = trainingCampService.getattendedcountByFeedBacks(programIds,campId,batchId,dates[0].trim(),dates[1].trim(),callFrom,enrollmentYrIds);
     		}else{
-    			finalVO = trainingCampService.getattendedcountByFeedBacks(programId,campId,batchId,null,null,callFrom);
+    			finalVO = trainingCampService.getattendedcountByFeedBacks(programIds,campId,batchId,null,null,callFrom,enrollmentYrIds);
     		}
     		
     		
@@ -2432,11 +2445,26 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		String fromType = jObj.getString("fromType");
     		String dates[] = jObj.getString("dates").split("-");
     		String callFrom = jObj.getString("callFrom");
+    		JSONArray enrollmentYrIdsArr = jObj.getJSONArray("enrollmentYrIds");
+    		List<Long> enrollmentYrIds = new ArrayList<Long>(0);
     		
+    		if(enrollmentYrIdsArr != null && enrollmentYrIdsArr.length() > 0){
+    			for(int i=0;i<enrollmentYrIdsArr.length();i++){
+    				enrollmentYrIds.add(Long.parseLong(enrollmentYrIdsArr.getString(i)));
+    			}
+    		}
+    		
+    		List<Long> programIds = new ArrayList<Long>(0);
+    		JSONArray programIdsArr = jObj.getJSONArray("programIds");
+    		if(programIdsArr != null && programIdsArr.length() > 0)
+    		{
+    			for(int i=0;i<programIdsArr.length();i++)
+    				programIds.add(new Long(programIdsArr.get(i).toString()));
+    		}
     		if(dates.length>1){
-    			simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId,dates[0].trim(),dates[1].trim(),fromType,callFrom);
+    			simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programIds,campId,batchId,dates[0].trim(),dates[1].trim(),fromType,callFrom,enrollmentYrIds);
     		}else{
-    			simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programId,campId,batchId,null,null,fromType,callFrom);
+    			simpleVOList = trainingCampService.getAttendedCountsByProgramOrCampOrBatch(programIds,campId,batchId,null,null,fromType,callFrom,enrollmentYrIds);
     		}
     		
     	}catch(Exception e){
@@ -2456,24 +2484,28 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		Long batchId = jObj.getLong("batchId");
     		String dates[] = jObj.getString("dates").split("-");
     		String callFrom = jObj.getString("callFrom");
-    		 List<Long> enrollmentYearIds=new ArrayList<Long>();
- 			JSONArray enrollmentYearIdsArray=jObj.getJSONArray("enrollmentYearIdsList");
- 			if(enrollmentYearIdsArray!=null &&  enrollmentYearIdsArray.length()>0){
- 				for( int i=0;i<enrollmentYearIdsArray.length();i++){
- 					enrollmentYearIds.add(Long.valueOf(enrollmentYearIdsArray.getString(i)));
- 				}
- 			}
- 			List<Long> programYearIds=new ArrayList<Long>();
- 			 JSONArray programIdsArray=jObj.getJSONArray("programIdsList");
- 						if(programIdsArray!=null &&  programIdsArray.length()>0){
- 							for( int i=0;i<programIdsArray.length();i++){
- 								programYearIds.add(Long.valueOf(programIdsArray.getString(i)));
- 							}
- 						}
+    		 
+    		JSONArray enrollmentYrIdsArr = jObj.getJSONArray("enrollmentYrIds");
+    		List<Long> enrollmentYrIds = new ArrayList<Long>(0);
+    		
+    		if(enrollmentYrIdsArr != null && enrollmentYrIdsArr.length() > 0){
+    			for(int i=0;i<enrollmentYrIdsArr.length();i++){
+    				enrollmentYrIds.add(Long.parseLong(enrollmentYrIdsArr.getString(i)));
+    			}
+    		}
+    		
+    		List<Long> programIds = new ArrayList<Long>(0);
+    		JSONArray programIdsArr = jObj.getJSONArray("programIds");
+    		if(programIdsArr != null && programIdsArr.length() > 0)
+    		{
+    			for(int i=0;i<programIdsArr.length();i++)
+    				programIds.add(new Long(programIdsArr.get(i).toString()));
+    		}
+    		
     		if(dates.length>1){
-    			simpleVOList = trainingCampService.getAttendedCountSummaryByBatch(programId,campId,batchId,dates[0].trim(),dates[1].trim(),callFrom,enrollmentYearIds,programYearIds);
+    			simpleVOList = trainingCampService.getAttendedCountSummaryByBatch(programId,campId,batchId,dates[0].trim(),dates[1].trim(),callFrom,enrollmentYrIds,programIds);
     		}else{
-    			simpleVOList = trainingCampService.getAttendedCountSummaryByBatch(programId,campId,batchId,null,null,callFrom,enrollmentYearIds,programYearIds);
+    			simpleVOList = trainingCampService.getAttendedCountSummaryByBatch(programId,campId,batchId,null,null,callFrom,enrollmentYrIds,programIds);
     		}
     		
     		
@@ -2675,7 +2707,6 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 								}
 							}
 			simpleVO=trainingCampService.getDayWiseAttendnenceForBatch(selDate,enrollmentYearIds,programYearIds);
-			
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDayWiseAttendnenceForBatch", e);
@@ -3000,21 +3031,22 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		Long batchId = jObj.getLong("batchId");
     		String dataType=jObj.getString("dataType");
     		String type=jObj.getString("type");
-    		List<Long> enrollmentYearIds=new ArrayList<Long>();
-			JSONArray enrollmentYearIdsArray=jObj.getJSONArray("enrollmentYearIdsList");
-			if(enrollmentYearIdsArray!=null &&  enrollmentYearIdsArray.length()>0){
-				for( int i=0;i<enrollmentYearIdsArray.length();i++){
-					enrollmentYearIds.add(Long.valueOf(enrollmentYearIdsArray.getString(i)));
-				}
-			}
-			List<Long> programYearIds=new ArrayList<Long>();
+    		JSONArray enrollmentYrIdsArr = jObj.getJSONArray("enrollmentYrIds");
+    		List<Long> enrollmentYrIds = new ArrayList<Long>(0);
+    		
+    		if(enrollmentYrIdsArr != null && enrollmentYrIdsArr.length() > 0){
+    			for(int i=0;i<enrollmentYrIdsArr.length();i++){
+    				enrollmentYrIds.add(Long.parseLong(enrollmentYrIdsArr.getString(i)));
+    			}
+    		}
+    		List<Long> programYearIds=new ArrayList<Long>();
 			 JSONArray programIdsArray=jObj.getJSONArray("programIdsList");
 						if(programIdsArray!=null &&  programIdsArray.length()>0){
 							for( int i=0;i<programIdsArray.length();i++){
 								programYearIds.add(Long.valueOf(programIdsArray.getString(i)));
 							}
 						}
-    		simpleVOList=trainingCampService.getDaysAttendedCadreDetails(batchId,dataType,type,enrollmentYearIds,programYearIds);
+    		simpleVOList=trainingCampService.getDaysAttendedCadreDetails(batchId,dataType,type,enrollmentYrIds,programYearIds);
     	}catch (Exception e) {
     		LOG.error("Exception raised at getDaysAttendedCadreDetails", e);
 		}

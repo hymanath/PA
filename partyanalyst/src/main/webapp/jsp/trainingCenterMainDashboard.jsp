@@ -1500,12 +1500,13 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		var batchId = $(this).attr("attr_batch_id");
 		var dates = $("#selectDate").val();
 		var callFrom = $(this).attr("attr_from");
+		var enrollmentYrId = $("#trainingEnrlmntYrId").val();
 		if(fromTypeGlob=="onClick"){
 			dates = $("#selectDate").val();
 		}else{
 			dates="";
 		}
-		var win = window.open('trainingProgramMainDashBoardAction.action?pd='+progId+'&cd='+campId+'&bd='+batchId+'&dts='+dates+'&cf='+callFrom+'', '_blank');
+		var win = window.open('trainingProgramMainDashBoardAction.action?pd='+progId+'&cd='+campId+'&bd='+batchId+'&dts='+dates+'&cf='+callFrom+'&eyi='+enrollmentYrId+'', '_blank');
 	});
 	
 	$(".constDistRadio").click(function(){
