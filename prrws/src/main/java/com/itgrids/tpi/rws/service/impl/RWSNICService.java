@@ -1853,23 +1853,17 @@ public class RWSNICService implements IRWSNICService{
  	    		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
  	      	}else{
 				String output = response.getEntity(String.class);
-				
-				if(output != null && !output.isEmpty()){
-					
+				if(output != null && !output.isEmpty()){					
 					JSONArray finalArray = new JSONArray(output);
 					
-				
 		 	    		if(finalArray!=null && finalArray.length()>0){
 		 	    			
 		 	    			JSONObject firstObj = (JSONObject)finalArray.get(0);
 		 	    			
 		 	    			if(firstObj.getString("status") !="null" && !firstObj.getString("status").trim().isEmpty() && 
-									firstObj.getString("status").trim().equalsIgnoreCase("Success")){
-		 	    				
-		 	    				for(int i=0;i<finalArray.length();i++){
-			 	    				
-			 	    				RwsClickVO subVo = new RwsClickVO();
-			 	    				
+									firstObj.getString("status").trim().equalsIgnoreCase("Success")){		 	    				
+		 	    				for(int i=0;i<finalArray.length();i++){			 	    				
+			 	    				RwsClickVO subVo = new RwsClickVO();			 	    				
 			 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
 			 	    				
 			 	    		        subVo.setDistrictCode(jobj.getString("districtCode"));
@@ -1877,16 +1871,15 @@ public class RWSNICService implements IRWSNICService{
 			 	    				subVo.setConstituencyCode(jobj.getString("constituencyCode"));
 			 	    				subVo.setConstituencyName(jobj.getString("constituencyName"));
 			 	    				subVo.setMandalCode(jobj.getString("mandalCode"));	
-			 	    				subVo.setMandalName(jobj.getString("mandalName"));    
-			 	    				subVo.setSourceCount(jobj.getString("sourceCount"));			 	    				
-			 	    				
+			 	    				subVo.setMandalName(jobj.getString("mandalName"));  
+			 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
+			 	    				subVo.setHabitationName(jobj.getString("habitationName"));			 	    				
+			 	    				subVo.setAssestCode(jobj.getString("assestCode"));
 			 	    				finalList.add(subVo);
 			 	    			}		 	    				
 		 	    			}		 	    		
-		 	    		}
-					
-				}
-				
+		 	    		}				
+				}				
  	      	}
 			
 		} catch (Exception e) {
@@ -2077,8 +2070,8 @@ public class RWSNICService implements IRWSNICService{
 			
 		}
 	}catch(Exception e){
-    	
+		LOG.error("Exception Occured in getHamletWiseIvrStatusList() method, Exception - ",e);
     }
 		return ivraHamletList;
-	}
+	}	
 }
