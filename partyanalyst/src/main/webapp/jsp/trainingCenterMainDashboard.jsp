@@ -112,8 +112,8 @@ header.eventsheader {
                 	<div class="panel-heading bg_c">
                     	<h4 class="panel-title" style="font-weight:bold;">
                         	TRAINING CENTER MAIN DASHBOARD
-							  <span class="" style="font-size:15px">Select Enrollment</span>
-									<select id="trainingEnrlmntYrId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;" id="">
+							  <!--<span class="" style="font-size:15px">Select Enrollment</span>-->
+									<select id="trainingEnrlmntYrId" style="width: 118px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;" id="" title="Select Enrollment">
 										<option value="3">2014-2016</option> 
 										<option value="4" selected="selected" >2016-2018</option> 
 									</select>
@@ -532,6 +532,7 @@ $(function () {
 	getAttendenceForTrainers("today");
 	//$(".ranges ul li:nth-child(5)").trigger("click");
 	getFeedBackCountsOfTraining("onLoad");
+	getAllTrainingCampDetails("onLoad");
 	
 });
 
@@ -540,7 +541,7 @@ $(function () {
 function getTrainingCenterDetailsBasedOnDates(fromType){
 
 	var dates;
-	if(fromType=="onLoad"){
+	if(fromType=="onLoad" || fromType=="change"){
 		dates="";
 	}else{
 		dates=$("#selectDate").val();
@@ -548,14 +549,14 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	var enrollmentYrIds =[];
 	enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 	if(fromType=="change"){
-		alert(900);
+		enrollmentYrIds.length = 0;
 		enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 	}
 	var programIds =[];
 	if(enrollmentYrIds == 4){
 		programIds.push(8);
 	}else{
-		programIds.push(6,7);
+		programIds.push(1,6,7);
 	}
 	var jsObj=
 	{	
@@ -1013,7 +1014,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		$('#partyDesgWisedivId').html('');
 		
 		var dates;
-		if(fromType=="onLoad"){
+		if(fromType=="onLoad" || fromType=="change"){
 			dates="";
 		}else{
 			dates=$("#selectDate").val();
@@ -1021,13 +1022,14 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		var enrollmentYrIds =[];
 		enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 	    if(fromType == "change"){
+			enrollmentYrIds.length = 0;
 		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 	     }
 		 var programIds =[];
 	    if(enrollmentYrIds == 4){
 		   programIds.push(8);
 	     }else{
-		 programIds.push(6,7);
+		 programIds.push(1,6,7);
 			}
 		var jObj={
 			selectedDate : dates,
@@ -1060,23 +1062,22 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	
 	function getDayWiseCountsForRunningBatches(fromType){
 		var dates;
-		if(fromType=="onLoad"){
+		if(fromType=="onLoad" || fromType=="change"){
 			dates="";
 		}else{
 			dates=$("#selectDate").val();
 		}
-		/* var enrollmentYrIds =[];
-		enrollmentYrIds.push($("#trainingEnrlmntYrId").val()); */
 		var enrollmentYrIds =[];
 		enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 	    if(fromType == "change"){
+			enrollmentYrIds.length = 0;
 		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 	     }
 		 var programIds =[];
 		if(enrollmentYrIds == 4){
 			programIds.push(8);
 		}else{
-			programIds.push(6,7);
+			programIds.push(1,6,7);
 		}
 		var jObj={
 			selectedDate : dates,
@@ -1157,20 +1158,21 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		});
 	}
 	
-	function getAttendenceForTrainers(type){
+	function getAttendenceForTrainers(type){//srujana
 		
 		var typeStr = $("input[name='filterRadio']:checked").val();
 		var searchType = $("input[name='filtersRadio']:checked").val();	
         var enrollmentYrIds =[];
         enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 		if(type == "change"){
+			enrollmentYrIds.length = 0;
 		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 	     }
         var programIds =[];
 		if(enrollmentYrIds == 4){
 			programIds.push(8);
 		}else{
-			programIds.push(6,7);
+			programIds.push(1,6,7);
 		}		
 		$("#spekrsTotalDiv").html("");
 		var jObj={
@@ -1323,7 +1325,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		$('#constWiseDivId').html('');
 		
 		var dates;
-		if(fromType=="onLoad"){
+		if(fromType=="onLoad" || fromType=="change"){
 			dates="";
 		}else{
 			dates=$("#selectDate").val();
@@ -1331,13 +1333,14 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		var enrollmentYrIds =[];
 		enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 	    if(fromType == "change"){
+			enrollmentYrIds.length = 0;
 		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 	     }
 		 var programIds =[];
 		if(enrollmentYrIds == 4){
 			programIds.push(8);
 		}else{
-			programIds.push(6,7);
+			programIds.push(1,6,7);
 		}
 		var jObj={
 		  selectedDate : dates,
@@ -1586,7 +1589,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			$("#viewDetailsBtnId").hide();
 			
 			var dates;
-			if(fromType=="onLoad"){
+			if(fromType=="onLoad" || fromType=="change"){
 				dates="";
 			}else{
 				dates=$("#selectDate").val();
@@ -1594,14 +1597,14 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			var enrollmentYrIds =[];
 			enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 	     if(fromType=="change"){
-			alert(456);
+			 enrollmentYrIds.length = 0;
 		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 	     }
 		 var programIds =[];
 			if(enrollmentYrIds==4){
 				programIds.push(8);
 			}else{
-				programIds.push(6,7);
+				programIds.push(1,6,7);
 			}
 		var jsObj={
 			dates : dates,
@@ -1683,7 +1686,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		window.open('feedbackOverViewDetailsAction.action?dates='+dates+'', '_blank');
 	});
 	
-	$(document).on("click",".cadreDetailsCls",function(){
+	$(document).on("click",".cadreDetailsCls",function(){ 
 		var batchId = $(this).attr("attr_batchId");
 		var type=$(this).attr("attr_type");
 		var dataType=$(this).attr("attr_dataType");
@@ -1697,11 +1700,20 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		$("#popupForCadreDetailsId").html('');
 		
 		$("#dataLoadingsImgForCadrePopUpId").show();
-		
+		var enrollmentYrIds =[];
+			enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+		 var programIds =[];
+			if(enrollmentYrIds==4){
+				programIds.push(8);
+			}else{
+				programIds.push(1,6,7);
+			}
 		var jsObj={
 			batchId : batchId,
 			dataType:dataType,
-			type:type
+			type:type,
+			enrollmentYearIdsList :enrollmentYrIds,
+			programIdsList : programIds	
 		}
 		$.ajax({
 		   type:'POST',
@@ -1755,13 +1767,14 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		  var enrollmentYrIds =[];
 		  enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 		  if(fromType == "change"){
+			  enrollmentYrIds.length = 0;
 		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
 	     }
 		  var programIds =[];
 			if(enrollmentYrIds == 4){
 				programIds.push(8);
 			}else{
-				programIds.push(6,7);
+				programIds.push(1,6,7);
 			}
 		var jsObj={
 			enrollmentYearIdsList :enrollmentYrIds,
@@ -1800,7 +1813,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			}
 		});
 	}
-	getAllTrainingCampDetails();
+	//getAllTrainingCampDetails();
 $(document).on("click","#refrshButtonId",function(){
 	updateTrainingCampSpeakersDetails();
 });
@@ -1820,8 +1833,9 @@ $(document).on('change', '#trainingEnrlmntYrId', function(){
 		getInvitedAttendedCadreCountByBatchIds("change");
 		getDayWiseCountsForRunningBatches("change");
 		getFeedBackCountsOfTraining("change");
+		getAllTrainingCampDetails("change");
 	});
-		
+$("#trainingEnrlmntYrId").tooltip();		
 </script>
 </body>
 </html>	
