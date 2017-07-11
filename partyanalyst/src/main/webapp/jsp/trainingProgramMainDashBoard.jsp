@@ -270,7 +270,7 @@ var campId = '${param.cd}';
 var batchId = '${param.bd}';
 var dates = '${param.dts}';
 var callFrom = '${param.cf}';
-var enrollmentYrId = '${param.eri}';
+var enrollmentYrId = '${param.eyi}';
 
 if(callFrom=="c"){
 	$("#completedRadio").prop("checked", true)
