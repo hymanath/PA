@@ -15,7 +15,7 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Object[]> getInvitedCadreCountByBatchIds(List<Long> batchIds,String type,List<Long> enrollmentYearIds);
 	public List<Object[]> getCompletedCounts(List<Long> batchIds);
 	
-	public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate,Date currDate,String callFrom);
+	public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,List<Long> programId,Long campId,Long batchId,Date fromDate,Date toDate,Date currDate,String callFrom,List<Long> enrollmentYrIds);
 	public Long getAttendedCountByBatch(Long batchId,Date fromDate,Date todate,Long enrollmentYearId,List<Long> enrollmentYearIds);
 	public List<Object[]> getDateWiseCountsByBatch(Long batchId,Date fromDate,Date toDate);
 	public List<Object[]> getCampWiseAttendedCountByProgram(Long programId,Date fromDate,Date toDate);
@@ -44,7 +44,7 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Long> getInviteeCadreIds(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	public List<Object[]> getAttendedNonInviteesCountForBatchesByLocation(List<Long> batchIds,List<Long> cadreIds,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	
-	public List<Object[]> getAttendedCountsForBatches(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds);
+	public List<Object[]> getAttendedCountsForBatches(List<Long> batchIds,List<Long> enrollmentYrIds,List<Long> programYearIds);
 	public Long getNonInviteesAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> enrollmentYearIds);
 	public Long getInviteesAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> enrollmentYearIds);
 	public List<Object[]> getAttendedBatchDetailsByTdpCadreId(Long tdpCadreId,Long programId);

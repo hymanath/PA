@@ -139,28 +139,30 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		query.setParameter("trainingCampBatchId",batchId);
 		return query.list();
 	}
-	public Object[] getBatchDates(Long batchId,Date fromDate,Date toDate,Long enrollmentYearId,List<Long> programYearIds){
+	public Object[] getBatchDates(Long batchId,Date fromDate,Date toDate,Long enrollmentYrIds,List<Long> programYearIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select date(model.fromDate),date(model.toDate),model.trainingCampBatchName,model.trainingCampSchedule.trainingCamp.campName " +
 				"	from  TrainingCampBatch model where model.trainingCampBatchId =:trainingCampBatchId and model.attendeeType.attendeeTypeId=1 and model.attendeeType.isDeleted='false' ");
 		
+		if(enrollmentYrIds != null && enrollmentYrIds.longValue() >0l){
+			sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId = :enrollmentYrIds ");
+		}
 		if(fromDate!=null && toDate!=null){
 			sb.append(" and date(model.fromDate) >= :fromDate and date(model.toDate) <= :toDate ");
 		}
-		sb.append(" and model.isCancelled = 'false' ");
-		if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
-			   sb.append(" and model.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
 		if(programYearIds != null && programYearIds.size()>0){
 			sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programYearIds)");
   	        }
+		sb.append(" and model.isCancelled = 'false' ");
 		Query query=getSession().createQuery(sb.toString());
 		if(fromDate!=null && toDate!=null){
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
 		}
-		if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
-			query.setParameter("enrollmentYearId",enrollmentYearId);
-		
+		if(enrollmentYrIds != null && enrollmentYrIds.longValue() >0){
+			query.setParameter("enrollmentYrIds", enrollmentYrIds);
+		}
+	
 		query.setParameter("trainingCampBatchId",batchId);
 		if(programYearIds != null && programYearIds.size()>0){
 			query.setParameterList("programYearIds", programYearIds);
@@ -362,7 +364,7 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		return query.list();
 	}
 	
-	public List<Object[]> getBatcheIdsForACampOrProgram(Long programId,Long campId,Date fromDate,Date toDate,String type,List<Long> enrollmentYearIds){
+	public List<Object[]> getBatcheIdsForACampOrProgram(List<Long> programIds,Long campId,Date fromDate,Date toDate,String type,List<Long> enrollmentYearIds){
 		StringBuilder sb = new StringBuilder();
 		Date currDate=new DateUtilService().getCurrentDateAndTime();
 		
@@ -372,9 +374,9 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 				" and model.attendeeType.attendeeTypeId=1 and model.attendeeType.isDeleted='false' ");
 		
 		if(campId!=null && campId>0l){
-			sb.append(" and model.trainingCampSchedule.trainingCamp.trainingCampId=:campId and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId ");
-		}else if(programId!=null && programId > 0l){
-			sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId=:programId ");
+			sb.append(" and model.trainingCampSchedule.trainingCamp.trainingCampId=:campId and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIds) ");
+		}else if(programIds!=null && programIds.size() > 0){
+			sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIds) ");
 		}
 		
 		if(fromDate!=null && toDate!=null){
@@ -398,9 +400,9 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		
 		if(campId>0l){
 			query.setParameter("campId", campId);
-			query.setParameter("programId", programId);
-		}else if(programId > 0l){
-			query.setParameter("programId", programId);
+			query.setParameterList("programIds", programIds);
+		}else if(programIds.size() > 0){
+			query.setParameterList("programIds", programIds);
 		}
 		
 		if(fromDate!=null && toDate!=null){
@@ -417,18 +419,26 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		return query.list();
 	}
 	
-	public List<Object[]> getBatchAndCampNameForABatch(Long batchId,List<Long> enrollmentYearIds){
+	public List<Object[]> getBatchAndCampNameForABatch(Long batchId,List<Long> enrollmentYrIds,List<Long> programIds){
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.trainingCampBatchName,model.trainingCampSchedule.trainingCamp.trainingCampId,model.trainingCampSchedule.trainingCamp.campName " +
 				" from TrainingCampBatch model " +
 				" where model.trainingCampBatchId=:batchId and model.attendeeType.attendeeTypeId=1 and model.attendeeType.isDeleted='false' ");
-		if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-			sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
-  	        }
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) ");
+		}
+		
+		if(programIds != null && programIds.size() >0){
+			sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIds) ");
+		}
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("batchId", batchId);
-		if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds", enrollmentYrIds);
+		}
+		if(programIds != null && programIds.size() >0){
+			query.setParameterList("programIds", programIds);
 		}
 		return query.list();
 	}
@@ -505,35 +515,35 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 	}
 	
 	public List<Object[]> getBatchInviteeDetails(List<Long> batchIds,List<Long> enrollmentYrIds,List<Long> programYearIds){
-	    StringBuilder sb = new StringBuilder();
-	    
-	    sb.append(" " +
-	     " select DISTINCT TC.camp_name as campname ,TCB.training_camp_batch_id as batchId ,TCB.training_camp_batch_code as batchCode," +
-	     "        date(TCB.from_date) as fromdate,date(TCB.to_date) as toDate ,TCBA.tdp_cadre_id as cadreId" +
-	     " from   training_camp_batch TCB left join training_camp_batch_attendee TCBA  on TCBA.training_camp_batch_id=TCB.training_camp_batch_id and TCBA.is_deleted = 'false' " +
-	     "        join training_camp_schedule TCS on TCB.training_camp_schedule_id = TCS.training_camp_schedule_id " +
-	     "        join training_camp TC on TCS.training_camp_id = TC.training_camp_id  " +
-	     " where   TCB.training_camp_batch_id in (:batchIds) and TCB.is_cancelled = 'false'  and TCB.attendee_type_id = 1 and TCBA.is_deleted='false'  " );
-	    
-	    if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
-	      sb.append(" and TCS.enrollment_year_id in (:enrollmentYrIds) ");
-	    }
-	    if(programYearIds != null && programYearIds.size() >0){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" " +
+		 " select DISTINCT TC.camp_name as campname ,TCB.training_camp_batch_id as batchId ,TCB.training_camp_batch_code as batchCode," +
+		 "        date(TCB.from_date) as fromdate,date(TCB.to_date) as toDate ,TCBA.tdp_cadre_id as cadreId" +
+		 " from   training_camp_batch TCB left join training_camp_batch_attendee TCBA  on TCBA.training_camp_batch_id=TCB.training_camp_batch_id and TCBA.is_deleted = 'false' " +
+		 "        join training_camp_schedule TCS on TCB.training_camp_schedule_id = TCS.training_camp_schedule_id " +
+		 "        join training_camp TC on TCS.training_camp_id = TC.training_camp_id  " +
+		 " where   TCB.training_camp_batch_id in (:batchIds) and TCB.is_cancelled = 'false'  and TCB.attendee_type_id = 1 and TCBA.is_deleted='false'  " );
+		
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append(" and TCS.enrollment_year_id in (:enrollmentYrIds) ");
+		}
+		if(programYearIds != null && programYearIds.size() >0){
 		      sb.append(" and TCS.training_camp_program_id in (:programYearIds) ");
 		    }
-	    sb.append(" order by TCB.training_camp_batch_id asc");
-	    Query query=getSession().createSQLQuery(sb.toString())
-	     .addScalar("campname",Hibernate.STRING)
-	     .addScalar("batchId",Hibernate.LONG)
-	     .addScalar("batchCode",Hibernate.STRING)
-	     .addScalar("fromdate",Hibernate.DATE)
-	     .addScalar("toDate",Hibernate.DATE)
-	     .addScalar("cadreId",Hibernate.LONG);
-	    query.setParameterList("batchIds",batchIds);
-	    if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
-	      query.setParameterList("enrollmentYrIds", enrollmentYrIds);
-	    }
-	    if(programYearIds != null && programYearIds.size() >0){
+		sb.append(" order by TCB.training_camp_batch_id asc");
+		Query query=getSession().createSQLQuery(sb.toString())
+		 .addScalar("campname",Hibernate.STRING)
+		 .addScalar("batchId",Hibernate.LONG)
+		 .addScalar("batchCode",Hibernate.STRING)
+		 .addScalar("fromdate",Hibernate.DATE)
+		 .addScalar("toDate",Hibernate.DATE)
+		 .addScalar("cadreId",Hibernate.LONG);
+		query.setParameterList("batchIds",batchIds);
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds", enrollmentYrIds);
+		}
+		if(programYearIds != null && programYearIds.size() >0){
 	    	query.setParameterList("programYearIds", programYearIds);
 	    }
 	    return query.list();

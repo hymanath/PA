@@ -22,12 +22,12 @@ public class TrainingCampProgramDAO extends GenericDaoHibernate<TrainingCampProg
 		return query.list();
 	}
 
-	public List<Object[]> getDistrictsByProgramId(Long programId){
+	public List<Object[]> getDistrictsByProgramId(List<Long> programIds){
 		Query query=getSession().createQuery(" select model1.district.districtId,model1.district.districtName,model1.trainingCampId " +
 				" from TrainingCampSchedule model,TrainingCampDistrict model1" +
-				" where model.trainingCampId=model1.trainingCampId and model.trainingCampProgramId=:programId and model.trainingCampProgram.isDeleted='N' " +
+				" where model.trainingCampId=model1.trainingCampId and model.trainingCampProgramId in (:programIds) and model.trainingCampProgram.isDeleted='N' " +
 				" order by model1.trainingCampId,model1.district.districtId");
-		query.setParameter("programId",programId);
+		query.setParameterList("programIds",programIds);
 		return query.list();
 
 	}
@@ -49,14 +49,14 @@ public class TrainingCampProgramDAO extends GenericDaoHibernate<TrainingCampProg
 		return query.list();
 	}
 
-	public List<Object[]> getConstsByProgramId(Long programId){
+	public List<Object[]> getConstsByProgramId(List<Long> programIds){
 
 		Query query=getSession().createQuery(" select c.constituencyId,c.name,model1.trainingCampId " +
 				" from TrainingCampSchedule model,TrainingCampDistrict model1,Constituency c" +
-				" where model.trainingCampId=model1.trainingCampId and model.trainingCampProgramId=:programId and model1.districtId=c.district.districtId " +
+				" where model.trainingCampId=model1.trainingCampId and model.trainingCampProgramId in (:programIds) and model1.districtId=c.district.districtId " +
 				"and c.electionScope.electionScopeId=2 and c.deformDate is null and model.trainingCampProgram.isDeleted='N' " +
 				" order by model1.trainingCampId,c.constituencyId");
-		query.setParameter("programId",programId);
+		query.setParameterList("programIds",programIds);
 		return query.list();
 
 	}

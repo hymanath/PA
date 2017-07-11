@@ -63,7 +63,7 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
     	query.setParameterList("batches",trainingCampBatchIds);
     	return query.list();
     }
-    public List<Object[]> getattendedcount(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate,String type){
+    public List<Object[]> getattendedcount(String queryString,List<Long> programIds,Long campId,Long batchId,Date fromDate,Date toDate,String type,List<Long> enrollmentYrIds){
     	
     	Query query=getSession().createQuery(queryString);
     	Date currDate=new DateUtilService().getCurrentDateAndTime();
@@ -76,27 +76,31 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 	    	query.setParameter("fromDate", fromDate);
 	    	query.setParameter("toDate", toDate);
     	}
-    	if(batchId==null && campId==null && programId!=null){
-    		query.setParameter("programId",programId);
+    	if(batchId==null && campId==null && programIds!=null){
+    		query.setParameterList("programIds",programIds);
     		
 		}else if(batchId==null && campId!=null){
 			query.setParameter("campId",campId);
-			if(programId!=null)
-				query.setParameter("programId",programId);
+			if(programIds!=null)
+				query.setParameterList("programIds",programIds);
 			
 		}else if(batchId!=null){
 			
-			if(programId!=null)
-				query.setParameter("programId",programId);
+			if(programIds!=null)
+				query.setParameterList("programIds",programIds);
 			if(campId!=null)
 				query.setParameter("campId",campId);
 			
 			query.setParameter("batchId",batchId);
 			
 		}
+    	
+    	if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds", enrollmentYrIds);
+		}
     	return query.list();
     }
- public Long getattendedcount1(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate,String type){
+ public Long getattendedcount1(String queryString,List<Long> programIds,Long campId,Long batchId,Date fromDate,Date toDate,String type,List<Long> enrollmentYrIds){
     	
     	Query query=getSession().createQuery(queryString);
     	
@@ -109,23 +113,27 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 	    	query.setParameter("fromDate", fromDate);
 	    	query.setParameter("toDate", toDate);
     	}
-    	if(batchId==null && campId==null && programId!=null){
-    		query.setParameter("programId",programId);
+    	if(batchId==null && campId==null && programIds!=null){
+    		query.setParameterList("programIds",programIds);
     		
 		}else if(batchId==null && campId!=null){
 			query.setParameter("campId",campId);
-			if(programId!=null)
-				query.setParameter("programId",programId);
+			if(programIds!=null)
+				query.setParameterList("programIds",programIds);
 			
 		}else if(batchId!=null){
 			
-			if(programId!=null)
-				query.setParameter("programId",programId);
+			if(programIds!=null)
+				query.setParameterList("programIds",programIds);
 			if(campId!=null)
 				query.setParameter("campId",campId);
 			
 			query.setParameter("batchId",batchId);
 			
+		}
+    	
+    	if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds", enrollmentYrIds);
 		}
     	return (Long)query.uniqueResult();
     }
