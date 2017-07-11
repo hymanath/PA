@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -93,13 +92,13 @@ public interface ITrainingCampService {
 	public SimpleVO getAllProgramsAndCamps();
 	public List<IdNameVO> getCampsByProgramAndUser(Long campProgramId,Long userId);
 	
-	public List<IdNameVO> getAttendedCountForBatchesByLocation(String startDateString,String endDateString,Long stateId);
-	public SimpleVO getInvitedAttendedCadreCountByBatchIds(String startDateString,String endDateString,Long stateId);
-	public Map<String,TrainingCampVO> getCompletedRunningUpcomingBatchIds(String startDateString,String endDateString,Long stateId,String type);
+	public List<IdNameVO> getAttendedCountForBatchesByLocation(String startDateString,String endDateString,Long stateId,List<Long> enrollmentYearIds,List<Long> programYearIds);
+	public SimpleVO getInvitedAttendedCadreCountByBatchIds(String startDateString,String endDateString,Long stateId,List<Long> enrollmentYearIds,List<Long> programYearIds);
+	public Map<String,TrainingCampVO> getCompletedRunningUpcomingBatchIds(String startDateString,String endDateString,Long stateId,String type,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	
 	public CadreFeedbackVO  getattendedcountByFeedBacks(Long programId,Long campId,Long batchId,String fromdate,String todate,String callFrom);
 	public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(Long programId,Long campId,Long batchId,String fromdate,String todate,String fromType,String callFrom);
-	public List<SimpleVO> getAttendedCountSummaryByBatch(Long programId,Long campId,Long batchId,String fromdate,String todate,String callFrom);
+	public List<SimpleVO> getAttendedCountSummaryByBatch(Long programId,Long campId,Long batchId,String fromdate,String todate,String callFrom,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	public SimpleVO getProgramSummary(Long programId,String fromdate,String todate);
 	public SimpleVO getCampSummary(Long programId,Long campId,String fromDate,String toDate);
 	public SimpleVO getProgCampBatchNames(Long programId,Long campId,Long batchId);
@@ -111,16 +110,16 @@ public interface ITrainingCampService {
 	public SurveyTrainingsVO getAllRecordsOfCampProgramScheduleAndBatch(Long campId, Long programId, Long scheduleId, Long batchId);
 	public SimpleVO getAttendedTrainingCampBatchDetailsOfCadre(Long programId,Long cadreId);
 	public List<SimpleVO> getRemarkSOfCadreByCallPurpose(Long programId,Long cadreId);
-	public List<SimpleVO> getDayWiseCountsForRunningBatches(String startDateString,String endDateString,Long stateId);
-	public SimpleVO getDayWiseAttendnenceForBatch(Long batchI,Long enrollmentYearId);
-	public List<SimpleVO> getAttendenceForTrainers(String type,String searchType);
+	public List<SimpleVO> getDayWiseCountsForRunningBatches(String startDateString,String endDateString,Long stateId,List<Long> enrollmentYearIds,List<Long> programYearIds);
+	public SimpleVO getDayWiseAttendnenceForBatch(Long batchId,List<Long> enrollmentYearIds,List<Long> programYearIds);
+	public List<SimpleVO> getAttendenceForTrainers(String type,String searchType,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	public List<CategoryFeedbackVO> getCategoryFeedBackAnswerForCadre(Long cadreId);
 	public List<IdNameVO> getFeedbackCategoriesForTraining(Long programId,Long campId,Long batchId);
 	public List<FeedbackQuestionVO> getTrainingFeedBackQuestionsList(FeedbackInputVO inputVo,List<Long> categoryIds);
 	public List<IdNameVO> getBatches(String type,Long programId,Long centerId);
 	public String saveCadreFeedBackAnswers(Long tdpCadreId,List<SimpleVO> feedbackAnswers);
 	public List<SimpleVO> getProgramCampBatchDetailsForAMemberBasedOnCadreId(List<Long> cadreIdList,String type);
-	public List<TrainingCampVO> getFeedBackCountsOfTraining(String fromDateStr,String toDateStr);
+	public List<TrainingCampVO> getFeedBackCountsOfTraining(String fromDateStr,String toDateStr,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	public List<IdNameVO> getProgramsForFeedBack();
 	public List<TrainingCampVO> getFeedbackCategoryCountsCenterWise(Long programId,String fromDate,String toDate);
 	public List<TrainingCampVO> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencIds,List<Long> catrgoryIds,Long programId,String type,String fromDate,String toDate);
@@ -128,8 +127,8 @@ public interface ITrainingCampService {
 	public List<IdNameVO> getAllDistrictsByState(Long stateId);
 	public List<IdNameVO> getAllConstituencysByDistrict(Long districtId);
 	public List<IdNameVO> getAllCategories();
-	public List<SimpleVO> getDaysAttendedCadreDetails(Long batchId,String dayType,String type);
-	public List<SimpleVO> getAllTrainingCampDetails();
+	public List<SimpleVO> getDaysAttendedCadreDetails(Long batchId,String dayType,String type,List<Long> enrollmentYearIds,List<Long> programYearIds);
+	public List<SimpleVO> getAllTrainingCampDetails(List<Long> enrollmentYearIds,List<Long> programYearIds);
 	public List<SimpleVO> getVillagesForDistrictIdDetails(List<Long> districtId);
 	public List<SimpleVO> getMandalsForDistrictIdDetails(List<Long> list);
 	public List<CallStatusVO> getMeetingTypesNew(List<Long> locationLevels);

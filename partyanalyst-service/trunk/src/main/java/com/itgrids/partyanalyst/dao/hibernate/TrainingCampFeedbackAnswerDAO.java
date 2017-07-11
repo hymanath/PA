@@ -213,7 +213,7 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 		return query.list();		
 	}
 	
-	 public List<Object[]> getFeedBackMembersCountProgramWise(Date startDate,Date endDate){
+	 public List<Object[]> getFeedBackMembersCountProgramWise(Date startDate,Date endDate,List<Long> enrollmentYearIds,List<Long> programYearIds){
 		 
 		 StringBuilder str = new StringBuilder();
 		 
@@ -226,9 +226,14 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 			 		" where model.trainingCampFeedbackCategory.isDeleted='N' and model.tdpCadre.isDeleted='N' ");
 		 
 		 if(startDate !=null && endDate !=null){
-			 str.append(" and date(model.updatedTime) between :startDate and :endDate  ");
+			 str.append(" and date(model.updatedTime) between :startDate and :endDate ");
 		 }
-		 
+		 if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			  str.append(" and model.trainingCampFeedbackCategory.trainingCampBatch.trainingCampSchedule.enrollmentYearId in (:enrollmentYearIds)");
+   	        }
+		 if(programYearIds != null && programYearIds.size()>0){
+			 str.append(" and model.trainingCampFeedbackCategory.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
+		 }
 		 str.append("group by model.trainingCampFeedbackCategory.trainingCampProgram.trainingCampProgramId," +
 			 		" model.trainingCampFeedbackCategory.trainingCamp.trainingCampId" +
 			 		" order by model.trainingCampFeedbackCategory.trainingCampProgram.programName," +
@@ -240,7 +245,12 @@ public class TrainingCampFeedbackAnswerDAO extends GenericDaoHibernate<TrainingC
 			 query.setParameter("startDate", startDate);
 			 query.setParameter("endDate", endDate);
 		 }
-		 
+		 if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			 query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		 }
+         if(programYearIds != null && programYearIds.size()>0){
+        	 query.setParameterList("programYearIds", programYearIds);
+		 }
 		 return query.list();
 	 }
 	

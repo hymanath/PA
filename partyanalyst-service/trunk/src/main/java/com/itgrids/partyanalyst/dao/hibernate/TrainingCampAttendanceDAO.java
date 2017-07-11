@@ -19,42 +19,83 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		super(TrainingCampAttendance.class);
 	}
 	
-  public List<Object[]>	 getAttendedCountForBatchesByLocation(List<Long> batchIds){
-	
-	  Query query=getSession().createQuery("  " +
+  public List<Object[]>	 getAttendedCountForBatchesByLocation(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds){
+	  StringBuilder sb=new StringBuilder();
+	  sb.append(
 	  " select    model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel,count(distinct model.attendance.tdpCadreId) " +
 	  " from      TrainingCampAttendance model,TdpCommitteeMember model2,TrainingCampBatchAttendee tcba " +
 	  " where     model.attendance.tdpCadreId=model2.tdpCadreId and " +
 	  "           model.trainingCampBatchId in (:trainingCampBatchIds) and model2.isActive='Y' " +
-	  "			and model.attendance.tdpCadreId=tcba.tdpCadreId and model.trainingCampBatch.trainingCampBatchId=tcba.trainingCampBatchId and tcba.isDeleted='false' and model.trainingCampBatch.attendeeTypeId=1 " +
-	  " group by  model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+	  "			and model.attendance.tdpCadreId=tcba.tdpCadreId and model.trainingCampBatch.trainingCampBatchId=tcba.trainingCampBatchId and tcba.isDeleted='false' and model.trainingCampBatch.attendeeTypeId=1 " );
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	  }
+	  if(programYearIds != null && programYearIds.size()>0){
+		  sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
+	  }
+	  sb.append(" group by  model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+	  Query query=getSession().createQuery(sb.toString());
 	  query.setParameterList("trainingCampBatchIds",batchIds);
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  query.setParameterList("enrollmentYearIds",enrollmentYearIds);
+	  }
+      if(programYearIds != null && programYearIds.size()>0){
+    	  query.setParameterList("programYearIds",programYearIds);
+	  }
 	  return query.list();
   }
   
-  public List<Long> getInviteeCadreIds(List<Long> batchIds){
-	  Query query=getSession().createQuery("  " +
+  public List<Long> getInviteeCadreIds(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds){
+	  StringBuilder sb=new StringBuilder();
+	  sb.append(
 			  " select    distinct model.attendance.tdpCadreId " +
 			  " from      TrainingCampAttendance model,TdpCommitteeMember model2,TrainingCampBatchAttendee tcba " +
 			  " where     model.attendance.tdpCadreId=model2.tdpCadreId and " +
 			  "           model.trainingCampBatchId in (:trainingCampBatchIds) and model2.isActive='Y' " +
 			  "			and model.attendance.tdpCadreId=tcba.tdpCadreId and model.trainingCampBatch.trainingCampBatchId=tcba.trainingCampBatchId and tcba.isDeleted='false' and model.trainingCampBatch.attendeeTypeId=1  ");
+	    if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		   sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	     }
+	    if(programYearIds != null && programYearIds.size()>0){
+	    	sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
+	    }
+	  Query query=getSession().createQuery(sb.toString());
 			  query.setParameterList("trainingCampBatchIds",batchIds);
+		if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			   query.setParameterList("enrollmentYearIds",enrollmentYearIds);
+			  } 
+        if(programYearIds != null && programYearIds.size()>0){
+        	query.setParameterList("programYearIds",programYearIds);
+	    }
 			  return query.list();
   }
 
-  public List<Object[]> getAttendedNonInviteesCountForBatchesByLocation(List<Long> batchIds,List<Long> cadreIds){
-	  Query query=getSession().createQuery("  " +
+  public List<Object[]> getAttendedNonInviteesCountForBatchesByLocation(List<Long> batchIds,List<Long> cadreIds,List<Long> enrollmentYearIds,List<Long> programYearIds){
+	  StringBuilder sb=new StringBuilder();
+	  sb.append(
 			  " select    model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel,count(distinct model.attendance.tdpCadreId) " +
 			  " from      TrainingCampAttendance model,TdpCommitteeMember model2 " +
 			  " where     model.attendance.tdpCadreId=model2.tdpCadreId and " +
-			  "           model.trainingCampBatchId in (:trainingCampBatchIds) and model2.isActive='Y' and model.attendance.tdpCadreId not in (:cadreIds) and model.trainingCampBatch.attendeeTypeId=1  " +
-			  " group by  model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+			  "           model.trainingCampBatchId in (:trainingCampBatchIds) and model2.isActive='Y' and model.attendance.tdpCadreId not in (:cadreIds) and model.trainingCampBatch.attendeeTypeId=1  " );
+	     if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+	    	 sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
+	     if(programYearIds != null && programYearIds.size()>0){
+	    	 sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programYearIds) ");
+	     }
+	     sb.append(" group by  model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+	      Query query=getSession().createQuery(sb.toString());
 			  query.setParameterList("trainingCampBatchIds",batchIds);
 			  query.setParameterList("cadreIds",cadreIds);
+			if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+				   query.setParameterList("enrollmentYearIds",enrollmentYearIds);
+				  }
+			 if(programYearIds != null && programYearIds.size()>0){
+				 query.setParameterList("programYearIds",programYearIds);
+			 }
 			  return query.list();
   }
-  public List<Object[]> getInvitedCadreCountByBatchIds(List<Long> batchIds,String type){
+  public List<Object[]> getInvitedCadreCountByBatchIds(List<Long> batchIds,String type,List<Long> enrollmentYearIds){
 	
 		 StringBuilder sb=new StringBuilder();
 		 sb.append(" select ");
@@ -68,7 +109,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		 
 		 sb.append(" from TrainingCampBatchAttendee model,TdpCadre model1 " +
 		 		   " where model.tdpCadreId=model1.tdpCadreId and model.trainingCampBatchId in (:trainingCampBatchIds) and model.isDeleted = 'false' and model.trainingCampBatch.attendeeTypeId=1  ");
-		 
+		 if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			 sb.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+   	        }
 		 if(type.equalsIgnoreCase("constituency")){
 			 sb.append(" group by model1.userAddress.constituency.constituencyId " +
 			 		   " order by model1.userAddress.constituency.name");
@@ -80,10 +123,13 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		 
 		Query query=getSession().createQuery(sb.toString());
 		query.setParameterList("trainingCampBatchIds",batchIds);
+		if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			query.setParameterList("enrollmentYearIds",enrollmentYearIds);
+		}
 		return query.list();
 		 
 	 }
- public List<Object[]> getAttendedCadreCountByBatchIds(List<Long> batchIds,String type){
+ public List<Object[]> getAttendedCadreCountByBatchIds(List<Long> batchIds,String type,List<Long> enrollmentYearIds){
 	
 	 StringBuilder sb=new StringBuilder();
 	 sb.append(" select ");
@@ -98,6 +144,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 sb.append(" from TrainingCampAttendance model,TdpCadre model1 " +
 	 		   " where model.attendance.tdpCadreId=model1.tdpCadreId and model.trainingCampBatchId in (:trainingCampBatchIds) and model.trainingCampBatch.attendeeTypeId=1 ");
 	 
+	 if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
 	 if(type.equalsIgnoreCase("constituency")){
 		 sb.append(" group by model1.userAddress.constituency.constituencyId " +
 		 		   " order by model1.userAddress.constituency.name");
@@ -108,11 +157,14 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 }
 	 
 	Query query=getSession().createQuery(sb.toString());
-	query.setParameterList("trainingCampBatchIds",batchIds);
+	 query.setParameterList("trainingCampBatchIds",batchIds);
+	if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		query.setParameterList("enrollmentYearIds",enrollmentYearIds);
+	}
 	return query.list();
 	 
  }
- public List<Object[]> getInviteeCountsinAttendedCounts(List<Long> batchIds,String type){
+ public List<Object[]> getInviteeCountsinAttendedCounts(List<Long> batchIds,String type,List<Long> enrollmentYearIds){
 		
 	 StringBuilder sb=new StringBuilder();
 	 sb.append(" select ");
@@ -127,7 +179,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 sb.append(" from TrainingCampAttendance model,TdpCadre model1,TrainingCampBatchAttendee model2 " +
 	 		   " where model.attendance.tdpCadreId=model1.tdpCadreId and model.attendance.tdpCadreId=model2.tdpCadreId and  model.trainingCampBatchId in (:trainingCampBatchIds) " +
 	 		   " and model2.isDeleted = 'false' and model.trainingCampBatch.attendeeTypeId=1  ");
-	 
+	 if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
 	 if(type.equalsIgnoreCase("constituency")){
 		 sb.append(" group by model1.userAddress.constituency.constituencyId " +
 		 		   " order by model1.userAddress.constituency.name");
@@ -139,6 +193,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 
 	Query query=getSession().createQuery(sb.toString());
 	query.setParameterList("trainingCampBatchIds",batchIds);
+	if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		query.setParameterList("enrollmentYearIds",enrollmentYearIds);
+	}
 	return query.list();
 	 
  }
@@ -153,11 +210,25 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		return query.list();
  }
  
- public List<Object[]> getCompletedCountDetails(List<Long> batchIds){
-		Query query = getSession().createQuery(" select distinct model.trainingCampBatch.trainingCampBatchId, model.attendance.tdpCadre.tdpCadreId " +
+ public List<Object[]> getCompletedCountDetails(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds){
+	 StringBuilder sb = new StringBuilder();
+	 sb.append(" select distinct model.trainingCampBatch.trainingCampBatchId, model.attendance.tdpCadre.tdpCadreId " +
 				" from TrainingCampAttendance model " +
 				" where model.trainingCampBatch.trainingCampBatchId in (:batchIds) and model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled='false'  ");
+	 if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		 sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
+	 if(programYearIds != null && programYearIds.size()>0){
+		 sb.append(" and  model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds) ");
+	 }
+	  Query query =getSession().createQuery(sb.toString());
 		query.setParameterList("batchIds", batchIds);
+		if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		}
+		if(programYearIds != null && programYearIds.size()>0){
+			 query.setParameterList("programYearIds", programYearIds);
+		 }
 		return (List<Object[]>)query.list();
 }
  
@@ -189,7 +260,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  }
 	  return query.list();
  }
-  public Long getAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,Long enrollmentYearId){
+  public Long getAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,Long enrollmentYearId,List<Long> programYearIds){
 	  StringBuilder sb=new StringBuilder();
 	  sb.append(" select count(distinct model.attendance.tdpCadre.tdpCadreId) " +
 				" from TrainingCampAttendance model " +
@@ -199,19 +270,25 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  }
 	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
 		   sb.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
-	  
+	   if(programYearIds != null && programYearIds.size()>0){
+		   sb.append(" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
+		}
 		Query query = getSession().createQuery(sb.toString());
 		if(fromDate!=null && toDate!=null){
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
 		}
+		if(programYearIds != null && programYearIds.size()>0){
+			query.setParameterList("programYearIds", programYearIds);
+		}
 		query.setParameter("batchId", batchId);
+		
 		 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
 			   query.setParameter("enrollmentYearId",enrollmentYearId);
 		return (Long)query.uniqueResult();
   }
   
-  public Long getInviteesAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr ,List<Long> staffCadreIdsList)
+  public Long getInviteesAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr ,List<Long> staffCadreIdsList,List<Long> enrollmentYearIds)
   {
 	  StringBuilder sb=new StringBuilder();
 	  
@@ -234,7 +311,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	   }
 	  if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
 		   sb.append(" and model.attendance.tdpCadre.tdpCadreId not in (:staffCadreIdsList) " );
-	  
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  sb.append(" and model1.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
 	  Query query = getSession().createQuery(sb.toString());
 		if(fromDate!=null && toDate!=null){
 			query.setParameter("fromDate", fromDate);
@@ -244,11 +323,13 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			query.setParameter("batchId", batchId);
 		if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
 		   query.setParameterList("staffCadreIdsList",staffCadreIdsList);
-		
+		if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			query.setParameterList("enrollmentYearIds",enrollmentYearIds);
+		}
 		return (Long)query.uniqueResult();
   }
   
-  public Long getNonInviteesAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList)
+  public Long getNonInviteesAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> enrollmentYearIds)
   {
 	  StringBuilder sb=new StringBuilder();
 	  
@@ -272,6 +353,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	   }
 	  if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
 		   sb.append(" and model.attendance.tdpCadre.tdpCadreId not in (:staffCadreIdsList) " );
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		   sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
 	  Query query = getSession().createQuery(sb.toString());
 		if(fromDate!=null && toDate!=null){
 			query.setParameter("fromDate", fromDate);
@@ -281,7 +365,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			query.setParameter("batchId", batchId);
 		if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
 			query.setParameterList("staffCadreIdsList",staffCadreIdsList);
-		
+		if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			query.setParameterList("enrollmentYearIds",enrollmentYearIds);
+		}
 		return (Long)query.uniqueResult();
   }
   
@@ -410,21 +496,26 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		return (List<Long>)query.list();
 }
  
- public List<Object[]> getCompletedCountsForABatch(Long batchId,List<Date> dates,Long enrollmentYearId){
+ public List<Object[]> getCompletedCountsForABatch(Long batchId,List<Date> dates,Long enrollmentYearId,List<Long> programYearIds){
 	 StringBuilder sb = new StringBuilder();
 	 sb.append(" select distinct model.attendance.tdpCadre.tdpCadreId,date(model.attendance.attendedTime)  " +
 				" from TrainingCampAttendance model " +
 				" where model.trainingCampBatch.trainingCampBatchId=:batchId and date(model.attendance.attendedTime) in (:dates)" +
-				" and model.trainingCampBatch.attendeeTypeId=1 ");
+				" and model.trainingCampBatch.attendeeTypeId=1  ");
+	 if(programYearIds != null && programYearIds.size()>0){
+		 sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programYearIds)");
+	        }
 	 if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
-		sb.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
-	Query query = getSession().createQuery(sb.toString());
-	query.setParameter("batchId", batchId);
-	query.setParameterList("dates", dates);
-	if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
-		query.setParameter("enrollmentYearId",enrollmentYearId);
-	
-	return query.list();
+			sb.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+	 Query query = getSession().createQuery(sb.toString());
+		query.setParameter("batchId", batchId);
+		query.setParameterList("dates", dates);
+	  if(programYearIds != null && programYearIds.size()>0){
+		query.setParameterList("programYearIds", programYearIds);
+		}
+		if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
+			query.setParameter("enrollmentYearId",enrollmentYearId);
+		return query.list();
 }
  
   /*public List<Object[]> getInviteeAttendedCounts(List<Long> batchIds,Date fromDate,Date toDate){
@@ -497,7 +588,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  return query.list();
   }
   
-  public List<Object[]> getInviteeAttendedCountsForCenterAndProgram(Date fromDate,Date toDate,List<Long> cadreIdsList){
+  public List<Object[]> getInviteeAttendedCountsForCenterAndProgram(Date fromDate,Date toDate,List<Long> cadreIdsList,List<Long> enrollmentYearIds,List<Long> programYearIds){
 	   
 	   StringBuilder sb = new StringBuilder();
 	   
@@ -514,7 +605,12 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	   {
 		   sb.append(" and model.attendance.tdpCadre.tdpCadreId not in (:cadreIdsList) ");		  
 	   }
-	   
+	   if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		    sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
+	   if(programYearIds != null && programYearIds.size()>0){
+		   sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
+	   }
 	   sb.append(" group by model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId ");
 	   
 	   Query query = getSession().createQuery(sb.toString());
@@ -526,11 +622,16 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	   if(cadreIdsList!=null && cadreIdsList!=null){
 		   query.setParameterList("cadreIdsList", cadreIdsList);
 	   }
-	   
+	   if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		   query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+	   }
+       if(programYearIds != null && programYearIds.size()>0){
+    	   query.setParameterList("programYearIds", programYearIds);  
+	   }
 	   return query.list();
   }
   
-  public List<Object[]> getInviteeAttendedDetailsForCenterAndProgram(Date fromDate,Date toDate,List<Long> cadreIdsList){
+  public List<Object[]> getInviteeAttendedDetailsForCenterAndProgram(Date fromDate,Date toDate,List<Long> cadreIdsList,List<Long> enrollmentYearIds,List<Long> programYearIds){
 	   
 	   StringBuilder sb = new StringBuilder();
 	   
@@ -546,7 +647,12 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	   {
 		   sb.append(" and model.attendance.tdpCadre.tdpCadreId not in (:cadreIdsList) ");		  
 	   }
-	   
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		    sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
+	  if(programYearIds != null && programYearIds.size()>0){
+		  sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
+	  }
 	   //sb.append(" group by model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId,model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId ");
 	   
 	   Query query = getSession().createQuery(sb.toString());
@@ -558,7 +664,12 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	   if(cadreIdsList!=null && cadreIdsList!=null){
 		   query.setParameterList("cadreIdsList", cadreIdsList);
 	   }
-	   
+	   if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		   query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+	   }
+	   if(programYearIds != null && programYearIds.size()>0){
+		   query.setParameterList("programYearIds", programYearIds); 
+	   }
 	   return query.list();
  }
   
@@ -596,7 +707,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  return (List<Long>)query.list();
   }
   
-  public List<Object[]> getSpeakersAttendedAreaDetailsForCenter(Long centerId,Long programId,Date fromDate,Date toDate){
+  public List<Object[]> getSpeakersAttendedAreaDetailsForCenter(Long centerId,Long programId,Date fromDate,Date toDate,List<Long> enrollmentYearIds,List<Long> programYearIds){
 	  StringBuilder sb = new StringBuilder();
 	  
 	  sb.append(" select distinct model.attendance.tdpCadre.tdpCadreId,model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName, " +
@@ -613,7 +724,12 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  if(fromDate!=null && toDate!=null){
 		  sb.append(" and ( date(model.attendance.attendedTime) >= :fromDate and date(model.attendance.attendedTime) <= :toDate ) ");
 	  }
-	  
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
+	  if(programYearIds != null && programYearIds.size()>0){
+		  sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds) ");
+	  }
 	  Query query = getSession().createQuery(sb.toString());
 	  if(centerId != null && centerId.longValue()>0L)
 		  query.setParameter("centerId", centerId);
@@ -623,19 +739,31 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		  query.setParameter("fromDate", fromDate);
 		  query.setParameter("toDate", toDate);
 	  }
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+	  }
+      if(programYearIds != null && programYearIds.size()>0){
+    	  query.setParameterList("programYearIds", programYearIds);
+	  }
 	  return query.list();
   }
   
-  public List<Object[]> getSpeakersAttendedDetailsForCenter(Long centerId,Long programId,Date fromDate,Date toDate){
+  public List<Object[]> getSpeakersAttendedDetailsForCenter(Long centerId,Long programId,Date fromDate,Date toDate,List<Long> enrollmentYearIds,List<Long> programYearIds){
 	  StringBuilder sb = new StringBuilder();
 	  
 	  sb.append(" select distinct A.tdp_cadre_id,count(distinct date(A.attended_time))  from training_camp_attendance TCA, attendance A,  " +
-		  		" training_camp_batch TCB , attendee_type AT1   where  TCA.training_camp_batch_id = TCB.training_camp_batch_id and ");
-	  sb.append(" TCA.attendance_id = A.attendance_id and TCB.attendee_type_id = AT1.attendee_type_id and  " );
+		  		" training_camp_batch TCB , attendee_type AT1,training_camp_schedule TCS  where  TCA.training_camp_batch_id = TCB.training_camp_batch_id and ");
+	  sb.append(" TCA.attendance_id = A.attendance_id and TCB.attendee_type_id = AT1.attendee_type_id and  TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and " );
 	  sb.append(" TCB.attendee_type_id = 2 and AT1.is_deleted='false' and TCB.is_cancelled = 'false'  ");
 	  
 	  if(fromDate!=null && toDate!=null){
 		  sb.append(" and ( date(A.attended_time) >=:fromDate and date(A.attended_time) <= :toDate ) ");
+	  }
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  sb.append(" and TCS.enrollment_year_id in (:enrollmentYearIds)");
+	        }
+	  if(programYearIds != null && programYearIds.size()>0){
+		  sb.append(" and TCS.training_camp_program_id in (:programYearIds)");
 	  }
 	  sb.append(" group by A.tdp_cadre_id ");
 	  
@@ -644,6 +772,12 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  if(fromDate!=null && toDate!=null){
 		  query.setParameter("fromDate", fromDate);
 		  query.setParameter("toDate", toDate);
+	  }
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+	  }
+      if(programYearIds != null && programYearIds.size()>0){
+    	  query.setParameterList("programYearIds", programYearIds); 
 	  }
 	  return query.list();
   }
@@ -681,14 +815,21 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  
   }
   
-  public List<Object[]> getTodaySpeakersAttendedDetails(Date toDayDate){
+  public List<Object[]> getTodaySpeakersAttendedDetails(Date toDayDate,List<Long> enrollmentYearIds,List<Long> programYearIds){
 	  StringBuilder sb = new StringBuilder();
 	  
 	  sb.append(" select distinct A.tdp_cadre_id,TCB.training_camp_batch_id,A.attended_time  from training_camp_attendance TCA, attendance A,  " +
-		  		" training_camp_batch TCB , attendee_type AT1   where  TCA.training_camp_batch_id = TCB.training_camp_batch_id and ");
-	  sb.append(" TCA.attendance_id = A.attendance_id and TCB.attendee_type_id = AT1.attendee_type_id and  " );
+		  		" training_camp_batch TCB , attendee_type AT1,training_camp_schedule TCS" +
+		  		"   where  TCA.training_camp_batch_id = TCB.training_camp_batch_id and ");
+	  sb.append(" TCA.attendance_id = A.attendance_id and TCB.attendee_type_id = AT1.attendee_type_id and  TCB.training_camp_schedule_id = TCS.training_camp_schedule_id " );
 	  sb.append(" TCB.attendee_type_id = 2 and AT1.is_deleted='false' and TCB.is_cancelled = 'false'  ");
 	  
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  sb.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
+	  if(programYearIds != null && programYearIds.size()>0){
+		  sb.append(" and model1.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
+	  }
 	  if(toDayDate!=null){
 		  sb.append(" and ( date(A.attended_time) =:toDayDate ) ");
 	  }
@@ -699,62 +840,77 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  if(toDayDate!=null){
 		  query.setDate("toDayDate", toDayDate);
 	  }
+      if(programYearIds != null && programYearIds.size()>0){
+    	  query.setParameterList("programYearIds", programYearIds);
+	  }
 	  return query.list();
   }
   
-  public List<Object[]> getDayWiseInviteeCountsForBatch(Long batchId,Long enrollmentYearId){
+  public List<Object[]> getDayWiseInviteeCountsForBatch(Long batchId,Long enrollmentYearId,List<Long> programYearIds){
 	  StringBuilder sb = new StringBuilder();
-	  sb.append("  select count(distinct tcba.tdpCadreId),date(tca.insertedTime) " +
-					" from TrainingCampAttendance tca,TrainingCampBatchAttendee tcba " +
-					" where " +
-					" tca.trainingCampBatchId = tcba.trainingCampBatchId and " +
-					" tca.trainingCampBatchId=:batchId and tca.attendance.tdpCadreId=tcba.tdpCadreId and tcba.isDeleted='false' " +
-					" and tca.trainingCampBatch.attendeeTypeId=1 ");
+	  sb.append(" select count(distinct tcba.tdpCadreId),date(tca.insertedTime) " +
+	  									" from TrainingCampAttendance tca,TrainingCampBatchAttendee tcba " +
+	  									" where " +
+	  									" tca.trainingCampBatchId = tcba.trainingCampBatchId and " +
+	  									" tca.trainingCampBatchId=:batchId and tca.attendance.tdpCadreId=tcba.tdpCadreId and tcba.isDeleted='false' " +
+	  									" and tca.trainingCampBatch.attendeeTypeId=1 ");
 	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
 		  sb.append(" and tcba.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
-	  sb.append("  group by date(tca.insertedTime) ");
+	  sb.append(" group by date(tca.insertedTime) ");
 	  Query query = getSession().createQuery(sb.toString());
-	  
 	  query.setParameter("batchId", batchId);
 	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
 		   query.setParameter("enrollmentYearId",enrollmentYearId);
 	  return query.list();
   }
 
-  public List<Long> getInviteeCadreIdsForADay(Long batchId,Date date,Long enrollmentYearId){
+  public List<Long> getInviteeCadreIdsForADay(Long batchId,Date date,Long enrollmentYearId,List<Long> programYearIds){
 	  StringBuilder sb = new StringBuilder();
 	  sb.append("  select distinct model.attendance.tdpCadre.tdpCadreId " +
 	  		" from TrainingCampAttendance model " +
-	  		" where model.trainingCampBa tch.trainingCampBatchId=:batchId " +
+	  		" where model.trainingCampBatch.trainingCampBatchId=:batchId " +
 	  		" and date(model.attendance.attendedTime)=:date and model.trainingCampBatch.attendeeTypeId=1  ");
 	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
 		   sb.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
+	  if(programYearIds != null && programYearIds.size()>0){
+		  sb.append(" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds) ");
+	  }
 	  Query query = getSession().createQuery(sb.toString());
 	  query.setParameter("batchId", batchId);
 	  query.setParameter("date", date);
 	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
 		   query.setParameter("enrollmentYearId",enrollmentYearId);
+      if(programYearIds != null && programYearIds.size()>0){
+    	  query.setParameterList("programYearIds", programYearIds);
+	  }
 	  return query.list();
   }
   
-  public List<Long> getNonInviteesNoDaysCount(Long batchId,Long enrollmentYearId){
-	  
-	  StringBuilder sb = new StringBuilder();
-	  sb.append("  select  a.tdpCadreId from TrainingCampAttendance tca,Attendance a " +
+  public List<Long> getNonInviteesNoDaysCount(Long batchId,List<Long> enrollmentYearIds,List<Long> programYearIds){
+	  StringBuilder sb =new StringBuilder();
+	  sb.append(" select  a.tdpCadreId from TrainingCampAttendance tca,Attendance a " +
 	  		"where tca.attendance.attendanceId=a.attendanceId and " +
 	  		"a.tdpCadreId not in (select tdpCadreId from TrainingCampBatchAttendee where isDeleted='false' and trainingCampBatchId=:batchId) " +
-	  		"and tca.trainingCampBatchId=:batchId and tca.trainingCampBatch.attendeeTypeId=1 ");
-	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
-		   sb.append(" and tca.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
-	   sb.append(" group by date(a.attendedTime),a.tdpCadreId");
-	  Query query = getSession().createQuery(sb.toString());
+	  		"and tca.trainingCampBatchId=:batchId and tca.trainingCampBatch.attendeeTypeId=1 " );
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  sb.append(" and tca.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
+	  if(programYearIds != null && programYearIds.size()>0){
+		  sb.append(" and tca.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)"); 
+	  }
+	  sb.append(" group by date(a.attendedTime),a.tdpCadreId");
+	  Query query =getSession().createQuery(sb.toString());
 	 /* Query query = getSession().createSQLQuery("select  a.tdp_cadre_id from training_camp_attendance tca,attendance a " +
 	  		"where tca.attendance_id=a.attendance_id and " +
 	  		"a.tdp_cadre_id not in (select tdp_cadre_id from training_camp_batch_attendee where is_deleted='false' and training_camp_batch_id=:batchId) " +
 	  		"and tca.training_camp_batch_id=:batchId group by date(a.attended_time),a.tdp_cadre_id");*/
 	  query.setParameter("batchId",batchId);
-	  if(enrollmentYearId != null && enrollmentYearId.longValue()>0L)
-		   query.setParameter("enrollmentYearId",enrollmentYearId);
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+	  }
+      if(programYearIds != null && programYearIds.size()>0){
+    	  query.setParameterList("programYearIds", programYearIds);
+	  }
 	  return query.list();
   }
   
@@ -779,13 +935,26 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  return query.list();
   }
   
-  public List<Object[]> getAttendedCountsForBatches(List<Long> batchIds){
-	  
-	  Query query=getSession().createQuery(" " +
+  public List<Object[]> getAttendedCountsForBatches(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds){
+	  StringBuilder sb =new StringBuilder();
+	  sb.append(
 	  	"select distinct tca.trainingCampBatchId,date(tca.attendance.attendedTime),tca.attendance.tdpCadreId " +
 	  	"from   TrainingCampAttendance tca " +
 	  	"where  tca.trainingCampBatchId in (:batchIds) and tca.trainingCampBatch.attendeeTypeId=1 and tca.trainingCampBatch.isCancelled='false' ");
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  sb.append(" and tca.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
+	  if(programYearIds != null && programYearIds.size()>0){
+		  sb.append(" and tca.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
+	  }
+	  Query query =getSession().createQuery(sb.toString());
 	  query.setParameterList("batchIds",batchIds);
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  query.setParameterList("enrollmentYearIds",enrollmentYearIds);
+	  }
+	  if(programYearIds != null && programYearIds.size()>0){
+		  query.setParameterList("programYearIds",programYearIds); 
+	  }
 	  return query.list();
   }
   

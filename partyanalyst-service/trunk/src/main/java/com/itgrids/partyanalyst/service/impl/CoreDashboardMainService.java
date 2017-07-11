@@ -2419,7 +2419,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @Description :This Service Method is used to get top5 strong or top5 poor members attended and eligible count.. 
 	*  @since 11-NOV-2016
 	*/
-	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,List<Long> enrollmentYrIds){
+	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,List<Long> enrollmentYearIds){
 
 	List<List<UserTypeVO>> resultList = new ArrayList<List<UserTypeVO>>(0);
 	Map<String,TrainingCampProgramVO> eligibleAndAttendedCntMap = new HashMap<String, TrainingCampProgramVO>(0);
@@ -2449,7 +2449,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			     }else{
 			    	 accessLevelValue = entry.getKey();	 
 			     }
-			   List<Object[]> returnObjList = trainingCampDetailsInfoDAO.getTrainingCampProgramEligibleAndAttendedMemberLocationWise(accessLevelValue,new ArrayList<Long>(entry.getValue()), toDate,enrollmentYrIds);
+			   List<Object[]> returnObjList = trainingCampDetailsInfoDAO.getTrainingCampProgramEligibleAndAttendedMemberLocationWise(accessLevelValue,new ArrayList<Long>(entry.getValue()), toDate,enrollmentYearIds);
 			   if(returnObjList != null && returnObjList.size() > 0){
 				   for (Object[] param : returnObjList) {
 					   String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
@@ -4869,7 +4869,7 @@ public List<IdNameVO> getLeaderShipCandidateDtlsPerDist(Long userAccessLevelId, 
 			 locationType="townDivision";  
 		 }
 		List<Object[]> rtrnElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, stats, lctnId, locationType, null, null); 
-		List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, toDate, stats, lctnId,locationType, null,null,enrollmentYearIds);
+		List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, toDate, stats, lctnId,locationType, null,null, enrollmentYearIds);
 		if(rtrnElgbleMmbrsObjLst != null && rtrnElgbleMmbrsObjLst.size() > 0){  
 			for(Object[] obj : rtrnElgbleMmbrsObjLst){
 				invitedCadreIds.add(obj[2] != null ? (Long)obj[2] : 0l);

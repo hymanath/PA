@@ -925,8 +925,8 @@ public class SchedulerService implements ISchedulerService{
 	          try {
 	            DateUtilService date = new DateUtilService();
 	            Date todayDate = date.getCurrentDateAndTime();
-	            List<Object[]> speakersList = trainingCampAttendanceDAO.getTodaySpeakersAttendedDetails(todayDate);
-	            List<Long> speakersListInAttendee = trainingCampBatchAttendeeDAO.getTodaySpeakersDetails(todayDate);
+	            List<Object[]> speakersList = trainingCampAttendanceDAO.getTodaySpeakersAttendedDetails(todayDate,null,null);
+	            List<Long> speakersListInAttendee = trainingCampBatchAttendeeDAO.getTodaySpeakersDetails(todayDate,null,null);
 	            
 	           List<String> existingIdslist = new ArrayList<String>(0);
 	           if(speakersListInAttendee!=null && speakersListInAttendee.size()>0){
@@ -936,7 +936,7 @@ public class SchedulerService implements ISchedulerService{
 	           }
 	           
 	           //staff cadreIds
-	           List<String> excludeTdpCadreIdsList = trainingCampBatchDAO.getExcudingTdpCadreIdsList();
+	           List<String> excludeTdpCadreIdsList = trainingCampBatchDAO.getExcudingTdpCadreIdsList(null,null);
 	           List<String> staffCadreIdsList = new ArrayList<String>(0);
 	               
 	           if(excludeTdpCadreIdsList != null && excludeTdpCadreIdsList.size()>0)
