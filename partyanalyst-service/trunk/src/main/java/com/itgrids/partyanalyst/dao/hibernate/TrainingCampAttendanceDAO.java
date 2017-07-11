@@ -232,7 +232,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		return (List<Object[]>)query.list();
 }
  
-  public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,Long programId,Long campId,Long batchId,Date fromDate,Date toDate,Date currDate,String callFrom){
+ public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,List<Long> programIds,Long campId,Long batchId,Date fromDate,Date toDate,Date currDate,String callFrom,List<Long> enrollmentYrIds){
 	 
 	  Query query=getSession().createQuery(queryString);
 	  if(fromDate!=null && toDate!=null){
@@ -243,18 +243,21 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  if(!callFrom.equalsIgnoreCase("all")){		
 		  query.setParameter("currDate", currDate);
 	  }
+	  if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds", enrollmentYrIds);
+		}
 	  
-	  if(batchId==null && campId==null && programId!=null ){
-		 query.setParameter("programId",programId);
+	  if(batchId==null && campId==null && programIds!=null ){
+		 query.setParameterList("programIds",programIds);
 	  }
 	  else if(batchId==null && campId!=null){
 		 query.setParameter("campId",campId);
-		 if(programId!=null)
-			 query.setParameter("programId",programId);
+		 if(programIds!=null)
+			 query.setParameterList("programIds",programIds);
 	  }else if(batchId!=null){
 		 query.setParameter("batchId",batchId);
-		 if(programId!=null)
-			 query.setParameter("programId",programId);
+		 if(programIds!=null)
+			 query.setParameterList("programIds",programIds);
 		 if(campId!=null)
 			 query.setParameter("campId",campId);
 	  }
@@ -938,23 +941,23 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  return query.list();
   }
   
-  public List<Object[]> getAttendedCountsForBatches(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds){
-	  StringBuilder sb =new StringBuilder();
-	  sb.append(
+  public List<Object[]> getAttendedCountsForBatches(List<Long> batchIds,List<Long> enrollmentYrIds,List<Long> programYearIds){
+	  StringBuilder sb = new StringBuilder();
+	  sb.append(" " +
 	  	"select distinct tca.trainingCampBatchId,date(tca.attendance.attendedTime),tca.attendance.tdpCadreId " +
 	  	"from   TrainingCampAttendance tca " +
 	  	"where  tca.trainingCampBatchId in (:batchIds) and tca.trainingCampBatch.attendeeTypeId=1 and tca.trainingCampBatch.isCancelled='false' ");
-	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-		  sb.append(" and tca.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
-	        }
+	  if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append(" and tca.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) ");
+		}
 	  if(programYearIds != null && programYearIds.size()>0){
 		  sb.append(" and tca.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
 	  }
-	  Query query =getSession().createQuery(sb.toString());
+	  Query query=getSession().createQuery(sb.toString());
 	  query.setParameterList("batchIds",batchIds);
-	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-		  query.setParameterList("enrollmentYearIds",enrollmentYearIds);
-	  }
+	  if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds", enrollmentYrIds);
+		}
 	  if(programYearIds != null && programYearIds.size()>0){
 		  query.setParameterList("programYearIds",programYearIds); 
 	  }

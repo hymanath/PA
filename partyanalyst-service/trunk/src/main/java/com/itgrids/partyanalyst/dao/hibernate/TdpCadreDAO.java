@@ -9656,7 +9656,7 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			sb.append("select model.tdpCadre.tdpCadreId," +		//0
 							" model.tdpCadre.memberShipNo," +	//1
 							" model.tdpCadre.firstname," +		//2
-							" designation.designationId," +	//3
+							" designation.designation," +	//3
 							" model.tdpCadre.mobileNo," +	//4
 							" userAddress.userAddressId," +		//5
 							" model1.voterId," +				//6
