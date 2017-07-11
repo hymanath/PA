@@ -238,7 +238,7 @@ public class NregsDashboardController {
 		}
 		return levlWiseVOList;
 	}
-	/*@PostMapping("/getNregaParliamentData")
+	@PostMapping("/getNregaParliamentData")
 	public @ResponseBody List<NregsDataVO> getNregaParliamentData(@RequestBody InputVO vo){
 		List<NregsDataVO> levlWiseVOList = null;
 		try {
@@ -248,7 +248,7 @@ public class NregsDashboardController {
 			LOG.error("Exception raised at getNregaParliamentData - NREGSController controller", e);
 		}
 		return levlWiseVOList;
-	}*/
+	}
 	
 	@PostMapping("/getNREGSProjectsAbstractNew")
 	public @ResponseBody List<NregsProjectsVO> getNREGSProjectsAbstractNew(@RequestBody InputVO vo){

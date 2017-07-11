@@ -36,7 +36,7 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregaLevelsWiseDataFrAvenue(InputVO inputVO);
 	public List<NregsProjectsVO> getNREGSAbstractDataByType(InputVO inputVO);
 	public List<NregsDataVO> getNregaLevelsWiseDataForTimelyPayments(InputVO inputVO);
-	//public List<NregsDataVO> getNregaParliamentData(InputVO inputVO);
+	public List<NregsDataVO> getNregaParliamentData(InputVO inputVO);
 	public List<NregsProjectsVO> getNREGSProjectsAbstractNew(InputVO inputVO);
 	public List<LocationFundDetailsVO> getAllNregaSubLocationDetails(InputVO inputVO);
 	public List<NregsDataVO> getNregaPanchatVsExpData(InputVO inputVO);
