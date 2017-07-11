@@ -155,91 +155,83 @@ public class RwsMinWorkscompViewDAO extends GenericDaoHibernate<RwsMinWorkscompV
 	@Override
 	public List<Object[]> getOnclickTargetsAcheievementsDetails(InputVO inputVO) {
 
-		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select distinct habModel.dCode,habModel.dName,constituencyModel.constituencyCode, constituencyModel.contituencyName," +
-				" habModel.mCode, habModel.mName, habModel.panchCode, habModel.panchName , sum(habModel.plainPopCovered+habModel.scPopCovered) from RwsMinHabView habModel,  RwsMinConstituencyView constituencyModel,"
-				+ " RwsMinWorksAdminHabsView workHabModel, RwsMinWorkscompView workAdminModel  where "
-				+ " habModel.panchCode = workHabModel.habCode and workHabModel.workId= workAdminModel.workId and habModel.dCode = constituencyModel.dCode and"
-				+ " habModel.mCode = constituencyModel.mCode and  workAdminModel.dateOfCompletion between :fromDate and :toDate and habModel.coverageStatus like :statusType ");
-		
-		if (inputVO.getFilterType() != null && inputVO.getFilterType().equalsIgnoreCase(IConstants.MANDAL) && inputVO.getFilterType().trim().length() > 0 && inputVO.getDistrictValue() != null) {
-			queryStr.append("  and habModel.mCode=:mcode ");
-		}else if (inputVO.getFilterType() != null && inputVO.getFilterType().equalsIgnoreCase(IConstants.DISTRICT) && inputVO.getFilterType().trim().length() > 0) {
-			queryStr.append("  and habModel.dCode=:dCode");
-		}else if (inputVO.getFilterType() != null && inputVO.getFilterType().equalsIgnoreCase(IConstants.CONSTITUENCY) && inputVO.getFilterType().trim().length() > 0) {
-			queryStr.append(" and constituencyModel.constituencyCode=:conCode");
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sb2 = new StringBuilder();
+		StringBuilder sbm = new StringBuilder();
+		StringBuilder sbe = new StringBuilder();
+
+		sb.append("select ");
+
+		sb2.append(" model.dCode,model.dName,model1.constituencyCode, model1.contituencyName,"
+				+ " model.mCode, model.mName, model.panchCode, model.panchName , sum(model.plainPopCovered+model.scPopCovered)");
+
+		sbm.append("from RwsMinHabView model,"
+				+ "  RwsMinConstituencyView model1,RwsMinWorksAdminHabsView targetModel, ");
+
+		sbe.append(" where" + "  model.panchCode = targetModel.habCode and "
+				+ " model.dCode = model1.dCode and model.mCode = model1.mCode ");
+
+		if (inputVO.getWorkStatus().equalsIgnoreCase(IConstants.TARGET_ALL)) {
+			sbm.append(" RwsMinWorksAdminView adminModel ");
+			sbe.append(" and targetModel.workId= adminModel.workId ");
+			if (inputVO.getYear() != null && inputVO.getFromDateStr() == null && inputVO.getToDateStr() == null) {
+				sbe.append(" and adminModel.targetDateComp >= :year ");
+			} else if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+				sbe.append(" and adminModel.targetDateComp between :fromDate and :toDate ");
+			}
+			if (inputVO.getAssetType() != null && inputVO.getAssetType().trim().length() > 0) {
+				sbe.append(" and model.coverageStatus like :statusType");
+			}
+		} else if (inputVO.getWorkStatus().equalsIgnoreCase(IConstants.TARGET_COMPLETED)) {
+			sbm.append(" RwsMinWorkscompView acheieveModel ");
+			sbe.append(" and acheieveModel.workId= targetModel.workId ");
+			if (inputVO.getYear() != null && inputVO.getFromDate() != null && inputVO.getToDate() == null) {
+				sbe.append(" and acheieveModel.dateOfCompletion >= :year ");
+			} else if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+				sbe.append(" and acheieveModel.dateOfCompletion between :fromDate and :toDate ");
+			}
+			if (inputVO.getAssetType() != null && inputVO.getAssetType().trim().length() > 0) {
+				sbe.append(" and model.coverageStatus like :statusType");
+			}
+
 		}
-		if(inputVO.getDistrictValue()!=null && inputVO.getDistrictValue().trim().length()>0){
-			queryStr.append(" and habModel.dCode=:dCode ");
+		if (inputVO.getFilterType() != null && inputVO.getFilterType().trim().length() > 0
+				&& inputVO.getFilterValue() != null && inputVO.getFilterValue().trim().length() > 0) {
+			if (inputVO.getFilterType().equalsIgnoreCase("district")) {
+				sbe.append(" and trim(model1.dCode) =:locationValue ");
+			} else if (inputVO.getFilterType().equalsIgnoreCase("constituency")) {
+				sbe.append(" and trim(model1.constituencyCode) =:locationValue ");
+			} else if (inputVO.getFilterType().equalsIgnoreCase("mandal")) {
+				sbe.append(" and trim(model1.mCode) =:locationValue ");
+			}
 		}
-		queryStr.append(" group by habModel.coverageStatus,habModel.dCode,habModel.dName,constituencyModel.constituencyCode, constituencyModel.contituencyName," +
-				" habModel.mCode, habModel.mName, habModel.panchCode, habModel.panchName order by habModel.dCode");
-	
-		Query query = getSession().createQuery(queryStr.toString());
-		
-		if(inputVO.getAssetType()!= null && inputVO.getAssetType().trim().length()>0 ){
-			query.setParameter("statusType",inputVO.getAssetType()+"%");
+		if (inputVO.getDistrictValue() != null && inputVO.getDistrictValue().trim().length() > 0) {
+			sbe.append(" and trim(model1.dCode) =:districtValue ");
 		}
-		if(inputVO.getFilterValue()!=null && inputVO.getFilterType().equalsIgnoreCase(IConstants.MANDAL) && inputVO.getFilterValue().trim().length()>0 && inputVO.getDistrictValue()!=null){
-			query.setParameter("mcode",inputVO.getFilterValue());
-		}else if(inputVO.getFilterValue()!=null && inputVO.getFilterType().equalsIgnoreCase(IConstants.DISTRICT) && inputVO.getFilterValue().trim().length()>0 ){
-			query.setParameter("dCode",inputVO.getFilterValue());
-		}else if(inputVO.getFilterValue()!=null && inputVO.getFilterType().equalsIgnoreCase(IConstants.CONSTITUENCY) && inputVO.getFilterValue().trim().length()>0){
-			query.setParameter("conCode",inputVO.getFilterValue());
+		sbe.append(" group by model.dCode,model.dName,model1.constituencyCode, model1.contituencyName,"
+				+ " model.mCode, model.mName, model.panchCode, model.panchName ");
+		sb.append(sb2.toString()).append(sbm.toString()).append(sbe.toString());
+		Query query = getSession().createQuery(sb.toString());
+
+		if (inputVO.getAssetType() != null && inputVO.getAssetType().trim().length() > 0) {
+			query.setParameter("statusType", inputVO.getAssetType() + "%");
 		}
-		if(inputVO.getDistrictValue()!= null && inputVO.getDistrictValue().trim().length()>0){
-			query.setParameter("dCode",inputVO.getDistrictValue());
+		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+			query.setDate("fromDate", inputVO.getFromDate());
+			query.setDate("toDate", inputVO.getToDate());
+		} else if (inputVO.getYear() != null && inputVO.getFromDate() != null && inputVO.getToDate() == null) {
+			query.setDate("year", inputVO.getFromDate());
 		}
-		if(inputVO.getFromDate() != null && inputVO.getToDate()!=null){
-		      query.setDate("fromDate", inputVO.getFromDate());
-		      query.setDate("toDate", inputVO.getToDate());
+
+		if (inputVO.getDistrictValue() != null && inputVO.getDistrictValue().trim().length() > 0) {
+			query.setParameter("districtValue", inputVO.getDistrictValue());
+		}
+		if (inputVO.getFilterValue() != null && inputVO.getFilterValue().trim().length() > 0) {
+			query.setParameter("locationValue", inputVO.getFilterValue().trim());
 		}
 		return query.list();
-	
+
 	}
-
-	@Override
-	public List<Object[]> getOnclickStrssedTargetsAcheievementsDetails(InputVO inputVO) {
-
-		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select distinct habModel.coverageStatus,habModel.dCode,habModel.dName,constituencyModel.constituencyCode, constituencyModel.contituencyName," +
-				" habModel.mCode, habModel.mName, habModel.panchCode, habModel.panchName , sum(habModel.plainPopCovered+habModel.scPopCovered) from RwsMinHabView habModel,  RwsMinConstituencyView constituencyModel,"
-				+ " RwsMinWorksAdminHabsView workHabModel, RwsMinWorkscompView workAdminModel, RwsMinStressedHabView stressedModel   where "
-				+ " habModel.panchCode = workHabModel.habCode and workHabModel.workId= workAdminModel.workId and habModel.dCode = constituencyModel.dCode and"
-				+ " habModel.mCode = constituencyModel.mCode and stressedModel.habCode= habModel.panchCode and " +
-				"  workAdminModel.dateOfCompletion between :fromDate and :toDate and stressedModel.year >= :strerssedyear ");
-		
-		if (inputVO.getFilterType() != null && inputVO.getFilterType().equalsIgnoreCase(IConstants.MANDAL) && inputVO.getFilterType().trim().length() > 0 && inputVO.getDistrictValue() != null) {
-			queryStr.append(" and habModel.mCode=:mcode and trim(habModel.dCode)=:dCode");
-		}else if (inputVO.getFilterType() != null && inputVO.getFilterType().equalsIgnoreCase(IConstants.DISTRICT) && inputVO.getFilterType().trim().length() > 0) {
-			queryStr.append(" and habModel.dCode=:dCode");
-		}else if (inputVO.getFilterType() != null && inputVO.getFilterType().equalsIgnoreCase(IConstants.CONSTITUENCY) && inputVO.getFilterType().trim().length() > 0) {
-			queryStr.append(" and constituencyModel.constituencyCode=:conCode");
-		}
-	
-		queryStr.append(" group by habModel.coverageStatus,habModel.dCode,habModel.dName,constituencyModel.constituencyCode, constituencyModel.contituencyName," +
-				" habModel.mCode, habModel.mName, habModel.panchCode, habModel.panchName order by habModel.dCode");
-	
-		Query query = getSession().createQuery(queryStr.toString());
-		
-		if(inputVO.getFilterValue()!=null && inputVO.getFilterType().equalsIgnoreCase(IConstants.MANDAL) && inputVO.getFilterValue().trim().length()>0 && inputVO.getDistrictValue()!=null){
-			query.setParameter("mcode",inputVO.getFilterValue());
-			query.setParameter("dCode",inputVO.getDistrictValue());
-
-		}else if(inputVO.getFilterValue()!=null && inputVO.getFilterType().equalsIgnoreCase(IConstants.DISTRICT) && inputVO.getFilterValue().trim().length()>0 ){
-			query.setParameter("dCode",inputVO.getFilterValue());
-		}else if(inputVO.getFilterValue()!=null && inputVO.getFilterType().equalsIgnoreCase(IConstants.CONSTITUENCY) && inputVO.getFilterValue().trim().length()>0){
-			query.setParameter("conCode",inputVO.getFilterValue());
-		}
-		if(inputVO.getFromDate() != null && inputVO.getToDate()!=null){
-		      query.setDate("fromDate", inputVO.getFromDate());
-		      query.setDate("toDate", inputVO.getToDate());
-		      query.setParameter("strerssedyear", inputVO.getStressedHabitationYear());
-		}
-		return query.list();
-	
-	}
-
 
 	@Override
 	public List<Object[]> getStressedKPIDeatils(InputVO inputVO,String TargetType) {
@@ -264,7 +256,7 @@ public class RwsMinWorkscompViewDAO extends GenericDaoHibernate<RwsMinWorkscompV
 			sbe.append(" and targetModel.workId= adminModel.workId ");
 			if(inputVO.getYear() != null  && inputVO.getFromDate() != null && inputVO.getToDate() == null){
 				sbe.append(" and adminModel.targetDateComp >= :year ");
-			}else if(inputVO.getYear() == null && inputVO.getFromDate() != null && inputVO.getToDate() != null){
+			}else if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
 				sbe.append(" and adminModel.targetDateComp between :fromDate and :toDate ");
 			}
 			
@@ -273,7 +265,7 @@ public class RwsMinWorkscompViewDAO extends GenericDaoHibernate<RwsMinWorkscompV
 			sbe.append(" and acheieveModel.workId= targetModel.workId ");
 			if(inputVO.getYear() != null  && inputVO.getFromDate() != null && inputVO.getToDate() == null){
 				sbe.append(" and acheieveModel.dateOfCompletion >= :year ");
-			}else if(inputVO.getYear() == null && inputVO.getFromDate() != null && inputVO.getToDate() != null){
+			}else if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
 
 				sbe.append(" and acheieveModel.dateOfCompletion between :fromDate and :toDate ");
 			}
@@ -315,7 +307,7 @@ public class RwsMinWorkscompViewDAO extends GenericDaoHibernate<RwsMinWorkscompV
 		sb.append(sb2.toString()).append(sbm.toString()).append(sbe.toString());
 		Query query = getSession().createQuery(sb.toString());
 		
-		if (inputVO.getYear() == null && inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
 			query.setDate("fromDate", inputVO.getFromDate());
 			query.setDate("toDate", inputVO.getToDate());
 		} else if (inputVO.getYear() != null && inputVO.getFromDate() != null && inputVO.getToDate() == null) {
