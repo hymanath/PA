@@ -112,6 +112,11 @@ header.eventsheader {
                 	<div class="panel-heading bg_c">
                     	<h4 class="panel-title" style="font-weight:bold;">
                         	TRAINING CENTER MAIN DASHBOARD
+							  <span class="" style="font-size:15px">Select Enrollment</span>
+									<select id="trainingEnrlmntYrId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;" id="">
+										<option value="3">2014-2016</option> 
+										<option value="4" selected="selected" >2016-2018</option> 
+									</select>
 							<span class="pull-right col-md-3" style="margin-top: -8px;">
 								<div class="input-group" >
 									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
@@ -533,17 +538,30 @@ $(function () {
  $("#mainheading").html(" TRAINING CENTER DASHBOARD ");
  
 function getTrainingCenterDetailsBasedOnDates(fromType){
-	
+
 	var dates;
 	if(fromType=="onLoad"){
 		dates="";
 	}else{
 		dates=$("#selectDate").val();
 	}
-  
+	var enrollmentYrIds =[];
+	enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	if(fromType=="change"){
+		alert(900);
+		enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	}
+	var programIds =[];
+	if(enrollmentYrIds == 4){
+		programIds.push(8);
+	}else{
+		programIds.push(6,7);
+	}
 	var jsObj=
 	{	
-		selectedDate : dates
+		selectedDate : dates,
+		enrollmentYearIdsList :enrollmentYrIds,
+		programIdsList : programIds
 	}
     $.ajax({
           type:'GET',
@@ -1000,9 +1018,21 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		}else{
 			dates=$("#selectDate").val();
 		}
-	
+		var enrollmentYrIds =[];
+		enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	    if(fromType == "change"){
+		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	     }
+		 var programIds =[];
+	    if(enrollmentYrIds == 4){
+		   programIds.push(8);
+	     }else{
+		 programIds.push(6,7);
+			}
 		var jObj={
-			selectedDate : dates
+			selectedDate : dates,
+			enrollmentYearIdsList :enrollmentYrIds,
+			programIdsList : programIds
 	     }
 		$.ajax({
 		   type:'POST',
@@ -1035,9 +1065,23 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		}else{
 			dates=$("#selectDate").val();
 		}
-		
+		/* var enrollmentYrIds =[];
+		enrollmentYrIds.push($("#trainingEnrlmntYrId").val()); */
+		var enrollmentYrIds =[];
+		enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	    if(fromType == "change"){
+		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	     }
+		 var programIds =[];
+		if(enrollmentYrIds == 4){
+			programIds.push(8);
+		}else{
+			programIds.push(6,7);
+		}
 		var jObj={
-			selectedDate : dates
+			selectedDate : dates,
+			enrollmentYearIdsList :enrollmentYrIds,
+			programIdsList : programIds
 	     }
 		
 		$.ajax({
@@ -1116,11 +1160,24 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	function getAttendenceForTrainers(type){
 		
 		var typeStr = $("input[name='filterRadio']:checked").val();
-		var searchType = $("input[name='filtersRadio']:checked").val();		
+		var searchType = $("input[name='filtersRadio']:checked").val();	
+        var enrollmentYrIds =[];
+        enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+		if(type == "change"){
+		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	     }
+        var programIds =[];
+		if(enrollmentYrIds == 4){
+			programIds.push(8);
+		}else{
+			programIds.push(6,7);
+		}		
 		$("#spekrsTotalDiv").html("");
 		var jObj={
 			type:typeStr,
-			searchType:searchType
+			searchType:searchType,
+			enrollmentYearIdsList :enrollmentYrIds,
+			programIdsList : programIds
 		}
 		$("#speakersAttendenceImg").show();
 		$.ajax({
@@ -1271,9 +1328,21 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		}else{
 			dates=$("#selectDate").val();
 		}
-		
+		var enrollmentYrIds =[];
+		enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	    if(fromType == "change"){
+		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	     }
+		 var programIds =[];
+		if(enrollmentYrIds == 4){
+			programIds.push(8);
+		}else{
+			programIds.push(6,7);
+		}
 		var jObj={
-		  selectedDate : dates
+		  selectedDate : dates,
+		  enrollmentYearIdsList :enrollmentYrIds,
+		  programIdsList : programIds
 	     }
 		$.ajax({
 		   type:'POST',
@@ -1513,7 +1582,6 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		});
 	}
 	function getFeedBackCountsOfTraining(fromType){
-			
 			$("#feefbackLoadingImgId").show();
 			$("#viewDetailsBtnId").hide();
 			
@@ -1523,9 +1591,22 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			}else{
 				dates=$("#selectDate").val();
 			}
-	
+			var enrollmentYrIds =[];
+			enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	     if(fromType=="change"){
+			alert(456);
+		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	     }
+		 var programIds =[];
+			if(enrollmentYrIds==4){
+				programIds.push(8);
+			}else{
+				programIds.push(6,7);
+			}
 		var jsObj={
-			dates : dates
+			dates : dates,
+			enrollmentYearIdsList :enrollmentYrIds,
+			programIdsList : programIds
 		}
 		$.ajax({
 		   type:'POST',
@@ -1669,10 +1750,22 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	}); */
 
 	
-	function getAllTrainingCampDetails(){
+	function getAllTrainingCampDetails(fromType){
 		
-		
+		  var enrollmentYrIds =[];
+		  enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+		  if(fromType == "change"){
+		    enrollmentYrIds.push($("#trainingEnrlmntYrId").val());
+	     }
+		  var programIds =[];
+			if(enrollmentYrIds == 4){
+				programIds.push(8);
+			}else{
+				programIds.push(6,7);
+			}
 		var jsObj={
+			enrollmentYearIdsList :enrollmentYrIds,
+			programIdsList : programIds,
 			task : "totalTrainingCampDetails"
 		}
 		$.ajax({
@@ -1719,7 +1812,16 @@ $(document).on("click","#refrshButtonId",function(){
 		}).done(function(result){	
 		});
 	}
-	
+
+$(document).on('change', '#trainingEnrlmntYrId', function(){
+		fromTypeGlob="change";
+		getTrainingCenterDetailsBasedOnDates("change");
+		getAttendedCountForBatchesByLocation("change");
+		getInvitedAttendedCadreCountByBatchIds("change");
+		getDayWiseCountsForRunningBatches("change");
+		getFeedBackCountsOfTraining("change");
+	});
+		
 </script>
 </body>
 </html>	
