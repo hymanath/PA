@@ -51,7 +51,9 @@ public class RwsMinShallowHandpumpsViewDAO extends GenericDaoHibernate<RwsMinSha
 		
 			sb.append(" count(distinct model.shallowHpCode) " );	
 		}
-
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			sbe.append(" and model3.statusDate between :fromDate and :toDate ");
+		}
 		if (inputVo.getFilterType() != null	&& inputVo.getFilterType().trim().length() > 0 && inputVo.getFilterValue() != null && inputVo.getFilterValue().trim().length() > 0) {
 			
 			sbm.append(" , RwsMinConstituencyView model4 ");
@@ -73,6 +75,10 @@ public class RwsMinShallowHandpumpsViewDAO extends GenericDaoHibernate<RwsMinSha
 		sb.append(sbm.toString()).append(sbe.toString());
 		Query query = getSession().createQuery(sb.toString());
 
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			query.setDate("fromDate", inputVo.getFromDate());
+			query.setDate("toDate", inputVo.getToDate());
+		}
 		if (inputVo.getFilterValue() != null && inputVo.getFilterValue().trim().length() > 0) {
 			query.setParameter("locationValue", inputVo.getFilterValue().trim());
 		}
