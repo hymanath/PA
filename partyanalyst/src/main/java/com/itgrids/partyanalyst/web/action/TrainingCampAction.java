@@ -3023,21 +3023,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 public String getUpdateTrainingCampSpeakersDetails(){
     	try{
     		jObj = new JSONObject(getTask());
-    		 List<Long> enrollmentYearIds=new ArrayList<Long>();
- 			JSONArray enrollmentYearIdsArray=jObj.getJSONArray("enrollmentYearIdsList");
- 			if(enrollmentYearIdsArray!=null &&  enrollmentYearIdsArray.length()>0){
- 				for( int i=0;i<enrollmentYearIdsArray.length();i++){
- 					enrollmentYearIds.add(Long.valueOf(enrollmentYearIdsArray.getString(i)));
- 				}
- 			}
- 			List<Long> programYearIds=new ArrayList<Long>();
- 			 JSONArray programIdsArray=jObj.getJSONArray("programIdsList");
- 						if(programIdsArray!=null &&  programIdsArray.length()>0){
- 							for( int i=0;i<programIdsArray.length();i++){
- 								programYearIds.add(Long.valueOf(programIdsArray.getString(i)));
- 							}
- 						}
-    		partyMeetingType =schedulerService.updateTrainingCampSpeakersDetails(enrollmentYearIds,programYearIds);
+    		partyMeetingType =schedulerService.updateTrainingCampSpeakersDetails();
     	}catch (Exception e) {
     		LOG.error("Exception raised at getUpdateTrainingCampSpeakersDetails", e);
 		}
