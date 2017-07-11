@@ -1709,7 +1709,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		   return query.list();   
 	}*/
 	// attended count query
-	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate, String status, Long locationId,String locationType,Long userType,String levelType,List<Long> enrollmentYearIds){
+	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate, String status, Long locationId,String locationType,Long userType,String levelType,List<Long> enrollmentYearIds,List<Long> trainingCampProgramIds){
 
 		  StringBuilder queryStr= new StringBuilder();
 			  
@@ -1798,7 +1798,12 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		 if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
 			 queryStr.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in(:enrollmentYearIds) ");
 		 }
+		 if(trainingCampProgramIds != null && trainingCampProgramIds.size() > 0){
+			queryStr.append(" and model.trainingCampProgram.trainingCampProgramId in (:trainingCampProgramIds) ");
+		 }
+		 
 		if(status.equalsIgnoreCase("leadership")){
+			
 			queryStr.append(" group by model.trainingCampProgram.trainingCampProgramId");
 			 if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 		    	  queryStr.append(",model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId");
@@ -1832,6 +1837,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 	if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
 	 		query.setParameterList("enrollmentYearIds", enrollmentYearIds);
 	 	}
+	 	if(trainingCampProgramIds != null && trainingCampProgramIds.size() > 0){
+			   query.setParameterList("trainingCampProgramIds", trainingCampProgramIds);
+		}
 		  return query.list();  
 	}
 	public Date getLastUpdatedTime()

@@ -2649,7 +2649,7 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByLocationTyp
 }
 
 // eligible count
-public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId, String status, Long locationId,String locationType,Long userType,String levelType){
+public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId, String status, Long locationId,String locationType,Long userType,String levelType,List<Long> trainingCampProgramIds){
 	
 	StringBuilder queryStr = new StringBuilder();
 
@@ -2733,7 +2733,12 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 	         queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 	  }
+	   
+	  if(trainingCampProgramIds != null && trainingCampProgramIds.size() > 0){
+		 queryStr.append(" and TCED.trainingCampProgram.trainingCampProgramId in (:trainingCampProgramIds) ");
+	  }
 	   if(status.equalsIgnoreCase("leadership")){
+		   
 		  queryStr.append(" group by TCED.trainingCampProgram.trainingCampProgramId ");
 		  if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 	    	  queryStr.append(",TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId");
@@ -2759,6 +2764,9 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 	   }
 	   if(locationId != null && locationId.longValue() > 0){
 		   query.setParameter("locationId", locationId);   
+	   }
+	   if(trainingCampProgramIds != null && trainingCampProgramIds.size() > 0){
+		   query.setParameterList("trainingCampProgramIds", trainingCampProgramIds);
 	   }
 	return query.list();
 }
