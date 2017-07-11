@@ -279,4 +279,16 @@ public class NregsDashboardController {
 		}
 		return levlWiseVOList;
 	}
+	
+	@PostMapping("/getNregaLevelsWiseDataForFAPerformance")
+	public @ResponseBody List<NregsDataVO> getNregaLevelsWiseDataForFAPerformance(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaLevelsWiseDataForFAPerformance(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataForFAPerformance - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
 }

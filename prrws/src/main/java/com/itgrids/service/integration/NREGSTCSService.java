@@ -2458,4 +2458,85 @@ public class NREGSTCSService implements INREGSTCSService{
 		
 		return voList;
 	}
+	
+	/*
+	 * Date : 11/07/2017
+	 * Author :Sravanth
+	 * @description : getNregaLevelsWiseDataForFAPerformance
+	 */
+	public List<NregsDataVO> getNregaLevelsWiseDataForFAPerformance(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			
+			String webServiceUrl = null;
+			
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Payments"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FaPerformanceServiceNew/FaPerformanceDataNew";
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state")){
+	 	    				for(int i=0;i<finalArray.length();i++){
+		 	    				NregsDataVO vo = new NregsDataVO();
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				vo.setState(jObj.getString("'STATE'"));
+		 	    				vo.setAvgDmdMarks(jObj.getString("AVG_DMD_MARKS"));
+		 	    				vo.setAvgDMusterMarks(jObj.getString("AVG_D_MUSTER_MARKS"));
+		 	    				vo.setAvgLbMarks(jObj.getString("AVG_LB_MARKS"));
+		 	    				vo.setAvgRozgarDivasMarks(jObj.getString("AVG_ROZGAR_DIVAS_MARKS"));
+		 	    				vo.setAvgDaysMarks(jObj.getString("AVG_AVG_DAYS_MARKS"));
+		 	    				vo.setAvgAvgWageMarks(jObj.getString("AVG_AVG_WAGE_MARKS"));
+		 	    				vo.setAvgFlagshipMarks(jObj.getString("AVG_FLAGSHIP_MARKS"));
+		 	    				vo.setAvgTotMarks(jObj.getString("AVG_TOT_MARKS"));
+		 	    				
+		 	    				voList.add(vo);
+		 	    			}
+	 	    			}
+	 	    			else{
+	 	    				for(int i=0;i<finalArray.length();i++){
+		 	    				NregsDataVO vo = new NregsDataVO();
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+		 	    				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district"))
+		 	    					vo.setDistrict(jObj.getString("DISTRICT_DESCRIPTION"));
+		 	    				else
+		 	    					vo.setDistrict(jObj.getString("DISTRICT"));
+		 	    				
+		 	    				vo.setConstituency(jObj.getString("ASSEMBLY"));
+		 	    				vo.setMandal(jObj.getString("MANDAL"));
+		 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+		 	    				vo.setAvgDmdMarks(jObj.getString("AVG_DMD_MARKS"));
+		 	    				vo.setAvgDMusterMarks(jObj.getString("AVG_D_MUSTER_MARKS"));
+		 	    				vo.setAvgLbMarks(jObj.getString("AVG_LB_MARKS"));
+		 	    				vo.setAvgRozgarDivasMarks(jObj.getString("AVG_ROZGAR_DIVAS_MARKS"));
+		 	    				vo.setAvgDaysMarks(jObj.getString("AVG_AVG_DAYS_MARKS"));
+		 	    				vo.setAvgAvgWageMarks(jObj.getString("AVG_AVG_WAGE_MARKS"));
+		 	    				vo.setAvgFlagshipMarks(jObj.getString("AVG_FLAGSHIP_MARKS"));
+		 	    				vo.setAvgTotMarks(jObj.getString("AVG_TOT_MARKS"));
+		 	    				
+		 	    				voList.add(vo);
+		 	    			}
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataForFAPerformance - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
 }
