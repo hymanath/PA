@@ -15441,7 +15441,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			
 				
 		} catch (Exception e) {
-			LOG.error("Error occured getLocationWiseAlertStatusDetailsInfo() method of AlertManagementSystemService",e);
+			LOG.error("Error occured getAlertsOfCategoryByStatusWise() method of AlertManagementSystemService",e);
 		}
  		 return finalVoList;
  	 }
