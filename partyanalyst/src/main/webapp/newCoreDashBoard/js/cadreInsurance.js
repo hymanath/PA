@@ -6,13 +6,27 @@
 	function globalInsuranceCalls()
 	{
 		var getCadreval = getCadreYearVal();
+		
+		var getdate = getdateType();
+		var getCadreval = getCadreYearVal();
+		
+		getUserTypeWiseTotalCadreInsuranceComplainctCnt(getdate,getCadreval);
+		getInsuranceCompanyWiseOverviewAndStatusDetails(getCadreval);
+		
 		getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails(getCadreval);
 		cadreInsuranceClickActions();
-		if($("[expand-icon='cadreInsurance']").hasClass("glyphicon-resize-small"))
-		{
-			//alert(1)
+		if($("[expand-icon='cadreInsurance']").hasClass("glyphicon-resize-small")){
 		}
-	}
+		/*cadre insurance details block*/
+		var selectionType=$("input:radio[name=cadeInsuranceCat]:checked").val();
+		if(selectionType == "category"){
+			getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
+			getConstituencyWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
+		}else{
+			getDistrictWiseThenStatusWiseInsuranceMemberCount('insuredMember','desc',0);
+			getConstituencyWiseThenStatusWiseInsuranceMemberCount('insuredMember','desc',0);
+		}
+	}   
 	function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip)
 	{
 		'use strict';
@@ -55,24 +69,6 @@
 	function cadreInsuranceClickActions()
 	{
 		$(".cadreInsuranceCategoryStatus,.cadreInsuranceCategoryStatusTs").hide();
-		/* $("#dateRangeIdCadreInsurance").daterangepicker({
-			opens: 'left',
-			startDate: cadreInsuranceFDate,
-			endDate: cadreInsuranceTDate,
-			locale: {
-			  format: 'DD/MM/YYYY'
-			},
-			ranges: {
-			   'Today' : [moment(), moment()],
-			   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-			   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-			   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-			   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-			   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-			   'This Month': [moment().startOf('month'), moment()],
-			   'This Year': [moment().startOf('Year'), moment()]
-			}
-		}); */
 		
 		$(document).on("click",".cadreInsuranceStateCls li",function(){
 			globalStateIdForCadreInsurance = $(this).attr('attr_id');
@@ -114,7 +110,8 @@
 				$("#tsConstBlockId").hide();
 				$("#tsDistrictBlockId").hide();
 				$("#apDistrictBlockId").show();
-				$("#apConstBlockId").show();  
+				$("#apConstBlockId").show();
+								
 				var selectionType=$("input:radio[name=cadeInsuranceCat]:checked").val();
 				if(selectionType == "category"){
 					getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
@@ -127,7 +124,8 @@
 				$("#tsConstBlockId").show();
 				$("#tsDistrictBlockId").show();
 				$("#apDistrictBlockId").hide();
-				$("#apConstBlockId").hide();          
+				$("#apConstBlockId").hide();
+				
 				var selectionType=$("input:radio[name=cadeInsuranceCatTs]:checked").val();
 				if(selectionType == "category"){
 					getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','insuredMember','desc',0);
@@ -140,7 +138,8 @@
 				$("#tsConstBlockId").show();
 				$("#tsDistrictBlockId").show();
 				$("#apDistrictBlockId").show();
-				$("#apConstBlockId").show();   				
+				$("#apConstBlockId").show();
+				
 				var selectionType=$("input:radio[name=cadeInsuranceCat]:checked").val();
 				if(selectionType == "category"){
 					getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
@@ -292,12 +291,12 @@
 				getAllItsSubUserTypeIdsByParentUserTypeForInsurance();
 				$(".cadreInsuranceComparisonblock").show();
 				$(".cadreInsuranceDetailedblock").hide();
-			}
+			}  
 		});
-		 $(document).on("click",".cadeInsuranceCat",function(){	
+		 $(document).on("click",".cadeInsuranceCatAndStsCls",function(){	
            if($(this).is(':checked')){
 				//alert(1111);
-				//alert(2222);
+				//alert(2222);     
 				var status = $(this).attr("attr_status");
 				if(status == 'categoryStatus')
 				{
@@ -318,7 +317,7 @@
 				}
 			}
 		});
-		$(document).on("click",".cadeInsuranceCatTs",function(){
+		$(document).on("click",".cadeInsuranceCatTs",function(){         
 			var status = $(this).attr("attr_status");
 			if(status == 'category')
 			{
@@ -1072,39 +1071,50 @@
 		{
 			var str='';
 			str+='<div class="row">';
-				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 apBlockCls">';
 					str+='<h4 class="panel-title headingColorApp"><span>ANDHRA PRADESH</span></h4>';
 				str+='</div>';
-				str+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
+				str+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10 apBlockCls">';
 					str+='<h4 class="panel-title text-capital">overview</h4>';
 					str+='<div id="overviewInsurance" style="height:300px;"></div>';
 				str+='</div>';
-				str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+				str+='<div class="col-md-4 col-xs-12 col-sm-4 apBlockCls">';
 					str+='<h4 class="panel-title text-capital">hospitalization</h4>';
 					str+='<div id="hospitalizationInsurance" style="height:300px"></div>';
 				str+='</div>';
-				str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+				str+='<div class="col-md-4 col-xs-12 col-sm-4 apBlockCls">';
 					str+='<h4 class="panel-title text-capital">death</h4>';
 					str+='<div id="deathInsurance" style="height:300px"></div>';
 				str+='</div>';
-				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 tsBlockCls">';  
 					str+='<h4 class="panel-title headingColorApp"><span>TELANGANA</span></h4>';
 				str+='</div>';
-				str+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
+				str+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10 tsBlockCls">';   
 					str+='<h4 class="panel-title text-capital">overview</h4>';
 					str+='<div id="overviewInsuranceTs" style="height:300px"></div>';
 				str+='</div>';
-				str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+				str+='<div class="col-md-4 col-xs-12 col-sm-4 tsBlockCls">';
 					str+='<h4 class="panel-title text-capital">hospitalization</h4>';
 					str+='<div id="hospitalizationInsuranceTs" style="height:300px"></div>';
 				str+='</div>';
-				str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+				str+='<div class="col-md-4 col-xs-12 col-sm-4 tsBlockCls">';  
 					str+='<h4 class="panel-title text-capital">death</h4>';
 					str+='<div id="deathInsuranceTs" style="height:300px"></div>';
 				str+='</div>';
 			str+='</div>';
 			
 			$("#insuranceCompanyWiseOverviewAndStatusDetails").html(str);
+			
+			if(globalStateIdForCadreInsurance ==1){
+				$(".apBlockCls").show();
+				$(".tsBlockCls").hide();
+			}else if(globalStateIdForCadreInsurance ==2){
+				$(".tsBlockCls").show();
+				$(".apBlockCls").hide();
+			}else{
+				$(".apBlockCls").show();
+				$(".tsBlockCls").show();
+			}
 			
 			var overviewList = []
 			var namesArr = [];
@@ -2063,7 +2073,7 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 	
    function getDistrictWiseThenCategoryWiseInsuranceMemberCount(sortingCondition,order,locationId){
 		$("#districtWiseThenCategoryWiseInsuranceMemberCount").html(spinner);
-		var category = $("#apCategoryId").val();
+		var category = $("#apCategoryId").val();  
 		var status = $("#apStatusId").val();
 		var yearId = getCadreYearVal();
 		var jsObj = {
