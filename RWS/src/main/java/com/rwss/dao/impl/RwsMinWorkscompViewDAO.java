@@ -242,7 +242,7 @@ public class RwsMinWorkscompViewDAO extends GenericDaoHibernate<RwsMinWorkscompV
 		StringBuilder sbe = new StringBuilder();
 		
 		sb.append("select ");
-		sb2.append(" model.coverageStatus, count(DISTINCT model.panchCode),sum(model.plainPopCovered+model.scPopCovered) ");
+		sb2.append(" model.coverageStatus, count(distinct model.panchCode),sum(model.plainPopCovered+model.scPopCovered) ");
 		
 		sbm.append("from RwsMinHabView model,"+ 
 				" RwsMinStressedHabView stressedModel, RwsMinConstituencyView model1,RwsMinWorksAdminHabsView targetModel, ");
