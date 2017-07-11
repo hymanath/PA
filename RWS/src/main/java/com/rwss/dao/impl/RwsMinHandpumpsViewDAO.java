@@ -71,7 +71,7 @@ public class RwsMinHandpumpsViewDAO extends GenericDaoHibernate<RwsMinHandpumpsV
 			}
 		}
 		if (inputVo.getDistrictValue() != null && inputVo.getDistrictValue().trim().length() > 0) {
-			sbe.append(" model3.dCode =:districtvalue");
+			sbe.append(" and trim(model3.dCode) =:districtvalue");
 		}
 		if (inputVo.getYear() != null && inputVo.getYear().trim().length() > 0) {
 			sbe.append(" and TO_CHAR(model3.statusDate,'YY') =:year ");
