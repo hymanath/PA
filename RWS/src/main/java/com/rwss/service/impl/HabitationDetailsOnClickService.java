@@ -173,25 +173,21 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 				inputVO.setToDate(sdf.parse("01-04-" + year));
 			}
 			
-			List<Object[]> object =null;
-			if(inputVO.getWorkStatus().equalsIgnoreCase(IConstants.TARGET_ALL) ){
-				object=rwsMinWorkscompViewDAO.getOnclickTargetsAcheievementsDetails(inputVO);
-			}else if(inputVO.getWorkStatus().equalsIgnoreCase(IConstants.TARGET_COMPLETED)){
-				object=rwsMinWorksAdminViewDAO.getOnclickTargetsAcheievementsDetails(inputVO);
-			}
+			List<Object[]> object=rwsMinWorkscompViewDAO.getOnclickTargetsAcheievementsDetails(inputVO);
+			
 			List<HabitationDetailsVO> habitationDetailsList = new ArrayList<HabitationDetailsVO>(0);
 			if(object != null){
 				for(Object[] param : object){
 					HabitationDetailsVO habitationDetailsVO = new HabitationDetailsVO();
-					habitationDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[1]));
-					habitationDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[2]));
-					habitationDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[3]));
-					habitationDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[4]));
-					habitationDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[5]));
-					habitationDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[6]));
-					habitationDetailsVO.setHabitationCode(commonMethodsUtilService.getStringValueForObject(param[7]));
-					habitationDetailsVO.setHabitationName(commonMethodsUtilService.getStringValueForObject(param[8]));
-					habitationDetailsVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[9]));
+					habitationDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[0]));
+					habitationDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					habitationDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[2]));
+					habitationDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					habitationDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[4]));
+					habitationDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[5]));
+					habitationDetailsVO.setHabitationCode(commonMethodsUtilService.getStringValueForObject(param[6]));
+					habitationDetailsVO.setHabitationName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					habitationDetailsVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[8]));
 					
 					habitationDetailsList.add(habitationDetailsVO);
 				}
@@ -228,35 +224,39 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 			LOG.info("Entered into getOnclickStrssedTargetsAcheievementsDetails() in HabitationDetailsService class");
 
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
-			if (inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() > 0) {
+			if (inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0
+					&& inputVO.getToDateStr() != null && inputVO.getToDateStr().length() > 0) {
+				
 				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
 				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
+				Long fromYear = Long.parseLong(inputVO.getFromDateStr().split("-")[2]);
+				Long toYear = Long.parseLong(inputVO.getToDateStr().split("-")[2]);
+
+				for (Long i = fromYear; i <= toYear; i++) {
+					inputVO.getStressedHabitationYearsList().add(i.toString());
+				}
 			} else if (inputVO.getYear() != null && inputVO.getYear().length() > 0) {
 				Long year = Long.valueOf(inputVO.getYear());
 				Long priviousYear = year - 1;
 				inputVO.setFromDate(sdf.parse("01-04-" + priviousYear));
 				inputVO.setToDate(sdf.parse("01-04-" + year));
+				inputVO.getStressedHabitationYearsList().add(inputVO.getYear());
 			}
 			
-			List<Object[]> object =null;
-			if(inputVO.getWorkStatus().equalsIgnoreCase(IConstants.TARGET_ALL) ){
-				object=rwsMinWorkscompViewDAO.getOnclickStrssedTargetsAcheievementsDetails(inputVO);
-			}else if(inputVO.getWorkStatus().equalsIgnoreCase(IConstants.TARGET_COMPLETED)){
-				object=rwsMinWorksAdminViewDAO.getOnclickStrssedTargetsAcheievementsDetails(inputVO);
-			}
+			List<Object[]> object = rwsMinWorksAdminViewDAO.getOnclickStrssedTargetsAcheievementsDetails(inputVO);
 			List<HabitationDetailsVO> habitationDetailsList = new ArrayList<HabitationDetailsVO>(0);
 			if(object != null){
 				for(Object[] param : object){
 					HabitationDetailsVO habitationDetailsVO = new HabitationDetailsVO();
-					habitationDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[1]));
-					habitationDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[2]));
-					habitationDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[3]));
-					habitationDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[4]));
-					habitationDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[5]));
-					habitationDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[6]));
-					habitationDetailsVO.setHabitationCode(commonMethodsUtilService.getStringValueForObject(param[7]));
-					habitationDetailsVO.setHabitationName(commonMethodsUtilService.getStringValueForObject(param[8]));
-					habitationDetailsVO.setToatlPorpualtionCovered(commonMethodsUtilService.getLongValueForObject(param[9]));
+					habitationDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[0]));
+					habitationDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					habitationDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[2]));
+					habitationDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					habitationDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[4]));
+					habitationDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[5]));
+					habitationDetailsVO.setHabitationCode(commonMethodsUtilService.getStringValueForObject(param[6]));
+					habitationDetailsVO.setHabitationName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					habitationDetailsVO.setToatlPorpualtionCovered(commonMethodsUtilService.getLongValueForObject(param[8]));
 					
 					habitationDetailsList.add(habitationDetailsVO);
 				}
