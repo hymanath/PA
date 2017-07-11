@@ -224,23 +224,23 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 			LOG.info("Entered into getOnclickStrssedTargetsAcheievementsDetails() in HabitationDetailsService class");
 
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
-			if (inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0
-					&& inputVO.getToDateStr() != null && inputVO.getToDateStr().length() > 0) {
-				
-				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
-				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
+			if(inputVO.getYear() != null && !inputVO.getYear().trim().isEmpty()){
+				inputVO.getStressedHabitationYearsList().add(inputVO.getYear());
+			}else if(inputVO.getFromDateStr() != null && !inputVO.getFromDateStr().trim().isEmpty() && inputVO.getToDateStr() != null && !inputVO.getToDateStr().trim().isEmpty()){
 				Long fromYear = Long.parseLong(inputVO.getFromDateStr().split("-")[2]);
 				Long toYear = Long.parseLong(inputVO.getToDateStr().split("-")[2]);
-
-				for (Long i = fromYear; i <= toYear; i++) {
+				for (Long i = fromYear; i < toYear; i++) {
 					inputVO.getStressedHabitationYearsList().add(i.toString());
 				}
-			} else if (inputVO.getYear() != null && inputVO.getYear().length() > 0) {
+			}
+			
+			if(inputVO.getFromDateStr()!= null && !inputVO.getFromDateStr().trim().isEmpty()  && inputVO.getToDateStr()!= null && !inputVO.getToDateStr().trim().isEmpty()){
+				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
+				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
+			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
 				Long year = Long.valueOf(inputVO.getYear());
-				Long priviousYear = year - 1;
-				inputVO.setFromDate(sdf.parse("01-04-" + priviousYear));
-				inputVO.setToDate(sdf.parse("01-04-" + year));
-				inputVO.getStressedHabitationYearsList().add(inputVO.getYear());
+				inputVO.setFromDate(sdf.parse("01-04-"+ year));
+				
 			}
 			
 			List<Object[]> object = rwsMinWorksAdminViewDAO.getOnclickStrssedTargetsAcheievementsDetails(inputVO);
