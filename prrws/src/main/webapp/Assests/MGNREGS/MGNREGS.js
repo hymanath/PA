@@ -147,7 +147,6 @@ function onLoadCalls()
 		getWebserviceHealthDetails(glStartDateForWebservice,glEndDateForWebservice);
 	});   
 	$(document).on('click','[overview-level]', function(){
-		alert(112)
 		var levelType = $(this).attr("overview-level");
 		var divId = $(this).attr("overview-divId");
 		var levelId = $(this).attr("overview-levelId");
@@ -198,7 +197,7 @@ function onLoadCalls()
 			else if(divId == "Payments" && (levelType == "state" || levelType == "district" || levelType == "mandal"))//
 				getNregaLevelsWiseDataForTimelyPayments(tableId,levelType,menuLocationType,menuLocationId);
 			else if(divId == "FAperformance")
-				getNregaLevelsWiseDataForFAPerformance(tableId,levelType,theadArr,menuLocationType,menuLocationId);
+				getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId);
 			else
 				getNregaLevelsWiseData(tableId,levelType,theadArr,menuLocationType,menuLocationId);
 		}
@@ -416,10 +415,10 @@ function projectData(divId,levelId,locationId)
 			getNregaLevelsWiseDataFrAvenue(tableId,dataArr[0],menuLocationType,menuLocationId);
 		else if(divId == "CC Roads")//
 			getNregaLevelsWiseDataForCCRoads(tableId,dataArr[0],menuLocationType,menuLocationId);
-		else if(divId == "Payments" && (dataArr[0] == "state"))//
+		else if(divId == "Payments")//
 			getNregaLevelsWiseDataForTimelyPayments(tableId,dataArr[0],menuLocationType,menuLocationId);
 		else if(divId == "FAperformance")
-			getNregaLevelsWiseDataForFAPerformance(tableId,dataArr[0],theadArr,menuLocationType,menuLocationId);
+			getNregaLevelsWiseDataForFAPerformance(tableId,dataArr[0],menuLocationType,menuLocationId);
 		else
 			getNregaLevelsWiseData(tableId,dataArr[0],theadArr,menuLocationType,menuLocationId);
 	
@@ -2104,9 +2103,17 @@ function getLabourBudgetClickingOverview(menuLocationType,menuLocationId)
 	});
 }
 
-function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId)
+function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
+	var theadArr = [locationTypeNew,'AVG_DMD_MARKS','AVG_D_MUSTER_MARKS','AVG_LB_MARKS','AVG_ROZGAR_DIVAS_MARKS','AVG_AVG_DAYS_MARKS','AVG_AVG_WAGE_MARKS','AVG_FLAGSHIP_MARKS','AVG_TOT_MARKS'];
+	if(locationTypeNew == "constituency")
+		theadArr = ["district",locationTypeNew,'AVG_DMD_MARKS','AVG_D_MUSTER_MARKS','AVG_LB_MARKS','AVG_ROZGAR_DIVAS_MARKS','AVG_AVG_DAYS_MARKS','AVG_AVG_WAGE_MARKS','AVG_FLAGSHIP_MARKS','AVG_TOT_MARKS'];
+	else if(locationTypeNew == "mandal")
+		theadArr = ["district","constituency",locationTypeNew,'AVG_DMD_MARKS','AVG_D_MUSTER_MARKS','AVG_LB_MARKS','AVG_ROZGAR_DIVAS_MARKS','AVG_AVG_DAYS_MARKS','AVG_AVG_WAGE_MARKS','AVG_FLAGSHIP_MARKS','AVG_TOT_MARKS'];
+	else if(locationTypeNew == "panchayat")
+		theadArr = ["district","constituency","mandal",locationTypeNew,'AVG_DMD_MARKS','AVG_D_MUSTER_MARKS','AVG_LB_MARKS','AVG_ROZGAR_DIVAS_MARKS','AVG_AVG_DAYS_MARKS','AVG_AVG_WAGE_MARKS','AVG_FLAGSHIP_MARKS','AVG_TOT_MARKS'];
+	
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
@@ -2130,7 +2137,7 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,theadArr,
 				for(var i in ajaxresp){
 					str+='<tr>';
 						if(locationTypeNew == "state"){
-							str+='<td class="text-capital">'+locationTypeNew+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].state+'</td>';
 						}
 						else if(locationTypeNew == "district"){
 							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
@@ -2150,28 +2157,15 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,theadArr,
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}
-						str+='<td>'+ajaxresp[i].target+'</td>';
-						if((globalDivName == 'Mulbery' || globalDivName == 'Silk worm' || globalDivName == 'Cattle drinking water trough' || globalDivName == 'Raising of Perinnial Fodder') && locationTypeNew == "state"){
-							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
-							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
-						}
-						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms') && (locationTypeNew == "state" || locationTypeNew == "district")){
-							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
-							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
-						}
-						str+='<td>'+ajaxresp[i].grounded+'</td>';
-						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
-						str+='<td>'+ajaxresp[i].inProgress+'</td>';
-						str+='<td>'+ajaxresp[i].completed+'</td>';
-						if(ajaxresp[i].percentage < 50){
-							str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
-						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
-						}else if(ajaxresp[i].percentage >= 80)
-						{
-							str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
-						}
-						//str+='<td>'+ajaxresp[i].percentage+'</td>';
+						str+='<td>'+ajaxresp[i].avgDmdMarks+'</td>';
+						str+='<td>'+ajaxresp[i].avgDMusterMarks+'</td>';
+						str+='<td>'+ajaxresp[i].avgLbMarks+'</td>';
+						str+='<td>'+ajaxresp[i].avgRozgarDivasMarks+'</td>';
+						str+='<td>'+ajaxresp[i].avgDaysMarks+'</td>';
+						str+='<td>'+ajaxresp[i].avgAvgWageMarks+'</td>';
+						str+='<td>'+ajaxresp[i].avgFlagshipMarks+'</td>';
+						str+='<td>'+ajaxresp[i].avgTotMarks+'</td>';
+						
 					str+='</tr>';
 				}
 			}
