@@ -538,10 +538,23 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 	 */
 	@Override
 	public List<HabitationDetailsVO> getWaterSourceDeatilsLocationWise(InputVO inputVo) {
-		List<HabitationDetailsVO> finalVo = new ArrayList<HabitationDetailsVO>();
+		List<HabitationDetailsVO> finalVo = new ArrayList<HabitationDetailsVO>(0);
 		List<Object[]> surfaceSourcesObjArr = null;
 		List<Object[]> groundWaterDetails = new ArrayList<Object[]>();
 		try{
+			
+			LOG.info("Entered into getWaterSourceDeatilsLocationWise() in HabitationDetailsService class");
+
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
+			if (inputVo.getFromDateStr() != null && inputVo.getFromDateStr().length() > 0 && inputVo.getToDateStr() != null && inputVo.getToDateStr().length() > 0) {
+				inputVo.setFromDate(sdf.parse(inputVo.getFromDateStr()));
+				inputVo.setToDate(sdf.parse(inputVo.getToDateStr()));
+			} else if (inputVo.getYear() != null && inputVo.getYear().length() > 0) {
+				Long year = Long.valueOf(inputVo.getYear());
+				Long priviousYear = year - 1;
+				inputVo.setFromDate(sdf.parse("01-04-" + priviousYear));
+				inputVo.setToDate(sdf.parse("01-04-" + year));
+			}
 			if(inputVo.getStatus() != null && inputVo.getStatus().trim().equalsIgnoreCase("ground") || inputVo.getStatus() != null && inputVo.getStatus().trim().equalsIgnoreCase("total")){
 				List<Object[]> handpumpsObjArr = rwsMinHandpumpsViewDAO.getWaterSourceDeatilsGroupByLocation(inputVo);
 				List<Object[]> shallowHandpumpObjArr = rwsMinShallowHandpumpsViewDAO.getWaterSourceDeatilsGroupByLocation(inputVo);
@@ -589,7 +602,9 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 						
 					}
 			}
-			
+			if(finalVo.size()>0){
+				finalVo.get(0).setStatus(IConstants.RESULT_SUCCESS);
+				}
 			return finalVo;
 		}catch(Exception e){
 			LOG.error("Error occured at getWaterSourceDeatilsLocationWise() in HabitationDetailsService class",e);

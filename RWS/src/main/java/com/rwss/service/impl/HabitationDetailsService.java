@@ -1423,8 +1423,20 @@ public class HabitationDetailsService implements IHabitationDetailsService {
 		List<LocationVO> locationList = new ArrayList<LocationVO>(0);
 		Map<String, Map<String, LocationVO>> districtMap = new LinkedHashMap<>();
 		try {
+			
 			LOG.info("Entered into getWaterSourceDeatils() in HabitationDetailsService class");
 		
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
+			if (inputVo.getFromDateStr() != null && inputVo.getFromDateStr().length() > 0 && inputVo.getToDateStr() != null && inputVo.getToDateStr().length() > 0) {
+				inputVo.setFromDate(sdf.parse(inputVo.getFromDateStr()));
+				inputVo.setToDate(sdf.parse(inputVo.getToDateStr()));
+			} else if (inputVo.getYear() != null && inputVo.getYear().length() > 0) {
+				Long year = Long.valueOf(inputVo.getYear());
+				Long priviousYear = year - 1;
+				inputVo.setFromDate(sdf.parse("01-04-" + priviousYear));
+				inputVo.setToDate(sdf.parse("01-04-" + year));
+
+			}
 			if (IConstants.SUPPLY_TYPE_SAFE == "safe") {
 
 				List<Object[]> handpumpsObjArr = rwsMinHandpumpsViewDAO.getWaterSourceDeatils2(inputVo,IConstants.SUPPLY_TYPE_SAFE);
