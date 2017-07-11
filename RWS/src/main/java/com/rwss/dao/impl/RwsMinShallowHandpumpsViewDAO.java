@@ -70,7 +70,7 @@ public class RwsMinShallowHandpumpsViewDAO extends GenericDaoHibernate<RwsMinSha
 			}
 		}
 		if (inputVo.getDistrictValue() != null && inputVo.getDistrictValue().trim().length() > 0) {
-			sbe.append(" model3.dCode =:districtvalue");
+			sbe.append(" and trim(model3.dCode) =:districtvalue");
 		}
 		sb.append(sbm.toString()).append(sbe.toString());
 		Query query = getSession().createQuery(sb.toString());
