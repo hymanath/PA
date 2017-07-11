@@ -8,18 +8,16 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import com.itgrids.dto.DrainsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.service.IDrainsService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
-
 import com.sun.jersey.api.client.ClientResponse;
 
-import jdk.nashorn.internal.scripts.JO;
-
+@Service
 @Transactional
 public class DrainsService implements IDrainsService {
 	

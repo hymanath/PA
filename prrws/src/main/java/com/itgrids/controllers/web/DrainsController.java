@@ -28,7 +28,7 @@ public class DrainsController {
 	private WebServiceUtilService webServiceUtilService;
 	
 	@Autowired
-	private IDrainsService DrainsService;
+	private IDrainsService drainsService;
 	
 	@RequestMapping(value ="/DrainsDashboard", method = RequestMethod.GET)
     public String drainsDashboard(ModelMap model) {
@@ -41,7 +41,7 @@ public class DrainsController {
 		
 		List<DrainsVO> drainsVO=null;
 		try {
-			drainsVO = DrainsService.getDrainsInfobyLocation(inputVO);
+			drainsVO = drainsService.getDrainsInfobyLocation(inputVO);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at  getDrainsInfobyLocation - DrainsController controller", e);
