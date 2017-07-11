@@ -121,47 +121,55 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 				         " model3.mCode=model4.mCode and " +
 				         " model3.dCode=model4.dCode ");
 							 
-			if (sourceType != null && !sourceType.isEmpty()){
-				  queryStr.append(" and trim(model.sourceTypeName)=:sourceType");
-			}
+		if (sourceType != null && !sourceType.isEmpty()) {
+			queryStr.append(" and trim(model.sourceTypeName)=:sourceType");
+		}
 	       
-			if (IConstants.SUPPLY_TYPE_SAFE.equalsIgnoreCase(inputVo.getType())) {
-				queryStr.append(" AND model3.safeLpcd != '0' and model3.safeLpcd is not null ");
-						
-			}else if (IConstants.SUPPLY_TYPE_UNSAFE.equalsIgnoreCase(inputVo.getType())) {
-				queryStr.append(" AND model3.unSafeLpcd != '0' and model3.unSafeLpcd is not null");
-			}
-			if (inputVo.getFilterType() != null && inputVo.getFilterType().trim().length() > 0 && inputVo.getFilterValue() != null
+		if (IConstants.SUPPLY_TYPE_SAFE.equalsIgnoreCase(inputVo.getType())) {
+			queryStr.append(" AND model3.safeLpcd != '0' and model3.safeLpcd is not null ");
+
+		} else if (IConstants.SUPPLY_TYPE_UNSAFE.equalsIgnoreCase(inputVo.getType())) {
+			queryStr.append(" AND model3.unSafeLpcd != '0' and model3.unSafeLpcd is not null");
+		}
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			queryStr.append(" and model3.statusDate between :fromDate and :toDate ");
+		}
+		if (inputVo.getFilterType() != null && inputVo.getFilterType().trim().length() > 0 && inputVo.getFilterValue() != null
 				&& inputVo.getFilterValue().trim().length() > 0) {
-				if (inputVo.getFilterType().equalsIgnoreCase("district")) {
-					queryStr.append(" and trim(model4.dCode) =:locationValue ");
-				} else if (inputVo.getFilterType().equalsIgnoreCase("constituency")) {
-					queryStr.append(" and trim(model4.constituencyCode) =:locationValue ");
-				}else if (inputVo.getFilterType().equalsIgnoreCase("mandal")) {
-		            queryStr.append(" and trim(model4.mCode) =:locationValue ");
-				}
-		   }
-			if (inputVo.getDistrictValue() != null && inputVo.getDistrictValue().trim().length() > 0) {
-		        queryStr.append(" and trim(model4.dCode) =:districtValue ");
-		    }
-			queryStr.append(" group by "
-	    			  + " model3.dCode, model3.dName, model4.constituencyCode, model4.contituencyName, model3.mCode, model3.mName, "
-	    			  + "model3.panchCode,"
-	    			  + " model3.panchName,"
-	    			  + " model.sourceCode, "
-	    			  + " model.assetCode"
-	    			  + " order by "
-					  + " model3.dCode ");	
+			if (inputVo.getFilterType().equalsIgnoreCase("district")) {
+				queryStr.append(" and trim(model4.dCode) =:locationValue ");
+			} else if (inputVo.getFilterType().equalsIgnoreCase("constituency")) {
+				queryStr.append(" and trim(model4.constituencyCode) =:locationValue ");
+			} else if (inputVo.getFilterType().equalsIgnoreCase("mandal")) {
+				queryStr.append(" and trim(model4.mCode) =:locationValue ");
+			}
+		}
+		if (inputVo.getDistrictValue() != null
+				&& inputVo.getDistrictValue().trim().length() > 0) {
+			queryStr.append(" and trim(model4.dCode) =:districtValue ");
+		}
+		queryStr.append(" group by "
+    			  + " model3.dCode, model3.dName, model4.constituencyCode, model4.contituencyName, model3.mCode, model3.mName, "
+    			  + "model3.panchCode,"
+    			  + " model3.panchName,"
+    			  + " model.sourceCode, "
+    			  + " model.assetCode"
+    			  + " order by "
+				  + " model3.dCode ");	
 		Query query = getSession().createQuery(queryStr.toString());
 		
-		if (sourceType != null && !sourceType.isEmpty()){
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			query.setDate("fromDate", inputVo.getFromDate());
+			query.setDate("toDate", inputVo.getToDate());
+		}
+		if (sourceType != null && !sourceType.isEmpty()) {
 			query.setParameter("sourceType", sourceType.trim());
-		 }
+		}
 		if (inputVo.getFilterValue() != null && inputVo.getFilterValue().trim().length() > 0) {
 			query.setParameter("locationValue", inputVo.getFilterValue().trim());
 		}
 		if (inputVo.getDistrictValue() != null && inputVo.getDistrictValue().trim().length() > 0) {
-		      query.setParameter("districtValue", inputVo.getDistrictValue());
+			query.setParameter("districtValue", inputVo.getDistrictValue());
 		}
 		return query.list();
 	}
@@ -246,11 +254,7 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 		
 		//,RwsMinConstituencyView model4
 		sbm.append(" FROM RwsMinSchemeSourcesView model ,RwsMinAssetNabInkView model2,"
-				+ " RwsMinHabView model3 "); 
-		if(inputVo.getLocationType().trim().length()>0 && inputVo.getLocationType().equalsIgnoreCase("constituency")){
-			sbm.append(" , RwsMinConstituencyView model4 ");
-		}
-		
+				+ " RwsMinHabView model3 , RwsMinConstituencyView model4 "); 
 		sbe.append(" WHERE "
 				+ " model.assetCode=model2.assetCode  "
 				+ " and model2.habCode=model3.panchCode ");
@@ -265,6 +269,10 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 		}else if("total".equalsIgnoreCase(type)){
 			   sb.append(" count(distinct model.sourceCode) " );			
 		}
+		
+		if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
+			   sbe.append(" and model3.statusDate between :fromDate and :toDate ");
+		  }
 
 		if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.STATE)){
 			sb.append(" ,'01','Andra Pradesh' ");
@@ -285,7 +293,6 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 
 		if (inputVo.getFilterType() != null && inputVo.getFilterType().trim().length() > 0 && inputVo.getFilterValue() != null	&& inputVo.getFilterValue().trim().length() > 0) {
 			
-			sbm.append(" , RwsMinConstituencyView model4 ");
 			sbe.append(" and model3.mCode=model4.mCode  "
 					+ " and model3.dCode=model4.dCode ");
 			
@@ -309,6 +316,11 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 		sb.append(sbm.toString()).append(sbe.toString());
 
 		Query query = getSession().createQuery(sb.toString()); 
+		
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			query.setDate("fromDate", inputVo.getFromDate());
+			query.setDate("toDate", inputVo.getToDate());
+		}
 
 		if (sourceType != null && !sourceType.isEmpty()) {
 			query.setParameter("sourceType", sourceType.trim());
