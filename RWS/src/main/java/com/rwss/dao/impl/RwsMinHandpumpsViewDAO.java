@@ -51,6 +51,9 @@ public class RwsMinHandpumpsViewDAO extends GenericDaoHibernate<RwsMinHandpumpsV
 		}else if("total".equalsIgnoreCase(type)){
 				sb.append(" count(distinct model.hpCode) " );	
 		}
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			sbe.append(" and model3.statusDate between :fromDate and :toDate ");
+		}
 
 		if (inputVo.getFilterType() != null	&& inputVo.getFilterType().trim().length() > 0 && inputVo.getFilterValue() != null && inputVo.getFilterValue().trim().length() > 0) {
 			
@@ -76,6 +79,10 @@ public class RwsMinHandpumpsViewDAO extends GenericDaoHibernate<RwsMinHandpumpsV
 		sb.append(sbm.toString()).append(sbe.toString());
 		Query query = getSession().createQuery(sb.toString());
 		
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			query.setDate("fromDate", inputVo.getFromDate());
+			query.setDate("toDate", inputVo.getToDate());
+		}
 		if (inputVo.getYear() != null && inputVo.getYear().trim().length() > 0) {
 			query.setParameter("year", inputVo.getYear().trim());
 		}
@@ -242,9 +249,9 @@ public class RwsMinHandpumpsViewDAO extends GenericDaoHibernate<RwsMinHandpumpsV
 		}else if("total".equalsIgnoreCase(type)){
 				sb.append(" count(distinct model.hpCode) " );	
 		}
-		 if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
-			   sbe.append(" and model3.statusDate between :fromDate and :toDate ");
-		   }
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			sbe.append(" and model3.statusDate between :fromDate and :toDate ");
+		}
 
 		if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.STATE)){
 			sb.append(" ,'01','Andra Pradesh' ");

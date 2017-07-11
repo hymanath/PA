@@ -52,7 +52,9 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 		}else if("total".equalsIgnoreCase(type)){
 			   sb.append(" count(distinct model.sourceCode) " );			
 		}
-
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			sbe.append(" and model3.statusDate between :fromDate and :toDate ");
+		}
 		if (sourceType != null && !sourceType.isEmpty()) {
 			sbe.append(" and trim(model.sourceTypeName)=:sourceType");
 		}
@@ -80,9 +82,10 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 
 		Query query = getSession().createQuery(sb.toString()); 
 				
-				
-				
-
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			query.setDate("fromDate", inputVo.getFromDate());
+			query.setDate("toDate", inputVo.getToDate());
+		}		
 		if (sourceType != null && !sourceType.isEmpty()) {
 			query.setParameter("sourceType", sourceType.trim());
 		}
@@ -269,7 +272,9 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 		}else if("total".equalsIgnoreCase(type)){
 			   sb.append(" count(distinct model.sourceCode) " );			
 		}
-		
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			sbe.append(" and model3.statusDate between :fromDate and :toDate ");
+		}
 		if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
 			   sbe.append(" and model3.statusDate between :fromDate and :toDate ");
 		  }
