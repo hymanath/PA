@@ -769,4 +769,22 @@ public class Scheduler {
 			}
 		//}
 	}
+	public ResultStatus pushTrainginCampDataLocationWiseByCommitteeLevel(){
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
+			return rs;
+		}  
+		log.error(" Entered In To - Pushing Location wise training camp Data to Intermediate Table.. ");
+		try{  
+			rs = schedulerService.pushTrainginCampDataLocationWiseByCommitteeLevel();
+			if(rs != null && rs.getMessage() != null && rs.getMessage().trim().length() > 0){
+				if(rs.getMessage().equalsIgnoreCase("Failure")){
+					log.error(" Exception Occurred While Pushing Location wise training camp Data to Intermediate Table.. "); 
+				}
+			}
+		}catch(Exception e){
+			log.error("\n\n pushTrainginCampDataLocationWiseByCommitteeLevel() "); 
+		}
+		return rs;  
+	}
 }
