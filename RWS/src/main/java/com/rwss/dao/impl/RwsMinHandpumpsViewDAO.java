@@ -118,6 +118,10 @@ public class RwsMinHandpumpsViewDAO extends GenericDaoHibernate<RwsMinHandpumpsV
 		}else if (IConstants.SUPPLY_TYPE_UNSAFE.equalsIgnoreCase(inputVo.getType())) {
 			queryStr.append(" AND model3.unSafeLpcd != '0' and model3.unSafeLpcd is not null");
 		}
+		if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
+			queryStr.append(" and model3.statusDate between :fromDate and :toDate ");
+		  }
+
 		       
 		if (inputVo.getFilterType() != null && inputVo.getFilterType().trim().length() > 0 && inputVo.getFilterValue() != null
 				&& inputVo.getFilterValue().trim().length() > 0) {
@@ -141,7 +145,11 @@ public class RwsMinHandpumpsViewDAO extends GenericDaoHibernate<RwsMinHandpumpsV
 					  + " order by "
 				      + " model3.dCode ");
 		Query query = getSession().createQuery(queryStr.toString());
-			
+		
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			query.setDate("fromDate", inputVo.getFromDate());
+			query.setDate("toDate", inputVo.getToDate());
+		}
 		if (inputVo.getFilterValue() != null && inputVo.getFilterValue().trim().length() > 0) {
 			query.setParameter("locationValue", inputVo.getFilterValue().trim());
 		}
@@ -234,6 +242,9 @@ public class RwsMinHandpumpsViewDAO extends GenericDaoHibernate<RwsMinHandpumpsV
 		}else if("total".equalsIgnoreCase(type)){
 				sb.append(" count(distinct model.hpCode) " );	
 		}
+		 if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
+			   sbe.append(" and model3.statusDate between :fromDate and :toDate ");
+		   }
 
 		if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.STATE)){
 			sb.append(" ,'01','Andra Pradesh' ");
@@ -256,7 +267,7 @@ public class RwsMinHandpumpsViewDAO extends GenericDaoHibernate<RwsMinHandpumpsV
 			}
 		}
 		if (inputVo.getDistrictValue() != null && inputVo.getDistrictValue().trim().length() > 0) {
-			sbe.append(" model3.dCode =:districtvalue");
+			sbe.append(" and model3.dCode =:districtvalue");
 		}
 		
 		if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.DISTRICT)){
@@ -269,7 +280,10 @@ public class RwsMinHandpumpsViewDAO extends GenericDaoHibernate<RwsMinHandpumpsV
 		sb.append(sbm.toString()).append(sbe.toString());
 		Query query = getSession().createQuery(sb.toString());
 		
-		
+		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
+			query.setDate("fromDate", inputVo.getFromDate());
+			query.setDate("toDate", inputVo.getToDate());
+		}
 		if (inputVo.getFilterValue() != null && inputVo.getFilterValue().trim().length() > 0) {
 			query.setParameter("locationValue", inputVo.getFilterValue().trim());
 		}
