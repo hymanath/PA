@@ -27,6 +27,9 @@
 @orange_color:#E37A1F;
 @achived_color:#FF464F;
 @target_color:#10B4B0;
+@light_yellow_color:#F2F1E6;
+@cyan_color: #E7F0EE;
+@light_pink_color:#FFEAEA;
 .rounded-corners(@radius:5px)
 {
 	-webkit-border-radius:@radius;
@@ -1366,3 +1369,51 @@ header
 			border-radius: 19px;
 		}
 	}
+.block{
+    
+    h4{
+        font-weight: 600;
+        padding: 5px 0px;
+        small{
+          font-size: 12px;
+          padding-top: 5px;
+          color: @light_cyan_color;
+        }
+      }
+      .panel{
+        border-radius: 0px;
+      }
+      .panel-default{
+        box-shadow: 0px 0px 3px 3px grey;
+      }
+    .panel-heading{
+      border-color: transparent;
+    }
+    .panel-body{
+      padding: 15px 25px;
+      span{
+        font-weight:600;
+        color: grey;
+      }
+    }
+  }
+#selectDistrict,#selectMandal,#selectDivision,#mandalDivision{
+        label{
+            font-weight: normal;
+        }
+    }
+#datatableDemo_wrapper,#datatableDemoOne_wrapper,#datatableDemoTwo_wrapper{
+    .row:first-child{
+        display: none;
+    }
+    td:nth-child(7),td:nth-child(8),td:nth-child(9),td:nth-child(10),td:nth-child(11){
+        background-color: @cyan_color;
+    }
+    td:nth-child(12),td:nth-child(13),td:nth-child(14),td:nth-child(15),td:nth-child(16){
+        background-color: @light_pink_color;
+    }
+    td:nth-child(17),td:nth-child(18),td:nth-child(19),td:nth-child(20),td:nth-child(21){
+        background-color: @light_yellow_color;
+    }
+    
+}
