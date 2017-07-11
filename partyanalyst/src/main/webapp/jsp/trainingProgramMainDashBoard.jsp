@@ -81,8 +81,16 @@ header.trainingHeader {
 							<input type="radio" value="completed" name="comOrAll" class="comAllRadio" id="completedRadio"/><label>&nbsp; Completed</label>
 							<input type="radio" value="all" name="comOrAll" class="comAllRadio" id="allRadio"/><label> &nbsp;All</label>
 						</span>-->
-                        </h4>                            
+						<div class="col-sm-3 pull-right">
+						<span class="" style="font-size:15px">Select Enrollment</span>
+						<select id="enrlmntYrId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;" id="">
+							<option value="3">2014-2016</option> 
+							<option value="4">2016-2018</option> 
+						</select>
+                        </h4> 
+						</div>
                     </div>
+					
                     <div class="panel-body" style="background-color:#EFF3F4">
 						<section>
                         	<div class="row">
@@ -262,6 +270,7 @@ var campId = '${param.cd}';
 var batchId = '${param.bd}';
 var dates = '${param.dts}';
 var callFrom = '${param.cf}';
+var enrollmentYrId = '${param.eri}';
 
 if(callFrom=="c"){
 	$("#completedRadio").prop("checked", true)
@@ -273,12 +282,12 @@ $('.close-icon').click(function(){
 	});
 	
 $("#mainheading").html("TRAINING PROGRAMME DASHBOARD");
+$("#enrlmntYrId").val(enrollmentYrId);
+getattendedcountByFeedBacks(enrollmentYrId);
+getAttendedCountsByProgramOrCampOrBatch("dist",enrollmentYrId);
 
-getattendedcountByFeedBacks();
-getAttendedCountsByProgramOrCampOrBatch("dist");
 
-
-getAttendedCountSummaryByBatch();//function for getting batch wise attendence
+getAttendedCountSummaryByBatch(enrollmentYrId);//function for getting batch wise attendence
 
 
 if((batchId==null || batchId==0) && (campId==null || campId==0) && (programId!=null && programId >0)){
@@ -302,15 +311,27 @@ $(".tbtn").click(function(){
 		$(".themeControll").toggleClass("active");
 	});
 
-function getAttendedCountsByProgramOrCampOrBatch(fromType)
+function getAttendedCountsByProgramOrCampOrBatch(fromType,enrollmentYrId)
 {
+	
+	var enrollmentYrIds = [];
+	enrollmentYrIds.push(enrollmentYrId);
+	var programId = 0;
+	var programIds =[];
+			if(enrollmentYrIds == 4){
+				programIds.push(8);
+			}else{
+				programIds.push(6,7,1);
+			}
 	var jsObj={
 		programId:programId,
+		programIds:programIds,
 		campId:campId,
 		batchId:batchId,
 		dates:dates,
 		callFrom:callFrom,
-		fromType:fromType
+		fromType:fromType,
+		enrollmentYrIds:enrollmentYrIds
 	}
 	$.ajax({
 		type:'POST',
@@ -394,14 +415,25 @@ function buildAttendedCountByProgramOrCampOrBatch(result,fromType)
 	}
 }
 	
-function getattendedcountByFeedBacks()
+function getattendedcountByFeedBacks(enrollmentYrId)
 {	
+var enrollmentYrIds = [];
+enrollmentYrIds.push(enrollmentYrId);
+var programId = 0;
+var programIds =[];
+			if(enrollmentYrIds == 4){
+				programIds.push(8);
+			}else{
+				programIds.push(6,7,1);
+			}
 	var jsObj={
 		programId:programId,
 		campId:campId,
 		batchId:batchId,
 		callFrom:callFrom,
-		dates:dates
+		dates:dates,
+		enrollmentYrIds:enrollmentYrIds,
+		programIds:programIds
 	}
 	$.ajax({
 		type:'POST',
@@ -570,19 +602,25 @@ function buildAttendedCountByFeedBacks(result)
 	$("#feedbackDetailsId").html(str);
 }
 
-function getAttendedCountSummaryByBatch(){
+function getAttendedCountSummaryByBatch(enrollmentYrId){
 	$("#titleSummary").html('BATCH WISE ATTENDANCE SUMMARY');
 	var enrollmentYrIds =[];
-     enrollmentYrIds.push($("#enrlmntYrId").val());
-	$("#programSummaryDivId").html('');
-	
+	enrollmentYrIds.push(enrollmentYrId);
+	var programIds =[];
+			if(enrollmentYrIds == 4){
+				programIds.push(8);
+			}else{
+				programIds.push(6,7,1);
+			}
+			var programId = 0;
 	var jsObj = {
 		programId:programId,
+		programIds:programIds,
 		campId:campId,
 		batchId:batchId,
 		callFrom:callFrom,
-		dates:dates,
-		enrollmentYearIdsList : enrollmentYrIds
+		enrollmentYrIds:enrollmentYrIds,
+		dates:dates
 	}
 	
 	$.ajax({
@@ -886,9 +924,10 @@ function buildSurveyDetails(result)
 	$("#surveyDetailsId").html(str);
 }
 	var selectedRadio='dist';
+	var enrollmentYrId = $("#enrlmntYrId").val();
 	$(".distrconstdtls").click(function(){
 		selectedRadio=$(this).val();
-		getAttendedCountsByProgramOrCampOrBatch($(this).val());
+		getAttendedCountsByProgramOrCampOrBatch($(this).val(),enrollmentYrId);
 	});
 	
 	/* $(".comAllRadio").click(function(){
@@ -927,6 +966,13 @@ function buildSurveyDetails(result)
 			}
 		});
 	}
+	$(document).on('change', '#enrlmntYrId', function(){
+		getattendedcountByFeedBacks($(this).val());
+		getAttendedCountsByProgramOrCampOrBatch(selectedRadio,$(this).val());
+		getAttendedCountSummaryByBatch($(this).val());
+		getProgCampBatchNames();
+		getSurveyDetails();
+	});
 	
 	function updateFunctions(){
 		programId = $("#programSelectId").val();
@@ -936,9 +982,10 @@ function buildSurveyDetails(result)
 		if($(".themeControll").hasClass("active")){
 			$(".themeControll").removeClass("active");
 		}
-		getattendedcountByFeedBacks();
-		getAttendedCountsByProgramOrCampOrBatch(selectedRadio);
-		getAttendedCountSummaryByBatch();
+		var enrollmentYrId = $("#enrlmntYrId").val();
+		getattendedcountByFeedBacks(enrollmentYrId);
+		getAttendedCountsByProgramOrCampOrBatch(selectedRadio,enrollmentYrId);
+		getAttendedCountSummaryByBatch(enrollmentYrId);
 		getProgCampBatchNames();
 		getSurveyDetails();
 	}
