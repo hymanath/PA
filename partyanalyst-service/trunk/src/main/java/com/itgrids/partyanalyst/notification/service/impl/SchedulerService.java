@@ -70,6 +70,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserEmailDAO;
 import com.itgrids.partyanalyst.dao.IUserTrackingDAO;
 import com.itgrids.partyanalyst.dto.DataSourceVO;
@@ -128,6 +129,7 @@ public class SchedulerService implements ISchedulerService{
 	private ITdpCadreDataSourceCountInfoDAO tdpCadreDataSourceCountInfoDAO;
 	private ITdpCadreDataSourceCountInfoTempDAO tdpCadreDataSourceCountInfoTempDAO;
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
+	private ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO;
 	
 	public ITrainingCampBatchDAO getTrainingCampBatchDAO() {  
 		return trainingCampBatchDAO;
@@ -312,6 +314,10 @@ public class SchedulerService implements ISchedulerService{
 	public void setTdpCadreEnrollmentYearDAO(
 			ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO) {
 		this.tdpCadreEnrollmentYearDAO = tdpCadreEnrollmentYearDAO;
+	}
+   public void setTrainingCampDetailsInfoDAO(
+			ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO) {
+		this.trainingCampDetailsInfoDAO = trainingCampDetailsInfoDAO;
 	}
 
 	public ResultStatus deleteSearchEngineAccessedURLsFromUserTracking(Date fromDate,Date toDate)
@@ -1925,4 +1931,22 @@ public class SchedulerService implements ISchedulerService{
 			LOG.error("Exception raised at getSourceOfRegDtls in SchedulerService{}", e);
 		}
 	}
+	/**
+	  * @return ResultStatus
+	  * @author Santosh 
+	  * @Description :This Service Method is user for pushing training camp data into intermediate table. 
+	  * @since 11-JULY-2017
+	  */
+   public ResultStatus pushTrainginCampDataLocationWiseByCommitteeLevel(){
+		ResultStatus rs = new ResultStatus();
+		try {
+			System.out.println("Trigger Occured in training program scheduler");
+			int count = trainingCampDetailsInfoDAO.pushTrainginCampDataLocationWiseByCommitteeLevel();
+			rs.setMessage("Success");
+		} catch (Exception e) {
+			LOG.error("Exception raised at pushTrainginCampDataLocationWiseByCommitteeLevel() in CadreRegistrationServiceNew Class", e);
+			rs.setMessage("Failure");
+		}
+		return rs;    
+	 }
 }

@@ -259,4 +259,8 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
 	  }
 	  return query.list();
    }
+ 	public int pushTrainginCampDataLocationWiseByCommitteeLevel(){
+		Query query = getSession().createSQLQuery("CALL training_camp_details_info(); ");
+		return query.executeUpdate();  
+	}
 }
