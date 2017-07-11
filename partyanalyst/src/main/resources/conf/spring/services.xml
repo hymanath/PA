@@ -1358,6 +1358,7 @@
 		<property name="coreDashboardPartyMeetingService" ref="coreDashboardPartyMeetingService"/>
 		<property name="tdpCadreDataSourceCountInfoDAO" ref="tdpCadreDataSourceCountInfoDAO"/>
 		<property name="tdpCadreDataSourceCountInfoTempDAO" ref="tdpCadreDataSourceCountInfoTempDAO"/> 	
+		<property name="trainingCampDetailsInfoDAO" ref="trainingCampDetailsInfoDAO"></property>
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
@@ -1770,7 +1771,15 @@
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="UpdateExpiredAppicationsInNominatedPosts" /> 
 	</bean>	
-	
+
+	 <bean name="insertTrainginCampDataLocationWiseByCommitteeLevel" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+    	<property name="jobDetail" ref="triggerTrainginCampDataLocationWiseByCommitteeLevel" />
+    	<property name="cronExpression" value="0 15 15  * * ?" />
+	</bean>
+    <bean name="triggerTrainginCampDataLocationWiseByCommitteeLevel" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushTrainginCampDataLocationWiseByCommitteeLevel" /> 
+	</bean> 
      <!-- TDPCADRE 2016 INTERMEDIATE TABLES SCHEDULERS END -->
      
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -1826,6 +1835,7 @@
 		    <ref bean="pushGenderWiseTdpCadreCountsByLowLevel"/>
 		    <ref bean="pushCasteStateWiseTdpCadreCountsByLowLevel"/> -->
 			<ref bean="UpdateExpirdAppicationsInNominatedPosts" />
+			<!--  <ref bean="insertTrainginCampDataLocationWiseByCommitteeLevel"/> -->
         </list>
     	</property>
 	</bean>

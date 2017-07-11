@@ -1618,7 +1618,14 @@ public String getTopPoorPerformancecommittees(){
 					enrollmentYearIds.add(Long.valueOf(enrollmentYearIdsArray.getString(i)));
 				}
 			}
-			trainingCampProgramVOList = coreDashboardMainService.getTrainingCampProgramsDetailsCntByUserType(userAccessLevelId,userAccessLevelValues,stateId,dateStr,userTypeId,activityMemberId,enrollmentYearIds);
+			List<Long> trainingCampProgramIds=new ArrayList<Long>();
+			JSONArray trainingCampProgramIdArr=jObj.getJSONArray("trainingCampProgramIds");
+			if(trainingCampProgramIdArr!=null &&  trainingCampProgramIdArr.length()>0){
+				for( int i=0;i<trainingCampProgramIdArr.length();i++){
+					trainingCampProgramIds.add(Long.valueOf(trainingCampProgramIdArr.getString(i)));
+				}
+			}
+			trainingCampProgramVOList = coreDashboardMainService.getTrainingCampProgramsDetailsCntByUserType(userAccessLevelId,userAccessLevelValues,stateId,dateStr,userTypeId,activityMemberId,enrollmentYearIds,trainingCampProgramIds);
 		}catch(Exception e){
 			LOG.error("Exception raised at getTotalEligibleAttendedAndNotAttenedOverviewCount() method of CoreDashBoardAction", e);
 		}
@@ -2292,7 +2299,14 @@ public String getCandidateDtlsPerDist(){
  						enrollmentYearIds.add(Long.valueOf(enrollmentYearIdsArray.getString(i)));
  					}
  				}
- 				idNameVoList = coreDashboardMainService.getLeaderShipCandidateDtlsPerDist(userAccessLevelId,userAccessLevelValues,stateId,distId,dateStr,enrollmentYearIds);
+ 				List<Long> trainingCampProgramIds=new ArrayList<Long>();
+ 				JSONArray trainingCampProgramIdArr=jObj.getJSONArray("trainingCampProgramIds");
+ 				if(trainingCampProgramIdArr!=null &&  trainingCampProgramIdArr.length()>0){
+ 					for( int i=0;i<trainingCampProgramIdArr.length();i++){
+ 						trainingCampProgramIds.add(Long.valueOf(trainingCampProgramIdArr.getString(i)));
+ 					}
+ 				}
+ 				idNameVoList = coreDashboardMainService.getLeaderShipCandidateDtlsPerDist(userAccessLevelId,userAccessLevelValues,stateId,distId,dateStr,enrollmentYearIds,trainingCampProgramIds);
  			
  			}catch(Exception e){
  				LOG.error("Exception raised at getLeaderShipCandidateDtlsPerDist() method of CoreDashBoardAction", e);
