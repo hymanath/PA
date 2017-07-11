@@ -43,9 +43,9 @@ public interface ICoreDashboardMainService {
 	public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,String endDateStr,List<Long> roles,String state);
 	public List<IdNameVO> getDebateRolesNew();
 	public List<IdNameVO> getCandidateDtlsPerDist(Long distId, Long programId, Long stateId, String strDate);   //,String dateStr
-	public List<IdNameVO> getLeaderShipCandidateDtlsPerDist(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, Long distId, String dateStr,List<Long> enrollmentYearIds);
+	public List<IdNameVO> getLeaderShipCandidateDtlsPerDist(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, Long distId, String dateStr,List<Long> enrollmentYearIds,List<Long> trainingCampProgramIds);
 	
-	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,Long userTypeId,Long activityMemberId,List<Long> enrollmentYearIds);
+	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,Long userTypeId,Long activityMemberId,List<Long> enrollmentYearIds,List<Long> trainingCampProgramIds);
 	public String getLatestDebate();
 	public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String startDateStr,String endDateStr,String searchType,Long candidateId);
 	public List<IdNameVO> getTrainingProgramMemberDtlsStatusWise(List<Long> programIdList,Long stateId,String dateStr,String status,String designation,Long designationId);

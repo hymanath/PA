@@ -2049,7 +2049,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @Description :This Service Method is used to get training camp program details count by user type.. 
 	*  @since 23-AUGUST-2016
 	*/
-	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,Long userTypeId,Long activityMemberId,List<Long> enrollmentYearIds){
+	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,Long userTypeId,Long activityMemberId,List<Long> enrollmentYearIds,List<Long> trainingCampProgramIds){
 		String status = "leadership";
 		List<TrainingCampProgramVO> resultList = new ArrayList<TrainingCampProgramVO>(0);
 		Map<Long,List<TrainingCampProgramVO>> programDtlsMap = new HashMap<Long, List<TrainingCampProgramVO>>(0);
@@ -2063,18 +2063,18 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 				 toDate = sdf.parse(toDateStr);
 			 }
 			if(userTypeId != null && userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-				List<Object[]> rtrnMandalElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, status, null, null, userTypeId, "tehsil"); 
+				List<Object[]> rtrnMandalElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, status, null, null, userTypeId, "tehsil",trainingCampProgramIds); 
 				setEligibleDataToMap(rtrnMandalElgbleMmbrsObjLst,programDtlsMap,programIdNameMap,userTypeId,"Tehsil");
-				List<Object[]> rtrnMandalAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, toDate, status, null, null, userTypeId, "tehsil",enrollmentYearIds);
+				List<Object[]> rtrnMandalAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, toDate, status, null, null, userTypeId, "tehsil",enrollmentYearIds,trainingCampProgramIds);
 				setAttendedDataToMap(rtrnMandalAttnddMemObjList,programDtlsMap,userTypeId,"Tehsil");
-				List<Object[]> rtrnTwnDivElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, status, null, null, userTypeId, "townDivision"); 
+				List<Object[]> rtrnTwnDivElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, status, null, null, userTypeId, "townDivision",trainingCampProgramIds); 
 				setEligibleDataToMap(rtrnTwnDivElgbleMmbrsObjLst,twnDivDtlsMap,twnDivisionProgramIdNameMap,userTypeId,"townDivision");
-				List<Object[]> rtrnTwnDivAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, toDate, status, null, null, userTypeId, "townDivision",enrollmentYearIds);
+				List<Object[]> rtrnTwnDivAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, toDate, status, null, null, userTypeId, "townDivision",enrollmentYearIds,trainingCampProgramIds);
 				setAttendedDataToMap(rtrnTwnDivAttnddMemObjList,twnDivDtlsMap,userTypeId,"townDivision");
 			}else{
-				List<Object[]> rtrnElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, status, null, null, userTypeId,null); 
+				List<Object[]> rtrnElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, status, null, null, userTypeId,null,trainingCampProgramIds); 
 				setEligibleDataToMap(rtrnElgbleMmbrsObjLst,programDtlsMap,programIdNameMap,userTypeId,null);
-				List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, toDate, status, null, null, userTypeId, null,enrollmentYearIds);
+				List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, toDate, status, null, null, userTypeId, null,enrollmentYearIds,trainingCampProgramIds);
 				setAttendedDataToMap(rtrnAttnddMemObjList,programDtlsMap,userTypeId,null);
 			}
 			
@@ -4829,7 +4829,7 @@ public List<List<IdNameVO>> getSpecialDistrictWiseCampAttendedMembers(List<Long>
 	return null;
 }
 
-public List<IdNameVO> getLeaderShipCandidateDtlsPerDist(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, Long locationId, String dateStr,List<Long> enrollmentYearIds){
+public List<IdNameVO> getLeaderShipCandidateDtlsPerDist(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, Long locationId, String dateStr,List<Long> enrollmentYearIds,List<Long> trainingCampProgramIds){
 	LOG.info(" entered in to getDistrictWiseCampAttendedMembers() of CoreDashBoardMainService ");
 	
 	try{
@@ -4868,8 +4868,8 @@ public List<IdNameVO> getLeaderShipCandidateDtlsPerDist(Long userAccessLevelId, 
 			 lctnId=Long.valueOf(strLocationId.substring(1, strLocationId.length()));	
 			 locationType="townDivision";  
 		 }
-		List<Object[]> rtrnElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, stats, lctnId, locationType, null, null); 
-		List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, toDate, stats, lctnId,locationType, null,null, enrollmentYearIds);
+		List<Object[]> rtrnElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, stats, lctnId, locationType, null, null,trainingCampProgramIds); 
+		List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, toDate, stats, lctnId,locationType, null,null, enrollmentYearIds,trainingCampProgramIds);
 		if(rtrnElgbleMmbrsObjLst != null && rtrnElgbleMmbrsObjLst.size() > 0){  
 			for(Object[] obj : rtrnElgbleMmbrsObjLst){
 				invitedCadreIds.add(obj[2] != null ? (Long)obj[2] : 0l);
