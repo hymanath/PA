@@ -828,13 +828,13 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		  		" training_camp_batch TCB , attendee_type AT1,training_camp_schedule TCS" +
 		  		"   where  TCA.training_camp_batch_id = TCB.training_camp_batch_id and ");
 	  sb.append(" TCA.attendance_id = A.attendance_id and TCB.attendee_type_id = AT1.attendee_type_id and  TCB.training_camp_schedule_id = TCS.training_camp_schedule_id " );
-	  sb.append(" TCB.attendee_type_id = 2 and AT1.is_deleted='false' and TCB.is_cancelled = 'false'  ");
+	  sb.append(" and TCB.attendee_type_id = 2 and AT1.is_deleted='false' and TCB.is_cancelled = 'false'");
 	  
 	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-		  sb.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+		  sb.append(" and TCS.enrollment_year_id in (:enrollmentYearIds)");
 	        }
 	  if(programYearIds != null && programYearIds.size()>0){
-		  sb.append(" and model1.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
+		  sb.append(" and TCS.training_camp_program_id in(:programYearIds)");
 	  }
 	  if(toDayDate!=null){
 		  sb.append(" and ( date(A.attended_time) =:toDayDate ) ");
