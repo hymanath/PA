@@ -158,8 +158,15 @@ var getDocumentWidth = $(document).width();
  function getTrainingCampProgramsDetailsCntByUserType(){
 		$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		 var dateStr = $("#dateRangeIdForTrainingCamp").val();
+		 var trainingCampProgramIds = [];
+		 var enrollmentyearId  = $("#tdpTriningYearId").val();
+		  if(enrollmentyearId==4){
+			  trainingCampProgramIds.push(8);
+		  }else if(enrollmentyearId==3){
+			  trainingCampProgramIds.push(1);
+		  }
 		 var enrollmentYrIds = [];
-         enrollmentYrIds.push($("#tdpTriningYearId").val());
+         enrollmentYrIds.push(enrollmentyearId);
 		var jsObj ={ 
 		             userAccessLevelId : globalUserAccessLevelId,
 					 userAccessLevelValuesArray : globalUserAccessLevelValues,
@@ -167,7 +174,8 @@ var getDocumentWidth = $(document).width();
 					 dateStr : dateStr,
 					 userTypeId : globalUserTypeId,
 					 activityMemberId : globalActivityMemberId,
-					 enrollmentYearIdsList :enrollmentYrIds
+					 enrollmentYearIdsList :enrollmentYrIds,
+					 trainingCampProgramIds : trainingCampProgramIds
 				  }
 		  
 		$.ajax({
@@ -995,7 +1003,7 @@ $(document).on("click",".trainingDetailed",function(){
 	$(".trainingDetailedBlock").show();
 	$(".trainingComparisonBlock").hide();
 	//buildTrainingProgramRslt(globalTrainingProgramsRslt);
-	getTrainingProgramBasicCnt();
+	getTrainingProgramBasicCnt();	
 });
 $(document).on("click",".trainingComparison",function(){
 	$(this).addClass("active")
@@ -2501,14 +2509,26 @@ function getCampMemberDtlsPerDist(distId,programId,stateId,dateSrt,areaName){
 function getLeaderShipMemDtlsPerDist(distId,dateSrt,areaName){
 	
 	var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	 var enrollmentyearId  = $("#tdpTriningYearId").val();
+	  if(enrollmentyearId==4){
+		  trainingCampProgramIds.push(8);
+	  }else if(enrollmentyearId==3){
+		  trainingCampProgramIds.push(1);
+	  }
+	 var enrollmentYrIds = [];
+	 enrollmentYrIds.push(enrollmentyearId);
+		 
 	if(dateSrt == '0')
 		dateStr = 0;
+	
 	var jsObj ={ 
 		userAccessLevelId : globalUserAccessLevelId,
 		userAccessLevelValuesArray : globalUserAccessLevelValues,
 		stateId : globalStateId,
 		distId : distId,
-		dateStr : dateStr   
+		dateStr : dateStr,
+        enrollmentYearIdsList :enrollmentYrIds,
+		trainingCampProgramIds : trainingCampProgramIds		
 	}
 	$.ajax({
 		type : 'POST',
