@@ -17,5 +17,4 @@ public interface IRwsMinWorkscompViewDAO extends GenericDao<RwsMinWorkscompView,
 
 	public List<Object[]> getOnclickTargetsAcheievementsDetails(InputVO inputVO);
 
-	public List<Object[]> getOnclickStrssedTargetsAcheievementsDetails(InputVO inputVO);
 }
