@@ -504,24 +504,38 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		return query.list();
 	}
 	
-	public List<Object[]> getBatchInviteeDetails(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds){
-		Query query=getSession().createSQLQuery(" " +
-		 " select DISTINCT TC.camp_name as campname ,TCB.training_camp_batch_id as batchId ,TCB.training_camp_batch_code as batchCode," +
-		 "        date(TCB.from_date) as fromdate,date(TCB.to_date) as toDate ,TCBA.tdp_cadre_id as cadreId" +
-		 " from   training_camp_batch TCB left join training_camp_batch_attendee TCBA  on TCBA.training_camp_batch_id=TCB.training_camp_batch_id and TCBA.is_deleted = 'false' " +
-		 "        join training_camp_schedule TCS on TCB.training_camp_schedule_id = TCS.training_camp_schedule_id " +
-		 "        join training_camp TC on TCS.training_camp_id = TC.training_camp_id  " +
-		 " where   TCB.training_camp_batch_id in (:batchIds) and TCB.is_cancelled = 'false'  " +
-		 " and TCB.attendee_type_id = 1 and TCBA.is_deleted='false' and TCS.enrollment_year_id in(:enrollmentYearIds) " +
-		 " order by TCB.training_camp_batch_id asc")
-		 .addScalar("campname",Hibernate.STRING)
-		 .addScalar("batchId",Hibernate.LONG)
-		 .addScalar("batchCode",Hibernate.STRING)
-		 .addScalar("fromdate",Hibernate.DATE)
-		 .addScalar("toDate",Hibernate.DATE)
-		 .addScalar("cadreId",Hibernate.LONG);
-		query.setParameterList("batchIds",batchIds);
-		query.setParameterList("enrollmentYearIds",enrollmentYearIds);
+	public List<Object[]> getBatchInviteeDetails(List<Long> batchIds,List<Long> enrollmentYrIds,List<Long> programYearIds){
+	    StringBuilder sb = new StringBuilder();
+	    
+	    sb.append(" " +
+	     " select DISTINCT TC.camp_name as campname ,TCB.training_camp_batch_id as batchId ,TCB.training_camp_batch_code as batchCode," +
+	     "        date(TCB.from_date) as fromdate,date(TCB.to_date) as toDate ,TCBA.tdp_cadre_id as cadreId" +
+	     " from   training_camp_batch TCB left join training_camp_batch_attendee TCBA  on TCBA.training_camp_batch_id=TCB.training_camp_batch_id and TCBA.is_deleted = 'false' " +
+	     "        join training_camp_schedule TCS on TCB.training_camp_schedule_id = TCS.training_camp_schedule_id " +
+	     "        join training_camp TC on TCS.training_camp_id = TC.training_camp_id  " +
+	     " where   TCB.training_camp_batch_id in (:batchIds) and TCB.is_cancelled = 'false'  and TCB.attendee_type_id = 1 and TCBA.is_deleted='false'  " );
+	    
+	    if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+	      sb.append(" and TCS.enrollment_year_id in (:enrollmentYrIds) ");
+	    }
+	    if(programYearIds != null && programYearIds.size() >0){
+		      sb.append(" and TCS.training_camp_program_id in (:programYearIds) ");
+		    }
+	    sb.append(" order by TCB.training_camp_batch_id asc");
+	    Query query=getSession().createSQLQuery(sb.toString())
+	     .addScalar("campname",Hibernate.STRING)
+	     .addScalar("batchId",Hibernate.LONG)
+	     .addScalar("batchCode",Hibernate.STRING)
+	     .addScalar("fromdate",Hibernate.DATE)
+	     .addScalar("toDate",Hibernate.DATE)
+	     .addScalar("cadreId",Hibernate.LONG);
+	    query.setParameterList("batchIds",batchIds);
+	    if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+	      query.setParameterList("enrollmentYrIds", enrollmentYrIds);
+	    }
+	    if(programYearIds != null && programYearIds.size() >0){
+	    	query.setParameterList("programYearIds", programYearIds);
+	    }
 	    return query.list();
 	}
 	public List<Object[]> getFromAndToDate(Long programId){
