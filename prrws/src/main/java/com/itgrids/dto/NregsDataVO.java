@@ -87,6 +87,71 @@ public class NregsDataVO implements Serializable{
 	private String dId;
 	private String mId;
 	
+	private String state;
+	private String avgDmdMarks;
+	private String avgDMusterMarks;
+	private String avgLbMarks;
+	private String avgRozgarDivasMarks;
+	private String avgDaysMarks;
+	private String avgAvgWageMarks;
+	private String avgFlagshipMarks;
+	private String avgTotMarks;
+	
+	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getAvgDmdMarks() {
+		return avgDmdMarks;
+	}
+	public void setAvgDmdMarks(String avgDmdMarks) {
+		this.avgDmdMarks = avgDmdMarks;
+	}
+	public String getAvgDMusterMarks() {
+		return avgDMusterMarks;
+	}
+	public void setAvgDMusterMarks(String avgDMusterMarks) {
+		this.avgDMusterMarks = avgDMusterMarks;
+	}
+	public String getAvgLbMarks() {
+		return avgLbMarks;
+	}
+	public void setAvgLbMarks(String avgLbMarks) {
+		this.avgLbMarks = avgLbMarks;
+	}
+	public String getAvgRozgarDivasMarks() {
+		return avgRozgarDivasMarks;
+	}
+	public void setAvgRozgarDivasMarks(String avgRozgarDivasMarks) {
+		this.avgRozgarDivasMarks = avgRozgarDivasMarks;
+	}
+	public String getAvgDaysMarks() {
+		return avgDaysMarks;
+	}
+	public void setAvgDaysMarks(String avgDaysMarks) {
+		this.avgDaysMarks = avgDaysMarks;
+	}
+	public String getAvgAvgWageMarks() {
+		return avgAvgWageMarks;
+	}
+	public void setAvgAvgWageMarks(String avgAvgWageMarks) {
+		this.avgAvgWageMarks = avgAvgWageMarks;
+	}
+	public String getAvgFlagshipMarks() {
+		return avgFlagshipMarks;
+	}
+	public void setAvgFlagshipMarks(String avgFlagshipMarks) {
+		this.avgFlagshipMarks = avgFlagshipMarks;
+	}
+	public String getAvgTotMarks() {
+		return avgTotMarks;
+	}
+	public void setAvgTotMarks(String avgTotMarks) {
+		this.avgTotMarks = avgTotMarks;
+	}
 	public String getmId() {
 		return mId;
 	}
