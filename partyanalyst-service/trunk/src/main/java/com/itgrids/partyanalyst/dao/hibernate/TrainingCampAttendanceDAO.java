@@ -500,8 +500,10 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 StringBuilder sb = new StringBuilder();
 	 sb.append(" select distinct model.attendance.tdpCadre.tdpCadreId,date(model.attendance.attendedTime)  " +
 				" from TrainingCampAttendance model " +
-				" where model.trainingCampBatch.trainingCampBatchId=:batchId and date(model.attendance.attendedTime) in (:dates)" +
-				" and model.trainingCampBatch.attendeeTypeId=1  ");
+				" where model.trainingCampBatch.trainingCampBatchId=:batchId ");
+	 if(dates != null && dates.size()>0)
+	   sb.append(" and date(model.attendance.attendedTime) in (:dates)" );
+	   sb.append(" and model.trainingCampBatch.attendeeTypeId=1  ");
 	 if(programYearIds != null && programYearIds.size()>0){
 		 sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programYearIds)");
 	        }
@@ -509,6 +511,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			sb.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYearId =:enrollmentYearId ");
 	 Query query = getSession().createQuery(sb.toString());
 		query.setParameter("batchId", batchId);
+		if(dates != null && dates.size()>0)
 		query.setParameterList("dates", dates);
 	  if(programYearIds != null && programYearIds.size()>0){
 		query.setParameterList("programYearIds", programYearIds);
