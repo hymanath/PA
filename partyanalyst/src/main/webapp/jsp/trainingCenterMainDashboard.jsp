@@ -113,7 +113,8 @@ header.eventsheader {
                     	<h4 class="panel-title" style="font-weight:bold;">
                         	TRAINING CENTER MAIN DASHBOARD
 							  <!--<span class="" style="font-size:15px">Select Enrollment</span>-->
-									<select id="trainingEnrlmntYrId" style="width: 118px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;" id="" title="Select Enrollment">
+									<select id="trainingEnrlmntYrId" style="width: 118px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;" id="" title="Select Enrollment"
+									 class="pull-right">
 										<option value="3">2014-2016</option> 
 										<option value="4" selected="selected" >2016-2018</option> 
 									</select>
