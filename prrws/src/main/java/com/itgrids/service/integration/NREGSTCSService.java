@@ -1300,6 +1300,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDate(),"dd/MM/yyyy","");
 			//get webservice details here 
 			List<Object[]> detailsList = webserviceCallDetailsDAO.getWebserviceHealthDetails(startDate, endDate);
+			
 			//create a map for webserviceId and providerId
 			Map<Long,Long> webserviceIdAndProviderIdMap = new HashMap<Long,Long>();
 			//create a map for providerId and providerName map
@@ -1364,6 +1365,15 @@ public class NREGSTCSService implements INREGSTCSService{
 					
 				}
 			}
+			//get failure webservice details.
+			List<Object[]> failureList = webserviceCallDetailsDAO.getWebserviceFailureDetails(startDate, endDate);
+			//create a map for webserviceId and failure count map.
+			Map<Long,Long> webserviceIdAndFailureCountMap = new HashMap<Long,Long>();
+			if(failureList != null && failureList.size() > 0){
+				for(Object[] param : failureList){
+					webserviceIdAndFailureCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
 			
 			//create VO object for UI
 			List<WebserviceDetailsVO> detailsVOs = new ArrayList<WebserviceDetailsVO>();
@@ -1390,6 +1400,7 @@ public class NREGSTCSService implements INREGSTCSService{
 						}
 						detailsVO.setTotalTime(commonMethodsUtilService.roundUptoThreeDecimalPoint(webserviceIdAndTotalTimeTakenMap.get(param.getKey()).doubleValue()/1000.0D));
 						detailsVO.setAverageTime(commonMethodsUtilService.roundUptoThreeDecimalPoint((webserviceIdAndTotalTimeTakenMap.get(param.getKey()).doubleValue()/webserviceIdAneTotalCallCountMap.get(param.getKey()).doubleValue())/1000.0D));
+						detailsVO.setNoResponce(commonMethodsUtilService.getLongValueForObject(webserviceIdAndFailureCountMap.get(param.getKey())));
 						detailsVOs.add(detailsVO);
 					}
 				}
