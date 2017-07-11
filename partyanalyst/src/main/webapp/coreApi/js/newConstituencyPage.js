@@ -28,6 +28,13 @@ function onLoadAjaxCalls()
 	//getGovtSchemeWiseBenefitMembersCount();
 	//getMandalWiseBenefitMembersCount();
 	
+	//Nag
+	//getLocationWiseCommitteesCount();
+	//getLevelWiseMeetingStatusCounts();
+	//getEnrollmentIds();
+	//getLocationWiseInsuranceStatusCount();
+	//getLocationWiseGrivanceTrustStatusCounts();
+	
 	
 }
 function getCandidateAndPartyInfoForConstituency(){
@@ -756,5 +763,94 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
 	console.log(result);
+	});	
+}
+
+// Location wise committees count
+function getLocationWiseCommitteesCount(){
+	jsObj={
+			locationType : "constituency",
+			locationId : 232,
+			enrollmentId : 2
+			
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getLocationWiseCommitteesCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	console.log(result);
+	});	
+}
+
+// Location Wise Meetings Status Counts
+function getLevelWiseMeetingStatusCounts(){
+	jsObj={
+			fromDate : "",
+			toDate:"",
+			locationId : 4,
+			locationValue : 232
+			
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getLevelWiseMeetingStatusCountsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	console.log(result);
+	});	
+}
+
+// Get enrollment Ids from db
+function getEnrollmentIds(){
+	jsObj={
+			
+		}
+	 $.ajax({
+      type : "GET",
+      url : "getEnrollmentsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	console.log(result);
+	});	
+}
+//Location wise insurance status counts
+function getLocationWiseInsuranceStatusCount(){
+	jsObj={
+			fromDate : "",
+			toDate:"",
+			locationId : 4,
+			locationValue : 233
+			
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getLocationWiseInsuranceStatusCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	console.log(result);
+	});	
+}
+
+//Location wise Grivance and trust status counts
+function getLocationWiseGrivanceTrustStatusCounts(){
+	jsObj={
+			"fromDate" : "",
+			"toDate":"",
+			"locationId" : 4,
+			"locationValue" : 244
+			
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getLocationWiseGrivanceTrustStatusCountsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	console.log(result);
 	});	
 }

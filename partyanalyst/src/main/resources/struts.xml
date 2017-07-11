@@ -17678,5 +17678,34 @@
 		</result> 
 	</action>
 	
+	<action name="getLocationWiseCommitteesCountAction" class="locationDashboardAction" method="getLocationWiseCommitteesCount">
+	    <result type="json" name="success">
+	    <param name="root">LocationWiseCommitteesCount</param>
+	    </result> 
+	</action>
+	
+	<action name="getLocationWiseMeetingStatusCountAction" class="locationDashboardAction" method="getLevelWiseMeetingStatusCounts">
+	    <result type="json" name="success">
+	   		 <param name="root">getLevelWiseMeetingStatusCounts</param>
+	    </result>
+    </action>
+	    
+	 <action name="getEnrollmentsAction" class="locationDashboardAction" method="getEnrollmentIds">
+	 		<result type="josn" name="success">
+	 			<param name="root">getEnrollments</param>
+	 		</result>
+	 </action>
+	 
+	 <action name="getLocationWiseInsuranceStatusCountAction" class="locationDashboardAction" method="getLocationWiseInsuranceStatusCount">
+	     <result type="json" name="success">
+	        <param name="root">getLocationWiseInsuranceStatusCount</param>
+	    </result>
+   </action>
+   
+   <action name="getLocationWiseGrivanceTrustStatusCountsAction" class="locationDashboardAction" method="getLocationWiseGrivanceTrustStatusCounts">
+        <result type="json" name="success">
+         <param name="root">getLocationWiseGrivanceTrustStatusCounts</param>
+       </result>
+   </action>
  </package>
 </struts>
