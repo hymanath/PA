@@ -124,6 +124,7 @@ public class RwsMinHabViewDAO extends GenericDaoHibernate<RwsMinHabView,String> 
 		}
 	    return query.list();
 		}
+		
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getStressedHabitationCountLocationWise(InputVO inputVo,String type){
 			
