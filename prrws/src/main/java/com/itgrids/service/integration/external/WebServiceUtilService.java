@@ -158,4 +158,68 @@ public class WebServiceUtilService {
 			LOG.error("Exception Occred in saveWebserviceCallDetails Method - ",e);
 		}
 	}
+	public ClientResponse getCallWebService(String url)
+	{
+		ClientResponse response = null;
+		WebserviceVO webserviceVO = null;
+		Date startTime = null;
+		Date endTime = null;
+		try{                                                                      
+			ClientConfig clientConfig = new DefaultClientConfig();
+			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,Boolean.TRUE);
+			Client client = Client.create(clientConfig);
+			client.setConnectTimeout(1000*60*2);
+		    client.setReadTimeout(1000*60*3);
+			WebResource resource = client.resource(url);
+			
+			webserviceVO = new WebserviceVO();
+			webserviceVO.setUrl(url);
+			startTime = dateUtilService.getCurrentDateAndTime();
+			webserviceVO.setCallTime(startTime);
+			webserviceVO.setWebserviceTrackId(saveWebserviceCallDetails(webserviceVO));
+			
+			response = resource.accept(javax.ws.rs.core.MediaType.APPLICATION_JSON).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(ClientResponse.class);
+			
+			endTime = dateUtilService.getCurrentDateAndTime();
+			
+			if(response == null || response.getStatus() != 200)
+			{
+				LOG.error("Failed to get External Webservice, URL - "+url+" Input - ");
+				webserviceVO.setStatus(IConstants.STATUS_FAIL);
+			}
+			else
+			{
+				webserviceVO.setStatus(IConstants.STATUS_SUCCESS);
+			}
+			
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in calling Webservice, URL - "+url+" Input - "+" Exception - ",e);
+			
+			ErrorLogVO errorLogVO = new ErrorLogVO();
+			errorLogVO.setInputUrl(url);
+			//errorLogVO.setInputJson(input != null ? input.toString() : null);
+			errorLogVO.setStatusCode(response != null ? response.getStatus() : null);
+			errorLogVO.setResponse(response != null ? response.getEntity(String.class) : null);
+			errorLogVO.setExceptionMsg(e.getLocalizedMessage());
+			errorLogVO.setExceptionStack(org.apache.commons.lang.exception.ExceptionUtils.getStackTrace(e));
+			
+			webserviceVO.setStatus(IConstants.STATUS_FAIL);
+			endTime = dateUtilService.getCurrentDateAndTime();
+			
+			loggerService.saveErrorLog(errorLogVO);
+		}
+		
+		try{
+			webserviceVO.setTimeTaken(endTime.getTime()-startTime.getTime());
+		}catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		
+		webserviceVO.setStatusCode(response != null ? new Long(response.getStatus()) : null);
+		updateWebserviceCallDetails(webserviceVO);
+		return response;
+	}
 }

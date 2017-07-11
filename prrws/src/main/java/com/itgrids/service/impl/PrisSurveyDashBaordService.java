@@ -52,7 +52,7 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 			String fromDate = sdf.format(datesList.get(0)); 
 			String toDate = sdf.format(datesList.get(datesList.size()-1));
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://130.211.128.117/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate(), inputVO);
+			ClientResponse response = webServiceUtilService.getCallWebService("http://130.211.128.117/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -74,7 +74,7 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    		}
 	 	    	}
 	 	     }
-	        ClientResponse response1 = webServiceUtilService.callWebService("http://130.211.128.117/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+fromDate+"&toDate="+toDate, inputVO);
+	        ClientResponse response1 = webServiceUtilService.getCallWebService("http://130.211.128.117/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+fromDate+"&toDate="+toDate);
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
@@ -145,12 +145,11 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 		List<PrisOverviewVo> distLst = new ArrayList<PrisOverviewVo>(0);
 		try {
 			 Long  totalHouseHolds = 0l;
-			 Long distId;
+			 Long distId =0l;
 			 String distName="";
 			 Long constId=0l;
 			 String constName="";
-			//response = webServiceUtilService.callWebService("http://130.211.128.117/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate(), inputVO);
-			response = webServiceUtilService.callWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&subFilterType="+inputVO.getSubFilterType(), inputVO);
+			response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&subFilterType="+inputVO.getSubFilterType());
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
