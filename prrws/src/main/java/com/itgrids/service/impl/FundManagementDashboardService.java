@@ -349,8 +349,9 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					double amountTotal = 0.0d;
 					for(FundSchemeVO middleParam : tempList){
 						middlefundSchemeVO.setTotalCount(middlefundSchemeVO.getTotalCount() + middleParam.getTotalCount());
-						String amountStr = middleParam.getAmount();
-						double amountDouble = Double.parseDouble(amountStr);
+						//String amountStr = middleParam.getAmount();
+						//double amountDouble = Double.parseDouble(amountStr);
+						double amountDouble = Double.parseDouble(middleParam.getTotalCount().toString());
 						amountTotal = amountTotal + amountDouble;
 						if(middleParam != null && middleParam.getSubList() != null && middleParam.getSubList().size() > 0){
 							for(FundSchemeVO innerParam : middleParam.getSubList()){
