@@ -3199,7 +3199,7 @@ public class WebServiceHandler {
 		try{			
 			return webServiceHandlerService.getLevelWiseMeetingStatusCounts(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("locationId"),jObj.getLong("locationValue"));		
 		}catch(Exception e){
-			LOG.error("Exception Occured in getLocationWiseCommitteesCount() Method, Exception is ",e);
+			LOG.error("Exception Occured in getLocationWiseMeetingsCount() Method, Exception is ",e);
 			return null;
 		}
 	}
