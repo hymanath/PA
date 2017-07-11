@@ -17690,10 +17690,10 @@
 	    </result>
     </action>
 	    
-	 <action name="getEnrollmentsAction" class="locationDashboardAction" method="getEnrollmentIds">
-	 		<result type="josn" name="success">
-	 			<param name="root">getEnrollments</param>
-	 		</result>
+	 <action name="getEnrollmentYearsAction" class="locationDashboardAction" method="getEnrollmentYears">
+	 		<result type="json" name="success">
+	 			<param name="root">enrollmentYears</param>
+	 		</result>			   
 	 </action>
 	 
 	 <action name="getLocationWiseInsuranceStatusCountAction" class="locationDashboardAction" method="getLocationWiseInsuranceStatusCount">
