@@ -3749,7 +3749,7 @@
 				}
 		});
 	}
-	
+	getLocationWiseHamletIvrList();
 	function getLocationWiseHamletIvrList(){
 		var jsObj={
 				fromDateStr:"",
@@ -3759,13 +3759,17 @@
 				locationValues:[232],
 				status:"green"
 		}
-		 $.ajax({
-	      type : "POST",
-	      url : "getLocationHamletIvrStatusList",
-	      dataType : 'json',
-	      data : {task :JSON.stringify(jsObj)}
-	    }).done(function(result){  
-	    	console.log(result);
+		$.ajax({                
+			type:'POST',    
+			url: 'getLocationHamletIvrStatusList',
+			dataType: 'json',
+			data : JSON.stringify(jsObj),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(ajaxresp){
+		 	console.log(result);
 		});	
 	}
 	
