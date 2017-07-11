@@ -269,6 +269,7 @@ function onLoadCalls()
 		str+='<th>No of Call</th>';
 		str+='<th>Success</th>';
 		str+='<th>Fail</th>';
+		str+='<th>No Response</th>';
 		str+='<th>Total time taken</th>';
 		str+='<th>Average time taken</th>';
 		str+='</tr>';
@@ -281,7 +282,16 @@ function onLoadCalls()
 			str+='<td>'+ajaxresp[i].webserviceName+'</td>';
 			str+='<td>'+ajaxresp[i].totalCalls+'</td>';
 			str+='<td>'+ajaxresp[i].totalSuccess+'</td>';
-			str+='<td>'+ajaxresp[i].totalFail+'</td>';
+			if(ajaxresp[i].totalFail != 0){
+				str+='<td>'+ajaxresp[i].totalFail+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
+			if(ajaxresp[i].noResponce != 0){
+				str+='<td>'+ajaxresp[i].noResponce+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
 			str+='<td>'+ajaxresp[i].totalTime+'</td>';
 			str+='<td>'+ajaxresp[i].averageTime+'</td>';
 			str+='</tr>';
