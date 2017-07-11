@@ -413,7 +413,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsDataVO> getNregaLevelsWiseData(InputVO inputVO){
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
 		try {
-			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			String webServiceUrl = null;
@@ -523,7 +523,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsDataVO> getNregaLevelwiseOverviewForLabourBudgetData(InputVO inputVO){
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
 		try {
-			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			String str = convertingInputVOToString(inputVO);
@@ -632,7 +632,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public NregsDataVO getMGNregsDistrWiseConsti(InputVO inputVO) {
 		NregsDataVO finalVO = new NregsDataVO();
 		try {
-			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			String webServiceUrl = null;
@@ -1570,7 +1570,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsDataVO> getNregaLevelsWiseDataFrNewCalls(InputVO inputVO){
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
 		try {
-			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			String webServiceUrl = null;
@@ -1639,7 +1639,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsDataVO> getNregaLevelsWiseDataFrAgriculture(InputVO inputVO){
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
 		try {
-			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			String str = convertingInputVOToString(inputVO);
@@ -1703,7 +1703,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsDataVO> getNregaLevelsWiseDataFrHorticulture(InputVO inputVO){
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
 		try {
-			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			String webServiceUrl = null;
@@ -1760,7 +1760,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsDataVO> getNregaLevelsWiseDataFrAvenue(InputVO inputVO){
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
 		try {
-			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			String webServiceUrl = null;
@@ -1817,7 +1817,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsDataVO> getNregaLevelsWiseDataForCCRoads(InputVO inputVO){
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
 		try {
-			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			String webServiceUrl = null;
@@ -1886,7 +1886,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			List<NregsDataVO> consList = new ArrayList<NregsDataVO>(0);
 			
 			String str = null;
-			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Labour Budget"))
@@ -2463,7 +2463,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsDataVO> getNregaLevelsWiseDataForTimelyPayments(InputVO inputVO){
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
 		try {
-			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			String webServiceUrl = null;
@@ -2605,7 +2605,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsDataVO> getNregaLevelsWiseDataForFAPerformance(InputVO inputVO){
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
 		try {
-			if(inputVO.getSublocaType().trim() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			String webServiceUrl = null;
