@@ -13,7 +13,7 @@ public interface ITrainingCampFeedbackAnswerDAO extends GenericDao<TrainingCampF
 	public List<Object[]> getFeedbackCategoryCountsCenterWise(Long programId,Date fromDate,Date toDate);
 	public List<Object[]> getFeedbackDetailsOfEachDistrictAndConstituencyWise(List<Long> districtIds,List<Long> constituencIds,List<Long> categoryIds,Long programId,String type,Date fromDate,Date toDate);
 	public List<Object[]> getFeedbackDetailsOfCadre(Long locationId,Long programId,String type,Date fromDate,Date toDate,Long categoryId);
-	public List<Object[]> getFeedBackMembersCountProgramWise(Date startDate,Date endDate);
+	public List<Object[]> getFeedBackMembersCountProgramWise(Date startDate,Date endDate,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	
 	public List<Object[]> getLocationWiseQuestionsAnswersDetails(Long locationId,String location);
 	

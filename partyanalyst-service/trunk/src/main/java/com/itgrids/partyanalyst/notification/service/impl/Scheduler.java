@@ -5,10 +5,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.itgrids.partyanalyst.dao.ISchedulersInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.model.SchedulersInfo;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;

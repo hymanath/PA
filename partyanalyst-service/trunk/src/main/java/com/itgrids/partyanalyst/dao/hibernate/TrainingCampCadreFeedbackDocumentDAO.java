@@ -48,7 +48,7 @@ public class TrainingCampCadreFeedbackDocumentDAO extends GenericDaoHibernate<Tr
 		return query.list();
 	}
 	
-	public List<Object[]> getFeedBackDocumentsCountProgramWise(Date startDate,Date endDate){
+	public List<Object[]> getFeedBackDocumentsCountProgramWise(Date startDate,Date endDate,List<Long> enrollmentYearIds,List<Long> programYearIds){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -65,7 +65,13 @@ public class TrainingCampCadreFeedbackDocumentDAO extends GenericDaoHibernate<Tr
 		 if(startDate !=null && endDate !=null){
 			 str.append(" and date(model.insertedTime) between :startDate and :endDate ");
 		 }
-		 str.append("group by model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
+		 if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			 str.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+   	        }
+		 if(programYearIds != null && programYearIds.size()>0){
+			 str.append(" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
+		 }
+		 str.append(" group by model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +
 		 		" model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId ");
 				
 			Query query = getSession().createQuery(str.toString());
@@ -75,7 +81,12 @@ public class TrainingCampCadreFeedbackDocumentDAO extends GenericDaoHibernate<Tr
 				 query.setParameter("startDate", startDate);
 				 query.setParameter("endDate", endDate);
 			 }
-		
+			 if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+				 query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+			 }
+			 if(programYearIds != null && programYearIds.size()>0){
+				 query.setParameterList("programYearIds", programYearIds);
+			 }
 		return query.list();
 	}
 }

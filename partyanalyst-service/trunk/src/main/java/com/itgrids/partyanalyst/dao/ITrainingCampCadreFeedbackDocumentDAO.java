@@ -10,5 +10,5 @@ import com.itgrids.partyanalyst.model.TrainingCampCadreFeedbackDocument;
 public interface ITrainingCampCadreFeedbackDocumentDAO extends GenericDao<TrainingCampCadreFeedbackDocument, Long> {
 	public List<Object[]> getFeedbackDocuments(Long tdpCadreId,Long enrollmentYearId);
 	public List<Object[]> getDocumentsCountForCadreWise(List<Long> tdpCadreIds,Long enrollmentYearId);
-	public List<Object[]> getFeedBackDocumentsCountProgramWise(Date startDate,Date endDate);
+	public List<Object[]> getFeedBackDocumentsCountProgramWise(Date startDate,Date endDate,List<Long> enrollmentYearIds,List<Long> programYearIds);
 }
