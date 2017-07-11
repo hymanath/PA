@@ -2610,7 +2610,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String webServiceUrl = null;
 			
-			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Payments"))
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FaPerformanceServiceNew/FaPerformanceDataNew";
 			
 			String str = convertingInputVOToString(inputVO);
