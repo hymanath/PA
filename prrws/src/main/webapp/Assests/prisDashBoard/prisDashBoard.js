@@ -45,7 +45,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 			}
 		}else if(blockName == 'Mandal'){
 			if(subBlockName == 'Districts'){
-				POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',0);
+				POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',0,0);
 			}else if(subBlockName == 'Parliament'){
 				POSTMandalOverview(5,blockName,subBlockName,'tableView',0);
 			}
@@ -57,24 +57,26 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		var subBlockName = $("[table-menu='"+blockName+"'] li.active").html();
 		$("#table"+blockName).DataTable().destroy();
 		$("#table"+blockName).html(spinner);
+		alert(subBlockName);
 		if(subBlockName == 'Districts')
 		{
-			POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',value);
+			POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',value,0);
 			POSTConstDateForAssemblyInfo(5,blockName,subBlockName,'',value)
 		}else if(subBlockName == 'Parliament')
 		{
 			POSTMandalOverview(5,blockName,subBlockName,'tableView',value);
 		}
 	});
-	$(document).on("change","#mandalsSelectBoxChosen",function(){
+	$(document).on("change","#mandalsSelectBoxchosen",function(){
 		var value = $(this).val();
 		var blockName = $(this).attr("attr_blockName");
 		var subBlockName = $("[table-menu='"+blockName+"'] li.active").html();
 		$("#table"+blockName).DataTable().destroy();
+		alert(subBlockName);
 		$("#table"+blockName).html(spinner);
 		if(subBlockName == 'Districts')
 		{
-			POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',value);
+			POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',value,$("#mandalsDistrictSelectBoxchosen").val());
 		}else if(subBlockName == 'Parliament')
 		{
 			POSTMandalOverview(5,blockName,subBlockName,'tableView',value);
@@ -84,8 +86,10 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		var value = $(this).val();
 		var blockName = $(this).attr("attr_blockName");
 		$("#table"+blockName).DataTable().destroy();
+		
 		$("#table"+blockName).html(spinner);
 		var subBlockName = $("[table-menu='"+blockName+"'] li.active").html();
+		alert(subBlockName);
 		if(subBlockName == 'Districts')
 		{
 			POSTConstDateForAssemblyInfo(4,blockName,subBlockName,'tableView',value);
@@ -246,7 +250,7 @@ function buildLevelWiseDetailsBlock(){
 		}else if(blockNameArr[i].id == 4){
 			POSTConstDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0);
 		}else if(blockNameArr[i].id == 5){
-			POSTMandalDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0);
+			POSTMandalDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0,0);
 		}
 	}
 	}
@@ -501,14 +505,18 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}
 		});
 	}
-	function POSTMandalDateForAssemblyInfo(blockId,blockName,subBlockName,viewType,locId){
+	function POSTMandalDateForAssemblyInfo(blockId,blockName,subBlockName,viewType,locId,filterId){
 		$("#"+blockName+'_'+blockId).html(spinner);
 		var json = {
 			fromDate:globalFromDate,
 			toDate:globalToDate,
-			locationId:locId,
-			locationType:"mandal"
-			}
+			locationId:0,
+			locationType:"mandal",
+			filterId: filterId,
+			filterType:'districts',
+			subFilterId: locId ,
+			subFilterType: 'constituency'//assembly
+		}
 		$.ajax({                
 			type:'POST',    
 			url: 'getPIRSSurveyInfo',
