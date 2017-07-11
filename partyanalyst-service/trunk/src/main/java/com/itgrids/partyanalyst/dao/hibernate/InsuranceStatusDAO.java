@@ -47,15 +47,15 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		else
 			sb.append(" and cm.state_id_cmp IN (1,2)");
 		
-		if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 2L)
+		if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 2L){
     		//sb.append(" and cm.state_id_cmp IN (:locationValuesSet) ");
-    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 3L)
+		}else if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 3L){
     		sb.append(" and cm.district_id IN (:locationValuesSet) ");
-    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 4L)
+		}else if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 4L){
     		sb.append(" and cm.assembly_id IN (:locationValuesSet) ");
-    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 5L)
+		}else if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 5L){
     		sb.append(" and cm.parliament_id IN (:locationValuesSet) ");
-    	        
+		}      
     	if(cadreYearId != null && cadreYearId.longValue() > 0l)
     		sb.append(" and tcey.enrollment_year_id = :cadreYearId");
     	if(fromDate != null && toDate != null)
@@ -121,15 +121,16 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		//else
 		//	sb.append(" and cm.state_id_cmp IN (1,2)");
 		
-		if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 2L)
+		if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 2L){
     		//sb.append(" and cm.state_id_cmp IN (:locationValuesSet) ");
-    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 3L)
+			
+		}else if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 3L){
     		sb.append(" and cm.district_id IN (:locationValuesSet) ");
-    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 4L)
+		}else if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 4L){
     		sb.append(" and cm.assembly_id IN (:locationValuesSet) ");
-    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 5L)
+		}else if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 5L){
     		sb.append(" and cm.parliament_id IN (:locationValuesSet) ");
-    	        
+		}     
     	if(cadreYearId != null && cadreYearId.longValue() > 0l)
     		sb.append(" and tcey.enrollment_year_id = :cadreYearId");
     	if(fromDate != null && toDate != null)
