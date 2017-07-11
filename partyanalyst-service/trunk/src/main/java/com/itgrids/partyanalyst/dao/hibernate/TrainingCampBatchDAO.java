@@ -497,7 +497,7 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 	public List<String> getExcudingTdpCadreIdsList(List<Long> enrollmentYearIds,List<Long> programYearIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.tdp_cadre_id from training_camp_staff model,training_camp_schedule model1 " +
-				" where  model.training_camp_program_id = model1.training_camp_program_id  ");
+				" where  model.training_camp_program_id = model1.training_camp_program_id ");
 		if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
 			sb.append(" and model1.enrollment_year_id in (:enrollmentYearIds)");
   	        }
