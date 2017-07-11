@@ -14,6 +14,7 @@ public class WebserviceDetailsVO implements Serializable {
 	private Long totalFail = 0L;
 	private Double totalTime = 0.0D;
 	private Double averageTime = 0.0D;
+	private Long noResponce = 0L;
 	public Long getProviderId() {
 		return providerId;
 	}
@@ -80,4 +81,11 @@ public class WebserviceDetailsVO implements Serializable {
 	public void setAverageTime(Double averageTime) {
 		this.averageTime = averageTime;
 	}
+	public Long getNoResponce() {
+		return noResponce;
+	}
+	public void setNoResponce(Long noResponce) {
+		this.noResponce = noResponce;
+	}
+	
 }
