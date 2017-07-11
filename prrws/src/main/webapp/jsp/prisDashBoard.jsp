@@ -122,9 +122,9 @@
 								  <img class="media-object" src="Assests/icons/Target_icon.png" alt="Target_icon">
 							  </div>
 							  <div class="media-body">
-								<h4 class="">TARGET <span class="pull-right color_Tlabel" id="targetOverallPercent"></span></h4>
+								<h4 class="panel-title">TARGET <span class="pull-right color_Tlabel" id="targetOverallPercent"></span></h4>
 								<small>Overall</small>
-								<h4 class="m_top10 title_align" id="targetOverall"></h4>
+								<h4 class="title_align" id="targetOverall"></h4>
 							  </div>
 							</div>
 						</div>
@@ -146,7 +146,7 @@
 					<div class="col-sm-3">
 						<div class="white-block">
 							<div class="media blockHeights block_styles">
-								<p>THIS MONTH - JUNE </p>
+								<p>THIS MONTH - <span class="thisMonthOverview text-capital">JUNE</span> </p>
 								<div class="row m_top5">
 									<div class="col-sm-6">
 										<img class="img_width" src="Assests/icons/Target_icon.png" alt="Achived_icon">
@@ -179,7 +179,6 @@
 <script src="Assests/Plugins/DateTime/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
-<script src="Assests/js/Pris.js" type="text/javascript"></script>
 <script src="Assests/prisDashBoard/prisDashBoard.js" type="text/javascript"></script>
 </body>
 </html>
