@@ -369,7 +369,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		String str = "";
 		try {
 			if(inputVO.getLocationId() != null)
-				if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() < 9l)
+				if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
 					inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
 			str = "{";
 			
