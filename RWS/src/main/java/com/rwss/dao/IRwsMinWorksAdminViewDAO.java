@@ -16,8 +16,6 @@ public interface IRwsMinWorksAdminViewDAO extends GenericDao<RwsMinWorksAdminVie
 	
 	public List<Object[]> getOnclickWorkDetails(InputVO inputVO);
 
-	public List<Object[]> getOnclickTargetsAcheievementsDetails(InputVO inputVO);
-	
 	public List<Object[]> getOnclickStrssedTargetsAcheievementsDetails(InputVO inputVO);
 	
 	public List<Object[]> getSchemeDetailsByTypeOfAssestName(InputVO inputVo);
