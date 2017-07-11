@@ -48,7 +48,7 @@ public class ParliamentAssemblyDAO extends GenericDaoHibernate<ParliamentAssembl
 	    	   return query.list();
 	}
 	public List<Object[]> getConsParlimentIds(){
-		Query query = getSession().createQuery("select concat(model.assembly.prConstituency.prDistrict,model.assembly.prConstituency.constituencyCode),"
+		Query query = getSession().createQuery("select distinct concat(model.assembly.prConstituency.prDistrict,model.assembly.prConstituency.constituencyCode),"
 				+ " model.parliamentId "
 				+ " from ParliamentAssembly model ");
 		return query.list();
