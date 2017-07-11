@@ -253,9 +253,6 @@ function buildLevelWiseDetailsBlock(){
 	
 }
 function buildTableData(result,blockId,blockName,subBlockName,viewType){
-		alert(blockName);
-		alert(subBlockName);
-		alert(viewType);
 		if(viewType == 'tableView')
 		{
 			var tableView='';
