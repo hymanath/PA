@@ -3198,10 +3198,10 @@
 								<div class="panel panel-default panelNew" id="apDistrictBlockId">
 									<div class="panel-heading">
 										<label class="radio-inline">
-											<input checked type="radio" attr_status="category" class="cadeInsuranceCat" name="cadeInsuranceCat" value="category"/>Show Category Wise (Death & Hospital)
+											<input checked type="radio" attr_status="category" class="cadeInsuranceCatAndStsCls" name="cadeInsuranceCat" value="category"/>Show Category Wise (Death & Hospital)
 										</label>
-										<label class="radio-inline">
-											<input type="radio" attr_status="categoryStatus" class="cadeInsuranceCat" name="cadeInsuranceCat" value="status"/>Show Status Wise
+										<label class="radio-inline">          
+											<input type="radio" attr_status="categoryStatus" class="cadeInsuranceCatAndStsCls" name="cadeInsuranceCat" value="status"/>Show Status Wise
 										</label>      
 									</div>
 									<div class="panel-heading">
@@ -5071,6 +5071,12 @@ var globalImages;
 		defaultCommitteeCalls();
 		getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId);     
 		defaultAlertCalls();
+		//if any member is selected then hide the ts block
+		$("#tsConstBlockId").hide();
+		$("#tsDistrictBlockId").hide();
+		$(".tsBlockCls").hide();    
+		$(".apBlockCls").show();   
+		
 		
 	});
 	
