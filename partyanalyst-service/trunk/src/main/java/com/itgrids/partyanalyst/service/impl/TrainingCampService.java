@@ -6002,7 +6002,7 @@ class TrainingCampService implements ITrainingCampService{
 				}
 			}
 			else if(type.equalsIgnoreCase("running") && batchIds!=null && batchIds.size()>0){
-				runningBatches = trainingCampBatchDAO.getCompletedBatchIds(sdf.parse(sdf.format(new Date())),"running",batchIds,enrollmentYearIds,programYearIds);
+				runningBatches = trainingCampBatchDAO.getCompletedBatchIds(dateUtilService.getCurrentDateAndTime(),"running",batchIds,enrollmentYearIds,programYearIds);
 				setBatchesInformation(finalMap,runningBatches,"running",runningBatchIds,totalTrainingCenters);
 				runningMembersCounts = getCompletedRunningUpcomingCountsForBatchIds(runningBatchIds,"attendee");
 				runningMembersCountsattendence = getCompletedRunningUpcomingCountsForBatchIds(runningBatchIds,"attendence");
@@ -7976,15 +7976,20 @@ class TrainingCampService implements ITrainingCampService{
 		public List<Date> getBetweenDates(Date fromDate,Date toDate){
 			
 			List<Date> dates = new ArrayList<Date>(0);
+			try{
 			
 			Calendar cal = Calendar.getInstance();
 		  if(fromDate != null)
 			cal.setTime(fromDate);
 			cal.add(Calendar.DATE, -1);
-			
+			if(toDate != null){
 			while (cal.getTime().before(toDate)) {
 			    cal.add(Calendar.DATE, 1);
 			    dates.add(cal.getTime());
+			}
+			}
+			}catch(Exception e){
+				LOG.error(" Error Occured in getBetweenDates method in TraininingCampService class" ,e);
 			}
 			return dates;
 		}
