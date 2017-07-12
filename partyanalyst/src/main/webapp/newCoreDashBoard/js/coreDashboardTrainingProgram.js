@@ -33,10 +33,30 @@ var getDocumentWidth = $(document).width();
 	 $("#programsDtlsCntTableId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 $("#villageWardTblId").html(' ');
 	 $("#mdlTwnDvsnTabId").html(' ');
+	 
+	 var programIdArr = [];//[6,7]
+	var enrollmentYrIds = [];
+	 enrollmentYrIds.push($("#tdpTriningYearId").val());
+	 
+	 if(enrollmentYrIds != null && enrollmentYrIds.length>0){
+		 for(var i in enrollmentYrIds){
+			 if(parseInt(enrollmentYrIds[i]) == 4){
+				 programIdArr=[];
+				 programIdArr=[8];
+			 }
+			 else  if(parseInt(enrollmentYrIds[i]) == 3){
+				 programIdArr=[];
+				 programIdArr=[1,6,7];
+			 }
+		 }
+	 }
+	 
+	 
 	 var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	  var enrollmentYrIds = [];
          enrollmentYrIds.push($("#tdpTriningYearId").val());
 		var jsObj ={ 
+					 programIdArr : programIdArr,
 		             userAccessLevelId : globalUserAccessLevelId,
 					 userAccessLevelValuesArray : globalUserAccessLevelValues,
 					 stateId : globalStateId,
@@ -158,15 +178,22 @@ var getDocumentWidth = $(document).width();
  function getTrainingCampProgramsDetailsCntByUserType(){
 		$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		 var dateStr = $("#dateRangeIdForTrainingCamp").val();
-		 var trainingCampProgramIds = [];
-		 var enrollmentyearId  = $("#tdpTriningYearId").val();
-		  if(enrollmentyearId==4){
-			  trainingCampProgramIds.push(8);
-		  }else if(enrollmentyearId==3){
-			  trainingCampProgramIds.push(1);
-		  }
 		 var enrollmentYrIds = [];
-         enrollmentYrIds.push(enrollmentyearId);
+         enrollmentYrIds.push($("#tdpTriningYearId").val());
+		 var programIdArr=[];
+		  if(enrollmentYrIds != null && enrollmentYrIds.length>0){
+			 for(var i in enrollmentYrIds){
+				 if(parseInt(enrollmentYrIds[i]) == 4){
+					 programIdArr=[];
+					 programIdArr=[8];
+				 }
+				 else  if(parseInt(enrollmentYrIds[i]) == 3){
+					 programIdArr=[];
+					 programIdArr=[1,6,7];
+				 }
+			 }
+		 }
+	 
 		var jsObj ={ 
 		             userAccessLevelId : globalUserAccessLevelId,
 					 userAccessLevelValuesArray : globalUserAccessLevelValues,
@@ -175,7 +202,8 @@ var getDocumentWidth = $(document).width();
 					 userTypeId : globalUserTypeId,
 					 activityMemberId : globalActivityMemberId,
 					 enrollmentYearIdsList :enrollmentYrIds,
-					 trainingCampProgramIds : trainingCampProgramIds
+					 trainingCampProgramIds:programIdArr
+					 
 				  }
 		  
 		$.ajax({
@@ -311,6 +339,19 @@ var globalUserWiseMemberRslt;
 	   var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	   var enrollmentYrIds = [];
 	   enrollmentYrIds.push($("#tdpTriningYearId").val());
+	var programIdArr = [];//[6,7]
+		 if(enrollmentYrIds != null && enrollmentYrIds.length>0){
+			 for(var i in enrollmentYrIds){
+				 if(parseInt(enrollmentYrIds[i]) == 4){
+					 programIdArr=[];
+					 programIdArr=[8];
+				 }
+				 else  if(parseInt(enrollmentYrIds[i]) == 3){
+					 programIdArr=[];
+					 programIdArr=[1,6,7];
+				 }
+			 }
+		 }
 	 var jsObj ={
 			          userAccessLevelId:globalUserAccessLevelId,
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
@@ -318,7 +359,8 @@ var globalUserWiseMemberRslt;
 					  userTypeId : globalUserTypeId,
 					  stateId : globalStateId,
 					  dateStr : dateStr,
-					  enrollmentYrIds:enrollmentYrIds
+					  enrollmentYrIds:enrollmentYrIds,
+					  programIdArr:programIdArr
 				}
 		
 		$.ajax({
@@ -597,7 +639,7 @@ var globalUserWiseMemberRslt;
 	}
 function stateLevelCampDetails(){ 
 	$("#stateLevelCampId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	var programIdArr = [8];//[6,7]
+	var programIdArr = [];//[6,7]
 	var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	if(dateStr == undefined || dateStr== null){ // Stopping default call when user has no training access.
 		return;
@@ -610,6 +652,10 @@ function stateLevelCampDetails(){
 			 if(parseInt(enrollmentYrIds[i]) == 4){
 				 programIdArr=[];
 				 programIdArr=[8];
+			 }
+			 else  if(parseInt(enrollmentYrIds[i]) == 3){
+				 programIdArr=[];
+				 programIdArr=[1,6,7];
 			 }
 		 }
 	 }
@@ -1003,7 +1049,7 @@ $(document).on("click",".trainingDetailed",function(){
 	$(".trainingDetailedBlock").show();
 	$(".trainingComparisonBlock").hide();
 	//buildTrainingProgramRslt(globalTrainingProgramsRslt);
-	getTrainingProgramBasicCnt();	
+	getTrainingProgramBasicCnt();
 });
 $(document).on("click",".trainingComparison",function(){
 	$(this).addClass("active")
@@ -1069,6 +1115,21 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 	  var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	  var enrollmentYrIds = [];
          enrollmentYrIds.push($("#tdpTriningYearId").val());
+	
+	var programIdArr = [];//[6,7]
+	 if(enrollmentYrIds != null && enrollmentYrIds.length>0){
+		 for(var i in enrollmentYrIds){
+			 if(parseInt(enrollmentYrIds[i]) == 4){
+				 programIdArr=[];
+				 programIdArr=[8];
+			 }
+			 else  if(parseInt(enrollmentYrIds[i]) == 3){
+				 programIdArr=[];
+				 programIdArr=[1,6,7];
+			 }
+		 }
+	 }
+	 
 	  var jsObj ={ 
 	               parentActivityMemberId : parentActivityMemberId,
 				   childUserTypeIdsArray : childUserTypeIdsArray,
@@ -1077,7 +1138,8 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 				   reportType :"selectedUserType",
 				   stateId : globalStateId,
 				   dateStr : dateStr,
-				   enrollmentYearIdsList :enrollmentYrIds
+				   enrollmentYearIdsList :enrollmentYrIds,
+				   programIdArr:programIdArr
 				 }
 	  $.ajax({
 			type : 'POST',
@@ -1273,12 +1335,27 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 	             childUserTypeIdsArray.push(userTypeId);
 				 var enrollmentYrIds = [];
          enrollmentYrIds.push($("#tdpTriningYearId").val());
+		 var programIdArr = [];//[6,7]
+		 if(enrollmentYrIds != null && enrollmentYrIds.length>0){
+			 for(var i in enrollmentYrIds){
+				 if(parseInt(enrollmentYrIds[i]) == 4){
+					 programIdArr=[];
+					 programIdArr=[8];
+				 }
+				 else  if(parseInt(enrollmentYrIds[i]) == 3){
+					 programIdArr=[];
+					 programIdArr=[1,6,7];
+				 }
+			 }
+		 }
+		 
 	  var jsObj ={  activityMemberId : activityMemberId,
 			         childUserTypeIdsArray : childUserTypeIdsArray,
 					 reportType : "directChild",
 					 stateId : globalStateId,
 					 dateStr : dateStr,
-					 enrollmentYearIdsList :enrollmentYrIds
+					 enrollmentYearIdsList :enrollmentYrIds,
+					 programIdArr:programIdArr
 				  }
 	   	$.ajax({
 			type : 'POST',
@@ -1524,12 +1601,27 @@ function buildTrainingProgramRslt(result){
 	  var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	   var enrollmentYrIds = [];
          enrollmentYrIds.push($("#tdpTriningYearId").val());
+	var programIdArr = [];//[6,7]
+	 if(enrollmentYrIds != null && enrollmentYrIds.length>0){
+		 for(var i in enrollmentYrIds){
+			 if(parseInt(enrollmentYrIds[i]) == 4){
+				 programIdArr=[];
+				 programIdArr=[8];
+			 }
+			 else  if(parseInt(enrollmentYrIds[i]) == 3){
+				 programIdArr=[];
+				 programIdArr=[1,6,7];
+			 }
+		 }
+	 }
+	 
 		var jsObj ={ 
 		              userTypeId : userTypeId,
 					  activityMemberId:activityMemberId,
 					  stateId : globalStateId,
 					  dateStr : dateStr,
-					  enrollmentYearIdsList :enrollmentYrIds
+					  enrollmentYearIdsList :enrollmentYrIds,
+					  programIdArr:programIdArr
 				  }
 		
 		$.ajax({
@@ -2509,26 +2601,14 @@ function getCampMemberDtlsPerDist(distId,programId,stateId,dateSrt,areaName){
 function getLeaderShipMemDtlsPerDist(distId,dateSrt,areaName){
 	
 	var dateStr = $("#dateRangeIdForTrainingCamp").val();
-	 var enrollmentyearId  = $("#tdpTriningYearId").val();
-	  if(enrollmentyearId==4){
-		  trainingCampProgramIds.push(8);
-	  }else if(enrollmentyearId==3){
-		  trainingCampProgramIds.push(1);
-	  }
-	 var enrollmentYrIds = [];
-	 enrollmentYrIds.push(enrollmentyearId);
-		 
 	if(dateSrt == '0')
 		dateStr = 0;
-	
 	var jsObj ={ 
 		userAccessLevelId : globalUserAccessLevelId,
 		userAccessLevelValuesArray : globalUserAccessLevelValues,
 		stateId : globalStateId,
 		distId : distId,
-		dateStr : dateStr,
-        enrollmentYearIdsList :enrollmentYrIds,
-		trainingCampProgramIds : trainingCampProgramIds		
+		dateStr : dateStr   
 	}
 	$.ajax({
 		type : 'POST',
