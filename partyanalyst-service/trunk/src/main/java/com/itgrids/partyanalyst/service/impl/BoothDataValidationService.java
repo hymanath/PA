@@ -4,6 +4,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.jfree.util.Log;
 
@@ -14,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dto.BoothAddressVO;
 import com.itgrids.partyanalyst.dto.BoothInchargeDetailsVO;
 import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -29,6 +32,7 @@ import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IBoothDataValidationService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothDataValidationService implements IBoothDataValidationService{
 
@@ -371,27 +375,95 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		
 	}
 
-	public List<BoothInchargeDetailsVO> getLocationLevelWiseBoothDetails(InputVO inputVO) {
+	public List<BoothInchargeDetailsVO> getLocationLevelWiseBoothCount(InputVO inputVO) {
 		List<BoothInchargeDetailsVO> resultList = new ArrayList<BoothInchargeDetailsVO>(0);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		try {
-			if(inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() > 0){
+			if (inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() > 0) {
 				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
 				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
 			}
-			List<Object[]> rtrnObjLst = boothInchargeDAO.getLocationLevelWiseBoothDetails(inputVO,"");
-			if (rtrnObjLst != null && rtrnObjLst.size() > 0) {
-				for (Object[] param : rtrnObjLst) {
-					BoothInchargeDetailsVO locationVO = new BoothInchargeDetailsVO();
-					locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					locationVO.setTotalBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					resultList.add(locationVO);
-				}
+
+			Map<Long, BoothInchargeDetailsVO> locationBoothMap = null;
+
+			List<Object[]> notStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
+			List<Object[]> startedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
+			List<Object[]> completedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
+			locationBoothMap = getLocationWiseBoothDtls(notStartedBoothObjLst,"NotStarted");
+			locationBoothMap = getLocationWiseBoothDtls(startedBoothObjLst,"Started");
+			locationBoothMap = getLocationWiseBoothDtls(completedBoothObjLst,"Completed");
+
+			if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
+				inputVO.setLocationLevel(IConstants.LOCALELECTIONBODY);
+				List<Object[]> lclElctnBdyNotStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
+				List<Object[]> lclElctnBdyStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
+				List<Object[]> lclElctnBdyCompletedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
+				locationBoothMap = getLocationWiseBoothDtls(lclElctnBdyNotStartedBoothObjLst, "NotStarted");
+				locationBoothMap = getLocationWiseBoothDtls(lclElctnBdyStartedBoothObjLst, "Started");
+				locationBoothMap = getLocationWiseBoothDtls(lclElctnBdyCompletedBoothObjLst, "Completed");
+			}
+			if (locationBoothMap != null && locationBoothMap.size() > 0) {
+				resultList.addAll(locationBoothMap.values());
 			}
 		} catch (Exception e) {
 			Log.error("Exception occured at getLocationLevelWiseBoothDetails() in BoothDataValidationService class",e);
 		}
 		return resultList;
+	}
+	public Map<Long,BoothInchargeDetailsVO> getLocationWiseBoothDtls(List<Object[]> objList,String resultType){
+		Map<Long,BoothInchargeDetailsVO> locationBoothMap = new TreeMap<Long, BoothInchargeDetailsVO>();
+		try{
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					BoothInchargeDetailsVO locationVO = locationBoothMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if (locationVO == null ){
+						locationVO = new BoothInchargeDetailsVO();
+						locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						locationVO.setBoothAddressVO(getBoothAddress(param));
+						locationBoothMap.put(locationVO.getLocationId(), locationVO);
+					}
+					if(resultType.equalsIgnoreCase("NotStarted")){
+						locationVO.setNotStartedBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						locationVO.setTotalBoothCount(locationVO.getTotalBoothCount()+locationVO.getNotStartedBoothCount());
+					}else if(resultType.equalsIgnoreCase("Started")){
+						locationVO.setStartedBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						locationVO.setTotalBoothCount(locationVO.getTotalBoothCount()+locationVO.getStartedBoothCount());
+					}else if(resultType.equalsIgnoreCase("Completed")){
+						locationVO.setCompletedBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						locationVO.setTotalBoothCount(locationVO.getTotalBoothCount()+locationVO.getCompletedBoothCount());
+					}
+				}
+			}
+		}catch(Exception e){
+			Log.error("Exception occured at getLocationWiseBoothDtls() in BoothDataValidationService class",e);
+		}
+		return locationBoothMap;
+	}
+
+	public BoothAddressVO getBoothAddress(Object[] param) {
+		BoothAddressVO addressVO = new BoothAddressVO();
+		try {
+			if (param != null && param.length > 0) {
+				addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[3]));
+				addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[4]));
+				addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[5]));
+				addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[6]));
+				addressVO.setParliamentConstituencyId(commonMethodsUtilService.getLongValueForObject(param[7]));
+				addressVO.setParliamentConstituency(commonMethodsUtilService.getStringValueForObject(param[8]));
+				addressVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[9]));
+				addressVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[10]));
+				if (param[11] == null) {
+					addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[15]));
+					addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[16])+ " "+ commonMethodsUtilService.getStringValueForObject(param[18]));
+				} else {
+					addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[11]));
+					addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[12]));
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception occured at getBoothAddress() in BoothDataValidationService class",e);
+		}
+		return addressVO;
 	}
 }

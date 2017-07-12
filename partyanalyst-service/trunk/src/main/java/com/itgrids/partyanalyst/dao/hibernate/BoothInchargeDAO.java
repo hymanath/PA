@@ -224,32 +224,36 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		}
 		return qry.list();
 	}
-public List<Object[]> getLocationLevelWiseBoothDetails(InputVO inputVO,String resultType){
-	
-	   	 StringBuilder queryStr = new StringBuilder();
-	     queryStr.append("select ");
-		if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.DISTRICT)){
+
+	public List<Object[]> getLocationLevelWiseBoothCount(InputVO inputVO,String resultType) {
+
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select ");
+		if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
 			queryStr.append(" district.districtId ");
 			queryStr.append(" ,district.districtName");
-		}else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)){
+		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)) {
 			queryStr.append(" parliamentConstituency.constituencyId ");
 			queryStr.append(" ,parliamentConstituency.name ");
-		}else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)) {
 			queryStr.append(" constituency.constituencyId ");
 			queryStr.append(" ,constituency.name ");
-		}else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)){
+		} else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
+			queryStr.append(" localElectionBody.localElectionBodyId ");
+			queryStr.append(" ,localElectionBody.name");
+		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
 			queryStr.append(" tehsil.tehsilId ");
 			queryStr.append(" ,tehsil.tehsilName");
-		}else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.PANCHAYAT)){
+		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
 			queryStr.append(" panct.panchayatId ");
 			queryStr.append(" ,panc.panchayatName");
 		}
 		queryStr.append(",count(distinct model.boothId)");
-		
-		queryStr.append(",district.districtId,district.districtName,parliamentConstituency.constituencyId,parliamentConstituency.name");
+
+		queryStr.append(",state.stateId,state.stateName,district.districtId,district.districtName,parliamentConstituency.constituencyId,parliamentConstituency.name");
 		queryStr.append(",constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName,panct.panchayatId,panc.panchayatName,");
 		queryStr.append(",localElectionBody.localElectionBodyId,localElectionBody.name,electionType.electionTypeId,electionType.electionType ");
-		
+
 		queryStr.append(" from BoothIncharge model ");
 		queryStr.append(" from left join model.boothInchargeRoleConditionMapping model1 ");
 		queryStr.append(" left join model1.address.state state ");
@@ -260,66 +264,144 @@ public List<Object[]> getLocationLevelWiseBoothDetails(InputVO inputVO,String re
 		queryStr.append(" left join model1.address.localElectionBody localElectionBody ");
 		queryStr.append(" left join model1.address.localElectionBody.electionType electionType ");
 		queryStr.append(" left join model1.address.panchayat panc ");
-		
-	    queryStr.append(" where model.isActive ='Y' and model.isDeleted = 'N' ");
-	    
-	    if(inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0){
-	    	
-	    	if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.DISTRICT)){
+
+		queryStr.append(" where model.isActive ='Y' and model.isDeleted = 'N' ");
+
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
+
+			if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
 				queryStr.append(" and district.districtId =:filterValue ");
-			}else if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)){
+			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)) {
 				queryStr.append(" and parliamentConstituency.constituencyId =:filterValue ");
-			}else if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)) {
 				queryStr.append(" and constituency.constituencyId =:filterValue");
-			}else if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)){
+			} else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
+				queryStr.append(" localElectionBody.localElectionBodyId =:filterValue ");
+			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
 				queryStr.append(" and tehsil.tehsilId =:filterValue");
-			}else if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PANCHAYAT)){
+			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
 				queryStr.append(" and model.booth.constituency.panchayat.panchayatId=:filterValue");
 			}
-	    }
-	    
-			if(resultType.equalsIgnoreCase("Not Started")){
-				queryStr.append(" and model1.isConfirmed='N' and model1.startDate is null && model1.completedDate is null ");
-			}else if(resultType.equalsIgnoreCase("Started")){
-				queryStr.append(" and model1.isConfirmed='N' and model1.completedDate is null");
-			}else if(resultType.equalsIgnoreCase("Completed")){
-				queryStr.append(" and model1.isConfirmed='Y' ");
+		}
+
+		if (resultType.equalsIgnoreCase("NotStarted")) {
+			queryStr.append(" and model1.isConfirmed='N' and model1.startDate is null && model1.completedDate is null ");
+		} else if (resultType.equalsIgnoreCase("Started")) {
+			queryStr.append(" and model1.isConfirmed='N' and model1.completedDate is null");
+		} else if (resultType.equalsIgnoreCase("Completed")) {
+			queryStr.append(" and model1.isConfirmed='Y' ");
+		}
+
+		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+			if (resultType.equalsIgnoreCase("Started")) {
+				queryStr.append(" and date(model1.startDate) between :fromDate and :toDate ");
+			} else if (resultType.equalsIgnoreCase("Completed")) {
+				queryStr.append(" and date(model.completedDate) between :fromDate and :toDate ");
 			}
-			
-		    if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
-				if(resultType.equalsIgnoreCase("Started")){
-					queryStr.append(" and date(model1.startDate) between :fromDate and :toDate ");
-				}else if(resultType.equalsIgnoreCase("Completed")){
-					queryStr.append(" and date(model.completedDate) between :fromDate and :toDate ");
-				}
-		   }
-		    if(inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue()>0){
-				queryStr.append(" and model.boothInchargeEnrollment.boothInchargeEnrollmentId =:boothInchargeEnrollmentId ");
-			}
+		}
+		if (inputVO.getBoothInchargeEnrollmentId() != null
+				&& inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
+			queryStr.append(" and model.boothInchargeEnrollment.boothInchargeEnrollmentId =:boothInchargeEnrollmentId ");
+		}
 		queryStr.append(" group by ");
-	    if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.DISTRICT)){
+		if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
 			queryStr.append(" district.districtId.districtId ");
-		}else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)){
+		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)) {
 			queryStr.append(" parliamentConstituency.constituencyId ");
-		}else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)) {
 			queryStr.append(" constituency.constituencyId ");
-		}else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)){
+		} else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
+			queryStr.append(" localElectionBody.localElectionBodyId ");
+		}  else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
 			queryStr.append(" tehsil.tehsilId ");
-		}else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.PANCHAYAT)){
+		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
 			queryStr.append(" panct.panchayatId ");
 		}
- 	    Query query = getSession().createQuery(queryStr.toString());
- 	    
- 	   if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+		
+		Query query = getSession().createQuery(queryStr.toString());
+
+		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
 			query.setDate("fromDate", inputVO.getFromDate());
 			query.setDate("toDate", inputVO.getToDate());
 		}
-		if(inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue()>0){
-			query.setParameter("boothInchargeEnrollmentId", inputVO.getBoothInchargeEnrollmentId());
+		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
+			query.setParameter("boothInchargeEnrollmentId",inputVO.getBoothInchargeEnrollmentId());
 		}
-	    if(inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0){
-	    	query.setParameter("filterValue", inputVO.getFilterValue());
-	    }
+		if (inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
+			query.setParameter("filterValue", inputVO.getFilterValue());
+		}
+		return query.list();
+	}
+	public List<Object[]> getLocationLevelWiseBoothDetails(InputVO inputVO,String resultType) {
+
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select ");
+
+		queryStr.append(",state.stateId,state.stateName,district.districtId,district.districtName,parliamentConstituency.constituencyId,parliamentConstituency.name");
+		queryStr.append(",constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName,panct.panchayatId,panc.panchayatName,");
+		queryStr.append(",localElectionBody.localElectionBodyId,localElectionBody.name,electionType.electionTypeId,electionType.electionType ");
+
+		queryStr.append(" from BoothIncharge model ");
+		queryStr.append(" from left join model.boothInchargeRoleConditionMapping model1 ");
+		queryStr.append(" left join model1.address.state state ");
+		queryStr.append(" left join model1.address.district district ");
+		queryStr.append(" left join model1.address.parliamentConstituency parliamentConstituency ");
+		queryStr.append(" left join model1.address.constituency constituency ");
+		queryStr.append(" left join model1.address.tehsil tehsil ");
+		queryStr.append(" left join model1.address.localElectionBody localElectionBody ");
+		queryStr.append(" left join model1.address.localElectionBody.electionType electionType ");
+		queryStr.append(" left join model1.address.panchayat panc ");
+
+		queryStr.append(" where model.isActive ='Y' and model.isDeleted = 'N' ");
+
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
+
+			if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
+				queryStr.append(" and district.districtId =:filterValue ");
+			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)) {
+				queryStr.append(" and parliamentConstituency.constituencyId =:filterValue ");
+			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)) {
+				queryStr.append(" and constituency.constituencyId =:filterValue");
+			} else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
+				queryStr.append(" localElectionBody.localElectionBodyId =:filterValue ");
+			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
+				queryStr.append(" and tehsil.tehsilId =:filterValue");
+			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
+				queryStr.append(" and model.booth.constituency.panchayat.panchayatId=:filterValue");
+			}
+		}
+
+		if (resultType.equalsIgnoreCase("NotStarted")) {
+			queryStr.append(" and model1.isConfirmed='N' and model1.startDate is null && model1.completedDate is null ");
+		} else if (resultType.equalsIgnoreCase("Started")) {
+			queryStr.append(" and model1.isConfirmed='N' and model1.completedDate is null");
+		} else if (resultType.equalsIgnoreCase("Completed")) {
+			queryStr.append(" and model1.isConfirmed='Y' ");
+		}
+
+		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+			if (resultType.equalsIgnoreCase("Started")) {
+				queryStr.append(" and date(model1.startDate) between :fromDate and :toDate ");
+			} else if (resultType.equalsIgnoreCase("Completed")) {
+				queryStr.append(" and date(model.completedDate) between :fromDate and :toDate ");
+			}
+		}
+		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
+			queryStr.append(" and model.boothInchargeEnrollment.boothInchargeEnrollmentId =:boothInchargeEnrollmentId ");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+
+		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+			query.setDate("fromDate", inputVO.getFromDate());
+			query.setDate("toDate", inputVO.getToDate());
+		}
+		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
+			query.setParameter("boothInchargeEnrollmentId",inputVO.getBoothInchargeEnrollmentId());
+		}
+		if (inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
+			query.setParameter("filterValue", inputVO.getFilterValue());
+		}
 		return query.list();
 	}
 }

@@ -17,5 +17,5 @@ public interface IBoothInchargeDAO extends GenericDao<BoothIncharge,Long>{
 	public Long getStartedBothCountByConstiId(Long constituencyId);
 	public Long getBoothAssignInchargeCount(Long userAccessLevelId,Set<Long> userAccessLevelValues,Date startDate,Date endDate,List<Long> committeeEnrollmentYearsIdsLst,List<Long> bothIds);
 	public List<Object[]> getBoothInchargeCountDetails(Long userAccessLevelId ,Set<Long> userAccessLevelValues,List<Long> boothCommEnrollYrIds,Date startDate,Date endDate);
-	public List<Object[]> getLocationLevelWiseBoothDetails(InputVO inputVO,String resultType);
+	public List<Object[]> getLocationLevelWiseBoothCount(InputVO inputVO,String resultType);
 }

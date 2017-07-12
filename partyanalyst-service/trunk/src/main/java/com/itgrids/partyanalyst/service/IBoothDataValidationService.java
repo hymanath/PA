@@ -15,5 +15,5 @@ public interface IBoothDataValidationService {
 	public UploadDataErrorMessageVO readVoterExcelDataAndValidate(
 			File filePath, String electionYear, Long stateId,
 			Long electionTypeId ,  String publicationDate) throws CsvException;
-	public List<BoothInchargeDetailsVO> getLocationLevelWiseBoothDetails(InputVO inputVO);
+	public List<BoothInchargeDetailsVO> getLocationLevelWiseBoothCount(InputVO inputVO);
 }
