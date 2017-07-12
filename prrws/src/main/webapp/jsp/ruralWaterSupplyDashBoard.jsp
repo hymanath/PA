@@ -15,6 +15,7 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
+ <link rel="stylesheet" type="text/css" href="Assests/SimplePagination/simplePagination.css"/>
 </head>
 <body>
 
@@ -313,7 +314,16 @@
         <h4 class="modal-title" id="modalHabliHeadingId">Modal title</h4>
       </div>
       <div class="modal-body">
-        <div id="modalHablitationTable"></div>
+		<div id="modalHablitationTable"></div>
+		<div id="modalAlertTable"></div>
+		<div id="modalAssetsTable"></div>
+		<div id="modalWaterSourceTable"></div>
+		<div id="modalIvrStatusTable"></div>
+		<div class="row">
+			<div class="col-md-10 col-md-offset-5 m_top20">
+				<div class="paginationId"></div>
+			</div>
+		</div>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -327,7 +337,9 @@
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
+<script src="Assests/SimplePagination/simplePagination3.js" type="text/javascript"></script>
 <!--<script src="Assests/ruralWaterSupply/custom.js" type="text/javascript"></script>-->
 <script src="Assests/ruralWaterSupply/ruralWaterSupplyDashBoard.js" type="text/javascript"></script>
+
 </body>
 </html>

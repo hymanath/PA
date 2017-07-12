@@ -9,6 +9,7 @@
 						 {name:'<p><span><img src="Assests/icons/alert_status.png"/> Jalavani </span></p>',id:'jalavani',img:'alert_status.png'},
 						 /*{ name:'Plan Of Action for Stressed Habitations <br><small>Water Budget has to be prepared for all habitations</small>',id:'planAction',img:'plan_action.png'  }*/ {name:'Assests',id:'assestsId',img:'assets.png'},{name:'Water Source',id:'waterSourceId',img:'works.png'},{name:'Work Schemes',id:'schemeId',img:'schemes.png'},];
 		var alertStatusBlockArr = [{name:'Alert Status Jalavani',id:'alertStatus'},{name:'Drinking Water Satisfaction Levels',id:'drinking'}];
+		var blockArrClickArr = [{name:'HabitationClick',id:'modalHablitationTable'},{name:'KpiClick',id:'modalKpiTable'},{name:'JalavaniClick',id:'modalAlertTable'},{name:'IvrStatusClick',id:'modalIvrStatusTable'},{name:'AssetsClick',id:'modalAssetsTable'},{name:'WaterSourceClick',id:'modalWaterSourceTable'},{name:'WorkSchemsClick',id:'modalWorkSchemsTable'}];
 		var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 		var levelNamesArr=[{name:'state',id:'2'},{name:'district',id:'3'},{name:'constituency',id:'4'},{name:'mandal',id:'5'}];
 		getAllFiniancialYears();
@@ -1872,35 +1873,41 @@
 							var CompleteClosedCount=0;var othersCount=0;var totalCount=0;var notifiedCount=0;var proposalCount=0;var actionInProgress=0;	
 							var completeClosed=0;var others=0;
 							var notifiedPerc=0;var proposalPerc=0;var actionPerc=0;var completeClosedPerc=0;var othersPerc=0;
+							
 							if(locationType == "state"){
 								tableView+='<td>Andhra Pradesh</td>';
 							}else{
-								tableView+='<td>'+GLtbodyAlertArr[i].locationName+'</td>';
+								tableView+='<td >'+GLtbodyAlertArr[i].locationName+'</td>';
 							}	
 							
 							for(var j in GLtbodyAlertArr[i].statusList){
 								if(GLtbodyAlertArr[i].statusList[j].id==2){
 									if(GLtbodyAlertArr[i].statusList[j].count !=null && GLtbodyAlertArr[i].statusList[j].count>0){
-										notifiedCount =GLtbodyAlertArr[i].statusList[j].count
+										notifiedCount =GLtbodyAlertArr[i].statusList[j].count;
+										
 									}
 									
 								}else if(GLtbodyAlertArr[i].statusList[j].id==13){
 									if(GLtbodyAlertArr[i].statusList[j].count !=null &&GLtbodyAlertArr[i].statusList[j].count>0){
 										proposalCount =GLtbodyAlertArr[i].statusList[j].count
+										locationValue =GLtbodyAlertArr[i].statusList[j].locationId;
 									}
 								}else if(GLtbodyAlertArr[i].statusList[j].id==3){
 									if(GLtbodyAlertArr[i].statusList[j].count !=null && GLtbodyAlertArr[i].statusList[j].count>0){
-										actionInProgress =GLtbodyAlertArr[i].statusList[j].count
+										actionInProgress =GLtbodyAlertArr[i].statusList[j].count;
+										locationValue =GLtbodyAlertArr[i].statusList[j].locationId;
 									}
 								}else if(GLtbodyAlertArr[i].statusList[j].id==4 ||  GLtbodyAlertArr[i].statusList[j].id == 12){
 									if(GLtbodyAlertArr[i].statusList[j].count !=null && GLtbodyAlertArr[i].statusList[j].count>0){
 										CompleteClosedCount =CompleteClosedCount+GLtbodyAlertArr[i].statusList[j].count;
 										completeClosed =CompleteClosedCount;
+										locationValue =GLtbodyAlertArr[i].statusList[j].locationId;
 									}
 								}else{
 									if(GLtbodyAlertArr[i].statusList[j].count !=null && GLtbodyAlertArr[i].statusList[j].count>0){
 										 othersCount =othersCount+GLtbodyAlertArr[i].statusList[j].count;
-										others =othersCount
+										others =othersCount;
+										locationValue =GLtbodyAlertArr[i].statusList[j].locationId;
 									}
 								}
 							}
@@ -1912,42 +1919,42 @@
 							othersPerc = (others/totalCount*100).toFixed(2);
 							
 							if(notifiedCount >0){
-								tableView+='<td>'+notifiedCount+'</td>'; 
+								tableView+='<td class="alertStatusViewCls" attr_status_id="2" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+notifiedCount+'">'+notifiedCount+'</td>'; 
 								tableView+='<td><small style="color:#0FBE08">'+notifiedPerc+' </small> </td>';
 							}else{
 								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(proposalCount >0){
-								tableView+='<td>'+proposalCount+'</td>'; 
+								tableView+='<td class="alertStatusViewCls" attr_status_id="13" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+proposalCount+'">'+proposalCount+'</td>'; 
 								tableView+='<td><small style="color:#0FBE08">'+proposalPerc+' </small> </td>';
 							}else{
 								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(actionInProgress >0){
-								tableView+='<td>'+actionInProgress+'</td>';
+								tableView+='<td class="alertStatusViewCls" attr_status_id="3" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+actionInProgress+'">'+actionInProgress+'</td>';
 								tableView+='<td><small style="color:#0FBE08">'+actionPerc+' </small></td>';
 							}else{
 								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(CompleteClosedCount >0){
-								tableView+='<td>'+CompleteClosedCount+'</td>';
+								tableView+='<td class="alertStatusViewCls" attr_status_id="4,12" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+CompleteClosedCount+'">'+CompleteClosedCount+'</td>';
 								tableView+='<td><small style="color:#0FBE08">'+completeClosedPerc+'</small> </td>';
 							}else{
 								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(othersCount >0){
-								tableView+='<td>'+othersCount+'</td>'; 
+								tableView+='<td class="alertStatusViewCls" attr_status_id="5,6,7,8,9,10,11,14" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+othersCount+'">'+othersCount+'</td>'; 
 								tableView+='<td><small style="color:#0FBE08">'+othersPerc+' %</small> </td>';
 							}else{
 								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(totalCount >0){
-								tableView+='<td>'+totalCount+'</td>';
+								tableView+='<td class="alertStatusViewCls" attr_status_id="" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+totalCount+'">'+totalCount+'</td>';
 							}else{
 								tableView+='<td> - </td>';
 							}
@@ -2003,7 +2010,7 @@
 							}	
 							if(GLtbodyAlertArr[i].statusList !=null && GLtbodyAlertArr[i].statusList.length>0){
 								for(var j in GLtbodyAlertArr[i].statusList){
-										tableView+='<td>'+GLtbodyAlertArr[i].statusList[j].count+'</td>';
+										tableView+='<td class="ivrStatusViewCls" attr_status_name="'+GLtbodyAlertArr[i].statusList[j].name+'" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+GLtbodyAlertArr[i].statusList[j].count+'">'+GLtbodyAlertArr[i].statusList[j].count+'</td>';
 										if(GLtbodyAlertArr[i].statusList[j].percentage !=null && GLtbodyAlertArr[i].statusList[j].percentage >0){
 											tableView+='<td><small style="color:#0FBE08">'+GLtbodyAlertArr[i].statusList[j].percentage+'</small></td>';
 										}else{
@@ -2031,7 +2038,7 @@
 			
 			
 		}
-		function tableViewHabitationStatus(divId,GLtbodyArr,locationType)
+		function tableViewHabitationStatus(divId,GLtbodyArr,locationType)//aravind
 		{
 				 for(var k in divId){
 					 var $windowWidth = $(window).width();
@@ -2153,7 +2160,7 @@
 										for(var j in GLtbodyArr[i].statusList){
 										if(GLtbodyArr[i].statusList[j].status != 'NC'){
 												if(GLtbodyArr[i].statusList[j].count !=null && GLtbodyArr[i].statusList[j].count>0){
-													tableView+='<td class="hablitationClickView" attr_status="'+GLtbodyArr[i].statusList[j].status+'" attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].goNumber+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].statusList[j].count+'</td>';
+													tableView+='<td class="hablitationClickView" attr_status="'+GLtbodyArr[i].statusList[j].status+'" attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].goNumber+'" attr_total_count = "'+GLtbodyArr[i].statusList[j].count+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].statusList[j].count+'</td>';
 													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].statusList[j].percentage+'</small></td>';
 												}else{
 													tableView+='<td> - </td>';
@@ -2176,12 +2183,12 @@
 										tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
 									}
 									if(GLtbodyArr[i].pcTarget !=null && GLtbodyArr[i].pcTarget >0){
-										tableView+='<td>'+GLtbodyArr[i].pcTarget+'</td>';
+										tableView+='<td class="kpiClickView" attr_status="PC" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].pcTarget+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].pcTarget+'</td>';
 									}else{
 										tableView+='<td> - </td>';
 									}
 									if(GLtbodyArr[i].pcAchivement !=null && GLtbodyArr[i].pcAchivement >0){
-										tableView+='<td>'+GLtbodyArr[i].pcAchivement+'</td>';
+										tableView+='<td class="kpiClickView" attr_status="PC" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].pcAchivement+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].pcAchivement+'</td>';
 									}else{
 										tableView+='<td> - </td>';
 									}
@@ -2196,12 +2203,12 @@
 										tableView+='<td> - </td>';
 									}
 									if(GLtbodyArr[i].qaTarget !=null && GLtbodyArr[i].qaTarget >0){
-										tableView+='<td>'+GLtbodyArr[i].qaTarget+'</td>';
+										tableView+='<td class="kpiClickView" attr_status="NSS" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].qaTarget+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].qaTarget+'</td>';
 									}else{
 										tableView+='<td> - </td>';
 									}
 									if(GLtbodyArr[i].qaAchivement !=null && GLtbodyArr[i].qaAchivement >0){
-										tableView+='<td>'+GLtbodyArr[i].qaAchivement+'</td>';
+										tableView+='<td class="kpiClickView" attr_status="NSS" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].qaAchivement+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].qaAchivement+'</td>';
 									}else{
 										tableView+='<td> - </td>';
 									}
@@ -2227,7 +2234,7 @@
 										if(GLtbodyArr[i].basicList[j].assetType == 'PWS' || GLtbodyArr[i].basicList[j].assetType == "CPWS"){
 												
 												if(GLtbodyArr[i].basicList[j].workOngoingCount !=null && GLtbodyArr[i].basicList[j].workOngoingCount>0){
-													tableView+='<td>'+GLtbodyArr[i].basicList[j].workOngoingCount+'</td>';
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "ongoing" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workOngoingCount+'</td>';
 												}else{
 													tableView+='<td> - </td>';
 												}
@@ -2237,7 +2244,7 @@
 													tableView+='<td> - </td>';
 												}
 												if(GLtbodyArr[i].basicList[j].workNotGroundedCount !=null && GLtbodyArr[i].basicList[j].workNotGroundedCount>0){
-													tableView+='<td>'+GLtbodyArr[i].basicList[j].workNotGroundedCount+'</td>';
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "notgrounded" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workNotGroundedCount+'</td>';
 												}else{
 													tableView+='<td> - </td>';
 												}
@@ -2247,7 +2254,7 @@
 													tableView+='<td> - </td>';
 												}	
 												if(GLtbodyArr[i].basicList[j].workCompletedCount !=null && GLtbodyArr[i].basicList[j].workCompletedCount>0){
-													tableView+='<td>'+GLtbodyArr[i].basicList[j].workCompletedCount+'</td>';
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "completed" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workCompletedCount+'</td>';
 												}else{
 													tableView+='<td> - </td>';
 												}
@@ -2257,12 +2264,12 @@
 													tableView+='<td> - </td>';
 												}	
 												if(GLtbodyArr[i].basicList[j].workComissionedCount !=null && GLtbodyArr[i].basicList[j].workComissionedCount>0){
-													tableView+='<td>'+GLtbodyArr[i].basicList[j].workComissionedCount+'</td>';
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "Commissioned" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workComissionedCount+'</td>';
 												}else{
 													tableView+='<td> - </td>';
 												}
 												if(GLtbodyArr[i].basicList[j].percentageTwo !=null && GLtbodyArr[i].basicList[j].percentageTwo>0){
-													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageTwo.toFixed(1)+'</small></td>';
+													tableView+='<td ><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageTwo.toFixed(1)+'</small></td>';
 												}else{
 													tableView+='<td> - </td>';
 												}	
@@ -2280,7 +2287,7 @@
 									if(GLtbodyArr[i].basicList !=null && GLtbodyArr[i].basicList.length>0){
 										for(var j in GLtbodyArr[i].basicList){
 											if(GLtbodyArr[i].basicList[j].count !=null && GLtbodyArr[i].basicList[j].count>0){
-												tableView+='<td>'+GLtbodyArr[i].basicList[j].count+'</td>';
+												tableView+='<td class="assetsClickView" attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_filter_value="'+GLtbodyArr[i].id+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].count+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].count+'</td>';
 											}else{
 												tableView+='<td> - </td>';
 											}
@@ -2301,27 +2308,27 @@
 										tableView+='<tr>';
 											tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
 											if(GLtbodyArr[i].safeGroundWaterSourceCount !=null && GLtbodyArr[i].safeGroundWaterSourceCount>0){
-												tableView+='<td>'+GLtbodyArr[i].safeGroundWaterSourceCount+'</td>';
+												tableView+='<td class="waterSourceClickView" attr_status="ground" attr_type="safe" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].safeGroundWaterSourceCount+'" attr_district_val="'+GLtbodyArr[i].locationId+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].safeGroundWaterSourceCount+'</td>';
 											}else{
 												tableView+='<td> - </td>';
 											}
 											if(GLtbodyArr[i].unSafeGroundWaterSourceCount !=null && GLtbodyArr[i].unSafeGroundWaterSourceCount>0){
-												tableView+='<td>'+GLtbodyArr[i].unSafeGroundWaterSourceCount+'</td>';
+												tableView+='<td class="waterSourceClickView" attr_status="ground" attr_type="un-safe" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].unSafeGroundWaterSourceCount+'" attr_district_val="'+GLtbodyArr[i].locationId+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].unSafeGroundWaterSourceCount+'</td>';
 											}else{
 												tableView+='<td> - </td>';
 											}
 											if(GLtbodyArr[i].totalGroundWaterSourceCount !=null && GLtbodyArr[i].totalGroundWaterSourceCount>0){
-												tableView+='<td>'+GLtbodyArr[i].totalGroundWaterSourceCount+'</td>';
+												tableView+='<td >'+GLtbodyArr[i].totalGroundWaterSourceCount+'</td>';
 											}else{
 												tableView+='<td> - </td>';
 											}
 											if(GLtbodyArr[i].safeSurfaceWaterSourceCount !=null && GLtbodyArr[i].safeSurfaceWaterSourceCount>0){
-												tableView+='<td>'+GLtbodyArr[i].safeSurfaceWaterSourceCount+'</td>';
+												tableView+='<td class="waterSourceClickView" attr_status="surface" attr_type="safe" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].safeSurfaceWaterSourceCount+'" attr_district_val="'+GLtbodyArr[i].locationId+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].safeSurfaceWaterSourceCount+'</td>';
 											}else{
 												tableView+='<td> - </td>';
 											}
 											if(GLtbodyArr[i].unSafeSurfaceWaterSourceCount !=null && GLtbodyArr[i].unSafeSurfaceWaterSourceCount>0){
-												tableView+='<td>'+GLtbodyArr[i].unSafeSurfaceWaterSourceCount+'</td>';
+												tableView+='<td class="waterSourceClickView" attr_status="surface" attr_type="un-safe" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].unSafeSurfaceWaterSourceCount+'" attr_district_val="'+GLtbodyArr[i].locationId+'"  style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].unSafeSurfaceWaterSourceCount+'</td>';
 											}else{
 												tableView+='<td> - </td>';
 											}
@@ -3025,11 +3032,11 @@
 				}else if(tabId == "constituencyBlockIdjalavani"){
 					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'constituency',"","",searchLevelId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',"","",searchLevelId);
-				}else if(tabId == "#constituencyBlockIdassestsId"){
+				}else if(tabId == "constituencyBlockIdassestsId"){
 					getAssetInfoBetweenDates('table','constituency',blocksArr,"","","");
-				}else if(tabId == "#constituencyBlockIdschemeId"){
+				}else if(tabId == "constituencyBlockIdschemeId"){
 					getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","");
-				}else if(tabId == "#constituencyBlockIdwaterSourceId"){
+				}else if(tabId == "constituencyBlockIdwaterSourceId"){
 					getWaterSourceDeatils2('constituency',blocksArr,"","","")
 				}
 				
@@ -3053,7 +3060,7 @@
 					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
 					getSchemeWiseWorkDetails('table','constituency',blocksArr,"district",distId,"");
 					
-				}else if(tabId == "#constituencyBlockIdwaterSourceId"){
+				}else if(tabId == "constituencyBlockIdwaterSourceId"){
 					getWaterSourceDeatils2('constituency',blocksArr,"district",distId,"")
 				}
 			}
@@ -3111,7 +3118,7 @@
 					getSchemeWiseWorkDetails('table','constituency',blocksArr,"constituency",constId,"");
 				}
 				
-			}else if(tabId == "#constituencyBlockIdwaterSourceId"){
+			}else if(tabId == "constituencyBlockIdwaterSourceId"){
 				if(constId == 0){
 					getWaterSourceDeatils2('constituency',blocksArr,"district",distId,"")
 				}else{
@@ -3149,7 +3156,7 @@
 					getAssetInfoBetweenDates('table','mandal',blocksArr,"","","");
 				}else if(tabIdM == "mandalBlockIdschemeId"){
 					getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","");
-				}else if(tabIdM == "#mandalBlockIdwaterSourceId"){
+				}else if(tabIdM == "mandalBlockIdwaterSourceId"){
 					getWaterSourceDeatils2('mandal',blocksArr,"","","")
 				}
 			}else{
@@ -3170,7 +3177,7 @@
 					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
 					 getSchemeWiseWorkDetails('table','mandal',blocksArr,"district",distId,"");
 					
-				}else if(tabIdM == "#mandalBlockIdwaterSourceId"){
+				}else if(tabIdM == "mandalBlockIdwaterSourceId"){
 					getWaterSourceDeatils2('mandal',blocksArr,"district",distId,"")
 				}
 			}
@@ -3298,7 +3305,7 @@
 					getSchemeWiseWorkDetails('table','mandal',blocksArr,"mandal",mandalId,distId);
 				}
 				
-			}else if(tabIdM == "#mandalBlockIdwaterSourceId"){
+			}else if(tabIdM == "mandalBlockIdwaterSourceId"){
 				if(mandalId == 0){
 					getWaterSourceDeatils2('mandal',blocksArr,"constituency",constId,"")
 				}else{
@@ -3375,268 +3382,8 @@
 		
 	}
 	
-	//onclick calls
-	getOnclickWorkDetails();
-	getOnclickTargetsAcheievementsDetails();
-	getOnclickStressedTargetsAcheievementsDetails();
-	getOnclickHabitationsupplyDetails();
-	getSchemeDetailsByTypeOfAssestName();
-	getAssetDetailsByAssetType();
 	
-	getWaterSourceDeatilsLocationWise();
-	function getOnclickWorkDetails(){
-		var json = {
-			fromDateStr:"01-04-2016",
-			toDateStr:"01-04-2018",
-			workStatus:"completed",
-			assetType:"PWS",
-			filterType:"mandal",
-			filterValue:"25",
-			districtValue:"01"
-		}
-		$.ajax({                
-			type:'POST',    
-			url: 'getOnclickWorkDetails',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(result){
-			
-		});
-	}
 	
-	function getOnclickTargetsAcheievementsDetails(){
-		var json = {
-			fromDateStr:"01-04-2016",
-			toDateStr:"01-04-2018",
-			workStatus:"targets",
-			filterType:"mandal",
-			filterValue:"25",
-			districtValue:"01",
-			assetType:"PC"
-		}
-		$.ajax({                
-			type:'POST',    
-			url: 'getOnclickTargetsAcheievementsDetails',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(result){
-			
-		});
-	}
-	
-	function getOnclickStressedTargetsAcheievementsDetails(){
-		var json = {
-			fromDateStr:"01-01-1997",
-			toDateStr:"01-04-2018",
-			workStatus:"targets",
-			//stressedHabitationYear:"2017"
-		}
-		$.ajax({                
-			type:'POST',    
-			url: 'getOnclickStressedTargetsAcheievementsDetails',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(result){
-			
-		});
-	}
-	
-	function getOnclickHabitationsupplyDetails(){
-		var json = {
-			year:"2017",
-			type:"safe",//or "un-safe"
-			startValue:"1",
-			endValue:"100",
-			filterType:"mandal",
-			filterValue:"25",
-			districtValue:"01"
-		}
-		$.ajax({                
-			type:'POST',    
-			url: 'getOnclickHabitationsupplyDetails',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(result){
-			
-		});
-	}
-	
-	function getSchemeDetailsByTypeOfAssestName(){
-		var assetTypeArr = [];
-		assetTypeArr.push("CPWS");
-		assetTypeArr.push("PWS");
-		var json = {
-			fromDateStr:"01-01-2016",
-			toDateStr:"01-04-2017",
-			assetTypeList:assetTypeArr,
-			startValue:"0",
-			endValue:"10",
-			year:"2017"
-		}
-		$.ajax({                
-			type:'POST',    
-			url: 'getSchemeDetailsByTypeOfAssestName',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(result){
-			
-		});
-	}
-	
-	function getAssetDetailsByAssetType(){
-		var json = {
-			assetType:"OPEN WELLS",
-			fromDateStr:"01-12-1997",
-			toDateStr:"31-12-2027",
-			startValue:"0",
-			endValue:"10",
-			filterType:"constituency",
-			filterValue:"128",
-			year:"2017"
-		}
-		$.ajax({                
-			type:'POST',    
-			url: 'getAssetDetailsByAssetType',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(result){
-			
-		});
-	}
-	
-	function getHabitationDetailsByStatusByLocationType(status,filterValue,filterType,districtVal){
-		
-		$("#modalHablitationTable").html(spinner);
-		var statusArr = [];
-		statusArr.push(status);
-		var yearVal="";
-			var financialVal =$("#financialYearId").val();
-			if(financialVal != 0){
-				 yearVal=financialVal;
-			}
-		var filterVal = '';	
-		var locationType = '';	
-		if(filterType == "state"){
-			filterVal = "";
-			locationType="";
-		}else{
-			filterVal = filterValue < 9?"0"+filterValue:filterValue;
-			locationType = filterType;
-		}	
-		var districtValStr="";	
-		if(filterType == "mandal"){
-			districtValStr = districtVal < 9?"0"+districtVal:districtVal;
-			
-		}		
-		var json = {
-			statusList:statusArr,
-			year:yearVal,
-			startValue:"0",
-			endValue:"50",
-			districtValue:districtValStr,
-			filterType:locationType,
-			filterValue:filterVal
-		}
-		$.ajax({                
-			type:'POST',    
-			url: 'getHabitationDetailsByStatusByLocationType',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(result){
-			if(result !=null && result.length>0){
-				buildHabitationDetailsByStatusByLocationType(result);
-			}else{
-				$("#modalHablitationTable").html('No Data Available');
-			}
-			
-		});
-	}
-	function buildHabitationDetailsByStatusByLocationType(result){
-		
-		var tableView='';
-		tableView+='<table class="table table-bordered" id="dataTableHablitation">';
-			tableView+='<thead>';
-				tableView+='<tr>';
-					tableView+='<th>DISTRICT</th>';
-					tableView+='<th>CONSTITUENCY</th>';
-					tableView+='<th>MANDAL</th>';
-					tableView+='<th>HABITATIONS NAME</th>';
-					tableView+='<th>HABITATIONS CODE</th>';
-				tableView+='</tr>';
-			tableView+='</thead>';
-			tableView+='<tbody>';
-			for(var i in result){
-				tableView+='<tr>';
-					tableView+='<td>'+result[i].districtName+'</td>';
-					tableView+='<td>'+result[i].constituencyName+'</td>';
-					tableView+='<td>'+result[i].mandalName+'</td>';
-					tableView+='<td>'+result[i].habitationName+'</td>';
-					tableView+='<td>'+result[i].habitationCode+'</td>';
-				tableView+='</tr>';
-			}
-			tableView+='</tbody>';
-		tableView+='</table>';
-		$("#modalHablitationTable").html(tableView);
-		$("#dataTableHablitation").dataTable();
-	}
-	$(document).on("click",".hablitationClickView",function(){
-		$("#modalHablitationTable").html('');
-		
-		var status = $(this).attr("attr_status");
-		var filterValue = $(this).attr("attr_filter_value");
-		var filterType=$(this).attr("attr_location_type");
-		var districtVal=$(this).attr("attr_district_val");
-		$("#modalHablitationDivId").modal('show');
-		$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
-		getHabitationDetailsByStatusByLocationType(status,filterValue,filterType,districtVal);
-		
-		
-	});
-	function getWaterSourceDeatilsLocationWise(){
-		var json = {
-			status:"surface"
-		}
-		$.ajax({                
-			type:'POST',    
-			url: 'getWaterSourceDeatilsLocationWise',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(result){
-			
-		});
-	}
 	
 	function getAllPrrwsDistricts(divId){
 	
@@ -3749,46 +3496,384 @@
 				}
 		});
 	}
-	getLocationWiseHamletIvrList();
-	function getLocationWiseHamletIvrList(){
-		var jsObj={
-				fromDateStr:"",
-				toDateStr:"",
-				year:"",
-				locationTypeId:"4",
-				locationValues:[232],
-				status:"green"
+	
+	
+	$(document).on("click",".ivrStatusViewCls",function(){
+		$("#modalHablitationTable").html('');
+		var status = $(this).attr("attr_status_name");
+		var locationType=$(this).attr("attr_location_type");
+		var locationValue=$(this).attr("attr_location_value");
+		var totalCount=$(this).attr("attr_total_count");
+		var startIndex=0;
+		$("#modalHablitationDivId").modal('show');
+		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		
+		getLocationWiseHamletIvrList(status,locationType,locationValue,totalCount);
+	});
+	$(document).on("click",".alertStatusViewCls",function(){
+		$("#modalHablitationTable").html('');
+		var status = $(this).attr("attr_status_id");
+		var locationType=$(this).attr("attr_location_type");
+		var locationValue=$(this).attr("attr_location_value");
+		var totalCount=$(this).attr("attr_total_count");
+		var startIndex=0;
+		$("#modalHablitationDivId").modal('show');
+		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		
+		getAlertsOfCategoryByStatusWise(status,locationType,locationValue,0,startIndex,totalCount);
+	});
+	$(document).on("click",".hablitationClickView",function(){
+		$("#modalHablitationTable").html('');
+		
+		var status = $(this).attr("attr_status");
+		var locationValue = $(this).attr("attr_filter_value");
+		var locationType=$(this).attr("attr_location_type");
+		var districtVal=$(this).attr("attr_district_val");
+		var totalCount=$(this).attr("attr_total_count");
+		$("#modalHablitationDivId").modal('show');
+		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		var startIndex=0;
+		getHabitationDetailsByStatusByLocationType(status,locationType,locationValue,districtVal,startIndex,totalCount);
+		
+		
+	});
+	$(document).on("click",".assetsClickView",function(){
+		$("#modalHablitationTable").html('');
+		
+		var status = $(this).attr("attr_status");
+		var locationValue = $(this).attr("attr_filter_value");
+		var locationType=$(this).attr("attr_location_type");
+		var totalCount=$(this).attr("attr_total_count");
+		$("#modalHablitationDivId").modal('show');
+		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		var startIndex=0;
+		getAssetDetailsByAssetType(status,locationType,locationValue,startIndex,totalCount);
+		
+		
+	});
+	$(document).on("click",".waterSourceClickView",function(){
+		$("#modalHablitationTable").html('');
+		
+		var status = $(this).attr("attr_status");
+		var locationValue = $(this).attr("attr_filter_value");
+		var locationType=$(this).attr("attr_location_type");
+		var totalCount=$(this).attr("attr_total_count");
+		var safeUnsafeType=$(this).attr("attr_type");
+		var districtVal=$(this).attr("attr_district_val");
+		$("#modalHablitationDivId").modal('show');
+		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		var startIndex=0;
+		getWaterSourceDeatilsLocationWise(status,safeUnsafeType,locationType,locationValue,districtVal,startIndex,totalCount);
+		
+		
+	});
+	$(document).on("click",".schemsClickView",function(){
+		$("#modalHablitationTable").html('');
+		
+		var status = $(this).attr("attr_status");
+		var totalCount=$(this).attr("attr_total_count");
+		var workStatus=$(this).attr("attr_type");
+		$("#modalHablitationDivId").modal('show');
+		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		var startIndex=0;
+		getOnclickWorkSchemsDetails(status,workStatus,totalCount);
+		
+		
+	});
+	$(document).on("click",".kpiClickView",function(){
+		$("#modalHablitationTable").html('');
+		
+		var status = $(this).attr("attr_status");
+		var locationValue = $(this).attr("attr_filter_value");
+		var locationType=$(this).attr("attr_location_type");
+		var districtVal=$(this).attr("attr_district_val");
+		var workStatus=$(this).attr("attr_type");
+		var totalCount=$(this).attr("attr_total_count");
+		$("#modalHablitationDivId").modal('show');
+		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		var startIndex=0;
+		getOnclickTargetsAcheievementsDetails(status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount);
+		
+		
+	});
+	
+	//KPI ON CLICK
+	function getOnclickTargetsAcheievementsDetails(status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount){
+		
+		
+		
+		var yearVal="";
+		var financialVal =$("#financialYearId").val();
+		if(financialVal != 0){
+			 yearVal=financialVal;
+		}
+		
+		var filterValue ='';
+		var filterType = '';	
+		if(locationType == "state"){
+			filterValue="";
+			filterType="";
+		}else{
+			filterValue = locationValue < 9?"0"+locationValue:locationValue;
+			filterType = locationType;
+		}
+		var districtValStr="";	
+		if(locationType == "mandal"){
+			districtValStr = districtVal < 9?"0"+districtVal:districtVal;
+			
+		}
+		
+			
+		var json = {
+			year:yearVal,
+			startValue:startIndex,
+			endValue:"10",
+			districtValue:districtValStr,
+			filterType:filterType,
+			filterValue:filterValue,
+			workStatus:workStatus,
+			assetType:status
 		}
 		$.ajax({                
 			type:'POST',    
-			url: 'getLocationHamletIvrStatusList',
+			url: 'getOnclickTargetsAcheievementsDetails',
 			dataType: 'json',
-			data : JSON.stringify(jsObj),
+			data : JSON.stringify(json),
 			beforeSend :   function(xhr){
 				xhr.setRequestHeader("Accept", "application/json");
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
-		}).done(function(ajaxresp){
-		 	console.log(result);
-		});	
+		}).done(function(result){
+			
+			
+		});
+	}
+	//shems ON CLICK
+	function getOnclickWorkSchemsDetails(status,workStatus,totalCount){
+		
+		
+		var yearVal="";
+		var financialVal =$("#financialYearId").val();
+		if(financialVal != 0){
+			 yearVal=financialVal;
+		}
+		
+		
+		
+		var json = {
+				year:yearVal,
+				fromDateStr:glStartDate,
+				toDateStr:glEndDate,
+				workStatus:workStatus,
+				assetType:status
+				}
+		
+		$.ajax({                
+			type:'POST',    
+			url: 'getOnclickWorkDetails',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount);
+		});
+	}
+	//waterSource ON CLICK
+	function getWaterSourceDeatilsLocationWise(status,safeUnsafeType,locationType,locationValue,districtVal,startIndex,totalCount){
+		
+		
+		var yearVal="";
+		var financialVal =$("#financialYearId").val();
+		if(financialVal != 0){
+			 yearVal=financialVal;
+		}
+		
+		var filterValue ='';
+		var filterType = '';	
+		if(locationType == "state"){
+			filterValue="";
+			filterType="";
+		}else{
+			filterValue = locationValue < 9?"0"+locationValue:locationValue;
+			filterType = locationType;
+		}
+		var districtValStr="";	
+		if(locationType == "mandal"){
+			districtValStr = districtVal < 9?"0"+districtVal:districtVal;
+			
+		}
+		
+		var json = {
+				year:yearVal,
+				startValue:startIndex,
+				endValue:"10",
+				filterType:filterType,
+				filterValue:filterValue,
+				districtValue:districtValStr,
+				type:safeUnsafeType,
+				status:status
+				}
+		
+		$.ajax({                
+			type:'POST',    
+			url: 'getWaterSourceDeatilsLocationWise',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			buildWaterSourceDeatilsLocationWise(result,status,safeUnsafeType,locationType,locationValue,districtVal,startIndex,totalCount);
+		});
 	}
 	
-	function getAlertsOfCategoryByStatusWise(){
-		var statusIds=[];
+	//Assets ON CLICK
+	function getAssetDetailsByAssetType(status,locationType,locationValue,startIndex,totalCount){
+		var yearVal="";
+			var financialVal =$("#financialYearId").val();
+			if(financialVal != 0){
+				 yearVal=financialVal;
+			}
+			var filterValue ='';
+			var filterType = '';	
+			if(locationType == "state"){
+				filterValue="";
+				filterType="";
+			}else{
+				filterValue = locationValue < 9?"0"+locationValue:locationValue;
+				filterType = locationType;
+			}
+			
 		var json = {
+			assetType:status,
+			fromDateStr:glStartDate,
+			toDateStr:glEndDate,
+			startValue:startIndex,
+			endValue:"10",
+			filterType:filterType,
+			filterValue:filterValue,
+			year:yearVal
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAssetDetailsByAssetType',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			buildAssetDetailsByAssetType(result,status,locationType,locationValue,startIndex,totalCount);
+		});
+	}
+	
+	//IVRSATATUSCLICK
+	function getLocationWiseHamletIvrList(status,locationType,locationValue,totalCount){
+		
+		var yearVal="";
+			var financialVal =$("#financialYearId").val();
+			if(financialVal != 0){
+				 yearVal=financialVal;
+			}
+		var locationValues=[];	
+		if(locationType=="state"){
+			locationTypeId=2;
+			locationValues.push(1);
+		}else if(locationType=="district"){
+			locationTypeId=3;
+			locationValues=[];
+		}else if(locationType=="constituency"){
+			locationTypeId=4;
+			if(locationValue == 0){
+				locationValues=[];
+			}else{
+				locationValues.push(locationValue)
+			}
+			
+		}else if(locationType=="mandal"){
+			locationTypeId=5;
+			if(locationValue == 0){
+				locationValues=[];
+			}else{
+				locationValues.push(locationValue)
+			}
+		}	
+		var jsObj={
+				fromDateStr:glStartDate,
+				toDateStr:glEndDate,
+				year:yearVal,
+				locationTypeId:locationTypeId,
+				locationValues:locationValues,
+				status:status
+		}
+		 $.ajax({
+	      type : "POST",
+	      url : "getLocationHamletIvrStatusList",
+	      dataType : 'json',
+	      data : {task :JSON.stringify(jsObj)}
+	    }).done(function(result){
+			if(result !=null && result.length>0){
+				buildLocationWiseHamletIvrList(status,locationType,locationValue,totalCount);
+			}else{
+				$(".paginationId").html("");
+				$("#modalIvrStatusTable").html('No Data Available');
+			}	
+	    	
+		});	
+	}
+	//alerts Status onclick
+	function getAlertsOfCategoryByStatusWise(status,locationType,locationValue,districtVal,startIndex,totalCount){
+	
+		var yearVal="";
+			var financialVal =$("#financialYearId").val();
+			if(financialVal != 0){
+				 yearVal=financialVal;
+			}
+		var locationTypeId=''; 
+		var locationValues=[];
+		var statusIds=[];
+			statusIds.push(status)
+		if(locationType=="state"){
+			locationTypeId=2;
+			locationValues.push(1);
+		}else if(locationType=="district"){
+			locationTypeId=3;
+			locationValues=[];
+		}else if(locationType=="constituency"){
+			locationTypeId=4;
+			if(locationValue == 0){
+				locationValues=[];
+			}else{
+				locationValues.push(locationValue)
+			}
+			
+		}else if(locationType=="mandal"){
+			locationTypeId=5;
+			if(locationValue == 0){
+				locationValues=[];
+			}else{
+				locationValues.push(locationValue)
+			}
+		}	
+		var json = {
+			
 		  deptId:49,
 		  fromDate:glStartDate,
 		  toDate:glEndDate,
 		  year:yearVal,
 		  locationTypeId:locationTypeId,
 		  locationValues:locationValues,
-		  statusIds : [],
+		  statusIds : statusIds,
 		  startIndex:startIndex,
-		  endIndex:endIndex
-		 
+		  endIndex:10		 
 		}
 		$.ajax({
-			url: 'getLocationWiseAlertStatusCounts',
+			url: 'getAlertsOfCategoryByStatusWise',
 			data: JSON.stringify(json),
 			type: "POST",
 			dataType: 'json', 
@@ -3797,11 +3882,256 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success: function(ajaxresp){
-				
+				if(ajaxresp !=null && ajaxresp.length>0){
+					buildHabitationDetailsByStatusByLocationType(ajaxresp,'alert_click',status,locationType,locationValue,districtVal,startIndex,totalCount);
+				}else{
+					$(".paginationId").html("");
+					$("#modalAlertTable").html('No Data Available');
+				}
 				
 			}
 		});
 	}
-	
-	
+
+	//habilationOneTAb
+	function getHabitationDetailsByStatusByLocationType(status,locationType,locationValue,districtVal,startIndex,totalCount){
+		
+		$("#modalHablitationTable").html(spinner);
+		var statusArr = [];
+		statusArr.push(status);
+			var yearVal="";
+			var financialVal =$("#financialYearId").val();
+			if(financialVal != 0){
+				 yearVal=financialVal;
+			}
+		
+		var filterValue ='';
+		var filterType = '';	
+		if(locationType == "state"){
+			filterValue="";
+			filterType="";
+		}else{
+			filterValue = locationValue < 9?"0"+locationValue:locationValue;
+			filterType = locationType;
+		}
+		var districtValStr="";	
+		if(locationType == "mandal"){
+			districtValStr = districtVal < 9?"0"+districtVal:districtVal;
+			
+		}
+		
+			
+		var json = {
+			statusList:statusArr,
+			year:yearVal,
+			startValue:startIndex,
+			endValue:"10",
+			districtValue:districtValStr,
+			filterType:filterType,
+			filterValue:filterValue
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getHabitationDetailsByStatusByLocationType',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				buildHabitationDetailsByStatusByLocationType1(result,'habitation_Click',status,locationType,locationValue,districtVal,startIndex,totalCount);
+			}else{
+				$(".paginationId").html("");
+				$("#modalHablitationTable").html('No Data Available');
+			}
+			
+		});
+	}
+	//AlertStatusbuild
+	function buildHabitationDetailsByStatusByLocationType(result,type,status,locationType,locationValue,districtVal,startIndex,totalCount){
+		var tableView='';
+		tableView+='<table class="table table-bordered" id="dataTableHablitation">';
+			tableView+='<thead>';
+			tableView+='<tr>';
+				tableView+='<th>TITLE</th>';
+				tableView+='<th>SOURCE</th>';
+				tableView+='<th>IMPACTLEVEL</th>';
+				tableView+='<th>STATUS</th>';
+				tableView+='<th>CREATED DATE</th>';
+			tableView+='</tr>';
+				
+			tableView+='</thead>';
+			tableView+='<tbody>';
+			for(var i in result){
+				tableView+='<tr>';
+						tableView+='<td>'+result[i].title+'</td>';
+						tableView+='<td>'+result[i].source+'</td>';
+						tableView+='<td>'+result[i].alertLevel+'</td>';
+						tableView+='<td>'+result[i].status+'</td>';
+							tableView+='<td>'+result[i].createdDate+'</td>';
+				tableView+='</tr>';
+			}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#modalAlertTable").html(tableView);
+		
+			if(startIndex == 0 && totalCount > 0){
+				$(".paginationId").pagination({
+					items: totalCount,
+					itemsOnPage: 10,
+					cssStyle: 'light-theme',
+					hrefTextPrefix: '#pages-',
+					onPageClick: function(pageNumber) { 
+						var num=(pageNumber-1)*10;
+						getAlertsOfCategoryByStatusWise(status,locationType,locationValue,districtVal,num,totalCount);
+					}
+					
+				});
+			}
+		$(".prev,.next").css("width","70px !important");	
+	} 
+	//habilationOneTAbbuild
+	function buildHabitationDetailsByStatusByLocationType1(result,type,status,locationType,locationValue,districtVal,startIndex,totalCount){
+		var tableView='';
+		tableView+='<table class="table table-bordered" id="dataTableHablitation">';
+			tableView+='<thead>';
+			tableView+='<tr>';
+					tableView+='<th>DISTRICT</th>';
+					tableView+='<th>CONSTITUENCY</th>';
+					tableView+='<th>MANDAL</th>';
+					tableView+='<th>HABITATIONS NAME</th>';
+					tableView+='<th>HABITATIONS CODE</th>';
+				tableView+='</tr>';
+				
+			tableView+='</thead>';
+			tableView+='<tbody>';
+			for(var i in result){
+				tableView+='<tr>';
+						tableView+='<td>'+result[i].districtName+'</td>';
+						tableView+='<td>'+result[i].constituencyName+'</td>';
+						tableView+='<td>'+result[i].mandalName+'</td>';
+						tableView+='<td>'+result[i].habitationName+'</td>';
+						tableView+='<td>'+result[i].habitationCode+'</td>';
+					tableView+='</tr>';
+			}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#modalHablitationTable").html(tableView);
+		
+		if(startIndex == 0 && totalCount > 0){
+				$(".paginationId").pagination({
+					items: totalCount,
+					itemsOnPage: 10,
+					cssStyle: 'light-theme',
+					hrefTextPrefix: '#pages-',
+					onPageClick: function(pageNumber) { 
+						var num=(pageNumber-1)*10;
+						getHabitationDetailsByStatusByLocationType(status,locationType,locationValue,districtVal,num,totalCount);
+							
+					}
+					
+				});
+			}
+		$(".prev,.next").css("width","70px !important");	
+	} 
+	//Asssets build
+	function buildAssetDetailsByAssetType(result,status,locationType,locationValue,startIndex,totalCount){
+		var tableView='';
+		tableView+='<table class="table table-bordered">';
+			tableView+='<thead>';
+			tableView+='<tr>';
+					tableView+='<th>DISTRICT</th>';
+					tableView+='<th>CONSTITUENCY</th>';
+					tableView+='<th>MANDAL</th>';
+					tableView+='<th>HABITATIONS NAME</th>';
+					tableView+='<th>HABITATIONS CODE</th>';
+					tableView+='<th>ASSEST NAME</th>';
+					tableView+='<th>ASSEST CODE</th>';
+					tableView+='<th>ASSEST COST</th>';
+				tableView+='</tr>';
+				
+			tableView+='</thead>';
+			tableView+='<tbody>';
+			for(var i in result){
+				tableView+='<tr>';
+						tableView+='<td>'+result[i].districtName+'</td>';
+						tableView+='<td>'+result[i].constituencyName+'</td>';
+						tableView+='<td>'+result[i].mandalName+'</td>';
+						tableView+='<td>'+result[i].habitationName+'</td>';
+						tableView+='<td>'+result[i].habitationCode+'</td>';
+						tableView+='<td>'+result[i].assestName+'</td>';
+						tableView+='<td>'+result[i].assestCode+'</td>';
+						tableView+='<td>'+result[i].assestCost+'</td>';
+					tableView+='</tr>';
+			}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#modalAssetsTable").html(tableView);
+		
+		if(startIndex == 0 && totalCount > 0){
+				$(".paginationId").pagination({
+					items: totalCount,
+					itemsOnPage: 10,
+					cssStyle: 'light-theme',
+					hrefTextPrefix: '#pages-',
+					onPageClick: function(pageNumber) { 
+						var num=(pageNumber-1)*10;
+						getAssetDetailsByAssetType(status,locationType,locationValue,num,totalCount);
+					}
+					
+				});
+			}
+		$(".prev,.next").css("width","70px !important");	
+	}
+	//waterSorce Build
+	function buildWaterSourceDeatilsLocationWise(result,status,safeUnsafeType,locationType,locationValue,districtVal,startIndex,totalCount){
+		var tableView='';
+		tableView+='<table class="table table-bordered">';
+			tableView+='<thead>';
+			tableView+='<tr>';
+					tableView+='<th>DISTRICT</th>';
+					tableView+='<th>CONSTITUENCY</th>';
+					tableView+='<th>MANDAL</th>';
+					
+				tableView+='</tr>';
+				
+			tableView+='</thead>';
+			tableView+='<tbody>';
+			for(var i in result){
+				tableView+='<tr>';
+						tableView+='<td>'+result[i].districtName+'</td>';
+						tableView+='<td>'+result[i].constituencyName+'</td>';
+						tableView+='<td>'+result[i].mandalName+'</td>';
+						
+					tableView+='</tr>';
+			}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#modalWaterSourceTable").html(tableView);
+		
+		if(startIndex == 0 && totalCount > 0){
+				$(".paginationId").pagination({
+					items: totalCount,
+					itemsOnPage: 10,
+					cssStyle: 'light-theme',
+					hrefTextPrefix: '#pages-',
+					onPageClick: function(pageNumber) { 
+						var num=(pageNumber-1)*10;
+						getAssetDetailsByAssetType(status,locationType,locationValue,num,totalCount);
+					}
+					
+				});
+			}
+		$(".prev,.next").css("width","70px !important");	
+	}
+	//schems build
+	function buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount){
+		
+	}
+	//ivr buld
+	function buildLocationWiseHamletIvrList(status,locationType,locationValue,totalCount){
+		
+	}
 	
