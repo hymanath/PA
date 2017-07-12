@@ -60,56 +60,64 @@ public class RwsMinWorksAdminViewDAO extends GenericDaoHibernate<RwsMinWorksAdmi
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getSchemeWiseWorkDetails(InputVO inputVO,String workType) {
+	public List<Object[]> getSchemeWiseWorkDetails(InputVO inputVO, String workType) {
 
-		    StringBuilder queryStr= new StringBuilder();
-		    queryStr.append("select model.typeOfAssestName, count(distinct model.workId)");
-		    if(inputVO.getLocationType().equalsIgnoreCase("state")){
-				 queryStr.append(" ,'01','Andra Pradesh'");
-			} else if(inputVO.getLocationType().equalsIgnoreCase("district")){
-				   queryStr.append(" ,model3.dCode,model3.dName");
-			   }else if (inputVO.getLocationType().equalsIgnoreCase("constituency")) {
-				   queryStr.append(" ,model4.constituencyCode,model4.contituencyName");
-			   }else if (inputVO.getLocationType().equalsIgnoreCase("mandal")) {
-				   queryStr.append(" ,model3.mCode,model3.mName,model3.dCode,model3.dName ");
-			   }
-		    queryStr.append(" from " +
-		    		" RwsMinWorksAdminView model, RwsMinWorksAdminHabsView model2, RwsMinHabView model3, RwsMinConstituencyView model4 " +
-					" where  model.workId=model2.workId and  model2.habCode=model3.panchCode and " +
-		            " model3.mCode=model4.mCode and model3.dCode=model4.dCode and model.workId not in (select distinct model1.workId from RwsMinWorkscompView model1) ");
-		    
-		    if(workType.equalsIgnoreCase(IConstants.WORK_GROUNDED) && inputVO.getFromDate() != null && inputVO.getToDate()!=null){
-		      queryStr.append(" and model.groundingDate is not null and  model.groundingDate between :fromDate and :todate");
-		    }else if(workType.equalsIgnoreCase(IConstants.WORK_NOTGROUNDED) && inputVO.getFromDate() != null && inputVO.getToDate()!=null){
-		      queryStr.append(" and model.groundingDate is null ");
-		    }
-		    if (inputVO.getFilterType() != null && inputVO.getFilterType().trim().length() > 0 && inputVO.getFilterValue() != null
-				&& inputVO.getFilterValue().trim().length() > 0) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.typeOfAssestName, count(distinct model.workId)");
+		if (inputVO.getLocationType().equalsIgnoreCase("state")) {
+			queryStr.append(" ,'01','Andra Pradesh'");
+		} else if (inputVO.getLocationType().equalsIgnoreCase("district")) {
+			queryStr.append(" ,model3.dCode,model3.dName");
+		} else if (inputVO.getLocationType().equalsIgnoreCase("constituency")) {
+			queryStr.append(" ,model4.constituencyCode,model4.contituencyName");
+		} else if (inputVO.getLocationType().equalsIgnoreCase("mandal")) {
+			queryStr.append(" ,model3.mCode,model3.mName,model3.dCode,model3.dName ");
+		}
+		queryStr.append(" from "
+				+ " RwsMinWorksAdminView model, RwsMinWorksAdminHabsView model2, RwsMinHabView model3, RwsMinConstituencyView model4 "
+				+ " where  model.workId=model2.workId and  model2.habCode=model3.panchCode and "
+				+ " model3.mCode=model4.mCode and model3.dCode=model4.dCode and model.workId not in (select distinct model1.workId from RwsMinWorkscompView model1) ");
+
+		if (workType.equalsIgnoreCase(IConstants.WORK_GROUNDED) && inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+			queryStr.append(" and model.groundingDate is not null and  model.groundingDate between :fromDate and :todate");
+		} else if (workType.equalsIgnoreCase(IConstants.WORK_NOTGROUNDED) && inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+			queryStr.append(" and model.groundingDate is null ");
+		}
+		if (inputVO.getFilterType() != null && inputVO.getFilterType().trim().length() > 0
+				&& inputVO.getFilterValue() != null && inputVO.getFilterValue().trim().length() > 0) {
 			if (inputVO.getFilterType().equalsIgnoreCase("district")) {
 				queryStr.append(" and trim(model4.dCode) =:locationValue ");
 			} else if (inputVO.getFilterType().equalsIgnoreCase("constituency")) {
 				queryStr.append(" and trim(model4.constituencyCode) =:locationValue ");
+			} else if (inputVO.getFilterType().equalsIgnoreCase("mandal")) {
+				queryStr.append(" and trim(model4.mCode) =:locationValue ");
 			}
 		}
-		    
-		    queryStr.append(" group by model.typeOfAssestName ");
-		    
-		    if(inputVO.getLocationType()!= null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
-				   queryStr.append(" ,model3.dCode,model3.dName");
-			   }else if (inputVO.getLocationType()!= null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")) {
-				   queryStr.append(" ,model4.constituencyCode,model4.contituencyName");
-			   }else if (inputVO.getLocationType()!= null &&  inputVO.getLocationType().trim().equalsIgnoreCase("mandal")) {
-				   queryStr.append(" ,model3.mCode,model3.mName,model3.dCode,model3.dName order by model3.dCode,model3.mCode");
-			   }
-		    Query query = getSession().createQuery(queryStr.toString());
-		    
-		    if(workType.equalsIgnoreCase(IConstants.WORK_GROUNDED) && inputVO.getFromDate() != null && inputVO.getToDate()!=null){
-		      query.setDate("fromDate", inputVO.getFromDate());
-		      query.setDate("todate", inputVO.getToDate());
-		    }
-		    if (inputVO.getFilterValue() != null && inputVO.getFilterValue().trim().length() > 0) {
-				query.setParameter("locationValue", inputVO.getFilterValue().trim());
-			}
+
+		if(inputVO.getDistrictValue()!=null && inputVO.getDistrictValue().trim().length()>0 && inputVO.getFilterType().equalsIgnoreCase("mandal")){
+			queryStr.append(" and trim(model4.dCode) =:districtValue ");
+		}
+		queryStr.append(" group by model.typeOfAssestName ");
+
+		if (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")) {
+			queryStr.append(" ,model3.dCode,model3.dName");
+		} else if (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")) {
+			queryStr.append(" ,model4.constituencyCode,model4.contituencyName");
+		} else if (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("mandal")) {
+			queryStr.append(" ,model3.mCode,model3.mName,model3.dCode,model3.dName order by model3.dCode,model3.mCode");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+
+		if (workType.equalsIgnoreCase(IConstants.WORK_GROUNDED) && inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+			query.setDate("fromDate", inputVO.getFromDate());
+			query.setDate("todate", inputVO.getToDate());
+		}
+		if (inputVO.getFilterValue() != null && inputVO.getFilterValue().trim().length() > 0) {
+			query.setParameter("locationValue", inputVO.getFilterValue().trim());
+		}
+		if(inputVO.getDistrictValue()!=null && inputVO.getDistrictValue().trim().length()>0 && inputVO.getFilterType().equalsIgnoreCase("mandal")){
+			query.setParameter("districtValue",inputVO.getDistrictValue());
+		}
 		return query.list();
 
 	}
@@ -346,6 +354,12 @@ public class RwsMinWorksAdminViewDAO extends GenericDaoHibernate<RwsMinWorksAdmi
 		}
 		if (inputVO.getAssetType() != null && inputVO.getAssetType().trim().length() > 0) {
 			query.setParameter("statusType", inputVO.getAssetType() + "%");
+		}
+		if (inputVO.getStartValue() != null && inputVO.getStartValue()!=0){
+			query.setFirstResult(inputVO.getStartValue());
+		}
+		if (inputVO.getEndValue() != null && inputVO.getEndValue()!=0){
+			query.setMaxResults(inputVO.getEndValue());
 		}
 		return query.list();
 	

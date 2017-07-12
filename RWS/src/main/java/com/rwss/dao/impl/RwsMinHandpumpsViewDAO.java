@@ -273,7 +273,8 @@ public class RwsMinHandpumpsViewDAO extends GenericDaoHibernate<RwsMinHandpumpsV
 				sbe.append(" and trim(model4.mCode) =:locationValue ");
 			}
 		}
-		if (inputVo.getDistrictValue() != null && inputVo.getDistrictValue().trim().length() > 0) {
+		if (inputVo.getDistrictValue() != null && inputVo.getDistrictValue().trim().length() > 0 
+				&& inputVo.getFilterType().equalsIgnoreCase("mandal")) {
 			sbe.append(" and model3.dCode =:districtvalue");
 		}
 		
@@ -294,7 +295,8 @@ public class RwsMinHandpumpsViewDAO extends GenericDaoHibernate<RwsMinHandpumpsV
 		if (inputVo.getFilterValue() != null && inputVo.getFilterValue().trim().length() > 0) {
 			query.setParameter("locationValue", inputVo.getFilterValue().trim());
 		}
-		if (inputVo.getDistrictValue() != null && inputVo.getDistrictValue().trim().length() > 0) {
+		if (inputVo.getDistrictValue() != null && inputVo.getDistrictValue().trim().length() > 0
+				&& inputVo.getFilterType().equalsIgnoreCase("mandal")) {
 			query.setParameter("districtvalue", inputVo.getDistrictValue().trim());
 		}
 		return query.list();
