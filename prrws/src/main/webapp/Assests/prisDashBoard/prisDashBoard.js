@@ -210,12 +210,15 @@ function buildLevelWiseDetailsBlock(){
 						}else{
 							collapse+='<div id="collapse'+blockNameArr[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+blockNameArr[i].id+'">';
 						}
-						
 							collapse+='<div class="panel-body">';
 								collapse+='<div class="col-sm-3">';
 									collapse+='<ul class="nav navbar-nav tableMenu" table-menu="'+blockNameArr[i].name+'">';
 										collapse+='<li class="active" id="showDistrictData" attr_type="districts">Districts</li>';
-										collapse+='<li id="showParliamentData" attr_type="parliament">Parliament</li>';
+										if(blockNameArr[i].id == 4){
+											collapse+='<li id="showParliamentData" attr_type="parliament">Parliament</li>';
+										}else if(blockNameArr[i].id == 5){
+											collapse+='<li id="showParliamentData" attr_type="parliament">Parliament</li>';
+										}
 									collapse+='</ul>';
 								collapse+='</div>';
 								if(blockNameArr[i].id == 4){
@@ -392,7 +395,6 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}
 		selectBox+='</select>';
 		$("#"+id).html(selectBox);
-		console.log(selectBox)
 		$("#"+id+"chosen").chosen();
 	}
 	function POSTMandalOverview(blockId,blockName,subBlockName,viewType,locId){
@@ -410,7 +412,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			filterId: filterId,
 			filterType:'districts',
 			subFilterId: locId ,
-			subFilterType: 'constituency'//assembly
+			subFilterType: 'parliament'//assembly
 		}
 		$.ajax({                
 			type:'POST',    
