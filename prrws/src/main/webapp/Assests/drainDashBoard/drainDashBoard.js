@@ -1,10 +1,12 @@
 onloadCalls();
 function onloadCalls(){
-	getDrainsInfobyLocation();
-	getDrainsInfo();
+	getDrainsInfoStateWise();
+	getDrainsInfoLocationWise("district");
+	getDrainsInfoLocationWise("constituency");
+	getDrainsInfoLocationWise("mandal");
 }
 
-function getDrainsInfobyLocation(){
+function getDrainsInfoStateWise(){
 	var json = {
 			fromDate : "01-04-2017",
 			toDate : "30-06-2017",
@@ -13,7 +15,7 @@ function getDrainsInfobyLocation(){
 		}
 		$.ajax({                
 			type:'POST',    
-			url: 'getDrainsInfobyLocation',
+			url: 'getDrainsInfoStateWise',
 			dataType: 'json',
 			data : JSON.stringify(json),
 			beforeSend :   function(xhr){
@@ -85,22 +87,110 @@ function getDrainsInfobyLocation(){
 		});
 }
 
-function getDrainsInfo(){
+function getDrainsInfoLocationWise(locationType){
+	var json = {
+		fromDate:"01-06-2017",
+		toDate:"30-06-2017",
+		locationId:0,
+		locationType:locationType
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getDrainsInfoLocationWise',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		buildingTable(result,locationType);
+	});
+}
 
-		var json = {
-			fromDate:"01-06-2017",
-			toDate:"30-06-2017",
-			locationId:0,
-			locationType:"district"
+function buildingTable(result,locationType){
+	var str='';
+	str+='<div class="table-responsive">';
+	str+='<table class="table" id="datatable'+locationType+'">';
+        str+='<thead>';
+            str+='<tr>';
+				if(locationType == "district")
+					str+='<th style="background-color:#ccc;">DISTRICTS</th>';
+				else if(locationType == "constituency")
+					str+='<th style="background-color:#ccc;">CONSTITUENCIES</th>';
+				else if(locationType == "mandal")
+					str+='<th style="background-color:#ccc;">MANDALS</th>';
+                str+='<th style="background-color:#ccc;" colspan="5">TOTAL</th>';
+                str+='<th style="background-color:#ccc;" colspan="5">KACCHA</th>';
+                str+='<th style="background-color:#ccc;" colspan="5">PAKKA</th>';
+                str+='<th style="background-color:#ccc;" colspan="5">UNDERGROUND</th>';
+            str+='</tr>';
+            str+='<tr>';
+                str+='<th></th>';
+                str+='<th>Avi</th>';
+				str+='<th>km</th>';
+				str+='<th>Cle</th>';
+				str+='<th>km</th>';
+                str+='<th>%</th>';
+                str+='<th>Avi</th>';
+				str+='<th>km</th>';
+                str+='<th>Cle</th>';
+				str+='<th>km</th>';
+                str+='<th>%</th>';
+				str+='<th>Avi</th>';
+				str+='<th>km</th>';
+                str+='<th>Cle</th>';
+				str+='<th>km</th>';
+                str+='<th>%</th>';
+				str+='<th>Avi</th>';
+				str+='<th>km</th>';
+                str+='<th>Cle</th>';
+				str+='<th>km</th>';
+                str+='<th>%</th>';
+            str+='</tr>';
+        str+='</thead>';
+		str+='<tbody>';
+			if(result != null && result.length > 0){
+				for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].name;
+						//<p><span>174</span>/<span>1003</span></p>
+						str+='</td>';
+						str+='<td>'+result[i].totalAvailable+'</td>';
+						str+='<td>'+result[i].totalAvailableKms+'</td>';
+						str+='<td>'+result[i].totalCleaned+'</td>';
+						str+='<td>'+result[i].totalCleanedKms+'</td>';
+						str+='<td>'+result[i].percentage+'</td>';
+						str+='<td>'+result[i].kachaAvailable+'</td>';
+						str+='<td>'+result[i].kachaAvailableKms+'</td>';
+						str+='<td>'+result[i].kachaCleaned+'</td>';
+						str+='<td>'+result[i].kachaCleanedKM+'</td>';
+						str+='<td>'+result[i].kachaPercentage+'</td>';
+						str+='<td>'+result[i].pakkaAvailable+'</td>';
+						str+='<td>'+result[i].pakkaAvailableKms+'</td>';
+						str+='<td>'+result[i].pakkaCleaned+'</td>';
+						str+='<td>'+result[i].pakkaCleanedKM+'</td>';
+						str+='<td>'+result[i].pakkaPercentage+'</td>';
+						str+='<td>'+result[i].ugAvailable+'</td>';
+						str+='<td>'+result[i].ugAvailableKms+'</td>';
+						str+='<td>'+result[i].ugCleaned+'</td>';
+						str+='<td>'+result[i].ugCleanedKms+'</td>';
+						str+='<td>'+result[i].ugPercentage+'</td>';
+					str+='</tr>';
+				}
+			}else{
+				str+='No Data Available.';
 			}
-		$.ajax({                
-			type:'POST',    
-			url: 'getDrainsInfobyLocationNew',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		});
+        str+='</tbody>';
+    str+='</table>';
+    str+='</div>';
+	
+	if(locationType == "district")
+		$("#districtTableDivId").html(str);
+	else if(locationType == "constituency")
+		$("#constituencyTableDivId").html(str);
+	else if(locationType == "mandal")
+		$("#mandalTableDivId").html(str);
+	
+	$("#datatable"+locationType).dataTable();	
 }

@@ -221,7 +221,8 @@
 							</ul>
 						</div>
 					</div>
-                    <table class="table" id="datatableDemo">
+					<div id="districtTableDivId"></div>
+                    <!--<table class="table" id="datatableDemo">
                         <thead>
                             <tr>
                                 <th style="background-color:#ccc;">DISTRICTS</th>
@@ -282,15 +283,16 @@
 								<td>0%</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table>-->
                     </div>
                     </div>
                     <div class="panel panel-black panel-default">
                         <div class="panel-heading">
-                            <h4 class="panel-title text-capital">DIVISION LEVEL OVERVIEW</h4>
+                            <h4 class="panel-title text-capital">CONSTITUENCY LEVEL OVERVIEW</h4>
                         </div>
                     <div class="panel-body">
-                    <table class="table" id="datatableDemoOne">
+					<div id="constituencyTableDivId"></div>
+                    <!--<table class="table" id="datatableDemoOne">
                         <div class="row">
                             <div class="col-sm-12">
                                  <div id="selectDistrict" class="col-sm-3"></div>
@@ -357,7 +359,7 @@
 								<td>0%</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table>-->
                     </div>
                     </div>
                     <div class="panel panel-black panel-default">
@@ -365,7 +367,8 @@
                             <h4 class="panel-title text-capital">MANDAL LEVEL OVERVIEW</h4>
                         </div>
                     <div class="panel-body">
-                    <table class="table" id="datatableDemoTwo">
+					<div id="mandalTableDivId"></div>
+                    <!--<table class="table" id="datatableDemoTwo">
                        <div class="row">
                             <div class="col-sm-12">
                                  <div id="selectMandal" class="col-sm-3"></div>
@@ -433,7 +436,7 @@
                                 
                             </tr>
                         </tbody>
-                    </table>
+                    </table>-->
                     </div>
                     </div>
                 </div>
