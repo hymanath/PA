@@ -987,9 +987,9 @@ public class CommonMethodsUtilService {
 		    	 tempAmount = amountStr.substring(0, amountStr.length()-7);
 		    	 //decimal point is required
 		    	 int len = amountStr.length()-7;
-		    	 decAmount = amountStr.substring(len,len+2);
+		    	 decAmount = amountStr.substring(len,len+3);
 		      }else{
-		    	  return "0."+String.valueOf(number/1000000);
+		    	  return String.valueOf(number/10000000.0);
 		      }
 		      amountStr = tempAmount;
 		      lenght = tempAmount.trim().length();

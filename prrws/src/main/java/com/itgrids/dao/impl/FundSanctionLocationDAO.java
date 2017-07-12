@@ -24,6 +24,7 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 		super(FundSanctionLocation.class);
 
 	}
+	//click
 	public List<Object[]> getLocationWiseFundSanctionDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
 			Date sDate,Date eDate,Long locationScopeId,List<Long> searchLvlVals,List<Long> schmeIdsList ){
 		StringBuilder sb = new StringBuilder();
@@ -32,7 +33,7 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 				+ " d.districtId, "//1
 				+ " d.districtName ,"//2
 				+ " dep.departmentName, "//3
-				+ " gs.schemeName, "//4
+				+ " modal.fundSanction.subProgram.programName, "//4
 				+ " modal.fundSanction.goNoDate, "//5
 				+ " sum(modal.fundSanction.sactionAmount), "//6
 				+ " modal.locationValue, "//7
@@ -78,7 +79,7 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 			sb.append(" and (date(modal.fundSanction.insertedTime) between  :sDate and :eDate) " );
 		}
 		if(schmeIdsList != null && schmeIdsList.size()>0)
-			sb.append(" and modal.fundSanction.subProgramId in (:schmeIdsList) ");
+			sb.append(" and modal.fundSanction.subProgram.subProgramId in (:schmeIdsList) ");
 		
 		sb.append(" group by modal.fundSanction.fundSactionId ");
 		
