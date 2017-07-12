@@ -36,7 +36,8 @@ public class RwsClickVO implements Serializable{
 	private String assestName;
 	private String assestCost;
 	
-	
+	private String commssionedDate;
+	private String targetDate;
 	
 	
 	public Long getPanchayatId() {
@@ -209,6 +210,18 @@ public class RwsClickVO implements Serializable{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getCommssionedDate() {
+		return commssionedDate;
+	}
+	public void setCommssionedDate(String commssionedDate) {
+		this.commssionedDate = commssionedDate;
+	}
+	public String getTargetDate() {
+		return targetDate;
+	}
+	public void setTargetDate(String targetDate) {
+		this.targetDate = targetDate;
 	}
 	
 	
