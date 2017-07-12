@@ -251,11 +251,11 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		queryStr.append(",count(distinct model.boothId)");
 
 		queryStr.append(",state.stateId,state.stateName,district.districtId,district.districtName,parliamentConstituency.constituencyId,parliamentConstituency.name");
-		queryStr.append(",constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName,panct.panchayatId,panc.panchayatName");
+		queryStr.append(",constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName,panc.panchayatId,panc.panchayatName");
 		queryStr.append(",localElectionBody.localElectionBodyId,localElectionBody.name,electionType.electionTypeId,electionType.electionType ");
 
 		queryStr.append(" from BoothIncharge model ");
-		queryStr.append(" from left join model.boothInchargeRoleConditionMapping model1 ");
+		queryStr.append(" left join model.boothInchargeRoleConditionMapping model1 ");
 		queryStr.append(" left join model1.address.state state ");
 		queryStr.append(" left join model1.address.district district ");
 		queryStr.append(" left join model1.address.parliamentConstituency parliamentConstituency ");
@@ -285,7 +285,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		}
 
 		if (resultType.equalsIgnoreCase("NotStarted")) {
-			queryStr.append(" and model1.isConfirmed='N' and model1.startDate is null && model1.completedDate is null ");
+			queryStr.append(" and model1.isConfirmed='N' and model1.startDate is null and model1.completedDate is null ");
 		} else if (resultType.equalsIgnoreCase("Started")) {
 			queryStr.append(" and model1.isConfirmed='N' and model1.completedDate is null");
 		} else if (resultType.equalsIgnoreCase("Completed")) {
@@ -351,12 +351,12 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 			queryStr.append(" tehsil.tehsilId ");
 			queryStr.append(" ,tehsil.tehsilName");
 		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
-			queryStr.append(" panct.panchayatId ");
+			queryStr.append(" panc.panchayatId ");
 			queryStr.append(" ,panc.panchayatName");
 		}
 	
 		queryStr.append(" from BoothIncharge model ");
-		queryStr.append(" from left join model.boothInchargeRoleConditionMapping model1 ");
+		queryStr.append(" left join model.boothInchargeRoleConditionMapping model1 ");
 		queryStr.append(" left join model1.address.district district ");
 		queryStr.append(" left join model1.address.parliamentConstituency parliamentConstituency ");
 		queryStr.append(" left join model1.address.constituency constituency ");
@@ -405,11 +405,11 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		queryStr.append("select ");
 
 		queryStr.append(",state.stateId,state.stateName,district.districtId,district.districtName,parliamentConstituency.constituencyId,parliamentConstituency.name");
-		queryStr.append(",constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName,panct.panchayatId,panc.panchayatName,");
+		queryStr.append(",constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName,panc.panchayatId,panc.panchayatName,");
 		queryStr.append(",localElectionBody.localElectionBodyId,localElectionBody.name,electionType.electionTypeId,electionType.electionType ");
 
 		queryStr.append(" from BoothIncharge model ");
-		queryStr.append(" from left join model.boothInchargeRoleConditionMapping model1 ");
+		queryStr.append(" left join model.boothInchargeRoleConditionMapping model1 ");
 		queryStr.append(" left join model1.address.state state ");
 		queryStr.append(" left join model1.address.district district ");
 		queryStr.append(" left join model1.address.parliamentConstituency parliamentConstituency ");
@@ -439,7 +439,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		}
 
 		if (resultType.equalsIgnoreCase("NotStarted")) {
-			queryStr.append(" and model1.isConfirmed='N' and model1.startDate is null && model1.completedDate is null ");
+			queryStr.append(" and model1.isConfirmed='N' and model1.startDate is null and model1.completedDate is null ");
 		} else if (resultType.equalsIgnoreCase("Started")) {
 			queryStr.append(" and model1.isConfirmed='N' and model1.completedDate is null");
 		} else if (resultType.equalsIgnoreCase("Completed")) {
