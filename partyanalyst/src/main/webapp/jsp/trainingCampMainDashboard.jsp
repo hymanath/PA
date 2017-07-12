@@ -1718,9 +1718,14 @@ function getDayWiseAttendnenceForBatch(){
 	 
 	   $("#dayWiseAttendDivId").html('');
 	   $("#dayWiseAttendDivId").show();
-	 
+	 var enrollmentYearIdsList =[];	 
+	 enrollmentYearIdsList.push($('#enrollmentId').val());
+	 var programIdsList=[];
+	  programIdsList.push($('#programId').val());
 	 var jsObj={
 		 batchId : batchId,
+		 enrollmentYearIdsList:enrollmentYearIdsList,
+		 programIdsList:programIdsList,
 		 enrollmentYearId:$('#enrollmentId').val()
 	 }
 	  $.ajax({
