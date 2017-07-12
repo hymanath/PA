@@ -246,8 +246,12 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
 			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
 				Long year = Long.valueOf(inputVO.getYear());
-				inputVO.setFromDate(sdf.parse("01-04-"+ year));
-				
+				Long priviousYear = year - 1;
+				inputVO.setFromDate(sdf.parse("01-04-" + priviousYear));
+				inputVO.setToDate(sdf.parse("01-04-" + year));
+				for (Long i = priviousYear; i < year; i++) {
+					inputVO.getStressedHabitationYearsList().add(i.toString());
+				}
 			}
 			
 			List<Object[]> object = rwsMinWorksAdminViewDAO.getOnclickStrssedTargetsAcheievementsDetails(inputVO);
