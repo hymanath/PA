@@ -36,7 +36,7 @@
 						<div class="arrow_box_top">
 							<ul>
 								<li>
-									<a href="fundManagementDashboard">
+									<a href="newfundManagementDashboard">
 										<h3>FMS</h3>
 										<p>Fund Management System</p>
 									</a>
@@ -120,7 +120,20 @@
 <main>
 	<section>
 		<div class="container-fluid">
-			<p class="text-danger">Note: Amount in Crores</p>
+			<div class="row">
+				<div class="col-sm-6">
+					<p class="text-danger">Note: Amount in Crores</p>
+				</div>
+				<div class="col-sm-6">
+					<ul class="list-inline pull-right defaultColorView">
+						<li><p class="text-primary"><i class="rounded-circle fa fa-inr"></i>High</p></li>
+						<li><p class="text-warning"><i class="rounded-circle fa fa-inr"></i>Average</p></li>
+						<li><p class="text-danger"><i class="rounded-circle fa fa-inr"></i>Low</p></li>
+					</ul>
+				</div>
+			</div>
+			
+			
 			<div class="row">
 				<div id="overviewBlock"></div>
 			</div>
