@@ -614,6 +614,8 @@
 		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO"/>	
 	    <property name="publicationDateDAO" ref="publicationDateDAO" />
 	    <property name="boothDAO" ref="boothDAO" />
+	    <property name="boothInchargeDAO" ref="boothInchargeDAO"></property>
+	    <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
 	</bean>
 		
 	<bean name="problemUploadService" class="com.itgrids.partyanalyst.service.impl.ProblemUploadService" >	
