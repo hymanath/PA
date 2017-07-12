@@ -176,23 +176,19 @@ public class RwsMinWorkscompViewDAO extends GenericDaoHibernate<RwsMinWorkscompV
 		sbe.append(" where" + "  model.panchCode = targetModel.habCode and "
 				+ " model.dCode = model1.dCode and model.mCode = model1.mCode ");
 
-		if (inputVO.getWorkStatus().equalsIgnoreCase(IConstants.TARGET_ALL)) {
+		if (inputVO.getWorkStatus().equalsIgnoreCase(IConstants.TARGET_ALL) && inputVO.getWorkStatus().trim().length()>0) {
 			sbm.append(" RwsMinWorksAdminView adminModel ");
 			sbe.append(" and targetModel.workId= adminModel.workId ");
-			if (inputVO.getYear() != null && inputVO.getFromDateStr() == null && inputVO.getToDateStr() == null) {
-				sbe.append(" and adminModel.targetDateComp >= :year ");
-			} else if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+			if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
 				sbe.append(" and adminModel.targetDateComp between :fromDate and :toDate ");
 			}
 			if (inputVO.getAssetType() != null && inputVO.getAssetType().trim().length() > 0) {
 				sbe.append(" and model.coverageStatus like :statusType");
 			}
-		} else if (inputVO.getWorkStatus().equalsIgnoreCase(IConstants.TARGET_COMPLETED)) {
+		} else if (inputVO.getWorkStatus().equalsIgnoreCase(IConstants.TARGET_COMPLETED) && inputVO.getWorkStatus().trim().length()>0) {
 			sbm.append(" RwsMinWorkscompView acheieveModel ");
 			sbe.append(" and acheieveModel.workId= targetModel.workId ");
-			if (inputVO.getYear() != null && inputVO.getFromDate() != null && inputVO.getToDate() == null) {
-				sbe.append(" and acheieveModel.dateOfCompletion >= :year ");
-			} else if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+			if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
 				sbe.append(" and acheieveModel.dateOfCompletion between :fromDate and :toDate ");
 			}
 			if (inputVO.getAssetType() != null && inputVO.getAssetType().trim().length() > 0) {
@@ -224,10 +220,7 @@ public class RwsMinWorkscompViewDAO extends GenericDaoHibernate<RwsMinWorkscompV
 		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
 			query.setDate("fromDate", inputVO.getFromDate());
 			query.setDate("toDate", inputVO.getToDate());
-		} else if (inputVO.getYear() != null && inputVO.getFromDate() != null && inputVO.getToDate() == null) {
-			query.setDate("year", inputVO.getFromDate());
-		}
-
+		} 
 		if (inputVO.getDistrictValue() != null && inputVO.getDistrictValue().trim().length() > 0) {
 			query.setParameter("districtValue", inputVO.getDistrictValue());
 		}
