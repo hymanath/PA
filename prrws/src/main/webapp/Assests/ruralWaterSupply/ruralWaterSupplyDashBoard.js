@@ -1933,28 +1933,28 @@
 								tableView+='<td> - </td>';
 							}
 							if(actionInProgress >0){
-								tableView+='<td class="alertStatusViewCls" attr_status_id="3" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+actionInProgress+'">'+actionInProgress+'</td>';
+								tableView+='<td class="alertStatusViewCls" attr_status_id="3" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+actionInProgress+'" style="cursor:pointer;text-decoration:underline">'+actionInProgress+'</td>';
 								tableView+='<td><small style="color:#0FBE08">'+actionPerc+' </small></td>';
 							}else{
 								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(CompleteClosedCount >0){
-								tableView+='<td class="alertStatusViewCls" attr_status_id="4,12" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+CompleteClosedCount+'">'+CompleteClosedCount+'</td>';
+								tableView+='<td class="alertStatusViewCls" attr_status_id="4,12" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+CompleteClosedCount+'" style="cursor:pointer;text-decoration:underline">'+CompleteClosedCount+'</td>';
 								tableView+='<td><small style="color:#0FBE08">'+completeClosedPerc+'</small> </td>';
 							}else{
 								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(othersCount >0){
-								tableView+='<td class="alertStatusViewCls" attr_status_id="5,6,7,8,9,10,11,14" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+othersCount+'">'+othersCount+'</td>'; 
+								tableView+='<td class="alertStatusViewCls" attr_status_id="5,6,7,8,9,10,11,14" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+othersCount+'" style="cursor:pointer;text-decoration:underline">'+othersCount+'</td>'; 
 								tableView+='<td><small style="color:#0FBE08">'+othersPerc+' %</small> </td>';
 							}else{
 								tableView+='<td> - </td>';
 								tableView+='<td> - </td>';
 							}
 							if(totalCount >0){
-								tableView+='<td class="alertStatusViewCls" attr_status_id="" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+totalCount+'">'+totalCount+'</td>';
+								tableView+='<td class="alertStatusViewCls" attr_status_id="" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+totalCount+'" style="cursor:pointer;text-decoration:underline">'+totalCount+'</td>';
 							}else{
 								tableView+='<td> - </td>';
 							}
@@ -2010,7 +2010,7 @@
 							}	
 							if(GLtbodyAlertArr[i].statusList !=null && GLtbodyAlertArr[i].statusList.length>0){
 								for(var j in GLtbodyAlertArr[i].statusList){
-										tableView+='<td class="ivrStatusViewCls" attr_status_name="'+GLtbodyAlertArr[i].statusList[j].name+'" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+GLtbodyAlertArr[i].statusList[j].count+'">'+GLtbodyAlertArr[i].statusList[j].count+'</td>';
+										tableView+='<td class="ivrStatusViewCls" attr_status_name="'+GLtbodyAlertArr[i].statusList[j].name+'" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+GLtbodyAlertArr[i].statusList[j].count+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyAlertArr[i].statusList[j].count+'</td>';
 										if(GLtbodyAlertArr[i].statusList[j].percentage !=null && GLtbodyAlertArr[i].statusList[j].percentage >0){
 											tableView+='<td><small style="color:#0FBE08">'+GLtbodyAlertArr[i].statusList[j].percentage+'</small></td>';
 										}else{
@@ -3500,30 +3500,48 @@
 	
 	$(document).on("click",".ivrStatusViewCls",function(){
 		$("#modalHablitationTable").html('');
+		$("#modalAlertTable").html('');
+		$("#modalAssetsTable").html('');
+		$("#modalWaterSourceTable").html('');
+		$("#modalIvrStatusTable").html('');
+		$("#modalKpiTable").html('');
+		$("#modalSchemsTable").html('');
 		var status = $(this).attr("attr_status_name");
 		var locationType=$(this).attr("attr_location_type");
 		var locationValue=$(this).attr("attr_location_value");
 		var totalCount=$(this).attr("attr_total_count");
 		var startIndex=0;
 		$("#modalHablitationDivId").modal('show');
-		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;Wise Details");
 		
 		getLocationWiseHamletIvrList(status,locationType,locationValue,totalCount);
 	});
 	$(document).on("click",".alertStatusViewCls",function(){
 		$("#modalHablitationTable").html('');
+		$("#modalAlertTable").html('');
+		$("#modalAssetsTable").html('');
+		$("#modalWaterSourceTable").html('');
+		$("#modalIvrStatusTable").html('');
+		$("#modalKpiTable").html('');
+		$("#modalSchemsTable").html('');
 		var status = $(this).attr("attr_status_id");
 		var locationType=$(this).attr("attr_location_type");
 		var locationValue=$(this).attr("attr_location_value");
 		var totalCount=$(this).attr("attr_total_count");
 		var startIndex=0;
 		$("#modalHablitationDivId").modal('show');
-		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;Wise Details");
 		
 		getAlertsOfCategoryByStatusWise(status,locationType,locationValue,0,startIndex,totalCount);
 	});
 	$(document).on("click",".hablitationClickView",function(){
 		$("#modalHablitationTable").html('');
+		$("#modalAlertTable").html('');
+		$("#modalAssetsTable").html('');
+		$("#modalWaterSourceTable").html('');
+		$("#modalIvrStatusTable").html('');
+		$("#modalKpiTable").html('');
+		$("#modalSchemsTable").html('');
 		
 		var status = $(this).attr("attr_status");
 		var locationValue = $(this).attr("attr_filter_value");
@@ -3531,7 +3549,7 @@
 		var districtVal=$(this).attr("attr_district_val");
 		var totalCount=$(this).attr("attr_total_count");
 		$("#modalHablitationDivId").modal('show');
-		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;Wise Details");
 		var startIndex=0;
 		getHabitationDetailsByStatusByLocationType(status,locationType,locationValue,districtVal,startIndex,totalCount);
 		
@@ -3539,13 +3557,19 @@
 	});
 	$(document).on("click",".assetsClickView",function(){
 		$("#modalHablitationTable").html('');
+		$("#modalAlertTable").html('');
+		$("#modalAssetsTable").html('');
+		$("#modalWaterSourceTable").html('');
+		$("#modalIvrStatusTable").html('');
+		$("#modalKpiTable").html('');
+		$("#modalSchemsTable").html('');
 		
 		var status = $(this).attr("attr_status");
 		var locationValue = $(this).attr("attr_filter_value");
 		var locationType=$(this).attr("attr_location_type");
 		var totalCount=$(this).attr("attr_total_count");
 		$("#modalHablitationDivId").modal('show');
-		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;Wise Details");
 		var startIndex=0;
 		getAssetDetailsByAssetType(status,locationType,locationValue,startIndex,totalCount);
 		
@@ -3553,6 +3577,12 @@
 	});
 	$(document).on("click",".waterSourceClickView",function(){
 		$("#modalHablitationTable").html('');
+		$("#modalAlertTable").html('');
+		$("#modalAssetsTable").html('');
+		$("#modalWaterSourceTable").html('');
+		$("#modalIvrStatusTable").html('');
+		$("#modalKpiTable").html('');
+		$("#modalSchemsTable").html('');
 		
 		var status = $(this).attr("attr_status");
 		var locationValue = $(this).attr("attr_filter_value");
@@ -3561,7 +3591,7 @@
 		var safeUnsafeType=$(this).attr("attr_type");
 		var districtVal=$(this).attr("attr_district_val");
 		$("#modalHablitationDivId").modal('show');
-		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
+		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;Wise Details");
 		var startIndex=0;
 		getWaterSourceDeatilsLocationWise(status,safeUnsafeType,locationType,locationValue,districtVal,startIndex,totalCount);
 		
@@ -3569,6 +3599,12 @@
 	});
 	$(document).on("click",".schemsClickView",function(){
 		$("#modalHablitationTable").html('');
+		$("#modalAlertTable").html('');
+		$("#modalAssetsTable").html('');
+		$("#modalWaterSourceTable").html('');
+		$("#modalIvrStatusTable").html('');
+		$("#modalKpiTable").html('');
+		$("#modalSchemsTable").html('');
 		
 		var status = $(this).attr("attr_status");
 		var totalCount=$(this).attr("attr_total_count");
@@ -3582,6 +3618,12 @@
 	});
 	$(document).on("click",".kpiClickView",function(){
 		$("#modalHablitationTable").html('');
+		$("#modalAlertTable").html('');
+		$("#modalAssetsTable").html('');
+		$("#modalWaterSourceTable").html('');
+		$("#modalIvrStatusTable").html('');
+		$("#modalKpiTable").html('');
+		$("#modalSchemsTable").html('');
 		var status = $(this).attr("attr_status");
 		var locationValue = $(this).attr("attr_filter_value");
 		var locationType=$(this).attr("attr_location_type");
@@ -3598,7 +3640,7 @@
 	
 	//KPI ON CLICK
 	function getOnclickTargetsAcheievementsDetails(status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount){
-		
+		$("#modalKpiTable").html(spinner);
 		var yearVal="";
 		var financialVal =$("#financialYearId").val();
 		if(financialVal != 0){
@@ -3642,26 +3684,24 @@
 			}
 		}).done(function(result){
 			if(result !=null && result.length>0){
-				buildOnclickTargetsAcheievementsDetails(result,'OnclickTargetsAcheievements_Click',status,locationType,locationValue,districtVal,startIndex,totalCount);
+				buildOnclickTargetsAcheievementsDetails(result,status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount);
 			}else{
 				$(".paginationId").html("");
-				$("#modalHablitationTable").html('No Data Available');
+				$("#modalKpiTable").html('No Data Available');
 			}
 			
 			
 		});
 	}
-	//shems ON CLICK
+	//schems ON CLICK
 	function getOnclickWorkSchemsDetails(status,workStatus,totalCount){
 		
-		
+		$("#modalSchemsTable").html(spinner);
 		var yearVal="";
 		var financialVal =$("#financialYearId").val();
 		if(financialVal != 0){
 			 yearVal=financialVal;
 		}
-		
-		
 		
 		var json = {
 				year:yearVal,
@@ -3681,12 +3721,18 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount);
+			if(result !=null && result.length>0){
+				buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount);
+			}else{
+				$(".paginationId").html("");
+				$("#modalSchemsTable").html('No Data Available');
+			}
+			
 		});
 	}
 	//waterSource ON CLICK
 	function getWaterSourceDeatilsLocationWise(status,safeUnsafeType,locationType,locationValue,districtVal,startIndex,totalCount){
-		
+		$("#modalWaterSourceTable").html(spinner);
 		
 		var yearVal="";
 		var financialVal =$("#financialYearId").val();
@@ -3730,12 +3776,19 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			buildWaterSourceDeatilsLocationWise(result,status,safeUnsafeType,locationType,locationValue,districtVal,startIndex,totalCount);
+			if(result !=null && result.length>0){
+				buildWaterSourceDeatilsLocationWise(result,status,safeUnsafeType,locationType,locationValue,districtVal,startIndex,totalCount);
+			}else{
+				$(".paginationId").html("");
+				$("#modalWaterSourceTable").html('No Data Available');
+			}
+			
 		});
 	}
 	
 	//Assets ON CLICK
 	function getAssetDetailsByAssetType(status,locationType,locationValue,startIndex,totalCount){
+		$("#modalAssetsTable").html(spinner);
 		var yearVal="";
 			var financialVal =$("#financialYearId").val();
 			if(financialVal != 0){
@@ -3771,13 +3824,19 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			buildAssetDetailsByAssetType(result,status,locationType,locationValue,startIndex,totalCount);
+			if(result !=null && result.length>0){
+				buildAssetDetailsByAssetType(result,status,locationType,locationValue,startIndex,totalCount);
+			}else{
+				$(".paginationId").html("");
+				$("#modalAssetsTable").html('No Data Available');
+			}
+			
 		});
 	}
 	
 	//IVRSATATUSCLICK
 	function getLocationWiseHamletIvrList(status,locationType,locationValue,totalCount){
-		
+		$("#modalIvrStatusTable").html(spinner);
 		var yearVal="";
 			var financialVal =$("#financialYearId").val();
 			if(financialVal != 0){
@@ -3831,7 +3890,7 @@
 	}
 	//alerts Status onclick
 	function getAlertsOfCategoryByStatusWise(status,locationType,locationValue,districtVal,startIndex,totalCount){
-	
+	$("#modalAlertTable").html(spinner);
 		var yearVal="";
 			var financialVal =$("#financialYearId").val();
 			if(financialVal != 0){
@@ -4131,7 +4190,32 @@
 	}
 	//schems build
 	function buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount){
-		
+		var tableView='';
+		tableView+='<table class="table table-bordered" id="dataTableSchems">';
+			tableView+='<thead>';
+			tableView+='<tr>';
+					tableView+='<th>DISTRICT</th>';
+					tableView+='<th>CONSTITUENCY</th>';
+					tableView+='<th>MANDAL</th>';
+					tableView+='<th>HABITATIONS NAME</th>';
+					tableView+='<th>HABITATIONS CODE</th>';
+				tableView+='</tr>';
+				
+			tableView+='</thead>';
+			tableView+='<tbody>';
+			for(var i in result){
+				tableView+='<tr>';
+						tableView+='<td>'+result[i].districtName+'</td>';
+						tableView+='<td>'+result[i].constituencyName+'</td>';
+						tableView+='<td>'+result[i].mandalName+'</td>';
+						tableView+='<td>'+result[i].habitationName+'</td>';
+						tableView+='<td>'+result[i].habitationCode+'</td>';
+					tableView+='</tr>';
+			}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#modalSchemsTable").html(tableView);
+		$("#dataTableSchems").dataTable();
 	}
 	//ivr buld
 	function buildLocationWiseHamletIvrList(status,locationType,locationValue,totalCount){
@@ -4139,7 +4223,7 @@
 	}
 	
 	// kpi build
-	function buildOnclickTargetsAcheievementsDetails(result,type,status,locationType,locationValue,districtVal,startIndex,totalCount){
+	function buildOnclickTargetsAcheievementsDetails(result,status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount){
 		var tableView='';
 		tableView+='<table class="table table-bordered" id="dataTableHablitation">';
 			tableView+='<thead>';
@@ -4164,7 +4248,7 @@
 			}
 			tableView+='</tbody>';
 		tableView+='</table>';
-		$("#modalHablitationTable").html(tableView);
+		$("#modalKpiTable").html(tableView);
 		
 		if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
@@ -4174,7 +4258,7 @@
 					hrefTextPrefix: '#pages-',
 					onPageClick: function(pageNumber) { 
 						var num=(pageNumber-1)*10;
-						getHabitationDetailsByStatusByLocationType(status,locationType,locationValue,districtVal,num,totalCount);
+						getOnclickTargetsAcheievementsDetails(status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount)
 							
 					}
 					
