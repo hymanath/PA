@@ -101,4 +101,19 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String getLocationBasedOnSelection(){
+		LOG.info("Entered into getLocationLevelWiseBoothCount()  of BoothReportAction ");
+		try{
+			jObj = new JSONObject(getTask());
+			InputVO inputVO = new InputVO();
+			inputVO.setLocationLevel(jObj.getString("locationLevel"));
+			inputVO.setFilterLevel(jObj.getString("filterLevel"));
+			inputVO.setFilterValue(jObj.getLong("filterValue"));
+			inputVO.setBoothInchargeEnrollmentId(jObj.getLong("boothInchargeEnrollmentId"));
+			boothInchargeDetailsList = boothDataValidationService.getLocationBasedOnSelection(inputVO);
+		}catch(Exception e){
+			LOG.error("Exception raised at getLocationLevelWiseBoothCount() method of BoothReportAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
