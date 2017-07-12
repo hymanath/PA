@@ -36,7 +36,7 @@ public class BoothInchargeRoleConditionMapping {
 	private Booth booth;
 	private BoothInchargeRoleCondition boothInchargeRoleCondition;
 	private BoothInchargeEnrollment boothInchargeEnrollment;
-	private Address address;
+	private UserAddress address;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -144,10 +144,10 @@ public class BoothInchargeRoleConditionMapping {
 	@JoinColumn(name="address_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Address getAddress() {
+	public UserAddress getAddress() {
 		return address;
 	}
-	public void setAddress(Address address) {
+	public void setAddress(UserAddress address) {
 		this.address = address;
 	}
 	

@@ -1,18 +1,23 @@
  package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dto.BoothInchargeDetailsVO;
+import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UploadDataErrorMessageVO;
 import com.itgrids.partyanalyst.excel.booth.VoterDataExcelReader;
 import com.itgrids.partyanalyst.excel.booth.VoterDataUploadVO;
@@ -21,9 +26,9 @@ import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter;
 import com.itgrids.partyanalyst.model.Hamlet;
-import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IBoothDataValidationService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 
 public class BoothDataValidationService implements IBoothDataValidationService{
 
@@ -31,11 +36,10 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
 	private IHamletDAO hamletDAO;
-	
 	private IPublicationDateDAO publicationDateDAO;
-
 	private IBoothDAO boothDAO;
-	
+	private IBoothInchargeDAO boothInchargeDAO;
+	private CommonMethodsUtilService commonMethodsUtilService;
 	public IBoothDAO getBoothDAO() {
 		return boothDAO;
 	}
@@ -89,8 +93,14 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
 		this.tehsilDAO = tehsilDAO;
 	}
-	
-	
+	public void setBoothInchargeDAO(IBoothInchargeDAO boothInchargeDAO) {
+		this.boothInchargeDAO = boothInchargeDAO;
+	}
+    public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+
 	public UploadDataErrorMessageVO readVoterExcelDataAndValidate(File filePath,
 			String electionYear, Long stateId, Long electionTypeId , String publicatonDateId) {
 		ResultStatus resultStatus = new ResultStatus();
@@ -360,5 +370,28 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		
 	}
-	
+
+	public List<BoothInchargeDetailsVO> getLocationLevelWiseBoothDetails(InputVO inputVO) {
+		List<BoothInchargeDetailsVO> resultList = new ArrayList<BoothInchargeDetailsVO>(0);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			if(inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() > 0){
+				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
+				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
+			}
+			List<Object[]> rtrnObjLst = boothInchargeDAO.getLocationLevelWiseBoothDetails(inputVO,"");
+			if (rtrnObjLst != null && rtrnObjLst.size() > 0) {
+				for (Object[] param : rtrnObjLst) {
+					BoothInchargeDetailsVO locationVO = new BoothInchargeDetailsVO();
+					locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					locationVO.setTotalBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					resultList.add(locationVO);
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception occured at getLocationLevelWiseBoothDetails() in BoothDataValidationService class",e);
+		}
+		return resultList;
+	}
 }
