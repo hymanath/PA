@@ -95,7 +95,7 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 			inputVO.setBoothInchargeEnrollmentId(jObj.getLong("boothInchargeEnrollmentId"));
 			inputVO.setFromDateStr(jObj.getString("startDate"));
 			inputVO.setToDateStr(jObj.getString("endDate"));
-			boothInchargeDetailsList = boothDataValidationService.getLocationLevelWiseBoothDetails(inputVO);
+			boothInchargeDetailsList = boothDataValidationService.getLocationLevelWiseBoothCount(inputVO);
 		}catch(Exception e){
 			LOG.error("Exception raised at getLocationLevelWiseBoothCount() method of BoothReportAction", e);
 		}
