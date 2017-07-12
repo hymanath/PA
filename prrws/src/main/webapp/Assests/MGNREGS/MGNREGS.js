@@ -1225,13 +1225,13 @@ function buildDistrictsPopupDetails(result,dataArr){
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Achivement','Percentage'];
 			}else if(globalDivName == "Agriculture Activities"){
-				theadArr = [dataArr,'TARGET','Completed','Achivement'];
+				theadArr = [dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'TARGET','Completed','Achivement'];
+					theadArr = ["district",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'TARGET','Completed','Achivement'];
+					theadArr = ["district","constituency",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Completed','Achivement'];
+					theadArr = ["district","constituency","mandal",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
 			}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds"){
 				theadArr = [dataArr,'TARGET','Sanctioned Target','Sanctioned Percentage','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				if(dataArr == "constituency")
@@ -2820,8 +2820,8 @@ function getNregaLevelsWiseDataForTimelyPayments(divIdd,locationType,menuLocatio
 		}
 	});
 }
-//getNregaParliamentData();
-/*  function getNregaParliamentData()
+/* getNregaParliamentData();
+function getNregaParliamentData()
 {
 	//$("#"+divIdd).html(spinner);
 	
@@ -2846,7 +2846,7 @@ function getNregaLevelsWiseDataForTimelyPayments(divIdd,locationType,menuLocatio
 		success: function(ajaxresp) {
 		}
 	});
-}  */
+}  */ 
 
 //ProjectOverviewNew
 //getNREGSProjectsAbstractNew();
