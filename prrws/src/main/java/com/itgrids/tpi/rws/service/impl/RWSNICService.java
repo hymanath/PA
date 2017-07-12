@@ -1473,7 +1473,14 @@ public class RWSNICService implements IRWSNICService{
 		 	    				subVo.setMandalCode(jobj.getString("mandalCode"));
 		 	    				subVo.setHabitationName(jobj.getString("habitationName"));
 		 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
-		 	    				subVo.setCompletionDate(jobj.getString("completionDate"));
+		 	    				if(jobj.has("completionDate")){
+		 	    					subVo.setCompletionDate(jobj.getString("completionDate"));
+		 	    				}else if(jobj.has("targetDate")){
+		 	    					subVo.setCompletionDate(jobj.getString("targetDate"));
+		 	    				}
+		 	    				if(jobj.has("commssionedDate")){
+		 	    					subVo.setCompletionDate(jobj.getString("commssionedDate"));
+		 	    				}
 		 	    				subVo.setWorkName(jobj.getString("workName"));		 	    				
 		 	    				subVo.setWorkId(jobj.getString("workId"));
 		 	    				//subVo.setSourceCount(jobj.getString("sourceCount"));
