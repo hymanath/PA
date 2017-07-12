@@ -7393,13 +7393,14 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	       
 	       sbm.append(" FROM ivr_survey_entity ISE,ivr_survey_entity_type ISET,"
 	       		+ "  ivr_survey_answer ISA,ivr_option IOP,user_address UA,ivr_respondent_location IRL,state S,district D,"
-	       		+ "  constituency C,tehsil T,panchayat P,hamlet H ");
-	       
+	       		+ "  constituency C,tehsil T,panchayat P,hamlet H,ivr_survey ISV ");
+	  
 	       sbe.append(" WHERE ISET.ivr_survey_entity_type_id = ISE.ivr_survey_entity_type_id"
 	       		+ " and ISE.ivr_survey_id = ISA.ivr_survey_id"
 	       		+ " and  ISA.ivr_option_id = IOP.ivr_option_id"
 	       		+ "	and ISA.ivr_respondent_id = IRL.ivr_respondent_id"
-	       		+ "	and IRL.address_id = UA.user_address_id"
+	       		+ "	and IRL.address_id = UA.user_address_id " +   
+	       		"  and ISV.ivr_survey_id = ISA.ivr_survey_id"
 	       		+ "	and UA.state_id = S.state_id"
 	       		+ "	and UA.district_id = D.district_id"
 	       		+ "	and UA.constituency_id = C.constituency_id"
@@ -7410,7 +7411,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	       		+ " and ISET.ivr_survey_entity_type_id=6"
 	       		+ " and ISET.is_deleted ='false'"
 	       		+ " and UA.hamlet_id is not null"
-	       		+ " and IOP.is_deleted ='false'");       
+	       		+ " and IOP.is_deleted ='false' " +
+	       		" and ISV.is_deleted ='false' ");       
 	       if(year!=null && !year.trim().isEmpty()){
 	         sbe.append(" and year(ISV.start_date) =:year  ");
 	       }
@@ -7418,7 +7420,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	         sbe.append(" and date(ISV.start_date) between :fromDate and :toDate  ");
 	       }
 	       
-	       sbg.append(" GROUP BY  UA.state_id,UA.district_id,UA.constituency_id,UA.tehsil_id,UA.panchayat_id,UA.hamlet_id,IOP.satisfied_status;");
+	       sbg.append(" GROUP BY  UA.state_id,UA.district_id,UA.constituency_id,UA.tehsil_id,UA.panchayat_id,UA.hamlet_id,IOP.satisfied_status ");
 	       
 	       if(locationTypeId !=null && locationTypeId.longValue()>0l){
 	         if(locationTypeId ==2l){
@@ -7466,7 +7468,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	           .addScalar("pName",Hibernate.STRING)
 	             .addScalar("hId",Hibernate.LONG) 
 	             .addScalar("hName",Hibernate.STRING)
-	             .addScalar("Status",Hibernate.STRING)
+	             .addScalar("status",Hibernate.STRING)
 	             .addScalar("count",Hibernate.LONG);
 				 if(year!=null && !year.trim().isEmpty()){
 					 query.setParameter("year", Integer.parseInt(year));
@@ -7479,6 +7481,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	      if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValues !=null && locationValues.size()>0){
 	        query.setParameterList("locationValues", locationValues);
 	      }
+	      
 	      return query.list();
 	
 	}
