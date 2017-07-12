@@ -7414,7 +7414,7 @@ class TrainingCampService implements ITrainingCampService{
 							levelMap.get(11l).setTotalCount(levelMap.get(11l).getCount());
 							
 							//others(total members - committee members)
-							districtVO.setTotal(districtVO.getCount()-(levelMap.get(5l).getTotalCount()+levelMap.get(6l).getTotalCount()+levelMap.get(11l).getTotalCount()));//others count
+							districtVO.setTotal(Math.abs(districtVO.getCount()-(levelMap.get(5l).getTotalCount()+levelMap.get(6l).getTotalCount()+levelMap.get(11l).getTotalCount())));//others count
 						}
 			        }
 				}

@@ -11,6 +11,7 @@ public class AppointmentCountDetailsVO implements Serializable{
 	private String name;
 	private String designation;
 	private String image;
+	private String appointmentTime;
 	public String getName() {
 		return name;
 	}
@@ -46,6 +47,12 @@ public class AppointmentCountDetailsVO implements Serializable{
 	}
 	public void setMonthCount(Long monthCount) {
 		this.monthCount = monthCount;
+	}
+	public String getAppointmentTime() {
+		return appointmentTime;
+	}
+	public void setAppointmentTime(String appointmentTime) {
+		this.appointmentTime = appointmentTime;
 	}
 	
 

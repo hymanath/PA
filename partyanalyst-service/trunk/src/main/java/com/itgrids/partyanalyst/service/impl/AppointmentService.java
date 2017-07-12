@@ -125,7 +125,6 @@ import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
-import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
@@ -8695,6 +8694,8 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 					 detailsVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					 detailsVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[2]));
 					 detailsVO.setImage("httP://www.mytdp.com/"+commonMethodsUtilService.getStringValueForObject(param[3]));
+					 detailsVO.setAppointmentTime(commonMethodsUtilService.getStringValueForObject(param[4]));
+					 
 					 returnVo.add(detailsVO);
 				}
 			}
@@ -8717,22 +8718,15 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 					 ResultStatus rs = new ResultStatus();
 					 
 		        	List<String> membershipNoList = new ArrayList<String>(0);
-	        		
-	        		membershipNoList.add(memberShipId);
-	        		
-	        		if(membershipNoList!=null && membershipNoList.size() >0 ){
-	        			
-	        			boolean apptCreationFlag = checkisEligibleForAppt(membershipNoList,2l);
-			        	if(apptCreationFlag){
-			        		
-			        		rs.setExceptionMsg("Not Eligible To Create Appointment.");
-			    			rs.setResultCode(2);
-			    			rs.setTabPrimaryKey(tabPrimaryKey);
-			        		return rs;
-			        	}
-	        		}
-	        		//SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-	        		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		        	/*SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+		        	Date todayDate = null;
+		        	try {
+						todayDate = sdf2.parse(date);
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}*/
+		        	SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		        	
 		        	Date fromDate =null;
 	        		if(date !=null && date !=null){
@@ -8743,26 +8737,42 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 							e.printStackTrace();
 						}
 	    			}
-		        	Appointment appointment = new Appointment();
-		        	appointment.setAppointmentUserId(2l);
+	        		membershipNoList.add(memberShipId);
+	        		
+	        		/*if(membershipNoList!=null && membershipNoList.size() >0 ){
+	        			
+	        			List<Appointment> list = appointmentCandidateRelationDAO.checkIsAppointmentForToday(membershipNoList,apptCreationStatusList,2l,todayDate);
+			        	if(list != null && list.size() >0){
+			        		appointment = list.get(0);
+			        		appointment.setUpdatedTime(fromDate);
+			        		appointment = appointmentDAO.save(appointment);
+			        		
+			        	}else{*/
+	        					Appointment appointment = new Appointment();
+			        		 	appointment.setAppointmentUserId(2l);
+					        	
+					        	appointment.setAppointmentPriorityId(1l);
+					        			 
+					        	appointment.setReason("Walkin");
+					        	
+					        	appointment.setAppointmentStatusId(IConstants.APPOINTMENT_STATUS_WAITING);
+					        	
+					        	appointment.setAppointmentPreferableTimeId(4l);
+					        	
+					        	
+					        	appointment.setCreatedBy(loginUserId);
+					        	appointment.setUpdatedBy(loginUserId);
+					        	appointment.setInsertedTime(fromDate);
+					        	appointment.setUpdatedTime(fromDate);
+					        	appointment.setIsDeleted("N");
+					        	appointment.setIsLabelled("N");
+					        	appointment = appointmentDAO.save(appointment);
+			        	//}
+	        		//}
+	        		//SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+	        		
 		        	
-		        	appointment.setAppointmentPriorityId(1l);
-		        			 
-		        	//appointment.setReason(appointmentVO.getReason());
 		        	
-		        	
-		        	appointment.setAppointmentStatusId(IConstants.APPOINTMENT_STATUS_WAITING);
-		        	
-		        	appointment.setAppointmentPreferableTimeId(4l);
-		        	
-		        	
-		        	appointment.setCreatedBy(loginUserId);
-		        	appointment.setUpdatedBy(loginUserId);
-		        	appointment.setInsertedTime(fromDate);
-		        	appointment.setUpdatedTime(fromDate);
-		        	appointment.setIsDeleted("N");
-		        	appointment.setIsLabelled("N");
-		        	appointment = appointmentDAO.save(appointment);
 		        	
 		        	
 		        	if( appointment != null && appointment.getAppointmentId() != null && appointment.getAppointmentId()>0l){
@@ -8853,8 +8863,14 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 			
 			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 			appCandi.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));
+			Long desigId = 0l;
+			List<Object[]> list = candidateDesignationDAO.getAppCandidateDesigListByType(3l);
+			if(list != null && list.size() >0){
+				Object[] param = list.get(0);
+				 desigId = (Long)param[0];
+			}
 			
-			//appCandi.setDesignationId(commonMethodsUtilService.getLongValueForObject(obj[3]));
+			appCandi.setDesignationId(desigId.longValue());
 			
 			appCandi.setMobileNo(commonMethodsUtilService.getStringValueForObject(obj[4]));
 			 

@@ -9,6 +9,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateRelationDAO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
+import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -1173,4 +1174,28 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
     	
     	return query.list();
     }
+    
+public List<Appointment> checkIsAppointmentForToday(List<String> membershipNoList,List<Long> apptStatusIds,Long appointmentUserId,Date today){
+		
+	StringBuilder sb = new StringBuilder();
+	sb.append("" +
+		" select  acr.appointment " +
+		" from    AppointmentCandidateRelation acr " +
+		" where   acr.appointment.isDeleted='N' " +
+		"         and acr.appointmentCandidate.membershipId in (:membershipNoList) " +
+		"         and acr.appointment.appointmentUserId = :appointmentUserId");
+	
+	if(apptStatusIds != null && apptStatusIds.size() >0){
+		sb.append( " and acr.appointment.appointmentStatusId in (:apptStatusIds) ");
+	}
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameterList("membershipNoList", membershipNoList);
+		if(apptStatusIds != null && apptStatusIds.size() >0){
+			query.setParameterList("apptStatusIds", apptStatusIds);
+		}
+		query.setParameter("appointmentUserId", appointmentUserId);
+		return query.list();
+	}
 }

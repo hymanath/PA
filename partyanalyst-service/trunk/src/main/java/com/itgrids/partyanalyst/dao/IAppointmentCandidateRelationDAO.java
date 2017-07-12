@@ -6,6 +6,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
+import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
 
 public interface IAppointmentCandidateRelationDAO extends GenericDao<AppointmentCandidateRelation, Long> {
@@ -55,4 +56,5 @@ public interface IAppointmentCandidateRelationDAO extends GenericDao<Appointment
 	public List<Object[]> getCandidateLastVisitedDtl(List<Long> appointmentCandidateIds,Long appointmentUserId,Long appStatusId);
 	public List<Object[]> getTotalApptsByCandiates(List<Long> appointmentCandidateIds,Long appointmentUserId);
 	public List<Long> checkAppointmentCandidateExistsWithAppointment(Long appointmentId,Long appointmentCandidateId);
+	public List<Appointment> checkIsAppointmentForToday(List<String> membershipNoList,List<Long> apptStatusIds,Long appointmentUserId,Date today);
 }
