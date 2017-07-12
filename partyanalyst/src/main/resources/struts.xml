@@ -17707,5 +17707,15 @@
          <param name="root">getLocationWiseGrivanceTrustStatusCounts</param>
        </result>
    </action>
+   <action name="getBoothInchargeDashboardAction" class="boothReportAction" method="getBoothInchargeDashboard">
+			<result name="success">/jsp/boothInchargeDashBoard.jsp</result>
+	</action> 
+	
+	<action name="getLocationLevelWiseBoothDetailsAction" class="boothReportAction" method="getLocationLevelWiseBoothDetails">
+        <result type="json" name="success">
+         	<param name="root">boothInchargeDetailsList</param>
+       </result>
+   </action>
+   
  </package>
 </struts>

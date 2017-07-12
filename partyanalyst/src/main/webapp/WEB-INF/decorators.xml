@@ -744,6 +744,7 @@
 		<pattern>/customReportAction*</pattern>
 		<pattern>/mahanaduNotificationAction*</pattern>
 		<pattern>/locationDashboardAction*</pattern>
+		<pattern>/getBoothInchargeDashboardAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">

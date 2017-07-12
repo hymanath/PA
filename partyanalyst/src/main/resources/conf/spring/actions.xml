@@ -441,6 +441,7 @@
 	</bean>
 	
 	<bean id="boothReportAction" class="com.itgrids.partyanalyst.web.action.BoothReportAction" singleton="false">
+		<property name="boothDataValidationService" ref="boothDataValidationService"></property>
 	</bean>
 	
 	<bean id="problemManagementReportAction" class="com.itgrids.partyanalyst.web.action.ProblemManagementReportAction" singleton="false">
