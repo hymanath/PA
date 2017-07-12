@@ -383,7 +383,7 @@ function buildAttendedCountByProgramOrCampOrBatch(result,fromType)
 						
 							str+='<tr>';
 								str+='<td>'+result[i].name+'</td>';
-								str+='<td>'+result[i].count+' IA&nbsp;'+result[i].total+' NIA</td>';
+								str+='<td>'+result[i].count+' IA&nbsp;-'+result[i].total+' NIA</td>';
 								for(var j in result[i].simpleVOList1){
 									if(result[i].simpleVOList1[j].id==5 || result[i].simpleVOList1[j].id==6 || result[i].simpleVOList1[j].id==11){
 									  str+='<td>'+result[i].simpleVOList1[j].totalCount+'</td>';
