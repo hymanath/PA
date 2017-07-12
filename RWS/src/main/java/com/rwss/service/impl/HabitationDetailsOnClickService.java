@@ -192,6 +192,13 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 					habitationDetailsList.add(habitationDetailsVO);
 				}
 			}
+			if (inputVO.getStartValue() != null && inputVO.getStartValue() == 0) {
+				inputVO.setEndValue(0);
+				List<Object[]> rtrnOverAllDtsObjLst = rwsMinWorkscompViewDAO.getOnclickTargetsAcheievementsDetails(inputVO);
+				if (rtrnOverAllDtsObjLst != null) {
+					jsonObj.put("totalCount", Long.valueOf(rtrnOverAllDtsObjLst.size()));
+				}
+			}
 			jsonObj.remove(IConstants.ERROR_MESSAGE);
 			jsonObj.put(IConstants.STATUS, IConstants.RESULT_SUCCESS);
 			jsonObj.put("onClickWorksList", habitationDetailsList);
@@ -259,6 +266,13 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 					habitationDetailsVO.setToatlPorpualtionCovered(commonMethodsUtilService.getLongValueForObject(param[8]));
 					
 					habitationDetailsList.add(habitationDetailsVO);
+				}
+			}
+			if (inputVO.getStartValue() != null && inputVO.getStartValue() == 0) {
+				inputVO.setEndValue(0);
+				List<Object[]> rtrnOverAllDtsObjLst = rwsMinWorksAdminViewDAO.getOnclickStrssedTargetsAcheievementsDetails(inputVO);
+				if (rtrnOverAllDtsObjLst != null) {
+					jsonObj.put("totalCount", Long.valueOf(rtrnOverAllDtsObjLst.size()));
 				}
 			}
 			jsonObj.remove(IConstants.ERROR_MESSAGE);
