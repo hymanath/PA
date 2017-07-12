@@ -7,7 +7,9 @@ import com.itgrids.dto.InputVO;
 
 public interface IDrainsService 
 {
+	public List<DrainsVO> getDrainsInfobyLocations(InputVO inputVO);
 	public DrainsVO getDrainsInfobyLocation(InputVO inputVO);
+	
 	
 	
 }
