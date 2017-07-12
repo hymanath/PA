@@ -1,6 +1,6 @@
 
-//getLocationLevelWiseBoothDetails();
-function getLocationLevelWiseBoothDetails(){
+//getLocationLevelWiseBoothCount();
+function getLocationLevelWiseBoothCount(){
 
 	var jsObj={  
 		locationLevel : "District",         
@@ -12,7 +12,7 @@ function getLocationLevelWiseBoothDetails(){
 	} 
 	$.ajax({
 		type : 'POST',
-		url : 'getLocationLevelWiseBoothDetailsAction.action',  
+		url : 'getLocationLevelWiseBoothCountAction.action',  
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){ 
