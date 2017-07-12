@@ -289,7 +289,7 @@ public class RwssDataController {
 			result = habitationDetailsService.getWaterSourceDeatils2(inputVo);
 			return result;
 		} catch (Exception e) {
-			LOG.error("Error occured at getSchemeWiseWorkDetails() in RwssDataController class",e);
+			LOG.error("Error occured at getWaterSourceDeatils2() in RwssDataController class",e);
 			LocationVO basicVO = new LocationVO();
 			basicVO.setStatus(IConstants.RESULT_FAILURE);
 			basicVO.setExceptionMessage(e.getLocalizedMessage());
@@ -307,7 +307,7 @@ public class RwssDataController {
 			return result;
 		} catch (Exception e) {
 			jobj = new JSONObject();
-			LOG.error("Error occured at getSchemeWiseWorkDetails() in RwssDataController class",e);
+			LOG.error("Error occured at getKpiDeatils() in RwssDataController class",e);
 			jobj.put("status", IConstants.RESULT_FAILURE);
 			jobj.put("exceptionMessage",e.getMessage());
 			
@@ -325,7 +325,7 @@ public class RwssDataController {
 			return result;
 		} catch (Exception e) {
 			jobj = new JSONObject();
-			LOG.error("Error occured at getSchemeWiseWorkDetails() in RwssDataController class",e);
+			LOG.error("Error occured at getStressedKPIDeatils() in RwssDataController class",e);
 			jobj.put("status", IConstants.RESULT_FAILURE);
 			jobj.put("exceptionMessage",e.getMessage());
 			
@@ -342,7 +342,7 @@ public class RwssDataController {
 			return result;	
 		}catch (Exception e) {
 			jobj = new JSONObject();
-			LOG.error("Error occured at getSchemeWiseWorkDetails() in RwssDataController class",e);
+			LOG.error("Error occured at getOnclickWorkDetails() in RwssDataController class",e);
 			jobj.put("status", IConstants.RESULT_FAILURE);
 			jobj.put("exceptionMessage",e.getMessage());
 			
@@ -360,7 +360,7 @@ public class RwssDataController {
 			return result;	
 		}catch (Exception e) {
 			jobj = new JSONObject();
-			LOG.error("Error occured at getSchemeWiseWorkDetails() in RwssDataController class",e);
+			LOG.error("Error occured at getOnclickTargetsAcheievementsDetails() in RwssDataController class",e);
 			jobj.put("status", IConstants.RESULT_FAILURE);
 			jobj.put("exceptionMessage",e.getMessage());
 			
@@ -377,7 +377,7 @@ public class RwssDataController {
 			return result;	
 		}catch (Exception e) {
 			jobj = new JSONObject();
-			LOG.error("Error occured at getSchemeWiseWorkDetails() in RwssDataController class",e);
+			LOG.error("Error occured at getOnclickStressedTargetsAcheievementsDetails() in RwssDataController class",e);
 			jobj.put("status", IConstants.RESULT_FAILURE);
 			jobj.put("exceptionMessage",e.getMessage());
 			
@@ -426,7 +426,7 @@ public class RwssDataController {
 			return result;	
 		}catch (Exception e) {
 			jobj = new JSONObject();
-			LOG.error("Error occured at getSchemeWiseWorkDetails() in RwssDataController class",e);
+			LOG.error("Error occured at getOnclickHabitationsupplyDetails() in RwssDataController class",e);
 			jobj.put("status", IConstants.RESULT_FAILURE);
 			jobj.put("exceptionMessage",e.getMessage());
 			
