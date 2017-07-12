@@ -560,7 +560,7 @@ function buildNREGSProjectsOverview(result,blockName)
 				str+='<div class="row">';
 				for(var i in result)
 				{
-					if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "Solid Waste Management" || result[i] == "Play Fields" || result[i] == "Burial Grounds" || result[i] == "Agriculture Activities" || result[i] == "Payments"){
+					if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "Solid Waste Management" || result[i] == "Play Fields" || result[i] == "Burial Grounds" || result[i] == "Agriculture Activities" || result[i] == "Payments" || result[i] == "FAperformance"){
 						if(result[i] == "Payments")
 						{
 							str+='<div class="col-sm-4 m_top10">';
@@ -580,7 +580,7 @@ function buildNREGSProjectsOverview(result,blockName)
 						str+='</div>';
 					}
 				}
-				str+='<div class="col-sm-2 m_top10">';
+				/* str+='<div class="col-sm-2 m_top10">';
 					str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 						if(result[i].length > 12)
 						{
@@ -589,7 +589,7 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
 						}
 					str+='</div>';
-				str+='</div>';
+				str+='</div>'; */
 			str+='</div>';
 		str+='</div>';
 		
@@ -2106,13 +2106,13 @@ function getLabourBudgetClickingOverview(menuLocationType,menuLocationId)
 function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
-	var theadArr = [locationTypeNew,'AVG_DMD_MARKS','AVG_D_MUSTER_MARKS','AVG_LB_MARKS','AVG_ROZGAR_DIVAS_MARKS','AVG_AVG_DAYS_MARKS','AVG_AVG_WAGE_MARKS','AVG_FLAGSHIP_MARKS','AVG_TOT_MARKS'];
+	var theadArr = [locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozgar Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FlagShip Programme Achivement(5)','Total Average(100)'];
 	if(locationTypeNew == "constituency")
-		theadArr = ["district",locationTypeNew,'AVG_DMD_MARKS','AVG_D_MUSTER_MARKS','AVG_LB_MARKS','AVG_ROZGAR_DIVAS_MARKS','AVG_AVG_DAYS_MARKS','AVG_AVG_WAGE_MARKS','AVG_FLAGSHIP_MARKS','AVG_TOT_MARKS'];
+		theadArr = ["district",locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozgar Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FlagShip Programme Achivement(5)','Total Average(100)'];
 	else if(locationTypeNew == "mandal")
-		theadArr = ["district","constituency",locationTypeNew,'AVG_DMD_MARKS','AVG_D_MUSTER_MARKS','AVG_LB_MARKS','AVG_ROZGAR_DIVAS_MARKS','AVG_AVG_DAYS_MARKS','AVG_AVG_WAGE_MARKS','AVG_FLAGSHIP_MARKS','AVG_TOT_MARKS'];
+		theadArr = ["district","constituency",locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozgar Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FlagShip Programme Achivement(5)','Total Average(100)'];
 	else if(locationTypeNew == "panchayat")
-		theadArr = ["district","constituency","mandal",locationTypeNew,'AVG_DMD_MARKS','AVG_D_MUSTER_MARKS','AVG_LB_MARKS','AVG_ROZGAR_DIVAS_MARKS','AVG_AVG_DAYS_MARKS','AVG_AVG_WAGE_MARKS','AVG_FLAGSHIP_MARKS','AVG_TOT_MARKS'];
+		theadArr = ["district","constituency","mandal",locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozgar Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FlagShip Programme Achivement(5)','Total Average(100)'];
 	
 	var json = {
 		year : "2017",
@@ -2818,17 +2818,19 @@ function getNregaLevelsWiseDataForTimelyPayments(divIdd,locationType,menuLocatio
 		}
 	});
 }
-
-/* function getNregaParliamentData(divIdd,locationType,theadArr)
+//getNregaParliamentData();
+/*  function getNregaParliamentData()
 {
-	$("#"+divIdd).html(spinner);
+	//$("#"+divIdd).html(spinner);
 	
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		locationType: "constituency",
-		divType : globalDivName
+		locationType: "state",
+		divType : "Average Wage",
+		locationId : "-1",
+		sublocaType : "constituency"
 	}
 	$.ajax({
 		url: 'getNregaParliamentData',
@@ -2840,68 +2842,9 @@ function getNregaLevelsWiseDataForTimelyPayments(divIdd,locationType,menuLocatio
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			var str = '';
-			if(ajaxresp != null && ajaxresp.length > 0){
-				for(var i in ajaxresp){
-					if($windowWidth < 768)
-						{
-							str+='<div class="table-responsive">';
-						}
-						str+='<table class="table table-bordered">';
-						if(globalDivName){
-							str+='<thead class="text-capital">';
-								str+='<th>Parliament Name <th>';
-								str+='<th>Target<th>';
-								str+='<th>Grounded<th>';
-								str+='<th>Not-Grounded<th>';
-								str+='<th>InProgress<th>';
-								str+='<th>Completed<th>';
-								str+='<th>Percentage<th>';
-							str+='</thead>';
-							str+='<tbody>';
-								str+='<tr>';
-									str+='<td class="text-capital">'+ajaxresp[i].parliamentName+'</td>';
-									str+='<td>'+ajaxresp[i].target+'</td>';
-									str+='<td>'+ajaxresp[i].grounded+'</td>';
-									str+='<td>'+ajaxresp[i].notGrounded+'</td>';
-									str+='<td>'+ajaxresp[i].inProgress+'</td>';
-									str+='<td>'+ajaxresp[i].completed+'</td>';
-									str+='<td>'+ajaxresp[i].percentage+'</td>';
-								str+='</tr>';
-							str+='</tbody>';
-						}else{
-							str+='<thead class="text-capital">';
-								str+='<th>Parliament Name <th>';
-								str+='<th>Target<th>';
-								str+='<th>Grounded<th>';
-								str+='<th>Not-Grounded<th>';
-								str+='<th>InProgress<th>';
-								str+='<th>Completed<th>';
-								str+='<th>Percentage<th>';
-							str+='</thead>';
-							str+='<tbody>';
-								str+='<tr>';
-									str+='<td class="text-capital">'+ajaxresp[i].parliamentName+'</td>';
-									str+='<td>'+ajaxresp[i].target+'</td>';
-									str+='<td>'+ajaxresp[i].grounded+'</td>';
-									str+='<td>'+ajaxresp[i].notGrounded+'</td>';
-									str+='<td>'+ajaxresp[i].inProgress+'</td>';
-									str+='<td>'+ajaxresp[i].completed+'</td>';
-									str+='<td>'+ajaxresp[i].percentage+'</td>';
-								str+='</tr>';
-							str+='</tbody>';
-						}
-							
-						str+='</table>';
-						if($windowWidth < 768)
-						{
-							tableView+='</div>';
-						}
-				}
-			}
 		}
 	});
-} */
+}  */
 
 //ProjectOverviewNew
 //getNREGSProjectsAbstractNew();
@@ -3180,7 +3123,7 @@ $(document).on("click",".menuDataCollapse",function(){
 
 				getNREGSProjectsAbstractNew(overViewArr[i],'district',locId,blockName,levelId);
 			}
-			else if(overViewArr[i] != 'Payments'){
+			else if(overViewArr[i] != 'Payments' || overViewArr[i] != 'FAperformance'){
 				getNREGSAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId);
 			}
 				
