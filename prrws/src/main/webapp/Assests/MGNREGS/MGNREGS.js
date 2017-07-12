@@ -2792,7 +2792,9 @@ function getNregaLevelsWiseDataForTimelyPayments(divIdd,locationType,menuLocatio
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}*/
-						if(locationType == "district")
+						if(locationType == "state")
+							str+='<td class="text-capital">'+locationType+'</td>';
+						else if(locationType == "district")
 							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 						else if(locationType == "constituency")
 							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
