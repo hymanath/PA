@@ -319,6 +319,8 @@
 		<div id="modalAssetsTable"></div>
 		<div id="modalWaterSourceTable"></div>
 		<div id="modalIvrStatusTable"></div>
+		<div id="modalKpiTable"></div>
+		<div id="modalSchemsTable"></div>
 		<div class="row">
 			<div class="col-md-10 col-md-offset-5 m_top20">
 				<div class="paginationId"></div>
