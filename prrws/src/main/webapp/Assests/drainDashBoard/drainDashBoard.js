@@ -1,6 +1,7 @@
 onloadCalls();
 function onloadCalls(){
 	getDrainsInfobyLocation();
+	getDrainsInfo();
 }
 
 function getDrainsInfobyLocation(){
@@ -80,6 +81,26 @@ function getDrainsInfobyLocation(){
 					ugStr+='</div>';
 					ugStr+='</div>';
 					$("#ugBodyId").html(ugStr);
+			}
+		});
+}
+
+function getDrainsInfo(){
+
+		var json = {
+			fromDate:"01-06-2017",
+			toDate:"30-06-2017",
+			locationId:0,
+			locationType:"district"
+			}
+		$.ajax({                
+			type:'POST',    
+			url: 'getDrainsInfobyLocationNew',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		});
 }
