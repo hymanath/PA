@@ -379,7 +379,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	  * @return List<BoothInchargeDetailsVO>
 	  * @author Santosh 
 	  * @Description :This Service Method is used to booth count location wise 
-	  *  @since 7-JULY-2017
+	  * @since 7-JULY-2017
 	  */
 	public List<BoothInchargeDetailsVO> getLocationLevelWiseBoothCount(InputVO inputVO) {
 		List<BoothInchargeDetailsVO> resultList = new ArrayList<BoothInchargeDetailsVO>(0);
@@ -390,23 +390,47 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
 			}
 
-			Map<Long, BoothInchargeDetailsVO> locationBoothMap = null;
-
-			List<Object[]> notStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
-			List<Object[]> startedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
-			List<Object[]> completedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
-			locationBoothMap = getLocationWiseBoothDtls(notStartedBoothObjLst,"NotStarted");
-			locationBoothMap = getLocationWiseBoothDtls(startedBoothObjLst,"Started");
-			locationBoothMap = getLocationWiseBoothDtls(completedBoothObjLst,"Completed");
-
+			Map<Long, BoothInchargeDetailsVO> locationBoothMap = new TreeMap<Long, BoothInchargeDetailsVO>(); ;
+          
 			if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
-				inputVO.setLocationLevel(IConstants.LOCALELECTIONBODY);
-				List<Object[]> lclElctnBdyNotStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
-				List<Object[]> lclElctnBdyStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
-				List<Object[]> lclElctnBdyCompletedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
-				locationBoothMap = getLocationWiseBoothDtls(lclElctnBdyNotStartedBoothObjLst, "NotStarted");
-				locationBoothMap = getLocationWiseBoothDtls(lclElctnBdyStartedBoothObjLst, "Started");
-				locationBoothMap = getLocationWiseBoothDtls(lclElctnBdyCompletedBoothObjLst, "Completed");
+				//Setting mandal Wise Booth Count
+				Long locationId = 0l;
+				 if(inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0 ){
+		            	locationId = Long.valueOf(inputVO.getFilterValue().toString().substring(0,1));
+		            	inputVO.setFilterValue(Long.valueOf(inputVO.getFilterValue().toString().substring(1)));
+		          }
+				 /*We are appending 1 prefix id for mandal.Because in single list
+				  mandal And localElection Body is going.So for identification purpose once user is selecting filter*/
+				 if(locationId == 0 || locationId == 1){//locationId 0:first time call 1: filter type
+					    List<Object[]> notStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
+						List<Object[]> startedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
+						List<Object[]> completedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
+						getLocationWiseBoothDtls(notStartedBoothObjLst,locationBoothMap,IConstants.TEHSIL,"NotStarted");
+						getLocationWiseBoothDtls(startedBoothObjLst,locationBoothMap,IConstants.TEHSIL,"Started");
+						getLocationWiseBoothDtls(completedBoothObjLst,locationBoothMap,IConstants.TEHSIL,"Completed");
+						 
+				 }
+				
+				//Setting LocationElectionBody Wise Booth Count
+				 if(locationId == 0 || locationId == 2){//We are appending 2 prefix id for Location election body
+					inputVO.setLocationLevel(IConstants.LOCALELECTIONBODY);
+					List<Object[]> lclElctnBdyNotStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
+					List<Object[]> lclElctnBdyStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
+					List<Object[]> lclElctnBdyCompletedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
+				
+					getLocationWiseBoothDtls(lclElctnBdyNotStartedBoothObjLst,locationBoothMap,IConstants.LOCALELECTIONBODY, "NotStarted");
+					getLocationWiseBoothDtls(lclElctnBdyStartedBoothObjLst,locationBoothMap,IConstants.LOCALELECTIONBODY, "Started");
+					getLocationWiseBoothDtls(lclElctnBdyCompletedBoothObjLst,locationBoothMap,IConstants.LOCALELECTIONBODY, "Completed");
+				 }
+			}else{
+				
+				List<Object[]> notStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
+				List<Object[]> startedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
+				List<Object[]> completedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
+				
+				getLocationWiseBoothDtls(notStartedBoothObjLst,locationBoothMap,"NotStarted","OtherLocation");
+				getLocationWiseBoothDtls(startedBoothObjLst,locationBoothMap,"Started","OtherLocation");
+				getLocationWiseBoothDtls(completedBoothObjLst,locationBoothMap,"Completed","OtherLocation");
 			}
 			if (locationBoothMap != null && locationBoothMap.size() > 0) {
 				resultList.addAll(locationBoothMap.values());
@@ -416,14 +440,20 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		return resultList;
 	}
-	public Map<Long,BoothInchargeDetailsVO> getLocationWiseBoothDtls(List<Object[]> objList,String resultType){
-		Map<Long,BoothInchargeDetailsVO> locationBoothMap = new TreeMap<Long, BoothInchargeDetailsVO>();
+	public void getLocationWiseBoothDtls(List<Object[]> objList,Map<Long,BoothInchargeDetailsVO> locationBoothMap,String type,String resultType){
 		try{
 			if (objList != null && objList.size() > 0) {
 				for (Object[] param : objList) {
 					BoothInchargeDetailsVO locationVO = locationBoothMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if (locationVO == null ){
 						locationVO = new BoothInchargeDetailsVO();
+						if(type.equalsIgnoreCase(IConstants.TEHSIL)) {
+							locationVO.setLocationIdStr("1"+commonMethodsUtilService.getStringValueForObject(param[0]));
+						} else if (type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)) {
+							locationVO.setLocationIdStr("2"+commonMethodsUtilService.getStringValueForObject(param[0]));
+						} else {
+							locationVO.setLocationIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+						}
 						locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
 						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 						locationVO.setBoothAddressVO(getBoothAddress(param));
@@ -444,7 +474,6 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}catch(Exception e){
 			Log.error("Exception occured at getLocationWiseBoothDtls() in BoothDataValidationService class",e);
 		}
-		return locationBoothMap;
 	}
 
 	public BoothAddressVO getBoothAddress(Object[] param) {
@@ -471,5 +500,51 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			Log.error("Exception occured at getBoothAddress() in BoothDataValidationService class",e);
 		}
 		return addressVO;
+	}
+	/**
+	  * @param  InputVO inputVO 
+	  * @return List<BoothInchargeDetailsVO>
+	  * @author Santosh 
+	  * @Description :This Service Method is used to get location based on selection. 
+	  * @since 7-JULY-2017
+	  */
+	public List<BoothInchargeDetailsVO> getLocationBasedOnSelection(InputVO inputVO) {
+		List<BoothInchargeDetailsVO> resultList = new ArrayList<BoothInchargeDetailsVO>();
+		try{
+			List<Object[]> locationObjLst = boothInchargeDAO.getLocationBasedOnSelection(inputVO);
+			resultList = getLocationList(locationObjLst,"");
+			if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
+				resultList = getLocationList(locationObjLst,IConstants.TEHSIL);
+				inputVO.setLocationLevel(IConstants.LOCALELECTIONBODY);
+				List<Object[]> localElectionBodyObjLst = boothInchargeDAO.getLocationBasedOnSelection(inputVO);
+				List<BoothInchargeDetailsVO> locationElectionBodyList = getLocationList(localElectionBodyObjLst,IConstants.LOCALELECTIONBODY);
+				resultList.addAll(locationElectionBodyList);
+			}
+		}catch(Exception e){
+			Log.error("Exception occured at getLocationBasedOnSelection() in BoothDataValidationService class",e);
+		}
+		return resultList;
+	}
+	public List<BoothInchargeDetailsVO> getLocationList(List<Object[]> locationObjLst,String type){
+		List<BoothInchargeDetailsVO> locationList = new ArrayList<BoothInchargeDetailsVO>();
+		try{
+			if (locationObjLst != null && locationObjLst.size() > 0) {
+				for (Object[] param:locationObjLst) {
+					BoothInchargeDetailsVO locationVO = new BoothInchargeDetailsVO();
+					if(type.equalsIgnoreCase(IConstants.TEHSIL)) {
+						locationVO.setLocationIdStr("1"+commonMethodsUtilService.getStringValueForObject(param[0]));
+					} else if (type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)) {
+						locationVO.setLocationIdStr("2"+commonMethodsUtilService.getStringValueForObject(param[0]));
+					} else {
+						locationVO.setLocationIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+					}
+					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					locationList.add(locationVO);
+				}
+			}
+		} catch(Exception e) {
+			Log.error("Exception occured at getLocationList() in BoothDataValidationService class",e);
+		}
+		return locationList;
 	}
 }
