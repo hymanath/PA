@@ -4085,5 +4085,17 @@
 	 </bean>
 	 <bean id="amsOfficerOtpDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.AmsOfficerOtpDetailsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
-	 </bean>
+	 </bean>	 	 
+	 <bean id="boothInchargeRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeRoleDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>	 
+	 <bean id="boothInchargeConditionDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeConditionDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>	 
+	 <bean id="boothInchargeRoleConditionDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeRoleConditionDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>	 
+	 <bean id="boothInchargeRoleConditionMappingDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeRoleConditionMappingDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>	 
 </beans>		
