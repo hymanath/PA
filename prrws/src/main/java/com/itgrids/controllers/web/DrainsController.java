@@ -1,5 +1,7 @@
 package com.itgrids.controllers.web;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.DrainsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.service.IDrainsService;
+import com.itgrids.service.IUserService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 
 @EnableAutoConfiguration
@@ -24,15 +27,18 @@ public class DrainsController {
 	private static final Logger LOG = Logger.getLogger(DrainsController.class);
 	@Autowired
 	private WebServiceUtilService webServiceUtilService;
+	@Autowired
+	private IUserService userServiceImpl;
 	
 	@Autowired
 	private IDrainsService drainsService;
 	
-	@GetMapping(value ="/drainsDashboard")
+	@GetMapping(value ="/drainDashBoard")
     public String drainsDashboard(ModelMap model) {
       
 		return "drainDashBoard";
     }
+	
 	@PostMapping("/getDrainsInfobyLocation")
 	public @ResponseBody DrainsVO getDrainsInfoByLocation(@RequestBody InputVO inputVO)
 	{
@@ -43,6 +49,19 @@ public class DrainsController {
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at  getDrainsInfobyLocation - DrainsController controller", e);
+		}
+		return drainsVO;
+	}
+	@PostMapping("/getDrainsInfobyLocationNew")
+	public @ResponseBody List<DrainsVO> getDrainsInfobyLocations(@RequestBody InputVO inputVO)
+	{
+		
+		List<DrainsVO> drainsVO=null;
+		try {
+			drainsVO = drainsService.getDrainsInfobyLocations(inputVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at  getDrainsInfobyLocations - DrainsController controller", e);
 		}
 		return drainsVO;
 	}
