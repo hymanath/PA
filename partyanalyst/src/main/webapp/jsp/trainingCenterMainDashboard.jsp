@@ -1714,7 +1714,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			batchId : batchId,
 			dataType:dataType,
 			type:type,
-			enrollmentYearIdsList :enrollmentYrIds,
+			enrollmentYrIds :enrollmentYrIds,
 			programIdsList : programIds	
 		}
 		$.ajax({
