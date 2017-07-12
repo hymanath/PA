@@ -631,7 +631,7 @@ getAllDepartments();
 					globalLocationId = $("#selectedName").attr("attr_levelidvalue")
 				}
 				emptyProgramSubProgramDistVal()
-				getAllSubLocationsBySuperLocationId(30,'distLevelParliamentNames',3);
+				getAllSubLocationsBySuperLocationId(11,'distLevelParliamentNames',3);
 				$(".distLevelparliamentCls").show();
 				$(".distLevelCls").hide();
 				 getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
@@ -663,7 +663,7 @@ getAllDepartments();
 					globalLocationId = $("#selectedName").attr("attr_levelidvalue")
 				}
 				emptyProgramSubProgramConstVal()
-				getAllSubLocationsBySuperLocationId(30,'constLevelParliaNames',4);
+				getAllSubLocationsBySuperLocationId(11,'constLevelParliaNames',4);
 				$(".constiLevelDistCls").hide();
 				$(".parlaiLevelDistCls").show();
 				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
@@ -695,7 +695,7 @@ getAllDepartments();
 					globalLocationId = $("#selectedName").attr("attr_levelidvalue")
 				}
 				emptyProgramSubProgramMandalVal()
-				getAllSubLocationsBySuperLocationId(30,'parliamentLevelConstNames',5);
+				getAllSubLocationsBySuperLocationId(11,'parliamentLevelConstNames',5);
 				$(".mandalLevelDistCls").hide();
 				$(".levelparliamentConstiCls").show();
 				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
@@ -727,7 +727,7 @@ getAllDepartments();
 					globalLocationId = $("#selectedName").attr("attr_levelidvalue")
 				}
 				emptyProgramSubProgramVillageVal()
-				getAllSubLocationsBySuperLocationId(30,'villageLeveParliNames',6);
+				getAllSubLocationsBySuperLocationId(11,'villageLeveParliNames',6);
 				
 				$(".villageLevelDistCls").hide();
 				$(".villageLevelParliCls").show();
@@ -2142,7 +2142,7 @@ getAllDepartments();
 		var locationLevelType = 9;
 		var locationId =$("#constLevelParliaNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'constLevelConstNames',4);
-		if(cummulativeType == "normalView"){
+		if(cummulativeType == "normalView"){     
 			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
 		}else{
 			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
