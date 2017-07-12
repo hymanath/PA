@@ -608,12 +608,12 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 	}
 	public Long todayAppointmentCandidateCount(Long userId,Date insertedDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
-		  sb.append("select count(model.appointmentCandidateId)" +
-		  		" from AppointmentCandidate model" +
-		  		" where model.createdBy = :userId");
+		  sb.append("select count(distinct model.appointment.appointmentId)" +
+		  		" from AppointmentCandidateRelation model" +
+		  		" where model.appointment.createdBy = :userId and model.appointment.isDeleted='N' ");
 		  if(insertedDate != null && endDate != null)
-			  sb.append(" and ( date(model.insertedTime) between :endDate and :insertedDate) ");
-		  sb.append(" group by model.createdBy ");
+			  sb.append(" and ( date(model.appointment.insertedTime) between :endDate and :insertedDate) ");
+		  sb.append(" group by model.appointment.createdBy ");
 		  Query query = getSession().createQuery(sb.toString());
 			query.setParameter("userId", userId);
 			 if(insertedDate != null && endDate != null){
@@ -624,13 +624,15 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 	}
 	public List<Object[]> appointmentCandidateDetails(Date fromDate,Date toDate,Long userId){
 		StringBuilder sb = new StringBuilder();
-		  sb.append("select model.appointmentCandidateId,model.name," +
-		  		" d.designation,model.imageURL " +
-		  		" from AppointmentCandidate model " +
-		  		" left join model.candidateDesignation d" +
-		  		" where model.createdBy = :userId");
+		  sb.append("select model.appointmentCandidate.appointmentCandidateId,model.appointmentCandidate.name," +
+		  		" d.designation,model.appointmentCandidate.imageURL,model.appointment.insertedTime " +
+		  		" from AppointmentCandidateRelation model " +
+		  		" left join model.appointmentCandidate.candidateDesignation d" +
+		  		" where model.appointment.createdBy = :userId and model.appointment.isDeleted='N' ");
 		  if(fromDate != null && toDate != null)
-			  sb.append(" and ( date(model.insertedTime) between :fromDate and :toDate) ");
+			  sb.append(" and ( date(model.appointment.insertedTime) between :fromDate and :toDate) ");
+		  sb.append(" order by model.appointment.insertedTime " );
+		  
 		  Query query = getSession().createQuery(sb.toString());
 			if(fromDate != null && toDate != null){
 				query.setDate("fromDate", fromDate); 
