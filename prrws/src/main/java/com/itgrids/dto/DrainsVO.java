@@ -12,24 +12,110 @@ public class DrainsVO implements Serializable {
 	private String name;
 	private Long kacha;
 	private Double kachhaKM;
-	private Long kachaCleaned;
-	private Double kachaCleanedKM;
-	private Double kachaPercentage;
+	private Long kachaCleaned=0l;
+	private Double kachaCleanedKM=0.00;
+	private Double kachaPercentage=0.00;
 	private Long pakka;
 	private Double pakkaKM;
-	private Long pakkaCleaned;
-	private Double pakkaCleanedKM;
-	private Double pakkaPercentage;
+	private Long pakkaCleaned=0l;
+	private Double pakkaCleanedKM=0.00;
+	private Double pakkaPercentage=0.00;
 	private Long underground;
 	private Double undergroundKM;
-	private Long undergroundCleaned;
-	private Double undergroundCleanedKM;
-	private Double undergroundPercentage;
+	private Long undergroundCleaned=0l;
+	private Double undergroundCleanedKM=0.00;
+	private Double undergroundPercentage=0.00;
 	private Long  availability;
 	private Double availabilityKM;
 	private Long cleaned;
 	private  Double cleanedKM;	
-	private Double percentage;
+	private Double percentage=0.00;
+	
+	private Long totalAvailable=0l,totalCleaned=0l,
+			kachaAvailable=0l,pakkaAvailable=0l,ugAvailable=0l,ugCleaned=0l;
+	private Double totalAvailableKms=0.00,totalCleanedKms=0.00,kachaAvailableKms=0.00,pakkaAvailableKms=0.00,ugAvailableKms=0.00,ugCleanedKms=0.00,ugPercentage=0.00;
+	
+	
+	public Double getUgPercentage() {
+		return ugPercentage;
+	}
+	public void setUgPercentage(Double ugPercentage) {
+		this.ugPercentage = ugPercentage;
+	}
+	public Double getUgCleanedKms() {
+		return ugCleanedKms;
+	}
+	public void setUgCleanedKms(Double ugCleanedKms) {
+		this.ugCleanedKms = ugCleanedKms;
+	}
+	public Long getKachaAvailable() {
+		return kachaAvailable;
+	}
+	public void setKachaAvailable(Long kachaAvailable) {
+		this.kachaAvailable = kachaAvailable;
+	}
+	public Double getKachaAvailableKms() {
+		return kachaAvailableKms;
+	}
+	public void setKachaAvailableKms(Double kachaAvailableKms) {
+		this.kachaAvailableKms = kachaAvailableKms;
+	}
+	public Long getPakkaAvailable() {
+		return pakkaAvailable;
+	}
+	public Double getTotalAvailableKms() {
+		return totalAvailableKms;
+	}
+	public void setTotalAvailableKms(Double totalAvailableKms) {
+		this.totalAvailableKms = totalAvailableKms;
+	}
+	public Double getTotalCleanedKms() {
+		return totalCleanedKms;
+	}
+	public void setTotalCleanedKms(Double totalCleanedKms) {
+		this.totalCleanedKms = totalCleanedKms;
+	}
+	
+	public Double getPakkaAvailableKms() {
+		return pakkaAvailableKms;
+	}
+	public void setPakkaAvailableKms(Double pakkaAvailableKms) {
+		this.pakkaAvailableKms = pakkaAvailableKms;
+	}
+	public Double getUgAvailableKms() {
+		return ugAvailableKms;
+	}
+	public void setUgAvailableKms(Double ugAvailableKms) {
+		this.ugAvailableKms = ugAvailableKms;
+	}
+	public Long getTotalAvailable() {
+		return totalAvailable;
+	}
+	public void setTotalAvailable(Long totalAvailable) {
+		this.totalAvailable = totalAvailable;
+	}
+	public Long getTotalCleaned() {
+		return totalCleaned;
+	}
+	public void setTotalCleaned(Long totalCleaned) {
+		this.totalCleaned = totalCleaned;
+	}
+	
+	public void setPakkaAvailable(Long pakkaAvailable) {
+		this.pakkaAvailable = pakkaAvailable;
+	}
+	public Long getUgAvailable() {
+		return ugAvailable;
+	}
+	public void setUgAvailable(Long ugAvailable) {
+		this.ugAvailable = ugAvailable;
+	}
+	public Long getUgCleaned() {
+		return ugCleaned;
+	}
+	public void setUgCleaned(Long ugCleaned) {
+		this.ugCleaned = ugCleaned;
+	}
 	public Long getId() {
 		return id;
 	}

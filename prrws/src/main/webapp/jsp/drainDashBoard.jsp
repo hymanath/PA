@@ -115,16 +115,18 @@
 								<h4 class="text-center">TOTAL</h4>
 							</div>
 							<div class="panel-body">
-								 <div class="row">
-									<div class="col-sm-6 subBlock">
-										<h5>AVAILABLE</h5>
-										<h4>631</h4>
-										<span>12210.2 KM</span>
-									</div>
-									<div class="col-sm-6 subBlock">
-										<h5>CLEANED</h5>
-										<h4>333<small class="pull-right">52.77%</small></h4>
-										<span>12210.2 KM</span>
+								<div id="totalBodyId">
+									 <div class="row">
+										<div class="col-sm-6 subBlock">
+											<h5>AVAILABLE</h5>
+											<h4 id="totalAvailableCountId">0</h4>
+											<span id="totalAvailableKmId">0 KM</span>
+										</div>
+										<div class="col-sm-6 subBlock">
+											<h5>CLEANED</h5>
+											<h4 id="totalCleanedCountId">0<small class="pull-right" id="totalPercentageId">0.00%</small></h4>
+											<span id="totalCleanedKmId">0 KM</span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -133,21 +135,23 @@
 						<div class="col-sm-3 block">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h4 class="text-center">KACCHA</h4>
+								<h4 class="text-center">KACHA</h4>
 							</div>
 							<div class="panel-body">
-								 <div class="row">
-									<div class="col-sm-6 subBlock">
-										<h5>AVAILABLE</h5>
-										<h4>631</h4>
-										<span>12210.2 KM</span>
+								<div id="kachaBodyId">
+									<div class="row">
+										<div class="col-sm-6 subBlock">
+											<h5>AVAILABLE</h5>
+											<h4 id="kachaAvailableCountId">0</h4>
+											<span id="kachaAvailableKmId">0 KM</span>
+										</div>
+										<div class="col-sm-6 subBlock">
+											<h5>CLEANED</h5>
+											<h4 id="kachaCleanedCountId">0<small class="pull-right" id="kachaPercentageId">0.00%</small></h4>
+											<span id="kachaCleanedKmId">0 KM</span>
+										</div>
 									</div>
-									<div class="col-sm-6 subBlock">
-										<h5>CLEANED</h5>
-										<h4>333<small class="pull-right">52.77%</small></h4>
-										<span>12210.2 KM</span>
-									</div>
-								</div>
+								</div>	
 							</div>
 						</div>
 						</div>
@@ -157,18 +161,20 @@
 								<h4 class="text-center">PAKKA</h4>
 							</div>
 							<div class="panel-body">
-								 <div class="row">
-									<div class="col-sm-6 subBlock">
-										<h5>AVAILABLE</h5>
-										<h4>631</h4>
-										<span>12210.2 KM</span>
+								<div id="pakkaBodyId"> 
+									<div class="row">
+										<div class="col-sm-6 subBlock">
+											<h5>AVAILABLE</h5>
+											<h4 id="pakkaAvailableCountId">0</h4>
+											<span id="pakkaAvailableKmId">0 KM</span>
+										</div>
+										<div class="col-sm-6 subBlock">
+											<h5>CLEANED</h5>
+											<h4 id="pakkaCleanedCountId">0<small class="pull-right" id="pakkaPercentageId">0.00%</small></h4>
+											<span id="pakkaCleanedKmId">0 KM</span>
+										</div>
 									</div>
-									<div class="col-sm-6 subBlock">
-										<h5>CLEANED</h5>
-										<h4>333<small class="pull-right">52.77%</small></h4>
-										<span>12210.2 KM</span>
-									</div>
-								</div>
+								</div>	
 							</div>
 						</div>
 						</div>
@@ -178,18 +184,20 @@
 								<h4 class="text-center">UNDERGROUND</h4>
 							</div>
 							<div class="panel-body">
-								 <div class="row">
-									<div class="col-sm-6 subBlock">
-										<h5>AVAILABLE</h5>
-										<h4>631</h4>
-										<span>12210.2 KM</span>
+								<div id="ugBodyId"> 
+									<div class="row">
+										<div class="col-sm-6 subBlock">
+											<h5>AVAILABLE</h5>
+											<h4 id="ugAvailableCountId">0</h4>
+											<span id="ugAvailableKmId">0 KM</span>
+										</div>
+										<div class="col-sm-6 subBlock">
+											<h5>CLEANED</h5>
+											<h4 id="udCleanedCountId">0<small class="pull-right" id="ugPercentageId">0.00%</small></h4>
+											<span id="ugCleanedKmId">0 KM</span>
+										</div>
 									</div>
-									<div class="col-sm-6 subBlock">
-										<h5>CLEANED</h5>
-										<h4>333<small class="pull-right">52.77%</small></h4>
-										<span>12210.2 KM</span>
-									</div>
-								</div>
+								</div>	
 							</div>
 						</div>
 						</div>
@@ -444,6 +452,6 @@
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/js/Pris.js" type="text/javascript"></script>
-<script src="Assests/prisDashBoard/prisDashBoard.js" type="text/javascript"></script>
+<script src="Assests/drainDashBoard/drainDashBoard.js" type="text/javascript"></script>
 </body>
 </html>
