@@ -374,7 +374,13 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		
 	}
-
+	/**
+	  * @param  InputVO inputVO 
+	  * @return List<BoothInchargeDetailsVO>
+	  * @author Santosh 
+	  * @Description :This Service Method is used to booth count location wise 
+	  *  @since 7-JULY-2017
+	  */
 	public List<BoothInchargeDetailsVO> getLocationLevelWiseBoothCount(InputVO inputVO) {
 		List<BoothInchargeDetailsVO> resultList = new ArrayList<BoothInchargeDetailsVO>(0);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
