@@ -344,7 +344,7 @@ public interface IConstants {
 	public static final String SUB_USER = "subUser";
 	public static final String POLITICIAN = "POLITICIAN";
 	public static final String COUNTRY = "COUNTRY";
-	public static final String STATE = "STATE";
+	public static final String STATE = "STATE";//santosh
 	public static final String DISTRICT = "DISTRICT";
 	public static final String CONSTITUENCY = "CONSTITUENCY";
 	public static final String TEHSIL = "TEHSIL";
@@ -1314,4 +1314,5 @@ public interface IConstants {
 	public static final String FEEDBACK_ALERT_CATEGORY_ID="4,5";
 	public static final Long MAHANADU_EVENT_ID = 51L;
 	public static final List<Long> IMPACT_IDS = Arrays.asList(3l,5l,6l,9l,12l);
+	public static final String PARLIAMENT_CONSTITUENCY = "PARLIAMENT CONSTITUENCY";
 }

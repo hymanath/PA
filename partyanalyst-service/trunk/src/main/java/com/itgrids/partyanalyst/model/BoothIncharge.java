@@ -35,11 +35,13 @@ public class BoothIncharge extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long boothInchargeRoleConditionMappingId;
 	
 	private Booth booth;
 	private TdpCadre tdpCadre;
 	private BoothInchargeEnrollment boothInchargeEnrollment;
 	private User user;
+	private BoothInchargeRoleConditionMapping boothInchargeRoleConditionMapping;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -122,7 +124,25 @@ public class BoothIncharge extends BaseModel implements Serializable{
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
-	
+	@Column(name = "booth_incharge_role_condition_mapping_id")
+	public Long getBoothInchargeRoleConditionMappingId() {
+		return boothInchargeRoleConditionMappingId;
+	}
+	public void setBoothInchargeRoleConditionMappingId(
+			Long boothInchargeRoleConditionMappingId) {
+		this.boothInchargeRoleConditionMappingId = boothInchargeRoleConditionMappingId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="booth_incharge_role_condition_mapping_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public BoothInchargeRoleConditionMapping getBoothInchargeRoleConditionMapping() {
+		return boothInchargeRoleConditionMapping;
+	}
+	public void setBoothInchargeRoleConditionMapping(
+			BoothInchargeRoleConditionMapping boothInchargeRoleConditionMapping) {
+		this.boothInchargeRoleConditionMapping = boothInchargeRoleConditionMapping;
+	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="booth_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
