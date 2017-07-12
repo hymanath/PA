@@ -350,7 +350,7 @@ function projectData(divId,levelId,locationId)
 								{
 									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
 								}else{
-									collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-divId="'+divId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
+									collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
 								}
 									collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - '+divId+'</h4>';
 								collapse+='</a>';
@@ -3023,7 +3023,7 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
-	}else if(result[0] != null && result[0].parameter == 'Payments')
+	}else if(result[0] != null && (result[0].parameter == 'Payments' || result[0].parameter == 'FAperformance'))
 	{
 		str+='<div></div>';
 	}else{
@@ -3112,7 +3112,7 @@ $(document).on("click",".menuDataCollapse",function(){
 		
 		for(var i in overViewArr)
 		{
-			if(overViewArr[i] != 'Payments')
+			if(overViewArr[i] != 'Payments' && overViewArr[i] != 'FAperformance')
 			{
 				$("[overview-block='"+overViewArr[i]+"']").html(spinner);
 			}else{
@@ -3123,7 +3123,7 @@ $(document).on("click",".menuDataCollapse",function(){
 
 				getNREGSProjectsAbstractNew(overViewArr[i],'district',locId,blockName,levelId);
 			}
-			else if(overViewArr[i] != 'Payments' || overViewArr[i] != 'FAperformance'){
+			else if(overViewArr[i] != 'Payments' && overViewArr[i] != 'FAperformance'){
 				getNREGSAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId);
 			}
 				
