@@ -1292,7 +1292,11 @@
 		      		   <value>com.itgrids.partyanalyst.model.MeekosamOccupation</value>
 		      		   <value>com.itgrids.partyanalyst.model.MeekosamCasteCategory</value>
 		      		   <value>com.itgrids.partyanalyst.model.MeekosamArgeeCategory</value>
-		      		   <value>com.itgrids.partyanalyst.model.MeekosamAnnualIncome</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamAnnualIncome</value>		      		   
+		      		   <value>com.itgrids.partyanalyst.model.BoothInchargeRole</value>
+		      		   <value>com.itgrids.partyanalyst.model.BoothInchargeCondition</value>
+		      		   <value>com.itgrids.partyanalyst.model.BoothInchargeRoleCondition</value>
+		      		   <value>com.itgrids.partyanalyst.model.BoothInchargeRoleConditionMapping</value>	      		   
 		      		   <value>com.itgrids.partyanalyst.model.AlertMeekosamReferalDetails</value>
 		      		   <value>com.itgrids.partyanalyst.model.MeekosamGrievanceReferDetails</value>
 		      		   <value>com.itgrids.partyanalyst.model.AmsOfficerOtpDetails</value>
