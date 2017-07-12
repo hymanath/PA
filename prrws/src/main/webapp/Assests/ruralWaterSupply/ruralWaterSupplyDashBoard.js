@@ -2183,12 +2183,12 @@
 										tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
 									}
 									if(GLtbodyArr[i].pcTarget !=null && GLtbodyArr[i].pcTarget >0){
-										tableView+='<td class="kpiClickView" attr_status="PC" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].pcTarget+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].pcTarget+'</td>';
+										tableView+='<td class="kpiClickView" attr_status="PC" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].pcTarget+'" attr_type="targets" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].pcTarget+'</td>';
 									}else{
 										tableView+='<td> - </td>';
 									}
 									if(GLtbodyArr[i].pcAchivement !=null && GLtbodyArr[i].pcAchivement >0){
-										tableView+='<td class="kpiClickView" attr_status="PC" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].pcAchivement+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].pcAchivement+'</td>';
+										tableView+='<td class="kpiClickView" attr_status="PC" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].pcAchivement+'" attr_type="achieved" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].pcAchivement+'</td>';
 									}else{
 										tableView+='<td> - </td>';
 									}
@@ -2203,12 +2203,12 @@
 										tableView+='<td> - </td>';
 									}
 									if(GLtbodyArr[i].qaTarget !=null && GLtbodyArr[i].qaTarget >0){
-										tableView+='<td class="kpiClickView" attr_status="NSS" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].qaTarget+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].qaTarget+'</td>';
+										tableView+='<td class="kpiClickView" attr_status="NSS" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].qaTarget+'" attr_type="targets" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].qaTarget+'</td>';
 									}else{
 										tableView+='<td> - </td>';
 									}
 									if(GLtbodyArr[i].qaAchivement !=null && GLtbodyArr[i].qaAchivement >0){
-										tableView+='<td class="kpiClickView" attr_status="NSS" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].qaAchivement+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].qaAchivement+'</td>';
+										tableView+='<td class="kpiClickView" attr_status="NSS" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].qaAchivement+'" attr_type="achieved"  style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].qaAchivement+'</td>';
 									}else{
 										tableView+='<td> - </td>';
 									}
@@ -3582,7 +3582,6 @@
 	});
 	$(document).on("click",".kpiClickView",function(){
 		$("#modalHablitationTable").html('');
-		
 		var status = $(this).attr("attr_status");
 		var locationValue = $(this).attr("attr_filter_value");
 		var locationType=$(this).attr("attr_location_type");
@@ -3599,8 +3598,6 @@
 	
 	//KPI ON CLICK
 	function getOnclickTargetsAcheievementsDetails(status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount){
-		
-		
 		
 		var yearVal="";
 		var financialVal =$("#financialYearId").val();
@@ -3644,6 +3641,12 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
+			if(result !=null && result.length>0){
+				buildOnclickTargetsAcheievementsDetails(result,'OnclickTargetsAcheievements_Click',status,locationType,locationValue,districtVal,startIndex,totalCount);
+			}else{
+				$(".paginationId").html("");
+				$("#modalHablitationTable").html('No Data Available');
+			}
 			
 			
 		});
@@ -4135,3 +4138,47 @@
 		
 	}
 	
+	// kpi build
+	function buildOnclickTargetsAcheievementsDetails(result,type,status,locationType,locationValue,districtVal,startIndex,totalCount){
+		var tableView='';
+		tableView+='<table class="table table-bordered" id="dataTableHablitation">';
+			tableView+='<thead>';
+			tableView+='<tr>';
+					tableView+='<th>DISTRICT</th>';
+					tableView+='<th>CONSTITUENCY</th>';
+					tableView+='<th>MANDAL</th>';
+					tableView+='<th>HABITATIONS NAME</th>';
+					tableView+='<th>HABITATIONS CODE</th>';
+				tableView+='</tr>';
+				
+			tableView+='</thead>';
+			tableView+='<tbody>';
+			for(var i in result){
+				tableView+='<tr>';
+						tableView+='<td>'+result[i].districtName+'</td>';
+						tableView+='<td>'+result[i].constituencyName+'</td>';
+						tableView+='<td>'+result[i].mandalName+'</td>';
+						tableView+='<td>'+result[i].habitationName+'</td>';
+						tableView+='<td>'+result[i].habitationCode+'</td>';
+					tableView+='</tr>';
+			}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#modalHablitationTable").html(tableView);
+		
+		if(startIndex == 0 && totalCount > 0){
+				$(".paginationId").pagination({
+					items: totalCount,
+					itemsOnPage: 10,
+					cssStyle: 'light-theme',
+					hrefTextPrefix: '#pages-',
+					onPageClick: function(pageNumber) { 
+						var num=(pageNumber-1)*10;
+						getHabitationDetailsByStatusByLocationType(status,locationType,locationValue,districtVal,num,totalCount);
+							
+					}
+					
+				});
+			}
+		$(".prev,.next").css("width","70px !important");	
+	} 
