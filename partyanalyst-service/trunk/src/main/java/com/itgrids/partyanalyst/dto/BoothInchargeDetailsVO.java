@@ -4,7 +4,7 @@ public class BoothInchargeDetailsVO {
 	
 	private Long locationId;
 	private String locationName;
-	private Long totalBoothCount;
+	private Long totalBoothCount=0l;
 	private Long startedBoothCount;
 	private Long notStartedBoothCount;
 	private Long completedBoothCount;
