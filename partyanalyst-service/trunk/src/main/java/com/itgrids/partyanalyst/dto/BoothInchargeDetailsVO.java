@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dto;
 public class BoothInchargeDetailsVO {
 	
 	private Long locationId;
+	private String locationIdStr;
 	private String locationName;
 	private Long totalBoothCount=0l;
 	private Long startedBoothCount;
@@ -53,6 +54,12 @@ public class BoothInchargeDetailsVO {
 	}
 	public void setBoothAddressVO(BoothAddressVO boothAddressVO) {
 		this.boothAddressVO = boothAddressVO;
+	}
+	public String getLocationIdStr() {
+		return locationIdStr;
+	}
+	public void setLocationIdStr(String locationIdStr) {
+		this.locationIdStr = locationIdStr;
 	}
 	
 	
