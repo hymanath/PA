@@ -100,6 +100,7 @@ header.trainingHeader {
                                         	<h4 class="text-center panel-title" style="font-weight:bold;" id="titleSummary">PROGRAMME SUMMARY</h4>
                                         </div>
 										<div id="programSummaryDivId"></div>
+										<center><img id="loadingImg3" src="images/icons/survey-details.gif" style="width:150px;height:150px;display:none;"/></center>
                                     </div>	
                                 </div>
 								<div class="col-md-4 pull-right">
@@ -112,6 +113,7 @@ header.trainingHeader {
 										<tr>
                                         	<td>
                                             	<span>DISTRICT LEVEL MEMBERS <span class="pull-right" id="districtLevelTotalId">0</span></span>
+												<center><img id="loadingImg4" src="images/icons/survey-details.gif" style="width:150px;height:150px;display:none;"/></center>
                                             </td>
                                         </tr>
                                         <tr>
@@ -141,6 +143,7 @@ header.trainingHeader {
 										<input type="radio" value="const" class="distrconstdtls" name="distconst"/><label>  CONSTITUENCY</label>
 									</div></center>
 									<div id="districtWiseDetailsId"></div>
+									<center><img id="loadingImg2" src="images/icons/survey-details.gif" style="width:150px;height:150px;display:none;"/></center>
 								</div>
 								
                             </div>
@@ -153,6 +156,7 @@ header.trainingHeader {
 										<h4 class="panel-title"><b>TRAINER FEEDBACK ON TRAINEES</b></h4>
 									</div>
 									<div class="panel-body" id="feedbackDetailsId"></div>
+									<center><img id="loadingImg1" src="images/icons/survey-details.gif" style="width:150px;height:150px;display:none;"/></center>
 								</div>
 							</div>
 						</div>
@@ -313,7 +317,13 @@ $(".tbtn").click(function(){
 
 function getAttendedCountsByProgramOrCampOrBatch(fromType,enrollmentYrId)
 {
-	
+	$("#totalTrainedId").html("");
+	$('#mandalLevelTotalId').html("");
+	$('#villageLevelTotalId').html("");
+	$('#districtLevelTotalId').html("");
+	$('#otherCommitteeId').html("");
+	$("#districtWiseDetailsId").html("");
+	$("#loadingImg2").show();
 	var enrollmentYrIds = [];
 	enrollmentYrIds.push(enrollmentYrId);
 	var programId = 0;
@@ -341,6 +351,7 @@ function getAttendedCountsByProgramOrCampOrBatch(fromType,enrollmentYrId)
 		if(result != null){
 			buildAttendedCountByProgramOrCampOrBatch(result,fromType);
 		}else{
+			$("#loadingImg2").hide();
 			$("#districtWiseDetailsId").html("NO DATA AVAILABLE...");
 		}
 	});
@@ -348,7 +359,6 @@ function getAttendedCountsByProgramOrCampOrBatch(fromType,enrollmentYrId)
 
 function buildAttendedCountByProgramOrCampOrBatch(result,fromType)
 {
-	$("#districtWiseDetailsId").html('');
 	var str='';
 	
 			str+='<table class="table table-bordered bg_ff" id="attendedTable">';
@@ -373,7 +383,7 @@ function buildAttendedCountByProgramOrCampOrBatch(result,fromType)
 						
 							str+='<tr>';
 								str+='<td>'+result[i].name+'</td>';
-								str+='<td>'+result[i].count+'</td>';
+								str+='<td>'+result[i].count+' IA&nbsp;'+result[i].total+' NIA</td>';
 								for(var j in result[i].simpleVOList1){
 									if(result[i].simpleVOList1[j].id==5 || result[i].simpleVOList1[j].id==6 || result[i].simpleVOList1[j].id==11){
 									  str+='<td>'+result[i].simpleVOList1[j].totalCount+'</td>';
@@ -389,6 +399,7 @@ function buildAttendedCountByProgramOrCampOrBatch(result,fromType)
 			str+='</table>';
 		
 	$("#districtWiseDetailsId").html(str);
+	$("#loadingImg2").hide();
 	$("#attendedTable").dataTable({
 		"iDisplayLength": 50,
 		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
@@ -396,6 +407,7 @@ function buildAttendedCountByProgramOrCampOrBatch(result,fromType)
 	
 	
 	//total values setting block.
+	
 	$('#totalTrainedId').html(result[0].totalCount);
 	if(result!=null){
 	  if(result[0].simpleVOList2!=null && result[0].simpleVOList2.length>0){
@@ -416,7 +428,9 @@ function buildAttendedCountByProgramOrCampOrBatch(result,fromType)
 }
 	
 function getattendedcountByFeedBacks(enrollmentYrId)
-{	
+{
+	$("#feedbackDetailsId").html("");
+	$("#loadingImg1").show();
 var enrollmentYrIds = [];
 enrollmentYrIds.push(enrollmentYrId);
 var programId = 0;
@@ -443,6 +457,7 @@ var programIds =[];
 		if(result != null){
 			buildAttendedCountByFeedBacks(result);
 		}else{
+			$("#loadingImg1").hide();
 			$("#feedbackDetailsId").html("NO DATA AVAILABLE...");
 		}
 	});
@@ -600,9 +615,12 @@ function buildAttendedCountByFeedBacks(result)
 		str+='</div>';
 		
 	$("#feedbackDetailsId").html(str);
+	$("#loadingImg1").hide();
 }
 
 function getAttendedCountSummaryByBatch(enrollmentYrId){
+	$("#programSummaryDivId").html("");
+	$("#loadingImg3").show();
 	$("#titleSummary").html('BATCH WISE ATTENDANCE SUMMARY');
 	var enrollmentYrIds =[];
 	enrollmentYrIds.push(enrollmentYrId);
@@ -631,6 +649,7 @@ function getAttendedCountSummaryByBatch(enrollmentYrId){
 		if(result != null){
 			buildAttendedCountSummaryByBatch(result);
 		}else{
+			$("#loadingImg3").hide();
 			$("#programSummaryDivId").html("NO DATA AVAILABLE...");
 		}
 	});
@@ -717,7 +736,9 @@ function buildAttendedCountSummaryByBatch(result){
 			str+='</tbody>';
 			str+='</table>';
 				$("#programSummaryDivId").html(str);
+				$("#loadingImg3").hide();
 		}else{
+			$("#loadingImg3").hide();
 			$("#programSummaryDivId").html("<h4 style='font-weight:bold;margin-left:10px;'>No Data Available</h4>");
 		}
 			
