@@ -39,26 +39,26 @@ public class DrainsController {
 		return "drainDashBoard";
     }
 	
-	@PostMapping("/getDrainsInfobyLocation")
-	public @ResponseBody DrainsVO getDrainsInfoByLocation(@RequestBody InputVO inputVO)
+	@PostMapping("/getDrainsInfoStateWise")
+	public @ResponseBody DrainsVO getDrainsInfoStateWise(@RequestBody InputVO inputVO)
 	{
 		
 		DrainsVO drainsVO=null;
 		try {
-			drainsVO = drainsService.getDrainsInfobyLocation(inputVO);
+			drainsVO = drainsService.getDrainsInfoStateWise(inputVO);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at  getDrainsInfobyLocation - DrainsController controller", e);
 		}
 		return drainsVO;
 	}
-	@PostMapping("/getDrainsInfobyLocationNew")
-	public @ResponseBody List<DrainsVO> getDrainsInfobyLocations(@RequestBody InputVO inputVO)
+	@PostMapping("/getDrainsInfoLocationWise")
+	public @ResponseBody List<DrainsVO> getDrainsInfoLocationWise(@RequestBody InputVO inputVO)
 	{
 		
 		List<DrainsVO> drainsVO=null;
 		try {
-			drainsVO = drainsService.getDrainsInfobyLocations(inputVO);
+			drainsVO = drainsService.getDrainsInfoLocationWise(inputVO);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at  getDrainsInfobyLocations - DrainsController controller", e);
