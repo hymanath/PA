@@ -20,6 +20,7 @@ public class TrainingCampProgram extends BaseModel implements Serializable{
 	private String programName;
 	private String description;
 	private Long durationInDays;
+	private String isDeleted;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="training_camp_program_id", unique=true, nullable=false)
@@ -50,6 +51,14 @@ public class TrainingCampProgram extends BaseModel implements Serializable{
 	public void setDurationInDays(Long durationInDays) {
 		this.durationInDays = durationInDays;
 	}
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 	
 	
 }
