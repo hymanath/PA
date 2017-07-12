@@ -463,7 +463,7 @@ function overviewData(divId,levelId,locationId)
 	
 	if(divId == 'Labour Budget')
 		getNREGSLabourBudgetOverview(divId,menuLocationType,menuLocationId);
-	else if(divId != 'Payments')
+	else if(divId != 'Payments' && divId != 'FAperformance')
 		getNregasOverview(divId,menuLocationType,menuLocationId);
 }
 function tableView(blockId,theadArr,result,locationType)
@@ -567,8 +567,12 @@ function buildNREGSProjectsOverview(result,blockName)
 						}else{
 							str+='<div class="col-sm-2 m_top10">';
 						}
-						
-					
+						if(result[i] == "FAperformance"){
+							str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
+							str+='</div>';
+						}
+						else{
 							str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 								if(result[i].length > 12)
 								{
@@ -577,6 +581,7 @@ function buildNREGSProjectsOverview(result,blockName)
 									str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
 								}
 							str+='</div>';
+						}
 						str+='</div>';
 					}
 				}
@@ -2117,7 +2122,7 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocat
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
-		toDate 	: '2017-05-30',//glEndDate,
+		toDate 	: glEndDate,//glEndDate,'2017-05-30'
 		locationType: locationTypeNew,
 		divType : globalDivName,
 		locationId : menuLocationId
@@ -2961,13 +2966,18 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 			str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
 		}
 		
-		
-		if(type.length > 12)
-		{
-			str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-		}else{
-			str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+		if(result[0].parameter == "FAperformance"){
+			str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
 		}
+		else{
+			if(type.length > 12)
+			{
+				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+			}else{
+				str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+			}
+		}
+		
 			
 			str+='<small class="text-center">Achieved</small>';
 			if(result[0].percentage != null && result[0].percentage.length > 0)
@@ -3030,12 +3040,17 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 		str+='<div></div>';
 	}else{
 		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+		if(type == "FAperformance"){
+			str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
+		}
+		else{
 			if(type.length > 12)
 			{
 				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 			}else{
 				str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
 			}
+		}
 			str+='<small class="text-center">Achieved</small>';
 			str+='<h1 class="text-center">0<small>%</small>';
 			str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
