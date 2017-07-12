@@ -11,7 +11,7 @@ public interface IConstants {
 
     public static final String WORK_COMPLETION = "completed";
     public static final String WORK_COMMISSIONED = "commissioned";
-	public static final String WORK_GROUNDED = "grounded";
+	public static final String WORK_GROUNDED = "ongoing";
 	public static final String WORK_NOTGROUNDED = "not grounded";
 	
 	public static final String ACTION_UPDATE= "updateUser";
