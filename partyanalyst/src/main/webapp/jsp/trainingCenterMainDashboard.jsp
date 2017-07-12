@@ -1159,8 +1159,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		});
 	}
 	
-	function getAttendenceForTrainers(type){//srujana
-		
+	function getAttendenceForTrainers(type){
 		var typeStr = $("input[name='filterRadio']:checked").val();
 		var searchType = $("input[name='filtersRadio']:checked").val();	
         var enrollmentYrIds =[];
@@ -1839,6 +1838,7 @@ $(document).on('change', '#trainingEnrlmntYrId', function(){
 		getDayWiseCountsForRunningBatches("change");
 		getFeedBackCountsOfTraining("change");
 		getAllTrainingCampDetails("change");
+		getAttendenceForTrainers("change");
 	});
 $("#trainingEnrlmntYrId").tooltip();		
 </script>
