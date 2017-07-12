@@ -2,7 +2,7 @@ onloadCalls();
 function onloadCalls(){
 	getDrainsInfoStateWise();
 	getDrainsInfoLocationWise("district");
-	getDrainsInfoLocationWise("constituency");
+	getDrainsInfoLocationWise("assembly");
 	getDrainsInfoLocationWise("mandal");
 }
 
@@ -116,10 +116,13 @@ function buildingTable(result,locationType){
             str+='<tr>';
 				if(locationType == "district")
 					str+='<th style="background-color:#ccc;">DISTRICTS</th>';
-				else if(locationType == "constituency")
+				else if(locationType == "assembly")
 					str+='<th style="background-color:#ccc;">CONSTITUENCIES</th>';
 				else if(locationType == "mandal")
 					str+='<th style="background-color:#ccc;">MANDALS</th>';
+				else if(locationType == "constituency")
+					str+='<th style="background-color:#ccc;">PARLIAMENTS</th>';
+				
                 str+='<th style="background-color:#ccc;" colspan="5">TOTAL</th>';
                 str+='<th style="background-color:#ccc;" colspan="5">KACCHA</th>';
                 str+='<th style="background-color:#ccc;" colspan="5">PAKKA</th>';
@@ -185,12 +188,22 @@ function buildingTable(result,locationType){
     str+='</table>';
     str+='</div>';
 	
-	if(locationType == "district")
+	if(locationType == "district" || locationType == "constituency")
 		$("#districtTableDivId").html(str);
-	else if(locationType == "constituency")
-		$("#constituencyTableDivId").html(str);
+	else if(locationType == "assembly")
+		$("#assemblyTableDivId").html(str);
 	else if(locationType == "mandal")
 		$("#mandalTableDivId").html(str);
 	
 	$("#datatable"+locationType).dataTable();	
 }
+
+$(document).on("click","[role='tabDrains_menu'] li",function(){
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+	if($(this).attr("attr_location_type") == "districts"){
+		getDrainsInfoLocationWise("district");
+	}else if($(this).attr("attr_location_type") == "parliament"){
+		getDrainsInfoLocationWise("constituency");
+	}
+});

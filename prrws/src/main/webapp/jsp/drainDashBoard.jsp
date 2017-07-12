@@ -215,9 +215,9 @@
                     <div class="panel-body">
 					<div class="row">
 						<div class="col-sm-12">
-							<ul class="nav navbar-nav list_inline">
-								<li>Districts</li>
-								<li>Parliament</li>
+							<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu">
+								<li class="active" attr_location_type="districts">Districts</li>
+								<li class="" attr_location_type="parliament">Parliament</li>
 							</ul>
 						</div>
 					</div>
@@ -291,7 +291,7 @@
                             <h4 class="panel-title text-capital">CONSTITUENCY LEVEL OVERVIEW</h4>
                         </div>
                     <div class="panel-body">
-					<div id="constituencyTableDivId"></div>
+					<div id="assemblyTableDivId"></div>
                     <!--<table class="table" id="datatableDemoOne">
                         <div class="row">
                             <div class="col-sm-12">
