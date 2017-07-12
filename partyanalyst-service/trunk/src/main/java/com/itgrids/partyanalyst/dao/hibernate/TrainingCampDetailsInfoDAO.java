@@ -14,7 +14,7 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
 	public TrainingCampDetailsInfoDAO() {
 		super(TrainingCampDetailsInfo.class);
 	}
-      public List<Object[]> getTrainingCampProgramEligibleAndAttendedDetails(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds){
+      public List<Object[]> getTrainingCampProgramEligibleAndAttendedDetails(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds,List<Long> programIdList){
     	  StringBuilder queryStr = new StringBuilder();
     	  queryStr.append(" select model.trainingCampProgram.trainingCampProgramId," +//0
     	  				 "  model.trainingCampProgram.programName," +//1
@@ -22,8 +22,9 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  				 " sum(model.attended)," +//3
     	  				 " sum(model.yetToTrain)  " +//4
     	  				 " from TrainingCampDetailsInfo model " +
-    	  				 " where model.trainingCampProgram.trainingCampProgramId=8 ");
-    	  				// " and model.trainingCampProgramId = model1.trainingCampProgramId ");//and model.tdpCommitteeLevelId is null
+    	  				 " where  model.trainingCampProgram.trainingCampProgramId is not null ");
+    	  if(programIdList != null && programIdList.size()>0)
+    		  queryStr.append(" and model.trainingCampProgram.trainingCampProgramId in (:programIdList) "); 
     	  if(locationScopeId != null && locationScopeId.longValue() > 0){
     		  queryStr.append(" and model.locationScopeId =:locationScopeId");
     	  }
@@ -44,16 +45,21 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
     		 // query.setParameterList("enrollmentYearIds", enrollmentYearIds);
     	  }
+    	  if(programIdList != null && programIdList.size()>0){
+    		 query.setParameterList("programIdList", programIdList);
+    	  }
     	 return query.list();
     }
-      public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds){
+      public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds,List<Long> programIdList){
     	  StringBuilder queryStr = new StringBuilder();
     	  queryStr.append(" select model.tdpCommitteeLevelId," +//0
     	  				  " sum(model.eligible)," +//1
     	  				  " sum(model.attended)," +//2
     	  				  " sum(model.yetToTrain)  " +//3
     	  				  " from TrainingCampDetailsInfo model  " +
-    	  				  " where model.trainingCampProgramId=8  ");//and model.tdpCommitteeLevelId is not null
+    			  		  " where  model.trainingCampProgram.trainingCampProgramId is not null ");
+    	  if(programIdList != null && programIdList.size()>0)
+    		  queryStr.append(" and model.trainingCampProgram.trainingCampProgramId in (:programIdList) "); 
     	  if(locationScopeId != null && locationScopeId.longValue() > 0){
     		  queryStr.append(" and model.locationScopeId =:locationScopeId");
     	  }
@@ -74,18 +80,21 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
     		  //query.setParameterList("enrollmentYearIds", enrollmentYearIds);  
     	  }
+    	  if(programIdList != null && programIdList.size()>0){
+     		 query.setParameterList("programIdList", programIdList);
+     	  }
     	 return query.list();
     }
-     public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberLocationWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds){
+     public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberLocationWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds,List<Long> programIdList){
     	  StringBuilder queryStr = new StringBuilder();
     	  queryStr.append(" select model.locationValue," +//0
     	  				  " sum(model.eligible)," +//1
     	  				  " sum(model.attended)," +//2
     	  				  " sum(model.yetToTrain)  " +//3
     	  				  " from TrainingCampDetailsInfo model "+
-    	  				//  " from TrainingCampDetailsInfo model,TrainingCampSchedule model1 " +
-    	  				  " where model.trainingCampProgramId=8 ");
-    	  				//  "and model1.trainingCampProgram.trainingCampProgramId = model.trainingCampProgram.trainingCampProgramId ");
+    	  				  " where model.trainingCampProgramId is not null  ");
+    	  if(programIdList != null && programIdList.size()>0)
+    		  queryStr.append(" and model.trainingCampProgramId in (:programIdList) ");
     	  if(locationScopeId != null && locationScopeId.longValue() > 0){
     		  queryStr.append(" and model.locationScopeId =:locationScopeId");
     	  }
@@ -107,6 +116,8 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  if(enrollmentYearIds != null && enrollmentYearIds.size() >0){
   			//query.setParameterList("enrollmentYearIds", enrollmentYearIds);
   		}
+    	  if(programIdList != null && programIdList.size()>0)
+    		  query.setParameterList("programIdList", programIdList);
     	 return query.list();
     }
    public List<Object[]> getLocationWiseReportBasedOnUserType(Long locationScopeId,List<Long> locationValues,Long stateId,Long userTypeId,Long activityMemberId){

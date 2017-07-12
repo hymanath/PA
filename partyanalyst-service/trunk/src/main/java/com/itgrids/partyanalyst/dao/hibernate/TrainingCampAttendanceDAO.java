@@ -1317,7 +1317,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		 return query.list();  
   		}
   	
-	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByLocationType(Long userAccessLevelId,List<Long> userAccessLevelValues,String locationType,Long stateId,Date toDate,List<Long> enrollmentYearIds){
+	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByLocationType(Long userAccessLevelId,List<Long> userAccessLevelValues,String locationType,Long stateId,Date toDate,List<Long> enrollmentYearIds,List<Long> programIdList){
 
 	     StringBuilder queryStr= new StringBuilder();
 		  
@@ -1357,6 +1357,10 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  		              " model2.tdpRoles.tdpRolesId = model3.tdpCommitteeRole.tdpRoles.tdpRolesId and" +
 	  		              " model.attendance.tdpCadre.isDeleted='N' and model.attendance.tdpCadre.enrollmentYear=2014 and model3.isActive='Y'" +
 	  		              " and model3.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and model3.tdpCadre.gender=model2.gender ");
+	 if(programIdList != null && programIdList.size()>0){
+		 queryStr.append(" and  model.trainingCampProgram.trainingCampProgramId in (:programIdList) ");
+	 }
+	 
 	 if(stateId != null && stateId.longValue() > 0){
 		queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId");
 	 }
@@ -1413,7 +1417,10 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
   }
    if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
 		  query.setParameterList("enrollmentYearIds", enrollmentYearIds);
-	  }
+   }
+   if(programIdList != null && programIdList.size()>0){
+	   query.setParameterList("programIdList", programIdList);
+   }
 		  return query.list();    
   }
 	public List<Object[]> getTotalAttendedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate, List<Date> dateList, String option,List<Long> enrollYrIds){   
@@ -1444,8 +1451,8 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		}
 		queryString.append(" TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId and TC.enrollmentYear = 2014 and TC.isDeleted='N' ");
 		if(option.equalsIgnoreCase("dayWise") && programIdList.size() == 1 && programIdList.get(0) != 6){
-			queryString.append("group by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, date(TCBA.trainingCampBatch.attendedTime) " +
-							   " order by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, date(TCBA.trainingCampBatch.attendedTime) ");
+			queryString.append("group by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, date(TCBA.attendedTime) " +
+							   " order by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, date(TCBA.attendedTime) ");
 		}else{
 			queryString.append(" group by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId " +
 			           		   " order by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");
