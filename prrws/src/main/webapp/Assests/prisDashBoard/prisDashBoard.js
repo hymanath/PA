@@ -57,7 +57,6 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		var subBlockName = $("[table-menu='"+blockName+"'] li.active").html();
 		$("#table"+blockName).DataTable().destroy();
 		$("#table"+blockName).html(spinner);
-		alert(subBlockName);
 		if(subBlockName == 'Districts')
 		{
 			POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',value,0);
@@ -72,7 +71,6 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		var blockName = $(this).attr("attr_blockName");
 		var subBlockName = $("[table-menu='"+blockName+"'] li.active").html();
 		$("#table"+blockName).DataTable().destroy();
-		alert(subBlockName);
 		$("#table"+blockName).html(spinner);
 		if(subBlockName == 'Districts')
 		{
@@ -89,7 +87,6 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		
 		$("#table"+blockName).html(spinner);
 		var subBlockName = $("[table-menu='"+blockName+"'] li.active").html();
-		alert(subBlockName);
 		if(subBlockName == 'Districts')
 		{
 			POSTConstDateForAssemblyInfo(4,blockName,subBlockName,'tableView',value);
@@ -316,7 +313,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 										{
 											if(subBlockName == 'Districts')
 											{
-												tableView+='<td>-</td>';
+												tableView+='<td>'+result.subList[i].districtName+'</td>';
 												tableView+='<td>'+result.subList[i].name+'</td>';
 											}else if(subBlockName == 'Parliament')
 											{
@@ -326,8 +323,8 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 										{
 											if(subBlockName == 'Districts')
 											{
-												tableView+='<td>-</td>';
-												tableView+='<td>-</td>';
+												tableView+='<td>'+result.subList[i].districtName+'</td>';
+												tableView+='<td>'+result.subList[i].constituencyName+'</td>';
 												tableView+='<td>'+result.subList[i].name+'</td>';
 											}else if(subBlockName == 'Parliament')
 											{
@@ -435,12 +432,12 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 	
 	function POSTBasicCountBlock(){
 		$("#totalHouseHolds").html(spinner);
-		$("#tarPOSTOverall").html(spinner);
-		$("#tarPOSTOverallPercent").html(spinner);
+		$("#targetOverall").html(spinner);
+		$("#targetOverallPercent").html(spinner);
 		$("#achievedOverall").html(spinner);
 		$("#achievedOverallpercent").html(spinner);
-		$("#subTarPOST").html(spinner);
-		$("#subTarPOSTPercentage").html(spinner);
+		$("#subTarget").html(spinner);
+		$("#subTargetPercentage").html(spinner);
 		$("#subAchieved").html(spinner);
 		$("#subAchievedPercentage").html(spinner);
 		var json = {
@@ -451,7 +448,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}
 		$.ajax({                
 			type:'POST',    
-			url: 'POSTPrisSurveyBasicData',
+			url: 'getPrisSurveyBasicData',
 			dataType: 'json',
 			data : JSON.stringify(json),
 			beforeSend :   function(xhr){
@@ -464,16 +461,15 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 	}
 	function buildBasicBlock(result){
 		$("#totalHouseHolds").html(result.totalHouseHolds);
-		$("#tarPOSTOverall").html(result.tarPOSTOverall);
-		$("#tarPOSTOverallPercent").html(result.tarPOSTOverallPercent);
+		$("#targetOverall").html(result.targetOverall);
+		$("#targetOverallPercent").html(result.targetOverallPercent);
 		$("#achievedOverall").html(result.achievedOverall);
 		$("#achievedOverallpercent").html(result.achievedOverallpercent);
-		$("#subTarPOST").html(result.subTarPOST);
-		$("#subTarPOSTPercentage").html(result.subTarPOSTPercentage);
+		$("#subTarget").html(result.subTarget);
+		$("#subTargetPercentage").html(result.subTargetPercentage);
 		$("#subAchieved").html(result.achievedOverall);
 		$("#subAchievedPercentage").html(result.achievedOverallpercent);
 	}
-	
 	function POSTConstDateForAssemblyInfo(blockId,blockName,subBlockName,viewType,locId){
 		$("#"+blockName+'_'+blockId).html(spinner);
 		var json = {
@@ -513,7 +509,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			locationId:0,
 			locationType:"mandal",
 			filterId: filterId,
-			filterType:'districts',
+			filterType:'district',
 			subFilterId: locId ,
 			subFilterType: 'constituency'//assembly
 		}
