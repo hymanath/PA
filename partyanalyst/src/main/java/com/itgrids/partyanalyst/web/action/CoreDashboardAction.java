@@ -1570,6 +1570,15 @@ public String getTopPoorPerformancecommittees(){
 			LOG.info("Entered into getTotalEligibleAttendedAndNotAttenedOverviewCount()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
 			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+			 
+			List<Long> programIdList = new ArrayList<Long>();
+			JSONArray programIdArr=jObj.getJSONArray("programIdArr");  
+			if(programIdArr!=null &&  programIdArr.length()>0){
+				for( int i=0;i<programIdArr.length();i++){ 
+					programIdList.add(Long.valueOf(programIdArr.getString(i)));
+				}
+			}
+			
 			
 			List<Long> userAccessLevelValues=new ArrayList<Long>();
 			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
@@ -1587,7 +1596,7 @@ public String getTopPoorPerformancecommittees(){
 					enrollmentYearIds.add(Long.valueOf(enrollmentYearIdsArray.getString(i)));
 				}
 			}
-			trainingCampProgramVO = coreDashboardMainService.getTrainingCampBasicDetailsCntOverview(userAccessLevelId,userAccessLevelValues,stateId,dateStr,enrollmentYearIds);
+			trainingCampProgramVO = coreDashboardMainService.getTrainingCampBasicDetailsCntOverview(userAccessLevelId,userAccessLevelValues,stateId,dateStr,enrollmentYearIds,programIdList);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getTotalEligibleAttendedAndNotAttenedOverviewCount() method of CoreDashBoardAction", e);
@@ -1648,6 +1657,13 @@ public String getTopPoorPerformancecommittees(){
 				userId = user.getRegistrationID();
 		    //Long userId = jObj.getLong("userId");
 			
+			List<Long> programIdList = new ArrayList<Long>();
+			JSONArray programIdArr=jObj.getJSONArray("programIdArr");  
+			if(programIdArr!=null &&  programIdArr.length()>0){
+				for( int i=0;i<programIdArr.length();i++){ 
+					programIdList.add(Long.valueOf(programIdArr.getString(i)));
+				}
+			}
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			Long userTypeId = jObj.getLong("userTypeId");
 		    Long userAccessLevelId = jObj.getLong("userAccessLevelId");
@@ -1668,7 +1684,7 @@ public String getTopPoorPerformancecommittees(){
 			}
 			Long stateId = jObj.getLong("stateId");
 			String dateStr = jObj.getString("dateStr");
-			userTypeVOList = coreDashboardMainService.getUserTypeWiseTotalEligibleAndAttendedCnt(userId,userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues,stateId,dateStr,enrollmentYrIds);
+			userTypeVOList = coreDashboardMainService.getUserTypeWiseTotalEligibleAndAttendedCnt(userId,userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues,stateId,dateStr,enrollmentYrIds,programIdList);
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getUserTypeWiseTotalEligibleAndAttendedCnt() method of CoreDashBoardAction", e); 
 	 }
@@ -1706,7 +1722,15 @@ public String getSelectedChildTypeMembersForTrainingProgram(){
 					enrollmentYearIds.add(Long.valueOf(enrollmentYearIdsArray.getString(i)));
 				}
 			}
-			activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(parentActivityMemberId,childUserTypeIds,userAccessLevelId,userAccessLevelValues,reportType,stateId,dateStr,enrollmentYearIds);
+			
+			List<Long> programIdList = new ArrayList<Long>();
+			JSONArray programIdArr=jObj.getJSONArray("programIdArr");  
+			if(programIdArr!=null &&  programIdArr.length()>0){
+				for( int i=0;i<programIdArr.length();i++){ 
+					programIdList.add(Long.valueOf(programIdArr.getString(i)));
+				}
+			}
+			activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(parentActivityMemberId,childUserTypeIds,userAccessLevelId,userAccessLevelValues,reportType,stateId,dateStr,enrollmentYearIds,programIdList);
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getSelectedChildTypeMembersForTrainingProgram() method of CoreDashBoardAction", e); 
 	 }
@@ -1736,7 +1760,16 @@ public String getDirectChildActivityTrainingProgramMemberDetails(){
 					enrollmentYearIds.add(Long.valueOf(enrollmentYearIdsArray.getString(i)));
 				}
 			}
-		 	activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(activityMemberId,childUserTypeIds,null,null,reportType,stateId,dateStr,enrollmentYearIds);
+			
+			List<Long> programIdList = new ArrayList<Long>();
+			JSONArray programIdArr=jObj.getJSONArray("programIdArr");  
+			if(programIdArr!=null &&  programIdArr.length()>0){
+				for( int i=0;i<programIdArr.length();i++){ 
+					programIdList.add(Long.valueOf(programIdArr.getString(i)));
+				}
+			}
+			
+		 	activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(activityMemberId,childUserTypeIds,null,null,reportType,stateId,dateStr,enrollmentYearIds,programIdList);
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getDirectChildActivityTrainingProgramMemberDetails() method of CoreDashBoardAction", e); 
 	 }
@@ -1746,6 +1779,13 @@ public String getTrainingProgramPoorCompletedLocationDtls(){
 	  try{
 			LOG.info("Entered into getTrainingProgramPoorCompletedLocationDtls()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
+			List<Long> programIdList = new ArrayList<Long>();
+			JSONArray programIdArr=jObj.getJSONArray("programIdArr");  
+			if(programIdArr!=null &&  programIdArr.length()>0){
+				for( int i=0;i<programIdArr.length();i++){ 
+					programIdList.add(Long.valueOf(programIdArr.getString(i)));
+				}
+			}
 			Long userTypeId = jObj.getLong("userTypeId");
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			 Long stateId = jObj.getLong("stateId");
@@ -1757,7 +1797,7 @@ public String getTrainingProgramPoorCompletedLocationDtls(){
 						enrollmentYearIds.add(Long.valueOf(enrollmentYearIdsArray.getString(i)));
 					}
 				}
-			trainingCampProgramVO = coreDashboardMainService.getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,stateId,dateStr,enrollmentYearIds);
+			trainingCampProgramVO = coreDashboardMainService.getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,stateId,dateStr,enrollmentYearIds,programIdList);
 		}catch(Exception e){
 			LOG.error("Exception raised at getTrainingProgramPoorCompletedLocationDtls() method of CoreDashBoardAction", e);
 		}
