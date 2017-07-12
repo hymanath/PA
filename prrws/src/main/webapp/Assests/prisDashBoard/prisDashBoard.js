@@ -26,6 +26,12 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		$(".border_adjust_align").addClass("border_top");
 	}
 	$(document).on('click','[table-menu] li',function(){
+		$('#districtSelectBoxchosen').val(0);
+		$('#mandalsDistrictSelectBoxchosen').val(0);
+		$('#mandalsSelectBoxchosen').val(0);
+		$('#districtSelectBoxchosen').trigger('chosen:updated');
+		$('#mandalsDistrictSelectBoxchosen').trigger('chosen:updated');
+		$('#mandalsSelectBoxchosen').trigger('chosen:updated');
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
 		var blockName = $(this).closest("ul").attr("table-menu");
@@ -388,7 +394,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 		
 		var selectBox = '';
 		selectBox+='<select id="'+id+'chosen" attr_blockName="'+blockName+'">';
-			selectBox+='<option>Select</option>';
+			selectBox+='<option value="0">Select</option>';
 			for(var i in result)
 			{
 				selectBox+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
