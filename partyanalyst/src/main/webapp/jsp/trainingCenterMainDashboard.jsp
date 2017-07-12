@@ -557,7 +557,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	if(enrollmentYrIds == 4){
 		programIds.push(8);
 	}else{
-		programIds.push(1,6,7);
+		programIds.push(1,6,7,5);
 	}
 	var jsObj=
 	{	
@@ -1030,7 +1030,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	    if(enrollmentYrIds == 4){
 		   programIds.push(8);
 	     }else{
-		 programIds.push(1,6,7);
+		 programIds.push(1,6,7,5);
 			}
 		var jObj={
 			selectedDate : dates,
@@ -1078,7 +1078,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		if(enrollmentYrIds == 4){
 			programIds.push(8);
 		}else{
-			programIds.push(1,6,7);
+			programIds.push(1,6,7,5);
 		}
 		var jObj={
 			selectedDate : dates,
@@ -1173,7 +1173,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		if(enrollmentYrIds == 4){
 			programIds.push(8);
 		}else{
-			programIds.push(1,6,7);
+			programIds.push(1,6,7,5);
 		}		
 		$("#spekrsTotalDiv").html("");
 		var jObj={
@@ -1341,7 +1341,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		if(enrollmentYrIds == 4){
 			programIds.push(8);
 		}else{
-			programIds.push(1,6,7);
+			programIds.push(1,6,7,5);
 		}
 		var jObj={
 		  selectedDate : dates,
@@ -1606,7 +1606,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			if(enrollmentYrIds==4){
 				programIds.push(8);
 			}else{
-				programIds.push(1,6,7);
+				programIds.push(1,6,7,5);
 			}
 		var jsObj={
 			dates : dates,
@@ -1708,7 +1708,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			if(enrollmentYrIds==4){
 				programIds.push(8);
 			}else{
-				programIds.push(1,6,7);
+				programIds.push(1,6,7,5);
 			}
 		var jsObj={
 			batchId : batchId,
@@ -1776,7 +1776,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			if(enrollmentYrIds == 4){
 				programIds.push(8);
 			}else{
-				programIds.push(1,6,7);
+				programIds.push(1,6,7,5);
 			}
 		var jsObj={
 			enrollmentYearIdsList :enrollmentYrIds,
