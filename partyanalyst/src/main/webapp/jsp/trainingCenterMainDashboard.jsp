@@ -234,7 +234,7 @@ header.eventsheader {
                                 	<div class="panel panel-default">
                                     	<div class="panel-body pad_0">
 											<div class="panel-heading bg_d">
-												<span class="panel-title text-bold">SPEAKERS ATTENDANCE <span class="col-md-offset-3" id="spekrsTotalDiv"></span><img id="refrshButtonId" alt="refresh icon" class="tiled-icon" style="margin-left:-225px;max-width: 128px; max-height: 22px;" title="Click Here To get Updated Speaker Details" src="images/refresh.png"></span>
+												<span class="panel-title text-bold">SPEAKERS ATTENDANCE <span class="col-md-offset-3" id="spekrsTotalDiv"></span><img id="refrshButtonId" alt="refresh icon" class="tiled-icon" style="margin-left:-265px;max-width: 128px; max-height: 22px;" title="Click Here To get Updated Speaker Details" src="images/refresh.png"></span>
 														<div class="pull-right">
 															<input type="radio" checked name="filterRadio" value="today" class="filterRadio"/>
 															<label>&nbsp;Today</label>
