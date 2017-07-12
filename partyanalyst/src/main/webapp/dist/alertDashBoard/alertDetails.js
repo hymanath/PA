@@ -1380,6 +1380,7 @@ function alertComments(result)
 			
 				if(entitlementsArr != null && entitlementsArr.length >0){
 				for(var x=0;x<entitlementsArr.length;x++){
+					
 				if(entitlementsArr[x].trim()=="IGNORE_PROGRAMME_COMMITTEE_ALERT_COMMENTS_ENTITLEMENT"){
 					    buildStr='<div class="panel-body" style="padding:5px;display:none;">';
 						/* $("#statusId").prop('disabled', true);
@@ -1392,7 +1393,7 @@ function alertComments(result)
 				}
 			}
 			/* if an alert is assigned to login user , we need to */
-			if(globalTdpCadreId == globalAssignedCadreId){
+			if($.inArray(globalTdpCadreId, globalAssignedCadreId) > -1){
 					buildStr='<div class="panel-body" style="padding:5px;display:block;">';
 					/* $("#statusId").prop('disabled', false);
 					var select = new Dropkick("#statusId");
@@ -1540,10 +1541,11 @@ function alertComments(result)
 	}
 
 	setTimeout(function(){
-		 if(globalTdpCadreId == "" || globalTdpCadreId == null){
+		if(globalTdpCadreId == "" || globalTdpCadreId == null){
 			;//alert("same");
 		}
-		else if(globalTdpCadreId != globalAssignedCadreId){
+		//else if(globalTdpCadreId != globalAssignedCadreId){
+		else if($.inArray(globalTdpCadreId, globalAssignedCadreId) == -1){
 			;//alert("not same");
 			$("#statusId").prop('disabled', true);
 			$("#commentsId").prop('disabled', true);
