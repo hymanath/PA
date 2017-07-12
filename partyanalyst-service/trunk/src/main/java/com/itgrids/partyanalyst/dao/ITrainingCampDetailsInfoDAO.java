@@ -8,9 +8,9 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.TrainingCampDetailsInfo;
 
 public interface ITrainingCampDetailsInfoDAO extends GenericDao<TrainingCampDetailsInfo, Long> {
-	public List<Object[]> getTrainingCampProgramEligibleAndAttendedDetails(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds);
-	public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds);
-	public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberLocationWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds);
+	public List<Object[]> getTrainingCampProgramEligibleAndAttendedDetails(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds,List<Long> programIdList);
+	public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds,List<Long> programIdList);
+	public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberLocationWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds,List<Long> programIdList);
 	public List<Object[]> getLocationWiseReportBasedOnUserType(Long locationScopeId,List<Long> locationValues,Long stateId,Long userTypeId,Long activityMemberId);
 	public List<Object[]> getTrainingCampEligibleAndAttendedCntByLocationType(Long locationScopeId,List<Long> locationValues,Long stateId,Long userTypeId,Long activityMemberId,String locationType);
 	public int pushTrainginCampDataLocationWiseByCommitteeLevel();
