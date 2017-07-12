@@ -1,6 +1,6 @@
 
 //getLocationLevelWiseBoothCount();
-//getLocationBasedOnSelection
+//getLocationBasedOnSelection();
 function getLocationLevelWiseBoothCount(){
 
 	var jsObj={  
@@ -21,7 +21,7 @@ function getLocationLevelWiseBoothCount(){
 	});
 }
 function getLocationBasedOnSelection(){
-
+ alert(11);
 	var jsObj={  
 		locationLevel : "District",         
 		filterLevel : " ",
