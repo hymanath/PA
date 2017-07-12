@@ -804,7 +804,7 @@ function deleteAlertAssignedCandidates(tdpCadreId)
 				});
 }
 
-var globalAssignedCadreId;
+var globalAssignedCadreId=[];
 function buildAlertAssignedCandidateData(result)
 {
 	
@@ -820,7 +820,7 @@ function buildAlertAssignedCandidateData(result)
 		for(var j in result[i].subList)  
 		{
 			
-			globalAssignedCadreId = result[i].subList[j].id;
+			globalAssignedCadreId.push(result[i].subList[j].id.toString().trim());
 			str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;">';
 			str+='<div class="media-left">';
 			str+='<img src="images/cadre_images/'+result[i].subList[j].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
