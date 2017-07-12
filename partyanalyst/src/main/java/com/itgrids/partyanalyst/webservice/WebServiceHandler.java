@@ -3257,7 +3257,7 @@ public class WebServiceHandler {
 					locationValuesList.add(Long.parseLong(arr.get(i)+""));
 				}
 			}
-			return webServiceHandlerService.getHamletWiseIvrStatusList(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getString("year"),locationValuesList,jObj.getLong("locationTypeId"),jObj.getString("statusType"));			
+			return webServiceHandlerService.getHamletWiseIvrStatusList(jObj.getString("fromDateStr"), jObj.getString("toDateStr"), jObj.getString("year"),locationValuesList,jObj.getLong("locationTypeId"),jObj.getString("status"));			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getHamletWiseIvrStatusList() Method, Exception is ",e);
 			return null;
