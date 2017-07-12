@@ -1820,10 +1820,13 @@ $(document).on("click","#refrshButtonId",function(){
 	updateTrainingCampSpeakersDetails();
 });
  function updateTrainingCampSpeakersDetails(){
+	 var jsObj={
+			task : "getUpdateTrainingCampSpeakersDetails"
+		}
 		$.ajax({
 		   type:'POST',
 		   url :'getUpdateTrainingCampSpeakersDetails.action',
-		   data: {},
+		   data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){	
 		});
 	}
