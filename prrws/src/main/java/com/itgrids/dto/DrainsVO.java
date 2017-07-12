@@ -116,6 +116,16 @@ public class DrainsVO implements Serializable {
 	public void setUgCleaned(Long ugCleaned) {
 		this.ugCleaned = ugCleaned;
 	}
+	
+	private List<DrainsVO> countList = new ArrayList<DrainsVO>(0);
+	private List<DrainsVO> distConsCuntList = new ArrayList<DrainsVO>(0);
+	private List<DrainsVO> distMandalCuntList = new ArrayList<DrainsVO>(0);
+	private List<DrainsVO> distMandalList = new ArrayList<DrainsVO>(0);
+	private List<DrainsVO> consMandalList = new ArrayList<DrainsVO>(0);
+	private List<DrainsVO> mandalVillageList = new ArrayList<DrainsVO>(0);
+	
+	private List<DrainsVO> typeList = new ArrayList<DrainsVO>(0);
+	
 	public Long getId() {
 		return id;
 	}
@@ -296,12 +306,7 @@ public class DrainsVO implements Serializable {
 		this.mandalVillageList = mandalVillageList;
 	}
 
-	private List<DrainsVO> countList = new ArrayList<DrainsVO>(0);
-	private List<DrainsVO> distConsCuntList = new ArrayList<DrainsVO>(0);
-	private List<DrainsVO> distMandalCuntList = new ArrayList<DrainsVO>(0);
-	private List<DrainsVO> distMandalList = new ArrayList<DrainsVO>(0);
-	private List<DrainsVO> consMandalList = new ArrayList<DrainsVO>(0);
-	private List<DrainsVO> mandalVillageList = new ArrayList<DrainsVO>(0);
+	
 	
 
 }
