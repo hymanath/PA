@@ -5963,7 +5963,7 @@ class TrainingCampService implements ITrainingCampService{
 					finalMap.get("completed").setCompletedBatchIds(completedBatchIds);
 				}
 				
-				runningBatches = trainingCampBatchDAO.getCompletedBatchIds(sdf.parse(sdf.format(new Date())),"running",batchIds,enrollmentYearIds,programYearIds);
+				runningBatches = trainingCampBatchDAO.getCompletedBatchIds(dateUtilService.getCurrentDateAndTime(),"running",batchIds,enrollmentYearIds,programYearIds);
 				setBatchesInformation(finalMap,runningBatches,"running",runningBatchIds,totalTrainingCenters);
 				runningMembersCounts = getCompletedRunningUpcomingCountsForBatchIds(runningBatchIds,"attendee");
 				runningMembersCountsattendence = getCompletedRunningUpcomingCountsForBatchIds(runningBatchIds,"attendence");
@@ -5977,7 +5977,7 @@ class TrainingCampService implements ITrainingCampService{
 					finalMap.get("running").setRunningBatchIds(runningBatchIds);
 				}
 				
-				upComingBatches = trainingCampBatchDAO.getCompletedBatchIds(sdf.parse(sdf.format(new Date())),"upcoming",batchIds,enrollmentYearIds,programYearIds);
+				upComingBatches = trainingCampBatchDAO.getCompletedBatchIds(dateUtilService.getCurrentDateAndTime(),"upcoming",batchIds,enrollmentYearIds,programYearIds);
 				setBatchesInformation(finalMap,upComingBatches,"upcoming",upComingBatchIds,totalTrainingCenters);
 				upCommingMembersCounts = getCompletedRunningUpcomingCountsForBatchIds(upComingBatchIds,"attendee");
 				setBatchCount(finalMap,"upcoming",upCommingMembersCounts);
@@ -5986,7 +5986,7 @@ class TrainingCampService implements ITrainingCampService{
 				}
 			}
 			else if(type.equalsIgnoreCase("completed") && batchIds!=null && batchIds.size()>0){
-				completedBatches = trainingCampBatchDAO.getCompletedBatchIds(sdf.parse(sdf.format(new Date())),"completed",batchIds,enrollmentYearIds,programYearIds);
+				completedBatches = trainingCampBatchDAO.getCompletedBatchIds(dateUtilService.getCurrentDateAndTime(),"completed",batchIds,enrollmentYearIds,programYearIds);
 				setBatchesInformation(finalMap,completedBatches,"completed",completedBatchIds,totalTrainingCenters);
 				completedMembersCounts = getCompletedRunningUpcomingCountsForBatchIds(completedBatchIds,"attendence");
 				
@@ -6017,7 +6017,7 @@ class TrainingCampService implements ITrainingCampService{
 				}
 			}
 			else if(type.equalsIgnoreCase("upComing") && batchIds!=null && batchIds.size()>0){
-				upComingBatches = trainingCampBatchDAO.getCompletedBatchIds(sdf.parse(sdf.format(new Date())),"upcoming",batchIds,enrollmentYearIds,programYearIds);
+				upComingBatches = trainingCampBatchDAO.getCompletedBatchIds(dateUtilService.getCurrentDateAndTime(),"upcoming",batchIds,enrollmentYearIds,programYearIds);
 				setBatchesInformation(finalMap,upComingBatches,"upcoming",upComingBatchIds,totalTrainingCenters);
 				upCommingMembersCounts = getCompletedRunningUpcomingCountsForBatchIds(upComingBatchIds,"attendee");
 				setBatchCount(finalMap,"upcoming",upCommingMembersCounts);
@@ -6140,9 +6140,9 @@ class TrainingCampService implements ITrainingCampService{
 					}
 					
 					//Confirmed Count.
-					 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null,null,cadreIdsLsit,null,programYearIds);
+					 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null,null,cadreIdsLsit,programYearIds,enrollmentYearIds);
 					 //total count attended.
-					 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId,null,null,null,programYearIds);
+					 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId,null,null,programYearIds,enrollmentYearIds);
 					 String perc=null;
 					 if(confirmedCount!=null && confirmedCount!=0l && totalBatchCount!=null){
 						 float percentage = (totalBatchCount * 100/(float)confirmedCount);
@@ -6150,7 +6150,7 @@ class TrainingCampService implements ITrainingCampService{
 					 }
 					 
 					 //preinstantiate.
-					  Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null,null,programYearIds);
+					  Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null,programYearIds,enrollmentYearIds);
 					  Date fromDate=null;
 					  Date toDate=null;
 					  if(batchDates!=null){
@@ -6178,9 +6178,9 @@ class TrainingCampService implements ITrainingCampService{
 						 
 					 //date wise counts.
 					 //List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,null,null);
-					  List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDayWiseInviteeCountsForBatch(batchId,null,programYearIds);
+					  List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDayWiseInviteeCountsForBatch(batchId,programYearIds,enrollmentYearIds);
 				
-					  List<Long> attendeeCadreIdsList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,null,programYearIds);
+					  List<Long> attendeeCadreIdsList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,programYearIds,enrollmentYearIds);
 						 
 						 if(dateWiseCounts!=null && dateWiseCounts.size()>0){
 							 
@@ -6190,7 +6190,7 @@ class TrainingCampService implements ITrainingCampService{
 									if(vo!=null){
 										vo.setTotal(obj[1]!=null?(Long)obj[0]:0l);//attended.
 										vo.setCount(confirmedCount-vo.getTotal());//absent.
-										List<Long> attendedCadreIdsList = trainingCampAttendanceDAO.getInviteeCadreIdsForADay(batchId,new SimpleDateFormat("yyyy-MM-dd").parse(obj[1].toString()),null,enrollmentYearIds);
+										List<Long> attendedCadreIdsList = trainingCampAttendanceDAO.getInviteeCadreIdsForADay(batchId,new SimpleDateFormat("yyyy-MM-dd").parse(obj[1].toString()),enrollmentYearIds,programYearIds);
 										if(attendedCadreIdsList!=null && attendedCadreIdsList.size()>0){
 											int count=0;
 											for(Long long1 : attendedCadreIdsList){
@@ -6241,7 +6241,7 @@ class TrainingCampService implements ITrainingCampService{
 				
 				List<Object[]> batchAttendence = trainingCampAttendanceDAO.getCompletedCountsForABatch(batchId,dates,enrollmentYearIds.get(0),programYearIds);
 				
-				List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,enrollmentYearIds.get(0),programYearIds);
+				List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,enrollmentYearIds,programYearIds);
 				Long oneDay=0l,twoDays=0l,ThreeDays=0l;
 				
 				for (Long long1 : attendeeList) {
@@ -6840,13 +6840,13 @@ class TrainingCampService implements ITrainingCampService{
 			   		Map<Long,SimpleVO> constituencyMap=new LinkedHashMap<Long,SimpleVO>();
 			   		
 			   		
-			   		List<Object[]> invitedListDist=trainingCampAttendanceDAO.getInvitedCadreCountByBatchIds(batchIds,"district",enrollmentYearIds);
-			   		List<Object[]> attendedListDist=trainingCampAttendanceDAO.getAttendedCadreCountByBatchIds(batchIds,"district",enrollmentYearIds);
-			   		List<Object[]> inviteesInAtendedListDist=trainingCampAttendanceDAO.getInviteeCountsinAttendedCounts(batchIds,"district",enrollmentYearIds); //getting invitees count in attended count dist wise.
+			   		List<Object[]> invitedListDist=trainingCampAttendanceDAO.getInvitedCadreCountByBatchIds(batchIds,"district",enrollmentYearIds,programYearIds);
+			   		List<Object[]> attendedListDist=trainingCampAttendanceDAO.getAttendedCadreCountByBatchIds(batchIds,"district",enrollmentYearIds,programYearIds);
+			   		List<Object[]> inviteesInAtendedListDist=trainingCampAttendanceDAO.getInviteeCountsinAttendedCounts(batchIds,"district",enrollmentYearIds,programYearIds); //getting invitees count in attended count dist wise.
 			   		
-			   		List<Object[]> invitedListCon=trainingCampAttendanceDAO.getInvitedCadreCountByBatchIds(batchIds,"constituency",enrollmentYearIds);
-			   		List<Object[]> attendedListCon=trainingCampAttendanceDAO.getAttendedCadreCountByBatchIds(batchIds,"constituency", enrollmentYearIds);
-			   		List<Object[]> inviteesInAtendedListCon=trainingCampAttendanceDAO.getInviteeCountsinAttendedCounts(batchIds,"constituency",enrollmentYearIds);//getting invitees count in attended count con wise.
+			   		List<Object[]> invitedListCon=trainingCampAttendanceDAO.getInvitedCadreCountByBatchIds(batchIds,"constituency",enrollmentYearIds,programYearIds);
+			   		List<Object[]> attendedListCon=trainingCampAttendanceDAO.getAttendedCadreCountByBatchIds(batchIds,"constituency", enrollmentYearIds,programYearIds);
+			   		List<Object[]> inviteesInAtendedListCon=trainingCampAttendanceDAO.getInviteeCountsinAttendedCounts(batchIds,"constituency",enrollmentYearIds,programYearIds);//getting invitees count in attended count con wise.
 			   		
 			   		
 			   		if(invitedListDist!=null && invitedListDist.size()>0){
@@ -8897,7 +8897,7 @@ class TrainingCampService implements ITrainingCampService{
 				 }
 				 
 				 //preinstantiate.
-				 Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null,enrollmentYearIds.get(0),programYearIds);
+				 Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null,enrollmentYearIds,programYearIds);
 				 Date fromDate=null;
 				  Date toDate=null;
 				  if(batchDates!=null){
@@ -8935,7 +8935,7 @@ class TrainingCampService implements ITrainingCampService{
 							if(vo!=null){
 								vo.setTotal(obj[1]!=null?(Long)obj[0]:0l);//attended.
 								vo.setCount(confirmedCount-vo.getTotal());//absent.
-								List<Long> attendedCadreIdsList = trainingCampAttendanceDAO.getInviteeCadreIdsForADay(batchId,new SimpleDateFormat("yyyy-MM-dd").parse(obj[1].toString()),null,programYearIds);
+								List<Long> attendedCadreIdsList = trainingCampAttendanceDAO.getInviteeCadreIdsForADay(batchId,dateUtilService.getCurrentDateAndTime(),enrollmentYearIds,programYearIds);
 								if(attendedCadreIdsList!=null && attendedCadreIdsList.size()>0){
 									int count=0;
 									for(Long long1 : attendedCadreIdsList){
@@ -8962,7 +8962,7 @@ class TrainingCampService implements ITrainingCampService{
 				
 				 List<Object[]> batchAttendence = trainingCampAttendanceDAO.getCompletedCountsForABatch(batchId1,dates,enrollmentYearIds.get(0),programYearIds);
 					
-				 List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId1,enrollmentYearIds.get(0),programYearIds);
+				 List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId1,enrollmentYearIds,programYearIds);
 				 Long oneDay=0l,twoDays=0l,ThreeDays=0l;
 				
 				for (Long long1 : attendeeList) {
@@ -9190,7 +9190,7 @@ class TrainingCampService implements ITrainingCampService{
 					}
 					else if(searchType.trim().equalsIgnoreCase("individual") || searchType.trim().equalsIgnoreCase("consolidated"))
 					{
-						List<Object[]> invitationdtls  = trainingCampBatchAttendeeDAO.getSpeakersDetails(fromDate,toDate,enrollmentYearIds);
+						List<Object[]> invitationdtls  = trainingCampBatchAttendeeDAO.getSpeakersDetails(fromDate,toDate,enrollmentYearIds,programYearIds);
 						Map<Long,List<SimpleVO>> inviteisMap = new LinkedHashMap<Long, List<SimpleVO>>(0);
 						Map<Long,List<SimpleVO>> inviteesMap = new LinkedHashMap<Long, List<SimpleVO>>(0);
 						if(invitationdtls != null && invitationdtls.size()>0)
@@ -10744,7 +10744,7 @@ class TrainingCampService implements ITrainingCampService{
 			try{			
 				
 				/*Long batchId=simpleVO2.getBatchId();*/
-			Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null,enrollmentYrIds.get(0),programYearIds);
+			Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null,programYearIds,enrollmentYrIds);
 			Date fromDate=null;
 				Date toDate=null;
 				
@@ -10757,7 +10757,7 @@ class TrainingCampService implements ITrainingCampService{
 				
 				List<Object[]> batchAttendence = trainingCampAttendanceDAO.getCompletedCountsForABatch(batchId,dates,enrollmentYrIds.get(0),programYearIds);
 				
-				List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,enrollmentYrIds.get(0),programYearIds);
+				List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,programYearIds,enrollmentYrIds);
 				
 				List<Long> oneDayInviteeCadreIds = new ArrayList<Long>(); 
 				List<Long> twoDaysInviteeCadreIds = new ArrayList<Long>(); 

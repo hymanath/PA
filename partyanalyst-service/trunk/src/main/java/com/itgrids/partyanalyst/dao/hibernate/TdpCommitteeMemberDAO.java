@@ -2232,16 +2232,21 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 		return query.list();
 	}
 	public List<Object[]> getMembersInfoByTdpCadreIdsList1(List<Long> tdpCadreIdsList){
-
-		Query query = getSession().createQuery("select model.tdpCadre.tdpCadreId," +
+       StringBuilder sb =new StringBuilder();
+       sb.append("select model.tdpCadre.tdpCadreId," +
 				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
 				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,  " +
 				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId,  " +
 				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name, " +
 				" model.tdpCommitteeRole.tdpCommitteeRoleId," +
-				" model.tdpCommitteeRole.tdpRoles.role,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel    " +
-				" from TdpCommitteeMember model where model.tdpCadreId in (:tdpCadreIdsList)  and model.isActive ='Y' ");
-		
+				" model.tdpCommitteeRole.tdpRoles.role,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel " +
+				" from TdpCommitteeMember model" );
+       sb.append(" where " );
+       if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+       sb.append(" model.tdpCadreId in (:tdpCadreIdsList) and " );
+       sb.append(" model.isActive ='Y' ");
+       Query query = getSession().createQuery(sb.toString());
+       if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
 		return query.list();
 	}

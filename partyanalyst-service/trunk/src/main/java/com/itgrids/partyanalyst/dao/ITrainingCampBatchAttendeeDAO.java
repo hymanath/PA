@@ -20,16 +20,16 @@ public interface ITrainingCampBatchAttendeeDAO extends GenericDao<TrainingCampBa
 	public List<String> getAttendeesForATrainingCampBatch(Long trainingCampBatchId);
 	public List<Object[]> getRunningUpcomingCounts(List<Long> batchIds);
     
-	public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,Long enrollmentYearId,List<Long> programYearIds);
+	public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> programYearIds,List<Long> enrollmentYearIds);
 	public List<Object[]> getConfirmedCadreByBatch(Long batchId,Long enrollmentYearId);
 	public List<TrainingCampBatchAttendee> getAttendeeDetailsByInviteeId(Long inviteeId, Long batchId,Long scheduleId);
-	public List<Long> getRunningUpcomingAttendeeCounts(Long batchId,Long enrollmentYearId,List<Long> programYearIds);
+	public List<Long> getRunningUpcomingAttendeeCounts(Long batchId,List<Long> programYearIds,List<Long> enrollmentYearIds);
 	public List<Object[]> getRunningUpcomingCountDetails(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	//public List<Object[]> getInvitedCounts(List<Long> batchIds);
 	//public List<Object[]> getInvitedDetails(List<Long> batchIds);
 	public List<Object[]> getInvitedCountsForCenter(Long centerId,Long programId,Date fromDate,Date toDate,List<Long> cadreIdsLsit);
 	public List<Long> getInvitedDetailsForCenter(Long centerId,Long programId,Date statrtDate,Date endDate,List<Long> cadreIdsLsit);
-	public List<Object[]> getSpeakersDetails(Date fromdate, Date toDate,List<Long> enrollmentYearIds);
+	public List<Object[]> getSpeakersDetails(Date fromdate, Date toDate,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	public List<Object[]> getProgramCampBatchDetailsForAMemberBasedOnCadreId(List<Long> cadreIdList,Date fromDate,Date toDate);
 	public List<Object[]> getInvitedCountsForCenterAndProgram(Date fromDate,Date toDate,List<Long> cadreIdsList,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date toDate,List<Long> cadreIdsList,List<Long> enrollmentYearIds,List<Long> programYearIds);

@@ -139,13 +139,13 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		query.setParameter("trainingCampBatchId",batchId);
 		return query.list();
 	}
-	public Object[] getBatchDates(Long batchId,Date fromDate,Date toDate,Long enrollmentYrIds,List<Long> programYearIds){
+	public Object[] getBatchDates(Long batchId,Date fromDate,Date toDate,List<Long> programYearIds,List<Long> enrollmentYearIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select date(model.fromDate),date(model.toDate),model.trainingCampBatchName,model.trainingCampSchedule.trainingCamp.campName " +
 				"	from  TrainingCampBatch model where model.trainingCampBatchId =:trainingCampBatchId and model.attendeeType.attendeeTypeId=1 and model.attendeeType.isDeleted='false' ");
 		
-		if(enrollmentYrIds != null && enrollmentYrIds.longValue() >0l){
-			sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId = :enrollmentYrIds ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() >0){
+			sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
 		}
 		if(fromDate!=null && toDate!=null){
 			sb.append(" and date(model.fromDate) >= :fromDate and date(model.toDate) <= :toDate ");
@@ -159,8 +159,8 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
 		}
-		if(enrollmentYrIds != null && enrollmentYrIds.longValue() >0){
-			query.setParameter("enrollmentYrIds", enrollmentYrIds);
+		if(enrollmentYearIds != null && enrollmentYearIds.size() >0){
+			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
 		}
 	
 		query.setParameter("trainingCampBatchId",batchId);
