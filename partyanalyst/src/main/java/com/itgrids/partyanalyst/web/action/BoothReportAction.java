@@ -84,8 +84,8 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 		
 		return Action.SUCCESS;
 	}
-	public String getLocationLevelWiseBoothDetails(){
-		LOG.info("Entered into getLocationLevelWiseBoothDetails()  of BoothReportAction ");
+	public String getLocationLevelWiseBoothCount(){
+		LOG.info("Entered into getLocationLevelWiseBoothCount()  of BoothReportAction ");
 		try{
 			jObj = new JSONObject(getTask());
 			InputVO inputVO = new InputVO();
@@ -97,7 +97,7 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 			inputVO.setToDateStr(jObj.getString("endDate"));
 			boothInchargeDetailsList = boothDataValidationService.getLocationLevelWiseBoothDetails(inputVO);
 		}catch(Exception e){
-			LOG.error("Exception raised at getLocationLevelWiseBoothDetails() method of BoothReportAction", e);
+			LOG.error("Exception raised at getLocationLevelWiseBoothCount() method of BoothReportAction", e);
 		}
 		return Action.SUCCESS;
 	}
