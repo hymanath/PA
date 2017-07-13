@@ -1,15 +1,26 @@
+/*
+DISTRICT
+PARLIAMENT CONSTITUENCY
+CONSTITUENCY
+TEHSIL
+PANCHAYAT
 
+NotStarted
+Started
+Completed
+*/
 //getLocationLevelWiseBoothCount();
 //getLocationBasedOnSelection();
+//getLocationLevelWiseBoothDetails();
 function getLocationLevelWiseBoothCount(){
 
 	var jsObj={  
-		locationLevel : "District",         
-		filterLevel : " ",
-		filterValue : 0,
-		boothInchargeEnrollmentId : 0,
-		startDate : "",
-		endDate : ""
+		locationLevel : "Constituency",         
+		filterLevel : "District",
+		filterValue : 19,
+		boothInchargeEnrollmentId : 1,
+		startDate : "13/07/2017",
+		endDate : "13/07/2017"
 	} 
 	$.ajax({
 		type : 'POST',
@@ -21,12 +32,11 @@ function getLocationLevelWiseBoothCount(){
 	});
 }
 function getLocationBasedOnSelection(){
- alert(11);
 	var jsObj={  
-		locationLevel : "District",         
-		filterLevel : " ",
-		filterValue : 0,
-		boothInchargeEnrollmentId : 0,
+		locationLevel : "Constituency",         
+		filterLevel : "District",
+		filterValue : 19,
+		boothInchargeEnrollmentId : 1,
 	
 	} 
 	$.ajax({
@@ -34,6 +44,26 @@ function getLocationBasedOnSelection(){
 		url : 'getLocationBasedOnSelectionAction.action',  
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
+	}).done(function(result){ 
+	  console.log(result);
+	});
+}
+
+function getLocationLevelWiseBoothDetails(){
+
+	var jObj={  
+		filterType : "Tehsil",
+		filterValue : "1240",
+		fromDate : "13/07/2017",
+		toDate : "13/07/2017",
+		boothEnrollementYearId : 1,
+		resultType : "NotStarted"
+	} 
+	$.ajax({
+		type : 'POST',
+		url : 'getLocationLevelWiseBoothDetailsAction.action',  
+		dataType : 'json',
+		data : {task :JSON.stringify(jObj)} 
 	}).done(function(result){ 
 	  console.log(result);
 	});
