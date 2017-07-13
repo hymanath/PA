@@ -667,10 +667,11 @@ function exportToExcel()
 		
 	
 	 $(document).on('click','.updateClass',function(){
-	   $.blockUI({image: src="./images/Optimizing Please Wait.gif"});
+	   <!--$.blockUI({image: src="./images/Optimizing Please Wait.gif"});-->
        var tdpCadreId=$(this).attr('attr-cadreId');
 	   var batchId=$(this).attr('attr-batchId');
-	   var jsObj={tdpCadreId:tdpCadreId,batchId:batchId}
+	   var enrollmentYearId = $('#enrollmentId').val();	
+	   var jsObj={tdpCadreId:tdpCadreId,batchId:batchId,enrollmentYearId:enrollmentYearId}
 	   $.ajax({
 		  type:'POST',
 		  url :'getDetailsForACadreAction.action',
