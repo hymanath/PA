@@ -66,7 +66,7 @@ public class PrisSurveyDashBoardController {
 	}
 	@RequestMapping("/getAllDistricts")
 	public @ResponseBody List<IdNameVO> getAllDistricts(){
-		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>();
+		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>(0);
 		try {
 			returnVoList = surveyDashBaordService.getAllDistricts();
 		} catch (Exception e){
@@ -76,7 +76,7 @@ public class PrisSurveyDashBoardController {
 	}
 	@RequestMapping("/getAllParliaments")
 	public @ResponseBody List<IdNameVO> getAllParliaments(){
-		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>();
+		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>(0);
 		try {
 			returnVoList = surveyDashBaordService.getAllParliaments();
 		} catch (Exception e){
@@ -84,11 +84,11 @@ public class PrisSurveyDashBoardController {
 		}
 		return returnVoList;
 	}
-	@RequestMapping("/getAllConstituenciesForDistrict")
-	public @ResponseBody List<IdNameVO> getAllConstituenciesForDistrict(Long districtId){
-		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>();
+	@PostMapping("/getAllConstituenciesForDistrict")
+	public @ResponseBody List<IdNameVO> getAllConstituenciesForDistrict(@RequestBody InputVO inputVO){
+		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>(0);
 		try {
-			returnVoList = surveyDashBaordService.getAllConstituenciesForDistrict(districtId);
+			returnVoList = surveyDashBaordService.getAllConstituenciesForDistrict(inputVO);
 		} catch (Exception e){
 			LOG.error("Exception raised at getAllConstituenciesForDistrict - PrisSurveyDashBoardController controller", e);
 		}
@@ -96,7 +96,7 @@ public class PrisSurveyDashBoardController {
 	}
 	@RequestMapping("/getAllConstituenciesForParliament")
 	public @ResponseBody List<IdNameVO> getAllConstituenciesForParliament(Long parliamentId){
-		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>();
+		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>(0);
 		try {
 			returnVoList = surveyDashBaordService.getAllConstituenciesForParliament(parliamentId);
 		} catch (Exception e){

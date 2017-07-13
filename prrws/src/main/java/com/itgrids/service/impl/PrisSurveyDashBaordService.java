@@ -285,11 +285,11 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 		 }	
 		  	return  idNameVOList;
 	}
-	public List<IdNameVO> getAllConstituenciesForDistrict(Long districtId){
+	public List<IdNameVO> getAllConstituenciesForDistrict(InputVO inputVO){
 		  List<IdNameVO> idNameVOList= new ArrayList<IdNameVO>(0);
 		  try
 		 {
-			List<Object[]> objList= constituencyDAO.getConstituencyListByDistrictId(districtId);
+			List<Object[]> objList= constituencyDAO.getConstituencyListByDistrictId(inputVO.getDistrictId());
 			
 			if(objList!=null && objList.size()>0){
 				for (Object[] objects : objList){
