@@ -2183,12 +2183,12 @@
 										tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
 									}
 									if(GLtbodyArr[i].pcTarget !=null && GLtbodyArr[i].pcTarget >0){
-										tableView+='<td class="kpiClickView" attr_status="PC" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].pcTarget+'" attr_type="targets" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].pcTarget+'</td>';
+										tableView+='<td class="kpiClickView" attr_status="PC" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_total_count = "'+GLtbodyArr[i].pcTarget+'" attr_type="targets" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].pcTarget+'</td>';
 									}else{
 										tableView+='<td> - </td>';
 									}
 									if(GLtbodyArr[i].pcAchivement !=null && GLtbodyArr[i].pcAchivement >0){
-										tableView+='<td class="kpiClickView" attr_status="PC" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].pcAchivement+'" attr_type="achieved" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].pcAchivement+'</td>';
+										tableView+='<td class="kpiClickView" attr_status="PC" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_total_count = "'+GLtbodyArr[i].pcAchivement+'" attr_type="achieved" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].pcAchivement+'</td>';
 									}else{
 										tableView+='<td> - </td>';
 									}
@@ -2203,12 +2203,12 @@
 										tableView+='<td> - </td>';
 									}
 									if(GLtbodyArr[i].qaTarget !=null && GLtbodyArr[i].qaTarget >0){
-										tableView+='<td class="kpiClickView" attr_status="NSS" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].qaTarget+'" attr_type="targets" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].qaTarget+'</td>';
+										tableView+='<td class="kpiClickView" attr_status="NSS" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_total_count = "'+GLtbodyArr[i].qaTarget+'" attr_type="targets" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].qaTarget+'</td>';
 									}else{
 										tableView+='<td> - </td>';
 									}
 									if(GLtbodyArr[i].qaAchivement !=null && GLtbodyArr[i].qaAchivement >0){
-										tableView+='<td class="kpiClickView" attr_status="NSS" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_total_count = "'+GLtbodyArr[i].qaAchivement+'" attr_type="achieved"  style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].qaAchivement+'</td>';
+										tableView+='<td class="kpiClickView" attr_status="NSS" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_total_count = "'+GLtbodyArr[i].qaAchivement+'" attr_type="achieved"  style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].qaAchivement+'</td>';
 									}else{
 										tableView+='<td> - </td>';
 									}
@@ -3664,6 +3664,8 @@
 		
 			
 		var json = {
+			fromDateStr:glStartDate,
+			toDateStr:glEndDate,
 			year:yearVal,
 			startValue:startIndex,
 			endValue:"10",
@@ -4258,7 +4260,7 @@
 					hrefTextPrefix: '#pages-',
 					onPageClick: function(pageNumber) { 
 						var num=(pageNumber-1)*10;
-						getOnclickTargetsAcheievementsDetails(status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount)
+						getOnclickTargetsAcheievementsDetails(status,workStatus,locationType,locationValue,districtVal,num,totalCount)
 							
 					}
 					
