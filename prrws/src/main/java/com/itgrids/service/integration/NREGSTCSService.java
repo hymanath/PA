@@ -2566,7 +2566,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	/*
 	 * Date : 28/06/2017
 	 * Author :Sravanth
-	 * @description : getNregaLevelsWiseDataForTimelyPayments
+	 * @description : getNregaLevelsWiseDataForFTOPayments
 	 */
 	public List<NregsDataVO> getNregaLevelsWiseDataForTimelyPayments(InputVO inputVO){
 		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
@@ -2624,6 +2624,69 @@ public class NREGSTCSService implements INREGSTCSService{
 		
 		return voList;
 	}
+	
+	/*
+	 * Date : 28/06/2017
+	 * Author :Sravanth
+	 * @description : getNregaLevelsWiseDataForNewFTOPayments
+	 */
+	public List<NregsDataVO> getNregaLevelsWiseDataForNewFTOPayments(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			
+			String webServiceUrl = null;
+			
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Payments"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PaymentsDataNewServices/PaymentsDataNew";
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    				for(int i=0;i<finalArray.length();i++){
+		 	    				NregsDataVO vo = new NregsDataVO();
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				vo.setFtoNotGenCnt(jObj.getString("FTO_NOT_GEN_CNT"));
+		 	    				vo.setFtoNotGenAmt(jObj.getString("FTO_NOT_GEN_AMT"));
+		 	    				vo.setFtoNotUploadCnt(jObj.getString("FTO_NOT_UPLOAD_CNT"));
+		 	    				vo.setFtoNotUploadAmt(jObj.getString("FTO_NOT_UPLOAD_AMT"));
+		 	    				vo.setFtoNotSentCnt(jObj.getString("FTO_NOT_SENT_CNT"));
+		 	    				vo.setFtoNotSentAmt(jObj.getString("FTO_NOT_SENT_AMT"));
+		 	    				vo.setRejectCnt(jObj.getString("REJECT_CNT"));
+		 	    				vo.setRejectAmt(jObj.getString("REJECT_AMT"));
+		 	    				vo.setPendingResponseCnt(jObj.getString("PENDING_RESPONSE_CNT"));
+		 	    				vo.setPendingResponseAmt(jObj.getString("PENDING_RESPONSE_AMT"));
+		 	    				if(inputVO.getLocationType().trim().toString().equalsIgnoreCase("district")){
+		 	    					vo.setdId(jObj.getString("DID"));
+		 	    					vo.setDistrict(jObj.getString("DNAME"));
+		 	    				}
+		 	    				else if(inputVO.getLocationType().trim().toString().equalsIgnoreCase("mandal")){
+		 	    					vo.setmId(jObj.getString("MID"));
+		 	    					vo.setMandal(jObj.getString("MANDAL_DESCRIPTION"));
+		 	    				}
+		 	    				voList.add(vo);
+		 	    			}
+	 	    			}
+	 	    		}
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseDataForTimelyPayments - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
 	/*
 	 * Date : 08/07/2017
 	 * Author :Nandhini
