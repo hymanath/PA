@@ -6239,7 +6239,7 @@ class TrainingCampService implements ITrainingCampService{
 				  
 				List<Date> dates=getBetweenDates(fromDate,toDate);
 				
-				List<Object[]> batchAttendence = trainingCampAttendanceDAO.getCompletedCountsForABatch(batchId,dates,enrollmentYearIds.get(0),programYearIds);
+				List<Object[]> batchAttendence = trainingCampAttendanceDAO.getCompletedCountsForABatch(batchId,dates,enrollmentYearIds,programYearIds);
 				
 				List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,enrollmentYearIds,programYearIds);
 				Long oneDay=0l,twoDays=0l,ThreeDays=0l;
@@ -8886,10 +8886,9 @@ class TrainingCampService implements ITrainingCampService{
 						staffcadreIdsLsit.add(Long.valueOf(cadreId));
 					}
 				}
-				
-				 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null,null,staffcadreIdsLsit,null,programYearIds);
+				 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null,null,staffcadreIdsLsit,enrollmentYearIds,programYearIds);
 				 //total count attended.
-				 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId,null,null,null,programYearIds);
+				 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId,null,null,enrollmentYearIds,programYearIds);
 				 String perc=null;
 				 if(confirmedCount!=null && confirmedCount!=0l && totalBatchCount!=null){
 					 float percentage = (totalBatchCount * 100/(float)confirmedCount);
@@ -8897,7 +8896,7 @@ class TrainingCampService implements ITrainingCampService{
 				 }
 				 
 				 //preinstantiate.
-				 Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null,enrollmentYearIds,programYearIds);
+				 Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null,programYearIds,enrollmentYearIds);
 				 Date fromDate=null;
 				  Date toDate=null;
 				  if(batchDates!=null){
@@ -8924,8 +8923,8 @@ class TrainingCampService implements ITrainingCampService{
 				 
 				 //date wise counts.
 				 //List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,null,null);
-				 List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDayWiseInviteeCountsForBatch(batchId,null,programYearIds);
-				 List<Long> attendeeCadreIdsList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,null,programYearIds);
+				 List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDayWiseInviteeCountsForBatch(batchId,enrollmentYearIds,programYearIds);
+				 List<Long> attendeeCadreIdsList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,enrollmentYearIds,programYearIds);
 				 
 				 if(dateWiseCounts!=null && dateWiseCounts.size()>0){
 					 
@@ -8960,7 +8959,7 @@ class TrainingCampService implements ITrainingCampService{
 
 				 Long batchId1=simpleVO.getBatchId();
 				
-				 List<Object[]> batchAttendence = trainingCampAttendanceDAO.getCompletedCountsForABatch(batchId1,dates,enrollmentYearIds.get(0),programYearIds);
+				 List<Object[]> batchAttendence = trainingCampAttendanceDAO.getCompletedCountsForABatch(batchId1,dates,enrollmentYearIds,programYearIds);
 					
 				 List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId1,enrollmentYearIds,programYearIds);
 				 Long oneDay=0l,twoDays=0l,ThreeDays=0l;
@@ -10755,7 +10754,7 @@ class TrainingCampService implements ITrainingCampService{
 				  
 				List<Date> dates=getBetweenDates(fromDate,toDate);
 				
-				List<Object[]> batchAttendence = trainingCampAttendanceDAO.getCompletedCountsForABatch(batchId,dates,enrollmentYrIds.get(0),programYearIds);
+				List<Object[]> batchAttendence = trainingCampAttendanceDAO.getCompletedCountsForABatch(batchId,dates,enrollmentYrIds,programYearIds);
 				
 				List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,programYearIds,enrollmentYrIds);
 				

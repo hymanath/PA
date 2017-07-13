@@ -229,7 +229,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   return (List<Object[]>)query.list();
    }
    
-   public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> programYearIds,List<Long> enrollmentYearIds){
+   public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> enrollmentYearIds,List<Long> programYearIds){
 	   
 	   StringBuilder sb=new StringBuilder();
 	   
@@ -315,7 +315,7 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   return query.list();
    }
    
-   public List<Long> getRunningUpcomingAttendeeCounts(Long batchId,List<Long> programYearIds,List<Long> enrollmentYearIds){
+   public List<Long> getRunningUpcomingAttendeeCounts(Long batchId,List<Long> enrollmentYearIds,List<Long> programYearIds){ 
 	   StringBuilder queryStr = new StringBuilder();
 	   queryStr.append(" select distinct model.tdpCadreId " +
 	   		" from TrainingCampBatchAttendee model " +
