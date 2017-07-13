@@ -10,6 +10,7 @@ function onLoadAjaxCalls()
 	getLocationWiseGrivanceTrustStatusCounts();
 	getGovtSchemeWiseBenefitMembersCount();
 	getMandalWiseBenefitMembersCount();
+	getLocationWiseTourMembersComplainceDtls();
 	 getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
 	/*getCountsForConstituency(); //Assembly election details
 	getAllPartiesAllElectionResultsChart(); //Assembly Election Detail
@@ -34,13 +35,7 @@ function onLoadAjaxCalls()
 	//Benefit
 	//getGovtSchemeWiseBenefitMembersCount();
 	//getMandalWiseBenefitMembersCount();
-	
-	//Nag
-	//getLocationWiseCommitteesCount();
-	//getLevelWiseMeetingStatusCounts();
-	//getEnrollmentIds();
-	//getLocationWiseInsuranceStatusCount();
-	//getLocationWiseGrivanceTrustStatusCounts();
+
 	
 	
 }
@@ -700,9 +695,9 @@ function getLocationWiseMeetingsCount(){
 function getLocationWiseTourMembersComplainceDtls(){
 	jsObj={
 		locationType:"constituency",
-		locationValue:272,
-		fromDate:"01/06/2017",
-		toDate:"30/06/2017"
+		locationValue:232,
+		fromDate:"01/05/2017",
+		toDate:"30/05/2017"
 	}
 	 $.ajax({
       type : "POST",
@@ -711,6 +706,28 @@ function getLocationWiseTourMembersComplainceDtls(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	console.log(result);
+		var str='';
+		if(result!=null && result.length>0){
+			str+='<table class="table table-hover">';
+			str+='<thead class="text-capitalize bg-E9">';
+			str+='<th>Designation</th>';
+			str+='<th>status</th>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+			str+='<td>'+result[i].designation+'</td>';
+			if(result[i].isComplaince=="False"){
+			str+='<td><span class="text-success" style="color:red">Non-Complaince</span></td>';	
+			}else{
+				str+='<td><span class="text-success" style="color:green">Complaince</span></td>';	
+			}
+			str+='</tr>';
+			}
+			str+='</tbody>';
+			str+='</table>';
+        $("#toursId").html(str);
+		}
 	});	
 }
 function getGovtSchemeWiseBenefitMembersCount(){
@@ -788,6 +805,58 @@ function getLocationWiseCommitteesCount(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	console.log(result);
+		var str='';
+		if(result != null){
+			var mainMandalTotal=result.mainCommStartedCount+result.mainCommCompletedCount+result.mainCommNotYetStarted;
+			var affltdAffltedTotal=result.affiCommStartedCount+result.affiCommCompletedCount+result.affiCommMandalNotStarted;
+			var mainVlgTotal=result.mainCommTotalMembers+result.mainCommTotalCount+result.mainCommVillageNotStarted;
+			var affltdVlgTotal=result.affiCommTotalMembers+result.affiCommTotalCount+result.affiCommVillageNotStarted;
+		str+='<table class="table table-bordered">';
+		str+='<thead>';
+		str+='<tr class="text-capital">';
+		str+='<th rowspan="2"></th>';
+		str+='<th colspan="3">main committee</th>';
+		str+='<th colspan="3">affliated committee</th>';
+		str+='</tr>';
+		str+='<tr class="text-capitalize bg-E9">';
+		str+='<th>total</th>';
+		str+='<th>started</th>';
+		str+='<th>completed</th>';
+		str+='<th>NotStarted</th>';
+		str+='<th>total</th>';
+		str+='<th>started</th>';
+		str+='<th>completed</th>';
+		str+='<th>NotStarted</th>';
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody class="text-capitalize">';
+		str+='<tr>';
+		str+='<td>mandal/town/division</td>';
+		str+='<td>'+mainMandalTotal+'</td>';
+		str+='<td>'+result.mainCommStartedCount+'</td>';
+		str+='<td>'+result.mainCommCompletedCount+'</td>';
+		str+='<td>'+result.mainCommNotYetStarted+'</td>';
+		str+='<td>'+affltdAffltedTotal+'</td>';
+		str+='<td>'+result.affiCommStartedCount+'</td>';
+		str+='<td>'+result.affiCommCompletedCount+'</td>';
+		str+='<td>'+result.affiCommMandalNotStarted+'</td>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<td>village/ward</td>';
+		str+='<td>'+mainVlgTotal+'</td>';
+		str+='<td>'+result.mainCommTotalMembers+'</td>';
+		str+='<td>'+result.mainCommTotalCount+'</td>';
+		str+='<td>'+result.mainCommVillageNotStarted+'</td>';
+		str+='<td>'+affltdVlgTotal+'</td>';
+		str+='<td>'+result.affiCommTotalMembers+'</td>';
+		str+='<td>'+result.affiCommTotalCount+'</td>';
+		str+='<td>'+result.affiCommVillageNotStarted+'</td>';
+		str+='</tr>';
+		str+='</tbody>';
+		str+='</table>';
+						
+			$("#committees").append(str);
+			}
 	});	
 }
 
@@ -807,12 +876,59 @@ function getLevelWiseMeetingStatusCounts(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	console.log(result);
+		var str='';
+		if(result!=null && result.length>0){
+		var vwTotal=result[0].completedCnt+result[0].pendingCnt+result[0].unabletoResolveCnt+result[0].notifiedCnt;
+		var mtdTotal=result[1].completedCnt+result[1].pendingCnt+result[1].unabletoResolveCnt+result[1].notifiedCnt;
+		var cTotal=result[2].completedCnt+result[2].pendingCnt+result[2].unabletoResolveCnt+result[2].notifiedCnt;
+		str+='<table class="table table-bordered">';
+		str+='<thead class="text-capitalize">';
+			str+='<th></th>';
+			str+='<th class="bg-E9">Village / Ward</th>';
+			str+='<th class="bg-E9">mandal/town/division</th>';
+			str+='<th class="bg-E9">constituency</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		  str+='<tr>';
+		    str+='<td>Total</td>';
+			str+='<td>'+vwTotal+'</td>';
+			str+='<td>'+mtdTotal+'</td>';
+			str+='<td>'+cTotal+'</td>';
+		  str+='</tr>';
+		  str+='<tr>';
+		   str+='<td>Yes</td>';
+		   str+='<td>'+result[0].completedCnt+'</td>';
+		str+='<td>'+result[1].completedCnt+'</td>';
+		str+='<td>'+result[2].completedCnt+'</td>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<td>No</td>';
+		str+='<td>'+result[0].pendingCnt+'</td>';
+		str+='<td>'+result[1].pendingCnt+'</td>';
+		str+='<td>'+result[2].pendingCnt+'</td>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<td>MayBe</td>';
+		str+='<td>'+result[0].unabletoResolveCnt+'</td>';
+		str+='<td>'+result[1].unabletoResolveCnt+'</td>';
+		str+='<td>'+result[2].unabletoResolveCnt+'</td>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<td>Not Updated</td>';
+		str+='<td>'+result[0].notifiedCnt+'</td>';
+		str+='<td>'+result[1].notifiedCnt+'</td>';
+		str+='<td>'+result[2].notifiedCnt+'</td>';
+		str+='</tr>';
+		str+='</tbody>';
+		str+='</table>';
+		$("#meetingsId").append(str);
+		}
+		 
 	});	
 }
 
 // Get enrollment Ids from db
 function getEnrollmentIds(){
-	alert("years");
 	var jsObj={
 			
 	}

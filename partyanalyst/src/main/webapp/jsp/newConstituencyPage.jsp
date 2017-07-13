@@ -759,44 +759,7 @@ pageEncoding="ISO-8859-1"%>
 								</div>
 							</div>
 						</div>
-						<div class="block pad_0">
-							<table class="table table-bordered">
-								<thead>
-									<tr class="text-capital">
-										<th rowspan="2"></th>
-										<th colspan="3">main committee</th>
-										<th colspan="3"> affliated committee</th>
-									</tr>
-									<tr class="text-capitalize bg-E9">
-										<th>total</th>
-										<th>started</th>
-										<th>completed</th>
-										<th>total</th>
-										<th>started</th>
-										<th>completed</th>
-									</tr>
-								</thead>
-								<tbody class="text-capitalize">
-									<tr>
-										<td>mandal/town/division</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-									</tr>
-									<tr>
-										<td>village/ward</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-									</tr>
-								</tbody>
-							</table>
+						<div class="block pad_0" id="committees">
 							<div class="pad_10">
 								<button class="btn btn-success btn-success-white text-capital">detailed information</button>
 							</div>
@@ -808,8 +771,8 @@ pageEncoding="ISO-8859-1"%>
 			<div class="col-md-8 col-xs-12 col-sm-8 m_top20" navbar-index="meetings">
 				<h3>Meetings <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
 				<p class="f-12 text-muted">Evertymonth: 9th/10th/11th</p>
-				<div class="block pad_0">
-					<table class="table table-bordered">
+				<div class="block pad_0" id="meetingsId">
+					<!-- <table class="table table-bordered">
 						<thead class="text-capitalize">
 							<th></th>
 							<th class="bg-E9">Village / Ward</th>
@@ -818,13 +781,37 @@ pageEncoding="ISO-8859-1"%>
 						</thead>
 						<tbody>
 							<tr>
-								<td>total</td>
+								<td>Total</td>
+								<td>1600</td>
+								<td>80</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<td>Yes</td>
+								<td>1600</td>
+								<td>80</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<td>No</td>
+								<td>1600</td>
+								<td>80</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<td>MayBe</td>
+								<td>1600</td>
+								<td>80</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<td>Not Updated</td>
 								<td>1600</td>
 								<td>80</td>
 								<td>1</td>
 							</tr>
 						</tbody>
-					</table>
+					</table> -->
 					<div class="pad_10">
 						<button class="btn btn-success btn-success-white text-capital">detailed information</button>
 					</div>
@@ -834,22 +821,7 @@ pageEncoding="ISO-8859-1"%>
 			<div class="col-md-4 col-xs-12 col-sm-4 m_top20" navbar-index="tours">
 				<h3>Tours <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
 				<p class="f-12 text-muted">Last Month Jan 2017</p>
-				<div class="block pad_0">
-					<table class="table table-hover">
-						<thead class="text-capitalize bg-E9">
-							<th>Designation</th>
-							<th>status</th>
-						</thead>
-						<tbody>
-							<tr>
-								<td>MP LOKSABHA</td>
-								<td><span class="text-success">Compliance</span></td>
-							</tr>
-							<tr>
-								<td>MP LOKSABHA</td>
-								<td><span class="text-danger">Non-Compliance</span></td>
-							</tr>
-						</tbody>
+				<div class="block pad_0" id="toursId">
 					</table>
 					<div class="block pad_10">
 						<button class="btn btn-success btn-success-white text-capital">detailed information</button>
