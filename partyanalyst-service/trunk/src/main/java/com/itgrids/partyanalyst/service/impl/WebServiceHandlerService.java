@@ -77,6 +77,7 @@ import com.itgrids.partyanalyst.dto.AmsTrackingVO;
 import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountDetailsVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
@@ -99,6 +100,7 @@ import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
+import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
@@ -136,7 +138,6 @@ import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.dto.WebServiceBaseVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
-import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.model.ActivityTabRequestBackup;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Event;
@@ -153,7 +154,6 @@ import com.itgrids.partyanalyst.model.MobileAppUserSmsDetails;
 import com.itgrids.partyanalyst.model.MobileAppUserSmsStatus;
 import com.itgrids.partyanalyst.model.MobileAppUserVoter;
 import com.itgrids.partyanalyst.model.SurveyUserAuth;
-import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 import com.itgrids.partyanalyst.model.UnionTabUser;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
@@ -5281,7 +5281,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 return null;
 	 }
 	 
-	 public List<TdpCommitteeEnrollment> getEnrollments(){
+	 public List<BasicVO> getEnrollments(){
 		 try{
 			 return locationDashboardService.getEnrollmentIds();
 		 }catch(Exception e){
@@ -5312,7 +5312,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	 } 
 	 
 
-	 public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(String fromDate, String toDate, Long locationId,Long locationValue){
+	 public List<AlertOverviewVO> getLevelWiseMeetingStatusCounts(String fromDate, String toDate, Long locationId,Long locationValue){
 		 try{
 			 return locationDashboardService.getLevelWiseMeetingStatusCounts(fromDate, toDate, locationId, locationValue);
 		 }catch(Exception e){
@@ -5332,7 +5332,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	 }
 
 	@Override
-	public List<List<GrivenceStatusVO>> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationId, Long locationValue) {
+	public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationId, Long locationValue) {
 		try{
 			return locationDashboardService.getGrivenceTrustStatusCounts(fromDateStr, toDateStr, locationId, locationValue);
 		}catch(Exception e){	

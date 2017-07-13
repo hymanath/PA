@@ -3,16 +3,16 @@ package com.itgrids.core.api.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
+import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
-import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
-import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 
 public interface ILocationDashboardService {
 	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId);
@@ -29,9 +29,9 @@ public interface ILocationDashboardService {
 	//committees
 	public CommitteeBasicVO getLocationWiseCommitteesCount(String locationType,Long locationId,Long enrollmentId);
 	
-	public List<TdpCommitteeEnrollment> getEnrollmentIds();
+	public List<BasicVO> getEnrollmentIds();
 	
-	public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(String fromDate,String toDate,Long locationId,Long locationValue);
+	public List<AlertOverviewVO> getLevelWiseMeetingStatusCounts(String fromDate,String toDate,Long locationId,Long locationValue);
 	public List<KeyValueVO> getNominatedPostStatusWiseCount(Long constituencyId,String fromDateStr, String toDateStr);
 	public List<KeyValueVO> getNominatedPostApplicationStatusWiseCount(Long constituencyId,String fromDateStr, String toDateStr);
 	public List<KeyValueVO> getPositionWiseMemberCount(Long constituencyId,String fromDateStr, String toDateStr);
@@ -41,5 +41,5 @@ public interface ILocationDashboardService {
 	public List<ConstituencyCadreVO> getLocationTypeWiseCadreCount(final String locationType,final Long locationValue);
 	public List<ConstituencyCadreVO> getAgeRangeGenerAndCasteGroupByCadreCount(final String locationType, final Long locationValue,final Long enrollmentYearId);
 	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue);
-    public List<List<GrivenceStatusVO>> getGrivenceTrustStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue);
+    public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue);
 }
