@@ -17726,6 +17726,10 @@
          	<param name="root">boothDtlsList</param>
        </result>
    </action>
-   
+   <action name="getBoothInchargeRolesAction" class="boothReportAction" method="getBoothInchargeRoles">
+        <result type="json" name="success">
+         	<param name="root">idAndNameVOList</param>
+       </result>
+   </action>
  </package>
 </struts>

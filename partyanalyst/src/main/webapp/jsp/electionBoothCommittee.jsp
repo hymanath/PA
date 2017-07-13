@@ -1962,6 +1962,21 @@ function getTdpCommitteePanchayatWardByMandal2(){
         $('#searchButnId').click();
     }
 });
+//getBoothInchargeRoles();
+function getBoothInchargeRoles()
+	{	
+	
+		var jsObj = {
+			boothId :909188
+		}
+		 $.ajax({
+			type : "POST",
+			url : "getBoothInchargeRolesAction.action",
+			data : {task:JSON.stringify(jsObj)} 
+		}).done(function(result){
+			
+		});
+	}
 </script>
 <script>
 var tableToExcel = (function() {
