@@ -1825,7 +1825,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  			//result => return from DAO contain fund amount as third parameter of each object array, here I will replace that with its correspond range
  			if(result != null && result.size() > 0){
  				for(Object[] param : result){
- 					param[2] = getRangeForFundAmount(fundSanctionRangeList,param[2] != null ? Double.parseDouble(param[2].toString()) : 0.0d);
+ 					param[2] = getRangeForFundAmount(fundSanctionRangeList,param[2] != null ? commonMethodsUtilService.roundUptoThreeDecimalPoint(Double.parseDouble(param[2].toString())) : 0.0d);
  				}
  			}
  			
