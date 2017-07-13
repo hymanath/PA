@@ -10,7 +10,7 @@ import com.itgrids.model.FundSanctionLocation;
 
 public interface IFundSanctionLocationDAO extends GenericDao<FundSanctionLocation,Long> {
 	public List<Object[]> getLocationWiseFundSanctionDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
-			Date sDate,Date eDate,Long locationScopeId,List<Long> searchLvlVals,List<Long> schmeIdsList );
+			Date sDate,Date eDate,Long locationScopeId,List<Long> searchLvlVals,List<Long> schmeIdsList ,List<Long> subProgramIdsList);
 	public List<Object[]> getALlProgramesAmountDetails(InputVO inputVO,Date sDate,Date eDate);
 
 }

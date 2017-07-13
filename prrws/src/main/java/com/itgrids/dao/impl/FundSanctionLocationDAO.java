@@ -26,7 +26,7 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 	}
 	//click
 	public List<Object[]> getLocationWiseFundSanctionDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
-			Date sDate,Date eDate,Long locationScopeId,List<Long> searchLvlVals,List<Long> schmeIdsList ){
+			Date sDate,Date eDate,Long locationScopeId,List<Long> searchLvlVals,List<Long> schmeIdsList,List<Long> subProgramIdsList ){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select " 
 				+ " modal.fundSanction.workName, "//0
@@ -80,7 +80,8 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 		}
 		if(schmeIdsList != null && schmeIdsList.size()>0)
 			sb.append(" and modal.fundSanction.subProgram.subProgramId in (:schmeIdsList) ");
-		
+		if(subProgramIdsList != null && subProgramIdsList.size()>0)
+			sb.append(" and modal.fundSanction.govtScheme.govtSchemeId in (:subProgramIdsList) ");
 		sb.append(" group by modal.fundSanction.fundSactionId ");
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -98,6 +99,8 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 		if(locationScopeId != null && locationScopeId.longValue() > 0l && searchLvlVals != null && searchLvlVals.size()>0){
 			query.setParameterList("searchLvlVals", searchLvlVals);
 		}
+		if(subProgramIdsList != null && subProgramIdsList.size()>0)
+			query.setParameterList("subProgramIdsList", subProgramIdsList);
 		return query.list();
 		
 	}

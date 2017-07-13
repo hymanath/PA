@@ -779,7 +779,7 @@ public class CommonMethodsUtilService {
 		 * @param List<Long>
 		 * @return if argument is not null java.lang.Double else 0.0
 		 */
-		public Double roundUptoThreeDecimalPoint(Double value){
+		public static Double roundUptoThreeDecimalPoint(Double value){
 			try{
 				 DecimalFormat df = new DecimalFormat("##.000");
 				if(value != null && value.doubleValue() > 0){
@@ -861,10 +861,7 @@ public class CommonMethodsUtilService {
 				}
 				return null;
 			}
-		
-
-			
-			public static List<String> buildIntervals(Double amount,int intervalsCount){
+			/*public static List<String> buildIntervals(Double amount,int intervalsCount){
 				List<String> returnList = new ArrayList<String>();
 				try {
 					List<String> intervalList = new ArrayList<String>();
@@ -907,8 +904,39 @@ public class CommonMethodsUtilService {
 					LOG.error(" Exception Occured in buildIntervals() , CommonMethodsUtilService class.");
 				}
 				return returnList;
+			}*/
+			public static List<String> buildIntervals(Double amount,int intervalsCount){
+				List<String> returnList = new ArrayList<String>();
+				try {
+					List<String> intervalList = new ArrayList<String>();
+					if(intervalsCount>0){
+						Double value= amount/intervalsCount;
+						Double tempValue=0.00d;
+						for (int i = 0; i < intervalsCount; i++) {
+							if(i==0){
+								intervalList.add(i+"-"+value);
+								tempValue =tempValue+value;
+							}else{
+								intervalList.add(tempValue+"-"+(tempValue+value));
+								tempValue =tempValue+value;
+							}
+						}
+					}					
+
+					if(isListOrSetValid(intervalList)){
+						for (String interval : intervalList) {
+							String[] rangeArr = interval.split("-");
+							if(rangeArr != null && rangeArr.length>0){
+								returnList.add(roundUptoThreeDecimalPoint(Double.valueOf(rangeArr[0]))+" - "+roundUptoThreeDecimalPoint(Double.valueOf(rangeArr[1])));
+							}
+						}
+					}
+					returnList.add(0,"0-0");
+				} catch (Exception e) {
+					LOG.error(" Exception Occured in buildIntervals() , CommonMethodsUtilService class.");
+				}
+				return returnList;
 			}
-			
 			public  static String calculatetempAmountInWords(Long number){
 			      String amountStr = number.toString();
 			      int lenght = amountStr.trim().length();

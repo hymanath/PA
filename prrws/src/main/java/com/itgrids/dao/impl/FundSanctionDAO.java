@@ -441,7 +441,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}else if(scopeId != null && scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
 			queryStr.append(" model.locationAddress.panchayat.panchayatId ");
 		}
-		queryStr.append(" ,(sum(model.fundSanction.sactionAmount)/100000) ");
+		queryStr.append(" ,(sum(model.fundSanction.sactionAmount)/10000000.0d) ");
 		queryStr.append(" from FundSanctionLocation model ");
 		queryStr.append(" where model.fundSanction.isDeleted ='N' and model.isDeleted ='N' ");
 		if(scopeId != null && scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
