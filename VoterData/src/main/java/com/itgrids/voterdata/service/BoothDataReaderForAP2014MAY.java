@@ -42,7 +42,6 @@ public class BoothDataReaderForAP2014MAY {
                 conn = DriverManager.getConnection(DB_URL,USER,PASS);
                 
                 for (File input : inputDir.listFiles(new FilenameFilter() {
-                    @Override
                     public boolean accept(File file, String filename) {
                         return filename.endsWith('.' + "pdf");
                     }

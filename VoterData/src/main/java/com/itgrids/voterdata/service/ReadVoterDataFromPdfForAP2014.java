@@ -117,7 +117,6 @@ public class ReadVoterDataFromPdfForAP2014 {
                 Long startTime = new Date().getTime();
                 
                 for (File input : inputDir.listFiles(new FilenameFilter() {
-                    @Override
                     public boolean accept(File file, String filename) {
                         return filename.endsWith('.' + "pdf");
                     }
