@@ -32,6 +32,7 @@ public class BoothInchargeRoleConditionMapping {
 	private String isConfirmed;
 	private Date startDate;
 	private Date completedDate;
+	private String isDeleted;
 	
 	private Booth booth;
 	private BoothInchargeRoleCondition boothInchargeRoleCondition;
@@ -104,7 +105,13 @@ public class BoothInchargeRoleConditionMapping {
 	public void setCompletedDate(Date completedDate) {
 		this.completedDate = completedDate;
 	}
-	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="booth_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)

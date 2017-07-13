@@ -400,14 +400,14 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	  */
 	public List<BoothInchargeDetailsVO> getLocationLevelWiseBoothCount(InputVO inputVO) {
 		List<BoothInchargeDetailsVO> resultList = new ArrayList<BoothInchargeDetailsVO>(0);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			if (inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() > 0) {
 				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
 				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
 			}
 
-			Map<Long, BoothInchargeDetailsVO> locationBoothMap = new TreeMap<Long, BoothInchargeDetailsVO>(); ;
+			Map<String, BoothInchargeDetailsVO> locationBoothMap = new TreeMap<String, BoothInchargeDetailsVO>(); ;
           
 			if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
 				//Setting MANDAL Wise Booth Count
@@ -418,14 +418,14 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		          }
 				 /*We are appending 1 prefix id for MANDAL and 2 for Local Election body.Because in single list
 				  MANDAL And localElection Body is going to UI.So for identification purpose once user is selecting filter.
-				  #locationId 0:first time call or except TEHSIL other filter selected 1: Once User select TEHSIL filter type  */
+				  #locationId 0:first time call or except TEHSIL other filter selected 1: Once User select TEHSIL filter type.*/
 				 if(locationId == 0 || locationId == 1){
 					    List<Object[]> notStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
 						List<Object[]> startedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
 						List<Object[]> completedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
-						getLocationWiseBoothDtls(notStartedBoothObjLst,locationBoothMap,IConstants.TEHSIL,"NotStarted");
-						getLocationWiseBoothDtls(startedBoothObjLst,locationBoothMap,IConstants.TEHSIL,"Started");
-						getLocationWiseBoothDtls(completedBoothObjLst,locationBoothMap,IConstants.TEHSIL,"Completed");
+						getLocationWiseBoothDtls(notStartedBoothObjLst,locationBoothMap,"NotStarted",IConstants.TEHSIL);
+						getLocationWiseBoothDtls(startedBoothObjLst,locationBoothMap,"Started",IConstants.TEHSIL);
+						getLocationWiseBoothDtls(completedBoothObjLst,locationBoothMap,"Completed",IConstants.TEHSIL);
 						 
 				 }
 				
@@ -436,9 +436,9 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 					List<Object[]> lclElctnBdyStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
 					List<Object[]> lclElctnBdyCompletedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
 				
-					getLocationWiseBoothDtls(lclElctnBdyNotStartedBoothObjLst,locationBoothMap,IConstants.LOCALELECTIONBODY, "NotStarted");
-					getLocationWiseBoothDtls(lclElctnBdyStartedBoothObjLst,locationBoothMap,IConstants.LOCALELECTIONBODY, "Started");
-					getLocationWiseBoothDtls(lclElctnBdyCompletedBoothObjLst,locationBoothMap,IConstants.LOCALELECTIONBODY, "Completed");
+					getLocationWiseBoothDtls(lclElctnBdyNotStartedBoothObjLst,locationBoothMap,"NotStarted",IConstants.LOCALELECTIONBODY);
+					getLocationWiseBoothDtls(lclElctnBdyStartedBoothObjLst,locationBoothMap,"Started",IConstants.LOCALELECTIONBODY);
+					getLocationWiseBoothDtls(lclElctnBdyCompletedBoothObjLst,locationBoothMap,"Completed",IConstants.LOCALELECTIONBODY);
 				 }
 			}else{
 				
@@ -458,11 +458,15 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		return resultList;
 	}
-	public void getLocationWiseBoothDtls(List<Object[]> objList,Map<Long,BoothInchargeDetailsVO> locationBoothMap,String type,String resultType){
+	public void getLocationWiseBoothDtls(List<Object[]> objList,Map<String,BoothInchargeDetailsVO> locationBoothMap,String resultType,String type){
 		try{
 			if (objList != null && objList.size() > 0) {
 				for (Object[] param : objList) {
-					BoothInchargeDetailsVO locationVO = locationBoothMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(param[0] == null){
+						continue;
+					}
+						
+					BoothInchargeDetailsVO locationVO = locationBoothMap.get(commonMethodsUtilService.getStringValueForObject(param[0]));
 					if (locationVO == null ){
 						locationVO = new BoothInchargeDetailsVO();
 						if(type.equalsIgnoreCase(IConstants.TEHSIL)) {
@@ -472,10 +476,9 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 						} else {
 							locationVO.setLocationIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
 						}
-						locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
 						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 						locationVO.setBoothAddressVO(getBoothAddress(param));
-						locationBoothMap.put(locationVO.getLocationId(), locationVO);
+						locationBoothMap.put(locationVO.getLocationIdStr(), locationVO);
 					}
 					if(resultType.equalsIgnoreCase("NotStarted")){
 						locationVO.setNotStartedBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -548,6 +551,9 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		try{
 			if (locationObjLst != null && locationObjLst.size() > 0) {
 				for (Object[] param:locationObjLst) {
+					if(param[0] == null){
+						continue;
+					}
 					BoothInchargeDetailsVO locationVO = new BoothInchargeDetailsVO();
 					if(type.equalsIgnoreCase(IConstants.TEHSIL)) {
 						locationVO.setLocationIdStr("1"+commonMethodsUtilService.getStringValueForObject(param[0]));
@@ -568,7 +574,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	
 	public List<BoothAddressVO> getLocationLevelWiseBoothDetails(InputVO inputVO) {
 		List<BoothAddressVO> resultList = new ArrayList<BoothAddressVO>(0);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			if (inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() > 0) {
 				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
@@ -582,7 +588,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		            	inputVO.setFilterValue(Long.valueOf(inputVO.getFilterValue().toString().substring(1)));
 		          }
 				 if(locationId == 2){
-					 inputVO.setLocationLevel(IConstants.LOCALELECTIONBODY);
+					 inputVO.setFilterLevel(IConstants.LOCALELECTIONBODY);
 				 }
 			}
 			      
