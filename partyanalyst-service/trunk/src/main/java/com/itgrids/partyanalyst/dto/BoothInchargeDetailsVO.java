@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class BoothInchargeDetailsVO {
 	
 	private Long locationId;
@@ -9,7 +11,14 @@ public class BoothInchargeDetailsVO {
 	private Long startedBoothCount;
 	private Long notStartedBoothCount;
 	private Long completedBoothCount;
+	private Long roleId;
+	private String roleName;
+	private Long minMemberCount=0l;
+	private Long maxMemberCount=0l;
+	private Long addedMemberCount=0l;
+	private String status;
 	
+	private List<BoothInchargeDetailsVO> subList;
 	private BoothAddressVO boothAddressVO;
 	
 	public Long getLocationId() {
@@ -61,7 +70,46 @@ public class BoothInchargeDetailsVO {
 	public void setLocationIdStr(String locationIdStr) {
 		this.locationIdStr = locationIdStr;
 	}
-	
-	
-	
+	public Long getRoleId() {
+		return roleId;
+	}
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
+	}
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+	public Long getMinMemberCount() {
+		return minMemberCount;
+	}
+	public void setMinMemberCount(Long minMemberCount) {
+		this.minMemberCount = minMemberCount;
+	}
+	public Long getMaxMemberCount() {
+		return maxMemberCount;
+	}
+	public void setMaxMemberCount(Long maxMemberCount) {
+		this.maxMemberCount = maxMemberCount;
+	}
+	public Long getAddedMemberCount() {
+		return addedMemberCount;
+	}
+	public void setAddedMemberCount(Long addedMemberCount) {
+		this.addedMemberCount = addedMemberCount;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public List<BoothInchargeDetailsVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<BoothInchargeDetailsVO> subList) {
+		this.subList = subList;
+	}
 }

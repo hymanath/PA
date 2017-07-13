@@ -266,7 +266,10 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		queryStr.append(" left join model1.address.panchayat panc ");
 
 		queryStr.append(" where model.isActive ='Y' and model.isDeleted = 'N' and model1.isDeleted='N' ");
-
+         
+		if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
+        	 queryStr.append(" and localElectionBody.localElectionBodyId is null ");
+         }
 		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
 
 			if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
@@ -283,7 +286,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 				queryStr.append(" and panc.panchayatId =:filterValue");
 			}
 		}
-
+        
 		if (resultType.equalsIgnoreCase("NotStarted")) {
 			queryStr.append(" and model1.isConfirmed='N' and model1.startDate is null and model1.completedDate is null ");
 		} else if (resultType.equalsIgnoreCase("Started")) {
@@ -300,7 +303,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 			}
 		}
 		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
-			queryStr.append(" and model.boothInchargeEnrollment.boothInchargeEnrollmentId =:boothInchargeEnrollmentId ");
+			queryStr.append(" and model.boothInchargeEnrollmentId =:boothInchargeEnrollmentId ");
 		}
 		queryStr.append(" group by ");
 		if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
@@ -437,7 +440,9 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 				queryStr.append(" and panc.panchayatId =:filterValue");
 			}
 		}
-
+		if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
+       	  queryStr.append(" and localElectionBody.localElectionBodyId is null ");
+        }
 		if (inputVO.getResultType().equalsIgnoreCase("NotStarted")) {
 			queryStr.append(" and model1.isConfirmed='N' and model1.startDate is null and model1.completedDate is null ");
 		} else if (inputVO.getResultType().equalsIgnoreCase("Started")) {
@@ -454,7 +459,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 			}
 		}
 		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
-			queryStr.append(" and model.boothInchargeEnrollment.boothInchargeEnrollmentId =:boothInchargeEnrollmentId ");
+			queryStr.append(" and model.boothInchargeEnrollmentId =:boothInchargeEnrollmentId ");
 		}
 		
 		Query query = getSession().createQuery(queryStr.toString());
@@ -493,8 +498,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		
 		return query.list();
 	}
-	
-	public Long checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Long> boothEnrollmentYrIds){
+public Long checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Long> boothEnrollmentYrIds){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.boothInchargeId from BoothIncharge model where " );
@@ -515,5 +519,23 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 			query.setParameterList("boothEnrollmentYrIds", boothEnrollmentYrIds);
 		
 		return (Long)query.uniqueResult();
+	}
+	public List<Object[]> getAddedMemberInBoothRoleWise(Long boothId,Long boothInchargeEnrollmentId) {
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select " +
+		 				 " model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId," +
+		 				 " model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.roleName," +
+		 				 " count(distinct model.tdpCadreId) " +
+		 				 " from BoothIncharge model " +
+		 				 " where " +
+		 				 " model.isDeleted='N' and  model.boothInchargeRoleConditionMapping.isDeleted='N' and model.isActive ='Y'" +
+		 				 " and model.boothInchargeRoleConditionMapping.boothId=:boothId " +
+		 				 " and model.boothInchargeRoleConditionMapping.boothInchargeEnrollmentId=:boothInchargeEnrollmentId " +
+		 				 " group by " +
+		 				 " model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("boothId", boothId);
+		query.setParameter("boothInchargeEnrollmentId", boothInchargeEnrollmentId);
+		return query.list();
 	}
 }
