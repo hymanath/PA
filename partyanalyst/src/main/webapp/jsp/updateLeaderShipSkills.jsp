@@ -188,7 +188,7 @@ var leaderShipLevelArray = [];
 		 
 		 $("#goalsDateId0").datetimepicker({format: "MM/DD/YYYY"});
 		 
-	     getAllStatusForCadre();
+	     //getAllStatusForCadre();
 		 
 		 function getAllStatusForCadre()
 		 {
@@ -289,6 +289,7 @@ function getLeaderShipDetails()
 	          dataType: 'json',
 	          data: {task:JSON.stringify(jObj)}
 	         }).done(function(result){
+	         	getAllStatusForCadre();
 				  if(result!=null){
 		    buildingData(result,cadreId,batchId);
 		  }
