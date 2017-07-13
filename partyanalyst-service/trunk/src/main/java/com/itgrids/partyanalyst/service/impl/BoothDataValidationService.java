@@ -626,11 +626,11 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		return resultList;
 	}
-	public List<IdAndNameVO> getBoothInchargeRoles(Long boothId){
+	public List<IdAndNameVO> getBoothInchargeRoles(Long boothId,List<Long> enrollmentYrIds){
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try{
 			Map<Long,IdAndNameVO> boothRolesMap = new HashMap<Long,IdAndNameVO>();
-			List<Object[]> roles = boothInchargeRoleConditionMappingDAO.getBoothInchargeRolesWithMinMAxCount(boothId);
+			List<Object[]> roles = boothInchargeRoleConditionMappingDAO.getBoothInchargeRolesWithMinMAxCount(boothId,enrollmentYrIds);
 			
 			if(commonMethodsUtilService.isListOrSetValid(roles)){
 				for (Object[] objects : roles) {
@@ -645,12 +645,13 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			}
 			List<Object[]> rolesCount = null;
 			if(commonMethodsUtilService.isMapValid(boothRolesMap)){
-				rolesCount = boothInchargeDAO.getBoothInchargeCountByRoleIds(boothRolesMap.keySet());
+				rolesCount = boothInchargeDAO.getBoothInchargeCountByRoleIds(boothRolesMap.keySet(),enrollmentYrIds);
 			}
-			
+			List<Long> savedRoles = new ArrayList<Long>();
 			if(commonMethodsUtilService.isMapValid(boothRolesMap)){
 				if(commonMethodsUtilService.isListOrSetValid(rolesCount)){
 					for (Object[] objects : rolesCount) {
+						savedRoles.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						IdAndNameVO roleVO = boothRolesMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						if(roleVO != null){
 							Long memCount = (Long)objects[1];
@@ -664,11 +665,12 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				}
 			}
 			
-			if(commonMethodsUtilService.isMapValid(boothRolesMap)){
-				for (Entry<Long, IdAndNameVO> entrySet : boothRolesMap.entrySet()) {
-					IdAndNameVO vo = getMatchedVOById(returnList,entrySet.getKey());
-					if(vo == null){
-						returnList.add(vo);
+			//Till not Saved With roleId for BoothIncharge Table Then adding those roles to returnList 
+			if(commonMethodsUtilService.isMapValid(boothRolesMap) && savedRoles != null && savedRoles.size()>0){
+				for (Map.Entry<Long, IdAndNameVO> entrySet : boothRolesMap.entrySet()) {
+					//IdAndNameVO vo = getMatchedVOById(returnList,entrySet.getKey());
+					if(!savedRoles.contains(entrySet.getKey())){
+						returnList.add(entrySet.getValue());
 					}
 				}
 			}

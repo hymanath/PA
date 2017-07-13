@@ -14,17 +14,24 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		super(BoothInchargeRoleConditionMapping.class);
 	}
 	
-	public List<Object[]> getBoothInchargeRolesWithMinMAxCount(Long boothId){
+	public List<Object[]> getBoothInchargeRolesWithMinMAxCount(Long boothId,List<Long> enrollmentYrIds){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append( " select model.boothInchargeRoleConditionMappingId, model.boothInchargeRoleCondition.minMembers," +
 				"model.boothInchargeRoleCondition.maxMembers,model.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId" +
-				",model.boothInchargeRoleCondition.boothInchargeRole.roleName from BoothInchargeRoleConditionMapping model where model.booth.boothId = :boothId " ); 
+				",model.boothInchargeRoleCondition.boothInchargeRole.roleName from BoothInchargeRoleConditionMapping model where " ); 
 		
+		if(boothId != null && boothId.longValue() >0l)
+			sb.append( "  model.booth.boothId = :boothId " );
+		
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0)
+			sb.append( " and model.boothInchargeEnrollment.boothInchargeEnrollmentId in (:enrollmentYrIds) " );
 		Query query=getSession().createQuery(sb.toString());
 		
 		if(boothId != null && boothId.longValue() >0l)
-		query.setParameter("boothId", boothId);
+			query.setParameter("boothId", boothId);
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0)
+			query.setParameterList("enrollmentYrIds", enrollmentYrIds);
 		
 		return query.list();
 		
