@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BoothAddressVO;
@@ -158,7 +160,15 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 		try{
 			jObj = new JSONObject(getTask());
 			Long boothId = jObj.getLong("boothId");
-			idAndNameVOList = boothDataValidationService.getBoothInchargeRoles(boothId);
+			
+			JSONArray enrollmentYrIdArr = jObj.getJSONArray("enrollmentYrIds");
+			List<Long> enrollmentYrIds = new ArrayList<Long>(0);
+			if(enrollmentYrIdArr != null && enrollmentYrIdArr.length()>0){
+				for (int i = 0; i < enrollmentYrIdArr.length(); i++) {
+					enrollmentYrIds.add(Long.valueOf(enrollmentYrIdArr.get(i).toString().trim()));
+				}
+			}
+			idAndNameVOList = boothDataValidationService.getBoothInchargeRoles(boothId,enrollmentYrIds);
 		}catch(Exception e){
 			LOG.error("Exception raised at getBoothInchargeRoles() method of BoothReportAction", e);
 		}

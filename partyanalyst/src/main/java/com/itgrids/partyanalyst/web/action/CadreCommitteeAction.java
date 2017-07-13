@@ -2727,7 +2727,15 @@ public String updateCommitteeMemberDesignationByCadreId(){
 			Long userId = regVO.getRegistrationID();
 			
 			jObj = new JSONObject(getTask());
-			status = cadreCommitteeService.saveElectionBoothCommitteeDetails(userId,jObj.getLong("boothId"),jObj.getLong("tdpCadreId"));
+			JSONArray enrollmentYrIdArr = jObj.getJSONArray("enrollmentYrIds");
+			List<Long> enrollmentYrIds = new ArrayList<Long>(0);
+			if(enrollmentYrIdArr != null && enrollmentYrIdArr.length()>0){
+				for (int i = 0; i < enrollmentYrIdArr.length(); i++) {
+					enrollmentYrIds.add(Long.valueOf(enrollmentYrIdArr.get(i).toString().trim()));
+				}
+			}
+			
+			status = cadreCommitteeService.saveElectionBoothCommitteeDetails(userId,jObj.getLong("boothId"),jObj.getLong("tdpCadreId"),jObj.getLong("boothIncrgRoleId"),enrollmentYrIds);
 		}catch(Exception e){
 			LOG.error("Exception occured in saveElectionBoothCommitteeDetails() At CadreCommitteeAction",e);
 		}

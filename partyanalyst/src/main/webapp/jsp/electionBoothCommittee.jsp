@@ -155,16 +155,20 @@
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-sm-4" id="mandalMainDivId">
-						<label for="">SELECT Mandal/Municipality/Corporation <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
+						<label for="">SELECT MANDAL/MUNCIPALITY/CORPORATION <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
 						<div id="mandalDivId"></div>
 					</div>
-					<div class="col-sm-4" id="committeePanchayatId">
+					<!--<div class="col-sm-4" id="committeePanchayatId">
 						<label for="committeeLocationId">SELECT PANCHAYAT <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
 						<select onchange="populateDefaultValue(1);gePanchayatOrBooth1();" class="form-control" id="committeeLocationId" ><option value="0">Select PANCHAYAT</option></select >
-					</div>
+					</div>-->
 					<div class="col-sm-4">
 						<label for="committeeLocationId1">SELECT LOCATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
-						<select onchange="populateDefaultValue(1);" class="form-control" id="committeeLocationId1" ><option value="0">Select Location</option></select >
+						<select onchange="populateDefaultValue(1);getBoothInchargeRoles();" class="form-control" id="committeeLocationId1" ><option value="0">Select Location</option></select >
+					</div>
+					<div class="col-sm-4" id="">
+						<label for="committeeDesigId">SELECT DESIGNATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
+						<select  class="form-control" id="committeeDesignationId"><option value="0">Select Designation</option></select>
 					</div>
 					<div class="col-sm-4" id="commitTypeId">
 						<label for="committeeTypeId">COMMITTEE TYPE <span style="color:red">*</span></label>
@@ -1648,7 +1652,8 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 				var str='';
 				if(result !=null){
 					if(num == 2)
-						str+='<select id="panchayatWardByMandal" class="form-control" onChange="getTdpCommitteePanchayatWardByMandal()">';
+						<!--str+='<select id="panchayatWardByMandal" class="form-control" onChange="getTdpCommitteePanchayatWardByMandal()">';-->
+					    str+='<select id="panchayatWardByMandal" class="form-control" onChange="gePanchayatOrBooth()">';
 						str+='<option value="0">Select Location</option>';
 						for(var i in result)
 						{
@@ -1745,14 +1750,14 @@ function getBoothsByMandal(mandalId){
 	$("#userDetailsId").html("");
 	$("#searchBy").html('');
 	 var mandalId = $("#panchayatWardByMandal").val();
-	 var panchayatId = $("#committeeLocationId").val();  
+	 var desigId = $("#committeeDesignationId").val();  
 	 var boothId = $("#committeeLocationId1").val();
 	 
 	  if(mandalId == 0 || mandalId.length==0){
 		errMsg=errMsg+"Please select atleast one Mandal/Muncipality/Corporation.<br/>";
 	  } 
-	  if(panchayatId ==0 || panchayatId.length == 0){
-		  errMsg=errMsg+"Please select atleast one panchayat<br/>";
+	  if(desigId ==0 || desigId.length == 0){
+		  errMsg=errMsg+"Please select atleast one Designation<br/>";
 	  }
 	  if(boothId == 0 || boothId.length ==0){
 		 errMsg=errMsg+"Please select atleast one location<br/>";
@@ -1781,17 +1786,17 @@ function getBoothUserDetails(){
 	var selectLocationName = constiName+" Constituency";
 	var mandalId = $("#panchayatWardByMandal").val();
 	var boothId = $("#committeeLocationId1").val();
-	var panchayatId = $("#committeeLocationId").val();
+	//var panchayatId = $("#committeeLocationId").val();
 	var mandalName = $("#panchayatWardByMandal option:selected").text();
 	var boothName = $("#committeeLocationId1 option:selected").text();
-	
-	
+
+
 	  if(mandalId == 0 || mandalId.length==0){
 		errMsg=errMsg+"Please select atleast one Mandal/Muncipality/Corporation.<br/>";
 	  } 
-	  if(panchayatId ==0 || panchayatId.length == 0){
+	  /*if(panchayatId ==0 || panchayatId.length == 0){
 		  errMsg=errMsg+"Please select atleast one panchayat<br/>";
-	  }
+	  }*/
 	  if(boothId == 0 || boothId.length ==0){
 			errMsg=errMsg+"Please select atleast one location<br/>";
 	  }
@@ -1962,19 +1967,28 @@ function getTdpCommitteePanchayatWardByMandal2(){
         $('#searchButnId').click();
     }
 });
-//getBoothInchargeRoles();
+
 function getBoothInchargeRoles()
-	{	
-	
+	{
+$("#committeeDesignationId  option").remove();		
+	var boothId = $("#committeeLocationId1").val();
+	var enrollmentYrIds = [];
+	enrollmentYrIds.push(1);
 		var jsObj = {
-			boothId :909188
+			boothId :boothId,
+			enrollmentYrIds:enrollmentYrIds
 		}
 		 $.ajax({
 			type : "POST",
 			url : "getBoothInchargeRolesAction.action",
 			data : {task:JSON.stringify(jsObj)} 
 		}).done(function(result){
-			
+			if(result != null){
+					$("#committeeDesignationId").append('<option value="0">Select Location</option>');
+				for(var i in result){
+						$("#committeeDesignationId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
+			}
 		});
 	}
 </script>
