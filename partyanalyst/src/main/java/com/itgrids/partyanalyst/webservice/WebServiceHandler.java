@@ -3150,19 +3150,7 @@ public class WebServiceHandler {
 		}
 	}
 	
-	@POST
-	@Path("/getEnrollments")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public List<TdpCommitteeEnrollment> getEnrollments(){
-		try{			
-			return webServiceHandlerService.getEnrollments();		
-		}catch(Exception e){
-			LOG.error("Exception Occured in getEnrollments Method, Exception is ",e);
-			return null;
-		}
-	}
-
+	
 	@POST
 	@Path("/getAppointmentCandidateCountDeatils")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -3191,45 +3179,7 @@ public class WebServiceHandler {
 		    return null;
 		}	
 	}
-	@POST
-	@Path("/getLocationWiseMeetingStatusCount")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(JSONObject jObj){
-		try{			
-			return webServiceHandlerService.getLevelWiseMeetingStatusCounts(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("locationId"),jObj.getLong("locationValue"));		
-		}catch(Exception e){
-			LOG.error("Exception Occured in getLocationWiseMeetingsCount() Method, Exception is ",e);
-			return null;
-		}
-	}
 	
-	@POST
-	@Path("/getLocationWiseInsuranceStatusCount")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(JSONObject jObj){
-		try{			
-			return webServiceHandlerService.getLocationWiseInsuranceStatusCounts(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("locationId"),jObj.getLong("locationValue"));		
-		}catch(Exception e){
-			LOG.error("Exception Occured in getLocationWiseInsuranceCount() Method, Exception is ",e);
-			return null;
-		}
-	}
-	
-	
-	@POST
-	@Path("/getLocationWiseGrivanceTrustStatusCounts")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public List<List<GrivenceStatusVO>> getLocationWiseGrivenceTurstStatusCounts(JSONObject jObj){
-		try{			
-			return webServiceHandlerService.getGrivenceTrustStatusCounts(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("locationId"),jObj.getLong("locationValue"));		
-		}catch(Exception e){
-			LOG.error("Exception Occured in getLocationWiseInsuranceCount() Method, Exception is ",e);
-			return null;
-		}
-	}
 	@POST
 	@Path("/checkMemberWalkInForToday")
 	@Produces(MediaType.APPLICATION_JSON)

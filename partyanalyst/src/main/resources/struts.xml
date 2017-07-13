@@ -17680,31 +17680,31 @@
 	
 	<action name="getLocationWiseCommitteesCountAction" class="locationDashboardAction" method="getLocationWiseCommitteesCount">
 	    <result type="json" name="success">
-	    <param name="root">LocationWiseCommitteesCount</param>
+	    <param name="root">committeeBasicVO</param>
 	    </result> 
 	</action>
 	
-	<action name="getLocationWiseMeetingStatusCountAction" class="locationDashboardAction" method="getLevelWiseMeetingStatusCounts">
+	<action name="getLevelWiseMeetingStatusCountsAction" class="locationDashboardAction" method="getLevelWiseMeetingStatusCounts">
 	    <result type="json" name="success">
-	   		 <param name="root">getLevelWiseMeetingStatusCounts</param>
+	   		 <param name="root">alertVO</param>
 	    </result>
     </action>
 	    
-	 <action name="getEnrollmentYearsAction" class="locationDashboardAction" method="getEnrollmentYears">
+	 <action name="getEnrollmentYearsAction" class="locationDashboardAction" method="getEnrollmentYearsList">
 	 		<result type="json" name="success">
 	 			<param name="root">enrollmentYears</param>
 	 		</result>			   
 	 </action>
 	 
-	 <action name="getLocationWiseInsuranceStatusCountAction" class="locationDashboardAction" method="getLocationWiseInsuranceStatusCount">
+	 <action name="getLocationWiseInsuranceStatusCountAction" class="locationDashboardAction" method="getLocationWiseInsuranceStatusCounts">
 	     <result type="json" name="success">
-	        <param name="root">getLocationWiseInsuranceStatusCount</param>
+	        <param name="root">insuranceVO</param>
 	    </result>
    </action>
    
    <action name="getLocationWiseGrivanceTrustStatusCountsAction" class="locationDashboardAction" method="getLocationWiseGrivanceTrustStatusCounts">
         <result type="json" name="success">
-         <param name="root">getLocationWiseGrivanceTrustStatusCounts</param>
+         <param name="root">grivenceVO</param>
        </result>
    </action>
    <action name="getBoothInchargeDashboardAction" class="boothReportAction" method="getBoothInchargeDashboard">

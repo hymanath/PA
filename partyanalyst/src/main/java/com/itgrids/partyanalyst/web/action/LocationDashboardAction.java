@@ -10,11 +10,16 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
+import com.itgrids.partyanalyst.dto.AlertOverviewVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
+import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
+import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
@@ -44,8 +49,43 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<ToursBasicVO> tourDesignationList;
 	private List<BenefitCandidateVO> govtSchemeMemberBenefitList;
 	private List<ConstituencyCadreVO> cadreDtlsList;
+	private List<BasicVO> enrollmentYears;
+	private CommitteeBasicVO committeeBasicVO;
+	private List<AlertOverviewVO> alertVO;
+	private InsuranceStatusCountsVO insuranceVO;
+	private List<GrivenceStatusVO> grivenceVO;
 	
 	
+	public List<GrivenceStatusVO> getGrivenceVO() {
+		return grivenceVO;
+	}
+	public void setGrivenceVO(List<GrivenceStatusVO> grivenceVO) {
+		this.grivenceVO = grivenceVO;
+	}
+	public InsuranceStatusCountsVO getInsuranceVO() {
+		return insuranceVO;
+	}
+	public void setInsuranceVO(InsuranceStatusCountsVO insuranceVO) {
+		this.insuranceVO = insuranceVO;
+	}
+	public List<AlertOverviewVO> getAlertVO() {
+		return alertVO;
+	}
+	public void setAlertVO(List<AlertOverviewVO> alertVO) {
+		this.alertVO = alertVO;
+	}
+	public CommitteeBasicVO getCommitteeBasicVO() {
+		return committeeBasicVO;
+	}
+	public void setCommitteeBasicVO(CommitteeBasicVO committeeBasicVO) {
+		this.committeeBasicVO = committeeBasicVO;
+	}
+	public List<BasicVO> getEnrollmentYears() {
+		return enrollmentYears;
+	}
+	public void setEnrollmentYears(List<BasicVO> enrollmentYears) {
+		this.enrollmentYears = enrollmentYears;
+	}
 	public List<KeyValueVO> getKeyValueVOList() {
 		return keyValueVOList;
 	}
@@ -328,4 +368,55 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		 return Action.SUCCESS;
 	 }
 	 
+	 public String getEnrollmentYearsList(){
+		 try{
+			 jObj = new JSONObject(getTask());
+			 enrollmentYears = locationDashboardService.getEnrollmentIds();
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getEnrollemtYears() of LocationDashboardAction{}", e);
+		 }
+		 return Action.SUCCESS;
+	 }
+	 
+	 public String getLocationWiseCommitteesCount(){
+		 try{
+			 jObj = new JSONObject(getTask());
+			 committeeBasicVO = locationDashboardService.getLocationWiseCommitteesCount(jObj.getString("locationType"), jObj.getLong("locationId"), jObj.getLong("enrollmentId"));
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getLocationWiseCommitteesCount() of LocationDashboardAction{}",e);
+		 }
+		return Action.SUCCESS;
+	 }
+	 
+	public String getLevelWiseMeetingStatusCounts(){
+		try{
+			jObj = new JSONObject(getTask());
+			alertVO = locationDashboardService.getLevelWiseMeetingStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationId"), jObj.getLong("locationValue"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getLocationWiseMeetingCount() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+		 
+	 }	
+	
+	public String getLocationWiseInsuranceStatusCounts(){
+		try{
+			jObj = new JSONObject(getTask());
+			insuranceVO = locationDashboardService.getLocationWiseInsuranceStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationId"), jObj.getLong("locationValue"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getLocationWiseInsuranceStatusCount() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationWiseGrivanceTrustStatusCounts(){
+		try{
+			jObj = new JSONObject(getTask());
+			grivenceVO = locationDashboardService.getGrivenceTrustStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationId"), jObj.getLong("locationValue"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getLocationWiseInsuranceStatusCount() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

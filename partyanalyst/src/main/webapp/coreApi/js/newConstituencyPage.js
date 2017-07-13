@@ -3,8 +3,15 @@ var globalConsId = 232;
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 function onLoadAjaxCalls()
 {
-	/* getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
-	getCountsForConstituency(); //Assembly election details
+	getLocationWiseCommitteesCount();
+	getEnrollmentIds();
+	getLevelWiseMeetingStatusCounts();
+	getLocationWiseInsuranceStatusCount();
+	getLocationWiseGrivanceTrustStatusCounts();
+	getGovtSchemeWiseBenefitMembersCount();
+	getMandalWiseBenefitMembersCount();
+	 getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
+	/*getCountsForConstituency(); //Assembly election details
 	getAllPartiesAllElectionResultsChart(); //Assembly Election Detail
 	getPrintMediaCountsForConstituencyPage(); //electronic media
 	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(); //problems
@@ -709,7 +716,7 @@ function getLocationWiseTourMembersComplainceDtls(){
 function getGovtSchemeWiseBenefitMembersCount(){
 	jsObj={
 		locationType:"constituency",
-		locationValue:272
+		locationValue:232
 	}
 	 $.ajax({
       type : "POST",
@@ -723,7 +730,7 @@ function getGovtSchemeWiseBenefitMembersCount(){
 function getMandalWiseBenefitMembersCount(){
 	jsObj={
 		locationType:"constituency",
-		locationValue:272,
+		locationValue:232,
 		govtSchemeId:1
 	}
 	 $.ajax({
@@ -768,7 +775,7 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(){
 
 // Location wise committees count
 function getLocationWiseCommitteesCount(){
-	jsObj={
+	var jsObj={
 			locationType : "constituency",
 			locationId : 232,
 			enrollmentId : 2
@@ -786,7 +793,7 @@ function getLocationWiseCommitteesCount(){
 
 // Location Wise Meetings Status Counts
 function getLevelWiseMeetingStatusCounts(){
-	jsObj={
+	var jsObj={
 			fromDate : "",
 			toDate:"",
 			locationId : 4,
@@ -805,12 +812,13 @@ function getLevelWiseMeetingStatusCounts(){
 
 // Get enrollment Ids from db
 function getEnrollmentIds(){
-	jsObj={
+	alert("years");
+	var jsObj={
 			
-		}
+	}
 	 $.ajax({
       type : "GET",
-      url : "getEnrollmentsAction.action",
+      url : "getEnrollmentYearsAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
@@ -819,7 +827,7 @@ function getEnrollmentIds(){
 }
 //Location wise insurance status counts
 function getLocationWiseInsuranceStatusCount(){
-	jsObj={
+	var jsObj={
 			fromDate : "",
 			toDate:"",
 			locationId : 4,
@@ -838,7 +846,7 @@ function getLocationWiseInsuranceStatusCount(){
 
 //Location wise Grivance and trust status counts
 function getLocationWiseGrivanceTrustStatusCounts(){
-	jsObj={
+	var jsObj={
 			"fromDate" : "",
 			"toDate":"",
 			"locationId" : 4,
