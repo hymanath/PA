@@ -161,28 +161,35 @@
 								<div class="row">
 									<div class="col-sm-12 panalActiveCls">
 										<div class="row">
-											<div class="col-sm-5">
+											<div class="col-sm-4">
 												<h4 class="advancedSearchStyle stateProSubProCls" attr_switch = "stateLevel">Advanced Search</h4>
 													<ul class="list-inline showHideStatePgramsCls m_top10" style="display:none;">
-														<li class="col-sm-4">
+														<li class="col-sm-6">
 															<select class="form-control chosenSelect" id="programNamesState" >
 															</select>
 														</li>
-														<li class="col-sm-4">
+														<li class="col-sm-6">
 															<select class="form-control chosenSelect" id="subProgramNamesState" >
 															</select>
 														</li>
 													</ul>
 											</div>
 											<div class="col-sm-1">
-													<ul class="" tab-switch="stateLevel" attr_switch = "stateLevel">
-													<!--<li class="active" attr_type="overview">overview</li>
+													<!--<ul class="" tab-switch="stateLevel" attr_switch = "stateLevel">
+													<li class="active" attr_type="overview">overview</li>
 													<li attr_type="scheme">Scheme level</li>
 													<li attr_type="deptscheme">Dept_Scheme Level</li>-->
 												</ul>
 											</div>
-											<div class="col-sm-6">
-												<ul class="nav nav-tabs pull-right tabTypeStateCls" role="tablist" id="tabSt" attr_switch = "stateLevel">
+											<div class="col-sm-5">
+												<ul class="switch-btn-New pull-right" role="tabCummulative" attr_switch = "stateLevel">
+													<li class="active" attr_type="cummulativeView">Cummulative View</li>
+													<li  attr_type="normalView">Year Wise</li>
+												</ul>
+											</div>
+											
+											<div class="col-sm-2">
+												<ul class="nav nav-tabs pull-right tabTypeStateCls" role="tablist" id="" attr_switch = "stateLevel">
 													<li role="presentation" attr_tab_type = "stateGraph" attr_level_type="state"><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 													<li role="presentation" class="active" attr_tab_type = "stateTable" attr_level_type="state"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
 													<!--<li role="presentation" class="" attr_tab_type = "stateCummulative" attr_level_type="state"><a href="#stateLevelCummulative" aria-controls="stateLevelCummulative" role="tab" data-toggle="tab">Cummulative</a></li>-->
@@ -194,14 +201,6 @@
 								<div class="row m_top20">
 									<div class="col-sm-12">
 										<div class="tab-content">
-											<div class="row">
-												<div class="col-sm-12">
-													<ul class="switch-btn-New" role="tabCummulative" attr_switch = "stateLevel">
-														<li class="active" attr_type="cummulativeView">Cummulative View</li>
-														<li  attr_type="normalView">Year Wise</li>
-													</ul>
-												</div>
-											</div>
 											<div role="tabpanel" class="tab-pane m_top10" id="stateLevelGraph">
 												<div class="row">
 													<div class="col-sm-12">
@@ -213,13 +212,6 @@
 												<div class="row">
 													<div class="col-sm-12">
 														<div id="stateLevlOvervwTable"></div>
-													</div>
-												</div>
-											</div>
-											<div role="tabpanel" class="tab-pane " id="stateLevelCummulative">
-												<div class="row">
-													<div class="col-sm-12">
-														<div id="stateLevelCummulativeOvervw"></div>
 													</div>
 												</div>
 											</div>
@@ -258,20 +250,17 @@
 													<li attr_type="parliamentType">Parliament</li>
 												</ul>
 											</div>
-											<div class="col-sm-6">
+											<div class="col-sm-2">
 												<h4 class="advancedSearchStyle stateProSubProCls selectboxsShowHide" attr_switch = "distLevel">Advanced Search</h4>
-												<ul class="list-inline m_top10 showHideDistrictPgramsCls selectboxsShowHide" style="display:none;">
-													<li class="col-sm-4">
-														<select class="form-control chosenSelect" id="programNamesDistrict" >
-														</select>
-													</li>
-													<li class="col-sm-5">
-														<select class="form-control chosenSelect" id="subProgramNamesDistrict" >
-														</select>
-													</li>
+												
+											</div>
+											<div class="col-sm-5">
+												<ul class="switch-btn-New tabCummulativeDistrict pull-right selectboxsShowHide" role="tabCummulative" attr_switch = "distLevel">
+													<li class="active ActiveDistrictCls" attr_type="cummulativeView">Cummulative View</li>
+													<li  attr_type="normalView">Year View</li>
 												</ul>
 											</div>
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<!-- Nav tabs -->
 												<ul class="nav nav-tabs pull-right tabTypeDistCls" role="tablist" id="tabDis">
 													<li role="presentation" attr_tab_type="distGraph" attr_level_type="district"><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
@@ -284,10 +273,16 @@
 									</div>
 								</div>
 								<div class="row selectboxsShowHide">
-									<div class="col-sm-12">
-										<ul class="switch-btn-New tabCummulativeDistrict" role="tabCummulative" attr_switch = "distLevel">
-											<li class="active ActiveDistrictCls" attr_type="cummulativeView">Cummulative View</li>
-											<li  attr_type="normalView">Normal View</li>
+									<div class="col-sm-12" >
+										<ul class="list-inline m_top10 showHideDistrictPgramsCls" style="display:none;">
+											<li class="col-sm-2">
+												<select class="form-control chosenSelect" id="programNamesDistrict" >
+												</select>
+											</li>
+											<li class="col-sm-2">
+												<select class="form-control chosenSelect" id="subProgramNamesDistrict" >
+												</select>
+											</li>
 										</ul>
 									</div>
 								</div>
@@ -398,20 +393,16 @@
 													<li  attr_type="parliamentType">Parliament</li>
 												</ul>
 											</div>
-											<div class="col-sm-5">
+											<div class="col-sm-2">
 												<h4 class="advancedSearchStyle stateProSubProCls selectboxsShowHide" attr_switch ="consLevel">Advanced Search</h4>
-												<ul class="list-inline m_top10 showHideConstituencyPgramsCls selectboxsShowHide" style="display:none;">
-													<li class="col-sm-4">
-														<select class="form-control chosenSelect" id="programNamesConst" >
-														</select>
-													</li>
-													<li class="col-sm-4">
-														<select class="form-control chosenSelect" id="subProgramNamesConst" >
-														</select>
-													</li>
-												</ul>
 											</div>
 											<div class="col-sm-5">
+												<ul class="switch-btn-New tabCummulativeConstituency pull-right selectboxsShowHide" role="tabCummulative" attr_switch = "consLevel">
+													<li class="active ActiveConstituencyCls" attr_type="cummulativeView">Cummulative View</li>
+													<li  attr_type="normalView ">Year Wise</li>
+												</ul>
+											</div>
+											<div class="col-sm-3">
 												<!-- Nav tabs -->
 												<ul class="nav nav-tabs pull-right tabTypeConsCls" role="tablist" id="tabCons">
 													<li role="presentation" attr_tab_type="consGraph" attr_level_type="constituency"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
@@ -425,9 +416,15 @@
 								</div>
 								<div class="row selectboxsShowHide">
 									<div class="col-sm-12">
-										<ul class="switch-btn-New tabCummulativeConstituency" role="tabCummulative" attr_switch = "consLevel">
-											<li class="active ActiveConstituencyCls" attr_type="cummulativeView">Cummulative View</li>
-											<li  attr_type="normalView ">Year Wise</li>
+										<ul class="list-inline m_top10 showHideConstituencyPgramsCls" style="display:none;">
+											<li class="col-sm-2">
+												<select class="form-control chosenSelect" id="programNamesConst" >
+												</select>
+											</li>
+											<li class="col-sm-2">
+												<select class="form-control chosenSelect" id="subProgramNamesConst" >
+												</select>
+											</li>
 										</ul>
 									</div>
 								</div>
@@ -546,20 +543,17 @@
 													<li  attr_type="parliamentType">Parliament</li>
 												</ul>
 											</div>
-											<div class="col-sm-5">
+											<div class="col-sm-2">
 												<h4 class="advancedSearchStyle stateProSubProCls selectboxsShowHide" attr_switch = "mandalLevel">Advanced Search</h4>
-												<ul class="list-inline m_top10 showHideMandalPgramsCls selectboxsShowHide" style="display:none;">
-													<li class="col-sm-4">
-														<select class="form-control chosenSelect" id="programNamesMandal" >
-														</select>
-													</li>
-													<li class="col-sm-4">
-														<select class="form-control chosenSelect" id="subProgramNamesMandal" >
-														</select>
-													</li>
-												</ul>
+												
 											</div>
 											<div class="col-sm-5">
+												<ul class="switch-btn-New tabCummulativeMandal selectboxsShowHide pull-right" role="tabCummulative" attr_switch = "mandalLevel">
+													<li class="active ActiveMandalCls" attr_type="cummulativeView">Cummulative View</li>
+													<li  attr_type="normalView">Year Wise</li>
+												</ul>
+											</div>
+											<div class="col-sm-3">
 												<!-- Nav tabs -->
 												<ul class="nav nav-tabs pull-right tabTypeMandalCls" role="tablist" id="tabMan">
 													<li role="presentation" attr_tab_type="mandalGraph" attr_level_type="mandal"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
@@ -573,9 +567,15 @@
 								</div>
 								<div class="row selectboxsShowHide">
 									<div class="col-sm-12">
-										<ul class="switch-btn-New tabCummulativeMandal" role="tabCummulative" attr_switch = "mandalLevel">
-											<li class="active ActiveMandalCls" attr_type="cummulativeView">Cummulative View</li>
-											<li  attr_type="normalView">Year Wise</li>
+										<ul class="list-inline m_top10 showHideMandalPgramsCls" style="display:none;">
+											<li class="col-sm-2">
+												<select class="form-control chosenSelect" id="programNamesMandal" >
+												</select>
+											</li>
+											<li class="col-sm-2">
+												<select class="form-control chosenSelect" id="subProgramNamesMandal" >
+												</select>
+											</li>
 										</ul>
 									</div>
 								</div>
@@ -699,20 +699,16 @@
 													<li attr_type="parliamentType">Parliament</li>
 												</ul>
 											</div>
-											<div class="col-sm-5">
+											<div class="col-sm-2">
 												<h4 class="advancedSearchStyle stateProSubProCls selectboxsShowHide" attr_switch = "villageLevel">Advanced Search</h4>
-												<ul class="list-inline m_top10 showHideVillagePgramsCls selectboxsShowHide" style="display:none;">
-													<li class="col-sm-4">
-														<select class="form-control chosenSelect" id="programNamesVillage" >
-														</select>
-													</li>
-													<li class="col-sm-4">
-														<select class="form-control chosenSelect" id="subProgramNamesVillage" >
-														</select>
-													</li>
-												</ul>
 											</div>
 											<div class="col-sm-5">
+												<ul class="switch-btn-New tabCummulativeVillage selectboxsShowHide" role="tabCummulative" attr_switch = "villageLevel">
+													<li class="active ActiveVillageCls" attr_type="cummulativeView">Cummulative View</li>
+													<li  attr_type="normalView">Year Wise</li>
+												</ul>
+											</div>
+											<div class="col-sm-3">
 												<!-- Nav tabs -->
 												<ul class="nav nav-tabs pull-right tabTypeVillageCls" role="tablist" id="tabVill">
 													<!--<li role="presentation" ><a href="#villageLevelGraph" aria-controls="villageLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>-->
@@ -726,9 +722,15 @@
 								</div>
 								<div class="row selectboxsShowHide">
 									<div class="col-sm-12">
-										<ul class="switch-btn-New tabCummulativeVillage" role="tabCummulative" attr_switch = "villageLevel">
-											<li class="active ActiveVillageCls" attr_type="cummulativeView">Cummulative View</li>
-											<li  attr_type="normalView">Year Wise</li>
+										<ul class="list-inline m_top10 showHideVillagePgramsCls" style="display:none;">
+											<li class="col-sm-4">
+												<select class="form-control chosenSelect" id="programNamesVillage" >
+												</select>
+											</li>
+											<li class="col-sm-4">
+												<select class="form-control chosenSelect" id="subProgramNamesVillage" >
+												</select>
+											</li>
 										</ul>
 									</div>
 								</div>
@@ -859,11 +861,11 @@
 		<div class="modal-content">
 			<div class="modal-header bg_EE">
 				<div class="row">
-					<div class="col-md-6 col-xs-12 col-sm-6">
+					<div class="col-md-8">
 						<h4 class="modal-title text-capitalize" id="diptNameId">Location Wise Fund Overview</h4>
 						<h6 id="officeNameId"></h6>
 					</div>
-					<div class="col-md-3 col-md-offset-3 col-xs-12 col-sm-6">
+					<div class="col-sm-3 pull-right">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				   
 					</div>
