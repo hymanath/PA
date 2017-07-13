@@ -26,10 +26,10 @@ import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
-import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
-import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.IGovtSchemeBeneficiaryDetailsDAO;
 import com.itgrids.partyanalyst.dao.IInsuranceStatusDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsNewDAO;
@@ -44,13 +44,14 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
+import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
 import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
-import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
@@ -1157,14 +1158,21 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	}
     /*
      * @author R Nagarjuna Gowd
-     * @return List<TdpCommitteeEnrollment> list contains enrollmentIds and Years
+     * @return BasicVO object contains enrollmentIds and Years
      * (non-Javadoc)
      * @see com.itgrids.core.api.service.ILocationDashboardService#getEnrollmentIds()
      */
 	@Override
-	public List<TdpCommitteeEnrollment> getEnrollmentIds() {
-		List<TdpCommitteeEnrollment> TdpCommitteeEnrollment = tdpCommitteeEnrollmentDAO.getAll();
-		return TdpCommitteeEnrollment;
+	public List<BasicVO> getEnrollmentIds() {
+		List<BasicVO> finalList = new ArrayList<BasicVO>();
+		List<TdpCommitteeEnrollment> tdpCommitteeEnrollment = tdpCommitteeEnrollmentDAO.getAll();
+		for (TdpCommitteeEnrollment tdpCommitteeEnrollment2 : tdpCommitteeEnrollment) {
+			BasicVO enrollmentList = new BasicVO();
+			enrollmentList.setId(tdpCommitteeEnrollment2.getTdpCommitteeEnrollmentId());
+			enrollmentList.setDescription(tdpCommitteeEnrollment2.getDescription());
+			finalList.add(enrollmentList);
+		}
+		return finalList;
 	}
 	/*
 	 * @param String fromDateStr
@@ -1177,12 +1185,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLevelWiseMeetingStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
 	 */
 	@Override
-	public List<List<AlertOverviewVO>> getLevelWiseMeetingStatusCounts(String fromDateStr, String toDateStr, Long locationId,
+	public List<AlertOverviewVO> getLevelWiseMeetingStatusCounts(String fromDateStr, String toDateStr, Long locationId,
 			Long locationValue) {
-		List<List<AlertOverviewVO>> meetingStatusCounts = new ArrayList<List<AlertOverviewVO>>();
-		List<AlertOverviewVO> vwStatusCountsList = new ArrayList<AlertOverviewVO>();
-		List<AlertOverviewVO> mtdStatusCountsList = new ArrayList<AlertOverviewVO>();
-		List<AlertOverviewVO> cStatusCountsList = new ArrayList<AlertOverviewVO>();
+		List<AlertOverviewVO> meetingStatusCounts = new ArrayList<AlertOverviewVO>();
 		AlertOverviewVO vwStatus = new AlertOverviewVO();
 		AlertOverviewVO mtdStatus = new AlertOverviewVO();
 		AlertOverviewVO cStatus = new AlertOverviewVO();
@@ -1239,12 +1244,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						}
 					}
 				}
-				vwStatusCountsList.add(vwStatus);
-				mtdStatusCountsList.add(mtdStatus);
-				cStatusCountsList.add(cStatus);
-				meetingStatusCounts.add(vwStatusCountsList);
-				meetingStatusCounts.add(mtdStatusCountsList);
-				meetingStatusCounts.add(cStatusCountsList);
+				meetingStatusCounts.add(vwStatus);
+				meetingStatusCounts.add(mtdStatus);
+				meetingStatusCounts.add(cStatus);
 
 			}
 		} catch (Exception e) {
@@ -2013,10 +2015,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
      * @see com.itgrids.core.api.service.ILocationDashboardService#getGrivenceTrustStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
      */
 	@Override
-	public List<List<GrivenceStatusVO>> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationId, Long locationValue) {
-		List<List<GrivenceStatusVO>> finalList = new ArrayList<List<GrivenceStatusVO>>();
-		List<GrivenceStatusVO> grivenceList = new ArrayList<GrivenceStatusVO>();
-		List<GrivenceStatusVO> trustList = new ArrayList<GrivenceStatusVO>();
+	public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationId, Long locationValue) {
+		List<GrivenceStatusVO> finalList = new ArrayList<GrivenceStatusVO>();
 		GrivenceStatusVO grivenceStatusCount = new GrivenceStatusVO();
 		GrivenceStatusVO trustStatusCount = new GrivenceStatusVO();
 		try{
@@ -2069,10 +2069,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
  					}
 				}
  			}
- 			grivenceList.add(grivenceStatusCount);
- 			trustList.add(trustStatusCount);
- 			finalList.add(grivenceList);
- 			finalList.add(trustList);
+ 			finalList.add(grivenceStatusCount);
+ 			finalList.add(trustStatusCount);
 		}catch(Exception e){
 			Log.error("Exception raised at grivence and trust counts service"+e);
 		}
