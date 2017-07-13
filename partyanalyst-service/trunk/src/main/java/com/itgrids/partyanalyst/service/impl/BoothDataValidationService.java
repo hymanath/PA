@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IBoothDataValidationService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothDataValidationService implements IBoothDataValidationService{
@@ -396,7 +397,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	  * @return List<BoothInchargeDetailsVO>
 	  * @author Santosh 
 	  * @Description :This Service Method is used to booth count location wise 
-	  * @since 7-JULY-2017
+	  * @since 12-JULY-2017
 	  */
 	public List<BoothInchargeDetailsVO> getLocationLevelWiseBoothCount(InputVO inputVO) {
 		List<BoothInchargeDetailsVO> resultList = new ArrayList<BoothInchargeDetailsVO>(0);
@@ -527,7 +528,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	  * @return List<BoothInchargeDetailsVO>
 	  * @author Santosh 
 	  * @Description :This Service Method is used to get location based on selection. 
-	  * @since 7-JULY-2017
+	  * @since 12-JULY-2017
 	  */
 	public List<BoothInchargeDetailsVO> getLocationBasedOnSelection(InputVO inputVO) {
 		List<BoothInchargeDetailsVO> resultList = new ArrayList<BoothInchargeDetailsVO>();
@@ -702,5 +703,80 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		return returnVO;
 	}
-	
+	/**
+	  * @param  Long boothId 
+	  * @param Long boothInchargeEnrollmentId
+	  * @return BoothInchargeDetailsVO
+	  * @author Santosh 
+	  * @Description :This Service Method is used update booth status.if required condition satisfied. 
+	  * @since 13-JULY-2017
+	  */
+	public BoothInchargeDetailsVO validateBoothToMakeConfirm(Long boothId,Long boothInchargeEnrollmentId){
+		BoothInchargeDetailsVO resultVO = new BoothInchargeDetailsVO();
+		try {
+			List<Object[]> requiredBoothMemberObjLst = boothInchargeRoleConditionMappingDAO. getBoothMinMaxRequiredMemberRoleWise(boothId, boothInchargeEnrollmentId);
+			List<Object[]> addedBoothMemberObjLst = boothInchargeDAO.getAddedMemberInBoothRoleWise(boothId, boothInchargeEnrollmentId);
+			Map<Long,BoothInchargeDetailsVO> boothDtlsMap = getBoothRequiredData(requiredBoothMemberObjLst);
+			
+			//Setting added member role wise 
+			if(addedBoothMemberObjLst != null && !addedBoothMemberObjLst.isEmpty() ){
+				for (Object[] param : addedBoothMemberObjLst) {
+					if(boothDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null){
+						boothDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).setAddedMemberCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+				}
+			}
+			//checking Is that added member is equal to booth required minMember or not.
+			boolean flag = Boolean.TRUE;
+			if(!boothDtlsMap.isEmpty()){
+				for (Entry<Long, BoothInchargeDetailsVO> roleEntry : boothDtlsMap.entrySet()) {
+					if(roleEntry.getValue().getAddedMemberCount() < roleEntry.getValue().getMinMemberCount()){
+						flag = Boolean.FALSE;
+					}
+				}
+			}
+			//Change Booth Status
+			resultVO.setStatus("Faliure");
+			if(flag){
+				int rowUpdateCount = updateBoothStatus(boothId,boothInchargeEnrollmentId);	
+				if(rowUpdateCount != 0){
+					resultVO.setStatus("Success");
+				}
+			}
+			resultVO.setSubList(new ArrayList<BoothInchargeDetailsVO>(boothDtlsMap.values()));
+		} catch (Exception e) {
+			Log.error("Exception raised at validateBoothToMakeConfirm in BoothDataValidationService class", e);
+
+		}
+		return resultVO;	
+	}
+	public Map<Long,BoothInchargeDetailsVO> getBoothRequiredData(List<Object[]> objList){
+		Map<Long,BoothInchargeDetailsVO> boothDtlsMap = new HashMap<Long, BoothInchargeDetailsVO>(0);
+		try {
+			if (objList != null && !objList.isEmpty()) {
+				for (Object[] param : objList) {
+					  BoothInchargeDetailsVO boothRoleVO = new BoothInchargeDetailsVO();
+						  boothRoleVO.setRoleId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						  boothRoleVO.setRoleName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						  boothRoleVO.setMinMemberCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						  boothRoleVO.setMaxMemberCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+						  boothDtlsMap.put(boothRoleVO.getRoleId(), boothRoleVO);
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception raised at getBoothRequiredData in BoothDataValidationService class", e);
+		}
+		return boothDtlsMap;
+	}
+	public int updateBoothStatus(Long boothId,Long boothInchargeEnrollmentId){
+		try {
+			DateUtilService date = new DateUtilService();
+			int updateRowCnt = boothInchargeRoleConditionMappingDAO.updateBoothStatus(boothId, boothInchargeEnrollmentId, date.getCurrentDateAndTime());
+		    return updateRowCnt;
+		} catch(Exception e) {
+			Log.error("Exception raised at updateBoothStatus in BoothDataValidationService class", e);
+			return 0;
+		}
+	}
+
 }

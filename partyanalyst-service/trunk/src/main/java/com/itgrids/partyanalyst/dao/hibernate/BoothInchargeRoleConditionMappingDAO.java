@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -36,4 +37,34 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		return query.list();
 		
 	}
+	public List<Object[]> getBoothMinMaxRequiredMemberRoleWise(Long boothId,Long boothInchargeEnrollmentId) {
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select " +
+		 				 " model.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId," +
+		 				 " model.boothInchargeRoleCondition.boothInchargeRole.roleName," +
+		 				 " model.boothInchargeRoleCondition.minMembers," +
+		 				 " model.boothInchargeRoleCondition.maxMembers " +
+		 				 " from BoothInchargeRoleConditionMapping model " +
+		 				 " where " +
+		 				 " model.isDeleted='N' and model.boothId=:boothId " +
+		 				 " and model.boothInchargeEnrollmentId=:boothInchargeEnrollmentId " +
+		 				 " group by " +
+		 				 " model.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("boothId", boothId);
+		query.setParameter("boothInchargeEnrollmentId", boothInchargeEnrollmentId);
+		return query.list();
+	}
+	public int updateBoothStatus(Long boothId,Long boothInchargeEnrollmentId,Date dateTime) {
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" update BoothInchargeRoleConditionMapping model set model.isConfirmed='Y',model.completedDate=:completedDate" +
+		 				 " where " +
+		 				 " model.isDeleted='N' and  model.boothId=:boothId and model.boothInchargeEnrollmentId=:boothInchargeEnrollmentId ");
+		 Query query = getSession().createQuery(queryStr.toString());
+		  query.setParameter("boothId", boothId);
+		  query.setParameter("boothInchargeEnrollmentId", boothInchargeEnrollmentId);
+		  query.setParameter("completedDate", dateTime);
+		  return query.executeUpdate();
+	}
+	
 }
