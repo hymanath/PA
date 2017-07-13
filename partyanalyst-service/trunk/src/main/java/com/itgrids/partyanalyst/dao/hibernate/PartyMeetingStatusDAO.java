@@ -867,7 +867,6 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 	   return query.list();
    }
    
-   @Override
 	public List<Object[]> getLevelWiseMeetingStatusCount(Date fromDate, Date toDate, Long locationId,Long locationValue) {
 		StringBuilder sb = new StringBuilder();
 		//0-partyMeetingLevelId,1-LevelName,2-meeting Status,3-Meeting Count
