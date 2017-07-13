@@ -471,4 +471,19 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getBoothInchargeCountByRoleIds(Set<Long> roleIds){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append( " select model.boothInchargeRoleConditionMappingId, count(model.boothInchargeId) from BoothIncharge model " +
+				"where model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId in (:roleIds) " +
+				"group by model.boothInchargeRoleConditionMappingId " ); 
+		
+		Query query=getSession().createQuery(sb.toString());
+		
+		if(roleIds != null && roleIds.size() >0)
+		query.setParameterList("roleIds", roleIds);
+		
+		return query.list();
+	}
 }

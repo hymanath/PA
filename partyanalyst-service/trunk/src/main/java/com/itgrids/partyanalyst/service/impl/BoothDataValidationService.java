@@ -3,8 +3,10 @@
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.jfree.util.Log;
@@ -13,11 +15,13 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
+import com.itgrids.partyanalyst.dao.IBoothInchargeRoleConditionMappingDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.BoothAddressVO;
 import com.itgrids.partyanalyst.dto.BoothInchargeDetailsVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -44,6 +48,19 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	private IBoothDAO boothDAO;
 	private IBoothInchargeDAO boothInchargeDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
+	private IBoothInchargeRoleConditionMappingDAO boothInchargeRoleConditionMappingDAO;
+	
+	
+	
+	public IBoothInchargeRoleConditionMappingDAO getBoothInchargeRoleConditionMappingDAO() {
+		return boothInchargeRoleConditionMappingDAO;
+	}
+
+	public void setBoothInchargeRoleConditionMappingDAO(
+			IBoothInchargeRoleConditionMappingDAO boothInchargeRoleConditionMappingDAO) {
+		this.boothInchargeRoleConditionMappingDAO = boothInchargeRoleConditionMappingDAO;
+	}
+
 	public IBoothDAO getBoothDAO() {
 		return boothDAO;
 	}
@@ -548,6 +565,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		return locationList;
 	}
+	
 	public List<BoothAddressVO> getLocationLevelWiseBoothDetails(InputVO inputVO) {
 		List<BoothAddressVO> resultList = new ArrayList<BoothAddressVO>(0);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -602,4 +620,79 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		return resultList;
 	}
+	public List<IdAndNameVO> getBoothInchargeRoles(Long boothId){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try{
+			Map<Long,IdAndNameVO> boothRolesMap = new HashMap<Long,IdAndNameVO>();
+			List<Object[]> roles = boothInchargeRoleConditionMappingDAO.getBoothInchargeRolesWithMinMAxCount(boothId);
+			
+			if(commonMethodsUtilService.isListOrSetValid(roles)){
+				for (Object[] objects : roles) {
+					IdAndNameVO roleVo = new IdAndNameVO();
+					roleVo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					roleVo.setName(commonMethodsUtilService.getStringValueForObject(objects[4]));
+					roleVo.setTsNow(commonMethodsUtilService.getLongValueForObject(objects[1]));//min mem Count
+					roleVo.setTsTotal(commonMethodsUtilService.getLongValueForObject(objects[2]));//max mem Count
+					
+					boothRolesMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), roleVo);
+				}
+			}
+			List<Object[]> rolesCount = null;
+			if(commonMethodsUtilService.isMapValid(boothRolesMap)){
+				rolesCount = boothInchargeDAO.getBoothInchargeCountByRoleIds(boothRolesMap.keySet());
+			}
+			
+			if(commonMethodsUtilService.isMapValid(boothRolesMap)){
+				if(commonMethodsUtilService.isListOrSetValid(rolesCount)){
+					for (Object[] objects : rolesCount) {
+						IdAndNameVO roleVO = boothRolesMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						if(roleVO != null){
+							Long memCount = (Long)objects[1];
+							if(memCount < roleVO.getTsTotal()){
+								returnList.add(roleVO);
+							}
+						}
+					}
+				}else{
+					returnList.addAll(boothRolesMap.values());
+				}
+			}
+			
+			if(commonMethodsUtilService.isMapValid(boothRolesMap)){
+				for (Entry<Long, IdAndNameVO> entrySet : boothRolesMap.entrySet()) {
+					IdAndNameVO vo = getMatchedVOById(returnList,entrySet.getKey());
+					if(vo == null){
+						returnList.add(vo);
+					}
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.error("Exception occured at getBoothInchargeRoles() in BoothDataValidationService class",e);
+		}
+		
+		return returnList;
+	}
+	
+	public IdAndNameVO getMatchedVOById(List<IdAndNameVO> list,Long id)
+	{
+		IdAndNameVO returnVO = null;
+		try {
+			
+			if(list != null && list.size()>0)
+			{
+				for (IdAndNameVO vo : list)
+				{
+					if(vo.getId().longValue() == id.longValue())
+					{
+						return vo;
+					}
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception raised in getMatchedVOById", e);
+		}
+		return returnVO;
+	}
+	
 }
