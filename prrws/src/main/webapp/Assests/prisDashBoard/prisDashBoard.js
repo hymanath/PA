@@ -2,13 +2,9 @@ var globalFromDate = moment().subtract(1,'month').startOf("month").format('DD-MM
 var globalToDate = moment().format('DD-MM-YYYY');
 var blockNameArr=[{name:'District',id:'3'},{name:'Constituency',id:'4'},{name:'Mandal',id:'5'}]
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-
 	onLoadCalls()
 
-	var maxHeight = 0;
-	/* $(".blockHeights").each(function(){
-	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
-	}); */
+	
 	$(".chosen-select").chosen();
 	$(".thisMonthOverview").html(moment().startOf("month").format("MMMM"));
 	function onLoadCalls()
@@ -16,11 +12,12 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		buildLevelWiseDetailsBlock();
 		POSTBasicCountBlock();
 	}
-	var width = $(window).width()
+	var width = $(window).width();
+	
 	if(width > 767){
 		$(".border_adjust_align").removeClass("border_top")
 		$(".border_adjust_align").addClass("border_right")
-		//$(".blockHeights").height(maxHeight);
+		
 	}else{
 		$(".border_adjust_align").removeClass("border_right")
 		$(".border_adjust_align").addClass("border_top");
@@ -48,6 +45,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 				POSTConstDateForAssemblyInfo(4,blockName,subBlockName,'tableView',0);
 			}else if(subBlockName == 'Parliament'){
 				POSTConstituencyOverview(4,blockName,subBlockName,'tableView',0);
+				getAllParliaments(4,blockName,subBlockName,'tableView');
 			}
 		}else if(blockName == 'Mandal'){
 			if(subBlockName == 'Districts'){
@@ -66,12 +64,12 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		$("#table"+blockName).html(spinner);
 		if(subBlockName == 'Districts')
 		{
-			POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',value,0);
+			districtsInMandalDataForAssemblyInfo(5,blockName,subBlockName,'tableView',value,$("#mandalsDistrictSelectBoxchosen").val());
 			POSTConstDateForAssemblyInfo(5,blockName,subBlockName,'',value)
 		}else if(subBlockName == 'Parliament')
 		{
+			distChangeMandalOverview(5,blockName,subBlockName,'tableView',value);
 			constMandalView(5,blockName,subBlockName,'tableView',value);
-			//POSTMandalOverview(5,blockName,subBlockName,'tableView',value);
 		}
 	});
 	$(document).on("change","#mandalsSelectBoxchosen",function(){
@@ -86,7 +84,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		}); 
 		//$("#table"+blockName).DataTable().destroy();
 		$("#table"+blockName).html(spinner);
-		if(subBlockName == 'Districts')
+		if(subBlockName == 'districts')
 		{
 			POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',value,$("#mandalsDistrictSelectBoxchosen").val());
 		}else if(subBlockName == 'parliament')
@@ -226,13 +224,18 @@ function buildLevelWiseDetailsBlock(){
 						}
 							collapse+='<div class="panel-body">';
 								collapse+='<div class="col-sm-3">';
-									collapse+='<ul class="nav navbar-nav tableMenu" table-menu="'+blockNameArr[i].name+'">';
-										collapse+='<li class="active" id="showDistrictData" attr_type="districts">Districts</li>';
-										if(blockNameArr[i].id == 4){
-											collapse+='<li id="showParliamentData" attr_type="parliament">Parliament</li>';
-										}else if(blockNameArr[i].id == 5){
-											collapse+='<li id="showParliamentData" attr_type="parliament">Parliament</li>';
-										}
+								if(blockNameArr[i].id == 3){
+									collapse+='<ul class="nav navbar-nav tableMenu list-inline" table-menu="'+blockNameArr[i].name+'" style="border:none;">';
+								}else{
+									collapse+='<ul class="nav navbar-nav tableMenu list-inline" table-menu="'+blockNameArr[i].name+'">';
+								}
+								if(blockNameArr[i].id == 4){
+									collapse+='<li class="active" id="showDistrictData" attr_type="districts">Districts</li>';
+									collapse+='<li id="showParliamentData" attr_type="parliament">Parliament</li>';
+								}else if(blockNameArr[i].id == 5){
+									collapse+='<li class="active" id="showDistrictData" attr_type="districts">Districts</li>';
+									collapse+='<li id="showParliamentData" attr_type="parliament">Parliament</li>';
+								}
 									collapse+='</ul>';
 								collapse+='</div>';
 								if(blockNameArr[i].id == 4){
@@ -263,8 +266,10 @@ function buildLevelWiseDetailsBlock(){
 			POSTDistrictOverview(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView');
 		}else if(blockNameArr[i].id == 4){
 			POSTConstDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0);
+			getAllDistricts(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView');
 		}else if(blockNameArr[i].id == 5){
 			POSTMandalDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0,0);
+			getAllDistricts(blockNameArr[i].id,blockNameArr[i].name,'Parliament','tableView');
 		}
 	}
 	}
@@ -367,6 +372,16 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 					"aaSorting": [],
 				});
 			}
+			if(blockId == '3'){
+				$(".dataTable"+blockId).dataTable({
+					 "paging":   false,
+					 "info":     false,
+					 "searching": false,
+					 "autoWidth": true,
+					 "sDom": '<"top"iflp>rt<"bottom"><"clear">',
+					 "order": [ 0, 'asc' ]
+				});
+			}
 		}
 	}
 	
@@ -437,7 +452,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}
 		}).done(function(result){
 			if(result !=null && result.subList !=null && result.subList.length>0){
-				buildTableData(result,blockId,blockName,subBlockName,viewType);
+				//buildTableData(result,blockId,blockName,subBlockName,viewType);
 				buildSelectBox('mandalsSelectBoxchosen',result.subList,'Mandal');
 			}else{
 				$("#"+blockName+'_'+blockId).html("No Data Available");
@@ -478,6 +493,40 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}
 		});
 	}
+	function distChangeMandalOverview(blockId,blockName,subBlockName,viewType,locId){
+		$("#"+blockName+'_'+blockId).html(spinner);
+		var filterId = $("#mandalsDistrictSelectBoxchosen").val();
+		if(filterId == null)
+		{
+			filterId = 0;
+		}
+		var json = {
+			fromDate:globalFromDate,
+			toDate:globalToDate,
+			locationId:0,
+			locationType:"mandal",
+			filterId: filterId,
+			filterType:'district',
+			subFilterId: 0 ,
+			subFilterType: 'constituency'//assembly
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getPIRSSurveyInfo',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null && result.subList !=null && result.subList.length>0){
+				buildTableData(result,blockId,blockName,subBlockName,viewType);
+			}else{
+				$("#"+blockName+'_'+blockId).html("No Data Available");
+			}
+		});
+	}
 	
 	function POSTBasicCountBlock(){
 		$("#totalHouseHolds").html(spinner);
@@ -490,8 +539,8 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 		$("#subAchieved").html(spinner);
 		$("#subAchievedPercentage").html(spinner);
 		var json = {
-			fromDate:"",
-			toDate:"",
+			fromDate:globalFromDate,
+			toDate:globalToDate,
 			locationId:0,
 			locationType:"district"
 			}
@@ -516,8 +565,13 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 		$("#achievedOverallpercent").html(result.achievedOverallpercent);
 		$("#subTarget").html(result.subTarget);
 		$("#subTargetPercentage").html(result.subTargetPercentage);
-		$("#subAchieved").html(result.achievedOverall);
-		$("#subAchievedPercentage").html(result.achievedOverallpercent);
+		$("#subAchieved").html(result.subAchieved);
+		$("#subAchievedPercentage").html(result.subAchievedPercentage);
+		var maxHeight = 0;
+		 $(".blockHeights").each(function(){
+		   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+		});
+		$(".blockHeights").height(maxHeight);
 	}
 	function POSTConstDateForAssemblyInfo(blockId,blockName,subBlockName,viewType,locId){
 		$("#"+blockName+'_'+blockId).html(spinner);
@@ -544,7 +598,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 				{
 					buildTableData(result,blockId,blockName,subBlockName,viewType);
 				}
-				buildSelectBox('mandalsSelectBox',result.voList,blockName);
+				//buildSelectBox('mandalsSelectBox',result.voList,blockName);
 			}else{
 				$("#"+blockName+'_'+blockId).html("No Data Available");
 			}
@@ -578,5 +632,130 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}else{
 				$("#"+blockName+'_'+blockId).html("No Data Available");
 			}
+		});
+	}
+	function districtsInMandalDataForAssemblyInfo(blockId,blockName,subBlockName,viewType,locId,filterId){
+		$("#"+blockName+'_'+blockId).html(spinner);
+		var json = {
+			fromDate:globalFromDate,
+			toDate:globalToDate,
+			locationId:0,
+			locationType:"mandal",
+			filterId: filterId,
+			filterType:'district',
+			subFilterId: 0 ,
+			subFilterType: 'constituency'//assembly
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getPIRSSurveyInfo',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			$("#"+blockName+'_'+blockId).html('');
+			if(result !=null && result.subList !=null && result.subList.length>0){
+				buildTableData(result,blockId,blockName,subBlockName,viewType);
+			}else{
+				$("#"+blockName+'_'+blockId).html("No Data Available");
+			}
+		});
+	}
+	function getAllDistricts(blockId,blockName,subBlockName,viewType){
+		var json = {}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllDistricts',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			$("#"+blockName+'_'+blockId).html('');
+			if(result !=null && result.length>0){
+				if(subBlockName == "Districts"){
+					alert(7);
+					buildSelectBox('districtSelectBoxchosen',result,blockName);
+				}else if(subBlockName == "Parliament"){
+					alert(9);
+					buildSelectBox('mandalsDistrictSelectBoxchosen',result,blockName);
+				}
+			}else{
+				$("#"+blockName+'_'+blockId).html("No Data Available");
+			}
+		});
+	}
+	function getAllParliaments(blockId,blockName,subBlockName){
+		var json = {}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllParliaments',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			$("#"+blockName+'_'+blockId).html('');
+			if(result !=null && result.length>0){
+				if(subBlockName == "Districts"){
+					alert(7);
+					buildSelectBox('districtSelectBoxchosen',result,blockName);
+				}else if(subBlockName == "Parliament"){
+					alert(9);
+					buildSelectBox('mandalsDistrictSelectBoxchosen',result,blockName);
+				}
+			}else{
+				$("#"+blockName+'_'+blockId).html("No Data Available");
+			}
+		});
+	}
+	getAllConstituenciesForDistrict();
+	getAllConstituenciesForParliament();
+	function getAllConstituenciesForDistrict(){
+		var json = {
+			districtId :19
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllConstituenciesForDistrict',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			/* $("#"+blockName+'_'+blockId).html('');
+			if(result !=null && result.subList !=null && result.subList.length>0){
+			}else{
+				$("#"+blockName+'_'+blockId).html("No Data Available");
+			} */
+		});
+	}
+	
+	function getAllConstituenciesForParliament(){
+		var json = {parliamentId:506}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllConstituenciesForParliament',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			/* $("#"+blockName+'_'+blockId).html('');
+			if(result !=null && result.subList !=null && result.subList.length>0){
+			}else{
+				$("#"+blockName+'_'+blockId).html("No Data Available");
+			} */
 		});
 	}
