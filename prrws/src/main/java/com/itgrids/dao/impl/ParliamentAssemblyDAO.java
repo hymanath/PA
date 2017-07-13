@@ -381,4 +381,10 @@ public class ParliamentAssemblyDAO extends GenericDaoHibernate<ParliamentAssembl
 		query.setParameter("searchLevelValue", searchLevelValue);
 		return query.list();
 	}
+	public List<Object[]> getAllParliaments(){
+		Query query = getSession().createQuery(" select distinct model.parliamentId,model.parliament.name " +
+				" from ParliamentAssembly model ");
+		
+		return query.list();
+	}
 }
