@@ -19,4 +19,5 @@ public interface IBoothInchargeDAO extends GenericDao<BoothIncharge,Long>{
 	public List<Object[]> getBoothInchargeCountDetails(Long userAccessLevelId ,Set<Long> userAccessLevelValues,List<Long> boothCommEnrollYrIds,Date startDate,Date endDate);
 	public List<Object[]> getLocationLevelWiseBoothCount(InputVO inputVO,String resultType);
 	public List<Object[]> getLocationBasedOnSelection(InputVO inputVO);
+	public List<Object[]> getLocationLevelWiseBoothDetails(InputVO inputVO);
 }

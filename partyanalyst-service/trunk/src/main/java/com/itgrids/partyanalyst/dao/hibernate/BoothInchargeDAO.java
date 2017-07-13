@@ -399,11 +399,11 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getLocationLevelWiseBoothDetails(InputVO inputVO,String resultType) {
+	public List<Object[]> getLocationLevelWiseBoothDetails(InputVO inputVO) {
 
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select ");
-
+        queryStr.append(" model1.booth.boothId,model1.booth.partName,model.isConfirmed");
 		queryStr.append(",state.stateId,state.stateName,district.districtId,district.districtName,parliamentConstituency.constituencyId,parliamentConstituency.name");
 		queryStr.append(",constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName,panc.panchayatId,panc.panchayatName,");
 		queryStr.append(",localElectionBody.localElectionBodyId,localElectionBody.name,electionType.electionTypeId,electionType.electionType ");
@@ -438,18 +438,18 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 			}
 		}
 
-		if (resultType.equalsIgnoreCase("NotStarted")) {
+		if (inputVO.getResultType().equalsIgnoreCase("NotStarted")) {
 			queryStr.append(" and model1.isConfirmed='N' and model1.startDate is null and model1.completedDate is null ");
-		} else if (resultType.equalsIgnoreCase("Started")) {
+		} else if (inputVO.getResultType().equalsIgnoreCase("Started")) {
 			queryStr.append(" and model1.isConfirmed='N' and model1.completedDate is null");
-		} else if (resultType.equalsIgnoreCase("Completed")) {
+		} else if (inputVO.getResultType().equalsIgnoreCase("Completed")) {
 			queryStr.append(" and model1.isConfirmed='Y' ");
 		}
 
 		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
-			if (resultType.equalsIgnoreCase("Started")) {
+			if (inputVO.getResultType().equalsIgnoreCase("Started")) {
 				queryStr.append(" and date(model1.startDate) between :fromDate and :toDate ");
-			} else if (resultType.equalsIgnoreCase("Completed")) {
+			} else if (inputVO.getResultType().equalsIgnoreCase("Completed")) {
 				queryStr.append(" and date(model.completedDate) between :fromDate and :toDate ");
 			}
 		}
