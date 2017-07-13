@@ -188,7 +188,7 @@ var leaderShipLevelArray = [];
 		 
 		 $("#goalsDateId0").datetimepicker({format: "MM/DD/YYYY"});
 		 
-	     //getAllStatusForCadre();
+	  
 		 
 		 function getAllStatusForCadre()
 		 {
@@ -206,11 +206,15 @@ var leaderShipLevelArray = [];
 			communicationSkillsArray=result.communicationsSkillslist;
 			leaderShipSkillsArray=result.leadershipSkillslist;
 			healthStatusArray=result.healthStatuslist;
+			getLeaderShipDetails();
 		  }
 		}
 		
 		
-		
+	$(document).ready(function(){
+		//alert("click here...");
+		getAllStatusForCadre();		
+	});
 	$(document).on('click', '.healthCardminus', function(){
 	  
 	  $(this).parent().parent().remove();
@@ -266,7 +270,7 @@ function myFunction(){
 
 	$("#mainheading").html("TRAINING CAMP MAIN DASHBOARD");
 	
-getLeaderShipDetails();
+
 function getLeaderShipDetails()
 {
 	
@@ -289,7 +293,6 @@ function getLeaderShipDetails()
 	          dataType: 'json',
 	          data: {task:JSON.stringify(jObj)}
 	         }).done(function(result){
-	         	getAllStatusForCadre();
 				  if(result!=null){
 		    buildingData(result,cadreId,batchId);
 		  }
