@@ -393,15 +393,16 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			Map<Long, BoothInchargeDetailsVO> locationBoothMap = new TreeMap<Long, BoothInchargeDetailsVO>(); ;
           
 			if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
-				//Setting mandal Wise Booth Count
+				//Setting MANDAL Wise Booth Count
 				Long locationId = 0l;
-				 if(inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0 ){
+				 if(inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0 && inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)){
 		            	locationId = Long.valueOf(inputVO.getFilterValue().toString().substring(0,1));
 		            	inputVO.setFilterValue(Long.valueOf(inputVO.getFilterValue().toString().substring(1)));
 		          }
-				 /*We are appending 1 prefix id for mandal.Because in single list
-				  mandal And localElection Body is going.So for identification purpose once user is selecting filter*/
-				 if(locationId == 0 || locationId == 1){//locationId 0:first time call 1: filter type
+				 /*We are appending 1 prefix id for MANDAL and 2 for Local Election body.Because in single list
+				  MANDAL And localElection Body is going to UI.So for identification purpose once user is selecting filter.
+				  #locationId 0:first time call or except TEHSIL other filter selected 1: Once User select TEHSIL filter type  */
+				 if(locationId == 0 || locationId == 1){
 					    List<Object[]> notStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
 						List<Object[]> startedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
 						List<Object[]> completedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
@@ -412,7 +413,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				 }
 				
 				//Setting LocationElectionBody Wise Booth Count
-				 if(locationId == 0 || locationId == 2){//We are appending 2 prefix id for Location election body
+				 if(locationId == 0 || locationId == 2){
 					inputVO.setLocationLevel(IConstants.LOCALELECTIONBODY);
 					List<Object[]> lclElctnBdyNotStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
 					List<Object[]> lclElctnBdyStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
@@ -512,7 +513,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		List<BoothInchargeDetailsVO> resultList = new ArrayList<BoothInchargeDetailsVO>();
 		try{
 			List<Object[]> locationObjLst = boothInchargeDAO.getLocationBasedOnSelection(inputVO);
-			resultList = getLocationList(locationObjLst,"");
+			resultList = getLocationList(locationObjLst,"OtherLocation");
 			if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
 				resultList = getLocationList(locationObjLst,IConstants.TEHSIL);
 				inputVO.setLocationLevel(IConstants.LOCALELECTIONBODY);

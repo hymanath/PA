@@ -248,7 +248,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 			queryStr.append(" panct.panchayatId ");
 			queryStr.append(" ,panc.panchayatName");
 		}
-		queryStr.append(",count(distinct model.boothId)");
+		queryStr.append(",count(distinct model1.boothId)");
 
 		queryStr.append(",state.stateId,state.stateName,district.districtId,district.districtName,parliamentConstituency.constituencyId,parliamentConstituency.name");
 		queryStr.append(",constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName,panc.panchayatId,panc.panchayatName");
