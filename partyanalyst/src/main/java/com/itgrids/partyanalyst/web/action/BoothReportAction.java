@@ -140,7 +140,7 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 		try{
 			jObj = new JSONObject(getTask());
 			InputVO inputVO = new InputVO();
-			inputVO.setLocationLevel(jObj.getString("filterType"));
+			inputVO.setFilterLevel(jObj.getString("filterType"));
 			inputVO.setFilterValue(jObj.getLong("filterValue"));
 			inputVO.setBoothInchargeEnrollmentId(jObj.getLong("boothEnrollementYearId"));
 			inputVO.setFromDateStr(jObj.getString("fromDate"));
