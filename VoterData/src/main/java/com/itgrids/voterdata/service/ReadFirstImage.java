@@ -16,7 +16,7 @@ public class ReadFirstImage {
 				System.out.println(file.getName()+"\t"+file.listFiles()[0].listFiles()[0].getName());
 		}*/
 		
-		Map<String,String> map = new HashMap<>(0);
+		Map<String,String> map = new HashMap<String,String>(0);
 		
 		map.put("10","6-MUDHOLE");
 		map.put("100","362-PALAKURTHI");
