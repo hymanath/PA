@@ -1,12 +1,20 @@
+var spinner_Drain = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner_Drain"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 onloadCalls();
 function onloadCalls(){
 	getDrainsInfoStateWise();
 	getDrainsInfoLocationWise("district");
 	getDrainsInfoLocationWise("assembly");
 	getDrainsInfoLocationWise("mandal");
+	$(".chosen-select").chosen();
 }
 
 function getDrainsInfoStateWise(){
+	$("#totalSpinnerId").html(spinner_Drain);
+	$("#undergroundSpinnerId").html(spinner_Drain);
+	$("#pakkaSpinnerId").html(spinner_Drain);
+	$("#kachaSpinnerId").html(spinner_Drain);
+	
 	var json = {
 			fromDate : "01-04-2017",
 			toDate : "30-06-2017",
@@ -23,6 +31,10 @@ function getDrainsInfoStateWise(){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
+			$("#totalSpinnerId").html('');
+			$("#undergroundSpinnerId").html('');
+			$("#pakkaSpinnerId").html('');
+			$("#kachaSpinnerId").html('');
 			if(result != null){
 				var totalStr='';
 					totalStr+='<div class="row">'
@@ -87,7 +99,9 @@ function getDrainsInfoStateWise(){
 		});
 }
 
+	
 function getDrainsInfoLocationWise(locationType){
+	$("#"+locationType+"TableDivId").html(spinner);
 	var json = {
 		fromDate:"01-06-2017",
 		toDate:"30-06-2017",
@@ -123,62 +137,72 @@ function buildingTable(result,locationType){
 				else if(locationType == "constituency")
 					str+='<th style="background-color:#ccc;">PARLIAMENTS</th>';
 				
-                str+='<th style="background-color:#ccc;" colspan="5">TOTAL</th>';
-                str+='<th style="background-color:#ccc;" colspan="5">KACCHA</th>';
-                str+='<th style="background-color:#ccc;" colspan="5">PAKKA</th>';
-                str+='<th style="background-color:#ccc;" colspan="5">UNDERGROUND</th>';
+                str+='<th style="background-color:#ccc;" colspan="5" class="text-center">TOTAL</th>';
+                str+='<th style="background-color:#ccc;" colspan="5" class="text-center">KACCHA</th>';
+                str+='<th style="background-color:#ccc;" colspan="5" class="text-center">PAKKA</th>';
+                str+='<th style="background-color:#ccc;" colspan="5" class="text-center">UNDERGROUND</th>';
             str+='</tr>';
             str+='<tr>';
-                str+='<th></th>';
-                str+='<th>Avi</th>';
-				str+='<th>km</th>';
-				str+='<th>Cle</th>';
-				str+='<th>km</th>';
-                str+='<th>%</th>';
-                str+='<th>Avi</th>';
-				str+='<th>km</th>';
-                str+='<th>Cle</th>';
-				str+='<th>km</th>';
-                str+='<th>%</th>';
-				str+='<th>Avi</th>';
-				str+='<th>km</th>';
-                str+='<th>Cle</th>';
-				str+='<th>km</th>';
-                str+='<th>%</th>';
-				str+='<th>Avi</th>';
-				str+='<th>km</th>';
-                str+='<th>Cle</th>';
-				str+='<th>km</th>';
-                str+='<th>%</th>';
+                str+='<th style="background-color:#fff"></th>';
+                str+='<th style="background-color:#fff">Avi</th>';
+				str+='<th style="background-color:#fff">km</th>';
+				str+='<th style="background-color:#fff">Cle</th>';
+				str+='<th style="background-color:#fff">km</th>';
+                str+='<th style="background-color:#fff">%</th>';
+				
+                str+='<th style="background-color:#E6EFEE">Avi</th>';
+				str+='<th style="background-color:#E6EFEE">km</th>';
+                str+='<th style="background-color:#E6EFEE">Cle</th>';
+				str+='<th style="background-color:#E6EFEE">km</th>';
+                str+='<th style="background-color:#E6EFEE">%</th>';
+				
+				str+='<th style="background-color:#FFEAEA">Avi</th>';
+				str+='<th style="background-color:#FFEAEA">km</th>';
+                str+='<th style="background-color:#FFEAEA">Cle</th>';
+				str+='<th style="background-color:#FFEAEA">km</th>';
+                str+='<th style="background-color:#FFEAEA">%</th>';
+				
+				str+='<th style="background-color:#F2F1E6">Avi</th>';
+				str+='<th style="background-color:#F2F1E6">km</th>';
+                str+='<th style="background-color:#F2F1E6">Cle</th>';
+				str+='<th style="background-color:#F2F1E6">km</th>';
+                str+='<th style="background-color:#F2F1E6">%</th>';
             str+='</tr>';
         str+='</thead>';
 		str+='<tbody>';
 			if(result != null && result.length > 0){
 				for(var i in result){
 					str+='<tr>';
-						str+='<td>'+result[i].name;
+					if(locationType == "district"){
+						str+='<td><img src="Assests/icons/'+result[i].name+'.png" style="height: 30px;margin-right: 7px;"/><br/>'+result[i].name+'</td>';
+					}else{
+						str+='<td>'+result[i].name+'</td>';
+					}
+						
 						//<p><span>174</span>/<span>1003</span></p>
-						str+='</td>';
 						str+='<td>'+result[i].totalAvailable+'</td>';
 						str+='<td>'+result[i].totalAvailableKms+'</td>';
 						str+='<td>'+result[i].totalCleaned+'</td>';
 						str+='<td>'+result[i].totalCleanedKms+'</td>';
-						str+='<td>'+result[i].percentage+'</td>';
-						str+='<td>'+result[i].kachaAvailable+'</td>';
-						str+='<td>'+result[i].kachaAvailableKms+'</td>';
-						str+='<td>'+result[i].kachaCleaned+'</td>';
-						str+='<td>'+result[i].kachaCleanedKM+'</td>';
-						str+='<td>'+result[i].kachaPercentage+'</td>';
-						str+='<td>'+result[i].pakkaAvailable+'</td>';
-						str+='<td>'+result[i].pakkaAvailableKms+'</td>';
-						str+='<td>'+result[i].pakkaCleaned+'</td>';
-						str+='<td>'+result[i].pakkaCleanedKM+'</td>';
-						str+='<td>'+result[i].pakkaPercentage+'</td>';
-						str+='<td>'+result[i].ugAvailable+'</td>';
-						str+='<td>'+result[i].ugAvailableKms+'</td>';
-						str+='<td>'+result[i].ugCleaned+'</td>';
-						str+='<td>'+result[i].ugCleanedKms+'</td>';
-						str+='<td>'+result[i].ugPercentage+'</td>';
+						str+='<td style="color:#FD3367">'+result[i].percentage+'</td>';
+						
+						str+='<td style="background-color:#E6EFEE">'+result[i].kachaAvailable+'</td>';
+						str+='<td style="background-color:#E6EFEE">'+result[i].kachaAvailableKms+'</td>';
+						str+='<td style="background-color:#E6EFEE">'+result[i].kachaCleaned+'</td>';
+						str+='<td style="background-color:#E6EFEE">'+result[i].kachaCleanedKM+'</td>';
+						str+='<td style="background-color:#E6EFEE;color:#FD3367">'+result[i].kachaPercentage+'</td>';
+						
+						str+='<td style="background-color:#FFEAEA">'+result[i].pakkaAvailable+'</td>';
+						str+='<td style="background-color:#FFEAEA">'+result[i].pakkaAvailableKms+'</td>';
+						str+='<td style="background-color:#FFEAEA">'+result[i].pakkaCleaned+'</td>';
+						str+='<td style="background-color:#FFEAEA">'+result[i].pakkaCleanedKM+'</td>';
+						str+='<td style="background-color:#FFEAEA;color:#FD3367">'+result[i].pakkaPercentage+'</td>';
+						
+						str+='<td style="background-color:#F2F1E6">'+result[i].ugAvailable+'</td>';
+						str+='<td style="background-color:#F2F1E6">'+result[i].ugAvailableKms+'</td>';
+						str+='<td style="background-color:#F2F1E6">'+result[i].ugCleaned+'</td>';
+						str+='<td style="background-color:#F2F1E6">'+result[i].ugCleanedKms+'</td>';
+						str+='<td style="background-color:#F2F1E6;color:#FD3367">'+result[i].ugPercentage+'</td>';
 					str+='</tr>';
 				}
 			}else{

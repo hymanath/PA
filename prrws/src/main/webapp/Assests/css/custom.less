@@ -1481,3 +1481,29 @@ header
 		}
 	}
 }
+.spinner_Drain {
+  margin:auto;
+  width: 25px;
+  height: 25px;
+  position: relative;
+  text-align: center;
+  -webkit-animation: sk-chasingDotsRotate 2s infinite linear;
+    animation: sk-chasingDotsRotate 2s infinite linear; 
+}
+.spinner_Drain .dot1 , .spinner_Drain .dot2 {
+    width: 60%;
+    height: 60%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    background-color: #1ABC9C;
+    border-radius: 100%;
+    -webkit-animation: sk-chasingDotsBounce 2s infinite ease-in-out;
+    animation: sk-chasingDotsBounce 2s infinite ease-in-out; 
+}
+.spinner_Drain .dot2 {
+    top: auto;
+    bottom: 0;
+    -webkit-animation-delay: -1s;
+    animation-delay: -1s; 
+}

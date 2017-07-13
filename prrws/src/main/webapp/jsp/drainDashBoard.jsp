@@ -112,7 +112,14 @@
                     <div class="col-sm-3 block">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h4 class="text-center">TOTAL</h4>
+								<div class="row">
+									<div class="col-sm-10">
+										<h4 class="text-center">TOTAL</h4>
+									</div>
+									<div class="col-sm-2">
+										<span id="totalSpinnerId" class="pull-right"></span>
+									</div>
+								</div>
 							</div>
 							<div class="panel-body">
 								<div id="totalBodyId">
@@ -135,7 +142,14 @@
 						<div class="col-sm-3 block">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h4 class="text-center">KACHA</h4>
+								<div class="row">
+									<div class="col-sm-10">
+										<h4 class="text-center">KACHA</h4>
+									</div>
+									<div class="col-sm-2">
+										<span id="kachaSpinnerId" class="pull-right"></span>
+									</div>
+								</div>
 							</div>
 							<div class="panel-body">
 								<div id="kachaBodyId">
@@ -158,7 +172,14 @@
 						<div class="col-sm-3 block">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h4 class="text-center">PAKKA</h4>
+								<div class="row">
+										<div class="col-sm-10">
+											<h4 class="text-center">PAKKA</h4>
+										</div>
+										<div class="col-sm-2">
+											<span id="pakkaSpinnerId" class="pull-right"></span>
+										</div>
+								</div>
 							</div>
 							<div class="panel-body">
 								<div id="pakkaBodyId"> 
@@ -181,7 +202,14 @@
 						<div class="col-sm-3 block">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h4 class="text-center">UNDERGROUND</h4>
+								<div class="row">
+										<div class="col-sm-10">
+											<h4 class="text-center">UNDERGROUND</h4>
+										</div>
+										<div class="col-sm-2">
+											<span id="undergroundSpinnerId" class="pull-right"></span>
+										</div>
+								</div>
 							</div>
 							<div class="panel-body">
 								<div id="ugBodyId"> 
@@ -291,6 +319,19 @@
                             <h4 class="panel-title text-capital">CONSTITUENCY LEVEL OVERVIEW</h4>
                         </div>
                     <div class="panel-body">
+					<div class="row">
+						<div class="col-sm-3">
+							<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu">
+								<li class="active" attr_location_type="districts">Districts</li>
+								<li class="" attr_location_type="parliament">Parliament</li>
+							</ul>
+						</div>
+						<div class="col-sm-3">
+							<select class="form-control chosen-select">
+								<option value="0">All Districts</option>
+							</select>
+						</div>
+					</div>
 					<div id="assemblyTableDivId"></div>
                     <!--<table class="table" id="datatableDemoOne">
                         <div class="row">
@@ -367,6 +408,24 @@
                             <h4 class="panel-title text-capital">MANDAL LEVEL OVERVIEW</h4>
                         </div>
                     <div class="panel-body">
+					<div class="row">
+						<div class="col-sm-3">
+							<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu">
+								<li class="active" attr_location_type="districts">Districts</li>
+								<li class="" attr_location_type="parliament">Parliament</li>
+							</ul>
+						</div>
+						<div class="col-sm-3">
+							<select class="form-control chosen-select">
+								<option value="0">All Districts</option>
+							</select>
+						</div>
+						<div class="col-sm-3">
+							<select class="form-control chosen-select">
+								<option value="0">All CONSTITUENCY</option>
+							</select>
+						</div>
+					</div>
 					<div id="mandalTableDivId"></div>
                     <!--<table class="table" id="datatableDemoTwo">
                        <div class="row">
