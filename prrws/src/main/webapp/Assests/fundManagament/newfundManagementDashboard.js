@@ -32,7 +32,7 @@ getAllDepartments();
 			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,0,0,'cumulative');
 			getGovtSchemesDetails("overviewSelect");
 			getGovtSchemesDetails("programNamesState");
-			//getGovtSubProgramsDetails(0,"subProgramNamesState");
+			getGovtSubProgramsDetails(0,"subProgramNamesState");
 		}, 1500);
 	}
 	
@@ -107,6 +107,7 @@ getAllDepartments();
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
 			getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
 			getGovtSchemesDetails("programNamesDistrict");
+			getGovtSubProgramsDetails(0,"subProgramNamesConst");
 			compareFundsBetweenFinancialYears(3,'comparionDistLevlOvervwTable');
 		}
 	});
@@ -123,7 +124,7 @@ getAllDepartments();
 			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
 			getAllSubLocationsBySuperLocationId(21,'constLevelDistNames',4);
 			getGovtSchemesDetails("programNamesConst");
-			//getGovtSubProgramsDetails(0,"subProgramNamesConst");
+			getGovtSubProgramsDetails(0,"subProgramNamesDistrict");
 			compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable');
 		}
 	});
@@ -140,7 +141,7 @@ getAllDepartments();
 			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
 			getAllSubLocationsBySuperLocationId(21,'mandalLevelDistNames',5);
 			getGovtSchemesDetails("programNamesMandal");
-			//getGovtSubProgramsDetails(0,"subProgramNamesMandal");
+			getGovtSubProgramsDetails(0,"subProgramNamesMandal");
 			compareFundsBetweenFinancialYears(5,'comparionMandalLevlOvervwTable');
 		}
 	});
@@ -157,7 +158,7 @@ getAllDepartments();
 			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
 			getAllSubLocationsBySuperLocationId(21,'villageLevelDistNames',6);		
 			getGovtSchemesDetails("programNamesVillage");
-			//getGovtSubProgramsDetails(0,"subProgramNamesVillage");	
+			getGovtSubProgramsDetails(0,"subProgramNamesVillage");	
 			compareFundsBetweenFinancialYears(6,'comparionVillageLevlOvervwTable');
 		}
 	});
