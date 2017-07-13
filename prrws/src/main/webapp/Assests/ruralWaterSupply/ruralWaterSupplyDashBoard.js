@@ -1230,7 +1230,7 @@
 			
 			var districtValue ="";
 			if(locationType == "mandal"){
-				if(parentLocId < 9){
+				if(parentLocId <= 9){
 					districtValue = "0"+parentLocId;
 				}else{
 					districtValue = parentLocId;
@@ -2160,7 +2160,7 @@
 										for(var j in GLtbodyArr[i].statusList){
 										if(GLtbodyArr[i].statusList[j].status != 'NC'){
 												if(GLtbodyArr[i].statusList[j].count !=null && GLtbodyArr[i].statusList[j].count>0){
-													tableView+='<td class="hablitationClickView" attr_status="'+GLtbodyArr[i].statusList[j].status+'" attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].goNumber+'" attr_total_count = "'+GLtbodyArr[i].statusList[j].count+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].statusList[j].count+'</td>';
+													tableView+='<td class="hablitationClickView" attr_status="'+GLtbodyArr[i].statusList[j].status+'" attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_total_count = "'+GLtbodyArr[i].statusList[j].count+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].statusList[j].count+'</td>';
 													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].statusList[j].percentage+'</small></td>';
 												}else{
 													tableView+='<td> - </td>';
@@ -2234,7 +2234,7 @@
 										if(GLtbodyArr[i].basicList[j].assetType == 'PWS' || GLtbodyArr[i].basicList[j].assetType == "CPWS"){
 												
 												if(GLtbodyArr[i].basicList[j].workOngoingCount !=null && GLtbodyArr[i].basicList[j].workOngoingCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "ongoing" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workOngoingCount+'</td>';
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_district_val="'+GLtbodyArr[i].id+'"attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "ongoing" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workOngoingCount+'</td>';
 												}else{
 													tableView+='<td> - </td>';
 												}
@@ -2244,7 +2244,7 @@
 													tableView+='<td> - </td>';
 												}
 												if(GLtbodyArr[i].basicList[j].workNotGroundedCount !=null && GLtbodyArr[i].basicList[j].workNotGroundedCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "notgrounded" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workNotGroundedCount+'</td>';
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_district_val="'+GLtbodyArr[i].id+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "notgrounded" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workNotGroundedCount+'</td>';
 												}else{
 													tableView+='<td> - </td>';
 												}
@@ -2254,7 +2254,7 @@
 													tableView+='<td> - </td>';
 												}	
 												if(GLtbodyArr[i].basicList[j].workCompletedCount !=null && GLtbodyArr[i].basicList[j].workCompletedCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "completed" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workCompletedCount+'</td>';
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_district_val="'+GLtbodyArr[i].id+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "completed" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workCompletedCount+'</td>';
 												}else{
 													tableView+='<td> - </td>';
 												}
@@ -2264,7 +2264,7 @@
 													tableView+='<td> - </td>';
 												}	
 												if(GLtbodyArr[i].basicList[j].workComissionedCount !=null && GLtbodyArr[i].basicList[j].workComissionedCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "Commissioned" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workComissionedCount+'</td>';
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_district_val="'+GLtbodyArr[i].id+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "Commissioned" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workComissionedCount+'</td>';
 												}else{
 													tableView+='<td> - </td>';
 												}
@@ -3018,7 +3018,7 @@
 		if(tabId == "constituencyBlockIdjalavani"){
 			distId = distId;
 		}else{
-			distId = distId < 9?"0"+distId:distId;
+			distId = distId <= 9?"0"+distId:distId;
 		}
 		var searchLevelId = 3;
 		if(blockName == "constituency"){
@@ -3136,7 +3136,7 @@
 		if(tabIdM == "mandalBlockIdjalavani"){
 			distId = distId;
 		}else{
-			distId = distId < 9?"0"+distId:distId;
+			distId = distId <= 9?"0"+distId:distId;
 		}
 		var searchLevelDistId = 3;
 		if(blockNameM == "mandal"){
@@ -3261,7 +3261,7 @@
 			var distId = $("#chosendistValmandalBlockId").val();
 		}else{
 			var constId = $("#chosenconstValmandalBlockId").val()<9?"0"+$("#chosenconstValmandalBlockId").val():$("#chosenconstValmandalBlockId").val();
-			mandalId = mandalId < 9?"0"+mandalId:mandalId;
+			mandalId = mandalId <= 9?"0"+mandalId:mandalId;
 			var distId = $("#chosendistValmandalBlockId").val()<9?"0"+$("#chosendistValmandalBlockId").val():$("#chosendistValmandalBlockId").val();
 		}
 		var searchLevelConstId = 4;
@@ -3609,10 +3609,14 @@
 		var status = $(this).attr("attr_status");
 		var totalCount=$(this).attr("attr_total_count");
 		var workStatus=$(this).attr("attr_type");
+		var locationValue = $(this).attr("attr_filter_value");
+		var locationType=$(this).attr("attr_location_type");
+		var districtVal=$(this).attr("attr_district_val");
 		$("#modalHablitationDivId").modal('show');
 		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;&nbsp;Wise Details");
 		var startIndex=0;
-		getOnclickWorkSchemsDetails(status,workStatus,totalCount);
+		getOnclickWorkSchemsDetails(status,workStatus,totalCount,locationValue,locationType,
+		districtVal);
 		
 		
 	});
@@ -3653,12 +3657,17 @@
 			filterValue="";
 			filterType="";
 		}else{
-			filterValue = locationValue < 9?"0"+locationValue:locationValue;
+			if(locationType == "mandal"){
+				filterValue = locationValue <= 9? locationValue:locationValue;
+
+		}else{
+			filterValue = locationValue <= 9?"0"+locationValue:locationValue;
+		}
 			filterType = locationType;
 		}
 		var districtValStr="";	
 		if(locationType == "mandal"){
-			districtValStr = districtVal < 9?"0"+districtVal:districtVal;
+			districtValStr = districtVal <= 9?"0"+districtVal:districtVal;
 			
 		}
 		
@@ -3696,7 +3705,7 @@
 		});
 	}
 	//schems ON CLICK
-	function getOnclickWorkSchemsDetails(status,workStatus,totalCount){
+	function getOnclickWorkSchemsDetails(status,workStatus,totalCount,locationValue,locationType,districtVal){
 		
 		$("#modalSchemsTable").html(spinner);
 		var yearVal="";
@@ -3704,12 +3713,29 @@
 		if(financialVal != 0){
 			 yearVal=financialVal;
 		}
+		var filterValue ='';
+		var filterType = '';	
+		if(locationType == "state"){
+			filterValue="";
+			filterType="";
+		}else{
+			filterValue = locationValue <= 9?"0"+locationValue:locationValue;
+			filterType = locationType;
+		}
+		var districtValStr="";	
+		if(locationType == "mandal"){
+			districtValStr = districtVal <= 9?"0"+districtVal:districtVal;
+			
+		}
 		
 		var json = {
 				year:yearVal,
 				fromDateStr:glStartDate,
 				toDateStr:glEndDate,
 				workStatus:workStatus,
+				districtValue:districtValStr,
+				filterType:filterType,
+				filterValue:filterValue,
 				assetType:status
 				}
 		
@@ -3748,12 +3774,12 @@
 			filterValue="";
 			filterType="";
 		}else{
-			filterValue = locationValue < 9?"0"+locationValue:locationValue;
+			filterValue = locationValue <= 9?"0"+locationValue:locationValue;
 			filterType = locationType;
 		}
 		var districtValStr="";	
 		if(locationType == "mandal"){
-			districtValStr = districtVal < 9?"0"+districtVal:districtVal;
+			districtValStr = districtVal <= 9?"0"+districtVal:districtVal;
 			
 		}
 		
@@ -3802,7 +3828,7 @@
 				filterValue="";
 				filterType="";
 			}else{
-				filterValue = locationValue < 9?"0"+locationValue:locationValue;
+				filterValue = locationValue <= 9?"0"+locationValue:locationValue;
 				filterType = locationType;
 			}
 			
@@ -3975,17 +4001,24 @@
 			filterValue="";
 			filterType="";
 		}else{
-			filterValue = locationValue < 9?"0"+locationValue:locationValue;
+			if(locationType == "mandal"){
+				filterValue = locationValue <= 9? locationValue:locationValue;
+
+			}else{
+				filterValue = locationValue <= 9?"0"+locationValue:locationValue;
+			}			
 			filterType = locationType;
 		}
 		var districtValStr="";	
 		if(locationType == "mandal"){
-			districtValStr = districtVal < 9?"0"+districtVal:districtVal;
+			districtValStr = districtVal <= 9?"0"+districtVal:districtVal;
 			
 		}
 		
 			
 		var json = {
+			fromDateStr:glStartDate,
+			toDateStr:glEndDate,
 			statusList:statusArr,
 			year:yearVal,
 			startValue:startIndex,
@@ -4158,6 +4191,8 @@
 					tableView+='<th>DISTRICT</th>';
 					tableView+='<th>CONSTITUENCY</th>';
 					tableView+='<th>MANDAL</th>';
+					tableView+='<th>HABITATION NAME</th>';
+					tableView+='<th>HABITATION CODE</th>';
 					
 				tableView+='</tr>';
 				
@@ -4168,7 +4203,8 @@
 						tableView+='<td>'+result[i].districtName+'</td>';
 						tableView+='<td>'+result[i].constituencyName+'</td>';
 						tableView+='<td>'+result[i].mandalName+'</td>';
-						
+						tableView+='<td>'+result[i].habitationName+'</td>';
+						tableView+='<td>'+result[i].habitationCode+'</td>';
 					tableView+='</tr>';
 			}
 			tableView+='</tbody>';
@@ -4201,6 +4237,7 @@
 					tableView+='<th>MANDAL</th>';
 					tableView+='<th>HABITATIONS NAME</th>';
 					tableView+='<th>HABITATIONS CODE</th>';
+					tableView+='<th>Work CODE</th>';
 				tableView+='</tr>';
 				
 			tableView+='</thead>';
@@ -4212,6 +4249,7 @@
 						tableView+='<td>'+result[i].mandalName+'</td>';
 						tableView+='<td>'+result[i].habitationName+'</td>';
 						tableView+='<td>'+result[i].habitationCode+'</td>';
+						tableView+='<td>'+result[i].workId+'</td>';
 					tableView+='</tr>';
 			}
 			tableView+='</tbody>';
