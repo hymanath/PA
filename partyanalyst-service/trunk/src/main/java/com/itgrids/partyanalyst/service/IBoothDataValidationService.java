@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BoothAddressVO;
 import com.itgrids.partyanalyst.dto.BoothInchargeDetailsVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UploadDataErrorMessageVO;
@@ -19,4 +20,5 @@ public interface IBoothDataValidationService {
 	public List<BoothInchargeDetailsVO> getLocationLevelWiseBoothCount(InputVO inputVO);
 	public List<BoothInchargeDetailsVO> getLocationBasedOnSelection(InputVO inputVO);
 	public List<BoothAddressVO> getLocationLevelWiseBoothDetails(InputVO inputVO);
+	public List<IdAndNameVO> getBoothInchargeRoles(Long boothId);
 }
