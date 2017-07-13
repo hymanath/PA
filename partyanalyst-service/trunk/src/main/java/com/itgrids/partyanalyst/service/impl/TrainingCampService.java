@@ -6140,9 +6140,9 @@ class TrainingCampService implements ITrainingCampService{
 					}
 					
 					//Confirmed Count.
-					 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null,null,cadreIdsLsit,programYearIds,enrollmentYearIds);
+					 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null,null,cadreIdsLsit,enrollmentYearIds,programYearIds);
 					 //total count attended.
-					 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId,null,null,programYearIds,enrollmentYearIds);
+					 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId,null,null,enrollmentYearIds,programYearIds);
 					 String perc=null;
 					 if(confirmedCount!=null && confirmedCount!=0l && totalBatchCount!=null){
 						 float percentage = (totalBatchCount * 100/(float)confirmedCount);
@@ -6178,9 +6178,9 @@ class TrainingCampService implements ITrainingCampService{
 						 
 					 //date wise counts.
 					 //List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,null,null);
-					  List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDayWiseInviteeCountsForBatch(batchId,programYearIds,enrollmentYearIds);
+					  List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDayWiseInviteeCountsForBatch(batchId,enrollmentYearIds,programYearIds);
 				
-					  List<Long> attendeeCadreIdsList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,programYearIds,enrollmentYearIds);
+					  List<Long> attendeeCadreIdsList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,enrollmentYearIds,programYearIds);
 						 
 						 if(dateWiseCounts!=null && dateWiseCounts.size()>0){
 							 
@@ -8887,7 +8887,7 @@ class TrainingCampService implements ITrainingCampService{
 					}
 				}
 				 Long confirmedCount=trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(batchId,null,null,null,staffcadreIdsLsit,enrollmentYearIds,programYearIds);
-				 //total count attended.
+				 //total count attended.						
 				 Long totalBatchCount=trainingCampAttendanceDAO.getAttendedCountByBatch(batchId,null,null,enrollmentYearIds,programYearIds);
 				 String perc=null;
 				 if(confirmedCount!=null && confirmedCount!=0l && totalBatchCount!=null){
