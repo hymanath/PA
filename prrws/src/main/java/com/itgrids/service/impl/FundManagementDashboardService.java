@@ -1553,7 +1553,11 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  			superLocationLevelIdStr = superLocationIdStr.substring(0, 1);
  			
 			superLocationIdStr = superLocationIdStr.substring(1);
-			Long superLocationId = Long.parseLong(superLocationIdStr);
+			Long superLocationId = 0L;
+			if(superLocationIdStr != null && superLocationIdStr.trim().length() > 0){
+				superLocationId = Long.parseLong(superLocationIdStr);
+			}
+			
 			Long superLocationLevelId = Long.parseLong(superLocationLevelIdStr);
 			//String type = "";
 			if(superLocationLevelId.longValue()== 9L){
