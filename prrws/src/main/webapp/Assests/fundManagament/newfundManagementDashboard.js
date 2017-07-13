@@ -33,7 +33,7 @@ getAllDepartments();
 			getGovtSchemesDetails("overviewSelect");
 			getGovtSchemesDetails("programNamesState");
 			getGovtSubProgramsDetails(0,"subProgramNamesState");
-		}, 5000);
+		}, 1500);
 	}
 	
 	
@@ -1958,7 +1958,7 @@ getAllDepartments();
 		var district = '';
 		var constituency = '';
 		var mandal = '';
-		if(result.ttlAmt !=null && result.ttlAmt>0.0){
+		if(result.ttlAmt !=null && result.ttlAmt>0){
 			total+='<h3>'+result.totalAmt+'</h3>';
 			total+='<ul class="list-inline">';
 				for(var i in result.subList)
@@ -1989,6 +1989,7 @@ getAllDepartments();
 			}
 		}else{
 			$("#blockProgram"+schemes).html('')
+			$("#blockProgramInd").html('No Data Available')
 		} 
 		
 		
@@ -3150,7 +3151,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 									overviewTable+='<th class="text-center"><i class="rounded-circle">C</i><p class="text-capital m_top10">constituency</p></th>';
 									overviewTable+='<th class="text-center"><i class="rounded-circle">M</i><p class="text-capital m_top10">Mandal</p></th>';
 								overviewTable+='</thead>';
-								overviewTable+='<tr >';
+								overviewTable+='<tr id="blockProgramInd">';
 									overviewTable+='<td class="text-capital clearCls"><h4>'+selectedValueData+'</h4></td>';
 									overviewTable+='<td class="total'+programId+' text-center clearCls"></td>';
 									overviewTable+='<td class="district'+programId+' clearCls"></td>';
@@ -3184,7 +3185,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 									overviewTable+='<th class="text-center"><i class="rounded-circle">M</i><p class="text-capital m_top10">Mandal</p></th>';
 								overviewTable+='</thead>';
 								overviewTable+='<tbody>';
-									overviewTable+='<tr>';
+									overviewTable+='<tr id="blockProgram0">';
 										overviewTable+='<td class="text-capital clearCls"><h4>ALL </h4></td>';
 										overviewTable+='<td class="total0 text-center clearCls"></td>';
 										overviewTable+='<td class="district0 clearCls"></td>';
@@ -3194,7 +3195,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 					var k = 1;					
 					for(var i in overviewSelectBoxData)
 					{
-						overviewTable+='<tr id="fffff">';
+						overviewTable+='<tr id="blockProgram'+k+'">';
 							overviewTable+='<td class="text-capital clearCls"><h4>'+overviewSelectBoxData[i].name+'</h4></td>';
 							overviewTable+='<td class="total'+k+' text-center clearCls"></td>';
 							overviewTable+='<td class="district'+k+' clearCls"></td>';
