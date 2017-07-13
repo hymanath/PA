@@ -1609,19 +1609,24 @@ function getCadreDetailsForBoothBySearchCriteria()
 	}
 
 function saveBoothDetails(tdpCadreId){
-	 var committeeLocationId =$("#committeeLocationId").val();
-	var boothNo =$("#committeeLocationId option:selected").text();
+	 var committeeLocationId =$("#committeeLocationId1").val();
+	var boothNo =$("#committeeLocationId1 option:selected").text();
 	var confm = confirm("Are you sure want to add this member as incharge for " +boothNo+ " ");
     if (confm == true) {
 
     } else {
 		return;
     }
-
+	var boothIncrgRoleId = $("#committeeDesignationId").val();
+	
+	var enrollmentYrIds = [];
+	enrollmentYrIds.push(1);
 	var jsObj =
 		{
 			boothId : committeeLocationId,
-			tdpCadreId : tdpCadreId
+			tdpCadreId : tdpCadreId,
+			boothIncrgRoleId:boothIncrgRoleId,
+			enrollmentYrIds:enrollmentYrIds
 		}
 		
 		$.ajax({
