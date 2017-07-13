@@ -398,7 +398,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			for(FundSchemeVO param : inputList){
 				param.setCount(0L);
 				param.setAmount("0.0");
-				if(param != null && param.getSubList() != null && param.getSubList().get(0) != null && param.getSubList().get(0).getSubList() != null && param.getSubList().get(0).getSubList().size() > 0){
+				if(param != null && param.getSubList() != null && param.getSubList().size() > 0 && param.getSubList().get(0) != null && param.getSubList().get(0).getSubList() != null && param.getSubList().get(0).getSubList().size() > 0){
 					for(FundSchemeVO innerParam : param.getSubList().get(0).getSubList()){
 						param.setCount(param.getCount()+innerParam.getCount());
 						String amountStr1 = param.getAmount();
@@ -1708,12 +1708,14 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 					}
 				}
 			}
+			List<Long> collectedLocIds = null;
 			if(finalList != null && finalList.size() > 0){
 				for(FundMatrixVO param : finalList){
 					Long totalLoc = 0L;
 					List<Long> totalLocIds = null;
 					Long collectedTotalLoc = 0L;
-					List<Long> collectedLocIds = null;
+					
+					collectedLocIds = new ArrayList<Long>();
 					if(param.getRangeList() != null && param.getRangeList().size() > 0){
 						totalLoc = Long.parseLong(param.getRangeList().get(0).getValue());
 						totalLocIds = param.getRangeList().get(0).getNonFundLocIds();
@@ -1724,9 +1726,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 								continue;
 							}
 							collectedTotalLoc = collectedTotalLoc + Long.parseLong(innerParam.getValue());
-							if(innerParam.getNonFundLocIds() != null){
-								collectedLocIds = new ArrayList<Long>();
-								collectedLocIds.addAll(innerParam.getNonFundLocIds());
+							if(innerParam.getLocationIds() != null){
+								collectedLocIds.addAll(convertToList(innerParam.getLocationIds()));
 							}
 						}
 						param.getRangeList().get(1).setValue(Long.toString((totalLoc-collectedTotalLoc)));
@@ -1740,7 +1741,22 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		}
 		return null;
 	}
-	
+	public List<Long> convertToList(String locationIds){
+		try{
+			List<Long> locList = new ArrayList<Long>();
+			String[] locationIdsArr = {};
+			if(locationIds != null && locationIds.split(",").length > 0){
+				locationIdsArr = locationIds.split(",");
+				for(String str : locationIdsArr){
+					locList.add(Long.parseLong(str));
+				}
+			}
+			return locList;
+		}catch(Exception e){
+			LOG.error("Exception Occurred in convertToList() of FundManagementDashboardService ", e);
+		}
+		return null;
+	}
 	public List<Long> getNonFundedLocIds(List<Long> totalLocIds,List<Long>  collectedLocIds){
 		
 		try{
