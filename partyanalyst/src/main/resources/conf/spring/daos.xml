@@ -4098,4 +4098,7 @@
 	 <bean id="boothInchargeRoleConditionMappingDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeRoleConditionMappingDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>	 
+	 <bean id="boothInchargeCommitteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeCommitteeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
