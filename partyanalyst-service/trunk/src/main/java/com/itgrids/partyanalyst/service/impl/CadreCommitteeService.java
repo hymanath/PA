@@ -61,6 +61,7 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
+import com.itgrids.partyanalyst.dao.IBoothInchargeRoleConditionMappingDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeChangeDesignationsDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeIncreasedPositionsDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
@@ -162,6 +163,7 @@ import com.itgrids.partyanalyst.model.ActivityLocationInfo;
 import com.itgrids.partyanalyst.model.ActivityLocationInfoDates;
 import com.itgrids.partyanalyst.model.ActivityScope;
 import com.itgrids.partyanalyst.model.BoothIncharge;
+import com.itgrids.partyanalyst.model.BoothInchargeRoleConditionMapping;
 import com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations;
 import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
@@ -300,6 +302,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IActivityConductedInfoDAO activityConductedInfoDAO;
 	private IRequiredAttributeDAO requiredAttributeDAO;
 	private IBoothInchargeDAO boothInchargeDAO;
+	private IBoothInchargeRoleConditionMappingDAO boothInchargeRoleConditionMappingDAO;
+	
+	public IBoothInchargeRoleConditionMappingDAO getBoothInchargeRoleConditionMappingDAO() {
+		return boothInchargeRoleConditionMappingDAO;
+	}
+
+	public void setBoothInchargeRoleConditionMappingDAO(
+			IBoothInchargeRoleConditionMappingDAO boothInchargeRoleConditionMappingDAO) {
+		this.boothInchargeRoleConditionMappingDAO = boothInchargeRoleConditionMappingDAO;
+	}
 		
 	public IRequiredAttributeDAO getRequiredAttributeDAO() {
 		return requiredAttributeDAO;
@@ -22145,9 +22157,18 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		}
 		return finalList;
 	}
-	public ResultStatus saveElectionBoothCommitteeDetails(Long userId,Long boothId,Long tdpCadreId){
+	public ResultStatus saveElectionBoothCommitteeDetails(Long userId,Long boothId,Long tdpCadreId,Long boothInchrgRoleId,List<Long> boothEnrollmentYrIds){
 		ResultStatus status = new ResultStatus();
 		try{
+			
+			Long boothInchId = boothInchargeDAO.checkIsBoothAlreadySaved(boothId,boothInchrgRoleId,boothEnrollmentYrIds);
+			
+			if(boothInchId == null){
+				BoothInchargeRoleConditionMapping boothInchargeRoleConditionMapping = boothInchargeRoleConditionMappingDAO.get(boothInchrgRoleId);
+				boothInchargeRoleConditionMapping.setStartDate(dateUtilService.getCurrentDateAndTime());
+				boothInchargeRoleConditionMappingDAO.save(boothInchargeRoleConditionMapping);
+			}
+			
 			BoothIncharge boothIncharge = boothInchargeDAO.getExistingMember(tdpCadreId,"addOption");
 			if(boothIncharge != null){
 				boothIncharge.setIsActive("Y");
@@ -22160,15 +22181,16 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 				boothInchrge.setTdpCadreId(tdpCadreId);
 				boothInchrge.setIsActive("Y");
 				boothInchrge.setIsDeleted("N");
-				boothInchrge.setBoothInchargeEnrollmentId(1l);
+				boothInchrge.setBoothInchargeEnrollmentId(boothEnrollmentYrIds.get(0));
 				boothInchrge.setInsertedBy(userId);
 				boothInchrge.setUpdatedBy(userId);
+				boothInchrge.setBoothInchargeRoleConditionMappingId(boothInchrgRoleId);
 				boothInchrge.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				boothInchrge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				boothInchargeDAO.save(boothInchrge);
 			}
 			
-			 status.setResultCode(0);
+			status.setResultCode(0);
 		}catch(Exception e){
 			status.setResultCode(1);
 			LOG.error("Exception raised in saveElectionBoothCommitteeDetails ", e);

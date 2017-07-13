@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.model.BoothInchargeRoleConditionMapping;
 
 public interface IBoothInchargeRoleConditionMappingDAO extends GenericDao<BoothInchargeRoleConditionMapping, Long> {
 
-	public List<Object[]> getBoothInchargeRolesWithMinMAxCount(Long boothId);
+	public List<Object[]> getBoothInchargeRolesWithMinMAxCount(Long boothId,List<Long> enrollmentYrIds);
 }

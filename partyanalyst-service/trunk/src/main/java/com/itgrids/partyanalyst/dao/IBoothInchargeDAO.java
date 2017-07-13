@@ -20,5 +20,6 @@ public interface IBoothInchargeDAO extends GenericDao<BoothIncharge,Long>{
 	public List<Object[]> getLocationLevelWiseBoothCount(InputVO inputVO,String resultType);
 	public List<Object[]> getLocationBasedOnSelection(InputVO inputVO);
 	public List<Object[]> getLocationLevelWiseBoothDetails(InputVO inputVO);
-	public List<Object[]> getBoothInchargeCountByRoleIds(Set<Long> keySet);
+	public List<Object[]> getBoothInchargeCountByRoleIds(Set<Long> keySet,List<Long> boothEnrollmentYrIds);
+	public Long checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Long> boothEnrollmentYrIds);
 }

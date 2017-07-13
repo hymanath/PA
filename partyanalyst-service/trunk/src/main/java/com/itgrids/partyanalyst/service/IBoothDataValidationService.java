@@ -20,5 +20,5 @@ public interface IBoothDataValidationService {
 	public List<BoothInchargeDetailsVO> getLocationLevelWiseBoothCount(InputVO inputVO);
 	public List<BoothInchargeDetailsVO> getLocationBasedOnSelection(InputVO inputVO);
 	public List<BoothAddressVO> getLocationLevelWiseBoothDetails(InputVO inputVO);
-	public List<IdAndNameVO> getBoothInchargeRoles(Long boothId);
+	public List<IdAndNameVO> getBoothInchargeRoles(Long boothId,List<Long> enrollmentYrId);
 }
