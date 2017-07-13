@@ -463,7 +463,7 @@ function overviewData(divId,levelId,locationId)
 	
 	if(divId == 'Labour Budget')
 		getNREGSLabourBudgetOverview(divId,menuLocationType,menuLocationId);
-	else if(divId != 'Payments' && divId != 'FAperformance')
+	else if(divId != 'Payments')
 		getNregasOverview(divId,menuLocationType,menuLocationId);
 }
 function tableView(blockId,theadArr,result,locationType)
@@ -1277,6 +1277,14 @@ function buildDistrictsPopupDetails(result,dataArr){
 					theadArr = ["district","constituency",dataArr,'TARGET','Completed','Percentage'];
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Completed','Percentage'];
+			}else if(globalDivName == "FAperformance"){
+				theadArr = [dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achivement(5)','Total Average(100)'];
+				if(dataArr == "constituency")
+					theadArr = ["district",dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achivement(5)','Total Average(100)'];
+				else if(dataArr == "mandal")
+					theadArr = ["district","constituency",dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achivement(5)','Total Average(100)'];
+				else if(dataArr == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achivement(5)','Total Average(100)'];
 			}else{
 				theadArr = [dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				if(dataArr == "constituency")
@@ -1324,7 +1332,13 @@ function buildDistrictsPopupDetails(result,dataArr){
 										}
 										str+='<td>'+result.distList[i].target+'</td>';
 										str+='<td>'+result.distList[i].achivement+'</td>';
-										str+='<td>'+result.distList[i].percentage+'</td>';
+										if(result.distList[i].percentage < 50){
+											str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
+											str+='<td style="background-color:#FFBA00">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 80){
+											str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
+										}
 									str+='</tr>';
 									}else if(globalDivName == "Agriculture Activities"){
 										str+='<tr>';
@@ -1348,7 +1362,13 @@ function buildDistrictsPopupDetails(result,dataArr){
 										}
 										str+='<td>'+result.distList[i].target+'</td>';
 										str+='<td>'+result.distList[i].completed+'</td>';
-										str+='<td>'+result.distList[i].achivement+'</td>';
+										if(result.distList[i].achivement < 50){
+											str+='<td style="background-color:#FF0000">'+result.distList[i].achivement+'</td>';
+										}else if(result.distList[i].achivement >= 50 && result.distList[i].achivement < 80){
+											str+='<td style="background-color:#FFBA00">'+result.distList[i].achivement+'</td>';
+										}else if(result.distList[i].achivement >= 80){
+											str+='<td style="background-color:#00AF50">'+result.distList[i].achivement+'</td>';
+										}
 									str+='</tr>';
 									}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds"){
 										str+='<tr>';
@@ -1543,6 +1563,44 @@ function buildDistrictsPopupDetails(result,dataArr){
 										}
 										//str+='<td>'+result.distList[i].percentage+'</td>';
 									str+='</tr>';
+									}else if(globalDivName == "FAperformance"){
+										str+='<tr>';
+										if(dataArr == "district"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										}
+										else if(dataArr == "constituency"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										}
+										else if(dataArr == "mandal"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										}
+										else if(dataArr == "panchayat"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+										}
+										str+='<td>'+result.distList[i].avgDmdMarks+'</td>';
+										str+='<td>'+result.distList[i].avgDMusterMarks+'</td>';
+										str+='<td>'+result.distList[i].avgLbMarks+'</td>';
+										str+='<td>'+result.distList[i].avgRozgarDivasMarks+'</td>';
+										str+='<td>'+result.distList[i].avgDaysMarks+'</td>';
+										str+='<td>'+result.distList[i].avgAvgWageMarks+'</td>';
+										str+='<td>'+result.distList[i].avgFlagshipMarks+'</td>';
+										
+										if(result.distList[i].percentage < 50){
+											str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
+											str+='<td style="background-color:#FFBA00">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 80)
+										{
+											str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
+										}
+										
+									str+='</tr>';
 									}else{
 										str+='<tr>';
 										if(dataArr == "district"){
@@ -1628,7 +1686,14 @@ function buildDistrictsPopupDetails(result,dataArr){
 									
 								str+='<td>'+result.distList[i].targetPersonDays+'</td>';
 								str+='<td>'+result.distList[i].generatedPersonDays+'</td>';
-								str+='<td>'+result.distList[i].perAppLB+'</td>';
+								//str+='<td>'+result.distList[i].perAppLB+'</td>';
+								if(result.distList[i].perAppLB < 50){
+									str+='<td style="background-color:#FF0000">'+result.distList[i].perAppLB+'</td>';
+								}else if(result.distList[i].perAppLB >= 50 && result.distList[i].perAppLB < 80){
+									str+='<td style="background-color:#FFBA00">'+result.distList[i].perAppLB+'</td>';
+								}else if(result.distList[i].perAppLB >= 80){
+									str+='<td style="background-color:#00AF50">'+result.distList[i].perAppLB+'</td>';
+								}
 								str+='<td>'+result.distList[i].wageExpenditure+'</td>';
 								str+='<td>'+result.distList[i].materialExpenditure+'</td>';
 								str+='<td>'+result.distList[i].totalExpenditure+'</td>';
@@ -1906,16 +1971,30 @@ function buildDistrictsPopupDetails(result,dataArr){
 function getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,menuLocationId)
 {
 	$("#nregsConsitenBodyId").html(spinner);
-	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-		toDate : glEndDate,
-		locationType: menuLocationType,
-		divType : globalDivName,
-		type  : type,
-		locationId : menuLocationId,
-		sublocaType : locationType
+	if(globalDivName == 'FAperformance'){
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			locationType: locationType,
+			divType : globalDivName,
+			type  : type,
+			locationId : menuLocationId,
+			sublocaType : locationType
+		}
+	}else{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			locationType: menuLocationType,
+			divType : globalDivName,
+			type  : type,
+			locationId : menuLocationId,
+			sublocaType : locationType
+		}
 	}
+	
 	$.ajax({
 		url: 'getMGNregsDistrWiseCount',
 		data: JSON.stringify(json),
@@ -2169,7 +2248,14 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocat
 						str+='<td>'+ajaxresp[i].avgDaysMarks+'</td>';
 						str+='<td>'+ajaxresp[i].avgAvgWageMarks+'</td>';
 						str+='<td>'+ajaxresp[i].avgFlagshipMarks+'</td>';
-						str+='<td>'+ajaxresp[i].avgTotMarks+'</td>';
+						//str+='<td>'+ajaxresp[i].avgTotMarks+'</td>';
+						if(ajaxresp[i].avgTotMarks < 50){
+							str+='<td style="background-color:#FF0000">'+ajaxresp[i].avgTotMarks+'</td>';
+						}else if(ajaxresp[i].avgTotMarks >= 50 && ajaxresp[i].avgTotMarks < 80){
+							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].avgTotMarks+'</td>';
+						}else if(ajaxresp[i].avgTotMarks >= 80){
+							str+='<td style="background-color:#00AF50">'+ajaxresp[i].avgTotMarks+'</td>';
+						}
 						
 					str+='</tr>';
 				}
