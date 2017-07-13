@@ -267,11 +267,11 @@ public class RwsMinHabViewDAO extends GenericDaoHibernate<RwsMinHabView,String> 
 		queryStr.append(" from  RwsMinHabView model,RwsMinConstituencyView model1 "+
 				        " where model.mCode=model1.mCode and model.dCode=model1.dCode ");
 			
-		if (inputVo.getYear() != null && inputVo.getYear().trim().length() > 0) {
+		if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
+			queryStr.append(" and  model.statusDate between :fromDate and :toDate ");
+		}else if (inputVo.getYear() != null && inputVo.getYear().trim().length() > 0) {
 			queryStr.append(" and  TO_CHAR(model.statusDate,'YY') =:year ");
-		}else if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
-			queryStr.append(" and  date(model.statusDate) between :fromDate and :toDate ");
-		}
+		} 
 		
 		if (inputVo.getStatusList() != null && inputVo.getStatusList().size() > 0) {
 			queryStr.append(" and trim(model.coverageStatus) in (:statusValues)");
@@ -294,11 +294,11 @@ public class RwsMinHabViewDAO extends GenericDaoHibernate<RwsMinHabView,String> 
 
 		Query query = getSession().createQuery(queryStr.toString());
 
-		if (inputVo.getYear() != null && inputVo.getYear().trim().length() > 0) {
-			query.setParameter("year", inputVo.getYear().trim());
-		}else if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
+		 if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
 			query.setDate("fromDate", inputVo.getFromDate());
 			query.setDate("toDate", inputVo.getToDate());
+		}else if (inputVo.getYear() != null && inputVo.getYear().trim().length() > 0) {
+			query.setParameter("year", inputVo.getYear().trim());
 		}
 		if (inputVo.getFilterValue() != null && inputVo.getFilterValue().trim().length() > 0) {
 			query.setParameter("locationValue", inputVo.getFilterValue());
