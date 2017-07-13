@@ -1805,7 +1805,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  			//result => return from DAO contain fund amount as third parameter of each object array, here I will replace that with its correspond range
  			if(result != null && result.size() > 0){
  				for(Object[] param : result){
- 					param[2] = getRangeForFundAmount(fundSanctionRangeList,commonMethodsUtilService.getLongValueForObject(param[2]));
+ 					param[2] = getRangeForFundAmount(fundSanctionRangeList,param[2] != null ? Double.parseDouble(param[2].toString()) : 0.0d);
  				}
  			}
  			
@@ -2108,7 +2108,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  				inputVO.setDeptIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList()));
  				inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSearchLvlVals()));
  				inputVO.setSchemeIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSchemeIdsList()));
- 				List<Object[]> fundSanctionDetails = fundSanctionLocationDAO.getLocationWiseFundSanctionDetails(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),startDate,endDate,inputVO.getBlockLevelId(),inputVO.getSearchLvlVals(),inputVO.getSchemeIdsList());
+ 				List<Object[]> fundSanctionDetails = fundSanctionLocationDAO.getLocationWiseFundSanctionDetails(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),startDate,endDate,inputVO.getBlockLevelId(),inputVO.getSearchLvlVals(),inputVO.getSchemeIdsList(),inputVO.getSubProgramIdsList());
  				if(fundSanctionDetails != null && fundSanctionDetails.size()>0){
  					finalReturnList = new ArrayList<LocationVO>();
  					for(Object[] param : fundSanctionDetails){
@@ -2375,20 +2375,20 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
    	}
    	return returnVO;
    }
-   public Object getRangeForFundAmount(List<Object[]> fundSanctionRangeList,Long fund){
+   public Object getRangeForFundAmount(List<Object[]> fundSanctionRangeList,Double fund){
 	   try{
 		   if(fundSanctionRangeList != null && fundSanctionRangeList.size() > 0 && fund != null){
 			   for(Object[] param : fundSanctionRangeList){
 				   if(commonMethodsUtilService.getStringValueForObject(param[1]).contains("-")){
 					   String[] strArr = commonMethodsUtilService.getStringValueForObject(param[1]).split("-");
-					   long leftVal = Long.parseLong(strArr[0].trim());
-					   long rightVal = Long.parseLong(strArr[1].trim());
-					   if(fund.longValue() >= leftVal && fund.longValue() <= rightVal){
+					   double leftVal = Double.parseDouble(strArr[0].trim());
+					   double rightVal = Double.parseDouble(strArr[1].trim());
+					   if(fund.doubleValue() >= leftVal && fund.doubleValue() <= rightVal){
 						   return param[0];
 					   }
 				   }else{
-					   long value = Long.parseLong(commonMethodsUtilService.getStringValueForObject(param[1]).substring(2));
-					   if(fund.longValue() > value){
+					   double value = Double.parseDouble(param[1] != null ? param[1].toString() : "0.0d");
+					   if(fund.doubleValue() > value){
 						   return param[0];
 					   }
 				   }
