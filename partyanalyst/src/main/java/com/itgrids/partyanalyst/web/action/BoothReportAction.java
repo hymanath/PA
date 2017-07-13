@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BoothAddressVO;
 import com.itgrids.partyanalyst.dto.BoothInchargeDetailsVO;
 import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.service.IBoothDataValidationService;
@@ -26,6 +27,7 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 	private JSONObject jObj;
 	private List<BoothInchargeDetailsVO> boothInchargeDetailsList;
 	private IBoothDataValidationService boothDataValidationService;
+	private List<BoothAddressVO> boothDtlsList;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -66,6 +68,13 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 	}
 	public void setBoothDataValidationService(IBoothDataValidationService boothDataValidationService) {
 		this.boothDataValidationService = boothDataValidationService;
+	}
+	
+	public List<BoothAddressVO> getBoothDtlsList() {
+		return boothDtlsList;
+	}
+	public void setBoothDtlsList(List<BoothAddressVO> boothDtlsList) {
+		this.boothDtlsList = boothDtlsList;
 	}
 	@Override
 	public String execute() throws Exception {
@@ -113,6 +122,24 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 			boothInchargeDetailsList = boothDataValidationService.getLocationBasedOnSelection(inputVO);
 		}catch(Exception e){
 			LOG.error("Exception raised at getLocationLevelWiseBoothCount() method of BoothReportAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationLevelWiseBoothDetails(){
+		LOG.info("Entered into getLocationLevelWiseBoothCount()  of BoothReportAction ");
+		try{
+			jObj = new JSONObject(getTask());
+			InputVO inputVO = new InputVO();
+			inputVO.setLocationLevel(jObj.getString("filterType"));
+			inputVO.setFilterValue(jObj.getLong("filterValue"));
+			inputVO.setBoothInchargeEnrollmentId(jObj.getLong("boothEnrollementYearId"));
+			inputVO.setFromDateStr(jObj.getString("fromDate"));
+			inputVO.setToDateStr(jObj.getString("toDate"));
+			inputVO.setResultType(jObj.getString("resultType"));
+			boothDtlsList = boothDataValidationService.getLocationLevelWiseBoothDetails(inputVO);
+		}catch(Exception e){
+			LOG.error("Exception raised at getLocationLevelWiseBoothDetails() method of BoothReportAction", e);
 		}
 		return Action.SUCCESS;
 	}
