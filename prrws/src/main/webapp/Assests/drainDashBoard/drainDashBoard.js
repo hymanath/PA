@@ -1,3 +1,5 @@
+var globalFromDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
+var globalToDate = moment().format('DD-MM-YYYY');
 var spinner_Drain = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner_Drain"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 onloadCalls();
@@ -9,6 +11,56 @@ function onloadCalls(){
 	$(".chosen-select").chosen();
 }
 
+$("#singleDateRangePicker").daterangepicker({
+		opens: 'left',
+		startDate: globalFromDate,
+		endDate: globalToDate,
+		locale: {
+		  format: 'DD-MM-YYYY'
+		}
+	});
+$('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+	
+	globalFromDate = picker.startDate.format('DD-MM-YYYY')
+	globalToDate = picker.endDate.format('DD-MM-YYYY')
+	
+	onloadCalls();
+});
+
+$(document).on('click','.calendar_active_cls li', function(){
+	var date = $(this).attr("attr_val");
+	
+	if(date == 'Today')
+	{
+		globalFromDate = moment().format('DD-MM-YYYY');
+		globalToDate = moment().format('DD-MM-YYYY');
+		
+	}else if(date == 'Week'){
+		globalFromDate = moment().subtract(1,'week').format('DD-MM-YYYY');
+		globalToDate = moment().format('DD-MM-YYYY');
+		
+	}else if(date == 'Month'){
+		globalFromDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
+		globalToDate = moment().format('DD-MM-YYYY');
+	}else if(date == '3Months'){
+		globalFromDate = moment().subtract(3,'month').startOf("month").format('DD-MM-YYYY');
+		globalToDate = moment().format('DD-MM-YYYY');
+	}else if(date == '6Months'){
+		globalFromDate = moment().subtract(6,'month').startOf("month").format('DD-MM-YYYY');
+		globalToDate = moment().format('DD-MM-YYYY');
+	}else if(date == 'Overall'){
+		globalFromDate = moment().subtract(20,'years').startOf("year").format('DD-MM-YYYY');
+		globalToDate = moment().format('DD-MM-YYYY');
+	}
+	
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+	if(date != "custom"){
+		onloadCalls();
+	}
+	
+});
+
 function getDrainsInfoStateWise(){
 	$("#totalSpinnerId").html(spinner_Drain);
 	$("#undergroundSpinnerId").html(spinner_Drain);
@@ -16,8 +68,8 @@ function getDrainsInfoStateWise(){
 	$("#kachaSpinnerId").html(spinner_Drain);
 	
 	var json = {
-			fromDate : "01-04-2017",
-			toDate : "30-06-2017",
+			fromDate : globalFromDate,
+			toDate : globalToDate,
 			locationType : "district" ,
 			locationId:"0"
 		}
@@ -103,8 +155,8 @@ function getDrainsInfoStateWise(){
 function getDrainsInfoLocationWise(locationType){
 	$("#"+locationType+"TableDivId").html(spinner);
 	var json = {
-		fromDate:"01-06-2017",
-		toDate:"30-06-2017",
+		fromDate : globalFromDate,
+		toDate : globalToDate,
 		locationId:0,
 		locationType:locationType
 	}
@@ -172,7 +224,8 @@ function buildingTable(result,locationType){
 		str+='<tbody>';
 			if(result != null && result.length > 0){
 				for(var i in result){
-					str+='<tr>';
+					if(result[i].totalAvailable !=null && result[i].totalAvailable>0){
+						str+='<tr>';
 					if(locationType == "district"){
 						str+='<td><img src="Assests/icons/'+result[i].name+'.png" style="height: 30px;margin-right: 7px;"/><br/>'+result[i].name+'</td>';
 					}else{
@@ -203,7 +256,8 @@ function buildingTable(result,locationType){
 						str+='<td style="background-color:#F2F1E6">'+result[i].ugCleaned+'</td>';
 						str+='<td style="background-color:#F2F1E6">'+result[i].ugCleanedKms+'</td>';
 						str+='<td style="background-color:#F2F1E6;color:#FD3367">'+result[i].ugPercentage+'</td>';
-					str+='</tr>';
+						str+='</tr>';
+					}					
 				}
 			}else{
 				str+='No Data Available.';
@@ -212,12 +266,7 @@ function buildingTable(result,locationType){
     str+='</table>';
     str+='</div>';
 	
-	if(locationType == "district" || locationType == "constituency")
-		$("#districtTableDivId").html(str);
-	else if(locationType == "assembly")
-		$("#assemblyTableDivId").html(str);
-	else if(locationType == "mandal")
-		$("#mandalTableDivId").html(str);
+	$("#"+locationType+"TableDivId").html(str);
 	
 	$("#datatable"+locationType).dataTable();	
 }
