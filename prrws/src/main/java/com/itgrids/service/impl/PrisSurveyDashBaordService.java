@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itgrids.dao.IConstituencyDAO;
+import com.itgrids.dao.IDistrictDAO;
+import com.itgrids.dao.IParliamentAssemblyDAO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.PrisDataVo;
 import com.itgrids.dto.PrisOverviewVo;
@@ -32,7 +36,12 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	private WebServiceUtilService webServiceUtilService;
 	@Autowired
 	private DateUtilService dateUtilService;
-	
+	@Autowired
+	private IDistrictDAO districtDAO;
+	@Autowired
+	private IParliamentAssemblyDAO parliamentAssemblyDAO;
+	@Autowired
+	private IConstituencyDAO constituencyDAO;
 	
 	
 	/*
@@ -63,13 +72,13 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
 	 	    			for(int i=0;i<finalArray.length();i++){
-			 	    		PrisDataVo vo = new PrisDataVo();
+			 	    		PrisDataVo totalVo = new PrisDataVo();
 			 	    		JSONObject jObj = (JSONObject) finalArray.get(i);
-			 	    		vo.setTotalHouseHolds(jObj.getLong("totalHouseHolds"));
-			 	    		vo.setTargetOverall(jObj.getLong("target"));
-			 	    		vo.setAchievedOverall(jObj.getLong("achived"));
+			 	    		totalVo.setTotalHouseHolds(jObj.getLong("totalHouseHolds"));
+			 	    		totalVo.setTargetOverall(jObj.getLong("target"));
+			 	    		totalVo.setAchievedOverall(jObj.getLong("achived"));
 			 	    		
-			 	    		totalList.add(vo);
+			 	    		totalList.add(totalVo);
 	 	    			}
 	 	    		}
 	 	    	}
@@ -83,13 +92,13 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    		JSONArray jsonArray = new JSONArray(output1);
 	 	    		if(jsonArray!=null && jsonArray.length()>0){
 	 	    			for(int i=0;i<jsonArray.length();i++){
-			 	    		PrisDataVo vo = new PrisDataVo();
+			 	    		PrisDataVo subVo = new PrisDataVo();
 			 	    		JSONObject jObj = (JSONObject) jsonArray.get(i);
-			 	    		vo.setSubTotal(jObj.getLong("totalHouseHolds"));
-			 	    		vo.setSubTarget(jObj.getLong("target"));
-			 	    		vo.setSubAchieved(jObj.getLong("achived"));
+			 	    		subVo.setSubTotal(jObj.getLong("totalHouseHolds"));
+			 	    		subVo.setSubTarget(jObj.getLong("target"));
+			 	    		subVo.setSubAchieved(jObj.getLong("achived"));
 			 	    		
-			 	    		subTotalList.add(vo);
+			 	    		subTotalList.add(subVo);
 	 	    			}
 	 	    		}
 	 	    	}
@@ -99,7 +108,7 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	        	Long total = 0l;
 	        	Long target = 0l;
 	        	Long achieved = 0l;
-	        	for (PrisDataVo returnVo : totalList) {
+	        	for (PrisDataVo returnVo : totalList){
 	        		total = total+returnVo.getTotalHouseHolds();
 	        		target = target+returnVo.getTargetOverall();
 	        		achieved =achieved+returnVo.getAchievedOverall();
@@ -235,5 +244,85 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	public Double caclPercantage(Long subCount,Long totalCount){
 		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		return d;
+	}
+	public List<IdNameVO> getAllDistricts(){
+	  List<IdNameVO> idNameVOList= new ArrayList<IdNameVO>(0);
+	  try
+	 {
+		List<Object[]> districtList= districtDAO.getDistrictIdName(1l);
+		
+		if(districtList!=null && districtList.size()>0){
+			for (Object[] objects : districtList){
+				IdNameVO idNameVO=new IdNameVO();
+				
+				idNameVO.setId((Long)objects[0]);
+				idNameVO.setName(objects[1].toString());
+				idNameVOList.add(idNameVO);
+			}
+		 }
+	 }catch (Exception e){
+		LOG.error("Exception raised in getAllDistricts", e);
+	 }	
+	  	return  idNameVOList;
+	}
+	public List<IdNameVO> getAllParliaments(){
+		  List<IdNameVO> idNameVOList= new ArrayList<IdNameVO>(0);
+		  try
+		 {
+			List<Object[]> objList= parliamentAssemblyDAO.getAllParliaments();
+			
+			if(objList!=null && objList.size()>0){
+				for (Object[] objects : objList){
+					IdNameVO idNameVO=new IdNameVO();
+					
+					idNameVO.setId((Long)objects[0]);
+					idNameVO.setName(objects[1].toString());
+					idNameVOList.add(idNameVO);
+				}
+			 }
+		 }catch (Exception e){
+			LOG.error("Exception raised in getAllDistricts", e);
+		 }	
+		  	return  idNameVOList;
+	}
+	public List<IdNameVO> getAllConstituenciesForDistrict(Long districtId){
+		  List<IdNameVO> idNameVOList= new ArrayList<IdNameVO>(0);
+		  try
+		 {
+			List<Object[]> objList= constituencyDAO.getConstituencyListByDistrictId(districtId);
+			
+			if(objList!=null && objList.size()>0){
+				for (Object[] objects : objList){
+					IdNameVO idNameVO=new IdNameVO();
+					
+					idNameVO.setId((Long)objects[0]);
+					idNameVO.setName(objects[1].toString());
+					idNameVOList.add(idNameVO);
+				}
+			 }
+		 }catch (Exception e){
+			LOG.error("Exception raised in getAllDistricts", e);
+		 }	
+		  	return  idNameVOList;
+	}
+	public List<IdNameVO> getAllConstituenciesForParliament(Long parliamentId){
+		  List<IdNameVO> idNameVOList= new ArrayList<IdNameVO>(0);
+		  try
+		 {
+			List<Object[]> objList= parliamentAssemblyDAO.getParliamentByConstIdAndName(parliamentId);
+			
+			if(objList!=null && objList.size()>0){
+				for (Object[] objects : objList){
+					IdNameVO idNameVO=new IdNameVO();
+					
+					idNameVO.setId((Long)objects[0]);
+					idNameVO.setName(objects[1].toString());
+					idNameVOList.add(idNameVO);
+				}
+			 }
+		 }catch (Exception e){
+			LOG.error("Exception raised in getAllDistricts", e);
+		 }	
+		  	return  idNameVOList;
 	}
 }

@@ -1,5 +1,8 @@
 package com.itgrids.controllers.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.AddressVO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.PrisDataVo;
 import com.itgrids.dto.PrisOverviewVo;
@@ -60,5 +64,44 @@ public class PrisSurveyDashBoardController {
 		}
 		return returnVo;
 	}
-	
+	@RequestMapping("/getAllDistricts")
+	public @ResponseBody List<IdNameVO> getAllDistricts(){
+		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>();
+		try {
+			returnVoList = surveyDashBaordService.getAllDistricts();
+		} catch (Exception e){
+			LOG.error("Exception raised at getAllDistricts - PrisSurveyDashBoardController controller", e);
+		}
+		return returnVoList;
+	}
+	@RequestMapping("/getAllParliaments")
+	public @ResponseBody List<IdNameVO> getAllParliaments(){
+		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>();
+		try {
+			returnVoList = surveyDashBaordService.getAllParliaments();
+		} catch (Exception e){
+			LOG.error("Exception raised at getAllParliaments - PrisSurveyDashBoardController controller", e);
+		}
+		return returnVoList;
+	}
+	@RequestMapping("/getAllConstituenciesForDistrict")
+	public @ResponseBody List<IdNameVO> getAllConstituenciesForDistrict(Long districtId){
+		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>();
+		try {
+			returnVoList = surveyDashBaordService.getAllConstituenciesForDistrict(districtId);
+		} catch (Exception e){
+			LOG.error("Exception raised at getAllConstituenciesForDistrict - PrisSurveyDashBoardController controller", e);
+		}
+		return returnVoList;
+	}
+	@RequestMapping("/getAllConstituenciesForParliament")
+	public @ResponseBody List<IdNameVO> getAllConstituenciesForParliament(Long parliamentId){
+		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>();
+		try {
+			returnVoList = surveyDashBaordService.getAllConstituenciesForParliament(parliamentId);
+		} catch (Exception e){
+			LOG.error("Exception raised at getAllConstituenciesForParliament - PrisSurveyDashBoardController controller", e);
+		}
+		return returnVoList;
+	}
 }
