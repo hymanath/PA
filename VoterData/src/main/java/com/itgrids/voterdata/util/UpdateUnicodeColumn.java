@@ -14,7 +14,7 @@ public class UpdateUnicodeColumn {
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 	static final String DB_URL = "jdbc:mysql://103.241.136.117:3306/public_pulse?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8";
 	static final String USER = "itgrids";
-	static final String PASS = "";
+	static final String PASS = "publ!cPu1se";
 	
 	static Connection conn = null;
 	static Statement stmt = null;
