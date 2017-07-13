@@ -129,14 +129,18 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getCampDistrictsByBatchId(Long batchId){
+	public List<Object[]> getCampDistrictsByBatchId(Long batchId,List<Long> enrollmentYrIds,List<Long> programIds){
 		
 		Query query=getSession().createQuery(" select model1.district.districtId,model1.district.districtName" +
 		" from TrainingCampBatch model,TrainingCampDistrict model1" +
 		" where model.trainingCampSchedule.trainingCamp.trainingCampId =model1.trainingCampId and model.trainingCampBatchId=:trainingCampBatchId " +
 		" and model.isCancelled = 'false' and model.attendeeType.attendeeTypeId=1 and model.attendeeType.isDeleted='false' " +
+		" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programIds) " +
+		" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in(:enrollmentYrIds)" +
 		" order by model1.district.districtId asc");
 		query.setParameter("trainingCampBatchId",batchId);
+		query.setParameterList("enrollmentYrIds", enrollmentYrIds);
+		query.setParameterList("programIds", programIds);
 		return query.list();
 	}
 	public Object[] getBatchDates(Long batchId,Date fromDate,Date toDate,List<Long> programYearIds,List<Long> enrollmentYearIds){
@@ -352,15 +356,19 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		return query.list();
 	}
 	
-	public List<Object[]> getCampConstsByBatchId(Long batchId){
+	public List<Object[]> getCampConstsByBatchId(Long batchId,List<Long> enrollmentYrIds,List<Long> programIds){
 		
 		Query query=getSession().createQuery(" select c.constituencyId,c.name " +
 		" from TrainingCampBatch model,TrainingCampDistrict model1,Constituency c " +
 		" where model.trainingCampSchedule.trainingCamp.trainingCampId =model1.trainingCampId and model.trainingCampBatchId=:trainingCampBatchId and model.isCancelled = 'false' " +
 		"  and model1.district.districtId=c.district.districtId and model.attendeeType.attendeeTypeId=1 and model.attendeeType.isDeleted='false' " +
 		" and c.electionScope.electionScopeId=2 and c.deformDate is null " +
+		" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programIds)" +
+		" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in(:enrollmentYrIds) " +
 		" order by c.constituencyId asc");
 		query.setParameter("trainingCampBatchId",batchId);
+		query.setParameterList("enrollmentYrIds", enrollmentYrIds);
+		query.setParameterList("programIds", programIds);
 		return query.list();
 	}
 	

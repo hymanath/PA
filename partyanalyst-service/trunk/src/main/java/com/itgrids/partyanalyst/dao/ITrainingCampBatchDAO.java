@@ -16,7 +16,7 @@ public interface ITrainingCampBatchDAO extends GenericDao<TrainingCampBatch,Long
 	public List<Object[]> getTrainingCampBatchesOfSchedule(Long trainingCampScheduleId);
 	public List<Object[]> getCompletedBatchIds(Date currDate,String type,List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	public Long getMaxNumbersForBacth(Long batchId);
-	public List<Object[]> getCampDistrictsByBatchId(Long batchId);
+	public List<Object[]> getCampDistrictsByBatchId(Long batchId,List<Long> enrollmentYrIds,List<Long> programIds);
 	public Object[] getBatchDates(Long batchId,Date fromDate,Date toDate,List<Long> programYearIds,List<Long> enrollmentYearIds);
 	public List<Object[]> getCentersAndBatchCountByProgram(Long programId,Date fromDate,Date toDate);
 	public Object[] getBatchCountByCamp(Long programId,Long campId,Date fromDate,Date toDate);
@@ -24,7 +24,7 @@ public interface ITrainingCampBatchDAO extends GenericDao<TrainingCampBatch,Long
 	public Object[] getBatchDatesWithOutDates(Long batchId,Long enrollmentYearId);
 	public List<Object[]> getBatchesInfoByProgramAndCamp(Long programId,Long campId);
 	public List<TrainingCampBatch> getAllRecordsByBatchId(Long batchId);
-	public List<Object[]> getCampConstsByBatchId(Long batchId);
+	public List<Object[]> getCampConstsByBatchId(Long batchId,List<Long> enrollmentYrIds,List<Long> programIds);
 	public List<Object[]> getBatcheIdsForACampOrProgram(List<Long> programId,Long campId,Date fromDate,Date toDate,String type,List<Long> enrollmentYrIds);
 	public List<Object[]> getBatchAndCampNameForABatch(Long batchId,List<Long> enrollmentYrIds,List<Long> programIds);
 	//public List<Object[]> getAllBatchesForTrainers();
