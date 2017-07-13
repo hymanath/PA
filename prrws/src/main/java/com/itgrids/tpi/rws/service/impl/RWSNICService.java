@@ -1770,8 +1770,9 @@ public class RWSNICService implements IRWSNICService{
 			 	    				subVo.setHabitationCode(jobj.getString("habitationCode"));
 			 	    				subVo.setHabitationName(jobj.getString("habitationName")); 	    
 			 	    				subVo.setCoverageStatus(jobj.getString("coverageStatus"));	
-			 	    				if(i == 0)
+			 	    				if(i == 0 && jobj.has("totalCount")){
 			 	    					subVo.setTotalCount(jobj.getString("totalCount"));
+			 	    				}
 			 	    				subVo.setAssestCode(jobj.getString("assestCode"));
 			 	    				subVo.setAssestName(jobj.getString("assestName"));
 			 	    				subVo.setAssestCost(jobj.getString("assestCost"));
