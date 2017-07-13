@@ -98,7 +98,7 @@ public interface ITrainingCampService {
 	
 	public CadreFeedbackVO  getattendedcountByFeedBacks(List<Long> programIds,Long campId,Long batchId,String fromdate,String todate,String callFrom,List<Long> enrollmentYrIds);
 	public List<SimpleVO> getAttendedCountsByProgramOrCampOrBatch(List<Long> programIds,Long campId,Long batchId,String fromdate,String todate,String fromType,String callFrom,List<Long> enrollmentYrIds);
-	public List<SimpleVO> getAttendedCountSummaryByBatch(Long programId,Long campId,Long batchId,String fromdate,String todate,String callFrom,List<Long> enrollmentYrIds,List<Long> programYearIds);
+	public List<SimpleVO> getAttendedCountSummaryByBatch(Long campId,Long batchId,String fromdate,String todate,String callFrom,List<Long> enrollmentYrIds,List<Long> programYearIds);
 	public SimpleVO getProgramSummary(Long programId,String fromdate,String todate);
 	public SimpleVO getCampSummary(Long programId,Long campId,String fromDate,String toDate);
 	public SimpleVO getProgCampBatchNames(Long programId,Long campId,Long batchId);

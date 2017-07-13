@@ -6227,7 +6227,7 @@ class TrainingCampService implements ITrainingCampService{
     	if(voList!=null && voList.size()>0){
     		for (SimpleVO simpleVO2 : voList) {
 				Long batchId=simpleVO2.getBatchId();
-				Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null,null,enrollmentYearIds);
+				Object[] batchDates=trainingCampBatchDAO.getBatchDates(batchId,null,null,programYearIds,enrollmentYearIds);
 				
 				Date fromDate=null;
 				Date toDate=null;
@@ -7348,7 +7348,7 @@ class TrainingCampService implements ITrainingCampService{
 				 
 					//Long programId =programIds.get(0);
 				//preinstantiate
-				preInstantiate(finalMap,programIds,campId,batchId,committeelevels,fromType);
+				preInstantiate(finalMap,programIds,campId,batchId,committeelevels,fromType,enrollmentYrIds);
 				
 				String queryString=getAttendedlocWiseCountsByProgramOrCampOrBatch(programIds,campId,batchId,fromDate,toDate,fromType,callFrom,enrollmentYrIds);
 				List<Object[]> totalCounts=trainingCampAttendanceDAO.getAttendedlocWiseCountsByProgramOrCampOrBatch(queryString,programIds,campId,batchId,fromDate,toDate,sdf.parse(sdf.format(new Date())),callFrom,enrollmentYrIds);
@@ -7455,7 +7455,7 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			return finalList;
 	  }
-		public void preInstantiate(Map<Long,SimpleVO> finalMap,List<Long> programIds,Long campId,Long batchId,List<Object[]> committeelevels,String fromType){
+		public void preInstantiate(Map<Long,SimpleVO> finalMap,List<Long> programIds,Long campId,Long batchId,List<Object[]> committeelevels,String fromType,List<Long> enrollmentYrIds){
 			
 			try{
 			    
@@ -7463,31 +7463,31 @@ class TrainingCampService implements ITrainingCampService{
 				
 				if(programIds!=null && batchId==null && campId==null){
 					if(fromType.equalsIgnoreCase("dist")){
-						districts=trainingCampProgramDAO.getDistrictsByProgramId(programIds);
+						districts=trainingCampProgramDAO.getDistrictsByProgramId(programIds,enrollmentYrIds);
 					}else{
-						districts=trainingCampProgramDAO.getConstsByProgramId(programIds);
+						districts=trainingCampProgramDAO.getConstsByProgramId(programIds,enrollmentYrIds);
 					}
 					
 				}else if(batchId==null && campId!=null){
 					if(fromType.equalsIgnoreCase("dist")){
-						districts=trainingCampDAO.getCampDistrictsByCampId(campId);
+						districts=trainingCampDAO.getCampDistrictsByCampId(campId,enrollmentYrIds,programIds);
 					}else{
-						districts=trainingCampDAO.getCampConstsByCampId(campId);
+						districts=trainingCampDAO.getCampConstsByCampId(campId,enrollmentYrIds,programIds);
 					}
 				}
 				else if(batchId!=null){
 					
 				  if(campId!=null){
 					  if(fromType.equalsIgnoreCase("dist")){
-						  districts=trainingCampDAO.getCampDistrictsByCampId(campId);
+						  districts=trainingCampDAO.getCampDistrictsByCampId(campId,enrollmentYrIds,programIds);
 					  }else{
-						  districts=trainingCampDAO.getCampConstsByCampId(campId);
+						  districts=trainingCampDAO.getCampConstsByCampId(campId,enrollmentYrIds,programIds);
 					  }
 				  }else{
 					  if(fromType.equalsIgnoreCase("dist")){
-						  districts=trainingCampBatchDAO.getCampDistrictsByBatchId(batchId);
+						  districts=trainingCampBatchDAO.getCampDistrictsByBatchId(batchId,enrollmentYrIds,programIds);
 					  }else{
-						  districts=trainingCampBatchDAO.getCampConstsByBatchId(batchId);
+						  districts=trainingCampBatchDAO.getCampConstsByBatchId(batchId,enrollmentYrIds,programIds);
 					  }
 				  }
 					
@@ -7698,7 +7698,7 @@ class TrainingCampService implements ITrainingCampService{
 	   *   return:List<SimpleVO>
 	   *   
 	  */
-		public List<SimpleVO> getAttendedCountSummaryByBatch(Long programId,Long campId,Long batchId,String fromDateString,String toDateString,String callFrom,List<Long> enrollmentYrIds,List<Long> programYearIds){
+		public List<SimpleVO> getAttendedCountSummaryByBatch(Long campId,Long batchId,String fromDateString,String toDateString,String callFrom,List<Long> enrollmentYrIds,List<Long> programYearIds){
 			
 			List<SimpleVO> retVoList = new ArrayList<SimpleVO>();
 			List<Object[]> batchIdsList = new ArrayList<Object[]>(0);
@@ -7717,7 +7717,7 @@ class TrainingCampService implements ITrainingCampService{
 					batchIdsList.add(objArr);
 				}else if(campId>0){
 					batchIdsList = trainingCampBatchDAO.getBatcheIdsForACampOrProgram(programYearIds,campId,fromDate1,toDate1,callFrom,enrollmentYrIds);
-				}else if(programId>0){
+				}else if(programYearIds.size()>0){
 					batchIdsList = trainingCampBatchDAO.getBatcheIdsForACampOrProgram(programYearIds,campId,fromDate1,toDate1,callFrom,enrollmentYrIds);
 				}
 				

@@ -20,13 +20,17 @@ public class TrainingCampDAO extends GenericDaoHibernate<TrainingCamp, Long> imp
 	  return query.list();
 	}
 	
-    public List<Object[]> getCampDistrictsByCampId(Long campId){
+    public List<Object[]> getCampDistrictsByCampId(Long campId,List<Long> enrollmentYrIds,List<Long> programIds){
 		
 		Query query=getSession().createQuery(" select model1.district.districtId,model1.district.districtName" +
-		" from TrainingCamp model,TrainingCampDistrict model1" +
-		" where model.trainingCampId =model1.trainingCampId and model.trainingCampId=:trainingCampId " +
+		" from TrainingCamp model,TrainingCampDistrict model1,TrainingCampSchedule model2 " +
+		" where model.trainingCampId =model1.trainingCampId  and model.trainingCampId = model2.trainingCampId " +
+		" and model.trainingCampId=:trainingCampId  and model2.enrollmentYearId in(:enrollmentYrIds) " +
+		" and model2.trainingCampProgramId in(:programIds)" +
 		" order by model1.district.districtId asc");
 		query.setParameter("trainingCampId",campId);
+		query.setParameterList("enrollmentYrIds", enrollmentYrIds);
+		query.setParameterList("programIds", programIds);
 		return query.list();
 	}
     public List<Object[]> getAllTrainingCamps(){
@@ -45,14 +49,18 @@ public class TrainingCampDAO extends GenericDaoHibernate<TrainingCamp, Long> imp
     	return query.list();
     }
 	
-    public List<Object[]> getCampConstsByCampId(Long campId){
+    public List<Object[]> getCampConstsByCampId(Long campId,List<Long> enrollmentYrIds,List<Long> programIds){
 		
 		Query query=getSession().createQuery(" select c.constituencyId,c.name " +
-		" from TrainingCamp model,TrainingCampDistrict model1,Constituency c " +
-		" where model.trainingCampId =model1.trainingCampId and model.trainingCampId=:trainingCampId and model1.district.districtId=c.district.districtId " +
+		" from TrainingCamp model,TrainingCampDistrict model1,Constituency c,trainingCampSchedule  model2" +
+		" where model.trainingCampId =model1.trainingCampId and model.trainingCampId=:trainingCampId " +
+		" and model1.district.districtId=c.district.districtId  and model.trainingCampId = model2.trainingCampId " +
+		" and model2.enrollmentYearId in(:enrollmentYrIds) and model2.trainingCampProgram.trainingCampProgramId in(:programIds) " +
 		" and c.electionScope.electionScopeId=2 and c.deformDate is null " +
 		" order by c.constituencyId asc");
 		query.setParameter("trainingCampId",campId);
+		query.setParameterList("enrollmentYrIds", enrollmentYrIds);
+		query.setParameterList("programIds", programIds);
 		return query.list();
 	}
 }
