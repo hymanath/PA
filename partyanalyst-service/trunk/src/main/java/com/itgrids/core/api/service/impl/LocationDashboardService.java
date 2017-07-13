@@ -1125,7 +1125,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					
 				}
 				committeeCounts.setMainCommCompletedCount(mainMandalCompletedCount);//main committee mandal/town/division count
-				committeeCounts.setMainCommStartedCount(mainMandalStartCount);//main committee village/ward count
+				committeeCounts.setMainCommStartedCount(mainMandalStartCount);//main committee mandal/town/division count
 				committeeCounts.setMainMandalTotal(mainMandalCompletedCount+mainMandalStartCount+mainMandalNotStarted);
 				committeeCounts.setMainCommTotalCount(mainVillageCompletedCount);//main committee village/ward count
 				committeeCounts.setMainCommTotalMembers(mainVillageStartCount);//main committee village/ward count
