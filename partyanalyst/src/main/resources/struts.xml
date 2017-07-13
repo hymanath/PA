@@ -17716,13 +17716,16 @@
          	<param name="root">boothInchargeDetailsList</param>
        </result>
    </action>
-   <action name="getLocationBasedOnSelectionAction" class="boothReportAction" method="getLocationBasedOnSelection">
+    <action name="getLocationBasedOnSelectionAction" class="boothReportAction" method="getLocationBasedOnSelection">
         <result type="json" name="success">
          	<param name="root">boothInchargeDetailsList</param>
        </result>
    </action>
-   
-   
+   <action name="getLocationLevelWiseBoothDetailsAction" class="boothReportAction" method="getLocationLevelWiseBoothDetails">
+        <result type="json" name="success">
+         	<param name="root">boothDtlsList</param>
+       </result>
+   </action>
    
  </package>
 </struts>
