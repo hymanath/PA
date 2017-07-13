@@ -12,6 +12,7 @@ Completed
 //getLocationLevelWiseBoothCount();
 //getLocationBasedOnSelection();
 //getLocationLevelWiseBoothDetails();
+//validateBoothToMakeConfirm();
 function getLocationLevelWiseBoothCount(){
 
 	var jsObj={  
@@ -62,6 +63,22 @@ function getLocationLevelWiseBoothDetails(){
 	$.ajax({
 		type : 'POST',
 		url : 'getLocationLevelWiseBoothDetailsAction.action',  
+		dataType : 'json',
+		data : {task :JSON.stringify(jObj)} 
+	}).done(function(result){ 
+	  console.log(result);
+	});
+}
+
+function validateBoothToMakeConfirm(){
+
+	var jObj = {  
+			boothId : 922852,
+			boothInchargeEnrollmentId : 1
+		} 
+	$.ajax({
+		type : 'POST',
+		url : 'validateBoothToMakeConfirmAction.action',  
 		dataType : 'json',
 		data : {task :JSON.stringify(jObj)} 
 	}).done(function(result){ 

@@ -17731,5 +17731,11 @@
          	<param name="root">idAndNameVOList</param>
        </result>
    </action>
+     <action name="validateBoothToMakeConfirmAction" class="boothReportAction" method="validateBoothToMakeConfirm">
+        <result type="json" name="success">
+         	<param name="root">resultVO</param>
+       </result>
+   </action>
+   
  </package>
 </struts>
