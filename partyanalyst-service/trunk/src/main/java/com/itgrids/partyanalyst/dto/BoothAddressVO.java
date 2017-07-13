@@ -14,6 +14,9 @@ public class BoothAddressVO {
 	private String tehsilName;
 	private Long panchayatId;
 	private String panchayat;
+	private Long boothId;
+	private String boothName;
+	private String status;
 	
 	public Long getStateId() {
 		return stateId;
@@ -87,6 +90,24 @@ public class BoothAddressVO {
 	public void setPanchayat(String panchayat) {
 		this.panchayat = panchayat;
 	}
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+	public String getBoothName() {
+		return boothName;
+	}
+	public void setBoothName(String boothName) {
+		this.boothName = boothName;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	
-	
+		
 }

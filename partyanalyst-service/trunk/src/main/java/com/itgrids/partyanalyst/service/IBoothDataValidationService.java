@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.service;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
-
+import com.itgrids.partyanalyst.dto.BoothAddressVO;
 import com.itgrids.partyanalyst.dto.BoothInchargeDetailsVO;
 import com.itgrids.partyanalyst.dto.InputVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UploadDataErrorMessageVO;
 import com.itgrids.partyanalyst.excel.CsvException;
 
@@ -16,4 +18,5 @@ public interface IBoothDataValidationService {
 			Long electionTypeId ,  String publicationDate) throws CsvException;
 	public List<BoothInchargeDetailsVO> getLocationLevelWiseBoothCount(InputVO inputVO);
 	public List<BoothInchargeDetailsVO> getLocationBasedOnSelection(InputVO inputVO);
+	public List<BoothAddressVO> getLocationLevelWiseBoothDetails(InputVO inputVO);
 }

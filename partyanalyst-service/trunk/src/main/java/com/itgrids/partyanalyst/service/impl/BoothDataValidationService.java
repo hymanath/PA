@@ -548,4 +548,58 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		return locationList;
 	}
+	public List<BoothAddressVO> getLocationLevelWiseBoothDetails(InputVO inputVO) {
+		List<BoothAddressVO> resultList = new ArrayList<BoothAddressVO>(0);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			if (inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() > 0) {
+				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
+				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
+			}
+			
+			if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
+				Long locationId = 0l;
+				 if(inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0 ){
+		            	locationId = Long.valueOf(inputVO.getFilterValue().toString().substring(0,1));
+		            	inputVO.setFilterValue(Long.valueOf(inputVO.getFilterValue().toString().substring(1)));
+		          }
+				 if(locationId == 2){
+					 inputVO.setLocationLevel(IConstants.LOCALELECTIONBODY);
+				 }
+			}
+			      
+			List<Object[]> boothDetailsObjList = boothInchargeDAO.getLocationLevelWiseBoothDetails(inputVO);
+			if(boothDetailsObjList != null && !boothDetailsObjList.isEmpty()) {
+			
+				for(Object[] param: boothDetailsObjList){
+					BoothAddressVO boothDetailsVO=new BoothAddressVO();
+					boothDetailsVO.setBoothId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					boothDetailsVO.setBoothName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					boothDetailsVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[2]));
+					boothDetailsVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[3]));
+					boothDetailsVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[4]));
+					boothDetailsVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[5]));
+					boothDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[6]));
+					boothDetailsVO.setParliamentConstituencyId(commonMethodsUtilService.getLongValueForObject(param[7]));
+					boothDetailsVO.setParliamentConstituency(commonMethodsUtilService.getStringValueForObject(param[8]));
+					boothDetailsVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[9]));
+					boothDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[10]));
+					if (param[11] == null) {
+						boothDetailsVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[15]));
+						boothDetailsVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[16])+ " "+ commonMethodsUtilService.getStringValueForObject(param[18]));
+					} else {
+						boothDetailsVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[11]));
+						boothDetailsVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[12]));
+					}				
+					
+					resultList.add(boothDetailsVO);
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			Log.error("Exception occured at getLocationLevelWiseBoothDetails() in BoothDataValidationService class",e);
+		}
+		return resultList;
+	}
 }

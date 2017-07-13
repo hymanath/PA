@@ -12,6 +12,7 @@ public class InputVO {
 	private Date fromDate;
 	private Date toDate;
 	private Long boothInchargeEnrollmentId;
+	private String resultType;
 	
 	public String getLocationLevel() {
 		return locationLevel;
@@ -60,6 +61,12 @@ public class InputVO {
 	}
 	public void setToDate(Date toDate) {
 		this.toDate = toDate;
+	}
+	public String getResultType() {
+		return resultType;
+	}
+	public void setResultType(String resultType) {
+		this.resultType = resultType;
 	}
     
 	
