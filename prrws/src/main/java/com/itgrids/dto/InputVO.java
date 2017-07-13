@@ -65,6 +65,7 @@ public class InputVO implements Serializable {
 	private String viewType;
 	private Long fromRange;
 	private Long toRange;
+	private Long districtId;
 	
 	private String locationIdStr;
 	
@@ -411,6 +412,12 @@ public class InputVO implements Serializable {
 	}
 	public void setToRange(Long toRange) {
 		this.toRange = toRange;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
 	}
 	
 }

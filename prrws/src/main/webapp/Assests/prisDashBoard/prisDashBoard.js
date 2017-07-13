@@ -36,21 +36,26 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		
 		if(blockName == 'District'){
 			if(subBlockName == 'Districts'){
+				getAllDistricts(3,blockName,subBlockName);
 				POSTDistrictOverview(3,blockName,subBlockName,'tableView');
 			}else if(subBlockName == 'Parliament'){
 				POSTDistrictOverview(3,blockName,subBlockName,'tableView');
+				getAllParliaments(3,blockName,subBlockName);
 			}
 		}else if(blockName == 'Constituency'){
 			if(subBlockName == 'Districts'){
+				getAllDistricts(4,blockName,subBlockName);
 				POSTConstDateForAssemblyInfo(4,blockName,subBlockName,'tableView',0);
 			}else if(subBlockName == 'Parliament'){
 				POSTConstituencyOverview(4,blockName,subBlockName,'tableView',0);
-				getAllParliaments(4,blockName,subBlockName,'tableView');
+				getAllParliaments(4,blockName,subBlockName);
 			}
 		}else if(blockName == 'Mandal'){
 			if(subBlockName == 'Districts'){
-				POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',0,0);
+				getAllDistricts(5,blockName,subBlockName);
+				POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',0,0,"assembly");
 			}else if(subBlockName == 'Parliament'){
+				getAllParliaments(5,blockName,subBlockName);
 				POSTMandalOverview(5,blockName,subBlockName,'tableView',0);
 			}
 		}
@@ -64,12 +69,15 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		$("#table"+blockName).html(spinner);
 		if(subBlockName == 'Districts')
 		{
-			districtsInMandalDataForAssemblyInfo(5,blockName,subBlockName,'tableView',value,$("#mandalsDistrictSelectBoxchosen").val());
-			POSTConstDateForAssemblyInfo(5,blockName,subBlockName,'',value)
+			getAllConstituenciesForDistrict(5,blockName,subBlockName,value);
+			//districtsInMandalDataForAssemblyInfo(5,blockName,subBlockName,'tableView',value,$("#mandalsDistrictSelectBoxchosen").val());
+			POSTConstDateForAssemblyInfo(5,blockName,subBlockName,'tableView',value);
+			
 		}else if(subBlockName == 'Parliament')
 		{
+			getAllConstituenciesForParliament(5,blockName,subBlockName,value);
 			distChangeMandalOverview(5,blockName,subBlockName,'tableView',value);
-			constMandalView(5,blockName,subBlockName,'tableView',value);
+			//constMandalView(5,blockName,subBlockName,'tableView',value);
 		}
 	});
 	$(document).on("change","#mandalsSelectBoxchosen",function(){
@@ -84,9 +92,11 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		}); 
 		//$("#table"+blockName).DataTable().destroy();
 		$("#table"+blockName).html(spinner);
+		
 		if(subBlockName == 'districts')
 		{
-			POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',value,$("#mandalsDistrictSelectBoxchosen").val());
+			
+			POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',value,$("#mandalsDistrictSelectBoxchosen").val(),"assembly");
 		}else if(subBlockName == 'parliament')
 		{
 			POSTMandalOverview(5,blockName,subBlockName,'tableView',value);
@@ -188,8 +198,8 @@ function POSTDistrictOverview(blockId,blockName,subBlockName,viewType){
 			$("#"+blockName+'_'+blockId).html('');
 			if(result !=null && result.subList !=null && result.subList.length>0){
 				buildTableData(result,blockId,blockName,subBlockName,'tableView');
-				buildSelectBox('districtSelectBox',result.subList,'Constituency');
-				buildSelectBox('mandalsDistrictSelectBox',result.subList,'Mandal');
+				//buildSelectBox('districtSelectBox',result.subList,'Constituency');
+				//buildSelectBox('mandalsDistrictSelectBox',result.subList,'Mandal');
 			}else{
 				$("#"+blockName+'_'+blockId).html("No Data Available");
 			}
@@ -266,10 +276,10 @@ function buildLevelWiseDetailsBlock(){
 			POSTDistrictOverview(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView');
 		}else if(blockNameArr[i].id == 4){
 			POSTConstDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0);
-			getAllDistricts(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView');
+			getAllDistricts(blockNameArr[i].id,blockNameArr[i].name,'Districts');
 		}else if(blockNameArr[i].id == 5){
-			POSTMandalDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0,0);
-			getAllDistricts(blockNameArr[i].id,blockNameArr[i].name,'Parliament','tableView');
+			POSTMandalDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0,0,"assembly");
+			getAllDistricts(blockNameArr[i].id,blockNameArr[i].name,'Parliament');
 		}
 	}
 	}
@@ -452,8 +462,8 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}
 		}).done(function(result){
 			if(result !=null && result.subList !=null && result.subList.length>0){
-				//buildTableData(result,blockId,blockName,subBlockName,viewType);
-				buildSelectBox('mandalsSelectBoxchosen',result.subList,'Mandal');
+				buildTableData(result,blockId,blockName,subBlockName,viewType);
+				//buildSelectBox('mandalsSelectBoxchosen',result.subList,'Mandal');
 			}else{
 				$("#"+blockName+'_'+blockId).html("No Data Available");
 			}
@@ -604,7 +614,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}
 		});
 	}
-	function POSTMandalDateForAssemblyInfo(blockId,blockName,subBlockName,viewType,locId,filterId){
+	function POSTMandalDateForAssemblyInfo(blockId,blockName,subBlockName,viewType,locId,filterId,subFilterType){
 		$("#"+blockName+'_'+blockId).html(spinner);
 		var json = {
 			fromDate:globalFromDate,
@@ -614,7 +624,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			filterId: filterId,
 			filterType:'district',
 			subFilterId: locId ,
-			subFilterType: 'constituency'//assembly
+			subFilterType: subFilterType//assembly
 		}
 		$.ajax({                
 			type:'POST',    
@@ -635,6 +645,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 		});
 	}
 	function districtsInMandalDataForAssemblyInfo(blockId,blockName,subBlockName,viewType,locId,filterId){
+		
 		$("#"+blockName+'_'+blockId).html(spinner);
 		var json = {
 			fromDate:globalFromDate,
@@ -664,7 +675,8 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}
 		});
 	}
-	function getAllDistricts(blockId,blockName,subBlockName,viewType){
+	function getAllDistricts(blockId,blockName,subBlockName){
+		
 		var json = {}
 		$.ajax({                
 			type:'POST',    
@@ -678,12 +690,19 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 		}).done(function(result){
 			$("#"+blockName+'_'+blockId).html('');
 			if(result !=null && result.length>0){
-				if(subBlockName == "Districts"){
-					alert(7);
-					buildSelectBox('districtSelectBoxchosen',result,blockName);
-				}else if(subBlockName == "Parliament"){
-					alert(9);
-					buildSelectBox('mandalsDistrictSelectBoxchosen',result,blockName);
+				if(blockId ==4){
+					if(subBlockName == "Districts"){
+						buildSelectBox('districtSelectBox',result,blockName);
+					}else if(subBlockName == "Parliament"){
+						buildSelectBox('districtSelectBox',result,blockName);
+					}
+				}else if(blockId ==5){
+					if(subBlockName == "Districts"){
+						buildSelectBox('mandalsDistrictSelectBox',result,blockName);
+					}else if(subBlockName == "Parliament"){
+						buildSelectBox('mandalsDistrictSelectBox',result,blockName);
+					}
+					
 				}
 			}else{
 				$("#"+blockName+'_'+blockId).html("No Data Available");
@@ -704,23 +723,30 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 		}).done(function(result){
 			$("#"+blockName+'_'+blockId).html('');
 			if(result !=null && result.length>0){
-				if(subBlockName == "Districts"){
-					alert(7);
-					buildSelectBox('districtSelectBoxchosen',result,blockName);
-				}else if(subBlockName == "Parliament"){
-					alert(9);
-					buildSelectBox('mandalsDistrictSelectBoxchosen',result,blockName);
+				if(blockId ==4){
+					if(subBlockName == "Districts"){
+						buildSelectBox('districtSelectBox',result,blockName);
+					}else if(subBlockName == "Parliament"){
+						buildSelectBox('districtSelectBox',result,blockName);
+					}
+				}else if(blockId ==5){
+					if(subBlockName == "Districts"){
+						buildSelectBox('mandalsDistrictSelectBox',result,blockName);
+					}else if(subBlockName == "Parliament"){
+						buildSelectBox('mandalsDistrictSelectBox',result,blockName);
+					}
+					
 				}
 			}else{
 				$("#"+blockName+'_'+blockId).html("No Data Available");
 			}
 		});
 	}
-	getAllConstituenciesForDistrict();
-	getAllConstituenciesForParliament();
-	function getAllConstituenciesForDistrict(){
+	
+	
+	function getAllConstituenciesForDistrict(blockId,blockName,subBlockName,value){
 		var json = {
-			districtId :19
+			districtId :parseInt(value)
 		}
 		$.ajax({                
 			type:'POST',    
@@ -732,16 +758,26 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			/* $("#"+blockName+'_'+blockId).html('');
-			if(result !=null && result.subList !=null && result.subList.length>0){
+			 $("#"+blockName+'_'+blockId).html('');
+			if(result !=null  && result.length>0){
+				if(blockId == 5){
+					if(subBlockName == "Districts"){
+						buildSelectBox('mandalsSelectBox',result,blockName);
+					}else if(subBlockName == "Parliament"){
+						buildSelectBox('mandalsSelectBox',result,blockName);
+					}
+				}
+				
 			}else{
 				$("#"+blockName+'_'+blockId).html("No Data Available");
-			} */
+			} 
 		});
 	}
 	
-	function getAllConstituenciesForParliament(){
-		var json = {parliamentId:506}
+	function getAllConstituenciesForParliament(blockId,blockName,subBlockName,value){
+		var json = {
+			parliamentId:parseInt(value)
+			}
 		$.ajax({                
 			type:'POST',    
 			url: 'getAllConstituenciesForParliament',
@@ -752,10 +788,17 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			/* $("#"+blockName+'_'+blockId).html('');
-			if(result !=null && result.subList !=null && result.subList.length>0){
+			$("#"+blockName+'_'+blockId).html('');
+			if(result !=null  && result.length>0){
+				if(blockId == 5){
+					if(subBlockName == "Districts"){
+						buildSelectBox('mandalsSelectBox',result,blockName);
+					}else if(subBlockName == "Parliament"){
+						buildSelectBox('mandalsSelectBox',result,blockName);
+					}
+				}
 			}else{
 				$("#"+blockName+'_'+blockId).html("No Data Available");
-			} */
+			} 
 		});
 	}
