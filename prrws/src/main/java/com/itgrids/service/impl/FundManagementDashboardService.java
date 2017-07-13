@@ -2580,6 +2580,15 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		  
 		 if(commonMethodsUtilService.isMapValid(finalMap)) {
 			 returnList.addAll(finalMap.values());
+			 
+			 Collections.sort(returnList,new Comparator<LocationFundDetailsVO>() {
+				 public int compare(LocationFundDetailsVO o1, LocationFundDetailsVO o2) {
+					if(o2.getCount() != null && o2.getCount().longValue()>0 && o1.getCount() != null && o1.getCount().longValue()>0)
+						return o2.getCount().compareTo(o1.getCount());
+					else
+						return 0;
+				}
+			});
 		 }
 		   
 	   }catch(Exception e){

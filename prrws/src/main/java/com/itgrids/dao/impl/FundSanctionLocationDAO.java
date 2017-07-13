@@ -132,7 +132,7 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 			if(inputVO.getSourceIdsList() != null && inputVO.getSourceIdsList().size()>0)
 				sb.append(" and modal.fundSanction.govtScheme.govtSchemeId in (:schmeIdsList) ");
 			
-			sb.append(" group by modal.fundSanction.govtScheme.govtSchemeId,modal.fundSanction.grantType.grantTypeId ");
+			sb.append(" group by modal.fundSanction.govtScheme.govtSchemeId,modal.fundSanction.grantType.grantTypeId order by sum(modal.fundSanction.sactionAmount) desc");
 			
 		 Query query = getSession().createQuery(sb.toString());
 		 
