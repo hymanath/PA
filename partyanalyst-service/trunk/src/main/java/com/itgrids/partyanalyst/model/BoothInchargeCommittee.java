@@ -31,9 +31,9 @@ public class BoothInchargeCommittee {
 	private Date completedDate;
 	private Long boothInchargeEnrollmentId;
 	private String isDeleted;
-	private String boothId;
+	private Long boothId;
 	
-	private Address address;
+	private UserAddress address;
 	private BoothInchargeEnrollment boothInchargeEnrollment;
 	private Booth booth;
 	
@@ -96,26 +96,26 @@ public class BoothInchargeCommittee {
 	}	
 	
 	@Column(name="booth_id")
-	public String getBoothId() {
+	public Long getBoothId() {
 		return boothId;
 	}
-	public void setBoothId(String boothId) {
+	public void setBoothId(Long boothId) {
 		this.boothId = boothId;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="booth_incharge_condition_id", insertable=false, updatable = false)
+	@JoinColumn(name="address_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Address getAddress() {
+	public UserAddress getAddress() {
 		return address;
 	}
-	public void setAddress(Address address) {
+	public void setAddress(UserAddress address) {
 		this.address = address;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="booth_incharge_condition_id", insertable=false, updatable = false)
+	@JoinColumn(name="booth_incharge_enrollment_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public BoothInchargeEnrollment getBoothInchargeEnrollment() {
@@ -136,8 +136,4 @@ public class BoothInchargeCommittee {
 	public void setBooth(Booth booth) {
 		this.booth = booth;
 	}
-	
-	
-	
-	
 }

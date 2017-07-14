@@ -26,7 +26,6 @@ import org.hibernate.annotations.NotFoundAction;
 public class BoothIncharge extends BaseModel implements Serializable{
 	
 	private Long boothInchargeId;
-	private Long boothId;
 	private Long tdpCadreId;
 	private String isActive;
 	private String isDeleted;
@@ -36,12 +35,13 @@ public class BoothIncharge extends BaseModel implements Serializable{
 	private Date insertedTime;
 	private Date updatedTime;
 	private Long boothInchargeRoleConditionMappingId;
+	private Long boothInchargeSerialNoRangeId;
 	
-	private Booth booth;
 	private TdpCadre tdpCadre;
 	private BoothInchargeEnrollment boothInchargeEnrollment;
 	private User user;
 	private BoothInchargeRoleConditionMapping boothInchargeRoleConditionMapping;
+	private BoothInchargeSerialNoRange boothInchargeSerialNoRange;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,15 +52,7 @@ public class BoothIncharge extends BaseModel implements Serializable{
 	public void setBoothInchargeId(Long boothInchargeId) {
 		this.boothInchargeId = boothInchargeId;
 	}
-	
-	@Column(name="booth_id")
-	public Long getBoothId() {
-		return boothId;
-	}
-	public void setBoothId(Long boothId) {
-		this.boothId = boothId;
-	}
-	
+			
 	@Column(name="tdp_cadre_id")
 	public Long getTdpCadreId() {
 		return tdpCadreId;
@@ -143,16 +135,6 @@ public class BoothIncharge extends BaseModel implements Serializable{
 			BoothInchargeRoleConditionMapping boothInchargeRoleConditionMapping) {
 		this.boothInchargeRoleConditionMapping = boothInchargeRoleConditionMapping;
 	}
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="booth_id", insertable=false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Booth getBooth() {
-		return booth;
-	}
-	public void setBooth(Booth booth) {
-		this.booth = booth;
-	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="tdp_cadre_id", insertable=false, updatable = false)
@@ -186,5 +168,24 @@ public class BoothIncharge extends BaseModel implements Serializable{
 	public void setUser(User user) {
 		this.user = user;
 	}
-
+	
+	@Column(name="booth_incharge_serial_no_range_id")
+	public Long getBoothInchargeSerialNoRangeId() {
+		return boothInchargeSerialNoRangeId;
+	}
+	public void setBoothInchargeSerialNoRangeId(Long boothInchargeSerialNoRangeId) {
+		this.boothInchargeSerialNoRangeId = boothInchargeSerialNoRangeId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="booth_incharge_serial_no_range_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public BoothInchargeSerialNoRange getBoothInchargeSerialNoRange() {
+		return boothInchargeSerialNoRange;
+	}
+	public void setBoothInchargeSerialNoRange(
+			BoothInchargeSerialNoRange boothInchargeSerialNoRange) {
+		this.boothInchargeSerialNoRange = boothInchargeSerialNoRange;
+	}
 }

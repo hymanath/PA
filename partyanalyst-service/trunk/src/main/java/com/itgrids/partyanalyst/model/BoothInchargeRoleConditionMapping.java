@@ -25,19 +25,17 @@ import org.hibernate.annotations.NotFoundAction;
 public class BoothInchargeRoleConditionMapping {
 
 	private Long boothInchargeRoleConditionMappingId;
-	private Long boothId;
-	private Long addressId;
 	private Long boothInchargeRoleConditionId;
 	private Long boothInchargeEnrollmentId;
 	private String isConfirmed;
 	private Date startDate;
 	private Date completedDate;
 	private String isDeleted;
+	private Long boothInchargeCommitteeId;
 	
-	private Booth booth;
+	private BoothInchargeCommittee boothInchargeCommittee;
 	private BoothInchargeRoleCondition boothInchargeRoleCondition;
 	private BoothInchargeEnrollment boothInchargeEnrollment;
-	private UserAddress address;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,23 +47,7 @@ public class BoothInchargeRoleConditionMapping {
 			Long boothInchargeRoleConditionMappingId) {
 		this.boothInchargeRoleConditionMappingId = boothInchargeRoleConditionMappingId;
 	}
-	
-	@Column(name="booth_id")
-	public Long getBoothId() {
-		return boothId;
-	}
-	public void setBoothId(Long boothId) {
-		this.boothId = boothId;
-	}
-	
-	@Column(name="address_id")
-	public Long getAddressId() {
-		return addressId;
-	}
-	public void setAddressId(Long addressId) {
-		this.addressId = addressId;
-	}	
-	
+		
 	@Column(name="booth_incharge_role_condition_id")
 	public Long getBoothInchargeRoleConditionId() {
 		return boothInchargeRoleConditionId;
@@ -112,17 +94,7 @@ public class BoothInchargeRoleConditionMapping {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="booth_id", insertable=false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Booth getBooth() {
-		return booth;
-	}
-	public void setBooth(Booth booth) {
-		this.booth = booth;
-	}
-	
+		
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="booth_incharge_role_condition_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -146,19 +118,24 @@ public class BoothInchargeRoleConditionMapping {
 			BoothInchargeEnrollment boothInchargeEnrollment) {
 		this.boothInchargeEnrollment = boothInchargeEnrollment;
 	}
+		
+	@Column(name="booth_incharge_committee_id")
+	public Long getBoothInchargeCommitteeId() {
+		return boothInchargeCommitteeId;
+	}
+	public void setBoothInchargeCommitteeId(Long boothInchargeCommitteeId) {
+		this.boothInchargeCommitteeId = boothInchargeCommitteeId;
+	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="address_id", insertable=false, updatable = false)
+	@JoinColumn(name="booth_incharge_committee_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public UserAddress getAddress() {
-		return address;
+	public BoothInchargeCommittee getBoothInchargeCommittee() {
+		return boothInchargeCommittee;
 	}
-	public void setAddress(UserAddress address) {
-		this.address = address;
+	public void setBoothInchargeCommittee(
+			BoothInchargeCommittee boothInchargeCommittee) {
+		this.boothInchargeCommittee = boothInchargeCommittee;
 	}
-	
-	
-	
-	
 }
