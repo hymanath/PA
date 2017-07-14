@@ -216,4 +216,25 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String updateRangeIdsOfBoothIncharge(){
+		LOG.info("Entered into updateRangeIdsOfBoothIncharge()  of BoothReportAction ");
+		try{
+			jObj = new JSONObject(getTask());
+			Long boothId = jObj.getLong("boothId");
+			Long boothIncgRoleId = jObj.getLong("boothIncgRoleId");
+			
+			JSONArray enrollmentYrIdArr = jObj.getJSONArray("enrollmentYrIds");
+			List<Long> enrollmentYrIds = new ArrayList<Long>(0);
+			if(enrollmentYrIdArr != null && enrollmentYrIdArr.length()>0){
+				for (int i = 0; i < enrollmentYrIdArr.length(); i++) {
+					enrollmentYrIds.add(Long.valueOf(enrollmentYrIdArr.get(i).toString().trim()));
+				}
+			}
+			task = boothDataValidationService.updateRangeIdsOfBoothIncharge(boothId,boothIncgRoleId,enrollmentYrIds);
+		}catch(Exception e){
+			LOG.error("Exception raised at updateRangeIdsOfBoothIncharge() method of BoothReportAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
