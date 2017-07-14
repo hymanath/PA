@@ -1,3 +1,4 @@
+
 package com.itgrids.dto;
 
 import java.io.Serializable;
@@ -11,18 +12,18 @@ public class NregsDataVO implements Serializable{
 	private String constituency;
 	private String mandal;
 	private String panchayat;
-	private Long targetPersonDays;
-	private Long generatedPersonDays;
-	private String perAppLB;
+	private Long targetPersonDays = 0l;
+	private Long generatedPersonDays = 0l;
+	private String perAppLB = "0";
 	private String avgWageRate;
-	private String totalExpenditure;
+	private String totalExpenditure = "0";
 	
-	private Long target;
-	private String grounded;
-	private String notGrounded;
-	private Long inProgress;
-	private Long completed;
-	private String percentage;
+	private Long target = 0l;
+	private String grounded = "0";
+	private String notGrounded = "0";
+	private Long inProgress = 0l;
+	private Long completed = 0l;
+	private String percentage = "0";
 	private Long total = 0l;
 	private Long constiInRed = 0l;
 	private Long constiInOrange = 0l;
@@ -42,25 +43,25 @@ public class NregsDataVO implements Serializable{
 	private List<NregsDataVO> distMandalList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> consMandalList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> mandalVillageList = new ArrayList<NregsDataVO>(0);
-	private String achivement;
-	private Long parliamentId;
+	private String achivement = "0";
+	private Long parliamentId = 0l;
 	private String parliamentName;
 	private String sanctionedKms;
 	private String sanctionedpercentage;
-	private String completedKms;
+	private String completedKms = "0";
 	
 	private String targetKMS;
-	private String sanctionedAmount;
+	private String sanctionedAmount = "0";
 	private String sanctionedKMS;
 	private String sanctionedPerventage;
-	private String expenditureAmount;
+	private String expenditureAmount = "0";
 	private String completedKMS;
 	
 	private String targetACRES;
 	private String sanctionedACRES;
-	private String pittingArea;
-	private String plantingArea;
-	private String pencentageOfPlanting;
+	private String pittingArea = "0";
+	private String plantingArea = "0";
+	private String pencentageOfPlanting = "0";
 	
 	private String pittingKMS;
 	private String plantingKMS;
@@ -68,9 +69,9 @@ public class NregsDataVO implements Serializable{
 	private String sanctionedTarget;
 	
 	private String achivementPercentage;
-	private String wageExpenditure;
-	private String materialExpenditure;
-	private String materialExpenditurePerc;
+	private String wageExpenditure = "0";
+	private String materialExpenditure = "0";
+	private String materialExpenditurePerc = "0";
 	
 	private String argicultureExpenditure;
 	

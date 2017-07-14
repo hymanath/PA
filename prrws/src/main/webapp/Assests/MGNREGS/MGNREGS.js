@@ -2923,7 +2923,7 @@ function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocatio
 		}
 	});
 }
-/* getNregaParliamentData();
+ //getNregaParliamentData();
 function getNregaParliamentData()
 {
 	//$("#"+divIdd).html(spinner);
@@ -2933,7 +2933,7 @@ function getNregaParliamentData()
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: "state",
-		divType : "Average Wage",
+		divType : "Agriculture Activities",
 		locationId : "-1",
 		sublocaType : "constituency"
 	}
@@ -2949,7 +2949,7 @@ function getNregaParliamentData()
 		success: function(ajaxresp) {
 		}
 	});
-}  */ 
+}   
 
 //ProjectOverviewNew
 //getNREGSProjectsAbstractNew();
@@ -3289,9 +3289,9 @@ function getAllNregaSubLocationDetails(divId,levelId,locationScopeId,type){
 	$("."+divId).html(spinner);
 	//var type = 'constituency' //district to constituency (only consider type like this)
 	var json = {
-		searchLevelId		: levelId,
-		searchLevelValue	: locationScopeId,
-		type 				: type		  
+		searchLevelId		: levelId,//3
+		menuLvelValue		: locationScopeId,//"03"
+		type 				: type//"constituency"//		  
 	}
 	$.ajax({
 		url : "getAllNregaSubLocationDetails",     
