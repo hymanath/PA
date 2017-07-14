@@ -176,7 +176,7 @@
 					<div class="col-sm-3">
 						<div class="white-block">
 							<div class="media blockHeights block_styles">
-								<p>THIS MONTH - <span class="thisMonthOverview text-capital">JUNE</span> </p>
+								<p> <span class="thisMonthOverview text-capital">JUNE</span> </p>
 								<div class="row m_top5">
 									<div class="col-sm-6">
 										<img class="img_width" src="Assests/icons/Target_icon.png" alt="Achived_icon">
