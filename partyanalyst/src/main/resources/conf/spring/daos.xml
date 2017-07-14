@@ -4101,4 +4101,7 @@
 	 <bean id="boothInchargeCommitteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeCommitteeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	  <bean id="boothInchargeSerialNoRangeDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeSerialNoRangeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
