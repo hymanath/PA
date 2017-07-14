@@ -136,6 +136,7 @@ $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	
 	globalFromDate = picker.startDate.format('DD-MM-YYYY')
 	globalToDate = picker.endDate.format('DD-MM-YYYY')
+	$(".thisMonthOverview").html(globalFromDate+" to "+globalToDate);
 	
 	buildLevelWiseDetailsBlock();
 	POSTBasicCountBlock();
@@ -168,6 +169,10 @@ $(document).on('click','.calendar_active_cls li', function(){
 		globalFromDate = moment().subtract(20,'years').startOf("year").format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
 		$(".thisMonthOverview").html("Overall");
+	}else if(date == 'Year'){
+		globalFromDate = moment().startOf("year").format('DD-MM-YYYY');
+		globalToDate = moment().format('DD-MM-YYYY');
+		$(".thisMonthOverview").html(globalFromDate+" to "+globalToDate);
 	}
 	
 	$(this).closest("ul").find("li").removeClass("active");
@@ -539,19 +544,50 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			buildBasicBlock(result);
+			if( result != null && result != ""){
+				buildBasicBlock(result);
+			}else{
+				$("#totalHouseHolds").html("");
+				$("#targetOverall").html("");
+				$("#targetOverallPercent").html("");
+				$("#achievedOverall").html("");
+				$("#achievedOverallpercent").html("");
+				$("#subTarget").html("");
+				$("#subTargetPercentage").html("");
+				$("#subAchieved").html("");
+				$("#subAchievedPercentage").html("");
+			}
+			
 		});
 	}
 	function buildBasicBlock(result){
-		$("#totalHouseHolds").html(result.totalHouseHolds);
-		$("#targetOverall").html(result.targetOverall);
-		$("#targetOverallPercent").html(result.targetOverallPercent);
-		$("#achievedOverall").html(result.achievedOverall);
-		$("#achievedOverallpercent").html(result.achievedOverallpercent);
-		$("#subTarget").html(result.subTarget);
-		$("#subTargetPercentage").html(result.subTargetPercentage);
-		$("#subAchieved").html(result.subAchieved);
-		$("#subAchievedPercentage").html(result.subAchievedPercentage);
+		if(result.totalHouseHolds !=null && result.totalHouseHolds >0){
+			$("#totalHouseHolds").html(result.totalHouseHolds);
+		}else{
+			$("#totalHouseHolds").html(0);
+		}
+		if(result.targetOverall != null && result.targetOverall > 0){
+			$("#targetOverall").html(result.targetOverall);
+		}else{
+			$("#targetOverall").html(0);
+		}
+		if(result.targetOverallPercent != null && result.targetOverallPercent > 0){
+			$("#targetOverallPercent").html(result.targetOverallPercent);
+		}else{
+			$("#targetOverallPercent").html(0);
+		}
+		if(result.achievedOverall != null && result.achievedOverall > 0){
+			$("#achievedOverall").html(result.achievedOverall);
+		}else{
+			$("#achievedOverall").html(0);
+		}
+		
+		$("#achievedOverallpercent").html(result.achievedOverallpercent != null && result.achievedOverallpercent >0?result.achievedOverallpercent:0);
+		$("#subTarget").html(result.subTarget != null && result.subTarget > 0 ? result.subTarget:0);
+		$("#subTargetPercentage").html(result.subTargetPercentage != null && result.subTargetPercentage > 0 ? result.subTargetPercentage:0);
+		$("#subAchieved").html(result.subAchieved != null && result.subAchieved > 0?result.subAchieved:0);
+		$("#subAchievedPercentage").html(result.subAchievedPercentage != null && result.subAchievedPercentage > 0?result.subAchievedPercentage:0);
+		
 		var maxHeight = 0;
 		 $(".blockHeights").each(function(){
 		   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
