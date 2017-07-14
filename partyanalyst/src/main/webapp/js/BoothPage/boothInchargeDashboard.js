@@ -10,14 +10,18 @@ Started
 Completed
 */
 var blockNames = ["DISTRICT","CONSTITUENCY","MANDAL","PANCHAYAT "];
+var stateLevel="STATE";
+getOverAllBoothDetails(stateLevel);
 getLocationLevelWiseBoothCount("DISTRICT","districtLevelBoothDtlsDivId");
 getLocationLevelWiseBoothCount("CONSTITUENCY","constituencyLevelBoothDtlsDivId");
 getLocationLevelWiseBoothCount("TEHSIL","mandalLevelBoothDtlsDivId");
 getLocationLevelWiseBoothCount("PANCHAYAT","panchaytLevelBoothDtlsDivId");
 getLocationBasedOnSelection();
 getLocationLevelWiseBoothDetails();
+validateBoothToMakeConfirm(); 
 
-$(document).on('click','.table-menu li',function(){
+
+ $(document).on('click','.table-menu li',function(){
 	$(this).closest("ul").find("li").removeClass("active");
 	$(this).addClass("active");
 	var subBlockNames = ["DISTRICT","PARLIAMENT"];
@@ -30,8 +34,103 @@ $(document).on('click','.table-menu li',function(){
 			$("#selectConstituencyDistrict").hide();
 		}
 	}
-});
-validateBoothToMakeConfirm(); 
+}); 
+
+function getOverAllBoothDetails(locationLevel){
+	var jsObj={  
+		locationLevel : locationLevel,         
+		filterLevel : "",
+		filterValue : 0,
+		boothInchargeEnrollmentId : 1,
+		startDate : "13/07/2017",
+		endDate : "13/07/2017"
+	} 
+	$.ajax({
+		type : 'POST',
+		url : 'getLocationLevelWiseBoothCountAction.action',  
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)} 
+	}).done(function(result){
+	 	  buildOverAllBoothDtls(result);
+	});
+
+}
+function buildOverAllBoothDtls(result){
+	if(result != null && result.length > 0){
+		 var overallDataObj = result[0];
+		 var rangevoterArr = overallDataObj.subList;
+		 if(overallDataObj != null){
+			 str+='<div class="col-sm-12 blocks">';
+                        str+='<div class="col-sm-3">';
+							str+='<div class="subBlock text-center">';
+                                str+='<p>TOTAL BOOTHS</p>';
+								if(overallDataObj.totalBoothCount != null){
+									 str+='<h4 class="text-center;">'+overallDataObj.totalBoothCount+'</h4>';
+								}else{
+									 str+='<h4 class="text-center;"> - </h4>';
+								}
+                               
+							str+='</div>';
+                        str+='</div>';
+                        str+='<div class="col-sm-3">';
+                            str+='<div class="subBlock text-center">';
+                           str+=' <p>STARTED BOOTHS</p>';
+							  if(overallDataObj.startedBoothCount != null){
+									 str+='<h4 class="text-center;">'+overallDataObj.startedBoothCount+'</h4>';
+								}else{
+									 str+='<h4 class="text-center;"> - </h4>';
+								}
+                            str+='</div>';
+                        str+='</div>';
+                        str+='<div class="col-sm-3">';
+                            str+='<div class="subBlock text-center">';
+                            str+='<p>NOT-STARTED BOOTHS</p>';
+                              if(overallDataObj.notStartedBoothCount != null){
+									 str+='<h4 class="text-center;">'+overallDataObj.notStartedBoothCount+'</h4>';
+								}else{
+									 str+='<h4 class="text-center;"> - </h4>';
+								}
+                           str+=' </div>';
+                       str+=' </div>';
+                        str+='<div class="col-sm-3">';
+                            str+='<div class="subBlock text-center">';
+                           str+=' <p>COMPLETED BOOTHS</p>';
+                             if(overallDataObj.completedBoothCount != null){
+									 str+='<h4 class="text-center;">'+overallDataObj.completedBoothCount+'</h4>';
+								}else{
+									 str+='<h4 class="text-center;"> - </h4>';
+								}
+                            str+='</div>';
+                        str+='</div>';
+                    str+='</div>';
+				$("#overAllBoothDlstDivId").html(str);
+		 }else{
+			 $("#overAllBoothDlstDivId").html('NO DATA AVAILABLE.');
+		 }
+		 
+		 if(rangevoterArr != null && rangevoterArr.length > 0){
+			 var str = '';
+			  str+='<ul class="">';
+			 for(var i in rangevoterArr){
+			   str+=' <li>';
+					str+='<p>'+rangevoterArr[i].roleName+'</p>';
+				     if(rangevoterArr[i].count > 0){
+						 str+='<h4>'+rangevoterArr[i].count+'</h4>';
+					 }else{
+						 str+='<h4>-</h4>';
+					 }
+				str+='</li>';
+           }
+			 str+'</ul>';
+			 $("#overAllSerialRangeWiseVoterDivId").html(str);
+		 }else{
+			$("#overAllSerialRangeWiseVoterDivId").html('NO DATA AVAILABLE'); 
+		 }
+	}else{
+		$("#overAllBoothDlstDivId").html('NO DATA AVAILABLE.');
+		$("#overAllSerialRangeWiseVoterDivId").html('NO DATA AVAILABLE'); 
+	}
+}
 function getLocationLevelWiseBoothCount(locationLevel,divId){
 
 	var jsObj={  
@@ -126,19 +225,19 @@ function getLocationLevelWiseBoothCount(locationLevel,divId){
 function getLocationSpeceficHeading(locationLevel){
 	var str = '';
 	if(locationLevel=="DISTRICT" || locationLevel=="PARLIAMENT CONSTITUENCY" || locationLevel=="PARLIAMENT CONSTITUENCY" || locationLevel=="CONSTITUENCY" || locationLevel=="TEHSIL" || locationLevel=="PANCHAYAT"){
-		str+='<th rowspan="2">DISTRIC NAME</th>';
+		str+='<th rowspan="2">DISTRICT</th>';
 	}
 	if(locationLevel=="PARLIAMENT CONSTITUENCY" || locationLevel=="CONSTITUENCY" || locationLevel=="TEHSIL" || locationLevel=="PANCHAYAT"){
-		str+='<th rowspan="2">PARLIAMENT CONSTITUENCY NAME</th>';
+		str+='<th rowspan="2">PARLIAMENT CONSTITUENCY</th>';
 	} 
 	if(locationLevel=="CONSTITUENCY" || locationLevel=="TEHSIL" || locationLevel=="PANCHAYAT"){
-		str+='<th rowspan="2">CONSTITUENCY NAME</th>';
+		str+='<th rowspan="2">CONSTITUENCY</th>';
 	}
 	if(locationLevel=="TEHSIL" || locationLevel=="PANCHAYAT"){
-		str+='<th rowspan="2">TEHSIL NAME</th>';
+		str+='<th rowspan="2">TEHSIL</th>';
 	}
 	if(locationLevel=="PANCHAYAT"){
-		str+='<th rowspan="2">PANCHAYAT NAME</th>';
+		str+='<th rowspan="2">PANCHAYAT</th>';
 	}
 	return str;
 }
@@ -214,3 +313,39 @@ function validateBoothToMakeConfirm(){
 	  console.log(result);
 	});
 }
+
+$("#constituencyWiseParliamentId").hide();
+$("#mandalWiseParliamentId").hide();
+$("#villegeWiseParliamentId").hide();
+$("#constituencyWiseDistrictId").show();
+$(document).on('click','#constituencyDistrictId',function(){
+	
+	$("#constituencyWiseDistrictId").show();
+	$("#constituencyWiseParliamentId").hide();	
+	});
+
+$(document).on('click','#constituencyParliamentId',function(){
+	
+	$("#constituencyWiseDistrictId").hide();
+	$("#constituencyWiseParliamentId").show();
+	});
+
+$(document).on('click','#mandalDistrictId',function(){
+	$("#mandalWiseDistrictId").show();
+	$("#mandalWiseParliamentId").hide();	
+	});
+
+$(document).on('click','#mandalParliamentId',function(){
+	$("#mandalWiseDistrictId").hide();
+	$("#mandalWiseParliamentId").show();
+	});
+	
+$(document).on('click','#panchayatDistrictId',function(){
+	$("#villegeWiseDistrictId").show();
+	$("#villegeWiseParliamentId").hide();	
+	});
+
+$(document).on('click','#panchayatParliamentId',function(){
+	$("#villegeWiseDistrictId").hide();
+	$("#villegeWiseParliamentId").show();
+	});

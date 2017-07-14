@@ -22,32 +22,7 @@
         <section class="mtop_20">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-sm-12 blocks">
-                        <div class="col-sm-3">
-							<div class="subBlock text-center">
-                                <p>TOTAL BOOTHS</p>
-                                <h4>74059</h4>
-							</div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="subBlock text-center">
-                            <p>STARTED BOOTHS</p>
-                            <h4>74059</h4>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="subBlock text-center">
-                            <p>NOT-STARTED BOOTHS</p>
-                            <h4>74059</h4>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="subBlock text-center">
-                            <p>COMPLETED BOOTHS</p>
-                            <h4>74059</h4>
-                            </div>
-                        </div>
-                    </div>
+				  <div id="overAllBoothDlstDivId"></div>
                 </div>
             </div>
         </section>
@@ -57,53 +32,8 @@
                         <div class="committeeMembers">
                             <div class="subBlock col-sm-12 text-center">
                                 <h5 class="">Booth Committee Members Voter ID Serial Numbers wise</h5>
-                            <ul class="">
-                                <li>
-                                    <p>0-10</p>
-                                    <h4>8752</h4>
-                                </li>
-                                <li>
-                                    <P>11-20</P>
-                                    <h4>8752</h4>
-                                </li>
-                                <li>
-                                    <P>21-30</P>
-                                    <h4>8752</h4>
-                                </li>
-                                <li>
-                                    <P>31-40</P>
-                                    <h4>8752</h4>
-                                </li>
-                                <li>
-                                    <P>41-50</P>
-                                    <h4>8752</h4>
-                                </li>
-                                <li>
-                                    <P>51-60</P>
-                                    <h4>8752</h4>
-                                </li>
-                                 <li>
-                                     <P>61-70</P>
-                                     <h4>8752</h4>
-                                </li>
-                                  
-                                <li>
-                                    <P>71-80</P>
-                                    <h4>8752</h4>
-                                </li>
-                                 <li>
-                                     <P>81-90</P>
-                                     <h4>8752</h4>
-                                </li>
-                                 <li>
-                                     <P>91-100</P>
-                                     <h4>8752</h4>
-                                </li>
-                                 <li>
-                                     <P>Above 100</P>
-                                     <h4>8752</h4>
-                                </li>
-                            </ul></div>
+								 <div id="overAllSerialRangeWiseVoterDivId"></div>
+                            </div>
                         </div>
                     </div>
             </div>
@@ -130,21 +60,21 @@
         </section>
         <section class="mtop_20">
             <div class="conatiner-fluid">
-                <div class="col-sm-12 tableBlock">
+                  <div class="col-sm-12 tableBlock">
                     <div class="col-sm-12">
 						<div class="panel panel-default">
-							  <div class="panel-heading">
-									<h4 class="panel-title text-capital">CONSTITUENCY WISE</h4>
-									<ul class="nav navbar-nav table-menu pull-right" table-menu="">
-										<li class="active ttt">DISTRICT</li>
-										<li class="ttt">PARLIAMENT</li>
-									</ul>
-								</div>
-							  <div class="panel-body">
-								<div class="row">
+							<div class="panel-heading">
+								<h4 class="panel-title text-capital">CONSTITUENCY WISE</h4>
+								<ul class="nav navbar-nav table-menu pull-right">
+									<li class="active" id="constituencyDistrictId">DISTRICT</li>
+									<li id="constituencyParliamentId">PARLIAMENT</li>
+								</ul>
+							</div>
+							<div class="panel-body">
+								<div class="row" id="constituencyWiseDistrictId">
 										<div class="col-sm-12" id="selectConstituencyDistrict">
 											<div id="" class="col-sm-3">
-												<select>
+												<select id="constituencySelectId">
 													<option>Ananthapur District</option>
 												</select>
 											</div>
@@ -152,9 +82,11 @@
 												<select>
 													<option>Select Constituency</option>
 												</select>
-											</div>
-										</div>
-										<div class="col-sm-12" id="selectParliament">
+											</div>											
+										</div>										
+								</div>
+								<div class="row" id="constituencyWiseParliamentId">
+										<div class="col-sm-12" id="selectConstituencyDistrict">
 											<div id="" class="col-sm-3">
 												<select>
 													<option>Select Parliament</option>
@@ -164,14 +96,13 @@
 												<select>
 													<option>Select Constituency</option>
 												</select>
-											</div>
-										</div>
+											</div>											
+										</div>										
 								</div>
-								
-										
-								
-							   <div id="constituencyLevelBoothDtlsDivId"></div>
 							 </div>
+						
+							  <div id="constituencyLevelBoothDtlsDivId"></div>
+							</div>
 						</div>
                     </div>
                 </div>
@@ -185,26 +116,51 @@
 							<div class="panel-heading">
 								<h4 class="panel-title text-capital">MANDAL WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right">
-									<li class="active">DISTRICT</li>
-									<li>PARLIAMENT</li>
+									<li class="active" id="mandalDistrictId">DISTRICT</li>
+									<li id="mandalParliamentId">PARLIAMENT</li>
 								</ul>
 							</div>
 							<div class="panel-body">
-								<div id="" class="col-sm-3">
-									<select>
-										<option>Ananthapur District</option>
-									</select>
-								</div>
-								<div id="" class="col-sm-3">
-									<select>
-										<option>Ananthapur Constituency</option>
-									</select>
+								<div class="row" id="mandalWiseDistrictId">
+										<div class="col-sm-12" id="selectConstituencyDistrict">
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Ananthapur District</option>
+												</select>
 											</div>
-								<div id="" class="col-sm-3">
-									<select>
-										<option>Select Mandal</option>
-									</select>
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Select Constituency</option>
+												</select>
+											</div>
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Select Mandal</option>
+												</select>
+											</div>
+										</div>										
 								</div>
+								<div class="row" id="mandalWiseParliamentId">
+										<div class="col-sm-12" id="selectConstituencyDistrict">
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Select Parliament</option>
+												</select>
+											</div>
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Select Constituency</option>
+												</select>
+											</div>
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Select Mandal</option>
+												</select>
+											</div>
+										</div>										
+								</div>
+							 </div>
+						
 							  <div id="mandalLevelBoothDtlsDivId"></div>
 							</div>
 						</div>
@@ -218,34 +174,62 @@
                     <div class="col-sm-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h4 class="panel-title text-capital">PANCHAYAT WISE</h4>
+								<h4 class="panel-title text-capital" >PANCHAYAT WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right" table-menu="">
-									<li class="active">DISTRICT</li>
-									<li>PARLIAMENT</li>
+									<li class="active" id="panchayatDistrictId">DISTRICT</li>
+									<li id="panchayatParliamentId">PARLIAMENT</li>
 								</ul>
 							</div>
-							<div class="panel-body">
-								<div id="" class="col-sm-3">
-									<select>
-										<option>Ananthapur District</option>
-									</select>
-								</div>
-								<div id="" class="col-sm-3">
-									<select>
-										<option>Ananthapur Constituency</option>
-									</select>
+							<div class="row" id="villegeWiseDistrictId">
+										<div class="col-sm-12" id="selectConstituencyDistrict">
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Ananthapur District</option>
+												</select>
 											</div>
-								<div id="" class="col-sm-3">
-									<select>
-										<option>Select Mandal</option>
-									</select>
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Select Constituency</option>
+												</select>
+											</div>
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Select Mandal</option>
+												</select>
+											</div>
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Select Villege</option>
+												</select>
+											</div>
+										</div>										
 								</div>
-								<div id="" class="col-sm-3">
-									<select>
-										<option>Select Village</option>
-									</select>
+								<div class="row" id="villegeWiseParliamentId">
+										<div class="col-sm-12" id="selectConstituencyDistrict">
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Select Parliament</option>
+												</select>
+											</div>
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Select Constituency</option>
+												</select>
+											</div>
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Select Mandal</option>
+												</select>
+											</div>
+											<div id="" class="col-sm-3">
+												<select>
+													<option>Select Villege</option>
+												</select>
+											</div>
+										</div>										
 								</div>
-							  <div id="panchaytLevelBoothDtlsDivId"></div>
+							 </div>
+								  <div id="panchaytLevelBoothDtlsDivId"></div>
 							</div>
 						</div>
                     </div>
