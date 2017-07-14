@@ -1380,7 +1380,7 @@ getAllDepartments();
 							levelName = "DISTRICT";
 							table+='<td>'+result[i].addressVO.districtName+'</td>';
 							if(viewType == "cumulative"){
-								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls fundSanctionCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="cursor:pointer;color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
+								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
 								//table+='<td>'+result[i].amount+'</td>';
 							}
 						}else if(levelId == '4')
@@ -1392,7 +1392,7 @@ getAllDepartments();
 							table+='<td>'+result[i].addressVO.parliamentName+'</td>';
 							table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 							if(viewType == "cumulative"){
-								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls fundSanctionCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="cursor:pointer;color:green;" attr_level_name = "CONSTITUENCY" >'+result[i].count+')</small></td>';
+								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "CONSTITUENCY" >'+result[i].count+')</small></td>';
 								//table+='<td>'+result[i].amount+'</td>';
 							}
 						}else if(levelId == '5')
@@ -1405,7 +1405,7 @@ getAllDepartments();
 							table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 							table+='<td>'+result[i].addressVO.tehsilName+'</td>';
 							if(viewType == "cumulative"){
-								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls fundSanctionCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="cursor:pointer;color:green;" attr_level_name = "MANDAL">'+result[i].count+')</small></td>';
+								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "MANDAL">'+result[i].count+')</small></td>';
 								//table+='<td>'+result[i].amount+'</td>';
 							}
 						}else if(levelId == '6')
@@ -1419,7 +1419,7 @@ getAllDepartments();
 							table+='<td>'+result[i].addressVO.tehsilName+'</td>';
 							table+='<td>'+result[i].addressVO.panchayatName+'</td>';
 							if(viewType == "cumulative"){
-								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls fundSanctionCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="cursor:pointer;color:green;" attr_level_name = "VILLAGE">'+result[i].count+')</small></td>';
+								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "VILLAGE">'+result[i].count+')</small></td>';
 								//table+='<td>'+result[i].amount+'</td>';
 							}
 						}
