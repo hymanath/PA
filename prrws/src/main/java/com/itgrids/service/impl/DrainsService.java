@@ -44,10 +44,10 @@ public class DrainsService implements IDrainsService {
 		try {
 			WebResource webResource = null;
 
-			if(inputVO.getSubFilterType() != null && !inputVO.getSubFilterType().trim().isEmpty() && inputVO.getSubFilterId() != null && inputVO.getSubFilterId() > 0l)
-				webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/api/drains/?getDrainsInfobyLocation=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId"+inputVO.getFilterId()+"&subFilterType"+inputVO.getSubFilterType()+"&subFilterId"+inputVO.getSubFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
-			else if(inputVO.getFilterType() != null && !inputVO.getFilterType().trim().isEmpty() && inputVO.getFilterId() != null && inputVO.getFilterId() > 0l)
-				webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/api/drains/?getDrainsInfobyLocation=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId"+inputVO.getFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+			if(inputVO.getSubFilterType() != null && !inputVO.getSubFilterType().trim().isEmpty())
+				webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/api/drains/?getDrainsInfobyLocation=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&subFilterType="+inputVO.getSubFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+			else if(inputVO.getFilterType() != null && !inputVO.getFilterType().trim().isEmpty())
+				webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/api/drains/?getDrainsInfobyLocation=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
 			else	
 				webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/api/drains/?getDrainsInfobyLocation=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
 			

@@ -5,9 +5,9 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 onloadCalls();
 function onloadCalls(){
 	getDrainsInfoStateWise();
-	getDrainsInfoLocationWise("district","onLoad","0","","districtView");
-	getDrainsInfoLocationWise("assembly","onLoad","0","","assemblyView");
-	getDrainsInfoLocationWise("mandal","onLoad","0","","mandalView");
+	getDrainsInfoLocationWise("district",'0','','0','',"districtView");
+	getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView");
+	getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView");
 	getAllDistricts("constituencyDistrictNames","DISTRICTS");
 	getAllDistricts("mandalDistrictNames","DISTRICTS");
 	$(".chosen-select").chosen();
@@ -154,7 +154,7 @@ function getDrainsInfoStateWise(){
 }
 
 	
-function getDrainsInfoLocationWise(locationType,type,filterId,filterType,divId){
+function getDrainsInfoLocationWise(locationType,filterId,filterType,subFilterId,subFilterType,divId){
 	
 	$("#"+divId+"TableDivId").html(spinner);
 		var json = {
@@ -163,7 +163,9 @@ function getDrainsInfoLocationWise(locationType,type,filterId,filterType,divId){
 			locationId:0,
 			locationType:locationType,
 			filterType:filterType,
-			filterId:filterId
+			filterId:filterId,
+			subFilterId:subFilterId,
+			subFilterType:subFilterType
 		}
 	
 	$.ajax({                
@@ -281,29 +283,85 @@ $(document).on("click","[role='tabDrains_menu'] li",function(){
 	var blockId = $(this).closest("ul").attr("attr_blockId");
 	if(blockId == 3){
 		if($(this).attr("attr_location_type") == "districts"){
-			getAllDistricts("constituencyDistrictNames","DISTRICTS");
-			getDrainsInfoLocationWise("district","onLoad",'0','','districtView');
+			getDrainsInfoLocationWise("district",'0','','0','','districtView');
 		}else if($(this).attr("attr_location_type") == "parliament"){
-			getAllConstituenciesForDistrict("mandalDistrictNames","PARLIAMENTS");
-			$("#constituencyTableDivId").html('');
-			getDrainsInfoLocationWise("constituency","onLoad",'0','','districtView');
+			getDrainsInfoLocationWise("constituency",'0','','0','','districtView');
 		}
 	}else if(blockId == 4){
 		if($(this).attr("attr_location_type") == "districts"){
-			getDrainsInfoLocationWise("assembly","onLoad",'0','','assemblyView');
+			getAllDistricts("constituencyDistrictNames","DISTRICTS");
+			getDrainsInfoLocationWise("assembly",'0','','0','','assemblyView');
 		}else if($(this).attr("attr_location_type") == "parliament"){
-			$("#constituencyTableDivId").html('');
-			getDrainsInfoLocationWise("constituency","onLoad",'0','','assemblyView');
+			getAllParliaments("constituencyDistrictNames","PARLIAMENTS");
+			getDrainsInfoLocationWise("assembly",'0','','0','','assemblyView');
+		}
+	}else if(blockId == 5){
+		$("#mandalConstituencyNames").html("");
+		$("#mandalConstituencyNames").trigger('chosen:updated');
+		if($(this).attr("attr_location_type") == "districts"){
+			getAllDistricts("mandalDistrictNames","DISTRICTS");
+			getDrainsInfoLocationWise("mandal",'0','','0','','mandalView');
+		}else if($(this).attr("attr_location_type") == "parliament"){
+			getAllParliaments("mandalDistrictNames","PARLIAMENTS");
+			getDrainsInfoLocationWise("mandal",'0','','0','','mandalView');
 		}
 	}
 	
 });
 $(document).on("change","#constituencyDistrictNames",function(){
-	var districtId = $(this).val();
-	var filterType = "district";
-	getDrainsInfoLocationWise("assembly","onChange",districtId,filterType,'assemblyView')
+	var districtId = 0;
+	var parlConstId = 0;
+	var locationType='';
+	$('.tableMenuCons li').each(function(i, obj){
+		 if($(this).hasClass('active')){
+			locationType = $(this).attr("attr_location_type");
+		 }
+	});
+	var filterType = "";
+	var subFilterType = "";
+	if(locationType == "districts" ){
+		filterType = "district";
+		districtId = $(this).val();
+	}else if(locationType == "parliament"){
+		filterType = "district";
+		subFilterType = "constituency";
+		parlConstId = $(this).val();
+	}
+	//getDrainsInfoLocationWise("assembly",districtId,filterType,'0','','assemblyView')
+	getDrainsInfoLocationWise("assembly",districtId,filterType,parlConstId,subFilterType,'assemblyView')
 });
 
+$(document).on("change","#mandalDistrictNames",function(){
+	var districtId = $(this).val();
+	var locationType='';
+	$('.tableMenuMandal li').each(function(i, obj){
+		 if($(this).hasClass('active')){
+			locationType = $(this).attr("attr_location_type");
+		 }
+	});
+	var filterType = "";
+	if(locationType == "districts"){
+		filterType = "district";
+		getDrainsInfoLocationWise("mandal",districtId,filterType,'0','','mandalView');
+		getAllConstituenciesForDistrict('mandalConstituencyNames','CONSTITUENCIES',districtId);
+	}else if(locationType == "parliament"){
+		filterType = "district";
+		getDrainsInfoLocationWise("mandal",'0','district',districtId,'constituency','mandalView');
+		getAllConstituenciesForParliament('mandalConstituencyNames','PARLIAMENTS',districtId);
+	}
+	
+});
+$(document).on("change","#mandalConstituencyNames",function(){
+	var constId = $(this).val();
+	var parlconstId= $("#mandalDistrictNames").val();
+	var locationType='';
+	$('.tableMenuMandal li').each(function(i, obj){
+		 if($(this).hasClass('active')){
+			locationType = $(this).attr("attr_location_type");
+		 }
+	});
+	getDrainsInfoLocationWise("mandal",parlconstId,'constituency',constId,'assembly','mandalView');
+});
 //All Districts 
 function getAllDistricts(divId,levelName){
 		$("#"+divId).html('');
@@ -328,7 +386,7 @@ function getAllDistricts(divId,levelName){
 			$("#"+divId).trigger('chosen:updated');
 		});
 	}
-	function getAllParliaments(){
+	function getAllParliaments(divId,levelName){
 	//All Parliaments
 		$("#"+divId).html('');
 		var json = {}
@@ -353,7 +411,9 @@ function getAllDistricts(divId,levelName){
 	}
 	
 	//District Onchange Constituency
-	function getAllConstituenciesForDistrict(){
+	function getAllConstituenciesForDistrict(divId,levelName,value){
+		$("#"+divId).html("");
+		$("#"+divId).trigger('chosen:updated');
 		var json = {
 			districtId :parseInt(value)
 		}
@@ -367,18 +427,20 @@ function getAllDistricts(divId,levelName){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			 $("#"+blockName+'_'+blockId).html('');
-			if(result !=null  && result.length>0){
-				
-				
-			}else{
-				$("#").html("No Data Available");
-			} 
+			if(result !=null && result.length>0){
+				 $("#"+divId).append('<option value="0">ALL '+levelName+'</option>');
+					for(var i in result){
+						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					}
+			}
+			$("#"+divId).trigger('chosen:updated');
 		});
 	}
 	
 	//parliament onchange Constituency
-	function getAllConstituenciesForParliament(){
+	function getAllConstituenciesForParliament(divId,levelName,value){
+		$("#"+divId).html('');
+		$("#"+divId).trigger('chosen:updated');
 		var json = {
 			parliamentId:parseInt(value)
 			}
@@ -392,11 +454,12 @@ function getAllDistricts(divId,levelName){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$("#"+blockName+'_'+blockId).html('');
-			if(result !=null  && result.length>0){
-				
-			}else{
-				$("#").html("No Data Available");
-			} 
+			if(result !=null && result.length>0){
+				 $("#"+divId).append('<option value="0">ALL '+levelName+'</option>');
+					for(var i in result){
+						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					}
+			}
+			$("#"+divId).trigger('chosen:updated');
 		});
 	}
