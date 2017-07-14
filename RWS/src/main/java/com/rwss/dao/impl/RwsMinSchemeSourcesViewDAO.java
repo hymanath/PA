@@ -257,10 +257,19 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 		
 		//,RwsMinConstituencyView model4
 		sbm.append(" FROM RwsMinSchemeSourcesView model ,RwsMinAssetNabInkView model2,"
-				+ " RwsMinHabView model3 , RwsMinConstituencyView model4 "); 
+				+ " RwsMinHabView model3 " );
+		
 		sbe.append(" WHERE "
 				+ " model.assetCode=model2.assetCode  "
 				+ " and model2.habCode=model3.panchCode ");
+				
+		if(inputVo.getLocationType()!= null && (inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.MANDAL) 
+				|| inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.CONSTITUENCY) )){
+			sbm.append(", RwsMinConstituencyView model4 "); 
+			sbe.append(" and model3.mCode=model4.mCode  "
+					+ " and model3.dCode=model4.dCode ");
+		}
+			
 		
 		if (IConstants.SUPPLY_TYPE_SAFE.equalsIgnoreCase(type)) {
 			sb.append(" count(model3.safeLpcd) ");			
@@ -275,18 +284,17 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 		if (inputVo.getFromDate() != null && inputVo.getToDate() != null) {
 			sbe.append(" and model3.statusDate between :fromDate and :toDate ");
 		}
-		if(inputVo.getFromDate() != null && inputVo.getToDate() != null){
-			   sbe.append(" and model3.statusDate between :fromDate and :toDate ");
-		  }
+		
 
 		if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.STATE)){
 			sb.append(" ,'01','Andra Pradesh' ");
 		}else if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.DISTRICT)){
-			sb.append(" ,model3.dCode,model3.dName ");
+			sb.append(" ,model3.dCode,model3.dName ");		
 		}else if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.CONSTITUENCY)){
 			sb.append(" ,model4.constituencyCode,model4.contituencyName ");
+			
 		}else if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.MANDAL)){
-			sb.append(" ,model3.mCode,model3.mName, model3.dCode,model3.dName ");
+			sb.append(" ,model4.mCode,model4.mName, model4.dCode,modeld.dName ");
 		}
 		
 		if (sourceType != null && !sourceType.isEmpty()) {
@@ -298,15 +306,15 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 
 		if (inputVo.getFilterType() != null && inputVo.getFilterType().trim().length() > 0 && inputVo.getFilterValue() != null	&& inputVo.getFilterValue().trim().length() > 0) {
 			
-			sbe.append(" and model3.mCode=model4.mCode  "
-					+ " and model3.dCode=model4.dCode ");
+			//sbm.append(", RwsMinConstituencyView model4 ");
+			
 			
 			if (inputVo.getFilterType().equalsIgnoreCase("district")) {
-				sbe.append(" and trim(model4.dCode) =:locationValue ");
+				sbe.append(" and trim(model3.dCode) =:locationValue ");
 			} else if (inputVo.getFilterType().equalsIgnoreCase("constituency")) {
 				sbe.append(" and trim(model4.constituencyCode) =:locationValue ");
 			} else if (inputVo.getFilterType().equalsIgnoreCase("mandal")) {
-				sbe.append(" and trim(model4.mCode) =:locationValue ");
+				sbe.append(" and trim(model3.mCode) =:locationValue ");
 			}
 			 
 		}
@@ -316,7 +324,7 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 		}else if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.CONSTITUENCY)){
 			sbe.append(" group by model4.constituencyCode,model4.contituencyName order by model4.constituencyCode");
 		}else if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.MANDAL)){
-			sbe.append(" group by model3.mCode,model3.mName, model3.dCode,model3.dName order by model3.mCode, model3.dCode");
+			sbe.append(" group by model4.mCode,model4.mName, model4.dCode,modeld.dName order by model4.mCode, model3.dCode");
 		}
 		sb.append(sbm.toString()).append(sbe.toString());
 
