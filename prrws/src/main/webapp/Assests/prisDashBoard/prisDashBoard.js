@@ -810,7 +810,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}
 		});
 	}
-	function parliamentChnageConstituencyOverview(blockId,blockName,subBlockName,viewType,locId){alert(locId);
+	function parliamentChnageConstituencyOverview(blockId,blockName,subBlockName,viewType,locId){
 		$("#"+blockName+'_'+blockId).html(spinner);
 		var json = {
 			fromDate:globalFromDate,
