@@ -407,8 +407,10 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
 				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
 			}
-
-			Map<String, BoothInchargeDetailsVO> locationBoothMap = new TreeMap<String, BoothInchargeDetailsVO>(); ;
+			 List<Object[]> rangeObjList = new ArrayList<Object[]>(){{add(new Object[]{1l,"0-10"});add(new Object[]{2l,"11-20"});add(new Object[]{3l,"21-30"});add(new Object[]{4l,"31-40"});
+	          add(new Object[]{5l,"41-50"});add(new Object[]{6l,"51-60"});add(new Object[]{7l,"61-70"});add(new Object[]{8l,"71-80"});add(new Object[]{9l,"81-90"});add(new Object[]{10l,"91-100"});add(new Object[]{11l,"100 Above"});}};
+	         
+           Map<String, BoothInchargeDetailsVO> locationBoothMap = new TreeMap<String, BoothInchargeDetailsVO>(); ;
           
 			if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
 				//Setting MANDAL Wise Booth Count
@@ -424,9 +426,9 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 					    List<Object[]> notStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
 						List<Object[]> startedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
 						List<Object[]> completedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
-						getLocationWiseBoothDtls(notStartedBoothObjLst,locationBoothMap,"NotStarted",IConstants.TEHSIL);
-						getLocationWiseBoothDtls(startedBoothObjLst,locationBoothMap,"Started",IConstants.TEHSIL);
-						getLocationWiseBoothDtls(completedBoothObjLst,locationBoothMap,"Completed",IConstants.TEHSIL);
+						getLocationWiseBoothDtls(notStartedBoothObjLst,rangeObjList,locationBoothMap,"NotStarted",IConstants.TEHSIL);
+						getLocationWiseBoothDtls(startedBoothObjLst,rangeObjList,locationBoothMap,"Started",IConstants.TEHSIL);
+						getLocationWiseBoothDtls(completedBoothObjLst,rangeObjList,locationBoothMap,"Completed",IConstants.TEHSIL);
 						 
 				 }
 				
@@ -437,9 +439,9 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 					List<Object[]> lclElctnBdyStartedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
 					List<Object[]> lclElctnBdyCompletedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
 				
-					getLocationWiseBoothDtls(lclElctnBdyNotStartedBoothObjLst,locationBoothMap,"NotStarted",IConstants.LOCALELECTIONBODY);
-					getLocationWiseBoothDtls(lclElctnBdyStartedBoothObjLst,locationBoothMap,"Started",IConstants.LOCALELECTIONBODY);
-					getLocationWiseBoothDtls(lclElctnBdyCompletedBoothObjLst,locationBoothMap,"Completed",IConstants.LOCALELECTIONBODY);
+					getLocationWiseBoothDtls(lclElctnBdyNotStartedBoothObjLst,rangeObjList,locationBoothMap,"NotStarted",IConstants.LOCALELECTIONBODY);
+					getLocationWiseBoothDtls(lclElctnBdyStartedBoothObjLst,rangeObjList,locationBoothMap,"Started",IConstants.LOCALELECTIONBODY);
+					getLocationWiseBoothDtls(lclElctnBdyCompletedBoothObjLst,rangeObjList,locationBoothMap,"Completed",IConstants.LOCALELECTIONBODY);
 				 }
 			}else{
 				
@@ -447,9 +449,9 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				List<Object[]> startedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
 				List<Object[]> completedBoothObjLst = boothInchargeDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
 				
-				getLocationWiseBoothDtls(notStartedBoothObjLst,locationBoothMap,"NotStarted","OtherLocation");
-				getLocationWiseBoothDtls(startedBoothObjLst,locationBoothMap,"Started","OtherLocation");
-				getLocationWiseBoothDtls(completedBoothObjLst,locationBoothMap,"Completed","OtherLocation");
+				getLocationWiseBoothDtls(notStartedBoothObjLst,rangeObjList,locationBoothMap,"NotStarted","OtherLocation");
+				getLocationWiseBoothDtls(startedBoothObjLst,rangeObjList,locationBoothMap,"Started","OtherLocation");
+				getLocationWiseBoothDtls(completedBoothObjLst,rangeObjList,locationBoothMap,"Completed","OtherLocation");
 			}
 			if (locationBoothMap != null && locationBoothMap.size() > 0) {
 				resultList.addAll(locationBoothMap.values());
@@ -459,7 +461,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		return resultList;
 	}
-	public void getLocationWiseBoothDtls(List<Object[]> objList,Map<String,BoothInchargeDetailsVO> locationBoothMap,String resultType,String type){
+	public void getLocationWiseBoothDtls(List<Object[]> objList,List<Object[]> rangeObjList,Map<String,BoothInchargeDetailsVO> locationBoothMap,String resultType,String type){
 		try{
 			if (objList != null && objList.size() > 0) {
 				for (Object[] param : objList) {
@@ -479,6 +481,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 						}
 						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 						locationVO.setBoothAddressVO(getBoothAddress(param));
+						locationVO.setSubList(getRangeList(rangeObjList));
 						locationBoothMap.put(locationVO.getLocationIdStr(), locationVO);
 					}
 					if(resultType.equalsIgnoreCase("NotStarted")){
@@ -497,7 +500,20 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			Log.error("Exception occured at getLocationWiseBoothDtls() in BoothDataValidationService class",e);
 		}
 	}
-
+    public List<BoothInchargeDetailsVO> getRangeList(List<Object[]> rangeObjLst){
+    	List<BoothInchargeDetailsVO> rangeList = new ArrayList<BoothInchargeDetailsVO>(0);
+    	try {
+    		for (Object[] param : rangeObjLst) {
+				BoothInchargeDetailsVO rangeVO = new BoothInchargeDetailsVO();
+				 rangeVO.setRoleId(commonMethodsUtilService.getLongValueForObject(param[0]));//rangeId
+				 rangeVO.setRoleName(commonMethodsUtilService.getStringValueForObject(param[1]));//range
+				 rangeList.add(rangeVO);
+			}
+    	} catch(Exception e) {
+    		Log.error("Exception occured at getRangeList() in BoothDataValidationService class",e);
+    	}
+    	return rangeList;
+    }
 	public BoothAddressVO getBoothAddress(Object[] param) {
 		BoothAddressVO addressVO = new BoothAddressVO();
 		try {
