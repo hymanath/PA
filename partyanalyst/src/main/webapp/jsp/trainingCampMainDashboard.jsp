@@ -1727,7 +1727,7 @@ function getDayWiseAttendnenceForBatch(){
 		 batchId : batchId,
 		 enrollmentYearIdsList:enrollmentYearIdsList,
 		 programIdsList:programIdsList,
-		 enrollmentYearId:$('#enrollmentId').val()
+		 //enrollmentYearId:$('#enrollmentId').val()
 	 }
 	  $.ajax({
 		    type:'POST',

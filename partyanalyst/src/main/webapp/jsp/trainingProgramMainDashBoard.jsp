@@ -81,9 +81,9 @@ header.trainingHeader {
 							<input type="radio" value="completed" name="comOrAll" class="comAllRadio" id="completedRadio"/><label>&nbsp; Completed</label>
 							<input type="radio" value="all" name="comOrAll" class="comAllRadio" id="allRadio"/><label> &nbsp;All</label>
 						</span>-->
-						<div class="col-sm-3 pull-right">
+						<div class="col-sm-4 pull-right">
 						<span class="" style="font-size:15px">Select Enrollment</span>
-						<select id="enrlmntYrId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;" id="">
+						<select id="enrlmntYrId" style="width: 108px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;" id="">
 							<option value="3">2014-2016</option> 
 							<option value="4">2016-2018</option> 
 						</select>
@@ -331,10 +331,10 @@ function getAttendedCountsByProgramOrCampOrBatch(fromType,enrollmentYrId)
 			if(enrollmentYrIds == 4){
 				programIds.push(8);
 			}else{
-				programIds.push(6,7,1);
+				programIds.push(6,7,1,5);
 			}
 	var jsObj={
-		programId:programId,
+		//programId:programId,
 		programIds:programIds,
 		campId:campId,
 		batchId:batchId,
@@ -438,7 +438,7 @@ var programIds =[];
 			if(enrollmentYrIds == 4){
 				programIds.push(8);
 			}else{
-				programIds.push(6,7,1);
+				programIds.push(6,7,1,5);
 			}
 	var jsObj={
 		programId:programId,
@@ -628,11 +628,11 @@ function getAttendedCountSummaryByBatch(enrollmentYrId){
 			if(enrollmentYrIds == 4){
 				programIds.push(8);
 			}else{
-				programIds.push(6,7,1);
+				programIds.push(6,7,1,5);
 			}
 			var programId = 0;
 	var jsObj = {
-		programId:programId,
+		//programId:programId,
 		programIds:programIds,
 		campId:campId,
 		batchId:batchId,

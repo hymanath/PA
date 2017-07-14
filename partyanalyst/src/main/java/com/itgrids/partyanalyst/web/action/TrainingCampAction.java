@@ -2382,10 +2382,10 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		
     		jObj = new JSONObject(getTask());
     		
-    		Long programId = jObj.getLong("programId");
+    		/*Long programId = jObj.getLong("programId");
     		if(programId==0l){
     			programId=null;
-    		}
+    		}*/
     		Long campId = jObj.getLong("campId");
     		if(campId==0l){
     			campId=null;
@@ -2430,10 +2430,10 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	try{
     		
     		jObj = new JSONObject(getTask());
-    		Long programId = jObj.getLong("programId");
+    		/*Long programId = jObj.getLong("programId");
     		if(programId==0l){
     			programId=null;
-    		}
+    		}*/
     		Long campId = jObj.getLong("campId");
     		if(campId==0l){
     			campId=null;
@@ -2479,7 +2479,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     	try{
     		
     		jObj = new JSONObject(getTask());
-    		Long programId = jObj.getLong("programId");
+    		//Long programId = jObj.getLong("programId");
     		Long campId = jObj.getLong("campId");
     		Long batchId = jObj.getLong("batchId");
     		String dates[] = jObj.getString("dates").split("-");
@@ -2503,9 +2503,9 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		}
     		
     		if(dates.length>1){
-    			simpleVOList = trainingCampService.getAttendedCountSummaryByBatch(programId,campId,batchId,dates[0].trim(),dates[1].trim(),callFrom,enrollmentYrIds,programIds);
+    			simpleVOList = trainingCampService.getAttendedCountSummaryByBatch(campId,batchId,dates[0].trim(),dates[1].trim(),callFrom,enrollmentYrIds,programIds);
     		}else{
-    			simpleVOList = trainingCampService.getAttendedCountSummaryByBatch(programId,campId,batchId,null,null,callFrom,enrollmentYrIds,programIds);
+    			simpleVOList = trainingCampService.getAttendedCountSummaryByBatch(campId,batchId,null,null,callFrom,enrollmentYrIds,programIds);
     		}
     		
     		
@@ -2691,7 +2691,7 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			jObj=new JSONObject(getTask());
 			
 			Long selDate = jObj.getLong("batchId");
-			Long enrollmentYearId = jObj.getLong("enrollmentYearId");
+			//Long enrollmentYearId = jObj.getLong("enrollmentYearId");
 			 List<Long> enrollmentYearIds=new ArrayList<Long>();
 				JSONArray enrollmentYearIdsArray=jObj.getJSONArray("enrollmentYearIdsList");
 				if(enrollmentYearIdsArray!=null &&  enrollmentYearIdsArray.length()>0){
