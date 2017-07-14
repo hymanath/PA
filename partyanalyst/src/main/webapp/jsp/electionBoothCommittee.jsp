@@ -164,7 +164,7 @@
 					</div>-->
 					<div class="col-sm-4">
 						<label for="committeeLocationId1">SELECT LOCATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
-						<select onchange="populateDefaultValue(1);getBoothInchargeRoles();" class="form-control" id="committeeLocationId1" ><option value="0">Select Location</option></select >
+						<select onchange="populateDefaultValue(1);getBoothInchargeRoles();gettingBoothInchargeRoleDetails();" class="form-control" id="committeeLocationId1" ><option value="0">Select Location</option></select >
 					</div>
 					<div class="col-sm-4" id="">
 						<label for="committeeDesigId">SELECT DESIGNATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
@@ -188,6 +188,7 @@
 						</ul>
 						<img id="viewDataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
 					</div>
+					<div id="boothInchargeRoleDivId"></div>
 					<div class="col-sm-12">
 						<div id="locationDivId"></div>
 						<div id="userDetailsId"></div>
@@ -1991,6 +1992,59 @@ $("#committeeDesignationId  option").remove();
 			}
 		});
 	}
+	
+	function gettingBoothInchargeRoleDetails(){
+		$("#boothInchargeRoleDivId").html('');
+		var boothId = $('#committeeLocationId1').val();
+	    var  enrllmentId =0;
+			var jsObj={
+				boothId:boothId,
+				constituencyId:'${locationValue}',
+				boothInchargeEnrollmentId:enrllmentId
+			}
+			$.ajax({
+				type : "POST",
+				url : "gettingBoothInchargeRoleDetailsAction.action",
+				data : {task:JSON.stringify(jsObj)} 
+			}).done(function(result){	
+			if(result != null){
+				buildBoothInchargeRoleDetails(result);	
+			}
+			
+		});	
+			
+	}
+	function buildBoothInchargeRoleDetails(result){
+	var str ='';
+	str +='<div class="col-sm-12">';
+	str +='<div class= "row">';
+	str +='<div class= "col-sm-5 col-sm-offset-3">';
+	str +='<table class="table table-bordered" id="roleTableId">';
+	str +='<thead>';
+	str +='<tr>';
+	str +='<th style="background-color:#d3d3d3">ROLE NAME</th>';
+	str +='<th style="background-color:#d3d3d3">TOTAL</th>';
+	str +='<th style="background-color:#d3d3d3">FILLED</th>';
+	str +='<th style="background-color:#d3d3d3">VACANCY</th>';
+	str +='</tr>';
+	str +='</thead>';
+	str +='<tbody>';
+	str +='<tr>';
+	for( var i in result){
+		str +='<td>'+result[i].roleName+'</td>';
+		str +='<td>'+result[i].maxMemberCount+'</td>';
+		str +='<td>'+result[i].count+'</td>';
+		str +='<td>'+result[i].vacancyCount+'</td>';
+		str +='</tr>';
+	}
+	str +='</tbody>';
+	str +='</table>';
+	str +='</div>';
+	str +='</div>';
+	str +='</div>';
+	$("#boothInchargeRoleDivId").html(str);
+}
+
 </script>
 <script>
 var tableToExcel = (function() {

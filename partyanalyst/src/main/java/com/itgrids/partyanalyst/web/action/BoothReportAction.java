@@ -33,6 +33,7 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 	private BoothInchargeDetailsVO resultVO;
 	private List<BoothAddressVO> boothDtlsList;
 	private List<IdAndNameVO> idAndNameVOList;
+	private List<BoothInchargeDetailsVO> boothIncbhargeVOList;
 	
 	
 	public List<IdAndNameVO> getIdAndNameVOList() {
@@ -93,6 +94,14 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 	}
 	public void setResultVO(BoothInchargeDetailsVO resultVO) {
 		this.resultVO = resultVO;
+	}
+	
+	public List<BoothInchargeDetailsVO> getBoothIncbhargeVOList() {
+		return boothIncbhargeVOList;
+	}
+	public void setBoothIncbhargeVOList(
+			List<BoothInchargeDetailsVO> boothIncbhargeVOList) {
+		this.boothIncbhargeVOList = boothIncbhargeVOList;
 	}
 	@Override
 	public String execute() throws Exception {
@@ -191,6 +200,19 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 			resultVO = boothDataValidationService.validateBoothToMakeConfirm(boothId,boothInchargeEnrollmentId);
 		}catch(Exception e){
 			LOG.error("Exception raised at validateBoothToMakeConfirm() method of BoothReportAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String gettingBoothInchargeRoleDetails(){
+		LOG.info("Entered into gettingBoothInchargeRoleDetails()  of BoothReportAction ");
+		try{
+			jObj = new JSONObject(getTask());
+			Long boothId = jObj.getLong("boothId");
+			Long boothInchargeEnrollmentId = jObj.getLong("boothInchargeEnrollmentId");
+			Long locationValue = jObj.getLong("constituencyId");
+			boothIncbhargeVOList = boothDataValidationService.gettingBoothInchargeRoleDetails(boothId,boothInchargeEnrollmentId,locationValue);
+		}catch(Exception e){
+			LOG.error("Exception raised at gettingBoothInchargeRoleDetails() method of BoothReportAction", e);
 		}
 		return Action.SUCCESS;
 	}
