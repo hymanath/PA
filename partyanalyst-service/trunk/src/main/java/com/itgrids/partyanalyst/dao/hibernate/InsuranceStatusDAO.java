@@ -1110,7 +1110,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 return query.list();
 	 }
 
-	@Override
+	
 	public List<Object[]> getConstituencyWiseInsuranceStatusCounts(Date fromDate, Date toDate, Long locationId,Long locationValue) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbm = new StringBuilder();
@@ -1155,7 +1155,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		return query.list();
 	}
 
-	@Override
+	
 	public List<Object[]> getGrivenceTrustStatusCounts(Date fromDate, Date toDate, Long locationId,Long locationValue) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbm = new StringBuilder();
