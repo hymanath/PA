@@ -13,6 +13,7 @@ public class BoothInchargeDetailsVO {
 	private Long completedBoothCount;
 	private Long roleId;
 	private String roleName;
+	private Long count=0l;
 	private Long minMemberCount=0l;
 	private Long maxMemberCount=0l;
 	private Long addedMemberCount=0l;
@@ -112,4 +113,11 @@ public class BoothInchargeDetailsVO {
 	public void setSubList(List<BoothInchargeDetailsVO> subList) {
 		this.subList = subList;
 	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	
 }

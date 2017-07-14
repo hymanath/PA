@@ -329,7 +329,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
 			query.setParameter("boothInchargeEnrollmentId",inputVO.getBoothInchargeEnrollmentId());
 		}
-		if (inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
 			query.setParameter("filterValue", inputVO.getFilterValue());
 		}
 		return query.list();
@@ -396,7 +396,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
 			query.setParameter("boothInchargeEnrollmentId",inputVO.getBoothInchargeEnrollmentId());
 		}
-		if (inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
 			query.setParameter("filterValue", inputVO.getFilterValue());
 		}
 		return query.list();
@@ -471,7 +471,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
 			query.setParameter("boothInchargeEnrollmentId",inputVO.getBoothInchargeEnrollmentId());
 		}
-		if (inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
 			query.setParameter("filterValue", inputVO.getFilterValue());
 		}
 		return query.list();
