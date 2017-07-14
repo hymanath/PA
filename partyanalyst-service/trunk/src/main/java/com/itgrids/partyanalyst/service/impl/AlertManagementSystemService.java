@@ -957,7 +957,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		return null;
 	}
 	public static Comparator<AlertVO> alphabeticalOrderWiseSorting = new Comparator<AlertVO>() {
-		@Override
+
 		public int compare(AlertVO obj1, AlertVO ojb2) {
 			return obj1.getName().compareTo(ojb2.getName());
 		}
@@ -16113,7 +16113,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 	 * @Description This Method implements the get location wise hamlet details based on green,orange and red status type.
 	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getHamletWiseIvrStatusList(java.lang.String, java.lang.String, java.lang.String, java.util.List, java.lang.Long, java.lang.String)
 	 */
-	@Override
+
 	public List<AlertVO> getHamletWiseIvrStatusList(String fromDateStr, String toDateStr, String year,List<Long> locationValues, Long locationTypeId,String statusType) {
         List<AlertVO> finalList = new ArrayList<AlertVO>();
         AlertVO vo = new AlertVO();
