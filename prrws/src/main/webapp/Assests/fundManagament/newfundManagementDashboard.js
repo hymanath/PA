@@ -787,44 +787,46 @@ getAllDepartments();
 				overviewTable+='<div class="col-sm-12">';
 					overviewTable+='<div class="panel panel-default">';
 						overviewTable+='<div class="panel-body">';
-							overviewTable+='<table class="table">';
-								overviewTable+='<thead>';
-									overviewTable+='<th><select id="overviewSelect" >';
-										overviewTable+='<option value="0">ALL PROGRAMMES </option>';
-										for(var i in result){
-											overviewTable+='<option value="'+result[i].id+'">'+result[i].name+' </option>';
+							overviewTable+='<div class="table-responsive">';
+								overviewTable+='<table class="table">';
+									overviewTable+='<thead>';
+										overviewTable+='<th><select id="overviewSelect" >';
+											overviewTable+='<option value="0">ALL PROGRAMMES </option>';
+											for(var i in result){
+												overviewTable+='<option value="'+result[i].id+'">'+result[i].name+' </option>';
+											}
+										overviewTable+='</select></th>';
+										overviewTable+='<th class="text-center"><i class="rounded-circle fa fa-inr"></i><p class="text-capital">total amount</p></th>';
+										overviewTable+='<th><i class="rounded-circle">D</i><p class="text-capital m_top10">district</p></th>';
+										overviewTable+='<th><i class="rounded-circle">C</i><p class="text-capital m_top10">constituency</p></th>';
+										overviewTable+='<th><i class="rounded-circle">M</i><p class="text-capital m_top10">Mandal</p></th>';
+									overviewTable+='</thead>';
+									overviewTable+='<tbody>';
+										overviewTable+='<tr id="blockProgram0">';
+											overviewTable+='<td class="text-capital clearCls"><h4>ALL </h4></td>';
+											overviewTable+='<td class="total0 text-center clearCls"></td>';
+											overviewTable+='<td class="district0 clearCls"></td>';
+											overviewTable+='<td class="constituency0 clearCls"></td>';
+											overviewTable+='<td class="mandal0 clearCls"></td>';
+										overviewTable+='</tr>';
+										var k = 1;					
+										for(var i in result)
+										{
+											overviewTable+='<tr id="blockProgram'+k+'">';
+												overviewTable+='<td class="text-capital clearCls"><h4>'+result[i].name+'</h4></td>';
+												overviewTable+='<td class="total'+k+' text-center clearCls"></td>';
+												overviewTable+='<td class="district'+k+' clearCls"></td>';
+												overviewTable+='<td class="constituency'+k+' clearCls"></td>';
+												overviewTable+='<td class="mandal'+k+' clearCls"></td>';
+											overviewTable+='</tr>';
+											k = k +1;
 										}
-									overviewTable+='</select></th>';
-									overviewTable+='<th class="text-center"><i class="rounded-circle fa fa-inr"></i><p class="text-capital">total amount</p></th>';
-									overviewTable+='<th class="text-center"><i class="rounded-circle">D</i><p class="text-capital m_top10">district</p></th>';
-									overviewTable+='<th class="text-center"><i class="rounded-circle">C</i><p class="text-capital m_top10">constituency</p></th>';
-									overviewTable+='<th class="text-center"><i class="rounded-circle">M</i><p class="text-capital m_top10">Mandal</p></th>';
-								overviewTable+='</thead>';
-								overviewTable+='<tbody>';
-									overviewTable+='<tr id="blockProgram0">';
-										overviewTable+='<td class="text-capital clearCls"><h4>ALL </h4></td>';
-										overviewTable+='<td class="total0 text-center clearCls"></td>';
-										overviewTable+='<td class="district0 clearCls"></td>';
-										overviewTable+='<td class="constituency0 clearCls"></td>';
-										overviewTable+='<td class="mandal0 clearCls"></td>';
-									overviewTable+='</tr>';
-					var k = 1;					
-					for(var i in result)
-					{
-						overviewTable+='<tr id="blockProgram'+k+'">';
-							overviewTable+='<td class="text-capital clearCls"><h4>'+result[i].name+'</h4></td>';
-							overviewTable+='<td class="total'+k+' text-center clearCls"></td>';
-							overviewTable+='<td class="district'+k+' clearCls"></td>';
-							overviewTable+='<td class="constituency'+k+' clearCls"></td>';
-							overviewTable+='<td class="mandal'+k+' clearCls"></td>';
-						overviewTable+='</tr>';
-						k = k +1;
-					}
-						overviewTable+='</tbody>';
-						overviewTable+='</table>';
+									overviewTable+='</tbody>';
+								overviewTable+='</table>';
+							overviewTable+='</div>';
 						overviewTable+='</div>';
-						overviewTable+='</div>';
-						overviewTable+='</div>';
+					overviewTable+='</div>';
+				overviewTable+='</div>';
 					$("#overViewTableId").html(overviewTable);
 					$("#overviewSelect").chosen();
 					getSchemeWiseOverviewDetails(0,0);
@@ -1162,8 +1164,8 @@ getAllDepartments();
 						str+='<table class="table table-bordered table-striped tableClr'+i+'">';
 							str+='<thead>';
 								str+='<tr>';
-									//str+='<th class="text-center" colspan="3"><h4>'+result[i].name+' <span class="pull-right rankingColor">'+i+'</span></h4><h3><b>'+result[i].ttlAmt+'</b></h3></th>';
-									str+='<th class="text-center" colspan="3"><h4>'+result[i].name+'</h4><h3><b>'+result[i].ttlAmt+'</b></h3></th>';
+									str+='<th class="text-center" colspan="3"><h4>'+result[i].name+' <span class="pull-right rankingColor">'+i+'</span></h4><h3><b>'+result[i].ttlAmt+'</b></h3></th>';
+									//str+='<th class="text-center" colspan="3"><h4>'+result[i].name+'</h4><h3><b>'+result[i].ttlAmt+'</b></h3></th>';
 								str+='</tr>';
 							str+='</thead>';
 							str+='<tbody>';
@@ -3176,9 +3178,9 @@ $(document).on('click','.closeShowPdfCls',function(){
 										}
 									overviewTable+='</select></th>';
 									overviewTable+='<th class="text-center"><i class="rounded-circle fa fa-inr"></i><p class="text-capital">total amount</p></th>';
-									overviewTable+='<th class="text-center"><i class="rounded-circle">D</i><p class="text-capital m_top10">district</p></th>';
-									overviewTable+='<th class="text-center"><i class="rounded-circle">C</i><p class="text-capital m_top10">constituency</p></th>';
-									overviewTable+='<th class="text-center"><i class="rounded-circle">M</i><p class="text-capital m_top10">Mandal</p></th>';
+									overviewTable+='<th><i class="rounded-circle">D</i><p class="text-capital m_top10">district</p></th>';
+									overviewTable+='<th><i class="rounded-circle">C</i><p class="text-capital m_top10">constituency</p></th>';
+									overviewTable+='<th><i class="rounded-circle">M</i><p class="text-capital m_top10">Mandal</p></th>';
 								overviewTable+='</thead>';
 								overviewTable+='<tr id="blockProgramInd">';
 									overviewTable+='<td class="text-capital clearCls"><h4>'+selectedValueData+'</h4></td>';
@@ -3200,44 +3202,46 @@ $(document).on('click','.closeShowPdfCls',function(){
 				overviewTable+='<div class="col-sm-12">';
 					overviewTable+='<div class="panel panel-default">';
 						overviewTable+='<div class="panel-body">';
-							overviewTable+='<table class="table">';
-								overviewTable+='<thead>';
-									overviewTable+='<th><select id="overviewSelect" >';
-										overviewTable+='<option value="0">ALL PROGRAMMES </option>';
-										for(var i in overviewSelectBoxData){
-											overviewTable+='<option value="'+overviewSelectBoxData[i].id+'">'+overviewSelectBoxData[i].name+' </option>';
+							overviewTable+='<div class="table-responsive">';
+								overviewTable+='<table class="table">';
+									overviewTable+='<thead>';
+										overviewTable+='<th><select id="overviewSelect" >';
+											overviewTable+='<option value="0">ALL PROGRAMMES </option>';
+											for(var i in overviewSelectBoxData){
+												overviewTable+='<option value="'+overviewSelectBoxData[i].id+'">'+overviewSelectBoxData[i].name+' </option>';
+											}
+										overviewTable+='</select></th>';
+										overviewTable+='<th class="text-center"><i class="rounded-circle fa fa-inr"></i><p class="text-capital">total amount</p></th>';
+										overviewTable+='<th><i class="rounded-circle">D</i><p class="text-capital m_top10">district</p></th>';
+										overviewTable+='<th><i class="rounded-circle">C</i><p class="text-capital m_top10">constituency</p></th>';
+										overviewTable+='<th><i class="rounded-circle">M</i><p class="text-capital m_top10">Mandal</p></th>';
+									overviewTable+='</thead>';
+									overviewTable+='<tbody>';
+										overviewTable+='<tr id="blockProgram0">';
+											overviewTable+='<td class="text-capital clearCls"><h4>ALL </h4></td>';
+											overviewTable+='<td class="total0 text-center clearCls"></td>';
+											overviewTable+='<td class="district0 clearCls"></td>';
+											overviewTable+='<td class="constituency0 clearCls"></td>';
+											overviewTable+='<td class="mandal0 clearCls"></td>';
+										overviewTable+='</tr>';
+										var k = 1;					
+										for(var i in overviewSelectBoxData)
+										{
+											overviewTable+='<tr id="blockProgram'+k+'">';
+												overviewTable+='<td class="text-capital clearCls"><h4>'+overviewSelectBoxData[i].name+'</h4></td>';
+												overviewTable+='<td class="total'+k+' text-center clearCls"></td>';
+												overviewTable+='<td class="district'+k+' clearCls"></td>';
+												overviewTable+='<td class="constituency'+k+' clearCls"></td>';
+												overviewTable+='<td class="mandal'+k+' clearCls"></td>';
+											overviewTable+='</tr>';
+											k = k +1;
 										}
-									overviewTable+='</select></th>';
-									overviewTable+='<th class="text-center"><i class="rounded-circle fa fa-inr"></i><p class="text-capital">total amount</p></th>';
-									overviewTable+='<th class="text-center"><i class="rounded-circle">D</i><p class="text-capital m_top10">district</p></th>';
-									overviewTable+='<th class="text-center"><i class="rounded-circle">C</i><p class="text-capital m_top10">constituency</p></th>';
-									overviewTable+='<th class="text-center"><i class="rounded-circle">M</i><p class="text-capital m_top10">Mandal</p></th>';
-								overviewTable+='</thead>';
-								overviewTable+='<tbody>';
-									overviewTable+='<tr id="blockProgram0">';
-										overviewTable+='<td class="text-capital clearCls"><h4>ALL </h4></td>';
-										overviewTable+='<td class="total0 text-center clearCls"></td>';
-										overviewTable+='<td class="district0 clearCls"></td>';
-										overviewTable+='<td class="constituency0 clearCls"></td>';
-										overviewTable+='<td class="mandal0 clearCls"></td>';
-									overviewTable+='</tr>';
-					var k = 1;					
-					for(var i in overviewSelectBoxData)
-					{
-						overviewTable+='<tr id="blockProgram'+k+'">';
-							overviewTable+='<td class="text-capital clearCls"><h4>'+overviewSelectBoxData[i].name+'</h4></td>';
-							overviewTable+='<td class="total'+k+' text-center clearCls"></td>';
-							overviewTable+='<td class="district'+k+' clearCls"></td>';
-							overviewTable+='<td class="constituency'+k+' clearCls"></td>';
-							overviewTable+='<td class="mandal'+k+' clearCls"></td>';
-						overviewTable+='</tr>';
-						k = k +1;
-					}
-						overviewTable+='</tbody>';
-						overviewTable+='</table>';
+									overviewTable+='</tbody>';
+								overviewTable+='</table>';
+							overviewTable+='</div>';
 						overviewTable+='</div>';
-						overviewTable+='</div>';
-						overviewTable+='</div>';
+					overviewTable+='</div>';
+				overviewTable+='</div>';
 					$("#overViewTableId").html(overviewTable);
 					$("#overviewSelect").chosen();
 			getSchemeWiseOverviewDetails(0,0);
