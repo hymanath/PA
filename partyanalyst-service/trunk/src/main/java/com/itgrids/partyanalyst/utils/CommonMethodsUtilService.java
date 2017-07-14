@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -799,5 +800,29 @@ public class CommonMethodsUtilService {
 				e.printStackTrace();
 				return true;
 			}
+		}
+		
+		/**
+		  * @param  List<Long> serialNos 
+		  * @return Map<Long,Long>
+		  * @author Hymavathi 
+		  * @Description :This Service Method is used to get Difference between adjacent Nos. 
+		  * @since 14-JULY-2017
+		  */
+		public Map<Long,Long> getAdjacentNumsDifference(List<Long> serialNos){
+			Map<Long,Long> diffMap = new HashMap<Long,Long>();
+			try{
+				diffMap.put(serialNos.get(0), 1l);
+				for(int i=0;i<serialNos.size();i++){
+					if(i<serialNos.size() && serialNos.size() >i+1){
+						Long diff = serialNos.get(i+1)-serialNos.get(i);
+						diffMap.put(serialNos.get(i+1),diff);
+					}
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return diffMap;
 		}
 }
