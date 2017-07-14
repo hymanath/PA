@@ -362,7 +362,7 @@ public class RWSNICService implements IRWSNICService{
 		 	   					
 		 	   					BasicVO mainVO = new BasicVO();
 		 	   					
-		 	   					mainVO.setLocationId(jObjMain.getLong("locationId"));
+		 	   					mainVO.setGoNumber(jObjMain.getString("locationId"));
 		 	   					mainVO.setLocationName(jObjMain.getString("locationName"));
 		 	   					
 		 	   					if(jsonArray !=null && jsonArray.length()>0){
