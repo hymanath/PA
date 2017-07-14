@@ -25,8 +25,8 @@ public class BoothInchargeRoleCondition {
 	private Long boothInchargeRoleConditionId;
 	private Long boothInchargeConditionId;
 	private Long boothInchargeRoleId;
-	private String minMembers;
-	private String maxMembers;
+	private Long minMembers;
+	private Long maxMembers;
 	
 	private BoothInchargeCondition boothInchargeCondition;
 	private BoothInchargeRole boothInchargeRole;
@@ -58,18 +58,18 @@ public class BoothInchargeRoleCondition {
 	}
 	
 	@Column(name="min_members")
-	public String getMinMembers() {
+	public Long getMinMembers() {
 		return minMembers;
 	}
-	public void setMinMembers(String minMembers) {
+	public void setMinMembers(Long minMembers) {
 		this.minMembers = minMembers;
 	}
 	
 	@Column(name="max_members")
-	public String getMaxMembers() {
+	public Long getMaxMembers() {
 		return maxMembers;
 	}
-	public void setMaxMembers(String maxMembers) {
+	public void setMaxMembers(Long maxMembers) {
 		this.maxMembers = maxMembers;
 	}
 	
@@ -95,7 +95,4 @@ public class BoothInchargeRoleCondition {
 	public void setBoothInchargeRole(BoothInchargeRole boothInchargeRole) {
 		this.boothInchargeRole = boothInchargeRole;
 	}
-	
-	
-	
 }
