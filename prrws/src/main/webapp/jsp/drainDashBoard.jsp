@@ -259,7 +259,7 @@
                     <div class="panel-body">
 					<div class="row">
 						<div class="col-sm-3">
-							<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu" attr_blockId="4">
+							<ul class="nav navbar-nav list_inline tableMenu tableMenuCons" role="tabDrains_menu" attr_blockId="4">
 								<li class="active" attr_location_type="districts">Districts</li>
 								<li class="" attr_location_type="parliament">Parliament</li>
 							</ul>
@@ -279,7 +279,7 @@
                     <div class="panel-body">
 					<div class="row">
 						<div class="col-sm-3">
-							<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu" attr_blockId="5">
+							<ul class="nav navbar-nav list_inline tableMenu tableMenuMandal" role="tabDrains_menu" attr_blockId="5">
 								<li class="active" attr_location_type="districts">Districts</li>
 								<li class="" attr_location_type="parliament">Parliament</li>
 							</ul>
@@ -289,8 +289,7 @@
 							</select>
 						</div>
 						<div class="col-sm-3">
-							<select class="form-control chosen-select">
-								<option value="0">All CONSTITUENCY</option>
+							<select class="form-control chosen-select" id="mandalConstituencyNames">
 							</select>
 						</div>
 					</div>
