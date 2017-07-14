@@ -94,11 +94,11 @@ public class PrisSurveyDashBoardController {
 		}
 		return returnVoList;
 	}
-	@RequestMapping("/getAllConstituenciesForParliament")
-	public @ResponseBody List<IdNameVO> getAllConstituenciesForParliament(Long parliamentId){
+	@PostMapping("/getAllConstituenciesForParliament")
+	public @ResponseBody List<IdNameVO> getAllConstituenciesForParliament(@RequestBody InputVO inputVO){
 		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>(0);
 		try {
-			returnVoList = surveyDashBaordService.getAllConstituenciesForParliament(parliamentId);
+			returnVoList = surveyDashBaordService.getAllConstituenciesForParliament(inputVO.getParliamentId());
 		} catch (Exception e){
 			LOG.error("Exception raised at getAllConstituenciesForParliament - PrisSurveyDashBoardController controller", e);
 		}
