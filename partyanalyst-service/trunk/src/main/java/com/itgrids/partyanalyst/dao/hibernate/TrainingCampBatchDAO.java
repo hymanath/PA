@@ -491,14 +491,18 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		return query.list();
 	}
 	
-	public List<String> getBatchNameWithDateAndCamp(Date date,Long campId){
+	public List<String> getBatchNameWithDateAndCamp(Date date,Long campId,List<Long> enrollmentYearIds,List<Long> programYearIds){
 		Query query = getSession().createQuery("select distinct model.trainingCampBatchName " +
 				"from TrainingCampBatch model " +
 				"where model.trainingCampSchedule.trainingCampId=:campId " +
 				"and :date between date(model.fromDate) and date(model.toDate) " +
+				" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds) " +
+				" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in(:enrollmentYearIds)" +
 				"and model.isCancelled='false' ");
 		query.setParameter("date", date);
 		query.setParameter("campId", campId);
+		query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		query.setParameterList("programYearIds", programYearIds);
 		return query.list();
 	}
 	

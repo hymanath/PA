@@ -9244,7 +9244,7 @@ class TrainingCampService implements ITrainingCampService{
 										{
 											String batchStr  ="Speakers";
 											if(type.equalsIgnoreCase("today"))
-												 batchStr = getBatchNameWithDateAndCamp(new SimpleDateFormat("yy-MM-dd").parse(dateStr),campId);
+												 batchStr = getBatchNameWithDateAndCamp(new SimpleDateFormat("yy-MM-dd").parse(dateStr),campId,enrollmentYearIds,programYearIds);
 											List<SimpleVO> voList = inviteisMap.get(tdpCadreId);
 											if(voList != null && voList.size()>0)
 											{
@@ -9389,7 +9389,8 @@ class TrainingCampService implements ITrainingCampService{
 															publicRepresentativeType.trim().equalsIgnoreCase("ZP CHAIRMAN") ) )
 													{
 														try {
-															vo.setStatus(districtDAO.get(commonMethodsUtilService.getLongValueForObject(cadreCandidate[5])).getDistrictName()+" District");
+															if(commonMethodsUtilService.getLongValueForObject(cadreCandidate[4]) == 3)
+															    vo.setStatus(districtDAO.get(commonMethodsUtilService.getLongValueForObject(cadreCandidate[5])).getDistrictName()+" District");
 														} catch (Exception e) {
 															e.printStackTrace();
 														}
@@ -10008,10 +10009,10 @@ class TrainingCampService implements ITrainingCampService{
 			return voList;
 		}
 		
-		public String getBatchNameWithDateAndCamp(Date date,Long campId){
+		public String getBatchNameWithDateAndCamp(Date date,Long campId,List<Long> enrollmentYearIds,List<Long> programYearIds ){
 			
 			if(date!=null && campId>0l){
-				List<String> batchsList =  trainingCampBatchDAO.getBatchNameWithDateAndCamp(date,campId);
+				List<String> batchsList =  trainingCampBatchDAO.getBatchNameWithDateAndCamp(date,campId,enrollmentYearIds,programYearIds);
 				if(batchsList != null && batchsList.size()>0)
 				{
 					if(batchsList.size() == 1)
