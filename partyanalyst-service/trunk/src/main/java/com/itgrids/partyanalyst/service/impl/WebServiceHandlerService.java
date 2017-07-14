@@ -5331,8 +5331,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return null;
 	 }
 
-	@Override
-	public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationId, Long locationValue) {
+
+	 public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationId, Long locationValue) {
 		try{
 			return locationDashboardService.getGrivenceTrustStatusCounts(fromDateStr, toDateStr, locationId, locationValue);
 		}catch(Exception e){	
@@ -5349,7 +5349,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 return null;
 	 }
 	
-	@Override
+
 	public List<AlertVO> getHamletWiseIvrStatusList(String fromDateStr, String toDateStr, String year,
 			List<Long> locationValues, Long locationTypeId, String statusType) {
 		try{
