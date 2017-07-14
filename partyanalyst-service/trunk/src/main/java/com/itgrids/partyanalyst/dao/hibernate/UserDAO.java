@@ -805,4 +805,15 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return query.list();
 	}
 	
+	
+	public List<Long> getCheckUserNameAvailibility(String userName){
+		Query query = getSession().createQuery("select model.userId " +
+				" from User model" +
+				" where model.userName = :userName" +
+				" and model.isEnabled = 'Y' ");
+		if(userName != null && userName.length() >0)
+		query.setParameter("userName", userName);
+		return query.list();
+	}
+	
 }

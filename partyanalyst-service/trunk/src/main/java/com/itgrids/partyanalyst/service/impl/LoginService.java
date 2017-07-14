@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 import org.apache.velocity.app.VelocityEngine;
+import org.jfree.util.Log;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -349,7 +350,7 @@ public class LoginService implements ILoginService{
 			regVO.setRegistrationID(userId);
 			regVO.setFirstName(user.getFirstName());
 			regVO.setLastName(user.getLastName());
-			regVO.setUserName(user.getUserName());
+			regVO.setUserName(user.getUserName().trim());
 			regVO.setLoginRestriction(user.get_loginRestriction());
 			List<String> userRoles = userRolesDAO.getUserRolesOfAUser(userId);
 			regVO.setUserRoles(userRoles);
@@ -1098,5 +1099,21 @@ public String getStateBasedOnLocation(String AccessType,String accessValue){
 			log.error("Exception Rised in getAmsAppValidateLoginDetails(-,-)  in LoginService ", e);
 		}
 		 return finalVo;
+	}
+	
+	public String getCheckUserNameAvailibility(String userName){
+		String checkUserStatus = "";
+		try {
+		Log.info("Entered into loginService of getCheckUserNameAvailibility")	;
+		List<Long> CheckuserIdsLst = userDAO.getCheckUserNameAvailibility(userName.trim());
+		if(CheckuserIdsLst != null && CheckuserIdsLst.size()>0){
+			checkUserStatus = "fail";
+		}else{
+			checkUserStatus = "success";
+		}
+		} catch (Exception e) {
+			Log.error("Exception occured into loginService of getCheckUserNameAvailibility",e);
+		}
+		return checkUserStatus;
 	}
 }
