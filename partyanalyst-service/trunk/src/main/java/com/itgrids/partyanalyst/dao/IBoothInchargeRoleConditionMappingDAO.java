@@ -12,4 +12,6 @@ public interface IBoothInchargeRoleConditionMappingDAO extends GenericDao<BoothI
 	public List<Object[]> getBoothInchargeRolesWithMinMAxCount(Long boothId,List<Long> enrollmentYrIds);
 	public List<Object[]> getBoothMinMaxRequiredMemberRoleWise(Long boothId,Long boothInchargeEnrollmentId);
 	public int updateBoothStatus(Long boothId,Long boothInchargeEnrollmentId,Date dateTime);
+	public List<Object[]> getBoothDetailsForTehsilId(List<Long> tehsilIds,Long constituencyId);
+	public List<Object[]> getBoothsDetailsForMuncipality(List<Long> lcalElcBdyId,Long constituencyId);
 }

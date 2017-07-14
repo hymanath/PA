@@ -19,22 +19,24 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 	}
 	
 	public List<Object[]> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId){
-		StringBuilder query = new StringBuilder("select model.booth.partNo, model.booth.villagesCovered, " +
-					" model.booth.constituency.name, " +
-					" model.booth.panchayat.panchayatName," +
+		StringBuilder query = new StringBuilder("select distinct model.boothInchargeRoleConditionMapping.boothInchargeCommittee.booth.partNo, " +
+				" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.booth.villagesCovered, " +
+					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.name, " +
+					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.panchayat.panchayatName," +
 					" model.tdpCadre.firstname, model.tdpCadre.mobileNo, model.tdpCadre.memberShipNo, " +
 					" model.tdpCadre.image, " +
-					" model.booth.tehsil.tehsilName " +
+					" model..boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilName " +
 					" from BoothIncharge model " +
 					" where " +
 					" model.isDeleted='N' "+
-					" and model.tdpCadre.isDeleted='N' and model.booth.publicationDate.publicationDateId = :publicationDate");
+					" and model.tdpCadre.isDeleted='N' and " +
+					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.publicationDate.publicationDateId = :publicationDate");
 		if(constituencyId !=null && constituencyId.longValue() > 0)
-		query.append(" and model.booth.constituency.constituencyId=:constituencyId");
+		query.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId=:constituencyId");
 		if(mandalId !=null && mandalId.longValue() > 0)
-		query.append(" and model.booth.tehsil.tehsilId=:mandalId");
+		query.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilId=:mandalId");
 		if(boothId !=null && boothId.longValue() > 0)
-		query.append(" and model.booth.boothId=:boothId");
+		query.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.boothId=:boothId");
 		
 		Query query1=getSession().createQuery(query.toString());
 		query1.setParameter("publicationDate", IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
@@ -61,10 +63,10 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 				" l.localElectionBodyId, " +
 				" l.name " +
 				" from BoothIncharge model " +
-				" left join model.booth b " +
-				" left join b.panchayat p " +
-				" left join b.tehsil t " +
-				" left join b.localBody l " +
+				" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth b " +
+				" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat p " +
+				" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil t " +
+				" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody l " +
 				" where model.isActive = 'Y' and model.isDeleted = 'N'");
 		if(tdpCadreIds != null && tdpCadreIds.size() > 0l)
 		{ 
@@ -103,10 +105,10 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(" select  count(distinct model.boothId) " +
+		sb.append(" select  count(distinct model.boothInchargeRoleConditionMapping.boothInchargeCommittee.booth.boothId) " +
 				  " from BoothIncharge model " +
-				  " where model.booth.constituency.constituencyId = :constituencyId " +
-				  " and model.booth.publicationDate.publicationDateId = :publicationDate " +
+				  " where model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId = :constituencyId " +
+				  " and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.publicationDate.publicationDateId = :publicationDate " +
 				  " and model.isActive ='Y' ");
 		
 		Query qry = getSession().createQuery(sb.toString());
@@ -115,7 +117,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 			qry.setParameter("constituencyId", constituencyId);
 		}
 		
-		qry.setParameter("publicationDate", IConstants.VOTER_DATA_PUBLICATION_ID);
+		qry.setParameter("publicationDate", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
 		
 		return (Long) qry.uniqueResult();
 	}
@@ -126,27 +128,27 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		queryStr.append(" select  count(distinct model.boothId) " +
 				  " from BoothIncharge model " +
 				  " where " +
-				  " model.booth.publicationDate.publicationDateId = :publicationDate " +
+				  " model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.publicationDate.publicationDateId = :publicationDate " +
 				  " and model.isActive ='Y' and model.isDeleted = 'N' ");
 		          if(bothIds != null && bothIds.size()>0){
-			             queryStr.append(" and model.boothId in (:bothIds) ");
+			             queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.boothId in (:bothIds) ");
 		             }
 				if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-				         queryStr.append(" and model.booth.constituency.state.stateId in (:userAccessLevelValues)");  
+				         queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.state.stateId in (:userAccessLevelValues)");  
 				       }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-				         queryStr.append(" and model.booth.constituency.district.districtId in (:userAccessLevelValues)");  
+				         queryStr.append(" and .boothInchargeRoleConditionMapping.boothInchargeCommittee.address.district.districtId in (:userAccessLevelValues)");  
 				       }/*else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
 				            queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
 				       }*/else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-				            queryStr.append(" and model.booth.constituency.constituencyId in (:userAccessLevelValues) ");  
+				            queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId in (:userAccessLevelValues) ");  
 				       }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
-				          queryStr.append(" and model.booth.tehsil.tehsilId in (:userAccessLevelValues)");  
+				          queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilId in (:userAccessLevelValues)");  
 				       }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
-				          queryStr.append(" and model.booth.localBody.localElectionBodyId in (:userAccessLevelValues)"); 
+				          queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localBody.localElectionBodyId in (:userAccessLevelValues)"); 
 				       }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
-				          queryStr.append(" and model.booth.panchayat.panchayatId in (:userAccessLevelValues)"); 
+				          queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat.panchayatId in (:userAccessLevelValues)"); 
 				       }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
-				          queryStr.append(" and model.booth.localBodyWard.constituencyId in (:userAccessLevelValues)"); 
+				          queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.ward.constituencyId in (:userAccessLevelValues)"); 
 				       }
 				if(startDate != null && endDate != null){
 					queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
@@ -156,7 +158,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 				}
 	 	  Query qry = getSession().createQuery(queryStr.toString());
 		
-		qry.setParameter("publicationDate", IConstants.VOTER_DATA_PUBLICATION_ID);
+		qry.setParameter("publicationDate", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
 		if(userAccessLevelValues != null && userAccessLevelValues.size()>0){
 			qry.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		}
@@ -180,25 +182,25 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		
 		queryStr.append(" select model.booth.boothId,model.tdpCadre.tdpCadreId,model.tdpCadre.gender  from BoothIncharge model " +
 				" where  model.isActive ='Y' and model.isDeleted='N' " +
-				" and model.booth.publicationDate.publicationDateId = :publicationDate "); 
+				" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.publicationDate.publicationDateId = :publicationDate "); 
 	
 		
 		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-			   queryStr.append(" and model.booth.constituency.state.stateId in (:userAccessLevelValues)");  
+			   queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.state.stateId in (:userAccessLevelValues)");  
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-			   queryStr.append(" and model.booth.constituency.district.districtId in (:userAccessLevelValues)");  
+			   queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.district.districtId in (:userAccessLevelValues)");  
 			 }/*else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
 		        queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
 			 }*/else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-		        queryStr.append(" and model.booth.constituency.constituencyId in (:userAccessLevelValues) ");  
+		        queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId in (:userAccessLevelValues) ");  
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
-			    queryStr.append(" and model.booth.tehsil.tehsilId in (:userAccessLevelValues)");  
+			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilId in (:userAccessLevelValues)");  
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
-			    queryStr.append(" and model.booth.localBody.localElectionBodyId in (:userAccessLevelValues)"); 
+			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
-			    queryStr.append(" and model.booth.panchayat.panchayatId in (:userAccessLevelValues)"); 
+			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat.panchayatId in (:userAccessLevelValues)"); 
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
-			    queryStr.append(" and model.booth.localBodyWard.constituencyId in (:userAccessLevelValues)"); 
+			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.ward.constituencyId in (:userAccessLevelValues)"); 
 			 }
 		
 		if(boothCommEnrollYrIds !=null && boothCommEnrollYrIds.size() > 0){
@@ -256,14 +258,14 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 
 		queryStr.append(" from BoothIncharge model ");
 		queryStr.append(" left join model.boothInchargeRoleConditionMapping model1 ");
-		queryStr.append(" left join model1.address.state state ");
-		queryStr.append(" left join model1.address.district district ");
-		queryStr.append(" left join model1.address.parliamentConstituency parliamentConstituency ");
-		queryStr.append(" left join model1.address.constituency constituency ");
-		queryStr.append(" left join model1.address.tehsil tehsil ");
-		queryStr.append(" left join model1.address.localElectionBody localElectionBody ");
-		queryStr.append(" left join model1.address.localElectionBody.electionType electionType ");
-		queryStr.append(" left join model1.address.panchayat panc ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.state state ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.district district ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.parliamentConstituency parliamentConstituency ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.constituency constituency ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.tehsil tehsil ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.localElectionBody localElectionBody ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.localElectionBody.electionType electionType ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.panchayat panc ");
 
 		queryStr.append(" where model.isActive ='Y' and model.isDeleted = 'N' and model1.isDeleted='N' ");
          
@@ -360,13 +362,13 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 	
 		queryStr.append(" from BoothIncharge model ");
 		queryStr.append(" left join model.boothInchargeRoleConditionMapping model1 ");
-		queryStr.append(" left join model1.address.district district ");
-		queryStr.append(" left join model1.address.parliamentConstituency parliamentConstituency ");
-		queryStr.append(" left join model1.address.constituency constituency ");
-		queryStr.append(" left join model1.address.tehsil tehsil ");
-		queryStr.append(" left join model1.address.localElectionBody localElectionBody ");
-		queryStr.append(" left join model1.address.localElectionBody.electionType electionType ");
-		queryStr.append(" left join model1.address.panchayat panc ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.district district ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.parliamentConstituency parliamentConstituency ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.constituency constituency ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.tehsil tehsil ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.localElectionBody localElectionBody ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.localElectionBody.electionType electionType ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.panchayat panc ");
 
 		queryStr.append(" where model.isActive ='Y' and model.isDeleted = 'N' and model1.isDeleted='N' ");
 
@@ -413,14 +415,14 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 
 		queryStr.append(" from BoothIncharge model ");
 		queryStr.append(" left join model.boothInchargeRoleConditionMapping model1 ");
-		queryStr.append(" left join model1.address.state state ");
-		queryStr.append(" left join model1.address.district district ");
-		queryStr.append(" left join model1.address.parliamentConstituency parliamentConstituency ");
-		queryStr.append(" left join model1.address.constituency constituency ");
-		queryStr.append(" left join model1.address.tehsil tehsil ");
-		queryStr.append(" left join model1.address.localElectionBody localElectionBody ");
-		queryStr.append(" left join model1.address.localElectionBody.electionType electionType ");
-		queryStr.append(" left join model1.address.panchayat panc ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.state state ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.district district ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.parliamentConstituency parliamentConstituency ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.constituency constituency ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.tehsil tehsil ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.localElectionBody localElectionBody ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.localElectionBody.electionType electionType ");
+		queryStr.append(" left join model1.boothInchargeCommittee.address.panchayat panc ");
 
 		queryStr.append(" where model.isActive ='Y' and model.isDeleted = 'N' and model1.isDeleted='N' ");
 
@@ -504,8 +506,8 @@ public Long checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Lo
 		sb.append(" select model.boothInchargeId from BoothIncharge model where " );
 		
 		if(boothId != null && boothId.longValue() >0l)
-			sb.append(" model.booth.boothId = :boothId ");
-		if(boothId != null && boothId.longValue() >0l)
+			sb.append(" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.boothId = :boothId ");
+		if(boothInchrgRoleId != null && boothInchrgRoleId.longValue() >0l)
 			sb.append("and  model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId = :boothInchrgRoleId ");
 		if(boothEnrollmentYrIds != null && boothEnrollmentYrIds.size() >0)
 			sb.append(" and  model.boothInchargeEnrollment.boothInchargeEnrollmentId in (:boothEnrollmentYrIds) ");
@@ -529,7 +531,7 @@ public Long checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Lo
 		 				 " from BoothIncharge model " +
 		 				 " where " +
 		 				 " model.isDeleted='N' and  model.boothInchargeRoleConditionMapping.isDeleted='N' and model.isActive ='Y'" +
-		 				 " and model.boothInchargeRoleConditionMapping.boothId=:boothId " +
+		 				 " and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.boothId=:boothId " +
 		 				 " and model.boothInchargeRoleConditionMapping.boothInchargeEnrollmentId=:boothInchargeEnrollmentId " +
 		 				 " group by " +
 		 				 " model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId ");
