@@ -1695,10 +1695,26 @@
 		var tabBlock = '';
 		var tableId = '';
 		tabBlock+='<div class="panel panel-black panel-default">';
-			tabBlock+='<div class="panel-heading">';
+			tabBlock+='<div class="panel-heading" id="heading'+blockId+'">';
+			if(blockId == "stateBlockId"){
+				tabBlock+='<a class="panelCollapseIcon collapseActiveStateCls" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+blockId+'" aria-expanded="true" aria-controls="collapse'+blockId+'">';
 				tabBlock+='<h4 class="panel-title text-capital">'+blockName+' level overview</h4>';
+				tabBlock+='</a>';
+			}else{
+				tabBlock+='<a class="panelCollapseIcon collapseActiveStateCls collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+blockId+'" aria-expanded="true" aria-controls="collapse'+blockId+'">';
+				tabBlock+='<h4 class="panel-title text-capital">'+blockName+' level overview</h4>';
+				tabBlock+='</a>';
+			}
+			
+				
+				
 			tabBlock+='</div>';
-			tabBlock+='<div>';
+			if(blockId  == "stateBlockId"){
+				tabBlock+='<div id="collapse'+blockId+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+blockId+'">';
+			}else{
+				tabBlock+='<div id="collapse'+blockId+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+blockId+'">';
+			}
+			
 				tabBlock+='<div class="row">';
 					tabBlock+='<div class="col-sm-12">';
 						tabBlock+='<div>';
@@ -1728,7 +1744,7 @@
 						tabBlock+='</div>';
 					tabBlock+='</div>';
 				tabBlock+='</div>';
-			tabBlock+='</div>';
+			
 			tabBlock+='<div class="panel-body">';
 				tabBlock+='<select class="form-control" role="tabListMobile">';
 					for(var i in blocksArr)
@@ -1774,6 +1790,7 @@
 					}
 				tabBlock+='</div>';
 			tabBlock+='</div>';
+		tabBlock+='</div>';
 		tabBlock+='</div>';
 		$("#"+blockId).html(tabBlock);
 		//$(".nav-tabs-custom li:last-child a").removeAttr("style");
@@ -3366,7 +3383,7 @@
 								for(var i in result.statusList){
 									totalStressCount =totalStressCount+result.statusList[i].stressedCount;
 									totalAllHabsCount =totalAllHabsCount+result.statusList[i].count;
-										str+='<th colspan="2">'+result.statusList[i].name+'</th>';
+										str+='<th colspan="2">'+result.statusList[i].status+'</th>';
 										
 								}
 								str+='<th colspan="2">TOTAL</th>';
