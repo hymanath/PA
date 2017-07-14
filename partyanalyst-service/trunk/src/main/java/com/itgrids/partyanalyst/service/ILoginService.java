@@ -41,4 +41,5 @@ public interface ILoginService {
 	
 	public AmsAppLoginVO getAmsAppValidateLoginDetails(String userName,String password);
 	
+	public String getCheckUserNameAvailibility(String userName);
 }

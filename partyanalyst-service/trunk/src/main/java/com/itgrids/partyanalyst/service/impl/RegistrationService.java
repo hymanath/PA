@@ -148,28 +148,37 @@ public class RegistrationService implements IRegistrationService{
 
 	public String saveRegistration(RegistrationVO values,String userType)
 	{
-		User user = saveDataIntoUserModel(values);
-		
-		if(checkUserName(values.getUserName())!= true)
-		{
-			
-			if(values.getStateId() !=null && values.getStateId()!=0)
-				user.setStateId(values.getStateId());
-			
-			if(values.getConstituency()!= null && !values.getConstituency().equalsIgnoreCase("Select Constituency"))
-			user.setConstituencyId(Long.parseLong(values.getConstituency().toString()));
-			user.setIsPwdChanged("true");
-			user.set_loginRestriction("false");
-			user.setMultipleAccessRestriction("false");
-			user.setIsEnabled("Y");
-			user = userDAO.save(user);
-			
-			saveDataInToUserRolesTable(user,values);
-			requestStatus.setRequestStatus(BaseDTO.SUCCESS);
+		boolean alreadyExist = false;
+		if(values.getUserName() != null && values.getUserName().length() >0){
+			List<Long> loginUserNameLst = userDAO.getCheckUserNameAvailibility(values.getUserName());
+			if(loginUserNameLst != null && loginUserNameLst.size() >0){
+				alreadyExist = true;
+			}
 		}
-		else
-			requestStatus.setRequestStatus(BaseDTO.PARTIAL);
-
+		
+		if(!alreadyExist){
+			User user = saveDataIntoUserModel(values);
+			
+			if(checkUserName(values.getUserName())!= true)
+			{
+				
+				if(values.getStateId() !=null && values.getStateId()!=0)
+					user.setStateId(values.getStateId());
+				
+				if(values.getConstituency()!= null && !values.getConstituency().equalsIgnoreCase("Select Constituency"))
+				user.setConstituencyId(Long.parseLong(values.getConstituency().toString()));
+				user.setIsPwdChanged("true");
+				user.set_loginRestriction("false");
+				user.setMultipleAccessRestriction("false");
+				user.setIsEnabled("Y");
+				user = userDAO.save(user);
+				
+				saveDataInToUserRolesTable(user,values);
+				requestStatus.setRequestStatus(BaseDTO.SUCCESS);
+			}
+			else
+				requestStatus.setRequestStatus(BaseDTO.PARTIAL);
+		}
 		return requestStatus.getRequestStatus();
 	}
 	
@@ -271,7 +280,7 @@ public class RegistrationService implements IRegistrationService{
 			user.setMiddleName(values.getMiddleName());
 			user.setLastName(values.getLastName());
 			user.setGender(values.getGender());
-			user.setUserName(values.getUserName());
+			user.setUserName(values.getUserName().trim());
 			
 			String secretKey = EncryptDecrypt.getSecretKey();
 			
