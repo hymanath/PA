@@ -108,7 +108,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(schemeIdsList != null && schemeIdsList.size()>0)
 			queryStr.append(" and model.fundSanction.govtSchemeId in (:schemeIdsList) ");
 		if(startDate != null && endDate != null)
-			queryStr.append(" and ( date(model.fundSanction.updatedTime) between :startDate and :endDate)  ");
+			queryStr.append(" and ( date(model.fundSanction.insertedTime) between :startDate and :endDate)  ");
 		if(govtSchmeIdsList != null && govtSchmeIdsList.size()>0){
 			queryStr.append(" and model.fundSanction.govtSchemeId in (:govtSchmeIdsList) ");
 		}
@@ -161,7 +161,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
 			queryStr.append(" panchayat.panchayatId, ");
 		}
-		queryStr.append(" model.fundSanction.financialYearId,model.fundSanction.govtSchemeId ");
+		queryStr.append(" model.fundSanction.financialYearId,model.fundSanction.subProgramId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		
 		if(financialYearIdsList != null && financialYearIdsList.size()>0)
@@ -267,7 +267,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(schemeIdsList != null && schemeIdsList.size()>0)
 			queryStr.append(" and model.fundSanction.govtSchemeId in (:schemeIdsList) ");
 		if(startDate != null && endDate != null)
-			queryStr.append(" and ( date(model.fundSanction.updatedTime) between :startDate and :endDate)  ");
+			queryStr.append(" and ( date(model.fundSanction.insertedTime) between :startDate and :endDate)  ");
 		/*if(searchScopeId != null && searchScopeId.longValue()>0L)
 			queryStr.append(" and model.locationScopeId =:searchScopeId ");
 		if(searchScopeValuesList != null && searchScopeValuesList.size()>0)
@@ -514,7 +514,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			queryStr.append(" and model.fundSanction.financialYearId in (:financialYearIdsList)  " );
 		}
 		if(fromDate != null && toDate != null)
-			queryStr.append(" and ( date(model.fundSanction.updatedTime) between :startDate and :endDate)  ");
+			queryStr.append(" and ( date(model.fundSanction.insertedTime) between :startDate and :endDate)  ");
 		if(deptIdsList != null && deptIdsList.size()>0)
 			queryStr.append(" and model.fundSanction.department.departmentId in (:deptIdsList) ");
 		if(sourceIdsList != null && sourceIdsList.size()>0)
