@@ -1170,7 +1170,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	     }
         var programIds =[];
 		if(enrollmentYrIds == 4){
-			programIds.push(8);
+			programIds.push(8,5);
 		}else{
 			programIds.push(1,6,7,5);
 		}		
