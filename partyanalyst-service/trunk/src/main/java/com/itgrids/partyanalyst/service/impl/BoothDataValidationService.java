@@ -3,10 +3,12 @@
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.jfree.util.Log;
@@ -16,6 +18,7 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeRoleConditionMappingDAO;
+import com.itgrids.partyanalyst.dao.IBoothInchargeSerialNoRangeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -32,6 +35,8 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter;
+import com.itgrids.partyanalyst.model.BoothIncharge;
+import com.itgrids.partyanalyst.model.BoothInchargeSerialNoRange;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IBoothDataValidationService;
@@ -50,9 +55,18 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	private IBoothInchargeDAO boothInchargeDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
 	private IBoothInchargeRoleConditionMappingDAO boothInchargeRoleConditionMappingDAO;
+	private IBoothInchargeSerialNoRangeDAO boothInchargeSerialNoRangeDAO;
 	
 	
-	
+	public IBoothInchargeSerialNoRangeDAO getBoothInchargeSerialNoRangeDAO() {
+		return boothInchargeSerialNoRangeDAO;
+	}
+
+	public void setBoothInchargeSerialNoRangeDAO(
+			IBoothInchargeSerialNoRangeDAO boothInchargeSerialNoRangeDAO) {
+		this.boothInchargeSerialNoRangeDAO = boothInchargeSerialNoRangeDAO;
+	}
+
 	public IBoothInchargeRoleConditionMappingDAO getBoothInchargeRoleConditionMappingDAO() {
 		return boothInchargeRoleConditionMappingDAO;
 	}
@@ -845,6 +859,64 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			Log.error("Exception raised at boothInchargeRoleDetails in gettingBoothInchargeRoleDetails class", e);
 		}
 		return returnList;
+	}
+	
+	/**
+	  * @param  boothId,boothIncgRoleId,enrollmentIds
+	  * @return String
+	  * @author Hymavathi 
+	  * @Description :This Service Method is used to Update the range ids in Booth Incharge table after each saving of member. 
+	  * @since 14-JULY-2017
+	  */
+	public String updateRangeIdsOfBoothIncharge(Long boothId,Long boothIncgRoleId,List<Long> enrollmentIds){
+		String status = "";
+		try{
+			
+			List<Object[]> serialNosList = boothInchargeDAO.getBoothInchargeRangeIds(boothId,boothIncgRoleId,enrollmentIds);
+			Map<Long,Long> memSerialNo = new HashMap<Long,Long>();
+			Map<Long,Long> serialNoMap = new HashMap<Long,Long>();
+			
+			if(commonMethodsUtilService.isListOrSetValid(serialNosList)){
+				for (Object[] objects : serialNosList) {
+					memSerialNo.put(commonMethodsUtilService.getLongValueForObject(objects[0]), commonMethodsUtilService.getLongValueForObject(objects[1]));
+					serialNoMap.put(commonMethodsUtilService.getLongValueForObject(objects[1]), commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}
+			}
+			List<BoothInchargeSerialNoRange> rangeIdList = boothInchargeSerialNoRangeDAO.getAll();
+			
+			List<Long> serialNos = new ArrayList<Long>();
+			Set<Long> uniqSerialNos = null;
+			Map<Long,Long> diffMap = null;
+			if(commonMethodsUtilService.isMapValid(serialNoMap)){	
+				uniqSerialNos =  serialNoMap.keySet();
+				serialNos.addAll(uniqSerialNos);
+				 Collections.sort(serialNos);
+				 diffMap = commonMethodsUtilService.getAdjacentNumsDifference(serialNos);
+			}
+			
+			
+			
+			if(commonMethodsUtilService.isMapValid(diffMap)){
+				for (Map.Entry<Long, Long> serialDiff : diffMap.entrySet()) {
+					for (BoothInchargeSerialNoRange rangeModal : rangeIdList) {
+						Long boothInchgId = serialNoMap.get(serialDiff.getKey());
+						if(rangeModal.getMinValue() <= serialDiff.getValue() && rangeModal.getMaxValue() >= serialDiff.getValue()){
+							BoothIncharge boothIncharge = boothInchargeDAO.get(boothInchgId);
+							boothIncharge.setBoothInchargeSerialNoRangeId(rangeModal.getBoothInchargeSerialNoRangeId());
+							boothInchargeDAO.save(boothIncharge);
+							status = "Updated Successfully";
+						}
+					}
+				}
+			}
+			
+			
+		}catch (Exception e) {
+			status = "Updation Failed";
+			e.printStackTrace();
+			Log.error("Exception raised at updateRangeIdsOfBoothIncharge in BoothDataValidationService class", e);
+		}
+		return status;
 	}
 
 }
