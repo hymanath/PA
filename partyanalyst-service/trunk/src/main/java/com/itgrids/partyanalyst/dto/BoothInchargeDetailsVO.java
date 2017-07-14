@@ -18,6 +18,8 @@ public class BoothInchargeDetailsVO {
 	private Long maxMemberCount=0l;
 	private Long addedMemberCount=0l;
 	private String status;
+	private Long roleMappingId;
+	private Long vacancyCount=0l;
 	
 	private List<BoothInchargeDetailsVO> subList;
 	private BoothAddressVO boothAddressVO;
@@ -119,5 +121,18 @@ public class BoothInchargeDetailsVO {
 	public void setCount(Long count) {
 		this.count = count;
 	}
+	public Long getRoleMappingId() {
+		return roleMappingId;
+	}
+	public void setRoleMappingId(Long roleMappingId) {
+		this.roleMappingId = roleMappingId;
+	}
+	public Long getVacancyCount() {
+		return vacancyCount;
+	}
+	public void setVacancyCount(Long vacancyCount) {
+		this.vacancyCount = vacancyCount;
+	}
+	
 	
 }
