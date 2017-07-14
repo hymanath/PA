@@ -17,12 +17,10 @@ public interface IBoothInchargeDAO extends GenericDao<BoothIncharge,Long>{
 	public Long getStartedBothCountByConstiId(Long constituencyId);
 	public Long getBoothAssignInchargeCount(Long userAccessLevelId,Set<Long> userAccessLevelValues,Date startDate,Date endDate,List<Long> committeeEnrollmentYearsIdsLst,List<Long> bothIds);
 	public List<Object[]> getBoothInchargeCountDetails(Long userAccessLevelId ,Set<Long> userAccessLevelValues,List<Long> boothCommEnrollYrIds,Date startDate,Date endDate);
-	public List<Object[]> getLocationLevelWiseBoothCount(InputVO inputVO,String resultType);
-	public List<Object[]> getLocationBasedOnSelection(InputVO inputVO);
-	public List<Object[]> getLocationLevelWiseBoothDetails(InputVO inputVO);
 	public List<Object[]> getBoothInchargeCountByRoleIds(Set<Long> keySet,List<Long> boothEnrollmentYrIds);
 	public List<Long> checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Long> boothEnrollmentYrIds);
 	public List<Object[]> getAddedMemberInBoothRoleWise(Long boothId,Long boothInchargeEnrollmentId);
 	public List<Object[]> gettingBoothInchargeFinalCount(Long boothId,Long boothInchargeEnrollmentId,Long locationValue);
 	public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRoleId,List<Long> boothEnrollmentYrIds);
+	public List<Object[]> getLocationSerialNoRangeWiseVoterCount(InputVO inputVO);
 }
