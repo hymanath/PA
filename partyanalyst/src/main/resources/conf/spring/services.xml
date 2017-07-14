@@ -617,6 +617,7 @@
 	    <property name="boothInchargeDAO" ref="boothInchargeDAO"></property>
 	    <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
 	    <property name="boothInchargeRoleConditionMappingDAO" ref="boothInchargeRoleConditionMappingDAO"></property>
+	    <property name="boothInchargeSerialNoRangeDAO" ref="boothInchargeSerialNoRangeDAO"></property>
 	</bean>
 		
 	<bean name="problemUploadService" class="com.itgrids.partyanalyst.service.impl.ProblemUploadService" >	

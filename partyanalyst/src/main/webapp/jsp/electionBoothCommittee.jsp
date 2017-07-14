@@ -2044,7 +2044,25 @@ $("#committeeDesignationId  option").remove();
 	str +='</div>';
 	$("#boothInchargeRoleDivId").html(str);
 }
-
+	function updateRangeIdsOfBoothIncharge()
+	{	
+	var boothId = $("#committeeLocationId1").val();
+	var boothIncrgRoleId = $("#committeeDesignationId").val();
+	var enrollmentYrIds = [];
+	enrollmentYrIds.push(1);
+		var jsObj = {
+			boothId :boothId,
+			enrollmentYrIds:enrollmentYrIds,
+			boothIncgRoleId:boothIncrgRoleId
+		}
+		 $.ajax({
+			type : "POST",
+			url : "updateRangeIdsOfBoothInchargeAction.action",
+			data : {task:JSON.stringify(jsObj)} 
+		}).done(function(result){
+			
+		});
+	}
 </script>
 <script>
 var tableToExcel = (function() {
