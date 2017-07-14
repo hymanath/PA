@@ -9,13 +9,29 @@ NotStarted
 Started
 Completed
 */
+var blockNames = ["DISTRICT","CONSTITUENCY","MANDAL","PANCHAYAT "];
 getLocationLevelWiseBoothCount("DISTRICT","districtLevelBoothDtlsDivId");
 getLocationLevelWiseBoothCount("CONSTITUENCY","constituencyLevelBoothDtlsDivId");
 getLocationLevelWiseBoothCount("TEHSIL","mandalLevelBoothDtlsDivId");
 getLocationLevelWiseBoothCount("PANCHAYAT","panchaytLevelBoothDtlsDivId");
-//getLocationBasedOnSelection();
-//getLocationLevelWiseBoothDetails();
-//validateBoothToMakeConfirm();
+getLocationBasedOnSelection();
+getLocationLevelWiseBoothDetails();
+
+$(document).on('click','.table-menu li',function(){
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+	var subBlockNames = ["DISTRICT","PARLIAMENT"];
+	for(var i in subBlockNames){
+		if(subBlockNames[i] == 'DISTRICT'){
+			$("#selectConstituencyDistrict").show();
+		}
+		else if(subBlockNames[i] == 'PARLIAMENT'){
+			$("#selectParliament").show();
+			$("#selectConstituencyDistrict").hide();
+		}
+	}
+});
+validateBoothToMakeConfirm(); 
 function getLocationLevelWiseBoothCount(locationLevel,divId){
 
 	var jsObj={  
@@ -31,10 +47,11 @@ function getLocationLevelWiseBoothCount(locationLevel,divId){
 		url : 'getLocationLevelWiseBoothCountAction.action',  
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
-	}).done(function(result){ 
+	}).done(function(result){
 	 	  buildLocationLevelWiseBoothDtls(result,locationLevel,divId);
 	});
 }
+
  function buildLocationLevelWiseBoothDtls(result,locationLevel,divId){
 	if(result != null && result.length > 0){
 		 var rangeArr = result[0].subList;
