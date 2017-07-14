@@ -136,11 +136,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
-    public void setBoothInchargeSerialNoRangeDAO(
-			IBoothInchargeSerialNoRangeDAO boothInchargeSerialNoRangeDAO) {
-		this.boothInchargeSerialNoRangeDAO = boothInchargeSerialNoRangeDAO;
-	}
-
+   
 	public UploadDataErrorMessageVO readVoterExcelDataAndValidate(File filePath,
 			String electionYear, Long stateId, Long electionTypeId , String publicatonDateId) {
 		ResultStatus resultStatus = new ResultStatus();
