@@ -3657,12 +3657,7 @@
 			filterValue="";
 			filterType="";
 		}else{
-			if(locationType == "mandal"){
-				filterValue = locationValue <= 9? locationValue:locationValue;
-
-		}else{
-			filterValue = locationValue <= 9?"0"+locationValue:locationValue;
-		}
+			filterValue = locationValue <= 9? locationValue:locationValue;
 			filterType = locationType;
 		}
 		var districtValStr="";	
@@ -4001,12 +3996,7 @@
 			filterValue="";
 			filterType="";
 		}else{
-			if(locationType == "mandal"){
-				filterValue = locationValue <= 9? locationValue:locationValue;
-
-			}else{
-				filterValue = locationValue <= 9?"0"+locationValue:locationValue;
-			}			
+			filterValue = locationValue <= 9? locationValue:locationValue;			
 			filterType = locationType;
 		}
 		var districtValStr="";	
