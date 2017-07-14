@@ -5,9 +5,11 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 onloadCalls();
 function onloadCalls(){
 	getDrainsInfoStateWise();
-	getDrainsInfoLocationWise("district");
-	getDrainsInfoLocationWise("assembly");
-	getDrainsInfoLocationWise("mandal");
+	getDrainsInfoLocationWise("district","onLoad","0","","districtView");
+	getDrainsInfoLocationWise("assembly","onLoad","0","","assemblyView");
+	getDrainsInfoLocationWise("mandal","onLoad","0","","mandalView");
+	getAllDistricts("constituencyDistrictNames","DISTRICTS");
+	getAllDistricts("mandalDistrictNames","DISTRICTS");
 	$(".chosen-select").chosen();
 }
 
@@ -152,14 +154,18 @@ function getDrainsInfoStateWise(){
 }
 
 	
-function getDrainsInfoLocationWise(locationType){
-	$("#"+locationType+"TableDivId").html(spinner);
-	var json = {
-		fromDate : globalFromDate,
-		toDate : globalToDate,
-		locationId:0,
-		locationType:locationType
-	}
+function getDrainsInfoLocationWise(locationType,type,filterId,filterType,divId){
+	
+	$("#"+divId+"TableDivId").html(spinner);
+		var json = {
+			fromDate : globalFromDate,
+			toDate : globalToDate,
+			locationId:0,
+			locationType:locationType,
+			filterType:filterType,
+			filterId:filterId
+		}
+	
 	$.ajax({                
 		type:'POST',    
 		url: 'getDrainsInfoLocationWise',
@@ -170,11 +176,11 @@ function getDrainsInfoLocationWise(locationType){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		buildingTable(result,locationType);
+		buildingTable(result,locationType,divId);
 	});
 }
 
-function buildingTable(result,locationType){
+function buildingTable(result,locationType,divId){
 	var str='';
 	str+='<div class="table-responsive">';
 	str+='<table class="table" id="datatable'+locationType+'">';
@@ -265,18 +271,132 @@ function buildingTable(result,locationType){
         str+='</tbody>';
     str+='</table>';
     str+='</div>';
-	
-	$("#"+locationType+"TableDivId").html(str);
-	
+	$("#"+divId+"TableDivId").html(str);
 	$("#datatable"+locationType).dataTable();	
 }
 
 $(document).on("click","[role='tabDrains_menu'] li",function(){
 	$(this).closest("ul").find("li").removeClass("active");
 	$(this).addClass("active");
-	if($(this).attr("attr_location_type") == "districts"){
-		getDrainsInfoLocationWise("district");
-	}else if($(this).attr("attr_location_type") == "parliament"){
-		getDrainsInfoLocationWise("constituency");
+	var blockId = $(this).closest("ul").attr("attr_blockId");
+	if(blockId == 3){
+		if($(this).attr("attr_location_type") == "districts"){
+			getAllDistricts("constituencyDistrictNames","DISTRICTS");
+			getDrainsInfoLocationWise("district","onLoad",'0','','districtView');
+		}else if($(this).attr("attr_location_type") == "parliament"){
+			getAllConstituenciesForDistrict("mandalDistrictNames","PARLIAMENTS");
+			$("#constituencyTableDivId").html('');
+			getDrainsInfoLocationWise("constituency","onLoad",'0','','districtView');
+		}
+	}else if(blockId == 4){
+		if($(this).attr("attr_location_type") == "districts"){
+			getDrainsInfoLocationWise("assembly","onLoad",'0','','assemblyView');
+		}else if($(this).attr("attr_location_type") == "parliament"){
+			$("#constituencyTableDivId").html('');
+			getDrainsInfoLocationWise("constituency","onLoad",'0','','assemblyView');
+		}
 	}
+	
 });
+$(document).on("change","#constituencyDistrictNames",function(){
+	var districtId = $(this).val();
+	var filterType = "district";
+	getDrainsInfoLocationWise("assembly","onChange",districtId,filterType,'assemblyView')
+});
+
+//All Districts 
+function getAllDistricts(divId,levelName){
+		$("#"+divId).html('');
+		var json = {}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllDistricts',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			
+			if(result !=null && result.length>0){
+				 $("#"+divId).append('<option value="0">ALL '+levelName+'</option>');
+					for(var i in result){
+						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					}
+			}
+			$("#"+divId).trigger('chosen:updated');
+		});
+	}
+	function getAllParliaments(){
+	//All Parliaments
+		$("#"+divId).html('');
+		var json = {}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllParliaments',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				 $("#"+divId).append('<option value="0">ALL '+levelName+'</option>');
+					for(var i in result){
+						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					}
+			}
+			$("#"+divId).trigger('chosen:updated');
+		});
+	}
+	
+	//District Onchange Constituency
+	function getAllConstituenciesForDistrict(){
+		var json = {
+			districtId :parseInt(value)
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllConstituenciesForDistrict',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			 $("#"+blockName+'_'+blockId).html('');
+			if(result !=null  && result.length>0){
+				
+				
+			}else{
+				$("#").html("No Data Available");
+			} 
+		});
+	}
+	
+	//parliament onchange Constituency
+	function getAllConstituenciesForParliament(){
+		var json = {
+			parliamentId:parseInt(value)
+			}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllConstituenciesForParliament',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			$("#"+blockName+'_'+blockId).html('');
+			if(result !=null  && result.length>0){
+				
+			}else{
+				$("#").html("No Data Available");
+			} 
+		});
+	}

@@ -8,14 +8,14 @@
 <title>Drains Dashboard</title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
+<link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
+<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
-<script src="Assests/Plugins/Less/less.js"></script>
-<link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
-<link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
+
 </head>
 <body>
 <style>
@@ -243,75 +243,13 @@
                     <div class="panel-body">
 					<div class="row">
 						<div class="col-sm-12">
-							<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu">
+							<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu" attr_blockId="3">
 								<li class="active" attr_location_type="districts">Districts</li>
 								<li class="" attr_location_type="parliament">Parliament</li>
 							</ul>
 						</div>
 					</div>
-					<div id="districtTableDivId"></div>
-                    <!--<table class="table" id="datatableDemo">
-                        <thead>
-                            <tr>
-                                <th style="background-color:#ccc;">DISTRICTS</th>
-                                <th style="background-color:#ccc;" colspan="5">TOTAL</th>
-                                <th style="background-color:#ccc;" colspan="5">KACCHA</th>
-                                <th style="background-color:#ccc;" colspan="5">PAKKA</th>
-                                <th style="background-color:#ccc;" colspan="5">UNDERGROUND</th>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th>Avi</th>
-								<th>km</th>
-                                <th>Cle</th>
-								<th>km</th>
-                                <th>%</th>
-                                <th>Avi</th>
-								<th>km</th>
-                                <th>Cle</th>
-								<th>km</th>
-                                <th>%</th>
-								<th>Avi</th>
-								<th>km</th>
-                                <th>Cle</th>
-								<th>km</th>
-                                <th>%</th>
-								<th>Avi</th>
-								<th>km</th>
-                                <th>Cle</th>
-								<th>km</th>
-                                <th>%</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    Anantapur
-									<p><span>174</span>/<span>1003</span></p>
-                                </td>
-                                <td>4335</td>
-                                <td>407.26</td>
-                                <td>3726</td>
-                                <td>347.08</td>
-								<td>0%</td>
-                                <td>4335</td>
-                                <td>407.26</td>
-                                <td>3726</td>
-                                <td>347.08</td>
-								<td>0%</td>
-								<td>4335</td>
-                                <td>407.26</td>
-                                <td>3726</td>
-                                <td>347.08</td>
-								<td>0%</td>
-								<td>4335</td>
-                                <td>407.26</td>
-                                <td>3726</td>
-                                <td>347.08</td>
-								<td>0%</td>
-                            </tr>
-                        </tbody>
-                    </table>-->
+					<div id="districtViewTableDivId"></div>
                     </div>
                     </div>
                     <div class="panel panel-black panel-default">
@@ -321,86 +259,17 @@
                     <div class="panel-body">
 					<div class="row">
 						<div class="col-sm-3">
-							<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu">
+							<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu" attr_blockId="4">
 								<li class="active" attr_location_type="districts">Districts</li>
 								<li class="" attr_location_type="parliament">Parliament</li>
 							</ul>
 						</div>
 						<div class="col-sm-3">
-							<select class="form-control chosen-select">
-								<option value="0">All Districts</option>
+							<select class="form-control chosen-select" id="constituencyDistrictNames">
 							</select>
 						</div>
 					</div>
-					<div id="assemblyTableDivId"></div>
-                    <!--<table class="table" id="datatableDemoOne">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                 <div id="selectDistrict" class="col-sm-3"></div>
-                                 <div id="selectDivision" class="col-sm-3"></div>
-                            </div>
-                        </div>
-                        <thead>
-                            <tr>
-                                <th style="background-color:#ccc;">Division</th>
-                                <th style="background-color:#ccc;" colspan="5">TOTAL</th>
-                                <th style="background-color:#ccc;" colspan="5">KACCHA</th>
-                                <th style="background-color:#ccc;" colspan="5">PAKKA</th>
-                                <th style="background-color:#ccc;" colspan="5">UNDERGROUND</th>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th>Avi</th>
-								<th>km</th>
-                                <th>Cle</th>
-								<th>km</th>
-                                <th>%</th>
-                                <th>Avi</th>
-								<th>km</th>
-                                <th>Cle</th>
-								<th>km</th>
-                                <th>%</th>
-								<th>Avi</th>
-								<th>km</th>
-                                <th>Cle</th>
-								<th>km</th>
-                                <th>%</th>
-								<th>Avi</th>
-								<th>km</th>
-                                <th>Cle</th>
-								<th>km</th>
-                                <th>%</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    
-                                    Anantapur
-                                </td>
-                                <td>4335</td>
-                                <td>407.26</td>
-                                <td>3726</td>
-                                <td>347.08</td>
-								<td>0%</td>
-                                <td>4335</td>
-                                <td>407.26</td>
-                                <td>3726</td>
-                                <td>347.08</td>
-								<td>0%</td>
-								<td>4335</td>
-                                <td>407.26</td>
-                                <td>3726</td>
-                                <td>347.08</td>
-								<td>0%</td>
-								<td>4335</td>
-                                <td>407.26</td>
-                                <td>3726</td>
-                                <td>347.08</td>
-								<td>0%</td>
-                            </tr>
-                        </tbody>
-                    </table>-->
+					<div id="assemblyViewTableDivId"></div>
                     </div>
                     </div>
                     <div class="panel panel-black panel-default">
@@ -410,14 +279,13 @@
                     <div class="panel-body">
 					<div class="row">
 						<div class="col-sm-3">
-							<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu">
+							<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu" attr_blockId="5">
 								<li class="active" attr_location_type="districts">Districts</li>
 								<li class="" attr_location_type="parliament">Parliament</li>
 							</ul>
 						</div>
 						<div class="col-sm-3">
-							<select class="form-control chosen-select">
-								<option value="0">All Districts</option>
+							<select class="form-control chosen-select" id="mandalDistrictNames">
 							</select>
 						</div>
 						<div class="col-sm-3">
@@ -426,76 +294,7 @@
 							</select>
 						</div>
 					</div>
-					<div id="mandalTableDivId"></div>
-                    <!--<table class="table" id="datatableDemoTwo">
-                       <div class="row">
-                            <div class="col-sm-12">
-                                 <div id="selectMandal" class="col-sm-3"></div>
-                                 <div id="mandalDivision" class="col-sm-3"></div>
-                            </div>
-                        </div>
-                        <thead>
-                            <tr>
-                                <th style="background-color:#ccc;">Mandal</th>
-                                <th style="background-color:#ccc;" colspan="5">TOTAL</th>
-                                <th style="background-color:#ccc;" colspan="5">KACCHA</th>
-                                <th style="background-color:#ccc;" colspan="5">PAKKA</th>
-                                <th style="background-color:#ccc;" colspan="5">UNDERGROUND</th>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th>Avi</th>
-								<th>km</th>
-                                <th>Cle</th>
-								<th>km</th>
-                                <th>%</th>
-                                <th>Avi</th>
-								<th>km</th>
-                                <th>Cle</th>
-								<th>km</th>
-                                <th>%</th>
-								<th>Avi</th>
-								<th>km</th>
-                                <th>Cle</th>
-								<th>km</th>
-                                <th>%</th>
-								<th>Avi</th>
-								<th>km</th>
-                                <th>Cle</th>
-								<th>km</th>
-                                <th>%</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    
-                                    Anantapur
-                                </td>
-								<td>4335</td>
-                                <td>407.26</td>
-                                <td>3726</td>
-                                <td>347.08</td>
-								<td>0%</td>
-                                <td>4335</td>
-                                <td>407.26</td>
-                                <td>3726</td>
-                                <td>347.08</td>
-								<td>0%</td>
-								<td>4335</td>
-                                <td>407.26</td>
-                                <td>3726</td>
-                                <td>347.08</td>
-								<td>0%</td>
-								<td>4335</td>
-                                <td>407.26</td>
-                                <td>3726</td>
-                                <td>347.08</td>
-								<td>0%</td>
-                                
-                            </tr>
-                        </tbody>
-                    </table>-->
+					<div id="mandalViewTableDivId"></div>
                     </div>
                     </div>
                 </div>
@@ -515,5 +314,6 @@
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/js/Pris.js" type="text/javascript"></script>
 <script src="Assests/drainDashBoard/drainDashBoard.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Less/less.js"></script>
 </body>
 </html>
