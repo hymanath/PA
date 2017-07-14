@@ -26,9 +26,16 @@ public class BasicVO {
 	 private String locationName;
 	 private List<BasicVO> basicList = new ArrayList<BasicVO>(0);
 	 private Long parentLocationId;
+	 private String goNumber;
 	 
 	 
 	 
+	public String getGoNumber() {
+		return goNumber;
+	}
+	public void setGoNumber(String goNumber) {
+		this.goNumber = goNumber;
+	}
 	public Long getParentLocationId() {
 		return parentLocationId;
 	}
