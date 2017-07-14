@@ -344,7 +344,7 @@ public interface IConstants {
 	public static final String SUB_USER = "subUser";
 	public static final String POLITICIAN = "POLITICIAN";
 	public static final String COUNTRY = "COUNTRY";
-	public static final String STATE = "STATE";//santosh
+	public static final String STATE = "STATE";
 	public static final String DISTRICT = "DISTRICT";
 	public static final String CONSTITUENCY = "CONSTITUENCY";
 	public static final String TEHSIL = "TEHSIL";
