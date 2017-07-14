@@ -1315,4 +1315,5 @@ public interface IConstants {
 	public static final Long MAHANADU_EVENT_ID = 51L;
 	public static final List<Long> IMPACT_IDS = Arrays.asList(3l,5l,6l,9l,12l);
 	public static final String PARLIAMENT_CONSTITUENCY = "PARLIAMENT CONSTITUENCY";
+	public static final Long BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID = 24L;
 }
