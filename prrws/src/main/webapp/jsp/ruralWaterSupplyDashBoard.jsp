@@ -152,13 +152,13 @@
 					<div class="col-sm-2 pad_lR_5">
 						<div class="white-block">
 							<h5 style="padding:5px"><span class="chartTitleAlign">Lab Test Water Sources</span></h5>
-							<div class="chart2" id="overView"></div>
+							<div class="chart2" id="overView" style="height:315px;"></div>
 						</div>
 					</div>
 					<div class="col-sm-4" style="padding-left: 5px;">
 						<div class="white-block">
 							<h5 style="padding:5px"><span class="chartTitleAlign">Works</span></h5>
-							<div class="chart2" id="habitationWorks"></div>
+							<div class="chart2" id="habitationWorks" style="height:315px;"></div>
 						</div>
 					</div>
 				</div>
@@ -276,7 +276,7 @@
 	</section>
 	<section>
 		<div class="container-fluid m_top20">
-			<div class="row">
+			<div class="row" id="accordion">
 				<div class="col-sm-12">
 					<div id="stateBlockId"></div>
 				</div>
