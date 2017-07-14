@@ -533,6 +533,8 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 					addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[11]));
 					addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[12]));
 				}
+				addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[13]));
+				addressVO.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[14]));
 			}
 		} catch (Exception e) {
 			Log.error("Exception occured at getBoothAddress() in BoothDataValidationService class",e);
