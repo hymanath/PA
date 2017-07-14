@@ -22,14 +22,14 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		StringBuilder query = new StringBuilder("select distinct model.boothInchargeRoleConditionMapping.boothInchargeCommittee.booth.partNo, " +
 				" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.booth.villagesCovered, " +
 					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.name, " +
-					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.panchayat.panchayatName," +
+					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat.panchayatName," +
 					" model.tdpCadre.firstname, model.tdpCadre.mobileNo, model.tdpCadre.memberShipNo, " +
 					" model.tdpCadre.image, " +
 					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilName " +
 					" from BoothIncharge model " +
 					" where " +
 					" model.isDeleted='N' "+
-					" and model.tdpCadre.isDeleted='N' and " +
+					" and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=2014 and " +
 					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.publicationDate.publicationDateId = :publicationDate");
 		if(constituencyId !=null && constituencyId.longValue() > 0)
 		query.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId=:constituencyId");
@@ -39,7 +39,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		query.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.boothId=:boothId");
 		
 		Query query1=getSession().createQuery(query.toString());
-		query1.setParameter("publicationDate", IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
+		query1.setParameter("publicationDate", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
 		if(constituencyId !=null && constituencyId.longValue() > 0){
 			query1.setParameter("constituencyId", constituencyId);
 		}
