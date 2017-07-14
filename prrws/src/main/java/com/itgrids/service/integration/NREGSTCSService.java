@@ -2263,13 +2263,14 @@ public class NREGSTCSService implements INREGSTCSService{
 					parlmentMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), commonMethodsUtilService.getStringValueForObject(objects[1]));
 				}
 			}
-			NregsDataVO finalVO = new NregsDataVO();
+			
 			List<String> constIds = new ArrayList<String>();
 			Long parlmentId = 0l;
 			if(commonMethodsUtilService.isMapValid(consParlMap)){
 			for(Entry<Long,List<String>> param : consParlMap.entrySet()){
 				 parlmentId = param.getKey();
 				 constIds  = param.getValue();
+				 NregsDataVO finalVO = new NregsDataVO();
 				 if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Labour Budget")){
 					 if(commonMethodsUtilService.isListOrSetValid(constIds)){
 						for (String constId : constIds) {
@@ -2277,11 +2278,11 @@ public class NREGSTCSService implements INREGSTCSService{
 							if(vo != null){
 								finalVO.setTargetPersonDays(vo.getTargetPersonDays()+finalVO.getTargetPersonDays());
 								finalVO.setGeneratedPersonDays(vo.getGeneratedPersonDays()+finalVO.getGeneratedPersonDays());
-								finalVO.setPerAppLB(vo.getPerAppLB()+finalVO.getPerAppLB());
-								finalVO.setWageExpenditure(vo.getWageExpenditure()+finalVO.getWageExpenditure());
-								finalVO.setMaterialExpenditure(vo.getMaterialExpenditure()+finalVO.getMaterialExpenditure());
-								finalVO.setTotalExpenditure(vo.getTotalExpenditure()+finalVO.getTotalExpenditure());
-								finalVO.setMaterialExpenditurePerc(vo.getMaterialExpenditurePerc()+finalVO.getMaterialExpenditurePerc());
+								finalVO.setPerAppLB(String.valueOf(Double.valueOf(vo.getPerAppLB())+Double.valueOf(finalVO.getPerAppLB())));
+								finalVO.setWageExpenditure(String.valueOf(Double.valueOf(vo.getWageExpenditure())+Double.valueOf(finalVO.getWageExpenditure())));
+								finalVO.setMaterialExpenditure(String.valueOf(Double.valueOf(vo.getMaterialExpenditure())+Double.valueOf(finalVO.getMaterialExpenditure())));
+								finalVO.setTotalExpenditure(String.valueOf(Double.valueOf(vo.getTotalExpenditure())+Double.valueOf(finalVO.getTotalExpenditure())));
+								finalVO.setMaterialExpenditurePerc(String.valueOf(Double.valueOf(vo.getMaterialExpenditurePerc())+Double.valueOf(finalVO.getMaterialExpenditurePerc())));
 							}
 						}
 					}
@@ -2297,8 +2298,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							NregsDataVO vo = getMatchedVO(consList,Long.valueOf(constId));
 							if(vo != null){
 								finalVO.setTarget(vo.getTarget()+finalVO.getTarget());
-								finalVO.setAchivement(vo.getAchivement()+finalVO.getAchivement());
-								finalVO.setPercentage(vo.getPercentage()+finalVO.getPercentage());
+								finalVO.setAchivement(String.valueOf(Double.valueOf(vo.getAchivement())+Double.valueOf(finalVO.getAchivement())));
+								finalVO.setPercentage(String.valueOf(Double.valueOf(vo.getPercentage())+Double.valueOf(finalVO.getPercentage())));
 							}
 						}
 					}
@@ -2314,9 +2315,9 @@ public class NREGSTCSService implements INREGSTCSService{
 								finalVO.setTarget(vo.getTarget()+finalVO.getTarget());
 								finalVO.setCompleted(vo.getCompleted()+finalVO.getCompleted());
 								if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture Activities")) 
-									finalVO.setAchivement(vo.getAchivement()+finalVO.getAchivement());
+									finalVO.setAchivement(String.valueOf(Double.valueOf(vo.getAchivement())+Double.valueOf(finalVO.getAchivement())));
 								else
-									finalVO.setPercentage(vo.getPercentage()+finalVO.getPercentage());
+									finalVO.setPercentage(String.valueOf(Double.valueOf(vo.getPercentage())+Double.valueOf(finalVO.getPercentage())));
 							}
 						}
 					}
@@ -2328,10 +2329,10 @@ public class NREGSTCSService implements INREGSTCSService{
 						for (String constId : constIds) {
 							NregsDataVO vo = getMatchedVO(consList,Long.valueOf(constId));
 							if(vo != null){
-								finalVO.setSanctionedACRES(vo.getSanctionedACRES()+finalVO.getSanctionedACRES());
-								finalVO.setPittingArea(vo.getPittingArea()+finalVO.getPittingArea());
-								finalVO.setPlantingArea(vo.getPlantingArea()+finalVO.getPlantingArea());
-								finalVO.setPencentageOfPlanting(vo.getPencentageOfPlanting()+finalVO.getPencentageOfPlanting());
+								finalVO.setSanctionedACRES(String.valueOf(Long.valueOf(vo.getSanctionedACRES())+Long.valueOf(finalVO.getSanctionedACRES())));
+								finalVO.setPittingArea(String.valueOf(Double.valueOf(vo.getPittingArea())+Double.valueOf(finalVO.getPittingArea())));
+								finalVO.setPlantingArea(String.valueOf(Double.valueOf(vo.getPlantingArea())+Double.valueOf(finalVO.getPlantingArea())));
+								finalVO.setPencentageOfPlanting(String.valueOf(Double.valueOf(vo.getPencentageOfPlanting())+Double.valueOf(finalVO.getPencentageOfPlanting())));
 							}
 						}
 					}
@@ -2343,11 +2344,11 @@ public class NREGSTCSService implements INREGSTCSService{
 						for (String constId : constIds) {
 							NregsDataVO vo = getMatchedVO(consList,Long.valueOf(constId));
 							if(vo != null){
-								finalVO.setSanctionedAmount(vo.getSanctionedAmount()+finalVO.getSanctionedAmount());
-								finalVO.setSanctionedKMS(vo.getSanctionedKMS()+finalVO.getSanctionedKMS());
-								finalVO.setExpenditureAmount(vo.getExpenditureAmount()+finalVO.getExpenditureAmount());
-								finalVO.setCompletedKMS(vo.getCompletedKMS()+finalVO.getCompletedKMS());
-								finalVO.setPercentage(vo.getPercentage()+finalVO.getPercentage());
+								finalVO.setSanctionedAmount(String.valueOf(Double.valueOf(vo.getSanctionedAmount())+Double.valueOf(finalVO.getSanctionedAmount())));
+								finalVO.setSanctionedKMS(String.valueOf(Long.valueOf(vo.getSanctionedKMS())+Long.valueOf(finalVO.getSanctionedKMS())));
+								finalVO.setExpenditureAmount(String.valueOf(Double.valueOf(vo.getExpenditureAmount())+Double.valueOf(finalVO.getExpenditureAmount())));
+								finalVO.setCompletedKMS(String.valueOf(Double.valueOf(vo.getCompletedKMS())+Double.valueOf(finalVO.getCompletedKMS())));
+								finalVO.setPercentage(String.valueOf(Double.valueOf(vo.getPercentage())+Double.valueOf(finalVO.getPercentage())));
 							}
 						}
 					}
@@ -2359,10 +2360,10 @@ public class NREGSTCSService implements INREGSTCSService{
 						for (String constId : constIds) {
 							NregsDataVO vo = getMatchedVO(consList,Long.valueOf(constId));
 							if(vo != null){
-								finalVO.setSanctionedKMS(vo.getSanctionedKMS()+finalVO.getSanctionedKMS());
-								finalVO.setPittingKMS(vo.getPittingKMS()+finalVO.getPittingKMS());
-								finalVO.setPlantingKMS(vo.getPlantingKMS()+finalVO.getPlantingKMS());
-								finalVO.setPencentageOfPlanting(vo.getPencentageOfPlanting()+finalVO.getPencentageOfPlanting());
+								finalVO.setSanctionedKMS(String.valueOf(Long.valueOf(vo.getSanctionedKMS())+Long.valueOf(finalVO.getSanctionedKMS())));
+								finalVO.setPittingKMS(String.valueOf(Long.valueOf(vo.getPittingKMS())+Long.valueOf(finalVO.getPittingKMS())));
+								finalVO.setPlantingKMS(String.valueOf(Long.valueOf(vo.getPlantingKMS())+Long.valueOf(finalVO.getPlantingKMS())));
+								finalVO.setPencentageOfPlanting(String.valueOf(Double.valueOf(vo.getPencentageOfPlanting())+Double.valueOf(finalVO.getPencentageOfPlanting())));
 							}
 						}
 					}
@@ -2375,8 +2376,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							NregsDataVO vo = getMatchedVO(consList,Long.valueOf(constId));
 							if(vo != null){
 								finalVO.setTarget(vo.getTarget()+finalVO.getTarget());
-								finalVO.setGrounded(vo.getGrounded()+finalVO.getGrounded());
-								finalVO.setNotGrounded(vo.getNotGrounded()+finalVO.getNotGrounded());
+								finalVO.setGrounded(String.valueOf(Long.valueOf(vo.getGrounded())+Long.valueOf(finalVO.getGrounded())));
+								finalVO.setNotGrounded(String.valueOf(Long.valueOf(vo.getNotGrounded())+Double.valueOf(finalVO.getNotGrounded())));
 								finalVO.setInProgress(vo.getInProgress()+finalVO.getInProgress());
 								finalVO.setCompleted(vo.getCompleted()+finalVO.getCompleted());
 							}
@@ -2818,14 +2819,14 @@ public class NREGSTCSService implements INREGSTCSService{
 		try{
 			List<Object[]> locationList = null;
 			Long levelId = inputVO.getSearchLevelId();
-			String locationId =inputVO.getSearchLevelValue().toString();
+			String locationId =inputVO.getMenuLvelValue();
 			if(levelId != null && levelId == IConstants.STATE_LEVEL_SCOPE_ID){//get districtIds
 				locationList = prDistrictDAO.getAllDistrictsFrState();
-			}/*else if(levelId != null && levelId == IConstants.DISTRICT_LEVEL_SCOPE_ID){//get constituencyIds
+			}else if(levelId != null && levelId == IConstants.DISTRICT_LEVEL_SCOPE_ID){//get constituencyIds
 				locationList= prConstituencyDAO.getAllConstutiensFrDistrict(locationId);
 				/*else
-				 locationList =parliamentAssemblyDAO.getParliamentIdAndName(locationId);
-			}*//*else if(levelId != null && levelId == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){//get tehsilIds
+				 locationList =parliamentAssemblyDAO.getParliamentIdAndName(locationId);*/
+			}/*else if(levelId != null && levelId == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){//get tehsilIds
 				locationList = tehsilConstituencyDAO.getTehsilIdAndName(locationId);
 			}else if(levelId != null && levelId == IConstants.MANDAL_LEVEL_SCOPE_ID){//get panchayatIds
 				locationList = panchayatDAO.getPanchayatIdAndName(locationId);
