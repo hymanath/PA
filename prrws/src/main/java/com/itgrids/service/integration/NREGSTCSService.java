@@ -25,6 +25,7 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
 import com.itgrids.dto.LocationFundDetailsVO;
+import com.itgrids.dto.NregaPaymentsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
@@ -2630,13 +2631,14 @@ public class NREGSTCSService implements INREGSTCSService{
 	 * Author :Sravanth
 	 * @description : getNregaLevelsWiseDataForNewFTOPayments
 	 */
-	public List<NregsDataVO> getNregaLevelsWiseDataForNewFTOPayments(InputVO inputVO){
-		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+	public List<NregaPaymentsVO> getNregaLevelsWiseDataForNewFTOPayments(InputVO inputVO){
+		List<NregaPaymentsVO> voList = new ArrayList<NregaPaymentsVO>(0);
 		try {
 			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			
 			String webServiceUrl = null;
+			Map<String,NregaPaymentsVO> namingMap = new HashMap<String,NregaPaymentsVO>(0);
 			
 			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Payments"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PaymentsDataNewServices/PaymentsDataNew";
@@ -2654,26 +2656,135 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
 	 	    				for(int i=0;i<finalArray.length();i++){
-		 	    				NregsDataVO vo = new NregsDataVO();
+	 	    					NregaPaymentsVO vo = new NregaPaymentsVO();
 		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-		 	    				vo.setFtoNotGenCnt(jObj.getString("FTO_NOT_GEN_CNT"));
-		 	    				vo.setFtoNotGenAmt(jObj.getString("FTO_NOT_GEN_AMT"));
-		 	    				vo.setFtoNotUploadCnt(jObj.getString("FTO_NOT_UPLOAD_CNT"));
-		 	    				vo.setFtoNotUploadAmt(jObj.getString("FTO_NOT_UPLOAD_AMT"));
-		 	    				vo.setFtoNotSentCnt(jObj.getString("FTO_NOT_SENT_CNT"));
-		 	    				vo.setFtoNotSentAmt(jObj.getString("FTO_NOT_SENT_AMT"));
-		 	    				vo.setRejectCnt(jObj.getString("REJECT_CNT"));
-		 	    				vo.setRejectAmt(jObj.getString("REJECT_AMT"));
-		 	    				vo.setPendingResponseCnt(jObj.getString("PENDING_RESPONSE_CNT"));
-		 	    				vo.setPendingResponseAmt(jObj.getString("PENDING_RESPONSE_AMT"));
-		 	    				if(inputVO.getLocationType().trim().toString().equalsIgnoreCase("district")){
-		 	    					vo.setdId(jObj.getString("DID"));
-		 	    					vo.setDistrict(jObj.getString("DNAME"));
+		 	    				vo.setId(jObj.getString("UNIQUEID"));
+		 	    				if(jObj.getString("TYPE") != null && jObj.getString("TYPE").trim().equalsIgnoreCase("Sub Total")){
+		 	    					NregaPaymentsVO mapVO = namingMap.get(jObj.getString("UNIQUEID"));
+		 	    					if(mapVO != null){
+		 	    						if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state")){
+			 	    						if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("district"))
+			 	    							vo.setDistrictName(mapVO.getDistrictName());
+			 	    						else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency")){
+			 	    							vo.setDistrictName(mapVO.getDistrictName());
+			 	    							vo.setConstName(mapVO.getConstName());
+			 	    						}else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("mandal")){
+			 	    							vo.setDistrictName(mapVO.getDistrictName());
+			 	    							vo.setConstName(mapVO.getConstName());
+			 	    							vo.setMandalName(mapVO.getMandalName());
+			 	    						}else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat")){
+			 	    							vo.setDistrictName(mapVO.getDistrictName());
+			 	    							vo.setConstName(mapVO.getConstName());
+			 	    							vo.setMandalName(mapVO.getMandalName());
+			 	    							vo.setPanchayatName(mapVO.getPanchayatName());
+			 	    						}
+			 	    					}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
+			 	    						if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency")){
+			 	    							vo.setDistrictName(mapVO.getDistrictName());
+			 	    							vo.setConstName(mapVO.getConstName());
+			 	    						}else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("mandal")){
+			 	    							vo.setDistrictName(mapVO.getDistrictName());
+			 	    							vo.setConstName(mapVO.getConstName());
+			 	    							vo.setMandalName(mapVO.getMandalName());
+			 	    						}else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat")){
+			 	    							vo.setDistrictName(mapVO.getDistrictName());
+			 	    							vo.setConstName(mapVO.getConstName());
+			 	    							vo.setMandalName(mapVO.getMandalName());
+			 	    							vo.setPanchayatName(mapVO.getPanchayatName());
+			 	    						}
+			 	    					}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+			 	    						if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency")){
+			 	    							vo.setConstName(mapVO.getConstName());
+			 	    						}else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("mandal")){
+			 	    							vo.setDistrictName(mapVO.getDistrictName());
+			 	    							vo.setConstName(mapVO.getConstName());
+			 	    							vo.setMandalName(mapVO.getMandalName());
+			 	    						}else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat")){
+			 	    							vo.setDistrictName(mapVO.getDistrictName());
+			 	    							vo.setConstName(mapVO.getConstName());
+			 	    							vo.setMandalName(mapVO.getMandalName());
+			 	    							vo.setPanchayatName(mapVO.getPanchayatName());
+			 	    						}
+			 	    					}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("mandal")){
+			 	    					  if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat")){
+			 	    							vo.setDistrictName(mapVO.getDistrictName());
+			 	    							vo.setConstName(mapVO.getConstName());
+			 	    							vo.setMandalName(mapVO.getMandalName());
+			 	    							vo.setPanchayatName(mapVO.getPanchayatName());
+			 	    						}
+			 	    					}
+		 	    					}
+		 	    				}else{
+		 	    					if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state")){
+		 	    						if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("district"))
+		 	    							vo.setDistrictName(jObj.getString("DISTRICT"));
+		 	    						else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency")){
+		 	    							vo.setDistrictName(jObj.getString("DISTRICT"));
+		 	    							vo.setConstName(jObj.getString("CONSTITUENCY"));
+		 	    						}else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("mandal")){
+		 	    							vo.setDistrictName(jObj.getString("DISTRICT"));
+		 	    							vo.setConstName(jObj.getString("CONSTITUENCY"));
+		 	    							vo.setMandalName(jObj.getString("MANDAL"));
+		 	    						}else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat")){
+		 	    							vo.setDistrictName(jObj.getString("DISTRICT"));
+		 	    							vo.setConstName(jObj.getString("CONSTITUENCY"));
+		 	    							vo.setMandalName(jObj.getString("MANDAL"));
+		 	    							vo.setPanchayatName(jObj.getString("PANCHAYAT"));
+		 	    						}
+		 	    					}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
+		 	    						if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency")){
+		 	    							vo.setDistrictName(jObj.getString("DISTRICT"));
+		 	    							vo.setConstName(jObj.getString("CONSTITUENCY"));
+		 	    						}else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("mandal")){
+		 	    							vo.setDistrictName(jObj.getString("DISTRICT"));
+		 	    							vo.setConstName(jObj.getString("CONSTITUENCY"));
+		 	    							vo.setMandalName(jObj.getString("MANDAL"));
+		 	    						}else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat")){
+		 	    							vo.setDistrictName(jObj.getString("DISTRICT"));
+		 	    							vo.setConstName(jObj.getString("CONSTITUENCY"));
+		 	    							vo.setMandalName(jObj.getString("MANDAL"));
+		 	    							vo.setPanchayatName(jObj.getString("PANCHAYAT"));
+		 	    						}
+		 	    					}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+		 	    						if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency")){
+		 	    							vo.setConstName(jObj.getString("CONSTITUENCY"));
+		 	    						}else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("mandal")){
+		 	    							vo.setDistrictName(jObj.getString("DISTRICT"));
+		 	    							vo.setConstName(jObj.getString("CONSTITUENCY"));
+		 	    							vo.setMandalName(jObj.getString("MANDAL"));
+		 	    						}else if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat")){
+		 	    							vo.setDistrictName(jObj.getString("DISTRICT"));
+		 	    							vo.setConstName(jObj.getString("CONSTITUENCY"));
+		 	    							vo.setMandalName(jObj.getString("MANDAL"));
+		 	    							vo.setPanchayatName(jObj.getString("PANCHAYAT"));
+		 	    						}
+		 	    					}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("mandal")){
+		 	    					  if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat")){
+		 	    							vo.setDistrictName(jObj.getString("DISTRICT"));
+		 	    							vo.setConstName(jObj.getString("CONSTITUENCY"));
+		 	    							vo.setMandalName(jObj.getString("MANDAL"));
+		 	    							vo.setPanchayatName(jObj.getString("PANCHAYAT"));
+		 	    						}
+		 	    					}
 		 	    				}
-		 	    				else if(inputVO.getLocationType().trim().toString().equalsIgnoreCase("mandal")){
-		 	    					vo.setmId(jObj.getString("MID"));
-		 	    					vo.setMandal(jObj.getString("MANDAL_DESCRIPTION"));
-		 	    				}
+		 	    				vo.setType(jObj.getString("TYPE"));
+		 	    				vo.setGeneratedQuantity(jObj.getString("T_WS_CNT"));
+		 	    				vo.setGeneratedAmount(jObj.getString("T_WS_AMT"));
+		 	    				vo.setGeneratedPendingQuantity(jObj.getString("FNG_WS_CNT"));
+		 	    				vo.setGeneratedPendingAmount(jObj.getString("FNG_WS_AMT"));
+		 	    				vo.setUploadQuantity(jObj.getString("FG_WS_CNT"));
+		 	    				vo.setUploadAmount(jObj.getString("FG_WS_AMT"));
+		 	    				vo.setUploadPendingQunatity(jObj.getString("FNU_WS_CNT"));
+		 	    				vo.setUploadPendingAmount(jObj.getString("FNU_WS_AMT"));
+		 	    				vo.setSentToBankQuantity(jObj.getString("FU_WS_CNT"));
+		 	    				vo.setSentToBankAmount(jObj.getString("FU_WS_AMT"));
+		 	    				vo.setSentToBankPendingQuantity(jObj.getString("FNS_WS_CNT"));
+		 	    				vo.setSentToBankPendingAmount(jObj.getString("FNS_WS_AMT"));
+		 	    				vo.setFailedTransactionQuantity(jObj.getString("FR_WS_CNT"));
+		 	    				vo.setFailedTransactionAmount(jObj.getString("FR_WS_AMT"));
+		 	    				vo.setFailedTransactionPendingQuantity(jObj.getString("FRP_WS_CNT"));
+		 	    				vo.setFailedTransactionPendingAmount(jObj.getString("FRP_WS_AMT"));
+		 	    				namingMap.put(vo.getId(), vo);
 		 	    				voList.add(vo);
 		 	    			}
 	 	    			}
@@ -2681,7 +2792,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	      }
 	        
 		} catch (Exception e) {
-			LOG.error("Exception raised at getNregaLevelsWiseDataForTimelyPayments - NREGSTCSService service", e);
+			LOG.error("Exception raised at getNregaLevelsWiseDataForNewFTOPayments - NREGSTCSService service", e);
 		}
 		
 		return voList;

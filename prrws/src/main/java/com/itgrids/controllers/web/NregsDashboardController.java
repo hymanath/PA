@@ -17,6 +17,7 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
 import com.itgrids.dto.LocationFundDetailsVO;
+import com.itgrids.dto.NregaPaymentsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
@@ -227,11 +228,11 @@ public class NregsDashboardController {
 		return locationVOList;
 	}
 	
-	@PostMapping("/getNregaLevelsWiseDataForTimelyPayments")
-	public @ResponseBody List<NregsDataVO> getNregaLevelsWiseDataForTimelyPayments(@RequestBody InputVO vo){
-		List<NregsDataVO> levlWiseVOList = null;
+	@PostMapping("/getNregaLevelsWiseDataForNewFTOPayments")
+	public @ResponseBody List<NregaPaymentsVO> getNregaLevelsWiseDataForNewFTOPayments(@RequestBody InputVO vo){
+		List<NregaPaymentsVO> levlWiseVOList = null;
 		try {
-			levlWiseVOList = nregsTcsService.getNregaLevelsWiseDataForTimelyPayments(vo);
+			levlWiseVOList = nregsTcsService.getNregaLevelsWiseDataForNewFTOPayments(vo);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNregaLevelsWiseDataForTimelyPayments - NREGSController controller", e);

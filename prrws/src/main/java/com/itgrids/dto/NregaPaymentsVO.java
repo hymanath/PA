@@ -7,8 +7,11 @@ import java.util.List;
 public class NregaPaymentsVO implements Serializable{
 
 	private String id;
-	private String name;
+	private String districtName;
 	private String type;
+	private String constName;
+	private String mandalName;
+	private String panchayatName;
 	
 	private String generatedQuantity;
 	private String generatedAmount;
@@ -37,11 +40,11 @@ public class NregaPaymentsVO implements Serializable{
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getDistrictName() {
+		return districtName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
 	}
 	public String getType() {
 		return type;
@@ -144,5 +147,23 @@ public class NregaPaymentsVO implements Serializable{
 	}
 	public void setFailedTransactionPendingAmount(String failedTransactionPendingAmount) {
 		this.failedTransactionPendingAmount = failedTransactionPendingAmount;
+	}
+	public String getConstName() {
+		return constName;
+	}
+	public void setConstName(String constName) {
+		this.constName = constName;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
 	}
 }

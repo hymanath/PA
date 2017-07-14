@@ -194,8 +194,8 @@ function onLoadCalls()
 				getNregaLevelsWiseDataFrAvenue(tableId,levelType,menuLocationType,menuLocationId);
 			else if(divId == "CC Roads")//
 				getNregaLevelsWiseDataForCCRoads(tableId,levelType,menuLocationType,menuLocationId);
-			else if(divId == "Payments" && (levelType == "state" || levelType == "district" || levelType == "mandal"))//
-				getNregaLevelsWiseDataForTimelyPayments(tableId,levelType,menuLocationType,menuLocationId);
+			else if(divId == "Payments" ) //&& (levelType == "state" || levelType == "district" || levelType == "mandal"))
+				getNregaLevelsWiseDataForNewFTOPayments(tableId,levelType,menuLocationType,menuLocationId);
 			else if(divId == "FAperformance")
 				getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId);
 			else
@@ -416,7 +416,7 @@ function projectData(divId,levelId,locationId)
 		else if(divId == "CC Roads")//
 			getNregaLevelsWiseDataForCCRoads(tableId,dataArr[0],menuLocationType,menuLocationId);
 		else if(divId == "Payments")//
-			getNregaLevelsWiseDataForTimelyPayments(tableId,dataArr[0],menuLocationType,menuLocationId);
+			getNregaLevelsWiseDataForNewFTOPayments(tableId,dataArr[0],menuLocationType,menuLocationId);
 		else if(divId == "FAperformance")
 			getNregaLevelsWiseDataForFAPerformance(tableId,dataArr[0],menuLocationType,menuLocationId);
 		else
@@ -2828,28 +2828,28 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 	});
 }
 
-function getNregaLevelsWiseDataForTimelyPayments(divIdd,locationType,menuLocationType,menuLocationId)
+function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
-	var theadArr = [locationType,'FTO_NOT_GEN_CNT','FTO_NOT_GEN_AMT','FTO_NOT_UPLOAD_CNT','FTO_NOT_UPLOAD_AMT','FTO_NOT_SENT_CNT','FTO_NOT_SENT_AMT','REJECT_CNT','REJECT_AMT','PENDING_RESPONSE_CNT','PENDING_RESPONSE_AMT'];
-	/*if(locationType == "constituency")
-		theadArr = ["district",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+	var theadArr = [locationType,'Type','Generated Quantity','Generated Amount','Genereated Pending Quantity','Generated Pending Amount','upload Quantity','upload Amount','Upload Pending Qunatity','Upload Pending Amount','Sent To Bank Quantity','sent To Bank Amount','Sent To Bank Pending Quantity','Sent To Bank Pending Amount','Failed Transaction Quantity','Failed Transaction Amount','Failed Transaction Pending Quantity','Failed Transaction Pending Amount'];
+	if(locationType == "constituency")
+		theadArr = ["district",locationType,'Type','Generated Quantity','Generated Amount','Genereated Pending Quantity','Generated Pending Amount','upload Quantity','upload Amount','Upload Pending Qunatity','Upload Pending Amount','Sent To Bank Quantity','sent To Bank Amount','Sent To Bank Pending Quantity','Sent To Bank Pending Amount','Failed Transaction Quantity','Failed Transaction Amount','Failed Transaction Pending Quantity','Failed Transaction Pending Amount'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+		theadArr = ["district","constituency",locationType,'Type','Generated Quantity','Generated Amount','Genereated Pending Quantity','Generated Pending Amount','upload Quantity','upload Amount','Upload Pending Qunatity','Upload Pending Amount','Sent To Bank Quantity','sent To Bank Amount','Sent To Bank Pending Quantity','Sent To Bank Pending Amount','Failed Transaction Quantity','Failed Transaction Amount','Failed Transaction Pending Quantity','Failed Transaction Pending Amount'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];*/
+		theadArr = ["district","constituency","mandal",locationType,'Type','Generated Quantity','Generated Amount','Genereated Pending Quantity','Generated Pending Amount','upload Quantity','upload Amount','Upload Pending Qunatity','Upload Pending Amount','Sent To Bank Quantity','sent To Bank Amount','Sent To Bank Pending Quantity','Sent To Bank Pending Amount','Failed Transaction Quantity','Failed Transaction Amount','Failed Transaction Pending Quantity','Failed Transaction Pending Amount'];
 	
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		locationType: locationType,
+		locationType: menuLocationType,
 		divType : globalDivName,
 		locationId : menuLocationId,
 		sublocaType : locationType
 	}
 	$.ajax({
-		url: 'getNregaLevelsWiseDataForTimelyPayments',
+		url: 'getNregaLevelsWiseDataForNewFTOPayments',
 		data: JSON.stringify(json),
 		type: "POST",
 		dataType: 'json', 
@@ -2862,28 +2862,28 @@ function getNregaLevelsWiseDataForTimelyPayments(divIdd,locationType,menuLocatio
 			if(ajaxresp != null && ajaxresp.length > 0){
 				for(var i in ajaxresp){
 					str+='<tr>';
-						/*if(locationType == "state"){
+						if(locationType == "state"){
 							str+='<td class="text-capital">'+locationType+'</td>';
 						}
 						else if(locationType == "district"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
 						}
 						else if(locationType == "constituency"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constName+'</td>';
 						}
 						else if(locationType == "mandal"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constName+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandalName+'</td>';
 						}
 						else if(locationType == "panchayat"){
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
-						}*/
-						if(locationType == "state")
+							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constName+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandalName+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].panchayatName+'</td>';
+						}
+						/* if(locationType == "state")
 							str+='<td class="text-capital">'+locationType+'</td>';
 						else if(locationType == "district")
 							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
@@ -2892,18 +2892,25 @@ function getNregaLevelsWiseDataForTimelyPayments(divIdd,locationType,menuLocatio
 						else if(locationType == "mandal")
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 						else if(locationType == "panchayat")
-							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>'; */
 						
-						str+='<td>'+ajaxresp[i].ftoNotGenCnt+'</td>';
-						str+='<td>'+ajaxresp[i].ftoNotGenAmt+'</td>';
-						str+='<td>'+ajaxresp[i].ftoNotUploadCnt+'</td>';
-						str+='<td>'+ajaxresp[i].ftoNotUploadAmt+'</td>';
-						str+='<td>'+ajaxresp[i].ftoNotSentCnt+'</td>';
-						str+='<td>'+ajaxresp[i].ftoNotSentAmt+'</td>';
-						str+='<td>'+ajaxresp[i].rejectCnt+'</td>';
-						str+='<td>'+ajaxresp[i].rejectAmt+'</td>';
-						str+='<td>'+ajaxresp[i].pendingResponseCnt+'</td>';
-						str+='<td>'+ajaxresp[i].pendingResponseAmt+'</td>';
+						str+='<td>'+ajaxresp[i].type+'</td>';
+						str+='<td>'+ajaxresp[i].generatedQuantity+'</td>';
+						str+='<td>'+ajaxresp[i].generatedAmount+'</td>';
+						str+='<td>'+ajaxresp[i].generatedPendingQuantity+'</td>';
+						str+='<td>'+ajaxresp[i].generatedPendingAmount+'</td>';
+						str+='<td>'+ajaxresp[i].uploadQuantity+'</td>';
+						str+='<td>'+ajaxresp[i].uploadAmount+'</td>';
+						str+='<td>'+ajaxresp[i].uploadPendingQunatity+'</td>';
+						str+='<td>'+ajaxresp[i].uploadPendingAmount+'</td>';
+						str+='<td>'+ajaxresp[i].sentToBankQuantity+'</td>';
+						str+='<td>'+ajaxresp[i].sentToBankAmount+'</td>';
+						str+='<td>'+ajaxresp[i].sentToBankPendingQuantity+'</td>';
+						str+='<td>'+ajaxresp[i].sentToBankPendingAmount+'</td>';
+						str+='<td>'+ajaxresp[i].failedTransactionQuantity+'</td>';
+						str+='<td>'+ajaxresp[i].failedTransactionAmount+'</td>';
+						str+='<td>'+ajaxresp[i].failedTransactionPendingQuantity+'</td>';
+						str+='<td>'+ajaxresp[i].failedTransactionPendingAmount+'</td>';
 					str+='</tr>';
 				}
 			}
@@ -3032,7 +3039,33 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 					str+='</div>';
 				str+='</div>';
 			}else{
-				str+='<div></div>';
+				//str+='<div></div>';
+				str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+				if(type == "FAperformance"){
+					str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
+				}
+				else{
+					if(type.length > 12)
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+					}else{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+					}
+				}
+					str+='<small class="text-center">Achieved</small>';
+					str+='<h1 class="text-center">0<small>%</small>';
+					str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+					str+='<div class="row">';
+						str+='<div class="col-sm-6 text-center">';
+							str+='<label>Target</label>';
+							str+='<h4>0</h4>';
+						str+='</div>';
+						str+='<div class="col-sm-6 text-center">';
+							str+='<label>Completed</label>';
+							str+='<h4>0</h4>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
 			}
 		}
 		
@@ -3226,7 +3259,7 @@ $(document).on("click",".menuDataCollapse",function(){
 
 				getNREGSProjectsAbstractNew(overViewArr[i],'district',locId,blockName,levelId);
 			}
-			else if(overViewArr[i] != 'Payments' && overViewArr[i] != 'FAperformance'){
+			else if(overViewArr[i] != 'FAperformance'){
 				getNREGSAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId);
 			}
 				
