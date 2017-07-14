@@ -103,7 +103,7 @@
 				</div>
 			</div>-->
 			
-		<h3 class="text-center">${finalStatus} &nbsp;CONSTITUENCY	</h3> 
+	<!--	<h3 class="text-center">${finalStatus} &nbsp;CONSTITUENCY	</h3> -->
 			<!--<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12" >
 				<div class="row" >
 				     
@@ -163,8 +163,8 @@
 						<select onchange="populateDefaultValue(1);gePanchayatOrBooth1();" class="form-control" id="committeeLocationId" ><option value="0">Select PANCHAYAT</option></select >
 					</div>-->
 					<div class="col-sm-4">
-						<label for="committeeLocationId1">SELECT LOCATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
-						<select onchange="populateDefaultValue(1);getBoothInchargeRoles();gettingBoothInchargeRoleDetails();" class="form-control" id="committeeLocationId1" ><option value="0">Select Location</option></select >
+						<label for="committeeLocationId1">SELECT BOOTH <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
+						<select onchange="populateDefaultValue(1);getBoothInchargeRoles();gettingBoothInchargeRoleDetails();" class="form-control" id="committeeLocationId1" ><option value="0">Select Booth </option></select >
 					</div>
 					<div class="col-sm-4" id="">
 						<label for="committeeDesigId">SELECT DESIGNATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
@@ -629,7 +629,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 			}
 		});
 		 
-		 getBoothsByConstituencyIds();
+		 //getBoothsByConstituencyIds();
 		});
 		
 	function getCommitteeLocations(){
@@ -1655,7 +1655,7 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 					if(num == 2)
 						<!--str+='<select id="panchayatWardByMandal" class="form-control" onChange="getTdpCommitteePanchayatWardByMandal()">';-->
 					    str+='<select id="panchayatWardByMandal" class="form-control" onChange="gePanchayatOrBooth()">';
-						str+='<option value="0">Select Location</option>';
+						str+='<option value="0">Select Mandal/Muncipality/Corporation</option>';
 						for(var i in result)
 						{
 							str+='<option value="'+result[i].id+'">'+result[i].name+'</option>'
@@ -1701,7 +1701,7 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 		$("#dataLoadingImg").hide();
 			if(result != null){
 					$("#committeeLocationId").append('<option value="0">Select Panchayat</option>');
-					$("#committeeLocationId1").append('<option value="0">Select Location</option>');
+					$("#committeeLocationId1").append('<option value="0">Select Booth </option>');
 				for(var i in result){
 						$("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 						
@@ -1715,7 +1715,7 @@ function gePanchayatOrBooth(){
 	var num =$("#panchayatWardByMandal").val();
 	var res = num.charAt(0);
 	if(res == 1){
-		getTdpCommitteePanchayatWardByMandal1($("#panchayatWardByMandal").val());	
+		getBoothsByMandal($('#panchayatWardByMandal').val());	
 	}else if(res == 2){
 		getBoothsByMandal($('#panchayatWardByMandal').val());
 	}
@@ -1738,42 +1738,39 @@ function getBoothsByMandal(mandalId){
 		$("#dataLoadingsImg").hide();
 		$("#dataLoadingImg").hide();
 			if(result != null){
-					$("#committeeLocationId1").append('<option value="0">Select Location</option>');
+					$("#committeeLocationId1").append('<option value="0">Select Booth</option>');
 				for(var i in result){
 						$("#committeeLocationId1").append('<option value='+result[i].id+'>Booth No - '+result[i].roleId+' ('+result[i].relativeName+' )</option>');
 				}
 			}
 		});
 	}
-	function showSearchDiv(){
-		
+function showSearchDiv(){
 	var errMsg ="";
 	$("#userDetailsId").html("");
 	$("#searchBy").html('');
-	 var mandalId = $("#panchayatWardByMandal").val();
-	 var desigId = $("#committeeDesignationId").val();  
-	 var boothId = $("#committeeLocationId1").val();
-	 
-	  if(mandalId == 0 || mandalId.length==0){
-		errMsg=errMsg+"Please select atleast one Mandal/Muncipality/Corporation.<br/>";
-	  } 
-	  if(desigId ==0 || desigId.length == 0){
-		  errMsg=errMsg+"Please select atleast one Designation<br/>";
-	  }
-	  if(boothId == 0 || boothId.length ==0){
-		 errMsg=errMsg+"Please select atleast one location<br/>";
-	  }
+	var mandalId = $("#panchayatWardByMandal").val();
+	var desigId = $("#committeeDesignationId").val();  
+	var boothId = $("#committeeLocationId1").val();
 	
-	    if(errMsg.length>0){
-		  $("#errorMessegeId").html(errMsg);
-		     return;
-	   }else{
-		 $("#errorMessegeId").html('');
-	    } 
-		
-		$("#searchcadrenewDiv").show();
-		
+	if(mandalId == 0 || mandalId.length==0){
+		errMsg=errMsg+"Please select atleast one Mandal/Muncipality/Corporation.<br/>";
+	} 
+	if(desigId ==0 || desigId.length == 0){
+		errMsg=errMsg+"Please select atleast one Designation<br/>";
 	}
+	if(boothId == 0 || boothId.length ==0){
+		errMsg=errMsg+"Please select atleast one Booth...<br/>";
+	}
+
+	if(errMsg.length>0){
+	$("#errorMessegeId").html(errMsg);
+		return;
+	}else{
+		$("#errorMessegeId").html('');
+		$("#searchcadrenewDiv").show();
+	}
+}
 
 function getBoothUserDetails(){
 	$("#searchcadrenewDiv").hide();
@@ -1798,9 +1795,9 @@ function getBoothUserDetails(){
 	  /*if(panchayatId ==0 || panchayatId.length == 0){
 		  errMsg=errMsg+"Please select atleast one panchayat<br/>";
 	  }*/
-	  if(boothId == 0 || boothId.length ==0){
-			errMsg=errMsg+"Please select atleast one location<br/>";
-	  }
+	 /* if(boothId == 0 || boothId.length ==0){
+			errMsg=errMsg+"Please select atleast one Booth<br/>";
+	  }*/
 	  if(boothId !=0 && boothId>0)
 		{
 			boothId = boothId;
@@ -1908,7 +1905,7 @@ function getTdpCommitteePanchayatWardByMandal1(mandalId){
 		$("#dataLoadingsImg").hide();
 		$("#dataLoadingImg").hide();
 			if(result != null){
-					$("#committeeLocationId1").append('<option value="0">Select Location</option>');
+					$("#committeeLocationId1").append('<option value="0">Select Booth</option>');
 				for(var i in result){
 						$("#committeeLocationId1").append('<option value='+result[i].locationId+'>Booth No - '+result[i].locationName+'</option>');
 				}
@@ -1952,7 +1949,7 @@ function getTdpCommitteePanchayatWardByMandal2(){
 		$("#dataLoadingsImg").hide();
 		$("#dataLoadingImg").hide();
 			if(result != null){
-					$("#committeeLocationId1").append('<option value="0">Select Location</option>');
+					$("#committeeLocationId1").append('<option value="0">Select Booth </option>');
 				for(var i in result){
 						$("#committeeLocationId1").append('<option value='+result[i].locationId+'>Booth No - '+result[i].locationName+'</option>');
 				}
@@ -1970,24 +1967,26 @@ function getTdpCommitteePanchayatWardByMandal2(){
 });
 
 function getBoothInchargeRoles()
-	{
-$("#committeeDesignationId  option").remove();		
+{
+	$("#committeeDesignationId  option").remove();	
+	$("#committeeDesignationId").append('<option value="0">Select Designation</option>');	
+	
 	var boothId = $("#committeeLocationId1").val();
-	var enrollmentYrIds = [];
-	enrollmentYrIds.push(1);
+	if(parseInt(boothId)>0){
+		var enrollmentYrIds = [];
+		enrollmentYrIds.push(1);
 		var jsObj = {
 			boothId :boothId,
 			enrollmentYrIds:enrollmentYrIds
-		}
+		};
 		 $.ajax({
 			type : "POST",
 			url : "getBoothInchargeRolesAction.action",
 			data : {task:JSON.stringify(jsObj)} 
 		}).done(function(result){
 			if(result != null){
-					$("#committeeDesignationId").append('<option value="0">Select Location</option>');
 				for(var i in result){
-						$("#committeeDesignationId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					$("#committeeDesignationId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				}
 			}
 		});
