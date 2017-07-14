@@ -3,10 +3,10 @@ var globalToDate = moment().format('DD-MM-YYYY');
 var blockNameArr=[{name:'District',id:'3'},{name:'Constituency',id:'4'},{name:'Mandal',id:'5'}]
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 	onLoadCalls()
-
+	$(".thisMonthOverview").html("This Month - "+moment().format("MMMM"));
 	
 	$(".chosen-select").chosen();
-	$(".thisMonthOverview").html(moment().startOf("month").format("MMMM"));
+	
 	function onLoadCalls()
 	{
 		buildLevelWiseDetailsBlock();
@@ -70,8 +70,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		if(subBlockName == 'Districts')
 		{
 			getAllConstituenciesForDistrict(5,blockName,subBlockName,value);
-			//districtsInMandalDataForAssemblyInfo(5,blockName,subBlockName,'tableView',value,$("#mandalsDistrictSelectBoxchosen").val());
-			POSTConstDateForAssemblyInfo(5,blockName,subBlockName,'tableView',value);
+			mandalDataForDistChangeForAssembly(5,blockName,subBlockName,'tableView',value);//Teja
 			
 		}else if(subBlockName == 'Parliament')
 		{
@@ -95,11 +94,10 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		
 		if(subBlockName == 'districts')
 		{
-			
 			POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',value,$("#mandalsDistrictSelectBoxchosen").val(),"assembly");
 		}else if(subBlockName == 'parliament')
 		{
-			POSTMandalOverview(5,blockName,subBlockName,'tableView',value);
+			parliamentAssemblyChangeMandalOverview(5,blockName,subBlockName,'tableView',value);
 		}
 	});
 	$(document).on("change","#districtSelectBoxchosen",function(){
@@ -114,7 +112,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 			POSTConstDateForAssemblyInfo(4,blockName,subBlockName,'tableView',value);
 		}else if(subBlockName == 'Parliament')
 		{
-			POSTConstituencyOverview(4,blockName,subBlockName,'tableView',value);
+			parliamentChnageConstituencyOverview(4,blockName,subBlockName,'tableView',value);
 		}
 	});
 	$("#singleDateRangePicker").daterangepicker({
@@ -149,23 +147,27 @@ $(document).on('click','.calendar_active_cls li', function(){
 	{
 		globalFromDate = moment().format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
-		
+		$(".thisMonthOverview").html("TODAY")
 	}else if(date == 'Week'){
 		globalFromDate = moment().subtract(1,'week').format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
-		
+		$(".thisMonthOverview").html("This week")
 	}else if(date == 'Month'){
 		globalFromDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
+		$(".thisMonthOverview").html("This Month - "+moment().format("MMMM"));
 	}else if(date == '3Months'){
 		globalFromDate = moment().subtract(3,'month').startOf("month").format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
+		$(".thisMonthOverview").html(moment().subtract(3,'month').format("MMMM")+" - "+moment().format("MMMM"));
 	}else if(date == '6Months'){
 		globalFromDate = moment().subtract(6,'month').startOf("month").format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
+		$(".thisMonthOverview").html(moment().subtract(6,'month').format("MMMM")+" - "+moment().format("MMMM"));
 	}else if(date == 'Overall'){
 		globalFromDate = moment().subtract(20,'years').startOf("year").format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
+		$(".thisMonthOverview").html("Overall");
 	}
 	
 	$(this).closest("ul").find("li").removeClass("active");
@@ -311,24 +313,12 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 								if(blockName == 'District'){
 									tableView+='<th>District</th>';
 								}else if(blockName == 'Constituency' ){
-									if(subBlockName == 'Districts')
-									{
-										tableView+='<th>District</th>';
-										tableView+='<th>Constituency</th>';
-									}else if(subBlockName == 'Parliament')
-									{
-										tableView+='<th>Constituency</th>';
-									}
+									tableView+='<th>District</th>';
+									tableView+='<th>Constituency</th>';
 								}else if(blockName == 'Mandal'){
-									if(subBlockName == 'Districts')
-									{
-										tableView+='<th>District</th>';
-										tableView+='<th>Constituency</th>';
-										tableView+='<th>Mandal</th>';
-									}else if(subBlockName == 'Parliament')
-									{
-										tableView+='<th>Mandal</th>';
-									}
+									tableView+='<th>District</th>';
+									tableView+='<th>Constituency</th>';
+									tableView+='<th>Mandal</th>';
 								}
 									tableView+='<th><img class="img_widthTable" src="Assests/icons/house_icon.png" alt="house_icon"><br/>TOTAL</th>';
 									tableView+='<th><img class="img_widthTable" src="Assests/icons/Target_icon.png" alt="target_icon"><br/>TARGET</th>';
@@ -343,26 +333,13 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 											tableView+='<td><img src="Assests/icons/'+result.subList[i].name+'.png" style="height: 30px;margin-right: 7px;"/>'+result.subList[i].name+'</td>';
 										}else if(blockName == 'Constituency')
 										{
-											if(subBlockName == 'Districts')
-											{
 												tableView+='<td>'+result.subList[i].districtName+'</td>';
 												tableView+='<td>'+result.subList[i].name+'</td>';
-											}else if(subBlockName == 'Parliament')
-											{
-												tableView+='<td>'+result.subList[i].name+'</td>';
-											}
 										}else if(blockName == 'Mandal')
 										{
-											if(subBlockName == 'Districts')
-											{
 												tableView+='<td>'+result.subList[i].districtName+'</td>';
 												tableView+='<td>'+result.subList[i].constituencyName+'</td>';
 												tableView+='<td>'+result.subList[i].name+'</td>';
-											}else if(subBlockName == 'Parliament')
-											{
-												tableView+='<td>'+result.subList[i].name+'</td>';
-											}
-											
 										}
 										tableView+='<td>'+result.subList[i].total+'</td>';
 										tableView+='<td>'+result.subList[i].target+'</td>';
@@ -400,10 +377,8 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 		var json = {
 			fromDate:globalFromDate,
 			toDate:globalToDate,
-			locationId:0,
-			locationType:"constituency",
-			filterId:locId,
-			filterType:"district"
+			locationId:locId,
+			locationType:"constituency"
 			}
 		$.ajax({                
 			type:'POST',    
@@ -475,16 +450,16 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 		if(filterId == null)
 		{
 			filterId = 0;
-		}
+		} 
 		var json = {
 			fromDate:globalFromDate,
 			toDate:globalToDate,
 			locationId:0,
 			locationType:"mandal",
-			filterId: filterId,
-			filterType:'district',
-			subFilterId: locId ,
-			subFilterType: 'constituency'//assembly
+			filterId: 0,
+			filterType:'constituency',
+			subFilterId: filterId ,
+			subFilterType: 'assembly'//assembly
 		}
 		$.ajax({                
 			type:'POST',    
@@ -515,10 +490,10 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			toDate:globalToDate,
 			locationId:0,
 			locationType:"mandal",
-			filterId: filterId,
-			filterType:'district',
-			subFilterId: 0 ,
-			subFilterType: 'constituency'//assembly
+			filterId:0,
+			filterType:'constituency',
+			subFilterId:filterId ,
+			subFilterType: 'assembly'//assembly
 		}
 		$.ajax({                
 			type:'POST',    
@@ -644,37 +619,6 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}
 		});
 	}
-	function districtsInMandalDataForAssemblyInfo(blockId,blockName,subBlockName,viewType,locId,filterId){
-		
-		$("#"+blockName+'_'+blockId).html(spinner);
-		var json = {
-			fromDate:globalFromDate,
-			toDate:globalToDate,
-			locationId:0,
-			locationType:"mandal",
-			filterId: filterId,
-			filterType:'district',
-			subFilterId: 0 ,
-			subFilterType: 'constituency'//assembly
-		}
-		$.ajax({                
-			type:'POST',    
-			url: 'getPIRSSurveyInfo',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(result){
-			$("#"+blockName+'_'+blockId).html('');
-			if(result !=null && result.subList !=null && result.subList.length>0){
-				buildTableData(result,blockId,blockName,subBlockName,viewType);
-			}else{
-				$("#"+blockName+'_'+blockId).html("No Data Available");
-			}
-		});
-	}
 	function getAllDistricts(blockId,blockName,subBlockName){
 		
 		var json = {}
@@ -776,7 +720,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 	
 	function getAllConstituenciesForParliament(blockId,blockName,subBlockName,value){
 		var json = {
-			parliamentId:parseInt(value)
+				parliamentId:parseInt(value)
 			}
 		$.ajax({                
 			type:'POST',    
@@ -800,5 +744,98 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}else{
 				$("#"+blockName+'_'+blockId).html("No Data Available");
 			} 
+		});
+	}
+	function mandalDataForDistChangeForAssembly(blockId,blockName,subBlockName,viewType,locId){
+		$("#"+blockName+'_'+blockId).html(spinner);
+		var json = {
+			fromDate:globalFromDate,
+			toDate:globalToDate,
+			locationId:0,
+			locationType:"mandal",
+			filterId:locId,
+			filterType:"district"
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getPIRSSurveyInfo',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null && result.subList !=null && result.subList.length>0){
+				if(viewType == 'tableView')
+				{
+					buildTableData(result,blockId,blockName,subBlockName,viewType);
+				}
+			}else{
+				$("#"+blockName+'_'+blockId).html("No Data Available");
+			}
+		});
+	}
+	function parliamentAssemblyChangeMandalOverview(blockId,blockName,subBlockName,viewType,locId){
+		$("#"+blockName+'_'+blockId).html(spinner);
+		var filterId = $("#mandalsDistrictSelectBoxchosen").val();
+		if(filterId == null)
+		{
+			filterId = 0;
+		} 
+		var json = {
+			fromDate:globalFromDate,
+			toDate:globalToDate,
+			locationId:0,
+			locationType:"mandal",
+			filterId:filterId,
+			filterType:'constituency',
+			subFilterId:locId,
+			subFilterType: 'assembly'//assembly
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getPIRSSurveyInfo',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null && result.subList !=null && result.subList.length>0){
+				buildTableData(result,blockId,blockName,subBlockName,viewType);
+			}else{
+				$("#"+blockName+'_'+blockId).html("No Data Available");
+			}
+		});
+	}
+	function parliamentChnageConstituencyOverview(blockId,blockName,subBlockName,viewType,locId){alert(locId);
+		$("#"+blockName+'_'+blockId).html(spinner);
+		var json = {
+			fromDate:globalFromDate,
+			toDate:globalToDate,
+			locationId:0,
+			locationType:"assembly",
+			filterId:0,
+			filterType:'district',
+			subFilterId:locId,
+			subFilterType: 'constituency'//assembly
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getPIRSSurveyInfo',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null && result.subList !=null && result.subList.length>0){
+				buildTableData(result,blockId,blockName,subBlockName,viewType);
+			}else{
+				$("#"+blockName+'_'+blockId).html("No Data Available");
+			}
 		});
 	}

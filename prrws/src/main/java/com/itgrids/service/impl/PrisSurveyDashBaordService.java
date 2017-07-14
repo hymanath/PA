@@ -56,13 +56,10 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 		
 		try {
 			 
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			List<Date> datesList = dateUtilService.getDatesOfCurrentMonth();
-			String fromDate = sdf.format(datesList.get(0)); 
-			String toDate = sdf.format(datesList.get(datesList.size()-1));
+			String fromDate = "01-01-1997";
+			String toDate = "01-12-2017";
 			
-			ClientResponse response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
-	        
+		  ClientResponse response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+fromDate+"&toDate="+toDate);
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
@@ -83,7 +80,7 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    		}
 	 	    	}
 	 	     }
-	        ClientResponse response1 = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+fromDate+"&toDate="+toDate);
+	        ClientResponse response1 = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
@@ -160,7 +157,9 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 			 String constName="";
 			 if(inputVO.getLocationType().equalsIgnoreCase("district")){
 				 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
-			 }else if(inputVO.getLocationType().equalsIgnoreCase("constituency") || inputVO.getLocationType().equalsIgnoreCase("assembly")){
+			 }else if(inputVO.getLocationType().equalsIgnoreCase("constituency")){
+				 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+			 }else if(inputVO.getLocationType().equalsIgnoreCase("assembly")){
 				 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType());
 			 }else if(inputVO.getLocationType().equalsIgnoreCase("mandal")){
 				 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&subFilterType="+inputVO.getSubFilterType());
