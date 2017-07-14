@@ -7378,7 +7378,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 			 query.setParameter("constituencyId",constituencyId);
 	 		return query.list();
 	 	}
-	@Override
+
 	public List<Object[]> getHamletWiseIvrStatusList(Date fromDate, Date toDate, String year, List<Long> locationValues,
 			Long locationTypeId) {
 		   StringBuilder sb = new StringBuilder();
