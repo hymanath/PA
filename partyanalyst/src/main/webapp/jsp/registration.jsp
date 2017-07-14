@@ -349,7 +349,7 @@ function getUserNameAvailabilityResult(results)
 	}
 function getStatesValidationForFreeuser()
 {
-
+	$(".errorMessage").html(' ');
 var Ele=document.getElementById('freeuser');
 var errorDiv=document.getElementById('errorDiv');
 var stateSelectBox =document.getElementById("stateSelectBox").value;
@@ -386,8 +386,57 @@ var str = '<font style="color:red;font-size:12px;">';
 	
 	return true;
 	
+} 
+function clearsubmitButtons(){
+	$("#submitUserId").hide();
+	$(".checkUsrNameCls").html(' ');
 }
+$(window).load(function() {
+  $('#submitUserId').css('display','none');
+  $('#userNameField').val('');
+  $('#passwordField').val('');
+  $("#firstNameField").val('');
+  $("#lastNameField").val('');
+  $("#middleNameField").val('');
+  $("#emailField").val('');
+  $("#telephoneNoField").val('');
+  $("#mobileField").val('');
+  $("#addressField").val('');
+});
+function checkAvailFunction(){
+	$(".checkUsrNameCls").html(' ');
+	
+	var userName = $("#userNameField").val().trim();
+	  if(userName == null || userName.length == 0){
+		$("#errorMsgDiv").html("userName is Required");
+		   return ;
+	}else{
+		$("#errorMsgDiv").html("  ");
+	} 
+	
 
+	var jsObj={
+		userName:userName
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "checkUsrNamesAvailabilityAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		console.log(result);
+		 if(result != null && result.length >0){
+			if(result =="success"){
+				$(".checkUsrNameCls").html('<span style ="color:green;  margin-left: 28px;">UserName is Available</span>');	
+				$("#submitUserId").show();
+			}else{
+				$(".checkUsrNameCls").html('<span  style =color:red;  margin-left: 28px;">UserName is already Exits</span>');	
+				$("#submitUserId").hide();
+				
+			}
+		
+		} 
+});
+}
 /* function checkUserNameAvailability()
 {
 	var userName = document.getElementById("userNameField").value;
@@ -447,19 +496,22 @@ var str = '<font style="color:red;font-size:12px;">';
 
 		 <div id="loginDetailsDiv" class="accessDivMain" align="center">
 		 <div id="errorMsgDiv"></div>
-			<div id="loginDetailsDivHead" class="accessDivHead"><div style="width: 102px; margin-bottom: 11px; color: blue; font-family: verdana; font-size: 13px; margin-left: -265px;">Login Details</div></div>
+			<div id="loginDetailsDivHead" class="accessDivHead"><div style="width: 102px; margin-bottom: 11px; color: blue; font-family: verdana; font-size: 13px; margin-right: 172;">Login Details</div></div>
 			<div id="loginDetailsDivBody" class="accessDivBody" style="margin-left: -11px;">
 				<table class="registrationTable" >
-					<tr>
-						<td width="100px;"><span>User Name </span><b class="requiredFont" style="color:red"> * </b></td>
-						<td ><s:textfield id="userNameField" name="userName" onBlur="checkUserNameAvailability()" /></td>
+					<tr style="position: relative;left: 52px;">
+						<!--<td><span>User Name </span><b class="requiredFont" style="color:red"> * </b></td>-->
+						<td ><span>User Name </span><b class="requiredFont" style="color:red"> * </b></td>
+						<td ><s:textfield id="userNameField" name="userName" onkeyup="clearsubmitButtons()" />&nbsp;</td>
+						<td><a style="cursor:pointer;"onclick="checkAvailFunction();">Check Availability</a></td>
+						<span class="checkUsrNameCls"></span>
 						<td><div id="userNameAvlDiv"></div></td>
 					</tr>
 				</table>
 				<table class="registrationTable">
 					<tr>
 						<td width="100px;"><span>Password</span><b class="requiredFont" style="color:red"> * </b></td>
-						<td ><s:password id="passwordField" name="password1"/>  </td>
+						<td ><s:password id="passwordField" name="password1" style = "margin-left:-22px;"/></td>
 						<input type="hidden" name="password" id="password1"/>
 						<td></td>
 					</tr>
@@ -608,15 +660,13 @@ var str = '<font style="color:red;font-size:12px;">';
 					
 
 		</table>
-		</div>
-
-			
+		</div>	
+	</div> 
+	 	<div id="submitUserId" style="text-align: center; display:none;" class="sbmitUsrClss">
+         <s:submit  name="Save" style="background-color: green; color: white; height: 38px; border-radius: 7px 7px 7px 7px; width: 78px;"  
+                  onclick="return getStatesValidationForFreeuser()" ></s:submit> 
 		</div> 
-		<div style="text-align: center;">
-<s:submit name="Save" style="background-color: green; color: white; height: 38px; border-radius: 7px 7px 7px 7px; width: 78px;"  onclick="return getStatesValidationForFreeuser()" ></s:submit> 
-		</div>
 </div>
 </s:form>  
-
 </body>  
 </html>

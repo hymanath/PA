@@ -48,6 +48,7 @@ import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
+import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -63,7 +64,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private InputStream inputStream;
 	private String status;
 	private AlertVO alertVO;
-	
+	private ILoginService loginService;
 	private List<BasicVO> basicVO;
 	private List<AlertDataVO> alertDataList;
 	private  List<StatusTrackingVO> statusTrackingVOList;
@@ -450,6 +451,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 
 	public void setTdpCadreId(Long tdpCadreId) {
 		this.tdpCadreId = tdpCadreId;
+	}
+
+	public ILoginService getLoginService() {
+		return loginService;
+	}
+
+	public void setLoginService(ILoginService loginService) {
+		this.loginService = loginService;
 	}
 
 	public String execute()	{
@@ -3297,4 +3306,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String getCheckUsrNamesAvailabilitys()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			status = loginService.getCheckUserNameAvailibility(jObj.getString("userName"));
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCheckUsrNamesAvailabilitys() Method of loginAction, Exception is - ",e);
+			
+		}
+		return Action.SUCCESS;
+	}
+	
 }
