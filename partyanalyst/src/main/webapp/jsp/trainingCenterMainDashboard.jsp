@@ -222,7 +222,9 @@ header.eventsheader {
                             	<div class="col-md-12">
 								<div class="panel panel-default" id="feedBackCountMainDivId" style="">
 										<div class="panel-heading bg_d">
-											<h4 class="panel-title"><b>TRAINED CADRE AND FEEDBACK DETAILS</b><span class="pull-right"><button class="btn btn-success btn-xs" id="viewDetailsBtnId" style="display:none">VIEW FULL DETAILS</button></span></h4>	
+											<h4 class="panel-title"><b>TRAINED CADRE AND FEEDBACK DETAILS</b><span class="pull-right">
+											<!--<button class="btn btn-success btn-xs" id="viewDetailsBtnId" style="display:none">VIEW FULL DETAILS</button>-->
+											</span></h4>	
 										</div>
 										<div class="panel-body pad_0">
 											<img id="feefbackLoadingImgId" style="width: 45px; height: 45px; margin-left: 45%; display: none;" src="images/ajaxImg2.gif">
