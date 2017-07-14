@@ -37,39 +37,68 @@
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
-							<ul>
-								<li>
-									<a href="newfundManagementDashboard">
-										<h3>FMS</h3>
-										<p>Fund Management System</p>
-									</a>
-								</li>
-								<li>
-									<a href="MGNREGSDashboard">
-										<h3>MGNREGS</h3>
-										<p>Mahatma Gandhi Rural employement guarantee scheme</p>
-									</a>
-								</li>
-								<li>
-									<a href="ruralWaterSupplyDashBoard">
-										<h3>RWS</h3>
-										<p>rural water <br/> supply</p>
-									</a>
-								</li>
-								<li>
-									<a href="prisDashBoard">
-										<h3>PRIS</h3>
-										<p>PRIS <br/>Survey DashBoard</p>
-									</a>
-								</li>
-								<li>
-									<a href="">
-										<h3>ENC</h3>
-										<p>engineering department</p>
-									</a>
-								</li>
-								
-							</ul>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="menu-block" style="background-color:#FFBA00">
+										<a href="newfundManagementDashboard">
+											<h3>FMS</h3>
+											<p>Fund Management System</p>
+										</a>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="menu-block" style="background-color:#56A3C5">
+										<a href="ruralWaterSupplyDashBoard">
+											<h3>RWS</h3>
+											<p>RURAL WATER SUPPLY</p>
+										</a>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>PANCHAYATI RAJ</h4>
+										<div class="row">
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#0F685C">
+													<a href="prisDashBoard">
+														<h3>PRIS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#31B8B7">
+													<a href="drainDashBoard">
+														<h3>DRAINS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#2C546C">
+													<a href="#">
+														<h3>ENC</h3>
+														<p>ENGINEERING DEPARTMENT</p>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>RURAL DEVELOPMENT</h4>
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#88186B">
+													<a href="MGNREGSDashboard">
+														<h3>MGNREGS</h3>
+														<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -80,7 +109,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-2 border_right m_top5">
-					<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span><i class="fa fa-chevron-down" aria-hidden="true"></i></h4>
+					<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
 					<div class="multi-level-selection-menu arrow_box_top"></div>
 				</div>
 				<div class="col-sm-3 border_right">
