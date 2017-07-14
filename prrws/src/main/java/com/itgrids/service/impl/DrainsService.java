@@ -42,8 +42,16 @@ public class DrainsService implements IDrainsService {
 	public List<DrainsVO> getDrainsInfoLocationWise(InputVO inputVO) {	
 		List<DrainsVO> finalList = new ArrayList<DrainsVO>(0);	
 		try {
-				WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/api/drains/?getDrainsInfobyLocation=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
-				ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+			WebResource webResource = null;
+
+			if(inputVO.getSubFilterType() != null && !inputVO.getSubFilterType().trim().isEmpty() && inputVO.getSubFilterId() != null && inputVO.getSubFilterId() > 0l)
+				webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/api/drains/?getDrainsInfobyLocation=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId"+inputVO.getFilterId()+"&subFilterType"+inputVO.getSubFilterType()+"&subFilterId"+inputVO.getSubFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+			else if(inputVO.getFilterType() != null && !inputVO.getFilterType().trim().isEmpty() && inputVO.getFilterId() != null && inputVO.getFilterId() > 0l)
+				webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/api/drains/?getDrainsInfobyLocation=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId"+inputVO.getFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+			else	
+				webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/api/drains/?getDrainsInfobyLocation=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+			
+			ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 		    
 	        	if(response.getStatus() != 200){
 	        		throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
