@@ -1681,15 +1681,15 @@ function getBoothUserDetailsbuild(result,locationName){
 				 str +='<thead>';
 					 str +='<tr class="text-center">';
 					 
-						str +='<th>Constituency&nbsp;Name</th>';
-						str +='<th>Mandal&nbsp;Name</th>';
-						str +='<th>Panchayat&nbsp;Name</th>';
-						str +='<th>Village&nbsp;Covered </th>';	
-						str +='<th>Booth&nbsp;No</th>';						
-						str +='<th>Photo</th>';
-						str +='<th>Membership&nbsp;No</th>';
-						str +='<th>Cadre&nbsp;Name</th>';
-						str +='<th>Mobile&nbsp;No</th>';
+						str +='<th>CONSTITUENCY&nbsp;NAME</th>';
+						str +='<th>MANDAL/MUNICIPALITY/CORPORATION&nbsp;NAME</th>';
+						str +='<th>PANCHAYAT&nbsp;NAME</th>';
+						str +='<th>VILLAGE&nbsp;COVERED </th>';	
+						str +='<th>BOOTH&nbsp;NO</th>';						
+						str +='<th>PHOTO</th>';
+						str +='<th>MEMBERSHIP&nbsp;NO</th>';
+						str +='<th>CADRE&nbsp;NAME</th>';
+						str +='<th>MOBILE&nbsp;NO</th>';
 						
 					 						 
 					 str +='</tr>';
