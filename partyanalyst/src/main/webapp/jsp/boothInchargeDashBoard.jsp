@@ -110,53 +110,18 @@
             <div class="conatiner-fluid">
                 <div class="col-sm-12 tableBlock">
                     <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title text-capital">DISTRICT WISE</h4>
-                            <ul class="nav navbar-nav table-menu pull-right">
-                                <li class="active">DISTRICT</li>
-                                <li>PARLAMENT</li>
-                            </ul>
-                        </div>
-                    <div class="panel-body">
-					
-                    <table class="table table-bordered table-responsive" id="datatableDemo">
-                        <thead>
-                           
-                            <tr>
-                                <th>DISTRIC NAME</th>
-                                <th>TOTAL BOOTHS</th>
-								<th>NOT-STARTED BOOTHS</th>
-                                <th>STARTED BOOTHS</th>
-								<th>COMPLETED BOOTHS</th>
-                                <th colspan="11" class="text-center">BOOTH COMMITTEE MEMBERS VOTER ID SERIAL NUMBERS WISE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Srikakulam</td>
-                                <td>5698</td>
-                                <td>5698</td>
-                                <td>5698</td>
-                                <td>5698</td>
-                                <td>0-10</td>
-                                <td>11-20</td>
-                                <td>21-30</td>
-                                <td>31-40</td>
-                                <td>41-50</td>
-                                <td>51-60</td>
-                                <td>61-70</td>
-                                <td>71-80</td>
-                                <td>81-90</td>
-                                <td>91-100</td>
-                                <td>Above 100</td>
-                            </tr>
-                        </tbody>
-                    </table>
-					
-                    </div>
-                    </div>
-                        
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title text-capital">DISTRICT WISE</h4>
+								<ul class="nav navbar-nav table-menu pull-right">
+									<li class="active">DISTRICT</li>
+									<li>PARLAMENT</li>
+								</ul>
+							</div>
+							<div class="panel-body">
+							   <div id="districtLevelBoothDtlsDivId"></div>
+							</div>
+						</div>
                     </div>
                 </div>
             </div>
@@ -165,57 +130,23 @@
             <div class="conatiner-fluid">
                 <div class="col-sm-12 tableBlock">
                     <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title text-capital">CONSTITUENCY WISE</h4>
-                            <ul class="nav navbar-nav table-menu pull-right">
-                                <li class="active">DISTRICT</li>
-                                <li>PARLAMENT</li>
-                            </ul>
-                        </div>
-                    <div class="panel-body">
-					<div class="row">
-                            <div class="col-sm-12">
-                                <div id="selectDistrict" class="col-sm-3"></div>
-                            </div>
-                    </div>
-                    <table class="table table-bordered table-responsive" id="">
-                        <thead>
-                           
-                            <tr>
-                                <th>CONSTITUENCY NAME</th>
-                                <th>TOTAL BOOTHS</th>
-								<th>NOT-STARTED BOOTHS</th>
-                                <th>STARTED BOOTHS</th>
-								<th>COMPLETED BOOTHS</th>
-                                <th colspan="11" class="text-center">BOOTH COMMITTEE MEMBERS VOTER ID SERIAL NUMBERS WISE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Srikakulam</td>
-                                <td>5698</td>
-                                <td>5698</td>
-                                <td>5698</td>
-                                <td>5698</td>
-                                <td>0-10</td>
-                                <td>11-20</td>
-                                <td>21-30</td>
-                                <td>31-40</td>
-                                <td>41-50</td>
-                                <td>51-60</td>
-                                <td>61-70</td>
-                                <td>71-80</td>
-                                <td>81-90</td>
-                                <td>91-100</td>
-                                <td>Above 100</td>
-                            </tr>
-                        </tbody>
-                    </table>
-					
-                    </div>
-                    </div>
-                        
+						<div class="panel panel-default">
+							  <div class="panel-heading">
+									<h4 class="panel-title text-capital">CONSTITUENCY WISE</h4>
+									<ul class="nav navbar-nav table-menu pull-right">
+										<li class="active">DISTRICT</li>
+										<li>PARLAMENT</li>
+									</ul>
+								</div>
+							  <div class="panel-body">
+								<div class="row">
+										<div class="col-sm-12">
+											<div id="selectDistrict" class="col-sm-3"></div>
+										</div>
+								</div>
+							   <div id="constituencyLevelBoothDtlsDivId"></div>
+							 </div>
+						</div>
                     </div>
                 </div>
             </div>
@@ -224,53 +155,38 @@
             <div class="conatiner-fluid">
                 <div class="col-sm-12 tableBlock">
                     <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title text-capital">MANDAL WISE</h4>
-                            <ul class="nav navbar-nav table-menu pull-right">
-                                <li class="active">DISTRICT</li>
-                                <li>PARLAMENT</li>
-                            </ul>
-                        </div>
-                    <div class="panel-body">
-					
-                    <table class="table table-bordered table-responsive" id="">
-                        <thead>
-                           
-                            <tr>
-                                <th>MANDAL NAME</th>
-                                <th>TOTAL BOOTHS</th>
-								<th>NOT-STARTED BOOTHS</th>
-                                <th>STARTED BOOTHS</th>
-								<th>COMPLETED BOOTHS</th>
-                                <th colspan="11" class="text-center">BOOTH COMMITTEE MEMBERS VOTER ID SERIAL NUMBERS WISE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Srikakulam</td>
-                                <td>5698</td>
-                                <td>5698</td>
-                                <td>5698</td>
-                                <td>5698</td>
-                                <td>0-10</td>
-                                <td>11-20</td>
-                                <td>21-30</td>
-                                <td>31-40</td>
-                                <td>41-50</td>
-                                <td>51-60</td>
-                                <td>61-70</td>
-                                <td>71-80</td>
-                                <td>81-90</td>
-                                <td>91-100</td>
-                                <td>Above 100</td>
-                            </tr>
-                        </tbody>
-                    </table>
-					
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title text-capital">MANDAL WISE</h4>
+								<ul class="nav navbar-nav table-menu pull-right">
+									<li class="active">DISTRICT</li>
+									<li>PARLAMENT</li>
+								</ul>
+							</div>
+							<div class="panel-body">
+							  <div id="mandalLevelBoothDtlsDivId"></div>
+							</div>
+						</div>
                     </div>
-                    </div>
-                        
+                </div>
+            </div>
+        </section>
+		 <section class="mtop_20">
+            <div class="conatiner-fluid">
+                <div class="col-sm-12 tableBlock">
+                    <div class="col-sm-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title text-capital">PANCHAYAT WISE</h4>
+								<ul class="nav navbar-nav table-menu pull-right">
+									<li class="active">DISTRICT</li>
+									<li>PARLAMENT</li>
+								</ul>
+							</div>
+							<div class="panel-body">
+							  <div id="panchaytLevelBoothDtlsDivId"></div>
+							</div>
+						</div>
                     </div>
                 </div>
             </div>
