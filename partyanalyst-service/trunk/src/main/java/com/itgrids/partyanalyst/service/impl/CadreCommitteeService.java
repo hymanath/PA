@@ -22177,7 +22177,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 				boothInchargeDAO.save(boothIncharge);
 			}else{
 				BoothIncharge boothInchrge = new BoothIncharge();
-				boothInchrge.setBoothId(boothId);
+				//boothInchrge.setBoothId(Long.valueOf(boothId));
 				boothInchrge.setTdpCadreId(tdpCadreId);
 				boothInchrge.setIsActive("Y");
 				boothInchrge.setIsDeleted("N");
@@ -22212,10 +22212,12 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 				localBodyIds.add(Long.valueOf(mandalId.toString().substring(1)));
 			}
 			 if(mandalIds != null && mandalIds.size() > 0l){
-				 boothList = boothDAO.getBoothsForTehsilId(mandalIds,constituencyId);
+				 //boothList = boothDAO.getBoothsForTehsilId(mandalIds,constituencyId);
+				 boothList = boothInchargeRoleConditionMappingDAO.getBoothDetailsForTehsilId(mandalIds,constituencyId);
 			 }
 			 if(localBodyIds != null && localBodyIds.size() > 0l){
-				 boothList = boothDAO.getBoothsForMuncipality(localBodyIds,constituencyId);
+				 //boothList = boothDAO.getBoothsForMuncipality(localBodyIds,constituencyId);
+				 boothList = boothInchargeRoleConditionMappingDAO.getBoothsDetailsForMuncipality(localBodyIds,constituencyId);
 			 }
 			 if(boothList != null && boothList.size() > 0l){
 				 for (Object[] objects : boothList) {
@@ -22242,7 +22244,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			Long tdpCadreId = 0l;
 			committeevo = searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationId,searchName,memberShipCardNo,voterCardNo,trNumber,mobileNo,casteStateId,casteCategory,
 			 fromAge, toAge, houseNo, gender, startIndex, maxIndex, isRemoved,enrollmentId,searchType);
-			if(committeevo != null){
+			if(committeevo != null && commonMethodsUtilService.isListOrSetValid(committeevo.getPreviousRoles())){
 				for (CadreCommitteeVO vo: committeevo.getPreviousRoles()){
 					tdpCadreId = vo.getTdpCadreId();
 					tdpCadreIds.add(tdpCadreId);
