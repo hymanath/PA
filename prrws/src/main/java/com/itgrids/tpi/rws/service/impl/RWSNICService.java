@@ -18,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
+/*import com.itgrids.dao.IRwsConstituencyDAO;
+import com.itgrids.dao.IRwsDistrictDAO;
+import com.itgrids.dao.IRwsTehsilDAO;*/
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
@@ -51,6 +54,12 @@ public class RWSNICService implements IRWSNICService{
 	private IConstituencyDAO constituencyDAO;
 	@Autowired
 	private ITehsilDAO tehsilDAO;
+/*	@Autowired
+	private IRwsTehsilDAO rwsTehsilDAO;
+	@Autowired
+	private IRwsDistrictDAO rwsDistrictDAO;
+	@Autowired
+	private IRwsConstituencyDAO rwsConstituencyDAO;*/
 	/*
 	 * Date : 15/06/2017
 	 * Author :Sandeep
@@ -59,7 +68,9 @@ public class RWSNICService implements IRWSNICService{
 	public List<LocationVO> getHabitationCoverageByStatusByLocationType(InputVO inputVO){
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
-			 
+			/*if(inputVO!= null){
+				inputVO = setFilterVal(inputVO);
+			}*/
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getHabitationCoverageByStatusByLocationType");
 			
 	        String authStringEnc = getAuthenticationString("admin","admin@123");
@@ -1117,16 +1128,17 @@ public class RWSNICService implements IRWSNICService{
  	 	    		JSONArray statusArray = maonJObj.getJSONArray("statusList");
  	 	    		
  	 	    		if(statusArray!=null && statusArray.length()>0){
+ 	 	    			List<StatusVO> tempList =getStatusSkeleton();
  	 	    			for(int i=0;i<statusArray.length();i++){
- 	 	    				StatusVO subVO = new StatusVO();
  	 	    				JSONObject jObj = (JSONObject) statusArray.get(i);
- 	 	    				subVO.setName(jObj.getString("status"));
- 	 	    				subVO.setCount(jObj.getLong("count"));//All Habs
- 	 	    				subVO.setStressedCount(jObj.getLong("stressedHabitationCount"));
- 	 	    				subVO.setPercentage(jObj.getDouble("percentage"));
- 	 	    				
- 	 	    				statusVO.getStatusList().add(subVO);
+ 	 	    				StatusVO subVO = getMatchedStatusVO(tempList,jObj.getString("status"));
+ 	 	    				if(subVO != null){
+ 	 	    					subVO.setCount(jObj.getLong("count"));//All Habs
+ 	 	    					subVO.setStressedCount(jObj.getLong("stressedHabitationCount"));
+ 	 	    					subVO.setPercentage(jObj.getDouble("percentage"));
+ 	 	    				}
  	 	    			}
+ 	 	    			statusVO.getStatusList().addAll(tempList);
  	 	    		}
  	    		}
  	    		
@@ -2082,4 +2094,33 @@ public class RWSNICService implements IRWSNICService{
     }
 		return ivraHamletList;
 	}	
-}
+/*	
+	public InputVO setFilterVal(InputVO inputVO){
+
+		try{
+			 String filterValue =null;
+			 if(inputVO.getFilterType()!= null && inputVO.getFilterValue()!=null && inputVO.getFilterType().trim().length()>0 && 
+					 inputVO.getFilterValue().trim().length()>0){
+				 if(inputVO.getFilterType().trim().equalsIgnoreCase(IConstants.MANDAL)){
+					 filterValue = rwsTehsilDAO.getRwsCode(Long.valueOf(inputVO.getFilterValue().trim()));
+					 inputVO.setFilterValue(filterValue);
+				 }else if(inputVO.getFilterType().trim().equalsIgnoreCase(IConstants.DISTRICT)){
+					 filterValue = rwsDistrictDAO.getRwsCode(Long.valueOf(inputVO.getFilterValue().trim()));
+					 inputVO.setFilterValue(filterValue);
+				 }else if(inputVO.getFilterType().trim().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					 filterValue = rwsConstituencyDAO.getRwsCode(Long.valueOf(inputVO.getFilterValue().trim()));
+					 inputVO.setFilterValue(filterValue);
+				 }
+				 
+			 }
+			 if(inputVO.getDistrictValue()!= null  && inputVO.getDistrictValue().trim().length()>0){
+				 String districtValue = rwsDistrictDAO.getRwsCode(Long.valueOf(inputVO.getFilterValue().trim()));
+				 inputVO.setDistrictValue(districtValue);
+			 }
+			 return inputVO;
+		}catch(Exception e){
+			LOG.error("Exception Occured in setFilterVal() method, Exception - ",e);
+			return inputVO;
+		}
+	}
+*/}
