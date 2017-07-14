@@ -8,6 +8,7 @@ public class NregsProjectsVO implements Serializable{
 	private String target;
 	private String completed;
 	private String percentage;
+	private String type;
 	
 	private String FTONOTGENCNT;
 	private String FTONOTUPLOADCNT;
@@ -16,6 +17,12 @@ public class NregsProjectsVO implements Serializable{
 	private String PENDINGRESPONSECNT;
 	
 	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public String getFTONOTGENCNT() {
 		return FTONOTGENCNT;
 	}

@@ -2839,6 +2839,8 @@ function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocatio
 	else if(locationType == "panchayat")
 		theadArr = ["district","constituency","mandal",locationType,'Type','Generated Quantity','Generated Amount','Genereated Pending Quantity','Generated Pending Amount','upload Quantity','upload Amount','Upload Pending Qunatity','Upload Pending Amount','Sent To Bank Quantity','sent To Bank Amount','Sent To Bank Pending Quantity','Sent To Bank Pending Amount','Failed Transaction Quantity','Failed Transaction Amount','Failed Transaction Pending Quantity','Failed Transaction Pending Amount'];
 	
+	var menuSelName = $("#selectedName").text();
+	
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
@@ -2864,6 +2866,9 @@ function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocatio
 					str+='<tr>';
 						if(locationType == "state"){
 							str+='<td class="text-capital">'+locationType+'</td>';
+						}
+						else if(locationType == "district" && menuLocationType == "district"){
+							str+='<td class="text-capital">'+menuSelName+'</td>';
 						}
 						else if(locationType == "district"){
 							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';

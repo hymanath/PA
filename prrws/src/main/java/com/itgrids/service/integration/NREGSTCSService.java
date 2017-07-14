@@ -2462,6 +2462,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    					else if(inputVO.getLocationType().trim().equalsIgnoreCase("state"))
 	 	    						vo.setParameter(jObj.getString("CAT_NAME"));
 	 	    					
+	 	    					if(inputVO.getLocationType().trim().equalsIgnoreCase("district"))
+	 	    						vo.setType(projectTypeArr[1]);
+	 	    					else
+	 	    						vo.setType("STATE");
+	 	    					
 	 	    					vo.setTarget(jObj.getString("TARGET"));
 		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
 		 	    				vo.setPercentage(jObj.getString("PERC"));
@@ -2552,6 +2557,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    					vo.setPENDINGRESPONSECNT(jObj.getString("PENDINGRESPONSECNT"));
 	 	    				else
 	 	    					vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				
+	 	    				if(vo.getParameter().contains("state") || vo.getParameter().contains("State") || vo.getParameter().contains("STATE"))
+	 	    					vo.setType("STATE");
+	 	    				else if(vo.getParameter().contains("district") || vo.getParameter().contains("District") || vo.getParameter().contains("DISTRICT"))
+	 	    					vo.setType("DISTRICT");
 	 	    				
 	 	    				returnList.add(vo);
 	    				}
