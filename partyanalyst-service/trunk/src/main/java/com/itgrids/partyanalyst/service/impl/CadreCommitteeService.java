@@ -22161,7 +22161,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		ResultStatus status = new ResultStatus();
 		try{
 			
-			Long boothInchId = boothInchargeDAO.checkIsBoothAlreadySaved(boothId,boothInchrgRoleId,boothEnrollmentYrIds);
+			List<Long> boothInchId = boothInchargeDAO.checkIsBoothAlreadySaved(boothId,boothInchrgRoleId,boothEnrollmentYrIds);
 			
 			if(boothInchId == null){
 				BoothInchargeRoleConditionMapping boothInchargeRoleConditionMapping = boothInchargeRoleConditionMappingDAO.get(boothInchrgRoleId);

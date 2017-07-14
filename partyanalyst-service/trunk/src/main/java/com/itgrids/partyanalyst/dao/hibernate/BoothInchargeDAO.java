@@ -500,7 +500,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		
 		return query.list();
 	}
-public Long checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Long> boothEnrollmentYrIds){
+public List<Long> checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Long> boothEnrollmentYrIds){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.boothInchargeId from BoothIncharge model where " );
@@ -520,7 +520,7 @@ public Long checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Lo
 		if(boothEnrollmentYrIds != null && boothEnrollmentYrIds.size() >0)
 			query.setParameterList("boothEnrollmentYrIds", boothEnrollmentYrIds);
 		
-		return (Long)query.uniqueResult();
+		return query.list();
 	}
 	public List<Object[]> getAddedMemberInBoothRoleWise(Long boothId,Long boothInchargeEnrollmentId) {
 		 StringBuilder queryStr = new StringBuilder();
@@ -541,7 +541,7 @@ public Long checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Lo
 		return query.list();
 	}
 	
- public List<Object[]> gettingBoothInchargeFinalCount(Long boothId,Long boothInchargeEnrollmentId,Long locationValue){
+public List<Object[]> gettingBoothInchargeFinalCount(Long boothId,Long boothInchargeEnrollmentId,Long locationValue){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append( " select model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId," +
@@ -567,5 +567,29 @@ public Long checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Lo
 		}
 		return query.list();
 		
+	}
+public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRoleId,List<Long> boothEnrollmentYrIds){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.boothInchargeId,model2.serialNo from BoothIncharge model " +
+				"left join model.tdpCadre.voter voter , BoothPublicationVoter model2 where " +
+				" model2.voter.voterId=voter.voterId " );
+		
+		if(boothId != null && boothId.longValue() >0l)
+			sb.append(" and model2.booth.boothId = :boothId ");
+		if(boothId != null && boothId.longValue() >0l)
+			sb.append("and  model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId = :boothInchrgRoleId ");
+		if(boothEnrollmentYrIds != null && boothEnrollmentYrIds.size() >0)
+			sb.append(" and  model.boothInchargeEnrollment.boothInchargeEnrollmentId in (:boothEnrollmentYrIds) ");
+		Query query=getSession().createQuery(sb.toString());
+		
+		if(boothId != null && boothId.longValue() >0l)
+			query.setParameter("boothId", boothId);
+		if(boothInchrgRoleId != null && boothInchrgRoleId.longValue() >0l)
+			query.setParameter("boothInchrgRoleId", boothInchrgRoleId);
+		if(boothEnrollmentYrIds != null && boothEnrollmentYrIds.size() >0)
+			query.setParameterList("boothEnrollmentYrIds", boothEnrollmentYrIds);
+		
+		return query.list();
 	}
 }
