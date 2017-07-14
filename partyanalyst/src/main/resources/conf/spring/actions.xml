@@ -1688,6 +1688,7 @@
 		<property name="alertService" ref="alertService"/>
 		<property name="cccDashboardService" ref="cccDashboardService"/>
 		<property name="alertManagementSystemService" ref="alertManagementSystemService"/>
+		<property name="loginService" ref="loginService"/>
 	</bean>
 	
 	<!-- Deabete End -->
