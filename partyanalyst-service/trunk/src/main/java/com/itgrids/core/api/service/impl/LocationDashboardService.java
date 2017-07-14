@@ -1056,7 +1056,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * (non-Javadoc)
 	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLocationWiseCommitteesCount(java.lang.String, java.lang.Long, java.lang.Long)
 	 */
-	@Override
+
 	public CommitteeBasicVO getLocationWiseCommitteesCount(String locationType, Long locationId,
 			Long enrollmentId) {
 
@@ -1162,7 +1162,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
      * (non-Javadoc)
      * @see com.itgrids.core.api.service.ILocationDashboardService#getEnrollmentIds()
      */
-	@Override
+	
 	public List<BasicVO> getEnrollmentIds() {
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		List<TdpCommitteeEnrollment> tdpCommitteeEnrollment = tdpCommitteeEnrollmentDAO.getAll();
@@ -1184,7 +1184,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * (non-Javadoc)
 	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLevelWiseMeetingStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
 	 */
-	@Override
+	
 	public List<AlertOverviewVO> getLevelWiseMeetingStatusCounts(String fromDateStr, String toDateStr, Long locationId,
 			Long locationValue) {
 		List<AlertOverviewVO> meetingStatusCounts = new ArrayList<AlertOverviewVO>();
@@ -1257,7 +1257,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	/*
 	 * Swadhin K Lenka
 	 */
-	@Override
+	
 	public List<KeyValueVO> getNominatedPostStatusWiseCount(Long constituencyId,String fromDateStr, String toDateStr){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -1289,7 +1289,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	/*
 	 * Swadhin K Lenka
 	 */
-	@Override
+	
 	public List<KeyValueVO> getNominatedPostApplicationStatusWiseCount(Long constituencyId,String fromDateStr, String toDateStr){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -1329,7 +1329,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			if(keyValueVOs != null && keyValueVOs.size() > 0){
 				tempArray = new ArrayList<KeyValueVO>(keyValueVOs);
 				Collections.sort(tempArray, new Comparator<KeyValueVO>(){
-					@Override
+
 					public int compare(KeyValueVO obj1,KeyValueVO obj2) {
 						return obj1.getId().compareTo(obj2.getId());
 					}
@@ -1344,7 +1344,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	/*
 	 * Swadhin K Lenka
 	 */
-	@Override
+	
 	public List<KeyValueVO> getPositionWiseMemberCount(Long constituencyId,String fromDateStr, String toDateStr){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -1410,7 +1410,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			if(finalList != null && finalList.size() > 0){
 				ArrayList<KeyValueVO> tempArray = new ArrayList<KeyValueVO>(finalList);
 				Collections.sort(tempArray, new Comparator<KeyValueVO>(){
-					@Override
+					
 					public int compare(KeyValueVO obj1,KeyValueVO obj2) {
 						return obj1.getId().compareTo(obj2.getId());
 					}
@@ -1964,7 +1964,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * (non-Javadoc)
 	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLocationWiseInsuranceStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
 	 */
-	@Override
+
 	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr, String toDateStr, Long locationId,Long locationValue) {
 		InsuranceStatusCountsVO insuranceStatusCounts = new InsuranceStatusCountsVO();
 		try{
@@ -2014,7 +2014,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
      * (non-Javadoc)
      * @see com.itgrids.core.api.service.ILocationDashboardService#getGrivenceTrustStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
      */
-	@Override
+
 	public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationId, Long locationValue) {
 		List<GrivenceStatusVO> finalList = new ArrayList<GrivenceStatusVO>();
 		GrivenceStatusVO grivenceStatusCount = new GrivenceStatusVO();
