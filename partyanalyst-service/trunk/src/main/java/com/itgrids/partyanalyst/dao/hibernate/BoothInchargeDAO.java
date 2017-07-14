@@ -25,7 +25,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.panchayat.panchayatName," +
 					" model.tdpCadre.firstname, model.tdpCadre.mobileNo, model.tdpCadre.memberShipNo, " +
 					" model.tdpCadre.image, " +
-					" model..boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilName " +
+					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilName " +
 					" from BoothIncharge model " +
 					" where " +
 					" model.isDeleted='N' "+
@@ -539,5 +539,33 @@ public Long checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Lo
 		query.setParameter("boothId", boothId);
 		query.setParameter("boothInchargeEnrollmentId", boothInchargeEnrollmentId);
 		return query.list();
+	}
+	
+ public List<Object[]> gettingBoothInchargeFinalCount(Long boothId,Long boothInchargeEnrollmentId,Long locationValue){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append( " select model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId," +
+				" count(model.boothInchargeId) from BoothIncharge model where " ); 
+		
+		if(boothId != null && boothId.longValue() >0l)
+			sb.append( "  model.boothInchargeRoleConditionMapping.boothInchargeCommittee.booth.boothId = :boothId " );
+		if(boothInchargeEnrollmentId != null && boothInchargeEnrollmentId.longValue() >0l)
+			sb.append( " and model.boothInchargeEnrollment.boothInchargeEnrollmentId = :boothInchargeEnrollmentId " );
+		if(locationValue != null && locationValue.longValue() >0l){
+			sb.append( " and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId = :locationValue ");
+		}
+		sb.append( " and model.isDeleted ='N' ");
+		sb.append( " group by model.boothInchargeRoleConditionMappingId ");
+		Query query=getSession().createQuery(sb.toString());
+		
+		if(boothId != null && boothId.longValue() >0l)
+			query.setParameter("boothId", boothId);
+		if(boothInchargeEnrollmentId != null && boothInchargeEnrollmentId.longValue() >0l)
+			query.setParameter("boothInchargeEnrollmentId", boothInchargeEnrollmentId);
+		if(locationValue != null && locationValue.longValue() >0l){
+			query.setParameter("locationValue", locationValue);
+		}
+		return query.list();
+		
 	}
 }

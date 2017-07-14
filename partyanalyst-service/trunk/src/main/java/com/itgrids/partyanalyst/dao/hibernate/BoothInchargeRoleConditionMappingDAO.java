@@ -97,5 +97,37 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 			query.setParameter("constituencyId", constituencyId);
 			return query.list();
 	}
+
+ public List<Object[]> gettingBoothInchargeMaxCount(Long boothId,Long boothInchargeEnrollmentId,Long locationValue){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append( " select model.boothInchargeRoleConditionMappingId, model.boothInchargeRoleCondition.minMembers," +
+				"model.boothInchargeRoleCondition.maxMembers,model.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId" +
+				",model.boothInchargeRoleCondition.boothInchargeRole.roleName from BoothInchargeRoleConditionMapping model where " ); 
+		
+		if(boothId != null && boothId.longValue() >0l)
+			sb.append( "  model.boothInchargeCommittee.booth.boothId = :boothId " );
+		
+		if(boothInchargeEnrollmentId != null && boothInchargeEnrollmentId.longValue() >0l)
+			sb.append( " and model.boothInchargeEnrollment.boothInchargeEnrollmentId = :boothInchargeEnrollmentId " );
+		if(locationValue != null && locationValue.longValue() >0l){
+			sb.append( " and model.boothInchargeCommittee.address.constituency.constituencyId = :locationValue ");
+		}
+		sb.append( " group by model.boothInchargeRoleConditionMappingId ");
+		Query query=getSession().createQuery(sb.toString());
+		
+		if(boothId != null && boothId.longValue() >0l)
+			query.setParameter("boothId", boothId);
+		if(boothInchargeEnrollmentId != null && boothInchargeEnrollmentId.longValue() >0l)
+			query.setParameter("boothInchargeEnrollmentId", boothInchargeEnrollmentId);
+		if(locationValue != null && locationValue.longValue() >0l){
+			query.setParameter("locationValue", locationValue);
+		}
+		return query.list();
+		
+	}
+ 
+ 
+
 	
 }

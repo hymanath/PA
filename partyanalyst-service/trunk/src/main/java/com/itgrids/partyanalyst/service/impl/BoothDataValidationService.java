@@ -796,5 +796,55 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			return 0;
 		}
 	}
+	/**
+	  * @param  Long boothId 
+	  * @param Long boothInchargeEnrollmentId
+	  * @param Long locationValue
+	  * @return List<BoothInchargeDetailsVO>
+	  * @author Srujana 
+	  * @Description :This Service Method is used to boothInchargeRoleName wise count   . 
+	  * @since 14-JULY-2017
+	  */
+	public List<BoothInchargeDetailsVO> gettingBoothInchargeRoleDetails(Long boothId,Long boothInchargeEnrollmentId,Long locationValue){
+		List<BoothInchargeDetailsVO> returnList =new  ArrayList<BoothInchargeDetailsVO>();
+		try{
+			
+		  List<Object[]>  boothInchargeMaxCount = boothInchargeRoleConditionMappingDAO.gettingBoothInchargeMaxCount(boothId,boothInchargeEnrollmentId,locationValue);
+		  Map<Long,BoothInchargeDetailsVO> inchargeMapRoles = new HashMap<Long,BoothInchargeDetailsVO>();
+			if(boothInchargeMaxCount != null && boothInchargeMaxCount.size()>0){
+				
+				for(Object[] param : boothInchargeMaxCount){
+					BoothInchargeDetailsVO boothVo =new BoothInchargeDetailsVO();
+					boothVo.setRoleMappingId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					boothVo.setMinMemberCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+					boothVo.setMaxMemberCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					boothVo.setRoleId(commonMethodsUtilService.getLongValueForObject(param[3]));
+					boothVo.setRoleName(commonMethodsUtilService.getStringValueForObject(param[4]));
+					boothVo.setVacancyCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					inchargeMapRoles.put(commonMethodsUtilService.getLongValueForObject(param[0]), boothVo);
+				}
+			}
+			List<Object[]> boothInchargeFinalCount =boothInchargeDAO.gettingBoothInchargeFinalCount(boothId,boothInchargeEnrollmentId,locationValue);
+			   if(boothInchargeFinalCount != null && boothInchargeFinalCount.size()>0){
+				   for(Object[] obj :boothInchargeFinalCount){  
+					   BoothInchargeDetailsVO   boothVo = inchargeMapRoles.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+						  if(boothVo != null){
+						  boothVo.setCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
+						  Long count = boothVo.getMaxMemberCount()-boothVo.getCount();
+						  boothVo.setVacancyCount(count);
+					  }
+				   }
+			   }
+			   if(commonMethodsUtilService.isMapValid(inchargeMapRoles) ){
+					for (Map.Entry<Long, BoothInchargeDetailsVO> entrySet : inchargeMapRoles.entrySet()) {
+							returnList.add(entrySet.getValue());
+					}
+				}
+			
+		}catch(Exception e){
+			Log.error("Exception raised at boothInchargeRoleDetails in gettingBoothInchargeRoleDetails class", e);
+		}
+		return returnList;
+	}
 
 }
