@@ -1416,11 +1416,14 @@ function updateFamilyInfo()
 			}
 			else
 			{
+				age = $(this).find(".age").val();
+				if(age == ""){
+					age = 0;
+				}
 				relation = $(this).find(".relation").val();
 				voterId = $(this).find(".votercardNocls").val();
 				partyMemberSince="";
 			}
-			
 				var obj = {
 					age:age,
 					casteStateId:casteStateId,
@@ -1471,7 +1474,7 @@ function updateFamilyInfo()
 		};
 		
 		console.log(jsObj);
-		
+		//return;
 		$.ajax({
 			  type:'GET',
 			  url: 'updateFamilyInfoAction.action',
