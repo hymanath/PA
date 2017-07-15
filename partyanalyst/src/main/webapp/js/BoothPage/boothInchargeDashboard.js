@@ -1,6 +1,5 @@
 
-  var globalBoothInchargeEnrollmentId=1;
-  
+    var globalBoothInchargeEnrollmentId=1;
 	var globalFromDate=moment().startOf('month').format("DD/MM/YYYY");
     var globalToDate=moment().endOf('month').format("DD/MM/YYYY");
 	
@@ -30,19 +29,20 @@
 		getLocationLevelWiseBoothCount("DISTRICT",filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
 		getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
 		getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
-		getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All");
+		getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");
 	});
 
 var filterLevel="";
 var filterValue=0;
-getOverAllBoothDetails("STATE");
+getOverAllBoothDetails("STATE",filterLevel,filterValue);
 getLocationLevelWiseBoothCount("DISTRICT",filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
 getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
 getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
 //getLocationLevelWiseBoothCount("PANCHAYAT",filterLevel,filterValue,"panchaytLevelBoothDtlsDivId");
-getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All");
+getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");
 getLocationLevelWiseBoothDetails();
 //validateBoothToMakeConfirm(); 
+
 
 $(document).on("click",".districtLevelCls",function(){
 	var selecteLegel = $(this).attr("attr_tab_level_value");
@@ -50,14 +50,14 @@ $(document).on("click",".districtLevelCls",function(){
 	$(".districtParliamentLevleHadingCls").html(levelHeading);
 	getLocationLevelWiseBoothCount(selecteLegel,filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
 })
-function getOverAllBoothDetails(locationLevel){
+function getOverAllBoothDetails(locationLevel,filterLevel,filterValue){
 	$("#overAllBoothDlstDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$("#overAllSerialRangeWiseVoterDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	
+	 
 	var jsObj={  
 		locationLevel : locationLevel,         
-		filterLevel : "",
-		filterValue : 0,
+		filterLevel : filterLevel,
+		filterValue : filterValue,
 		boothInchargeEnrollmentId : globalBoothInchargeEnrollmentId,
 		startDate : globalFromDate,
 		endDate : globalToDate
@@ -70,6 +70,7 @@ function getOverAllBoothDetails(locationLevel){
 	}).done(function(result){
 		 $("#overAllBoothDlstDivId").html(' ');
 		 $("#overAllSerialRangeWiseVoterDivId").html(' ');
+		  $(".serialRangeHeadingCls").show();
 	 	  buildOverAllBoothDtls(result);
 	});
 
@@ -280,7 +281,8 @@ function getLocationWiseBoothAddress(locationLevel,addressObj){
 	}
 	return str;
 }
-function getLocationBasedOnSelection(locationLevel,filterLevelLevel,filterValue,divId,type){
+/* Filter Related Script Start */
+function getLocationBasedOnSelection(locationLevel,filterLevelLevel,filterValue,divId,type,resultLevel){
 	var jsObj={  
 		locationLevel : locationLevel,         
 		filterLevel : filterLevelLevel,
@@ -293,11 +295,11 @@ function getLocationBasedOnSelection(locationLevel,filterLevelLevel,filterValue,
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){ 
-	   buildSelectBox(result,locationLevel,divId,type);
+	   buildSelectBox(result,locationLevel,divId,type,resultLevel);
 	});
 }
 
-function buildSelectBox(result,locationLevel,divId,type){
+function buildSelectBox(result,locationLevel,divId,type,resultLevel){
 	var str = '';
 	str+='<option value="0">SELECT '+locationLevel+'</option>'
 	if(result != null && result.length > 0){
@@ -311,15 +313,28 @@ function buildSelectBox(result,locationLevel,divId,type){
      	$("#panchatLevelDistrictSelectBxId").html(str);
     }else{
 		$("#"+divId).html(str);
+		if(resultLevel=="CONSTITUENCY"){
+			$("#constituencyLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
+		}else if(resultLevel=="TEHSIL"){
+			$("#mandalLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
+			$("#mandalLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
+		}else if(resultLevel=="PANCHAYAT"){
+			$("#panchaytLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
+			$("#panchaytLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
+			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+		}
 	}                               
 }
 $(document).on("click",".locationLevelTabCls",function(){
 	var parentSelectBoxId = $(this).attr("attr_select_box_id");
 	var selectedLevel = $(this).attr("attr_tab_level_value");
-	$("#"+parentSelectBoxId).attr("attr_level","PARLIAMENT CONSTITUENCY");
+	var resultLevel = $(this).attr("attr_result_level");
+	var resultLevelDivId = $(this).attr("attr_result_level_div_id");
+	$("#"+parentSelectBoxId).attr("attr_level",selectedLevel);
 	var filterLevel="";
     var filterValue=0;
-	getLocationBasedOnSelection(selectedLevel,filterLevel,filterValue,parentSelectBoxId,"Other");
+	getLocationLevelWiseBoothCount(resultLevel,filterLevel,filterValue,resultLevelDivId);
+	getLocationBasedOnSelection(selectedLevel,filterLevel,filterValue,parentSelectBoxId,"Other",resultLevel);
 	
 });
 $(document).on("change",".selectBoxCls",function(){
@@ -329,9 +344,12 @@ $(document).on("change",".selectBoxCls",function(){
 	var subLevel = $(this).attr("attr_sub_level");
 	var resultLevel = $(this).attr("attr_result_level");
 	var resultLevelDivId = $(this).attr("attr_result_level_div_id");
+	
 	if(selectValue>0){
 	 getLocationLevelWiseBoothCount(resultLevel,selectedLevel,selectValue,resultLevelDivId);
-	 getSubLevelLocationBasedOnSelection(subLevel,selectedLevel,selectValue,subLevelDropBoxId);	
+	 if(subLevel != undefined){
+	   getSubLevelLocationBasedOnSelection(subLevel,selectedLevel,selectValue,subLevelDropBoxId);		 
+	 }
 	}
 });
 function getSubLevelLocationBasedOnSelection(locationLevel,filterLevelLevel,filterValue,divId){
@@ -360,6 +378,8 @@ function buildSubLevelDropDown(result,locationLevel,divId){
 	}
 	$("#"+divId).html(str);                           
 }
+/* Filter Related Script END */
+
 function getLocationLevelWiseBoothDetails(){
 
 	var jObj={  
