@@ -25,21 +25,28 @@ public class BasicVO {
 	 private Long locationId;
 	 private String locationName;
 	 private List<BasicVO> basicList = new ArrayList<BasicVO>(0);
-	 private Long parentLocationId;
+	 private String parentLocationId;
 	 private String goNumber;
+	 private String districtId;
 	 
 	 
 	 
+	public String getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(String districtId) {
+		this.districtId = districtId;
+	}
 	public String getGoNumber() {
 		return goNumber;
 	}
 	public void setGoNumber(String goNumber) {
 		this.goNumber = goNumber;
 	}
-	public Long getParentLocationId() {
+	public String getParentLocationId() {
 		return parentLocationId;
 	}
-	public void setParentLocationId(Long parentLocationId) {
+	public void setParentLocationId(String parentLocationId) {
 		this.parentLocationId = parentLocationId;
 	}
 	public List<BasicVO> getBasicList() {
