@@ -1,25 +1,25 @@
 /*
-DISTRICT
-PARLIAMENT CONSTITUENCY
-CONSTITUENCY
-TEHSIL
-PANCHAYAT
-
 NotStarted
 Started
 Completed
 */
-var blockNames = ["DISTRICT","CONSTITUENCY","MANDAL","PANCHAYAT "];
+var blockNames = ["DISTRICT","CONSTITUENCY","MANDAL","PANCHAYAT"];
 var stateLevel="STATE";
 getOverAllBoothDetails(stateLevel);
-getLocationLevelWiseBoothCount("DISTRICT","districtLevelBoothDtlsDivId");
+getLocationLevelWiseBoothCount("DISTRICT","dstrctParlmntLvlBoothDtlsDivId");
 getLocationLevelWiseBoothCount("CONSTITUENCY","constituencyLevelBoothDtlsDivId");
 getLocationLevelWiseBoothCount("TEHSIL","mandalLevelBoothDtlsDivId");
-getLocationLevelWiseBoothCount("PANCHAYAT","panchaytLevelBoothDtlsDivId");
+//getLocationLevelWiseBoothCount("PANCHAYAT","panchaytLevelBoothDtlsDivId");
 getLocationBasedOnSelection();
 getLocationLevelWiseBoothDetails();
 validateBoothToMakeConfirm(); 
 
+$(document).on("click",".districtLevelCls",function(){
+	var selecteLegel = $(this).attr("attr_level_value");
+	var levelHeading = selecteLegel+" WISE";
+	$(".districtParliamentLevleHadingCls").html(levelHeading);
+	getLocationLevelWiseBoothCount(selecteLegel,"dstrctParlmntLvlBoothDtlsDivId");
+})
 
  $(document).on('click','.table-menu li',function(){
 	$(this).closest("ul").find("li").removeClass("active");
@@ -43,7 +43,7 @@ function getOverAllBoothDetails(locationLevel){
 		filterValue : 0,
 		boothInchargeEnrollmentId : 1,
 		startDate : "13/07/2017",
-		endDate : "13/07/2017"
+		endDate : "30/07/2017"
 	} 
 	$.ajax({
 		type : 'POST',
@@ -60,6 +60,7 @@ function buildOverAllBoothDtls(result){
 		 var overallDataObj = result[0];
 		 var rangevoterArr = overallDataObj.subList;
 		 if(overallDataObj != null){
+			 var str='';
 			 str+='<div class="col-sm-12 blocks">';
                         str+='<div class="col-sm-3">';
 							str+='<div class="subBlock text-center">';
@@ -139,7 +140,7 @@ function getLocationLevelWiseBoothCount(locationLevel,divId){
 		filterValue : 0,
 		boothInchargeEnrollmentId : 1,
 		startDate : "13/07/2017",
-		endDate : "13/07/2017"
+		endDate : "30/07/2017"
 	} 
 	$.ajax({
 		type : 'POST',
