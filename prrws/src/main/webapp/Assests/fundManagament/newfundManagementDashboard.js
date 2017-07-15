@@ -29,7 +29,7 @@ getAllDepartments();
 		
 		setTimeout(function(){ 
 			getALlProgramesAmountDetails();	
-			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,0,0,'cumulative');
+			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,0,0,'cumulative','onload');
 			getGovtSchemesDetails("overviewSelect");
 			getGovtSchemesDetails("programNamesState");
 			getGovtSubProgramsDetails(0,"subProgramNamesState");
@@ -104,7 +104,7 @@ getAllDepartments();
 				globalLocationLevelTypeId = globalLocationLevelTypeId
 				globalLocationId = globalLocationId
 			}
-			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
 			getGovtSchemesDetails("programNamesDistrict");
 			getGovtSubProgramsDetails(0,"subProgramNamesConst");
@@ -121,7 +121,7 @@ getAllDepartments();
 				globalLocationLevelTypeId = globalLocationLevelTypeId
 				globalLocationId = globalLocationId
 			}
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			getAllSubLocationsBySuperLocationId(21,'constLevelDistNames',4);
 			getGovtSchemesDetails("programNamesConst");
 			getGovtSubProgramsDetails(0,"subProgramNamesDistrict");
@@ -138,7 +138,7 @@ getAllDepartments();
 				globalLocationLevelTypeId = globalLocationLevelTypeId
 				globalLocationId = globalLocationId
 			}
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			getAllSubLocationsBySuperLocationId(21,'mandalLevelDistNames',5);
 			getGovtSchemesDetails("programNamesMandal");
 			getGovtSubProgramsDetails(0,"subProgramNamesMandal");
@@ -155,7 +155,7 @@ getAllDepartments();
 				globalLocationLevelTypeId = globalLocationLevelTypeId
 				globalLocationId = globalLocationId
 			}
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			getAllSubLocationsBySuperLocationId(21,'villageLevelDistNames',6);		
 			getGovtSchemesDetails("programNamesVillage");
 			getGovtSubProgramsDetails(0,"subProgramNamesVillage");	
@@ -175,9 +175,9 @@ getAllDepartments();
 			
 		});
 		if(blockType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"")
+			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload')
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative")
+			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload')
 		}
 	  
 	});
@@ -200,9 +200,9 @@ getAllDepartments();
 			
 		});
 		if(blockType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 		}
 	});
 	//constituency
@@ -231,9 +231,9 @@ getAllDepartments();
 		});
 	 getGovtSubProgramsDetails(programId,"subProgramNamesConst");
 	 if(blockType == "normalView"){
-		 getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+		 getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 	 }else{
-		 getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+		 getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 	 }
 	 
 		
@@ -270,9 +270,9 @@ getAllDepartments();
 		
 	 getGovtSubProgramsDetails(programId,"subProgramNamesMandal");
 	 if(blockType == "normalView"){
-		  getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+		  getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 	 }else{
-		  getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+		  getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 	 }
 	
 	});
@@ -313,9 +313,9 @@ getAllDepartments();
 			
 		});
 		 if(blockType == "normalView"){
-			 getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+			 getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 		 }else{
-			 getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+			 getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 		 }
 	 
 	});
@@ -331,9 +331,9 @@ getAllDepartments();
 			
 		});
 		if(blockType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative")
+			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload')
 		}
 	  
 	});
@@ -356,9 +356,9 @@ getAllDepartments();
 		});
 		
 		if(blockType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 		}
 	  
 	});
@@ -386,10 +386,10 @@ getAllDepartments();
 			
 		});
 	if(blockType == "normalView"){
-		getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+		getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 	}else{
 		
-	}	getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+	}	getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 	 
 	});
 	
@@ -421,9 +421,9 @@ getAllDepartments();
 			
 		});
 		if(blockType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 		}
 	  
 	});
@@ -463,9 +463,9 @@ getAllDepartments();
 			
 		});
 		if(blockType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onLoad');
 		}
 	  
 	});
@@ -494,9 +494,9 @@ getAllDepartments();
 			var programId = $("#programNamesState").val();
 			var subProgramId = $("#subProgramNamesState").val();
 			if(blockType == "normalView"){
-				getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,'');
+				getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,'','onload');
 			}else{
-				getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,'cumulative');
+				getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,'cumulative','onload');
 			}
 			
 		}else if(blockName == 'distLevel'){
@@ -507,9 +507,9 @@ getAllDepartments();
 			$("#distLevelParliamentNames").val(0);
 			$("#distLevelParliamentNames").trigger("chosen:updated");
 			if(blockType == "normalView"){
-				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 			}else{
-				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 			}
 			
 		}else if(blockName == 'consLevel'){
@@ -524,9 +524,9 @@ getAllDepartments();
 			
 			if(blockType == "cummulativeView"){
 				
-				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 			}else{
-				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 			}
 		}else if(blockName == 'mandalLevel'){
 			var programId = $("#programNamesMandal").val();
@@ -541,9 +541,9 @@ getAllDepartments();
 			$("#mandalLevelMandalNames").trigger("chosen:updated");
 			if(blockType == "normalView"){
 				
-				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 			}else{
-				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 			}
 		}else if(blockName == 'villageLevel'){
 			var programId = $("#programNamesVillage").val();
@@ -554,9 +554,9 @@ getAllDepartments();
 			$("#villageLeveParliNames").trigger("chosen:updated");
 			if(blockType == "normalView"){
 				
-				getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+				getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 			}else{
-				getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+				getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 			}
 		}
 	});
@@ -575,41 +575,41 @@ getAllDepartments();
 				var programId = $("#programNamesState").val();
 				var subProgramId = $("#subProgramNamesState").val();
 				if(cummulativeType == "normalView"){
-					getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,'');
+					getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,'','onload');
 				}else{
-					getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,'cumulative');
+					getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,'cumulative','onload');
 				}
 			}else if(blockName == 'distLevel'){
 				var programId = $("#programNamesDistrict").val();
 				var subProgramId = $("#subProgramNamesDistrict").val();
 				if(cummulativeType == "normalView"){
-					getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+					getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 				}else{
-					getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+					getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 				}
 			}else if(blockName == 'consLevel'){
 				var programId = $("#programNamesConst").val();
 				var subProgramId = $("#subProgramNamesConst").val();
 				if(cummulativeType == "normalView"){
-					getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+					getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 				}else{
-					getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+					getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 				}
 			}else if(blockName == 'mandalLevel'){
 				var programId = $("#programNamesMandal").val();
 				var subProgramId = $("#subProgramNamesMandal").val();
 				if(cummulativeType == "normalView"){
-					getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+					getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 				}else{
-					getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+					getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 				}
 			}else if(blockName == 'villageLevel'){
 				var programId = $("#programNamesVillage").val();
 				var subProgramId = $("#subProgramNamesVillage").val();
 				if(cummulativeType == "normalView"){
-					getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"");
+					getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
 				}else{
-					getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative");
+					getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 				}
 			}
 	});
@@ -635,7 +635,7 @@ getAllDepartments();
 				getAllSubLocationsBySuperLocationId(11,'distLevelParliamentNames',3);
 				$(".distLevelparliamentCls").show();
 				$(".distLevelCls").hide();
-				 getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+				 getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			}else{
 				if(globalLevelId == 0){
 					globalLocationLevelTypeId=3;
@@ -649,7 +649,7 @@ getAllDepartments();
 				emptyProgramSubProgramDistVal()
 				$(".distLevelparliamentCls").hide();
 				$(".distLevelCls").show();
-				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			}
 			
 		}else if(blockName == 'consLevel'){
@@ -667,7 +667,7 @@ getAllDepartments();
 				getAllSubLocationsBySuperLocationId(11,'constLevelParliaNames',4);
 				$(".constiLevelDistCls").hide();
 				$(".parlaiLevelDistCls").show();
-				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			}else{
 				if(globalLevelId == 0){
 					globalLocationLevelTypeId=4;
@@ -681,7 +681,7 @@ getAllDepartments();
 				emptyProgramSubProgramConstVal()
 				$(".parlaiLevelDistCls").hide();
 				$(".constiLevelDistCls").show();
-				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			}
 			 
 		}else if(blockName == 'mandalLevel'){
@@ -699,7 +699,7 @@ getAllDepartments();
 				getAllSubLocationsBySuperLocationId(11,'parliamentLevelConstNames',5);
 				$(".mandalLevelDistCls").hide();
 				$(".levelparliamentConstiCls").show();
-				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			}else{
 				if(globalLevelId == 0){
 					globalLocationLevelTypeId=5;
@@ -714,7 +714,7 @@ getAllDepartments();
 				emptyProgramSubProgramMandalVal()
 				$(".levelparliamentConstiCls").hide();
 				$(".mandalLevelDistCls").show();
-				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+				getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			}
 		}else if(blockName == 'villageLevel'){
 			$(".tabCummulativeVillage li").removeClass("active");
@@ -732,7 +732,7 @@ getAllDepartments();
 				
 				$(".villageLevelDistCls").hide();
 				$(".villageLevelParliCls").show();
-				getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+				getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			}else{
 				if(globalLevelId == 0){
 					globalLocationLevelTypeId=6;
@@ -747,7 +747,7 @@ getAllDepartments();
 				emptyProgramSubProgramVillageVal()
 				$(".villageLevelParliCls").hide();
 				$(".villageLevelDistCls").show();
-				getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+				getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			}
 		}
 		
@@ -1200,7 +1200,7 @@ getAllDepartments();
 		
 	}
 	
-	function getSchemeWiseLocationWiseAmountDetails(levelId,divId,sortingType,orderType,locationId,locationLevelType,programId,subProgramId,viewType){
+	function getSchemeWiseLocationWiseAmountDetails(levelId,divId,sortingType,orderType,locationId,locationLevelType,programId,subProgramId,viewType,onchageType){
 		$("#"+divId).html(spinner);
 		$("#"+divId+"Table").html(spinner);
 		var levelValues = [];
@@ -1215,13 +1215,19 @@ getAllDepartments();
 		if(locationId == null || locationId == 0){
 			 levelValues =[];
 		}else{
-			if(length >2){
-				var tempIdStr=""+locationId;
-				var finalIdStr= tempIdStr.substring(1);
-				levelValues.push(finalIdStr);
-			}else{
+			if(onchageType == "onload"){
 				levelValues.push(locationId);
+			}else{
+				if(length >2){
+				var tempIdStr=""+locationId;
+					var finalIdStr= tempIdStr.substring(1);
+					levelValues.push(finalIdStr);
+				}else{
+					levelValues.push(locationId);
+				}
 			}
+			
+			
 			 
 		}
 		 
@@ -1319,16 +1325,22 @@ getAllDepartments();
 							}
 						}else if(levelId == '4')
 						{
+							var blockType = getblockTypeCons();
 							table+='<th>DISTRICT</th>';
-							table+='<th>PARLIAMENT</th>';
+							if(blockType == "parliamentType"){
+								table+='<th>PARLIAMENT</th>';
+							}
 							table+='<th>CONSTITUENCY</th>';
 							if(viewType == "cumulative"){
 								table+='<th>TOTAL</th>';
 							}
 						}else if(levelId == '5')
 						{
+							var blockType = getblockTypeMandal();
 							table+='<th>DISTRICT</th>';
-							table+='<th>PARLIAMENT</th>';
+							if(blockType == "parliamentType"){
+								table+='<th>PARLIAMENT</th>';
+							}
 							table+='<th>CONSTITUENCY</th>';
 							table+='<th>MANDAL</th>';
 							if(viewType == "cumulative"){
@@ -1336,8 +1348,11 @@ getAllDepartments();
 							}
 						}else if(levelId == '6')
 						{
+							var blockType = getblockTypeVillage();
 							table+='<th>DISTRICT</th>';
-							table+='<th>PARLIAMENT</th>';
+							if(blockType == "parliamentType"){
+								table+='<th>PARLIAMENT</th>';
+							}
 							table+='<th>CONSTITUENCY</th>';
 							table+='<th>MANDAL</th>';
 							table+='<th>VILLAGE</th>';
@@ -1387,11 +1402,14 @@ getAllDepartments();
 							}
 						}else if(levelId == '4')
 						{
+							var blockType = getblockTypeCons();
 							lvlVal =result[i].addressVO.assemblyId;
 							levelName = "CONTITUENCY";
 							locatioName =result[i].addressVO.assemblyName;
 							table+='<td>'+result[i].addressVO.districtName+'</td>';
-							table+='<td>'+result[i].addressVO.parliamentName+'</td>';
+							if(blockType == "parliamentType"){
+								table+='<td>'+result[i].addressVO.parliamentName+'</td>';
+							}
 							table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 							if(viewType == "cumulative"){
 								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "CONSTITUENCY" >'+result[i].count+')</small></td>';
@@ -1399,11 +1417,14 @@ getAllDepartments();
 							}
 						}else if(levelId == '5')
 						{
+							var blockType = getblockTypeMandal();
 							lvlVal =result[i].addressVO.id;
 							locatioName =result[i].addressVO.tehsilName;
 							levelName = "MANDAL";
 							table+='<td>'+result[i].addressVO.districtName+'</td>';
-							table+='<td>'+result[i].addressVO.parliamentName+'</td>';
+							if(blockType == "parliamentType"){
+								table+='<td>'+result[i].addressVO.parliamentName+'</td>';
+							}
 							table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 							table+='<td>'+result[i].addressVO.tehsilName+'</td>';
 							if(viewType == "cumulative"){
@@ -1412,11 +1433,14 @@ getAllDepartments();
 							}
 						}else if(levelId == '6')
 						{
+							var blockType = getblockTypeVillage();
 							lvlVal =result[i].addressVO.id;
 							locatioName =result[i].addressVO.panchayatName;
 							levelName = "VILLAGE";
 							table+='<td>'+result[i].addressVO.districtName+'</td>';
-							table+='<td>'+result[i].addressVO.parliamentName+'</td>';
+							if(blockType == "parliamentType"){
+								table+='<td>'+result[i].addressVO.parliamentName+'</td>';
+							}
 							table+='<td>'+result[i].addressVO.assemblyName+'</td>';
 							table+='<td>'+result[i].addressVO.tehsilName+'</td>';
 							table+='<td>'+result[i].addressVO.panchayatName+'</td>';
@@ -1475,15 +1499,17 @@ getAllDepartments();
 			if(levelId == 2){
 				if(result !=null && result.length>0){
 					var yearsArr=[];
-					var NABARDArr =[];
-					var NREGPArr =[];
+					var SVSArr=[];
+					var MVSArr=[];
+					var SOLARArr=[];
+					var CWTPArr=[];
 					var CRRArr=[];
 					var RDFArr=[];
+					var FC13Arr=[];
 					var MRRArr=[];
-					var FC13Arr=[]; 
-					var APDRPGRANTArr=[]; 
-					var NRDWPArr=[]; 
-					var SDPArr=[];
+					var NABARDArr =[];
+					var NREGPArr =[];
+					var APDRPGRANTArr=[];
 					var totalCountArr = [];
 					var totalCount2 = '';
 					for(var i in result){
@@ -1517,32 +1543,38 @@ getAllDepartments();
 										for(var k in result[i].subList[j].subList){
                                             totalCount2 =totalCount2+result[i].subList[j].subList[k].count;
 											if(result[i].subList[j].subList[k].id == 1){
-												//NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												NABARDArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												//SVSArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												SVSArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 2){
-												 //NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 NREGPArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+												 //MVSArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 MVSArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }else if(result[i].subList[j].subList[k].id == 3){
+												 //SOLARArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 SOLARArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+											 }else if(result[i].subList[j].subList[k].id == 4){
+												 //CWTPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 CWTPArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+											 }else if(result[i].subList[j].subList[k].id == 5){
 												 //CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
 												 CRRArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
-											 }else if(result[i].subList[j].subList[k].id == 4){
+											 }else if(result[i].subList[j].subList[k].id == 6){
 												 //RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
 												 RDFArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
-											 }else if(result[i].subList[j].subList[k].id == 5){
-												 //MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 MRRArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
-											 }else if(result[i].subList[j].subList[k].id == 6){
+											 }else if(result[i].subList[j].subList[k].id == 7){
 												 //FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
 												 FC13Arr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
-											 }else if(result[i].subList[j].subList[k].id == 7){
+											 }else if(result[i].subList[j].subList[k].id == 8){
+												 //MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 MRRArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+											 }else if(result[i].subList[j].subList[k].id == 9){
+												 //NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 NABARDArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+											 }else if(result[i].subList[j].subList[k].id == 10){
+												 //NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+												 NREGPArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+											 }else if(result[i].subList[j].subList[k].id == 11){
 												 //APDRPGRANTArr.push({"y":result[i].subList[j].subList[k].totalCount})
 												 APDRPGRANTArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
-											 }else if(result[i].subList[j].subList[k].id == 8){
-												 //NRDWPArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 NRDWPArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
-											 }else if(result[i].subList[j].subList[k].id == 9){
-												 //NRDWPArr.push({"y":result[i].subList[j].subList[k].totalCount})
-												 SDPArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
 											 }
 										}
 										 totalCountArr.push(totalCount2);
@@ -1552,30 +1584,37 @@ getAllDepartments();
 							}
 						}
 						var mainJosnObjArr=[];
-						if(NABARDArr != null && NABARDArr.length > 0){
-							mainJosnObjArr.push({name:'NABARD',data:NABARDArr,color:"#309AFF"});  
+						if(SVSArr != null && SVSArr.length > 0){
+							mainJosnObjArr.push({name:'SVS',data:SVSArr,color:"#309AFF"});  
 						}
-						if(MRRArr != null && MRRArr.length > 0){
-							mainJosnObjArr.push({name:'MRR',data:MRRArr,color:"#01A64E"});  
+						if(MVSArr != null && MVSArr.length > 0){
+							mainJosnObjArr.push({name:'MVS',data:MVSArr,color:"#01A64E"});  
 						}
-						if(NREGPArr != null && NREGPArr.length > 0){
-							mainJosnObjArr.push({name:'NREGP',data:NREGPArr,color:"#FF0DAD"});  
+						if(SOLARArr != null && SOLARArr.length > 0){
+							mainJosnObjArr.push({name:'SOLAR',data:SOLARArr,color:"#FF0DAD"});  
+						}
+						if(CWTPArr != null && CWTPArr.length > 0){
+							mainJosnObjArr.push({name:'CWTP',data:CWTPArr,color:"#FF872C"});  
 						}
 						if(CRRArr != null && CRRArr.length > 0){
-							mainJosnObjArr.push({name:'CRR',data:CRRArr,color:"#FF872C"});  
+							mainJosnObjArr.push({name:'CRR',data:CRRArr,color:"#3C46FF"});  
 						}
 						if(RDFArr != null && RDFArr.length > 0){
-							mainJosnObjArr.push({name:'RDF',data:RDFArr,color:"#3C46FF"});  
+							mainJosnObjArr.push({name:'RDF',data:RDFArr,color:"#5B5B5B"});  
 						}
 						if(FC13Arr != null && FC13Arr.length > 0){
-							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#5B5B5B"});  
+							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#46306A"});  
+						}
+						if(MRRArr != null && MRRArr.length > 0){
+							mainJosnObjArr.push({name:'MRR',data:MRRArr,color:"#9C9C9C"});  
+						}if(NABARDArr != null && NABARDArr.length > 0){
+							mainJosnObjArr.push({name:'NABARD',data:NABARDArr,color:"#14BAAD"});  
+						}
+						if(NREGPArr != null && NREGPArr.length > 0){
+							mainJosnObjArr.push({name:'NREGP',data:NREGPArr,color:"#14BEED"});  
 						}
 						if(APDRPGRANTArr != null && APDRPGRANTArr.length > 0){
-							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#46306A"});  
-						}if(NRDWPArr != null && NRDWPArr.length > 0){
-							mainJosnObjArr.push({name:'NRDWP',data:NRDWPArr,color:"#9C9C9C"});  
-						}if(SDPArr != null && SDPArr.length > 0){
-							mainJosnObjArr.push({name:'SDP',data:SDPArr,color:"#14BAAD"});  
+							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#18BGGD"});  
 						}
 					}
 					$(".chart"+divId).highcharts({
@@ -1817,6 +1856,17 @@ getAllDepartments();
 							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#18BGGD"});  
 						}
 					}
+					var heightOfDiv = assemblyShemeNameArr.length ;
+					if(heightOfDiv >10){
+						heightOfDiv = heightOfDiv * 80;
+						$(".chart"+divId).css("height",heightOfDiv);
+						$(".scroller"+divId).mCustomScrollbar({setHeight:'600px'})
+					}else{
+						$(".chart"+divId).css("height","auto");
+						$(".scroller"+divId).removeAttr('style')
+						$(".scroller"+divId).mCustomScrollbar('destroy');
+					  }
+					/* 
 					var length = result.length
 					var height = '';
 					if(length == 0)
@@ -1829,7 +1879,7 @@ getAllDepartments();
 					{
 						$(".scroller"+divId).mCustomScrollbar({setHeight:'600px'})
 					}
-					$(".chart"+divId).height(height);
+					$(".chart"+divId).height(height); */
 					$(".chart"+divId).highcharts({
 						chart: {
 							type: 'bar',
@@ -2091,9 +2141,9 @@ getAllDepartments();
 			locationId =$("#distLevelDistrictNames").val();
 		}
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 			
@@ -2124,9 +2174,9 @@ getAllDepartments();
 			
 		});
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 	});	
@@ -2148,9 +2198,9 @@ getAllDepartments();
 		var locationId =$("#constLevelDistNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'constLevelConstNames',4);
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 			
@@ -2173,9 +2223,9 @@ getAllDepartments();
 		var locationId =$("#constLevelParliaNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'constLevelConstNames',4);
 		if(cummulativeType == "normalView"){     
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 			
@@ -2198,9 +2248,9 @@ getAllDepartments();
 		var locationId =$("#constLevelConstNames").val();
 		var viewTypeValue='';
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");	
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');	
 		}
 		
 			
@@ -2250,10 +2300,10 @@ getAllDepartments();
 			}
 		}
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
 			
-		}getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+		}getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		
 	});
 	
@@ -2276,9 +2326,9 @@ getAllDepartments();
 		var locationId =$("#mandalLevelDistNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'mandalLevelConstNames',5);
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 			
@@ -2301,9 +2351,9 @@ getAllDepartments();
 		var locationId =$("#parliamentLevelConstNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'mandalLevelConstNames',5);
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 			
@@ -2326,9 +2376,9 @@ getAllDepartments();
 		var locationId =$("#mandalLevelConstNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'mandalLevelMandalNames',5);
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 			
@@ -2350,9 +2400,9 @@ getAllDepartments();
 		var locationLevelType = 5;
 		var locationId =$("#mandalLevelMandalNames").val();
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 			
@@ -2412,9 +2462,9 @@ getAllDepartments();
 			
 		});
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 	});
@@ -2437,9 +2487,9 @@ getAllDepartments();
 		var locationId =$("#villageLevelDistNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'villageLevelConstNames',6);
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 			
@@ -2462,9 +2512,9 @@ getAllDepartments();
 		var locationId =$("#villageLeveParliNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'villageLevelConstNames',6);
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 			
@@ -2487,9 +2537,9 @@ getAllDepartments();
 		var locationId =$("#villageLevelConstNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'villageLevelMandalNames',6);
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 			
@@ -2512,9 +2562,9 @@ getAllDepartments();
 		var locationId =$("#villageLevelMandalNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'villageLevelNames',6);
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 			
@@ -2536,9 +2586,9 @@ getAllDepartments();
 		var locationLevelType = 6;
 		var locationId =$("#villageLevelNames").val();
 		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
 			
@@ -3286,7 +3336,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 				globalLocationId = globalLocationId;
 				globalLocationLevelTypeId = globalLocationLevelTypeId;
 			}
-			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 		}
 		
 		if(!$(".collapseActiveDistCls").hasClass("collapsed")){
@@ -3297,7 +3347,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 				globalLocationId = globalLocationId;
 				globalLocationLevelTypeId = globalLocationLevelTypeId;
 			}
-			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
 			getGovtSchemesDetails("programNamesDistrict");
 			getGovtSubProgramsDetails(0,"subProgramNamesDistrict");
@@ -3311,7 +3361,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 				globalLocationId = globalLocationId;
 				globalLocationLevelTypeId = globalLocationLevelTypeId;
 			}
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			getAllSubLocationsBySuperLocationId(21,'constLevelDistNames',4);
 			getGovtSchemesDetails("programNamesConst");
 			getGovtSubProgramsDetails(0,"subProgramNamesConst");
@@ -3325,7 +3375,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 				globalLocationId = globalLocationId;
 				globalLocationLevelTypeId = globalLocationLevelTypeId;
 			}
-			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			getAllSubLocationsBySuperLocationId(21,'mandalLevelDistNames',5);
 			getGovtSchemesDetails("programNamesMandal");
 			getGovtSubProgramsDetails(0,"subProgramNamesMandal");
@@ -3339,7 +3389,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 				globalLocationId = globalLocationId;
 				globalLocationLevelTypeId = globalLocationLevelTypeId;
 			}
-			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative");
+			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			getAllSubLocationsBySuperLocationId(21,'villageLevelDistNames',6);		
 			getGovtSchemesDetails("programNamesVillage");
 			getGovtSubProgramsDetails(0,"subProgramNamesVillage");	
