@@ -335,7 +335,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 									for(var i in result.subList){
 									tableView+='<tr>';
 										if(blockName == 'District'){
-											tableView+='<td><img src="Assests/icons/'+result.subList[i].name+'.png" style="height: 30px;margin-right: 7px;"/>'+result.subList[i].name+'</td>';
+											tableView+='<td><img src="Assests/icons/'+result.subList[i].name+'.png" style="height: 30px;margin-right: 7px;width:50px;"/>'+result.subList[i].name+'</td>';
 										}else if(blockName == 'Constituency')
 										{
 												tableView+='<td>'+result.subList[i].districtName+'</td>';
@@ -738,7 +738,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			 $("#"+blockName+'_'+blockId).html('');
+			// $("#"+blockName+'_'+blockId).html('');
 			if(result !=null  && result.length>0){
 				if(blockId == 5){
 					if(subBlockName == "Districts"){
@@ -768,7 +768,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$("#"+blockName+'_'+blockId).html('');
+		//	$("#"+blockName+'_'+blockId).html('');
 			if(result !=null  && result.length>0){
 				if(blockId == 5){
 					if(subBlockName == "Districts"){
