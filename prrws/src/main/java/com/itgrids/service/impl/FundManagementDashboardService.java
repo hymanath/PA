@@ -2567,6 +2567,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		   if(commonMethodsUtilService.isListOrSetValid(schemes)){
 			   for (GovtScheme govtScheme : schemes) {
 				   LocationFundDetailsVO schemeVO = new LocationFundDetailsVO();
+				   schemeVO.setCount(0L);
 				   schemeVO.setId(commonMethodsUtilService.getLongValueForObject(govtScheme.getGovtSchemeId()));
 				   schemeVO.setName(commonMethodsUtilService.getStringValueForObject(govtScheme.getSchemeName()));
 				   
@@ -2603,7 +2604,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			 
 			 Collections.sort(returnList,new Comparator<LocationFundDetailsVO>() {
 				 public int compare(LocationFundDetailsVO o1, LocationFundDetailsVO o2) {
-					if(o2.getCount() != null && o2.getCount().longValue()>0 && o1.getCount() != null && o1.getCount().longValue()>0)
+					if(o2.getCount() != null && o2.getCount().longValue() >= 0L && o1.getCount() != null && o1.getCount().longValue() >= 0L)
 						return o2.getCount().compareTo(o1.getCount());
 					else
 						return 0;
