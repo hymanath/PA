@@ -455,6 +455,8 @@
 	 </decorator>
 	 
 	<decorator name="tdpMenu" page="tdpMenu.jsp">  
+	<pattern>/cadrePartyMeetingManagementAction*</pattern>
+	
 	<pattern>/activitiesDashboard*</pattern>
 	<!-- Training module Starts-->
 	 <pattern>/trainingCenterDashBoardAction*</pattern>
@@ -764,6 +766,7 @@
 		<pattern>/createMeekosamGrievanceAction*</pattern>
 		<pattern>/grievanceRequestAction*</pattern>
 		<pattern>/updateMobileNoAction*</pattern>  
+		
 		
 	 </decorator>
 </decorators>
