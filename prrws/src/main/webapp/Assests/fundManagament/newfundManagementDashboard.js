@@ -3054,6 +3054,7 @@ function getLocationWiseAmountAndCountDetails(levelId,divId,type,levelValueStr){
 			order : "desc",   //asc,desc
 			fromDateStr : glStartDate,//"01-06-2013",       
 			toDateStr : glEndDate,//"10-06-2020",
+			deptIdsList:deptIds
 		}
 		$.ajax({
 			url : "getLocationWiseAmountAndCountDetails",  
