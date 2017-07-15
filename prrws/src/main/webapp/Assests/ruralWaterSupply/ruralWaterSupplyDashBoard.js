@@ -2305,7 +2305,7 @@
 									if(GLtbodyArr[i].basicList !=null && GLtbodyArr[i].basicList.length>0){
 										for(var j in GLtbodyArr[i].basicList){
 											if(GLtbodyArr[i].basicList[j].count !=null && GLtbodyArr[i].basicList[j].count>0){
-												tableView+='<td class="assetsClickView" attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].count+'" attr_location_name="'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].count+'</td>';
+												tableView+='<td class="assetsClickView" attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].count+'" attr_location_name="'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].count+'</td>';
 											}else{
 												tableView+='<td> - </td>';
 											}
@@ -3605,10 +3605,11 @@
 		var locationType=$(this).attr("attr_location_type");
 		var totalCount=$(this).attr("attr_total_count");
 		var locationName=$(this).attr("attr_location_name");
+		var districtVal = $(this).attr("attr_district_val");
 		$("#modalHablitationDivId").modal('show');
 		$("#modalHabliHeadingId").html("<h4 class='text-capital'>"+locationName+"&nbsp;&nbsp;"+locationType+"&nbsp;&nbsp;"+status+"&nbsp;&nbsp;Overview</h4>");
 		var startIndex=0;
-		getAssetDetailsByAssetType(status,locationType,locationValue,startIndex,totalCount);
+		getAssetDetailsByAssetType(status,locationType,locationValue,startIndex,totalCount,districtVal);
 		
 		
 	});
@@ -3849,7 +3850,7 @@
 	}
 	
 	//Assets ON CLICK
-	function getAssetDetailsByAssetType(status,locationType,locationValue,startIndex,totalCount){
+	function getAssetDetailsByAssetType(status,locationType,locationValue,startIndex,totalCount,districtVal){
 		$("#modalAssetsTable").html(spinner);
 		var yearVal="";
 			var financialVal =$("#financialYearId").val();
@@ -3865,7 +3866,11 @@
 				filterValue = locationValue;
 				filterType = locationType;
 			}
-			
+			var districtVal1="";
+			if(locationType == "mandal"){
+				districtVal1=districtVal;
+			}
+
 		var json = {
 			assetType:status,
 			fromDateStr:glStartDate,
@@ -3874,7 +3879,8 @@
 			endValue:"10",
 			filterType:filterType,
 			filterValue:filterValue,
-			year:yearVal
+			year:yearVal,
+			districtValue:districtVal1
 		}
 		$.ajax({                
 			type:'POST',    
