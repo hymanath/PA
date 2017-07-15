@@ -1,5 +1,7 @@
-
+	var filterLevel="";
+	var filterValue=0;
 	var globalBoothInchargeEnrollmentId=1;
+	
  	var globalFromDate=moment().startOf('month').format("DD/MM/YYYY");
     var globalToDate=moment().endOf('month').format("DD/MM/YYYY");
 	$(".selectBoxCls").chosen();
@@ -22,25 +24,24 @@
 		   'This Year': [moment().startOf('Year'), moment()]
 		}
 	});
+
 	$('#daterangePickerId').on('apply.daterangepicker', function(ev, picker) {
 		globalFromDate = picker.startDate.format('DD/MM/YYYY');
 		globalToDate = picker.endDate.format('DD/MM/YYYY');
-		getOverAllBoothDetails("STATE");
+		getOverAllBoothDetails("STATE",filterLevel,filterValue);
 		getLocationLevelWiseBoothCount("DISTRICT",filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
 		getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
 		getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
 		getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");
 	});
  
-var filterLevel="";
-var filterValue=0;
 getOverAllBoothDetails("STATE",filterLevel,filterValue);
 getLocationLevelWiseBoothCount("DISTRICT",filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
 getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
 getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
 //getLocationLevelWiseBoothCount("PANCHAYAT",filterLevel,filterValue,"panchaytLevelBoothDtlsDivId");
 getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");
-getLocationLevelWiseBoothDetails();
+//getLocationLevelWiseBoothDetails();
 //validateBoothToMakeConfirm(); 
 
 //making active and de-active location tab
