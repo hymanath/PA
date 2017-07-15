@@ -31,6 +31,10 @@ $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 
 $(document).on('click','.calendar_active_cls li', function(){
 	var date = $(this).attr("attr_val");
+	$(".tableMenu li").removeClass("active");
+	$(".tableMenu li:first-child").addClass("active");
+	$("#mandalConstituencyNames").html('');
+	$("#mandalConstituencyNames").trigger("chosen:updated");
 	
 	if(date == 'Today')
 	{
@@ -347,7 +351,7 @@ $(document).on("change","#mandalDistrictNames",function(){
 	}else if(locationType == "parliament"){
 		filterType = "district";
 		getDrainsInfoLocationWise("mandal",'0','district',districtId,'constituency','mandalView');
-		getAllConstituenciesForParliament('mandalConstituencyNames','PARLIAMENTS',districtId);
+		getAllConstituenciesForParliament('mandalConstituencyNames','CONSTITUENCIES',districtId);
 	}
 	
 });
