@@ -1084,6 +1084,9 @@
 									<li>
 										<a target="_blank" href="partyLeadersDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Core Dashboard </span></a>
 									</li>
+									<li>
+										<a target="_blank" href="getBoothInchargeDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Booth Committee Dashboard </span></a>
+									</li>
 								</c:if>
 							</c:if>
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD')}">
