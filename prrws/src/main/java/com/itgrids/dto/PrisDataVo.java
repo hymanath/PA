@@ -12,13 +12,13 @@ import java.util.List;
 public class PrisDataVo implements Serializable{
 	private Long totalHouseHolds;
 	private Long targetOverall;
-	private Double targetOverallPercent;
+	private Double targetOverallPercent=0.00;
 	private Long achievedOverall;
-	private Double achievedOverallpercent;
+	private Double achievedOverallpercent=0.00;
 	private Long subTarget;
-	private Double subTargetPercentage;
+	private Double subTargetPercentage=0.00;
 	private Long subAchieved;
-	private Double subAchievedPercentage;
+	private Double subAchievedPercentage=0.00;
 	private Long subTotal;
 	
 	public Long getTotalHouseHolds() {
