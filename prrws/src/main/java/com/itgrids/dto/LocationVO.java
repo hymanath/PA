@@ -23,7 +23,7 @@ public class LocationVO implements Serializable {
 	private String sactionAmount;
 	private Long fundSanctionId;
 	private StringBuilder locName;
-	private Long parentLocationId;
+	private String parentLocationId;
 	private Long govtOrderId;
 	private String goNumber;
 	private String issueDate;
@@ -41,10 +41,10 @@ public class LocationVO implements Serializable {
 	public void setAddressVO(AddressVO addressVO) {
 		this.addressVO = addressVO;
 	}
-	public Long getParentLocationId() {
+	public String getParentLocationId() {
 		return parentLocationId;
 	}
-	public void setParentLocationId(Long parentLocationId) {
+	public void setParentLocationId(String parentLocationId) {
 		this.parentLocationId = parentLocationId;
 	}
 	public Long getLocationLevelId() {
