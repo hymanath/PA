@@ -222,13 +222,17 @@ public class RwsMinShallowHandpumpsViewDAO extends GenericDaoHibernate<RwsMinSha
 		
 		//,RwsMinConstituencyView model4
 		sbm.append("from RwsMinShallowHandpumpsView model,RwsMinAssetNabInkView model2,"
-					+ " RwsMinHabView model3, RwsMinConstituencyView model4 ");
+					+ " RwsMinHabView model3 ");
 		
 		sbe.append("where" +
 					" model.assetCode=model2.assetCode and "
 					+ " model2.habCode=model3.panchCode ");
-		sbe.append(" and model3.mCode=model4.mCode  "
-				+ " and model3.dCode=model4.dCode ");
+		if(inputVo.getLocationType()!= null && (inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.MANDAL) 
+				|| inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.CONSTITUENCY) )){
+			sbm.append(", RwsMinConstituencyView model4 "); 
+			sbe.append(" and model3.mCode=model4.mCode  "
+					+ " and model3.dCode=model4.dCode ");
+		}
 		if (IConstants.SUPPLY_TYPE_SAFE.equalsIgnoreCase(type)) {
 					sb.append(" count(model3.safeLpcd) ");			
 					sbe.append(" AND model3.safeLpcd != '0' and model3.safeLpcd is not null ");

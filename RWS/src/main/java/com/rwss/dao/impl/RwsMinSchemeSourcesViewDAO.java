@@ -294,7 +294,7 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 			sb.append(" ,model4.constituencyCode,model4.contituencyName ");
 			
 		}else if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.MANDAL)){
-			sb.append(" ,model4.mCode,model4.mName, model4.dCode,modeld.dName ");
+			sb.append(" ,model4.mCode,model4.mName, model4.dCode,model4.dName ");
 		}
 		
 		if (sourceType != null && !sourceType.isEmpty()) {
@@ -324,7 +324,7 @@ public class RwsMinSchemeSourcesViewDAO extends GenericDaoHibernate<RwsMinScheme
 		}else if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.CONSTITUENCY)){
 			sbe.append(" group by model4.constituencyCode,model4.contituencyName order by model4.constituencyCode");
 		}else if(inputVo.getLocationType()!= null && inputVo.getLocationType().trim().equalsIgnoreCase(IConstants.MANDAL)){
-			sbe.append(" group by model4.mCode,model4.mName, model4.dCode,modeld.dName order by model4.mCode, model3.dCode");
+			sbe.append(" group by model4.mCode,model4.mName, model4.dCode,model4.dName order by model4.mCode, model4.dCode");
 		}
 		sb.append(sbm.toString()).append(sbe.toString());
 
