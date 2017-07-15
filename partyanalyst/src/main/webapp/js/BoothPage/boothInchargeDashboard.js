@@ -1,8 +1,8 @@
 
-    var globalBoothInchargeEnrollmentId=1;
-	var globalFromDate=moment().startOf('month').format("DD/MM/YYYY");
+	var globalBoothInchargeEnrollmentId=1;
+ 	var globalFromDate=moment().startOf('month').format("DD/MM/YYYY");
     var globalToDate=moment().endOf('month').format("DD/MM/YYYY");
-	
+	$(".selectBoxCls").chosen();
 	$('#daterangePickerId').daterangepicker({
 		opens: 'left',
 		startDate: globalFromDate,
@@ -31,7 +31,7 @@
 		getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
 		getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");
 	});
-
+ 
 var filterLevel="";
 var filterValue=0;
 getOverAllBoothDetails("STATE",filterLevel,filterValue);
@@ -55,6 +55,8 @@ $(document).on('click',' li.districtLevelCls ',function(){
 });
 
 $(document).on("click",".districtLevelCls",function(){
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
 	var selecteLegel = $(this).attr("attr_tab_level_value");
 	var levelHeading = selecteLegel+" WISE";
 	$(".districtParliamentLevleHadingCls").html(levelHeading);
@@ -141,8 +143,9 @@ function buildOverAllBoothDtls(result){
 		 
 		 if(rangevoterArr != null && rangevoterArr.length > 0){
 			 var str = '';
-			  str+='<ul class="">';
-			 for(var i in rangevoterArr){
+			str+='<h5 class="">Booth Committee Members Voter ID Serial Numbers wise</h5>';
+			str+='<ul class="">';
+			for(var i in rangevoterArr){
 			   str+=' <li>';
 					str+='<p>'+rangevoterArr[i].roleName+'</p>';
 				     if(rangevoterArr[i].count > 0){
@@ -151,7 +154,7 @@ function buildOverAllBoothDtls(result){
 						 str+='<h4>-</h4>';
 					 }
 				str+='</li>';
-           }
+			}
 			 str+'</ul>';
 			 $("#overAllSerialRangeWiseVoterDivId").html(str);
 		 }else{
@@ -189,63 +192,63 @@ function getLocationLevelWiseBoothCount(locationLevel,filterLevel,filterValue,di
 		 var str = '';
 		 str+='<div class="table-responsive">';
 		 str+='<table class="table table-bordered" id="'+divId+'dataTableId">';
-                       str+='<thead>';
-                            str+='<tr>';
-							var locationSpecificHeadingStr = getLocationSpeceficHeading(locationLevel);
-							str = str +" "+locationSpecificHeadingStr;
-                                str+='<th rowspan="2">TOTAL BOOTHS</th>';
-								str+='<th rowspan="2">NOT-STARTED BOOTHS</th>';
-                                str+='<th rowspan="2">STARTED BOOTHS</th>';
-								str+='<th rowspan="2">COMPLETED BOOTHS</th>';
-								str+='<th colspan="11" class="text-center">BOOTH COMMITTEE MEMBERS VOTER ID SERIAL NUMBERS WISE</th>';
-								if(rangeArr != null && rangeArr.length > 0){
-									str+='<tr>';
-									for(var i in rangeArr){
-										str+='<th>'+rangeArr[i].roleName+'</th>';
-									}
-									str+='</tr>';
+			str+='<thead>';
+				str+='<tr>';
+				var locationSpecificHeadingStr = getLocationSpeceficHeading(locationLevel);
+				str = str +" "+locationSpecificHeadingStr;
+					str+='<th rowspan="2">TOTAL BOOTHS</th>';
+					str+='<th rowspan="2">NOT-STARTED BOOTHS</th>';
+					str+='<th rowspan="2">STARTED BOOTHS</th>';
+					str+='<th rowspan="2">COMPLETED BOOTHS</th>';
+					str+='<th colspan="11" class="text-center">BOOTH COMMITTEE MEMBERS VOTER ID SERIAL NUMBERS WISE</th>';
+				str+='</tr>';
+				if(rangeArr != null && rangeArr.length > 0){
+					str+='<tr>';
+					for(var i in rangeArr){
+						str+='<th>'+rangeArr[i].roleName+'</th>';
+					}
+					str+='</tr>';
+				}
+			str+='</thead>';
+			 str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+					   var boothAddressStr = getLocationWiseBoothAddress(locationLevel,result[i].boothAddressVO);
+						 str = str +" "+boothAddressStr;
+						if(result[i].totalBoothCount != null){
+							str+='<td class="text-center;">'+result[i].totalBoothCount+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].notStartedBoothCount != null){
+							str+='<td class="text-center;">'+result[i].notStartedBoothCount+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].startedBoothCount != null){
+							str+='<td class="text-center;">'+result[i].startedBoothCount+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].completedBoothCount != null){
+							str+='<td class="text-center;">'+result[i].completedBoothCount+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].subList != null && result[i].subList.length > 0){
+							for(var j in result[i].subList){
+								if(result[i].subList[j].count > 0){
+								  str+='<td>'+result[i].subList[j].count+'</td>';	
+								}else{
+								   str+='<td>-</td>';		
 								}
-					        str+='</tr>';
-                       str+='</thead>';
-					     str+='<tbody>';
-                            for(var i in result){
-								str+='<tr>';
-								   var boothAddressStr = getLocationWiseBoothAddress(locationLevel,result[i].boothAddressVO);
-								     str = str +" "+boothAddressStr;
-									if(result[i].totalBoothCount != null){
-										str+='<td class="text-center;">'+result[i].totalBoothCount+'</td>';
-									}else{
-										str+='<td class="text-center;">-</td>';	
-									}
-								    if(result[i].notStartedBoothCount != null){
-										str+='<td class="text-center;">'+result[i].notStartedBoothCount+'</td>';
-									}else{
-										str+='<td class="text-center;">-</td>';	
-									}
-									if(result[i].startedBoothCount != null){
-										str+='<td class="text-center;">'+result[i].startedBoothCount+'</td>';
-									}else{
-										str+='<td class="text-center;">-</td>';	
-									}
-									if(result[i].completedBoothCount != null){
-										str+='<td class="text-center;">'+result[i].completedBoothCount+'</td>';
-									}else{
-										str+='<td class="text-center;">-</td>';	
-									}
-									if(result[i].subList != null && result[i].subList.length > 0){
-										for(var j in result[i].subList){
-											if(result[i].subList[j].count > 0){
-											  str+='<td>'+result[i].subList[j].count+'</td>';	
-											}else{
-											   str+='<td>-</td>';		
-											}
-											 
-										}
-									}
-							str+='</tr>';
-                           }
-                     str+='</tbody>';
-			str+='</table>';
+								 
+							}
+						}
+				str+='</tr>';
+			   }
+			str+='</tbody>';
+		str+='</table>';
 		str+='</div>';
 	 $("#"+divId).html(str);	
 	 $("#"+divId+'dataTableId').dataTable();
@@ -305,7 +308,7 @@ function getLocationBasedOnSelection(locationLevel,filterLevelLevel,filterValue,
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){ 
-	   buildSelectBox(result,locationLevel,divId,type,resultLevel);
+		 buildSelectBox(result,locationLevel,divId,type,resultLevel);
 	});
 }
 
@@ -321,21 +324,31 @@ function buildSelectBox(result,locationLevel,divId,type,resultLevel){
 		$("#constituencyLevelDistrictSelectBxId").html(str);
      	$("#mandalLevelDistrictSelectBxId").html(str);
      	$("#panchatLevelDistrictSelectBxId").html(str);
+		$("#constituencyLevelDistrictSelectBxId,#panchatLevelDistrictSelectBxId,#mandalLevelDistrictSelectBxId").trigger("chosen:updated");
     }else{
 		$("#"+divId).html(str);
+		$("#"+divId).trigger("chosen:updated");
 		if(resultLevel=="CONSTITUENCY"){
 			$("#constituencyLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
+			$("#constituencyLevelConstituenySelectBxId").trigger("chosen:updated");
 		}else if(resultLevel=="TEHSIL"){
 			$("#mandalLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
 			$("#mandalLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
+			$("#mandalLevelConstituenySelectBxId").trigger("chosen:updated");
+			$("#mandalLevelMandalSelectBxId").trigger("chosen:updated");
 		}else if(resultLevel=="PANCHAYAT"){
 			$("#panchaytLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
 			$("#panchaytLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
 			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+			$("#panchaytLevelConstituenySelectBxId").trigger("chosen:updated");
+			$("#panchaytLevelMandalSelectBxId").trigger("chosen:updated");
+			$("#panchaytLevelPanchaytSelectBxId").trigger("chosen:updated");
 		}
 	}                               
 }
 $(document).on("click",".locationLevelTabCls",function(){
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
 	var parentSelectBoxId = $(this).attr("attr_select_box_id");
 	var selectedLevel = $(this).attr("attr_tab_level_value");
 	var resultLevel = $(this).attr("attr_result_level");
@@ -387,6 +400,7 @@ function buildSubLevelDropDown(result,locationLevel,divId){
 		}
 	}
 	$("#"+divId).html(str);                           
+	$("#"+divId).trigger("chosen:updated");
 }
 /* Filter Related Script END */
 
