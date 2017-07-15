@@ -11,6 +11,14 @@ function onloadCalls(){
 	getAllDistricts("constituencyDistrictNames","DISTRICTS");
 	getAllDistricts("mandalDistrictNames","DISTRICTS");
 	$(".chosen-select").chosen();
+	
+	$("header").on("click",".menu-cls",function(e){
+		e.stopPropagation();
+		$(".menu-data-cls").toggle();
+	});
+	$(document).on("click",function(){
+		$(".menu-data-cls").hide();
+	});
 }
 
 $("#singleDateRangePicker").daterangepicker({
