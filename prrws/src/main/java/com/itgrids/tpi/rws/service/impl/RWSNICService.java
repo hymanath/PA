@@ -181,7 +181,7 @@ public class RWSNICService implements IRWSNICService{
 	 	    				vo.setLocationName(mandalObj.getString("locationName"));
 		 	    			vo.setStreetHabitationCount(mandalObj.getLong("stressedHabitationCount"));
 		 	    			vo.setTotalCount(mandalObj.getLong("totalCount"));
-		 	    			vo.setParentLocationId(distObj.getLong("districtId"));
+		 	    			vo.setParentLocationId(distObj.getString("districtId"));
 		 	    			JSONArray statusListArray = mandalObj.getJSONArray("statusList");
 		 	    				
 		 	    			if(statusListArray != null && statusListArray.length() > 0){
@@ -464,9 +464,9 @@ public class RWSNICService implements IRWSNICService{
 			    				JSONArray jsonSubArray = jObjSub.getJSONArray("subList");//types
 			    				
 			    				BasicVO mainVo = new BasicVO();
-			    				mainVo.setId(jObjMain.getLong("locationId"));//district			    				
+			    				mainVo.setDistrictId(jObjMain.getString("locationId"));//district			    				
 			    				mainVo.setName(jObjSub.getString("name"));//distName
-			    				mainVo.setLocationId(jObjSub.getLong("locationId"));//mandalId
+			    				mainVo.setGoNumber(jObjSub.getString("locationId"));//mandalId
 			    				mainVo.setLocationName(jObjSub.getString("locationName"));//mandalName
 			    				
 			    				finalList.add(mainVo);
@@ -585,8 +585,8 @@ public class RWSNICService implements IRWSNICService{
 				if(finalMap.get(jObj.getLong("districtId")) == null){
 					Map<Long,BasicVO> inMap = new HashMap<Long, BasicVO>(0);
 					BasicVO vo = new BasicVO();
-					vo.setParentLocationId(jObj.getLong("districtId"));
-					vo.setId(jObj.getLong("locationId"));
+					vo.setParentLocationId(jObj.getString("districtId"));
+					vo.setGoNumber(jObj.getString("locationId"));
 					vo.setName(jObj.getString("locationName"));
 					
 					vo.setBasicList(getAssetsSkeleton(jobj.getJSONArray("distinctAssetsList")));
@@ -607,8 +607,8 @@ public class RWSNICService implements IRWSNICService{
 					
 					if(distMap.get(jObj.getLong("locationId")) == null){
 						BasicVO vo = new BasicVO();
-						vo.setParentLocationId(jObj.getLong("districtId"));
-						vo.setId(jObj.getLong("locationId"));
+						vo.setParentLocationId(jObj.getString("districtId"));
+						vo.setGoNumber(jObj.getString("locationId"));
 						vo.setName(jObj.getString("locationName"));
 						
 						vo.setBasicList(getAssetsSkeleton(jobj.getJSONArray("distinctAssetsList")));
@@ -662,7 +662,7 @@ public class RWSNICService implements IRWSNICService{
 	   			JSONObject jObj = (JSONObject) finalArray.get(i);
 	   			if(finalMap.get(jObj.getLong("locationId")) == null){
 	   				BasicVO inVO = new BasicVO();
-	   				inVO.setId(jObj.getLong("locationId"));
+	   				inVO.setGoNumber(jObj.getString("locationId"));
 	   				inVO.setName(jObj.getString("locationName"));
 	             
 	   				inVO.setBasicList(getAssetsSkeleton(jobj.getJSONArray("distinctAssetsList")));
@@ -910,7 +910,7 @@ public class RWSNICService implements IRWSNICService{
 					JSONArray indiArr = acvhiementArr.getJSONArray(i);
 					if(finalMap.get(indiArr.getLong(5)) == null){
 						KPIVO vo = new KPIVO();
-						vo.setParentLocationId(indiArr.getLong(5));
+						vo.setParentLocationId(indiArr.getString(5));
 						vo.setLocationId(indiArr.getString(0));
 						vo.setLocationName(indiArr.getString(1));
 						
@@ -928,7 +928,7 @@ public class RWSNICService implements IRWSNICService{
 						Map<Long, KPIVO> mandlMap = finalMap.get(indiArr.getLong(5));
 						if(mandlMap.get(indiArr.getLong(0)) == null){
 							KPIVO vo = new KPIVO();
-							vo.setParentLocationId(indiArr.getLong(5));
+							vo.setParentLocationId(indiArr.getString(5));
 							vo.setLocationId(indiArr.getString(0));
 							vo.setLocationName(indiArr.getString(1));
 							
@@ -962,7 +962,7 @@ public class RWSNICService implements IRWSNICService{
 					JSONArray indiArr = acvhiementArr.getJSONArray(i);
 					if(finalMap.get(indiArr.getLong(5)) == null){
 						KPIVO vo = new KPIVO();
-						vo.setParentLocationId(indiArr.getLong(5));
+						vo.setParentLocationId(indiArr.getString(5));
 						vo.setLocationId(indiArr.getString(0));
 						vo.setLocationName(indiArr.getString(1));
 						
@@ -980,7 +980,7 @@ public class RWSNICService implements IRWSNICService{
 						Map<Long, KPIVO> mandlMap = finalMap.get(indiArr.getLong(5));
 						if(mandlMap.get(indiArr.getLong(0)) == null){
 							KPIVO vo = new KPIVO();
-							vo.setParentLocationId(indiArr.getLong(5));
+							vo.setParentLocationId(indiArr.getString(5));
 							vo.setLocationId(indiArr.getString(0));
 							vo.setLocationName(indiArr.getString(1));
 							
