@@ -362,7 +362,7 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		queryStr.append(",model.boothInchargeSerialNoRange.boothInchargeSerialNoRangeId ");
 		queryStr.append(",count(distinct model.tdpCadreId)");
 		queryStr.append(" from BoothIncharge model ");
-		queryStr.append(" where model.isDeleted='N' and model.isActive='N' and model.boothInchargeSerialNoRange.isDeleted='N'   ");
+		queryStr.append(" where model.isDeleted='N' and model.isActive='Y' and model.boothInchargeSerialNoRange.isDeleted='N' and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.isDeleted='N' ");
          
 		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
 
