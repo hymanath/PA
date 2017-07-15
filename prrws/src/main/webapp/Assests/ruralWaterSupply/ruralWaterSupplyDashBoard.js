@@ -3973,7 +3973,11 @@
 			locationValues.push(1);
 		}else if(locationType=="district"){
 			locationTypeId=3;
-			locationValues=[];
+			if(locationValue == 0){
+				locationValues=[];
+			}else{
+				locationValues.push(locationValue)
+			}
 		}else if(locationType=="constituency"){
 			locationTypeId=4;
 			if(locationValue == 0){
