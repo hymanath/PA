@@ -2559,7 +2559,9 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				else
 	 	    					vo.setPercentage(jObj.getString("PERCENTAGE"));
 	 	    				
-	 	    				if(vo.getParameter().contains("state") || vo.getParameter().contains("State") || vo.getParameter().contains("STATE"))
+	 	    				if(inputVO.getLocationType().trim().equalsIgnoreCase("state"))
+	 	    					vo.setType("STATE");
+	 	    				else if(vo.getParameter().contains("state") || vo.getParameter().contains("State") || vo.getParameter().contains("STATE"))
 	 	    					vo.setType("STATE");
 	 	    				else if(vo.getParameter().contains("district") || vo.getParameter().contains("District") || vo.getParameter().contains("DISTRICT"))
 	 	    					vo.setType("DISTRICT");
