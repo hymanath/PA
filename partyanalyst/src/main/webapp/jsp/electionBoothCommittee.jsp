@@ -1991,6 +1991,7 @@ function getBoothInchargeRoles()
 			}
 		});
 	}
+}
 	
 	function gettingBoothInchargeRoleDetails(){
 		$("#boothInchargeRoleDivId").html('');
