@@ -113,7 +113,7 @@ public class PartyMeetingAttendanceTabUser extends BaseModel implements Serializ
 		this.attendanceTabUserId = attendanceTabUserId;
 	}
 
-	@Column(name="inserted_by_id")
+	@Column(name="inserted_by")
 	public Long getInsertedById() {
 		return insertedById;
 	}

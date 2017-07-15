@@ -25,4 +25,12 @@ public class AttendanceTabUserDAO extends GenericDaoHibernate<AttendanceTabUser,
 		return query.list();
 		
 	}
+	public List<Object[]> getAttendanceTabUserDetailes(){
+		StringBuilder sb=new StringBuilder();
+		sb.append("select model.attendanceTabUserId,model.firstname,model.lastname,model.mobile,model.username " +
+				"from AttendanceTabUser model where model.isEnabled='Y' " );
+		Query query = getSession().createQuery(sb.toString());
+		
+		return query.list();
+	}
 }

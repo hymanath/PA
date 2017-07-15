@@ -24,20 +24,36 @@ public class PartyMeetingAttendanceTabUserDAO extends GenericDaoHibernate<PartyM
 		query.setParameter("attendanceTabUserId",attendanceTabUserId);
 		return query.list(); 
 	}
-	@SuppressWarnings("unchecked")
-	public List<Object[]> getPartyMeetingsTabUserNameByDistrict(Long districtId){
-		StringBuilder sb=new StringBuilder();
-		sb.append("select distinct model.attendanceTabUser.attendanceTabUserId," +
-				" model.attendanceTabUser.firstname,model.attendanceTabUser.lastname,"); 
-		sb.append("model.attendanceTabUser.mobile from PartyMeetingAttendanceTabUser model  ");
-		sb.append(" where model.attendanceTabUser.isEnabled='Y' ");
-		if(districtId !=null && districtId.longValue() > 0L){
-		sb.append("and model.partyMeeting.meetingAddress.district.districtId=:districtId ");
+
+	
+			@SuppressWarnings("unchecked")
+		public List<Object[]> getPartyMeetingsTabUserNameByDistrict(Long districtId){
+			StringBuilder sb=new StringBuilder();
+			sb.append("select distinct model.attendanceTabUser.attendanceTabUserId," +
+					" model.attendanceTabUser.firstname,model.attendanceTabUser.lastname,"); 
+			sb.append("model.attendanceTabUser.mobile from PartyMeetingAttendanceTabUser model  ");
+			sb.append(" where model.attendanceTabUser.isEnabled='Y' ");
+			if(districtId !=null && districtId.longValue() > 0L){
+			sb.append("and model.partyMeeting.meetingAddress.district.districtId=:districtId ");
+			}
+			Query query = getSession().createQuery(sb.toString());
+			if(districtId !=null && districtId.longValue() > 0L){
+			query.setParameter("districtId",districtId);
+			}
+			return query.list(); 
 		}
-		Query query = getSession().createQuery(sb.toString());
-		if(districtId !=null && districtId.longValue() > 0L){
-		query.setParameter("districtId",districtId);
+		public List<Object[]> getPartyMeetingTabUserDetails(Long partyMeetingId){
+			StringBuilder sb=new StringBuilder();
+			sb.append(" select distinct model.attendanceTabUser.attendanceTabUserId ," +//0
+					"model.attendanceTabUser.username, " +//1
+					"model.attendanceTabUser.firstname," +//2
+					"model.attendanceTabUser.lastname," +//3
+					"model.attendanceTabUser.mobile "+//4
+			       " from PartyMeetingAttendanceTabUser model "+
+			        " where model.partyMeeting.partyMeetingId=:partyMeetingId and model.isDeleted='Y' ");
+			Query query = getSession().createQuery(sb.toString());
+			if(partyMeetingId !=null && partyMeetingId.longValue() > 0L)
+			query.setParameter("partyMeetingId",partyMeetingId);
+			return query.list(); 
 		}
-		return query.list(); 
-	}
 }

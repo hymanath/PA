@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +16,11 @@ public class PartyMeetingsVO implements Serializable{
     private String mandalTwnDivision;
     private Long constituencyId;
     private String constituencyName;
+	private String teshilName;
+	private Long teshilId;
+	private Long panchayatId;
+	private Long inviteeId;
+	private Long meetingMainTypeId;
 
 	private String name;
 	private String meetingName;
@@ -22,11 +29,14 @@ public class PartyMeetingsVO implements Serializable{
 	private String conductedDate;
 	private String remarks;
 	private String tesilName;
+	private String stateName;
+	
 	
 	private Long plannedCount = 0l;
 	private Long conductedCount = 0l;
 	private Long notConductedCount = 0l;
-	
+	private Date startDate;
+	private Date endDate;
 	/*For Core DashBoard  */
 	private Long totalCount=0l;
 	private Long mayBeCount=0l;
@@ -55,6 +65,7 @@ public class PartyMeetingsVO implements Serializable{
 	private List<PartyMeetingsVO> subList;
 	private Map<Long,PartyMeetingsVO> subMap;
 	private Map<String,PartyMeetingsVO> subMap1;
+	private List<String> inviteeList;
 	
 	private Integer year;
 	private String month;
@@ -71,7 +82,37 @@ public class PartyMeetingsVO implements Serializable{
 	private Long yesCount =0l;
 	private Long noCount =0l;
 	private Long changedCount=0L;
+	private Long villageId=0l;
+	private Time startTime;
+	private Time endTime;
+	private Time lateTime;
 	
+	
+	
+	public String getStateName() {
+		return stateName;
+	}
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+	public Time getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Time startTime) {
+		this.startTime = startTime;
+	}
+	public Time getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(Time endTime) {
+		this.endTime = endTime;
+	}
+	public Time getLateTime() {
+		return lateTime;
+	}
+	public void setLateTime(Time lateTime) {
+		this.lateTime = lateTime;
+	}
 	public Long getChangedCount() {
 		return changedCount;
 	}
@@ -400,11 +441,69 @@ public class PartyMeetingsVO implements Serializable{
 	public void setNoCount(Long noCount) {
 		this.noCount = noCount;
 	}
+
+	public String getTeshilName() {
+		return teshilName;
+	}
+	public void setTeshilName(String teshilName) {
+		this.teshilName = teshilName;
+	}
+	public Long getTeshilId() {
+		return teshilId;
+	}
+	public void setTeshilId(Long teshilId) {
+		this.teshilId = teshilId;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public List<String> getInviteeList() {
+		return inviteeList;
+	}
+	public void setInviteeList(List<String> inviteeList) {
+		this.inviteeList = inviteeList;
+	}
+	public Long getInviteeId() {
+		return inviteeId;
+	}
+	public void setInviteeId(Long inviteeId) {
+		this.inviteeId = inviteeId;
+	}
+	public Long getMeetingMainTypeId() {
+		return meetingMainTypeId;
+	}
+	public void setMeetingMainTypeId(Long meetingMainTypeId) {
+		this.meetingMainTypeId = meetingMainTypeId;
+	}
+	public Long getVillageId() {
+		return villageId;
+	}
+	public void setVillageId(Long villageId) {
+		this.villageId = villageId;
+	}
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
 	public String getTesilName() {
 		return tesilName;
 	}
 	public void setTesilName(String tesilName) {
 		this.tesilName = tesilName;
 	}
+
+	
 	
 }

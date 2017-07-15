@@ -2385,11 +2385,11 @@ public void flushAndclearSession(){
 	}
 	
 	public List<Object[]> getCadreDetailsByMemberShipId(List<String> memberCardNos)	{
-		Query query = getSession().createQuery("select model.memberShipNo , " +
-				" model.voterId," +
-				" model.firstname," +
-				" model.relativename," +
-				" model.voter.voterId," +
+		Query query = getSession().createQuery("select model.memberShipNo , " +    
+				" model.voterId," +  
+				" model.firstname," + 
+				" model.relativename," + 
+				" model.voter.voterId," + 
 				" model.voter.voterIDCardNo,model.dataSourceType,model.tdpCadreId,model.refNo,model.mobileNo,model.photoType,model.image," +
 				" model.userAddress.userAddressId,model.cardNumber from TdpCadre model " +
 				" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");

@@ -1,10 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 
 public class PartyMeetingVO implements java.io.Serializable{
 
@@ -27,6 +26,13 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private String memberStatus;
 	public List<PartyMeetingVO> partyMeetingVOList = new ArrayList<PartyMeetingVO>(0);
 	private Long partyMeetingTypeId;
+	private Long partyMeetingSubTypeId;
+	public Long getPartyMeetingSubTypeId() {
+		return partyMeetingSubTypeId;
+	}
+	public void setPartyMeetingSubTypeId(Long partyMeetingSubTypeId) {
+		this.partyMeetingSubTypeId = partyMeetingSubTypeId;
+	}
 	private String partyMeetingType;
 	private Long meetingLevelId;
 	private String meetingLevel;
@@ -78,7 +84,80 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private String constNmae;
 	private String meetingTime;
 	private String partyInvaitedChecking;
+	private File file;
+	private Long districtId=0L;
+	private Long constituencyId=0L;
+	private Long mandalId=0L;
+	private Long villageId=0L;
+	private String teshilName;
+	private Long sessionId;
+	private Long meetingMainType;
+	private Long tehsilId;
+	private Long stateId;
+	private List<SessionVO> sessionVOList=new ArrayList<SessionVO>(0);
+	private List<Long> tdpCadreIds;
 	
+	 
+	 private List<Long> sessionTypeId= new ArrayList<Long>(0);
+	 private List<String> startTimeList = new ArrayList<String>(0);
+	 private List<String> endTimeList = new ArrayList<String>(0);
+	 private List<String> lateTimeList = new ArrayList<String>(0);
+	    
+	
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public Long getMeetingMainType() {
+		return meetingMainType;
+	}
+	public void setMeetingMainType(Long meetingMainType) {
+		this.meetingMainType = meetingMainType;
+	}
+	public Long getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(Long sessionId) {
+		this.sessionId = sessionId;
+	}
+	public String getTeshilName() {
+		return teshilName;
+	}
+	public void setTeshilName(String teshilName) {
+		this.teshilName = teshilName;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public Long getVillageId() {
+		return villageId;
+	}
+	public void setVillageId(Long villageId) {
+		this.villageId = villageId;
+	}
+	public File getFile() {
+		return file;
+	}
+	public void setFile(File file) {
+		this.file = file;
+	}
 	public Double getInviteeAttendedPerc() {
 		return inviteeAttendedPerc;
 	}
@@ -502,5 +581,49 @@ public class PartyMeetingVO implements java.io.Serializable{
 	public void setPartyInvaitedChecking(String partyInvaitedChecking) {
 		this.partyInvaitedChecking = partyInvaitedChecking;
 	}
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+	public List<SessionVO> getSessionVOList() {
+		return sessionVOList;
+	}
+	public void setSessionVOList(List<SessionVO> sessionVOList) {
+		this.sessionVOList = sessionVOList;
+	}
+	public List<Long> getTdpCadreIds() {
+		return tdpCadreIds;
+	}
+	public void setTdpCadreIds(List<Long> tdpCadreIds) {
+		this.tdpCadreIds = tdpCadreIds;
+	}
+	public List<Long> getSessionTypeId() {
+		return sessionTypeId;
+	}
+	public void setSessionTypeId(List<Long> sessionTypeId) {
+		this.sessionTypeId = sessionTypeId;
+	}
+	public List<String> getStartTimeList() {
+		return startTimeList;
+	}
+	public void setStartTimeList(List<String> startTimeList) {
+		this.startTimeList = startTimeList;
+	}
+	public List<String> getEndTimeList() {
+		return endTimeList;
+	}
+	public void setEndTimeList(List<String> endTimeList) {
+		this.endTimeList = endTimeList;
+	}
+	public List<String> getLateTimeList() {
+		return lateTimeList;
+	}
+	public void setLateTimeList(List<String> lateTimeList) {
+		this.lateTimeList = lateTimeList;
+	}
+
+	
 	
 }
