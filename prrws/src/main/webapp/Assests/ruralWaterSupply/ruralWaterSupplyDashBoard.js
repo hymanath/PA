@@ -1231,12 +1231,7 @@
 			
 			var districtValue ="";
 			if(locationType == "mandal"){
-				if(parentLocId <= 9){
-					districtValue = "0"+parentLocId;
-				}else{
-					districtValue = parentLocId;
-				}
-				
+				districtValue = parentLocId;
 			}
 			var json = {
 					locationType:locationType,
