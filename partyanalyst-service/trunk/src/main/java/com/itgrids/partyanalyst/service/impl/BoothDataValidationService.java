@@ -466,6 +466,9 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				 }
 			}else{ //for other location 
 				
+				if(inputVO.getFilterLevel() != null && inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)){
+			    	inputVO.setFilterValue(Long.valueOf(inputVO.getFilterValue().toString().substring(1)));//in the case of TEHSIL taking id except first because we are appending while sending
+	     		}
 				List<Object[]> notStartedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
 				List<Object[]> startedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
 				List<Object[]> completedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
@@ -601,6 +604,9 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	public List<BoothInchargeDetailsVO> getLocationBasedOnSelection(InputVO inputVO) {
 		List<BoothInchargeDetailsVO> resultList = new ArrayList<BoothInchargeDetailsVO>();
 		try{
+			if(inputVO.getFilterLevel() != null && inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)){
+		    	inputVO.setFilterValue(Long.valueOf(inputVO.getFilterValue().toString().substring(1)));//in the case of TEHSIL taking id except first because we are appending while sending
+     		}
 			List<Object[]> locationObjLst = boothInchargeRoleConditionMappingDAO.getLocationBasedOnSelection(inputVO);
 			resultList = getLocationList(locationObjLst,"OtherLocation");
 			if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
