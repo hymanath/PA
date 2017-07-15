@@ -45,7 +45,7 @@
                 <div class="col-sm-12">
                         <div class="committeeMembers">
                             <div class="subBlock col-sm-12 text-center">
-                                <h5 class="">Booth Committee Members Voter ID Serial Numbers wise</h5>
+                                <h5 class="serialRangeHeadingCls" style='display:none;'>Booth Committee Members Voter ID Serial Numbers wise</h5>
 								 <div id="overAllSerialRangeWiseVoterDivId"></div>
 					        </div>
                         </div>
@@ -80,8 +80,8 @@
 							<div class="panel-heading">
 								<h4 class="panel-title text-capital">CONSTITUENCY WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right">
-									<li class="active locationLevelTabCls" style="cursor:pointer;" attr_select_box_id="constituencyLevelDistrictSelectBxId" attr_tab_level_value="DISTRICT">DISTRICT</li>
-									<li class="locationLevelTabCls" style="cursor:pointer;" attr_select_box_id="constituencyLevelDistrictSelectBxId" attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
+									<li class="active locationLevelTabCls" style="cursor:pointer;" attr_result_level="CONSTITUENCY" attr_result_level_div_id="constituencyLevelBoothDtlsDivId" attr_select_box_id="constituencyLevelDistrictSelectBxId" attr_tab_level_value="DISTRICT">DISTRICT</li>
+									<li class="locationLevelTabCls" style="cursor:pointer;" attr_result_level="CONSTITUENCY" attr_result_level_div_id="constituencyLevelBoothDtlsDivId" attr_select_box_id="constituencyLevelDistrictSelectBxId" attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
 								</ul>
 							</div>
 							<div class="panel-body">
@@ -115,8 +115,8 @@
 							<div class="panel-heading">
 								<h4 class="panel-title text-capital">MANDAL WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right">
-									<li class="active locationLevelTabCls" style="cursor:pointer;" attr_select_box_id="mandalLevelDistrictSelectBxId" attr_tab_level_value="DISTRICT">DISTRICT</li>
-									<li class="locationLevelTabCls" style="cursor:pointer;" attr_select_box_id="mandalLevelDistrictSelectBxId" attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
+									<li class="active locationLevelTabCls" style="cursor:pointer;" attr_result_level="TEHSIL" attr_result_level_div_id="mandalLevelBoothDtlsDivId" attr_select_box_id="mandalLevelDistrictSelectBxId" attr_tab_level_value="DISTRICT">DISTRICT</li>
+									<li class="locationLevelTabCls" style="cursor:pointer;" attr_result_level="TEHSIL" attr_result_level_div_id="mandalLevelBoothDtlsDivId" attr_select_box_id="mandalLevelDistrictSelectBxId" attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
 								</ul>
 							</div>
 							<div class="panel-body">
@@ -155,8 +155,8 @@
 							<div class="panel-heading">
 								<h4 class="panel-title text-capital" >PANCHAYAT WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right" table-menu="">
-									<li class="active locationLevelTabCls" style="cursor:pointer;" attr_select_box_id="panchatLevelDistrictSelectBxId" attr_tab_level_value="DISTRICT">DISTRICT</li>
-									<li class="locationLevelTabCls" style="cursor:pointer;" attr_select_box_id="panchatLevelDistrictSelectBxId"  attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
+									<li class="active locationLevelTabCls" style="cursor:pointer;" attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_select_box_id="panchatLevelDistrictSelectBxId" attr_tab_level_value="DISTRICT">DISTRICT</li>
+									<li class="locationLevelTabCls" style="cursor:pointer;" attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_select_box_id="panchatLevelDistrictSelectBxId"  attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
 								</ul>
 							</div>
 							<div class="row" id="villegeWiseDistrictId">
