@@ -128,7 +128,7 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 	
 public List<Object[]> getAllDistrictDetails(Long stateId){
 		
-		Query query = getSession().createQuery("select model.districtId , model.districtName from District model where model.state.stateId=?");
+		Query query = getSession().createQuery("select model.districtId , model.districtName from District model where model.state.stateId=? order by model.districtName");
 		query.setParameter(0,stateId );
 		return query.list();
 		

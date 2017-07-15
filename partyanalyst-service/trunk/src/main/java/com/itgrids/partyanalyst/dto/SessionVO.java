@@ -60,6 +60,12 @@ public class SessionVO implements Serializable{
     private List<KeyValueVO> nonInviteeDesgnList = new ArrayList<KeyValueVO>();
     
     
+    private Long partyMeetingSessionId;
+    private Long sessionTypeId;
+    private String startTime;
+    private String endTime;
+    
+    
 	public List<KeyValueVO> getInvitedDesgnList() {
 		return invitedDesgnList;
 	}
@@ -329,6 +335,30 @@ public class SessionVO implements Serializable{
 	}
 	public void setPartyMeetingId(Long partyMeetingId) {
 		this.partyMeetingId = partyMeetingId;
+	}
+	public Long getPartyMeetingSessionId() {
+		return partyMeetingSessionId;
+	}
+	public void setPartyMeetingSessionId(Long partyMeetingSessionId) {
+		this.partyMeetingSessionId = partyMeetingSessionId;
+	}
+	public Long getSessionTypeId() {
+		return sessionTypeId;
+	}
+	public void setSessionTypeId(Long sessionTypeId) {
+		this.sessionTypeId = sessionTypeId;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 	
 			

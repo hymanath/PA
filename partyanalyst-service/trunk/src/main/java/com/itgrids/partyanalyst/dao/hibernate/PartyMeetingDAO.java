@@ -4167,42 +4167,99 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	}
 	    	return query.list();
 	    } 
-	 public List<Object[]> getCadrePartyMeetngDeatils(Date fromDate,Date toDate,Long meetigLevelId){
+
+	 
+		public List<Object[]> getCadrePartyMeetngDeatils(Date fromDate,Date toDate,Long meetigLevelId,int startIndex,int maxIndex){
+			 StringBuilder sb = new StringBuilder();
+			 sb.append(" select  model.partyMeetingId,");	//0  meeting Id
+			 sb.append("model.meetingName," ); 				//1  meeting name
+			 sb.append("model.partyMeetingLevel.level," );	//2   meeting level
+			 sb.append("model.partyMeetingType.type,");     //3   meeting type
+			 sb.append("TRIM( '00:00:00.0' from model.startDate ) " );          		//4	  meeting start time
+			 sb.append(",meetingAddress.district.districtName ");  //5  district name
+			 sb.append(	",meetingAddress.constituency.name " );  //6
+			 sb.append(",meetingAddress.tehsil.tehsilName "); //7
+			 sb.append(",meetingAddress.panchayat.panchayatName "); //8
+			 sb.append(" from PartyMeeting model " +
+					"left join model.meetingAddress meetingAddress " +
+					"left join meetingAddress.district district " +
+					"left join meetingAddress.constituency constituency " +
+					"left join meetingAddress.tehsil tehsil " +
+					"left join meetingAddress.panchayat panchayat " +
+					"where model.isActive='Y' ");
+			
+			 if(fromDate!=null && toDate!=null){
+				sb.append(" and (date (model.startDate) between :fromDate and :toDate) " );
+		        }
+			 if(meetigLevelId !=null && meetigLevelId.longValue() > 0L){
+				 sb.append("and  model.partyMeetingLevelId=:meetigLevelId ");
+			 }
+			 sb.append(" order by model.startDate desc");
+			 Query query = getSession().createQuery(sb.toString());
+			 if(fromDate != null && toDate != null){
+					query.setDate("fromDate", fromDate);
+				query.setDate("toDate", toDate);
+				}
+			 if(meetigLevelId !=null && meetigLevelId.longValue() > 0L){
+				 query.setParameter("meetigLevelId",meetigLevelId);
+			 }
+			 if(maxIndex > 0)
+				{
+			 query.setFirstResult(startIndex);
+			 query.setMaxResults(maxIndex);
+				}
+			 return query.list();
+		 }
+		 	// for meetings count
+	public Long getCadrePartyMeetngDeatilsCount(Date fromDate,Date toDate,Long meetigLevelId){
 		 StringBuilder sb = new StringBuilder();
-		 sb.append(" select model.partyMeetingId,");	//0  meeting Id
-		 sb.append("model.meetingName," ); 				//1  meeting name
-		 sb.append("model.partyMeetingLevel.level," );	//2   meeting level
-		 sb.append("model.partyMeetingType.type,");     //3   meeting type
-		 sb.append("TRIM( '00:00:00.0' from model.startDate ) " );          		//4	  meeting start time
-		sb.append(",model.meetingAddress.district.districtName ");  //5  district name
-		 if(meetigLevelId !=null && (meetigLevelId.longValue()==0L || meetigLevelId.longValue()==3L ||meetigLevelId.longValue()==4L || meetigLevelId.longValue()==5L 
-				 ||meetigLevelId.longValue()==6L || meetigLevelId.longValue()==7L || meetigLevelId.longValue()==8L)){
-		 sb.append(	",model.meetingAddress.constituency.name " );   //6  constituency name
-		 }
-		 if(meetigLevelId !=null && (meetigLevelId.longValue()==0L || meetigLevelId.longValue()==4L || meetigLevelId.longValue()==5L 
-				 ||meetigLevelId.longValue()==6L || meetigLevelId.longValue()==7L || meetigLevelId.longValue()==8L)){
-		 sb.append(",model.meetingAddress.tehsil.tehsilName ");  	 //7  mandal name
-		 }
-		 if(meetigLevelId !=null &&( meetigLevelId.longValue()==0L || meetigLevelId.longValue()==5L 
-				 ||meetigLevelId.longValue()==6L || meetigLevelId.longValue()==7L || meetigLevelId.longValue()==8L)){
-		 sb.append(",model.meetingAddress.panchayat.panchayatName ");	//8 village name
-		 }
-		 sb.append(" from PartyMeeting model where model.isActive='Y' ");
-		
-		 if(fromDate!=null && toDate!=null){
-			sb.append(" and (date (model.startDate) between :fromDate and :toDate) " );
-	        }
-		 if(meetigLevelId !=null && meetigLevelId.longValue() > 0L){
-			 sb.append("and  model.partyMeetingLevelId=:meetigLevelId");
-		 }
-		 Query query = getSession().createQuery(sb.toString());
-		 if(fromDate != null && toDate != null){
-				query.setDate("fromDate", fromDate);
-			query.setDate("toDate", toDate);
-			}
-		 if(meetigLevelId !=null && meetigLevelId.longValue() > 0L){
-			 query.setParameter("meetigLevelId",meetigLevelId);
-		 }
-		 return query.list();
-	 }
+		 sb.append("select distinct count(model.partyMeetingId) from PartyMeeting model  where ");
+			 if(meetigLevelId !=null && meetigLevelId.longValue() > 0L){
+				 sb.append(" model.partyMeetingLevelId=:meetigLevelId and ");
+			 }
+			 if(fromDate!=null && toDate!=null){
+					sb.append(" (date (model.startDate) between :fromDate and :toDate) " );
+			     }
+			 Query query = getSession().createQuery(sb.toString());
+			 if(fromDate != null && toDate != null){
+					query.setDate("fromDate", fromDate);
+				query.setDate("toDate", toDate);
+				}
+			 if(meetigLevelId !=null && meetigLevelId.longValue() > 0L){
+				 query.setParameter("meetigLevelId",meetigLevelId);
+			 }
+		return (Long)query.uniqueResult();
+	}
+	public List<Object[]> getPartyMeetingDetailsByPartyMeetingId(Long patyMeetingId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" select  PM.partyMeetingId, PM.meetingName" ); //00 MEETINiD,01 name
+        sb.append(",PM.startDate,PM.endDate, PM.partyMeetingLevelId " );// 02 start sate,03 enf fate, 04 meeting levelId
+        sb.append(",PM.partyMeetingTypeId,meetingAddress.district.districtId,");// 05 meeting sub typeId,06 districtId
+        sb.append("meetingAddress.constituency.constituencyId" );				// 07constincyId
+        sb.append(",meetingAddress.tehsil.tehsilId,meetingAddress.panchayat.panchayatId");//08 tehsilId,09 panchayatId
+        sb.append(",PM.partyMeetingType.partyMeetingMainTypeId,meetingAddress.state.stateId " ); //10  meting main typeid,11 STATEiD
+        sb.append("from PartyMeeting PM left join PM.meetingAddress meetingAddress " );
+        sb.append("left join meetingAddress.district district ");
+        sb.append("left join meetingAddress.constituency constituency " );
+        sb.append("left join meetingAddress.tehsil tehsil " );
+        sb.append("left join meetingAddress.panchayat panchayat ");
+        if(patyMeetingId!=null && patyMeetingId >0L){
+        	sb.append("where PM.partyMeetingId=:patyMeetingId " );
+        }
+        Query query = getSession().createQuery(sb.toString());
+        if(patyMeetingId!=null && patyMeetingId >0L){
+            query.setParameter("patyMeetingId", patyMeetingId);
+        }
+        
+        return query.list();
+    }
+
+	 public Integer updatePartyMeetingDetails(Long meetingId){
+			Query query=getSession().createQuery(" update PartyMeeting model set model.isActive = 'N' where model.partyMeetingId =:meetingId ");		
+			query.setParameter("meetingId",meetingId);
+			return  query.executeUpdate();
+		}
+
+
+	 
  }

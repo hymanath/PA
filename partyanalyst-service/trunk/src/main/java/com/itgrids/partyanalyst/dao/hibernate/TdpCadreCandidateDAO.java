@@ -148,4 +148,24 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 		return query.list();
 	}
 	
+	public List<Object[]> geTdpCadreCandidateDetailsByMemberShipIds(List<String> memberShipNos){
+		  StringBuilder sb = new StringBuilder();
+		  sb.append("select  tdpCadreCandidate.tdpCadre.memberShipNo," +//0
+					 "tdpCadreCandidate.tdpCadre.tdpCadreId," +//1
+					  "tdpCadreCandidate.tdpCadre.firstname," +//2
+					  "tdpCadreCandidate.tdpCadre.mobileNo," +//3
+					  "tdpCadreCandidate.tdpCadre.image," +  //4
+					  "publicRepresentativeType.type " +// 5
+					  "from TdpCadreCandidate tdpCadreCandidate," +
+					  "PublicRepresentative publicRepresentative " +
+					  "left join publicRepresentative.publicRepresentativeType publicRepresentativeType " +
+					  "where  tdpCadreCandidate.tdpCadre.isDeleted = 'N' " +
+					  "and publicRepresentative.candidateId=tdpCadreCandidate.candidateId ");										
+		  if(memberShipNos != null && memberShipNos.size() > 0l)
+			  sb.append("and tdpCadreCandidate.tdpCadre.memberShipNo in (:memberShipNos)  ");	
+		  	Query query = getSession().createQuery(sb.toString());
+			if(memberShipNos != null && memberShipNos.size() > 0l)
+				query.setParameterList("memberShipNos", memberShipNos);
+	  return query.list();
+	}
 }

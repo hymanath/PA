@@ -20,4 +20,13 @@ public class SessionTypeDAO extends GenericDaoHibernate<SessionType, Long> imple
 	     Query query = getSession().createQuery(queryStr.toString());
 	     return query.list();
    }
+   public List<Object[]> getPartyMeetingSession(Long sessionTypeId){
+	   StringBuilder queryStr = new StringBuilder();
+	   queryStr.append(" select model.startTime,model.endTime,model.lateTime from SessionType model where sessionTypeId:=sessionTypeId ");
+	     Query query = getSession().createQuery(queryStr.toString());
+	     query.setParameter("sessionTypeId",sessionTypeId);
+	     return query.list();
+	   
+   }
 }
+

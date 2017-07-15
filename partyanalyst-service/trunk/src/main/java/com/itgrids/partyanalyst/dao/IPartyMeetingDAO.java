@@ -92,6 +92,11 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public List<Object[]> getPartyMeetingsImagesCountsByMeetings(List<Long> meetingIds);
 	public List<Object[]> getPartyMeetingsImagesCoveredByMeetings(List<Long> meetingIds);
 	public List<Object[]> meetingsBaseTotalCountForDiffLevels(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet,List<Long> locLevelIdList);
+
+	public List<Object[]> getCadrePartyMeetngDeatils(Date fromDate,Date toDate,Long meetigLevelId,int startIndex,int maxIndex);
+	 public Long getCadrePartyMeetngDeatilsCount(Date fromDate,Date toDate,Long meetigLevelId);
+	 public List<Object[]> getPartyMeetingDetailsByPartyMeetingId(Long patyMeetingId);
+	 public Integer updatePartyMeetingDetails(Long meetingId);
 	
-	 public List<Object[]> getCadrePartyMeetngDeatils(Date fromDate,Date toDate,Long meetigLevelId);
+
 }

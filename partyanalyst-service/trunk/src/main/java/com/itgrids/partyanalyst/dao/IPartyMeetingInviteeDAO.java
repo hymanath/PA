@@ -72,4 +72,6 @@ public List<Object[]> getPartyMeetingsInvitationsDetailsByCadreIds(List<Long> td
 	public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMultiLocationWiseMeeting(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet,List<Long> locLevelIdList,String isRequired);
 	public List<Object[]> getInvitteeDetails(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,
 			Date fromDate,Date toDate,Long stateId,List<Long> levelIdsList,Long partyMeetngGrpId,Long partyMeetingId,Long locationId);
+	
+	public List<Object[]> getPartyMeetingInviteeDetaisByPartyMeetingId(Long meetingId);
 }

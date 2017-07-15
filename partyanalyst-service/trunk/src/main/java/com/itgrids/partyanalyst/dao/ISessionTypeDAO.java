@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.SessionType;
 
 public interface ISessionTypeDAO extends GenericDao<SessionType, Long>{
 	public List<Object[]> getAllSessionType();
+	public List<Object[]> getPartyMeetingSession(Long sessionTypeId);
 }
