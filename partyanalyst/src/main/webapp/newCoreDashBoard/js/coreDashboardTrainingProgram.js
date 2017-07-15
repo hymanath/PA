@@ -1738,7 +1738,7 @@ function buildTrainingProgramRslt(result){
 		resultListFirst = result.districtList;
 		resultListSecond = result.constituencyList;
 	  }
-	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
+	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6 || userTypeId==12 || userTypeId==14){
 		 str+='<p class="text-capital">Constituencies<span style="margin-left:140px">Attended Percentage</span></p>';  
 		resultListFirst = result.constituencyList;
 		resultListSecond = result.mandalList;  
@@ -1782,7 +1782,7 @@ function buildTrainingProgramRslt(result){
 	   if(userTypeId!= null && userTypeId==3 || userTypeId==2){
 		str+='<p class="text-capital">Constituencies<span style="margin-left:140px">Attended Percentage</span></p>';  
 	  }
-	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
+	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6 || userTypeId==12 || userTypeId==14){
 		 str+='<p class="text-capital">Mandal/Town/Division<span style="margin-left:100px">Attended Percentage</span></p>';  
 	  }
 	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
