@@ -1,16 +1,13 @@
-/*
-NotStarted
-Started
-Completed
-*/
 
-	var userFromDate=moment().startOf('month').format("DD/MM/YYYY");
-    var userToDate=moment().endOf('month').format("DD/MM/YYYY");
+  var globalBoothInchargeEnrollmentId=1;
+  
+	var globalFromDate=moment().startOf('month').format("DD/MM/YYYY");
+    var globalToDate=moment().endOf('month').format("DD/MM/YYYY");
 	
 	$('#daterangePickerId').daterangepicker({
 		opens: 'left',
-		startDate: userFromDate,
-		endDate: userToDate,
+		startDate: globalFromDate,
+		endDate: globalToDate,
 		locale: {
 			  format: 'DD/MM/YYYY'
 			},
@@ -27,52 +24,43 @@ Completed
 		}
 	});
 	$('#daterangePickerId').on('apply.daterangepicker', function(ev, picker) {
-		userFromDate = picker.startDate.format('DD/MM/YYYY');
-		userToDate = picker.endDate.format('DD/MM/YYYY');
+		globalFromDate = picker.startDate.format('DD/MM/YYYY');
+		globalToDate = picker.endDate.format('DD/MM/YYYY');
+		getOverAllBoothDetails("STATE");
+		getLocationLevelWiseBoothCount("DISTRICT",filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
+		getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
+		getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
+		getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All");
 	});
 
-var blockNames = ["DISTRICT","CONSTITUENCY","MANDAL","PANCHAYAT"];
-var stateLevel="STATE";
-getOverAllBoothDetails(stateLevel);
-getLocationLevelWiseBoothCount("DISTRICT","dstrctParlmntLvlBoothDtlsDivId");
-getLocationLevelWiseBoothCount("CONSTITUENCY","constituencyLevelBoothDtlsDivId");
-getLocationLevelWiseBoothCount("TEHSIL","mandalLevelBoothDtlsDivId");
-getLocationLevelWiseBoothCount("PANCHAYAT","panchaytLevelBoothDtlsDivId");
-getLocationBasedOnSelection();
+var filterLevel="";
+var filterValue=0;
+getOverAllBoothDetails("STATE");
+getLocationLevelWiseBoothCount("DISTRICT",filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
+getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
+getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
+//getLocationLevelWiseBoothCount("PANCHAYAT",filterLevel,filterValue,"panchaytLevelBoothDtlsDivId");
+getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All");
 getLocationLevelWiseBoothDetails();
-validateBoothToMakeConfirm(); 
+//validateBoothToMakeConfirm(); 
 
 $(document).on("click",".districtLevelCls",function(){
-	var selecteLegel = $(this).attr("attr_level_value");
+	var selecteLegel = $(this).attr("attr_tab_level_value");
 	var levelHeading = selecteLegel+" WISE";
 	$(".districtParliamentLevleHadingCls").html(levelHeading);
-	getLocationLevelWiseBoothCount(selecteLegel,"dstrctParlmntLvlBoothDtlsDivId");
+	getLocationLevelWiseBoothCount(selecteLegel,filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
 })
-
- $(document).on('click','.table-menu li',function(){
-	$(this).closest("ul").find("li").removeClass("active");
-	$(this).addClass("active");
-	var subBlockNames = ["DISTRICT","PARLIAMENT"];
-	for(var i in subBlockNames){
-		if(subBlockNames[i] == 'DISTRICT'){
-			$("#selectConstituencyDistrict").show();
-		}
-		else if(subBlockNames[i] == 'PARLIAMENT'){
-			$("#selectParliament").show();
-			$("#selectConstituencyDistrict").hide();
-		}
-	}
-}); 
-
 function getOverAllBoothDetails(locationLevel){
-	$("#ajaximageId").show();
+	$("#overAllBoothDlstDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$("#overAllSerialRangeWiseVoterDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	
 	var jsObj={  
 		locationLevel : locationLevel,         
 		filterLevel : "",
 		filterValue : 0,
-		boothInchargeEnrollmentId : 1,
-		startDate : userFromDate,
-		endDate : userToDate
+		boothInchargeEnrollmentId : globalBoothInchargeEnrollmentId,
+		startDate : globalFromDate,
+		endDate : globalToDate
 	} 
 	$.ajax({
 		type : 'POST',
@@ -80,7 +68,8 @@ function getOverAllBoothDetails(locationLevel){
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){
-		$("#ajaximageId").hide();
+		 $("#overAllBoothDlstDivId").html(' ');
+		 $("#overAllSerialRangeWiseVoterDivId").html(' ');
 	 	  buildOverAllBoothDtls(result);
 	});
 
@@ -162,15 +151,15 @@ function buildOverAllBoothDtls(result){
 		$("#overAllSerialRangeWiseVoterDivId").html('NO DATA AVAILABLE'); 
 	}
 }
-function getLocationLevelWiseBoothCount(locationLevel,divId){
-    $("#ajaximageId").show();
+function getLocationLevelWiseBoothCount(locationLevel,filterLevel,filterValue,divId){
+    $("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var jsObj={  
 		locationLevel : locationLevel,         
-		filterLevel : "",
-		filterValue : 0,
-		boothInchargeEnrollmentId : 1,
-		startDate : userFromDate,
-		endDate : userToDate
+		filterLevel : filterLevel,
+		filterValue : filterValue,
+		boothInchargeEnrollmentId : globalBoothInchargeEnrollmentId,
+		startDate : globalFromDate,
+		endDate : globalToDate
 	} 
 	$.ajax({
 		type : 'POST',
@@ -178,8 +167,8 @@ function getLocationLevelWiseBoothCount(locationLevel,divId){
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){
-		$("#ajaximageId").hide();
-	 	  buildLocationLevelWiseBoothDtls(result,locationLevel,divId);
+		$("#"+divId).html('');
+	 	buildLocationLevelWiseBoothDtls(result,locationLevel,divId);
 	});
 }
 
@@ -192,7 +181,6 @@ function getLocationLevelWiseBoothCount(locationLevel,divId){
                        str+='<thead>';
                             str+='<tr>';
 							var locationSpecificHeadingStr = getLocationSpeceficHeading(locationLevel);
-							console.log(locationSpecificHeadingStr);
 							str = str +" "+locationSpecificHeadingStr;
                                 str+='<th rowspan="2">TOTAL BOOTHS</th>';
 								str+='<th rowspan="2">NOT-STARTED BOOTHS</th>';
@@ -292,13 +280,12 @@ function getLocationWiseBoothAddress(locationLevel,addressObj){
 	}
 	return str;
 }
-function getLocationBasedOnSelection(){
+function getLocationBasedOnSelection(locationLevel,filterLevelLevel,filterValue,divId,type){
 	var jsObj={  
-		locationLevel : "Constituency",         
-		filterLevel : "District",
-		filterValue : 19,
-		boothInchargeEnrollmentId : 1,
-	
+		locationLevel : locationLevel,         
+		filterLevel : filterLevelLevel,
+		filterValue : filterValue,
+		boothInchargeEnrollmentId : globalBoothInchargeEnrollmentId,
 	} 
 	$.ajax({
 		type : 'POST',
@@ -306,10 +293,73 @@ function getLocationBasedOnSelection(){
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){ 
-	  console.log(result);
+	   buildSelectBox(result,locationLevel,divId,type);
 	});
 }
 
+function buildSelectBox(result,locationLevel,divId,type){
+	var str = '';
+	str+='<option value="0">SELECT '+locationLevel+'</option>'
+	if(result != null && result.length > 0){
+		for(var i in result){
+			str+='<option value="'+result[i].locationIdStr+'">'+result[i].locationName+'</option>'
+		}
+	}
+	if(type == "All"){
+		$("#constituencyLevelDistrictSelectBxId").html(str);
+     	$("#mandalLevelDistrictSelectBxId").html(str);
+     	$("#panchatLevelDistrictSelectBxId").html(str);
+    }else{
+		$("#"+divId).html(str);
+	}                               
+}
+$(document).on("click",".locationLevelTabCls",function(){
+	var parentSelectBoxId = $(this).attr("attr_select_box_id");
+	var selectedLevel = $(this).attr("attr_tab_level_value");
+	$("#"+parentSelectBoxId).attr("attr_level","PARLIAMENT CONSTITUENCY");
+	var filterLevel="";
+    var filterValue=0;
+	getLocationBasedOnSelection(selectedLevel,filterLevel,filterValue,parentSelectBoxId,"Other");
+	
+});
+$(document).on("change",".selectBoxCls",function(){
+	var selectValue = $(this).val();
+	var subLevelDropBoxId = $(this).attr("attr_sub_level_drop_box_id");
+	var selectedLevel = $(this).attr("attr_level");
+	var subLevel = $(this).attr("attr_sub_level");
+	var resultLevel = $(this).attr("attr_result_level");
+	var resultLevelDivId = $(this).attr("attr_result_level_div_id");
+	if(selectValue>0){
+	 getLocationLevelWiseBoothCount(resultLevel,selectedLevel,selectValue,resultLevelDivId);
+	 getSubLevelLocationBasedOnSelection(subLevel,selectedLevel,selectValue,subLevelDropBoxId);	
+	}
+});
+function getSubLevelLocationBasedOnSelection(locationLevel,filterLevelLevel,filterValue,divId){
+	var jsObj={  
+		locationLevel : locationLevel,         
+		filterLevel : filterLevelLevel,
+		filterValue : filterValue,
+		boothInchargeEnrollmentId : globalBoothInchargeEnrollmentId,
+	} 
+	$.ajax({
+		type : 'POST',
+		url : 'getLocationBasedOnSelectionAction.action',  
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)} 
+	}).done(function(result){ 
+	   buildSubLevelDropDown(result,locationLevel,divId);
+	});
+}
+function buildSubLevelDropDown(result,locationLevel,divId){
+	var str = '';
+	str+='<option value="0">SELECT '+locationLevel+'</option>'
+	if(result != null && result.length > 0){
+		for(var i in result){
+			str+='<option value="'+result[i].locationIdStr+'">'+result[i].locationName+'</option>'
+		}
+	}
+	$("#"+divId).html(str);                           
+}
 function getLocationLevelWiseBoothDetails(){
 
 	var jObj={  
@@ -317,7 +367,7 @@ function getLocationLevelWiseBoothDetails(){
 		filterValue : "1240",
 		fromDate : "13/07/2017",
 		toDate : "13/07/2017",
-		boothEnrollementYearId : 1,
+		boothEnrollementYearId : globalBoothInchargeEnrollmentId,
 		resultType : "NotStarted"
 	} 
 	$.ajax({
@@ -331,10 +381,9 @@ function getLocationLevelWiseBoothDetails(){
 }
 
 function validateBoothToMakeConfirm(){
-
 	var jObj = {  
 			boothId : 922852,
-			boothInchargeEnrollmentId : 1
+			boothInchargeEnrollmentId : globalBoothInchargeEnrollmentId
 		} 
 	$.ajax({
 		type : 'POST',
@@ -345,39 +394,3 @@ function validateBoothToMakeConfirm(){
 	  console.log(result);
 	});
 }
-
-$("#constituencyWiseParliamentId").hide();
-$("#mandalWiseParliamentId").hide();
-$("#villegeWiseParliamentId").hide();
-$("#constituencyWiseDistrictId").show();
-$(document).on('click','#constituencyDistrictId',function(){
-	
-	$("#constituencyWiseDistrictId").show();
-	$("#constituencyWiseParliamentId").hide();	
-	});
-
-$(document).on('click','#constituencyParliamentId',function(){
-	
-	$("#constituencyWiseDistrictId").hide();
-	$("#constituencyWiseParliamentId").show();
-	});
-
-$(document).on('click','#mandalDistrictId',function(){
-	$("#mandalWiseDistrictId").show();
-	$("#mandalWiseParliamentId").hide();	
-	});
-
-$(document).on('click','#mandalParliamentId',function(){
-	$("#mandalWiseDistrictId").hide();
-	$("#mandalWiseParliamentId").show();
-	});
-	
-$(document).on('click','#panchayatDistrictId',function(){
-	$("#villegeWiseDistrictId").show();
-	$("#villegeWiseParliamentId").hide();	
-	});
-
-$(document).on('click','#panchayatParliamentId',function(){
-	$("#villegeWiseDistrictId").hide();
-	$("#villegeWiseParliamentId").show();
-	});
