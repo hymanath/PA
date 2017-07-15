@@ -17,7 +17,7 @@ public class PrisOverviewVo implements Serializable{
 	private Long total =0l;
 	private Long target =0l;
 	private Long achieved =0l;
-	private String achievedPercentage;
+	private Double achievedPercentage=0.00;
 	
 	private List<PrisOverviewVo> voList = new ArrayList<PrisOverviewVo>(0);
 	private List<PrisOverviewVo> subList = new ArrayList<PrisOverviewVo>(0);
@@ -55,10 +55,10 @@ public class PrisOverviewVo implements Serializable{
 	public void setAchieved(Long achieved) {
 		this.achieved = achieved;
 	}
-	public String getAchievedPercentage() {
+	public Double getAchievedPercentage() {
 		return achievedPercentage;
 	}
-	public void setAchievedPercentage(String achievedPercentage) {
+	public void setAchievedPercentage(Double achievedPercentage) {
 		this.achievedPercentage = achievedPercentage;
 	}
 	public List<PrisOverviewVo> getVoList() {
