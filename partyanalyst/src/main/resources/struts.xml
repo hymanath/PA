@@ -17626,11 +17626,113 @@
 			<param name="root">successMsg</param>       
 		</result> 
 	</action> 
-	<action name="saveMeetingDetailsAction" class="cadrePartyMeetingManagementAction" method="execute"> <!-- saveMeetingDetails -->
+	 <action name="cadrePartyMeetingManagementAction" class="cadrePartyMeetingManagementAction">
+	   		 <result name="success">/jsp/partyMeetingManagement.jsp</result>			
+	    </action>
+	    
+		<action name="getDistrictsAction" class="cadrePartyMeetingManagementAction" method="getDistrictsBasedOnStateId"> 
 		<result type="json" name="success">    
-		<param name="root">successMsg</param>
+		<param name="root">keyValueVOList</param>
+		</result>  
+	</action>  
+	<action name="getMandalBasedOnConstituencyAction" class="cadrePartyMeetingManagementAction" method="getMandalBasedOnConstituency"> 
+		<result type="json" name="success">    
+		<param name="root">locations</param>
+		</result>  
+	</action>
+	<action name="getPanchayatWardByMandalsAction" class="cadrePartyMeetingManagementAction" method="getPanchayatWardByMandal"> 
+		<result type="json" name="success">    
+		<param name="root">locations</param>
+		</result>  
+	</action>
+      <action name="downloadInviteesTemplateAction" class="cadrePartyMeetingManagementAction" method="downloadInviteesTemplate">
+    <result name="success" type="stream">
+    <param name="contentDisposition">attachment;filename=test.csv</param>
+    <param name="contentType">text/csv</param>
+    <param name="inputName">inputStream</param>
+    <param name="bufferSize">1024</param>
+   </result>
+    </action>  
+    
+    <action name="savepartymeetingDetailsWithExcelAction" class="cadrePartyMeetingManagementAction" method="savepartymeetingDetailsWithExcel">
+      <result name="success" type="stream">			   
+	  <param name="inputName">inputStream</param>
+	  </result>
+    </action>  
+    <action name="getMeetingMainTypeAction" class="cadrePartyMeetingManagementAction" method="getMeetingMainType"> <!-- saveMeetingDetails -->
+		<result type="json" name="success">    
+		<param name="root">partyMeetingVOList</param>
 		</result>        
 	</action> 
+	
+	<action name="getMeetingSubTypeAction" class="cadrePartyMeetingManagementAction" method="getMeetingSubType"> 
+		<result type="json" name="success">    
+		<param name="root">partyMeetingVOList</param>
+		</result>        
+	</action> 
+	<action name="getCadrePartyMeetngDeatilsAction" class="cadrePartyMeetingManagementAction" method="getCadrePartyMeetngDeatils"> 
+		<result type="json" name="success">    
+		<param name="root">partyMeetingVOList</param>
+		</result>        
+	</action> 
+	<action name="getPartyMeetingLevelsAction" class="cadrePartyMeetingManagementAction" method="getPartyMeetingLevels"> 
+		<result type="json" name="success">    
+		<param name="root">partyMeetingVOList</param>
+		</result>        
+	</action> 
+	<action name="getAllSessionTypeAction" class="cadrePartyMeetingManagementAction" method="getAllSessionType"> 
+		<result type="json" name="success">    
+		<param name="root">partyMeetingVOList</param>
+		</result>        
+	</action> 
+	<action name="getPartyMeetingsTabUserNameByDistrictAction" class="cadrePartyMeetingManagementAction" method="getPartyMeetingsTabUserNameByDistrict"> 
+		<result type="json" name="success">    
+		<param name="root">partyMeetingVOList</param>
+		</result>        
+	</action> 
+	  	  
+	  	<action name="getPartyMeetingDeatilesForMeetingEditAction" class="cadrePartyMeetingManagementAction" method="getPartyMeetingDeatilesForMeetingEditByMeetingId">
+		<result type="json" name="success">    
+		<param name="root">partyMeetingVOList</param>
+		</result>        
+	</action> 
+	<action name="getPartyMeetingSessionAction" class="cadrePartyMeetingManagementAction" method="getPartyMeetingSession">
+		<result type="json" name="success">    
+		<param name="root">partyMeetingVOList</param>
+		</result>        
+	</action> 
+	<action name="getMemberShipIdsFromExcelAction" class="cadrePartyMeetingManagementAction" method="getMemberShipIdsFromExcel">
+		<result type="json" name="success">    
+		<param name="root">resultString</param>
+		</result>        
+	</action> 
+	<action name="savepartymeetingDetailsAction" class="cadrePartyMeetingManagementAction" method="savepartymeetingDetails">
+		<result type="json" name="success">    
+		<param name="root">status</param>
+		</result>        
+	</action> 
+	<action name="getTdpCadreDetailsForInveetMeetingAction" class="cadrePartyMeetingManagementAction" method="getTdpCadreDetailsForInveetMeeting">
+		<result type="json" name="success">    
+		<param name="root">statusList</param>
+		</result>        
+	</action> 
+	<action name="getPartyMeetingTabUserDetailsAction" class="cadrePartyMeetingManagementAction" method="getPartyMeetingTabUserDetails">
+		<result type="json" name="success">    
+		<param name="root">partyMeetingVOList</param>
+		</result>        
+	</action> 
+	<action name="deletePartyMeetingDatailsAction" class="cadrePartyMeetingManagementAction" method="deletePartyMeetingDatails">
+		<result type="json" name="success">    
+		<param name="root">resultStatus</param>
+		</result>        
+	</action> 
+	<action name="getSessionsDetailsByMeetingIdAction" class="cadrePartyMeetingManagementAction" method="getSessionsDetailsByMeetingId"> <!-- saveMeetingDetails -->
+		<result type="json" name="success">    
+		<param name="root">partyMeetingsVOList</param>
+		</result>        
+	</action> 
+	  	  
+
 	<action name="getNominatedPostStatusWiseCountAction" class="locationDashboardAction"  method="getNominatedPostStatusWiseCount">
 		<result type="json" name="success">    
 			<param name="root">keyValueVOList</param>       

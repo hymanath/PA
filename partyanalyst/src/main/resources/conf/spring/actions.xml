@@ -1794,6 +1794,9 @@
 	</bean>	
 	<bean id="cadrePartyMeetingManagementAction" class="com.itgrids.partyanalyst.web.action.CadrePartyMeetingManagementAction" singleton="false">
 			<property name="cadrePartyMeetingManagementService" ref="cadrePartyMeetingManagementService"/>
+			 <property name="cadreCommitteeService" ref="cadreCommitteeService" /> 
+			 
+																	
 	</bean>		
 </beans>	
 	

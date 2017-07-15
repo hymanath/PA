@@ -4350,7 +4350,26 @@
   		<property name="insuranceStatusDAO" ref="insuranceStatusDAO"></property>
   </bean>
   <bean name="cadrePartyMeetingManagementService" class="com.itgrids.partyanalyst.meeting.service.impl.CadrePartyMeetingManagementService" >
-  
-  </bean>
+         <property name="districtDAO" ref="districtDAO" />
+         <property name="constituencyDAO" ref="constituencyDAO" />
+         <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+         <property name="transactionTemplate" ref="transactionTemplate" />
+         <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+ 	     <property name="partyMeetingMainTypeDAO" ref="partyMeetingMainTypeDAO"></property>
+ 	     <property name="partyMeetingTypeDAO" ref="partyMeetingTypeDAO"></property>
+		 <property name="partyMeetingDAO" ref="partyMeetingDAO"></property>
+		 <property name="partyMeetingLevelDAO" ref="partyMeetingLevelDAO"></property>
+		 <property name="sessionTypeDAO" ref="sessionTypeDAO"></property>
+		 <property name="partyMeetingAttendanceTabUserDAO" ref="partyMeetingAttendanceTabUserDAO"></property>
+		 <property name="dateUtilService" ref="dateUtilService" />
+		 <property name="partyMeetingInviteeDAO" ref="partyMeetingInviteeDAO"></property> 
+		 <property name="tehsilDAO" ref="tehsilDAO"></property>
+		 <property name="userAddressDAO" ref="userAddressDAO"></property>
+		 <property name="partyMeetingSessionDAO" ref="partyMeetingSessionDAO"></property>
+		  <property name="attendanceTabUserDAO" ref="attendanceTabUserDAO"></property> 
+		  	<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
+		  	<property name="stateDAO" ref="stateDAO" />
+			<property name="userDAO" ref="userDAO" />
+    </bean>
 </beans>			
 	
