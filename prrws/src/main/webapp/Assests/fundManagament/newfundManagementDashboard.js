@@ -1157,6 +1157,7 @@ getAllDepartments();
 	{
 		if(result !=null && result.length>0){
 			var str='';
+			var orderNo = 1;
 			for(var i in result)
 			{
 				if(result[i].count !=null && result[i].count>0){
@@ -1164,7 +1165,7 @@ getAllDepartments();
 						str+='<table class="table table-bordered table-striped tableClr'+i+'">';
 							str+='<thead>';
 								str+='<tr>';
-									str+='<th class="text-center" colspan="3"><h4>'+result[i].name+' <span class="pull-right rankingColor">'+i+'</span></h4><h3><b>'+result[i].ttlAmt+'</b></h3></th>';
+									str+='<th class="text-center" colspan="3"><h4>'+result[i].name+' <span class="pull-right rankingColor">'+orderNo+'</span></h4><h3><b>'+result[i].ttlAmt+'</b></h3></th>';
 									//str+='<th class="text-center" colspan="3"><h4>'+result[i].name+'</h4><h3><b>'+result[i].ttlAmt+'</b></h3></th>';
 								str+='</tr>';
 							str+='</thead>';
@@ -1187,6 +1188,7 @@ getAllDepartments();
 							str+='</tbody>';
 						str+='</table>';
 					str+='</div>';
+					orderNo = orderNo + 1;
 				}else{
 					$(".tableClr"+i).html('');
 				}
