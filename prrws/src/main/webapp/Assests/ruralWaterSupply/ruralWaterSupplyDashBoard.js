@@ -2028,7 +2028,7 @@
 							}	
 							if(GLtbodyAlertArr[i].statusList !=null && GLtbodyAlertArr[i].statusList.length>0){
 								for(var j in GLtbodyAlertArr[i].statusList){
-										tableView+='<td class="ivrStatusViewCls" attr_status_name="'+GLtbodyAlertArr[i].statusList[j].name+'" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].locationId+'" attr_total_count="'+GLtbodyAlertArr[i].statusList[j].count+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyAlertArr[i].statusList[j].count+'</td>';
+										tableView+='<td class="ivrStatusViewCls" attr_status_name="'+GLtbodyAlertArr[i].statusList[j].name+'" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].id+'" attr_location_name="'+GLtbodyAlertArr[i].name+'" attr_total_count="'+GLtbodyAlertArr[i].statusList[j].count+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyAlertArr[i].statusList[j].count+'</td>';
 										if(GLtbodyAlertArr[i].statusList[j].percentage !=null && GLtbodyAlertArr[i].statusList[j].percentage >0){
 											tableView+='<td><small style="color:#0FBE08">'+GLtbodyAlertArr[i].statusList[j].percentage+'</small></td>';
 										}else{
@@ -3547,9 +3547,10 @@
 		var locationType=$(this).attr("attr_location_type");
 		var locationValue=$(this).attr("attr_location_value");
 		var totalCount=$(this).attr("attr_total_count");
+		var locationName=$(this).attr("attr_location_name");
 		var startIndex=0;
 		$("#modalHablitationDivId").modal('show');
-		//$("#modalHabliHeadingId").html(status+" &nbsp;&nbsp;Wise Details");
+		$("#modalHabliHeadingId").html("<h4 class='text-capital'>"+locationName+"&nbsp;&nbsp;"+locationType+"&nbsp;&nbsp;"+status+"&nbsp;&nbsp;Overview</h4>");
 		
 		getLocationWiseHamletIvrList(status,locationType,locationValue,totalCount);
 	});
@@ -3914,7 +3915,11 @@
 			locationValues.push(1);
 		}else if(locationType=="district"){
 			locationTypeId=3;
-			locationValues=[];
+			if(locationValue == 0){
+				locationValues=[];
+			}else{
+				locationValues.push(locationValue)
+			}
 		}else if(locationType=="constituency"){
 			locationTypeId=4;
 			if(locationValue == 0){
@@ -3943,12 +3948,15 @@
 	      type : "POST",
 	      url : "getLocationHamletIvrStatusList",
 	      dataType : 'json',
-	      data : {task :JSON.stringify(jsObj)}
+	     data : JSON.stringify(jsObj),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
 	    }).done(function(result){
 			if(result !=null && result.length>0){
-				buildLocationWiseHamletIvrList(status,locationType,locationValue,totalCount);
+				buildLocationWiseHamletIvrList(result,status,locationType,locationValue,totalCount);
 			}else{
-				$(".paginationId").html("");
 				$("#modalIvrStatusTable").html('No Data Available');
 			}	
 	    	
@@ -4297,8 +4305,35 @@
 		$("#dataTableSchems").dataTable();
 	}
 	//ivr buld
-	function buildLocationWiseHamletIvrList(status,locationType,locationValue,totalCount){
-		
+	function buildLocationWiseHamletIvrList(result,status,locationType,locationValue,totalCount){
+		var tableView='';
+		tableView+='<table class="table table-bordered" id="dataTableivr">';
+			tableView+='<thead>';
+			tableView+='<tr>';
+					tableView+='<th>DISTRICT</th>';
+					tableView+='<th>CONSTITUENCY</th>';
+					tableView+='<th>MANDAL</th>';
+					tableView+='<th>PANCHAYAT</th>';
+					tableView+='<th>HABITATIONS NAME</th>';
+					tableView+='<th>HABITATIONS CODE</th>';
+				tableView+='</tr>';
+				
+			tableView+='</thead>';
+			tableView+='<tbody>';
+			for(var i in result){
+				tableView+='<tr>';
+						tableView+='<td>'+result[i].districtName+'</td>';
+						tableView+='<td>'+result[i].constituencyName+'</td>';
+						tableView+='<td>'+result[i].mandalName+'</td>';
+						tableView+='<td>'+result[i].panchayat+'</td>';
+						tableView+='<td>'+result[i].habitationName+'</td>';
+						tableView+='<td>'+result[i].habitationCode+'</td>';
+					tableView+='</tr>';
+			}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#modalIvrStatusTable").html(tableView);
+		$("#dataTableivr").dataTable();
 	}
 	
 	// kpi build
