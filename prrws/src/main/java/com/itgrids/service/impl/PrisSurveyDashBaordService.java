@@ -25,6 +25,7 @@ import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 @Service
 @Transactional
@@ -56,7 +57,7 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 		
 		try {
 			 
-			String fromDate = "01-01-2014";
+			String fromDate = "01-01-2012";
 			String toDate = "01-12-2017";
 			
 		  ClientResponse response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+fromDate+"&toDate="+toDate);
@@ -146,7 +147,6 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 */
 	public PrisOverviewVo getPIRSSurveyInfo(InputVO inputVO){
 		PrisOverviewVo finalVo = new PrisOverviewVo();
-		ClientResponse response = null;
 		List<PrisOverviewVo> distOverViewLst = new ArrayList<PrisOverviewVo>(0);
 		List<PrisOverviewVo> distLst = new ArrayList<PrisOverviewVo>(0);
 		try {
@@ -155,7 +155,8 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 			 String distName="";
 			 Long constId=0l;
 			 String constName="";
-			 if(inputVO.getLocationType().equalsIgnoreCase("district")){
+			 
+			 /*if(inputVO.getLocationType().equalsIgnoreCase("district")){
 				 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
 			 }else if(inputVO.getLocationType().equalsIgnoreCase("constituency")){
 				 if(inputVO.getSubFilterId() != null && inputVO.getSubFilterId() >0l){
@@ -172,9 +173,26 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 				 }
 				 
 			 }else if(inputVO.getLocationType().equalsIgnoreCase("mandal")){
-				 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&subFilterType="+inputVO.getSubFilterType());
-			 }
+				 if(inputVO.getFilterId() != null && inputVO.getFilterId() >0l){
+					 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType());
+				 }else if(inputVO.getSubFilterId() != null && inputVO.getSubFilterId() >0l){
+					 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&subFilterType="+inputVO.getSubFilterType());
+				 }else{
+					 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+				 }
+				 	
+			 }*/
 			
+			 WebResource webResource = null;
+
+				if(inputVO.getSubFilterType() != null && !inputVO.getSubFilterType().trim().isEmpty())
+					webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&subFilterType="+inputVO.getSubFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+				else if(inputVO.getFilterType() != null && !inputVO.getFilterType().trim().isEmpty())
+					webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+				else	
+					webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+				
+				ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
@@ -221,7 +239,8 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    				vo.setTotal(totalHouseHolds);
 	 	    				vo.setTarget(jObj.getLong("target"));
 	 	    				vo.setAchieved(jObj.getLong("achived"));
-	 	    				vo.setAchievedPercentage(new BigDecimal(jObj.getString("percentage")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				vo.setAchievedPercentage(vo.getTarget() > 0 ? round(((vo.getAchieved()*100.00)/vo.getTarget()),2):0.00);
+	 	    				
 	 	    				vo.setDistrictId(distId);
 	 	    				vo.setDistrictName(distName);
 	 	    				vo.setConstituencyId(constId);
@@ -333,5 +352,13 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 			LOG.error("Exception raised in getAllDistricts", e);
 		 }	
 		  	return  idNameVOList;
+	}
+	public static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    long factor = (long) Math.pow(10, places);
+	    value = value * factor;
+	    long tmp = Math.round(value);
+	    return (double) tmp / factor;
 	}
 }
