@@ -3,13 +3,41 @@ NotStarted
 Started
 Completed
 */
+
+	var userFromDate=moment().startOf('month').format("DD/MM/YYYY");
+    var userToDate=moment().endOf('month').format("DD/MM/YYYY");
+	
+	$('#daterangePickerId').daterangepicker({
+		opens: 'left',
+		startDate: userFromDate,
+		endDate: userToDate,
+		locale: {
+			  format: 'DD/MM/YYYY'
+			},
+		ranges: {
+			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+			'Today' : [moment(), moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()]
+		}
+	});
+	$('#daterangePickerId').on('apply.daterangepicker', function(ev, picker) {
+		userFromDate = picker.startDate.format('DD/MM/YYYY');
+		userToDate = picker.endDate.format('DD/MM/YYYY');
+	});
+
 var blockNames = ["DISTRICT","CONSTITUENCY","MANDAL","PANCHAYAT"];
 var stateLevel="STATE";
 getOverAllBoothDetails(stateLevel);
 getLocationLevelWiseBoothCount("DISTRICT","dstrctParlmntLvlBoothDtlsDivId");
 getLocationLevelWiseBoothCount("CONSTITUENCY","constituencyLevelBoothDtlsDivId");
 getLocationLevelWiseBoothCount("TEHSIL","mandalLevelBoothDtlsDivId");
-//getLocationLevelWiseBoothCount("PANCHAYAT","panchaytLevelBoothDtlsDivId");
+getLocationLevelWiseBoothCount("PANCHAYAT","panchaytLevelBoothDtlsDivId");
 getLocationBasedOnSelection();
 getLocationLevelWiseBoothDetails();
 validateBoothToMakeConfirm(); 
@@ -37,13 +65,14 @@ $(document).on("click",".districtLevelCls",function(){
 }); 
 
 function getOverAllBoothDetails(locationLevel){
+	$("#ajaximageId").show();
 	var jsObj={  
 		locationLevel : locationLevel,         
 		filterLevel : "",
 		filterValue : 0,
 		boothInchargeEnrollmentId : 1,
-		startDate : "13/07/2017",
-		endDate : "30/07/2017"
+		startDate : userFromDate,
+		endDate : userToDate
 	} 
 	$.ajax({
 		type : 'POST',
@@ -51,6 +80,7 @@ function getOverAllBoothDetails(locationLevel){
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){
+		$("#ajaximageId").hide();
 	 	  buildOverAllBoothDtls(result);
 	});
 
@@ -133,14 +163,14 @@ function buildOverAllBoothDtls(result){
 	}
 }
 function getLocationLevelWiseBoothCount(locationLevel,divId){
-
+    $("#ajaximageId").show();
 	var jsObj={  
 		locationLevel : locationLevel,         
 		filterLevel : "",
 		filterValue : 0,
 		boothInchargeEnrollmentId : 1,
-		startDate : "13/07/2017",
-		endDate : "30/07/2017"
+		startDate : userFromDate,
+		endDate : userToDate
 	} 
 	$.ajax({
 		type : 'POST',
@@ -148,6 +178,7 @@ function getLocationLevelWiseBoothCount(locationLevel,divId){
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){
+		$("#ajaximageId").hide();
 	 	  buildLocationLevelWiseBoothDtls(result,locationLevel,divId);
 	});
 }

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Booth Commitee Dashboard</title>
 <link href="Assets/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assets/css/boothIncharge.less" rel="stylesheet" type="text/less">
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assets/js/less.js"></script>
@@ -21,6 +22,19 @@
    
         <section class="mtop_20">
             <div class="container-fluid">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-sm-3 pull-right">
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+								<input type="text" class="form-control pull-right"  name="daterangePicker" id="daterangePickerId"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			
                 <div class="row">
 				  <div id="overAllBoothDlstDivId"></div>
                 </div>
@@ -33,6 +47,7 @@
                             <div class="subBlock col-sm-12 text-center">
                                 <h5 class="">Booth Committee Members Voter ID Serial Numbers wise</h5>
 								 <div id="overAllSerialRangeWiseVoterDivId"></div>
+								 <img id="ajaximageId"  style="width:50px;height:50px; margin-left: 346px; margin-top: -26px;" src="images/icons/loading.gif">
                             </div>
                         </div>
                     </div>
@@ -52,6 +67,7 @@
 							</div>
 							<div class="panel-body">
 							   <div id="dstrctParlmntLvlBoothDtlsDivId"></div>
+							   <img id="ajaximageId"  style="width:50px;height:50px; margin-left: 346px; margin-top: -26px;" src="images/icons/loading.gif">
 							</div>
 						</div>
                     </div>
@@ -99,8 +115,7 @@
 											</div>											
 										</div>										
 								</div>
-							 </div>
-						
+							 </div>						
 							  <div id="constituencyLevelBoothDtlsDivId"></div>
 							</div>
 						</div>
@@ -209,7 +224,7 @@
 											<div id="" class="col-sm-3">
 												<select>
 													<option>Select Parliament</option>
-												</select>
+												</select> 
 											</div>
 											<div id="" class="col-sm-3">
 												<select>
@@ -241,6 +256,8 @@
 <script src="Assets/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assets/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assets/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assets/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assets/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assets/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
