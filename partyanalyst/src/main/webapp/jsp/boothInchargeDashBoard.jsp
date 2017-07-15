@@ -44,14 +44,14 @@
                     <div class="col-sm-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h4 class="panel-title text-capital">DISTRICT WISE</h4>
+								<h4 class="panel-title text-capital districtParliamentLevleHadingCls">DISTRICT WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right" table-menu="">
-									<li class="active">DISTRICT</li>
-									<li>PARLIAMENT</li>
+									<li class="active districtLevelCls" style="cursor:pointer;" attr_level_value="DISTRICT">DISTRICT</li>
+									<li class="districtLevelCls" style="cursor:pointer;" attr_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
 								</ul>
 							</div>
 							<div class="panel-body">
-							   <div id="districtLevelBoothDtlsDivId"></div>
+							   <div id="dstrctParlmntLvlBoothDtlsDivId"></div>
 							</div>
 						</div>
                     </div>
@@ -66,8 +66,8 @@
 							<div class="panel-heading">
 								<h4 class="panel-title text-capital">CONSTITUENCY WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right">
-									<li class="active" id="constituencyDistrictId">DISTRICT</li>
-									<li id="constituencyParliamentId">PARLIAMENT</li>
+									<li class="active" style="cursor:pointer;" id="constituencyDistrictId">DISTRICT</li>
+									<li id="constituencyParliamentId" style="cursor:pointer;">PARLIAMENT</li>
 								</ul>
 							</div>
 							<div class="panel-body">
@@ -116,12 +116,12 @@
 							<div class="panel-heading">
 								<h4 class="panel-title text-capital">MANDAL WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right">
-									<li class="active" id="mandalDistrictId">DISTRICT</li>
-									<li id="mandalParliamentId">PARLIAMENT</li>
+									<li class="active" id="mandalDistrictId" style="cursor:pointer;">DISTRICT</li>
+									<li id="mandalParliamentId" style="cursor:pointer;">PARLIAMENT</li>
 								</ul>
 							</div>
 							<div class="panel-body">
-								<div class="row" id="mandalWiseDistrictId">
+								<div class="row" id="mandalWiseDistrictId" style="cursor:pointer;">
 										<div class="col-sm-12" id="selectConstituencyDistrict">
 											<div id="" class="col-sm-3">
 												<select>
@@ -176,8 +176,8 @@
 							<div class="panel-heading">
 								<h4 class="panel-title text-capital" >PANCHAYAT WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right" table-menu="">
-									<li class="active" id="panchayatDistrictId">DISTRICT</li>
-									<li id="panchayatParliamentId">PARLIAMENT</li>
+									<li class="active" id="panchayatDistrictId" style="cursor:pointer;">DISTRICT</li>
+									<li id="panchayatParliamentId" style="cursor:pointer;">PARLIAMENT</li>
 								</ul>
 							</div>
 							<div class="row" id="villegeWiseDistrictId">
