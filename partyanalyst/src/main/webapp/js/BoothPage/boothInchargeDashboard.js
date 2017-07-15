@@ -43,6 +43,16 @@ getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");
 getLocationLevelWiseBoothDetails();
 //validateBoothToMakeConfirm(); 
 
+//making active and de-active location tab
+$(document).on('click',' li.districtLevelCls ',function(){
+  $(this).parent().find(".districtLevelCls").removeClass("active");
+  $(this).addClass("active");
+}); 
+
+  $(document).on('click',' li.locationLevelTabCls ',function(){
+  $(this).parent().find(".locationLevelTabCls").removeClass("active");
+  $(this).addClass("active");
+});
 
 $(document).on("click",".districtLevelCls",function(){
 	var selecteLegel = $(this).attr("attr_tab_level_value");
