@@ -1993,7 +1993,7 @@
 			if(GLtbodyAlertArr !=null && GLtbodyAlertArr.length>0){
 				var $windowWidth = $(window).width();
 					var tableView='';
-					var totalCount=0;
+					
 					tableView+='<h5 style="padding:5px"><span class="chartTitleAlign"><img src="Assests/icons/driking.png"> <span style="margin-left:5px;">Drinking Water Satisfaction Levels</span></span></h5>';
 				if($windowWidth < 768)
 				{
@@ -2021,6 +2021,7 @@
 							}else{
 								tableView+='<td>'+GLtbodyAlertArr[i].name+'</td>';
 							}	
+							var totalCount=0;
 							if(GLtbodyAlertArr[i].statusList !=null && GLtbodyAlertArr[i].statusList.length>0){
 								for(var j in GLtbodyAlertArr[i].statusList){
 										tableView+='<td class="ivrStatusViewCls" attr_status_name="'+GLtbodyAlertArr[i].statusList[j].name+'" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].id+'" attr_location_name="'+GLtbodyAlertArr[i].name+'" attr_total_count="'+GLtbodyAlertArr[i].statusList[j].count+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyAlertArr[i].statusList[j].count+'</td>';
@@ -3398,11 +3399,28 @@
 								str+='<tr>';
 								str+='<td>TOTAL</td>';
 								for(var i in result.statusList){
-									str+='<td>'+result.statusList[i].stressedCount+' <small style="color:#0FBE08">'+result.statusList[i].percentage+' %</small></td>';
-									str+='<td>'+result.statusList[i].count+'</td>';
+									if(result.statusList[i].stressedCount !=null && result.statusList[i].stressedCount>0){
+										str+='<td>'+result.statusList[i].stressedCount+' <small style="color:#0FBE08">'+result.statusList[i].percentage+' %</small></td>';
+									}else{
+										str+='<td> - </td>';
+									}
+									if(result.statusList[i].count !=null && result.statusList[i].count>0){
+										str+='<td>'+result.statusList[i].count+'</td>';
+									}else{
+										str+='<td> - </td>';
+									}
+									
 								}
-								str+='<td>'+totalStressCount+'</td>';
-								str+='<td>'+totalAllHabsCount+'</td>';
+								if(totalStressCount !=null && totalStressCount>0){
+									str+='<td>'+totalStressCount+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(totalAllHabsCount !=null && totalAllHabsCount>0){
+									str+='<td>'+totalAllHabsCount+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
 								str+='</tr>';
 							str+='</tbody>';
 					
