@@ -9,13 +9,13 @@ public class KPIVO {
 	private Long pcTarget=0l,pcAchivement=0l;
 	private Long qaTarget=0l,qaAchivement=0l;
 	private Double pcPercentage=0.00,qaPercentage=0.00;
-	private Long parentLocationId;
+	private String parentLocationId;
 	
 	
-	public Long getParentLocationId() {
+	public String getParentLocationId() {
 		return parentLocationId;
 	}
-	public void setParentLocationId(Long parentLocationId) {
+	public void setParentLocationId(String parentLocationId) {
 		this.parentLocationId = parentLocationId;
 	}
 	public Double getPcPercentage() {
