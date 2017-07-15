@@ -6,6 +6,7 @@
 <title>Booth Commitee Dashboard</title>
 <link href="Assets/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
 <link href="Assets/css/boothIncharge.less" rel="stylesheet" type="text/less">
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assets/js/less.js"></script>
@@ -34,8 +35,7 @@
 						</div>
 					</div>
 				</div>
-			
-                <div class="row">
+		        <div class="row">
 				  <div id="overAllBoothDlstDivId"></div>
                 </div>
             </div>
@@ -47,8 +47,7 @@
                             <div class="subBlock col-sm-12 text-center">
                                 <h5 class="">Booth Committee Members Voter ID Serial Numbers wise</h5>
 								 <div id="overAllSerialRangeWiseVoterDivId"></div>
-								 <img id="ajaximageId"  style="width:50px;height:50px; margin-left: 346px; margin-top: -26px;" src="images/icons/loading.gif">
-                            </div>
+					        </div>
                         </div>
                     </div>
             </div>
@@ -61,13 +60,12 @@
 							<div class="panel-heading">
 								<h4 class="panel-title text-capital districtParliamentLevleHadingCls">DISTRICT WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right" table-menu="">
-									<li class="active districtLevelCls" style="cursor:pointer;" attr_level_value="DISTRICT">DISTRICT</li>
-									<li class="districtLevelCls" style="cursor:pointer;" attr_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
+									<li class="active districtLevelCls" style="cursor:pointer;" attr_tab_level_value="DISTRICT">DISTRICT</li>
+									<li class="districtLevelCls" style="cursor:pointer;" attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
 								</ul>
 							</div>
 							<div class="panel-body">
 							   <div id="dstrctParlmntLvlBoothDtlsDivId"></div>
-							   <img id="ajaximageId"  style="width:50px;height:50px; margin-left: 346px; margin-top: -26px;" src="images/icons/loading.gif">
 							</div>
 						</div>
                     </div>
@@ -82,40 +80,26 @@
 							<div class="panel-heading">
 								<h4 class="panel-title text-capital">CONSTITUENCY WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right">
-									<li class="active" style="cursor:pointer;" id="constituencyDistrictId">DISTRICT</li>
-									<li id="constituencyParliamentId" style="cursor:pointer;">PARLIAMENT</li>
+									<li class="active locationLevelTabCls" style="cursor:pointer;" attr_select_box_id="constituencyLevelDistrictSelectBxId" attr_tab_level_value="DISTRICT">DISTRICT</li>
+									<li class="locationLevelTabCls" style="cursor:pointer;" attr_select_box_id="constituencyLevelDistrictSelectBxId" attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
 								</ul>
 							</div>
 							<div class="panel-body">
 								<div class="row" id="constituencyWiseDistrictId">
-										<div class="col-sm-12" id="selectConstituencyDistrict">
-											<div id="" class="col-sm-3">
-												<select id="constituencySelectId">
-													<option>Ananthapur District</option>
+										<div class="col-sm-12">
+											<div class="col-sm-3">
+												<select id="constituencyLevelDistrictSelectBxId" attr_result_level="CONSTITUENCY" attr_result_level_div_id="constituencyLevelBoothDtlsDivId" attr_sub_level_drop_box_id="constituencyLevelConstituenySelectBxId" class="selectBoxCls" attr_level="DISTRICT" attr_sub_level="CONSTITUENCY">
+													<option value="0">SELECT DISTRICT</option>
 												</select>
 											</div>
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Constituency</option>
+											<div  class="col-sm-3">
+												<select class="selectBoxCls" id="constituencyLevelConstituenySelectBxId" attr_result_level="CONSTITUENCY" attr_result_level_div_id="constituencyLevelBoothDtlsDivId" attr_level="CONSTITUENCY">
+													<option value="0">SELECT CONSTITUENCY</option>
 												</select>
 											</div>											
 										</div>										
 								</div>
-								<div class="row" id="constituencyWiseParliamentId">
-										<div class="col-sm-12" id="selectConstituencyDistrict">
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Parliament</option>
-												</select>
-											</div>
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Constituency</option>
-												</select>
-											</div>											
-										</div>										
-								</div>
-							 </div>						
+						 </div>		
 							  <div id="constituencyLevelBoothDtlsDivId"></div>
 							</div>
 						</div>
@@ -131,51 +115,31 @@
 							<div class="panel-heading">
 								<h4 class="panel-title text-capital">MANDAL WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right">
-									<li class="active" id="mandalDistrictId" style="cursor:pointer;">DISTRICT</li>
-									<li id="mandalParliamentId" style="cursor:pointer;">PARLIAMENT</li>
+									<li class="active locationLevelTabCls" style="cursor:pointer;" attr_select_box_id="mandalLevelDistrictSelectBxId" attr_tab_level_value="DISTRICT">DISTRICT</li>
+									<li class="locationLevelTabCls" style="cursor:pointer;" attr_select_box_id="mandalLevelDistrictSelectBxId" attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
 								</ul>
 							</div>
 							<div class="panel-body">
 								<div class="row" id="mandalWiseDistrictId" style="cursor:pointer;">
 										<div class="col-sm-12" id="selectConstituencyDistrict">
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Ananthapur District</option>
+											<div class="col-sm-3">
+												<select id="mandalLevelDistrictSelectBxId" class="selectBoxCls"  attr_result_level="TEHSIL" attr_result_level_div_id="mandalLevelBoothDtlsDivId" attr_sub_level_drop_box_id="mandalLevelConstituenySelectBxId" attr_level="DISTRICT" attr_sub_level="CONSTITUENCY">
+													<option value="0">SELECT DISTRICT</option>
 												</select>
 											</div>
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Constituency</option>
+											<div class="col-sm-3">
+												<select id="mandalLevelConstituenySelectBxId" class="selectBoxCls"  attr_result_level="TEHSIL" attr_result_level_div_id="mandalLevelBoothDtlsDivId" attr_sub_level_drop_box_id="mandalLevelMandalSelectBxId" attr_level="CONSTITUENCY" attr_sub_level="TEHSIL">
+													<option value="0">SELECT CONSTITUENCY</option>
 												</select>
 											</div>
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Mandal</option>
-												</select>
-											</div>
-										</div>										
-								</div>
-								<div class="row" id="mandalWiseParliamentId">
-										<div class="col-sm-12" id="selectConstituencyDistrict">
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Parliament</option>
-												</select>
-											</div>
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Constituency</option>
-												</select>
-											</div>
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Mandal</option>
+											<div class="col-sm-3">
+												<select id="mandalLevelMandalSelectBxId"   class="selectBoxCls" attr_result_level="TEHSIL" attr_result_level_div_id="mandalLevelBoothDtlsDivId" attr_level="TEHSIL">
+													<option value="0">SELECT MANDAL</option>
 												</select>
 											</div>
 										</div>										
 								</div>
 							 </div>
-						
 							  <div id="mandalLevelBoothDtlsDivId"></div>
 							</div>
 						</div>
@@ -191,64 +155,41 @@
 							<div class="panel-heading">
 								<h4 class="panel-title text-capital" >PANCHAYAT WISE</h4>
 								<ul class="nav navbar-nav table-menu pull-right" table-menu="">
-									<li class="active" id="panchayatDistrictId" style="cursor:pointer;">DISTRICT</li>
-									<li id="panchayatParliamentId" style="cursor:pointer;">PARLIAMENT</li>
+									<li class="active locationLevelTabCls" style="cursor:pointer;" attr_select_box_id="panchatLevelDistrictSelectBxId" attr_tab_level_value="DISTRICT">DISTRICT</li>
+									<li class="locationLevelTabCls" style="cursor:pointer;" attr_select_box_id="panchatLevelDistrictSelectBxId"  attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
 								</ul>
 							</div>
 							<div class="row" id="villegeWiseDistrictId">
 										<div class="col-sm-12" id="selectConstituencyDistrict">
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Ananthapur District</option>
+											<div class="col-sm-3">
+												<select id="panchatLevelDistrictSelectBxId"  class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_sub_level_drop_box_id="panchaytLevelConstituenySelectBxId" attr_level="DISTRICT" attr_sub_level="CONSTITUENCY">
+													<option value="0">SELECT DISTRICT</option>
 												</select>
 											</div>
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Constituency</option>
+											<div class="col-sm-3">
+												<select id="panchaytLevelConstituenySelectBxId" class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_sub_level_drop_box_id="panchaytLevelMandalSelectBxId" attr_level="CONSTITUENCY" attr_sub_level="TEHSIL">
+													<option value="0">SELECT CONSTITUENCY</option>
 												</select>
 											</div>
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Mandal</option>
+											<div class="col-sm-3">
+												<select id="panchaytLevelMandalSelectBxId" class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId"  attr_sub_level_drop_box_id="panchaytLevelPanchaytSelectBxId"  attr_level="TEHSIL" attr_sub_level="PANCHAYAT">
+													<option value="0">SELECT MANDAL</option>
 												</select>
 											</div>
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Villege</option>
-												</select>
-											</div>
-										</div>										
-								</div>
-								<div class="row" id="villegeWiseParliamentId">
-										<div class="col-sm-12" id="selectConstituencyDistrict">
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Parliament</option>
-												</select> 
-											</div>
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Constituency</option>
-												</select>
-											</div>
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Mandal</option>
-												</select>
-											</div>
-											<div id="" class="col-sm-3">
-												<select>
-													<option>Select Villege</option>
+											<div class="col-sm-3">
+												<select id="panchaytLevelPanchaytSelectBxId" class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_level="PANCHAYAT">
+													<option value="0">SELECT PANCHAYAT</option>
 												</select>
 											</div>
 										</div>										
-								</div>
-							 </div>
-								  <div id="panchaytLevelBoothDtlsDivId"></div>
 							</div>
 						</div>
-                    </div>
-                </div>
+							 <div id="panchaytLevelBoothDtlsDivId">
+							 </div>
+					</div>
+			  </div>
+           </div>
+          </div>
             </div>
         </section>
    
@@ -264,6 +205,5 @@
 <script src="Assets/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assets/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="js/BoothPage/boothInchargeDashboard.js" type="text/javascript"></script>
-
 </body>
 </html>
