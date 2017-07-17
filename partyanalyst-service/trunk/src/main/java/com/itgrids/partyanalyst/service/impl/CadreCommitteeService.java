@@ -22173,6 +22173,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			if(boothIncharge != null){
 				boothIncharge.setIsActive("Y");
 				boothIncharge.setUpdatedBy(userId);
+				boothIncharge.setBoothInchargeSerialNoRangeId(1L);
 				boothIncharge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				boothInchargeDAO.save(boothIncharge);
 			}else{
@@ -22181,6 +22182,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 				boothInchrge.setTdpCadreId(tdpCadreId);
 				boothInchrge.setIsActive("Y");
 				boothInchrge.setIsDeleted("N");
+				boothInchrge.setBoothInchargeSerialNoRangeId(1L);
 				boothInchrge.setBoothInchargeEnrollmentId(boothEnrollmentYrIds.get(0));
 				boothInchrge.setInsertedBy(userId);
 				boothInchrge.setUpdatedBy(userId);
@@ -22229,7 +22231,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 				}
 			 } 
 		 }catch(Exception e){
-			 LOG.error("Exception raised in saveElectionBoothCommitteeDetails ", e);
+			 LOG.error("Exception raised in getBoothsForMandals ", e);
 		 }
 		 return returnList;
 	 }
