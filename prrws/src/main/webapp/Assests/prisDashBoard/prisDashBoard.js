@@ -498,7 +498,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			filterId:0,
 			filterType:'constituency',
 			subFilterId:filterId ,
-			subFilterType: 'assembly'//assembly
+			subFilterType: 'constituency'//assembly
 		}
 		$.ajax({                
 			type:'POST',    
@@ -824,8 +824,8 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			toDate:globalToDate,
 			locationId:0,
 			locationType:"mandal",
-			filterId:filterId,
-			filterType:'constituency',
+			filterId:0,
+			filterType:'district',
 			subFilterId:locId,
 			subFilterType: 'assembly'//assembly
 		}
