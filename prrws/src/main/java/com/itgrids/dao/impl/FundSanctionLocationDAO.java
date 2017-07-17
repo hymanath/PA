@@ -64,6 +64,8 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 			sb.append(" and modal.locationAddress.state.stateId in (:searchLvlVals) ");
 		}else if(locationScopeId != null && locationScopeId.longValue() > 0l && locationScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID && searchLvlVals != null && searchLvlVals.size()>0){
 			sb.append(" and modal.locationAddress.district.districtId in (:searchLvlVals) ");
+		}else if(locationScopeId != null && locationScopeId.longValue() > 0l && locationScopeId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID && searchLvlVals != null && searchLvlVals.size()>0){
+			sb.append(" and modal.locationAddress.parliament.constituencyId in (:searchLvlVals) ");
 		}else if(locationScopeId != null && locationScopeId.longValue() > 0l && locationScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID && searchLvlVals != null && searchLvlVals.size()>0){
 			sb.append(" and modal.locationAddress.constituency.constituencyId in (:searchLvlVals) ");
 		}else if(locationScopeId != null && locationScopeId.longValue() > 0l && locationScopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID && searchLvlVals != null && searchLvlVals.size()>0){
