@@ -70,26 +70,30 @@ public class DrainsService implements IDrainsService {
 		 	    				drainsVO.setTotalAvailableKms(!jObj.getString("availabilityKM").equalsIgnoreCase("null") ? jObj.getDouble("availabilityKM"):0.00);
 		 	    				drainsVO.setTotalCleaned(!jObj.getString("cleaned").equalsIgnoreCase("null") ? jObj.getLong("cleaned") : 0l);
 		 	    				drainsVO.setTotalCleanedKms(!jObj.getString("cleanedKM").equalsIgnoreCase("null") ? jObj.getDouble("cleanedKM") : 0.00);
-		 	    				drainsVO.setPercentage(!jObj.getString("percentage").equalsIgnoreCase("null") ? jObj.getDouble("percentage") : 0.00);
+		 	    				//drainsVO.setPercentage(!jObj.getString("percentage").equalsIgnoreCase("null") ? jObj.getDouble("percentage") : 0.00);
+		 	    				drainsVO.setPercentage(!jObj.getString("availability").equalsIgnoreCase("null") && jObj.getLong("availability") > 0l ? round(((jObj.getLong("cleaned")*100.00)/jObj.getLong("availability")),2):0.00);
 		 	    				
 		 	    				
 		 	    				drainsVO.setKachaAvailable(!jObj.getString("kacha").equalsIgnoreCase("null") ? jObj.getLong("kacha") : 0l);
 		 	    				drainsVO.setKachaCleaned(!jObj.getString("kachaCleaned").equalsIgnoreCase("null") ? jObj.getLong("kachaCleaned") : 0l);
 		 	    				drainsVO.setKachaAvailableKms(!jObj.getString("kachhaKM").equalsIgnoreCase("null") ? jObj.getDouble("kachhaKM") : 0.00);
-		 	    				drainsVO.setKachaPercentage(!jObj.getString("kachaPercentage").equalsIgnoreCase("null") ? jObj.getDouble("kachaPercentage") : 0.00);
+		 	    				//drainsVO.setKachaPercentage(!jObj.getString("kachaPercentage").equalsIgnoreCase("null") ? jObj.getDouble("kachaPercentage") : 0.00);
+		 	    				drainsVO.setKachaPercentage(!jObj.getString("kacha").equalsIgnoreCase("null") && jObj.getLong("kacha") > 0l ? round(((jObj.getLong("kachaCleaned")*100.00)/jObj.getLong("kacha")),2) : 0.00);
 		 	    				drainsVO.setKachaCleanedKM(!jObj.getString("kachaCleanedKM").equalsIgnoreCase("null") ? jObj.getDouble("kachaCleanedKM") : 0.00);
 		 	    				
 		 	    				
 		 	    				drainsVO.setPakkaAvailable(!jObj.getString("pakka").equalsIgnoreCase("null") ? jObj.getLong("pakka") : 0l);
 		 	    				drainsVO.setPakkaCleaned(!jObj.getString("pakkaCleaned").equalsIgnoreCase("null") ? jObj.getLong("pakkaCleaned") : 0l);
 		 	    				drainsVO.setPakkaCleanedKM(!jObj.getString("pakkaCleanedKM").equalsIgnoreCase("null") ? jObj.getDouble("pakkaCleanedKM") : 0.00);
-		 	    				drainsVO.setPakkaPercentage(!jObj.getString("pakkaPercentage").equalsIgnoreCase("null") ? jObj.getDouble("pakkaPercentage"): 0.00);
+		 	    				//drainsVO.setPakkaPercentage(!jObj.getString("pakkaPercentage").equalsIgnoreCase("null") ? jObj.getDouble("pakkaPercentage"): 0.00);
+		 	    				drainsVO.setPakkaPercentage(!jObj.getString("pakka").equalsIgnoreCase("null") && jObj.getLong("pakka") > 0l ? round(((jObj.getLong("pakkaCleaned")*100.00)/jObj.getLong("pakka")),2):0.00);
 		 	    				drainsVO.setPakkaAvailableKms(!jObj.getString("pakkaKM").equalsIgnoreCase("null") ? jObj.getDouble("pakkaKM") : 0.00);
 		 	    				
 		 	    				drainsVO.setUgAvailable(!jObj.getString("underground").equalsIgnoreCase("null") ? jObj.getLong("underground") : 0l);
 		 	    				drainsVO.setUgCleaned(!jObj.getString("undergroundCleaned").equalsIgnoreCase("null") ? jObj.getLong("undergroundCleaned") : 0l);
 		 	    				drainsVO.setUgCleanedKms(!jObj.getString("undergroundCleanedKM").equalsIgnoreCase("null") ? jObj.getDouble("undergroundCleanedKM") : 0.00);
-		 	    				drainsVO.setUgPercentage(!jObj.getString("undergroundPercentage").equalsIgnoreCase("null") ? jObj.getDouble("undergroundPercentage") : 0.00);
+		 	    				//drainsVO.setUgPercentage(!jObj.getString("undergroundPercentage").equalsIgnoreCase("null") ? jObj.getDouble("undergroundPercentage") : 0.00);
+		 	    				drainsVO.setUgPercentage(!jObj.getString("underground").equalsIgnoreCase("null") && jObj.getLong("underground") > 0l ? round(((jObj.getLong("undergroundCleaned")*100.00)/jObj.getLong("underground")),2) : 0.00);
 		 	    				drainsVO.setUgAvailableKms(!jObj.getString("undergroundKM").equalsIgnoreCase("null") ? jObj.getDouble("undergroundKM") : 0.00);
 		                        finalList.add(drainsVO);
 	        				}
