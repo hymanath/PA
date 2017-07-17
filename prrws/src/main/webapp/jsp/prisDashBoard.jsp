@@ -166,7 +166,7 @@
 								  <img class="media-object" src="Assests/icons/Achived_icon.png" alt="Achived_icon">
 							  </div>
 							  <div class="media-body">
-								<h4 class="">ACHIVED <span class="pull-right color_Alabel" id="achievedOverallpercent"></span></h4>
+								<h4 class="">ACHIEVED <span class="pull-right color_Alabel" id="achievedOverallpercent"></span></h4>
 								<small>Overall</small>
 								<h4 class="m_top10 title_align" id="achievedOverall"></h4>
 							  </div>

@@ -327,15 +327,15 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 								}
 									tableView+='<th><img class="img_widthTable" src="Assests/icons/house_icon.png" alt="house_icon"><br/>TOTAL</th>';
 									tableView+='<th><img class="img_widthTable" src="Assests/icons/Target_icon.png" alt="target_icon"><br/>TARGET</th>';
-									tableView+='<th><img class="img_widthTable" src="Assests/icons/Achived_icon.png" alt="Achived_icon"><br/>ACHIVED</th>';
-									tableView+='<th><img class="img_widthTable" src="Assests/icons/Achived_Perc_Icon.png" alt="Achived_%_Icon"><br/>ACHIVED %</th>';
+									tableView+='<th><img class="img_widthTable" src="Assests/icons/Achived_icon.png" alt="Achived_icon"><br/>ACHIEVED</th>';
+									tableView+='<th><img class="img_widthTable" src="Assests/icons/Achived_Perc_Icon.png" alt="Achived_%_Icon"><br/>ACHIEVED %</th>';
 								tableView+='</thead>';
 								
 								tableView+='<tbody>';
 									for(var i in result.subList){
 									tableView+='<tr>';
 										if(blockName == 'District'){
-											tableView+='<td><img src="Assests/icons/'+result.subList[i].name+'.png" style="height: 30px;margin-right: 7px;width:50px;"/>'+result.subList[i].name+'</td>';
+											tableView+='<td><img src="Assests/icons/'+result.subList[i].name+'.png" style="height: 30px;margin-right: 7px;width:30px;"/>'+result.subList[i].name+'</td>';
 										}else if(blockName == 'Constituency')
 										{
 												tableView+='<td>'+result.subList[i].districtName+'</td>';
@@ -406,7 +406,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 	{
 		var selectBox = '';
 		selectBox+='<select id="'+id+'chosen" attr_blockName="'+blockName+'">';
-			selectBox+='<option value="0">Select</option>';
+			selectBox+='<option value="0">Select All</option>';
 			for(var i in result)
 			{
 				selectBox+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
