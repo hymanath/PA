@@ -25,7 +25,9 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat.panchayatName," +
 					" model.tdpCadre.firstname, model.tdpCadre.mobileNo, model.tdpCadre.memberShipNo, " +
 					" model.tdpCadre.image, " +
-					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilName " +
+					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilName," +
+					" model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.roleName," +
+					" model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId,model.boothInchargeId " +
 					" from BoothIncharge model " +
 					" where " +
 					" model.isDeleted='N' "+

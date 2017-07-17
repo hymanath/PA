@@ -49,6 +49,9 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Long mobileNumber;
 	private Long memberShipNo;
 	private String firstName;
+	private String roleName;
+	private Long roleMappingId;
+	private Long inchargeId;
 		
 		
 	public String getFirstName() {
@@ -444,6 +447,30 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 
 	public void setCommitteeMemberStatus(String committeeMemberStatus) {
 		this.committeeMemberStatus = committeeMemberStatus;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+	public Long getRoleMappingId() {
+		return roleMappingId;
+	}
+
+	public void setRoleMappingId(Long roleMappingId) {
+		this.roleMappingId = roleMappingId;
+	}
+
+	public Long getInchargeId() {
+		return inchargeId;
+	}
+
+	public void setInchargeId(Long inchargeId) {
+		this.inchargeId = inchargeId;
 	}
 	
 	
