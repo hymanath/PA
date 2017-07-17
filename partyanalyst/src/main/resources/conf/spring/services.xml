@@ -1778,7 +1778,7 @@
 
 	 <bean name="insertTrainginCampDataLocationWiseByCommitteeLevel" class="org.springframework.scheduling.quartz.CronTriggerBean">  
     	<property name="jobDetail" ref="triggerTrainginCampDataLocationWiseByCommitteeLevel" />
-    	<property name="cronExpression" value="0 15 15  * * ?" />
+    	<property name="cronExpression" value="0 30 3  * * ?" />
 	</bean>
     <bean name="triggerTrainginCampDataLocationWiseByCommitteeLevel" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
@@ -1839,7 +1839,7 @@
 		    <ref bean="pushGenderWiseTdpCadreCountsByLowLevel"/>
 		    <ref bean="pushCasteStateWiseTdpCadreCountsByLowLevel"/> -->
 			<ref bean="UpdateExpirdAppicationsInNominatedPosts" />
-			<!--  <ref bean="insertTrainginCampDataLocationWiseByCommitteeLevel"/> -->
+			<ref bean="insertTrainginCampDataLocationWiseByCommitteeLevel"/>
         </list>
     	</property>
 	</bean>
