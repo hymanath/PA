@@ -628,8 +628,8 @@ getAllDepartments();
 					globalLocationLevelTypeId=9;
 					globalLocationId=0;
 				}else{
-					globalLocationLevelTypeId = $("#selectedName").attr("attr_levelidvalue")
-					globalLocationId = $("#selectedName").attr("attr_levelidvalue")
+					globalLocationLevelTypeId = globalLocationLevelTypeId
+					globalLocationId = globalLocationId
 				}
 				emptyProgramSubProgramDistVal()
 				getAllSubLocationsBySuperLocationId(11,'distLevelParliamentNames',3);
@@ -641,8 +641,8 @@ getAllDepartments();
 					globalLocationLevelTypeId=3;
 					globalLocationId=0;
 				}else{
-					globalLocationLevelTypeId = $("#selectedName").attr("attr_levelidvalue")
-					globalLocationId = $("#selectedName").attr("attr_levelidvalue")
+					globalLocationLevelTypeId = globalLocationLevelTypeId
+					globalLocationId = globalLocationId
 				}
 				$("#distLevelDistrictNames").val(0);
 				$("#distLevelDistrictNames").trigger('chosen:updated');
@@ -660,8 +660,8 @@ getAllDepartments();
 					globalLocationLevelTypeId=9;
 					globalLocationId=0;
 				}else{
-					globalLocationLevelTypeId = $("#selectedName").attr("attr_levelidvalue")
-					globalLocationId = $("#selectedName").attr("attr_levelidvalue")
+					globalLocationLevelTypeId = globalLocationLevelTypeId
+					globalLocationId = globalLocationId
 				}
 				emptyProgramSubProgramConstVal()
 				getAllSubLocationsBySuperLocationId(11,'constLevelParliaNames',4);
@@ -673,8 +673,8 @@ getAllDepartments();
 					globalLocationLevelTypeId=4;
 					globalLocationId=0;
 				}else{
-					globalLocationLevelTypeId = $("#selectedName").attr("attr_levelidvalue")
-					globalLocationId = $("#selectedName").attr("attr_levelidvalue")
+					globalLocationLevelTypeId = globalLocationLevelTypeId
+					globalLocationId = globalLocationId
 				}
 				$("#constLevelDistNames").val(0);
 				$("#constLevelDistNames").trigger('chosen:updated');
@@ -705,8 +705,8 @@ getAllDepartments();
 					globalLocationLevelTypeId=5;
 					globalLocationId=0;
 				}else{
-					globalLocationLevelTypeId = $("#selectedName").attr("attr_levelidvalue")
-					globalLocationId = $("#selectedName").attr("attr_levelidvalue")
+					globalLocationLevelTypeId = globalLocationLevelTypeId
+					globalLocationId = globalLocationId
 				}
 				$("#mandalLevelDistNames").val(0);
 				$("#mandalLevelDistNames").trigger('chosen:updated');
@@ -724,8 +724,8 @@ getAllDepartments();
 					globalLocationLevelTypeId=9
 					globalLocationId=0;
 				}else{
-					globalLocationLevelTypeId = $("#selectedName").attr("attr_levelidvalue")
-					globalLocationId = $("#selectedName").attr("attr_levelidvalue")
+					globalLocationLevelTypeId = globalLocationLevelTypeId
+					globalLocationId = globalLocationId
 				}
 				emptyProgramSubProgramVillageVal()
 				getAllSubLocationsBySuperLocationId(11,'villageLeveParliNames',6);
@@ -738,8 +738,8 @@ getAllDepartments();
 					globalLocationLevelTypeId=6;
 					globalLocationId=0;
 				}else{
-					globalLocationLevelTypeId = $("#selectedName").attr("attr_levelidvalue")
-					globalLocationId = $("#selectedName").attr("attr_levelidvalue")
+					globalLocationLevelTypeId = globalLocationLevelTypeId
+					globalLocationId = globalLocationId
 				}
 				$("#villageLevelDistNames").val(0);
 				$("#villageLevelDistNames").trigger('chosen:updated');
@@ -1243,6 +1243,12 @@ getAllDepartments();
 		}else{
 			subProgramIdsList.push(subProgramId)
 		}
+		
+		if(locationLevelType == 9 && levelId == 3){
+			 levelId = 9;
+		}
+		
+		
 		var json = {
 			searchLevelId:locationLevelType,
 			blockLevelId : levelId, 
@@ -1321,11 +1327,22 @@ getAllDepartments();
 							}
 						}else if(levelId == '3')
 						{
+							var blockType = getblockType();
+							
 							table+='<th>DISTRICT</th>';
 							if(viewType == "cumulative"){
 								table+='<th>TOTAL</th>';
 							}
-						}else if(levelId == '4')
+						}else if(levelId == '9')
+						{
+							var blockType = getblockType();
+						
+							table+='<th>PARLIAMENT</th>';
+							if(viewType == "cumulative"){
+								table+='<th>TOTAL</th>';
+							}
+						}
+						else if(levelId == '4')
 						{
 							var blockType = getblockTypeCons();
 							table+='<th>DISTRICT</th>';
@@ -1379,103 +1396,128 @@ getAllDepartments();
 							schmeIdstr = result[i].subList[j].subList[m].id;
 							
 						}
-					table+='<tr>';
-					var lvlVal = 0;
-					var locatioName='';
-					var levelName='';
-						if(levelId == '2')
-						{
-							lvlVal =1;
-							//table+='<td>1</td>';
-							table+='<td>Andhra Pradesh</td>';
-							if(viewType == "cumulative"){
-								table+='<td>'+result[i].amount+'  ('+result[i].count+')</td>';
+					if(result[i].amount !=null && result[i].amount !="0.0"){	
+						table+='<tr>';
+						var lvlVal = 0;
+						var locatioName='';
+						var levelName='';
+							if(levelId == '2')
+							{
+								lvlVal =1;
+								//table+='<td>1</td>';
+									table+='<td>Andhra Pradesh</td>';
+										if(viewType == "cumulative"){
+											table+='<td>'+result[i].amount+'  ('+result[i].count+')</td>';
+										}
+								
 							}
-						}
-						else if(levelId == '3')
-						{
-							lvlVal =result[i].addressVO.districtId;
-							locatioName =result[i].addressVO.districtName;
-							levelName = "DISTRICT";
-							table+='<td>'+result[i].addressVO.districtName+'</td>';
-							if(viewType == "cumulative"){
-								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
-								//table+='<td>'+result[i].amount+'</td>';
-							}
-						}else if(levelId == '4')
-						{
-							var blockType = getblockTypeCons();
-							lvlVal =result[i].addressVO.assemblyId;
-							levelName = "CONTITUENCY";
-							locatioName =result[i].addressVO.assemblyName;
-							table+='<td>'+result[i].addressVO.districtName+'</td>';
-							if(blockType == "parliamentType"){
+							else if(levelId == '3')
+							{
+								lvlVal =result[i].addressVO.districtId;
+								locatioName =result[i].addressVO.districtName;
+								levelName = "DISTRICT";
+								var blockType = getblockType();
+								table+='<td>'+result[i].addressVO.districtName+'</td>';
+									if(viewType == "cumulative"){
+										table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
+										//table+='<td>'+result[i].amount+'</td>';
+									}
+								
+								
+								
+							}else if(levelId == '9')
+							{
+								lvlVal =result[i].addressVO.parliamentId;
+								locatioName =result[i].addressVO.parliamentName;
+								levelName = "PARLIAMENT";
+								var blockType = getblockType();
 								table+='<td>'+result[i].addressVO.parliamentName+'</td>';
+									if(viewType == "cumulative"){
+										table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
+										//table+='<td>'+result[i].amount+'</td>';
+									}
 							}
-							table+='<td>'+result[i].addressVO.assemblyName+'</td>';
-							if(viewType == "cumulative"){
-								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "CONSTITUENCY" >'+result[i].count+')</small></td>';
-								//table+='<td>'+result[i].amount+'</td>';
+							else if(levelId == '4')
+							{
+								var blockType = getblockTypeCons();
+								lvlVal =result[i].addressVO.assemblyId;
+								levelName = "CONTITUENCY";
+								locatioName =result[i].addressVO.assemblyName;
+								table+='<td>'+result[i].addressVO.districtName+'</td>';
+									if(blockType == "parliamentType"){
+										table+='<td>'+result[i].addressVO.parliamentName+'</td>';
+									}
+									table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+									if(viewType == "cumulative"){
+										table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "CONSTITUENCY" >'+result[i].count+')</small></td>';
+										//table+='<td>'+result[i].amount+'</td>';
+									}
+								
+								
+							}else if(levelId == '5')
+							{
+								var blockType = getblockTypeMandal();
+								lvlVal =result[i].addressVO.id;
+								locatioName =result[i].addressVO.tehsilName;
+								levelName = "MANDAL";
+								
+								table+='<td>'+result[i].addressVO.districtName+'</td>';
+									if(blockType == "parliamentType"){
+										table+='<td>'+result[i].addressVO.parliamentName+'</td>';
+									}
+									table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+									table+='<td>'+result[i].addressVO.tehsilName+'</td>';
+									if(viewType == "cumulative"){
+										table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "MANDAL">'+result[i].count+')</small></td>';
+										//table+='<td>'+result[i].amount+'</td>';
+									}
+								
+							}else if(levelId == '6')
+							{
+								var blockType = getblockTypeVillage();
+								lvlVal =result[i].addressVO.id;
+								locatioName =result[i].addressVO.panchayatName;
+								levelName = "VILLAGE";
+								table+='<td>'+result[i].addressVO.districtName+'</td>';
+										if(blockType == "parliamentType"){
+											table+='<td>'+result[i].addressVO.parliamentName+'</td>';
+										}
+										table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+										table+='<td>'+result[i].addressVO.tehsilName+'</td>';
+										table+='<td>'+result[i].addressVO.panchayatName+'</td>';
+										if(viewType == "cumulative"){
+											table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "VILLAGE">'+result[i].count+')</small></td>';
+											//table+='<td>'+result[i].amount+'</td>';
+										}
+								
 							}
-						}else if(levelId == '5')
-						{
-							var blockType = getblockTypeMandal();
-							lvlVal =result[i].addressVO.id;
-							locatioName =result[i].addressVO.tehsilName;
-							levelName = "MANDAL";
-							table+='<td>'+result[i].addressVO.districtName+'</td>';
-							if(blockType == "parliamentType"){
-								table+='<td>'+result[i].addressVO.parliamentName+'</td>';
-							}
-							table+='<td>'+result[i].addressVO.assemblyName+'</td>';
-							table+='<td>'+result[i].addressVO.tehsilName+'</td>';
-							if(viewType == "cumulative"){
-								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "MANDAL">'+result[i].count+')</small></td>';
-								//table+='<td>'+result[i].amount+'</td>';
-							}
-						}else if(levelId == '6')
-						{
-							var blockType = getblockTypeVillage();
-							lvlVal =result[i].addressVO.id;
-							locatioName =result[i].addressVO.panchayatName;
-							levelName = "VILLAGE";
-							table+='<td>'+result[i].addressVO.districtName+'</td>';
-							if(blockType == "parliamentType"){
-								table+='<td>'+result[i].addressVO.parliamentName+'</td>';
-							}
-							table+='<td>'+result[i].addressVO.assemblyName+'</td>';
-							table+='<td>'+result[i].addressVO.tehsilName+'</td>';
-							table+='<td>'+result[i].addressVO.panchayatName+'</td>';
-							if(viewType == "cumulative"){
-								table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "VILLAGE">'+result[i].count+')</small></td>';
-								//table+='<td>'+result[i].amount+'</td>';
-							}
-						}
-						table+='<td class="text-center">'+result[0].subList[j].year+'</td>';
-						for(var k in result[i].subList[j].subList)
-						{
-							if(result[i].subList[j].yearId != 0){
-								newYearId = result[i].subList[j].yearId;
-							}else{
-								newYearId = $("#financialYearId").val();
-							} 
-							if(levelId != '2'){
-								if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
-									
-									table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" attr_location_name="'+locatioName+'" attr_level_name="'+levelName+'">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls">&nbsp;&nbsp;(<u><span style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</span> </u>)</small></td>';
-									
+							table+='<td class="text-center">'+result[0].subList[j].year+'</td>';
+							for(var k in result[i].subList[j].subList)
+							{
+								if(result[i].subList[j].yearId != 0){
+									newYearId = result[i].subList[j].yearId;
 								}else{
-									table+='<td class="text-center no-right-border">-</td>';
-								}
-							}else{
-								if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
-									table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls" >&nbsp;&nbsp;('+result[i].subList[j].subList[k].count+')</small></td>';
-								}else{
-									table+='<td class="text-center no-right-border">-</td>';
-								}
+									newYearId = $("#financialYearId").val();
+								} 
+									if(levelId != '2'){
+										if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
+											
+											table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" attr_location_name="'+locatioName+'" attr_level_name="'+levelName+'">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls">&nbsp;&nbsp;(<u><span style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</span> </u>)</small></td>';
+											
+										}else{
+											table+='<td class="text-center no-right-border">-</td>';
+										}
+									}else{
+										if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
+											table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls" >&nbsp;&nbsp;('+result[i].subList[j].subList[k].count+')</small></td>';
+										}else{
+											table+='<td class="text-center no-right-border">-</td>';
+										}
+									}
+								
 							}
-						}
-					table+='</tr>';
+						table+='</tr>';
+					}
 					}
 				}
 				table+='</tbody>';
@@ -1489,7 +1531,7 @@ getAllDepartments();
 		$("#"+divId+"Table").html(table);
 		$('.toolltipCls').tooltip();
 		
-		if(levelId == 3 || levelId == 4 || levelId == 5 || levelId == 6)
+		if(levelId == 3 || levelId == 4 || levelId == 5 || levelId == 6 || levelId == 9)
 		{
 			$("#dataTable"+divId).dataTable({
 					"iDisplayLength": 15,
@@ -1713,7 +1755,7 @@ getAllDepartments();
 					});
 					
 				}
-			}else if(levelId == 3 || levelId == 4 || levelId == 5){
+			}else if(levelId == 3 || levelId == 4 || levelId == 5 || levelId == 9){
 				
 				if(result !=null && result.length>0){
 				
@@ -1767,6 +1809,11 @@ getAllDepartments();
 										locationName =result[i].subList[j].addressVO.panchayatName;
 										levelName = "VILLAGE";
 										assemblyShemeNameArr.push(result[i].subList[j].addressVO.panchayatName+"<br/>("+result[i].subList[j].year+")")
+									}else if(levelId == 9){
+										locationId=result[i].subList[j].addressVO.id;
+										locationName =result[i].subList[j].addressVO.parliamentName;
+										levelName = "PARLIAMENT";
+										assemblyShemeNameArr.push(result[i].subList[j].addressVO.parliamentName+"<br/>("+result[i].subList[j].year+")")
 									}
 								}
 								
@@ -2220,9 +2267,20 @@ getAllDepartments();
 		});
 		var programId =$("#programNamesConst").val();
 		var subProgramId =$("#subProgramNamesConst").val();
-		var locationId =0;
-		var locationLevelType = 9;
-		var locationId =$("#constLevelParliaNames").val();
+		
+		
+		var parliamentId =$("#constLevelParliaNames").val();
+		var constituencyId =$("#constLevelConstNames").val();
+		var locationId=0;
+		var locationLevelType = 0;
+		if(constituencyId !=0 && parliamentId !=0){
+			locationId = constituencyId;
+			locationLevelType=9;
+		}else if(constituencyId !=0 && parliamentId ==0){
+			locationId = constituencyId;
+			locationLevelType=4;
+		}
+		
 		getAllSubLocationsBySuperLocationId(locationId,'constLevelConstNames',4);
 		if(cummulativeType == "normalView"){     
 			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
@@ -2245,9 +2303,19 @@ getAllDepartments();
 		});
 		var programId =$("#programNamesConst").val();
 		var subProgramId =$("#subProgramNamesConst").val();
-		var locationId =0;
-		var locationLevelType = 4;
-		var locationId =$("#constLevelConstNames").val();
+		
+		var districtId = $("#constLevelDistNames").val();
+		var constituencyId =$("#constLevelConstNames").val();
+		var locationId=0;
+		var locationLevelType = 0;
+		if(districtId !=0 && constituencyId !=0){
+			locationId = constituencyId;
+			locationLevelType=4;
+		}else if(districtId !=0 && constituencyId ==0){
+			locationId = districtId;
+			locationLevelType=3;
+		}
+		
 		var viewTypeValue='';
 		if(cummulativeType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
@@ -2323,8 +2391,10 @@ getAllDepartments();
 		});
 		var programId =$("#programNamesMandal").val();
 		var subProgramId =$("#subProgramNamesMandal").val();
+		
 		var locationId =0;
 		var locationLevelType = 3;
+		
 		var locationId =$("#mandalLevelDistNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'mandalLevelConstNames',5);
 		if(cummulativeType == "normalView"){
@@ -3086,6 +3156,7 @@ function getLocationWiseAmountAndCountDetails(levelId,divId,type,levelValueStr){
 			{
 				table+='<div class="table-responsive">';
 			}
+			var levelName='';
 			table+='<table class="table table-bordered table-striped table-condensed" id="dataTable'+divId+'" style="width:100%;">';
 				table+='<thead class="text-center">';
 					table+='<tr>';
@@ -3100,14 +3171,18 @@ function getLocationWiseAmountAndCountDetails(levelId,divId,type,levelValueStr){
 						//table+='<th class="text-capital">ID</th>';
 						if(levelId == '2')
 						{
+							levelName = "STATE";
 							table+='<th class="text-capital">State</th>';
 						}else if(levelId == '3'){
+							levelName = "DISTRICT";
 							table+='<th class="text-capital">District</th>';
 						}else if(levelId == '4')
 						{
+							levelName = "CONSTITUENCY";
 							table+='<th class="text-capital">Constituency</th>';
 						}else if(levelId == '5')
 						{
+							levelName = "MANDAL";
 							table+='<th class="text-capital">Mandal</th>';
 						}
 						
@@ -3136,7 +3211,7 @@ function getLocationWiseAmountAndCountDetails(levelId,divId,type,levelValueStr){
 									}      
 								} 
 								if(result[i].locationList1[j].count != null && result[i].locationList1[j].count > 0){
-									table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].locationId+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="0" attr_dept_id="0" style="cursor:pointer;color:green;">'+result[i].locationList1[j].count+'</td>';
+									table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+result[i].locationId+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="0" attr_dept_id="0" attr_location_name="'+result[i].locationName+'" attr_level_name="'+levelName+'" style="cursor:pointer;color:green;">'+result[i].locationList1[j].count+'</td>';
 								}else{
 									table+='<td class="text-center no-right-border">-</td>';
 								}
@@ -3330,7 +3405,25 @@ $(document).on('click','.closeShowPdfCls',function(){
 		$("#selectedName").attr("attr_id",globalLocationId)
 		$("#selectedName").attr("attr_levelid",globalLevelId)
 		
-		
+		if(globalLocationLevelTypeId == 0){
+			$(".villageBlock").show();
+			$(".constituencyBlock").show();
+			$(".mandalBlock").show();
+			$(".districtBlock").show();
+			$(".stateBlock").show();
+		}else if(globalLocationLevelTypeId == 3){
+			$(".stateBlock").hide();
+			$(".districtBlock").show();
+			$(".villageBlock").show();
+			$(".constituencyBlock").show();
+			$(".mandalBlock").show();
+		}else if(globalLocationLevelTypeId == 4){
+			$(".stateBlock").hide();
+			$(".districtBlock").hide();
+			$(".villageBlock").show();
+			$(".constituencyBlock").show();
+			$(".mandalBlock").show();
+		}
 		if(!$(".collapseActiveStateCls").hasClass("collapsed")){
 			if(globalLevelId == 0 || globalLevelId == 1){
 				globalLocationId = 0;
@@ -3350,6 +3443,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 				globalLocationId = globalLocationId;
 				globalLocationLevelTypeId = globalLocationLevelTypeId;
 			}
+			
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
 			getGovtSchemesDetails("programNamesDistrict");
@@ -3401,7 +3495,8 @@ $(document).on('click','.closeShowPdfCls',function(){
 		
 	});	
 	$(document).on("click","[role='tablist'] a",function(){	
-		var value = $(this).html();
+		var value = $(this).attr("attr_compision");
+		
 		if(value == 'Comparision')
 		{
 		  $(this).closest("[role='tabpanel']").find(".selectboxsShowHide").hide();
