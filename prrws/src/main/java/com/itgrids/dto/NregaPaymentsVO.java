@@ -13,25 +13,65 @@ public class NregaPaymentsVO implements Serializable{
 	private String mandalName;
 	private String panchayatName;
 	
-	private String generatedQuantity;
-	private String generatedAmount;
-	private String generatedPendingQuantity;
-	private String generatedPendingAmount;
+	private String generatedQuantity = "0";
+	private String generatedAmount = "0";
+	private String generatedPendingQuantity = "0";
+	private String generatedPendingAmount = "0";
 	
-	private String uploadQuantity;
-	private String uploadAmount;
-	private String uploadPendingQunatity;
-	private String uploadPendingAmount;
+	private String uploadQuantity = "0";
+	private String uploadAmount = "0";
+	private String uploadPendingQunatity = "0";
+	private String uploadPendingAmount = "0";
 	
-	private String sentToBankQuantity;
-	private String sentToBankAmount;
-	private String sentToBankPendingQuantity;
-	private String sentToBankPendingAmount;
+	private String sentToBankQuantity = "0";
+	private String sentToBankAmount = "0";
+	private String sentToBankPendingQuantity = "0";
+	private String sentToBankPendingAmount = "0";
 	
-	private String failedTransactionQuantity;
-	private String failedTransactionAmount;
-	private String failedTransactionPendingQuantity;
-	private String failedTransactionPendingAmount;
+	private String failedTransactionQuantity = "0";
+	private String failedTransactionAmount = "0";
+	private String failedTransactionPendingQuantity = "0";
+	private String failedTransactionPendingAmount = "0";
+	
+	private Long parliamentId;
+	private String parliamentName;
+	
+	private String totalPayments;
+	private String totalAmount;
+	private String totalWage;
+	private String totalMaterial;
+	private String completedWage;
+	private String completedMaterial;
+	private String pendingWage;
+	private String pendingMaterial;
+	private String failedWage;
+	private String failedMaterial;
+	private String generatedWage;
+	private String generatedMaterial;
+	private String uploadWage;
+	private String uploadMaterial;
+	private String sentBankWage;
+	private String sentBankMaterial;
+	private String completedWageAmount;
+	private String completedMaterialAmount;
+	private String pendingWageAmount;
+	private String pendingMaterialAmount;
+	private String failedWageAmount;
+	private String failedMaterialAmount;
+	private String generatedWageAmount;
+	private String generatedMaterialAmount;
+	private String totalGenerates;
+	private String uploadedWageAmount;
+	private String uploadedMaterialAmount;
+	private String totalUploads;
+	private String sentBankWageAmount;
+	private String sentBankMaterialAmount;
+	private String totalSentBankS;
+	private String totalPendings;
+	private String totalGeneratesAmount;
+	private String totalUploadsAmount;
+	private String totalSentBankAmount;
+	
 	
 	
 	public String getId() {
@@ -165,5 +205,227 @@ public class NregaPaymentsVO implements Serializable{
 	}
 	public void setPanchayatName(String panchayatName) {
 		this.panchayatName = panchayatName;
+	}
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+	public String getParliamentName() {
+		return parliamentName;
+	}
+	public void setParliamentName(String parliamentName) {
+		this.parliamentName = parliamentName;
+	}
+	public String getTotalPayments() {
+		return totalPayments;
+	}
+	public void setTotalPayments(String totalPayments) {
+		this.totalPayments = totalPayments;
+	}
+	public String getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(String totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	public String getTotalWage() {
+		return totalWage;
+	}
+	public void setTotalWage(String totalWage) {
+		this.totalWage = totalWage;
+	}
+	public String getTotalMaterial() {
+		return totalMaterial;
+	}
+	public void setTotalMaterial(String totalMaterial) {
+		this.totalMaterial = totalMaterial;
+	}
+	public String getCompletedWage() {
+		return completedWage;
+	}
+	public void setCompletedWage(String completedWage) {
+		this.completedWage = completedWage;
+	}
+	public String getCompletedMaterial() {
+		return completedMaterial;
+	}
+	public void setCompletedMaterial(String completedMaterial) {
+		this.completedMaterial = completedMaterial;
+	}
+	public String getPendingWage() {
+		return pendingWage;
+	}
+	public void setPendingWage(String pendingWage) {
+		this.pendingWage = pendingWage;
+	}
+	public String getPendingMaterial() {
+		return pendingMaterial;
+	}
+	public void setPendingMaterial(String pendingMaterial) {
+		this.pendingMaterial = pendingMaterial;
+	}
+	public String getFailedWage() {
+		return failedWage;
+	}
+	public void setFailedWage(String failedWage) {
+		this.failedWage = failedWage;
+	}
+	public String getFailedMaterial() {
+		return failedMaterial;
+	}
+	public void setFailedMaterial(String failedMaterial) {
+		this.failedMaterial = failedMaterial;
+	}
+	public String getGeneratedWage() {
+		return generatedWage;
+	}
+	public void setGeneratedWage(String generatedWage) {
+		this.generatedWage = generatedWage;
+	}
+	public String getGeneratedMaterial() {
+		return generatedMaterial;
+	}
+	public void setGeneratedMaterial(String generatedMaterial) {
+		this.generatedMaterial = generatedMaterial;
+	}
+	public String getUploadWage() {
+		return uploadWage;
+	}
+	public void setUploadWage(String uploadWage) {
+		this.uploadWage = uploadWage;
+	}
+	public String getUploadMaterial() {
+		return uploadMaterial;
+	}
+	public void setUploadMaterial(String uploadMaterial) {
+		this.uploadMaterial = uploadMaterial;
+	}
+	public String getSentBankWage() {
+		return sentBankWage;
+	}
+	public void setSentBankWage(String sentBankWage) {
+		this.sentBankWage = sentBankWage;
+	}
+	public String getSentBankMaterial() {
+		return sentBankMaterial;
+	}
+	public void setSentBankMaterial(String sentBankMaterial) {
+		this.sentBankMaterial = sentBankMaterial;
+	}
+	public String getCompletedWageAmount() {
+		return completedWageAmount;
+	}
+	public void setCompletedWageAmount(String completedWageAmount) {
+		this.completedWageAmount = completedWageAmount;
+	}
+	public String getCompletedMaterialAmount() {
+		return completedMaterialAmount;
+	}
+	public void setCompletedMaterialAmount(String completedMaterialAmount) {
+		this.completedMaterialAmount = completedMaterialAmount;
+	}
+	public String getPendingWageAmount() {
+		return pendingWageAmount;
+	}
+	public void setPendingWageAmount(String pendingWageAmount) {
+		this.pendingWageAmount = pendingWageAmount;
+	}
+	public String getPendingMaterialAmount() {
+		return pendingMaterialAmount;
+	}
+	public void setPendingMaterialAmount(String pendingMaterialAmount) {
+		this.pendingMaterialAmount = pendingMaterialAmount;
+	}
+	public String getFailedWageAmount() {
+		return failedWageAmount;
+	}
+	public void setFailedWageAmount(String failedWageAmount) {
+		this.failedWageAmount = failedWageAmount;
+	}
+	public String getFailedMaterialAmount() {
+		return failedMaterialAmount;
+	}
+	public void setFailedMaterialAmount(String failedMaterialAmount) {
+		this.failedMaterialAmount = failedMaterialAmount;
+	}
+	public String getGeneratedWageAmount() {
+		return generatedWageAmount;
+	}
+	public void setGeneratedWageAmount(String generatedWageAmount) {
+		this.generatedWageAmount = generatedWageAmount;
+	}
+	public String getGeneratedMaterialAmount() {
+		return generatedMaterialAmount;
+	}
+	public void setGeneratedMaterialAmount(String generatedMaterialAmount) {
+		this.generatedMaterialAmount = generatedMaterialAmount;
+	}
+	public String getTotalGenerates() {
+		return totalGenerates;
+	}
+	public void setTotalGenerates(String totalGenerates) {
+		this.totalGenerates = totalGenerates;
+	}
+	public String getUploadedWageAmount() {
+		return uploadedWageAmount;
+	}
+	public void setUploadedWageAmount(String uploadedWageAmount) {
+		this.uploadedWageAmount = uploadedWageAmount;
+	}
+	public String getUploadedMaterialAmount() {
+		return uploadedMaterialAmount;
+	}
+	public void setUploadedMaterialAmount(String uploadedMaterialAmount) {
+		this.uploadedMaterialAmount = uploadedMaterialAmount;
+	}
+	public String getTotalUploads() {
+		return totalUploads;
+	}
+	public void setTotalUploads(String totalUploads) {
+		this.totalUploads = totalUploads;
+	}
+	public String getSentBankWageAmount() {
+		return sentBankWageAmount;
+	}
+	public void setSentBankWageAmount(String sentBankWageAmount) {
+		this.sentBankWageAmount = sentBankWageAmount;
+	}
+	public String getSentBankMaterialAmount() {
+		return sentBankMaterialAmount;
+	}
+	public void setSentBankMaterialAmount(String sentBankMaterialAmount) {
+		this.sentBankMaterialAmount = sentBankMaterialAmount;
+	}
+	public String getTotalSentBankS() {
+		return totalSentBankS;
+	}
+	public void setTotalSentBankS(String totalSentBankS) {
+		this.totalSentBankS = totalSentBankS;
+	}
+	public String getTotalPendings() {
+		return totalPendings;
+	}
+	public void setTotalPendings(String totalPendings) {
+		this.totalPendings = totalPendings;
+	}
+	public String getTotalGeneratesAmount() {
+		return totalGeneratesAmount;
+	}
+	public void setTotalGeneratesAmount(String totalGeneratesAmount) {
+		this.totalGeneratesAmount = totalGeneratesAmount;
+	}
+	public String getTotalUploadsAmount() {
+		return totalUploadsAmount;
+	}
+	public void setTotalUploadsAmount(String totalUploadsAmount) {
+		this.totalUploadsAmount = totalUploadsAmount;
+	}
+	public String getTotalSentBankAmount() {
+		return totalSentBankAmount;
+	}
+	public void setTotalSentBankAmount(String totalSentBankAmount) {
+		this.totalSentBankAmount = totalSentBankAmount;
 	}
 }
