@@ -17855,5 +17855,11 @@
 			<param name="root">task</param>       
 		</result> 
    </action>
+   <action name="deleteRoleMemberDetailsAction" class="boothReportAction"  method="deleteRoleMemberDetails">
+		<result type="json" name="success">    
+			<param name="root">task</param>       
+		</result> 
+   </action>
+   
  </package>
 </struts>
