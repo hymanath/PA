@@ -24,17 +24,56 @@
 	});
 
 	$('#daterangePickerId').on('apply.daterangepicker', function(ev, picker) {
-		var filterLevel = $(this).attr("accessType");
-        var filterValue = $(this).attr("accessValue");
+		var filterLevel = $(this).attr("accessType");//filterLevel is nothing but user accessType
+        var filterValue = $(this).attr("accessValue");////filterValue is nothing but user accessValue
 		globalFromDate = picker.startDate.format('DD/MM/YYYY');
 		globalToDate = picker.endDate.format('DD/MM/YYYY');
-		getOverAllBoothDetails("STATE",filterLevel,filterValue);
-		getLocationLevelWiseBoothCount("DISTRICT",filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
-		getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
-		getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
-		getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");
 		$("#boothDtlsDivId").html('');
 		$("#panchaytLevelBoothDtlsDivId").html('');
+		//based on user access level.we are building select box and sending ajax call 
+		if(filterLevel == "CONSTITUENCY"){
+			
+		getOverAllBoothDetails("STATE","CONSTITUENCY",accessValue);
+		getLocationLevelWiseBoothCount("TEHSIL","CONSTITUENCY",accessValue,"mandalLevelBoothDtlsDivId");
+		getLocationLevelWiseBoothCount("PANCHAYAT","CONSTITUENCY",accessValue,"panchaytLevelBoothDtlsDivId");
+		getLocationBasedOnSelection("TEHSIL","CONSTITUENCY",accessValue,"","CONSTITUENCY","");
+		 $("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+		 $("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+		 $("#panchaytLevelPanchaytSelectBxId,#boothBlockPanchaytSelectBxId").trigger("chosen:updated");
+		}else if(filterLevel == "PARLIAMENT CONSTITUENCY"){
+			
+		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"","PARLIAMENT CONSTITUENCY","");
+		getOverAllBoothDetails("STATE","PARLIAMENT CONSTITUENCY",accessValue);
+		getLocationLevelWiseBoothCount("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"constituencyLevelBoothDtlsDivId");
+		getLocationLevelWiseBoothCount("TEHSIL","PARLIAMENT CONSTITUENCY",accessValue,"mandalLevelBoothDtlsDivId");
+		getLocationLevelWiseBoothCount("PANCHAYAT","PARLIAMENT CONSTITUENCY",accessValue,"panchaytLevelBoothDtlsDivId");
+		//clearing select box
+		 $("#boothBlockMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
+		 $("#mandalLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
+		 $("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+		 $("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+		 $("#panchaytLevelPanchaytSelectBxId,#boothBlockPanchaytSelectBxId,#mandalLevelMandalSelectBxId,#boothBlockMandalSelectBxId").trigger("chosen:updated");
+		}else if(filterLevel == "DISTRICT" || filterLevel == "STATE"){
+		  getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");	
+		  getOverAllBoothDetails("STATE",filterLevel,filterValue);
+		  getLocationLevelWiseBoothCount("DISTRICT",filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
+		  getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
+		  getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
+		  //clearing select box
+		  $("#constituencyLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
+		 $("#mandalLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
+		  $("#mandalLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
+		  $("#panchaytLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
+		  $("#panchaytLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
+		  $("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+		  
+		  $("#boothBlockConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
+		  $("#boothBlockMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
+		  $("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+		  $("#boothBlockConstituenySelectBxId,#boothBlockMandalSelectBxId,#boothBlockPanchaytSelectBxId").trigger("chosen:updated");
+		  $("#constituencyLevelConstituenySelectBxId,#mandalLevelConstituenySelectBxId,#mandalLevelMandalSelectBxId").trigger("chosen:updated");
+		  $("#panchaytLevelConstituenySelectBxId,#panchaytLevelMandalSelectBxId,#panchaytLevelPanchaytSelectBxId").trigger("chosen:updated");
+		}
 	});
  
 //making active and de-active location tab
@@ -322,7 +361,16 @@ function buildSelectBox(result,locationLevel,divId,type,resultLevel){
      	$("#panchatLevelDistrictSelectBxId").html(str);
 		$("#boothBlockDistrictSelectBxId").html(str);
 		$("#constituencyLevelDistrictSelectBxId,#panchatLevelDistrictSelectBxId,#mandalLevelDistrictSelectBxId,#boothBlockDistrictSelectBxId").trigger("chosen:updated");
-    }else{
+    }else if(type == "PARLIAMENT CONSTITUENCY"){
+		$("#constituencyLevelConstituenySelectBxId").html(str);
+		$("#mandalLevelConstituenySelectBxId").html(str);
+		$("#boothBlockConstituenySelectBxId").html(str);
+		$("#constituencyLevelConstituenySelectBxId,#mandalLevelConstituenySelectBxId,#boothBlockConstituenySelectBxId").trigger("chosen:updated");
+	}else if(type == "CONSTITUENCY"){
+		$("#mandalLevelMandalSelectBxId").html(str);
+		$("#boothBlockMandalSelectBxId").html(str);
+		$("#mandalLevelMandalSelectBxId,#boothBlockMandalSelectBxId").trigger("chosen:updated");
+	}else{
 		$("#"+divId).html(str);
 		$("#"+divId).trigger("chosen:updated");
 		if(resultLevel=="CONSTITUENCY"){
