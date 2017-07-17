@@ -29,7 +29,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 					" model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.roleName," +
 					" model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId,model.boothInchargeId " +
 					" from BoothIncharge model " +
-					" where " +
+					" where   model.isActive='Y' and " +
 					" model.isDeleted='N' "+
 					" and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=2014 and " +
 					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.publicationDate.publicationDateId = :publicationDate");
@@ -63,7 +63,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 				" t.tehsilId, " +
 				" t.tehsilName, " +
 				" l.localElectionBodyId, " +
-				" l.name " +
+				" l.name, model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.roleName " +
 				" from BoothIncharge model " +
 				" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth b " +
 				" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat p " +
@@ -111,7 +111,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 				  " from BoothIncharge model " +
 				  " where model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId = :constituencyId " +
 				  " and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.publicationDate.publicationDateId = :publicationDate " +
-				  " and model.isActive ='Y' ");
+				  " and  model.isDeleted='N' and model.isActive='Y'   ");
 		
 		Query qry = getSession().createQuery(sb.toString());
 		
@@ -233,10 +233,10 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append( " select model.boothInchargeRoleConditionMappingId, count(model.boothInchargeId) from BoothIncharge model " +
-				"where  " );
+				"where model.isDeleted='N' and model.isActive='Y'  " );
 		
 		if(roleIds != null && roleIds.size() >0)
-			sb.append(" model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId in (:roleIds) ");
+			sb.append(" and model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId in (:roleIds) ");
 		if(boothEnrollmentYrIds != null && boothEnrollmentYrIds.size() >0)
 			sb.append(" and model.boothInchargeEnrollment.boothInchargeEnrollmentId in (:boothEnrollmentYrIds) ");
 				sb.append("group by model.boothInchargeRoleConditionMappingId " ); 
@@ -253,10 +253,10 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 public List<Long> checkIsBoothAlreadySaved(Long boothId,Long boothInchrgRoleId,List<Long> boothEnrollmentYrIds){
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select model.boothInchargeId from BoothIncharge model where " );
+		sb.append(" select model.boothInchargeId from BoothIncharge model where  model.isDeleted='N' and model.isActive='Y'  " );
 		
 		if(boothId != null && boothId.longValue() >0l)
-			sb.append(" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.boothId = :boothId ");
+			sb.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.boothId = :boothId ");
 		if(boothInchrgRoleId != null && boothInchrgRoleId.longValue() >0l)
 			sb.append("and  model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId = :boothInchrgRoleId ");
 		if(boothEnrollmentYrIds != null && boothEnrollmentYrIds.size() >0)
@@ -304,7 +304,7 @@ public List<Object[]> gettingBoothInchargeFinalCount(Long boothId,Long boothInch
 		if(locationValue != null && locationValue.longValue() >0l){
 			sb.append( " and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId = :locationValue ");
 		}
-		sb.append( " and model.isDeleted ='N' ");
+		sb.append( " and  model.isDeleted='N' and model.isActive='Y'   ");
 		sb.append( " group by model.boothInchargeRoleConditionMappingId ");
 		Query query=getSession().createQuery(sb.toString());
 		
@@ -323,7 +323,7 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.boothInchargeId,model2.serialNo from BoothIncharge model " +
 				"left join model.tdpCadre.voter voter , BoothPublicationVoter model2 where " +
-				" model2.voter.voterId=voter.voterId " );
+				"  model.isDeleted='N' and model.isActive='Y'  and model2.voter.voterId=voter.voterId " );
 		
 		if(boothId != null && boothId.longValue() >0l)
 			sb.append(" and model2.booth.boothId = :boothId ");
