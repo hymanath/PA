@@ -10757,7 +10757,7 @@ class TrainingCampService implements ITrainingCampService{
 				
 				List<Object[]> batchAttendence = trainingCampAttendanceDAO.getCompletedCountsForABatch(batchId,dates,enrollmentYrIds,programYearIds);
 				
-				List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,programYearIds,enrollmentYrIds);
+				List<Long> attendeeList = trainingCampBatchAttendeeDAO.getRunningUpcomingAttendeeCounts(batchId,enrollmentYrIds,programYearIds);
 				
 				List<Long> oneDayInviteeCadreIds = new ArrayList<Long>(); 
 				List<Long> twoDaysInviteeCadreIds = new ArrayList<Long>(); 
