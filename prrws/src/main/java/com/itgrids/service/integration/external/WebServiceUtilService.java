@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
 import com.itgrids.dao.IWebserviceCallDetailsDAO;
 import com.itgrids.dao.IWebserviceDAO;
 import com.itgrids.dto.ErrorLogVO;
@@ -46,6 +47,7 @@ public class WebServiceUtilService {
 		WebserviceVO webserviceVO = null;
 		Date startTime = null;
 		Date endTime = null;
+		Gson gson = new Gson();
 		try{                                                                      
 			ClientConfig clientConfig = new DefaultClientConfig();
 			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,Boolean.TRUE);
@@ -58,6 +60,17 @@ public class WebServiceUtilService {
 			webserviceVO.setUrl(url);
 			startTime = dateUtilService.getCurrentDateAndTime();
 			webserviceVO.setCallTime(startTime);
+			
+			if(url != null && url.contains("?"))
+			{
+				int index = url.indexOf("?");
+				webserviceVO.setUrl(url.substring(0,index));
+				webserviceVO.setInputData(url.substring(index+1));
+			}
+			
+			if(input != null)
+				webserviceVO.setInputData(gson.toJson(input));
+			
 			webserviceVO.setWebserviceTrackId(saveWebserviceCallDetails(webserviceVO));
 			
 			response = resource.accept(javax.ws.rs.core.MediaType.APPLICATION_JSON).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(ClientResponse.class,input);
@@ -130,6 +143,7 @@ public class WebServiceUtilService {
 					webserviceCallDetails.setUrl(webserviceVO.getUrl().trim());
 			}
 			webserviceCallDetails.setCallTime(webserviceVO.getCallTime());
+			webserviceCallDetails.setInputData(webserviceVO.getInputData());
 			webserviceCallDetails = webserviceCallDetailsDAO.save(webserviceCallDetails);
 			
 			return webserviceCallDetails.getWebserviceCallDetailsId();
