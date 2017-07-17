@@ -1,6 +1,4 @@
-	var filterLevel="";
-	var filterValue=0;
-	var globalBoothInchargeEnrollmentId=1;
+   var globalBoothInchargeEnrollmentId=1;
 	
  	var globalFromDate=moment().startOf('month').format("DD/MM/YYYY");
     var globalToDate=moment().endOf('month').format("DD/MM/YYYY");
@@ -26,6 +24,8 @@
 	});
 
 	$('#daterangePickerId').on('apply.daterangepicker', function(ev, picker) {
+		var filterLevel = $(this).attr("accessType");
+        var filterValue = $(this).attr("accessValue");
 		globalFromDate = picker.startDate.format('DD/MM/YYYY');
 		globalToDate = picker.endDate.format('DD/MM/YYYY');
 		getOverAllBoothDetails("STATE",filterLevel,filterValue);
@@ -33,17 +33,10 @@
 		getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
 		getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
 		getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");
+		$("#boothDtlsDivId").html('');
+		$("#panchaytLevelBoothDtlsDivId").html('');
 	});
  
-getOverAllBoothDetails("STATE",filterLevel,filterValue);
-getLocationLevelWiseBoothCount("DISTRICT",filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
-getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
-getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
-//getLocationLevelWiseBoothCount("PANCHAYAT",filterLevel,filterValue,"panchaytLevelBoothDtlsDivId");
-getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");
-//getLocationLevelWiseBoothDetails();
-//validateBoothToMakeConfirm(); 
-
 //making active and de-active location tab
 $(document).on('click',' li.districtLevelCls ',function(){
   $(this).parent().find(".districtLevelCls").removeClass("active");
@@ -59,6 +52,8 @@ $(document).on("click",".districtLevelCls",function(){
 	$(this).closest("ul").find("li").removeClass("active");
 	$(this).addClass("active");
 	var selecteLegel = $(this).attr("attr_tab_level_value");
+	var filterLevel = $(this).attr("accessType");
+    var filterValue = $(this).attr("accessValue");
 	var levelHeading = selecteLegel+" WISE";
 	$(".districtParliamentLevleHadingCls").html(levelHeading);
 	getLocationLevelWiseBoothCount(selecteLegel,filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
@@ -325,7 +320,8 @@ function buildSelectBox(result,locationLevel,divId,type,resultLevel){
 		$("#constituencyLevelDistrictSelectBxId").html(str);
      	$("#mandalLevelDistrictSelectBxId").html(str);
      	$("#panchatLevelDistrictSelectBxId").html(str);
-		$("#constituencyLevelDistrictSelectBxId,#panchatLevelDistrictSelectBxId,#mandalLevelDistrictSelectBxId").trigger("chosen:updated");
+		$("#boothBlockDistrictSelectBxId").html(str);
+		$("#constituencyLevelDistrictSelectBxId,#panchatLevelDistrictSelectBxId,#mandalLevelDistrictSelectBxId,#boothBlockDistrictSelectBxId").trigger("chosen:updated");
     }else{
 		$("#"+divId).html(str);
 		$("#"+divId).trigger("chosen:updated");
@@ -335,15 +331,18 @@ function buildSelectBox(result,locationLevel,divId,type,resultLevel){
 		}else if(resultLevel=="TEHSIL"){
 			$("#mandalLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
 			$("#mandalLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
-			$("#mandalLevelConstituenySelectBxId").trigger("chosen:updated");
-			$("#mandalLevelMandalSelectBxId").trigger("chosen:updated");
+			$("#mandalLevelConstituenySelectBxId,#mandalLevelMandalSelectBxId").trigger("chosen:updated");
 		}else if(resultLevel=="PANCHAYAT"){
 			$("#panchaytLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
 			$("#panchaytLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
 			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
-			$("#panchaytLevelConstituenySelectBxId").trigger("chosen:updated");
-			$("#panchaytLevelMandalSelectBxId").trigger("chosen:updated");
-			$("#panchaytLevelPanchaytSelectBxId").trigger("chosen:updated");
+			$("#panchaytLevelConstituenySelectBxId,#panchaytLevelMandalSelectBxId,#panchaytLevelPanchaytSelectBxId").trigger("chosen:updated");
+		}else if(resultLevel=="BOOTH"){
+			$("#boothDtlsDivId").html('');
+			$("#boothBlockConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
+			$("#boothBlockMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
+			$("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+			$("#boothBlockConstituenySelectBxId,#boothBlockMandalSelectBxId,#boothBlockPanchaytSelectBxId").trigger("chosen:updated");
 		}
 	}                               
 }
@@ -355,9 +354,14 @@ $(document).on("click",".locationLevelTabCls",function(){
 	var resultLevel = $(this).attr("attr_result_level");
 	var resultLevelDivId = $(this).attr("attr_result_level_div_id");
 	$("#"+parentSelectBoxId).attr("attr_level",selectedLevel);
-	var filterLevel="";
-    var filterValue=0;
-	getLocationLevelWiseBoothCount(resultLevel,filterLevel,filterValue,resultLevelDivId);
+	var filterLevel = $(this).attr("accessType");
+    var filterValue = $(this).attr("accessValue");
+	if(resultLevel=="PANCHAYAT"){
+		$("#panchaytLevelBoothDtlsDivId").html('');
+	}
+	if(resultLevel != "BOOTH" && resultLevel != "PANCHAYAT"){
+	  getLocationLevelWiseBoothCount(resultLevel,filterLevel,filterValue,resultLevelDivId);	
+	}
 	getLocationBasedOnSelection(selectedLevel,filterLevel,filterValue,parentSelectBoxId,"Other",resultLevel);
 	
 });
@@ -369,12 +373,13 @@ $(document).on("change",".selectBoxCls",function(){
 	var resultLevel = $(this).attr("attr_result_level");
 	var resultLevelDivId = $(this).attr("attr_result_level_div_id");
 	
-	if(selectValue>0){
+	if(selectValue>0 && subLevelDropBoxId!="panchaytLevelConstituenySelectBxId"){
 	 getLocationLevelWiseBoothCount(resultLevel,selectedLevel,selectValue,resultLevelDivId);
+	}
 	 if(subLevel != undefined){
 	   getSubLevelLocationBasedOnSelection(subLevel,selectedLevel,selectValue,subLevelDropBoxId);		 
 	 }
-	}
+	
 });
 function getSubLevelLocationBasedOnSelection(locationLevel,filterLevelLevel,filterValue,divId){
 	var jsObj={  
@@ -405,15 +410,70 @@ function buildSubLevelDropDown(result,locationLevel,divId){
 }
 /* Filter Related Script END */
 
-function getLocationLevelWiseBoothDetails(){
+/* Booth Details Block Start */
+$(document).on("click",".resultTypeTabCls",function(){
+	var tabType = $(this).attr("attr_tab_level_value");
+	var clickType = $(this).attr("attr_heading_level");
+	var filterLevel = $(this).attr("accessType");
+    var filterValue = $(this).attr("accessValue");
+ 		 if(clickType=="SUMMARY"){
+			 $(".panchaytBlockCls").show();
+			 $(".boothBlckCls").hide();
+			 var locationLevel = $(this).attr("attr_panchayt_result_level");
+			 var selectBoxDivId = $(this).attr("attr_pnchyt_lvl_parent_select_box_div_id");
+			 getSubLevelLocationBasedOnSelection(locationLevel,filterLevel,filterValue,selectBoxDivId)
+			$("#panchaytLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
+			$("#panchaytLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
+			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+			$("#panchaytLevelConstituenySelectBxId,#panchaytLevelMandalSelectBxId,#panchaytLevelPanchaytSelectBxId").trigger("chosen:updated");
+		
+			 $(".resultTypeTabCls").removeClass("active");
+			 $(".resultTypeUL li:nth-child(1)" ).addClass("active");
+			 $("#panchaytLevelBoothDtlsDivId").html('');
+			 
+		 }else if(clickType == "DETAILS"){
+			  $(".panchaytBlockCls").hide();
+			  $(".boothBlckCls").show();
+			  var locationLevel = $(".boothResultTypeCls").attr("attr_booth_result_level");
+			  var selectBoxDivId = $(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id");
+			  getSubLevelLocationBasedOnSelection(locationLevel,filterLevel,filterValue,selectBoxDivId);
+			  $("#boothBlockConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
+			  $("#boothBlockMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
+			  $("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+			  $("#boothBlockConstituenySelectBxId,#boothBlockMandalSelectBxId,#boothBlockPanchaytSelectBxId").trigger("chosen:updated");
+			  
+			  $(".resultTypeTabCls").removeClass("active");
+			  $(".resultTypeUL li:nth-child(2)" ).addClass("active");
+			  $("#boothDtlsDivId").html('');
+		 }
+});
 
+$(".boothBlockCls").chosen();
+$(document).on("change",".boothBlockCls",function(){
+	var selectValue = $(this).val();
+	var subLevelDropBoxId = $(this).attr("attr_sub_level_drop_box_id");
+	var selectedLevel = $(this).attr("attr_level");
+	var subLevel = $(this).attr("attr_sub_level");
+	var resultLevel = $(this).attr("attr_result_level");
+	var resultLevelDivId = $(this).attr("attr_result_level_div_id");
+	var resultType="All";
+	 if(selectValue>0 && subLevelDropBoxId != "boothBlockConstituenySelectBxId"){
+	   getLocationLevelWiseBoothDetails(selectedLevel,selectValue,resultType);
+	 }
+	 if(subLevel != undefined ){
+	   getSubLevelLocationBasedOnSelection(subLevel,selectedLevel,selectValue,subLevelDropBoxId);		 
+	 }
+	
+});
+function getLocationLevelWiseBoothDetails(filterLevel,filterValue,resultType){
+	$("#boothDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var jObj={  
-		filterType : "Tehsil",
-		filterValue : "1240",
-		fromDate : "13/07/2017",
-		toDate : "13/07/2017",
+		filterType : filterLevel,
+		filterValue : filterValue,
+		fromDate : globalFromDate,
+		toDate : globalToDate,
 		boothEnrollementYearId : globalBoothInchargeEnrollmentId,
-		resultType : "NotStarted"
+		resultType : resultType
 	} 
 	$.ajax({
 		type : 'POST',
@@ -421,10 +481,74 @@ function getLocationLevelWiseBoothDetails(){
 		dataType : 'json',
 		data : {task :JSON.stringify(jObj)} 
 	}).done(function(result){ 
-	  console.log(result);
+	   buildBoothDetails(result);
 	});
 }
-
+function buildBoothDetails(result){
+	var str='';
+	if(result != null && result.length > 0){
+		 str+='<div class="table-responsive">';
+		 str+='<table class="table table-bordered" id="bootDtlsdataTableId">';
+			str+='<thead>';
+				    str+='<th>DISTRICT</th>';
+				    str+='<th>PARLIAMENT CONSTITUENCY</th>';
+				    str+='<th>CONSTITUENCY</th>';
+				    str+='<th>MANDAL</th>';
+				    str+='<th>PANCHAYAT</th>';
+				    str+='<th>Booth NO</th>';
+					str+='<th>Booth Status</th>';
+			str+='</thead>';
+			 str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+						if(result[i].districtName != null){
+							str+='<td class="text-center;">'+result[i].districtName+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].parliamentConstituency != null){
+							str+='<td class="text-center;">'+result[i].parliamentConstituency+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].constituencyName != null){
+							str+='<td class="text-center;">'+result[i].constituencyName+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].tehsilName != null){
+							str+='<td class="text-center;">'+result[i].tehsilName+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].panchayat != null){
+							str+='<td class="text-center;">'+result[i].panchayat+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].boothName != null){
+							str+='<td class="text-center;">'+result[i].boothName+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].status != null){
+							str+='<td class="text-center;">'+result[i].status+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+				str+='</tr>';
+			   }
+			str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+	 $("#boothDtlsDivId").html(str);	
+	 $('#bootDtlsdataTableId').dataTable();
+	}else{
+	  $("#boothDtlsDivId").html('NO DATA AVAILABLE');
+	}
+}
+/* Booth Details Block End */
+//validateBoothToMakeConfirm(); 
 function validateBoothToMakeConfirm(){
 	var jObj = {  
 			boothId : 922852,

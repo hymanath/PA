@@ -21,8 +21,11 @@
 </head>
 <body>
         <section class="m_top20">
+		  
             <div class="container-fluid">
 				<div class="row">
+				 <h4 class="text-center"><span style="border: 1px solid rgba(119, 119, 119, 0.467); border-radius: 20px; padding: 10px; background-color: rgb(255, 255, 255); font-weight: 600;">
+				 BOOTH COMMITTEE DASHBOARD</span></h4>
 					<div class="col-sm-3 pull-right">
 						<div class="input-group">
 							<span class="input-group-addon">
@@ -32,7 +35,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row m_top10">
 				  <div id="overAllBoothDlstDivId"></div>
                 </div>
             </div>
@@ -97,7 +100,7 @@
 											<li class="locationLevelTabCls" style="cursor:pointer;" attr_result_level="CONSTITUENCY" attr_result_level_div_id="constituencyLevelBoothDtlsDivId" attr_select_box_id="constituencyLevelDistrictSelectBxId" attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
 										</ul>
 									</div>
-									<div class="col-sm-1">
+									<div class="col-sm-1 collapseDivCls">
 										<a class=" profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="width:20px;height:20px;display:block;float:right"></a>
 									</div>
 								</div>
@@ -140,7 +143,7 @@
 											<li class="locationLevelTabCls" style="cursor:pointer;" attr_result_level="TEHSIL" attr_result_level_div_id="mandalLevelBoothDtlsDivId" attr_select_box_id="mandalLevelDistrictSelectBxId" attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
 										</ul>
 									</div>
-									<div class="col-sm-1">
+									<div class="col-sm-1 collapseDivCls">
 										<a class=" profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="width:20px;height:20px;display:block;float:right"></a>
 									</div>
 								</div>
@@ -174,30 +177,36 @@
                 </div>
             </div>
         </section>
-		<section class="m_top20">
+		<section class="m_top20 panchaytBlockCls" style="display:none;">
             <div class="conatiner-fluid">
                 <div class="col-sm-12 tableBlock">
                     <div class="col-sm-12">
 						<div class="panel panel-default" id="panchayatAccessLevelId">
 							<div class="panel-heading" id="headingFour">
 								<div class="row">
-									<div class="col-sm-6">
+									<div class="col-sm-3">
 										<h4 class="panel-title m_top5 text-capital" >PANCHAYAT WISE</h4>
 									</div>
-									<div class="col-sm-5" id = "panchayatWiseDistrictparliamentIds">
+									<div class="col-sm-4">
+										<ul class="nav navbar-nav table-menu pull-right resultTypeUL">
+											<li class="active resultTypeTabCls" style="cursor:pointer;" attr_heading_level="SUMMARY" >SUMMARY</li>
+											<li class="resultTypeTabCls" style="cursor:pointer;" attr_heading_level="DETAILS" >BOOTH WISE</li>
+										</ul>
+									</div>
+									<div class="col-sm-4" id = "panchayatWiseDistrictparliamentIds">
 										<ul class="nav navbar-nav table-menu pull-right" table-menu="">
 											<li class="active locationLevelTabCls" style="cursor:pointer;" attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_select_box_id="panchatLevelDistrictSelectBxId" attr_tab_level_value="DISTRICT">DISTRICT</li>
 											<li class="locationLevelTabCls" style="cursor:pointer;" attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_select_box_id="panchatLevelDistrictSelectBxId"  attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
 										</ul>
 									</div>
-									<div class="col-sm-1">
+									<div class="col-sm-1 collapseDivCls1">
 										<a class="collapsed profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style="width:20px;height:20px;display:block;float:right"></a>
 									</div>
 								</div>
 							</div>
 							<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
 							<div class="panel-body">
-								<div class="row" id="villegeWiseDistrictId">
+								<div class="row">
 									<div id="selectConstituencyDistrict">
 										<div class="col-sm-3" id="panchayatWiseDisticDivId">
 											<select id="panchatLevelDistrictSelectBxId"  class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_sub_level_drop_box_id="panchaytLevelConstituenySelectBxId" attr_level="DISTRICT" attr_sub_level="CONSTITUENCY">
@@ -230,6 +239,68 @@
 			</div>
         </div>
 	</section>
+	<section class="m_top20 boothBlckCls">
+            <div class="conatiner-fluid">
+                <div class="col-sm-12 tableBlock">
+                    <div class="col-sm-12">
+						<div class="panel panel-default">
+							<div class="panel-heading" id="headingFour">
+								<div class="row">
+									<div class="col-sm-3">
+										<h4 class="panel-title m_top5 text-capital" >BOOTH WISE</h4>
+									</div>
+									<div class="col-sm-4" >
+										<ul class="nav navbar-nav table-menu pull-right resultTypeUL">
+											<li class="resultTypeTabCls boothResultTypeCls" style="cursor:pointer;" attr_heading_level="SUMMARY">SUMMARY</li>
+											<li class="active resultTypeTabCls boothResultTypeCls" style="cursor:pointer;" attr_heading_level="DETAILS">BOOTH WISE</li>
+										</ul>
+									</div>
+									<div class="col-sm-4">
+										<ul class="nav navbar-nav table-menu pull-right" id="boothLevelDistParTabDivId" table-menu="">
+											<li class="active locationLevelTabCls" style="cursor:pointer;" attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId" attr_select_box_id="boothBlockDistrictSelectBxId" attr_tab_level_value="DISTRICT">DISTRICT</li>
+											<li class="locationLevelTabCls" style="cursor:pointer;" attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId" attr_select_box_id="boothBlockDistrictSelectBxId"  attr_tab_level_value="PARLIAMENT CONSTITUENCY">PARLIAMENT</li>
+										</ul>
+									</div>
+									<div class="col-sm-1">
+										<a class="collapsed profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="width:20px;height:20px;display:block;float:right"></a>
+									</div>
+								</div>
+							</div>
+							<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+							<div class="panel-body">
+								<div class="row">
+									<div>
+										<div class="col-sm-3" id="boothLevelDistDivId">
+											<select id="boothBlockDistrictSelectBxId"  class="boothBlockCls"  attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId" attr_sub_level_drop_box_id="boothBlockConstituenySelectBxId" attr_level="DISTRICT" attr_sub_level="CONSTITUENCY">
+												<option value="0">SELECT DISTRICT</option>
+											</select>
+										</div>
+										<div class="col-sm-3" id="boothLevelConDivId">
+											<select id="boothBlockConstituenySelectBxId" class="boothBlockCls"  attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId" attr_sub_level_drop_box_id="boothBlockMandalSelectBxId" attr_level="CONSTITUENCY" attr_sub_level="TEHSIL">
+												<option value="0">SELECT CONSTITUENCY</option>
+											</select>
+										</div>
+										<div class="col-sm-3">
+											<select id="boothBlockMandalSelectBxId" class="boothBlockCls"  attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId"  attr_sub_level_drop_box_id="boothBlockPanchaytSelectBxId"  attr_level="TEHSIL" attr_sub_level="PANCHAYAT">
+												<option value="0">SELECT MANDAL</option>
+											</select>
+										</div>
+										<div class="col-sm-3">
+											<select id="boothBlockPanchaytSelectBxId" class="boothBlockCls"  attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId" attr_level="PANCHAYAT">
+												<option value="0">SELECT PANCHAYAT</option>
+											</select>
+										</div>
+									</div>										
+								</div>
+								<div id="boothDtlsDivId" class="m_top20"></div>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+	</section>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="Assets/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
@@ -242,45 +313,55 @@
 <script type="text/javascript">
 var accessType = '${sessionScope.USER.accessType}';
 var accessValue = '${sessionScope.USER.accessValue}';
-/* var globalUserAccessLevel="";
-var globalUserAccessValue;
-var globalFilterLevel=""; */
-console.log(accessType);
-console.log(accessValue);
 $(document).ready(function(){
 	if(accessType == "MLA"){
 		
 		$("#districtAccessLevelId").hide();
 		$("#constituencyAccessLevelId").hide();
-		$("#mandalAccessLevelId").show();
-		$("#panchayatAccessLevelId").show();
-		//mandal block headings
+		//mandal block heading hiding 
+		$("#boothLevelDistParTabDivId").hide();
 		$("#mandalWiseDisticparlimentIds").hide();
-		$("#mandalLevelDistrictDivId").hide();//mandal block district select box hideing
-		$("#mandalLevelConstituencyDivId").hide();//mandal block constituency select box hideing
+		$("#mandalLevelDistrictDivId").hide();
+		$("#mandalLevelConstituencyDivId").hide();
 		
 		//parliament block heading hide
 		$("#panchayatWiseDistrictparliamentIds").hide();
-		$("#panchayatWiseDisticDivId").hide(); //panchayat block district select box hideing 
-		$("#panchayatWiseConstituencyDivId").hide(); //panchayat block constituency select box hideing
+		$("#panchayatWiseDisticDivId").hide(); //panchayat block district select box hiding 
+		$("#panchayatWiseConstituencyDivId").hide(); //panchayat block constituency select box hiding
+		$("#boothLevelDistDivId").hide(); 
+		$("#boothLevelConDivId").hide(); 
+		$(".collapseDivCls").removeClass("col-sm-1");
+		$(".collapseDivCls").addClass("col-sm-6");
+		$(".collapseDivCls1").addClass("col-sm-5");
+		
+		$(".resultTypeTabCls").attr("attr_panchayt_result_level","TEHSIL");
+		$(".resultTypeTabCls").attr("attr_pnchyt_lvl_parent_select_box_div_id","panchaytLevelMandalSelectBxId");
+		$(".boothResultTypeCls").attr("attr_booth_result_level","TEHSIL");
+		$(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id","boothBlockMandalSelectBxId");
+		
 		getOverAllBoothDetails("STATE","CONSTITUENCY",accessValue);
 		getLocationLevelWiseBoothCount("TEHSIL","CONSTITUENCY",accessValue,"mandalLevelBoothDtlsDivId");
 		getLocationLevelWiseBoothCount("PANCHAYAT","CONSTITUENCY",accessValue,"panchaytLevelBoothDtlsDivId");
 		getLocationBasedOnSelection("TEHSIL","CONSTITUENCY",accessValue,"mandalLevelMandalSelectBxId","Other","");
-		getLocationBasedOnSelection("TEHSIL","CONSTITUENCY",accessValue,"panchaytLevelMandalSelectBxId","Other","");
-	
+		getLocationBasedOnSelection("TEHSIL","CONSTITUENCY",accessValue,"boothBlockMandalSelectBxId","Other","");
+	    setAccessLevelTypeAndValue("CONSTITUENCY",accessValue);
+	  
 	}else if(accessType == "MP"){
 		$("#districtAccessLevelId").hide();
-		$("#constituencyAccessLevelId").show();
-		$("#mandalAccessLevelId").show();
-		$("#panchayatAccessLevelId").show(); 
 		$("#constitencyWiseDistrictParliamentId").hide();
 		$("#constituencyWiseDistrictId").hide();
 		$("#mandalWiseDisticparlimentIds").hide();
 		$("#mandalLevelDistrictDivId").hide();
 		$("#panchayatWiseDistrictparliamentIds").hide();
 		$("#panchayatWiseDisticDivId").hide();
-
+        $("#boothLevelDistDivId").hide(); 
+		$("#boothLevelDistParTabDivId").hide();
+		$(".resultTypeTabCls").attr("attr_pnchyt_lvl_parent_select_box_div_id","panchaytLevelConstituenySelectBxId");
+		$(".resultTypeTabCls").attr("attr_panchayt_result_level","CONSTITUENCY");
+		$(".boothResultTypeCls").attr("attr_booth_result_level","CONSTITUENCY");
+		$(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id","boothBlockConstituenySelectBxId");
+		
+		setAccessLevelTypeAndValue("PARLIAMENT CONSTITUENCY",accessValue);
 
 		getOverAllBoothDetails("STATE","PARLIAMENT CONSTITUENCY",accessValue);
 		getLocationLevelWiseBoothCount("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"constituencyLevelBoothDtlsDivId");
@@ -288,43 +369,38 @@ $(document).ready(function(){
 		getLocationLevelWiseBoothCount("PANCHAYAT","PARLIAMENT CONSTITUENCY",accessValue,"panchaytLevelBoothDtlsDivId");
 		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"constituencyLevelConstituenySelectBxId","Other","");
 		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"mandalLevelConstituenySelectBxId","Other","");
-		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"panchaytLevelConstituenySelectBxId","Other","");
-		
-
-		
+		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"boothBlockConstituenySelectBxId","Other","");
+	
 	}else if(accessType == "DISTRICT"){
-			
-			$("#districtAccessLevelId").show();
-			$("#constituencyAccessLevelId").show();
-			$("#mandalAccessLevelId").show();
-			$("#panchayatAccessLevelId").show();
 			getOverAllBoothDetails("STATE","DISTRICT",accessValue);
 			getLocationLevelWiseBoothCount("DISTRICT","DISTRICT",accessValue,"dstrctParlmntLvlBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("CONSTITUENCY","DISTRICT",accessValue,"constituencyLevelBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("TEHSIL","DISTRICT",accessValue,"mandalLevelBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("PANCHAYAT","DISTRICT",accessValue,"panchaytLevelBoothDtlsDivId");
-			getLocationBasedOnSelection("DISTRICT","DISTRICT",accessValue,"constituencyLevelDistrictSelectBxId","Other","");
-			getLocationBasedOnSelection("DISTRICT","DISTRICT",accessValue,"mandalLevelDistrictSelectBxId","Other","");
-			getLocationBasedOnSelection("DISTRICT","DISTRICT",accessValue,"panchatLevelDistrictSelectBxId","Other","");
-	}else if (accessType == "STATE"){
-		
-			$("#districtAccessLevelId").show();
-			$("#constituencyAccessLevelId").show();
-			$("#mandalAccessLevelId").show();
-			$("#panchayatAccessLevelId").show();
+			getLocationBasedOnSelection("DISTRICT","DISTRICT",accessValue,"","All","");
+			setAccessLevelTypeAndValue("DISTRICT",accessValue);
 			
+	}else if (accessType == "STATE"){
 			getOverAllBoothDetails("STATE","STATE",accessValue);
 			getLocationLevelWiseBoothCount("DISTRICT","STATE",accessValue,"dstrctParlmntLvlBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("CONSTITUENCY","STATE",accessValue,"constituencyLevelBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("TEHSIL","STATE",accessValue,"mandalLevelBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("PANCHAYAT","STATE",accessValue,"panchaytLevelBoothDtlsDivId");
-			getLocationBasedOnSelection("DISTRICT","STATE",accessValue,"constituencyLevelDistrictSelectBxId","Other","");
-			getLocationBasedOnSelection("DISTRICT","STATE",accessValue,"mandalLevelDistrictSelectBxId","Other","");
-			getLocationBasedOnSelection("DISTRICT","STATE",accessValue,"panchatLevelDistrictSelectBxId","Other","");
+			getLocationBasedOnSelection("DISTRICT","STATE",accessValue,"","All","");
+			setAccessLevelTypeAndValue("STATE",accessValue);
 	} 
-	
+	function setAccessLevelTypeAndValue(accessType,accessValue){
+		
+		   $(".locationLevelTabCls").attr("accessType",accessType);
+		   $(".locationLevelTabCls").attr("accessValue",accessValue);
+		   $(".districtLevelCls").attr("accessType",accessType);
+		   $(".districtLevelCls").attr("accessValue",accessValue);
+		   $(".resultTypeTabCls").attr("accessType",accessType);
+		   $(".resultTypeTabCls").attr("accessValue",accessValue);
+		   $("#daterangePickerId").attr("accessType",accessType);
+		   $("#daterangePickerId").attr("accessValue",accessValue);
+	}
 });
 </script>
 </body>
-
 </html>
