@@ -92,9 +92,8 @@ public class RwsMinWorkscompViewDAO extends GenericDaoHibernate<RwsMinWorkscompV
 	@Override
 	public List<Object[]> getOnclickWorkDetails(InputVO inputVO) {
 		
-		StringBuilder queryStr= new StringBuilder();
-		queryStr.append("select model.dCode,model.dName,constituencyModel.constituencyCode, constituencyModel.contituencyName,model.mCode,model.mName, model.panchCode, model.panchName," +
-				"  compModel.workId,compModel.workName,compModel.dateOfCompletion, compModel.dateOfComm,compModel.sanctionAmount," +
+		StringBuilder queryStr= new StringBuilder();queryStr.append("select model.dCode,model.dName,constituencyModel.constituencyCode, constituencyModel.contituencyName,model.mCode,model.mName, model.panchCode, model.panchName," +
+				"  compModel.workId,compModel.workName,adminModel.groundingDate,compModel.dateOfCompletion, compModel.dateOfComm,compModel.sanctionAmount," +
 				" adminModel.typeOfAssestName from RwsMinHabView model, " +
 				" RwsMinConstituencyView constituencyModel, RwsMinWorkscompView compModel, RwsMinWorksAdminHabsView adminHabModel, RwsMinWorksAdminView adminModel  where " +
 				" model.panchCode = adminHabModel.habCode and adminHabModel.workId= compModel.workId and "+
@@ -108,9 +107,6 @@ public class RwsMinWorkscompViewDAO extends GenericDaoHibernate<RwsMinWorkscompV
 				queryStr.append(" and constituencyModel.constituencyCode=:conCode");
 		}
 		
-		if(inputVO.getAssetSubType() != null && !inputVO.getAssetSubType().trim().isEmpty()){
-			queryStr.append(" and adminModel.typeOfAssestName = :assetSubType ");
-		}
 		if(inputVO.getDistrictValue()!=null && inputVO.getDistrictValue().trim().length()>0){
 			queryStr.append(" and model.dCode=:dCode ");
 		} 
@@ -127,7 +123,7 @@ public class RwsMinWorkscompViewDAO extends GenericDaoHibernate<RwsMinWorkscompV
 		}
 		
 		queryStr.append(" group by  model.dCode,model.dName,constituencyModel.constituencyCode, constituencyModel.contituencyName,model.mCode,model.mName, model.panchCode, model.panchName," +
-				"  compModel.workId,compModel.workName,compModel.dateOfCompletion, compModel.dateOfComm,compModel.sanctionAmount,adminModel.typeOfAssestName");
+				"  compModel.workId,compModel.workName,adminModel.groundingDate,compModel.dateOfCompletion, compModel.dateOfComm,compModel.sanctionAmount,adminModel.typeOfAssestName");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
@@ -137,10 +133,6 @@ public class RwsMinWorkscompViewDAO extends GenericDaoHibernate<RwsMinWorkscompV
 			query.setParameter("dCode",inputVO.getFilterValue());
 		}else if(inputVO.getFilterValue()!=null && inputVO.getFilterType().equalsIgnoreCase(IConstants.CONSTITUENCY) && inputVO.getFilterValue().trim().length()>0){
 			query.setParameter("conCode",inputVO.getFilterValue());
-		}
-		
-		if(inputVO.getAssetSubType() != null && !inputVO.getAssetSubType().trim().isEmpty()){
-			query.setParameter("assetSubType", inputVO.getAssetSubType());
 		}
 		
 		if(inputVO.getFromDate() != null && inputVO.getToDate()!=null){

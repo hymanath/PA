@@ -24,7 +24,7 @@ public class HabitationDetailsVO {
 	private String completionDate;
 	private String commssionedDate;
 	private String targetDate;
-	
+	private String groundingDate;
 	private String assestCode;
 	private String assestName;
 	private String assestCost;
@@ -185,6 +185,12 @@ public class HabitationDetailsVO {
 	}
 	public void setSourceCount(Long sourceCount) {
 		this.sourceCount = sourceCount;
+	}
+	public String getGroundingDate() {
+		return groundingDate;
+	}
+	public void setGroundingDate(String groundingDate) {
+		this.groundingDate = groundingDate;
 	}
 	
 	
