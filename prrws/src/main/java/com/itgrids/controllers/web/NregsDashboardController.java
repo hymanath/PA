@@ -292,4 +292,27 @@ public class NregsDashboardController {
 		}
 		return levlWiseVOList;
 	}
+	
+	@PostMapping("/getNregaParliamentDataFrpayments")
+	public @ResponseBody List<NregaPaymentsVO> getNregaParliamentDataFrpayments(@RequestBody InputVO vo){
+		List<NregaPaymentsVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaParliamentDataFrpayments(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaParliamentDataFrpayments - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	@PostMapping("/getNregaPaymentsAbsAndOverview")
+	public @ResponseBody NregaPaymentsVO getNregaPaymentsAbsAndOverview(@RequestBody InputVO vo){
+		NregaPaymentsVO returnVO = null;
+		try {
+			returnVO = nregsTcsService.getNregaPaymentsAbsAndOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaPaymentsAbsAndOverview - NREGSController controller", e);
+		}
+		return returnVO;
+	}
 }

@@ -3449,3 +3449,57 @@ $(document).on("click","#selectedName",function(){
 	$(".arrowIconChanged").parent().find('i.fa').removeClass("fa-chevron-down");
 	$(".arrowIconChanged").parent().find('i.fa').addClass("fa-chevron-up");
 });
+//getNregaParliamentDataFrPayments();
+/* function getNregaParliamentDataFrPayments()
+{
+	//$("#"+divIdd).html(spinner);
+	
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: "state",
+		divType : "Payments",
+		locationId : "-1",
+		sublocaType : "constituency"
+	}
+	$.ajax({
+		url: 'getNregaParliamentDataFrpayments',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+		}
+	});
+} */
+//getNregaPaymentsAbsAndOverview();
+/* function getNregaPaymentsAbsAndOverview()
+{
+	//$("#"+divIdd).html(spinner);
+	
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: "state",
+		divType : "Payments",
+		locationId : "-1",
+		sublocaType : "state"
+	}
+	$.ajax({
+		url: 'getNregaPaymentsAbsAndOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+		}
+	});
+} */

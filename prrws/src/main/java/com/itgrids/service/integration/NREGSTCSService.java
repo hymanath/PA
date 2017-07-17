@@ -318,7 +318,8 @@ public class NREGSTCSService implements INREGSTCSService{
  	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Horticulture") ||
  	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avenue") ||
  	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries") ||
- 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance")){
+ 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance") ||
+ 	    					(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs") && (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")))){
 	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
 	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
 	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
@@ -2377,7 +2378,7 @@ public class NREGSTCSService implements INREGSTCSService{
 							if(vo != null){
 								finalVO.setTarget(vo.getTarget()+finalVO.getTarget());
 								finalVO.setGrounded(String.valueOf(Long.valueOf(vo.getGrounded())+Long.valueOf(finalVO.getGrounded())));
-								finalVO.setNotGrounded(String.valueOf(Long.valueOf(vo.getNotGrounded())+Double.valueOf(finalVO.getNotGrounded())));
+								finalVO.setNotGrounded(String.valueOf(Long.valueOf(vo.getNotGrounded())+Long.valueOf(finalVO.getNotGrounded())));
 								finalVO.setInProgress(vo.getInProgress()+finalVO.getInProgress());
 								finalVO.setCompleted(vo.getCompleted()+finalVO.getCompleted());
 							}
@@ -3000,4 +3001,317 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return returnVal;
 	}
+	/*
+	 * Date : 15/07/2017
+	 * Author :Nandhini
+	 * @description : getNregaParliamentDataFrpayments
+	 */
+	public List<NregaPaymentsVO> getNregaParliamentDataFrpayments(InputVO inputVO){
+		List<NregaPaymentsVO> finalVOList = new ArrayList<NregaPaymentsVO>(0);
+		try {
+			String webServiceUrl = null;
+			Map<Long,List<String>> consParlMap = new HashMap<Long,List<String>>(0);
+			List<Long> parlIds = new ArrayList<Long>(0);
+			Map<Long,String> parlmentMap = new HashMap<Long,String>(0);
+			List<Long> constuIds = new ArrayList<Long>(0);
+			List<NregaPaymentsVO> consList = new ArrayList<NregaPaymentsVO>(0);
+			
+			String str = null;
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Payments"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PaymentsDataNewServices/PaymentsDataNew";
+			
+			 str = convertingInputVOToString(inputVO);
+			 
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+	       
+			if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+		 	    	if(output != null && !output.isEmpty()){
+		 	    		JSONArray finalArray = new JSONArray(output);
+		 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    				for(int i=0;i<finalArray.length();i++){
+		 	    					NregaPaymentsVO nregaPaymentsVO = new NregaPaymentsVO();
+		 	    					JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    					nregaPaymentsVO.setId(jObj.getString("UNIQUEID"));
+		 	    					nregaPaymentsVO.setDistrictName(jObj.getString("DISTRICT"));
+		 	    					nregaPaymentsVO.setConstName(jObj.getString("CONSTITUENCY"));
+		 	    					nregaPaymentsVO.setType(jObj.getString("TYPE"));
+		 	    					nregaPaymentsVO.setGeneratedQuantity(jObj.getString("T_WS_CNT"));
+		 	    					nregaPaymentsVO.setGeneratedAmount(jObj.getString("T_WS_AMT"));
+		 	    					nregaPaymentsVO.setGeneratedPendingQuantity(jObj.getString("FNG_WS_CNT"));
+		 	    					nregaPaymentsVO.setGeneratedPendingAmount(jObj.getString("FNG_WS_AMT"));
+		 	    					nregaPaymentsVO.setUploadQuantity(jObj.getString("FG_WS_CNT"));
+		 	    					nregaPaymentsVO.setUploadAmount(jObj.getString("FG_WS_AMT"));
+		 	    					nregaPaymentsVO.setUploadPendingQunatity(jObj.getString("FNU_WS_CNT"));
+		 	    					nregaPaymentsVO.setUploadPendingAmount(jObj.getString("FNU_WS_AMT"));
+		 	    					nregaPaymentsVO.setSentToBankQuantity(jObj.getString("FU_WS_CNT"));
+		 	    					nregaPaymentsVO.setSentToBankAmount(jObj.getString("FU_WS_AMT"));
+		 	    					nregaPaymentsVO.setSentToBankPendingQuantity(jObj.getString("FNS_WS_CNT"));
+		 	    					nregaPaymentsVO.setSentToBankPendingAmount(jObj.getString("FNS_WS_AMT"));
+		 	    					nregaPaymentsVO.setFailedTransactionQuantity(jObj.getString("FR_WS_CNT"));
+		 	    					nregaPaymentsVO.setFailedTransactionAmount(jObj.getString("FR_WS_AMT"));
+		 	    					nregaPaymentsVO.setFailedTransactionPendingQuantity(jObj.getString("FRP_WS_CNT"));
+		 	    					nregaPaymentsVO.setFailedTransactionPendingAmount(jObj.getString("FRP_WS_AMT"));
+			 	    					 	    				
+			 	    				consList.add(nregaPaymentsVO);	 
+			 	    			}
+		 	    			}
+			        List<Object[]> constParlList = parliamentAssemblyDAO.getConsParlimentIds();
+					if(constParlList != null && constParlList.size() > 0l){
+						for (Object[] objects : constParlList) {
+							Long parlmentId = commonMethodsUtilService.getLongValueForObject(objects[1]);
+							parlIds.add(parlmentId);
+							List<String> constIdsList = consParlMap.get(parlmentId);
+							if(constIdsList == null){
+								constIdsList = new ArrayList<String>(0);
+								constIdsList.add(commonMethodsUtilService.getStringValueForObject(objects[0]));
+								consParlMap.put(parlmentId,constIdsList);
+							}else{
+								constIdsList.add(commonMethodsUtilService.getStringValueForObject(objects[0]));
+							}
+						}
+					}
+				//Getting parlId,parlmentName
+				List<Object[]> parlList = constituencyDAO.getParlmentNames(parlIds);
+				if(commonMethodsUtilService.isListOrSetValid(parlList)){
+					for (Object[] objects : parlList) {
+						parlmentMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), commonMethodsUtilService.getStringValueForObject(objects[1]));
+					}
+				}
+			
+			List<String> constIds = new ArrayList<String>();
+			Long parlmentId = 0l;
+			if(commonMethodsUtilService.isMapValid(consParlMap)){
+			for(Entry<Long,List<String>> param : consParlMap.entrySet()){
+				 parlmentId = param.getKey();
+				 constIds  = param.getValue();
+				 String[] typeArr = {"w","M","Sub Total"};
+				 for (String string : typeArr) {
+					 NregaPaymentsVO paymentParlVO = new NregaPaymentsVO();
+					 if(commonMethodsUtilService.isListOrSetValid(constIds)){
+						 for (String constId : constIds) {
+						 NregaPaymentsVO vo = getMatchedVOList(consList,constId,string);
+						 if(vo != null){
+								paymentParlVO.setType(vo.getType());
+								paymentParlVO.setGeneratedQuantity(String.valueOf(Long.valueOf(vo.getGeneratedQuantity())+Long.valueOf(paymentParlVO.getGeneratedQuantity())));
+								paymentParlVO.setGeneratedAmount(String.valueOf(Long.valueOf(vo.getGeneratedAmount())+Long.valueOf(paymentParlVO.getGeneratedAmount())));
+								paymentParlVO.setGeneratedPendingQuantity(String.valueOf(Long.valueOf(vo.getGeneratedPendingQuantity())+Long.valueOf(paymentParlVO.getGeneratedPendingQuantity())));
+								paymentParlVO.setGeneratedPendingAmount(String.valueOf(Long.valueOf(vo.getGeneratedPendingAmount())+Long.valueOf(paymentParlVO.getGeneratedPendingAmount())));
+								paymentParlVO.setUploadQuantity(String.valueOf(Long.valueOf(vo.getUploadQuantity())+Long.valueOf(paymentParlVO.getUploadPendingQunatity())));
+								paymentParlVO.setUploadAmount(String.valueOf(Long.valueOf(vo.getUploadAmount())+Long.valueOf(paymentParlVO.getUploadAmount())));
+								paymentParlVO.setUploadPendingQunatity(String.valueOf(Long.valueOf(vo.getUploadPendingQunatity())+Long.valueOf(paymentParlVO.getUploadPendingQunatity())));
+								paymentParlVO.setUploadPendingAmount(String.valueOf(Long.valueOf(vo.getUploadPendingAmount())+Long.valueOf(paymentParlVO.getUploadPendingAmount())));
+								paymentParlVO.setSentToBankQuantity(String.valueOf(Long.valueOf(vo.getSentToBankQuantity())+Long.valueOf(paymentParlVO.getSentToBankQuantity())));
+								paymentParlVO.setSentToBankAmount(String.valueOf(Long.valueOf(vo.getSentToBankAmount())+Long.valueOf(paymentParlVO.getSentToBankAmount())));
+								paymentParlVO.setSentToBankPendingQuantity(String.valueOf(Long.valueOf(vo.getSentToBankPendingQuantity())+Long.valueOf(paymentParlVO.getSentToBankPendingQuantity())));
+								paymentParlVO.setSentToBankPendingAmount(String.valueOf(Long.valueOf(vo.getSentToBankPendingAmount())+Long.valueOf(paymentParlVO.getSentToBankPendingAmount())));
+								paymentParlVO.setFailedTransactionQuantity(String.valueOf(Long.valueOf(vo.getFailedTransactionQuantity())+Long.valueOf(paymentParlVO.getFailedTransactionQuantity())));
+								paymentParlVO.setFailedTransactionAmount(String.valueOf(Long.valueOf(vo.getFailedTransactionAmount())+Long.valueOf(paymentParlVO.getFailedTransactionAmount())));
+								paymentParlVO.setFailedTransactionPendingQuantity(String.valueOf(Long.valueOf(vo.getFailedTransactionPendingQuantity())+Long.valueOf(paymentParlVO.getFailedTransactionPendingQuantity())));
+								paymentParlVO.setFailedTransactionPendingAmount(String.valueOf(Long.valueOf(vo.getFailedTransactionPendingAmount())+Long.valueOf(paymentParlVO.getFailedTransactionPendingAmount())));
+								
+							}
+						 }
+					 }
+					 paymentParlVO.setParliamentId(parlmentId);
+					paymentParlVO.setParliamentName(parlmentMap.get(parlmentId));
+					finalVOList.add(paymentParlVO);
+				 	}
+				 }
+				}
+	 	    	
+		 	 }
+	 	   }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaParliamentDataFrpayments - NREGSTCSService service", e);
+		}
+		
+		return finalVOList;
+	}
+	/*
+	 * Date : 14/07/2017
+	 * Author :Nandhini
+	 * @description : getMatchedVOList
+	 */
+	public NregaPaymentsVO getMatchedVOList(List<NregaPaymentsVO> list,String constId,String type){
+		try{
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (NregaPaymentsVO nregaPaymentsVO : list) {
+					if(nregaPaymentsVO.getId().equals(constId) && nregaPaymentsVO.getType().trim().equalsIgnoreCase(type)){
+						return nregaPaymentsVO;
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getMatchedVOList - NREGSTCSService service", e);
+		}
+		return null;
+	}
+	/*
+	 * Date : 15/07/2017
+	 * Author :Nandhini
+	 * @description : getNREGSProjectsAbstractNew
+	 
+	public List<NregsProjectsVO> getNREGSProjectsAbstractNewFrConstituency(InputVO inputVO){
+		List<NregsProjectsVO> voList = new ArrayList<NregsProjectsVO>(0);
+		try {
+			String projectType = null;
+			String constituencyId = inputVO.getLocationIdStr();
+			
+			inputVO.setLocationType("district");
+			inputVO.setLocationId(inputVO.getDeptId());
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	  if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Grounds"))
+	 	    		  inputVO.setType("Burial Ground");
+	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi Buildings"))
+	 	    		  inputVO.setType("Anganwadi");
+	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GP Buildings"))
+	 	    		  inputVO.setType("Gram Panchayat Buildings");
+	 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Silk Worms"))
+	 	    		  inputVO.setType("Silk worm");
+	 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Cattle Drinking Water Troughs"))
+	 	    		  inputVO.setType("Cattle drinking water trough");
+	 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Raising of Perinnial Fodders"))
+		 	    	  inputVO.setType("Raising of Perinnial Fodder");
+	 	    	  
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsProjectsVO vo = new NregsProjectsVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				if(inputVO.getLocationType().trim().equalsIgnoreCase("district"))
+	 	    					projectType = jObj.getString("CAT_NAME||'_DISTRICT'");
+	 	    				else if(inputVO.getLocationType().trim().equalsIgnoreCase("state"))
+	 	    					projectType = jObj.getString("CAT_NAME");
+	 	    				
+	 	    				String[]  projectTypeArr = projectType.split("_");
+	 	    				if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase(projectTypeArr[0])){
+	 	    					if(inputVO.getLocationType().trim().equalsIgnoreCase("district"))
+	 	    						vo.setParameter(jObj.getString("CAT_NAME||'_DISTRICT'"));
+	 	    					else if(inputVO.getLocationType().trim().equalsIgnoreCase("state"))
+	 	    						vo.setParameter(jObj.getString("CAT_NAME"));
+	 	    					
+	 	    					if(inputVO.getLocationType().trim().equalsIgnoreCase("district"))
+	 	    						vo.setType(projectTypeArr[1]);
+	 	    					else
+	 	    						vo.setType("STATE");
+	 	    					
+	 	    					vo.setTarget(jObj.getString("TARGET"));
+		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
+		 	    				vo.setPercentage(jObj.getString("PERC"));
+		 	    				voList.add(vo);
+	 	    				}
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    	 
+	 	     }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSProjectsAbstractNew - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}*/
+	
+	/*
+	 * Date : 17/07/2017
+	 * Author :Nandhini
+	 * @description : getNregaPaymentsAbsAndOverview
+	 */
+	public NregaPaymentsVO getNregaPaymentsAbsAndOverview(InputVO inputVO){
+		NregaPaymentsVO returnVO = new NregaPaymentsVO();
+		try {
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			
+			String webServiceUrl = null;
+			
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Payments"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PaywgpmatExpenditureNew/PaywgpmatExpOverviewNew";
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+    				JSONObject jObj = new JSONObject(output);
+		 	    	 returnVO.setTotalPayments(jObj.getString("TOTAL_PAYMENTS"));
+		 	    	 returnVO.setTotalAmount(jObj.getString("TOTAL_AMOUNT"));
+		 	    	//Total Wages Spliting
+		 	    	 returnVO.setTotalWage(jObj.getString("TOTAL_WAGE").split(" ")[0]);
+		 	    	 //Total Material Spliting
+		 	    	 returnVO.setTotalMaterial(jObj.getString("TOTAL_MATERIAL").split(" ")[0]);
+		 	    	//Completed Wage Spliting
+		 	    	 returnVO.setCompletedWage(jObj.getString("COMPLETED_WAGE").split(" ")[0]);
+		 	    	 returnVO.setCompletedWageAmount(convertRupeesIntoCrores(jObj.getString("COMPLETED_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
+		 	    	//Completed Material Spliting
+		 	    	 returnVO.setCompletedMaterial(jObj.getString("COMPLETED_MATERIAL").split(" ")[0]);
+		 	    	 returnVO.setCompletedMaterialAmount(convertRupeesIntoCrores(jObj.getString("COMPLETED_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
+		 	    	//Pending Wage Spliting
+		 	    	 returnVO.setPendingWage(jObj.getString("PENDING_WAGE").split(" ")[0]);
+		 	    	 returnVO.setPendingWageAmount(convertRupeesIntoCrores(jObj.getString("PENDING_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
+		 	    	//Pending Material Spliting
+		 	    	 returnVO.setPendingMaterial(jObj.getString("PENDING_MATERIAL").split(" ")[0]);
+		 	    	 returnVO.setPendingMaterialAmount(convertRupeesIntoCrores(jObj.getString("PENDING_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
+		 	    	//Failed Wage Spliting
+		 	    	 returnVO.setFailedWage(jObj.getString("FAILED_WAGE").split(" ")[0]);
+		 	    	 returnVO.setFailedWageAmount(convertRupeesIntoCrores(jObj.getString("FAILED_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
+		 	    	//Failed Material Spliting
+		 	    	 returnVO.setFailedMaterial(jObj.getString("FAILED_MATERIAL").split(" ")[0]);
+		 	    	 returnVO.setFailedMaterialAmount(convertRupeesIntoCrores(jObj.getString("FAILED_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
+		 	    	//Generated Wage Spliting
+		 	    	 returnVO.setGeneratedWage(jObj.getString("GENERATED_WAGE").split(" ")[0]);
+		 	    	 returnVO.setGeneratedWageAmount(convertRupeesIntoCrores(jObj.getString("GENERATED_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
+		 	    	//Generated Material Spliting
+		 	    	 returnVO.setGeneratedMaterial(jObj.getString("GENERATED_MATERIAL").split(" ")[0]);
+		 	    	 returnVO.setGeneratedMaterialAmount(convertRupeesIntoCrores(jObj.getString("GENERATED_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
+		 	    	 returnVO.setTotalGenerates(String.valueOf(Long.valueOf(returnVO.getGeneratedWage())+Long.valueOf(returnVO.getGeneratedMaterial())));
+		 	    	//Uploaded Wage Spliting
+		 	    	 returnVO.setUploadWage(jObj.getString("UPLOADED_WAGE").split(" ")[0]);
+		 	    	 returnVO.setUploadedWageAmount(convertRupeesIntoCrores(jObj.getString("UPLOADED_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
+		 	    	//Uploaded Material Spliting
+		 	    	 returnVO.setUploadMaterial(jObj.getString("UPLOADED_MATERIAL").split(" ")[0]);
+		 	    	 returnVO.setUploadedMaterialAmount(convertRupeesIntoCrores(jObj.getString("UPLOADED_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
+		 	    	 returnVO.setTotalUploads(String.valueOf(Long.valueOf(returnVO.getUploadWage())+Long.valueOf(returnVO.getUploadMaterial())));
+		 	    	//SentBank Wage Spliting
+		 	    	 returnVO.setSentBankWage(jObj.getString("SENTBANK_WAGE").split(" ")[0]);
+		 	    	 returnVO.setSentBankWageAmount(convertRupeesIntoCrores(jObj.getString("SENTBANK_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
+		 	    	//SentBank Material Spliting
+		 	    	 returnVO.setSentBankMaterial(jObj.getString("SENTBANK_MATERIAL").split(" ")[0]);
+		 	    	 returnVO.setSentBankMaterialAmount(convertRupeesIntoCrores(jObj.getString("SENTBANK_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
+		 	    	 returnVO.setTotalSentBankS(String.valueOf(Long.valueOf(returnVO.getSentBankWage())+Long.valueOf(returnVO.getSentBankMaterial())));
+		 	    	 returnVO.setTotalPendings(String.valueOf(Long.valueOf(returnVO.getPendingWage())+Long.valueOf(returnVO.getPendingMaterial())));
+		 	    	 returnVO.setTotalGeneratesAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(returnVO.getGeneratedWageAmount())+Long.valueOf(returnVO.getGeneratedMaterialAmount()))));
+		 	    	 returnVO.setTotalUploadsAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(returnVO.getUploadedWageAmount())+Long.valueOf(returnVO.getUploadedMaterialAmount()))));
+		 	    	returnVO.setTotalSentBankAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(returnVO.getSentBankWageAmount())+Long.valueOf(returnVO.getSentBankMaterialAmount()))));
+		 	    	}
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaPaymentsAbsAndOverview - NREGSTCSService service", e);
+		}
+		
+		return returnVO;
+	}
+	
 }

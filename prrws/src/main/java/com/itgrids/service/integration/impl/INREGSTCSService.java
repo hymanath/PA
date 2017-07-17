@@ -43,4 +43,6 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getNregaPanchatVsExpData(InputVO inputVO);
 	public List<NregsDataVO> getNregaLevelsWiseDataForFAPerformance(InputVO inputVO);
 	public List<NregaPaymentsVO> getNregaLevelsWiseDataForNewFTOPayments(InputVO inputVO);
+	public List<NregaPaymentsVO> getNregaParliamentDataFrpayments(InputVO inputVO);
+	public NregaPaymentsVO getNregaPaymentsAbsAndOverview(InputVO inputVO);
 }
