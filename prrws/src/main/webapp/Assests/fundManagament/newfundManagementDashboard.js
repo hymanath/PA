@@ -3405,6 +3405,11 @@ $(document).on('click','.closeShowPdfCls',function(){
 		$("#selectedName").attr("attr_id",globalLocationId)
 		$("#selectedName").attr("attr_levelid",globalLevelId)
 		
+		if(globalLevelId == 0 || globalLevelId == 1){
+			$(".parliamentCls").show();
+		}else{
+			$(".parliamentCls").hide();
+		}
 		if(globalLocationLevelTypeId == 0){
 			$(".villageBlock").show();
 			$(".constituencyBlock").show();
