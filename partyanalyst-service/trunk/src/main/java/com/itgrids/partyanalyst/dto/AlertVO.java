@@ -103,8 +103,8 @@ public class AlertVO {
 	private int endIndex;
 	private String type;
 	
-	private Long satisfiedCount;
-	private Long unSatisfiedCount;
+	private Long satisfiedCount=0l;
+	private Long unSatisfiedCount=0l;
 	private Long locationCnt=0l;
 	private Long statusCount=0l;
     
