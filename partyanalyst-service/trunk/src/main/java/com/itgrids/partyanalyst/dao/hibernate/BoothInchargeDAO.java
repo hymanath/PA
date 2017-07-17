@@ -366,7 +366,9 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
          
 		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
 
-		   if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
+			if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.STATE)){
+				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.state.stateId =:filterValue ");
+			}else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
 				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.district.districtId =:filterValue ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)) {
 				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.parliamentConstituency.constituencyId =:filterValue ");
