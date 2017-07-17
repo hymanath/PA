@@ -121,15 +121,22 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 					habitationDetailsVO.setWorkId(commonMethodsUtilService.getStringValueForObject(param[8]));
 					habitationDetailsVO.setWorkName(commonMethodsUtilService.getStringValueForObject(param[9]));
 					if(inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_COMPLETION)){
-						habitationDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[10].toString()));
+						habitationDetailsVO.setGroundingDate(commonMethodsUtilService.getStringValueForObject(param[10].toString()));
+						habitationDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[11].toString()));
+						habitationDetailsVO.setSacntionedAmount(commonMethodsUtilService.getStringValueForObject(param[13]));
+						habitationDetailsVO.setAssestType(commonMethodsUtilService.getStringValueForObject(param[14]));
 					}else if(inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_COMMISSIONED)){
-						habitationDetailsVO.setCommssionedDate(commonMethodsUtilService.getStringValueForObject(param[11].toString()));
+						habitationDetailsVO.setGroundingDate(commonMethodsUtilService.getStringValueForObject(param[10].toString()));
+						habitationDetailsVO.setCommssionedDate(commonMethodsUtilService.getStringValueForObject(param[12].toString()));
+						habitationDetailsVO.setSacntionedAmount(commonMethodsUtilService.getStringValueForObject(param[13]));
+						habitationDetailsVO.setAssestType(commonMethodsUtilService.getStringValueForObject(param[14]));
 					}else if(inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_GROUNDED)){
-						habitationDetailsVO.setCommssionedDate(commonMethodsUtilService.getStringValueForObject(param[10].toString()));
+						habitationDetailsVO.setGroundingDate(commonMethodsUtilService.getStringValueForObject(param[10].toString()));
 						habitationDetailsVO.setTargetDate(commonMethodsUtilService.getStringValueForObject(param[11].toString()));
+						habitationDetailsVO.setSacntionedAmount(commonMethodsUtilService.getStringValueForObject(param[12]));
+						habitationDetailsVO.setAssestType(commonMethodsUtilService.getStringValueForObject(param[13]));
 					}
-					habitationDetailsVO.setSacntionedAmount(commonMethodsUtilService.getStringValueForObject(param[12]));
-					habitationDetailsVO.setAssestType(commonMethodsUtilService.getStringValueForObject(param[13]));
+					
 					habitationDetailsList.add(habitationDetailsVO);
 				}
 			}
