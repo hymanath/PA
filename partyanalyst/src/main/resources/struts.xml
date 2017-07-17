@@ -17229,6 +17229,8 @@
   </action>
   <action name="electionBoothCommitteeAction" class="cadreCommitteeAction" method="getElectionBoothCommitteeDetails">
 	 <result name="success">/jsp/electionBoothCommittee.jsp</result>
+	 <result name="input">/jsp/loginForm.jsp</result>
+	 <result name="error">/jsp/entitlementErrorPage.jsp</result>
   </action>
   <action name="saveElectionBoothCommitteeDetailsAction" class="cadreCommitteeAction" method="saveElectionBoothCommitteeDetails">
 		<result type="json" name="success">
