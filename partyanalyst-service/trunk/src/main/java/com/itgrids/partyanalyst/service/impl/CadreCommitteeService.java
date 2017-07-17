@@ -60,6 +60,7 @@ import com.itgrids.partyanalyst.dao.IActivityTypeDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothInchargeCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeRoleConditionMappingDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeChangeDesignationsDAO;
@@ -129,7 +130,6 @@ import com.itgrids.partyanalyst.dao.impl.IActivityLocationInfoDatesDAO;
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.AddressVO;
-import com.itgrids.partyanalyst.dto.AdminHouseVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
@@ -163,6 +163,7 @@ import com.itgrids.partyanalyst.model.ActivityLocationInfo;
 import com.itgrids.partyanalyst.model.ActivityLocationInfoDates;
 import com.itgrids.partyanalyst.model.ActivityScope;
 import com.itgrids.partyanalyst.model.BoothIncharge;
+import com.itgrids.partyanalyst.model.BoothInchargeCommittee;
 import com.itgrids.partyanalyst.model.BoothInchargeRoleConditionMapping;
 import com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations;
 import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
@@ -205,7 +206,6 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
-import com.rabbitmq.client.ReturnListener;
 
 public class CadreCommitteeService implements ICadreCommitteeService
 {
@@ -303,7 +303,17 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IRequiredAttributeDAO requiredAttributeDAO;
 	private IBoothInchargeDAO boothInchargeDAO;
 	private IBoothInchargeRoleConditionMappingDAO boothInchargeRoleConditionMappingDAO;
+	private IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO;
 	
+	public IBoothInchargeCommitteeDAO getBoothInchargeCommitteeDAO() {
+		return boothInchargeCommitteeDAO;
+	}
+
+	public void setBoothInchargeCommitteeDAO(
+			IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO) {
+		this.boothInchargeCommitteeDAO = boothInchargeCommitteeDAO;
+	}
+
 	public IBoothInchargeRoleConditionMappingDAO getBoothInchargeRoleConditionMappingDAO() {
 		return boothInchargeRoleConditionMappingDAO;
 	}
@@ -22165,8 +22175,13 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			
 			if(boothInchId == null){
 				BoothInchargeRoleConditionMapping boothInchargeRoleConditionMapping = boothInchargeRoleConditionMappingDAO.get(boothInchrgRoleId);
-				boothInchargeRoleConditionMapping.setStartDate(dateUtilService.getCurrentDateAndTime());
-				boothInchargeRoleConditionMappingDAO.save(boothInchargeRoleConditionMapping);
+				if(boothInchargeRoleConditionMapping != null){
+					BoothInchargeCommittee boothInchargeCommittee = boothInchargeCommitteeDAO.get(boothInchargeRoleConditionMapping.getBoothInchargeCommitteeId());
+					if(boothInchargeCommittee != null){
+						boothInchargeCommittee.setStartDate(dateUtilService.getCurrentDateAndTime());
+						boothInchargeCommitteeDAO.save(boothInchargeCommittee);
+					}
+				}
 			}
 			
 			BoothIncharge boothIncharge = boothInchargeDAO.getExistingMember(tdpCadreId,"addOption");
@@ -22274,6 +22289,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					CadreCommitteeVO vo = cadreMap.get(commonMethodsUtilService.getLongValueForObject(Obj[0]));
 						if(vo !=null){
 							 vo.setType("Added Member");
+							 vo.setRoleName(commonMethodsUtilService.getStringValueForObject(Obj[7]));
 							 vo.setBoothNumber(commonMethodsUtilService.getLongValueForObject(Obj[1]));
 							 vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(Obj[2]));
 							 vo.setTehsilId(commonMethodsUtilService.getLongValueForObject(Obj[3]));
