@@ -156,33 +156,6 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 			 Long constId=0l;
 			 String constName="";
 			 
-			 /*if(inputVO.getLocationType().equalsIgnoreCase("district")){
-				 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
-			 }else if(inputVO.getLocationType().equalsIgnoreCase("constituency")){
-				 if(inputVO.getSubFilterId() != null && inputVO.getSubFilterId() >0l){
-					 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&subFilterType="+inputVO.getSubFilterType());
-				 }else{
-					 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType());
-				 }
-				 
-			 }else if(inputVO.getLocationType().equalsIgnoreCase("assembly")){
-				 if(inputVO.getSubFilterId() != null && inputVO.getSubFilterId() >0l){
-					 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&subFilterType="+inputVO.getSubFilterType());
-				 }else{
-					 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType());
-				 }
-				 
-			 }else if(inputVO.getLocationType().equalsIgnoreCase("mandal")){
-				 if(inputVO.getFilterId() != null && inputVO.getFilterId() >0l){
-					 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType());
-				 }else if(inputVO.getSubFilterId() != null && inputVO.getSubFilterId() >0l){
-					 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"&filterId="+inputVO.getFilterId()+"&filterType="+inputVO.getFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&subFilterType="+inputVO.getSubFilterType());
-				 }else{
-					 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
-				 }
-				 	
-			 }*/
-			
 			 WebResource webResource = null;
 
 				if(inputVO.getSubFilterType() != null && !inputVO.getSubFilterType().trim().isEmpty())
