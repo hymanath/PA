@@ -184,7 +184,7 @@ header.eventsheader {
 												<table class="table-condensed">
 													<tr>
 														<td>
-															<div id="donutchart" style="height: 66px;width:100px;"></div>
+															<div id="donutchart"  style="height:200px;width:200px"></div>
 														</td>
 														<td>
 															<h4 class="m_0">TOTAL BATCHES - <span id="totalTrainingBatches" style="font-weight:bold;">0</span></h4>
@@ -406,6 +406,7 @@ header.eventsheader {
         </div>
     </div>
 <!-- feedback count Div-->
+
 </main>
 <footer>
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
@@ -977,6 +978,9 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 						alpha: 30
 					}
 				},
+				 title:{
+					 text:''
+					 },
 				legend: {
 						enabled: true,
 						align: 'right',
@@ -989,8 +993,8 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					},
 				plotOptions: {
 					pie: {
-						innerSize: 50,
-						depth: 10,
+						innerSize: 80,
+						depth: 50,
 						dataLabels: {
 							enabled: false,
 						}
@@ -1144,7 +1148,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					if(innternalFlag){
 						str+='<td>0</td>';
 					}
-					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day1Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].oneDayNIACount+'</a> - NIA</td>';
+					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls" title="To click on invitee Details">'+result[i].day1Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls" title="To click on nonInvitee Details">'+result[i].oneDayNIACount+'</a> - NIA</td>';
 					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day2Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].twoDaysNIACount+'</a> - NIA</td>';
 					
 					if(flag){
@@ -1738,7 +1742,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		for(var i in result){
 			str+='<div class="media scrollDivConstituencycls" style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].cadreId+'>';
 				str+='<span href="#" class="media-left">';
-				str+='<img style="width: 64px; height: 64px;" src="'+result[i].imagePath+'" />';
+				str+='<img style="width: 64px; height: 64px;" src="'+result[i].imageStr+'" />';
 				str+='</span>';
 				str+='<div class="media-body">';
 				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].name+' ; ';				
