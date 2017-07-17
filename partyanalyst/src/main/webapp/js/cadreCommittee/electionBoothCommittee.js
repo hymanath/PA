@@ -584,7 +584,7 @@
 				str+='<li>Gender: '+result[i].gender+'</li>';
 				str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
 				str+='<li>Caste: '+result[i].casteName+'</li>';
-				str+='<li>Voter ID: '+result[i].voterCardNo+'</li>&nbsp;&nbsp;<span class="text-danger remveMbrCls" attr_cadre_id="'+result[i].tdpCadreId+'" attr_location_id="'+locationId+'" style="cursor:pointer;" title="Click here to remove member">x</span>';
+				str+='<li>Voter ID: '+result[i].voterCardNo+'</li>';
 				  if(addressVO != null ){
 						str+='<li>Mandal : '+addressVO.mandalName+'</li>';
 						str+='<li>Panchayat : '+addressVO.panchayatName+'</li>';				
@@ -596,11 +596,11 @@
 					str+='<ul  style="color:#449D44;">';
 					if(result[i].type != null && result[i].type.trim().length > 0){						
 						if(result[i].localElectionBody == null )
-							str+='<li style="font-weight:bold;"> Aleary Incharger for  Booth No - '+result[i].boothNumber+' ,'+result[i].panchayat+' Panchayat , '+result[i].tehsil+' Mandal. </li>';	
+							str+='<li style="font-weight:bold;"> Already '+result[i].roleName+' Position for  Booth No - '+result[i].boothNumber+' ,'+result[i].panchayat+' Panchayat , '+result[i].tehsil+' Mandal. </li>';	
 						else if(result[i].tehsil == null )
-							str+='<li style="font-weight:bold;"> Aleary Incharger for Booth No - '+result[i].boothNumber+' , '+result[i].tehsil+' Muncipality. </li>';	
+							str+='<li style="font-weight:bold;"> Already '+result[i].roleName+' Position  for Booth No - '+result[i].boothNumber+' , '+result[i].tehsil+' Muncipality. </li>';	
 						else 
-							str+='<li style="font-weight:bold;"> Aleary Incharger for Booth No - '+result[i].boothNumber+' ,'+result[i].tehsil+' Mandal/Muncipality. </li>';	
+							str+='<li style="font-weight:bold;"> Already '+result[i].roleName+' Position  for Booth No - '+result[i].boothNumber+' ,'+result[i].tehsil+' Mandal/Muncipality. </li>';	
 					}
 					str+='</ul>';	
 					str+='</div>';
@@ -649,12 +649,12 @@
 		var areaType = $('#areaTypeId').val();
 		var committeeMngtType = $('#committeeMngtType').val();
 		
-		var committeePosition = $('#committeePositionId').val();
-		var committeePositionRoleType = $('#committeePositionId option:selected').attr("attr_role_type");
+		var committeePosition = $('#committeeDesignationId').val();
+		var committeePositionRoleType = $('#committeeDesignationId option:selected').attr("attr_role_type");
 		
 		
 		var existingDesignation = '';
-		var committeePositionStr = $('#committeePositionId option:selected').text().trim();
+		var committeePositionStr = $('#committeeDesignationId option:selected').text().trim();
 		var locationTypeStr= " Mandal " ;
 		if(existingRole != null && existingRole != 0 && existingRole.trim().length>0)
 		{
@@ -1388,7 +1388,7 @@ $(document).on("click",".updateMemberCls",function(){
 			if(result != null && result == "success"){
 				alert("Current Designation Deleted Successfully...");
 				$(".dataLoadingImgCls").hide();
-				getCadreDetailsForBoothBySearchCriteria();
+				gettingBoothInchargeRoleDetails();
 			}
 			else{
 				alert("Sorry,Exception Occured.Please Try Again...");
@@ -1611,7 +1611,8 @@ function getCadreDetailsForBoothBySearchCriteria()
 function saveBoothDetails(tdpCadreId){
 	 var committeeLocationId =$("#committeeLocationId1").val();
 	var boothNo =$("#committeeLocationId1 option:selected").text();
-	var confm = confirm("Are you sure want to add this member as incharge for " +boothNo+ " ");
+	var committeePositionStr = $('#committeeDesignationId option:selected').text().trim();
+	var confm = confirm(" Are you sure want to add this cadre as "+committeePositionStr+" Position for " +boothNo+ " ");
     if (confm == true) {
 
     } else {
@@ -1638,8 +1639,8 @@ function saveBoothDetails(tdpCadreId){
 					 alert("Member added successfully.....")
 					/* $("#errMsgId").html("<span style='color:green;'>Member added successfully.....</span>"); */
 					setTimeout(function(){
-						getCadreDetailsForBoothBySearchCriteria();
-						updateRangeIdsOfBoothIncharge();
+						gePanchayatOrBooth();
+						updateRangeIdsOfBoothIncharge(committeeLocationId);
 					},1200);
 				}else{
 					alert("Member added failed.Please try again..")
@@ -1663,7 +1664,7 @@ $(document).on("click",".remveMbrCls",function(){
 				if(result.resultCode == 0){
 					alert("Member removed successfully.....");
 					setTimeout(function(){
-						getCadreDetailsForBoothBySearchCriteria();
+						//getCadreDetailsForBoothBySearchCriteria();
 					},1200);
 				}else{
 					alert("Member removed failed.Please try again.");
@@ -1681,17 +1682,17 @@ function getBoothUserDetailsbuild(result,locationName){
 				 str +='<thead>';
 					 str +='<tr class="text-center">';
 					 
-						str +='<th>CONSTITUENCY&nbsp;NAME</th>';
+						//str +='<th>CONSTITUENCY&nbsp;NAME</th>';
 						str +='<th>MANDAL/MUNICIPALITY/CORPORATION&nbsp;NAME</th>';
 						str +='<th>PANCHAYAT&nbsp;NAME</th>';
-						str +='<th>VILLAGE&nbsp;COVERED </th>';	
+						//str +='<th>VILLAGE&nbsp;COVERED </th>';	
 						str +='<th>BOOTH&nbsp;NO</th>';						
 						str +='<th>PHOTO</th>';
 						str +='<th>MEMBERSHIP&nbsp;NO</th>';
 						str +='<th>CADRE&nbsp;NAME</th>';
 						str +='<th>MOBILE&nbsp;NO</th>';
 						str +='<th>ROLE&nbsp;NAME</th>';
-						str +='<th>DELETE MEMBER&nbsp;</th>';
+						str +='<th> REMOVE &nbsp;</th>';
 					 						 
 					 str +='</tr>';
 				 str +='</thead>';			 
@@ -1701,10 +1702,10 @@ function getBoothUserDetailsbuild(result,locationName){
 							//alert(membershipNo.length);
 							
 							str +='<tr>';
-								str +='<td>'+result[i].name+'</td>';
+								//str +='<td>'+result[i].name+'</td>';
 								str +='<td>'+result[i].mandalName+'</td>';
 								str +='<td>'+result[i].panchayatName+'</td>';
-								str +='<td>'+result[i].boothName+'</td>';
+								//str +='<td>'+result[i].boothName+'</td>';
 																
 								str +='<td><span title="http://www.mytdp.com/cadre_images/'+result[i].url+'"></span>'+'Booth No - '+result[i].boothNumber+'</td>';
 								str +='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
@@ -1720,7 +1721,7 @@ function getBoothUserDetailsbuild(result,locationName){
 								  str +='<td>'+result[i].roleName+'</td>';
 							    else
 								  str +='<td>  -  </td>';
-								str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' value="DELETE" type="button"></td>';	
+								str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' attr_role="'+result[i].roleName+'" value="DELETE" type="button"></td>';	
 							str +='</tr>';
 							}
 			  str +='</tbody>';
@@ -1743,6 +1744,11 @@ function exportToExcel(tableId)
 }
 
 $(document).on("click","#deleteMembrsBtn",function(){
+	 var roleName = $(this).attr('attr_role');
+	if(!confirm(" Are You sure want to remove this "+roleName+" Position Cadre ?")){
+		return ;
+	}
+	
 	var inchargeId = $(this).attr("attr_incharge_id");
 	var roleMappingId = $(this).attr("attr_roleMapping_id");
 	
@@ -1758,6 +1764,8 @@ $(document).on("click","#deleteMembrsBtn",function(){
 			}).done(function(result){
 				if(result == "delete Successfully"){
 					alert("Member deleted successfully.....");
+					gettingBoothInchargeRoleDetails();
+					getBoothUserDetails();
 				}else{
 					alert("Member deleted failed.Please try again.");
 				}
