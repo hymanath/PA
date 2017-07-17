@@ -75,246 +75,57 @@
 	</script>
   </head>
   <body>
-	<!--<div class="container-fluid">
-		<div class="row" style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-top:12px solid rgba(19,167,81,0.8);border-bottom:12px solid rgba(19,167,81,0.8);display:flex">
-		 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
-				<img src="images/cadreCommitee/committee_logo.png" title="Committee Logo" alt="committee" />
-			</div>
-			<div class="col-md-3  col-xs-3 col-sm-3">
-			<div class="" style="color:white;margin-top: 20px;"><b> Welcome ${sessionScope.UserName} </b></div>
-				<a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top:20px;">
-				Menu <img src="images/menu_icon.png" />
-				</a>
-				<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
-				  <li><a tabindex="-1" href="cadreCommitteeAction.action">Home</a></li>
-				  <li><a tabindex="-1" href="cadreCommitteeSummaryAction.action">Summary Report</a></li>
-				  <li><a tabindex="-1" href="cadreCommitteeRequestAction.action">Request For Positions Increase</a></li>
-				  <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
-				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
-				</ul>
-            </div>
-		</div>-->
+	
 		<div class="container">
-		<div class="row ">
-		<!--<div class="col-md-12 col-xs-12 col-sm-12 "><h4><i class="glyphicon glyphicon-home pull-right redirectHomePage" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Click here to Home Page"  style="cursor:pointer;"></i></h4></div>
-			<div class="row" style="margin-top:30px;">
-				 <div class="container breadcrumb" >
-					   <i>For any Technical Support, please contact : <b> +91-7032818783 / 8499912198</b> , @email: tdpparty.helpdesk@gmail.com </i></p>
-				</div>
-			</div>-->
-			
-	<!--	<h3 class="text-center">${finalStatus} &nbsp;CONSTITUENCY	</h3> -->
-			<!--<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12" >
-				<div class="row" >
-				     
-					<div class="col-md-4 col-md-offset-0 col-sm-4 col-xs-4" >
-						<a class="btn btn-success btn-block arrow_selected" id="basicCommitteeTab" href="javascript:{showAndHideTabs('basicCommitteeDiv');}"> Committee <br>Management<br> <br></a>
+		
+			<input type="hidden" value="1" id="committeeMngtType"/>		
+			<input type="hidden" value="1" id="areaTypeId"/>
+			<div class="row" id="basicCommitteeDiv">
+				<div id="errorMessegeId" style ="color:red;"></div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title text-center">${finalStatus} &nbsp;CONSTITUENCY	</h4> 
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-sm-4" id="mandalMainDivId">
+									<label for="">SELECT MANDAL/MUNCIPALITY/CORPORATION <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
+									<div id="mandalDivId"></div>
+								</div>
+								<!--<div class="col-sm-4" id="committeePanchayatId">
+									<label for="committeeLocationId">SELECT PANCHAYAT <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
+									<select onchange="populateDefaultValue(1);gePanchayatOrBooth1();" class="form-control" id="committeeLocationId" ><option value="0">Select PANCHAYAT</option></select >
+								</div>-->
+								<div class="col-sm-4">
+									<label for="committeeLocationId1">SELECT BOOTH <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
+									<select onchange="populateDefaultValue(1);getBoothInchargeRoles();gettingBoothInchargeRoleDetails();" class="form-control" id="committeeLocationId1" ><option value="0">Select Booth </option></select >
+								</div>								
+								</div>
+								<div class="row">
+									<div class="col-sm-4" style="margin-top:25px;margin-left:325px;">
+										<ul class="list-inline">
+											<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getBoothUserDetails();" value="VIEW" /></li>
+											<li><input type="button" id="addMembrsBtn" class="btn btn-success" style="display:none;" onclick="showSearchDiv();" value="ADD" /></li>
+										</ul>
+										<img id="viewDataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
+									</div>
+								</div>
+								<div class="col-sm-4" id="committeeDesigDivId" style="display:none">
+									<label for="committeeDesigId">SELECT DESIGNATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
+									<select  class="form-control" id="committeeDesignationId">
+										<option value="0">Select Designation</option>
+									</select>
+								</div>
+								<div class="col-sm-12">
+									<div id="boothInchargeRoleDivId" style="display:none;"></div>
+									<div id="locationDivId"></div>
+									<div id="userDetailsId"></div>
+								</div>
+							</div>
 					</div>
-					<div class="col-md-4 col-sm-4 col-xs-4">
-						<a class="btn btn-success btn-block "   id="publicrepresantativeTab" href="javascript:{showAndHideTabs('publicrepresantative');}">Mandal/Municipality/Division <br> 
-								Main Committee <br> Electoral Management</a>
-					</div>
-					<div class="col-md-4 col-sm-4 col-xs-4">
-						<a class="btn btn-success btn-block "  id="mandalaffiliatedTab" href="javascript:{showAndHideTabs('mandalaffiliated');}" >Mandal/Municipality/Division <br> Affiliated   Committee <br>  Electoral Management</a>				
-					</div>
-				</div> 		
-			</div> 	-->	
-		</div> 
-		<input type="hidden" value="1" id="committeeMngtType"/>		
-		<input type="hidden" value="1" id="areaTypeId"/>
-		<div class="row" id="basicCommitteeDiv">
-		<!-- <div class="row m_top20">
-			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
-				<div class="radio pull-right">
-				  <label>
-				    <input type="radio" name="committeeType" onclick="validateSearchType('1');getTdpCommitteeMandalCorporationsByConstituency(1);" checked="true" value="1" id="villageId"> Village / Ward
-				  </label>
-			    </div>
-			</div>
-			<div class="col-md-4 col-sm-6 col-xs-6">
-				<div class="radio">
-				  <label>
-				    <input type="radio" id="mndlLvlCommittSelec" name="committeeType" onclick="validateSearchType('2');getCommitteeLocations();" value="2"/> Mandal / Town / Division 
-				  </label>
-			    </div>
-			</div>
-			<div class="col-md-4 col-sm-6 col-xs-6">
-				<div class="radio">
-				  <label>
-				    <input type="radio" id="mndlLvlCommittSelec" name="committeeType" onclick="validateSearchType('3');getTdpCommitteeMandalCorporationsByConstituency(2);" value="3"/> BoothIncharge 
-				  </label>
-			    </div>
 			</div>
 			
-		</div> -->
-		<div id="errorMessegeId" style ="color:red;"></div>
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h4 class="panel-title text-center">${finalStatus} &nbsp;CONSTITUENCY	</h4> 
-			</div>
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-sm-4" id="mandalMainDivId">
-						<label for="">SELECT MANDAL/MUNCIPALITY/CORPORATION <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
-						<div id="mandalDivId"></div>
-					</div>
-					<!--<div class="col-sm-4" id="committeePanchayatId">
-						<label for="committeeLocationId">SELECT PANCHAYAT <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
-						<select onchange="populateDefaultValue(1);gePanchayatOrBooth1();" class="form-control" id="committeeLocationId" ><option value="0">Select PANCHAYAT</option></select >
-					</div>-->
-					<div class="col-sm-4">
-						<label for="committeeLocationId1">SELECT BOOTH <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
-						<select onchange="populateDefaultValue(1);getBoothInchargeRoles();gettingBoothInchargeRoleDetails();" class="form-control" id="committeeLocationId1" ><option value="0">Select Booth </option></select >
-					</div>
-					<div class="col-sm-4" id="">
-						<label for="committeeDesigId">SELECT DESIGNATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
-						<select  class="form-control" id="committeeDesignationId"><option value="0">Select Designation</option></select>
-					</div>
-					<div class="col-sm-4" id="commitTypeId">
-						<label for="committeeTypeId">COMMITTEE TYPE <span style="color:red">*</span></label>
-						<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1);" >
-							<option value="0">Select Committee Type</option>
-							<option value="3">View All Committee Info</option>
-							<option value="1">Main Committee</option>
-							<option value="2">Affiliated Committee</option>
-						</select >
-						
-						<div id="committeeTypeIdErr"></div>
-					</div>
-					<div class="col-sm-4" style="margin-top:25px;">
-						<ul class="list-inline">
-							<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getBoothUserDetails();" value="VIEW" /></li>
-							<li><input type="button" id="addMembrsBtn" class="btn btn-success" onclick="showSearchDiv();" value="ADD" /></li>
-						</ul>
-						<img id="viewDataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
-					</div>
-					<div id="boothInchargeRoleDivId"></div>
-					<div class="col-sm-12">
-						<div id="locationDivId"></div>
-						<div id="userDetailsId"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--<div id="committeeMainId" class="row">	
-			<div class="col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-12 ">
-				<div class="form-group col-xs-12">
-					<label for="committeeId">AFFILIATED COMMITTEE <span style="color:red">*</span></label>
-					<select class="form-control" onchange="hideMembers();getCommitteCadreMembersInfo(2)" id="afflitCommitteeId"><option>Select Affiliated Committee</option></select >
-					<div id="afflitCommitteeIdErr"></div>
-				 </div>
-			</div>			
-		</div> -->
-		<!--<div class="row m_top20">
-			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 "  >
-				<div class="form-group col-xs-12 pull-right" >
-					<label for="committeeId">AFFILIATED COMMITTEE</label>
-					<select class="form-control" onchange="hideMembers();getCommitteCadreMembersInfo(2)" id="afflitCommitteeId"><option>Select Affiliated Committee</option></select >
-					<div id="afflitCommitteeIdErr"></div>
-				 </div>
-			</div>
-			<!--
-			<div class="col-md-4 col-sm-6 col-xs-6" id="designationDivId">
-				<div class="form-group col-xs-12">
-					<label for="exampleInputEmail1">COMMITTEE DESIGNATION</label>
-					<select  class="form-control" id="committeePositionId"  name="eligibleRoles[0].cadreRoleId"><option value="0">Select Designation </option></select >
-					<div id="committeePositionIdErr"></div>
-				 </div>
-			</div>
-			
-		</div>-->
-		<div class="row">	
-			<div class="col-md-12 col-sm-12 col-xs-12 text-center">
-					
-					
-			</div> 
-			 
-			<!-- <div id ="totStaredNotStartedConstiencyId"></div> -->
-		</div>
 		
-		<div id="printDiv">		
-			<div id="affiliCommitteeAllInfoDivId" class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12"></div>
-			<div id="elctarolInfoDivId" class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12"></div>
-			<div id="printBtnDiv" style="display:none" class="col-md-2 col-md-offset-5 col-sm-4 col-xs-4" >
-				<input type="button" value="Print" class="btn btn-success btn-block" onclick="javascript:CallPrint('printDiv')" />
-			</div>
-		</div>
-		
-		
-		<!-------VIEW BLOCK------>
-		<div class="row" id="committeeDetailsDiv">	
-			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
-				<h4><span id="affComitteeMainTitle"></span></h4>
-				<hr style="margin: 0px;">
-				<ul class="list-inline pull-right ">
-					<li><span style="color:#777;font-weight:bold;">TOTAL </span></li>
-					<li><span style="color:orange;font-weight:bold;">PROPOSED </span></li>
-					<li><span style="color:#449D44;font-weight:bold;">FINALIZED</span></li>
-					<li><span style="color:#F65050;font-weight:bold;">VACANCY</span></li>
-				</ul>
-				
-			</div>			
-			
-			<div class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1 ">
-				<div class="variable-width" id="commitMembrsCountDiv"></div>
-			</div>
-		
-			<div id="committeeMmbrsMainDiv" class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0 text-center"></div>
-		</div>
-		<!-------/VIEW BLOCK END------>
-		<div style="border-top:1px solid #fff;" class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2 text-center m_top20"  id="step1Id">
-			<span class="badge" style="z-index: 2; margin-top: -10px;">STEP-1</span>
-		   
-		  </div>
-  
-		<div id="designationDivId" class="row">	
-			<div class="col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-12 ">
-				<div class="form-group col-xs-12">
-					<label for="exampleInputEmail1">COMMITTEE DESIGNATION</label>
-					<select  class="form-control" id="committeePositionId"  name="eligibleRoles[0].cadreRoleId"><option value="0">Select Designation </option></select >
-					<div id="committeePositionIdErr"></div>
-				 </div>
-			</div>			
-		</div> 
-		
-		<!-------ADD BLOCK------>		
-	</div>		
-		<!-------/ADD BLOCK END------>
-		
-		<!-- start public Representatives Block  -->
-		
-		<div class="row" id="publicrepresantative" >	
-			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1  m_top20 text-center">
-				<h3 class="text-success text-uppercase" >Process to Add <br> public representatives as Mandal/Municipality/Division Electoral</h3>
-				
-				<hr style="margin: 0px;">
-			</div>
-
-		</div>	
-		<!-- end public Representatives Block  -->
-		
-		<!-- start mandal committee Block  -->
-		
-		<div class="container-fluid" id="mandalaffiliated">
-				
-		<div class="row m_top20">
-			<div class="com-md-8 col-sm-12 col-xs-12 text-center">
-				<h3 class="text-success text-uppercase">Process to add Cadre as Mandal/Municipality/Division Affiliated Electoral</h3>
-			</div>
-		</div>
-		<div id="nonafiliatedCommitteeDivId" class="row">	
-			<div class="col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-12 ">
-				<div class="form-group col-xs-12">
-					<label for="committeeId">AFFILIATED COMMITTEE <span style="color:red">*</span></label>
-						<s:select theme="simple" cssClass="form-control selectBoxWidth span12 input-block-level editClass" id="nonafiliatedCommitteeId" list="cadreRolesVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Affiliated Committee  " style="width:100%;height:35px;" />	
-					<div id="nonAfflitCommitteeIdErr"></div>
-				 </div>
-			</div>			
-		</div> 
-
-	</div>
-	
-	
   
 	<div class="row" id="searchcadrenewDiv">	
 	
@@ -441,7 +252,7 @@
 		<!-- end mandal committee Block  -->
 		
 		
-	</div>
+	</div>	
 	<!--<footer class="text-center m_top20">
 			&copy; 2015 Telugu Desam Party
 	</footer>-->
@@ -510,6 +321,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 				}
 				$('#cadreSearchType').val('membershipId');
 				$("#searchcadrenewDiv").hide();
+				$('#searchBy').val('');
 				if(roleId == null || roleId ==0)
 				{
 					$('#committeePositionIdErr').html('Please Select Designation.');
@@ -804,6 +616,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 		$("#committeeTypeIdErr").html("");
 		$("#afflitCommitteeIdErr").html("");
 		$("#searchcadrenewDiv").hide();
+		$('#searchBy').val('');
 		var locId = $("#committeeLocationId").val();
 		var locVal = $("#afflitCommitteeId").val();
 		if(locId == null || locId == 0){
@@ -823,6 +636,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 		 }
 		 $("#committeeDetailsDiv").show();
 		 $("#searchcadrenewDiv").hide();
+		 $('#searchBy').val('');
 		 $("#commitMembrsCountDiv").html('<center><img src="images/icons/loading.gif"  /></center>');
 		 $("#committeeMmbrsMainDiv").html("");
 		 var reqCommitteeType = "main";
@@ -984,6 +798,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 		$("#viewMembrsBtn").show();
 		 $("#cadreDetailsDiv,#step3Id,#searchcadrenewDiv,#designationDivId,#step1Id,#committeeMainId").hide();
 		 $("#cadreDetailsDiv").html("");
+		 $('#searchBy').val('');
 		 $("#affiliCommitteeAllInfoDivId").html("");
 		  $("#viewMembrsBtn").removeAttr("disabled");
 		  
@@ -1034,6 +849,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 		{
 			$("#designationDivId,#step1Id,#step2Id,#step3Id").hide();
 			$("#searchcadrenewDiv").hide();
+			$('#searchBy').val('');
 		}
 		
 		 $("#committeeMmbrsMainDiv").html("");
@@ -1128,6 +944,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 		else{
 			$("#committeeDetailsDiv").hide();
 			$("#searchcadrenewDiv").hide();
+			$('#searchBy').val('');
 			$("#committeePositionId").val(0);
 		}
 		 
@@ -1594,7 +1411,7 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 	//	var dates = date.split("-");
 		//fromDate = dates[0];
 		//toDate = dates[1];
-	var r=confirm("Are You Sure To Remove ?");
+	var r=confirm("Are You sure want to Remove ?");
 		if(r)
 		{
 	var jsObj = 
@@ -1713,6 +1530,11 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 	}
 function gePanchayatOrBooth(){
 	var num =$("#panchayatWardByMandal").val();
+	$('#userDetailsId,#locationDivId,#cadreDetailsDiv').html('');
+	$('#addMembrsBtn,#boothInchargeRoleDivId,#committeeDesigDivId,#searchcadrenewDiv,#cadreDetailsDiv').hide();
+	$('#searchBy').val('');
+	 $("#committeeLocationId1  option").remove();
+	 $("#committeeLocationId1").append('<option value="0">Select Booth</option>');
 	var res = num.charAt(0);
 	if(res == 1){
 		getBoothsByMandal($('#panchayatWardByMandal').val());	
@@ -1745,35 +1567,46 @@ function getBoothsByMandal(mandalId){
 			}
 		});
 	}
+
+$(document).on("click","#committeeDesignationId",function(){
+	var id =$(this).val();
+	$('#searchcadrenewDiv').hide();
+	$('#searchBy').val('');
+	if(id>0){
+		$('#searchcadrenewDiv').show();	
+	}
+});
+
 function showSearchDiv(){
 	var errMsg ="";
+	$('#committeeDesignationId').val(0);
 	$("#userDetailsId").html("");
-	$("#searchBy").html('');
-	var mandalId = $("#panchayatWardByMandal").val();
-	var desigId = $("#committeeDesignationId").val();  
+	$("#searchBy,#locationDivId").html('');
+	$('#searchcadrenewDiv,#boothInchargeRoleDivId').hide();
+	$('#searchBy').val('');
+	var mandalId = $("#panchayatWardByMandal").val();	
 	var boothId = $("#committeeLocationId1").val();
-	
 	if(mandalId == 0 || mandalId.length==0){
 		errMsg=errMsg+"Please select atleast one Mandal/Muncipality/Corporation.<br/>";
 	} 
-	if(desigId ==0 || desigId.length == 0){
-		errMsg=errMsg+"Please select atleast one Designation<br/>";
-	}
 	if(boothId == 0 || boothId.length ==0){
 		errMsg=errMsg+"Please select atleast one Booth...<br/>";
 	}
-
 	if(errMsg.length>0){
 	$("#errorMessegeId").html(errMsg);
 		return;
 	}else{
 		$("#errorMessegeId").html('');
-		$("#searchcadrenewDiv").show();
+		$("#committeeDesigDivId").show();
 	}
 }
 
 function getBoothUserDetails(){
+	
 	$("#searchcadrenewDiv").hide();
+	$('#searchBy').val('');
+	$("#committeeDesigDivId").hide();
+	$('#committeeDesignationId').val(0);
 	$("#cadreDetailsDiv").hide();
 	$("#userDetailsId").html('');
 	$("#locationDivId").html('');
@@ -1787,11 +1620,11 @@ function getBoothUserDetails(){
 	//var panchayatId = $("#committeeLocationId").val();
 	var mandalName = $("#panchayatWardByMandal option:selected").text();
 	var boothName = $("#committeeLocationId1 option:selected").text();
+	$("#boothInchargeRoleDivId").hide();
 
-
-	  if(mandalId == 0 || mandalId.length==0){
-		errMsg=errMsg+"Please select atleast one Mandal/Muncipality/Corporation.<br/>";
-	  } 
+	  //if(mandalId == 0 || mandalId.length==0){
+	//	errMsg=errMsg+"Please select atleast one Mandal/Muncipality/Corporation.<br/>";
+	 // } 
 	  /*if(panchayatId ==0 || panchayatId.length == 0){
 		  errMsg=errMsg+"Please select atleast one panchayat<br/>";
 	  }*/
@@ -1800,6 +1633,7 @@ function getBoothUserDetails(){
 	  }*/
 	  if(boothId !=0 && boothId>0)
 		{
+			$("#boothInchargeRoleDivId").show();
 			boothId = boothId;
 			mandalId = 0;
 			selectLocationName = boothName;
@@ -1817,7 +1651,7 @@ function getBoothUserDetails(){
 		 $("#errorMessegeId").html('');
 	    } 
 		$("#viewDataLoadingImg").show();
-	
+		
 	var jsObj={
 		constituencyId:globalLocationId,
 		mandalId:mandalId,
@@ -1994,8 +1828,16 @@ function getBoothInchargeRoles()
 }
 	
 	function gettingBoothInchargeRoleDetails(){
-		$("#boothInchargeRoleDivId").html('');
+		
+		$("#boothInchargeRoleDivId,#locationDivId").html('');
 		var boothId = $('#committeeLocationId1').val();
+		$('#addMembrsBtn').show();
+		$('#searchBy').val('');
+		$('#boothInchargeRoleDivId,#searchcadrenewDiv,#userDetailsId,#committeeDesigDivId').hide();
+		if(boothId==0){
+			$('#addMembrsBtn').hide();
+		}
+		
 	    var  enrllmentId =0;
 			var jsObj={
 				boothId:boothId,
@@ -2010,9 +1852,7 @@ function getBoothInchargeRoles()
 			if(result != null){
 				buildBoothInchargeRoleDetails(result);	
 			}
-			
 		});	
-			
 	}
 	function buildBoothInchargeRoleDetails(result){
 	var str ='';
@@ -2044,9 +1884,9 @@ function getBoothInchargeRoles()
 	str +='</div>';
 	$("#boothInchargeRoleDivId").html(str);
 }
-	function updateRangeIdsOfBoothIncharge()
+	function updateRangeIdsOfBoothIncharge(boothId)
 	{	
-	var boothId = $("#committeeLocationId1").val();
+	//var boothId = $("#committeeLocationId1").val();
 	var boothIncrgRoleId = $("#committeeDesignationId").val();
 	var enrollmentYrIds = [];
 	enrollmentYrIds.push(1);
