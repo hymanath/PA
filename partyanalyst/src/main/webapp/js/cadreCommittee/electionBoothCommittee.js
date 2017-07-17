@@ -1690,7 +1690,8 @@ function getBoothUserDetailsbuild(result,locationName){
 						str +='<th>MEMBERSHIP&nbsp;NO</th>';
 						str +='<th>CADRE&nbsp;NAME</th>';
 						str +='<th>MOBILE&nbsp;NO</th>';
-						
+						str +='<th>ROLE&nbsp;NAME</th>';
+						str +='<th>DELETE MEMBER&nbsp;</th>';
 					 						 
 					 str +='</tr>';
 				 str +='</thead>';			 
@@ -1714,9 +1715,12 @@ function getBoothUserDetailsbuild(result,locationName){
 								else 
 									str +='<td>  -  </td>';
 								str +='<td>'+result[i].firstName+'</td>';	
-								str +='<td>'+result[i].mobileNumber+'</td>';	
-								
-									
+								str +='<td>'+result[i].mobileNumber+'</td>';
+                                if(result[i].roleName != null)								
+								  str +='<td>'+result[i].roleName+'</td>';
+							    else
+								  str +='<td>  -  </td>';
+								str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' value="DELETE" type="button"></td>';	
 							str +='</tr>';
 							}
 			  str +='</tbody>';
@@ -1737,3 +1741,27 @@ function exportToExcel(tableId)
 {
 	tableToExcel(''+tableId+'', 'Booth Committee Details.. ');
 }
+
+$(document).on("click","#deleteMembrsBtn",function(){
+	var inchargeId = $(this).attr("attr_incharge_id");
+	var roleMappingId = $(this).attr("attr_roleMapping_id");
+	
+	var jsObj =
+		{
+			boothInchargeMappingId : roleMappingId,
+            boothInchargeId :  inchargeId	
+		}
+		   $.ajax({
+				    type : "POST",
+					url : "deleteRoleMemberDetailsAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result == "delete Successfully"){
+					alert("Member deleted successfully.....");
+				}else{
+					alert("Member deleted failed.Please try again.");
+				}
+			});
+	
+});	
+
