@@ -401,6 +401,9 @@ public class AnnouncementService implements IAnnouncementService {
 					optionVo.setMemberShipNo(commonMethodsUtilService.getLongValueForObject(Obj[6]));
 					optionVo.setUrl(commonMethodsUtilService.getStringValueForObject(Obj[7]));
 					optionVo.setMandalName(commonMethodsUtilService.getStringValueForObject(Obj[8]));
+					optionVo.setRoleName(commonMethodsUtilService.getStringValueForObject(Obj[9]));
+					optionVo.setRoleMappingId(commonMethodsUtilService.getLongValueForObject(Obj[10]));
+					optionVo.setInchargeId(commonMethodsUtilService.getLongValueForObject(Obj[11]));
 					finalList.add(optionVo);
 				}
 				return finalList;
