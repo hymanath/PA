@@ -2798,7 +2798,23 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				vo.setFailedTransactionPendingQuantity(jObj.getString("FRP_WS_CNT"));
 		 	    				vo.setFailedTransactionPendingAmount(jObj.getString("FRP_WS_AMT"));
 		 	    				namingMap.put(vo.getId(), vo);
-		 	    				voList.add(vo);
+		 	    				if(inputVO.getType() != null && !inputVO.getType().trim().toString().equalsIgnoreCase("All") && inputVO.getType().toString().trim().equalsIgnoreCase("Wage")){
+		 	    					if(vo.getType() != null && vo.getType().toString().trim().equalsIgnoreCase("W")){
+		 	    						voList.add(vo);
+		 	    					}
+		 	    				}
+		 	    				else if(inputVO.getType() != null && !inputVO.getType().trim().toString().equalsIgnoreCase("All") && inputVO.getType().toString().trim().equalsIgnoreCase("Material")){
+		 	    					if(vo.getType() != null && vo.getType().toString().trim().equalsIgnoreCase("M")){
+		 	    						voList.add(vo);
+		 	    					}
+		 	    				}
+		 	    				else if(inputVO.getType() != null && !inputVO.getType().trim().toString().equalsIgnoreCase("All") && inputVO.getType().toString().trim().equalsIgnoreCase("Total")){
+		 	    					if(vo.getType() != null && (vo.getType().toString().trim().equalsIgnoreCase("Total") || vo.getType().toString().trim().equalsIgnoreCase("Sub Total"))){
+		 	    						voList.add(vo);
+		 	    					}
+		 	    				}
+		 	    				else if(inputVO.getType() != null && inputVO.getType().trim().toString().equalsIgnoreCase("All"))
+		 	    					voList.add(vo);
 		 	    			}
 	 	    			}
 	 	    		}
@@ -2970,5 +2986,18 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		
 		return voList;
+	}
+	
+	public String convertRupeesIntoCrores(String value){
+		String returnVal = null;
+		try {
+			if(value != null){
+				returnVal = new BigDecimal(Long.valueOf(value)/10000000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				returnVal = returnVal+" CR";
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at convertRupeesIntoCrores - NREGSTCSService service", e);
+		}
+		return returnVal;
 	}
 }
