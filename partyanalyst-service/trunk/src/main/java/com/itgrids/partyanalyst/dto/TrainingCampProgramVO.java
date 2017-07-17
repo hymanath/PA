@@ -25,6 +25,9 @@ public class TrainingCampProgramVO {
 	private List<TrainingCampProgramVO> locationList;
 	
 	private String lastUpdatedTime;
+	private Long InviteeAttended = 0l;
+	private Long nonInviteeAttended=0l;
+	
  	public Long getId() {
 		return id;
 	}
@@ -140,5 +143,19 @@ public class TrainingCampProgramVO {
 	public void setLastUpdatedTime(String lastUpdatedTime) {
 		this.lastUpdatedTime = lastUpdatedTime;
 	}
+	public Long getInviteeAttended() {
+		return InviteeAttended;
+	}
+	public void setInviteeAttended(Long inviteeAttended) {
+		InviteeAttended = inviteeAttended;
+	}
+	public Long getNonInviteeAttended() {
+		return nonInviteeAttended;
+	}
+	public void setNonInviteeAttended(Long nonInviteeAttended) {
+		this.nonInviteeAttended = nonInviteeAttended;
+	}
+	
+	
   	
 }

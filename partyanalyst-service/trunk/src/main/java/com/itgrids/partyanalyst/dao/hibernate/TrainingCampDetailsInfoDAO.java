@@ -20,7 +20,8 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  				 "  model.trainingCampProgram.programName," +//1
     	  				 " sum(model.eligible)," +//2
     	  				 " sum(model.attended)," +//3
-    	  				 " sum(model.yetToTrain)  " +//4
+    	  				 " sum(model.yetToTrain) ," +//4
+    	  				 " sum(model.invited) " +//5
     	  				 " from TrainingCampDetailsInfo model " +
     	  				 " where  model.trainingCampProgram.trainingCampProgramId is not null ");
     	  if(programIdList != null && programIdList.size()>0)
@@ -55,7 +56,8 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  queryStr.append(" select model.tdpCommitteeLevelId," +//0
     	  				  " sum(model.eligible)," +//1
     	  				  " sum(model.attended)," +//2
-    	  				  " sum(model.yetToTrain)  " +//3
+    	  				  " sum(model.yetToTrain)," +//3
+    	  				  " sum(model.invited) " +//4
     	  				  " from TrainingCampDetailsInfo model  " +
     			  		  " where  model.trainingCampProgram.trainingCampProgramId is not null ");
     	  if(programIdList != null && programIdList.size()>0)

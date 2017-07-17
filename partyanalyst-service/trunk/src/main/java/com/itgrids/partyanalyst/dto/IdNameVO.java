@@ -118,7 +118,26 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String tehsilName;
 	private String panchayatName;
 	private String municipalityName;
+	private Long inviteeAttnd;
+	private Long nonInviteeAttnd;
 	
+	
+	public Long getInviteeAttnd() {
+		return inviteeAttnd;
+	}
+
+	public void setInviteeAttnd(Long inviteeAttnd) {
+		this.inviteeAttnd = inviteeAttnd;
+	}
+
+	public Long getNonInviteeAttnd() {
+		return nonInviteeAttnd;
+	}
+
+	public void setNonInviteeAttnd(Long nonInviteeAttnd) {
+		this.nonInviteeAttnd = nonInviteeAttnd;
+	}
+
 	public String getCallerName() {
 		return callerName;
 	}
