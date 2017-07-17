@@ -2700,26 +2700,44 @@ public String updateCommitteeMemberDesignationByCadreId(){
 		return Action.SUCCESS;
 	}
 	public String getElectionBoothCommitteeDetails(){
-		try{
-			ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
-			genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
-			cadreRolesVOList = cadreCommitteeService.getBasicCadreCommitteesDetails();
-			locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
-			List<BasicVO> accLoc = getUserAccessConstituencies();
-			finalStatus = accLoc.get(0).getName();
-			locationValue = accLoc.get(0).getId();
-			if(panchayatId == null) //default values for prepopulate fields
-			{
-				panchayatId = "0";
-				committeeTypeId = 0L;
-				committeeId = 0L;
-				result3 = "0";
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("BOOTH_INCHARGE_COMMITTEE_ENTITLEMENT") || entitlements.contains("BOOTH_INCHARGE_COMMITTEE_ADMIN_ENTITLEMENT"))){
+				noaccess = true ;
 			}
-		}catch(Exception e){
-			LOG.error("Exception occured in getElectionBoothCommitteeDetails() At CadreCommitteeAction",e);
+		
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+			
+		ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
+		genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
+		cadreRolesVOList = cadreCommitteeService.getBasicCadreCommitteesDetails();
+		locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
+		List<BasicVO> accLoc = getUserAccessConstituencies();
+		finalStatus = accLoc.get(0).getName();
+		locationValue = accLoc.get(0).getId();
+		if(panchayatId == null) //default values for prepopulate fields
+		{
+			panchayatId = "0";
+			committeeTypeId = 0L;
+			committeeId = 0L;
+			result3 = "0";
+		}
+			return Action.SUCCESS;
+		}else{
+			return "error";
 		}
 		
-		return Action.SUCCESS;
 	}
 	public String saveElectionBoothCommitteeDetails(){
 		try{
