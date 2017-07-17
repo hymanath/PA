@@ -918,7 +918,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
   
   public List<Long> getNonInviteesNoDaysCount(Long batchId,List<Long> enrollmentYearIds,List<Long> programYearIds){
 	  StringBuilder sb =new StringBuilder();
-	  sb.append(" select  a.tdpCadreId from TrainingCampAttendance tca,Attendance a " +
+	  sb.append(" select distinct a.tdpCadreId from TrainingCampAttendance tca,Attendance a " +
 	  		"where tca.attendance.attendanceId=a.attendanceId and " +
 	  		"a.tdpCadreId not in (select tdpCadreId from TrainingCampBatchAttendee where isDeleted='false' and trainingCampBatchId=:batchId) " +
 	  		"and tca.trainingCampBatchId=:batchId and tca.trainingCampBatch.attendeeTypeId=1 " );
