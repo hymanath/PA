@@ -52,7 +52,14 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String enrollmentYears;
 	private Long tehsilId;
 	private Long LocalElectionId;
+	private String roleName;
 	
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 	public Long getTehsilId() {
 		return tehsilId;
 	}
