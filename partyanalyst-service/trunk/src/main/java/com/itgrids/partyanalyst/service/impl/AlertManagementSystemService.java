@@ -16116,7 +16116,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 
 	public List<AlertVO> getHamletWiseIvrStatusList(String fromDateStr, String toDateStr, String year,List<Long> locationValues, Long locationTypeId,String statusType) {
         List<AlertVO> finalList = new ArrayList<AlertVO>();
-        
+        List<AlertVO> countsList = new ArrayList<AlertVO>();
  		try{
  			Date fromDate = null;
 			Date toDate = null;
@@ -16133,31 +16133,40 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					Long yCount = 0l;
 		            Long nCount = 0l;
 		            AlertVO vo = new AlertVO();
+		            AlertVO matchedVO = getMatchedAlertVO(countsList, (Long)objects[10]);
+		            if(matchedVO == null){
+		            	matchedVO = new AlertVO();
+		            	matchedVO.setAlertId((Long)objects[10]);
+		            	setHamletDetails(objects,matchedVO);
+		            	countsList.add(matchedVO);
+		            }
 		            //Here get and set the ivrs ans counts based on ivrs satifaction status
 					if(objects[12]!=null && objects[12].toString().equalsIgnoreCase("Y")){
-						yCount = (objects[13] !=null ? (Long)objects[13]:0l);
+						matchedVO.setSatisfiedCount(objects[13] !=null ? (Long)objects[13]:0l);
  						
  					}else if(objects[12]!=null && objects[12].toString().equalsIgnoreCase("N")){
- 						nCount = (objects[13] !=null ? (Long)objects[13]:0l);
+ 						matchedVO.setUnSatisfiedCount(objects[13] !=null ? (Long)objects[13]:0l);
  					}
-					// Calculate the percentage for hamlet ivrs answers count
-					String perc = cadreDetailsService.calculatePercentage(yCount+nCount,yCount);
-					//Here set the object status type is green(green means ivrs answers percentage is >=80)
-					if(statusType.equalsIgnoreCase("green") && statusType!=null && perc!=null && perc!="0" && (Double.parseDouble(perc)>=80)){
-						setHamletDetails(objects,vo);
-						//Here set the object status type is orange(orange means ivrs answers percentage is >=50 and <80)
-					}else if(statusType.equalsIgnoreCase("orange") && statusType!=null && perc!=null && perc!="0" && (Double.parseDouble(perc)>=50 && (Double.parseDouble(perc)<80))){
-						setHamletDetails(objects,vo);
-						//Here set the object status type is red(red means ivrs answers percentage is <50)
-					}else if(statusType.equalsIgnoreCase("red") && statusType!=null && perc!=null && perc!="0" && (Double.parseDouble(perc)<50)){
-						setHamletDetails(objects,vo);
-					}
-					if(vo.getHamletId()!=null){
-					finalList.add(vo);
-					}
-				}
-				
+					
+				}	
 			}
+					if(countsList !=null && countsList.size()>0){
+						for (AlertVO hamletVO : countsList) {
+							// Calculate the percentage for hamlet ivrs answers count
+							String perc = cadreDetailsService.calculatePercentage(hamletVO.getSatisfiedCount()+hamletVO.getUnSatisfiedCount(),hamletVO.getSatisfiedCount());
+							if(statusType.equalsIgnoreCase("green") && statusType!=null && perc!=null && perc!="0" && (Double.parseDouble(perc)>=80)){
+								finalList.add(hamletVO);
+								//Here set the object status type is orange(orange means ivrs answers percentage is >=50 and <80)
+							}else if(statusType.equalsIgnoreCase("orange") && statusType!=null && perc!=null && perc!="0" && (Double.parseDouble(perc)>=50 && (Double.parseDouble(perc)<80))){
+								finalList.add(hamletVO);
+								//Here set the object status type is red(red means ivrs answers percentage is <50)
+							}else if(statusType.equalsIgnoreCase("red") && statusType!=null && perc!=null && perc!="0" && (Double.parseDouble(perc)<50)){
+								finalList.add(hamletVO);
+							}
+						}
+						
+					}
+			
  		}catch (Exception e) {
 			e.printStackTrace();
 		}
