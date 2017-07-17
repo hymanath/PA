@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,7 +116,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	 * @description : to get scheme wise funds transaction details
 	 */
 	
-	public List<FundSchemeVO> getFinancialYearWiseSchemeDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
+	public List<FundSchemeVO> getFinancialYearWiseSchemeDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,																	//BlockLevelId
 			List<Long> sourceIdsList,List<Long> schemeIdsList,String startDateStr,String endDateStr,Long searchScopeId,List<Long> searchScopeValuesList,String order,String sortingType,Long searchLevelId,
 			List<Long> govtSchmeIdsList,List<Long> subProgramIdsList,Long glSearchLevelId,List<Long> glSearchLevelValue,String viewType){
 		List<FundSchemeVO> returnList = new ArrayList<FundSchemeVO>(0);
@@ -189,9 +190,9 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 						addressVO.setId(addressVO.getAssemblyId());
 						addressVO.setName(addressVO.getAssemblyName());
-					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
-						addressVO.setId(addressVO.getAssemblyId());
-						addressVO.setName(addressVO.getAssemblyName());
+					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+						addressVO.setId(addressVO.getParliamentId());
+						addressVO.setName(addressVO.getParliamentName());
 					}else if(searchLevelId != null && searchLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){						
 						addressVO.setId(addressVO.getTehsilId());
 						addressVO.setName(addressVO.getTehsilName());
@@ -310,7 +311,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 		if(viewType != null && viewType.trim().equalsIgnoreCase("cumulative")){
 			if(returnList != null && returnList.size() > 0){
 				returnList = prepareCumulativeView(returnList);
-				updateAmountAndCount(returnList);
+				returnList = updateAmountAndCount(returnList);
+				
 			}
 		}
 		
@@ -393,8 +395,9 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			LOG.error(" Exception occured in FundManagementDashboardService ,updateInnerList() ",e);
 		}
 	}
-	public void updateAmountAndCount(List<FundSchemeVO> inputList){
+	public List<FundSchemeVO> updateAmountAndCount(List<FundSchemeVO> inputList){
 		try{
+			List<FundSchemeVO> returnList = new ArrayList<FundSchemeVO>();
 			for(FundSchemeVO param : inputList){
 				param.setCount(0L);
 				param.setAmount("0.0");
@@ -408,10 +411,15 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						param.setAmount(commonMethodsUtilService.roundUptoTwoDecimalPoint(new Double(amountDouble1+amountDouble2)).toString());
 					}
 				}
+				if(param.getCount().longValue() != 0L){
+					returnList.add(param);
+				}
 			}
+			return returnList;
 		}catch(Exception e){
 			LOG.error(" Exception occured in FundManagementDashboardService ,updateAmountAndCount() ",e);
 		}
+		return null;
 	}
 	public static Comparator<FundSchemeVO> nameWiseAscendingOrder = new Comparator<FundSchemeVO>() {
     	public int compare(FundSchemeVO o1, FundSchemeVO o2) {
