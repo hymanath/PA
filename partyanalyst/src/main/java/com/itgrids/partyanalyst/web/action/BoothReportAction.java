@@ -237,4 +237,17 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String deleteRoleMemberDetails(){
+		LOG.info("Entered into deleteRoleMemberDetails()  of BoothReportAction ");
+		try{
+			jObj = new JSONObject(getTask());
+			Long boothInchargeMappingId = jObj.getLong("boothInchargeMappingId");
+			Long boothInchargeId = jObj.getLong("boothInchargeId");
+			
+			task = boothDataValidationService.deleteRoleMemberDetails(boothInchargeMappingId,boothInchargeId);
+		}catch(Exception e){
+			LOG.error("Exception raised at deleteRoleMemberDetails() method of BoothReportAction", e);
+		}
+		return Action.SUCCESS;  
+	}
 }
