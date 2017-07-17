@@ -313,25 +313,25 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
   {
 	  StringBuilder sb=new StringBuilder();
 	  
-	  sb.append(" select count(distinct model.attendance.tdpCadre.tdpCadreId) " +
-				" from TrainingCampAttendance model, TrainingCampBatchAttendee model1  " +
-				" where  model1.tdpCadre.tdpCadreId = model.attendance.tdpCadre.tdpCadreId and model1.isDeleted ='false' and " +
-				" model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled ='false' ");
+	  sb.append(" select count(distinct model1.tdpCadreId) " +
+				" from TrainingCampBatchAttendee model1  " +
+				" where  model1.tdpCadre.tdpCadreId = model1.tdpCadreId and model1.isDeleted ='false' and " +
+				" model1.trainingCampBatch.attendeeTypeId=1 and model1.trainingCampBatch.isCancelled ='false' ");
 	  if(batchId != null && batchId.longValue()>0L){
-		  sb.append(" and model.trainingCampBatch.trainingCampBatchId =:batchId ");
+		  sb.append(" and model1.trainingCampBatch.trainingCampBatchId =:batchId ");
 		  if(fromDate!=null && toDate!=null){
-			  sb.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate");
+			  sb.append(" and date(model1.trainingCampBatch.fromDate) >= :fromDate and date(model1.trainingCampBatch.toDate) <= :toDate");
 		  }
 	  }
 	  else if(searchTypeStr != null && fromDate!=null && toDate!=null){		   
 		   if(searchTypeStr.trim().equalsIgnoreCase("running"))
-			   sb.append(" and ( (:fromDate between date(model.trainingCampBatch.fromDate) and date(model.trainingCampBatch.toDate) ) or " +
-			   		" (:toDate between date(model.trainingCampBatch.fromDate) and date(model.trainingCampBatch.toDate) )  )");
+			   sb.append(" and ( (:fromDate between date(model1.trainingCampBatch.fromDate) and date(model1.trainingCampBatch.toDate) ) or " +
+			   		" (:toDate between date(model1.trainingCampBatch.fromDate) and date(model1.trainingCampBatch.toDate) )  )");
 		   else  if(searchTypeStr.trim().equalsIgnoreCase("completed"))
-			   sb.append(" and (date(model.trainingCampBatch.fromDate) < :fromDate and date(model.trainingCampBatch.toDate) < :toDate ) ");
+			   sb.append(" and (date(model1.trainingCampBatch.fromDate) < :fromDate and date(model1.trainingCampBatch.toDate) < :toDate ) ");
 	   }
 	  if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
-		   sb.append(" and model.attendance.tdpCadre.tdpCadreId not in (:staffCadreIdsList) " );
+		   sb.append(" and model1.tdpCadreId not in (:staffCadreIdsList) " );
 	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
 		  sb.append(" and model1.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
 	        }
