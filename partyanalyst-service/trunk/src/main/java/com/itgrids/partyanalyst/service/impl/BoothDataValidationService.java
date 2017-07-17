@@ -999,5 +999,20 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		return status;
 	}
+	public String deleteRoleMemberDetails(Long boothInchargeMappingId,Long boothInchargeId){
+		String status = "";
+		try{
+			BoothIncharge  inchargeDetails = boothInchargeDAO.get(boothInchargeId);
+			if(inchargeDetails != null){
+				inchargeDetails.setIsDeleted("Y");
+			}
+			status = "delete Successfully";
+		}catch (Exception e) {
+			status = "delete Failed";
+			e.printStackTrace();
+			Log.error("Exception raised at deleteRoleMemberDetails in BoothDataValidationService class", e);
+		}
+		return status;
+	}
 
 }
