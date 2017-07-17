@@ -596,11 +596,11 @@
 					str+='<ul  style="color:#449D44;">';
 					if(result[i].type != null && result[i].type.trim().length > 0){						
 						if(result[i].localElectionBody == null )
-							str+='<li style="font-weight:bold;"> Already '+result[i].roleName+' Position for  Booth No - '+result[i].boothNumber+' ,'+result[i].panchayat+' Panchayat , '+result[i].tehsil+' Mandal. </li>';	
+							str+='<li style="font-weight:bold;"> Already added as  <span style="color:#000;"> '+result[i].roleName+'</span> Position for  Booth No - '+result[i].boothNumber+' ,'+result[i].panchayat+' Panchayat , '+result[i].tehsil+' Mandal. </li>';	
 						else if(result[i].tehsil == null )
-							str+='<li style="font-weight:bold;"> Already '+result[i].roleName+' Position  for Booth No - '+result[i].boothNumber+' , '+result[i].tehsil+' Muncipality. </li>';	
+							str+='<li style="font-weight:bold;"> Already added as  <span style="color:#000;"> '+result[i].roleName+'</span> Position for Booth No - '+result[i].boothNumber+' , '+result[i].tehsil+' Muncipality. </li>';	
 						else 
-							str+='<li style="font-weight:bold;"> Already '+result[i].roleName+' Position  for Booth No - '+result[i].boothNumber+' ,'+result[i].tehsil+' Mandal/Muncipality. </li>';	
+							str+='<li style="font-weight:bold;"> Already added as  <span style="color:#000;"> '+result[i].roleName+'</span>  Position for Booth No - '+result[i].boothNumber+' ,'+result[i].tehsil+' Mandal/Muncipality. </li>';	
 					}
 					str+='</ul>';	
 					str+='</div>';
