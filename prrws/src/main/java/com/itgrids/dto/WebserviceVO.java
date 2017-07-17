@@ -13,6 +13,7 @@ public class WebserviceVO implements Serializable{
 	private Long timeTaken;
 	private Long webserviceTrackId;
 	private String status;
+	private String inputData;
 
 	public String getUrl() {
 		return url;
@@ -60,6 +61,14 @@ public class WebserviceVO implements Serializable{
 
 	public void setWebserviceTrackId(Long webserviceTrackId) {
 		this.webserviceTrackId = webserviceTrackId;
+	}
+
+	public String getInputData() {
+		return inputData;
+	}
+
+	public void setInputData(String inputData) {
+		this.inputData = inputData;
 	}
 	
 }
