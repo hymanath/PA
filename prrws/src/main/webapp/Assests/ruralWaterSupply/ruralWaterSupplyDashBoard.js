@@ -3,7 +3,7 @@
 		var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
 		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","Ground":"#14BAAD","Surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
 		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049",
-		"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","SOSO":"#FFBA00","NOT SATISFIED":"#FF0909"}
+		"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","PARTIALLY SATISFIED":"#FFBA00","NOT SATISFIED":"#FF0909"}
 		var blocksArr = [{name:'Coverage Status Of Habitation',id:'habitation',img:'coverage_status.png'},
 						 {name:'Key Performance',id:'performance',img:'key_performance.png'},
 						 {name:'<p><span><img src="Assests/icons/alert_status.png"/> Jalavani </span></p>',id:'jalavani',img:'alert_status.png'},
@@ -1511,7 +1511,7 @@
 				totalCount =notifiedCnt+actionPgress+propasalCnt+CompleteClosedCount+othersCount;
 				statusCountArr.push(CompleteClosedCount);
 				statusCountArr.push(othersCount);
-				var colors = ['#FC5049']
+				var colors = ['#efa5b6','#ffcb7f','#5a8476','#4d9b66','#9698c8']
 				var id = 'alertStatus';
 				var type = {
 					type: 'column',
@@ -1556,7 +1556,7 @@
 				var data = [{
 					name: '',
 					data: statusCountArr,
-
+					
 					dataLabels: {
 						enabled: true,
 						color: '#000',
@@ -2930,7 +2930,7 @@
 			min: 0,
 			gridLineWidth: 0,
 			minorGridLineWidth: 0,
-			categories: ['SATISFIED','SOSO','NOT SATISFIED'],
+			categories: ['SATISFIED','PARTIALLY SATISFIED','NOT SATISFIED'],
 			labels: {
 				useHTML:true,
 				formatter: function() {
@@ -3094,6 +3094,7 @@
 					getSchemeWiseWorkDetails('table','constituency',blocksArr,"district",distId,"");
 					
 				}else if(tabId == "constituencyBlockIdwaterSourceId"){
+					getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
 					getWaterSourceDeatils2('constituency',blocksArr,"district",distId,"")
 				}
 			}
@@ -3211,6 +3212,7 @@
 					 getSchemeWiseWorkDetails('table','mandal',blocksArr,"district",distId,"");
 					
 				}else if(tabIdM == "mandalBlockIdwaterSourceId"){
+					getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
 					getWaterSourceDeatils2('mandal',blocksArr,"district",distId,"")
 				}
 			}
@@ -3273,7 +3275,7 @@
 					getSchemeWiseWorkDetails('table','mandal',blocksArr,"constituency",constId,"");
 				}
 				
-			}else if(tabIdM == "#mandalBlockIdwaterSourceId"){
+			}else if(tabIdM == "mandalBlockIdwaterSourceId"){
 				getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
 				if(constId == 0){
 					getWaterSourceDeatils2('mandal',blocksArr,"district",distId,"")
@@ -4301,8 +4303,10 @@
 					tableView+='<th>DISTRICT</th>';
 					tableView+='<th>CONSTITUENCY</th>';
 					tableView+='<th>MANDAL</th>';
-					tableView+='<th>HABITATIONS NAME</th>';
-					tableView+='<th>HABITATIONS CODE</th>';
+					tableView+='<th>SANCTIONED AMOUNT</th>';
+					tableView+='<th>COMPLETION DATE</th>';
+					//tableView+='<th>HABITATIONS NAME</th>';
+					//tableView+='<th>HABITATIONS CODE</th>';
 					tableView+='<th>Work CODE</th>';
 				tableView+='</tr>';
 				
@@ -4313,8 +4317,10 @@
 						tableView+='<td>'+result[i].districtName+'</td>';
 						tableView+='<td>'+result[i].constituencyName+'</td>';
 						tableView+='<td>'+result[i].mandalName+'</td>';
-						tableView+='<td>'+result[i].habitationName+'</td>';
-						tableView+='<td>'+result[i].habitationCode+'</td>';
+						tableView+='<td>'+result[i].sacntionedAmount+'</td>';
+						tableView+='<td>'+result[i].completionDate+'</td>';
+						//tableView+='<td>'+result[i].habitationName+'</td>';
+						//tableView+='<td>'+result[i].habitationCode+'</td>';
 						tableView+='<td>'+result[i].workId+'</td>';
 					tableView+='</tr>';
 			}
