@@ -8934,7 +8934,7 @@ class TrainingCampService implements ITrainingCampService{
 							if(vo!=null){
 								vo.setTotal(obj[1]!=null?(Long)obj[0]:0l);//attended.
 								vo.setCount(confirmedCount-vo.getTotal());//absent.
-								List<Long> attendedCadreIdsList = trainingCampAttendanceDAO.getInviteeCadreIdsForADay(batchId,dateUtilService.getCurrentDateAndTime(),enrollmentYearIds,programYearIds);
+								List<Long> attendedCadreIdsList = trainingCampAttendanceDAO.getInviteeCadreIdsForADay(batchId,(Date)obj[1],enrollmentYearIds,programYearIds);
 								if(attendedCadreIdsList!=null && attendedCadreIdsList.size()>0){
 									int count=0;
 									for(Long long1 : attendedCadreIdsList){
