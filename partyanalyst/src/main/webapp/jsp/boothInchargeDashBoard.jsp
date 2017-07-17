@@ -318,58 +318,59 @@ $(document).ready(function(){
 		
 		$("#districtAccessLevelId").hide();
 		$("#constituencyAccessLevelId").hide();
-		//mandal block heading hiding 
+		//block tab heading hiding 
 		$("#boothLevelDistParTabDivId").hide();
 		$("#mandalWiseDisticparlimentIds").hide();
 		$("#mandalLevelDistrictDivId").hide();
-		$("#mandalLevelConstituencyDivId").hide();
-		
-		//parliament block heading hide
 		$("#panchayatWiseDistrictparliamentIds").hide();
-		$("#panchayatWiseDisticDivId").hide(); //panchayat block district select box hiding 
-		$("#panchayatWiseConstituencyDivId").hide(); //panchayat block constituency select box hiding
+		//select box hiding 
+		$("#mandalLevelConstituencyDivId").hide();
+		$("#panchayatWiseDisticDivId").hide(); 
+		$("#panchayatWiseConstituencyDivId").hide(); 
 		$("#boothLevelDistDivId").hide(); 
 		$("#boothLevelConDivId").hide(); 
+		/* Adding and removing class dynamically */
 		$(".collapseDivCls").removeClass("col-sm-1");
 		$(".collapseDivCls").addClass("col-sm-6");
 		$(".collapseDivCls1").addClass("col-sm-5");
-		
+		//Adding Dynamic Attribute based on user access level 
 		$(".resultTypeTabCls").attr("attr_panchayt_result_level","TEHSIL");
 		$(".resultTypeTabCls").attr("attr_pnchyt_lvl_parent_select_box_div_id","panchaytLevelMandalSelectBxId");
 		$(".boothResultTypeCls").attr("attr_booth_result_level","TEHSIL");
 		$(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id","boothBlockMandalSelectBxId");
-		
+		//ajax call based on user access level
 		getOverAllBoothDetails("STATE","CONSTITUENCY",accessValue);
 		getLocationLevelWiseBoothCount("TEHSIL","CONSTITUENCY",accessValue,"mandalLevelBoothDtlsDivId");
 		getLocationLevelWiseBoothCount("PANCHAYAT","CONSTITUENCY",accessValue,"panchaytLevelBoothDtlsDivId");
-		getLocationBasedOnSelection("TEHSIL","CONSTITUENCY",accessValue,"mandalLevelMandalSelectBxId","Other","");
-		getLocationBasedOnSelection("TEHSIL","CONSTITUENCY",accessValue,"boothBlockMandalSelectBxId","Other","");
+		getLocationBasedOnSelection("TEHSIL","CONSTITUENCY",accessValue,"","CONSTITUENCY","");
+	    //setting dynamically user access type and access value based on login user
 	    setAccessLevelTypeAndValue("CONSTITUENCY",accessValue);
 	  
 	}else if(accessType == "MP"){
+		//block tab heading hiding 
+		$("#panchayatWiseDistrictparliamentIds").hide();
+		$("#mandalLevelDistrictDivId").hide();
+		$("#mandalWiseDisticparlimentIds").hide();
+		$("#boothLevelDistParTabDivId").hide();
+		//select box hiding 
 		$("#districtAccessLevelId").hide();
 		$("#constitencyWiseDistrictParliamentId").hide();
 		$("#constituencyWiseDistrictId").hide();
-		$("#mandalWiseDisticparlimentIds").hide();
-		$("#mandalLevelDistrictDivId").hide();
-		$("#panchayatWiseDistrictparliamentIds").hide();
 		$("#panchayatWiseDisticDivId").hide();
         $("#boothLevelDistDivId").hide(); 
-		$("#boothLevelDistParTabDivId").hide();
+		//Adding Dynamic Attribute based on user access level 
 		$(".resultTypeTabCls").attr("attr_pnchyt_lvl_parent_select_box_div_id","panchaytLevelConstituenySelectBxId");
 		$(".resultTypeTabCls").attr("attr_panchayt_result_level","CONSTITUENCY");
 		$(".boothResultTypeCls").attr("attr_booth_result_level","CONSTITUENCY");
 		$(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id","boothBlockConstituenySelectBxId");
-		
+		//setting dynamically user access type and access value based on login user
 		setAccessLevelTypeAndValue("PARLIAMENT CONSTITUENCY",accessValue);
-
+        //ajax call based on user access level
 		getOverAllBoothDetails("STATE","PARLIAMENT CONSTITUENCY",accessValue);
 		getLocationLevelWiseBoothCount("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"constituencyLevelBoothDtlsDivId");
 		getLocationLevelWiseBoothCount("TEHSIL","PARLIAMENT CONSTITUENCY",accessValue,"mandalLevelBoothDtlsDivId");
 		getLocationLevelWiseBoothCount("PANCHAYAT","PARLIAMENT CONSTITUENCY",accessValue,"panchaytLevelBoothDtlsDivId");
-		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"constituencyLevelConstituenySelectBxId","Other","");
-		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"mandalLevelConstituenySelectBxId","Other","");
-		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"boothBlockConstituenySelectBxId","Other","");
+		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"","PARLIAMENT CONSTITUENCY","");
 	
 	}else if(accessType == "DISTRICT"){
 			getOverAllBoothDetails("STATE","DISTRICT",accessValue);
@@ -378,6 +379,7 @@ $(document).ready(function(){
 			getLocationLevelWiseBoothCount("TEHSIL","DISTRICT",accessValue,"mandalLevelBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("PANCHAYAT","DISTRICT",accessValue,"panchaytLevelBoothDtlsDivId");
 			getLocationBasedOnSelection("DISTRICT","DISTRICT",accessValue,"","All","");
+			//setting dynamically user access type and access value based on login user
 			setAccessLevelTypeAndValue("DISTRICT",accessValue);
 			
 	}else if (accessType == "STATE"){
@@ -387,10 +389,10 @@ $(document).ready(function(){
 			getLocationLevelWiseBoothCount("TEHSIL","STATE",accessValue,"mandalLevelBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("PANCHAYAT","STATE",accessValue,"panchaytLevelBoothDtlsDivId");
 			getLocationBasedOnSelection("DISTRICT","STATE",accessValue,"","All","");
+			//setting dynamically user access type and access value based on login user
 			setAccessLevelTypeAndValue("STATE",accessValue);
 	} 
 	function setAccessLevelTypeAndValue(accessType,accessValue){
-		
 		   $(".locationLevelTabCls").attr("accessType",accessType);
 		   $(".locationLevelTabCls").attr("accessValue",accessValue);
 		   $(".districtLevelCls").attr("accessType",accessType);
