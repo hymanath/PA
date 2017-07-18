@@ -110,12 +110,12 @@
 								<div class="row" >
 									<div class="col-sm-3" id="constituencyWiseDistrictId">
 										<select id="constituencyLevelDistrictSelectBxId" attr_result_level="CONSTITUENCY" attr_result_level_div_id="constituencyLevelBoothDtlsDivId" attr_sub_level_drop_box_id="constituencyLevelConstituenySelectBxId" class="selectBoxCls" attr_level="DISTRICT" attr_sub_level="CONSTITUENCY">
-											<option value="0">SELECT DISTRICT</option>
+											<option value="0">All DISTRICT</option>
 										</select>
 									</div>
 									<div  class="col-sm-3">
 										<select class="selectBoxCls" id="constituencyLevelConstituenySelectBxId" attr_result_level="CONSTITUENCY" attr_result_level_div_id="constituencyLevelBoothDtlsDivId" attr_level="CONSTITUENCY">
-											<option value="0">SELECT CONSTITUENCY</option>
+											<option value="0">All CONSTITUENCY</option>
 										</select>
 									</div>
 								</div>
@@ -154,17 +154,17 @@
 									<div  id="selectConstituencyDistrict">
 										<div class="col-sm-3" id="mandalLevelDistrictDivId">
 											<select id="mandalLevelDistrictSelectBxId" class="selectBoxCls"  attr_result_level="TEHSIL" attr_result_level_div_id="mandalLevelBoothDtlsDivId" attr_sub_level_drop_box_id="mandalLevelConstituenySelectBxId" attr_level="DISTRICT" attr_sub_level="CONSTITUENCY">
-												<option value="0">SELECT DISTRICT</option>
+												<option value="0">All DISTRICT</option>
 											</select>
 										</div>
 										<div class="col-sm-3" id ="mandalLevelConstituencyDivId">
 											<select id="mandalLevelConstituenySelectBxId" class="selectBoxCls"  attr_result_level="TEHSIL" attr_result_level_div_id="mandalLevelBoothDtlsDivId" attr_sub_level_drop_box_id="mandalLevelMandalSelectBxId" attr_level="CONSTITUENCY" attr_sub_level="TEHSIL">
-												<option value="0">SELECT CONSTITUENCY</option>
+												<option value="0">All CONSTITUENCY</option>
 											</select>
 										</div>
 										<div class="col-sm-3">
 											<select id="mandalLevelMandalSelectBxId"   class="selectBoxCls" attr_result_level="TEHSIL" attr_result_level_div_id="mandalLevelBoothDtlsDivId" attr_level="TEHSIL">
-												<option value="0">SELECT MANDAL</option>
+												<option value="0">All MANDAL</option>
 											</select>
 										</div>
 									</div>										
@@ -210,22 +210,22 @@
 									<div id="selectConstituencyDistrict">
 										<div class="col-sm-3" id="panchayatWiseDisticDivId">
 											<select id="panchatLevelDistrictSelectBxId"  class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_sub_level_drop_box_id="panchaytLevelConstituenySelectBxId" attr_level="DISTRICT" attr_sub_level="CONSTITUENCY">
-												<option value="0">SELECT DISTRICT</option>
+												<option value="0">All DISTRICT</option>
 											</select>
 										</div>
 										<div class="col-sm-3" id="panchayatWiseConstituencyDivId">
 											<select id="panchaytLevelConstituenySelectBxId" class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_sub_level_drop_box_id="panchaytLevelMandalSelectBxId" attr_level="CONSTITUENCY" attr_sub_level="TEHSIL">
-												<option value="0">SELECT CONSTITUENCY</option>
+												<option value="0">All CONSTITUENCY</option>
 											</select>
 										</div>
 										<div class="col-sm-3">
 											<select id="panchaytLevelMandalSelectBxId" class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId"  attr_sub_level_drop_box_id="panchaytLevelPanchaytSelectBxId"  attr_level="TEHSIL" attr_sub_level="PANCHAYAT">
-												<option value="0">SELECT MANDAL</option>
+												<option value="0">All MANDAL</option>
 											</select>
 										</div>
 										<div class="col-sm-3">
 											<select id="panchaytLevelPanchaytSelectBxId" class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_level="PANCHAYAT">
-												<option value="0">SELECT PANCHAYAT</option>
+												<option value="0">All PANCHAYAT</option>
 											</select>
 										</div>
 									</div>										
@@ -272,22 +272,22 @@
 									<div>
 										<div class="col-sm-3" id="boothLevelDistDivId">
 											<select id="boothBlockDistrictSelectBxId"  class="boothBlockCls"  attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId" attr_sub_level_drop_box_id="boothBlockConstituenySelectBxId" attr_level="DISTRICT" attr_sub_level="CONSTITUENCY">
-												<option value="0">SELECT DISTRICT</option>
+												<option value="0">All DISTRICT</option>
 											</select>
 										</div>
 										<div class="col-sm-3" id="boothLevelConDivId">
 											<select id="boothBlockConstituenySelectBxId" class="boothBlockCls"  attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId" attr_sub_level_drop_box_id="boothBlockMandalSelectBxId" attr_level="CONSTITUENCY" attr_sub_level="TEHSIL">
-												<option value="0">SELECT CONSTITUENCY</option>
+												<option value="0">All CONSTITUENCY</option>
 											</select>
 										</div>
 										<div class="col-sm-3">
 											<select id="boothBlockMandalSelectBxId" class="boothBlockCls"  attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId"  attr_sub_level_drop_box_id="boothBlockPanchaytSelectBxId"  attr_level="TEHSIL" attr_sub_level="PANCHAYAT">
-												<option value="0">SELECT MANDAL</option>
+												<option value="0">All MANDAL</option>
 											</select>
 										</div>
 										<div class="col-sm-3">
 											<select id="boothBlockPanchaytSelectBxId" class="boothBlockCls"  attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId" attr_level="PANCHAYAT">
-												<option value="0">SELECT PANCHAYAT</option>
+												<option value="0">All PANCHAYAT</option>
 											</select>
 										</div>
 									</div>										
@@ -393,6 +393,7 @@ $(document).ready(function(){
 			setAccessLevelTypeAndValue("STATE",accessValue);
 	} 
 	function setAccessLevelTypeAndValue(accessType,accessValue){
+		
 		   $(".locationLevelTabCls").attr("accessType",accessType);
 		   $(".locationLevelTabCls").attr("accessValue",accessValue);
 		   $(".districtLevelCls").attr("accessType",accessType);

@@ -120,6 +120,7 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 		
 		return Action.SUCCESS;
 	}
+	
 	public String getLocationLevelWiseBoothCount(){
 		LOG.info("Entered into getLocationLevelWiseBoothCount()  of BoothReportAction ");
 		try{
@@ -127,7 +128,19 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 			InputVO inputVO = new InputVO();
 			inputVO.setLocationLevel(jObj.getString("locationLevel"));
 			inputVO.setFilterLevel(jObj.getString("filterLevel"));
-			inputVO.setFilterValue(jObj.getLong("filterValue"));
+			JSONArray filterValueArr =jObj.getJSONArray("filterValueArr");
+			if(filterValueArr!=null &&  filterValueArr.length()>0){
+				for( int i=0;i<filterValueArr.length();i++){
+					inputVO.getFilterValueList().add(Long.valueOf(filterValueArr.getString(i)));
+				}
+			}
+			JSONArray boothRoleIdArr =jObj.getJSONArray("boothRoleIdArr");
+			if(boothRoleIdArr!=null &&  boothRoleIdArr.length()>0){
+				for( int i=0;i<boothRoleIdArr.length();i++){
+					inputVO.getBoothRoleIds().add(Long.valueOf(boothRoleIdArr.getString(i)));
+				}
+			}
+			
 			inputVO.setBoothInchargeEnrollmentId(jObj.getLong("boothInchargeEnrollmentId"));
 			inputVO.setFromDateStr(jObj.getString("startDate"));
 			inputVO.setToDateStr(jObj.getString("endDate"));
@@ -144,7 +157,18 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 			InputVO inputVO = new InputVO();
 			inputVO.setLocationLevel(jObj.getString("locationLevel"));
 			inputVO.setFilterLevel(jObj.getString("filterLevel"));
-			inputVO.setFilterValue(jObj.getLong("filterValue"));
+			JSONArray filterValueArr =jObj.getJSONArray("filterValueArr");
+			if(filterValueArr!=null &&  filterValueArr.length()>0){
+				for( int i=0;i<filterValueArr.length();i++){
+					inputVO.getFilterValueList().add(Long.valueOf(filterValueArr.getString(i)));
+				}
+			}
+			JSONArray boothRoleIdArr =jObj.getJSONArray("boothRoleIdArr");
+			if(boothRoleIdArr!=null &&  boothRoleIdArr.length()>0){
+				for( int i=0;i<boothRoleIdArr.length();i++){
+					inputVO.getBoothRoleIds().add(Long.valueOf(boothRoleIdArr.getString(i)));
+				}
+			}
 			inputVO.setBoothInchargeEnrollmentId(jObj.getLong("boothInchargeEnrollmentId"));
 			boothInchargeDetailsList = boothDataValidationService.getLocationBasedOnSelection(inputVO);
 		}catch(Exception e){
@@ -159,7 +183,18 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 			jObj = new JSONObject(getTask());
 			InputVO inputVO = new InputVO();
 			inputVO.setFilterLevel(jObj.getString("filterType"));
-			inputVO.setFilterValue(jObj.getLong("filterValue"));
+			JSONArray filterValueArr =jObj.getJSONArray("filterValueArr");
+			if(filterValueArr!=null &&  filterValueArr.length()>0){
+				for( int i=0;i<filterValueArr.length();i++){
+					inputVO.getFilterValueList().add(Long.valueOf(filterValueArr.getString(i)));
+				}
+			}
+			JSONArray boothRoleIdArr =jObj.getJSONArray("boothRoleIdArr");
+			if(boothRoleIdArr!=null &&  boothRoleIdArr.length()>0){
+				for( int i=0;i<boothRoleIdArr.length();i++){
+					inputVO.getBoothRoleIds().add(Long.valueOf(boothRoleIdArr.getString(i)));
+				}
+			}
 			inputVO.setBoothInchargeEnrollmentId(jObj.getLong("boothEnrollementYearId"));
 			inputVO.setFromDateStr(jObj.getString("fromDate"));
 			inputVO.setToDateStr(jObj.getString("toDate"));
