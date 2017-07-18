@@ -30,6 +30,8 @@ function collapseMenu(id,resultArr,buildId)
 	}else if(id == 3)
 	{
 		levelIdValue = 4;
+	}else if(id == 4){
+		levelIdValue = 5;
 	}else{
 		levelIdValue = 2;
 	}
