@@ -565,7 +565,7 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		queryStr.append(" select TCB.fromDate, TCB.toDate from TrainingCampBatch TCB " +
 						" where " +
 						" TCB.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = :programId and " +
-						" TCB.isCancelled = 'false' ");
+						" TCB.isCancelled = 'false' and TCB.attendeeTypeId= 1 ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("programId", programId);
 		return query.list();
