@@ -243,7 +243,7 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 			}else if(inputVO.getFromDateStr() != null && !inputVO.getFromDateStr().trim().isEmpty() && inputVO.getToDateStr() != null && !inputVO.getToDateStr().trim().isEmpty()){
 				Long fromYear = Long.parseLong(inputVO.getFromDateStr().split("-")[2]);
 				Long toYear = Long.parseLong(inputVO.getToDateStr().split("-")[2]);
-				for (Long i = fromYear; i < toYear; i++) {
+				for (Long i = fromYear; i <= toYear; i++) {
 					inputVO.getStressedHabitationYearsList().add(i.toString());
 				}
 			}
@@ -256,7 +256,7 @@ public class HabitationDetailsOnClickService implements IHabitationDetailsOnClic
 				Long priviousYear = year - 1;
 				inputVO.setFromDate(sdf.parse("01-04-" + priviousYear));
 				inputVO.setToDate(sdf.parse("01-04-" + year));
-				for (Long i = priviousYear; i < year; i++) {
+				for (Long i = priviousYear; i <= year; i++) {
 					inputVO.getStressedHabitationYearsList().add(i.toString());
 				}
 			}
