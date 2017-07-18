@@ -18,9 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
-/*import com.itgrids.dao.IRwsConstituencyDAO;
+import com.itgrids.dao.IRwsConstituencyDAO;
 import com.itgrids.dao.IRwsDistrictDAO;
-import com.itgrids.dao.IRwsTehsilDAO;*/
+import com.itgrids.dao.IRwsTehsilDAO;
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
@@ -54,12 +54,12 @@ public class RWSNICService implements IRWSNICService{
 	private IConstituencyDAO constituencyDAO;
 	@Autowired
 	private ITehsilDAO tehsilDAO;
-/*	@Autowired
+	@Autowired
 	private IRwsTehsilDAO rwsTehsilDAO;
 	@Autowired
 	private IRwsDistrictDAO rwsDistrictDAO;
 	@Autowired
-	private IRwsConstituencyDAO rwsConstituencyDAO;*/
+	private IRwsConstituencyDAO rwsConstituencyDAO;
 	/*
 	 * Date : 15/06/2017
 	 * Author :Sandeep
@@ -68,9 +68,9 @@ public class RWSNICService implements IRWSNICService{
 	public List<LocationVO> getHabitationCoverageByStatusByLocationType(InputVO inputVO){
 		List<LocationVO> voList = new ArrayList<LocationVO>(0);
 		try {
-			/*if(inputVO!= null){
+			if(inputVO!= null){
 				inputVO = setFilterVal(inputVO);
-			}*/
+			}
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getHabitationCoverageByStatusByLocationType");
 			
 	        String authStringEnc = getAuthenticationString("admin","admin@123");
@@ -347,6 +347,10 @@ public class RWSNICService implements IRWSNICService{
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		try {
 			
+			if(VO!= null){
+				VO = setFilterVal(VO);
+			}
+			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getSchemeWiseWorkDetails");
 		     String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		     ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, VO);
@@ -518,7 +522,9 @@ public class RWSNICService implements IRWSNICService{
 	public List<BasicVO> getAssetsInfo(InputVO vo) {
 		List<BasicVO> assetsList = new ArrayList<BasicVO>(0);
 		try {
-        
+			if(vo!= null){
+				vo = setFilterVal(vo);
+			}
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getAssetsinfo");          
 			String authStringEnc = getAuthenticationString("admin","admin@123");          
 			ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, vo);
@@ -871,7 +877,9 @@ public class RWSNICService implements IRWSNICService{
 	public List<KPIVO> getKeyPerformanceIndicatorsInfo(InputVO inputVO){
 		List<KPIVO> voList = new ArrayList<KPIVO>(0);
 		try {
-			
+			if(inputVO!= null){
+				inputVO = setFilterVal(inputVO);
+			}
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getKpiDeatils");
 		    String authStringEnc = getAuthenticationString("admin","admin@123");	        
 		    ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
@@ -1973,6 +1981,10 @@ public class RWSNICService implements IRWSNICService{
 	public List<WaterSourceVO> getWaterSourceDeatils2(InputVO inputVO){
 		List<WaterSourceVO> waterSourceVOList = new ArrayList<WaterSourceVO>(0); 
 		try {
+			
+			if (inputVO != null) {
+				inputVO = setFilterVal(inputVO);
+			}
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getWaterSourceDeatils2");
 	        String authStringEnc = getAuthenticationString("admin","admin@123");
         	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, inputVO);
@@ -2098,7 +2110,7 @@ public class RWSNICService implements IRWSNICService{
     }
 		return ivraHamletList;
 	}	
-/*	
+
 	public InputVO setFilterVal(InputVO inputVO){
 
 		try{
@@ -2118,7 +2130,7 @@ public class RWSNICService implements IRWSNICService{
 				 
 			 }
 			 if(inputVO.getDistrictValue()!= null  && inputVO.getDistrictValue().trim().length()>0){
-				 String districtValue = rwsDistrictDAO.getRwsCode(Long.valueOf(inputVO.getFilterValue().trim()));
+				 String districtValue = rwsDistrictDAO.getRwsCode(Long.valueOf(inputVO.getDistrictValue().trim()));
 				 inputVO.setDistrictValue(districtValue);
 			 }
 			 return inputVO;
@@ -2127,4 +2139,4 @@ public class RWSNICService implements IRWSNICService{
 			return inputVO;
 		}
 	}
-*/}
+ }

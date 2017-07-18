@@ -1,5 +1,5 @@
  //Angular Start  getAlertsOfCategoryByStatusWise()
-		var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY");
+		var glStartDate = moment().subtract(40, 'years').startOf('year').format("DD-MM-YYYY");
 		var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
 		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","Ground":"#14BAAD","Surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
 		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049",
@@ -31,8 +31,12 @@
 			getHamletWiseIvrStatusCounts('graph','','state',"","",2);
 			
 			//locationType,filterType,filterValue,districtValue,divId
-			getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
-			getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+			//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+			//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+			
+			getAllPrrwsDistricts("chosendistValconstituencyBlockId");
+			getAllPrrwsDistricts("chosendistValmandalBlockId");
+			
 			tabBlocks('stateBlockId','state');
 			tabBlocks('districtBlockId','district');
 			tabBlocks('constituencyBlockId','constituency');
@@ -2451,45 +2455,55 @@
 			}else if(blockName == "constituency"){
 				emptyCheckConstituency();
 				if(id == "constituencyBlockIdhabitation"){
-					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 				}else if(id=="constituencyBlockIdperformance"){
-					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table',"","","");
 				}else if(id=="constituencyBlockIdjalavani"){
 					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'constituency',"","",3);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',"","",3);
 				}else if(id == "constituencyBlockIdassestsId"){
-					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					getAssetInfoBetweenDates('table','constituency',blocksArr,"","","");
 				}else if(id == "constituencyBlockIdschemeId"){
-					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","");
 				}else if(id == "constituencyBlockIdwaterSourceId"){
-					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
 					getWaterSourceDeatils2('constituency',blocksArr,"","","")
 				}
 			}else if(blockName == "mandal"){
 				emptyCheckMandal();
 				if(id == "mandalBlockIdhabitation"){
-					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+					getAllPrrwsDistricts("chosendistValmandalBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
 					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 				}else if(id=="mandalBlockIdperformance"){
-					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+					getAllPrrwsDistricts("chosendistValmandalBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table',"","","");
 				}else if(id=="mandalBlockIdjalavani"){
 					getAllPrrwsDistricts("chosendistValmandalBlockId");
 					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'mandal',"","",3);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',"","",3);
 				}else if(id == "mandalBlockIdassestsId"){
-					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+					getAllPrrwsDistricts("chosendistValmandalBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
 					getAssetInfoBetweenDates('table','mandal',blocksArr,"","","");
 				}else if(id == "mandalBlockIdschemeId"){
-					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+					getAllPrrwsDistricts("chosendistValmandalBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
 					getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","");
 				}else if(id == "mandalBlockIdwaterSourceId"){
-					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+					getAllPrrwsDistricts("chosendistValmandalBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
 					getWaterSourceDeatils2('mandal',blocksArr,"","","")
 				}
 			}
@@ -2591,45 +2605,55 @@
 			}else if(blockName == "constituency"){
 				emptyCheckConstituency();
 				if(id == "constituencyBlockIdhabitation"){
-					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 				}else if(id=="constituencyBlockIdperformance"){
-					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table',"","","");
 				}else if(id=="constituencyBlockIdjalavani"){
 					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'constituency',"","",3);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',"","",3);
 				}else if(id == "constituencyBlockIdassestsId"){
-					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					getAssetInfoBetweenDates('table','constituency',blocksArr,"","","");
 				}else if(id == "constituencyBlockIdschemeId"){
-					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","");
 				}else if(id == "constituencyBlockIdwaterSourceId"){
-					getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
+					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
 					getWaterSourceDeatils2('constituency',blocksArr,"","","")
 				}
 			}else if(blockName == "mandal"){
 				emptyCheckMandal();
 				if(id == "mandalBlockIdhabitation"){
-					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+					getAllPrrwsDistricts("chosendistValmandalBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
 					getHabitationCoverageByStatusByLocationType(blockName,blocksArr,'table',"","","");
 				}else if(id=="mandalBlockIdperformance"){
-					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+					getAllPrrwsDistricts("chosendistValmandalBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
 					getKeyPerformanceIndicatorsInfo(blockName,blocksArr,'table',"","","");
 				}else if(id=="mandalBlockIdjalavani"){
 					getAllPrrwsDistricts("chosendistValmandalBlockId");
 					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'mandal',"","",3);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',"","",3);
 				}else if(id == "mandalBlockIdassestsId"){
-					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+					getAllPrrwsDistricts("chosendistValmandalBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
 					getAssetInfoBetweenDates('table','mandal',blocksArr,"","","");
 				}else if(id == "mandalBlockIdschemeId"){
-					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+					getAllPrrwsDistricts("chosendistValmandalBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
 					getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","");
 				}else if(id == "mandalBlockIdwaterSourceId"){
-					getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
+					getAllPrrwsDistricts("chosendistValmandalBlockId");
+					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
 					getWaterSourceDeatils2('mandal',blocksArr,"","","")
 				}
 			}
@@ -3048,11 +3072,11 @@
 		var blockName = getSelectedType().blockNameC;
 		var tabId = getSelectedType().tabIdC;
 		var distId = $(this).val();
-		if(tabId == "constituencyBlockIdjalavani"){
+		/* if(tabId == "constituencyBlockIdjalavani"){
 			distId = distId;
 		}else{
 			distId = distId <= 9?"0"+distId:distId;
-		}
+		} */
 		var searchLevelId = 3;
 		if(blockName == "constituency"){
 			if(distId == 0){
@@ -3076,10 +3100,12 @@
 			}else{
 				 
 				 if(tabId == "constituencyBlockIdhabitation"){
-					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
+					 getConstituenciesForDistrict(distId,"chosenconstValconstituencyBlockId");
+					// getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
 					getHabitationCoverageByStatusByLocationType('constituency',blocksArr,'table',"district",distId,"");
 				}else if(tabId == "constituencyBlockIdperformance"){
-					getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
+					getConstituenciesForDistrict(distId,"chosenconstValconstituencyBlockId");
+					//getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
 					getKeyPerformanceIndicatorsInfo('constituency',blocksArr,'table',"district",distId,"");
 				}else if(tabId == "constituencyBlockIdjalavani"){
 					
@@ -3087,14 +3113,17 @@
 					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'constituency',distId,"",searchLevelId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'constituency',distId,"",searchLevelId);
 				}else if(tabId == "constituencyBlockIdassestsId"){
-					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
+					getConstituenciesForDistrict(distId,"chosenconstValconstituencyBlockId");
+					 //getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
 					getAssetInfoBetweenDates('table','constituency',blocksArr,"district",distId,"");
 				}else if(tabId == "constituencyBlockIdschemeId"){
-					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
+					getConstituenciesForDistrict(distId,"chosenconstValconstituencyBlockId");
+					 //getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
 					getSchemeWiseWorkDetails('table','constituency',blocksArr,"district",distId,"");
 					
 				}else if(tabId == "constituencyBlockIdwaterSourceId"){
-					getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
+					getConstituenciesForDistrict(distId,"chosenconstValconstituencyBlockId");
+					//getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
 					getWaterSourceDeatils2('constituency',blocksArr,"district",distId,"")
 				}
 			}
@@ -3102,11 +3131,12 @@
 	});
 	$(document).on("change","#chosenconstValconstituencyBlockId",function(){
 		var	constId = $(this).val();
-		if(tabId == "constituencyBlockIdjalavani"){
+		var distId = $("#chosendistValconstituencyBlockId").val();
+		/* if(tabId == "constituencyBlockIdjalavani"){
 			var distId = $("#chosendistValconstituencyBlockId").val();
 		}else{
 			var distId = $("#chosendistValconstituencyBlockId").val()<9?"0"+$("#chosendistValconstituencyBlockId").val():$("#chosendistValconstituencyBlockId").val();
-		}
+		} */
 		
 		
 		var blockName = getSelectedType().blockNameC;
@@ -3167,11 +3197,11 @@
 		var blockNameM = getSelectedTypeMandal().blockNameM;
 		var tabIdM = getSelectedTypeMandal().tabIdM;
 		var distId = $(this).val();
-		if(tabIdM == "mandalBlockIdjalavani"){
+		/* if(tabIdM == "mandalBlockIdjalavani"){
 			distId = distId;
 		}else{
 			distId = distId <= 9?"0"+distId:distId;
-		}
+		} */
 		var searchLevelDistId = 3;
 		if(blockNameM == "mandal"){
 			if(distId == 0){
@@ -3195,24 +3225,29 @@
 				}
 			}else{
 				 if(tabIdM == "mandalBlockIdhabitation"){
-					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
+					 getConstituenciesForDistrict(distId,"chosenconstValmandalBlockId");
+					 //getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
 					getHabitationCoverageByStatusByLocationType('mandal',blocksArr,'table',"district",distId,"");
 				}else if(tabIdM == "mandalBlockIdperformance"){
-					getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
+					getConstituenciesForDistrict(distId,"chosenconstValmandalBlockId");
+					//getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
 					getKeyPerformanceIndicatorsInfo('mandal',blocksArr,'table',"district",distId,"");
 				}else if(tabIdM == "mandalBlockIdjalavani"){
 					getConstituenciesForDistrict(distId,"chosenconstValmandalBlockId");
 					getLocationWiseAlertStatusCounts('table',alertStatusBlockArr,'mandal',distId,"",searchLevelDistId);
 					getHamletWiseIvrStatusCounts('table',alertStatusBlockArr,'mandal',distId,"",searchLevelDistId);
 				}else if(tabIdM == "mandalBlockIdassestsId"){
-					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
+					getConstituenciesForDistrict(distId,"chosenconstValmandalBlockId");
+					// getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
 					getAssetInfoBetweenDates('table','mandal',blocksArr,"district",distId,"");
 				}else if(tabIdM == "mandalBlockIdschemeId"){
-					 getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
+					getConstituenciesForDistrict(distId,"chosenconstValmandalBlockId");
+					// getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
 					 getSchemeWiseWorkDetails('table','mandal',blocksArr,"district",distId,"");
 					
 				}else if(tabIdM == "mandalBlockIdwaterSourceId"){
-					getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
+					getConstituenciesForDistrict(distId,"chosenconstValmandalBlockId");
+					//getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
 					getWaterSourceDeatils2('mandal',blocksArr,"district",distId,"")
 				}
 			}
@@ -3223,25 +3258,28 @@
 		var	constId = $(this).val();
 		var blockNameM = getSelectedTypeMandal().blockNameM;
 		var tabIdM = getSelectedTypeMandal().tabIdM;
-		if(tabIdM == "mandalBlockIdjalavani"){
+		var distId = $("#chosendistValmandalBlockId").val();
+		/* if(tabIdM == "mandalBlockIdjalavani"){
 			var distId = $("#chosendistValmandalBlockId").val();
 		}else{
 			var distId = $("#chosendistValmandalBlockId").val()<9?"0"+$("#chosendistValmandalBlockId").val():$("#chosendistValmandalBlockId").val();
-		}
+		} */
 		var searchLevelConstId = 4;
 		var searchLevelDistId = 3;
 		if(blockNameM == "mandal"){
 			if(tabIdM == "mandalBlockIdhabitation"){
 				$("#chosenmandalValmandalBlockId").html("");
 				$("#chosenmandalValmandalBlockId").trigger("chosen:updated");
-				 getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
+				getTehsilsForConstituency(constId,"chosenmandalValmandalBlockId");
+				 //getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
 				if(constId == 0){
 				  getHabitationCoverageByStatusByLocationType('mandal',blocksArr,'table',"district",distId,"");
 				}else{
 					getHabitationCoverageByStatusByLocationType('mandal',blocksArr,'table',"constituency",constId,"");
 				}
 			}else if(tabIdM == "mandalBlockIdperformance"){
-				getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
+				getTehsilsForConstituency(constId,"chosenmandalValmandalBlockId");
+			//	getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
 				if(constId == 0){
 					getKeyPerformanceIndicatorsInfo('mandal',blocksArr,'table',"district",distId,"");
 				}else{
@@ -3260,7 +3298,8 @@
 				}
 				
 			}else if(tabIdM == "mandalBlockIdassestsId"){
-				getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
+				getTehsilsForConstituency(constId,"chosenmandalValmandalBlockId");
+				//getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
 				if(constId == 0){
 					getAssetInfoBetweenDates('table','mandal',blocksArr,"district",distId,"");
 				}else{
@@ -3268,7 +3307,8 @@
 				}
 				
 			}else if(tabIdM == "mandalBlockIdschemeId"){
-				getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
+				getTehsilsForConstituency(constId,"chosenmandalValmandalBlockId");
+				//getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
 				if(constId == 0){
 					getSchemeWiseWorkDetails('table','mandal',blocksArr,"district",distId,"");
 				}else{
@@ -3276,7 +3316,8 @@
 				}
 				
 			}else if(tabIdM == "mandalBlockIdwaterSourceId"){
-				getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
+				getTehsilsForConstituency(constId,"chosenmandalValmandalBlockId");
+				//getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
 				if(constId == 0){
 					getWaterSourceDeatils2('mandal',blocksArr,"district",distId,"")
 				}else{
@@ -3290,7 +3331,10 @@
 		var	mandalId = $(this).val();
 		var blockNameM = getSelectedTypeMandal().blockNameM;
 		var tabIdM = getSelectedTypeMandal().tabIdM;
-		if(tabIdM == "mandalBlockIdjalavani"){
+			var constId = $("#chosenconstValmandalBlockId").val();
+			mandalId=mandalId;
+			var distId = $("#chosendistValmandalBlockId").val();
+		/* if(tabIdM == "mandalBlockIdjalavani"){
 			var constId = $("#chosenconstValmandalBlockId").val();
 			mandalId=mandalId;
 			var distId = $("#chosendistValmandalBlockId").val();
@@ -3298,7 +3342,7 @@
 			var constId = $("#chosenconstValmandalBlockId").val()<9?"0"+$("#chosenconstValmandalBlockId").val():$("#chosenconstValmandalBlockId").val();
 			mandalId = mandalId <= 9?"0"+mandalId:mandalId;
 			var distId = $("#chosendistValmandalBlockId").val()<9?"0"+$("#chosendistValmandalBlockId").val():$("#chosendistValmandalBlockId").val();
-		}
+		} */
 		var searchLevelConstId = 4;
 		var searchLevelDistId = 3;
 		var searchLevelManId = 5;
@@ -3642,6 +3686,7 @@
 		$("#modalKpiTable").html('');
 		$("#modalSchemsTable").html('');
 		
+		
 		var status = $(this).attr("attr_status");
 		var locationValue = $(this).attr("attr_filter_value");
 		var locationType=$(this).attr("attr_location_type");
@@ -3663,6 +3708,7 @@
 		$("#modalIvrStatusTable").html('');
 		$("#modalKpiTable").html('');
 		$("#modalSchemsTable").html('');
+		$(".paginationId").html("");
 		
 		var status = $(this).attr("attr_status");
 		var totalCount=$(this).attr("attr_total_count");
@@ -3807,7 +3853,7 @@
 			if(result !=null && result.length>0){
 				buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount);
 			}else{
-				$(".paginationId").html("");
+				
 				$("#modalSchemsTable").html('No Data Available');
 			}
 			
@@ -3815,6 +3861,7 @@
 	}
 	//waterSource ON CLICK
 	function getWaterSourceDeatilsLocationWise(status,safeUnsafeType,locationType,locationValue,districtVal,startIndex,totalCount){
+		
 		$("#modalWaterSourceTable").html(spinner);
 		
 		var yearVal="";
@@ -4117,7 +4164,7 @@
 	//AlertStatusbuild
 	function buildHabitationDetailsByStatusByLocationType(result,type,status,locationType,locationValue,districtVal,startIndex,totalCount){
 		var tableView='';
-		tableView+='<table class="table table-bordered" id="dataTableHablitation">';
+		tableView+='<table class="table table-bordered" id="dataTableAlertTable">';
 			tableView+='<thead>';
 			tableView+='<tr>';
 				tableView+='<th>TITLE</th>';
@@ -4141,7 +4188,15 @@
 			tableView+='</tbody>';
 		tableView+='</table>';
 		$("#modalAlertTable").html(tableView);
-		
+		$("#dataTableAlertTable").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"order": [ 0, 'desc' ],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
 			if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
 					items: totalCount,
@@ -4160,7 +4215,7 @@
 	//habilationOneTAbbuild
 	function buildHabitationDetailsByStatusByLocationType1(result,type,status,locationType,locationValue,districtVal,startIndex,totalCount){
 		var tableView='';
-		tableView+='<table class="table table-bordered" id="dataTableHablitation">';
+		tableView+='<table class="table table-bordered" id="dataTableHablitationTable">';
 			tableView+='<thead>';
 			tableView+='<tr>';
 					tableView+='<th>DISTRICT</th>';
@@ -4184,7 +4239,15 @@
 			tableView+='</tbody>';
 		tableView+='</table>';
 		$("#modalHablitationTable").html(tableView);
-		
+		$("#dataTableHablitationTable").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"order": [ 0, 'desc' ],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
 		if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
 					items: totalCount,
@@ -4204,7 +4267,7 @@
 	//Asssets build
 	function buildAssetDetailsByAssetType(result,status,locationType,locationValue,startIndex,totalCount){
 		var tableView='';
-		tableView+='<table class="table table-bordered">';
+		tableView+='<table class="table table-bordered" id="dataTableAssetsTable">';
 			tableView+='<thead>';
 			tableView+='<tr>';
 					tableView+='<th>DISTRICT</th>';
@@ -4234,7 +4297,15 @@
 			tableView+='</tbody>';
 		tableView+='</table>';
 		$("#modalAssetsTable").html(tableView);
-		
+		$("#dataTableAssetsTable").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"order": [ 0, 'desc' ],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
 		if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
 					items: totalCount,
@@ -4253,7 +4324,7 @@
 	//waterSorce Build
 	function buildWaterSourceDeatilsLocationWise(result,status,safeUnsafeType,locationType,locationValue,districtVal,startIndex,totalCount){
 		var tableView='';
-		tableView+='<table class="table table-bordered">';
+		tableView+='<table class="table table-bordered" id="dataTableWaterSource"> ';
 			tableView+='<thead>';
 			tableView+='<tr>';
 					tableView+='<th>DISTRICT</th>';
@@ -4278,7 +4349,15 @@
 			tableView+='</tbody>';
 		tableView+='</table>';
 		$("#modalWaterSourceTable").html(tableView);
-		
+		$("#dataTableWaterSource").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"order": [ 0, 'desc' ],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
 		if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
 					items: totalCount,
@@ -4327,7 +4406,15 @@
 			tableView+='</tbody>';
 		tableView+='</table>';
 		$("#modalSchemsTable").html(tableView);
-		$("#dataTableSchems").dataTable();
+		$("#dataTableSchems").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"order": [ 0, 'desc' ],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
 	}
 	//ivr buld
 	function buildLocationWiseHamletIvrList(result,status,locationType,locationValue,totalCount){
@@ -4358,13 +4445,22 @@
 			tableView+='</tbody>';
 		tableView+='</table>';
 		$("#modalIvrStatusTable").html(tableView);
-		$("#dataTableivr").dataTable();
+		
+		$("#dataTableivr").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"order": [ 0, 'desc' ],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
 	}
 	
 	// kpi build
 	function buildOnclickTargetsAcheievementsDetails(result,status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount){
 		var tableView='';
-		tableView+='<table class="table table-bordered" id="dataTableHablitation">';
+		tableView+='<table class="table table-bordered" id="dataTableKpi">';
 			tableView+='<thead>';
 			tableView+='<tr>';
 					tableView+='<th>DISTRICT</th>';
@@ -4388,6 +4484,15 @@
 			tableView+='</tbody>';
 		tableView+='</table>';
 		$("#modalKpiTable").html(tableView);
+		$("#dataTableKpi").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"order": [ 0, 'desc' ],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
 		
 		if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
