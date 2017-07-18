@@ -38,9 +38,9 @@ public class TehsilDAO extends GenericDaoHibernate<Tehsil,Long> implements ITehs
 	}
 	
 	public List<Object[]> getTehsilsForConstituency(Long constituencyId){
-		Query query = getSession().createQuery(" select model.tehsilId,model.tehsilName "
-				+ " from Tehsil model,Constituency model1 "
-				+ " where model.districtId = model1.districtId and model1.constituencyId = :constituencyId ");
+		Query query = getSession().createQuery(" select model.tehsil.tehsilId,tehsil.tehsilName "
+				+ " from TehsilConstituency model "
+				+ " where model.constituencyId = :constituencyId ");
 		query.setParameter("constituencyId", constituencyId);
 		
 		return query.list();

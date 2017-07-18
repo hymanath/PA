@@ -44,7 +44,7 @@ public interface IConstants {
     public static final String STATUS_FAIL = "Fail";
     
     public static final String RWS_NIC_DOMINE_IP = "http://rwss.ap.nic.in";//LIVE URL
-    //public static final String RWS_NIC_DOMINE_IP = "http://192.168.11.150:8085";//LOCAL URL
+    //public static final String RWS_NIC_DOMINE_IP = "http://192.168.11.109:8085";//LOCAL URL
 	
     public static final String MANDAL = "mandal";
     public static final String DISTRICT = "district";
