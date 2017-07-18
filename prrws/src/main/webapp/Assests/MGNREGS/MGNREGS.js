@@ -104,9 +104,15 @@ function onLoadCalls()
 		{
 			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+			{
 				getNREGSProjectsAbstractNew(overViewArr[i],locType,locId,'',levelId);
-			else
-				getNREGSAbstractDataByType(overViewArr[i],locType,locId,'',levelId);
+			}else if(overViewArr[i] == 'Payments')
+			{
+				getNregaPaymentsAbsAndOverview(overViewArr[i],locType,locId,levelId,'abstract');
+			}else
+			{
+				getNREGSAbstractDataByType(overViewArr[i],locType,locId,'',levelId,'dateChange');
+			}
 		}
 	});
 	$('#dateRangePickerMGNF').on('dp.change', function(e){ 
@@ -135,13 +141,17 @@ function onLoadCalls()
 		{
 			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+			{
 				getNREGSProjectsAbstractNew(overViewArr[i],locType,locId,'',levelId);
-			else
-				getNREGSAbstractDataByType(overViewArr[i],locType,locId,'',levelId);
+			}else if(overViewArr[i] == 'Payments')
+			{
+				getNregaPaymentsAbsAndOverview(overViewArr[i],locType,locId,levelId,'abstract');
+			}else
+			{
+				getNREGSAbstractDataByType(overViewArr[i],locType,locId,'',levelId,'dateChange');
+			}
 		}
-		//getNREGSProjectsOverview(blockName);
 	});
-	//getNREGSProjectsOverview('')
 	
 	$(document).on('click','#getWebserviceDetailsId', function(){
 		getWebserviceHealthDetails(glStartDateForWebservice,glEndDateForWebservice);
@@ -195,7 +205,7 @@ function onLoadCalls()
 			else if(divId == "CC Roads")//
 				getNregaLevelsWiseDataForCCRoads(tableId,levelType,menuLocationType,menuLocationId);
 			else if(divId == "Payments" ) //&& (levelType == "state" || levelType == "district" || levelType == "mandal"))
-				getNregaLevelsWiseDataForNewFTOPayments(tableId,levelType,menuLocationType,menuLocationId);
+				getNregaLevelsWiseDataForNewFTOPayments(tableId,levelType,menuLocationType,menuLocationId,'Wage');
 			else if(divId == "FAperformance")
 				getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId);
 			else
@@ -242,7 +252,7 @@ function onLoadCalls()
 					fromDate : fromDate,    
 					toDate : toDate, 
 				};
-	$.ajax({
+		$.ajax({
 			url : "getWebserviceHealthDetails",             
 			data : JSON.stringify(json),
 			type : "POST",
@@ -363,6 +373,22 @@ function projectData(divId,levelId,locationId)
 							}
 							
 								collapse+='<div class="panel-body">';
+								if(divId == 'Payments')
+								{
+									collapse+='';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="Material"  type="radio" attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> Material';
+									collapse+='</label>';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="Wage" type="radio" checked attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> Wage';
+									collapse+='</label>';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="Total" type="radio" attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> Total';
+									collapse+='</label>';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="All" type="radio" attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> All';
+									collapse+='</label>';
+								}
 									collapse+='<div id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"></div>';
 								collapse+='</div>';
 							collapse+='</div>';
@@ -416,7 +442,7 @@ function projectData(divId,levelId,locationId)
 		else if(divId == "CC Roads")//
 			getNregaLevelsWiseDataForCCRoads(tableId,dataArr[0],menuLocationType,menuLocationId);
 		else if(divId == "Payments")//
-			getNregaLevelsWiseDataForNewFTOPayments(tableId,dataArr[0],menuLocationType,menuLocationId);
+			getNregaLevelsWiseDataForNewFTOPayments(tableId,dataArr[0],menuLocationType,menuLocationId,'Wage');
 		else if(divId == "FAperformance")
 			getNregaLevelsWiseDataForFAPerformance(tableId,dataArr[0],menuLocationType,menuLocationId);
 		else
@@ -465,6 +491,8 @@ function overviewData(divId,levelId,locationId)
 		getNREGSLabourBudgetOverview(divId,menuLocationType,menuLocationId);
 	else if(divId != 'Payments')
 		getNregasOverview(divId,menuLocationType,menuLocationId);
+	else if(divId == 'Payments')
+		getNregaPaymentsAbsAndOverview(divId,menuLocationType,0,2,'overview');
 }
 function tableView(blockId,theadArr,result,locationType)
 {
@@ -501,30 +529,6 @@ function tableView(blockId,theadArr,result,locationType)
 	}
 	
 }
-function getNREGSProjectsOverview(blockName)
-{
-	$("#projectsOverview").html(spinner);
-	var json = {
-			year:"2017",
-			fromDate:glStartDate,
-			toDate:glEndDate
-		}
-	$.ajax({
-		url: 'getNREGSProjectsOverview',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			//buildNREGSProjectsOverview(ajaxresp,blockName);
-			
-		}
-	});
-}
-
 function buildNREGSProjectsOverview(result,blockName)
 {
 	var str='';
@@ -561,12 +565,7 @@ function buildNREGSProjectsOverview(result,blockName)
 				for(var i in result)
 				{
 					if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "Solid Waste Management" || result[i] == "Play Fields" || result[i] == "Burial Grounds" || result[i] == "Agriculture Activities" || result[i] == "Payments" || result[i] == "FAperformance"){
-						if(result[i] == "Payments")
-						{
-							str+='<div class="col-sm-4 m_top10">';
-						}else{
-							str+='<div class="col-sm-2 m_top10">';
-						}
+						str+='<div class="col-sm-2 m_top10">';
 						if(result[i] == "FAperformance"){
 							str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
@@ -2716,38 +2715,15 @@ for(var i in overViewArr)
 {
 	$("[overview-block='"+overViewArr[i]+"']").append(spinner);
 	if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+	{
 		getNREGSProjectsAbstractNew(overViewArr[i],'state',"0",'',2);
-	else
-		getNREGSAbstractDataByType(overViewArr[i],'state',"0",'',2);
+	}else if(overViewArr[i] == 'Payments')
+	{
+		getNregaPaymentsAbsAndOverview(overViewArr[i],'state',0,2,'abstract');
+	}else{
+		getNREGSAbstractDataByType(overViewArr[i],'state',"0",'',2,'onLoad');
+	}
 }
-/*for(var i in overViewArr){
-	getNREGSProjectsOverviewArr(overViewArr[i]);
-}
-
-function getNREGSProjectsOverviewArr(parameter)
-{
-	$("#projectsOverview").html(spinner);
-	var json = {
-			year:"2017",
-			fromDate:glStartDate,
-			toDate:glEndDate,
-			parameter : parameter
-		}
-	$.ajax({
-		url: 'getNREGSProjectsOverview',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			buildNREGSProjectsOverview(ajaxresp,'');
-			
-		}
-	});
-}*/
 
 function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,menuLocationId)
 {
@@ -2828,7 +2804,7 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 	});
 }
 
-function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocationType,menuLocationId)
+function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocationType,menuLocationId,buildType)
 {
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Type','Generated Quantity','Generated Amount','Genereated Pending Quantity','Generated Pending Amount','upload Quantity','upload Amount','Upload Pending Qunatity','Upload Pending Amount','Sent To Bank Quantity','sent To Bank Amount','Sent To Bank Pending Quantity','Sent To Bank Pending Amount','Failed Transaction Quantity','Failed Transaction Amount','Failed Transaction Pending Quantity','Failed Transaction Pending Amount'];
@@ -2848,7 +2824,8 @@ function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocatio
 		locationType: menuLocationType,
 		divType : globalDivName,
 		locationId : menuLocationId,
-		sublocaType : locationType
+		sublocaType : locationType,
+		type:buildType
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataForNewFTOPayments',
@@ -2974,23 +2951,153 @@ function getNREGSProjectsAbstractNew(type,locType,locId,blockName,levelId)
 		  xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			//if(ajaxresp != null && ajaxresp.length > 0){
-				buildNREGSAbstractDataByType(type,ajaxresp,blockName,locId,locType,levelId)
-			//}
+			buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId);
 		}
 	});
 }
-function getNREGSAbstractDataByType(type,locType,locId,blockName,levelId)
+function getNregaPaymentsAbsAndOverview(type,locType,locId,levelId,buildType)
 {
-
+	$("#projectOvervw"+type.replace(/\s+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		type : type,
 		locationType: locType,
-		locationId : locId
+		divType : type,
+		locationId : locId,
+		sublocaType :locType
 	}
+	$.ajax({
+		url: 'getNregaPaymentsAbsAndOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			if(buildType == 'abstract')
+			{
+				buildNREGSAbstractDataByTypeNew(type,ajaxresp,'',locId,locType,levelId);
+			}else if(buildType == 'overview')
+			{
+				buildPaymentsOverviewData(ajaxresp,type);
+			}
+			
+		}
+	});
+}
+function buildPaymentsOverviewData(result,projectDivId)
+{
+	var str= '';
+	str+='<div class="row">';
+		str+='<div class="col-sm-12">';
+			str+='<h4 class="text-center"><strong>Fund Transfer Order - Payments</strong></h4>';
+			str+='<div class="row">';
+				str+='<div class="col-sm-4">';
+					str+='<h4 class="panel-title text-capital">total fto - '+result.totalPendings+' (<i class="fa fa-inr"></i> '+result.totalPayments+')</h4>';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-6">';
+							str+='<p class="text-capital"><strong>wages - '+result.totalWage+'</strong></p>';
+							str+='<p class="text-capitalize m_top10">Completed</p>';
+							str+='<p><strong>'+result.completedWage+'</strong> (<i class="fa fa-inr"></i> '+result.completedWageAmount+')</p>';
+							str+='<p class="text-capitalize">Pending</p>';
+							str+='<p><strong>'+result.pendingWage+'</strong> (<i class="fa fa-inr"></i> '+result.pendingWageAmount+')</p>';
+							str+='<p class="text-capitalize">Failed</p>';
+							str+='<p><strong>'+result.failedWage+'</strong> (<i class="fa fa-inr"></i> '+result.failedWageAmount+')</p>';
+						str+='</div>';
+						str+='<div class="col-sm-6">';
+							str+='<p class="text-capital"><strong>material - '+result.totalMaterial+'</strong></p>';
+							str+='<p class="text-capitalize m_top10">Completed</p>';
+							str+='<p><strong>'+result.completedMaterial+'</strong> (<i class="fa fa-inr"></i> '+result.completedMaterialAmount+')</p>';
+							str+='<p class="text-capitalize">Pending</p>';
+							str+='<p><strong>'+result.pendingMaterial+'</strong> (<i class="fa fa-inr"></i> '+result.pendingMaterialAmount+')</p>';
+							str+='<p class="text-capitalize">Failed</p>';
+							str+='<p><strong>'+result.failedMaterial+'</strong> (<i class="fa fa-inr"></i> '+result.failedMaterialAmount+')</p>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-8 m_top20">';
+					str+='<table class="table table-bordered">';
+						str+='<thead>';
+							str+='<th style="padding:20px;">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-12">';
+										str+='<h4 class="text-capital panel-title text-center"><span style="padding:3px 8px;background-color:#ccc">generated - '+result.totalGenerates+' (<i class="fa fa-inr"></i> '+result.totalGeneratesAmount+')</span></h4>';
+									str+='</div>';
+									str+='<div class="col-sm-6 m_top20">';
+										str+='<p>Wages</p>';
+										str+='<p>'+result.generatedWage+' (<i class="fa fa-inr"></i> '+result.generatedWageAmount+')</p>';
+									str+='</div>';
+									str+='<div class="col-sm-6 m_top20">';
+										str+='<p>Material</p>';
+										str+='<p>'+result.generatedMaterial+' (<i class="fa fa-inr"></i> '+result.generatedMaterialAmount+')</p>';
+									str+='</div>';
+								str+='</div>';
+							str+='</th>';
+							str+='<th style="padding:20px;">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-12">';
+										str+='<h4 class="text-capital panel-title text-center"><span style="padding:3px 8px;background-color:#ccc">uploaded - '+result.totalUploads+' (<i class="fa fa-inr"></i> '+result.totalUploadsAmount+')</span></h4>';
+									str+='</div>';
+									str+='<div class="col-sm-6 m_top20">';
+										str+='<p>Wages</p>';
+										str+='<p>'+result.uploadWage+' (<i class="fa fa-inr"></i> '+result.uploadedWageAmount+')</p>';
+									str+='</div>';
+									str+='<div class="col-sm-6 m_top20">';
+										str+='<p>Material</p>';
+										str+='<p>'+result.uploadMaterial+' (<i class="fa fa-inr"></i> '+result.uploadedMaterialAmount+')</p>';
+									str+='</div>';
+								str+='</div>';
+							str+='</th>';
+							str+='<th style="padding:20px;">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-12">';
+										str+='<h4 class="text-capital panel-title text-center"><span style="padding:3px 8px;background-color:#ccc">sent to bank - '+result.totalSentBankS+' (<i class="fa fa-inr"></i> '+result.totalSentBankAmount+')</span></h4>';
+									str+='</div>';
+									str+='<div class="col-sm-6 m_top20">';
+										str+='<p>Wages</p>';
+										str+='<p>'+result.sentBankWage+' (<i class="fa fa-inr"></i> '+result.sentBankWageAmount+')</p>';
+									str+='</div>';
+									str+='<div class="col-sm-6 m_top20">';
+										str+='<p>Material</p>';
+										str+='<p>'+result.sentBankMaterial+' (<i class="fa fa-inr"></i> '+result.sentBankMaterialAmount+')</p>';
+									str+='</div>';
+								str+='</div>';
+							str+='</th>';
+						str+='</thead>';
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str);
+}
+
+function getNREGSAbstractDataByType(type,locType,locId,blockName,levelId,buildDateType)
+{
+	if(buildDateType == 'onLoad' && type == 'FAperformance')
+	{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : '2017-05-01',
+			type : type,
+			locationType: locType,
+			locationId : locId
+		}
+	}else{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			type : type,
+			locationType: locType,
+			locationId : locId
+		}
+	}
+	
 	
 	$.ajax({
 		url: 'getNREGSAbstractDataByType',
@@ -3002,20 +3109,281 @@ function getNREGSAbstractDataByType(type,locType,locId,blockName,levelId)
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			//if(ajaxresp != null && ajaxresp.length > 0){
-				buildNREGSAbstractDataByType(type,ajaxresp,blockName,locId,locType,levelId)
-			//}
-			
+			buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId);
 		}
-	});
+	}); 
 }
-function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelId)
+function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,levelId)
 {
 	$("[overview-block='"+type+"']").removeClass("panel-block-white");
 	var str='';
 	
 	$("[overview-block='"+type+"']").attr("attr_levelId",levelId);
 	$("[overview-block='"+type+"']").attr("attr_locationId",locId);
+	if(type == 'Payments' && result != null)
+	{
+		str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+			if(type.length > 12)
+			{
+				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+			}else{
+				str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+			}
+			str+='<small class="text-center">Total Pending</small>';
+			if(result.totalPendings != null && result.totalPendings.length > 0)
+			{
+				str+='<h1 class="text-center">'+result.totalPendings+'</h1>';
+			}else{
+				str+='<h1 class="text-center">0</h1>';
+			}
+			str+='<div class="row">';
+				str+='<div class="col-sm-6 text-center">';
+					str+='<label>Pending Wage</label>';
+					if(result.pendingWage != null && result.pendingWage.length > 0)
+					{
+						str+='<h4>'+result.pendingWage+' (<i class="fa fa-inr"></i>'+result.pendingWageAmount+')</h4>';
+					}else{
+						str+='<h4>0</h4>';
+					}
+					
+				str+='</div>';
+				str+='<div class="col-sm-6 text-center">';
+					str+='<label>Pending Material</label>';
+					if(result.pendingMaterial != null && result.pendingMaterial.length > 0)
+					{
+						str+='<h4>'+result.pendingMaterial+' (<i class="fa fa-inr"></i>'+result.pendingMaterialAmount+')</h4>';
+					}else{
+						str+='<h4>0</h4>';
+					}
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	}
+	if(result != null && result.length > 0)
+	{
+		for(var i in result)
+		{
+			if(levelId == 2 || levelId == "2"){
+				
+				if(result[i].percentage < 50)
+				{
+					str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+				}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+				{
+					str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+					
+				}else if(result[i].percentage >= 80)
+				{
+					str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+				}
+					if(type.length > 12)
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+					}else{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+					}
+					str+='<small class="text-center">Achieved</small>';
+					if(result[i].percentage != null && result[i].percentage.length > 0)
+					{
+						str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+					}else{
+						str+='<h1 class="text-center">0<small>%</small>';
+					}
+						
+					if(result[i].percentage < 50)
+					{
+						str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+					}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+					{
+						str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+					}else if(result[i].percentage >= 80)
+					{
+						str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+					}
+					str+='<div class="row">';
+						str+='<div class="col-sm-6 text-center">';
+							str+='<label>Target</label>';
+							if(result[i].target != null && result[i].target.length > 0)
+							{
+								if(result[i].parameter == 'Labour Budget')
+								{
+									str+='<h4>'+result[0].target+'L</h4>';
+								}else if(result[0].parameter == 'Timely Payments'){
+									str+='<h4>'+result[0].target+'%</h4>';
+								}else{
+									str+='<h4>'+result[0].target+'</h4>';
+								}
+							}else{
+								str+='<h4>0</h4>';
+							}
+							
+						str+='</div>';
+						str+='<div class="col-sm-6 text-center">';
+							str+='<label>Completed</label>';
+							if(result[i].completed != null && result[i].completed.length > 0)
+							{
+								if(result[i].parameter == 'Labour Budget')
+								{
+									str+='<h4>'+result[i].completed+'L</h4>';
+								}else if(result[i].parameter == 'Timely Payments'){
+									str+='<h4>'+result[i].completed+'%</h4>';
+								}else{
+									str+='<h4>'+result[i].completed+'</h4>';
+								}
+								
+							}else{
+								str+='<h4>0</h4>';
+							}
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			}else if(levelId == 3 || levelId == "3")
+			{
+				if(result[i].type == 'DISTRICT')
+				{
+					if(result[i] != null)
+					{
+						if(result[i].percentage < 50)
+						{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+						{
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+							
+						}else if(result[i].percentage >= 80)
+						{
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+						}
+							if(type.length > 12)
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+							}else{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+							}
+							str+='<small class="text-center">Achieved</small>';
+							if(result[i].percentage != null && result[i].percentage.length > 0)
+							{
+								str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+							}else{
+								str+='<h1 class="text-center">0<small>%</small>';
+							}
+								
+							if(result[i].percentage < 50)
+							{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+							{
+								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+							}else if(result[i].percentage >= 80)
+							{
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}
+							str+='<div class="row">';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Target</label>';
+									if(result[i].target != null && result[i].target.length > 0)
+									{
+										if(result[i].parameter == 'Labour Budget')
+										{
+											str+='<h4>'+result[0].target+'L</h4>';
+										}else if(result[0].parameter == 'Timely Payments'){
+											str+='<h4>'+result[0].target+'%</h4>';
+										}else{
+											str+='<h4>'+result[0].target+'</h4>';
+										}
+									}else{
+										str+='<h4>0</h4>';
+									}
+									
+								str+='</div>';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Completed</label>';
+									if(result[i].completed != null && result[i].completed.length > 0)
+									{
+										if(result[i].parameter == 'Labour Budget')
+										{
+											str+='<h4>'+result[i].completed+'L</h4>';
+										}else if(result[i].parameter == 'Timely Payments'){
+											str+='<h4>'+result[i].completed+'%</h4>';
+										}else{
+											str+='<h4>'+result[i].completed+'</h4>';
+										}
+										
+									}else{
+										str+='<h4>0</h4>';
+									}
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					}else{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+							str+='<h1 class="text-center">0<small>%</small></h1>';
+							str+='<div class="row">';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Target</label>';
+									str+='<h4>0</h4>';
+								str+='</div>';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Completed</label>';
+									str+='<h4>0</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					}
+					
+				}else if(result[i].type == 'STATE')
+				{
+					if(result[i] != null)
+					{
+						if(result[i].percentage < 50)
+						{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+						{
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+							
+						}else if(result[i].percentage >= 80)
+						{
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+						}
+							str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
+							if(result[i].percentage != null && result[i].percentage.length > 0)
+							{
+								str+='<h2 class="text-center">'+result[i].percentage+'</h2>';
+							}else{
+								str+='<h2 class="text-center">0</h2>';
+							}
+						str+='</div>';
+					}else{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+							str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
+							str+='<h2 class="text-center">0</h2>';
+						str+='</div>';
+					}
+				}
+			}else if(levelId == 4 || levelId == "4")
+			{
+				str+='<div>Constituencies Service Pending</div>';
+			}
+		}
+	}
+	
+	$("[overview-block='"+type+"']").html(str);
+	$(".panel-block-white-title").tooltip();
+	if(type == blockName)
+	{
+		$("[overview-block='"+blockName+"']").trigger("click");
+	}
+	
+}
+/* function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelId)
+{
+	$("[overview-block='"+type+"']").removeClass("panel-block-white");
+	var str='';
+	
+	$("[overview-block='"+type+"']").attr("attr_levelId",levelId);
+	$("[overview-block='"+type+"']").attr("attr_locationId",locId);
+	
 	if(result != null && result.length > 0)
 	{
 		if(result[0].parameter == 'Payments')
@@ -3229,7 +3597,7 @@ function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelI
 	{
 		$("[overview-block='"+blockName+"']").trigger("click");
 	}
-}
+} */
 $(document).on("click",".menuDataCollapse",function(){
 	$(".multi-level-selection-menu").css("display","none");
 	$(".arrowIconChanged").find('.fa').removeClass("fa-chevron-up");
@@ -3250,24 +3618,35 @@ $(document).on("click",".menuDataCollapse",function(){
 	$("#selectedName").attr("attr_id",locId)
 	if(levelId == 3)
 	{
-		
 		for(var i in overViewArr)
 		{
-			if(overViewArr[i] != 'Payments' && overViewArr[i] != 'FAperformance')
-			{
-				$("[overview-block='"+overViewArr[i]+"']").html(spinner);
-			}else{
-				$("[overview-block='"+overViewArr[i]+"']").html(' ');
-			}
+			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
 			{
-
 				getNREGSProjectsAbstractNew(overViewArr[i],'district',locId,blockName,levelId);
+			}else if(overViewArr[i] == 'Payments')
+			{
+				getNregaPaymentsAbsAndOverview(overViewArr[i],'district',locId,levelId,'abstract');
+			}else
+			{
+				getNREGSAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId,'onLoad');
 			}
-			else if(overViewArr[i] != 'FAperformance'){
-				getNREGSAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId);
+		}
+	}else if(levelId == 4)
+	{
+		for(var i in overViewArr)
+		{
+			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
+			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+			{
+				getNREGSProjectsAbstractNew(overViewArr[i],'constituency',locId,blockName,levelId);
+			}else if(overViewArr[i] == 'Payments')
+			{
+				getNregaPaymentsAbsAndOverview(overViewArr[i],'constituency',locId,levelId,'abstract');
+			}else
+			{
+				getNREGSAbstractDataByType(overViewArr[i],'constituency',locId,blockName,levelId,'onLoad');
 			}
-				
 		}
 	}else if(levelId == 2)
 	{
@@ -3275,15 +3654,21 @@ $(document).on("click",".menuDataCollapse",function(){
 		{
 			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
-				getNREGSProjectsAbstractNew(overViewArr[i],'state',"0",blockName,levelId);
-			else
-				getNREGSAbstractDataByType(overViewArr[i],'state',"0",blockName,levelId);
+			{
+				getNREGSProjectsAbstractNew(overViewArr[i],'state',locId,blockName,levelId);
+			}else if(overViewArr[i] == 'Payments')
+			{
+				getNregaPaymentsAbsAndOverview(overViewArr[i],'state',locId,levelId,'abstract');
+			}else
+			{
+				getNREGSAbstractDataByType(overViewArr[i],'state',locId,blockName,levelId,'onLoad');
+			}
 		}
 	}
 	
 });
 
-var stateArr = [{'name':'Andhra Pradesh','id':1}];
+var stateArr = [{'name':'Andhra Pradesh','type':1}];
 collapseMenu(1,stateArr,'multi-level-selection-menu');
 function getAllNregaSubLocationDetails(divId,levelId,locationScopeId,type){
 	$("."+divId).html(spinner);
@@ -3312,6 +3697,9 @@ function collapseMenu(id,resultArr,buildId)
 	if(id == 2)
 	{
 		levelIdValue = 3;
+	}else if(id == 3)
+	{
+		levelIdValue = 4;
 	}else{
 		levelIdValue = 2;
 	}
@@ -3321,18 +3709,19 @@ function collapseMenu(id,resultArr,buildId)
 	for(var i in resultArr)
 	{
 		collapse+='<div class="panel panel-default panelExpand">';
-			collapse+='<div class="panel-heading" role="tab" id="heading'+resultArr[i].id+'">';
+			collapse+='<div class="panel-heading" role="tab" id="heading'+resultArr[i].type+'">';
 				collapse+='<h4 class="panel-title">';
+					//if(levelIdValue == 2 || levelIdValue == 3)
 					if(levelIdValue == 2)
 					{
-						collapse+='<a role="button" style="height:10px;width:10px;display:inline-block;" attr_levelIdValue="'+levelIdValue+'" attr_distId="'+resultArr[i].type+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].id+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id"  class="panelCollapseIcon panelCollapseIconClick collapsed" data-toggle="collapse" data-parent="#accordion'+[id]+'" href="#collapse'+resultArr[i].id+'" aria-expanded="true" aria-controls="collapse'+resultArr[i].id+'">&nbsp;</a>';
+						collapse+='<a role="button" style="height:10px;width:10px;display:inline-block;" attr_levelIdValue="'+levelIdValue+'" attr_distId="'+resultArr[i].type+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].type+'" attr_targetId="collapseMenu'+resultArr[i].type+'Id"  class="panelCollapseIcon panelCollapseIconClick collapsed" data-toggle="collapse" data-parent="#accordion'+id+'" href="#collapse'+resultArr[i].type+'" aria-expanded="true" aria-controls="collapse'+resultArr[i].type+'">&nbsp;</a>';
 					}
-					collapse+='<span style="padding-left:10px;cursor:pointer;" class="menuDataCollapse"  attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].type+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id" >'+resultArr[i].name+'</span>';
+					collapse+='<span style="padding-left:10px;cursor:pointer;" class="menuDataCollapse"  attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].type+'" attr_targetId="collapseMenu'+resultArr[i].type+'Id" >'+resultArr[i].name+'</span>';
 				collapse+='</h4>';
 			collapse+='</div>';
-			collapse+='<div id="collapse'+resultArr[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+resultArr[i].id+'">';
+			collapse+='<div id="collapse'+resultArr[i].type+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+resultArr[i].type+'">';
 				collapse+='<div class="panel-body">';
-					collapse+='<div class="collapseMenu'+resultArr[i].id+'Id"></div>';
+					collapse+='<div class="collapseMenu'+resultArr[i].type+'Id"></div>';
 				collapse+='</div>';
 			collapse+='</div>';
 		collapse+='</div>';
@@ -3355,6 +3744,7 @@ $(document).on("click",".panelCollapseIconClick",function(e){
 	}
 	if(levelId == "3" || levelId == 3)
 	{
+		locationScopeId = $(this).attr("attr_distid");
 		type='constituency';
 	}
 	getAllNregaSubLocationDetails(buildId,levelId,locationScopeId,type)
@@ -3449,6 +3839,25 @@ $(document).on("click","#selectedName",function(){
 	$(".arrowIconChanged").parent().find('i.fa').removeClass("fa-chevron-down");
 	$(".arrowIconChanged").parent().find('i.fa').addClass("fa-chevron-up");
 });
+$(document).on("click","[attr_radioBtn]",function(){
+	var blockName = $(this).attr("name");
+	var locationType = $(this).attr("attr_locationType");
+	var levelId = $(this).attr("attr_levelId");
+	var locationId = $(this).attr("overview-locationId");
+	var menuLocationType = '';
+	var menuLocationId = '';
+	var buildType = $(this).attr("attr_name");
+	if(levelId == 2)
+	{
+		menuLocationId = "-1";
+		menuLocationType = "state";
+	}else if(levelId == 3)
+	{
+		menuLocationId = locationId;
+		menuLocationType = "district";
+	}
+	getNregaLevelsWiseDataForNewFTOPayments(blockName,locationType,menuLocationType,menuLocationId,buildType);
+});
 //getNregaParliamentDataFrPayments();
 /* function getNregaParliamentDataFrPayments()
 {
@@ -3465,33 +3874,6 @@ $(document).on("click","#selectedName",function(){
 	}
 	$.ajax({
 		url: 'getNregaParliamentDataFrpayments',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-		}
-	});
-} */
-//getNregaPaymentsAbsAndOverview();
-/* function getNregaPaymentsAbsAndOverview()
-{
-	//$("#"+divIdd).html(spinner);
-	
-	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-		toDate : glEndDate,
-		locationType: "state",
-		divType : "Payments",
-		locationId : "-1",
-		sublocaType : "state"
-	}
-	$.ajax({
-		url: 'getNregaPaymentsAbsAndOverview',
 		data: JSON.stringify(json),
 		type: "POST",
 		dataType: 'json', 
