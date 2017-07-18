@@ -27,6 +27,7 @@ public class TrainingCampDAO extends GenericDaoHibernate<TrainingCamp, Long> imp
 		" where model.trainingCampId =model1.trainingCampId  and model.trainingCampId = model2.trainingCampId " +
 		" and model.trainingCampId=:trainingCampId  and model2.enrollmentYearId in(:enrollmentYrIds) " +
 		" and model2.trainingCampProgramId in(:programIds)" +
+		" and model2.trainingCampProgram.isDeleted ='N' "+
 		" order by model1.district.districtId asc");
 		query.setParameter("trainingCampId",campId);
 		query.setParameterList("enrollmentYrIds", enrollmentYrIds);
@@ -52,7 +53,7 @@ public class TrainingCampDAO extends GenericDaoHibernate<TrainingCamp, Long> imp
     public List<Object[]> getCampConstsByCampId(Long campId,List<Long> enrollmentYrIds,List<Long> programIds){
 		
 		Query query=getSession().createQuery(" select c.constituencyId,c.name " +
-		" from TrainingCamp model,TrainingCampDistrict model1,Constituency c,trainingCampSchedule  model2" +
+		" from TrainingCamp model,TrainingCampDistrict model1,Constituency c,TrainingCampSchedule  model2 " +
 		" where model.trainingCampId =model1.trainingCampId and model.trainingCampId=:trainingCampId " +
 		" and model1.district.districtId=c.district.districtId  and model.trainingCampId = model2.trainingCampId " +
 		" and model2.enrollmentYearId in(:enrollmentYrIds) and model2.trainingCampProgram.trainingCampProgramId in(:programIds) " +
