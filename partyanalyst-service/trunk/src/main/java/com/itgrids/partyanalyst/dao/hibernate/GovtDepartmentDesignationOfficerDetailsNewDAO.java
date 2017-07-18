@@ -278,7 +278,7 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
 	public List<Long> getGovtDeptDesigOfficerIdListByUserId(Long userId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId from GovtDepartmentDesignationOfficerDetailsNew model " +
-						" where  model.userId = :userId");
+						" where  model.userId = :userId and model.isDeleted = 'N' ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("userId", userId);
 		return query.list();
