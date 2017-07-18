@@ -489,10 +489,10 @@ function overviewData(divId,levelId,locationId)
 	
 	if(divId == 'Labour Budget')
 		getNREGSLabourBudgetOverview(divId,menuLocationType,menuLocationId);
-	else if(divId != 'Payments')
-		getNregasOverview(divId,menuLocationType,menuLocationId);
 	else if(divId == 'Payments')
-		getNregaPaymentsAbsAndOverview(divId,menuLocationType,0,2,'overview');
+		getNregaPaymentsAbsAndOverview(divId,menuLocationType,menuLocationId,2,'overview');
+	else
+		getNregasOverview(divId,menuLocationType,menuLocationId);
 }
 function tableView(blockId,theadArr,result,locationType)
 {
@@ -3138,20 +3138,20 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			}
 			str+='<div class="row">';
 				str+='<div class="col-sm-6 text-center">';
-					str+='<label>Pending Wage</label>';
+					str+='<label>Wage</label>';
 					if(result.pendingWage != null && result.pendingWage.length > 0)
 					{
-						str+='<h4>'+result.pendingWage+' (<i class="fa fa-inr"></i>'+result.pendingWageAmount+')</h4>';
+						str+='<h4>'+result.pendingWage+'</h4> <h4>(<i class="fa fa-inr"></i>'+result.pendingWageAmount+')</h4>';
 					}else{
 						str+='<h4>0</h4>';
 					}
 					
 				str+='</div>';
 				str+='<div class="col-sm-6 text-center">';
-					str+='<label>Pending Material</label>';
+					str+='<label>Material</label>';
 					if(result.pendingMaterial != null && result.pendingMaterial.length > 0)
 					{
-						str+='<h4>'+result.pendingMaterial+' (<i class="fa fa-inr"></i>'+result.pendingMaterialAmount+')</h4>';
+						str+='<h4>'+result.pendingMaterial+'</h4><h4> (<i class="fa fa-inr"></i>'+result.pendingMaterialAmount+')</h4>';
 					}else{
 						str+='<h4>0</h4>';
 					}
@@ -3376,228 +3376,6 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	}
 	
 }
-/* function buildNREGSAbstractDataByType(type,result,blockName,locId,locType,levelId)
-{
-	$("[overview-block='"+type+"']").removeClass("panel-block-white");
-	var str='';
-	
-	$("[overview-block='"+type+"']").attr("attr_levelId",levelId);
-	$("[overview-block='"+type+"']").attr("attr_locationId",locId);
-	
-	if(result != null && result.length > 0)
-	{
-		if(result[0].parameter == 'Payments')
-		{
-			if(locType != 'district')
-			{
-				str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
-					if(type.length > 12)
-					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-					}else{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
-					}
-					str+='<div class="row">';
-						str+='<div class="col-sm-6">';
-							str+='<small>Payment Response Count</small> <h2>'+result[0].pendingresponsecnt+'</h2>';
-							str+='<small>FTO Not Uploaded Count</small> <h2>'+result[0].ftonotuploadcnt+'</h2>';
-						str+='</div>';
-						str+='<div class="col-sm-6">';
-							str+='<small>FTO Not Generated Count</small> <h2>'+result[0].ftonotgencnt+'</h2>';
-							str+='<small>FTO Not Sent Count</small> <h2>'+result[0].ftonotsentcnt+'</h2>';
-						str+='</div>';
-						str+='<div class="col-sm-12">';
-							str+='<small>Reject Count '+result[0].rejectcnt+'</small>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-			}else{
-				//str+='<div></div>';
-				str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
-				if(type == "FAperformance"){
-					str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
-				}
-				else{
-					if(type.length > 12)
-					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-					}else{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
-					}
-				}
-					str+='<small class="text-center">Achieved</small>';
-					str+='<h1 class="text-center">0<small>%</small>';
-					str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
-					str+='<div class="row">';
-						str+='<div class="col-sm-6 text-center">';
-							str+='<label>Target</label>';
-							str+='<h4>0</h4>';
-						str+='</div>';
-						str+='<div class="col-sm-6 text-center">';
-							str+='<label>Completed</label>';
-							str+='<h4>0</h4>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-			}
-		}
-		
-		//$("[overview-block='Payments'']").closest(".col-sm-2").removeClass("col-sm-2").addClass("col-sm-4");
-	}
-	if(result[0] != null && result[0].parameter != 'Payments')
-	{
-		if(result[0].percentage < 50)
-		{
-			str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
-		}else if(result[0].percentage >= 50 && result[0].percentage < 80)
-		{
-			str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
-			
-		}else if(result[0].percentage >= 80)
-		{
-			str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
-		}
-		
-		if(result[0].parameter == "FAperformance"){
-			str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
-		}
-		else{
-			if(type.length > 12)
-			{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-			}else{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
-			}
-		}
-		
-			
-			str+='<small class="text-center">Achieved</small>';
-			if(result[0].percentage != null && result[0].percentage.length > 0)
-			{
-				str+='<h1 class="text-center">'+result[0].percentage+'<small>%</small>';
-			}else{
-				str+='<h1 class="text-center">0<small>%</small>';
-			}
-				
-			if(result[0].percentage < 50)
-			{
-				str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
-			}else if(result[0].percentage >= 50 && result[0].percentage < 80)
-			{
-				str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
-			}else if(result[0].percentage >= 80)
-			{
-				str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
-			}
-			str+='<div class="row">';
-				str+='<div class="col-sm-6 text-center">';
-					str+='<label>Target</label>';
-					if(result[0].target != null && result[0].target.length > 0)
-					{
-						if(result[0].parameter == 'Labour Budget' && locType != 'district')
-						{
-							str+='<h4>'+result[0].target+'L</h4>';
-						}else if(result[0].parameter == 'Timely Payments'){
-							str+='<h4>'+result[0].target+'%</h4>';
-						}else{
-							str+='<h4>'+result[0].target+'</h4>';
-						}
-						
-					}else{
-						str+='<h4>0</h4>';
-					}
-					
-				str+='</div>';
-				str+='<div class="col-sm-6 text-center">';
-					str+='<label>Completed</label>';
-					if(result[0].completed != null && result[0].completed.length > 0)
-					{
-						if(result[0].parameter == 'Labour Budget' && locType != 'district')
-						{
-							str+='<h4>'+result[0].completed+'L</h4>';
-						}else if(result[0].parameter == 'Timely Payments'){
-							str+='<h4>'+result[0].completed+'%</h4>';
-						}else{
-							str+='<h4>'+result[0].completed+'</h4>';
-						}
-						
-					}else{
-						str+='<h4>0</h4>';
-					}
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-	}else if(result[0] != null && (result[0].parameter == 'Payments' || result[0].parameter == 'FAperformance'))
-	{
-		str+='<div></div>';
-	}else{
-		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
-		if(type == "FAperformance"){
-			str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
-		}
-		else{
-			if(type.length > 12)
-			{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-			}else{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
-			}
-		}
-			str+='<small class="text-center">Achieved</small>';
-			str+='<h1 class="text-center">0<small>%</small>';
-			str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
-			str+='<div class="row">';
-				str+='<div class="col-sm-6 text-center">';
-					str+='<label>Target</label>';
-					str+='<h4>0</h4>';
-				str+='</div>';
-				str+='<div class="col-sm-6 text-center">';
-					str+='<label>Completed</label>';
-					str+='<h4>0</h4>';
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-	}
-	
-	
-	if(locType == 'district')
-	{
-		if(result[1] != null)
-		{
-			if(result[1].percentage < 50)
-			{
-				str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-			}else if(result[1].percentage >= 50 && result[1].percentage < 80)
-			{
-				str+='<div class="panel-black-white panel-block-white-medium text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-				
-			}else if(result[1].percentage >= 80)
-			{
-				str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-			}
-				str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
-				if(result[1].percentage != null && result[1].percentage.length > 0)
-				{
-					str+='<h2 class="text-center">'+result[1].percentage+'</h2>';
-				}else{
-					str+='<h2 class="text-center">0</h2>';
-				}
-			str+='</div>';
-		}else{
-			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-				str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
-				str+='<h2 class="text-center">0</h2>';
-			str+='</div>';
-		}
-		
-	}
-	$("[overview-block='"+type+"']").html(str);
-	$(".panel-block-white-title").tooltip();
-	if(type == blockName)
-	{
-		$("[overview-block='"+blockName+"']").trigger("click");
-	}
-} */
 $(document).on("click",".menuDataCollapse",function(){
 	$(".multi-level-selection-menu").css("display","none");
 	$(".arrowIconChanged").find('.fa').removeClass("fa-chevron-up");
