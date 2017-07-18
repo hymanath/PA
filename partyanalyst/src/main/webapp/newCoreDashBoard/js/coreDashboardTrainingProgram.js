@@ -2281,7 +2281,10 @@ function buildStateLevelCampDetails(result,programIdArr){
 	str2+='<span class="label label-warning" style="margin-right: 5px;">Absent-'+absent+'</span>'; 
 	$("#positionId").html(str2);     
 	$("#memberId").html(str); 
-	$("#campMemberDtlsId").dataTable();        
+	$("#campMemberDtlsId").dataTable({
+		"iDisplayLength": 50,
+		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
+		});        
 	}  
 	function stateLevelCampMembersDistWise(programIdArr){
 	$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -3048,5 +3051,8 @@ function getTrainingRecentTime(){
 	}
 	str+='</tbody>'; 
 	$("#memberId").html(str); 
-	$("#campMemberDtlsId").dataTable();        
+	$("#campMemberDtlsId").dataTable({
+		"iDisplayLength": 50,
+		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
+		});        
   }
