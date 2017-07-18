@@ -265,7 +265,7 @@
 										
 										<div class="col-sm-6 panalActiveCls">
 											<ul class="switch-btn-New distLevelActive selectboxsShowHide" tab-switch="distLevel" attr_switch = "distLevel">
-												<li class="active" attr_type="districtType">District</li>
+												<li class="active districtActiveCls" attr_type="districtType">District</li>
 												<li attr_type="parliamentType" class="parliamentCls">Parliament</li>
 											</ul>
 											<ul class="switch-btn-New tabCummulativeDistrict selectboxsShowHide" role="tabCummulative" attr_switch = "distLevel">
@@ -403,7 +403,7 @@
 										<div class="row">
 											<div class="col-sm-6 panalActiveCls">
 												<ul class="switch-btn-New consLevelActive selectboxsShowHide" tab-switch="consLevel" attr_switch = "consLevel">
-													<li  class="active" attr_type="districtType">District</li>
+													<li  class="active constituencyActiveCls" attr_type="districtType">District</li>
 													<li  attr_type="parliamentType" class="parliamentCls">Parliament</li>
 												</ul>
 												<ul class="switch-btn-New tabCummulativeConstituency selectboxsShowHide" role="tabCummulative" attr_switch = "consLevel">
@@ -548,7 +548,7 @@
 										<div class="row">
 											<div class="col-sm-6 panalActiveCls">
 												<ul class="switch-btn-New mandalLevelActive selectboxsShowHide" tab-switch="mandalLevel" attr_switch = "mandalLevel">
-													<li  class="active" attr_type="districtType">District</li>
+													<li  class="active mandalActiveCls" attr_type="districtType">District</li>
 													<li  attr_type="parliamentType" class="parliamentCls">Parliament</li>
 												</ul>
 												<ul class="switch-btn-New tabCummulativeMandal selectboxsShowHide" role="tabCummulative" attr_switch = "mandalLevel">
@@ -700,7 +700,7 @@
 										<div class="row">
 											<div class="col-sm-6 panalActiveCls">
 												<ul class="switch-btn-New villageLevelActive selectboxsShowHide" tab-switch="villageLevel" attr_switch = "villageLevel">
-													<li class="active" attr_type="districtType">District</li>
+													<li class="active villageActiveCls" attr_type="districtType">District</li>
 													<li attr_type="parliamentType" class="parliamentCls">Parliament</li>
 												</ul>
 												<ul class="switch-btn-New tabCummulativeVillage selectboxsShowHide" role="tabCummulative" attr_switch = "villageLevel">

@@ -927,6 +927,53 @@ getAllDepartments();
 	$(".tabCummulativeStateCls li").removeClass("active");
 	$(".ActiveStateCls").addClass("active"); 
 	
+		$(".distLevelActive li").removeClass("active");
+		$(".districtActiveCls").addClass("active"); 
+		
+		$(".consLevelActive li").removeClass("active");
+		$(".constituencyActiveCls").addClass("active"); 
+		
+		$(".mandalLevelActive li").removeClass("active");
+		$(".mandalActiveCls").addClass("active"); 
+		
+		$(".villageLevelActive li").removeClass("active");
+		$(".villageActiveCls").addClass("active"); 
+		//district
+		$(".distLevelparliamentCls").hide();
+		getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
+		
+		//Constituency
+		$(".parlaiLevelDistCls").hide();
+		$("#constLevelConstNames").html('');
+		$("#constLevelConstNames").trigger("chosen:updated");
+		getAllSubLocationsBySuperLocationId(21,'constLevelDistNames',4);
+			
+		
+		//mandal
+		$(".levelparliamentConstiCls").hide();
+		getAllSubLocationsBySuperLocationId(21,'mandalLevelDistNames',5);
+		$("#mandalLevelConstNames").html('');
+		$("#mandalLevelConstNames").trigger("chosen:updated");
+		
+		$("#mandalLevelMandalNames").html('');
+		$("#mandalLevelMandalNames").trigger("chosen:updated");
+		
+		//VILLAGE
+		$(".villageLevelParliCls").hide();
+		getAllSubLocationsBySuperLocationId(21,'villageLevelDistNames',6);	
+		$("#villageLevelConstNames").html('');
+		$("#villageLevelConstNames").trigger("chosen:updated");
+		
+		$("#villageLevelMandalNames").html('');
+		$("#villageLevelMandalNames").trigger("chosen:updated");
+		
+		$("#villageLevelNames").html('');
+		$("#villageLevelNames").trigger("chosen:updated");
+		$(".showHideConstituencyPgramsCls").hide();
+		$(".showHideDistrictPgramsCls").hide();
+		$(".showHideVillagePgramsCls").hide();
+		$(".showHideMandalPgramsCls").hide();
+		
 	$(".collapseActiveVillageCls").addClass("collapsed");
 	$(".collapseActiveMandalCls").addClass("collapsed");
 	$(".collapseActiveConstCls").addClass("collapsed");
@@ -981,6 +1028,54 @@ getAllDepartments();
 		$(".tabCummulativeStateCls li").removeClass("active");
 		$(".ActiveStateCls").addClass("active"); 
 		
+		$(".distLevelActive li").removeClass("active");
+		$(".districtActiveCls").addClass("active"); 
+		
+		$(".consLevelActive li").removeClass("active");
+		$(".constituencyActiveCls").addClass("active"); 
+		
+		$(".mandalLevelActive li").removeClass("active");
+		$(".mandalActiveCls").addClass("active"); 
+		
+		$(".villageLevelActive li").removeClass("active");
+		$(".villageActiveCls").addClass("active"); 
+		$(".showHideConstituencyPgramsCls").hide();
+		$(".showHideDistrictPgramsCls").hide();
+		$(".showHideVillagePgramsCls").hide();
+		$(".showHideMandalPgramsCls").hide();
+		
+		//district
+		$(".distLevelparliamentCls").hide();
+		getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
+		
+		//Constituency
+		$(".parlaiLevelDistCls").hide();
+		$("#constLevelConstNames").html('');
+		$("#constLevelConstNames").trigger("chosen:updated");
+		getAllSubLocationsBySuperLocationId(21,'constLevelDistNames',4);
+			
+		
+		//mandal
+		$(".levelparliamentConstiCls").hide();
+		getAllSubLocationsBySuperLocationId(21,'mandalLevelDistNames',5);
+		$("#mandalLevelConstNames").html('');
+		$("#mandalLevelConstNames").trigger("chosen:updated");
+		
+		$("#mandalLevelMandalNames").html('');
+		$("#mandalLevelMandalNames").trigger("chosen:updated");
+		
+		//VILLAGE
+		$(".villageLevelParliCls").hide();
+		getAllSubLocationsBySuperLocationId(21,'villageLevelDistNames',6);	
+		$("#villageLevelConstNames").html('');
+		$("#villageLevelConstNames").trigger("chosen:updated");
+		
+		$("#villageLevelMandalNames").html('');
+		$("#villageLevelMandalNames").trigger("chosen:updated");
+		
+		$("#villageLevelNames").html('');
+		$("#villageLevelNames").trigger("chosen:updated");
+			
 		$(".collapseActiveVillageCls").addClass("collapsed");
 		$(".collapseActiveMandalCls").addClass("collapsed");
 		$(".collapseActiveConstCls").addClass("collapsed");
