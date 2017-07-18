@@ -317,7 +317,7 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 			
 		}
 	
-	@Override  
+
 	public String saveInvitiesDetails(final PartyMeetingVO partyMeetingVO,final File file,final Long partyMeetingId) {
 		final File fstream=file;
 		   String status ="";
