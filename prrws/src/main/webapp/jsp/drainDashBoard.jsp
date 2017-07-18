@@ -58,41 +58,45 @@
 								<div class="col-sm-12 m_top10">
 									<div class="menu-heading-block">
 										<h4>PANCHAYATI RAJ</h4>
-									</div>
-								</div>
-								<div class="col-sm-6 m_top10">
-									<div class="menu-block" style="background-color:#0F685C">
-										<a href="prisDashBoard">
-											<h3>PRIS</h3>
-										</a>
-									</div>
-								</div>
-								<div class="col-sm-6 m_top10">
-									<div class="menu-block" style="background-color:#31B8B7">
-										<a href="drainDashBoard">
-											<h3>DRAINS</h3>
-										</a>
-									</div>
-								</div>
-								<div class="col-sm-12 m_top10">
-									<div class="menu-block" style="background-color:#2C546C">
-										<a href="#">
-											<h3>ENC</h3>
-											<p>ENGINEERING DEPARTMENT</p>
-										</a>
+										<div class="row">
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#0F685C">
+													<a href="prisDashBoard">
+														<h3>PRIS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#31B8B7">
+													<a href="drainDashBoard">
+														<h3>DRAINS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#2C546C">
+													<a href="#">
+														<h3>ENC</h3>
+														<p>ENGINEERING DEPARTMENT</p>
+													</a>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="col-sm-12 m_top10">
 									<div class="menu-heading-block">
 										<h4>RURAL DEVELOPMENT</h4>
-									</div>
-								</div>
-								<div class="col-sm-12 m_top10">
-									<div class="menu-block" style="background-color:#88186B">
-										<a href="MGNREGSDashboard">
-											<h3>MGNREGS</h3>
-											<p>Mahatma Gandhi Rural employement guarantee scheme</p>
-										</a>
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#88186B">
+													<a href="MGNREGSDashboard">
+														<h3>MGNREGS</h3>
+														<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+													</a>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -104,8 +108,12 @@
 	</nav>
 	<section class="navbar-section">
 		<div class="container-fluid">
-			<div class="row navbar_section_whitebk">
-				<div class="col-sm-12 m_top5 ">
+			<div class="row">
+				<div class="col-sm-6">
+					<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
+					<div class="multi-level-selection-menu arrow_box_top"></div>
+				</div>
+				<div class="col-sm-6">
 					<ul class="list-inline pull-right calendar_active_cls">
 						<li attr_val="Overall"><img src="Assests/icons/Overall_icon.png"/>&nbsp;&nbsp;<b><span>Overall</span></b></li>
 						<li attr_val="Today"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Today</span></b></li>
@@ -254,23 +262,23 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                <div class="panel panel-black panel-default">
+					<div class="panel panel-black panel-default" overview-level="district">
                         <div class="panel-heading">
                             <h4 class="panel-title text-capital">DISTRICT LEVEL OVERVIEW</h4>
                         </div>
-                    <div class="panel-body">
-					<div class="row">
-						<div class="col-sm-12">
-							<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu" attr_blockId="3">
-								<li class="active" attr_location_type="districts">Districts</li>
-								<li class="" attr_location_type="parliament">Parliament</li>
-							</ul>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-sm-12">
+									<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu" attr_blockId="3">
+										<li class="active" attr_location_type="districts">Districts</li>
+										<li class="" attr_location_type="parliament">Parliament</li>
+									</ul>
+								</div>
+							</div>
+							<div id="districtViewTableDivId"></div>
 						</div>
-					</div>
-					<div id="districtViewTableDivId"></div>
                     </div>
-                    </div>
-                    <div class="panel panel-black panel-default">
+                    <div class="panel panel-black panel-default" overview-level="constituency">
                         <div class="panel-heading">
                             <h4 class="panel-title text-capital">CONSTITUENCY LEVEL OVERVIEW</h4>
                         </div>
@@ -290,7 +298,7 @@
 					<div id="assemblyViewTableDivId"></div>
                     </div>
                     </div>
-                    <div class="panel panel-black panel-default">
+                    <div class="panel panel-black panel-default" overview-level="mandal">
                         <div class="panel-heading">
                             <h4 class="panel-title text-capital">MANDAL LEVEL OVERVIEW</h4>
                         </div>
@@ -329,8 +337,8 @@
 <script src="Assests/Plugins/DateTime/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
 <script src="Assests/js/Pris.js" type="text/javascript"></script>
 <script src="Assests/drainDashBoard/drainDashBoard.js" type="text/javascript"></script>
-
 </body>
 </html>
