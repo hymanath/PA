@@ -107,8 +107,8 @@ function getOverAllBoothDetails(locationLevel,filterLevel,filterValue){
 	  filterLevel="";
 	  filterValueArr=[];
 	}		
- 	
-	 var boothRoleIdArr = [1,2];
+ 	var boothRoleIdArr = [1,2];
+	 
 	var jsObj={  
 		locationLevel : locationLevel,         
 		filterLevel : filterLevel,
@@ -508,9 +508,9 @@ $(document).on("click",".resultTypeTabCls",function(){
 			 var locationLevel = $(this).attr("attr_panchayt_result_level");
 			 var selectBoxDivId = $(this).attr("attr_pnchyt_lvl_parent_select_box_div_id");
 			 getSubLevelLocationBasedOnSelection(locationLevel,filterLevel,filterValue,selectBoxDivId)
-			$("#panchaytLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
-			$("#panchaytLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
-			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+			$("#panchaytLevelConstituenySelectBxId").html('<option value="0">All CONSTITUENCY</option>');
+			$("#panchaytLevelMandalSelectBxId").html('<option value="0">All MANDAL</option>');
+			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
 			$("#panchaytLevelConstituenySelectBxId,#panchaytLevelMandalSelectBxId,#panchaytLevelPanchaytSelectBxId").trigger("chosen:updated");
 		
 			 $(".resultTypeTabCls").removeClass("active");
@@ -523,9 +523,9 @@ $(document).on("click",".resultTypeTabCls",function(){
 			  var locationLevel = $(".boothResultTypeCls").attr("attr_booth_result_level");
 			  var selectBoxDivId = $(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id");
 			  getSubLevelLocationBasedOnSelection(locationLevel,filterLevel,filterValue,selectBoxDivId);
-			  $("#boothBlockConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
-			  $("#boothBlockMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
-			  $("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+			  $("#boothBlockConstituenySelectBxId").html('<option value="0">All CONSTITUENCY</option>');
+			  $("#boothBlockMandalSelectBxId").html('<option value="0">All MANDAL</option>');
+			  $("#boothBlockPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
 			  $("#boothBlockConstituenySelectBxId,#boothBlockMandalSelectBxId,#boothBlockPanchaytSelectBxId").trigger("chosen:updated");
 			  
 			  $(".resultTypeTabCls").removeClass("active");
