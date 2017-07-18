@@ -31,6 +31,7 @@ public class LocationAddress{
 	private Panchayat panchayat;
 	private State state;
 	private Constituency parliament;
+	private Hamlet hamlet;
 
 	@Id
 	@Column(name="location_address_id")
@@ -142,6 +143,14 @@ public class LocationAddress{
 	}
 	public void setParliament(Constituency parliament) {
 		this.parliament = parliament;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "hamlet_id", insertable = false, updatable = false)
+	public Hamlet getHamlet() {
+		return hamlet;
+	}
+	public void setHamlet(Hamlet hamlet) {
+		this.hamlet = hamlet;
 	}
 	
 	

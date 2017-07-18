@@ -46,12 +46,16 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 				+ " govtOrder.govtOrderId, "//14
 				+ " govtOrder.goNumber, "//15
 				+ " govtOrder.issueDate, "//16
-				+ " govtOrder.filePath ");//17  
+				+ " govtOrder.filePath , "//17
+				+ " parl.name, "//18
+				+ " hamlet.hamletName ");//19
 		sb.append(" from FundSanctionLocation modal " +
 				" left outer join modal.locationAddress.district d  " +
 				" left outer join modal.locationAddress.constituency c " +
+				" left outer join modal.locationAddress.parliament parl " +
 				" left outer join modal.locationAddress.tehsil t  " +
 				" left outer join modal.locationAddress.panchayat p " +
+				" left outer join modal.locationAddress.hamlet hamlet " +
 				" left outer join modal.fundSanction.govtScheme gs " +
 				" left outer join modal.fundSanction.department dep " +
 				" left outer join modal.fundSanction.govtOrder  govtOrder" +
