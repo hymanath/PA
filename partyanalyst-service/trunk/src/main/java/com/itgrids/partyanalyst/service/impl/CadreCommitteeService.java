@@ -22173,7 +22173,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			
 			List<Long> boothInchId = boothInchargeDAO.checkIsBoothAlreadySaved(boothId,boothInchrgRoleId,boothEnrollmentYrIds);
 			
-			if(boothInchId == null){
+			if(boothInchId == null || boothInchId.size() == 0){
 				BoothInchargeRoleConditionMapping boothInchargeRoleConditionMapping = boothInchargeRoleConditionMappingDAO.get(boothInchrgRoleId);
 				if(boothInchargeRoleConditionMapping != null){
 					BoothInchargeCommittee boothInchargeCommittee = boothInchargeCommitteeDAO.get(boothInchargeRoleConditionMapping.getBoothInchargeCommitteeId());
