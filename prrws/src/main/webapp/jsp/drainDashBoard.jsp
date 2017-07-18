@@ -260,67 +260,91 @@
 		</section>
         <section class="m_top20">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row" id="accordion">
                 <div class="col-sm-12">
 					<div class="panel panel-black panel-default" overview-level="district">
                         <div class="panel-heading">
-                            <h4 class="panel-title text-capital">DISTRICT LEVEL OVERVIEW</h4>
+							<a class="panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+								<h4 class="panel-title text-capital">DISTRICT LEVEL OVERVIEW</h4>
+							</a>
                         </div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-sm-12">
-									<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu" attr_blockId="3">
-										<li class="active" attr_location_type="districts">Districts</li>
-										<li class="" attr_location_type="parliament">Parliament</li>
-									</ul>
+						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-sm-12">
+										<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu" attr_blockId="3">
+											<li class="active" attr_location_type="districts">Districts</li>
+											<li class="" attr_location_type="parliament">Parliament</li>
+										</ul>
+									</div>
 								</div>
+								<div id="districtViewTableDivId"></div>
 							</div>
-							<div id="districtViewTableDivId"></div>
 						</div>
                     </div>
                     <div class="panel panel-black panel-default" overview-level="constituency">
                         <div class="panel-heading">
-                            <h4 class="panel-title text-capital">CONSTITUENCY LEVEL OVERVIEW</h4>
+							<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+								<h4 class="panel-title text-capital">CONSTITUENCY LEVEL OVERVIEW</h4>
+							</a>
                         </div>
-                    <div class="panel-body">
-					<div class="row">
-						<div class="col-sm-3">
-							<ul class="nav navbar-nav list_inline tableMenu tableMenuCons" role="tabDrains_menu" attr_blockId="4">
-								<li class="active" attr_location_type="districts">Districts</li>
-								<li class="" attr_location_type="parliament">Parliament</li>
-							</ul>
+						<div id="collapseTwo" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingTwo">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="col-sm-3">
+											<ul class="nav navbar-nav list_inline tableMenu tableMenuCons" role="tabDrains_menu" attr_blockId="4">
+												<li class="active" attr_location_type="districts">Districts</li>
+												<li class="" attr_location_type="parliament">Parliament</li>
+											</ul>
+										</div>
+										<div class="col-sm-3">
+											<select class="form-control chosen-select" id="constituencyDistrictNames">
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<div id="assemblyViewTableDivId"></div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="col-sm-3">
-							<select class="form-control chosen-select" id="constituencyDistrictNames">
-							</select>
-						</div>
-					</div>
-					<div id="assemblyViewTableDivId"></div>
-                    </div>
                     </div>
                     <div class="panel panel-black panel-default" overview-level="mandal">
                         <div class="panel-heading">
+						<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                             <h4 class="panel-title text-capital">MANDAL LEVEL OVERVIEW</h4>
                         </div>
-                    <div class="panel-body">
-					<div class="row">
-						<div class="col-sm-3">
-							<ul class="nav navbar-nav list_inline tableMenu tableMenuMandal" role="tabDrains_menu" attr_blockId="5">
-								<li class="active" attr_location_type="districts">Districts</li>
-								<li class="" attr_location_type="parliament">Parliament</li>
-							</ul>
+						</a>
+						<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="col-sm-3">
+											<ul class="nav navbar-nav list_inline tableMenu tableMenuMandal" role="tabDrains_menu" attr_blockId="5">
+												<li class="active" attr_location_type="districts">Districts</li>
+												<li class="" attr_location_type="parliament">Parliament</li>
+											</ul>
+										</div>
+										<div class="col-sm-3">
+											<select class="form-control chosen-select" id="mandalDistrictNames">
+											</select>
+										</div>
+										<div class="col-sm-3">
+											<select class="form-control chosen-select" id="mandalConstituencyNames">
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<div id="mandalViewTableDivId"></div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="col-sm-3">
-							<select class="form-control chosen-select" id="mandalDistrictNames">
-							</select>
-						</div>
-						<div class="col-sm-3">
-							<select class="form-control chosen-select" id="mandalConstituencyNames">
-							</select>
-						</div>
-					</div>
-					<div id="mandalViewTableDivId"></div>
-                    </div>
                     </div>
                 </div>
             </div>
