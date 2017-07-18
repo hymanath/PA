@@ -1690,4 +1690,13 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
     	}
     	return query.list();
 	}
+	public List<String> getPartyMeetingInviteesDetailsAttendence(Long partyMeetingId){
+    	
+    	Query query = getSession().createQuery(" select distinct model.attendance.tdpCadre.memberShipNo " +
+    						" from PartyMeetingAttendance model " +
+    						" where model.partyMeeting.partyMeetingId = :partyMeetingId  and  model.attendance.tdpCadre.isDeleted='N' and model.partyMeeting.isActive='Y' " );
+    	query.setParameter("partyMeetingId", partyMeetingId);
+    	
+    	return query.list();
+    }
 }
