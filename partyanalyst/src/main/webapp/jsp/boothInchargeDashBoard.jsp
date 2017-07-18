@@ -373,6 +373,12 @@ $(document).ready(function(){
 		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"","PARLIAMENT CONSTITUENCY","");
 	
 	}else if(accessType == "DISTRICT"){
+			//Adding Dynamic Attribute based on user access level 
+			$(".resultTypeTabCls").attr("attr_panchayt_result_level","DISTRICT");
+			$(".resultTypeTabCls").attr("attr_pnchyt_lvl_parent_select_box_div_id","panchatLevelDistrictSelectBxId");
+			$(".boothResultTypeCls").attr("attr_booth_result_level","DISTRICT");
+			$(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id","boothBlockDistrictSelectBxId");
+	
 			getOverAllBoothDetails("STATE","DISTRICT",accessValue);
 			getLocationLevelWiseBoothCount("DISTRICT","DISTRICT",accessValue,"dstrctParlmntLvlBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("CONSTITUENCY","DISTRICT",accessValue,"constituencyLevelBoothDtlsDivId");
@@ -383,6 +389,12 @@ $(document).ready(function(){
 			setAccessLevelTypeAndValue("DISTRICT",accessValue);
 			
 	}else if (accessType == "STATE"){
+			//Adding Dynamic Attribute based on user access level 
+			$(".resultTypeTabCls").attr("attr_panchayt_result_level","DISTRICT");
+			$(".resultTypeTabCls").attr("attr_pnchyt_lvl_parent_select_box_div_id","panchatLevelDistrictSelectBxId");
+			$(".boothResultTypeCls").attr("attr_booth_result_level","DISTRICT");
+			$(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id","boothBlockDistrictSelectBxId");
+	
 			getOverAllBoothDetails("STATE","STATE",accessValue);
 			getLocationLevelWiseBoothCount("DISTRICT","STATE",accessValue,"dstrctParlmntLvlBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("CONSTITUENCY","STATE",accessValue,"constituencyLevelBoothDtlsDivId");
