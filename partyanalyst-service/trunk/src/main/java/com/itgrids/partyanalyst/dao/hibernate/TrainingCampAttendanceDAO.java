@@ -1354,7 +1354,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
     	    }
     	        
             
-		     queryStr.append(" count(distinct model.attendance.tdpCadre.tdpCadreId) " + //5
+		     queryStr.append(" count(distinct model.attendance.tdpCadre.tdpCadreId),model3.tdpCommitteeRole.tdpRolesId " + //5
 		                  " from TrainingCampAttendance model,TrainingCampEligbleDesignation model2,TdpCommitteeMember model3 " +
 	  		              " where model.attendance.tdpCadre.tdpCadreId = model3.tdpCadre.tdpCadreId and " +
 	  		              " model.trainingCampProgram.trainingCampProgramId = model2.trainingCampProgram.trainingCampProgramId and " +
@@ -1394,22 +1394,22 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		  queryStr.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
 	    }
    if(locationType != null && locationType.equalsIgnoreCase("District")){
-	         queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId asc"); //1
+	         queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId,model3.tdpCommitteeRole.tdpRolesId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId asc"); //1
    } 
    if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
-    queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId asc"); //3
+    queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId,model3.tdpCommitteeRole.tdpRolesId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId asc"); //3
 	    }
    if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
-	   queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.tehsil.tehsilId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.tehsil.tehsilId asc"); //1  
+	   queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.tehsil.tehsilId,model3.tdpCommitteeRole.tdpRolesId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.tehsil.tehsilId asc"); //1  
    }  
    if(locationType != null && locationType.equalsIgnoreCase("Village")){
-	   queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId asc"); //1   
+	   queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId,model3.tdpCommitteeRole.tdpRolesId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId asc"); //1   
    }
    if(locationType != null && locationType.equalsIgnoreCase("Ward")){
-	queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId asc");   
+	queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId,model3.tdpCommitteeRole.tdpRolesId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId asc");   
    }
    if(locationType != null && locationType.equalsIgnoreCase("TownDivision")){
-	 queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId asc");  
+	 queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId,model3.tdpCommitteeRole.tdpRolesId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId asc");  
    }
    Query query = getSession().createQuery(queryStr.toString());
    if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
@@ -1438,24 +1438,24 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			queryString.append(" date(TCBA.attendedTime), ");     
 		}
 		queryString.append(" count(distinct TC.tdpCadreId) from " +
-						   " TdpCadre TC, TrainingCampBatchAttendee TCBA where  ");  
+						   " TdpCadre TC, TrainingCampBatchAttendee TCBA where  TCBA.trainingCampBatch.attendeeTypeId = 1  ");  
 		if(programIdList != null && programIdList.size()>0){
-			queryString.append(" TCBA.trainingCampBatch.isCancelled='false' and  TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and ");  
+			queryString.append(" and TCBA.trainingCampBatch.isCancelled='false' and  TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList)  ");  
 		}
 		if(option.equalsIgnoreCase("dayWise") && programIdList.size() == 1 && programIdList.get(0) != 6){
-			queryString.append(" date(TCBA.attendedTime) in (:dateList) and ");  
+			queryString.append(" and date(TCBA.attendedTime) in (:dateList)  ");  
 		}else{
-			queryString.append(" date(TCBA.attendedTime) <= (:toDate) and ");  
+			queryString.append(" and date(TCBA.attendedTime) <= (:toDate)  ");  
 		}
 		if(enrollYrIds != null && enrollYrIds.size() >0){
-			queryString.append(" TCBA.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollYrIds)  and " );
+			queryString.append(" and TCBA.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollYrIds)   " );
 		}
 		if(stateId.longValue() == 1L){
-			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") and ");
+			queryString.append(" and TCBA.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+")  ");
 		}else{
-			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") and ");
+			queryString.append(" and TCBA.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")  ");
 		}
-		queryString.append(" TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId and TC.enrollmentYear = 2014 and TC.isDeleted='N' ");
+		queryString.append(" and TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId and TC.enrollmentYear = 2014 and TC.isDeleted='N' ");
 		if(option.equalsIgnoreCase("dayWise") && programIdList.size() == 1 && programIdList.get(0) != 6){
 			queryString.append("group by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, date(TCBA.attendedTime) " +
 							   " order by TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, date(TCBA.attendedTime) ");
