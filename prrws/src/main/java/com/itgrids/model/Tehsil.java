@@ -26,6 +26,7 @@ public class Tehsil {
 	private Long tehsilId;
 	private String tehsilName;
 	private Long districtId;
+	private Long rwsTehsilId;
 	
 	private District district;
 	
@@ -62,6 +63,14 @@ public class Tehsil {
 	}
 	public void setDistrict(District district) {
 		this.district = district;
+	}
+	@Column(name="rws_tehsil_id")
+	public Long getRwsTehsilId() {
+		return rwsTehsilId;
+	}
+	
+	public void setRwsTehsilId(Long rwsTehsilId) {
+		this.rwsTehsilId = rwsTehsilId;
 	}
 	
 }
