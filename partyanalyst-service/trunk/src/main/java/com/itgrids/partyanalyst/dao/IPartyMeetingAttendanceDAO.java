@@ -54,4 +54,5 @@ public interface IPartyMeetingAttendanceDAO extends GenericDao<PartyMeetingAtten
 	public List<Object[]> getPartyLevelIdWiseMeetingAttendanceDetails(Long partyMeetnMainTypId,Long  userAccessLevelId,Set<Long> userAccessLevelValues, 
 			Date fromDateStr,Date toDateStr, Long stateId, List<Long> levelIdsList ,Long  partyMeetngGrpId,Long sessionTypId,Long partyMeetingId,Long locationId);
 	public List<Object[]> getMeetingsBasedConductedCountForDiffLevels(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet,List<Long> locLevelIdList);
+	public List<String> getPartyMeetingInviteesDetailsAttendence(Long partyMeetingId);
 }
