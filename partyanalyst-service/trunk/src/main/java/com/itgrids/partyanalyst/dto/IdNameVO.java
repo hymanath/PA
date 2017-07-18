@@ -3,7 +3,9 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Swadhin
@@ -121,7 +123,25 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long inviteeAttnd;
 	private Long nonInviteeAttnd;
 	
+	private Set<Long> inviteeIds = new HashSet<Long>(0);
+	private Set<Long> nonInviteeIds = new HashSet<Long>(0);
 	
+	public Set<Long> getInviteeIds() {
+		return inviteeIds;
+	}
+
+	public void setInviteeIds(Set<Long> inviteeIds) {
+		this.inviteeIds = inviteeIds;
+	}
+
+	public Set<Long> getNonInviteeIds() {
+		return nonInviteeIds;
+	}
+
+	public void setNonInviteeIds(Set<Long> nonInviteeIds) {
+		this.nonInviteeIds = nonInviteeIds;
+	}
+
 	public Long getInviteeAttnd() {
 		return inviteeAttnd;
 	}
