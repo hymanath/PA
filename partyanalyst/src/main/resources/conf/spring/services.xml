@@ -4367,10 +4367,11 @@
 		 <property name="tehsilDAO" ref="tehsilDAO"></property>
 		 <property name="userAddressDAO" ref="userAddressDAO"></property>
 		 <property name="partyMeetingSessionDAO" ref="partyMeetingSessionDAO"></property>
-		  <property name="attendanceTabUserDAO" ref="attendanceTabUserDAO"></property> 
-		  	<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
-		  	<property name="stateDAO" ref="stateDAO" />
-			<property name="userDAO" ref="userDAO" />
+		 <property name="attendanceTabUserDAO" ref="attendanceTabUserDAO"></property> 
+		 <property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
+		 <property name="stateDAO" ref="stateDAO" />
+		 <property name="userDAO" ref="userDAO" />
+		 <property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
     </bean>
 </beans>			
 	
