@@ -2,12 +2,14 @@ var globalFromDate = moment().subtract(1,'month').startOf("month").format('DD-MM
 var globalToDate = moment().format('DD-MM-YYYY');
 var spinner_Drain = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner_Drain"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+$("#selectedName").attr("attr_id","0");
+$("#selectedName").attr("attr_levelidvalue","2");
 onloadCalls();
 function onloadCalls(){
-	getDrainsInfoStateWise();
-	getDrainsInfoLocationWise("district",'0','','0','',"districtView");
-	getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView");
-	getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView");
+	getDrainsInfoStateWise(0);
+	getDrainsInfoLocationWise("district",'0','','0','',"districtView",0);
+	getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",0);
+	getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView",0);
 	getAllDistricts("constituencyDistrictNames","DISTRICTS");
 	getAllDistricts("mandalDistrictNames","DISTRICTS");
 	$(".chosen-select").chosen();
@@ -36,7 +38,50 @@ $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	
 	onloadCalls();
 });
-
+$(document).on("click",".menuDataCollapse",function(){
+	var locId = $(this).attr("attr_id");
+	var levelId = $(this).attr("attr_levelidvalue");
+	$("#selectedName").text($(this).html());
+	$("#selectedName").attr("attr_id",locId);
+	$("#selectedName").attr("attr_levelidvalue",levelId);
+	
+	if(levelId == 2)
+	{
+		$(".tableMenu li:nth-child(2)").show();
+		$("[overview-level]").show();
+		getDrainsInfoStateWise(0);
+		getDrainsInfoLocationWise("district",'0','','0','',"districtView",0);
+		getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",0);
+		getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView",0);
+	}else if(levelId == 3)
+	{
+		$(".tableMenu li:nth-child(2)").hide();
+		$("[overview-level]").show();
+		$("#constituencyDistrictNames,#mandalDistrictNames").val(locId).trigger("chosen:updated");
+		getDrainsInfoStateWise(locId);
+		getAllConstituenciesForDistrict('mandalConstituencyNames','CONSTITUENCIES',locId);
+		getDrainsInfoLocationWise("district",'0','','0','',"districtView",locId);
+		getDrainsInfoLocationWise("assembly",locId,'district','','',"assemblyView",0);
+		getDrainsInfoLocationWise("mandal",locId,'district','','',"mandalView",0);
+	}else if(levelId == 4)
+	{
+		$(".tableMenu li:nth-child(2)").hide();
+		$("[overview-level='district']").hide();
+		$("#constituencyDistrictNames,#mandalDistrictNames").val(locId).trigger("chosen:updated");
+		getDrainsInfoStateWise(locId);
+		getAllConstituenciesForDistrict('mandalConstituencyNames','CONSTITUENCIES',locId);
+		//getDrainsInfoLocationWise("district",'0','','0','',"districtView",locId);
+		//getDrainsInfoLocationWise(locationType,filterId,filterType,subFilterId,subFilterType,divId,locId)
+		//getDrainsInfoLocationWise("assembly",locId,'constituency','','',"assemblyView",0);
+		//getDrainsInfoLocationWise("assembly",0,'district',locId,'constituency','assemblyView',0);
+		getDrainsInfoLocationWise("assembly",locId,'constituency','','',"assemblyView",0);
+		//getDrainsInfoLocationWise("mandal",locId,'constituency','','assembly',"mandalView",0);
+		getDrainsInfoLocationWise("mandal",'','constituency',locId,'assembly','mandalView',0);
+	}
+		
+	
+	
+});
 $(document).on('click','.calendar_active_cls li', function(){
 	var date = $(this).attr("attr_val");
 	$(".tableMenu li").removeClass("active");
@@ -75,7 +120,7 @@ $(document).on('click','.calendar_active_cls li', function(){
 	
 });
 
-function getDrainsInfoStateWise(){
+function getDrainsInfoStateWise(locId){
 	$("#totalSpinnerId").html(spinner_Drain);
 	$("#undergroundSpinnerId").html(spinner_Drain);
 	$("#pakkaSpinnerId").html(spinner_Drain);
@@ -85,7 +130,7 @@ function getDrainsInfoStateWise(){
 			fromDate : globalFromDate,
 			toDate : globalToDate,
 			locationType : "district" ,
-			locationId:"0"
+			locationId:locId
 		}
 		$.ajax({                
 			type:'POST',    
@@ -166,13 +211,13 @@ function getDrainsInfoStateWise(){
 }
 
 	
-function getDrainsInfoLocationWise(locationType,filterId,filterType,subFilterId,subFilterType,divId){
+function getDrainsInfoLocationWise(locationType,filterId,filterType,subFilterId,subFilterType,divId,locId){
 	
 	$("#"+divId+"TableDivId").html(spinner);
 		var json = {
 			fromDate : globalFromDate,
 			toDate : globalToDate,
-			locationId:0,
+			locationId:locId,
 			locationType:locationType,
 			filterType:filterType,
 			filterId:filterId,
@@ -197,25 +242,24 @@ function getDrainsInfoLocationWise(locationType,filterId,filterType,subFilterId,
 function buildingTable(result,locationType,divId){
 	var str='';
 	str+='<div class="table-responsive">';
-	str+='<table class="table" id="datatable'+locationType+'">';
+	str+='<table class="table table-condensed table-striped" id="datatable'+locationType+'">';
         str+='<thead>';
             str+='<tr>';
 				if(locationType == "district")
-					str+='<th style="background-color:#ccc;">DISTRICTS</th>';
+					str+='<th rowspan="2">DISTRICTS</th>';
 				else if(locationType == "assembly")
-					str+='<th style="background-color:#ccc;">CONSTITUENCIES</th>';
+					str+='<th rowspan="2">CONSTITUENCIES</th>';
 				else if(locationType == "mandal")
-					str+='<th style="background-color:#ccc;">MANDALS</th>';
+					str+='<th rowspan="2">MANDALS</th>';
 				else if(locationType == "constituency")
-					str+='<th style="background-color:#ccc;">PARLIAMENTS</th>';
+					str+='<th rowspan="2">PARLIAMENTS</th>';
 				
-                str+='<th style="background-color:#ccc;" colspan="5" class="text-center">TOTAL</th>';
-                str+='<th style="background-color:#ccc;" colspan="5" class="text-center">KACCHA</th>';
-                str+='<th style="background-color:#ccc;" colspan="5" class="text-center">PAKKA</th>';
-                str+='<th style="background-color:#ccc;" colspan="5" class="text-center">UNDERGROUND</th>';
+                str+='<th colspan="5" class="text-center">TOTAL</th>';
+                str+='<th colspan="5" class="text-center">KACCHA</th>';
+                str+='<th colspan="5" class="text-center">PAKKA</th>';
+                str+='<th colspan="5" class="text-center">UNDERGROUND</th>';
             str+='</tr>';
             str+='<tr>';
-                str+='<th style="background-color:#fff"></th>';
                 str+='<th style="background-color:#fff">Avi</th>';
 				str+='<th style="background-color:#fff">km</th>';
 				str+='<th style="background-color:#fff">Cle</th>';
@@ -295,27 +339,27 @@ $(document).on("click","[role='tabDrains_menu'] li",function(){
 	var blockId = $(this).closest("ul").attr("attr_blockId");
 	if(blockId == 3){
 		if($(this).attr("attr_location_type") == "districts"){
-			getDrainsInfoLocationWise("district",'0','','0','','districtView');
+			getDrainsInfoLocationWise("district",'0','','0','','districtView',0);
 		}else if($(this).attr("attr_location_type") == "parliament"){
-			getDrainsInfoLocationWise("constituency",'0','','0','','districtView');
+			getDrainsInfoLocationWise("constituency",'0','','0','','districtView',0);
 		}
 	}else if(blockId == 4){
 		if($(this).attr("attr_location_type") == "districts"){
 			getAllDistricts("constituencyDistrictNames","DISTRICTS");
-			getDrainsInfoLocationWise("assembly",'0','','0','','assemblyView');
+			getDrainsInfoLocationWise("assembly",'0','','0','','assemblyView',0);
 		}else if($(this).attr("attr_location_type") == "parliament"){
 			getAllParliaments("constituencyDistrictNames","PARLIAMENTS");
-			getDrainsInfoLocationWise("assembly",'0','','0','','assemblyView');
+			getDrainsInfoLocationWise("assembly",'0','','0','','assemblyView',0);
 		}
 	}else if(blockId == 5){
 		$("#mandalConstituencyNames").html("");
 		$("#mandalConstituencyNames").trigger('chosen:updated');
 		if($(this).attr("attr_location_type") == "districts"){
 			getAllDistricts("mandalDistrictNames","DISTRICTS");
-			getDrainsInfoLocationWise("mandal",'0','','0','','mandalView');
+			getDrainsInfoLocationWise("mandal",'0','','0','','mandalView',0);
 		}else if($(this).attr("attr_location_type") == "parliament"){
 			getAllParliaments("mandalDistrictNames","PARLIAMENTS");
-			getDrainsInfoLocationWise("mandal",'0','','0','','mandalView');
+			getDrainsInfoLocationWise("mandal",'0','','0','','mandalView',0);
 		}
 	}
 	
@@ -340,7 +384,7 @@ $(document).on("change","#constituencyDistrictNames",function(){
 		parlConstId = $(this).val();
 	}
 	//getDrainsInfoLocationWise("assembly",districtId,filterType,'0','','assemblyView')
-	getDrainsInfoLocationWise("assembly",districtId,filterType,parlConstId,subFilterType,'assemblyView')
+	getDrainsInfoLocationWise("assembly",districtId,filterType,parlConstId,subFilterType,'assemblyView',0)
 });
 
 $(document).on("change","#mandalDistrictNames",function(){
@@ -354,11 +398,11 @@ $(document).on("change","#mandalDistrictNames",function(){
 	var filterType = "";
 	if(locationType == "districts"){
 		filterType = "district";
-		getDrainsInfoLocationWise("mandal",districtId,filterType,'0','','mandalView');
+		getDrainsInfoLocationWise("mandal",districtId,filterType,'0','','mandalView',0);
 		getAllConstituenciesForDistrict('mandalConstituencyNames','CONSTITUENCIES',districtId);
 	}else if(locationType == "parliament"){
 		filterType = "district";
-		getDrainsInfoLocationWise("mandal",'0','district',districtId,'constituency','mandalView');
+		getDrainsInfoLocationWise("mandal",'0','district',districtId,'constituency','mandalView',0);
 		getAllConstituenciesForParliament('mandalConstituencyNames','CONSTITUENCIES',districtId);
 	}
 	
@@ -372,7 +416,7 @@ $(document).on("change","#mandalConstituencyNames",function(){
 			locationType = $(this).attr("attr_location_type");
 		 }
 	});
-	getDrainsInfoLocationWise("mandal",'0','district',constId,'assembly','mandalView');
+	getDrainsInfoLocationWise("mandal",'0','district',constId,'assembly','mandalView',0);
 });
 //All Districts 
 function getAllDistricts(divId,levelName){
