@@ -244,13 +244,13 @@ function buildingTable(result,locationType,divId){
 		str+='<tbody>';
 			if(result != null && result.length > 0){
 				for(var i in result){
-					if(result[i].totalAvailable !=null && result[i].totalAvailable>0){
+					//if(result[i].totalAvailable !=null && result[i].totalAvailable>0){
 						str+='<tr>';
-					if(locationType == "district"){
-						str+='<td><img src="Assests/icons/'+result[i].name+'.png" style="height: 30px;margin-right: 7px;"/><br/>'+result[i].name+'</td>';
-					}else{
-						str+='<td>'+result[i].name+'</td>';
-					}
+						if(locationType == "district"){
+							str+='<td><img src="Assests/icons/'+result[i].name+'.png" style="height: 30px;margin-right: 7px;"/><br/>'+result[i].name+'</td>';
+						}else{
+							str+='<td>'+result[i].name+'</td>';
+						}
 						
 						//<p><span>174</span>/<span>1003</span></p>
 						str+='<td>'+result[i].totalAvailable+'</td>';
@@ -277,7 +277,7 @@ function buildingTable(result,locationType,divId){
 						str+='<td style="background-color:#F2F1E6">'+result[i].ugCleanedKms+'</td>';
 						str+='<td style="background-color:#F2F1E6;color:#FD3367">'+result[i].ugPercentage+'</td>';
 						str+='</tr>';
-					}					
+					//}					
 				}
 			}else{
 				str+='No Data Available.';
@@ -372,7 +372,7 @@ $(document).on("change","#mandalConstituencyNames",function(){
 			locationType = $(this).attr("attr_location_type");
 		 }
 	});
-	getDrainsInfoLocationWise("mandal",parlconstId,'constituency',constId,'assembly','mandalView');
+	getDrainsInfoLocationWise("mandal",'0','district',constId,'assembly','mandalView');
 });
 //All Districts 
 function getAllDistricts(divId,levelName){
