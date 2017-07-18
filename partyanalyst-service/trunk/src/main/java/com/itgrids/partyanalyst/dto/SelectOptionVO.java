@@ -52,7 +52,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private String roleName;
 	private Long roleMappingId;
 	private Long inchargeId;
-		
+	private Long serialNo;
 		
 	public String getFirstName() {
 		return firstName;
@@ -471,6 +471,14 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 
 	public void setInchargeId(Long inchargeId) {
 		this.inchargeId = inchargeId;
+	}
+
+	public Long getSerialNo() {
+		return serialNo;
+	}
+
+	public void setSerialNo(Long serialNo) {
+		this.serialNo = serialNo;
 	}
 	
 	

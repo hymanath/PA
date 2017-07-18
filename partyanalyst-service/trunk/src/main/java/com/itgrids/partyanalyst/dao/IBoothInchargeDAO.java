@@ -10,7 +10,8 @@ import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.model.BoothIncharge;
 
 public interface IBoothInchargeDAO extends GenericDao<BoothIncharge,Long>{
-	public List<Object[]> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId);
+	//public List<Object[]> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId);
+	public List<Object[]> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId,String cadreType);
 	
 	public List<Object[]> getCadreIdsForLocation(List<Long> tdpCadreIds);
 	public BoothIncharge getExistingMember(Long locationId,String type);

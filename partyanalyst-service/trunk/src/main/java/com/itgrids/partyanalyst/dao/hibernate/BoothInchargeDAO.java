@@ -18,7 +18,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		super(BoothIncharge.class);
 	}
 	
-	public List<Object[]> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId){
+	public List<Object[]> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId,String cadreType){
 		StringBuilder query = new StringBuilder("select distinct model.boothInchargeRoleConditionMapping.boothInchargeCommittee.booth.partNo, " +
 				" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.booth.villagesCovered, " +
 					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.name, " +
@@ -27,9 +27,17 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 					" model.tdpCadre.image, " +
 					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilName," +
 					" model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.roleName," +
-					" model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId,model.boothInchargeId " +
-					" from BoothIncharge model " +
-					" where   model.isActive='Y' and " +
+					" model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId,model.boothInchargeId ," +
+					" bpv.serialNo " +
+					" from BoothIncharge model,BoothPublicationVoter bpv " +
+					" where  model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId = bpv.booth.boothId and ");
+		if(cadreType != null && !cadreType.isEmpty()){
+			if(cadreType.trim().equalsIgnoreCase("familyVoterId"))
+				query.append(" bpv.voter.voterId = model.tdpCadre.familyVoterId ");
+			else 
+				query.append(" bpv.voter.voterId = model.tdpCadre.voterId ");
+		}
+		query.append("  and model.isActive='Y' and " +
 					" model.isDeleted='N' "+
 					" and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=2014 and " +
 					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.publicationDate.publicationDateId = :publicationDate");
