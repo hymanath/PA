@@ -176,21 +176,24 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
         	 queryStr.append(" and localElectionBody.localElectionBodyId is null ");
          }
-		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
+		if(inputVO.getBoothRoleIds() != null && inputVO.getBoothRoleIds().size() > 0){
+			queryStr.append(" and model.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId in(:boothRoleIds)");
+		}
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0) {
 			if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.STATE)){
-				queryStr.append(" and state.stateId =:filterValue");
+				queryStr.append(" and state.stateId in(:filterValues)");
 			}else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
-				queryStr.append(" and district.districtId =:filterValue ");
+				queryStr.append(" and district.districtId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)) {
-				queryStr.append(" and parliamentConstituency.constituencyId =:filterValue ");
+				queryStr.append(" and parliamentConstituency.constituencyId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)) {
-				queryStr.append(" and constituency.constituencyId =:filterValue");
+				queryStr.append(" and constituency.constituencyId in(:filterValues)");
 			} else if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
-				queryStr.append(" and localElectionBody.localElectionBodyId =:filterValue ");
+				queryStr.append(" and localElectionBody.localElectionBodyId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
-				queryStr.append(" and tehsil.tehsilId =:filterValue");
+				queryStr.append(" and tehsil.tehsilId in(:filterValues)");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
-				queryStr.append(" and panc.panchayatId =:filterValue");
+				queryStr.append(" and panc.panchayatId in(:filterValues)");
 			}
 		}
         
@@ -238,9 +241,13 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
 			query.setParameter("boothInchargeEnrollmentId",inputVO.getBoothInchargeEnrollmentId());
 		}
-		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
-			query.setParameter("filterValue", inputVO.getFilterValue());
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0) {
+			query.setParameterList("filterValues", inputVO.getFilterValueList());
 		}
+		if(inputVO.getBoothRoleIds() != null && inputVO.getBoothRoleIds().size() > 0){
+			query.setParameterList("boothRoleIds", inputVO.getBoothRoleIds());
+		}
+	
 		return query.list();
 	}
 	public List<Object[]> getLocationBasedOnSelection(InputVO inputVO) {
@@ -279,23 +286,26 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		queryStr.append(" left join model1.address.panchayat panc ");
 
 		queryStr.append(" where model.isDeleted='N' and model1.isDeleted='N' ");
-
-		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
+		
+		if(inputVO.getBoothRoleIds() != null && inputVO.getBoothRoleIds().size() > 0){
+			queryStr.append(" and model.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId in(:boothRoleIds)");
+		}
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0) {
 
 			if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.STATE)){
-				queryStr.append(" and state.stateId =:filterValue");
+				queryStr.append(" and state.stateId in(:filterValues)");
 			}else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
-				queryStr.append(" and district.districtId =:filterValue ");
+				queryStr.append(" and district.districtId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)) {
-				queryStr.append(" and parliamentConstituency.constituencyId =:filterValue ");
+				queryStr.append(" and parliamentConstituency.constituencyId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)) {
-				queryStr.append(" and constituency.constituencyId =:filterValue");
+				queryStr.append(" and constituency.constituencyId in(:filterValues)");
 			} else if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
-				queryStr.append(" and localElectionBody.localElectionBodyId =:filterValue ");
+				queryStr.append(" and localElectionBody.localElectionBodyId in(:filterValues)");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
-				queryStr.append(" and tehsil.tehsilId =:filterValue");
+				queryStr.append(" and tehsil.tehsilId in(:filterValues)");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
-				queryStr.append(" and panc.panchayatId =:filterValue");
+				queryStr.append(" and panc.panchayatId in(:filterValues)");
 			}
 		}
 
@@ -308,9 +318,13 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
 			query.setParameter("boothInchargeEnrollmentId",inputVO.getBoothInchargeEnrollmentId());
 		}
-		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
-			query.setParameter("filterValue", inputVO.getFilterValue());
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0) {
+			query.setParameterList("filterValues", inputVO.getFilterValueList());
 		}
+		if(inputVO.getBoothRoleIds() != null && inputVO.getBoothRoleIds().size() > 0){
+			query.setParameterList("boothRoleIds", inputVO.getBoothRoleIds());
+		}
+	
 		return query.list();
 	}
 	
@@ -335,22 +349,25 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		queryStr.append(" left join model1.address.panchayat panc ");
 
 		queryStr.append(" where model.isDeleted='N' and model1.isDeleted='N' ");
-
-		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
+		
+		if(inputVO.getBoothRoleIds() != null && inputVO.getBoothRoleIds().size() > 0){
+			queryStr.append(" and model.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId in(:boothRoleIds)");
+		}
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0) {
 			if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.STATE)) {
-				queryStr.append(" and state.stateId =:filterValue ");
+				queryStr.append(" and state.stateId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
-				queryStr.append(" and district.districtId =:filterValue ");
+				queryStr.append(" and district.districtId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)) {
-				queryStr.append(" and parliamentConstituency.constituencyId =:filterValue ");
+				queryStr.append(" and parliamentConstituency.constituencyId in(:filterValues)");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)) {
-				queryStr.append(" and constituency.constituencyId =:filterValue");
+				queryStr.append(" and constituency.constituencyId in(:filterValues)");
 			} else if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
-				queryStr.append(" and localElectionBody.localElectionBodyId =:filterValue ");
+				queryStr.append(" and localElectionBody.localElectionBodyId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
-				queryStr.append(" and tehsil.tehsilId =:filterValue");
+				queryStr.append(" and tehsil.tehsilId in(:filterValues)");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
-				queryStr.append(" and panc.panchayatId =:filterValue");
+				queryStr.append(" and panc.panchayatId in(:filterValues)");
 			}
 		}
 		if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
@@ -384,8 +401,11 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
 			query.setParameter("boothInchargeEnrollmentId",inputVO.getBoothInchargeEnrollmentId());
 		}
-		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
-			query.setParameter("filterValue", inputVO.getFilterValue());
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0) {
+			query.setParameterList("filterValues", inputVO.getFilterValueList());
+		}
+		if(inputVO.getBoothRoleIds() != null && inputVO.getBoothRoleIds().size() > 0){
+			query.setParameterList("boothRoleIds", inputVO.getBoothRoleIds());
 		}
 		return query.list();
 	}

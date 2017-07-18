@@ -366,29 +366,31 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		queryStr.append(" from BoothIncharge model ");
 		queryStr.append(" where model.isDeleted='N' and model.isActive='Y' and model.boothInchargeSerialNoRange.isDeleted='N' and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.isDeleted='N' ");
          
-		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0) {
 
 			if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.STATE)){
-				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.state.stateId =:filterValue ");
+				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.state.stateId in(:filterValues) ");
 			}else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
-				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.district.districtId =:filterValue ");
+				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.district.districtId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)) {
-				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.parliamentConstituency.constituencyId =:filterValue ");
+				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.parliamentConstituency.constituencyId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)) {
-				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId =:filterValue");
+				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId in(:filterValues)");
 			} else if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
-				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId =:filterValue ");
+				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
-				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilId =:filterValue");
+				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilId in(:filterValues)");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
-				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat.panchayatId =:filterValue");
+				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat.panchayatId in(:filterValues)");
 			}
 		}
         
 		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
 			queryStr.append(" and date(model.updatedTime) between :fromDate and :toDate ");
 		}
-		
+		if(inputVO.getBoothRoleIds() != null && inputVO.getBoothRoleIds().size() > 0){
+			queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId in(:boothRoleIds)");
+		}
 		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
 			queryStr.append(" and model.boothInchargeEnrollmentId =:boothInchargeEnrollmentId ");
 		}
@@ -418,9 +420,13 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
 			query.setParameter("boothInchargeEnrollmentId",inputVO.getBoothInchargeEnrollmentId());
 		}
-		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0) {
-			query.setParameter("filterValue", inputVO.getFilterValue());
+		if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0) {
+			query.setParameterList("filterValues", inputVO.getFilterValueList());
 		}
+		if(inputVO.getBoothRoleIds() != null && inputVO.getBoothRoleIds().size() > 0){
+			query.setParameterList("boothRoleIds", inputVO.getBoothRoleIds());
+		}
+	
 		return query.list();
 	}
 }

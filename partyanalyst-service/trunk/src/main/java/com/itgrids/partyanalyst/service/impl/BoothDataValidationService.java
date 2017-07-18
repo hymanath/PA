@@ -430,9 +430,11 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
 				//Setting MANDAL Wise Booth Count
 				Long locationId = 0l;
-				 if(inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0 && inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)){
-		            	locationId = Long.valueOf(inputVO.getFilterValue().toString().substring(0,1));
-		            	inputVO.setFilterValue(Long.valueOf(inputVO.getFilterValue().toString().substring(1)));
+				 if(inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0 && inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)){
+		            	locationId = Long.valueOf(inputVO.getFilterValueList().get(0).toString().substring(0,1));
+		            	String filterValues = inputVO.getFilterValueList().get(0).toString().substring(1);
+		            	inputVO.getFilterValueList().clear();
+		            	inputVO.getFilterValueList().add(Long.valueOf(filterValues));
 		          }
 				 /*We are appending 1 prefix id for MANDAL and 2 for Local Election body.Because in single list
 				  MANDAL And localElection Body is going to UI.So for identification purpose once user is selecting filter.
@@ -467,8 +469,10 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			}else{ //for other location 
 				
 				if(inputVO.getFilterLevel() != null && inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)){
-			    	inputVO.setFilterValue(Long.valueOf(inputVO.getFilterValue().toString().substring(1)));//in the case of TEHSIL taking id except first because we are appending while sending
-	     		}
+					String filterValues = inputVO.getFilterValueList().get(0).toString().substring(1);//in the case of TEHSIL taking id except first because we are appending while sending
+					inputVO.getFilterValueList().clear();
+		            inputVO.getFilterValueList().add(Long.valueOf(filterValues));
+			    }
 				List<Object[]> notStartedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
 				List<Object[]> startedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
 				List<Object[]> completedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
@@ -605,8 +609,10 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		List<BoothInchargeDetailsVO> resultList = new ArrayList<BoothInchargeDetailsVO>();
 		try{
 			if(inputVO.getFilterLevel() != null && inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)){
-		    	inputVO.setFilterValue(Long.valueOf(inputVO.getFilterValue().toString().substring(1)));//in the case of TEHSIL taking id except first because we are appending while sending
-     		}
+				String filterValues = inputVO.getFilterValueList().get(0).toString().substring(1);//in the case of TEHSIL taking id except first because we are appending while sending
+				inputVO.getFilterValueList().clear();
+	            inputVO.getFilterValueList().add(Long.valueOf(filterValues));
+		 	}
 			List<Object[]> locationObjLst = boothInchargeRoleConditionMappingDAO.getLocationBasedOnSelection(inputVO);
 			resultList = getLocationList(locationObjLst,"OtherLocation");
 			if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
@@ -664,9 +670,11 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			
 			if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
 				Long locationId = 0l;
-				 if(inputVO.getFilterValue() != null && inputVO.getFilterValue().longValue() > 0 ){
-		            	locationId = Long.valueOf(inputVO.getFilterValue().toString().substring(0,1));
-		            	inputVO.setFilterValue(Long.valueOf(inputVO.getFilterValue().toString().substring(1)));
+				 if(inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0 ){
+					    locationId = Long.valueOf(inputVO.getFilterValueList().get(0).toString().substring(0,1));
+		            	String filterValues = inputVO.getFilterValueList().get(0).toString().substring(1);
+		            	inputVO.getFilterValueList().clear();
+		            	inputVO.getFilterValueList().add(Long.valueOf(filterValues));
 		          }
 				 if(locationId == 2){
 					 inputVO.setFilterLevel(IConstants.LOCALELECTIONBODY);

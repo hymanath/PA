@@ -1,12 +1,15 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class InputVO {
 
 	private String locationLevel;
 	private String filterLevel;
-	private Long filterValue;
+	private List<Long> filterValueList;
+	private List<Long> boothRoleIds;
 	private String fromDateStr;
 	private String toDateStr;
 	private Date fromDate;
@@ -26,11 +29,11 @@ public class InputVO {
 	public void setFilterLevel(String filterLevel) {
 		this.filterLevel = filterLevel;
 	}
-	public Long getFilterValue() {
-		return filterValue;
-	}
-	public void setFilterValue(Long filterValue) {
-		this.filterValue = filterValue;
+	public List<Long> getFilterValueList() {
+		if(filterValueList == null ){
+			filterValueList = new ArrayList<Long>(0);
+		}
+		return filterValueList;
 	}
 	public String getFromDateStr() {
 		return fromDateStr;
@@ -68,6 +71,14 @@ public class InputVO {
 	public void setResultType(String resultType) {
 		this.resultType = resultType;
 	}
+	public List<Long> getBoothRoleIds() {
+		if(boothRoleIds == null){
+			boothRoleIds = new ArrayList<Long>(0);
+		}
+		return boothRoleIds;
+	}
+	
+	
     
 	
 }
