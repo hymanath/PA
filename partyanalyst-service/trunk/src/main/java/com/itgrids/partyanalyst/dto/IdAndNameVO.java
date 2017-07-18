@@ -51,8 +51,25 @@ public class IdAndNameVO {
 	private String membershipNo;
 	
 	private List<String> enrollmentYears = new ArrayList<String>();
+	private List<IdAndNameVO>NotAttendanceList=new ArrayList<IdAndNameVO>();
+	private List<IdAndNameVO>AttendanceList=new ArrayList<IdAndNameVO>();
 	
 	
+	
+	
+	
+	public List<IdAndNameVO> getNotAttendanceList() {
+		return NotAttendanceList;
+	}
+	public void setNotAttendanceList(List<IdAndNameVO> notAttendanceList) {
+		NotAttendanceList = notAttendanceList;
+	}
+	public List<IdAndNameVO> getAttendanceList() {
+		return AttendanceList;
+	}
+	public void setAttendanceList(List<IdAndNameVO> attendanceList) {
+		AttendanceList = attendanceList;
+	}
 	public List<String> getEnrollmentYears() {
 		return enrollmentYears;
 	}
