@@ -38,6 +38,7 @@ public class RwsClickVO implements Serializable{
 	
 	private String commssionedDate;
 	private String targetDate;
+	private String groundingDate;
 	
 	
 	public Long getPanchayatId() {
@@ -222,6 +223,12 @@ public class RwsClickVO implements Serializable{
 	}
 	public void setTargetDate(String targetDate) {
 		this.targetDate = targetDate;
+	}
+	public String getGroundingDate() {
+		return groundingDate;
+	}
+	public void setGroundingDate(String groundingDate) {
+		this.groundingDate = groundingDate;
 	}
 	
 	
