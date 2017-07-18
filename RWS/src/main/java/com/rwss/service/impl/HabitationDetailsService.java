@@ -98,7 +98,7 @@ public class HabitationDetailsService implements IHabitationDetailsService {
 				Long fromYear = Long.parseLong(inputVO.getFromDateStr().split("-")[2]);
 				Long toYear = Long.parseLong(inputVO.getToDateStr().split("-")[2]);
 				
-				for (Long i = fromYear; i < toYear; i++) {
+				for (Long i = fromYear; i <= toYear; i++) {
 					inputVO.getStressedHabitationYearsList().add(i.toString());
 				}
 			}
@@ -1114,16 +1114,17 @@ public class HabitationDetailsService implements IHabitationDetailsService {
 	public String getKPIDeatils(InputVO inputVO) {
 		JSONObject resultobj = new JSONObject();
 		try{
-			Long year =null ;
 			Double perecentage=null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-mmm-yy");
-			if(inputVO.getFromDateStr()!= null  && inputVO.getToDateStr()!= null ){
+			if (inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() > 0) {
 				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
 				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
-			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
-				year = Long.valueOf(inputVO.getYear());
-				inputVO.setFromDate(sdf.parse("01-04-"+ year));
-				
+			} else if (inputVO.getYear() != null && inputVO.getYear().length() > 0) {
+				Long year = Long.valueOf(inputVO.getYear());
+				Long priviousYear = year - 1;
+				inputVO.setFromDate(sdf.parse("01-04-" + priviousYear));
+				inputVO.setToDate(sdf.parse("01-04-" + year));
+
 			}
 			// for State Level
 			List<Object[]> targetData =  rwsMinWorksAdminViewDAO.getStateLevelKPIDeatils(inputVO, IConstants.TARGET_ALL);
@@ -1208,24 +1209,26 @@ public class HabitationDetailsService implements IHabitationDetailsService {
 			Double perecentage=null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
 			
-			if(inputVO.getYear() != null && !inputVO.getYear().trim().isEmpty()){
-				inputVO.getStressedHabitationYearsList().add(inputVO.getYear());
-			}else if(inputVO.getFromDateStr() != null && !inputVO.getFromDateStr().trim().isEmpty() && inputVO.getToDateStr() != null && !inputVO.getToDateStr().trim().isEmpty()){
-				Long fromYear = Long.parseLong(inputVO.getFromDateStr().split("-")[2]);
-				Long toYear = Long.parseLong(inputVO.getToDateStr().split("-")[2]);
-				for (Long i = fromYear; i < toYear; i++) {
-					inputVO.getStressedHabitationYearsList().add(i.toString());
-				}
-			}
-			
 			if(inputVO.getFromDateStr()!= null && !inputVO.getFromDateStr().trim().isEmpty()  && inputVO.getToDateStr()!= null && !inputVO.getToDateStr().trim().isEmpty()){
 				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
 				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
 			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
 				year = Long.valueOf(inputVO.getYear());
-				inputVO.setFromDate(sdf.parse("01-04-"+ year));
-				
+				Long fromYear = year - 1;
+				inputVO.setFromDate(sdf.parse("01-04-" + fromYear));
+				inputVO.setToDate(sdf.parse("01-04-" + year));
+				for (Long i = fromYear; i <= year; i++) {
+					inputVO.getStressedHabitationYearsList().add(i.toString());
+				}
 			}
+			if(inputVO.getFromDateStr() != null && !inputVO.getFromDateStr().trim().isEmpty() && inputVO.getToDateStr() != null && !inputVO.getToDateStr().trim().isEmpty()){
+				Long fromYear = Long.parseLong(inputVO.getFromDateStr().split("-")[2]);
+				Long toYear = Long.parseLong(inputVO.getToDateStr().split("-")[2]);
+				for (Long i = fromYear; i <= toYear; i++) {
+					inputVO.getStressedHabitationYearsList().add(i.toString());
+				}
+			}
+			
 			// for State Level
 			List<Object[]> stressedHabtationTargetData =  rwsMinWorkscompViewDAO.getStressedKPIDeatils(inputVO, IConstants.TARGET_ALL);
 			List<Object[]> stressedHabtationAcheieveMentsData =  rwsMinWorkscompViewDAO.getStressedKPIDeatils(inputVO,IConstants.TARGET_COMPLETED);

@@ -142,19 +142,14 @@ public class RwsMinWorksAdminViewDAO extends GenericDaoHibernate<RwsMinWorksAdmi
 		if(TargetType.equalsIgnoreCase(IConstants.TARGET_ALL)){
 			sbm.append(" RwsMinWorksAdminView adminModel ");
 			sbe.append(" and targetModel.workId= adminModel.workId ");
-			if(inputVO.getYear() != null  && inputVO.getFromDateStr() == null && inputVO.getToDateStr() == null){
-				sbe.append(" and adminModel.targetDateComp >= :year ");
-			}else if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
 				sbe.append(" and adminModel.targetDateComp between :fromDate and :toDate ");
 			}
 			
 		}else if(TargetType.equalsIgnoreCase(IConstants.TARGET_COMPLETED)){
 			sbm.append(" RwsMinWorkscompView acheieveModel ");
 			sbe.append(" and acheieveModel.workId= targetModel.workId ");
-			if(inputVO.getYear() != null  && inputVO.getFromDate()!= null && inputVO.getToDate() == null){
-				sbe.append(" and acheieveModel.dateOfCompletion >= :year ");
-			}else if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
-
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
 				sbe.append(" and acheieveModel.dateOfCompletion between :fromDate and :toDate ");
 			}
 			
@@ -194,8 +189,6 @@ public class RwsMinWorksAdminViewDAO extends GenericDaoHibernate<RwsMinWorksAdmi
 		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
 			query.setDate("fromDate", inputVO.getFromDate());
 			query.setDate("toDate", inputVO.getToDate());
-		} else if (inputVO.getYear() != null && inputVO.getFromDate() != null && inputVO.getToDate() == null) {
-			query.setDate("year", inputVO.getFromDate());
 		}
 		
 		if(inputVO.getDistrictValue()!=null && inputVO.getDistrictValue().trim().length()>0){
