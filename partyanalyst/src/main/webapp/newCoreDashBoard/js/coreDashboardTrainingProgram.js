@@ -99,15 +99,15 @@ var getDocumentWidth = $(document).width();
 					str+='</td>';
 					str+='<td>';
 						str+='<h4>'+programList[i].totalAttenedCount+'&nbsp;</h4>';
-						str+='<p class="text-muted text-capital">TA</p>';
+						str+='<p class="text-muted text-capital">Total Attended </p>';
 					str+='</td>';
 					str+='<td>';
 						str+='<h4>'+programList[i].inviteeAttended+'&nbsp;</h4>';
-						str+='<p class="text-muted text-capital">IA</p>';
+						str+='<p class="text-muted text-capital">Invitee Attended </p>';
 					str+='</td>';
 					str+='<td>';
 						str+='<h4>'+programList[i].nonInviteeAttended+'&nbsp;</h4>';
-						str+='<p class="text-muted text-capital">NIA</p>';
+						str+='<p class="text-muted text-capital">Non Invitee Attended </p>';
 					str+='</td>';
 					str+='<td>';
 						str+='<h4>'+programList[i].totalNotAttenedCount+'&nbsp;<span class="font-10 text-danger"> '+programList[i].totalNotAttenedCountPer+'%</span></h4>';
@@ -137,15 +137,15 @@ var getDocumentWidth = $(document).width();
 				str1+='<h4>'+villageWardRslt.totalEligibleCount+'</h4>';
 			str1+='</td>';
 			str1+='<td>';
-				str1+='<p class="text-muted text-capitalize">TA</p>';
+				str1+='<p class="text-muted text-capitalize">Total Attended </p>';
 				str1+='<h4>'+villageWardRslt.totalAttenedCount+'&nbsp;</h4>'
 			str1+='</td>';
 			str1+='<td>';
-				str1+='<p class="text-muted text-capitalize">IA</p>';
+				str1+='<p class="text-muted text-capitalize">Invitee Attended</p>';
 				str1+='<h4>'+villageWardRslt.inviteeAttended+'&nbsp;</h4>'
 			str1+='</td>';
 			str1+='<td>';
-				str1+='<p class="text-muted text-capitalize">NIA</p>';
+				str1+='<p class="text-muted text-capitalize">Non Invitee Attended</p>';
 				str1+='<h4>'+villageWardRslt.nonInviteeAttended+'&nbsp;</h4>'
 			str1+='</td>';
 			str1+='<td>';
@@ -174,15 +174,15 @@ var getDocumentWidth = $(document).width();
 				str2+='<h4>'+mandalTwnDivRslt.totalEligibleCount+'</h4>';
 			str2+='</td>';
 			str2+='<td>';
-				str2+='<p class="text-muted text-capitalize">TA</p>';
+				str2+='<p class="text-muted text-capitalize">Total Attended</p>';
 				str2+='<h4>'+mandalTwnDivRslt.totalAttenedCount+'</h4>'
 			str2+='</td>';
 			str2+='<td>';
-				str2+='<p class="text-muted text-capitalize">IA</p>';
+				str2+='<p class="text-muted text-capitalize">Invitee Attended</p>';
 				str2+='<h4>'+mandalTwnDivRslt.inviteeAttended+' </h4>'
 			str2+='</td>';
 			str2+='<td>';
-				str2+='<p class="text-muted text-capitalize">NIA</p>';
+				str2+='<p class="text-muted text-capitalize">Non Invitee Attended</p>';
 				str2+='<h4>'+mandalTwnDivRslt.nonInviteeAttended+'</h4>'
 			str2+='</td>';
 			str2+='<td>';
@@ -730,24 +730,23 @@ function buildStateLevelCampAttendedDetails(result){
 						str+='<p class="responsiveFont">'+result[i].count+'</p>';
 					str+='</td>';
 					str+='<td>';
-						str+='<p class="text-muted text-capitalize">IA</p>';
+					str+='<p class="text-muted text-capitalize">Total Attended</p>';
+					str+='<p class="responsiveFont">'+(parseInt(result[i].inviteeAttnd)+parseInt(result[i].nonInviteeAttnd))+'</hp>'; 
+					str+='</td>';							
+					str+='<td>';
+						str+='<p class="text-muted text-capitalize" title="Invitee Attended">Invitee Attended</p>';
 						str+='<p class="responsiveFont">'+result[i].inviteeAttnd+'</p>';
 			str+='</td>';
 			str+='<td>';
-			var NIA = result[i].actualCount-result[i].inviteeAttnd;
-						str+='<p class="text-muted text-capitalize">NIA</p>';
+			var NIA = result[i].nonInviteeAttnd;
+						str+='<p class="text-muted text-capitalize" title="Non Invitee Attended">Non Invitee Attended</p>';
 						str+='<p class="responsiveFont">'+NIA+'</p>';
 			str+='</td>';
-			str+='<td>';
-				var per = (result[i].actualCount*(100/result[i].count)).toFixed(2);
-				
-				str+='<p class="text-muted text-capitalize">attended</p>';
-				str+='<p class="responsiveFont">'+result[i].actualCount+'<span class="font-10 text-success">'+per+'%</span></hp>'; 
-							str+='</td>';  
+			  
 							str+='<td>';
 								var abs = result[i].count - result[i].actualCount; 
 								str+='<p class="text-muted text-capitalize">absent</p>    ';
-								str+='<p class="responsiveFont">'+abs+'<span class="font-10 text-danger">'+(100-per).toFixed(2)+'%</span></p>';     
+								//str+='<p class="responsiveFont">'+abs+'<span class="font-10 text-danger">'+(100-per).toFixed(2)+'%</span></p>';     
 								
 					str+='</td>';
 				str+='</tr>';
@@ -1202,8 +1201,8 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 			 str+='<th>Eligible</th>';
 			 str+='<th>Attended</th>';
 			 str+='<th>%</th>';
-			 str+='<th>IA</th>';
-			 str+='<th>NIA</th>';
+			 str+='<th title="Invitee Attended">IA</th>';
+			 str+='<th title="Non Invitee Attended">NIA</th>';
 			 str+='<th>Yet to train</th>';
 			 str+='<th>%</th>';
 		 str+='</thead>';
@@ -1258,17 +1257,18 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 			 str+='<table class="table table-condensed">';
 				 str+='<thead>';
 					 str+='<th>Eligible</th>';
-					 str+='<th colspan="2">Attended</th>';
-					 str+='<th colspan="1">IA</th>';
-					 str+='<th colspan="1">NIA</th>';
+					 str+='<th>Total Attended</th>';
+					 str+='<th colspan="1"  title="Invitee Attended" >IA  </th>';
+					 str+='<th colspan="1"  title="Non Invitee Attended">NIA</th>';
+					  str+='<th colspan="1"  title="Invitee Attended %" >IA % </th>';
 				    str+='<th colspan="2">Yet to train</th>';
 				 str+='</thead>';
 				 str+='<tr>';
 					 str+='<td>'+result[i].totalEligibleCount+'</td>';
-					 str+='<td>'+result[i].totalAttenedCount+'</td>';
-					 str+='<td>'+result[i].totalAttenedCountPer+'%</td>';
-					 str+='<td>'+result[i].inviteeAttendedCnt+'</td>';
+					 str+='<td>'+result[i].totalAttenedCount+'</td>';					
+					 str+='<td>'+result[i].inviteeAttendedCnt+'</td>';					 
 					 str+='<td>'+result[i].nonInviteeAttendedCnt+'</td>';
+					  str+='<td>'+result[i].totalAttenedCountPer+'%</td>';
 					 str+='<td>'+result[i].totalNotAttenedCount+'</td>';
 					 str+='<td>'+result[i].totalNotAttenedCountPer+'%</td>';
 				 str+='</tr>';
@@ -1427,9 +1427,11 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 					str+='<th>Rank</th>';
 					str+='<th>Designation</th>';
 					str+='<th>Name</th>';
-					str+='<th style="text-align:center;">Total Eligible</th>';
-					str+='<th style="text-align:center;">Attended</th>';
-					str+='<th style="text-align:center;">%</th>';
+					str+='<th style="text-align:center;"> Eligible</th>';
+					str+='<th style="text-align:center;"> Total Attended</th>';
+					str+='<th style="text-align:center;" title="Invitee Attended "> IA </th>';
+					str+='<th style="text-align:center;" title=" Non Invitee Attended "> NIA </th>';
+					str+='<th style="text-align:center;"  title="Invitee Attended %"> IA %</th>';
 					str+='<th style="text-align:center;">Not Attended</th>';
 					str+='<th style="text-align:center;">%</th>';
 				str+'=</thead>';
@@ -1451,7 +1453,9 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 			}
 		   str+='<td>'+result[i].name+'</td>';
 			str+='<td style="text-align:center;">'+result[i].totalEligibleCount+'</td>';
-			str+='<td style="text-align:center;">'+result[i].totalAttenedCount+'</td>';
+			str+='<td style="text-align:center;">'+result[i].totalAttenedCount+'</td>';			
+			str+='<td style="text-align:center;">'+result[i].inviteeAttendedCnt+'</td>';
+			str+='<td style="text-align:center;">'+result[i].nonInviteeAttendedCnt+'</td>';
 			str+='<td style="text-align:center;">'+result[i].totalAttenedCountPer+'</td>';
 			str+='<td style="text-align:center;">'+result[i].totalNotAttenedCount+'</td>';
 			str+='<td style="text-align:center;">'+result[i].totalNotAttenedCountPer+'</td>';
