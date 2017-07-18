@@ -383,12 +383,21 @@ public class AnnouncementService implements IAnnouncementService {
 		return null;
 	}
 	
-	public List<SelectOptionVO> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId){
+	public List<SelectOptionVO> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId, String cadreType){
 		SelectOptionVO optionVo=null;
 		try{
 			ArrayList<SelectOptionVO> finalList=new ArrayList<SelectOptionVO>(0);
 			
-			List<Object[]> result=boothInchargeDAO.getBoothUserDetails(constituencyId, mandalId, boothId);
+			List<Object[]> result=boothInchargeDAO.getBoothUserDetails(constituencyId, mandalId, boothId,"own");
+			List<Object[]> result1= boothInchargeDAO.getBoothUserDetails(constituencyId, mandalId, boothId,"familyVoterId");
+			
+			if(!commonMethodsUtilService.isListOrSetValid(result)){
+				result = new ArrayList<Object[]>(0);
+			}
+			if(commonMethodsUtilService.isListOrSetValid(result1)){
+				result.addAll(result1);
+			}
+			
 			if(result !=null){
 				for(Object[] Obj: result){
 					optionVo = new SelectOptionVO();
@@ -404,6 +413,7 @@ public class AnnouncementService implements IAnnouncementService {
 					optionVo.setRoleName(commonMethodsUtilService.getStringValueForObject(Obj[9]));
 					optionVo.setRoleMappingId(commonMethodsUtilService.getLongValueForObject(Obj[10]));
 					optionVo.setInchargeId(commonMethodsUtilService.getLongValueForObject(Obj[11]));
+					optionVo.setSerialNo(commonMethodsUtilService.getLongValueForObject(Obj[12]));
 					finalList.add(optionVo);
 				}
 				return finalList;

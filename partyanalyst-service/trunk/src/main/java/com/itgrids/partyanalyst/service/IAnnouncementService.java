@@ -18,5 +18,5 @@ public interface IAnnouncementService {
     public List<AnnouncementVO> getAllUserAnnouncementDetails(Long userId,Date today);
     
     public  List<SelectOptionVO> getUserBasedAccessConstituencies(Long userId);
-    public List<SelectOptionVO> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId);
+    public List<SelectOptionVO> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId, String cadreType);
 } 
