@@ -24,6 +24,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAttendanceTabUserDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceTabUserDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
@@ -78,10 +79,20 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 	private IPartyMeetingSessionDAO partyMeetingSessionDAO;
 	private IStateDAO stateDAO;
 	private IUserDAO userDAO;
+	private IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO;
 	private  ResultStatus resultStatus;
 
 	
-	 public ResultStatus getResultStatus() {
+	 public IPartyMeetingAttendanceDAO getPartyMeetingAttendanceDAO() {
+		return partyMeetingAttendanceDAO;
+	}
+
+	public void setPartyMeetingAttendanceDAO(
+			IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO) {
+		this.partyMeetingAttendanceDAO = partyMeetingAttendanceDAO;
+	}
+
+	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
 
@@ -1201,5 +1212,34 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 				}
 				return finalSessioList;
 			}
-		  
+		  public IdAndNameVO getPartyMeetingInviteesDetailsAttendence(Long meetingId){
+			  IdAndNameVO idAndNameVO=null;
+		        List<String> invetiMeberShipList=null;
+		        List<IdAndNameVO> notAttendedFinalList=null;
+		        List<String> notAttendList =null;
+		        List<String> attendedList=partyMeetingAttendanceDAO.getPartyMeetingInviteesDetailsAttendence(meetingId);
+		        List<IdAndNameVO> attendfinalList=  getTdpCadreDetailsForInveetMeeting(attendedList);
+		      	List<Object[]> inviteeObjs=partyMeetingInviteeDAO.getPartyMeetingInviteeDetaisByPartyMeetingId(meetingId);
+		      	if(inviteeObjs !=null && inviteeObjs.size() >0){
+		      		invetiMeberShipList=new ArrayList<String>();
+			      	for(Object[] objcts: inviteeObjs){
+			      		invetiMeberShipList.add(commonMethodsUtilService.getStringValueForObject(objcts[5]));
+			      	}
+		      	}
+		         if(attendedList !=null && attendedList.size()>0 && invetiMeberShipList !=null && invetiMeberShipList.size() >0){
+		        	 notAttendList=new ArrayList<String>();
+		        	 for(String invetiMeber:invetiMeberShipList){
+		        		 if(!attendedList.contains(invetiMeber)){
+		        			 notAttendList.add(invetiMeber);
+		        		 }
+		        	 }
+		         }
+		         notAttendedFinalList=  getTdpCadreDetailsForInveetMeeting(notAttendList);
+		         if(notAttendedFinalList !=null || attendfinalList !=null){
+			         idAndNameVO=new IdAndNameVO();
+			         idAndNameVO.setNotAttendanceList(notAttendedFinalList);
+			         idAndNameVO.setAttendanceList(attendfinalList);
+		         }
+		          return idAndNameVO;
+		      }
 }
