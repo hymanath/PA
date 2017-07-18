@@ -409,4 +409,16 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		}
 		return query.list();
 	}
+	public List<Object[]> getBoothInchargeRoles(){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select distinct model.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId," +
+				    " model.boothInchargeRoleCondition.boothInchargeRole.roleName " +
+				    " from BoothInchargeRoleConditionMapping model " +
+				    " where model.isDeleted ='N'");
+		Query query = getSession().createQuery(sb.toString());
+		return query.list();
+		
+	}
+
 }
