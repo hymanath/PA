@@ -109,7 +109,7 @@
 				<div class="col-sm-12">
 					<ul class="list-inline navbar-header-custom">
 						<li style="position:relative;top:-13px;cursor: pointer;">
-							<h4 class="arrowIconChanged"><span id="selectedName" style="text-transform: uppercase;cursor:pointer;">Andhra Pradesh </span>&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-down" aria-hidden="true"></i></h4>
+							<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;">Andhra Pradesh </span></h4>
 							<div class="multi-level-selection-menu arrow_box_top"></div>
 						</li>
 						<li>
@@ -208,7 +208,7 @@
 												</ul>
 											</div>
 											<div class="col-sm-6">
-												<ul class="nav nav-tabs pull-right tabTypeStateCls" role="tablist" id="" attr_switch = "stateLevel">
+												<ul class="nav nav-tabs pull-right tabTypeStateCls" role="tablist" id="" >
 													<li role="presentation" attr_tab_type = "stateGraph" attr_level_type="state"><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 													<li role="presentation" class="active" attr_tab_type = "stateTable" attr_level_type="state"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
 													<!--<li role="presentation" class="" attr_tab_type = "stateCummulative" attr_level_type="state"><a href="#stateLevelCummulative" aria-controls="stateLevelCummulative" role="tab" data-toggle="tab">Cummulative</a></li>-->
@@ -288,20 +288,24 @@
 									<div class="col-sm-6 showHideDistrictPgramsCls" style="display:none;" >
 										<ul class="list-inline row">
 											<li class="col-sm-6">
+												<label>PROGRAMS</label>
 												<select class="form-control chosenSelect" id="programNamesDistrict" >
 												</select>
 											</li>
 											<li class="col-sm-6">
+												<label>SUB PROGRAMS</label>
 												<select class="form-control chosenSelect" id="subProgramNamesDistrict" >
 												</select>
 											</li>
 										</ul>
 									</div>
 									<div class="col-sm-3 distLevelCls distLevelCls1" >
+										<label>DISTRICT</label>
 										<select class="form-control chosenSelect" id="distLevelDistrictNames" >
 										</select>
 									</div>
 									<div class="col-sm-3 distLevelparliamentCls distLevelCls1" style="display:none;">
+										<label>PARLIAMENT</label>
 										<select class="form-control chosenSelect" id="distLevelParliamentNames" >
 										</select>
 									</div>
@@ -404,7 +408,7 @@
 												</ul>
 												<ul class="switch-btn-New tabCummulativeConstituency selectboxsShowHide" role="tabCummulative" attr_switch = "consLevel">
 													<li class="active ActiveConstituencyCls" attr_type="cummulativeView">Cummulative View</li>
-													<li  attr_type="normalView ">Year Wise</li>
+													<li  attr_type="normalView">Year Wise</li>
 												</ul>
 											</div>
 											<div class="col-sm-6">
@@ -420,36 +424,34 @@
 										</div>
 									</div>
 								</div>
-								<div class="row selectboxsShowHide m_top10">
-									<div class="col-sm-12">
-										<ul class="list-inline m_top10 showHideConstituencyPgramsCls" style="display:none;">
-											<li class="col-sm-2">
-												<select class="form-control chosenSelect" id="programNamesConst" >
-												</select>
-											</li>
-											<li class="col-sm-2">
-												<select class="form-control chosenSelect" id="subProgramNamesConst" >
-												</select>
-											</li>
-										</ul>
-									</div>
-									</div>
-									<div class="row selectboxsShowHide m_top10">
-									<div class="">
+								<div class="row selectboxsShowHide m_top10 ">
+										<div class="col-sm-3 showHideConstituencyPgramsCls" style="display:none;">
+											<label>PROGRAMS</label>
+											<select class="form-control chosenSelect" id="programNamesConst" >
+											</select>
+										</div>
+										<div class="col-sm-3 showHideConstituencyPgramsCls" style="display:none;">
+											<label>SUB PROGRAMS</label>
+											<select class="form-control chosenSelect" id="subProgramNamesConst" >
+											</select>
+										</div>
 										<div class="col-sm-3 constiLevelDistCls " >
+											<label>DISTRICT</label>
 											<select class="form-control chosenSelect " id="constLevelDistNames" >
 												<option value="0"> SELECT DISTRICT</option>
 											</select>
 										</div>
 										<div class="col-sm-3 parlaiLevelDistCls " style="display:none;">
+											<label>PARLIAMENT</label>
 											<select class="form-control chosenSelect" id="constLevelParliaNames" >
 											</select>
 										</div>
 										<div class="col-sm-3 constiLevelCls " >
+											<label>CONSTITUENCY</label>
 											<select class="form-control chosenSelect" id="constLevelConstNames" >
 											</select>
 										</div>
-									</div>
+									
 								</div>
 								<div class="row m_top10">
 									<div class="col-sm-12">
@@ -568,39 +570,38 @@
 									</div>
 								</div>
 								<div class="row selectboxsShowHide m_top10">
-									<div class="col-sm-12">
-										<ul class="list-inline m_top10 showHideMandalPgramsCls" style="display:none;">
-											<li class="col-sm-2">
-												<select class="form-control chosenSelect" id="programNamesMandal" >
-												</select>
-											</li>
-											<li class="col-sm-2">
-												<select class="form-control chosenSelect" id="subProgramNamesMandal" >
-												</select>
-											</li>
-										</ul>
-									</div>
-									</div>
-									<div class="row selectboxsShowHide m_top10">
-									<div class="">
+										<div class="col-sm-3 showHideMandalPgramsCls" style="display:none;">
+											<label>PROGRAMS</label>
+											<select class="form-control chosenSelect" id="programNamesMandal" >
+											</select>
+										</div>
+										<div class="col-sm-3 showHideMandalPgramsCls" style="display:none;">
+											<label>SUB PROGRAMS</label>
+											<select class="form-control chosenSelect" id="subProgramNamesMandal" >
+											</select>
+										</div>
 										<div class="col-sm-3 mandalLevelDistCls" >
+											<label>DISTRICT</label>
 											<select class="form-control chosenSelect" id="mandalLevelDistNames" >
 												<option value="0"> SELECT DISTRICT</option>
 											</select>
 										</div>
 										<div class="col-sm-3 levelparliamentConstiCls" style="display:none">
+											<label>PARLIAMENT</label>
 											<select class="form-control chosenSelect" id="parliamentLevelConstNames" >
 											</select>
 										</div>
 										<div class="col-sm-3 levelmandalConstiCls" >
+											<label>CONSTITUENCY</label>
 											<select class="form-control chosenSelect" id="mandalLevelConstNames" >
 											</select>
 										</div>
 										<div class="col-sm-3 mandalLevelCls" >
+											<label>MANDAL</label>
 											<select class="form-control chosenSelect" id="mandalLevelMandalNames" >
 											</select>
 										</div>
-									</div>
+									
 								</div>
 								<div class="row m_top10">
 									<div class="col-sm-12">
@@ -722,43 +723,44 @@
 								</div>
 							
 								<div class="row selectboxsShowHide m_top10">
-									<div class="col-sm-12">
-										<ul class="list-inline m_top10 showHideVillagePgramsCls" style="display:none;">
-											<li class="col-sm-3">
-												<select class="form-control chosenSelect" id="programNamesVillage" >
-												</select>
-											</li>
-											<li class="col-sm-3">
-												<select class="form-control chosenSelect" id="subProgramNamesVillage" >
-												</select>
-											</li>
-										</ul>
-									</div>
-								</div>
-									<div class="row selectboxsShowHide m_top10">
-									<div class="">
-										<div class="col-sm-2 villageLevelDistCls" >
+										<div class="col-sm-3 showHideVillagePgramsCls" style="display:none;">
+											<label>PROGRAMS</label>
+											<select class="form-control chosenSelect" id="programNamesVillage" >
+											</select>
+										</div>
+										<div class="col-sm-3 showHideVillagePgramsCls" style="display:none;">
+											<label>SUB PROGRAMS</label>
+											<select class="form-control chosenSelect" id="subProgramNamesVillage" >
+											</select>
+										</div>
+								
+										<div class="col-sm-3 villageLevelDistCls" >
+											<label>DISTRICT</label>
 											<select class="form-control chosenSelect" id="villageLevelDistNames" >
 												<option value="0"> SELECT DISTRICT</option>
 											</select>
 										</div>
-										<div class="col-sm-2 villageLevelParliCls" style="display:none">
+										<div class="col-sm-3 villageLevelParliCls" style="display:none">
+											<label>PARLIAMENT</label>
 											<select class="form-control chosenSelect" id="villageLeveParliNames" >
 											</select>
 										</div>
 										<div class="col-sm-2 villageLevelConstiCls" >
+											<label>CONSTITUENCY</label>
 											<select class="form-control chosenSelect" id="villageLevelConstNames" >
 											</select>
 										</div>
-										<div class="col-sm-2 villageLevelMandalCls" >
+										<div class="col-sm-3 villageLevelMandalCls" >
+											<label>MANDAL</label>
 											<select class="form-control chosenSelect" id="villageLevelMandalNames" >
 											</select>
 										</div>
-										<div class="col-sm-2 villageLevelCls" >
+										<div class="col-sm-3 villageLevelCls" >
+											<label>VILLAGE</label>
 											<select class="form-control chosenSelect" id="villageLevelNames" >
 											</select>
 										</div>
-									</div>
+									
 								</div>
 								<div class="row m_top10">
 									<div class="col-sm-12">

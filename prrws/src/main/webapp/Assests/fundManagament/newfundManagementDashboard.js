@@ -107,7 +107,7 @@ getAllDepartments();
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
 			getGovtSchemesDetails("programNamesDistrict");
-			getGovtSubProgramsDetails(0,"subProgramNamesConst");
+			getGovtSubProgramsDetails(0,"subProgramNamesDistrict");
 			compareFundsBetweenFinancialYears(3,'comparionDistLevlOvervwTable');
 		}
 	});
@@ -124,7 +124,7 @@ getAllDepartments();
 			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload');
 			getAllSubLocationsBySuperLocationId(21,'constLevelDistNames',4);
 			getGovtSchemesDetails("programNamesConst");
-			getGovtSubProgramsDetails(0,"subProgramNamesDistrict");
+			getGovtSubProgramsDetails(0,"subProgramNamesConst");
 			compareFundsBetweenFinancialYears(4,'comparionConstLevlOvervwTable');
 		}
 	});
@@ -176,7 +176,7 @@ getAllDepartments();
 		});
 		if(blockType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload')
-		}else{
+		}else if(blockType == "cummulativeView"){
 			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload')
 		}
 	  
@@ -188,12 +188,12 @@ getAllDepartments();
 	  $("#distLevelDistrictNames").trigger("chosen:updated");
 	  $("#distLevelParliamentNames").val(0);
 	  $("#distLevelParliamentNames").trigger("chosen:updated");
-	  $(".tabCummulativeDistrict li").removeClass("active");
-	  $(".ActiveDistrictCls").addClass("active");
+	  /* $(".tabCummulativeDistrict li").removeClass("active");
+	  $(".ActiveDistrictCls").addClass("active"); */
 	  var subProgramId =0;
 	  getGovtSubProgramsDetails(programId,"subProgramNamesDistrict");
 		var blockType ='';
-		$("[role='tabCummulative'] li").each(function(i, obj){
+		$(" .tabCummulativeDistrict li").each(function(i, obj){
 			 if($(this).hasClass("active")){
 				  blockType = $(this).attr("attr_type");
 			 }
@@ -201,7 +201,7 @@ getAllDepartments();
 		});
 		if(blockType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
-		}else{
+		}else if(blockType == "cummulativeView"){
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 		}
 	});
@@ -213,26 +213,24 @@ getAllDepartments();
 	  $("#constLevelParliaNames").val(0);
 	  $("#constLevelDistNames").trigger("chosen:updated");
 	  $("#constLevelParliaNames").trigger("chosen:updated");
-	 // $(".tabCummulativeConstituency li").removeClass("active");
-	 // $(".ActiveConstituencyCls").addClass("active");
 	  var id = $("#constLevelConstNames").val();
 	  if(id>0){
 		  $("#constLevelConstNames").html('');
-		  $("#constLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		  $("#constLevelConstNames").trigger("chosen:updated");
 	  }
 	  
-	  var blockType ='';
-		$("[role='tabCummulative'] li").each(function(i, obj){
+	  var blockTypeCons ='';
+		$(" .tabCummulativeConstituency li").each(function(i, obj){
 			 if($(this).hasClass("active")){
-				  blockType = $(this).attr("attr_type");
+				  blockTypeCons = $(this).attr("attr_type");
 			 }
 			
 		});
 	 getGovtSubProgramsDetails(programId,"subProgramNamesConst");
-	 if(blockType == "normalView"){
+	
+	 if(blockTypeCons == "normalView"){
 		 getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
-	 }else{
+	 }else if(blockTypeCons == "cummulativeView"){
 		 getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 	 }
 	 
@@ -246,22 +244,21 @@ getAllDepartments();
 	  $("#parliamentLevelConstNames").val(0);
 	  $("#mandalLevelDistNames").trigger("chosen:updated");
 	  $("#parliamentLevelConstNames").trigger("chosen:updated");
-	  $(".tabCummulativeMandal li").removeClass("active");
-	  $(".ActiveMandalCls").addClass("active");
+	 
 	  var id = $("#mandalLevelConstNames").val();
 	  if(id>0){
 		  $("#mandalLevelConstNames").html('');
-		  $("#mandalLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
+		 // $("#mandalLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		  $("#mandalLevelConstNames").trigger("chosen:updated");
 	  }
 	  var id1 = $("#mandalLevelMandalNames").val();
 	  if(id1>0){
 		  $("#mandalLevelMandalNames").html('');
-		  $("#mandalLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
+		 // $("#mandalLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
 		  $("#mandalLevelMandalNames").trigger("chosen:updated");
 	  }
 	   var blockType ='';
-		$("[role='tabCummulative'] li").each(function(i, obj){
+		$(".tabCummulativeMandal li").each(function(i, obj){
 			 if($(this).hasClass("active")){
 				  blockType = $(this).attr("attr_type");
 			 }
@@ -271,7 +268,7 @@ getAllDepartments();
 	 getGovtSubProgramsDetails(programId,"subProgramNamesMandal");
 	 if(blockType == "normalView"){
 		  getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
-	 }else{
+	}else if(blockType == "cummulativeView"){
 		  getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 	 }
 	
@@ -285,28 +282,28 @@ getAllDepartments();
 	  $("#villageLevelDistNames").trigger("chosen:updated");
 	  $("#villageLeveParliNames").trigger("chosen:updated");
 	  var id = $("#villageLevelConstNames").val();
-	  $(".tabCummulativeVillage li").removeClass("active");
-	  $(".ActiveVillageCls").addClass("active");
+	 /*  $(".tabCummulativeVillage li").removeClass("active");
+	  $(".ActiveVillageCls").addClass("active"); */
 	  if(id>0){
 		  $("#villageLevelConstNames").html('');
-		  $("#villageLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
+		 // $("#villageLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		  $("#villageLevelConstNames").trigger("chosen:updated");
 	  }
 	  var id1 = $("#villageLevelMandalNames").val();
 	  if(id1>0){
 		  $("#villageLevelMandalNames").html('');
-		  $("#villageLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
+		 // $("#villageLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
 		  $("#villageLevelMandalNames").trigger("chosen:updated");
 	  }
 	  var id2 = $("#villageLevelNames").val();
 	  if(id2>0){
 		  $("#villageLevelNames").html('');
-		  $("#villageLevelNames").append('<option value="0">ALL VILLAGE</option>');	
+		//  $("#villageLevelNames").append('<option value="0">ALL VILLAGE</option>');	
 		  $("#villageLevelNames").trigger("chosen:updated");
 	  }
 		getGovtSubProgramsDetails(programId,"subProgramNamesVillage");
 	  var blockType ='';
-		$("[role='tabCummulative'] li").each(function(i, obj){
+		$(".tabCummulativeVillage li").each(function(i, obj){
 			 if($(this).hasClass("active")){
 				  blockType = $(this).attr("attr_type");
 			 }
@@ -314,7 +311,7 @@ getAllDepartments();
 		});
 		 if(blockType == "normalView"){
 			 getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
-		 }else{
+		}else if(blockType == "cummulativeView"){
 			 getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 		 }
 	 
@@ -332,7 +329,7 @@ getAllDepartments();
 		});
 		if(blockType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
-		}else{
+		}else if(blockType == "cummulativeView"){
 			getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','','',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload')
 		}
 	  
@@ -345,10 +342,10 @@ getAllDepartments();
 	  $("#distLevelDistrictNames").trigger("chosen:updated");
 	  $("#distLevelParliamentNames").val(0);
 	  $("#distLevelParliamentNames").trigger("chosen:updated");
-	  $(".tabCummulativeDistrict li").removeClass("active");
-	  $(".ActiveDistrictCls").addClass("active");
+	  /* $(".tabCummulativeDistrict li").removeClass("active");
+	  $(".ActiveDistrictCls").addClass("active"); */
 		var blockType ='';
-		$("[role='tabCummulative'] li").each(function(i, obj){
+		$(".tabCummulativeDistrict li").each(function(i, obj){
 			 if($(this).hasClass("active")){
 				  blockType = $(this).attr("attr_type");
 			 }
@@ -357,7 +354,7 @@ getAllDepartments();
 		
 		if(blockType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
-		}else{
+		}else if(blockType == "cummulativeView"){
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
 		}
 	  
@@ -366,8 +363,8 @@ getAllDepartments();
 	$(document).on("change","#subProgramNamesConst",function(){
 	 var subProgramId = $(this).val();
 	 var programId = $("#programNamesConst").val();
-	  $(".tabCummulativeConstituency li").removeClass("active");
-	  $(".ActiveConstituencyCls").addClass("active");
+	 /*  $(".tabCummulativeConstituency li").removeClass("active");
+	  $(".ActiveConstituencyCls").addClass("active"); */
 	  $("#constLevelDistNames").val(0);
 	  $("#constLevelParliaNames").val(0);
 	  $("#constLevelDistNames").trigger("chosen:updated");
@@ -375,11 +372,10 @@ getAllDepartments();
 	  var id = $("#constLevelConstNames").val();
 	  if(id>0){
 		  $("#constLevelConstNames").html('');
-		  $("#constLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		  $("#constLevelConstNames").trigger("chosen:updated");
 	  }
 	  var blockType ='';
-		$("[role='tabCummulative'] li").each(function(i, obj){
+		$(".tabCummulativeConstituency li").each(function(i, obj){
 			 if($(this).hasClass("active")){
 				  blockType = $(this).attr("attr_type");
 			 }
@@ -387,9 +383,9 @@ getAllDepartments();
 		});
 	if(blockType == "normalView"){
 		getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
-	}else{
-		
-	}	getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
+	}else if(blockType == "cummulativeView"){
+		getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"cumulative",'onload');
+	}	
 	 
 	});
 	
@@ -404,17 +400,15 @@ getAllDepartments();
 	  var id = $("#mandalLevelConstNames").val();
 	  if(id>0){
 		  $("#mandalLevelConstNames").html('');
-		  $("#mandalLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		  $("#mandalLevelConstNames").trigger("chosen:updated");
 	  }
 	  var id1 = $("#mandalLevelMandalNames").val();
 	  if(id1>0){
 		  $("#mandalLevelMandalNames").html('');
-		  $("#mandalLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
 		  $("#mandalLevelMandalNames").trigger("chosen:updated");
 	  }
 	   var blockType ='';
-		$("[role='tabCummulative'] li").each(function(i, obj){
+		$(".tabCummulativeMandal li").each(function(i, obj){
 			 if($(this).hasClass("active")){
 				  blockType = $(this).attr("attr_type");
 			 }
@@ -438,25 +432,25 @@ getAllDepartments();
 	  var id = $("#villageLevelConstNames").val();
 	  if(id>0){
 		  $("#villageLevelConstNames").html('');
-		  $("#villageLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
+		  //$("#villageLevelConstNames").append('<option value="0">ALL CONSTITUENCY</option>');	
 		  $("#villageLevelConstNames").trigger("chosen:updated");
 	  }
 	  var id1 = $("#villageLevelMandalNames").val();
 	  if(id1>0){
 		  $("#villageLevelMandalNames").html('');
-		  $("#villageLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
+		 // $("#villageLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
 		  $("#villageLevelMandalNames").trigger("chosen:updated");
 		  
 	  }
 	  var id2 = $("#villageLevelNames").val();
 	  if(id2>0){
 		  $("#villageLevelNames").html('');
-		  $("#villageLevelNames").append('<option value="0">ALL VILLAGE</option>');	
+		  //$("#villageLevelNames").append('<option value="0">ALL VILLAGE</option>');	
 		  $("#villageLevelNames").trigger("chosen:updated");
 		  
 	  }
 	   var blockType ='';
-		$("[role='tabCummulative'] li").each(function(i, obj){
+		$(".tabCummulativeVillage li").each(function(i, obj){
 			 if($(this).hasClass("active")){
 				  blockType = $(this).attr("attr_type");
 			 }
@@ -552,6 +546,12 @@ getAllDepartments();
 			$("#villageLevelDistNames").trigger("chosen:updated");
 			$("#villageLeveParliNames").val(0);
 			$("#villageLeveParliNames").trigger("chosen:updated");
+			$("#villageLevelNames").html('');
+			$("#villageLevelNames").trigger("chosen:updated")
+			$("#villageLevelMandalNames").html('');
+			$("#villageLevelMandalNames").trigger("chosen:updated")
+			$("#villageLevelConstNames").html('');
+			$("#villageLevelConstNames").trigger("chosen:updated")
 			if(blockType == "normalView"){
 				
 				getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,programId,subProgramId,"",'onload');
@@ -655,6 +655,8 @@ getAllDepartments();
 		}else if(blockName == 'consLevel'){
 			$(".tabCummulativeConstituency li").removeClass("active");
 			$(".ActiveConstituencyCls").addClass("active");
+			$("#constLevelConstNames").val(0);
+			$("#constLevelConstNames").trigger('chosen:updated');
 			if(blockType == "parliamentType"){
 				if(globalLevelId == 0){
 					globalLocationLevelTypeId=9;
@@ -796,14 +798,14 @@ getAllDepartments();
 												overviewTable+='<option value="'+result[i].id+'">'+result[i].name+' </option>';
 											}
 										overviewTable+='</select></th>';
-										overviewTable+='<th class="text-center"><i class="rounded-circle fa fa-inr"></i><p class="text-capital">total amount</p></th>';
-										overviewTable+='<th><i class="rounded-circle">D</i><p class="text-capital m_top10">district</p></th>';
-										overviewTable+='<th><i class="rounded-circle">C</i><p class="text-capital m_top10">constituency</p></th>';
-										overviewTable+='<th><i class="rounded-circle">M</i><p class="text-capital m_top10">Mandal</p></th>';
+										overviewTable+='<th class="text-center"><span class="rounded-circle fa fa-inr"></span><p class="text-capital">total amount</p></th>';
+										overviewTable+='<th><span class="rounded-circle">D</span><p class="text-capital m_top10">district</p></th>';
+										overviewTable+='<th><span class="rounded-circle">C</span><p class="text-capital m_top10">constituency</p></th>';
+										overviewTable+='<th><span class="rounded-circle">M</span><p class="text-capital m_top10">Mandal</p></th>';
 									overviewTable+='</thead>';
 									overviewTable+='<tbody>';
 										overviewTable+='<tr id="blockProgram0">';
-											overviewTable+='<td class="text-capital clearCls"><h4>ALL </h4></td>';
+											overviewTable+='<td class="text-capital clearCls" style="border-right:2px dashed #777;"><h4>ALL </h4></td>';
 											overviewTable+='<td class="total0 text-center clearCls"></td>';
 											overviewTable+='<td class="district0 clearCls"></td>';
 											overviewTable+='<td class="constituency0 clearCls"></td>';
@@ -813,7 +815,7 @@ getAllDepartments();
 										for(var i in result)
 										{
 											overviewTable+='<tr id="blockProgram'+k+'">';
-												overviewTable+='<td class="text-capital clearCls"><h4>'+result[i].name+'</h4></td>';
+												overviewTable+='<td class="text-capital clearCls" style="border-right:2px dashed #777;"><h4>'+result[i].name+'</h4></td>';
 												overviewTable+='<td class="total'+k+' text-center clearCls"></td>';
 												overviewTable+='<td class="district'+k+' clearCls"></td>';
 												overviewTable+='<td class="constituency'+k+' clearCls"></td>';
@@ -844,22 +846,19 @@ getAllDepartments();
 	function emptyProgramSubProgramDistVal(){
 		$("#programNamesDistrict").val(0);
 		$("#programNamesDistrict").trigger('chosen:updated');
-		$("#subProgramNamesDistrict").empty();
-		$("#subProgramNamesDistrict").append('<option value="0">ALL SUB PROGRAMMES </option>');	
+		$("#subProgramNamesDistrict").val(0);
 		$("#subProgramNamesDistrict").trigger('chosen:updated');
 	}
 	function emptyProgramSubProgramConstVal(){
 		$("#programNamesConst").val(0);
 		$("#programNamesConst").trigger('chosen:updated');
-		$("#subProgramNamesConst").empty();
-		$("#subProgramNamesConst").append('<option value="0">ALL SUB PROGRAMMES</option>');	
+		$("#subProgramNamesConst").val(0);
 		$("#subProgramNamesConst").trigger('chosen:updated');
 	}
 	function emptyProgramSubProgramVillageVal(){
 		$("#programNamesVillage").val(0);
 		$("#programNamesVillage").trigger('chosen:updated');
-		$("#subProgramNamesVillage").empty();
-		$("#subProgramNamesVillage").append('<option value="0">ALL SUB PROGRAMMES</option>');	
+		$("#subProgramNamesVillage").val(0);
 		$("#subProgramNamesVillage").trigger('chosen:updated');
 		$("#villageLevelNames").html('');
 		//$("#villageLevelNames").append('<option value="0">ALL VILLAGE</option>');	
@@ -874,8 +873,7 @@ getAllDepartments();
 	function emptyProgramSubProgramMandalVal(){
 		$("#programNamesMandal").val(0);
 		$("#programNamesMandal").trigger('chosen:updated');
-		$("#subProgramNamesMandal").empty();
-		$("#subProgramNamesMandal").append('<option value="0">ALL SubProgram</option>');	
+		$("#subProgramNamesMandal").val(0);
 		$("#subProgramNamesMandal").trigger('chosen:updated');
 		$("#mandalLevelMandalNames").html('');
 	   // $("#mandalLevelMandalNames").append('<option value="0">ALL MANDAL</option>');	
@@ -915,11 +913,11 @@ getAllDepartments();
 	financialArrGlob.push("0");
 	//console.log("glob -- "+financialArrGlob);
 	$(document).on("change","#financialYearId",function(){//ara
-	$('#tabVill a[href="#villageLevelTable"]').trigger('click');
+	/* $('#tabVill a[href="#villageLevelTable"]').trigger('click');
 	$('#tabMan a[href="#mandalLevelTable"]').trigger('click');
 	$('#tabSt a[href="#stateLevelTable"]').trigger('click');
 	$('#tabDis a[href="#distLevelTable"]').trigger('click');
-	$('#tabCons a[href="#consLevelTable"]').trigger('click');
+	$('#tabCons a[href="#consLevelTable"]').trigger('click'); */
 	$(".collapseActiveVillageCls").addClass("collapsed");
 	$(".collapseActiveMandalCls").addClass("collapsed");
 	$(".collapseActiveConstCls").addClass("collapsed");
@@ -960,11 +958,11 @@ getAllDepartments();
 	var departmentArrGlob =[];
 	departmentArrGlob.push("0");
 	$(document).on("change","#DepartmentsId",function(){//ara1
-		$('#tabVill a[href="#villageLevelTable"]').trigger('click');
+		/* $('#tabVill a[href="#villageLevelTable"]').trigger('click');
 		$('#tabMan a[href="#mandalLevelTable"]').trigger('click');
 		$('#tabSt a[href="#stateLevelTable"]').trigger('click');
 		$('#tabDis a[href="#distLevelTable"]').trigger('click');
-		$('#tabCons a[href="#consLevelTable"]').trigger('click');
+		$('#tabCons a[href="#consLevelTable"]').trigger('click'); */
 		$(".collapseActiveVillageCls").addClass("collapsed");
 		$(".collapseActiveMandalCls").addClass("collapsed");
 		$(".collapseActiveConstCls").addClass("collapsed");
@@ -1531,7 +1529,7 @@ getAllDepartments();
 		$("#"+divId+"Table").html(table);
 		$('.toolltipCls').tooltip();
 		
-		if(levelId == 3 || levelId == 4 || levelId == 5 || levelId == 6 || levelId == 9)
+		if( levelId == 4 || levelId == 5 || levelId == 6)
 		{
 			$("#dataTable"+divId).dataTable({
 					"iDisplayLength": 15,
@@ -1539,7 +1537,16 @@ getAllDepartments();
 					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 			});
 			
-		}
+		}else if(levelId == 3 || levelId == 9){
+				$("#dataTable"+divId).dataTable({
+					"paging":   false,
+					"info":     false,
+					"searching": true,
+					"autoWidth": true,
+					"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+					"order": [ 0, 'desc' ]
+				});
+			}
 			if(levelId == 2){
 				if(result !=null && result.length>0){
 					var yearsArr=[];
@@ -2191,7 +2198,7 @@ getAllDepartments();
 		}
 		if(cummulativeType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
-		}else{
+		}else if(cummulativeType == "cummulativeView"){
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
@@ -2224,7 +2231,7 @@ getAllDepartments();
 		});
 		if(cummulativeType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
-		}else{
+		}else if(cummulativeType == "cummulativeView"){
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
 		}
 		
@@ -2246,10 +2253,11 @@ getAllDepartments();
 		var locationLevelType = 3;
 		var locationId =$("#constLevelDistNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'constLevelConstNames',4);
-		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
-		}else{
+		if(cummulativeType == "cummulativeView"){
 			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
+			
+		}else if(cummulativeType == "normalView"){
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}
 		
 			
@@ -2274,18 +2282,18 @@ getAllDepartments();
 		var locationId=0;
 		var locationLevelType = 0;
 		if(constituencyId !=0 && parliamentId !=0){
-			locationId = constituencyId;
+			locationId = parliamentId;
 			locationLevelType=9;
 		}else if(constituencyId !=0 && parliamentId ==0){
 			locationId = constituencyId;
 			locationLevelType=4;
 		}
 		
-		getAllSubLocationsBySuperLocationId(locationId,'constLevelConstNames',4);
-		if(cummulativeType == "normalView"){     
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
-		}else{
+		getAllSubLocationsBySuperLocationId(parliamentId,'constLevelConstNames',4);
+		if(cummulativeType == "cummulativeView"){     
 			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
+		}else if(cummulativeType == "normalView"){
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}
 		
 			
@@ -2316,11 +2324,11 @@ getAllDepartments();
 			locationLevelType=3;
 		}
 		
-		var viewTypeValue='';
-		if(cummulativeType == "normalView"){
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
-		}else{
-			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');	
+		
+		if(cummulativeType == "cummulativeView"){
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
+		}else if(cummulativeType == "normalView"){
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');	
 		}
 		
 			
@@ -2369,11 +2377,11 @@ getAllDepartments();
 				locationLevelType =4;
 			}
 		}
-		if(cummulativeType == "normalView"){
+		if(cummulativeType == "cummulativeView"){
+			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
+		}else if(cummulativeType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
-		}else{
-			
-		}getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change');
+		}
 		
 	});
 	
@@ -2392,10 +2400,13 @@ getAllDepartments();
 		var programId =$("#programNamesMandal").val();
 		var subProgramId =$("#subProgramNamesMandal").val();
 		
-		var locationId =0;
-		var locationLevelType = 3;
-		
 		var locationId =$("#mandalLevelDistNames").val();
+		var locationLevelType = 3;
+		if(locationId == 0){
+			 $("#mandalLevelMandalNames").html('');
+			 $("#mandalLevelMandalNames").trigger("chosen:updated")
+			 
+		 }
 		getAllSubLocationsBySuperLocationId(locationId,'mandalLevelConstNames',5);
 		if(cummulativeType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
@@ -2418,9 +2429,17 @@ getAllDepartments();
 		});
 		var programId =$("#programNamesMandal").val();
 		var subProgramId =$("#subProgramNamesMandal").val();
-		var locationId =0;
+	
 		var locationLevelType = 9;
 		var locationId =$("#parliamentLevelConstNames").val();
+		 if(locationId == 0){
+			 $("#mandalLevelMandalNames").html('');
+			 $("#mandalLevelMandalNames").trigger("chosen:updated")
+			 
+		 }
+		
+		
+		
 		getAllSubLocationsBySuperLocationId(locationId,'mandalLevelConstNames',5);
 		if(cummulativeType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
@@ -2443,10 +2462,33 @@ getAllDepartments();
 		});
 		var programId =$("#programNamesMandal").val();
 		var subProgramId =$("#subProgramNamesMandal").val();
+		
+		
+		var constituencyId =$("#mandalLevelConstNames").val();
+		var mandalId = $("#mandalLevelMandalNames").val();
+		
+		var parliamentId = $("#parliamentLevelConstNames").val();
+		var districtId = $("#mandalLevelDistNames").val();
+		
+		var locationLevelType = 0;
 		var locationId =0;
-		var locationLevelType = 4;
-		var locationId =$("#mandalLevelConstNames").val();
-		getAllSubLocationsBySuperLocationId(locationId,'mandalLevelMandalNames',5);
+		if(constituencyId !=0){
+			locationId = constituencyId;
+			locationLevelType =4;
+			getAllSubLocationsBySuperLocationId(locationId,'mandalLevelMandalNames',5);
+		}else if(constituencyId ==0){
+			$("#mandalLevelMandalNames").html('');
+			$("#mandalLevelMandalNames").trigger("chosen:updated");
+			if(blockType == "districtType"){
+				locationId = districtId;
+				locationLevelType =3;
+			}else if(blockType == "parliamentType"){
+				locationId = parliamentId;
+				locationLevelType =9;
+			}
+			
+		}
+		
 		if(cummulativeType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
@@ -2468,9 +2510,26 @@ getAllDepartments();
 		});
 		var programId =$("#programNamesMandal").val();
 		var subProgramId =$("#subProgramNamesMandal").val();
+		
+		
+		
+		var constituencyId =$("#mandalLevelConstNames").val();
+		var mandalId = $("#mandalLevelMandalNames").val();
+		
+		var parliamentId = $("#parliamentLevelConstNames").val();
+		var districtId = $("#mandalLevelDistNames").val();
+		
+		var locationLevelType = 0;
 		var locationId =0;
-		var locationLevelType = 5;
-		var locationId =$("#mandalLevelMandalNames").val();
+		if(mandalId !=0){
+			locationId = mandalId;
+			locationLevelType =5;
+		}else if(mandalId ==0){
+			locationId = constituencyId;
+			locationLevelType =4;
+			
+		}
+		
 		if(cummulativeType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(5,'mandalLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
@@ -2579,7 +2638,6 @@ getAllDepartments();
 		});
 		var programId =$("#programNamesVillage").val();
 		var subProgramId =$("#subProgramNamesVillage").val();
-		var locationId =0;
 		var locationLevelType = 9;
 		var locationId =$("#villageLeveParliNames").val();
 		getAllSubLocationsBySuperLocationId(locationId,'villageLevelConstNames',6);
@@ -2604,9 +2662,24 @@ getAllDepartments();
 		});
 		var programId =$("#programNamesVillage").val();
 		var subProgramId =$("#subProgramNamesVillage").val();
+		
+		
+		var constituencyId =$("#villageLevelConstNames").val();
+		var districtId =$("#villageLevelDistNames").val();
 		var locationId =0;
-		var locationLevelType = 4;
-		var locationId =$("#villageLevelConstNames").val();
+		var locationLevelType = 0;
+		
+		if(constituencyId !=0){
+			locationId = constituencyId;
+			locationLevelType = 4;
+		}else if(constituencyId ==0){
+			$("#villageLevelNames").html('');
+			$("#villageLevelNames").trigger("chosen:updated")
+			$("#villageLevelMandalNames").html('');
+			$("#villageLevelMandalNames").trigger("chosen:updated")
+			locationId = districtId;
+			locationLevelType = 3;
+		}
 		getAllSubLocationsBySuperLocationId(locationId,'villageLevelMandalNames',6);
 		if(cummulativeType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
@@ -2629,9 +2702,22 @@ getAllDepartments();
 		});
 		var programId =$("#programNamesVillage").val();
 		var subProgramId =$("#subProgramNamesVillage").val();
-		var locationId =0;
-		var locationLevelType = 5;
-		var locationId =$("#villageLevelMandalNames").val();
+		
+		var mandalId =$("#villageLevelMandalNames").val();
+		var constituencyId =$("#villageLevelConstNames").val();
+		
+		var locationLevelType = 0;
+		var locationId=0;
+		
+		if(mandalId !=0){
+			locationId = mandalId;
+			locationLevelType = 5
+		}else if(mandalId ==0){
+			$("#villageLevelNames").html('');
+			$("#villageLevelNames").trigger("chosen:updated")
+			locationId = constituencyId;
+			locationLevelType = 4
+		}
 		getAllSubLocationsBySuperLocationId(locationId,'villageLevelNames',6);
 		if(cummulativeType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
@@ -2654,9 +2740,21 @@ getAllDepartments();
 		});
 		var programId =$("#programNamesVillage").val();
 		var subProgramId =$("#subProgramNamesVillage").val();
-		var locationId =0;
-		var locationLevelType = 6;
-		var locationId =$("#villageLevelNames").val();
+		
+		
+		var villageId =$("#villageLevelNames").val();
+		var mandalId =$("#villageLevelMandalNames").val();
+		
+		var locationId=0;
+		var locationLevelType = 0;
+		
+		if(villageId !=0){
+			locationId = villageId;
+			locationLevelType =6;
+		}else if(villageId == 0){
+			locationId = mandalId;
+			locationLevelType =5;
+		}
 		if(cummulativeType == "normalView"){
 			getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change');
 		}else{
@@ -3305,10 +3403,10 @@ $(document).on('click','.closeShowPdfCls',function(){
 											
 										}
 									overviewTable+='</select></th>';
-									overviewTable+='<th class="text-center"><i class="rounded-circle fa fa-inr"></i><p class="text-capital">total amount</p></th>';
-									overviewTable+='<th><i class="rounded-circle">D</i><p class="text-capital m_top10">district</p></th>';
-									overviewTable+='<th><i class="rounded-circle">C</i><p class="text-capital m_top10">constituency</p></th>';
-									overviewTable+='<th><i class="rounded-circle">M</i><p class="text-capital m_top10">Mandal</p></th>';
+									overviewTable+='<th class="text-center"><span class="rounded-circle fa fa-inr"></span><p class="text-capital">total amount</p></th>';
+									overviewTable+='<th><span class="rounded-circle">D</span><p class="text-capital m_top10">district</p></th>';
+									overviewTable+='<th><span class="rounded-circle">C</span><p class="text-capital m_top10">constituency</p></th>';
+									overviewTable+='<th><span class="rounded-circle">M</span><p class="text-capital m_top10">Mandal</p></th>';
 								overviewTable+='</thead>';
 								overviewTable+='<tr id="blockProgramInd">';
 									overviewTable+='<td class="text-capital clearCls"><h4>'+selectedValueData+'</h4></td>';
@@ -3339,14 +3437,14 @@ $(document).on('click','.closeShowPdfCls',function(){
 												overviewTable+='<option value="'+overviewSelectBoxData[i].id+'">'+overviewSelectBoxData[i].name+' </option>';
 											}
 										overviewTable+='</select></th>';
-										overviewTable+='<th class="text-center"><i class="rounded-circle fa fa-inr"></i><p class="text-capital">total amount</p></th>';
-										overviewTable+='<th><i class="rounded-circle">D</i><p class="text-capital m_top10">district</p></th>';
-										overviewTable+='<th><i class="rounded-circle">C</i><p class="text-capital m_top10">constituency</p></th>';
-										overviewTable+='<th><i class="rounded-circle">M</i><p class="text-capital m_top10">Mandal</p></th>';
+										overviewTable+='<th class="text-center"><span class="rounded-circle fa fa-inr"></span><p class="text-capital">total amount</p></th>';
+										overviewTable+='<th><span class="rounded-circle">D</span><p class="text-capital m_top10">district</p></th>';
+										overviewTable+='<th><span class="rounded-circle">C</span><p class="text-capital m_top10">constituency</p></th>';
+										overviewTable+='<th><span class="rounded-circle">M</span><p class="text-capital m_top10">Mandal</p></th>';
 									overviewTable+='</thead>';
 									overviewTable+='<tbody>';
 										overviewTable+='<tr id="blockProgram0">';
-											overviewTable+='<td class="text-capital clearCls"><h4>ALL </h4></td>';
+											overviewTable+='<td class="text-capital clearCls" style="border-right:2px dashed #777;"><h4>ALL </h4></td>';
 											overviewTable+='<td class="total0 text-center clearCls"></td>';
 											overviewTable+='<td class="district0 clearCls"></td>';
 											overviewTable+='<td class="constituency0 clearCls"></td>';
@@ -3356,7 +3454,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 										for(var i in overviewSelectBoxData)
 										{
 											overviewTable+='<tr id="blockProgram'+k+'">';
-												overviewTable+='<td class="text-capital clearCls"><h4>'+overviewSelectBoxData[i].name+'</h4></td>';
+												overviewTable+='<td class="text-capital clearCls" style="border-right:2px dashed #777;"><h4>'+overviewSelectBoxData[i].name+'</h4></td>';
 												overviewTable+='<td class="total'+k+' text-center clearCls"></td>';
 												overviewTable+='<td class="district'+k+' clearCls"></td>';
 												overviewTable+='<td class="constituency'+k+' clearCls"></td>';
@@ -3383,11 +3481,11 @@ $(document).on('click','.closeShowPdfCls',function(){
 		});
 		
 	});
-	$(document).on("click","#selectedName",function(){
+	/* $(document).on("click","#selectedName",function(){
 		$(".arrowIconChanged").parent().find('i').removeClass("fa-chevron-down");
 		$(".arrowIconChanged").parent().find('i').addClass("fa-chevron-up");
 		
-	});	
+	}); */	
 	$(document).on("click",".menuDataCollapse",function(){
 		$(".multi-level-selection-menu").css("display","none");
 		$("#selectedName").html($(this).html());
@@ -3395,8 +3493,8 @@ $(document).on('click','.closeShowPdfCls',function(){
 		globalLocationLevelTypeId = $(this).attr("attr_levelidvalue");
 		globalLocationId = $(this).attr("attr_id");
 		globalLevelId = $(this).attr("attr_levelid");
-		$(".arrowIconChanged").find('i').removeClass("fa-chevron-up");
-		$(".arrowIconChanged").find('i').addClass("fa-chevron-down");
+		/* $(".arrowIconChanged").find('i').removeClass("fa-chevron-up");
+		$(".arrowIconChanged").find('i').addClass("fa-chevron-down"); */
 		getALlProgramesAmountDetails();
 		getGovtSchemesDetails("overviewSelect");
 		getGovtSchemesDetails("programNamesState");
@@ -3427,6 +3525,12 @@ $(document).on('click','.closeShowPdfCls',function(){
 			$(".districtBlock").hide();
 			$(".villageBlock").show();
 			$(".constituencyBlock").show();
+			$(".mandalBlock").show();
+		}else if(globalLocationLevelTypeId == 5){
+			$(".stateBlock").hide();
+			$(".districtBlock").hide();
+			$(".villageBlock").show();
+			$(".constituencyBlock").hide();
 			$(".mandalBlock").show();
 		}
 		if(!$(".collapseActiveStateCls").hasClass("collapsed")){
