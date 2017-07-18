@@ -2158,7 +2158,13 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  	 						}else if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 6l){
  	 							locs.append(commonMethodsUtilService.getStringValueForObject(param[11]));
  	 							locs.append("  Panchayat");
- 	 						}else{
+ 	 						}else if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 10l){
+ 	 							locs.append(commonMethodsUtilService.getStringValueForObject(param[18]));
+ 	 							locs.append("  Parliament ");
+ 							}else if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 11l){
+ 	 							locs.append(commonMethodsUtilService.getStringValueForObject(param[19]));
+ 	 							locs.append("  Hamlet ");
+ 							}else{
  	 							locs.append("");
  	 						}
  	 						returnVO.setFundSanctionId(commonMethodsUtilService.getLongValueForObject(param[13]));
@@ -2178,6 +2184,12 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	 						}else if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 6l){
 	 							returnVO.getLocName().append(","+commonMethodsUtilService.getStringValueForObject(param[11]));
 	 							returnVO.getLocName().append("  Panchayat");
+	 						}else if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 10l){
+	 							returnVO.getLocName().append(","+commonMethodsUtilService.getStringValueForObject(param[18]));
+	 							returnVO.getLocName().append("  Parliament");
+	 						}else if(param[12] != null && (Long)param[12] != 0l && (Long)param[12] == 11l){
+	 							returnVO.getLocName().append(","+commonMethodsUtilService.getStringValueForObject(param[19]));
+	 							returnVO.getLocName().append("  Hamlet");
 	 						}else{
 	 							returnVO.getLocName().append("");
 	 						}
