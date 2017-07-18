@@ -319,7 +319,9 @@ public class NREGSTCSService implements INREGSTCSService{
  	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avenue") ||
  	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries") ||
  	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance") ||
- 	    					(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs") && (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")))){
+ 	    					(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs") && (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district"))) //|| 
+ 	    					//(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("IHHL") && (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")))
+ 	    					){
 	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
 	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
 	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
@@ -3285,26 +3287,26 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    	//Generated Material Spliting
 		 	    	 returnVO.setGeneratedMaterial(convertRupeesIntoLakhes(jObj.getString("GENERATED_MATERIAL").split(" ")[0]));
 		 	    	 returnVO.setGeneratedMaterialAmount(convertRupeesIntoCrores(jObj.getString("GENERATED_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
-		 	    	 returnVO.setTotalGenerates(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(returnVO.getGeneratedWage())+Long.valueOf(returnVO.getGeneratedMaterial()))));
+		 	    	 returnVO.setTotalGenerates(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(jObj.getString("GENERATED_WAGE").split(" ")[0])+Long.valueOf(jObj.getString("GENERATED_MATERIAL").split(" ")[0]))));
 		 	    	//Uploaded Wage Spliting
 		 	    	 returnVO.setUploadWage(convertRupeesIntoLakhes(jObj.getString("UPLOADED_WAGE").split(" ")[0]));
 		 	    	 returnVO.setUploadedWageAmount(convertRupeesIntoCrores(jObj.getString("UPLOADED_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
 		 	    	//Uploaded Material Spliting
 		 	    	 returnVO.setUploadMaterial(convertRupeesIntoLakhes(jObj.getString("UPLOADED_MATERIAL").split(" ")[0]));
 		 	    	 returnVO.setUploadedMaterialAmount(convertRupeesIntoCrores(jObj.getString("UPLOADED_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
-		 	    	 returnVO.setTotalUploads(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(returnVO.getUploadWage())+Long.valueOf(returnVO.getUploadMaterial()))));
+		 	    	 returnVO.setTotalUploads(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(jObj.getString("UPLOADED_WAGE").split(" ")[0])+Long.valueOf(jObj.getString("UPLOADED_MATERIAL").split(" ")[0]))));
 		 	    	//SentBank Wage Spliting
 		 	    	 returnVO.setSentBankWage(convertRupeesIntoLakhes(jObj.getString("SENTBANK_WAGE").split(" ")[0]));
 		 	    	 returnVO.setSentBankWageAmount(convertRupeesIntoCrores(jObj.getString("SENTBANK_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
 		 	    	//SentBank Material Spliting
 		 	    	 returnVO.setSentBankMaterial(convertRupeesIntoLakhes(jObj.getString("SENTBANK_MATERIAL").split(" ")[0]));
 		 	    	 returnVO.setSentBankMaterialAmount(convertRupeesIntoCrores(jObj.getString("SENTBANK_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
-		 	    	 returnVO.setTotalSentBankS(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(returnVO.getSentBankWage())+Long.valueOf(returnVO.getSentBankMaterial()))));
-		 	    	 returnVO.setTotalPendings(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(returnVO.getPendingWage())+Long.valueOf(returnVO.getPendingMaterial()))));
-		 	    	 returnVO.setTotalGeneratesAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(returnVO.getGeneratedWageAmount())+Long.valueOf(returnVO.getGeneratedMaterialAmount()))));
-		 	    	 returnVO.setTotalUploadsAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(returnVO.getUploadedWageAmount())+Long.valueOf(returnVO.getUploadedMaterialAmount()))));
-		 	    	 returnVO.setTotalSentBankAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(returnVO.getSentBankWageAmount())+Long.valueOf(returnVO.getSentBankMaterialAmount()))));
-		 	    	returnVO.setTotalPendinAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(returnVO.getPendingWageAmount())+Long.valueOf(returnVO.getPendingMaterialAmount()))));
+		 	    	 returnVO.setTotalSentBankS(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(jObj.getString("SENTBANK_WAGE").split(" ")[0])+Long.valueOf(jObj.getString("SENTBANK_MATERIAL").split(" ")[0]))));
+		 	    	 returnVO.setTotalPendings(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(jObj.getString("PENDING_WAGE").split(" ")[0])+Long.valueOf(jObj.getString("PENDING_MATERIAL").split(" ")[0]))));
+		 	    	 returnVO.setTotalGeneratesAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(jObj.getString("GENERATED_WAGE").split(" ")[1].trim().replace(")", "").replace("(", ""))+Long.valueOf(jObj.getString("GENERATED_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")))));
+		 	    	 returnVO.setTotalUploadsAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(jObj.getString("UPLOADED_WAGE").split(" ")[1].trim().replace(")", "").replace("(", ""))+Long.valueOf(jObj.getString("UPLOADED_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")))));
+		 	    	 returnVO.setTotalSentBankAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(jObj.getString("SENTBANK_WAGE").split(" ")[1].trim().replace(")", "").replace("(", ""))+Long.valueOf(jObj.getString("SENTBANK_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")))));
+		 	    	returnVO.setTotalPendinAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(jObj.getString("PENDING_WAGE").split(" ")[1].trim().replace(")", "").replace("(", ""))+Long.valueOf(jObj.getString("PENDING_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")))));
 		 	    	}
 	 	      }
 	        
