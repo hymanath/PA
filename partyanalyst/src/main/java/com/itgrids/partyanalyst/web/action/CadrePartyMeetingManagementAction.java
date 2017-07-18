@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.meeting.service.ICadrePartyMeetingManagementService;
@@ -192,7 +193,27 @@ public class CadrePartyMeetingManagementAction extends ActionSupport implements 
 	}
 	public String execute() {
 		
-			return Action.SUCCESS;
+		try {
+			LOG.info("Entered into execute method in CadrePartyMeetingManagementAction Action");
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(entitlements.contains("PARTY_MEETINGS_CREATE_USER_ADMIN_ENTITLEMENT".trim())){
+					return Action.SUCCESS;
+				}
+			}
+			if(user.getIsAdmin() != null && user.getIsAdmin().equalsIgnoreCase("true")){
+				return Action.SUCCESS;
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in execute method in CadreRegistrationAction Action",e);
+		}
+		return Action.ERROR;
 		
 	}
     
@@ -550,6 +571,16 @@ public String getPanchayatWardByMandal(){
 			}
  	return Action.SUCCESS;	
  }
+ public String getAllInviteeAtendedDetails(){
+	   try{
+	       jObj = new JSONObject(getTask());
+	     Long meetingId=jObj.getLong("partyMeetingId");
+	     idAndNameVO= cadrePartyMeetingManagementService.getPartyMeetingInviteesDetailsAttendence(meetingId);
+	       }catch (Exception e) {
+	    LOG.error("Exception Occured in getAllInviteeAtendedDetails() method, Exception - ",e); 
+	    }
+	      return Action.SUCCESS;  
+	 }
 }
 
 
