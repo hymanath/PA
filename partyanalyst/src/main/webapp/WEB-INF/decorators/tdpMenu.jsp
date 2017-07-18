@@ -1096,16 +1096,25 @@
 							</c:if>
 							
 							<c:if test="${sessionScope.USER.isAdmin != 'true'}">
-								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'BOOTH_INCHARGE_COMMITTEE_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'BOOTH_INCHARGE_COMMITTEE_ADMIN_ENTITLEMENT')}">
-										<li>
-											<a href="getBoothInchargeDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Booth Committee Dashboard </span></a>
-										</li>
+								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'BOOTH_INCHARGE_COMMITTEE_ENTITLEMENT')}">
 										<li>
 											<a href="electionBoothCommitteeAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;  Booth Committee Creation </span></a>
 										</li>
 								</c:if>
-							</c:if>
-								
+								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'BOOTH_INCHARGE_COMMITTEE_ADMIN_ENTITLEMENT')}">
+									<li>
+										<a href="getBoothInchargeDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Booth Committee Dashboard </span></a>
+									</li>										
+								</c:if>
+							</c:if>	
+							
+							<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'BOOTH_INCHARGE_COMMITTEE_ADMIN_ENTITLEMENT')}">
+									<li>
+										<a href="getBoothInchargeDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Booth Committee Dashboard </span></a>
+									</li>										
+								</c:if>
+							</c:if>		
 						    <c:if test="${sessionScope.USER.isAdmin != 'true'}">
 							    <c:if test="${ fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_REGISTRATION_ENTITLEMENT' )  ||
 							fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_DASHBOARD_ENTITLEMENT' ) ||
