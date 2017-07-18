@@ -378,8 +378,8 @@ function buildAttendedCountByProgramOrCampOrBatch(result,fromType)
 				str+='<tbody>';
 				
 				for(var i in result){
-					
-					if(result[i].name != "Others"){
+					if(result[i].count != 0 || result[i].total != 0){
+					  if(result[i].name != "Others"){
 						
 							str+='<tr>';
 								str+='<td>'+result[i].name+'</td>';
@@ -393,16 +393,16 @@ function buildAttendedCountByProgramOrCampOrBatch(result,fromType)
 							str+='</tr>';
 						
 					}
-						
-					}
+					}		
+				}
 				str+='</tbody>';
 			str+='</table>';
 		
 	$("#districtWiseDetailsId").html(str);
 	$("#loadingImg2").hide();
 	$("#attendedTable").dataTable({
-		"iDisplayLength": 50,
-		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
+		"iDisplayLength": 20,
+		"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 		});
 	
 	
