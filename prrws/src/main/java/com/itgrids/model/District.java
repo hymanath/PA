@@ -22,8 +22,10 @@ public class District{
 	private Long stateId;
 	private String nameLocal;
 	private Long prDistrictId;
+	private Long rwsDistrictId;
 	private State state;
 	private PrDistrict prDistrict;
+	private RwsDistrict rwsDistrict;
 	
 	
 
@@ -87,6 +89,25 @@ public class District{
 
 	public void setPrDistrict(PrDistrict prDistrict) {
 		this.prDistrict = prDistrict;
+	}
+
+	@Column(name="rws_district_id")
+	public Long getRwsDistrictId() {
+		return rwsDistrictId;
+	}
+
+	public void setRwsDistrictId(Long rwsDistrictId) {
+		this.rwsDistrictId = rwsDistrictId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "rws_district_id", insertable = false, updatable = false)
+	public RwsDistrict getRwsDistrict() {
+		return rwsDistrict;
+	}
+
+	public void setRwsDistrict(RwsDistrict rwsDistrict) {
+		this.rwsDistrict = rwsDistrict;
 	}
 	
 	

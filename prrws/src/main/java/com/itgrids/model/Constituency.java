@@ -28,7 +28,8 @@ public class Constituency{
 	private ElectionScope electionScope;
 	private District district;
 	private PrConstituency prConstituency;
-	
+	private Long rwsConstituencyId;
+	private RwsConstituency rwsConstituency;
 
 	@Id
 	@Column(name="constituency_id")
@@ -117,6 +118,21 @@ public class Constituency{
 	}
 	public void setPrConstituency(PrConstituency prConstituency) {
 		this.prConstituency = prConstituency;
+	}
+	@Column(name="rws_constituency_id")
+	public Long getRwsConstituencyId() {
+		return rwsConstituencyId;
+	}
+	public void setRwsConstituencyId(Long rwsConstituencyId) {
+		this.rwsConstituencyId = rwsConstituencyId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "rws_constituency_id", insertable = false, updatable = false)
+	public RwsConstituency getRwsConstituency() {
+		return rwsConstituency;
+	}
+	public void setRwsConstituency(RwsConstituency rwsConstituency) {
+		this.rwsConstituency = rwsConstituency;
 	}
 		
 }
