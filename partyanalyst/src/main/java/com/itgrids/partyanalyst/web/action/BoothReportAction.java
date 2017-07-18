@@ -285,4 +285,13 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;  
 	}
+	public String boothInchargeRoles(){
+		LOG.info("Entered into boothInchargeRoles()  of BoothReportAction ");
+		try {
+			boothIncbhargeVOList = boothDataValidationService.getBoothInchagesMappingRoles();
+		} catch (Exception e) {
+			LOG.error("Exception raised at boothInchargeRoles() method of BoothReportAction", e);
+		}
+		return Action.SUCCESS;  
+	}
 }
