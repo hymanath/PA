@@ -19,5 +19,6 @@ public interface IBoothInchargeRoleConditionMappingDAO extends GenericDao<BoothI
 	public List<Object[]> getLocationLevelWiseBoothCount(InputVO inputVO,String resultType);
 	public List<Object[]> getLocationBasedOnSelection(InputVO inputVO);
 	public List<Object[]> getLocationLevelWiseBoothDetails(InputVO inputVO);
+	public List<Object[]> getBoothInchargeRoles();
 
 }

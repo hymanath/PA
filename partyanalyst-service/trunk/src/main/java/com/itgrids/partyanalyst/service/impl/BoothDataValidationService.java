@@ -1023,4 +1023,22 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		return status;
 	}
 
+	public List<BoothInchargeDetailsVO> getBoothInchagesMappingRoles(){
+		List<BoothInchargeDetailsVO> rolesList = new ArrayList<BoothInchargeDetailsVO>();
+		try {
+			Log.info("Enteted into getBoothInchagesMappingRoles of BoothDataValidationService class");
+			List<Object[]> rolesObjLst = boothInchargeRoleConditionMappingDAO.getBoothInchargeRoles();
+			if(rolesObjLst != null && rolesObjLst.size() >0){
+				for(Object[] obj : rolesObjLst){
+					BoothInchargeDetailsVO rolesVO = new BoothInchargeDetailsVO();
+					rolesVO.setRoleId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					rolesVO.setRoleName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					rolesList.add(rolesVO);
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception Occured into getBoothInchagesMappingRoles of BoothDataValidationService class",e);
+		}
+		return rolesList;
+	}
 }
