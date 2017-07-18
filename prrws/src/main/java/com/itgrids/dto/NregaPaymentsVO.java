@@ -71,6 +71,7 @@ public class NregaPaymentsVO implements Serializable{
 	private String totalGeneratesAmount;
 	private String totalUploadsAmount;
 	private String totalSentBankAmount;
+	private String totalPendinAmount;
 	
 	
 	
@@ -427,5 +428,11 @@ public class NregaPaymentsVO implements Serializable{
 	}
 	public void setTotalSentBankAmount(String totalSentBankAmount) {
 		this.totalSentBankAmount = totalSentBankAmount;
+	}
+	public String getTotalPendinAmount() {
+		return totalPendinAmount;
+	}
+	public void setTotalPendinAmount(String totalPendinAmount) {
+		this.totalPendinAmount = totalPendinAmount;
 	}
 }

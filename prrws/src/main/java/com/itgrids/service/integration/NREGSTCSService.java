@@ -3256,54 +3256,55 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	if(output != null && !output.isEmpty()){
     				JSONObject jObj = new JSONObject(output);
 		 	    	 returnVO.setTotalPayments(jObj.getString("TOTAL_PAYMENTS"));
-		 	    	 returnVO.setTotalAmount(jObj.getString("TOTAL_AMOUNT"));
+		 	    	 returnVO.setTotalAmount(convertRupeesIntoCrores(jObj.getString("TOTAL_AMOUNT")));
 		 	    	//Total Wages Spliting
-		 	    	 returnVO.setTotalWage(jObj.getString("TOTAL_WAGE").split(" ")[0]);
+		 	    	 returnVO.setTotalWage(convertRupeesIntoLakhes(jObj.getString("TOTAL_WAGE").split(" ")[0]));
 		 	    	 //Total Material Spliting
-		 	    	 returnVO.setTotalMaterial(jObj.getString("TOTAL_MATERIAL").split(" ")[0]);
+		 	    	 returnVO.setTotalMaterial(convertRupeesIntoLakhes(jObj.getString("TOTAL_MATERIAL").split(" ")[0]));
 		 	    	//Completed Wage Spliting
-		 	    	 returnVO.setCompletedWage(jObj.getString("COMPLETED_WAGE").split(" ")[0]);
+		 	    	 returnVO.setCompletedWage(convertRupeesIntoLakhes(jObj.getString("COMPLETED_WAGE").split(" ")[0]));
 		 	    	 returnVO.setCompletedWageAmount(convertRupeesIntoCrores(jObj.getString("COMPLETED_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
 		 	    	//Completed Material Spliting
-		 	    	 returnVO.setCompletedMaterial(jObj.getString("COMPLETED_MATERIAL").split(" ")[0]);
+		 	    	 returnVO.setCompletedMaterial(convertRupeesIntoLakhes(jObj.getString("COMPLETED_MATERIAL").split(" ")[0]));
 		 	    	 returnVO.setCompletedMaterialAmount(convertRupeesIntoCrores(jObj.getString("COMPLETED_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
 		 	    	//Pending Wage Spliting
-		 	    	 returnVO.setPendingWage(jObj.getString("PENDING_WAGE").split(" ")[0]);
+		 	    	 returnVO.setPendingWage(convertRupeesIntoLakhes(jObj.getString("PENDING_WAGE").split(" ")[0]));
 		 	    	 returnVO.setPendingWageAmount(convertRupeesIntoCrores(jObj.getString("PENDING_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
 		 	    	//Pending Material Spliting
-		 	    	 returnVO.setPendingMaterial(jObj.getString("PENDING_MATERIAL").split(" ")[0]);
+		 	    	 returnVO.setPendingMaterial(convertRupeesIntoLakhes(jObj.getString("PENDING_MATERIAL").split(" ")[0]));
 		 	    	 returnVO.setPendingMaterialAmount(convertRupeesIntoCrores(jObj.getString("PENDING_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
 		 	    	//Failed Wage Spliting
-		 	    	 returnVO.setFailedWage(jObj.getString("FAILED_WAGE").split(" ")[0]);
+		 	    	 returnVO.setFailedWage(convertRupeesIntoLakhes(jObj.getString("FAILED_WAGE").split(" ")[0]));
 		 	    	 returnVO.setFailedWageAmount(convertRupeesIntoCrores(jObj.getString("FAILED_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
 		 	    	//Failed Material Spliting
 		 	    	 returnVO.setFailedMaterial(jObj.getString("FAILED_MATERIAL").split(" ")[0]);
 		 	    	 returnVO.setFailedMaterialAmount(convertRupeesIntoCrores(jObj.getString("FAILED_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
 		 	    	//Generated Wage Spliting
-		 	    	 returnVO.setGeneratedWage(jObj.getString("GENERATED_WAGE").split(" ")[0]);
+		 	    	 returnVO.setGeneratedWage(convertRupeesIntoLakhes(jObj.getString("GENERATED_WAGE").split(" ")[0]));
 		 	    	 returnVO.setGeneratedWageAmount(convertRupeesIntoCrores(jObj.getString("GENERATED_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
 		 	    	//Generated Material Spliting
-		 	    	 returnVO.setGeneratedMaterial(jObj.getString("GENERATED_MATERIAL").split(" ")[0]);
+		 	    	 returnVO.setGeneratedMaterial(convertRupeesIntoLakhes(jObj.getString("GENERATED_MATERIAL").split(" ")[0]));
 		 	    	 returnVO.setGeneratedMaterialAmount(convertRupeesIntoCrores(jObj.getString("GENERATED_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
-		 	    	 returnVO.setTotalGenerates(String.valueOf(Long.valueOf(returnVO.getGeneratedWage())+Long.valueOf(returnVO.getGeneratedMaterial())));
+		 	    	 returnVO.setTotalGenerates(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(returnVO.getGeneratedWage())+Long.valueOf(returnVO.getGeneratedMaterial()))));
 		 	    	//Uploaded Wage Spliting
-		 	    	 returnVO.setUploadWage(jObj.getString("UPLOADED_WAGE").split(" ")[0]);
+		 	    	 returnVO.setUploadWage(convertRupeesIntoLakhes(jObj.getString("UPLOADED_WAGE").split(" ")[0]));
 		 	    	 returnVO.setUploadedWageAmount(convertRupeesIntoCrores(jObj.getString("UPLOADED_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
 		 	    	//Uploaded Material Spliting
-		 	    	 returnVO.setUploadMaterial(jObj.getString("UPLOADED_MATERIAL").split(" ")[0]);
+		 	    	 returnVO.setUploadMaterial(convertRupeesIntoLakhes(jObj.getString("UPLOADED_MATERIAL").split(" ")[0]));
 		 	    	 returnVO.setUploadedMaterialAmount(convertRupeesIntoCrores(jObj.getString("UPLOADED_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
-		 	    	 returnVO.setTotalUploads(String.valueOf(Long.valueOf(returnVO.getUploadWage())+Long.valueOf(returnVO.getUploadMaterial())));
+		 	    	 returnVO.setTotalUploads(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(returnVO.getUploadWage())+Long.valueOf(returnVO.getUploadMaterial()))));
 		 	    	//SentBank Wage Spliting
-		 	    	 returnVO.setSentBankWage(jObj.getString("SENTBANK_WAGE").split(" ")[0]);
+		 	    	 returnVO.setSentBankWage(convertRupeesIntoLakhes(jObj.getString("SENTBANK_WAGE").split(" ")[0]));
 		 	    	 returnVO.setSentBankWageAmount(convertRupeesIntoCrores(jObj.getString("SENTBANK_WAGE").split(" ")[1].trim().replace(")", "").replace("(", "")));
 		 	    	//SentBank Material Spliting
-		 	    	 returnVO.setSentBankMaterial(jObj.getString("SENTBANK_MATERIAL").split(" ")[0]);
+		 	    	 returnVO.setSentBankMaterial(convertRupeesIntoLakhes(jObj.getString("SENTBANK_MATERIAL").split(" ")[0]));
 		 	    	 returnVO.setSentBankMaterialAmount(convertRupeesIntoCrores(jObj.getString("SENTBANK_MATERIAL").split(" ")[1].trim().replace(")", "").replace("(", "")));
-		 	    	 returnVO.setTotalSentBankS(String.valueOf(Long.valueOf(returnVO.getSentBankWage())+Long.valueOf(returnVO.getSentBankMaterial())));
-		 	    	 returnVO.setTotalPendings(String.valueOf(Long.valueOf(returnVO.getPendingWage())+Long.valueOf(returnVO.getPendingMaterial())));
+		 	    	 returnVO.setTotalSentBankS(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(returnVO.getSentBankWage())+Long.valueOf(returnVO.getSentBankMaterial()))));
+		 	    	 returnVO.setTotalPendings(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(returnVO.getPendingWage())+Long.valueOf(returnVO.getPendingMaterial()))));
 		 	    	 returnVO.setTotalGeneratesAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(returnVO.getGeneratedWageAmount())+Long.valueOf(returnVO.getGeneratedMaterialAmount()))));
 		 	    	 returnVO.setTotalUploadsAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(returnVO.getUploadedWageAmount())+Long.valueOf(returnVO.getUploadedMaterialAmount()))));
-		 	    	returnVO.setTotalSentBankAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(returnVO.getSentBankWageAmount())+Long.valueOf(returnVO.getSentBankMaterialAmount()))));
+		 	    	 returnVO.setTotalSentBankAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(returnVO.getSentBankWageAmount())+Long.valueOf(returnVO.getSentBankMaterialAmount()))));
+		 	    	returnVO.setTotalPendinAmount(convertRupeesIntoCrores(String.valueOf(Long.valueOf(returnVO.getPendingWageAmount())+Long.valueOf(returnVO.getPendingMaterialAmount()))));
 		 	    	}
 	 	      }
 	        
@@ -3312,6 +3313,18 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		
 		return returnVO;
+	}
+	public String convertRupeesIntoLakhes(String value){
+		String returnVal = null;
+		try {
+			if(value != null){
+				returnVal = new BigDecimal(Long.valueOf(value)/100000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				returnVal = returnVal+" L";
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at convertRupeesIntoLakhes - NREGSTCSService service", e);
+		}
+		return returnVal;
 	}
 	
 }
