@@ -1686,12 +1686,13 @@ function getBoothUserDetailsbuild(result,locationName){
 						str +='<th>MANDAL/MUNICIPALITY/CORPORATION&nbsp;NAME</th>';
 						str +='<th>PANCHAYAT&nbsp;NAME</th>';
 						//str +='<th>VILLAGE&nbsp;COVERED </th>';	
-						str +='<th>BOOTH&nbsp;NO</th>';						
+						str +='<th>BOOTH&nbsp;NO</th>';
+						str +='<th>Serial No</th>';						
 						str +='<th>PHOTO</th>';
 						str +='<th>MEMBERSHIP&nbsp;NO</th>';
 						str +='<th>CADRE&nbsp;NAME</th>';
+						str +='<th>CADRE&nbsp;NAME</th>';
 						str +='<th>MOBILE&nbsp;NO</th>';
-						str +='<th>ROLE&nbsp;NAME</th>';
 						str +='<th> REMOVE &nbsp;</th>';
 					 						 
 					 str +='</tr>';
@@ -1707,7 +1708,9 @@ function getBoothUserDetailsbuild(result,locationName){
 								str +='<td>'+result[i].panchayatName+'</td>';
 								//str +='<td>'+result[i].boothName+'</td>';
 																
-								str +='<td><span title="http://www.mytdp.com/cadre_images/'+result[i].url+'"></span>'+'Booth No - '+result[i].boothNumber+'</td>';
+								str +='<td><span title="http://www.mytdp.com/cadre_images/'+result[i].url+'"></span>'+'Booth No - '+result[i].boothNumber+'</td>';								
+							    if(result[i].serialNo != null)								
+								  str +='<td>'+result[i].serialNo+'</td>';
 								str +='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
 								if( membershipNo.length==8)
 									str +='<td>'+result[i].memberShipNo+'</td>';
@@ -1771,5 +1774,4 @@ $(document).on("click","#deleteMembrsBtn",function(){
 				}
 			});
 	
-});	
-
+});

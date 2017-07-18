@@ -1652,17 +1652,18 @@ function getBoothUserDetails(){
 	    } 
 		$("#viewDataLoadingImg").show();
 		
-	var jsObj={
+	var jObj={
 		constituencyId:globalLocationId,
 		mandalId:mandalId,
-		boothId:boothId		
+		boothId:boothId,
+		cadreType:""
 	}
 	
 	$.ajax({
 	
 	type:"GET",
 	url:"getBoothUserDetailsAction.action",
-	data:{task:JSON.stringify(jsObj)}
+	data:{task:JSON.stringify(jObj)}
 	}).done(function(result){
 		$("#viewDataLoadingImg").hide();
 			if(result != null && result != ''){
