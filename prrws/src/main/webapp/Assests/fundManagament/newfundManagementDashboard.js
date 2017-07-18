@@ -918,6 +918,15 @@ getAllDepartments();
 	$('#tabSt a[href="#stateLevelTable"]').trigger('click');
 	$('#tabDis a[href="#distLevelTable"]').trigger('click');
 	$('#tabCons a[href="#consLevelTable"]').trigger('click'); */
+	$(".tabCummulativeDistrict li").removeClass("active");
+	$(".ActiveDistrictCls").addClass("active"); 
+	$(".tabCummulativeVillage li").removeClass("active");
+	$(".ActiveVillageCls").addClass("active"); 
+	$(".tabCummulativeConstituency li").removeClass("active");
+	$(".ActiveConstituencyCls").addClass("active"); 
+	$(".tabCummulativeStateCls li").removeClass("active");
+	$(".ActiveStateCls").addClass("active"); 
+	
 	$(".collapseActiveVillageCls").addClass("collapsed");
 	$(".collapseActiveMandalCls").addClass("collapsed");
 	$(".collapseActiveConstCls").addClass("collapsed");
@@ -963,6 +972,15 @@ getAllDepartments();
 		$('#tabSt a[href="#stateLevelTable"]').trigger('click');
 		$('#tabDis a[href="#distLevelTable"]').trigger('click');
 		$('#tabCons a[href="#consLevelTable"]').trigger('click'); */
+		$(".tabCummulativeDistrict li").removeClass("active");
+		$(".ActiveDistrictCls").addClass("active"); 
+		$(".tabCummulativeVillage li").removeClass("active");
+		$(".ActiveVillageCls").addClass("active"); 
+		$(".tabCummulativeConstituency li").removeClass("active");
+		$(".ActiveConstituencyCls").addClass("active"); 
+		$(".tabCummulativeStateCls li").removeClass("active");
+		$(".ActiveStateCls").addClass("active"); 
+		
 		$(".collapseActiveVillageCls").addClass("collapsed");
 		$(".collapseActiveMandalCls").addClass("collapsed");
 		$(".collapseActiveConstCls").addClass("collapsed");
