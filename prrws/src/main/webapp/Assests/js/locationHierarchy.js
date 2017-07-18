@@ -41,7 +41,10 @@ function collapseMenu(id,resultArr,buildId)
 		collapse+='<div class="panel panel-default panelExpand">';
 			collapse+='<div class="panel-heading" role="tab" id="heading'+resultArr[i].id+'">';
 				collapse+='<h4 class="panel-title">';
-					collapse+='<a role="button" style="height:10px;width:10px;display:inline-block;" attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].id+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id"  class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordion'+[id]+'" href="#collapse'+resultArr[i].id+'" aria-expanded="true" aria-controls="collapse'+resultArr[i].id+'">&nbsp;</a>';
+					if(levelIdValue == 2 || levelIdValue == 3)
+					{
+						collapse+='<a role="button" style="height:10px;width:10px;display:inline-block;" attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].id+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id"  class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordion'+[id]+'" href="#collapse'+resultArr[i].id+'" aria-expanded="true" aria-controls="collapse'+resultArr[i].id+'">&nbsp;</a>';
+					}
 					collapse+='<span style="padding-left:10px;cursor:pointer;" class="menuDataCollapse"  attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].id+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id" >'+resultArr[i].name+'</span>';
 				collapse+='</h4>';
 			collapse+='</div>';
