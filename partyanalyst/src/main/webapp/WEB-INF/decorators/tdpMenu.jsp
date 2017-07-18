@@ -1014,6 +1014,13 @@
 										</li>
 									
 									</c:if>
+									<c:if test="${sessionScope.USER.isAdmin != 'true'}">
+								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_MEETINGS_CREATE_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'PARTY_MEETINGS_CREATE_USER_ADMIN_ENTITLEMENT')}">
+									<li>
+										<a href="cadrePartyMeetingManagementAction.action"><i class="fa fa-qrcode ico-white"></i><span>&nbsp;&nbsp; create And Update Party Meetings</span></a>
+									</li>
+								</c:if>
+							</c:if>
 												
 								<!--<li style="text-align: right">
 									<a href="newCadreDashBoard2016Action.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;2016 Cadre Dashboard</span></a>
@@ -1193,6 +1200,7 @@
                        
                     </li></c:if>
                 </ul>
+				
             </nav>
 					</div>
            
