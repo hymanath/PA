@@ -192,8 +192,8 @@
 									<div class="col-sm-12 panalActiveCls">
 										<div class="row">
 											<div class="col-sm-6">
-												<ul class="switch-btn-New" role="tabCummulative" attr_switch = "stateLevel">
-													<li class="active" attr_type="cummulativeView">Cummulative View</li>
+												<ul class="switch-btn-New tabCummulativeStateCls" role="tabCummulative" attr_switch = "stateLevel">
+													<li class="active ActiveStateCls" attr_type="cummulativeView">Cummulative View</li>
 													<li  attr_type="normalView">Year Wise</li>
 												</ul>
 												<ul class="list-inline showHideStatePgramsCls m_top10" style="display:none;">
