@@ -3732,7 +3732,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			try{
 				session = request.getSession();
 			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-				Long scopeId = regVo.getRegistrationID();
+				Long userId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
 				
 				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
@@ -3828,7 +3828,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					} 
 				}
 			
-				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseAlertClick(govtDeptDesiOffIdList,govtOffcrIdList,alertStatusIds,formDateStr,toDateStr,clickType,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseAlertClick(userId,govtOffcrIdList,alertStatusIds,formDateStr,toDateStr,clickType,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}catch(Exception e){
 				e.printStackTrace();
