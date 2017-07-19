@@ -2863,10 +2863,20 @@ public class NREGSTCSService implements INREGSTCSService{
 			}*/	
 			if(commonMethodsUtilService.isListOrSetValid(locationList)){
 				for(Object[] objects : locationList){
-					LocationFundDetailsVO locationFundDetailsVO = new LocationFundDetailsVO();
-					    locationFundDetailsVO.setType(commonMethodsUtilService.getStringValueForObject(objects[0]));//District_code
-						locationFundDetailsVO.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-						detailsVOs.add(locationFundDetailsVO);
+					if(levelId != null && levelId == IConstants.STATE_LEVEL_SCOPE_ID){
+						LocationFundDetailsVO locationFundDetailsVO = new LocationFundDetailsVO();
+							locationFundDetailsVO.setType(commonMethodsUtilService.getStringValueForObject(objects[0]));//District_code
+							locationFundDetailsVO.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							detailsVOs.add(locationFundDetailsVO);
+					}else if(levelId != null && levelId == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+						LocationFundDetailsVO locationFundDetailsVO = new LocationFundDetailsVO();
+							locationFundDetailsVO.setType(commonMethodsUtilService.getStringValueForObject(objects[0]));//constituency code
+							locationFundDetailsVO.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							locationFundDetailsVO.setYear(commonMethodsUtilService.getStringValueForObject(objects[2]));//District_code
+							detailsVOs.add(locationFundDetailsVO);
+					}
+					
+						
 				}
 			}
 		}catch(Exception e){

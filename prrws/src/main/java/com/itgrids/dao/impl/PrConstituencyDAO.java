@@ -18,7 +18,8 @@ public class PrConstituencyDAO extends GenericDaoHibernate<PrConstituency, Long>
 	public List<Object[]> getAllConstutiensFrDistrict(String districtId){
 	    StringBuilder sb = new StringBuilder();
 	    sb.append(" select distinct model.constituencyCode,"
-	    		+ " model.constituencyName "
+	    		+ " model.constituencyName,"
+	    		+ " model.prDistrict.districtCode"
 	    		+ " from PrConstituency model");
 	    if(districtId != null)
 	    	sb.append(" where model.prDistrict.districtCode = :districtId");
