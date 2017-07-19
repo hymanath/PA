@@ -417,9 +417,9 @@ $(document).ready(function(){
 	}else if(accessType == "DISTRICT" || accessType=="DIST PRESIDNET" || accessType=="GS" || accessType=="INCHARGE MINISTER"){
 			//Adding Dynamic Attribute based on user access level 
 			var accessLevel = "DISTRICT";
-			if(activityMemberId != null && activityMemberId==4 || activityMemberId==5){
+			/* if(activityMemberId != null && activityMemberId==4 || activityMemberId==5){
 				accessLevel="CONSTITUENCY";
-			}
+			} */
 			$(".resultTypeTabCls").attr("attr_panchayt_result_level","DISTRICT");
 			$(".resultTypeTabCls").attr("attr_pnchyt_lvl_parent_select_box_div_id","panchatLevelDistrictSelectBxId");
 			$(".boothResultTypeCls").attr("attr_booth_result_level","DISTRICT");
