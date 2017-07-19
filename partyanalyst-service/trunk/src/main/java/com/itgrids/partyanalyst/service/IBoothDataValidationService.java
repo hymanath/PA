@@ -24,4 +24,5 @@ public interface IBoothDataValidationService {
 	public String updateRangeIdsOfBoothIncharge(Long boothId,Long boothIncgRoleId,List<Long> enrollmentIds);
 	public String deleteRoleMemberDetails(Long boothInchargeMappingId,Long boothInchargeId);
 	public List<BoothInchargeDetailsVO> getBoothInchagesMappingRoles();
+	public InputVO getLoginUserDtls(Long userId);
 }

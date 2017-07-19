@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,6 +14,8 @@ import java.util.TreeMap;
 
 import org.jfree.util.Log;
 
+import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
+import com.itgrids.partyanalyst.dao.IActivityMemberDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -22,6 +25,8 @@ import com.itgrids.partyanalyst.dao.IBoothInchargeSerialNoRangeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.BoothAddressVO;
 import com.itgrids.partyanalyst.dto.BoothInchargeDetailsVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -56,7 +61,10 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	private CommonMethodsUtilService commonMethodsUtilService;
 	private IBoothInchargeRoleConditionMappingDAO boothInchargeRoleConditionMappingDAO;
 	private IBoothInchargeSerialNoRangeDAO boothInchargeSerialNoRangeDAO;
-	
+	private IActivityMemberDAO activityMemberDAO;
+	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
+	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	
 	public IBoothInchargeSerialNoRangeDAO getBoothInchargeSerialNoRangeDAO() {
 		return boothInchargeSerialNoRangeDAO;
@@ -136,7 +144,25 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
-   
+    public void setActivityMemberDAO(IActivityMemberDAO activityMemberDAO) {
+		this.activityMemberDAO = activityMemberDAO;
+	}
+
+	public void setActivityMemberAccessLevelDAO(
+			IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO) {
+		this.activityMemberAccessLevelDAO = activityMemberAccessLevelDAO;
+	}
+
+	public void setUserConstituencyAccessInfoDAO(
+			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
+		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
+	}
+
+	public void setUserDistrictAccessInfoDAO(
+			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
+		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
+	}
+
 	public UploadDataErrorMessageVO readVoterExcelDataAndValidate(File filePath,
 			String electionYear, Long stateId, Long electionTypeId , String publicatonDateId) {
 		ResultStatus resultStatus = new ResultStatus();
@@ -1021,6 +1047,65 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			Log.error("Exception raised at deleteRoleMemberDetails in BoothDataValidationService class", e);
 		}
 		return status;
+	}
+	/**
+	  * @param  Long userId 
+	  * @return InputVO resultVO
+	  * @author Santosh 
+	  * @Description :This Service Method is used to get user access level and there values.. 
+	  * @since 18-JULY-2017
+	  */
+	public InputVO getLoginUserDtls(Long userId) {
+		InputVO resultVO = new InputVO();
+		try {
+			/*Long activityMemberId = activityMemberDAO.findActivityMemberIdByUserId(userId);
+			if(activityMemberId != null && activityMemberId.longValue() > 0){
+				List<Object[]> userobjList = activityMemberAccessLevelDAO.getMemberDetailsByActivityMemberId(activityMemberId);
+				resultVO = getUserAccessLevelDtls(userobjList);
+				return resultVO;
+			}else{*/
+				List<Long> districtList = userDistrictAccessInfoDAO.getDistrictIdsByUsrId(userId);
+				if(districtList != null && districtList.size() > 0){
+					resultVO.setAccessType("DISTRICT");
+					resultVO.setUserId(userId);
+					resultVO.getAccessValues().addAll(new HashSet<Long>(districtList));
+				}else{
+					List<Object[]> constituencyAccessObjLst = userConstituencyAccessInfoDAO.getConstituencyByUserId(userId);
+					if(constituencyAccessObjLst != null && constituencyAccessObjLst.size() > 0){
+						for (Object[] param : constituencyAccessObjLst) {
+							 if(commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("Parliament"))	{
+								 resultVO.setAccessType("MP");
+							 }else if(commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("Assembly")){
+								 resultVO.setAccessType("MLA");
+							 }
+							 resultVO.getAccessValues().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						}
+					}
+					resultVO.setUserId(userId);
+				}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			Log.error("Exception raised at getLoginUserDtls in BoothDataValidationService class", e);
+		}
+		return resultVO;
+	}
+	public InputVO getUserAccessLevelDtls(List<Object[]> objList) {
+		InputVO resultVO = new InputVO();
+		try {
+			if(objList != null && objList.size() > 0){
+			  for (Object[] param : objList) {
+				  resultVO.setAccessType(commonMethodsUtilService.getStringValueForObject(param[1]));
+				  resultVO.setAccessLevelId(commonMethodsUtilService.getLongValueForObject(param[2]));
+				  resultVO.getAccessValues().add(commonMethodsUtilService.getLongValueForObject(param[3]));
+				  resultVO.setActivityMemberId(commonMethodsUtilService.getLongValueForObject(param[4]));
+			  }
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			Log.error("Exception raised at getUserAccessLevelDtls in BoothDataValidationService class", e);
+		}
+		return resultVO;
 	}
 
 	public List<BoothInchargeDetailsVO> getBoothInchagesMappingRoles(){

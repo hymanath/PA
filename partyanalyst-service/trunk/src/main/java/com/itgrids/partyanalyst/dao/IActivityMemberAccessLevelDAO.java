@@ -13,4 +13,5 @@ public interface IActivityMemberAccessLevelDAO extends GenericDao<ActivityMember
 	public List<Object[]> getMemberIdMemberLvlAndLocationValueByTdpCadre(Long tdpCadreId);
 	
 	public List<Object[]> getLocationLevelAndValuesByActivityMembersIdForOrganization(Long activityMemberId);
+	public List<Object[]> getMemberDetailsByActivityMemberId(Long activityMemberId);
 }
