@@ -431,7 +431,7 @@ $(document).ready(function(){
 			getLocationLevelWiseBoothCount("TEHSIL",accessLevel,accessValueStr,"mandalLevelBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("PANCHAYAT",accessLevel,accessValueStr,"panchaytLevelBoothDtlsDivId");
 			getLocationBasedOnSelection("DISTRICT",accessLevel,accessValueStr,"","All","");
-			getLocationBasedOnSelection("DISTRICT","STATE",accessValueStr,"boothBlockDistrictSelectBxId","Other","PANCHAYAT");
+			getLocationBasedOnSelection("DISTRICT","DISTRICT",accessValueStr,"boothBlockDistrictSelectBxId","Other","PANCHAYAT");
 			//setting dynamically user access type and access value based on login user
 			setAccessLevelTypeAndValue("DISTRICT",accessValueStr);
 			
