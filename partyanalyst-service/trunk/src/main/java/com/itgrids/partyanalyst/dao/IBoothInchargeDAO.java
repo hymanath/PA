@@ -24,4 +24,5 @@ public interface IBoothInchargeDAO extends GenericDao<BoothIncharge,Long>{
 	public List<Object[]> gettingBoothInchargeFinalCount(Long boothId,Long boothInchargeEnrollmentId,Long locationValue);
 	public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRoleId,List<Long> boothEnrollmentYrIds);
 	public List<Object[]> getLocationSerialNoRangeWiseVoterCount(InputVO inputVO);
+	public List<Object[]> getLocationLevelWseCadreDetails(InputVO inputVO,String type);
 }

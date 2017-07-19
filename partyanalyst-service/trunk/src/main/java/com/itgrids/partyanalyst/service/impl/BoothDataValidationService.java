@@ -770,46 +770,56 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		try{
 			if (boothDetailsObjList != null && !boothDetailsObjList.isEmpty()) {
 				for (Object[] param: boothDetailsObjList) {
-					BoothAddressVO boothDetailsVO=new BoothAddressVO();
-					boothDetailsVO.setBoothId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					boothDetailsVO.setBoothName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					String boothStatus = commonMethodsUtilService.getStringValueForObject(param[2]);
-					String status="";
-					if (boothStatus.equalsIgnoreCase("N") && param[3]== null && param[4] == null) {//param[3] startedDate,param[4] completed date
-						status="NotStarted";
-					} else if(boothStatus.equalsIgnoreCase("N") && param[3] != null && param[4] == null) {
-						status="Started";
-					} else if(boothStatus.equalsIgnoreCase("Y") && param[3] != null && param[4] != null) {
-						status="Completed";
-					}
-					boothDetailsVO.setStatus(status);
-					boothDetailsVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[5]));
-					boothDetailsVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[6]));
-					boothDetailsVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[7]));
-					boothDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[8]));
-					boothDetailsVO.setParliamentConstituencyId(commonMethodsUtilService.getLongValueForObject(param[9]));
-					boothDetailsVO.setParliamentConstituency(commonMethodsUtilService.getStringValueForObject(param[10]));
-					boothDetailsVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[11]));
-					boothDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[12]));
-					if (param[13] == null) {
-						boothDetailsVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[17]));
-						boothDetailsVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[18])+ " "+ commonMethodsUtilService.getStringValueForObject(param[20]));
-					} else {
-						boothDetailsVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[13]));
-						boothDetailsVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[14]));
-					}				
-					boothDetailsVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[15]));
-					boothDetailsVO.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[16]));
+					BoothAddressVO boothDetailsVO = getCompletedBoothDetails(param);
 					boothDetailsVO.setIsReadyToConfirm("no");
 					boothDtlsList.add(boothDetailsVO);
 				}
-				
 			}
-			
 		}catch(Exception e){
 			Log.error("Exception occured at getBoothDetails() in BoothDataValidationService class",e);
 		}
 		return boothDtlsList;
+	}
+	public BoothAddressVO getCompletedBoothDetails(Object[] param){
+		BoothAddressVO boothDetailsVO = new BoothAddressVO();
+		try{
+			if(param != null && param.length > 0){
+				boothDetailsVO.setBoothId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				boothDetailsVO.setBoothName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				String boothStatus = commonMethodsUtilService.getStringValueForObject(param[2]);
+				boothDetailsVO.setIsConfirm(boothStatus);
+				String status="";
+				if (boothStatus.equalsIgnoreCase("N") && param[3]== null && param[4] == null) {//param[3] startedDate,param[4] completed date
+					status="NotStarted";
+				} else if(boothStatus.equalsIgnoreCase("N") && param[3] != null && param[4] == null) {
+					status="Started";
+				} else if(boothStatus.equalsIgnoreCase("Y") && param[3] != null && param[4] != null) {
+					status="Completed";
+				}
+				boothDetailsVO.setStatus(status);
+				boothDetailsVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[5]));
+				boothDetailsVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[6]));
+				boothDetailsVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[7]));
+				boothDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[8]));
+				boothDetailsVO.setParliamentConstituencyId(commonMethodsUtilService.getLongValueForObject(param[9]));
+				boothDetailsVO.setParliamentConstituency(commonMethodsUtilService.getStringValueForObject(param[10]));
+				boothDetailsVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[11]));
+				boothDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[12]));
+				if (param[13] == null) {
+					boothDetailsVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[17]));
+					boothDetailsVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[18])+ " "+ commonMethodsUtilService.getStringValueForObject(param[20]));
+				} else {
+					boothDetailsVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[13]));
+					boothDetailsVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[14]));
+				}				
+				boothDetailsVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[15]));
+				boothDetailsVO.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[16]));
+				
+			}
+		}catch (Exception e){
+			Log.error("Exception occured at getCompletedBoothDetails() in BoothDataValidationService class",e);
+		}
+		return boothDetailsVO;
 	}
 	public List<IdAndNameVO> getBoothInchargeRoles(Long boothId,List<Long> enrollmentYrIds){
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
@@ -1163,4 +1173,59 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		return rolesList;
 	}
+    public List<BoothAddressVO> getLocationWiseCadreDetails(InputVO inputVO){
+    	List<BoothAddressVO> resultList = new ArrayList<BoothAddressVO>(0);
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    	try {
+    		if (inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() > 0) {
+				inputVO.setFromDate(sdf.parse(inputVO.getFromDateStr()));
+				inputVO.setToDate(sdf.parse(inputVO.getToDateStr()));
+			}
+			
+			if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
+				Long locationId = 0l;
+				 if(inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0 ){
+					    locationId = Long.valueOf(inputVO.getFilterValueList().get(0).toString().substring(0,1));
+		            	String filterValues = inputVO.getFilterValueList().get(0).toString().substring(1);
+		            	inputVO.getFilterValueList().clear();
+		            	inputVO.getFilterValueList().add(Long.valueOf(filterValues));
+		          }
+				 if(locationId == 2){
+					 inputVO.setFilterLevel(IConstants.LOCALELECTIONBODY);
+				 }
+			}
+			List<Object[]> voterDtlsObjLst = boothInchargeDAO.getLocationLevelWseCadreDetails(inputVO, "voter");
+			List<Object[]> familyVoterDtlsObjList = boothInchargeDAO.getLocationLevelWseCadreDetails(inputVO, "familyVoter");
+			List<BoothAddressVO> voterDtlsList = getCadreDetails(voterDtlsObjLst);
+			List<BoothAddressVO> familyVoterDtlsList = getCadreDetails(familyVoterDtlsObjList);
+			resultList.addAll(voterDtlsList);
+			resultList.addAll(familyVoterDtlsList);
+    		
+    	} catch (Exception e){
+    		Log.error("Exception Occured into getLocationWiseCadreDetails of BoothDataValidationService class",e);
+    	}
+    	return resultList;
+    }
+    public List<BoothAddressVO> getCadreDetails(List<Object[]> objList) {
+    	List<BoothAddressVO> returnList = new ArrayList<BoothAddressVO>(0);
+    	try {
+    	    if (objList != null && objList.size() > 0) {
+    			for (Object[] param:objList) {
+    				BoothAddressVO boothDetailsVO = getCompletedBoothDetails(param);
+    				boothDetailsVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[21]));
+    				boothDetailsVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[22]+""+commonMethodsUtilService.getStringValueForObject(param[23])));
+    				boothDetailsVO.setImage(commonMethodsUtilService.getStringValueForObject(param[24]));
+    				boothDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[25]));
+    				boothDetailsVO.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(param[26]));
+    				boothDetailsVO.setSerialNo(commonMethodsUtilService.getLongValueForObject(param[27]));
+    				boothDetailsVO.setRangeId(commonMethodsUtilService.getLongValueForObject(param[28]));
+    				boothDetailsVO.setRange(commonMethodsUtilService.getStringValueForObject(param[29]));
+    				returnList.add(boothDetailsVO);
+    			}
+    		}
+    	} catch (Exception e) {
+    		Log.error("Exception Occured into getCadreDetails of BoothDataValidationService class",e);
+    	}
+    	return returnList;
+    }
 }

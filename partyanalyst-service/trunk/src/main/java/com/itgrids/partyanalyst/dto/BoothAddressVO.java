@@ -18,6 +18,17 @@ public class BoothAddressVO {
 	private String boothName;
 	private String status;
 	private String isReadyToConfirm;
+	private String isConfirm;
+	
+	private Long tdpCadreId;
+	private String cadreName;
+	private Long serialNo;
+	private String image;
+	private String mobileNo;
+	private String role;
+	private String memberShipNo;
+	private Long rangeId;
+	private String range;
 	
 	public String getIsReadyToConfirm() {
 		return isReadyToConfirm;
@@ -114,6 +125,66 @@ public class BoothAddressVO {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	public String getCadreName() {
+		return cadreName;
+	}
+	public void setCadreName(String cadreName) {
+		this.cadreName = cadreName;
+	}
+	public Long getSerialNo() {
+		return serialNo;
+	}
+	public void setSerialNo(Long serialNo) {
+		this.serialNo = serialNo;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
+	public String getMemberShipNo() {
+		return memberShipNo;
+	}
+	public void setMemberShipNo(String memberShipNo) {
+		this.memberShipNo = memberShipNo;
+	}
+	public Long getRangeId() {
+		return rangeId;
+	}
+	public void setRangeId(Long rangeId) {
+		this.rangeId = rangeId;
+	}
+	public String getRange() {
+		return range;
+	}
+	public void setRange(String range) {
+		this.range = range;
+	}
+	public String getIsConfirm() {
+		return isConfirm;
+	}
+	public void setIsConfirm(String isConfirm) {
+		this.isConfirm = isConfirm;
 	}
 	
 		
