@@ -615,7 +615,8 @@ function getLocationLevelWiseBoothDetails(filterLevel,filterValue,resultType){
 		}else{
 		  filterLevel="";
 		  filterValueArr=[];
-	   }			
+	   }		
+     var locationLevel="PANCHAYAT";	   
 	var boothRoleIdArr = [];
 	var roleId = $("#boothCommitteeDashbrdRolesId").val();
 	if(roleId != null && roleId != 0){
@@ -636,10 +637,10 @@ function getLocationLevelWiseBoothDetails(filterLevel,filterValue,resultType){
 		dataType : 'json',
 		data : {task :JSON.stringify(jObj)} 
 	}).done(function(result){ 
-	   buildBoothDetails(result);
+	   buildBoothDetails(result,locationLevel);
 	});
 }
-function buildBoothDetails(result){
+function buildBoothDetails(result,locationLevel){
 	var str='';
 	if(result != null && result.length > 0){
 		 str+='<div class="table-responsive">';
@@ -684,7 +685,12 @@ function buildBoothDetails(result){
 							str+='<td class="text-center;">-</td>';	
 						}
 						if(result[i].boothName != null){
-							str+='<td class="text-center;">'+result[i].boothName+'</td>';
+							if(result[i].status != null && result[i].status!="NotStarted"){
+								str+='<td class="text-center cadreDetailsCls" style="cursor: pointer; font-size: 16px; margin-top: 10px;color: rgb(51, 122, 183);" attr_location_level='+locationLevel+'  attr_booth_id="'+result[i].boothId+'">'+result[i].boothName+'</td>';
+							}else{
+								str+='<td class="text-center;">'+result[i].boothName+'</td>';
+							}
+							
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
@@ -712,6 +718,122 @@ function buildBoothDetails(result){
 	}
 }
 /* Booth Details Block End */
+$(document).on("click",".cadreDetailsCls",function(){
+	$("#boothInchargeDataModalDivId").modal("show");
+	var locationLevel = $(this).attr("attr_location_level");
+	var boothId = $(this).attr("attr_booth_id");
+	var filterLevel="";
+	var filterValue=[];
+	var serialRangeId=0;
+	getLocationWiseCadreDetails(locationLevel,filterLevel,filterValue,boothId,serialRangeId);
+	
+});
+
+function getLocationWiseCadreDetails(locationLevel,filterLevel,filterValue,boothId,serialRangeId){
+	  $("#cadreDetailsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   var filterValueArr;   
+	   if(filterValue != null && filterValue.length > 0){
+		  filterValueArr=filterValue.split(",");
+		}else{
+		  filterLevel="";
+		  filterValueArr=[];
+	   }			
+		var boothRoleIdArr = [];
+		var roleId = $("#boothCommitteeDashbrdRolesId").val();
+		if(roleId != null && roleId != 0){
+			boothRoleIdArr.push(roleId);
+		} 
+	
+	var jObj={  
+		filterType : "",
+		filterValueArr : filterValueArr   ,
+		fromDate : globalFromDate,
+		toDate : globalToDate,
+		boothEnrollementYearId : globalBoothInchargeEnrollmentId,
+		resultType : "",
+		boothRoleIdArr:boothRoleIdArr,
+		serialRangeId:serialRangeId,
+		boothId:boothId
+	} 
+	$.ajax({
+		type : 'POST',
+		url : 'getLocationWiseCadreDetailsAction.action',  
+		dataType : 'json',
+		data : {task :JSON.stringify(jObj)} 
+	}).done(function(result){ 
+	   buildCadreDetails(result,locationLevel);
+	});
+}
+function buildCadreDetails(result,locationLevel){
+	if(result != null && result.length > 0){
+		 var str = '';
+		 str+='<div class="table-responsive">';
+		 str+='<table class="table table-bordered" id="cadreDetailsDataTableId">';
+			str+='<thead>';
+				str+='<tr>';
+				//var locationSpecificHeadingStr = getLocationSpeceficHeading(locationLevel);
+				//str = str +" "+locationSpecificHeadingStr;
+				
+					str+='<th>DISTRICT</th>';
+					str+='<th>PARLIAMENT CONSTITUENCY</th>';
+					str+='<th>CONSTITUENCY</th>';
+					str+='<th>TEHSIL</th>';
+					str+='<th>VILLAGE/WARD</th>';
+					str+='<th>NAME</th>';
+					str+='<th>MEMBERSHIP NO</th>';
+					str+='<th>MOBILE NO</th>';
+					str+='<th>IMAGE</th>';
+					str+='<th>SERIAL NO</th>';
+				str+='</tr>';
+			str+='</thead>';
+			 str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+					   //var boothAddressStr = getLocationWiseBoothAddress(locationLevel,result[i]);
+						 //str = str +" "+boothAddressStr;
+						str+='<td>'+result[i].districtName+'</td>';
+						str+='<td>'+result[i].parliamentConstituency+'</td>';
+						str+='<td>'+result[i].constituencyName+'</td>';
+						str+='<td>'+result[i].tehsilName+'</td>';
+						str+='<td>'+result[i].panchayat+'</td>';
+						
+						if(result[i].cadreName != null){
+							str+='<td class="text-center;">'+result[i].cadreName+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].memberShipNo != null){
+							str+='<td class="text-center;">'+result[i].memberShipNo+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].mobileNo != null){
+							str+='<td class="text-center;">'+result[i].mobileNo+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].image != null && result[i].image.length > 0){
+							str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].image+'" style="width: 50px; height: 50px;"></td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].serialNo != null){
+							str+='<td class="text-center;">'+result[i].serialNo+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+					
+				str+='</tr>';
+			   }
+			str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+	 $("#cadreDetailsDivId").html(str);	
+	 $("#cadreDetailsDataTableId").dataTable();
+	}else{
+	  $("#cadreDetailsDivId").html('NO DATA AVAILABLE.')	
+	}
+}
 function boothInchargeRoles(){
 	  var jObj = {   
 	    } 

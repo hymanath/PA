@@ -312,5 +312,34 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;  
 	}
-	
+	public String getLocationWiseCadreDetails(){
+		LOG.info("Entered into getLocationWiseCadreDetails()  of BoothReportAction ");
+		try{
+			jObj = new JSONObject(getTask());
+			InputVO inputVO = new InputVO();
+			inputVO.setFilterLevel(jObj.getString("filterType"));
+			JSONArray filterValueArr =jObj.getJSONArray("filterValueArr");
+			if(filterValueArr!=null &&  filterValueArr.length()>0){
+				for( int i=0;i<filterValueArr.length();i++){
+					inputVO.getFilterValueList().add(Long.valueOf(filterValueArr.getString(i)));
+				}
+			}
+			JSONArray boothRoleIdArr =jObj.getJSONArray("boothRoleIdArr");
+			if(boothRoleIdArr!=null &&  boothRoleIdArr.length()>0){
+				for( int i=0;i<boothRoleIdArr.length();i++){
+					inputVO.getBoothRoleIds().add(Long.valueOf(boothRoleIdArr.getString(i)));
+				}
+			}
+			inputVO.setBoothInchargeEnrollmentId(jObj.getLong("boothEnrollementYearId"));
+			inputVO.setFromDateStr(jObj.getString("fromDate"));
+			inputVO.setToDateStr(jObj.getString("toDate"));
+			inputVO.setResultType(jObj.getString("resultType"));
+			inputVO.setBoothId(jObj.getLong("boothId"));
+			inputVO.setSerialRangeId(jObj.getLong("serialRangeId"));
+			boothDtlsList = boothDataValidationService.getLocationWiseCadreDetails(inputVO);
+		}catch(Exception e){
+			LOG.error("Exception raised at getLocationWiseCadreDetails() method of BoothReportAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
