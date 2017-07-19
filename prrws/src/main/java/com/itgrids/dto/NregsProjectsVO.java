@@ -1,6 +1,8 @@
 package com.itgrids.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NregsProjectsVO implements Serializable{
 
@@ -15,6 +17,7 @@ public class NregsProjectsVO implements Serializable{
 	private String FTONOTSENTCNT;
 	private String REJECTCNT;
 	private String PENDINGRESPONSECNT;
+	private List<NregsProjectsVO> subList = new ArrayList<NregsProjectsVO>();
 	
 	
 	public String getType() {
@@ -76,5 +79,11 @@ public class NregsProjectsVO implements Serializable{
 	}
 	public void setTarget(String target) {
 		this.target = target;
+	}
+	public List<NregsProjectsVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<NregsProjectsVO> subList) {
+		this.subList = subList;
 	}
 }

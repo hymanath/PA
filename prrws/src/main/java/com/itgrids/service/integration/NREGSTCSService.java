@@ -2790,22 +2790,22 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    					}
 		 	    				}
 		 	    				vo.setType(jObj.getString("TYPE"));
-		 	    				vo.setGeneratedQuantity(jObj.getString("T_WS_CNT"));
-		 	    				vo.setGeneratedAmount(jObj.getString("T_WS_AMT"));
-		 	    				vo.setGeneratedPendingQuantity(jObj.getString("FNG_WS_CNT"));
-		 	    				vo.setGeneratedPendingAmount(jObj.getString("FNG_WS_AMT"));
-		 	    				vo.setUploadQuantity(jObj.getString("FG_WS_CNT"));
-		 	    				vo.setUploadAmount(jObj.getString("FG_WS_AMT"));
-		 	    				vo.setUploadPendingQunatity(jObj.getString("FNU_WS_CNT"));
-		 	    				vo.setUploadPendingAmount(jObj.getString("FNU_WS_AMT"));
-		 	    				vo.setSentToBankQuantity(jObj.getString("FU_WS_CNT"));
-		 	    				vo.setSentToBankAmount(jObj.getString("FU_WS_AMT"));
-		 	    				vo.setSentToBankPendingQuantity(jObj.getString("FNS_WS_CNT"));
-		 	    				vo.setSentToBankPendingAmount(jObj.getString("FNS_WS_AMT"));
-		 	    				vo.setFailedTransactionQuantity(jObj.getString("FR_WS_CNT"));
-		 	    				vo.setFailedTransactionAmount(jObj.getString("FR_WS_AMT"));
-		 	    				vo.setFailedTransactionPendingQuantity(jObj.getString("FRP_WS_CNT"));
-		 	    				vo.setFailedTransactionPendingAmount(jObj.getString("FRP_WS_AMT"));
+		 	    				vo.setGeneratedQuantity(convertRupeesIntoLakhes(jObj.getString("T_WS_CNT")));
+		 	    				vo.setGeneratedAmount(convertRupeesIntoCrores(jObj.getString("T_WS_AMT")));
+		 	    				vo.setGeneratedPendingQuantity(convertRupeesIntoLakhes(jObj.getString("FNG_WS_CNT")));
+		 	    				vo.setGeneratedPendingAmount(convertRupeesIntoCrores(jObj.getString("FNG_WS_AMT")));
+		 	    				vo.setUploadQuantity(convertRupeesIntoLakhes(jObj.getString("FG_WS_CNT")));
+		 	    				vo.setUploadAmount(convertRupeesIntoCrores(jObj.getString("FG_WS_AMT")));
+		 	    				vo.setUploadPendingQunatity(convertRupeesIntoLakhes(jObj.getString("FNU_WS_CNT")));
+		 	    				vo.setUploadPendingAmount(convertRupeesIntoCrores(jObj.getString("FNU_WS_AMT")));
+		 	    				vo.setSentToBankQuantity(convertRupeesIntoLakhes(jObj.getString("FU_WS_CNT")));
+		 	    				vo.setSentToBankAmount(convertRupeesIntoCrores(jObj.getString("FU_WS_AMT")));
+		 	    				vo.setSentToBankPendingQuantity(convertRupeesIntoLakhes(jObj.getString("FNS_WS_CNT")));
+		 	    				vo.setSentToBankPendingAmount(convertRupeesIntoCrores(jObj.getString("FNS_WS_AMT")));
+		 	    				vo.setFailedTransactionQuantity(convertRupeesIntoLakhes(jObj.getString("FR_WS_CNT")));
+		 	    				vo.setFailedTransactionAmount(convertRupeesIntoCrores(jObj.getString("FR_WS_AMT")));
+		 	    				vo.setFailedTransactionPendingQuantity(convertRupeesIntoLakhes(jObj.getString("FRP_WS_CNT")));
+		 	    				vo.setFailedTransactionPendingAmount(convertRupeesIntoCrores(jObj.getString("FRP_WS_AMT")));
 		 	    				namingMap.put(vo.getId(), vo);
 		 	    				if(inputVO.getType() != null && !inputVO.getType().trim().toString().equalsIgnoreCase("All") && inputVO.getType().toString().trim().equalsIgnoreCase("Wage")){
 		 	    					if(vo.getType() != null && vo.getType().toString().trim().equalsIgnoreCase("W")){
@@ -3206,7 +3206,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				String[]  projectTypeArr = projectType.split("_");
 	 	    				if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase(projectTypeArr[0])){
 	 	    					vo.setParameter(jObj.getString("CAT_NAME"));
-	 	    					vo.setType("Constituency");
+	 	    					vo.setType("constituency");
 	 	    					vo.setTarget(jObj.getString("TARGET"));
 		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
 		 	    				vo.setPercentage(jObj.getString("PERC"));
@@ -3235,7 +3235,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			String str1 = convertingInputVOToString(inputVO);
 			
 			ClientResponse distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1);
-	        
+	       
 	        if(distResponse.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ distResponse.getStatus());
 	 	      }else{
@@ -3273,22 +3273,27 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    						vo.setParameter(jObj.getString("CAT_NAME"));
 	 	    					
 	 	    					if(inputVO.getLocationType().trim().equalsIgnoreCase("district"))
-	 	    						vo.setType(projectTypeArr[1]);
+	 	    						vo.setType("district");
 	 	    					else
-	 	    						vo.setType("STATE");
+	 	    						vo.setType("state");
 	 	    					
 	 	    					vo.setTarget(jObj.getString("TARGET"));
 		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
 		 	    				vo.setPercentage(jObj.getString("PERC"));
-		 	    				voList.add(vo);
+		 	    				
+		 	    				if(voList.get(0) != null && voList.size() > 0l){
+		 	    					voList.get(0).getSubList().add(vo);
+		 	    				}else{
+		 	    					NregsProjectsVO newVO = new NregsProjectsVO();
+		 	    					newVO.getSubList().add(vo);
+		 	    					voList.add(newVO);
+		 	    				}
 	 	    				}
 	 	    			}
 	 	    		}
 	 	    	}
 	 	    	 
 	 	     }
-	        
-	        
 	        
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNREGSProjectsAbstractNewFrConstituency - NREGSTCSService service", e);
@@ -3463,7 +3468,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    					vo.setPercentage(jObj.getString("PER"));
 	 	    				else
 	 	    					vo.setPercentage(jObj.getString("PERCENTAGE"));
-	 	    					vo.setType("CONSTITUENCY");
+	 	    					vo.setType("constituency");
 	 	    				
 	 	    				returnList.add(vo);
 	    				}
@@ -3538,13 +3543,19 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    					vo.setPercentage(jObj.getString("PERCENTAGE"));
 	 	    				
 	 	    				if(inputVO.getLocationType().trim().equalsIgnoreCase("state"))
-	 	    					vo.setType("STATE");
+	 	    					vo.setType("state");
 	 	    				else if(vo.getParameter().contains("state") || vo.getParameter().contains("State") || vo.getParameter().contains("STATE"))
-	 	    					vo.setType("STATE");
+	 	    					vo.setType("state");
 	 	    				else if(vo.getParameter().contains("district") || vo.getParameter().contains("District") || vo.getParameter().contains("DISTRICT"))
-	 	    					vo.setType("DISTRICT");
+	 	    					vo.setType("district");
 	 	    				
-	 	    				returnList.add(vo);
+	 	    				if(returnList.get(0) != null && returnList.size() > 0l){
+	 	    					returnList.get(0).getSubList().add(vo);
+	 	    				}else{
+	 	    					NregsProjectsVO newVO = new NregsProjectsVO();
+	 	    					newVO.getSubList().add(vo);
+	 	    					returnList.add(newVO);
+	 	    				}
 	    				}
 	 	    		}
 	 	    	}
