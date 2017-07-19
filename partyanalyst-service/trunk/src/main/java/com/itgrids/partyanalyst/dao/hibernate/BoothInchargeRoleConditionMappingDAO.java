@@ -44,8 +44,8 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		 queryStr.append(" select " +
 		 				 " model.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId," +
 		 				 " model.boothInchargeRoleCondition.boothInchargeRole.roleName," +
-		 				 " model.boothInchargeRoleCondition.minMembers," +
-		 				 " model.boothInchargeRoleCondition.maxMembers " +
+		 				 " sum(model.boothInchargeRoleCondition.minMembers)," +
+		 				 " sum(model.boothInchargeRoleCondition.maxMembers) " +
 		 				 " from BoothInchargeRoleConditionMapping model " +
 		 				 " where " +
 		 				 " model.isDeleted='N' and model.boothId=:boothId " +
