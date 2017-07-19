@@ -3396,7 +3396,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
     				JSONObject jObj = new JSONObject(output);
-		 	    	 returnVO.setTotalPayments(jObj.getString("TOTAL_PAYMENTS"));
+		 	    	 returnVO.setTotalPayments(convertRupeesIntoLakhes(jObj.getString("TOTAL_PAYMENTS")));
 		 	    	 returnVO.setTotalAmount(convertRupeesIntoCrores(jObj.getString("TOTAL_AMOUNT")));
 		 	    	//Total Wages Spliting
 		 	    	 returnVO.setTotalWage(convertRupeesIntoLakhes(jObj.getString("TOTAL_WAGE").split(" ")[0]));
