@@ -34,6 +34,7 @@
 	$(document).on("change","#boothCommitteeDashbrdRolesId",function(){
 		var filterLevel = $(this).attr("accessType");//filterLevel is nothing but user accessType
         var filterValue = $(this).attr("accessValue");////filterValue is nothing but user accessValue
+		clearCommonDiv();
 	    ajaxCallBasedOnUserAccessLevel(filterLevel,filterValue);
 	 
 	
