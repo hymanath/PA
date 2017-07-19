@@ -524,23 +524,25 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 					if(param[0] == null){
 						continue;
 					}
+					String locationIdStr ="";
+					if(type.equalsIgnoreCase(IConstants.TEHSIL)) {
+						locationIdStr="1"+commonMethodsUtilService.getStringValueForObject(param[0]);
+					} else if (type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)) {
+						locationIdStr ="2"+commonMethodsUtilService.getStringValueForObject(param[0]);
+					} else {
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[0]);
+					}
 						
-					BoothInchargeDetailsVO locationVO = locationBoothMap.get(commonMethodsUtilService.getStringValueForObject(param[0]));
+					BoothInchargeDetailsVO locationVO = locationBoothMap.get(locationIdStr.trim());
 					if (locationVO == null ){
 						locationVO = new BoothInchargeDetailsVO();
-						if(type.equalsIgnoreCase(IConstants.TEHSIL)) {
-							locationVO.setLocationIdStr("1"+commonMethodsUtilService.getStringValueForObject(param[0]));
-						} else if (type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)) {
-							locationVO.setLocationIdStr("2"+commonMethodsUtilService.getStringValueForObject(param[0]));
-						} else {
-							locationVO.setLocationIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
-						}
+						locationVO.setLocationIdStr(locationIdStr);
 						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 						locationVO.setBoothAddressVO(getBoothAddress(param));
 						//taking location wise serial range wise voter map and setting based on location. 
 						Map<Long,Long> rangeWiseVoterCountMap = locationSerialRangeWiseVoterMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 						locationVO.setSubList(getRangeList(rangeObjList,rangeWiseVoterCountMap));
-						locationBoothMap.put(locationVO.getLocationIdStr(), locationVO);
+						locationBoothMap.put(locationVO.getLocationIdStr().trim(), locationVO);
 					}
 					
 					if(resultType.equalsIgnoreCase("NotStarted")){
