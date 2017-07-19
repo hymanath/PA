@@ -379,8 +379,14 @@ public class NREGSTCSService implements INREGSTCSService{
 		String str = "";
 		try {
 			if(inputVO.getLocationId() != null)
-				if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
-					inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
+					if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
+						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+				}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+					if(inputVO.getLocationId().longValue() > 0l)
+						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+				}
+				
 			str = "{";
 			
 			if(inputVO.getFromDate() != null )
@@ -3156,18 +3162,18 @@ public class NREGSTCSService implements INREGSTCSService{
 		return null;
 	}
 	/*
-	 * Date : 15/07/2017
+	 * Date : 18/07/2017
 	 * Author :Nandhini
-	 * @description : getNREGSProjectsAbstractNew
+	 * @description : getNREGSProjectsAbstractNewFrConstituency
+	 */
 	 
 	public List<NregsProjectsVO> getNREGSProjectsAbstractNewFrConstituency(InputVO inputVO){
 		List<NregsProjectsVO> voList = new ArrayList<NregsProjectsVO>(0);
 		try {
 			String projectType = null;
-			String constituencyId = inputVO.getLocationIdStr();
+			Long constituencyId = inputVO.getLocationId();
+			Long districtId = inputVO.getDistrictId();
 			
-			inputVO.setLocationType("district");
-			inputVO.setLocationId(inputVO.getDeptId());
 			String str = convertingInputVOToString(inputVO);
 			
 			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
@@ -3189,6 +3195,65 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    	  inputVO.setType("Raising of Perinnial Fodder");
 	 	    	  
 	 	    	 String output = response.getEntity(String.class);
+	 	    	 if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsProjectsVO vo = new NregsProjectsVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    					projectType = jObj.getString("CAT_NAME");
+	 	    				
+	 	    				String[]  projectTypeArr = projectType.split("_");
+	 	    				if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase(projectTypeArr[0])){
+	 	    					vo.setParameter(jObj.getString("CAT_NAME"));
+	 	    					vo.setType("Constituency");
+	 	    					vo.setTarget(jObj.getString("TARGET"));
+		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
+		 	    				vo.setPercentage(jObj.getString("PERC"));
+		 	    				voList.add(vo);
+	 	    				}
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    	 
+	 	     }
+	        
+	        inputVO.setLocationType("district");
+			inputVO.setLocationId(districtId);
+			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Ground"))
+	    		  inputVO.setType("Burial Grounds");
+	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi "))
+	    		  inputVO.setType("Anganwadi Buildings");
+	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Gram Panchayat Buildings"))
+	    		  inputVO.setType(" GP Buildings");
+	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Silk worm"))
+	    		  inputVO.setType("Silk Worms");
+	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Cattle drinking water trough"))
+	    		  inputVO.setType("Cattle Drinking Water Troughs");
+	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Raising of Perinnial Fodder "))
+	 	    	  inputVO.setType("Raising of Perinnial Fodders");
+			String str1 = convertingInputVOToString(inputVO);
+			
+			ClientResponse distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1);
+	        
+	        if(distResponse.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ distResponse.getStatus());
+	 	      }else{
+	 	    	  if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Grounds"))
+	 	    		  inputVO.setType("Burial Ground");
+	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi Buildings"))
+	 	    		  inputVO.setType("Anganwadi");
+	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GP Buildings"))
+	 	    		  inputVO.setType("Gram Panchayat Buildings");
+	 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Silk Worms"))
+	 	    		  inputVO.setType("Silk worm");
+	 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Cattle Drinking Water Troughs"))
+	 	    		  inputVO.setType("Cattle drinking water trough");
+	 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Raising of Perinnial Fodders"))
+		 	    	  inputVO.setType("Raising of Perinnial Fodder");
+	 	    	  
+	 	    	 String output = distResponse.getEntity(String.class);
+
 	 	    	 if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
@@ -3223,12 +3288,14 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 
 	 	     }
 	        
+	        
+	        
 		} catch (Exception e) {
-			LOG.error("Exception raised at getNREGSProjectsAbstractNew - NREGSTCSService service", e);
+			LOG.error("Exception raised at getNREGSProjectsAbstractNewFrConstituency - NREGSTCSService service", e);
 		}
 		
 		return voList;
-	}*/
+	}
 	
 	/*
 	 * Date : 17/07/2017
@@ -3327,6 +3394,165 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at convertRupeesIntoLakhes - NREGSTCSService service", e);
 		}
 		return returnVal;
+	}
+	/*
+	 * Date : 18/07/2017
+	 * Author :Nandhini
+	 * @description : getNREGSAbstractDataByTypeFrConstituency
+	 */
+	public List<NregsProjectsVO> getNREGSAbstractDataByTypeFrConstituency(InputVO inputVO){
+		List<NregsProjectsVO> returnList = new ArrayList<>();
+		try {
+			Long constituencyId = inputVO.getLocationId();
+			Long districtId = inputVO.getDistrictId();
+			
+			String str = convertingInputVOToString(inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
+			
+			if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	    				for(int i=0;i<finalArray.length();i++){
+	    					NregsProjectsVO vo = new NregsProjectsVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Nurseries"))
+	 	    					vo.setParameter(jObj.getString("'NURSERIES'"));
+	 	    				else
+	 	    					vo.setParameter(jObj.getString("PARAMETER"));
+	 	    				
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")){
+	 	    					vo.setTarget(jObj.getString("MAX(T.AVG_WAGE_TARGET)"));
+		 	    				vo.setCompleted(jObj.getString("AVG_WAGE"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")){
+	 	    					vo.setTarget(jObj.getString("MAX(T.AVG_DAYS_TARGET)"));
+		 	    				vo.setCompleted(jObj.getString("AVG_DAYS"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("HH Completed 100 Days")){
+	 	    					vo.setTarget(jObj.getString("ROUND(NVL(SUM(HH_WORKING)*0.2,0),0)"));
+		 	    				vo.setCompleted(jObj.getString("COMP_100"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Timely Payment")){
+	 	    					vo.setTarget(jObj.getString("MAX(T.UPLOAD_5_TARGET)"));
+		 	    				vo.setCompleted(jObj.getString("UPLOAD_5"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue")){
+	 	    					vo.setTarget(jObj.getString("TARGET"));
+		 	    				vo.setCompleted(jObj.getString("ACHIVEMENT"));
+	 	    				}
+	 	    				else{
+	 	    					vo.setTarget(jObj.getString("TARGET"));
+		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
+	 	    				}
+	 	    				
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("IHHL") || inputVO.getType().toString().trim().equalsIgnoreCase("Vermi Compost")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Agriculture Activities")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Farm Ponds"))
+	 	    					vo.setPercentage(jObj.getString("PERC"));
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("HH Completed 100 Days")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Timely Payment")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue"))
+	 	    					vo.setPercentage(jObj.getString("PER"));
+	 	    				else
+	 	    					vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    					vo.setType("CONSTITUENCY");
+	 	    				
+	 	    				returnList.add(vo);
+	    				}
+	 	    		}
+	 	    	}
+	 	    }
+			
+			inputVO.setLocationType("district");
+			inputVO.setLocationId(districtId);
+			String str1 = convertingInputVOToString(inputVO);
+			ClientResponse distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1);
+			
+			if(distResponse.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ distResponse.getStatus());
+	 	      }else{
+	 	    	 String output = distResponse.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	    				for(int i=0;i<finalArray.length();i++){
+	    					NregsProjectsVO vo = new NregsProjectsVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Nurseries") && inputVO.getLocationType().toString().trim().equalsIgnoreCase("state"))
+	 	    					vo.setParameter(jObj.getString("'NURSERIES'"));
+	 	    				else
+	 	    					vo.setParameter(jObj.getString("PARAMETER"));
+	 	    				
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")){
+	 	    					vo.setTarget(jObj.getString("MAX(T.AVG_WAGE_TARGET)"));
+		 	    				vo.setCompleted(jObj.getString("AVG_WAGE"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")){
+	 	    					vo.setTarget(jObj.getString("MAX(T.AVG_DAYS_TARGET)"));
+		 	    				vo.setCompleted(jObj.getString("AVG_DAYS"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("HH Completed 100 Days")){
+	 	    					vo.setTarget(jObj.getString("ROUND(NVL(SUM(HH_WORKING)*0.2,0),0)"));
+		 	    				vo.setCompleted(jObj.getString("COMP_100"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Timely Payment")){
+	 	    					vo.setTarget(jObj.getString("MAX(T.UPLOAD_5_TARGET)"));
+		 	    				vo.setCompleted(jObj.getString("UPLOAD_5"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue")){
+	 	    					vo.setTarget(jObj.getString("TARGET"));
+		 	    				vo.setCompleted(jObj.getString("ACHIVEMENT"));
+	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Payments")){
+	 	    					vo.setFTONOTGENCNT(jObj.getString("FTONOTGENCNT"));
+	 	    					vo.setFTONOTUPLOADCNT(jObj.getString("FTONOTUPLOADCNT"));
+	 	    					vo.setFTONOTSENTCNT(jObj.getString("FTONOTSENTCNT"));
+	 	    					vo.setREJECTCNT(jObj.getString("REJECTCNT"));
+	 	    				}
+	 	    				else{
+	 	    					vo.setTarget(jObj.getString("TARGET"));
+		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
+	 	    				}
+	 	    				
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("IHHL") || inputVO.getType().toString().trim().equalsIgnoreCase("Vermi Compost")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Agriculture Activities")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Farm Ponds"))
+	 	    					vo.setPercentage(jObj.getString("PERC"));
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("HH Completed 100 Days")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Timely Payment")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue"))
+	 	    					vo.setPercentage(jObj.getString("PER"));
+	 	    				else
+	 	    					vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				
+	 	    				if(inputVO.getLocationType().trim().equalsIgnoreCase("state"))
+	 	    					vo.setType("STATE");
+	 	    				else if(vo.getParameter().contains("state") || vo.getParameter().contains("State") || vo.getParameter().contains("STATE"))
+	 	    					vo.setType("STATE");
+	 	    				else if(vo.getParameter().contains("district") || vo.getParameter().contains("District") || vo.getParameter().contains("DISTRICT"))
+	 	    					vo.setType("DISTRICT");
+	 	    				
+	 	    				returnList.add(vo);
+	    				}
+	 	    		}
+	 	    	}
+	 	    }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSAbstractDataByTypeFrConstituency - NREGSTCSService service", e);
+		}
+		return returnList;
 	}
 	
 }
