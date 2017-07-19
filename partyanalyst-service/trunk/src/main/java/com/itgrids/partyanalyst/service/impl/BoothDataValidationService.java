@@ -666,12 +666,14 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 					BoothInchargeDetailsVO locationVO = new BoothInchargeDetailsVO();
 					if(type.equalsIgnoreCase(IConstants.TEHSIL)) {
 						locationVO.setLocationIdStr("1"+commonMethodsUtilService.getStringValueForObject(param[0]));
-					} else if (type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)) {
+						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					}else if (type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)) {
 						locationVO.setLocationIdStr("2"+commonMethodsUtilService.getStringValueForObject(param[0]));
+						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1])+" Munci/Corp/Greater City");
 					} else {
 						locationVO.setLocationIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					}
-					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					locationList.add(locationVO);
 				}
 			}
@@ -726,6 +728,38 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				 List<Object[]> boothDetailsObjList = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothDetails(inputVO);
 	             resultList = getBoothDetails(boothDetailsObjList);
 			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(resultList)){
+				
+				List<Object[]> requiredRolesCountList = boothInchargeRoleConditionMappingDAO.getLocationLevelBoothWiserRequieredMembersDetails(inputVO,"rolesCount");
+				List<Object[]> addedCountList = boothInchargeRoleConditionMappingDAO.getLocationLevelBoothWiserRequieredMembersDetails(inputVO,"addedCount");
+				Map<Long,Long> requiredRolesMap = new HashMap<Long, Long>(0);
+				Map<Long,Long> readyToFinalMap = new HashMap<Long, Long>(0);
+				if(commonMethodsUtilService.isListOrSetValid(requiredRolesCountList) && commonMethodsUtilService.isListOrSetValid(addedCountList)){
+					for (Object[] param : requiredRolesCountList) {
+						requiredRolesMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+				}
+				if(commonMethodsUtilService.isListOrSetValid(addedCountList)){
+					for (Object[] param : addedCountList) {
+						if(requiredRolesMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null){
+							Long maxCount = requiredRolesMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+							Long addedCount = commonMethodsUtilService.getLongValueForObject(param[1]);
+							if(addedCount != null && addedCount.longValue()>0 && maxCount != null && maxCount.longValue()>0 &&  addedCount.longValue() == maxCount.longValue()){
+								readyToFinalMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+							}
+						}
+					}
+				}
+				
+				if(commonMethodsUtilService.isMapValid(readyToFinalMap)){
+					for (BoothAddressVO boothAddressVO : resultList) {
+						if(boothAddressVO.getBoothId() != null && boothAddressVO.getBoothId().longValue()>0L && readyToFinalMap.get(boothAddressVO.getBoothId()) != null){
+							boothAddressVO.setIsReadyToConfirm("yes");
+						}
+					}
+				}
+			}
 		} catch (Exception e) {
 			Log.error("Exception occured at getLocationLevelWiseBoothDetails() in BoothDataValidationService class",e);
 		}
@@ -766,6 +800,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 					}				
 					boothDetailsVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[15]));
 					boothDetailsVO.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[16]));
+					boothDetailsVO.setIsReadyToConfirm("no");
 					boothDtlsList.add(boothDetailsVO);
 				}
 				
