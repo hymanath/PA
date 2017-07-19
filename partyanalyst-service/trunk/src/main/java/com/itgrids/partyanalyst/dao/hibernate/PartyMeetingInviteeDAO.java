@@ -2471,7 +2471,12 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 	public List<Object[]> getPartyMeetingInviteeDetaisByPartyMeetingId(Long meetingId){
     	StringBuilder sb = new StringBuilder();
     	sb.append("select PI.partyMeetingId,TCC.tdpCadreId");//meetingId, tdpCadreId  ,0,1
-    	sb.append(",PR.candidateId,CAN.lastname,PT.type,tdpCadre.memberShipNo,tdpCadre.mobileNo,PI.partyMeetingInviteeId");//candidateId,name,position,2,3,4
+    	sb.append(",PR.candidateId," +//2 
+    			"CAN.lastname," +//3
+    			"PT.type," +//4
+    			"tdpCadre.memberShipNo," +//5
+    			"tdpCadre.mobileNo," +//6
+    			"PI.partyMeetingInviteeId ");//candidateId,name,position,2,3,4
 		sb.append("	from PartyMeetingInvitee PI,PublicRepresentative PR");
 		sb.append(",TdpCadreCandidate TCC,Candidate CAN,PublicRepresentativeType PT,TdpCadre tdpCadre ");
 		sb.append("where PI.tdpCadreId=TCC.tdpCadreId ");
