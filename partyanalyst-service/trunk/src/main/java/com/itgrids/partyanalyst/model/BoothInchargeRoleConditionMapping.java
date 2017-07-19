@@ -28,8 +28,6 @@ public class BoothInchargeRoleConditionMapping {
 	private Long boothInchargeRoleConditionId;
 	private Long boothInchargeEnrollmentId;
 	private String isConfirmed;
-	private Date startDate;
-	private Date completedDate;
 	private String isDeleted;
 	private Long boothInchargeCommitteeId;
 	
@@ -72,21 +70,6 @@ public class BoothInchargeRoleConditionMapping {
 		this.isConfirmed = isConfirmed;
 	}
 	
-	@Column(name="start_date")
-	public Date getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-	
-	@Column(name="completed_date")
-	public Date getCompletedDate() {
-		return completedDate;
-	}
-	public void setCompletedDate(Date completedDate) {
-		this.completedDate = completedDate;
-	}
 	@Column(name="is_deleted")
 	public String getIsDeleted() {
 		return isDeleted;
