@@ -53,6 +53,7 @@ public class IdAndNameVO {
 	private List<String> enrollmentYears = new ArrayList<String>();
 	private List<IdAndNameVO>NotAttendanceList=new ArrayList<IdAndNameVO>();
 	private List<IdAndNameVO>AttendanceList=new ArrayList<IdAndNameVO>();
+	private List<IdAndNameVO> nonInviteeAttendancList=new ArrayList<IdAndNameVO>();
 	
 	
 	
@@ -339,6 +340,12 @@ public class IdAndNameVO {
 	}
 	public void setMembershipNo(String membershipNo) {
 		this.membershipNo = membershipNo;
+	}
+	public List<IdAndNameVO> getNonInviteeAttendancList() {
+		return nonInviteeAttendancList;
+	}
+	public void setNonInviteeAttendancList(List<IdAndNameVO> nonInviteeAttendancList) {
+		this.nonInviteeAttendancList = nonInviteeAttendancList;
 	}	
 	
 }
