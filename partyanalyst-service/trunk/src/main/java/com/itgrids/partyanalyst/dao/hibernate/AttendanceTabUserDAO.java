@@ -25,6 +25,7 @@ public class AttendanceTabUserDAO extends GenericDaoHibernate<AttendanceTabUser,
 		return query.list();
 		
 	}
+
 	public List<Object[]> getAttendanceTabUserDetailes(){
 		StringBuilder sb=new StringBuilder();
 		sb.append("select model.attendanceTabUserId,model.firstname,model.lastname,model.mobile,model.username " +
