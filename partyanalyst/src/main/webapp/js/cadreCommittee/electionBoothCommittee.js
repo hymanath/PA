@@ -1677,13 +1677,13 @@ function getBoothUserDetailsbuild(result,locationName){
 	$("#userDetailsId").show();
 	$("#locationDivId").html('<center><h4>'+locationName+' Committee Details.</center></h4>');
 	var str = '';
-	str +='<h4><a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothReport\')}"  style="margin-bottom: 7px;"> Export Excel</a></h4>';
+	str +='<h4><a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothExportExcelReport\')}"  style="margin-bottom: 7px;"> Export Excel</a></h4>';
 		  str +='<table class="table table-bordered" id="rangeWiseExportBoothReport">';
 				 str +='<thead>';
 					 str +='<tr class="text-center">';
 					 
 						//str +='<th>CONSTITUENCY&nbsp;NAME</th>';
-						str +='<th>MANDAL/MUNICIPALITY/CORPORATION&nbsp;NAME</th>';
+						str +='<th>MANDAL/MUNICI/CORP/GREATER CITY&nbsp;NAME</th>';
 						str +='<th>PANCHAYAT&nbsp;NAME</th>';
 						//str +='<th>VILLAGE&nbsp;COVERED </th>';	
 						str +='<th>BOOTH&nbsp;NO</th>';
@@ -1708,7 +1708,7 @@ function getBoothUserDetailsbuild(result,locationName){
 								str +='<td>'+result[i].panchayatName+'</td>';
 								//str +='<td>'+result[i].boothName+'</td>';
 																
-								str +='<td><span title="http://www.mytdp.com/cadre_images/'+result[i].url+'"></span>'+'Booth No - '+result[i].boothNumber+'</td>';								
+								str +='<td><span></span>'+'Booth No - '+result[i].boothNumber+'</td>';								
 							    if(result[i].serialNo != null)								
 								  str +='<td>'+result[i].serialNo+'</td>';
 								str +='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
@@ -1729,11 +1729,69 @@ function getBoothUserDetailsbuild(result,locationName){
 							}
 			  str +='</tbody>';
 			  str +='</table>';
-	$("#userDetailsId").html(str);
-	$("#rangeWiseExportBoothReport").dataTable({
-			"iDisplayLength": 20,
-			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-		});
+			  
+			 $("#userDetailsId").html(str);
+			$("#rangeWiseExportBoothReport").dataTable({
+					"iDisplayLength": 20,
+					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+			});
+		
+			   str +='<table class="table table-bordered" style="display:none;" id="rangeWiseExportBoothExportExcelReport">';
+				 str +='<thead>';
+					 str +='<tr class="text-center">';
+					 
+						str +='<th>CONSTITUENCY&nbsp;NAME</th>';
+						str +='<th>MANDAL/MUNICIPALITY/CORPORATION&nbsp;NAME</th>';
+						str +='<th>PANCHAYAT&nbsp;NAME</th>';
+						str +='<th>VILLAGE&nbsp;COVERED </th>';	
+						str +='<th>BOOTH&nbsp;NO</th>';
+						str +='<th>Serial No</th>';						
+						//str +='<th>PHOTO</th>';
+						str +='<th>MEMBERSHIP&nbsp;NO</th>';
+						str +='<th>CADRE&nbsp;NAME</th>';
+						str +='<th>CADRE&nbsp;NAME</th>';
+						str +='<th>MOBILE&nbsp;NO</th>';
+						str +='<th> REMOVE &nbsp;</th>';
+					 						 
+					 str +='</tr>';
+				 str +='</thead>';			 
+			  str +='<tbody>';
+						for(var i in result){
+							var membershipNo = result[i].memberShipNo != null ? result[i].memberShipNo+"":"-";
+							//alert(membershipNo.length);
+							
+							str +='<tr>';
+								str +='<td>'+result[i].name+'</td>';
+								str +='<td>'+result[i].mandalName+'</td>';
+								str +='<td>'+result[i].panchayatName+'</td>';
+								str +='<td>'+result[i].boothName+'</td>';
+																
+								str +='<td><span></span>'+'Booth No - '+result[i].boothNumber+'</td>';								
+							    if(result[i].serialNo != null)								
+								  str +='<td>'+result[i].serialNo+'</td>';
+								else
+								   str +='<td> - </td>';
+								//str +='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+								if( membershipNo.length==8)
+									str +='<td>'+result[i].memberShipNo+'</td>';
+								else if(membershipNo.length==7)
+									str +='<td>0'+result[i].memberShipNo+'</td>';
+								else 
+									str +='<td>  -  </td>';
+								
+								str +='<td>'+result[i].firstName+'</td>';	
+								str +='<td>'+result[i].mobileNumber+'</td>';
+                                if(result[i].roleName != null)								
+								  str +='<td>'+result[i].roleName+'</td>';
+							    else
+								  str +='<td>  -  </td>';
+								str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' attr_role="'+result[i].roleName+'" value="DELETE" type="button"></td>';	
+							str +='</tr>';
+							}
+			  str +='</tbody>';
+			  str +='</table>';
+			   $("#userDetailsId").html(str);
+	
 }
 
 function setDefaultImage(img){
