@@ -1232,29 +1232,52 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 			  IdAndNameVO idAndNameVO=null;
 		        List<String> invetiMeberShipList=null;
 		        List<IdAndNameVO> notAttendedFinalList=null;
+		        List<IdAndNameVO> attendNonInviteesFinalVOList=null;
 		        List<String> notAttendList =null;
+		        List<String> attendNonInviteesList=null;
+		        List<String> attendedForInvetteeList=null;
+		        //get the attendance list membershipi ids
 		        List<String> attendedList=partyMeetingAttendanceDAO.getPartyMeetingInviteesDetailsAttendence(meetingId);
-		        List<IdAndNameVO> attendfinalList=  getTdpCadreDetailsForInveetMeeting(attendedList);
+		      
+		        //get party meeting invitees list by passin meeting id
 		      	List<Object[]> inviteeObjs=partyMeetingInviteeDAO.getPartyMeetingInviteeDetaisByPartyMeetingId(meetingId);
 		      	if(inviteeObjs !=null && inviteeObjs.size() >0){
 		      		invetiMeberShipList=new ArrayList<String>();
-			      	for(Object[] objcts: inviteeObjs){
+			      	for(Object[] objcts: inviteeObjs){    //set the memership ids into list for comparing with attendlist then we get non-attendlist
 			      		invetiMeberShipList.add(commonMethodsUtilService.getStringValueForObject(objcts[5]));
 			      	}
 		      	}
 		         if(attendedList !=null && attendedList.size()>0 && invetiMeberShipList !=null && invetiMeberShipList.size() >0){
 		        	 notAttendList=new ArrayList<String>();
 		        	 for(String invetiMeber:invetiMeberShipList){
-		        		 if(!attendedList.contains(invetiMeber)){
-		        			 notAttendList.add(invetiMeber);
+		        		 if(!attendedList.contains(invetiMeber)){// comparing attendlist and invettelist membership ids
+		        			 notAttendList.add(invetiMeber);//non-attend list
 		        		 }
 		        	 }
 		         }
+		         if(attendedList !=null && attendedList.size()>0 && invetiMeberShipList !=null && invetiMeberShipList.size() >0){
+		        	 attendNonInviteesList=new ArrayList<String>();
+		        	 attendedForInvetteeList=new ArrayList<String>();
+		        	 for(String attendMmber:attendedList){
+		        		 if(invetiMeberShipList.contains(attendMmber)){
+		        			 attendedForInvetteeList.add(attendMmber);
+		        		 }else{
+		        			 attendNonInviteesList.add(attendMmber);
+		        		 }
+		        	 }
+		         }
+		         //get deatails of attend people by passing membershipId
+			        List<IdAndNameVO> attendfinalList=  getTdpCadreDetailsForInveetMeeting(attendedForInvetteeList);
+		         //get non-attend persons details
 		         notAttendedFinalList=  getTdpCadreDetailsForInveetMeeting(notAttendList);
+		         attendNonInviteesFinalVOList=getTdpCadreDetailsForInveetMeeting(attendNonInviteesList);
+		         //listes are set to VO Class to sent UI
 		         if(notAttendedFinalList !=null || attendfinalList !=null){
 			         idAndNameVO=new IdAndNameVO();
 			         idAndNameVO.setNotAttendanceList(notAttendedFinalList);
 			         idAndNameVO.setAttendanceList(attendfinalList);
+			         idAndNameVO.setNonInviteeAttendancList(attendNonInviteesFinalVOList);
+			         
 		         }
 		          return idAndNameVO;
 		      }
