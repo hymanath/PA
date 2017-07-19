@@ -945,10 +945,9 @@ function buildSurveyDetails(result)
 	$("#surveyDetailsId").html(str);
 }
 	var selectedRadio='dist';
-	var enrollmentYrId = $("#enrlmntYrId").val();
 	$(".distrconstdtls").click(function(){
 		selectedRadio=$(this).val();
-		getAttendedCountsByProgramOrCampOrBatch($(this).val(),enrollmentYrId);
+		getAttendedCountsByProgramOrCampOrBatch($(this).val(),$("#enrlmntYrId").val());
 	});
 	
 	/* $(".comAllRadio").click(function(){
