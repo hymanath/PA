@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.BoothAddressVO;
 import com.itgrids.partyanalyst.dto.BoothInchargeDetailsVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.InputVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IBoothDataValidationService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -34,6 +35,7 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 	private List<BoothAddressVO> boothDtlsList;
 	private List<IdAndNameVO> idAndNameVOList;
 	private List<BoothInchargeDetailsVO> boothIncbhargeVOList;
+	private InputVO userVO;
 	
 	
 	public List<IdAndNameVO> getIdAndNameVOList() {
@@ -103,6 +105,12 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 			List<BoothInchargeDetailsVO> boothIncbhargeVOList) {
 		this.boothIncbhargeVOList = boothIncbhargeVOList;
 	}
+	public InputVO getUserVO() {
+		return userVO;
+	}
+	public void setUserVO(InputVO userVO) {
+		this.userVO = userVO;
+	}
 	@Override
 	public String execute() throws Exception {
 		LOG.debug("BoothReportAction.execute()... started");
@@ -118,6 +126,15 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 	}
 	public String getBoothInchargeDashboard(){
 		
+		 Long userId = null; 
+		 HttpSession session = request.getSession();
+		 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		 if(user == null || user.getRegistrationID() == null){
+			return "error";
+		 }else {
+			  userId = user.getRegistrationID();
+			  userVO = boothDataValidationService.getLoginUserDtls(userId);
+		 }
 		return Action.SUCCESS;
 	}
 	
