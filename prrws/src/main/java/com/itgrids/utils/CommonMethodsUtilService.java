@@ -1019,7 +1019,7 @@ public class CommonMethodsUtilService {
 		    	 int len = amountStr.length()-7;
 		    	 decAmount = amountStr.substring(len,len+3);
 		      }else{
-		    	  System.out.println("else:"+String.valueOf(number/10000000.0));
+		    	  //System.out.println("else:"+String.valueOf(number/10000000.0));
 		    	  String f = formatter.format(number/10000000.0);
 		    	  //System.out.print(f);
 		    	  return f;

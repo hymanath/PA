@@ -1803,7 +1803,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  			inputVO.setSourceIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList()));
  			inputVO.setSchemeIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSchemeIdsList()));
  			//All the funds taken by in this query
- 			List<Object[]> result =  fundSanctionDAO.financialYearWiseFundDetails(new ArrayList<Long>(){{add(previousYearId);add(presentYearId);}},inputVO.getDeptIdsList(),inputVO.getDeptIdsList(),inputVO.getSchemeIdsList(),inputVO.getBlockLevelId());
+ 			List<Object[]> result =  fundSanctionDAO.financialYearWiseFundDetails(new ArrayList<Long>(){{add(previousYearId);add(presentYearId);}},inputVO.getDeptIdsList(),inputVO.getDeptIdsList(),inputVO.getSchemeIdsList(),inputVO.getBlockLevelId(),inputVO.getSearchLevelId(),inputVO.getSearchLevelValue());
  			
  			//find out the max fund in the couple of years
  			double maxAmount =0.00d;
