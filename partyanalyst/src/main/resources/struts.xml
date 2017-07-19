@@ -17870,5 +17870,10 @@
          	<param name="root">boothIncbhargeVOList</param>
        </result>
    </action>
+    <action name="getLocationWiseCadreDetailsAction" class="boothReportAction" method="getLocationWiseCadreDetails">
+        <result type="json" name="success">
+         	<param name="root">boothDtlsList</param>
+       </result>
+   </action>
  </package>
 </struts>
