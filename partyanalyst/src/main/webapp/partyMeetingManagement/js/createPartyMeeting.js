@@ -266,104 +266,81 @@ function getCadrePartyMeetngDeatils(levelDivId, meetingLevelId, userFromDate, us
     });
 }
 
-function buildMeetingDetailsTable(results, partiMeetingLevelId, levelDivId, jsObj) {
-    var str = "";
-    str += "<table id='meetingTableId" + levelDivId + "' class='table table-bordered'>";
-    str += "<thead class='text-capital'>";
-    str += "<tr>"
-    str += "<th>meeting name</th>";
-    str += "<th>Level</th>";
-    str += "<th>type</th>";
-    str += "<th>District Name</th>";
-    str += "<th>Constincy Name</th>";
-    str += "<th>Mandal</th>";
-    str += "<th>Village</th>";
-    str += "<th>Date</th>";
-    str += "<th>Action</th>";
-    str += "</tr>"
-    str += "</thead>";
-    str += "<tbody>";
-    for (var i in results) {
-        str += "<tr>"
-        str += "<td>" + results[i].meetingName + "</td>";
-        str += "<td>" + results[i].remarks + "</td>";
-        str += "<td>" + results[i].meetingType + "</td>";
-        if (results[i].districtName != null) {
-            str += "<td>" + results[i].districtName + "</td>";
-        } else {
-            str += "<td>-</td>";
-        }
-        if (results[i].constituencyName != null) {
-            str += "<td>" + results[i].constituencyName + "</td>";
-        } else {
-            str += "<td>-</td>";
-        }
-        if (results[i].tesilName != null) {
-            str += "<td>" + results[i].tesilName + "</td>";
-        } else {
-            str += "<td>-</td>";
-        }
-
-        if (results[i].name != null) {
-            str += "<td>" + results[i].name + "</td>";
-        } else {
-            str += "<td>-</td>";
-        }
-        str += "<td>" + results[i].updatedTime + "</td>";
-        str += "<td><i id=" + results[i].id + " class='glyphicon glyphicon-edit meetingEditCls' style='padding-right:10px;cursor:pointer;'></i><i id=" + results[i].id + " class='glyphicon glyphicon-trash'></i></td>";
-        str += "</tr>"
-    }
-    str += "</tbody>";
-    str += "</table>";
-    $("#meetingTableId").html(str);
-    var itemsCount = +results[0].totalCount;
-    var maxResults = jsObj.maxIndex;
-    if (jsObj.startFromResult == 0) {
-        $("#paginationDivId").html('');
-        $("#paginationDivId").pagination({
-            items: itemsCount,
-            itemsOnPage: maxResults,
-            cssStyle: 'light-theme',
-
-            onPageClick: function(pageNumber, event) {
-                var startFromResult2 = (pageNumber - 1) * 10;
-                getCadrePartyMeetngDeatils(jsObj.levelDivId, jsObj.partyMeetingMainTypeId, jsObj.startDateStr, jsObj.endDateStr, startFromResult2);
-            }
-        });
-    }
-    $("#meetingTableId").html(str);
-}
-
-function getConstituencyAction(districtId, type, id, theshilId, panchayatId) {
-    $('#constituency').html(" ");
-    var jsObj = {
-        districtId: districtId
-    }
-    $.ajax({
-        type: "GET",
-        url: "getConstituenciesForADistrictAjaxAction.action",
-        data: {
-            task: JSON.stringify(jsObj)
-        }
-    }).done(function(results) {
-        $('#constituencySpinnerId').hide();
-        for (var i in results) {
-            if (type == null) {
-                $("#constituency").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
-            } else {
-
-                $("#constituencyModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
-                $("#constituencyModelId option[value=" + id + "]").attr('selected', 'selected');
-
-            }
-        }
-        if (type == "model") {
-            var constituency = $("#constituencyModelId").val();
-            getMandalBasedOnConstituencyAction(constituency, type, theshilId, panchayatId);
-            //alert($("#districtModelId").val());
-            getPartyMeetingsTabUserNameByDistrict($("#districtModelId").val(), type);
-        }
-    });
+function buildMeetingDetailsTable(results,partiMeetingLevelId,levelDivId,jsObj){
+	var str="";
+	str+="<table id='meetingTableId"+levelDivId+"' class='table table-bordered'>";
+		str+="<thead class='text-capital'>";
+			str+="<tr>"
+				str+="<th>meeting name</th>";
+				str+="<th>Level</th>";
+				str+="<th>type</th>";
+				str+="<th>District Name</th>";
+				str+="<th>Constincy Name</th>";
+				str+="<th>Mandal</th>";
+				str+="<th>Village</th>";
+				str+="<th>Date</th>";
+				str+="<th>Action</th>";
+			str+="</tr>"
+		str+="</thead>";
+		str+="<tbody>";
+		for(var i in results){
+			str+="<tr>"
+					str+="<td>"+results[i].meetingName+"</td>";
+					str+="<td>"+results[i].remarks+"</td>";
+					str+="<td>"+results[i].meetingType+"</td>";
+				if(results[i].districtName != null){
+					str+="<td>"+results[i].districtName+"</td>";
+				}else{
+					str+="<td>-</td>";
+				}
+				if(results[i].constituencyName != null){
+					str+="<td>"+results[i].constituencyName+"</td>";
+				}else{
+					str+="<td>-</td>";
+				}
+				if(results[i].teshilName != null){
+					str+="<td>"+results[i].teshilName+"</td>";
+				}else{
+					str+="<td>-</td>";
+				}
+			
+				if(results[i].name != null){
+					str+="<td>"+results[i].name+"</td>";
+				}else{
+					str+="<td>-</td>";
+				}
+					str+="<td>"+results[i].updatedTime+"</td>";
+					str+="<td class='text-center'>";
+					if(results[i].flage=="true"){
+						str+="<i id="+results[i].id+" class='glyphicon glyphicon-edit meetingEditCls'   title='Edit' style='padding-right:10px;cursor:pointer;'></i>";
+					}
+					if(results[i].isCondacted=="Y"){
+						str+="<i id="+results[i].id+" class='glyphicon glyphicon-trash' style='display:none;'></i>";
+					}else{
+						str+="<i id="+results[i].id+" class='glyphicon glyphicon-trash'></i>";
+					}
+					str+="</td>";
+			str+="</tr>"
+		}
+		str+="</tbody>";
+	str+="</table>";
+	$("#meetingTableId").html(str);
+	var itemsCount=+results[0].totalCount;
+	var maxResults=jsObj.maxIndex;
+	if(jsObj.startFromResult==0){
+		$("#paginationDivId").html('');
+		$("#paginationDivId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			
+			onPageClick: function(pageNumber, event) {
+				var startFromResult2=(pageNumber-1)*10;
+				getCadrePartyMeetngDeatils(jsObj.levelDivId,jsObj.partyMeetingMainTypeId,jsObj.startDateStr,jsObj.endDateStr,startFromResult2); 
+			}
+		});
+	}
+	$("#meetingTableId").html(str);
 }
 
 function getMandalBasedOnConstituencyAction(constituencyId, type, theshilId, panchayatId) {
