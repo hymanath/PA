@@ -45,4 +45,6 @@ public interface INREGSTCSService {
 	public List<NregaPaymentsVO> getNregaLevelsWiseDataForNewFTOPayments(InputVO inputVO);
 	public List<NregaPaymentsVO> getNregaParliamentDataFrpayments(InputVO inputVO);
 	public NregaPaymentsVO getNregaPaymentsAbsAndOverview(InputVO inputVO);
+	public List<NregsProjectsVO> getNREGSProjectsAbstractNewFrConstituency(InputVO inputVO);
+	public List<NregsProjectsVO> getNREGSAbstractDataByTypeFrConstituency(InputVO inputVO);
 }

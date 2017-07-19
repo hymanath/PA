@@ -315,4 +315,28 @@ public class NregsDashboardController {
 		}
 		return returnVO;
 	}
+	
+	@PostMapping("/getNREGSProjectsAbstractNewFrConstituency")
+	public @ResponseBody List<NregsProjectsVO> getNREGSProjectsAbstractNewFrConstituency(@RequestBody InputVO vo){
+		List<NregsProjectsVO> projectVOList = null;
+		try {
+			projectVOList = nregsTcsService.getNREGSProjectsAbstractNewFrConstituency(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSProjectsAbstractNewFrConstituency - NREGSController controller", e);
+		}
+		return projectVOList;
+	}
+	
+	@PostMapping("/getNREGSAbstractDataByTypeFrConstituency")
+	public @ResponseBody List<NregsProjectsVO> getNREGSAbstractDataByTypeFrConstituency(@RequestBody InputVO vo){
+		List<NregsProjectsVO> locationVOList = null;
+		try {
+			locationVOList = nregsTcsService.getNREGSAbstractDataByTypeFrConstituency(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSAbstractDataByTypeFrConstituency - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
 }

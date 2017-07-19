@@ -3663,3 +3663,63 @@ $(document).on("click","[attr_radioBtn]",function(){
 		}
 	});
 } */
+//getNREGSProjectsAbstractNewFrConstituency();
+function getNREGSProjectsAbstractNewFrConstituency()
+{
+	$("#nregsOverviewBodyId").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		type : "Burial Grounds",
+		locationType: "constituency",
+		locationId : "01120",
+		districtId : "01"
+	}
+	$.ajax({
+		url: 'getNREGSProjectsAbstractNewFrConstituency',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			//if(ajaxresp != null && ajaxresp.length > 0){
+				//buildNREGSAbstractDataByType(type,ajaxresp,blockName,locId,locType,levelId)
+			//}
+		}
+	});
+}
+getNREGSAbstractDataByTypeFrConstituency();
+function getNREGSAbstractDataByTypeFrConstituency()
+{
+
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		type : "Average Days of Employment",
+		locationType: "constituency",
+		locationId : "01120",
+		districtId : "01"
+	}
+	
+	$.ajax({
+		url: 'getNREGSAbstractDataByTypeFrConstituency',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			//if(ajaxresp != null && ajaxresp.length > 0){
+				//buildNREGSAbstractDataByType(type,ajaxresp,blockName,locId,locType,levelId)
+			//}
+			
+		}
+	});
+}
