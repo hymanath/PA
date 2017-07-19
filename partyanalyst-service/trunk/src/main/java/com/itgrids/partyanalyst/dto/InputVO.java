@@ -18,6 +18,8 @@ public class InputVO {
 	private Date toDate;
 	private Long boothInchargeEnrollmentId;
 	private String resultType;
+	private Long serialRangeId;
+	private Long boothId;
 	//Login user related attribute
 	private String accessType;
 	private Set<Long> accessValues;
@@ -116,10 +118,17 @@ public class InputVO {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	
-	
-	
-	
-    
-	
+	public Long getSerialRangeId() {
+		return serialRangeId;
+	}
+	public void setSerialRangeId(Long serialRangeId) {
+		this.serialRangeId = serialRangeId;
+	}
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+		
 }
