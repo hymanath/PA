@@ -82,17 +82,9 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 	private IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO;
 	private  ResultStatus resultStatus;
 
+
 	
-	 public IPartyMeetingAttendanceDAO getPartyMeetingAttendanceDAO() {
-		return partyMeetingAttendanceDAO;
-	}
-
-	public void setPartyMeetingAttendanceDAO(
-			IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO) {
-		this.partyMeetingAttendanceDAO = partyMeetingAttendanceDAO;
-	}
-
-	public ResultStatus getResultStatus() {
+	 public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
 
@@ -271,6 +263,15 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 	}
 
 	
+	public IPartyMeetingAttendanceDAO getPartyMeetingAttendanceDAO() {
+		return partyMeetingAttendanceDAO;
+	}
+
+	public void setPartyMeetingAttendanceDAO(
+			IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO) {
+		this.partyMeetingAttendanceDAO = partyMeetingAttendanceDAO;
+	}
+
 	public List<KeyValueVO> getDistrictsBasedOnStateId(Long stateId){
 		List<KeyValueVO> returnList = new ArrayList<KeyValueVO>(0);
 		try {
@@ -575,6 +576,7 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 			Long totalMeetingCount=0L;
 			try{
 			  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			  SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
 		      Date fromDate = null;
 		      Date	toDate = null;
 		      if(startDateStr != null && endDateStr != null){
@@ -591,11 +593,19 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 					partyMeetingVO.setMeetingName(commonMethodsUtilService.getStringValueForObject(objcts[1]));// meeting name
 					partyMeetingVO.setRemarks(commonMethodsUtilService.getStringValueForObject(objcts[2]));//meeting level
 					partyMeetingVO.setMeetingType(commonMethodsUtilService.getStringValueForObject(objcts[3]));//meeting type
-					partyMeetingVO.setUpdatedTime(commonMethodsUtilService.getStringValueForObject(objcts[4]));// meeting date
-					partyMeetingVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(objcts[5]));// district nam 
+					partyMeetingVO.setUpdatedTime(commonMethodsUtilService.getStringValueForObject(objcts[4]));// meeting start date
+					partyMeetingVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(objcts[5]));// district name
 					partyMeetingVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objcts[6]));//constincy name
 					partyMeetingVO.setTeshilName(commonMethodsUtilService.getStringValueForObject(objcts[7]));// tesil name
 					partyMeetingVO.setName(commonMethodsUtilService.getStringValueForObject(objcts[8]));// village name.
+					String []endDate=commonMethodsUtilService.getStringValueForObject(objcts[9]).split("\\s");
+					partyMeetingVO.setMonth(endDate[0]);// end date
+					partyMeetingVO.setIsCondacted(commonMethodsUtilService.getStringValueForObject(objcts[10]));
+					Date currrentdate=sdf2.parse(dateUtilService.getCurrentDateInStringFormat());
+					Long daysCount=dateUtilService.noOfDayBetweenDates(endDate[0],dateUtilService.getDateInStringFormatByDate(currrentdate,"yyyy-MM-dd"));
+					if(daysCount <=2){
+						partyMeetingVO.setFlage("true");
+					}
 					finalList.add(partyMeetingVO);
 				}
 				
@@ -723,11 +733,10 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 							
 							//partyMeetingVO.setConductedDate(commonMethodsUtilService.getStringValueForObject(objcts[2])); // start date
 							//partyMeetingVO.setUpdatedTime(commonMethodsUtilService.getStringValueForObject(objcts[3]));    // end date
-							String startDate=commonMethodsUtilService.getStringValueForObject(objcts[2]);
-                            String endDate=commonMethodsUtilService.getStringValueForObject(objcts[3]);
-                            System.out.println(dateUtilService.getDateByStringAndFormat(startDate,"yyy-dd-mm"));
-							partyMeetingVO.setStartDate(dateUtilService.getDateByStringAndFormat(startDate,"yyy-dd-mm")); // start date
-							partyMeetingVO.setEndDate(dateUtilService.getDateByStringAndFormat(endDate,"yyy-dd-mm"));;    // end date   
+							String []startDate=commonMethodsUtilService.getStringValueForObject(objcts[2]).split("\\s");
+                            String []endDate=commonMethodsUtilService.getStringValueForObject(objcts[3]).split("\\s");
+							partyMeetingVO.setConductedDate(startDate[0]); // start date
+							partyMeetingVO.setUpdatedTime(endDate[0]);		 // end date   
 							partyMeetingVO.setMeetingTypeId(commonMethodsUtilService.getLongValueForObject(objcts[4]));    //meeting typeId
 							partyMeetingVO.setMandalTwnDivisionId(commonMethodsUtilService.getLongValueForObject(objcts[5])); //meeting levelId
 							partyMeetingVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(objcts[6]));       // district id
@@ -908,7 +917,7 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 					
 						finalList.add(idAndNameVO);
 					}
-					// to cheack the memberShipIds exist or not
+					// to check the memberShipIds exist or not
 					 memberShipNotAvailbleList=new ArrayList<String>();
 						for(String memberShipStr :memberShipIds){
 							if(!memberShipNoSet.contains(memberShipStr)){
@@ -1212,6 +1221,13 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 				}
 				return finalSessioList;
 			}
+		    /**
+			 * @author  Babu kurakula <href:kondababu.kurakula@itgrids.com >
+			 * @Date 28th June,2017
+			 * @description to  get party meeting  attendance detailes
+			 * @param attend and non attend list
+			 * @return  idAndNamevo contaibns two list's attend list and not attend list 
+		 */
 		  public IdAndNameVO getPartyMeetingInviteesDetailsAttendence(Long meetingId){
 			  IdAndNameVO idAndNameVO=null;
 		        List<String> invetiMeberShipList=null;
