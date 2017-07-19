@@ -82,6 +82,7 @@ function onLoadCalls()
 		glEndDate = e.date.format("YYYY-MM")+"-31";
 		var levelId = $("#selectedName").attr("attr_levelId");
 		var locId = $("#selectedName").attr("attr_id");
+		var districtId = $("#selectedName").attr("attr_distid");
 		var locType = '';
 		if(levelId == 2)
 		{
@@ -89,6 +90,9 @@ function onLoadCalls()
 		}else if(levelId == 3)
 		{
 			locType = 'district'
+		}else if(levelId == 4)
+		{
+			locType = 'constituency'
 		}
 		var blockName = '';
 		$(".panel-block-white").each(function(){
@@ -112,6 +116,18 @@ function onLoadCalls()
 			}else
 			{
 				getNREGSAbstractDataByType(overViewArr[i],locType,locId,'',levelId,'dateChange');
+			}
+			if(levelId == 4)
+			{
+				if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+				{
+					getNREGSProjectsAbstractNewFrConstituency(overViewArr[i],locType,locId,districtId,'',levelId);
+				}else if(overViewArr[i] == 'Payments')
+				{
+					getNregaPaymentsAbsAndOverview(overViewArr[i],locType,locId,levelId,'abstract');
+				}else{
+					getNREGSAbstractDataByTypeFrConstituency(overViewArr[i],locType,locId,districtId,'',levelId);
+				}
 			}
 		}
 	});
@@ -119,6 +135,7 @@ function onLoadCalls()
 		glStartDate = e.date.format("YYYY-MM")+"-01";
 		var levelId = $("#selectedName").attr("attr_levelId");
 		var locId = $("#selectedName").attr("attr_id");
+		var districtId = $("#selectedName").attr("attr_distid");
 		var locType = '';
 		if(levelId == 2)
 		{
@@ -149,6 +166,18 @@ function onLoadCalls()
 			}else
 			{
 				getNREGSAbstractDataByType(overViewArr[i],locType,locId,'',levelId,'dateChange');
+			}
+			if(levelId == 4)
+			{
+				if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+				{
+					getNREGSProjectsAbstractNewFrConstituency(overViewArr[i],locType,locId,districtId,'',levelId);
+				}else if(overViewArr[i] == 'Payments')
+				{
+					getNregaPaymentsAbsAndOverview(overViewArr[i],locType,locId,levelId,'abstract');
+				}else{
+					getNREGSAbstractDataByTypeFrConstituency(overViewArr[i],locType,locId,districtId,'',levelId);
+				}
 			}
 		}
 	});
@@ -171,6 +200,10 @@ function onLoadCalls()
 		{
 			menuLocationId = locationId;
 			menuLocationType = "district";
+		}else if(levelId == 4)
+		{
+			menuLocationId = locationId;
+			menuLocationType = "constituency";
 		}
 		
 		var theadArr = [levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
@@ -347,6 +380,9 @@ function projectData(divId,levelId,locationId)
 	}else if(levelId == 3)
 	{
 		dataArr = ['district','constituency','mandal','panchayat'];
+	}else if(levelId == 4)
+	{
+		dataArr = ['constituency','mandal','panchayat'];
 	}
 	collapse+='<section>';
 		collapse+='<div class="row">';
@@ -410,6 +446,10 @@ function projectData(divId,levelId,locationId)
 	{
 		menuLocationId = locationId;
 		menuLocationType = "district";
+	}else if(levelId == 4)
+	{
+		menuLocationId = locationId;
+		menuLocationType = "constituency";
 	}
 	
 	
@@ -484,6 +524,10 @@ function overviewData(divId,levelId,locationId)
 	{
 		menuLocationId = locationId;
 		menuLocationType = "district";
+	}else if(levelId == 4)
+	{
+		menuLocationId = locationId;
+		menuLocationType = "constituency";
 	}
 	
 	
@@ -3122,7 +3166,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	$("[overview-block='"+type+"']").attr("attr_locationId",locId);
 	if(type == 'Payments' && result != null)
 	{
-		str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+		str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding:7px 5px">';
 			if(type.length > 12)
 			{
 				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
@@ -3130,28 +3174,29 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
 			}
 			str+='<small class="text-center">Total Pending</small>';
-			if(result.totalPendings != null && result.totalPendings.length > 0)
+			if(result.totalPendinAmount != null && result.totalPendinAmount.length > 0)
 			{
-				str+='<h1 class="text-center">'+result.totalPendings+'</h1>';
+				str+='<h1 class="text-center" style="font-size:26px"><i class="fa fa-inr"></i> '+result.totalPendinAmount+'</h1>';
+				str+='<small>('+result.totalPendings+')</small>';
 			}else{
 				str+='<h1 class="text-center">0</h1>';
 			}
 			str+='<div class="row">';
-				str+='<div class="col-sm-6 text-center">';
+				str+='<div class="col-sm-6 text-center pad_right0">';
 					str+='<label>Wage</label>';
 					if(result.pendingWage != null && result.pendingWage.length > 0)
 					{
-						str+='<h4>'+result.pendingWage+'</h4> <h4>(<i class="fa fa-inr"></i>'+result.pendingWageAmount+')</h4>';
+						str+='<h4>'+result.pendingWage+'</h4> <small>(<i class="fa fa-inr" style="position:static"></i>'+result.pendingWageAmount+')</small>';
 					}else{
 						str+='<h4>0</h4>';
 					}
 					
 				str+='</div>';
-				str+='<div class="col-sm-6 text-center">';
+				str+='<div class="col-sm-6 text-center pad_left0">';
 					str+='<label>Material</label>';
 					if(result.pendingMaterial != null && result.pendingMaterial.length > 0)
 					{
-						str+='<h4>'+result.pendingMaterial+'</h4><h4> (<i class="fa fa-inr"></i>'+result.pendingMaterialAmount+')</h4>';
+						str+='<h4>'+result.pendingMaterial+'</h4><small> (<i class="fa fa-inr" style="position:static"></i>'+result.pendingMaterialAmount+')</small>';
 					}else{
 						str+='<h4>0</h4>';
 					}
@@ -3163,7 +3208,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	{
 		for(var i in result)
 		{
-			if(levelId == 2 || levelId == "2"){
+			if(levelId == 2 || levelId == "2" || levelId == 4 || levelId == "4"){
 				
 				if(result[i].percentage < 50)
 				{
@@ -3205,7 +3250,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='<label>Target</label>';
 							if(result[i].target != null && result[i].target.length > 0)
 							{
-								if(result[i].parameter == 'Labour Budget')
+								if(result[i].parameter == 'Labour Budget' && levelId == 2)
 								{
 									str+='<h4>'+result[0].target+'L</h4>';
 								}else if(result[0].parameter == 'Timely Payments'){
@@ -3216,13 +3261,12 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}else{
 								str+='<h4>0</h4>';
 							}
-							
 						str+='</div>';
 						str+='<div class="col-sm-6 text-center">';
 							str+='<label>Completed</label>';
 							if(result[i].completed != null && result[i].completed.length > 0)
 							{
-								if(result[i].parameter == 'Labour Budget')
+								if(result[i].parameter == 'Labour Budget' && levelId == 2)
 								{
 									str+='<h4>'+result[i].completed+'L</h4>';
 								}else if(result[i].parameter == 'Timely Payments'){
@@ -3237,6 +3281,35 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
+				if(levelId == 4 || levelId == "4")
+				{
+					str+='<div class="panel-black-white panel-block-white-high text-center" overview-'+result[i].type+'="'+type+'" style="border-top:1px solid #333;">';
+						str+='<small class="panel-block-white-title text-capitalize text-center">ACHIEVED</small>';
+						str+='<div class="row">';
+						for(var j in result[i].subList)
+						{
+							if(result[i].subList != null)
+							{
+								str+='<div class="col-sm-6">';
+									str+='<p>'+result[i].subList[j].type+'</p>';
+									if(result[i].subList[j].percentage != null && result[i].subList[j].percentage.length > 0)
+									{
+										str+='<h2 class="text-center">'+result[i].subList[j].percentage+'</h2>';
+									}else{
+										str+='<h2 class="text-center">0</h2>';
+									}
+								str+='</div>';
+							}else{
+								str+='<div class="col-sm-6">';
+									str+='<p>'+result[i].subList[j].type+'</p>';
+									str+='<h2 class="text-center">0</h2>';
+								str+='</div>';
+							}
+						}
+						str+='</div>';
+					str+='</div>';
+				}
+				
 			}else if(levelId == 3 || levelId == "3")
 			{
 				if(result[i].type == 'DISTRICT')
@@ -3283,10 +3356,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 									str+='<label>Target</label>';
 									if(result[i].target != null && result[i].target.length > 0)
 									{
-										if(result[i].parameter == 'Labour Budget')
-										{
-											str+='<h4>'+result[0].target+'L</h4>';
-										}else if(result[0].parameter == 'Timely Payments'){
+										if(result[0].parameter == 'Timely Payments'){
 											str+='<h4>'+result[0].target+'%</h4>';
 										}else{
 											str+='<h4>'+result[0].target+'</h4>';
@@ -3300,10 +3370,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 									str+='<label>Completed</label>';
 									if(result[i].completed != null && result[i].completed.length > 0)
 									{
-										if(result[i].parameter == 'Labour Budget')
-										{
-											str+='<h4>'+result[i].completed+'L</h4>';
-										}else if(result[i].parameter == 'Timely Payments'){
+										if(result[i].parameter == 'Timely Payments'){
 											str+='<h4>'+result[i].completed+'%</h4>';
 										}else{
 											str+='<h4>'+result[i].completed+'</h4>';
@@ -3361,9 +3428,6 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						str+='</div>';
 					}
 				}
-			}else if(levelId == 4 || levelId == "4")
-			{
-				str+='<div>Constituencies Service Pending</div>';
 			}
 		}
 	}
@@ -3391,6 +3455,7 @@ $(document).on("click",".menuDataCollapse",function(){
 	$(".panel-block-white").removeClass("active");
 	var locId = $(this).attr("attr_id");
 	$("#selectedName").html($(this).html())
+	var districtId = $("#selectedName").attr("attr_distId");
 	var levelId = $(this).attr("attr_levelIdValue");
 	$("#selectedName").attr("attr_levelid",levelId);
 	$("#selectedName").attr("attr_id",locId)
@@ -3417,13 +3482,12 @@ $(document).on("click",".menuDataCollapse",function(){
 			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
 			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
 			{
-				getNREGSProjectsAbstractNew(overViewArr[i],'constituency',locId,blockName,levelId);
+				getNREGSProjectsAbstractNewFrConstituency(overViewArr[i],'constituency',locId,districtId,'',levelId);
 			}else if(overViewArr[i] == 'Payments')
 			{
 				getNregaPaymentsAbsAndOverview(overViewArr[i],'constituency',locId,levelId,'abstract');
-			}else
-			{
-				getNREGSAbstractDataByType(overViewArr[i],'constituency',locId,blockName,levelId,'onLoad');
+			}else{
+				getNREGSAbstractDataByTypeFrConstituency(overViewArr[i],'constituency',locId,districtId,'',levelId);
 			}
 		}
 	}else if(levelId == 2)
@@ -3489,12 +3553,12 @@ function collapseMenu(id,resultArr,buildId)
 		collapse+='<div class="panel panel-default panelExpand">';
 			collapse+='<div class="panel-heading" role="tab" id="heading'+resultArr[i].type+'">';
 				collapse+='<h4 class="panel-title">';
-					//if(levelIdValue == 2 || levelIdValue == 3)
-					if(levelIdValue == 2)
+					if(levelIdValue == 2 || levelIdValue == 3)
+					//if(levelIdValue == 2)
 					{
 						collapse+='<a role="button" style="height:10px;width:10px;display:inline-block;" attr_levelIdValue="'+levelIdValue+'" attr_distId="'+resultArr[i].type+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].type+'" attr_targetId="collapseMenu'+resultArr[i].type+'Id"  class="panelCollapseIcon panelCollapseIconClick collapsed" data-toggle="collapse" data-parent="#accordion'+id+'" href="#collapse'+resultArr[i].type+'" aria-expanded="true" aria-controls="collapse'+resultArr[i].type+'">&nbsp;</a>';
 					}
-					collapse+='<span style="padding-left:10px;cursor:pointer;" class="menuDataCollapse"  attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].type+'" attr_targetId="collapseMenu'+resultArr[i].type+'Id" >'+resultArr[i].name+'</span>';
+					collapse+='<span style="padding-left:10px;cursor:pointer;" class="menuDataCollapse"  attr_levelIdValue="'+levelIdValue+'" attr_distid="" attr_levelId="'+id+'" attr_id="'+resultArr[i].type+'" attr_targetId="collapseMenu'+resultArr[i].type+'Id" >'+resultArr[i].name+'</span>';
 				collapse+='</h4>';
 			collapse+='</div>';
 			collapse+='<div id="collapse'+resultArr[i].type+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+resultArr[i].type+'">';
@@ -3524,6 +3588,7 @@ $(document).on("click",".panelCollapseIconClick",function(e){
 	{
 		locationScopeId = $(this).attr("attr_distid");
 		type='constituency';
+		$("#selectedName").attr("attr_distid",locationScopeId);
 	}
 	getAllNregaSubLocationDetails(buildId,levelId,locationScopeId,type)
 });
@@ -3541,6 +3606,7 @@ $(document).on("click",".cuntCls",function(){
 	$("#LabBudgtPanExBodyId").html('');
 	$("#nregsPanExpModalId").modal("show");
 	$("#LabBudgtPanExBodyId").html(spinner);
+	$("#LabBudgtPanExBodyOverviewId").html(spinner);
 	var range = $(this).attr("attr_range");
 	var locationType = $(this).attr("attr_location_type");
 	var locationId = $(this).attr("attr_loaction_id");
@@ -3582,35 +3648,151 @@ $(document).on("click",".cuntCls",function(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success : function(result){   
-			buildLabourBudgetPanExpData(result);
+			buildLabourBudgetPanExpData(result,'tableView',range);
 		}
 	});
+	$.ajax({
+		url : "getNregaPanchatVsExpLevelWiseCountsData",     
+		data : JSON.stringify(json),
+		type : "POST",  
+		dataTypa : 'json',   
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success : function(result){   
+			buildLabourBudgetPanExpData(result,'overView',range);
+		}
+	});
+	
 });
 
-function buildLabourBudgetPanExpData(result){
-	var str='';
-	str+='<table class="table table-bordered" id="larBudExpTableId">';
-		str+='<thead>';
-			str+='<th>District</th>';
-			str+='<th>Assembly</th>';
-			str+='<th>Mandal</th>';
-			str+='<th>Panchayat</th>';
-			str+='<th>Total Expenditure</th>';
-		str+='</thead>';
-		str+='<tbody>';
-		for(var i in result){
-			str+='<tr>';
-				str+='<td>'+result[i].district+'</td>';
-				str+='<td>'+result[i].constituency+'</td>';
-				str+='<td>'+result[i].mandal+'</td>';
-				str+='<td>'+result[i].panchayat+'</td>';
-				str+='<td>'+result[i].totalExpenditure+'</td>';
-			str+='</tr>';
+function buildLabourBudgetPanExpData(result,viewType,range){
+	if(viewType == 'tableView')
+	{
+		var str='';
+		if(range == "Below 1"){
+			 fromRange = 0;
+			 toRange = 1;
+		}else if(range == "Above 400"){
+			fromRange = 400;
+			 toRange = 5000;
+		}else if(range == "0"){
+			fromRange = 0;
+			 toRange = 0;
+		}else{
+			rangeArr = range.split("-");
+			 fromRange = rangeArr[0];
+			 toRange = rangeArr[1];
 		}
-		str+='</tbody>';
-	str+='</table>';
-	$("#LabBudgtPanExBodyId").html(str);
-	$("#larBudExpTableId").dataTable();
+		str+='<div class="row">';
+			str+='<div class="col-sm-12"><h4>No of Panchayaties Vs Expenditure In Lakhs('+range+')</h4></div></div>';
+		str+='</div>';
+		str+='<div class="row">';
+			str+='<div class="col-sm-12">';
+				str+='<div class="table-responsive">';
+					str+='<table class="table table-bordered" id="larBudExpTableId">';
+						str+='<thead>';
+							str+='<th>District</th>';
+							str+='<th>Assembly</th>';
+							str+='<th>Mandal</th>';
+							str+='<th>Panchayat</th>';
+							str+='<th>Total Expenditure</th>';
+						str+='</thead>';
+						str+='<tbody>';
+						for(var i in result){
+							str+='<tr>';
+								str+='<td>'+result[i].district+'</td>';
+								str+='<td>'+result[i].constituency+'</td>';
+								str+='<td>'+result[i].mandal+'</td>';
+								str+='<td>'+result[i].panchayat+'</td>';
+								str+='<td>'+result[i].totalExpenditure+'</td>';
+							str+='</tr>';
+						}
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		$("#LabBudgtPanExBodyId").html(str);
+		$("#larBudExpTableId").dataTable();
+	}else if(viewType == 'overView'){
+		var str1='';
+		str1+='<div class="row">';
+			str1+='<div class="col-sm-12"><h4>Overview</h4></div></div>';
+		str1+='</div>';
+		str1+='<div class="row m_top20">';
+			str1+='<div class="col-sm-4 blockHeights">';
+				str1+='<div class="blockHeightsScroll">';
+					str1+='<table class="table table-bordered dataTableCls">';
+						str1+='<thead>';
+							str1+='<th>District</th>';
+							str1+='<th>Count</th>';
+						str1+='</thead>';
+						str1+='<tbody>';
+						for(var i in result){
+							str1+='<tr>';
+								str1+='<td>'+result[i].district+'</td>';
+								str1+='<td>'+result[i].count+'</td>';
+							str1+='</tr>';
+						}
+						str1+='</tbody>';
+					str1+='</table>';
+				str1+='</div>';
+			str1+='</div>';
+			str1+='<div class="col-sm-4 blockHeights">';
+				str1+='<div class="blockHeightsScroll">';
+					str1+='<table class="table table-bordered dataTableCls">';
+						str1+='<thead>';
+							str1+='<th>Constituency</th>';
+							str1+='<th>Count</th>';
+						str1+='</thead>';
+						str1+='<tbody>';
+						for(var i in result){
+							for(var j in result[i].subList)
+							{
+								str1+='<tr>';
+									str1+='<td>'+result[i].subList[j].constituency+'</td>';
+									str1+='<td>'+result[i].subList[j].count+'</td>';
+								str1+='</tr>';
+							}
+						}
+						str1+='</tbody>';
+					str1+='</table>';
+				str1+='</div>';
+			str1+='</div>';
+			str1+='<div class="col-sm-4 blockHeights">';
+				str1+='<div class="blockHeightsScroll">';
+					str1+='<table class="table table-bordered dataTableCls">';
+						str1+='<thead>';
+							str1+='<th>Mandal</th>';
+							str1+='<th>Count</th>';
+						str1+='</thead>';
+						str1+='<tbody>';
+						for(var i in result){
+							for(var j in result[i].subList)
+							{
+								for(var k in result[i].subList[j].subList)
+								{
+									str1+='<tr>';
+										str1+='<td>'+result[i].subList[j].subList[k].mandal+'</td>';
+										str1+='<td>'+result[i].subList[j].subList[k].count+'</td>';
+									str1+='</tr>';	
+								}
+							}
+							
+						}
+						str1+='</tbody>';
+					str1+='</table>';
+				str1+='</div>';
+			str1+='</div>';
+		str1+='</div>';
+		$("#LabBudgtPanExBodyOverviewId").html(str1);
+		//$(".blockHeights").height("400px");
+		$(".blockHeightsScroll").mCustomScrollbar();
+		$(".dataTableCls").dataTable();
+	}
+	
 }
 
 $(document).on("click","#selectedName",function(){
@@ -3663,18 +3845,17 @@ $(document).on("click","[attr_radioBtn]",function(){
 		}
 	});
 } */
-//getNREGSProjectsAbstractNewFrConstituency();
-function getNREGSProjectsAbstractNewFrConstituency()
+
+function getNREGSProjectsAbstractNewFrConstituency(type,locType,locId,districtId,blockName,levelId)
 {
-	$("#nregsOverviewBodyId").html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		type : "Burial Grounds",
-		locationType: "constituency",
-		locationId : "01120",
-		districtId : "01"
+		type : type,
+		locationType: locType,
+		locationId : locId,
+		districtId : districtId
 	}
 	$.ajax({
 		url: 'getNREGSProjectsAbstractNewFrConstituency',
@@ -3686,24 +3867,21 @@ function getNREGSProjectsAbstractNewFrConstituency()
 		  xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			//if(ajaxresp != null && ajaxresp.length > 0){
-				//buildNREGSAbstractDataByType(type,ajaxresp,blockName,locId,locType,levelId)
-			//}
+			buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId)
 		}
 	});
 }
-getNREGSAbstractDataByTypeFrConstituency();
-function getNREGSAbstractDataByTypeFrConstituency()
-{
 
+function getNREGSAbstractDataByTypeFrConstituency(type,locType,locId,districtId,blockName,levelId)
+{
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		type : "Average Days of Employment",
-		locationType: "constituency",
-		locationId : "01120",
-		districtId : "01"
+		type : type,
+		locationType: locType,
+		locationId : locId,
+		districtId : districtId
 	}
 	
 	$.ajax({
@@ -3716,10 +3894,7 @@ function getNREGSAbstractDataByTypeFrConstituency()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			//if(ajaxresp != null && ajaxresp.length > 0){
-				//buildNREGSAbstractDataByType(type,ajaxresp,blockName,locId,locType,levelId)
-			//}
-			
+			buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId)
 		}
 	});
 }
