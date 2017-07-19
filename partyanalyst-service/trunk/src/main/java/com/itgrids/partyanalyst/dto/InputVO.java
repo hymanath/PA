@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class InputVO {
 
@@ -16,6 +18,12 @@ public class InputVO {
 	private Date toDate;
 	private Long boothInchargeEnrollmentId;
 	private String resultType;
+	//Login user related attribute
+	private String accessType;
+	private Set<Long> accessValues;
+	private Long accessLevelId;
+	private Long activityMemberId;
+	private Long userId;
 	
 	public String getLocationLevel() {
 		return locationLevel;
@@ -77,6 +85,39 @@ public class InputVO {
 		}
 		return boothRoleIds;
 	}
+	public String getAccessType() {
+		return accessType;
+	}
+	public void setAccessType(String accessType) {
+		this.accessType = accessType;
+	}
+	public Set<Long> getAccessValues() {
+		if(accessValues == null){
+			accessValues = new HashSet<Long>();
+		}
+		return accessValues;
+	}
+	
+	public Long getAccessLevelId() {
+		return accessLevelId;
+	}
+	public void setAccessLevelId(Long accessLevelId) {
+		this.accessLevelId = accessLevelId;
+	}
+	public Long getActivityMemberId() {
+		return activityMemberId;
+	}
+	public void setActivityMemberId(Long activityMemberId) {
+		this.activityMemberId = activityMemberId;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	
+	
 	
 	
     

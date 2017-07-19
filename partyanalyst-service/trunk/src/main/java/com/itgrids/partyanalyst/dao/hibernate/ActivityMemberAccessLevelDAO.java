@@ -62,4 +62,21 @@ public class ActivityMemberAccessLevelDAO extends GenericDaoHibernate<ActivityMe
 		   query.setParameter("activityMemberId", activityMemberId);
 		   return query.list();
 	  }
+	  public List<Object[]> getMemberDetailsByActivityMemberId(Long activityMemberId){
+			
+		  Query query = getSession().createQuery(" select model1.userType.userTypeId," +
+		  										 " model1.userType.shortName," +
+												 " model.activityMemberLevelId," +
+												 " model.activityLocationValue," +
+												 " model1.activityMemberId " +
+												 " from " +
+												 " ActivityMemberAccessLevel model,ActivityMemberAccessType model1 " +
+												 " where " +
+												 " model.activityMemberId=model1.activityMemberId and " +
+												 " model.activityMember.activityMemberId = :activityMemberId " +
+												 " and model.isActive = 'Y' and model1.isActive = 'Y'");
+			
+			query.setParameter("activityMemberId",activityMemberId);
+			return query.list();
+		}
 }
