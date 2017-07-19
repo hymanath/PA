@@ -13,6 +13,11 @@
       <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
       <link href="daterangepicker/bootstrap-datetimepicker.css" type="text/css" rel="stylesheet"/>
       <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+	  <style>
+	  .glyphicon-plus,.glyphicon-minus{
+		  cursor:pointer;
+	  }
+	  </style>
    </head>
    <body>
       <div class="container">
@@ -356,7 +361,7 @@
          </div>
 		 </div>
          <div class="panel-body" id="editTabUserExpandCollapseId">
-             <div id="tabUserTableDivId"></div> 
+             <div id="tabUserEditMeetingTableDivId"></div> 
 			</div>
 			</div>
 			
@@ -366,6 +371,7 @@
             <div class="row">
                <div class="col-sm-11">
                   <h4 class="panel-title m_top5">Attended Invitiees</h4>
+				  
                </div>
                <div class="col-sm-1">
                   <span id="attendedInvitieesTabButton" data-toggle="collapse" data-target="#attendedInvitieesTable" class="attendedInvitieesTabExpandCollapse">
@@ -375,15 +381,34 @@
             </div>
          </div>
          <div class="panel-body" id="attendedInvitieesTable">
+			<div id="attendceOfInviteeDivId"></div>
          </div>
       </div>
+	<!--  <div class="panel panel-default">
+         <div class="panel-heading">
+            <div class="row">
+               <div class="col-sm-11">
+                  <h4 class="panel-title m_top5">Attended None-Invitiees</h4>
+				  
+               </div>
+               <div class="col-sm-1">
+                  <span id="attendedNoneInvitieesTabButton" data-toggle="collapse" data-target="#attendedNoneInvitieesTable" class="attendedNoneInvitieesTabExpandCollapse">
+                  <i class="glyphicon glyphicon-plus"></i>
+                  </span>
+               </div>
+            </div>
+         </div>
+         <div class="panel-body" id="attendedNoneInvitieesTable">
+			<div id="attendceOfNoneInviteeDivId"></div>
+         </div>
+      </div>    -->
 	  
 	  
 	  <div class="panel panel-default">
          <div class="panel-heading">
             <div class="row">
                <div class="col-sm-11">
-                  <h4 class="panel-title m_top5">Non-Attended Invitiees</h4>
+                  <h4 class="panel-title m_top5">Not-Attended Invitiees</h4>
                </div>
                <div class="col-sm-1">
                   <span id="nonAttendedInvitieesTabButton" data-toggle="collapse" data-target="#nonAttendedInvitieesTable" class="nonAttendedInvitieesTabExpandCollapse">
@@ -393,6 +418,7 @@
             </div>
          </div>
          <div class="panel-body" id="nonAttendedInvitieesTable">
+			<div id="nonAttendedInvitieesDivId"></div>
          </div>
       </div>
 				
@@ -750,18 +776,3 @@
 </script>  
    </body>
 </html>
-<!--
-function getTdpCadreDetailsForPartyMeetingAction(partyMeetingId){
-		 var jsObj = {
-			   partyMeetingId:"445220"
-		  }
-	      $.ajax({
-	        type:"GET",
-	        url:"getTdpCadreDetailsForPartyMeetingAction.action",
-	        data:{task:JSON.stringify(jsObj)}
-	      }).done(function(results) {
-			for(i in results){
-				
-			}
-	     });
-	  } -->
