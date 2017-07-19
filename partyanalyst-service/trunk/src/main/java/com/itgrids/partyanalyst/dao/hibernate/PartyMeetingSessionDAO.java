@@ -233,4 +233,9 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 		}
 		return query.list();  
 	}
+	 public Integer updatePartyMeetingSession(Long sessionId){
+			Query query=getSession().createQuery(" update PartyMeetingSession model set model.isDeleted = 'Y' where model.partyMeetingSessionId =:sessionId ");		
+			query.setParameter("sessionId",sessionId);
+			return  query.executeUpdate();
+		}
 }//
