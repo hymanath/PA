@@ -59,7 +59,7 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 				" left outer join modal.fundSanction.govtScheme gs " +
 				" left outer join modal.fundSanction.department dep " +
 				" left outer join modal.fundSanction.govtOrder  govtOrder" +
-				" where modal.isDeleted='N' ");		
+				" where modal.isDeleted='N' and modal.fundSanction.isDeleted = 'N' ");		
 		
 		if(financialYearIdsList != null && financialYearIdsList.size() >0l ){
 			sb.append(" and modal.fundSanction.financialYearId in (:financialYearIdsList)  " );
