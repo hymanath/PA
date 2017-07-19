@@ -98,7 +98,15 @@ public class NregsDataVO implements Serializable{
 	private String avgFlagshipMarks;
 	private String avgTotMarks;
 	
+	private List<NregsDataVO> subList = new ArrayList<NregsDataVO>(0);
 	
+	
+	public List<NregsDataVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<NregsDataVO> subList) {
+		this.subList = subList;
+	}
 	public String getState() {
 		return state;
 	}
