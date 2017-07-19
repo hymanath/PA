@@ -337,19 +337,20 @@ if(accessType2 == null || accessType2.length ==0){
 }else{
 	accessType = accessType2;
 }
-if(accessValue2 == null || accessValue2.length==0){
-	   accessValues.push(accessValue1);
-}else {
-	 <c:forEach items="${userVO.accessValues}" var="userAccessLevelValue">
-		accessValues.push( ${userAccessLevelValue} );        
-      </c:forEach>  
+
+<c:forEach items="${userVO.accessValues}" var="userAccessLevelValue">
+	accessValues.push( ${userAccessLevelValue} );        
+</c:forEach>  
+
+if(accessValues.length == 0){
+    accessValues.push(accessValue1);
 }
 
 var accessValueStr = '';
 if(accessValues != null && accessValues.length > 0){
 	for(var i in accessValues){
 		if(i == 0){
-			accessValueStr = accessValues[i];
+			accessValueStr = accessValues[i]+"";
 		}else {
 			accessValueStr = accessValueStr+","+accessValues[i];
 		}
