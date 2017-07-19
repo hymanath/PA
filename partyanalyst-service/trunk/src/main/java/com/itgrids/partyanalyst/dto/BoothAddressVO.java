@@ -17,7 +17,14 @@ public class BoothAddressVO {
 	private Long boothId;
 	private String boothName;
 	private String status;
+	private String isReadyToConfirm;
 	
+	public String getIsReadyToConfirm() {
+		return isReadyToConfirm;
+	}
+	public void setIsReadyToConfirm(String isReadyToConfirm) {
+		this.isReadyToConfirm = isReadyToConfirm;
+	}
 	public Long getStateId() {
 		return stateId;
 	}
