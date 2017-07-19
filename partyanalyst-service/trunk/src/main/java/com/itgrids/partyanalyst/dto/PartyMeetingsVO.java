@@ -30,6 +30,8 @@ public class PartyMeetingsVO implements Serializable{
 	private String remarks;
 	private String tesilName;
 	private String stateName;
+	private String flage;
+	private String isCondacted;
 	
 	
 	private Long plannedCount = 0l;
@@ -86,6 +88,7 @@ public class PartyMeetingsVO implements Serializable{
 	private Time startTime;
 	private Time endTime;
 	private Time lateTime;
+	
 	
 	
 	
@@ -502,6 +505,18 @@ public class PartyMeetingsVO implements Serializable{
 	}
 	public void setTesilName(String tesilName) {
 		this.tesilName = tesilName;
+	}
+	public String getFlage() {
+		return flage;
+	}
+	public void setFlage(String flage) {
+		this.flage = flage;
+	}
+	public String getIsCondacted() {
+		return isCondacted;
+	}
+	public void setIsCondacted(String isCondacted) {
+		this.isCondacted = isCondacted;
 	}
 
 	
