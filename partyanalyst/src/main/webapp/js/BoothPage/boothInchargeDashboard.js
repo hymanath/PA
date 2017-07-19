@@ -266,6 +266,7 @@ function getLocationLevelWiseBoothCount(locationLevel,filterLevel,filterValue,di
 		 var rangeArr = result[0].subList;
 		 var str = '';
 		 str+='<div class="table-responsive">';
+		 str +='<h4><a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\''+divId+'dataTableId\')}"  style="margin-bottom: 7px;"> Export Excel</a></h4>';
 		 str+='<table class="table table-bordered" id="'+divId+'dataTableId">';
 			str+='<thead>';
 				str+='<tr>';
@@ -642,15 +643,17 @@ function buildBoothDetails(result){
 	var str='';
 	if(result != null && result.length > 0){
 		 str+='<div class="table-responsive">';
+		  str +='<h4><a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'bootDtlsdataTableId\')}"  style="margin-bottom: 7px;"> Export Excel</a></h4>';
 		 str+='<table class="table table-bordered" id="bootDtlsdataTableId">';
 			str+='<thead>';
 				    str+='<th>DISTRICT</th>';
-				    str+='<th>PARLIAMENT CONSTITUENCY</th>';
+				    str+='<th>PARLIAMENT </th>';
 				    str+='<th>CONSTITUENCY</th>';
 				    str+='<th>MANDAL</th>';
 				    str+='<th>PANCHAYAT</th>';
 				    str+='<th>Booth NO</th>';
 					str+='<th>Booth Status</th>';
+					str+='<th>Update Status</th>';
 			str+='</thead>';
 			 str+='<tbody>';
 				for(var i in result){
@@ -690,7 +693,14 @@ function buildBoothDetails(result){
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-				str+='</tr>';
+						
+						if(result[i].isReadyToConfirm == "yes"){
+							str+='<td> <button class="btn btn-xs btn-min btn-success" onclick="validateBoothToMakeConfirm('+result[i].boothId+',\''+result[i].boothName+'\')"> Entry Finished </button></td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}	
+						
+						str+='</tr>';
 			   }
 			str+='</tbody>';
 		str+='</table>';
@@ -725,9 +735,12 @@ function boothInchargeRoles(){
 	}
 	
 //validateBoothToMakeConfirm(); 
-function validateBoothToMakeConfirm(){
+function validateBoothToMakeConfirm(boothId,boothName){
+	
+	if(!confirm("Are you sure want confirm this Booth No-"+boothName+"  incharge Committee ?"))
+		return;
 	var jObj = {  
-			boothId : 922852,
+			boothId : boothId,
 			boothInchargeEnrollmentId : globalBoothInchargeEnrollmentId
 		} 
 	$.ajax({
@@ -738,4 +751,9 @@ function validateBoothToMakeConfirm(){
 	}).done(function(result){ 
 	  console.log(result);
 	});
+}
+
+function exportToExcel(tableId)
+{
+	tableToExcel(''+tableId+'', 'Booth Committee Details.. ');
 }
