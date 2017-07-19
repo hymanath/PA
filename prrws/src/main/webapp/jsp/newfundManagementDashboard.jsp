@@ -904,6 +904,36 @@
 	</div><!--  /.modal-dialog -->  
 </div><!--  /.modal -->
 
+<div class="modal fade" tabindex="-1" id="rwsModalDivId" role="dialog" style="z-index:99999;">
+	<div class="modal-dialog" style="width:90%;">
+		<div class="modal-content modal-custom">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="modalTitleRwsId"></h4>  
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="habilitationsBlockId"></div>
+					</div>	
+					<div class="col-sm-12 m_top20">
+						<div id="kpiBlockId"></div>
+					</div>
+					<div class="col-sm-12 m_top20">
+						<div id="assestsBlockId"></div>
+					</div>
+					<div class="col-sm-12 m_top20">
+						<div id="waterSchemsBlockId"></div>
+					</div>
+				</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div><!--  /.modal-content -->  
+	</div><!--  /.modal-dialog -->  
+</div><!--  /.modal -->
+
+
 <form id="menuselectionFormId" name="menuselectionFormId">
 	<input type="hidden" value="2" id="searchLevelId" name="searchLevelId" />
 	<input type="hidden" value="1" id="searchLevelValue" name="searchLevelValue" />
