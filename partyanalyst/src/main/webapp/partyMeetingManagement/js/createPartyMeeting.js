@@ -4,7 +4,6 @@ var spinner = '<div class="spinner"><div class="dot1"></div><div class="dot2"></
 var startFromResult = 0;
 var resultStartsGlobalavar = 0;
 onLoadCalls();
-
 function onLoadCalls() {
     var levelDivId = 'all';
     var meetingLevelId = "0";
@@ -35,6 +34,7 @@ $('#daterangePickerId').daterangepicker({
         'This Year': [moment().startOf('Year'), moment()]
     }
 });
+
 $('#daterangePickerId').on('apply.daterangepicker', function(ev, picker) {
     userFromDate = picker.startDate.format('DD/MM/YYYY');
     userToDate = picker.endDate.format('DD/MM/YYYY');
@@ -123,7 +123,7 @@ $(document).on("click", ".meetingLevelCls", function() {
 
     getCadrePartyMeetngDeatils(levelDivId, meetingLevelId, userFromDate, userToDate, startFromResult);
 });
-
+/*
 $(document).on("click", ".paginate_button", function() {
     var levelDivId = $('.active').attr('level_attr');
     var meetingLevelId = $('.active').attr('meeting_levelId_attr');
@@ -132,6 +132,7 @@ $(document).on("click", ".paginate_button", function() {
     resultStartsGlobalavar = startFromResult + 9;
 
 });
+*/
 $(document).on("change", "#constituency", function() {
     $('#mandalSpinnerId').show();
     var constituencyId = $('#constituency').val();
@@ -151,7 +152,7 @@ $(document).on("change", "#state", function() {
 
 
 
-function getMeetingSubTypeAction(mainMeetingTypeId, model, selId) {
+function getMeetingSubTypeAction(mainMeetingTypeId,model, selId) {
     $("#meetingTypeSubTypeId").html("");
     var jsObj = {
         partyMeetingMainTypeId: mainMeetingTypeId
@@ -163,23 +164,25 @@ function getMeetingSubTypeAction(mainMeetingTypeId, model, selId) {
             task: JSON.stringify(jsObj)
         }
     }).done(function(results) {
-        for (var i in results) {
-            if (model == null) {
-                $("#meetingTypeSubTypeId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
-            } else {
-                $("#meetingTypeSubTypeModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
-            }
-
-        }
-        if (model = "model") {
-            $("#meetingTypeSubTypeModelId option[value=" + selId + "]").attr('selected', 'selected');
-        }
+		if(results !=null){
+			for (var i in results) {
+				if (model == null) {
+					$("#meetingTypeSubTypeId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
+				} else {
+					$("#meetingTypeSubTypeModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
+				}
+			}
+			if (model = "model") {
+				$("#meetingTypeSubTypeModelId option[value=" + selId + "]").attr('selected', 'selected');
+			}
+		}
+	
 
     });
 }
-getPartyMeetingsTabUserNameByDistrict()
+getPartyMeetingsTabUserNameByDistrict();
 
-function getPartyMeetingsTabUserNameByDistrict(type) {
+function getPartyMeetingsTabUserNameByDistrict(model) {
 
     var jsObj = {
 
@@ -191,15 +194,13 @@ function getPartyMeetingsTabUserNameByDistrict(type) {
             task: JSON.stringify(jsObj)
         }
     }).done(function(results) {
-        for (var i in results) {
-            if (results != null) {
-                buildTabUserDetails(results);
-                if (type == null) {
+		 if (results != null) {
+			 buildTabUserDetails(results);
+			for (var i in results) {
+                if (model == null) {
                     $('#tabusermobilenumberId').html("  " + results[i].constituencyName);
-                    $('#tabuserDistrictId').html("  " + results[i].name);
-                    //$('#tabuserId').val(results[i].id);    
-                } else {
-                    //$('#tabuserModelId').val(results[i].id);
+                    $('#tabuserDistrictId').html("  " + results[i].name);  
+                } else { 
                     $('#tabusermobilenumberModelId').html("  " + results[i].constituencyName);
                     $('#tabuserDistrictModelId').html("  " + results[i].name);
                 }
@@ -212,29 +213,30 @@ function getPartyMeetingsTabUserNameByDistrict(type) {
 
 function buildTabUserDetails(results, meetingId) {
     var str = '';
-    str += "<table id='tabUserTableId' class='table table-bordered tabUserTableCls'>";
+    str += "<table  class='table table-bordered tabUserTableCls'>";
 
     str += "<thead>";
-    str += "<tr>";
-    str += "<th>User Name</th>";
-    str += "<th>Mobile Number</th>";
-    str += "<th>District Name</th>";
-    str += "<th>Check Box</th>";
+    str += "<tr >";
+    str += "<th  class='text-captal text-center'>User Name</th>";
+    str += "<th class='text-captal text-center'>Mobile Number</th>";
+    str += "<th class='text-captal text-center'>District Name</th>";
+    str += "<th class='text-captal text-center'>Check Box</th>";
 
     str += "</tr>";
     str += "<thead>";
     str += "<tbody>";
     for (var i in results) {
         str += "<tr>";
-        str += "<td>" + results[i].meetingName + "</td>";
-        str += "<td>" + results[i].constituencyName + "</td>";
-        str += "<td>" + results[i].name + "</td>";
-        str += "<td><input type='checkBox' class='tabUserCheckBoxCls' value=" + results[i].id + "></td>";
+        str += "<td class='text-center'>" + results[i].meetingName + "</td>";
+        str += "<td class='text-center'>" + results[i].constituencyName + "</td>";
+        str += "<td class='text-center'>" + results[i].name + "</td>";
+        str += "<td  class='text-center'><input type='checkBox' class='tabUserCheckBoxCls' value=" + results[i].id + "></td>";
         str += "</tr>";
     }
     str += "</tbody>";
     str += "</table>";
     $("#tabUserTableDivId").html(str);
+	$("#tabUserEditMeetingTableDivId").html(str);
     // $("#tabUserIdDetailsModal").html(str);
     $(".tabUserTableCls").dataTable();
     if (meetingId != null) {
@@ -261,8 +263,10 @@ function getCadrePartyMeetngDeatils(levelDivId, meetingLevelId, userFromDate, us
             task: JSON.stringify(jsObj)
         }
     }).done(function(results) {
-        $("#paginationDivId").show();
-        buildMeetingDetailsTable(results, partiMeetingLevelId, levelDivId, jsObj);
+		if(results!=null){
+			$("#paginationDivId").show();
+			buildMeetingDetailsTable(results, partiMeetingLevelId, levelDivId, jsObj);
+		}
     });
 }
 
@@ -817,6 +821,120 @@ function getTdpCadreDetailsForPartyMeetingAction() {
         }
     });
 }
+getAttendanceForMeeting();
+function getAttendanceForMeeting() {
+	
+    var jsObj = {
+        partyMeetingId: "445220"
+    }
+    $.ajax({
+        type: "GET",
+        url: "getAttendanceForMeetingActoin.action",
+        data: {
+            task: JSON.stringify(jsObj)
+        }
+    }).done(function(results) {
+		buildAttendaceOfInveiteesTable(results);
+		buildNotAttendacInveiteesTable(results);
+		//buildAttendaceOfNoneInveiteesTable(results);
+		
+        for (i in results) {
+
+        }
+    });
+	
+  function	buildAttendaceOfInveiteesTable(results){
+	  	 var str = "";
+    str += "<table id='attendaceOfInviteeTableId' class='table-bordered'>";
+    str += "<thead class='text-capital'>";
+    str += "<tr>";
+    str += "<th>Image</th>";
+    str += "<th>Name</th>";
+    str += "<th>Desiganation</th>";
+    str += "<th>Membership No</th>";
+    str += "<th>Mobile No</th>";
+    str += "</tr>";
+    str += "<thead>";
+    str += "<tbody class='text-center'>";
+		for(var i in results.attendanceList){
+				str+="<tr>";
+		   str+="<td><img src='https://www.mytdp.com/images/cadre_images/"+results.attendanceList[i].imagePathStr+"' style='height:50px;width:50px;'></td>";
+		   str+="<td>"+results.attendanceList[i].name+"</td>";
+		    str+="<td>"+results.attendanceList[i].partyName+"</td>";
+			str+="<td>"+results.attendanceList[i].membershipNo+"</td>";
+			//str+="<td>"+results.attendanceList[i].membershipNo+"</td>";
+			str+="<td>"+results.attendanceList[i].mobileNumber+"</td>";
+			str+="</tr>";
+		}
+    str += "</tbody>";
+    str += "<table>";
+    $("#attendceOfInviteeDivId").html(str);
+	$("#attendaceOfInviteeTableId").dataTable();
+	}
+
+
+	function buildNotAttendacInveiteesTable(results){
+	   var str = "";
+    str += "<table id='nonAttendedInvitieestableId' class='table-bordered'>";
+    str += "<thead class='text-capital'>";
+    str += "<tr>";
+    str += "<th>Image</th>";
+    str += "<th>Name</th>";
+    str += "<th>Desiganation</th>";
+    str += "<th>Membership No</th>";
+    str += "<th>Mobile No</th>";
+	str += "<th>Comment</th>";
+    str += "</tr>";
+    str += "<thead>";
+    str += "<tbody class='text-center'>";
+		for(var i in results.notAttendanceList){
+				str+="<tr>";
+		   str+="<td><img src='https://www.mytdp.com/images/cadre_images/"+results.notAttendanceList[i].imagePathStr+"' style='height:50px;width:50px;'></td>";
+		   str+="<td>"+results.notAttendanceList[i].name+"</td>";
+		    str+="<td>"+results.notAttendanceList[i].partyName+"</td>";
+			str+="<td>"+results.notAttendanceList[i].membershipNo+"</td>";
+			//str+="<td>"+results.notAttendanceList[i].membershipNo+"</td>";
+			str+="<td>"+results.notAttendanceList[i].mobileNumber+"</td>";
+			str+="<td><input type='text' cadre_attr_id="+results.notAttendanceList[i].id+" placeholder='Enter Comment'/></td>";
+			str+="</tr>";
+		}
+    str += "</tbody>";
+    str += "<table>";
+    $("#nonAttendedInvitieesDivId").html(str);
+	$("#nonAttendedInvitieestableId").dataTable();
+	}
+	function buildAttendaceOfNoneInveiteesTable(results){
+		 var str = "";
+    str += "<table id='attendaceForNoneInviteeTableId' class='table-bordered'>";
+    str += "<thead class='text-capital'>";
+    str += "<tr>";
+    str += "<th>Image</th>";
+    str += "<th>Name</th>";
+    str += "<th>Desiganation</th>";
+    str += "<th>Membership No</th>";
+    str += "<th>Mobile No</th>";
+    str += "</tr>";
+    str += "<thead>";
+    str += "<tbody class='text-center'>";
+		for(var i in results.nonInviteeAttendancList){
+				str+="<tr>";
+		   str+="<td><img src='https://www.mytdp.com/images/cadre_images/"+results.nonInviteeAttendancList[i].imagePathStr+"' style='height:50px;width:50px;'></td>";
+		   str+="<td>"+results.nonInviteeAttendancList[i].name+"</td>";
+		    str+="<td>"+results.nonInviteeAttendancList[i].partyName+"</td>";
+			str+="<td>"+results.nonInviteeAttendancList[i].membershipNo+"</td>";
+			//str+="<td>"+results.nonInviteeAttendancList[i].membershipNo+"</td>";
+			str+="<td>"+results.nonInviteeAttendancList[i].mobileNumber+"</td>";
+			str+="</tr>";
+		}
+    str += "</tbody>";
+    str += "<table>";
+    $("#attendceOfNoneInviteeDivId").html(str);
+	$("#attendaceForNoneInviteeTableId").dataTable();
+	}
+	 
+}
+
+
 
 /* var editSessions="<div class='col-sm-4'><label for='session'>Session:</label>"+
 "<select class='form-control sessionTypeId' id='sessionModelId'>"+
