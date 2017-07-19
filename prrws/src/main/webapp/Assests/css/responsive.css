@@ -57,6 +57,14 @@
 		font-size:12px;
 		top:0px;
 	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
+	.pad_left0
+	{
+		padding-left:15px;
+	}
 }
 @media (min-width: 500px) and (max-width:767px) 
 {
@@ -106,6 +114,14 @@
 	.panel-black-white label
 	{
 		font-size:12px;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
+	.pad_left0
+	{
+		padding-left:15px;
 	}
 }
 @media (min-width:769px) and  (max-width:991px){
