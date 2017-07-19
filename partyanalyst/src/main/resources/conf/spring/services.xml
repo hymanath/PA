@@ -618,6 +618,10 @@
 	    <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
 	    <property name="boothInchargeRoleConditionMappingDAO" ref="boothInchargeRoleConditionMappingDAO"></property>
 	    <property name="boothInchargeSerialNoRangeDAO" ref="boothInchargeSerialNoRangeDAO"></property>
+	    <property name="activityMemberDAO" ref="activityMemberDAO"></property>
+	    <property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"></property>
+	    <property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO"></property>
+	    <property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO"></property>
 	</bean>
 		
 	<bean name="problemUploadService" class="com.itgrids.partyanalyst.service.impl.ProblemUploadService" >	
