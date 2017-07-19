@@ -2513,7 +2513,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	    					NregsProjectsVO vo = new NregsProjectsVO();
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 	 	    				
-	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Nurseries") && inputVO.getLocationType().toString().trim().equalsIgnoreCase("state"))
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Nurseries") && (inputVO.getLocationType().toString().trim().equalsIgnoreCase("state") || inputVO.getLocationType().toString().trim().equalsIgnoreCase("constituency")))
 	 	    					vo.setParameter(jObj.getString("'NURSERIES'"));
 	 	    				else
 	 	    					vo.setParameter(jObj.getString("PARAMETER"));
