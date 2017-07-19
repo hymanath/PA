@@ -65,6 +65,20 @@
 				}
 			} 
 		}
+		var width = $(window).width();
+		if(width > 767)
+		{
+			header = $('header section'),
+			$(window).scroll(function(){
+				var windowScrollTop = $(window).scrollTop();
+
+				if (windowScrollTop>50) {
+					header.addClass("header-fixed");
+				} else {
+					header.removeClass("header-fixed");
+				}
+			});
+		}
 		function getSelectedTypeMandal(){
 			for(var i in levelNamesArr){
 				if(levelNamesArr[i].name == "mandal"){
