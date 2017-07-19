@@ -1,3 +1,9 @@
+
+<%@ page language="java" contentType="text/html; charset=utf-8"
+		pageEncoding="utf-8"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html>
 <head>
@@ -26,7 +32,12 @@
 				<div class="row">
 				 <h4 class="text-center"><span style="border: 1px solid rgba(119, 119, 119, 0.467); border-radius: 20px; padding: 10px; background-color: rgb(255, 255, 255); font-weight: 600;">
 				 BOOTH COMMITTEE DASHBOARD</span></h4>
-					<div class="col-sm-3 pull-right">
+					<div class="col-sm-3 pull-right m_top20" >
+						<select class="form-control chosen-select" id="boothCommitteeDashbrdRolesId">
+							
+						</select>
+					</div>
+					<div class="col-sm-3 pull-right m_top20">
 						<div class="input-group">
 							<span class="input-group-addon">
 								<i class="glyphicon glyphicon-calendar"></i>
@@ -210,22 +221,22 @@
 									<div id="selectConstituencyDistrict">
 										<div class="col-sm-3" id="panchayatWiseDisticDivId">
 											<select id="panchatLevelDistrictSelectBxId"  class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_sub_level_drop_box_id="panchaytLevelConstituenySelectBxId" attr_level="DISTRICT" attr_sub_level="CONSTITUENCY">
-												<option value="0">All DISTRICT</option>
+												<option value="0">SELECT DISTRICT</option>
 											</select>
 										</div>
 										<div class="col-sm-3" id="panchayatWiseConstituencyDivId">
 											<select id="panchaytLevelConstituenySelectBxId" class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_sub_level_drop_box_id="panchaytLevelMandalSelectBxId" attr_level="CONSTITUENCY" attr_sub_level="TEHSIL">
-												<option value="0">All CONSTITUENCY</option>
+												<option value="0">SELECT CONSTITUENCY</option>
 											</select>
 										</div>
 										<div class="col-sm-3">
 											<select id="panchaytLevelMandalSelectBxId" class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId"  attr_sub_level_drop_box_id="panchaytLevelPanchaytSelectBxId"  attr_level="TEHSIL" attr_sub_level="PANCHAYAT">
-												<option value="0">All MANDAL</option>
+												<option value="0">SELECT MANDAL</option>
 											</select>
 										</div>
 										<div class="col-sm-3">
 											<select id="panchaytLevelPanchaytSelectBxId" class="selectBoxCls"  attr_result_level="PANCHAYAT" attr_result_level_div_id="panchaytLevelBoothDtlsDivId" attr_level="PANCHAYAT">
-												<option value="0">All PANCHAYAT</option>
+												<option value="0">SELECT PANCHAYAT</option>
 											</select>
 										</div>
 									</div>										
@@ -272,22 +283,22 @@
 									<div>
 										<div class="col-sm-3" id="boothLevelDistDivId">
 											<select id="boothBlockDistrictSelectBxId"  class="boothBlockCls"  attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId" attr_sub_level_drop_box_id="boothBlockConstituenySelectBxId" attr_level="DISTRICT" attr_sub_level="CONSTITUENCY">
-												<option value="0">All DISTRICT</option>
+												<option value="0">SELECT DISTRICT</option>
 											</select>
 										</div>
 										<div class="col-sm-3" id="boothLevelConDivId">
 											<select id="boothBlockConstituenySelectBxId" class="boothBlockCls"  attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId" attr_sub_level_drop_box_id="boothBlockMandalSelectBxId" attr_level="CONSTITUENCY" attr_sub_level="TEHSIL">
-												<option value="0">All CONSTITUENCY</option>
+												<option value="0">SELECT CONSTITUENCY</option>
 											</select>
 										</div>
 										<div class="col-sm-3">
 											<select id="boothBlockMandalSelectBxId" class="boothBlockCls"  attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId"  attr_sub_level_drop_box_id="boothBlockPanchaytSelectBxId"  attr_level="TEHSIL" attr_sub_level="PANCHAYAT">
-												<option value="0">All MANDAL</option>
+												<option value="0">SELECT MANDAL</option>
 											</select>
 										</div>
 										<div class="col-sm-3">
 											<select id="boothBlockPanchaytSelectBxId" class="boothBlockCls"  attr_result_level="BOOTH" attr_result_level_div_id="boothDtlsDivId" attr_level="PANCHAYAT">
-												<option value="0">All PANCHAYAT</option>
+												<option value="0">SELECT PANCHAYAT</option>
 											</select>
 										</div>
 									</div>										
@@ -311,10 +322,41 @@
 <script src="Assets/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="js/BoothPage/boothInchargeDashboard.js" type="text/javascript"></script>
 <script type="text/javascript">
-var accessType = '${sessionScope.USER.accessType}';
-var accessValue = '${sessionScope.USER.accessValue}';
+boothInchargeRoles();
+var accessLevelArr=[];
+var accessType1 = '${sessionScope.USER.accessType}';
+var accessValue1 = '${sessionScope.USER.accessValue}';
+var accessType2 = '${userVO.accessType}';
+var accessValue2 = '${userVO.accessValues}';
+//var accessLevelId = '${userVO.accessLevelId}';
+//var activityMemberId = '${userVO.activityMemberId}';
+var accessValues =[];
+var accessType="";
+if(accessType2 == null || accessType2.length ==0){
+	accessType = accessType1;
+}else{
+	accessType = accessType2;
+}
+if(accessValue2 == null || accessValue2.length==0){
+	   accessValues.push(accessValue1);
+}else {
+	 <c:forEach items="${userVO.accessValues}" var="userAccessLevelValue">
+		accessValues.push( ${userAccessLevelValue} );        
+      </c:forEach>  
+}
+
+var accessValueStr = '';
+if(accessValues != null && accessValues.length > 0){
+	for(var i in accessValues){
+		if(i == 0){
+			accessValueStr = accessValues[i];
+		}else {
+			accessValueStr = accessValueStr+","+accessValues[i];
+		}
+	}
+}	   
 $(document).ready(function(){
-	if(accessType == "MLA"){
+	if(accessType == "MLA" || accessType == "SEC" || accessType == "CONST INCHARGE" || accessType=="ORG SEC"){
 		
 		$("#districtAccessLevelId").hide();
 		$("#constituencyAccessLevelId").hide();
@@ -339,14 +381,14 @@ $(document).ready(function(){
 		$(".boothResultTypeCls").attr("attr_booth_result_level","TEHSIL");
 		$(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id","boothBlockMandalSelectBxId");
 		//ajax call based on user access level
-		getOverAllBoothDetails("STATE","CONSTITUENCY",accessValue);
-		getLocationLevelWiseBoothCount("TEHSIL","CONSTITUENCY",accessValue,"mandalLevelBoothDtlsDivId");
-		getLocationLevelWiseBoothCount("PANCHAYAT","CONSTITUENCY",accessValue,"panchaytLevelBoothDtlsDivId");
-		getLocationBasedOnSelection("TEHSIL","CONSTITUENCY",accessValue,"","CONSTITUENCY","");
+		getOverAllBoothDetails("STATE","CONSTITUENCY",accessValueStr);
+		getLocationLevelWiseBoothCount("TEHSIL","CONSTITUENCY",accessValueStr,"mandalLevelBoothDtlsDivId");
+		getLocationLevelWiseBoothCount("PANCHAYAT","CONSTITUENCY",accessValueStr,"panchaytLevelBoothDtlsDivId");
+		getLocationBasedOnSelection("TEHSIL","CONSTITUENCY",accessValueStr,"","CONSTITUENCY","");
 	    //setting dynamically user access type and access value based on login user
-	    setAccessLevelTypeAndValue("CONSTITUENCY",accessValue);
+	    setAccessLevelTypeAndValue("CONSTITUENCY",accessValueStr);
 	  
-	}else if(accessType == "MP"){
+	}else if(accessType == "MP" || accessType == "PARLIAMENT INCHARGE"){
 		//block tab heading hiding 
 		$("#panchayatWiseDistrictparliamentIds").hide();
 		$("#mandalLevelDistrictDivId").hide();
@@ -364,29 +406,34 @@ $(document).ready(function(){
 		$(".boothResultTypeCls").attr("attr_booth_result_level","CONSTITUENCY");
 		$(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id","boothBlockConstituenySelectBxId");
 		//setting dynamically user access type and access value based on login user
-		setAccessLevelTypeAndValue("PARLIAMENT CONSTITUENCY",accessValue);
+		setAccessLevelTypeAndValue("PARLIAMENT CONSTITUENCY",accessValueStr);
         //ajax call based on user access level
-		getOverAllBoothDetails("STATE","PARLIAMENT CONSTITUENCY",accessValue);
-		getLocationLevelWiseBoothCount("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"constituencyLevelBoothDtlsDivId");
-		getLocationLevelWiseBoothCount("TEHSIL","PARLIAMENT CONSTITUENCY",accessValue,"mandalLevelBoothDtlsDivId");
-		getLocationLevelWiseBoothCount("PANCHAYAT","PARLIAMENT CONSTITUENCY",accessValue,"panchaytLevelBoothDtlsDivId");
-		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValue,"","PARLIAMENT CONSTITUENCY","");
+		getOverAllBoothDetails("STATE","PARLIAMENT CONSTITUENCY",accessValueStr);
+		getLocationLevelWiseBoothCount("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValueStr,"constituencyLevelBoothDtlsDivId");
+		getLocationLevelWiseBoothCount("TEHSIL","PARLIAMENT CONSTITUENCY",accessValueStr,"mandalLevelBoothDtlsDivId");
+		getLocationLevelWiseBoothCount("PANCHAYAT","PARLIAMENT CONSTITUENCY",accessValueStr,"panchaytLevelBoothDtlsDivId");
+		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValueStr,"","PARLIAMENT CONSTITUENCY","");
 	
-	}else if(accessType == "DISTRICT"){
+	}else if(accessType == "DISTRICT" || accessType=="DIST PRESIDNET" || accessType=="GS" || accessType=="INCHARGE MINISTER"){
 			//Adding Dynamic Attribute based on user access level 
+			var accessLevel = "DISTRICT";
+			if(activityMemberId != null && activityMemberId==4 || activityMemberId==5){
+				accessLevel="CONSTITUENCY";
+			}
 			$(".resultTypeTabCls").attr("attr_panchayt_result_level","DISTRICT");
 			$(".resultTypeTabCls").attr("attr_pnchyt_lvl_parent_select_box_div_id","panchatLevelDistrictSelectBxId");
 			$(".boothResultTypeCls").attr("attr_booth_result_level","DISTRICT");
 			$(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id","boothBlockDistrictSelectBxId");
 	
-			getOverAllBoothDetails("STATE","DISTRICT",accessValue);
-			getLocationLevelWiseBoothCount("DISTRICT","DISTRICT",accessValue,"dstrctParlmntLvlBoothDtlsDivId");
-			getLocationLevelWiseBoothCount("CONSTITUENCY","DISTRICT",accessValue,"constituencyLevelBoothDtlsDivId");
-			getLocationLevelWiseBoothCount("TEHSIL","DISTRICT",accessValue,"mandalLevelBoothDtlsDivId");
-			getLocationLevelWiseBoothCount("PANCHAYAT","DISTRICT",accessValue,"panchaytLevelBoothDtlsDivId");
-			getLocationBasedOnSelection("DISTRICT","DISTRICT",accessValue,"","All","");
+			getOverAllBoothDetails("STATE",accessLevel,accessValueStr);
+			getLocationLevelWiseBoothCount("DISTRICT",accessLevel,accessValueStr,"dstrctParlmntLvlBoothDtlsDivId");
+			getLocationLevelWiseBoothCount("CONSTITUENCY",accessLevel,accessValueStr,"constituencyLevelBoothDtlsDivId");
+			getLocationLevelWiseBoothCount("TEHSIL",accessLevel,accessValueStr,"mandalLevelBoothDtlsDivId");
+			getLocationLevelWiseBoothCount("PANCHAYAT",accessLevel,accessValueStr,"panchaytLevelBoothDtlsDivId");
+			getLocationBasedOnSelection("DISTRICT",accessLevel,accessValueStr,"","All","");
+			getLocationBasedOnSelection("DISTRICT","STATE",accessValueStr,"boothBlockDistrictSelectBxId","Other","PANCHAYAT");
 			//setting dynamically user access type and access value based on login user
-			setAccessLevelTypeAndValue("DISTRICT",accessValue);
+			setAccessLevelTypeAndValue("DISTRICT",accessValueStr);
 			
 	}else if (accessType == "STATE"){
 			//Adding Dynamic Attribute based on user access level 
@@ -395,14 +442,15 @@ $(document).ready(function(){
 			$(".boothResultTypeCls").attr("attr_booth_result_level","DISTRICT");
 			$(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id","boothBlockDistrictSelectBxId");
 	
-			getOverAllBoothDetails("STATE","STATE",accessValue);
-			getLocationLevelWiseBoothCount("DISTRICT","STATE",accessValue,"dstrctParlmntLvlBoothDtlsDivId");
-			getLocationLevelWiseBoothCount("CONSTITUENCY","STATE",accessValue,"constituencyLevelBoothDtlsDivId");
-			getLocationLevelWiseBoothCount("TEHSIL","STATE",accessValue,"mandalLevelBoothDtlsDivId");
-			getLocationLevelWiseBoothCount("PANCHAYAT","STATE",accessValue,"panchaytLevelBoothDtlsDivId");
-			getLocationBasedOnSelection("DISTRICT","STATE",accessValue,"","All","");
+			getOverAllBoothDetails("STATE","STATE",accessValueStr);
+			getLocationLevelWiseBoothCount("DISTRICT","STATE",accessValueStr,"dstrctParlmntLvlBoothDtlsDivId");
+			getLocationLevelWiseBoothCount("CONSTITUENCY","STATE",accessValueStr,"constituencyLevelBoothDtlsDivId");
+			getLocationLevelWiseBoothCount("TEHSIL","STATE",accessValueStr,"mandalLevelBoothDtlsDivId");
+			getLocationLevelWiseBoothCount("PANCHAYAT","STATE",accessValueStr,"panchaytLevelBoothDtlsDivId");
+			getLocationBasedOnSelection("DISTRICT","STATE",accessValueStr,"","All","");
+			getLocationBasedOnSelection("DISTRICT","STATE",accessValueStr,"boothBlockDistrictSelectBxId","Other","PANCHAYAT");
 			//setting dynamically user access type and access value based on login user
-			setAccessLevelTypeAndValue("STATE",accessValue);
+			setAccessLevelTypeAndValue("STATE",accessValueStr);
 	} 
 	function setAccessLevelTypeAndValue(accessType,accessValue){
 		
@@ -414,6 +462,8 @@ $(document).ready(function(){
 		   $(".resultTypeTabCls").attr("accessValue",accessValue);
 		   $("#daterangePickerId").attr("accessType",accessType);
 		   $("#daterangePickerId").attr("accessValue",accessValue);
+		   $("#boothCommitteeDashbrdRolesId").attr("accessType",accessType);
+		   $("#boothCommitteeDashbrdRolesId").attr("accessValue",accessValue);
 	}
 });
 </script>

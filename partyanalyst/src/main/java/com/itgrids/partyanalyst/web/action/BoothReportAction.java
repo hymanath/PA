@@ -285,13 +285,15 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;  
 	}
-	public String boothInchargeRoles(){
-		LOG.info("Entered into boothInchargeRoles()  of BoothReportAction ");
-		try {
+	public String geboothInchargeRoles(){
+		LOG.info("Entered into geboothInchargeRoles()  of BoothReportAction ");
+		try{
+			jObj = new JSONObject(getTask());
 			boothIncbhargeVOList = boothDataValidationService.getBoothInchagesMappingRoles();
-		} catch (Exception e) {
-			LOG.error("Exception raised at boothInchargeRoles() method of BoothReportAction", e);
+		}catch(Exception e){
+			LOG.error("Exception raised at geboothInchargeRoles() method of BoothReportAction", e);
 		}
 		return Action.SUCCESS;  
 	}
+	
 }
