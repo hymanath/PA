@@ -19,4 +19,6 @@ public interface IPartyMeetingSessionDAO extends GenericDao< PartyMeetingSession
 	public List<Object[]> getLateTimeDetails(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,
 			Date fromDate,Date toDate,Long stateId,List<Long> levelIdsList,Long partyMeetngGrpId,Long locationId);
 	public List<Object[]> getSessionsDetailsByMeetingId(Long meetingId);
+	 public Integer updatePartyMeetingSession(Long sessionId);
+		
 }
