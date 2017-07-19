@@ -339,4 +339,16 @@ public class NregsDashboardController {
 		}
 		return locationVOList;
 	}
+	
+	@PostMapping("/getNregaPanchatVsExpLevelWiseCountsData")
+	public @ResponseBody List<NregsDataVO> getNregaPanchatVsExpLevelWiseCountsData(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaPanchatVsExpLevelWiseCountsData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaPanchatVsExpLevelWiseCountsData - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
 }

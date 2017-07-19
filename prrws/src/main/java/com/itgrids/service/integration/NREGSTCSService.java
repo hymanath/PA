@@ -3576,4 +3576,187 @@ public class NREGSTCSService implements INREGSTCSService{
 		return returnList;
 	}
 	
+	/*
+	 * Date : 19/07/2017
+	 * Author :Sravanth
+	 * @description : getNregaPanchatVsExpLevelWiseCountsData
+	 */
+	public List<NregsDataVO> getNregaPanchatVsExpLevelWiseCountsData(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			String str = convertingInputVOToString(inputVO); 
+			
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataPanchayatNew", str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	Map<String,NregsDataVO> districtMap = new LinkedHashMap<String,NregsDataVO>();
+	 	    	String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				
+	 	    				NregsDataVO distvo = districtMap.get(jObj.getString("DISTRICT"));
+	 	    				if(distvo != null){
+	 	    					
+	 	    					NregsDataVO constvo = getConstituencyMatchedVO(distvo.getSubList(), jObj.getString("ASSEMBLY"));
+	 	    					if(constvo != null){
+	 	    						
+	 	    						NregsDataVO mandvo = getMandalMatchedVO(constvo.getSubList(), jObj.getString("MANDAL"));
+	 	    						if(mandvo != null){
+	 	    							
+	 	    							NregsDataVO pancvo = getPanchayatMatchedVO(mandvo.getSubList(), jObj.getString("PANCHAYAT"));
+	 	    							if(pancvo != null){
+	 	    								pancvo.setCount(pancvo.getCount()+1l);
+	 	    							}
+	 	    							else{
+	 	    								pancvo = new NregsDataVO();
+	 	    								pancvo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    								pancvo.setCount(1l);
+	 	    							
+	 	    								mandvo.getSubList().add(pancvo);
+	 	    							}
+	 	    							mandvo.setCount(mandvo.getCount()+1l);
+	 	    						}
+	 	    						else{
+	 	    							mandvo = new NregsDataVO();
+	 	    							mandvo.setMandal(jObj.getString("MANDAL"));
+	 	    							mandvo.setCount(1l);
+	 	    							
+	 	    								NregsDataVO pancvo = new NregsDataVO();
+	 	    								pancvo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    								pancvo.setCount(1l);
+	 	    							
+	 	    								mandvo.getSubList().add(pancvo);
+	 	    							
+	 	    							constvo.getSubList().add(mandvo);
+	 	    						}
+	 	    						constvo.setCount(constvo.getCount()+1l);
+	 	    					}
+	 	    					else{
+	 	    						constvo = new NregsDataVO();
+	 	    						constvo.setConstituency(jObj.getString("ASSEMBLY"));
+	 	    						constvo.setCount(1l);
+	 	    							
+	 	    							NregsDataVO mandvo = new NregsDataVO();
+	 	    							mandvo.setMandal(jObj.getString("MANDAL"));
+	 	    							mandvo.setCount(1l);
+	 	    							
+	 	    								NregsDataVO pancvo = new NregsDataVO();
+	 	    								pancvo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    								pancvo.setCount(1l);
+	 	    							
+	 	    								mandvo.getSubList().add(pancvo);
+	 	    							
+	 	    							constvo.getSubList().add(mandvo);
+	 	    						distvo.getSubList().add(constvo);
+	 	    					}
+	 	    					
+	 	    					distvo.setCount(distvo.getCount()+1l);
+	 	    				}
+	 	    				else{
+	 	    					distvo = new NregsDataVO();
+	 	    					distvo.setDistrict(jObj.getString("DISTRICT"));
+	 	    					
+	 	    						NregsDataVO constvo = new NregsDataVO();
+	 	    						constvo.setConstituency(jObj.getString("ASSEMBLY"));
+	 	    						constvo.setCount(1l);
+	 	    							
+	 	    							NregsDataVO mandvo = new NregsDataVO();
+	 	    							mandvo.setMandal(jObj.getString("MANDAL"));
+	 	    							mandvo.setCount(1l);
+	 	    							
+	 	    								NregsDataVO pancvo = new NregsDataVO();
+	 	    								pancvo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    								pancvo.setCount(1l);
+	 	    							
+	 	    							mandvo.getSubList().add(pancvo);
+	 	    							
+	 	    						constvo.getSubList().add(mandvo);
+	 	    						
+	 	    					distvo.getSubList().add(constvo);
+	 	    					distvo.setCount(1l);
+	 	    					districtMap.put(jObj.getString("DISTRICT"), distvo);
+	 	    				}
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    	if(districtMap != null)
+	 	    		voList = new ArrayList<NregsDataVO>(districtMap.values());
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaPanchatVsExpLevelWiseCountsData - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	/*
+	 * Date : 19/07/2017
+	 * Author :Sravanth
+	 * @description : getConstituencyMatchedVO
+	 */
+	public NregsDataVO getConstituencyMatchedVO(List<NregsDataVO> list,String constituency){
+		try{
+			if(list != null && !list.isEmpty()){
+				for (NregsDataVO nregsDataVO : list) {
+					if(nregsDataVO.getConstituency().trim().equalsIgnoreCase(constituency.trim())){
+						return nregsDataVO;
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getConstituencyMatchedVO - NREGSTCSService service", e);
+		}
+		return null;
+	}
+	
+	/*
+	 * Date : 19/07/2017
+	 * Author :Sravanth
+	 * @description : getMandalMatchedVO
+	 */
+	public NregsDataVO getMandalMatchedVO(List<NregsDataVO> list,String mandal){
+		try{
+			if(list != null && !list.isEmpty()){
+				for (NregsDataVO nregsDataVO : list) {
+					if(nregsDataVO.getMandal().trim().equalsIgnoreCase(mandal.trim())){
+						return nregsDataVO;
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getMandalMatchedVO - NREGSTCSService service", e);
+		}
+		return null;
+	}
+	
+	/*
+	 * Date : 19/07/2017
+	 * Author :Sravanth
+	 * @description : getPanchayatMatchedVO
+	 */
+	public NregsDataVO getPanchayatMatchedVO(List<NregsDataVO> list,String panchayat){
+		try{
+			if(list != null && !list.isEmpty()){
+				for (NregsDataVO nregsDataVO : list) {
+					if(nregsDataVO.getPanchayat().trim().equalsIgnoreCase(panchayat.trim())){
+						return nregsDataVO;
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getPanchayatMatchedVO - NREGSTCSService service", e);
+		}
+		return null;
+	}
 }
