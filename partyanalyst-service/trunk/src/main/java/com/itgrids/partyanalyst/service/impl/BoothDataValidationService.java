@@ -1178,6 +1178,13 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		return rolesList;
 	}
+	/**
+	  * @param  InputVO inputVO
+	  * @return List<BoothAddressVO>
+	  * @author Santosh 
+	  * @Description :This Service Method is used to get cadre details based on booth or location. 
+	  * @since 19-JULY-2017
+	  */
     public List<BoothAddressVO> getLocationWiseCadreDetails(InputVO inputVO){
     	List<BoothAddressVO> resultList = new ArrayList<BoothAddressVO>(0);
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
