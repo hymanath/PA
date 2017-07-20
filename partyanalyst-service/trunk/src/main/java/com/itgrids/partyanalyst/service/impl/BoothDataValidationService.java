@@ -594,12 +594,12 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				addressVO.setParliamentConstituency(commonMethodsUtilService.getStringValueForObject(param[8]));
 				addressVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[9]));
 				addressVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[10]));
-				if (param[11] == null) {
+				if (param[15] == null) {//mucipality is null
+					addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[11]));
+					addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[12]));					
+				} else {
 					addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[15]));
 					addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[16])+ " "+ commonMethodsUtilService.getStringValueForObject(param[18]));
-				} else {
-					addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[11]));
-					addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[12]));
 				}
 				addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[13]));
 				addressVO.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[14]));
@@ -809,12 +809,13 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				boothDetailsVO.setParliamentConstituency(commonMethodsUtilService.getStringValueForObject(param[10]));
 				boothDetailsVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[11]));
 				boothDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[12]));
-				if (param[13] == null) {
-					boothDetailsVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[17]));
-					boothDetailsVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[18])+ " "+ commonMethodsUtilService.getStringValueForObject(param[20]));
-				} else {
+				if (param[17] == null) {//mucipality is null
 					boothDetailsVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[13]));
 					boothDetailsVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[14]));
+				} else {
+					boothDetailsVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[17]));
+					boothDetailsVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[18])+ " "+ commonMethodsUtilService.getStringValueForObject(param[20]));
+				
 				}				
 				boothDetailsVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[15]));
 				boothDetailsVO.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[16]));
