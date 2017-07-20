@@ -2851,13 +2851,13 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocationType,menuLocationId,buildType)
 {
 	$("#"+divIdd).html(spinner);
-	var theadArr = [locationType,'Type','Generated FTO','Generated Amount','Pending FTO in Generated','Pending Amount in Generated','upload FTO','upload Amount','Pending Fto in Uploads','Pending Amount in Uploads','fto-Sent To Bank','sent To Bank Amount','fto pending-Sent To Bank','Sent To Bank Pending Amount','Failed Transaction fto','Failed Transaction Amount'];
+	var theadArr = [locationType,'Type','Total Payments','Total Amount','FTO Not Generated','FTO Not Generated Amount','FTO Generated','FTO Generated Amount','FTO Not Uploaded','FTO Not Uploaded Amount','FTO Uploaded','FTO Uploaded Amount','FTO Not sent To Bank','FTO Not sent To Bank Amount','FTO Sent To Bank','FTO Sent To Bank Amount','FTO Sent To Bank Success','FTO Sent To Bank Success Amount','FTO Transaction Failed','FTO Transaction Failed Amount','Pending With FTO','Pending With FTO Amount'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Type','Generated FTO','Generated Amount','Pending FTO in Generated','Pending Amount in Generated','upload FTO','upload Amount','Pending Fto in Uploads','Pending Amount in Uploads','fto-Sent To Bank','sent To Bank Amount','fto pending-Sent To Bank','Sent To Bank Pending Amount','Failed Transaction fto','Failed Transaction Amount'];
+		theadArr = ["district",locationType,'Type','Total Payments','Total Amount','FTO Not Generated','FTO Not Generated Amount','FTO Generated','FTO Generated Amount','FTO Not Uploaded','FTO Not Uploaded Amount','FTO Uploaded','FTO Uploaded Amount','FTO Not sent To Bank','FTO Not sent To Bank Amount','FTO Sent To Bank','FTO Sent To Bank Amount','FTO Sent To Bank Success','FTO Sent To Bank Success Amount','FTO Transaction Failed','FTO Transaction Failed Amount','Pending With FTO','Pending With FTO Amount'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Type','Generated FTO','Generated Amount','Pending FTO in Generated','Pending Amount in Generated','upload FTO','upload Amount','Pending Fto in Uploads','Pending Amount in Uploads','fto-Sent To Bank','sent To Bank Amount','fto pending-Sent To Bank','Sent To Bank Pending Amount','Failed Transaction fto','Failed Transaction Amount'];
+		theadArr = ["district","constituency",locationType,'Type','Total Payments','Total Amount','FTO Not Generated','FTO Not Generated Amount','FTO Generated','FTO Generated Amount','FTO Not Uploaded','FTO Not Uploaded Amount','FTO Uploaded','FTO Uploaded Amount','FTO Not sent To Bank','FTO Not sent To Bank Amount','FTO Sent To Bank','FTO Sent To Bank Amount','FTO Sent To Bank Success','FTO Sent To Bank Success Amount','FTO Transaction Failed','FTO Transaction Failed Amount','Pending With FTO','Pending With FTO Amount'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Type','Generated FTO','Generated Amount','Pending FTO in Generated','Pending Amount in Generated','upload FTO','upload Amount','Pending Fto in Uploads','Pending Amount in Uploads','fto-Sent To Bank','sent To Bank Amount','fto pending-Sent To Bank','Sent To Bank Pending Amount','Failed Transaction fto','Failed Transaction Amount'];
+		theadArr = ["district","constituency","mandal",locationType,'Type','Total Payments','Total Amount','FTO Not Generated','FTO Not Generated Amount','FTO Generated','FTO Generated Amount','FTO Not Uploaded','FTO Not Uploaded Amount','FTO Uploaded','FTO Uploaded Amount','FTO Not sent To Bank','FTO Not sent To Bank Amount','FTO Sent To Bank','FTO Sent To Bank Amount','FTO Sent To Bank Success','FTO Sent To Bank Success Amount','FTO Transaction Failed','FTO Transaction Failed Amount','Pending With FTO','Pending With FTO Amount'];
 	
 	var menuSelName = $("#selectedName").text();
 	
@@ -2909,7 +2909,7 @@ function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocatio
 							str+='<td class="text-capital">'+ajaxresp[i].mandalName+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayatName+'</td>';
 						}
-						/* if(locationType == "state")
+						 /* if(locationType == "state")
 							str+='<td class="text-capital">'+locationType+'</td>';
 						else if(locationType == "district")
 							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
@@ -2918,7 +2918,7 @@ function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocatio
 						else if(locationType == "mandal")
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 						else if(locationType == "panchayat")
-							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>'; */
+							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>'; */ 
 						
 						str+='<td>'+ajaxresp[i].type+'</td>';
 						str+='<td>'+ajaxresp[i].generatedQuantity+'</td>';
@@ -2933,10 +2933,14 @@ function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocatio
 						str+='<td>'+ajaxresp[i].sentToBankAmount+'</td>';
 						str+='<td>'+ajaxresp[i].sentToBankPendingQuantity+'</td>';
 						str+='<td>'+ajaxresp[i].sentToBankPendingAmount+'</td>';
+						 str+='<td>'+ajaxresp[i].ftoSentToBank+'</td>';
+						str+='<td>'+ajaxresp[i].ftoSentToAmount+'</td>';
+						str+='<td>'+ajaxresp[i].sentToBankSuccess+'</td>';
+						str+='<td>'+ajaxresp[i].sentToBankSuccessAmt+'</td>'; 
 						str+='<td>'+ajaxresp[i].failedTransactionQuantity+'</td>';
 						str+='<td>'+ajaxresp[i].failedTransactionAmount+'</td>';
-						//str+='<td>'+ajaxresp[i].failedTransactionPendingQuantity+'</td>';
-						//str+='<td>'+ajaxresp[i].failedTransactionPendingAmount+'</td>';
+						str+='<td>'+ajaxresp[i].failedTransactionPendingQuantity+'</td>';
+						str+='<td>'+ajaxresp[i].failedTransactionPendingAmount+'</td>';
 					str+='</tr>';
 				}
 			}

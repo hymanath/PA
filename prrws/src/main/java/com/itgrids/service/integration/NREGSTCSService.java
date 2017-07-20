@@ -2843,6 +2843,18 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				else
 				 	    					vo.setFailedTransactionPendingQuantity(convertRupeesIntoLakhes(jObj.getString("FRP_WS_CNT")));
 				 	    				vo.setFailedTransactionPendingAmount(convertRupeesIntoCrores(jObj.getString("FRP_WS_AMT")));
+				 	    				if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") ||
+										   inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))
+						 	    			vo.setFtoSentToBank(jObj.getString("FS_WS_CNT"));
+						 	    		else
+						 	    			vo.setFtoSentToBank(convertRupeesIntoLakhes(jObj.getString("FS_WS_CNT")));
+						 	    		vo.setFtoSentToAmount(convertRupeesIntoCrores(jObj.getString("FS_WS_AMT")));
+						 	    		if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") ||
+										   inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))
+								 	    	 vo.setSentToBankSuccess(jObj.getString("FP_WS_CNT"));
+								 	    else
+								 	    	  vo.setSentToBankSuccess(convertRupeesIntoLakhes(jObj.getString("FP_WS_CNT")));
+								 	    vo.setSentToBankSuccessAmt(convertRupeesIntoCrores(jObj.getString("FP_WS_AMT")));
 		 	    				}else{
 			 	    					vo.setType(jObj.getString("TYPE"));
 				 	    				vo.setGeneratedQuantity(jObj.getString("T_WS_CNT"));
@@ -2861,6 +2873,10 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				vo.setFailedTransactionAmount(jObj.getString("FR_WS_AMT"));
 				 	    				vo.setFailedTransactionPendingQuantity(jObj.getString("FRP_WS_CNT"));
 				 	    				vo.setFailedTransactionPendingAmount(jObj.getString("FRP_WS_AMT"));
+				 	    				vo.setFtoSentToBank(jObj.getString("FS_WS_CNT"));
+				 	    				vo.setFtoSentToAmount(jObj.getString("FS_WS_AMT"));
+				 	    				vo.setSentToBankSuccess(jObj.getString("FP_WS_CNT"));
+				 	    				vo.setSentToBankSuccessAmt(jObj.getString("FP_WS_AMT"));
 		 	    				}
 		 	    				
 		 	    				namingMap.put(vo.getId(), vo);
@@ -3132,6 +3148,10 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    					nregaPaymentsVO.setFailedTransactionAmount(jObj.getString("FR_WS_AMT"));
 		 	    					nregaPaymentsVO.setFailedTransactionPendingQuantity(jObj.getString("FRP_WS_CNT"));
 		 	    					nregaPaymentsVO.setFailedTransactionPendingAmount(jObj.getString("FRP_WS_AMT"));
+		 	    					nregaPaymentsVO.setFtoSentToBank(jObj.getString("FS_WS_CNT"));
+		 	    					nregaPaymentsVO.setFtoSentToAmount(jObj.getString("FS_WS_AMT"));
+		 	    					nregaPaymentsVO.setSentToBankSuccess(jObj.getString("FP_WS_CNT"));
+		 	    					nregaPaymentsVO.setSentToBankSuccessAmt(jObj.getString("FP_WS_AMT"));
 			 	    					 	    				
 			 	    				consList.add(nregaPaymentsVO);	 
 			 	    			}
@@ -3189,6 +3209,10 @@ public class NREGSTCSService implements INREGSTCSService{
 								paymentParlVO.setFailedTransactionAmount(String.valueOf(Long.valueOf(vo.getFailedTransactionAmount())+Long.valueOf(paymentParlVO.getFailedTransactionAmount())));
 								paymentParlVO.setFailedTransactionPendingQuantity(String.valueOf(Long.valueOf(vo.getFailedTransactionPendingQuantity())+Long.valueOf(paymentParlVO.getFailedTransactionPendingQuantity())));
 								paymentParlVO.setFailedTransactionPendingAmount(String.valueOf(Long.valueOf(vo.getFailedTransactionPendingAmount())+Long.valueOf(paymentParlVO.getFailedTransactionPendingAmount())));
+								paymentParlVO.setFtoSentToBank(String.valueOf(Long.valueOf(vo.getFtoSentToBank())+Long.valueOf(paymentParlVO.getFtoSentToBank())));
+								paymentParlVO.setFtoSentToAmount(String.valueOf(Long.valueOf(vo.getFtoSentToAmount())+Long.valueOf(paymentParlVO.getFtoSentToAmount())));
+								paymentParlVO.setSentToBankSuccess(String.valueOf(Long.valueOf(vo.getSentToBankSuccess())+Long.valueOf(paymentParlVO.getSentToBankSuccess())));
+								paymentParlVO.setSentToBankSuccessAmt(String.valueOf(Long.valueOf(vo.getSentToBankSuccessAmt())+Long.valueOf(paymentParlVO.getSentToBankSuccessAmt())));
 								
 							}
 						 }
