@@ -662,7 +662,9 @@ function exportToExcel()
 		   $("#ajaxImage").hide();
 		   $("#accordion").html(str);
 		   
-		   $(".temptable").dataTable();
+		   <!--$(".temptable").dataTable();-->
+		   $(".temptable").dataTable({"aaSorting": [[ 1, "desc" ]],
+		   "aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]});
 		}
 		
 	
