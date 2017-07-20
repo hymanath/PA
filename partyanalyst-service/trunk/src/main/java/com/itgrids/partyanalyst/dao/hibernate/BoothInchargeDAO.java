@@ -30,7 +30,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 					" tehsil.tehsilName," +
 					" model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.roleName," +
 					" model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId,model.boothInchargeId ," +
-					" bpv.serialNo, ward.name ,localElectionBody.name   " +
+					" bpv.serialNo, ward.name ,localElectionBody.name, model.boothInchargeRoleConditionMapping.boothInchargeCommittee.isConfirmed   " +
 					" from BoothPublicationVoter bpv," +
 					" BoothIncharge model  " +
 					" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address address " +
@@ -42,14 +42,15 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 					" left join address.panchayat panchayat  " +
 					" left join address.ward ward  " +
 					" left join address.booth booth  " +
-					" where  booth.boothId = bpv.booth.boothId and ");
+					//" where  booth.boothId = bpv.booth.boothId and ");
+					" where  model.isActive='Y'  ");
 		if(cadreType != null && !cadreType.isEmpty()){
 			if(cadreType.trim().equalsIgnoreCase("familyVoterId"))
-				query.append(" bpv.voter.voterId = model.tdpCadre.familyVoterId ");
+				query.append(" and bpv.voter.voterId = model.tdpCadre.familyVoterId ");
 			else 
-				query.append(" bpv.voter.voterId = model.tdpCadre.voterId ");
+				query.append(" and bpv.voter.voterId = model.tdpCadre.voterId ");
 		}
-		query.append("  and model.isActive='Y' and  model.isDeleted='N'  and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=2014 and " +
+		query.append("   and  model.isDeleted='N'  and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=2014 and " +
 					" booth.publicationDate.publicationDateId = :publicationDate");
 		if(constituencyId !=null && constituencyId.longValue() > 0)
 		query.append(" and constituency.constituencyId=:constituencyId");
@@ -57,7 +58,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		query.append(" and tehsil.tehsilId=:mandalId");
 		if(boothId !=null && boothId.longValue() > 0)
 		query.append(" and booth.boothId=:boothId");
-		
+		query.append(" group by model.tdpCadre.tdpCadreId ");
 		Query query1=getSession().createQuery(query.toString());
 		query1.setParameter("publicationDate", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
 		if(constituencyId !=null && constituencyId.longValue() > 0){
