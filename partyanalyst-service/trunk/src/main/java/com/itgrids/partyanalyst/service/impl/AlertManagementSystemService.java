@@ -16132,9 +16132,6 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			
 			if(ivrList !=null && ivrList.size()>0){
 				for (Object[] objects : ivrList) {
-					Long yCount = 0l;
-		            Long nCount = 0l;
-		            AlertVO vo = new AlertVO();
 		            AlertVO matchedVO = getMatchedAlertVO(countsList, (Long)objects[10]);
 		            if(matchedVO == null){
 		            	matchedVO = new AlertVO();
