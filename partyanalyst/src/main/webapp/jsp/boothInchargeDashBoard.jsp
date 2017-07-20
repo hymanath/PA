@@ -444,7 +444,7 @@ $(document).ready(function(){
 		getOverAllBoothDetails("STATE","PARLIAMENT CONSTITUENCY",accessValueStr);
 		getLocationLevelWiseBoothCount("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValueStr,"constituencyLevelBoothDtlsDivId");
 		getLocationLevelWiseBoothCount("TEHSIL","PARLIAMENT CONSTITUENCY",accessValueStr,"mandalLevelBoothDtlsDivId");
-		getLocationLevelWiseBoothCount("PANCHAYAT","PARLIAMENT CONSTITUENCY",accessValueStr,"panchaytLevelBoothDtlsDivId");
+		//getLocationLevelWiseBoothCount("PANCHAYAT","PARLIAMENT CONSTITUENCY",accessValueStr,"panchaytLevelBoothDtlsDivId");
 		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValueStr,"","PARLIAMENT CONSTITUENCY","");
 	
 	}else if(accessType == "DISTRICT" || accessType=="DIST PRESIDNET" || accessType=="GS" || accessType=="INCHARGE MINISTER"){

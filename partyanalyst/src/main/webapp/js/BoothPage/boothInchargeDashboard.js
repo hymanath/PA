@@ -57,7 +57,7 @@ function ajaxCallBasedOnUserAccessLevel(filterLevel,filterValue){
 			getOverAllBoothDetails("STATE","PARLIAMENT CONSTITUENCY",filterValue);
 			getLocationLevelWiseBoothCount("CONSTITUENCY","PARLIAMENT CONSTITUENCY",filterValue,"constituencyLevelBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("TEHSIL","PARLIAMENT CONSTITUENCY",filterValue,"mandalLevelBoothDtlsDivId");
-			getLocationLevelWiseBoothCount("PANCHAYAT","PARLIAMENT CONSTITUENCY",filterValue,"panchaytLevelBoothDtlsDivId");
+			//getLocationLevelWiseBoothCount("PANCHAYAT","PARLIAMENT CONSTITUENCY",filterValue,"panchaytLevelBoothDtlsDivId");
 			//clearing select box
 			$("#boothBlockMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
 			$("#mandalLevelMandalSelectBxId").html('<option value="0">All MANDAL</option>');
@@ -67,7 +67,7 @@ function ajaxCallBasedOnUserAccessLevel(filterLevel,filterValue){
 		}else if(filterLevel == "DISTRICT" || filterLevel == "STATE"){
 			clearCommonDiv();
 		   getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");	
-		   getLocationBasedOnSelection("DISTRICT","STATE",accessValueStr,"boothBlockDistrictSelectBxId","Other","PANCHAYAT");
+		   getLocationBasedOnSelection("DISTRICT",filterLevel,accessValueStr,"boothBlockDistrictSelectBxId","Other","PANCHAYAT");
 		   getOverAllBoothDetails("STATE",filterLevel,filterValue);
 		   getLocationLevelWiseBoothCount("DISTRICT",filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
 		   getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
@@ -784,8 +784,8 @@ function buildCadreDetails(result,locationLevel,boothName){
 				str+='<tr>';
 				//var locationSpecificHeadingStr = getLocationSpeceficHeading(locationLevel);
 				//str = str +" "+locationSpecificHeadingStr;
-					str+='<th>DISTRICT</th>';
-					str+='<th>PARLIAMENT CONSTITUENCY</th>';
+				//	str+='<th>DISTRICT</th>';
+				//	str+='<th>PARLIAMENT CONSTITUENCY</th>';
 					str+='<th>CONSTITUENCY</th>';
 					str+='<th>TEHSIL</th>';
 					str+='<th>VILLAGE/WARD</th>';
@@ -804,8 +804,8 @@ function buildCadreDetails(result,locationLevel,boothName){
 					str+='<tr>';
 					   //var boothAddressStr = getLocationWiseBoothAddress(locationLevel,result[i]);
 						 //str = str +" "+boothAddressStr;
-						str+='<td>'+result[i].districtName+'</td>';
-						str+='<td>'+result[i].parliamentConstituency+'</td>';
+					//	str+='<td>'+result[i].districtName+'</td>';
+					//	str+='<td>'+result[i].parliamentConstituency+'</td>';
 						str+='<td>'+result[i].constituencyName+'</td>';
 						str+='<td>'+result[i].tehsilName+'</td>';
 						str+='<td>'+result[i].panchayat+'</td>';
