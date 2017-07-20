@@ -1678,21 +1678,21 @@ function getBoothUserDetailsbuild(result,locationName){
 	$("#locationDivId").html('<center><h4>'+locationName+' Committee Details.</center></h4>');
 	var str = '';
 	str +='<h4><a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothExportExcelReport\')}"  style="margin-bottom: 7px;"> Export Excel</a></h4>';
-		  str +='<table class="table table-bordered" id="rangeWiseExportBoothReport">';
+		  str +='<table class="table table-bordered" id="rangeWiseBoothReport">';
 				 str +='<thead>';
 					 str +='<tr class="text-center">';
 					 
 						//str +='<th>CONSTITUENCY&nbsp;NAME</th>';
-						str +='<th>MANDAL/MUNICI/CORP/GREATER CITY&nbsp;NAME</th>';
-						str +='<th>PANCHAYAT&nbsp;NAME</th>';
+						str +='<th>MANDAL/MUNCI/CORP/GREATER&nbsp;CITY&nbsp;</th>';
+						str +='<th>VILLAGE/WARD&nbsp;</th>';
 						//str +='<th>VILLAGE&nbsp;COVERED </th>';	
 						str +='<th>BOOTH&nbsp;NO</th>';
-						str +='<th>Serial No</th>';						
+						str +='<th>SERIAL&nbsp;No</th>';						
 						str +='<th>PHOTO</th>';
 						str +='<th>MEMBERSHIP&nbsp;NO</th>';
 						str +='<th>CADRE&nbsp;NAME</th>';
-						str +='<th>CADRE&nbsp;NAME</th>';
 						str +='<th>MOBILE&nbsp;NO</th>';
+						str +='<th>MEMBERSHIP&nbsp;NO</th>';
 						str +='<th> REMOVE &nbsp;</th>';
 					 						 
 					 str +='</tr>';
@@ -1708,7 +1708,7 @@ function getBoothUserDetailsbuild(result,locationName){
 								str +='<td>'+result[i].panchayatName+'</td>';
 								//str +='<td>'+result[i].boothName+'</td>';
 																
-								str +='<td><span></span>'+'Booth No - '+result[i].boothNumber+'</td>';								
+								str +='<td><span></span>'+'Booth&nbsp;No&nbsp;-&nbsp;'+result[i].boothNumber+'</td>';								
 							    if(result[i].serialNo != null)								
 								  str +='<td>'+result[i].serialNo+'</td>';
 								str +='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
@@ -1730,28 +1730,22 @@ function getBoothUserDetailsbuild(result,locationName){
 			  str +='</tbody>';
 			  str +='</table>';
 			  
-			 $("#userDetailsId").html(str);
-			$("#rangeWiseExportBoothReport").dataTable({
-					"iDisplayLength": 20,
-					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-			});
-		
 			   str +='<table class="table table-bordered" style="display:none;" id="rangeWiseExportBoothExportExcelReport">';
 				 str +='<thead>';
 					 str +='<tr class="text-center">';
 					 
-						str +='<th>CONSTITUENCY&nbsp;NAME</th>';
-						str +='<th>MANDAL/MUNICIPALITY/CORPORATION&nbsp;NAME</th>';
-						str +='<th>PANCHAYAT&nbsp;NAME</th>';
+						str +='<th>CONSTITUENCY&nbsp;</th>';
+						str +='<th>MANDAL/MUNICIPALITY/CORPORATION&nbsp;</th>';
+						str +='<th>VILLAGE/WARD&nbsp;</th>';
 						str +='<th>VILLAGE&nbsp;COVERED </th>';	
 						str +='<th>BOOTH&nbsp;NO</th>';
-						str +='<th>Serial No</th>';						
+						str +='<th>SERIAL&nbsp;nO</th>';						
 						//str +='<th>PHOTO</th>';
 						str +='<th>MEMBERSHIP&nbsp;NO</th>';
 						str +='<th>CADRE&nbsp;NAME</th>';
-						str +='<th>CADRE&nbsp;NAME</th>';
 						str +='<th>MOBILE&nbsp;NO</th>';
-						str +='<th> REMOVE &nbsp;</th>';
+						str +='<th>MEMBERSHIP&nbsp;NO</th>';
+						//str +='<th> REMOVE &nbsp;</th>';
 					 						 
 					 str +='</tr>';
 				 str +='</thead>';			 
@@ -1785,13 +1779,16 @@ function getBoothUserDetailsbuild(result,locationName){
 								  str +='<td>'+result[i].roleName+'</td>';
 							    else
 								  str +='<td>  -  </td>';
-								str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' attr_role="'+result[i].roleName+'" value="DELETE" type="button"></td>';	
+								//str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' attr_role="'+result[i].roleName+'" value="DELETE" type="button"></td>';	
 							str +='</tr>';
 							}
 			  str +='</tbody>';
 			  str +='</table>';
 			   $("#userDetailsId").html(str);
-	
+				$("#rangeWiseBoothReport").dataTable({
+						"iDisplayLength": 20,
+						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+				});
 }
 
 function setDefaultImage(img){
