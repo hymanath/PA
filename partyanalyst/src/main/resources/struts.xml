@@ -17866,7 +17866,7 @@
 			<param name="root">task</param>       
 		</result> 
    </action>
-   <action name="boothInchargeRolesAction" class="boothReportAction" method="boothInchargeRoles">
+   <action name="getBoothInchargersRolesAction" class="boothReportAction" method="geboothInchargeRoles">
         <result type="json" name="success">
          	<param name="root">boothIncbhargeVOList</param>
        </result>
