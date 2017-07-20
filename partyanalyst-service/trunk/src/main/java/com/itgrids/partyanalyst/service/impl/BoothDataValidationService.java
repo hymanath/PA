@@ -761,6 +761,8 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 						if(boothAddressVO.getBoothId() != null && boothAddressVO.getBoothId().longValue()>0L && readyToFinalMap.get(boothAddressVO.getBoothId()) != null){
 							boothAddressVO.setIsReadyToConfirm("yes");
 						}
+						if(boothAddressVO.getBoothId() != null && boothAddressVO.getBoothId().longValue()==1060048L)
+							System.out.println(boothAddressVO.getBoothId());
 					}
 				}
 			}
