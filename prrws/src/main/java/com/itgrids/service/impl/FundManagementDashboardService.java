@@ -2136,6 +2136,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  				inputVO.setDeptIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList()));
  				inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSearchLvlVals()));
  				inputVO.setSchemeIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSchemeIdsList()));
+ 				inputVO.setSubProgramIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSubProgramIdsList()));
  				List<Object[]> fundSanctionDetails = fundSanctionLocationDAO.getLocationWiseFundSanctionDetails(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),startDate,endDate,inputVO.getBlockLevelId(),inputVO.getSearchLvlVals(),inputVO.getSchemeIdsList(),inputVO.getSubProgramIdsList());
  				if(fundSanctionDetails != null && fundSanctionDetails.size()>0){
  					finalReturnList = new ArrayList<LocationVO>();
