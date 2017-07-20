@@ -21,7 +21,7 @@ function onLoadCalls()
 		}
 	});
 	var width = $(window).width()
-	if(width > 767)
+	/* if(width > 767)
 	{
 		header = $('header section'),
 		$(window).scroll(function(){
@@ -33,7 +33,7 @@ function onLoadCalls()
 				header.removeClass("header-fixed");
 			}
 		});
-	}
+	} */
 	$(document).on('click','[overview-block]', function(){
 		$("[overview-state],[overview-district]").removeClass("active");
 		var projectDivId = $(this).attr("overview-block");
