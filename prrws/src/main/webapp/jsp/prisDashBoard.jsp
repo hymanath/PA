@@ -31,7 +31,7 @@
 				<div class="col-sm-1 col-xs-3 pad_left0">
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
-				<div class="col-sm-4 m_top10 col-xs-9">
+				<div class="col-sm-4 m_top10 col-xs-9 headingBlock">
 					<h4 class="text-capital">PRIS Survey</h4>
 					<p>DASHBOARD</p>
 				</div>
@@ -119,7 +119,7 @@
 						<li attr_val="3Months"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>3Months</span></b></li>
 						<li attr_val="6Months"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>6Months</span></b></li>
 						<li attr_val="Year"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Year</span></b></li>
-						<li attr_val="custom" id="singleDateRangePicker"><img src="Assests/icons/CustomRange_icon.png"/>&nbsp;&nbsp;<b>Custom Range</b></li>
+						<li attr_val="custom" id="singleDateRangePicker"><img src="Assests/icons/CustomRange_icon.png"/>&nbsp;&nbsp;<b><span>Custom Range</span></b></li>
 						</li>
 					</ul>  
 				</div>
@@ -132,7 +132,7 @@
 	<section>
 			<div class="row">
 				<div class="col-sm-12 m_top5 ">
-					<div class="col-sm-3">
+					<div class="col-sm-3 mainBlock">
 						<div class="white-block">
 							<div class="media blockHeights block_styles">
 							  <div class="media-left img_middle">
@@ -145,7 +145,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-3 mainBlock">
 						<div class="white-block">
 							<div class="media blockHeights block_styles">
 							  <div class="media-left img_middle">
@@ -159,7 +159,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-3 mainBlock">
 						<div class="white-block">
 							<div class="media blockHeights block_styles">
 							  <div class="media-left img_middle">
@@ -173,7 +173,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-3 mainBlock">
 						<div class="white-block">
 							<div class="media blockHeights block_styles">
 								<p> <span class="thisMonthOverview text-capital">JUNE</span> </p>
