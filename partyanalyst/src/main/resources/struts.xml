@@ -17656,7 +17656,7 @@
     <param name="inputName">inputStream</param>
     <param name="bufferSize">1024</param>
    </result>
-    </action>    
+    </action>  
     
     <action name="savepartymeetingDetailsWithExcelAction" class="cadrePartyMeetingManagementAction" method="savepartymeetingDetailsWithExcel">
       <result name="success" type="stream">			   
@@ -17871,12 +17871,16 @@
          	<param name="root">boothIncbhargeVOList</param>
        </result>
    </action>
-   
-    <action name="getLocationWiseCadreDetailsAction" class="boothReportAction" method="getLocationWiseCadreDetails">
+     <action name="getLocationWiseCadreDetailsAction" class="boothReportAction" method="getLocationWiseCadreDetails">
         <result type="json" name="success">
          	<param name="root">boothDtlsList</param>
        </result>
    </action>
-
+   <action name="getActivityStatusListAction" class="locationDashboardAction"  method="getLocationWiseActivityStatusList">
+		<result type="json" name="success">    
+			<param name="root">activityStatusList</param>       
+		</result> 
+   </action>
+   
  </package>
 </struts>

@@ -842,11 +842,11 @@ pageEncoding="ISO-8859-1"%>
 							  <option tab_id="benefits3">OC (20)</option>
 							  <option tab_id="benefits4">OC (20)</option>
 						  </select>
-						  <ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">
-							<li class="active"><a href="#benefits1" aria-controls="OC" role="tab" data-toggle="tab">CM Relief Fund <span class="pull-right">20</span></a></li>
-							<li><a href="#benefits2" aria-controls="benefits2" role="tab" data-toggle="tab">Brahmin Corporation</a></li>
-							<li><a href="#benefits3" aria-controls="benefits3" role="tab" data-toggle="tab">Muslim Minorities</a></li>
-							<li><a href="#benefits4" aria-controls="benefits4" role="tab" data-toggle="tab">BC Corp Beneficiery</a></li>
+						  <ul class="nav nav-tabs nav-tabs-horizontal" role="tablist" id="benefitsId">
+							<!-- <li class="active"><a href="#benefits1" aria-controls="OC" role="tab" data-toggle="tab">CM Relief Fund <span class="pull-right">20</span></a></li>
+							<li><a href="#benefits2" aria-controls="benefits2" role="tab" data-toggle="tab">Brahmin Corporation<span class="pull-right">20</span></a></li>
+							<li><a href="#benefits3" aria-controls="benefits3" role="tab" data-toggle="tab">Muslim Minorities<span class="pull-right">20</span></a></li>
+							<li><a href="#benefits4" aria-controls="benefits4" role="tab" data-toggle="tab">BC Corp Beneficiery<span class="pull-right">20</span></a></li> -->
 						  </ul>
 					  </div>
 					  <!-- Tab panes -->
@@ -915,35 +915,7 @@ pageEncoding="ISO-8859-1"%>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="activities">
 				<h3 >Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
-				<div class="block pad_0">
-					<table class="table table-bordered">
-						<thead class="text-capitalize">
-							<th>Activity Name</th>
-							<th>level</th>
-							<th>status</th>
-						</thead>
-						<tbody>
-							<tr>
-								<td>legendary blood donation jan-2017</td>
-								<td>constituency</td>
-								<td>100%</td>
-							</tr>
-							<tr>
-								<td rowspan="2">janmaboomi - 2017 </td>
-								<td>constituency</td>
-								<td>100%</td>
-							</tr>
-							<tr>
-								<td>constituency</td>
-								<td>100%</td>
-							</tr>
-							<tr>
-								<td>jana chaitanya yatra</td>
-								<td>constituency</td>
-								<td>100%</td>
-							</tr>
-						</tbody>
-					</table>
+				<div class="block pad_0" id="activiteId">
 					<div class="pad_10">
 						<button class="btn btn-success btn-success-white text-capital">detailed information</button>
 					</div>
@@ -1087,7 +1059,7 @@ pageEncoding="ISO-8859-1"%>
 						</div>
 						<div class="col-md-4 col-xs-12 col-sm-4">
 							<h4 class="panel-title text-capital text-center">Insurance</h4>
-							<div id="grievanceDetails1"></div>
+							<div id="insuranceId"></div>
 						</div>
 						<div class="col-md-4 col-xs-12 col-sm-4">
 							<h4 class="panel-title text-capital text-center">Trust Education</h4>
@@ -1203,5 +1175,6 @@ pageEncoding="ISO-8859-1"%>
 </script>
 <script src="coreApi/js/custom.js" type="text/javascript"></script>
 <script src="coreApi/js/newConstituencyPage.js" type="text/javascript"></script>
+
 </body>
 </html>

@@ -11,6 +11,9 @@ function onLoadAjaxCalls()
 	getGovtSchemeWiseBenefitMembersCount();
 	getMandalWiseBenefitMembersCount();
 	getLocationWiseTourMembersComplainceDtls();
+	getCasteGroupNAgeWiseVoterNCadreCounts();
+	getActivityStatusList();
+	//getTotalAlertDetailsForConstituencyInfo();
 	 getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
 	/*getCountsForConstituency(); //Assembly election details
 	getAllPartiesAllElectionResultsChart(); //Assembly Election Detail
@@ -22,7 +25,7 @@ function onLoadAjaxCalls()
 	getVotersAndCadreCasteWiseCount("voter");
 	getVotersAndCadreCasteWiseCount("cadre");
 	getCasteGroupNAgeWiseVoterNCadreCounts(); */
-	getCasteNAgeWiseVoterNCadreCounts();
+	//getCasteNAgeWiseVoterNCadreCounts();
 	getEnrollmentYearWiseCadres();
 	
 	//meetings
@@ -38,6 +41,55 @@ function onLoadAjaxCalls()
 
 	
 	
+}
+function highChartsDonut(id,data,legend)
+{
+	$('#'+id).highcharts({
+		chart: {
+            type: 'pie',
+			backgroundColor: 'transparent',
+            options3d: {
+                enabled: false,
+                alpha: 45
+            }
+        },	
+		title: {
+			text: ''
+		},
+		subtitle: {
+			text: ''
+		},
+		plotOptions: {	
+			pie: {
+                innerSize: 40,
+                depth: 40,
+				showInLegend: legend,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+		},
+		legend: {
+			itemStyle: {
+				fontWeight: 'normal',
+				'font-family':'roboto',
+				'font-size':'13px'
+            },
+			enabled: true,
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+			useHTML: true,
+			
+			labelFormatter: function() {
+				return this.name + ' ' + this.y + '';
+			}
+		},
+		series:[{
+            name : 'Count',
+            data: data
+        }]
+	});
 }
 function getCandidateAndPartyInfoForConstituency(){
 	$("#candidateProfile").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
@@ -645,7 +697,8 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(){
       url : "getCasteGroupNAgeWiseVoterNCadreCountsAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){  
+    }).done(function(result){ 
+      console.log(result);	
 	});	
 }
 
@@ -661,7 +714,8 @@ function getCasteNAgeWiseVoterNCadreCounts(){
       url : "getCasteNAgeWiseVoterNCadreCountsAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){  
+    }).done(function(result){ 
+       console.log(result);	
 	});	
 }
 function getEnrollmentYearWiseCadres(){
@@ -733,7 +787,7 @@ function getLocationWiseTourMembersComplainceDtls(){
 function getGovtSchemeWiseBenefitMembersCount(){
 	jsObj={
 		locationType:"constituency",
-		locationValue:232
+		locationValue:272
 	}
 	 $.ajax({
       type : "POST",
@@ -742,6 +796,13 @@ function getGovtSchemeWiseBenefitMembersCount(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	console.log(result);
+		var str='';
+		if(result!=null && result.length>0){
+			for(var i in result){
+				str+='<li class="active"><a href="#benefits1" aria-controls="OC" role="tab" data-toggle="tab">'+result[i].name+'<span class="pull-right">'+result[i].totalCount+'</span></a></li>';
+			}
+			$("#benefitsId").html(str);
+		}
 	});	
 }
 function getMandalWiseBenefitMembersCount(){
@@ -757,7 +818,7 @@ function getMandalWiseBenefitMembersCount(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	console.log(result);
-	});	
+		});	
 }
 function getLocationTypeWiseCadreCount(){
 	jsObj={
@@ -957,6 +1018,25 @@ function getLocationWiseInsuranceStatusCount(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	console.log(result);
+		console.log(result['accountRejected']);
+		var data = [];
+		var depth = 60;
+		var id  = '';
+		if(result!=null){
+			data=[
+					{name:'accountRejected',y:result['accountRejected']},
+					{name:'approved',y:result['approved']},
+					{name:'closedAtInsurance',y:result['closedAtInsurance']},
+					{name:'closedAtParty',y:result['closedAtParty']},
+					{name:'closedLetters',y:result['closedLetters']},
+					{name:'foreadedToInsurance',y:result['foreadedToInsurance']},
+					{name:'submittedInparty',y:result['submittedInparty']},
+					{name:'waitingForDocs',y:result['waitingForDocs']},
+						];
+			id = 'insuranceId';
+		$("#"+id).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		highChartsDonut(id,data,true)
+		}
 	});	
 }
 
@@ -976,5 +1056,91 @@ function getLocationWiseGrivanceTrustStatusCounts(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	console.log(result);
+		var grivance = [];
+		var trust = [];
+		var depth = 60;
+		var grivanceId  = '';
+		var trustId = '';
+		if(result!=null && result.length>0){
+		grivance=[{name:'approves',y:result[0]['approves']},
+		{name:'completed',y:result[0]['completed']},
+		{name:'inProgress',y:result[0]['inProgress']},
+		{name:'notEligible',y:result[0]['notEligible']},
+		{name:'notPossible',y:result[0]['notPossible']},
+		{name:'notVerified',y:result[0]['notVerified']},];
+		
+		trust=[{name:'approves',y:result[1]['approves']},
+		{name:'completed',y:result[1]['completed']},
+		{name:'inProgress',y:result[1]['inProgress']},
+		{name:'notEligible',y:result[1]['notEligible']},
+		{name:'notPossible',y:result[1]['notPossible']},
+		{name:'notVerified',y:result[1]['notVerified']},];
+			grivanceId = 'grivanceId';
+			trustId = 'trustId';
+		$("#"+grivanceId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#"+trustId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		highChartsDonut(grivanceId,grivance,true)
+		highChartsDonut(trustId,trust,true)
+		}
 	});	
 }
+
+
+function getTotalAlertDetailsForConstituencyInfo(){
+	var jsObj={
+			"fromDateStr" : "",
+			"toDateStr":"",
+			"constituencyId" : 4,
+			"alertTypeIdsStr" : [1]
+			
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getTotalAlertDetailsForConstituencyInfoAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	console.log(result);
+	});	
+}
+
+function getActivityStatusList(){
+	var jsObj={
+			"fromDate" : "",
+			"toDate":"",
+			"year":"",
+			"locationValues" : [12],
+			"locationId" : 3
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getActivityStatusListAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	console.log(result);
+		var str = '';
+		var per='%';
+		str+='<table class="table table-bordered">';
+		str+='<thead class="text-capitalize">';
+		str+='<th>Activity Name</th>';
+		str+='<th>level</th>';
+		str+='<th>status</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		if(result!=null && result.length>0){
+			for(var i in result){
+		str+='<tr>';
+		str+='<td>'+result[i].name+'</td>';
+		str+='<td>'+result[i].description+'</td>';
+		str+='<td>'+result[i].perc+''+per+'</td>';
+		str+='</tr>';
+			}
+		}
+		str+='</tbody>';
+		str+='</table>';
+		
+		$("#activiteId").html(str);
+	});	
+}
+

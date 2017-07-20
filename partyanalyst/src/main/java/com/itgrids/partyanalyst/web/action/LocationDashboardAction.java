@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
@@ -54,8 +56,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<AlertOverviewVO> alertVO;
 	private InsuranceStatusCountsVO insuranceVO;
 	private List<GrivenceStatusVO> grivenceVO;
+	private List<BasicVO> activityStatusList;
 	
 	
+	public List<BasicVO> getActivityStatusList() {
+		return activityStatusList;
+	}
+	public void setActivityStatusList(List<BasicVO> activityStatusList) {
+		this.activityStatusList = activityStatusList;
+	}
 	public List<GrivenceStatusVO> getGrivenceVO() {
 		return grivenceVO;
 	}
@@ -415,6 +424,23 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			grivenceVO = locationDashboardService.getGrivenceTrustStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationId"), jObj.getLong("locationValue"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getLocationWiseInsuranceStatusCount() of LocationDashboardAction{}",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationWiseActivityStatusList(){
+		try{
+			jObj = new JSONObject(getTask());
+			JSONArray locationValues = jObj.getJSONArray("locationValues");  
+			List<Long> locationValuesList = new ArrayList<Long>();
+			if(locationValues != null && locationValues.length() > 0){
+				for (int i = 0; i < locationValues.length(); i++){
+					locationValuesList.add(Long.parseLong(locationValues.getString(i)));          
+				}
+			}
+			activityStatusList = locationDashboardService.getLocationWiseActivitysStatus(jObj.getString("fromDate"), jObj.getString("toDate"),jObj.getString("year"),locationValuesList, jObj.getLong("locationId"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getActivityStatusList() of LocationDashboardAction{}",e);
 		}
 		return Action.SUCCESS;
 	}
