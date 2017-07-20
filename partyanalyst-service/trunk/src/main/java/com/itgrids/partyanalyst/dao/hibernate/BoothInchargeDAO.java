@@ -397,12 +397,14 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 			} else if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
 				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
-				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilId in(:filterValues)");
+				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilId in(:filterValues)  ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
 				queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat.panchayatId in(:filterValues)");
 			}
 		}
-        
+		if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
+			queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId is null ");
+		}
 		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
 			queryStr.append(" and date(model.updatedTime) between :fromDate and :toDate ");
 		}
@@ -505,7 +507,7 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 			} else if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
 				queryStr.append(" and localElectionBody.localElectionBodyId in(:filterValues) ");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
-				queryStr.append(" and tehsil.tehsilId in(:filterValues)");
+				queryStr.append(" and tehsil.tehsilId in(:filterValues) and localElectionBody.localElectionBodyId is null");
 			} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
 				queryStr.append(" and panc.panchayatId in(:filterValues)");
 			}
