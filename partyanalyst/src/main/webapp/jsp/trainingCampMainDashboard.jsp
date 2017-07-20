@@ -1523,6 +1523,7 @@ function exportToExcel()
 		    data:{task:JSON.stringify(jsObj)},
 	      }).done(function(results){
 			  if(results !=null){
+				  $("#ajaxImage").hide();
 				  buildDateWiseAttendedAndAbsentCandidatesDetails(results);
 			  }
 		  });
@@ -1603,7 +1604,6 @@ function buildDateWiseAttendedAndAbsentCandidatesDetails(results)
 			
 		str+='</table>';
 	str+='</div>';
-	$("#ajaxImage").hide();
 	$("#attendanceDiv").html(str);
 	$("#exportExcelDivId").show();
 	
