@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
+import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -90,6 +91,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private INominatedPostDAO nominatedPostDAO;
 	private INominatedPostApplicationDAO nominatedPostApplicationDAO;
 	private IBoardLevelDAO boardLevelDAO;
+	//Activity
+	private IActivityDAO activityDAO;
+	
+	public IActivityDAO getActivityDAO() {
+		return activityDAO;
+	}
+	public void setActivityDAO(IActivityDAO activityDAO) {
+		this.activityDAO = activityDAO;
+	}
 	public void setInsuranceStatusDAO(IInsuranceStatusDAO insuranceStatusDAO) {
 		this.insuranceStatusDAO = insuranceStatusDAO;
 	}
@@ -2195,6 +2205,62 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			LOG.error("Exception raised at getCasteCategoryList in getCasteCategoryList class",e);
 		}
 		return casteCategoryList;
+	}
+	@Override
+	public List<BasicVO> getLocationWiseActivitysStatus(String fromDateStr, String toDateStr, String year,List<Long> locationValues, Long locationTypeId) {
+		List<BasicVO> finalList = new ArrayList<BasicVO>();
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			//0-activity_scope_id 1-activity_name 2-level 3-total
+			List<Object[]> activityTotal=activityDAO.getActivitysTotal(fromDate, toDate, year, locationValues, locationTypeId);
+			//0-activity_scope_id 1-activity_name 2-level 3-conducted_count
+			List<Object[]> activityConductedCount=activityDAO.getActivitysConductedCount(fromDate, toDate, year, locationValues, locationTypeId);
+			//0-activity_scope_id 1-activity_name 2-level 3-total
+			List<Object[]> conductedInfoTotal = activityDAO.getConductedInfoTotal(fromDate, toDate, year, locationValues, locationTypeId);
+			//0-activity_scope_id 1-activity_name 2-level 3-conductedCount
+			List<Object[]> conductedCount = activityDAO.getConductedInfoCount(fromDate, toDate, year, locationValues, locationTypeId);
+			
+			for (Object[] object1 : activityTotal) {
+				for (Object[] object2 : activityConductedCount) {
+					BasicVO vo = new BasicVO();
+					if(((Long)object2[0]).equals((Long)object1[0])){
+						vo.setPerc(calculatePercantage((Long)object2[3], (Long)object1[3]));
+						vo.setName(object1[1].toString());
+						vo.setDescription(object1[2].toString());
+						vo.setTotalVoters((Long)object1[3]);
+						vo.setTotalResult((Long)object2[3]);
+					}
+					if(vo.getPerc()!=null){
+						finalList.add(vo);
+				}
+				}
+			}
+			for (Object[] object3 : conductedInfoTotal) {
+				for (Object[] object4 : conductedCount) {
+					BasicVO vo = new BasicVO();
+					if(((Long)object3[0]).equals((Long)object4[0])){
+						vo.setPerc(calculatePercantage((Long)object4[3], (Long)object3[3]));
+						vo.setName(object3[1].toString());
+						vo.setDescription(object3[2].toString());
+						vo.setTotalVoters((Long)object3[3]);
+						vo.setTotalResult((Long)object3[3]);
+					}
+					if(vo.getPerc()!=null){
+						finalList.add(vo);
+						}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getActivityStatusList() in LocationDashBoardService class",e);
+		}
+		return finalList;
 	}
 	
 	
