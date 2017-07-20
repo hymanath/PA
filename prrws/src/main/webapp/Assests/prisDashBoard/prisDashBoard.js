@@ -309,6 +309,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 								
 							tableView+='</div>';
 						tableView+='</div>';
+						tableView+='<div class="table-responsive">';
 						tableView+='<table class="table dataTable'+blockId+'" id="table'+blockName+'">';
 								tableView+='<thead>';
 								//(for constituency viwew in adding district name)
@@ -354,6 +355,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 									}
 								tableView+='</tbody>';
 								tableView+='</table>';
+							tableView+='</div>';
 						tableView+='</div>';
 				tableView+='</div>';
 			tableView+='</div>';
