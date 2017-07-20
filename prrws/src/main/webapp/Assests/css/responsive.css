@@ -145,18 +145,14 @@
 /* Ipad Only STYLES START*/
 @media only screen and (device-width: 768px) 
 {
-	.panel-block-white-high h1,
-	.panel-block-white-low h1,
-	.panel-block-white-medium h1,
-	.panel-block-white-high.active h1,
-	.panel-block-white-low.active h1,
-	.panel-block-white-medium.active h1
+	
+	#projectsOverview .col-sm-2
 	{
-		font-size:25px;
+		width:33.3%
 	}
-	.panel-black-white label
+	#projectsOverview .col-sm-4
 	{
-		font-size:12px;
+		width:100%;
 	}
 }
 @media only screen and (device-width: 1024px) 
@@ -170,9 +166,41 @@
 	{
 		font-size:25px;
 	}
+	.panel-block-white-low.active small,
+	.panel-block-white-medium.active small,
+	.panel-block-white-high.active small,
+	.panel-block-white-low small,
+	.panel-block-white-medium small,
+	.panel-block-white-high small
+	{
+		font-size:8px;
+	}
+	.panel-block-white-low.active small .fa,
+	.panel-block-white-medium.active small .fa,
+	.panel-block-white-high.active small .fa,
+	.panel-block-white-low small .fa,
+	.panel-block-white-medium small .fa,
+	.panel-block-white-high small .fa
+	{
+		position: absolute;
+		top: 12px;
+		left: -5px;
+	}
 	.panel-black-white label
 	{
-		font-size:12px;
+		font-size:10px;
+	}
+	.panel-black-white .col-sm-6
+	{
+		width:100%;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
+	.pad_left0
+	{
+		padding-left:15px;
 	}
 }
 
