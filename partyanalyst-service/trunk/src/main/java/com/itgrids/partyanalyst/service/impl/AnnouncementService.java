@@ -418,6 +418,7 @@ public class AnnouncementService implements IAnnouncementService {
 						optionVo.setPanchayatName(commonMethodsUtilService.getStringValueForObject(Obj[13]));
 					if(optionVo.getMandalName() == null || optionVo.getMandalName().trim().isEmpty())
 						optionVo.setMandalName(commonMethodsUtilService.getStringValueForObject(Obj[8]));
+					optionVo.setStatus(commonMethodsUtilService.getStringValueForObject(Obj[14]));
 					
 					finalList.add(optionVo);
 				}
