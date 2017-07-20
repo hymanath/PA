@@ -581,6 +581,16 @@ public String getPanchayatWardByMandal(){
 	    }
 	      return Action.SUCCESS;  
 	 }
+ public String editPartyMeeting(){
+	   try{
+	       jObj = new JSONObject(getTask());
+	     Long meetingId=jObj.getLong("partyMeetingId");
+	     partyMeetingVOList= cadrePartyMeetingManagementService.getPartyMeetingDeatilesForMeetingEditByMeetingId(meetingId);
+	       }catch (Exception e) {
+	    LOG.error("Exception Occured in editPartyMeeting() method, Exception - ",e); 
+	    }
+	      return Action.SUCCESS;  
+	 }
 }
 
 
