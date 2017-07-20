@@ -1225,6 +1225,8 @@ public class BoothDataValidationService implements IBoothDataValidationService{
     				boothDetailsVO.setSerialNo(commonMethodsUtilService.getLongValueForObject(param[27]));
     				boothDetailsVO.setRangeId(commonMethodsUtilService.getLongValueForObject(param[28]));
     				boothDetailsVO.setRange(commonMethodsUtilService.getStringValueForObject(param[29]));
+    				boothDetailsVO.setBoothName(commonMethodsUtilService.getStringValueForObject(param[30]));
+    				boothDetailsVO.setRole(commonMethodsUtilService.getStringValueForObject(param[31]));
     				returnList.add(boothDetailsVO);
     			}
     		}

@@ -53,7 +53,16 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Long roleMappingId;
 	private Long inchargeId;
 	private Long serialNo;
-		
+	private String originalLocation;
+	
+	public String getOriginalLocation() {
+		return originalLocation;
+	}
+
+	public void setOriginalLocation(String originalLocation) {
+		this.originalLocation = originalLocation;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
