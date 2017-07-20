@@ -846,7 +846,11 @@ function buildCampSummaryDetails(result)
 }*/
 
 function getProgCampBatchNames(){
-	
+   if($("#enrlmntYrId").val() == 3){
+	   programId = 1;
+   }else if($("#enrlmntYrId").val() == 4){
+	   programId = 8;
+   }
 	var jsObj = {
 		programId:programId,
 		campId:campId,
