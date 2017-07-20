@@ -144,12 +144,12 @@ function getOverAllBoothDetails(locationLevel,filterLevel,filterValue){
 	}).done(function(result){
 		 $("#overAllBoothDlstDivId").html(' ');
 		 $("#overAllSerialRangeWiseVoterDivId").html(' ');
-		  $(".serialRangeHeadingCls").show();
-	 	  buildOverAllBoothDtls(result);
+		 $(".serialRangeHeadingCls").show();
+	 	  buildOverAllBoothDtls(result,locationLevel);
 	});
 
 }
-function buildOverAllBoothDtls(result){
+function buildOverAllBoothDtls(result,locationLevel){
 	if(result != null && result.length > 0){
 		 var overallDataObj = result[0];
 		 var rangevoterArr = overallDataObj.subList;
@@ -212,6 +212,7 @@ function buildOverAllBoothDtls(result){
 					str+='<p>'+rangevoterArr[i].roleName+'</p>';
 				     if(rangevoterArr[i].count > 0){
 						 str+='<h4>'+rangevoterArr[i].count+'</h4>';
+						 //class="cadreDetailsCls" style="cursor: pointer; font-size: 16px; margin-top: 10px;color: rgb(51, 122, 183);" attr_location_level='+locationLevel+' attr_serial_no="'+rangevoterArr[i].roleId+'" attr_filter_level="" attr_filter_value="0"  attr_booth_id="0"
 					 }else{
 						 str+='<h4>-</h4>';
 					 }
@@ -686,7 +687,7 @@ function buildBoothDetails(result,locationLevel){
 						}
 						if(result[i].boothName != null){
 							if(result[i].status != null && result[i].status!="NotStarted"){
-								str+='<td class="text-center cadreDetailsCls" style="cursor: pointer; font-size: 16px; margin-top: 10px;color: rgb(51, 122, 183);" attr_location_level='+locationLevel+'  attr_booth_id="'+result[i].boothId+'">'+result[i].boothName+'</td>';
+								str+='<td class="text-center cadreDetailsCls" style="cursor: pointer; font-size: 16px; margin-top: 10px;color: rgb(51, 122, 183);" attr_location_level='+locationLevel+' attr_serial_no="0" attr_filter_level="" attr_filter_value="0"  attr_booth_id="'+result[i].boothId+'">'+result[i].boothName+'</td>';
 							}else{
 								str+='<td class="text-center;">'+result[i].boothName+'</td>';
 							}
@@ -722,10 +723,15 @@ $(document).on("click",".cadreDetailsCls",function(){
 	$("#boothInchargeDataModalDivId").modal("show");
 	var locationLevel = $(this).attr("attr_location_level");
 	var boothId = $(this).attr("attr_booth_id");
-	var filterLevel="";
-	var filterValue=[];
-	var serialRangeId=0;
-	getLocationWiseCadreDetails(locationLevel,filterLevel,filterValue,boothId,serialRangeId);
+	var serialRangeId = $(this).attr("attr_serial_no");
+	var filterLevel = $(this).attr("attr_filter_level");
+	var filterValue = $(this).attr("attr_filter_value");
+	var filterValueArr=[];
+	if(filterValue > 0){
+		filterValueArr.push(filterValue);
+	}
+
+	getLocationWiseCadreDetails(locationLevel,filterLevel,filterValueArr,boothId,serialRangeId);
 	
 });
 
@@ -773,17 +779,16 @@ function buildCadreDetails(result,locationLevel){
 				str+='<tr>';
 				//var locationSpecificHeadingStr = getLocationSpeceficHeading(locationLevel);
 				//str = str +" "+locationSpecificHeadingStr;
-				
 					str+='<th>DISTRICT</th>';
 					str+='<th>PARLIAMENT CONSTITUENCY</th>';
 					str+='<th>CONSTITUENCY</th>';
 					str+='<th>TEHSIL</th>';
 					str+='<th>VILLAGE/WARD</th>';
 					str+='<th>NAME</th>';
-					str+='<th>MEMBERSHIP NO</th>';
-					str+='<th>MOBILE NO</th>';
 					str+='<th>IMAGE</th>';
 					str+='<th>SERIAL NO</th>';
+					str+='<th>MOBILE NO</th>';
+					str+='<th>MEMBERSHIP NO</th>';
 				str+='</tr>';
 			str+='</thead>';
 			 str+='<tbody>';
@@ -802,16 +807,6 @@ function buildCadreDetails(result,locationLevel){
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-						if(result[i].memberShipNo != null){
-							str+='<td class="text-center;">'+result[i].memberShipNo+'</td>';
-						}else{
-							str+='<td class="text-center;">-</td>';	
-						}
-						if(result[i].mobileNo != null){
-							str+='<td class="text-center;">'+result[i].mobileNo+'</td>';
-						}else{
-							str+='<td class="text-center;">-</td>';	
-						}
 						if(result[i].image != null && result[i].image.length > 0){
 							str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].image+'" style="width: 50px; height: 50px;"></td>';
 						}else{
@@ -822,7 +817,17 @@ function buildCadreDetails(result,locationLevel){
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-					
+						if(result[i].mobileNo != null){
+							str+='<td class="text-center;">'+result[i].mobileNo+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].memberShipNo != null){
+							str+='<td class="text-center;">'+result[i].memberShipNo+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						
 				str+='</tr>';
 			   }
 			str+='</tbody>';
