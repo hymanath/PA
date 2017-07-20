@@ -157,7 +157,7 @@
 										</ul>
 									</div>
 									<div class="col-sm-1 collapseDivCls">
-										<a class=" profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="width:20px;height:20px;display:block;float:right"></a>
+										<a class="profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="width:20px;height:20px;display:block;float:right"></a>
 									</div>
 								</div>
 							</div>
@@ -275,11 +275,11 @@
 										</ul>
 									</div>
 									<div class="col-sm-1">
-										<a class="collapsed profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="width:20px;height:20px;display:block;float:right"></a>
+										<a class="boothClopseCls profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="width:20px;height:20px;display:block;float:right"></a>
 									</div>
 								</div>
 							</div>
-							<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+							<div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
 							<div class="panel-body">
 								<div class="row">
 									<div>
@@ -412,8 +412,11 @@ $(document).ready(function(){
 		getLocationBasedOnSelection("TEHSIL","CONSTITUENCY",accessValueStr,"","CONSTITUENCY","");
 	    //setting dynamically user access type and access value based on login user
 	    setAccessLevelTypeAndValue("CONSTITUENCY",accessValueStr);
+		getLocationLevelWiseBoothDetails("CONSTITUENCY",accessValueStr,"All");
 	  
 	}else if(accessType == "MP" || accessType == "PARLIAMENT INCHARGE"){
+		$(".boothClopseCls").addClass("collapsed");
+		$("#collapseFive").removeClass("in");
 		//block tab heading hiding 
 		$("#panchayatWiseDistrictparliamentIds").hide();
 		$("#mandalLevelDistrictDivId").hide();
@@ -440,6 +443,8 @@ $(document).ready(function(){
 		getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",accessValueStr,"","PARLIAMENT CONSTITUENCY","");
 	
 	}else if(accessType == "DISTRICT" || accessType=="DIST PRESIDNET" || accessType=="GS" || accessType=="INCHARGE MINISTER"){
+			$(".boothClopseCls").addClass("collapsed");
+			$("#collapseFive").removeClass("in");
 			//Adding Dynamic Attribute based on user access level 
 			var accessLevel = "DISTRICT";
 			/* if(activityMemberId != null && activityMemberId==4 || activityMemberId==5){
@@ -461,6 +466,8 @@ $(document).ready(function(){
 			setAccessLevelTypeAndValue("DISTRICT",accessValueStr);
 			
 	}else if (accessType == "STATE"){
+			$(".boothClopseCls").addClass("collapsed");
+			$("#collapseFive").removeClass("in");
 			//Adding Dynamic Attribute based on user access level 
 			$(".resultTypeTabCls").attr("attr_panchayt_result_level","DISTRICT");
 			$(".resultTypeTabCls").attr("attr_pnchyt_lvl_parent_select_box_div_id","panchatLevelDistrictSelectBxId");
