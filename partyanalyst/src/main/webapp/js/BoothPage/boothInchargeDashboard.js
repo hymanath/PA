@@ -797,7 +797,7 @@ function buildCadreDetails(result,locationLevel,boothName){
 					str+='<th>CONSTITUENCY</th>';
 					str+='<th>TEHSIL</th>';
 					str+='<th>VILLAGE/WARD</th>';
-					//str+='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
+					str+='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
 					str+='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
 					str+='<th>NAME</th>';
 					str+='<th>IMAGE</th>';
@@ -817,7 +817,7 @@ function buildCadreDetails(result,locationLevel,boothName){
 						str+='<td>'+result[i].constituencyName+'</td>';
 						str+='<td>'+result[i].tehsilName+'</td>';
 						str+='<td>'+result[i].panchayat+'</td>';
-						//str+='<td>BOOTH&nbsp;NO-'+result[i].boothName+'</td>';
+						str+='<td>BOOTH&nbsp;NO-'+result[i].boothName+'</td>';
 						str+='<td>BOOTH&nbsp;NO-'+boothName+'</td>';
 						
 						if(result[i].cadreName != null){
@@ -864,7 +864,7 @@ function buildCadreDetails(result,locationLevel,boothName){
 					str+='<th>CONSTITUENCY</th>';
 					str+='<th>TEHSIL</th>';
 					str+='<th>VILLAGE/WARD</th>';
-					//str+='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
+					str+='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
 					str+='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
 					str+='<th>NAME</th>';
 					//str+='<th>IMAGE</th>';
@@ -882,7 +882,7 @@ function buildCadreDetails(result,locationLevel,boothName){
 						str+='<td>'+result[i].constituencyName+'</td>';
 						str+='<td>'+result[i].tehsilName+'</td>';
 						str+='<td>'+result[i].panchayat+'</td>';
-						//str+='<td>BOOTH&nbsp;NO-'+result[i].boothName+'</td>';
+						str+='<td>BOOTH&nbsp;NO-'+result[i].boothName+'</td>';
 						str+='<td>BOOTH&nbsp;NO-'+boothName+'</td>';
 						
 						if(result[i].cadreName != null){

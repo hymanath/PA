@@ -1642,7 +1642,7 @@ function getBoothUserDetails(){
 		}
 		else if(mandalId !=0 && mandalId>0)
 		{
-			mandalId = mandalId.substr(1);
+			//mandalId = mandalId.substr(1);
 			boothId = 0;
 			selectLocationName = mandalName;
 		}
@@ -1834,7 +1834,7 @@ function getBoothInchargeRoles()
 		
 		$("#boothInchargeRoleDivId,#locationDivId").html('');
 		var boothId = $('#committeeLocationId1').val();
-		$('#addMembrsBtn').show();
+		//$('#addMembrsBtn').show();
 		$('#searchBy').val('');
 		$('#boothInchargeRoleDivId,#searchcadrenewDiv,#userDetailsId,#committeeDesigDivId').hide();
 		if(boothId==0){
@@ -1853,7 +1853,10 @@ function getBoothInchargeRoles()
 				data : {task:JSON.stringify(jsObj)} 
 			}).done(function(result){	
 			if(result != null){
+				$('#addMembrsBtn').show();
 				buildBoothInchargeRoleDetails(result);	
+			}else{
+				$('#addMembrsBtn').hide();
 			}
 		});	
 	}
