@@ -61,7 +61,7 @@ header.trainingHeader {
                     </a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
 					   <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
-					   <li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
+					   <li><a href="trainingCenterDashBoardAction.action"><span>DASHBOARD</span></a> </li>
 					   <!--<li><a href="callCenterTrainingAgentDashBoard.action"><span>CALLERS DASHBOARD</span></a> </li>-->
 					   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
 					
