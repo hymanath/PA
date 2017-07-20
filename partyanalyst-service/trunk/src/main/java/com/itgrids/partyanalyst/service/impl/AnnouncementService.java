@@ -419,7 +419,7 @@ public class AnnouncementService implements IAnnouncementService {
 					if(optionVo.getMandalName() == null || optionVo.getMandalName().trim().isEmpty())
 						optionVo.setMandalName(commonMethodsUtilService.getStringValueForObject(Obj[8]));
 					optionVo.setStatus(commonMethodsUtilService.getStringValueForObject(Obj[14]));
-					
+					optionVo.setOriginalLocation(commonMethodsUtilService.getStringValueForObject(Obj[16]));
 					finalList.add(optionVo);
 				}
 				return finalList;

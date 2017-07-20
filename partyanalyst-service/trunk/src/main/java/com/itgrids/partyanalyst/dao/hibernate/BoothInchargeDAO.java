@@ -30,7 +30,8 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 					" tehsil.tehsilName," +
 					" model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.roleName," +
 					" model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId,model.boothInchargeId ," +
-					" bpv.serialNo, ward.name ,localElectionBody.name, model.boothInchargeRoleConditionMapping.boothInchargeCommittee.isConfirmed   " +
+					" bpv.serialNo, ward.name ,localElectionBody.name, model.boothInchargeRoleConditionMapping.boothInchargeCommittee.isConfirmed," +
+					" bpv.booth.partNo   " +
 					" from BoothPublicationVoter bpv," +
 					" BoothIncharge model  " +
 					" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address address " +
@@ -462,7 +463,8 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		
 		queryStr.append(",model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.lastname,model.tdpCadre.image ");
 		queryStr.append(",model.tdpCadre.mobileNo,model.tdpCadre.memberShipNo,model2.serialNo" +
-				        ",model.boothInchargeSerialNoRange.boothInchargeSerialNoRangeId,model.boothInchargeSerialNoRange.range ");
+				        ",model.boothInchargeSerialNoRange.boothInchargeSerialNoRangeId,model.boothInchargeSerialNoRange.range,model2.booth.partNo," +
+				        " model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.roleName  ");
 
 		queryStr.append(" from BoothIncharge model ");
 		queryStr.append(" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee model1 ");
