@@ -205,3 +205,73 @@
 }
 
 /* Ipad Only STYLES END */
+/*css for PRIS and Drains dashboard responsive*/
+
+@media(min-width:320px) and (max-width: 767px){
+	
+	header .logo{
+		height: 50px;
+	}
+	header .headingBlock{
+		margin-top: 5px !important;
+	}
+	header .glyphicon-th{
+		font-size: 20px;
+		top: 13px;
+	}
+}
+@media(min-width:320px) and (max-width: 570px){
+	.headingBlock{
+		padding-left: 38px;
+		margin-top: 5px !important;
+		}
+		.calendar_active_cls li img{
+			height: 25px;
+			padding: 2px;
+		}
+		.calendar_active_cls li span{
+			font-weight: initial;
+		}
+		.menu-data-cls{
+				top: 50px !important;
+				width: 300px;
+		}
+		.multi-level-selection-menu {
+			width: 280px;
+		}
+	
+}
+@media(min-width: 768px) and (max-width: 991px){
+		.subBlock:first-child{
+			padding-left: 0px;
+		}
+		.subBlock:nth-child(2){
+			padding-left: 10px;
+		}
+		.block h4{
+			font-size: 17px;
+		}
+		.subBlock h5{
+			font-size: 13px;
+		}
+		.subBlock h4{
+			font-size: 16px;
+		}
+		.mainBlock{
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		.mainBlock  .block_styles{
+			padding: 20px 12px;
+		}
+		.block_styles {
+			padding: 20px 12px;
+		}
+		.mainBlock  .block_styles img{
+			height: 45px;
+		}
+		.mainBlock .block_styles  h4{
+			font-size: 15px;
+		}
+	
+}
