@@ -73,6 +73,11 @@ public class NregaPaymentsVO implements Serializable{
 	private String totalSentBankAmount;
 	private String totalPendinAmount;
 	
+	private String ftoSentToBank = "0";
+	private String ftoSentToAmount = "0";
+	private String sentToBankSuccess = "0";
+	private String sentToBankSuccessAmt = "0";
+	
 	
 	
 	public String getId() {
@@ -435,4 +440,29 @@ public class NregaPaymentsVO implements Serializable{
 	public void setTotalPendinAmount(String totalPendinAmount) {
 		this.totalPendinAmount = totalPendinAmount;
 	}
+	public String getFtoSentToBank() {
+		return ftoSentToBank;
+	}
+	public void setFtoSentToBank(String ftoSentToBank) {
+		this.ftoSentToBank = ftoSentToBank;
+	}
+	public String getFtoSentToAmount() {
+		return ftoSentToAmount;
+	}
+	public void setFtoSentToAmount(String ftoSentToAmount) {
+		this.ftoSentToAmount = ftoSentToAmount;
+	}
+	public String getSentToBankSuccess() {
+		return sentToBankSuccess;
+	}
+	public void setSentToBankSuccess(String sentToBankSuccess) {
+		this.sentToBankSuccess = sentToBankSuccess;
+	}
+	public String getSentToBankSuccessAmt() {
+		return sentToBankSuccessAmt;
+	}
+	public void setSentToBankSuccessAmt(String sentToBankSuccessAmt) {
+		this.sentToBankSuccessAmt = sentToBankSuccessAmt;
+	}
+	
 }
