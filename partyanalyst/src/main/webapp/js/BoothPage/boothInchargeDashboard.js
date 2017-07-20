@@ -41,8 +41,9 @@
 });
 //based on user access level.we are building select box and sending ajax call 
 function ajaxCallBasedOnUserAccessLevel(filterLevel,filterValue){
-		clearCommonDiv();
+		
 		if(filterLevel == "CONSTITUENCY"){
+			getLocationLevelWiseBoothDetails("CONSTITUENCY",filterValue,"All");
 			getOverAllBoothDetails("STATE","CONSTITUENCY",filterValue);
 			getLocationLevelWiseBoothCount("TEHSIL","CONSTITUENCY",filterValue,"mandalLevelBoothDtlsDivId");
 			getLocationLevelWiseBoothCount("PANCHAYAT","CONSTITUENCY",filterValue,"panchaytLevelBoothDtlsDivId");
@@ -51,6 +52,7 @@ function ajaxCallBasedOnUserAccessLevel(filterLevel,filterValue){
 			$("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
 			$("#panchaytLevelPanchaytSelectBxId,#boothBlockPanchaytSelectBxId").trigger("chosen:updated");
 		}else if(filterLevel == "PARLIAMENT CONSTITUENCY"){
+			clearCommonDiv();
 			getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",filterValue,"","PARLIAMENT CONSTITUENCY","");
 			getOverAllBoothDetails("STATE","PARLIAMENT CONSTITUENCY",filterValue);
 			getLocationLevelWiseBoothCount("CONSTITUENCY","PARLIAMENT CONSTITUENCY",filterValue,"constituencyLevelBoothDtlsDivId");
@@ -63,6 +65,7 @@ function ajaxCallBasedOnUserAccessLevel(filterLevel,filterValue){
 			$("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
 			$("#panchaytLevelPanchaytSelectBxId,#boothBlockPanchaytSelectBxId,#mandalLevelMandalSelectBxId,#boothBlockMandalSelectBxId").trigger("chosen:updated");
 		}else if(filterLevel == "DISTRICT" || filterLevel == "STATE"){
+			clearCommonDiv();
 		   getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");	
 		   getLocationBasedOnSelection("DISTRICT","STATE",accessValueStr,"boothBlockDistrictSelectBxId","Other","PANCHAYAT");
 		   getOverAllBoothDetails("STATE",filterLevel,filterValue);
@@ -786,7 +789,7 @@ function buildCadreDetails(result,locationLevel,boothName){
 					str+='<th>CONSTITUENCY</th>';
 					str+='<th>TEHSIL</th>';
 					str+='<th>VILLAGE/WARD</th>';
-					str+='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
+					//str+='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
 					str+='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
 					str+='<th>NAME</th>';
 					str+='<th>IMAGE</th>';
@@ -806,7 +809,7 @@ function buildCadreDetails(result,locationLevel,boothName){
 						str+='<td>'+result[i].constituencyName+'</td>';
 						str+='<td>'+result[i].tehsilName+'</td>';
 						str+='<td>'+result[i].panchayat+'</td>';
-						str+='<td>BOOTH&nbsp;NO-'+result[i].boothName+'</td>';
+						//str+='<td>BOOTH&nbsp;NO-'+result[i].boothName+'</td>';
 						str+='<td>BOOTH&nbsp;NO-'+boothName+'</td>';
 						
 						if(result[i].cadreName != null){
@@ -848,8 +851,6 @@ function buildCadreDetails(result,locationLevel,boothName){
 		 str+='<table class="table table-bordered" style="display:none;" id="cadreDetailsExportDataTableId">';
 			str+='<thead>';
 				str+='<tr>';
-				//var locationSpecificHeadingStr = getLocationSpeceficHeading(locationLevel);
-				//str = str +" "+locationSpecificHeadingStr;
 					str+='<th>DISTRICT</th>';
 					str+='<th>PARLIAMENT CONSTITUENCY</th>';
 					str+='<th>CONSTITUENCY</th>';
@@ -868,8 +869,6 @@ function buildCadreDetails(result,locationLevel,boothName){
 			 str+='<tbody>';
 				for(var i in result){
 					str+='<tr>';
-					   //var boothAddressStr = getLocationWiseBoothAddress(locationLevel,result[i]);
-						 //str = str +" "+boothAddressStr;
 						str+='<td>'+result[i].districtName+'</td>';
 						str+='<td>'+result[i].parliamentConstituency+'</td>';
 						str+='<td>'+result[i].constituencyName+'</td>';
@@ -937,7 +936,6 @@ function boothInchargeRoles(){
 	    }
 	  }
 		$("#boothCommitteeDashbrdRolesId").html(str);
-		//$("#boothCommitteeDashbrdRolesId").chosen();
 	    $("#boothCommitteeDashbrdRolesId").trigger("chosen:updated");
 	  });
 	}
