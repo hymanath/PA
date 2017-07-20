@@ -331,7 +331,11 @@ function getLocationLevelWiseBoothCount(locationLevel,filterLevel,filterValue,di
 		str+='</table>';
 		str+='</div>';
 	 $("#"+divId).html(str);	
-	 $("#"+divId+'dataTableId').dataTable();
+	 $("#"+divId+'dataTableId').dataTable({
+			"aaSorting": [[ 4, "desc" ]], 
+			"iDisplayLength" : 10,
+			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]								
+	});
 	}else{
 	  $("#"+divId).html('NO DATA AVAILABLE.')	
 	}
