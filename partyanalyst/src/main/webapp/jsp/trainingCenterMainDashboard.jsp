@@ -208,7 +208,7 @@ header.eventsheader {
                             	<div class="col-md-12">
                                 	<div class="panel panel-default">
                                     	<div class="panel-heading bg_d">
-                                        	<h4 class="panel-title text-bold">CURRENTLY RUNNING BATCHES ATTENDENCE</h4>
+                                        	<h4 class="panel-title text-bold">CURRENTLY RUNNING BATCHES ATTENDENCE &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:bold;"> IA-Invitee Attended, NIA-Non Invitee Attended</span></h4>
                                         </div>
                                         <div class="panel-body pad_0" id="runningTrainingProgramsDayWiseAttendence">
 										</div>
