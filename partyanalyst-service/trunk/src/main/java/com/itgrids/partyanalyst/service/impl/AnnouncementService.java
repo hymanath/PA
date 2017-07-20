@@ -409,7 +409,8 @@ public class AnnouncementService implements IAnnouncementService {
 					optionVo.setMobileNumber(commonMethodsUtilService.getLongValueForObject(Obj[5]));
 					optionVo.setMemberShipNo(commonMethodsUtilService.getLongValueForObject(Obj[6]));
 					optionVo.setUrl(commonMethodsUtilService.getStringValueForObject(Obj[7]));
-					optionVo.setMandalName(commonMethodsUtilService.getStringValueForObject(Obj[14])+" Munci/Corp/Greater City ");
+					if(commonMethodsUtilService.getStringValueForObject(Obj[14]).trim().length()>0)
+						optionVo.setMandalName(commonMethodsUtilService.getStringValueForObject(Obj[14])+" Muncipality ");
 					optionVo.setRoleName(commonMethodsUtilService.getStringValueForObject(Obj[9]));
 					optionVo.setRoleMappingId(commonMethodsUtilService.getLongValueForObject(Obj[10]));
 					optionVo.setInchargeId(commonMethodsUtilService.getLongValueForObject(Obj[11]));
@@ -417,8 +418,8 @@ public class AnnouncementService implements IAnnouncementService {
 					if(optionVo.getPanchayatName() == null ||  optionVo.getPanchayatName().trim().isEmpty())
 						optionVo.setPanchayatName(commonMethodsUtilService.getStringValueForObject(Obj[13]));
 					if(optionVo.getMandalName() == null || optionVo.getMandalName().trim().isEmpty())
-						optionVo.setMandalName(commonMethodsUtilService.getStringValueForObject(Obj[8]));
-					optionVo.setStatus(commonMethodsUtilService.getStringValueForObject(Obj[14]));
+						optionVo.setMandalName(commonMethodsUtilService.getStringValueForObject(Obj[8])+" Mandal " );
+					optionVo.setStatus(commonMethodsUtilService.getStringValueForObject(Obj[15]));
 					optionVo.setOriginalLocation(commonMethodsUtilService.getStringValueForObject(Obj[16]));
 					finalList.add(optionVo);
 				}
