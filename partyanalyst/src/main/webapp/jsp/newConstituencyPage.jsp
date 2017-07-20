@@ -1055,7 +1055,7 @@ pageEncoding="ISO-8859-1"%>
 					<div class="row">
 						<div class="col-md-4 col-xs-12 col-sm-4">
 							<h4 class="panel-title text-capital text-center">Grievance</h4>
-							<div id="grievanceDetails0"></div>
+							<div id="grivanceId"></div>
 						</div>
 						<div class="col-md-4 col-xs-12 col-sm-4">
 							<h4 class="panel-title text-capital text-center">Insurance</h4>
@@ -1063,7 +1063,7 @@ pageEncoding="ISO-8859-1"%>
 						</div>
 						<div class="col-md-4 col-xs-12 col-sm-4">
 							<h4 class="panel-title text-capital text-center">Trust Education</h4>
-							<div id="grievanceDetails2"></div>
+							<div id="trustId"></div>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top15">
 							<button class="btn btn-success btn-success-white text-capital">detailed information</button>
