@@ -194,7 +194,8 @@ header.trainingHeader {
             <div class="col-md-10 col-md-offset-1">
                 <label>Select Program</label>
                 <select class="form-control custom-select" id="programSelectId">
-                   <option value="1">Leadership Skills</option> 
+                   <option value="1">Leadership Skills-2014-16</option> 
+				   <option value="8">Leadership Skills-2016-18</option> 
                 </select>
             </div>
             <div class="col-md-10 col-md-offset-1">
@@ -287,12 +288,6 @@ $('.close-icon').click(function(){
 	
 $("#mainheading").html("TRAINING PROGRAMME DASHBOARD");
 $("#enrlmntYrId").val(enrollmentYrId);
-getattendedcountByFeedBacks(enrollmentYrId);
-getAttendedCountsByProgramOrCampOrBatch("dist",enrollmentYrId);
-
-
-getAttendedCountSummaryByBatch(enrollmentYrId);//function for getting batch wise attendence
-
 
 if((batchId==null || batchId==0) && (campId==null || campId==0) && (programId!=null && programId >0)){
 	//getProgramSummary();
@@ -433,7 +428,6 @@ function getattendedcountByFeedBacks(enrollmentYrId)
 	$("#loadingImg1").show();
 var enrollmentYrIds = [];
 enrollmentYrIds.push(enrollmentYrId);
-var programId = 0;
 var programIds =[];
 			if(enrollmentYrIds == 4){
 				programIds.push(8);
@@ -441,7 +435,6 @@ var programIds =[];
 				programIds.push(6,7,1,5);
 			}
 	var jsObj={
-		programId:programId,
 		campId:campId,
 		batchId:batchId,
 		callFrom:callFrom,
@@ -852,7 +845,6 @@ function buildCampSummaryDetails(result)
 	$("#programSummaryDivId").html(str);
 }*/
 
-getProgCampBatchNames();
 function getProgCampBatchNames(){
 	
 	var jsObj = {
@@ -881,7 +873,7 @@ function getProgCampBatchNames(){
 		}
 	});
 }
-getSurveyDetails();
+
 function getSurveyDetails()
 {
 	$("#surveyDataLoadoing").show();
@@ -987,6 +979,16 @@ function buildSurveyDetails(result)
 		});
 	}
 	$(document).on('change', '#enrlmntYrId', function(){
+		var value = $(this).val();
+		var valueText = $("#enrlmntYrId option:selected").html();
+		if(value == 3){
+			$('#programSelectId').html("<option value='1'>Training Program"+valueText+"</option>"); 
+		}else if($(this).val() == 4){
+			$('#programSelectId').html("<option value='8'>Training Program"+valueText+"</option>");
+		}
+		$("#programTypeSelectId").val('all');
+		$("#centerSelectId").val(0);
+		$("#batchSelectId").val(0);
 		getattendedcountByFeedBacks($(this).val());
 		getAttendedCountsByProgramOrCampOrBatch(selectedRadio,$(this).val());
 		getAttendedCountSummaryByBatch($(this).val());
@@ -1003,6 +1005,21 @@ function buildSurveyDetails(result)
 			$(".themeControll").removeClass("active");
 		}
 		var enrollmentYrId = $("#enrlmntYrId").val();
+		getattendedcountByFeedBacks(enrollmentYrId);
+		getAttendedCountsByProgramOrCampOrBatch(selectedRadio,enrollmentYrId);
+		getAttendedCountSummaryByBatch(enrollmentYrId);
+		getProgCampBatchNames();
+		getSurveyDetails();
+	}
+	onloadCalls();
+	function onloadCalls(){
+		var enrollmentYrId = $("#enrlmntYrId").val();
+		var valueText = $("#enrlmntYrId option:selected").html();
+		if(enrollmentYrId == 3){
+			$('#programSelectId').html("<option value='1'>Training Program"+valueText+"</option>"); 
+		}else if(enrollmentYrId == 4){
+			$('#programSelectId').html("<option value='8'>Training Program"+valueText+"</option>");
+		}
 		getattendedcountByFeedBacks(enrollmentYrId);
 		getAttendedCountsByProgramOrCampOrBatch(selectedRadio,enrollmentYrId);
 		getAttendedCountSummaryByBatch(enrollmentYrId);
