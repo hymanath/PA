@@ -1686,14 +1686,14 @@ function getBoothUserDetailsbuild(result,locationName){
 						str +='<th>MANDAL/MUNCI/CORP/GREATER&nbsp;CITY&nbsp;</th>';
 						str +='<th>VILLAGE/WARD&nbsp;</th>';
 						//str +='<th>VILLAGE&nbsp;COVERED </th>';	
-					//	str +='<th>OWN BOOTH&nbsp;NO</th>';
+						str +='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
 						str +='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
-						str +='<th>SERIAL&nbsp;No</th>';						
+						str +='<th>SERIAL&nbsp;NO</th>';						
 						str +='<th>PHOTO</th>';
 						str +='<th>MEMBERSHIP&nbsp;NO</th>';
 						str +='<th>CADRE&nbsp;NAME</th>';
 						str +='<th>MOBILE&nbsp;NO</th>';
-						str +='<th>MEMBERSHIP&nbsp;NO</th>';
+						str +='<th>DESIGNATION</th>';
 						str +='<th> REMOVE &nbsp;</th>';
 					 						 
 					 str +='</tr>';
@@ -1709,7 +1709,7 @@ function getBoothUserDetailsbuild(result,locationName){
 								str +='<td>'+result[i].panchayatName+'</td>';
 								//str +='<td>'+result[i].boothName+'</td>';
 																
-								//str +='<td><span></span>'+'Booth&nbsp;No&nbsp;-&nbsp;'+result[i].originalLocation+'</td>';								
+								str +='<td><span></span>'+'Booth&nbsp;No&nbsp;-&nbsp;'+result[i].originalLocation+'</td>';
 								str +='<td><span></span>'+'Booth&nbsp;No&nbsp;-&nbsp;'+result[i].boothNumber+'</td>';								
 							    if(result[i].serialNo != null)								
 								  str +='<td>'+result[i].serialNo+'</td>';
@@ -1726,7 +1726,10 @@ function getBoothUserDetailsbuild(result,locationName){
 								  str +='<td>'+result[i].roleName+'</td>';
 							    else
 								  str +='<td>  -  </td>';
-								str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' attr_role="'+result[i].roleName+'" value="DELETE" type="button"></td>';	
+								if(result[i].status != null && (result[i].status=="N" || result[i].status=="N " || result[i].status==" N" || result[i].status==" N "))	
+									str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' attr_role="'+result[i].roleName+'" value="DELETE" type="button"></td>';
+								else
+								  str +='<td>  -  </td>';								
 							str +='</tr>';
 							}
 			  str +='</tbody>';
@@ -1740,13 +1743,14 @@ function getBoothUserDetailsbuild(result,locationName){
 						str +='<th>MANDAL/MUNICIPALITY/CORPORATION&nbsp;</th>';
 						str +='<th>VILLAGE/WARD&nbsp;</th>';
 						str +='<th>VILLAGE&nbsp;COVERED </th>';	
-						str +='<th>BOOTH&nbsp;NO</th>';
+						str +='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
+						str +='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
 						str +='<th>SERIAL&nbsp;nO</th>';						
 						//str +='<th>PHOTO</th>';
 						str +='<th>MEMBERSHIP&nbsp;NO</th>';
 						str +='<th>CADRE&nbsp;NAME</th>';
 						str +='<th>MOBILE&nbsp;NO</th>';
-						str +='<th>MEMBERSHIP&nbsp;NO</th>';
+						str +='<th>DESIGNATION</th>';
 						//str +='<th> REMOVE &nbsp;</th>';
 					 						 
 					 str +='</tr>';
@@ -1761,7 +1765,7 @@ function getBoothUserDetailsbuild(result,locationName){
 								str +='<td>'+result[i].mandalName+'</td>';
 								str +='<td>'+result[i].panchayatName+'</td>';
 								str +='<td>'+result[i].boothName+'</td>';
-																
+								str +='<td><span></span>'+'Booth&nbsp;No&nbsp;-&nbsp;'+result[i].originalLocation+'</td>';
 								str +='<td><span></span>'+'Booth No - '+result[i].boothNumber+'</td>';								
 							    if(result[i].serialNo != null)								
 								  str +='<td>'+result[i].serialNo+'</td>';
@@ -1808,7 +1812,7 @@ $(document).on("click","#deleteMembrsBtn",function(){
 	if(!confirm(" Are You sure want to remove this "+roleName+" Position Cadre ?")){
 		return ;
 	}
-	
+	$(this).hide();
 	var inchargeId = $(this).attr("attr_incharge_id");
 	var roleMappingId = $(this).attr("attr_roleMapping_id");
 	
