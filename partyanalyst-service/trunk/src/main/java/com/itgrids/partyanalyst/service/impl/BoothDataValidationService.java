@@ -525,19 +525,23 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 						continue;
 					}
 					String locationIdStr ="";
+					String locationName = "";
 					if(type.equalsIgnoreCase(IConstants.TEHSIL)) {
 						locationIdStr="1"+commonMethodsUtilService.getStringValueForObject(param[0]);
+						locationName = commonMethodsUtilService.getStringValueForObject(param[1]);
 					} else if (type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)) {
 						locationIdStr ="2"+commonMethodsUtilService.getStringValueForObject(param[0]);
+						locationName = commonMethodsUtilService.getStringValueForObject(param[1])+" Munci/Corp/Greater City";
 					} else {
 						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[0]);
+						locationName = commonMethodsUtilService.getStringValueForObject(param[1]);
 					}
 						
 					BoothInchargeDetailsVO locationVO = locationBoothMap.get(locationIdStr.trim());
 					if (locationVO == null ){
 						locationVO = new BoothInchargeDetailsVO();
 						locationVO.setLocationIdStr(locationIdStr);
-						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						locationVO.setLocationName(locationName);
 						locationVO.setBoothAddressVO(getBoothAddress(param));
 						//taking location wise serial range wise voter map and setting based on location. 
 						Map<Long,Long> rangeWiseVoterCountMap = locationSerialRangeWiseVoterMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
