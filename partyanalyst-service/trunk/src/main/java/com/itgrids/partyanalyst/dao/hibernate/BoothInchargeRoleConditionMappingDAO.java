@@ -76,7 +76,8 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 											" from BoothInchargeRoleConditionMapping model" +
 											" where model.boothInchargeCommittee.address.tehsil.tehsilId in (:tehsilIds)" +
 											" and model.boothInchargeCommittee.address.constituency.constituencyId = :constituencyId" +
-											" and model.boothInchargeCommittee.booth.publicationDate.publicationDateId = :publicationDate");
+											" and model.boothInchargeCommittee.booth.publicationDate.publicationDateId = :publicationDate " +
+											" and model.boothInchargeCommittee.address.localElectionBody is null ");
 		
 		query.setParameter("publicationDate", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
 		query.setParameterList("tehsilIds", tehsilIds);
