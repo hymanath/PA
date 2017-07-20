@@ -720,7 +720,12 @@ function buildBoothDetails(result,locationLevel){
 		str+='</table>';
 		str+='</div>';
 	 $("#boothDtlsDivId").html(str);	
-	 $('#bootDtlsdataTableId').dataTable();
+	 $("#bootDtlsdataTableId").dataTable({
+			"aaSorting": [[ 4, "desc" ]], 
+			"iDisplayLength" : 10,
+			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
+				
+		 });
 	}else{
 	  $("#boothDtlsDivId").html('NO DATA AVAILABLE');
 	}
@@ -918,7 +923,12 @@ function buildCadreDetails(result,locationLevel,boothName){
 		
 		str+='</div>';
 	 $("#cadreDetailsDivId").html(str);	
-	 $("#cadreDetailsDataTableId").dataTable();
+	 $("#cadreDetailsDataTableId").dataTable({
+			"aaSorting": [[ 4, "desc" ]], 
+			"iDisplayLength" : 10,
+					"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
+				
+	});
 	}else{
 	  $("#cadreDetailsDivId").html('NO DATA AVAILABLE.')	
 	}
