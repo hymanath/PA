@@ -1276,13 +1276,26 @@ function updateFamilyInfo()
 		var emailreg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 		var mobileNo = $(this).find(".mobile").val();
 		var relation = $(this).find(".relation").val();
-		var errStrDiv = $(this).find(".mobile").attr('key');
+		var errStrDiv = $(this).find(".mobile").attr('key');						
 		if(name != null && name.trim().length == 0)
 		{
 			strErr+=" Name is required.";
 			$('#'+errStrDiv+'').html(strErr);
 			return;
-		}	   
+		}
+         var numericExpression =  /^[a-z,A-Z," "]+$/;
+				if(!$("#nameId").val().match(numericExpression)){
+					strErr+="Enter characters Only.";
+					$('#'+errStrDiv+'').html(strErr);
+					 return;
+					}
+		if(name != null && name.trim().length < 3)
+		{
+			strErr+=" Please enter Minimum 3 Characters.";
+			$('#'+errStrDiv+'').html(strErr);
+			return;
+		}
+					
 		if(relation != null && relation == 0)
 		{
 			strErr+=" Relations is required.";
@@ -1556,7 +1569,7 @@ function addNewMemberInFamily(size)
 			str+='<input type="hidden" value="cadreId"  style="display:none;" class="tdpCadre" />';
 			
 			str+='<div class="panel-heading">';
-            str+=' Name : <span class="mandatory"> * </span>  <h4 class="media-heading"> <input type="text"  class="name form-control"  style="width: 250px"  placeholder="Please enter name " />    </h4> <div id="ErrorDiv'+size+'"  class="mandatory"></div>';
+            str+=' Name : <span class="mandatory"> * </span>  <h4 class="media-heading"> <input type="text"  class="name form-control"  style="width: 250px" id="nameId" placeholder="Please enter name " />    </h4> <div id="ErrorDiv'+size+'"  class="mandatory"></div>';
 			str+='<i class="glyphicon glyphicon-minus-sign pull-right" style="border: 1px solid rgb(0, 0, 0); padding: 2px; width: 20px; height: 20px; font-size: 14px;margin-top:-33px;cursor:pointer" onclick="removeDetails(\'familyInnfo'+size+'\');" title="Click To Remove Family Member"></i>';
             str+='</div>';
 			
