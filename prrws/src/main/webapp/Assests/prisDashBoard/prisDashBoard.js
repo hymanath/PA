@@ -1,4 +1,4 @@
-var globalFromDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
+var globalFromDate = moment().subtract(0,'month').startOf("month").format('DD-MM-YYYY');
 var globalToDate = moment().format('DD-MM-YYYY');
 var blockNameArr=[{name:'District',id:'3'},{name:'Constituency',id:'4'},{name:'Mandal',id:'5'}]
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
