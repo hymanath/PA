@@ -13,7 +13,7 @@
       <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
       <link href="daterangepicker/bootstrap-datetimepicker.css" type="text/css" rel="stylesheet"/>
       <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
-	  <style>
+      <style>
 	  .glyphicon-plus,.glyphicon-minus{
 		  cursor:pointer;
 	  }
@@ -267,7 +267,7 @@
                      <button type="button" class="close" data-dismiss="modal">&times;</button>
                      <h4 class="modal-title">Meeting Details</h4>
                   </div>
-                  <form name="editMeetingDetailsSubmitFormName" id="editMeetingDetailsSubmitFormId">
+                  <!-- <form name="editMeetingDetailsSubmitFormName" id="editMeetingDetailsSubmitFormId"> -->
                      <div class="modal-body">
 					 <div class="panel panel-default">
                        <div class="panel-body">
@@ -371,7 +371,7 @@
             <div class="row">
                <div class="col-sm-11">
                   <h4 class="panel-title m_top5">Attended Invitiees</h4>
-				  
+               
                </div>
                <div class="col-sm-1">
                   <span id="attendedInvitieesTabButton" data-toggle="collapse" data-target="#attendedInvitieesTable" class="attendedInvitieesTabExpandCollapse">
@@ -381,34 +381,16 @@
             </div>
          </div>
          <div class="panel-body" id="attendedInvitieesTable">
-			<div id="attendceOfInviteeDivId"></div>
+         <div id="attendceOfInviteeDivId"></div>
          </div>
       </div>
-	<!--  <div class="panel panel-default">
-         <div class="panel-heading">
-            <div class="row">
-               <div class="col-sm-11">
-                  <h4 class="panel-title m_top5">Attended None-Invitiees</h4>
-				  
-               </div>
-               <div class="col-sm-1">
-                  <span id="attendedNoneInvitieesTabButton" data-toggle="collapse" data-target="#attendedNoneInvitieesTable" class="attendedNoneInvitieesTabExpandCollapse">
-                  <i class="glyphicon glyphicon-plus"></i>
-                  </span>
-               </div>
-            </div>
-         </div>
-         <div class="panel-body" id="attendedNoneInvitieesTable">
-			<div id="attendceOfNoneInviteeDivId"></div>
-         </div>
-      </div>    -->
 	  
 	  
 	  <div class="panel panel-default">
          <div class="panel-heading">
             <div class="row">
                <div class="col-sm-11">
-                  <h4 class="panel-title m_top5">Not-Attended Invitiees</h4>
+                  <h4 class="panel-title m_top5">Non-Attended Invitiees</h4>
                </div>
                <div class="col-sm-1">
                   <span id="nonAttendedInvitieesTabButton" data-toggle="collapse" data-target="#nonAttendedInvitieesTable" class="nonAttendedInvitieesTabExpandCollapse">
@@ -418,7 +400,6 @@
             </div>
          </div>
          <div class="panel-body" id="nonAttendedInvitieesTable">
-			<div id="nonAttendedInvitieesDivId"></div>
          </div>
       </div>
 				
@@ -430,7 +411,7 @@
                </div>
                <div class="form-group">
                   <label for="textArea">Please Enter MemberShip Id's In Comma Separator:</label>
-                  <textarea id="textAreaId" class="form-control" cols="50" rows="4"></textarea>
+                  <textarea id="editTextAreaId" class="form-control" cols="50" rows="4"></textarea>
                </div>
             </div>
 								
@@ -452,18 +433,17 @@
 						   
 				 <div class="form-group">
                  <button type="button" class="btn btn-danger" id="genarateModelXmlId">Download Invitees</button>
-               </div>      
+               </div>     
+              <form name="editPartyMeetingExcelUploadName" id="editPartyMeetingExcelUploadId">			
                <div class="form-group">
-                  <input type="file" id="editPartyMeetingIdUpload" multiple="multiple"  name="files[]" class="m_top20" required/>
+                  <input type="file" id="editPartyMeetingId" multiple="multiple"  name="files[]" class="m_top20" required/>
                </div>
-						   
-                        
-                     
                      <div class="modal-footer">
                         <button type="button" class="btn btn-success" id="editMeetingDetailsSubmitId">Submit</button>
+						 </form>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                      </div>
-                  </form>
+                
                </div>
             </div>
          </div>
@@ -499,9 +479,7 @@
 
 
     $(document).on("click", "#applicatioSubmitId", function() {
-
-        console.log(memebershipIds);
-
+        //console.log(memebershipIds);
         console.log($("#partyMeetingId").val().length);
         if ($("#textAreaId").val().length > 0 && $("#partyMeetingId").val().length > 0) {
             $(".resultStatus").modal('show');
@@ -691,7 +669,7 @@
             $("#excelUploadStatusId").html(uploadResult);
         }
     }
-
+/*
     $(document).on("click", "#editMeetingDetailsSubmitId", function() {
 
         var uploadHandler = {
@@ -703,7 +681,7 @@
         YAHOO.util.Connect.setForm('editMeetingDetailsSubmitFormName', true);
         YAHOO.util.Connect.asyncRequest('POST', 'savepartymeetingDetailsWithExcelAction.action', uploadHandler);
 
-    });
+    });*/
 
     $(document).on("click", ".checkAllCheckBoxCls", function() {
         if ($(this).is(":checked")) {
@@ -743,7 +721,7 @@
         YAHOO.util.Connect.asyncRequest('POST', 'savepartymeetingDetailsAction.action', uploadHandler);
 
     });
-	
+    
 	$(document).on("click", "#genarateModelXmlId", function() {
     generateExcelReport();
 });
@@ -751,6 +729,62 @@
     function generateExcelReport() {
         tableToExcel("inviteeTavbleId", 'Tab user wise Registration Report');
     }
+    
+	$(document).on("click", "#editMeetingDetailsSubmitId", function() {
+        if ($("#editTextAreaId").val().length > 0 && $("#editPartyMeetingId").val().length > 0) {
+            $(".resultStatus").modal('show');
+			$(".meetingEditModelId").modal('hide');
+            $('#submitSuccessId').html("");
+            $('#submitSuccessId').append("<p>Please upload csv file or use TextArea to enter Membership Id's</p>");
+            setTimeout(function() {
+                $(".resultStatus").modal('hide');
+            }, 3000);
+        } else if ($("#editPartyMeetingId").val().length > 0) {
+            editCallActionMethod();
+        } else if ($("#editTextAreaId").val().length > 0) {
+            var editTextAreaIds = $("#editTextAreaId").val();
+            var memebershipIds = editTextAreaIds.split(",");
+            $("#tdpCadreDetailsModalId").modal('show');
+            getTdpCadreDetailsForInveetMeeting(memebershipIds);
+            createHiddenFields();
+        } else {
+
+        }
+	});
+	
+	function editCallActionMethod(){
+        var uploadHandler = {
+            upload: function(o) {
+                uploadResult = o.responseText;
+				console.log(uploadResult);
+				uploadResult = uploadResult.replace("<pre>", "");
+                uploadResult = uploadResult.replace("</pre>", "");
+                uploadResult = uploadResult.replace(",\"", "");
+                uploadResult = uploadResult.replace("\"", "");
+                uploadResult = uploadResult.replace(/\"/g, "");
+    
+                uploadResult = uploadResult.replace("<pre style=word-wrap: break-word; white-space: pre-wrap;>", "");
+                console.log(uploadResult);
+                if (uploadResult == "Please upload csv format") {
+                    $('#submitSuccessId').html("");
+                    $(".resultStatus").modal('show');
+                    $('#submitSuccessId').append("<p>Please upload csv format</p>");
+                    setTimeout(function() {
+                        $(".resultStatus").modal('hide');
+                    }, 3000);
+
+                } else {
+                    $("#tdpCadreDetailsModalId").modal('show');
+                    var memeberShipArr = uploadResult.split(",");
+                    getTdpCadreDetailsForInveetMeeting(memeberShipArr);
+                    //createHiddenFields();
+                }
+            }
+        };
+
+		YAHOO.util.Connect.setForm('editPartyMeetingExcelUploadName', true);
+        YAHOO.util.Connect.asyncRequest('POST', 'getMemberShipIdsFromExcelAction.action', uploadHandler);
+	}
 </script>
 <script>
     var tableToExcel = (function() {
