@@ -9,27 +9,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Committee Management</title>
-
-    <!-- Bootstrap -->
-    <link href="css/cadreCommitee/bootstrap.min.css" rel="stylesheet">
-	 <!-- Custom Styles -->
-    <link href="css/cadreCommitee/style.css" rel="stylesheet">
-	<!----slick.css----->
-	<link rel="stylesheet" type="text/css" href="css/cadreCommitee/slick/slick.css"/>
-	<!-- dataTable.css -->
+	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+    <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/>
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/cadreCommittee/bootstrap.min.js"></script>
-	<!----slick Js----->
-	<script type="text/javascript" src="js/cadreCommittee/slick/slick.min.js"></script>
-	<script type="text/javascript" src="js/cadreCommittee/electionBoothCommittee.js"></script>
-   	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-			<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
-	<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
-	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
+	<link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
+	<link href="Assets/css/boothIncharge.less" rel="stylesheet" type="text/less">
+	<script src="https://use.fontawesome.com/07d3416f74.js"></script>
+	<script src="Assets/js/less.js"></script>
+   	
+	
 	<style>
 	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationsDiv,
 	#designationDivId,#step1Id,#step2Id,#step3Id,#cadreDetailsDiv
@@ -257,7 +248,18 @@
 			&copy; 2015 Telugu Desam Party
 	</footer>-->
 
-	<script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/> 
+<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="Assets/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
+<script src="dist/newmultiselect/chosen.jquery.js" type="text/javascript"></script>
+<script src="Assets/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="Assets/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/cadreCommittee/electionBoothCommittee.js"></script>
+<script type="text/javascript">
  validateSearchType('3');
 getTdpCommitteeMandalCorporationsByConstituency(2);	
 var globalLocationId = '${sessionScope.USER.accessValue}';
