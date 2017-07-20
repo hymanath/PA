@@ -1431,6 +1431,7 @@ getAllDepartments();
 			
 		var table='';
 		var newYearId;
+		var departmentId = $("#DepartmentsId").val();
 		/* if(result[0].subList.length >= 2 || $windowWidth < 768)
 			{
 				table+='<div class="table-responsive">';
@@ -1442,6 +1443,8 @@ getAllDepartments();
 						if(levelId == '2')
 						{
 							table+='<th>STATE</th>';
+							if(departmentId != 1)
+							table+='<th></th>';
 							if(viewType == "cumulative"){
 								table+='<th>TOTAL</th>';
 							}
@@ -1450,6 +1453,8 @@ getAllDepartments();
 							var blockType = getblockType();
 							
 							table+='<th>DISTRICT</th>';
+							if(departmentId != 1)
+							table+='<th></th>';
 							if(viewType == "cumulative"){
 								table+='<th>TOTAL</th>';
 							}
@@ -1466,10 +1471,14 @@ getAllDepartments();
 						{
 							var blockType = getblockTypeCons();
 							table+='<th>DISTRICT</th>';
+							if(departmentId != 1)
+							table+='<th></th>';
 							if(blockType == "parliamentType"){
 								table+='<th>PARLIAMENT</th>';
 							}
 							table+='<th>CONSTITUENCY</th>';
+							if(departmentId != 1)
+							table+='<th></th>';
 							if(viewType == "cumulative"){
 								table+='<th>TOTAL</th>';
 							}
@@ -1477,11 +1486,17 @@ getAllDepartments();
 						{
 							var blockType = getblockTypeMandal();
 							table+='<th>DISTRICT</th>';
+							if(departmentId != 1)
+							table+='<th></th>';
 							if(blockType == "parliamentType"){
 								table+='<th>PARLIAMENT</th>';
 							}
 							table+='<th>CONSTITUENCY</th>';
+							if(departmentId != 1)
+							table+='<th></th>';
 							table+='<th>MANDAL</th>';
+							if(departmentId != 1)
+							table+='<th></th>';
 							if(viewType == "cumulative"){
 								table+='<th>TOTAL</th>';
 							}
@@ -1525,7 +1540,11 @@ getAllDepartments();
 							{
 								lvlVal =1;
 								//table+='<td>1</td>';
-									table+='<td>Andhra Pradesh <span class="icon-text rwsModalClickView" attr_rws_levelId="2" attr_rws_locationId="1" attr_district_val ="" attr_type="state" attr_location_name="Andhra Pradesh">R</span></td>';
+									table+='<td>Andhra Pradesh </td>';
+									if(departmentId != 1){
+										table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="2" attr_rws_locationId="1" attr_district_val ="" attr_type="state" attr_location_name="Andhra Pradesh">R</span></td>';
+									}
+									
 										if(viewType == "cumulative"){
 											table+='<td>'+result[i].amount+'  ('+result[i].count+')</td>';
 										}
@@ -1537,7 +1556,11 @@ getAllDepartments();
 								locatioName =result[i].addressVO.districtName;
 								levelName = "DISTRICT";
 								var blockType = getblockType();
-								table+='<td>'+result[i].addressVO.districtName+' <span class="icon-text rwsModalClickView" attr_rws_levelId="3" attr_rws_locationId="'+lvlVal+'" attr_district_val ="" attr_type="district" attr_location_name="'+result[i].addressVO.districtName+'">R</span></td>';
+								table+='<td>'+result[i].addressVO.districtName+' </td>';
+								if(departmentId != 1){
+									table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="3" attr_rws_locationId="'+lvlVal+'" attr_district_val ="" attr_type="district" attr_location_name="'+result[i].addressVO.districtName+'">R</span></td>';
+								}
+								
 									if(viewType == "cumulative"){
 										table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
 										//table+='<td>'+result[i].amount+'</td>';
@@ -1564,11 +1587,19 @@ getAllDepartments();
 								var districtId =result[i].addressVO.districtId;
 								levelName = "CONTITUENCY";
 								locatioName =result[i].addressVO.assemblyName;
-								table+='<td>'+result[i].addressVO.districtName+' <span class="icon-text rwsModalClickView" attr_rws_levelId="4" attr_rws_locationId="'+districtId+'" attr_district_val ="" attr_type="district" attr_location_name="'+result[i].addressVO.districtName+'">R</span></td>';
+								table+='<td>'+result[i].addressVO.districtName+' </td>';
+								if(departmentId != 1){
+									table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="4" attr_rws_locationId="'+districtId+'" attr_district_val ="" attr_type="district" attr_location_name="'+result[i].addressVO.districtName+'">R</span></td>';
+								}
+								
 									if(blockType == "parliamentType"){
 										table+='<td>'+result[i].addressVO.parliamentName+'</td>';
 									}
-									table+='<td>'+result[i].addressVO.assemblyName+' <span class="icon-text rwsModalClickView" attr_rws_levelId="4" attr_rws_locationId="'+lvlVal+'" attr_district_val ="" attr_type="constituency" attr_location_name="'+result[i].addressVO.assemblyName+'">R</span></td>';
+									table+='<td>'+result[i].addressVO.assemblyName+' </td>';
+										if(departmentId != 1){
+											table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="4" attr_rws_locationId="'+lvlVal+'" attr_district_val ="" attr_type="constituency" attr_location_name="'+result[i].addressVO.assemblyName+'">R</span></td>';
+										}
+									
 									if(viewType == "cumulative"){
 										table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "CONSTITUENCY" >'+result[i].count+')</small></td>';
 										//table+='<td>'+result[i].amount+'</td>';
@@ -1583,12 +1614,24 @@ getAllDepartments();
 								levelName = "MANDAL";
 								var districtId =result[i].addressVO.districtId;
 								var constituencyId =result[i].addressVO.assemblyId;
-								table+='<td>'+result[i].addressVO.districtName+' <span class="icon-text rwsModalClickView" attr_rws_levelId="5" attr_rws_locationId="'+districtId+'" attr_district_val ="" attr_type="district" attr_location_name="'+result[i].addressVO.districtName+'">R</span></td>';
+								table+='<td>'+result[i].addressVO.districtName+' </td>';
+								if(departmentId != 1){
+									table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="5" attr_rws_locationId="'+districtId+'" attr_district_val ="" attr_type="district" attr_location_name="'+result[i].addressVO.districtName+'">R</span></td>';
+								}
+								
 									if(blockType == "parliamentType"){
 										table+='<td>'+result[i].addressVO.parliamentName+'</td>';
 									}
-									table+='<td>'+result[i].addressVO.assemblyName+' <span class="icon-text rwsModalClickView" attr_rws_levelId="5" attr_rws_locationId="'+constituencyId+'" attr_district_val ="" attr_type="constituency" attr_location_name="'+result[i].addressVO.assemblyName+'">R</span></td>';
-									table+='<td>'+result[i].addressVO.tehsilName+' <span class="icon-text rwsModalClickView" attr_rws_levelId="5" attr_rws_locationId="'+lvlVal+'" attr_district_val ="'+districtId+'" attr_type="mandal" attr_location_name="'+result[i].addressVO.tehsilName+'">R</span></td>';
+									table+='<td>'+result[i].addressVO.assemblyName+' </td>';
+									if(departmentId != 1){
+										table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="5" attr_rws_locationId="'+constituencyId+'" attr_district_val ="" attr_type="constituency" attr_location_name="'+result[i].addressVO.assemblyName+'">R</span></td>';
+									}
+									
+									table+='<td>'+result[i].addressVO.tehsilName+' </td>';
+									if(departmentId != 1){
+										table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="5" attr_rws_locationId="'+lvlVal+'" attr_district_val ="'+districtId+'" attr_type="mandal" attr_location_name="'+result[i].addressVO.tehsilName+'">R</span></td>';
+									}
+									
 									if(viewType == "cumulative"){
 										table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "MANDAL">'+result[i].count+')</small></td>';
 										//table+='<td>'+result[i].amount+'</td>';
