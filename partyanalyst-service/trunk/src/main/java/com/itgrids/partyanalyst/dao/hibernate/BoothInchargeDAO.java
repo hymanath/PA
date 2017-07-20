@@ -342,10 +342,11 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.boothInchargeId,model2.serialNo from BoothIncharge model " +
 				"left join model.tdpCadre.voter voter , BoothPublicationVoter model2 where " +
-				"  model.isDeleted='N' and model.isActive='Y'  and model2.voter.voterId=voter.voterId " );
+				"  model.isDeleted='N' and model.isActive='Y'  and model2.voter.voterId=voter.voterId and " +
+				" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.booth.publicationDate.publicationDateId=:publicationDateId " );
 		
 		if(boothId != null && boothId.longValue() >0l)
-			sb.append(" and model2.booth.boothId = :boothId ");
+			//sb.append(" and model2.booth.boothId = :boothId ");
 		if(boothId != null && boothId.longValue() >0l)
 			sb.append("and  model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId = :boothInchrgRoleId ");
 		if(boothEnrollmentYrIds != null && boothEnrollmentYrIds.size() >0)
@@ -358,7 +359,7 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 			query.setParameter("boothInchrgRoleId", boothInchrgRoleId);
 		if(boothEnrollmentYrIds != null && boothEnrollmentYrIds.size() >0)
 			query.setParameterList("boothEnrollmentYrIds", boothEnrollmentYrIds);
-		
+		query.setParameter("publicationDateId", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
 		return query.list();
 	}
 	public List<Object[]> getLocationSerialNoRangeWiseVoterCount(InputVO inputVO) {
@@ -479,7 +480,7 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		}else if(type.equalsIgnoreCase("familyVoter")){
 			queryStr.append("where model2.voter.voterId = model.tdpCadre.familyVoterId ");
 		}  
-		queryStr.append(" and model2.boothId=model1.booth.boothId");
+		//queryStr.append(" and model2.boothId=model1.booth.boothId");
 		queryStr.append(" and model1.booth.publicationDate.publicationDateId=:publicationDateId ");
 
 		queryStr.append(" and model.isDeleted='N' and model.boothInchargeRoleConditionMapping.isDeleted ='N' and model1.isDeleted='N' and model.isActive = 'Y' ");
@@ -517,7 +518,7 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
 			queryStr.append(" and model1.boothInchargeEnrollmentId =:boothInchargeEnrollmentId ");
 		}
-		
+		queryStr.append(" group by  model.tdpCadre.tdpCadreId ");
 		Query query = getSession().createQuery(queryStr.toString());
 
 		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
