@@ -1302,6 +1302,12 @@ function updateFamilyInfo()
 			$("#cadreErrorDiv").html(strErr);
 			return;
 		}
+		else if ($("#cadreMobile").val() != null && $("#cadreMobile").val() != "" && $("#cadreMobile").val().length != 10 ) 
+		{
+			strErr+='Invalid Mobile No.';
+			$("#cadreErrorDiv").html(strErr);
+			return;			
+		}
 		else if (mobileNo !=null && mobileNo != "" && mobileNo.length != 10 ) 
 		{
 			strErr+='Invalid Mobile No.';
