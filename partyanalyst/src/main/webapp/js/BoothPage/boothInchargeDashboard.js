@@ -687,7 +687,7 @@ function buildBoothDetails(result,locationLevel){
 						}
 						if(result[i].boothName != null){
 							if(result[i].status != null && result[i].status!="NotStarted"){
-								str+='<td class="text-center cadreDetailsCls" style="cursor: pointer; font-size: 16px; margin-top: 10px;color: rgb(51, 122, 183);" attr_location_level='+locationLevel+' attr_serial_no="0" attr_filter_level="" attr_filter_value="0"  attr_booth_id="'+result[i].boothId+'">'+result[i].boothName+'</td>';
+								str+='<td class="text-center cadreDetailsCls" style="cursor: pointer; font-size: 16px; margin-top: 10px;color: rgb(51, 122, 183);" attr_location_level='+locationLevel+' attr_serial_no="0" attr_filter_level="" attr_booth_name="'+result[i].boothName+'" attr_filter_value="0"  attr_booth_id="'+result[i].boothId+'">'+result[i].boothName+'</td>';
 							}else{
 								str+='<td class="text-center;">'+result[i].boothName+'</td>';
 							}
@@ -723,6 +723,7 @@ $(document).on("click",".cadreDetailsCls",function(){
 	$("#boothInchargeDataModalDivId").modal("show");
 	var locationLevel = $(this).attr("attr_location_level");
 	var boothId = $(this).attr("attr_booth_id");
+	var boothName = $(this).attr("attr_booth_name");
 	var serialRangeId = $(this).attr("attr_serial_no");
 	var filterLevel = $(this).attr("attr_filter_level");
 	var filterValue = $(this).attr("attr_filter_value");
@@ -731,11 +732,11 @@ $(document).on("click",".cadreDetailsCls",function(){
 		filterValueArr.push(filterValue);
 	}
 
-	getLocationWiseCadreDetails(locationLevel,filterLevel,filterValueArr,boothId,serialRangeId);
+	getLocationWiseCadreDetails(locationLevel,filterLevel,filterValueArr,boothId,serialRangeId,boothName);
 	
 });
 
-function getLocationWiseCadreDetails(locationLevel,filterLevel,filterValue,boothId,serialRangeId){
+function getLocationWiseCadreDetails(locationLevel,filterLevel,filterValue,boothId,serialRangeId,boothName){
 	  $("#cadreDetailsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var filterValueArr;   
 	   if(filterValue != null && filterValue.length > 0){
@@ -767,12 +768,13 @@ function getLocationWiseCadreDetails(locationLevel,filterLevel,filterValue,booth
 		dataType : 'json',
 		data : {task :JSON.stringify(jObj)} 
 	}).done(function(result){ 
-	   buildCadreDetails(result,locationLevel);
+	   buildCadreDetails(result,locationLevel,boothName);
 	});
 }
-function buildCadreDetails(result,locationLevel){
+function buildCadreDetails(result,locationLevel,boothName){
 	if(result != null && result.length > 0){
 		 var str = '';
+		 str +='<h4><a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'cadreDetailsExportDataTableId\')}"  style="margin-bottom: 7px;"> Export Excel</a></h4>';
 		 str+='<div class="table-responsive">';
 		 str+='<table class="table table-bordered" id="cadreDetailsDataTableId">';
 			str+='<thead>';
@@ -784,11 +786,14 @@ function buildCadreDetails(result,locationLevel){
 					str+='<th>CONSTITUENCY</th>';
 					str+='<th>TEHSIL</th>';
 					str+='<th>VILLAGE/WARD</th>';
+					str+='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
+					str+='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
 					str+='<th>NAME</th>';
 					str+='<th>IMAGE</th>';
 					str+='<th>SERIAL NO</th>';
 					str+='<th>MOBILE NO</th>';
 					str+='<th>MEMBERSHIP NO</th>';
+					str+='<th>DESIGNATION</th>';
 				str+='</tr>';
 			str+='</thead>';
 			 str+='<tbody>';
@@ -801,6 +806,8 @@ function buildCadreDetails(result,locationLevel){
 						str+='<td>'+result[i].constituencyName+'</td>';
 						str+='<td>'+result[i].tehsilName+'</td>';
 						str+='<td>'+result[i].panchayat+'</td>';
+						str+='<td>BOOTH&nbsp;NO-'+result[i].boothName+'</td>';
+						str+='<td>BOOTH&nbsp;NO-'+boothName+'</td>';
 						
 						if(result[i].cadreName != null){
 							str+='<td class="text-center;">'+result[i].cadreName+'</td>';
@@ -827,11 +834,85 @@ function buildCadreDetails(result,locationLevel){
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-						
+						if(result[i].role != null){
+							str+='<td class="text-center;">'+result[i].role+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
 				str+='</tr>';
 			   }
 			str+='</tbody>';
 		str+='</table>';
+		
+		
+		 str+='<table class="table table-bordered" style="display:none;" id="cadreDetailsExportDataTableId">';
+			str+='<thead>';
+				str+='<tr>';
+				//var locationSpecificHeadingStr = getLocationSpeceficHeading(locationLevel);
+				//str = str +" "+locationSpecificHeadingStr;
+					str+='<th>DISTRICT</th>';
+					str+='<th>PARLIAMENT CONSTITUENCY</th>';
+					str+='<th>CONSTITUENCY</th>';
+					str+='<th>TEHSIL</th>';
+					str+='<th>VILLAGE/WARD</th>';
+					//str+='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
+					str+='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
+					str+='<th>NAME</th>';
+					//str+='<th>IMAGE</th>';
+					str+='<th>SERIAL NO</th>';
+					str+='<th>MOBILE NO</th>';
+					str+='<th>MEMBERSHIP NO</th>';
+					str+='<th>DESIGNATION</th>';
+				str+='</tr>';
+			str+='</thead>';
+			 str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+					   //var boothAddressStr = getLocationWiseBoothAddress(locationLevel,result[i]);
+						 //str = str +" "+boothAddressStr;
+						str+='<td>'+result[i].districtName+'</td>';
+						str+='<td>'+result[i].parliamentConstituency+'</td>';
+						str+='<td>'+result[i].constituencyName+'</td>';
+						str+='<td>'+result[i].tehsilName+'</td>';
+						str+='<td>'+result[i].panchayat+'</td>';
+						//str+='<td>BOOTH&nbsp;NO-'+result[i].boothName+'</td>';
+						str+='<td>BOOTH&nbsp;NO-'+boothName+'</td>';
+						
+						if(result[i].cadreName != null){
+							str+='<td class="text-center;">'+result[i].cadreName+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].image != null && result[i].image.length > 0){
+							//str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].image+'" style="width: 50px; height: 50px;"></td>';
+						}else{
+							//str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].serialNo != null){
+							str+='<td class="text-center;">'+result[i].serialNo+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].mobileNo != null){
+							str+='<td class="text-center;">'+result[i].mobileNo+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].memberShipNo != null){
+							str+='<td class="text-center;">'+result[i].memberShipNo+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].role != null){
+							str+='<td class="text-center;">'+result[i].role+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+				str+='</tr>';
+			   }
+			str+='</tbody>';
+		str+='</table>';
+		
 		str+='</div>';
 	 $("#cadreDetailsDivId").html(str);	
 	 $("#cadreDetailsDataTableId").dataTable();
@@ -844,7 +925,7 @@ function boothInchargeRoles(){
 	    } 
 	  $.ajax({
 	    type : 'POST',
-	    url : 'geboothInchargeRolesAction.action',  
+	    url : 'getBoothInchargersRolesAction.action',  
 	    dataType : 'json',
 	    data : {task :JSON.stringify(jObj)} 
 	  }).done(function(result){ 

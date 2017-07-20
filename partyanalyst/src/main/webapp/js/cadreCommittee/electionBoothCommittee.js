@@ -1686,7 +1686,8 @@ function getBoothUserDetailsbuild(result,locationName){
 						str +='<th>MANDAL/MUNCI/CORP/GREATER&nbsp;CITY&nbsp;</th>';
 						str +='<th>VILLAGE/WARD&nbsp;</th>';
 						//str +='<th>VILLAGE&nbsp;COVERED </th>';	
-						str +='<th>BOOTH&nbsp;NO</th>';
+					//	str +='<th>OWN BOOTH&nbsp;NO</th>';
+						str +='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
 						str +='<th>SERIAL&nbsp;No</th>';						
 						str +='<th>PHOTO</th>';
 						str +='<th>MEMBERSHIP&nbsp;NO</th>';
@@ -1708,6 +1709,7 @@ function getBoothUserDetailsbuild(result,locationName){
 								str +='<td>'+result[i].panchayatName+'</td>';
 								//str +='<td>'+result[i].boothName+'</td>';
 																
+								//str +='<td><span></span>'+'Booth&nbsp;No&nbsp;-&nbsp;'+result[i].originalLocation+'</td>';								
 								str +='<td><span></span>'+'Booth&nbsp;No&nbsp;-&nbsp;'+result[i].boothNumber+'</td>';								
 							    if(result[i].serialNo != null)								
 								  str +='<td>'+result[i].serialNo+'</td>';
