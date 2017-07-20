@@ -355,7 +355,7 @@ function getLocationSpeceficHeading(locationLevel){
 		str+='<th rowspan="2">TEHSIL</th>';
 	}
 	if(locationLevel=="PANCHAYAT"){
-		str+='<th rowspan="2">PANCHAYAT</th>';
+		str+='<th rowspan="2">VILLAGE/WARD</th>';
 	}
 	return str;
 }
@@ -645,10 +645,10 @@ function getLocationLevelWiseBoothDetails(filterLevel,filterValue,resultType){
 		dataType : 'json',
 		data : {task :JSON.stringify(jObj)} 
 	}).done(function(result){ 
-	   buildBoothDetails(result,locationLevel);
+	   buildBoothDetails(result,locationLevel,filterLevel,filterValue);
 	});
 }
-function buildBoothDetails(result,locationLevel){
+function buildBoothDetails(result,locationLevel,filterLevel,filterValue){
 	var str='';
 	if(result != null && result.length > 0){
 		 str+='<div class="table-responsive">';
@@ -659,7 +659,7 @@ function buildBoothDetails(result,locationLevel){
 				    str+='<th>PARLIAMENT </th>';
 				    str+='<th>CONSTITUENCY</th>';
 				    str+='<th>MANDAL</th>';
-				    str+='<th>PANCHAYAT</th>';
+				    str+='<th>VILLAGE/WARD</th>';
 				    str+='<th>Booth NO</th>';
 					str+='<th>Booth Status</th>';
 					str+='<th>Update Status</th>';
@@ -707,9 +707,8 @@ function buildBoothDetails(result,locationLevel){
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-						
 						if(result[i].isReadyToConfirm == "yes"){
-							str+='<td> <button class="btn btn-xs btn-min btn-success" onclick="validateBoothToMakeConfirm('+result[i].boothId+',\''+result[i].boothName+'\')"> Entry Finished </button></td>';
+							str+='<td> <button class="btn btn-xs btn-min btn-success" onclick="validateBoothToMakeConfirm('+result[i].boothId+',\''+result[i].boothName+'\',\''+filterLevel+'\',\''+filterValue+'\')"> Entry Finished </button></td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}	
@@ -954,8 +953,7 @@ function boothInchargeRoles(){
 	  });
 	}
 	
-//validateBoothToMakeConfirm(); 
-function validateBoothToMakeConfirm(boothId,boothName){
+function validateBoothToMakeConfirm(boothId,boothName,filterLevel,filterValue){
 	
 	if(!confirm("Are you sure want confirm this Booth No-"+boothName+"  incharge Committee ?"))
 		return;
@@ -969,7 +967,13 @@ function validateBoothToMakeConfirm(boothId,boothName){
 		dataType : 'json',
 		data : {task :JSON.stringify(jObj)} 
 	}).done(function(result){ 
-	  console.log(result);
+	  if(result != null && result.status=="Success"){
+		   alert("BOOTH CONFIRM SUCCESSFULLY.");
+		  getLocationLevelWiseBoothDetails(filterLevel,filterValue,"All");
+	  }else {
+		  alert("Failure");
+	  }
+	 
 	});
 }
 
