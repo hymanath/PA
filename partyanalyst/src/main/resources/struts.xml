@@ -17631,7 +17631,9 @@
 	 <action name="cadrePartyMeetingManagementAction" class="cadrePartyMeetingManagementAction">
 	   		 <result name="success">/jsp/partyMeetingManagement.jsp</result>			
 	    </action>
-	    
+	    <action name="editPartyMeetingManagementAction" class="cadrePartyMeetingManagementAction" method="editPartyMeeting">
+		    <result name="success">/jsp/editPartyMeetingManagement.jsp</result>
+		</action>
 		<action name="getDistrictsAction" class="cadrePartyMeetingManagementAction" method="getDistrictsBasedOnStateId"> 
 		<result type="json" name="success">    
 		<param name="root">keyValueVOList</param>
@@ -17733,9 +17735,9 @@
 		<param name="root">partyMeetingsVOList</param>
 		</result>        
 	</action> 
-  <action name="getTdpCadreDetailsForPartyMeetingAction" class="cadrePartyMeetingManagementAction" method="getAllInviteeAtendedDetails">
+  <action name="getAttendanceForMeetingActoin" class="cadrePartyMeetingManagementAction" method="getAllInviteeAtendedDetails">
 		<result type="json" name="success">    
-		<param name="root">statusList</param>
+		<param name="root">idAndNameVO</param>
 		</result>        
 	</action> 
 
@@ -17817,7 +17819,6 @@
    </action>
    <action name="getBoothInchargeDashboardAction" class="boothReportAction" method="getBoothInchargeDashboard">
 			<result name="success">/jsp/boothInchargeDashBoard.jsp</result>
-			<result name="error">/jsp/loginForm.jsp?src=userProfile</result>
 	</action> 
 	
 	<action name="getLocationLevelWiseBoothCountAction" class="boothReportAction" method="getLocationLevelWiseBoothCount">
@@ -17865,15 +17866,17 @@
 			<param name="root">task</param>       
 		</result> 
    </action>
-   <action name="geboothInchargeRolesAction" class="boothReportAction" method="geboothInchargeRoles">
+   <action name="boothInchargeRolesAction" class="boothReportAction" method="boothInchargeRoles">
         <result type="json" name="success">
          	<param name="root">boothIncbhargeVOList</param>
        </result>
    </action>
+   
     <action name="getLocationWiseCadreDetailsAction" class="boothReportAction" method="getLocationWiseCadreDetails">
         <result type="json" name="success">
          	<param name="root">boothDtlsList</param>
        </result>
    </action>
+
  </package>
 </struts>
