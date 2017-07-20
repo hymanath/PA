@@ -456,7 +456,7 @@
 	 
 	<decorator name="tdpMenu" page="tdpMenu.jsp">  
 	<pattern>/cadrePartyMeetingManagementAction*</pattern>
-	
+	<pattern>/editPartyMeetingManagementAction*</pattern>
 	<pattern>/activitiesDashboard*</pattern>
 	<!-- Training module Starts-->
 	 <pattern>/trainingCenterDashBoardAction*</pattern>
