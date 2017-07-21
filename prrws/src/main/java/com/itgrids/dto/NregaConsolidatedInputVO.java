@@ -8,7 +8,7 @@ public class NregaConsolidatedInputVO implements Serializable{
 
 	private Long id;
 	private String name;
-	private String convergenceType;
+	private Long convergenceTypeId;
 	
 	private String fromDate;
 	private String toDate;
@@ -31,11 +31,11 @@ public class NregaConsolidatedInputVO implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getConvergenceType() {
-		return convergenceType;
+	public Long getConvergenceTypeId() {
+		return convergenceTypeId;
 	}
-	public void setConvergenceType(String convergenceType) {
-		this.convergenceType = convergenceType;
+	public void setConvergenceType(Long convergenceTypeId) {
+		this.convergenceTypeId = convergenceTypeId;
 	}
 	public String getFromDate() {
 		return fromDate;
