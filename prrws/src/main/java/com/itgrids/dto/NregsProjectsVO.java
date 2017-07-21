@@ -18,7 +18,7 @@ public class NregsProjectsVO implements Serializable{
 	private String REJECTCNT;
 	private String PENDINGRESPONSECNT;
 	private List<NregsProjectsVO> subList = new ArrayList<NregsProjectsVO>();
-	
+	private String componentType;
 	
 	public String getType() {
 		return type;
@@ -85,5 +85,11 @@ public class NregsProjectsVO implements Serializable{
 	}
 	public void setSubList(List<NregsProjectsVO> subList) {
 		this.subList = subList;
+	}
+	public String getComponentType() {
+		return componentType;
+	}
+	public void setComponentType(String componentType) {
+		this.componentType = componentType;
 	}
 }

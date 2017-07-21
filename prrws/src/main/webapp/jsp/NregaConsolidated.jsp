@@ -50,7 +50,7 @@ function getAllConvergenceTypes()
 		}
 	});
 }
-getComponentByConvergType();
+//getComponentByConvergType();
 function getComponentByConvergType()
 {
 	var json = {
@@ -68,6 +68,32 @@ function getComponentByConvergType()
 		},
 		success: function(ajaxresp) {
 			//buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId)
+		}
+	});
+}
+//getNREGSConsolidatedAbstrct();
+function getNREGSConsolidatedAbstrct()
+{
+	//$("#nregsOverviewBodyId").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : "2017-04-01",
+		toDate : "2017-07-30",
+		locationType: "district",
+		locationIdStr : "12",
+		componentIds : [1,2]
+	}
+	$.ajax({
+		url: 'getNREGSConsolidatedAbstrct',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			//buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId);
 		}
 	});
 }
