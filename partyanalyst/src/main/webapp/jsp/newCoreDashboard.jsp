@@ -3124,7 +3124,7 @@
 							<div class="col-md-8 col-sm-8 col-xs-8">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/cadreInsurance.png" class="iconClass"/>
-									cadre insurance <small class="text-muted">2016-2018</small>
+									cadre insurance <small class="text-muted"></small>
 								</h4>
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-4">
