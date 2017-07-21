@@ -692,6 +692,8 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 }
 		 if(stateId != null && stateId.longValue() > 0L){
 			 queryStr.append(" AND state_id_cmp =:stateId ");  
+		 }else{
+			 queryStr.append(" AND state_id_cmp in (1,2) ");
 		 }
 		 
 		 queryStr.append(" AND CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id "+
