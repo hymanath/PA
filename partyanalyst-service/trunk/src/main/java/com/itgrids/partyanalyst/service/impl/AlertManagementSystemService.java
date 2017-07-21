@@ -15887,11 +15887,15 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			List<Object[]> alertImpactLevelLst = alertDAO.getAlertImpactLevelWiseDetailsForConstituencyInfo(fromDate, toDate, constituencyId, alertTypeIds);
-			setImpactLevelData(alertImpactLevelLst,finalVoList);
 			
 			List<Object[]> alertStatusLst = alertDAO.getAlertStatusWiseDetailsForConstituencyInfo(fromDate, toDate, constituencyId, alertTypeIds);
 			setStatusWiseData(alertStatusLst,finalVoList);
+			
+			List<Object[]> scopeList = alertImpactScopeDAO.getAlertImpactScope();
+			setImpactScopeSkeletonNew(scopeList,finalVoList);
+			
+			List<Object[]> alertImpactLevelLst  = alertDAO.getAlertImpactLevelWiseDetailsForConstituencyInfo(fromDate, toDate, constituencyId, alertTypeIds);
+			setImpactLevelData(alertImpactLevelLst,finalVoList);
 			
 			List<Object[]> totalAlertCnt = alertDAO.getTotalAlertDetailsCount(fromDate, toDate, constituencyId, alertTypeIds);
 			setAlertData(totalAlertCnt,totalList);
@@ -15993,49 +15997,42 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 	public void setImpactLevelData(List<Object[]> objList,List<AlertVO> finalVOList){
 		if(objList != null && objList.size() > 0){
 			for (Object[] objects : objList) {
-				AlertVO matchedVO = getmatchedAlertVo(finalVOList,(Long)objects[0]);
+				AlertVO matchedVO = getmatchedAlertVo(finalVOList.get(0).getSubList1(),(Long)objects[0]);
 				if(matchedVO == null){
 					matchedVO = new AlertVO();
 					matchedVO.setId((Long)objects[0]);
 					matchedVO.setStatus(objects[1].toString());
 					
-					AlertVO alertTypeVo = new AlertVO();
+					/*AlertVO alertTypeVo = new AlertVO();
 						alertTypeVo.setId((Long)objects[2]);
-						alertTypeVo.setStatus(objects[3].toString());
+						alertTypeVo.setStatus(objects[3].toString());*/
 					
 					if((Long)objects[2] == 1l){
-						alertTypeVo.setCount((Long)objects[4]);//For party
+						matchedVO.setCount((Long)objects[4]);//For party
 					}
 					else if((Long)objects[2] == 2l){
-						alertTypeVo.setAlertCnt((Long)objects[4]);//For Govt
+						matchedVO.setAlertCnt((Long)objects[4]);//For Govt
 					}
-					matchedVO.getSubList1().add(alertTypeVo);
 					finalVOList.add(matchedVO);
 				}else{
-					AlertVO alertTypeVo = getmatchedAlertVo(matchedVO.getSubList1(),(Long)objects[0]);
-					if( alertTypeVo == null){
-						alertTypeVo = new AlertVO();
-						alertTypeVo.setId((Long)objects[2]);
-						alertTypeVo.setStatus(objects[3].toString());
-							if((Long)objects[2] == 1l){
-								alertTypeVo.setCount((Long)objects[4]);//For party
-							}
-							else if((Long)objects[2] == 2l){
-								alertTypeVo.setAlertCnt((Long)objects[4]);//For Govt
-							}
-							matchedVO.getSubList1().add(alertTypeVo);
-					}else{
-						if((Long)objects[2] == 1l){
-							alertTypeVo.setCount((Long)objects[4]);//For Party
-						}
-						else if((Long)objects[2] == 2l){
-							alertTypeVo.setAlertCnt((Long)objects[4]);//For Govt
-						}
+					if((Long)objects[2] == 1l){
+						matchedVO.setCount((Long)objects[4]);//For party
 					}
-					
-						
+					else if((Long)objects[2] == 2l){
+						matchedVO.setAlertCnt((Long)objects[4]);//For Govt
+					}
 				}
 			}
+		}
+	}
+	public void setImpactScopeSkeletonNew(List<Object[]> scopeDetlsLst,List<AlertVO> finalVOList){
+		if(scopeDetlsLst != null && scopeDetlsLst.size() > 0){
+			for (Object[] objects : scopeDetlsLst){
+				AlertVO vo = new AlertVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					finalVOList.get(0).getSubList1().add(vo);
+		   }
 		}
 	}
 	//0-statusId,1-status,2-color,3-impactScopeId,4-impactScope,5-alertTypeId,alertType-6,7-count
