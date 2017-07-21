@@ -452,16 +452,20 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		   
 		   Map<String, BoothInchargeDetailsVO> locationBoothMap = new TreeMap<String, BoothInchargeDetailsVO>(); ;
 		   Map<Long,Map<Long,Long>> locationSerialRangeWiseVoterMap = null;
-          
+		   
+		     Long locationId = 0l;
+		     //we are separating MANDAL and localElectionBody.
+		     if(inputVO.getFilterLevel() != null && inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)){
+					locationId = Long.valueOf(inputVO.getFilterValueList().get(0).toString().substring(0,1));
+					String filterValues = inputVO.getFilterValueList().get(0).toString().substring(1);//in the case of TEHSIL taking id except first because we are appending while sending
+					inputVO.getFilterValueList().clear();
+		            inputVO.getFilterValueList().add(Long.valueOf(filterValues));
+		            if(locationId==2l){////Local Election Body
+		            	inputVO.setFilterLevel(IConstants.LOCALELECTIONBODY);
+		            }
+			    }
 			if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
 				//Setting MANDAL Wise Booth Count
-				Long locationId = 0l;
-				 if(inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0 && inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)){
-		            	locationId = Long.valueOf(inputVO.getFilterValueList().get(0).toString().substring(0,1));
-		            	String filterValues = inputVO.getFilterValueList().get(0).toString().substring(1);
-		            	inputVO.getFilterValueList().clear();
-		            	inputVO.getFilterValueList().add(Long.valueOf(filterValues));
-		          }
 				 /*We are appending 1 prefix id for MANDAL and 2 for Local Election body.Because in single list
 				  MANDAL And localElection Body is going to UI.So for identification purpose once user is selecting filter.
 				  #locationId 0:first time call or except TEHSIL other filter selected 1: Once User select TEHSIL filter type.*/
@@ -494,11 +498,6 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				 }
 			}else{ //for other location 
 				
-				if(inputVO.getFilterLevel() != null && inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)){
-					String filterValues = inputVO.getFilterValueList().get(0).toString().substring(1);//in the case of TEHSIL taking id except first because we are appending while sending
-					inputVO.getFilterValueList().clear();
-		            inputVO.getFilterValueList().add(Long.valueOf(filterValues));
-			    }
 				List<Object[]> notStartedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
 				List<Object[]> startedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
 				List<Object[]> completedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
