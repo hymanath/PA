@@ -13,7 +13,7 @@ function onLoadAjaxCalls()
 	getLocationWiseTourMembersComplainceDtls();
 	getCasteGroupNAgeWiseVoterNCadreCounts();
 	getActivityStatusList();
-	//getTotalAlertDetailsForConstituencyInfo();
+	getTotalAlertDetailsForConstituencyInfo();
 	 getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
 	/*getCountsForConstituency(); //Assembly election details
 	getAllPartiesAllElectionResultsChart(); //Assembly Election Detail
@@ -687,6 +687,7 @@ function getVotersAndCadreCasteWiseCount(type){
 	});	
 }
 
+var casteInfoResultGlob = "";
 function getCasteGroupNAgeWiseVoterNCadreCounts(){
 	jsObj={
 		constituencyId:232,
@@ -698,7 +699,13 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){ 
-      console.log(result);	
+		if(result != null && result.length > 0){
+			casteInfoResultGlob = result;
+			setTimeout(function(){
+				buildCasteGroupWiseInfo();
+				buildCasteInfoForVoter();
+			}, 1000);
+		}
 	});	
 }
 
@@ -865,7 +872,7 @@ function getLocationWiseCommitteesCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	console.log(result);
+    	//console.log(result);
 		var str='';
 		if(result != null){
 			var mainMandalTotal=result.mainCommStartedCount+result.mainCommCompletedCount+result.mainCommNotYetStarted;
@@ -936,7 +943,7 @@ function getLevelWiseMeetingStatusCounts(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	console.log(result);
+    	//console.log(result);
 		var str='';
 		if(result!=null && result.length>0){
 		var vwTotal=result[0].completedCnt+result[0].pendingCnt+result[0].unabletoResolveCnt+result[0].notifiedCnt;
@@ -1144,3 +1151,90 @@ function getActivityStatusList(){
 	});	
 }
 
+$(document).on("click",".voterCadreSwitchCls",function(){
+	alert($(this).attr("attr_type"));
+	if($(this).attr("attr_type") == "voter"){
+		buildCasteInfoForVoter();
+	}else if($(this).attr("attr_type") == "cadre"){
+		builsCasteInfoForCadre();
+	}
+});
+
+function buildCasteInfoForVoter(){
+	alert(1);
+	if(casteInfoResultGlob != null && casteInfoResultGlob.length > 0){
+		
+	}
+}
+
+function builsCasteInfoForCadre(){
+	alert(2);
+	if(casteInfoResultGlob != null && casteInfoResultGlob.length > 0){
+		
+	}
+}
+
+function buildCasteGroupWiseInfo(){
+	if(casteInfoResultGlob != null && casteInfoResultGlob != "" && casteInfoResultGlob.length > 0){
+		var mainArr = [];
+		for(var i in casteInfoResultGlob){
+			var subArr = [];
+			var name = "",count = 0;
+			name = casteInfoResultGlob[i].ageRange;
+			if(casteInfoResultGlob[i].locationVotersVOList != null && casteInfoResultGlob[i].locationVotersVOList.length > 0){
+				for(var j in casteInfoResultGlob[i].locationVotersVOList){
+					count = count+casteInfoResultGlob[i].locationVotersVOList[j].femaleVoters+casteInfoResultGlob[i].locationVotersVOList[j].maleVoters;
+				}
+				subArr.push(name);
+				subArr.push(parseInt(count));
+				mainArr.push(subArr);
+			}
+		}
+		
+		var obj = {
+					name: 'Proprietary or Undetectable',
+					y: 0.2,
+					dataLabels: {
+						enabled: false
+					}
+				}
+			mainArr.push(obj);		
+		
+		$('#casteGroupInfoChartDivId').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: 0,
+				plotShadow: false
+			},
+			title: {
+				text: '',
+				align: 'center',
+				verticalAlign: 'middle',
+				y: 40
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					dataLabels: {
+						enabled: true,
+						distance: -50,
+						style: {
+							fontWeight: 'bold',
+							color: 'white'
+						}
+					},
+				   
+					center: ['50%', '75%']
+				}
+			},
+			series: [{
+				type: 'pie',
+				name: 'Browser share',
+				innerSize: '50%',
+				data:mainArr
+			}]
+		});
+	}
+}

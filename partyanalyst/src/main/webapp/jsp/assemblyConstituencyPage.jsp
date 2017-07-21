@@ -87,7 +87,7 @@
 							<div class="block pad_5">
 								<h4 class="text-capitalize"><img src="coreApi/img/electronic.png"/>electronic media</h4>
 								<div id="electronicMediaCounts"></div>
-</div>
+							</div>
 						</div>
 					</div>
 					<div class="panel-group m_top10" id="newsCollapse" role="tablist" aria-multiselectable="true">
@@ -177,6 +177,144 @@
 					</div>
 					<div class="pad_10">
 						<button class="btn btn-success btn-success-white">detailed news information</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="casteInfo">
+			<h3>Caste Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+			<div class="block">
+				<div class="row">
+					<div class="col-md-4 col-xs-12 col-sm-4">
+						<h4 class="panel-title">Caste Group Wise Voters
+							<ul class="switch-btn">
+								<li class="voterCadreSwitchCls active" attr_type="voter">Voter</li>
+								<li class="voterCadreSwitchCls" attr_type="cadre">Cadre</li>
+							</ul>
+						</h4>
+						<div class="m_top20" id="casteGroupInfoChartDivId">ddd</div>
+						
+						<table class="table table-bordered bg-E9">
+							<thead>
+								<th>OC</th>
+								<th>BC</th>
+								<th>SC</th>
+								<th>ST</th>
+								<th>MINORITY</th>
+							</thead>
+							<tbody>
+								<tr>
+									<td>25000</td>
+									<td>25000</td>
+									<td>25000</td>
+									<td>25000</td>
+									<td>25000</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						<h5>Caste Wise Voters</h5>
+						<div class="m_top20" id="casteWiseVoters"></div>
+					</div>
+					<div class="col-md-8 col-xs-12 col-sm-8">
+						<div>
+						  <!-- Nav tabs -->
+						  <select class="form-control" role="tabListMobile">
+							  <option tab_id="OC">OC</option>
+							  <option tab_id="BC">BC</option>
+							  <option tab_id="SC">SC</option>
+							  <option tab_id="ST">ST</option>
+						  </select>
+						  <ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active"><a href="#OC" aria-controls="OC" role="tab" data-toggle="tab">OC</a></li>
+							<li role="presentation"><a href="#BC" aria-controls="BC" role="tab" data-toggle="tab">BC</a></li>
+							<li role="presentation"><a href="#SC" aria-controls="SC" role="tab" data-toggle="tab">SC</a></li>
+							<li role="presentation"><a href="#ST" aria-controls="ST" role="tab" data-toggle="tab">ST</a></li>
+						  </ul>
+						  <!-- Tab panes -->
+						  <div class="tab-content">
+							<div role="tabpanel" class="tab-pane active pad_10" id="OC">
+								<h4 class="panel-title text-capitalize">Caste Wise - Voter & Cadre Information b/w age group</h4>
+								<table class="table table-noborder">
+									<thead class="text-capitalize">
+										<th>Caste Name</th>
+										<th>voters <span class="text-success">%</span></th>
+										<th>cadres <span class="text-success">%</span></th>
+										<th>Male(V) <span class="text-success">%</span></th>
+										<th>Male(C) <span class="text-success">%</span></th>
+										<th>FeMale(V) <span class="text-success">%</span></th>
+										<th>FeMale(C) <span class="text-success">%</span></th>
+									</thead>
+									<tbody>
+										<tr>
+											<td><i class="glyphicon glyphicon-plus td-expand-icon" collapseid="td-expand-one"></i> Brahmin</td>
+											<td>2 <span class="text-success">2%</span></td>
+											<td>2 <span class="text-success">2%</span></td>
+											<td>2 <span class="text-success">2%</span></td>
+											<td>2 <span class="text-success">2%</span></td>
+											<td>2 <span class="text-success">2%</span></td>
+											<td>2 <span class="text-success">2%</span></td>
+										</tr>
+										<tr class="td-expand-body" collapseBodyId="td-expand-one">
+											<td colspan="7" class="top-arrow">
+												<i class="glyphicon glyphicon-remove td-expand-hide"></i>
+												<h4 class="panel-title"><span class="text-capital">brahmin caste</span> - <span class="text-capitalize">voter and cadre information b/w age group</span></h4>
+												<p class="text-muted text-right">
+													<span class="f-11"><i class="glyphicon glyphicon-info-sign"></i> _(C) = Cadres ; _(V) = Voter</span>
+												</p>
+												<table class="table table-noborder m_top10">
+													<thead class="text-capitalize">
+														<th>Caste Name</th>
+														<th>voters <span class="text-success">%</span></th>
+														<th>cadres <span class="text-success">%</span></th>
+														<th>Male(V) <span class="text-success">%</span></th>
+														<th>Male(C) <span class="text-success">%</span></th>
+														<th>FeMale(V) <span class="text-success">%</span></th>
+														<th>FeMale(C) <span class="text-success">%</span></th>
+													</thead>
+													<tbody>
+														<tr>
+															<td>Brahmin</td>
+															<td>2 <span class="text-success">2%</span></td>
+															<td>2 <span class="text-success">2%</span></td>
+															<td>2 <span class="text-success">2%</span></td>
+															<td>2 <span class="text-success">2%</span></td>
+															<td>2 <span class="text-success">2%</span></td>
+															<td>2 <span class="text-success">2%</span></td>
+														</tr>
+														<tr>
+															<td>Brahmin</td>
+															<td>2 <span class="text-success">2%</span></td>
+															<td>2 <span class="text-success">2%</span></td>
+															<td>2 <span class="text-success">2%</span></td>
+															<td>2 <span class="text-success">2%</span></td>
+															<td>2 <span class="text-success">2%</span></td>
+															<td>2 <span class="text-success">2%</span></td>
+														</tr>
+													</tbody>
+												</table>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div role="tabpanel" class="tab-pane pad_10" id="BC">
+								
+							</div>
+							<div role="tabpanel" class="tab-pane pad_10" id="SC">
+								  
+							</div>
+							<div role="tabpanel" class="tab-pane pad_10" id="ST">
+								  
+							</div>
+						  </div>
+
+						</div>
+						
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<button class="btn btn-success btn-success-white text-capital">detailed caste information</button>
 					</div>
 				</div>
 			</div>
