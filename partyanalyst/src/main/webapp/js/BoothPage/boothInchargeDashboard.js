@@ -489,9 +489,12 @@ $(document).on("change",".selectBoxCls",function(){
 	var subLevel = $(this).attr("attr_sub_level");
 	var resultLevel = $(this).attr("attr_result_level");
 	var resultLevelDivId = $(this).attr("attr_result_level_div_id");
+	var filterLevel = $("#boothCommitteeDashbrdRolesId").attr("accessType");
+    var filterValue = $("#boothCommitteeDashbrdRolesId").attr("accessValue");
 	var locationId = selectValue;
-	if(selectValue==0){
-		selectValue="";
+	if(selectValue==0){// if user is selection all location then we are setting user access level value.
+		selectedLevel = filterLevel;
+		selectValue = filterValue;
 	}
 	if(resultLevel == "PANCHAYAT" && locationId >0 && subLevelDropBoxId != "panchaytLevelConstituenySelectBxId"){
 	   getLocationLevelWiseBoothCount(resultLevel,selectedLevel,selectValue,resultLevelDivId);	
