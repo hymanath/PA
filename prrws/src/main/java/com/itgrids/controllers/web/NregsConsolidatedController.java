@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @EnableAutoConfiguration
 @Controller
 @RequestMapping("/")
-public class NregsConsolidatedServiceController {
+public class NregsConsolidatedController {
 
 }
