@@ -15902,10 +15902,11 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			List<Object[]> assignMembersList = alertAssignedOfficerNewDAO.getAssignedMemberAlertDetails(fromDate, toDate, constituencyId, alertTypeIds);
 			setAlertData(assignMembersList,assignList);
 			
-			finalVoList.get(0).getIdNamesList().addAll(totalList);
-			finalVoList.get(0).getDocList().addAll(involvedList);
-			finalVoList.get(0).getAssignList().addAll(assignList);
-			
+			if(finalVoList != null && finalVoList.size() > 0){
+				finalVoList.get(0).getIdNamesList().addAll(totalList);
+				finalVoList.get(0).getDocList().addAll(involvedList);
+				finalVoList.get(0).getAssignList().addAll(assignList);
+			}
 
 			if(finalVoList != null && finalVoList.size() > 0){
 				for (AlertVO finalVo : finalVoList){
