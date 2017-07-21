@@ -1,5 +1,4 @@
-   var globalBoothInchargeEnrollmentId=1;
-	
+    var globalBoothInchargeEnrollmentId=1;
  	var globalFromDate=moment().startOf('month').format("DD/MM/YYYY");
     var globalToDate=moment().endOf('month').format("DD/MM/YYYY");
 	$(".selectBoxCls").chosen();
@@ -34,40 +33,37 @@
 	$(document).on("change","#boothCommitteeDashbrdRolesId",function(){
 		var filterLevel = $(this).attr("accessType");//filterLevel is nothing but user accessType
         var filterValue = $(this).attr("accessValue");////filterValue is nothing but user accessValue
-		clearCommonDiv();
 	    ajaxCallBasedOnUserAccessLevel(filterLevel,filterValue);
 	 
 	
 });
 //based on user access level.we are building select box and sending ajax call 
 function ajaxCallBasedOnUserAccessLevel(filterLevel,filterValue){
-		
+		hideShowDiv();//making booth block active and hiding panchayat block.
 		if(filterLevel == "CONSTITUENCY"){
-			getLocationLevelWiseBoothDetails("CONSTITUENCY",filterValue,"All");
-			getOverAllBoothDetails("STATE","CONSTITUENCY",filterValue);
-			getLocationLevelWiseBoothCount("TEHSIL","CONSTITUENCY",filterValue,"mandalLevelBoothDtlsDivId");
-			getLocationLevelWiseBoothCount("PANCHAYAT","CONSTITUENCY",filterValue,"panchaytLevelBoothDtlsDivId");
-			getLocationBasedOnSelection("TEHSIL","CONSTITUENCY",filterValue,"","CONSTITUENCY","");
-			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
-			$("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+			getLocationLevelWiseBoothDetails(filterLevel,filterValue,"All");
+			getOverAllBoothDetails("STATE",filterLevel,filterValue);
+			getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
+			//getLocationLevelWiseBoothCount("PANCHAYAT",filterLevel,filterValue,"panchaytLevelBoothDtlsDivId");
+			getLocationBasedOnSelection("TEHSIL",filterLevel,filterValue,"","CONSTITUENCY");
+			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
+			$("#boothBlockPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
 			$("#panchaytLevelPanchaytSelectBxId,#boothBlockPanchaytSelectBxId").trigger("chosen:updated");
 		}else if(filterLevel == "PARLIAMENT CONSTITUENCY"){
-			clearCommonDiv();
-			getLocationBasedOnSelection("CONSTITUENCY","PARLIAMENT CONSTITUENCY",filterValue,"","PARLIAMENT CONSTITUENCY","");
-			getOverAllBoothDetails("STATE","PARLIAMENT CONSTITUENCY",filterValue);
-			getLocationLevelWiseBoothCount("CONSTITUENCY","PARLIAMENT CONSTITUENCY",filterValue,"constituencyLevelBoothDtlsDivId");
-			getLocationLevelWiseBoothCount("TEHSIL","PARLIAMENT CONSTITUENCY",filterValue,"mandalLevelBoothDtlsDivId");
-			//getLocationLevelWiseBoothCount("PANCHAYAT","PARLIAMENT CONSTITUENCY",filterValue,"panchaytLevelBoothDtlsDivId");
+			getLocationBasedOnSelection("CONSTITUENCY",filterLevel,filterValue,"","PARLIAMENT CONSTITUENCY");
+			getOverAllBoothDetails("STATE",filterLevel,filterValue);
+			getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
+			getLocationLevelWiseBoothCount("TEHSIL",filterLevel,filterValue,"mandalLevelBoothDtlsDivId");
+			getLocationLevelWiseBoothDetails(filterLevel,filterValue,"All");
 			//clearing select box
-			$("#boothBlockMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
+			$("#boothBlockMandalSelectBxId").html('<option value="0">All MANDAL</option>');
 			$("#mandalLevelMandalSelectBxId").html('<option value="0">All MANDAL</option>');
-			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
-			$("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
+			$("#boothBlockPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
 			$("#panchaytLevelPanchaytSelectBxId,#boothBlockPanchaytSelectBxId,#mandalLevelMandalSelectBxId,#boothBlockMandalSelectBxId").trigger("chosen:updated");
 		}else if(filterLevel == "DISTRICT" || filterLevel == "STATE"){
-			clearCommonDiv();
-		   getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All","");	
-		   getLocationBasedOnSelection("DISTRICT",filterLevel,accessValueStr,"boothBlockDistrictSelectBxId","Other","PANCHAYAT");
+		   clearCommonDiv();
+		   getLocationBasedOnSelection("DISTRICT",filterLevel,filterValue,"","All");	
 		   getOverAllBoothDetails("STATE",filterLevel,filterValue);
 		   getLocationLevelWiseBoothCount("DISTRICT",filterLevel,filterValue,"dstrctParlmntLvlBoothDtlsDivId");
 		   getLocationLevelWiseBoothCount("CONSTITUENCY",filterLevel,filterValue,"constituencyLevelBoothDtlsDivId");
@@ -76,23 +72,18 @@ function ajaxCallBasedOnUserAccessLevel(filterLevel,filterValue){
 		   $("#constituencyLevelConstituenySelectBxId").html('<option value="0">All CONSTITUENCY</option>');
 		   $("#mandalLevelConstituenySelectBxId").html('<option value="0">All CONSTITUENCY</option>');
 		   $("#mandalLevelMandalSelectBxId").html('<option value="0">All MANDAL</option>');
-		   $("#panchaytLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
-		   $("#panchaytLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
-		   $("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+		   $("#panchaytLevelConstituenySelectBxId").html('<option value="0">All CONSTITUENCY</option>');
+		   $("#panchaytLevelMandalSelectBxId").html('<option value="0">All MANDAL</option>');
+		   $("#panchaytLevelPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
 		  
-		   $("#boothBlockConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
-		   $("#boothBlockMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
-		   $("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+		   $("#boothBlockConstituenySelectBxId").html('<option value="0">All CONSTITUENCY</option>');
+		   $("#boothBlockMandalSelectBxId").html('<option value="0">All MANDAL</option>');
+		   $("#boothBlockPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
 		   $("#boothBlockConstituenySelectBxId,#boothBlockMandalSelectBxId,#boothBlockPanchaytSelectBxId").trigger("chosen:updated");
 		   $("#constituencyLevelConstituenySelectBxId,#mandalLevelConstituenySelectBxId,#mandalLevelMandalSelectBxId").trigger("chosen:updated");
 		   $("#panchaytLevelConstituenySelectBxId,#panchaytLevelMandalSelectBxId,#panchaytLevelPanchaytSelectBxId").trigger("chosen:updated");
 	  }
 }
-function clearCommonDiv(){
-	$("#boothDtlsDivId").html('');
-	$("#panchaytLevelBoothDtlsDivId").html('');
-}
- 
 //making active and de-active location tab
 $(document).on('click',' li.districtLevelCls ',function(){
   $(this).parent().find(".districtLevelCls").removeClass("active");
@@ -117,14 +108,8 @@ $(document).on("click",".districtLevelCls",function(){
 function getOverAllBoothDetails(locationLevel,filterLevel,filterValue){
 	$("#overAllBoothDlstDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$("#overAllSerialRangeWiseVoterDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-   var filterValueArr;   
-   if(filterValue != null && filterValue.trim().length > 0){
-	   filterValueArr=filterValue.split(",");
-	}else{
-	  filterLevel="";
-	  filterValueArr=[];
-	}		
-	var boothRoleIdArr = [];
+    var filterValueArr=filterValue.split(","); ;   
+ 	var boothRoleIdArr = [];
 	var roleId = $("#boothCommitteeDashbrdRolesId").val();
 	if(roleId != null && roleId != 0){
 		boothRoleIdArr.push(roleId);
@@ -232,15 +217,9 @@ function buildOverAllBoothDtls(result,locationLevel){
 	}
 }
 function getLocationLevelWiseBoothCount(locationLevel,filterLevel,filterValue,divId){
-    $("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   var filterValueArr;   
-	   if(filterValue != null && filterValue.trim().length > 0){
-		   filterValueArr=filterValue.split(",");
-		}else{
-			filterLevel="";
-			filterValueArr=[];
-		}	
-		var boothRoleIdArr = [];
+        $("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	    var filterValueArr=filterValue.split(",");  
+	 	var boothRoleIdArr = [];
 		var roleId = $("#boothCommitteeDashbrdRolesId").val();
 		if(roleId != null && roleId != 0){
 			boothRoleIdArr.push(roleId);
@@ -321,8 +300,7 @@ function getLocationLevelWiseBoothCount(locationLevel,filterLevel,filterValue,di
 								  str+='<td>'+result[i].subList[j].count+'</td>';	
 								}else{
 								   str+='<td>-</td>';		
-								}
-								 
+								}								 
 							}
 						}
 				str+='</tr>';
@@ -332,9 +310,9 @@ function getLocationLevelWiseBoothCount(locationLevel,filterLevel,filterValue,di
 		str+='</div>';
 	 $("#"+divId).html(str);	
 	 $("#"+divId+'dataTableId').dataTable({
-			"aaSorting": [[ 4, "desc" ]], 
-			"iDisplayLength" : 10,
-			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]								
+		"aaSorting": [[ 4, "desc" ]], 
+		"iDisplayLength" : 10,
+		"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]								
 	});
 	}else{
 	  $("#"+divId).html('NO DATA AVAILABLE.')	
@@ -379,14 +357,8 @@ function getLocationWiseBoothAddress(locationLevel,addressObj){
 	return str;
 }
 /* Filter Related Script Start */
-function getLocationBasedOnSelection(locationLevel,filterLevelLevel,filterValue,divId,type,resultLevel){
-	   var filterValueArr;   
-	   if(filterValue != null && filterValue.trim().length > 0){
-		   filterValueArr=filterValue.split(",");
-		}else{
-		  filterLevel="";
-		  filterValueArr=[];
-	   }		
+function getLocationBasedOnSelection(locationLevel,filterLevelLevel,filterValue,divId,type){
+	 var filterValueArr=filterValue.split(","); ;   
 	 var boothRoleIdArr = [];
 	 var roleId = $("#boothCommitteeDashbrdRolesId").val();
 	 if(roleId != null && roleId != 0){
@@ -405,19 +377,13 @@ function getLocationBasedOnSelection(locationLevel,filterLevelLevel,filterValue,
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){ 
-		 buildSelectBox(result,locationLevel,divId,type,resultLevel);
+		 buildSelectBox(result,locationLevel,divId,type);
 	});
 }
 
-function buildSelectBox(result,locationLevel,divId,type,resultLevel){
-	
-	var str = '';
-	if(resultLevel == "PANCHAYAT" || resultLevel=="BOOTH"){
-		str+='<option value="0">SELECT '+locationLevel+'</option>'	
-	}else {
+function buildSelectBox(result,locationLevel,divId,type){
+	  var str = '';
 	  str+='<option value="0">All '+locationLevel+'</option>'	
-	}
-	
 	if(result != null && result.length > 0){
 		for(var i in result){
 			str+='<option value="'+result[i].locationIdStr+'">'+result[i].locationName+'</option>'
@@ -427,8 +393,8 @@ function buildSelectBox(result,locationLevel,divId,type,resultLevel){
 		$("#constituencyLevelDistrictSelectBxId").html(str);
      	$("#mandalLevelDistrictSelectBxId").html(str);
      	$("#panchatLevelDistrictSelectBxId").html(str);
-		//$("#boothBlockDistrictSelectBxId").html(str);
-		$("#constituencyLevelDistrictSelectBxId,#panchatLevelDistrictSelectBxId,#mandalLevelDistrictSelectBxId").trigger("chosen:updated");
+		$("#boothBlockDistrictSelectBxId").html(str);
+		$("#constituencyLevelDistrictSelectBxId,#panchatLevelDistrictSelectBxId,#mandalLevelDistrictSelectBxId,#boothBlockDistrictSelectBxId").trigger("chosen:updated");
     }else if(type == "PARLIAMENT CONSTITUENCY"){
 		$("#constituencyLevelConstituenySelectBxId").html(str);
 		$("#mandalLevelConstituenySelectBxId").html(str);
@@ -441,7 +407,10 @@ function buildSelectBox(result,locationLevel,divId,type,resultLevel){
 	}else{
 		$("#"+divId).html(str);
 		$("#"+divId).trigger("chosen:updated");
-		if(resultLevel=="CONSTITUENCY"){
+	}                               
+}
+function clearSelectBoxByLocationLevel(resultLevel){
+	  if(resultLevel=="CONSTITUENCY"){
 			$("#constituencyLevelConstituenySelectBxId").html('<option value="0">All CONSTITUENCY</option>');
 			$("#constituencyLevelConstituenySelectBxId").trigger("chosen:updated");
 		}else if(resultLevel=="TEHSIL"){
@@ -449,18 +418,53 @@ function buildSelectBox(result,locationLevel,divId,type,resultLevel){
 			$("#mandalLevelMandalSelectBxId").html('<option value="0">All MANDAL</option>');
 			$("#mandalLevelConstituenySelectBxId,#mandalLevelMandalSelectBxId").trigger("chosen:updated");
 		}else if(resultLevel=="PANCHAYAT"){
-			$("#panchaytLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
-			$("#panchaytLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
-			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+			$("#panchaytLevelConstituenySelectBxId").html('<option value="0">All CONSTITUENCY</option>');
+			$("#panchaytLevelMandalSelectBxId").html('<option value="0">All MANDAL</option>');
+			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
 			$("#panchaytLevelConstituenySelectBxId,#panchaytLevelMandalSelectBxId,#panchaytLevelPanchaytSelectBxId").trigger("chosen:updated");
 		}else if(resultLevel=="BOOTH"){
 			$("#boothDtlsDivId").html('');
-			$("#boothBlockConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
-			$("#boothBlockMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
-			$("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+			$("#boothBlockConstituenySelectBxId").html('<option value="0">All CONSTITUENCY</option>');
+			$("#boothBlockMandalSelectBxId").html('<option value="0">All MANDAL</option>');
+			$("#boothBlockPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
 			$("#boothBlockConstituenySelectBxId,#boothBlockMandalSelectBxId,#boothBlockPanchaytSelectBxId").trigger("chosen:updated");
 		}
-	}                               
+}
+function clearChildSelectBoxByLocationLevel(locationLevel,resultLevel){
+		if(resultLevel=="TEHSIL"){
+			 if(locationLevel=="CONSTITUENCY"){
+			   $("#mandalLevelMandalSelectBxId").html('<option value="0">All MANDAL</option>');
+			   $("#mandalLevelMandalSelectBxId").trigger("chosen:updated");
+			 }
+		 }else if(resultLevel=="PANCHAYAT"){
+			 if(locationLevel=="CONSTITUENCY"){
+				 $("#panchaytLevelMandalSelectBxId").html('<option value="0">All MANDAL</option>');
+			     $("#panchaytLevelPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
+			     $("#panchaytLevelMandalSelectBxId,#panchaytLevelPanchaytSelectBxId").trigger("chosen:updated");
+			 }else if(locationLevel=="TEHSIL"){
+				 $("#panchaytLevelPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
+			     $("#panchaytLevelPanchaytSelectBxId").trigger("chosen:updated");
+			 }
+		 }else if(resultLevel=="BOOTH"){
+			 if(locationLevel=="CONSTITUENCY"){
+				 $("#boothBlockMandalSelectBxId").html('<option value="0">All MANDAL</option>');
+			     $("#boothBlockPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
+			     $("#boothBlockPanchaytSelectBxId,#boothBlockMandalSelectBxId").trigger("chosen:updated");
+			 }else if(locationLevel=="TEHSIL"){
+				 $("#boothBlockPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
+			     $("#boothBlockPanchaytSelectBxId").trigger("chosen:updated");
+			 }
+		 }
+ }
+function clearCommonDiv(){
+	$("#boothDtlsDivId").html('');
+	$("#panchaytLevelBoothDtlsDivId").html('');
+}
+function hideShowDiv(){
+	 $(".panchaytBlockCls").hide();
+	 $(".boothBlckCls").show();
+	 $(".resultTypeTabCls").removeClass("active");
+	 $(".resultTypeUL li:nth-child(2)" ).addClass("active");
 }
 $(document).on("click",".locationLevelTabCls",function(){
 	$(this).closest("ul").find("li").removeClass("active");
@@ -478,8 +482,8 @@ $(document).on("click",".locationLevelTabCls",function(){
 	if(resultLevel != "BOOTH" && resultLevel != "PANCHAYAT"){
 	  getLocationLevelWiseBoothCount(resultLevel,filterLevel,filterValue,resultLevelDivId);	
 	}
-	
-	getLocationBasedOnSelection(selectedLevel,filterLevel,filterValue,parentSelectBoxId,"Other",resultLevel);
+	clearSelectBoxByLocationLevel(resultLevel);
+	getLocationBasedOnSelection(selectedLevel,filterLevel,filterValue,parentSelectBoxId,"Other");
 	
 });
 $(document).on("change",".selectBoxCls",function(){
@@ -489,34 +493,57 @@ $(document).on("change",".selectBoxCls",function(){
 	var subLevel = $(this).attr("attr_sub_level");
 	var resultLevel = $(this).attr("attr_result_level");
 	var resultLevelDivId = $(this).attr("attr_result_level_div_id");
-	var filterLevel = $("#boothCommitteeDashbrdRolesId").attr("accessType");
-    var filterValue = $("#boothCommitteeDashbrdRolesId").attr("accessValue");
-	var locationId = selectValue;
-	if(selectValue==0){// if user is selection all location then we are setting user access level value.
+	var filterLevel = $("#boothCommitteeDashbrdRolesId").attr("accessType");//user access level 
+    var filterValue = $("#boothCommitteeDashbrdRolesId").attr("accessValue");//user access value 
+	var parentSelectBoxId = $(this).attr("attr_parent_level_drop_box_id");
+	var parentLevel = $(this).attr("attr_parent_level");
+	var parentSelectBoxValue = $("#"+parentSelectBoxId).val();
+
+	/* NOTE:We are overriding selected selectedLevel and selectValue based on requirement */
+	
+	/* in the case of state or district level login user.if user is selecting district filter value all location 
+	   then select box value will be 0 and you will get parentSelectBoxValue is undefined.in this case we are 
+        sending user access level and their value.*/
+	var seletedLocationType="single";
+	if(selectValue == 0 && parentSelectBoxValue == undefined){
 		selectedLevel = filterLevel;
 		selectValue = filterValue;
+		seletedLocationType="All";
+	    /*there is one case .when MLA/MP are login we are hiding some drop down .
+		in this case parentSelectBoxValue will come 0. in this case when user is selecting all location .
+		then selected drop down value and parentSelectBoxValue both will be zero .
+		in this case we are sending user access level and their value.*/
+	}else if(selectValue == 0 && parentSelectBoxValue == 0){
+		 selectedLevel = filterLevel;
+		 selectValue = filterValue;
+		 seletedLocationType="All";
+	/*if user is selection child drop down all location level then we are sending parent selected value.*/
+	}else if(selectValue == 0){
+		 selectedLevel = parentLevel;
+		 selectValue = parentSelectBoxValue;
 	}
-	if(resultLevel == "PANCHAYAT" && locationId >0 && subLevelDropBoxId != "panchaytLevelConstituenySelectBxId"){
-	   getLocationLevelWiseBoothCount(resultLevel,selectedLevel,selectValue,resultLevelDivId);	
-	}else{
-		clearCommonDiv();
+	if(resultLevel == "PANCHAYAT"){
+		if(subLevelDropBoxId != "panchaytLevelConstituenySelectBxId"){//except district filter selection we are sending call.
+			 if(filterLevel =="STATE" && seletedLocationType=="All"){//in the case of state access user level all selection we are stopping call because huge data is there.
+				 clearCommonDiv();
+			 }else{
+				 getLocationLevelWiseBoothCount(resultLevel,selectedLevel,selectValue,resultLevelDivId);		 
+			 }
+		}else {
+		  clearCommonDiv();
+	    }
 	}
 	if(resultLevel != "PANCHAYAT"){
 		getLocationLevelWiseBoothCount(resultLevel,selectedLevel,selectValue,resultLevelDivId);
 	}
 	if(subLevel != undefined){
-	   getSubLevelLocationBasedOnSelection(resultLevel,subLevel,selectedLevel,selectValue,subLevelDropBoxId);		 
+	   clearChildSelectBoxByLocationLevel(subLevel,resultLevel);
+	   getSubLevelLocationBasedOnSelection(subLevel,selectedLevel,selectValue,subLevelDropBoxId);		 
 	}
 	
 });
-function getSubLevelLocationBasedOnSelection(resultLevel,locationLevel,filterLevel,filterValue,divId){
-	   var filterValueArr;   
-	   if(filterValue != null && filterValue.trim().length > 0){
-		  filterValueArr=filterValue.split(",");
-		}else{
-		  filterLevel="";
-		  filterValueArr=[];
-	   }			
+function getSubLevelLocationBasedOnSelection(locationLevel,filterLevel,filterValue,divId){
+	 var filterValueArr=filterValue.split(","); ;   
 	 var boothRoleIdArr = [];
 	 var roleId = $("#boothCommitteeDashbrdRolesId").val();
 	 if(roleId != null && roleId != 0){
@@ -535,17 +562,12 @@ function getSubLevelLocationBasedOnSelection(resultLevel,locationLevel,filterLev
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){ 
-	   buildSubLevelDropDown(result,locationLevel,divId,resultLevel);
+	   buildSubLevelDropDown(result,locationLevel,divId);
 	});
 }
-function buildSubLevelDropDown(result,locationLevel,divId,resultLevel){
+function buildSubLevelDropDown(result,locationLevel,divId){
 	var str = '';
-	if(resultLevel == "PANCHAYAT"){
-	  str+='<option value="0">SELECT '+locationLevel+'</option>'	
-	}else{
 	 str+='<option value="0">All '+locationLevel+'</option>'	
-	}
-	
 	if(result != null && result.length > 0){
 		for(var i in result){
 			str+='<option value="'+result[i].locationIdStr+'">'+result[i].locationName+'</option>'
@@ -562,16 +584,15 @@ $(document).on("click",".resultTypeTabCls",function(){
 	var clickType = $(this).attr("attr_heading_level");
 	var filterLevel = $(this).attr("accessType");
     var filterValue = $(this).attr("accessValue");
-	var resultLevel="PANCHAYAT";
  		 if(clickType=="SUMMARY"){
 			 $(".panchaytBlockCls").show();
 			 $(".boothBlckCls").hide();
 			 var locationLevel = $(this).attr("attr_panchayt_result_level");
 			 var selectBoxDivId = $(this).attr("attr_pnchyt_lvl_parent_select_box_div_id");
-			 getSubLevelLocationBasedOnSelection(resultLevel,locationLevel,filterLevel,filterValue,selectBoxDivId)
-			$("#panchaytLevelConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
-			$("#panchaytLevelMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
-			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+			 getSubLevelLocationBasedOnSelection(locationLevel,filterLevel,filterValue,selectBoxDivId)
+			$("#panchaytLevelConstituenySelectBxId").html('<option value="0">All CONSTITUENCY</option>');
+			$("#panchaytLevelMandalSelectBxId").html('<option value="0">All MANDAL</option>');
+			$("#panchaytLevelPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
 			$("#panchaytLevelConstituenySelectBxId,#panchaytLevelMandalSelectBxId,#panchaytLevelPanchaytSelectBxId").trigger("chosen:updated");
 		
 			 $(".resultTypeTabCls").removeClass("active");
@@ -583,10 +604,10 @@ $(document).on("click",".resultTypeTabCls",function(){
 			  $(".boothBlckCls").show();
 			  var locationLevel = $(".boothResultTypeCls").attr("attr_booth_result_level");
 			  var selectBoxDivId = $(".boothResultTypeCls").attr("attr_boot_level_parent_select_box_div_id");
-			  getSubLevelLocationBasedOnSelection(resultLevel,locationLevel,filterLevel,filterValue,selectBoxDivId);
-			  $("#boothBlockConstituenySelectBxId").html('<option value="0">SELECT CONSTITUENCY</option>');
-			  $("#boothBlockMandalSelectBxId").html('<option value="0">SELECT MANDAL</option>');
-			  $("#boothBlockPanchaytSelectBxId").html('<option value="0">SELECT PANCHAYAT</option>');
+			  getSubLevelLocationBasedOnSelection(locationLevel,filterLevel,filterValue,selectBoxDivId);
+			  $("#boothBlockConstituenySelectBxId").html('<option value="0">All CONSTITUENCY</option>');
+			  $("#boothBlockMandalSelectBxId").html('<option value="0">All MANDAL</option>');
+			  $("#boothBlockPanchaytSelectBxId").html('<option value="0">All PANCHAYAT</option>');
 			  $("#boothBlockConstituenySelectBxId,#boothBlockMandalSelectBxId,#boothBlockPanchaytSelectBxId").trigger("chosen:updated");
 			  
 			  $(".resultTypeTabCls").removeClass("active");
@@ -603,34 +624,55 @@ $(document).on("change",".boothBlockCls",function(){
 	var subLevel = $(this).attr("attr_sub_level");
 	var resultLevel = $(this).attr("attr_result_level");
 	var resultLevelDivId = $(this).attr("attr_result_level_div_id");
-	var filterLevel = $("#boothCommitteeDashbrdRolesId").attr("accessType");
-    var filterValue = $("#boothCommitteeDashbrdRolesId").attr("accessValue");
+	var filterLevel = $("#boothCommitteeDashbrdRolesId").attr("accessType");//user access level
+    var filterValue = $("#boothCommitteeDashbrdRolesId").attr("accessValue");//user access value.
+	var parentSelectBoxId = $(this).attr("attr_parent_level_drop_box_id");
+	var parentLevel = $(this).attr("attr_parent_level");
+	var parentSelectBoxValue = $("#"+parentSelectBoxId).val();
+	
+	/* NOTE:We are overriding selected selectedLevel and selectValue based on requirement */
+	
+	/* in the case of state or district level login user.if user is selecting district filter value all location 
+	   then select box value will be 0 and you will get parentSelectBoxValue is undefined.in this case we are 
+        sending user access level and their value.*/
+	var seletedLocationType="single";
+	if(selectValue == 0 && parentSelectBoxValue == undefined){
+		selectedLevel = filterLevel;
+		selectValue = filterValue;
+		seletedLocationType="All";
+	    /*there is one case .when MLA/MP are login we are hiding some drop down .
+		in this case parentSelectBoxValue will come 0. in this case when user is selecting all location .
+		then selected drop down value and parentSelectBoxValue both will be zero .
+		in this case we are sending user access level and their value.*/
+	}else if(selectValue == 0 && parentSelectBoxValue == 0){
+		 selectedLevel = filterLevel;
+		 selectValue = filterValue;
+		 seletedLocationType="All";
+	/*if user is selection child drop down all location level then we are sending parent selected value.*/
+	}else if(selectValue == 0){
+		 selectedLevel = parentLevel;
+		 selectValue = parentSelectBoxValue;
+	}
 	var resultType="All";
-    var resultLevel="PANCHAYAT";
-	 if(selectValue > 0 && subLevelDropBoxId != "boothBlockConstituenySelectBxId"){
-	   getLocationLevelWiseBoothDetails(selectedLevel,selectValue,resultType);
-	 }else {
+	
+	 if(subLevelDropBoxId != "boothBlockConstituenySelectBxId"){//except district filter selection we are sending call.
+		 if(filterLevel =="STATE" && seletedLocationType=="All"){//in the case of state access user level all selection we are stopping call because huge data is there.
+			  clearCommonDiv();
+		 }else{
+			 getLocationLevelWiseBoothDetails(selectedLevel,selectValue,resultType);	 
+		 }
+	 }else{
 		 clearCommonDiv();
 	 }
-	 if(selectValue==0){//if user is selecting all location level then we are sending user access level and value
-		selectedLevel=filterLevel;
-		selectValue=filterValue;
-	 }
 	 if(subLevel != undefined ){
-	   getSubLevelLocationBasedOnSelection(resultLevel,subLevel,selectedLevel,selectValue,subLevelDropBoxId);		 
+	    clearChildSelectBoxByLocationLevel(subLevel,resultLevel);
+	   getSubLevelLocationBasedOnSelection(subLevel,selectedLevel,selectValue,subLevelDropBoxId);		 
 	 }
-	
 });
 function getLocationLevelWiseBoothDetails(filterLevel,filterValue,resultType){
 	$("#boothDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   var filterValueArr;   
-	   if(filterValue != null && filterValue.trim().length > 0){
-		  filterValueArr=filterValue.split(",");
-		}else{
-		  filterLevel="";
-		  filterValueArr=[];
-	   }		
-     var locationLevel="PANCHAYAT";	   
+	var filterValueArr=filterValue.split(","); ;   
+    var locationLevel="PANCHAYAT";	   
 	var boothRoleIdArr = [];
 	var roleId = $("#boothCommitteeDashbrdRolesId").val();
 	if(roleId != null && roleId != 0){
@@ -726,11 +768,10 @@ function buildBoothDetails(result,locationLevel,filterLevel,filterValue){
 		str+='</div>';
 	 $("#boothDtlsDivId").html(str);	
 	 $("#bootDtlsdataTableId").dataTable({
-			"aaSorting": [[ 4, "desc" ]], 
-			"iDisplayLength" : 10,
-			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
-				
-		 });
+		"aaSorting": [[ 4, "desc" ]], 
+		"iDisplayLength" : 10,
+		"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
+	 });
 	}else{
 	  $("#boothDtlsDivId").html('NO DATA AVAILABLE');
 	}
@@ -748,26 +789,16 @@ $(document).on("click",".cadreDetailsCls",function(){
 	if(filterValue > 0){
 		filterValueArr.push(filterValue);
 	}
-
 	getLocationWiseCadreDetails(locationLevel,filterLevel,filterValueArr,boothId,serialRangeId,boothName);
-	
 });
 
-function getLocationWiseCadreDetails(locationLevel,filterLevel,filterValue,boothId,serialRangeId,boothName){
-	  $("#cadreDetailsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   var filterValueArr;   
-	   if(filterValue != null && filterValue.length > 0){
-		  filterValueArr=filterValue.split(",");
-		}else{
-		  filterLevel="";
-		  filterValueArr=[];
-	   }			
-		var boothRoleIdArr = [];
+function getLocationWiseCadreDetails(locationLevel,filterLevel,filterValueArr,boothId,serialRangeId,boothName){
+	   $("#cadreDetailsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	    var boothRoleIdArr = [];
 		var roleId = $("#boothCommitteeDashbrdRolesId").val();
 		if(roleId != null && roleId != 0){
 			boothRoleIdArr.push(roleId);
 		} 
-	
 	var jObj={  
 		filterType : "",
 		filterValueArr : filterValueArr   ,
@@ -861,7 +892,6 @@ function buildCadreDetails(result,locationLevel,boothName){
 			str+='</tbody>';
 		str+='</table>';
 		
-		
 		 str+='<table class="table table-bordered" style="display:none;" id="cadreDetailsExportDataTableId">';
 			str+='<thead>';
 				str+='<tr>';
@@ -929,10 +959,9 @@ function buildCadreDetails(result,locationLevel,boothName){
 		str+='</div>';
 	 $("#cadreDetailsDivId").html(str);	
 	 $("#cadreDetailsDataTableId").dataTable({
-			"aaSorting": [[ 4, "desc" ]], 
-			"iDisplayLength" : 10,
-					"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
-				
+		"aaSorting": [[ 4, "desc" ]], 
+		"iDisplayLength" : 10,
+		"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]						
 	});
 	}else{
 	  $("#cadreDetailsDivId").html('NO DATA AVAILABLE.')	
@@ -979,10 +1008,8 @@ function validateBoothToMakeConfirm(boothId,boothName,filterLevel,filterValue){
 	  }else {
 		  alert("Failure");
 	  }
-	 
 	});
 }
-
 function exportToExcel(tableId)
 {
 	tableToExcel(''+tableId+'', 'Booth Committee Details.. ');
