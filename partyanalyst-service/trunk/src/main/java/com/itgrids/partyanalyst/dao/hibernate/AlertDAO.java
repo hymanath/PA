@@ -704,6 +704,17 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 		
 	}
 	
+	public List<Alert> getAlertDetailsOfNewstypeNew(Long alertCategoryType){
+		Query query = getSession().createQuery(" select model from Alert model " +
+				"  where " +
+				" model.alertCategoryTypeId = :alertCategoryType" +
+				" order by model.updatedTime desc ");
+		
+		query.setParameter("alertCategoryType", alertCategoryType);
+		
+		return query.list();
+	}
+	
 	public int updateAlertStatusOfNews(Long alertCategoryType,Long alertStatusId){
 		Query query = getSession().createQuery(" update Alert model set model.alertStatusId =:alertStatusId,model.updatedTime=:updatedTime where " +
 				"  model.alertCategoryTypeId =:alertCategoryType ");
@@ -3182,7 +3193,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
    
    public List<Object[]> getAlertCreatedDate(Long alertCategoryTypeId){
 		
-		Query query = getSession().createQuery(" select model.alertId,date(model.createdTime) from Alert model " +
+		Query query = getSession().createQuery(" select model.alertId,date(model.createdTime),model.alertType.alertType from Alert model " +
 				"  where " +
 				" model.alertCategoryTypeId = :alertCategoryTypeId " +
 				" order by model.alertId desc ");
@@ -3194,7 +3205,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	}
    
    public int updateAlertStatusOfNewsForDelete(Long alertId){
-	   Query query = getSession().createQuery(" update Alert model set model.isDeleted = 'O',model.updatedTime=:updatedTime where model.alertId=:alertId ");
+	   Query query = getSession().createQuery(" update Alert model set model.isDeleted = 'M',model.updatedTime=:updatedTime where model.alertId=:alertId ");
 	   query.setParameter("alertId", alertId);
 	   query.setParameter("updatedTime", new DateUtilService().getCurrentDateAndTime());
 	    return query.executeUpdate();
