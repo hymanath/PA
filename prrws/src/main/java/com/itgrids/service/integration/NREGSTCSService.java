@@ -503,20 +503,23 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
 	 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worm")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle drinking water trough")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising of Perinnial Fodder"))
+	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worms")
+	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle drinking water troughs")
+	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising of Perinnial Fodders"))
 	 	    							&& inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state")){
 	 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
 	 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
+	 	    					vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Long.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				}
 	 	    				
 	 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Ponds")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Drying Platforms"))
+	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Drying Platforms")
+	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Anganwadi Buildings"))
 	 	    						&& (inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state")
 	 	    								|| inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district"))){
 	 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
 	 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
+	 	    					vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Long.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				}
 	 	    				
 	 	    				voList.add(vo);
@@ -2794,89 +2797,92 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    						(inputVO.getLocationType().trim().equalsIgnoreCase("district") && inputVO.getSublocationType().trim().equalsIgnoreCase("district")|| inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") || inputVO.getSublocationType().trim().equalsIgnoreCase("mandal")) ||
 		 	    						inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
 			 	    					vo.setType(jObj.getString("TYPE"));
-			 	    					if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") ||
-			 	    					   inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))
-			 	    						vo.setGeneratedQuantity(jObj.getString("T_WS_CNT"));
-			 	    					else
-			 	    						vo.setGeneratedQuantity(convertRupeesIntoLakhes(jObj.getString("T_WS_CNT")));
+			 	    					if(inputVO.getSublocationType() != null && (inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") 
+			 	    							|| inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))){
+			 	    						vo.setTotalPayments(jObj.getString("T_WS_CNT"));
+			 	    						
+			 	    						vo.setGeneratedPendingQuantity(jObj.getString("FNG_WS_CNT"));
+			 	    						vo.setGeneratedQuantity(jObj.getString("FG_WS_CNT"));
+			 	    						
+			 	    						vo.setUploadPendingQunatity(jObj.getString("FNU_WS_CNT"));
+			 	    						vo.setUploadQuantity(jObj.getString("FU_WS_CNT"));
+			 	    						
+			 	    						vo.setSentToBankPendingQuantity(jObj.getString("FNS_WS_CNT"));
+			 	    						vo.setSentToBankQuantity(jObj.getString("FS_WS_CNT"));
+			 	    						
+			 	    						vo.setFailedTransactionQuantity(jObj.getString("FR_WS_CNT"));
+			 	    						vo.setPendingAtBankQuantity(jObj.getString("FRP_WS_CNT"));
+			 	    						vo.setSentToBankSuccess(jObj.getString("FP_WS_CNT"));
+			 	    					}
+			 	    					else{
+			 	    						vo.setTotalPayments(convertRupeesIntoLakhes(jObj.getString("T_WS_CNT")));
+			 	    						
+			 	    						vo.setGeneratedPendingQuantity(convertRupeesIntoLakhes(jObj.getString("FNG_WS_CNT")));
+			 	    						vo.setGeneratedQuantity(convertRupeesIntoLakhes(jObj.getString("FG_WS_CNT")));
+			 	    						
+			 	    						vo.setUploadPendingQunatity(convertRupeesIntoLakhes(jObj.getString("FNU_WS_CNT")));
+			 	    						vo.setUploadQuantity(convertRupeesIntoLakhes(jObj.getString("FU_WS_CNT")));
+			 	    						
+			 	    						vo.setSentToBankPendingQuantity(convertRupeesIntoLakhes(jObj.getString("FNS_WS_CNT")));
+			 	    						vo.setSentToBankQuantity(convertRupeesIntoLakhes(jObj.getString("FS_WS_CNT")));
+			 	    						
+			 	    						vo.setFailedTransactionQuantity(convertRupeesIntoLakhes(jObj.getString("FR_WS_CNT")));
+			 	    						vo.setPendingAtBankQuantity(convertRupeesIntoLakhes(jObj.getString("FRP_WS_CNT")));
+			 	    						vo.setSentToBankSuccess(convertRupeesIntoLakhes(jObj.getString("FP_WS_CNT")));
+			 	    					}
 			 	    					
-				 	    				vo.setGeneratedAmount(convertRupeesIntoCrores(jObj.getString("T_WS_AMT")));
-				 	    				if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") ||
-					 	    			   inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))
-				 	    					vo.setGeneratedPendingQuantity(jObj.getString("FNG_WS_CNT"));
-				 	    				else
-				 	    					vo.setGeneratedPendingQuantity(convertRupeesIntoLakhes(jObj.getString("FNG_WS_CNT")));
+				 	    				vo.setTotalAmount(convertRupeesIntoCrores(jObj.getString("T_WS_AMT")));
+				 	    				
 				 	    				vo.setGeneratedPendingAmount(convertRupeesIntoCrores(jObj.getString("FNG_WS_AMT")));
-				 	    				if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") ||
-							 	    	   inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))
-				 	    					vo.setUploadQuantity(jObj.getString("FG_WS_CNT"));
-				 	    				else
-				 	    					vo.setUploadQuantity(convertRupeesIntoLakhes(jObj.getString("FG_WS_CNT")));
-				 	    				vo.setUploadAmount(convertRupeesIntoCrores(jObj.getString("FG_WS_AMT")));
-				 	    				if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") ||
-									 	   inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))
-				 	    					vo.setUploadPendingQunatity(jObj.getString("FNU_WS_CNT"));
-				 	    				else
-				 	    					vo.setUploadPendingQunatity(convertRupeesIntoLakhes(jObj.getString("FNU_WS_CNT")));
+				 	    				vo.setGeneratedAmount(convertRupeesIntoCrores(jObj.getString("FG_WS_AMT")));
+				 	    				
 				 	    				vo.setUploadPendingAmount(convertRupeesIntoCrores(jObj.getString("FNU_WS_AMT")));
-				 	    				if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") ||
-										   inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))
-				 	    					vo.setSentToBankQuantity(jObj.getString("FU_WS_CNT"));
-				 	    				else
-				 	    					vo.setSentToBankQuantity(convertRupeesIntoLakhes(jObj.getString("FU_WS_CNT")));
-				 	    				vo.setSentToBankAmount(convertRupeesIntoCrores(jObj.getString("FU_WS_AMT")));
-				 	    				if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") ||
-										   inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))
-				 	    					vo.setSentToBankPendingQuantity(jObj.getString("FNS_WS_CNT"));
-				 	    				else
-				 	    					vo.setSentToBankPendingQuantity(convertRupeesIntoLakhes(jObj.getString("FNS_WS_CNT")));
+				 	    				vo.setUploadAmount(convertRupeesIntoCrores(jObj.getString("FU_WS_AMT")));
+				 	    				
 				 	    				vo.setSentToBankPendingAmount(convertRupeesIntoCrores(jObj.getString("FNS_WS_AMT")));
-				 	    				if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") ||
-										   inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))
-				 	    					vo.setFailedTransactionQuantity(jObj.getString("FR_WS_CNT"));
-				 	    				else
-				 	    					vo.setFailedTransactionQuantity(convertRupeesIntoLakhes(jObj.getString("FR_WS_CNT")));
+				 	    				vo.setSentToBankAmount(convertRupeesIntoCrores(jObj.getString("FS_WS_AMT")));
+				 	    				
 				 	    				vo.setFailedTransactionAmount(convertRupeesIntoCrores(jObj.getString("FR_WS_AMT")));
-				 	    				if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") ||
-										   inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))
-				 	    					vo.setFailedTransactionPendingQuantity(jObj.getString("FRP_WS_CNT"));
-				 	    				else
-				 	    					vo.setFailedTransactionPendingQuantity(convertRupeesIntoLakhes(jObj.getString("FRP_WS_CNT")));
-				 	    				vo.setFailedTransactionPendingAmount(convertRupeesIntoCrores(jObj.getString("FRP_WS_AMT")));
-				 	    				if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") ||
-										   inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))
-						 	    			vo.setFtoSentToBank(jObj.getString("FS_WS_CNT"));
-						 	    		else
-						 	    			vo.setFtoSentToBank(convertRupeesIntoLakhes(jObj.getString("FS_WS_CNT")));
-						 	    		vo.setFtoSentToAmount(convertRupeesIntoCrores(jObj.getString("FS_WS_AMT")));
-						 	    		if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("constituency") ||
-										   inputVO.getSublocationType().trim().equalsIgnoreCase("mandal"))
-								 	    	 vo.setSentToBankSuccess(jObj.getString("FP_WS_CNT"));
-								 	    else
-								 	    	  vo.setSentToBankSuccess(convertRupeesIntoLakhes(jObj.getString("FP_WS_CNT")));
-								 	    vo.setSentToBankSuccessAmt(convertRupeesIntoCrores(jObj.getString("FP_WS_AMT")));
+				 	    				vo.setPendingAtBankAmount(convertRupeesIntoCrores(jObj.getString("FRP_WS_AMT")));
+				 	    				vo.setSentToBankSuccessAmt(convertRupeesIntoCrores(jObj.getString("FP_WS_AMT")));
+				 	    				
+								 	    vo.setTotalPendings(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(jObj.getString("FNG_WS_CNT"))+Long.valueOf(jObj.getString("FNU_WS_CNT"))+Long.valueOf(jObj.getString("FNS_WS_CNT"))+Long.valueOf(jObj.getString("FRP_WS_CNT")))));
+								 	    vo.setTotalPendinAmount(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(jObj.getString("FNG_WS_AMT"))+Long.valueOf(jObj.getString("FNU_WS_AMT"))+Long.valueOf(jObj.getString("FNS_WS_AMT"))+Long.valueOf(jObj.getString("FRP_WS_AMT")))));
 		 	    				}else{
 			 	    					vo.setType(jObj.getString("TYPE"));
-				 	    				vo.setGeneratedQuantity(jObj.getString("T_WS_CNT"));
-				 	    				vo.setGeneratedAmount(jObj.getString("T_WS_AMT"));
+			 	    					
+				 	    				vo.setTotalPayments(jObj.getString("T_WS_CNT"));
+				 	    				vo.setTotalAmount(jObj.getString("T_WS_AMT"));
+				 	    				
 				 	    				vo.setGeneratedPendingQuantity(jObj.getString("FNG_WS_CNT"));
 				 	    				vo.setGeneratedPendingAmount(jObj.getString("FNG_WS_AMT"));
-				 	    				vo.setUploadQuantity(jObj.getString("FG_WS_CNT"));
-				 	    				vo.setUploadAmount(jObj.getString("FG_WS_AMT"));
+				 	    				
+				 	    				vo.setGeneratedQuantity(jObj.getString("FG_WS_CNT"));
+				 	    				vo.setGeneratedAmount(jObj.getString("FG_WS_AMT"));
+				 	    				
 				 	    				vo.setUploadPendingQunatity(jObj.getString("FNU_WS_CNT"));
 				 	    				vo.setUploadPendingAmount(jObj.getString("FNU_WS_AMT"));
-				 	    				vo.setSentToBankQuantity(jObj.getString("FU_WS_CNT"));
-				 	    				vo.setSentToBankAmount(jObj.getString("FU_WS_AMT"));
+				 	    				
+				 	    				vo.setUploadQuantity(jObj.getString("FU_WS_CNT"));
+				 	    				vo.setUploadAmount(jObj.getString("FU_WS_AMT"));
+				 	    				
 				 	    				vo.setSentToBankPendingQuantity(jObj.getString("FNS_WS_CNT"));
 				 	    				vo.setSentToBankPendingAmount(jObj.getString("FNS_WS_AMT"));
+				 	    				
+				 	    				vo.setSentToBankQuantity(jObj.getString("FS_WS_CNT"));
+				 	    				vo.setSentToBankAmount(jObj.getString("FS_WS_AMT"));
+				 	    				
 				 	    				vo.setFailedTransactionQuantity(jObj.getString("FR_WS_CNT"));
 				 	    				vo.setFailedTransactionAmount(jObj.getString("FR_WS_AMT"));
-				 	    				vo.setFailedTransactionPendingQuantity(jObj.getString("FRP_WS_CNT"));
-				 	    				vo.setFailedTransactionPendingAmount(jObj.getString("FRP_WS_AMT"));
-				 	    				vo.setFtoSentToBank(jObj.getString("FS_WS_CNT"));
-				 	    				vo.setFtoSentToAmount(jObj.getString("FS_WS_AMT"));
+				 	    				
+				 	    				vo.setPendingAtBankQuantity(jObj.getString("FRP_WS_CNT"));
+				 	    				vo.setPendingAtBankAmount(jObj.getString("FRP_WS_AMT"));
+				 	    				
 				 	    				vo.setSentToBankSuccess(jObj.getString("FP_WS_CNT"));
 				 	    				vo.setSentToBankSuccessAmt(jObj.getString("FP_WS_AMT"));
+				 	    				
+				 	    				vo.setTotalPendings(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(jObj.getString("FNG_WS_CNT"))+Long.valueOf(jObj.getString("FNU_WS_CNT"))+Long.valueOf(jObj.getString("FNS_WS_CNT"))+Long.valueOf(jObj.getString("FRP_WS_CNT")))));
+								 	    vo.setTotalPendinAmount(convertRupeesIntoLakhes(String.valueOf(Long.valueOf(jObj.getString("FNG_WS_AMT"))+Long.valueOf(jObj.getString("FNU_WS_AMT"))+Long.valueOf(jObj.getString("FNS_WS_AMT"))+Long.valueOf(jObj.getString("FRP_WS_AMT")))));
 		 	    				}
 		 	    				
 		 	    				namingMap.put(vo.getId(), vo);

@@ -99,8 +99,15 @@ public class NregsDataVO implements Serializable{
 	private String avgTotMarks;
 	
 	private List<NregsDataVO> subList = new ArrayList<NregsDataVO>(0);
+	private String percSant;
 	
 	
+	public String getPercSant() {
+		return percSant;
+	}
+	public void setPercSant(String percSant) {
+		this.percSant = percSant;
+	}
 	public List<NregsDataVO> getSubList() {
 		return subList;
 	}

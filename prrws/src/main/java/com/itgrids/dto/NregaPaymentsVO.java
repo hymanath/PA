@@ -78,8 +78,22 @@ public class NregaPaymentsVO implements Serializable{
 	private String sentToBankSuccess = "0";
 	private String sentToBankSuccessAmt = "0";
 	
+	private String pendingAtBankQuantity;
+	private String pendingAtBankAmount;
 	
 	
+	public String getPendingAtBankQuantity() {
+		return pendingAtBankQuantity;
+	}
+	public void setPendingAtBankQuantity(String pendingAtBankQuantity) {
+		this.pendingAtBankQuantity = pendingAtBankQuantity;
+	}
+	public String getPendingAtBankAmount() {
+		return pendingAtBankAmount;
+	}
+	public void setPendingAtBankAmount(String pendingAtBankAmount) {
+		this.pendingAtBankAmount = pendingAtBankAmount;
+	}
 	public String getId() {
 		return id;
 	}
