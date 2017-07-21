@@ -11,4 +11,12 @@ import com.itgrids.service.integration.impl.INREGSConsolidatedService;
 public class NREGSConsolidatedService implements INREGSConsolidatedService{
 
 	private static final Logger LOG = Logger.getLogger(NREGSConsolidatedService.class);
+	
+	/*
+	 * Date : 21/07/2017
+	 * Author :Sravanth
+	 * @description : getNREGSLevelWiseConsolidatedReport
+	 * 
+	 */
+	//public List<NregaConsolidatedDataVO> getNREGSLevelWiseConsolidatedReport
 }

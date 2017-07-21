@@ -20,7 +20,7 @@ public class NregsConsolidatedController {
 	@Autowired
 	private INREGSConsolidatedService nregsConsolidatedService;
 	
-	@RequestMapping(value ="/NregaConsolidatedDashboard", method = RequestMethod.GET)
+	@RequestMapping(value ="/getNregaConsolidatedDashboard", method = RequestMethod.GET)
     public String getNregaConsolidatedDashboard(ModelMap model) {
 		return "NregaConsolidated";
     }
