@@ -6,6 +6,7 @@ import java.util.List;
 
 public class NregaConsolidatedDataVO implements Serializable{
 
+	private Long id;
 	private String name;
 	private String district;
 	private String constituency;
@@ -17,6 +18,12 @@ public class NregaConsolidatedDataVO implements Serializable{
 	private List<NregaConsolidatedDataVO> subList = new ArrayList<NregaConsolidatedDataVO>(0);
 	
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}

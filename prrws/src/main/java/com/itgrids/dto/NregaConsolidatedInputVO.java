@@ -9,16 +9,30 @@ public class NregaConsolidatedInputVO implements Serializable{
 	private Long id;
 	private String name;
 	private Long convergenceTypeId;
+	private String componentName;
+	private String url;
 	
 	private String fromDate;
 	private String toDate;
 	private String year;
-	private String locationId;
+	private String locationIdStr;
 	private String locationType;
 	private String subLocationType;
 	private List<Long> componentIds = new ArrayList<Long>();
 	
 	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	public String getComponentName() {
+		return componentName;
+	}
+	public void setComponentName(String componentName) {
+		this.componentName = componentName;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -55,11 +69,11 @@ public class NregaConsolidatedInputVO implements Serializable{
 	public void setYear(String year) {
 		this.year = year;
 	}
-	public String getLocationId() {
-		return locationId;
+	public String getLocationIdStr() {
+		return locationIdStr;
 	}
-	public void setLocationId(String locationId) {
-		this.locationId = locationId;
+	public void setLocationIdStr(String locationIdStr) {
+		this.locationIdStr = locationIdStr;
 	}
 	public String getLocationType() {
 		return locationType;
