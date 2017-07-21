@@ -6344,7 +6344,7 @@ public String getAlertSourceWiseAlert(){
 				jObj = new JSONObject(getTask());
 				String fromDateStr = jObj.getString("fromDateStr");
 				String toDateStr = jObj.getString("toDateStr");
-				Long constituencyId = jObj.getLong("copnstituencyId");
+				Long constituencyId = jObj.getLong("constituencyId");
 				JSONArray alertTypeIdsStr = jObj.getJSONArray("alertTypeIdsStr");  
 				List<Long> alertTypeIds = new ArrayList<Long>();
 				if(alertTypeIdsStr != null && alertTypeIdsStr.length() > 0){
