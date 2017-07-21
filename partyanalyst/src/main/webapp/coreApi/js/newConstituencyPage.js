@@ -38,7 +38,9 @@ function onLoadAjaxCalls()
 	//Benefit
 	//getGovtSchemeWiseBenefitMembersCount();
 	//getMandalWiseBenefitMembersCount();
-
+	getPositionWiseMemberCount();
+	getNominatedPostApplicationDetails();
+	getNominatedPostStatusWiseCount();
 	
 	
 }
@@ -1097,7 +1099,7 @@ function getTotalAlertDetailsForConstituencyInfo(){
 	var jsObj={
 			"fromDateStr" : "",
 			"toDateStr":"",
-			"constituencyId" : 4,
+			"copnstituencyId" : 232,
 			"alertTypeIdsStr" : [1]
 			
 		}
@@ -1107,8 +1109,196 @@ function getTotalAlertDetailsForConstituencyInfo(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	console.log(result);
+    	buildAlertsBlock(result);
 	});	
+}
+function buildAlertsBlock(result){
+	var str ='';
+	str+='<div class="col-md-12 col-xs-12 col-ms-12 m_top20" navbar-index="alerts">';
+				str+='<h3>Alerts <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>';
+				str+='<div class="block">';
+					str+='<div class="row">';
+						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+							str+='<div class="block">';
+								str+='<ul class="list-inline list-border">';
+									str+='<li>';
+										if(result[0].idNamesList[0].count != null && result[0].idNamesList[0].count > 0){
+											str+='<h4>'+result[0].idNamesList[0].count+'</h4>';
+										}else{
+											str+='<h4>0</h4>';
+										}
+									str+='<p>Total Alerts</p>';
+									str+='</li>';
+									str+='<li>';
+										if(result[0].docList[0].count != null && result[0].docList[0].count > 0){
+											str+='<h4>'+result[0].docList[0].count+'</h4>';
+										}else{
+											str+='<h4>0</h4>';
+										}
+										
+										str+='<p>Involved Members</p>';
+									str+='</li>';
+									str+='<li>';
+										//if(result[0].assignList[0].count != null && result[0].assignList[0].count > 0 && result[0].assignList[0].count !=""){
+											//str+='<h4>'+result[0].assignList[0].count+'</h4>';
+										//}else{
+											str+='<h4>0</h4>';
+										//}
+										
+										str+='<p>Assigned Memebers</p>';
+									str+='</li>';
+								str+='</ul>';
+							str+='</div>';
+							str+='<div class="row m_top15">';
+								str+='<div class="col-md-5 col-xs-12 col-sm-5">';
+									str+='<div id="overallAlerts" style="height:200px"></div>';
+								str+='</div>';
+								str+='<div class="col-md-7 col-xs-12 col-sm-7">';
+									 
+								  /*str+='<select class="form-control" role="tabListMobile">';
+									  str+='<option tab_id="alerts1">OC</option>';
+									  str+='<option tab_id="alerts2">BC</option>';
+									  str+='<option tab_id="alerts3">SC</option>';
+								  str+='</select>';*/
+								  str+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
+									str+='<li role="presentation" class="active"><a href="#alerts1" aria-controls="alerts1" role="tab" data-toggle="tab">OC</a></li>';
+									str+='<li role="presentation"><a href="#alerts2" aria-controls="alerts1" role="tab" data-toggle="tab">BC</a></li>';
+									str+='<li role="presentation"><a href="#alerts3" aria-controls="alerts1" role="tab" data-toggle="tab">SC</a></li>';
+								  str+='</ul>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-md-6 col-xs-12 col-sm-6 pad_left0">';
+							str+='<div>';
+							  str+='<div class="tab-content">';
+								str+='<div role="tabpanel" class="tab-pane active pad_10" id="alerts1">';
+									str+='<table class="table table-noborder">';
+										str+='<thead class="text-capitalize bg-E9">';
+											str+='<th>alert status</th>';
+											str+='<th>total</th>';
+											str+='<th>party</th>';
+											str+='<th>govt</th>';
+										str+='</thead>';
+										str+='<tbody>';
+										if(result.subList2 != null && result.subList2.length > 0){
+											for(var i in result.subList2){
+										  str+='<tr>';
+											str+='<td>'+result.subList2[i].status+'</td>';
+											str+='<td>'+result.locationCnt+'</td>';
+											if(result.subList2[i].alertTypeId == 1){
+												str+='<td>'+result.subList2[i].count+'</td>';
+											}else if(result.subList2[i].alertTypeId == 2){
+												str+='<td>'+result.subList2[i].count+'</td>';
+											}
+											
+										  str+='</tr>';
+											}
+										}											
+										str+='</tbody>';
+									str+='</table>';
+								str+='</div>';
+								str+='<div role="tabpanel" class="tab-pane pad_10" id="alerts2">';
+									
+								str+='</div>';
+								str+='<div role="tabpanel" class="tab-pane pad_10" id="alerts3">';
+									  
+								str+='</div>';
+							  str+='</div>';
+
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="block">';
+					str+='<h4>Alert Impact Level</h4>';
+					str+='<ul class="list-inline blockStyleAlign">';
+					if(result[0].subList1 != null && result[0].subList1.length > 0){
+						for(var k in result[0].subList1){
+						str+='<li><h2 style="text-align: center;">'+result[0].subList1[k].count+'</h2> <p>'+result[0].subList1[k].status+'</p></li>';
+						}
+					}
+						
+					str+='</ul>';
+				str+='</div>';
+			str+='</div>';
+			$("#alertsBlockDiv").html(str);
+			
+		
+		$("#overallAlerts").highcharts({
+			chart: {
+				type: 'pie',
+				options3d: {
+					enabled: true,
+					alpha: 25
+				}
+			},
+			title: {
+				text: null
+			},
+			subtitle: {
+				text: null
+			},
+			tooltip: {
+				useHTML: true,
+				backgroundColor: '#FCFFC5', 
+				formatter: function() {
+					var cnt = this.point.count;
+					return "<b style='color:"+this.point.color+"'>"+this.point.name+" - "+cnt+"("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+				}  
+			}, 
+			plotOptions: {
+				series: {
+					dataLabels: {
+						enabled: false,
+						formatter: function() {
+							return Math.round(this.percentage*100)/100 + ' %';
+						},
+						distance: -30,
+						color:'black'
+					},
+					point:{
+						events:{
+							click:function(){
+								getData(this.count,this.sts);     
+							}
+						}
+					}
+				},
+				pie: {
+					innerSize: 130,
+					depth: 180,
+					dataLabels:{
+						enabled: false,
+						  formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.percentage,1)+ '%';
+								}
+							} 
+					},
+					showInLegend: false
+				},
+			},
+			    series: [{
+				name: 'Brands',
+				colorByPoint: true,
+				data: [{
+					name: 'Constituency',
+					y: 56.33
+					
+				}, {
+					name: 'Mandal/Municipality',
+					y: 24.03
+					
+				}, {
+					name: 'Village/Ward',
+					y: 10.38
+					
+				}]
+			}]
+		});
+
 }
 
 function getActivityStatusList(){
@@ -1125,7 +1315,7 @@ function getActivityStatusList(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	console.log(result);
+    	//console.log(result);
 		var str = '';
 		var per='%';
 		str+='<table class="table table-bordered">';
@@ -1150,7 +1340,84 @@ function getActivityStatusList(){
 		$("#activiteId").html(str);
 	});	
 }
-
+function getNominatedPostStatusWiseCount(){
+	var jsObj={
+			"fromDateStr" : "",
+			"toDateStr":"",
+			"constituencyId":232
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getNominatedPostStatusWiseCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		var str='';
+		if(result != null && result.length >0){
+			for(var i in result){
+				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+					str+='<ul class="graph-legend">';
+						str+='<li><span class="statusBox"></span>'+result[i].name+'<span class="count">'+result[i].count+'</span></li>';
+					str+='</ul>';
+				str+='</div>';
+			}
+			$("#nominatedPostDiv").html(str);
+		}
+	});	
+}
+function getNominatedPostApplicationDetails(){
+	var jsObj={
+			"fromDateStr" : "",
+			"toDateStr":"",
+			"constituencyId":232
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getNominatedPostApplicationStatusWiseCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		var str='';
+		if(result != null && result.length >0){
+			for(var i in result){
+				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+					str+='<ul class="graph-legend">';
+						str+='<li><span class="statusBox"></span>'+result[i].name+'<span class="count">'+result[i].count+'</span></li>';
+					str+='</ul>';
+				str+='</div>';
+			}
+			$("#applicationCntBlock").html(str);
+		}
+	});	
+}
+function getPositionWiseMemberCount(){
+	var jsObj={
+			"fromDateStr" : "",
+			"toDateStr":"",
+			"constituencyId":232
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getPositionWiseMemberCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		var str='';
+		if(result != null && result.length >0){
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+					str+='<ul class="list-inline blockStyleAlign" >';
+			for(var i in result){
+				str+='<li>';
+					str+='<h3>'+result[i].count+'</h3>';
+					str+='<p class="text-capitalize">'+result[i].name+'</p>';
+				str+='</li>';
+			}
+			str+='</ul>';
+				str+='</div>';
+			$("#nominatedMembersDiv").html(str);
+		}
+	});	
+}
 $(document).on("click",".voterCadreSwitchCls",function(){
 	alert($(this).attr("attr_type"));
 	if($(this).attr("attr_type") == "voter"){
