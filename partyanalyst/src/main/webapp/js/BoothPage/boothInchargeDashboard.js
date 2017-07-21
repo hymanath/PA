@@ -603,6 +603,8 @@ $(document).on("change",".boothBlockCls",function(){
 	var subLevel = $(this).attr("attr_sub_level");
 	var resultLevel = $(this).attr("attr_result_level");
 	var resultLevelDivId = $(this).attr("attr_result_level_div_id");
+	var filterLevel = $("#boothCommitteeDashbrdRolesId").attr("accessType");
+    var filterValue = $("#boothCommitteeDashbrdRolesId").attr("accessValue");
 	var resultType="All";
     var resultLevel="PANCHAYAT";
 	 if(selectValue > 0 && subLevelDropBoxId != "boothBlockConstituenySelectBxId"){
@@ -610,8 +612,9 @@ $(document).on("change",".boothBlockCls",function(){
 	 }else {
 		 clearCommonDiv();
 	 }
-	 if(selectValue==0){
-		selectValue="";
+	 if(selectValue==0){//if user is selecting all location level then we are sending user access level and value
+		selectedLevel=filterLevel;
+		selectValue=filterValue;
 	 }
 	 if(subLevel != undefined ){
 	   getSubLevelLocationBasedOnSelection(resultLevel,subLevel,selectedLevel,selectValue,subLevelDropBoxId);		 
