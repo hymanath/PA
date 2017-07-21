@@ -214,11 +214,11 @@ function onLoadCalls()
 		else if(levelType == "panchayat")
 			theadArr = ["district","constituency","mandal",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 		
-		if((divId == 'Mulbery' || divId == 'Silk worm' || divId == 'Cattle drinking water trough' || divId == 'Raising of Perinnial Fodder') && levelType == "state")
-			theadArr = [levelType,'TARGET','sanctioned Target','sanctioned Percentage','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state")
+			theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 		
-		if((divId == 'Fish Ponds' || divId == 'Fish Drying Platforms') && (levelType == "state" || levelType == "district"))
-			theadArr = [levelType,'TARGET','sanctioned Target','sanctioned Percentage','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings') && (levelType == "state" || levelType == "district"))
+			theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 		
 		var tableId = divId.replace(/\s+/g, '')+''+levelType;
 		$("#"+tableId).html(spinner);
@@ -461,11 +461,11 @@ function projectData(divId,levelId,locationId)
 		else if(dataArr[0] == "panchayat")
 			theadArr = ["district","constituency","mandal",dataArr[0],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 		
-		if((divId == 'Mulbery' || divId == 'Silk worm' || divId == 'Cattle drinking water trough' || divId == 'Raising of Perinnial Fodder') && dataArr[0] == "state")
-			theadArr = [dataArr[0],'TARGET','sanctioned Target','sanctioned Percentage','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		if((divId == 'Mulbery' || divId == 'Silk worms' || divId == 'Cattle drinking water troughs' || divId == 'Raising of Perinnial Fodders') && dataArr[0] == "state")
+			theadArr = [dataArr[0],'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 		
-		if((divId == 'Fish Ponds' || divId == 'Fish Drying Platforms') && (dataArr[0] == "state" || dataArr[0] == "district"))
-			theadArr = [dataArr[0],'TARGET','sanctioned Target','sanctioned Percentage','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		if((divId == 'Fish Ponds' || divId == 'Fish Drying Platforms' || divId == 'Anganwadi Buildings') && (dataArr[0] == "state" || dataArr[0] == "district"))
+			theadArr = [dataArr[0],'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 		
 		var tableId = divId.replace(/\s+/g, '')+''+dataArr[0];
 		$("#"+tableId).html(spinner);
@@ -2355,13 +2355,13 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}
 						str+='<td>'+ajaxresp[i].target+'</td>';
-						if((globalDivName == 'Mulbery' || globalDivName == 'Silk worm' || globalDivName == 'Cattle drinking water trough' || globalDivName == 'Raising of Perinnial Fodder') && locationTypeNew == "state"){
+						if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
 							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
-							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+							//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 						}
-						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms') && (locationTypeNew == "state" || locationTypeNew == "district")){
+						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings') && (locationTypeNew == "state" || locationTypeNew == "district")){
 							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
-							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+							//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 						}
 						str+='<td>'+ajaxresp[i].grounded+'</td>';
 						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
@@ -2371,11 +2371,28 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 							str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
 						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
 							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
-						}else if(ajaxresp[i].percentage >= 80)
-						{
+						}else if(ajaxresp[i].percentage >= 80){
 							str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
 						}
-						//str+='<td>'+ajaxresp[i].percentage+'</td>';
+						
+						if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
+							if(ajaxresp[i].percSant < 50){
+								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
+								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 80){
+								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
+							}
+						}
+						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							if(ajaxresp[i].percSant < 50){
+								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
+								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 80){
+								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
+							}
+						}
 					str+='</tr>';
 				}
 			}
@@ -2851,13 +2868,13 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocationType,menuLocationId,buildType)
 {
 	$("#"+divIdd).html(spinner);
-	var theadArr = [locationType,'Type','Total Payments','Total Amount','Not Generated fto','Not Generated fto Amount','Generated fto','Generated fto Amount','Not Uploaded fto','Not Uploaded fto Amount','Uploaded fto','Uploaded fto Amount','Not sent To Bank fto','Not sent To Bank fto Amount','Sent To Bank fto','Sent To Bank fto Amount','Transaction Success fto','Transaction Success fto Amount','Failed Transaction fto','Failed Transaction fto Amount','Pending at bank FTO','Pending at bank FTO Amount'];
+	var theadArr = [locationType,'Type','Total Payments','Total Amount','total pending fto','total pending amount','Not Generated fto','Not Generated fto Amount','Not Uploaded fto','Not Uploaded fto Amount','Not sent To Bank fto','Not sent To Bank fto Amount','Pending at bank FTO','Pending at bank FTO Amount','Failed Transaction fto','Failed Transaction fto Amount'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Type','Total Payments','Total Amount','Not Generated fto','Not Generated fto Amount','Generated fto','Generated fto Amount','Not Uploaded fto','Not Uploaded fto Amount','Uploaded fto','Uploaded fto Amount','Not sent To Bank fto','Not sent To Bank fto Amount','Sent To Bank fto','Sent To Bank fto Amount','Transaction Success fto','Transaction Success fto Amount','Failed Transaction fto','Failed Transaction fto Amount','Pending at bank FTO','Pending at bank FTO Amount'];
+		theadArr = ["district",locationType,'Type','Total Payments','Total Amount','total pending fto','total pending amount','Not Generated fto','Not Generated fto Amount','Not Uploaded fto','Not Uploaded fto Amount','Not sent To Bank fto','Not sent To Bank fto Amount','Pending at bank FTO','Pending at bank FTO Amount','Failed Transaction fto','Failed Transaction fto Amount'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Type','Total Payments','Total Amount','Not Generated fto','Not Generated fto Amount','Generated fto','Generated fto Amount','Not Uploaded fto','Not Uploaded fto Amount','Uploaded fto','Uploaded fto Amount','Not sent To Bank fto','Not sent To Bank fto Amount','Sent To Bank fto','Sent To Bank fto Amount','Transaction Success fto','Transaction Success fto Amount','Failed Transaction fto','Failed Transaction fto Amount','Pending at bank FTO','Pending at bank FTO Amount'];
+		theadArr = ["district","constituency",locationType,'Type','Total Payments','Total Amount','total pending fto','total pending amount','Not Generated fto','Not Generated fto Amount','Not Uploaded fto','Not Uploaded fto Amount','Not sent To Bank fto','Not sent To Bank fto Amount','Pending at bank FTO','Pending at bank FTO Amount','Failed Transaction fto','Failed Transaction fto Amount'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Type','Total Payments','Total Amount','Not Generated fto','Not Generated fto Amount','Generated fto','Generated fto Amount','Not Uploaded fto','Not Uploaded fto Amount','Uploaded fto','Uploaded fto Amount','Not sent To Bank fto','Not sent To Bank fto Amount','Sent To Bank fto','Sent To Bank fto Amount','Transaction Success fto','Transaction Success fto Amount','Failed Transaction fto','Failed Transaction fto Amount','Pending at bank FTO','Pending at bank FTO Amount'];
+		theadArr = ["district","constituency","mandal",locationType,'Type','Total Payments','Total Amount','total pending fto','total pending amount','Not Generated fto','Not Generated fto Amount','Not Uploaded fto','Not Uploaded fto Amount','Not sent To Bank fto','Not sent To Bank fto Amount','Pending at bank FTO','Pending at bank FTO Amount','Failed Transaction fto','Failed Transaction fto Amount'];
 	
 	var menuSelName = $("#selectedName").text();
 	
@@ -2921,26 +2938,20 @@ function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocatio
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>'; */ 
 						
 						str+='<td>'+ajaxresp[i].type+'</td>';
-						str+='<td>'+ajaxresp[i].generatedQuantity+'</td>';
-						str+='<td>'+ajaxresp[i].generatedAmount+'</td>';
+						str+='<td>'+ajaxresp[i].totalPayments+'</td>';
+						str+='<td>'+ajaxresp[i].totalAmount+'</td>';
+						str+='<td>'+ajaxresp[i].totalPendings+'</td>';
+						str+='<td>'+ajaxresp[i].totalPendinAmount+'</td>';
 						str+='<td>'+ajaxresp[i].generatedPendingQuantity+'</td>';
 						str+='<td>'+ajaxresp[i].generatedPendingAmount+'</td>';
-						str+='<td>'+ajaxresp[i].uploadQuantity+'</td>';
-						str+='<td>'+ajaxresp[i].uploadAmount+'</td>';
 						str+='<td>'+ajaxresp[i].uploadPendingQunatity+'</td>';
 						str+='<td>'+ajaxresp[i].uploadPendingAmount+'</td>';
-						str+='<td>'+ajaxresp[i].sentToBankQuantity+'</td>';
-						str+='<td>'+ajaxresp[i].sentToBankAmount+'</td>';
 						str+='<td>'+ajaxresp[i].sentToBankPendingQuantity+'</td>';
 						str+='<td>'+ajaxresp[i].sentToBankPendingAmount+'</td>';
-						 str+='<td>'+ajaxresp[i].ftoSentToBank+'</td>';
-						str+='<td>'+ajaxresp[i].ftoSentToAmount+'</td>';
-						str+='<td>'+ajaxresp[i].sentToBankSuccess+'</td>';
-						str+='<td>'+ajaxresp[i].sentToBankSuccessAmt+'</td>'; 
+						str+='<td>'+ajaxresp[i].pendingAtBankQuantity+'</td>';
+						str+='<td>'+ajaxresp[i].pendingAtBankAmount+'</td>';
 						str+='<td>'+ajaxresp[i].failedTransactionQuantity+'</td>';
 						str+='<td>'+ajaxresp[i].failedTransactionAmount+'</td>';
-						str+='<td>'+ajaxresp[i].failedTransactionPendingQuantity+'</td>';
-						str+='<td>'+ajaxresp[i].failedTransactionPendingAmount+'</td>';
 					str+='</tr>';
 				}
 			}

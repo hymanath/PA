@@ -1,7 +1,9 @@
 package com.itgrids.service.integration;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -16,6 +18,7 @@ import com.itgrids.dao.INregaComponentServiceDAO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.NregaConsolidatedDataVO;
 import com.itgrids.dto.NregaConsolidatedInputVO;
+import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSConsolidatedService;
@@ -49,7 +52,9 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 	public List<NregaConsolidatedDataVO> getNREGSLevelWiseConsolidatedReport(NregaConsolidatedInputVO inputVO){
 		List<NregaConsolidatedDataVO> returnList = new ArrayList<NregaConsolidatedDataVO>(0);
 		try {
+			Map<String,NregaConsolidatedDataVO> locationMap = new LinkedHashMap<String,NregaConsolidatedDataVO>();
 			List<NregaConsolidatedInputVO> urlsList = new ArrayList<NregaConsolidatedInputVO>(0);
+			
 			if(inputVO != null && inputVO.getComponentIds() != null && !inputVO.getComponentIds().isEmpty()){
 				List<Object[]> list = nregaComponentServiceDAO.getComponentUrlsByComponentIds(inputVO.getComponentIds(), "DATA");
 				if(list != null && !list.isEmpty()){
@@ -75,7 +80,94 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 							JSONArray finalArray = new JSONArray(output);
 							if(finalArray != null && finalArray.length() > 0){
 								for(int i=0;i<finalArray.length();i++){
-									
+									JSONObject jObj = (JSONObject) finalArray.get(i);
+									if(urlvo.getComponentName() != null && 
+											(urlvo.getComponentName().trim().equalsIgnoreCase("Farm Ponds") || urlvo.getComponentName().trim().equalsIgnoreCase("IHHL")
+												|| urlvo.getComponentName().trim().equalsIgnoreCase("Vermi Compost") || urlvo.getComponentName().trim().equalsIgnoreCase("GP Buildings")
+												|| urlvo.getComponentName().trim().equalsIgnoreCase("Anganwadi Buildings") || urlvo.getComponentName().trim().equalsIgnoreCase("Mandal Buildings")
+												|| urlvo.getComponentName().trim().equalsIgnoreCase("NTR 90 Days") || urlvo.getComponentName().trim().equalsIgnoreCase("Production of Bricks")
+												|| urlvo.getComponentName().trim().equalsIgnoreCase("Mulbery") || urlvo.getComponentName().trim().equalsIgnoreCase("Silk Worms")
+												|| urlvo.getComponentName().trim().equalsIgnoreCase("Cattle Drinking Water Troughs") || urlvo.getComponentName().trim().equalsIgnoreCase("Raising of Perinnial Fodders")
+												|| urlvo.getComponentName().trim().equalsIgnoreCase("Solid Waste Management") || urlvo.getComponentName().trim().equalsIgnoreCase("Play Fields")
+												|| urlvo.getComponentName().trim().equalsIgnoreCase("Burial Grounds") || urlvo.getComponentName().trim().equalsIgnoreCase("Agriculture Activities")
+												|| urlvo.getComponentName().trim().equalsIgnoreCase("Fish Drying Platforms") || urlvo.getComponentName().trim().equalsIgnoreCase("Fish Ponds")))
+									if(inputVO.getLocationType().trim().equalsIgnoreCase("state") && inputVO.getSubLocationType().trim().equalsIgnoreCase("state")){
+										NregaConsolidatedDataVO levelvo = locationMap.get("state");
+										if(levelvo == null){
+											levelvo = new NregaConsolidatedDataVO();
+												
+												NregaConsolidatedDataVO componentvo = new NregaConsolidatedDataVO();
+												componentvo.setName("state");
+												componentvo.setComponent(urlvo.getComponentName());
+												componentvo.setPercentage(jObj.getString("PERCENTAGE"));
+												levelvo.getSubList().add(componentvo);
+												
+											locationMap.put("state", levelvo);
+										}else{
+											NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), urlvo.getComponentName());
+											if(componentvo == null){
+												componentvo = new NregaConsolidatedDataVO();
+												componentvo.setName("state");
+												componentvo.setComponent(urlvo.getComponentName());
+												componentvo.setPercentage(jObj.getString("PERCENTAGE"));
+												levelvo.getSubList().add(componentvo);
+											}
+										}
+									}else{
+										NregaConsolidatedDataVO levelvo = null;
+										if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+											levelvo = locationMap.get(jObj.getString("DISTRICT").trim());
+										else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
+											levelvo = locationMap.get(jObj.getString("CONSTITUENCY").trim());
+										else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
+											levelvo = locationMap.get(jObj.getString("MANDAL").trim());
+										else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
+											levelvo = locationMap.get(jObj.getString("PANCHAYAT").trim());
+										
+										if(levelvo == null){
+											levelvo = new NregaConsolidatedDataVO();
+												
+												NregaConsolidatedDataVO componentvo = new NregaConsolidatedDataVO();
+												
+												if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+													componentvo.setName(jObj.getString("DISTRICT").trim());
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
+													componentvo.setName(jObj.getString("CONSTITUENCY").trim());
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
+													componentvo.setName(jObj.getString("MANDAL").trim());
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
+													componentvo.setName(jObj.getString("PANCHAYAT").trim());
+												componentvo.setComponent(urlvo.getComponentName());
+												componentvo.setPercentage(jObj.getString("PERCENTAGE"));
+												levelvo.getSubList().add(componentvo);
+												
+											if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+												locationMap.put(jObj.getString("DISTRICT").trim(), levelvo);
+											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
+												locationMap.put(jObj.getString("CONSTITUENCY").trim(), levelvo);
+											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
+												locationMap.put(jObj.getString("MANDAL").trim(), levelvo);
+											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
+												locationMap.put(jObj.getString("PANCHAYAT").trim(), levelvo);
+										}else{
+											NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), urlvo.getComponentName());
+											if(componentvo == null){
+												componentvo = new NregaConsolidatedDataVO();
+												
+												if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+													componentvo.setName(jObj.getString("DISTRICT").trim());
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
+													componentvo.setName(jObj.getString("CONSTITUENCY").trim());
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
+													componentvo.setName(jObj.getString("MANDAL").trim());
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
+													componentvo.setName(jObj.getString("PANCHAYAT").trim());
+												componentvo.setComponent(urlvo.getComponentName());
+												componentvo.setPercentage(jObj.getString("PERCENTAGE"));
+												levelvo.getSubList().add(componentvo);
+											}
+										}
+									}
 								}
 							}
 						}
@@ -86,6 +178,28 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 			LOG.error("Exception raised at getNREGSLevelWiseConsolidatedReport - NREGSConsolidatedService Service", e);
 		}
 		return returnList;
+	}
+	
+	/*
+	 * Date : 21/07/2017
+	 * Author :Sravanth
+	 * @description : convertingInputVOToString
+	 * 
+	 */
+	public NregaConsolidatedDataVO getMatchedVOByString(List<NregaConsolidatedDataVO> list,String component){
+		try{
+			if(list != null && !list.isEmpty()){
+				for (NregaConsolidatedDataVO nregaConsolidatedDataVO : list) {
+					if(nregaConsolidatedDataVO.getComponent().trim().equalsIgnoreCase(component)){
+						return nregaConsolidatedDataVO;
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getMatchedVOByString - NREGSConsolidatedService service", e);
+		}
+		return null;
 	}
 	
 	/*
