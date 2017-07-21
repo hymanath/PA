@@ -180,6 +180,74 @@
 					</div>
 				</div>
 			</div>
+			<!-- Teja -->
+				<div id="alertsBlockDiv"></div>
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="nominatedPosts">
+				<h3>Nominated Post <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<div class="block">
+					<div class="row">
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<h5 class="m_left10">Posts</h5>
+							<div class="row">
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<div id="posts" style="height:80px;"></div>
+								</div>
+								<div id="nominatedPostDiv"></div>
+								<!--
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<ul class="graph-legend">
+                                    	<li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
+                                        <li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
+                                        <li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
+                                    </ul>
+								</div>-->
+							</div>
+							
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<h5 class="m_left10">Applications</h5>
+							<div class="row">
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<div id="applications" style="height:120px;"></div>
+								</div>
+								<div id="applicationCntBlock"></div>
+								<!--<div class="col-md-6 col-xs-12 col-sm-6">
+									<ul class="graph-legend">
+									
+                                    	<li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
+                                    </ul>
+								</div>-->
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<hr class="m_0"/>
+							<h4 class="text-capital text-center m_top-10"><span class="bg-fff pad_10">position level</span></h4>
+						</div>
+						<div id="nominatedMembersDiv"></div>
+						<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+							<ul class="list-border list-inline">
+								<li>
+									<h3>2</h3>
+									<p class="text-capitalize">central</p>
+								</li>
+								<li>
+									<h3>2</h3>
+									<p class="text-capitalize">central</p>
+								</li>
+								<li>
+									<h3>2</h3>
+									<p class="text-capitalize">central</p>
+								</li>
+							</ul>
+						</div>-->
+					</div>
+				</div>
+				<div class="block">
+					<button class="btn btn-success btn-success-white">detailed information</button>
+				</div>
+			</div>
 		</div>
 		
 		<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="casteInfo">
