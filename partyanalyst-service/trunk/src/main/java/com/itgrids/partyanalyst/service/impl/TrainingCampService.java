@@ -7361,6 +7361,7 @@ class TrainingCampService implements ITrainingCampService{
 						SimpleVO districtVO=finalMap.get(districtId);
 						if(districtVO==null){
 							districtVO=finalMap.get(0l);
+							if(districtVO != null)
 							districtVO.setCount(districtVO.getCount()+ (obj[2]!=null?(Long)obj[2]:0l));
 							//total trained numbers count.
 							totalTrainedNumbers=totalTrainedNumbers+(obj[2]!=null?(Long)obj[2]:0l);
@@ -7380,9 +7381,11 @@ class TrainingCampService implements ITrainingCampService{
 						Long districtId=(Long)obj[0];
 						SimpleVO districtVO=finalMap.get(districtId);
 						if(districtVO==null){
-							
+							SimpleVO levelVO = null;
 							districtVO=finalMap.get(0l);
-							SimpleVO levelVO=districtVO.getMap().get((Long)obj[2]);
+							if(districtVO != null)
+							 levelVO=districtVO.getMap().get((Long)obj[2]);
+							if(levelVO != null)
 							levelVO.setCount(levelVO.getCount()+(obj[4]!=null?(Long)obj[4]:0l));
 							//level wise totalCount
 							Long levelId=(Long)obj[2];
@@ -7545,16 +7548,20 @@ class TrainingCampService implements ITrainingCampService{
 				 
 				 if(fromType.equalsIgnoreCase("dist")){
 					 sb.append(" select d.districtId,d.districtName,count(distinct tc.tdpCadreId) " +
-					 		    " from  TrainingCampAttendance tca,TdpCadre tc,District d " +
-					 		    " where  tca.attendance.tdpCadreId=tc.tdpCadreId and tc.userAddress.district.districtId=d.districtId ");
+					 		    " from  TrainingCampAttendance tca,TdpCadre tc,District d, " +
+					 		    " TdpCommitteeMember model2 " +
+							    " where tca.attendance.tdpCadreId= model2.tdpCadreId "+
+					 		    " and  tca.attendance.tdpCadreId=tc.tdpCadreId and tc.userAddress.district.districtId=d.districtId ");
 					 if(fromDate!=null && toDate!=null){
 						 sb.append(" and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate ");
 					 }
 					 //sb.append(" and date(tca.trainingCampBatch.fromDate) < :currDate and date(tca.trainingCampBatch.toDate) < :currDate ");
-				 }else if(fromType.equalsIgnoreCase("const")){
+				     }else if(fromType.equalsIgnoreCase("const")){
 					 sb.append(" select c.constituencyId,c.name,count(distinct tc.tdpCadreId) " +
-					 		    " from  TrainingCampAttendance tca,TdpCadre tc,Constituency c " +
-					 		    " where  tca.attendance.tdpCadreId=tc.tdpCadreId and tc.userAddress.constituency.constituencyId=c.constituencyId ");
+					 		    " from  TrainingCampAttendance tca,TdpCadre tc,Constituency c, " +
+					 		    " TdpCommitteeMember model2 " +
+					 		    " where  tca.attendance.tdpCadreId=tc.tdpCadreId and tca.attendance.tdpCadreId= model2.tdpCadreId " +
+					 		    " and tc.userAddress.constituency.constituencyId=c.constituencyId ");
 					 if(fromDate!=null && toDate!=null){
 						sb.append(" and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate "); 
 					 }
@@ -7566,7 +7573,12 @@ class TrainingCampService implements ITrainingCampService{
 				 
 				 if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
 					 sb.append(" and tca.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) ");
-				}
+				  }
+				 if(enrollmentYrIds != null && enrollmentYrIds.contains(4l)){
+					 sb.append(" and model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId = 2 ");
+				 }else if(enrollmentYrIds != null && enrollmentYrIds.contains(3l)){
+					 sb.append(" and model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId = 1 ");
+				 }
 				 if(callFrom.equalsIgnoreCase("c")){
 					sb.append(" and date(tca.trainingCampBatch.fromDate) < :currDate and date(tca.trainingCampBatch.toDate) < :currDate ");
 				 }
@@ -7632,7 +7644,8 @@ class TrainingCampService implements ITrainingCampService{
 							   " model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +
 							   " count(distinct tca.attendance.tdpCadreId)");
 					sb.append(" from TrainingCampAttendance tca,TdpCommitteeMember model2 " +
-							   " where tca.attendance.tdpCadreId=model2.tdpCadreId and  model2.isActive='Y' ");
+							   " where tca.attendance.tdpCadreId=model2.tdpCadreId and " +
+							   "  model2.isActive='Y' ");
 					if(fromDate!=null && toDate!=null){
 						   sb.append(" and date(tca.trainingCampBatch.fromDate) >= :fromDate and date(tca.trainingCampBatch.toDate) <= :toDate  ");
 					}
@@ -7654,6 +7667,11 @@ class TrainingCampService implements ITrainingCampService{
 				if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
 					sb.append(" and tca.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) ");
 				}
+				if(enrollmentYrIds != null && enrollmentYrIds.contains(4l)){
+					 sb.append(" and model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId = 2 ");
+				 }else if(enrollmentYrIds != null && enrollmentYrIds.contains(3l)){
+					 sb.append(" and model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId = 1 ");
+				 }
 				
 				if(batchId==null && campId==null && programIds!=null){
 					sb.append(" and tca.trainingCampProgramId in (:programIds) ");

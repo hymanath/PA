@@ -31,8 +31,8 @@ public class TrainingCampProgramDAO extends GenericDaoHibernate<TrainingCampProg
 		if(enrollmentYrIds != null && enrollmentYrIds.size()>0){
 			sb.append(" and model.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
 		}
-				//" and model.trainingCampProgram.isDeleted='N' " +
-		sb.append(" order by model1.trainingCampId,model1.district.districtId");
+		sb.append(" and model.trainingCampProgram.isDeleted='N' " );
+		sb.append(" order by model1.trainingCampId,model1.district.districtId ");
 		Query query=getSession().createQuery(sb.toString());
 		if(programIds != null && programIds.size()>0)
 		   query.setParameterList("programIds",programIds);
