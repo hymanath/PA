@@ -111,7 +111,7 @@ control.makeTransliteratable([''+id+'']);
                 <img src="dist/img/CBN1.png" class="img-responsive">
             </div>
             <div class="col-md-6 col-xs-7 col-sm-7 text-center">               
-                 <p class="header-text display-style" id="mainheading" style="font-size:32px;"></p>               
+                 <p class="header-text display-style" id="mainheading" style="font-size:32px;">FEEDBACK FORM</p>               
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />   
             </div>
