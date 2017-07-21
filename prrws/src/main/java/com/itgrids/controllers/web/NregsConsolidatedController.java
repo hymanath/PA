@@ -58,4 +58,16 @@ public class NregsConsolidatedController {
 		return list;
 	}
 	
+	@PostMapping("/getNREGSConsolidatedAbstrct")
+	public @ResponseBody List<NregsProjectsVO> getNREGSConsolidatedAbstrct(@RequestBody NregaConsolidatedInputVO nregaConsolidatedInputVO){
+		List<NregsProjectsVO> finalList = null;
+		try{
+			finalList = nregsConsolidatedService.getNREGSConsolidatedAbstrct(nregaConsolidatedInputVO);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getNREGSConsolidatedAbstrct - NregsConsolidatedController",e);
+		}
+		return finalList;
+	}
+	
 }
