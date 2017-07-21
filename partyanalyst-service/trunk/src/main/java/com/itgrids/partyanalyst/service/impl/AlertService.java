@@ -3175,7 +3175,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 									updateAlertForNewsInUpdateStatus(inputVO,null);//only status change
 								}else if(inputVO !=null && inputVO.getType().trim().equalsIgnoreCase("update")){
 									//updateAlertForNewsInUpdateStatus(inputVO);				
-									List<Alert> alertList = alertDAO.getAlertDetailsOfNewstype(inputVO.getId(),inputVO.getAlertType());				
+									//List<Alert> alertList = alertDAO.getAlertDetailsOfNewstype(inputVO.getId(),inputVO.getAlertType());
+									List<Alert> alertList = alertDAO.getAlertDetailsOfNewstypeNew(inputVO.getId());	
 									alert = alertList.get(0);
 									updateAlertForNewsInUpdateStatus(inputVO,alert);//Updation				
 								}else{
@@ -3643,6 +3644,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			
 			String categoryCreatedDate = null;
 			Long alertId=null;
+			String alertType=null;
 			if(VO.getId() !=null && VO.getId().longValue()>0){
 				//Date categoryCreatedDateObj  
 				List<Object[]> objList = alertDAO.getAlertCreatedDate(VO.getId());					
@@ -3650,31 +3652,58 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				if(objList !=null && objList.size()>0){
 					
 					alertId = objList.get(0)[0] !=null ?  (Long)objList.get(0)[0]:null;
-					categoryCreatedDateObj= objList.get(0)[1] !=null ?  (Date)objList.get(0)[1]:null;
+					categoryCreatedDateObj= objList.get(0)[1] !=null ?  (Date)objList.get(0)[1]:null;//Alert Created Date Converting into Date From Object
+					alertType= objList.get(0)[2] !=null ?  objList.get(0)[2].toString():null;
 				}
 				
+				//Alert Date Converting into String Format from Date
 				if(categoryCreatedDateObj !=null){
 					categoryCreatedDate =sdf.format(categoryCreatedDateObj);
 				}			
 			}
 			
+			
+			//Converting  
+			Date fromDate = sdf.parse(categoryCreatedDate);
+			Calendar now =  Calendar.getInstance();
+			now.setTime(fromDate);
+			now.add(Calendar.DATE,6);
+			String toDateMonth = (now.get(Calendar.MONTH) + 1)>9?""+(now.get(Calendar.MONTH)+1):"0"+(now.get(Calendar.MONTH)+1);
+			String toDate  = now.get(Calendar.YEAR)+"-"+toDateMonth + "-"+ now.get(Calendar.DATE);
+		
+			List<String> dates = new ArrayList<String>(10);
+			
+			dates.add(categoryCreatedDate);
+		    Calendar cal = Calendar.getInstance();
+		    cal.setTime(sdf.parse(categoryCreatedDate));
+		    while (cal.getTime().before(sdf.parse(toDate))) {
+		        cal.add(Calendar.DATE, 1);
+		        dates.add(sdf.format(cal.getTime()).trim());		        
+		    }
+		    
 			int updateAlert=0;
-			if(categoryCreatedDate !=null && !categoryCreatedDate.trim().isEmpty() && categoryCreatedDate.trim().equalsIgnoreCase(currentDate)){							
-				updateAlert = alertDAO.updateAlertStatusOfNewsForDelete(alertId);//
-			}else{
-				updateAlert = alertDAO.updateAlertStatusOfNews(VO.getId(),VO.getStatusId());
-				if(updateAlert>0){
-					AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
-					 alertTrackingVO.setAlertStatusId(VO.getStatusId());
-					 alertTrackingVO.setAlertId(alertId);
-					 alertTrackingVO.setAlertTrackingActionId(1l);
-					 
-					 //tracking saving method
-					 saveAlertTrackingDetails(alertTrackingVO)	;
+			
+			if(alertType !=null && alertType.trim().equalsIgnoreCase("Party")){
+				if(dates !=null && dates.size()>0 && dates.contains(currentDate)){							
+					updateAlert = alertDAO.updateAlertStatusOfNewsForDelete(alertId);//
+				}else{
+					updateAlert = alertDAO.updateAlertStatusOfNews(VO.getId(),VO.getStatusId());
+					if(updateAlert>0){
+						AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+						 alertTrackingVO.setAlertStatusId(VO.getStatusId());
+						 alertTrackingVO.setAlertId(alertId);
+						 alertTrackingVO.setAlertTrackingActionId(1l);
+						 
+						 //tracking saving method
+						 saveAlertTrackingDetails(alertTrackingVO)	;
+					}
 				}
 			}
+			
 			if(updateAlert > 0){
 				result ="success";
+			}else{
+				result ="Govt Alert";
 			}
 		} catch (Exception e) {
 			LOG.error("error in updateActionableItemsToActionNotRequired() method",e);
