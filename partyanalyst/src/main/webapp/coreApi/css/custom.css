@@ -514,3 +514,8 @@ label
 	font-size:12px;
     line-height: 30px;
 }
+.blockStyleAlign li{
+	 border-right: 1px solid #000;
+    padding: 15px;
+}
+}
