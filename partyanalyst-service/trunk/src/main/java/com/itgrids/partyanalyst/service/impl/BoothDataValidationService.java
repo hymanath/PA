@@ -1092,6 +1092,9 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			BoothIncharge  inchargeDetails = boothInchargeDAO.get(boothInchargeId);
 			if(inchargeDetails != null){
 				inchargeDetails.setIsDeleted("Y");
+				inchargeDetails.setIsActive("N");
+				inchargeDetails.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+				boothInchargeDAO.save(inchargeDetails);
 			}
 			status = "delete Successfully";
 		}catch (Exception e) {
