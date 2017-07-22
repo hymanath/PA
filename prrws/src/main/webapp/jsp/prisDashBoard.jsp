@@ -109,7 +109,7 @@
 	</nav>
 	<section class="navbar-section">
 		<div class="container-fluid">
-			<div class="row navbar_section_whitebk">
+			<div class="row">
 				<div class="col-sm-12 m_top5 ">
 					<ul class="list-inline pull-right calendar_active_cls">
 						<li attr_val="Overall"><img src="Assests/icons/Overall_icon.png"/>&nbsp;&nbsp;<b><span>Overall</span></b></li>
@@ -130,70 +130,74 @@
 <main>
 	<div class="container-fluid">
 	<section>
-			<div class="row">
-				<div class="col-sm-12 m_top5 ">
-					<div class="col-sm-3 mainBlock">
-						<div class="white-block">
-							<div class="media blockHeights block_styles">
-							  <div class="media-left img_middle">
-								  <img class="media-object" src="Assests/icons/house_icon.png" alt="house_icon">
-							  </div>
-							  <div class="media-body">
-								<h4 class="">TOTAL HOUSEHOLDS</h4>
-								<h4 class="m_top10 title_align" id="totalHouseHolds"></h4>
-							  </div>
-							</div>
+			<div class="row m_top5">
+				<div class="col-sm-3 mainBlock">
+					<div class="white-block">
+						<div class="media blockHeights block_styles">
+						  <div class="media-left img_middle">
+							  <img class="media-object" src="Assests/icons/house_icon.png" alt="house_icon">
+						  </div>
+						  <div class="media-body">
+							<h4 class="">TOTAL HOUSEHOLDS</h4>
+							<h4 class="m_top10 title_align" id="totalHouseHolds"></h4>
+						  </div>
 						</div>
 					</div>
-					<div class="col-sm-3 mainBlock">
-						<div class="white-block">
-							<div class="media blockHeights block_styles">
-							  <div class="media-left img_middle">
-								  <img class="media-object" src="Assests/icons/Target_icon.png" alt="Target_icon">
-							  </div>
-							  <div class="media-body">
-								<h4 class="panel-title">TARGET <span class="pull-right color_Tlabel" id="targetOverallPercent"></span></h4>
-								<small>Overall</small>
-								<h4 class="title_align" id="targetOverall"></h4>
-							  </div>
-							</div>
+				</div>
+				<div class="col-sm-3 mainBlock">
+					<div class="white-block">
+						<div class="media blockHeights block_styles">
+						  <div class="media-left img_middle">
+							  <img class="media-object" src="Assests/icons/Target_icon.png" alt="Target_icon">
+						  </div>
+						  <div class="media-body">
+							<h4 class="panel-title">TARGET <span class="pull-right color_Tlabel" id="targetOverallPercent"></span></h4>
+							<small>Overall</small>
+							<h4 class="title_align" id="targetOverall"></h4>
+						  </div>
 						</div>
 					</div>
-					<div class="col-sm-3 mainBlock">
-						<div class="white-block">
-							<div class="media blockHeights block_styles">
-							  <div class="media-left img_middle">
-								  <img class="media-object" src="Assests/icons/Achived_icon.png" alt="Achived_icon">
-							  </div>
-							  <div class="media-body">
-								<h4 class="">ACHIEVED <span class="pull-right color_Alabel" id="achievedOverallpercent"></span></h4>
-								<small>Overall</small>
-								<h4 class="m_top10 title_align" id="achievedOverall"></h4>
-							  </div>
-							</div>
+				</div>
+				<div class="col-sm-3 mainBlock">
+					<div class="white-block">
+						<div class="media blockHeights block_styles">
+						  <div class="media-left img_middle">
+							  <img class="media-object" src="Assests/icons/Achived_icon.png" alt="Achived_icon">
+						  </div>
+						  <div class="media-body">
+							<h4 class="">ACHIEVED <span class="pull-right color_Alabel" id="achievedOverallpercent"></span></h4>
+							<small>Overall</small>
+							<h4 class="m_top10 title_align" id="achievedOverall"></h4>
+						  </div>
 						</div>
 					</div>
-					<div class="col-sm-3 mainBlock">
-						<div class="white-block">
-							<div class="media blockHeights block_styles">
-								<p> <span class="thisMonthOverview text-capital">JUNE</span> </p>
-								<div class="row m_top5">
-									<div class="col-sm-6">
-										<img class="img_width" src="Assests/icons/Target_icon.png" alt="Achived_icon">
-										<span class="pull-right color_Tlabel" id="subTargetPercentage"></span>
-										<h5>TARGET</h5>
-										<h4 class="m_top5"><b id="subTarget"></b></h4>
-									</div>
-									<div class="col-sm-6 border_right border_adjust_align">
-										<img  class="img_width" src="Assests/icons/Achived_icon.png" alt="Achived_icon">
-										<span class="pull-right color_Alabel" id="subAchievedPercentage"></span>
-										<h5>ACHIVED</h5>
-										<h4 class="m_top5"><b id="subAchieved"></b></h4>
-									</div>
+				</div>
+				<div class="col-sm-3 mainBlock">
+					<div class="white-block">
+						<div class="media blockHeights block_styles">
+							<p> <span class="thisMonthOverview text-capital">JUNE</span> </p>
+							<div class="row m_top5">
+								<div class="col-sm-6">
+									<img class="img_width" src="Assests/icons/Target_icon.png" alt="Achived_icon">
+									<span class="pull-right color_Tlabel" id="subTargetPercentage"></span>
+									<h5>TARGET</h5>
+									<h4 class="m_top5"><b id="subTarget"></b></h4>
+								</div>
+								<div class="col-sm-6 border_right border_adjust_align">
+									<img  class="img_width" src="Assests/icons/Achived_icon.png" alt="Achived_icon">
+									<span class="pull-right color_Alabel" id="subAchievedPercentage"></span>
+									<h5>ACHIVED</h5>
+									<h4 class="m_top5"><b id="subAchieved"></b></h4>
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>
+				
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="levelBlocksDivId"></div>
 				</div>
 			</div>
 		</section>
