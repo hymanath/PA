@@ -1130,7 +1130,7 @@ function getTotalAlertDetailsForConstituencyInfo(){
 	var jsObj={
 			"fromDateStr" : "",
 			"toDateStr":"",
-			"copnstituencyId" : 232,
+			"constituencyId" : 232,
 			"alertTypeIdsStr" : [1]
 			
 		}
