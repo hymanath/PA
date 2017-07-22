@@ -52,6 +52,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 				getAllParliaments(4,blockName,subBlockName);
 			}
 		}else if(blockName == 'Mandal'){
+			$("#mandalsSelectBox").hide();
 			if(subBlockName == 'Districts'){
 				getAllDistricts(5,blockName,subBlockName);
 				POSTMandalDateForAssemblyInfo(5,blockName,subBlockName,'tableView',0,0,"assembly");
@@ -63,6 +64,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 	});
 	$(document).on("change","#mandalsDistrictSelectBoxchosen",function(){
 		var value = $(this).val();
+		$("#mandalsSelectBox").show();
 		var blockName = $(this).attr("attr_blockName");
 		var subBlockName = $("[table-menu='"+blockName+"'] li.active").html();
 		
@@ -348,10 +350,10 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 								else if(blockName == 'Constituency' ){
 									
 									tableView+='<tr>';
-										if(subBlockName == "Districts"){
+										if(subBlockName == "Districts" || subBlockName == "districts"){
 											tableView+='<th colspan="1">District</th>';
 											tableView+='<th colspan="1">Constituency</th>';
-										}else if(subBlockName == "Parliament"){
+										}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
 											tableView+='<th colspan="1">Parliament</th>';
 											//tableView+='<th colspan="1">Constituency</th>';
 										}
@@ -364,10 +366,10 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 										tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/Achived_Perc_Icon.png" alt="Achived_%_Icon"><br/>ACHIEVED %</th>';
 									tableView+='</tr>';
 									tableView+='<tr>';
-										if(subBlockName == "Districts"){
+										if(subBlockName == "Districts"  || subBlockName == "districts"){
 											tableView+='<th ></th>';
 											tableView+='<th ></th>';
-										}else if(subBlockName == "Parliament"){
+										}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
 											tableView+='<th ></th>';
 											//tableView+='<th ></th>';
 										}
@@ -383,13 +385,13 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 									
 								}else if(blockName == 'Mandal'){
 									tableView+='<tr>';
-									if(subBlockName == "Districts"){
+									if(subBlockName == "Districts" || subBlockName == "districts"){
 										tableView+='<th colspan="1">District</th>';
 										tableView+='<th colspan="1">Constituency</th>';
 										tableView+='<th colspan="1">Mandal</th>';
-									}else if(subBlockName == "Parliament"){
-										//tableView+='<th colspan="1">Parliament</th>';
-										tableView+='<th colspan="1">Constituency</th>';
+									}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
+										tableView+='<th colspan="1">Parliament</th>';
+										//tableView+='<th colspan="1">Constituency</th>';
 										tableView+='<th colspan="1">Mandal</th>';
 										//tableView+='<th colspan="1">Constituency</th>';
 									}
@@ -403,11 +405,11 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 									tableView+='</tr>';
 									
 									tableView+='<tr>';
-									if(subBlockName == "Districts"){
+									if(subBlockName == "Districts" || subBlockName == "districts"){
 										tableView+='<th ></th>';
 										tableView+='<th ></th>';
 										tableView+='<th ></th>';
-									}else if(subBlockName == "Parliament"){
+									}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
 										//tableView+='<th ></th>';
 										tableView+='<th ></th>';
 										tableView+='<th ></th>';
@@ -441,10 +443,10 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 										
 										else if(blockName == 'Constituency')
 										{
-												if(subBlockName == "Districts"){
+												if(subBlockName == "Districts" || subBlockName == "districts"){
 													tableView+='<td>'+result.subList[i].districtName+'</td>';
 													tableView+='<td>'+result.subList[i].name+'</td>';
-												}else if(subBlockName == "Parliament"){
+												}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
 													tableView+='<td>'+result.subList[i].name+'</td>';
 													//tableView+='<td>'+result.subList[i].name+'</td>';
 												}
@@ -458,11 +460,12 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 												
 										}else if(blockName == 'Mandal')
 										{
-											if(subBlockName == "Districts"){
+											
+											if(subBlockName == "Districts" || subBlockName == "districts"){
 												tableView+='<td>'+result.subList[i].districtName+'</td>';
 												tableView+='<td>'+result.subList[i].constituencyName+'</td>';
 												tableView+='<td>'+result.subList[i].name+'</td>';
-											}else if(subBlockName == "Parliament"){
+											}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
 												//tableView+='<td>'+result.subList[i].constituencyName+'</td>';
 												tableView+='<td>'+result.subList[i].constituencyName+'</td>';
 												tableView+='<td>'+result.subList[i].name+'</td>';
@@ -537,7 +540,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 	{
 		var selectBox = '';
 		selectBox+='<select id="'+id+'chosen" attr_blockName="'+blockName+'">';
-			selectBox+='<option value="0">Select All</option>';
+			selectBox+='<option value="0">All</option>';
 			for(var i in result)
 			{
 				selectBox+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
@@ -1076,7 +1079,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 												str+='<p>Started</p>';
 											str+='</li>';
 											str+='<li>';
-												str+='<h4><b>'+result.parliamentStarted+'</b></h4>';
+												str+='<h4><b>'+result.parliamentNotStarted+'</b></h4>';
 												str+='<p>Not Started</p>';
 											str+='</li>';
 											str+='<li>';
