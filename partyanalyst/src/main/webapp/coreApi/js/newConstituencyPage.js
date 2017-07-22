@@ -28,7 +28,7 @@ function onLoadAjaxCalls()
 	//getCasteNAgeWiseVoterNCadreCounts();
 	getEnrollmentYearWiseCadres();
 	
-	//meetings
+	//meetings(duplicate)
 	getLocationWiseMeetingsCount();
 	//cadre
 	// getLocationTypeWiseCadreCount();
@@ -860,7 +860,7 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(){
 	});	
 }
 
-// Location wise committees count
+//Location wise committees count
 function getLocationWiseCommitteesCount(){
 	var jsObj={
 			locationType : "constituency",
@@ -874,8 +874,17 @@ function getLocationWiseCommitteesCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	//console.log(result);
+    	console.log(result);
 		var str='';
+		var mainMandal = [];
+		var mainVillage= [];
+		var affMandal = [];
+		var affVillage = [];
+		var mainMandalId = '';
+		var mainVillageId = '';
+		var affMandalId = '';
+		var affVillageId = '';
+		var depth = 60;
 		if(result != null){
 			var mainMandalTotal=result.mainCommStartedCount+result.mainCommCompletedCount+result.mainCommNotYetStarted;
 			var affltdAffltedTotal=result.affiCommStartedCount+result.affiCommCompletedCount+result.affiCommMandalNotStarted;
@@ -924,11 +933,33 @@ function getLocationWiseCommitteesCount(){
 		str+='</tr>';
 		str+='</tbody>';
 		str+='</table>';
-						
+			/*	mainMandal=[
+				{name:'Completed',y:result['mainMandalCompletePer']},
+					{name:'Started',y:result['mainMandalStartPer'}]	;	
+				mainVillage=[{name:'Completed',y:result['mainVillageCompletePer']},
+					{name:'Started',y:result['mainVillageStartPer'}];
+			    affMandal = [{name:'Completed',y:result['affMandalCompletePer']},
+					{name:'Started',y:result['affMandalStartPer'}];
+		       affVillage = [{name:'Completed',y:result['affVillageCompletePer']},
+					{name:'Started',y:result['affVillageStartPer'}];
+		mainMandalId = 'mandalLevelId';
+		mainVillageId = 'villageLevelId';
+		affMandalId = 'affMandalLevelId';
+		affVillageId = 'affVillageLevelId';
+					
+					$("#"+mainMandalId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		highChartsDonut(mainMandalId,mainMandal,true)
+		$("#"+villageLevelId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		highChartsDonut(villageLevelId,mainVillage,true)
+		$("#"+affMandalId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		highChartsDonut(affMandalId,affMandal,true)
+		$("#"+affVillageLevelId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		highChartsDonut(affVillageLevelId,affVillage,true) */
 			$("#committees").append(str);
 			}
 	});	
 }
+
 
 // Location Wise Meetings Status Counts
 function getLevelWiseMeetingStatusCounts(){

@@ -137,6 +137,7 @@
 						</div>
 					  </div>
 					</div>
+										
 					<div class="pad_10">
 						<button class="btn btn-success btn-success-white">detailed news information</button>
 					</div>
@@ -387,6 +388,177 @@
 				</div>
 			</div>
 		</div>
+		<!--Committees starting -->
+		<div class="col-md-12 col-xs-12 col-sm-12">
+						<div class="block">
+							<div class="row">
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<h4 class="panel-title text-capital">main committee formation</h4>
+									<div class="row m_top15">
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<h4 class="panel-title text-capital">mandal/town/division level</h4>
+											<div id="mandalLevelId"></div>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<h4 class="panel-title text-capital">vilalge/ward level</h4>
+											<div id="villageLevelId"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<h4 class="panel-title text-capital">affliated committee formation</h4>
+									<div class="row m_top15">
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<h4 class="panel-title text-capital">mandal/town/division level</h4>
+											<div id="affMandalLevelId"></div>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<h4 class="panel-title text-capital">vilalge/ward level</h4>
+											<div id="affVillageLevelId"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="block pad_0" id="committees">
+							<div class="pad_10">
+								<button class="btn btn-success btn-success-white text-capital">detailed information</button>
+							</div>
+						</div>
+					</div>
+					<!--Committees ending -->
+                <!--Meetings & Tours Starting -->
+				<div class="col-md-8 col-xs-12 col-sm-8 m_top20" navbar-index="meetings">
+				<h3>Meetings <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<p class="f-12 text-muted">Evertymonth: 9th/10th/11th</p>
+				<div class="block pad_0" id="meetingsId">
+					<div class="pad_10">
+						<button class="btn btn-success btn-success-white text-capital">detailed information</button>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-4 col-xs-12 col-sm-4 m_top20" navbar-index="tours">
+				<h3>Tours <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<p class="f-12 text-muted">Last Month Jan 2017</p>
+				<div class="block pad_0" id="toursId">
+					</table>
+					<div class="block pad_10">
+						<button class="btn btn-success btn-success-white text-capital">detailed information</button>
+					</div>
+				</div>
+			</div>
+			<!--Meetings & Tours ending -->
+			
+			<!--benefits Starting -->
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="benefits">
+				<h3>Benefits</h3>
+				<div class="block pad_0">
+					<div class="row">
+					  <!-- Nav tabs -->
+					  <div class="col-md-3 col-xs-12 col-sm-3 pad_right0">
+						  <select class="form-control" role="tabListMobile">
+							  <option tab_id="benefits1">OC (20)</option>
+							  <option tab_id="benefits2">OC (20)</option>
+							  <option tab_id="benefits3">OC (20)</option>
+							  <option tab_id="benefits4">OC (20)</option>
+						  </select>
+						  <ul class="nav nav-tabs nav-tabs-horizontal" role="tablist" id="benefitsId">
+						  </ul>
+					  </div>
+					  <!-- Tab panes -->
+					  <div class="col-md-9 col-xs-12 col-sm-9 pad_left0">
+						  <div class="tab-content">
+							<div role="tabpanel" class="tab-pane active pad_10" id="benefits1">
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-6">
+										<div id="benefitsGraph" style="height:200px"></div>
+									</div>
+									<div class="col-md-6 col-xs-12 col-sm-6">
+										<table class="table table-noborder">
+											<thead class="text-capitalize bg-E9">
+												<th></th>
+												<th>Total</th>
+												<th>%</th>
+											</thead>
+											<tbody class="text-capitalize">
+												<tr>
+													<td><span class="chart-legend-color"></span>Population</td>
+													<td>5000</td>
+													<td>40%</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+										<table class="table table-noborder">
+											<thead class="text-capitalize bg-E9">
+												<th>mandal name</th>
+												<th>population</th>
+												<th>eligible</th>
+												<th>benefited</th>
+												<th>non-eligible benefited</th>
+											</thead>
+											<tbody class="text-capitalize">
+												<tr>
+													<td>allur mandal</td>
+													<td>5000</td>
+													<td>2000 <span class="text-success">40%</span></td>
+													<td>2000 <span class="text-success">40%</span></td>
+													<td>2000 <span class="text-success">40%</span></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+									<button class="btn btn-success btn-success-white text-capital">detailed caste information</button>
+								</div>
+							</div>
+							<div role="tabpanel" class="tab-pane pad_10" id="benefits2">
+								a
+							</div>
+							<div role="tabpanel" class="tab-pane pad_10" id="benefits3">
+								b
+							</div>
+							<div role="tabpanel" class="tab-pane pad_10" id="benefits4">
+								c
+							</div>
+						  </div>
+					  </div>
+
+					</div>
+				</div>
+			</div>
+			<!--benefits ending -->
+			
+			<!--grievance starting -->
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20"  navbar-index="grievance">
+				<h3>Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<div class="block">
+					<div class="row">
+						<div class="col-md-4 col-xs-12 col-sm-4">
+							<h4 class="panel-title text-capital text-center">Grievance</h4>
+							<div id="grivanceId"></div>
+						</div>
+						<div class="col-md-4 col-xs-12 col-sm-4">
+							<h4 class="panel-title text-capital text-center">Insurance</h4>
+							<div id="insuranceId"></div>
+						</div>
+						<div class="col-md-4 col-xs-12 col-sm-4">
+							<h4 class="panel-title text-capital text-center">Trust Education</h4>
+							<div id="trustId"></div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top15">
+							<button class="btn btn-success btn-success-white text-capital">detailed information</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--grievance ending -->
+		
+
+					
 	</section>
 </div>
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
