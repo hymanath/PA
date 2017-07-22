@@ -11,6 +11,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 	{
 		buildLevelWiseDetailsBlock();
 		POSTBasicCountBlock();
+		getPIRSSurveyInfoStateLevel();
 	}
 	var width = $(window).width();
 	
@@ -217,7 +218,7 @@ function POSTDistrictOverview(blockId,blockName,subBlockName,viewType){
 function buildLevelWiseDetailsBlock(){
 	var collapse='';
 	if(blockNameArr !=null){
-	collapse+='<div class="">';
+	collapse+='<div class="row">';
 		collapse+='<div class="col-sm-12">';
 			for(var i in blockNameArr)
 			{
@@ -310,47 +311,173 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 							tableView+='</div>';
 						tableView+='</div>';
 						tableView+='<div class="table-responsive">';
-						tableView+='<table class="table dataTable'+blockId+'" id="table'+blockName+'">';
+						tableView+='<table class="table dataTable'+blockId+'" id="table'+blockName+'" style="width:100%">';
 								tableView+='<thead>';
-								//(for constituency viwew in adding district name)
-								//tableView+='<th>District Name</th>';
-								//tableView+='<th>Constituency Name</th>';
 								
 								if(blockName == 'District'){
-									tableView+='<th>District</th>';
-								}else if(blockName == 'Constituency' ){
-									tableView+='<th>District</th>';
-									tableView+='<th>Constituency</th>';
-								}else if(blockName == 'Mandal'){
-									tableView+='<th>District</th>';
-									tableView+='<th>Constituency</th>';
-									tableView+='<th>Mandal</th>';
+									tableView+='<tr>';
+									tableView+='<th style="font-size:10px;" rowspan="2" class="text-center">District</th>';
+									tableView+='<th style="font-size:10px;" colspan="1" class="text-center"><img class="img_widthTable" src="Assests/icons/District_Survy_icon.png" alt="District_Survy_icon"><br/>DISTRICT</th>';
+									
+									tableView+='<th style="font-size:10px;" colspan="3" class="text-center"><img class="img_widthTable" src="Assests/icons/Constituency_Survy_icon.png" alt="Constituency_Survy_icon"><br/>CONSTITUENCY</th>';
+									
+									tableView+='<th style="font-size:10px;" colspan="3" class="text-center"><img class="img_widthTable" src="Assests/icons/Mandal_Survy_icon.png" alt="Mandal_Survy_icon"><br/>MANDAL</th>';
+									
+									tableView+='<th style="font-size:10px;" colspan="3" class="text-center"><img class="img_widthTable" src="Assests/icons/Gram_Panchayat_Survy_icon.png" alt="Gram_Panchayat_Survy_icon"><br/>PANCHAYAT</th>';
+									
+									tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/house_icon.png" alt="house_icon"><br/>TOTAL</th>';
+									tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/Target_icon.png" alt="target_icon"><br/>TARGET</th>';
+									tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/Achived_icon.png" alt="Achived_icon"><br/>ACHIEVED</th>';
+									tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/Achived_Perc_Icon.png" alt="Achived_%_Icon"><br/>ACHIEVED %</th>';
+									tableView+='</tr>';
+									
+									tableView+='<tr>';
+										tableView+='<th style="font-size:10px;" class="cyan_color"></th>';
+										tableView+='<th style="font-size:10px;" class="light_pink_color">STARTED</th>';
+										tableView+='<th style="font-size:10px;" class="light_pink_color">NOT-STARTED</th>';
+										tableView+='<th style="font-size:10px;" class="light_pink_color">COMPLETED</th>';
+										tableView+='<th style="font-size:10px;" class="light_yellow_color">STARTED</th>';
+										tableView+='<th style="font-size:10px;" class="light_yellow_color">NOT-STARTED</th>';
+										tableView+='<th style="font-size:10px;" class="light_yellow_color">COMPLETED</th>';
+										tableView+='<th style="font-size:10px;" class="light_rose_color">STARTED</th>';
+										tableView+='<th style="font-size:10px;" class="light_rose_color">NOT-STARTED</th>';
+										tableView+='<th style="font-size:10px;" class="light_rose_color">COMPLETED</th>';
+									tableView+='</tr>';
 								}
-									tableView+='<th><img class="img_widthTable" src="Assests/icons/house_icon.png" alt="house_icon"><br/>TOTAL</th>';
-									tableView+='<th><img class="img_widthTable" src="Assests/icons/Target_icon.png" alt="target_icon"><br/>TARGET</th>';
-									tableView+='<th><img class="img_widthTable" src="Assests/icons/Achived_icon.png" alt="Achived_icon"><br/>ACHIEVED</th>';
-									tableView+='<th><img class="img_widthTable" src="Assests/icons/Achived_Perc_Icon.png" alt="Achived_%_Icon"><br/>ACHIEVED %</th>';
+								
+								else if(blockName == 'Constituency' ){
+									
+									tableView+='<tr>';
+										if(subBlockName == "Districts"){
+											tableView+='<th colspan="1">District</th>';
+											tableView+='<th colspan="1">Constituency</th>';
+										}else if(subBlockName == "Parliament"){
+											tableView+='<th colspan="1">Parliament</th>';
+											//tableView+='<th colspan="1">Constituency</th>';
+										}
+										
+										tableView+='<th style="font-size:10px;" colspan="3" class="text-center"><img class="img_widthTable" src="Assests/icons/Mandal_Survy_icon.png" alt="Mandal_Survy_icon"><br/>MANDAL</th>';
+										tableView+='<th style="font-size:10px;" colspan="3" class="text-center"><img class="img_widthTable" src="Assests/icons/Gram_Panchayat_Survy_icon.png" alt="Gram_Panchayat_Survy_icon"><br/>PANCHAYAT</th>';
+										tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/house_icon.png" alt="house_icon"><br/>TOTAL</th>';
+										tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/Target_icon.png" alt="target_icon"><br/>TARGET</th>';
+										tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/Achived_icon.png" alt="Achived_icon"><br/>ACHIEVED</th>';
+										tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/Achived_Perc_Icon.png" alt="Achived_%_Icon"><br/>ACHIEVED %</th>';
+									tableView+='</tr>';
+									tableView+='<tr>';
+										if(subBlockName == "Districts"){
+											tableView+='<th ></th>';
+											tableView+='<th ></th>';
+										}else if(subBlockName == "Parliament"){
+											tableView+='<th ></th>';
+											//tableView+='<th ></th>';
+										}
+										
+										tableView+='<th style="font-size:10px;" class="light_yellow_color">STARTED</th>';
+										tableView+='<th style="font-size:10px;" class="light_yellow_color">NOT-STARTED</th>';
+										tableView+='<th style="font-size:10px;" class="light_yellow_color">COMPLETED</th>';
+										tableView+='<th style="font-size:10px;" class="light_rose_color">STARTED</th>';
+										tableView+='<th style="font-size:10px;" class="light_rose_color">NOT-STARTED</th>';
+										tableView+='<th style="font-size:10px;" class="light_rose_color">COMPLETED</th>';
+									tableView+='</tr>';
+									
+									
+								}else if(blockName == 'Mandal'){
+									tableView+='<tr>';
+									if(subBlockName == "Districts"){
+										tableView+='<th colspan="1">District</th>';
+										tableView+='<th colspan="1">Constituency</th>';
+										tableView+='<th colspan="1">Mandal</th>';
+									}else if(subBlockName == "Parliament"){
+										//tableView+='<th colspan="1">Parliament</th>';
+										tableView+='<th colspan="1">Constituency</th>';
+										tableView+='<th colspan="1">Mandal</th>';
+										//tableView+='<th colspan="1">Constituency</th>';
+									}
+									
+									
+									tableView+='<th style="font-size:10px;" colspan="3" class="text-center"><img class="img_widthTable" src="Assests/icons/Gram_Panchayat_Survy_icon.png" alt="Gram_Panchayat_Survy_icon"><br/>PANCHAYAT</th>';
+									tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/house_icon.png" alt="house_icon"><br/>TOTAL</th>';
+									tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/Target_icon.png" alt="target_icon"><br/>TARGET</th>';
+									tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/Achived_icon.png" alt="Achived_icon"><br/>ACHIEVED</th>';
+									tableView+='<th style="font-size:10px;" rowspan="2" class="text-center"><img class="img_widthTable" src="Assests/icons/Achived_Perc_Icon.png" alt="Achived_%_Icon"><br/>ACHIEVED %</th>';
+									tableView+='</tr>';
+									
+									tableView+='<tr>';
+									if(subBlockName == "Districts"){
+										tableView+='<th ></th>';
+										tableView+='<th ></th>';
+										tableView+='<th ></th>';
+									}else if(subBlockName == "Parliament"){
+										//tableView+='<th ></th>';
+										tableView+='<th ></th>';
+										tableView+='<th ></th>';
+										//tableView+='<th colspan="1">Constituency</th>';
+									}
+										
+										tableView+='<th style="font-size:10px;" class="light_rose_color">STARTED</th>';
+										tableView+='<th style="font-size:10px;" class="light_rose_color">NOT-STARTED</th>';
+										tableView+='<th style="font-size:10px;" class="light_rose_color">COMPLETED</th>';
+									tableView+='</tr>';
+								}
+									
 								tableView+='</thead>';
 								
 								tableView+='<tbody>';
 									for(var i in result.subList){
 									tableView+='<tr>';
 										if(blockName == 'District'){
-											tableView+='<td><img src="Assests/icons/'+result.subList[i].name+'.png" style="height: 30px;margin-right: 7px;width:30px;"/>'+result.subList[i].name+'</td>';
-										}else if(blockName == 'Constituency')
+											tableView+='<td  style="font-size:12px;"><img src="Assests/icons/'+result.subList[i].name+'.png" style="height: 30px;margin-right: 7px;width:30px;"/></br>'+result.subList[i].name+'</td>';
+											tableView+='<td style="font-size:12px;" class="cyan_color">'+result.subList[i].districtStarted+'</td>';
+											tableView+='<td style="font-size:12px;" class="light_pink_color">'+result.subList[i].consStarted+'</td>';
+											tableView+='<td style="font-size:12px;" class="light_pink_color">'+result.subList[i].consNotStarted+'</td>';
+											tableView+='<td style="font-size:12px;" class="light_pink_color">'+result.subList[i].consCompleted+'</td>';
+											tableView+='<td style="font-size:12px;" class="light_yellow_color">'+result.subList[i].mandalStarted+'</td>';
+											tableView+='<td style="font-size:12px;" class="light_yellow_color">'+result.subList[i].mandalNotStarted+'</td>';
+											tableView+='<td style="font-size:12px;" class="light_yellow_color">'+result.subList[i].mandalCompleted+'</td>';
+											tableView+='<td style="font-size:12px;" class="light_rose_color">'+result.subList[i].panchayatStarted+'</td>';
+											tableView+='<td style="font-size:12px;" class="light_rose_color">'+result.subList[i].panchayatNotStarted+'</td>';
+											tableView+='<td style="font-size:12px;" class="light_rose_color">'+result.subList[i].panchayatCompleted+'</td>';
+										}
+										
+										else if(blockName == 'Constituency')
 										{
-												tableView+='<td>'+result.subList[i].districtName+'</td>';
-												tableView+='<td>'+result.subList[i].name+'</td>';
+												if(subBlockName == "Districts"){
+													tableView+='<td>'+result.subList[i].districtName+'</td>';
+													tableView+='<td>'+result.subList[i].name+'</td>';
+												}else if(subBlockName == "Parliament"){
+													tableView+='<td>'+result.subList[i].name+'</td>';
+													//tableView+='<td>'+result.subList[i].name+'</td>';
+												}
+												
+												tableView+='<td style="font-size:12px;" class="light_yellow_color">'+result.subList[i].mandalStarted+'</td>';
+												tableView+='<td style="font-size:12px;" class="light_yellow_color">'+result.subList[i].mandalNotStarted+'</td>';
+												tableView+='<td style="font-size:12px;" class="light_yellow_color">'+result.subList[i].mandalCompleted+'</td>';
+												tableView+='<td style="font-size:12px;" class="light_rose_color">'+result.subList[i].panchayatStarted+'</td>';
+												tableView+='<td style="font-size:12px;" class="light_rose_color">'+result.subList[i].panchayatNotStarted+'</td>';
+												tableView+='<td style="font-size:12px;" class="light_rose_color">'+result.subList[i].panchayatCompleted+'</td>';
+												
 										}else if(blockName == 'Mandal')
 										{
+											if(subBlockName == "Districts"){
 												tableView+='<td>'+result.subList[i].districtName+'</td>';
 												tableView+='<td>'+result.subList[i].constituencyName+'</td>';
 												tableView+='<td>'+result.subList[i].name+'</td>';
+											}else if(subBlockName == "Parliament"){
+												//tableView+='<td>'+result.subList[i].constituencyName+'</td>';
+												tableView+='<td>'+result.subList[i].constituencyName+'</td>';
+												tableView+='<td>'+result.subList[i].name+'</td>';
+												
+											}
+												
+												tableView+='<td style="font-size:12px;" class="light_rose_color">'+result.subList[i].panchayatStarted+'</td>';
+												tableView+='<td style="font-size:12px;" class="light_rose_color">'+result.subList[i].panchayatNotStarted+'</td>';
+												tableView+='<td style="font-size:12px;" class="light_rose_color">'+result.subList[i].panchayatCompleted+'</td>';
 										}
+										
 										tableView+='<td>'+result.subList[i].total+'</td>';
 										tableView+='<td>'+result.subList[i].target+'</td>';
 										tableView+='<td>'+result.subList[i].achieved+'</td>';
-										tableView+='<td>'+result.subList[i].achievedPercentage+'</td>';
+										tableView+='<td>'+result.subList[i].achievedPercentage+'</td>'; 
 									tableView+='</tr>';
 									}
 								tableView+='</tbody>';
@@ -364,6 +491,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			if(blockId == '4' || blockId == '5'){
 				$(".dataTable"+blockId).dataTable({
 					"aaSorting": [],
+					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 				});
 			}
 			if(blockId == '3'){
@@ -373,7 +501,8 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 					 "searching": false,
 					 "autoWidth": true,
 					 "sDom": '<"top"iflp>rt<"bottom"><"clear">',
-					 "order": [ 0, 'asc' ]
+					 "order": [ 0, 'asc' ],
+					 "aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 				});
 			}
 		}
@@ -658,7 +787,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 		});
 	}
 	function getAllDistricts(blockId,blockName,subBlockName){
-		
+		//$("#"+blockName+'_'+blockId).html('');
 		var json = {}
 		$.ajax({                
 			type:'POST',    
@@ -670,7 +799,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$("#"+blockName+'_'+blockId).html('');
+			
 			if(result !=null && result.length>0){
 				if(blockId ==4){
 					if(subBlockName == "Districts"){
@@ -692,6 +821,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 		});
 	}
 	function getAllParliaments(blockId,blockName,subBlockName){
+		//$("#"+blockName+'_'+blockId).html('');
 		var json = {}
 		$.ajax({                
 			type:'POST',    
@@ -703,7 +833,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$("#"+blockName+'_'+blockId).html('');
+			
 			if(result !=null && result.length>0){
 				if(blockId ==4){
 					if(subBlockName == "Districts"){
@@ -876,4 +1006,138 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 				$("#"+blockName+'_'+blockId).html("No Data Available");
 			}
 		});
+	}
+	
+	function getPIRSSurveyInfoStateLevel(){
+		$("#levelBlocksDivId").html(spinner);
+		var json = {
+			fromDate:globalFromDate,
+			toDate:globalToDate
+			
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getPIRSSurveyInfoStateLevel',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null){
+				buildPIRSSurveyInfoStateLevel(result);
+			}
+			
+		});
+	}
+	
+	function buildPIRSSurveyInfoStateLevel(result){
+		
+		
+		if(result !=null){
+			var str='';
+					str+='<div class="white-block" style="padding:10px;">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-3">';
+								str+='<div class="media">';
+									str+='<div class="media-left">';
+										str+='<img class="media-object" src="Assests/icons/District_Survy_icon.png" alt="District_Survy_icon">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 class="panel-title" style="font-size:12px;font-weight: 800;">NO OF <span style="color:#827B13;">DISTRICTS</span> SURVEY</h5>';
+										str+='<ul class="list-inline block-level">';
+											str+='<li>';
+												str+='<h4><b>'+result.districtStarted+'</b></h4>';
+												str+='<p>Started</p>';
+											str+='</li>';
+											str+='<li>';
+												str+='<h4><b>'+result.districtNotStarted+'</b></h4>';
+												str+='<p>Not Started</p>';
+											str+='</li>';
+											str+='<li>';
+												str+='<h4><b>'+result.districtCompleted+'</b></h4>';
+												str+='<p>Completed</p>';
+											str+='</li>';
+										str+='</ul>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-3">';
+								str+='<div class="media">';
+									str+='<div class="media-left">';
+										str+='<img class="media-object" src="Assests/icons/Constituency_Survy_icon.png" alt="Constituency_Survy_icon">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 class="panel-title" style="font-size:12px;font-weight: 800;">NO OF <span style="color:#8341D6;">CONSTITUENCIES</span> SURVEY</h5>';
+										str+='<ul class="list-inline block-level">';
+											str+='<li>';
+												str+='<h4><b>'+result.parliamentStarted+'</b></h4>';
+												str+='<p>Started</p>';
+											str+='</li>';
+											str+='<li>';
+												str+='<h4><b>'+result.parliamentStarted+'</b></h4>';
+												str+='<p>Not Started</p>';
+											str+='</li>';
+											str+='<li>';
+												str+='<h4><b>'+result.parliamentCompleted+'</b></h4>';
+												str+='<p>Completed</p>';
+											str+='</li>';
+										str+='</ul>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-3">';
+								str+='<div class="media">';
+									str+='<div class="media-left">';
+										str+='<img class="media-object" src="Assests/icons/Mandal_Survy_icon.png" alt="Mandal_Survy_icon">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 class="panel-title" style="font-size:12px;font-weight: 800;">NO OF <span style="color:#00BEE8;">MANDALS</span> SURVEY</h5>';
+										str+='<ul class="list-inline block-level">';
+											str+='<li>';
+												str+='<h4><b>'+result.mandalStarted+'</b></h4>';
+												str+='<p>Started</p>';
+											str+='</li>';
+											str+='<li>';
+												str+='<h4><b>'+result.mandalNotStarted+'</b></h4>';
+												str+='<p>Not Started</p>';
+											str+='</li>';
+											str+='<li>';
+												str+='<h4><b>'+result.mandalCompleted+'</b></h4>';
+												str+='<p>Completed</p>';
+											str+='</li>';
+										str+='</ul>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-3">';
+								str+='<div class="media">';
+									str+='<div class="media-left">';
+										str+='<img class="media-object" src="Assests/icons/Gram_Panchayat_Survy_icon.png" alt="Gram_Panchayat_Survy_icon">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 class="panel-title" style="font-size:12px;font-weight: 800;">NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span> SURVEY</h5>';
+										str+='<ul class="list-inline block-level">';
+											str+='<li>';
+												str+='<h4><b>'+result.panchayatStarted+'</b></h4>';
+												str+='<p>Started</p>';
+											str+='</li>';
+											str+='<li>';
+												str+='<h4><b>'+result.panchayatNotStarted+'</b></h4>';
+												str+='<p>Not Started</p>';
+											str+='</li>';
+											str+='<li>';
+												str+='<h4><b>'+result.panchayatCompleted+'</b></h4>';
+												str+='<p>Completed</p>';
+											str+='</li>';
+										str+='</ul>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+			$("#levelBlocksDivId").html(str);
+		}
+		
 	}
