@@ -198,6 +198,7 @@ control.makeTransliteratable([''+id+'']);
                                        <!-- <option>మీ నియోజకవర్గం పార్టీ, పార్టీ నాయకులు</option>-->
                                     </select>
                                 </div>
+								<div id="savingErrId" style="color:red;"></div>
                             </div>
                         </div>
 						
@@ -733,32 +734,51 @@ function getPrograms(){
 	}
 	function saveFeedback()
 	{
+		$("#savingErrId").html("");
+		var categoryId =$("#categoryId").val();
+		if(categoryId == 0 || categoryId == null){
+			$("#savingErrId").html("select category");
+			return;
+		}
 		var cadreId ='${cadreId}';
 		var arr = [];
+		var isError="false";
 		$(".answers").each(function(){
 			var id = $(this).attr("feedbackId");
 			var answer = $(this).val().trim();
+		 if(answer == null || answer.length == 0 || answer == ""){
+			  $("#savingErrId").html("Please enter all fields.");
+			 isError="true"
+		   } 			  
 			var obj = {
 				id : id,
 				answer:answer,
 			}
-			if(answer != null && answer.length > 0)
-			arr.push(obj)
-		})
+			if(answer != null && answer.length > 0 ||answer == "")
+			arr.push(obj)  
+		});
+		
+		if(isError == "true")
+			return;
+		
 		var jsObj = {
 			tdpCadreId:cadreId,
 			arr:arr,
 			task:""
 		}
-//	console.log(arr)
 		 $.ajax({
 				type:'POST',
 				url :'saveCategorysDetailsAction.action',
 				data:{task:JSON.stringify(jsObj)},
 			  }).done(function(result){
 				  
-				  if(result != null && result == 'success')
+				  if(result != null && result == 'success'){
 				  		alert("Feed back saved Successfully...");
+						$("#categoryId").val('').trigger("chosen:updated");
+						$(".answers").each(function(){
+							$(this).val('');
+						});
+				  }
 					//buildQuestionOptions(result,parseInt(finalCategoryIdsList[0]))
 				   }); 
 		

@@ -15,10 +15,17 @@
 <link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="training/dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<link href="dist/DatatableBootstrap/DatatableB.css" rel="stylesheet" type="text/css">
+<link href="dist/DataTable_NewVersion/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
-
 <style type="text/css">
+#dataTablePagination_length , #dataTablePagination_filter
+{
+	display:none;
+}
+#dataTablePagination thead
+{
+	display:none;
+}
 .panel-group .panel
 {
 	margin-top:0px !important;
@@ -184,16 +191,16 @@ header.eventsheader {
 												<table class="table-condensed">
 													<tr>
 														<td>
-															<div id="donutchart"  style="height:200px;width:200px"></div>
+															<div id="donutchart"  style="height:200px;width:350px"></div>
 														</td>
-														<td>
+														<!--<td>
 															<h4 class="m_0">TOTAL BATCHES - <span id="totalTrainingBatches" style="font-weight:bold;">0</span></h4>
 															<ul class="m_0 pad_0 font-12">
 																<li class="text-danger" style="padding:2px; font-weight:bold;">UPCOMING BATCHES - <span id="upcomingBatches">0</span></li>
 																<li class="text-yellow" style="padding:2px; font-weight:bold;">RUNNING BATCHES - <span id="runningBatches">0</span> </li>
-																<li class="text-success" style="padding:2px; font-weight:bold;">COMPLETED BATCHES - <span id="completedBatches">0</span></li>
+																<li class="text-success" style="padding:2px; font-weight:bold;color : 21B4FF">COMPLETED BATCHES - <span id="completedBatches">0</span></li>
 															</ul>
-														</td>
+														</td>-->
 													</tr>
 												</table>
                                             	
@@ -445,7 +452,7 @@ header.eventsheader {
 			<div class="col-md-12">
 				<div style="background: rgba(0, 0, 0, 0.1) none repeat scroll 0% 0%; border: medium none transparent; margin-bottom: 2px;" class="well well-sm">
 				<center><img id="dataLoadingsImgForCadrePopUpId" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
-				<div id="popupForCadreDetailsId" class="table-scroll-1"></div>	
+				<div id="popupForCadreDetailsId"></div>	
 				</div>
 			</div>
 		</div>
@@ -459,8 +466,7 @@ header.eventsheader {
 
 <script src="training/dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="training/dist/js/bootstrap.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<script src="dist/DatatableBootstrap/DatatableB.js" type="text/javascript"></script>
+<script src="dist/DataTable_NewVersion/dataTable.js" type="text/javascript"></script>
 <script type="text/javascript" src="training/dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script type="text/javascript" src="training/dist/scroll/jquery.mousewheel.js"></script>
 <script src="training/dist/DateRange/moment.js" type="text/javascript"></script>
@@ -969,7 +975,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			Highcharts.setOptions({
 				colors: ['#40b5bf', '#999967', '#089bf8', '#ac69ae' , '#cccccc']
 			});
-			$('#donutchart').highcharts({
+			chart = Highcharts.chart('donutchart', {
 				chart: {
 					type: 'pie',
 					backgroundColor: 'transparent',
@@ -979,25 +985,32 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					}
 				},
 				 title:{
-					 text:''
+					 text:'TOTAL BATCHES'
 					 },
 				legend: {
 						enabled: true,
 						align: 'right',
-						verticalAlign: 'right',
+						verticalAlign: 'center',
+						y:60,
 						floating: false,
 						backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-						borderColor: '#CCC',
-						borderWidth: 1,
+						borderColor: '#fff',
+						useHTML:true,
+						labelFormatter: function () {
+							return '<span title="' + this.name + '">' + this.name + ' - ' + this.y + '</span>';
+						},
+						borderWidth: 0,
 						shadow: false
 					},
 				plotOptions: {
 					pie: {
-						innerSize: 80,
-						depth: 50,
+						center: [50, 50],
+						innerSize: 60,
+						depth: 40,
 						dataLabels: {
 							enabled: false,
-						}
+						},
+						showInLegend: true
 					}, 
 				},
 				
@@ -1010,6 +1023,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					]
 				}]
 			});
+			chart.setTitle({text: "Total Batches"});//+compltedBatchesGlob+upcomingBatchesGlob+runningBatchesGlob});
 		}else{
 			$("#allProgramWiseDetailsDIv").html("No Data Found");
 		}
@@ -1105,6 +1119,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				str+='<tr>';
 				str+='<th>Center</th>';
 				str+='<th>Batch</th>';
+				str+='<th>Total</th>';
 				str+='<th>Day 1 Count</th>';
 				str+='<th>Day 2 Count</th>';
 				
@@ -1132,6 +1147,17 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					str+='<tr>';
 					str+='<td>'+result[i].centerName+'</td>';
 					str+='<td>'+result[i].batchName+'</td>';
+					var totalIACount =0;
+				    var totalNIACount =0;
+					for(var j in result[i].simpleVOList1){						
+						 totalIACount = totalIACount+result[i].simpleVOList1[j].total;
+				         totalNIACount = totalNIACount+result[i].simpleVOList1[j].nonInviteeAttendedCount;
+					}
+					if(result[i].simpleVOList1[j].total!=null){
+					 str+='<td>'+totalIACount+'- IA <br/>'+totalNIACount+'- NIA</td>';
+					}else{
+						str+='<td>0</td>';
+					}
 					var innternalFlag=false;
 					if(result[i].simpleVOList1 !=null && result[i].simpleVOList1.length<=2){
 						if(flag){
@@ -1423,8 +1449,8 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		str+='</table>';
 		$('#distWiseDivId').html(str);
 		$("#distTable").dataTable({"aaSorting": [[ 1, "desc" ]],
-		   "aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]});
-		$("#distTable").removeClass('dataTable');
+		   "aLengthMenu": [[10, 20, 40,90,-1], [10, 20, 40,90,"All"]]});
+		//$("#distTable").removeClass('dataTable');
 	}
 	function buildConstData(results){
 		
@@ -1478,7 +1504,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		$('#constWiseDivId').html(str);
 		
 		$("#constTable").dataTable({"aaSorting": [[ 1, "desc" ]],
-		   "aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]});
+		   "aLengthMenu": [[10, 20, 40,90,-1], [10, 20, 40,90,"All"]]});
 		$("#constTable").removeClass("dataTable");
 	}
 	
@@ -1739,27 +1765,34 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	}
 	function buildDaysAttendedCadreDetails(result){
 		var str='';
-		for(var i in result){
-			str+='<div class="media scrollDivConstituencycls" style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].cadreId+'>';
-				str+='<span href="#" class="media-left">';
-				str+='<img style="width: 64px; height: 64px;" src="'+result[i].imageStr+'" />';
-				str+='</span>';
-				str+='<div class="media-body">';
-				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].name+' ; ';				
-				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].status+' </h5>';
-				str+='<ul class="list-inline">';
-				str+='<li>Age:'+result[i].age+';</li>';
-				str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
-				str+='<li>Caste: '+result[i].caste+'</li>';
-				str+='<li>MemberShip No: <a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" >'+result[i].membershipNo+'</a></li>';
-				str+='</ul>';
-				str+='</div>';
-			str+='</div>';         
-		}
+		str+='<table class="table" id="dataTablePagination">';
+			str+='<thead>';
+				str+='<th></th>';
+			str+='</thead>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td>';
+						str+='<div class="media scrollDivConstituencycls" style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].cadreId+'>';
+							str+='<span href="#" class="media-left">';
+							str+='<img style="width: 64px; height: 64px;" src="'+result[i].imageStr+'" />';
+							str+='</span>';
+							str+='<div class="media-body">';
+							str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].name+' ; ';				
+							str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].status+' </h5>';
+							str+='<ul class="list-inline">';
+							str+='<li>Age:'+result[i].age+';</li>';
+							str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
+							str+='<li>Caste: '+result[i].caste+'</li>';
+							str+='<li>MemberShip No: <a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" >'+result[i].membershipNo+'</a></li>';
+							str+='</ul>';
+							str+='</div>';
+						str+='</div>';
+					str+='</td>';
+				str+='</tr>';
+			}
+		str+='</table>';
 		$("#popupForCadreDetailsId").html(str);
-		 $('.table-scroll-1').scrollator({
-			custom_class: 'table-scroll-1',
-		}); 
+		$("#dataTablePagination").dataTable();
 		//$(".scrollDivConstituencycls").mCustomScrollbar({max-height:400px;overflow-y:auto;z-index:999999;});
 	}
 	
