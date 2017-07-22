@@ -1642,7 +1642,10 @@ function saveBoothDetails(tdpCadreId){
 						gePanchayatOrBooth();
 						updateRangeIdsOfBoothIncharge(committeeLocationId);
 					},1200);
-				}else{
+				}else if(result.resultCode == 2){
+					alert("No Vacancy.");
+					/* $("#errMsgId").html("<span style='color:green;'>Member added failed.Please try again..</span>"); */
+				}else {
 					alert("Member added failed.Please try again..")
 					/* $("#errMsgId").html("<span style='color:green;'>Member added failed.Please try again..</span>"); */
 				}
