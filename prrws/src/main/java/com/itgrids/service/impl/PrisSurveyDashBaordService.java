@@ -151,6 +151,10 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 		try {
 			 Long  totalHouseHolds = 0l;
 			 WebResource webResource = null;
+			 Long distId =0l;
+			 String distName="";
+			 Long constId=0l;
+			 String constName="";
 
 				if(inputVO.getSubFilterType() != null && !inputVO.getSubFilterType().trim().isEmpty())
 					webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&subFilterType="+inputVO.getSubFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
@@ -181,6 +185,29 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    				vo.setTotal(totalHouseHolds);
 	 	    				vo.setTarget(jObj.getLong("target"));
 	 	    				vo.setAchieved(jObj.getLong("achived"));
+	 	    				if (jObj.isNull("districtId")){
+	 	    					distId = 0l;
+	 	    				} else {
+	 	    					distId = jObj.getLong("districtId");
+	 	    				}
+	 	    				
+	 	    				if (jObj.isNull("districtName")){
+	 	    					distName = "";
+	 	    				} else {
+	 	    					distName = jObj.getString("districtName");
+	 	    				}
+	 	    				
+	 	    				if (jObj.isNull("constituencyId")){
+	 	    					constId = 0l;
+	 	    				} else {
+	 	    					constId = jObj.getLong("constituencyId");
+	 	    				}
+	 	    				
+	 	    				if (jObj.isNull("constituencyName")){
+	 	    					constName = "";
+	 	    				} else {
+	 	    					constName = jObj.getString("constituencyName");
+	 	    				}
 	 	    				if(inputVO.getLocationType().equalsIgnoreCase("district")){
 	 	    					vo.setDistrictStarted(jObj.getString("districtStarted"));
 	 	    					vo.setConsStarted(jObj.getString("consStarted"));
@@ -208,6 +235,10 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 		 	    				
 	 	    				}
 	 	    				vo.setAchievedPercentage(vo.getTarget() > 0 ? round(((vo.getAchieved()*100.00)/vo.getTarget()),2):0.00);
+	 	    				vo.setDistrictId(distId);
+	 	    				vo.setDistrictName(distName);
+	 	    				vo.setConstituencyId(constId);
+	 	    				vo.setConstituencyName(constName);
 	 	    				distOverViewLst.add(vo);
 	 	    			}
 	 	    		}
