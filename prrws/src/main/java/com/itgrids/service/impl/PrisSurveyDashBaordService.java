@@ -183,20 +183,31 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    				vo.setAchieved(jObj.getLong("achived"));
 	 	    				if(inputVO.getLocationType().equalsIgnoreCase("district")){
 	 	    					vo.setDistrictStarted(jObj.getString("districtStarted"));
+	 	    					vo.setConsStarted(jObj.getString("consStarted"));
+		 	    				vo.setConsNotStarted(jObj.getString("consNotStatrted"));
+		 	    				vo.setConsCompleted(jObj.getString("consCompeleted"));
+		 	    				vo.setMandalStarted(jObj.getString("mandalStarted"));
+		 	    				vo.setMandalNotStarted(jObj.getString("mandalNotStarted"));
+		 	    				vo.setMandalCompleted(jObj.getString("mandalCompleted"));
+		 	    				vo.setPanchayatStarted(jObj.getString("panchayatStarted"));
+		 	    				vo.setPanchayatNotStarted(jObj.getString("panchayatNotStarted"));
+		 	    				vo.setPanchayatCompleted(jObj.getString("panchayatCompleted"));
+		 	    				
+	 	    				}else if(inputVO.getLocationType().equalsIgnoreCase("constituency") || inputVO.getLocationType().equalsIgnoreCase("assembly")){
+		 	    				vo.setMandalStarted(jObj.getString("mandalStarted"));
+		 	    				vo.setMandalNotStarted(jObj.getString("mandalNotStarted"));
+		 	    				vo.setMandalCompleted(jObj.getString("mandalCompleted"));
+		 	    				vo.setPanchayatStarted(jObj.getString("panchayatStarted"));
+		 	    				vo.setPanchayatNotStarted(jObj.getString("panchayatNotStarted"));
+		 	    				vo.setPanchayatCompleted(jObj.getString("panchayatCompleted"));
+		 	    				
+	 	    				}else if(inputVO.getLocationType().equalsIgnoreCase("mandal")){
+		 	    				vo.setPanchayatStarted(jObj.getString("panchayatStarted"));
+		 	    				vo.setPanchayatNotStarted(jObj.getString("panchayatNotStarted"));
+		 	    				vo.setPanchayatCompleted(jObj.getString("panchayatCompleted"));
+		 	    				
 	 	    				}
-	 	    				
-	 	    				vo.setConsStarted(jObj.getString("consStarted"));
-	 	    				vo.setConsNotStarted(jObj.getString("consNotStatrted"));
-	 	    				vo.setConsCompleted(jObj.getString("consCompeleted"));
-	 	    				vo.setMandalStarted(jObj.getString("mandalStarted"));
-	 	    				vo.setMandalNotStarted(jObj.getString("mandalNotStarted"));
-	 	    				vo.setMandalCompleted(jObj.getString("mandalCompleted"));
-	 	    				vo.setPanchayatStarted(jObj.getString("panchayatStarted"));
-	 	    				vo.setPanchayatNotStarted(jObj.getString("panchayatNotStarted"));
-	 	    				vo.setPanchayatCompleted(jObj.getString("panchayatCompleted"));
-	 	    				
 	 	    				vo.setAchievedPercentage(vo.getTarget() > 0 ? round(((vo.getAchieved()*100.00)/vo.getTarget()),2):0.00);
-	 	    				
 	 	    				distOverViewLst.add(vo);
 	 	    			}
 	 	    		}
