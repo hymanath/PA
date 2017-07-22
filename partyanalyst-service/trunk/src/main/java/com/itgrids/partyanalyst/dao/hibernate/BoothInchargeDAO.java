@@ -114,7 +114,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		if(type != null && type.trim().equalsIgnoreCase("removeOption"))
 			sb.append(" where model.isActive = 'Y' and model.isDeleted = 'N'");
 		else if(type != null && type.trim().equalsIgnoreCase("addOption"))
-			sb.append(" where model.isActive = 'N' and model.isDeleted = 'N'");
+			sb.append(" where model.isActive = 'N' and model.isDeleted = 'Y'");
 		
 		if(tdpCadreId != null && tdpCadreId.longValue() > 0l){
 			sb.append(" and model.tdpCadreId = :tdpCadreId");
@@ -551,5 +551,21 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		query.setParameter("publicationDateId", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
 		
 		return query.list();
+	}
+	public Long getRoleWiseTotalAddedMember(Long boothId,Long boothInchargeEnrollmentId,Long boothInchargeRoleId) {
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select " +
+		 				 " count(distinct model.tdpCadreId) " +
+		 				 " from BoothIncharge model " +
+		 				 " where " +
+		 				 " model.isDeleted='N' and  model.boothInchargeRoleConditionMapping.isDeleted='N' and model.isActive ='Y'" +
+		 				 " and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.boothId=:boothId " +
+		 				 " and model.boothInchargeRoleConditionMapping.boothInchargeEnrollmentId=:boothInchargeEnrollmentId " +
+		 				 " and model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId=:boothInchargeRoleId");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("boothId", boothId);
+		query.setParameter("boothInchargeEnrollmentId", boothInchargeEnrollmentId);
+		query.setParameter("boothInchargeRoleId", boothInchargeRoleId);
+		return (Long)query.uniqueResult();
 	}
 }

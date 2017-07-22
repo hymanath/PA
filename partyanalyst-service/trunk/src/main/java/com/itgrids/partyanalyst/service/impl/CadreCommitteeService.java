@@ -22183,31 +22183,41 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					}
 				}
 			}
-			
-			BoothIncharge boothIncharge = boothInchargeDAO.getExistingMember(tdpCadreId,"addOption");
-			if(boothIncharge != null){
-				boothIncharge.setIsActive("Y");
-				boothIncharge.setUpdatedBy(userId);
-				boothIncharge.setBoothInchargeSerialNoRangeId(1L);
-				boothIncharge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-				boothInchargeDAO.save(boothIncharge);
-			}else{
-				BoothIncharge boothInchrge = new BoothIncharge();
-				//boothInchrge.setBoothId(Long.valueOf(boothId));
-				boothInchrge.setTdpCadreId(tdpCadreId);
-				boothInchrge.setIsActive("Y");
-				boothInchrge.setIsDeleted("N");
-				boothInchrge.setBoothInchargeSerialNoRangeId(1L);
-				boothInchrge.setBoothInchargeEnrollmentId(boothEnrollmentYrIds.get(0));
-				boothInchrge.setInsertedBy(userId);
-				boothInchrge.setUpdatedBy(userId);
-				boothInchrge.setBoothInchargeRoleConditionMappingId(boothInchrgRoleId);
-				boothInchrge.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				boothInchrge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-				boothInchargeDAO.save(boothInchrge);
-			}
-			
-			status.setResultCode(0);
+			BoothInchargeRoleConditionMapping boothInchargeRoleConditionMapping = boothInchargeRoleConditionMappingDAO.get(boothInchrgRoleId);
+		    Long maxBoothRoleCount = boothInchargeRoleConditionMapping.getBoothInchargeRoleCondition().getMaxMembers();
+		    Long boothInchargeRoleId = boothInchargeRoleConditionMapping.getBoothInchargeRoleCondition().getBoothInchargeRoleId();
+		    Long boothAddedMemberCount = boothInchargeDAO.getRoleWiseTotalAddedMember(boothId, boothEnrollmentYrIds.get(0), boothInchargeRoleId);
+		    
+		    if (boothAddedMemberCount < maxBoothRoleCount) {/*Checking is required member added or not.if not then only user can add else we are sending resultCode by that we are showing message to end user.Now Vacany is not there. */
+		    	
+		    	BoothIncharge boothIncharge = boothInchargeDAO.getExistingMember(tdpCadreId,"addOption");
+				if(boothIncharge != null){
+					boothIncharge.setIsActive("Y");
+					boothIncharge.setUpdatedBy(userId);
+					boothIncharge.setBoothInchargeSerialNoRangeId(1L);
+					boothIncharge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					boothIncharge.setIsDeleted("N");
+					boothInchargeDAO.save(boothIncharge);
+				}else{
+					BoothIncharge boothInchrge = new BoothIncharge();
+					//boothInchrge.setBoothId(Long.valueOf(boothId));
+					boothInchrge.setTdpCadreId(tdpCadreId);
+					boothInchrge.setIsActive("Y");
+					boothInchrge.setIsDeleted("N");
+					boothInchrge.setBoothInchargeSerialNoRangeId(1L);
+					boothInchrge.setBoothInchargeEnrollmentId(boothEnrollmentYrIds.get(0));
+					boothInchrge.setInsertedBy(userId);
+					boothInchrge.setUpdatedBy(userId);
+					boothInchrge.setBoothInchargeRoleConditionMappingId(boothInchrgRoleId);
+					boothInchrge.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					boothInchrge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					boothInchargeDAO.save(boothInchrge);
+				}
+				
+				status.setResultCode(0);
+		    }else {
+		    	status.setResultCode(2);
+		    }
 		}catch(Exception e){
 			status.setResultCode(1);
 			LOG.error("Exception raised in saveElectionBoothCommitteeDetails ", e);
