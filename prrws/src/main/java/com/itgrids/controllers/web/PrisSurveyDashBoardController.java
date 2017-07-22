@@ -104,4 +104,14 @@ public class PrisSurveyDashBoardController {
 		}
 		return returnVoList;
 	}
+	@PostMapping("/getPIRSSurveyInfoStateLevel")
+	public @ResponseBody PrisOverviewVo getPIRSSurveyInfoStateLevel(@RequestBody InputVO inputVO){
+		PrisOverviewVo returnVo = null;
+		try {
+			returnVo = surveyDashBaordService.getPIRSSurveyInfoStateLevel(inputVO);
+		} catch (Exception e){
+			LOG.error("Exception raised at getPIRSSurveyInfoStateLevel - PrisSurveyDashBoardController controller", e);
+		}
+		return returnVo;
+	}
 }
