@@ -1500,17 +1500,27 @@ function exportToExcel()
 	  }
 	  
 	  function getCadreAttendneceByBatch(batchId){
-	  
-			$("#batchSelErrDivId").html('');
-			if(batchId == 0){
+		  var programId = $("#programId").val();
+		  var centerId = $("#centerId").val();
+		  var batchId  = $("#batchId").val();
+		  if(programId == 0){
+			$("#programSelErrDivId").html("Please Select Any Program");
+			return;
+		  }
+		  if(centerId == 0){
+			$("#centerSelErrDivId").html("Please Select Any Center");
+			return;
+		  }
+		  if(batchId == 0){
 				$("#batchSelErrDivId").html("Please Select Any Batch");
-				return;
-			  }
+				  return;
+			}
+		  $("#batchSelErrDivId,#centerSelErrDivId,#programSelErrDivId").html('');
 		  $("#ajaxImage").show();
 		  $("#attendanceDiv").html('');
 		  $("#attendanceDiv").show();
 		  $("#exportExcelAttendanceDiv").html('');
-		  
+	 
 		  getDayWiseAttendnenceForBatch();
 		  
 		  var jsObj={
@@ -1825,6 +1835,9 @@ function buildDayWiseAttendnenceForBatch(result,center){
 			$('#programId').append('<option value="1"> Leadership Skills - 2014 - 16 </option>');
 		} 
 	}
+	$(document).on("click","#submitId",function(){
+		$('#acheivementsId, #communicationSkillsCheckId,#leadershipLevelCheckId,#whatsupUsingId,#leadershipSkillsCheckId,#smartPhoneUsingId,#goalsId,#healthCheckId,#feedBackAnswerChkId,#feedBackDocumentsChkId,#whatsupSharingId,#facebookKnownId').removeAttr('checked');
+	});
 	</script>
 	<script>
 var tableToExcel = (function() {

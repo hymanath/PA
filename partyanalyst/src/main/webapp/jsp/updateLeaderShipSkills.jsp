@@ -557,6 +557,7 @@ function getLeaderShipDetails()
 						  str+='<div class="row">';
 						  str+='<div class="col-md-12 m_top10 ">';
 						  str+='<input type="file" class="healthCardattachment" />';
+						  str+='<i class="glyphicon glyphicon-minus add-plus healthCardminus  pull-right" id="healthCardMinusId" style="display:none"></i>';
 						  str+='</div>';
 						  str+='</div>';
 						  str+='<div class="row" id="healthCardCntaddDiv">';
@@ -703,6 +704,7 @@ str+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackD
 						 str+='<div class="row ">';
 							  str+='<div class="col-md-2 m_top10 ">';
 							  str+='<input type="file" class="feedbackDocs" />';
+							  str+='<i class="glyphicon glyphicon-minus add-plus feedbackDocminus  pull-right" id="feedbackDocminusId"  style="border-right-width: 0px; border-left-width: 0px; padding-right: 5px; margin-right: -376px; margin-left: 0px;display:none;"></i>';
 							  str+='</div>';
 							 str+='</div>';
 						  str+='<div class="row" id="feedbackDocumentaddDiv">';
@@ -842,7 +844,8 @@ str+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackD
 	str+='</div>';
 	str+='</div>';
 	$("#modalBodyId").html(str);
-	$("#goalsDateId0").datetimepicker({format: "MM/DD/YYYY"});
+	$("#goalsDateId0").datetimepicker({format: "MM/DD/YYYY",
+	   minDate: new Date()});
 	
 	$('.fancybox').fancybox();
 	}
@@ -1098,7 +1101,7 @@ str+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackD
   healthCardCnt = 0;
 	  function addHealthCard()
 	  {
-		
+		$("#healthCardMinusId").show();
 		  var str ='';
 		str+='<div class="row">';
 		  str+='<div class="col-md-10">';
@@ -1119,7 +1122,7 @@ str+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackD
 	   var feedbackDocCnt = 0;
 	  function addFeedbackDoc()
 	  {
-		
+		 $("#feedbackDocminusId").show();
 		  var str ='';
 		 
 		  	str+='<div class="row">';
@@ -1128,7 +1131,7 @@ str+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackD
 		  str+='<input type="file" class="feedbackDocs" />';
 		  str+='</div>';
 		  str+='</div>';
-		
+		  
 		  str+='<div class="col-md-1">';
 		  str+='<i class="glyphicon glyphicon-minus add-plus feedbackDocminus m_top10"></i>';
 		    str+='</div>';
