@@ -148,14 +148,8 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	public PrisOverviewVo getPIRSSurveyInfo(InputVO inputVO){
 		PrisOverviewVo finalVo = new PrisOverviewVo();
 		List<PrisOverviewVo> distOverViewLst = new ArrayList<PrisOverviewVo>(0);
-		List<PrisOverviewVo> distLst = new ArrayList<PrisOverviewVo>(0);
 		try {
 			 Long  totalHouseHolds = 0l;
-			 Long distId =0l;
-			 String distName="";
-			 Long constId=0l;
-			 String constName="";
-			 
 			 WebResource webResource = null;
 
 				if(inputVO.getSubFilterType() != null && !inputVO.getSubFilterType().trim().isEmpty())
@@ -184,40 +178,24 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    				} else {
 	 	    					totalHouseHolds = jObj.getLong("totalHouseHolds");
 	 	    				}
-	 	    				
-	 	    				if (jObj.isNull("districtId")){
-	 	    					distId = 0l;
-	 	    				} else {
-	 	    					distId = jObj.getLong("districtId");
-	 	    				}
-	 	    				
-	 	    				if (jObj.isNull("districtName")){
-	 	    					distName = "";
-	 	    				} else {
-	 	    					distName = jObj.getString("districtName");
-	 	    				}
-	 	    				
-	 	    				if (jObj.isNull("constituencyId")){
-	 	    					constId = 0l;
-	 	    				} else {
-	 	    					constId = jObj.getLong("constituencyId");
-	 	    				}
-	 	    				
-	 	    				if (jObj.isNull("constituencyName")){
-	 	    					constName = "";
-	 	    				} else {
-	 	    					constName = jObj.getString("constituencyName");
-	 	    				}
-	 	    				
 	 	    				vo.setTotal(totalHouseHolds);
 	 	    				vo.setTarget(jObj.getLong("target"));
 	 	    				vo.setAchieved(jObj.getLong("achived"));
-	 	    				vo.setAchievedPercentage(vo.getTarget() > 0 ? round(((vo.getAchieved()*100.00)/vo.getTarget()),2):0.00);
+	 	    				if(inputVO.getLocationType().equalsIgnoreCase("district")){
+	 	    					vo.setDistrictStarted(jObj.getString("districtStarted"));
+	 	    				}
 	 	    				
-	 	    				vo.setDistrictId(distId);
-	 	    				vo.setDistrictName(distName);
-	 	    				vo.setConstituencyId(constId);
-	 	    				vo.setConstituencyName(constName);
+	 	    				vo.setConsStarted(jObj.getString("consStarted"));
+	 	    				vo.setConsNotStarted(jObj.getString("consNotStatrted"));
+	 	    				vo.setConsCompleted(jObj.getString("consCompeleted"));
+	 	    				vo.setMandalStarted(jObj.getString("mandalStarted"));
+	 	    				vo.setMandalNotStarted(jObj.getString("mandalNotStarted"));
+	 	    				vo.setMandalCompleted(jObj.getString("mandalCompleted"));
+	 	    				vo.setPanchayatStarted(jObj.getString("panchayatStarted"));
+	 	    				vo.setPanchayatNotStarted(jObj.getString("panchayatNotStarted"));
+	 	    				vo.setPanchayatCompleted(jObj.getString("panchayatCompleted"));
+	 	    				
+	 	    				vo.setAchievedPercentage(vo.getTarget() > 0 ? round(((vo.getAchieved()*100.00)/vo.getTarget()),2):0.00);
 	 	    				
 	 	    				distOverViewLst.add(vo);
 	 	    			}
@@ -225,18 +203,7 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    		
 	 	    	}
  	      }
-	        if(distOverViewLst != null && distOverViewLst.size() > 0){
-	        	for (PrisOverviewVo prisOverviewVo : distOverViewLst) {
-	        		PrisOverviewVo vo = new PrisOverviewVo();
-	        		vo.setId(prisOverviewVo.getId());
-	        		vo.setName(prisOverviewVo.getName());
-	        		
-	        		distLst.add(vo);
-				}
-	        }
-	      
-	        finalVo.setSubList(distOverViewLst);
-	        finalVo.setVoList(distLst);
+	      finalVo.setSubList(distOverViewLst);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getPIRSSurveyInfo - SurveyDashBaordService service", e);
 		}
@@ -333,5 +300,47 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	    value = value * factor;
 	    long tmp = Math.round(value);
 	    return (double) tmp / factor;
+	}
+	/*
+	 * Date : 07/07/2017
+	 * Author :Teja
+	 * @description : getPIRSSurveyInfoStateLevel
+	 */
+	public PrisOverviewVo getPIRSSurveyInfoStateLevel(InputVO inputVO){
+		PrisOverviewVo finalVo = new PrisOverviewVo();
+		try {
+			 WebResource webResource = null;
+
+					webResource = commonMethodsUtilService.getWebResourceObject("http://45.114.245.209/survey/api/?getPIRSSurveyInfoStateLevel=true&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+				
+				ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+    				JSONObject jObj = new JSONObject(output);
+	 	    				
+    				finalVo.setDistrictStarted(jObj.getString("districtStarted"));
+    				finalVo.setDistrictNotStarted(jObj.getString("districtNotStarted"));
+    				finalVo.setDistrictCompleted(jObj.getString("districtCompleted"));
+    				finalVo.setParliamentStarted(jObj.getString("parliamentStarted"));
+    				finalVo.setParliamentNotStarted(jObj.getString("parliamentNotStatrted"));
+    				finalVo.setParliamentCompleted(jObj.getString("parliamentCompleted"));
+    				finalVo.setMandalStarted(jObj.getString("mandalStarted"));
+    				finalVo.setMandalNotStarted(jObj.getString("mandalNotStarted"));
+    				finalVo.setMandalCompleted(jObj.getString("mandalCompleted"));
+    				finalVo.setPanchayatStarted(jObj.getString("panchayatStarted"));
+    				finalVo.setPanchayatNotStarted(jObj.getString("panchayatNotStartted"));
+    				finalVo.setPanchayatCompleted(jObj.getString("panchayatCompleted"));
+	 	    				
+	 	    		
+	 	    	}
+ 	      }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPIRSSurveyInfoStateLevel - SurveyDashBaordService service", e);
+		}
+		return finalVo;
 	}
 }
