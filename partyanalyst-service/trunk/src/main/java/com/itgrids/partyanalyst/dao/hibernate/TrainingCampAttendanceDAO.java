@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -311,31 +312,42 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
   }
   
   public Long getInviteesAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr ,List<Long> staffCadreIdsList,List<Long> enrollmentYearIds)
-  {
-	  StringBuilder sb=new StringBuilder();
-	  
-	  sb.append(" select count(distinct model1.tdpCadreId) " +
-				" from TrainingCampBatchAttendee model1  " +
-				" where  model1.tdpCadre.tdpCadreId = model1.tdpCadreId and model1.isDeleted ='false' and " +
-				" model1.trainingCampBatch.attendeeTypeId=1 and model1.trainingCampBatch.isCancelled ='false' ");
+  {	  StringBuilder sb=new StringBuilder();
+	  List<Long> tdpCommitteeEnrolmentYearIdsList = new ArrayList<Long>(0);
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  for (Long tdpEnrollmentYearId : enrollmentYearIds) {
+			  if(tdpEnrollmentYearId != null)
+				  tdpCommitteeEnrolmentYearIdsList.add(tdpEnrollmentYearId-2);
+			  
+		}
+	  }
+	  sb.append(" select count(distinct TCA.attendance.tdpCadreId) " +
+				" from TrainingCampAttendance TCA, TdpCommitteeMember TCM   " + 
+				" where  TCA.attendance.tdpCadre.tdpCadreId = TCM.tdpCadreId and TCM.isActive='Y' and " +
+				" TCM.tdpCommitteeRole.tdpRolesId in ("+IConstants.TRAINING_INVITEE_ROLE_IDS+") and  " +
+				" TCA.trainingCampBatch.attendeeTypeId=1 and TCA.trainingCampBatch.isCancelled ='false' and  " +
+				" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (5,7,9,6,8) ");
+	  if(tdpCommitteeEnrolmentYearIdsList != null && tdpCommitteeEnrolmentYearIdsList.size()>0)
+		  sb.append(" and TCM.tdpCommitteeEnrollmentId in (:tdpCommitteeEnrolmentYearIdsList) ");
 	  if(batchId != null && batchId.longValue()>0L){
-		  sb.append(" and model1.trainingCampBatch.trainingCampBatchId =:batchId ");
+		  sb.append(" and TCA.trainingCampBatch.trainingCampBatchId =:batchId ");
 		  if(fromDate!=null && toDate!=null){
-			  sb.append(" and date(model1.trainingCampBatch.fromDate) >= :fromDate and date(model1.trainingCampBatch.toDate) <= :toDate");
+			  sb.append(" and date(TCA.trainingCampBatch.fromDate) >= :fromDate and date(TCA.trainingCampBatch.toDate) <= :toDate");
 		  }
 	  }
 	  else if(searchTypeStr != null && fromDate!=null && toDate!=null){		   
 		   if(searchTypeStr.trim().equalsIgnoreCase("running"))
-			   sb.append(" and ( (:fromDate between date(model1.trainingCampBatch.fromDate) and date(model1.trainingCampBatch.toDate) ) or " +
-			   		" (:toDate between date(model1.trainingCampBatch.fromDate) and date(model1.trainingCampBatch.toDate) )  )");
+			   sb.append(" and ( (:fromDate between date(TCA.trainingCampBatch.fromDate) and date(TCA.trainingCampBatch.toDate) ) or " +
+			   		" (:toDate between date(TCA.trainingCampBatch.fromDate) and date(TCA.trainingCampBatch.toDate) )  )");
 		   else  if(searchTypeStr.trim().equalsIgnoreCase("completed"))
-			   sb.append(" and (date(model1.trainingCampBatch.fromDate) < :fromDate and date(model1.trainingCampBatch.toDate) < :toDate ) ");
+			   sb.append(" and (date(TCA.trainingCampBatch.fromDate) < :fromDate and date(TCA.trainingCampBatch.toDate) < :toDate ) ");
 	   }
 	  if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
-		   sb.append(" and model1.tdpCadreId not in (:staffCadreIdsList) " );
+		   sb.append(" and TCM.tdpCadreId not in (:staffCadreIdsList) " );
 	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-		  sb.append(" and model1.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+		  sb.append(" and TCA.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
 	        }
+	  
 	  Query query = getSession().createQuery(sb.toString());
 		if(fromDate!=null && toDate!=null){
 			query.setParameter("fromDate", fromDate);
@@ -348,36 +360,50 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
 			query.setParameterList("enrollmentYearIds",enrollmentYearIds);
 		}
+		if(tdpCommitteeEnrolmentYearIdsList != null && tdpCommitteeEnrolmentYearIdsList.size()>0)
+			query.setParameterList("tdpCommitteeEnrolmentYearIdsList",tdpCommitteeEnrolmentYearIdsList);
+		
 		return (Long)query.uniqueResult();
   }
   
   public Long getNonInviteesAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> enrollmentYearIds)
   {
 	  StringBuilder sb=new StringBuilder();
-	  
-	  sb.append(" select count(distinct model.attendance.tdpCadre.tdpCadreId) " +
-				" from TrainingCampAttendance model  " +
-				" where  model.attendance.tdpCadre.tdpCadreId not in ( select distinct model1.tdpCadre.tdpCadreId from  TrainingCampBatchAttendee model1  " +
-				" where  model1.isDeleted ='false' )  and " +
-				" model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled ='false' ");
+	  List<Long> tdpCommitteeEnrolmentYearIdsList = new ArrayList<Long>(0);
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  for (Long tdpEnrollmentYearId : enrollmentYearIds) {
+			  if(tdpEnrollmentYearId != null)
+				  tdpCommitteeEnrolmentYearIdsList.add(tdpEnrollmentYearId-2);
+			  
+		}
+	  }
+	  sb.append(" select count(distinct TCA.attendance.tdpCadreId) " +
+				" from TrainingCampAttendance TCA, TdpCommitteeMember TCM   " +
+				" where  TCA.attendance.tdpCadre.tdpCadreId = TCM.tdpCadreId and TCM.isActive='Y' and " +
+				" TCM.tdpCommitteeRole.tdpRolesId not in ("+IConstants.TRAINING_INVITEE_ROLE_IDS+") and  " +
+				" TCA.trainingCampBatch.attendeeTypeId=1 and TCA.trainingCampBatch.isCancelled ='false' and " +
+				" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (5,7,9,6,8)  ");
+	  if(tdpCommitteeEnrolmentYearIdsList != null && tdpCommitteeEnrolmentYearIdsList.size()>0)
+		  sb.append(" and TCM.tdpCommitteeEnrollmentId in (:tdpCommitteeEnrolmentYearIdsList) ");
 	  if(batchId != null && batchId.longValue()>0L){
-		  sb.append(" and model.trainingCampBatch.trainingCampBatchId =:batchId ");
+		  sb.append(" and TCA.trainingCampBatch.trainingCampBatchId =:batchId ");
 		  if(fromDate!=null && toDate!=null){
-			  sb.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate");
+			  sb.append(" and date(TCA.trainingCampBatch.fromDate) >= :fromDate and date(TCA.trainingCampBatch.toDate) <= :toDate");
 		  }
 	  }
 	  else if(searchTypeStr != null && fromDate!=null && toDate!=null){		   
 		   if(searchTypeStr.trim().equalsIgnoreCase("running"))
-			   sb.append(" and ( (:fromDate between date(model.trainingCampBatch.fromDate) and date(model.trainingCampBatch.toDate) ) or " +
-			   		" (:toDate between date(model.trainingCampBatch.fromDate) and date(model.trainingCampBatch.toDate))) ");
+			   sb.append(" and ( (:fromDate between date(TCA.trainingCampBatch.fromDate) and date(TCA.trainingCampBatch.toDate) ) or " +
+			   		" (:toDate between date(TCA.trainingCampBatch.fromDate) and date(TCA.trainingCampBatch.toDate) )  )");
 		   else  if(searchTypeStr.trim().equalsIgnoreCase("completed"))
-			   sb.append(" and (date(model.trainingCampBatch.fromDate) < :fromDate and date(model.trainingCampBatch.toDate) < :toDate ) ");
+			   sb.append(" and (date(TCA.trainingCampBatch.fromDate) < :fromDate and date(TCA.trainingCampBatch.toDate) < :toDate ) ");
 	   }
 	  if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
-		   sb.append(" and model.attendance.tdpCadre.tdpCadreId not in (:staffCadreIdsList) " );
+		   sb.append(" and TCM.tdpCadreId not in (:staffCadreIdsList) " );
 	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-		   sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+		  sb.append(" and TCA.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
 	        }
+	  
 	  Query query = getSession().createQuery(sb.toString());
 		if(fromDate!=null && toDate!=null){
 			query.setParameter("fromDate", fromDate);
@@ -386,10 +412,72 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		if(batchId != null && batchId.longValue()>0L)			
 			query.setParameter("batchId", batchId);
 		if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
-			query.setParameterList("staffCadreIdsList",staffCadreIdsList);
+		   query.setParameterList("staffCadreIdsList",staffCadreIdsList);
 		if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
 			query.setParameterList("enrollmentYearIds",enrollmentYearIds);
 		}
+		if(tdpCommitteeEnrolmentYearIdsList != null && tdpCommitteeEnrolmentYearIdsList.size()>0)
+			query.setParameterList("tdpCommitteeEnrolmentYearIdsList",tdpCommitteeEnrolmentYearIdsList);
+		
+		return (Long)query.uniqueResult();
+  }
+  
+  public Long getTotalAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> enrollmentYearIds)
+  {
+	  StringBuilder sb=new StringBuilder();
+	  List<Long> tdpCommitteeEnrolmentYearIdsList = new ArrayList<Long>(0);
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  for (Long tdpEnrollmentYearId : enrollmentYearIds) {
+			  if(tdpEnrollmentYearId != null)
+				  tdpCommitteeEnrolmentYearIdsList.add(tdpEnrollmentYearId-2);
+			  
+		}
+	  }
+	  
+	  fromDate = null;  toDate = null; searchTypeStr = null;
+	  
+	  sb.append(" select count(distinct TCA.attendance.tdpCadreId) " +
+				" from TrainingCampAttendance TCA, TdpCommitteeMember TCM   " +
+				" where  TCA.attendance.tdpCadre.tdpCadreId = TCM.tdpCadreId and TCM.isActive='Y' and " +
+				" TCM.tdpCommitteeRole.tdpRolesId in ("+IConstants.TRAINING_INVITEE_ROLE_IDS+") and  " +
+				" TCA.trainingCampBatch.attendeeTypeId=1 and TCA.trainingCampBatch.isCancelled ='false' and " +
+				" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (5,7,9,6,8)  ");
+	  if(tdpCommitteeEnrolmentYearIdsList != null && tdpCommitteeEnrolmentYearIdsList.size()>0)
+		  sb.append(" and TCM.tdpCommitteeEnrollmentId in (:tdpCommitteeEnrolmentYearIdsList) ");
+	  if(batchId != null && batchId.longValue()>0L){
+		  sb.append(" and TCA.trainingCampBatch.trainingCampBatchId =:batchId ");
+		  if(fromDate!=null && toDate!=null){
+			  sb.append(" and date(TCA.trainingCampBatch.fromDate) >= :fromDate and date(TCA.trainingCampBatch.toDate) <= :toDate");
+		  }
+	  }
+	  else if(searchTypeStr != null && fromDate!=null && toDate!=null){		   
+		   if(searchTypeStr.trim().equalsIgnoreCase("running"))
+			   sb.append(" and ( (:fromDate between date(TCA.trainingCampBatch.fromDate) and date(TCA.trainingCampBatch.toDate) ) or " +
+			   		" (:toDate between date(TCA.trainingCampBatch.fromDate) and date(TCA.trainingCampBatch.toDate) )  )");
+		   else  if(searchTypeStr.trim().equalsIgnoreCase("completed"))
+			   sb.append(" and (date(TCA.trainingCampBatch.fromDate) < :fromDate and date(TCA.trainingCampBatch.toDate) < :toDate ) ");
+	   }
+	  if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
+		   sb.append(" and TCM.tdpCadreId not in (:staffCadreIdsList) " );
+	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		  sb.append(" and TCA.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+	        }
+	  
+	  Query query = getSession().createQuery(sb.toString());
+		if(fromDate!=null && toDate!=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		if(batchId != null && batchId.longValue()>0L)			
+			query.setParameter("batchId", batchId);
+		if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
+		   query.setParameterList("staffCadreIdsList",staffCadreIdsList);
+		if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			query.setParameterList("enrollmentYearIds",enrollmentYearIds);
+		}
+		if(tdpCommitteeEnrolmentYearIdsList != null && tdpCommitteeEnrolmentYearIdsList.size()>0)
+			query.setParameterList("tdpCommitteeEnrolmentYearIdsList",tdpCommitteeEnrolmentYearIdsList);
+		
 		return (Long)query.uniqueResult();
   }
   
