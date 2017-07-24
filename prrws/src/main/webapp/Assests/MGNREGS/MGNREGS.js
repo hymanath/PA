@@ -2245,9 +2245,10 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocat
 		year : "2017",
 		fromDate : glStartDate,
 		toDate 	: glEndDate,//glEndDate,'2017-05-30'
-		locationType: locationTypeNew,
+		locationType: menuLocationType,
 		divType : globalDivName,
-		locationId : menuLocationId
+		locationId : menuLocationId,
+		sublocaType : locationTypeNew
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataForFAPerformance',

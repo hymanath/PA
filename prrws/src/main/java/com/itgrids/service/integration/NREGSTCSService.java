@@ -3033,11 +3033,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
-	 	    			if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state")){
+	 	    			if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state") && inputVO.getSublocationType().trim().equalsIgnoreCase("state")){
 	 	    				for(int i=0;i<finalArray.length();i++){
 		 	    				NregsDataVO vo = new NregsDataVO();
 		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-		 	    				vo.setState(jObj.getString("'STATE'"));
+		 	    				vo.setState(jObj.getString("UNIQUEID"));
 		 	    				vo.setAvgDmdMarks(jObj.getString("AVG_DMD_MARKS"));
 		 	    				vo.setAvgDMusterMarks(jObj.getString("AVG_D_MUSTER_MARKS"));
 		 	    				vo.setAvgLbMarks(jObj.getString("AVG_LB_MARKS"));
@@ -3055,7 +3055,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				NregsDataVO vo = new NregsDataVO();
 		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 		 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
-		 	    				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district"))
+		 	    				if(inputVO.getLocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("district"))
 		 	    					vo.setDistrict(jObj.getString("DISTRICT_DESCRIPTION"));
 		 	    				else
 		 	    					vo.setDistrict(jObj.getString("DISTRICT"));
