@@ -10931,15 +10931,16 @@ class TrainingCampService implements ITrainingCampService{
 			
 			// currently running batch Details
 			Date currentDate = new DateUtilService().getCurrentDateAndTime();
-			Long upComingConfirmedCount=  trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(null, currentDate, currentDate,"upcoming",staffcadreIdsLsit,null,enrollmentYearIds);
-			Long runningConfirmedCount=  trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(null, currentDate, currentDate,"running",staffcadreIdsLsit,null,enrollmentYearIds);
-			Long completedConfirmedCount=  trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(null, currentDate, currentDate,"completed",staffcadreIdsLsit,null,enrollmentYearIds);
+			Long upComingConfirmedCount=  0L;//trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(null, currentDate, currentDate,"upcoming",staffcadreIdsLsit,null,enrollmentYearIds);
+			Long runningConfirmedCount=  0L;//trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(null, currentDate, currentDate,"running",staffcadreIdsLsit,null,enrollmentYearIds);
+			Long completedConfirmedCount=  0L;//trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(null, currentDate, currentDate,"completed",staffcadreIdsLsit,null,enrollmentYearIds);
 			 
 			Long runningInviteedAttendenceCount =  trainingCampAttendanceDAO.getInviteesAttendedCountByBatch(null, currentDate, currentDate,"running",staffcadreIdsLsit,enrollmentYearIds);
 			Long runningNonInviteedAttendenceCount =  trainingCampAttendanceDAO.getNonInviteesAttendedCountByBatch(null, currentDate, currentDate,"running",staffcadreIdsLsit,enrollmentYearIds);
 			Long completedInviteesAttendenceCount = trainingCampAttendanceDAO.getInviteesAttendedCountByBatch(null, currentDate, currentDate,"completed",staffcadreIdsLsit,enrollmentYearIds);
 			Long completedNonInviteesAttendenceCount = trainingCampAttendanceDAO.getNonInviteesAttendedCountByBatch(null, currentDate, currentDate,"completed",staffcadreIdsLsit,enrollmentYearIds);
 			
+			Long totalAttendedCount = trainingCampAttendanceDAO.getTotalAttendedCountByBatch(null, currentDate, currentDate,"completed",staffcadreIdsLsit,enrollmentYearIds);
 			
 			Long totalConfirmedCount=0L;
 			Long totalInviteesAttendedCount  = 0L;
@@ -10990,6 +10991,11 @@ class TrainingCampService implements ITrainingCampService{
 			totalBatchsVO.setInviteeAttendedCount(totalInviteesAttendedCount);
 			totalBatchsVO.setNonInviteeAttendedCount(Integer.valueOf(totalNonInviteesAttendedCount.toString()));
 			totalBatchsVO.setConfirmedCount(totalConfirmedCount);
+			
+			if(totalAttendedCount != null && totalAttendedCount.longValue()>0L)
+				totalBatchsVO.setTotalCount(totalAttendedCount);
+			else
+				totalBatchsVO.setTotalCount(0L);
 			
 			trainingCampDetlsVOList.add(totalBatchsVO);
 			
