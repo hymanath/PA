@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -72,4 +73,6 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Object[]> getTrainingCampAttendanceSummary(List<Long> cadreIds);
 	public List<Object[]> getBatchIds(List<Long> tdpCadreIdsList);
 	public List<Object[]> getCampDetails(List<Long> batchIds);
+	public List<Object[]> getInviteeAttendedCount(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programIds,List<Long> campIds ,List<Long> scheduleIds,List<Long> roleIds,Date startDate,Date endDate,Set<Long> staffCadreIds);
+	public List<Object[]> getTotalAttendedCount(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programIds,List<Long> campIds ,List<Long> scheduleIds,Date startDate,Date endDate,Set<Long> staffCadreIds);
 }

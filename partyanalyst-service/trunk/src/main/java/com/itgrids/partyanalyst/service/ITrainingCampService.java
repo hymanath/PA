@@ -137,4 +137,5 @@ public interface ITrainingCampService {
 	public String saveFinalizedMeetingDetails(final Long partyMeetingId,final String memberType,final String membershipId,final String name,
 			final String mobileNo,final String remark,final String statusId,final String updateBy,final Long userId,final List<String> fileNames);
 	public List<CallStatusVO> getCommentsMeetingDetails(Long partyMeetingId);
+	public Map<String,TrainingCampVO> getAllTrainingProgWiseCompletedRunningUpcomingBatchIds(String endDateString,String startDateString,Long stateId,String type,List<Long> enrollmentYearIds,List<Long> programYearIds);
 }
