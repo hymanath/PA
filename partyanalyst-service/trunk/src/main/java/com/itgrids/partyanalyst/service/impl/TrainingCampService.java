@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -5915,6 +5916,7 @@ class TrainingCampService implements ITrainingCampService{
     public Map<String,TrainingCampVO> getCompletedRunningUpcomingBatchIds(String endDateString,String startDateString,Long stateId,String type,List<Long> enrollmentYearIds,List<Long> programYearIds){
     	Map<String,TrainingCampVO> finalMap = new HashMap<String, TrainingCampVO>();
     	finalMap.put("completed",new TrainingCampVO());
+    	Map<String,TrainingCampVO> finalMap1 = null;
     	try {
 			LOG.info("Entered into getCompletedRunningUpcomingBatchIds");
 			
@@ -6031,18 +6033,19 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			
 			if(completedBatches.size()>0){
-				setProgramInformation(finalMap,completedBatches,"completed","completed");
+				setProgramInformation(finalMap,completedBatches,"completed","completed",type);
 				setBatchesCountForProgWise(finalMap,completedMembersCounts,completedMembersCountsattendee,nonInvitesCountCompleted,"completed");
 			}
 			if(runningBatches.size()>0){
-				setProgramInformation(finalMap,runningBatches,"completed","running");
+				setProgramInformation(finalMap,runningBatches,"completed","running",type);
 				setBatchesCountForProgWise(finalMap,runningMembersCounts,runningMembersCountsattendence,nonInvitesCountRunning,"running");
 			}
 			if(upComingBatches.size()>0){
-				setProgramInformation(finalMap,upComingBatches,"completed","upcoming");
+				setProgramInformation(finalMap,upComingBatches,"completed","upcoming",type);
 				setBatchesCountForProgWise(finalMap,upCommingMembersCounts,null,null,"upcoming");
 			}
 			
+			 //finalMap1 = getAllTrainingProgWiseCompletedRunningUpcomingBatchIds( endDateString, startDateString, stateId, type, enrollmentYearIds, programYearIds);
 			/*//running batches daywise counts
 			List<SimpleVO> runningBatchesAttendence = getDayWiseCountsForRunningBatches(runningBatches);
 			if(runningBatchesAttendence!=null && runningBatchesAttendence.size()>0){
@@ -6052,7 +6055,7 @@ class TrainingCampService implements ITrainingCampService{
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCompletedRunningUpcomingBatchIds", e);
 		}
-    	return finalMap;
+    	return finalMap1;
     }
     
 	public Map<Long,Long> getNonInviteesCount(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds){
@@ -6400,7 +6403,7 @@ class TrainingCampService implements ITrainingCampService{
     	}
     }
     
-    public void setProgramInformation(Map<String,TrainingCampVO> finalMap,List<Object[]> result,String type,String toType){
+    public void setProgramInformation(Map<String,TrainingCampVO> finalMap,List<Object[]> result,String type,String toType,String dataType){
     	
     	try {
     		LOG.info("Entered into setProgramInformation");
@@ -6477,8 +6480,12 @@ class TrainingCampService implements ITrainingCampService{
 	            			matchesScheduleVO.setCompletedDetails(btchDtlsLst);
 						}else if(toType.equalsIgnoreCase("running")){
 							matchesScheduleVO.setRunningDetails(btchDtlsLst);
+							if(dataType.equalsIgnoreCase("All"))
+							matchesScheduleVO.setBatchDetails(btchDtlsLst);
 						}else if(toType.equalsIgnoreCase("upcoming")){
 							matchesScheduleVO.setUpcomingDetails(btchDtlsLst);
+							if(dataType.equalsIgnoreCase("All"))
+							matchesScheduleVO.setBatchDetails(btchDtlsLst);
 						}
 	            		
 						
@@ -6679,6 +6686,25 @@ class TrainingCampService implements ITrainingCampService{
     			for(TrainingCampVO temp:result){
     				if(temp.getBatchId().equals(id)){
     					return temp;
+    				}
+    			}
+    		}
+    		if(type.equalsIgnoreCase("committeeLvl")){
+    			for(TrainingCampVO temp:result){
+    				if(temp.getCommitteeLvlId() != null){
+	    				if(temp.getCommitteeLvlId().equals(id)){
+	    					return temp;
+	    				}
+    				}
+    			}
+    		}
+    		
+    		if(type.equalsIgnoreCase("role")){
+    			for(TrainingCampVO temp:result){
+    				if(temp.getRoleId() != null){
+	    				if(temp.getRoleId().equals(id)){
+	    					return temp;
+	    				}
     				}
     			}
     		}
@@ -11570,5 +11596,526 @@ public List<CallStatusVO> getCommentsMeetingDetails(Long partyMeetingId){
 		LOG.error("Exception raised in getCommentsMeetingDetails",e);
 	}
 	return returnList;
+}
+
+public List<TrainingCampVO> getNonInviteeAttendedCount(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programIds,List<Long> campIds ,List<Long> scheduleIds,List<Long> roleIds,Date startDate,Date endDate){
+	List<TrainingCampVO> returnList = new ArrayList<TrainingCampVO>(0);
+	
+	try{
+		List<String> excludeTdpCadreIdsList = trainingCampBatchDAO.getExcudingTdpCadreIdsList(enrollmentYearIds,programIds);
+		Set<Long> cadreIdsLsit = new TreeSet<Long>();
+				
+		if(excludeTdpCadreIdsList != null && excludeTdpCadreIdsList.size()>0)
+		{
+			for (String cadreId : excludeTdpCadreIdsList) {
+				cadreIdsLsit.add(Long.valueOf(cadreId));
+			}
+		}
+		List<Object[]> totalAttended = trainingCampAttendanceDAO.getTotalAttendedCount(batchIds, enrollmentYearIds, programIds, campIds, scheduleIds, startDate, endDate,cadreIdsLsit);
+		List<Object[]> inviteeAttended = trainingCampAttendanceDAO.getInviteeAttendedCount(batchIds, enrollmentYearIds, programIds, campIds, scheduleIds, roleIds, startDate, endDate,cadreIdsLsit);
+		Map<Long,Set<Long>> batchWiseTotAttnd = new HashMap<Long,Set<Long>>();
+		if(commonMethodsUtilService.isListOrSetValid(totalAttended)){
+			for (Object[] objects : totalAttended) {
+				Set<Long> attendedList = batchWiseTotAttnd.get(commonMethodsUtilService.getLongValueForObject(objects[6]));
+				if(attendedList == null || attendedList.size() ==0){
+					attendedList = new TreeSet<Long>();
+					batchWiseTotAttnd.put(commonMethodsUtilService.getLongValueForObject(objects[6]), attendedList);
+				}
+				attendedList.add(commonMethodsUtilService.getLongValueForObject(objects[8]));
+			}
+		}
+		
+		setNonInviteeAttendedCount(batchWiseTotAttnd,inviteeAttended,returnList);
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception raised in getNonInviteeAttendedCount",e);
+	}
+	return returnList;
+}
+
+public void setNonInviteeAttendedCount(Map<Long,Set<Long>> totAttendMap, List<Object[]> result, List<TrainingCampVO> returnList){
+	LOG.debug("Entered Into SetBatchesInformation");
+	try{
+		
+		List<Long> attendedRoleIds = new ArrayList<Long>();
+		attendedRoleIds.add(1l);
+		attendedRoleIds.add(2l);
+		attendedRoleIds.add(3l);
+		Map<Long,TrainingCampVO> finalMap = new HashMap<Long,TrainingCampVO>();
+		if(result!=null && result.size()>0){
+			for(Object[] obj:result){
+				TrainingCampVO tmp = finalMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+        		if(tmp==null){
+        			tmp = new TrainingCampVO();
+        		}
+        		
+        		List<TrainingCampVO> prgDtlsLst = tmp.getProgramDetails();
+        		if(prgDtlsLst==null){
+        			prgDtlsLst = new ArrayList<TrainingCampVO>();
+        		}
+        		TrainingCampVO prgrm = getMatchedProgCampBatch(Long.valueOf(obj[1].toString()), prgDtlsLst, "program");
+        		boolean isNewProgram = false;
+        		if(prgrm==null){
+        			isNewProgram = true;
+        			prgrm = new TrainingCampVO();
+        			prgrm.setProgramId(Long.valueOf(obj[1].toString()));
+        			prgrm.setProgramName(obj[2].toString());
+        		}
+        		
+        		List<TrainingCampVO> cmpDtlsLst =prgrm.getCampDetails();
+        		if(cmpDtlsLst==null){
+        			cmpDtlsLst = new ArrayList<TrainingCampVO>();
+        		}
+        		
+        		TrainingCampVO cmp = getMatchedProgCampBatch(Long.valueOf(obj[3].toString()), cmpDtlsLst, "camp");
+        		boolean isNewCamp = false;
+        		if(cmp==null){
+        			isNewCamp = true;
+        			cmp = new TrainingCampVO();
+        			cmp.setCampId(Long.valueOf(obj[3].toString()));
+        			cmp.setCampName(obj[4].toString());
+        		}
+        		
+        		List<TrainingCampVO> schdulDtlsLst = cmp.getScheduleDetails();
+        		if(schdulDtlsLst==null){
+        			schdulDtlsLst = new ArrayList<TrainingCampVO>();
+        		}
+        		
+        		TrainingCampVO scdle = getMatchedProgCampBatch(Long.valueOf(obj[5].toString()), schdulDtlsLst, "schedule");
+        		boolean isNewSchedule = false;
+        		if(scdle==null){
+        			isNewSchedule= true;
+        			scdle = new TrainingCampVO();
+        			scdle.setScheduleId((Long)obj[5]);
+        			scdle.setScheduleDates(obj[6].toString()+" - "+obj[7].toString());
+        			scdle.setScheduleCode(obj[8].toString());
+        		}
+        		
+        		List<TrainingCampVO> btchDtlsLst =scdle.getBatchDetails();
+        		if(btchDtlsLst==null){
+        			btchDtlsLst = new ArrayList<TrainingCampVO>();
+        		}
+        		TrainingCampVO btch = getMatchedProgCampBatch(Long.valueOf(obj[9].toString()), btchDtlsLst, "batch");
+        		boolean isNewBatch = false;
+        		if(btch==null){
+        			isNewBatch = true;
+        			btch = new TrainingCampVO();
+        			btch.setBatchId(Long.valueOf(obj[9].toString()));
+        			btch.setBatchName(obj[10].toString());
+        			btch.setBatchDates(obj[11].toString().substring(0, 9)+" - "+obj[12].toString().substring(0, 9));
+        			
+            	}
+        		if(!isNewCamp){
+        			cmp.setCmpBatchCount(cmp.getCmpBatchCount()+1);
+        		}
+        		List<TrainingCampVO> committeeLvlList = btch.getCommitteLvlDetails();
+        		if(committeeLvlList==null){
+        			committeeLvlList = new ArrayList<TrainingCampVO>();
+        		}
+        		
+        		TrainingCampVO committeeLvl = getMatchedProgCampBatch(Long.valueOf(obj[13].toString()), committeeLvlList, "committeeLvl");
+        		boolean isNewCommitteeLvl = false;
+        		if(committeeLvl==null){
+        			isNewCommitteeLvl = true;
+        			committeeLvl = new TrainingCampVO();
+        			committeeLvl.setCommitteeLvlId(commonMethodsUtilService.getLongValueForObject(obj[13]));
+        			committeeLvl.setCommitteeLvlName(commonMethodsUtilService.getStringValueForObject(obj[14]));
+        		}
+        		
+        		List<TrainingCampVO> roleList = committeeLvl.getRoles();
+        		if(roleList==null){
+        			roleList = new ArrayList<TrainingCampVO>();
+        		}
+        		TrainingCampVO role = getMatchedProgCampBatch(Long.valueOf(obj[15].toString()), roleList, "role");
+        		if(role==null){
+        			role = new TrainingCampVO();
+        			role.setRoleId(commonMethodsUtilService.getLongValueForObject(obj[15]));
+        			role.setRole(commonMethodsUtilService.getStringValueForObject(obj[16]));
+        			roleList.add(role);
+        		}
+        		Set<Long> totalAttendForBatch = totAttendMap.get(commonMethodsUtilService.getLongValueForObject(obj[9]));
+    			if(totalAttendForBatch != null && totalAttendForBatch.size() >0){
+        			if(totalAttendForBatch.contains(commonMethodsUtilService.getLongValueForObject(obj[17]))){
+        				role.setMemberCountAttendee(role.getMemberCountAttendee()+1);
+        			}else{
+        				role.setMemberCountNonIn(role.getMemberCountNonIn()+1);
+        				btch.setMemberCountNonIn(btch.getMemberCountNonIn()+1);
+        			}
+    			}
+    			if(attendedRoleIds.contains(role.getRoleId()) && totalAttendForBatch.contains(commonMethodsUtilService.getLongValueForObject(obj[17]))){
+    				btch.setMemberCountAttendee(btch.getMemberCountAttendee()+1);
+    			}else{
+    				btch.setMemberCountNonIn(btch.getMemberCountNonIn()+1);
+    			}
+        		committeeLvl.setRoles(roleList);
+        		if(isNewCommitteeLvl){
+        			committeeLvlList.add(committeeLvl);
+        		}
+        		btch.setCommitteLvlDetails(committeeLvlList);
+        		
+        		if(isNewBatch){
+        			btchDtlsLst.add(btch);
+        		}
+        		scdle.setBatchDetails(btchDtlsLst);
+        		
+        		if(isNewSchedule){
+        			schdulDtlsLst.add(scdle);
+        		}
+        		cmp.setScheduleDetails(schdulDtlsLst);
+        		
+        		if(isNewCamp){
+        			cmpDtlsLst.add(cmp);
+        		}
+        		if(!isNewCamp){
+        			cmp.setCmpBatchCount(cmp.getCmpBatchCount()+1);
+        		}
+        		prgrm.setCampDetails(cmpDtlsLst);
+    			if(isNewProgram){
+    				prgDtlsLst.add(prgrm);
+    			}
+    			tmp.setProgramDetails(prgDtlsLst);
+    			finalMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), tmp);
+			}
+			
+		}
+		
+		if(commonMethodsUtilService.isMapValid(finalMap)){
+			returnList.addAll(finalMap.values());
+		}
+		
+	}catch (Exception e) {
+		LOG.error("Exception Raised in SetBatchesInformation",e);
+	}
+}
+
+public void setBatchesInformationNew(Map<String,TrainingCampVO> finalMap, List<TrainingCampVO> returnList, String type,List<Long> batchIdsList,List<Long> totalTrainingCenters){
+	LOG.debug("Entered Into SetBatchesInformation");
+	try{
+		
+		if(returnList!=null && returnList.size()>0){
+			for(TrainingCampVO enrollmeb:returnList){
+				for(TrainingCampVO progVO:enrollmeb.getProgramDetails()){
+					for(TrainingCampVO campVO:progVO.getCampDetails()){
+						for(TrainingCampVO scheduleVO:campVO.getScheduleDetails()){
+							for(TrainingCampVO batchVO:scheduleVO.getBatchDetails()){
+								campVO.setCmpBatchCount(Long.valueOf(campVO.getScheduleDetails().size()));
+								if(!batchIdsList.contains(batchVO.getBatchId())){
+									batchIdsList.add(batchVO.getBatchId());
+								}
+								if(!totalTrainingCenters.contains(campVO.getCampId())){
+				        			totalTrainingCenters.add(campVO.getCampId());
+				        		}
+								TrainingCampVO tmp = finalMap.get(type);
+			            		if(tmp==null){
+			            			tmp = new TrainingCampVO();
+			            		}
+			            		tmp.setProgramDetails(enrollmeb.getProgramDetails());
+			            		tmp.setProgramWiseDetails(enrollmeb.getProgramDetails());
+			        			finalMap.put(type, tmp);
+							}
+						}
+					}
+				}
+			}
+		}	
+		
+	}catch (Exception e) {
+		LOG.error("Exception Raised in setBatchesInformationNew",e);
+	}
+}
+public Map<String,TrainingCampVO> getAllTrainingProgWiseCompletedRunningUpcomingBatchIds(String endDateString,String startDateString,Long stateId,String type,List<Long> enrollmentYearIds,List<Long> programYearIds){
+	Map<String,TrainingCampVO> finalMap = new HashMap<String, TrainingCampVO>();
+	finalMap.put("completed",new TrainingCampVO());
+	try {
+		LOG.info("Entered into getCompletedRunningUpcomingBatchIds");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Date startDate = null,endDate = null;
+		if(startDateString !=null && endDateString!=null){
+			startDate= sdf.parse(startDateString);
+			endDate  = sdf.parse(endDateString);
+		}
+		
+		List<Long> completedBatchIds = new ArrayList<Long>(0);
+		List<Long> runningBatchIds = new ArrayList<Long>(0);
+		List<Long> upComingBatchIds = new ArrayList<Long>(0);
+
+		List<Long> totalTrainingCenters= new ArrayList<Long>(0);
+		
+		List<Object[]> completedBatches = new ArrayList<Object[]>(0); 
+		List<Object[]> runningBatches = new ArrayList<Object[]>(0);
+		List<Object[]> upComingBatches = new ArrayList<Object[]>(0);
+		
+		Map<Long,Long> completedMembersCounts = new HashMap<Long, Long>(0);
+		Map<Long,Long> runningMembersCounts  = new HashMap<Long, Long>(0);
+		Map<Long,Long> upCommingMembersCounts = new HashMap<Long, Long>(0);
+		Map<Long,Long> completedMembersCountsattendee = new HashMap<Long, Long>(0);
+		Map<Long,Long> runningMembersCountsattendence  = new HashMap<Long, Long>(0);
+		Map<Long,Long> nonInvitesCountCompleted = new HashMap<Long, Long>(0);
+		Map<Long,Long> nonInvitesCountRunning =  new HashMap<Long, Long>(0);
+		
+		
+		List<Long> batchIds = trainingCampBatchDAO.getBatchIds(startDate,endDate,stateId,enrollmentYearIds,programYearIds);
+		
+		if(type.equalsIgnoreCase("All") && batchIds!=null && batchIds.size()>0){
+			completedBatches = trainingCampBatchDAO.getCompletedBatchIds(sdf.parse(sdf.format(new Date())),"completed",batchIds,enrollmentYearIds,programYearIds);
+			if(commonMethodsUtilService.isListOrSetValid(completedBatches)){
+				for (Object[] obj : completedBatches) {
+					completedBatchIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				}
+			}
+			
+			
+			List<TrainingCampVO> nonInviteeAttendeeCompl = getNonInviteeAttendedCount( completedBatchIds, enrollmentYearIds, programYearIds, null ,null,null, null, null);
+			if(nonInviteeAttendeeCompl != null )
+			setBatchesInformationNew(finalMap,nonInviteeAttendeeCompl,"completed",completedBatchIds,totalTrainingCenters);
+			
+			setBatchCountNew(finalMap,"completed");
+			if(completedBatchIds!=null && completedBatchIds.size()>0){
+				finalMap.get("completed").setCompletedBatchIds(completedBatchIds);
+			}
+			
+			runningBatches = trainingCampBatchDAO.getCompletedBatchIds(dateUtilService.getCurrentDateAndTime(),"running",batchIds,enrollmentYearIds,programYearIds);
+			if(commonMethodsUtilService.isListOrSetValid(runningBatches)){
+				for (Object[] obj : runningBatches) {
+					runningBatchIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				}
+			}
+			List<TrainingCampVO> nonInviteeAttendeeRunn = getNonInviteeAttendedCount( runningBatchIds, enrollmentYearIds, programYearIds, null ,null,null, null, null);
+			if(nonInviteeAttendeeRunn != null )
+			setBatchesInformationNew(finalMap,nonInviteeAttendeeRunn,"running",runningBatchIds,totalTrainingCenters);
+			
+			setBatchCountNew(finalMap,"running");
+			if(runningBatchIds!=null && runningBatchIds.size()>0){
+				finalMap.get("running").setRunningBatchIds(runningBatchIds);
+			}
+			
+			upComingBatches = trainingCampBatchDAO.getCompletedBatchIds(dateUtilService.getCurrentDateAndTime(),"upcoming",batchIds,enrollmentYearIds,programYearIds);
+			if(commonMethodsUtilService.isListOrSetValid(upComingBatches)){
+				for (Object[] obj : upComingBatches) {
+					upComingBatchIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				}
+			}
+			List<TrainingCampVO> nonInviteeAttendeeUpcom = getNonInviteeAttendedCount( upComingBatchIds, enrollmentYearIds, programYearIds, null ,null,null, null, null);
+			if(nonInviteeAttendeeUpcom != null )
+			setBatchesInformationNew(finalMap,nonInviteeAttendeeUpcom,"upComing",upComingBatchIds,totalTrainingCenters);
+			
+			setBatchCountNew(finalMap,"upComing");
+			if(upComingBatchIds!=null && upComingBatchIds.size()>0){
+				finalMap.get("upComing").setUpComingBatchIds(upComingBatchIds);
+			}
+			
+		}
+		else if(type.equalsIgnoreCase("completed") && batchIds!=null && batchIds.size()>0){
+			completedBatches = trainingCampBatchDAO.getCompletedBatchIds(sdf.parse(sdf.format(new Date())),"completed",batchIds,enrollmentYearIds,programYearIds);
+			if(commonMethodsUtilService.isListOrSetValid(completedBatches)){
+				for (Object[] obj : completedBatches) {
+					completedBatchIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				}
+			}
+			List<TrainingCampVO> nonInviteeAttendeeCompl = getNonInviteeAttendedCount( completedBatchIds, enrollmentYearIds, programYearIds, null ,null,null, null, null);
+			if(nonInviteeAttendeeCompl != null )
+			setBatchesInformationNew(finalMap,nonInviteeAttendeeCompl,"completed",completedBatchIds,totalTrainingCenters);
+			
+			setBatchCountNew(finalMap,"completed");
+			if(completedBatchIds!=null && completedBatchIds.size()>0){
+				finalMap.get("completed").setCompletedBatchIds(completedBatchIds);
+			}
+			
+		}
+		else if(type.equalsIgnoreCase("running") && batchIds!=null && batchIds.size()>0){
+			runningBatches = trainingCampBatchDAO.getCompletedBatchIds(dateUtilService.getCurrentDateAndTime(),"running",batchIds,enrollmentYearIds,programYearIds);
+			if(commonMethodsUtilService.isListOrSetValid(runningBatches)){
+				for (Object[] obj : runningBatches) {
+					runningBatchIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				}
+			}
+			List<TrainingCampVO> nonInviteeAttendeeRunn = getNonInviteeAttendedCount( runningBatchIds, enrollmentYearIds, programYearIds, null ,null,null, null, null);
+			if(nonInviteeAttendeeRunn != null )
+			setBatchesInformationNew(finalMap,nonInviteeAttendeeRunn,"running",runningBatchIds,totalTrainingCenters);
+			
+			setBatchCountNew(finalMap,"running");
+			if(runningBatchIds!=null && runningBatchIds.size()>0){
+				finalMap.get("running").setRunningBatchIds(runningBatchIds);
+			}
+		}
+		else if(type.equalsIgnoreCase("upComing") && batchIds!=null && batchIds.size()>0){
+			upComingBatches = trainingCampBatchDAO.getCompletedBatchIds(dateUtilService.getCurrentDateAndTime(),"upcoming",batchIds,enrollmentYearIds,programYearIds);
+			if(commonMethodsUtilService.isListOrSetValid(upComingBatches)){
+				for (Object[] obj : upComingBatches) {
+					upComingBatchIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				}
+			}
+			List<TrainingCampVO> nonInviteeAttendeeUpcom = getNonInviteeAttendedCount( runningBatchIds, enrollmentYearIds, programYearIds, null ,null,null, null, null);
+			if(nonInviteeAttendeeUpcom != null )
+			setBatchesInformationNew(finalMap,nonInviteeAttendeeUpcom,"upComing",upComingBatchIds,totalTrainingCenters);
+			
+			setBatchCountNew(finalMap,"upComing");
+			if(upComingBatchIds!=null && upComingBatchIds.size()>0){
+				finalMap.get("upComing").setUpComingBatchIds(upComingBatchIds);
+			}
+		}
+		
+		if(finalMap.get("completed")!=null){
+			finalMap.get("completed").setTotalTrainingCenters(totalTrainingCenters.size());
+		}
+		
+		if(completedBatches.size()>0){
+			setProgramInformation(finalMap,completedBatches,"completed","completed",type);
+			setBatchesCountForProgWiseNew(finalMap,"completed",type);
+		}
+		if(runningBatches.size()>0){
+			setProgramInformation(finalMap,runningBatches,"completed","running",type);
+			setBatchesCountForProgWiseNew(finalMap,"running",type);
+		}
+		if(upComingBatches.size()>0){
+			setProgramInformation(finalMap,upComingBatches,"completed","upcoming",type);
+			setBatchesCountForProgWiseNew(finalMap,"upcoming",type);
+		}
+		
+		/*//running batches daywise counts
+		List<SimpleVO> runningBatchesAttendence = getDayWiseCountsForRunningBatches(runningBatches);
+		if(runningBatchesAttendence!=null && runningBatchesAttendence.size()>0){
+			finalMap.get("completed").setSimpleVoList(runningBatchesAttendence);
+		}*/
+					
+	} catch (Exception e) {
+		LOG.error("Exception raised at getCompletedRunningUpcomingBatchIds", e);
+	}
+	return finalMap;
+}
+
+public void setBatchCountNew(Map<String,TrainingCampVO> finalMap,String type){
+	String temp="";
+	
+	if(finalMap.get(type)!=null){
+		TrainingCampVO vo = finalMap.get(type);
+		
+		if(vo.getProgramDetails()!=null){
+			for (TrainingCampVO progTrainingCampVO : vo.getProgramDetails()) {
+				if(progTrainingCampVO.getCampDetails()!=null){
+					for (TrainingCampVO campTrainingCampVO : progTrainingCampVO.getCampDetails()) {
+						if(campTrainingCampVO.getScheduleDetails()!=null){
+							for(TrainingCampVO scheduleTrainingCampVO : campTrainingCampVO.getScheduleDetails()){
+								if(scheduleTrainingCampVO.getBatchDetails()!=null){
+									for(TrainingCampVO batchTrainingCampVO : scheduleTrainingCampVO.getBatchDetails()){
+										if(type.equalsIgnoreCase("completed")){
+												batchTrainingCampVO.setCompletedMemberAttendeeCount(batchTrainingCampVO.getMemberCountAttendee());
+												batchTrainingCampVO.setCompletedAttendenceNonIn(batchTrainingCampVO.getMemberCountNonIn());
+												batchTrainingCampVO.setCompletedMemberCount(batchTrainingCampVO.getMemberCountAttendee());
+										}
+										else if(type.equalsIgnoreCase("running")){
+											batchTrainingCampVO.setRunningAttendenceMemberCount(batchTrainingCampVO.getMemberCountAttendee());
+											batchTrainingCampVO.setRunningAttendenceNonIn(batchTrainingCampVO.getMemberCountNonIn());
+											batchTrainingCampVO.setRunningMemberCount(batchTrainingCampVO.getMemberCountAttendee());
+										}
+										
+										else if(type.equalsIgnoreCase("upcoming")){
+											batchTrainingCampVO.setUpCommingMemberCount(batchTrainingCampVO.getMemberCountAttendee());
+										}
+									}
+								}
+									
+							}
+						}	
+					}
+				}
+			}
+		}
+	}
+}
+public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,String fromType,String dataType){
+	if(finalMap.get("completed").getProgramWiseDetails()!=null && finalMap.get("completed").getProgramWiseDetails().size()>0){
+		for(TrainingCampVO vo : finalMap.get("completed").getProgramWiseDetails()){
+			if(vo.getCampDetails()!=null && vo.getCampDetails().size()>0){
+				for(TrainingCampVO vo1 : vo.getCampDetails()){
+					if(vo1.getScheduleDetails()!=null && vo1.getScheduleDetails().size()>0){
+						for(TrainingCampVO vo2 : vo1.getScheduleDetails()){
+							if(vo2.getBatchDetails()!=null && vo2.getBatchDetails().size()>0){
+							for(TrainingCampVO batchVO : vo2.getBatchDetails()){
+							if(fromType.equalsIgnoreCase("completed")){
+    							if(vo2.getCompletedDetails()!=null && vo2.getCompletedDetails().size()>0){
+    								for(TrainingCampVO vo3:vo2.getCompletedDetails()){
+    									vo3.setMemberCountNonIn(batchVO.getCompletedAttendenceNonIn());
+    									vo3.setMemberCountAttendee(batchVO.getCompletedMemberAttendeeCount());
+    									vo3.setMemberCount(batchVO.getCompletedMemberCount());
+    									
+    								}
+    							}
+    							
+							}else if(fromType.equalsIgnoreCase("running")){
+    							if(vo2.getRunningDetails()!=null && vo2.getRunningDetails().size()>0){
+    								for(TrainingCampVO vo3:vo2.getRunningDetails()){
+    									if(!dataType.equalsIgnoreCase("All")){
+    										vo3.setMemberCountNonIn(batchVO.getRunningAttendenceNonIn());
+	    									vo3.setMemberCountAttendee(batchVO.getRunningAttendenceMemberCount());
+	    									vo3.setMemberCount(batchVO.getRunningMemberCount());
+    									}else{
+    									if(finalMap.get("running").getProgramWiseDetails()!=null && finalMap.get("running").getProgramWiseDetails().size()>0){
+    										for(TrainingCampVO voo : finalMap.get("running").getProgramWiseDetails()){
+    											if(voo.getCampDetails()!=null && voo.getCampDetails().size()>0){
+    												for(TrainingCampVO voo1 : voo.getCampDetails()){
+    													if(voo1.getScheduleDetails()!=null && voo1.getScheduleDetails().size()>0){
+    														for(TrainingCampVO voo2 : voo1.getScheduleDetails()){
+    															if(voo2.getBatchDetails()!=null && voo2.getBatchDetails().size()>0){
+    															for(TrainingCampVO batchVO1 : voo2.getBatchDetails()){
+    																if(batchVO1.getBatchId().equals(batchVO.getBatchId().longValue())){
+    																vo3.setMemberCountNonIn(batchVO1.getRunningAttendenceNonIn());
+    						    									vo3.setMemberCountAttendee(batchVO1.getRunningAttendenceMemberCount());
+    						    									vo3.setMemberCount(batchVO1.getRunningMemberCount());
+    																}
+    															}
+    															}
+    														}
+    														}
+    													}
+    												}
+    											}
+    										}
+    									}
+    								}
+    							}
+							}else if(fromType.equalsIgnoreCase("upcoming")){
+    							if(vo2.getUpcomingDetails()!=null && vo2.getUpcomingDetails().size()>0){
+    								for(TrainingCampVO vo3:vo2.getUpcomingDetails()){
+    									if(!dataType.equalsIgnoreCase("All")){
+    										vo3.setMemberCountNonIn(0l);
+    										vo3.setMemberCountAttendee(0l);
+	    									vo3.setMemberCount(batchVO.getUpCommingMemberCount());
+    									}else{
+    									if(finalMap.get("upcoming").getProgramWiseDetails()!=null && finalMap.get("upcoming").getProgramWiseDetails().size()>0){
+    										for(TrainingCampVO voo : finalMap.get("upcoming").getProgramWiseDetails()){
+    											if(voo.getCampDetails()!=null && voo.getCampDetails().size()>0){
+    												for(TrainingCampVO voo1 : voo.getCampDetails()){
+    													if(voo1.getScheduleDetails()!=null && voo1.getScheduleDetails().size()>0){
+    														for(TrainingCampVO voo2 : voo1.getScheduleDetails()){
+    															if(voo2.getBatchDetails()!=null && voo2.getBatchDetails().size()>0){
+    															for(TrainingCampVO batchVO1 : voo2.getBatchDetails()){
+    																if(batchVO1.getBatchId().equals(batchVO.getBatchId().longValue())){
+    																vo3.setMemberCountNonIn(0l);
+    						    									vo3.setMemberCountAttendee(0l);
+    						    									vo3.setMemberCount(batchVO1.getUpCommingMemberCount());
+    																}
+    															}
+    															}
+    														}
+    													}
+    												}
+    											}
+    											}
+    										}
+    									}
+    									
+    								}
+    							}
+							}
+							}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 }

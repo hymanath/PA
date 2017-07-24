@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
@@ -2073,5 +2074,156 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		query.setParameterList("batchIds", batchIds);
 	  return query.list();
 	}
+	
+	public List<Object[]> getInviteeAttendedCount(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programIds,List<Long> campIds ,List<Long> scheduleIds,List<Long> roleIds,Date startDate,Date endDate,Set<Long> staffCadreIds){
+		   Long committeeEnrollmentYrId = 0l;
+		   if(enrollmentYearIds != null && enrollmentYearIds.contains(4l)){
+			   committeeEnrollmentYrId = 2l;
+		   }else if(enrollmentYearIds != null && enrollmentYearIds.contains(3l)){
+			   committeeEnrollmentYrId = 1l;
+		   }
+		   StringBuilder sb=new StringBuilder();
+		   sb.append(" select  model.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId," +//0
+		   		"model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +//1
+		   		"model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName," +//2
+		   		"model.trainingCampSchedule.trainingCamp.trainingCampId," +//3
+		   		"model.trainingCampSchedule.trainingCamp.campName," +//4
+		   		"model.trainingCampSchedule.trainingCampScheduleId," +//5
+		   		"model.trainingCampSchedule.fromDate," +//6
+		   		"model.trainingCampSchedule.toDate," +//7
+		   		"model.trainingCampSchedule.trainingCampScheduleCode," +//8
+		   		"model.trainingCampBatch.trainingCampBatchId," +//9
+		   		"model.trainingCampBatch.trainingCampBatchName," +//10
+		   		"model.trainingCampBatch.fromDate," +//11
+		   		"model.trainingCampBatch.toDate," +//12
+		   		"TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId," +//13
+		   		"TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel, "+//14
+		   		"TCM.tdpCommitteeRole.tdpRoles.tdpRolesId," +//15
+		   		"TCM.tdpCommitteeRole.tdpRoles.role," +//16
+		   		" model.attendance.tdpCadre.tdpCadreId " +//17
+		   		" from TrainingCampAttendance model ,TdpCommitteeMember TCM  " +
+		   		" where TCM.tdpCadre.tdpCadreId=model.attendance.tdpCadre.tdpCadreId   and model.trainingCampBatch.isCancelled='false' " +
+		   		" and model.trainingCampBatch.attendeeType.attendeeTypeId=1 and model.trainingCampBatch.attendeeType.isDeleted='false' and TCM.isActive = 'Y' ");
+		  if(batchIds != null && batchIds.size() >0){
+			  sb.append(" and model.trainingCampBatchId in (:batchIds) ");
+		  }
+		   
+		   if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			   sb.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+			   sb.append(" and TCM.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId = :committeeEnrollmentYrId ");
+	 	   }
+		   if(campIds != null && campIds.size() >0){
+			   sb.append(" and model.trainingCampSchedule.trainingCamp.trainingCampId in (:campIds) ");
+		   }
+	 	  	if(scheduleIds != null && scheduleIds.size() >0){
+			   sb.append(" and model.trainingCampSchedule.trainingCampScheduleId in (:scheduleIds) ");
+		   }
+	 	  	if(roleIds != null && roleIds.size() >0){
+			   sb.append(" and model.tdpCommitteeRole.tdpRoles.tdpRolesId in (:roleIds) ");
+		   }
+		   if(programIds != null && programIds.size()>0){
+			   sb.append(" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programIds) ");
+		   }
+		   if(staffCadreIds != null && staffCadreIds.size() >0){
+			   sb.append(" and model.attendance.tdpCadre.tdpCadreId not in (:staffCadreIds) " );
+		   }
+		   if(startDate!=null && endDate!=null){
+			   sb.append(" and ( date(model.insertedTime) between :startDate and :endDate) ");
+		   }
+		   
+		   sb.append(" group by  model.trainingCampBatch.trainingCampBatchId,model.attendance.tdpCadre.tdpCadreId " );
+		   Query query =getSession().createQuery(sb.toString());
+		   if(batchIds != null && batchIds.size() >0){
+			   query.setParameterList("batchIds", batchIds);
+		   }
+		   if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			   query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+			   query.setParameter("committeeEnrollmentYrId", committeeEnrollmentYrId);
+		   }
+		   if(programIds != null && programIds.size()>0){
+			   query.setParameterList("programIds", programIds);
+		   }
+		   if(staffCadreIds != null && staffCadreIds.size() >0){
+			   query.setParameterList("staffCadreIds", staffCadreIds);
+		   }
+		   if(campIds != null && campIds.size() >0){
+			   query.setParameterList("campIds", campIds);
+		   }
+		   if(scheduleIds != null && scheduleIds.size() >0){
+			   query.setParameterList("scheduleIds", scheduleIds);
+		   }
+		   if(roleIds != null && roleIds.size() >0){
+			   query.setParameterList("roleIds", roleIds);
+		   }
+		   if(startDate!=null && endDate!=null){
+			   query.setDate("startDate", startDate);
+			   query.setDate("endDate", endDate);
+		   }
+		   return (List<Object[]>)query.list();
+	   }
+	public List<Object[]> getTotalAttendedCount(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programIds,List<Long> campIds ,List<Long> scheduleIds,Date startDate,Date endDate,Set<Long> staffCadreIds){
+		   
+		   StringBuilder sb=new StringBuilder();
+		   sb.append(" select  model.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId," +//0
+		   		"model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId," +//1
+		   		"model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName," +//2
+		   		"model.trainingCampSchedule.trainingCamp.trainingCampId," +//3
+		   		"model.trainingCampSchedule.trainingCamp.campName," +//4
+		   		"model.trainingCampSchedule.trainingCampScheduleId," +//5
+		   		"model.trainingCampBatchId," +//6
+		   		"model.trainingCampBatch.trainingCampBatchName," +//7
+		   		" model.attendance.tdpCadre.tdpCadreId " +//8
+		   		" from TrainingCampAttendance model  " +
+		   		" where    model.trainingCampBatch.isCancelled='false' " +
+		   		" and model.trainingCampBatch.attendeeType.attendeeTypeId=1 and model.trainingCampBatch.attendeeType.isDeleted='false'  ");
+		   if(batchIds != null && batchIds.size() >0){
+			   sb.append(" and model.trainingCampBatchId in (:batchIds)  ");
+		   }
+		   if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			   sb.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+			}
+		   if(campIds != null && campIds.size() >0){
+			   sb.append(" and model.trainingCampSchedule.trainingCamp.trainingCampId in (:campIds) ");
+		   }
+	 	  	if(scheduleIds != null && scheduleIds.size() >0){
+			   sb.append(" and model.trainingCampSchedule.trainingCampScheduleId in (:scheduleIds) ");
+		   }
+		   if(programIds != null && programIds.size()>0){
+			   sb.append(" and model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programIds) ");
+		   }
+		   if(startDate!=null && endDate!=null){
+			   sb.append(" and ( date(model.insertedTime) between :startDate and :endDate) ");
+		   }
+		   if(staffCadreIds != null && staffCadreIds.size() >0){
+			   sb.append(" and model.attendance.tdpCadre.tdpCadreId not in (:staffCadreIds) " );
+		   }
+		   
+		   sb.append(" group by model.trainingCampBatchId,model.attendance.tdpCadre.tdpCadreId ");
+		   Query query =getSession().createQuery(sb.toString());
+		   if(batchIds != null && batchIds.size() >0){
+			   query.setParameterList("batchIds", batchIds);
+		   }
+		   if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			   query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+			}
+		   if(programIds != null && programIds.size()>0){
+			   query.setParameterList("programIds", programIds);
+		   }
+		   if(campIds != null && campIds.size() >0){
+			   query.setParameterList("campIds", campIds);
+		   }
+		   if(scheduleIds != null && scheduleIds.size() >0){
+			   query.setParameterList("scheduleIds", scheduleIds);
+		   }
+		  
+		   if(startDate!=null && endDate!=null){
+			   query.setDate("startDate", startDate);
+			   query.setDate("endDate", endDate);
+		   }
+		   if(staffCadreIds != null && staffCadreIds.size() >0){
+			   query.setParameterList("staffCadreIds", staffCadreIds);
+		   }
+		   return (List<Object[]>)query.list();
+	   }
 }
 

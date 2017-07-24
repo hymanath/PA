@@ -51,6 +51,9 @@ public class TrainingCampVO implements java.io.Serializable{
 	private List<TrainingCampVO> campDetails;
 	private List<TrainingCampVO> programDetails;
 	private List<TrainingCampVO> scheduleDetails;
+	private List<TrainingCampVO> committeLvlDetails;
+	private List<TrainingCampVO> roles;
+	
 	
 	private String batchName;
 	private Long campId;
@@ -93,12 +96,15 @@ public class TrainingCampVO implements java.io.Serializable{
 	
 	private Long completedAttendenceNonIn;
 	private Long runningAttendenceNonIn;
-	private Long memberCountNonIn;
+	private Long memberCountNonIn = 0l;
 	
 	private Long thirdId;
 	private String thirdName;
 	private Long districtCount=0l;
-	
+	private Long committeeLvlId;
+	private String committeeLvlName;
+	private Long roleId;
+	private String role;
 		
 	
 	public Long getDistrictCount() {
@@ -587,6 +593,42 @@ public class TrainingCampVO implements java.io.Serializable{
 	}
 	public void setPendingCalls(Long pendingCalls) {
 		this.pendingCalls = pendingCalls;
+	}
+	public List<TrainingCampVO> getCommitteLvlDetails() {
+		return committeLvlDetails;
+	}
+	public void setCommitteLvlDetails(List<TrainingCampVO> committeLvlDetails) {
+		this.committeLvlDetails = committeLvlDetails;
+	}
+	public List<TrainingCampVO> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<TrainingCampVO> roles) {
+		this.roles = roles;
+	}
+	public Long getCommitteeLvlId() {
+		return committeeLvlId;
+	}
+	public void setCommitteeLvlId(Long committeeLvlId) {
+		this.committeeLvlId = committeeLvlId;
+	}
+	public String getCommitteeLvlName() {
+		return committeeLvlName;
+	}
+	public void setCommitteeLvlName(String committeeLvlName) {
+		this.committeeLvlName = committeeLvlName;
+	}
+	public Long getRoleId() {
+		return roleId;
+	}
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 	
