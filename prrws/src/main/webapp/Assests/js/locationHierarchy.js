@@ -45,9 +45,9 @@ function collapseMenu(id,resultArr,buildId)
 				collapse+='<h4 class="panel-title">';
 					if(levelIdValue == 2 || levelIdValue == 3 || levelIdValue == 4)
 					{
-						collapse+='<a role="button" style="height:10px;width:10px;display:inline-block;" attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].id+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id"  class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordion'+[id]+'" href="#collapse'+resultArr[i].id+'" aria-expanded="true" aria-controls="collapse'+resultArr[i].id+'">&nbsp;</a>';
+						collapse+='<a role="button" style="height:10px;width:10px;display:inline-block;" attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].id+'" attr_name="'+resultArr[i].name+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id"  class="panelCollapseIconClick menuAttrAddNames panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordion'+[id]+'" href="#collapse'+resultArr[i].id+'" aria-expanded="true" aria-controls="collapse'+resultArr[i].id+'">&nbsp;</a>';
 					}
-					collapse+='<span style="padding-left:10px;cursor:pointer;" class="menuDataCollapse"  attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].id+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id" >'+resultArr[i].name+'</span>';
+					collapse+='<span style="padding-left:10px;cursor:pointer;" class="menuDataCollapse"  attr_levelIdValue="'+levelIdValue+'" attr_levelId="'+id+'" attr_id="'+resultArr[i].id+'" attr_name="'+resultArr[i].name+'" attr_targetId="collapseMenu'+resultArr[i].id+'Id" >'+resultArr[i].name+'</span>';
 				collapse+='</h4>';
 			collapse+='</div>';
 			collapse+='<div id="collapse'+resultArr[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+resultArr[i].id+'">';
