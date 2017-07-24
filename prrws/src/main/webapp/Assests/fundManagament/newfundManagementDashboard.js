@@ -146,8 +146,8 @@ getAllDepartments();
 					$("#constLevelDistNames").append("<option value="+distrctIdForMenuForConsBlock+">"+globalLocationName+" </option>");
 					$("#constLevelDistNames").trigger("chosen:updated");
 					
-					$("#constLevelConstNames").html('');
-					$("#constLevelConstNames").trigger("chosen:updated");
+					getAllSubLocationsBySuperLocationId(distrctIdForMenuForConsBlock,'constLevelConstNames',4);
+					
 				}else if(globalLocationLevelTypeId == 4){
 					var constituencyIdForMenuForConsBlock = "4"+globalLocationId;
 					$("#constLevelDistNames").html('');
@@ -187,8 +187,9 @@ getAllDepartments();
 					$("#mandalLevelDistNames").append("<option value="+districtIdForMenuForConsBlock1+">"+globalLocationName+" </option>");
 					$("#mandalLevelDistNames").trigger("chosen:updated");
 					
-					$("#mandalLevelConstNames").html('');
-					$("#mandalLevelConstNames").trigger("chosen:updated");
+					getAllSubLocationsBySuperLocationId(districtIdForMenuForConsBlock1,'mandalLevelConstNames',5);
+					
+					
 					
 					$("#mandalLevelMandalNames").html('');
 					$("#mandalLevelMandalNames").trigger("chosen:updated");
@@ -203,8 +204,8 @@ getAllDepartments();
 					$("#mandalLevelConstNames").append("<option value="+mandalIdForMenuForConsBlock1+">"+globalLocationName+" </option>");
 					$("#mandalLevelConstNames").trigger("chosen:updated");
 					
-					$("#mandalLevelMandalNames").html('');
-					$("#mandalLevelMandalNames").trigger("chosen:updated");
+					getAllSubLocationsBySuperLocationId(mandalIdForMenuForConsBlock1,'mandalLevelMandalNames',5);
+					
 				}else if(globalLocationLevelTypeId == 5){
 					var mandalIdForMenuForConsBlock = "5"+globalLocationId;
 					$("#mandalLevelDistNames").html('');
@@ -249,8 +250,7 @@ getAllDepartments();
 					$("#villageLevelDistNames").append("<option value="+districtIdForMenuForConsBlock2+">"+globalLocationName+" </option>");
 					$("#villageLevelDistNames").trigger("chosen:updated");
 					
-					$("#villageLevelConstNames").html('');
-					$("#villageLevelConstNames").trigger("chosen:updated");
+					getAllSubLocationsBySuperLocationId(districtIdForMenuForConsBlock2,'villageLevelConstNames',6);
 					
 					$("#villageLevelMandalNames").html('');
 					$("#villageLevelMandalNames").trigger("chosen:updated");
@@ -265,8 +265,7 @@ getAllDepartments();
 					$("#villageLevelConstNames").append("<option value="+mandalIdForMenuForConsBlock2+">"+globalLocationName+" </option>");
 					$("#villageLevelConstNames").trigger("chosen:updated");
 					
-					$("#villageLevelMandalNames").html('');
-					$("#villageLevelMandalNames").trigger("chosen:updated");
+					getAllSubLocationsBySuperLocationId(mandalIdForMenuForConsBlock2,'villageLevelMandalNames',6);
 					
 				}else if(globalLocationLevelTypeId == 5){
 					var mandalIdForMenuForConsBlock = "5"+globalLocationId;
@@ -3917,9 +3916,8 @@ $(document).on('click','.closeShowPdfCls',function(){
 					$("#constLevelDistNames").html('');
 					$("#constLevelDistNames").append("<option value="+districtIdForMenuForConsBlock+">"+globalLocationName+" </option>");
 					$("#constLevelDistNames").trigger("chosen:updated");
+					getAllSubLocationsBySuperLocationId(districtIdForMenuForConsBlock,'constLevelConstNames',4);
 					
-					$("#constLevelConstNames").html('');
-					$("#constLevelConstNames").trigger("chosen:updated");
 				}else if(globalLocationLevelTypeId == 4){
 					var constituencyIdForMenuForConsBlock = "4"+globalLocationId;
 					$("#constLevelDistNames").html('');
@@ -3956,10 +3954,8 @@ $(document).on('click','.closeShowPdfCls',function(){
 					$("#mandalLevelDistNames").html('');
 					$("#mandalLevelDistNames").append("<option value="+districtIdForMenuForConsBlock1+">"+globalLocationName+" </option>");
 					$("#mandalLevelDistNames").trigger("chosen:updated");
-					
-					$("#mandalLevelConstNames").html('');
-					$("#mandalLevelConstNames").trigger("chosen:updated");
-					
+					getAllSubLocationsBySuperLocationId(districtIdForMenuForConsBlock1,'mandalLevelConstNames',5);
+				
 					$("#mandalLevelMandalNames").html('');
 					$("#mandalLevelMandalNames").trigger("chosen:updated");
 				}
@@ -3972,9 +3968,8 @@ $(document).on('click','.closeShowPdfCls',function(){
 					$("#mandalLevelConstNames").html('');
 					$("#mandalLevelConstNames").append("<option value="+mandalIdForMenuForConsBlock1+">"+globalLocationName+" </option>");
 					$("#mandalLevelConstNames").trigger("chosen:updated");
+					getAllSubLocationsBySuperLocationId(mandalIdForMenuForConsBlock1,'mandalLevelMandalNames',5);
 					
-					$("#mandalLevelMandalNames").html('');
-					$("#mandalLevelMandalNames").trigger("chosen:updated");
 				}else if(globalLocationLevelTypeId == 5){
 					var mandalIdForMenuForConsBlock = "5"+globalLocationId;
 					$("#mandalLevelDistNames").html('');
@@ -4014,9 +4009,8 @@ $(document).on('click','.closeShowPdfCls',function(){
 					$("#villageLevelDistNames").html('');
 					$("#villageLevelDistNames").append("<option value="+districtIdForMenuForConsBlock2+">"+globalLocationName+" </option>");
 					$("#villageLevelDistNames").trigger("chosen:updated");
+					getAllSubLocationsBySuperLocationId(districtIdForMenuForConsBlock2,'villageLevelConstNames',6);
 					
-					$("#villageLevelConstNames").html('');
-					$("#villageLevelConstNames").trigger("chosen:updated");
 					
 					$("#villageLevelMandalNames").html('');
 					$("#villageLevelMandalNames").trigger("chosen:updated");
@@ -4030,9 +4024,8 @@ $(document).on('click','.closeShowPdfCls',function(){
 					$("#villageLevelConstNames").html('');
 					$("#villageLevelConstNames").append("<option value="+mandalIdForMenuForConsBlock2+">"+globalLocationName+" </option>");
 					$("#villageLevelConstNames").trigger("chosen:updated");
+					getAllSubLocationsBySuperLocationId(mandalIdForMenuForConsBlock2,'villageLevelMandalNames',6);
 					
-					$("#villageLevelMandalNames").html('');
-					$("#villageLevelMandalNames").trigger("chosen:updated");
 					
 				}else if(globalLocationLevelTypeId == 5){
 					var mandalIdForMenuForConsBlock = "5"+globalLocationId;
