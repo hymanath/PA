@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.NregaConsolidatedDataVO;
 import com.itgrids.dto.NregaConsolidatedInputVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.impl.INREGSConsolidatedService;
@@ -70,4 +71,15 @@ public class NregsConsolidatedController {
 		return finalList;
 	}
 	
+	@PostMapping("/getNREGSLevelWiseConsolidatedReport")
+	public @ResponseBody List<NregaConsolidatedDataVO> getNREGSLevelWiseConsolidatedReport(@RequestBody NregaConsolidatedInputVO vo){
+		List<NregaConsolidatedDataVO> locationVOList = null;
+		try {
+			locationVOList = nregsConsolidatedService.getNREGSLevelWiseConsolidatedReport(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSLevelWiseConsolidatedReport - NregsConsolidatedController controller", e);
+		}
+		return locationVOList;
+	}
 }
