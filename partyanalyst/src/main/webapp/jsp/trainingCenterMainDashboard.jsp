@@ -1017,9 +1017,9 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				series: [{
 					name: ' ',
 					data: [
-						['Upcoming Batchs', upcomingBatchesGlob],
-						['Running Batchs', runningBatchesGlob],
-						['Completed Batchs', compltedBatchesGlob],
+						['Upcoming Batches', upcomingBatchesGlob],
+						['Running Batches', runningBatchesGlob],
+						['Completed Batches', compltedBatchesGlob],
 					]
 				}]
 			});
@@ -1845,7 +1845,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 						$('#completedMembersNonAte').html(result[i].nonInviteeAttendedCount);						
 					}else if(i==3){
 						$('#totalMembers').html(result[i].confirmedCount);
-						$('#totalMembersIn').html(result[i].inviteeAttendedCount);
+						$('#totalMembersIn').html(result[i].inviteeAttendedCount+' (<span style="font-weight:bold;color:green;" title="Unique Attended Count">'+ result[i].totalCount+'</span>)');
 						$('#totalMembersNonIn').html(result[i].nonInviteeAttendedCount);						
 					}
 						
