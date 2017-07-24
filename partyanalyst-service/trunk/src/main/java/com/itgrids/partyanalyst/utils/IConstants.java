@@ -1316,4 +1316,5 @@ public interface IConstants {
 	public static final List<Long> IMPACT_IDS = Arrays.asList(3l,5l,6l,9l,12l);
 	public static final String PARLIAMENT_CONSTITUENCY = "PARLIAMENT CONSTITUENCY";
 	public static final Long BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID = 24L;
+	public static final String TRAINING_INVITEE_ROLE_IDS = "1,2,3";
 }
