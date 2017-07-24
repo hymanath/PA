@@ -691,6 +691,7 @@ function getVotersAndCadreCasteWiseCount(type){
 
 var casteInfoResultGlob = "";
 function getCasteGroupNAgeWiseVoterNCadreCounts(){
+	$("#casteGroupsTabsDivId").html("");
 	jsObj={
 		constituencyId:232,
     	publicationDateId:22
@@ -707,14 +708,16 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(){
 				buildCasteGroupWiseInfo();
 				buildCasteInfoForVoter();
 			}, 1000);
+		}else{
+			$("#casteGroupsTabsDivId").html("No Data Available");
 		}
 	});	
 }
 
-function getCasteNAgeWiseVoterNCadreCounts(){
+function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName){
 	jsObj={
-		casteGroupId:1,
-		casteId:284,
+		casteGroupId:casteGroupId,
+		casteId:casteId,
 		constituencyId:232,
     	publicationDateId:22
     }
@@ -724,7 +727,40 @@ function getCasteNAgeWiseVoterNCadreCounts(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){ 
-       console.log(result);	
+		if(result != null && result.length > 0){
+			var str='';
+			str+='<h4 class="panel-title"><span class="text-capital">'+casteName+'</span> - <span class="text-capitalize">voter and cadre information b/w age group</span></h4>';
+			str+='<p class="text-muted text-right">';
+			str+='<span class="f-11"><i class="glyphicon glyphicon-info-sign"></i> _(C) = Cadres ; _(V) = Voter</span>';
+			str+='</p>';
+			str+='<table class="table table-noborder m_top10">';
+			str+='<thead class="text-capitalize">';
+			str+='<th></th>';
+			str+='<th>voters <span class="text-success">%</span></th>';
+			str+='<th>cadres <span class="text-success">%</span></th>';
+			str+='<th>Male(V) <span class="text-success">%</span></th>';
+			str+='<th>Male(C) <span class="text-success">%</span></th>';
+			str+='<th>FeMale(V) <span class="text-success">%</span></th>';
+			str+='<th>FeMale(C) <span class="text-success">%</span></th>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td>'+result[i].ageRange+'</td>';
+					str+='<td>'+result[i].totalVoters+' '+result[i].totalVotersPerc+'</td>';
+					str+='<td>'+result[i].totalCadres+' '+result[i].totalCadrePerc+'</td>';
+					str+='<td>'+result[i].maleVoters+' '+result[i].maleVotersPerc+'</td>';
+					str+='<td>'+result[i].maleCadres+' '+result[i].maleCadrePerc+'</td>';
+					str+='<td>'+result[i].femaleVoters+' '+result[i].femaleVotersPerc+'</td>';
+					str+='<td>'+result[i].femaleCadres+' '+result[i].femaleCadrePerc+'</td>';
+				str+='</tr>';
+			}
+			str+='</tbody>';
+			str+='</table>';
+			$("#expandCaste"+casteId).html(str);
+		}else{
+			$("#expandCaste"+casteId).html("No Data Available.");
+		}
 	});	
 }
 function getEnrollmentYearWiseCadres(){
@@ -1450,7 +1486,6 @@ function getPositionWiseMemberCount(){
 	});	
 }
 $(document).on("click",".voterCadreSwitchCls",function(){
-	alert($(this).attr("attr_type"));
 	if($(this).attr("attr_type") == "voter"){
 		buildCasteInfoForVoter();
 	}else if($(this).attr("attr_type") == "cadre"){
@@ -1459,21 +1494,8 @@ $(document).on("click",".voterCadreSwitchCls",function(){
 });
 
 function buildCasteInfoForVoter(){
-	alert(1);
-	if(casteInfoResultGlob != null && casteInfoResultGlob.length > 0){
-		
-	}
-}
-
-function builsCasteInfoForCadre(){
-	alert(2);
-	if(casteInfoResultGlob != null && casteInfoResultGlob.length > 0){
-		
-	}
-}
-
-function buildCasteGroupWiseInfo(){
 	if(casteInfoResultGlob != null && casteInfoResultGlob != "" && casteInfoResultGlob.length > 0){
+		//chart start
 		var mainArr = [];
 		for(var i in casteInfoResultGlob){
 			var subArr = [];
@@ -1534,5 +1556,176 @@ function buildCasteGroupWiseInfo(){
 				data:mainArr
 			}]
 		});
+		//chart end
+		
+		//table start
+		var str='';
+		str+='<table class="table table-bordered bg-E9">';
+		str+='<thead>';
+		for(var i in casteInfoResultGlob){
+			str+='<th>'+casteInfoResultGlob[i].ageRange+'</th>';
+		}
+		str+='</thead>';
+		str+='<tbody>';
+		str+='<tr>';
+		for(var i in casteInfoResultGlob){
+			str+='<td>'+casteInfoResultGlob[i].totalVoters+'</td>';
+		}
+		str+='</tr>';
+		str+='</tbody>';
+		str+='</table>';
+		$("#casteGroupTableDivId").html(str);
+		//table end				
 	}
 }
+
+function builsCasteInfoForCadre(){
+	if(casteInfoResultGlob != null && casteInfoResultGlob != "" && casteInfoResultGlob.length > 0){
+		//chart start
+		var mainArr = [];
+		for(var i in casteInfoResultGlob){
+			var subArr = [];
+			var name = "",count = 0;
+			name = casteInfoResultGlob[i].ageRange;
+			if(casteInfoResultGlob[i].locationVotersVOList != null && casteInfoResultGlob[i].locationVotersVOList.length > 0){
+				for(var j in casteInfoResultGlob[i].locationVotersVOList){
+					count = count+casteInfoResultGlob[i].locationVotersVOList[j].maleCadres+casteInfoResultGlob[i].locationVotersVOList[j].femaleCadres;
+				}
+				subArr.push(name);
+				subArr.push(parseInt(count));
+				mainArr.push(subArr);
+			}
+		}
+		
+		var obj = {
+					name: 'Proprietary or Undetectable',
+					y: 0.2,
+					dataLabels: {
+						enabled: false
+					}
+				}
+			mainArr.push(obj);		
+		
+		$('#casteGroupInfoChartDivId').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: 0,
+				plotShadow: false
+			},
+			title: {
+				text: '',
+				align: 'center',
+				verticalAlign: 'middle',
+				y: 40
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					dataLabels: {
+						enabled: true,
+						distance: -50,
+						style: {
+							fontWeight: 'bold',
+							color: 'white'
+						}
+					},
+				   
+					center: ['50%', '75%']
+				}
+			},
+			series: [{
+				type: 'pie',
+				name: '',
+				innerSize: '50%',
+				data:mainArr
+			}]
+		});
+		//chart end
+		
+		//table start
+		var str='';
+		str+='<table class="table table-bordered bg-E9">';
+		str+='<thead>';
+		for(var i in casteInfoResultGlob){
+			str+='<th>'+casteInfoResultGlob[i].ageRange+'</th>';
+		}
+		str+='</thead>';
+		str+='<tbody>';
+		str+='<tr>';
+		for(var i in casteInfoResultGlob){
+			str+='<td>'+casteInfoResultGlob[i].totalCadres+'</td>';
+		}
+		str+='</tr>';
+		str+='</tbody>';
+		str+='</table>';
+		$("#casteGroupTableDivId").html(str);
+		//table end				
+	}
+}
+
+function buildCasteGroupWiseInfo(){
+	if(casteInfoResultGlob != null && casteInfoResultGlob != "" && casteInfoResultGlob.length > 0){
+		var str='';
+		str+='<ul class="nav nav-tabs" role="tablist">';
+		for(var i in casteInfoResultGlob){
+			if(i==0)
+				str+='<li role="presentation" class="active"><a href="#'+casteInfoResultGlob[i].ageRange+'" aria-controls="'+casteInfoResultGlob[i].ageRange+'" role="tab" data-toggle="tab">'+casteInfoResultGlob[i].ageRange+'</a></li>';
+			else	
+				str+='<li role="presentation"><a href="#'+casteInfoResultGlob[i].ageRange+'" aria-controls="'+casteInfoResultGlob[i].ageRange+'" role="tab" data-toggle="tab">'+casteInfoResultGlob[i].ageRange+'</a></li>';
+		}
+		str+='</ul>';
+		
+		str+='<div class="tab-content">';
+		str+='<h4 class="panel-title text-capitalize">Caste Wise - Voter & Cadre Information b/w age group</h4>';
+		for(var i in casteInfoResultGlob){
+			if(i==0)
+				str+='<div role="tabpanel" class="tab-pane active pad_10" id="'+casteInfoResultGlob[i].ageRange+'">';
+			else
+				str+='<div role="tabpanel" class="tab-pane pad_10" id="'+casteInfoResultGlob[i].ageRange+'">';
+			str+='<table class="table table-noborder" style="font-size:12px;">';
+			str+='<thead class="text-capitalize">';
+			str+='<th>Caste Name</th>';
+			str+='<th>voters <span class="text-success">%</span></th>';
+			str+='<th>cadres <span class="text-success">%</span></th>';
+			str+='<th>Male(V) <span class="text-success">%</span></th>';
+			str+='<th>Male(C) <span class="text-success">%</span></th>';
+			str+='<th>FeMale(V) <span class="text-success">%</span></th>';
+			str+='<th>FeMale(C) <span class="text-success">%</span></th>';
+			str+='</thead>';
+			str+='<tbody>';
+			if(casteInfoResultGlob[i].locationVotersVOList != null && casteInfoResultGlob[i].locationVotersVOList.length > 0){
+				for(var j in casteInfoResultGlob[i].locationVotersVOList){
+					str+='<tr>';
+					str+='<td><i class="glyphicon glyphicon-plus td-expand-icon expandCasteIconCls" attr_caste_name="'+casteInfoResultGlob[i].locationVotersVOList[j].ageRange+'" attr_caste_group_id="'+casteInfoResultGlob[i].ageRangeId+'" attr_caste_id="'+casteInfoResultGlob[i].locationVotersVOList[j].ageRangeId+'" collapseid="td-expand-'+casteInfoResultGlob[i].locationVotersVOList[j].ageRangeId+'"></i></td>';
+					str+='<td>'+casteInfoResultGlob[i].locationVotersVOList[j].ageRange+'</td>';
+					str+='<td>'+casteInfoResultGlob[i].locationVotersVOList[j].totalVoters+' '+casteInfoResultGlob[i].locationVotersVOList[j].totalVotersPerc+'%</td>';
+					str+='<td>'+casteInfoResultGlob[i].locationVotersVOList[j].totalCadres+' '+casteInfoResultGlob[i].locationVotersVOList[j].totalCadrePerc+'</td>';
+					str+='<td>'+casteInfoResultGlob[i].locationVotersVOList[j].maleVoters+' '+casteInfoResultGlob[i].locationVotersVOList[j].maleVotersPerc+'</td>';
+					str+='<td>'+casteInfoResultGlob[i].locationVotersVOList[j].maleCadres+' '+casteInfoResultGlob[i].locationVotersVOList[j].maleCadrePerc+'</td>';
+					str+='<td>'+casteInfoResultGlob[i].locationVotersVOList[j].femaleVoters+' '+casteInfoResultGlob[i].locationVotersVOList[j].femaleVotersPerc+'</td>';
+					str+='<td>'+casteInfoResultGlob[i].locationVotersVOList[j].femaleCadres+' '+casteInfoResultGlob[i].locationVotersVOList[j].femaleCadrePerc+'</td>';
+					str+='</tr>';
+					str+='<tr class="td-expand-body" collapseBodyId="td-expand-'+casteInfoResultGlob[i].locationVotersVOList[j].ageRangeId+'">';
+					str+='<td colspan="8" class="top-arrow" id="expandCaste'+casteInfoResultGlob[i].locationVotersVOList[j].ageRangeId+'"></td></tr>';
+				}
+			}
+			str+='</tbody>';
+			str+='</table>';
+			
+			str+='</div>';
+		}
+		str+='</div>';
+		$("#casteGroupsTabsDivId").html(str);
+	}else{
+		$("#casteGroupsTabsDivId").html("No Data Available.");
+	}
+}
+
+$(document).on("click",".expandCasteIconCls",function(){
+	var casteGroupId = $(this).attr("attr_caste_group_id");
+	var casteId = $(this).attr("attr_caste_id");
+	var casteName = $(this).attr("attr_caste_name");
+	getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName);
+});
