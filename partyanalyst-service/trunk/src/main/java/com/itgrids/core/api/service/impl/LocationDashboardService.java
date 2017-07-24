@@ -732,14 +732,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							femaleTotalCadres = femaleTotalCadres + casteVO.getFemaleCadres();
 							totalCadres = totalCadres + casteVO.getMaleCadres() + casteVO.getFemaleCadres();
 						}
-
+						casteGroupVO.setTotalVoters(maleTotalVoters+femaleTotalVoters);
+						casteGroupVO.setTotalCadres(totalCadres);
 						for (LocationVotersVO casteVO : casteGroupVO.getLocationVotersVOList()) {
-							casteVO.setMaleVotersPerc(((casteVO.getMaleVoters() * 100) / maleTotalVoters) + " %");
-							casteVO.setFemaleVotersPerc(((casteVO.getFemaleVoters() * 100) / femaleTotalVoters) + " %");
+							casteVO.setMaleVotersPerc(((casteVO.getMaleVoters() * 100) / maleTotalVoters) + "%");
+							casteVO.setFemaleVotersPerc(((casteVO.getFemaleVoters() * 100) / femaleTotalVoters) + "%");
 							casteVO.setTotalCadres(casteVO.getMaleCadres() + casteVO.getFemaleCadres());
-							casteVO.setTotalCadrePerc(((casteVO.getTotalCadres() * 100) / totalCadres) + " %");
-							casteVO.setMaleCadrePerc(((casteVO.getMaleCadres() * 100) / maleTotalCadres) + " %");
-							casteVO.setFemaleCadrePerc(((casteVO.getFemaleCadres() * 100) / femaleTotalCadres) + " &%");
+							casteVO.setTotalCadrePerc(((casteVO.getTotalCadres() * 100) / totalCadres) + "%");
+							casteVO.setMaleCadrePerc(((casteVO.getMaleCadres() * 100) / maleTotalCadres) + "%");
+							casteVO.setFemaleCadrePerc(((casteVO.getFemaleCadres() * 100) / femaleTotalCadres) + "%");
 						}
 					}
 				}
@@ -827,18 +828,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 
 				for (Entry<Long, LocationVotersVO> entry : map.entrySet()) {
-					entry.getValue()
-							.setTotalVotersPerc(((entry.getValue().getTotalVoters() * 100.00) / totalVoters) + " %");
-					entry.getValue()
-							.setMaleVotersPerc(((entry.getValue().getMaleVoters() * 100.00) / totalMaleVoters) + " %");
-					entry.getValue().setFemaleVotersPerc(
-							((entry.getValue().getFemaleVoters() * 100.00) / totalFemaleVoters) + " %");
-					entry.getValue()
-							.setTotalCadrePerc(((entry.getValue().getTotalCadres() * 100.00) / totalCadres) + " %");
-					entry.getValue()
-							.setMaleCadrePerc(((entry.getValue().getMaleCadres() * 100.00) / totalMaleCadres) + " %");
-					entry.getValue().setFemaleCadrePerc(
-							((entry.getValue().getFemaleCadres() * 100.00) / totalFemaleCadres) + " %");
+					entry.getValue().setTotalVotersPerc(round(((entry.getValue().getTotalVoters() * 100.00) / totalVoters),2) + "%");
+					entry.getValue().setMaleVotersPerc(round(((entry.getValue().getMaleVoters() * 100.00) / totalMaleVoters),2) + "%");
+					entry.getValue().setFemaleVotersPerc(round(((entry.getValue().getFemaleVoters() * 100.00) / totalFemaleVoters),2) + "%");
+					entry.getValue().setTotalCadrePerc(round(((entry.getValue().getTotalCadres() * 100.00) / totalCadres),2) + "%");
+					entry.getValue().setMaleCadrePerc(round(((entry.getValue().getMaleCadres() * 100.00) / totalMaleCadres),2) + "%");
+					entry.getValue().setFemaleCadrePerc(round(((entry.getValue().getFemaleCadres() * 100.00) / totalFemaleCadres),2) + "%");
 				}
 
 				voList.addAll(map.values());
@@ -847,6 +842,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			LOG.error("Exception raised at getCasteNAgeWiseVoterNCadreCounts", e);
 		}
 		return voList;
+	}
+	
+	public static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    long factor = (long) Math.pow(10, places);
+	    value = value * factor;
+	    long tmp = Math.round(value);
+	    return (double) tmp / factor;
 	}
 
 	public List<KeyValueVO> getEnrollmentYearWiseCadres() {
