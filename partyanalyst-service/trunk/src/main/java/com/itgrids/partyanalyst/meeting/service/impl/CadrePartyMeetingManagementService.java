@@ -696,40 +696,24 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 			
 			List<PartyMeetingsVO> finalList=null;
 			try{
+				List<IdAndNameVO> inviteeDeatilsVOS= null;
 				List<Object[]> objectList=partyMeetingDAO.getPartyMeetingDetailsByPartyMeetingId(meetingId);
 				List<Object[]> inviteeObjs=partyMeetingInviteeDAO.getPartyMeetingInviteeDetaisByPartyMeetingId(meetingId);
-				Map<Long,List<String>> caderIdPositionMap=null;
-				Map<Long,String>tdpcadreIdName=null;
-				List<String> positionList=null;
-				Map<Long,String> tdpcadreIdAndMemberShipIdMap=null;
-				Map<Long,String> tdpcadreIdAndPhoneNumber=null;
-				Map<Long,Long> tdpCadreIdAndInviteeId=null;
+				List<String> memberShipiNoList=null;
 				//tdp cadreId set
 				Set<Long> tdpCadreIdSet=null;
 				if(inviteeObjs != null && inviteeObjs.size() > 0L){
-					tdpCadreIdAndInviteeId=new HashMap<Long,Long>();
-					caderIdPositionMap=new HashMap<Long,List<String>>(0);
-					tdpcadreIdName=new HashMap<Long,String>();
-					tdpcadreIdAndMemberShipIdMap=new HashMap<Long,String>();
-					tdpcadreIdAndPhoneNumber=new HashMap<Long,String>();
 					 tdpCadreIdSet=new HashSet<Long>();
+					 memberShipiNoList=new ArrayList<String>();
 					for(Object[] objcts: inviteeObjs){
 						//tdp cadreId set
 						tdpCadreIdSet.add(commonMethodsUtilService.getLongValueForObject(objcts[1]));
+						memberShipiNoList.add(commonMethodsUtilService.getStringValueForObject(objcts[2]));
 						//positions List
-						positionList=caderIdPositionMap.get(objcts[1]);
-						tdpcadreIdName.put(commonMethodsUtilService.getLongValueForObject(objcts[1]),commonMethodsUtilService.getStringValueForObject(objcts[3]));
-						tdpCadreIdAndInviteeId.put(commonMethodsUtilService.getLongValueForObject(objcts[1]),commonMethodsUtilService.getLongValueForObject(objcts[7]));
-						tdpcadreIdAndMemberShipIdMap.put(commonMethodsUtilService.getLongValueForObject(objcts[1]),commonMethodsUtilService.getStringValueForObject(objcts[5]));
-						tdpcadreIdAndPhoneNumber.put(commonMethodsUtilService.getLongValueForObject(objcts[1]),commonMethodsUtilService.getStringValueForObject(objcts[6]));
-						if(positionList!=null){
-							caderIdPositionMap.get(objcts[1]).add(commonMethodsUtilService.getStringValueForObject(objcts[4]));
-						}else{
-							positionList=new ArrayList<String>();
-							positionList.add(commonMethodsUtilService.getStringValueForObject(objcts[4]));
-							caderIdPositionMap.put(commonMethodsUtilService.getLongValueForObject(objcts[1]),positionList);
-						}
 					}
+				}
+				if(memberShipiNoList != null && memberShipiNoList.size() >0){
+					 inviteeDeatilsVOS= getTdpCadreDetailsForInveetMeeting(memberShipiNoList);
 				}
 					if(objectList !=null && objectList.size() > 0){
 						finalList=new ArrayList<PartyMeetingsVO>();
@@ -753,25 +737,10 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 							partyMeetingVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(objcts[9]));     //villageId
 							partyMeetingVO.setMeetingMainTypeId(commonMethodsUtilService.getLongValueForObject(objcts[10]));//meeting main type id
 							partyMeetingVO.setStateName(commonMethodsUtilService.getStringValueForObject(objcts[11]));//State NAME
-						if(inviteeObjs != null && inviteeObjs.size() >0L){
-							 invitesList=new ArrayList<PartyMeetingsVO>();
-							for(Long id: tdpCadreIdSet){
-								PartyMeetingsVO inviteeVO=new PartyMeetingsVO();
-								inviteeVO.setId(id);                       // cadreId id
-								inviteeVO.setName(tdpcadreIdName.get(id)); //candidate name
-								inviteeVO.setMandalTwnDivision(tdpcadreIdAndMemberShipIdMap.get(id));// memberShihId
-								inviteeVO.setRemarks(tdpcadreIdAndPhoneNumber.get(id));// mobile number
-								inviteeVO.setInviteeId(tdpCadreIdAndInviteeId.get(id));  // inviteeId  
-								List<String> positionTypeList=null;
-								positionTypeList=new ArrayList<String>();
-								for(String type: caderIdPositionMap.get(id)){
-									positionTypeList.add(type);   //to set desiganations
-								}
-								inviteeVO.setInviteeList(positionTypeList);
-								invitesList.add(inviteeVO);
-								}
-						}
-							partyMeetingVO.setSubList(invitesList);
+							if(inviteeDeatilsVOS !=null && inviteeDeatilsVOS.size() >0){
+								partyMeetingVO.setInvetteList(inviteeDeatilsVOS);
+							}
+						
 							finalList.add(partyMeetingVO);
 						}
 					}
@@ -864,7 +833,8 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 			List<IdAndNameVO> finalList=null;
 			List<String> memberShipNotAvailbleList=null;
 			try{
-				List<Object[]> tdpCadreObjs=tdpCadreCandidateDAO.geTdpCadreCandidateDetailsByMemberShipIds(memberShipIds);
+				List<Object[]> cadreDesiganatinsObj=null;
+				List<Object[]> tdpCadreObjs=tdpCadreDAO.getTdpCadreDatailsForMeetings(memberShipIds);
 				Map<Long,List<String>> cadreIdAndDesigination=null;
 				Set<Long> cadreIdSet=null;
 				Map<Long,String> cadreIdAndMemberShipId=null;
@@ -877,8 +847,7 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 				if(tdpCadreObjs != null && tdpCadreObjs.size() > 0){
 					cadreIdSet=new HashSet<Long>();
 					memberShipNoSet=new HashSet<String>();
-					cadreIdAndDesigination=new HashMap<Long,List<String>>();
-					List<String> desilist=null;
+					
 					cadreIdAndImage=new HashMap<Long,String>();
 					cadreIdAndname=new HashMap<Long,String>();
 					cadreIdAndMobile=new HashMap<Long,String>();
@@ -892,13 +861,20 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 						cadreIdAndImage.put(commonMethodsUtilService.getLongValueForObject(objcts[1]), commonMethodsUtilService.getStringValueForObject(objcts[4]));
 						cadreIdAndMobile.put(commonMethodsUtilService.getLongValueForObject(objcts[1]), commonMethodsUtilService.getStringValueForObject(objcts[3]));
 						cadreIdAndMemberShip.put(commonMethodsUtilService.getLongValueForObject(objcts[1]), commonMethodsUtilService.getStringValueForObject(objcts[0]));
-						desilist=cadreIdAndDesigination.get(objcts[1]);
+					}
+					 cadreDesiganatinsObj=tdpCadreCandidateDAO.geTdpCadreCandidateDesiganationsByCadreaIds(cadreIdSet);
+				}
+				if(cadreDesiganatinsObj != null && cadreDesiganatinsObj.size() >0){
+					cadreIdAndDesigination=new HashMap<Long,List<String>>();
+					List<String> desilist=null;
+					for(Object[] objcts: cadreDesiganatinsObj){
+						desilist=cadreIdAndDesigination.get(objcts[0]);
 						if(desilist != null){
-							cadreIdAndDesigination.get(commonMethodsUtilService.getLongValueForObject(objcts[1])).add(commonMethodsUtilService.getStringValueForObject(objcts[5]));
+							cadreIdAndDesigination.get(commonMethodsUtilService.getLongValueForObject(objcts[0])).add(commonMethodsUtilService.getStringValueForObject(objcts[2]));
 						}else{
 							desilist=new ArrayList<String>();
-							desilist.add(commonMethodsUtilService.getStringValueForObject(objcts[5]));
-							cadreIdAndDesigination.put(commonMethodsUtilService.getLongValueForObject(objcts[1]),desilist);
+							desilist.add(commonMethodsUtilService.getStringValueForObject(objcts[2]));
+							cadreIdAndDesigination.put(commonMethodsUtilService.getLongValueForObject(objcts[0]),desilist);
 						}
 					}
 				}
@@ -913,16 +889,19 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 						idAndNameVO.setMobileNumber(cadreIdAndMobile.get(id)); //MOBILE NO..
 						idAndNameVO.setMembershipNo(cadreIdAndMemberShip.get(id));//memberShipNo
 						String positions="";
-						for(String posi : cadreIdAndDesigination.get(id) ){
-							if(positions !=null && positions.length() > 0){
-								positions=positions+","+posi;
-							}else{
-								positions=posi;
+						if(cadreIdAndDesigination !=null && cadreIdAndDesigination.size() >0){
+							if(cadreIdAndDesigination.get(id) != null){
+								for(String posi : cadreIdAndDesigination.get(id) ){
+									if(positions !=null && positions.length() > 0){
+										positions=positions+","+posi;
+									}else{
+										positions=posi;
+									}
+								}
 							}
 						}
 						
 						idAndNameVO.setPartyName(positions);//position name
-					
 						finalList.add(idAndNameVO);
 					}
 					// to check the memberShipIds exist or not
