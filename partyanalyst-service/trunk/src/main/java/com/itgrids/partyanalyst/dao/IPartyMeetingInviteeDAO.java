@@ -74,4 +74,7 @@ public List<Object[]> getPartyMeetingsInvitationsDetailsByCadreIds(List<Long> td
 			Date fromDate,Date toDate,Long stateId,List<Long> levelIdsList,Long partyMeetngGrpId,Long partyMeetingId,Long locationId);
 	
 	public List<Object[]> getPartyMeetingInviteeDetaisByPartyMeetingId(Long meetingId);
+	
+	public int updateAbsenteeRemark(Long cadreId,Long partyMeetingId,String comment);
+	public List<Object[]> getPartyMeetingInvitteesMembershipNo(Long partyMeetingId);
 }
