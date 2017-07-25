@@ -56,4 +56,22 @@ public class PartyMeetingAttendanceTabUserDAO extends GenericDaoHibernate<PartyM
 			query.setParameter("partyMeetingId",partyMeetingId);
 			return query.list(); 
 		}
+		public List<Object[]> getTabuserTotaldetailsFromMeetingId(Long partyMeetingId,List<Long>attendanceTabUserIdList){
+		      StringBuilder sb=new StringBuilder();
+		      sb.append("select distinct model.partyMeetingAttendanceTabUserId , "+
+		              "model.partyMeeting.partyMeetingId , "+
+		              "model.attendanceTabUser.attendanceTabUserId , "+
+		              "model.isDeleted , "+
+		              "model.insertedBy.userId , "+
+		              "model.insertedTime "+
+		              " from PartyMeetingAttendanceTabUser model "+
+		              "where model.partyMeeting.partyMeetingId=:partyMeetingId and "+
+		              "model.attendanceTabUser.attendanceTabUserId in (:attendanceTabUserIdList) and model.isDeleted='Y' ");
+		      Query query = getSession().createQuery(sb.toString());
+		      query.setParameter("partyMeetingId",partyMeetingId);
+		       query.setParameterList("attendanceTabUserIdList", attendanceTabUserIdList);
+		      return query.list(); 
+		  
+		      
+		    }
 }
