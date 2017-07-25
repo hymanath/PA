@@ -1367,6 +1367,8 @@
 		<property name="tdpCadreDataSourceCountInfoDAO" ref="tdpCadreDataSourceCountInfoDAO"/>
 		<property name="tdpCadreDataSourceCountInfoTempDAO" ref="tdpCadreDataSourceCountInfoTempDAO"/> 	
 		<property name="trainingCampDetailsInfoDAO" ref="trainingCampDetailsInfoDAO"></property>
+		<property name="alertService" ref="alertService"></property>
+		
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
@@ -1790,6 +1792,15 @@
 	</bean> 
      <!-- TDPCADRE 2016 INTERMEDIATE TABLES SCHEDULERS END -->
      
+    <bean name="sendSmsDetailsOfAlert" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="sendSmsDetailsOfAlertRef" />
+    	<property name="cronExpression" value="0 30 0 ? * MON *" />
+	</bean>
+	<bean name="sendSmsDetailsOfAlertRef" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="sendSmsDetailsOfAlertVal" />
+    </bean>
+     
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     	<property name="triggers">
         <list>
@@ -1844,6 +1855,7 @@
 		    <ref bean="pushCasteStateWiseTdpCadreCountsByLowLevel"/> -->
 			<ref bean="UpdateExpirdAppicationsInNominatedPosts" />
 			<ref bean="insertTrainginCampDataLocationWiseByCommitteeLevel"/>
+			<ref bean="sendSmsDetailsOfAlert"/>
         </list>
     	</property>
 	</bean>
@@ -3670,6 +3682,7 @@
 		<property name="alertDepartmentCommentDAO" ref="alertDepartmentCommentDAO"></property>
         <property name="alertDepartmentCommentNewDAO" ref="alertDepartmentCommentNewDAO"></property>
         <property name="govtProposalPropertyCategoryDAO" ref="govtProposalPropertyCategoryDAO"></property>		
+        <property name="smsCountrySmsService" ref="smsCountrySmsService"></property>        	
 	</bean>            
 	<!-- Debate End -->
 	
