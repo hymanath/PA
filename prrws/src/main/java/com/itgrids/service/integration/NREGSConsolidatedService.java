@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -23,6 +25,7 @@ import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSConsolidatedService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.NREGSCumulativeThread;
 import com.sun.jersey.api.client.ClientResponse;
 
 @Service
@@ -33,6 +36,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 	
 	@Autowired
 	private INregaComponentServiceDAO nregaComponentServiceDAO;
+	
+	 
 	@Autowired
 	private WebServiceUtilService webServiceUtilService;
 	
@@ -68,14 +73,90 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 				}
 			}
 			
+			List<ClientResponse> responseList = new ArrayList<ClientResponse>();
 			String str = convertingInputVOToString(inputVO);
 			if(urlsList != null && !urlsList.isEmpty()){
+				ExecutorService executor = Executors.newFixedThreadPool(30);
 				for (NregaConsolidatedInputVO urlvo : urlsList) {
-					ClientResponse response = webServiceUtilService.callWebService(urlvo.getUrl().toString(), str);
+					 Runnable worker = new NREGSCumulativeThread(urlvo.getUrl(),responseList,str);
+					 executor.execute(worker);
+				}	 
+				executor.shutdown();
+				while (!executor.isTerminated()) {
+						
+				}
+					System.out.println("Finished all threads"+responseList);
+
+			}
+			
+			if(responseList != null && !responseList.isEmpty()){
+				for (ClientResponse response : responseList) {
 					if(response.getStatus() != 200){
 						throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 					}else{
 						String output = response.getEntity(String.class);
+						String returnUrl = response.toString().split(" ")[1].toString().split("rest/")[1];
+						String componentName = null;
+						if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("LabourBudgetServiceNew/LabourBudgetDataNew"))
+							componentName = "Labour Budget";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FarmPondService_new/FarmPondData_new"))
+							componentName = "Farm Ponds";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("IHHLService_new/IHHLData_new"))
+							componentName = "IHHL";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("VermiService_new/VermiData_new"))
+							componentName = "Vermi Compost";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("SolidWasteManagementServices/SolidWasteManagementData"))
+							componentName = "Solid Waste Management";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("BurialGroundsServices/BurialGroundsData"))
+							componentName = "Burial Grounds";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("PlayFieldsServices/PlayFieldsData"))
+							componentName = "Play Fields";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AgricultureServices/AgricultureData"))
+							componentName = "Agriculture Activities";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AveragewageServicesNew/AveragewageDataNew"))
+							componentName = "Average Wage";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AverageDaysServicesNew/AverageDaysDataNew"))
+							componentName = "Average Days of Employment";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("HundredHoursServices/HundredHoursData"))
+							componentName = "HH Completed 100 Days";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("TimePaymentsServicesNew/TimePaymentsDataNew"))
+							componentName = "Timely Payment";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("CCRoadsServicesNew/CCRoadsDataNew"))
+							componentName = "CC Roads";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AnganawadiServiceNew/AnganawadiDataNew"))
+							componentName = "Anganwadi Buildings";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("GpBuildingServiceNew/GpBuildingDataNew"))
+							componentName = "GP Buildings";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("MandalBuildingServiceNew/MandalBuildingDataNew"))
+							componentName = "Mandal Buildings";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("HousingServiceNew/HousingDataNew"))
+							componentName = "NTR 90 Days";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("BricksServiceNew/BricksDataNew"))
+							componentName = "Production of Bricks";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("MulberyServiceNew/MulberyDataNew"))
+							componentName = "Mulbery";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("SilkwarmServiceNew/SilkwarmDataNew"))
+							componentName = "Silk Worms";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("CattleServiceNew/CattleDataNew"))
+							componentName = "Cattle Drinking Water Troughs";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FodderServiceNew/FodderDataNew"))
+							componentName = "Raising of Perinnial Fodders";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("HorticultureServiceNew/HorticultureDataNew"))
+							componentName = "Horticulture";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AvenueServicesNew/AvenueDataNew"))
+							componentName = "Avenue";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FishPondServiceNew/FishPondDataNew"))
+							componentName = "Fish Ponds";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FishDryingServiceNew/FishDryingDataNew"))
+							componentName = "Fish Drying Platforms";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("NurseriesServiceNew/NurseriesDataNew"))
+							componentName = "Nurseries";
+						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FaPerformanceServiceNew/FaPerformanceDataNew"))
+							componentName = "FAperformance";
+						/*else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("SilkwarmServiceNew/SilkwarmDataNew"))
+							componentName = "Silk Worms";*/
+						
+						
 						if(output != null && !output.isEmpty()){
 							JSONArray finalArray = new JSONArray(output);
 							if(finalArray != null && finalArray.length() > 0){
@@ -88,13 +169,19 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 												
 												NregaConsolidatedDataVO componentvo = new NregaConsolidatedDataVO();
 												componentvo.setName("state");
-												componentvo.setComponent(urlvo.getComponentName());
-												if(urlvo.getComponentName() != null && urlvo.getComponentName().trim().equalsIgnoreCase("Labour Budget")){
+												componentvo.setComponent(componentName);
+												if(componentName != null && componentName.trim().equalsIgnoreCase("Labour Budget")){
 													componentvo.setPercentage(jObj.getString("PER_APP_LB"));
 												}
-												else if(urlvo.getComponentName() != null && 
-														(urlvo.getComponentName().trim().equalsIgnoreCase("Horticulture") || urlvo.getComponentName().trim().equalsIgnoreCase("Avenue"))){
+												else if(componentName != null && 
+														(componentName.trim().equalsIgnoreCase("Horticulture") || componentName.trim().equalsIgnoreCase("Avenue"))){
 													componentvo.setPercentage(jObj.getString("PERCENTAGEOFPLANTING"));
+												}
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance")){
+													componentvo.setPercentage(jObj.getString("AVG_TOT_MARKS"));
+												}
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities")){
+													componentvo.setPercentage(jObj.getString("ACHEIVEMENT"));
 												}
 												else{
 													componentvo.setPercentage(jObj.getString("PERCENTAGE"));
@@ -103,17 +190,23 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 												
 											locationMap.put("state", levelvo);
 										}else{
-											NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), urlvo.getComponentName());
+											NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), componentName);
 											if(componentvo == null){
 												componentvo = new NregaConsolidatedDataVO();
 												componentvo.setName("state");
-												componentvo.setComponent(urlvo.getComponentName());
-												if(urlvo.getComponentName() != null && urlvo.getComponentName().trim().equalsIgnoreCase("Labour Budget")){
+												componentvo.setComponent(componentName);
+												if(componentName != null && componentName.trim().equalsIgnoreCase("Labour Budget")){
 													componentvo.setPercentage(jObj.getString("PER_APP_LB"));
 												}
-												else if(urlvo.getComponentName() != null && 
-														(urlvo.getComponentName().trim().equalsIgnoreCase("Horticulture") || urlvo.getComponentName().trim().equalsIgnoreCase("Avenue"))){
+												else if(componentName != null && 
+														(componentName.trim().equalsIgnoreCase("Horticulture") || componentName.trim().equalsIgnoreCase("Avenue"))){
 													componentvo.setPercentage(jObj.getString("PERCENTAGEOFPLANTING"));
+												}
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance")){
+													componentvo.setPercentage(jObj.getString("AVG_TOT_MARKS"));
+												}
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities")){
+													componentvo.setPercentage(jObj.getString("ACHEIVEMENT"));
 												}
 												else{
 													componentvo.setPercentage(jObj.getString("PERCENTAGE"));
@@ -123,7 +216,9 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 										}
 									}else{
 										NregaConsolidatedDataVO levelvo = null;
-										if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+										if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+											levelvo = locationMap.get(jObj.getString("DISTRICT_DESCRIPTION").trim());
+										else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 											levelvo = locationMap.get(jObj.getString("DISTRICT").trim());
 										else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 											levelvo = locationMap.get(jObj.getString("CONSTITUENCY").trim());
@@ -137,7 +232,9 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 												
 												NregaConsolidatedDataVO componentvo = new NregaConsolidatedDataVO();
 												
-												if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+												if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+													levelvo = locationMap.get(jObj.getString("DISTRICT_DESCRIPTION").trim());
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 													componentvo.setName(jObj.getString("DISTRICT").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 													componentvo.setName(jObj.getString("CONSTITUENCY").trim());
@@ -145,20 +242,28 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 													componentvo.setName(jObj.getString("MANDAL").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
 													componentvo.setName(jObj.getString("PANCHAYAT").trim());
-												componentvo.setComponent(urlvo.getComponentName());
-												if(urlvo.getComponentName() != null && urlvo.getComponentName().trim().equalsIgnoreCase("Labour Budget")){
+												componentvo.setComponent(componentName);
+												if(componentName != null && componentName.trim().equalsIgnoreCase("Labour Budget")){
 													componentvo.setPercentage(jObj.getString("PER_APP_LB"));
 												}
-												else if(urlvo.getComponentName() != null && 
-														(urlvo.getComponentName().trim().equalsIgnoreCase("Horticulture") || urlvo.getComponentName().trim().equalsIgnoreCase("Avenue"))){
+												else if(componentName != null && 
+														(componentName.trim().equalsIgnoreCase("Horticulture") || componentName.trim().equalsIgnoreCase("Avenue"))){
 													componentvo.setPercentage(jObj.getString("PERCENTAGEOFPLANTING"));
+												}
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance")){
+													componentvo.setPercentage(jObj.getString("AVG_TOT_MARKS"));
+												}
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities")){
+													componentvo.setPercentage(jObj.getString("ACHEIVEMENT"));
 												}
 												else{
 													componentvo.setPercentage(jObj.getString("PERCENTAGE"));
 												}
 												levelvo.getSubList().add(componentvo);
 												
-											if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+											if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+												levelvo = locationMap.get(jObj.getString("DISTRICT_DESCRIPTION").trim());
+											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 												locationMap.put(jObj.getString("DISTRICT").trim(), levelvo);
 											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 												locationMap.put(jObj.getString("CONSTITUENCY").trim(), levelvo);
@@ -167,11 +272,13 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
 												locationMap.put(jObj.getString("PANCHAYAT").trim(), levelvo);
 										}else{
-											NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), urlvo.getComponentName());
+											NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), componentName);
 											if(componentvo == null){
 												componentvo = new NregaConsolidatedDataVO();
 												
-												if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+												if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+													levelvo = locationMap.get(jObj.getString("DISTRICT_DESCRIPTION").trim());
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 													componentvo.setName(jObj.getString("DISTRICT").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 													componentvo.setName(jObj.getString("CONSTITUENCY").trim());
@@ -179,13 +286,19 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 													componentvo.setName(jObj.getString("MANDAL").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
 													componentvo.setName(jObj.getString("PANCHAYAT").trim());
-												componentvo.setComponent(urlvo.getComponentName());
-												if(urlvo.getComponentName() != null && urlvo.getComponentName().trim().equalsIgnoreCase("Labour Budget")){
+												componentvo.setComponent(componentName);
+												if(componentName != null && componentName.trim().equalsIgnoreCase("Labour Budget")){
 													componentvo.setPercentage(jObj.getString("PER_APP_LB"));
 												}
-												else if(urlvo.getComponentName() != null && 
-														(urlvo.getComponentName().trim().equalsIgnoreCase("Horticulture") || urlvo.getComponentName().trim().equalsIgnoreCase("Avenue"))){
+												else if(componentName != null && 
+														(componentName.trim().equalsIgnoreCase("Horticulture") || componentName.trim().equalsIgnoreCase("Avenue"))){
 													componentvo.setPercentage(jObj.getString("PERCENTAGEOFPLANTING"));
+												}
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance")){
+													componentvo.setPercentage(jObj.getString("AVG_TOT_MARKS"));
+												}
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities")){
+													componentvo.setPercentage(jObj.getString("ACHEIVEMENT"));
 												}
 												else{
 													componentvo.setPercentage(jObj.getString("PERCENTAGE"));
@@ -197,7 +310,7 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 								}
 							}
 						}
-		 	    	}
+					}
 				}
 			}
 			
