@@ -13,11 +13,6 @@
       <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
       <link href="daterangepicker/bootstrap-datetimepicker.css" type="text/css" rel="stylesheet"/>
       <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
-      <style>
-	  .glyphicon-plus,.glyphicon-minus{
-		  cursor:pointer;
-	  }
-	  </style>
    </head>
    <body>
       <div class="container">
@@ -85,9 +80,9 @@
                   </select>
                </div>
                <div class="col-sm-4">
-                  <label for="meetingType2">Meeting Sub-Type:</label>
+                  <label for="meetingSubType">Meeting Sub-Type:</label>
                   <select class="form-control" id="meetingTypeSubTypeId" name="partyMeetingTypeId" >
-                     <option value="">Select Meeting Type2</option>
+                     <option value="">Select Meeting Sub-Type</option>
                   </select>
                </div>
                <div class="col-sm-4">
@@ -361,7 +356,7 @@
          </div>
 		 </div>
          <div class="panel-body" id="editTabUserExpandCollapseId">
-             <div id="tabUserEditMeetingTableDivId"></div> 
+             <div id="tabUserTableDivId"></div> 
 			</div>
 			</div>
 			
@@ -371,7 +366,6 @@
             <div class="row">
                <div class="col-sm-11">
                   <h4 class="panel-title m_top5">Attended Invitiees</h4>
-               
                </div>
                <div class="col-sm-1">
                   <span id="attendedInvitieesTabButton" data-toggle="collapse" data-target="#attendedInvitieesTable" class="attendedInvitieesTabExpandCollapse">
@@ -381,7 +375,6 @@
             </div>
          </div>
          <div class="panel-body" id="attendedInvitieesTable">
-         <div id="attendceOfInviteeDivId"></div>
          </div>
       </div>
 	  
@@ -479,7 +472,6 @@
 
 
     $(document).on("click", "#applicatioSubmitId", function() {
-        //console.log(memebershipIds);
         console.log($("#partyMeetingId").val().length);
         if ($("#textAreaId").val().length > 0 && $("#partyMeetingId").val().length > 0) {
             $(".resultStatus").modal('show');
@@ -513,9 +505,7 @@
                 uploadResult = uploadResult.replace("</pre>", "");
                 uploadResult = uploadResult.replace(",\"", "");
                 uploadResult = uploadResult.replace("\"", "");
-                //uploadResult = uploadResult.replace(",\"","");
                 uploadResult = uploadResult.replace(/\"/g, "");
-                //uploadResult = uploadResult.replace(/\"/g, "");
                 uploadResult = uploadResult.replace("<pre style=word-wrap: break-word; white-space: pre-wrap;>", "");
                 console.log(uploadResult);
                 if (uploadResult == "Please upload csv format") {
@@ -708,6 +698,7 @@
                 console.log(uploadResult);
                 $('#closeModalId').click();
                 $(".resultStatus").modal('show');
+				$('#submitSuccessId').html("");
                 $('#submitSuccessId').append("<p>DATA SAVED SUCESSFULLY</p>");
                 setTimeout(function() {
                     $(".resultStatus").modal('hide');
@@ -721,7 +712,9 @@
         YAHOO.util.Connect.asyncRequest('POST', 'savepartymeetingDetailsAction.action', uploadHandler);
 
     });
-    
+	
+	
+	
 	$(document).on("click", "#genarateModelXmlId", function() {
     generateExcelReport();
 });
@@ -729,7 +722,10 @@
     function generateExcelReport() {
         tableToExcel("inviteeTavbleId", 'Tab user wise Registration Report');
     }
-    
+	
+	
+	
+	
 	$(document).on("click", "#editMeetingDetailsSubmitId", function() {
         if ($("#editTextAreaId").val().length > 0 && $("#editPartyMeetingId").val().length > 0) {
             $(".resultStatus").modal('show');
@@ -777,7 +773,7 @@
                     $("#tdpCadreDetailsModalId").modal('show');
                     var memeberShipArr = uploadResult.split(",");
                     getTdpCadreDetailsForInveetMeeting(memeberShipArr);
-                    //createHiddenFields();
+                   
                 }
             }
         };
@@ -810,3 +806,18 @@
 </script>  
    </body>
 </html>
+<!--
+function getTdpCadreDetailsForPartyMeetingAction(partyMeetingId){
+		 var jsObj = {
+			   partyMeetingId:"445220"
+		  }
+	      $.ajax({
+	        type:"GET",
+	        url:"getTdpCadreDetailsForPartyMeetingAction.action",
+	        data:{task:JSON.stringify(jsObj)}
+	      }).done(function(results) {
+			for(i in results){
+				
+			}
+	     });
+	  } -->
