@@ -9685,5 +9685,21 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			
 			return query.list();
 		}
-	   
+	   public List<Object[]> getTdpCadreDatailsForMeetings(List<String> memberShipIds){
+		   StringBuilder sb = new StringBuilder();
+			  sb.append("select model.memberShipNo,");//0
+			  sb.append("model.tdpCadreId,");//1
+			  sb.append("model.firstname," );//2
+			  sb.append("model.mobileNo,");//3
+			  sb.append("model.image  ");//4
+			  sb.append("from TdpCadre model  " );
+			  sb.append( "where  model.isDeleted = 'N'  " );  
+			  if(memberShipIds != null && memberShipIds.size() > 0l)
+				  sb.append("and model.memberShipNo in (:memberShipIds)  ");
+				 sb.append("order by model.firstname asc ");
+			  Query query = getSession().createQuery(sb.toString());
+			  if(memberShipIds != null && memberShipIds.size() > 0l)
+				  query.setParameterList("memberShipIds", memberShipIds);
+			  return query.list();
+	   }
 }
