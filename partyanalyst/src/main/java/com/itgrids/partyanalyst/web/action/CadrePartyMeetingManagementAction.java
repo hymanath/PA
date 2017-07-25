@@ -573,8 +573,8 @@ public String getPanchayatWardByMandal(){
  }
  public String getAllInviteeAtendedDetails(){
 	   try{
-	       jObj = new JSONObject(getTask());
-	     Long meetingId=jObj.getLong("partyMeetingId");
+		   jObj = new JSONObject(getTask());
+	 		Long meetingId=jObj.getLong("partyMeetingId");
 	     idAndNameVO= cadrePartyMeetingManagementService.getPartyMeetingInviteesDetailsAttendence(meetingId);
 	       }catch (Exception e) {
 	    LOG.error("Exception Occured in getAllInviteeAtendedDetails() method, Exception - ",e); 
@@ -591,6 +591,17 @@ public String getPanchayatWardByMandal(){
 	    }
 	      return Action.SUCCESS;  
 	 }
+	 
+	 public String deletePartyMeetingSession(){
+		 	try {
+		 		jObj = new JSONObject(getTask());
+		 		Long meetingSessionId=jObj.getLong("meetingSessionId");
+		 		resultStatus = cadrePartyMeetingManagementService.deletePartyMeetingSession(meetingSessionId);
+				} catch (Exception e) {
+					LOG.error("Exception Occured in deletePartyMeetingSession() method, Exception - ",e); 
+				}
+		 	return Action.SUCCESS;	
+		 }
 }
 
 
