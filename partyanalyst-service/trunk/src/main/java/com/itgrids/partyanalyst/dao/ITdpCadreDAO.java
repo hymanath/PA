@@ -533,4 +533,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  
 	 
 	  public List<Object[]> getTdpCadreDetailsByMemberShipId(List<String> membershipNoList);
+	  public List<Object[]> getTdpCadreDatailsForMeetings(List<String> memberShipIds);
 } 
