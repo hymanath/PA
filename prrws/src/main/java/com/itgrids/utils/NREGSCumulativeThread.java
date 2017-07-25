@@ -2,23 +2,22 @@ package com.itgrids.utils;
 
 import java.util.List;
 
-import com.itgrids.dao.WebServiceUtilServiceTest;
-import com.itgrids.dto.InputVO;
+import com.itgrids.service.integration.external.NregaWebServiceUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 
 public class NREGSCumulativeThread implements Runnable {
 
 	private String url =null;
 	private ClientResponse response =null;
-	private InputVO inputVO =null;
+	private String inputVO =null;
 	private List responseVo=null;
 
 	 
 
-	public NREGSCumulativeThread(String url,List responseVo,InputVO inputVO) {
+	public NREGSCumulativeThread(String url,List responseVo,String input) {
 		this.url=url;
 		this.responseVo = responseVo;
-		this.inputVO=inputVO;
+		this.inputVO=input;
 	}
 
 	@Override
@@ -31,7 +30,7 @@ public class NREGSCumulativeThread implements Runnable {
 	private void callWebService() {
 		try {
 			 
-			WebServiceUtilServiceTest webServiceUtilService = new WebServiceUtilServiceTest();
+			NregaWebServiceUtilService webServiceUtilService = new NregaWebServiceUtilService();
 		    ClientResponse response = webServiceUtilService.callWebService(url, inputVO);
 		    responseVo.add(response) ;
 		} catch (Exception e) {
