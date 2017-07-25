@@ -70,6 +70,8 @@ public class InputVO implements Serializable {
 	private String locationIdStr;
 	private String menuLvelValue;
 	private Long parliamentId;
+	private String location;
+	private String subLocation;
 	
 	
 	public String getLocationIdStr() {
@@ -433,5 +435,18 @@ public class InputVO implements Serializable {
 	public void setParliamentId(Long parliamentId) {
 		this.parliamentId = parliamentId;
 	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public String getSubLocation() {
+		return subLocation;
+	}
+	public void setSubLocation(String subLocation) {
+		this.subLocation = subLocation;
+	}
+    	
 	
 }

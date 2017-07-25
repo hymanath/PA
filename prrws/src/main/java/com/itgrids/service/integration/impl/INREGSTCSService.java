@@ -7,6 +7,7 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
 import com.itgrids.dto.LocationFundDetailsVO;
+import com.itgrids.dto.NregaLocationOverviewVO;
 import com.itgrids.dto.NregaPaymentsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
@@ -48,4 +49,7 @@ public interface INREGSTCSService {
 	public List<NregsProjectsVO> getNREGSProjectsAbstractNewFrConstituency(InputVO inputVO);
 	public List<NregsProjectsVO> getNREGSAbstractDataByTypeFrConstituency(InputVO inputVO);
 	public List<NregsDataVO> getNregaPanchatVsExpLevelWiseCountsData(InputVO inputVO);
+	public NregaLocationOverviewVO getIhhlAbstractData(InputVO inputVO);
+	public NregaLocationOverviewVO getIhhlOverviewData(InputVO inputVO);
+	public List<NregaLocationOverviewVO> getLocationIhhlData(InputVO inputVO);
 }
