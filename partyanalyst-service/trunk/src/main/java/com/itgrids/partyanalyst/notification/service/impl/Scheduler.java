@@ -787,4 +787,14 @@ public class Scheduler {
 		}
 		return rs;  
 	}
+	
+	public ResultStatus sendSmsDetailsOfAlertVal(){
+		ResultStatus rs = new ResultStatus();		 
+		try {
+			schedulerService.sendSmsDetailsOfAlert();
+		} catch (Exception e) {
+			log.error("Exception raised at sendSmsDetailsOfAlertVal() in Scheduler Class "); 
+		}
+		return rs;
+	}
 }

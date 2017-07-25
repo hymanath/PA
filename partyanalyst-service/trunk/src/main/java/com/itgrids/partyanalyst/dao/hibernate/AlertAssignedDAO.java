@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
 import com.itgrids.partyanalyst.model.AlertAssigned;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AlertAssignedDAO extends GenericDaoHibernate<AlertAssigned, Long> implements IAlertAssignedDAO{
 
@@ -286,4 +287,22 @@ public int updateAlertSmsStatus(Long assignedId){
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getSmsTdpCadreDetails(){
+		
+		Query query = getSession().createQuery(" select model.tdpCadreId,model.tdpCadre.mobileNo,model.tdpCadre.firstname,model.alert.alertStatusId," +
+				" model.alert.alertStatus.alertStatus,count(distinct model.alertId) " +
+				" from AlertAssigned model " +
+				" where model.isDeleted ='N' and model.alert.isDeleted ='N'" +
+				" and model.alert.alertStatusId in (:alertStatusIds) " +
+				" and model.alert.alertTypeId  =:alertTypeId" +
+				" and model.tdpCadre.mobileNo is not null" +
+				" group by model.tdpCadreId,model.alert.alertStatusId ");
+		
+		query.setParameterList("alertStatusIds", IConstants.PARTY_ALERT_SMS_STATUS_IDS);
+		query.setParameter("alertTypeId", IConstants.PARTY_ALERT_TYPE_ID);
+		return query.list();
+		
+	}
+	
 }

@@ -169,4 +169,5 @@ public interface IAlertService {
     public UserAddress saveUserAddressForMeekosamGrievanceAlert(final GrievanceAlertVO inputVO);
     public KeyValueVO getRegionScopeValuesForUser(Long userId,Long deptId);
     public AlertOverviewVO getAlertCntInRequiredFormatToExportToExcel(String fromDateStr, String toDateStr, Long stateId,Long departmentId, Long sourceId, String rangeType);
+    public ResultStatus getSmsTdpCadreDetails();
 }

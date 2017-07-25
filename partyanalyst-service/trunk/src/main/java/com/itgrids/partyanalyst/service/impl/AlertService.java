@@ -293,6 +293,12 @@ private IGovtSmsActionTypeDAO govtSmsActionTypeDAO;
 private IGovtAlertDepartmentLocationNewDAO govtAlertDepartmentLocationNewDAO;
 private IGovtProposalPropertyCategoryDAO govtProposalPropertyCategoryDAO;
 
+private SmsCountrySmsService smsCountrySmsService;
+
+
+public void setSmsCountrySmsService(SmsCountrySmsService smsCountrySmsService) {
+	this.smsCountrySmsService = smsCountrySmsService;
+}
 
 public IGovtAlertDepartmentLocationNewDAO getGovtAlertDepartmentLocationNewDAO() {
 	return govtAlertDepartmentLocationNewDAO;
@@ -15760,5 +15766,79 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		}
 		
 		return noOfRow;
+	}
+	public ResultStatus getSmsTdpCadreDetails(){
+		ResultStatus rs = new ResultStatus();
+		try {
+			
+			Map<Long, AlertVO> cadreMap = new HashMap<Long, AlertVO>();
+			//0.tdpCadreId,1.mobileNo,2.name,3.alertStatusId,4.alertStatus,5.alertCount
+			List<Object[]> alertAssignedObj =alertAssignedDAO.getSmsTdpCadreDetails();
+			if(alertAssignedObj !=null && alertAssignedObj.size()>0){
+				for (Object[] objects : alertAssignedObj) {
+					AlertVO vo = cadreMap.get(objects[0] !=null ? (Long)objects[0]:null);
+					
+					if(vo == null){
+						vo = new AlertVO();
+						vo.setId((Long)objects[0]);
+						vo.setName(objects[2] !=null ? objects[2].toString():null);
+						vo.setMobileNo(objects[1] !=null ? objects[1].toString():null);
+						cadreMap.put((Long)objects[0], vo);
+					}
+					
+					if(objects[3] !=null && (Long)objects[3] == 2l)
+					{
+						vo.setNotifiedCount((Long)objects[5]);
+					}else if((Long)objects[3] == 3l ){
+						vo.setActionInProgressCount((Long)objects[5]);
+					}
+					
+				}
+				
+				if(cadreMap !=null && cadreMap.size()>0){
+					for (Entry<Long, AlertVO> cadre : cadreMap.entrySet()) {
+						AlertVO vo=cadre.getValue();
+						StringBuilder sb = new StringBuilder();
+						sb.append(" Dear "+vo.getName()+" Garu , \nYou are having  " );
+						
+						if(vo.getNotifiedCount() !=null && vo.getNotifiedCount().longValue()>0l){
+							sb.append(" \nNotified Alerts : "+vo.getNotifiedCount()+".  ");
+						}else if(vo.getActionInProgressCount() !=null && vo.getActionInProgressCount().longValue()>0l){
+							sb.append(" \nAction In Progress Alerts : "+vo.getActionInProgressCount()+".  ");
+						}
+								
+						sb.append(" \nPlease take the necessary action and close it ASAP. ");
+													
+						rs = smsCountrySmsService.sendSmsFromAdmin(sb.toString(), true, vo.getMobileNo());
+						
+					}
+					
+					/*StringBuilder sb = new StringBuilder();
+					sb.append(" Dear Ashok Garu , \n" +
+							" You are having " );
+					
+					//if(vo.getNotifiedCount() !=null && vo.getNotifiedCount().longValue()>0l){
+						sb.append("\n Notified Alerts : 10.  ");
+					//}else if(vo.getActionInProgressCount() !=null && vo.getActionInProgressCount().longValue()>0l){
+						sb.append(" \n Action In Progress Alerts : 20.  ");
+					//}
+							
+					sb.append(" \nPlease take the necessary action and close it ASAP. ");
+					
+					String msg = "9573073174-7675892288-9676696760";
+						
+					smsCountrySmsService.sendSmsFromAdmin(sb.toString(), true, msg.split("-")[0].trim());
+					smsCountrySmsService.sendSmsFromAdmin(sb.toString(), true, msg.split("-")[1].trim());
+					smsCountrySmsService.sendSmsFromAdmin(sb.toString(), true, msg.split("-")[2].trim());*/
+				}
+				
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Error occured getSmsTdpCadreDetails() method of AlertService{}");
+		}
+		return rs;
 	}
 }

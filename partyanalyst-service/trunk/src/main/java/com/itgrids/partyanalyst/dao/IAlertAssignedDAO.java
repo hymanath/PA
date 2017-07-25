@@ -23,4 +23,5 @@ public interface IAlertAssignedDAO extends GenericDao<AlertAssigned, Long> {
 	public int updateAlertSmsStatus(Long assignedId);
 	public List<Object[]> getAlertAssignedCandidateForDashBoard(Long alertId,Long stateId,Long alertTypeId,Date fromDate,Date toDate);
 	public List<Object[]> getAssignedAlertsSummary(List<Long> cadreIds);
+	public List<Object[]> getSmsTdpCadreDetails();
 }
