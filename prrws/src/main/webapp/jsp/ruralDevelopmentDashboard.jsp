@@ -169,7 +169,17 @@
 	<section>
 		<div class="container">
 			<div class="row">
-				<div id="overViewAbstract"></div>
+				<div class="col-sm-12">
+					<div class="panel panel-default panel-black">
+						<div class="panel-heading">
+							<h4 class="panel-title">NTR Jalavani Overview</h4>
+						</div>
+						<div class="panel-body">
+							<div id="overViewAbstract"></div>
+						</div>
+					</div>
+				</div>
+				
 				<div class="col-sm-12 m_top20">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
@@ -179,6 +189,9 @@
 							<div id="overViewDataId"></div>
 						</div>
 					</div>
+				</div>
+				<div class="col-sm-12 m_top20">
+					<div id="projectData"></div>
 				</div>
 			</div>
 		</div>
@@ -228,6 +241,7 @@ function onLoadCalls()
 {
 	getNtrJalaSiriAbstract();
 	getNtrJalaSiriOverview();
+	projectData('NTR Jala Siri',2,'');
 }
 function getNtrJalaSiriAbstract()
 {
@@ -433,15 +447,99 @@ function getNtrJalaSiriOverview()
 		}
 	});
 }
-getNtrJalaSiriLvlWiseData();
-function getNtrJalaSiriLvlWiseData()
+
+function projectData(divId,levelId,locationId)
 {
+	//alert(locationId);
+	var collapse='';
+	var dataArr = '';
+	if(levelId == 2)
+	{
+		dataArr = ['state','district','constituency','mandal'];
+	}
+	collapse+='<section>';
+		collapse+='<div class="row">';
+			collapse+='<div class="col-sm-12">';
+				for(var i in dataArr)
+				{
+					collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
+						collapse+='<div class="panel panel-default panel-black">';
+							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+dataArr[i]+'">';
+								if(i == 0)
+								{
+									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
+								}else{
+									collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
+								}
+									if(divId == 'FAperformance')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - FA Performance</h4>';
+									}else{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - '+divId+'</h4>';
+									}
+									
+								collapse+='</a>';
+							collapse+='</div>';
+							if(i == 0)
+							{
+								collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
+							}else{
+								collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
+							}
+							
+								collapse+='<div class="panel-body">';
+								if(divId == 'Payments')
+								{
+									collapse+='';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="Material"  type="radio" attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> Material';
+									collapse+='</label>';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="Wage" type="radio" checked attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> Wage';
+									collapse+='</label>';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="Total" type="radio" attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> Total';
+									collapse+='</label>';
+									collapse+='<label class="radio-inline">';
+										collapse+='<input name="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="All" type="radio" attr_radioBtn="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"/> All';
+									collapse+='</label>';
+								}
+									collapse+='<div id="'+divId.replace(/\s+/g, '')+''+dataArr[i]+'"></div>';
+								collapse+='</div>';
+							collapse+='</div>';
+						collapse+='</div>';
+					collapse+='</div>';
+				}
+			collapse+='</div>';
+		collapse+='</div>';
+	collapse+='</section>';
+	$("#projectData").html(collapse);
 	
+	for(var i in dataArr)
+	{
+		var theadArr = [dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		if(dataArr[i] == "constituency")
+			theadArr = ["district",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		else if(dataArr[i] == "mandal")
+			theadArr = ["district","constituency",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		else if(dataArr[i] == "panchayat")
+			theadArr = ["district","constituency","mandal",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		
+		divId = 'NTRJalaSiri'+dataArr[i];
+		getNtrJalaSiriLvlWiseData(dataArr[i],divId,theadArr);		
+	}
+	
+	
+
+}
+function getNtrJalaSiriLvlWiseData(locationType,divId,theadArr)
+{
+	$("#"+divId).html(spinner);	
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		locationType : "state"
+		locationType : locationType
 	}
 	$.ajax({
 		url: 'getNtrJalaSiriLvlWiseData',
@@ -453,11 +551,86 @@ function getNtrJalaSiriLvlWiseData()
 		  xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			
+			tableView(divId,theadArr,ajaxresp,locationType);
 		}
 	});
 }
-
+function tableView(blockId,theadArr,result,locationType)
+{
+	var tableView='';
+	tableView+='<div class="table-responsive">';
+		tableView+='<table class="table table-bordered dataTable'+blockId+'">';
+			tableView+='<thead class="text-capital">';
+				for(var i in theadArr)
+				{
+					tableView+='<th>'+theadArr[i]+'</th>';
+				}
+			tableView+='</thead>';
+			tableView+='<tbody>';
+				if(result != null && result.length > 0){
+					for(var i in result){
+						tableView+='<tr>';
+							if(locationType == "state"){
+								tableView+='<td class="text-capital">'+locationType+'</td>';
+							}
+							else if(locationType == "district"){
+								tableView+='<td class="text-capital">'+result[i].district+'</td>';
+							}
+							else if(locationType == "constituency"){
+								tableView+='<td class="text-capital">'+result[i].district+'</td>';
+								tableView+='<td class="text-capital">'+result[i].constituency+'</td>';
+							}
+							else if(locationType == "mandal"){
+								tableView+='<td class="text-capital">'+result[i].district+'</td>';
+								tableView+='<td class="text-capital">'+result[i].constituency+'</td>';
+								tableView+='<td class="text-capital">'+result[i].mandal+'</td>';
+							}
+							else if(locationType == "panchayat"){
+								tableView+='<td class="text-capital">'+result[i].district+'</td>';
+								tableView+='<td class="text-capital">'+result[i].constituency+'</td>';
+								tableView+='<td class="text-capital">'+result[i].mandal+'</td>';
+								tableView+='<td class="text-capital">'+result[i].panchayat+'</td>';
+							}	
+							
+							tableView+='<td>'+result[i].target+'</td>';
+							tableView+='<td>'+result[i].grounded+'</td>';
+							tableView+='<td>'+result[i].notGrounded+'</td>';
+							tableView+='<td>'+result[i].inProgress+'</td>';
+							tableView+='<td>'+result[i].completed+'</td>';
+							if(result[i].percentage < 50)
+							{
+								tableView+='<td style="background-color:#FF0000">'+result[i].percentage+'</td>';
+							}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+							{
+								tableView+='<td style="background-color:#FFBA00">'+result[i].percentage+'</td>';
+							}else if(result[i].percentage >= 80)
+							{
+								tableView+='<td style="background-color:#00AF50">'+result[i].percentage+'</td>';
+							}
+						tableView+='</tr>';
+					}
+				}
+			tableView+='</tbody>';
+		tableView+='</table>';
+	tableView+='</div>';
+	
+	$("#"+blockId).html(tableView);	
+	if(locationType == 'constituency' || locationType == 'mandal' || locationType == 'panchayat')
+	{
+		$(".dataTable"+blockId).dataTable({
+			"iDisplayLength": 15,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
+	}else if(locationType == 'district')
+	{
+		$(".dataTable"+blockId).dataTable({
+			"iDisplayLength": 20,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
+	}
+}
 </script>
 </body>
 </html>
