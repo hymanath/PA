@@ -2,16 +2,100 @@ var globalFromDate = moment().subtract(1,'month').startOf("month").format('DD-MM
 var globalToDate = moment().format('DD-MM-YYYY');
 var spinner_Drain = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner_Drain"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var globallocId = 0;
+var globallevelId = 0;
+var globalLocationName='';
 $("#selectedName").attr("attr_id","0");
 $("#selectedName").attr("attr_levelidvalue","2");
 onloadCalls();
+function DefaultValuesSetMainBlock(){
+	$("#totalAvailableCountId").html(0);
+	$("#totalAvailableKmId").html(0);
+	$("#totalCleanedCountId").html(0);
+	$("#totalCleanedKmId").html(0);
+	$("#kachaAvailableCountId").html(0);
+	$("#kachaAvailableKmId").html(0);
+	$("#kachaCleanedCountId").html(0);
+	$("#kachaCleanedKmId").html(0);
+	$("#pakkaAvailableCountId").html(0);
+	$("#pakkaAvailableKmId").html(0);
+	$("#pakkaCleanedCountId").html(0);
+	$("#pakkaCleanedKmId").html(0);
+	$("#ugAvailableCountId").html(0);
+	$("#ugAvailableKmId").html(0);
+	$("#udCleanedCountId").html(0);
+	$("#ugCleanedKmId").html(0);
+}
 function onloadCalls(){
-	getDrainsInfoStateWise(0);
-	getDrainsInfoLocationWise("district",'0','','0','',"districtView",0);
-	getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",0);
-	getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView",0);
-	getAllDistricts("constituencyDistrictNames","DISTRICTS");
-	getAllDistricts("mandalDistrictNames","DISTRICTS");
+	
+	if(globallevelId == 2 || globallevelId == 0){
+		
+		$(".tableMenu li:nth-child(2)").show();
+		$("[overview-level]").show();
+		DefaultValuesSetMainBlock();
+		$("#constituencyDistrictNames_chosen").show();
+		$("#mandalDistrictNames_chosen").show();
+		$("#mandalConstituencyNames_chosen").show();
+		getDrainsInfoStateWise(globallocId,"district");
+		getAllDistricts("constituencyDistrictNames","DISTRICTS");
+		getAllDistricts("mandalDistrictNames","DISTRICTS");
+		//District
+		getDrainsInfoLocationWise("district",'0','','0','',"districtView",globallocId);
+		//constituency
+		getDrainsInfoLocationWise("assembly",globallocId,'','0','',"assemblyView",0);
+		//Mandal
+		getDrainsInfoLocationWise("mandal",globallocId,'','0','',"mandalView",0);
+	}else if(globallevelId == 3){
+		$(".tableMenu li:nth-child(1)").addClass("active");
+		$(".tableMenu li:nth-child(2)").hide();
+		$("[overview-level]").show();
+		DefaultValuesSetMainBlock();
+		getDrainsInfoStateWise(globallocId,"district");
+		
+		//District
+		getDrainsInfoLocationWise("district",'0','','0','',"districtView",globallocId);
+		
+		//constituency
+		$("#constituencyDistrictNames_chosen").show();
+		$("#constituencyDistrictNames").html('');
+		$("#constituencyDistrictNames").append("<option value="+globallocId+">"+globalLocationName+" </option>");
+		$("#constituencyDistrictNames").trigger("chosen:updated");
+		getDrainsInfoLocationWise("assembly",globallocId,'district','0','',"assemblyView",0);
+		//Mandal
+		$("#mandalDistrictNames_chosen").show();
+		$("#mandalConstituencyNames_chosen").show();
+		$("#mandalDistrictNames").html('');
+		$("#mandalDistrictNames").append("<option value="+globallocId+">"+globalLocationName+" </option>");
+		$("#mandalDistrictNames").trigger("chosen:updated");
+		getAllConstituenciesForDistrict('mandalConstituencyNames','CONSTITUENCIES',globallocId);
+		getDrainsInfoLocationWise("mandal",globallocId,'district','0','',"mandalView",0);
+	}else if(globallevelId == 4){
+		$(".tableMenu li:nth-child(1)").addClass("active");
+		$(".tableMenu li:nth-child(2)").hide();
+		$("[overview-level='district']").hide();
+		DefaultValuesSetMainBlock();
+		getDrainsInfoStateWise(globallocId,"assembly");
+		
+		//constituency
+		$("#constituencyDistrictNames_chosen").hide();
+		getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",globallocId);
+		//Mandal
+		$("#mandalDistrictNames_chosen").hide();
+		$("#mandalConstituencyNames_chosen").hide();
+		getDrainsInfoLocationWise("mandal",'0','',globallocId,'assembly',"mandalView",0);
+	}else if(globallevelId == 5){
+		$(".tableMenu li:nth-child(1)").addClass("active");
+		$(".tableMenu li:nth-child(2)").hide();
+		$("[overview-level='district']").hide();
+		$("[overview-level='constituency']").hide();
+		DefaultValuesSetMainBlock();
+		getDrainsInfoStateWise(globallocId,"mandal");
+		//Mandal
+		$("#mandalDistrictNames_chosen").hide();
+		$("#mandalConstituencyNames_chosen").hide();
+		getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView",globallocId);
+	}
+	
 	$(".chosen-select").chosen();
 	
 	$("header").on("click",".menu-cls",function(e){
@@ -39,48 +123,81 @@ $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	onloadCalls();
 });
 $(document).on("click",".menuDataCollapse",function(){
-	var locId = $(this).attr("attr_id");
-	var levelId = $(this).attr("attr_levelidvalue");
+	globallocId = $(this).attr("attr_id");
+	globallevelId = $(this).attr("attr_levelidvalue");
+	globalLocationName=$(this).attr("attr_name");
 	$("#selectedName").text($(this).html());
-	$("#selectedName").attr("attr_id",locId);
-	$("#selectedName").attr("attr_levelidvalue",levelId);
+	$("#selectedName").attr("attr_id",globallocId);
+	$("#selectedName").attr("attr_levelidvalue",globallevelId);
+	$("#selectedName").attr("attr_name",globalLocationName);
 	
-	if(levelId == 2)
-	{
+	if(globallevelId == 2 || globallevelId == 0){
+		$(".tableMenu li:nth-child(1)").removeClass("active");
 		$(".tableMenu li:nth-child(2)").show();
 		$("[overview-level]").show();
-		getDrainsInfoStateWise(0);
-		getDrainsInfoLocationWise("district",'0','','0','',"districtView",0);
-		getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",0);
-		getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView",0);
-	}else if(levelId == 3)
-	{
+		DefaultValuesSetMainBlock();
+		$("#constituencyDistrictNames_chosen").show();
+		$("#mandalDistrictNames_chosen").show();
+		$("#mandalConstituencyNames_chosen").show();
+		getDrainsInfoStateWise(globallocId,"district");
+		getAllDistricts("constituencyDistrictNames","DISTRICTS");
+		getAllDistricts("mandalDistrictNames","DISTRICTS");
+		//District
+		getDrainsInfoLocationWise("district",'0','','0','',"districtView",globallocId);
+		//constituency
+		getDrainsInfoLocationWise("assembly",globallocId,'','0','',"assemblyView",0);
+		//Mandal
+		getDrainsInfoLocationWise("mandal",globallocId,'','0','',"mandalView",0);
+	}else if(globallevelId == 3){
+		$(".tableMenu li:nth-child(1)").addClass("active");
 		$(".tableMenu li:nth-child(2)").hide();
 		$("[overview-level]").show();
-		$("#constituencyDistrictNames,#mandalDistrictNames").val(locId).trigger("chosen:updated");
-		getDrainsInfoStateWise(locId);
-		getAllConstituenciesForDistrict('mandalConstituencyNames','CONSTITUENCIES',locId);
-		getDrainsInfoLocationWise("district",'0','','0','',"districtView",locId);
-		getDrainsInfoLocationWise("assembly",locId,'district','','',"assemblyView",0);
-		getDrainsInfoLocationWise("mandal",locId,'district','','',"mandalView",0);
-	}else if(levelId == 4)
-	{
+		DefaultValuesSetMainBlock();
+		getDrainsInfoStateWise(globallocId,"district");
+		
+		//District
+		getDrainsInfoLocationWise("district",'0','','0','',"districtView",globallocId);
+		
+		//constituency
+		$("#constituencyDistrictNames_chosen").show();
+		$("#constituencyDistrictNames").html('');
+		$("#constituencyDistrictNames").append("<option value="+globallocId+">"+globalLocationName+" </option>");
+		$("#constituencyDistrictNames").trigger("chosen:updated");
+		getDrainsInfoLocationWise("assembly",globallocId,'district','0','',"assemblyView",0);
+		//Mandal
+		$("#mandalDistrictNames_chosen").show();
+		$("#mandalConstituencyNames_chosen").show();
+		$("#mandalDistrictNames").html('');
+		$("#mandalDistrictNames").append("<option value="+globallocId+">"+globalLocationName+" </option>");
+		$("#mandalDistrictNames").trigger("chosen:updated");
+		getAllConstituenciesForDistrict('mandalConstituencyNames','CONSTITUENCIES',globallocId);
+		getDrainsInfoLocationWise("mandal",globallocId,'district','0','',"mandalView",0);
+	}else if(globallevelId == 4){
+		$(".tableMenu li:nth-child(1)").addClass("active");
 		$(".tableMenu li:nth-child(2)").hide();
 		$("[overview-level='district']").hide();
-		$("#constituencyDistrictNames,#mandalDistrictNames").val(locId).trigger("chosen:updated");
-		getDrainsInfoStateWise(locId);
-		getAllConstituenciesForDistrict('mandalConstituencyNames','CONSTITUENCIES',locId);
-		//getDrainsInfoLocationWise("district",'0','','0','',"districtView",locId);
-		//getDrainsInfoLocationWise(locationType,filterId,filterType,subFilterId,subFilterType,divId,locId)
-		//getDrainsInfoLocationWise("assembly",locId,'constituency','','',"assemblyView",0);
-		//getDrainsInfoLocationWise("assembly",0,'district',locId,'constituency','assemblyView',0);
-		getDrainsInfoLocationWise("assembly",locId,'constituency','','',"assemblyView",0);
-		//getDrainsInfoLocationWise("mandal",locId,'constituency','','assembly',"mandalView",0);
-		getDrainsInfoLocationWise("mandal",'','constituency',locId,'assembly','mandalView',0);
-	}
+		DefaultValuesSetMainBlock();
+		getDrainsInfoStateWise(globallocId,"assembly");
 		
-	
-	
+		//constituency
+		$("#constituencyDistrictNames_chosen").hide();
+		getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",globallocId);
+		//Mandal
+		$("#mandalDistrictNames_chosen").hide();
+		$("#mandalConstituencyNames_chosen").hide();
+		getDrainsInfoLocationWise("mandal",'0','',globallocId,'assembly',"mandalView",0);
+	}else if(globallevelId == 5){
+		$(".tableMenu li:nth-child(1)").addClass("active");
+		$(".tableMenu li:nth-child(2)").hide();
+		$("[overview-level='district']").hide();
+		$("[overview-level='constituency']").hide();
+		DefaultValuesSetMainBlock();
+		getDrainsInfoStateWise(globallocId,"mandal");
+		//Mandal
+		$("#mandalDistrictNames_chosen").hide();
+		$("#mandalConstituencyNames_chosen").hide();
+		getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView",globallocId);
+	}
 });
 $(document).on('click','.calendar_active_cls li', function(){
 	var date = $(this).attr("attr_val");
@@ -120,7 +237,7 @@ $(document).on('click','.calendar_active_cls li', function(){
 	
 });
 
-function getDrainsInfoStateWise(locId){
+function getDrainsInfoStateWise(locId,locationType){
 	$("#totalSpinnerId").html(spinner_Drain);
 	$("#undergroundSpinnerId").html(spinner_Drain);
 	$("#pakkaSpinnerId").html(spinner_Drain);
@@ -129,7 +246,7 @@ function getDrainsInfoStateWise(locId){
 	var json = {
 			fromDate : globalFromDate,
 			toDate : globalToDate,
-			locationType : "district" ,
+			locationType : locationType ,
 			locationId:locId
 		}
 		$.ajax({                
@@ -243,7 +360,7 @@ function buildingTable(result,locationType,divId){
 	var str='';
 	str+='<div><span class="pull-right" style="margin:10px;"><b>Avi - Availabel , Cle - Cleaned , Km - kilometers</b></span></div>';
 	str+='<div class="col-md-12 table-responsive">';
-	str+='<table class="table table-condensed table-striped" id="datatable'+locationType+'">';
+	str+='<table class="table table-condensed table-striped" id="datatable'+locationType+'" style="width:100%;">';
         str+='<thead>';
             str+='<tr>';
 				if(locationType == "district")
@@ -267,23 +384,23 @@ function buildingTable(result,locationType,divId){
 				str+='<th style="background-color:#fff">km</th>';
                 str+='<th style="background-color:#fff">%</th>';
 				
-                str+='<th style="background-color:#E6EFEE">Avi</th>';
-				str+='<th style="background-color:#E6EFEE">km</th>';
-                str+='<th style="background-color:#E6EFEE">Cle</th>';
-				str+='<th style="background-color:#E6EFEE">km</th>';
-                str+='<th style="background-color:#E6EFEE">%</th>';
+                str+='<th style="background-color:#d9c5f2">Avi</th>';
+				str+='<th style="background-color:#d9c5f2">km</th>';
+                str+='<th style="background-color:#d9c5f2">Cle</th>';
+				str+='<th style="background-color:#d9c5f2">km</th>';
+                str+='<th style="background-color:#d9c5f2">%</th>';
 				
-				str+='<th style="background-color:#FFEAEA">Avi</th>';
-				str+='<th style="background-color:#FFEAEA">km</th>';
-                str+='<th style="background-color:#FFEAEA">Cle</th>';
-				str+='<th style="background-color:#FFEAEA">km</th>';
-                str+='<th style="background-color:#FFEAEA">%</th>';
+				str+='<th style="background-color:#b1ebf7">Avi</th>';
+				str+='<th style="background-color:#b1ebf7">km</th>';
+                str+='<th style="background-color:#b1ebf7">Cle</th>';
+				str+='<th style="background-color:#b1ebf7">km</th>';
+                str+='<th style="background-color:#b1ebf7">%</th>';
 				
-				str+='<th style="background-color:#F2F1E6">Avi</th>';
-				str+='<th style="background-color:#F2F1E6">km</th>';
-                str+='<th style="background-color:#F2F1E6">Cle</th>';
-				str+='<th style="background-color:#F2F1E6">km</th>';
-                str+='<th style="background-color:#F2F1E6">%</th>';
+				str+='<th style="background-color:#fcddef">Avi</th>';
+				str+='<th style="background-color:#fcddef">km</th>';
+                str+='<th style="background-color:#fcddef">Cle</th>';
+				str+='<th style="background-color:#fcddef">km</th>';
+                str+='<th style="background-color:#fcddef">%</th>';
             str+='</tr>';
         str+='</thead>';
 		str+='<tbody>';
@@ -298,29 +415,113 @@ function buildingTable(result,locationType,divId){
 						}
 						
 						//<p><span>174</span>/<span>1003</span></p>
-						str+='<td>'+result[i].totalAvailable+'</td>';
-						str+='<td>'+result[i].totalAvailableKms+'</td>';
-						str+='<td>'+result[i].totalCleaned+'</td>';
-						str+='<td>'+result[i].totalCleanedKms+'</td>';
-						str+='<td style="color:#FD3367">'+result[i].percentage+'</td>';
+						if(result[i].totalAvailable !=null && result[i].totalAvailable>0){
+							str+='<td style="background-color:#fff">'+result[i].totalAvailable+'</td>';
+						}else{
+							str+='<td style="background-color:#fff"> - </td>';
+						}
+						if(result[i].totalAvailableKms !=null && result[i].totalAvailableKms>0){
+							str+='<td style="background-color:#fff">'+result[i].totalAvailableKms+'</td>';
+						}else{
+							str+='<td style="background-color:#fff"> - </td>';
+						}
 						
-						str+='<td style="background-color:#E6EFEE">'+result[i].kachaAvailable+'</td>';
-						str+='<td style="background-color:#E6EFEE">'+result[i].kachaAvailableKms+'</td>';
-						str+='<td style="background-color:#E6EFEE">'+result[i].kachaCleaned+'</td>';
-						str+='<td style="background-color:#E6EFEE">'+result[i].kachaCleanedKM+'</td>';
-						str+='<td style="background-color:#E6EFEE;color:#FD3367">'+result[i].kachaPercentage+'</td>';
+						if(result[i].totalCleaned !=null && result[i].totalCleaned>0){
+							str+='<td style="background-color:#fff">'+result[i].totalCleaned+'</td>';
+						}else{
+							str+='<td style="background-color:#fff"> - </td>';
+						}
 						
-						str+='<td style="background-color:#FFEAEA">'+result[i].pakkaAvailable+'</td>';
-						str+='<td style="background-color:#FFEAEA">'+result[i].pakkaAvailableKms+'</td>';
-						str+='<td style="background-color:#FFEAEA">'+result[i].pakkaCleaned+'</td>';
-						str+='<td style="background-color:#FFEAEA">'+result[i].pakkaCleanedKM+'</td>';
-						str+='<td style="background-color:#FFEAEA;color:#FD3367">'+result[i].pakkaPercentage+'</td>';
+						if(result[i].totalCleanedKms !=null && result[i].totalCleanedKms>0){
+							str+='<td style="background-color:#fff">'+result[i].totalCleanedKms+'</td>';
+						}else{
+							str+='<td style="background-color:#fff"> - </td>';
+						}
+						if(result[i].percentage !=null && result[i].percentage>0){
+							str+='<td style="color:#FD3367">'+result[i].percentage+'</td>';
+						}else{
+							str+='<td style="color:#FD3367"> - </td>';
+						}
 						
-						str+='<td style="background-color:#F2F1E6">'+result[i].ugAvailable+'</td>';
-						str+='<td style="background-color:#F2F1E6">'+result[i].ugAvailableKms+'</td>';
-						str+='<td style="background-color:#F2F1E6">'+result[i].ugCleaned+'</td>';
-						str+='<td style="background-color:#F2F1E6">'+result[i].ugCleanedKms+'</td>';
-						str+='<td style="background-color:#F2F1E6;color:#FD3367">'+result[i].ugPercentage+'</td>';
+						if(result[i].kachaAvailable !=null && result[i].kachaAvailable >0){
+							str+='<td style="background-color:#d9c5f2">'+result[i].kachaAvailable+'</td>';
+						}else{
+							str+='<td style="background-color:#d9c5f2"> - </td>';
+						}
+						if(result[i].kachaAvailableKms !=null && result[i].kachaAvailableKms >0){
+							str+='<td style="background-color:#d9c5f2">'+result[i].kachaAvailableKms+'</td>';
+						}else{
+							str+='<td style="background-color:#d9c5f2"> - </td>';
+						}
+						if(result[i].kachaCleaned !=null && result[i].kachaCleaned >0){
+							str+='<td style="background-color:#d9c5f2">'+result[i].kachaCleaned+'</td>';
+						}else{
+							str+='<td> - </td>';
+						}
+						
+						if(result[i].kachaCleanedKM !=null && result[i].kachaCleanedKM >0){
+							str+='<td style="background-color:#d9c5f2">'+result[i].kachaCleanedKM+'</td>';
+						}else{
+							str+='<td style="background-color:#d9c5f2"> - </td>';
+						}
+						
+						if(result[i].kachaPercentage !=null && result[i].kachaPercentage >0){
+							str+='<td style="background-color:#d9c5f2;color:#FD3367">'+result[i].kachaPercentage+'</td>';
+						}else{
+							str+='<td style="background-color:#d9c5f2;color:#FD3367"> - </td>';
+						}
+						
+						if(result[i].pakkaAvailable !=null && result[i].pakkaAvailable >0){
+							str+='<td style="background-color:#b1ebf7">'+result[i].pakkaAvailable+'</td>';
+						}else{
+							str+='<td style="background-color:#b1ebf7"> - </td>';
+						}
+						if(result[i].pakkaAvailableKms !=null && result[i].pakkaAvailableKms >0){
+								str+='<td style="background-color:#b1ebf7">'+result[i].pakkaAvailableKms+'</td>';
+						}else{
+							str+='<td style="background-color:#b1ebf7"> - </td>';
+						}
+						if(result[i].pakkaCleaned !=null && result[i].pakkaCleaned >0){
+							str+='<td style="background-color:#b1ebf7">'+result[i].pakkaCleaned+'</td>';
+						}else{
+							str+='<td style="background-color:#b1ebf7"> - </td>';
+						}
+						if(result[i].pakkaCleanedKM !=null && result[i].pakkaCleanedKM >0){
+						str+='<td style="background-color:#b1ebf7">'+result[i].pakkaCleanedKM+'</td>';
+						}else{
+							str+='<td style="background-color:#b1ebf7"> - </td>';
+						}
+						if(result[i].pakkaPercentage !=null && result[i].pakkaPercentage >0){
+							str+='<td style="background-color:#b1ebf7;color:#FD3367">'+result[i].pakkaPercentage+'</td>';
+						}else{
+							str+='<td style="background-color:#b1ebf7;color:#FD3367"> - </td>';
+						}
+						
+						if(result[i].ugAvailable !=null && result[i].ugAvailable >0){
+							str+='<td style="background-color:#fcddef">'+result[i].ugAvailable+'</td>';
+						}else{
+							str+='<td style="background-color:#fcddef"> - </td>';
+						}
+						if(result[i].ugAvailableKms !=null && result[i].ugAvailableKms >0){
+							str+='<td style="background-color:#fcddef">'+result[i].ugAvailableKms+'</td>';
+						}else{
+							str+='<td style="background-color:#fcddef"> - </td>';
+						}
+						if(result[i].ugCleaned !=null && result[i].ugCleaned >0){
+							str+='<td style="background-color:#fcddef">'+result[i].ugCleaned+'</td>';
+						}else{
+							str+='<td style="background-color:#fcddef"> - </td>';
+						}
+						if(result[i].ugCleanedKms !=null && result[i].ugCleanedKms >0){
+							str+='<td style="background-color:#fcddef">'+result[i].ugCleanedKms+'</td>';
+						}else{
+							str+='<td style="background-color:#fcddef"> - </td>';
+						}
+						if(result[i].ugPercentage !=null && result[i].ugPercentage >0){
+							str+='<td style="background-color:#fcddef;color:#FD3367">'+result[i].ugPercentage+'</td>';
+						}else{
+							str+='<td style="background-color:#fcddef;color:#FD3367"> - </td>';
+						}
 						str+='</tr>';
 					//}					
 				}
@@ -344,14 +545,23 @@ $(document).on("click","[role='tabDrains_menu'] li",function(){
 	var blockId = $(this).closest("ul").attr("attr_blockId");
 	if(blockId == 3){
 		if($(this).attr("attr_location_type") == "districts"){
-			getDrainsInfoLocationWise("district",'0','','0','','districtView',0);
+			getDrainsInfoLocationWise("district",'0','','0','','districtView',globallocId);
 		}else if($(this).attr("attr_location_type") == "parliament"){
 			getDrainsInfoLocationWise("constituency",'0','','0','','districtView',0);
 		}
 	}else if(blockId == 4){
 		if($(this).attr("attr_location_type") == "districts"){
-			getAllDistricts("constituencyDistrictNames","DISTRICTS");
-			getDrainsInfoLocationWise("assembly",'0','','0','','assemblyView',0);
+			
+			if(globallevelId ==2 || globallevelId == 0){
+				getAllDistricts("constituencyDistrictNames","DISTRICTS");
+				getDrainsInfoLocationWise("assembly",globallocId,'','0','','assemblyView',0);
+			}else{
+				$("#constituencyDistrictNames").html('');
+				$("#constituencyDistrictNames").append("<option value="+globallocId+">"+globalLocationName+" </option>");
+				$("#constituencyDistrictNames").trigger("chosen:updated");
+				getDrainsInfoLocationWise("assembly",globallocId,'district','0','','assemblyView',0);
+			}
+			
 		}else if($(this).attr("attr_location_type") == "parliament"){
 			getAllParliaments("constituencyDistrictNames","PARLIAMENTS");
 			getDrainsInfoLocationWise("assembly",'0','','0','','assemblyView',0);
@@ -360,8 +570,16 @@ $(document).on("click","[role='tabDrains_menu'] li",function(){
 		$("#mandalConstituencyNames").html("");
 		$("#mandalConstituencyNames").trigger('chosen:updated');
 		if($(this).attr("attr_location_type") == "districts"){
-			getAllDistricts("mandalDistrictNames","DISTRICTS");
-			getDrainsInfoLocationWise("mandal",'0','','0','','mandalView',0);
+			if(globallevelId ==2 || globallevelId == 0){
+				getAllDistricts("mandalDistrictNames","DISTRICTS");
+				getDrainsInfoLocationWise("mandal",'0','','0','','mandalView',0);
+			}else{
+				$("#mandalDistrictNames").html('');
+				$("#mandalDistrictNames").append("<option value="+globallocId+">"+globalLocationName+" </option>");
+				$("#mandalDistrictNames").trigger("chosen:updated");
+				getDrainsInfoLocationWise("mandal",globallocId,'district','0','','mandalView',0);
+			}
+			
 		}else if($(this).attr("attr_location_type") == "parliament"){
 			getAllParliaments("mandalDistrictNames","PARLIAMENTS");
 			getDrainsInfoLocationWise("mandal",'0','','0','','mandalView',0);
