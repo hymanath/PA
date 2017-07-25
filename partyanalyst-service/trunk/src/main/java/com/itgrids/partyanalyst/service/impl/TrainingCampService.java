@@ -11648,8 +11648,47 @@ public void setNonInviteeAttendedCount(Map<Long,Set<Long>> totAttendMap, List<Ob
 		attendedRoleIds.add(2l);
 		attendedRoleIds.add(3l);
 		Map<Long,TrainingCampVO> finalMap = new HashMap<Long,TrainingCampVO>();
+		Map<Long,Set<Long>> committeeMembersMap = new HashMap<Long, Set<Long>>(0);
+		Map<Long,Set<Long>> batchwiseOtherTdpCadreIdsListMap = new HashMap<Long, Set<Long>>(0);
+		
 		if(result!=null && result.size()>0){
+			
+			/**
+			 * Here we are getting attended comittee members tdpcadreIds
+			 */
 			for(Object[] obj:result){
+				Long batchId = Long.valueOf(obj[9].toString());
+				Set<Long> batchWiseCommitteeMembersIdsList = new HashSet<Long>(0);
+				if(committeeMembersMap.get(batchId)  != null){
+					batchWiseCommitteeMembersIdsList=committeeMembersMap.get(batchId);
+				}
+				batchWiseCommitteeMembersIdsList.add(Long.valueOf(obj[17].toString()));
+				committeeMembersMap.put(batchId, batchWiseCommitteeMembersIdsList);
+			}
+			
+			/**
+			 * Here we are separating others tdpcadreIds , others means who are not having any role in committee
+			 */
+			if(commonMethodsUtilService.isMapValid(committeeMembersMap) && commonMethodsUtilService.isMapValid(totAttendMap)){
+				for (Long batchId: totAttendMap.keySet()) {
+					Set<Long> totalAttendedTdpCadreIds = totAttendMap.get(batchId);
+					Set<Long> attendedCommitteeMemebrsTdpCadreIds = committeeMembersMap.get(batchId);
+					for (Long tdpCadreId : totalAttendedTdpCadreIds) {
+						if(!attendedCommitteeMemebrsTdpCadreIds.contains(tdpCadreId)){
+							Set<Long> batchWiseMembersIdsList = new HashSet<Long>(0);
+							if(batchwiseOtherTdpCadreIdsListMap.get(batchId)  != null){
+								batchWiseMembersIdsList=batchwiseOtherTdpCadreIdsListMap.get(batchId);
+							}
+							batchWiseMembersIdsList.add(tdpCadreId);
+							batchwiseOtherTdpCadreIdsListMap.put(batchId, batchWiseMembersIdsList);
+						}
+					}
+				}
+			}
+			
+			
+			for(Object[] obj:result){
+				
 				TrainingCampVO tmp = finalMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
         		if(tmp==null){
         			tmp = new TrainingCampVO();
@@ -11710,7 +11749,12 @@ public void setNonInviteeAttendedCount(Map<Long,Set<Long>> totAttendMap, List<Ob
         			btch.setBatchName(obj[10].toString());
         			btch.setBatchDates(obj[11].toString().substring(0, 9)+" - "+obj[12].toString().substring(0, 9));
         			
+        			Set<Long> otherIdsList = batchwiseOtherTdpCadreIdsListMap.get(btch.getBatchId());
+        			if(commonMethodsUtilService.isListOrSetValid(otherIdsList)){
+        				btch.setMemberCountNonIn(Long.valueOf(String.valueOf(otherIdsList.size())));
+        			}
             	}
+        		
         		if(!isNewCamp){
         			cmp.setCmpBatchCount(cmp.getCmpBatchCount()+1);
         		}
@@ -11745,7 +11789,7 @@ public void setNonInviteeAttendedCount(Map<Long,Set<Long>> totAttendMap, List<Ob
         				role.setMemberCountAttendee(role.getMemberCountAttendee()+1);
         			}else{
         				role.setMemberCountNonIn(role.getMemberCountNonIn()+1);
-        				btch.setMemberCountNonIn(btch.getMemberCountNonIn()+1);
+        				//btch.setMemberCountNonIn(btch.getMemberCountNonIn()+1);
         			}
     			}
     			if(attendedRoleIds.contains(role.getRoleId()) && totalAttendForBatch.contains(commonMethodsUtilService.getLongValueForObject(obj[17]))){
