@@ -35,6 +35,7 @@ import com.itgrids.service.integration.impl.INREGSTCSService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 @Service
 @Transactional
@@ -3845,5 +3846,167 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at getPanchayatMatchedVO - NREGSTCSService service", e);
 		}
 		return null;
+	}
+	 /**
+	  * @param  InputVO inputVO which contain fromDateStr,toDateStr,location and locationId
+	  * @return NregaLocationOverviewVO
+	  * @author Santosh 
+	  * @Description :This Service Method is used to get IHHL abstract data.
+	  * @since 24-JULY-2017
+	  */
+	public NregaLocationOverviewVO getIhhlAbstractData(InputVO inputVO){
+		NregaLocationOverviewVO resultVO = new NregaLocationOverviewVO();
+		try {
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://125.17.121.167/rwsapwebapi/api/values/Abstact_IHHLData?fromMonth="+inputVO.getFromDateStr()+"&toMonth="+inputVO.getToDateStr()+"&Location="+inputVO.getLocation()+"&locationID="+inputVO.getLocationIdStr());
+	        ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+		        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject jsonObject = new JSONObject(output);
+	 	    		JSONArray overViewArr = jsonObject.getJSONArray("MinisterDashBoardStateOverView");
+	 	    		JSONArray locationOverviewArr = jsonObject.getJSONArray("MinisterDashBoardLocOverView");
+	 	    		//overall overview
+	 	    		if(overViewArr != null && overViewArr.length() > 0){
+	 	    			resultVO.setSubList1(new ArrayList<NregaLocationOverviewVO>());
+	 	    			for(int i=0;i<overViewArr.length();i++){
+	 	    				JSONObject jObj = (JSONObject) overViewArr.get(i);
+	 	    				NregaLocationOverviewVO vo = getIhhlSummaryData(jObj);
+	 	    				resultVO.getSubList1().add(vo);
+	 	    			}	
+	 	    		}
+	 	    		//location wise overview
+	 	    		if(locationOverviewArr != null && locationOverviewArr.length() > 0){
+	 	    			resultVO.setSubList2(new ArrayList<NregaLocationOverviewVO>());
+	 	    			for(int i=0;i<locationOverviewArr.length();i++){
+	 	    				JSONObject jObj = (JSONObject) locationOverviewArr.get(i);
+	 	    				NregaLocationOverviewVO vo = getIhhlLocationWiseData(jObj);
+	 	    				resultVO.getSubList2().add(vo);
+	 	    			}	
+	 	    		}
+	 	    	}
+	 	      }  
+		} catch (Exception e) {
+			LOG.error("Exception raised at getIhhlOverviewData - NREGSTCSService service", e);
+		}
+		return resultVO;
+	}
+	/**
+	  * @param  InputVO inputVO which contain fromDateStr,toDateStr,location and locationId
+	  * @return NregaLocationOverviewVO
+	  * @author Santosh 
+	  * @Description :This Service Method is used to get IHHL overview data.
+	  * @since 24-JULY-2017
+	  */
+	public NregaLocationOverviewVO getIhhlOverviewData(InputVO inputVO){
+		NregaLocationOverviewVO resultVO = new NregaLocationOverviewVO();
+		try {
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://125.17.121.167/rwsapwebapi/api/values/Overview_IHHLData?fromMonth="+inputVO.getFromDateStr()+"&toMonth="+inputVO.getToDateStr()+"&Location="+inputVO.getLocation()+"&locationID="+inputVO.getLocationIdStr());
+	        ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+		        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject jsonObject = new JSONObject(output);
+	 	    		JSONArray overViewArr = jsonObject.getJSONArray("MinisterDashBoardStateOverView");
+	 	    		JSONArray locationOverviewArr = jsonObject.getJSONArray("MinisterDashBoardLocOverView");
+	 	    		//overall overview
+	 	    		if(overViewArr != null && overViewArr.length() > 0){
+	 	    			resultVO.setSubList1(new ArrayList<NregaLocationOverviewVO>());
+	 	    			for(int i=0;i<overViewArr.length();i++){
+	 	    				JSONObject jObj = (JSONObject) overViewArr.get(i);
+	 	    				NregaLocationOverviewVO vo = getIhhlSummaryData(jObj);
+	 	    				resultVO.getSubList1().add(vo);
+	 	    			}	
+	 	    		}
+	 	    		//location wise overview
+	 	    		if(locationOverviewArr != null && locationOverviewArr.length() > 0){
+	 	    			resultVO.setSubList2(new ArrayList<NregaLocationOverviewVO>());
+	 	    			for(int i=0;i<locationOverviewArr.length();i++){
+	 	    				JSONObject jObj = (JSONObject) locationOverviewArr.get(i);
+	 	    				NregaLocationOverviewVO vo = getIhhlLocationWiseData(jObj);
+	 	    				resultVO.getSubList2().add(vo);
+	 	    			}	
+	 	    		}
+	 	    	}
+	 	      }  
+		} catch (Exception e) {
+			LOG.error("Exception raised at getIhhlOverviewData - NREGSTCSService service", e);
+		}
+		return resultVO;
+	}
+	public NregaLocationOverviewVO getIhhlSummaryData(JSONObject jObj){
+		NregaLocationOverviewVO vo = new NregaLocationOverviewVO();
+		try {
+			    vo.setTarget(jObj.getLong("TARGET"));
+				vo.setGrounded(jObj.getLong("GROUNDED"));
+				vo.setNoTGrounded(jObj.getLong("NOT_GROUNDED"));
+				vo.setCompleted(jObj.getLong("COMPLETED"));
+				vo.setPercentage(new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		} catch(Exception e){
+			LOG.error("Exception raised at getIhhlSummaryData() - NREGSTCSService service", e);
+		}
+		return vo;
+	}
+	public NregaLocationOverviewVO getIhhlLocationWiseData(JSONObject jObj){
+		NregaLocationOverviewVO vo = new NregaLocationOverviewVO();
+		try {
+			    vo.setType(jObj.getString("TYPE"));
+				vo.setGreen(jObj.getLong("GREEN"));
+				vo.setRed(jObj.getLong("RED"));
+				vo.setOrange(jObj.getLong("ORANGE"));
+				vo.setTotal(jObj.getLong("TOTAL"));
+		} catch(Exception e){
+			LOG.error("Exception raised at getIhhlLocationWiseData() - NREGSTCSService service", e);
+		}
+		return vo;
+	}
+	/**
+	  * @param  InputVO inputVO which contain fromDateStr,toDateStr,location and locationId
+	  * @return List<NregaLocationOverviewVO>
+	  * @author Santosh 
+	  * @Description :This Service Method is used to get IHHL location wise details.
+	  * @since 24-JULY-2017
+	  */
+	public List<NregaLocationOverviewVO> getLocationIhhlData(InputVO inputVO){
+		List<NregaLocationOverviewVO> resultList = new ArrayList<NregaLocationOverviewVO>(0);
+		try {
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://125.17.121.167/rwsapwebapi/api/values/Location_IHHLData?fromMonth="+inputVO.getFromDateStr()+"&toMonth="+inputVO.getToDateStr()+"&Location="+inputVO.getLocation()+"&subLocation="+inputVO.getSubLocation()+"&locationID="+inputVO.getLocationIdStr());
+	        ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject jsonObject = new JSONObject(output);
+	 	    		JSONArray locationOverviewDtlsArr = jsonObject.getJSONArray("MinisterDashBoardLocationData");
+	 	    		if(locationOverviewDtlsArr != null && locationOverviewDtlsArr.length() > 0){
+	 	    			for(int i=0;i<locationOverviewDtlsArr.length();i++){
+	 	    				NregaLocationOverviewVO locationVO = new NregaLocationOverviewVO();
+	 	    				JSONObject jObj = (JSONObject) locationOverviewDtlsArr.get(i);
+	 	    				locationVO.setUniqueId(jObj.getString("UNIQUEID"));
+	 	    				locationVO.setDistrict(jObj.getString("DISTRICT"));
+	 	    				locationVO.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				locationVO.setMandal(jObj.getString("MANDAL"));
+	 	    				locationVO.setPanchayt(jObj.getString("PANCHAYAT"));
+	 	    				locationVO.setTarget(jObj.getLong("TARGET"));
+	 	    				locationVO.setGrounded(jObj.getLong("GROUNDED"));
+	 	    				locationVO.setNoTGrounded(jObj.getLong("NOT_GROUNDED"));
+	 	    				locationVO.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				locationVO.setPercentage(new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				resultList.add(locationVO);
+	 	    			}	
+	 	    		}
+	 	    	}
+	 	      }  
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationIhhlData() - NREGSTCSService service", e);
+		}
+		return resultList;
 	}
 }

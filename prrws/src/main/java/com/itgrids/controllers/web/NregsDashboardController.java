@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LabourBudgetOverViewVO;
 import com.itgrids.dto.LocationFundDetailsVO;
+import com.itgrids.dto.NregaLocationOverviewVO;
 import com.itgrids.dto.NregaPaymentsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
@@ -315,7 +317,6 @@ public class NregsDashboardController {
 		}
 		return returnVO;
 	}
-	
 	@PostMapping("/getNREGSProjectsAbstractNewFrConstituency")
 	public @ResponseBody List<NregsProjectsVO> getNREGSProjectsAbstractNewFrConstituency(@RequestBody InputVO vo){
 		List<NregsProjectsVO> projectVOList = null;
@@ -351,4 +352,35 @@ public class NregsDashboardController {
 		}
 		return levlWiseVOList;
 	}
+	@PostMapping("/getIhhlAbstractData")
+	public @ResponseBody  NregaLocationOverviewVO getIhhlAbstractData(@RequestBody InputVO vo){
+		NregaLocationOverviewVO  resultVO = null;
+		try {
+			resultVO =  nregsTcsService.getIhhlOverviewData(vo);
+		} catch(Exception e){
+			LOG.error("Exception raised at getIhhlAbstractData() - NREGSController controller", e);
+		}
+		return resultVO;
+	}
+	@PostMapping("/getIhhlOverviewData")
+	public @ResponseBody  NregaLocationOverviewVO getIhhlOverviewData(@RequestBody InputVO vo){
+		NregaLocationOverviewVO  resultVO = null;
+		try {
+			resultVO =  nregsTcsService.getIhhlOverviewData(vo);
+		} catch(Exception e){
+			LOG.error("Exception raised at NregsOverviewVO() - NREGSController controller", e);
+		}
+		return resultVO;
+	}
+	@PostMapping("/getLocationIhhlData")
+	public @ResponseBody  List<NregaLocationOverviewVO> getLocationIhhlData(@RequestBody InputVO vo){
+		List<NregaLocationOverviewVO>  resultList = null;
+		try {
+			resultList =  nregsTcsService.getLocationIhhlData(vo);
+		} catch(Exception e){
+			LOG.error("Exception raised at getLocationIhhlData() - NREGSController controller", e);
+		}
+		return resultList;
+	}
+	
 }

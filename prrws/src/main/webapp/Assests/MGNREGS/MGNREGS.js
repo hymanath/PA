@@ -815,7 +815,7 @@ function buildNREGSProjectsOverview(result,blockName)
 	
 }
 
-//LabourBudget Overview Call — Sravanth
+//LabourBudget Overview Call נSravanth
 function getNREGSLabourBudgetOverview(projectDivId,menuLocationType,menuLocationId)
 {
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
@@ -842,7 +842,7 @@ function getNREGSLabourBudgetOverview(projectDivId,menuLocationType,menuLocation
 	});
 }
 
-//LabourBudget Expenditure Call  — Sravanth
+//LabourBudget Expenditure Call  נSravanth
 function getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId)
 {
 	$("#projectOvervw"+projectDivId).html(spinner);
@@ -868,7 +868,7 @@ function getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocat
   });
 }
 
-//LabourBudget LevelWise Data Call — Sravanth
+//LabourBudget LevelWise Data Call נSravanth
 function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLocationId)
 {
 	var theadArr = [locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
@@ -3911,6 +3911,81 @@ function getNREGSAbstractDataByTypeFrConstituency(type,locType,locId,districtId,
 		},
 		success: function(ajaxresp) {
 			buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId)
+		}
+	});
+}
+
+//IHHL Ajax Call
+//getIhhlAbstractData();
+//getIhhlOverviewData();
+//getLocationIhhlData();
+
+function getIhhlAbstractData()
+{
+	
+	var json = {
+		fromDateStr:"201704",
+        toDateStr:"201707",
+        location:"state",
+        locationIdStr:"01"
+	  }
+	$.ajax({
+		url: 'getIhhlAbstractData',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			console.log(ajaxresp);
+		}
+	});
+}
+function getIhhlOverviewData()
+{
+	var json = {
+		fromDateStr:"201704",
+        toDateStr:"201707",
+        location:"state",
+        locationIdStr:"01"
+	}
+	$.ajax({
+		url: 'getIhhlOverviewData',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			console.log(ajaxresp);
+		}
+	});
+}
+function getLocationIhhlData()
+{
+	var json = {
+		fromDateStr:"201704",
+        toDateStr:"201707",
+        location:"state",
+		subLocation:"district",
+        locationIdStr:"01",
+		subLocation:"district"
+	}
+	$.ajax({
+		url: 'getLocationIhhlData',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			  console.log(ajaxresp);
 		}
 	});
 }
