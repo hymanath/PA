@@ -370,7 +370,6 @@
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
-<script src="Assests/js/Pris.js" type="text/javascript"></script>
 <script src="Assests/drainDashBoard/drainDashBoard.js" type="text/javascript"></script>
 </body>
 </html>
