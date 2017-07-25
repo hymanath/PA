@@ -48,7 +48,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 				getAllDistricts(4,blockName,subBlockName);
 				POSTConstDateForAssemblyInfo(4,blockName,subBlockName,'tableView',0);
 			}else if(subBlockName == 'Parliament'){
-				POSTConstituencyOverview(4,blockName,subBlockName,'tableView',0);
+				 POSTConstituencyOverview(4,blockName,subBlockName,'tableView',0);
 				getAllParliaments(4,blockName,subBlockName);
 			}
 		}else if(blockName == 'Mandal'){
@@ -355,7 +355,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 											tableView+='<th colspan="1">Constituency</th>';
 										}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
 											tableView+='<th colspan="1">Parliament</th>';
-											//tableView+='<th colspan="1">Constituency</th>';
+											tableView+='<th colspan="1">Constituency</th>';
 										}
 										
 										tableView+='<th style="font-size:10px;" colspan="3" class="text-center"><img class="img_widthTable" src="Assests/icons/Mandal_Survy_icon.png" alt="Mandal_Survy_icon"><br/>MANDAL</th>';
@@ -371,7 +371,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 											tableView+='<th ></th>';
 										}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
 											tableView+='<th ></th>';
-											//tableView+='<th ></th>';
+											tableView+='<th ></th>';
 										}
 										
 										tableView+='<th style="font-size:10px;" class="light_yellow_color">STARTED</th>';
@@ -391,9 +391,9 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 										tableView+='<th colspan="1">Mandal</th>';
 									}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
 										tableView+='<th colspan="1">Parliament</th>';
-										//tableView+='<th colspan="1">Constituency</th>';
+										tableView+='<th colspan="1">Constituency</th>';
 										tableView+='<th colspan="1">Mandal</th>';
-										//tableView+='<th colspan="1">Constituency</th>';
+									
 									}
 									
 									
@@ -410,10 +410,10 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 										tableView+='<th ></th>';
 										tableView+='<th ></th>';
 									}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
-										//tableView+='<th ></th>';
 										tableView+='<th ></th>';
 										tableView+='<th ></th>';
-										//tableView+='<th colspan="1">Constituency</th>';
+										tableView+='<th ></th>';
+										
 									}
 										
 										tableView+='<th style="font-size:10px;" class="light_rose_color">STARTED</th>';
@@ -447,8 +447,9 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 													tableView+='<td>'+result.subList[i].districtName+'</td>';
 													tableView+='<td>'+result.subList[i].name+'</td>';
 												}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
+													tableView+='<td>'+result.subList[i].parliament+'</td>';
 													tableView+='<td>'+result.subList[i].name+'</td>';
-													//tableView+='<td>'+result.subList[i].name+'</td>';
+													
 												}
 												
 												tableView+='<td style="font-size:12px;" class="light_yellow_color">'+result.subList[i].mandalStarted+'</td>';
@@ -466,8 +467,8 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 												tableView+='<td>'+result.subList[i].constituencyName+'</td>';
 												tableView+='<td>'+result.subList[i].name+'</td>';
 											}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
-												//tableView+='<td>'+result.subList[i].constituencyName+'</td>';
 												tableView+='<td>'+result.subList[i].constituencyName+'</td>';
+												tableView+='<td>'+result.subList[i].assemblyName+'</td>';
 												tableView+='<td>'+result.subList[i].name+'</td>';
 												
 											}
@@ -517,7 +518,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			fromDate:globalFromDate,
 			toDate:globalToDate,
 			locationId:locId,
-			locationType:"constituency"
+			locationType:"assembly"
 			}
 		$.ajax({                
 			type:'POST',    
@@ -536,11 +537,19 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			}
 		});
 	}
-	function buildSelectBox(id,result,blockName)
+	function buildSelectBox(id,result,blockName,type)
 	{
+		
 		var selectBox = '';
 		selectBox+='<select id="'+id+'chosen" attr_blockName="'+blockName+'">';
-			selectBox+='<option value="0">All</option>';
+		if(type == "districts"){
+			selectBox+='<option value="0">All Districts</option>';
+		}else if(type == "constituency"){
+			selectBox+='<option value="0">All Constituency</option>';
+		}else if(type == "parliaments"){
+			selectBox+='<option value="0">All Parliaments</option>';
+		}
+			
 			for(var i in result)
 			{
 				selectBox+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
@@ -596,7 +605,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			locationId:0,
 			locationType:"mandal",
 			filterId: 0,
-			filterType:'constituency',
+			filterType:'assembly',
 			subFilterId: filterId ,
 			subFilterType: 'assembly'//assembly
 		}
@@ -806,15 +815,15 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			if(result !=null && result.length>0){
 				if(blockId ==4){
 					if(subBlockName == "Districts"){
-						buildSelectBox('districtSelectBox',result,blockName);
+						buildSelectBox('districtSelectBox',result,blockName,"districts");
 					}else if(subBlockName == "Parliament"){
-						buildSelectBox('districtSelectBox',result,blockName);
+						buildSelectBox('districtSelectBox',result,blockName,"districts");
 					}
 				}else if(blockId ==5){
 					if(subBlockName == "Districts"){
-						buildSelectBox('mandalsDistrictSelectBox',result,blockName);
+						buildSelectBox('mandalsDistrictSelectBox',result,blockName,"districts");
 					}else if(subBlockName == "Parliament"){
-						buildSelectBox('mandalsDistrictSelectBox',result,blockName);
+						buildSelectBox('mandalsDistrictSelectBox',result,blockName,"districts");
 					}
 					
 				}
@@ -840,15 +849,15 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			if(result !=null && result.length>0){
 				if(blockId ==4){
 					if(subBlockName == "Districts"){
-						buildSelectBox('districtSelectBox',result,blockName);
+						buildSelectBox('districtSelectBox',result,blockName,"parliaments");
 					}else if(subBlockName == "Parliament"){
-						buildSelectBox('districtSelectBox',result,blockName);
+						buildSelectBox('districtSelectBox',result,blockName,"parliaments");
 					}
 				}else if(blockId ==5){
 					if(subBlockName == "Districts"){
-						buildSelectBox('mandalsDistrictSelectBox',result,blockName);
+						buildSelectBox('mandalsDistrictSelectBox',result,blockName,"parliaments");
 					}else if(subBlockName == "Parliament"){
-						buildSelectBox('mandalsDistrictSelectBox',result,blockName);
+						buildSelectBox('mandalsDistrictSelectBox',result,blockName,"parliaments");
 					}
 					
 				}
@@ -877,9 +886,9 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			if(result !=null  && result.length>0){
 				if(blockId == 5){
 					if(subBlockName == "Districts"){
-						buildSelectBox('mandalsSelectBox',result,blockName);
+						buildSelectBox('mandalsSelectBox',result,blockName,"constituency");
 					}else if(subBlockName == "Parliament"){
-						buildSelectBox('mandalsSelectBox',result,blockName);
+						buildSelectBox('mandalsSelectBox',result,blockName,"constituency");
 					}
 				}
 				
@@ -907,9 +916,9 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			if(result !=null  && result.length>0){
 				if(blockId == 5){
 					if(subBlockName == "Districts"){
-						buildSelectBox('mandalsSelectBox',result,blockName);
+						buildSelectBox('mandalsSelectBox',result,blockName,"constituency");
 					}else if(subBlockName == "Parliament"){
-						buildSelectBox('mandalsSelectBox',result,blockName);
+						buildSelectBox('mandalsSelectBox',result,blockName,"constituency");
 					}
 				}
 			}else{

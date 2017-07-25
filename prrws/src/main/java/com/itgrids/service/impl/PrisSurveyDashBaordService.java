@@ -220,7 +220,7 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 		 	    				vo.setPanchayatNotStarted(jObj.getString("panchayatNotStarted"));
 		 	    				vo.setPanchayatCompleted(jObj.getString("panchayatCompleted"));
 		 	    				
-	 	    				}else if(inputVO.getLocationType().equalsIgnoreCase("constituency") || inputVO.getLocationType().equalsIgnoreCase("assembly")){
+	 	    				}else if(inputVO.getLocationType().equalsIgnoreCase("constituency")){
 		 	    				vo.setMandalStarted(jObj.getString("mandalStarted"));
 		 	    				vo.setMandalNotStarted(jObj.getString("mandalNotStarted"));
 		 	    				vo.setMandalCompleted(jObj.getString("mandalCompleted"));
@@ -232,7 +232,18 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 		 	    				vo.setPanchayatStarted(jObj.getString("panchayatStarted"));
 		 	    				vo.setPanchayatNotStarted(jObj.getString("panchayatNotStarted"));
 		 	    				vo.setPanchayatCompleted(jObj.getString("panchayatCompleted"));
+		 	    				vo.setAssemblyId(jObj.getLong("assemblyId"));
+	 	    					vo.setAssemblyName(jObj.getString("assemblyName"));
 		 	    				
+	 	    				}else if(inputVO.getLocationType().equalsIgnoreCase("assembly")){
+	 	    					vo.setMandalStarted(jObj.getString("mandalStarted"));
+		 	    				vo.setMandalNotStarted(jObj.getString("mandalNotStarted"));
+		 	    				vo.setMandalCompleted(jObj.getString("mandalCompleted"));
+		 	    				vo.setPanchayatStarted(jObj.getString("panchayatStarted"));
+		 	    				vo.setPanchayatNotStarted(jObj.getString("panchayatNotStarted"));
+		 	    				vo.setPanchayatCompleted(jObj.getString("panchayatCompleted"));
+	 	    					vo.setParliamentId(jObj.getLong("parliamentId"));
+	 	    					vo.setParliament(jObj.getString("parliamentName"));
 	 	    				}
 	 	    				vo.setAchievedPercentage(vo.getTarget() > 0 ? round(((vo.getAchieved()*100.00)/vo.getTarget()),2):0.00);
 	 	    				vo.setDistrictId(distId);
