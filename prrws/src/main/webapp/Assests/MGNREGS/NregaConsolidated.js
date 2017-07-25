@@ -1,7 +1,45 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var glStartDate = '2017-04-01'//moment().startOf('year').format("YYYY-MM")+'-1';
 var glEndDate = moment().format("YYYY-MM")+'-30';
+var overViewArr = [];
+//var overViewArr = [{"name":'Labour Budget',"id":"15"},{"name":'Farm Ponds',"id":"15"},{"name":'IHHL',"id":"15"},{"name":'Vermi Compost',"id":"15"},{"name":'Solid Waste Management',"id":"15"},{"name":'Burial Grounds',"id":"15"},{"name":'Play Fields',"id":"15"},{"name":'Agriculture Activities',"id":"15"},{"name":'Average Wage',"id":"15"},{"name":'Average Days of Employment',"id":"15"},{"name":'HH Completed 100 Days',"id":"15"},{"name":'Timely Payment',"id":"15"},{"name":'CC Roads',"id":"15"},{"name":'Anganwadi Buildings',"id":"15"},{"name":'GP Buildings',"id":"15"},{"name":'Mandal Buildings',"id":"15"},{"name":'NTR 90 Days',"id":"15"},{"name":'Production of Bricks',"id":"15"},{"name":'Mulbery',"id":"15"},{"name":'Silk Worms',"id":"15"},{"name":'Cattle Drinking Water Troughs',"id":"15"},{"name":'Raising of Perinnial Fodders',"id":"15"},{"name":'Horticulture',"id":"15"},{"name":'Avenue',"id":"15"},{"name":'Fish Ponds',"id":"15"},{"name":'Fish Drying Platforms',"id":"15"},{"name":'Nurseries',"id":"15"},{"name":'Payments',"id":"15"},{"name":'FAperformance',"id":"15"}];
+var overViewIdsArr = [];
+$("#projectsOverview").html(spinner);
+$("#dateRangePickerMGNF").val('2017-04-01');
+$("#dateRangePickerMGNT").val(moment().format("YYYY-MM")+'-30');
 
+
+$("#dateRangePickerMGNF").datetimepicker({
+	format: 'YYYY-MM',
+	viewMode:'months'
+});
+$("#dateRangePickerMGNT").datetimepicker({
+	format: 'YYYY-MM',
+	viewMode:'months'
+});
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
+$('#dateRangePickerMGNF').on('dp.change', function(e){ 
+	glStartDate = e.date.format("YYYY-MM")+"-31";
+	buildNREGSProjectsOverview(overViewArr,'');
+	projectData(2);
+});
+$('#dateRangePickerMGNT').on('dp.change', function(e){ 
+	glEndDate = e.date.format("YYYY-MM")+"-31";
+	buildNREGSProjectsOverview(overViewArr,'');
+	projectData(2);
+});
+
+onLoadCalls()
+function onLoadCalls()
+{
+	getAllConvergenceTypes();
+}
 
 $(document).on("click",".menuDataCollapse",function(){
 	$(".multi-level-selection-menu").css("display","none");
@@ -24,6 +62,14 @@ $(document).on("click",".menuDataCollapse",function(){
 	$("#selectedName").attr("attr_id",locId)
 	
 });
+$(".menu-top-selection .arrow_box_top").hide();
+$(document).on("click",".menu-top-selection-icon",function(e){
+	e.stopPropagation();
+	$(".menu-top-selection .arrow_box_top").show();
+});
+$(document).on("click",".menu-top-selection",function(e){
+	e.stopPropagation();
+});
 $(document).on("click",".panelCollapseIconClick",function(e){
 	e.stopPropagation();
 	var buildId = $(this).attr("attr_targetId");
@@ -44,9 +90,26 @@ $(document).on("click",".panelCollapseIconClick",function(e){
 	}
 	getAllNregaSubLocationDetails(buildId,levelId,locationScopeId,type)
 });
+$(document).on("click",".selectionMenuSubmitIdNewCls",function(){
+	overViewIdsArr = [] ;
+	overViewArr = [];
+	
+	$(".menuSelectionCheckBox").each(function(){
+		var checkboxId = $(this).attr("checkboxId");
+		if((checkboxId != 12 || checkboxId != "12") && ($(this).prop('checked')==true))
+		{
+			var checkboxName = $(this).attr("checkboxName");
+			overViewArr.push({"name":checkboxName,"id":checkboxId});
+			overViewIdsArr.push(checkboxId);
+		}
+	});
+	buildNREGSProjectsOverview(overViewArr,'');
+	projectData(2);
+});
+/* Menu Start*/
 $(".multi-level-selection-menu").hide();
 $(document).on("click",function(){
-	$(".multi-level-selection-menu").hide();
+	$(".multi-level-selection-menu,.menu-top-selection .arrow_box_top").hide();
 });
 $(document).on("click","#selectedName",function(e){
 	e.stopPropagation();
@@ -113,4 +176,893 @@ function collapseMenu(id,resultArr,buildId)
 	}
 	collapse+='</div>';
 	$("."+buildId).html(collapse);
+}
+
+/* Menu End*/
+function getAllConvergenceTypes()
+{
+	var json = {
+	}
+	
+	$.ajax({
+		url: 'getAllConvergenceTypes',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildAllConvergenceTypes(ajaxresp);
+		}
+	});
+}
+function buildAllConvergenceTypes(result)
+{
+	var selectionMenu = '';
+	selectionMenu+='<div class="navTabsMenuSelection">';
+		selectionMenu+='<div class="col-sm-6">';
+			selectionMenu+='<ul class="nav nav-tabs" role="tablist">';
+				for(var i in result)
+				{
+					if(i == 0)
+					{
+						selectionMenu+='<li role="presentation" class="active"><a href="#selectionMenuId'+result[i].id+'" aria-controls="selectionMenuId'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+'</a></li>';
+					}else{
+						selectionMenu+='<li role="presentation"><a href="#selectionMenuId'+result[i].id+'" aria-controls="selectionMenuId'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+'</a></li>';
+					}
+				}
+			selectionMenu+='</ul>';
+		selectionMenu+='</div>';
+		selectionMenu+='<div class="col-sm-6">';
+			selectionMenu+='<div class="tab-content">';
+				for(var i in result)
+				{
+					if(i == 0)
+					{
+						selectionMenu+='<div role="tabpanel" class="tab-pane active" id="selectionMenuId'+result[i].id+'">A'+result[i].id+'</div>';
+					}else{
+						selectionMenu+='<div role="tabpanel" class="tab-pane" id="selectionMenuId'+result[i].id+'">A'+result[i].id+'</div>';
+					}
+				}
+				
+			selectionMenu+='</div>';
+			selectionMenu+='<button class="btn btn-success m_top20 btn-sm selectionMenuSubmitIdNewCls" type="button" id="selectionMenuSubmitIdNew">SUBMIT</button>';
+		selectionMenu+='</div>';
+	selectionMenu+='</div>';
+	$("#navTabsMenuSelectionId").html(selectionMenu);
+	for(var i in result)
+	{
+		var convergenceId = result[i].id;
+		var divId = 'selectionMenuId'+result[i].id;
+		getComponentByConvergType(convergenceId,divId)
+	}
+}
+function getComponentByConvergType(convergenceId,divId)
+{
+	$("#"+divId).html(spinner);
+	var json = {
+		convergenceTypeId : convergenceId
+	}
+	
+	$.ajax({
+		url: 'getComponentByConvergType',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildComponentByConvergType(ajaxresp,divId,convergenceId);
+		}
+	});
+}
+function buildComponentByConvergType(result,divId,convergenceId)
+{
+	var selectionMenu = '';
+	
+	selectionMenu+='';
+	selectionMenu+='<ul class="menu-selection-body">';
+		for(var i in result)
+		{
+			selectionMenu+='<li>';
+				selectionMenu+='<label class="checkbox-inline"><input type="checkbox" checked class="menuSelectionCheckBox '+divId+'" checkboxName="'+result[i].name+'" checkboxId="'+result[i].id+'"/>'+result[i].name+'</label>';
+			selectionMenu+='</li>';
+			overViewArr.push({"name":result[i].name,"id":result[i].id});
+			if(result[i].id != 12 ||result[i].id != "12")
+			{
+				overViewIdsArr.push(result[i].id);
+			}
+		}		
+	selectionMenu+='</ul>';
+	$("#"+divId).html(selectionMenu);
+	if(convergenceId == 4)
+	{
+		buildNREGSProjectsOverview(overViewArr,'');
+		projectData(2);
+	}	
+}
+
+function buildNREGSProjectsOverview(result,blockName)
+{
+	var str='';
+	
+	str+='<div class="row">';
+		str+='<div class="col-sm-12">';
+			str+='<div class=" bg_color"  style="border: 5px solid #fff;padding:15px;">';
+				str+='<h4 class="text-center m_top10"><b>NON-CONVERGENCE</b></h4>';
+					str+='<div class="row">';
+						str+='<div class="col-sm-12">';
+							str+='<div class="block-border">';
+								str+='<h5 class="text-danger">Labour Budget</h5>';
+								str+='<div class="row">';	
+									for(var i in result)
+									{
+										if(result[i].name == "Labour Budget" || result[i].name == "Average Wage" || result[i].name == "Average Days of Employment" || result[i].name == "HH Completed 100 Days" || result[i].name == "Timely Payment")
+										{
+											str+='<div class="col-sm-2 m_top10">';
+												str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';
+													if(result[i].name.length > 12)
+													{
+														str+='<h4 class="panel-block-white-title text-capitalize toolTipTitleCls text-center" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
+													}else{
+														str+='<h4 class="panel-block-white-title text-capitalize toolTipTitleCls text-center">'+result[i].name+'</h4>';
+													}
+												str+='</div>';
+											str+='</div>';
+										}
+									}
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="row">';
+					for(var i in result)
+					{
+						if(result[i].name == "Farm Ponds" || result[i].name == "IHHL" || result[i].name == "Vermi Compost" || result[i].name == "Solid Waste Management" || result[i].name == "Play Fields" || result[i].name == "Burial Grounds" || result[i].name == "Agriculture Activities" || result[i].name == "Payments" || result[i].name == "FAperformance"){
+							str+='<div class="col-sm-2 m_top10">';
+							if(result[i].name == "FAperformance"){
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="Field Assistant Performance">FA Performan..</h4>';
+								str+='</div>';
+							}
+							else{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';	
+									if(result[i].name.length > 12)
+									{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
+									}else{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
+									}
+								str+='</div>';
+							}
+							str+='</div>';
+						}
+					}
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="col-sm-12">';
+			str+='<div class=" bg_color"  style="border: 5px solid #fff;padding:15px;">';
+				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-PR DEPTS</b></h4>';
+				str+='<div class="row">';
+					for(var i in result)
+					{
+						if(result[i].name == "CC Roads" || result[i].name == "Anganwadi Buildings" || result[i].name == "GP Buildings" || result[i].name == "Mandal Buildings"){
+							str+='<div class="col-sm-2 m_top10">';
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';	
+									if(result[i].name.length > 12)
+									{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
+									}else{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
+									}
+								str+='</div>';
+							str+='</div>';
+						}
+					}
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="col-sm-12">';
+			str+='<div class=" bg_color"  style="border: 5px solid #fff;padding:15px;">';
+				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-OTHER DEPTS</b></h4>';
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Housing</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									if(result[i].name == "NTR 90 Days" || result[i].name == "Production of Bricks"){
+										str+='<div class="col-sm-6 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';	
+												if(result[i].name.length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
+												}
+											str+='</div>';
+										str+='</div>';
+									}
+								}
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Seri Culture</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									if(result[i].name == "Mulbery" || result[i].name == "Silk Worms" ){
+										str+='<div class="col-sm-6 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';	
+												if(result[i].name.length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
+												}
+											str+='</div>';
+										str+='</div>';
+									}
+								}
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Animal Husbendary</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									if(result[i].name == "Cattle Drinking Water Troughs" || result[i].name == "Raising of Perinnial Fodders"){
+										str+='<div class="col-sm-6 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';
+												if(result[i].name.length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
+												}
+											str+='</div>';
+										str+='</div>';
+									}
+								}
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">SERP</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									if(result[i].name == "Horticulture" || result[i].name == "Avenue"){
+										str+='<div class="col-sm-6 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';
+												if(result[i].name.length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
+												}
+											str+='</div>';
+										str+='</div>';
+									}
+								}
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Fisheries</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									if(result[i].name == "Fish Drying Platforms" || result[i].name == "Fish Ponds"){
+										str+='<div class="col-sm-6 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';
+												if(result[i].name.length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
+												}
+											str+='</div>';
+										str+='</div>';
+									}
+								}
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Forest</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									if(result[i].name == "Nurseries"){
+										str+='<div class="col-sm-6 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';
+												if(result[i].name.length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
+												}
+											str+='</div>';
+										str+='</div>';
+									}
+								}
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	$("#projectsOverview").html(str);
+
+	$(".toolTipTitleCls").tooltip();
+	if(blockName != null)
+	{
+		$('[overview-block]').removeClass("active");
+		$('[overview-block="'+blockName+'"]').addClass("active");
+		$('[overview-block="'+blockName+'"]').trigger('click');
+	}
+	for(var i in overViewArr)
+	{
+		$("[overview-block='"+overViewArr[i].name+"']").html(spinner);
+		if(overViewArr[i].name == 'Solid Waste Management' || overViewArr[i].name == 'Burial Grounds' || overViewArr[i].name == 'Play Fields' || overViewArr[i].name == 'CC Roads' || overViewArr[i].name == 'Anganwadi Buildings' || overViewArr[i].name == 'GP Buildings' || overViewArr[i].name == 'Mandal Buildings' || overViewArr[i].name == 'NTR 90 Days' || overViewArr[i].name == 'Production of Bricks' || overViewArr[i].name == 'Mulbery' || overViewArr[i].name == 'Silk Worms' || overViewArr[i].name == 'Cattle Drinking Water Troughs' || overViewArr[i].name == 'Raising of Perinnial Fodders' || overViewArr[i].name == 'Fish Ponds' || overViewArr[i].name == 'Fish Drying Platforms')
+		{
+			getNREGSProjectsAbstractNew(overViewArr[i].name,'state',"0",'',2);
+		}else if(overViewArr[i].name == 'Payments')
+		{
+			getNregaPaymentsAbsAndOverview(overViewArr[i].name,'state',0,2,'abstract');
+		}else{
+			getNREGSAbstractDataByType(overViewArr[i].name,'state',"0",'',2,'onLoad');
+		}
+	}
+
+}
+function getNREGSProjectsAbstractNew(type,locType,locId,blockName,levelId)
+{
+	//$("#projectsOverview").html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		type : type,
+		locationType: locType,
+		locationId : locId
+	}
+	$.ajax({
+		url: 'getNREGSProjectsAbstractNew',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId);
+		}
+	});
+}
+
+function getNregaPaymentsAbsAndOverview(type,locType,locId,levelId,buildType)
+{
+	//$("#projectOvervw"+type.replace(/\s+/g, '')).html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locType,
+		divType : type,
+		locationId : locId,
+		sublocaType :locType
+	}
+	$.ajax({
+		url: 'getNregaPaymentsAbsAndOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			if(buildType == 'abstract')
+			{
+				buildNREGSAbstractDataByTypeNew(type,ajaxresp,'',locId,locType,levelId);
+			}else if(buildType == 'overview')
+			{
+				buildPaymentsOverviewData(ajaxresp,type);
+			}
+			
+		}
+	});
+}
+function getNREGSAbstractDataByType(type,locType,locId,blockName,levelId,buildDateType)
+{
+	if(buildDateType == 'onLoad' && type == 'FAperformance')
+	{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : '2017-05-01',
+			type : type,
+			locationType: locType,
+			locationId : locId
+		}
+	}else{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			type : type,
+			locationType: locType,
+			locationId : locId
+		}
+	}
+	
+	
+	$.ajax({
+		url: 'getNREGSAbstractDataByType',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId);
+		}
+	}); 
+}
+function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,levelId)
+{
+	$("[overview-block='"+type+"']").removeClass("panel-block-white");
+	var str='';
+	
+	$("[overview-block='"+type+"']").attr("attr_levelId",levelId);
+	$("[overview-block='"+type+"']").attr("attr_locationId",locId);
+	if(type == 'Payments' && result != null)
+	{
+		str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding:7px 5px">';
+			if(type.length > 12)
+			{
+				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+			}else{
+				str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+			}
+			str+='<small class="text-center">Total Pending</small>';
+			if(result.totalPendinAmount != null && result.totalPendinAmount.length > 0)
+			{
+				str+='<h1 class="text-center" style="font-size:26px"><i class="fa fa-inr"></i> '+result.totalPendinAmount+'</h1>';
+				str+='<small>('+result.totalPendings+')</small>';
+			}else{
+				str+='<h1 class="text-center">0</h1>';
+			}
+			str+='<div class="row">';
+				str+='<div class="col-sm-6 text-center pad_right0">';
+					str+='<label>Wage</label>';
+					if(result.pendingWage != null && result.pendingWage.length > 0)
+					{
+						str+='<h4>'+result.pendingWage+'</h4> <small>(<i class="fa fa-inr" style="position:static"></i>'+result.pendingWageAmount+')</small>';
+					}else{
+						str+='<h4>0</h4>';
+					}
+					
+				str+='</div>';
+				str+='<div class="col-sm-6 text-center pad_left0">';
+					str+='<label>Material</label>';
+					if(result.pendingMaterial != null && result.pendingMaterial.length > 0)
+					{
+						str+='<h4>'+result.pendingMaterial+'</h4><small> (<i class="fa fa-inr" style="position:static"></i>'+result.pendingMaterialAmount+')</small>';
+					}else{
+						str+='<h4>0</h4>';
+					}
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	}
+	if(result != null && result.length > 0)
+	{
+		for(var i in result)
+		{
+			if(levelId == 2 || levelId == "2" || levelId == 4 || levelId == "4"){
+				
+				if(result[i].percentage < 50)
+				{
+					str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+				}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+				{
+					str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+					
+				}else if(result[i].percentage >= 80)
+				{
+					str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+				}
+					if(type.length > 12)
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+					}else{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+					}
+					str+='<small class="text-center">Achieved</small>';
+					if(result[i].percentage != null && result[i].percentage.length > 0)
+					{
+						str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+					}else{
+						str+='<h1 class="text-center">0<small>%</small>';
+					}
+						
+					if(result[i].percentage < 50)
+					{
+						str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+					}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+					{
+						str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+					}else if(result[i].percentage >= 80)
+					{
+						str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+					}
+					str+='<div class="row">';
+						str+='<div class="col-sm-6 text-center">';
+							str+='<label>Target</label>';
+							if(result[i].target != null && result[i].target.length > 0)
+							{
+								if(result[i].parameter == 'Labour Budget' && levelId == 2)
+								{
+									str+='<h4>'+result[0].target+'L</h4>';
+								}else if(result[0].parameter == 'Timely Payments'){
+									str+='<h4>'+result[0].target+'%</h4>';
+								}else{
+									str+='<h4>'+result[0].target+'</h4>';
+								}
+							}else{
+								str+='<h4>0</h4>';
+							}
+						str+='</div>';
+						str+='<div class="col-sm-6 text-center">';
+							str+='<label>Completed</label>';
+							if(result[i].completed != null && result[i].completed.length > 0)
+							{
+								if(result[i].parameter == 'Labour Budget' && levelId == 2)
+								{
+									str+='<h4>'+result[i].completed+'L</h4>';
+								}else if(result[i].parameter == 'Timely Payments'){
+									str+='<h4>'+result[i].completed+'%</h4>';
+								}else{
+									str+='<h4>'+result[i].completed+'</h4>';
+								}
+								
+							}else{
+								str+='<h4>0</h4>';
+							}
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				if(levelId == 4 || levelId == "4")
+				{
+					str+='<div class="panel-black-white panel-block-white-high text-center" overview-'+result[i].type+'="'+type+'" style="border-top:1px solid #333;">';
+						str+='<small class="panel-block-white-title text-capitalize text-center">ACHIEVED</small>';
+						str+='<div class="row">';
+						for(var j in result[i].subList)
+						{
+							if(result[i].subList != null)
+							{
+								str+='<div class="col-sm-6">';
+									str+='<p>'+result[i].subList[j].type+'</p>';
+									if(result[i].subList[j].percentage != null && result[i].subList[j].percentage.length > 0)
+									{
+										str+='<h2 class="text-center">'+result[i].subList[j].percentage+'</h2>';
+									}else{
+										str+='<h2 class="text-center">0</h2>';
+									}
+								str+='</div>';
+							}else{
+								str+='<div class="col-sm-6">';
+									str+='<p>'+result[i].subList[j].type+'</p>';
+									str+='<h2 class="text-center">0</h2>';
+								str+='</div>';
+							}
+						}
+						str+='</div>';
+					str+='</div>';
+				}
+				
+			}else if(levelId == 3 || levelId == "3")
+			{
+				if(result[i].type == 'DISTRICT')
+				{
+					if(result[i] != null)
+					{
+						if(result[i].percentage < 50)
+						{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+						{
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+							
+						}else if(result[i].percentage >= 80)
+						{
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+						}
+							if(type.length > 12)
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+							}else{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
+							}
+							str+='<small class="text-center">Achieved</small>';
+							if(result[i].percentage != null && result[i].percentage.length > 0)
+							{
+								str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+							}else{
+								str+='<h1 class="text-center">0<small>%</small>';
+							}
+								
+							if(result[i].percentage < 50)
+							{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+							{
+								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+							}else if(result[i].percentage >= 80)
+							{
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}
+							str+='<div class="row">';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Target</label>';
+									if(result[i].target != null && result[i].target.length > 0)
+									{
+										if(result[0].parameter == 'Timely Payments'){
+											str+='<h4>'+result[0].target+'%</h4>';
+										}else{
+											str+='<h4>'+result[0].target+'</h4>';
+										}
+									}else{
+										str+='<h4>0</h4>';
+									}
+									
+								str+='</div>';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Completed</label>';
+									if(result[i].completed != null && result[i].completed.length > 0)
+									{
+										if(result[i].parameter == 'Timely Payments'){
+											str+='<h4>'+result[i].completed+'%</h4>';
+										}else{
+											str+='<h4>'+result[i].completed+'</h4>';
+										}
+										
+									}else{
+										str+='<h4>0</h4>';
+									}
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					}else{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+							str+='<h1 class="text-center">0<small>%</small></h1>';
+							str+='<div class="row">';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Target</label>';
+									str+='<h4>0</h4>';
+								str+='</div>';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Completed</label>';
+									str+='<h4>0</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					}
+					
+				}else if(result[i].type == 'STATE')
+				{
+					if(result[i] != null)
+					{
+						if(result[i].percentage < 50)
+						{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+						{
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+							
+						}else if(result[i].percentage >= 80)
+						{
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+						}
+							str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
+							if(result[i].percentage != null && result[i].percentage.length > 0)
+							{
+								str+='<h2 class="text-center">'+result[i].percentage+'</h2>';
+							}else{
+								str+='<h2 class="text-center">0</h2>';
+							}
+						str+='</div>';
+					}else{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+							str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
+							str+='<h2 class="text-center">0</h2>';
+						str+='</div>';
+					}
+				}
+			}
+		}
+	}
+	
+	$("[overview-block='"+type+"']").html(str);
+	$(".panel-block-white-title").tooltip();
+	if(type == blockName)
+	{
+		$("[overview-block='"+blockName+"']").trigger("click");
+	}
+	
+}
+
+function projectData(levelId)
+{
+	//alert(locationId);
+	var collapse='';
+	var dataArr = '';
+	if(levelId == 2)
+	{
+		dataArr = ['state','district','constituency','mandal'];
+	}else if(levelId == 3)
+	{
+		dataArr = ['district','constituency','mandal'];
+	}else if(levelId == 4)
+	{
+		dataArr = ['constituency','mandal'];
+	}
+	collapse+='<section>';
+		collapse+='<div class="row">';
+			collapse+='<div class="col-sm-12">';
+				for(var i in dataArr)
+				{
+					collapse+='<div class="panel-group" id="accordion'+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
+						collapse+='<div class="panel panel-default panel-black">';
+							collapse+='<div class="panel-heading" role="tab" id="heading'+overViewArr[i].name+''+dataArr[i]+'">';
+								if(i == 0)
+								{
+									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-divId="'+overViewArr[i].name+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+dataArr[i]+'" href="#collapse'+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+dataArr[i]+'">';
+								}else{
+									collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-divId="'+overViewArr[i].name+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+dataArr[i]+'" href="#collapse'+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+dataArr[i]+'">';
+								}
+									collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level - consolidated overview</h4>';
+								collapse+='</a>';
+							collapse+='</div>';
+							if(i == 0)
+							{
+								collapse+='<div id="collapse'+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+dataArr[i]+'">';
+							}else{
+								collapse+='<div id="collapse'+dataArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+dataArr[i]+'">';
+							}
+							
+								collapse+='<div class="panel-body">';
+									collapse+='<div id="'+dataArr[i]+'"></div>';
+								collapse+='</div>';
+							collapse+='</div>';
+						collapse+='</div>';
+					collapse+='</div>';
+				}
+			collapse+='</div>';
+		collapse+='</div>';
+	collapse+='</section>';
+	
+	$("#projectData").html(collapse);
+	//getNREGSLevelWiseConsolidatedReport(levelId,locationType,subLocationType,locationId);
+	getNREGSLevelWiseConsolidatedReport(2,'state','state','-1','state');
+	getNREGSLevelWiseConsolidatedReport(2,'state','district','-1','district');
+	getNREGSLevelWiseConsolidatedReport(2,'state','constituency','-1','constituency');
+	getNREGSLevelWiseConsolidatedReport(2,'state','mandal','-1','mandal');
+	/* //From Menu
+	var menuLocationId = '';
+	var menuLocationType = '';
+	if(levelId == 2)
+	{
+		menuLocationId = "-1";
+		menuLocationType = "state";
+	}else if(levelId == 3)
+	{
+		menuLocationId = locationId;
+		menuLocationType = "district";
+	}else if(levelId == 4)
+	{
+		menuLocationId = locationId;
+		menuLocationType = "constituency";
+	} */
+}
+function getNREGSLevelWiseConsolidatedReport(levelId,locationType,subLocationType,locationId,divId)
+{
+	$("#"+divId).html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locationType,
+		locationIdStr : locationId,
+		subLocationType : subLocationType,
+		componentIds : overViewIdsArr
+	}
+	$.ajax({
+		url: 'getNREGSLevelWiseConsolidatedReport',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			tableView(ajaxresp,divId);
+		}
+	});
+}
+function tableView(result,divId)
+{
+	var tableView='';
+	
+	tableView+='<div class="table-responsive">';
+		tableView+='<table class="table table-bordered dataTable'+divId+'">';
+			tableView+='<thead class="text-capital">';
+				tableView+='<th>'+divId+'</th>';
+				/* for(var i in result[0].subList)
+				{
+					tableView+='<th>'+result[0].subList[i].component+'</th>';
+				}			 */
+				for(var i in overViewArr)
+				{
+					tableView+='<th>'+overViewArr[i].name+'</th>';
+				}
+			tableView+='</thead>';
+			
+ 			tableView+='<tbody>';
+				for(var i in result)
+				{
+					tableView+='<tr>';
+						tableView+='<td>'+result[i].subList[0].name+'</td>';
+						for(var j in result[i].subList)
+						{
+							if(result[i].subList[j].percentage < 50)
+							{
+								tableView+='<td style="background-color:#FF0000">'+result[i].subList[j].percentage+'</td>';
+							}else if(result[i].subList[j].percentage >= 50 && result[i].subList[j].percentage < 80)
+							{
+								tableView+='<td style="background-color:#FFBA00">'+result[i].subList[j].percentage+'</td>';
+							}else if(result[i].subList[j].percentage >= 80)
+							{
+								tableView+='<td style="background-color:#00AF50">'+result[i].subList[j].percentage+'</td>';
+							}
+						}
+					tableView+='</tr>';
+				}
+			tableView+='</tbody>';
+		tableView+='</table>';
+	tableView+='</div>';
+	$("#"+divId).html(tableView);	
+	if(divId != 'state')
+	{
+		$(".dataTable"+divId).dataTable({
+			"iDisplayLength": 20,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		});
+	}
 }

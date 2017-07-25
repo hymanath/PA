@@ -376,14 +376,33 @@ function projectData(divId,levelId,locationId)
 	var dataArr = '';
 	if(levelId == 2)
 	{
-		dataArr = ['state','district','constituency','mandal','panchayat'];
+		if(divId == 'Mandal Buildings')
+		{
+			dataArr = ['state','district','constituency','mandal'];
+		}else{
+			dataArr = ['state','district','constituency','mandal','panchayat'];
+		}
+		
 	}else if(levelId == 3)
 	{
-		dataArr = ['district','constituency','mandal','panchayat'];
+		if(divId == 'Mandal Buildings')
+		{
+			dataArr = ['district','constituency','mandal'];
+		}else{
+			dataArr = ['district','constituency','mandal','panchayat'];
+		}
+		
 	}else if(levelId == 4)
 	{
-		dataArr = ['constituency','mandal','panchayat'];
+		if(divId == 'Mandal Buildings')
+		{
+			dataArr = ['constituency','mandal'];
+		}else{
+			dataArr = ['constituency','mandal','panchayat'];
+		}
+		
 	}
+	
 	collapse+='<section>';
 		collapse+='<div class="row">';
 			collapse+='<div class="col-sm-12">';
@@ -398,7 +417,13 @@ function projectData(divId,levelId,locationId)
 								}else{
 									collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
 								}
-									collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - '+divId+'</h4>';
+									if(divId == 'FAperformance')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - FA Performance</h4>';
+									}else{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - '+divId+'</h4>';
+									}
+									
 								collapse+='</a>';
 							collapse+='</div>';
 							if(i == 0)
@@ -578,18 +603,150 @@ function buildNREGSProjectsOverview(result,blockName)
 	var str='';
 	
 	str+='<div class="row">';
-		str+='<div class="col-sm-12 bg_color" style="border: 5px solid #fff;padding:15px;">';
-			str+='<h4 class="text-center m_top10"><b>NON-CONVERGENCE</b></h4>';
+		str+='<div class="col-sm-12">';
+			str+='<div class=" bg_color"  style="border: 5px solid #fff;padding:15px;">';
+				str+='<h4 class="text-center m_top10"><b>NON-CONVERGENCE</b></h4>';
+					str+='<div class="row">';
+						str+='<div class="col-sm-12">';
+							str+='<div class="block-border">';
+								str+='<h5 class="text-danger">Labour Budget</h5>';
+								str+='<div class="row">';	
+									for(var i in result)
+									{
+										if(result[i] == "Labour Budget" || result[i] == "Average Wage" || result[i] == "Average Days of Employment" || result[i] == "HH Completed 100 Days" || result[i] == "Timely Payment")
+										{
+											str+='<div class="col-sm-2 m_top10">';
+												str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
+													if(result[i].length > 12)
+													{
+														str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
+													}else{
+														str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+													}
+												str+='</div>';
+											str+='</div>';
+										}
+									}
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="row">';
+					for(var i in result)
+					{
+						if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "Solid Waste Management" || result[i] == "Play Fields" || result[i] == "Burial Grounds" || result[i] == "Agriculture Activities" || result[i] == "Payments" || result[i] == "FAperformance"){
+							str+='<div class="col-sm-2 m_top10">';
+							if(result[i] == "FAperformance"){
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
+								str+='</div>';
+							}
+							else{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									if(result[i].length > 12)
+									{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
+									}else{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+									}
+								str+='</div>';
+							}
+							str+='</div>';
+						}
+					}
+					/* str+='<div class="col-sm-2 m_top10">';
+						str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+							if(result[i].length > 12)
+							{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
+							}else{
+								str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+							}
+						str+='</div>';
+					str+='</div>'; */
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="col-sm-12">';
+			str+='<div class=" bg_color"  style="border: 5px solid #fff;padding:15px;">';
+				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-PR DEPTS</b></h4>';
 				str+='<div class="row">';
-					str+='<div class="col-sm-12">';
+					for(var i in result)
+					{
+						if(result[i] == "CC Roads" || result[i] == "Anganwadi Buildings" || result[i] == "GP Buildings" || result[i] == "Mandal Buildings"){
+							str+='<div class="col-sm-2 m_top10">';
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									if(result[i].length > 12)
+									{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
+									}else{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+									}
+								str+='</div>';
+							str+='</div>';
+						}
+					}
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="col-sm-12">';
+			str+='<div class=" bg_color"  style="border: 5px solid #fff;padding:15px;">';
+				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-OTHER DEPTS</b></h4>';
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Labour Budget</h5>';
+							str+='<h5 class="text-danger">Housing</h5>';
 							str+='<div class="row">';	
 								for(var i in result)
 								{
-									if(result[i] == "Labour Budget" || result[i] == "Average Wage" || result[i] == "Average Days of Employment" || result[i] == "HH Completed 100 Days" || result[i] == "Timely Payment")
-									{
-										str+='<div class="col-sm-2 m_top10">';
+									if(result[i] == "NTR 90 Days" || result[i] == "Production of Bricks"){
+										str+='<div class="col-sm-6 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+												if(result[i].length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+												}
+											str+='</div>';
+										str+='</div>';
+									}
+								}
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Seri Culture</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									if(result[i] == "Mulbery" || result[i] == "Silk Worms" ){
+										str+='<div class="col-sm-6 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+												if(result[i].length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+												}
+											str+='</div>';
+										str+='</div>';
+									}
+								}
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Animal Husbendary</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									if(result[i] == "Cattle Drinking Water Troughs" || result[i] == "Raising of Perinnial Fodders"){
+										str+='<div class="col-sm-6 m_top10">';
 											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
 												if(result[i].length > 12)
 												{
@@ -605,197 +762,71 @@ function buildNREGSProjectsOverview(result,blockName)
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="row">';
-				for(var i in result)
-				{
-					if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "Solid Waste Management" || result[i] == "Play Fields" || result[i] == "Burial Grounds" || result[i] == "Agriculture Activities" || result[i] == "Payments" || result[i] == "FAperformance"){
-						str+='<div class="col-sm-2 m_top10">';
-						if(result[i] == "FAperformance"){
-							str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
-							str+='</div>';
-						}
-						else{
-							str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
-								if(result[i].length > 12)
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">SERP</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
 								{
-									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
-								}else{
-									str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+									if(result[i] == "Horticulture" || result[i] == "Avenue"){
+										str+='<div class="col-sm-6 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
+												if(result[i].length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+												}
+											str+='</div>';
+										str+='</div>';
+									}
 								}
 							str+='</div>';
-						}
 						str+='</div>';
-					}
-				}
-				/* str+='<div class="col-sm-2 m_top10">';
-					str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
-						if(result[i].length > 12)
-						{
-							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
-						}else{
-							str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
-						}
 					str+='</div>';
-				str+='</div>'; */
-			str+='</div>';
-		str+='</div>';
-		
-		str+='<div class="col-sm-12 bg_color" style="border: 5px solid #fff;padding:15px;">';
-			str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-PR DEPTS</b></h4>';
-			str+='<div class="row">';
-				for(var i in result)
-				{
-					if(result[i] == "CC Roads" || result[i] == "Anganwadi Buildings" || result[i] == "GP Buildings" || result[i] == "Mandal Buildings"){
-						str+='<div class="col-sm-2 m_top10">';
-							str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
-								if(result[i].length > 12)
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Fisheries</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
 								{
-									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
-								}else{
-									str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+									if(result[i] == "Fish Drying Platforms" || result[i] == "Fish Ponds"){
+										str+='<div class="col-sm-6 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
+												if(result[i].length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+												}
+											str+='</div>';
+										str+='</div>';
+									}
 								}
 							str+='</div>';
 						str+='</div>';
-					}
-				}
-			str+='</div>';
-		str+='</div>';
-		
-		str+='<div class="col-sm-12 bg_color" style="border: 5px solid #fff;padding:15px;">';
-			str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-OTHER DEPTS</b></h4>';
-			str+='<div class="row m_top20">';
-				str+='<div class="col-sm-4">';
-					str+='<div class="block-border">';
-						str+='<h5 class="text-danger">Housing</h5>';
-						str+='<div class="row">';	
-							for(var i in result)
-							{
-								if(result[i] == "NTR 90 Days" || result[i] == "Production of Bricks"){
-									str+='<div class="col-sm-6 m_top10">';
-										str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
-											if(result[i].length > 12)
-											{
-												str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
-											}else{
-												str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
-											}
-										str+='</div>';
-									str+='</div>';
-								}
-							}
-						str+='</div>';
 					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-4">';
-					str+='<div class="block-border">';
-						str+='<h5 class="text-danger">Seri Culture</h5>';
-						str+='<div class="row">';	
-							for(var i in result)
-							{
-								if(result[i] == "Mulbery" || result[i] == "Silk Worms" ){
-									str+='<div class="col-sm-6 m_top10">';
-										str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
-											if(result[i].length > 12)
-											{
-												str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
-											}else{
-												str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
-											}
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Forest</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									if(result[i] == "Nurseries"){
+										str+='<div class="col-sm-6 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
+												if(result[i].length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+												}
+											str+='</div>';
 										str+='</div>';
-									str+='</div>';
+									}
 								}
-							}
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-4">';
-					str+='<div class="block-border">';
-						str+='<h5 class="text-danger">Animal Husbendary</h5>';
-						str+='<div class="row">';	
-							for(var i in result)
-							{
-								if(result[i] == "Cattle Drinking Water Troughs" || result[i] == "Raising of Perinnial Fodders"){
-									str+='<div class="col-sm-6 m_top10">';
-										str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
-											if(result[i].length > 12)
-											{
-												str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
-											}else{
-												str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
-											}
-										str+='</div>';
-									str+='</div>';
-								}
-							}
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-			str+='</div>';
-			str+='<div class="row m_top20">';
-				str+='<div class="col-sm-4">';
-					str+='<div class="block-border">';
-						str+='<h5 class="text-danger">SERP</h5>';
-						str+='<div class="row">';	
-							for(var i in result)
-							{
-								if(result[i] == "Horticulture" || result[i] == "Avenue"){
-									str+='<div class="col-sm-6 m_top10">';
-										str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
-											if(result[i].length > 12)
-											{
-												str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
-											}else{
-												str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
-											}
-										str+='</div>';
-									str+='</div>';
-								}
-							}
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-4">';
-					str+='<div class="block-border">';
-						str+='<h5 class="text-danger">Fisheries</h5>';
-						str+='<div class="row">';	
-							for(var i in result)
-							{
-								if(result[i] == "Fish Drying Platforms" || result[i] == "Fish Ponds"){
-									str+='<div class="col-sm-6 m_top10">';
-										str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
-											if(result[i].length > 12)
-											{
-												str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
-											}else{
-												str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
-											}
-										str+='</div>';
-									str+='</div>';
-								}
-							}
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-4">';
-					str+='<div class="block-border">';
-						str+='<h5 class="text-danger">Forest</h5>';
-						str+='<div class="row">';	
-							for(var i in result)
-							{
-								if(result[i] == "Nurseries"){
-									str+='<div class="col-sm-6 m_top10">';
-										str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
-											if(result[i].length > 12)
-											{
-												str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
-											}else{
-												str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
-											}
-										str+='</div>';
-									str+='</div>';
-								}
-							}
+							str+='</div>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -3202,7 +3233,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					str+='<label>Wage</label>';
 					if(result.pendingWage != null && result.pendingWage.length > 0)
 					{
-						str+='<h4>'+result.pendingWage+'</h4> <small>(<i class="fa fa-inr" style="position:static"></i>'+result.pendingWageAmount+')</small>';
+						str+='<h4>'+result.pendingWageAmount+'</h4> <small>(<i class="fa fa-inr" style="position:static"></i>'+result.pendingWage+')</small>';
 					}else{
 						str+='<h4>0</h4>';
 					}
@@ -3212,7 +3243,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					str+='<label>Material</label>';
 					if(result.pendingMaterial != null && result.pendingMaterial.length > 0)
 					{
-						str+='<h4>'+result.pendingMaterial+'</h4><small> (<i class="fa fa-inr" style="position:static"></i>'+result.pendingMaterialAmount+')</small>';
+						str+='<h4>'+result.pendingMaterialAmount+'</h4><small> (<i class="fa fa-inr" style="position:static"></i>'+result.pendingMaterial+')</small>';
 					}else{
 						str+='<h4>0</h4>';
 					}
@@ -3239,7 +3270,13 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				}
 					if(type.length > 12)
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+						if(type == 'FAperformance')
+						{
+							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
+						}else{
+							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+						}
+						
 					}else{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
 					}

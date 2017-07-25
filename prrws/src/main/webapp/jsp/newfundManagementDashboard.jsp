@@ -92,6 +92,14 @@
 													</a>
 												</div>
 											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#88186B">
+													<a href="RuralDevelopmentDashboard">
+														<h3>RD</h3>
+														<p>Rural Development</p>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -163,12 +171,37 @@
 				</div>
 			</div>
 			
-			
-			<div class="row">
-				<div id="overviewBlock"></div>
+			<div class="panel-group" id="accordion122" role="tablist" aria-multiselectable="true">
+				<div class="panel panel-default panel-black">
+					<div class="panel-heading" role="tab" id="headi123">
+						<a role="button"  class="panelCollapseIcon " data-toggle="collapse" data-parent="#accordion122" href="#coll123" aria-expanded="true" aria-controls="coll123">
+							<h4 class="panel-title">Funds Overview</h4>
+						</a>
+					</div>
+					<div id="coll123" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headi123">
+						<div class="panel-body">
+							<div class="row">
+								<div id="overviewBlock"></div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="row m_top20">
-				<div id="overViewTableId"></div>
+			<div class="panel-group" id="accordion1234" role="tablist" aria-multiselectable="true">
+				<div class="panel panel-default panel-black">
+					<div class="panel-heading" role="tab" id="headi1234">
+						<a role="button" class="panelCollapseIcon " data-toggle="collapse" data-parent="#accordion1234" href="#coll1234" aria-expanded="false" aria-controls="coll1234">
+							<h4 class="panel-title">Funds Overview Details</h4>
+						</a>
+					</div>
+					<div id="coll1234" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headi1234">
+						<div class="panel-body">
+							<div class="row">
+								<div id="overViewTableId"></div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
