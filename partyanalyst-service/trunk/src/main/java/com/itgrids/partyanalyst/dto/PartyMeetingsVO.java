@@ -21,6 +21,7 @@ public class PartyMeetingsVO implements Serializable{
 	private Long panchayatId;
 	private Long inviteeId;
 	private Long meetingMainTypeId;
+	private List<IdAndNameVO> invetteList= new ArrayList<IdAndNameVO>();
 
 	private String name;
 	private String meetingName;
@@ -517,6 +518,12 @@ public class PartyMeetingsVO implements Serializable{
 	}
 	public void setIsCondacted(String isCondacted) {
 		this.isCondacted = isCondacted;
+	}
+	public List<IdAndNameVO> getInvetteList() {
+		return invetteList;
+	}
+	public void setInvetteList(List<IdAndNameVO> invetteList) {
+		this.invetteList = invetteList;
 	}
 
 	
