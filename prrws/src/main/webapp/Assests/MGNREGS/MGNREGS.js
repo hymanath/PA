@@ -3233,7 +3233,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					str+='<label>Wage</label>';
 					if(result.pendingWage != null && result.pendingWage.length > 0)
 					{
-						str+='<h4>'+result.pendingWageAmount+'</h4> <small>(<i class="fa fa-inr" style="position:static"></i>'+result.pendingWage+')</small>';
+						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result.pendingWageAmount+'</h4> <small>('+result.pendingWage+')</small>';
 					}else{
 						str+='<h4>0</h4>';
 					}
@@ -3243,7 +3243,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					str+='<label>Material</label>';
 					if(result.pendingMaterial != null && result.pendingMaterial.length > 0)
 					{
-						str+='<h4>'+result.pendingMaterialAmount+'</h4><small> (<i class="fa fa-inr" style="position:static"></i>'+result.pendingMaterial+')</small>';
+						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result.pendingMaterialAmount+'</h4><small> ('+result.pendingMaterial+')</small>';
 					}else{
 						str+='<h4>0</h4>';
 					}
