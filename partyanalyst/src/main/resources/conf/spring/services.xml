@@ -4377,6 +4377,7 @@
 		 <property name="stateDAO" ref="stateDAO" />
 		 <property name="userDAO" ref="userDAO" />
 		 <property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
+		  <property name="attendanceDAO" ref="attendanceDAO" />
     </bean>
 </beans>			
 	
