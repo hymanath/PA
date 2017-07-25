@@ -31,10 +31,13 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayati Raj & RD & RWS</h4>
-					<p>MNREGS - AP</p>
+					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
+					<p>MGNREGS - AP</p>
 				</div>
-				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
+				<div class="col-sm-2 col-xs-12 col-sm-offset-3">
+					<img src="Assests/images/NREGS-LOGO.png" class="m_top5"/>
+				</div>
+				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
