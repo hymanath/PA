@@ -2491,6 +2491,27 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		 }
 		return query.list();
     }
+
+	@Override
+	public int updateAbsenteeRemark(Long cadreId, Long partyMeetingId,String comment) {
+		StringBuilder queryStr = new StringBuilder();
+	     queryStr.append(" update PartyMeetingInvitee model set model.absenteeRemark=:comment"+
+	              " where " +
+	              " model.partyMeetingId=:partyMeetingId and  model.tdpCadreId=:cadreId ");
+	     Query query = getSession().createQuery(queryStr.toString());
+	      query.setParameter("cadreId", cadreId);
+	      query.setParameter("partyMeetingId", partyMeetingId);
+	      query.setParameter("comment", comment);
+	      return query.executeUpdate();
+	}
+	
+	public List<Object[]> getPartyMeetingInvitteesMembershipNo(Long partyMeetingId)
+	{
+		Query query = getSession().createQuery("SELECT DISTINCT model.tdpCadre.memberShipNo,model.absenteeRemark FROM PartyMeetingInvitee model where model.partyMeeting.partyMeetingId = :partyMeetingId  " +
+				" and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear="+IConstants.CADRE_ENROLLMENT_NUMBER+" and model.partyMeeting.isActive='Y' ");
+		query.setParameter("partyMeetingId",partyMeetingId);
+		return query.list();
+	}
 }
 
 
