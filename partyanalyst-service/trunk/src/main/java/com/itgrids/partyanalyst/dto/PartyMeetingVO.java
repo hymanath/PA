@@ -102,6 +102,7 @@ public class PartyMeetingVO implements java.io.Serializable{
 	 private List<String> startTimeList = new ArrayList<String>(0);
 	 private List<String> endTimeList = new ArrayList<String>(0);
 	 private List<String> lateTimeList = new ArrayList<String>(0);
+	 private List<String> cadreWithComments = new ArrayList<String>(0);
 	    
 	
 	public Long getStateId() {
@@ -622,6 +623,12 @@ public class PartyMeetingVO implements java.io.Serializable{
 	}
 	public void setLateTimeList(List<String> lateTimeList) {
 		this.lateTimeList = lateTimeList;
+	}
+	public List<String> getCadreWithComments() {
+		return cadreWithComments;
+	}
+	public void setCadreWithComments(List<String> cadreWithComments) {
+		this.cadreWithComments = cadreWithComments;
 	}
 
 	
