@@ -40,7 +40,37 @@ public class PrisOverviewVo implements Serializable{
 	private String parliamentNotStarted;
 	private String parliamentCompleted;
 	
+	private Long parliamentId;
+	private String parliament;
 	
+	private Long assemblyId;
+	private String assemblyName;
+	
+	
+	public Long getAssemblyId() {
+		return assemblyId;
+	}
+	public void setAssemblyId(Long assemblyId) {
+		this.assemblyId = assemblyId;
+	}
+	public String getAssemblyName() {
+		return assemblyName;
+	}
+	public void setAssemblyName(String assemblyName) {
+		this.assemblyName = assemblyName;
+	}
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+	public String getParliament() {
+		return parliament;
+	}
+	public void setParliament(String parliament) {
+		this.parliament = parliament;
+	}
 	public Long getId() {
 		return id;
 	}
