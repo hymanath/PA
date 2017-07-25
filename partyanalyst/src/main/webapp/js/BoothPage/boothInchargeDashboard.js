@@ -142,13 +142,17 @@ function buildOverAllBoothDtls(result,locationLevel){
 		 var overallDataObj = result[0];
 		 var rangevoterArr = overallDataObj.subList;
 		 if(overallDataObj != null){
+			 var totalBooth = overallDataObj.totalBoothCount;
+			 var startedBooth = overallDataObj.startedBoothCount;
+			 var completedBooth = overallDataObj.completedBoothCount;
+			 var notStartedBooth = totalBooth-(startedBooth+completedBooth);
 			 var str='';
 			 str+='<div class="col-sm-12 blocks">';
                         str+='<div class="col-sm-3">';
 							str+='<div class="subBlock text-center">';
                                 str+='<p>TOTAL BOOTHS</p>';
-								if(overallDataObj.totalBoothCount != null){
-									 str+='<h4 class="text-center;">'+overallDataObj.totalBoothCount+'</h4>';
+								if(totalBooth > 0 ){
+									 str+='<h4 class="text-center;">'+totalBooth+'</h4>';
 								}else{
 									 str+='<h4 class="text-center;"> - </h4>';
 								}
@@ -158,8 +162,8 @@ function buildOverAllBoothDtls(result,locationLevel){
                         str+='<div class="col-sm-3">';
                             str+='<div class="subBlock text-center">';
                            str+=' <p>STARTED BOOTHS</p>';
-							  if(overallDataObj.startedBoothCount != null){
-									 str+='<h4 class="text-center;">'+overallDataObj.startedBoothCount+'</h4>';
+							  if(startedBooth > 0){
+									 str+='<h4 class="text-center;">'+startedBooth+'</h4>';
 								}else{
 									 str+='<h4 class="text-center;"> - </h4>';
 								}
@@ -168,8 +172,8 @@ function buildOverAllBoothDtls(result,locationLevel){
                         str+='<div class="col-sm-3">';
                             str+='<div class="subBlock text-center">';
                             str+='<p>NOT-STARTED BOOTHS</p>';
-                              if(overallDataObj.notStartedBoothCount != null){
-									 str+='<h4 class="text-center;">'+overallDataObj.notStartedBoothCount+'</h4>';
+                              if(notStartedBooth > 0){
+									 str+='<h4 class="text-center;">'+notStartedBooth+'</h4>';
 								}else{
 									 str+='<h4 class="text-center;"> - </h4>';
 								}
@@ -178,8 +182,8 @@ function buildOverAllBoothDtls(result,locationLevel){
                         str+='<div class="col-sm-3">';
                             str+='<div class="subBlock text-center">';
                            str+=' <p>COMPLETED BOOTHS</p>';
-                             if(overallDataObj.completedBoothCount != null){
-									 str+='<h4 class="text-center;">'+overallDataObj.completedBoothCount+'</h4>';
+                             if(completedBooth > 0){
+									 str+='<h4 class="text-center;">'+completedBooth+'</h4>';
 								}else{
 									 str+='<h4 class="text-center;"> - </h4>';
 								}
@@ -272,25 +276,30 @@ function getLocationLevelWiseBoothCount(locationLevel,filterLevel,filterValue,di
 			 str+='<tbody>';
 				for(var i in result){
 					str+='<tr>';
-					   var boothAddressStr = getLocationWiseBoothAddress(locationLevel,result[i].boothAddressVO);
+					     var boothAddressStr = getLocationWiseBoothAddress(locationLevel,result[i].boothAddressVO);
+						 var totalBooth = result[i].totalBoothCount;
+						 var startedBooth = result[i].startedBoothCount;
+						 var completedBooth = result[i].completedBoothCount;
+						 var notStartedBooth = totalBooth-(startedBooth+completedBooth);
+					
 						 str = str +" "+boothAddressStr;
-						if(result[i].totalBoothCount != null){
-							str+='<td class="text-center;">'+result[i].totalBoothCount+'</td>';
+						if(totalBooth > 0){
+							str+='<td class="text-center;">'+totalBooth+'</td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-						if(result[i].notStartedBoothCount != null){
-							str+='<td class="text-center;">'+result[i].notStartedBoothCount+'</td>';
+						if(notStartedBooth > 0){
+							str+='<td class="text-center;">'+notStartedBooth+'</td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-						if(result[i].startedBoothCount != null){
-							str+='<td class="text-center;">'+result[i].startedBoothCount+'</td>';
+						if(startedBooth > 0){
+							str+='<td class="text-center;">'+startedBooth+'</td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-						if(result[i].completedBoothCount != null){
-							str+='<td class="text-center;">'+result[i].completedBoothCount+'</td>';
+						if(completedBooth > 0){
+							str+='<td class="text-center;">'+completedBooth+'</td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
