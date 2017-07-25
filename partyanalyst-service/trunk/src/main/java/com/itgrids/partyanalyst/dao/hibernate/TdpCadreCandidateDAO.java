@@ -168,4 +168,22 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 				query.setParameterList("memberShipNos", memberShipNos);
 	  return query.list();
 	}
+	public List<Object[]> geTdpCadreCandidateDesiganationsByCadreaIds(Set<Long> tdpCadreIds){
+		  StringBuilder sb = new StringBuilder();
+		  sb.append("select  tdpCadreCandidate.tdpCadreId," +//0
+		  		"tdpCadreCandidate.candidateId," +//1
+		  		"publicRepresentative.publicRepresentativeType.type " +//2
+		  		"from TdpCadreCandidate tdpCadreCandidate, " +
+		  		"PublicRepresentative publicRepresentative " +
+		  		"left join publicRepresentative.publicRepresentativeType publicRepresentativeType " +
+		  		"where  publicRepresentative.candidateId=tdpCadreCandidate.candidateId ");
+		  if(tdpCadreIds != null && tdpCadreIds.size() > 0l){
+			  sb.append("and tdpCadreCandidate.tdpCadreId in (:tdpCadreIds)");	
+		  }
+		  Query query = getSession().createQuery(sb.toString());
+		  if(tdpCadreIds != null && tdpCadreIds.size() > 0l)
+				query.setParameterList("tdpCadreIds", tdpCadreIds);
+		  return query.list();
+	}
+	
 }
