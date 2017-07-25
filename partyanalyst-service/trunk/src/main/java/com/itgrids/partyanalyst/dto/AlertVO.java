@@ -107,7 +107,23 @@ public class AlertVO {
 	private Long unSatisfiedCount=0l;
 	private Long locationCnt=0l;
 	private Long statusCount=0l;
+	
+	private Long notifiedCount=0l;
+	private Long actionInProgressCount=0l;
     
+	
+	public Long getNotifiedCount() {
+		return notifiedCount;
+	}
+	public void setNotifiedCount(Long notifiedCount) {
+		this.notifiedCount = notifiedCount;
+	}
+	public Long getActionInProgressCount() {
+		return actionInProgressCount;
+	}
+	public void setActionInProgressCount(Long actionInProgressCount) {
+		this.actionInProgressCount = actionInProgressCount;
+	}
 	public String getCallerDuplicate() {
 		return callerDuplicate;
 	}

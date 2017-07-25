@@ -82,6 +82,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Event;
 import com.itgrids.partyanalyst.model.TrainingCampBatchAttendee;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
+import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
@@ -131,6 +132,13 @@ public class SchedulerService implements ISchedulerService{
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	private ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO;
 	
+	private IAlertService alertService;
+	
+	
+	public void setAlertService(IAlertService alertService) {
+		this.alertService = alertService;
+	}
+
 	public ITrainingCampBatchDAO getTrainingCampBatchDAO() {  
 		return trainingCampBatchDAO;
 	}
@@ -1949,4 +1957,22 @@ public class SchedulerService implements ISchedulerService{
 		}
 		return rs;    
 	 }
+   
+   public ResultStatus sendSmsDetailsOfAlert(){
+	   ResultStatus rs = new ResultStatus();
+	   try {
+		
+		   ResultStatus result = alertService.getSmsTdpCadreDetails();
+		   if(result !=null && result.getResultCode() ==0){
+			   rs.setExceptionMsg("success");
+		   }else{
+			   rs.setExceptionMsg("failure");
+		   }
+		  
+		} catch (Exception e) {
+			LOG.error("Exception raised at sendSmsDetailsOfAlert() in SchedulerService Class", e);
+			rs.setMessage("Failure");
+		}
+	    return rs;
+   }
 }

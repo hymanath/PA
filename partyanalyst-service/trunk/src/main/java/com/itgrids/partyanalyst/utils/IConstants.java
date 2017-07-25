@@ -1270,7 +1270,7 @@ public interface IConstants {
 	public static final Long GOVT_TOUR_TYPE_ID = 2L;
 	//ALERT MONITORING DASHBOARD
 	public static final String GOVT_ALERT_CATEGORY_ID="2,3,4,5,6,7,8,9";
-	public static final String GOVT_ALERT_TYPE_ID="2";
+	public static final String GOVT_ALERT_TYPE_ID="2";	
 	
 	public static final String ALERT_DEPT_DOCUMENTS ="alert_documents";
 	public static final List<Long> MAHANADUEVENTIDS = Arrays.asList(7l,30l);
@@ -1317,4 +1317,6 @@ public interface IConstants {
 	public static final String PARLIAMENT_CONSTITUENCY = "PARLIAMENT CONSTITUENCY";
 	public static final Long BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID = 24L;
 	public static final String TRAINING_INVITEE_ROLE_IDS = "1,2,3";
+	public static final List<Long> PARTY_ALERT_SMS_STATUS_IDS = Arrays.asList(2l,3l); 
+	public static final Long PARTY_ALERT_TYPE_ID=1l;
 }

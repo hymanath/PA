@@ -32,4 +32,5 @@ public interface ISchedulerService {
 	public ResultStatus pushDataToPartyMeetingStatusTable();
 	public ResultStatus pushSourceOfRegistrationIntoIntermediateTable();
 	public ResultStatus pushTrainginCampDataLocationWiseByCommitteeLevel();
+	public ResultStatus sendSmsDetailsOfAlert();
 }
