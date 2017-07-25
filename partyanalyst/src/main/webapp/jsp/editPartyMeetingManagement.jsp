@@ -14,7 +14,11 @@
       <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
       <link href="daterangepicker/bootstrap-datetimepicker.css" type="text/css" rel="stylesheet"/>
       <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
-
+	<style>
+	 .fa-plus-square-o,.fa-minus-square-o{
+	cursor:pointer;
+}
+</style>
    </head>
    <body>
 <div class="container">
@@ -46,13 +50,13 @@
             <div class="col-sm-4">
                <label for="meetingType2">Meeting Sub-Type:</label>
                <select class="form-control" id="meetingTypeSubTypeModelId">
-                  <option value="4">Select Meeting Type2</option>
+                  <option value="0">Select Meeting Type2</option>
                </select>
             </div>
             <div class="col-sm-4">
                <label for="meetingLevel">Meeting Level:</label>
                <select class="form-control meetingLevels" id="meetingLevelModelId">
-                  <option value="selected">Select Meeting Level</option>
+                  <option value="0">Select Meeting Level</option>
                </select>
             </div>
          </div>
@@ -106,7 +110,7 @@
 					
 					</div>
 				</div>
-				<div class="panel-body" >
+				<div class="panel-body" id="sessionPanelBodyId"  >
 					<div id="sessionModelId"></div>
 				</div>
 		 </div>
@@ -122,9 +126,9 @@
                      <h4 class="panel-title">Tab User Details</h4>
                   </div>
                   <div class="col-sm-1">
-                     <span id="editTabUserTabButton" data-toggle="collapse" data-target="#editTabUserExpandCollapseId" class="tabUserExpandCollapse">
-                     <i class="glyphicon glyphicon-plus"></i>
-                     </span>
+                   <h3>  <span id="editTabUserTabButton" data-toggle="collapse" data-target="#editTabUserExpandCollapseId" class="tabUserExpandCollapse">
+                     <i class="fa fa-plus-square-o"></i>
+                     </span></h3>
                   </div>
                </div>
             </div>
@@ -139,9 +143,9 @@
                      <h4 class="panel-title m_top5">Attended Invitiees</h4>
                   </div>
                   <div class="col-sm-1">
-                     <span id="attendedInvitieesTabButton" data-toggle="collapse" data-target="#attendedInvitieesTable" class="attendedInvitieesTabExpandCollapse">
-                     <i class="glyphicon glyphicon-plus"></i>
-                     </span>
+                     <h3><span id="attendedInvitieesTabButton" data-toggle="collapse" data-target="#attendedInvitieesTable" class="attendedInvitieesTabExpandCollapse">
+                     <i class="fa fa-plus-square-o"></i>
+                     </span></h3>
                   </div>
                </div>
             </div>
@@ -156,9 +160,9 @@
                      <h4 class="panel-title m_top5">Non-Attended Invitiees</h4>
                   </div>
                   <div class="col-sm-1">
-                     <span id="nonAttendedInvitieesTabButton" data-toggle="collapse" data-target="#nonAttendedInvitieesTable" class="nonAttendedInvitieesTabExpandCollapse">
-                     <i class="glyphicon glyphicon-plus"></i>
-                     </span>
+                     <h3><span id="nonAttendedInvitieesTabButton" data-toggle="collapse" data-target="#nonAttendedInvitieesTable" class="nonAttendedInvitieesTabExpandCollapse">
+                     <i class="fa fa-plus-square-o"></i>
+                     </span></h3>
                   </div>
                </div>
             </div>
@@ -381,31 +385,27 @@
         str += "<th>Name</th>";
         str += "<th>Desiganation</th>";
         str += "<th>Membership No</th>";
-        str += "<th>Invitees No</th>";
         str += "<th>Mobile No</th>";
         str += "</tr>";
         str += "<thead>";
         str += "<tbody>";
         for (var i in results) {
-            for (var j in results[i].subList) {
+            for (var j in results[i].invetteList) {
                 var sNo = parseInt(j) + parseInt(1);
                 str += "<tr>";
                 str += "<td>" + sNo + "</td>";
-                str += "<td>" + results[i].subList[j].name + "</td>";
-                var str2 = '';
-                str += "+<td>";
-                for (var k in results[i].subList[j].inviteeList) {
-                    str2 = results[i].subList[j].inviteeList[k];
-                    // str+="<td>"+results[i].subList[j].inviteeList[k]+"</td>";
-                    str += str2 + ', ';
-                }
-
-                // str+="+<td>"str2+"</td>";
-
-                str += "</td>";
-                str += "<td>" + results[i].subList[j].mandalTwnDivision + "</td>";
-                str += "<td>" + results[i].subList[j].inviteeId + "</td>";
-                str += "<td>" + results[i].subList[j].remarks + "</td>";
+                str += "<td >" + results[i].invetteList[j].name + "</td>";
+				if(results[i].invetteList[j].partyName !=null && results[i].invetteList[j].partyName.length >0){
+					str += "<td>" + results[i].invetteList[j].partyName + "</td>";
+				}else{
+					 str += "<td>-</td>";
+				}
+                str += "<td>" + results[i].invetteList[j].membershipNo + "</td>";
+				if(results[i].invetteList[j].mobileNumber !=null && results[i].invetteList[j].mobileNumber.length >0){
+					str += "<td>" + results[i].invetteList[j].mobileNumber + "</td>";
+				}else{
+					 str += "<td>-</td>";
+				}
                 str += "</tr>";
             }
         }
@@ -508,7 +508,7 @@
 
   
 	
-	function getMeetingLevels(meetingLevelId){
+function getMeetingLevels(meetingLevelId){
    if (meetingLevelId == 1 || meetingLevelId == 9) {
         $("#stateModelDivId").show();
         $("#districtModelDivId").hide();
@@ -671,17 +671,14 @@ $(document).on("change", "#mandalModelId", function() {
         $.ajax({
             type: "GET",
             url: "getPanchayatWardByMandalsAction.action",
-            data: {
-                task: JSON.stringify(jsObj)
-            }
+            data: {task: JSON.stringify(jsObj)}
         }).done(function(results) {
-			
-            for (var i in results) {
-                    $("#villageModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
-                
-            }
+			if(results !=null){
+				for (var i in results) {
+					$("#villageModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
+				}
+			}
             if (type == "model") {
-
                 $("#villageModelId option[value=" + panchayatId + "]").attr('selected', 'selected');
             }
         });
@@ -749,8 +746,16 @@ $(document).on("change", "#mandalModelId", function() {
                 str += "<tr>";
                 str += "<td><img src='https://www.mytdp.com/images/cadre_images/" + results.attendanceList[i].imagePathStr + "' style='height:50px;width:50px;'></td>";
                 str += "<td>" + results.attendanceList[i].name + "</td>";
-                str += "<td>" + results.attendanceList[i].partyName + "</td>";
-                str += "<td>" + results.attendanceList[i].membershipNo + "</td>";
+				if(results.attendanceList[i].partyName !=null && results.attendanceList[i].partyName.length >0){
+					str += "<td>" + results.attendanceList[i].partyName + "</td>";
+				}else{
+					 str += "<td>-</td>";
+				}
+				if(results.attendanceList[i].membershipNo !=null && results.attendanceList[i].membershipNo.length >0){
+					str += "<td>" + results.attendanceList[i].membershipNo + "</td>";
+				}else{
+					 str += "<td>-</td>";
+				}
                 //str+="<td>"+results.attendanceList[i].membershipNo+"</td>";
                 str += "<td>" + results.attendanceList[i].mobileNumber + "</td>";
 				if(results.attendanceList[i].question !=null && results.attendanceList[i].question.length >0){
@@ -784,12 +789,23 @@ $(document).on("change", "#mandalModelId", function() {
             str += "<tbody class='text-center'>";
             for (var i in results.notAttendanceList) {
                 str += "<tr>";
-                str += "<td><img src='https://www.mytdp.com/images/cadre_images/" + results.notAttendanceList[i].imagePathStr + "' style='height:50px;width:50px;'></td>";
+                str += "<td><img src='https://www.mytdp.com/images/cadre_images/" + results.notAttendanceList[i].imagePathStr + "' alter='No Image' style='height:50px;width:50px;'></td>";
                 str += "<td>" + results.notAttendanceList[i].name + "</td>";
-                str += "<td>" + results.notAttendanceList[i].partyName + "</td>";
-                str += "<td>" + results.notAttendanceList[i].membershipNo + "</td>";
-                //str+="<td>"+results.notAttendanceList[i].membershipNo+"</td>";
-                str += "<td>" + results.notAttendanceList[i].mobileNumber + "</td>";
+				if(results.notAttendanceList[i].partyName !=null && results.notAttendanceList[i].partyName.length >0){
+					str += "<td>" + results.notAttendanceList[i].partyName + "</td>";
+				}else{
+					str+="<td>-</td>";
+				}
+				if(results.notAttendanceList[i].membershipNo !=null && results.notAttendanceList[i].membershipNo.length >0){
+					str += "<td>" + results.notAttendanceList[i].membershipNo + "</td>";
+				}else{
+					str+="<td>-</td>";
+				}
+				if(results.notAttendanceList[i].mobileNumber !=null && results.notAttendanceList[i].mobileNumber.length >0){
+					str += "<td>" + results.notAttendanceList[i].mobileNumber + "</td>";
+				}else{
+					str+="<td>-</td>";
+				}
                 str += "<td><input class='nonAttenededComment' type='text' id='" + results.notAttendanceList[i].id + "' placeholder='Enter Comment'/></td>";
 			    str += "<td  class='text-center'><input type='checkBox' class='nonattendedCheckBoxCls' value='" + results.notAttendanceList[i].id + "'></td>";
                 str += "</tr>";
@@ -833,34 +849,34 @@ $(document).on("change", "#mandalModelId", function() {
 	
 	
 	$(document).on("change", "#meetingLevelModelId", function() {
-    var meetingLevelId = $('#meetingLevelModelId').val();
-	getMeetingLevels(meetingLevelId);
+		var meetingLevelId = $('#meetingLevelModelId').val();
+		getMeetingLevels(meetingLevelId);
    });
 		
 	$(document).on("change", "#stateModelId", function() {
-    var stateId = $('#stateModelId').val();
-    getDistrictsAction(stateId);
+		var stateId = $('#stateModelId').val();
+		getDistrictsAction(stateId);
 });
     $('#nonAttendedInvitieesTable').hide();
     $('#nonAttendedInvitieesTabButton').on("click", function() {
-        if ($(this).find("i").hasClass("glyphicon-plus")) {
-            $(this).find("i").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+        if ($(this).find("i").hasClass("fa-plus-square-o")) {
+            $(this).find("i").removeClass("fa-plus-square-o").addClass("fa-minus-square-o");
             $('#nonAttendedInvitieesTable').show();
 
         } else {
-            $(this).find("i").addClass("glyphicon-plus").removeClass("glyphicon-minus");
+            $(this).find("i").addClass("fa-plus-square-o").removeClass("fa-minus-square-o");
             $('#nonAttendedInvitieesTable').hide();
         }
     });
 
     $('#attendedInvitieesTable').hide();
     $('#attendedInvitieesTabButton').on("click", function() {
-        if ($(this).find("i").hasClass("glyphicon-plus")) {
-            $(this).find("i").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+        if ($(this).find("i").hasClass("fa-plus-square-o")) {
+            $(this).find("i").removeClass("fa-plus-square-o").addClass("fa-minus-square-o");
             $('#attendedInvitieesTable').show();
 
         } else {
-            $(this).find("i").addClass("glyphicon-plus").removeClass("glyphicon-minus");
+            $(this).find("i").addClass("fa-plus-square-o").removeClass("fa-minus-square-o");
             $('#attendedInvitieesTable').hide();
         }
     });
@@ -868,12 +884,12 @@ $(document).on("change", "#mandalModelId", function() {
 
     $('#editTabUserExpandCollapseId').hide();
     $('#editTabUserTabButton').on("click", function() {
-        if ($(this).find("i").hasClass("glyphicon-plus")) {
-            $(this).find("i").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+        if ($(this).find("i").hasClass("fa-plus-square-o")) {
+            $(this).find("i").removeClass("fa-plus-square-o").addClass("fa-minus-square-o");
             $('#editTabUserExpandCollapseId').show();
 
         } else {
-            $(this).find("i").addClass("glyphicon-plus").removeClass("glyphicon-minus");
+            $(this).find("i").addClass("fa-plus-square-o").removeClass("fa-minus-square-o");
             $('#editTabUserExpandCollapseId').hide();
         }
     });
@@ -1228,7 +1244,6 @@ else if(i>=0){
    
 }      */
         selectedSessionModel.push(results[i].name);
-    
       }
       
       
@@ -1247,57 +1262,41 @@ else if(i>=0){
   }
 
 
-function addSessionsListForModel(idModel,dataOfSelected)
-  {
-    
-     
-    
+function addSessionsListForModel(idModel,dataOfSelected){
+	
     var jsObj = {}
     var selectedId=[];
 
     $.ajax({
-      type: "GET",
-      url: "getAllSessionTypeAction.action",
-      data: {
-        task: JSON.stringify(jsObj)
-      }
+		  type: "GET",
+		  url: "getAllSessionTypeAction.action",
+		  data: {
+			task: JSON.stringify(jsObj)
+		}
     }).done(function (results) {
 
-      for (var i in results) {
-        
-        for (var j in dataOfSelected) 
-        {
-          
-          if(dataOfSelected[j]==results[i].name)
-{
-  
-  selectedId.push(results[i].id);
-}
-            }
-         
-       if(dataOfSelected[0]=="extraSession")
-    {
-      $(idModel).append('<option value=' + results[i].id +'>' + results[i].name + '</option>');
-    }
-else {
-       $(idModel).append('<option value=' + results[i].id +'>' + results[i].name + '</option>');
-}
-	}
-	
-       if(dataOfSelected[0]=="extraSession")
-    {
-		$(idModel).val("select Session");
-	}		
-      
-      
-    else{
-       var index=0;
-       $(idModel).each(function()
-       {
-         $(this).val(selectedId[index])
-      index++;
-       });
-    }
+       for (var i in results) {
+			for (var j in dataOfSelected){
+				if(dataOfSelected[j]==results[i].name){
+					selectedId.push(results[i].id);
+				}
+			}
+				if(dataOfSelected[0]=="extraSession"){
+					$(idModel).append('<option value=' + results[i].id +'>' + results[i].name + '</option>');
+				}else {
+					$(idModel).append('<option value=' + results[i].id +'>' + results[i].name + '</option>');
+				}
+		}
+		
+        if(dataOfSelected[0]=="extraSession"){
+			$(idModel).val(0);
+		} else{
+			var index=0;
+			$(idModel).each(function(){
+				$(this).val(selectedId[index])
+				index++;
+			});
+		}
  
       });
     
@@ -1349,30 +1348,30 @@ alert(meetingSessionId);
   
   
   $(document).on("click",".addButForModel", function () {
-    console.log($('.deleteSessionsForModel').length);
-	var numberOfSessions=$('.deleteSessionsForModel').length;
-	if($('.deleteSessionsForModel').length<=3)
-	{
-    $('#sessionModelId').append("<div class='deleteSessionsForModel'><div class='col-sm-4'><label for='session'>Session:</label>"+
-"<select class='form-control sessionTypeIdForModel' id='sessionIdFOrModel"+numberOfSessions+"'><option value=''>Select Session</option></select></div>"+
-"<div class='col-sm-2'><label for='startTimeForNewEditModel'>Start Time:</label><input type='text' class='form-control timeCls startTimeForModel' id='startTime'  value=' '></div>"+
-"<div class='col-sm-2'><label for='endTimeForNewEditModel'>End Time:</label><input type='text' class='form-control timeCls endTimeForModel' id='endTime' value=' '></div>"+
-"<div class='col-sm-2'><label for='lateTimeForNewEditModel'>Late Time:</label><input type='text' class='form-control timeCls lateTimeForModel' id='lateTime' value=' '></div><div class='col-sm-2 '><button class='btn btn-danger delButForModel' style='margin-top:20px;'>Delete Sessions <i class='glyphicon glyphicon-trash' aria-hidden='true'></i></button></div></div>");
-	}
- var startTimeForModel=$('.startTimeForModel');
-      var endTimeForModel=$('.endTimeForModel');
-      var lateTimeForModel=$('.lateTimeForModel');
-var sessionTypeIdForNewEditModel=$('#sessionIdFOrModel'+numberOfSessions);
-var extraSession=[];
-extraSession.push("extraSession");
- addSessionsListForModel(sessionTypeIdForNewEditModel,extraSession);
+		console.log($('.deleteSessionsForModel').length);
+		//$("#sessionPanelBodyId").show();
+		var numberOfSessions=$('.deleteSessionsForModel').length;
+		if($('.deleteSessionsForModel').length<=3){
+				$('#sessionModelId').append("<div class='deleteSessionsForModel'><div class='col-sm-4'><label for='session'>Session:</label>"+
+			"<select class='form-control sessionTypeIdForModel' id='sessionIdFOrModel"+numberOfSessions+"'><option value=''>Select Session</option></select></div>"+
+			"<div class='col-sm-2'><label for='startTimeForNewEditModel'>Start Time:</label><input type='text' class='form-control timeCls startTimeForModel' id='startTime'  value=' '></div>"+
+			"<div class='col-sm-2'><label for='endTimeForNewEditModel'>End Time:</label><input type='text' class='form-control timeCls endTimeForModel' id='endTime' value=' '></div>"+
+			"<div class='col-sm-2'><label for='lateTimeForNewEditModel'>Late Time:</label><input type='text' class='form-control timeCls lateTimeForModel' id='lateTime' value=' '></div><div class='col-sm-2 '><button class='btn btn-danger delButForModel' style='margin-top:20px;'>Delete Sessions <i class='glyphicon glyphicon-trash' aria-hidden='true'></i></button></div></div>");
+		}
+		  var startTimeForModel=$('.startTimeForModel');
+		  var endTimeForModel=$('.endTimeForModel');
+		 var lateTimeForModel=$('.lateTimeForModel');
+		var sessionTypeIdForNewEditModel=$('#sessionIdFOrModel'+numberOfSessions);
+		var extraSession=[];
+		extraSession.push("extraSession");
+		 addSessionsListForModel(sessionTypeIdForNewEditModel,extraSession);
 
-addDateTimePickerForModel(startTimeForModel,endTimeForModel,lateTimeForModel);
+		addDateTimePickerForModel(startTimeForModel,endTimeForModel,lateTimeForModel);
 
     });
 	
 	$(document).on("click", ".delButForModel", function () {
-    $(this).parent().parent().remove();
+		$(this).parent().parent().remove();
   });
   
 </script>
