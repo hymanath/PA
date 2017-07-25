@@ -2365,9 +2365,11 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			String temp[] = selDate.split("-");
 			
 			if(temp.length>1){
-				returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(temp[1].trim(),temp[0].trim(),1l,"All",enrollmentYearIds,programYearIds);
+				//returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(temp[1].trim(),temp[0].trim(),1l,"All",enrollmentYearIds,programYearIds);
+				returnResult = trainingCampService.getAllTrainingProgWiseCompletedRunningUpcomingBatchIds(temp[1].trim(),temp[0].trim(),1l,"All",enrollmentYearIds,programYearIds);
 			}else{
-				returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(null,null,0l,"All",enrollmentYearIds,programYearIds);
+				//returnResult = trainingCampService.getCompletedRunningUpcomingBatchIds(null,null,0l,"All",enrollmentYearIds,programYearIds);
+				returnResult = trainingCampService.getAllTrainingProgWiseCompletedRunningUpcomingBatchIds(null,null,0l,"All",enrollmentYearIds,programYearIds);
 			}
 			
 		} catch (Exception e) {

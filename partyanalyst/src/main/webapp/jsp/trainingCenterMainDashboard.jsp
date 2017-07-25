@@ -631,7 +631,9 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 						var campspan=myResult[i].campDetails[j].cmpBatchCount;
 						str+="<td rowspan="+campspan+" class='summaryCls' attr_prog_id='"+myResult[i].programId+"' attr_camp_id='"+myResult[i].campDetails[j].campId+"' attr_from='c' attr_batch_id='0' style='cursor:pointer' title='Click Here View Camp Summary'>"+myResult[i].campDetails[j].campName+"</td>";
 							for(var k in myResult[i].campDetails[j].scheduleDetails){
+								
 								var schedule = myResult[i].campDetails[j].scheduleDetails[k];
+								if(schedule.scheduleCode != null){
 								str+="<td rowspan="+schedule.batchDetails.length+">"+schedule.scheduleCode+"</td>";
 									for(var m in schedule.batchDetails){
 										str+="<td class='summaryCls' title='Click Here to View Batch Summary' style='cursor:pointer' attr_batch_id='"+schedule.batchDetails[m].batchId+"' attr_prog_id='"+myResult[i].programId+"' attr_from='c' attr_camp_id='"+myResult[i].campDetails[j].campId+"'>"+schedule.batchDetails[m].batchName+"</td>";
@@ -640,7 +642,9 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 										
 										str+="</tr>";
 									}
+									}
 								str+="</tr>";
+								
 							}
 						str+="</tr>";
 					}
