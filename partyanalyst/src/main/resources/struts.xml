@@ -17730,6 +17730,11 @@
 		<param name="root">resultStatus</param>
 		</result>        
 	</action> 
+	<action name="deletePartyMeetingSessionAction" class="cadrePartyMeetingManagementAction" method="deletePartyMeetingSession">
+		<result type="json" name="success">    
+		<param name="root">resultStatus</param>
+		</result>        
+	</action> 
 	<action name="getSessionsDetailsByMeetingIdAction" class="cadrePartyMeetingManagementAction" method="getSessionsDetailsByMeetingId"> <!-- saveMeetingDetails -->
 		<result type="json" name="success">    
 		<param name="root">partyMeetingsVOList</param>
