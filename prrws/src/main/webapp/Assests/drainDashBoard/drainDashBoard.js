@@ -241,7 +241,8 @@ function getDrainsInfoLocationWise(locationType,filterId,filterType,subFilterId,
 
 function buildingTable(result,locationType,divId){
 	var str='';
-	str+='<div class="table-responsive">';
+	str+='<div><span class="pull-right" style="margin:10px;"><b>Avi - Availabel , Cle - Cleaned , Km - kilometers</b></span></div>';
+	str+='<div class="col-md-12 table-responsive">';
 	str+='<table class="table table-condensed table-striped" id="datatable'+locationType+'">';
         str+='<thead>';
             str+='<tr>';
@@ -330,7 +331,11 @@ function buildingTable(result,locationType,divId){
     str+='</table>';
     str+='</div>';
 	$("#"+divId+"TableDivId").html(str);
-	$("#datatable"+locationType).dataTable();	
+	$("#datatable"+locationType).dataTable({
+					"iDisplayLength": 10,
+					"aaSorting": [],
+					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+	});	
 }
 
 $(document).on("click","[role='tabDrains_menu'] li",function(){
