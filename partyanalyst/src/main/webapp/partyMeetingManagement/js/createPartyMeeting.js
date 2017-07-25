@@ -4,6 +4,7 @@ var spinner = '<div class="spinner"><div class="dot1"></div><div class="dot2"></
 var startFromResult = 0;
 var resultStartsGlobalavar = 0;
 onLoadCalls();
+
 function onLoadCalls() {
     var levelDivId = 'all';
     var meetingLevelId = "0";
@@ -150,8 +151,9 @@ $(document).on("change", "#state", function() {
 
 
 
-function getMeetingSubTypeAction(mainMeetingTypeId,model, selId) {
+function getMeetingSubTypeAction(mainMeetingTypeId, model, selId) {
     $("#meetingTypeSubTypeId").html("");
+	$("#meetingTypeSubTypeId").append('<option value=' + 0 + '>' + "Select Meeting Sub-type" + '</option>');
     var jsObj = {
         partyMeetingMainTypeId: mainMeetingTypeId
     }
@@ -168,7 +170,7 @@ function getMeetingSubTypeAction(mainMeetingTypeId,model, selId) {
             } else {
                 $("#meetingTypeSubTypeModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
             }
-           
+
         }
         if (model = "model") {
             $("#meetingTypeSubTypeModelId option[value=" + selId + "]").attr('selected', 'selected');
@@ -176,9 +178,9 @@ function getMeetingSubTypeAction(mainMeetingTypeId,model, selId) {
 
     });
 }
-getPartyMeetingsTabUserNameByDistrict();
+getPartyMeetingsTabUserNameByDistrict()
 
-function getPartyMeetingsTabUserNameByDistrict(model) {
+function getPartyMeetingsTabUserNameByDistrict(type) {
 
     var jsObj = {
 
@@ -270,48 +272,48 @@ function buildMeetingDetailsTable(results,partiMeetingLevelId,levelDivId,jsObj){
 	str+="<table id='meetingTableId"+levelDivId+"' class='table table-bordered'>";
 		str+="<thead class='text-capital'>";
 			str+="<tr>"
-				str+="<th>meeting name</th>";
-				str+="<th>Level</th>";
-				str+="<th>type</th>";
-				str+="<th>District Name</th>";
-				str+="<th>Constincy Name</th>";
-				str+="<th>Mandal</th>";
-				str+="<th>Village</th>";
-				str+="<th>Date</th>";
-				str+="<th>Action</th>";
+				str+="<th class='text-center text-capital'>meeting name</th>";
+				str+="<th class='text-center text-capital'>Level</th>";
+				str+="<th class='text-center text-capital'> meeting type</th>";
+				str+="<th class='text-center text-capital'>District Name</th>";
+				str+="<th class='text-center text-capital'>Constincy Name</th>";
+				str+="<th class='text-center text-capital'>Mandal</th>";
+				str+="<th class='text-center text-capital'>Village</th>";
+				str+="<th class='text-center text-capital'>Date</th>";
+				str+="<th class='text-center text-capital'>Action</th>";
 			str+="</tr>"
 		str+="</thead>";
 		str+="<tbody>";
 		for(var i in results){
 			str+="<tr>"
-					str+="<td>"+results[i].meetingName+"</td>";
-					str+="<td>"+results[i].remarks+"</td>";
-					str+="<td>"+results[i].meetingType+"</td>";
+					str+="<td class='text-center'>"+results[i].meetingName+"</td>";
+					str+="<td class='text-center'>"+results[i].remarks+"</td>";
+					str+="<td class='text-center'>"+results[i].meetingType+"</td>";
 				if(results[i].districtName != null){
-					str+="<td>"+results[i].districtName+"</td>";
+					str+="<td class='text-center'>"+results[i].districtName+"</td>";
 				}else{
-					str+="<td>-</td>";
+					str+="<td class='text-center'>-</td>";
 				}
 				if(results[i].constituencyName != null){
-					str+="<td>"+results[i].constituencyName+"</td>";
+					str+="<td class='text-center'>"+results[i].constituencyName+"</td>";
 				}else{
-					str+="<td>-</td>";
+					str+="<td class='text-center'>-</td>";
 				}
 				if(results[i].teshilName != null){
-					str+="<td>"+results[i].teshilName+"</td>";
+					str+="<td class='text-center'>"+results[i].teshilName+"</td>";
 				}else{
-					str+="<td>-</td>";
+					str+="<td class='text-center'>-</td>";
 				}
 			
 				if(results[i].name != null){
-					str+="<td>"+results[i].name+"</td>";
+					str+="<td class='text-center'>"+results[i].name+"</td>";
 				}else{
-					str+="<td>-</td>";
+					str+="<td class='text-center'>-</td>";
 				}
-					str+="<td>"+results[i].updatedTime+"</td>";
+					str+="<td class='text-center'>"+results[i].updatedTime+"</td>";
 					str+="<td class='text-center'>";
 					if(results[i].flage=="true"){
-						str+="<i id="+results[i].id+" class='glyphicon glyphicon-edit meetingEditCls'   title='Edit' style='padding-right:10px;cursor:pointer;'></i>";
+						str+="<i id="+results[i].id+" class='glyphicon glyphicon-edit meetingEditCls'   title='Edit Meeting' style='padding-right:10px;cursor:pointer;'></i>";
 					}
 					if(results[i].isCondacted=="Y"){
 						str+="<i id="+results[i].id+" class='glyphicon glyphicon-trash' style='display:none;'></i>";
@@ -344,6 +346,7 @@ function buildMeetingDetailsTable(results,partiMeetingLevelId,levelDivId,jsObj){
 
 function getMandalBasedOnConstituencyAction(constituencyId, type, theshilId, panchayatId) {
     $('#mandal').html(" ");
+    $("#mandal").append('<option value=' + 0 + '>' + "Select Mandal" + '</option>');
     var jsObj = {
         constituencyId: constituencyId
     }
@@ -357,10 +360,9 @@ function getMandalBasedOnConstituencyAction(constituencyId, type, theshilId, pan
         $('#mandalSpinnerId').hide();
         for (var i in results) {
             if (type == null) {
-                $("#mandal").append('<option value=' + 0 + '>' + "Select Mandal" + '</option>');
+            
                 $("#mandal").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
             } else {
-                $("#mandalModelId").append('<option value=' + 0 + '>' + "Select Mandal" + '</option>');
                 $("#mandalModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
 
             }
@@ -375,6 +377,7 @@ function getMandalBasedOnConstituencyAction(constituencyId, type, theshilId, pan
 
 function getPanchayatWardByMandalAction(mandalId, constituencyId, type, panchayatId) {
     $('#village').html(" ");
+	 $("#villageModelId").append('<option value=' + 0 + '>' + "Select Village" + '</option>');
     var jsObj = {
         constituencyId: constituencyId,
         mandalId: mandalId
@@ -391,7 +394,7 @@ function getPanchayatWardByMandalAction(mandalId, constituencyId, type, panchaya
             if (type == null) {
                 $("#village").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
             } else {
-                $("#villageModelId").append('<option value=' + 0 + '>' + "Select Village" + '</option>');
+               
                 $("#villageModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
             }
         }
@@ -462,6 +465,7 @@ function getAllSessionType() {
 
 function getDistrictsAction(stateId, model, id) {
     $("#district").html("");
+	$("#district").append('<option value=' + 0 + '>' + "Select District" + '</option>');
     var jsObj = {
         stateId: stateId
     }
@@ -830,4 +834,12 @@ $(document).on("click",".meetingEditCls",function(){
 		var redirectWindow=window.open('editPartyMeetingManagementAction.action?meetingId='+meetingId+'');
         
 	});
-	
+/* var editSessions="<div class='col-sm-4'><label for='session'>Session:</label>"+
+"<select class='form-control sessionTypeId' id='sessionModelId'>"+
+"<option value=''>Select Session</option></select></div>"+
+"<div class='col-sm-2'><label for='startDate'>Start Time:</label>"+
+"<input type='text' class='form-control timeCls startTime' id='startModalTime'  /></div>"+
+"<div class='col-sm-2'><label for='startDate'>End Time:</label>"+
+"<input type='text' class='form-control timeCls endTime' id='endModalTime'/></div>"+
+"<div class='col-sm-2'><label for='startDate'>Late Time:</label>"+
+"<input type='text' class='form-control timeCls lateTime' id='lateModalTime'/></div>";*/
