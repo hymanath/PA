@@ -3971,7 +3971,6 @@ function getLocationIhhlData()
 		fromDateStr:"201704",
         toDateStr:"201707",
         location:"state",
-		subLocation:"district",
         locationIdStr:"01",
 		subLocation:"district"
 	}
