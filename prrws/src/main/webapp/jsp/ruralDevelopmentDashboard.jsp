@@ -172,7 +172,7 @@
 				<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
-							<h4 class="panel-title">NTR Jalavani Overview</h4>
+							<h4 class="panel-title">NTR Jalasiri Overview</h4>
 						</div>
 						<div class="panel-body">
 							<div id="overViewAbstract"></div>
@@ -183,7 +183,7 @@
 				<div class="col-sm-12 m_top20">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
-							<h4 class="panel-title">NTR Jalavani Overview</h4>
+							<h4 class="panel-title">NTR Jalasiri Overview</h4>
 						</div>
 						<div class="panel-body">
 							<div id="overViewDataId"></div>
@@ -265,7 +265,17 @@ function getNtrJalaSiriAbstract()
 			var str='';
 			str+='<div class="col-sm-4">';
 				str+='<div class="text-center">';
-					str+='<div class="panel-black-white panel-block-white-high text-center">';
+					if(ajaxresp.percentage < 50)
+					{
+						str+='<div class="panel-black-white panel-block-white-low text-center active">';
+					}else if(ajaxresp.percentage >= 50 && ajaxresp.percentage < 80)
+					{
+						str+='<div class="panel-black-white panel-block-white-medium text-center active">';
+						
+					}else if(ajaxresp.percentage >= 80)
+					{
+						str+='<div class="panel-black-white panel-block-white-high text-center active">';
+					}
 						str+='<h4 class="panel-block-white-title text-capitalize text-center">NTR Jala Siri</h4>';
 						str+='<small class="text-center">Achieved</small>';
 						str+='<h1 class="text-center">'+ajaxresp.percentage+'<small>%</small><small><i class="fa fa-long-arrow-up"></i></small></h1>';
@@ -315,7 +325,7 @@ function getNtrJalaSiriOverview()
 								str1+='<p>Average Per District : '+ajaxresp.averagePerDistrict+'</p>';
 							str1+='</td>';
 							str1+='<td>';
-								str1+='<p>Total Avg NTR Jalavani in District : '+ajaxresp.totalAvgFarmsInDistrict+'</p>';
+								str1+='<p>Total Avg NTR Jalasiri in District : '+ajaxresp.totalAvgFarmsInDistrict+'</p>';
 							str1+='</td>';
 						str1+='</tr>';
 						str1+='<tr>';
@@ -323,7 +333,7 @@ function getNtrJalaSiriOverview()
 								str1+='<p>Average Per Constituency : '+ajaxresp.averagePerConstituency+'</p>';
 							str1+='</td>';
 							str1+='<td>';
-								str1+='<p>Total Avg NTR Jalavani in Constituency : '+ajaxresp.totalAvgFarmsInConstituency+'</p>';
+								str1+='<p>Total Avg NTR Jalasiri in Constituency : '+ajaxresp.totalAvgFarmsInConstituency+'</p>';
 							str1+='</td>';
 						str1+='</tr>';
 						str1+='<tr>';
@@ -331,7 +341,7 @@ function getNtrJalaSiriOverview()
 								str1+='<p>Average Per Mandal : '+ajaxresp.averagePerMandal+'</p>';
 							str1+='</td>';
 							str1+='<td>';
-								str1+='<p>Total Avg NTR Jalavani in Mandal: '+ajaxresp.totalAvgFarmsInMandal+'</p>';
+								str1+='<p>Total Avg NTR Jalasiri in Mandal: '+ajaxresp.totalAvgFarmsInMandal+'</p>';
 							str1+='</td>';
 						str1+='</tr>';
 						str1+='<tr>';
@@ -340,7 +350,7 @@ function getNtrJalaSiriOverview()
 								str1+='<h4>'+ajaxresp.totalBudget+'</h4>';
 							str1+='</td>';
 							str1+='<td>';
-								str1+='<p>Total NTR Jalavani</p>';
+								str1+='<p>Total NTR Jalasiri</p>';
 								str1+='<h4>'+ajaxresp.totalBudget+'</h4>';
 							str1+='</td>';
 						str1+='</tr>';
