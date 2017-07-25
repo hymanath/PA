@@ -471,13 +471,13 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				  #locationId 0:first time call or except TEHSIL other filter selected 1: Once User select TEHSIL filter type.*/
 				 if(locationId == 0 || locationId == 1){
 					    
-					    List<Object[]> notStartedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
+					    List<Object[]> notStartedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "TotalBooth");
 						List<Object[]> startedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
 						List<Object[]> completedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
 						List<Object[]> voterCountObjLst     = boothInchargeDAO.getLocationSerialNoRangeWiseVoterCount(inputVO);
 						
 						locationSerialRangeWiseVoterMap = getVoterCountRangeWise(voterCountObjLst);
-						getLocationWiseBoothDtls(notStartedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"NotStarted",IConstants.TEHSIL);
+						getLocationWiseBoothDtls(notStartedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"TotalBooth",IConstants.TEHSIL);
 						getLocationWiseBoothDtls(startedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"Started",IConstants.TEHSIL);
 						getLocationWiseBoothDtls(completedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"Completed",IConstants.TEHSIL);
 						 
@@ -486,25 +486,25 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				//Setting LocationElectionBody Wise Booth Count
 				 if(locationId == 0 || locationId == 2){
 					inputVO.setLocationLevel(IConstants.LOCALELECTIONBODY);
-					List<Object[]> lclElctnBdyNotStartedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
+					List<Object[]> lclElctnBdyNotStartedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "TotalBooth");
 					List<Object[]> lclElctnBdyStartedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
 					List<Object[]> lclElctnBdyCompletedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
 					List<Object[]> voterCountObjLst     = boothInchargeDAO.getLocationSerialNoRangeWiseVoterCount(inputVO);
 					
 					locationSerialRangeWiseVoterMap = getVoterCountRangeWise(voterCountObjLst);
-					getLocationWiseBoothDtls(lclElctnBdyNotStartedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"NotStarted",IConstants.LOCALELECTIONBODY);
+					getLocationWiseBoothDtls(lclElctnBdyNotStartedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"TotalBooth",IConstants.LOCALELECTIONBODY);
 					getLocationWiseBoothDtls(lclElctnBdyStartedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"Started",IConstants.LOCALELECTIONBODY);
 					getLocationWiseBoothDtls(lclElctnBdyCompletedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"Completed",IConstants.LOCALELECTIONBODY);
 				 }
 			}else{ //for other location 
 				
-				List<Object[]> notStartedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "NotStarted");
+				List<Object[]> notStartedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "TotalBooth");
 				List<Object[]> startedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Started");
 				List<Object[]> completedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
 				List<Object[]> voterCountObjLst     = boothInchargeDAO.getLocationSerialNoRangeWiseVoterCount(inputVO);
 				
 				locationSerialRangeWiseVoterMap = getVoterCountRangeWise(voterCountObjLst);
-				getLocationWiseBoothDtls(notStartedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"NotStarted","OtherLocation");
+				getLocationWiseBoothDtls(notStartedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"TotalBooth","OtherLocation");
 				getLocationWiseBoothDtls(startedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"Started","OtherLocation");
 				getLocationWiseBoothDtls(completedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"Completed","OtherLocation");
 			}
@@ -548,15 +548,12 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 						locationBoothMap.put(locationVO.getLocationIdStr().trim(), locationVO);
 					}
 					
-					if(resultType.equalsIgnoreCase("NotStarted")){
-						locationVO.setNotStartedBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-						locationVO.setTotalBoothCount(locationVO.getTotalBoothCount()+locationVO.getNotStartedBoothCount());
+					if(resultType.equalsIgnoreCase("TotalBooth")){
+						locationVO.setTotalBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
 					}else if(resultType.equalsIgnoreCase("Started")){
 						locationVO.setStartedBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-						locationVO.setTotalBoothCount(locationVO.getTotalBoothCount()+locationVO.getStartedBoothCount());
 					}else if(resultType.equalsIgnoreCase("Completed")){
 						locationVO.setCompletedBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-						locationVO.setTotalBoothCount(locationVO.getTotalBoothCount()+locationVO.getCompletedBoothCount());
 					}
 				}
 			}

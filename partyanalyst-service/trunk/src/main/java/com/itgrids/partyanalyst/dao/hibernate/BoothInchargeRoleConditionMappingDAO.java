@@ -198,15 +198,15 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 			}
 		}
         
-		if (resultType.equalsIgnoreCase("NotStarted")) {
-			queryStr.append(" and model1.isConfirmed='N' and model1.startDate is null and model1.completedDate is null ");
+		if (resultType.equalsIgnoreCase("TotalBooth")) {//NotStarted
+			//queryStr.append(" and model1.isConfirmed='N' and model1.startDate is null and model1.completedDate is null ");
 		} else if (resultType.equalsIgnoreCase("Started")) {
 			queryStr.append(" and model1.isConfirmed='N' and model1.startDate is not null and model1.completedDate is null");
 		} else if (resultType.equalsIgnoreCase("Completed")) {
 			queryStr.append(" and model1.isConfirmed='Y' and model1.startDate is not null and model1.completedDate is not null ");
 		}
 
-		if (inputVO.getFromDate() != null && inputVO.getToDate() != null && !resultType.equalsIgnoreCase("NotStarted")) {
+		if (inputVO.getFromDate() != null && inputVO.getToDate() != null && !resultType.equalsIgnoreCase("TotalBooth")) {
 			if (resultType.equalsIgnoreCase("Started")) {
 				queryStr.append(" and date(model1.startDate) between :fromDate and :toDate ");
 			} else if (resultType.equalsIgnoreCase("Completed")) {
@@ -235,7 +235,7 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		
 		Query query = getSession().createQuery(queryStr.toString());
 
-		if (inputVO.getFromDate() != null && inputVO.getToDate() != null && !resultType.equalsIgnoreCase("NotStarted")) {
+		if (inputVO.getFromDate() != null && inputVO.getToDate() != null && !resultType.equalsIgnoreCase("TotalBooth")) {
 			query.setDate("fromDate", inputVO.getFromDate());
 			query.setDate("toDate", inputVO.getToDate());
 		}
