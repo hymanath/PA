@@ -2469,22 +2469,13 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 	}
     
 	public List<Object[]> getPartyMeetingInviteeDetaisByPartyMeetingId(Long meetingId){
-    	StringBuilder sb = new StringBuilder();
-    	sb.append("select PI.partyMeetingId,TCC.tdpCadreId");//meetingId, tdpCadreId  ,0,1
-    	sb.append(",PR.candidateId," +//2 
-    			"CAN.lastname," +//3
-    			"PT.type," +//4
-    			"tdpCadre.memberShipNo," +//5
-    			"tdpCadre.mobileNo," +//6
-    			"PI.partyMeetingInviteeId ");//candidateId,name,position,2,3,4
-		sb.append("	from PartyMeetingInvitee PI,PublicRepresentative PR");
-		sb.append(",TdpCadreCandidate TCC,Candidate CAN,PublicRepresentativeType PT,TdpCadre tdpCadre ");
-		sb.append("where PI.tdpCadreId=TCC.tdpCadreId ");
-		sb.append("and  tdpCadre.tdpCadreId=PI.tdpCadreId ");
-		sb.append("and  TCC.candidateId=PR.candidateId ");
-		sb.append("and PR.candidateId=CAN.candidateId ");
-		sb.append("and PT.publicRepresentativeTypeId=PR.publicRepresentativeTypeId ");
-		sb.append("and PI.partyMeetingId=:meetingId ");
+		StringBuilder sb = new StringBuilder();
+    	sb.append("select model.partyMeetingId,model.tdpCadre.tdpCadreId,");//meetingId, tdpCadreId  ,0,1
+    	sb.append("model.tdpCadre.memberShipNo,model.partyMeetingInviteeId " +
+    			"from  PartyMeetingInvitee model ");//2 memmershipid  //3 partyMeetingInviteeId
+		sb.append("where model.tdpCadre.isDeleted='N' " );
+		 if(meetingId != null && meetingId.longValue() > 0l)
+			 sb.append("and model.partyMeetingId=:meetingId");
 		Query query = getSession().createQuery(sb.toString());
 		 if(meetingId != null && meetingId.longValue() > 0l){
 			 query.setParameter("meetingId", meetingId);
