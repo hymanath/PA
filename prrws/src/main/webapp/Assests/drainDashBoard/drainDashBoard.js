@@ -72,6 +72,7 @@ function onloadCalls(){
 	}else if(globallevelId == 4){
 		$(".tableMenu li:nth-child(1)").addClass("active");
 		$(".tableMenu li:nth-child(2)").hide();
+		$("[overview-level='constituency']").show();
 		$("[overview-level='district']").hide();
 		DefaultValuesSetMainBlock();
 		getDrainsInfoStateWise(globallocId,"assembly");
@@ -639,7 +640,10 @@ $(document).on("change","#mandalConstituencyNames",function(){
 			locationType = $(this).attr("attr_location_type");
 		 }
 	});
-	getDrainsInfoLocationWise("mandal",'0','district',constId,'assembly','mandalView',0);
+	if(constId == 0)
+		getDrainsInfoLocationWise("mandal",$("#mandalDistrictNames").val(),'district','0','','mandalView',0);
+	else	
+		getDrainsInfoLocationWise("mandal",'0','district',constId,'assembly','mandalView',0);
 });
 //All Districts 
 function getAllDistricts(divId,levelName){
@@ -694,7 +698,8 @@ function getAllDistricts(divId,levelName){
 		$("#"+divId).html("");
 		$("#"+divId).trigger('chosen:updated');
 		var json = {
-			districtId :parseInt(value)
+			districtId :parseInt(value),
+			type:"URBAN"
 		}
 		$.ajax({                
 			type:'POST',    
