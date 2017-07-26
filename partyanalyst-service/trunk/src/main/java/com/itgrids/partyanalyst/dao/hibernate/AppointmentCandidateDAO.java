@@ -610,7 +610,8 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		StringBuilder sb = new StringBuilder();
 		  sb.append("select count(distinct model.appointment.appointmentId)" +
 		  		" from AppointmentCandidateRelation model" +
-		  		" where model.appointment.createdBy = :userId and model.appointment.isDeleted='N' ");
+		  		" where model.appointment.createdBy = :userId and model.appointment.isDeleted='N' " +
+		  		" and model.appointmentCandidate.tdpCadre.isDeleted = 'N' ");
 		  if(insertedDate != null && endDate != null)
 			  sb.append(" and ( date(model.appointment.insertedTime) between :endDate and :insertedDate) ");
 		  sb.append(" group by model.appointment.createdBy ");
@@ -628,10 +629,12 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		  		" d.designation,model.appointmentCandidate.imageURL,model.appointment.insertedTime " +
 		  		" from AppointmentCandidateRelation model " +
 		  		" left join model.appointmentCandidate.candidateDesignation d" +
-		  		" where model.appointment.createdBy = :userId and model.appointment.isDeleted='N' ");
+		  		" where model.appointment.createdBy = :userId and model.appointment.isDeleted='N'" +
+		  		" and model.appointmentCandidate.tdpCadre.isDeleted = 'N' ");
 		  if(fromDate != null && toDate != null)
 			  sb.append(" and ( date(model.appointment.insertedTime) between :fromDate and :toDate) ");
-		  sb.append(" order by model.appointment.insertedTime " );
+		  
+		  sb.append(" order by model.appointment.insertedTime desc" );
 		  
 		  Query query = getSession().createQuery(sb.toString());
 			if(fromDate != null && toDate != null){
@@ -643,5 +646,41 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		return query.list();
 		
 	}
-	
+	public Long getAppointmentCandUniqueCount(Long userId,Date fromDate,Date endDate){
+		StringBuilder sb = new StringBuilder();
+		  sb.append("select " +
+		  		" count(distinct model.appointmentCandidateId)" +
+		  		" from AppointmentCandidateRelation model" +
+		  		" where model.appointment.createdBy = :userId " +
+		  		" and model.appointment.isDeleted='N' " +
+		  		" and model.appointmentCandidate.tdpCadre.isDeleted = 'N' ");
+		  
+		  if(fromDate != null && endDate != null)
+			  sb.append(" and date(model.appointment.insertedTime) between :endDate and :fromDate ");
+		  
+		  Query query = getSession().createQuery(sb.toString());
+			query.setParameter("userId", userId);
+			 if(fromDate != null && endDate != null){
+				 query.setDate("fromDate", fromDate); 
+				 query.setDate("endDate", endDate); 
+			 }
+		return (Long) query.uniqueResult();	
+	}
+	public Long todayAppointmentCandUniqueCount(Long userId,Date insertedDate,Date endDate){
+		StringBuilder sb = new StringBuilder();
+		  sb.append("select count(distinct model.appointmentCandidateId)" +
+		  		" from AppointmentCandidateRelation model" +
+		  		" where model.appointment.createdBy = :userId and model.appointment.isDeleted='N' " +
+		  		" and model.appointmentCandidate.tdpCadre.isDeleted = 'N' ");
+		  if(insertedDate != null && endDate != null)
+			  sb.append(" and ( date(model.appointment.insertedTime) between :endDate and :insertedDate) ");
+		  
+		  Query query = getSession().createQuery(sb.toString());
+			query.setParameter("userId", userId);
+			 if(insertedDate != null && endDate != null){
+				 query.setDate("insertedDate", insertedDate); 
+				 query.setDate("endDate", endDate); 
+			 }
+		return (Long) query.uniqueResult();	
+	}
 }
