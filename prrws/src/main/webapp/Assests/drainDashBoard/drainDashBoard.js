@@ -359,7 +359,7 @@ function getDrainsInfoLocationWise(locationType,filterId,filterType,subFilterId,
 
 function buildingTable(result,locationType,divId){
 	var str='';
-	str+='<div><span class="pull-right" style="margin:10px;"><b>Avi - Availabel , Cle - Cleaned , Km - kilometers</b></span></div>';
+	str+='<div><span class="pull-right" style="margin:10px;"><b>Avi - Available , Cle - Cleaned , Km - kilometers</b></span></div>';
 	str+='<div class="col-md-12 table-responsive">';
 	str+='<table class="table table-condensed table-striped" id="datatable'+locationType+'" style="width:100%;">';
         str+='<thead>';
@@ -374,7 +374,7 @@ function buildingTable(result,locationType,divId){
 					str+='<th rowspan="2">PARLIAMENTS</th>';
 				
                 str+='<th colspan="5" class="text-center">TOTAL</th>';
-                str+='<th colspan="5" class="text-center">KACCHA</th>';
+                str+='<th colspan="5" class="text-center">KACHA</th>';
                 str+='<th colspan="5" class="text-center">PAKKA</th>';
                 str+='<th colspan="5" class="text-center">UNDERGROUND</th>';
             str+='</tr>';
