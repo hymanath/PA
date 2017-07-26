@@ -84,14 +84,28 @@
 										<div class="row">
 											<div class="col-sm-12 m_top10">
 												<div class="menu-block" style="background-color:#88186B">
-													<a href="MGNREGSDashboard">
-														<h3>MGNREGS</h3>
-														<p>Mahatma Gandhi Rural employement guarantee scheme</p>
-													</a>
+													<h3>MGNREGS</h3>
+													<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+													<div class="row">
+														<div class="col-sm-6 m_top10">
+															<div class="menu-block" style="background-color:#FFBA00">
+																<a href="MGNREGSDashboard">
+																	<p>Dashboard</p>
+																</a>
+															</div>
+														</div>
+														<div class="col-sm-6 m_top10">
+															<div class="menu-block" style="background-color:#56A3C5">
+																<a href="NregaConsolidatedDashboard">
+																	<p>Consolidated</p>
+																</a>
+															</div>
+														</div>
+													</div>
 												</div>
 											</div>
 											<div class="col-sm-12 m_top10">
-												<div class="menu-block" style="background-color:#88186B">
+												<div class="menu-block" style="background-color:#ff1c5e">
 													<a href="RuralDevelopmentDashboard">
 														<h3>RD</h3>
 														<p>Rural Development</p>
@@ -172,7 +186,7 @@
 				<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
-							<h4 class="panel-title">NTR Jalasiri</h4>
+							<h4 class="panel-title text-capital">NTR Jalasiri</h4>
 						</div>
 						<div class="panel-body">
 							<div id="overViewAbstract"></div>
@@ -183,7 +197,7 @@
 				<div class="col-sm-12 m_top20">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
-							<h4 class="panel-title">NTR Jalasiri Overview</h4>
+							<h4 class="panel-title text-capital">NTR Jalasiri Overview</h4>
 						</div>
 						<div class="panel-body">
 							<div id="overViewDataId"></div>
