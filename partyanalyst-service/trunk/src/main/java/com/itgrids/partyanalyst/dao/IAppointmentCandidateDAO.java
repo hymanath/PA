@@ -30,5 +30,7 @@ public interface IAppointmentCandidateDAO extends GenericDao<AppointmentCandidat
  public Long appointmntCandExistForVtrId(String voterId);
  public Long todayAppointmentCandidateCount(Long userId,Date insertedDate,Date endDate);
  public List<Object[]> appointmentCandidateDetails(Date fromDate,Date toDate,Long userId);
+ public Long getAppointmentCandUniqueCount(Long userId,Date fromDate,Date endDate);
+ public Long todayAppointmentCandUniqueCount(Long userId,Date insertedDate,Date endDate);
  
 }
