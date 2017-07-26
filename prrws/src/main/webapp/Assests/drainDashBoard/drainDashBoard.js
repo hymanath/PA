@@ -30,21 +30,23 @@ function onloadCalls(){
 	
 	if(globallevelId == 2 || globallevelId == 0){
 		
+		$(".tableMenu li").removeClass("active");
+		$(".tableMenu li:nth-child(1)").addClass("active");
 		$(".tableMenu li:nth-child(2)").show();
 		$("[overview-level]").show();
 		DefaultValuesSetMainBlock();
 		$("#constituencyDistrictNames_chosen").show();
 		$("#mandalDistrictNames_chosen").show();
 		$("#mandalConstituencyNames_chosen").show();
-		getDrainsInfoStateWise(globallocId,"district");
+		getDrainsInfoStateWise(0,"district");
 		getAllDistricts("constituencyDistrictNames","DISTRICTS");
 		getAllDistricts("mandalDistrictNames","DISTRICTS");
 		//District
-		getDrainsInfoLocationWise("district",'0','','0','',"districtView",globallocId);
+		getDrainsInfoLocationWise("district",'0','','0','',"districtView",0);
 		//constituency
-		getDrainsInfoLocationWise("assembly",globallocId,'','0','',"assemblyView",0);
+		getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",0);
 		//Mandal
-		getDrainsInfoLocationWise("mandal",globallocId,'','0','',"mandalView",0);
+		getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView",0);
 	}else if(globallevelId == 3){
 		$(".tableMenu li:nth-child(1)").addClass("active");
 		$(".tableMenu li:nth-child(2)").hide();
@@ -133,22 +135,23 @@ $(document).on("click",".menuDataCollapse",function(){
 	$("#selectedName").attr("attr_name",globalLocationName);
 	
 	if(globallevelId == 2 || globallevelId == 0){
-		$(".tableMenu li:nth-child(1)").removeClass("active");
+		$(".tableMenu li").removeClass("active");
+		$(".tableMenu li:nth-child(1)").addClass("active");
 		$(".tableMenu li:nth-child(2)").show();
 		$("[overview-level]").show();
 		DefaultValuesSetMainBlock();
 		$("#constituencyDistrictNames_chosen").show();
 		$("#mandalDistrictNames_chosen").show();
 		$("#mandalConstituencyNames_chosen").show();
-		getDrainsInfoStateWise(globallocId,"district");
+		getDrainsInfoStateWise(0,"district");
 		getAllDistricts("constituencyDistrictNames","DISTRICTS");
 		getAllDistricts("mandalDistrictNames","DISTRICTS");
 		//District
-		getDrainsInfoLocationWise("district",'0','','0','',"districtView",globallocId);
+		getDrainsInfoLocationWise("district",'0','','0','',"districtView",0);
 		//constituency
-		getDrainsInfoLocationWise("assembly",globallocId,'','0','',"assemblyView",0);
+		getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",0);
 		//Mandal
-		getDrainsInfoLocationWise("mandal",globallocId,'','0','',"mandalView",0);
+		getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView",0);
 	}else if(globallevelId == 3){
 		$(".tableMenu li:nth-child(1)").addClass("active");
 		$(".tableMenu li:nth-child(2)").hide();
@@ -359,19 +362,52 @@ function getDrainsInfoLocationWise(locationType,filterId,filterType,subFilterId,
 
 function buildingTable(result,locationType,divId){
 	var str='';
+	var viewTypeMandal='';
+		$('.tableMenuMandal li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+				viewTypeMandal = $(this).attr("attr_location_type");
+			 }
+		});
+	var viewTypeCons='';
+		$('.tableMenuCons li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+				viewTypeCons = $(this).attr("attr_location_type");
+			 }
+		});	
 	str+='<div><span class="pull-right" style="margin:10px;"><b>Avi - Available , Cle - Cleaned , Km - kilometers</b></span></div>';
 	str+='<div class="col-md-12 table-responsive">';
 	str+='<table class="table table-condensed table-striped" id="datatable'+locationType+'" style="width:100%;">';
         str+='<thead>';
             str+='<tr>';
-				if(locationType == "district")
+				if(locationType == "district"){
 					str+='<th rowspan="2">DISTRICTS</th>';
-				else if(locationType == "assembly")
-					str+='<th rowspan="2">CONSTITUENCIES</th>';
-				else if(locationType == "mandal")
-					str+='<th rowspan="2">MANDALS</th>';
-				else if(locationType == "constituency")
+				}
+				else if(locationType == "assembly"){
+					if(viewTypeCons == "districts"){
+						str+='<th rowspan="2">DISTRICTS</th>';
+						str+='<th rowspan="2">CONSTITUENCIES</th>';
+					}else{
+						str+='<th rowspan="2">PARLIAMENTS</th>';
+						str+='<th rowspan="2">CONSTITUENCIES</th>';
+					}	
+					
+				}
+				else if(locationType == "mandal"){
+					if(viewTypeMandal == "districts"){
+						str+='<th rowspan="2">DISTRICTS</th>';
+						str+='<th rowspan="2">CONSTITUENCIES</th>';
+						str+='<th rowspan="2">MANDALS</th>';
+					}else{
+						str+='<th rowspan="2">PARLIAMENTS</th>';
+						str+='<th rowspan="2">CONSTITUENCIES</th>';
+						str+='<th rowspan="2">MANDALS</th>';
+					}	
+					
+				}
+				else if(locationType == "constituency"){
 					str+='<th rowspan="2">PARLIAMENTS</th>';
+				}
+					
 				
                 str+='<th colspan="5" class="text-center">TOTAL</th>';
                 str+='<th colspan="5" class="text-center">KACHA</th>';
@@ -411,7 +447,27 @@ function buildingTable(result,locationType,divId){
 						str+='<tr>';
 						if(locationType == "district"){
 							str+='<td><img src="Assests/icons/'+result[i].name+'.png" style="height: 30px;margin-right: 7px;"/><br/>'+result[i].name+'</td>';
-						}else{
+						}else if(locationType == "assembly"){
+							if(viewTypeCons == "districts"){
+								str+='<td>'+result[i].districtName+'</td>';
+								str+='<td>'+result[i].name+'</td>';
+							}else{
+								str+='<td>'+result[i].parliamentName+'</td>';
+								str+='<td>'+result[i].name+'</td>';
+							}
+							
+						}else if(locationType == "mandal"){
+							if(viewTypeCons == "districts"){
+								str+='<td>'+result[i].districtName+'</td>';
+								str+='<td>'+result[i].assemblyName+'</td>';
+								str+='<td>'+result[i].name+'</td>';
+							}else{
+								str+='<td>'+result[i].parliamentName+'</td>';
+								str+='<td>'+result[i].assemblyName+'</td>';
+								str+='<td>'+result[i].name+'</td>';
+							}
+							
+						}else if(locationType == "constituency"){
 							str+='<td>'+result[i].name+'</td>';
 						}
 						
