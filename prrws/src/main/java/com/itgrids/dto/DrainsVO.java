@@ -30,12 +30,49 @@ public class DrainsVO implements Serializable {
 	private Long cleaned;
 	private  Double cleanedKM;	
 	private Double percentage=0.00;
-	
+	private Long districtId=0l,parliamentId=0l,assemblyId=0l;
+	private String districtName="",parliamentName="",assemblyName="";
 	private Long totalAvailable=0l,totalCleaned=0l,
 			kachaAvailable=0l,pakkaAvailable=0l,ugAvailable=0l,ugCleaned=0l;
 	private Double totalAvailableKms=0.00,totalCleanedKms=0.00,kachaAvailableKms=0.00,pakkaAvailableKms=0.00,ugAvailableKms=0.00,ugCleanedKms=0.00,ugPercentage=0.00;
 	
 	
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+	public Long getAssemblyId() {
+		return assemblyId;
+	}
+	public void setAssemblyId(Long assemblyId) {
+		this.assemblyId = assemblyId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getParliamentName() {
+		return parliamentName;
+	}
+	public void setParliamentName(String parliamentName) {
+		this.parliamentName = parliamentName;
+	}
+	public String getAssemblyName() {
+		return assemblyName;
+	}
+	public void setAssemblyName(String assemblyName) {
+		this.assemblyName = assemblyName;
+	}
 	public Double getUgPercentage() {
 		return ugPercentage;
 	}
@@ -123,8 +160,6 @@ public class DrainsVO implements Serializable {
 	private List<DrainsVO> distMandalList = new ArrayList<DrainsVO>(0);
 	private List<DrainsVO> consMandalList = new ArrayList<DrainsVO>(0);
 	private List<DrainsVO> mandalVillageList = new ArrayList<DrainsVO>(0);
-	
-	private List<DrainsVO> typeList = new ArrayList<DrainsVO>(0);
 	
 	public Long getId() {
 		return id;
