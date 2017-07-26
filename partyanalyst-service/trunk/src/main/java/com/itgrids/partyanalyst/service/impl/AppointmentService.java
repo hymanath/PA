@@ -8650,6 +8650,7 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  	  try{
  		 Date insertedDate = dateUtilService.getCurrentDateAndTime();
  		 Long todayCount = appointmentCandidateDAO.todayAppointmentCandidateCount(userId,insertedDate,insertedDate);
+ 		 Long todayUniqueCount = appointmentCandidateDAO.todayAppointmentCandUniqueCount(userId, insertedDate, insertedDate);
  		 Calendar date = Calendar.getInstance();
          date.set(Calendar.DAY_OF_MONTH, 1);
        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -8659,12 +8660,19 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 				fromDate = df.parse(startDateStr);
 			}
           Long totalCount =appointmentCandidateDAO.todayAppointmentCandidateCount(userId,insertedDate,fromDate);
+          Long uniqueCount = appointmentCandidateDAO.getAppointmentCandUniqueCount(userId, insertedDate, fromDate);
           returnVo = new AppointmentCountDetailsVO();
            if(todayCount != null && todayCount>0l){
         	   returnVo.setTodayCount(todayCount); 
            }
            if(totalCount != null && totalCount>0l){
         	   returnVo.setMonthCount(totalCount);
+           }
+           if(uniqueCount != null && uniqueCount.longValue() > 0l){
+        	   returnVo.setUniqueCount(uniqueCount);
+           }
+           if(todayUniqueCount != null && todayUniqueCount.longValue() > 0l){
+        	   returnVo.setTodayUniqueCount(todayUniqueCount);
            }
      
  		}catch(Exception e){
