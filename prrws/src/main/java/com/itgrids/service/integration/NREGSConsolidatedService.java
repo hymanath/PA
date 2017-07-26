@@ -49,6 +49,29 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 	private INregaComponentDAO nregaComponentDAO;
 	
 	/*
+	 * Date : 26/07/2017
+	 * Author :Sravanth
+	 * @description : getNregaComponentsList
+	 * 
+	 */
+	public List<NregaConsolidatedDataVO> getNregaComponentsList(List<Object[]> list){
+		List<NregaConsolidatedDataVO> returnList = new ArrayList<NregaConsolidatedDataVO>(0);
+		try {
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					NregaConsolidatedDataVO componentvo = new NregaConsolidatedDataVO();
+					componentvo.setComponent(obj[1] != null ? obj[1].toString():"");
+					componentvo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					returnList.add(componentvo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaComponentsList - NREGSConsolidatedService Service", e);
+		}
+		return returnList;
+	}
+	
+	/*
 	 * Date : 21/07/2017
 	 * Author :Sravanth
 	 * @description : getNREGSLevelWiseConsolidatedReport
@@ -59,6 +82,7 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 		try {
 			Map<String,NregaConsolidatedDataVO> locationMap = new LinkedHashMap<String,NregaConsolidatedDataVO>();
 			List<NregaConsolidatedInputVO> urlsList = new ArrayList<NregaConsolidatedInputVO>(0);
+			//List<NregaConsolidatedDataVO> componentsList = new ArrayList<NregaConsolidatedDataVO>(0);
 			
 			if(inputVO != null && inputVO.getComponentIds() != null && !inputVO.getComponentIds().isEmpty()){
 				List<Object[]> list = nregaComponentServiceDAO.getComponentUrlsByComponentIds(inputVO.getComponentIds(), "DATA");
@@ -71,103 +95,105 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 						urlsList.add(vo);
 					}
 				}
-			}
-			
-			List<ClientResponse> responseList = new ArrayList<ClientResponse>();
-			String str = convertingInputVOToString(inputVO);
-			if(urlsList != null && !urlsList.isEmpty()){
-				ExecutorService executor = Executors.newFixedThreadPool(30);
-				for (NregaConsolidatedInputVO urlvo : urlsList) {
-					 Runnable worker = new NREGSCumulativeThread(urlvo.getUrl(),responseList,str);
-					 executor.execute(worker);
-				}	 
-				executor.shutdown();
-				while (!executor.isTerminated()) {
-						
-				}
-					System.out.println("Finished all threads"+responseList);
+				
+				List<ClientResponse> responseList = new ArrayList<ClientResponse>();
+				String str = convertingInputVOToString(inputVO);
+				if(urlsList != null && !urlsList.isEmpty()){
+					ExecutorService executor = Executors.newFixedThreadPool(30);
+					for (NregaConsolidatedInputVO urlvo : urlsList) {
+						 Runnable worker = new NREGSCumulativeThread(urlvo.getUrl(),responseList,str);
+						 executor.execute(worker);
+					}	 
+					executor.shutdown();
+					while (!executor.isTerminated()) {
+							
+					}
+						System.out.println("Finished all threads"+responseList);
 
-			}
-			
-			if(responseList != null && !responseList.isEmpty()){
-				for (ClientResponse response : responseList) {
-					if(response.getStatus() != 200){
-						throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-					}else{
-						String output = response.getEntity(String.class);
-						String returnUrl = response.toString().split(" ")[1].toString().split("rest/")[1];
-						String componentName = null;
-						if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("LabourBudgetServiceNew/LabourBudgetDataNew"))
-							componentName = "Labour Budget";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FarmPondService_new/FarmPondData_new"))
-							componentName = "Farm Ponds";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("IHHLService_new/IHHLData_new"))
-							componentName = "IHHL";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("VermiService_new/VermiData_new"))
-							componentName = "Vermi Compost";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("SolidWasteManagementServices/SolidWasteManagementData"))
-							componentName = "Solid Waste Management";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("BurialGroundsServices/BurialGroundsData"))
-							componentName = "Burial Grounds";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("PlayFieldsServices/PlayFieldsData"))
-							componentName = "Play Fields";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AgricultureServices/AgricultureData"))
-							componentName = "Agriculture Activities";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AveragewageServicesNew/AveragewageDataNew"))
-							componentName = "Average Wage";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AverageDaysServicesNew/AverageDaysDataNew"))
-							componentName = "Average Days of Employment";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("HundredHoursServices/HundredHoursData"))
-							componentName = "HH Completed 100 Days";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("TimePaymentsServicesNew/TimePaymentsDataNew"))
-							componentName = "Timely Payment";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("CCRoadsServicesNew/CCRoadsDataNew"))
-							componentName = "CC Roads";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AnganawadiServiceNew/AnganawadiDataNew"))
-							componentName = "Anganwadi Buildings";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("GpBuildingServiceNew/GpBuildingDataNew"))
-							componentName = "GP Buildings";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("MandalBuildingServiceNew/MandalBuildingDataNew"))
-							componentName = "Mandal Buildings";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("HousingServiceNew/HousingDataNew"))
-							componentName = "NTR 90 Days";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("BricksServiceNew/BricksDataNew"))
-							componentName = "Production of Bricks";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("MulberyServiceNew/MulberyDataNew"))
-							componentName = "Mulbery";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("SilkwarmServiceNew/SilkwarmDataNew"))
-							componentName = "Silk Worms";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("CattleServiceNew/CattleDataNew"))
-							componentName = "Cattle Drinking Water Troughs";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FodderServiceNew/FodderDataNew"))
-							componentName = "Raising of Perinnial Fodders";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("HorticultureServiceNew/HorticultureDataNew"))
-							componentName = "Horticulture";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AvenueServicesNew/AvenueDataNew"))
-							componentName = "Avenue";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FishPondServiceNew/FishPondDataNew"))
-							componentName = "Fish Ponds";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FishDryingServiceNew/FishDryingDataNew"))
-							componentName = "Fish Drying Platforms";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("NurseriesServiceNew/NurseriesDataNew"))
-							componentName = "Nurseries";
-						else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FaPerformanceServiceNew/FaPerformanceDataNew"))
-							componentName = "FAperformance";
-						/*else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("SilkwarmServiceNew/SilkwarmDataNew"))
-							componentName = "Silk Worms";*/
-						
-						
-						if(output != null && !output.isEmpty()){
-							JSONArray finalArray = new JSONArray(output);
-							if(finalArray != null && finalArray.length() > 0){
-								for(int i=0;i<finalArray.length();i++){
-									JSONObject jObj = (JSONObject) finalArray.get(i);
-									if(inputVO.getLocationType().trim().equalsIgnoreCase("state") && inputVO.getSubLocationType().trim().equalsIgnoreCase("state")){
-										NregaConsolidatedDataVO levelvo = locationMap.get("state");
-										if(levelvo == null){
-											levelvo = new NregaConsolidatedDataVO();
-												
-												NregaConsolidatedDataVO componentvo = new NregaConsolidatedDataVO();
+				}
+				
+				if(responseList != null && !responseList.isEmpty()){
+					for (ClientResponse response : responseList) {
+						if(response.getStatus() != 200){
+							throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+						}else{
+							String output = response.getEntity(String.class);
+							String returnUrl = response.toString().split(" ")[1].toString().split("rest/")[1];
+							String componentName = null;
+							if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("LabourBudgetServiceNew/LabourBudgetDataNew"))
+								componentName = "Labour Budget";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FarmPondService_new/FarmPondData_new"))
+								componentName = "Farm Ponds";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("IHHLService_new/IHHLData_new"))
+								componentName = "IHHL";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("VermiService_new/VermiData_new"))
+								componentName = "Vermi Compost";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("SolidWasteManagementServices/SolidWasteManagementData"))
+								componentName = "Solid Waste Management";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("BurialGroundsServices/BurialGroundsData"))
+								componentName = "Burial Grounds";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("PlayFieldsServices/PlayFieldsData"))
+								componentName = "Play Fields";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AgricultureServices/AgricultureData"))
+								componentName = "Agriculture Activities";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AveragewageServicesNew/AveragewageDataNew"))
+								componentName = "Average Wage";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AverageDaysServicesNew/AverageDaysDataNew"))
+								componentName = "Average Days of Employment";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("HundredHoursServices/HundredHoursData"))
+								componentName = "HH Completed 100 Days";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("TimePaymentsServicesNew/TimePaymentsDataNew"))
+								componentName = "Timely Payment";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("CCRoadsServicesNew/CCRoadsDataNew"))
+								componentName = "CC Roads";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AnganawadiServiceNew/AnganawadiDataNew"))
+								componentName = "Anganwadi Buildings";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("GpBuildingServiceNew/GpBuildingDataNew"))
+								componentName = "GP Buildings";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("MandalBuildingServiceNew/MandalBuildingDataNew"))
+								componentName = "Mandal Buildings";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("HousingServiceNew/HousingDataNew"))
+								componentName = "NTR 90 Days";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("BricksServiceNew/BricksDataNew"))
+								componentName = "Production of Bricks";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("MulberyServiceNew/MulberyDataNew"))
+								componentName = "Mulbery";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("SilkwarmServiceNew/SilkwarmDataNew"))
+								componentName = "Silk Worms";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("CattleServiceNew/CattleDataNew"))
+								componentName = "Cattle Drinking Water Troughs";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FodderServiceNew/FodderDataNew"))
+								componentName = "Raising of Perinnial Fodders";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("HorticultureServiceNew/HorticultureDataNew"))
+								componentName = "Horticulture";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AvenueServicesNew/AvenueDataNew"))
+								componentName = "Avenue";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FishPondServiceNew/FishPondDataNew"))
+								componentName = "Fish Ponds";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FishDryingServiceNew/FishDryingDataNew"))
+								componentName = "Fish Drying Platforms";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("NurseriesServiceNew/NurseriesDataNew"))
+								componentName = "Nurseries";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FaPerformanceServiceNew/FaPerformanceDataNew"))
+								componentName = "FAperformance";
+							/*else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("SilkwarmServiceNew/SilkwarmDataNew"))
+								componentName = "Silk Worms";*/
+							
+							
+							if(output != null && !output.isEmpty()){
+								JSONArray finalArray = new JSONArray(output);
+								if(finalArray != null && finalArray.length() > 0){
+									for(int i=0;i<finalArray.length();i++){
+										JSONObject jObj = (JSONObject) finalArray.get(i);
+										if(inputVO.getLocationType().trim().equalsIgnoreCase("state") && inputVO.getSubLocationType().trim().equalsIgnoreCase("state")){
+											NregaConsolidatedDataVO levelvo = locationMap.get("state");
+											if(levelvo == null){
+												levelvo = new NregaConsolidatedDataVO();
+												levelvo.setSubList(getNregaComponentsList(list));
+												levelvo.setName("state");
+												NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), componentName);
+												if(componentvo == null)
+													componentvo = new NregaConsolidatedDataVO();
 												componentvo.setName("state");
 												componentvo.setComponent(componentName);
 												if(componentName != null && componentName.trim().equalsIgnoreCase("Labour Budget")){
@@ -186,13 +212,13 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 												else{
 													componentvo.setPercentage(jObj.getString("PERCENTAGE"));
 												}
-												levelvo.getSubList().add(componentvo);
-												
-											locationMap.put("state", levelvo);
-										}else{
-											NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), componentName);
-											if(componentvo == null){
-												componentvo = new NregaConsolidatedDataVO();
+												//levelvo.getSubList().add(componentvo);
+													
+												locationMap.put("state", levelvo);
+											}else{
+												NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), componentName);
+												if(componentvo == null)
+													componentvo = new NregaConsolidatedDataVO();
 												componentvo.setName("state");
 												componentvo.setComponent(componentName);
 												if(componentName != null && componentName.trim().equalsIgnoreCase("Labour Budget")){
@@ -211,73 +237,85 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 												else{
 													componentvo.setPercentage(jObj.getString("PERCENTAGE"));
 												}
-												levelvo.getSubList().add(componentvo);
+												//levelvo.getSubList().add(componentvo);
+												//}
 											}
-										}
-									}else{
-										NregaConsolidatedDataVO levelvo = null;
-										if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
-											levelvo = locationMap.get(jObj.getString("DISTRICT_DESCRIPTION").trim());
-										else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
-											levelvo = locationMap.get(jObj.getString("DISTRICT").trim());
-										else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
-											levelvo = locationMap.get(jObj.getString("CONSTITUENCY").trim());
-										else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
-											levelvo = locationMap.get(jObj.getString("MANDAL").trim());
-										else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
-											levelvo = locationMap.get(jObj.getString("PANCHAYAT").trim());
-										
-										if(levelvo == null){
-											levelvo = new NregaConsolidatedDataVO();
-												
-												NregaConsolidatedDataVO componentvo = new NregaConsolidatedDataVO();
-												
-												if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
-													levelvo = locationMap.get(jObj.getString("DISTRICT_DESCRIPTION").trim());
-												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
-													componentvo.setName(jObj.getString("DISTRICT").trim());
-												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
-													componentvo.setName(jObj.getString("CONSTITUENCY").trim());
-												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
-													componentvo.setName(jObj.getString("MANDAL").trim());
-												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
-													componentvo.setName(jObj.getString("PANCHAYAT").trim());
-												componentvo.setComponent(componentName);
-												if(componentName != null && componentName.trim().equalsIgnoreCase("Labour Budget")){
-													componentvo.setPercentage(jObj.getString("PER_APP_LB"));
-												}
-												else if(componentName != null && 
-														(componentName.trim().equalsIgnoreCase("Horticulture") || componentName.trim().equalsIgnoreCase("Avenue"))){
-													componentvo.setPercentage(jObj.getString("PERCENTAGEOFPLANTING"));
-												}
-												else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance")){
-													componentvo.setPercentage(jObj.getString("AVG_TOT_MARKS"));
-												}
-												else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities")){
-													componentvo.setPercentage(jObj.getString("ACHEIVEMENT"));
-												}
-												else{
-													componentvo.setPercentage(jObj.getString("PERCENTAGE"));
-												}
-												levelvo.getSubList().add(componentvo);
-												
+										}else{
+											NregaConsolidatedDataVO levelvo = null;
 											if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 												levelvo = locationMap.get(jObj.getString("DISTRICT_DESCRIPTION").trim());
 											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
-												locationMap.put(jObj.getString("DISTRICT").trim(), levelvo);
+												levelvo = locationMap.get(jObj.getString("DISTRICT").trim());
 											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
-												locationMap.put(jObj.getString("CONSTITUENCY").trim(), levelvo);
+												levelvo = locationMap.get(jObj.getString("CONSTITUENCY").trim());
 											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
-												locationMap.put(jObj.getString("MANDAL").trim(), levelvo);
+												levelvo = locationMap.get(jObj.getString("MANDAL").trim());
 											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
-												locationMap.put(jObj.getString("PANCHAYAT").trim(), levelvo);
-										}else{
-											NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), componentName);
-											if(componentvo == null){
-												componentvo = new NregaConsolidatedDataVO();
-												
+												levelvo = locationMap.get(jObj.getString("PANCHAYAT").trim());
+											
+											if(levelvo == null){
+												levelvo = new NregaConsolidatedDataVO();
+												levelvo.setSubList(getNregaComponentsList(list));
 												if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
-													levelvo = locationMap.get(jObj.getString("DISTRICT_DESCRIPTION").trim());
+													levelvo.setDistrict(jObj.getString("DISTRICT_DESCRIPTION").trim());
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+													levelvo.setDistrict(jObj.getString("DISTRICT").trim());
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
+													levelvo.setConstituency(jObj.getString("CONSTITUENCY").trim());
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
+													levelvo.setMandal(jObj.getString("MANDAL").trim());
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
+													levelvo.setPanchayat(jObj.getString("PANCHAYAT").trim());
+												NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), componentName);
+												if(componentvo == null)
+													componentvo = new NregaConsolidatedDataVO();	
+													
+													if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+														componentvo.setName(jObj.getString("DISTRICT_DESCRIPTION").trim());
+													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+														componentvo.setName(jObj.getString("DISTRICT").trim());
+													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
+														componentvo.setName(jObj.getString("CONSTITUENCY").trim());
+													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
+														componentvo.setName(jObj.getString("MANDAL").trim());
+													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
+														componentvo.setName(jObj.getString("PANCHAYAT").trim());
+													componentvo.setComponent(componentName);
+													if(componentName != null && componentName.trim().equalsIgnoreCase("Labour Budget")){
+														componentvo.setPercentage(jObj.getString("PER_APP_LB"));
+													}
+													else if(componentName != null && 
+															(componentName.trim().equalsIgnoreCase("Horticulture") || componentName.trim().equalsIgnoreCase("Avenue"))){
+														componentvo.setPercentage(jObj.getString("PERCENTAGEOFPLANTING"));
+													}
+													else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance")){
+														componentvo.setPercentage(jObj.getString("AVG_TOT_MARKS"));
+													}
+													else if(componentName != null && componentName.trim().equalsIgnoreCase("Agriculture Activities")){
+														componentvo.setPercentage(jObj.getString("ACHEIVEMENT"));
+													}
+													else{
+														componentvo.setPercentage(jObj.getString("PERCENTAGE"));
+													}
+													//levelvo.getSubList().add(componentvo);
+													
+												if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+													locationMap.put(jObj.getString("DISTRICT_DESCRIPTION").trim(), levelvo);
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+													locationMap.put(jObj.getString("DISTRICT").trim(), levelvo);
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
+													locationMap.put(jObj.getString("CONSTITUENCY").trim(), levelvo);
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
+													locationMap.put(jObj.getString("MANDAL").trim(), levelvo);
+												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("panchayat"))
+													locationMap.put(jObj.getString("PANCHAYAT").trim(), levelvo);
+											}else{
+												NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), componentName);
+												if(componentvo == null)
+													componentvo = new NregaConsolidatedDataVO();
+													
+												if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+													componentvo.setName(jObj.getString("DISTRICT_DESCRIPTION").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 													componentvo.setName(jObj.getString("DISTRICT").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
@@ -303,7 +341,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 												else{
 													componentvo.setPercentage(jObj.getString("PERCENTAGE"));
 												}
-												levelvo.getSubList().add(componentvo);
+												//levelvo.getSubList().add(componentvo);
+												//}
 											}
 										}
 									}
@@ -312,11 +351,10 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 						}
 					}
 				}
+				
+				if(locationMap != null)
+					returnList = new ArrayList<NregaConsolidatedDataVO>(locationMap.values());
 			}
-			
-			if(locationMap != null)
-				returnList = new ArrayList<NregaConsolidatedDataVO>(locationMap.values());
-			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNREGSLevelWiseConsolidatedReport - NREGSConsolidatedService Service", e);
 		}
