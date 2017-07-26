@@ -719,7 +719,7 @@ function buildNREGSProjectsOverview(result,blockName)
 					str+='</div>';
 					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Seri Culture</h5>';
+							str+='<h5 class="text-danger">Sericulture</h5>';
 							str+='<div class="row">';	
 								for(var i in result)
 								{
@@ -741,7 +741,7 @@ function buildNREGSProjectsOverview(result,blockName)
 					str+='</div>';
 					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Animal Husbendary</h5>';
+							str+='<h5 class="text-danger">Animal Husbandry</h5>';
 							str+='<div class="row">';	
 								for(var i in result)
 								{

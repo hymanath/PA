@@ -68,7 +68,7 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	
 	/**
 	 * Date : 25/07/2017
-	 * Author :Nandhiini
+	 * Author :Nandhini
 	 * @description : getNtrJalaSiriOverview
 	 */
 	public NregsOverviewVO getNtrJalaSiriOverview(InputVO inputVO){
