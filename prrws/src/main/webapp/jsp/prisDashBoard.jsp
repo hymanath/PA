@@ -118,7 +118,11 @@
 	<section class="navbar-section">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-12 m_top5 ">
+				<div class="col-sm-3">
+					<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
+					<div class="multi-level-selection-menu arrow_box_top"></div>
+				</div>
+				<div class="col-sm-9">
 					<ul class="list-inline pull-right calendar_active_cls">
 						<li attr_val="Overall"><img src="Assests/icons/Overall_icon.png"/>&nbsp;&nbsp;<b><span>Overall</span></b></li>
 						<li attr_val="Today"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Today</span></b></li>
@@ -138,6 +142,11 @@
 <main>
 	<div class="container-fluid">
 	<section>
+			<div class="row m_top5">
+				<div class="col-sm-12">
+					<div id="levelBlocksDivId"></div>
+				</div>
+			</div>
 			<div class="row m_top5">
 				<div class="col-sm-3 mainBlock">
 					<div class="white-block">
@@ -203,11 +212,7 @@
 				</div>
 				
 			</div>
-			<div class="row">
-				<div class="col-sm-12">
-					<div id="levelBlocksDivId"></div>
-				</div>
-			</div>
+			
 		</section>
 		<section>
 			<div id="levelWiseBlockId" class="m_top20"></div>
@@ -221,6 +226,7 @@
 <script src="Assests/Plugins/DateTime/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
 <script src="Assests/prisDashBoard/prisDashBoard.js" type="text/javascript"></script>
 </body>
 </html>
