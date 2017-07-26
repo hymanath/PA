@@ -9,7 +9,7 @@ function onLoadAjaxCalls()
 	getLocationWiseInsuranceStatusCount();
 	getLocationWiseGrivanceTrustStatusCounts();
 	getGovtSchemeWiseBenefitMembersCount();
-	getMandalWiseBenefitMembersCount();
+	//getMandalWiseBenefitMembersCount(1);
 	getLocationWiseTourMembersComplainceDtls();
 	getCasteGroupNAgeWiseVoterNCadreCounts();
 	getActivityStatusList();
@@ -804,7 +804,7 @@ function getLocationWiseTourMembersComplainceDtls(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	console.log(result);
+    	//console.log(result);
 		var str='';
 		if(result!=null && result.length>0){
 			str+='<table class="table table-hover">';
@@ -830,9 +830,10 @@ function getLocationWiseTourMembersComplainceDtls(){
 	});	
 }
 function getGovtSchemeWiseBenefitMembersCount(){
+$("#benefitsId").html(spinner);
 	jsObj={
 		locationType:"constituency",
-		locationValue:272
+		locationValue:232
 	}
 	 $.ajax({
       type : "POST",
@@ -840,21 +841,37 @@ function getGovtSchemeWiseBenefitMembersCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	console.log(result);
 		var str='';
+		str+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
 		if(result!=null && result.length>0){
+			getMandalWiseBenefitMembersCount(result[0].id);
 			for(var i in result){
-				str+='<li class="active"><a href="#benefits1" aria-controls="OC" role="tab" data-toggle="tab">'+result[i].name+'<span class="pull-right">'+result[i].totalCount+'</span></a></li>';
+			
+			if(i==0)
+				str+='<li role="benfitPresentation" class="active"><a class="tabClick" href="#" id="'+result[i].id+'" aria-controls="'+result[i].name+'" role="tab" data-toggle="tab">'+result[i].name+'<span class="pull-right">'+result[i].totalCount+'</span></a></li>';
+			else	
+				str+='<li role="benfitPresentation"><a class="tabClick" href="#" id="'+result[i].id+'" aria-controls="'+result[i].name+'" role="tab" data-toggle="tab">'+result[i].name+'<span class="pull-right">'+result[i].totalCount+'</span></a></li>';
+
 			}
+		str+='</ul>'
 			$("#benefitsId").html(str);
 		}
 	});	
 }
-function getMandalWiseBenefitMembersCount(){
+$(document).on("click",".tabClick",function(){
+
+var tab_id = $(this).attr('id');
+getMandalWiseBenefitMembersCount(tab_id);
+	
+});
+function getMandalWiseBenefitMembersCount(id){
+$("#benefits1").html('');
+$("#benefits1").html(spinner);
+	var schemeId=id;
 	jsObj={
 		locationType:"constituency",
 		locationValue:232,
-		govtSchemeId:1
+		govtSchemeId:schemeId
 	}
 	 $.ajax({
       type : "POST",
@@ -862,8 +879,39 @@ function getMandalWiseBenefitMembersCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	console.log(result);
-		});	
+    	var str= '';
+	if(result!= null){
+		str+='<div class="row"><div class="col-md-6 col-xs-12 col-sm-6">';
+				str+='<div id="benefitsGraph" style="height:200px"></div></div>';
+				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+					str+='<table class="table table-noborder">';
+					str+='<thead class="text-capitalize bg-E9">';
+					str+='<th></th>';
+					str+='<th>Total</th>';
+					//str+='<th>%</th></thead>';							
+					str+='<tbody class="text-capitalize">';	
+			for (var i in result){
+				str+='<tr>';
+				str+='<td><span class="chart-legend-color"></span>benefited</td>'
+				str+='<td>'+result[i].totalCount+'</td>';
+				str+='</tr> </tbody></table></div>';
+			}
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+			str+='<table class="table table-noborder">';
+			str+='<thead class="text-capitalize bg-E9">';
+			str+='<th>mandal name</th>';
+					//<th>population</th><th>eligible</th><th>non-eligible benefited</th>
+			str+='<th>benefited</th></thead><tbody class="text-capitalize">'
+			for (var i in result){
+				str+='<tr>';
+				str+='<td>'+result[i].name+'</td>';
+				str+='<td>'+result[i].totalCount+'</td>';
+				str+='</tr></tbody></table></div></div>';
+			}
+		}
+		$("#benefits1").html(str);
+	});	
+	
 }
 function getLocationTypeWiseCadreCount(){
 	jsObj={
@@ -876,7 +924,7 @@ function getLocationTypeWiseCadreCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-	console.log(result);
+	//console.log(result);
 	});	
 }
 
@@ -892,7 +940,7 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-	console.log(result);
+	//console.log(result);
 	});	
 }
 
@@ -910,7 +958,7 @@ function getLocationWiseCommitteesCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	console.log(result);
+    	//console.log(result);
 		var str='';
 		var mainMandal = [];
 		var mainVillage= [];
@@ -1075,7 +1123,7 @@ function getEnrollmentIds(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	console.log(result);
+    	//console.log(result);
 	});	
 }
 //Location wise insurance status counts
@@ -1093,8 +1141,8 @@ function getLocationWiseInsuranceStatusCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	console.log(result);
-		console.log(result['accountRejected']);
+    	//console.log(result);
+		//console.log(result['accountRejected']);
 		var data = [];
 		var depth = 60;
 		var id  = '';
@@ -1131,7 +1179,7 @@ function getLocationWiseGrivanceTrustStatusCounts(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	console.log(result);
+    	//console.log(result);
 		var grivance = [];
 		var trust = [];
 		var depth = 60;
@@ -1721,8 +1769,10 @@ function buildCasteGroupWiseInfo(){
 	}else{
 		$("#casteGroupsTabsDivId").html("No Data Available.");
 	}
-}
-
+}/* 
+$(document).on("click",".benefitsRefresh",function(){
+		getGovtSchemeWiseBenefitMembersCount();
+}); */
 $(document).on("click",".expandCasteIconCls",function(){
 	var casteGroupId = $(this).attr("attr_caste_group_id");
 	var casteId = $(this).attr("attr_caste_id");
