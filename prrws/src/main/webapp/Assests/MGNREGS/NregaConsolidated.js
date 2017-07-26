@@ -41,6 +41,13 @@ function onLoadCalls()
 	getAllConvergenceTypes();
 }
 
+$(document).on("click","[collapse-click]",function(){
+	var divId = $(this).attr("collapse-click");
+	if(divId != "state")
+	{
+		getNREGSLevelWiseConsolidatedReport(2,'state',divId,'-1',divId);
+	}
+});
 $(document).on("click",".menuDataCollapse",function(){
 	$(".multi-level-selection-menu").css("display","none");
 	$(".arrowIconChanged").find('.fa').removeClass("fa-chevron-up");
@@ -96,7 +103,7 @@ $(document).on("click",".selectionMenuSubmitIdNewCls",function(){
 	
 	$(".menuSelectionCheckBox").each(function(){
 		var checkboxId = $(this).attr("checkboxId");
-		if((checkboxId != 12 || checkboxId != "12") && ($(this).prop('checked')==true))
+		if($(this).prop('checked')==true)
 		{
 			var checkboxName = $(this).attr("checkboxName");
 			overViewArr.push({"name":checkboxName,"id":checkboxId});
@@ -272,18 +279,17 @@ function buildComponentByConvergType(result,divId,convergenceId)
 				selectionMenu+='<label class="checkbox-inline"><input type="checkbox" checked class="menuSelectionCheckBox '+divId+'" checkboxName="'+result[i].name+'" checkboxId="'+result[i].id+'"/>'+result[i].name+'</label>';
 			selectionMenu+='</li>';
 			overViewArr.push({"name":result[i].name,"id":result[i].id});
-			if(result[i].id != 12 ||result[i].id != "12")
-			{
-				overViewIdsArr.push(result[i].id);
-			}
+			overViewIdsArr.push(result[i].id);
 		}		
 	selectionMenu+='</ul>';
 	$("#"+divId).html(selectionMenu);
 	if(convergenceId == 4)
 	{
-		buildNREGSProjectsOverview(overViewArr,'');
-		projectData(2);
-	}	
+		setTimeout(function(){
+			buildNREGSProjectsOverview(overViewArr,'');
+			projectData(2);
+		},500);
+	}
 }
 
 function buildNREGSProjectsOverview(result,blockName)
@@ -943,7 +949,7 @@ function projectData(levelId)
 								{
 									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-divId="'+overViewArr[i].name+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+dataArr[i]+'" href="#collapse'+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+dataArr[i]+'">';
 								}else{
-									collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-divId="'+overViewArr[i].name+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+dataArr[i]+'" href="#collapse'+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+dataArr[i]+'">';
+									collapse+='<a role="button" collapse-click="'+dataArr[i]+'" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-divId="'+overViewArr[i].name+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+dataArr[i]+'" href="#collapse'+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+dataArr[i]+'">';
 								}
 									collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level - consolidated overview</h4>';
 								collapse+='</a>';
@@ -952,7 +958,7 @@ function projectData(levelId)
 							{
 								collapse+='<div id="collapse'+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+dataArr[i]+'">';
 							}else{
-								collapse+='<div id="collapse'+dataArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+dataArr[i]+'">';
+								collapse+='<div id="collapse'+dataArr[i]+'"  class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+dataArr[i]+'">';
 							}
 							
 								collapse+='<div class="panel-body">';
@@ -967,27 +973,8 @@ function projectData(levelId)
 	collapse+='</section>';
 	
 	$("#projectData").html(collapse);
-	//getNREGSLevelWiseConsolidatedReport(levelId,locationType,subLocationType,locationId);
 	getNREGSLevelWiseConsolidatedReport(2,'state','state','-1','state');
-	getNREGSLevelWiseConsolidatedReport(2,'state','district','-1','district');
-	getNREGSLevelWiseConsolidatedReport(2,'state','constituency','-1','constituency');
-	getNREGSLevelWiseConsolidatedReport(2,'state','mandal','-1','mandal');
-	/* //From Menu
-	var menuLocationId = '';
-	var menuLocationType = '';
-	if(levelId == 2)
-	{
-		menuLocationId = "-1";
-		menuLocationType = "state";
-	}else if(levelId == 3)
-	{
-		menuLocationId = locationId;
-		menuLocationType = "district";
-	}else if(levelId == 4)
-	{
-		menuLocationId = locationId;
-		menuLocationType = "constituency";
-	} */
+	
 }
 function getNREGSLevelWiseConsolidatedReport(levelId,locationType,subLocationType,locationId,divId)
 {
@@ -1023,32 +1010,37 @@ function tableView(result,divId)
 		tableView+='<table class="table table-bordered dataTable'+divId+'">';
 			tableView+='<thead class="text-capital">';
 				tableView+='<th>'+divId+'</th>';
-				/* for(var i in result[0].subList)
+				for(var i in result[0].subList)
 				{
 					tableView+='<th>'+result[0].subList[i].component+'</th>';
-				}			 */
-				for(var i in overViewArr)
+				}
+				/* for(var i in overViewArr)
 				{
 					tableView+='<th>'+overViewArr[i].name+'</th>';
-				}
+				} */
 			tableView+='</thead>';
 			
  			tableView+='<tbody>';
 				for(var i in result)
 				{
 					tableView+='<tr>';
-						tableView+='<td>'+result[i].subList[0].name+'</td>';
+						tableView+='<td class="text-capital">'+result[i].subList[0].name+'</td>';
 						for(var j in result[i].subList)
 						{
-							if(result[i].subList[j].percentage < 50)
+							if(result[i].subList[j].percentage != null)
 							{
-								tableView+='<td style="background-color:#FF0000">'+result[i].subList[j].percentage+'</td>';
-							}else if(result[i].subList[j].percentage >= 50 && result[i].subList[j].percentage < 80)
-							{
-								tableView+='<td style="background-color:#FFBA00">'+result[i].subList[j].percentage+'</td>';
-							}else if(result[i].subList[j].percentage >= 80)
-							{
-								tableView+='<td style="background-color:#00AF50">'+result[i].subList[j].percentage+'</td>';
+								if(result[i].subList[j].percentage < 50)
+								{
+									tableView+='<td style="background-color:#FF0000;color:#fff">'+result[i].subList[j].percentage+'</td>';
+								}else if(result[i].subList[j].percentage >= 50 && result[i].subList[j].percentage < 80)
+								{
+									tableView+='<td style="background-color:#FFBA00;color:#fff">'+result[i].subList[j].percentage+'</td>';
+								}else if(result[i].subList[j].percentage >= 80)
+								{
+									tableView+='<td style="background-color:#00AF50;color:#fff">'+result[i].subList[j].percentage+'</td>';
+								}	
+							}else{
+								tableView+='<td>-</td>';
 							}
 						}
 					tableView+='</tr>';
