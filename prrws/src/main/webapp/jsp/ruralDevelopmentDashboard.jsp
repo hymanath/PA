@@ -172,7 +172,7 @@
 				<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
-							<h4 class="panel-title">NTR Jalasiri Overview</h4>
+							<h4 class="panel-title">NTR Jalasiri</h4>
 						</div>
 						<div class="panel-body">
 							<div id="overViewAbstract"></div>
@@ -423,28 +423,28 @@ function getNtrJalaSiriOverview()
 							str1+='<td>';
 								str1+='<div class="col-sm-9">';
 									str1+='<div class="media">';
-										str1+='<h4  attr_type="total">Total Constituencies : '+ajaxresp.totalConstituencies+'</h4>';
+										str1+='<h4  attr_type="total">Total Mandals : '+ajaxresp.totalMandals+'</h4>';
 									str1+='</div>';
 									str1+='<div class="media">';
 									str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
 									if(ajaxresp.mandalsInRed != null && ajaxresp.mandalsInRed > 0)
-										str1+='<p class="media-body detailsCls">Constituencies in Red : '+ajaxresp.mandalsInRed+'</p>';
+										str1+='<p class="media-body detailsCls">Mandals in Red : '+ajaxresp.mandalsInRed+'</p>';
 									else
-										str1+='<p class="media-body"  >Constituencies in Red : '+ajaxresp.mandalsInRed+'</p>';
+										str1+='<p class="media-body"  >Mandals in Red : '+ajaxresp.mandalsInRed+'</p>';
 										str1+='</div>';
 									str1+='<div class="media">';
 									str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
 									if(ajaxresp.mandalsInOrange != null && ajaxresp.mandalsInOrange > 0)
-										str1+='<p class="media-body detailsCls">Constituencies in Orange : '+ajaxresp.mandalsInOrange+'</p>';
+										str1+='<p class="media-body detailsCls">Mandals in Orange : '+ajaxresp.mandalsInOrange+'</p>';
 									else
-										str1+='<p class="media-body"  >Constituencies in Orange : '+ajaxresp.mandalsInOrange+'</p>';
+										str1+='<p class="media-body"  >Mandals in Orange : '+ajaxresp.mandalsInOrange+'</p>';
 										str1+='</div>';
 									str1+='<div class="media">';
 										str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
 										if(ajaxresp.mandalsInGreen != null && ajaxresp.mandalsInGreen > 0)
-											str1+='<p class="media-body detailsCls">Constituencies in Green : '+ajaxresp.mandalsInGreen+'</p>';
+											str1+='<p class="media-body detailsCls">Mandals in Green : '+ajaxresp.mandalsInGreen+'</p>';
 										else
-											str1+='<p class="media-body">Constituencies in Green : '+ajaxresp.mandalsInGreen+'</p>';
+											str1+='<p class="media-body">Mandals in Green : '+ajaxresp.mandalsInGreen+'</p>';
 									str1+='</div>';
 								str1+='</div>';	
 							str1+='</td>';
