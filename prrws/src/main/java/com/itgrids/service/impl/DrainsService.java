@@ -66,6 +66,21 @@ public class DrainsService implements IDrainsService {
 		 	    				DrainsVO drainsVO=new DrainsVO(); //MainLocation VO
 		 	    				drainsVO.setId(!jObj.getString("id").equalsIgnoreCase("null") ? jObj.getLong("id"):0l); 
 		 	    				drainsVO.setName(!jObj.getString("name").equalsIgnoreCase("null") ? jObj.getString("name") : "");
+		 	    				
+		 	    				if(inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("assembly")){
+		 	    					drainsVO.setDistrictId(!jObj.getString("districtId").equalsIgnoreCase("null")?jObj.getLong("districtId"):0l);
+		 	    					drainsVO.setDistrictName(!jObj.getString("district").equalsIgnoreCase("null")?jObj.getString("district"):"");
+		 	    					drainsVO.setParliamentId(!jObj.getString("parliamentId").equalsIgnoreCase("null")?jObj.getLong("parliamentId"):0l);
+		 	    					drainsVO.setParliamentName(!jObj.getString("parliamentName").equalsIgnoreCase("null")?jObj.getString("parliamentName"):"");
+		 	    				}else if(inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("mandal")){
+		 	    					drainsVO.setDistrictId(!jObj.getString("districtId").equalsIgnoreCase("null")?jObj.getLong("districtId"):0l);
+		 	    					drainsVO.setDistrictName(!jObj.getString("district").equalsIgnoreCase("null")?jObj.getString("district"):"");
+		 	    					drainsVO.setParliamentId(!jObj.getString("costituencyId").equalsIgnoreCase("null")?jObj.getLong("costituencyId"):0l);
+		 	    					drainsVO.setParliamentName(!jObj.getString("constituencyName").equalsIgnoreCase("null")?jObj.getString("constituencyName"):"");
+		 	    					drainsVO.setAssemblyId(!jObj.getString("assemblyId").equalsIgnoreCase("null")?jObj.getLong("assemblyId"):0l);
+		 	    					drainsVO.setAssemblyName(!jObj.getString("assemblyName").equalsIgnoreCase("null")?jObj.getString("assemblyName"):"");
+		 	    				}
+		 	    				
 		 	    				drainsVO.setTotalAvailable(!jObj.getString("availability").equalsIgnoreCase("null") ? jObj.getLong("availability") : 0l);
 		 	    				drainsVO.setTotalAvailableKms(!jObj.getString("availabilityKM").equalsIgnoreCase("null") ? jObj.getDouble("availabilityKM"):0.00);
 		 	    				drainsVO.setTotalCleaned(!jObj.getString("cleaned").equalsIgnoreCase("null") ? jObj.getLong("cleaned") : 0l);
