@@ -12,6 +12,8 @@ public class AppointmentCountDetailsVO implements Serializable{
 	private String designation;
 	private String image;
 	private String appointmentTime;
+	private Long uniqueCount =0l;
+	private Long todayUniqueCount =0l;
 	public String getName() {
 		return name;
 	}
@@ -54,6 +56,17 @@ public class AppointmentCountDetailsVO implements Serializable{
 	public void setAppointmentTime(String appointmentTime) {
 		this.appointmentTime = appointmentTime;
 	}
+	public Long getUniqueCount() {
+		return uniqueCount;
+	}
+	public void setUniqueCount(Long uniqueCount) {
+		this.uniqueCount = uniqueCount;
+	}
+	public Long getTodayUniqueCount() {
+		return todayUniqueCount;
+	}
+	public void setTodayUniqueCount(Long todayUniqueCount) {
+		this.todayUniqueCount = todayUniqueCount;
+	}
 	
-
 }
