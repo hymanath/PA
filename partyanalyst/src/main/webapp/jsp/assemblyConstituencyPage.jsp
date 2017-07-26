@@ -345,61 +345,13 @@
 				<div class="block pad_0">
 					<div class="row">
 					  <!-- Nav tabs -->
-					  <div class="col-md-3 col-xs-12 col-sm-3 pad_right0">
-						  <select class="form-control" role="tabListMobile">
-							  <option tab_id="benefits1">OC (20)</option>
-							  <option tab_id="benefits2">OC (20)</option>
-							  <option tab_id="benefits3">OC (20)</option>
-							  <option tab_id="benefits4">OC (20)</option>
-						  </select>
-						  <ul class="nav nav-tabs nav-tabs-horizontal" role="tablist" id="benefitsId">
-						  </ul>
+					  <div class="col-md-3 col-xs-12 col-sm-3 pad_right0" id="benefitsId">
 					  </div>
 					  <!-- Tab panes -->
 					  <div class="col-md-9 col-xs-12 col-sm-9 pad_left0">
 						  <div class="tab-content">
 							<div role="tabpanel" class="tab-pane active pad_10" id="benefits1">
-								<div class="row">
-									<div class="col-md-6 col-xs-12 col-sm-6">
-										<div id="benefitsGraph" style="height:200px"></div>
-									</div>
-									<div class="col-md-6 col-xs-12 col-sm-6">
-										<table class="table table-noborder">
-											<thead class="text-capitalize bg-E9">
-												<th></th>
-												<th>Total</th>
-												<th>%</th>
-											</thead>
-											<tbody class="text-capitalize">
-												<tr>
-													<td><span class="chart-legend-color"></span>Population</td>
-													<td>5000</td>
-													<td>40%</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-										<table class="table table-noborder">
-											<thead class="text-capitalize bg-E9">
-												<th>mandal name</th>
-												<th>population</th>
-												<th>eligible</th>
-												<th>benefited</th>
-												<th>non-eligible benefited</th>
-											</thead>
-											<tbody class="text-capitalize">
-												<tr>
-													<td>allur mandal</td>
-													<td>5000</td>
-													<td>2000 <span class="text-success">40%</span></td>
-													<td>2000 <span class="text-success">40%</span></td>
-													<td>2000 <span class="text-success">40%</span></td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
+								
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 									<button class="btn btn-success btn-success-white text-capital">detailed caste information</button>
 								</div>
