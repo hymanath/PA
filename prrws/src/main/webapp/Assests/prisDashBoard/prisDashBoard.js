@@ -2,6 +2,12 @@ var globalFromDate = moment().subtract(0,'month').startOf("month").format('DD-MM
 var globalToDate = moment().format('DD-MM-YYYY');
 var blockNameArr=[{name:'District',id:'3'},{name:'Constituency',id:'4'},{name:'Mandal',id:'5'}]
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var globallocId = 0;
+var globallevelId = 0;
+var globalLocationName='';
+$("#selectedName").attr("attr_id","0");
+$("#selectedName").attr("attr_levelidvalue","2");
+
 	onLoadCalls()
 	$(".thisMonthOverview").html("This Month - "+moment().format("MMMM"));
 	
@@ -12,7 +18,86 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		buildLevelWiseDetailsBlock();
 		POSTBasicCountBlock();
 		getPIRSSurveyInfoStateLevel();
+		$("header").on("click",".menu-cls",function(e){
+			e.stopPropagation();
+			$(".menu-data-cls").toggle();
+		});
+		$(document).on("click",function(){
+			$(".menu-data-cls").hide();
+		});
+		
 	}
+	$(document).on("click",".menuDataCollapse",function(){
+		globallocId = $(this).attr("attr_id");
+		globallevelId = $(this).attr("attr_levelidvalue");
+		globalLocationName=$(this).attr("attr_name");
+		$("#selectedName").text($(this).html());
+		$("#selectedName").attr("attr_id",globallocId);
+		$("#selectedName").attr("attr_levelidvalue",globallevelId);
+		$("#selectedName").attr("attr_name",globalLocationName);
+	
+		if(globallevelId == 2 || globallevelId == 0){
+			$(".tableMenu li").removeClass("active");
+			$(".tableMenu li:nth-child(1)").addClass("active");
+			$(".tableMenu li:nth-child(2)").show();
+			$("[overview-level]").show();
+			$("#mandalsDistrictSelectBox").show();
+			$("#districtSelectBox").show();
+			$("#mandalsSelectBox").show();
+		}else if(globallevelId == 3){
+			$(".tableMenu li:nth-child(1)").addClass("active");
+			$(".tableMenu li:nth-child(2)").hide();
+			$("[overview-level]").show();
+			$("#mandalsDistrictSelectBox").show();
+			$("#districtSelectBox").show();
+			$("#mandalsSelectBox").show();
+			$("#districtSelectBoxchosen").html('');
+			$("#districtSelectBoxchosen").append("<option value="+globallocId+">"+globalLocationName+" </option>");
+			$("#districtSelectBoxchosen").trigger("chosen:updated");
+			
+			$("#mandalsDistrictSelectBoxchosen").html('');
+			$("#mandalsDistrictSelectBoxchosen").append("<option value="+globallocId+">"+globalLocationName+" </option>");
+			$("#mandalsDistrictSelectBoxchosen").trigger("chosen:updated");
+			getAllConstituenciesForDistrict(5,"Mandal","Districts",globallocId);
+			
+		}else if(globallevelId == 4){
+			$(".tableMenu li:nth-child(1)").addClass("active");
+			$(".tableMenu li:nth-child(2)").hide();
+			$("[overview-level='District']").hide();
+			$("[overview-level='constituency']").show();
+			
+			$("#mandalsDistrictSelectBox").hide();
+			$("#districtSelectBox").hide();
+			$("#mandalsSelectBox").hide();
+		}else if(globallevelId == 5){
+			$(".tableMenu li:nth-child(1)").addClass("active");
+			$(".tableMenu li:nth-child(2)").hide();
+			$("[overview-level='District']").hide();
+			$("[overview-level='Constituency']").hide();
+			$("#mandalsDistrictSelectBox").hide();
+			$("#districtSelectBox").hide();
+			$("#mandalsSelectBox").hide();
+		}
+		POSTBasicCountBlock();
+		getPIRSSurveyInfoStateLevel();
+		for(var i in blockNameArr){
+			if(blockNameArr[i].id == 3){
+				POSTDistrictOverview(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView');
+			}else if(blockNameArr[i].id == 4){
+				POSTConstDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0);
+				if(globallevelId == 2 || globallevelId == 0){
+					getAllDistricts(blockNameArr[i].id,blockNameArr[i].name,'Districts');
+				}
+				
+			}else if(blockNameArr[i].id == 5){
+				POSTMandalDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0,0,"assembly");
+				if(globallevelId == 2 || globallevelId == 0){
+					getAllDistricts(blockNameArr[i].id,blockNameArr[i].name,'Parliament');
+				}
+				
+			}
+		}
+});
 	var width = $(window).width();
 	
 	if(width > 767){
@@ -126,13 +211,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 		  format: 'DD-MM-YYYY'
 		}
 	});
-	$("header").on("click",".menu-cls",function(e){
-		e.stopPropagation();
-		$(".menu-data-cls").toggle();
-	});
-	$(document).on("click",function(){
-		$(".menu-data-cls").hide();
-	});
+	
 $(".chosenSelect").chosen({width:'100%'});
 $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	
@@ -140,9 +219,10 @@ $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	globalFromDate = picker.startDate.format('DD-MM-YYYY')
 	globalToDate = picker.endDate.format('DD-MM-YYYY')
 	$(".thisMonthOverview").html(globalFromDate+" to "+globalToDate);
-	
 	buildLevelWiseDetailsBlock();
 	POSTBasicCountBlock();
+	getPIRSSurveyInfoStateLevel();
+	
 });
 $(document).on('click','.calendar_active_cls li', function(){
 	var date = $(this).attr("attr_val");
@@ -183,16 +263,23 @@ $(document).on('click','.calendar_active_cls li', function(){
 	if(date != "custom"){
 		buildLevelWiseDetailsBlock();
 		POSTBasicCountBlock();
+		getPIRSSurveyInfoStateLevel();
 	}
 	
 });
 
 function POSTDistrictOverview(blockId,blockName,subBlockName,viewType){
 	$("#"+blockName+'_'+blockId).html(spinner);
+	var locationId =0;
+	if(globallevelId == 2 || globallevelId == 0){
+		locationId =0;
+	}else{
+		locationId = globallocId
+	}
 		var json = {
 			fromDate:globalFromDate,
 			toDate:globalToDate,
-			locationId:0,
+			locationId:locationId,
 			locationType:"district"
 			}
 		$.ajax({                
@@ -224,7 +311,7 @@ function buildLevelWiseDetailsBlock(){
 		collapse+='<div class="col-sm-12">';
 			for(var i in blockNameArr)
 			{
-				collapse+='<div class="panel-group" id="accordion'+blockNameArr[i].id+'" role="tablist" aria-multiselectable="true">';
+				collapse+='<div class="panel-group" id="accordion'+blockNameArr[i].id+'" role="tablist" aria-multiselectable="true" overview-level="'+blockNameArr[i].name+'">';
 					collapse+='<div class="panel panel-default panel-black">';
 						collapse+='<div class="panel-heading" role="tab" id="heading'+blockNameArr[i].id+'">';
 							if(i == 0)
@@ -281,17 +368,23 @@ function buildLevelWiseDetailsBlock(){
 		collapse+='</div>';
 	collapse+='</div>';
 	$("#levelWiseBlockId").html(collapse);
-	for(var i in blockNameArr){
-		if(blockNameArr[i].id == 3){
-			POSTDistrictOverview(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView');
-		}else if(blockNameArr[i].id == 4){
-			POSTConstDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0);
-			getAllDistricts(blockNameArr[i].id,blockNameArr[i].name,'Districts');
-		}else if(blockNameArr[i].id == 5){
-			POSTMandalDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0,0,"assembly");
-			getAllDistricts(blockNameArr[i].id,blockNameArr[i].name,'Parliament');
+		for(var i in blockNameArr){
+			if(blockNameArr[i].id == 3){
+				POSTDistrictOverview(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView');
+			}else if(blockNameArr[i].id == 4){
+				POSTConstDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0);
+				if(globallevelId == 2 || globallevelId == 0){
+					getAllDistricts(blockNameArr[i].id,blockNameArr[i].name,'Districts');
+				}
+				
+			}else if(blockNameArr[i].id == 5){
+				POSTMandalDateForAssemblyInfo(blockNameArr[i].id,blockNameArr[i].name,'Districts','tableView',0,0,"assembly");
+				if(globallevelId == 2 || globallevelId == 0){
+					getAllDistricts(blockNameArr[i].id,blockNameArr[i].name,'Parliament');
+				}
+				
+			}
 		}
-	}
 	}
 	
 }
@@ -464,7 +557,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 											
 											if(subBlockName == "Districts" || subBlockName == "districts"){
 												tableView+='<td>'+result.subList[i].districtName+'</td>';
-												tableView+='<td>'+result.subList[i].constituencyName+'</td>';
+												tableView+='<td>'+result.subList[i].assemblyName+'</td>';
 												tableView+='<td>'+result.subList[i].name+'</td>';
 											}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
 												tableView+='<td>'+result.subList[i].constituencyName+'</td>';
@@ -541,6 +634,14 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 	{
 		
 		var selectBox = '';
+		
+		if(type == "districts"){
+			selectBox+='<label>District</label>';
+		}else if(type == "constituency"){
+			selectBox+='<label>Constituency</label>';
+		}else if(type == "parliaments"){
+			selectBox+='<label>Parliament</label>';
+		}
 		selectBox+='<select id="'+id+'chosen" attr_blockName="'+blockName+'">';
 		if(type == "districts"){
 			selectBox+='<option value="0">All Districts</option>';
@@ -671,11 +772,28 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 		$("#subTargetPercentage").html(spinner);
 		$("#subAchieved").html(spinner);
 		$("#subAchievedPercentage").html(spinner);
+		var locationType='';
+		var locationId=0;
+		
+		if(globallevelId == 2 || globallevelId == 0){
+			locationType = "district";
+			locationId = 0;
+		}else if(globallevelId == 3){
+			locationType = "district";
+			locationId = globallocId;
+		}else if(globallevelId == 4){
+			locationType = "assembly";
+			locationId = globallocId;
+			
+		}else if(globallevelId == 5){
+			locationType = "mandal";
+			locationId = globallocId;
+		}
 		var json = {
 			fromDate:globalFromDate,
 			toDate:globalToDate,
-			locationId:0,
-			locationType:"district"
+			locationId:locationId,
+			locationType:locationType
 			}
 		$.ajax({                
 			type:'POST',    
@@ -739,13 +857,59 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 	}
 	function POSTConstDateForAssemblyInfo(blockId,blockName,subBlockName,viewType,locId){
 		$("#"+blockName+'_'+blockId).html(spinner);
+		var filterIdN=0;
+		var filterType='';
+		var locationId=0;
+		if(globallevelId ==2 || globallevelId ==0){
+			$(".tableMenu li").removeClass("active");
+			$(".tableMenu li:nth-child(1)").addClass("active");
+			$(".tableMenu li:nth-child(2)").show();
+			$("[overview-level]").show();
+			$("#mandalsDistrictSelectBox").show();
+			$("#districtSelectBox").show();
+			$("#mandalsSelectBox").show();
+			filterIdN =locId;
+			filterType ="district";
+			locationId=0;
+		}else if(globallevelId ==3){
+			$(".tableMenu li:nth-child(1)").addClass("active");
+			$(".tableMenu li:nth-child(2)").hide();
+			$("[overview-level]").show();
+			$("#mandalsDistrictSelectBox").show();
+			$("#districtSelectBox").show();
+			$("#mandalsSelectBox").show();
+			filterIdN = globallocId;
+			filterType ="district";
+			locationId=0;
+			
+			$("#districtSelectBoxchosen").html('');
+			$("#districtSelectBoxchosen").append("<option value="+globallocId+">"+globalLocationName+" </option>");
+			$("#districtSelectBoxchosen").trigger("chosen:updated");
+			
+			$("#mandalsDistrictSelectBoxchosen").html('');
+			$("#mandalsDistrictSelectBoxchosen").append("<option value="+globallocId+">"+globalLocationName+" </option>");
+			$("#mandalsDistrictSelectBoxchosen").trigger("chosen:updated");
+			getAllConstituenciesForDistrict(5,"Mandal","Districts",globallocId);
+			
+		}else if(globallevelId ==4){
+			$(".tableMenu li:nth-child(1)").addClass("active");
+			$(".tableMenu li:nth-child(2)").hide();
+			$("[overview-level='District']").hide();
+			$("[overview-level='constituency']").show();
+			$("#mandalsDistrictSelectBox").hide();
+			$("#districtSelectBox").hide();
+			$("#mandalsSelectBox").hide();
+			filterIdN = 0;
+			filterType ="";
+			locationId=globallocId;
+		}
 		var json = {
 			fromDate:globalFromDate,
 			toDate:globalToDate,
-			locationId:0,
+			locationId:locationId,
 			locationType:"assembly",
-			filterId:locId,
-			filterType:"district"
+			filterId:filterIdN,
+			filterType:filterType
 		}
 		$.ajax({                
 			type:'POST',    
@@ -770,15 +934,83 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 	}
 	function POSTMandalDateForAssemblyInfo(blockId,blockName,subBlockName,viewType,locId,filterId,subFilterType){
 		$("#"+blockName+'_'+blockId).html(spinner);
+		
+		var locationId=0;
+		var subFilterId=0;
+		var subFilterTypeN='';
+		var filterIdN=0;
+		var filterTypeN='';
+		if(globallevelId ==2 || globallevelId ==0){
+			$(".tableMenu li").removeClass("active");
+			$(".tableMenu li:nth-child(1)").addClass("active");
+			$(".tableMenu li:nth-child(2)").show();
+			$("[overview-level]").show();
+			$("#mandalsDistrictSelectBox").show();
+			$("#districtSelectBox").show();
+			$("#mandalsSelectBox").show();
+			locationId=0
+			subFilterId = locId;
+			subFilterTypeN =subFilterType;
+			filterIdN=filterId;
+			filterTypeN='district';
+		}else if(globallevelId ==3){
+			$(".tableMenu li:nth-child(1)").addClass("active");
+			$(".tableMenu li:nth-child(2)").hide();
+			$("[overview-level]").show();
+			
+			locationId=0;
+			filterIdN=globallocId;
+			filterTypeN='district';
+			subFilterId = 0;
+			subFilterTypeN ="";
+			$("#mandalsDistrictSelectBox").show();
+			$("#districtSelectBox").show();
+			$("#mandalsSelectBox").show();
+			$("#districtSelectBoxchosen").html('');
+			$("#districtSelectBoxchosen").append("<option value="+globallocId+">"+globalLocationName+" </option>");
+			$("#districtSelectBoxchosen").trigger("chosen:updated");
+			
+			$("#mandalsDistrictSelectBoxchosen").html('');
+			$("#mandalsDistrictSelectBoxchosen").append("<option value="+globallocId+">"+globalLocationName+" </option>");
+			$("#mandalsDistrictSelectBoxchosen").trigger("chosen:updated");
+			getAllConstituenciesForDistrict(5,"Mandal","Districts",globallocId);
+			
+		}else if(globallevelId ==4){
+			$(".tableMenu li:nth-child(1)").addClass("active");
+			$(".tableMenu li:nth-child(2)").hide();
+			$("[overview-level='District']").hide();
+			$("[overview-level='constituency']").show();
+			$("#mandalsDistrictSelectBox").hide();
+			$("#districtSelectBox").hide();
+			$("#mandalsSelectBox").hide();
+			locationId=0;
+			filterIdN=0;
+			filterTypeN='';
+			subFilterId = globallocId;
+			subFilterTypeN ="assembly";
+		}else if(globallevelId ==5){
+			$(".tableMenu li:nth-child(1)").addClass("active");
+			$(".tableMenu li:nth-child(2)").hide();
+			$("[overview-level='District']").hide();
+			$("[overview-level='Constituency']").hide();
+			$("#mandalsDistrictSelectBox").hide();
+			$("#mandalsSelectBox").hide();
+			locationId = globallocId
+			filterIdN=0;
+			filterTypeN='';
+			subFilterId = 0;
+			subFilterTypeN ="";
+		}
+		
 		var json = {
 			fromDate:globalFromDate,
 			toDate:globalToDate,
-			locationId:0,
+			locationId:locationId,
 			locationType:"mandal",
-			filterId: filterId,
-			filterType:'district',
-			subFilterId: locId ,
-			subFilterType: subFilterType//assembly
+			filterId: filterIdN,
+			filterType:filterTypeN,
+			subFilterId: subFilterId ,
+			subFilterType: subFilterTypeN//assembly
 		}
 		$.ajax({                
 			type:'POST',    
@@ -790,7 +1022,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$("#"+blockName+'_'+blockId).html('');
+			//$("#"+blockName+'_'+blockId).html('');
 			if(result !=null && result.subList !=null && result.subList.length>0){
 				buildTableData(result,blockId,blockName,subBlockName,viewType);
 			}else{
