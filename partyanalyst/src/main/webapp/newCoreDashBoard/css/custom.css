@@ -2939,3 +2939,7 @@ color: rgb(51, 122, 183);
     height: 10px;
     width: 10px;
 }
+.panelBlock
+{
+	position:relative;
+}

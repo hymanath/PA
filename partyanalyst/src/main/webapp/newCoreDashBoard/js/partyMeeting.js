@@ -169,6 +169,7 @@ function globalMeetingsCalls(type)
 	 $("#committeeTypeDivId").html(str);
  }	
 $(document).on("click",".committeeMeetingsSettings",function(){
+	alert(12)
     $("#committeeTypeDivId").show();
 	$(".settingsDropDown").toggle();
 });
@@ -670,14 +671,14 @@ $(document).on("click",".selectAll",function(){
 	}
 	}
 	
-$(document).on("click",".meetingLiCls",function(){
-	var memberType=$(this).attr("attr_value");
-	 if(memberType != null && memberType == "strong"){
-	  buildgUserTypeWiseConductedAndMayBeTopFiveStrongPerResults(globalUserWiseMeetingMemberRslt); 
-	 }else if(memberType == "poor"){
-	  buildgUserTypeWiseConductedAndMayBeTopFivePoorPerResults(globalUserWiseMeetingMemberRslt);
-	 }
-});
+	$(document).on("click",".meetingLiCls",function(){
+		var memberType=$(this).attr("attr_value");
+		if(memberType != null && memberType == "strong"){
+			buildgUserTypeWiseConductedAndMayBeTopFiveStrongPerResults(globalUserWiseMeetingMemberRslt); 
+		}else if(memberType == "poor"){
+			buildgUserTypeWiseConductedAndMayBeTopFivePoorPerResults(globalUserWiseMeetingMemberRslt);
+		}
+	});
 	$(document).on("click",".mainMeetingsIcon",function(){
 		var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
 		var meetingTypeId = $(this).attr("attr_meeting_type_id");
@@ -998,6 +999,7 @@ $(document).on("click",".meetingLiCls",function(){
 		$(this).addClass('active');
 	});
 	$(document).on("click",".moreMeetingsBlocksIcon",function(){
+		$(".moreMeetingsBlocksList").show();
 		$(this).addClass("unExpandBlock");
 		var selectedType = $(this).parent().attr("attr_selected_type");
 		 if(selectedType != null && selectedType != undefined && selectedType=="sessionMeeting"){
@@ -2076,23 +2078,24 @@ $(document).on("click",".stateLevelMeetingBtnCls",function(){
 	
 });
  $(document).on("click",".specialMeetingBtncls",function(){
-	 var isChecked=false; 
-		 $("#specialMeetingUlId li").each(function() {
-		  if($(this).find("input").is(":checked")){
+	var isChecked=false; 
+	$("#specialMeetingUlId li").each(function(){
+		if($(this).find("input").is(":checked")){
 			isChecked = true;
-		  }
-	   });
-	   if(isChecked){
-		 $("#specialMeetingErrorId").html(' ');
-		 getPartySpecialMeetingsMainTypeOverview(0); 
-		 $(".specialMeetingDropDown").hide();
-		 $("#specialMeetingDivId").hide();
-		 $(".moreMeetingsBlocksDetailed").hide();   
-	   }else{
+		}
+	});
+	if(isChecked == true){
+		$("#specialMeetingErrorId").html(' ');
+		getPartySpecialMeetingsMainTypeOverview(0); 
+		$(".specialMeetingDropDown").hide();
+		$("#specialMeetingDivId").hide();
+		$(".moreMeetingsBlocksDetailed").hide();   
+	}else{
 		$("#specialMeetingErrorId").html("Please select at least one meeting.");
 		return;
-	   }
+	}
 });
+
 /* $(document).on("click",".meetingTypeCls",function(){
 	var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
 	var meetingTypeId = $(this).attr("attr_meeting_type_id");
@@ -2156,10 +2159,14 @@ $(document).on("click",".stateLevelMeetingSeeting",function(){
 	$(".settingsStateLevelMeetingDropDown").toggle();
 	$(".specialMeetingDropDown").hide();
 });
-$(document).on("click",".specialMeetingSeeting",function(){
+$(document).on("click",".specialMeetingSeeting",function(e){
+	e.stopPropagation();
     $("#specialMeetingDivId").show();
 	$(".specialMeetingDropDown").toggle();
 	$(".settingsStateLevelMeetingDropDown").hide();
+});
+$(document).on("click",".specialMeetingDropDown",function(e){
+	e.stopPropagation();
 });
 $(document).on("click",".selectAllStateLevelMeeting",function(){
    if($(this).is(":checked")){

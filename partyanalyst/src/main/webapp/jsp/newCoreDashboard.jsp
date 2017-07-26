@@ -26,9 +26,6 @@
 {
 	display:none;
 }
-
-
-
 .slickApplyPopupDays li.active{
 	background: #E29203 none repeat scroll 0 0;
 	 border-radius: 5px 5px 0px 0px;
@@ -1740,14 +1737,25 @@
 								<h6 id="lastMeetingUpdatedIdTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12" expand-block-inner="meetings">
-								<h4>
-									<span class="headingColor text-capital">committee meetings</span>
-									<span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
-									<span class="mainMeetingsIcon" style="background-color:#fff;margin-left:5px;" expand-icon-inner="meetings" expand_event_name="mainMeetings">
-										<i class="glyphicon glyphicon-fullscreen"></i>
-									</span>
-									<span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span>
-								</h4>
+								<div class="row">
+									<div class="col-sm-6 col-xs-12 col-md-6">
+										<h4 class="display:inline-block">
+											<span class="headingColor text-capital">committee meetings</span>
+										</h4>
+									</div>
+									<div class="col-sm-6 col-xs-12 col-md-6">
+										<div style="position:relative;">
+											<span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
+											<span class="mainMeetingsIcon" style="background-color:#fff;margin-left:5px;" expand-icon-inner="meetings" expand_event_name="mainMeetings">
+												<i class="glyphicon glyphicon-fullscreen"></i>
+											</span>
+											<span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span>
+											<div class="settingsDropDown" id="committeeTypeDivId">
+												
+											</div>
+										</div>
+									</div>
+								</div>
 								<div class="row">
 									<div id="meetingBasicCountDivId"></div>
 								</div>
@@ -1788,12 +1796,12 @@
 												<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeeting();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
 											</h4>
 										</div>
-										<div class="specialMeetingDropDown " style="left:0px;">
+										<div class="specialMeetingDropDown " style="left:0px;top:30px;">
 											<ul class="list-inline">
 												<li><label><input type="checkbox" class="selectAllSpecialMeeting"/>&nbsp&nbspSelect All</label></li>
 											</ul>
 											<div id="specialMeetingDivId"></div>
-											<button type="button" attr_main_type_meeting_id="3"  class="btn btn-success specialMeetingBtncls">Get Details</button>
+											<button type="button" onclick="specialMeetingBtncls()" attr_main_type_meeting_id="3"  class="btn btn-success specialMeetingBtncls">Get Details</button>
 										</div>
 										<div id="specialMeetingBasicCnt"></div>
 									</div>
@@ -1848,6 +1856,7 @@
 									<!--<li class="multiLocation">multiLocation</li>-->
 								</ul>
 							</div>
+							
 							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 detailedMeetngsBlkId" style="display:none" expand-block-more="meetings" >
 								<ul class="list-inline pull-right activeUlCls">
 									<li class="active attendedMetngs" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Attended</li>
@@ -1876,7 +1885,10 @@
 										<div id="districtWiseSpecialMeetingsGraph"></div>
 										<div id="partyMeetingOverviewTabDiv"></div>
 										<div id="cmtMemberDtlsTableId"></div>
-										
+										<div id="childUserTypeDetailsDivIdForMeetingMultiLocation"></div>
+										<div id="childActivityMemberDivIdForMeetingMultiLocation" class="m_top20"></div>
+										<div id="directChildActivityMeetingMemberDivMultiLocation" class="m_top20"></div>
+										<div id="topPoorLocationsMeetingDiv" class="m_top20"></div>
 										<div id="userAccessLevelLocationDivId"></div>
 										<div id="districtWisePartyMeetingTypeDivId"></div>
 									</div>
@@ -4464,6 +4476,7 @@ $("[expand-icon]").click(function(){
 			globalToursCalls('');
 		}else if(blockName == 'meetings')
 		{
+			$(".moreMeetingsBlocksIcon").attr("expand_event_name",'mainMeetings')
 			$(".stateLevelMeetingBlock").show();
 			$(".showMoreBlockCls").show();
 			$(".dateRangePickerClsForMeetings").removeClass("hide");
@@ -4636,10 +4649,12 @@ $(document).on("click","[expand-icon-inner]",function(){
 				getUserTypeWiseTotalEligibleAndAttendedCnt();
 			}
 		}else if(blockName == 'meetings'){
+			//var memberType = $(".meetingLiCls").attr("attr_value");
+			
 			$(".moreMeetingsBlocksIcon").attr("expand_event_name",expandName)
 			if(expandName == "statelevelmeeting")
 			{
-				
+				console.log("State Level Meetings");
 			}else if(expandName == "mainMeetings")
 			{
 				var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");

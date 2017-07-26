@@ -1,6 +1,3 @@
-
-
-
 getMultiLocationWiseMeetingGroupsData();
 function getMultiLocationWiseMeetingGroupsData(){
 	$("#MultiLocationWiseMeetingGroupsData").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -963,7 +960,8 @@ function getDistWiseMeetingDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGro
 	}
 	
 $(document).on("click",".multiMetingDetailedBlock",function(){
-	$(".moreMeetingsBlocksMultiLocationComparision,.moreMultiMeetingsBlocksDetailed").hide();
+	$(".moreMeetingsBlocksMultiLocationComparision,.moreMultiMeetingsBlocksDetailed,#childUserTypeDetailsDivIdForMeetingMultiLocation,#childActivityMemberDivIdForMeetingMultiLocation,#directChildActivityMeetingMemberDivMultiLocation,#topPoorLocationsMeetingDiv").hide();
+	$("#meetingLevelHIghChartsDivId,#districtWiseSpecialMeetingsGraph,#userAccessLevelLocationDivId").show();
 	$(".attendedMetngs").addClass("active");
 	$(".meetingBased").removeClass("active");
 	$(".multiMeetingChortCls,.detailedMeetngsBlkId").show();
@@ -1015,10 +1013,14 @@ $(document).on("click",".sessnWiseAttendnceBsd",function(){
 $(document).on("click",".multiLocation",function(){
 	//getChildUserTypesByItsParentUserTypeForMeeting();
 	getAllItsSubUserTypeIdsByParentUserTypeIdForMeetingMultiLocation();
-	$(".moreMeetingsBlocksMultiLocationComparision").show();
-	$(".moreMeetingsBlocksDetailed,.moreMultiMeetingsBlocksDetailed,.detailedMeetngsBlkId").hide();
+	$(".moreMeetingsBlocksMultiLocationComparision,.moreMeetingsBlocksDetailed,#childUserTypeDetailsDivIdForMeetingMultiLocation,#childActivityMemberDivIdForMeetingMultiLocation,#directChildActivityMeetingMemberDivMultiLocation,#topPoorLocationsMeetingDiv").show();
+	$("#meetingLevelHIghChartsDivId,#districtWiseSpecialMeetingsGraph,.moreMultiMeetingsBlocksDetailed,.detailedMeetngsBlkId,#userAccessLevelLocationDivId").hide();
 });
-
+$(document).on("click",".removeSelectTr",function(){
+	var removeSelected = $(this).attr("attr_removeSelecUserType"); 
+	$("#"+removeSelected).html(' ');
+	$("#"+removeSelected).hide();
+});
 function getAllItsSubUserTypeIdsByParentUserTypeIdForMeetingMultiLocation(){
 		 
 	   $("#childUserTypeDetailsDivIdForMeetingMultiLocation").html('');
@@ -1186,6 +1188,8 @@ if(childUserType != null && childUserType.trim()=="MLA/CI" || childUserType.trim
 		"aaSorting": [],
 		"iDisplayLength" : 5	
 	   });
+	
+	
  //getTopPoorMeetingLocationsMultiLocation(firstActivityMemberId,firstUserMemberName,firstuserType);
   }else{
    if(result !=null && result.length >0){
@@ -1269,6 +1273,7 @@ if(childUserType != null && childUserType.trim()=="MLA/CI" || childUserType.trim
 	}
 	str+='</ul>';
 	$("#childActivityMemberDivIdForMeetingMultiLocation").html(str);
+	
 		$(".slickPanelSliderMeetingMultiLocation").slick({
 			 slide: 'li',
 			 slidesToShow: 3,
@@ -1330,7 +1335,85 @@ if(childUserType != null && childUserType.trim()=="MLA/CI" || childUserType.trim
 }
 }
 }
-
+function getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType){
+	$("#topPoorLocationsMeetingDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var state = globalState;
+   
+	var partyMeetingTypeArr=[];
+	$("#committeeTypeId li").each(function() {
+	  if($(this).find("input").is(":checked")){
+		  partyMeetingTypeArr.push($(this).find("input").attr("id"));
+	  }
+	});
+  
+   
+	var jsObj ={  activityMemberId : activityMemberId,
+				 state:state,
+				 partyMeetingTypeIds : partyMeetingTypeArr,
+				 startDateString :  customStartDateMeetings ,
+				 endDateString   :  customEndDateMeetings
+			  }
+	$.ajax({
+		type : 'POST',
+		url : 'getTopPoorMeetingLocationsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildTopPoorMeetingLocations(result,selectedMemberName,selectedUserType);
+	});
+}
+function buildTopPoorMeetingLocations(result,selectedMemberName,selectedUserType){
+	$("#topPoorLocationsMeetingDiv").html('');
+	var str ='';
+	
+	if(result !=null && result.length >0){
+		str+='<b><span class="color_333 pad_5 bg_CC text-capital">top five <span class="text-danger">poor</span> locations - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
+		str+='<div class="row m_top20">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<p class="text-capital"><b>'+result[0].requiredName+'</b><span style="margin-left:150px">Conducted Percentage<span></p>';
+				str+='<table class="table tableCumulative">';
+		var countVar =0;
+		var BGColor = 1;
+			for(var i in  result){
+				
+				//top 5 should build.
+				countVar =countVar+1;
+				if (countVar === 6) {
+					break;
+				}
+					str+='<tr>';
+						str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+countVar+'</span></td>';
+						
+						if(result[0].requiredName == "Mandals/Muncipalitys/Divisions" || result[0].requiredName == "Villages/Wards"){
+							str+='<td>'+result[i].name+' ('+result[i].locationLevelName+')</td>';
+						}else{
+							str+='<td>'+result[i].name+'</td>';
+						}
+						str+='<td>';
+						if(result[i].conductedCount !=null && result[i].conductedCount >0){
+							str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result[i].conductedPerc+'%">';
+							  str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result[i].conductedCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result[i].conductedPerc+'%;">';
+								str+='<span class="sr-only">'+result[i].conductedPerc+'% Complete</span>';
+							  str+='</div>';
+							str+='</div>';
+						str+='</td>';
+						str+='<td class="text-danger">'+result[i].conductedCount+'('+(result[i].conductedPerc+"%")+')</td>';
+						}else{
+							str+='<td class="text-danger"> - </td>';
+						}
+							
+					str+='</tr>';
+					BGColor = BGColor - 0.2;
+			}
+			str+='</table>';
+			str+='</div>';
+		str+='</div>';
+		$("#topPoorLocationsMeetingDiv").html(str);
+		$('.progressCustom').tooltip();
+	}else{
+		$("#topPoorLocationsMeetingDiv").html("No Data Available");
+	}			
+}
 function getLocationWiseMeetingsDetails(locationLevelId,locationValuesArray,partyMeetingLevelId){
 	//$("#locationWiseHighChartsDiv").html("");
 	
@@ -1533,10 +1616,10 @@ function getDirectChildActivityMemberMeetingDetailsMultiLocation(activityMemberI
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		$("#"+childActivityMemberId).html('');
-		buildgetDirectChildActivityMemberMeetingsDetailsMultiLocation(result,selectedMemberName,selectedUserType,childActivityMemberId);
+		buildgetDirectChildActivityMemberMeetingsDetailsMultiLocation(result,selectedMemberName,selectedUserType,childActivityMemberId,activityMemberId);
 	});
 }
-function buildgetDirectChildActivityMemberMeetingsDetailsMultiLocation(result,selectedMemberName,selectedUserType,childActivityMemberId){
+function buildgetDirectChildActivityMemberMeetingsDetailsMultiLocation(result,selectedMemberName,selectedUserType,childActivityMemberId,activityMemberId){
 	$("#"+childActivityMemberId).html('');
 	var str ='';
 	
@@ -1629,6 +1712,7 @@ function buildgetDirectChildActivityMemberMeetingsDetailsMultiLocation(result,se
 		str+='</tbody>';
 		str+='</table>';
 		$("#"+childActivityMemberId).html(str);
+		getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType); 
 	}else{
 		 if(childActivityMemberId == "directChildActivityMeetingMemberDivMultiLocation"){
 			$("#"+childActivityMemberId).html("<h5><span  class='text-capital'>"+selectedMemberName+"</span> - <span class='text-capitalize'>"+selectedUserType+"</span> - ( No Data Available )</h5>");
@@ -1728,10 +1812,10 @@ $(document).on("click",".compareActivityMemberClsForMeetingMultiLocation",functi
 		locationValuesArr = locationValues;
 	}*/
 	if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
-	  //getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType); 
+	  getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType); 
 	 }else{
 	  getDirectChildActivityMemberMeetingDetailsMultiLocation(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-	  //getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType);
+	  getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType);
 	}
 	//getLocationWiseMeetingsDetails(locationLevelId,locationValuesArr);
 });
@@ -1758,10 +1842,10 @@ $(document).on("click",".compareActivityMemberClsForMeetingMultiLocation",functi
 		locationValuesArr = locationValues;
 	}	*/
 	if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
-		  //getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType); 
+		  getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType); 
 		 }else{
 	      getDirectChildActivityMemberMeetingDetailsMultiLocation(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		  //getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType);
+		  getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType);
 		}
 	//getLocationWiseMeetingsDetails(locationLevelId,locationValuesArr);
 });

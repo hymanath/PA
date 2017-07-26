@@ -15,6 +15,29 @@ var globalStateId=1;
 				$(this).attr("attr_endDate",moment().subtract(1,'month').endOf('month').format("DD/MM/YYYY"));
 			}
 		});	
+		$(document).on("click",".committeeMeetingsSettings",function(e){
+			//$("#committeeTypeDivId").show();
+			e.stopPropagation();
+			$(".settingsDropDown").toggle();
+		});
+		$(document).on("click","#committeeMeetingsSettingsSubmitId",function(e){
+			getPartyMeetingBasicCountDetails();
+			$("#committeeTypeDivId").hide();
+		});
+		$(document).on("click",".selectAllSpecialMeeting",function(){
+			if($(this).is(":checked")){
+				$("#specialMeetingUlId li").each(function() {
+					$(this).find("input").prop("checked",true)
+				});
+			}else{
+				$("#specialMeetingUlId li").each(function() {
+					$(this).find("input").prop("checked",false)      
+				});
+			}	
+		});
+		$(document).on("click",function(){
+			$(".settingsDropDown,.specialMeetingDropDown ").hide();
+		});
 		$(document).on("click",".meetingsConflictsCls1",function(){
 			$("#myModalImageId").modal("show");
 			$("#myModalLabelId").html("Image Details");
@@ -289,12 +312,37 @@ var globalStateId=1;
 			$(this).addClass('btn-primary');
 			getPartySpecialMeetingsMainTypeOverview(0);
 		});
+		
+		$(document).on("click",".specialMeetingBtncls",function(){
+			var isChecked=false; 
+			$("#specialMeetingUlId li").each(function(){
+				if($(this).find("input").is(":checked")){
+					isChecked = true;
+				}
+			});
+			if(isChecked == true){
+				$("#specialMeetingErrorId").html(' ');
+				getPartySpecialMeetingsMainTypeOverview(0); 
+				$(".specialMeetingDropDown").hide();
+				$("#specialMeetingDivId").hide();
+				$(".moreMeetingsBlocksDetailed").hide();   
+			}else{
+				$("#specialMeetingErrorId").html("Please select at least one meeting.");
+				return;
+			}
+		});
+
 		$(document).on("click",".stateLevelMeetingSeeting",function(){
 			$("#stateLevelMeetingDivId").show();
 			$(".settingsStateLevelMeetingDropDown").toggle();
 			$(".specialMeetingDropDown").hide();
 		});
-		$(document).on("click",".specialMeetingSeeting",function(){
+		$(document).on("click",".specialMeetingDropDown,#committeeTypeDivId",function(e){
+			e.stopPropagation();
+		});
+
+		$(document).on("click",".specialMeetingSeeting",function(e){
+			e.stopPropagation();
 			$("#specialMeetingDivId").show();
 			$(".specialMeetingDropDown").toggle();
 			$(".settingsStateLevelMeetingDropDown").hide();
@@ -385,6 +433,7 @@ var globalStateId=1;
 			}
 		});
 		$(document).on("click",".moreMeetingsBlocksIcon",function(){
+			$(".moreMeetingsBlocksList").show();
 			var $this = $(this);
 			var expandName = $this.attr("expand_event_name");
 			if(expandName == "statelevelmeeting")
@@ -514,9 +563,10 @@ function buildCommitteeTypes(result){
 	 var str='';
 	 str+='<ul style="list-style: none;" id="committeeTypeId" class="selectAllOptions">';
 	 for(var i in result){
-		 str+="<li><label><input checked type='checkbox' id="+result[i].id+">&nbsp&nbsp"+result[i].name+"</label></li>";
+		 str+="<li><label class='checkbox-inline'><input checked type='checkbox' id="+result[i].id+">&nbsp&nbsp"+result[i].name+"</label></li>";
 	 }
 	 str+='</ul> ';
+	str+='<button class="btn btn-success btn-xs" id="committeeMeetingsSettingsSubmitId">SUBMIT</button>';
 	 $("#committeeTypeDivId").html(str);
  }	
 function getPartyMeetingBasicCountDetails()
@@ -652,8 +702,8 @@ function buildMeetingBasicCountDetails(result){
 						 }
 						 //str+='</h4>';
 					 }else{
-					 str+='<p class="text-muted text-capitalize">yes</p>';	  
-					 str+='<h4>'+levelWiseResult[i].conductedCount+'<span class="font-10 text-success"> '+levelWiseResult[i].conductedCountPer+'%</span><!--<span class="glyphicon glyphicon-info-sign updationDetailsCls" style="cursor: pointer;margin-left: 4px;font-size:14px;" attr_level_type="'+levelWiseResult[i].name+'"></span>--></h4>';
+						str+='<p class="text-muted text-capitalize">yes</p>';	  
+						str+='<h4>'+levelWiseResult[i].conductedCount+'<span class="font-10 text-success"> '+levelWiseResult[i].conductedCountPer+'%</span><!--<span class="glyphicon glyphicon-info-sign updationDetailsCls" 	style="cursor: pointer;margin-left: 4px;font-size:14px;" attr_level_type="'+levelWiseResult[i].name+'"></span>--></h4>';
 					 }
 					 str+='</td>';  
 						str+='<td>';
@@ -1971,7 +2021,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result,isCl
 			enabled: false,
 		}
 		var tooltip = {
-			valueSuffix: ' %',
+			valueSuffix: '',
 			shared : true,
 		}
 		var yAxis = {
@@ -2571,6 +2621,7 @@ function buildLevelWiseHighCharts(result){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
 				str+='<div class="panel panel-default">';
 					str+='<div class="panel-body">';
+					str+='<h4 class="panel-title">Party Meetings</h4>';	
 					 var length = levelWiseResult.length - 1;
 					  str+='<ul class="villageWardUlMeeting">';
 						for(var i = length; i >= 0; i--){
