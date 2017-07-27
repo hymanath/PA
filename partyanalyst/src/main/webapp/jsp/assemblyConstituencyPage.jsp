@@ -188,28 +188,20 @@
 				<div class="block">
 					<div class="row">
 						<div class="col-md-6 col-xs-12 col-sm-6">
-							<h5 class="m_left10">Posts</h5>
 							<div class="row">
-								<div class="col-md-6 col-xs-12 col-sm-6">
-									<div id="posts" style="height:80px;"></div>
-								</div>
-								<div id="nominatedPostDiv"></div>
-								<!--
-								<div class="col-md-6 col-xs-12 col-sm-6">
-									<ul class="graph-legend">
-                                    	<li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                        <li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                        <li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                    </ul>
-								</div>-->
+							<div class="col-md-6 col-xs-12 col-sm-6 " >
+									<div id="postsDiv" ></div>
+							</div>
+					
+							<div id="nominatedPostDiv"></div>
 							</div>
 							
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-6">
 							<h5 class="m_left10">Applications</h5>
 							<div class="row">
-								<div class="col-md-6 col-xs-12 col-sm-6">
-									<div id="applications" style="height:120px;"></div>
+								<div class="col-md-6 col-xs-12 col-sm-6 " >
+									<div id="NominatedPostInfoChartDivId" style="height:250px; "></div>
 								</div>
 								<div id="applicationCntBlock"></div>
 								<!--<div class="col-md-6 col-xs-12 col-sm-6">
@@ -286,7 +278,7 @@
 									<div class="row m_top15">
 										<div class="col-md-6 col-xs-12 col-sm-6">
 											<h4 class="panel-title text-capital">mandal/town/division level</h4>
-											<div id="mandalLevelId"></div>
+											<div id="mandalLevelId" ></div>
 										</div>
 										<div class="col-md-6 col-xs-12 col-sm-6">
 											<h4 class="panel-title text-capital">vilalge/ward level</h4>
@@ -341,7 +333,9 @@
 			
 			<!--benefits Starting -->
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="benefits">
-				<h3>Benefits</h3>
+				<div class="panel-heading">
+				<h3>Benefits <!--<span class="benefitsRefresh pull-right"><i class="glyphicon glyphicon-refresh f-14" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+				</span>--></h3></div>
 				<div class="block pad_0">
 					<div class="row">
 					  <!-- Nav tabs -->
@@ -352,19 +346,11 @@
 						  <div class="tab-content">
 							<div role="tabpanel" class="tab-pane active pad_10" id="benefits1">
 								
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+								 <!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 									<button class="btn btn-success btn-success-white text-capital">detailed caste information</button>
-								</div>
+								</div>-->
 							</div>
-							<div role="tabpanel" class="tab-pane pad_10" id="benefits2">
-								a
-							</div>
-							<div role="tabpanel" class="tab-pane pad_10" id="benefits3">
-								b
-							</div>
-							<div role="tabpanel" class="tab-pane pad_10" id="benefits4">
-								c
-							</div>
+							
 						  </div>
 					  </div>
 
