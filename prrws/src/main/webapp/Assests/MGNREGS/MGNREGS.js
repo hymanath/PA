@@ -2355,7 +2355,7 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocat
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
-		toDate 	: glEndDate,//glEndDate,'2017-05-30'
+		toDate 	: "2017-05-30",//glEndDate,'2017-05-30'
 		locationType: menuLocationType,
 		divType : globalDivName,
 		locationId : menuLocationId,
@@ -2517,14 +2517,27 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 function getNregasOverview(projectDivId,menuLocationType,menuLocationId)
 {
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
-	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-        toDate : glEndDate,
-		divType : globalDivName,
-		locationType : menuLocationType,
-		locationId : menuLocationId
+	if(projectDivId == 'FAperformance')
+	{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : '2017-05-30',
+			divType : globalDivName,
+			locationType : menuLocationType,
+			locationId : menuLocationId
+		}
+	}else{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+	        toDate : glEndDate,
+			divType : globalDivName,
+			locationType : menuLocationType,
+			locationId : menuLocationId
+		}
 	}
+	
 	$.ajax({
 		url: 'getNregasOverview',
 		data: JSON.stringify(json),
@@ -3254,7 +3267,7 @@ function getNREGSAbstractDataByType(type,locType,locId,blockName,levelId,buildDa
 		var json = {
 			year : "2017",
 			fromDate : glStartDate,
-			toDate : '2017-05-01',
+			toDate : '2017-05-30',
 			type : type,
 			locationType: locType,
 			locationId : locId
