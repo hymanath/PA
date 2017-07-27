@@ -1878,7 +1878,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		 LOG.error("Error occured at setAttendedMemberCntToMap() in CoreDashboardMainService {}",e); 
 	}
 	}*/
-	   /**
+	   /** village
 		  * @param  Long userAccessLevelId
 		  * @param List<Long> userAccessLevelValues
 		  * @param Long stateId
@@ -1908,11 +1908,11 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			
 			 
 			 List<Long> tdpCommitteeLvlIds = new ArrayList<Long>();
-			 tdpCommitteeLvlIds.add(6l);
-			 tdpCommitteeLvlIds.add(8l);
-			 tdpCommitteeLvlIds.add(5l);
-			 tdpCommitteeLvlIds.add(7l);
-			 tdpCommitteeLvlIds.add(9l);
+			 tdpCommitteeLvlIds.add(6l);//village: 
+			 tdpCommitteeLvlIds.add(8l);//ward
+			 tdpCommitteeLvlIds.add(5l);//mandal
+			 tdpCommitteeLvlIds.add(7l);//town
+			 tdpCommitteeLvlIds.add(9l);//division
 			 List<Object[]> attendedList = trainingCampBatchAttendeeDAO.getTotalAttendeeCount(programIdList,1l,toDate,enrollmentYearIds,accessLevelValue,userAccessLevelValues,tdpCommitteeLvlIds);
 		     List<Object[]> rtrnCommiteeLevelEligibleAndAttendedObjLst = trainingCampDetailsInfoDAO.getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(accessLevelValue, userAccessLevelValues, toDate,enrollmentYearIds,programIdList);
 			    TrainingCampProgramVO villageWardVO = new TrainingCampProgramVO();
@@ -4108,7 +4108,7 @@ public List<UserDataVO> getbasicCommitteeDetails(){
 		LOG.error("Exception raised at getbasicCommitteeDetails() method of CoreDashboardMainService", e);
 	}
 	return basicCommitteeList;
-}
+}//state lvl.
 public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,Long stateId,String dateStr,String option,List<Long> enrollYrIds){    
 	LOG.info(" entered in to getStateLevelCampAttendedDetails() of CoreDashBoardMainService ");
 	try{
