@@ -1316,7 +1316,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			Long userTypeId = jObj.getLong("userTypeId");
-			
+			String committeType= jObj.getString("commiteType");
 			String state = jObj.getString("state");
 			
 			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
@@ -1330,7 +1330,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 				}
 			}
 			
-			userTypeVOList = coreDashboardMainService.getUserTypeWiseCommitteesCompletedCounts1(userId,activityMemberId,userTypeId,state,committeeLevelBasedCommitteeIdsMap,dateString,committeeEnrollmentYearsIdsLst);
+			userTypeVOList = coreDashboardMainService.getUserTypeWiseCommitteesCompletedCounts1(userId,activityMemberId,userTypeId,state,committeeLevelBasedCommitteeIdsMap,dateString,committeeEnrollmentYearsIdsLst,committeType);
 		}catch(Exception e){
 			LOG.error("Exception raised at getUserTypeWiseCommitteesCompletedCounts1() method of CoreDashBoard", e);
 		}
@@ -1351,6 +1351,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 				}
 			}
 			String state = jObj.getString("state");
+			String committeType= jObj.getString("commiteType"); 
 			
 			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
 			
@@ -1363,7 +1364,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 					committeeEnrollmentYearsIdsLst.add(Long.valueOf(committeeEnrollmentYearArray.getString(i)));
 				}
 			}
-			committeeDataVOList = coreDashboardMainService.getLevelWiseBasicCommitteesCountReport(userAccessLevelId,userAccessLevelValues,state,committeeLevelBasedCommitteeIdsMap,dateString,committeeEnrollmentYearsIdsLst);
+			committeeDataVOList = coreDashboardMainService.getLevelWiseBasicCommitteesCountReport(userAccessLevelId,userAccessLevelValues,state,committeeLevelBasedCommitteeIdsMap,dateString,committeeEnrollmentYearsIdsLst,committeType);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getLevelWiseBasicCommitteesCountReport() method of CoreDashBoard", e);
@@ -1387,6 +1388,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			
 			String committeeStatus = jObj.getString("committeeStatus");
 			Long userLocationLevelId = jObj.getLong("userLocationLevelId");
+			String committeType= jObj.getString("commiteType"); 
 			
 			List<Long> userLocationLevelValues = new ArrayList<Long>();
 			JSONArray userLocationLevelValuesArray=jObj.getJSONArray("userLocationLevelValuesArray");
@@ -1407,7 +1409,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 					committeeEnrollmentYearsIdsLst.add(Long.valueOf(committeeEnrollmentYearArray.getString(i)));
 				}
 			}
-			committeeDataVOList = coreDashboardMainService.committeesPerformanceCohort(tdpCommitteeLevelIdsClicked,committeeLevelBasedCommitteeIdsMap,committeeStatus,userLocationLevelId,userLocationLevelValues,dateString,state,committeeEnrollmentYearsIdsLst);
+			committeeDataVOList = coreDashboardMainService.committeesPerformanceCohort(tdpCommitteeLevelIdsClicked,committeeLevelBasedCommitteeIdsMap,committeeStatus,userLocationLevelId,userLocationLevelValues,dateString,state,committeeEnrollmentYearsIdsLst,committeType);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at committeesPerformanceCohort() method of CoreDashBoard", e);
@@ -1466,6 +1468,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			}
 			
 			String state = jObj.getString("state");
+			String committeType= jObj.getString("commiteType");
 			
 			String dateString = jObj.getString("dateString");
 			
@@ -1477,7 +1480,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 					committeeEnrollmentYearsIdsLst.add(Long.valueOf(committeeEnrollmentYearArray.getString(i)));
 				}
 			}
-			activityMembersList = coreDashboardMainService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeIds,state,committeeLevelBasedCommitteeIdsMap,dateString,committeeEnrollmentYearsIdsLst);
+			activityMembersList = coreDashboardMainService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeIds,state,committeeLevelBasedCommitteeIdsMap,dateString,committeeEnrollmentYearsIdsLst,committeType);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getSelectedChildUserTypeMembers() method of CoreDashBoard", e);
@@ -1496,6 +1499,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			String state = jObj.getString("state");
 			
 			String dateString = jObj.getString("dateString");
+			String committeType= jObj.getString("commiteType");
 			
 			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
 			
@@ -1506,7 +1510,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 					committeeEnrollmentYearsIdsLst.add(Long.valueOf(committeeEnrollmentYearArray.getString(i)));
 				}
 			}
-			activityMembersList = coreDashboardMainService.getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,state,committeeLevelBasedCommitteeIdsMap,dateString,committeeEnrollmentYearsIdsLst);
+			activityMembersList = coreDashboardMainService.getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,state,committeeLevelBasedCommitteeIdsMap,dateString,committeeEnrollmentYearsIdsLst,committeType);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getDirectChildActivityMemberCommitteeDetails() method of CoreDashBoard", e);
@@ -1522,6 +1526,7 @@ public String getTopPoorPerformancecommittees(){
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			
 			String state = jObj.getString("state");
+			String committeType = jObj.getString("commiteType");
 			String dateString = jObj.getString("dateString");
 			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
 			List<Long> committeeEnrollmentYearsIdsLst = new ArrayList<Long>();
@@ -1531,7 +1536,7 @@ public String getTopPoorPerformancecommittees(){
 					committeeEnrollmentYearsIdsLst.add(Long.valueOf(committeeEnrollmentYearArray.getString(i)));
 				}
 			}
-			committeeDataVO = coreDashboardMainService.getTopPoorPerformancecommittees(activityMemberId,committeeLevelBasedCommitteeIdsMap,state,dateString,committeeEnrollmentYearsIdsLst);
+			committeeDataVO = coreDashboardMainService.getTopPoorPerformancecommittees(activityMemberId,committeeLevelBasedCommitteeIdsMap,state,dateString,committeeEnrollmentYearsIdsLst,committeType);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getTopPoorPerformancecommittees() method of CoreDashBoard", e);
@@ -1550,6 +1555,7 @@ public String getTopPoorPerformancecommittees(){
 			
 			String state = jObj.getString("state");
 			String dateString = jObj.getString("dateString");
+			String committeType= jObj.getString("commiteType");
 			
 			List<Long> committeeEnrollmentYearsIdsLst = new ArrayList<Long>();
 			JSONArray committeeEnrollmentYearArray =jObj.getJSONArray("committeeEnrollmentYearArray");
@@ -1558,7 +1564,7 @@ public String getTopPoorPerformancecommittees(){
 					committeeEnrollmentYearsIdsLst.add(Long.valueOf(committeeEnrollmentYearArray.getString(i)));
 				}
 			}
-			committeeDataVOList = coreDashboardMainService.getTopPoorCommitteeLocations(activityMemberId,committeeLevelBasedCommitteeIdsMap,state,dateString,committeeEnrollmentYearsIdsLst);
+			committeeDataVOList = coreDashboardMainService.getTopPoorCommitteeLocations(activityMemberId,committeeLevelBasedCommitteeIdsMap,state,dateString,committeeEnrollmentYearsIdsLst,committeType);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getTopPoorCommitteeLocations() method of CoreDashBoard", e);
@@ -1570,7 +1576,7 @@ public String getTopPoorPerformancecommittees(){
 			LOG.info("Entered into getTotalEligibleAttendedAndNotAttenedOverviewCount()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
 			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
-			 
+			
 			List<Long> programIdList = new ArrayList<Long>();
 			JSONArray programIdArr=jObj.getJSONArray("programIdArr");  
 			if(programIdArr!=null &&  programIdArr.length()>0){
@@ -1819,7 +1825,6 @@ public String getTrainingProgramBasicCnt(){
 		}
 		 Long stateId = jObj.getLong("stateId");
 		 String dateStr = jObj.getString("dateStr");
-		// Long enrollmentYearId =jObj.getLong("enrollmentYearId");
 		 List<Long> enrollmentYearIds=new ArrayList<Long>();
 			JSONArray enrollmentYearIdsArray=jObj.getJSONArray("enrollmentYearIdsList");
 			if(enrollmentYearIdsArray!=null &&  enrollmentYearIdsArray.length()>0){
@@ -2331,7 +2336,7 @@ public String getCandidateDtlsPerDist(){
  				}
  				Long stateId = jObj.getLong("stateId");
  				Long distId = jObj.getLong("distId");
- 				String dateStr = jObj.getString("dateStr"); 
+ 				String dateStr = jObj.getString("dateStr");
  				List<Long> enrollmentYearIds=new ArrayList<Long>();
  				JSONArray enrollmentYearIdsArray=jObj.getJSONArray("enrollmentYearIdsList");
  				if(enrollmentYearIdsArray!=null &&  enrollmentYearIdsArray.length()>0){
