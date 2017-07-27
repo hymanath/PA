@@ -1044,7 +1044,7 @@ function gettingBoothInchargeRoleDetails(boothId,locationValue,enrllmentId){
 			if(result != null){
 				buildBoothInchargeRoleDetails(result);	
 			}else{
-				//$('#addMembrsBtn').hide();
+				$("#boothInchargeRoleDivId").html('NO DATA AVAILABLE.');
 			}
 		});	
 	}
