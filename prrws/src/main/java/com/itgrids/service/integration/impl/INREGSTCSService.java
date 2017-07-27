@@ -21,7 +21,7 @@ public interface INREGSTCSService {
 	public List<IdNameVO> getLabourBudgetExpenditure(InputVO inputVO);
 	public List<NregsDataVO> getNregaLevelwiseOverviewForLabourBudgetData(InputVO inputVO);
 	public List<WebserviceDetailsVO> getWebserviceHealthDetails(InputVO inputVO);
-	public List<NregsDataVO> getNregsConstCuntDetails(String output,Map<String,NregsDataVO> cntMap,String divType,String subLocationType);
+	public List<NregsDataVO> getNregsConstCuntDetails(String output,Map<String,NregsDataVO> cntMap,String divType,String locationType,String subLocationType);
 	public NregsDataVO getMGNregsDistrWiseConsti(InputVO inputVO);
 	public List<NregsDataVO> getDistrictsConstitByType(List<NregsDataVO>  returnList,String type);
 	public List<NregsDataVO> getNregsMandalsCuntFrDistrict(String output,Map<String,NregsDataVO> cntMap,String divType,String subLocationType);
