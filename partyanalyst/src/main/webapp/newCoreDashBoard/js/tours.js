@@ -34,7 +34,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 				var isFilterApply = "No";
 				var filterType = "";
 				var desgnatnIdsLst = [];
-				getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,0,0,"");
+				getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,0,0,0,0,"");
 			}
 		}
 		
@@ -208,7 +208,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var isFilterApply = "No";
 		var filterType = "";
 		var desgnatnIdsLst = [];
-	   getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,0,0,"");
+	   getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,0,0,0,0,"");
 		
 	});
 
@@ -230,7 +230,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			var isFilterApply = "No";
 			var filterType = "";
 			var desgnatnIdsLst = [];
-		    getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,0,0,"");
+		    getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,0,0,0,0,"");
 		 }
 	}
 	
@@ -858,7 +858,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var isFilterApply = "Yes";
 		var desgnatnIdsLst = designationStr.split(",");
 		 $(".toursSessionDropDownCls").hide();	
-		getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,0,0,divId);
+		getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,0,0,0,0,divId);
 		//$(".tourFilteCheckBoxCls").trigger("click");
 	});
 	
@@ -917,21 +917,23 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		  var isFilterApply="Yes";
 		  var filterType=" ";
 		  var ownDistValue = 0;
-		 var ownCnsttuncyValue = 0;
-		 var incharegeConstituencyValue = 0;
-		 var ichargeDistrictValue = 0;
-		 var govtWorkValue = 0;
-		 var stateTourCategoryValue = 0;
-		 var complainceValue = 0; 
-		 var anganwadiVisitValue = 0;
-		 var tourCategorySliderType = $(this).closest(".tab-pane").find('.sliderCategoryTypeCls:checkbox:checked').attr("attr_slider_type");
-		 var mainSlider = $(this).closest(".tab-pane").find('.mainSliderCls:checkbox:checked').attr("attr_slider_type");
-		 if(tourCategorySliderType == undefined && mainSlider==undefined){
+		  var ownCnsttuncyValue = 0;
+		  var incharegeConstituencyValue = 0;
+		  var ichargeDistrictValue = 0;
+		  var govtWorkValue = 0;
+		  var stateTourCategoryValue = 0;
+		  var complainceValue = 0; 
+		  var anganwadiVisitValue = 0;
+		  var ownAreaValue = 0;
+		  var inchargeParliamentValue = 0;
+		  var tourCategorySliderType = $(this).closest(".tab-pane").find('.sliderCategoryTypeCls:checkbox:checked').attr("attr_slider_type");
+		  var mainSlider = $(this).closest(".tab-pane").find('.mainSliderCls:checkbox:checked').attr("attr_slider_type");
+		  if(tourCategorySliderType == undefined && mainSlider==undefined){
 			 $(this).closest(".tab-pane").find(".errorCls").html("Please Select Filter Type.");
 			 return;
-		 }
-		 $(this).closest(".tab-pane").find(".errorCls").html(' ');
-		 if(tourCategorySliderType != undefined && tourCategorySliderType=="tourCategory"){
+		  }
+		  $(this).closest(".tab-pane").find(".errorCls").html(' ');
+		  if(tourCategorySliderType != undefined && tourCategorySliderType=="tourCategory"){
 			 if(sliderNameArr != null && sliderNameArr.length > 0){
 					 for(var i in sliderNameArr){
 					
@@ -971,6 +973,14 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 						} else if(sliderNameArr[i]=="AnganwadiVisits"){
 							var anganwadiVisitSliderValue = $("."+className).val();
 							anganwadiVisitValue = anganwadiVisitSliderValue;
+							
+						}else if(sliderNameArr[i]=="OwnArea"){
+							var ownAreaValueSliderValue = $("."+className).val();
+							 ownAreaValue = ownAreaValueSliderValue;
+							
+						}else if(sliderNameArr[i]=="InchargeParliament"){
+							var inchargeParliamentValueSliderValue = $("."+className).val();
+							 inchargeParliamentValue = inchargeParliamentValueSliderValue;
 						}
 					 }
 				 }	 
@@ -984,11 +994,11 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			   var mainSliderValue = $("."+mainSlderCls).val();
 			   complainceValue = mainSliderValue;  
 		  }
-		  getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,stateTourCategoryValue,anganwadiVisitValue,complainceValue,divId);
+		  getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,stateTourCategoryValue,anganwadiVisitValue,ownAreaValue,inchargeParliamentValue,complainceValue,divId);
 		  $(".toursSessionDropDownCls").hide();	
     });
 	
-	function getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,stateTourCategoryValue,anganwadiVisitValue,complainceValue,divId){
+	function getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,stateTourCategoryValue,anganwadiVisitValue,ownAreaValue,inchargeParliamentValue,complainceValue,divId){
     	 if(isFilterApply=="No"){
 		   $("#toursPerformanceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		 }else{
@@ -1016,6 +1026,8 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 					 govtWorkValue :govtWorkValue,
 					 stateTourCategoryValue:stateTourCategoryValue,
 					 anganwadiVisitValue : anganwadiVisitValue,
+					 ownAreaValue : ownAreaValue,
+					 inchargeParliamentValue : inchargeParliamentValue,
 					 complainceValue :complainceValue
 				
 				  }
