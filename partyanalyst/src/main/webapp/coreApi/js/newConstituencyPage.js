@@ -64,7 +64,7 @@ function highChartsDonut(id,data,legend)
 		plotOptions: {	
 			pie: {
                 innerSize: 40,
-                depth: 40,
+                depth: 50,
 				showInLegend: legend,
 				dataLabels: {
                     enabled: false,
@@ -974,73 +974,84 @@ function getLocationWiseCommitteesCount(){
 			var affltdAffltedTotal=result.affiCommStartedCount+result.affiCommCompletedCount+result.affiCommMandalNotStarted;
 			var mainVlgTotal=result.mainCommTotalMembers+result.mainCommTotalCount+result.mainCommVillageNotStarted;
 			var affltdVlgTotal=result.affiCommTotalMembers+result.affiCommTotalCount+result.affiCommVillageNotStarted;
-		str+='<table class="table table-bordered">';
-		str+='<thead>';
-		str+='<tr class="text-capital">';
-		str+='<th rowspan="2"></th>';
-		str+='<th colspan="3">main committee</th>';
-		str+='<th colspan="3">affliated committee</th>';
-		str+='</tr>';
-		str+='<tr class="text-capitalize bg-E9">';
-		str+='<th>total</th>';
-		str+='<th>started</th>';
-		str+='<th>completed</th>';
-		str+='<th>NotStarted</th>';
-		str+='<th>total</th>';
-		str+='<th>started</th>';
-		str+='<th>completed</th>';
-		str+='<th>NotStarted</th>';
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody class="text-capitalize">';
-		str+='<tr>';
-		str+='<td>mandal/town/division</td>';
-		str+='<td>'+mainMandalTotal+'</td>';
-		str+='<td>'+result.mainCommStartedCount+'</td>';
-		str+='<td>'+result.mainCommCompletedCount+'</td>';
-		str+='<td>'+result.mainCommNotYetStarted+'</td>';
-		str+='<td>'+affltdAffltedTotal+'</td>';
-		str+='<td>'+result.affiCommStartedCount+'</td>';
-		str+='<td>'+result.affiCommCompletedCount+'</td>';
-		str+='<td>'+result.affiCommMandalNotStarted+'</td>';
-		str+='</tr>';
-		str+='<tr>';
-		str+='<td>village/ward</td>';
-		str+='<td>'+mainVlgTotal+'</td>';
-		str+='<td>'+result.mainCommTotalMembers+'</td>';
-		str+='<td>'+result.mainCommTotalCount+'</td>';
-		str+='<td>'+result.mainCommVillageNotStarted+'</td>';
-		str+='<td>'+affltdVlgTotal+'</td>';
-		str+='<td>'+result.affiCommTotalMembers+'</td>';
-		str+='<td>'+result.affiCommTotalCount+'</td>';
-		str+='<td>'+result.affiCommVillageNotStarted+'</td>';
-		str+='</tr>';
-		str+='</tbody>';
-		str+='</table>';
-			/*	mainMandal=[
+			var mandalNotStartedPer= Math.round((result.mainCommNotYetStarted/mainMandalTotal)*100);
+			var affltdMandalNotStartedPer= Math.round((result.affiCommMandalNotStarted/affltdAffltedTotal)*100);
+			var mainVlgNotStartedPer= Math.round((result.mainCommVillageNotStarted/mainVlgTotal)*100);
+			var affltdVlgNotStartedPer= Math.round((result.affiCommVillageNotStarted/affltdVlgTotal)*100);
+
+			str+='<table class="table table-bordered">';
+			str+='<thead>';
+			str+='<tr class="text-capital">';
+			str+='<th rowspan="2"></th>';
+			str+='<th colspan="3">main committee</th>';
+			str+='<th colspan="3">affliated committee</th>';
+			str+='</tr>';
+			str+='<tr class="text-capitalize bg-E9">';
+			str+='<th>total</th>';
+			str+='<th>started</th>';
+			str+='<th>completed</th>';
+			str+='<th>NotStarted</th>';
+			str+='<th>total</th>';
+			str+='<th>started</th>';
+			str+='<th>completed</th>';
+			str+='<th>NotStarted</th>';
+			str+='</tr>';
+			str+='</thead>';
+			str+='<tbody class="text-capitalize">';
+			str+='<tr>';
+			str+='<td>mandal/town/division</td>';
+			str+='<td>'+mainMandalTotal+'</td>';
+			str+='<td>'+result.mainCommStartedCount+'</td>';
+			str+='<td>'+result.mainCommCompletedCount+'</td>';
+			str+='<td>'+result.mainCommNotYetStarted+'</td>';
+			str+='<td>'+affltdAffltedTotal+'</td>';
+			str+='<td>'+result.affiCommStartedCount+'</td>';
+			str+='<td>'+result.affiCommCompletedCount+'</td>';
+			str+='<td>'+result.affiCommMandalNotStarted+'</td>';
+			str+='</tr>';
+			str+='<tr>';
+			str+='<td>village/ward</td>';
+			str+='<td>'+mainVlgTotal+'</td>';
+			str+='<td>'+result.mainCommTotalMembers+'</td>';
+			str+='<td>'+result.mainCommTotalCount+'</td>';
+			str+='<td>'+result.mainCommVillageNotStarted+'</td>';
+			str+='<td>'+affltdVlgTotal+'</td>';
+			str+='<td>'+result.affiCommTotalMembers+'</td>';
+			str+='<td>'+result.affiCommTotalCount+'</td>';
+			str+='<td>'+result.affiCommVillageNotStarted+'</td>';
+			str+='</tr>';
+			str+='</tbody>';
+			str+='</table>';
+
+			mainMandal=[
 				{name:'Completed',y:result['mainMandalCompletePer']},
-					{name:'Started',y:result['mainMandalStartPer'}]	;	
-				mainVillage=[{name:'Completed',y:result['mainVillageCompletePer']},
-					{name:'Started',y:result['mainVillageStartPer'}];
-			    affMandal = [{name:'Completed',y:result['affMandalCompletePer']},
-					{name:'Started',y:result['affMandalStartPer'}];
-		       affVillage = [{name:'Completed',y:result['affVillageCompletePer']},
-					{name:'Started',y:result['affVillageStartPer'}];
+				{name:'Started',y:result['mainMandalStartPer']},
+				{name:'NotStarted',y:mandalNotStartedPer}];	
+			mainVillage=[{name:'Completed',y:result['mainVillageCompletePer']},
+					{name:'Started',y:result['mainVillageStartPer']},
+					{name:'NotStarted',y:mainVlgNotStartedPer}];	
+			affMandal = [{name:'Completed',y:result['affMandalCompletePer']},
+					{name:'Started',y:result['affMandalStartPer']},
+					{name:'NotStarted',y:affltdMandalNotStartedPer}];
+		    affVillage = [{name:'Completed',y:result['affVillageCompletePer']},
+					{name:'Started',y:result['affVillageStartPer']},
+					{name:'NotStarted',y:affltdVlgNotStartedPer}];
 		mainMandalId = 'mandalLevelId';
 		mainVillageId = 'villageLevelId';
 		affMandalId = 'affMandalLevelId';
 		affVillageId = 'affVillageLevelId';
-					
-					$("#"+mainMandalId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		highChartsDonut(mainMandalId,mainMandal,true)
-		$("#"+villageLevelId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		highChartsDonut(villageLevelId,mainVillage,true)
-		$("#"+affMandalId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		
+	$("#"+mainMandalId).html('<h4 class="panel-title text-capital">mandal/town/division level</h4><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	highChartsDonut(mainMandalId,mainMandal,true)
+	$("#"+mainVillageId).html('<h4 class="panel-title text-capital">vilalge/ward level</h4><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	highChartsDonut(mainVillageId,mainVillage,true)
+	$("#"+affMandalId).html('<h4 class="panel-title text-capital">mandal/town/division level</h4><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		highChartsDonut(affMandalId,affMandal,true)
-		$("#"+affVillageLevelId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		highChartsDonut(affVillageLevelId,affVillage,true) */
+		$("#"+affVillageId).html('<h4 class="panel-title text-capital">vilalge/ward level</h4><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		highChartsDonut(affVillageId,affVillage,true)	
 			$("#committees").append(str);
-			}
+		}
+		 
 	});	
 }
 
@@ -1468,15 +1479,76 @@ function getNominatedPostStatusWiseCount(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		var str='';
+		var subArr = [];
 		if(result != null && result.length >0){
+			var mainArr =[];
+			var totalCount =0;
+			var colors = ['#0FBE08','#FF0909','#FFBA00']
 			for(var i in result){
-				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
-					str+='<ul class="graph-legend">';
-						str+='<li><span class="statusBox"></span>'+result[i].name+'<span class="count">'+result[i].count+'</span></li>';
-					str+='</ul>';
-				str+='</div>';
-			}
+				var subArr = [];
+				totalCount=totalCount+result[i].count;
+				subArr.push(result[i].name);
+				subArr.push(parseInt(result[i].count));
+				console.log(subArr);
+				mainArr.push(subArr);
+
+				$('#postsDiv').highcharts({
+					chart: {
+						type: 'column',
+						style:{"font-weight":'bold',
+						}
+					},
+					colors: colors,
+					title: {
+						text: 'Posts'
+					},
+					subtitle: {
+						text: ''
+					},
+					xAxis: {
+						type: 'category',
+						labels: {
+							rotation: -45,
+						style: {
+						fontSize: '13px',
+						fontFamily: 'Verdana, sans-serif'
+						}
+					
+						}
+					},
+					yAxis: {
+						min: 0,
+						title: {
+							text: 'Posts Count'
+						}
+					},
+					legend: {
+						enabled: false
+					},
+					tooltip: {
+						pointFormat: 'Posts: <b>{point.y}</b>'
+					},
+					series: [{
+						name: '',
+						data: mainArr,
+						dataLabels: {
+							enabled: true,
+							rotation: -90,
+							color: '#FFFFFF',
+							align: 'right',
+							format: '{point.y}', // one decimal
+							y: 10, // 10 pixels down from the top
+							style: {
+								fontSize: '13px',
+								fontFamily: 'Verdana, sans-serif'
+							}
+						}
+					}]
+				});
+		
+			//chart end
 			$("#nominatedPostDiv").html(str);
+			}
 		}
 	});	
 }
@@ -1493,8 +1565,72 @@ function getNominatedPostApplicationDetails(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		var str='';
+		var mainArr = [];
 		if(result != null && result.length >0){
 			for(var i in result){
+				var subArr = [];
+				var name = "",
+				name = result[i].name;
+				subArr.push(name);
+				subArr.push(parseInt(result[i].count));
+				mainArr.push(subArr);
+			//=================	chart===============
+				var obj = {
+					name: 'Proprietary or Undetectable',
+					y: 0.5,
+					dataLabels: {
+						enabled: false
+					}
+				}
+			mainArr.push(obj);		
+		
+		$('#NominatedPostInfoChartDivId').highcharts({
+			chart: {
+            type: 'pie',
+			backgroundColor: 'transparent',
+            options3d: {
+                enabled: false,
+                alpha: 45
+            }
+        },	
+		title: {
+			text: ''
+		},
+		subtitle: {
+			text: ''
+		},
+		plotOptions: {	
+			pie: {
+                innerSize: 40,
+                depth: 40,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+		},
+		legend: {
+			itemStyle: {
+				fontWeight: 'normal',
+				'font-family':'roboto',
+				'font-size':'13px'
+            },
+			enabled: true,
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+			useHTML: true,
+			
+			labelFormatter: function() {
+				return this.name + ' ' + this.y + '';
+			}
+		},
+		series:[{
+            name : 'Count',
+            data: mainArr
+        }]
+		});
+		//chart end
+				
 				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 					str+='<ul class="graph-legend">';
 						str+='<li><span class="statusBox"></span>'+result[i].name+'<span class="count">'+result[i].count+'</span></li>';
