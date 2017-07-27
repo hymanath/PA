@@ -42,10 +42,11 @@ function onLoadAjaxCalls()
 	
 	
 }
-function highChartsDonut(id,data,legend)
+function highChartsDonut(id,data,legend,title,height)
 {
 	$('#'+id).highcharts({
 		chart: {
+			height: height,
             type: 'pie',
 			backgroundColor: 'transparent',
             options3d: {
@@ -54,7 +55,7 @@ function highChartsDonut(id,data,legend)
             }
         },	
 		title: {
-			text: ''
+			text: title
 		},
 		subtitle: {
 			text: ''
@@ -82,7 +83,7 @@ function highChartsDonut(id,data,legend)
 			useHTML: true,
 			
 			labelFormatter: function() {
-				return this.name + ' ' + this.y + '';
+				return this.name + '-' + this.y + '';
 			}
 		},
 		series:[{
@@ -547,7 +548,7 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(){
 			data.push(Obj);
 		}
 		//console.log(data);
-		highChartsDonut('problemsDetailedGraph',data,false);
+		highChartsDonut('problemsDetailedGraph',data,false,200);
 	});
 }
 function getDetailedGovtOverAllAnalysisProblemsForView(){
@@ -1022,31 +1023,31 @@ function getLocationWiseCommitteesCount(){
 			str+='</table>';
 
 			mainMandal=[
-				{name:'Completed',y:result['mainMandalCompletePer']},
-				{name:'Started',y:result['mainMandalStartPer']},
-				{name:'NotStarted',y:mandalNotStartedPer}];	
-			mainVillage=[{name:'Completed',y:result['mainVillageCompletePer']},
-					{name:'Started',y:result['mainVillageStartPer']},
-					{name:'NotStarted',y:mainVlgNotStartedPer}];	
-			affMandal = [{name:'Completed',y:result['affMandalCompletePer']},
-					{name:'Started',y:result['affMandalStartPer']},
-					{name:'NotStarted',y:affltdMandalNotStartedPer}];
-		    affVillage = [{name:'Completed',y:result['affVillageCompletePer']},
-					{name:'Started',y:result['affVillageStartPer']},
-					{name:'NotStarted',y:affltdVlgNotStartedPer}];
+				{name:'Completed',y:result['mainMandalCompletePer'],color:'#eda809'},
+				{name:'Started',y:result['mainMandalStartPer'],color:'#862d59'},
+				{name:'NotStarted',y:mandalNotStartedPer,color:'#e3e6ed'}];	
+			mainVillage=[{name:'Completed',y:result['mainVillageCompletePer'],color:'#eda809'},
+					{name:'Started',y:result['mainVillageStartPer'],color:'#862d59'},
+					{name:'NotStarted',y:mainVlgNotStartedPer,color:'#e3e6ed'}];	
+			affMandal = [{name:'Completed',y:result['affMandalCompletePer'],color:'#eda809'},
+					{name:'Started',y:result['affMandalStartPer'],color:'#862d59'},
+					{name:'NotStarted',y:affltdMandalNotStartedPer,color:'#e3e6ed'}];
+		    affVillage = [{name:'Completed',y:result['affVillageCompletePer'],color:'#eda809'},
+					{name:'Started',y:result['affVillageStartPer'],color:'#862d59'},
+					{name:'NotStarted',y:affltdVlgNotStartedPer,color:'#e3e6ed'}];
 		mainMandalId = 'mandalLevelId';
 		mainVillageId = 'villageLevelId';
 		affMandalId = 'affMandalLevelId';
 		affVillageId = 'affVillageLevelId';
 		
-	$("#"+mainMandalId).html('<h4 class="panel-title text-capital">mandal/town/division level</h4><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	highChartsDonut(mainMandalId,mainMandal,true)
-	$("#"+mainVillageId).html('<h4 class="panel-title text-capital">vilalge/ward level</h4><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	highChartsDonut(mainVillageId,mainVillage,true)
-	$("#"+affMandalId).html('<h4 class="panel-title text-capital">mandal/town/division level</h4><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		highChartsDonut(affMandalId,affMandal,true)
-		$("#"+affVillageId).html('<h4 class="panel-title text-capital">vilalge/ward level</h4><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		highChartsDonut(affVillageId,affVillage,true)	
+	$("#"+mainMandalId).html();
+	highChartsDonut(mainMandalId,mainMandal,true,'mandal/town level',200)
+	$("#"+mainVillageId).html();
+	highChartsDonut(mainVillageId,mainVillage,true,'vilalge/ward level',200)
+	$("#"+affMandalId).html();
+		highChartsDonut(affMandalId,affMandal,true,'mandal/town level',200)
+		$("#"+affVillageId).html();
+		highChartsDonut(affVillageId,affVillage,true,'vilalge/ward level',200)	
 			$("#committees").append(str);
 		}
 		 
@@ -1157,18 +1158,18 @@ function getLocationWiseInsuranceStatusCount(){
 		var id  = '';
 		if(result!=null){
 			data=[
-					{name:'accountRejected',y:result['accountRejected']},
-					{name:'approved',y:result['approved']},
-					{name:'closedAtInsurance',y:result['closedAtInsurance']},
-					{name:'closedAtParty',y:result['closedAtParty']},
-					{name:'closedLetters',y:result['closedLetters']},
-					{name:'foreadedToInsurance',y:result['foreadedToInsurance']},
-					{name:'submittedInparty',y:result['submittedInparty']},
-					{name:'waitingForDocs',y:result['waitingForDocs']},
+					{name:'AccountRejected',y:result['accountRejected']},
+					{name:'Approved',y:result['approved']},
+					{name:'ClosedAtInsurance',y:result['closedAtInsurance']},
+					{name:'ClosedAtParty',y:result['closedAtParty']},
+					{name:'ClosedLetters',y:result['closedLetters']},
+					{name:'ForeadedToInsurance',y:result['foreadedToInsurance']},
+					{name:'SubmittedInparty',y:result['submittedInparty']},
+					{name:'WaitingForDocs',y:result['waitingForDocs']},
 						];
 			id = 'insuranceId';
 		$("#"+id).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		highChartsDonut(id,data,true)
+		highChartsDonut(id,data,true,'Insurance',200)
 		}
 	});	
 }
@@ -1195,25 +1196,25 @@ function getLocationWiseGrivanceTrustStatusCounts(){
 		var grivanceId  = '';
 		var trustId = '';
 		if(result!=null && result.length>0){
-		grivance=[{name:'approves',y:result[0]['approves']},
-		{name:'completed',y:result[0]['completed']},
-		{name:'inProgress',y:result[0]['inProgress']},
-		{name:'notEligible',y:result[0]['notEligible']},
-		{name:'notPossible',y:result[0]['notPossible']},
-		{name:'notVerified',y:result[0]['notVerified']},];
+		grivance=[{name:'Approved',y:result[0]['approves']},
+		{name:'Completed',y:result[0]['completed']},
+		{name:'InProgress',y:result[0]['inProgress']},
+		{name:'NotEligible',y:result[0]['notEligible']},
+		{name:'NotPossible',y:result[0]['notPossible']},
+		{name:'NotVerified',y:result[0]['notVerified']},];
 		
-		trust=[{name:'approves',y:result[1]['approves']},
-		{name:'completed',y:result[1]['completed']},
-		{name:'inProgress',y:result[1]['inProgress']},
-		{name:'notEligible',y:result[1]['notEligible']},
-		{name:'notPossible',y:result[1]['notPossible']},
-		{name:'notVerified',y:result[1]['notVerified']},];
+		trust=[{name:'Approved',y:result[1]['approves']},
+		{name:'Completed',y:result[1]['completed']},
+		{name:'InProgress',y:result[1]['inProgress']},
+		{name:'NotEligible',y:result[1]['notEligible']},
+		{name:'NotPossible',y:result[1]['notPossible']},
+		{name:'NotVerified',y:result[1]['notVerified']},];
 			grivanceId = 'grivanceId';
 			trustId = 'trustId';
 		$("#"+grivanceId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#"+trustId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		highChartsDonut(grivanceId,grivance,true)
-		highChartsDonut(trustId,trust,true)
+		highChartsDonut(grivanceId,grivance,true,'Grievance',200)
+		highChartsDonut(trustId,trust,true,'Trust Education',200)
 		}
 	});	
 }
@@ -1478,23 +1479,34 @@ function getNominatedPostStatusWiseCount(){
     }).done(function(result){
 		var str='';
 		var subArr = [];
+		var colors = ['#0FBE08','#FF0909','#FFBA00','#FFBAB0']
 		if(result != null && result.length >0){
 			var mainArr =[];
+			var totArr=[];
 			var totalCount =0;
-			var colors = ['#0FBE08','#FF0909','#FFBA00']
 			for(var i in result){
 				var subArr = [];
 				totalCount=totalCount+result[i].count;
-				subArr.push(result[i].name);
-				subArr.push(parseInt(result[i].count));
-				console.log(subArr);
+				subArr={name:result[i].name,y:result[i].count};
 				mainArr.push(subArr);
-
+				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+					str+='<ul class="graph-legend">';
+						str+='<li><span class="statusBox"></span>'+result[i].name+'<span class="count">'+result[i].count+'</span></li>';
+					str+='</ul>';
+				str+='</div>';
+				$("#nominatedPostDiv").html(str);
+			}
+			totArr={name:'Total',y:totalCount};	
+			mainArr.push(totArr);
 				$('#postsDiv').highcharts({
 					chart: {
 						type: 'column',
-						style:{"font-weight":'bold',
-						}
+						height:350,
+						backgroundColor: 'transparent',
+						options3d: {
+							enabled: false,
+							alpha: 45
+							}
 					},
 					colors: colors,
 					title: {
@@ -1502,6 +1514,14 @@ function getNominatedPostStatusWiseCount(){
 					},
 					subtitle: {
 						text: ''
+					},
+					plotOptions: {	
+						column: {
+							colorByPoint: true
+						}, 
+					},
+					legend:{
+						enabled:false
 					},
 					xAxis: {
 						type: 'category',
@@ -1520,22 +1540,16 @@ function getNominatedPostStatusWiseCount(){
 							text: 'Posts Count'
 						}
 					},
-					legend: {
-						enabled: false
-					},
-					tooltip: {
-						pointFormat: 'Posts: <b>{point.y}</b>'
-					},
-					series: [{
-						name: '',
+					series:[{
+						name: 'Posts Count',
 						data: mainArr,
 						dataLabels: {
-							enabled: true,
+							enabled: false,
 							rotation: -90,
 							color: '#FFFFFF',
 							align: 'right',
-							format: '{point.y}', // one decimal
-							y: 10, // 10 pixels down from the top
+							format: '{point.y}', 
+							y: 10, 
 							style: {
 								fontSize: '13px',
 								fontFamily: 'Verdana, sans-serif'
@@ -1545,8 +1559,7 @@ function getNominatedPostStatusWiseCount(){
 				});
 		
 			//chart end
-			$("#nominatedPostDiv").html(str);
-			}
+			
 		}
 	});	
 }
@@ -1569,73 +1582,17 @@ function getNominatedPostApplicationDetails(){
 				var subArr = [];
 				var name = "",
 				name = result[i].name;
-				subArr.push(name);
-				subArr.push(parseInt(result[i].count));
-				mainArr.push(subArr);
-			//=================	chart===============
-				var obj = {
-					name: 'Proprietary or Undetectable',
-					y: 0.5,
-					dataLabels: {
-						enabled: false
-					}
-				}
-			mainArr.push(obj);		
-		
-		$('#NominatedPostInfoChartDivId').highcharts({
-			chart: {
-            type: 'pie',
-			backgroundColor: 'transparent',
-            options3d: {
-                enabled: false,
-                alpha: 45
-            }
-        },	
-		title: {
-			text: ''
-		},
-		subtitle: {
-			text: ''
-		},
-		plotOptions: {	
-			pie: {
-                innerSize: 40,
-                depth: 40,
-				dataLabels: {
-                    enabled: false,
-				}
-            }, 
-		},
-		legend: {
-			itemStyle: {
-				fontWeight: 'normal',
-				'font-family':'roboto',
-				'font-size':'13px'
-            },
-			enabled: true,
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-			useHTML: true,
-			
-			labelFormatter: function() {
-				return this.name + ' ' + this.y + '';
-			}
-		},
-		series:[{
-            name : 'Count',
-            data: mainArr
-        }]
-		});
-		//chart end
-				
-				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+				subArr={name:result[i].name,y:parseInt(result[i].count)};
+				mainArr.push(subArr);			
+				/* str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 					str+='<ul class="graph-legend">';
-						str+='<li><span class="statusBox"></span>'+result[i].name+'<span class="count">'+result[i].count+'</span></li>';
+						str+='<li><span class="statusBox" ></span>'+result[i].name+'<span class="count">'+result[i].count+'</span></li>';
 					str+='</ul>';
 				str+='</div>';
+				$("#applicationCntBlock").html(str); */
 			}
-			$("#applicationCntBlock").html(str);
+			highChartsDonut('NominatedPostInfoChartDivId',mainArr,true,'Applications',250)
+			$("#NominatedPostInfoChartDivId").html();
 		}
 	});	
 }
