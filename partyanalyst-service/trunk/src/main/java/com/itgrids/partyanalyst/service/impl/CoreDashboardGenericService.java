@@ -898,25 +898,48 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 			   
 			   StringBuilder sb = new StringBuilder();
 			   
-			   if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
-					sb.append(" and model.userAddress.state.stateId in (:tdpCommitteeLevelValues) ");
-				}
-				else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
-					
-					sb.append(" and model.userAddress.district.districtId in (:tdpCommitteeLevelValues) ");
-					
-				}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
-					
-					sb.append(" and model.userAddress.parliamentConstituency.constituencyId in (:tdpCommitteeLevelValues) ");
-					
-				}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
-					
-					sb.append(" and model.userAddress.constituency.constituencyId in (:tdpCommitteeLevelValues) ");
-					
-				}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
-					
-					sb.append(" and model.userAddress.tehsil.tehsilId in (:tdpCommitteeLevelValues) ");
-				}
+			   if(!committeeBO.getCommitteType().equalsIgnoreCase("boothCommittee")){
+				   if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
+						sb.append(" and model.userAddress.state.stateId in (:tdpCommitteeLevelValues) ");
+					}
+					else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
+						
+						sb.append(" and model.userAddress.district.districtId in (:tdpCommitteeLevelValues) ");
+						
+					}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
+						
+						sb.append(" and model.userAddress.parliamentConstituency.constituencyId in (:tdpCommitteeLevelValues) ");
+						
+					}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
+						
+						sb.append(" and model.userAddress.constituency.constituencyId in (:tdpCommitteeLevelValues) ");
+						
+					}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
+						
+						sb.append(" and model.userAddress.tehsil.tehsilId in (:tdpCommitteeLevelValues) ");
+					}
+			   }else{
+				   if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
+						sb.append(" and model.address.state.stateId in (:tdpCommitteeLevelValues) ");
+					}
+					else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
+						
+						sb.append(" and model.address.district.districtId in (:tdpCommitteeLevelValues) ");
+						
+					}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
+						
+						sb.append(" and model.address.parliamentConstituency.constituencyId in (:tdpCommitteeLevelValues) ");
+						
+					}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
+						
+						sb.append(" and model.address.constituency.constituencyId in (:tdpCommitteeLevelValues) ");
+						
+					}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
+						
+						sb.append(" and model.address.tehsil.tehsilId in (:tdpCommitteeLevelValues) ");
+					}
+			   }
+			  
 			   return sb;
 		   }
 		
