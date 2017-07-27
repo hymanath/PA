@@ -30,6 +30,8 @@ public class CommitteeInputVO implements Serializable{
 	private StringBuilder queryString;
 	private StringBuilder committeesQueryString;
 	
+	private String committeType;
+	
 	public List<Long> getTehsilIds() {
 		return tehsilIds;
 	}
@@ -149,5 +151,11 @@ public class CommitteeInputVO implements Serializable{
 	}
 	public void setEnrollmentYearList(List<Long> enrollmentYearList) {
 		this.enrollmentYearList = enrollmentYearList;
+	}
+	public String getCommitteType() {
+		return committeType;
+	}
+	public void setCommitteType(String committeType) {
+		this.committeType = committeType;
 	}
 }
