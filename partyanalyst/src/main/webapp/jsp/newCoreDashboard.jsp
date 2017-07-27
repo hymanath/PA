@@ -13,7 +13,7 @@
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
-<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<link href="dist/DataTable_NewVersion/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
@@ -3194,8 +3194,8 @@
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12">
 								<ul class="list-inline activeUlCls cadreInsuranceLi pull-right" expand-block-more="cadreInsurance" style="display:none">
-									<li class="active">Detailed</li>
-									<li>Comparison</li>
+									<li class="active" attr_type="Detailed" >Detailed</li>
+									<li attr_type="Comparison" >Comparison</li>
 								</ul>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 cadreInsuranceDetailedblock" expand-block-more="cadreInsurance" style="display:none">
@@ -3209,37 +3209,45 @@
 								</div>
 								<div class="panel panel-default panelNew" id="apDistrictBlockId">
 									<div class="panel-heading">
-										<label class="radio-inline">
-											<input checked type="radio" attr_status="category" class="cadeInsuranceCatAndStsCls" name="cadeInsuranceCat" value="category"/>Show Category Wise (Death & Hospital)
-										</label>
-										<label class="radio-inline">          
-											<input type="radio" attr_status="categoryStatus" class="cadeInsuranceCatAndStsCls" name="cadeInsuranceCat" value="status"/>Show Status Wise
-										</label>      
+										<div class="row">
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<label class="radio-inline">
+													<input checked type="radio" attr_status="category" class="cadeInsuranceCatAndStsCls" name="cadeInsuranceCat" value="category"/>Show Category Wise (Death & Hospital)
+												</label>
+												<label class="radio-inline">          
+													<input type="radio" attr_status="categoryStatus" class="cadeInsuranceCatAndStsCls" name="cadeInsuranceCat" value="status"/>Show Status Wise
+												</label> 
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<div class="col-md-4 col-xs-12 col-sm-4">
+													<select class="form-control" id="apCategoryId">
+														<option value=" ">ALL</option>
+														<option value="Death">Death</option>
+														<option value="Hospitalization">Hospitalization</option>
+													</select>
+												</div> 
+												<div class="col-md-4 col-xs-12 col-sm-4">
+													<select class="form-control" id="apStatusId">
+														<option value=" ">ALL</option>   
+														<option value="INTIMATIONS">INTIMATIONS</option>
+														<option value="FORWARDED">FORWARDED</option>
+														<option value="SETTLED">SETTLED</option>
+														<option value="REJECTED">REJECTED</option>
+													</select>
+												</div>
+												<div class="col-md-2 col-xs-12 col-sm-2">
+													<input type="submit" value="SUBMIT" onclick="getInsuranceData();" class="btn-primary btn-sm btn"/>
+												</div> 
+											</div>
+										</div>
+										     
 									</div>
 									<div class="panel-heading">
 										<div class="row">
 											<div class="col-md-6 col-xs-12 col-sm-6">
 												<h4 class="m_top10"><span class="headingColor text-capital" id="distGraphHeadingId">andhra pradesh district wise - categories overview</span></h4>         
 											</div>
-											<div class="col-md-2 col-xs-12 col-sm-2">
-												<select class="form-control" id="apCategoryId">
-													<option value=" ">ALL</option>
-													<option value="Death">Death</option>
-													<option value="Hospitalization">Hospitalization</option>
-												</select>
-											</div> 
-											<div class="col-md-2 col-xs-12 col-sm-2">
-												<select class="form-control" id="apStatusId">
-													<option value=" ">ALL</option>   
-													<option value="INTIMATIONS">INTIMATIONS</option>
-													<option value="FORWARDED">FORWARDED</option>
-													<option value="SETTLED">SETTLED</option>
-													<option value="REJECTED">REJECTED</option>
-												</select>
-											</div>
-											<div class="col-md-2 col-xs-12 col-sm-2">
-												<input type="submit" value="SUBMIT" onclick="getInsuranceData();" class="btn-primary btn-sm btn"/>
-											</div>    
+											   
 										</div>
 									</div>
 									<div class="panel-body">
@@ -3367,37 +3375,47 @@
 								</div>
 								<div class="panel panel-default panelNew" id="tsDistrictBlockId">
 									<div class="panel-heading">
-										<label class="radio-inline">
-											<input checked type="radio" attr_status="category" value="category" class="cadeInsuranceCatTs" name="cadeInsuranceCatTs"/>Show Category Wise (Death & Hospital)
-										</label>
-										<label class="radio-inline">
-											<input type="radio" attr_status="categoryStatus" value="categoryStatus" class="cadeInsuranceCatTs" name="cadeInsuranceCatTs"/>Show Status Wise
-										</label>  
+										<div class="row">
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<label class="radio-inline">
+													<input checked type="radio" attr_status="category" value="category" class="cadeInsuranceCatTs" name="cadeInsuranceCatTs"/>Show Category Wise (Death & Hospital)
+												</label>
+												<label class="radio-inline">
+													<input type="radio" attr_status="categoryStatus" value="categoryStatus" class="cadeInsuranceCatTs" name="cadeInsuranceCatTs"/>Show Status Wise
+												</label>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<div class="row">
+													<div class="col-md-4 col-xs-12 col-sm-4">
+														<select class="form-control" id="tsCategoryId">
+															<option value=" ">ALL</option>
+															<option value="Death">Death</option>
+															<option value="Hospitalization">Hospitalization</option>
+														</select>
+													</div> 
+													<div class="col-md-4 col-xs-12 col-sm-4">
+														<select class="form-control" id="tsStatusId">
+															<option value=" ">ALL</option>
+															<option value="INTIMATIONS">INTIMATIONS</option>
+															<option value="FORWARDED">FORWARDED</option>
+															<option value="SETTLED">SETTLED</option>
+															<option value="REJECTED">REJECTED</option>
+														</select>
+													</div>
+													<div class="col-md-2 col-xs-12 col-sm-2">  
+														<input type="submit" value="SUBMIT" onclick="getInsuranceDataForTs();" class="btn-primary btn-sm btn"/>
+													</div> 
+												</div>
+											</div>
+										</div>
+										  
 									</div>
 									<div class="panel-heading">
 										<div class="row">
 											<div class="col-md-6 col-xs-12 col-sm-6">
 												<h4 class="m_top10"><span class="headingColor text-capital">telangana district wise - categories overview</span></h4>
 											</div>
-											<div class="col-md-2 col-xs-12 col-sm-2">
-												<select class="form-control" id="tsCategoryId">
-													<option value=" ">ALL</option>
-													<option value="Death">Death</option>
-													<option value="Hospitalization">Hospitalization</option>
-												</select>
-											</div> 
-											<div class="col-md-2 col-xs-12 col-sm-2">
-												<select class="form-control" id="tsStatusId">
-													<option value=" ">ALL</option>
-													<option value="INTIMATIONS">INTIMATIONS</option>
-													<option value="FORWARDED">FORWARDED</option>
-													<option value="SETTLED">SETTLED</option>
-													<option value="REJECTED">REJECTED</option>
-												</select>
-											</div>
-											<div class="col-md-2 col-xs-12 col-sm-2">  
-												<input type="submit" value="SUBMIT" onclick="getInsuranceDataForTs();" class="btn-primary btn-sm btn"/>
-											</div> 
+											
 										</div>      
 									</div>
 									<div class="panel-body">
@@ -3583,7 +3601,7 @@
 <!-- Insurance Modal -->
 
 <div class="modal fade" id="insuranceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document" style="width:75%"> 
+	<div class="modal-dialog" role="document" style="width:95%"> 
 		<div class="modal-content" style="border-radius:0px">
 			<div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -4396,7 +4414,7 @@
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
-<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script src="dist/DataTable_NewVersion/dataTable.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
@@ -4875,7 +4893,7 @@ var globalImages;
 	  var globalUserTypeId = loggedInUserTypeId;
 	  var globalUserAccessLevelId = loggedInUserAccessLevelId;
 	  var globalUserAccessLevelValues = loggedInUserAccessLevelValues;
-	  
+	  var globalselectedUserType='STATE';
 	  var globalState = 'AP';
 	  
 	   var globalBasicCommitteeIdsArray = []; //basicCommitteeIdsArray
@@ -5081,7 +5099,7 @@ var globalImages;
 	    globalUserTypeId = clickedUserTypeId;
 	    globalUserAccessLevelId = clickedUserAccessLevelId;
 	    globalUserAccessLevelValues = clickedUserAccessLevelValuesArray;
-		
+		globalselectedUserType = selectedUserType;
 		onLoadCalls();
 		defaultCommitteeCalls();
 		getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId);     
