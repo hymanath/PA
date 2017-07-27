@@ -28,11 +28,14 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 					" model.tdpCadre.mobileNo, " +
 					" model.tdpCadre.memberShipNo, " +
 					" model.tdpCadre.image, " +
+					
 					" tehsil.tehsilName," +
 					" model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.roleName," +
 					" model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId,model.boothInchargeId ," +
 					" bpv.serialNo, ward.name ,localElectionBody.name, model.boothInchargeRoleConditionMapping.boothInchargeCommittee.isConfirmed," +
-					" bpv.booth.partNo   " +
+					" bpv.booth.partNo,   " +
+					" model.tdpCadre.relativename," +
+					" model.tdpCadre.age " +
 					" from BoothPublicationVoter bpv," +
 					" BoothIncharge model  " +
 					" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address address " +
