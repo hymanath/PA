@@ -159,6 +159,16 @@ function buildOverAllBoothDtls(result,locationLevel){
                                
 							str+='</div>';
                         str+='</div>';
+						 str+='<div class="col-sm-3">';
+                            str+='<div class="subBlock text-center">';
+                            str+='<p>NOT-STARTED BOOTHS</p>';
+                              if(notStartedBooth > 0){
+									 str+='<h4 class="text-center;">'+notStartedBooth+'</h4>';
+								}else{
+									 str+='<h4 class="text-center;"> - </h4>';
+								}
+                           str+=' </div>';
+                       str+=' </div>';
                         str+='<div class="col-sm-3">';
                             str+='<div class="subBlock text-center">';
                            str+=' <p>STARTED BOOTHS</p>';
@@ -169,16 +179,6 @@ function buildOverAllBoothDtls(result,locationLevel){
 								}
                             str+='</div>';
                         str+='</div>';
-                        str+='<div class="col-sm-3">';
-                            str+='<div class="subBlock text-center">';
-                            str+='<p>NOT-STARTED BOOTHS</p>';
-                              if(notStartedBooth > 0){
-									 str+='<h4 class="text-center;">'+notStartedBooth+'</h4>';
-								}else{
-									 str+='<h4 class="text-center;"> - </h4>';
-								}
-                           str+=' </div>';
-                       str+=' </div>';
                         str+='<div class="col-sm-3">';
                             str+='<div class="subBlock text-center">';
                            str+=' <p>COMPLETED BOOTHS</p>';
