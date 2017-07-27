@@ -634,7 +634,7 @@ function buildNREGSProjectsOverview(result,blockName)
 					str+='<div class="row">';
 					for(var i in result)
 					{
-						if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "Solid Waste Management" || result[i] == "Play Fields" || result[i] == "Burial Grounds" || result[i] == "Agriculture Activities" || result[i] == "Payments" || result[i] == "FAperformance"){
+						if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "Solid Waste Management" || result[i] == "Play Fields" || result[i] == "Burial Grounds" || result[i] == "Agriculture Activities" || result[i] == "Payments" || result[i] == "FAperformance" || result[i] == "SMC Trench" || result[i] == "Imp to CD" || result[i] == "MPT_PT" || result[i] == "GC Works" || result[i] == "CD_CW"){
 							str+='<div class="col-sm-2 m_top10">';
 							if(result[i] == "FAperformance"){
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
@@ -2802,7 +2802,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 
 
 //var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','CC Roads','Anganwadi','Gram Panchayat Buildings','Mandal buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk worm','Cattle drinking water trough','Raising of Perinnial Fodder','Solid Waste Management','Play Fields','Burial Grounds','Fish Drying Platforms','Fish Ponds','Agriculture Activities','Average Wage','Avg days of emp per HH','HH Comp 100 days','Timely Payments','Horticulture','Avenue'];
-var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','Solid Waste Management','Burial Grounds','Play Fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads','Anganwadi Buildings','GP Buildings','Mandal Buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Cattle Drinking Water Troughs','Raising of Perinnial Fodders','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance'];
+var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','Solid Waste Management','Burial Grounds','Play Fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads','Anganwadi Buildings','GP Buildings','Mandal Buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Cattle Drinking Water Troughs','Raising of Perinnial Fodders','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance'];
 buildNREGSProjectsOverview(overViewArr,'')
 for(var i in overViewArr)
 {
