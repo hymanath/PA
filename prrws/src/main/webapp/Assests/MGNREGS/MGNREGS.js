@@ -186,64 +186,69 @@ function onLoadCalls()
 		getWebserviceHealthDetails(glStartDateForWebservice,glEndDateForWebservice);
 	});   
 	$(document).on('click','[overview-level]', function(){
-		var levelType = $(this).attr("overview-level");
-		var divId = $(this).attr("overview-divId");
-		var levelId = $(this).attr("overview-levelId");
-		var locationId = $(this).attr("overview-locationId");
-		var menuLocationId = '';
-		var menuLocationType = '';
-		if(levelId == 2)
+		var collapseExpanded = $(this).attr("aria-expanded");
+		if(collapseExpanded == true || collapseExpanded == 'true')
 		{
-			menuLocationId = "-1";
-			menuLocationType = "state";
-		}else if(levelId == 3)
-		{
-			menuLocationId = locationId;
-			menuLocationType = "district";
-		}else if(levelId == 4)
-		{
-			menuLocationId = locationId;
-			menuLocationType = "constituency";
-		}
-		
-		var theadArr = [levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-		if(levelType == "constituency")
-			theadArr = ["district",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-		else if(levelType == "mandal")
-			theadArr = ["district","constituency",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-		else if(levelType == "panchayat")
-			theadArr = ["district","constituency","mandal",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-		
-		if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state")
-			theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
-		
-		if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (levelType == "state" || levelType == "district"))
-			theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
-		
-		var tableId = divId.replace(/\s+/g, '')+''+levelType;
-		$("#"+tableId).html(spinner);
-		if(levelType == 'district' || levelType == 'constituency' || levelType == 'panchayat' || levelType == 'mandal')
-		{
+			var levelType = $(this).attr("overview-level");
+			var divId = $(this).attr("overview-divId");
+			var levelId = $(this).attr("overview-levelId");
+			var locationId = $(this).attr("overview-locationId");
+			var menuLocationId = '';
+			var menuLocationType = '';
+			if(levelId == 2)
+			{
+				menuLocationId = "-1";
+				menuLocationType = "state";
+			}else if(levelId == 3)
+			{
+				menuLocationId = locationId;
+				menuLocationType = "district";
+			}else if(levelId == 4)
+			{
+				menuLocationId = locationId;
+				menuLocationType = "constituency";
+			}
 			
-			if(divId == 'Labour Budget')
-				getNREGSLabBugdtLelwiseData(tableId,levelType,menuLocationType,menuLocationId);
-			else if(divId == "Agriculture Activities")
-				getNregaLevelsWiseDataFrAgriculture(tableId,levelType,menuLocationType,menuLocationId);
-			else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries" || divId == "Timely Payment")
-				getNregaLevelsWiseDataFrNewCalls(tableId,levelType,menuLocationType,menuLocationId,divId);
-			else if(divId == "Horticulture")//
-				getNregaLevelsWiseDataFrHorticulture(tableId,levelType,menuLocationType,menuLocationId);
-			else if(divId == "Avenue")//
-				getNregaLevelsWiseDataFrAvenue(tableId,levelType,menuLocationType,menuLocationId);
-			else if(divId == "CC Roads")//
-				getNregaLevelsWiseDataForCCRoads(tableId,levelType,menuLocationType,menuLocationId);
-			else if(divId == "Payments" ) //&& (levelType == "state" || levelType == "district" || levelType == "mandal"))
-				getNregaLevelsWiseDataForNewFTOPayments(tableId,levelType,menuLocationType,menuLocationId,'Wage');
-			else if(divId == "FAperformance")
-				getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId);
-			else
-				getNregaLevelsWiseData(tableId,levelType,theadArr,menuLocationType,menuLocationId);
+			var theadArr = [levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			if(levelType == "constituency")
+				theadArr = ["district",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			else if(levelType == "mandal")
+				theadArr = ["district","constituency",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			else if(levelType == "panchayat")
+				theadArr = ["district","constituency","mandal",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			
+			if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state")
+				theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+			
+			if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (levelType == "state" || levelType == "district"))
+				theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+			
+			var tableId = divId.replace(/\s+/g, '')+''+levelType;
+			$("#"+tableId).html(spinner);
+			if(levelType == 'district' || levelType == 'constituency' || levelType == 'panchayat' || levelType == 'mandal')
+			{
+				
+				if(divId == 'Labour Budget')
+					getNREGSLabBugdtLelwiseData(tableId,levelType,menuLocationType,menuLocationId);
+				else if(divId == "Agriculture Activities")
+					getNregaLevelsWiseDataFrAgriculture(tableId,levelType,menuLocationType,menuLocationId);
+				else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries" || divId == "Timely Payment")
+					getNregaLevelsWiseDataFrNewCalls(tableId,levelType,menuLocationType,menuLocationId,divId);
+				else if(divId == "Horticulture")//
+					getNregaLevelsWiseDataFrHorticulture(tableId,levelType,menuLocationType,menuLocationId);
+				else if(divId == "Avenue")//
+					getNregaLevelsWiseDataFrAvenue(tableId,levelType,menuLocationType,menuLocationId);
+				else if(divId == "CC Roads")//
+					getNregaLevelsWiseDataForCCRoads(tableId,levelType,menuLocationType,menuLocationId);
+				else if(divId == "Payments" ) //&& (levelType == "state" || levelType == "district" || levelType == "mandal"))
+					getNregaLevelsWiseDataForNewFTOPayments(tableId,levelType,menuLocationType,menuLocationId,'Wage');
+				else if(divId == "FAperformance")
+					getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId);
+				else
+					getNregaLevelsWiseData(tableId,levelType,theadArr,menuLocationType,menuLocationId);
+			}
 		}
+		
 	});
 	
 }
@@ -413,17 +418,31 @@ function projectData(divId,levelId,locationId)
 							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+dataArr[i]+'">';
 								if(i == 0)
 								{
-									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
+									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
 								}else{
 									collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+dataArr[i]+'">';
 								}
 									if(divId == 'FAperformance')
 									{
 										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - FA Performance</h4>';
+									}else if(divId == 'SMC Trench')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - SMC Trenches</h4>';
+									}else if(divId == 'Imp to CD')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Improvements to Check Dams and Percolation Tanks</h4>';
+									}else if(divId == 'MPT_PT')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Mini Percolation Tanks and Percolation Tanks</h4>';
+									}else if(divId == 'GC Works')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Gully Control Works</h4>';
+									}else if(divId == 'CD_CW')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Check Dams and Check Walls</h4>';
 									}else{
 										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - '+divId+'</h4>';
 									}
-									
 								collapse+='</a>';
 							collapse+='</div>';
 							if(i == 0)
@@ -524,7 +543,28 @@ function overviewData(divId,levelId,locationId)
 					collapse+='<div class="panel panel-default panel-black">';
 						collapse+='<div class="panel-heading" role="tab" id="heading'+divId+'">';
 							collapse+='<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+'" href="#collapse'+divId.replace(/\s+/g, '')+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+'">';
+							if(divId == 'FAperformance')
+							{
+								collapse+='<h4 class="panel-title text-capital">FA Performance overview</h4>';
+							}else if(divId == 'SMC Trench')
+							{
+								collapse+='<h4 class="panel-title text-capital">SMC Trenches overview</h4>';
+							}else if(divId == 'Imp to CD')
+							{
+								collapse+='<h4 class="panel-title text-capital">Improvements to Check Dams and Percolation Tanks overview</h4>';
+							}else if(divId == 'MPT_PT')
+							{
+								collapse+='<h4 class="panel-title text-capital">Mini Percolation Tanks and Percolation Tanks overview</h4>';
+							}else if(divId == 'GC Works')
+							{
+								collapse+='<h4 class="panel-title text-capital">Gully Control Works overview</h4>';
+							}else if(divId == 'CD_CW')
+							{
+								collapse+='<h4 class="panel-title text-capital">Check Dams and Check Walls overview</h4>';
+							}else{
 								collapse+='<h4 class="panel-title text-capital">'+divId+' overview</h4>';
+							}
+								
 							collapse+='</a>';
 						collapse+='</div>';
 						collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+'">';
@@ -640,8 +680,32 @@ function buildNREGSProjectsOverview(result,blockName)
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
 								str+='</div>';
-							}
-							else{
+							}else if(result[i] == 'SMC Trench')
+							{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="SMC Trenches">SMC Trench..</h4>';
+								str+='</div>';
+							}else if(result[i] == 'Imp to CD')
+							{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Improvements to Check Dams and Percolation Tanks">Improvements..</h4>';
+								str+='</div>';
+							}else if(result[i] == 'MPT_PT')
+							{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mini Percolation Tanks and Percolation Tanks">Mini Perco..</h4>';
+								str+='</div>';
+							}else if(result[i] == 'GC Works')
+							{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Gully Control Works">Gully Contr..</h4>';
+								str+='</div>';
+							}else if(result[i] == 'CD_CW')
+							{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Check Dams and Check Walls">Check Dam..</h4>';
+								str+='</div>';
+							}else{
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 									if(result[i].length > 12)
 									{
@@ -3278,15 +3342,27 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				{
 					str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
 				}
-					if(type.length > 12)
+					if(type == 'FAperformance')
 					{
-						if(type == 'FAperformance')
-						{
-							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
-						}else{
-							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-						}
-						
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
+					}else if(type == 'SMC Trench')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="SMC Trenches">SMC Trench..</h4>';
+					}else if(type == 'Imp to CD')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Improvements to Check Dams and Percolation Tanks">Improvements..</h4>';
+					}else if(type == 'MPT_PT')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mini Percolation Tanks and Percolation Tanks">Mini Perco..</h4>';
+					}else if(type == 'GC Works')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Gully Control Works">Gully Contr..</h4>';
+					}else if(type == 'CD_CW')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Check Dams and Check Walls">Check Dam..</h4>';
+					}else if(type.length > 12)
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 					}else{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
 					}
