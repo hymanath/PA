@@ -33,8 +33,6 @@ function onLoadAjaxCalls()
 	//cadre
 	// getLocationTypeWiseCadreCount();
 	// getAgeRangeGenerAndCasteGroupByCadreCount();
-	//tour
-	//getLocationWiseTourMembersComplainceDtls();
 	//Benefit
 	//getGovtSchemeWiseBenefitMembersCount();
 	//getMandalWiseBenefitMembersCount();

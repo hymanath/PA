@@ -359,6 +359,17 @@
 			</div>
 			<!--benefits ending -->
 			
+			<!--Activities Starting -->
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="activities">
+				<h3 >Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<div class="block pad_0" id="activiteId">
+					<div class="pad_10">
+						<button class="btn btn-success btn-success-white text-capital">detailed information</button>
+					</div>
+				</div>
+			</div>
+			<!--Activities ending -->
+			
 			<!--grievance starting -->
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20"  navbar-index="grievance">
 				<h3>Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
