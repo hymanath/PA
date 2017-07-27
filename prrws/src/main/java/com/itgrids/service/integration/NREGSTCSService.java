@@ -546,7 +546,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    								|| inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district"))){
 	 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
 	 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
-	 	    					vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Long.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    					if(vo.getCompleted() != null && vo.getCompleted().longValue() > 0l && vo.getSanctionedTarget() != null && Long.valueOf(vo.getSanctionedTarget()) > 0l)
+	 	    						vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Long.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    					else
+	 	    						vo.setPercSant("0.00");
 	 	    				}
 	 	    				
 	 	    				voList.add(vo);
@@ -887,8 +890,13 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("district")){
 				 	    					nregsDataVO.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
 				 	    					nregsDataVO.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
-				 	    					nregsDataVO.setPercSant(new BigDecimal(nregsDataVO.getCompleted()*100.00/Long.valueOf(nregsDataVO.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-				 	    					nregsDataVO.setPercentage(new BigDecimal(nregsDataVO.getCompleted()*100.00/Long.valueOf(nregsDataVO.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    					if(nregsDataVO.getCompleted() != null && nregsDataVO.getCompleted().longValue() > 0l && nregsDataVO.getSanctionedTarget() != null && Long.valueOf(nregsDataVO.getSanctionedTarget()).longValue() > 0l){
+				 	    						nregsDataVO.setPercSant(new BigDecimal(nregsDataVO.getCompleted()*100.00/Long.valueOf(nregsDataVO.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    						nregsDataVO.setPercentage(new BigDecimal(nregsDataVO.getCompleted()*100.00/Long.valueOf(nregsDataVO.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    					}else{
+				 	    						nregsDataVO.setPercSant("0.00");
+				 	    						nregsDataVO.setPercentage("0.00");
+				 	    					}
 					 	    				nregsDataVO.setAvgTotMarks(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				 	    				}else{
 				 	    					nregsDataVO.setPercentage(jObj.getString("PERCENTAGE"));
