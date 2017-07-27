@@ -808,6 +808,9 @@ function getLocationWiseCadreDetails(locationLevel,filterLevel,filterValueArr,bo
 		if(roleId != null && roleId != 0){
 			boothRoleIdArr.push(roleId);
 		} 
+		var  enrllmentId =0;
+		var locationValue =$("#boothBlockConstituenySelectBxId").val();
+		gettingBoothInchargeRoleDetails(boothId,locationValue,enrllmentId);
 	var jObj={  
 		filterType : "",
 		filterValueArr : filterValueArr   ,
@@ -1022,4 +1025,56 @@ function validateBoothToMakeConfirm(boothId,boothName,filterLevel,filterValue){
 function exportToExcel(tableId)
 {
 	tableToExcel(''+tableId+'', 'Booth Committee Details.. ');
+}
+function gettingBoothInchargeRoleDetails(boothId,locationValue,enrllmentId){
+		
+		$("#boothInchargeRoleDivId").html('');
+
+	    var  enrllmentId =0;
+			var jsObj={
+				boothId:boothId,
+				constituencyId:locationValue,
+				boothInchargeEnrollmentId:enrllmentId
+			}
+			$.ajax({
+				type : "POST",
+				url : "gettingBoothInchargeRoleDetailsAction.action",
+				data : {task:JSON.stringify(jsObj)} 
+			}).done(function(result){	
+			if(result != null){
+				buildBoothInchargeRoleDetails(result);	
+			}else{
+				//$('#addMembrsBtn').hide();
+			}
+		});	
+	}
+	function buildBoothInchargeRoleDetails(result){
+	var str ='';
+	str +='<div class="col-sm-12">';
+	str +='<div class= "row">';
+	str +='<div class= "col-sm-5 col-sm-offset-3">';
+	str +='<table class="table table-bordered" id="roleTableId">';
+	str +='<thead>';
+	str +='<tr>';
+	str +='<th style="background-color:#d3d3d3">ROLE NAME</th>';
+	str +='<th style="background-color:#d3d3d3">TOTAL</th>';
+	str +='<th style="background-color:#d3d3d3">FILLED</th>';
+	str +='<th style="background-color:#d3d3d3">VACANCY</th>';
+	str +='</tr>';
+	str +='</thead>';
+	str +='<tbody>';
+	str +='<tr>';
+	for( var i in result){
+		str +='<td>'+result[i].roleName+'</td>';
+		str +='<td>'+result[i].maxMemberCount+'</td>';
+		str +='<td>'+result[i].count+'</td>';
+		str +='<td>'+result[i].vacancyCount+'</td>';
+		str +='</tr>';
+	}
+	str +='</tbody>';
+	str +='</table>';
+	str +='</div>';
+	str +='</div>';
+	str +='</div>';
+	$("#boothInchargeRoleDivId").html(str);
 }
