@@ -84,6 +84,8 @@ public class ToursBasicVO {
 	private Double stateTourCategoryComplaincePer = 0.0d;
 	private Double anganwadiVisitsComplaincePer = 0.0d;
 	private Double midDayMealComplaincePer = 0.0d;
+	private Double inchargeParliamentPer = 0.0d;
+	private Double ownAreaPer = 0.0d;
 
 
 	
@@ -736,4 +738,17 @@ public class ToursBasicVO {
 	public void setSubMap(Map<Long, String> subMap) {
 		this.subMap = subMap;
 	}
+	public Double getInchargeParliamentPer() {
+		return inchargeParliamentPer;
+	}
+	public void setInchargeParliamentPer(Double inchargeParliamentPer) {
+		this.inchargeParliamentPer = inchargeParliamentPer;
+	}
+	public Double getOwnAreaPer() {
+		return ownAreaPer;
+	}
+	public void setOwnAreaPer(Double ownAreaPer) {
+		this.ownAreaPer = ownAreaPer;
+	}
+	
 }
