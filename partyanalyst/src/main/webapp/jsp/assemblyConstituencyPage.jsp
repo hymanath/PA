@@ -182,10 +182,10 @@
 				</div>
 			</div>
 			<!-- Teja -->
-				<div id="alertsBlockDiv"></div>
-				<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="nominatedPosts">
-				<h3>Nominated Post <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
-				<div class="block">
+
+		<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="nominatedPosts">
+			<h3>Nominated Post <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+			<div class="block">
 					<div class="row">
 						<div class="col-md-6 col-xs-12 col-sm-6">
 							<div class="row">
@@ -193,24 +193,11 @@
 									<div id="postsDiv" ></div>
 							</div>
 					
-							<div id="nominatedPostDiv"></div>
+							<div id="nominatedPostDiv" style="padding-top:20%"></div>
 							</div>
 							
 						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<h5 class="m_left10">Applications</h5>
-							<div class="row">
-								<div class="col-md-6 col-xs-12 col-sm-6 " >
-									<div id="NominatedPostInfoChartDivId" style="height:250px; "></div>
-								</div>
-								<div id="applicationCntBlock"></div>
-								<!--<div class="col-md-6 col-xs-12 col-sm-6">
-									<ul class="graph-legend">
-									
-                                    	<li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                    </ul>
-								</div>-->
-							</div>
+						<div class="col-md-6 col-xs-12 col-sm-6" id="NominatedPostInfoChartDivId">
 						</div>
 					</div>
 					<div class="row">
@@ -219,27 +206,10 @@
 							<h4 class="text-capital text-center m_top-10"><span class="bg-fff pad_10">position level</span></h4>
 						</div>
 						<div id="nominatedMembersDiv"></div>
-						<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-							<ul class="list-border list-inline">
-								<li>
-									<h3>2</h3>
-									<p class="text-capitalize">central</p>
-								</li>
-								<li>
-									<h3>2</h3>
-									<p class="text-capitalize">central</p>
-								</li>
-								<li>
-									<h3>2</h3>
-									<p class="text-capitalize">central</p>
-								</li>
-							</ul>
-						</div>-->
 					</div>
 				</div>
-				<div class="block">
-					<button class="btn btn-success btn-success-white">detailed information</button>
-				</div>
+			<div class="block">
+				<button class="btn btn-success btn-success-white">detailed information</button>
 			</div>
 		</div>
 		
@@ -275,27 +245,16 @@
 							<div class="row">
 								<div class="col-md-6 col-xs-12 col-sm-6">
 									<h4 class="panel-title text-capital">main committee formation</h4>
-									<div class="row m_top15">
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4 class="panel-title text-capital">mandal/town/division level</h4>
-											<div id="mandalLevelId" ></div>
+										<div class="row m_top15">
+											<div class="col-md-6 col-xs-12 col-sm-6" id="mandalLevelId"></div>
+											<div class="col-md-6 col-xs-12 col-sm-6" id="villageLevelId"></div>
 										</div>
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4 class="panel-title text-capital">vilalge/ward level</h4>
-											<div id="villageLevelId"></div>
-										</div>
-									</div>
 								</div>
 								<div class="col-md-6 col-xs-12 col-sm-6">
 									<h4 class="panel-title text-capital">affliated committee formation</h4>
 									<div class="row m_top15">
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4 class="panel-title text-capital">mandal/town/division level</h4>
-											<div id="affMandalLevelId"></div>
-										</div>
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4 class="panel-title text-capital">vilalge/ward level</h4>
-											<div id="affVillageLevelId"></div>
+										<div class="col-md-6 col-xs-12 col-sm-6" id="affMandalLevelId"></div>
+										<div class="col-md-6 col-xs-12 col-sm-6" id="affVillageLevelId">
 										</div>
 									</div>
 								</div>
@@ -375,17 +334,11 @@
 				<h3>Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
 				<div class="block">
 					<div class="row">
-						<div class="col-md-4 col-xs-12 col-sm-4">
-							<h4 class="panel-title text-capital text-center">Grievance</h4>
-							<div id="grivanceId"></div>
+						<div class="col-md-4 col-xs-12 col-sm-4"id="grivanceId">
 						</div>
-						<div class="col-md-4 col-xs-12 col-sm-4">
-							<h4 class="panel-title text-capital text-center">Insurance</h4>
-							<div id="insuranceId"></div>
+						<div class="col-md-4 col-xs-12 col-sm-4" id="insuranceId">
 						</div>
-						<div class="col-md-4 col-xs-12 col-sm-4">
-							<h4 class="panel-title text-capital text-center">Trust Education</h4>
-							<div id="trustId"></div>
+						<div class="col-md-4 col-xs-12 col-sm-4" id="trustId">
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top15">
 							<button class="btn btn-success btn-success-white text-capital">detailed information</button>
