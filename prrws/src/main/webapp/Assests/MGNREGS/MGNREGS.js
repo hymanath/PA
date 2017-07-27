@@ -1536,16 +1536,16 @@ function buildDistrictsPopupDetails(result,dataArr){
 										str+='<td>'+result.distList[i].notGrounded+'</td>';
 										str+='<td>'+result.distList[i].inProgress+'</td>';
 										str+='<td>'+result.distList[i].completed+'</td>';
-										if(result.distList[i].percentage < 50){
-											str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
-										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
-											str+='<td style="background-color:#FFBA00">'+result.distList[i].percentage+'</td>';
-										}else if(result.distList[i].percentage >= 80)
-										{
-											str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
-										}
+										
 										//str+='<td>'+result.distList[i].percentage+'</td>';
 										if(dataArr == "district"){
+											if(result.distList[i].avgTotMarks < 50){
+												str+='<td style="background-color:#FF0000">'+result.distList[i].avgTotMarks+'</td>';
+											}else if(result.distList[i].avgTotMarks >= 50 && result.distList[i].avgTotMarks < 80){
+												str+='<td style="background-color:#FFBA00">'+result.distList[i].avgTotMarks+'</td>';
+											}else if(result.distList[i].avgTotMarks >= 80){
+												str+='<td style="background-color:#00AF50">'+result.distList[i].avgTotMarks+'</td>';
+											}
 											if(result.distList[i].percSant < 50){
 												str+='<td style="background-color:#FF0000">'+result.distList[i].percSant+'</td>';
 											}else if(result.distList[i].percSant >= 50 && result.distList[i].percSant < 80){
@@ -1553,7 +1553,14 @@ function buildDistrictsPopupDetails(result,dataArr){
 											}else if(result.distList[i].percSant >= 80){
 												str+='<td style="background-color:#00AF50">'+result.distList[i].percSant+'</td>';
 											}
-											
+										}else{
+											if(result.distList[i].percentage < 50){
+												str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
+											}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
+												str+='<td style="background-color:#FFBA00">'+result.distList[i].percentage+'</td>';
+											}else if(result.distList[i].percentage >= 80){
+												str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
+											}
 										}
 									str+='</tr>';
 									}else if(globalDivName == "CC Roads"){
