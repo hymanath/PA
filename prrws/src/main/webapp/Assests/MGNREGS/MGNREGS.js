@@ -217,7 +217,7 @@ function onLoadCalls()
 		if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state")
 			theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 		
-		if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings') && (levelType == "state" || levelType == "district"))
+		if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (levelType == "state" || levelType == "district"))
 			theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 		
 		var tableId = divId.replace(/\s+/g, '')+''+levelType;
@@ -489,7 +489,7 @@ function projectData(divId,levelId,locationId)
 		if((divId == 'Mulbery' || divId == 'Silk worms' || divId == 'Cattle drinking water troughs' || divId == 'Raising of Perinnial Fodders') && dataArr[0] == "state")
 			theadArr = [dataArr[0],'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 		
-		if((divId == 'Fish Ponds' || divId == 'Fish Drying Platforms' || divId == 'Anganwadi Buildings') && (dataArr[0] == "state" || dataArr[0] == "district"))
+		if((divId == 'Fish Ponds' || divId == 'Fish Drying Platforms' || divId == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (dataArr[0] == "state" || dataArr[0] == "district"))
 			theadArr = [dataArr[0],'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 		
 		var tableId = divId.replace(/\s+/g, '')+''+dataArr[0];
@@ -1311,8 +1311,8 @@ function buildDistrictsPopupDetails(result,dataArr){
 					theadArr = ["district","constituency",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
-			}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds"){
-				theadArr = [dataArr,'TARGET','Sanctioned Target','Sanctioned Percentage','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds" || globalDivName == "Anganwadi Buildings" || globalDivName == "SMC Trench" || globalDivName == "Imp to CD" || globalDivName == "MPT_PT" || globalDivName == "GC Works" || globalDivName == "CD_CW"){
+				theadArr = [dataArr,'TARGET','Sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','Sanctioned Percentage'];
 				if(dataArr == "constituency")
 					theadArr = ["district",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				else if(dataArr == "mandal")
@@ -1444,7 +1444,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td style="background-color:#00AF50">'+result.distList[i].achivement+'</td>';
 										}
 									str+='</tr>';
-									}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds"){
+									}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds" || globalDivName == "Anganwadi Buildings" || globalDivName == "SMC Trench" || globalDivName == "Imp to CD" || globalDivName == "MPT_PT" || globalDivName == "GC Works" || globalDivName == "CD_CW"){
 										str+='<tr>';
 										if(dataArr == "district"){
 											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
@@ -1467,7 +1467,6 @@ function buildDistrictsPopupDetails(result,dataArr){
 										str+='<td>'+result.distList[i].target+'</td>';
 										if(dataArr == "district"){
 											str+='<td>'+result.distList[i].sanctionedTarget+'</td>';
-											str+='<td>'+result.distList[i].sanctionedPerventage+'</td>';
 										}
 										str+='<td>'+result.distList[i].grounded+'</td>';
 										str+='<td>'+result.distList[i].notGrounded+'</td>';
@@ -1482,6 +1481,16 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
 										}
 										//str+='<td>'+result.distList[i].percentage+'</td>';
+										if(dataArr == "district"){
+											if(result.distList[i].percSant < 50){
+												str+='<td style="background-color:#FF0000">'+result.distList[i].percSant+'</td>';
+											}else if(result.distList[i].percSant >= 50 && result.distList[i].percSant < 80){
+												str+='<td style="background-color:#FFBA00">'+result.distList[i].percSant+'</td>';
+											}else if(result.distList[i].percSant >= 80){
+												str+='<td style="background-color:#00AF50">'+result.distList[i].percSant+'</td>';
+											}
+											
+										}
 									str+='</tr>';
 									}else if(globalDivName == "CC Roads"){
 										str+='<tr>';
@@ -2391,10 +2400,11 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 							//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 						}
-						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings') && (locationTypeNew == "state" || locationTypeNew == "district")){
+						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 							//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 						}
+						
 						str+='<td>'+ajaxresp[i].grounded+'</td>';
 						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
 						str+='<td>'+ajaxresp[i].inProgress+'</td>';
@@ -2416,7 +2426,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
 							}
 						}
-						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings') && (locationTypeNew == "state" || locationTypeNew == "district")){
+						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 							if(ajaxresp[i].percSant < 50){
 								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
 							}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
