@@ -16,28 +16,32 @@ public class BoothInchargesVO implements Serializable {
 	private String insertedTime;
 	private String updatedTime;
 	private Long totalCount =0l;
-	private Long assignedCount =0l;
-	private Long notAssignedCount =0l;
 	private Long maleCnt =0l;
 	private Long femaleCnt=0l;
 	private Long totalBooths=0l;
 	private String boothInchargesAssnd;
 	private Set<Long> boothIds = new HashSet<Long>();
-	private Double assignedPerc;
-	private Double nonAssnedPerc;
+	private Long startedCount=0L;
+	private Long completedCount=0L;
+	private Long notStartedCount=0L;
 	
-	
-	public Double getAssignedPerc() {
-		return assignedPerc;
+	public Long getStartedCount() {
+		return startedCount;
 	}
-	public void setAssignedPerc(Double assignedPerc) {
-		this.assignedPerc = assignedPerc;
+	public void setStartedCount(Long startedCount) {
+		this.startedCount = startedCount;
 	}
-	public Double getNonAssnedPerc() {
-		return nonAssnedPerc;
+	public Long getCompletedCount() {
+		return completedCount;
 	}
-	public void setNonAssnedPerc(Double nonAssnedPerc) {
-		this.nonAssnedPerc = nonAssnedPerc;
+	public void setCompletedCount(Long completedCount) {
+		this.completedCount = completedCount;
+	}
+	public Long getNotStartedCount() {
+		return notStartedCount;
+	}
+	public void setNotStartedCount(Long notStartedCount) {
+		this.notStartedCount = notStartedCount;
 	}
 	public Set<Long> getBoothIds() {
 		return boothIds;
@@ -111,18 +115,7 @@ public class BoothInchargesVO implements Serializable {
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
 	}
-	public Long getAssignedCount() {
-		return assignedCount;
-	}
-	public void setAssignedCount(Long assignedCount) {
-		this.assignedCount = assignedCount;
-	}
-	public Long getNotAssignedCount() {
-		return notAssignedCount;
-	}
-	public void setNotAssignedCount(Long notAssignedCount) {
-		this.notAssignedCount = notAssignedCount;
-	}
+	
 	public Long getMaleCnt() {
 		return maleCnt;
 	}
