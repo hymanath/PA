@@ -1684,18 +1684,18 @@ function getBoothUserDetailsbuild(result,locationName){
 		  str +='<table class="table table-bordered" id="rangeWiseBoothReport">';
 				 str +='<thead>';
 					 str +='<tr class="text-center">';
-					 
-						//str +='<th>CONSTITUENCY&nbsp;NAME</th>';
+						str +='<th>MEMBERSHIP&nbsp;NO</th>';
+						str +='<th>PHOTO</th>';
+						str +='<th>CADRE&nbsp;NAME</th>';
+						str +='<th>RELATIVE&nbsp;NAME</th>';
+						str +='<th>AGE</th>';
+						str +='<th>MOBILE&nbsp;NO</th>';
 						str +='<th>MANDAL/MUNCI/CORP/GREATER&nbsp;CITY&nbsp;</th>';
 						str +='<th>VILLAGE/WARD&nbsp;</th>';
-						//str +='<th>VILLAGE&nbsp;COVERED </th>';	
 						str +='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
 						str +='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
-						str +='<th>SERIAL&nbsp;NO</th>';						
-						str +='<th>PHOTO</th>';
-						str +='<th>MEMBERSHIP&nbsp;NO</th>';
-						str +='<th>CADRE&nbsp;NAME</th>';
-						str +='<th>MOBILE&nbsp;NO</th>';
+					    str +='<th>SERIAL&nbsp;NO</th>';	
+					 
 						str +='<th>DESIGNATION</th>';
 						str +='<th> REMOVE &nbsp;</th>';
 					 						 
@@ -1708,40 +1708,47 @@ function getBoothUserDetailsbuild(result,locationName){
 							
 							str +='<tr>';
 								//str +='<td>'+result[i].name+'</td>';
-								str +='<td>'+result[i].mandalName+'</td>';
-								str +='<td>'+result[i].panchayatName+'</td>';
-								//str +='<td>'+result[i].boothName+'</td>';
-																
-								str +='<td><span></span>'+'Booth&nbsp;No&nbsp;-&nbsp;'+result[i].originalLocation+'</td>';
-								str +='<td><span></span>'+'Booth&nbsp;No&nbsp;-&nbsp;'+result[i].boothNumber+'</td>';								
-							    if(result[i].serialNo != null)								
-								  str +='<td>'+result[i].serialNo+'</td>';
-								str +='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
 								if( membershipNo.length==8)
 									str +='<td>'+result[i].memberShipNo+'</td>';
 								else if(membershipNo.length==7)
 									str +='<td>0'+result[i].memberShipNo+'</td>';
 								else 
 									str +='<td>  -  </td>';
-								str +='<td>'+result[i].firstName+'</td>';	
-								str +='<td>'+result[i].mobileNumber+'</td>';
-                                if(result[i].roleName != null)								
-								  str +='<td>'+result[i].roleName+'</td>';
-							    else
-								  str +='<td>  -  </td>';
-								if(result[i].status != null && (result[i].status=="N" || result[i].status=="N " || result[i].status==" N" || result[i].status==" N "))	
+									str +='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+									str +='<td>'+result[i].firstName+'</td>';
+									str +='<td>'+result[i].committeeMemberStatus+'</td>';//relativeName
+									str +='<td>'+result[i].constituencyId+'</td>';//age
+									str +='<td>'+result[i].mobileNumber+'</td>';
+									str +='<td>'+result[i].mandalName+'</td>';
+									str +='<td>'+result[i].panchayatName+'</td>';
+								//str +='<td>'+result[i].boothName+'</td>';
+																
+								str +='<td><span></span>'+'Booth&nbsp;No&nbsp;-&nbsp;'+result[i].originalLocation+'</td>';
+								str +='<td><span></span>'+'Booth&nbsp;No&nbsp;-&nbsp;'+result[i].boothNumber+'</td>';								
+							    if(result[i].serialNo != null)								
+								  str +='<td>'+result[i].serialNo+'</td>';
+							
+							    if(result[i].roleName != null)								
+									  str +='<td>'+result[i].roleName+'</td>';
+									else
+									  str +='<td>  -  </td>';
+							if(result[i].status != null && (result[i].status=="N" || result[i].status=="N " || result[i].status==" N" || result[i].status==" N "))	
 									str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' attr_role="'+result[i].roleName+'" value="DELETE" type="button"></td>';
 								else
-								  str +='<td>  -  </td>';								
+								
+                                  str +='<td>  -  </td>';								  
 							str +='</tr>';
 							}
 			  str +='</tbody>';
 			  str +='</table>';
 			  
 			   str +='<table class="table table-bordered" style="display:none;" id="rangeWiseExportBoothExportExcelReport">';
-				 str +='<thead>';
+				  str +='<thead>';
 					 str +='<tr class="text-center">';
-					 
+					 str +='<th>MEMBERSHIP&nbsp;NO</th>';
+					 	str +='<th>CADRE&nbsp;NAME</th>';
+						str +='<th>RELATIVE&nbsp;NAME</th>';
+						str +='<th>AGE</th>';
 						str +='<th>CONSTITUENCY&nbsp;</th>';
 						str +='<th>MANDAL/MUNICIPALITY/CORPORATION&nbsp;</th>';
 						str +='<th>VILLAGE/WARD&nbsp;</th>';
@@ -1750,8 +1757,8 @@ function getBoothUserDetailsbuild(result,locationName){
 						str +='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
 						str +='<th>SERIAL&nbsp;nO</th>';						
 						//str +='<th>PHOTO</th>';
-						str +='<th>MEMBERSHIP&nbsp;NO</th>';
-						str +='<th>CADRE&nbsp;NAME</th>';
+						
+					
 						str +='<th>MOBILE&nbsp;NO</th>';
 						str +='<th>DESIGNATION</th>';
 						//str +='<th> REMOVE &nbsp;</th>';
@@ -1764,6 +1771,15 @@ function getBoothUserDetailsbuild(result,locationName){
 							//alert(membershipNo.length);
 							
 							str +='<tr>';
+							 if( membershipNo.length==8)
+									str +='<td>'+result[i].memberShipNo+'</td>';
+								else if(membershipNo.length==7)
+									str +='<td>0'+result[i].memberShipNo+'</td>';
+								else 
+									str +='<td>  -  </td>';
+								str +='<td>'+result[i].firstName+'</td>';
+                                str +='<td>'+result[i].committeeMemberStatus+'</td>';//relativeName
+								str +='<td>'+result[i].constituencyId+'</td>';//age								
 								str +='<td>'+result[i].name+'</td>';
 								str +='<td>'+result[i].mandalName+'</td>';
 								str +='<td>'+result[i].panchayatName+'</td>';
@@ -1775,14 +1791,8 @@ function getBoothUserDetailsbuild(result,locationName){
 								else
 								   str +='<td> - </td>';
 								//str +='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
-								if( membershipNo.length==8)
-									str +='<td>'+result[i].memberShipNo+'</td>';
-								else if(membershipNo.length==7)
-									str +='<td>0'+result[i].memberShipNo+'</td>';
-								else 
-									str +='<td>  -  </td>';
 								
-								str +='<td>'+result[i].firstName+'</td>';	
+								
 								str +='<td>'+result[i].mobileNumber+'</td>';
                                 if(result[i].roleName != null)								
 								  str +='<td>'+result[i].roleName+'</td>';
