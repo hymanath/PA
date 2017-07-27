@@ -1,9 +1,9 @@
-    var finalGlobalUrl='';
-	var boothcommiteType= "tdpCommittee";
-     function passRequiredUrl(finalURL){
+	var finalGlobalUrl='';
+	var boothcommiteType= "boothCommittee";
+	 function passRequiredUrl(finalURL){
 		  finalGlobalUrl = finalURL; 
 	  }	
-	function getLevelWiseBasicCommitteesArray(){
+	function getBoothLevelWiseBasicCommitteesArray(){
 		
 		var levelWiseBasicCommitteesArray = new Array();
 		var jsObj={committeeLevelId:"",basicCommitteeIds:""};
@@ -22,11 +22,12 @@
 		
 		//mandal/town/division level.
 		var mandalBasicCommitteeIds =[];
-		$(".mandalCommitteecheckBoxClass").each(function(){
+		/*$(".mandalCommitteecheckBoxClass").each(function(){
 			if($(this).is(':checked')){
 				mandalBasicCommitteeIds.push( $(this).val() );
 			}
-		}); 
+		}); */
+		mandalBasicCommitteeIds.push(1);
 		var mandalCommitteeLevelObject = new Object();
 		mandalCommitteeLevelObject.committeeLevelId = 5;
 		mandalCommitteeLevelObject.basicCommitteeIds = mandalBasicCommitteeIds;
@@ -47,60 +48,34 @@
 		
 		return levelWiseBasicCommitteesArray;
 	}
-	$(document).on("click","#checkAllAffliatedVillagelevelId",function(){
+	$(document).on("click","#checkAllBoothAffliatedVillagelevelId",function(){
 		if($(this).is(':checked')){
 		   $('.villageCommitteeAffliatedcheckBoxClass').prop('checked', true);
 		}else{
 		   $('.villageCommitteeAffliatedcheckBoxClass').prop('checked', false);
 		}
 	});
-	$(document).on("click","#checkAllAffliatedMandallevelId",function(){
+	$(document).on("click","#checkAllBoothAffliatedMandallevelId",function(){
 		if($(this).is(':checked')){
 		   $('.mandalCommitteeAffliatedcheckBoxClass').prop('checked', true);
 		}else{
 		   $('.mandalCommitteeAffliatedcheckBoxClass').prop('checked', false);
 		}
 	});
-	$(document).on("click","#checkAllAffliatedDistrictlevelId",function(){
+	$(document).on("click","#checkAllBoothAffliatedDistrictlevelId",function(){
 		if($(this).is(':checked')){
 		   $('.districtCommitteeAffliatedcheckBoxClass').prop('checked', true);
 		}else{
 		   $('.districtCommitteeAffliatedcheckBoxClass').prop('checked', false);
 		}
 	});
-	function getCommitteesBasicCountReport(){
-		
-		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	    var state = globalState;
-        var dateString = $("#dateRangeId").val();
-		
-		var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-		var committeeEnrollmentYearArray = new Array();
-		committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
-		// alert(888);
-		var jsObj ={  userAccessLevelId:globalUserAccessLevelId,
-					  userAccessLevelValuesArray:globalUserAccessLevelValues,
-					  state:state,
-					  levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
-					  dateString : dateString,
-					  committeeEnrollmentYearArray :committeeEnrollmentYearArray
-					}
-		
-		$.ajax({
-			type : 'POST',
-			url : 'getCommitteesBasicCountReportAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			$("#basicCommitteeCountsDiv").html('');
-			buildgetCommitteesBasicCountReport(result);
-			
-		});
+	function getBoothCommitteesBasicCountReport(){
+		boothDefaultCommitteeCalls();
 	}
-	function getUserTypeWiseCommitteesCompletedCounts(){
+	function getBoothUserTypeWiseCommitteesCompletedCounts(){
 		
 		var state = globalState;
-	    var dateString = $("#dateRangeId").val();
+	    var dateString = $("#dateRangeBoothId").val();
     
 		var jsObj ={  
 			          activityMemberId : globalActivityMemberId,
@@ -124,16 +99,17 @@
 		});
 	}
 	var globalUserWiseMemberRslt;
-	function getUserTypeWiseCommitteesCompletedCounts1(){
-		$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	function getUserTypeWiseCommitteesCompletedCounts2(){
+		$("#boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	   var state = globalState;
-       var dateString = $("#dateRangeId").val();
-	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+       var dateString = $("#dateRangeBoothId").val();
+	   var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
+	 
 	  // alert(1111);
 	   var committeeEnrollmentYearArray = new Array();
-	   if($("#tdpCommitteeYearId").val() != null)
-		   committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
-		var jsObj ={  
+		   committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
+		    
+			var jsObj ={  
 			          activityMemberId : globalActivityMemberId,
 					  userTypeId : globalUserTypeId,
 			          userAccessLevelId:globalUserAccessLevelId,
@@ -142,7 +118,7 @@
 					  levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
 					  dateString : dateString,
 					  committeeEnrollmentYearArray :committeeEnrollmentYearArray,
-					  commiteType: "tdpCommittee"
+					  commiteType: boothcommiteType
  			         
 					}
 		
@@ -152,30 +128,30 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('');
-			buildgetUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(result);
+			$("#boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('');
+			buildgetBoothUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(result);
 			
 			//buildgetUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(result);
 			 globalUserWiseMemberRslt = result;
 		});
 	}
-	function getLevelWiseBasicCommitteesCountReport(){
-		
-		$("#levelWiseBasicCommittees").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	function getBoothLevelWiseBasicCommitteesCountReport(){
+		$("#boothLevelWiseBasicCommittees").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var state = globalState;
 	   
-       var dateString = $("#dateRangeId").val();
-	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+       var dateString = $("#dateRangeBoothId").val();
+	   var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 	   // alert(222);
 	   var committeeEnrollmentYearArray = new Array();
-		   committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
-		var jsObj ={ userAccessLevelId:globalUserAccessLevelId,
+		   committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
+		var jsObj ={
+			         userAccessLevelId:globalUserAccessLevelId,
 					 userAccessLevelValuesArray:globalUserAccessLevelValues,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
 					 dateString : dateString,
-					  committeeEnrollmentYearArray :committeeEnrollmentYearArray,
-					  commiteType: "tdpCommittee"
+					 committeeEnrollmentYearArray :committeeEnrollmentYearArray,
+					 commiteType: boothcommiteType
 					}
 		
 		$.ajax({
@@ -184,15 +160,14 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#levelWiseBasicCommittees").html('');
-			buildgetLevelWiseBasicCommitteesCountReport(result);
+			$("#boothLevelWiseBasicCommittees").html('');
+			buildgetBoothLevelWiseBasicCommitteesCountReport(result);
 			
 		});
 	}
-	function getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray){
-		
-		
-		$("#districtWiseCommitteesReport").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	function getBoothcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray){
+	
+		$("#boothDistrictWiseCommitteesReport").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		
 		var state = globalState;
 		
@@ -200,11 +175,11 @@
 		var userLocationLevelValuesArray = globalUserAccessLevelValues;
 		
 		var committeeStatus = 'all';
-        var dateString = $("#dateRangeId").val();
-		var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+        var dateString = $("#dateRangeBoothId").val();
+		var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 		 //alert(333);
 		var committeeEnrollmentYearArray = new Array();
-		    committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
+		    committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
 		var jsObj ={tdpCommitteeLevelIdsClickedArray:tdpCommitteeLevelIdsClickedArray,
 					levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
 					committeeStatus:committeeStatus,
@@ -213,7 +188,7 @@
 					dateString : dateString,
 					state:state,
 					committeeEnrollmentYearArray:committeeEnrollmentYearArray,
-					commiteType: "tdpCommittee"
+					commiteType: boothcommiteType
 					}
 		
 		$.ajax({
@@ -222,14 +197,13 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#districtWiseCommitteesReport").html('');
-			buildCommitteesPerformanceCohort(result);
+			$("#boothDistrictWiseCommitteesReport").html('');
+			buildBoothCommitteesPerformanceCohort(result);
 			
 		});
 	}
-	
-	function getAllItsSubUserTypeIdsByParentUserTypeId(){
-		  $("#childUserTypeDetailsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	function getBoothAllItsSubUserTypeIdsByParentUserTypeId(){
+		  $("#boothChildUserTypeDetailsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj = { parentUserTypeId : globalUserTypeId }
 		$.ajax({
 			type : 'POST',
@@ -238,35 +212,35 @@
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.length > 0){
-			 buildgetChildUserTypesByItsParentUserType(result)
+			 buildgetboothChildUserTypesByItsParentUserType(result)
 			}else{
-			 $("#childUserTypeDetailsDiv").html('NO DATA AVAILABLE.');	
+			 $("#boothChildUserTypeDetailsDiv").html('NO DATA AVAILABLE.');	
 			}
 		});			 
 	}
 	
 	
-	function getSelectedChildUserTypeMembers(childUserTypeIdString,childUserType){
+	function getBoothSelectedChildUserTypeMembers(childUserTypeIdString,childUserType){
 		
-	$("#SelectedUserTypeDetailsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$("#boothSelectedUserTypeDetailsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
      var parentActivityMemberId = globalActivityMemberId;
 	 
 	 var childUserTypeIdsArray = childUserTypeIdString.split(",");
 	 
-	 var date = $("#dateRangeId").val();
+	 var date = $("#dateRangeBoothId").val();
 	 var state = globalState;
-  	 var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+  	 var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 	 var committeeEnrollmentYearArray = new Array();
-		 committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
+		 committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
 		  //alert(444);
 	  var jsObj ={ 
-	               parentActivityMemberId : parentActivityMemberId,
-				   childUserTypeIdsArray : childUserTypeIdsArray,
-				   dateString : date,
-				   state:state,
-				   levelWiseBasicCommitteesArray:levelWiseBasicCommitteesArray,
-				  committeeEnrollmentYearArray:committeeEnrollmentYearArray,
-				  commiteType: "tdpCommittee"
+					parentActivityMemberId : parentActivityMemberId,
+					childUserTypeIdsArray : childUserTypeIdsArray,
+					dateString : date,
+					state:state,
+					levelWiseBasicCommitteesArray:levelWiseBasicCommitteesArray,
+					committeeEnrollmentYearArray:committeeEnrollmentYearArray,
+					commiteType: boothcommiteType
 				 }
 	  $.ajax({
 			type : 'POST',
@@ -274,28 +248,28 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#SelectedUserTypeDetailsDiv").html('');
-			buildgetSelectedChildUserTypeMembers(result,childUserType);
+			$("#boothSelectedUserTypeDetailsDiv").html('');
+			buildgetBoothSelectedChildUserTypeMembers(result,childUserType);
 		});
 	}
-	function getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
+	function getBoothDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
 	   $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state = globalState
 	   
-	   var dateString = $('#dateRangeId').val();
-	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+	   var dateString = $('#dateRangeBoothId').val();
+	   var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 	   var committeeEnrollmentYearArray = new Array();
-		   committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
-		  
-	   var jsObj ={  activityMemberId : activityMemberId,
+		   committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
+		  //  alert(555);
+	   var jsObj ={  
+	                 activityMemberId : activityMemberId,
 			         userTypeId : userTypeId,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
  			         dateString :   dateString,
 					 committeeEnrollmentYearArray:committeeEnrollmentYearArray,
-					 commiteType: "tdpCommittee"
+					 commiteType: boothcommiteType
 				  }
-	   
 	   	$.ajax({
 			type : 'POST',
 			url : 'getDirectChildActivityMemberCommitteeDetailsAction.action',
@@ -303,24 +277,25 @@
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			$("#"+childActivityMemberId).html('');
-			buildgetDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId);
+			buildgetBoothDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId);
 		});
 	}
-	function getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType){
-	   $("#topPoorPerformanceDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	function getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType){
+	   $("#boothTopPoorPerformanceDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state = globalState;
 	  
-	   var dateString = $('#dateRangeId').val();
-	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+	   var dateString = $('#dateRangeBoothId').val();
+	   var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 	   var committeeEnrollmentYearArray = new Array();
-		committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
-		
+		committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
+		//alert(boothcommiteType);
+		// alert(666);
 	   var jsObj ={  activityMemberId : activityMemberId,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
  			         dateString :   dateString,
 					 committeeEnrollmentYearArray:committeeEnrollmentYearArray,
-					  commiteType: "tdpCommittee"
+					 commiteType: boothcommiteType
 				  }
 	   
 	   	$.ajax({
@@ -329,25 +304,27 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			 $("#topPoorPerformanceDiv").html('');
-			buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType);
+			 $("#boothTopPoorPerformanceDiv").html('');
+			buildgetBoothTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType);
 			
 		});
 	}
-	function getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType){
-	   $("#topPoorLocationsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	function getBoothTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType){
+	   $("#boothTopPoorLocationsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state = globalState;
-	   
-	   var dateString = $('#dateRangeId').val();
-	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+	   //alert(boothcommiteType);
+	   //alert(top);
+	   var dateString = $('#dateRangeBoothId').val();
+	   var levelWiseBasicCommitteesArray = getBoothLevelWiseBasicCommitteesArray();
 	    var committeeEnrollmentYearArray = new Array();
-		committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
+		committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
+		// alert(777);
 	   var jsObj ={  activityMemberId : activityMemberId,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
  			         dateString :   dateString,
 					 committeeEnrollmentYearArray:committeeEnrollmentYearArray,
-					 commiteType: "tdpCommittee"
+					 commiteType: boothcommiteType
 				  }
 	   
 	   	$.ajax({
@@ -356,13 +333,14 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			 $("#topPoorLocationsDiv").html('');
-			buildTopPoorCommitteeLocations(result,selectedMemberName,selectedUserType);
+			 $("#boothTopPoorLocationsDiv").html('');
+			buildBoothTopPoorCommitteeLocations(result,selectedMemberName,selectedUserType);
 			
 		});
 	}
-	function buildgetCommitteesBasicCountReport(result){
-		$("#basicCommitteeCountsDiv").html('');
+	//srujana
+	function buildgetBoothCommitteesBasicCountReport(result){
+		$("#boothBasicCommitteeCountsDiv").html('');
 		var str='';
 		var locationLevelNameArray =[];
 		if(result !=null){
@@ -436,13 +414,13 @@
 														str+='<p class="text-muted text-capitalize responsiveFont">Started';
 														if(result.subList[i].mainVO.startedCount !=null && result.subList[i].mainVO.startedCount >0){
 															if(result.subList[i].name == "Village")
-																str+='<i  id=\''+'villageAll'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'villageAll\',\'main\','+1+'\,\'started\')" style="cursor:pointer;margin-left:3px" class="glyphicon glyphicon-info-sign"></i></p>';
+																str+='<i  id=\''+'villageAll'+'IdAPstarted\' onClick="getBoothMainCommitteeMembersCount(\''+globalState+'\',\'villageAll\',\'main\','+1+'\,\'started\')" style="cursor:pointer;margin-left:3px" class="glyphicon glyphicon-info-sign"></i></p>';
 															if(result.subList[i].name == "Mandal")
-																str+='<i style="cursor:pointer;margin-left:3px" id=\''+'mandalAll'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'mandalAll\',\'main\','+1+'\,\'started\')"  class="glyphicon glyphicon-info-sign "></i></p>';
+																str+='<i style="cursor:pointer;margin-left:3px" id=\''+'mandalAll'+'IdAPstarted\' onClick="getBoothMainCommitteeMembersCount(\''+globalState+'\',\'mandalAll\',\'main\','+1+'\,\'started\')"  class="glyphicon glyphicon-info-sign "></i></p>';
 															if(result.subList[i].name == "District")
-																str+='<i style="cursor:pointer;margin-left:3px" id=\''+'district'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'district\',\'main\','+1+'\,\'started\')" class="glyphicon glyphicon-info-sign "></i></p>';
+																str+='<i style="cursor:pointer;margin-left:3px" id=\''+'district'+'IdAPstarted\' onClick="getBoothMainCommitteeMembersCount(\''+globalState+'\',\'district\',\'main\','+1+'\,\'started\')" class="glyphicon glyphicon-info-sign "></i></p>';
 															if(result.subList[i].name == "State")
-																str+='<i style="cursor:pointer;margin-left:3px" id=\''+'state'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'state\',\'main\','+1+'\,\'started\')" class="glyphicon glyphicon-info-sign "></i></p>';
+																str+='<i style="cursor:pointer;margin-left:3px" id=\''+'state'+'IdAPstarted\' onClick="getBoothMainCommitteeMembersCount(\''+globalState+'\',\'state\',\'main\','+1+'\,\'started\')" class="glyphicon glyphicon-info-sign "></i></p>';
 														
 															str+='<p class="responsiveFont">'+result.subList[i].mainVO.startedCount+' <small class="text-danger"> '+result.subList[i].mainVO.startedPerc+'%</small></p>';
 														}else{
@@ -454,13 +432,13 @@
 														str+='<p class="text-muted text-capitalize responsiveFont">Completed';
 														if(result.subList[i].mainVO.completedCount !=null && result.subList[i].mainVO.completedCount >0){
 															if(result.subList[i].name == "Village")
-																str+='<i style="cursor:pointer;margin-left:3px" id=\''+'villageAll'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'villageAll\',\'main\','+1+'\,\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
+																str+='<i style="cursor:pointer;margin-left:3px" id=\''+'villageAll'+'IdAPcompleted\' onClick="getBoothMainCommitteeMembersCount(\''+globalState+'\',\'villageAll\',\'main\','+1+'\,\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
 															if(result.subList[i].name == "Mandal")
-																 str+='<i style="cursor:pointer;margin-left:3px" id=\''+'mandalAll'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'mandalAll\',\'main\','+1+'\,\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
+																 str+='<i style="cursor:pointer;margin-left:3px" id=\''+'mandalAll'+'IdAPcompleted\' onClick="getBoothMainCommitteeMembersCount(\''+globalState+'\',\'mandalAll\',\'main\','+1+'\,\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
 															 if(result.subList[i].name == "District")
-																 str+='<i style="cursor:pointer;margin-left:3px" id=\''+'district'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'district\',\'main\','+1+'\,\'completed\')"  class="glyphicon glyphicon-info-sign "></i></p>';
+																 str+='<i style="cursor:pointer;margin-left:3px" id=\''+'district'+'IdAPcompleted\' onClick="getBoothMainCommitteeMembersCount(\''+globalState+'\',\'district\',\'main\','+1+'\,\'completed\')"  class="glyphicon glyphicon-info-sign "></i></p>';
 															 if(result.subList[i].name == "State")
-																 str+='<i style="cursor:pointer;margin-left:3px" id=\''+'state'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'state\',\'main\','+1+'\,\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
+																 str+='<i style="cursor:pointer;margin-left:3px" id=\''+'state'+'IdAPcompleted\' onClick="getBoothMainCommitteeMembersCount(\''+globalState+'\',\'state\',\'main\','+1+'\,\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
 														
 															str+='<p class="responsiveFont">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small></p>';
 														}else{
@@ -556,13 +534,13 @@
 													str+='<p class="text-muted text-capitalize responsiveFont">Started';
 													if(result.subList[i].affliatedVO.startedCount !=null && result.subList[i].affliatedVO.startedCount >0){
 														if(result.subList[i].name == "Village")
-															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'villageAll'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'villageAll\',\'started\')" class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'villageAll'+'IdAPAfflstarted\' onClick="getBoothAflCommitteeCount(\''+globalState+'\',\'villageAll\',\'started\')" class="glyphicon glyphicon-info-sign "></i></p>';
 														if(result.subList[i].name == "Mandal")
-															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'mandalAll'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'mandalAll\',\'started\')" class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'mandalAll'+'IdAPAfflstarted\' onClick="getBoothAflCommitteeCount(\''+globalState+'\',\'mandalAll\',\'started\')" class="glyphicon glyphicon-info-sign "></i></p>';
 														 if(result.subList[i].name == "District")
-															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'district'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'district\',\'started\')"  class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'district'+'IdAPAfflstarted\' onClick="getBoothAflCommitteeCount(\''+globalState+'\',\'district\',\'started\')"  class="glyphicon glyphicon-info-sign "></i></p>';
 														if(result.subList[i].name == "State")
-															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'state'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'state\',\'started\')" class="glyphicon glyphicon-info-sign "></i></p>'; 
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'state'+'IdAPAfflstarted\' onClick="getBoothAflCommitteeCount(\''+globalState+'\',\'state\',\'started\')" class="glyphicon glyphicon-info-sign "></i></p>'; 
 													
 														str+='<p>'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small></p>';
 													}else{
@@ -574,13 +552,13 @@
 													str+='<p class="text-muted text-capitalize responsiveFont">Completed';
 													if(result.subList[i].affliatedVO.completedCount !=null && result.subList[i].affliatedVO.completedCount >0){
 														 if(result.subList[i].name == "Village")
-															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'villageAll'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'villageAll\',\'completed\')"  class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'villageAll'+'IdAPAfflcompleted\' onClick="getBoothAflCommitteeCount(\''+globalState+'\',\'villageAll\',\'completed\')"  class="glyphicon glyphicon-info-sign "></i></p>';
 														if(result.subList[i].name == "Mandal")
-															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'mandalAll'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'mandalAll\',\'completed\')"  class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'mandalAll'+'IdAPAfflcompleted\' onClick="getBoothAflCommitteeCount(\''+globalState+'\',\'mandalAll\',\'completed\')"  class="glyphicon glyphicon-info-sign "></i></p>';
 														 if(result.subList[i].name == "District")
-															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'district'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'district\',\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'district'+'IdAPAfflcompleted\' onClick="getBoothAflCommitteeCount(\''+globalState+'\',\'district\',\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
 														if(result.subList[i].name == "State")
-															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'state'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'state\',\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'state'+'IdAPAfflcompleted\' onClick="getBoothAflCommitteeCount(\''+globalState+'\',\'state\',\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
 													
 														str+='<p>'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small></p>';
 													}else{
@@ -597,10 +575,10 @@
 					
 				 }
 					
-				str+='</ul>';
-				$("#basicCommitteeCountsDiv").html(str);
+				str+='</ul> srishailam';
+				$("#boothBasicCommitteeCountsDiv").html(str);
 		}else{
-			$("#basicCommitteeCountsDiv").html("No Data Available");
+			$("#boothBasicCommitteeCountsDiv").html("No Data Available");
 		}
 		
 	}
@@ -617,22 +595,22 @@
 		return properName;
 	}
 	
-	function buildgetLevelWiseBasicCommitteesCountReport(result)
+	function buildgetBoothLevelWiseBasicCommitteesCountReport(result)
 	{
-		$("#levelWiseBasicCommittees").html('');
+		$("#boothLevelWiseBasicCommittees").html('');
 		
 		var firstLevelForCohort = '';
 		//Building Level Names.
 		var locationLevelNameArray =[];
 		if(result != null && result.length > 0){
 			var str='';
-			str+='<ul class="villageWardUl">';
+			str+='<ul class="boothVillageWardUl">';
 			var length = result.length - 1;
 			for(var i = length; i >= 0; i--){
 				if(result[i].id !=10){
 					if(result[i].subList !=null && result[i].subList.length > 0){
+						str+='<li class="customLi">';
 						var properName = getProperLocationLevelName(result[i].name);
-						str+='<li class="customLi" attr_committee_level_name="'+properName+'">';
 						if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 							locationLevelNameArray.push(properName);
 							str+='<h4>'+properName+' Level</h4>';
@@ -645,7 +623,7 @@
 						str+='<div class="scroll-div">';
 							str+='<ul class="list-inline best-matched-profile ">';
 							for(var j in result[i].subList){
-								str+='<li><div id="levelWiseCommittesDetailed'+i+''+j+'" class="chartLi"></div></li>';
+								str+='<li><div id="boothLevelWiseCommittesDetailed'+i+''+j+'" class="chartLi"></div></li>';
 							}
 							str+='</ul>';
 						str+='</div>';
@@ -655,7 +633,7 @@
             }
 			str+='</ul>';
 		}
-	    $("#levelWiseBasicCommittees").html(str);
+	    $("#boothLevelWiseBasicCommittees").html(str);
 		
 		
 	 
@@ -677,8 +655,8 @@
 							
 							if( levelWiseBasicCompletedPercArray.length !=0 && levelWiseBasicStartedPercArray.length !=0 && levelWiseBasicNotStartedPercArray.length !=0){
 								$(function () {
-								$('#levelWiseCommittesDetailed'+i+''+j+'').highcharts({
-									colors: ['#0061D0','#7DDF7D','#C53A36'],
+								$('#boothLevelWiseCommittesDetailed'+i+''+j+'').highcharts({
+									colors: ['#7DDF7D','#C53A36'],
 									chart: {
 										type: 'column',
 										
@@ -747,17 +725,14 @@
 									 series: [{
 										name: 'Started',
 										data: levelWiseBasicStartedPercArray 
-									}, {
-										name: 'Completed',
-										data: levelWiseBasicCompletedPercArray
-									}, {
+									},{
 										name: 'Not Started',
 										data: levelWiseBasicNotStartedPercArray
 									}]
 								});
 							});	
 							}else{
-								$('#levelWiseCommittesDetailed'+i+''+j+'').html("<b>"+committeeName+"</b> (<span style='text-align:center'>No Data Available</span>)");
+								$('#boothLevelWiseCommittesDetailed'+i+''+j+'').html("<b>"+committeeName+"</b> (<span style='text-align:center'>No Data Available</span>)");
 							}
 						}
 					}
@@ -765,9 +740,9 @@
 			}
 		
 		}else{
-			$("#levelWiseBasicCommittees").html("No Data Available");
+			$("#boothLevelWiseBasicCommittees").html("No Data Available");
 		}  
-		$(".villageWardUl").slick({
+		$(".boothVillageWardUl").slick({
 			 slide: '.customLi',
 			 slidesToShow: 1,
 			 slidesToScroll: 1,
@@ -776,7 +751,7 @@
 			 swipe:false,
 			 touchMove:false
 		}); 
-		$(".moreBlocksDistrictlevel").show();
+		$(".moreBlocksDistrictlevels").show();
 		 //calling function for performance cohort.
 		var tdpCommitteeLevelIdsClickedArray = [];
 		if(firstLevelForCohort.toLowerCase().indexOf("mandal") >= 0){
@@ -791,22 +766,22 @@
 		}else if(firstLevelForCohort.toLowerCase().indexOf("state") >= 0){
 			tdpCommitteeLevelIdsClickedArray.push(10);
 		}
-		getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray); 
+		getBoothcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray); 
 		
 	}
 	
-	function buildCommitteesPerformanceCohort(result){
-		$("#districtWiseCommitteesReport").html('');
+	function buildBoothCommitteesPerformanceCohort(result){
+		$("#boothDistrictWiseCommitteesReport").html('');
 		if(result != null && result.length > 0){
 			var str='';
 			
 			for(var i in result){
 				str+=result[i].name;
-				str+='<div id="mainCommittees'+i+'" class="chartLiD" style="height:300px" ></div>';
+				str+='<div id="boothMainCommittees'+i+'" class="chartLiD" style="height:300px" ></div>';
 			}
 									
 		}
-		$("#districtWiseCommitteesReport").html(str);
+		$("#boothDistrictWiseCommitteesReport").html(str);
 		
 		
 		
@@ -827,10 +802,7 @@
 							districtNamesArray.push(result[i].subList[j].name);
 						}
 						
-						
-						//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
-							districtWiseCompletedPercArray.push(result[i].subList[j].completedPerc);
-						//}
+						districtWiseCompletedPercArray.push(result[i].subList[j].completedPerc);
 						//if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
 							districtWiseStartedPercArray.push(result[i].subList[j].startedPerc);
 						//}
@@ -840,8 +812,8 @@
 					}
 			}
 						$(function () {
-							$('#mainCommittees'+i+'').highcharts({
-								colors: ['#0061D0','#7DDF7D','#C53A36'],
+							$('#boothMainCommittees'+i+'').highcharts({
+								colors: ['#338ecf','#7DDF7D','#C53A36',],
 								chart: {
 									type: 'column'
 								},
@@ -916,7 +888,7 @@
 								}, {
 									name: 'Completed',
 									data: districtWiseCompletedPercArray
-								}, {
+								},{
 									name: 'Not Started',
 									data: districtWiseNotStartedPercArray
 								}]
@@ -926,10 +898,10 @@
 			
 		}
 	}else{
-		$("#districtWiseCommitteesReport").html("No Data Available")
+		$("#boothDistrictWiseCommitteesReport").html("No Data Available")
 	}
 		
-		$("#districtWiseCommitteesReport").each(function(){
+		$("#boothDistrictWiseCommitteesReport").each(function(){
 			var scrollengthDiv = $(this).find(".chartLiD").length;
 			if(scrollengthDiv >= 4){
 				$(".verticalScrollBar").mCustomScrollbar({setHeight:'560px'})
@@ -941,8 +913,8 @@
 		});
 }
 	
-	function buildgetChildUserTypesByItsParentUserType(result){
-		$("#childUserTypeDetailsDiv").html('');
+	function buildgetboothChildUserTypesByItsParentUserType(result){
+		$("#boothChildUserTypeDetailsDiv").html('');
 		var str='';
 		 str+='<ul class="comparisonSelect">';
 		 
@@ -952,11 +924,11 @@
 			 firstChildUserTypeIdString = result[0].shortName;
 			 userType=result[0].userType;
 			 for(var i in result){
-				 str+='<li attr_usertypeid="'+result[i].shortName+'" attr_userType=\''+result[i].userType+'\' class="childUserTypeCls">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+				 str+='<li attr_usertypeid="'+result[i].shortName+'" attr_userType=\''+result[i].userType+'\' class="boothchildUserTypeCls">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
 		 }
 		str+='</ul>';
-		$("#childUserTypeDetailsDiv").html(str);
+		$("#boothChildUserTypeDetailsDiv").html(str);
 		if(finalGlobalUrl=="committeesMonitoringAction"){
 			var lengthSize = result.length;
 			firstChildUserTypeIdString = result[lengthSize-1].shortName; 
@@ -965,19 +937,18 @@
 		}else{
 		 $(".comparisonSelect li:first-child").addClass("active");	
 		}
-		getSelectedChildUserTypeMembers(firstChildUserTypeIdString,userType);
+		getBoothSelectedChildUserTypeMembers(firstChildUserTypeIdString,userType);
 		
 	}
 	
-	
-	
-	function buildgetSelectedChildUserTypeMembers(result,childUserType){
 		
-		$("#SelectedUserTypeDetailsDiv").html('');
+	function buildgetBoothSelectedChildUserTypeMembers(result,childUserType){
+		
+		$("#boothSelectedUserTypeDetailsDiv").html('');
 	var str='';
 	    var firstActivityMemberId;
 		var firstUserTypeId;
-		var firstChildActivityMemberId = "directChildActivityMemberDiv";
+		var firstChildActivityMemberId = "boothDirectChildActivityMemberDiv";
 		var firstuserType;
 		var firstUserMemberName;
 			firstActivityMemberId = result[0].activityMemberId;
@@ -992,7 +963,7 @@
 			 str+='<th>Designation</th>';
 			 str+='<th>Location</th>';
 			 str+='<th>Total</th>';
-			 str+='<th>Yet To Start</th>';
+			 str+='<th>Not Started</th>';
 			 str+='<th>Started</th>';
 			 str+='<th>Completed</th>';
 			 str+='<th>%</th>';
@@ -1000,7 +971,7 @@
 		 str+='<tbody>';
 		 var rank=1;
 		  for(var i in result){
-			str+='<tr style="cursor:pointer;" class="compareActivityMemberCls" attr_selectedusertype="'+result[i].userType+'"  attr_id="directChildActivityMemberDiv"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+'>';
+			str+='<tr style="cursor:pointer;" class="compareActivityMemberCls1" attr_selectedusertype="'+result[i].userType+'"  attr_id="boothDirectChildActivityMemberDiv"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+'>';
 			 str+='<td><span class="counts">'+rank+'</span></td>';
 			 str+='<td>'+result[i].name+'</td>';
 			 str+='<td>'+result[i].userType+'</td>';
@@ -1010,11 +981,11 @@
 			}else{
 				str+='<td> - </td>';
 			}
-			if( result[i].notStartedCount != null && result[i].notStartedCount >0){
-					str+='<td>'+result[i].notStartedCount+'</td>';
+			if(result[i].notStartedCount !=null && result[i].notStartedCount >0){
+				str+='<td>'+result[i].notStartedCount+'</td>';
 			}else{
 				str+='<td> - </td>';
-			} 
+			}
 			if(result[i].startedCount !=null && result[i].startedCount >0){
 				str+='<td>'+result[i].startedCount+'</td>';
 			}else{
@@ -1035,13 +1006,14 @@
 			}
 			str+='</tbody>';
 			str+='</table>';
-	    $("#SelectedUserTypeDetailsDiv").html(str);
+	    $("#boothSelectedUserTypeDetailsDiv").html(str);
+		
 		$("#committeeMemberDataTblId").dataTable({
 			"aaSorting": [],
 			"iDisplayLength" : 5	
 		});
-		getTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
-		getTopPoorCommitteeLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
+		getBoothTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
+		getBoothTopPoorCommitteeLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
 	 }else{	
 	   if(result !=null && result.length >0){
 		str+='<ul class="list-inline slickPanelSliderCommittee">';
@@ -1050,10 +1022,10 @@
 			rankVar =rankVar+1;
 			var locationNamevaraiable =result[i].locationName;
 			if(i == 0){
-				str+='<li  style="cursor:pointer;" class="compareActivityMemberCls panelActiveSlick" attr_id ="directChildActivityMemberDiv" attr_selectedmembername="'+result[i].name+'" attr_selectedusertype="'+result[i].userType+'" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
+				str+='<li  style="cursor:pointer;" class="compareActivityMemberCls1 panelActiveSlick" attr_id ="boothDirectChildActivityMemberDiv" attr_selectedmembername="'+result[i].name+'" attr_selectedusertype="'+result[i].userType+'" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
 			}else{
 				
-				str+='<li  style="cursor:pointer;" class="compareActivityMemberCls" attr_id ="directChildActivityMemberDiv" attr_selectedmembername="'+result[i].name+'" attr_selectedusertype="'+result[i].userType+'" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
+				str+='<li  style="cursor:pointer;" class="compareActivityMemberCls1" attr_id ="boothDirectChildActivityMemberDiv" attr_selectedmembername="'+result[i].name+'" attr_selectedusertype="'+result[i].userType+'" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
 				
 			}
 			
@@ -1080,6 +1052,7 @@
 							str+='<thead>';
 								str+='<th>Total</th>';
 								str+='<th>Started</th>';
+								str+='<th>Not Started</th>';
 								str+='<th>Completed</th>';
 								str+='<th>%(<small>completed</small>)</th>';
 							str+='</thead>';
@@ -1091,6 +1064,11 @@
 							}
 							if(result[i].startedCount !=null && result[i].startedCount >0){
 								str+='<td>'+result[i].startedCount+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if(result[i].notStartedCount !=null && result[i].notStartedCount >0){
+								str+='<td>'+result[i].notStartedCount+'</td>';
 							}else{
 								str+='<td> - </td>';
 							}
@@ -1113,7 +1091,7 @@
 		}
 		str+='</ul>';
 		
-		$("#SelectedUserTypeDetailsDiv").html(str);
+		$("#boothSelectedUserTypeDetailsDiv").html(str);
 			$(".slickPanelSliderCommittee").slick({
 				 slide: 'li',
 				 slidesToShow: 3,
@@ -1155,9 +1133,9 @@
 					// instead of a settings object
 				  ]
 			});
-		getDirectChildActivityMemberCommitteeDetails(firstActivityMemberId,firstUserTypeId,firstUserMemberName,firstuserType,firstChildActivityMemberId);
-		getTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
-		getTopPoorCommitteeLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
+		getBoothDirectChildActivityMemberCommitteeDetails(firstActivityMemberId,firstUserTypeId,firstUserMemberName,firstuserType,firstChildActivityMemberId);
+		getBoothTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
+		getBoothTopPoorCommitteeLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
 	}
 	}
 	/* else{
@@ -1166,39 +1144,39 @@
 	
 	}
 	
-	$(document).on("click",".childUserTypeCls",function(){
-		
-		if(!$(this).hasClass("active")){
-			$("#directChildActivityMemberDiv").html('');
-			$("#topPoorPerformanceDiv").html('');
-			$("#topPoorLocationsDiv").html(''); 
+	$(document).on("click",".boothchildUserTypeCls",function(){
+		if($(this).hasClass("active")){
+			$("#boothDirectChildActivityMemberDiv").html('');
+			$("#boothTopPoorPerformanceDiv").html('');
+			$("#boothTopPoorLocationsDiv").html(''); 
 			var childUserTypeIdString = $(this).attr("attr_usertypeid");
 			var childUserType = $(this).attr("attr_userType");
-			 getSelectedChildUserTypeMembers(childUserTypeIdString,childUserType);
+			 getBoothSelectedChildUserTypeMembers(childUserTypeIdString,childUserType);
 		}else{
-			$("#SelectedUserTypeDetailsDiv").html('');
-			$("#directChildActivityMemberDiv").html('');
-			$("#topPoorPerformanceDiv").html('');
-			$("#topPoorLocationsDiv").html(''); 
+			$("#boothSelectedUserTypeDetailsDiv").html('');
+			$("#boothDirectChildActivityMemberDiv").html('');
+			$("#boothTopPoorPerformanceDiv").html('');
+			$("#boothTopPoorLocationsDiv").html(''); 
 		}
 		
 	});
 	
-	function buildgetUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(result){
-		$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('');
+	function buildgetBoothUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(result){
+		$("#boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('');
 		
 		if(result != null && result.length > 0){
 			for(var i in result){
-				
 				var candidateNameAndCompletedCountArray = [];
 				var countVar =0;
 				var candidateNameStartedCountArray =[];
+				var candidateNameCompletedCountArray =[];
 				var candidateNameNotStartedCountArray =[];
 				var candidateNameArray=[];
 				if(result[i] !=null && result[i].length>0){
 					for(var j in result[i]){
 							candidateNameArray.push(result[i][j].name)
-						 var obj1 = {
+							//console.log(result[i][j].name);
+						var obj1 = {
 								name: result[i][j].name,
 								y: result[i][j].completedPerc
 							};
@@ -1210,8 +1188,9 @@
 								name: result[i][j].name,
 								y: result[i][j].notStartedPerc
 							};
-						candidateNameAndCompletedCountArray.push(obj1);
+							
 						candidateNameStartedCountArray.push(obj2);
+						candidateNameCompletedCountArray.push(obj1);
 						candidateNameNotStartedCountArray.push(obj3);
 						
 							
@@ -1222,9 +1201,7 @@
 					}
 				}
 				
-					
-				if( result[i][j].completedPerc !=0 || result[i][j].startedPerc !=0 || result[i][j].notStartedPerc !=0){
-					
+				if(result[i][j].startedPerc !=0 || result[i][j].notStartedPerc !=0){
 					var str='';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					if(result[i][0].userTypeId == 4 || result[i][0].userTypeId == 11){
@@ -1232,13 +1209,13 @@
 					}else{
 						str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
 					}	
-					str+='<div id="genSec'+i+'" style="height:170px;"></div>';
+					str+='<div id="genSecBooth'+i+'" style="height:170px;"></div>';
 					str+='</div>'
-					$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").append(str);
+					$("#boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv").append(str);
 					
 					$(function () {
-						 $("#genSec"+i).highcharts({
-							 colors: ['#0061D0','#7DDF7D','#C53A36'],
+						 $("#genSecBooth"+i).highcharts({
+							colors: ['#338ecf','#7DDF7D','#C53A36',],
 							chart: {
 								type: 'column'
 							},
@@ -1318,7 +1295,7 @@
 									data: candidateNameStartedCountArray
 								},{
 									name: 'Completed',
-									data: candidateNameAndCompletedCountArray
+									data: candidateNameCompletedCountArray
 								},{
 									name: 'Not Started',
 									data: candidateNameNotStartedCountArray
@@ -1327,22 +1304,24 @@
 						});
 					});
 				} else{
-					$("#genSec"+i).html("No Data Available");
-					$("#genSec"+i).css("height","35px");
+					$("#genSecBooth"+i).html("No Data Available");
+					$("#genSecBooth"+i).css("height","35px");
 						
 				} 
 				
 			}
 			
 		}else{
-			//$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html("No Data Available");
-			$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html("");
+			//$("#boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html("No Data Available");
+			$("#boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html("");
 		}
 		
 	}
 	
-	function buildgetUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(result){
-		$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('');
+	function buildgetBoothUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(result){
+		
+		$("#boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('');
+		
 		if(result != null && result.length > 0){
 			for(var i in result){
 				
@@ -1351,20 +1330,8 @@
 				var candidateNameNotStartedCountArray =[];
 				var candidateNameArray=[];
 				var countVar = 0;
-				var completedper = 0;
-				var strtdPerc = 0;
-				var ntStrtedPrc = 0;
 				if(result[i] !=null && result[i].length  >0){
 					for(var j = result[i].length -1; j >= 0; j--){
-						
-						completedper = result[i][j].completedPerc;
-						strtdPerc = result[i][j].startedPerc;
-						ntStrtedPrc = result[i][j].notStartedPerc;
-						
-						 var obj1 = {
-								name: result[i][j].name,
-								y: result[i][j].completedPerc
-							};
 						var obj2 = {
 								name: result[i][j].name,
 								y: result[i][j].startedPerc
@@ -1373,7 +1340,6 @@
 								name: result[i][j].name,
 								y: result[i][j].notStartedPerc
 							};
-						candidateNameAndCompletedCountArray.push(obj1);
 						candidateNameStartedCountArray.push(obj2);
 						candidateNameNotStartedCountArray.push(obj3);
 						
@@ -1384,7 +1350,8 @@
 					}
 				}
 			  		
-				if( completedper !=0 || strtdPerc !=0 || ntStrtedPrc !=0){
+				//if( result[i][j].completedPerc !=0){
+					
 					var str='';
 					
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -1393,16 +1360,16 @@
 						}else{
 							str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
 						}
-					str+='<div id="genSec1'+i+'" class="m_top20" style="height:170px;"></div>';
+					str+='<div id="genSecBooth1'+i+'" class="m_top20" style="height:170px;"></div>';
 					str+='</div>';
 				
-					$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").append(str);
+					$("#boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv").append(str);
 					
-					var getWidth = $("#genSec1"+i).parent().width()+'px';
-					$("#genSec1"+i).width(getWidth);
+					var getWidth = $("#genSecBooth1"+i).parent().width()+'px';
+					$("#genSecBooth1"+i).width(getWidth);
 					$(function () {
-						 $("#genSec1"+i).highcharts({
-							 colors: ['#0061D0','#7DDF7D','#C53A36'],
+						 $("#genSecBooth1"+i).highcharts({
+							colors: ['#7DDF7D','#C53A36'],
 							chart: {
 								type: 'column'
 							},
@@ -1477,50 +1444,47 @@
 									name: 'Started',
 									data: candidateNameStartedCountArray
 								},{
-									name: 'Completed',
-									data: candidateNameAndCompletedCountArray
-								},{
 									name: 'Not Started',
 									data: candidateNameNotStartedCountArray
 								}],
 						 
 						});
 					});
-				}else{
-					$("#genSec1"+i).html("No Data Available");
-					$("#genSec1"+i).css("height","35px");
+				// }else{
+					// $("#genSecBooth1"+i).html("No Data Available");
+					// $("#genSecBooth1"+i).css("height","35px");
 						
-				} 
+				// } 
 				
 			}
 			
 		}else{
-			$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html("No Data Available");
+			$("#boothUserTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html("No Data Available");
 		}
 		
 	}
 	$(document).on("click",".liCls1",function(){
 		var memberType=$(this).attr("attr_value");
 		 if(memberType != null && memberType == "strong"){
-			buildgetUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(globalUserWiseMemberRslt); 
+			buildgetBoothUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(globalUserWiseMemberRslt); 
 		 }else if(memberType == "poor"){
-			buildgetUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(globalUserWiseMemberRslt)
+			buildgetBoothUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(globalUserWiseMemberRslt)
 		 }
 	});
 
 	$(document).on("click",".topFivePoorResults",function(){
 		$("#userTypeWiseCommitteesForTopFiveStrongDiv").hide();
 		$("#userTypeWiseCommitteesForTopFivePoorDiv").show();
-		getUserTypeWiseCommitteesCompletedCounts1();
+		getUserTypeWiseCommitteesCompletedCounts2();
 	})
 	$(document).on("click",".topFiveStrongResults",function(){
 		$("#userTypeWiseCommitteesForTopFiveStrongDiv").show();
 		$("#userTypeWiseCommitteesForTopFivePoorDiv").hide();
-		getUserTypeWiseCommitteesCompletedCounts1();
+		getUserTypeWiseCommitteesCompletedCounts2();
 	})
 	
 	
-	$(document).on("click",".compareActivityMemberCls",function(){
+	$(document).on("click",".compareActivityMemberCls1",function(){
 		//$(".slickPanelSlider").find("li").removeClass("active");
 		//$(this).addClass("active");
 		$(".slickPanelSliderCommittee").find("li").removeClass("panelActiveSlick");
@@ -1532,26 +1496,26 @@
 		var childActivityMemberId = $(this).attr("attr_id");  
 		//$(".showChildBlockAndTopPoorBlock").show();
 		if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
-		  getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
-		  getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
+		  getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		  getBoothTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
 		 }else{ 
-	     getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		 getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
-		 getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
+	     getBoothDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		 getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		 getBoothTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
 		}
 	})
-	function buildgetDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId){
+	function buildgetBoothDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId){
 		$("#"+childActivityMemberId).html('');
 		var str ='';
 		
 		if(result != null && result.length >0){
 			var rankVar =0;
 			str+='<h4><span  class="text-capital">'+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+'</span></h4>';
-			if(childActivityMemberId != "directChildActivityMemberDiv"){
+			if(childActivityMemberId != "boothDirectChildActivityMemberDiv"){
 				str+='<span class="removeSelecUserType pull-right" attr_removeSelecUserType = "'+childActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
 			}
 			
-				if(childActivityMemberId != "directChildActivityMemberDiv")
+				if(childActivityMemberId != "boothDirectChildActivityMemberDiv")
 				{
 					str+='<table class="table table-condensed tableLevels m_top20">';
 				}else{
@@ -1563,7 +1527,7 @@
 						str+='<th>Designation</th>';
 						str+='<th>Name</th>';
 						str+='<th>total</th>';
-						str+='<th>Yet To Start</th>';
+						str+='<th>Not Started</th>';
 						str+='<th>started</th>';
 						str+='<th>completed</th>';
 						str+='<th>%</th>';
@@ -1572,7 +1536,7 @@
 					for(var i in result){
 						rankVar = rankVar+1;
 						 var locationNamevar = result[i].locationName;
-						str+='<tr class="compareLowLevelActivityMemberCls"  attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
+						str+='<tr class="boothcompareLowLevelActivityMemberCls"  attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
 							str+='<td>';
 							str+='<span class="tableCount">'+rankVar+'</span>';	
 							str+='</td>';
@@ -1625,7 +1589,7 @@
 				str+='</table>';
 				$("#"+childActivityMemberId).html(str);
 		}else{
-			if(childActivityMemberId == "directChildActivityMemberDiv"){
+			if(childActivityMemberId == "boothDirectChildActivityMemberDiv"){
 				$("#"+childActivityMemberId).html("<h5><span  class='text-capital'>"+selectedMemberName+"</span> - <span class='text-capitalize'>"+selectedUserType+"</span> - ( No Data Available )</h5>");
 			}
 			
@@ -1633,7 +1597,7 @@
 	
 	}
 	 
-	 $(document).on("click",".compareLowLevelActivityMemberCls",function(){
+	 $(document).on("click",".boothcompareLowLevelActivityMemberCls",function(){
 		 $(this).closest('tr').next('tr.showHideTr').show(); 
 		 
 		var activityMemberId = $(this).attr("attr_activitymemberid");  
@@ -1642,12 +1606,10 @@
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
 		if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
-		  getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
-		  getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
+		  getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
 		 }else{ 
-	     getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		 getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
-		 getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
+	     getBoothDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		 getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
 		}
 	})
 	
@@ -1662,8 +1624,8 @@
 		 $("#"+removeSelected).closest('.showHideTr').hide();
 	});
 	
-	function buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType){
-		$("#topPoorPerformanceDiv").html('');
+	function buildgetBoothTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType){
+		$("#boothTopPoorPerformanceDiv").html('');
 		var str='';
 		 	
 		if(result != null && result.subList1 != null && result.subList1.length >0){
@@ -1753,14 +1715,14 @@
 		
 		}
 		str+='</div>';
-		$("#topPoorPerformanceDiv").html(str);
+		$("#boothTopPoorPerformanceDiv").html(str);
 		$('.progressCustom').tooltip()
 	
 		
 	}
 	
-	function buildTopPoorCommitteeLocations(result,selectedMemberName,selectedUserType){
-		$("#topPoorLocationsDiv").html('');
+	function buildBoothTopPoorCommitteeLocations(result,selectedMemberName,selectedUserType){
+		$("#boothTopPoorLocationsDiv").html('');
 		var str ='';
 		
 		if(result !=null && result.length >0){
@@ -1807,7 +1769,7 @@
 				str+='</table>';
 				str+='</div>';
 			str+='</div>';
-			$("#topPoorLocationsDiv").html(str);
+			$("#boothTopPoorLocationsDiv").html(str);
 			$('.progressCustom').tooltip()
 		}/* else{
 			$("#topPoorLocationsDiv").html("<span class='color_333 pad_5 bg_CC text-capital'>top five <span class='text-danger'>poor</span> locations - (<span style='font-size:11px;'><i> "+selectedMemberName+" - "+selectedUserType+"</i></span>) - (No Data Available)</span>");
@@ -1819,65 +1781,47 @@
 	// DETAILD BLOCK : clicked on '... dots' and 'detailed block' or 'click on slick' START
 	
 	//... dots.
-	var isCommitteeMoreBlockExpand = false;
-	var isCommitteeMoreBlockClosed= false;
-	$(document).on("click",".moreBlocksIcon",function(){
-		isCommitteeMoreBlockExpand = true;
-		isCommitteeMoreBlockClosed = false;
-		$(this).addClass("unExpandBlock");
-		$(".moreBlocks").show();
-		$(".moreBlocksDetailAndComp").show();
-		$(".moreBlocks1").hide();
+	$(document).on("click",".moreBlocksIcons",function(){
+		$(this).addClass("unExpandBlocksBoothC");
+		
+		$(".moreBoothBlocks1").hide();
 		$(".committeeSeetingBlock").show();
-		customBuildGraph();
-		$("#levelWiseBasicCommittees").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		setTimeout(function(){ committeeDetailsBlockdefaultCall(); }, 1000);
-		/* if($(this).hasClass("unExpandBlock")){
-			getLevelWiseBasicCommitteesCountReport();
-		} */
+		$(".moreBoothBlocksDetailAndComp").show();
+		//customBuildGraph();
+		getBoothLevelWiseBasicCommitteesCountReport();
+		
 		
 	});
-	$(document).on("click",".unExpandBlock",function(){
-		$(this).removeClass("unExpandBlock");
-		isCommitteeMoreBlockClosed = true;
-		$(".moreBlocks").hide();
-		$(".moreBlocks1").hide();
-		$(".moreBlocksDetailAndComp").hide();
-		$(".committeeSeetingBlock").hide();
-		$(".moreBlocksDistrictlevel").hide();
-		$(".comparisionBlock").removeClass("active");
-		$(".detailedBlock").addClass("active");
+	$(document).on("click",".unExpandBlocksBoothC",function(){
+		$(this).removeClass("unExpandBlocksBoothC");
+		$(".moreBoothBlocks1").hide();
+		$(".moreBoothBlocksDetailAndComp").hide();
+		$(".moreBlocksDistrictlevels").hide();
+		$(".comparisionBlocks").removeClass("active");
+		$(".detailedBlocks").addClass("active");
 	});
-	
-	function committeeDetailsBlockdefaultCall(){
-		if(isCommitteeMoreBlockExpand==true && isCommitteeMoreBlockClosed==false){
-			getLevelWiseBasicCommitteesCountReport();
-		}	
-	}
-	
-	$(document).on("click",".detailedBlock",function(){
-		$(".moreBlocks1").hide();
-		$(".moreBlocks").show();
-		getLevelWiseBasicCommitteesCountReport();
+	$(document).on("click",".detailedBlocks",function(){
+		$(".moreBoothBlocks1").hide();
+		$(".moreBlocksDistrictlevels").show();
+		getBoothLevelWiseBasicCommitteesCountReport();
 	});
 	
 	
-	$(document).on("click",".comparisionBlock",function(){
-		$("#SelectedUserTypeDetailsDiv").html(''); 
-		$("#directChildActivityMemberDiv").html('');
-		$("#topPoorPerformanceDiv").html('');
-		$("#topPoorLocationsDiv").html(''); 
+	$(document).on("click",".comparisionBlocks",function(){
+		$("#boothSelectedUserTypeDetailsDiv").html(''); 
+		$("#boothDirectChildActivityMemberDiv").html('');
+		$("#boothTopPoorPerformanceDiv").html('');
+		$("#boothTopPoorLocationsDiv").html(''); 
 		
-		$(".moreBlocks").hide();
-		$(".moreBlocksDistrictlevel").hide();
-		$(".moreBlocks1").show();
-		getAllItsSubUserTypeIdsByParentUserTypeId();
+		$(".moreBoothBlocks1").show();
+		$(".moreBlocksDistrictlevels").hide();
+		
+		getBoothAllItsSubUserTypeIdsByParentUserTypeId();
 		
 	});
 	
-	$("#levelWiseBasicCommittees").on("click",".slick-next,.slick-prev",function(){
-		//var currentSliderLevel = $(".slick-current").find("h4").html();
-		var currentSliderLevel = $(".customLi.slick-current").attr("attr_committee_level_name");
+	$("#boothLevelWiseBasicCommittees").on("click",".slick-next,.slick-prev",function(){
+		var currentSliderLevel = $(".slick-current").find("h4").html();
 		
 		var tdpCommitteeLevelIdsClickedArray = [];
 		
@@ -1894,7 +1838,7 @@
 			tdpCommitteeLevelIdsClickedArray.push(10);
 		}
 		
-		getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
+		getBoothcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
 		
 	});
 	
@@ -1925,7 +1869,7 @@
 		
 		if(allSelectedCommitteeIdsArray!=null && allSelectedCommitteeIdsArray.length>0){
 			 $(".basicCommitteesBlockDropDown").hide();	
-			 defaultCommitteeCalls();
+			 boothDefaultCommitteeCalls();
 		}else{
 			//show error msg
 			$("#committeeErrMsg").modal("show");
@@ -1933,9 +1877,10 @@
     });
 	
 	
-	function defaultCommitteeCalls(){
+	function boothDefaultCommitteeCalls(){
 		
-		committeeBasicCall();
+		//boothDefaultCommitteeCalls();//srujana
+		getUserTypeWiseBoothCommitteesInchargeDetails();
 		
 		if($(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".liCls1").each(function(){
@@ -1946,7 +1891,7 @@
 					$(".addactive").addClass("active");
 				}
 			});
-			   getUserTypeWiseCommitteesCompletedCounts1();	
+			   getUserTypeWiseCommitteesCompletedCounts2();	
 			
 
 		}
@@ -1954,27 +1899,27 @@
 		var finalURL = URLArr[parseInt(URLArr.length) - 1].replace('.action','');
 		if(finalURL =="committeesMonitoringAction")
 		{
-			getUserTypeWiseCommitteesCompletedCounts1();	
+			getUserTypeWiseCommitteesCompletedCounts2();	
 		}
-		if($(".moreBlocksIcon").hasClass("unExpandBlock")){
-			if($(".detailedBlock").hasClass("active")){
-				$("#levelWiseBasicCommittees").html('');
-				$(".moreBlocksDistrictlevel").hide();
+		if($(".moreBlocksIcons").hasClass("unExpandBlocksBoothC")){
+			if($(".detailedBlocks").hasClass("active")){
+				$("#boothLevelWiseBasicCommittees").html('');
+				$(".moreBlocksDistrictlevels").hide();
 				
-				getLevelWiseBasicCommitteesCountReport();
+				getBoothLevelWiseBasicCommitteesCountReport();//srujana
 			}
-			if($(".comparisionBlock").hasClass("active")){
-				$("#directChildActivityMemberDiv").html('');
-				$("#topPoorPerformanceDiv").html('');
-				$("#topPoorLocationsDiv").html('');
-				getAllItsSubUserTypeIdsByParentUserTypeId();
+			if($(".comparisionBlocks").hasClass("active")){
+				$("#boothDirectChildActivityMemberDiv").html('');
+				$("#boothTopPoorPerformanceDiv").html('');
+				$("#boothTopPoorLocationsDiv").html('');
+				getBoothAllItsSubUserTypeIdsByParentUserTypeId();
 			}
 		}
 	}
-	function committeeBasicCall(){
-			getCommitteesBasicCountReport(); 
-	}
-	$(document).on("click",".comparisonSelect li",function(){
+	/* function boothCommitteeBasicCall(){
+			getBoothCommitteesBasicCountReport(); 
+	}  */
+	/* $(document).on("click",".comparisonSelect li",function(){
 		if($(this).hasClass("active") == true)
 		{
 			$(this).removeClass("active");
@@ -1982,11 +1927,7 @@
 			$(".comparisonSelect li").removeClass("active");
 			$(this).addClass("active");
 		}
-	});
-	$(document).on("click",".basicCommitteesBlockDiv",function(e){
-		$(this).closest(".committeesBlock").find(".basicCommitteesBlockDropDown").toggle();
-		e.stopPropagation();
-	});
+	}); */
 	$(document).on("click",function(){
 		$(".documentCloseClass").hide();
 	});
@@ -1994,104 +1935,34 @@
 		e.stopPropagation();
 	});
 	//$(".committeesDate").html("up to date( "+customStartDatemMeetings+" )");
-	 $('#dateRangeId').on('apply.daterangepicker', function(ev, picker) {
+	
+	$("#dateRangeBoothId").daterangepicker({
+		opens: 'left',
+	    startDate: moment(),
+        endDate: moment(),
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+			'Today': [moment(), moment()],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
+        }
+	})
+	 $('#dateRangeBoothId').on('apply.daterangepicker', function(ev, picker) {
 		customStartDatemMeetings = picker.startDate.format('DD/MM/YYYY');
 			//do something, like clearing an input
-		defaultCommitteeCalls();
+		boothDefaultCommitteeCalls();
 		$(".committeesDate").html("( "+customStartDatemMeetings+" )");
 	});
-	 
-	 /* $(document).on("click",".iconExpand",function(){
-			$(".dateRangePickerCls").toggleClass("hide");
-			$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".committeesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			$(".basicCommitteesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			$(".userTypeCommitteesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			$(".committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
-			$(".committeesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-			$(".basicCommitteesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-			$(".userTypeCommitteesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-			$(".showDatePicker").toggle();
-			if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".moreBlocks").hide();
-				$(".moreBlocksDistrictlevel").hide();
-				$(".moreBlocks1").hide();
-				$(".moreBlocksDetailAndComp").hide();
-			}else{
-				 getUserTypeWiseCommitteesCompletedCounts1();	
-				setTimeout(function(){
-					$('html,body').animate({
-						scrollTop: $(".committeesBlock").offset().top},
-					'slow');
-				},500);
-			}
-			if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
-				$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
-				$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".debatesMoreHiddenBlock,.debatesHiddenBlock").hide();
-				$(".dateRangePickerClsForDebates").toggleClass("hide");
-				$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
-				$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
-				$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-				$(".dateRangePickerClsForMeetings").toggleClass("hide");
-				$(".moreMeetingsBlocks1").hide();
-				$(".moreMeetingsBlocksDetailed").hide();
-				$(".moreMeetingsBlocksComparision").hide();
-			}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
-				$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-				$(".dateRangePickerClsForNews").toggleClass("hide");
-			}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents,.comparisonBlockActivities ").hide();
-				$(".panelBlockCollapseIcon").addClass("collapsed");
-				$(".activitesExpandIcon").parent().parent().parent().parent().find(".collapse").removeClass("in").addClass("collapsed");
-				$(".activitesExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
-				$(".eventsListExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
-				$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-				$(".dateRangePickerClsForEvents").toggleClass("hide");
-			}else if( $(".cadreExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".cadreExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".moreCadreBlock,.moreBlocksCadre,.moreBlocksCadreIcon").hide();
-				$(".cadreBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			}else if( $(".attendaceIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".attendaceIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".attendanceBlockMore,.moreAttBlocks,.moreAttBlocksIcon").hide();
-				$(".dateRangePickerClsForAttendance").toggleClass('hide');
-				$(".attendanceBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			}else if( $(".NewTourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".NewTourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".NewTourExpandCls,.NewToursHiddenBlock,.moreNewToursBlocksDetailed").hide();
-				$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			}else if( $(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".alertsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".districtAltCtnCls ,.alertLocationDiv,.dateRangePickerClsForAlert,.alertComparisonblock").hide();
-				$(".alertsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			}else if( $(".tourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".tourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".tourExpandCls ,.toursHiddenBlock,.moreToursBlocks1,.moreToursBlocksDetailed ,.comparisonBlockTours ,.toursDateRangePickerCls").hide();
-				$(".toursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			}else if( $(".emnIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".emnIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".moreBlockEMN ,.newEmnHideCls,.dateRangePickerClsForEmn,.newsComparisonUl").hide();
-				$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			}
-	
-			 setTimeout(function(){
-				$(".committeesHiddenBlock,.moreBlocksIcon").toggle();
-				//initialiseGraph();
-			},500); 
-		}); */
-		
-		function getCadreEnrolmentYears(){
+	 		
+	function getBoothCadreEnrolmentYears(){
 			 var jsObj={
 			
 				   };
@@ -2104,26 +1975,29 @@
 			}).done(function(result){
 				if(result != null && result.length > 0){
 					for(var i in result){
-						if(parseInt(result[i].id) == 2)
-							$("#tdpCommitteeYearId").append('<option value='+result[i].id+' selected="selected">'+result[i].electionYear+'</option>');
-						else
-							$("#tdpCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
+						$("#tdpBoothCommitteeYearId").append('<option value="1" selected="selected">'+result[i].electionYear+'</option>');
+						/*if(parseInt(result[i].id) >1 ){
+							if(parseInt(result[i].id) == 2)
+								$("#tdpBoothCommitteeYearId").append('<option value='+result[i].id+' selected="selected">'+result[i].electionYear+'</option>');
+							else
+								$("#tdpBoothCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
+						}*/
 					}
 				}
 				if(finalGlobalUrl=="committeesMonitoringAction"){
-				    $(".comparisionBlock ").trigger("click");
+				    $(".comparisionBlocks ").trigger("click");
 				}
-				getCommitteeDetailsBiEnrollement(2);
+				getBoothCommitteeDetailsBiEnrollement(2);
 			});
 		}
-		$(document).on("change","#tdpCommitteeYearId",function(){
-			getCommitteeDetailsBiEnrollement(0);
+		$(document).on("change","#tdpBoothCommitteeYearId",function(){
+			getBoothCommitteeDetailsBiEnrollement(0);
 		});
 		
-		function getCommitteeDetailsBiEnrollement(id){
+		function getBoothCommitteeDetailsBiEnrollement(id){
 			var enrollmentIdsArr = new Array();
 			if(id == 0)
-				enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
+				enrollmentIdsArr.push($("#tdpBoothCommitteeYearId").val());
 			else{
 				enrollmentIdsArr.push(id);
 			}
@@ -2177,18 +2051,18 @@
 							var tDate = result[i].toDate.split('-')[2].substring(0,2);
 						}
 						
-						$('#dateRangeId').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
-						$('#dateRangeId').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
-						$('#dateRangeId').val(fDate+'/'+fMonth+'/'+fYear+' - '+tDate+'/'+tMonth+'/'+tYear)
+						$('#dateRangeBoothId').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
+						$('#dateRangeBoothId').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
+						$('#dateRangeBoothId').val(fDate+'/'+fMonth+'/'+fYear+' - '+tDate+'/'+tMonth+'/'+tYear)
 					}
-					defaultCommitteeCalls();
+					boothDefaultCommitteeCalls();
 				}
 			});
 		}
-		$(document).on("change","#tdpCommitteeYearId",function(){
+		$(document).on("change","#tdpBoothCommitteeYearId",function(){
 			/* alert(12);
 			var id =0; */
-			getCommitteeDetailsBiEnrollement(0);
+			getBoothCommitteeDetailsBiEnrollement(0);
 		});
 		$('body').on('click', function (e) {
 
@@ -2218,10 +2092,10 @@
 	
 	});
 		
- function getAflCommitteeCount(state,level,committeeType){
+ function getBoothAflCommitteeCount(state,level,committeeType){
 	//	var startDate=$(".dp_startDate").val();
 	//	var endDate=$(".dp_endDate").val();
-	var dateStr = $('#dateRangeId').val();		
+	var dateStr = $('#dateRangeBoothId').val();		
 	var dateStrArr = dateStr.split('-');
 	var startDate = dateStrArr[0];
 	var endDate = dateStrArr[1];
@@ -2273,7 +2147,7 @@
 		}
 		var state = state; 
 		var committeeSpanTypeIdsArr = [];
-		committeeSpanTypeIdsArr.push($('#tdpCommitteeYearId').val());
+		committeeSpanTypeIdsArr.push($('#tdpBoothCommitteeYearId').val());
 		var jObj = {
 			state:globalStateId,
 			levelIdsArr:levelIdsArr,
@@ -2322,11 +2196,11 @@
 		});
 	}
 	
-	function getMainCommitteeMembersCount(state,level,type,committeeId,committeeType){
+	function getBoothMainCommitteeMembersCount(state,level,type,committeeId,committeeType){
 		
 		//var startDate=$(".dp_startDate").val();
 		//var endDate=$(".dp_endDate").val();
-		var dateStr = $('#dateRangeId').val();
+		var dateStr = $('#dateRangeBoothId').val();
 		var dateStrArr = dateStr.split('-');
 		var startDate = dateStrArr[0];
 		var endDate = dateStrArr[1];
@@ -2380,7 +2254,7 @@
 		
 		var state = state; 
 		var committeeSpanTypeIdsArr = [];
-		committeeSpanTypeIdsArr.push($('#tdpCommitteeYearId').val());
+		committeeSpanTypeIdsArr.push($('#tdpBoothCommitteeYearId').val());
 		var jObj = {
 			state:globalStateId,
 			levelIdsArr:levelIdsArr,
@@ -2459,3 +2333,195 @@
 					
 		});
 	}
+	
+	
+	function getBoothCommitteeInchargesCount(){
+			$("#boothCommitteesAssdDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+   var state = globalState;
+   if(state == "AP"){
+	   state=1;
+   }else if(state == "TS"){
+	   state=36;
+   } 
+   var dateString = $("#dateRangeBoothId").val();
+    
+     var committeeEnrollmentYearArray = new Array();
+	 if($("#tdpBoothCommitteeYearId").val() != null)
+       committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
+     var jsObj ={  
+            activityMemberId : globalActivityMemberId,
+            state:state,
+            dateString : dateString,
+            committeeEnrollmentYearArray :committeeEnrollmentYearArray
+           }
+    
+    $.ajax({
+      type : 'POST',
+      url : 'getBoothCommitteeInchargesCountAction.action',
+      dataType : 'json',
+      data : {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length >0){
+			buildBasicCommitteesCountDetails(result);
+		}
+     });
+  }
+  
+  function buildBasicCommitteesCountDetails(result){
+	var str="";
+	var totalBooths =$("#totalBoothsCount").text();
+	str+='<table class="table table-condensed table-bordered m_top20">';
+		str+='<thead class="bg_CC">';
+			str+='<th>Booth Incharge Assigned</th>';
+			str+='<th>Booths</th>';
+			str+='<th>No of booths Incharges</th>';
+			str+='<th>Male</th>';
+			str+='<th>Female</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+			var buildStr = "";
+			var buildStr1 = "";
+			var buildStr2 = "";
+			var buildStr3 = "";
+			var boothInchargesAssnd = result[i].boothInchargesAssnd;
+			if(boothInchargesAssnd == "5-10" || boothInchargesAssnd == "10-Above"){
+				buildStr=" "+boothInchargesAssnd+" Range Members added booths count.";
+				buildStr1=" "+boothInchargesAssnd+" Range  added Members count.";
+				buildStr2=" "+boothInchargesAssnd+" Range  added Members Male count.";
+				buildStr3=" "+boothInchargesAssnd+" Range  added Members Female count.";
+			}else{
+				buildStr=" Only "+boothInchargesAssnd+" Member(s) added booths count.";
+				buildStr1=" Total added Members Count in "+boothInchargesAssnd+" Member(s) added booths ."
+				buildStr1=" Total added Members Count in "+boothInchargesAssnd+" Member(s) added booths ."
+				buildStr2=" Total added Members Male Count in "+boothInchargesAssnd+" Member(s) added booths ."
+				buildStr3=" Total added Members Female Count in "+boothInchargesAssnd+" Member(s) added booths ."
+			}
+				str+='<td>'+result[i].boothInchargesAssnd+'</td>';
+				if(result[i].boothIds.length > 0){
+					var assigdPer = ((result[i].boothIds.length*100.0)/totalBooths).toFixed(2);
+					
+					str+='<td> <span class="tooltipCls" title="'+buildStr+'">  '+result[i].boothIds.length+'&nbsp;&nbsp;<small class="text-danger responsiveFont "  >('+assigdPer+')%</small> </span></td>';
+					
+				}else {
+					str+='<td>-</td>';
+				}
+				if(result[i].tdpCadreId != null)
+					str+='<td> <span class="tooltipCls" title="'+buildStr1+'"> '+result[i].tdpCadreId+'</span></td>';
+				else
+					str+='<td>-</td>';
+				if(result[i].maleCnt > 0){
+					var malePer = ((result[i].maleCnt*100.0)/result[i].tdpCadreId).toFixed(2);
+					str+='<td> <span class="tooltipCls" title="'+buildStr2+'"> '+result[i].maleCnt+'&nbsp;&nbsp;<small class="text-danger responsiveFont">('+malePer+')%</small></span></td>';
+				}else {
+					str+='<td>-</td>';
+				}
+				if(result[i].femaleCnt > 0){
+					var femalePer = ((result[i].femaleCnt*100.0)/result[i].tdpCadreId).toFixed(2);
+					str+='<td> <span class="tooltipCls" title="'+buildStr3+'"> '+result[i].femaleCnt+'&nbsp;&nbsp;<small class="text-danger responsiveFont">('+femalePer+')%</small></span></td>';
+				}else{ 
+					str+='<td>-</td>';
+				}
+			str+='</tr>';		
+		}
+	   
+		str+='</tbody>';
+	str+='</table>';
+	  
+	$("#boothCommitteesAssdDiv").html(str);
+	$('.tooltipCls').tooltip();
+  }
+  function getUserTypeWiseBoothCommitteesInchargeDetails()
+  {
+
+	$("#boothBasicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var state = globalState;
+	var dateString = $("#dateRangeBoothId").val();
+	var committeeEnrollmentYearArray = new Array();
+	if($("#tdpBoothCommitteeYearId").val() != null)
+	  committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
+
+    var jsObj ={  
+		activityMemberId : globalActivityMemberId,
+		state:state,
+		dateString : dateString,
+		committeeEnrollmentYearArray :committeeEnrollmentYearArray
+	}
+    
+    $.ajax({
+		type : 'POST',
+		url : 'getUserTypeWiseBoothCommitteesInchargeSummaryAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+		buildUserTypeWiseBoothCommitteesInchargeDetails(result)
+    });
+  }
+  function buildUserTypeWiseBoothCommitteesInchargeDetails(result)
+  {
+	  console.log(result);
+		$("#boothBasicCommitteeCountsDiv").html('');
+		var str='';
+		
+		var locationLevelNameArray =[];
+		if(result !=null){
+			
+			var startedPerc='0.00';
+			var completedPerc='0.00';
+			var notstartedPerc='0.00';
+			str+='<h4 class="text-capital bg_49 pad_custom">basic committee Incharges</h4>';
+				
+			str+='<table class="table table-condensed">';
+			   str+='<tr>';
+					str+='<td>';
+					if(result.totalCount != null){
+						str+='<h4 class="responsiveFont" id="totalBoothsCount">'+result.totalCount+'</h4>';
+					}else{
+						str+='<h4 class="responsiveFont"> - </h4>';
+					}
+						str+='<p class="text-muted text-capitalize responsiveFont m_top10">total  </p>';
+					str+='</td>';
+					str+='<td>';
+					if(result.startedCount !=null){
+						startedPerc = (parseInt(result.startedCount)*100/result.totalCount).toFixed(2);
+						str+='<h4 class="responsiveFont">'+result.startedCount+'</h4>';
+						str+='<small class="text-primary responsiveFont">('+startedPerc+'%)</small>';
+						str+='<p class="text-muted text-capitalize responsiveFont">Started</p>';
+					}else{
+						str+='<h4 class="responsiveFont"> - </h4>';
+						str+='<p class="text-muted text-capitalize responsiveFont"> Started  </p>';
+					}
+					str+='</td>';
+					str+='<td>';
+					if(result.completedCount !=null){
+						completedPerc = (parseInt(result.completedCount)*100/result.totalCount).toFixed(2);
+						str+='<h4 class="responsiveFont">'+result.completedCount+'</h4>';
+						str+='<small class="text-success responsiveFont">('+completedPerc+'%)</small>';
+						str+='<p class="text-muted text-capitalize responsiveFont">Completed</p>';
+					}else{
+						str+='<h4 class="responsiveFont"> - </h4>';
+						str+='<p class="text-muted text-capitalize responsiveFont"> Completed  </p>';
+					}
+					str+='</td>';
+					
+					str+='<td>';
+					if(result.notStartedCount !=null){
+						notstartedPerc = (parseInt(result.notStartedCount)*100/result.totalCount).toFixed(2);
+						str+='<h4 class="responsiveFont">'+result.notStartedCount+'</h4>';
+						str+='<small class="text-danger responsiveFont">('+notstartedPerc+'%)</small>';
+						str+='<p class="text-muted responsiveFont text-capitalize">Not Started  </p>';
+					}else{
+						str+='<h4 class="responsiveFont"> - </h4>';
+						str+='<p class="text-muted responsiveFont text-capitalize">Not Started  </p>';
+					}
+					str+='</td>';
+				str+='</tr>';
+			str+='</table>';
+				
+				$("#boothBasicCommitteeCountsDiv").html(str);
+		}else{
+			$("#boothBasicCommitteeCountsDiv").html("No Data Available");
+		} 
+      getBoothCommitteeInchargesCount();		
+  }
