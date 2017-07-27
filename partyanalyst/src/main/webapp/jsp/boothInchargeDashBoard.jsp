@@ -323,12 +323,27 @@
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="modalLabelNameId">CADRE DETAILS</h4>
 			  </div>
 			  <div class="modal-body">
 				  <div  class="row">
-					<div class="col-md-12 col-xs-12 col-sm-12">
-						<div id="cadreDetailsDivId"></div>
+					<div class="col-sm-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">BOOTH MEMBER DETAILS</h4>
+							</div>
+							<div class="panel-body">
+								<div id="boothInchargeRoleDivId" ></div>
+							</div>
+						</div>
+					<h4 class="modal-title" id="modalLabelNameId">CADRE DETAILS</h4>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title"></h4>
+							</div>
+							<div class="panel-body">
+								<div id="cadreDetailsDivId"></div>
+							</div>
+						</div>
 					</div>
 				  </div>				 
 					<!--<center><img id="dataLoadingsImgForDebate" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>-->
