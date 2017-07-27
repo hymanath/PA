@@ -6,6 +6,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
+import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 
@@ -505,4 +506,8 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	 public List<Object[]> getBoothsForMuncipalitys(List<Long> lcalElcBdyId,Long constituencyId);
 	 public List<Object[]> getBoothsForMuncipalityWise(List<Long> lcalElcBdyId,Long constituencyId);
 	 public List<Long>  getBoothCommitteesTotalCount(Long userAccessLevelId,Set<Long> userAccessLevelValues);
+	 public Long  getBoothCommitteesOnlyTotalCount(Long userAccessLevelId,Set<Long> userAccessLevelValues);
+	 public List<Object[]> getLocationWiseCommitteesCountByLocIds(CommitteeInputVO committeeBO);
+	 public List<Object[]> levelWiseBasicCommitteesCount(CommitteeInputVO committeeBO);
+	 public List<Object[]> committeesPerformanceCohort(CommitteeInputVO committeeBO);
 }
