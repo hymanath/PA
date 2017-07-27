@@ -421,6 +421,8 @@ public class AnnouncementService implements IAnnouncementService {
 						optionVo.setMandalName(commonMethodsUtilService.getStringValueForObject(Obj[8])+" Mandal " );
 					optionVo.setStatus(commonMethodsUtilService.getStringValueForObject(Obj[15]));
 					optionVo.setOriginalLocation(commonMethodsUtilService.getStringValueForObject(Obj[16]));
+					optionVo.setCommitteeMemberStatus(commonMethodsUtilService.getStringValueForObject(Obj[17]));//RELATIVENAME
+					optionVo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(Obj[18]));//AGE
 					finalList.add(optionVo);
 				}
 				return finalList;
