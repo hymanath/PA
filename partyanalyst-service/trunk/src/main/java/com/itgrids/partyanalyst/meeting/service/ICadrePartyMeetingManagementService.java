@@ -32,6 +32,7 @@ public interface ICadrePartyMeetingManagementService {
 	 public List<PartyMeetingVO> getSessionsDetailsByMeetingId(Long meetingId);
 	 public IdAndNameVO getPartyMeetingInviteesDetailsAttendence(Long meetingId);
 	 public ResultStatus deletePartyMeetingSession(Long meetingSessionId);
+	 public IdAndNameVO getInviteeExistingAndNotExistingOfMeetingDetails(List<String> memberShipIds,Long meetingId);
 	
 
 }
