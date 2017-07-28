@@ -3187,7 +3187,7 @@ public class WebServiceHandler {
 	public ResultStatus checkMemberWalkInForToday(JSONObject jObj){
 		try{			
 			return webServiceHandlerService.checkMemberWalkInForToday(jObj.getString("membershipId"),jObj.getString("dateStr"),jObj.getString("uniqueId"),jObj.getLong("loginUserId"),
-					jObj.getLong("tabPrimaryKey"));		
+					jObj.getLong("tabPrimaryKey"),jObj.getString("isCheckedStatus"));		
 		}catch(Exception e){
 			LOG.error("Exception Occured in checkMemberWalkInForToday() Method, Exception is ",e);
 			return null;
