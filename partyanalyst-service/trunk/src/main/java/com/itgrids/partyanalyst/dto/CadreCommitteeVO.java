@@ -3,6 +3,10 @@ package com.itgrids.partyanalyst.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author rsys
+ *
+ */
 public class CadreCommitteeVO implements java.io.Serializable{
 	
 	private Long id;
@@ -53,7 +57,14 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private Long tehsilId;
 	private Long LocalElectionId;
 	private String roleName;
+	private String serialNo="";
 	
+	public String getSerialNo() {
+		return serialNo;
+	}
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
+	}
 	public String getRoleName() {
 		return roleName;
 	}
