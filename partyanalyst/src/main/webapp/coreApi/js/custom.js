@@ -29,7 +29,7 @@ function globalFunction()
 	problemsDetailedGraph();
 	committees();
 	problemsSolveGraph(); */
-	minimise('.right-nav-list li',10);
+	minimise('.right-nav-list li',5);
 	rightNav();
 	
 	$(document).on("click",".switch-btn li",function(){
