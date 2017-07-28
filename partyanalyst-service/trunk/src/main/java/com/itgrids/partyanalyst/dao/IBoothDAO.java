@@ -510,4 +510,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	 public List<Object[]> getLocationWiseCommitteesCountByLocIds(CommitteeInputVO committeeBO);
 	 public List<Object[]> levelWiseBasicCommitteesCount(CommitteeInputVO committeeBO);
 	 public List<Object[]> committeesPerformanceCohort(CommitteeInputVO committeeBO);
+	 public List<Object[]> getVoterDetailsByBoothId(Long boothId);
+	 public List<Object[]> getVoterSerialNoByVoterIdsList(List<Long> voterIdsList,Long boothId);
 }
