@@ -585,6 +585,7 @@
 				str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
 				str+='<li>Caste: '+result[i].casteName+'</li>';
 				str+='<li>Voter ID: '+result[i].voterCardNo+'</li>';
+				str+='<li> <span style="font-weight:bold;color:red;"> Serial No : '+result[i].serialNo+' </span></li>';
 				  if(addressVO != null ){
 						str+='<li>Mandal : '+addressVO.mandalName+'</li>';
 						str+='<li>Panchayat : '+addressVO.panchayatName+'</li>';				
@@ -1423,7 +1424,7 @@ function getCadreDetailsForBoothBySearchCriteria()
 		var trNumber = '';
 		var voterCardNo = '';
 		var gender = '';
-		var houseNo = '';
+		var houseNo = $('#committeeLocationId1').val();
 		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
 		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
 		$("#cadreDetailsDiv").hide();
@@ -1643,6 +1644,9 @@ function saveBoothDetails(tdpCadreId){
 						updateRangeIdsOfBoothIncharge(committeeLocationId);
 					},1200);
 				}else if(result.resultCode == 2){
+					alert(result.message);
+					/* $("#errMsgId").html("<span style='color:green;'>Member added failed.Please try again..</span>"); */
+				}else if(result.resultCode == 3){
 					alert("No Vacancy.");
 					/* $("#errMsgId").html("<span style='color:green;'>Member added failed.Please try again..</span>"); */
 				}else {
