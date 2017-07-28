@@ -338,8 +338,11 @@ function getLocationSpeceficHeading(locationLevel){
 	if(locationLevel=="CONSTITUENCY" || locationLevel=="TEHSIL" || locationLevel=="PANCHAYAT"){
 		str+='<th rowspan="2">CONSTITUENCY</th>';
 	}
-	if(locationLevel=="TEHSIL" || locationLevel=="PANCHAYAT"){
-		str+='<th rowspan="2">TEHSIL</th>';
+	if(locationLevel=="TEHSIL"){
+		str+='<th rowspan="2">TEHSIL/MUNCIPALITY/MUNCIPAL CORP</th>';
+	}
+	if(locationLevel=="PANCHAYAT"){
+	  str+='<th rowspan="2">TEHSIL</th>';	
 	}
 	if(locationLevel=="PANCHAYAT"){
 		str+='<th rowspan="2">VILLAGE/WARD</th>';
@@ -355,7 +358,7 @@ function getLocationWiseBoothAddress(locationLevel,addressObj){
 		str+='<td>'+addressObj.parliamentConstituency+'</td>';
 	}
 	if(locationLevel=="CONSTITUENCY" || locationLevel=="TEHSIL" || locationLevel=="PANCHAYAT"){
-		str+='<td>'+addressObj.constituencyName+'</td>';
+		  str+='<td>'+addressObj.constituencyName+'</td>';	
 	}
 	if(locationLevel=="TEHSIL" || locationLevel=="PANCHAYAT"){
 		str+='<td>'+addressObj.tehsilName+'</td>';
@@ -395,7 +398,14 @@ function buildSelectBox(result,locationLevel,divId,type){
 	  str+='<option value="0">All '+locationLevel+'</option>'	
 	if(result != null && result.length > 0){
 		for(var i in result){
-			str+='<option value="'+result[i].locationIdStr+'">'+result[i].locationName+'</option>'
+			if(divId=="panchaytLevelMandalSelectBxId"){
+				var firstDigit = result[i].locationIdStr.substring(0,1);
+				if(firstDigit !=2){//we are removing locationElectionBody from dropDown in PANCHAYAT Lavel.
+				  str+='<option value="'+result[i].locationIdStr+'">'+result[i].locationName+'</option>'
+				}
+		   }else {
+			  str+='<option value="'+result[i].locationIdStr+'">'+result[i].locationName+'</option>'		
+		   }
 		}
 	}
 	if(type == "All"){
@@ -575,11 +585,18 @@ function getSubLevelLocationBasedOnSelection(locationLevel,filterLevel,filterVal
 	});
 }
 function buildSubLevelDropDown(result,locationLevel,divId){
-	var str = '';
+	 var str = '';
 	 str+='<option value="0">All '+locationLevel+'</option>'	
 	if(result != null && result.length > 0){
 		for(var i in result){
-			str+='<option value="'+result[i].locationIdStr+'">'+result[i].locationName+'</option>'
+		   if(divId=="panchaytLevelMandalSelectBxId"){
+				var firstDigit = result[i].locationIdStr.substring(0,1);
+				if(firstDigit !=2){//we are removing locationElectionBody from dropDown in PANCHAYAT Lavel.
+				  str+='<option value="'+result[i].locationIdStr+'">'+result[i].locationName+'</option>'
+				}
+		   }else {
+			str+='<option value="'+result[i].locationIdStr+'">'+result[i].locationName+'</option>'	
+		  }
 		}
 	}
 	$("#"+divId).html(str);                           
@@ -718,6 +735,7 @@ function buildBoothDetails(result,locationLevel,filterLevel,filterValue){
 				    str+='<th>MANDAL</th>';
 				    str+='<th>VILLAGE/WARD</th>';
 				    str+='<th>Booth NO</th>';
+				    str+='<th>AddedMemberCount</th>';
 					str+='<th>Booth Status</th>';
 					str+='<th>Update Status</th>';
 			str+='</thead>';
@@ -750,15 +768,17 @@ function buildBoothDetails(result,locationLevel,filterLevel,filterValue){
 							str+='<td class="text-center;">-</td>';	
 						}
 						if(result[i].boothName != null){
-							if(result[i].status != null && result[i].status!="NotStarted"){
-								str+='<td class="text-center cadreDetailsCls" style="cursor: pointer; font-size: 16px; margin-top: 10px;color: rgb(51, 122, 183);" attr_location_level='+locationLevel+' attr_serial_no="0" attr_filter_level="" attr_booth_name="'+result[i].boothName+'" attr_filter_value="0"  attr_booth_id="'+result[i].boothId+'">'+result[i].boothName+'</td>';
-							}else{
-								str+='<td class="text-center;">'+result[i].boothName+'</td>';
-							}
-							
+							str+='<td class="text-center">'+result[i].boothName+'</td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
+						var addedCount = result[i].convenerCount+result[i].memberCount
+						if(addedCount > 0 ){
+						  str+='<td class="text-center cadreDetailsCls" style="cursor: pointer; font-size: 16px; margin-top: 10px;color: rgb(51, 122, 183);" attr_location_level='+locationLevel+' attr_serial_no="0" attr_filter_level="" attr_booth_name="'+result[i].boothName+'" attr_filter_value="0"  attr_booth_id="'+result[i].boothId+'">'+addedCount+'</td>';
+						}else {
+						  str+='<td class="text-center">-</td>';		
+						}
+						
 						if(result[i].status != null){
 							str+='<td class="text-center;">'+result[i].status+'</td>';
 						}else{
