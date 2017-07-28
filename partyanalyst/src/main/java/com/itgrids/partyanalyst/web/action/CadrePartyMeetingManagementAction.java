@@ -585,7 +585,7 @@ public String getPanchayatWardByMandal(){
 	   try{
 	       jObj = new JSONObject(getTask());
 	     Long meetingId=jObj.getLong("partyMeetingId");
-	     partyMeetingVOList= cadrePartyMeetingManagementService.getPartyMeetingDeatilesForMeetingEditByMeetingId(meetingId);
+	     //partyMeetingVOList= cadrePartyMeetingManagementService.getPartyMeetingDeatilesForMeetingEditByMeetingId(meetingId);
 	       }catch (Exception e) {
 	    LOG.error("Exception Occured in editPartyMeeting() method, Exception - ",e); 
 	    }
@@ -602,6 +602,24 @@ public String getPanchayatWardByMandal(){
 				}
 		 	return Action.SUCCESS;	
 		 }
+	 
+	 public String getInviteeExistingAndNotExistingOfMeetingDetails(){
+	     try{
+	       jObj = new JSONObject(getTask());
+	      Long meetingId=jObj.getLong("meetingId");
+	       JSONArray memberShipNosArry = jObj.getJSONArray("memberShipNos");
+	       List<String> memberShipNosList = new ArrayList<String>(0);
+	       if(memberShipNosArry != null && memberShipNosArry.length()>0){
+	         for (int i = 0; i < memberShipNosArry.length(); i++) {
+	           memberShipNosList.add(memberShipNosArry.get(i) != null? memberShipNosArry.get(i).toString().trim():"");
+	         }
+	       }
+	       idAndNameVO= cadrePartyMeetingManagementService.getInviteeExistingAndNotExistingOfMeetingDetails(memberShipNosList,meetingId);
+	       } catch (Exception e) {
+	       LOG.error("Exception Occured in getInviteeExistingAndNotExistingOfMeetingDetails  method, Exception - ",e); 
+	     }
+	     return Action.SUCCESS;
+	    }
 }
 
 
