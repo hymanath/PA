@@ -17631,7 +17631,7 @@
 	 <action name="cadrePartyMeetingManagementAction" class="cadrePartyMeetingManagementAction">
 	   		 <result name="success">/jsp/partyMeetingManagement.jsp</result>			
 	    </action>
-	    <action name="editPartyMeetingManagementAction" class="cadrePartyMeetingManagementAction" method="editPartyMeeting">
+	    <action name="editPartyMeetingManagementAction" class="cadrePartyMeetingManagementAction">
 		    <result name="success">/jsp/editPartyMeetingManagement.jsp</result>
 		</action>
 		<action name="getDistrictsAction" class="cadrePartyMeetingManagementAction" method="getDistrictsBasedOnStateId"> 
@@ -17741,6 +17741,11 @@
 		</result>        
 	</action> 
   <action name="getAttendanceForMeetingActoin" class="cadrePartyMeetingManagementAction" method="getAllInviteeAtendedDetails">
+		<result type="json" name="success">    
+		<param name="root">idAndNameVO</param>
+		</result>        
+	</action> 
+	 <action name="getInviteeExistingAndNotExistingOfMeetingDetailsAction" class="cadrePartyMeetingManagementAction" method="getInviteeExistingAndNotExistingOfMeetingDetails">
 		<result type="json" name="success">    
 		<param name="root">idAndNameVO</param>
 		</result>        
