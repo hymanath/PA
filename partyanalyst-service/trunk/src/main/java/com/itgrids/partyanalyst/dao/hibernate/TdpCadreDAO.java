@@ -3582,11 +3582,45 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		{
 			StringBuilder queryStr = new StringBuilder();
 			
-			queryStr.append(" select distinct model.tdpCadre.tdpCadreId, model.tdpCadre.firstname, model.tdpCadre.relativename,  ");
-			queryStr.append(" model.tdpCadre.gender ,model.tdpCadre.memberShipNo, model.tdpCadre.refNo , model.tdpCadre.mobileNo, model.tdpCadre.image, model.tdpCadre.cardNumber,model.tdpCadre.age,date(model.tdpCadre.dateOfBirth), constituency.name,voter.age,occupatn.occupation, ");
-			queryStr.append(" tehsil.tehsilName , panc.panchayatName,localElectionBody.name,district.districtName,caste.casteName,voter.voterIDCardNo, electionType.electionType, model.tdpCadre.houseNo,  ");
-			queryStr.append(" constituency.constituencyId, tehsil.tehsilId, panc.panchayatId, localElectionBody.localElectionBodyId, district.districtId,voter.houseNo,model.tdpCadre.aadheerNo, model.tdpCadre.dataSourceType , model.tdpCadre.isDeleted,cadreDeleteReason.cadreDeleteReasonId," +
-					" cadreDeleteReason.reason, model.enrollmentYearId,model.enrollmentYear.year ");//20
+			queryStr.append(" select distinct " +
+					" model.tdpCadre.tdpCadreId," +//0
+					" model.tdpCadre.firstname," +
+					" model.tdpCadre.relativename,  ");
+			queryStr.append(" 	model.tdpCadre.gender ," +
+					"			model.tdpCadre.memberShipNo," +
+					" model.tdpCadre.refNo , " +//5
+					" model.tdpCadre.mobileNo," +
+					" model.tdpCadre.image," +
+					" model.tdpCadre.cardNumber," +
+					" model.tdpCadre.age," +
+					" date(model.tdpCadre.dateOfBirth)," +//10
+					" constituency.name," +
+					" voter.age," +
+					" occupatn.occupation, ");
+			queryStr.append(" tehsil.tehsilName , " +
+					"panc.panchayatName," +//15
+					"localElectionBody.name," +
+					"district.districtName," +
+					"caste.casteName," +
+					"voter.voterIDCardNo, " +
+					"electionType.electionType, " +//20
+					"model.tdpCadre.houseNo,  ");
+			queryStr.append(" constituency.constituencyId, " +
+					"tehsil.tehsilId, " +
+					"panc.panchayatId, " +
+					"localElectionBody.localElectionBodyId, " +//25
+					"district.districtId," +
+					"voter.houseNo," +
+					"model.tdpCadre.aadheerNo," +
+					" model.tdpCadre.dataSourceType ," +
+					" model.tdpCadre.isDeleted," +//30
+					"cadreDeleteReason.cadreDeleteReasonId," +
+					" cadreDeleteReason.reason," +
+					" model.enrollmentYearId," +
+					"model.enrollmentYear.year ," +
+					" model.tdpCadre.voterId," +
+					"model.tdpCadre.familyVoterId");//36
+			
 			queryStr.append(" from TdpCadreEnrollmentYear model left join model.tdpCadre.userAddress.panchayat panc ");
 			queryStr.append(" left join model.tdpCadre.userAddress.tehsil tehsil ");
 			queryStr.append(" left join model.tdpCadre.userAddress.constituency constituency ");
@@ -9701,6 +9735,17 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			  if(memberShipIds != null && memberShipIds.size() > 0l)
 				  query.setParameterList("memberShipIds", memberShipIds);
 			  return query.list();
+	   }
+	   
+	   public List<Object[]> getSerialNoInLastestPublicationForCadre(List<Long> tdpCadreIdsList){
+		   StringBuilder sb = new StringBuilder();
+		   sb.append(" select distinct TC.tdpCadreId,BPV.serialNo from BoothPublicationVoter BPV, TdpCadre TC where TC.voterId = BPV.voter.voterId and " +
+		   		"BPV.booth.publicationDate.publicationDateId =:publicationDateId and TC.tdpCadreId in (:tdpCadreIdsList) " +
+		   		" order by BPV.serialNo  ");
+		   Query query = getSession().createQuery(sb.toString());
+		   query.setParameter("publicationDateId", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
+		   query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+		   return query.list();
 	   }
 	   public List<TdpCadre> isMembershipIdVAlidOrNotValid(String membershipId){
 		   StringBuilder sb = new StringBuilder();

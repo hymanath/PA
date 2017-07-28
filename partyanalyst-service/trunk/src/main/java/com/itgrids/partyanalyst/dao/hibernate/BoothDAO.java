@@ -3182,4 +3182,25 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		}
 		return query.list();
     }
+	
+	public List<Object[]> getVoterDetailsByBoothId(Long boothId){
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.voter.voterId,model.serialNo from BoothPublicationVoter model where model.boothId =:boothId " +
+				" order by model.serialNo ");
+		Query query =getSession().createQuery(str.toString());
+		query.setParameter("boothId", boothId);
+		return query.list();
+	}
+	
+	public List<Object[]> getVoterSerialNoByVoterIdsList(List<Long> voterIdsList,Long boothId){
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.voter.voterId,model.serialNo from BoothPublicationVoter model where model.boothId =:boothId and " +
+				"  model.voter.voterId in (:voterIdsList) " +
+				"order by model.serialNo ");
+		Query query =getSession().createQuery(str.toString());
+		query.setParameter("boothId", boothId);
+		query.setParameterList("voterIdsList", voterIdsList);
+		return query.list();
+	}
+	
 }

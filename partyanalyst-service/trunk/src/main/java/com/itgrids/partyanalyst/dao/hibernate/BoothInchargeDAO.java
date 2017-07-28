@@ -83,7 +83,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		return query1.list();
 	}
 	
-	public List<Object[]> getCadreIdsForLocation(List<Long> tdpCadreIds){
+	public List<Object[]> getCadreIdsForLocation(List<Long> boothIdsList){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select " +
 				" model.tdpCadre.tdpCadreId," +
@@ -92,21 +92,22 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 				" t.tehsilId, " +
 				" t.tehsilName, " +
 				" l.localElectionBodyId, " +
-				" l.name, model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.roleName " +
+				" l.name, model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.roleName," +
+				" model.tdpCadre.voterId, model.tdpCadre.familyVoterId " +
 				" from BoothIncharge model " +
 				" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth b " +
 				" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat p " +
 				" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil t " +
 				" left join model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody l " +
 				" where model.isActive = 'Y' and model.isDeleted = 'N'");
-		if(tdpCadreIds != null && tdpCadreIds.size() > 0l)
+		if(boothIdsList != null && boothIdsList.size() > 0l)
 		{ 
-			sb.append(" and model.tdpCadreId in (:tdpCadreIds)");
+			sb.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId in (:boothIdsList)");
 		}
 		
 		Query query = getSession().createQuery(sb.toString());
-		if(tdpCadreIds != null && tdpCadreIds.size() > 0l) 
-			query.setParameterList("tdpCadreIds", tdpCadreIds);
+		if(boothIdsList != null && boothIdsList.size() > 0l) 
+			query.setParameterList("boothIdsList", boothIdsList);
 		
 		return query.list();
 	}
@@ -1130,5 +1131,65 @@ public List<Object[]> getBoothCommitteesCommitteeLevelWiseCountsByLocIds(Committ
 	}
 	return query.list();
 }
+public List<Object[]> getBoothRoleWiseAddedMemberCount(InputVO inputVO) {
 
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append("select ");
+	queryStr.append(" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId ");
+	queryStr.append(",model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRoleId ");
+	queryStr.append(",count(distinct model.tdpCadreId)");
+	queryStr.append(" from BoothIncharge model ");
+	queryStr.append(" where model.isDeleted='N' and model.isActive='Y' and model.boothInchargeSerialNoRange.isDeleted='N' and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.isDeleted='N' ");
+     
+	if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0) {
+
+		if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.STATE)){
+			queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.state.stateId in(:filterValues) ");
+		}else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.DISTRICT)) {
+			queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.district.districtId in(:filterValues) ");
+		} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)) {
+			queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.parliamentConstituency.constituencyId in(:filterValues) ");
+		} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)) {
+			queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId in(:filterValues)");
+		} else if(inputVO.getFilterLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
+			queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId in(:filterValues) ");
+		} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
+			queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilId in(:filterValues)  ");
+		} else if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
+			queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat.panchayatId in(:filterValues)");
+		}
+	}
+	if (inputVO.getFilterLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
+		queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId is null ");
+	}
+	if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+		queryStr.append(" and date(model.updatedTime) between :fromDate and :toDate ");
+	}
+	if(inputVO.getBoothRoleIds() != null && inputVO.getBoothRoleIds().size() > 0){
+		queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRole.boothInchargeRoleId in(:boothRoleIds)");
+	}
+	if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
+		queryStr.append(" and model.boothInchargeEnrollmentId =:boothInchargeEnrollmentId ");
+	}
+	queryStr.append(" group by ");
+	queryStr.append(" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId," +
+			        " model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRoleId");
+	Query query = getSession().createQuery(queryStr.toString());
+
+	if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+		query.setDate("fromDate", inputVO.getFromDate());
+		query.setDate("toDate", inputVO.getToDate());
+	}
+	if (inputVO.getBoothInchargeEnrollmentId() != null && inputVO.getBoothInchargeEnrollmentId().longValue() > 0) {
+		query.setParameter("boothInchargeEnrollmentId",inputVO.getBoothInchargeEnrollmentId());
+	}
+	if (inputVO.getFilterLevel().length() > 0 && inputVO.getFilterValueList() != null && inputVO.getFilterValueList().size() > 0) {
+		query.setParameterList("filterValues", inputVO.getFilterValueList());
+	}
+	if(inputVO.getBoothRoleIds() != null && inputVO.getBoothRoleIds().size() > 0){
+		query.setParameterList("boothRoleIds", inputVO.getBoothRoleIds());
+	}
+
+	return query.list();
+}
 }
