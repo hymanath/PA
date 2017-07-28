@@ -113,5 +113,5 @@ public interface IAppointmentService {
 	public String savingAppointCandRelaDetails(Long appointmntId,Long appntCandidateId);
 	public List<AppointmentCountDetailsVO> getAppointmentCandidateDetails(String fromDateStr,String toDateStr,Long userId);
 	public AppointmentCountDetailsVO getAppointmentCandidateCountDeatils(Long userId);
-	public ResultStatus checkMemberWalkInForToday(final String memberShipId,final String date , final String uniqueId,final Long loginUserId,final Long tabPrimaryKey);
+	public ResultStatus checkMemberWalkInForToday(final String memberShipId,final String date , final String uniqueId,final Long loginUserId,final Long tabPrimaryKey,final String isCheckedStatus);
 }

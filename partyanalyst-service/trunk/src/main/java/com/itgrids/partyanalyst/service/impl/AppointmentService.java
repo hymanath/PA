@@ -120,6 +120,7 @@ import com.itgrids.partyanalyst.model.LabelAppointment;
 import com.itgrids.partyanalyst.model.LabelAppointmentHistory;
 import com.itgrids.partyanalyst.model.NominatedPostAgeRange;
 import com.itgrids.partyanalyst.model.SmsHistory;
+import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -8715,144 +8716,155 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  		
  	}
  	
- 	public ResultStatus checkMemberWalkInForToday(final String memberShipId,final String date , final String uniqueId,final Long loginUserId,final Long tabPrimaryKey){
+ 	public ResultStatus checkMemberWalkInForToday(final String memberShipId,final String date , final String uniqueId,final Long loginUserId,final Long tabPrimaryKey,final String isCheckedStatus){
 		 ResultStatus status = new ResultStatus();
 		try {
 			 //saveApptDetailsInFatalLog(appointmentVO);
-			 
-			status = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
-				public Object doInTransaction(TransactionStatus arg0) {
-					
-					 ResultStatus rs = new ResultStatus();
-					 
-		        	List<String> membershipNoList = new ArrayList<String>(0);
-		        	/*SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-		        	Date todayDate = null;
-		        	try {
-						todayDate = sdf2.parse(date);
-					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}*/
-		        	SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		        	
-		        	Date fromDate =null;
-	        		if(date !=null && date !=null){
-	    				try {
-							fromDate = sdf1.parse(date);
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-	    			}
-	        		membershipNoList.add(memberShipId);
-	        		
-	        		/*if(membershipNoList!=null && membershipNoList.size() >0 ){
-	        			
-	        			List<Appointment> list = appointmentCandidateRelationDAO.checkIsAppointmentForToday(membershipNoList,apptCreationStatusList,2l,todayDate);
-			        	if(list != null && list.size() >0){
-			        		appointment = list.get(0);
-			        		appointment.setUpdatedTime(fromDate);
-			        		appointment = appointmentDAO.save(appointment);
-			        		
-			        	}else{*/
-	        					Appointment appointment = new Appointment();
-			        		 	appointment.setAppointmentUserId(2l);
-					        	
-					        	appointment.setAppointmentPriorityId(1l);
-					        			 
-					        	appointment.setReason("Walkin");
-					        	
-					        	appointment.setAppointmentStatusId(IConstants.APPOINTMENT_STATUS_WAITING);
-					        	
-					        	appointment.setAppointmentPreferableTimeId(4l);
-					        	
-					        	
-					        	appointment.setCreatedBy(loginUserId);
-					        	appointment.setUpdatedBy(loginUserId);
-					        	appointment.setInsertedTime(fromDate);
-					        	appointment.setUpdatedTime(fromDate);
-					        	appointment.setIsDeleted("N");
-					        	appointment.setIsLabelled("N");
-					        	appointment = appointmentDAO.save(appointment);
-			        	//}
-	        		//}
-	        		//SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-	        		
-		        	
-		        	
-		        	
-		        	
-		        	if( appointment != null && appointment.getAppointmentId() != null && appointment.getAppointmentId()>0l){
-		        		String temp = "NL";
-		        		appointmentDAO.updateUniquesIdForAppointment(temp+"_"+appointment.getAppointmentId(),appointment.getAppointmentId());
-		        	}
-		        	
-		        	//dates
-		        	List<Date> datesList = new ArrayList<Date>(0);
-		        	
-		        	appointment.setAppointmentPreferableTimeId(4l);
-		        		datesList = dateUtilService.getDatesOfCurrentWeek();
-		        	
-		        	
-		        	/*if(datesList != null && datesList.size() > 0){
-		        		Long order = 1l;
-		        		for (Date date : datesList) {*/
-		        			AppointmentPreferableDate appointmentPreferableDate = new AppointmentPreferableDate();
-		        			
-		        			appointmentPreferableDate.setAppointmentId(appointment.getAppointmentId());
-		        			appointmentPreferableDate.setAppointmentDate(fromDate);
-		        			appointmentPreferableDate.setOrderNo(1l);
-		        			
-		        			appointmentPreferableDate = appointmentPreferableDateDAO.save(appointmentPreferableDate);
-		        			/*order++;
-						}
-		        	}*/
-		        	
-		        	//gettdpcadre Ids for membership nums
-		        		
-		        		Map<String,Object[]> cadreIdsMap = new HashMap<String, Object[]>(0);
-		        		if(membershipNoList != null && membershipNoList.size() > 0){
-		        			List<Object[]> cadreIdsObjList = tdpCadreDAO.getTdpCadreDetailsByMemberShipId(membershipNoList);
-		        			if(cadreIdsObjList != null && cadreIdsObjList.size() > 0){
-		        				for (Object[] objects : cadreIdsObjList) {
-		        					cadreIdsMap.put(objects[1].toString(),objects);
-								}
-		        			}
-		        		}
-		        		
-		        		
-		        		AppointmentCandidate appCandi =null;
-			        				if(memberShipId !=null && !memberShipId.isEmpty()){		        					
-			        					List<AppointmentCandidate> aptModelList = appointmentCandidateDAO.getAppointmentCandidateObjByMemship(memberShipId);	
-			        					
-			        					if(aptModelList !=null && aptModelList.size()>0){
-			        						appCandi = aptModelList.get(0);
-			        					}	
-			        					
-			        					if(appCandi ==null){//Saving
-			        						appCandi = new AppointmentCandidate();
-			        					}
-			        					
-			        					//saving && Updation
-			        					appCandi = appointmentCandidateDetailsSaving(appCandi,cadreIdsMap,loginUserId,memberShipId,fromDate);
-			        					AppointmentCandidateRelation acr = new AppointmentCandidateRelation();
-					        			acr.setAppointmentId(appointment.getAppointmentId());
-					        			acr.setAppointmentCandidateId(appCandi.getAppointmentCandidateId());
-					        			appointmentCandidateRelationDAO.save(acr);
-				        			
-							            saveAppointmentTrackingDetails(appointment.getAppointmentId(),IConstants.APPOINTMENT_ACTION_STATUS_CHANGE,null,
-							            		IConstants.APPOINTMENT_STATUS_WAITING,loginUserId,null);
-							        	rs.setExceptionMsg("success");
-										rs.setResultCode(0);
-										rs.setTabPrimaryKey(tabPrimaryKey);
-			        				}
-			        				
-				        			
-					return rs;
+			List<TdpCadre> isRemovedOrNot = tdpCadreDAO.isMembershipIdVAlidOrNotValid(memberShipId);
+			if(isRemovedOrNot != null && isRemovedOrNot.size() > 0){
+				if(isCheckedStatus.equalsIgnoreCase("online")){
+					status.setMessage(" This membership id is deleted.");
+					status.setTabPrimaryKey(tabPrimaryKey);
 				}
-		    });
-			
+			}else{
+				List<TdpCadre> isCadre = tdpCadreDAO.isMebershipIdValid(memberShipId);
+				if(isCadre != null && isCadre.size() > 0){
+					status = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
+						public Object doInTransaction(TransactionStatus arg0) {
+							 ResultStatus rs = new ResultStatus();
+							 
+				        	List<String> membershipNoList = new ArrayList<String>(0);
+				        	/*SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+				        	Date todayDate = null;
+				        	try {
+								todayDate = sdf2.parse(date);
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}*/
+				        	SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				        	
+				        	Date fromDate =null;
+			        		if(date !=null && date !=null){
+			    				try {
+									fromDate = sdf1.parse(date);
+								} catch (ParseException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+			    			}
+			        		membershipNoList.add(memberShipId);
+			        		
+			        		/*if(membershipNoList!=null && membershipNoList.size() >0 ){
+			        			
+			        			List<Appointment> list = appointmentCandidateRelationDAO.checkIsAppointmentForToday(membershipNoList,apptCreationStatusList,2l,todayDate);
+					        	if(list != null && list.size() >0){
+					        		appointment = list.get(0);
+					        		appointment.setUpdatedTime(fromDate);
+					        		appointment = appointmentDAO.save(appointment);
+					        		
+					        	}else{*/
+			        					Appointment appointment = new Appointment();
+					        		 	appointment.setAppointmentUserId(2l);
+							        	
+							        	appointment.setAppointmentPriorityId(1l);
+							        			 
+							        	appointment.setReason("Walkin");
+							        	
+							        	appointment.setAppointmentStatusId(IConstants.APPOINTMENT_STATUS_WAITING);
+							        	
+							        	appointment.setAppointmentPreferableTimeId(4l);
+							        	
+							        	
+							        	appointment.setCreatedBy(loginUserId);
+							        	appointment.setUpdatedBy(loginUserId);
+							        	appointment.setInsertedTime(fromDate);
+							        	appointment.setUpdatedTime(fromDate);
+							        	appointment.setIsDeleted("N");
+							        	appointment.setIsLabelled("N");
+							        	appointment = appointmentDAO.save(appointment);
+					        	//}
+			        		//}
+			        		//SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			        		
+				        	
+				        	
+				        	
+				        	
+				        	if( appointment != null && appointment.getAppointmentId() != null && appointment.getAppointmentId()>0l){
+				        		String temp = "NL";
+				        		appointmentDAO.updateUniquesIdForAppointment(temp+"_"+appointment.getAppointmentId(),appointment.getAppointmentId());
+				        	}
+				        	
+				        	//dates
+				        	List<Date> datesList = new ArrayList<Date>(0);
+				        	
+				        	appointment.setAppointmentPreferableTimeId(4l);
+				        		datesList = dateUtilService.getDatesOfCurrentWeek();
+				        	
+				        	
+				        	/*if(datesList != null && datesList.size() > 0){
+				        		Long order = 1l;
+				        		for (Date date : datesList) {*/
+				        			AppointmentPreferableDate appointmentPreferableDate = new AppointmentPreferableDate();
+				        			
+				        			appointmentPreferableDate.setAppointmentId(appointment.getAppointmentId());
+				        			appointmentPreferableDate.setAppointmentDate(fromDate);
+				        			appointmentPreferableDate.setOrderNo(1l);
+				        			
+				        			appointmentPreferableDate = appointmentPreferableDateDAO.save(appointmentPreferableDate);
+				        			/*order++;
+								}
+				        	}*/
+				        	
+				        	//gettdpcadre Ids for membership nums
+				        		
+				        		Map<String,Object[]> cadreIdsMap = new HashMap<String, Object[]>(0);
+				        		if(membershipNoList != null && membershipNoList.size() > 0){
+				        			List<Object[]> cadreIdsObjList = tdpCadreDAO.getTdpCadreDetailsByMemberShipId(membershipNoList);
+				        			if(cadreIdsObjList != null && cadreIdsObjList.size() > 0){
+				        				for (Object[] objects : cadreIdsObjList) {
+				        					cadreIdsMap.put(objects[1].toString(),objects);
+										}
+				        			}
+				        		}
+				        		
+				        		
+				        		AppointmentCandidate appCandi =null;
+					        				if(memberShipId !=null && !memberShipId.isEmpty()){		        					
+					        					List<AppointmentCandidate> aptModelList = appointmentCandidateDAO.getAppointmentCandidateObjByMemship(memberShipId);	
+					        					
+					        					if(aptModelList !=null && aptModelList.size()>0){
+					        						appCandi = aptModelList.get(0);
+					        					}	
+					        					
+					        					if(appCandi ==null){//Saving
+					        						appCandi = new AppointmentCandidate();
+					        					}
+					        					
+					        					//saving && Updation
+					        					appCandi = appointmentCandidateDetailsSaving(appCandi,cadreIdsMap,loginUserId,memberShipId,fromDate);
+					        					AppointmentCandidateRelation acr = new AppointmentCandidateRelation();
+							        			acr.setAppointmentId(appointment.getAppointmentId());
+							        			acr.setAppointmentCandidateId(appCandi.getAppointmentCandidateId());
+							        			appointmentCandidateRelationDAO.save(acr);
+						        			
+									            saveAppointmentTrackingDetails(appointment.getAppointmentId(),IConstants.APPOINTMENT_ACTION_STATUS_CHANGE,null,
+									            		IConstants.APPOINTMENT_STATUS_WAITING,loginUserId,null);
+									        	rs.setExceptionMsg("success");
+												rs.setResultCode(0);
+												rs.setTabPrimaryKey(tabPrimaryKey);
+					        				}
+					        				
+						        			
+							return rs;
+						}
+				    });
+				}else{
+					status.setMessage("Invalid.");
+					status.setTabPrimaryKey(tabPrimaryKey);
+				}
+			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at saveAppointment", e);
 			status.setExceptionClass(e.getMessage());
