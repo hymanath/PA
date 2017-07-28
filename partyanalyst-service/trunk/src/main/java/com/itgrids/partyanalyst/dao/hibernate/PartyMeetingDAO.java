@@ -4239,7 +4239,8 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         sb.append(",PM.partyMeetingTypeId,meetingAddress.district.districtId,");// 05 meeting sub typeId,06 districtId
         sb.append("meetingAddress.constituency.constituencyId" );				// 07constincyId
         sb.append(",meetingAddress.tehsil.tehsilId,meetingAddress.panchayat.panchayatId");//08 tehsilId,09 panchayatId
-        sb.append(",PM.partyMeetingType.partyMeetingMainTypeId,meetingAddress.state.stateId " ); //10  meting main typeid,11 STATEiD
+        sb.append(",PM.partyMeetingType.partyMeetingMainTypeId,");//10  meting main typeid,
+        sb.append("meetingAddress.state.stateId,PM.isConducted " ); //11 STATEiD,12 isConducted
         sb.append("from PartyMeeting PM left join PM.meetingAddress meetingAddress " );
         sb.append("left join meetingAddress.district district ");
         sb.append("left join meetingAddress.constituency constituency " );
@@ -4254,8 +4255,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         }
         
         return query.list();
-    }
-
+	}
 	 public Integer updatePartyMeetingDetails(Long meetingId){
 			Query query=getSession().createQuery(" update PartyMeeting model set model.isActive = 'N' where model.partyMeetingId =:meetingId ");		
 			query.setParameter("meetingId",meetingId);
