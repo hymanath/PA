@@ -5324,7 +5324,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 
 	 public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue){
 		 try{
-			 return locationDashboardService.getLocationWiseInsuranceStatusCounts(fromDateStr,toDateStr,locationId,locationValue);
+			// return locationDashboardService.getLocationWiseInsuranceStatusCounts(fromDateStr,toDateStr,locationId,locationValue);
 		 }catch(Exception e){
 			 log.error("Exception raised at getLocationWiseInsuranceStatusCounts", e);
 		 }
@@ -5334,15 +5334,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 
 	 public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationId, Long locationValue) {
 		try{
-			return locationDashboardService.getGrivenceTrustStatusCounts(fromDateStr, toDateStr, locationId, locationValue);
+			//return locationDashboardService.getGrivenceTrustStatusCounts(fromDateStr, toDateStr, locationId, locationValue);
 		}catch(Exception e){	
 			log.error("Exception raised at getLocationWiseGrivenceStatusCounts", e);
 		}return null;
 	}
 
-	public ResultStatus checkMemberWalkInForToday( String memberShipId, String date ,  String uniqueId, Long loginUserId,Long tabPrimaryKey){
+	public ResultStatus checkMemberWalkInForToday( String memberShipId, String date ,  String uniqueId, Long loginUserId,Long tabPrimaryKey,String isCheckedStatus){
 		 try{
-			 return appointmentService.checkMemberWalkInForToday(memberShipId, date, uniqueId,loginUserId,tabPrimaryKey);
+			 return appointmentService.checkMemberWalkInForToday(memberShipId, date, uniqueId,loginUserId,tabPrimaryKey,isCheckedStatus);
 		 }catch(Exception e){
 			 log.error("Exception raised at checkMemberWalkInForToday", e);
 		 }
