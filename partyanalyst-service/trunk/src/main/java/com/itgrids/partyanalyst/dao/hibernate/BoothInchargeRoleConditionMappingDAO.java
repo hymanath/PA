@@ -226,7 +226,7 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)) {
 			queryStr.append(" constituency.constituencyId ");
 		} else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
-			queryStr.append(" localElectionBody.localElectionBodyId ");
+			queryStr.append(" constituency.constituencyId,localElectionBody.localElectionBodyId ");
 		}  else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
 			queryStr.append(" tehsil.tehsilId ");
 		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
