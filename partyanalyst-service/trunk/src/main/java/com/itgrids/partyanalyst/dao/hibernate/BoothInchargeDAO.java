@@ -237,7 +237,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 			sbM.append(" and model.boothInchargeEnrollmentId in (:tdpCommitteeEnrollmentId) ");
 		}
 		if(committeeBO.getStatus() != null && committeeBO.getStatus().trim().equalsIgnoreCase("notstarted")){
-			sbM.append(" and model.isConfirmed ='N' and model.startDate is null and model.completedDate is null ");
+			//sbM.append(" and model.isConfirmed ='N' and model.startDate is null and model.completedDate is null ");
 		}
 		if(committeeBO.getStatus() != null && committeeBO.getStatus().trim().equalsIgnoreCase("started")){
 			sbM.append(" and model.isConfirmed ='N' and model.startDate is not null and model.completedDate is null ");

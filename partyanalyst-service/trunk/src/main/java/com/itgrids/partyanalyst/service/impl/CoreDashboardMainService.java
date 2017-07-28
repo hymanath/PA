@@ -1387,17 +1387,30 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	    	    			 List<Object[]> startedCountList = boothInchargeDAO.getLocationWiseCommitteesCountByLocIds(committeeBO);
 	    	    			 setBoothCommitteesCountToItsCorrespondingLocation("started",startedCountList,locationLevelCountsMap,userAccessLevelId);
 	    	    		 }
-	    	    		 if(committeeBO.getStatusList().contains("notStarted")){
+	    	    		 /*if(committeeBO.getStatusList().contains("notStarted")){
 	    	    			 committeeBO.setStatus("notStarted");
 	    	    			 List<Object[]> notStartedList = boothInchargeDAO.getLocationWiseCommitteesCountByLocIds(committeeBO);
 	    	    			 setBoothCommitteesCountToItsCorrespondingLocation("notStarted",notStartedList,locationLevelCountsMap,userAccessLevelId);
-	    	    		 }
+	    	    		 }*/
 	    	    		 setBoothCommitteesCountToItsCorrespondingLocation("total",totalCountList,locationLevelCountsMap,userAccessLevelId);
+	    	    		 getNotStartedBoothCount(locationLevelCountsMap);
 	    			 }
 	    		 }
 	    	 }    
 	     }
 	    return locationLevelCountsMap;
+   }
+   public void getNotStartedBoothCount( Map<String,UserTypeVO> locationLevelCountsMap){
+	   try {
+		   if(locationLevelCountsMap != null && locationLevelCountsMap.size() > 0){
+			   for (Entry<String, UserTypeVO> entry : locationLevelCountsMap.entrySet()) {
+				entry.getValue().setNotStartedCount(entry.getValue().getTotalCount()-(entry.getValue().getStartedCount()+entry.getValue().getCompletedCount()));
+			}
+		   }
+	   } catch(Exception e){
+		   LOG.error("Exception occured at getNotStartedBoothCount() in CoreDashboardMainService"+e);
+	   }
+	   
    }
    public void clearLocationLevelIds(CommitteeInputVO inputVO){
 			inputVO.setStateIds(null);
@@ -1447,11 +1460,11 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 						 countsVO.setStartedCount(obj[0]!=null?(Long)obj[0]:0l); 
 					 }else if(status.equalsIgnoreCase("completed")){
 						 countsVO.setCompletedCount(obj[0]!=null?(Long)obj[0]:0l); 
-					 }else if(status.equalsIgnoreCase("notStarted")){
+					 }/*else if(status.equalsIgnoreCase("notStarted")){
 						 Long toalcount =obj[0]!=null?(Long)obj[0]:0l;
-						 Long count= toalcount-countsVO.getStartedCount();
+						 Long count= toalcount-(countsVO.getStartedCount()+countsVO.getCompletedCount());
 						 countsVO.setNotStartedCount(count); 
-					 }
+					 }*/
 				 }
 			 }
 	 }
