@@ -297,7 +297,7 @@ label
 	list-style:none;
 	position:relative;
 	padding-right:7px;
-	padding-top:20px;
+	padding-top:10px;
 	font-size:14px;
 	text-align:right;
 	cursor:pointer;
@@ -315,7 +315,7 @@ label
 	border-radius:50%;
 	background-color:#ECF0F1;
 	border:2px solid #D3B783;
-	top:23px;
+	top:15px;
 }
 .right-nav ul li:after
 {
@@ -325,7 +325,7 @@ label
 	display:block;
 	position:absolute;
 	right:-4px;
-	top:36px;
+	top:28px;
 }
 .right-nav ul li.active
 {
@@ -342,7 +342,7 @@ label
 	border-radius:50%;
 	background-color:#ED8362;
 	border:2px solid #ED8362;
-	top:25px;
+	top:13px;
 }
 .right-nav ul li.active:after
 {
@@ -352,7 +352,7 @@ label
 	display:block;
 	position:absolute;
 	right:-3px;
-	top:38px;
+	top:16px;
 }
 .right-nav ul li:last-child:after
 {
