@@ -107,6 +107,7 @@
 	 
 	  // alert(1111);
 	   var committeeEnrollmentYearArray = new Array();
+	   if($("#tdpBoothCommitteeYearId").val() != null)
 		   committeeEnrollmentYearArray.push($("#tdpBoothCommitteeYearId").val());
 		    
 			var jsObj ={  
@@ -1607,9 +1608,11 @@
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
 		if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
 		  getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		  getBoothTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
 		 }else{ 
 	     getBoothDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
 		 getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		 getBoothTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
 		}
 	})
 	
