@@ -1371,6 +1371,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 						}
 						cadreVO.setEnrollmentYearId(cadre[33] != null ? Long.valueOf(cadre[33].toString().trim()):0L);
 						cadreVO.setEnrollmentYearIdStr(cadre[33] != null ? cadre[33].toString().trim():"");
+						cadreVO.setVoterId(commonMethodsUtilService.getLongValueForObject(cadre[35]));
+						if(cadreVO.getVoterId() == null || cadreVO.getVoterId().longValue() == 0L)
+							cadreVO.setVoterId(commonMethodsUtilService.getLongValueForObject(cadre[36]));	
 						//cadreVO.setYear(cadre[34] != null ? cadre[34].toString():"");
 					}
 					
