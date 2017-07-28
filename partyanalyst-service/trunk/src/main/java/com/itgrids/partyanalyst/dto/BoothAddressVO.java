@@ -29,6 +29,8 @@ public class BoothAddressVO {
 	private String memberShipNo;
 	private Long rangeId;
 	private String range;
+	private Long memberCount=0l;
+	private Long convenerCount=0l;
 	
 	public String getIsReadyToConfirm() {
 		return isReadyToConfirm;
@@ -186,6 +188,19 @@ public class BoothAddressVO {
 	public void setIsConfirm(String isConfirm) {
 		this.isConfirm = isConfirm;
 	}
+	public Long getMemberCount() {
+		return memberCount;
+	}
+	public void setMemberCount(Long memberCount) {
+		this.memberCount = memberCount;
+	}
+	public Long getConvenerCount() {
+		return convenerCount;
+	}
+	public void setConvenerCount(Long convenerCount) {
+		this.convenerCount = convenerCount;
+	}
+	
 	
 		
 }
