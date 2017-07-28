@@ -728,6 +728,11 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				 List<Object[]> boothDetailsObjList = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothDetails(inputVO);
 	             resultList = getBoothDetails(boothDetailsObjList);
 			}
+			//getting boothRole Wise Added Member Count
+			List<Object[]> addedMemberObjLst = boothInchargeDAO.getBoothRoleWiseAddedMemberCount(inputVO);
+			//setting role wise booth added member count
+			 setBoothRoleWiseAddedMemberCount(addedMemberObjLst,resultList);
+			
 			
 			if(commonMethodsUtilService.isListOrSetValid(resultList)){
 				
@@ -766,6 +771,41 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			Log.error("Exception occured at getLocationLevelWiseBoothDetails() in BoothDataValidationService class",e);
 		}
 		return resultList;
+	}
+	public void setBoothRoleWiseAddedMemberCount(List<Object[]> addedMemberObjLst,List<BoothAddressVO> resultList) {
+		try {
+			if(addedMemberObjLst != null && addedMemberObjLst.size() > 0){
+				for (Object[] param : addedMemberObjLst) {
+					Long boothId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					Long roleId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					Long cadreCount = commonMethodsUtilService.getLongValueForObject(param[2]);
+					BoothAddressVO matchVO = getMatchVO(resultList,boothId);
+					if(matchVO != null){
+						if(roleId == 1l){//Convenor
+							matchVO.setConvenerCount(cadreCount);
+						}else if(roleId == 2l){//member
+							matchVO.setMemberCount(cadreCount);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception occured at getLocationLevelWiseBoothDetails() in BoothDataValidationService class",e);
+		}
+	}
+	public BoothAddressVO getMatchVO(List<BoothAddressVO> resultList,Long boothId){
+		try {
+			 if(resultList != null ){
+				 for (BoothAddressVO boothAddressVO : resultList) {
+					if(boothAddressVO.getBoothId().longValue() == boothId){
+						return boothAddressVO;
+					}
+				}
+			 }
+		} catch (Exception e){
+			Log.error("Exception occured at getLocationLevelWiseBoothDetails() in BoothDataValidationService class",e);
+		}
+		return null;
 	}
 	public List<BoothAddressVO> getBoothDetails(List<Object[]> boothDetailsObjList){
 		List<BoothAddressVO> boothDtlsList = new ArrayList<BoothAddressVO>(0);
