@@ -692,9 +692,10 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 		 * @description :party meeting details and invitees and other detailes
 		 * @return List of PartyMeetingsVO  contais locations and invetivees cadreId,name,desiganation
 	 */
-		public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Long meetingId){
+public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Long meetingId){
 			
 			List<PartyMeetingsVO> finalList=null;
+			 SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
 			try{
 				List<IdAndNameVO> inviteeDeatilsVOS= null;
 				List<Object[]> objectList=partyMeetingDAO.getPartyMeetingDetailsByPartyMeetingId(meetingId);
@@ -726,9 +727,9 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 							//partyMeetingVO.setConductedDate(commonMethodsUtilService.getStringValueForObject(objcts[2])); // start date
 							//partyMeetingVO.setUpdatedTime(commonMethodsUtilService.getStringValueForObject(objcts[3]));    // end date
 							String startDate=commonMethodsUtilService.getStringValueForObject(objcts[2]);//.split("\\s");
-                            String endDate=commonMethodsUtilService.getStringValueForObject(objcts[3]);//.split("\\s");
+                            String []endDate=commonMethodsUtilService.getStringValueForObject(objcts[3]).split("\\s");
 							partyMeetingVO.setConductedDate(startDate); // start date
-							partyMeetingVO.setUpdatedTime(endDate);		 // end date   
+							partyMeetingVO.setUpdatedTime(endDate[0]+" "+endDate[1]);		 // end date   
 							partyMeetingVO.setMeetingTypeId(commonMethodsUtilService.getLongValueForObject(objcts[4]));    //meeting typeId
 							partyMeetingVO.setMandalTwnDivisionId(commonMethodsUtilService.getLongValueForObject(objcts[5])); //meeting levelId
 							partyMeetingVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(objcts[6]));       // district id
@@ -737,9 +738,16 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 							partyMeetingVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(objcts[9]));     //villageId
 							partyMeetingVO.setMeetingMainTypeId(commonMethodsUtilService.getLongValueForObject(objcts[10]));//meeting main type id
 							partyMeetingVO.setStateName(commonMethodsUtilService.getStringValueForObject(objcts[11]));//State NAME
+							partyMeetingVO.setIsCondacted(commonMethodsUtilService.getStringValueForObject(objcts[12]));
+							Date currrentdate=sdf2.parse(dateUtilService.getCurrentDateInStringFormat());
+							Long daysCount=dateUtilService.noOfDayBetweenDates(endDate[0],dateUtilService.getDateInStringFormatByDate(currrentdate,"yyyy-MM-dd"));
+							if(daysCount <=1){
+								partyMeetingVO.setFlage("true");// sett flage to set meeting Edit button 
+							}
 							if(inviteeDeatilsVOS !=null && inviteeDeatilsVOS.size() >0){
 								partyMeetingVO.setInvetteList(inviteeDeatilsVOS);
 							}
+							
 						
 							finalList.add(partyMeetingVO);
 						}
@@ -794,9 +802,13 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 		                      if(rowCount>1l){
 		                        Long readNumberColums=0l;
 		                    for (int i = 0; i < cadreIdList.length; i++) {
+		                    	if(!cadreIdList[i].isEmpty()){
+		                    		if(!cadreIdList[i].contains(" ")){
 		                      if(StringUtils.isNumeric(cadreIdList[i])){
 		                        readNumberColums++;
 		                      }
+		                      }
+		                    }
 		                      String membershipId="";
 		                      if(readNumberColums==2l){
 		                        if(cadreIdList[i].length()==7){
@@ -904,23 +916,32 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 						idAndNameVO.setPartyName(positions);//position name
 						finalList.add(idAndNameVO);
 					}
+				}
 					// to check the memberShipIds exist or not
+				if(memberShipNoSet !=null && memberShipNoSet.size() >0){
 					 memberShipNotAvailbleList=new ArrayList<String>();
 						for(String memberShipStr :memberShipIds){
 							if(!memberShipNoSet.contains(memberShipStr)){
 								memberShipNotAvailbleList.add(memberShipStr);// membership not Availble List
 							}
 						}
+				}else{
+					 memberShipNotAvailbleList=new ArrayList<String>();
+					 memberShipNotAvailbleList.addAll(memberShipIds);
 				}
-				if(memberShipNotAvailbleList != null && memberShipNotAvailbleList.size() > 0){
+				if(finalList !=null && finalList.size() > 0 &&memberShipNotAvailbleList != null && memberShipNotAvailbleList.size() > 0){
 					finalList.get(0).setEnrollmentYears(memberShipNotAvailbleList);
+				}else if(finalList == null && memberShipNotAvailbleList != null && memberShipNotAvailbleList.size() > 0){
+					finalList=new ArrayList<IdAndNameVO>();
+					IdAndNameVO idAndNameVO=new IdAndNameVO();
+					idAndNameVO.setEnrollmentYears(memberShipNotAvailbleList);
+					finalList.add(idAndNameVO);
 				}
 			}catch(Exception e){
 				LOG.error("Exception Occured in getTdpCadreDetailsForInveetMeeting  method, Exception - ",e); 
 			}
 			return finalList;
 		}
-
 		
 		  public PartyMeeting saveMeetingDetails(final PartyMeetingVO inputvo){
 		        PartyMeeting result = (PartyMeeting) transactionTemplate.execute(new TransactionCallback() {
@@ -1103,12 +1124,27 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 						  List<String> endTimeList=inputvo.getEndTimeList();
 						  List<String> lateTimeList=inputvo.getLateTimeList();
 						  
-						  
+						  List<Long> partyMeetingSessionIds=new ArrayList<Long>();
 						  
 						  if(sessionIdList.size()>0){
 							  for(int i=0;i<sessionIdList.size();i++){
-								  PartyMeetingSession partyMeetingSession=partyMeetingSessionDAO.get(meetingAddressId);
-								  //PartyMeetingSession partyMeetingSession=new PartyMeetingSession();
+								  if(sessionIdList.get(i)>4l){
+									  PartyMeetingSession dbPartyMeetingSession=partyMeetingSessionDAO.get(sessionIdList.get(i));
+									  partyMeetingSessionIds.add(dbPartyMeetingSession.getPartyMeetingSessionId());
+									  java.sql.Time timeValue = new java.sql.Time(formatter.parse(startTimeList.get(i)).getTime());
+									  dbPartyMeetingSession.setStartTime(timeValue);
+									  java.sql.Time endTime = new java.sql.Time(formatter.parse(endTimeList.get(i)).getTime());
+									  dbPartyMeetingSession.setEndTime(endTime);
+									  java.sql.Time lateTime = new java.sql.Time(formatter.parse(lateTimeList.get(i)).getTime());
+									  dbPartyMeetingSession.setLateTime(lateTime);  
+									  dbPartyMeetingSession.setPartyMeetingId(retunedObj.getPartyMeetingId());  
+									  dbPartyMeetingSession.setIsDeleted("N");
+									  dbPartyMeetingSession.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+									  dbPartyMeetingSession.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									  partyMeetingSessionDAO.save(dbPartyMeetingSession);
+								  }
+								  else{
+								  PartyMeetingSession partyMeetingSession=new PartyMeetingSession();
 								  partyMeetingSession.setSessionTypeId(sessionIdList.get(i));
 								  java.sql.Time timeValue = new java.sql.Time(formatter.parse(startTimeList.get(i)).getTime());
 								  partyMeetingSession.setStartTime(timeValue);
@@ -1116,8 +1152,13 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 								  partyMeetingSession.setEndTime(endTime);
 								  java.sql.Time lateTime = new java.sql.Time(formatter.parse(lateTimeList.get(i)).getTime());
 								  partyMeetingSession.setLateTime(lateTime);  
-								  partyMeetingSession.setPartyMeetingId(retunedObj.getPartyMeetingId());  
-								  partyMeetingSessionDAO.save(partyMeetingSession);
+								  partyMeetingSession.setPartyMeetingId(retunedObj.getPartyMeetingId()); 
+								  partyMeetingSession.setIsDeleted("N");
+								  partyMeetingSession.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								  partyMeetingSession.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								  PartyMeetingSession dbPartyMeetingSessionId=partyMeetingSessionDAO.save(partyMeetingSession);
+								  partyMeetingSessionIds.add(dbPartyMeetingSessionId.getPartyMeetingSessionId());
+								  }
 							  }
 						  }
 						  
@@ -1138,19 +1179,19 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 							}
 		                    }
 						   }
-						 
+						  }
 						   if(inputvo.getCadreWithComments() !=null && inputvo.getCadreWithComments().size()>0){
 							   int updatedCount=0;
 							   List<String> cadreWithComments=inputvo.getCadreWithComments();
 							   for(String cadreIdWithComment:cadreWithComments){
 								   String idAndComment[]=cadreIdWithComment.split(",");
-								   Long cadreId=Long.valueOf(idAndComment[0]);
-								   String comment=idAndComment[1];
+								   Long cadreId=Long.valueOf(idAndComment[0].trim());
+								   String comment=idAndComment[1].trim();
 								   updatedCount +=partyMeetingInviteeDAO.updateAbsenteeRemark(cadreId,inputvo.getPartyMeetingId(),comment);
 							   }
 							}
 						   
-		               }
+		              
 						  if(inputvo.getAtrPoints() !=null && inputvo.getAtrPoints().size()>0){ //get cadre ids
 							   List<String> cadreIds=inputvo.getAtrPoints();
 							   for(String cadreId:cadreIds){
@@ -1162,12 +1203,14 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 								   if(savedAttendance !=null){
 									   Long attendanceId=savedAttendance.getAttendanceId();
 									   if(attendanceId !=null){
+										   for(Long partyMeetingSessionId:partyMeetingSessionIds){
 										   PartyMeetingAttendance partyMeetingAttendance=new PartyMeetingAttendance();
 										   partyMeetingAttendance.setPartyMeetingId(inputvo.getPartyMeetingId());
 										   partyMeetingAttendance.setAttendance(attendanceDAO.get(attendanceId));
 										   partyMeetingAttendance.setInsertedTime(date.getCurrentDateAndTime());
-										   partyMeetingAttendance.setPartyMeetingSessionId(3975l); //static sessionid
+										   partyMeetingAttendance.setPartyMeetingSessionId(partyMeetingSessionId);
 										   partyMeetingAttendanceDAO.save(partyMeetingAttendance);
+										   }
 									   }
 								   }
 							   }
@@ -1175,12 +1218,15 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 						  
 						    
 						  List<Long> attendedList=inputvo.getAttendedList();
+						   List<Long> partyMeetingAttendanceTabUserId=new ArrayList<Long>();
+						   List<Long> primaryAttendanceTabUserId=new ArrayList<Long>();
+						   List<Long> dBpartyMeetingAttendanceTabUserId=new ArrayList<Long>();
 						   if(attendedList !=null && attendedList.size()>0){
-							   List<Long> partyMeetingAttendanceTabUserId=new ArrayList<Long>();
 							  List<Object[]> partyMeetingAttendanceTabUserDetails= partyMeetingAttendanceTabUserDAO.getTabuserTotaldetailsFromMeetingId(inputvo.getPartyMeetingId(),attendedList);
 							  if(partyMeetingAttendanceTabUserDetails != null){
 							  for(Object[] obj:partyMeetingAttendanceTabUserDetails){
 								  partyMeetingAttendanceTabUserId.add((Long) obj[2]);
+								  //primaryAttendanceTabUserId.add((Long) obj[0]);
 							  }
 							  }
 			                 for(int i=0;i<attendedList.size();i++){  
@@ -1194,8 +1240,32 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 									   partyMeetingAttendanceTabUserDAO.save(partyMeetingAttendanceTabUser);
 			                	 }     
 			                    }
-			                  
-			               }
+			                 
+			                 List<Object[]> dBPartyMeetingAttendanceTabUserDetails=partyMeetingAttendanceTabUserDAO.getPartyMeetingTabUserDetails(retunedObj.getPartyMeetingId());
+			                 if(dBPartyMeetingAttendanceTabUserDetails != null){
+								  for(Object[] obj:dBPartyMeetingAttendanceTabUserDetails){
+									  dBpartyMeetingAttendanceTabUserId.add((Long) obj[0]);
+									  primaryAttendanceTabUserId.add((Long) obj[5]);
+								  }
+								  }
+			                 for(int i=0;i<primaryAttendanceTabUserId.size();i++){ 
+                				 if(!attendedList.contains((Long.valueOf(dBpartyMeetingAttendanceTabUserId.get(i))))){
+                					  PartyMeetingAttendanceTabUser partyMeetingAttendance=partyMeetingAttendanceTabUserDAO.get(primaryAttendanceTabUserId.get(i));
+			                		  partyMeetingAttendance.setIsDeleted("N");
+			                		  partyMeetingAttendanceTabUserDAO.save(partyMeetingAttendance);
+                				 }
+                		     }
+						   }
+						   else{
+							   List<Object[]> dBPartyMeetingAttendanceTabUserDetails=partyMeetingAttendanceTabUserDAO.getPartyMeetingTabUserDetails(retunedObj.getPartyMeetingId());
+				                 if(dBPartyMeetingAttendanceTabUserDetails != null){
+									  for(Object[] obj:dBPartyMeetingAttendanceTabUserDetails){
+										  PartyMeetingAttendanceTabUser partyMeetingAttendance=partyMeetingAttendanceTabUserDAO.get((Long) obj[5]);
+				                		  partyMeetingAttendance.setIsDeleted("N");
+				                		  partyMeetingAttendanceTabUserDAO.save(partyMeetingAttendance);
+									  }
+				                 }
+						   }
 		                }
 		               }catch(Exception e){
 		                 e.printStackTrace(); 
@@ -1423,5 +1493,55 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 				}
 				return resultStatus;
 			}
+		  
+		  /**
+			 * @author  Babu kurakula <href:kondababu.kurakula@itgrids.com >
+			 * @Date 27-07-2017
+			 * @description to get invitee Existing members and not existing members full deatils when
+			 					we edit meeting invitees
+			 * @param List of membership ids and meetingId
+			 * @return  idAndNameVO
+		 */
+		  public IdAndNameVO getInviteeExistingAndNotExistingOfMeetingDetails(List<String> memberShipIds,Long meetingId){
+			  IdAndNameVO  finalidAndNameVO=null;
+			  List<IdAndNameVO> tdpCaderDetilsList=null;
+			  Set<String> invitesList=null;
+			  List<String> existingMembersList=null;
+			  List<String> notExistingMembersList=null;
+			  try{
+			  //to get the invitee deatails
+			  List<Object[]> invitesObjs=partyMeetingInviteeDAO.getPartyMeetingInvitteesMembershipNo(meetingId);
+	            if(invitesObjs !=null && invitesObjs.size() > 0L){
+	            	 invitesList=new HashSet<String>();
+	            	for(Object[] inviobj : invitesObjs){//set membershipIds
+	            		invitesList.add(commonMethodsUtilService.getStringValueForObject(inviobj[0]));
+	    	        }
+	            }
+	            if(invitesList !=null && invitesList.size() >0 && memberShipIds !=null && memberShipIds.size() >0){
+	            	existingMembersList=new ArrayList<String>();//comparing membershipIds  existing or Not
+	            	notExistingMembersList=new ArrayList<String>();
+	            	for(String memberStr: memberShipIds){
+	            		if(!invitesList.contains(memberStr)){
+	            			notExistingMembersList.add(memberStr);//not exiting membershipIds
+	            		}else{
+	            			existingMembersList.add(memberStr);	// exiting membershipIds
+	            		}
+	            	}
+	            }
+	          // get not exiting membershipIds details
+	            if(notExistingMembersList !=null && notExistingMembersList.size() >0){
+	            	tdpCaderDetilsList=getTdpCadreDetailsForInveetMeeting(notExistingMembersList);
+	            }
+	            //set the UI
+	              finalidAndNameVO =new IdAndNameVO();
+	            finalidAndNameVO.setAttendanceList(tdpCaderDetilsList);
+	            finalidAndNameVO.setEnrollmentYears(existingMembersList);
+			  }catch(Exception e){
+					LOG.error("Exception Occured in getInviteeExistingAndNotExistingOfMeetingDetails  method, Exception - ",e); 
+
+			  }
+			  return finalidAndNameVO;
+		  
+		  }
 		  
 }
