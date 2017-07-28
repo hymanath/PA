@@ -14,9 +14,10 @@ function onLoadAjaxCalls()
 	getCasteGroupNAgeWiseVoterNCadreCounts();
 	getActivityStatusList();
 	getTotalAlertDetailsForConstituencyInfo();
-	 getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
-	/*getCountsForConstituency(); //Assembly election details
 	getAllPartiesAllElectionResultsChart(); //Assembly Election Detail
+	getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
+	/*getCountsForConstituency(); //Assembly election details
+	
 	getPrintMediaCountsForConstituencyPage(); //electronic media
 	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(); //problems
 	getDetailedGovtOverAllAnalysisProblemsForView();
@@ -714,6 +715,7 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(){
 }
 
 function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName){
+	$("#expandCaste"+casteId).html(spinner);
 	jsObj={
 		casteGroupId:casteGroupId,
 		casteId:casteId,
@@ -841,27 +843,32 @@ $("#benefitsId").html(spinner);
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
 		var str='';
-		str+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
+		
 		if(result!=null && result.length>0){
-			getMandalWiseBenefitMembersCount(result[0].id);
-			for(var i in result){
-			
-			if(i==0)
-				str+='<li role="benfitPresentation" class="active"><a class="tabClick" href="#" id="'+result[i].id+'" aria-controls="'+result[i].name+'" role="tab" data-toggle="tab">'+result[i].name+'<span class="pull-right">'+result[i].totalCount+'</span></a></li>';
-			else	
-				str+='<li role="benfitPresentation"><a class="tabClick" href="#" id="'+result[i].id+'" aria-controls="'+result[i].name+'" role="tab" data-toggle="tab">'+result[i].name+'<span class="pull-right">'+result[i].totalCount+'</span></a></li>';
+			str+='<select class="form-control" role="tabListMobile">';
+				for(var i in result){
+					str+='<option class="tabClick" id="'+result[i].id+'" tab_id="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+			str+='</select>';
+			str+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
+				getMandalWiseBenefitMembersCount(result[0].id);
+				for(var i in result){
+				
+				if(i==0)
+					str+='<li role="benfitPresentation" class="active"><a class="tabClick" href="#" id="'+result[i].id+'" aria-controls="'+result[i].name+'" role="tab" data-toggle="tab">'+result[i].name+'<span class="pull-right">'+result[i].totalCount+'</span></a></li>';
+				else	
+					str+='<li role="benfitPresentation"><a class="tabClick" href="#" id="'+result[i].id+'" aria-controls="'+result[i].name+'" role="tab" data-toggle="tab">'+result[i].name+'<span class="pull-right">'+result[i].totalCount+'</span></a></li>';
 
-			}
-		str+='</ul>'
+				}
+			str+='</ul>'
 			$("#benefitsId").html(str);
+			responsiveTabs()
 		}
 	});	
 }
 $(document).on("click",".tabClick",function(){
-
-var tab_id = $(this).attr('id');
-getMandalWiseBenefitMembersCount(tab_id);
-	
+	var tab_id = $(this).attr('id');
+	getMandalWiseBenefitMembersCount(tab_id);	
 });
 function getMandalWiseBenefitMembersCount(id){
 $("#benefits1").html('');
