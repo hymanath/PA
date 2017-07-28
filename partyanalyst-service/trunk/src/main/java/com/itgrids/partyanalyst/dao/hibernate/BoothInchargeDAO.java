@@ -588,7 +588,7 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 			queryStr.append("where model2.voter.voterId = model.tdpCadre.familyVoterId ");
 		}  
 		//queryStr.append(" and model2.boothId=model1.booth.boothId");
-		queryStr.append(" and model1.booth.publicationDate.publicationDateId=:publicationDateId  and model2.booth.publicationDate.publicationDateId = :publicationDateId ");
+		queryStr.append(" and model1.booth.publicationDate.publicationDateId=:publicationDateId  ");//and model2.booth.publicationDate.publicationDateId = :publicationDateId 
 
 		queryStr.append(" and model.isDeleted='N' and model.boothInchargeRoleConditionMapping.isDeleted ='N' and model1.isDeleted='N' and model.isActive = 'Y' ");
 		
