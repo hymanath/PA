@@ -9702,4 +9702,34 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 				  query.setParameterList("memberShipIds", memberShipIds);
 			  return query.list();
 	   }
+	   public List<TdpCadre> isMembershipIdVAlidOrNotValid(String membershipId){
+		   StringBuilder sb = new StringBuilder();
+			  sb.append("select model from TdpCadre model where  model.isDeleted = 'Y' " ); 
+			  
+			  if(membershipId != null){
+				  sb.append(" and model.memberShipNo = :membershipId ");
+			  }
+			  
+			  Query query = getSession().createQuery(sb.toString());
+			  if(membershipId != null){
+				  query.setParameter("membershipId", membershipId);
+			  }
+			  
+			return query.list();
+	   }
+	   public List<TdpCadre> isMebershipIdValid(String membershipId){
+		   StringBuilder sb = new StringBuilder();
+			  sb.append("select model from TdpCadre model where  model.isDeleted = 'N' " ); 
+			  
+			  if(membershipId != null){
+				  sb.append(" and model.memberShipNo = :membershipId ");
+			  }
+			  
+			  Query query = getSession().createQuery(sb.toString());
+			  if(membershipId != null){
+				  query.setParameter("membershipId", membershipId);
+			  }
+			  
+			return query.list();
+	   }
 }
