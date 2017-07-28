@@ -101,7 +101,50 @@ public class NregsDataVO implements Serializable{
 	private List<NregsDataVO> subList = new ArrayList<NregsDataVO>(0);
 	private String percSant;
 	
+	private Long borewellsDrilled;
+	private String ltFiles;
+	private String sentToTransco;
+	private String beneficaryContribution;
+	private String amountPaidTransco;
+	private String borewellenergisation;
 	
+	
+	public Long getBorewellsDrilled() {
+		return borewellsDrilled;
+	}
+	public void setBorewellsDrilled(Long borewellsDrilled) {
+		this.borewellsDrilled = borewellsDrilled;
+	}
+	public String getLtFiles() {
+		return ltFiles;
+	}
+	public void setLtFiles(String ltFiles) {
+		this.ltFiles = ltFiles;
+	}
+	public String getSentToTransco() {
+		return sentToTransco;
+	}
+	public void setSentToTransco(String sentToTransco) {
+		this.sentToTransco = sentToTransco;
+	}
+	public String getBeneficaryContribution() {
+		return beneficaryContribution;
+	}
+	public void setBeneficaryContribution(String beneficaryContribution) {
+		this.beneficaryContribution = beneficaryContribution;
+	}
+	public String getAmountPaidTransco() {
+		return amountPaidTransco;
+	}
+	public void setAmountPaidTransco(String amountPaidTransco) {
+		this.amountPaidTransco = amountPaidTransco;
+	}
+	public String getBorewellenergisation() {
+		return borewellenergisation;
+	}
+	public void setBorewellenergisation(String borewellenergisation) {
+		this.borewellenergisation = borewellenergisation;
+	}
 	public String getPercSant() {
 		return percSant;
 	}

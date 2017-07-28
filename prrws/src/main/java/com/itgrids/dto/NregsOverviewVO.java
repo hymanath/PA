@@ -9,30 +9,39 @@ import java.io.Serializable;
 	 */
 public class NregsOverviewVO implements Serializable{
 
-	  private String averagePerDistrict;
-	  private String averagePerConstituency;
-	  private String averagePerMandal;
-	  private String totalBudget;
-	  private String totalAvgFarmsInDistrict;
-	  private String totalAvgFarmsInConstituency;
-	  private String totalAvgFarmsInMandal;
-	  private Long districtsInRed;
-	  private Long districtsInOrange;
-	  private Long districtsInGreen;
-	  private Long totalDistricts;
-	  private Long constituenciesInRed;
-	  private Long constituenciesInOrange;
-	  private Long constituenciesInGreen;
-	  private Long totalConstituencies;
-	  private Long mandalsInRed;
-	  private Long mandalsInOrange;
-	  private Long mandalsInGreen;
-	  private Long totalMandals;
-	  private Long villagesInRed;
-	  private Long villagesInOrange;
-	  private Long villagesInGreen;
-	  private Long totalVillages;
+	private String averagePerDistrict;
+	private String averagePerConstituency;
+	private String averagePerMandal;
+	private String totalBudget;
+	private String totalAvgFarmsInDistrict;
+	private String totalAvgFarmsInConstituency;
+	private String totalAvgFarmsInMandal;
+	private Long districtsInRed;
+	private Long districtsInOrange;
+	private Long districtsInGreen;
+	private Long totalDistricts;
+	private Long constituenciesInRed;
+	private Long constituenciesInOrange;
+	private Long constituenciesInGreen;
+	private Long totalConstituencies;
+	private Long mandalsInRed;
+	private Long mandalsInOrange;
+	private Long mandalsInGreen;
+	private Long totalMandals;
+	private Long villagesInRed;
+	private Long villagesInOrange;
+	private Long villagesInGreen;
+	private Long totalVillages;
+	private String totalBudget1;
 	  
+	
+	
+	public String getTotalBudget1() {
+		return totalBudget1;
+	}
+	public void setTotalBudget1(String totalBudget1) {
+		this.totalBudget1 = totalBudget1;
+	}
 	public String getAveragePerDistrict() {
 		return averagePerDistrict;
 	}

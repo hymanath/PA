@@ -18,6 +18,7 @@ import com.itgrids.dto.NregaConsolidatedDataVO;
 import com.itgrids.dto.NregaConsolidatedInputVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
+import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.IRuralDevelopmentService;
 import com.sun.jersey.api.client.ClientResponse;
@@ -37,10 +38,10 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	 * @description : getNtrJalaSiriAbstract
 	 * 
 	 */
-	public NregsDataVO getNtrJalaSiriAbstract(InputVO inputVO){
-		NregsDataVO returnVO = new NregsDataVO();
+	public NregsProjectsVO getNtrJalaSiriAbstract(InputVO inputVO){
+		NregsProjectsVO returnVO = new NregsProjectsVO();
 		try{
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrsService/NtrsData", inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrDashBoardService/AbstractData", inputVO);
 			
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -52,9 +53,10 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	 	    		if(finalArray!=null && finalArray.length()>0){
 	 	    			for(int i=0;i<finalArray.length();i++){
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				returnVO.setParameter(jObj.getString("PARAMETER"));
 	 	    				returnVO.setPercentage(jObj.getString("PERCENTAGE"));
-	 	    				returnVO.setTarget(jObj.getLong("TARGET"));
-	 	    				returnVO.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				returnVO.setTarget(jObj.getString("TARGET"));
+	 	    				returnVO.setCompleted(jObj.getString("GROUNDED"));
 	 	    			}
 	 	    		}
 	 	    	}
@@ -75,7 +77,7 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 		NregsOverviewVO finalVO = new NregsOverviewVO();
 		try {
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrsService/NtrsOverview", inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrDashBoardService/NtrOverviewNew", inputVO);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -104,6 +106,7 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
  	    				finalVO.setMandalsInOrange(Obj.getLong("MANDALSINORANGE"));
  	    				finalVO.setMandalsInGreen(Obj.getLong("MANDALSINGREEN"));
  	    				finalVO.setTotalMandals(Obj.getLong("TOTALMANDALS"));
+ 	    				finalVO.setTotalBudget1(Obj.getString("TOTALBUDGET1"));
 	 	    		}
 	 	    				
 	 	    	}
@@ -124,7 +127,7 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	public List<NregsDataVO> getNtrJalaSiriLvlWiseData(InputVO inputVO){
 		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>(0);
 		try{
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrsService/NtrsData", inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrDashBoardService/NtrDataNew", inputVO);
 			
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -142,12 +145,19 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				
 	 	    				vo.setTarget(jObj.getLong("TARGET"));
-	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
-	 	    				vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
-	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
-	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
-	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				vo.setBorewellsDrilled(jObj.getLong("BOREWELLS_DRILLED_SUCCESS"));
+	 	    				vo.setLtFiles(jObj.getString("LT_FILES"));
+	 	    				vo.setSentToTransco(jObj.getString("SENT_TO_TRANSCO"));
+	 	    				if(inputVO.getLocationType() != null && (inputVO.getLocationType().equalsIgnoreCase("constituency") || inputVO.getLocationType().equalsIgnoreCase("mandal")))
+	 	    					vo.setBeneficaryContribution(jObj.getString("BENEFICIARY_CONTRI"));
+	 	    				else
+	 	    					vo.setBeneficaryContribution(jObj.getString("BENEFICARY_CONTRIBUTION"));
+	 	    				vo.setAmountPaidTransco(jObj.getString("AMOUNT_PAID_TRANSCO"));
+	 	    				vo.setBorewellenergisation(jObj.getString("BOREWELL_ENERGISATION"));
+	 	    				if(vo.getTarget() != null && vo.getTarget() > 0l && vo.getBorewellsDrilled() != null && vo.getBorewellsDrilled() > 0l)
+	 	    					vo.setPercentage(new BigDecimal(vo.getBorewellsDrilled()*100.00/vo.getTarget()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				returnList.add(vo);
 	 	    			
 	 	    			}

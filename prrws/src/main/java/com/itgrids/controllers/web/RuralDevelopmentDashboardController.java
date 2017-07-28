@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
+import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.impl.IRuralDevelopmentService;
 
 @EnableAutoConfiguration
@@ -34,8 +35,8 @@ public class RuralDevelopmentDashboardController {
     }
 	
 	@PostMapping("/getNtrJalaSiriAbstract")
-	public @ResponseBody NregsDataVO  getNtrJalaSiriAbstract(@RequestBody InputVO inputVO){
-		NregsDataVO returnVO = null;
+	public @ResponseBody NregsProjectsVO  getNtrJalaSiriAbstract(@RequestBody InputVO inputVO){
+		NregsProjectsVO returnVO = null;
 		try {
 			returnVO = ruralDevelopmentService.getNtrJalaSiriAbstract(inputVO);
 			
