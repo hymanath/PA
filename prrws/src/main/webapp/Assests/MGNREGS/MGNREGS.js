@@ -2994,13 +2994,13 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocationType,menuLocationId,buildType)
 {
 	$("#"+divIdd).html(spinner);
-	var theadArr = [locationType,'Type','Total Payments','Total Amount','total pending fto','total pending amount','Not Generated fto','Not Generated fto Amount','Not Uploaded fto','Not Uploaded fto Amount','Not sent To Bank fto','Not sent To Bank fto Amount','Pending at bank FTO','Pending at bank FTO Amount','Failed Transaction fto','Failed Transaction fto Amount'];
+	var theadArr = [locationType,'Type','Total Payments','Total Amount','total pending amount','Not Generated fto Amount','Not Uploaded fto Amount','Not sent To Bank fto Amount','Pending at bank FTO Amount','Failed Transaction fto Amount'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Type','Total Payments','Total Amount','total pending fto','total pending amount','Not Generated fto','Not Generated fto Amount','Not Uploaded fto','Not Uploaded fto Amount','Not sent To Bank fto','Not sent To Bank fto Amount','Pending at bank FTO','Pending at bank FTO Amount','Failed Transaction fto','Failed Transaction fto Amount'];
+		theadArr = ["district",locationType,'Type','Total Payments','Total Amount','total pending amount','Not Generated fto Amount','Not Uploaded fto Amount','Not sent To Bank fto Amount','Pending at bank FTO Amount','Failed Transaction fto Amount'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Type','Total Payments','Total Amount','total pending fto','total pending amount','Not Generated fto','Not Generated fto Amount','Not Uploaded fto','Not Uploaded fto Amount','Not sent To Bank fto','Not sent To Bank fto Amount','Pending at bank FTO','Pending at bank FTO Amount','Failed Transaction fto','Failed Transaction fto Amount'];
+		theadArr = ["district","constituency",locationType,'Type','Total Payments','Total Amount','total pending amount','Not Generated fto Amount','Not Uploaded fto Amount','Not sent To Bank fto Amount','Pending at bank FTO Amount','Failed Transaction fto Amount'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Type','Total Payments','Total Amount','total pending fto','total pending amount','Not Generated fto','Not Generated fto Amount','Not Uploaded fto','Not Uploaded fto Amount','Not sent To Bank fto','Not sent To Bank fto Amount','Pending at bank FTO','Pending at bank FTO Amount','Failed Transaction fto','Failed Transaction fto Amount'];
+		theadArr = ["district","constituency","mandal",locationType,'Type','Total Payments','Total Amount','total pending amount','Not Generated fto Amount','Not Uploaded fto Amount','Not sent To Bank fto Amount','Pending at bank FTO Amount','Failed Transaction fto Amount'];
 	
 	var menuSelName = $("#selectedName").text();
 	
@@ -3066,17 +3066,17 @@ function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocatio
 						str+='<td>'+ajaxresp[i].type+'</td>';
 						str+='<td>'+ajaxresp[i].totalPayments+'</td>';
 						str+='<td>'+ajaxresp[i].totalAmount+'</td>';
-						str+='<td>'+ajaxresp[i].totalPendings+'</td>';
+						//str+='<td>'+ajaxresp[i].totalPendings+'</td>';
 						str+='<td>'+ajaxresp[i].totalPendinAmount+'</td>';
-						str+='<td>'+ajaxresp[i].generatedPendingQuantity+'</td>';
+						//str+='<td>'+ajaxresp[i].generatedPendingQuantity+'</td>';
 						str+='<td>'+ajaxresp[i].generatedPendingAmount+'</td>';
-						str+='<td>'+ajaxresp[i].uploadPendingQunatity+'</td>';
+						//str+='<td>'+ajaxresp[i].uploadPendingQunatity+'</td>';
 						str+='<td>'+ajaxresp[i].uploadPendingAmount+'</td>';
-						str+='<td>'+ajaxresp[i].sentToBankPendingQuantity+'</td>';
+						//str+='<td>'+ajaxresp[i].sentToBankPendingQuantity+'</td>';
 						str+='<td>'+ajaxresp[i].sentToBankPendingAmount+'</td>';
-						str+='<td>'+ajaxresp[i].pendingAtBankQuantity+'</td>';
+						//str+='<td>'+ajaxresp[i].pendingAtBankQuantity+'</td>';
 						str+='<td>'+ajaxresp[i].pendingAtBankAmount+'</td>';
-						str+='<td>'+ajaxresp[i].failedTransactionQuantity+'</td>';
+						//str+='<td>'+ajaxresp[i].failedTransactionQuantity+'</td>';
 						str+='<td>'+ajaxresp[i].failedTransactionAmount+'</td>';
 					str+='</tr>';
 				}
