@@ -825,4 +825,50 @@ public class CommonMethodsUtilService {
 			
 			return diffMap;
 		}
+		/**
+		 * author: Srishailam Pittala
+		 * Date: 28th July,2018
+		 */
+		/**
+		  * serialNo= 6, 
+		  * TempSerialNo = serialNo,
+		  * remainingCountToNext_100 = 100-6 ,
+		  * remainingCountToNext_100=94
+		  * maxValue = 6+94
+		  * minValue = (100-100)+1 = 1							  * 
+		  */
+		public Object[] isAvaiableBetweenPreAndPost_100_Distance(Long serialNo,Long checkWithSerialNo){
+			boolean isEligibleToAdd = true;
+			Object[] result = null;
+			try {
+				Long maxValue = 0L;
+				Long minValue = 0L;
+				 
+				String checkWithSerialNoStr = checkWithSerialNo.toString();
+				 if(checkWithSerialNoStr.trim().length()==1 || checkWithSerialNoStr.trim().length()==2){
+					 Long tempNo = checkWithSerialNo;
+					 Long remainingCountToNext_100 = 100-tempNo;								
+					 maxValue = tempNo+remainingCountToNext_100;
+					 minValue = (maxValue-100)+1;
+					 Long tempSerialNo = serialNo;//Long.valueOf(vo.getSerialNo());
+					 if(tempSerialNo>=minValue && tempSerialNo<=maxValue){
+						 isEligibleToAdd = false;
+					 }
+				 }else{
+					 Long tempNo = Long.valueOf(checkWithSerialNoStr.toString().substring(checkWithSerialNoStr.trim().length()-2, checkWithSerialNoStr.trim().length()));
+					 Long remainingCountToNext_100 = 100-tempNo;								
+					 maxValue = checkWithSerialNo+remainingCountToNext_100;
+					 minValue = (maxValue-100)+1;
+					 Long tempSerialNo = serialNo;//Long.valueOf(vo.getSerialNo());
+					 if(tempSerialNo>=minValue && tempSerialNo<=maxValue){
+						 isEligibleToAdd = false;
+					 }
+				 }
+				 
+				 result = new Object[]{isEligibleToAdd,minValue,maxValue};
+			} catch (Exception e) {
+				LOG.error("Exception Occured in isAvaiableBetweenPreAndPost_100_Distance() Method");
+			}
+			return result;
+		}
 }
