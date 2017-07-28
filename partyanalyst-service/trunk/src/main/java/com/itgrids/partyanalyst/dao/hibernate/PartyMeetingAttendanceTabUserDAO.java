@@ -48,7 +48,8 @@ public class PartyMeetingAttendanceTabUserDAO extends GenericDaoHibernate<PartyM
 					"model.attendanceTabUser.username, " +//1
 					"model.attendanceTabUser.firstname," +//2
 					"model.attendanceTabUser.lastname," +//3
-					"model.attendanceTabUser.mobile "+//4
+					"model.attendanceTabUser.mobile, "+//4
+					"model.partyMeetingAttendanceTabUserId "+//5
 			       " from PartyMeetingAttendanceTabUser model "+
 			        " where model.partyMeeting.partyMeetingId=:partyMeetingId and model.isDeleted='Y' ");
 			Query query = getSession().createQuery(sb.toString());
