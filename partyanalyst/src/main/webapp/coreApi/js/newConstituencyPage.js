@@ -1231,7 +1231,7 @@ function getTotalAlertDetailsForConstituencyInfo(){
 	var jsObj={
 			"fromDateStr" : "",
 			"toDateStr":"",
-			"constituencyId" : 232,
+			"constituencyId" : 233,
 			"alertTypeIdsStr" : [1]
 			
 		}
@@ -1288,14 +1288,14 @@ function buildAlertsBlock(result){
 								str+='<div class="col-md-7 col-xs-12 col-sm-7">';
 									 
 								  /*str+='<select class="form-control" role="tabListMobile">';
-									  str+='<option tab_id="alerts1">OC</option>';
-									  str+='<option tab_id="alerts2">BC</option>';
-									  str+='<option tab_id="alerts3">SC</option>';
+									  str+='<option tab_id="alerts1">Constitunety Level</option>';
+									  str+='<option tab_id="alerts2">Mandal/Muncipality</option>';
+									  str+='<option tab_id="alerts3">Village/Ward</option>';
 								  str+='</select>';*/
 								  str+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
-									str+='<li role="presentation" class="active"><a href="#alerts1" aria-controls="alerts1" role="tab" data-toggle="tab">OC</a></li>';
-									str+='<li role="presentation"><a href="#alerts2" aria-controls="alerts1" role="tab" data-toggle="tab">BC</a></li>';
-									str+='<li role="presentation"><a href="#alerts3" aria-controls="alerts1" role="tab" data-toggle="tab">SC</a></li>';
+									str+='<li role="presentation" class="active"><a href="#alerts1" aria-controls="alerts1" role="tab" data-toggle="tab">Constitunety Level</a></li>';
+									str+='<li role="presentation"><a href="#alerts2" aria-controls="alerts1" role="tab" data-toggle="tab">Mandal/Muncipality</a></li>';
+									str+='<li role="presentation"><a href="#alerts3" aria-controls="alerts1" role="tab" data-toggle="tab">Village/Ward</a></li>';
 								  str+='</ul>';
 								str+='</div>';
 							str+='</div>';
@@ -1312,18 +1312,22 @@ function buildAlertsBlock(result){
 											str+='<th>govt</th>';
 										str+='</thead>';
 										str+='<tbody>';
-										if(result.subList2 != null && result.subList2.length > 0){
-											for(var i in result.subList2){
-										  str+='<tr>';
-											str+='<td>'+result.subList2[i].status+'</td>';
-											str+='<td>'+result.locationCnt+'</td>';
-											if(result.subList2[i].alertTypeId == 1){
-												str+='<td>'+result.subList2[i].count+'</td>';
-											}else if(result.subList2[i].alertTypeId == 2){
-												str+='<td>'+result.subList2[i].count+'</td>';
-											}
+										
+										if(result!= null && result.length > 0){
+											for(var i in result){
+												for(var j in result[i].subList2){
+											str+='<tr>';
+											str+='<td>'+result[i].subList2[j].status+'</td>';
+											// str+='<td>''</td>';
+											str+='<td>'+result[i].subList2[j].count+'</td>';
+										/*	if(result[i].subList2[i].alertTypeId == 1){
+												str+='<td>'+result[i].subList2[i].count+'</td>';
+											}else if(result[i].subList2[i].alertTypeId == 2){
+												str+='<td>'+result[i].subList2[i].count+'</td>';
+											} */
 											
 										  str+='</tr>';
+										  }
 											}
 										}											
 										str+='</tbody>';

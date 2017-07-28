@@ -267,6 +267,16 @@
 						</div>
 					</div>
 					<!--Committees ending -->
+					
+						<!-- alerts Starting -->
+				<div id="alertsBlockDiv"></div>
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="nominatedPosts">
+				<div class="block">
+					<button class="btn btn-success btn-success-white">detailed information</button>
+				</div>
+			</div>
+			<!-- alerts ending -->
+					
                 <!--Meetings & Tours Starting -->
 				<div class="col-md-8 col-xs-12 col-sm-8 m_top20" navbar-index="meetings">
 				<h3>Meetings <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
