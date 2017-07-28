@@ -480,7 +480,7 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)) {
 			queryStr.append(" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId ");
 		} else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
-			queryStr.append(" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId ");
+			queryStr.append(" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId,model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId ");
 		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {
 			queryStr.append(" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilId ");
 		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.PANCHAYAT)) {
@@ -529,7 +529,8 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY)) {
 			queryStr.append(" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.parliamentConstituency.constituencyId ");
 		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)) {
-			queryStr.append(" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId ");
+			queryStr.append(" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId," +
+					       "  model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId ");
 		} else if(inputVO.getLocationLevel().equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
 			queryStr.append(" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId ");
 		} else if (inputVO.getLocationLevel().equalsIgnoreCase(IConstants.TEHSIL)) {

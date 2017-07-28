@@ -482,7 +482,8 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 						getLocationWiseBoothDtls(completedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"Completed",IConstants.TEHSIL);
 						 
 				 }
-				
+				 Map<Long,Map<String,BoothInchargeDetailsVO>>  locationElectionBodyBoothDtlsMap = new HashMap<Long, Map<String,BoothInchargeDetailsVO>>(0);
+				 Map<Long,Map<Long,Map<Long,Long>>> localEleAgeRangWiseCadreMap = null;
 				//Setting LocationElectionBody Wise Booth Count
 				 if(locationId == 0 || locationId == 2){
 					inputVO.setLocationLevel(IConstants.LOCALELECTIONBODY);
@@ -491,10 +492,20 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 					List<Object[]> lclElctnBdyCompletedBoothObjLst = boothInchargeRoleConditionMappingDAO.getLocationLevelWiseBoothCount(inputVO, "Completed");
 					List<Object[]> voterCountObjLst     = boothInchargeDAO.getLocationSerialNoRangeWiseVoterCount(inputVO);
 					
-					locationSerialRangeWiseVoterMap = getVoterCountRangeWise(voterCountObjLst);
-					getLocationWiseBoothDtls(lclElctnBdyNotStartedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"TotalBooth",IConstants.LOCALELECTIONBODY);
-					getLocationWiseBoothDtls(lclElctnBdyStartedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"Started",IConstants.LOCALELECTIONBODY);
-					getLocationWiseBoothDtls(lclElctnBdyCompletedBoothObjLst,rangeObjList,locationBoothMap,locationSerialRangeWiseVoterMap,"Completed",IConstants.LOCALELECTIONBODY);
+					localEleAgeRangWiseCadreMap = getLocalElectionBodyVoterCountRangeWise(voterCountObjLst);
+					getLocalEleBodyBoothDtls(lclElctnBdyNotStartedBoothObjLst,rangeObjList,locationElectionBodyBoothDtlsMap,localEleAgeRangWiseCadreMap,"TotalBooth",IConstants.LOCALELECTIONBODY);
+					getLocalEleBodyBoothDtls(lclElctnBdyStartedBoothObjLst,rangeObjList,locationElectionBodyBoothDtlsMap,localEleAgeRangWiseCadreMap,"Started",IConstants.LOCALELECTIONBODY);
+					getLocalEleBodyBoothDtls(lclElctnBdyCompletedBoothObjLst,rangeObjList,locationElectionBodyBoothDtlsMap,localEleAgeRangWiseCadreMap,"Completed",IConstants.LOCALELECTIONBODY);
+					
+					if(locationElectionBodyBoothDtlsMap .size() > 0 ){
+					   for (Entry<Long, Map<String, BoothInchargeDetailsVO>> constituencyEntry : locationElectionBodyBoothDtlsMap.entrySet()) {//adding local election body into mandal
+						    if(constituencyEntry.getValue() != null && constituencyEntry.getValue().size() > 0){
+						    	 for(Entry<String, BoothInchargeDetailsVO> locaEleEntry:constituencyEntry.getValue().entrySet()){
+						    		 resultList.add(locaEleEntry.getValue());
+						    	 }
+						    }
+					   }	
+					}
 				 }
 			}else{ //for other location 
 				
@@ -554,6 +565,56 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 						locationVO.setStartedBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
 					}else if(resultType.equalsIgnoreCase("Completed")){
 						locationVO.setCompletedBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+				}
+			}
+		}catch(Exception e){
+			Log.error("Exception occured at getLocationWiseBoothDtls() in BoothDataValidationService class",e);
+		}
+	}
+	public void getLocalEleBodyBoothDtls(List<Object[]> objList,List<Object[]> rangeObjList,Map<Long,Map<String,BoothInchargeDetailsVO>>  locationElectionBodyBoothDtlsMap,Map<Long,Map<Long,Map<Long,Long>>> localEleAgeRangWiseCadreMap,String resultType,String type){
+		try{
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					if(param[0] == null){
+						continue;
+					}
+					Long constituencyId = commonMethodsUtilService.getLongValueForObject(param[9]);
+					String locationIdStr ="2"+commonMethodsUtilService.getStringValueForObject(param[0]);
+					String locationName = commonMethodsUtilService.getStringValueForObject(param[1])+" Munci/Corp/Greater City";
+						
+					Map<String,BoothInchargeDetailsVO> localEleMap = locationElectionBodyBoothDtlsMap.get(constituencyId);
+					if (localEleMap == null ){
+						localEleMap = new HashMap<String, BoothInchargeDetailsVO>(0);
+						locationElectionBodyBoothDtlsMap.put(constituencyId, localEleMap);
+					}
+					BoothInchargeDetailsVO localEleBodyVO = localEleMap.get(locationIdStr.trim());
+					 if(localEleBodyVO == null){
+						 localEleBodyVO = new BoothInchargeDetailsVO();
+						 localEleBodyVO.setLocationIdStr(locationIdStr);
+						 localEleBodyVO.setLocationName(locationName);
+						 localEleBodyVO.setBoothAddressVO(getBoothAddress(param));
+						 localEleBodyVO.setSubList(getRangeList(rangeObjList,null));
+						//taking location wise serial range wise voter map and setting based on location. 
+						 Map<Long,Map<Long,Long>> localEleBodyMap = localEleAgeRangWiseCadreMap.get(commonMethodsUtilService.getLongValueForObject(constituencyId));
+						 if(localEleBodyMap != null ){
+							 Map<Long,Long> rangeWiseVoterCountMap = localEleBodyMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+							  if(localEleBodyVO.getSubList() != null && localEleBodyVO.getSubList().size() > 0){
+								   for(BoothInchargeDetailsVO rangeVO:localEleBodyVO.getSubList()){
+									   if(rangeWiseVoterCountMap != null ){
+										   rangeVO.setCount(rangeWiseVoterCountMap.get(rangeVO.getRoleId()));
+									   }
+								   }
+							  }
+						 }
+						 localEleMap.put(locationIdStr.trim(), localEleBodyVO);
+					 }
+					if(resultType.equalsIgnoreCase("TotalBooth")){
+						localEleBodyVO.setTotalBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					}else if(resultType.equalsIgnoreCase("Started")){
+						localEleBodyVO.setStartedBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					}else if(resultType.equalsIgnoreCase("Completed")){
+						localEleBodyVO.setCompletedBoothCount(commonMethodsUtilService.getLongValueForObject(param[2]));
 					}
 				}
 			}
@@ -625,6 +686,31 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			Log.error("Exception occured at getVoterCountRangeWise() in BoothDataValidationService class",e);
 		}
 		return locationSerialRangeWiseVoterMap;
+	}
+	public Map<Long,Map<Long,Map<Long,Long>>> getLocalElectionBodyVoterCountRangeWise(List<Object[]> objList) {
+		Map<Long,Map<Long,Map<Long,Long>>> localEleAgeRangWiseCadreMap = new HashMap<Long, Map<Long,Map<Long,Long>>>(0);
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(objList)) {
+				for (Object[] param:objList) {
+					Long constituencyId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					Long localEleBodyId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					Map<Long,Map<Long,Long>> localEleMap = localEleAgeRangWiseCadreMap.get(constituencyId);
+					if(localEleMap == null){
+						localEleMap = new HashMap<Long, Map<Long,Long>>();
+						localEleAgeRangWiseCadreMap.put(constituencyId, localEleMap);
+					}
+					Map<Long,Long> rangeMap = localEleMap.get(localEleBodyId);
+					 if(rangeMap == null){
+						 rangeMap = new HashMap<Long,Long>();
+						 localEleMap.put(localEleBodyId, rangeMap);
+					 }
+					 rangeMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+		} catch(Exception e) {
+			Log.error("Exception occured at getVoterCountRangeWise() in BoothDataValidationService class",e);
+		}
+		return localEleAgeRangWiseCadreMap;
 	}
 	/**
 	  * @param  InputVO inputVO 
