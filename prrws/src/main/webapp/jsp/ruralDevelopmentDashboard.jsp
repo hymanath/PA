@@ -264,7 +264,8 @@ function getNtrJalaSiriAbstract()
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
-		locationType: "state"
+		locationType : "district",
+		locationId : "-1"
 	}
 	$.ajax({
 		url: 'getNtrJalaSiriAbstract',
@@ -365,7 +366,7 @@ function getNtrJalaSiriOverview()
 							str1+='</td>';
 							str1+='<td>';
 								str1+='<p>Total NTR Jalasiri</p>';
-								str1+='<h4>'+ajaxresp.totalBudget+'</h4>';
+								str1+='<h4>'+ajaxresp.totalBudget1+'</h4>';
 							str1+='</td>';
 						str1+='</tr>';
 					str1+='</tbody>';
@@ -541,13 +542,13 @@ function projectData(divId,levelId,locationId)
 	
 	for(var i in dataArr)
 	{
-		var theadArr = [dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		var theadArr = [dataArr[i],'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
 		if(dataArr[i] == "constituency")
-			theadArr = ["district",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			theadArr = ["district",dataArr[i],'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
 		else if(dataArr[i] == "mandal")
-			theadArr = ["district","constituency",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			theadArr = ["district","constituency",dataArr[i],'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
 		else if(dataArr[i] == "panchayat")
-			theadArr = ["district","constituency","mandal",dataArr[i],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			theadArr = ["district","constituency","mandal",dataArr[i],'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
 		
 		divId = 'NTRJalaSiri'+dataArr[i];
 		getNtrJalaSiriLvlWiseData(dataArr[i],divId,theadArr);		
@@ -617,10 +618,12 @@ function tableView(blockId,theadArr,result,locationType)
 							}	
 							
 							tableView+='<td>'+result[i].target+'</td>';
-							tableView+='<td>'+result[i].grounded+'</td>';
-							tableView+='<td>'+result[i].notGrounded+'</td>';
-							tableView+='<td>'+result[i].inProgress+'</td>';
-							tableView+='<td>'+result[i].completed+'</td>';
+							tableView+='<td>'+result[i].borewellsDrilled+'</td>';
+							tableView+='<td>'+result[i].ltFiles+'</td>';
+							tableView+='<td>'+result[i].sentToTransco+'</td>';
+							tableView+='<td>'+result[i].beneficaryContribution+'</td>';
+							tableView+='<td>'+result[i].amountPaidTransco+'</td>';
+							tableView+='<td>'+result[i].borewellenergisation+'</td>';
 							if(result[i].percentage < 50)
 							{
 								tableView+='<td style="background-color:#FF0000">'+result[i].percentage+'</td>';
