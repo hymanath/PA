@@ -772,15 +772,15 @@ function buildNREGSProjectsOverview(result,blockName)
 			str+='<div class=" bg_color"  style="border: 5px solid #fff;padding:15px;">';
 				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-OTHER DEPTS</b></h4>';
 				str+='<div class="row m_top20">';
-					str+='<div class="col-sm-4">';
+					str+='<div class="col-sm-8">';
 						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Housing</h5>';
+							str+='<h5 class="text-danger">Animal Husbandry</h5>';
 							str+='<div class="row">';	
 								for(var i in result)
 								{
-									if(result[i] == "NTR 90 Days" || result[i] == "Production of Bricks" || result[i] == "NTR Rural House"){
-										str+='<div class="col-sm-6 m_top10">';
-											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									if(result[i] == "Cattle Drinking Water Troughs" || result[i] == "Raising of Perinnial Fodders" || result[i] == "OPGK-Perinnials" || result[i] == "OPGK-Annuals"){
+										str+='<div class="col-sm-3 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
 												if(result[i].length > 12)
 												{
 													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
@@ -794,6 +794,7 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
+					
 					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
 							str+='<h5 class="text-danger">Sericulture</h5>';
@@ -816,15 +817,17 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-					str+='<div class="col-sm-4">';
+				str+='</div>';
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-6">';
 						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Animal Husbandry</h5>';
+							str+='<h5 class="text-danger">Housing</h5>';
 							str+='<div class="row">';	
 								for(var i in result)
 								{
-									if(result[i] == "Cattle Drinking Water Troughs" || result[i] == "Raising of Perinnial Fodders" || result[i] == "OPGK-Perinnials" || result[i] == "OPGK-Annuals"){
-										str+='<div class="col-sm-6 m_top10">';
-											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
+									if(result[i] == "NTR 90 Days" || result[i] == "Production of Bricks" || result[i] == "NTR Rural House"){
+										str+='<div class="col-sm-4 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 												if(result[i].length > 12)
 												{
 													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
@@ -838,8 +841,7 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-				str+='</div>';
-				str+='<div class="row m_top20">';
+			
 					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
 							str+='<h5 class="text-danger">SERP</h5>';
@@ -862,6 +864,30 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
+					str+='<div class="col-sm-2">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Forest</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									if(result[i] == "Nurseries"){
+										str+='<div class="col-sm-12 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
+												if(result[i].length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+												}
+											str+='</div>';
+										str+='</div>';
+									}
+								}
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="row m_top20">';
 					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
 							str+='<h5 class="text-danger">Fisheries</h5>';
@@ -884,28 +910,7 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-					str+='<div class="col-sm-4">';
-						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Forest</h5>';
-							str+='<div class="row">';	
-								for(var i in result)
-								{
-									if(result[i] == "Nurseries"){
-										str+='<div class="col-sm-6 m_top10">';
-											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
-												if(result[i].length > 12)
-												{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
-												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
-												}
-											str+='</div>';
-										str+='</div>';
-									}
-								}
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
+					
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
