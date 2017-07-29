@@ -11952,7 +11952,9 @@ public Map<String,TrainingCampVO> getAllTrainingProgWiseCompletedRunningUpcoming
 			
 			setBatchCountNew(finalMap,"upComing");
 			if(upComingBatchIds!=null && upComingBatchIds.size()>0){
+				if(finalMap.containsKey("upComing")){
 				finalMap.get("upComing").setUpComingBatchIds(upComingBatchIds);
+				}
 			}
 			
 		}
@@ -12133,6 +12135,7 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
     										vo3.setMemberCountAttendee(0l);
 	    									vo3.setMemberCount(batchVO.getUpCommingMemberCount());
     									}else{
+    										if(finalMap.containsKey("upcoming")){
     									if(finalMap.get("upcoming").getProgramWiseDetails()!=null && finalMap.get("upcoming").getProgramWiseDetails().size()>0){
     										for(TrainingCampVO voo : finalMap.get("upcoming").getProgramWiseDetails()){
     											if(voo.getCampDetails()!=null && voo.getCampDetails().size()>0){
@@ -12154,6 +12157,7 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
     											}
     											}
     										}
+    									 }
     									}
     									
     								}
