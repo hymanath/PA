@@ -107,7 +107,7 @@ function onLoadCalls()
 		for(var i in overViewArr)
 		{
 			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
-			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
 			{
 				getNREGSProjectsAbstractNew(overViewArr[i],locType,locId,'',levelId);
 			}else if(overViewArr[i] == 'Payments')
@@ -119,7 +119,7 @@ function onLoadCalls()
 			}
 			if(levelId == 4)
 			{
-				if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+				if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
 				{
 					getNREGSProjectsAbstractNewFrConstituency(overViewArr[i],locType,locId,districtId,'',levelId);
 				}else if(overViewArr[i] == 'Payments')
@@ -157,7 +157,7 @@ function onLoadCalls()
 		for(var i in overViewArr)
 		{
 			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
-			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
 			{
 				getNREGSProjectsAbstractNew(overViewArr[i],locType,locId,'',levelId);
 			}else if(overViewArr[i] == 'Payments')
@@ -169,7 +169,7 @@ function onLoadCalls()
 			}
 			if(levelId == 4)
 			{
-				if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+				if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
 				{
 					getNREGSProjectsAbstractNewFrConstituency(overViewArr[i],locType,locId,districtId,'',levelId);
 				}else if(overViewArr[i] == 'Payments')
@@ -778,7 +778,7 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='<div class="row">';	
 								for(var i in result)
 								{
-									if(result[i] == "NTR 90 Days" || result[i] == "Production of Bricks"){
+									if(result[i] == "NTR 90 Days" || result[i] == "Production of Bricks" || result[i] == "NTR Rural House"){
 										str+='<div class="col-sm-6 m_top10">';
 											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 												if(result[i].length > 12)
@@ -822,7 +822,7 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='<div class="row">';	
 								for(var i in result)
 								{
-									if(result[i] == "Cattle Drinking Water Troughs" || result[i] == "Raising of Perinnial Fodders"){
+									if(result[i] == "Cattle Drinking Water Troughs" || result[i] == "Raising of Perinnial Fodders" || result[i] == "OPGK-Perinnials" || result[i] == "OPGK-Annuals"){
 										str+='<div class="col-sm-6 m_top10">';
 											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
 												if(result[i].length > 12)
@@ -2918,12 +2918,12 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 
 
 //var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','CC Roads','Anganwadi','Gram Panchayat Buildings','Mandal buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk worm','Cattle drinking water trough','Raising of Perinnial Fodder','Solid Waste Management','Play Fields','Burial Grounds','Fish Drying Platforms','Fish Ponds','Agriculture Activities','Average Wage','Avg days of emp per HH','HH Comp 100 days','Timely Payments','Horticulture','Avenue'];
-var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','Solid Waste Management','Burial Grounds','Play Fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads','Anganwadi Buildings','GP Buildings','Mandal Buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Cattle Drinking Water Troughs','Raising of Perinnial Fodders','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance'];
+var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','Solid Waste Management','Burial Grounds','Play Fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads','Anganwadi Buildings','GP Buildings','Mandal Buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Cattle Drinking Water Troughs','Raising of Perinnial Fodders','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','NTR Rural House','OPGK-Perinnials','OPGK-Annuals'];
 buildNREGSProjectsOverview(overViewArr,'')
 for(var i in overViewArr)
 {
 	$("[overview-block='"+overViewArr[i]+"']").append(spinner);
-	if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+	if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
 	{
 		getNREGSProjectsAbstractNew(overViewArr[i],'state',"0",'',2);
 	}else if(overViewArr[i] == 'Payments')
@@ -3645,7 +3645,7 @@ $(document).on("click",".menuDataCollapse",function(){
 		for(var i in overViewArr)
 		{
 			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
-			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
 			{
 				getNREGSProjectsAbstractNew(overViewArr[i],'district',locId,blockName,levelId);
 			}else if(overViewArr[i] == 'Payments')
@@ -3661,7 +3661,7 @@ $(document).on("click",".menuDataCollapse",function(){
 		for(var i in overViewArr)
 		{
 			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
-			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
 			{
 				getNREGSProjectsAbstractNewFrConstituency(overViewArr[i],'constituency',locId,districtId,'',levelId);
 			}else if(overViewArr[i] == 'Payments')
@@ -3676,7 +3676,7 @@ $(document).on("click",".menuDataCollapse",function(){
 		for(var i in overViewArr)
 		{
 			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
-			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms')
+			if(overViewArr[i] == 'Solid Waste Management' || overViewArr[i] == 'Burial Grounds' || overViewArr[i] == 'Play Fields' || overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
 			{
 				getNREGSProjectsAbstractNew(overViewArr[i],'state',locId,blockName,levelId);
 			}else if(overViewArr[i] == 'Payments')

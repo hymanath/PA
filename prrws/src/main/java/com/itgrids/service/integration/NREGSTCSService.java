@@ -310,6 +310,12 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GCWorkService/GCWorkOverview";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CD_CW"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CheckDamService/CheckDamOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Rural House"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NTRRuralService/NTRRuralOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PernnialService/PernnialOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnnualsService/AnnualsOverview";
 			
 			String str = convertingInputVOToString(inputVO);
 			
@@ -331,8 +337,10 @@ public class NREGSTCSService implements INREGSTCSService{
  	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avenue") ||
  	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries") ||
  	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance") ||
- 	    					(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs") && (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district"))) //|| 
- 	    					//(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("IHHL") && (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")))
+ 	    					(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs") && (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district"))) ||
+ 	    					(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Rural House") && !(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state"))) ||
+ 	    					(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") && !(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state"))) ||
+ 	    					(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals") && !(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state")))
  	    					){
 	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
 	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
@@ -494,6 +502,12 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GCWorkService/GCWorkData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CD_CW"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CheckDamService/CheckDamData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Rural House"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NTRRuralService/NTRRuralData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PernnialService/PernnialData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnnualsService/AnnualsData";
 			
 			String str = convertingInputVOToString(inputVO);
 			
@@ -666,7 +680,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		    				if(vo != null){
 			    				if(Double.valueOf(percValue)  < 50){
 		    						vo.setConstiInRed(vo.getConstiInRed()+1l);
-		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <=80){
+		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <80){
 		    						vo.setConstiInOrange(vo.getConstiInOrange()+1l);
 	    						}else if(Double.valueOf(percValue)  >=80){
 		    						vo.setConstiInGreen(vo.getConstiInGreen()+1l);
@@ -773,6 +787,12 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GCWorkService/GCWorkData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CD_CW"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CheckDamService/CheckDamData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Rural House"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NTRRuralService/NTRRuralData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PernnialService/PernnialData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnnualsService/AnnualsData";
 			
 			 str = convertingInputVOToString(inputVO);
 			 
@@ -1323,7 +1343,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		    				if(vo != null) {
 			    				if(Double.valueOf(percValue)  < 50){
 		    						vo.setMandalsInRed(vo.getMandalsInRed()+1l);
-		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <=80){
+		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <80){
 		    						vo.setMandalsInOrange(vo.getMandalsInOrange()+1l);
 	    						}else if(Double.valueOf(percValue)  >=80){
 		    						vo.setMandalsInGreen(vo.getMandalsInGreen()+1l);
@@ -1383,7 +1403,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		    				{
 			    				if(Double.valueOf(percValue)  < 50){
 		    						vo.setMandalsInRed(vo.getMandalsInRed()+1l);
-		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <=80){
+		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <80){
 		    						vo.setMandalsInOrange(vo.getMandalsInOrange()+1l);
 	    						}else if(Double.valueOf(percValue)  >=80){
 		    						vo.setMandalsInGreen(vo.getMandalsInGreen()+1l);
@@ -1423,7 +1443,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			if(type != null && !type.trim().equalsIgnoreCase("total")){
 				if(type.trim().equalsIgnoreCase("red") && Double.valueOf(nregsDataVO.getPercentage()) < 50)
 					filterList.add(nregsDataVO);
-				else if(type.trim().equalsIgnoreCase("orange") && Double.valueOf(nregsDataVO.getPercentage()) <= 80 && Double.valueOf(nregsDataVO.getPercentage()) >=50)
+				else if(type.trim().equalsIgnoreCase("orange") && Double.valueOf(nregsDataVO.getPercentage()) <80 && Double.valueOf(nregsDataVO.getPercentage()) >=50)
 					filterList.add(nregsDataVO);
 				else if(type.trim().equalsIgnoreCase("green") && Double.valueOf(nregsDataVO.getPercentage()) >= 80)
 					filterList.add(nregsDataVO);
@@ -1606,7 +1626,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		    				if(vo != null) {
 			    				if(Double.valueOf(percValue)  < 50){
 		    						vo.setVillagesInRed(vo.getVillagesInRed()+1l);
-		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <=80){
+		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <80){
 		    						vo.setVillagesInOrange(vo.getVillagesInOrange()+1l);
 	    						}else if(Double.valueOf(percValue)  >=80){
 		    						vo.setVillagesInGreen(vo.getVillagesInGreen()+1l);
@@ -1666,7 +1686,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		    				{
 			    				if(Double.valueOf(percValue)  < 50){
 		    						vo.setVillagesInRed(vo.getVillagesInRed()+1l);
-		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <=80){
+		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <80){
 		    						vo.setVillagesInOrange(vo.getVillagesInOrange()+1l);
 	    						}else if(Double.valueOf(percValue)  >=80){
 		    						vo.setVillagesInGreen(vo.getVillagesInGreen()+1l);
@@ -1722,7 +1742,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		    				{
 			    				if(Double.valueOf(percValue)  < 50){
 		    						vo.setVillagesInRed(vo.getVillagesInRed()+1l);
-		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <=80){
+		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <80){
 		    						vo.setVillagesInOrange(vo.getVillagesInOrange()+1l);
 	    						}else if(Double.valueOf(percValue)  >=80){
 		    						vo.setVillagesInGreen(vo.getVillagesInGreen()+1l);
