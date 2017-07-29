@@ -52,4 +52,7 @@ public interface INREGSTCSService {
 	public NregaLocationOverviewVO getIhhlAbstractData(InputVO inputVO);
 	public NregaLocationOverviewVO getIhhlOverviewData(InputVO inputVO);
 	public List<NregaLocationOverviewVO> getLocationIhhlData(InputVO inputVO);
+	
+	public List<NregsProjectsVO> getNregsProjectsIWMPAbstract(InputVO inputVO);
+	public List<NregsDataVO> getLocationWiseWaterBudgetDetails(InputVO inputVO);
 }

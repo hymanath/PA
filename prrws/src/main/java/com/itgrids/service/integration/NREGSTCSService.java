@@ -310,6 +310,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GCWorkService/GCWorkOverview";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CD_CW"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CheckDamService/CheckDamOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("WaterBudget"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/WaterBudgetOverview";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Rural House"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NTRRuralService/NTRRuralOverview";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials"))
@@ -329,19 +331,17 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject Obj = new JSONObject(output);
 	 	    		if(Obj!=null && Obj.length()>0){
-	 	    			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Average Wage") || 
- 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Average Days of Employment") || 
- 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Completed 100 Days") || 
- 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payment") || 
- 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Horticulture") ||
- 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Avenue") ||
- 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries") ||
- 	    					inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance") ||
- 	    					(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs") && (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district"))) ||
- 	    					(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Rural House") && !(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state"))) ||
- 	    					(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") && !(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state"))) ||
- 	    					(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals") && !(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state")))
- 	    					){
+	 	    			if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("Average Wage") || 
+ 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Average Days of Employment") || 
+ 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Completed 100 Days") || 
+ 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payment") || 
+ 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Horticulture") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Avenue") ||
+ 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries") ||	inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance") ||
+ 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("WaterBudget") ||
+ 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Rural House") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
+ 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
+ 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
+ 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs") && inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")))){
 	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
 	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
 	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
@@ -4097,5 +4097,129 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at getLocationIhhlData() - NREGSTCSService service", e);
 		}
 		return resultList;
+	}
+	
+	public List<NregsProjectsVO> getNregsProjectsIWMPAbstract(InputVO inputVO){
+		List<NregsProjectsVO> returnList = new ArrayList<NregsProjectsVO>();
+		try {
+			String projectType = null;
+			String str = convertingInputVOToStringForIWMP(inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsProjectsVO vo = new NregsProjectsVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				
+	 	    				vo.setParameter(jObj.getString("PARAMETER"));
+	 	    				vo.setTarget(jObj.getString("TARGET"));
+	 	    				vo.setCompleted(jObj.getString("ACHMT"));
+	 	    				vo.setPercentage(jObj.getString("PER"));
+	 	    				
+	 	    				returnList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	 }
+	 	      }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsProjectsIWMPAbstract() - NREGSTCSService service", e);
+		}
+		return returnList;
+	}
+	
+	public String convertingInputVOToStringForIWMP(InputVO inputVO){
+		String str = "";
+		try {
+			if(inputVO.getLocationId() != null)
+				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
+					if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
+						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+				}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+					if(inputVO.getLocationId().longValue() > 0l)
+						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+				}
+				
+			str = "{";
+			
+			if(inputVO.getFromDate() != null )
+				str += "\"fromDate\" : \""+inputVO.getFromDate()+"\",";
+			if(inputVO.getToDate() != null)
+				str += "\"toDate\" : \""+inputVO.getToDate()+"\",";
+			if(inputVO.getYear() != null)
+				str += "\"year\" : \""+inputVO.getYear()+"\",";
+			if(inputVO.getLocationType() != null)
+				str += "\"locationType\" : \""+inputVO.getLocationType()+"\",";
+			if(inputVO.getLocationIdStr() != null)
+				str += "\"locationId\" : \""+inputVO.getLocationIdStr()+"\",";
+			else if(inputVO.getLocationId() != null)
+				str += "\"locationId\" : \""+inputVO.getLocationId()+"\",";
+			if(inputVO.getSublocationType() != null)
+				str += "\"SublocationType\" : \""+inputVO.getSublocationType()+"\",";
+			if(inputVO.getType() != null)
+				str += "\"Type\" : \""+inputVO.getType()+"\",";
+			
+			if(str.length() > 1)
+				str = str.substring(0,str.length()-1);
+			
+			str += "}";
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at convertingInputVOToStringForIWMP - NREGSTCSService service", e);
+		}
+		return str;
+	}
+	
+	public List<NregsDataVO> getLocationWiseWaterBudgetDetails(InputVO inputVO){
+		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>();
+		try {
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/WaterBudgetData", str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTarget(jObj.getLong("TGT"));
+	 	    				vo.setAchivement(jObj.getString("ACHMT"));
+	 	    				vo.setAchmtGT0(jObj.getString("ACHMTGT0"));
+	 	    				vo.setAchmtLT0(jObj.getString("ACHMTLT0"));
+	 	    				vo.setBalance(jObj.getString("BALANCE"));
+	 	    				vo.setArea(jObj.getString("AREA"));
+	 	    				vo.setGross(jObj.getString("GROSS"));
+	 	    				vo.setStroageCap(jObj.getString("STRG_CAP"));
+	 	    				vo.setBalanceRunOff(jObj.getString("BALANCERUNOFF"));
+	 	    				
+	 	    				returnList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseWaterBudgetDetails - NREGSTCSService service", e);
+		}
+		return returnList;
 	}
 }
