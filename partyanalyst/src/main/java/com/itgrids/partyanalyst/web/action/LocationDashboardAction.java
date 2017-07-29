@@ -417,7 +417,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public String getLevelWiseMeetingStatusCounts(){
 		try{
 			jObj = new JSONObject(getTask());
-			alertVO = locationDashboardService.getLevelWiseMeetingStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationId"), jObj.getLong("locationValue"));
+			JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
+			List<Long> locationValues = new ArrayList<Long>();
+			if(locationValuesArr != null && locationValuesArr.length() > 0){
+				for (int i = 0; i < locationValuesArr.length(); i++){
+					locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
+				} 
+			}
+			
+			alertVO = locationDashboardService.getLevelWiseMeetingStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getLocationWiseMeetingCount() of LocationDashboardAction{}",e);
 		}
@@ -428,7 +436,14 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public String getLocationWiseInsuranceStatusCounts(){
 		try{
 			jObj = new JSONObject(getTask());
-			insuranceVO = locationDashboardService.getLocationWiseInsuranceStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationId"), jObj.getLong("locationValue"));
+			JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
+			List<Long> locationValues = new ArrayList<Long>();
+			if(locationValuesArr != null && locationValuesArr.length() > 0){
+				for (int i = 0; i < locationValuesArr.length(); i++){
+					locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
+				} 
+			}
+			insuranceVO = locationDashboardService.getLocationWiseInsuranceStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getLocationWiseInsuranceStatusCount() of LocationDashboardAction{}",e);
 		}
@@ -438,7 +453,14 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public String getLocationWiseGrivanceTrustStatusCounts(){
 		try{
 			jObj = new JSONObject(getTask());
-			grivenceVO = locationDashboardService.getGrivenceTrustStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationId"), jObj.getLong("locationValue"));
+			JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
+			List<Long> locationValues = new ArrayList<Long>();
+			if(locationValuesArr != null && locationValuesArr.length() > 0){
+				for (int i = 0; i < locationValuesArr.length(); i++){
+					locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
+				} 
+			}
+			grivenceVO = locationDashboardService.getGrivenceTrustStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getLocationWiseInsuranceStatusCount() of LocationDashboardAction{}",e);
 		}
