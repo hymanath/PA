@@ -21,10 +21,10 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 	
 	public List<Object[]> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId,String cadreType){
 		String tempId = mandalId.toString().substring(0,1);
-		StringBuilder query = new StringBuilder("select distinct model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.partNo," +
-				    " model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.villagesCovered, " +
-					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.constituency.name, " +
-					" model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.panchayat.panchayatName," +
+		StringBuilder query = new StringBuilder("select distinct booth.partNo," +
+				    " booth.villagesCovered, " +
+					" constituency.name, " +
+					" panchayat.panchayatName," +
 					" model.tdpCadre.firstname, " +
 					" model.tdpCadre.mobileNo, " +
 					" model.tdpCadre.memberShipNo, " +
@@ -57,9 +57,9 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 				query.append(" and bpv.voter.voterId = model.tdpCadre.voterId ");
 		}
 		query.append("   and  model.isDeleted='N'  and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=2014 and " +
-					" booth.publicationDate.publicationDateId = :publicationDate and bpv.booth.publicationDate.publicationDateId = :publicationDate ");
+					   " booth.publicationDate.publicationDateId = :publicationDate and bpv.booth.publicationDate.publicationDateId = :publicationDate ");
 		if(constituencyId !=null && constituencyId.longValue() > 0)
-			query.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.constituency.constituencyId=:constituencyId");
+			query.append(" and constituency.constituencyId=:constituencyId");
 		if(mandalId !=null && mandalId.longValue() > 0){
 			if(tempId.trim().equalsIgnoreCase("1"))
 				query.append(" and localElectionBody.localElectionBodyId=:mandalId  ");
@@ -67,7 +67,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 				query.append(" and tehsil.tehsilId=:mandalId and localElectionBody.localElectionBodyId is null ");
 		}
 		if(boothId !=null && boothId.longValue() > 0)
-			query.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.boothId=:boothId");
+			query.append(" and booth.boothId=:boothId");
 		query.append(" group by model.tdpCadre.tdpCadreId ");
 		Query query1=getSession().createQuery(query.toString());
 		query1.setParameter("publicationDate", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
@@ -588,7 +588,7 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 			queryStr.append("where model2.voter.voterId = model.tdpCadre.familyVoterId ");
 		}  
 		//queryStr.append(" and model2.boothId=model1.booth.boothId");
-		queryStr.append(" and model1.booth.publicationDate.publicationDateId=:publicationDateId  ");//and model2.booth.publicationDate.publicationDateId = :publicationDateId 
+		queryStr.append(" and model1.booth.publicationDate.publicationDateId=:publicationDateId and model2.booth.publicationDate.publicationDateId = :publicationDateId  ");
 
 		queryStr.append(" and model.isDeleted='N' and model.boothInchargeRoleConditionMapping.isDeleted ='N' and model1.isDeleted='N' and model.isActive = 'Y' ");
 		
