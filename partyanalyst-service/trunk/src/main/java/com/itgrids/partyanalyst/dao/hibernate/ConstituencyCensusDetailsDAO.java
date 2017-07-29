@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -72,5 +73,22 @@ public class ConstituencyCensusDetailsDAO extends GenericDaoHibernate<Constituen
 	public List<Long> checkForConstituencyExistanceByYear(Long constituencyId,Long year) {
 		Object[] params = {constituencyId,year};
 		return getHibernateTemplate().find("select model.constituencyId from ConstituencyCensusDetails model where model.constituencyId = ? and model.year = ? ",params);	
+	}
+	
+	@Override
+	public List<Object[]> getTotalCensusPopulation(Set<Long> locationIdSet,Long year){
+			
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.totalPopulation, model.constituencyId from ConstituencyCensusDetails model " +
+				"where model.constituencyId in (:constituencyId) and " +
+				"model.year =:years and tru =:tru order by model.year asc");
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameterList("constituencyId", locationIdSet);
+		query.setParameter("years", year);
+		query.setParameter("tru", "total");
+		
+		return  query.list();
+	
 	}
 }
