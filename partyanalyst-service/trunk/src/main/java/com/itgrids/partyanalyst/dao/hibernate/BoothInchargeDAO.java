@@ -1212,4 +1212,20 @@ public List<Object[]> getBoothRoleWiseAddedMemberCount(InputVO inputVO) {
 
 	return query.list();
 }
+public Long getBoothTotalAddedMember(Long boothId,Long boothInchargeEnrollmentId) {
+
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append(" select ");
+	queryStr.append(" count(distinct model.tdpCadreId)");
+	queryStr.append(" from BoothIncharge model ");
+	queryStr.append(" where model.isDeleted='N' and model.isActive='Y' ");
+	queryStr.append(" and model.boothInchargeRoleConditionMapping.isDeleted='N' "); 
+	queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.isDeleted='N' ");
+	queryStr.append(" and model.boothInchargeEnrollmentId =:boothInchargeEnrollmentId ");
+	queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId =:boothId ");
+	Query query = getSession().createQuery(queryStr.toString());
+	query.setParameter("boothInchargeEnrollmentId",boothInchargeEnrollmentId);
+	query.setParameter("boothId",boothId);
+	return (Long)query.uniqueResult();
+}
 }

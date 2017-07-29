@@ -22398,6 +22398,28 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 				}
 			}
 			committeevo.setPreviousRoles(returnList);
+			//Checking isVoterDelted or not and sending status to UI.
+			if (committeevo.getPreviousRoles() != null && committeevo.getPreviousRoles().size() > 0) {
+				Set<Long> cadreIdSet = new HashSet<Long>(0);
+				for (CadreCommitteeVO cadreVO : committeevo.getPreviousRoles()) {
+					cadreIdSet.add(cadreVO.getTdpCadreId());
+				}
+				List<Object[]> cadreObjLst = tdpCadreDAO.isVoterDeleted(cadreIdSet);
+				Map<Long, String> cadreStatusMap = new HashMap<Long, String>(0);
+				if (cadreObjLst != null && cadreObjLst.size() > 0) {
+					
+					for (Object[] param : cadreObjLst) {
+						cadreStatusMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1]));
+					}
+					
+					for (CadreCommitteeVO cadreVO : committeevo.getPreviousRoles()) {
+						cadreVO.setIsDeletedVoter(cadreStatusMap.get(cadreVO.getTdpCadreId()));
+					}
+				}
+				
+			}
+			
+			
 		}catch(Exception e){
 			 LOG.error("Exception raised in saveElectionBoothCommitteeDetails ", e);
 		}

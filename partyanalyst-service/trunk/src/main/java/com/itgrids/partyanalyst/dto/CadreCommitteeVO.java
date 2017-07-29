@@ -58,6 +58,7 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private Long LocalElectionId;
 	private String roleName;
 	private String serialNo="";
+	private String isDeletedVoter="";
 	private Long cadreVoterId;
 	
 	public Long getCadreVoterId() {
@@ -587,5 +588,12 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	public void setCommitteeMemberStatus(String committeeMemberStatus) {
 		this.committeeMemberStatus = committeeMemberStatus;
 	}
+	public String getIsDeletedVoter() {
+		return isDeletedVoter;
+	}
+	public void setIsDeletedVoter(String isDeletedVoter) {
+		this.isDeletedVoter = isDeletedVoter;
+	}
+	
 	
 }
