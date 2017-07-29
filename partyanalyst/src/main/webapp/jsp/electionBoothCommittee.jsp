@@ -1669,7 +1669,7 @@ function getBoothUserDetails(){
 	}).done(function(result){
 		$("#viewDataLoadingImg").hide();
 			if(result != null && result != ''){
-			  getBoothUserDetailsbuild(result,selectLocationName);
+			  getBoothUserDetailsbuild(result,selectLocationName,boothId);
 			}else{
 				$("#userDetailsId").html(' <center> No Data available... </center>');
 			}
