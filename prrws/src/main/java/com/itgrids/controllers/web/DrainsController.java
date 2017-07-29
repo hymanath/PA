@@ -76,7 +76,7 @@ public class DrainsController {
 		}
 		return null;
 	}
-	@PostMapping("/getDrainsIvrStatusCounts")
+	@PostMapping("/getOverAllIvrDetails")
 	public @ResponseBody List<StatusVO> getOverAllIvrDetails(@RequestBody InputVO inputVO){
 		try {
 			return drainsService.getOverAllIvrDetails(inputVO);			
