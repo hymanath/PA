@@ -1522,7 +1522,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	  * @Description :This Service Method is used to get tour leader over all complaince details designation wise. 
 	  *  @since 7-JULY-2017
 	  */
-	public List<ToursBasicVO> getLocationWiseTourMembersComplainceDtls(final String locationType,final Long locationValue,final String fromDateStr,final String toDateStr){
+	public List<ToursBasicVO> getLocationWiseTourMembersComplainceDtls(final Long locationTypeId,final List<Long> locationValues,final String fromDateStr,final String toDateStr,final String year){
 		List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>(0);
 		Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String,List<ToursBasicVO>>>(0);
 	    Map<String,String> categoryIdNameMap = new HashMap<String, String>(0);
@@ -1544,7 +1544,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			 //Get month year ids based on month year 
 			 List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
 			 
-			 List<Object[]> rtrnCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getLocationWiseTourMemberDetails(getUserAccessLevel(locationType), locationType, locationValue);
+			 List<Object[]> rtrnCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getLocationWiseTourMemberDetails(getUserAccessLevel(locationTypeId), locationTypeId, locationValues,year);
 			 //getting designation wise target
 			 ToursBasicVO basicDtlsVO = getRequiredData(rtrnCandiateObjLst);
 			  if(monthyearIds != null && monthyearIds.size() > 0 && basicDtlsVO.getComplaincandidateIdsSet() != null && basicDtlsVO.getNoNComplaincandidateIdsSet() != null){
@@ -1904,9 +1904,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			}
 			return d;
 	 }
-	public Long getUserAccessLevel(String locationType){
+	public Long getUserAccessLevel(Long locationTypeId){
 		Long userAccessLevelId=0l;
-		if(locationType != null){
+		/*if(locationTypeId != null){
 			if(locationType.equalsIgnoreCase("District")){
 				userAccessLevelId = 3l;
 			}else if(locationType.equalsIgnoreCase("ParliamentConstituency")){
@@ -1914,7 +1914,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			}else if(locationType.equalsIgnoreCase("Constituency")){
 				userAccessLevelId = 4l;
 			}
-		}
+		}*/
+		userAccessLevelId = locationTypeId;
 		return userAccessLevelId;
 	}
 	public ToursBasicVO getRequiredData(List<Object[]> objList){
@@ -2157,10 +2158,10 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @Description :This Service Method is used to location type cadre count details 
 	 *  @since 27-JUNE-2017
 	 */
-	public List<ConstituencyCadreVO> getLocationTypeWiseCadreCount(final String locationType,final Long locationValue){
+	public List<ConstituencyCadreVO> getLocationTypeWiseCadreCount(final Long locationTypeId,final List<Long> locationValues){
 		List<ConstituencyCadreVO> resultList = new ArrayList<ConstituencyCadreVO>(0);
 		try{
-			List<Object[]> rtrnCaderCountObjLst = tdpCadreEnrollmentInfoDAO.getLocationTypeWiseCadreCount(getUserAccessLevel(locationType), locationValue);
+			List<Object[]> rtrnCaderCountObjLst = tdpCadreEnrollmentInfoDAO.getLocationTypeWiseCadreCount(locationTypeId,locationValues);
 			if(rtrnCaderCountObjLst != null && rtrnCaderCountObjLst.size() > 0){
 				for (Object[] param : rtrnCaderCountObjLst) {
 					  ConstituencyCadreVO enrollmentYearVO = new ConstituencyCadreVO();
