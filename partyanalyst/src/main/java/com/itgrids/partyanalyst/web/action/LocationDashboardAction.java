@@ -352,8 +352,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getNominatedPostStatusWiseCount(){
 		 try{
 			 jObj = new JSONObject(getTask());
-			 keyValueVOList = locationDashboardService.getNominatedPostStatusWiseCount(jObj.getLong("constituencyId"),jObj.getString("fromDateStr"),jObj.getString("toDateStr"));
-		 }catch(Exception e){
+			 JSONArray locationValues = jObj.getJSONArray("locationValues");  
+				List<Long> locationValuesList = new ArrayList<Long>();
+				if(locationValues != null && locationValues.length() > 0){
+					for (int i = 0; i < locationValues.length(); i++){
+						locationValuesList.add(Long.parseLong(locationValues.getString(i)));          
+					}
+				}
+			 keyValueVOList = locationDashboardService.getNominatedPostStatusWiseCount(
+					 jObj.getLong("locationTypeId"),locationValuesList,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getString("year"));
+			 }catch(Exception e){
 			 LOG.error("Exception raised at getNominatedPostStatusWiseCount() of LocationDashboardAction{}", e);
 		 }
 		 return Action.SUCCESS;
@@ -361,7 +369,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getNominatedPostApplicationStatusWiseCount(){
 		 try{
 			 jObj = new JSONObject(getTask());
-			 keyValueVOList = locationDashboardService.getNominatedPostApplicationStatusWiseCount(jObj.getLong("constituencyId"),jObj.getString("fromDateStr"),jObj.getString("toDateStr"));
+			 JSONArray locationValues = jObj.getJSONArray("locationValues");  
+				List<Long> locationValuesList = new ArrayList<Long>();
+				if(locationValues != null && locationValues.length() > 0){
+					for (int i = 0; i < locationValues.length(); i++){
+						locationValuesList.add(Long.parseLong(locationValues.getString(i)));          
+					}
+				}
+					 
+			 keyValueVOList = locationDashboardService.getNominatedPostApplicationStatusWiseCount(
+					 jObj.getLong("locationTypeId"),locationValuesList,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getString("year"));
 		 }catch(Exception e){
 			 LOG.error("Exception raised at getNominatedPostApplicationStatusWiseCount() of LocationDashboardAction{}", e);
 		 }
