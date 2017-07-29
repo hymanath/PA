@@ -31,7 +31,7 @@ public interface ILocationDashboardService {
 	
 	public List<BasicVO> getEnrollmentIds();
 	
-	public List<AlertOverviewVO> getLevelWiseMeetingStatusCounts(String fromDate,String toDate,Long locationId,Long locationValue);
+	public List<AlertOverviewVO> getLevelWiseMeetingStatusCounts(String fromDate,String toDate,Long locationTypeId,List<Long> locationValues,String year);
 	public List<KeyValueVO> getNominatedPostStatusWiseCount(Long locationTypeId,List<Long> locationValuesList,String fromDateStr, String toDateStr,String year);
 	public List<KeyValueVO> getNominatedPostApplicationStatusWiseCount(Long locationTypeId,List<Long> locationValuesList,String fromDateStr, String toDateStr,String year);
 	public List<KeyValueVO> getPositionWiseMemberCount(Long constituencyId,String fromDateStr, String toDateStr);
@@ -40,7 +40,7 @@ public interface ILocationDashboardService {
 	public List<BenefitCandidateVO> getMandalWiseBenefitMembersCount(final String locationType, final Long locationValue,final Long govtSchemeId);
 	public List<ConstituencyCadreVO> getLocationTypeWiseCadreCount(final String locationType,final Long locationValue);
 	public List<ConstituencyCadreVO> getAgeRangeGenerAndCasteGroupByCadreCount(final String locationType, final Long locationValue,final Long enrollmentYearId);
-	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue);
-    public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue);
+	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr,String toDateStr,Long locationTypeId,List<Long> locationValues,String year);
+    public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr,String toDateStr,Long locationTypeId,List<Long> locationValues,String year);
     public List<BasicVO> getLocationWiseActivitysStatus(String fromDateStr,String toDateStr,String year,List<Long> locationValues,Long locationTypeId);
 }
