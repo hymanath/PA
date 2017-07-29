@@ -1219,8 +1219,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLevelWiseMeetingStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
 	 */
 	
-	public List<AlertOverviewVO> getLevelWiseMeetingStatusCounts(String fromDateStr, String toDateStr, Long locationId,
-			Long locationValue) {
+	public List<AlertOverviewVO> getLevelWiseMeetingStatusCounts(String fromDateStr, String toDateStr, Long locationTypeId,
+			List<Long> locationValues,String year) {
 		List<AlertOverviewVO> meetingStatusCounts = new ArrayList<AlertOverviewVO>();
 		AlertOverviewVO vwStatus = new AlertOverviewVO();
 		AlertOverviewVO mtdStatus = new AlertOverviewVO();
@@ -1240,8 +1240,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			
 		}
 		// 0-partyMeetingLevelId,1-LevelName,2-meeting Status,3-Meetings Count
-		List<Object[]> objList = partyMeetingStatusDAO.getLevelWiseMeetingStatusCount(frmDate, toDate, locationId,
-				locationValue);
+		List<Object[]> objList = partyMeetingStatusDAO.getLevelWiseMeetingStatusCount(frmDate, toDate, locationTypeId,
+				locationValues,year);
 		try {
 			if (objList != null) {
 				for (Object[] objects : objList) {
@@ -2038,7 +2038,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLocationWiseInsuranceStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
 	 */
 
-	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr, String toDateStr, Long locationId,Long locationValue) {
+	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr, String toDateStr, Long locationTypeId,List<Long> locationValues,String year) {
 		InsuranceStatusCountsVO insuranceStatusCounts = new InsuranceStatusCountsVO();
 		try{
 			Date fromDate = null;
@@ -2050,7 +2050,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
  				toDate = sdf.parse(toDateStr);
  			}
  			//0-locationValue(DIstrict or ConstituencyId),1-locationName,2-Status,3-StatusId,4-Count
- 			List<Object[]> insuranceStatus = insuranceStatusDAO.getConstituencyWiseInsuranceStatusCounts(fromDate, toDate, locationId, locationValue);
+ 			List<Object[]> insuranceStatus = insuranceStatusDAO.getConstituencyWiseInsuranceStatusCounts(fromDate, toDate,locationTypeId,locationValues,year);
  			if(insuranceStatus!=null){
  				//Here set the values for object 
  				for (Object[] objects : insuranceStatus) {
@@ -2088,7 +2088,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
      * @see com.itgrids.core.api.service.ILocationDashboardService#getGrivenceTrustStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
      */
 
-	public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationId, Long locationValue) {
+	public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year) {
 		List<GrivenceStatusVO> finalList = new ArrayList<GrivenceStatusVO>();
 		GrivenceStatusVO grivenceStatusCount = new GrivenceStatusVO();
 		GrivenceStatusVO trustStatusCount = new GrivenceStatusVO();
@@ -2102,7 +2102,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
  				toDate = sdf.parse(toDateStr);
  			}
  			//0-consId,1-Status,2-typeOfIssue,3-count
- 			List<Object[]> grivenceTrustList = insuranceStatusDAO.getGrivenceTrustStatusCounts(fromDate, toDate, locationId, locationValue);
+ 			List<Object[]> grivenceTrustList = insuranceStatusDAO.getGrivenceTrustStatusCounts(fromDate, toDate,locationTypeId,locationValues,year);
  			if(grivenceTrustList!=null){
  				//  Here set the Grivence values for object
  				for (Object[] objects : grivenceTrustList) {
