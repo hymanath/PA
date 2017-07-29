@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.dao.IGovtProposalPropertyCategoryTrackingDAO;
 import com.itgrids.partyanalyst.dao.IGovtRejoinderActionDAO;
 import com.itgrids.partyanalyst.dao.IGovtSmsActionTypeDAO;
 import com.itgrids.partyanalyst.dao.INewsPaperDAO;
+import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
@@ -197,7 +198,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private ImageAndStringConverter imageAndStringConverter;
 	
 	private ICadreDetailsService cadreDetailsService;
+	//private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	
+	
+	/*public void setParliamentAssemblyDAO(
+			IParliamentAssemblyDAO parliamentAssemblyDAO) {
+		this.parliamentAssemblyDAO = parliamentAssemblyDAO;
+	}*/
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
 	}
@@ -15557,24 +15564,37 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 				frmDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			Map<Long,Map<Long,AlertVO>> typeMap = new HashMap<Long,Map<Long,AlertVO>>();
 			
  			//0-locationId,1-locationName,2-hamlet_id,3-satisfied_status,4-answers_count
  			List<Object[]> ivrCounts = alertAssignedOfficerNewDAO.getHamletWiseIvrStatusCounts(frmDate, toDate, year, locationValues,locationTypeId,
  					serchLevelId, searchLevelValues);
- 			for (Object[] objects : ivrCounts) {
- 				Map<Long,AlertVO> hamletMap = typeMap.get((Long)objects[0]);
- 				if(hamletMap==null){
- 					hamletMap = new HashMap<Long, AlertVO>();
- 					typeMap.put((Long)objects[0], hamletMap);
- 				}
- 				
- 				AlertVO vo = hamletMap.get((Long)objects[2]);
- 				if(vo==null){
- 					vo = new AlertVO();
- 					vo.setId((Long)objects[2]);
- 					hamletMap.put((Long)objects[2], vo);
- 				}
+ 			
+ 			finalList = setIvrDetailsToList(ivrCounts,finalList);
+ 			
+ 		}catch (Exception e) {
+			e.printStackTrace();
+		}
+ 		return finalList;
+ 		}
+	
+	public List<AlertVO> setIvrDetailsToList(List<Object[]> ivrCounts,List<AlertVO> finalList){
+		try {
+			
+			Map<Long,Map<Long,AlertVO>> typeMap = new HashMap<Long,Map<Long,AlertVO>>();
+			
+			if(ivrCounts !=null && ivrCounts.size()>0){
+				for (Object[] objects : ivrCounts) {
+	 				Map<Long,AlertVO> hamletMap = typeMap.get((Long)objects[0]);
+	 				if(hamletMap==null){
+	 					hamletMap = new HashMap<Long, AlertVO>();
+	 					typeMap.put((Long)objects[0], hamletMap);
+	 				}	 				
+	 				AlertVO vo = hamletMap.get((Long)objects[2]);
+	 				if(vo==null){
+	 					vo = new AlertVO();
+	 					vo.setId((Long)objects[2]);
+	 					hamletMap.put((Long)objects[2], vo);
+	 				}
  					vo.setName(objects[1] !=null ? objects[1].toString():null);//locationName
  				
  					if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("Y")){
@@ -15583,8 +15603,8 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  					}else if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("N")){
  						vo.setUnSatisfiedCount(objects[4] !=null ? (Long)objects[4]:0l);
  					}
- 			}	
- 			
+	 			}	
+			}
  			if(typeMap!=null && typeMap.size()>0){
  				for (Entry<Long, Map<Long, AlertVO>> objects : typeMap.entrySet()) {
  					
@@ -15648,12 +15668,12 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
  	 				finalList.add(typeVO);
 				}
  			}
- 			
- 		}catch (Exception e) {
-			e.printStackTrace();
+			
+		} catch (Exception e) {
+			LOG.error("Error occured setIvrDetailsToList() method of AlertManagementSystemService",e);
 		}
- 		return finalList;
- 		}
+		return finalList;
+	}
  	
 	/*
 	   * Date : 23/06/2017
@@ -16186,5 +16206,304 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		vo.setHamlet(obj[11] !=null ? obj[11].toString():null);
 		}
 		return vo;
-}
+	}
+	public List<AlertVO> getDrainsIvrStatusCounts(String fromDateStr,String toDateStr,List<Long> locationValues,Long locationTypeId,
+			 Long searchlevelId,List<Long> searchLevelValues,Long entityType,List<Long> questionsList,List<String> selectedDatesStr){
+		List<AlertVO> finalList = new ArrayList<AlertVO>();
+		try {
+ 			Date frmDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				frmDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			List<Date> selectedDates = new ArrayList<Date>(0);
+			if(selectedDatesStr !=null && selectedDatesStr.size()>0){
+				for (String dateStr : selectedDatesStr) {
+					selectedDates.add( sdf.parse(dateStr));
+				}				
+			} 
+			
+			
+			/*Map<Long,IdNameVO> assemblyMap = new HashMap<Long, IdNameVO>(); 
+			if(locationTypeId !=null && locationTypeId.longValue()==10l){
+				List<Object[]> parliamentObj = parliamentAssemblyDAO.getParliamentDetailsOfAssembly(1l);
+				if(parliamentObj !=null && parliamentObj.size()>0){
+					assemblyMap = setParliamentObjectDetails(parliamentObj,assemblyMap);
+				}				
+			}*/
+			
+			//0-locationId,1-locationName,2-panchayat_id,3-satisfied_status,4-answers_count,5.Date
+			//0-locationId,1-locationName,2-panchayat_id,3-satisfied_status,4-answers_count			
+			List<Object[]> ivrCountsObj = alertAssignedOfficerNewDAO.getDrainsIvrStatusCounts(frmDate, toDate, locationValues,locationTypeId,
+ 					searchlevelId, searchLevelValues,entityType,questionsList,selectedDates);
+			
+			if(selectedDates !=null && selectedDates.size()>1){
+	 			finalList = setIvrComparisonDetailsToList(ivrCountsObj,finalList,selectedDatesStr);
+			}else{		
+	 			finalList = setIvrDetailsToList(ivrCountsObj,finalList);
+			}
+			
+ 			/*if(finalList !=null && finalList.size()>0){
+ 				if(assemblyMap !=null && assemblyMap.size()>0){
+ 					for (Entry<Long, IdNameVO> mainVO : assemblyMap.entrySet()) {
+						
+					}
+ 				}
+ 			}*/
+ 			
+ 		} catch (Exception e) {
+			LOG.error("Error occured getDrainsIvrStatusCounts() method of AlertManagementSystemService",e);
+		}
+		return finalList;
+	}
+	public Map<Long,IdNameVO> setParliamentObjectDetails(List<Object[]> objList,Map<Long,IdNameVO> assemblyMap){
+		try {
+			
+			if(objList !=null && objList.size()>0){
+				for (Object[] objects : objList) {
+					IdNameVO  vo= assemblyMap.get((Long)objects[2]);//assemblyId
+					if(vo == null){
+						vo = new IdNameVO();
+						assemblyMap.put((Long)objects[2], vo);
+					}
+					vo.setId((Long)objects[0]);//ParliamentId
+					vo.setName(objects[1] !=null ? objects[1].toString():null);//ParliamentName					
+					vo.setOrderId((Long)objects[2]);//assemblyId
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured setParliamentObjectDetails() method of AlertManagementSystemService",e);
+		}
+		return assemblyMap;
+	}
+	//0-locationId,1-locationName,2-panchayat_id,3-satisfied_status,4-answers_count,5.Date
+	public List<AlertVO> setIvrComparisonDetailsToList(List<Object[]> ivrCountsObj,List<AlertVO> finalList,List<String> dateListStr){
+		try {
+			
+			// Here Hamlet means Panchayat
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			
+			Map<Long,Map<String,Map<Long,AlertVO>>> typeMap = new HashMap<Long,Map<String,Map<Long,AlertVO>>>();
+			
+			if(ivrCountsObj !=null && ivrCountsObj.size()>0){
+				for (Object[] objects : ivrCountsObj) {
+					
+					Map<String,Map<Long,AlertVO>> dateMap =  typeMap.get((Long)objects[0]);
+					if(dateMap == null){			
+						dateMap = new HashMap<String, Map<Long,AlertVO>>();
+						
+						for (String dateStr : dateListStr) {
+							dateMap.put(dateStr,new HashMap<Long, AlertVO>());// default dates Pushing into Dates Map
+						}												
+						typeMap.put((Long)objects[0], dateMap);
+					}
+					
+	 				Map<Long,AlertVO> hamletMap = dateMap.get(sdf.format(objects[5]));
+	 				if(hamletMap==null){
+	 					hamletMap = new HashMap<Long, AlertVO>();
+	 					dateMap.put(sdf.format(objects[5]), hamletMap);
+	 				}	 				
+	 				AlertVO vo = hamletMap.get((Long)objects[2]);
+	 				if(vo==null){
+	 					vo = new AlertVO();
+	 					vo.setId((Long)objects[2]);
+	 					hamletMap.put((Long)objects[2], vo);
+	 				}
+ 					vo.setName(objects[1] !=null ? objects[1].toString():null);//locationName
+ 					vo.setDate1(objects[5] !=null ? sdf.format(objects[5]):null);//Date String
+ 				
+ 					if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("Y")){
+ 						vo.setSatisfiedCount(objects[4] !=null ? (Long)objects[4]:0l);
+ 						
+ 					}else if(objects[3]!=null && objects[3].toString().equalsIgnoreCase("N")){
+ 						vo.setUnSatisfiedCount(objects[4] !=null ? (Long)objects[4]:0l);
+ 					}
+	 			}	
+			}
+ 			if(typeMap!=null && typeMap.size()>0){
+ 				
+ 				for (Entry<Long, Map<String, Map<Long, AlertVO>>> objects : typeMap.entrySet()) {
+ 					
+ 					AlertVO typeVO = new AlertVO();
+ 					typeVO.setId(objects.getKey());//locationId
+
+ 					Map<String, Map<Long,AlertVO>> dateMap = objects.getValue();
+ 					
+ 					if(dateMap !=null && dateMap.size()>0){
+ 						
+ 						List<AlertVO> dateList = new ArrayList<AlertVO>(0);
+ 						
+ 						for (Entry<String, Map<Long, AlertVO>> datMp : dateMap.entrySet()) {
+ 							
+
+ 	 						Long greenHamletCount=0l;
+ 	 	 	 				Long orangeHamletCount=0l;
+ 	 	 	 				Long redHamletCount=0l;
+ 							
+ 							AlertVO vo = new AlertVO(); 							
+ 							vo.setDate1(datMp.getKey());
+ 							
+ 							Map<Long,AlertVO> hamletMap = datMp.getValue();
+
+ 							List<AlertVO> hamletList = new  ArrayList<AlertVO>(hamletMap.values());
+ 							
+ 							//Panchayat Details of DateWise
+ 							if(hamletList!=null && hamletList.size()>0){
+ 		 						for (AlertVO hamletVo : hamletList) { 		 							
+ 		 							Long satisfyCount = hamletVo.getSatisfiedCount() !=null ? hamletVo.getSatisfiedCount():0l;
+ 		 		 					Long unSatisfyCount = hamletVo.getUnSatisfiedCount()!=null ? hamletVo.getUnSatisfiedCount():0l;
+ 		 		 					
+ 		 		 					hamletVo.setCount(satisfyCount+unSatisfyCount);
+ 		 		 					
+ 		 		 					String perc = cadreDetailsService.calculatePercentage(hamletVo.getCount(),satisfyCount);
+ 		 		 					if(perc !=null && perc !="0" && !perc.trim().isEmpty()){
+ 		 		 						hamletVo.setPercentage(Double.parseDouble(perc));
+ 		 		 						
+ 		 		 						if(hamletVo.getPercentage()>=80){
+ 		 		 							greenHamletCount++;
+ 		 		 						}else if(hamletVo.getPercentage()<80 && hamletVo.getPercentage()>=50){
+ 		 		 							orangeHamletCount++;
+ 		 		 						}else if(hamletVo.getPercentage()<50){
+ 		 		 							redHamletCount++;
+ 		 		 						}
+ 		 		 					}
+ 								}
+ 		 						typeVO.setName(hamletList.get(0).getName());
+ 		 					}
+ 							
+ 							Long total = greenHamletCount+orangeHamletCount+redHamletCount;
+ 							double greenPer = (Double.parseDouble(cadreDetailsService.calculatePercentage(total, greenHamletCount)));
+ 		 		            double orangePer = (Double.parseDouble(cadreDetailsService.calculatePercentage(total, orangeHamletCount)));
+ 		 		            double redPer = (Double.parseDouble(cadreDetailsService.calculatePercentage(total, redHamletCount)));
+ 		 		            
+ 		 		            AlertVO green = new AlertVO(); 
+ 		 	 				green.setName("green");
+ 		 	 				green.setCount(greenHamletCount);
+ 		 	 				green.setPercentage(greenPer);
+ 		 	 				AlertVO orange = new AlertVO(); 
+ 		 	 				orange.setName("orange");
+ 		 	 				orange.setCount(orangeHamletCount);
+ 		 	 				orange.setPercentage(orangePer);
+ 		 	 				AlertVO red = new AlertVO();
+ 		 	 				red.setName("red");
+ 		 	 				red.setCount(redHamletCount);
+ 		 	 				red.setPercentage(redPer);
+ 		 		            
+ 		 	 				vo.getSubList1().add(green);
+ 		 	 				vo.getSubList1().add(orange);
+ 		 	 				vo.getSubList1().add(red);
+ 		 					
+ 		 	 				dateList.add(vo); // color Vo adding to dates List
+ 		 	 				
+ 						}
+ 						typeVO.setSubList1(dateList);//dateList Adding to LocationType VO
+ 					}
+ 	 				
+ 					finalList.add(typeVO);//finally locationType Vo adding to location List  
+				}
+ 			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured setIvrComparisonDetailsToList() method of AlertManagementSystemService",e);
+		}
+		return finalList;
+	}
+	
+	public List<AlertVO> getOverAllIvrDetails(String fromDateStr,String toDateStr,Long entityType,List<Long> questionsList,String type){
+		List<AlertVO> finalList = new ArrayList<AlertVO>();
+		try {
+			
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			//0.optionId,1.option,2.count
+			List<Object[]> ivrObj =  alertAssignedOfficerNewDAO.getOverAllIvrDetails(fromDate, toDate, entityType, questionsList, type);
+			
+			if(ivrObj !=null && ivrObj.size()>0){
+				Long total=0l;
+				for (Object[] obj : ivrObj) {
+					AlertVO vo = new AlertVO();
+					vo.setId(obj[0] !=null ? (Long)obj[0]:null);
+					vo.setName(obj[1] !=null ? obj[1].toString():null);
+					vo.setCount(obj[2] !=null ? (Long)obj[2]:0l);
+					total = total + vo.getCount();
+					finalList.add(vo);
+				}
+				finalList.get(0).setCategoryCount(total);
+				
+				for (AlertVO vo : finalList) {					
+					vo.setPercentage(calculatePercantage(vo.getCount(), total));					
+				}				
+			}
+			
+			
+		} catch (Exception e) {
+			LOG.error("Error occured getOverAllIvrDetails() method of AlertManagementSystemService",e);
+		}
+		return finalList;
+	}
+	
+	public List<IdNameVO> getIvrSurveyDates(String fromDateStr,String toDateStr,Long entityType){
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			List<Date> resultObj = alertAssignedOfficerNewDAO.getIvrSurveyDates(fromDate,toDate,entityType);
+			
+			if(resultObj !=null && resultObj.size()>0){
+				for (Date obj : resultObj) {
+					IdNameVO vo = new IdNameVO();
+					vo.setName(obj !=null ? sdf.format(obj):null);
+					finalList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured getIvrSurveyDates() method of AlertManagementSystemService",e);
+		}
+		return finalList;
+	}
+	public List<IdNameVO> getIvrSurveyQuestions(String fromDateStr,String toDateStr,Long entityType){
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			List<Object[]> resultObj = alertAssignedOfficerNewDAO.getIvrSurveyQuestions(fromDate,toDate,entityType);
+			
+			if(resultObj !=null && resultObj.size()>0){
+				for (Object[] objects : resultObj) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(objects[0] !=null ? (Long)objects[0]:null);
+					vo.setName(objects[1] !=null ? objects[1].toString():null);
+					finalList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured getIvrSurveyQuestions() method of AlertManagementSystemService",e);
+		}
+		return finalList;
+	}
+	
 }

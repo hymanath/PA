@@ -5329,5 +5329,45 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		return null;
 	}
-
+	public List<AlertVO> getDrainsIvrStatusCounts(String fromDateStr,String toDateStr,List<Long> locationValues,Long locationTypeId,
+			 Long searchlevelId,List<Long> searchLevelValues,Long entityType,List<Long> questionsList,List<String> selectedDatesStr){
+		try {
+			
+			return alertManagementSystemService.getDrainsIvrStatusCounts(fromDateStr, toDateStr, locationValues, locationTypeId, searchlevelId,
+					searchLevelValues,entityType,questionsList,selectedDatesStr);
+			
+		} catch (Exception e) {
+			log.error("Exception raised at getDrainsIvrStatusCounts in WebServiceHandlerService class  ", e);
+		}
+		return null;
+	}
+	
+	public List<AlertVO> getOverAllIvrDetails(String fromDateStr,String toDateStr,Long entityType,List<Long> questionsList,String type){
+		try {
+			
+			return alertManagementSystemService.getOverAllIvrDetails(fromDateStr,toDateStr,entityType,questionsList,type);
+			
+		} catch (Exception e) {
+			log.error("Exception raised at getOverAllIvrDetails in WebServiceHandlerService class  ", e);
+		}
+		return null;
+	}
+	
+	public List<IdNameVO> getIvrSurveyDates(String fromDateStr,String toDateStr,Long entityType){
+		try {
+			return alertManagementSystemService.getIvrSurveyDates(fromDateStr,toDateStr,entityType);
+		} catch (Exception e) {
+			log.error("Exception raised at getIvrSurveyDates in WebServiceHandlerService class  ", e);
+		}
+		return null;
+	}
+	
+	public List<IdNameVO> getIvrSurveyQuestions(String fromDateStr,String toDateStr,Long entityType){
+		try {
+			return alertManagementSystemService.getIvrSurveyQuestions(fromDateStr,toDateStr,entityType);
+		} catch (Exception e) {
+			log.error("Exception raised at getIvrSurveyQuestions in WebServiceHandlerService class  ", e);
+		}
+		return null;
+	}
 }

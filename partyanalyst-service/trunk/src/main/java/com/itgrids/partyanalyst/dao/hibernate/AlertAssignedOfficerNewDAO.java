@@ -10,8 +10,8 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
-import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerNew;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -7511,4 +7511,350 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	      return query.list();
 	
 	}
+	
+	public List<Object[]> getDrainsIvrStatusCounts(Date fromDate,Date toDate,List<Long> locationValues,Long locationTypeId,
+			 Long searchlevelId,List<Long> searchLevelValues,Long entityType,List<Long> questionsList,List<Date> selectedDates){
+		   StringBuilder sb = new StringBuilder();
+	       StringBuilder sbm = new StringBuilder();
+	       StringBuilder sbe = new StringBuilder();
+	       StringBuilder sbg = new StringBuilder();
+	       
+	       sb.append(" SELECT ");
+	       
+	       sbm.append(" FROM ivr_survey_entity ISE,ivr_survey_entity_type ISET,ivr_survey_answer ISA,ivr_option IOP,user_address UA,ivr_respondent_location IRL,"
+	             + " ivr_survey ISV ");
+	       
+	       sbe.append(" WHERE ISET.ivr_survey_entity_type_id = ISE.ivr_survey_entity_type_id "
+	                     +" and ISE.ivr_survey_id = ISA.ivr_survey_id"
+	                     +" and  ISA.ivr_option_id = IOP.ivr_option_id"
+	                     +" and ISA.ivr_respondent_id = IRL.ivr_respondent_id"
+	                     +" and IRL.address_id = UA.user_address_id"
+	                     +" and ISV.ivr_survey_id = ISA.ivr_survey_id"
+	                     +" "
+	                     +" and ISET.ivr_survey_entity_type_id=:entityType " +
+	                     "  and UA.panchayat_id is not null"
+	                     +" and ISET.is_deleted ='false'"
+	                     +" "
+	                     +" and IOP.is_deleted ='false'"
+	                     +" and ISV.is_deleted ='false'" +
+	                     "  and ISA.is_deleted ='false'" +
+	                     " and ISE.is_deleted ='false'" +
+	                     " and ISA.is_valid ='Y' ");
+	       
+	       /*if(year!=null && !year.trim().isEmpty()){
+	         sbe.append(" and year(ISV.start_date) =:year  ");
+	       }*/
+	       if(fromDate!=null && toDate!=null){
+	         sbe.append(" and date(ISV.start_date) between :fromDate and :toDate  ");
+	       }else if(selectedDates !=null && selectedDates.size()>0){
+	    	   sbe.append(" and date(ISV.start_date) in (:selectedDates)  ");
+	       }
+	       
+	       sbg.append(" GROUP BY ");
+	       
+	       if(locationTypeId !=null && locationTypeId.longValue()>0l){
+	         if(locationTypeId ==2l){
+	           sb.append( "  UA.state_id as typeId,S.state_name as type " );
+	           sbm.append( "  ,state S  " );          
+	           sbe.append( "  and S.state_id = UA.state_id  " );
+	           sbe.append( " and UA.district_id between 11 and 23 ");
+	           sbg.append(" UA.state_id ");
+	           
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append(" and S.state_id in (:locationValues) ");
+	           }
+	         	 
+	           
+	         }else if(locationTypeId ==3l){
+	           
+	           sb.append( "  UA.district_id as typeId,D.district_name as type  " );
+	           sbm.append( "  ,district D  " );           
+	           sbe.append( "  and D.district_id = UA.district_id  " );	           
+	           sbg.append(" UA.district_id ");
+	           
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append(" and D.district_id in (:locationValues) ");
+	           }else{
+	        	   sbe.append( " and UA.district_id between 11 and 23 ");
+	           }
+	           
+	         }else if(locationTypeId ==4l){
+	           sb.append( "  UA.constituency_id as typeId,C.name as type " );
+	           sbm.append( "  ,constituency C  " );
+	           sbe.append( "  and C.constituency_id = UA.constituency_id  " );
+	           
+	           sbg.append(" UA.constituency_id ");         
+	           
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append(" and C.constituency_id in (:locationValues) ");
+	           }
+	           
+	         }else if(locationTypeId ==5l){
+	           sb.append( "  UA.tehsil_id as typeId,T.tehsil_name as type " );
+	           sbm.append( "  ,tehsil T  " );           
+	           sbe.append( "  and T.tehsil_id = UA.tehsil_id  " );
+	           
+	           sbg.append(" UA.tehsil_id ");  
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append(" and T.tehsil_id  in (:locationValues) ");
+	           }
+	           
+	         }else if(locationTypeId ==6l){
+	           sb.append( "  UA.panchayat_id as typeId,P.panchayat_name as type " );
+	           sbm.append( "  ,panchayat P  " );
+	           sbe.append( "  and P.panchayat_id =  UA.panchayat_id  " );
+	           
+	           sbg.append(" UA.panchayat_id "); 
+	           
+	           if(locationValues !=null && locationValues.size()>0){
+	        	   sbe.append( "  and P.panchayat_id in  (:locationValues)  " );
+	           }	           
+	         }else if(locationTypeId ==10l){
+		           sb.append( "  UA.parliament_constituency_id as typeId,PC.name as type " );
+		           sbm.append( "  ,Constituency PC  " );
+		           sbe.append( "  and PC.constituency_id =  UA.parliament_constituency_id  " );
+		           
+		           sbg.append(" UA.parliament_constituency_id "); 
+		           
+		           if(locationValues !=null && locationValues.size()>0){
+		        	   sbe.append( "  and UA.parliament_constituency_id in  (:locationValues)  " );
+		           }	           
+		         }
+	         
+	       }
+	       
+	       
+	       if(searchlevelId !=null && searchlevelId.longValue()>0l && searchLevelValues !=null && searchLevelValues.size()>0){
+		         if(searchlevelId ==2l){
+		           sbe.append("  and UA.state_id in (:searchLevelValues)  ");
+		         }else if(searchlevelId ==3l){
+		           sbe.append(" and UA.district_id in (:searchLevelValues) ");		           
+		         }else if(searchlevelId ==4l){
+		           sbe.append(" and UA.constituency_id in (:searchLevelValues) ");		           
+		         }else if(searchlevelId ==5l){
+		           sbe.append(" and UA.tehsil_id  in (:searchLevelValues) ");
+		         }else if(searchlevelId ==6l){
+		           sbe.append( " and UA.panchayat_id in  (:searchLevelValues)  " );
+		         }else if(searchlevelId ==10l){
+			           sbe.append( " and UA.parliament_constituency_id in  (:searchLevelValues)  " );
+			      }
+		    }
+	       if(questionsList !=null && questionsList.size()>0){
+	    	   sbm.append(" ,ivr_survey_question ISQ,ivr_question IQ ");
+	    	   
+	    	   sbe.append(" and ISA.ivr_survey_question_id = ISQ.ivr_survey_question_id" +
+	    	   		" and IQ.ivr_question_id = ISQ.ivr_question_id" +
+	    	   		" and  IQ.ivr_question_id in (:questionsList) ");
+	       }
+	       
+	       if(selectedDates !=null && selectedDates.size()>1){
+		       sb.append(" ,UA.panchayat_id as panchayatId,IOP.satisfied_status as satisfiedStatus,count(distinct ISA.ivr_survey_answer_id) as count,date(ISV.start_date) as date ");	       
+		       sbg.append(" ,date(ISV.start_date),UA.panchayat_id,IOP.satisfied_status ");
+	       }else{
+	    	   sb.append(" ,UA.panchayat_id as panchayatId,IOP.satisfied_status as satisfiedStatus,count(distinct ISA.ivr_survey_answer_id) as count ");	       
+		       sbg.append(" ,UA.panchayat_id,IOP.satisfied_status ");
+	       }
+	       
+	       sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());  
+	       
+	       Query query = null;
+	       if(selectedDates !=null && selectedDates.size()>1){
+	    	   query = getSession().createSQLQuery(sb.toString())
+		           .addScalar("typeId",Hibernate.LONG) 
+		           .addScalar("type",Hibernate.STRING) 		          
+		           .addScalar("panchayatId",Hibernate.LONG) 
+		           .addScalar("satisfiedStatus",Hibernate.STRING)		           
+		           .addScalar("count",Hibernate.LONG)
+		           .addScalar("date",Hibernate.DATE);
+	       }else{
+	    	   query = getSession().createSQLQuery(sb.toString())
+			           .addScalar("typeId",Hibernate.LONG) 
+			           .addScalar("type",Hibernate.STRING) 
+			           .addScalar("panchayatId",Hibernate.LONG) 
+			           .addScalar("satisfiedStatus",Hibernate.STRING)
+		               .addScalar("count",Hibernate.LONG);
+	       }
+	       
+			/*if(year!=null && !year.trim().isEmpty()){
+				 query.setParameter("year", Integer.parseInt(year));
+			}
+	       else */if(fromDate!=null && toDate!=null){
+	         query.setParameter("fromDate", fromDate);
+	         query.setParameter("toDate", toDate);
+	       }else if(selectedDates !=null && selectedDates.size()>0){
+	    	   query.setParameterList("selectedDates", selectedDates);
+	       }
+	      
+	      if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValues !=null && locationValues.size()>0){
+	        query.setParameterList("locationValues", locationValues);
+	      }
+	      if(searchlevelId !=null && searchlevelId.longValue()>0l && searchLevelValues !=null && searchLevelValues.size()>0){
+	    	  query.setParameterList("searchLevelValues", searchLevelValues);
+	      }
+	      if(questionsList !=null && questionsList.size()>0){
+	    	  query.setParameterList("questionsList", questionsList);
+	      }
+	      query.setParameter("entityType", entityType);
+	      
+	      return query.list();
+	 }
+	
+	public List<Object[]> getIvrResponseDetails(Date fromDate,Date toDate,Long entityType,List<Long> questionsList){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" SELECT model.ivrOption.ivrOptionId,count(distinct ISA.ivrSurveyAnswerId) FROM IvrSurveyEntity model,IvrSurveyAnswer ISA," +
+				" IvrRespondentLocation  IRL " +				
+				" WHERE ISA.ivrSurveyId = model.ivrSurveyId " +
+				" and IRL.ivrRespondent.ivrRespondentId = ISA.ivrRespondentId  " +
+				" and model.ivrSurveyEntityTypeId = :entityType" + //dynamic
+				" and model.isDeleted ='false'" +
+				" and model.ivrSurveyEntityType.isDeleted='false'" +
+				" and ISA.isDeleted ='false' " +
+				" and ISA.ivrSurvey.isDeleted ='false' " +
+				" and ISA.isValid ='Y' " );
+		
+		if(questionsList !=null && questionsList.size()>0){
+			str.append(" and ISA.ivrSurveyQuestion.ivrSurveyQuestionId in (:questionsList) " +
+					" and ISA.ivrSurveyQuestion.isDeleted='false' ");
+		}
+		
+		if(fromDate !=null && toDate !=null){
+			str.append(" and ISA.ivrSurvey.startDate between :fromDate and :toDate ");
+		}
+		
+		str.append("and model.ivrRespondent.isDeleted ='false' " +
+				" and IRL.userAddress.state.stateId = :stateId ");
+			
+		str.append(" GROUP BY " +
+				" model.ivrOption.ivrOptionId  ");
+		
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("entityType", entityType);
+		query.setParameter("stateId", 1l);
+		
+		if(questionsList !=null && questionsList.size()>0){
+			query.setParameterList("questionsList", questionsList);
+		}
+		if(fromDate !=null && toDate !=null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		return query.list();
+	}
+	
+public List<Object[]> getOverAllIvrDetails(Date fromDate,Date toDate,Long entityType,List<Long> questionsList,String type){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" SELECT ISA.ivrOption.ivrOptionId,ISA.ivrOption.option ");
+		
+		if(type !=null && type.trim().equalsIgnoreCase("panchayat")){
+			str.append(" ,count(distinct IRL.userAddress.panchayatId)");
+		}else if(type !=null && type.trim().equalsIgnoreCase("hamlet")){
+			str.append(" ,count(distinct IRL.userAddress.hamlet.hamletId)");
+		}else{
+			str.append(" ,count(distinct ISA.ivrSurveyAnswerId) ");
+		}
+		
+		str.append(" FROM IvrSurveyEntity model,IvrSurveyAnswer ISA," +
+					" IvrRespondentLocation  IRL " +				
+				" WHERE ISA.ivrSurveyId = model.ivrSurveyId " +
+				" and IRL.ivrRespondent.ivrRespondentId = ISA.ivrRespondentId  " +
+				" and model.ivrSurveyEntityTypeId = :entityType" + //dynamic
+				" and model.isDeleted ='false'" +
+				" and model.ivrSurveyEntityType.isDeleted='false'" +
+				" and ISA.isDeleted ='false' " +
+				" and ISA.ivrSurvey.isDeleted ='false' " +
+				" and ISA.isValid ='Y'" +
+				" and ISA.ivrOption.isDeleted ='false' " );
+		
+		if(questionsList !=null && questionsList.size()>0){
+			str.append(" and ISA.ivrSurveyQuestion.ivrSurveyQuestionId in (:questionsList) " +
+					" and ISA.ivrSurveyQuestion.isDeleted='false' ");
+		}
+		
+		if(fromDate !=null && toDate !=null){
+			str.append(" and ISA.ivrSurvey.startDate between :fromDate and :toDate ");
+		}
+		
+		str.append("and IRL.ivrRespondent.isDeleted ='false' " +
+				" and IRL.userAddress.state.stateId = :stateId ");
+			
+		str.append(" GROUP BY " +
+				" ISA.ivrOption.ivrOptionId  ");
+		
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("entityType", entityType);
+		query.setParameter("stateId", 1l);
+		
+		if(questionsList !=null && questionsList.size()>0){
+			query.setParameterList("questionsList", questionsList);
+		}
+		if(fromDate !=null && toDate !=null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		return query.list();
+	}
+	
+	public List<Date> getIvrSurveyDates(Date fromDate,Date toDate,Long entityType){
+		
+		StringBuilder str=new StringBuilder();
+		
+		str.append(" SELECT date(model.ivrSurvey.startDate) FROM IvrSurveyEntity model " +
+				" WHERE model.isDeleted ='false' " +
+				" and model.ivrSurvey.isDeleted = 'false'" +
+				" and model.ivrSurveyEntityType.isDeleted ='false' " +
+				" and model.ivrSurveyEntityTypeId =:entityType ");
+		
+		if(fromDate !=null && toDate !=null){
+			str.append(" and  date(model.ivrSurvey.startDate) between :fromDate and :toDate ");
+		}
+		
+		Query query = getSession().createQuery(str.toString());
+		if(fromDate !=null && toDate !=null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		query.setParameter("entityType", entityType);
+		
+		return query.list();
+	}
+	public List<Object[]> getIvrSurveyQuestions(Date fromDate,Date toDate,Long entityType){
+		
+		StringBuilder str=new StringBuilder();
+		
+		str.append(" SELECT ISA.ivrSurveyQuestion.ivrQuestion.ivrQuestionId,ISA.ivrSurveyQuestion.ivrQuestion.question " +
+				" FROM IvrSurveyEntity model,IvrSurveyAnswer ISA " +
+				" WHERE model.ivrSurveyId=ISA.ivrSurveyId " +
+				" and model.isDeleted ='false' " +
+				" and model.ivrSurvey.isDeleted = 'false' " +
+				" and ISA.ivrSurveyQuestion.isDeleted ='false'" +
+				" and ISA.ivrSurveyQuestion.ivrQuestion='false'" +
+				" and model.ivrSurveyEntityType.isDeleted ='false'" +
+				" and model.ivrSurveyEntityTypeId =:entityType ");
+		
+		if(fromDate !=null && toDate !=null){
+			str.append(" and  date(model.ivrSurvey.startDate) between :fromDate and :toDate ");
+		}
+		
+		Query query = getSession().createQuery(str.toString());
+		if(fromDate !=null && toDate !=null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		query.setParameter("entityType", entityType);
+		
+		return query.list();
+	}
+
 }

@@ -25,9 +25,11 @@ public class ParliamentAssembly {
 	private Long parliamentAssemblyId;
 	private Long parliamentId;
 	private Long assemblyId;
+	private Long stateId;
 	
 	private Constituency parliamentAssembly;
 	private Constituency assembly;
+	private State state;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -72,5 +74,26 @@ public class ParliamentAssembly {
 	public void setAssembly(Constituency assembly) {
 		this.assembly = assembly;
 	}
+	
+	@Column(name="state_id")
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="state_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public State getState() {
+		return state;
+	}
+	public void setState(State state) {
+		this.state = state;
+	}
+	
+	
 	
 }
