@@ -13,6 +13,9 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.jfree.util.Log;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberDAO;
@@ -65,6 +68,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
+	private TransactionTemplate transactionTemplate = null;
 	
 	public IBoothInchargeSerialNoRangeDAO getBoothInchargeSerialNoRangeDAO() {
 		return boothInchargeSerialNoRangeDAO;
@@ -161,6 +165,13 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	public void setUserDistrictAccessInfoDAO(
 			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
 		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
+	}
+    public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
 	}
 
 	public UploadDataErrorMessageVO readVoterExcelDataAndValidate(File filePath,
@@ -1209,24 +1220,38 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		return status;
 	}
-	public String deleteRoleMemberDetails(Long boothInchargeMappingId,Long boothInchargeId,Long userId){
-		String status = "";
-		try{
-			BoothIncharge  inchargeDetails = boothInchargeDAO.get(boothInchargeId);
-			if(inchargeDetails != null){
-				inchargeDetails.setIsDeleted("Y");
-				inchargeDetails.setIsActive("N");
-				inchargeDetails.setUpdatedBy(userId);
-				inchargeDetails.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-				boothInchargeDAO.save(inchargeDetails);
-			}
-			status = "delete Successfully";
-		}catch (Exception e) {
-			status = "delete Failed";
-			e.printStackTrace();
-			Log.error("Exception raised at deleteRoleMemberDetails in BoothDataValidationService class", e);
-		}
-		return status;
+	
+	public String deleteRoleMemberDetails(final Long boothInchargeMappingId,final Long boothInchargeId,final Long userId,final Long boothId,final Long boothInchargeEnrollementId){
+		   String status = "";	
+		   status = (String)transactionTemplate.execute(new TransactionCallback() {
+				@Override
+				public Object doInTransaction(TransactionStatus arg0) {
+					String status="";
+					try {
+						BoothIncharge  inchargeDetails = boothInchargeDAO.get(boothInchargeId);
+						if(inchargeDetails != null){
+							inchargeDetails.setIsDeleted("Y");
+							inchargeDetails.setIsActive("N");
+							inchargeDetails.setUpdatedBy(userId);
+							inchargeDetails.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+							boothInchargeDAO.save(inchargeDetails);
+						}
+						status = "delete Successfully";
+						//updating startState and isConfirm Status of  booth.If all member is deleted 
+						Long boothAddedMembCount =  boothInchargeDAO.getBoothTotalAddedMember(boothId, boothInchargeEnrollementId);
+						if(boothAddedMembCount == null || boothAddedMembCount.longValue()==0l){
+							int updateCount = boothInchargeRoleConditionMappingDAO.updateBoothStarteDate(boothId, boothInchargeEnrollementId);
+						}
+					} catch (Exception e){
+						status = "delete Failed";
+						e.printStackTrace();
+						Log.error("Exception raised at deleteRoleMemberDetails in BoothDataValidationService class", e);
+					}
+					return status;
+				}
+			});
+			return status;
+			
 	}
 	/**
 	  * @param  Long userId 

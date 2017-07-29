@@ -9777,4 +9777,9 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			  
 			return query.list();
 	   }
+	   public List<Object[]> isVoterDeleted(Set<Long> tdpCadreIds){
+		    Query  query = getSession().createQuery("select tc.tdpCadreId,tc.isDeletedVoter from TdpCadre tc where tc.isDeletedVoter='Y' and tc.tdpCadreId in (:tdpCadreIds)");
+		    query.setParameterList("tdpCadreIds", tdpCadreIds);
+		    return query.list();
+	   }
 }

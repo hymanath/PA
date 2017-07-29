@@ -33,4 +33,5 @@ public interface IBoothInchargeDAO extends GenericDao<BoothIncharge,Long>{
 	public List<Object[]> getBoothCommitteesCumulativeCommitteesCountsByLocIds(CommitteeInputVO committeeBO);
 	public List<Object[]> getBoothCommitteesCommitteeLevelWiseCountsByLocIds(CommitteeInputVO committeeBO);
 	public List<Object[]> getBoothRoleWiseAddedMemberCount(InputVO inputVO);
+	public Long getBoothTotalAddedMember(Long boothId,Long boothInchargeEnrollmentId);
 }

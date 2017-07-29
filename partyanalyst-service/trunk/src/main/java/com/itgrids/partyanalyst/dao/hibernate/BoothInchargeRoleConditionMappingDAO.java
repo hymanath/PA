@@ -485,5 +485,14 @@ public class BoothInchargeRoleConditionMappingDAO extends GenericDaoHibernate<Bo
 		}
 		return query.list();
 	}
-	
+	public int updateBoothStarteDate(Long boothId,Long boothInchargeEnrollmentId) {
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" update BoothInchargeCommittee model set model.isConfirmed='N',model.startDate='NULL' " +
+		 				 " where " +
+		 				 " model.isDeleted='N' and  model.boothId=:boothId and model.boothInchargeEnrollmentId=:boothInchargeEnrollmentId ");
+		  Query query = getSession().createQuery(queryStr.toString());
+		  query.setParameter("boothId", boothId);
+		  query.setParameter("boothInchargeEnrollmentId", boothInchargeEnrollmentId);
+		  return query.executeUpdate();
+	}
 }
