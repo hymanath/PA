@@ -265,9 +265,6 @@ public interface IWebServiceHandlerService {
     public List<BasicVO> getEnrollments();
     public AppointmentCountDetailsVO getAppointmentCandidateCountDeatils(Long userId);
     public List<AppointmentCountDetailsVO> getAppointmentCandidateDetails(String fromDateStr,String toDateStr,Long userId);
-    public List<AlertOverviewVO> getLevelWiseMeetingStatusCounts(String fromDate, String toDate, Long locationId,Long locationValue);
-    public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue);
-    public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr,String toDateStr,Long locationId,Long locationValue);
     public ResultStatus checkMemberWalkInForToday( String memberShipId, String date ,  String uniqueId, Long loginUserId,Long tabPrimaryKey,String isCheckedStatus);
     public List<AlertVO> getHamletWiseIvrStatusList(String fromDateStr,String toDateStr,String year,List<Long> locationValues,Long locationTypeId,String statusType);
 }
