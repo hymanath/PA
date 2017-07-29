@@ -1081,8 +1081,9 @@ function getLevelWiseMeetingStatusCounts(){
 	var jsObj={
 			fromDate : "",
 			toDate:"",
-			locationId : 4,
-			locationValue : 232
+			locationTypeId : 4,
+			locationValuesArr :[232],
+			year:""
 			
 		}
 	 $.ajax({
@@ -1162,8 +1163,9 @@ function getLocationWiseInsuranceStatusCount(){
 	var jsObj={
 			fromDate : "",
 			toDate:"",
-			locationId : 4,
-			locationValue : 233
+			locationTypeId : 4,
+			locationValuesArr :[232],
+			year:""
 			
 		}
 	 $.ajax({
@@ -1200,9 +1202,9 @@ function getLocationWiseGrivanceTrustStatusCounts(){
 	var jsObj={
 			"fromDate" : "",
 			"toDate":"",
-			"locationId" : 4,
-			"locationValue" : 244
-			
+			"locationTypeId" : 4,
+			"locationValuesArr" :[232],
+			"year":""
 		}
 	 $.ajax({
       type : "POST",
