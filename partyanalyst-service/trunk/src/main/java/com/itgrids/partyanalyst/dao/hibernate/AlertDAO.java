@@ -10510,7 +10510,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		
 	 		return query.list();
 	 	}
-	 	public List<Object[]> getTotalAlertDetailsCount(Date fromDate,Date toDate,Long constituencyId,List<Long> alertTypeIds){
+	 	public List<Object[]> getTotalAlertDetailsCount(Date fromDate,Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
 	 		StringBuilder queryStr = new StringBuilder();
 	 			queryStr.append(" SELECT model.alertType.alertTypeId,model.alertType.alertType,count(distinct model.alertId) " +
 	 				" FROM Alert model " +
@@ -10520,8 +10520,21 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		if(fromDate != null && toDate != null){
 				queryStr.append(" and date(model.createdTime) between :fromDate and :toDate ");  
 			}
-	 			queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
-	 			queryStr.append(" GROUP BY model.alertTypeId " +
+	 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
+	 	        if(locationTypeId == 4l){
+	 	        	queryStr.append(" and model.userAddress.constituency.constituencyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 3l){
+	 	        	queryStr.append(" and model.userAddress.district.districtId in(:locationValues) ");
+	 	        }else if(locationTypeId == 5l){
+	 	        	queryStr.append(" and model.userAddress.tehsil.tehsilId in(:locationValues) ");
+	 	        }else if(locationTypeId == 6l){
+	 	        	queryStr.append(" and model.userAddress.panchayat.panchayatId in(:locationValues) ");
+	 	        }
+	 	    }
+	 		if(year != null && !year.trim().isEmpty()){
+	 	    	queryStr.append(" and year(model.createdTime) =:year ");   
+	 	    }
+	 		queryStr.append(" GROUP BY model.alertTypeId " +
 	 					" order by model.alertStatus.statusOrder  ");
 	 		Query query = getSession().createQuery(queryStr.toString());
 	 		query.setParameterList("alertTypeIds", alertTypeIds);
@@ -10529,10 +10542,23 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 				query.setParameter("fromDate", fromDate);
 	 			query.setParameter("toDate", toDate);
 			 }
-			 query.setParameter("constituencyId",constituencyId);
+			 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
+		 	        if(locationTypeId == 4l){
+		 	        	query.setParameterList("locationValues", locationValues);
+		 	        }else if(locationTypeId == 3l){
+		 	        	query.setParameterList("locationValues", locationValues);
+		 	        }else if(locationTypeId == 5l){
+		 	        	query.setParameterList("locationValues", locationValues);
+		 	        }else if(locationTypeId == 6l){
+		 	        	query.setParameterList("locationValues", locationValues);
+		 	        }
+		 	    }
+			 if(year !=null && !year.trim().isEmpty()){
+				 query.setParameter("year", Integer.parseInt(year));
+		 	 }
 	 		return  query.list();
 	 	}
-      public List<Object[]> getAlertStatusWiseDetailsForConstituencyInfo(Date fromDate , Date toDate,Long constituencyId,List<Long> alertTypeIds){
+      public List<Object[]> getAlertStatusWiseDetailsForConstituencyInfo(Date fromDate , Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
 	 		StringBuilder queryStr = new StringBuilder();
 	 			queryStr.append(" SELECT model.alertStatus.alertStatusId,model.alertStatus.alertStatus," +
 	 					" model.alertStatus.color,model.alertImpactScope.alertImpactScopeId,model.alertImpactScope.impactScope," +
@@ -10546,14 +10572,24 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 				queryStr.append(" and date(model.createdTime) between :fromDate and :toDate ");  
 			}
 	 	        queryStr.append(" and model.alertImpactScope.alertImpactScopeId in(:impactScopeIds) ");
-	 	   
-	 	    	queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
-	 	    	
-	 		
-	 	    	queryStr.append(" GROUP BY model.alertStatus.alertStatusId,model.alertImpactScope.alertImpactScopeId," +
+	 	     if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
+	 	        if(locationTypeId == 4l){
+	 	        	queryStr.append(" and model.userAddress.constituency.constituencyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 3l){
+	 	        	queryStr.append(" and model.userAddress.district.districtId in(:locationValues) ");
+	 	        }else if(locationTypeId == 5l){
+	 	        	queryStr.append(" and model.userAddress.tehsil.tehsilId in(:locationValues) ");
+	 	        }else if(locationTypeId == 6l){
+	 	        	queryStr.append(" and model.userAddress.panchayat.panchayatId in(:locationValues) ");
+	 	        }
+	 	    }
+	 	    if(year != null && !year.trim().isEmpty()){
+	 	    	queryStr.append(" and year(model.createdTime) =:year ");   
+	 	    }
+	 	    queryStr.append(" GROUP BY model.alertStatus.alertStatusId,model.alertImpactScope.alertImpactScopeId," +
 	 	    			" model.alertType.alertTypeId ");
 	 	    	
-	 	    	queryStr.append(" order by model.alertStatus.statusOrder  ");
+	 	    queryStr.append(" order by model.alertStatus.statusOrder  ");
 	 		
 	 		Query query = getSession().createQuery(queryStr.toString());
 	 		query.setParameterList("alertTypeIds", alertTypeIds);
@@ -10561,11 +10597,24 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 				query.setParameter("fromDate", fromDate);
 	 			query.setParameter("toDate", toDate);
 			 }
-			 query.setParameter("constituencyId",constituencyId);
+			 if(year !=null && !year.trim().isEmpty()){
+		 			query.setParameter("year", Integer.parseInt(year));
+		 	 }
+			 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
+			 	if(locationTypeId == 4l){
+				 query.setParameterList("locationValues",locationValues);
+	 	        }else if(locationTypeId == 3l){
+	 	        	query.setParameterList("locationValues",locationValues);
+	 	        }else if(locationTypeId == 5l){
+	 	        	query.setParameterList("locationValues",locationValues);
+	 	        }else if(locationTypeId == 6l){
+	 	        	query.setParameterList("locationValues",locationValues);
+	 	        }
+			 }
 			 query.setParameterList("impactScopeIds", IConstants.IMPACT_IDS);
 	 		return query.list();
 	 	}
-      public List<Object[]> getAlertImpactLevelWiseDetailsForConstituencyInfo(Date fromDate , Date toDate,Long constituencyId,List<Long> alertTypeIds){
+      public List<Object[]> getAlertImpactLevelWiseDetailsForConstituencyInfo(Date fromDate , Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
 	 		StringBuilder queryStr = new StringBuilder();
 	 			queryStr.append(" SELECT model.alertImpactScope.alertImpactScopeId,model.alertImpactScope.impactScope," +
 	 					" model.alertType.alertTypeId,model.alertType.alertType, " +
@@ -10577,9 +10626,22 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	    if(fromDate != null && toDate != null){
 				queryStr.append(" and date(model.createdTime) between :fromDate and :toDate ");  
 			}
-	 	    	queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
+	 	   if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+	 	    	if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 4l){
+		        	queryStr.append(" and model.userAddress.constituency.constituencyId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 3l){
+		        	queryStr.append(" and model.userAddress.district.districtId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 5l){
+		        	queryStr.append(" and model.userAddress.tehsil.tehsilId in(:locationValues) ");
+		        }else if(locationTypeId != null && locationTypeId.longValue() > 0l && locationTypeId == 6l){
+		        	queryStr.append(" and model.userAddress.panchayat.panchayatId in(:locationValues) ");
+		        }
+	 	    }
+	 	    if(year != null && !year.trim().isEmpty()){
+	 	    	queryStr.append(" and year(model.createdTime) =:year ");   
+	 	    }
 	 		
-	 	    	queryStr.append(" GROUP BY model.alertImpactScope.alertImpactScopeId," +
+	 	    queryStr.append(" GROUP BY model.alertImpactScope.alertImpactScopeId," +
 	 	    			" model.alertType.alertTypeId " +
 	 	    			" order by model.alertImpactScope.orderNo  ");
 	 	    	
@@ -10589,7 +10651,20 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 				query.setParameter("fromDate", fromDate);
 		 			query.setParameter("toDate", toDate);
 	 			 }
-	 			 query.setParameter("constituencyId",constituencyId);
+	 			if(year !=null && !year.trim().isEmpty()){
+	 				query.setParameter("year", Integer.parseInt(year));
+	 			}
+	 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	 
+	 			if(locationTypeId == 4l){
+	 				query.setParameterList("locationValues", locationValues);
+		        }else if(locationTypeId == 3l){
+		        	query.setParameterList("locationValues", locationValues);
+		        }else if(locationTypeId == 5l){
+		        	query.setParameterList("locationValues", locationValues);
+		        }else if(locationTypeId == 6l){
+		        	query.setParameterList("locationValues", locationValues);
+		        }
+	 		}
 	 		return query.list();
       }
 	 	public List<Long> getLocationWiseAlertStatusDetailsInfo(Date fromDate , Date toDate,Long deptId,String year,Long locationTypeId,List<Long> locationValues,

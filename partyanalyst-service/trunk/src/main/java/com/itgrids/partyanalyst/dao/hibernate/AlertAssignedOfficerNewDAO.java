@@ -7356,7 +7356,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	      return query.list();
 	 }
 	 @SuppressWarnings("unchecked")
-	public List<Object[]> getAssignedMemberAlertDetails(Date fromDate,Date toDate,Long constituencyId,List<Long> alertTypeIds){
+	public List<Object[]> getAssignedMemberAlertDetails(Date fromDate,Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
 	 		StringBuilder queryStr = new StringBuilder();
 	 			queryStr.append(" SELECT model.alert.alertType.alertTypeId,model.alert.alertType.alertType,count(distinct model.alert.alertId) " +
 	 				" FROM AlertAssignedOfficerNew model " +
@@ -7366,7 +7366,20 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	 		if(fromDate != null && toDate != null){
 				queryStr.append(" and date(model.alert.createdTime) between :fromDate and :toDate ");   
 			}
-	 			queryStr.append(" and model.alert.userAddress.constituency.constituencyId =:constituencyId ");
+	 		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
+	 	        if(locationTypeId == 4l){
+	 	        	queryStr.append(" and model.alert.userAddress.constituency.constituencyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 3l){
+	 	        	queryStr.append(" and model.alert.userAddress.district.districtId in(:locationValues) ");
+	 	        }else if(locationTypeId == 5l){
+	 	        	queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in(:locationValues) ");
+	 	        }else if(locationTypeId == 6l){
+	 	        	queryStr.append(" and model.alert.userAddress.panchayat.panchayatId in(:locationValues) ");
+	 	        }
+	 	    }
+	 		if(year != null && !year.trim().isEmpty()){
+	 	    	queryStr.append(" and year(model.createdTime) =:year ");   
+	 	    }
 	 			queryStr.append(" group by  model.alert.alertType.alertTypeId ");
 	 		
 	 		Query query = getSession().createQuery(queryStr.toString());
@@ -7375,7 +7388,20 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 				query.setParameter("fromDate", fromDate);
 				query.setParameter("toDate", toDate);
 			 }
-			 query.setParameter("constituencyId",constituencyId);
+			 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
+	 	        if(locationTypeId == 4l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 3l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 5l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 6l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }
+		 	 }
+			 if(year !=null && !year.trim().isEmpty()){
+				 query.setParameter("year", Integer.parseInt(year));
+		 	 }
 	 		return query.list();
 	 	}
 

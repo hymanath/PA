@@ -131,6 +131,6 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
     public List<Object[]> getLocationWiseAlertStatusCounts(Long departmentId,Date fromDate,Date toDate,String year,Long groupByValue,List<Long> locationValues);
     public List<Object[]> getHamletWiseIvrStatusCounts(Date fromDate,Date toDate,String year,List<Long> locationValues,Long LocationTypeId,
 			 Long searchlevelId,List<Long> searchLevelValues);
-    public List<Object[]> getAssignedMemberAlertDetails(Date fromDate,Date toDate,Long constituencyId,List<Long> alertTypeIds);
+    public List<Object[]> getAssignedMemberAlertDetails(Date fromDate,Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year);
     public List<Object[]> getHamletWiseIvrStatusList(Date fromDate,Date toDate,String year,List<Long> locationValues,Long locationTypeId);
 }

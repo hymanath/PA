@@ -15874,7 +15874,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 	   * Author :Teja
 	   * @description : getTotalAlertDetailsForConstituencyInfo(Getting Alert details for constituency page)
 	   */
-	public  List<AlertVO> getTotalAlertDetailsForConstituencyInfo(String fromDateStr ,String toDateStr,Long constituencyId,List<Long> alertTypeIds){
+	public  List<AlertVO> getTotalAlertDetailsForConstituencyInfo(String fromDateStr ,String toDateStr,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
 		List<AlertVO> finalVoList = new ArrayList<AlertVO>();
 		List<IdNameVO> totalList = new ArrayList<IdNameVO>();
 		List<IdNameVO> involvedList = new ArrayList<IdNameVO>();
@@ -15887,23 +15887,22 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			
-			List<Object[]> alertStatusLst = alertDAO.getAlertStatusWiseDetailsForConstituencyInfo(fromDate, toDate, constituencyId, alertTypeIds);
+			List<Object[]> alertStatusLst = alertDAO.getAlertStatusWiseDetailsForConstituencyInfo(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
 			setStatusWiseData(alertStatusLst,finalVoList);
 			
 			List<Object[]> scopeList = alertImpactScopeDAO.getAlertImpactScope();
 			setImpactScopeSkeletonNew(scopeList,finalVoList);
 			
-			List<Object[]> alertImpactLevelLst  = alertDAO.getAlertImpactLevelWiseDetailsForConstituencyInfo(fromDate, toDate, constituencyId, alertTypeIds);
+			List<Object[]> alertImpactLevelLst  = alertDAO.getAlertImpactLevelWiseDetailsForConstituencyInfo(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
 			setImpactLevelData(alertImpactLevelLst,finalVoList);
 			
-			List<Object[]> totalAlertCnt = alertDAO.getTotalAlertDetailsCount(fromDate, toDate, constituencyId, alertTypeIds);
+			List<Object[]> totalAlertCnt = alertDAO.getTotalAlertDetailsCount(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
 			setAlertData(totalAlertCnt,totalList);
 			
-			List<Object[]> involvedMembersList = alertCandidateDAO.getInvolvedMemberAlertDetails(fromDate, toDate, constituencyId, alertTypeIds);
+			List<Object[]> involvedMembersList = alertCandidateDAO.getInvolvedMemberAlertDetails(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
 			setAlertData(involvedMembersList,involvedList);
 			
-			List<Object[]> assignMembersList = alertAssignedOfficerNewDAO.getAssignedMemberAlertDetails(fromDate, toDate, constituencyId, alertTypeIds);
+			List<Object[]> assignMembersList = alertAssignedOfficerNewDAO.getAssignedMemberAlertDetails(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
 			setAlertData(assignMembersList,assignList);
 			
 			if(finalVoList != null && finalVoList.size() > 0){
@@ -16026,13 +16025,15 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 	}
 	public void setImpactScopeSkeletonNew(List<Object[]> scopeDetlsLst,List<AlertVO> finalVOList){
-		if(scopeDetlsLst != null && scopeDetlsLst.size() > 0){
-			for (Object[] objects : scopeDetlsLst){
-				AlertVO vo = new AlertVO();
-					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-					vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
-					finalVOList.get(0).getSubList1().add(vo);
-		   }
+		if(finalVOList != null && finalVOList.size() >0){
+			if(scopeDetlsLst != null && scopeDetlsLst.size() > 0){
+				for (Object[] objects : scopeDetlsLst){
+					AlertVO vo = new AlertVO();
+						vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						finalVOList.get(0).getSubList1().add(vo);
+			   }
+			}
 		}
 	}
 	//0-statusId,1-status,2-color,3-impactScopeId,4-impactScope,5-alertTypeId,alertType-6,7-count
