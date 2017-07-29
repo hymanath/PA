@@ -3213,4 +3213,95 @@ public class WebServiceHandler {
 			return null;
 		}
 	}
+	@POST
+	@Path("/getDrainsIvrStatusCounts")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AlertVO> getDrainsIvrStatusCounts(JSONObject jObj){
+		try{
+			List<Long> locationValuesList = new ArrayList<Long>(0);
+			List<Long> searchValuesList = new ArrayList<Long>(0);
+			List<Long> questionList = new ArrayList<Long>(0);
+			List<String> selectedDates = new ArrayList<String>(0);
+			JSONArray arr = jObj.getJSONArray("locationValues");
+			if(arr != null && arr.length() > 0){
+				for (int i = 0; i < arr.length(); i++) {
+					locationValuesList.add(Long.parseLong(arr.get(i)+""));
+				}
+			}
+			JSONArray searchArr = jObj.getJSONArray("levelValues");
+			if(searchArr != null && searchArr.length() > 0){
+				for (int i = 0; i < searchArr.length(); i++) {
+					searchValuesList.add(Long.parseLong(searchArr.get(i)+""));
+				}
+			}
+			JSONArray questionArr = jObj.getJSONArray("questionsList");
+			if(questionArr != null && questionArr.length() > 0){
+				for (int i = 0; i < questionArr.length(); i++) {
+					questionList.add(Long.parseLong(questionArr.get(i)+""));
+				}
+			}
+			
+			JSONArray selectedDatesArr = jObj.getJSONArray("selectedDates");
+			if(selectedDatesArr != null && selectedDatesArr.length() > 0){
+				for (int i = 0; i < selectedDatesArr.length(); i++) {
+					selectedDates.add(selectedDatesArr.get(i).toString());
+				}
+			}
+			
+			return webServiceHandlerService.getDrainsIvrStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"),locationValuesList,jObj.getLong("locationTypeId"),
+					jObj.getLong("blockLevelId"),searchValuesList,jObj.getLong("entityType"),questionList,selectedDates);			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getDrainsIvrStatusCounts() Method in WebServiceHandler class, Exception is ",e);
+			return null;
+		}
+	}
+	
+	@POST
+	@Path("/getOverAllIvrDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AlertVO> getOverAllIvrDetails(JSONObject jObj){
+		try{
+			List<Long> questionList = new ArrayList<Long>(0);
+			JSONArray arr = jObj.getJSONArray("questionsList");
+			if(arr != null && arr.length() > 0){
+				for (int i = 0; i < arr.length(); i++) {
+					questionList.add(Long.parseLong(arr.get(i)+""));
+				}
+			}
+			//String fromDateStr,String toDateStr,Long entityType,List<Long> questionsList,String type
+			return webServiceHandlerService.getOverAllIvrDetails(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("entityType"),questionList,jObj.getString("type"));			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getOverAllIvrDetails() Method, Exception is ",e);
+			return null;
+		}
+	}
+	@POST
+	@Path("/getIvrSurveyDates")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<IdNameVO> getIvrSurveyDates(JSONObject jObj){
+		try {
+			
+			return webServiceHandlerService.getIvrSurveyDates(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("entityType"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getIvrSurveyDates() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/getIvrSurveyQuestions")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<IdNameVO> getIvrSurveyQuestions(JSONObject jObj){
+		try {			
+			return webServiceHandlerService.getIvrSurveyQuestions(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("entityType"));			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getIvrSurveyQuestions() Method, Exception is ",e);
+		}
+		return null;
+	}
+	
 }
