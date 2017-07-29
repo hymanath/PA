@@ -1013,7 +1013,7 @@
 			"aaSorting": [],
 			"iDisplayLength" : 5	
 		});
-		getBoothTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
+		//getBoothTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
 		getBoothTopPoorCommitteeLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
 	 }else{	
 	   if(result !=null && result.length >0){
@@ -1135,7 +1135,7 @@
 				  ]
 			});
 		getBoothDirectChildActivityMemberCommitteeDetails(firstActivityMemberId,firstUserTypeId,firstUserMemberName,firstuserType,firstChildActivityMemberId);
-		getBoothTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
+		//getBoothTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
 		getBoothTopPoorCommitteeLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
 	}
 	}
@@ -1497,11 +1497,11 @@
 		var childActivityMemberId = $(this).attr("attr_id");  
 		//$(".showChildBlockAndTopPoorBlock").show();
 		if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
-		  getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		  //getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
 		  getBoothTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
 		 }else{ 
 	     getBoothDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		 getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		 //getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
 		 getBoothTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
 		}
 	})
@@ -1607,11 +1607,11 @@
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
 		if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
-		  getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		  //getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
 		  getBoothTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
 		 }else{ 
 	     getBoothDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		 getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		 //getBoothTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
 		 getBoothTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
 		}
 	})
