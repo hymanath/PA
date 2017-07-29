@@ -26,13 +26,17 @@ $(document).on("click",function(){
 });
 $('#dateRangePickerMGNF').on('dp.change', function(e){ 
 	glStartDate = e.date.format("YYYY-MM")+"-31";
-	buildNREGSProjectsOverview(overViewArr,'');
-	projectData(2);
+	var locId = $("#selectedName").attr("attr_id");
+	var levelId = $("#selectedName").attr("attr_levelid");
+	buildNREGSProjectsOverview(overViewArr,'',locId,levelId);
+	projectData(levelId,locId);
 });
 $('#dateRangePickerMGNT').on('dp.change', function(e){ 
 	glEndDate = e.date.format("YYYY-MM")+"-31";
-	buildNREGSProjectsOverview(overViewArr,'');
-	projectData(2);
+	var locId = $("#selectedName").attr("attr_id");
+	var levelId = $("#selectedName").attr("attr_levelid");
+	buildNREGSProjectsOverview(overViewArr,'',locId,levelId);
+	projectData(levelId,locId);
 });
 
 onLoadCalls()
@@ -43,9 +47,35 @@ function onLoadCalls()
 
 $(document).on("click","[collapse-click]",function(){
 	var divId = $(this).attr("collapse-click");
+	var locId = $("#selectedName").attr("attr_id");
+	var levelId = $("#selectedName").attr("attr_levelid");
+	var locationType = '';
+	if(levelId == 2)
+	{
+		locationType = 'state';
+		subLocType = 'state';
+		divId = $(this).attr("overview-level");
+	}else if(levelId == 3)
+	{
+		locationType = 'district';
+		subLocType = 'district';
+		divId = $(this).attr("overview-level");
+	}else if(levelId == 4)
+	{
+		locationType = 'district';
+		subLocType = 'constituency';
+		divId = $(this).attr("overview-level");
+	}
+	if(divId == 'constituency')
+	{
+		subLocType = 'constituency';
+	}else if(divId == 'mandal')
+	{
+		subLocType = 'mandal';
+	}
 	if(divId != "state")
 	{
-		getNREGSLevelWiseConsolidatedReport(2,'state',divId,'-1',divId);
+		getNREGSLevelWiseConsolidatedReport(levelId,locationType,subLocType,locId,divId);
 	}
 });
 $(document).on("click",".menuDataCollapse",function(){
@@ -66,8 +96,9 @@ $(document).on("click",".menuDataCollapse",function(){
 	var districtId = $("#selectedName").attr("attr_distId");
 	var levelId = $(this).attr("attr_levelIdValue");
 	$("#selectedName").attr("attr_levelid",levelId);
-	$("#selectedName").attr("attr_id",locId)
-	
+	$("#selectedName").attr("attr_id",locId);
+	buildNREGSProjectsOverview(overViewArr,'',locId,levelId);
+	projectData(levelId,locId);
 });
 $(".menu-top-selection .arrow_box_top").hide();
 $(document).on("click",".menu-top-selection-icon",function(e){
@@ -111,7 +142,9 @@ $(document).on("click",".selectionMenuSubmitIdNewCls",function(){
 		}
 	});
 	buildNREGSProjectsOverview(overViewArr,'');
-	projectData(2);
+	var locId = $("#selectedName").attr("attr_id");
+	var levelId = $("#selectedName").attr("attr_levelid");
+	projectData(levelId,locId);
 });
 /* Menu Start*/
 $(".multi-level-selection-menu").hide();
@@ -286,13 +319,15 @@ function buildComponentByConvergType(result,divId,convergenceId)
 	if(convergenceId == 4)
 	{
 		setTimeout(function(){
-			buildNREGSProjectsOverview(overViewArr,'');
-			projectData(2);
+			var locId = $("#selectedName").attr("attr_id");
+			var levelId = $("#selectedName").attr("attr_levelid");
+			buildNREGSProjectsOverview(overViewArr,'',locId,levelId);
+			projectData(levelId,locId);
 		},500);
 	}
 }
 
-function buildNREGSProjectsOverview(result,blockName)
+function buildNREGSProjectsOverview(result,blockName,locId,levelId)
 {
 	var str='';
 	
@@ -526,17 +561,28 @@ function buildNREGSProjectsOverview(result,blockName)
 		$('[overview-block="'+blockName+'"]').addClass("active");
 		$('[overview-block="'+blockName+'"]').trigger('click');
 	}
+	var locType = '';
+	if(levelId == 2 || levelId == "2")
+	{
+		locType = 'state';
+	}else if(levelId == 3 || levelId == "3")
+	{
+		locType = 'district';
+	}else if(levelId == 4 || levelId == "4")
+	{
+		locType = 'constituency';
+	}
 	for(var i in overViewArr)
 	{
 		$("[overview-block='"+overViewArr[i].name+"']").html(spinner);
 		if(overViewArr[i].name == 'Solid Waste Management' || overViewArr[i].name == 'Burial Grounds' || overViewArr[i].name == 'Play Fields' || overViewArr[i].name == 'CC Roads' || overViewArr[i].name == 'Anganwadi Buildings' || overViewArr[i].name == 'GP Buildings' || overViewArr[i].name == 'Mandal Buildings' || overViewArr[i].name == 'NTR 90 Days' || overViewArr[i].name == 'Production of Bricks' || overViewArr[i].name == 'Mulbery' || overViewArr[i].name == 'Silk Worms' || overViewArr[i].name == 'Cattle Drinking Water Troughs' || overViewArr[i].name == 'Raising of Perinnial Fodders' || overViewArr[i].name == 'Fish Ponds' || overViewArr[i].name == 'Fish Drying Platforms')
 		{
-			getNREGSProjectsAbstractNew(overViewArr[i].name,'state',"0",'',2);
+			getNREGSProjectsAbstractNew(overViewArr[i].name,locType,locId,blockName,levelId);
 		}else if(overViewArr[i].name == 'Payments')
 		{
-			getNregaPaymentsAbsAndOverview(overViewArr[i].name,'state',0,2,'abstract');
+			getNregaPaymentsAbsAndOverview(overViewArr[i].name,locId,blockName,levelId,'abstract');
 		}else{
-			getNREGSAbstractDataByType(overViewArr[i].name,'state',"0",'',2,'onLoad');
+			getNREGSAbstractDataByType(overViewArr[i].name,locType,locId,blockName,levelId,'onLoad');
 		}
 	}
 
@@ -922,20 +968,27 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	
 }
 
-function projectData(levelId)
+function projectData(levelId,locId)
 {
 	//alert(locationId);
 	var collapse='';
 	var dataArr = '';
+	var subLocType = '';
+	var locationType = '';
+	var divId = '';
 	if(levelId == 2)
 	{
 		dataArr = ['state','district','constituency','mandal'];
+		subLocType,divId = 'state';
 	}else if(levelId == 3)
 	{
 		dataArr = ['district','constituency','mandal'];
+		subLocType,locationType,divId = 'district';
 	}else if(levelId == 4)
 	{
 		dataArr = ['constituency','mandal'];
+		locationType,divId = 'district';
+		subLocType = 'constituency';
 	}
 	collapse+='<section>';
 		collapse+='<div class="row">';
@@ -973,7 +1026,24 @@ function projectData(levelId)
 	collapse+='</section>';
 	
 	$("#projectData").html(collapse);
-	getNREGSLevelWiseConsolidatedReport(2,'state','state','-1','state');
+	var locId = $("#selectedName").attr("attr_id");
+	if(levelId == 2)
+	{
+		locationType = 'state';
+		subLocType = 'state';
+		divId = 'state'
+	}else if(levelId == 3)
+	{
+		locationType = 'district';
+		subLocType = 'district';
+		divId = 'district'
+	}else if(levelId == 4)
+	{
+		locationType = 'district';
+		subLocType = 'constituency';
+		divId = 'constituency'
+	}
+	getNREGSLevelWiseConsolidatedReport(levelId,locationType,subLocType,locId,divId);
 	
 }
 function getNREGSLevelWiseConsolidatedReport(levelId,locationType,subLocationType,locationId,divId)
@@ -1054,7 +1124,11 @@ function tableView(result,divId)
 		$(".dataTable"+divId).dataTable({
 			"iDisplayLength": 20,
 			"aaSorting": [],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": 'Bfrtip',
+			buttons: [
+				'copy', 'excel', 'pdf', 'print'
+			]
 		});
 	}
 }
