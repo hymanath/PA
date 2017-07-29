@@ -1943,7 +1943,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	  * @Description :This Service Method is used for getting government scheme wise benefit member count 
 	  *  @since 7-JULY-2017
 	  */
-	public List<BenefitCandidateVO> getGovtSchemeWiseBenefitMembersCount(final String locationType, final Long locationValue) {
+	public List<BenefitCandidateVO> getGovtSchemeWiseBenefitMembersCount(final Long locationType, final Long locationValue) {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
 			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getGovtSchemeWiseBenefitMemberCount(locationType,locationValue);
@@ -1981,7 +1981,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	  * @Description :This Service Method is used for getting mandal wise benefit member count 
 	  *  @since 7-JULY-2017
 	  */
-	public List<BenefitCandidateVO> getMandalWiseBenefitMembersCount(final String locationType, final Long locationValue,final Long govtSchemeId) {
+	public List<BenefitCandidateVO> getMandalWiseBenefitMembersCount(final Long locationType, final Long locationValue,final Long govtSchemeId) {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
 			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getMandalWiseBenefitMemberCountByGovtScheme(locationType,locationValue, govtSchemeId);
