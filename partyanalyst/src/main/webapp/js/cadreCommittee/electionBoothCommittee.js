@@ -1680,10 +1680,11 @@ $(document).on("click",".remveMbrCls",function(){
 	
 });	
 
-function getBoothUserDetailsbuild(result,locationName){
+function getBoothUserDetailsbuild(result,locationName,boothId){
 	$("#userDetailsId").show();
 	$("#locationDivId").html('<center><h4>'+locationName+' Committee Details.</center></h4>');
 	var str = '';
+	//str+='<div class="table-responsive">';
 	str +='<h4><a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothExportExcelReport\')}"  style="margin-bottom: 7px;"> Export Excel</a></h4>';
 		  str +='<table class="table table-bordered" id="rangeWiseBoothReport">';
 				 str +='<thead>';
@@ -1737,7 +1738,7 @@ function getBoothUserDetailsbuild(result,locationName){
 									else
 									  str +='<td>  -  </td>';
 							if(result[i].status != null && (result[i].status=="N" || result[i].status=="N " || result[i].status==" N" || result[i].status==" N "))	
-									str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' attr_role="'+result[i].roleName+'" value="DELETE" type="button"></td>';
+									str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_booth_id='+boothId+' attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' attr_role="'+result[i].roleName+'" value="DELETE" type="button"></td>';
 								else
 								
                                   str +='<td>  -  </td>';								  
@@ -1807,6 +1808,7 @@ function getBoothUserDetailsbuild(result,locationName){
 							}
 			  str +='</tbody>';
 			  str +='</table>';
+			 // str+='</div>';
 			   $("#userDetailsId").html(str);
 				$("#rangeWiseBoothReport").dataTable({
 						"iDisplayLength": 20,
@@ -1832,11 +1834,14 @@ $(document).on("click","#deleteMembrsBtn",function(){
 	$(this).hide();
 	var inchargeId = $(this).attr("attr_incharge_id");
 	var roleMappingId = $(this).attr("attr_roleMapping_id");
+	var boothId = $(this).attr("attr_booth_id");
 	
 	var jsObj =
 		{
 			boothInchargeMappingId : roleMappingId,
-            boothInchargeId :  inchargeId	
+            boothInchargeId :  inchargeId,
+            boothId:boothId,
+            boothInchargeEnrollementId:1			
 		}
 		   $.ajax({
 				    type : "POST",
