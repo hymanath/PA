@@ -347,7 +347,12 @@ function onLoadCalls()
 		str+='</table>';
 		str+='</div>';
 		$("#webserviceDetailsModalId").html(str);
-		$("#webserviceHealthDetailsTableId").dataTable();
+		$("#webserviceHealthDetailsTableId").dataTable({
+			"dom": 'Bfrtip',
+			buttons: [
+				'copy', 'excel', 'pdf', 'print'
+			]
+		});
 		
 	}
 	
@@ -626,14 +631,22 @@ function tableView(blockId,theadArr,result,locationType)
 		$(".dataTable"+blockId).dataTable({
 			"iDisplayLength": 15,
 			"aaSorting": [],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"dom": 'Bfrtip',
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			buttons: [
+				'copy', 'excel', 'pdf', 'print'
+			]
 		});
 	}else if(locationType == 'district')
 	{
 		$(".dataTable"+blockId).dataTable({
 			"iDisplayLength": 20,
 			"aaSorting": [],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": 'Bfrtip',
+			buttons: [
+				'copy', 'excel', 'pdf', 'print'
+			]
 		});
 	}
 	
@@ -2116,9 +2129,18 @@ function buildDistrictsPopupDetails(result,dataArr){
 	}
 	$("#nregsConsitenBodyId").html(str);
 	$(".dataTableCls").dataTable({
-		"order": [[ 1, "asc" ]]
+		"order": [[ 1, "asc" ]],
+		"dom": 'Bfrtip',
+		buttons: [
+			'copy', 'excel', 'pdf', 'print'
+		]
 	});
-	$(".dataTableClsDist").dataTable();
+	$(".dataTableClsDist").dataTable({
+		"dom": 'Bfrtip',
+		buttons: [
+			'copy', 'excel', 'pdf', 'print'
+		]
+	});
 	
 }
 
@@ -3874,7 +3896,12 @@ function buildLabourBudgetPanExpData(result,viewType,range){
 			str+='</div>';
 		str+='</div>';
 		$("#LabBudgtPanExBodyId").html(str);
-		$("#larBudExpTableId").dataTable();
+		$("#larBudExpTableId").dataTable({
+			"dom": 'Bfrtip',
+			buttons: [
+				'copy', 'excel', 'pdf', 'print'
+			]
+		});
 	}else if(viewType == 'overView'){
 		var str1='';
 		str1+='<div class="row">';
@@ -3949,7 +3976,12 @@ function buildLabourBudgetPanExpData(result,viewType,range){
 		$("#LabBudgtPanExBodyOverviewId").html(str1);
 		//$(".blockHeights").height("400px");
 		$(".blockHeightsScroll").mCustomScrollbar();
-		$(".dataTableCls").dataTable();
+		$(".dataTableCls").dataTable({
+			"dom": 'Bfrtip',
+			buttons: [
+				'copy', 'excel', 'pdf', 'print'
+			]
+		});
 	}
 	
 }
