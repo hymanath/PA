@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.DrainsVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.service.IDrainsService;
 import com.itgrids.service.IUserService;
@@ -85,6 +86,14 @@ public class DrainsController {
 		}
 		return null;
 	} 
-	
+	@PostMapping("/getIvrSurveyDates")
+	public @ResponseBody List<KeyValueVO> getIvrSurveyDates(@RequestBody InputVO inputVO){
+		try {
+			return drainsService.getIvrSurveyDates(inputVO);			
+		} catch (Exception e) {
+			LOG.error("Exception raised at  getIvrSurveyDates - DrainsController controller", e);
+		}
+		return null;
+	} 
 
 }
