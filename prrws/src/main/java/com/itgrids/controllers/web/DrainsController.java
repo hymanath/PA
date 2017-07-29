@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.DrainsVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.StatusVO;
 import com.itgrids.service.IDrainsService;
 import com.itgrids.service.IUserService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
@@ -65,6 +66,25 @@ public class DrainsController {
 		}
 		return drainsVO;
 	}
+	@PostMapping("/getDrainsIvrStatusCounts")
+	public @ResponseBody List<StatusVO> getDrainsIvrStatusCounts(@RequestBody InputVO inputVO)
+	{		
+		try {
+			return drainsService.getDrainsIvrStatusCounts(inputVO);			
+		} catch (Exception e) {
+			LOG.error("Exception raised at  getDrainsIvrStatusCounts - DrainsController controller", e);
+		}
+		return null;
+	}
+	@PostMapping("/getDrainsIvrStatusCounts")
+	public @ResponseBody List<StatusVO> getOverAllIvrDetails(@RequestBody InputVO inputVO){
+		try {
+			return drainsService.getOverAllIvrDetails(inputVO);			
+		} catch (Exception e) {
+			LOG.error("Exception raised at  getOverAllIvrDetails - DrainsController controller", e);
+		}
+		return null;
+	} 
 	
 
 }
