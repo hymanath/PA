@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -22,5 +23,7 @@ public interface IConstituencyCensusDetailsDAO extends GenericDao<ConstituencyCe
 			Long constituencyId, List<Long> years);
 	
 	public List<Long> checkForConstituencyExistanceByYear(Long constituencyId,Long year);
+	
+	public List<Object[]> getTotalCensusPopulation(Set<Long> locationIdSet,Long year);
 
 }

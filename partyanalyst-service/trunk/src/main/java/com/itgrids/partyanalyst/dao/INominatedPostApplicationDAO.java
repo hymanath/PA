@@ -56,5 +56,5 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 	public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId);
 	public int updateApplicationExpiredByApplns(List<Long> nominatedPostApplciationIdsLsit, Long userId,Date currentDate);
 	public Long nominatedPostAppPostionDetails(Long boardLevelId,Long locationValue,Long deptId,Long boardId,Long positionId,Long postTypeId,Long nominationCandidateId,Long statusId );
-	public List<Object[]> getNominatedPostApplicationStatusWiseCount(Long constituencyId,Date startDate, Date endDate);
+	public List<Object[]> getNominatedPostApplicationStatusWiseCount(Long locationTypeId,List<Long> locationValue, Date startDate, Date endDate);
 }
