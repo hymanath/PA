@@ -1926,13 +1926,13 @@ String committeType){
 				        for(String groupingLocation : groupingLocationsList){
 				          
 				          committeeBO.setGroupingLocation(groupingLocation);
-				          
+				          				          
 				          List<Object[]>  totalList   = boothDAO.getLocationWiseCommitteesCountByLocIds(committeeBO);
-				          committeeBO.setStatus("started"); 
-				          List<Object[]> completedList = boothInchargeDAO.getTopPoorCommitteeLocations(committeeBO);
+		    	    			 committeeBO.setStatus("completed");
+		    	    			 List<Object[]> completedList = boothInchargeDAO.getTopPoorCommitteeLocations(committeeBO);
+		    	    			 locationCommitteeCountSetting(completedList,finalMap,"completed",groupingLocation);
 				          
-				          locationCommitteeCountSetting(totalList,finalMap,"notStarted",groupingLocation);
-				          locationCommitteeCountSetting(completedList,finalMap,"started",groupingLocation);
+				          locationCommitteeCountSetting(totalList,finalMap,"null",groupingLocation);
 				          
 				        }
 				   }
