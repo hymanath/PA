@@ -2060,24 +2060,36 @@ return (Long) query.uniqueResult();
 		query.setParameter("positionId", positionId);
 		return  query.list();
 	}
- public List<Object[]> getNominatedPostStatusWiseCount(Long constituencyId,Date startDate, Date endDate){
+ public List<Object[]> getNominatedPostStatusWiseCount(Long locationType,List<Long> locationValuesList, Date startDate, Date endDate,
+			String year){
 	 StringBuilder sb = new StringBuilder();
 	 sb.append(" select " +
 	 		   " nominatedPost.nominatedPostStatus.nominatedPostStatusId, " +
 	 		   " nominatedPost.nominatedPostStatus.status, " +
 	 		   " count(distinct nominatedPost.nominatedPostId) " +
 	 		   " from NominatedPost nominatedPost where " +
-			   " nominatedPost.nominatedPostMember.address.constituency.constituencyId = :constituencyId " +
-			   " and nominatedPost.isDeleted = 'N' " +
+			   " nominatedPost.isDeleted = 'N' " +
 			   " and nominatedPost.isExpired = 'N' " +
 			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' ");
+	 
+	 	if (locationType != null && locationValuesList != null && locationValuesList.size()>0) {
+				if (locationType == 3) {
+					sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValue) ");
+				} else if (locationType == 10) {
+					sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValue) ");
+				} else if (locationType == 4) {
+					sb.append(" and nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValue) ");
+				} else if (locationType == 5) {
+					sb.append(" and nominatedPost.nominatedPostMember.address.Tehsil.constituencyId in(:locationValue) ");
+				} 
+	 }
 	 if(startDate != null && endDate != null){
 		 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
 	 }
 	 sb.append(" group by nominatedPost.nominatedPostStatus.nominatedPostStatusId "); 
 	 sb.append(" order by nominatedPost.nominatedPostStatus.nominatedPostStatusId ");
 	 Query query = getSession().createQuery(sb.toString());
-	 query.setParameter("constituencyId",constituencyId);
+	 query.setParameterList("locationValue",locationValuesList);
 	 if(startDate != null && endDate != null){
 		 query.setDate("startDate",startDate);
 		 query.setDate("endDate",endDate);

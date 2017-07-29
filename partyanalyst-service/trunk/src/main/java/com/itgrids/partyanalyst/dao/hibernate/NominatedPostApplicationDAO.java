@@ -2477,23 +2477,37 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		 return (Long) query.uniqueResult();
 		
 	}
-	public List<Object[]> getNominatedPostApplicationStatusWiseCount(Long constituencyId,Date startDate, Date endDate){
+	public List<Object[]> getNominatedPostApplicationStatusWiseCount(Long locationType, List<Long> locationValue, Date startDate,
+			Date endDate){
 		 StringBuilder sb = new StringBuilder();
 		 sb.append(" select " +
 		 		   " nominatedPostApplication.applicationStatus.applicationStatusId, " +
 		 		   " nominatedPostApplication.applicationStatus.status, " +
 		 		   " count(distinct nominatedPostApplication.nominatedPostApplicationId) " +
 		 		   " from NominatedPostApplication nominatedPostApplication where " +
-				   " nominatedPostApplication.address.constituency.constituencyId = :constituencyId " +
-				   " and nominatedPostApplication.isDeleted = 'N' " +
+				   " nominatedPostApplication.isDeleted = 'N' " +
 				   " and nominatedPostApplication.isExpired = 'N' ");
-		 if(startDate != null && endDate != null){
+		if (locationType != null && locationValue != null && locationValue.size()>0) {
+				if (locationType == 3) {
+					sb.append(" and nominatedPostApplication.address.district.districtId in(:locationValue) ");
+				} else if (locationType == 10) {
+					sb.append(" and nominatedPostApplication.address.parliamentConstituency.constituencyId in(:locationValue) ");
+				} else if (locationType == 4) {
+					sb.append(" and nominatedPostApplication.address.constituency.constituencyId in(:locationValue) ");
+				} else if (locationType == 5) {
+					sb.append(" and nominatedPostApplication.address.Tehsil.constituencyId in(:locationValue) ");
+				}
+		}
+		if(startDate != null && endDate != null){
 			 sb.append(" and (date(nominatedPostApplication.updatedTime) between :startDate and :endDate) ");
-		 }
+		}
 		 sb.append(" group by nominatedPostApplication.applicationStatus.applicationStatusId ");
 		 sb.append(" order by nominatedPostApplication.applicationStatus.applicationStatusId ");
 		 Query query = getSession().createQuery(sb.toString());
-		 query.setParameter("constituencyId",constituencyId);
+		
+		 if (locationType != null && locationValue != null && locationValue.size() > 0) {
+			 query.setParameterList("locationValue",locationValue);
+		 }
 		 if(startDate != null && endDate != null){
 			 query.setDate("startDate",startDate);
 			 query.setDate("endDate",endDate);
