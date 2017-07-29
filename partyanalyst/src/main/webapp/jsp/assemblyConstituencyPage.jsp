@@ -467,8 +467,10 @@
 	<thead class="text-capitalize f-12 bg-E9">
 		<tr>
 			<th>Year</th>
+			<th style="width:10%"><i class="fa fa-thumbs-up" style="font-size:24px;color:green"></i></th>
 			<th>won candidate</th>
 			<th>majority of votes</th>
+			<th><i class="fa fa-thumbs-down" style="font-size:24px;color:red"></i></th>
 			<th>lost candidate</th>
 		</tr>
 	</thead>
@@ -476,8 +478,10 @@
 		{{#each this}}
 		<tr>
 			<td>{{electionYear}}</td>
+			<td>{{candidateResultsVO.partyShortName}}</td>
 			<td>{{candidateResultsVO.candidateName}}</td>
 			<td>{{candidateResultsVO.votesEarned}}</td>
+			<td>{{candidateOppositionList.0.partyShortName}} </td>
 			<td>{{candidateOppositionList.0.candidateName}}</td>
 		</tr>
 		{{/each}}

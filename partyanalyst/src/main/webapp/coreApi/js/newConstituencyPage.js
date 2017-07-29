@@ -16,6 +16,7 @@ function onLoadAjaxCalls()
 	getTotalAlertDetailsForConstituencyInfo();
 	getAllPartiesAllElectionResultsChart(); //Assembly Election Detail
 	getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
+	getDetailedElectionInformaction()//get detailed election information
 	/*getCountsForConstituency(); //Assembly election details
 	
 	getPrintMediaCountsForConstituencyPage(); //electronic media
