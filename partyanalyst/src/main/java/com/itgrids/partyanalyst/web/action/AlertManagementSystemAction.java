@@ -6343,8 +6343,9 @@ public String getAlertSourceWiseAlert(){
 				}
 				jObj = new JSONObject(getTask());
 				String fromDateStr = jObj.getString("fromDateStr");
+				String year = jObj.getString("year");
 				String toDateStr = jObj.getString("toDateStr");
-				Long constituencyId = jObj.getLong("constituencyId");
+				Long locationTypeId = jObj.getLong("locationTypeId");
 				JSONArray alertTypeIdsStr = jObj.getJSONArray("alertTypeIdsStr");  
 				List<Long> alertTypeIds = new ArrayList<Long>();
 				if(alertTypeIdsStr != null && alertTypeIdsStr.length() > 0){
@@ -6352,7 +6353,14 @@ public String getAlertSourceWiseAlert(){
 						alertTypeIds.add(Long.parseLong(alertTypeIdsStr.getString(i)));        
 					} 
 				}
-				alertVOs = alertManagementSystemService.getTotalAlertDetailsForConstituencyInfo(fromDateStr,toDateStr,constituencyId,alertTypeIds);
+				JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
+				List<Long> locationValues = new ArrayList<Long>();
+				if(locationValuesArr != null && locationValuesArr.length() > 0){
+					for (int i = 0; i < locationValuesArr.length(); i++){
+						locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
+					} 
+				}
+				alertVOs = alertManagementSystemService.getTotalAlertDetailsForConstituencyInfo(fromDateStr,toDateStr,locationValues,alertTypeIds,locationTypeId,year);
 				
 		 }catch(Exception e){
 			 successMsg = "failure";
