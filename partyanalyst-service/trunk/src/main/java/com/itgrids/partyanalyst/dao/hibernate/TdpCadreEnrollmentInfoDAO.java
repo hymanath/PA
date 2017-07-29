@@ -57,17 +57,17 @@ public class TdpCadreEnrollmentInfoDAO extends GenericDaoHibernate<TdpCadreEnrol
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getLocationTypeWiseCadreCount(final Long locationScopeId,final Long locationValue){
+	public List<Object[]> getLocationTypeWiseCadreCount(final Long locationScopeId,final List<Long> locationValues){
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append(" select model.enrollmentYear.enrollmentYearId,model.enrollmentYear.description,sum(model.totalCadre),sum(model.newCadre),sum(model.renewalCadre) from TdpCadreEnrollmentInfo model");
-		 if(locationScopeId != null && locationValue!= null && locationValue.longValue() > 0l){
-		  queryStr.append(" where model.locationScopeId=:locationScopeId and model.locationValue =:locationValue ");
+		 if(locationScopeId != null && locationValues!= null && locationValues.size() >0){
+		  queryStr.append(" where model.locationScopeId=:locationScopeId and model.locationValue in(:locationValues) ");
 		 }
 		 queryStr.append(" group by model.enrollmentYear.enrollmentYearId order by model.enrollmentYear.orderNo");
 		 Query query = getSession().createQuery(queryStr.toString());
-		 if(locationScopeId != null && locationValue!= null && locationValue.longValue() > 0l){
+		 if(locationScopeId != null && locationValues!= null && locationValues.size() >0){
 			 query.setParameter("locationScopeId", locationScopeId); 
-			 query.setParameter("locationValue", locationValue); 
+			 query.setParameterList("locationValues", locationValues); 
 		 }
 		 return query.list();	
 	}
