@@ -160,7 +160,7 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 		return query.list();
 	}
 
-	public List<Object[]> getGovtSchemeWiseBenefitMemberCount(String locationType, Long locationValue) {
+	public List<Object[]> getGovtSchemeWiseBenefitMemberCount(Long locationType, Long locationValue) {
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.govtSchemes.govtSchemesId," +
 						" model.govtSchemes.schemeName," +
@@ -171,12 +171,14 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 				        " model.isDeleted='N' ");
 		
 		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
-			if (locationType.equalsIgnoreCase("District")) {
+			if (locationType == 3) {
 				queryStr.append(" and model.userAddress.district.districtId=:locationValue ");
-			} else if (locationType.equalsIgnoreCase("ParliamentConstituency")) {
+			} else if (locationType == 10) {
 				queryStr.append(" and model.userAddress.parliamentConstituency.constituencyId=:locationValue ");
-			} else if (locationType.equalsIgnoreCase("Constituency")) {
+			} else if (locationType == 4) {
 				queryStr.append(" and model.userAddress.constituency.constituencyId=:locationValue ");
+			} else if (locationType == 5) {
+				queryStr.append(" and model.userAddress.tehsil.tehsilId=:locationValue ");
 			}
 		}
 		queryStr.append(" group by model.govtSchemesId");
@@ -188,7 +190,7 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 		}
 		return query.list();
 	}
-	public List<Object[]> getMandalWiseBenefitMemberCountByGovtScheme(String locationType, Long locationValue,Long govtSchemeId) {
+	public List<Object[]> getMandalWiseBenefitMemberCountByGovtScheme(Long locationType, Long locationValue,Long govtSchemeId) {
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.userAddress.tehsil.tehsilId," +
 						" model.userAddress.tehsil.tehsilName," +
@@ -199,12 +201,14 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 				        " model.isDeleted='N' ");
 		
 		if (locationType != null && locationValue != null && locationValue.longValue() > 0l) {
-			if (locationType.equalsIgnoreCase("District")) {
+			if (locationType == 3) {
 				queryStr.append(" and model.userAddress.district.districtId=:locationValue ");
-			} else if (locationType.equalsIgnoreCase("ParliamentConstituency")) {
+			} else if (locationType == 10) {
 				queryStr.append(" and model.userAddress.parliamentConstituency.constituencyId=:locationValue ");
-			} else if (locationType.equalsIgnoreCase("Constituency")) {
+			} else if (locationType == 4) {
 				queryStr.append(" and model.userAddress.constituency.constituencyId=:locationValue ");
+			} else if (locationType == 5) {
+				queryStr.append(" and model.userAddress.tehsil.tehsilId=:locationValue ");
 			}
 		}
 		if (govtSchemeId != null && govtSchemeId.longValue() > 0){
