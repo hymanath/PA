@@ -1243,16 +1243,10 @@ function getTotalAlertDetailsForConstituencyInfo(){
 	var jsObj={
 			"fromDateStr" : "",
 			"toDateStr":"",
-<<<<<<< .mine
-			"constituencyId" : 232,
-			"alertTypeIdsStr" : [1]
-			
-=======
 			"locationValuesArr" : [232],
 			"alertTypeIdsStr" : [1],
 			"locationTypeId":4,
 			"year" :""
->>>>>>> .r45380
 		}
 	 $.ajax({
       type : "POST",
