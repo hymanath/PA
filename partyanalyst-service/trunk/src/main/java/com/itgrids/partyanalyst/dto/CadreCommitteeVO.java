@@ -58,7 +58,14 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private Long LocalElectionId;
 	private String roleName;
 	private String serialNo="";
+	private Long cadreVoterId;
 	
+	public Long getCadreVoterId() {
+		return cadreVoterId;
+	}
+	public void setCadreVoterId(Long cadreVoterId) {
+		this.cadreVoterId = cadreVoterId;
+	}
 	public String getSerialNo() {
 		return serialNo;
 	}
