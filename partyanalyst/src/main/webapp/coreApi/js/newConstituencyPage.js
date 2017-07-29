@@ -1226,15 +1226,14 @@ function getLocationWiseGrivanceTrustStatusCounts(){
 		}
 	});	
 }
-
-
 function getTotalAlertDetailsForConstituencyInfo(){
 	var jsObj={
 			"fromDateStr" : "",
 			"toDateStr":"",
-			"constituencyId" : 233,
-			"alertTypeIdsStr" : [1]
-			
+			"locationValuesArr" : [232],
+			"alertTypeIdsStr" : [1],
+			"locationTypeId":4,
+			"year" :""
 		}
 	 $.ajax({
       type : "POST",
