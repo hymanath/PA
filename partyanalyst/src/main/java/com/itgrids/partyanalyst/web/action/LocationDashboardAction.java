@@ -297,11 +297,18 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String  getLocationWiseTourMembersComplainceDtls(){
 		 try {
 			 jObj = new JSONObject(getTask());
-			 String locationType = jObj.getString("locationType");
-			 Long locationValue = jObj.getLong("locationValue");
+			 Long locationTypeId = jObj.getLong("locationTypeId");
 			 String fromDateStr = jObj.getString("fromDate");
 			 String toDateStr = jObj.getString("toDate");
-			 tourDesignationList = locationDashboardService.getLocationWiseTourMembersComplainceDtls(locationType,locationValue,fromDateStr,toDateStr);
+			 String year = jObj.getString("year");
+			 JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
+				List<Long> locationValues = new ArrayList<Long>();
+				if(locationValuesArr != null && locationValuesArr.length() > 0){
+					for (int i = 0; i < locationValuesArr.length(); i++){
+						locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
+					} 
+				}
+			 tourDesignationList = locationDashboardService.getLocationWiseTourMembersComplainceDtls(locationTypeId,locationValues,fromDateStr,toDateStr,year);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseTourMembersComplainceDtls in LocationDashboardAction class", e);
 		}
@@ -333,7 +340,14 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String  getLocationTypeWiseCadreCount(){
 		 try {
 			jObj = new JSONObject(getTask());
-			cadreDtlsList = locationDashboardService.getLocationTypeWiseCadreCount(jObj.getString("locationType"),jObj.getLong("locationValue"));
+			JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
+			List<Long> locationValues = new ArrayList<Long>();
+			if(locationValuesArr != null && locationValuesArr.length() > 0){
+				for (int i = 0; i < locationValuesArr.length(); i++){
+					locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
+				} 
+			}
+			cadreDtlsList = locationDashboardService.getLocationTypeWiseCadreCount(jObj.getLong("locationTypeId"),locationValues);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationTypeWiseCadreCount in LocationDashboardAction class", e);
 		}
