@@ -13,6 +13,6 @@ public interface IGovtSchemeBeneficiaryDetailsDAO extends GenericDao<GovtSchemeB
 	public List<Object[]> getLocalityBasedBenefitSchemesDetails(Long accessLevelId,List<Long> accessLevelValuesList);
 	public List<Object[]> getBenefitSchemesMembersDetails(Long locationLevelId,Long benefitId,Integer minValue,Integer maxValue);
 	public List<Object[]> getAllConstBenefitDetailsForADist(Long distId);
-	public List<Object[]> getGovtSchemeWiseBenefitMemberCount(String locationType, Long locationValue);
-	public List<Object[]> getMandalWiseBenefitMemberCountByGovtScheme(String locationType, Long locationValue,Long govtSchemeId);
+	public List<Object[]> getGovtSchemeWiseBenefitMemberCount(Long locationType, Long locationValue);
+	public List<Object[]> getMandalWiseBenefitMemberCountByGovtScheme(Long locationType, Long locationValue,Long govtSchemeId);
 }
