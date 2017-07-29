@@ -310,7 +310,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String  getGovtSchemeWiseBenefitMembersCount(){
 		 try {
 			 jObj = new JSONObject(getTask());
-			 String locationType = jObj.getString("locationType");
+			 Long locationType = jObj.getLong("locationType");
 			 Long locationValue = jObj.getLong("locationValue");
 			 govtSchemeMemberBenefitList = locationDashboardService.getGovtSchemeWiseBenefitMembersCount(locationType,locationValue);
 		} catch (Exception e) {
@@ -321,7 +321,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String  getMandalWiseBenefitMembersCount(){
 		 try {
 			 jObj = new JSONObject(getTask());
-			 String locationType = jObj.getString("locationType");
+			 Long locationType = jObj.getLong("locationType");
 			 Long locationValue = jObj.getLong("locationValue");
 			 Long govtSchemeId = jObj.getLong("govtSchemeId");
 			 govtSchemeMemberBenefitList = locationDashboardService.getMandalWiseBenefitMembersCount(locationType,locationValue,govtSchemeId);
