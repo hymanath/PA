@@ -219,7 +219,7 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
   			return query.list();    	       	  
        }
 	//Constituency Page Query
-	public List<Object[]> getLocationWiseTourMemberDetails(Long userAccessLevelId,String locationType,Long locationValue){
+	public List<Object[]> getLocationWiseTourMemberDetails(Long userAccessLevelId,Long locationTypeId,List<Long> locationValues,String year){
 		   StringBuilder queryStr = new StringBuilder();
 		   queryStr.append(" select  " +
 		   				" SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
@@ -234,17 +234,20 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 				   		" SACL.selfAppraisalCandidate.isActive = 'Y' and SACL.isDeleted='N' and " +  
 				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y'");
 		   
-		   if(locationType != null && locationType.trim().length() > 0 && locationValue != null){
-			   
-			    if(locationType.equalsIgnoreCase("District")){
-				   queryStr.append(" and SACL.userAddress.district.districtId in (:locationValue)");  
-			    }else if(locationType.equalsIgnoreCase("Parliament")){
-				   queryStr.append(" and SACL.userAddress.parliamentConstituency.constituencyId in (:locationValue) ");  
-			    }else if(locationType.equalsIgnoreCase("Constituency")){
-				   queryStr.append(" and SACL.userAddress.constituency.constituencyId in (:locationValue) ");  
-			    }   
-		   }
-		   
+		   if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
+	 	        if(locationTypeId == 4l){
+	 	        	queryStr.append(" and SACL.userAddress.constituency.constituencyId in(:locationValues) ");
+	 	        }else if(locationTypeId == 3l){
+	 	        	queryStr.append(" and SACL.userAddress.district.districtId in(:locationValues) ");
+	 	        }else if(locationTypeId == 5l){
+	 	        	queryStr.append(" and SACL.userAddress.tehsil.tehsilId in(:locationValues) ");
+	 	        }else if(locationTypeId == 6l){
+	 	        	queryStr.append(" and SACL.userAddress.panchayat.panchayatId in(:locationValues) ");
+	 	        }
+	 	    }
+		   if(year != null && !year.trim().isEmpty()){
+	 	    	//queryStr.append(" and year(model.createdTime) =:year ");   
+	 	   }
 		   if(userAccessLevelId != null && userAccessLevelId.longValue()  > 0){
 			   queryStr.append(" and SACL.locationScopeId=:userAccessLevelId");
 		   }
@@ -256,8 +259,19 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 		   
 		   Query query = getSession().createQuery(queryStr.toString());	
 		   
-		   if(locationValue != null && locationValue.longValue() > 0){
-			   query.setParameter("locationValue", locationValue);
+		   if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+	 	        if(locationTypeId == 4l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 3l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 5l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 6l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }
+	 	    }
+		   if(year !=null && !year.trim().isEmpty()){
+	 			query.setParameter("year", Integer.parseInt(year));
 		   }
 		   if(userAccessLevelId != null && userAccessLevelId.longValue()  > 0){
 			   query.setParameter("userAccessLevelId", userAccessLevelId);
