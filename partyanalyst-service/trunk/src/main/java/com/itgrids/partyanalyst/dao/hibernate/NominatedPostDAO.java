@@ -2080,7 +2080,7 @@ return (Long) query.uniqueResult();
 				} else if (locationType == 4) {
 					sb.append(" and nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValue) ");
 				} else if (locationType == 5) {
-					sb.append(" and nominatedPost.nominatedPostMember.address.Tehsil.constituencyId in(:locationValue) ");
+					sb.append(" and nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValue) ");
 				} 
 	 }
 	 if(startDate != null && endDate != null){

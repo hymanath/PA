@@ -2495,7 +2495,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 				} else if (locationType == 4) {
 					sb.append(" and nominatedPostApplication.address.constituency.constituencyId in(:locationValue) ");
 				} else if (locationType == 5) {
-					sb.append(" and nominatedPostApplication.address.Tehsil.constituencyId in(:locationValue) ");
+					sb.append(" and nominatedPostApplication.address.tehsil.tehsilId in(:locationValue) ");
 				}
 		}
 		if(startDate != null && endDate != null){
