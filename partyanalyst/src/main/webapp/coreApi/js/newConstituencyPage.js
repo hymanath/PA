@@ -832,7 +832,7 @@ function getLocationWiseTourMembersComplainceDtls(){
 function getGovtSchemeWiseBenefitMembersCount(){
 $("#benefitsId").html(spinner);
 	jsObj={
-		locationType:"constituency",
+		locationType:4,
 		locationValue:232
 	}
 	 $.ajax({
@@ -875,7 +875,7 @@ $("#benefits1").html('');
 $("#benefits1").html(spinner);
 	var schemeId=id;
 	jsObj={
-		locationType:"constituency",
+		locationType:4,
 		locationValue:232,
 		govtSchemeId:schemeId
 	}
@@ -1249,6 +1249,7 @@ function getTotalAlertDetailsForConstituencyInfo(){
 			"alertTypeIdsStr" : [1],
 			"locationTypeId":4,
 			"year" :""
+
 		}
 	 $.ajax({
       type : "POST",
