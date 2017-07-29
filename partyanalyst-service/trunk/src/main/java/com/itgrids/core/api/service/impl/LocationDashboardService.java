@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +25,8 @@ import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
+import com.itgrids.partyanalyst.dao.ICensusDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
@@ -93,7 +96,24 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IBoardLevelDAO boardLevelDAO;
 	//Activity
 	private IActivityDAO activityDAO;
+	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
 	
+	public void setConstituencyCensusDetailsDAO(IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO) {
+		this.constituencyCensusDetailsDAO = constituencyCensusDetailsDAO;
+	}
+	public void setCensusDAO(ICensusDAO censusDAO) {
+		this.censusDAO = censusDAO;
+	}
+	private ICensusDAO censusDAO;
+	
+	public IConstituencyCensusDetailsDAO getConstituencyCensusDetailsDAO(){
+		return constituencyCensusDetailsDAO;
+		
+	}
+	public ICensusDAO getCensusDAO(){
+		return censusDAO;
+		
+	}
 	public IActivityDAO getActivityDAO() {
 		return activityDAO;
 	}
@@ -1272,7 +1292,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * Swadhin K Lenka
 	 */
 	
-	public List<KeyValueVO> getNominatedPostStatusWiseCount(Long constituencyId,String fromDateStr, String toDateStr){
+	public List<KeyValueVO> getNominatedPostStatusWiseCount(Long locationTypeId,List<Long> locationValuesList,String fromDateStr, String toDateStr,String year){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			
@@ -1282,7 +1302,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				startDate = sdf.parse(fromDateStr);
 				endDate = sdf.parse(toDateStr);
 			}
-			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostStatusWiseCount(constituencyId,startDate,endDate);
+			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostStatusWiseCount(locationTypeId, locationValuesList, startDate, endDate,year);
 			List<KeyValueVO> keyValueVOs = new ArrayList<KeyValueVO>();
 			KeyValueVO keyValueVO = null;
 			if(nominatedPostList != null && nominatedPostList.size() > 0){
@@ -1304,7 +1324,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * Swadhin K Lenka
 	 */
 	
-	public List<KeyValueVO> getNominatedPostApplicationStatusWiseCount(Long constituencyId,String fromDateStr, String toDateStr){
+	public List<KeyValueVO> getNominatedPostApplicationStatusWiseCount(Long locationTypeId,List<Long> locationValuesList,String fromDateStr,
+			String toDateStr,String year){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			
@@ -1314,7 +1335,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				startDate = sdf.parse(fromDateStr);
 				endDate = sdf.parse(toDateStr);
 			}
-			List<Object[]> nominatedPostApplicationList = nominatedPostApplicationDAO.getNominatedPostApplicationStatusWiseCount(constituencyId,startDate,endDate);
+			List<Object[]> nominatedPostApplicationList = nominatedPostApplicationDAO.getNominatedPostApplicationStatusWiseCount(locationTypeId,locationValuesList,startDate,endDate);
 			List<KeyValueVO> keyValueVOs = new CopyOnWriteArrayList<KeyValueVO>();
 			KeyValueVO keyValueVO = null;
 			if(nominatedPostApplicationList != null && nominatedPostApplicationList.size() > 0){
@@ -1926,11 +1947,31 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
 			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getGovtSchemeWiseBenefitMemberCount(locationType,locationValue);
-			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst);
+			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,"constituency",locationValue);
+			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst,censusPopList,"constituency");
 		} catch (Exception e) {
 			Log.error("Exception Occured at getGovtSchemeWiseBenefitMembersCount() in LocationDashboardService class",e);
 		}
 		return resultList;
+	}
+	
+	private List<Object[]> getCensusPopulation(List<Object[]> benefitMemberObjLst,String locationType, Long locationValue) {
+		
+		Set<Long> locationIdSet = new HashSet<Long>();
+		List<Object[]> censusPopList = null;
+		if(locationType == "constituency"){	
+			locationIdSet.add(locationValue);
+			censusPopList= constituencyCensusDetailsDAO.getTotalCensusPopulation(locationIdSet, 2011l);
+		}else if(locationType == "tehsil"){
+			if (benefitMemberObjLst != null && benefitMemberObjLst.size() > 0) {
+				for (Object[] param : benefitMemberObjLst) {
+					locationIdSet.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+				}
+			}
+			censusPopList= censusDAO.getTotalCensusPopulation(locationIdSet, 2011l);
+		}
+		return censusPopList;
+		
 	}
 	/**
 	  * @param String locationType
@@ -1944,24 +1985,42 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
 			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getMandalWiseBenefitMemberCountByGovtScheme(locationType,locationValue, govtSchemeId);
-			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst);
+			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,"tehsil",locationValue);
+			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst,censusPopList,"tehsil");
 		} catch (Exception e) {
 			Log.error("Exception Occured at getMandalWiseBenefitMembersCount() in LocationDashboardService class",e);
 		}
 		return resultList;
 	}
 
-	public List<BenefitCandidateVO> getGovtSchemeBenefitMemberDlstList(List<Object[]> objList) {
+	public List<BenefitCandidateVO> getGovtSchemeBenefitMemberDlstList(List<Object[]> objList, List<Object[]> censusPopList, String locationType) {
 		List<BenefitCandidateVO> returnList = new ArrayList<BenefitCandidateVO>(0);
 		try {
 			if (objList != null && objList.size() > 0) {
 				for (Object[] param : objList) {
 					BenefitCandidateVO vo = new BenefitCandidateVO();
-					vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					vo.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					returnList.add(vo);
+					for(Object[] censusParam : censusPopList){
+						if(locationType!= null && locationType.equalsIgnoreCase("constituency")){
+							vo.setTotalPopulation(commonMethodsUtilService.getLongValueForObject(censusParam[0]));
+							vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							vo.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+							returnList.add(vo);
+						}if(locationType.equalsIgnoreCase("tehsil")){
+							Long l2 = commonMethodsUtilService.getLongValueForObject(censusParam[1]);
+							if(commonMethodsUtilService.getLongValueForObject(param[0]).compareTo(l2)==0){
+								vo.setTotalPopulation(commonMethodsUtilService.getLongValueForObject(censusParam[0]));
+								vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+								vo.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+								returnList.add(vo);
+							}
+						}
+						
+					}
+					
 				}
+	
 			}
 		} catch (Exception e) {
 			Log.error("Exception Occured at getGovtSchemeBenefitMemberDlstList() in LocationDashboardService class",e);
