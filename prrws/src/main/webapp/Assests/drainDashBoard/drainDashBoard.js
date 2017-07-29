@@ -34,17 +34,17 @@ function onloadCalls(){
 		$(".tableMenu li:nth-child(1)").addClass("active");
 		$(".tableMenu li:nth-child(2)").show();
 		$("[overview-level]").show();
-		DefaultValuesSetMainBlock();
+		//DefaultValuesSetMainBlock();
 		$("#constituencyDistrictNames_chosen").show();
 		$("#mandalDistrictNames_chosen").show();
 		$("#mandalConstituencyNames_chosen").show();
-		getDrainsInfoStateWise(0,"district");
-		getAllDistricts("constituencyDistrictNames","DISTRICTS");
-		getAllDistricts("mandalDistrictNames","DISTRICTS");
+		//getDrainsInfoStateWise(0,"district");
+		//getAllDistricts("constituencyDistrictNames","DISTRICTS");
+		//getAllDistricts("mandalDistrictNames","DISTRICTS");
 		//District
-		getDrainsInfoLocationWise("district",'0','','0','',"districtView",0);
+		//getDrainsInfoLocationWise("district",'0','','0','',"districtView",0);
 		//constituency
-		getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",0);
+		//getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",0);
 		//Mandal
 		getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView",0);
 	}else if(globallevelId == 3){
@@ -802,4 +802,110 @@ function getAllDistricts(divId,levelName){
 			}
 			$("#"+divId).trigger('chosen:updated');
 		});
+	}
+	
+	//IVR
+	ivrResponseDatesView();
+	buildIvrTableView();
+	function ivrResponseDatesView(){
+		
+		var str='';
+		
+		str+='<div class="col-sm-12">';
+			str+='<div class="row m_top10">';
+				str+='<div class="col-sm-1" style="border-right:1px solid #000;">';
+					str+='<button class="btn btn-sm btn-success">OverAll</button>';
+				str+='</div>';
+				str+='<div class="col-sm-9">';
+					str+='<ul class="list-inline ivrDatesClr slider1">';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+						str+='<li><input type="checkbox"> 12 july 2017</li>';
+					str+='</ul>';
+				str+='</div>';
+				str+='<div class="col-sm-2 text-center" style="border-left:1px solid #000;">';
+					str+='<ul class="list-inline">';
+						str+='<li><input type="checkbox"></br><span style="color:#000;">COMPARISION</span></li>';
+						str+='<li><button class="btn btn-sm btn-success">Submit</button></li>';
+					str+='</ul>';
+				str+='</div>';
+			str+='</div>';
+			
+		str+='</div>';
+		
+		$("#ivrResponseDatesDivId").html(str);
+		$(".slider1").slick({
+			slides:'li',
+			infinite: false,
+			slidesToShow: 7,
+			slidesToScroll: 2,
+			variableWidth: true
+		})
+	}
+	$(document).on("click",".ivrDatesClr li",function(e){
+		$(".ivrDatesClr li").removeClass("activeDateCls");
+		$(this).addClass("activeDateCls");
+	});
+	function buildIvrTableView(){
+		var str='';
+			str+='<table class="table table-condensed">';
+				str+='<thead>';
+				str+='<tr>';
+					str+='<th>DISTRICT</th>';
+					str+='<th>TOTAL VILLAGES</th>';
+					str+='<th>GREEN</th>';
+					str+='<th>%</th>';
+					str+='<th>ORANGE</th>';
+					str+='<th>%</th>';
+					str+='<th>RED</th>';
+					str+='<th>%</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					str+='<tr>';
+						str+='<td>SRIKAKULAM</td>';
+						str+='<td>100</td>';
+						str+='<td>20</td>';
+						str+='<td>100</td>';
+						str+='<td>20</td>';
+						str+='<td>100</td>';
+						str+='<td>20</td>';
+						str+='<td>100</td>';
+						
+					str+='</tr>';
+					str+='<tr>';
+						str+='<td>SRIKAKULAM</td>';
+						str+='<td>100</td>';
+						str+='<td>20</td>';
+						str+='<td>100</td>';
+						str+='<td>20</td>';
+						str+='<td>100</td>';
+						str+='<td>20</td>';
+						str+='<td>100</td>';
+						
+					str+='</tr>';
+					str+='<tr>';
+						str+='<td>SRIKAKULAM</td>';
+						str+='<td>100</td>';
+						str+='<td>20</td>';
+						str+='<td>100</td>';
+						str+='<td>20</td>';
+						str+='<td>100</td>';
+						str+='<td>20</td>';
+						str+='<td>100</td>';
+						
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+			$("#ivrTableView").html(str);
 	}

@@ -34,6 +34,8 @@
 @achor_color:#337ab7;
 @dark_brown_color_New:#686868;
 @light_rose_color:#FCDDEF;
+@ivr_color:#E37A1F;
+@ivr_ash_color:#F2F2F2;
 .rounded-corners(@radius:5px)
 {
 	-webkit-border-radius:@radius;
@@ -1639,4 +1641,25 @@ header
 		}
 	}
 	
+}
+.ivrReponseStyle{
+	background-color:@white_color !important;
+	h4{
+		color:@black_color !important;
+	}
+	.ivrDatesClr{
+		li{
+			cursor:pointer;
+			padding:4px;
+			color:@black_color !important;
+		}
+	}
+}
+.activeDateCls{
+	border:1px solid #d3d3d3;
+	background-color:@ivr_color;
+	border-radius:10px;
+}
+.callerBKClr{
+	background-color:@ivr_ash_color;
 }

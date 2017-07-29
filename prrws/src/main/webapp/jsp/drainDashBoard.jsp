@@ -14,6 +14,8 @@
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/slickNew/slick/slick.less" type="text/less" rel="stylesheet"/>
+<link href="Assests/Plugins/slickNew/slick/slick-theme.less" type="text/less" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
 </head>
@@ -338,8 +340,9 @@
                         <div class="panel-heading">
 						<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                             <h4 class="panel-title text-capital">MANDAL LEVEL OVERVIEW</h4>
-                        </div>
+                        
 						</a>
+						</div>
 						<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
 							<div class="panel-body">
 								<div class="row">
@@ -368,6 +371,79 @@
 							</div>
 						</div>
                     </div>
+					<div class="panel panel-black panel-default">
+						<div class="panel-heading ivrReponseStyle" >
+							<div class="row">
+								<div class="col-sm-4">
+									<h4 class="text-capital">IVR RESPONSE OVERVIEW</h4>
+								</div>
+								<div class="col-sm-3 pull-right">
+									<select class="form-control chosen-select">
+										<option value="1">Select Question</option>
+										<option value="1">Select Question</option>
+										<option value="1">Select Question</option>
+									</select>
+								</div>
+							</div>
+							<div class="row">
+								<div id="ivrResponseDatesDivId"></div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<h4>CC Roads needs to be in kms</h4>
+								<div class="row m_top10">
+									<div class="col-sm-12">
+										<div class="col-sm-4">
+											<div class="media">
+											  <div class="media-left img_middle">
+												  <img class="media-object" src="Assests/icons/house_icon.png" alt="house_icon">
+											  </div>
+											  <div class="media-body">
+												<h5 class=""><b>TOTAL PANCHAYATS</b></h5>
+												<h5 class="m_top5 title_align"><b>526842</b></h5>
+											  </div>
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<h5 class=""><b>TOTAL PANCHAYATS</b></h5>
+											<h5 class="m_top5 title_align"><b>526842</b></h5>
+										</div>
+										<div class="col-sm-4">
+											<h5 class=""><b>TOTAL PANCHAYATS</b></h5>
+											<h5 class="m_top5 title_align"><b>526842</b></h5>
+										</div>
+									</div>
+								</div>
+								<div class="row m_top10">
+								<div class="col-sm-12 callerBKClr m_top10">
+									<div class="col-sm-4">
+										<div class="media">
+										  <div class="media-left img_middle">
+											  <img class="media-object" src="Assests/icons/house_icon.png" alt="house_icon">
+										  </div>
+										  <div class="media-body">
+											<h5 class="m_top10"><b>TOTAL PANCHAYATS</b></h5>
+											<h5 class="m_top5 title_align"><b>526842</b></h5>
+										  </div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<h5 class="m_top20 title_align"><b>526842</b></h5>
+									</div>
+									<div class="col-sm-4">
+										<h5 class="m_top20 title_align"><b>526842</b></h5>
+									</div>
+								</div>
+								</div>
+								<div class="row m_top10">
+								
+									<div class="col-sm-12">
+										<div id="ivrTableView"></div>
+									</div>
+								</div>
+								</div>
+						</div>
+					</div>
                 </div>
             </div>
         </div>
@@ -383,6 +459,7 @@
 <script src="Assests/Plugins/DateTime/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script src="Assests/Plugins/slickNew/slick/slick.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
 <script src="Assests/drainDashBoard/drainDashBoard.js" type="text/javascript"></script>
 </body>
