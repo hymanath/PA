@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IActivityMemberDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothInchargeCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeRoleConditionMappingDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeSerialNoRangeDAO;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.hibernate.BoothInchargeCommitteeDAO;
 import com.itgrids.partyanalyst.dto.BoothAddressVO;
 import com.itgrids.partyanalyst.dto.BoothInchargeDetailsVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -44,6 +46,7 @@ import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter;
 import com.itgrids.partyanalyst.model.BoothIncharge;
+import com.itgrids.partyanalyst.model.BoothInchargeCommittee;
 import com.itgrids.partyanalyst.model.BoothInchargeSerialNoRange;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -68,6 +71,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
+	private IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO;
 	private TransactionTemplate transactionTemplate = null;
 	
 	public IBoothInchargeSerialNoRangeDAO getBoothInchargeSerialNoRangeDAO() {
@@ -172,6 +176,10 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
+	}
+	public void setBoothInchargeCommitteeDAO(
+			IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO) {
+		this.boothInchargeCommitteeDAO = boothInchargeCommitteeDAO;
 	}
 
 	public UploadDataErrorMessageVO readVoterExcelDataAndValidate(File filePath,
@@ -1238,9 +1246,16 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 						}
 						status = "delete Successfully";
 						//updating startState and isConfirm Status of  booth.If all member is deleted 
-						Long boothAddedMembCount =  boothInchargeDAO.getBoothTotalAddedMember(boothId, boothInchargeEnrollementId);
+						Long boothAddedMembCount =  boothInchargeDAO.getBoothTotalAddedMember(inchargeDetails.getBoothInchargeRoleConditionMapping().getBoothInchargeCommittee().getBoothId(), boothInchargeEnrollementId);
 						if(boothAddedMembCount == null || boothAddedMembCount.longValue()==0l){
-							int updateCount = boothInchargeRoleConditionMappingDAO.updateBoothStarteDate(boothId, boothInchargeEnrollementId);
+							//int updateCount = boothInchargeRoleConditionMappingDAO.updateBoothStarteDate(inchargeDetails.getBoothInchargeRoleConditionMapping().getBoothInchargeCommittee().getBoothId(), boothInchargeEnrollementId);
+							BoothInchargeCommittee boothInchargeCommittee = boothInchargeCommitteeDAO.get(inchargeDetails.getBoothInchargeRoleConditionMapping().getBoothInchargeCommittee().getBoothInchargeCommitteeId());
+							if(boothInchargeCommittee != null){
+								boothInchargeCommittee.setStartDate(null);
+								boothInchargeCommittee.setIsConfirmed("N");
+								boothInchargeCommittee.setCompletedDate(null);
+								boothInchargeCommitteeDAO.save(boothInchargeCommittee);
+							}
 						}
 					} catch (Exception e){
 						status = "delete Failed";
