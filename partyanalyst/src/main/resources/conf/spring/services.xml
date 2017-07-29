@@ -622,6 +622,7 @@
 	    <property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"></property>
 	    <property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO"></property>
 	    <property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO"></property>
+	    <property name="transactionTemplate" ref="transactionTemplate"></property>
 	</bean>
 		
 	<bean name="problemUploadService" class="com.itgrids.partyanalyst.service.impl.ProblemUploadService" >	

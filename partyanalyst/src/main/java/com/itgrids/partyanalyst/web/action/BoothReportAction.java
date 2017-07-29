@@ -300,8 +300,10 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 			jObj = new JSONObject(getTask());
 			Long boothInchargeMappingId = jObj.getLong("boothInchargeMappingId");
 			Long boothInchargeId = jObj.getLong("boothInchargeId");
+			Long boothId = jObj.getLong("boothId");
+			Long boothInchargeEnrollementId = jObj.getLong("boothInchargeEnrollementId");
 			
-			task = boothDataValidationService.deleteRoleMemberDetails(boothInchargeMappingId,boothInchargeId,user.getRegistrationID());
+			task = boothDataValidationService.deleteRoleMemberDetails(boothInchargeMappingId,boothInchargeId,user.getRegistrationID(),boothId,boothInchargeEnrollementId);
 		}catch(Exception e){
 			LOG.error("Exception raised at deleteRoleMemberDetails() method of BoothReportAction", e);
 		}
