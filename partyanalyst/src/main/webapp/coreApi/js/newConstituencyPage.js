@@ -1192,7 +1192,7 @@ function getLocationWiseInsuranceStatusCount(){
 						];
 			id = 'insuranceId';
 		$("#"+id).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		highChartsDonut(id,data,true,'Insurance',200)
+		highChartsDonut(id,data,true,'Insurance',250)
 		}
 	});	
 }
@@ -1236,8 +1236,8 @@ function getLocationWiseGrivanceTrustStatusCounts(){
 			trustId = 'trustId';
 		$("#"+grivanceId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#"+trustId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		highChartsDonut(grivanceId,grivance,true,'Grievance',200)
-		highChartsDonut(trustId,trust,true,'Trust Education',200)
+		highChartsDonut(grivanceId,grivance,true,'Grievance',250)
+		highChartsDonut(trustId,trust,true,'Trust Education',250)
 		}
 	});	
 }
