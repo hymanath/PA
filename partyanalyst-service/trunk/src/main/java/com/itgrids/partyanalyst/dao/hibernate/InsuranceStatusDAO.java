@@ -1189,10 +1189,10 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 				.addScalar("typeOfIssue",Hibernate.STRING)
 				.addScalar("count",Hibernate.LONG);
 		if(locationTypeId!=null && locationTypeId.longValue()>0){
-			query.setParameter("locationValues", locationValues);
+			query.setParameterList("locationValues", locationValues);
 		}
 		if(year !=null && !year.trim().isEmpty()){
- 			query.setParameter("year", year);
+ 			query.setParameter("year", Integer.parseInt(year));
 		}
 		if(fromDate !=null && toDate !=null){
    		query.setDate("startDate", fromDate);
