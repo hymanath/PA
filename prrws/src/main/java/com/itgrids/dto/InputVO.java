@@ -73,6 +73,8 @@ public class InputVO implements Serializable {
 	private String location;
 	private String subLocation;
 	
+	private Long entityType;
+	private List<Long> questionsList;
 	
 	public String getLocationIdStr() {
 		return locationIdStr;
@@ -446,6 +448,18 @@ public class InputVO implements Serializable {
 	}
 	public void setSubLocation(String subLocation) {
 		this.subLocation = subLocation;
+	}
+	public Long getEntityType() {
+		return entityType;
+	}
+	public void setEntityType(Long entityType) {
+		this.entityType = entityType;
+	}
+	public List<Long> getQuestionsList() {
+		return questionsList;
+	}
+	public void setQuestionsList(List<Long> questionsList) {
+		this.questionsList = questionsList;
 	}
     	
 	

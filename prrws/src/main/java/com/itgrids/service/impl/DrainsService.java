@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dto.DrainsVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.KeyValueVO;
+import com.itgrids.dto.RwsClickVO;
+import com.itgrids.dto.StatusVO;
 import com.itgrids.service.IDrainsService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
@@ -188,5 +191,176 @@ public class DrainsService implements IDrainsService {
 	    value = value * factor;
 	    long tmp = Math.round(value);
 	    return (double) tmp / factor;
+	}
+	
+	public List<StatusVO> getDrainsIvrStatusCounts(InputVO vo) {
+		List<StatusVO> voList = new ArrayList<StatusVO>(0);
+		try {
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getDrainsIvrStatusCounts");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getDrainsIvrStatusCounts");
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+				String output = response.getEntity(String.class);
+				
+				
+				if(vo.getQuestionsList() !=null && vo.getQuestionsList().size()>1){
+					voList = setIvrComparisonDetailsToList(output,voList);
+				}else{
+					if(output != null && !output.isEmpty()){
+						JSONArray finalArray = new JSONArray(output);//Type Array
+		 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    			for(int i=0;i<finalArray.length();i++){
+		 	    				StatusVO statusVo = new StatusVO();
+		 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
+		 	    				
+		 	    				statusVo.setId(jobj.getLong("id"));
+		 	    				statusVo.setName(jobj.getString("name"));
+		 	    				
+		 	    				JSONArray subListArr  = jobj.getJSONArray("subList1"); // Color Array
+		 	    				
+		 	    				if(subListArr!=null && subListArr.length()>0){
+		 		 	    			for(int j=0;j<subListArr.length();j++){
+		 		 	    				
+		 		 	    				JSONObject colorJobj = (JSONObject)subListArr.get(j);
+		 		 	    				 StatusVO colorVO = new StatusVO();
+		 		 	    				colorVO.setName(colorJobj.getString("name"));
+		 		 	    				colorVO.setCount(colorJobj.getLong("count"));
+		 		 	    				colorVO.setPercentage(colorJobj.getDouble("percentage"));
+		 		 	    				statusVo.getStatusList().add(colorVO);
+		 		 	    				
+		 		 	    			}
+		 		 	    		}	 	    				
+		 	    				voList.add(statusVo);
+		 	    			}
+		 	    		}
+		 	    	}
+				}
+				
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDrainsIvrStatusCounts - DrainsService service", e);
+		}
+		return voList;
+	}
+	
+	public List<StatusVO> setIvrComparisonDetailsToList(String output,List<StatusVO> voList){
+		try {
+			
+			if(output != null && !output.isEmpty()){
+				JSONArray finalArray = new JSONArray(output);//Type Array
+ 	    		if(finalArray!=null && finalArray.length()>0){
+ 	    			for(int i=0;i<finalArray.length();i++){
+ 	    				StatusVO statusVo = new StatusVO();
+ 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
+ 	    				
+ 	    				statusVo.setId(jobj.getLong("id"));
+ 	    				statusVo.setName(jobj.getString("name"));
+ 	    				
+ 	    				JSONArray datesArr  = jobj.getJSONArray("subList1"); // Color Array
+ 	    				
+ 	    				if(datesArr !=null && datesArr.length()>0){
+ 	    					for (int j=0;j<datesArr.length();j++) {
+ 	    						
+ 	    						JSONObject datesObj = (JSONObject)datesArr.get(j);
+ 	    						StatusVO dateVo = new StatusVO();
+ 	    						dateVo.setName(datesObj.getString("name"));
+ 	    						
+ 	    						JSONArray subListArr  = datesObj.getJSONArray("subList1");
+ 	    						if(subListArr!=null && subListArr.length()>0){
+ 	    		 	    			for(int k=0;k<subListArr.length();k++){
+ 	    		 	    				
+ 	    		 	    				JSONObject colorJobj = (JSONObject)subListArr.get(k);
+ 	    		 	    				 StatusVO colorVO = new StatusVO();
+ 	    		 	    				colorVO.setName(colorJobj.getString("name"));
+ 	    		 	    				colorVO.setCount(colorJobj.getLong("count"));
+ 	    		 	    				colorVO.setPercentage(colorJobj.getDouble("percentage"));
+ 	    		 	    				dateVo.getStatusList().add(colorVO); 	    		 	    				
+ 	    		 	    			}
+ 	    		 	    		}	 	    				
+ 	    	    				//voList.add(statusVo);
+ 	    						statusVo.getStatusList().add(dateVo);
+							}
+ 	    					
+ 	    				}
+ 	    				voList.add(statusVo);
+ 	    			}
+ 	    		}
+ 	    	}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at setIvrComparisonDetailsToList - DrainsService service", e);
+		}
+		return voList;
+	}
+	
+	public List<StatusVO> getOverAllIvrDetails(InputVO vo){
+		List<StatusVO> finalList = new ArrayList<StatusVO>(0);
+		try {
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getOverAllIvrDetails");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getOverAllIvrDetails");
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+				String output = response.getEntity(String.class);
+					if(output != null && !output.isEmpty()){
+						JSONArray finalArray = new JSONArray(output);//Type Array
+		 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    			JSONObject jobjOne = (JSONObject)finalArray.get(0);
+		 	    			
+		 	    			Long total = jobjOne.getLong("categoryCount");
+		 	    			for(int i=0;i<finalArray.length();i++){
+		 	    				StatusVO statusVo = new StatusVO();		 	    				
+		 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
+		 	    				statusVo.setId(jobj.getLong("id"));
+		 	    				statusVo.setName(jobj.getString("name"));
+		 	    				statusVo.setCount(jobj.getLong("count"));
+		 	    				statusVo.setPercentage(jobj.getDouble("percentage"));		 		 	    		    				
+ 		 	    				finalList.add(statusVo);
+		 	    			}
+		 	    			finalList.get(0).setTotal(total);
+		 	    	}
+				}
+				
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getOverAllIvrDetails - DrainsService service", e);
+		}
+		return finalList;
+	}
+	public List<KeyValueVO> getIvrSurveyDates(InputVO inputVo){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>(0);
+		try {
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getIvrSurveyDates");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getIvrSurveyDates");
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVo);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	     }else{
+				String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					JSONArray finalArray = new JSONArray(output);//Type Array
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				KeyValueVO vo = new KeyValueVO();
+	 	    				JSONObject jobj = (JSONObject)finalArray.get(i);	 	    				
+	 	    				vo.setValue(jobj.getString("name"));
+	 	    				finalList.add(vo);
+	 	    			}
+	 	    		}
+				}
+	 	     }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getIvrSurveyDates - DrainsService service", e);
+		}
+		return finalList;
 	}
 }
