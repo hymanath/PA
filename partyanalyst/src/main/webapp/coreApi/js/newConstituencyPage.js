@@ -9,7 +9,6 @@ function onLoadAjaxCalls()
 	getLocationWiseInsuranceStatusCount();
 	getLocationWiseGrivanceTrustStatusCounts();
 	getGovtSchemeWiseBenefitMembersCount();
-	//getMandalWiseBenefitMembersCount(1);
 	getLocationWiseTourMembersComplainceDtls();
 	getCasteGroupNAgeWiseVoterNCadreCounts();
 	getActivityStatusList();
@@ -36,8 +35,6 @@ function onLoadAjaxCalls()
 	// getLocationTypeWiseCadreCount();
 	// getAgeRangeGenerAndCasteGroupByCadreCount();
 	//Benefit
-	//getGovtSchemeWiseBenefitMembersCount();
-	//getMandalWiseBenefitMembersCount();
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
 	getNominatedPostStatusWiseCount();
@@ -76,12 +73,13 @@ function highChartsDonut(id,data,legend,title,height)
 			itemStyle: {
 				fontWeight: 'normal',
 				'font-family':'roboto',
-				'font-size':'13px'
+				'font-size':'16px'
             },
 			enabled: true,
             layout: 'vertical',
             align: 'right',
             verticalAlign: 'middle',
+			backgroundColor:'#e9f6e8',
 			useHTML: true,
 			
 			labelFormatter: function() {
@@ -852,7 +850,7 @@ $("#benefitsId").html(spinner);
 				}
 			str+='</select>';
 			str+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
-				getMandalWiseBenefitMembersCount(result[0].id);
+				getMandalWiseBenefitMembersCount(result[0].id,result[0].name);
 				for(var i in result){
 				
 				if(i==0)
@@ -869,9 +867,10 @@ $("#benefitsId").html(spinner);
 }
 $(document).on("click",".tabClick",function(){
 	var tab_id = $(this).attr('id');
-	getMandalWiseBenefitMembersCount(tab_id);	
+	var name = $(this).attr('aria-controls');
+	getMandalWiseBenefitMembersCount(tab_id,name);	
 });
-function getMandalWiseBenefitMembersCount(id){
+function getMandalWiseBenefitMembersCount(id, name){
 $("#benefits1").html('');
 $("#benefits1").html(spinner);
 	var schemeId=id;
@@ -880,42 +879,56 @@ $("#benefits1").html(spinner);
 		locationValue:232,
 		govtSchemeId:schemeId
 	}
-	 $.ajax({
+	$.ajax({
       type : "POST",
       url : "getMandalWiseBenefitMembersCountAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	var str= '';
-	if(result!= null){
-		str+='<div class="row"><div class="col-md-6 col-xs-12 col-sm-6">';
-				str+='<div id="benefitsGraph" style="height:200px"></div></div>';
-				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
-					str+='<table class="table table-noborder">';
-					str+='<thead class="text-capitalize bg-E9">';
-					str+='<th></th>';
-					str+='<th>Total</th>';
-					//str+='<th>%</th></thead>';							
-					str+='<tbody class="text-capitalize">';	
+		var mainMandal1=[];
+		if(result!= null){
+			var totalBenfitedCount =0;
+			var totalPoPulation =0;
 			for (var i in result){
-				str+='<tr>';
-				str+='<td><span class="chart-legend-color"></span>benefited</td>'
-				str+='<td>'+result[i].totalCount+'</td>';
-				str+='</tr> </tbody></table></div>';
+				totalBenfitedCount=totalBenfitedCount+result[i].totalCount;
+				totalPoPulation=totalPoPulation+result[i].totalPopulation;
 			}
+			/* str+='<div class="row"><div class="col-md-6 col-xs-12 col-sm-6">';
+			//str+='<div id="benefitsGraph"></div></div>';
+			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+			str+='<table class="table table-noborder">';
+			str+='<thead class="text-capitalize bg-E9">';
+			str+='<th></th>';
+			str+='<th>Total</th>';
+			//str+='<th>%</th></thead>';							
+			str+='<tbody class="text-capitalize">';	
+			
+			str+='<tr>';
+			str+='<td><span class="chart-legend-color"></span>TotalPopulation</td>'
+			str+='<td>'+totalPoPulation+'</td></tr> ';
+			str+='<tr>';
+			str+='<td><span class="chart-legend-color"></span>benefited</td>'
+			str+='<td>'+totalBenfitedCount+'</td>';
+			str+='</tr></tbody></table></div>';  */
 			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 			str+='<table class="table table-noborder">';
 			str+='<thead class="text-capitalize bg-E9">';
 			str+='<th>mandal name</th>';
-					//<th>population</th><th>eligible</th><th>non-eligible benefited</th>
+			//<th>population</th><th>eligible</th><th>non-eligible benefited</th>
 			str+='<th>benefited</th></thead><tbody class="text-capitalize">'
 			for (var i in result){
 				str+='<tr>';
 				str+='<td>'+result[i].name+'</td>';
 				str+='<td>'+result[i].totalCount+'</td>';
-				str+='</tr></tbody></table></div></div>';
+				str+='</tr>';
 			}
+			str+='</tbody></table></div></div>';
 		}
+		mainMandal1=[{name:'Population',y:totalPoPulation,color:'#fc8db7'},
+			{name:'Benfited',y:totalBenfitedCount,color:'#27b720'}];
+		$("#"+'benefitsGraph').html();
+			highChartsDonut('benefitsGraph',mainMandal1,true,name,200)
 		$("#benefits1").html(str);
 	});	
 	
@@ -1033,30 +1046,30 @@ function getLocationWiseCommitteesCount(){
 			mainMandal=[
 				{name:'Completed',y:result['mainMandalCompletePer'],color:'#eda809'},
 				{name:'Started',y:result['mainMandalStartPer'],color:'#862d59'},
-				{name:'NotStarted',y:mandalNotStartedPer,color:'#e3e6ed'}];	
+				{name:'NotStarted',y:mandalNotStartedPer,color:'#c3c6c3'}];	
 			mainVillage=[{name:'Completed',y:result['mainVillageCompletePer'],color:'#eda809'},
 					{name:'Started',y:result['mainVillageStartPer'],color:'#862d59'},
-					{name:'NotStarted',y:mainVlgNotStartedPer,color:'#e3e6ed'}];	
+					{name:'NotStarted',y:mainVlgNotStartedPer,color:'#c3c6c3'}];	
 			affMandal = [{name:'Completed',y:result['affMandalCompletePer'],color:'#eda809'},
 					{name:'Started',y:result['affMandalStartPer'],color:'#862d59'},
-					{name:'NotStarted',y:affltdMandalNotStartedPer,color:'#e3e6ed'}];
+					{name:'NotStarted',y:affltdMandalNotStartedPer,color:'#c3c6c3'}];
 		    affVillage = [{name:'Completed',y:result['affVillageCompletePer'],color:'#eda809'},
 					{name:'Started',y:result['affVillageStartPer'],color:'#862d59'},
-					{name:'NotStarted',y:affltdVlgNotStartedPer,color:'#e3e6ed'}];
+					{name:'NotStarted',y:affltdVlgNotStartedPer,color:'#c3c6c3'}];
 		mainMandalId = 'mandalLevelId';
 		mainVillageId = 'villageLevelId';
 		affMandalId = 'affMandalLevelId';
 		affVillageId = 'affVillageLevelId';
 		
-	$("#"+mainMandalId).html();
-	highChartsDonut(mainMandalId,mainMandal,true,'mandal/town level',200)
-	$("#"+mainVillageId).html();
-	highChartsDonut(mainVillageId,mainVillage,true,'vilalge/ward level',200)
-	$("#"+affMandalId).html();
-		highChartsDonut(affMandalId,affMandal,true,'mandal/town level',200)
-		$("#"+affVillageId).html();
-		highChartsDonut(affVillageId,affVillage,true,'vilalge/ward level',200)	
-			$("#committees").append(str);
+		$("#"+mainMandalId).html();
+		highChartsDonut(mainMandalId,mainMandal,true,'mandal/town level',200)
+		$("#"+mainVillageId).html();
+		highChartsDonut(mainVillageId,mainVillage,true,'vilalge/ward level',200)
+		$("#"+affMandalId).html();
+			highChartsDonut(affMandalId,affMandal,true,'mandal/town level',200)
+			$("#"+affVillageId).html();
+			highChartsDonut(affVillageId,affVillage,true,'vilalge/ward level',200)	
+				$("#committees").append(str);
 		}
 		 
 	});	
@@ -1230,10 +1243,16 @@ function getTotalAlertDetailsForConstituencyInfo(){
 	var jsObj={
 			"fromDateStr" : "",
 			"toDateStr":"",
+<<<<<<< .mine
+			"constituencyId" : 232,
+			"alertTypeIdsStr" : [1]
+			
+=======
 			"locationValuesArr" : [232],
 			"alertTypeIdsStr" : [1],
 			"locationTypeId":4,
 			"year" :""
+>>>>>>> .r45380
 		}
 	 $.ajax({
       type : "POST",
@@ -1478,9 +1497,11 @@ function getActivityStatusList(){
 }
 function getNominatedPostStatusWiseCount(){
 	var jsObj={
+			"year":"",
 			"fromDateStr" : "",
 			"toDateStr":"",
-			"constituencyId":232
+			"locationTypeId":4,
+			"locationValues":[232]
 		}
 	 $.ajax({
       type : "POST",
@@ -1576,9 +1597,11 @@ function getNominatedPostStatusWiseCount(){
 }
 function getNominatedPostApplicationDetails(){
 	var jsObj={
+			"year":"",
 			"fromDateStr" : "",
 			"toDateStr":"",
-			"constituencyId":232
+			"locationTypeId":4,
+			"locationValues":[232]
 		}
 	 $.ajax({
       type : "POST",
