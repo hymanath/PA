@@ -108,7 +108,57 @@ public class NregsDataVO implements Serializable{
 	private String amountPaidTransco;
 	private String borewellenergisation;
 	
+	private String achmtGT0;
+	private String achmtLT0;
+	private String balance;
+	private String area;
+	private String gross;
+	private String stroageCap;
+	private String balanceRunOff;
 	
+	
+	public String getAchmtGT0() {
+		return achmtGT0;
+	}
+	public void setAchmtGT0(String achmtGT0) {
+		this.achmtGT0 = achmtGT0;
+	}
+	public String getAchmtLT0() {
+		return achmtLT0;
+	}
+	public void setAchmtLT0(String achmtLT0) {
+		this.achmtLT0 = achmtLT0;
+	}
+	public String getBalance() {
+		return balance;
+	}
+	public void setBalance(String balance) {
+		this.balance = balance;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	public String getGross() {
+		return gross;
+	}
+	public void setGross(String gross) {
+		this.gross = gross;
+	}
+	public String getStroageCap() {
+		return stroageCap;
+	}
+	public void setStroageCap(String stroageCap) {
+		this.stroageCap = stroageCap;
+	}
+	public String getBalanceRunOff() {
+		return balanceRunOff;
+	}
+	public void setBalanceRunOff(String balanceRunOff) {
+		this.balanceRunOff = balanceRunOff;
+	}
 	public Long getBorewellsDrilled() {
 		return borewellsDrilled;
 	}

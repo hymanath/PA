@@ -383,4 +383,27 @@ public class NregsDashboardController {
 		return resultList;
 	}
 	
+	@PostMapping("/getNregsProjectsIWMPAbstract")
+	public @ResponseBody List<NregsProjectsVO> getNregsProjectsIWMPAbstract(@RequestBody InputVO vo){
+		List<NregsProjectsVO> projectVOList = null;
+		try {
+			projectVOList = nregsTcsService.getNregsProjectsIWMPAbstract(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregsProjectsIWMPAbstract - NREGSController controller", e);
+		}
+		return projectVOList;
+	}
+	
+	@PostMapping("/getLocationWiseWaterBudgetDetails")
+	public @ResponseBody List<NregsDataVO> getLocationWiseWaterBudgetDetails(@RequestBody InputVO vo){
+		List<NregsDataVO> projectVOList = null;
+		try {
+			projectVOList = nregsTcsService.getLocationWiseWaterBudgetDetails(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseWaterBudgetDetails - NREGSController controller", e);
+		}
+		return projectVOList;
+	}
 }

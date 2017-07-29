@@ -141,10 +141,14 @@ $(document).on("click",".selectionMenuSubmitIdNewCls",function(){
 			overViewIdsArr.push(checkboxId);
 		}
 	});
-	buildNREGSProjectsOverview(overViewArr,'');
+	
 	var locId = $("#selectedName").attr("attr_id");
 	var levelId = $("#selectedName").attr("attr_levelid");
-	projectData(levelId,locId);
+	setTimeout(function(){
+		buildNREGSProjectsOverview(overViewArr,'',locId,levelId);
+		projectData(levelId,locId);
+	},400)
+	
 });
 /* Menu Start*/
 $(".multi-level-selection-menu").hide();
@@ -997,12 +1001,12 @@ function projectData(levelId,locId)
 				{
 					collapse+='<div class="panel-group" id="accordion'+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
 						collapse+='<div class="panel panel-default panel-black">';
-							collapse+='<div class="panel-heading" role="tab" id="heading'+overViewArr[i].name+''+dataArr[i]+'">';
+							collapse+='<div class="panel-heading" role="tab" id="heading'+dataArr[i]+'">';
 								if(i == 0)
 								{
-									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-divId="'+overViewArr[i].name+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+dataArr[i]+'" href="#collapse'+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+dataArr[i]+'">';
+									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+dataArr[i]+'" href="#collapse'+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+dataArr[i]+'">';
 								}else{
-									collapse+='<a role="button" collapse-click="'+dataArr[i]+'" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-divId="'+overViewArr[i].name+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+dataArr[i]+'" href="#collapse'+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+dataArr[i]+'">';
+									collapse+='<a role="button" collapse-click="'+dataArr[i]+'" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+dataArr[i]+'" href="#collapse'+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+dataArr[i]+'">';
 								}
 									collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level - consolidated overview</h4>';
 								collapse+='</a>';
