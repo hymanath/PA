@@ -480,10 +480,10 @@
 		{{#each this}}
 		<tr>
 			<td>{{electionYear}}</td>
-			<td>{{candidateResultsVO.partyShortName}}</td>
+			<td><img src="images/party_flags/{{candidateResultsVO.partyShortName}}.png"></td>
 			<td>{{candidateResultsVO.candidateName}}</td>
 			<td>{{candidateResultsVO.votesEarned}}</td>
-			<td>{{candidateOppositionList.0.partyShortName}} </td>
+			<td><img src="images/party_flags/{{candidateOppositionList.0.partyShortName}}.PNG"></td>
 			<td>{{candidateOppositionList.0.candidateName}}</td>
 		</tr>
 		{{/each}}
