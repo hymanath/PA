@@ -15,6 +15,7 @@ public class BenefitCandidateVO {
 	private String benefitName="";
 	private Long amount;
 	private Long totalCount=0l;
+	private Long totalPopulation;
 	
 	
 	public Long getId() {
@@ -101,6 +102,12 @@ public class BenefitCandidateVO {
 	}
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
+	}
+	public Long getTotalPopulation() {
+		return totalPopulation;
+	}
+	public void setTotalPopulation(Long totalPopulation) {
+		this.totalPopulation = totalPopulation;
 	}
 	
 }
