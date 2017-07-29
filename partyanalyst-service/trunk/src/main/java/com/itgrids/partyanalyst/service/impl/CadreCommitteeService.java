@@ -2316,7 +2316,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						committeeVO.setToYear(tdpCadre.getToYear());
 						committeeVO.setYear(tdpCadre.getYear());
 						committeeVO.setEnrollmentYears(tdpCadre.getEnrollmentYears());
-						committeeVO.setVoterId(tdpCadre.getVoterId());
+						committeeVO.setCadreVoterId(tdpCadre.getVoterId());
 						cadreCommitteeList.add(committeeVO);
 					}
 					if(maxIndex != 0)
@@ -22338,11 +22338,11 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			
 			if(committeevo != null && commonMethodsUtilService.isListOrSetValid(committeevo.getPreviousRoles())){
 				for (CadreCommitteeVO vo: committeevo.getPreviousRoles()){
-					if(voterSerialNoMap.keySet().contains(vo.getVoterId())){
+					if(voterSerialNoMap.keySet().contains(vo.getCadreVoterId())){
 						tdpCadreId = vo.getTdpCadreId();
 						tdpCadreIds.add(tdpCadreId);
 						vo.setType("Not Added");
-						vo.setSerialNo(voterSerialNoMap.get(vo.getVoterId()).toString());
+						vo.setSerialNo(voterSerialNoMap.get(vo.getCadreVoterId()).toString());
 						cadreMap.put(vo.getTdpCadreId(), vo);
 					}
 				}
@@ -22368,7 +22368,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 							 }else{
 								 vo.setTehsil(commonMethodsUtilService.getStringValueForObject(Obj[4]));
 							 }
-							 vo.setSerialNo(voterSerialNoMap.get(vo.getVoterId()).toString());
+							 vo.setSerialNo(voterSerialNoMap.get(vo.getCadreVoterId()).toString());
 						}
 					}
 				}
