@@ -5314,7 +5314,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 
 	 public List<AlertOverviewVO> getLevelWiseMeetingStatusCounts(String fromDate, String toDate, Long locationId,Long locationValue){
 		 try{
-			 return locationDashboardService.getLevelWiseMeetingStatusCounts(fromDate, toDate, locationId, locationValue);
+			 //return locationDashboardService.getLevelWiseMeetingStatusCounts(fromDate, toDate, locationId, locationValue);
 		 }catch(Exception e){
 			 log.error("Exception raised at getLevelWiseMeetingStatusCounts", e);
 		 }

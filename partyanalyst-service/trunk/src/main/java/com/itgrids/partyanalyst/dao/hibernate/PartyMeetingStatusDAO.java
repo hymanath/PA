@@ -1,4 +1,4 @@
-package com.itgrids.partyanalyst.dao.hibernate;
+ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
@@ -867,28 +867,49 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 	   return query.list();
    }
    
-	public List<Object[]> getLevelWiseMeetingStatusCount(Date fromDate, Date toDate, Long locationId,Long locationValue) {
+	public List<Object[]> getLevelWiseMeetingStatusCount(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year) {
 		StringBuilder sb = new StringBuilder();
 		//0-partyMeetingLevelId,1-LevelName,2-meeting Status,3-Meeting Count
 		sb.append("select model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.partyMeetingLevel.level ,"
 				+ "model.mettingStatus,count(distinct model.partyMeetingId) "
 				+ " from PartyMeetingStatus model where "
 				+ "  model.partyMeeting.isActive = 'Y' ");
-		if(locationId!=null && locationId==3l){
-			sb.append(" and model.partyMeeting.meetingAddress.district.districtId=:locationValue");
-		}else if(locationId!=null && locationId==4l){
-			sb.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId=:locationValue");
-		}
+		
+		
+		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
+ 	        if(locationTypeId == 4l){
+ 	        	sb.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId in(:locationValues) ");
+ 	        }else if(locationTypeId == 3l){
+ 	        	sb.append(" and model.partyMeeting.meetingAddress.district.districtId in(:locationValues) ");
+ 	        }else if(locationTypeId == 5l){
+ 	        	sb.append(" and model.partyMeeting.meetingAddress.tehsil.tehsilId in(:locationValues) ");
+ 	        }else if(locationTypeId == 6l){
+ 	        	sb.append(" and model.partyMeeting.meetingAddress.panchayat.panchayatId in(:locationValues) ");
+ 	        }
+ 	    }
+		if(year != null && !year.trim().isEmpty()){
+			sb.append(" and year(model.insertedTime) =:year ");   
+ 	    }
+		
 		if(fromDate !=null && toDate !=null){
    		sb.append(" and (date(model.startDate) between :startDate and  :endDate )");
    	}
 		sb.append(" group by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.mettingStatus ");
 		Query query = getSession().createQuery(sb.toString());
-		if(locationId!=null && locationId==3l){
-			query.setParameter("locationValue", locationValue);
-		}else if(locationId!=0 && locationId==4l){
-			query.setParameter("locationValue", locationValue);
-		}
+		if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+ 	        if(locationTypeId == 4l){
+ 	        	query.setParameterList("locationValues", locationValues);
+ 	        }else if(locationTypeId == 3l){
+ 	        	query.setParameterList("locationValues", locationValues);
+ 	        }else if(locationTypeId == 5l){
+ 	        	query.setParameterList("locationValues", locationValues);
+ 	        }else if(locationTypeId == 6l){
+ 	        	query.setParameterList("locationValues", locationValues);
+ 	        }
+ 	    }
+		if(year !=null && !year.trim().isEmpty()){
+ 			query.setParameter("year", year);
+ 	    }
 		if(fromDate !=null && toDate !=null){
    		query.setDate("startDate", fromDate);
    		query.setDate("endDate", toDate);

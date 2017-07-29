@@ -1105,7 +1105,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	 }
 
 	
-	public List<Object[]> getConstituencyWiseInsuranceStatusCounts(Date fromDate, Date toDate, Long locationId,Long locationValue) {
+	public List<Object[]> getConstituencyWiseInsuranceStatusCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbm = new StringBuilder();
 		StringBuilder sbe = new StringBuilder();
@@ -1119,18 +1119,21 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 				+ " CM.delete_status IS NULL AND "
 				+ " (CM.Subject IS NOT NULL OR CM.Subject != '')  ");
 		sbg.append(" GROUP BY ");
-		if(locationId!=null && locationId==3l && locationValue.longValue()>0 && locationValue!=null){
+		if(locationTypeId!=null && locationTypeId==3l && locationValues!=null && locationValues.size() > 0){
 			sb.append(" D.district_id as typeId,D.district_name as typeName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count");
-			sbe.append(" AND CM.district_id=:locationValue");
+			sbe.append(" AND CM.district_id in(:locationValues)");
 			sbg.append(" D.district_id ");
-		}else if(locationId!=null && locationId==4l && locationValue.longValue()>0 && locationValue!=null){
+		}else if(locationTypeId!=null && locationTypeId==4l && locationValues!=null && locationValues.size() > 0){
 			sb.append(" C.constituency_id as typeId,C.name as typeName,GIS.status as status,GIS.grievance_insurance_status_id as statusId,COUNT(CM.Complaint_id) as count ");
-			sbe.append(" AND CM.assembly_id=:locationValue");
+			sbe.append(" AND CM.assembly_id in(:locationValues)");
 			sbg.append(" C.constituency_id");
 		}
 		if(fromDate !=null && toDate !=null){
 	   		sb.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate )");
 	   	}
+		if(year != null && !year.trim().isEmpty()){
+			sb.append(" and year(CM.Raised_Date) =:year ");   
+ 	    }
 		sbg.append("  ,GIS.grievance_insurance_status_id; ");
 		sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
 		Query query = getSession().createSQLQuery(sb.toString())
@@ -1139,8 +1142,11 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 				.addScalar("status",Hibernate.STRING)
 				.addScalar("statusId",Hibernate.LONG)
 				.addScalar("count",Hibernate.LONG);
-		if(locationId!=null && locationId.longValue()>0){
-			query.setParameter("locationValue", locationValue);
+		if(locationTypeId!=null && locationTypeId.longValue()>0){
+			query.setParameterList("locationValues",locationValues);
+		}
+		if(year !=null && !year.trim().isEmpty()){
+ 			query.setParameter("year", year);
 		}
 		if(fromDate !=null && toDate !=null){
    		query.setDate("startDate", fromDate);
@@ -1150,7 +1156,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	}
 
 	
-	public List<Object[]> getGrivenceTrustStatusCounts(Date fromDate, Date toDate, Long locationId,Long locationValue) {
+	public List<Object[]> getGrivenceTrustStatusCounts(Date fromDate, Date toDate, Long locationTypeId,List<Long> locationValues,String year) {
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbm = new StringBuilder();
 		StringBuilder sbe = new StringBuilder();
@@ -1160,18 +1166,21 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		sbe.append(" WHERE  CM.type_of_issue IN('Govt','Party','Welfare','Trust Education Support') and "
 				+ " CM.delete_status IS NULL AND (CM.Subject IS NOT NULL OR CM.Subject != '') ");
 		sbg.append(" GROUP BY ");
-		if(locationId!=null && locationId==3l  && locationId.longValue()>0 && locationValue!=null){
+		if(locationTypeId!=null && locationTypeId==3l  && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
 			sb.append(" D.district_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count ");
-			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.district_id=:locationValue");
+			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.district_id in(:locationValues)");
 			sbg.append(" D.district_id ");
-		}else if(locationId!=null && locationId==4l && locationValue.longValue()>0 && locationValue!=null){
+		}else if(locationTypeId!=null && locationTypeId==4l && locationTypeId.longValue()>0 && locationValues!=null && locationValues.size() > 0){
 			sb.append( " C.constituency_id as typeId,CM.Completed_Status as status,CM.type_of_issue as typeOfIssue,COUNT(CM.Complaint_id) as count " );
-			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.assembly_id=:locationValue");
+			sbe.append(" AND CM.district_id = D.district_id AND CM.assembly_id = C.constituency_id AND CM.assembly_id in(:locationValues)");
 			sbg.append(" C.constituency_id ");
 		}
 		if(fromDate !=null && toDate !=null){
 	   		sbe.append(" AND (date(CM.Raised_Date) between :startDate and  :endDate ) ");
 	   	}
+		if(year != null && !year.trim().isEmpty()){
+			sbe.append(" and year(CM.Raised_Date) =:year ");   
+ 	    }
 		sbg.append("  ,CM.type_of_issue,CM.Completed_Status; ");
 		sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
 		Query query = getSession().createSQLQuery(sb.toString())
@@ -1179,8 +1188,11 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 				.addScalar("status",Hibernate.STRING)
 				.addScalar("typeOfIssue",Hibernate.STRING)
 				.addScalar("count",Hibernate.LONG);
-		if(locationId!=null && locationId.longValue()>0){
-			query.setParameter("locationValue", locationValue);
+		if(locationTypeId!=null && locationTypeId.longValue()>0){
+			query.setParameter("locationValues", locationValues);
+		}
+		if(year !=null && !year.trim().isEmpty()){
+ 			query.setParameter("year", year);
 		}
 		if(fromDate !=null && toDate !=null){
    		query.setDate("startDate", fromDate);
