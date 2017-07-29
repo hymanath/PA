@@ -16,7 +16,7 @@ function onLoadAjaxCalls()
 	getAllPartiesAllElectionResultsChart(); //Assembly Election Detail
 	getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
 	getDetailedElectionInformaction()//get detailed election information
-	/*getCountsForConstituency(); //Assembly election details
+	/*getCountsForConstituency(); //Assembly election Cadre
 	
 	getPrintMediaCountsForConstituencyPage(); //electronic media
 	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(); //problems
@@ -32,7 +32,7 @@ function onLoadAjaxCalls()
 	//meetings(duplicate)
 	getLocationWiseMeetingsCount();
 	//cadre
-	// getLocationTypeWiseCadreCount();
+	 getLocationTypeWiseCadreCount();
 	// getAgeRangeGenerAndCasteGroupByCadreCount();
 	//Benefit
 	getPositionWiseMemberCount();
@@ -793,10 +793,11 @@ function getLocationWiseMeetingsCount(){
 
 function getLocationWiseTourMembersComplainceDtls(){
 	jsObj={
-		locationType:"constituency",
-		locationValue:232,
+		locationTypeId:4,
+		locationValuesArr:[232],
 		fromDate:"01/05/2017",
-		toDate:"30/05/2017"
+		toDate:"30/05/2017",
+		year:""
 	}
 	 $.ajax({
       type : "POST",
@@ -935,8 +936,8 @@ $("#benefits1").html(spinner);
 }
 function getLocationTypeWiseCadreCount(){
 	jsObj={
-		locationType:"constituency",
-		locationValue:232
+		locationTypeId:4,
+		locationValuesArr:[232]
 	}
 	 $.ajax({
       type : "POST",
