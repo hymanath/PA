@@ -2173,7 +2173,7 @@
                                                 <div id="boothDirectChildActivityMemberDiv" class="table-responsive"></div><!--sruj-->
                                                 <div class="row m_top20">
                                                     <div class="col-md-8 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
-														<div id="boothTopPoorPerformanceDiv"></div>
+														<div id="boothTopPoorPerformanceDiv" style="display:none;"></div>
                                                     </div>
                                                     <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0">
                                                         <div id="boothTopPoorLocationsDiv"></div>
