@@ -15,7 +15,7 @@ function onLoadAjaxCalls()
 	getTotalAlertDetailsForConstituencyInfo();
 	getAllPartiesAllElectionResultsChart(); //Assembly Election Detail
 	getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
-	getDetailedElectionInformaction()//get detailed election information
+	getDetailedElectionInformaction();//get detailed election information
 	/*getCountsForConstituency(); //Assembly election Cadre
 	
 	getPrintMediaCountsForConstituencyPage(); //electronic media
@@ -38,6 +38,7 @@ function onLoadAjaxCalls()
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
 	getNominatedPostStatusWiseCount();
+	getCountsForConstituency();
 	
 	
 }
@@ -79,11 +80,10 @@ function highChartsDonut(id,data,legend,title,height)
             layout: 'vertical',
             align: 'right',
             verticalAlign: 'middle',
-			backgroundColor:'#e9f6e8',
 			useHTML: true,
 			
 			labelFormatter: function() {
-				return this.name + '-' + this.y + '';
+				return '<span style="color:'+this.color+'">'+this.name + '-' + this.y + '';
 			}
 		},
 		series:[{
@@ -143,6 +143,8 @@ function getCountsForConstituency(){
 		if(results != null)
 		{
 			$list.html(templatess(results[0]));
+		}else{
+			$("#consCountsId").html('NO DATA');
 		}
 	});		
 		 			
