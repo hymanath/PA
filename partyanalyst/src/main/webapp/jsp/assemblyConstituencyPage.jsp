@@ -220,7 +220,7 @@
 						<div class="m_top20" id="casteWiseVoters"></div>
 					</div>
 					<div class="col-md-8 col-xs-12 col-sm-8">
-						<div id="casteGroupsTabsDivId"></div>
+						<div id="casteGroupsTabsDivId" style="overflow-y: scroll; height:450px;"></div>
 					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12">
 						<button class="btn btn-success btn-success-white text-capital">detailed caste information</button>
