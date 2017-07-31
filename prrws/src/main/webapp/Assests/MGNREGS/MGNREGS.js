@@ -4168,3 +4168,55 @@ function getLocationIhhlData()
 		}
 	});
 }
+
+getNregaPaymentsAbsAndOverviewDtls();
+getNregaPaymentsDtlsLocationWise();
+function getNregaPaymentsAbsAndOverviewDtls()
+{
+	var json = {
+		year : "2017",
+		fromDate : "2017-01-01",
+		toDate : "2017-06-30",
+		locationType: "state",
+		locationId : "-1",
+		sublocaType :"state"
+	}
+	$.ajax({
+		url: 'getNregaPaymentsAbsAndOverviewDtls',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			console.log(ajaxresp);
+		}
+	});
+}
+function getNregaPaymentsDtlsLocationWise()
+{
+	var json = {
+		year : "2017",
+		fromDate : "2017-01-01",
+		toDate : "2017-06-30",
+		locationType: "state",
+		locationId : "-1",
+		sublocaType :"district",
+		type:"All"
+	}
+	$.ajax({
+		url: 'getNregaPaymentsDtlsLocationWise',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			console.log(ajaxresp);
+		}
+	});
+}

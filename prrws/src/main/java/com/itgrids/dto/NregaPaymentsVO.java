@@ -81,7 +81,30 @@ public class NregaPaymentsVO implements Serializable{
 	private String pendingAtBankQuantity;
 	private String pendingAtBankAmount;
 	
-	
+	private String notGeneratedWagesAmount="0";
+	private String notGeneratedMaterialAmount="0";
+	private String totalNotGeneratedAmount="0" ;
+	private String notUploadedWagesAmount="0";
+	private String notUploadedMaterialAmount="0";
+	private String totalNotUploadedAmount="0";
+	private String notSentBankWageAmount="0";
+	private String notSentBankMaterialAmount="0";
+	private String totalNotSentBankAmount="0";
+    private String totalCompletedAmount="0";
+    private String rejectedWagesAmount="0";
+    private String rejectedMaterialAmount="0";
+    private String totalRejectedAmount="0";
+    private String releasePendingWageAmount="0";
+    private String releasePendingMaterialAmount="0";
+    private String totalReleasePendingAmount="0";
+    private String responsePendingWageAmount="0";
+    private String responsePendingMaterialAmount="0";
+    private String totalResponsePendingAmount="0";
+    private String reprocessPendingWageAmount="0";
+    private String reprocessPendingMaterialAmount="0";
+    private String totalReprocessPendingAmount="0";
+    
+    
 	public String getPendingAtBankQuantity() {
 		return pendingAtBankQuantity;
 	}
@@ -478,5 +501,142 @@ public class NregaPaymentsVO implements Serializable{
 	public void setSentToBankSuccessAmt(String sentToBankSuccessAmt) {
 		this.sentToBankSuccessAmt = sentToBankSuccessAmt;
 	}
+	public String getNotGeneratedWagesAmount() {
+		return notGeneratedWagesAmount;
+	}
+	public void setNotGeneratedWagesAmount(String notGeneratedWagesAmount) {
+		this.notGeneratedWagesAmount = notGeneratedWagesAmount;
+	}
+	public String getNotGeneratedMaterialAmount() {
+		return notGeneratedMaterialAmount;
+	}
+	public void setNotGeneratedMaterialAmount(String notGeneratedMaterialAmount) {
+		this.notGeneratedMaterialAmount = notGeneratedMaterialAmount;
+	}
+	public String getTotalNotGeneratedAmount() {
+		return totalNotGeneratedAmount;
+	}
+	public void setTotalNotGeneratedAmount(String totalNotGeneratedAmount) {
+		this.totalNotGeneratedAmount = totalNotGeneratedAmount;
+	}
+	public String getNotUploadedWagesAmount() {
+		return notUploadedWagesAmount;
+	}
+	public void setNotUploadedWagesAmount(String notUploadedWagesAmount) {
+		this.notUploadedWagesAmount = notUploadedWagesAmount;
+	}
+	public String getNotUploadedMaterialAmount() {
+		return notUploadedMaterialAmount;
+	}
+	public void setNotUploadedMaterialAmount(String notUploadedMaterialAmount) {
+		this.notUploadedMaterialAmount = notUploadedMaterialAmount;
+	}
+	public String getTotalNotUploadedAmount() {
+		return totalNotUploadedAmount;
+	}
+	public void setTotalNotUploadedAmount(String totalNotUploadedAmount) {
+		this.totalNotUploadedAmount = totalNotUploadedAmount;
+	}
+	public String getNotSentBankWageAmount() {
+		return notSentBankWageAmount;
+	}
+	public void setNotSentBankWageAmount(String notSentBankWageAmount) {
+		this.notSentBankWageAmount = notSentBankWageAmount;
+	}
+	public String getNotSentBankMaterialAmount() {
+		return notSentBankMaterialAmount;
+	}
+	public void setNotSentBankMaterialAmount(String notSentBankMaterialAmount) {
+		this.notSentBankMaterialAmount = notSentBankMaterialAmount;
+	}
+	public String getTotalNotSentBankAmount() {
+		return totalNotSentBankAmount;
+	}
+	public void setTotalNotSentBankAmount(String totalNotSentBankAmount) {
+		this.totalNotSentBankAmount = totalNotSentBankAmount;
+	}
+	public String getTotalCompletedAmount() {
+		return totalCompletedAmount;
+	}
+	public void setTotalCompletedAmount(String totalCompletedAmount) {
+		this.totalCompletedAmount = totalCompletedAmount;
+	}
+	public String getRejectedWagesAmount() {
+		return rejectedWagesAmount;
+	}
+	public void setRejectedWagesAmount(String rejectedWagesAmount) {
+		this.rejectedWagesAmount = rejectedWagesAmount;
+	}
+	public String getRejectedMaterialAmount() {
+		return rejectedMaterialAmount;
+	}
+	public void setRejectedMaterialAmount(String rejectedMaterialAmount) {
+		this.rejectedMaterialAmount = rejectedMaterialAmount;
+	}
+	public String getTotalRejectedAmount() {
+		return totalRejectedAmount;
+	}
+	public void setTotalRejectedAmount(String totalRejectedAmount) {
+		this.totalRejectedAmount = totalRejectedAmount;
+	}
+	public String getReleasePendingWageAmount() {
+		return releasePendingWageAmount;
+	}
+	public void setReleasePendingWageAmount(String releasePendingWageAmount) {
+		this.releasePendingWageAmount = releasePendingWageAmount;
+	}
+	public String getReleasePendingMaterialAmount() {
+		return releasePendingMaterialAmount;
+	}
+	public void setReleasePendingMaterialAmount(String releasePendingMaterialAmount) {
+		this.releasePendingMaterialAmount = releasePendingMaterialAmount;
+	}
+	public String getTotalReleasePendingAmount() {
+		return totalReleasePendingAmount;
+	}
+	public void setTotalReleasePendingAmount(String totalReleasePendingAmount) {
+		this.totalReleasePendingAmount = totalReleasePendingAmount;
+	}
+	public String getResponsePendingWageAmount() {
+		return responsePendingWageAmount;
+	}
+	public void setResponsePendingWageAmount(String responsePendingWageAmount) {
+		this.responsePendingWageAmount = responsePendingWageAmount;
+	}
+	public String getResponsePendingMaterialAmount() {
+		return responsePendingMaterialAmount;
+	}
+	public void setResponsePendingMaterialAmount(
+			String responsePendingMaterialAmount) {
+		this.responsePendingMaterialAmount = responsePendingMaterialAmount;
+	}
+	public String getTotalResponsePendingAmount() {
+		return totalResponsePendingAmount;
+	}
+	public void setTotalResponsePendingAmount(String totalResponsePendingAmount) {
+		this.totalResponsePendingAmount = totalResponsePendingAmount;
+	}
+	public String getReprocessPendingWageAmount() {
+		return reprocessPendingWageAmount;
+	}
+	public void setReprocessPendingWageAmount(String reprocessPendingWageAmount) {
+		this.reprocessPendingWageAmount = reprocessPendingWageAmount;
+	}
+	public String getReprocessPendingMaterialAmount() {
+		return reprocessPendingMaterialAmount;
+	}
+	public void setReprocessPendingMaterialAmount(
+			String reprocessPendingMaterialAmount) {
+		this.reprocessPendingMaterialAmount = reprocessPendingMaterialAmount;
+	}
+	public String getTotalReprocessPendingAmount() {
+		return totalReprocessPendingAmount;
+	}
+	public void setTotalReprocessPendingAmount(String totalReprocessPendingAmount) {
+		this.totalReprocessPendingAmount = totalReprocessPendingAmount;
+	}
+	
+  	
+	
 	
 }

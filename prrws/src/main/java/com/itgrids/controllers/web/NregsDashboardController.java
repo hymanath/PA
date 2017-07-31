@@ -406,4 +406,26 @@ public class NregsDashboardController {
 		}
 		return projectVOList;
 	}
+	@PostMapping("/getNregaPaymentsAbsAndOverviewDtls")
+	public @ResponseBody List<NregaPaymentsVO> getNregaPaymentsAbsAndOverviewDtls(@RequestBody InputVO vo){
+		List<NregaPaymentsVO> resultList = null;
+		try {
+			resultList = nregsTcsService.getNregaPaymentsAbsAndOverviewDtls(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaPaymentsAbsAndOverviewDtls - NREGSController controller", e);
+		}
+		return resultList;
+	}
+	@PostMapping("/getNregaPaymentsDtlsLocationWise")
+	public @ResponseBody List<NregaPaymentsVO> getNregaPaymentsDtlsLocationWise(@RequestBody InputVO vo){
+		List<NregaPaymentsVO> resultList = null;
+		try {
+			resultList = nregsTcsService.getNregaPaymentsDtlsLocationWise(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaPaymentsDtlsLocationWise - NREGSController controller", e);
+		}
+		return resultList;
+	}
 }
