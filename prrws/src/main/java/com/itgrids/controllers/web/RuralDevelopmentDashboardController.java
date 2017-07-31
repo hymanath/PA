@@ -69,4 +69,40 @@ public class RuralDevelopmentDashboardController {
 		}
 		return lvlDataList;
 	}
+	
+	@PostMapping("/getRDLevelsWiseData")
+	public @ResponseBody List<NregsDataVO> getRDLevelsWiseData(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = ruralDevelopmentService.getRDLevelsWiseData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaLevelsWiseData - RuralDevelopmentDashboardController", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping("/getRDOverview")
+	public @ResponseBody NregsOverviewVO getRDOverview(@RequestBody InputVO vo){
+		NregsOverviewVO overViewVO = null;
+		try {
+			overViewVO = ruralDevelopmentService.getRDOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getRDOverview - RuralDevelopmentDashboardController", e);
+		}
+		return overViewVO;
+	}
+	
+	@PostMapping("/getRDAbstractDataByType")
+	public @ResponseBody List<NregsProjectsVO> getRDAbstractDataByType(@RequestBody InputVO vo){
+		List<NregsProjectsVO> locationVOList = null;
+		try {
+			locationVOList = ruralDevelopmentService.getRDAbstractDataByType(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getRDAbstractDataByType - RuralDevelopmentDashboardController", e);
+		}
+		return locationVOList;
+	}
 }

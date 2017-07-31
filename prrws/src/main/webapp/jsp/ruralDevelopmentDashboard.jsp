@@ -658,6 +658,155 @@ function tableView(blockId,theadArr,result,locationType)
 		});
 	}
 }
+//getRDAbstractDataByType();
+function getRDAbstractDataByType()
+{
+	var json = {
+			year : "2017",
+			fromDate : "2017-04-01",
+			toDate : "2017-07-30",
+			type : "WaterBudget",
+			locationType: "state",
+			locationId : "-1"
+		}
+	
+	$.ajax({
+		url: 'getRDAbstractDataByType',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			//buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId);
+		}
+	}); 
+}
+//getRDOverview();
+function getRDOverview()
+{
+	
+		var json = {
+			year : "2017",
+			fromDate : "2017-04-01",
+	        toDate : "2017-07-30",
+			divType : "SMC Trench",
+			locationType : "constituency",
+			locationId : "01120"
+		}
+	
+	
+	$.ajax({
+		url: 'getRDOverview',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			//buildNregasOverViewBlock(ajaxresp,projectDivId,menuLocationType,menuLocationId);
+		}
+	});
+}
+getRDLevelsWiseData();
+function getRDLevelsWiseData()
+{
+	//$("#"+divIdd).html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : "2017-04-01",
+		toDate : "2017-07-30",
+		locationType: "constituency",
+		divType : "SMC Trench",
+		locationId : "10293",
+		sublocaType : "constituency"
+	}
+	$.ajax({
+		url: 'getRDLevelsWiseData',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			/* var str = '';
+			if(ajaxresp != null && ajaxresp.length > 0){
+				for(var i in ajaxresp){
+					str+='<tr>';
+						if(locationTypeNew == "state"){
+							str+='<td class="text-capital">'+locationTypeNew+'</td>';
+						}
+						else if(locationTypeNew == "district"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+						}
+						else if(locationTypeNew == "constituency"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+						}
+						else if(locationTypeNew == "mandal"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+						}
+						else if(locationTypeNew == "panchayat"){
+							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+						}
+						str+='<td>'+ajaxresp[i].target+'</td>';
+						if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
+							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
+							//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+						}
+						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
+							//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+						}
+						
+						str+='<td>'+ajaxresp[i].grounded+'</td>';
+						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+						str+='<td>'+ajaxresp[i].inProgress+'</td>';
+						str+='<td>'+ajaxresp[i].completed+'</td>';
+						if(ajaxresp[i].percentage < 50){
+							str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
+						}else if(ajaxresp[i].percentage >= 80){
+							str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
+						}
+						
+						if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
+							if(ajaxresp[i].percSant < 50){
+								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
+								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 80){
+								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
+							}
+						}
+						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+							if(ajaxresp[i].percSant < 50){
+								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
+								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
+							}else if(ajaxresp[i].percSant >= 80){
+								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
+							}
+						}
+					str+='</tr>';
+				}
+			}*/
+
+		} 
+	});
+}
 </script>
 </body>
 </html>
