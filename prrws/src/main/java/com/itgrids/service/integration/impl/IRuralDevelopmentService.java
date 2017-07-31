@@ -12,5 +12,8 @@ public interface IRuralDevelopmentService {
 	public NregsProjectsVO getNtrJalaSiriAbstract(InputVO inputVO);
 	public NregsOverviewVO getNtrJalaSiriOverview(InputVO inputVO);
 	public List<NregsDataVO> getNtrJalaSiriLvlWiseData(InputVO inputVO);
+	public List<NregsDataVO> getRDLevelsWiseData(InputVO inputVO);
+	public NregsOverviewVO getRDOverview(InputVO inputVO);
+	public List<NregsProjectsVO> getRDAbstractDataByType(InputVO inputVO);
 
 }
