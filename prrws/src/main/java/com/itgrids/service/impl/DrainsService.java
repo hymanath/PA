@@ -364,11 +364,11 @@ public class DrainsService implements IDrainsService {
 		return finalList;
 	}
 	
-	public List<KeyValueVO> getIvrQuestions(InputVO inputVo){
+	public List<KeyValueVO> getIvrSurveyQuestions(InputVO inputVo){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>(0);
 		try {
 			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getIvrSurveyDates");
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getIvrQuestions");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getIvrSurveyQuestions");
 	        
 	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVo);
 	        
@@ -394,4 +394,5 @@ public class DrainsService implements IDrainsService {
 		}
 		return finalList;
 	}
+	
 }

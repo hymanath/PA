@@ -95,12 +95,12 @@ public class DrainsController {
 		}
 		return null;
 	}
-	@PostMapping("/getIvrQuestions")
-	public @ResponseBody List<KeyValueVO> getIvrQuestions(@RequestBody InputVO inputVO){
+	@PostMapping("/getIvrSurveyQuestions")
+	public @ResponseBody List<KeyValueVO> getIvrSurveyQuestions(@RequestBody InputVO inputVO){
 		try {
-			return drainsService.getIvrQuestions(inputVO);			
+			return drainsService.getIvrSurveyQuestions(inputVO);			
 		} catch (Exception e) {
-			LOG.error("Exception raised at  getIvrQuestions - DrainsController controller", e);
+			LOG.error("Exception raised at  getIvrSurveyQuestions - DrainsController controller", e);
 		}
 		return null;
 	}
