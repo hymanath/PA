@@ -134,9 +134,16 @@
                <div class="panel panel-default">
                   <div class="panel-heading">
                      <div class="row">
-                        <div class="col-sm-11">
+                        <div class="col-sm-9">
                            <h4 class="panel-title m_top5">Attended Invitiees</h4>
                         </div>
+						<div class="col-sm-2">
+						 <div id="attendanceSessionWiseDivId">
+                        <select class="form-control" id="attendanceSessionWiseId">
+                        <option value="0">Select Session</option>
+                        </select>
+                        </div>
+						</div>
                         <div class="col-sm-1">
                            <span id="attendedInvitieesTabButton" data-toggle="collapse" data-target="#attendedInvitieesTable" class="attendedInvitieesTabExpandCollapse">
                            <i class="glyphicon glyphicon-plus"></i>
@@ -145,6 +152,7 @@
                      </div>
                   </div>
                   <div class="panel-body" id="attendedInvitieesTable">
+				   <div id="attendceOfInviteeSpinnerDivId" class="m_top10"></div>
                      <div id="attendceOfInviteeDivId"></div>
                   </div>
                </div>
@@ -269,7 +277,7 @@
 
 <script type="text/javascript">
     getUrlVars();
-
+var spinner = '<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'
 function getUrlVars() {
     var vars = [],
         hash;
@@ -283,7 +291,8 @@ function getUrlVars() {
 }
 
 var meetingId = getUrlVars()["meetingId"];
-getAttendanceForMeeting(meetingId);
+
+getAttendanceForMeeting(meetingId,"0");
 getPartyMeetingDeatilesForMeetingEdit();
 
 function getPartyMeetingDeatilesForMeetingEdit() {
@@ -691,12 +700,14 @@ function getPartyMeetingLevels() {
 
 
 
-function getAttendanceForMeeting(meetingId) {
+function getAttendanceForMeeting(meetingId,bydefaultSessionId) {
 
-    $("#nonAttendedInvitieesDivId").html(' ');
+   // $("#nonAttendedInvitieesDivId").html(' ');
     $("#attendceOfInviteeDivId").html(' ');
+	$("#attendceOfInviteeDivId").html(spinner);
     var jsObj = {
-        partyMeetingId: meetingId
+        partyMeetingId: meetingId,
+		partyMeetingSessionId:bydefaultSessionId
     }
     $.ajax({
         type: "GET",
@@ -707,12 +718,32 @@ function getAttendanceForMeeting(meetingId) {
     }).done(function(results) {
         console.log(results);
         buildAttendaceOfInveiteesTable(results);
-        buildNotAttendacInveiteesTable(results);
-        for (i in results) {
-
-        }
+        //buildNotAttendacInveiteesTable(results);
+        
     });
+}
+	getNoneAttenedInvettesForMeeting(meetingId,"0");
+function getNoneAttenedInvettesForMeeting(meetingId,bydefaultSessionId) {
 
+    $("#nonAttendedInvitieesDivId").html(' ');
+    //$("#attendceOfInviteeDivId").html(' ');
+    var jsObj = {
+        partyMeetingId: meetingId,
+		partyMeetingSessionId:bydefaultSessionId
+    }
+    $.ajax({
+        type: "GET",
+        url: "getAttendanceForMeetingActoin.action",
+        data: {
+            task: JSON.stringify(jsObj)
+        }
+    }).done(function(results) {
+        console.log(results);
+       // buildAttendaceOfInveiteesTable(results);
+        buildNotAttendacInveiteesTable(results);
+       
+    });
+}
     function buildAttendaceOfInveiteesTable(results) {
 
         var str = "";
@@ -754,6 +785,8 @@ function getAttendanceForMeeting(meetingId) {
 
 
     function buildNotAttendacInveiteesTable(results) {
+		//getSessionsForAttendedInviteesByMeetingId(meetingId,"notEmpty","true");
+		console.log(seesionResults);
         var str = "";
         str += "<table id='nonAttendedInvitieestableId' class='table-bordered'>";
         str += "<thead class='text-capital'>";
@@ -765,12 +798,13 @@ function getAttendanceForMeeting(meetingId) {
         str += "<th class='text-center'>Mobile No</th>";
         str += "<th class='text-center'>Comment</th>";
         str += "<th class='text-captal text-center'>Add Attendance</th>";
+		 str += "<th class='text-captal text-center'>Select Session</th>";
         str += "</tr>";
         str += "<thead>";
         str += "<tbody class='text-center'>";
 		if(results != null){
         for (var i in results.notAttendanceList) {
-            str += "<tr>";
+            str += "<tr style='font-size:12px;'>";
             str += "<td><img src='https://www.mytdp.com/images/cadre_images/" + results.notAttendanceList[i].imagePathStr + "' style='height:50px;width:50px;'></td>";
             str += "<td>" + results.notAttendanceList[i].name + "</td>";
             str += "<td>" + results.notAttendanceList[i].partyName + "</td>";
@@ -778,8 +812,14 @@ function getAttendanceForMeeting(meetingId) {
             //str+="<td>"+results.notAttendanceList[i].membershipNo+"</td>";
             str += "<td>" + results.notAttendanceList[i].mobileNumber + "</td>";
             str += "<td><input class='nonAttenededComment' type='text' id='" + results.notAttendanceList[i].id + "' placeholder='Enter Comment'/></td>";
-            str += "<td  class='text-center'><input type='checkBox' class='nonattendedCheckBoxCls' value='" + results.notAttendanceList[i].id + "'></td>";
-            str += "</tr>";
+	        str += "<td><select class='form-control addAttendanceSessionId'><option value='0'>Select Village</option>";
+			for(var j in seesionResults){
+           str+="<option value='"+ seesionResults[j].id + "'>" + seesionResults[j].name + "</option>";
+		   }
+			str+="</select></td>";
+		    str += "<td  class='text-center'><input type='checkBox' class='nonattendedCheckBoxCls' value='" + results.notAttendanceList[i].id + "'></td>";
+
+			str += "</tr>";
         }
 		}
         str += "</tbody>";
@@ -815,7 +855,7 @@ function getAttendanceForMeeting(meetingId) {
         str += "<table>";
         $("#attendceOfNoneInviteeDivId").html(str);
         $("#attendaceForNoneInviteeTableId").dataTable();
-    }
+    
 }
 
 
@@ -842,14 +882,16 @@ $('#nonAttendedInvitieesTabButton').on("click", function() {
 });
 
 $('#attendedInvitieesTable').hide();
+$('#attendanceSessionWiseDivId').hide();
 $('#attendedInvitieesTabButton').on("click", function() {
     if ($(this).find("i").hasClass("glyphicon-plus")) {
         $(this).find("i").removeClass("glyphicon-plus").addClass("glyphicon-minus");
         $('#attendedInvitieesTable').show();
-
+        $('#attendanceSessionWiseDivId').show();
     } else {
         $(this).find("i").addClass("glyphicon-plus").removeClass("glyphicon-minus");
         $('#attendedInvitieesTable').hide();
+		$('#attendanceSessionWiseDivId').hide();
     }
 });
 
@@ -875,10 +917,44 @@ function generateExcelReport() {
 }
 
 
-
-
+	function validSessionLateTime(strtTimeHours,endTimeHours,lateTimeHours,startTimeMins,endTimeMins,lateTimeMins){
+		var count=0;
+		for(var i in lateTimeHours){
+		if(lateTimeHours[i] < strtTimeHours[i])
+			{
+			  $('#validationId').append("<p>late time hours should be more than start time  ="+lateTimeHours[i]+": "+lateTimeMins[i]+"</p>");
+			  count++;
+			}else if(lateTimeHours[i] == strtTimeHours[i]){
+				if(lateTimeMins[i] <= startTimeMins[i] ){
+					$('#validationId').append("<p>late time minutes should be more then start time = "+lateTimeHours[i]+": "+lateTimeMins[i]+"</p>");
+					count++;
+				}
+				
+			}
+			if( lateTimeHours[i] > endTimeHours[i] ){
+			$('#validationId').append("<p>late time hours should be less than end time = "+lateTimeHours[i]+": "+lateTimeMins[i]+"</p>");
+			count++;
+			}else if(lateTimeHours[i] == endTimeHours[i]){
+				if(lateTimeMins[i] >= endTimeMins[i]){
+					$('#validationId').append("<p>late time minutes should be less than end = "+lateTimeHours[i]+": "+lateTimeMins[i]+"</p>");
+					count++;
+				}
+			}
+				if( strtTimeHours[i] > endTimeHours[i] ){
+			$('#validationId').append("<p>start time hours should be less than end time = "+lateTimeHours[i]+": "+lateTimeMins[i]+"</p>");
+			count++;
+			}else if(strtTimeHours[i] == endTimeHours[i]){
+				if(strtTimeHours[i] >= endTimeMins[i]){
+					$('#validationId').append("<p>start time mints should be less than end = "+lateTimeHours[i]+": "+lateTimeMins[i]+"</p>");
+					count++;
+				}
+			}
+		}
+		
+        return count;
+	}
 $(document).on("click", "#editMeetingId", function() {
-   
+    $('#validationId').html("");
    var availableSessions=[];
     $('.sessionTypeIdForModel').each(function() {
 	   availableSessions.push($('option:selected', $(this)).text());    
@@ -888,11 +964,76 @@ $(document).on("click", "#editMeetingId", function() {
   if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) acc.push(el); return acc;
 }, []);
 
-     if(duplicateSessions.length > 0){
+var strtTimeHours=[];
+var startTimeMins=[];
+var endTimeHours=[];
+var endTimeMins=[];
+var lateTimeHours=[];
+var lateTimeMins=[];
+
+var completeStartTime=[];
+ $('.startTimeForModel').each(function() {
+	 if($(this).val().length > 1){
+	     completeStartTime.push($(this).val());	
+		 var startArr=$(this).val().split(":");
+		 strtTimeHours.push(parseInt(startArr[0]));
+		 startTimeMins.push(parseInt(startArr[1]));
+		
+	 }		 
+    });
+
+var completeEndTime=[];
+	 $('.endTimeForModel').each(function() {
+		  if($(this).val().length > 1){
+		 completeEndTime.push($(this).val());
+		 var endArr=$(this).val().split(":");
+		  endTimeHours.push(parseInt(endArr[0]));
+		 endTimeMins.push(parseInt(endArr[1]));
+		  }		 
+    });
+
+	 var completeLateTime=[];
+    $('.lateTimeForModel').each(function() {
+		 if($(this).val().length > 1){
+		 completeLateTime.push($(this).val());
+		  var lateArr=$(this).val().split(":");
+		   lateTimeHours.push(parseInt(lateArr[0]));
+			lateTimeMins.push(parseInt(lateArr[1]));
+		 }
+
+    });
+var errorCount=validSessionLateTime(strtTimeHours,endTimeHours,lateTimeHours,startTimeMins,endTimeMins,lateTimeMins);
+
+     var duplicateStartTime = completeStartTime.reduce(function(acc, el, i, arr) {
+  if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) acc.push(el); return acc;
+}, []);
+
+var duplicateEndTime = completeEndTime.reduce(function(acc, el, i, arr) {
+  if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) acc.push(el); return acc;
+}, []);
+
+var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
+  if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) acc.push(el); return acc;
+}, []);
+
+
+  if(duplicateSessions.length > 0 ||
+	 duplicateStartTime.length > 0 || duplicateEndTime.length>0 || duplicateLateTime.length>0 || errorCount >0){
       $(".validationStatus").modal('show');
-      $('#validationId').html("");
 	  if(duplicateSessions.length > 0){
       $('#validationId').append("<p>Please Avoid Duplicate Sessions</p><p>"+duplicateSessions+"</p>");
+	  }
+	 /* if(notValidLateTime.length > 0){
+      $('#validationId').append("<p>Late Time should be B/w Start and End Time</p><p>"+notValidLateTime+"</p>");
+	  } */
+	  if(duplicateStartTime.length > 0){
+       $('#validationId').append("<p>Please Avoid Duplicate StartTime</p><p>"+duplicateStartTime+"</p>");
+	  }
+	  if(duplicateEndTime.length > 0){
+       $('#validationId').append("<p>Please Avoid Duplicate EndTime</p><p>"+duplicateEndTime+"</p>");
+	  }
+	  if(duplicateLateTime.length > 0){
+       $('#validationId').append("<p>Please Avoid Duplicate LateTime</p><p>"+duplicateLateTime+"</p>");
 	  }
           setTimeout(function() {
       $(".validationStatus").modal('hide');
@@ -900,26 +1041,20 @@ $(document).on("click", "#editMeetingId", function() {
 	 }
 	 
 	else{
-    var cadreIdsAndComments = "";
-    $('.nonAttenededComment').each(function() {
-        cadreIdsAndComments += $(this).attr('id') + "," + $(this).val();
-    });
-    var r = 0;
-    var nonattendedChecked = "";
+    if ($("#editPartyMeetingId").val().length == 0 && $("#editTextAreaId").val().length == 0) {
+  
+  var r = 0;
     $(".nonattendedCheckBoxCls:checked").each(function(index, elem) {
-        nonattendedChecked += $(elem).val();
-        if (nonattendedChecked.length > 0 && $("#editPartyMeetingId").val().length == 0 && $("#editTextAreaId").val().length == 0) {
-            var dynamicElement = "<input type='hidden' value=" + $(elem).val() + " name='partyMeetingVO.atrPoints[" + r + "]'/> ";
+	    var sessionId=($(this).closest("td").prev("td").find("select").val());
+		var cadreIdWithSessonId=$(elem).val()+","+sessionId;
+            var dynamicElement = "<input type='hidden' value='" + cadreIdWithSessonId + "' name='partyMeetingVO.atrPoints[" + r + "]'/> ";
             $('#modalBodyId').append(dynamicElement);
             r = r + 1;
-        }
     })
-    if (cadreIdsAndComments.length > 0 && $("#editPartyMeetingId").val().length == 0 && $("#editTextAreaId").val().length == 0) {
-        var uploadHandler = {
+	   var uploadHandler = {
             upload: function(o) {
                 uploadResult = o.responseText;
                 console.log(uploadResult);
-                //$('#closeModalId').click();
                 $(".resultStatus").modal('show');
                 $('#submitSuccessId').html("");
                 $('#submitSuccessId').append("<p>DATA SAVED SUCESSFULLY</p>");
@@ -930,7 +1065,7 @@ $(document).on("click", "#editMeetingId", function() {
 
 
             }
-        };
+        };  
 
         $("#tdpCadreDetailsModalId").modal('hide');
         createHiddenFields();
@@ -1108,7 +1243,9 @@ $(document).on("click", "#savingMeetingWithInviteesID", function() {
     });
     var u = 0;
     $(".nonattendedCheckBoxCls:checked").each(function(index, elem) {
-        var dynamicElement = "<input type='hidden' value=" + $(elem).val() + " name='partyMeetingVO.atrPoints[" + u + "]'/> ";
+		 var sessionId=($(this).closest("td").prev("td").find("select").val());
+		var cadreIdWithSessonId=$(elem).val()+","+sessionId;
+        var dynamicElement = "<input type='hidden' value='" + cadreIdWithSessonId + "' name='partyMeetingVO.atrPoints[" + r + "]'/> ";
         $('#modalBodyId').append(dynamicElement);
         u = u + 1;
     })
@@ -1307,6 +1444,33 @@ function getSessionsForModelByMeetingId(partyMeetingId) {
 
 }
 
+var seesionResults={};
+getSessionsForAttendedInviteesByMeetingId(meetingId);
+function getSessionsForAttendedInviteesByMeetingId(partyMeetingId) {
+    var jsObj = {
+        partyMeetingId: partyMeetingId
+		
+    }
+    $.ajax({
+        type: "GET",
+        url: "getSessionsDetailsByMeetingIdAction.action",
+        data: {
+            task: JSON.stringify(jsObj)
+        }
+    }).done(function(results) {
+        for (i in results) {
+         $("#attendanceSessionWiseId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
+		}
+		seesionResults=results;
+    });
+
+}
+
+$(document).on("change", "#attendanceSessionWiseId", function() {
+    var sessionId = $("#attendanceSessionWiseId").val();
+    getAttendanceForMeeting(meetingId,sessionId);
+
+});
 
 function addSessionsListForModel(idModel, dataOfSelected, dbIds, existing) {
 
@@ -1418,6 +1582,9 @@ function deletesessionconformation(meetingSessionId,id) {
         }).done(function(results) {
             if (results != null) {
 				$(id).parent().parent().remove();
+				getSessionsForAttendedInviteesByMeetingId(meetingId);
+				getAttendanceForMeeting(meetingId,"0");
+                getNoneAttenedInvettesForMeeting(meetingId,"0");
             } 
 
         });
