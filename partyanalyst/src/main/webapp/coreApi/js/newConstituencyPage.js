@@ -120,7 +120,7 @@ function getCandidateAndPartyInfoForConstituency(){
   }
 	
 function getCountsForConstituency(){
-	$("#consCountsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	$("#consCountsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12 m_top20"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 	var tehsilId=0;
 	var publicationDateId = 22;
 	var type = 'constituency';
@@ -154,7 +154,7 @@ function getCountsForConstituency(){
 function getAllPartiesAllElectionResultsChart()
 {
 	var id = 'assemblyElectionDetails';
-	$("#"+id).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#"+id).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
     var jsObj = {
 		constituencyId:232,
 		task:"partiesPerformanceInDiffElectionsAjax"
@@ -516,7 +516,7 @@ function getPrintMediaCountsForConstituencyPage(){
     var isDept="N";
 	$.ajax({
 		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+1+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
+		url: "http://mytdp.com/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
 		
 	}).then(function(result){
 		$list.html(templatess(result.coreDashBoardVOList));
@@ -539,7 +539,7 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(){
 	var isDept="N";
 	$.ajax({
 		//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
+		url: "http://mytdp.com/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
 		
 	}).then(function(result){
 		$list.html(templatess(result));
@@ -570,7 +570,7 @@ function getDetailedGovtOverAllAnalysisProblemsForView(){
 	var isDept="N";
 	$.ajax({
 		//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
+		url: "http://mytdp.com/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
 		
 	}).then(function(result){
 		$list.html(templatess(result));
@@ -647,7 +647,7 @@ function getDetailedGovtOverAllAnalysisProblemsForView(){
 	});
 }
 function getDetailedElectionInformaction(){
-	$("#assemblyElectionDetailsView").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	$("#assemblyElectionDetailsView").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 	var $list = $('#assemblyElectionDetailsView'),
         templatess = Handlebars.compile($('#assemblyElectionDetailsTable').html());
 	jsObj={
@@ -674,6 +674,7 @@ function getVotersAndcadreAgeWiseCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
+	console.log(result);
   });
 }
 
@@ -689,12 +690,15 @@ function getVotersAndCadreCasteWiseCount(type){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
+	console.log(result);
 	});	
 }
 
 var casteInfoResultGlob = "";
 function getCasteGroupNAgeWiseVoterNCadreCounts(){
 	$("#casteGroupsTabsDivId").html("");
+	$("#casteGroupsTabsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	$("#casteGroupInfoChartDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div></div>');
 	jsObj={
 		constituencyId:232,
     	publicationDateId:22
@@ -1700,15 +1704,19 @@ function buildCasteInfoForVoter(){
 		
 		$('#casteGroupInfoChartDivId').highcharts({
 			chart: {
-				plotBackgroundColor: null,
-				plotBorderWidth: 0,
-				plotShadow: false
+				height: 370,
+				type: 'pie',
+				backgroundColor: 'transparent',
+				options3d: {
+					enabled: false,
+					alpha: 45
+				}
 			},
 			title: {
 				text: '',
 				align: 'center',
 				verticalAlign: 'middle',
-				y: 40
+				y: 50
 			},
 			tooltip: {
 				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -1786,15 +1794,19 @@ function builsCasteInfoForCadre(){
 		
 		$('#casteGroupInfoChartDivId').highcharts({
 			chart: {
-				plotBackgroundColor: null,
-				plotBorderWidth: 0,
-				plotShadow: false
+				height: 370,
+				type: 'pie',
+				backgroundColor: 'transparent',
+				options3d: {
+					enabled: false,
+					alpha: 45
+				}
 			},
 			title: {
 				text: '',
 				align: 'center',
 				verticalAlign: 'middle',
-				y: 40
+				y: 50
 			},
 			tooltip: {
 				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -1864,6 +1876,7 @@ function buildCasteGroupWiseInfo(){
 				str+='<div role="tabpanel" class="tab-pane pad_10" id="'+casteInfoResultGlob[i].ageRange+'">';
 			str+='<table class="table table-noborder" style="font-size:12px;">';
 			str+='<thead class="text-capitalize">';
+			str+='<th></th>';
 			str+='<th>Caste Name</th>';
 			str+='<th>voters <span class="text-success">%</span></th>';
 			str+='<th>cadres <span class="text-success">%</span></th>';
