@@ -17891,6 +17891,10 @@
 			<param name="root">activityStatusList</param>       
 		</result> 
    </action>
-   
+   <action name="getattendedcountByFeedBacksCountsAction" class="trainingCampAction" method="getattendedcountByFeedBacksCounts">
+	    <result type="json" name="success">		   
+		    <param name="root">partyMeetingWSVOList</param>
+		</result>
+	</action>
  </package>
 </struts>
