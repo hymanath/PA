@@ -1922,3 +1922,53 @@ $(document).on("click",".expandCasteIconCls",function(){
 	var casteName = $(this).attr("attr_caste_name");
 	getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName);
 });
+getLeadersInNewsForConstituencyPage();
+function getLeadersInNewsForConstituencyPage(){
+	var userAccessLevelValuesArray=[232];
+	var userAccessLevelId=5;
+	var stateId=1;
+	var startDate="18-03-2015",endDate="18-03-2017";
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+state
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+stateId
+		
+	}).then(function(result){
+		if(result != null && result.length > 0){
+			buildLeadersInNewsBlock(result);
+		}
+	});
+}
+function buildLeadersInNewsBlock(result){
+	var str ="";
+  str+='=<div class="panel-body pad_0">';
+	str+='<table class="table table-noborder f-12">';
+		str+='<thead class="bg-E9 text-capitalize">';
+			str+='<th>leader name</th>';
+			str+='<th>designation</th>';
+			str+='<th>positive</th>';
+			str+='<th>negative</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for (var i in result){
+			str+='<tr>';
+				str+='<td>';
+					str+='<img src="coreApi/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/>'+result[i].name+' ';
+				str+='</td>';
+				str+='<td>'+result[i].isNewsBulletin+'</td>';
+				if(result[i].positiveCount != null && result[i].positiveCount >0){
+					str+='<td>'+result[i].positiveCount+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				if(result[i].negativeCount != null && result[i].negativeCount >0){
+					str+='<td>'+result[i].negativeCount+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+		}
+			str+='</tr>';
+		str+='</tbody>';
+	str+='</table>';
+str+='</div>';
+$("#leadersInNewsDiv").html(str);
+}
