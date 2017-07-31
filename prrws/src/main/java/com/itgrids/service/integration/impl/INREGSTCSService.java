@@ -55,4 +55,6 @@ public interface INREGSTCSService {
 	
 	public List<NregsProjectsVO> getNregsProjectsIWMPAbstract(InputVO inputVO);
 	public List<NregsDataVO> getLocationWiseWaterBudgetDetails(InputVO inputVO);
+	public List<NregaPaymentsVO> getNregaPaymentsAbsAndOverviewDtls(InputVO inputVO);
+	public List<NregaPaymentsVO> getNregaPaymentsDtlsLocationWise(InputVO inputVO);
 }
