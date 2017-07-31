@@ -9739,8 +9739,8 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 	   
 	   public List<Object[]> getSerialNoInLastestPublicationForCadre(List<Long> tdpCadreIdsList){
 		   StringBuilder sb = new StringBuilder();
-		   sb.append(" select distinct TC.tdpCadreId,BPV.serialNo from BoothPublicationVoter BPV, TdpCadre TC where TC.voterId = BPV.voter.voterId and " +
-		   		"BPV.booth.publicationDate.publicationDateId =:publicationDateId and TC.tdpCadreId in (:tdpCadreIdsList) " +
+		   sb.append(" select distinct TC.tdpCadreId,BPV.serialNo from BoothPublicationVoter BPV, TdpCadre TC where (TC.voterId = BPV.voter.voterId or TC.familyVoterId = BPV.voter.voterId ) and " +
+		   		" BPV.booth.publicationDate.publicationDateId =:publicationDateId and TC.tdpCadreId in (:tdpCadreIdsList) " +
 		   		" order by BPV.serialNo  ");
 		   Query query = getSession().createQuery(sb.toString());
 		   query.setParameter("publicationDateId", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
