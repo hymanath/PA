@@ -243,16 +243,7 @@
 													<li class="active ActiveStateCls" attr_type="cummulativeView">Cummulative View</li>
 													<li  attr_type="normalView">Year Wise</li>
 												</ul>
-												<ul class="list-inline showHideStatePgramsCls m_top10" style="display:none;">
-													<li>
-														<select class="form-control chosenSelect" id="programNamesState" >
-														</select>
-													</li>
-													<li>
-														<select class="form-control chosenSelect" id="subProgramNamesState" >
-														</select>
-													</li>
-												</ul>
+												
 											</div>
 											<div class="col-sm-6">
 												<ul class="nav nav-tabs pull-right tabTypeStateCls" role="tablist" id="" >
@@ -261,6 +252,22 @@
 													<!--<li role="presentation" class="" attr_tab_type = "stateCummulative" attr_level_type="state"><a href="#stateLevelCummulative" aria-controls="stateLevelCummulative" role="tab" data-toggle="tab">Cummulative</a></li>-->
 													<li role="presentation"><a class="advancedSearchStyle stateProSubProCls" attr_switch = "stateLevel"><i class="fa fa-search-plus"></i></a></li>
 												</ul>
+											</div>
+											<div class="col-sm-12 showHideStatePgramsCls m_top10" style="display:none;">
+												<div class="row">
+													<div class="col-sm-3">
+														<select class="form-control chosenSelect" id="programNamesState" >
+														</select>
+													</div>
+													<div class="col-sm-3">
+														<select class="form-control chosenSelect" id="subProgramNamesState" >
+														</select>
+													</div>
+													<div class="col-sm-3">
+														<select class="form-control chosenSelect" id="grantTypeState" >
+														</select>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -333,18 +340,23 @@
 									</div>
 								<div class="row selectboxsShowHide m_top20">
 									<div class="col-sm-6 showHideDistrictPgramsCls" style="display:none;" >
-										<ul class="list-inline row">
-											<li class="col-sm-6">
+										<div class="row">
+											<div class="col-sm-4">
 												<label>PROGRAMS</label>
 												<select class="form-control chosenSelect" id="programNamesDistrict" >
 												</select>
-											</li>
-											<li class="col-sm-6">
+											</div>
+											<div class="col-sm-4">
 												<label>SUB PROGRAMS</label>
 												<select class="form-control chosenSelect" id="subProgramNamesDistrict" >
 												</select>
-											</li>
-										</ul>
+											</div>
+											<div class="col-sm-4">
+												<label>GRANT TYPE</label>
+												<select class="form-control chosenSelect" id="grantTypeDistrict" >
+												</select>
+											</div>
+										</div>
 									</div>
 									<div class="col-sm-3 distLevelCls distLevelCls1" >
 										<label>DISTRICT</label>
@@ -480,6 +492,11 @@
 										<div class="col-sm-3 showHideConstituencyPgramsCls" style="display:none;">
 											<label>SUB PROGRAMS</label>
 											<select class="form-control chosenSelect" id="subProgramNamesConst" >
+											</select>
+										</div>
+										<div class="col-sm-3 showHideConstituencyPgramsCls" style="display:none;">
+											<label>GRANT TYPE</label>
+											<select class="form-control chosenSelect" id="grantTypeConst" >
 											</select>
 										</div>
 										<div class="col-sm-3 constiLevelDistCls " >
@@ -627,6 +644,11 @@
 											<select class="form-control chosenSelect" id="subProgramNamesMandal" >
 											</select>
 										</div>
+										<div class="col-sm-3 showHideMandalPgramsCls" style="display:none;">
+											<label>GRANT TYPE</label>
+											<select class="form-control chosenSelect" id="grantTypeMandal" >
+											</select>
+										</div>
 										<div class="col-sm-3 mandalLevelDistCls" >
 											<label>DISTRICT</label>
 											<select class="form-control chosenSelect" id="mandalLevelDistNames" >
@@ -768,7 +790,7 @@
 										</div>
 									</div>
 								</div>
-							
+							 
 								<div class="row selectboxsShowHide m_top10">
 										<div class="col-sm-3 showHideVillagePgramsCls" style="display:none;">
 											<label>PROGRAMS</label>
@@ -778,6 +800,11 @@
 										<div class="col-sm-3 showHideVillagePgramsCls" style="display:none;">
 											<label>SUB PROGRAMS</label>
 											<select class="form-control chosenSelect" id="subProgramNamesVillage" >
+											</select>
+										</div>
+										<div class="col-sm-3 showHideVillagePgramsCls" style="display:none;">
+											<label>GRANT TYPE</label>
+											<select class="form-control chosenSelect" id="grantTypeVillage" >
 											</select>
 										</div>
 								
@@ -986,7 +1013,7 @@
 	<input type="hidden" value="1" id="searchLevelValue" name="searchLevelValue" />
 	<input type="hidden" value="RWS" id="fromPage" name="fromPage" />
 	<input type="hidden" value="RWS" id="toPage" name="toPage" />	
-</form>
+</form>  
 <footer></footer>
 <script type="text/javascript" src="Assests/js/jquery-1.11.3.js"></script>        
 <script type="text/javascript" src="Assests/js/bootstrap.js"></script>
@@ -994,7 +1021,7 @@
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script> 
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>

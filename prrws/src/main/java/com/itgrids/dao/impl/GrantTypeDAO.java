@@ -29,10 +29,10 @@ public class GrantTypeDAO extends GenericDaoHibernate<GrantType, Long> implement
 		
 	    
 	    if(govtSchemesId == null || govtSchemesId.longValue() == 0L){
-			  StringBuilder sb = new StringBuilder();
-			    sb.append(" select distinct model.grantType.grantTypeId,model.grantType.type from GrantType model ");
-			    Query query = getSession().createQuery(sb.toString());
-			    return query.list(); 
+	    	StringBuilder sb = new StringBuilder();
+		    sb.append(" select distinct model.grantTypeId,model.type from GrantType model ");
+		    Query query = getSession().createQuery(sb.toString());
+		    return query.list(); 
 		}
 		else if (govtSchemesId.longValue() > 0L){
 			StringBuilder sb = new StringBuilder();
