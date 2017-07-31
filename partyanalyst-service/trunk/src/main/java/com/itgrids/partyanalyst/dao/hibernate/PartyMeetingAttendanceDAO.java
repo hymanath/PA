@@ -1698,7 +1698,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
     	query.setParameter("partyMeetingId", partyMeetingId);
     	
     	return query.list();
-    }*/
+    }
 	public List<String> getPartyMeetingInviteesDetailsAttendence(Long partyMeetingId){
     	
     	Query query = getSession().createQuery(" select distinct model.attendance.tdpCadre.memberShipNo " +
@@ -1708,6 +1708,24 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
     	
     	return query.list();
     }
+	*/
 	
 	
+		public List<String> getPartyMeetingInviteesDetailsAttendence(Long partyMeetingId,Long sessionId){
+		      StringBuilder sb=new StringBuilder();
+		      sb.append("select distinct model.attendance.tdpCadre.memberShipNo ");
+		      sb.append(" from PartyMeetingAttendance model ");
+		      sb.append(" where model.attendance.tdpCadre.isDeleted='N' and model.partyMeeting.isActive='Y' ");
+		      sb.append("and model.partyMeeting.partyMeetingId = :partyMeetingId  ");
+		      if(sessionId !=null && sessionId.longValue() >0){
+		        sb.append("and model.partyMeetingSessionId = :sessionId ");
+		      }
+		      Query query = getSession().createQuery(sb.toString());
+		      query.setParameter("partyMeetingId", partyMeetingId);
+		      if(sessionId !=null && sessionId.longValue() >0){
+		        query.setParameter("sessionId", sessionId);
+		      }
+		      
+		      return query.list();
+		    }
 }
