@@ -37,7 +37,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 	 */
 	//total
 	public List<Object[]> getFinancialYearWiseScheameDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
-			List<Long> sourceIdsList,List<Long> schemeIdsList,Date startDate,Date endDate,Long searchScopeId,List<Long> searchScopeValuesList,Long searchLevelId,List<Long> govtSchmeIdsList,List<Long> subProgramIdsList,Long glSearchLevelId,List<Long> glSearchLevelValue){
+			List<Long> sourceIdsList,List<Long> schemeIdsList,Date startDate,Date endDate,Long searchScopeId,List<Long> searchScopeValuesList,Long searchLevelId,List<Long> govtSchmeIdsList,List<Long> subProgramIdsList,Long glSearchLevelId,List<Long> glSearchLevelValue, List<Long> grantTypeIdsList){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct  "
 					  + " model.fundSanction.subProgramId, "//0
@@ -45,7 +45,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 					  + " model.fundSanction.financialYear.financialYearId, "//2
 					  + " model.fundSanction.financialYear.yearDesc, "//3
 					  + " count( distinct model.fundSanction.fundSactionId), "//4
-					  + " sum(model.fundSanction.sactionAmount), ");//5
+					  + " sum(model.fundSanction.sactionAmount) "//5
+					  + ",");
 		if(searchLevelId != null && searchLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
 			queryStr.append(" state.stateId, "//6
 					  + " state.stateName ");//7
@@ -101,6 +102,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		
 		if(financialYearIdsList != null && financialYearIdsList.size()>0)
 			queryStr.append(" and model.fundSanction.financialYearId in (:financialYearIdsList) ");
+		if(grantTypeIdsList != null && grantTypeIdsList.size()>0)
+			queryStr.append(" and model.fundSanction.grantTypeId in (:grantTypeIdsList) ");
 		if(deptIdsList != null && deptIdsList.size()>0)
 			queryStr.append(" and model.fundSanction.department.departmentId in (:deptIdsList) ");
 		if(sourceIdsList != null && sourceIdsList.size()>0)
@@ -186,6 +189,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}
 		if(glSearchLevelValue != null && glSearchLevelValue.size()>0)
 			query.setParameterList("glSearchLevelValue", glSearchLevelValue);
+		if(grantTypeIdsList != null && grantTypeIdsList.size()>0)
+			query.setParameterList("grantTypeIdsList", grantTypeIdsList);
 		return query.list();
 	}
 	/*

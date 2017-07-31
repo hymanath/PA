@@ -125,7 +125,7 @@ public class FundManagementDashboardController {
 		public @ResponseBody List<FundSchemeVO> getFinancialYearWiseScheameDetails(@RequestBody InputVO inputVO){
 			List<FundSchemeVO> ajaxResult = fundManagementDashboardService.getFinancialYearWiseSchemeDetails(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),inputVO.getSchemeIdsList(),
 					inputVO.getFromDateStr(),inputVO.getToDateStr(),inputVO.getSearchLevelId(),inputVO.getLevelValues(),inputVO.getOrder(),inputVO.getSortingType(),inputVO.getBlockLevelId(),inputVO.getGovtSchmeIdsList(),
-					inputVO.getSubProgramIdsList(),inputVO.getGlSearchLevelId(),inputVO.getGlSearchLevelValue(),inputVO.getViewType());
+					inputVO.getSubProgramIdsList(),inputVO.getGlSearchLevelId(),inputVO.getGlSearchLevelValue(),inputVO.getViewType(),inputVO.getGrantTypeIdsList());
 			return ajaxResult;
 		}	
 		
@@ -263,4 +263,13 @@ public class FundManagementDashboardController {
 					LocationFundDetailsVO  returnVO = fundManagementDashboardService.getSchemeWiseOverviewDetails(inputVO);
 					return returnVO;
 				  }
+				
+				@RequestMapping(value="/getGovtGrantTypeDetails", method = RequestMethod.POST,
+				        produces = MediaType.APPLICATION_JSON_VALUE,
+				        consumes = MediaType.APPLICATION_JSON_VALUE)
+				        public @ResponseBody List<LocationFundDetailsVO> getGovtGrantTypeDetails(@RequestBody Map<String,Long> map){
+					    
+				             List<LocationFundDetailsVO>  govtSubProgramsList=fundManagementDashboardService.getGovtGrantTypeDetails(map.get("govtSchemesId"));
+				             return govtSubProgramsList;
+				        }
 }

@@ -118,7 +118,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	
 	public List<FundSchemeVO> getFinancialYearWiseSchemeDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,																	//BlockLevelId
 			List<Long> sourceIdsList,List<Long> schemeIdsList,String startDateStr,String endDateStr,Long searchScopeId,List<Long> searchScopeValuesList,String order,String sortingType,Long searchLevelId,
-			List<Long> govtSchmeIdsList,List<Long> subProgramIdsList,Long glSearchLevelId,List<Long> glSearchLevelValue,String viewType){
+			List<Long> govtSchmeIdsList,List<Long> subProgramIdsList,Long glSearchLevelId,List<Long> glSearchLevelValue,String viewType, List<Long> grantTypeIdsList){
 		List<FundSchemeVO> returnList = new ArrayList<FundSchemeVO>(0);
 		try {
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd/MM/yyyy","");
@@ -130,7 +130,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			schemeIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(schemeIdsList);
 			searchScopeValuesList = commonMethodsUtilService.makeEmptyListByZeroValue(searchScopeValuesList);
 			
-			List<Object[]> result =  fundSanctionDAO.getFinancialYearWiseScheameDetails(financialYearIdsList,deptIdsList,sourceIdsList, schemeIdsList,startDate,endDate,searchScopeId,searchScopeValuesList,searchLevelId,govtSchmeIdsList,subProgramIdsList,glSearchLevelId,glSearchLevelValue);
+			List<Object[]> result =  fundSanctionDAO.getFinancialYearWiseScheameDetails(financialYearIdsList,deptIdsList,sourceIdsList, schemeIdsList,startDate,endDate,searchScopeId,searchScopeValuesList,searchLevelId,govtSchmeIdsList,subProgramIdsList,glSearchLevelId,glSearchLevelValue, grantTypeIdsList);
 			Map<Long,FundSchemeVO> locationMap = new HashMap<Long,FundSchemeVO>(0);
 			Map<Long,FundSchemeVO> yearsMap = new TreeMap<Long,FundSchemeVO>();
 			//Map<Long,FundSchemeVO> deptsMap = new HashMap<Long,FundSchemeVO>(0);
@@ -2550,9 +2550,9 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		  List<LocationFundDetailsVO> finalReturnList= null;
 		  try{
 			finalReturnList=new ArrayList<LocationFundDetailsVO>();
-		    List<Object[]> govtSubPrgrmObjs =subProgramDAO.getGovtSubProgramsDetails(govtSchemesId);
-		    if(govtSubPrgrmObjs != null && govtSubPrgrmObjs.size()>0 && !govtSubPrgrmObjs.isEmpty()){
-		    	for(Object[] Obj: govtSubPrgrmObjs){
+		    List<Object[]> govtGrantTypeObjs =subProgramDAO.getGovtSubProgramsDetails(govtSchemesId);
+		    if(govtGrantTypeObjs != null && govtGrantTypeObjs.size()>0 && !govtGrantTypeObjs.isEmpty()){
+		    	for(Object[] Obj: govtGrantTypeObjs){
 		    		LocationFundDetailsVO vo=new LocationFundDetailsVO();
 		    		vo.setId(commonMethodsUtilService.getLongValueForObject(Obj[0]));
 		    		vo.setName(commonMethodsUtilService.getStringValueForObject(Obj[1]));
@@ -2801,5 +2801,32 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			LOG.error(" Exception raised in setLocationWiseFund (); ");
 		}
 	}
+   
+   /*
+ 	 * Date : 28/07/2017
+ 	 * Author : Shrinu
+ 	 * @description : To get GovtSubProgramsDetails
+ 	 * @return  List<LocationFundDetailsVO>
+ 	 */
+    public List<LocationFundDetailsVO> getGovtGrantTypeDetails(Long govtSchemesId){
+ 		  List<LocationFundDetailsVO> finalReturnList= null;
+ 		  try{
+ 			finalReturnList=new ArrayList<LocationFundDetailsVO>();
+ 		    List<Object[]> govtSubPrgrmObjs =grantTypeDAO.getGovtGrantTypeDetails(govtSchemesId);
+ 		    if(govtSubPrgrmObjs != null && govtSubPrgrmObjs.size()>0 && !govtSubPrgrmObjs.isEmpty()){
+ 		    	for(Object[] Obj: govtSubPrgrmObjs){
+ 		    		LocationFundDetailsVO vo=new LocationFundDetailsVO();
+ 		    		vo.setId(commonMethodsUtilService.getLongValueForObject(Obj[0]));
+ 		    		vo.setName(commonMethodsUtilService.getStringValueForObject(Obj[1]));
+ 		    		finalReturnList.add(vo);
+ 		    	}
+ 		    }
+
+ 		  }catch(Exception e){
+ 		   // e.printStackTrace();
+ 		    LOG.error(" Exception raised in getConstituencies (); ");
+ 		  }
+ 		return finalReturnList;  
+ 		}
   
 }
