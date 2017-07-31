@@ -38,8 +38,8 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	 * @description : getNtrJalaSiriAbstract
 	 * 
 	 */
-	public NregsProjectsVO getNtrJalaSiriAbstract(InputVO inputVO){
-		NregsProjectsVO returnVO = new NregsProjectsVO();
+	public List<NregsProjectsVO> getNtrJalaSiriAbstract(InputVO inputVO){
+		List<NregsProjectsVO> returnList = new ArrayList<NregsProjectsVO>();
 		try{
 			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/NtrDashBoardService/AbstractData", inputVO);
 			
@@ -53,10 +53,12 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	 	    		if(finalArray!=null && finalArray.length()>0){
 	 	    			for(int i=0;i<finalArray.length();i++){
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-	 	    				returnVO.setParameter(jObj.getString("PARAMETER"));
-	 	    				returnVO.setPercentage(jObj.getString("PERCENTAGE"));
-	 	    				returnVO.setTarget(jObj.getString("TARGET"));
-	 	    				returnVO.setCompleted(jObj.getString("GROUNDED"));
+	 	    				NregsProjectsVO vo = new NregsProjectsVO(); 
+	 	    				vo.setParameter(jObj.getString("PARAMETER"));
+	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				vo.setTarget(jObj.getString("TARGET"));
+	 	    				vo.setCompleted(jObj.getString("GROUNDED"));
+	 	    				returnList.add(vo);
 	 	    			}
 	 	    		}
 	 	    	}
@@ -64,7 +66,7 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 		}catch(Exception e){
 			LOG.error("Exception raised at getNtrJalaSiriAbstract - RuralDevelopmentService", e);
 		}
-		return  returnVO;
+		return  returnList;
 	}
 	
 	
