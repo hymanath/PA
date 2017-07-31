@@ -210,7 +210,7 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 			str += "}";
 			
 		} catch (Exception e) {
-			LOG.error("Exception raised at convertingInputVOToString - NREGSTCSService service", e);
+			LOG.error("Exception raised at convertingInputVOToString - RuralDevelopmentService", e);
 		}
 		return str;
 	}
@@ -240,6 +240,8 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CheckDamService/CheckDamData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("WaterBudget"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/WaterBudgetData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GH"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GreeningHillocksService/GreeningHillocksData";
 			
 			if(inputVO.getDivType() != null && inputVO.getDivType().trim().equalsIgnoreCase("WaterBudget"))
 				str = convertingInputVOToStringForIWMP(inputVO);
@@ -274,6 +276,16 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 		 	    				vo.setGross(jObj.getString("GROSS"));
 		 	    				vo.setStroageCap(jObj.getString("STRG_CAP"));
 		 	    				vo.setBalanceRunOff(jObj.getString("BALANCERUNOFF"));
+	 	    				}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().equalsIgnoreCase("GH")){
+	 	    					
+	 	    					if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("state") || inputVO.getLocationType().trim().equalsIgnoreCase("district")) &&
+	 	    					   inputVO.getSublocationType() != null && (inputVO.getSublocationType().trim().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().equalsIgnoreCase("district")))
+	 	    							vo.setTarget(jObj.getLong("DISTRICT_TARGET"));
+	 	    					
+	 	    					vo.setSanctionedTarget(jObj.getString("SANCTION_TARGET"));
+		 	    				vo.setPittingKMS(jObj.getString("PITTING_EXT"));
+		 	    				vo.setPlantingKMS(jObj.getString("PLNTNG_EXT"));
+		 	    				vo.setPercentage(jObj.getString("EXPN"));
 	 	    				}else{
 	 	    					vo.setTarget(jObj.getLong("TARGET"));
 		 	    				vo.setGrounded(jObj.getString("GROUNDED"));
@@ -326,6 +338,8 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CheckDamService/CheckDamOverview";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("WaterBudget"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/WaterBudgetOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GH"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GreeningHillocksService/GreeningHillocksOverview";
 			
 			String str = convertingInputVOToString(inputVO);
 			
@@ -339,7 +353,7 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject Obj = new JSONObject(output);
 	 	    		if(Obj!=null && Obj.length()>0){
-	 	    			if(inputVO.getDivType().trim().toString().equalsIgnoreCase("WaterBudget")){
+	 	    			if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("WaterBudget") || inputVO.getDivType().trim().toString().equalsIgnoreCase("GH"))){
 	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
 	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
 	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
@@ -402,12 +416,12 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 		try {
 			String str = null;
 			ClientResponse response = null;
-			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("WaterBudget"))
+			if(inputVO.getType() != null && (inputVO.getType().trim().equalsIgnoreCase("WaterBudget") || inputVO.getType().trim().equalsIgnoreCase("GH")))
 				str = convertingInputVOToStringForIWMP(inputVO);
 			else
 			 str = convertingInputVOToString(inputVO);
 			
-			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("WaterBudget"))
+			if(inputVO.getType() != null && (inputVO.getType().trim().equalsIgnoreCase("WaterBudget") || inputVO.getType().trim().equalsIgnoreCase("GH")))
 				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str);
 			else
 				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
@@ -426,7 +440,7 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	 	    				vo.setParameter(jObj.getString("PARAMETER"));
 	 	    				vo.setTarget(jObj.getString("TARGET"));
 	 	    				
-	 	    				if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("WaterBudget")){
+	 	    				if(inputVO.getType() != null && (inputVO.getType().trim().equalsIgnoreCase("WaterBudget") || inputVO.getType().trim().equalsIgnoreCase("GH")) ){
 	 	    					vo.setCompleted(jObj.getString("ACHMT"));
 		 	    				vo.setPercentage(jObj.getString("PER"));
 	 	    				}else{
