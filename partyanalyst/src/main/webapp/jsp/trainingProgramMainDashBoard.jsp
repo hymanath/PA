@@ -4,6 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Training Program Dashboard</title>
+<div id="cadreDetailsModalId" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="gridSystemModalLabel">Cadre Details</h4>
+			</div>
+			<div class="modal-body" id="cadreDetailsModalBodyId"></div>
+		</div>
+	</div>
+</div>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
@@ -508,14 +519,14 @@ function buildAttendedCountByFeedBacks(result)
 				str+='<td>Communication Skills</td>';
 				str+='<td>'+result.list[1].count+'</td>';
 				for(var j in result.list[1].subList){
-					str+='<td>'+result.list[1].subList[j].count+'</td>';
+					str+='<td><span class="skillCountsCls" style="cursor:pointer;color:green" attr_skill_type="cs" attr_status_id="'+result.list[1].subList[j].id+'">'+result.list[1].subList[j].count+'</span></td>';
 				}
 			str+='</tr>';
 			str+='<tr>';
 				str+='<td>Leadership Skills</td>';
 				str+='<td>'+result.list[2].count+'</td>';
 				for(var j in result.list[2].subList){
-					str+='<td>'+result.list[2].subList[j].count+'</td>';
+					str+='<td><span class="skillCountsCls" style="cursor:pointer;color:green" attr_skill_type="ls" attr_status_id="'+result.list[1].subList[j].id+'">'+result.list[2].subList[j].count+'</span></td>';
 				}
 			str+='</tr>';
 		str+='</table>';
@@ -1030,6 +1041,65 @@ function buildSurveyDetails(result)
 		getProgCampBatchNames();
 		getSurveyDetails();
 	}
+	
+	$(document).on("click",".skillCountsCls",function(){
+		$("#cadreDetailsModalId").modal("show");
+		$("#cadreDetailsModalBodyId").html('<center><img src="images/icons/survey-details.gif" style="width:150px;height:150px;"/></center>');
+		var enrollmentYrIds = [];
+		enrollmentYrIds.push($("#enrlmntYrId").val());
+		var programIds =[];
+		if(enrollmentYrIds == 4){
+			programIds.push(8);
+		}else{
+			programIds.push(6,7,1,5);
+		}
+		var jsObj={
+			campId:campId,
+			batchId:batchId,
+			callFrom:callFrom,
+			dates:dates,
+			enrollmentYrIds:enrollmentYrIds,
+			programIds:programIds,
+			skillType : $(this).attr("attr_skill_type"),
+			statusId : $(this).attr("attr_status_id")
+		}
+		$.ajax({
+			type:'POST',
+			 url: 'getattendedcountByFeedBacksCountsAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			var str='';
+			if(result != null && result.length > 0){
+				str+='<table class="table table-bordered" id="cadreDetailsTableId">';
+				str+='<thead>';
+				str+='<th>Image</th>';
+				str+='<th>Name</th>';
+				str+='<th>Mobile No</th>';
+				str+='<th>DOB</th>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+					str+='<td><img style="height:50px;width:50px;" src='+result[i].imgStr+'></td>';
+					str+='<td>'+result[i].name+'</td>';
+					str+='<td>'+result[i].mobileNo+'</td>';
+					str+='<td>'+result[i].dateOfBirth+'</td>';
+					str+='</tr>';
+				}
+				str+='</tbody>';
+				str+='</table>';
+			}else{
+				str="No Data Available.";
+			}
+			$("#cadreDetailsModalBodyId").html(str);
+			$("#cadreDetailsTableId").dataTable({
+				"iDisplayLength": 10,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+			});	
+		});
+		
+	});
 </script>
 </body>
 </html>	

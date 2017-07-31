@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SimpleVO;
@@ -129,8 +130,17 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private String updateRemarks;
 	private String updateStatusId;
 	private Long updateFinalyzeMeetingId;
+	private List<PartyMeetingWSVO> partyMeetingWSVOList;
 	
 	
+	public List<PartyMeetingWSVO> getPartyMeetingWSVOList() {
+		return partyMeetingWSVOList;
+	}
+
+	public void setPartyMeetingWSVOList(List<PartyMeetingWSVO> partyMeetingWSVOList) {
+		this.partyMeetingWSVOList = partyMeetingWSVOList;
+	}
+
 	public ISchedulerService getSchedulerService() {
 		return schedulerService;
 	}
@@ -3234,4 +3244,46 @@ public String getCommentsMeetingDetails(){
 	}
 	return Action.SUCCESS;
 }
+
+	public String getattendedcountByFeedBacksCounts(){
+		try {
+			RegistrationVO regVo =(RegistrationVO) request.getSession().getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			
+			Long campId = jObj.getLong("campId");
+    		if(campId==0l){
+    			campId=null;
+    		}
+    		Long batchId = jObj.getLong("batchId");
+    		if(batchId==0l){
+    			batchId=null;
+    		}
+    		List<Long> enrollmentYrIds = new ArrayList<Long>(0);
+    		JSONArray enrollmentYrIdsArr = jObj.getJSONArray("enrollmentYrIds");
+    		if(enrollmentYrIdsArr != null && enrollmentYrIdsArr.length() > 0)
+    		{
+    			for(int i=0;i<enrollmentYrIdsArr.length();i++)
+    				enrollmentYrIds.add(new Long(enrollmentYrIdsArr.get(i).toString()));
+    		}
+    		List<Long> programIds = new ArrayList<Long>(0);
+    		JSONArray programIdsArr = jObj.getJSONArray("programIds");
+    		if(programIdsArr != null && programIdsArr.length() > 0)
+    		{
+    			for(int i=0;i<programIdsArr.length();i++)
+    				programIds.add(new Long(programIdsArr.get(i).toString()));
+    		}
+    		
+    		String dates[] = jObj.getString("dates").split("-");
+    		
+    		if(dates.length>1){
+    			partyMeetingWSVOList = trainingCampService.getattendedcountByFeedBacksCounts(programIds,campId,batchId,dates[0].trim(),dates[1].trim(),jObj.getString("callFrom"),enrollmentYrIds,jObj.getString("skillType"),jObj.getLong("statusId"));
+    		}else{
+    			partyMeetingWSVOList = trainingCampService.getattendedcountByFeedBacksCounts(programIds,campId,batchId,null,null,jObj.getString("callFrom"),enrollmentYrIds,jObj.getString("skillType"),jObj.getLong("statusId"));
+    		}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getattendedcountByFeedBacksCounts Action", e);
+		}
+		return Action.SUCCESS;
+	}
 }
