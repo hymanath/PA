@@ -673,8 +673,8 @@ function getVotersAndcadreAgeWiseCount(){
       url : "getVotersAndcadreAgeWiseCountAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){  
-	console.log(result);
+    }).done(function(result){
+	//console.log(result);   
   });
 }
 
@@ -689,8 +689,8 @@ function getVotersAndCadreCasteWiseCount(type){
       url : "getVotersAndCadreCasteWiseCountAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){  
-	console.log(result);
+    }).done(function(result){
+    //console.log(result);  
 	});	
 }
 
@@ -1940,7 +1940,7 @@ function getLeadersInNewsForConstituencyPage(){
 }
 function buildLeadersInNewsBlock(result){
 	var str ="";
-  str+='=<div class="panel-body pad_0">';
+  str+='<div class="panel-body pad_0">';
 	str+='<table class="table table-noborder f-12">';
 		str+='<thead class="bg-E9 text-capitalize">';
 			str+='<th>leader name</th>';
