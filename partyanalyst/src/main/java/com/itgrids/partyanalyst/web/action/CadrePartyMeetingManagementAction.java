@@ -317,7 +317,7 @@ public String getPanchayatWardByMandal(){
 	   return Action.SUCCESS;  
    }
    
- public String savepartymeetingDetailsWithExcel(){//savepartymeetingDetailsWithExcel
+/* public String savepartymeetingDetailsWithExcel(){//savepartymeetingDetailsWithExcel
 	// try{
 	if(partyMeetingVO != null){
 	 PartyMeeting partyMeeting=cadrePartyMeetingManagementService.saveMeetingDetails(partyMeetingVO);
@@ -363,7 +363,7 @@ public String getPanchayatWardByMandal(){
 	 }
 	 return Action.SUCCESS;
  }
- 
+ */
  public String getMeetingMainType(){
 		try {
 			partyMeetingVOList=cadrePartyMeetingManagementService.getMeetingMainType();
@@ -575,7 +575,8 @@ public String getPanchayatWardByMandal(){
 	   try{
 		   jObj = new JSONObject(getTask());
 	 		Long meetingId=jObj.getLong("partyMeetingId");
-	     idAndNameVO= cadrePartyMeetingManagementService.getPartyMeetingInviteesDetailsAttendence(meetingId);
+	 		Long sessionId=jObj.getLong("partyMeetingSessionId");
+	     idAndNameVO= cadrePartyMeetingManagementService.getPartyMeetingInviteesDetailsAttendence(meetingId,sessionId);
 	       }catch (Exception e) {
 	    LOG.error("Exception Occured in getAllInviteeAtendedDetails() method, Exception - ",e); 
 	    }
