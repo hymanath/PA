@@ -2096,24 +2096,55 @@ return (Long) query.uniqueResult();
 	 }
 	 return query.list();
  }
- public List<Object[]> getPositionWiseMemberCount(Long constituencyId,Date startDate, Date endDate){
+ @SuppressWarnings("unchecked")
+public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year){
 	 StringBuilder sb = new StringBuilder();
 	 sb.append(" select " +
 	 		   " nominatedPost.nominatedPostMember.boardLevel.boardLevelId, " +
 	 		   " nominatedPost.nominatedPostMember.boardLevel.level, " +
 	 		   " count(distinct nominatedPost.nominatedPostMember.nominatedPostMemberId) " +
 	 		   " from NominatedPost nominatedPost where " +
-			   " nominatedPost.nominatedPostMember.address.constituency.constituencyId = :constituencyId " +
-			   " and nominatedPost.isDeleted = 'N' " +
+			  // " nominatedPost.nominatedPostMember.address.constituency.constituencyId = :constituencyId " +
+			   " nominatedPost.isDeleted = 'N' " +
 			   " and nominatedPost.isExpired = 'N' " +
 			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' ");
+	 
+	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
+	        if(locationTypeId == 4l){
+	        	sb.append(" and nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValues) ");
+	        }else if(locationTypeId == 3l){
+	        	sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValues) ");
+	        }else if(locationTypeId == 5l){
+	        	sb.append(" and nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValues) ");
+	        }else if(locationTypeId == 6l){
+	        	sb.append(" and nominatedPost.nominatedPostMember.address.panchayat.panchayatId in(:locationValues) ");
+	        }
+	    }
 	 if(startDate != null && endDate != null){
 		 sb.append(" and (date(nominatedPost.nominatedPostMember.updatedTime) between :startDate and :endDate) ");
 	 }
+	 if(year != null && !year.trim().isEmpty()){
+		 sb.append(" and year(nominatedPost.nominatedPostMember.updatedTime) = :year ");   
+	 }
 	 sb.append(" group by nominatedPost.nominatedPostMember.boardLevel.boardLevelId ");
 	 sb.append(" order by nominatedPost.nominatedPostMember.boardLevel.boardLevelId ");
+	 
 	 Query query = getSession().createQuery(sb.toString());
-	 query.setParameter("constituencyId",constituencyId);
+	 
+	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+	        if(locationTypeId == 4l){
+	        	query.setParameterList("locationValues", locationValues);
+	        }else if(locationTypeId == 3l){
+	        	query.setParameterList("locationValues", locationValues);
+	        }else if(locationTypeId == 5l){
+	        	query.setParameterList("locationValues", locationValues);
+	        }else if(locationTypeId == 6l){
+	        	query.setParameterList("locationValues", locationValues);
+	        }
+	    }
+	 if(year !=null && !year.trim().isEmpty()){
+		query.setParameter("year", Integer.parseInt(year));
+	 }
 	 if(startDate != null && endDate != null){
 		 query.setDate("startDate",startDate);
 		 query.setDate("endDate",endDate);
