@@ -60,7 +60,14 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String serialNo="";
 	private String isDeletedVoter="";
 	private Long cadreVoterId;
+	private String isDuplicate="";
 	
+	public String getIsDuplicate() {
+		return isDuplicate;
+	}
+	public void setIsDuplicate(String isDuplicate) {
+		this.isDuplicate = isDuplicate;
+	}
 	public Long getCadreVoterId() {
 		return cadreVoterId;
 	}

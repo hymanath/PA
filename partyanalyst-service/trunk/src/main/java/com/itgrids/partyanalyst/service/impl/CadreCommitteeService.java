@@ -22179,13 +22179,13 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 				 tdpCadreIdsList.add(tdpCadreId);
 				 boolean isEligibleToAdd = true;
 				 
-				List<Object[]> boothCadreIdList = boothInchargeDAO.getCadreIdsForLocation(boothIdsList);
+				List<Object[]> boothCadreIdList = boothInchargeDAO.getCadreIdsForLocation(boothIdsList,1L);
 				Set<Long> needToDisableSerialNosList = new HashSet<Long>(0);
 				Object[] resultStatus = null;
 				Long minValue=0L;
 				Long maxValue =0L;
 				
-				if(boothCadreIdList != null && boothCadreIdList.size() > 0l){
+				if(boothCadreIdList != null && boothCadreIdList.size() > 0){
 					List<Long> voterIdsList = new ArrayList<Long>(0);
 					for(Object[] Obj: boothCadreIdList){
 						//own voterId, family VoterId
@@ -22202,24 +22202,24 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 						List<Object[]> cadreSerilaNoList = tdpCadreDAO.getSerialNoInLastestPublicationForCadre(tdpCadreIdsList);
 						if(commonMethodsUtilService.isListOrSetValid(cadreSerilaNoList)){
 							for (Long checkWithSerialNo : needToDisableSerialNosList) {
-								if(checkWithSerialNo != null && checkWithSerialNo.longValue()>0L){
-									resultStatus = commonMethodsUtilService.isAvaiableBetweenPreAndPost_100_Distance(commonMethodsUtilService.getLongValueForObject(cadreSerilaNoList.get(0)[1]),checkWithSerialNo);
-								}
-								if(resultStatus != null){
-									isEligibleToAdd = (boolean) Boolean.valueOf(resultStatus[0].toString());
-									minValue =  commonMethodsUtilService.getLongValueForObject(resultStatus[1]);
-									maxValue =  commonMethodsUtilService.getLongValueForObject(resultStatus[2]);
+								if(isEligibleToAdd){
+									if(checkWithSerialNo != null && checkWithSerialNo.longValue()>0L){
+										resultStatus = commonMethodsUtilService.isAvaiableBetweenPreAndPost_100_Distance(commonMethodsUtilService.getLongValueForObject(cadreSerilaNoList.get(0)[1]),checkWithSerialNo);
+									}
+									if(resultStatus != null){
+										isEligibleToAdd = (boolean) Boolean.valueOf(resultStatus[0].toString());
+										minValue =  commonMethodsUtilService.getLongValueForObject(resultStatus[1]);
+										maxValue =  commonMethodsUtilService.getLongValueForObject(resultStatus[2]);
+									}
 								}
 							}
 						}else{
 							isEligibleToAdd = false;
 						}
-						
 					}
-				
 				if(!isEligibleToAdd){
 					status.setResultCode(2);
-					status.setMessage("The Serial Nos between "+minValue+" - "+maxValue+" already added. So try with other than this range Serila Nos...");
+					status.setMessage("The Serial Nos between "+minValue+" - "+maxValue+" already added. So try with other than this range Serial Nos...");
 					return status;
 				}
 			}
@@ -22348,8 +22348,9 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 				}
 			}
 			
-			List<Object[]> boothCadreIdList = boothInchargeDAO.getCadreIdsForLocation(boothIdsList);
+			List<Object[]> boothCadreIdList = boothInchargeDAO.getCadreIdsForLocation(boothIdsList,0L);
 			Set<Long> needToDisableSerialNosList = new HashSet<Long>(0);
+			Set<String> addedSerialNoList = new HashSet<String>(0);
 			if(boothCadreIdList != null && boothCadreIdList.size() > 0l){
 				for(Object[] Obj: boothCadreIdList){
 					//own voterId, family VoterId
@@ -22357,6 +22358,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					// needToDisableSerialNosList.add(voterSerialNoMap.get(commonMethodsUtilService.getLongValueForObject(Obj[9])));
 					CadreCommitteeVO vo = cadreMap.get(commonMethodsUtilService.getLongValueForObject(Obj[0]));
 						if(vo !=null){
+							
 							 vo.setType("Added Member");
 							 vo.setRoleName(commonMethodsUtilService.getStringValueForObject(Obj[7]));
 							 vo.setBoothNumber(commonMethodsUtilService.getLongValueForObject(Obj[1]));
@@ -22369,15 +22371,28 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 								 vo.setTehsil(commonMethodsUtilService.getStringValueForObject(Obj[4]));
 							 }
 							 vo.setSerialNo(voterSerialNoMap.get(vo.getCadreVoterId()).toString());
+							 vo.setIsDuplicate("No");
+							 if(addedSerialNoList.contains(vo.getSerialNo().trim())){
+								 vo.setIsDuplicate("Yes");
+							 }
+							addedSerialNoList.add(vo.getSerialNo().trim());
 						}
 					}
 				}
 			
 			if(commonMethodsUtilService.isMapValid(cadreMap)){
-				if(!commonMethodsUtilService.isListOrSetValid(needToDisableSerialNosList))
-					returnList = new ArrayList<CadreCommitteeVO>(cadreMap.values());
-				else if(commonMethodsUtilService.isListOrSetValid(needToDisableSerialNosList)){
-					returnList = new ArrayList<CadreCommitteeVO>(0);
+				returnList = new ArrayList<CadreCommitteeVO>(0);
+				if(!commonMethodsUtilService.isListOrSetValid(needToDisableSerialNosList)){
+					//returnList = new ArrayList<CadreCommitteeVO>(cadreMap.values());
+					for (CadreCommitteeVO vo : cadreMap.values()) {
+						vo.setIsDuplicate("No");
+						 if(addedSerialNoList.contains(vo.getSerialNo().trim())){
+							 vo.setIsDuplicate("Yes");
+						 }
+						 returnList.add(vo);	
+					}
+				}else if(commonMethodsUtilService.isListOrSetValid(needToDisableSerialNosList)){
+				
 					Object[] resultStatus = null;
 					for (CadreCommitteeVO vo : cadreMap.values()) {
 						boolean isEligibleToAdd = true;
