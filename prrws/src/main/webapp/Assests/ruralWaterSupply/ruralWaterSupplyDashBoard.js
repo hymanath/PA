@@ -5078,7 +5078,7 @@ function getIHHLlocationLvlWiseData(locationType){
 							"iDisplayLength": 20,
 							"aaSorting": [],
 							"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-							"dom": 'Bfrtip',
+							"dom": 'Blfrtip',
 							buttons: [
 								'copy', 'excel', 'pdf', 'print'
 							]
