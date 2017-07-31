@@ -3075,8 +3075,8 @@
 										<i class="glyphicon glyphicon-calendar"></i>
 									</span>-->
 									<select class="yearWiseDtsCls" style="height: 30px;">
-										<option value="0">All Time Cadre</option>
-										<option value="4" selected>2016-2018</option>
+										<option value="0" selected>All Time Cadre</option>
+										<option value="4">2016-2018</option>
 										<option value="3">2014-2016</option>
 										<option value="2">2012-2014</option>
 									</select>
@@ -3170,7 +3170,7 @@
 											<div class="col-md-6 col-xs-12 col-sm-6">
 												<h4 class="m_top10"><span class="headingColor text-capital" id="distGraphHeadingId">andhra pradesh district wise - categories overview</span></h4>         
 											</div>
-											<div class="col-md-2 col-xs-12 col-sm-2">
+											<!--<div class="col-md-2 col-xs-12 col-sm-2">
 												<select class="form-control" id="apCategoryId">
 													<option value=" ">ALL</option>
 													<option value="Death">Death</option>
@@ -3188,7 +3188,7 @@
 											</div>
 											<div class="col-md-2 col-xs-12 col-sm-2">
 												<input type="submit" value="SUBMIT" onclick="getInsuranceData();" class="btn-primary btn-sm btn"/>
-											</div>    
+											</div> -->   
 										</div>
 									</div>
 									<div class="panel-body">
