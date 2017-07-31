@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.FeedbackQuestionVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
@@ -138,4 +139,5 @@ public interface ITrainingCampService {
 			final String mobileNo,final String remark,final String statusId,final String updateBy,final Long userId,final List<String> fileNames);
 	public List<CallStatusVO> getCommentsMeetingDetails(Long partyMeetingId);
 	public Map<String,TrainingCampVO> getAllTrainingProgWiseCompletedRunningUpcomingBatchIds(String endDateString,String startDateString,Long stateId,String type,List<Long> enrollmentYearIds,List<Long> programYearIds);
+	public List<PartyMeetingWSVO> getattendedcountByFeedBacksCounts(List<Long> programIds,Long campId,Long batchId,String fromdate,String todate,String callFrom,List<Long> enrollmentYrIds,String skillType,Long statusId);
 }

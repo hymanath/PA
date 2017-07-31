@@ -105,6 +105,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SimpleVO;
@@ -7240,6 +7241,10 @@ class TrainingCampService implements ITrainingCampService{
 						   " where tca.attendance.tdpCadreId=tccfd.tdpCadreId" +
 						   " and tca.trainingCampBatch.attendeeTypeId = 1 ");
 				
+				if(campId != null && campId> 0l){
+					sbM.append(" and tccfd.trainingCampProgramId=:campId ");
+				}
+				
 				if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
 					sbM.append(" and tca.trainingCampSchedule.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) ");
 				}
@@ -12172,4 +12177,126 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 		}
 	}
 }
+
+	public List<PartyMeetingWSVO> getattendedcountByFeedBacksCounts(List<Long> programIds,Long campId,Long batchId,String fromDateString,String toDateStrng,String callFrom,List<Long> enrollmentYrIds,String skillType,Long statusId){
+		List<PartyMeetingWSVO> resultList = new ArrayList<PartyMeetingWSVO>(0);
+		try {
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date fromDate=null,toDate=null;
+			if(fromDateString!=null && toDateStrng!=null){
+				fromDate = sdf.parse(fromDateString);
+				toDate = sdf.parse(toDateStrng);
+			}
+			
+			String queryString = prepareQueryForCountsClick(programIds,campId,batchId,fromDate,toDate,callFrom,enrollmentYrIds,skillType,statusId);
+			
+			List<Long> tdpCadreIds = trainingCampCadreFeedbackDetailsDAO.getattendedcountClickDetails(queryString,programIds,campId,batchId,fromDate,toDate,callFrom,enrollmentYrIds,skillType,statusId);
+			
+			if(tdpCadreIds != null && tdpCadreIds.size() > 0){
+				List<Object[]> cadreDetails = tdpCadreDAO.getCadreFormalDetails(tdpCadreIds);
+				
+				if(cadreDetails != null && cadreDetails.size() > 0){
+					for (Object[] obj : cadreDetails) {
+						PartyMeetingWSVO vo = new PartyMeetingWSVO();
+			          
+			            Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+			            String image = obj[5] != null ? obj[5].toString():"";
+			            vo.setTdpCadreId(cadreId);
+			            vo.setName(obj[1] != null ? obj[1].toString():"");
+			            vo.setDateOfBirth(obj[2] != null ? obj[2].toString():"");
+			            vo.setAge(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+			            vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+			            vo.setImgStr("https://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
+			            vo.setMemberShipNo(obj[6] != null ? obj[6].toString():"");
+			            resultList.add(vo);
+					}
+				}
+					 
+			}
+			
+			
+		} catch (Exception e) {
+			LOG.error("Excpetion raiseda at getattendedcountByFeedBacksCounts", e);
+		}
+		return resultList;
+		
+	}
+	
+	public String prepareQueryForCountsClick(List<Long> programIds,Long campId,Long batchId,Date fromDate,Date toDate,String type,List<Long> enrollmentYrIds,String skillType,Long statusTypeId){
+
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select distinct tccfd.tdp_cadre_id as cadreId" +
+				" from training_camp_cadre_feedback_details tccfd,");
+		if(skillType != null && skillType.equalsIgnoreCase("cs")){
+			sb.append("cadre_comminication_skills_status ccss,");
+		}else if(skillType != null && skillType.equalsIgnoreCase("ls")){
+			sb.append("cadre_leadership_skills_status clss,");
+		}		
+		sb.append("training_camp_attendance tca," +
+				" attendance attendance,training_camp_batch tcb, training_camp_schedule tcs" +
+				" where tca.attendance_id = attendance.attendance_id ");
+		
+		if(campId != null && campId>0l){
+			 sb.append(" and tccfd.training_camp_program_id=:campId ");
+		}
+		
+		if(skillType != null && skillType.equalsIgnoreCase("cs")){
+			sb.append(" and tccfd.cadre_comminication_skills_status_id=ccss.cadre_comminication_skills_status_id ");
+		}else if(skillType != null && skillType.equalsIgnoreCase("ls")){
+			sb.append(" and tccfd.cadre_leadership_skills_status_id=clss.cadre_leadership_skills_status_id ");
+		}
+				
+		sb.append(" and attendance.tdp_cadre_id=tccfd.tdp_cadre_id " +
+				" and tca.training_camp_batch_id=tcb.training_camp_batch_id " +
+				" and tca.training_camp_schedule_id=tcs.training_camp_schedule_id ");
+		
+		if(skillType != null && skillType.equalsIgnoreCase("cs") && statusTypeId != null && statusTypeId > 0l){
+			sb.append(" and ccss.cadre_comminication_skills_status_id = :statusTypeId ");
+		}else if(skillType != null && skillType.equalsIgnoreCase("ls") && statusTypeId != null && statusTypeId > 0l){
+			sb.append(" and clss.cadre_leadership_skills_status_id = :statusTypeId ");
+		}
+		  
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append(" and tcs.enrollment_year_id in (:enrollmentYrIds) ");
+		}
+		if(fromDate!=null && toDate!=null){
+			sb.append(" and date(tcb.from_date) >= :fromDate and date(tcb.to_date) <= :toDate ");
+		}
+		
+		if(type.equalsIgnoreCase("c")){
+			sb.append(" and date(tcb.from_date) < :currDate and date(tcb.to_date) < :currDate ");
+		}
+		else if(type.equalsIgnoreCase("r")){
+			sb.append(" and date(tcb.from_date) <= :currDate and  date(tcb.to_date) >= :currDate ");
+		}
+		else if(type.equalsIgnoreCase("u")){
+			sb.append(" and date(tcb.from_date) > :currDate and date(tcb.to_date) > :currDate ");
+		}
+		
+       if(batchId==null && campId==null && programIds!=null){
+			
+			sb.append(" and tca.training_camp_program_id in (:programIds) ");
+			
+		}else if(batchId==null && campId!=null){
+			
+			sb.append(" and tcs.training_camp_id=:campId");
+			if(programIds!=null && programIds.size()>0)
+				sb.append(" and tca.training_camp_program_id in (:programIds) ");
+			
+		}else if(batchId!=null){
+			
+			if(programIds!=null && programIds.size()>0)
+				sb.append(" and tca.training_camp_program_id in (:programIds) ");
+			if(campId!=null)
+			   sb.append(" and tcs.training_camp_id=:campId");
+			
+			sb.append(" and tca.training_camp_batch_id=:batchId");
+			
+		} 
+		
+		return sb.toString();
+	
+	}
 }

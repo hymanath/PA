@@ -49,6 +49,7 @@ public class TrainingCampCadreFeedbackDetails extends BaseModel implements Seria
 	private String watsappShare;
 	private String facebookUsing;
 	private String healthCardAttachment;
+	private Long trainingCampProgramId;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -254,6 +255,14 @@ public class TrainingCampCadreFeedbackDetails extends BaseModel implements Seria
 	}
 	public void setHealthCardAttachment(String healthCardAttachment) {
 		this.healthCardAttachment = healthCardAttachment;
+	}
+	
+	@Column(name="training_camp_program_id")
+	public Long getTrainingCampProgramId() {
+		return trainingCampProgramId;
+	}
+	public void setTrainingCampProgramId(Long trainingCampProgramId) {
+		this.trainingCampProgramId = trainingCampProgramId;
 	}
 	
 	
