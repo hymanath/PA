@@ -75,6 +75,7 @@ public class InputVO implements Serializable {
 	
 	private Long entityType;
 	private List<Long> questionsList;
+	private List<String> selectedDates;
 	
 	public String getLocationIdStr() {
 		return locationIdStr;
@@ -461,6 +462,13 @@ public class InputVO implements Serializable {
 	public void setQuestionsList(List<Long> questionsList) {
 		this.questionsList = questionsList;
 	}
+	public List<String> getSelectedDates() {
+		return selectedDates;
+	}
+	public void setSelectedDates(List<String> selectedDates) {
+		this.selectedDates = selectedDates;
+	}
+	
     	
 	
 }
