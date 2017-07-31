@@ -284,7 +284,42 @@
  $('#districtSpinnerId').hide();
 
 
-
+function validSessionLateTime(strtTimeHours,endTimeHours,lateTimeHours,startTimeMins,endTimeMins,lateTimeMins){
+		var count=0;
+		for(var i in lateTimeHours){
+		if(lateTimeHours[i] < strtTimeHours[i])
+			{
+			  $('#validationId').append("<p>late time hours should be more than start time  ="+lateTimeHours[i]+": "+lateTimeMins[i]+"</p>");
+			  count++;
+			}else if(lateTimeHours[i] == strtTimeHours[i]){
+				if(lateTimeMins[i] <= startTimeMins[i] ){
+					$('#validationId').append("<p>late time minutes should be more then start time = "+lateTimeHours[i]+": "+lateTimeMins[i]+"</p>");
+					count++;
+				}
+				
+			}
+			if( lateTimeHours[i] > endTimeHours[i] ){
+			$('#validationId').append("<p>late time hours should be less than end time = "+lateTimeHours[i]+": "+lateTimeMins[i]+"</p>");
+			count++;
+			}else if(lateTimeHours[i] == endTimeHours[i]){
+				if(lateTimeMins[i] >= endTimeMins[i]){
+					$('#validationId').append("<p>late time minutes should be less than end = "+lateTimeHours[i]+": "+lateTimeMins[i]+"</p>");
+					count++;
+				}
+			}
+				if( strtTimeHours[i] > endTimeHours[i] ){
+			$('#validationId').append("<p>start time hours should be less than end time = "+lateTimeHours[i]+": "+lateTimeMins[i]+"</p>");
+			count++;
+			}else if(strtTimeHours[i] == endTimeHours[i]){
+				if(strtTimeHours[i] >= endTimeMins[i]){
+					$('#validationId').append("<p>start time mints should be less than end = "+lateTimeHours[i]+": "+lateTimeMins[i]+"</p>");
+					count++;
+				}
+			}
+		}
+		
+        return count;
+	}
 
  $(document).on("click", "#applicatioSubmitId", function() {
    var availableSessions=[];
@@ -296,11 +331,71 @@
   if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) acc.push(el); return acc;
 }, []);
 
-     if(duplicateSessions.length > 0){
+var strtTimeHours=[];
+var startTimeMins=[];
+var endTimeHours=[];
+var endTimeMins=[];
+var lateTimeHours=[];
+var lateTimeMins=[];
+
+   var completeStartTime=[];
+ $('.startTime').each(function() {
+	 if($(this).val().length > 1){
+	     completeStartTime.push($(this).val());
+         var startArr=$(this).val().split(":");
+		 strtTimeHours.push(parseInt(startArr[0]));
+		 startTimeMins.push(parseInt(startArr[1]));		 
+	 }		 
+    });
+var completeEndTime=[];
+	 $('.endTime').each(function() {
+		  if($(this).val().length > 1){
+		 completeEndTime.push($(this).val());
+		 var endArr=$(this).val().split(":");
+		 endTimeHours.push(parseInt(endArr[0]));
+		 endTimeMins.push(parseInt(endArr[1]));
+		  }		 
+    });
+	
+	 var completeLateTime=[];
+    $('.lateTime').each(function() {
+		 if($(this).val().length > 1){
+		 completeLateTime.push($(this).val());
+		  var lateArr=$(this).val().split(":");
+		  lateTimeHours.push(parseInt(lateArr[0]));
+		  lateTimeMins.push(parseInt(lateArr[1]));
+		 }
+    });
+
+	var errorCount=validSessionLateTime(strtTimeHours,endTimeHours,lateTimeHours,startTimeMins,endTimeMins,lateTimeMins);
+	
+     var duplicateStartTime = completeStartTime.reduce(function(acc, el, i, arr) {
+  if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) acc.push(el); return acc;
+}, []);
+
+var duplicateEndTime = completeEndTime.reduce(function(acc, el, i, arr) {
+  if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) acc.push(el); return acc;
+}, []);
+
+var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
+  if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) acc.push(el); return acc;
+}, []);
+
+
+  if(duplicateSessions.length > 0 ||
+	 duplicateStartTime.length > 0 || duplicateEndTime.length>0 || duplicateLateTime.length>0 || errorCount >0){
       $(".validationStatus").modal('show');
-      $('#validationId').html("");
 	  if(duplicateSessions.length > 0){
       $('#validationId').append("<p>Please Avoid Duplicate Sessions</p><p>"+duplicateSessions+"</p>");
+	  }
+	  if(duplicateStartTime.length > 0){
+       $('#validationId').append("<p>Please Avoid Duplicate StartTime</p><p>"+duplicateStartTime+"</p>");
+	  }
+	  if(duplicateEndTime.length > 0){
+       $('#validationId').append("<p>Please Avoid Duplicate EndTime</p><p>"+duplicateEndTime+"</p>");
+	  }
+	  if(duplicateLateTime.length > 0){
+       $('#validationId').append("<p>Please Avoid Duplicate LateTime</p><p>"+duplicateLateTime+"</p>");
 	  }
           setTimeout(function() {
       $(".validationStatus").modal('hide');
