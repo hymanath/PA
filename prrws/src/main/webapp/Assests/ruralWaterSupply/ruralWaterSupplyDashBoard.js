@@ -3,7 +3,7 @@
 		var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
 		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","Ground":"#14BAAD","Surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
 		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049",
-		"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","PARTIALLY SATISFIED":"#FFBA00","NOT SATISFIED":"#FF0909"}
+		"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","PARTIALLY SATISFIED":"#FFBA00","NOT SATISFIED":"#FF0909","TARGET":"#FC5049","COMPLETED":"#14BAAD"}
 		var blocksArr = [{name:'Coverage Status Of Habitation',id:'habitation',img:'coverage_status.png'},
 						 {name:'Key Performance',id:'performance',img:'key_performance.png'},
 						 {name:'<p><span><img src="Assests/icons/alert_status.png"/> Jalavani </span></p>',id:'jalavani',img:'alert_status.png'},
@@ -13,6 +13,8 @@
 		var blockArrClickArr = [{name:'HabitationClick',id:'modalHablitationTable'},{name:'KpiClick',id:'modalKpiTable'},{name:'JalavaniClick',id:'modalAlertTable'},{name:'IvrStatusClick',id:'modalIvrStatusTable'},{name:'AssetsClick',id:'modalAssetsTable'},{name:'WaterSourceClick',id:'modalWaterSourceTable'},{name:'WorkSchemsClick',id:'modalWorkSchemsTable'}];
 		var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 		var levelNamesArr=[{name:'state',id:'2'},{name:'district',id:'3'},{name:'constituency',id:'4'},{name:'mandal',id:'5'}];
+		var levelWiseSBArr = ['state','district','constituencies','mandal','panchayat'];
+		//var overViewArr = ['IHHL'];
 		getAllFiniancialYears();
 		function onloadCalls(){
 			getHabitationCoverageByStatusByLocationType('state','','graph',"","","");
@@ -21,7 +23,8 @@
 			getSchemesDetails();
 			getSchemeWiseWorkDetails('graph','state',"","","","");
 			getAssetInfoBetweenDates('graph','state',"","","","");
-			getWaterSourceInfo();
+			//getWaterSourceInfo();
+			getWaterSourceDeatils2("state","","","","","graph")
 			getKeyPerformanceIndicatorsInfo('state','','graph',"","","");
 			getPlanofActionForStressedHabitations();
 			//getAlertDetailsOfCategoryByStatusWise();
@@ -29,7 +32,7 @@
 			getAlertFeedbackStatusDetails();
 			
 			getHamletWiseIvrStatusCounts('graph','','state',"","",2);
-			
+			getIHHLOverviewData("abstract");
 			//locationType,filterType,filterValue,districtValue,divId
 			//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
 			//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
@@ -2448,7 +2451,7 @@
 				}else if(id == "stateBlockIdschemeId"){
 					getSchemeWiseWorkDetails('table','state',blocksArr,"","","");
 				}else if(id == "stateBlockIdwaterSourceId"){
-					getWaterSourceDeatils2('state',blocksArr,"","","")
+					getWaterSourceDeatils2('state',blocksArr,"","","","table")
 				}
 			}else if(blockName == "district"){
 				emptyCheckDistrict();
@@ -2464,7 +2467,7 @@
 				}else if(id == "districtBlockIdschemeId"){
 					getSchemeWiseWorkDetails('table','district',blocksArr,"","","");
 				}else if(id == "districtBlockIdwaterSourceId"){
-					getWaterSourceDeatils2('district',blocksArr,"","","")
+					getWaterSourceDeatils2('district',blocksArr,"","","","table")
 				}
 			}else if(blockName == "constituency"){
 				emptyCheckConstituency();
@@ -2491,7 +2494,7 @@
 				}else if(id == "constituencyBlockIdwaterSourceId"){
 					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
-					getWaterSourceDeatils2('constituency',blocksArr,"","","")
+					getWaterSourceDeatils2('constituency',blocksArr,"","","","table")
 				}
 			}else if(blockName == "mandal"){
 				emptyCheckMandal();
@@ -2518,7 +2521,7 @@
 				}else if(id == "mandalBlockIdwaterSourceId"){
 					getAllPrrwsDistricts("chosendistValmandalBlockId");
 					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
-					getWaterSourceDeatils2('mandal',blocksArr,"","","")
+					getWaterSourceDeatils2('mandal',blocksArr,"","","","table")
 				}
 			}
 		});
@@ -2598,7 +2601,7 @@
 				}else if(id == "stateBlockIdschemeId"){
 					getSchemeWiseWorkDetails('table','state',blocksArr,"","","");
 				}else if(id == "stateBlockIdwaterSourceId"){
-					getWaterSourceDeatils2('state',blocksArr,"","","")
+					getWaterSourceDeatils2('state',blocksArr,"","","","table")
 				}
 			}else if(blockName == "district"){
 				emptyCheckDistrict();
@@ -2614,7 +2617,7 @@
 				}else if(id == "districtBlockIdschemeId"){
 					getSchemeWiseWorkDetails('table','district',blocksArr,"","","");
 				}else if(id == "districtBlockIdwaterSourceId"){
-					getWaterSourceDeatils2('district',blocksArr,"","","")
+					getWaterSourceDeatils2('district',blocksArr,"","","","table")
 				}
 			}else if(blockName == "constituency"){
 				emptyCheckConstituency();
@@ -2641,7 +2644,7 @@
 				}else if(id == "constituencyBlockIdwaterSourceId"){
 					getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 					//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
-					getWaterSourceDeatils2('constituency',blocksArr,"","","")
+					getWaterSourceDeatils2('constituency',blocksArr,"","","","table")
 				}
 			}else if(blockName == "mandal"){
 				emptyCheckMandal();
@@ -2668,7 +2671,7 @@
 				}else if(id == "mandalBlockIdwaterSourceId"){
 					getAllPrrwsDistricts("chosendistValmandalBlockId");
 					//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
-					getWaterSourceDeatils2('mandal',blocksArr,"","","")
+					getWaterSourceDeatils2('mandal',blocksArr,"","","","table")
 				}
 			}
 		});
@@ -3108,7 +3111,7 @@
 				}else if(tabId == "constituencyBlockIdschemeId"){
 					getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","");
 				}else if(tabId == "constituencyBlockIdwaterSourceId"){
-					getWaterSourceDeatils2('constituency',blocksArr,"","","")
+					getWaterSourceDeatils2('constituency',blocksArr,"","","","table")
 				}
 				
 			}else{
@@ -3138,7 +3141,7 @@
 				}else if(tabId == "constituencyBlockIdwaterSourceId"){
 					getConstituenciesForDistrict(distId,"chosenconstValconstituencyBlockId");
 					//getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValconstituencyBlockId");
-					getWaterSourceDeatils2('constituency',blocksArr,"district",distId,"")
+					getWaterSourceDeatils2('constituency',blocksArr,"district",distId,"","table")
 				}
 			}
 		}
@@ -3198,9 +3201,9 @@
 				
 			}else if(tabId == "constituencyBlockIdwaterSourceId"){
 				if(constId == 0){
-					getWaterSourceDeatils2('constituency',blocksArr,"district",distId,"")
+					getWaterSourceDeatils2('constituency',blocksArr,"district",distId,"","table")
 				}else{
-					getWaterSourceDeatils2('constituency',blocksArr,"constituency",constId,"")
+					getWaterSourceDeatils2('constituency',blocksArr,"constituency",constId,"","table")
 				}
 				
 			}
@@ -3235,7 +3238,7 @@
 				}else if(tabIdM == "mandalBlockIdschemeId"){
 					getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","");
 				}else if(tabIdM == "mandalBlockIdwaterSourceId"){
-					getWaterSourceDeatils2('mandal',blocksArr,"","","")
+					getWaterSourceDeatils2('mandal',blocksArr,"","","","table")
 				}
 			}else{
 				 if(tabIdM == "mandalBlockIdhabitation"){
@@ -3262,7 +3265,7 @@
 				}else if(tabIdM == "mandalBlockIdwaterSourceId"){
 					getConstituenciesForDistrict(distId,"chosenconstValmandalBlockId");
 					//getLocationBasedOnSelection("constituency","district",distId,"","chosenconstValmandalBlockId");
-					getWaterSourceDeatils2('mandal',blocksArr,"district",distId,"")
+					getWaterSourceDeatils2('mandal',blocksArr,"district",distId,"","table")
 				}
 			}
 		}
@@ -3333,9 +3336,9 @@
 				getTehsilsForConstituency(constId,"chosenmandalValmandalBlockId");
 				//getLocationBasedOnSelection("mandal","constituency",constId,"","chosenmandalValmandalBlockId");
 				if(constId == 0){
-					getWaterSourceDeatils2('mandal',blocksArr,"district",distId,"")
+					getWaterSourceDeatils2('mandal',blocksArr,"district",distId,"","table")
 				}else{
-					getWaterSourceDeatils2('mandal',blocksArr,"constituency",constId,"")
+					getWaterSourceDeatils2('mandal',blocksArr,"constituency",constId,"","table")
 				}
 				
 			}
@@ -3400,9 +3403,9 @@
 				
 			}else if(tabIdM == "mandalBlockIdwaterSourceId"){
 				if(mandalId == 0){
-					getWaterSourceDeatils2('mandal',blocksArr,"constituency",constId,"")
+					getWaterSourceDeatils2('mandal',blocksArr,"constituency",constId,"","table")
 				}else{
-					getWaterSourceDeatils2('mandal',blocksArr,"mandal",mandalId,distId)
+					getWaterSourceDeatils2('mandal',blocksArr,"mandal",mandalId,distId,"table")
 				}
 				
 			}
@@ -3573,15 +3576,21 @@
 	}
 	
 	
-	function getWaterSourceDeatils2(locationType,divId,filterType,filterValue,districtValue){
-		for(var k in divId){
+	function getWaterSourceDeatils2(locationType,divId,filterType,filterValue,districtValue,type){//araV
+		
+		if(type == "graph"){
+			$("#waterSources").html(spinner);
+		}else{
+			for(var k in divId){
 				$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
 			}
+		}
+		
 		var json = {
 			year:"2017",
 			locationType:locationType,
-			fromDateStr:"01-12-1997",
-			toDateStr:"31-07-2017",
+			fromDateStr:glStartDate,
+			toDateStr:glEndDate,
 			filterType:filterType,
 			filterValue:filterValue,
 			districtValue:districtValue
@@ -3597,8 +3606,12 @@
 			}
 		}).done(function(ajaxresp){
 				if(ajaxresp !=null && ajaxresp.length>0){
+					if(type == "graph"){
+						buildWaterSourceStateLevelGraphView(ajaxresp);
+					}
 					buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations');
 				}else{
+					
 					for(var k in divId){
 						$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
 					}
@@ -3607,7 +3620,88 @@
 		});
 	}
 	
-	
+	function buildWaterSourceStateLevelGraphView(ajaxresp){
+		if(ajaxresp !=null && ajaxresp.length>0){//ara4
+			var safeArr = [];
+			var unSafeArr = [];
+			for(var i in ajaxresp){
+				safeArr.push({"y":ajaxresp[i].safeGroundWaterSourceCount})
+				safeArr.push({"y":ajaxresp[i].safeSurfaceWaterSourceCount})
+				unSafeArr.push({"y":ajaxresp[i].unSafeGroundWaterSourceCount})
+				unSafeArr.push({"y":ajaxresp[i].unSafeSurfaceWaterSourceCount})
+			}
+			$("#waterSources").highcharts({
+					chart: {
+						type: 'column'
+					},
+					title: {
+						text: '',
+						align:'left',
+						style: {
+							color: '#000',
+							font: 'bold 16px "Lato", sans-serif'
+						}
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: ['GROUND','SURFACE']
+					},
+					yAxis:{
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+							title: {
+								text: null
+							},
+					}, 
+					
+					legend: {
+						symbolHeight: 12,
+						symbolWidth: 12,
+						symbolRadius: 6,
+						enabled: true
+					},
+					tooltip: {
+						useHTML:true,
+						formatter: function () {
+							return '<b>' + this.x + '</b><br/>' +
+								this.series.name + ': ' + this.y;
+						}
+					},
+					plotOptions: {
+						column: {
+							//colorByPoint: true
+							dataLabels: {
+								useHTML:true,
+								enabled: true,
+								formatter: function() {
+									if(this.y == 0){
+										return null;
+									}else{
+										return '<span>'+this.y+'</span>';
+									}
+									
+								}
+							}
+						}
+					},
+					series: [{
+							name: 'SAFE',
+							data: safeArr,
+							color:'#14BBAE'
+						}, {
+							name: 'UNSAFE',
+							data: unSafeArr,
+							color:'#FC5E57'
+						}]
+				});
+		}else{
+			$("#waterSourcesTtlValues").hide()
+			$("#waterSources").html("No Data Available");
+		}
+	}
 	$(document).on("click",".ivrStatusViewCls",function(){
 		$("#modalHablitationTable").html('');
 		$("#modalAlertTable").html('');
@@ -4524,8 +4618,13 @@
 			}
 		$(".prev,.next").css("width","70px !important");	
 	}
-//getIHHLOverviewData();
-function getIHHLOverviewData(){
+
+	function getIHHLOverviewData(type){
+		if(type == "abstract"){
+			$("#swatchBharatDivId").html(spinner);
+		}else{
+			$("#swatchBharatOvervwIHHL").html(spinner);
+		}
 		
 		var json = {
 				fromMonth:"201704",
@@ -4544,27 +4643,341 @@ function getIHHLOverviewData(){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			/* if(result !=null && result.length>0){
-				buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount);
-			}else{
+			if(result !=null){
+				if(type == "abstract"){
+					buildIHHLOverviewDataAbstractOverView(result);
+				}else{
+					
+					builOverViewBlock(result,"IHHL");
+				}
 				
-				$("#modalSchemsTable").html('No Data Available');
-			} */
-			
+			}else{
+				if(type == "abstract"){
+					$("#swatchBharatDivId").html("NO DATA AVAILABLE");
+				}else{
+					$("#swatchBharatOvervwIHHL").html("NO DATA AVAILABLE");
+				}
+				
+			}
 		});
 	}
-getIHHLlocationLvlWiseData();
-function getIHHLlocationLvlWiseData(){
+	
+	function buildIHHLOverviewDataAbstractOverView(result){
+		if(result.subList1 !=null && result.subList1.length>0){
+				var dataArr=[];
+				var totalCount=0;
+				for(var i in result.subList1){
+					dataArr.push(result.subList1[i].target)
+					dataArr.push(result.subList1[i].completed)
+					totalCount =result.subList1[i].target+result.subList1[i].completed
+				}
+			var colors = ['#FC5049','#14BAAD']
+			var id = 'swatchBharatDivId';
+			var type = {
+				type: 'column',
+				backgroundColor:'transparent'
+			};
+			var title = { text: ''
+				/* text: 'Habitation',
+				align:'left',
+				 style: {
+					 color: '#000',
+					 font: 'bold 16px "Lato", sans-serif'
+				  } */
+			};
+		
+			var legend = {
+				enabled: false
+			};
+			var yAxis = {
+				title: {
+					text: null
+				},
+			};
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: ['TARGET','COMPLETED'],
+				labels: {
+					useHTML:true,
+					formatter: function() {
+						return '<p><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value+'</p>';
+						
+					},
+					
+				}
+				
+			};
+			
+			var plotOptions ={ column: {
+					colorByPoint: true
+				}};
+			var tooltip = {
+				useHTML:true,
+				formatter: function () {
+						var pcnt = (this.y / totalCount) * 100;
+						return '<b>' + this.x + '</b><br/>' +
+							this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+					}
+			};
+
+			var data = [{
+				name: '',
+				data: dataArr,
+
+				dataLabels: {
+					enabled: true,
+					color: '#000',
+					align: 'center',
+					formatter: function() {
+						var pcnt = (this.y / totalCount) * 100;
+						return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+					}
+				}
+			}];
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
+			
+		}
+	}
+	
+	$(document).on("click",".overViewDtlsSwatchBharatCls",function(){
+		
+		var str='';
+		str+='<div class="panel-group" id="accordion">';
+			str+='<div class="panel panel-default panel-black">';
+				str+='<div class="panel-heading" role="tab" id="headingSBM">';
+					str+='<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseSBM" aria-expanded="true" aria-controls="collapseSBM">';
+						str+='<h4 class="panel-title text-capital">Swatch Bharat - IHHL</h4>';
+					str+='</a>';
+					
+				str+='</div>';
+				str+='<div id="collapseSBM" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSBM">';
+					str+='<div class="panel-body">';
+						str+='<div id="overViewBlockId"></div>';
+						str+='<div id="levelWiseSwatchBharatId"></div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+		$("#sbmIhhlBlockId").html(str);
+		
+		overviewData("IHHL");
+		levelWiseSBData("IHHL");
+		$('html,body').animate({
+			scrollTop: $("#overViewBlockId").offset().top},
+        'slow');
+	});
+	
+	function overviewData(divId){
+		var collapse = '';
+		collapse+='<section>';
+			collapse+='<div class="row">';
+				collapse+='<div class="col-sm-12">';
+					collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+'" role="tablist" aria-multiselectable="true">';
+						collapse+='<div class="panel panel-default panel-black">';
+							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+'">';
+								collapse+='<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+'" href="#collapse'+divId.replace(/\s+/g, '')+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+'">';
+								collapse+='<h4 class="panel-title text-capital">'+divId+' overview</h4>';
+								collapse+='</a>';
+							collapse+='</div>';
+							collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+'">';
+								collapse+='<div class="panel-body">';
+									collapse+='<div id="swatchBharatOvervw'+divId.replace(/\s+/g, '')+'"></div>';
+								collapse+='</div>';
+							collapse+='</div>';
+						collapse+='</div>';
+					collapse+='</div>';
+				collapse+='</div>';
+			collapse+='</div>';
+		collapse+='</section>';
+		$("#overViewBlockId").html(collapse);
+		
+		getIHHLOverviewData("overview")
+		
+	}
+	
+function builOverViewBlock(result,divId){
+	var $windowWidth = $(window).width();
+	if(result.subList2 !=null && result.subList2.length>0){
+		var str1="";
+		str1+='<div class="table-responsive">';
+			str1+='<table class="table table-bordered m_top10" >';
+				str1+='<tbody>';
+				str1+='<tr>';
+				for(var i in result.subList2){
+						str1+='<td>';
+							str1+='<div class="col-sm-12">';
+							if(result.subList2[i].type == "District"){
+								str1+='<h4 ><strong>Total Districts : '+result.subList2[i].total+'</strong></h4>';
+							}else if(result.subList2[i].type == "Constituencies"){
+								str1+='<h4 ><strong>Total Constituencies : '+result.subList2[i].total+'</strong></h4>';
+							}else if(result.subList2[i].type == "Mandal"){
+								str1+='<h4 ><strong>Total Mandal : '+result.subList2[i].total+'</strong></h4>';
+							}else if(result.subList2[i].type == "Panchayat"){
+								str1+='<h4 ><strong>Total Panchayat : '+result.subList2[i].total+'</strong></h4>';
+							}
+								
+							str1+='</div>';
+							str1+='<div class="col-sm-12 m_top10">';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+									if(result.subList2[i].red != null && result.subList2[i].red > 0){
+										if(result.subList2[i].type == "District"){
+											str1+='<p class="media-body" >Districts in Red : '+result.subList2[i].red+'</p>';
+										}else if(result.subList2[i].type == "Constituencies"){
+											str1+='<p class="media-body" >Constituencies in Red : '+result.subList2[i].red+'</p>';
+										}else if(result.subList2[i].type == "Mandal"){
+											str1+='<p class="media-body" >Mandal in Red : '+result.subList2[i].red+'</p>';
+										}else if(result.subList2[i].type == "Panchayat"){
+											str1+='<p class="media-body" >Panchayat in Red : '+result.subList2[i].red+'</p>';
+										}
+										
+									}else{
+										if(result.subList2[i].type == "District"){
+											str1+='<p>Districts in Red : - </p>';
+										}else if(result.subList2[i].type == "Constituencies"){
+											str1+='<p>Constituencies in Red : - </p>';
+										}else if(result.subList2[i].type == "Mandal"){
+											str1+='<p>Mandal in Red : - </p>';
+										}else if(result.subList2[i].type == "Panchayat"){
+											str1+='<p>Panchayat in Red : - </p>';
+										}
+										
+									}
+								str1+='</div>';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+									if(result.subList2[i].orange != null && result.subList2[i].orange > 0){
+										if(result.subList2[i].type == "District"){
+											str1+='<p class="media-body"  >Districts in Orange : '+result.subList2[i].orange+'</p>';
+										}else if(result.subList2[i].type == "Constituencies"){
+											str1+='<p class="media-body"  >Constituencies in Orange : '+result.subList2[i].orange+'</p>';
+										}else if(result.subList2[i].type == "Mandal"){
+											str1+='<p class="media-body" >Mandal in Orange : '+result.subList2[i].orange+'</p>';
+										}else if(result.subList2[i].type == "Panchayat"){
+											str1+='<p class="media-body" >Panchayat in Orange : '+result.subList2[i].orange+'</p>';
+										}
+									}else{
+										if(result.subList2[i].type == "District"){
+											str1+='<p>Districts in Red : - </p>';
+										}else if(result.subList2[i].type == "Constituencies"){
+											str1+='<p>Constituencies in Red : - </p>';
+										}else if(result.subList2[i].type == "Mandal"){
+											str1+='<p>Mandal in Red : - </p>';
+										}else if(result.subList2[i].type == "Panchayat"){
+											str1+='<p>Panchayat in Red : - </p>';
+										}
+									}
+								str1+='</div>';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+									if(result.subList2[i].green != null && result.subList2[i].green > 0){
+										if(result.subList2[i].type == "District"){
+											str1+='<p class="media-body" >Districts in Green : '+result.subList2[i].green+'</p>';
+										}else if(result.subList2[i].type == "Constituencies"){
+											str1+='<p class="media-body" >Constituencies in Green : '+result.subList2[i].green+'</p>';
+										}else if(result.subList2[i].type == "Mandal"){
+											str1+='<p class="media-body" >Mandal in Green : '+result.subList2[i].green+'</p>';
+										}else if(result.subList2[i].type == "Panchayat"){
+											str1+='<p class="media-body" >Panchayat in Green : '+result.subList2[i].green+'</p>';
+										}
+									}else{
+										if(result.subList2[i].type == "District"){
+											str1+='<p>Districts in Red : - </p>';
+										}else if(result.subList2[i].type == "Constituencies"){
+											str1+='<p>Constituencies in Red : - </p>';
+										}else if(result.subList2[i].type == "Mandal"){
+											str1+='<p>Mandal in Red : - </p>';
+										}else if(result.subList2[i].type == "Panchayat"){
+											str1+='<p>Panchayat in Red : - </p>';
+										}
+									}
+								str1+='</div>';
+							str1+='</div>';
+						str1+='</td>';
+				}
+				str1+='</tr>';
+				str1+='</tbody>';
+			str1+='</table>';
+		str1+='</div>';	
+		$("#swatchBharatOvervw"+divId.replace(/\s+/g, '')).html(str1);	
+		
+	}
+}
+function levelWiseSBData(divId)
+{
+	var collapse='';
+		collapse+='<section>';
+			collapse+='<div class="row">';
+			collapse+='<div class="col-sm-12">';
+				for(var i in levelWiseSBArr)
+				{
+					collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" role="tablist" aria-multiselectable="true">';
+						collapse+='<div class="panel panel-default panel-black">';
+							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseSBArr[i]+'">';
+								if(i == 0)
+								{
+									collapse+='<a role="button" class="panelCollapseIcon '+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+								}else{
+									collapse+='<a role="button" class="panelCollapseIcon collapsed '+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+								}
+								collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview - (SBM- '+divId+')</h4>';
+									
+								collapse+='</a>';
+							collapse+='</div>';
+							if(i == 0)
+							{
+								collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+							}else{
+								collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+							}
+							
+								collapse+='<div class="panel-body">';
+									collapse+='<div id="'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"></div>';
+								collapse+='</div>';
+							collapse+='</div>';
+						collapse+='</div>';
+					collapse+='</div>';
+				}
+			collapse+='</div>';
+			collapse+='</div>';
+			collapse+='</section>';
+			
+	$("#levelWiseSwatchBharatId").html(collapse);
+	
+	setTimeout(function(){ 
+		for(var i in levelWiseSBArr){
+			if(levelWiseSBArr[i] == "state"){
+				getIHHLlocationLvlWiseData("state")
+			}else if(levelWiseSBArr[i] == "district"){
+				getIHHLlocationLvlWiseData("district")
+			}else if(levelWiseSBArr[i] == "constituencies"){
+				getIHHLlocationLvlWiseData("constituencies")
+			}
+		}	
+	
+	}, 1500);
+	
+}
+$(document).on("click",".IHHLmandal",function(){
+		getIHHLlocationLvlWiseData("mandal")
+});
+$(document).on("click",".IHHLpanchayat",function(){
+	getIHHLlocationLvlWiseData("panchayat")
+});	
+function getIHHLlocationLvlWiseData(locationType){
+		$("#IHHL"+locationType).html(spinner);
 		
 		var json = {
 			fromMonth:"201704",
 			toMonth:"201707",
 			location:"state",
 			locationId:"01",
-			subLocation : "constituencies"
+			subLocation :locationType
 				
 		}
-		
 		$.ajax({                
 			type:'POST',    
 			url: 'getIHHLlocationLvlWiseData',
@@ -4575,12 +4988,101 @@ function getIHHLlocationLvlWiseData(){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			/* if(result !=null && result.length>0){
-				buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount);
-			}else{
-				
-				$("#modalSchemsTable").html('No Data Available');
-			} */
-			
+			if(result !=null && result.length>0){
+				buildIHHLlocationLvlWiseData(result,locationType);
+			}
 		});
 	}
+	
+		function buildIHHLlocationLvlWiseData(ajaxresp,locationType){
+			if(ajaxresp != null && ajaxresp.length > 0){
+					var str = '';
+					str+='<div class="table-responsive">';
+						str+='<table class="table table-bordered dataTable'+locationType+'">';
+							str+='<thead class="text-capital">';
+								if(locationType == "state"){
+									str+='<th class="text-capital">'+locationType+'</th>';
+								}
+								else if(locationType == "district"){
+									str+='<th class="text-capital">district</th>';
+								}
+								else if(locationType == "constituencies"){
+									str+='<th class="text-capital">district</th>';
+									str+='<th class="text-capital">constituency</th>';
+								}
+								else if(locationType == "mandal"){
+									str+='<th class="text-capital">district</th>';
+									str+='<th class="text-capital">constituency</th>';
+									str+='<th class="text-capital">mandal</th>';
+								}
+								else if(locationType == "panchayat"){
+									str+='<th class="text-capital">district</th>';
+									str+='<th class="text-capital">constituency</th>';
+									str+='<th class="text-capital">mandal</th>';
+									str+='<th class="text-capital">panchayat</th>';
+								}
+								str+='<th class="text-capital">TARGET</th>';
+								str+='<th class="text-capital">Grounded</th>';
+								str+='<th class="text-capital">Not-Grounded</th>';
+								str+='<th class="text-capital">In Progress</th>';
+								str+='<th class="text-capital">Completed</th>';
+								str+='<th class="text-capital">Achivement Percentage</th>';
+								
+							str+='</thead>';
+							str+='<tbody>';
+								for(var i in ajaxresp){
+									str+='<tr>';
+										if(locationType == "state"){
+											str+='<td class="text-capital">'+locationType+'</td>';
+										}
+										else if(locationType == "district"){
+											str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+										}
+										else if(locationType == "constituencies"){
+											str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+										}
+										else if(locationType == "mandal"){
+											str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+										}
+										else if(locationType == "panchayat"){
+											str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+										}
+										str+='<td class="text-capital">'+ajaxresp[i].target+'</td>';										
+										str+='<td class="text-capital">'+ajaxresp[i].grounded+'</td>';										
+										str+='<td class="text-capital">'+ajaxresp[i].noTGrounded+'</td>';										
+										str+='<td class="text-capital">'+ajaxresp[i].completed+'</td>';										
+										str+='<td class="text-capital">'+ajaxresp[i].completed+'</td>';	
+										
+										if(ajaxresp[i].percentage >=80){
+											str+='<td class="text-capital" style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
+										}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+												str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
+										}else if(ajaxresp[i].percentage <50){
+											str+='<td class="text-capital" style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
+										}
+									str+='</tr>';
+								}
+							str+='</tbody>';
+						str+='</table>';
+					str+='</div>';
+					$("#IHHL"+locationType).html(str);
+					
+					if(locationType !="state" || locationType !="district"){
+						$(".dataTable"+locationType).dataTable({
+							"iDisplayLength": 20,
+							"aaSorting": [],
+							"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+							"dom": 'Bfrtip',
+							buttons: [
+								'copy', 'excel', 'pdf', 'print'
+							]
+						});
+					}
+				}
+		}
