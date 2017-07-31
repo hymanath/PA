@@ -612,11 +612,13 @@
 					str+='</div>';
 					str+='</div>';
 					
-					if(result[i].type == "Not Added")
+					if(result[i].type == "Not Added" && (result[i].isDuplicate=="No" || result[i].isDuplicate==""))
 					{
 						str+='<div class="form-inline ">';
-						str+='<a onclick="javascript:{saveBoothDetails('+result[i].tdpCadreId+')}" class="btn btn-success btn-medium m_top5" > ADD PROFILE</a><span id="errMsgId"></span>';
+						str+='<a onclick="javascript:{saveBoothDetails('+result[i].tdpCadreId+')}" class="btn btn-success btn-medium m_top5 addProfileCls" > ADD PROFILE</a><span id="errMsgId"></span>';
 						str+='</div>';	
+					}else if(result[i].isDuplicate=="Yes") {
+						str+='<div class="form-inline " style="color:red;" title="This cadre may or may not registered with Own voterId or Family Voter Id." > No access to add .  Because This Serial No already added as incharger.</div> ';	
 					}
 				}
 				elegRolCnt++;
@@ -1610,7 +1612,7 @@ function getCadreDetailsForBoothBySearchCriteria()
 	}
 
 function saveBoothDetails(tdpCadreId){
-	 var committeeLocationId =$("#committeeLocationId1").val();
+	var committeeLocationId =$("#committeeLocationId1").val();
 	var boothNo =$("#committeeLocationId1 option:selected").text();
 	var committeePositionStr = $('#committeeDesignationId option:selected').text().trim();
 	var confm = confirm(" Are you sure want to add this cadre as "+committeePositionStr+" Position for " +boothNo+ " ");
@@ -1620,7 +1622,7 @@ function saveBoothDetails(tdpCadreId){
 		return;
     }
 	var boothIncrgRoleId = $("#committeeDesignationId").val();
-	
+	$('.addProfileCls').hide();
 	var enrollmentYrIds = [];
 	enrollmentYrIds.push(1);
 	var jsObj =
@@ -1644,12 +1646,15 @@ function saveBoothDetails(tdpCadreId){
 						updateRangeIdsOfBoothIncharge(committeeLocationId);
 					},1200);
 				}else if(result.resultCode == 2){
+					$('.addProfileCls').show();
 					alert(result.message);
 					/* $("#errMsgId").html("<span style='color:green;'>Member added failed.Please try again..</span>"); */
 				}else if(result.resultCode == 3){
+					$('.addProfileCls').show();
 					alert("No Vacancy.");
 					/* $("#errMsgId").html("<span style='color:green;'>Member added failed.Please try again..</span>"); */
 				}else {
+					$('.addProfileCls').show();
 					alert("Member added failed.Please try again..")
 					/* $("#errMsgId").html("<span style='color:green;'>Member added failed.Please try again..</span>"); */
 				}
@@ -1840,7 +1845,7 @@ $(document).on("click","#deleteMembrsBtn",function(){
 		{
 			boothInchargeMappingId : roleMappingId,
             boothInchargeId :  inchargeId,
-            boothId:boothId,
+            boothId:0,
             boothInchargeEnrollementId:1			
 		}
 		   $.ajax({
