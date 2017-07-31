@@ -13,7 +13,7 @@ import com.itgrids.partyanalyst.model.BoothIncharge;
 public interface IBoothInchargeDAO extends GenericDao<BoothIncharge,Long>{
 	public List<Object[]> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId,String cadreType);
 	
-	public List<Object[]> getCadreIdsForLocation(List<Long> tdpCadreIds);
+	public List<Object[]> getCadreIdsForLocation(List<Long> tdpCadreIds,Long roleId);
 	public BoothIncharge getExistingMember(Long locationId,String type);
 	public Long getStartedBothCountByConstiId(Long constituencyId);
 	public Long getBoothAssignInchargeCount(String searchType , Long userAccessLevelId,Set<Long> userAccessLevelValues,Date startDate,Date endDate,List<Long> committeeEnrollmentYearsIdsLst,List<Long> bothIds);
