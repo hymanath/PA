@@ -37,12 +37,11 @@
 	<section>
 		<div class="row">
 			<div id="candidateProfile"></div>
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="constituencyVoters">
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 			<div id="consCountsId"></div>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="election">
 				 <h3 class="text-capitalize">Election Information Assembly Constituency</h3>
-				 <h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>
 				 <div class="block">
 					<div class="row">
 						 <div class="col-md-12 col-xs-12 col-sm-12">
@@ -55,9 +54,19 @@
 							 <label class="text-capital m_left5">
 							 	<input type="checkbox"/>parliament
 							 </label>
-							 
-							 <div id="test"></div>
-						 </div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="block">
+								<div class="row">
+									<h5 class="text-capitalize" style="margin-left: 10px;">Assembly Election Details</h5>	
+									<div class="col-md-6 col-xs-12 col-sm-6">
+										<div id="assemblyElectionDetails"></div>
+									</div>
+									<div class="col-md-6 col-xs-12 col-sm-6">
+										<div id="assemblyElectionDetailsView">
+									</div></div>
+								</div>
+						 </div></div>
 					</div>
 				</div>
 			</div>
@@ -213,11 +222,16 @@
 								<li class="voterCadreSwitchCls" attr_type="cadre">Cadre</li>
 							</ul>
 						</h4>
-						<div class="" id="casteGroupInfoChartDivId"></div>
+						 <div class="col-md-10 col-xs-12 col-sm-10" >
+						<div id="casteGroupInfoChartDivId"></div>
+						</div>
+						 <div class="col-md-10 col-xs-12 col-sm-10">
 						<div class="m_top20" id="casteGroupTableDivId"></div>
-						
+						</div>
+						<div class="col-md-10 col-xs-12 col-sm-10">
 						<h5>Caste Wise Voters</h5>
 						<div class="m_top20" id="casteWiseVoters"></div>
+						</div>
 					</div>
 					<div class="col-md-8 col-xs-12 col-sm-8">
 						<div id="casteGroupsTabsDivId" style="overflow-y: scroll; height:450px;"></div>
