@@ -7832,21 +7832,26 @@ public List<Object[]> getOverAllIvrDetails(Date fromDate,Date toDate,Long entity
 		
 		StringBuilder str=new StringBuilder();
 		
-		str.append(" SELECT ISA.ivrSurveyQuestion.ivrQuestion.ivrQuestionId,ISA.ivrSurveyQuestion.ivrQuestion.question " +
-				" FROM IvrSurveyEntity model,IvrSurveyAnswer ISA " +
-				" WHERE model.ivrSurveyId=ISA.ivrSurveyId " +
-				" and model.isDeleted ='false' " +
-				" and model.ivrSurvey.isDeleted = 'false' " +
-				" and ISA.ivrSurveyQuestion.isDeleted ='false'" +
-				" and ISA.ivrSurveyQuestion.ivrQuestion='false'" +
-				" and model.ivrSurveyEntityType.isDeleted ='false'" +
-				" and model.ivrSurveyEntityTypeId =:entityType ");
+		str.append(" SELECT distinct iq.question as question FROM ivr_survey_entity ise,ivr_survey_answer isa,ivr_survey_question isq,ivr_question iq ," +
+				" ivr_survey_entity_type iset,ivr_survey isv " +
+				"  WHERE ise.ivr_survey_id = isa.ivr_survey_id " +
+				" and isa.ivr_survey_question_id = isq.ivr_survey_question_id" +
+				" and isq.ivr_question_id = iq.ivr_question_id" +
+				" and ise.ivr_survey_entity_type_id = iset.ivr_survey_entity_type_id " +
+				" and isv.ivr_survey_id  = isa.ivr_survey_id " +
+				" and ise.ivr_survey_entity_type_id = :entityType " +
+				" and isq.is_deleted ='false'" +
+				" and iq.is_deleted ='false'" +
+				" and ise.is_deleted ='false'" +
+				" and isa.is_deleted ='false'" +
+				" and iset.is_deleted ='false' ");
 		
 		if(fromDate !=null && toDate !=null){
-			str.append(" and  date(model.ivrSurvey.startDate) between :fromDate and :toDate ");
+			str.append(" and  date(isv.start_date) between :fromDate and :toDate ");
 		}
 		
-		Query query = getSession().createQuery(str.toString());
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("question",Hibernate.STRING)  ;
 		if(fromDate !=null && toDate !=null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
