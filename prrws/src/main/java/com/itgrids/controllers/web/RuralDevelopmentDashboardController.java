@@ -35,15 +35,15 @@ public class RuralDevelopmentDashboardController {
     }
 	
 	@PostMapping("/getNtrJalaSiriAbstract")
-	public @ResponseBody NregsProjectsVO  getNtrJalaSiriAbstract(@RequestBody InputVO inputVO){
-		NregsProjectsVO returnVO = null;
+	public @ResponseBody List<NregsProjectsVO>  getNtrJalaSiriAbstract(@RequestBody InputVO inputVO){
+		List<NregsProjectsVO> returnList = null;
 		try {
-			returnVO = ruralDevelopmentService.getNtrJalaSiriAbstract(inputVO);
+			returnList = ruralDevelopmentService.getNtrJalaSiriAbstract(inputVO);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNtrJalaSiriAbstract - RuralDevelopmentDashboardController", e);
 		}
-		return returnVO;
+		return returnList;
 	}
 	
 	@PostMapping("/getNtrJalaSiriOverview")

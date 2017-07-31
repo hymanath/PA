@@ -9,7 +9,7 @@ import com.itgrids.dto.NregsProjectsVO;
 
 public interface IRuralDevelopmentService {
 	
-	public NregsProjectsVO getNtrJalaSiriAbstract(InputVO inputVO);
+	public List<NregsProjectsVO> getNtrJalaSiriAbstract(InputVO inputVO);
 	public NregsOverviewVO getNtrJalaSiriOverview(InputVO inputVO);
 	public List<NregsDataVO> getNtrJalaSiriLvlWiseData(InputVO inputVO);
 	public List<NregsDataVO> getRDLevelsWiseData(InputVO inputVO);
