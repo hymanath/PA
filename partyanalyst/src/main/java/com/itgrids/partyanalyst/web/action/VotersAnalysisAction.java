@@ -1251,10 +1251,10 @@ public void setVotersFamilyInfo(List<VoterHouseInfoVO> votersFamilyInfo) {
 public String getCountsForLevel()
 {
 	try{
-	String param ;
-	param = getTask();
-	jObj = new JSONObject(param);
-	session = request.getSession();
+		String param ;
+		param = getTask();
+		jObj = new JSONObject(param);
+		session = request.getSession();
 	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 	//Long userId =  regVO.getRegistrationID();
 	Long userId = null;
