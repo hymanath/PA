@@ -13,7 +13,7 @@ public interface IFundManagementDashboardService {
 	public List<LocationVO> getLocationLevelInfo();
 	public List<LocationVO> getLocationWiseAmountDetails(InputVO inputVO);
 	public List<FundSchemeVO> getFinancialYearWiseSchemeDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
-	List<Long> sourceIdsList,List<Long> schemeIdsList,String startDateStr,String endDateStr,Long searchScopeId,List<Long> searchScopeValuesList,String order,String sortingType,Long searchLevelId,List<Long> govtSchmeIdsList,List<Long> subProgramIdsList,Long glSearchLevelId,List<Long> glSearchLevelValue,String viewType);
+	List<Long> sourceIdsList,List<Long> schemeIdsList,String startDateStr,String endDateStr,Long searchScopeId,List<Long> searchScopeValuesList,String order,String sortingType,Long searchLevelId,List<Long> govtSchmeIdsList,List<Long> subProgramIdsList,Long glSearchLevelId,List<Long> glSearchLevelValue,String viewType,List<Long> grantTypeIdsList);
 	public List<FundSchemeVO> getFinancialYearWiseDeptsWiseSchemeDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,List<Long> schemeIdsList,String startDateStr,String endDateStr,Long searchScopeId,List<Long> searchScopeValuesList, String order, String sortingType,Long searchLevelId);
 	public LocationFundDetailsVO getLocationWiseFundDetails(InputVO inputVO);
 	public LocationFundDetailsVO getTotalFunds(InputVO inputVO);
@@ -39,4 +39,5 @@ public interface IFundManagementDashboardService {
 	 public List<LocationFundDetailsVO> getALlProgramesAmountDetails(InputVO inputVO);
 	 public LocationFundDetailsVO getSchemeWiseOverviewDetails(InputVO inputVO);
 	public List<LocationFundDetailsVO> getAllSubLocationsOnsuperLocation(InputVO inputVO);
+	public List<LocationFundDetailsVO> getGovtGrantTypeDetails(Long govtSchemesId);
 }
