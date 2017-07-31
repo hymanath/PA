@@ -16,10 +16,12 @@ function onLoadAjaxCalls()
 	getAllPartiesAllElectionResultsChart(); //Assembly Election Detail
 	getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
 	getDetailedElectionInformaction();//get detailed election information
+	getPrintMediaCountsForConstituencyPage();
+	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage();
 	/*getCountsForConstituency(); //Assembly election Cadre
 	
-	getPrintMediaCountsForConstituencyPage(); //electronic media
-	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(); //problems
+	 //electronic media
+	 //problems
 	getDetailedGovtOverAllAnalysisProblemsForView();
 	getDetailedElectionInformaction()//get detailed election information
 	getVotersAndcadreAgeWiseCount();
@@ -502,14 +504,14 @@ function getPrintMediaCountsForConstituencyPage(){
     var templatess = Handlebars.compile($('#media-counts').html());
 	$list.html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$list1.html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	var userAccessLevelValuesArray=232;
+	var userAccessLevelValuesArray=[232];
 	var userAccessLevelId=5;
 	var state="ap";
 	var startDate="18-03-2015",endDate="18-03-2017";
-    var newsPaperIdsStr=" ";
-    var impactScopeIdsStr=" ";
-    var benefitIdsStr=" ";
-    var orgIdsStr=" ";
+    var newsPaperIdsStr=[1,2,3,10,11,12];
+    var impactScopeIdsStr=[1,2,3,4,5,6,8];
+    var benefitIdsStr=[1,2];
+    var orgIdsStr=[163,265,269,362,514,872,1117,1853];
     var type="Print";
     var isDept="N";
 	$.ajax({
