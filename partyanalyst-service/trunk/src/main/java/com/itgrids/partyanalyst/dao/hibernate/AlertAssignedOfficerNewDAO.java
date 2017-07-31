@@ -7832,7 +7832,7 @@ public List<Object[]> getOverAllIvrDetails(Date fromDate,Date toDate,Long entity
 		
 		StringBuilder str=new StringBuilder();
 		
-		str.append(" SELECT distinct iq.question as question FROM ivr_survey_entity ise,ivr_survey_answer isa,ivr_survey_question isq,ivr_question iq ," +
+		str.append(" SELECT distinct iq.ivr_question_id as ivrQuestionId,iq.question as question FROM ivr_survey_entity ise,ivr_survey_answer isa,ivr_survey_question isq,ivr_question iq ," +
 				" ivr_survey_entity_type iset,ivr_survey isv " +
 				"  WHERE ise.ivr_survey_id = isa.ivr_survey_id " +
 				" and isa.ivr_survey_question_id = isq.ivr_survey_question_id" +
@@ -7851,6 +7851,7 @@ public List<Object[]> getOverAllIvrDetails(Date fromDate,Date toDate,Long entity
 		}
 		
 		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("ivrQuestionId",Hibernate.LONG)
 				.addScalar("question",Hibernate.STRING)  ;
 		if(fromDate !=null && toDate !=null){
 			query.setDate("fromDate", fromDate);
