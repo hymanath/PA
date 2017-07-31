@@ -781,7 +781,7 @@ function getEnrollmentYearWiseCadres(){
 
 function getLocationWiseMeetingsCount(){
 	jsObj={
-		locationtype:"constituency",
+		locationType:"constituency",
 		constituencyId:232
 	}
 	 $.ajax({
@@ -939,7 +939,8 @@ $("#benefits1").html(spinner);
 function getLocationTypeWiseCadreCount(){
 	jsObj={
 		locationTypeId:4,
-		locationValuesArr:[232]
+		locationValuesArr:[232],
+		year:""
 	}
 	 $.ajax({
       type : "POST",
@@ -1634,7 +1635,9 @@ function getPositionWiseMemberCount(){
 	var jsObj={
 			"fromDateStr" : "",
 			"toDateStr":"",
-			"constituencyId":232
+			"locationValuesArr":[232],
+			"locationTypeId":4,
+			"year":""
 		}
 	 $.ajax({
       type : "POST",
