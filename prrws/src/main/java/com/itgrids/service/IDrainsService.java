@@ -14,5 +14,6 @@ public interface IDrainsService
 	public List<StatusVO> getDrainsIvrStatusCounts(InputVO vo);
 	public List<StatusVO> getOverAllIvrDetails(InputVO vo);
 	public List<KeyValueVO> getIvrSurveyDates(InputVO inputVo);
+	public List<KeyValueVO> getIvrQuestions(InputVO inputVo);
 }
 

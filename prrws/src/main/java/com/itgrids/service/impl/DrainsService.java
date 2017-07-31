@@ -363,4 +363,35 @@ public class DrainsService implements IDrainsService {
 		}
 		return finalList;
 	}
+	
+	public List<KeyValueVO> getIvrQuestions(InputVO inputVo){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>(0);
+		try {
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getIvrSurveyDates");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getIvrQuestions");
+	        
+	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVo);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	     }else{
+				String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					JSONArray finalArray = new JSONArray(output);//Type Array
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				KeyValueVO vo = new KeyValueVO();
+	 	    				JSONObject jobj = (JSONObject)finalArray.get(i);
+	 	    				vo.setKey(jobj.getLong("id"));
+	 	    				vo.setValue(jobj.getString("name"));
+	 	    				finalList.add(vo);
+	 	    			}
+	 	    		}
+				}
+	 	     }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getIvrQuestions - DrainsService service", e);
+		}
+		return finalList;
+	}
 }
