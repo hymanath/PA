@@ -1380,7 +1380,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * Swadhin K Lenka
 	 */
 	
-	public List<KeyValueVO> getPositionWiseMemberCount(Long constituencyId,String fromDateStr, String toDateStr){
+	public List<KeyValueVO> getPositionWiseMemberCount(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			
@@ -1394,7 +1394,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			List<Object[]> list = boardLevelDAO.getBoardLevels();
 			List<KeyValueVO> finalList = new CopyOnWriteArrayList<KeyValueVO>();
 			buildTemplate(list,finalList);
-			List<Object[]> positionList = nominatedPostDAO.getPositionWiseMemberCount(constituencyId,startDate,endDate);
+			List<Object[]> positionList = nominatedPostDAO.getPositionWiseMemberCount(locationValues,startDate,endDate,locationTypeId,year);
 			List<KeyValueVO> keyValueVOs = new CopyOnWriteArrayList<KeyValueVO>();
 			KeyValueVO keyValueVO = null;
 			if(positionList != null && positionList.size() > 0){
@@ -2158,10 +2158,10 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @Description :This Service Method is used to location type cadre count details 
 	 *  @since 27-JUNE-2017
 	 */
-	public List<ConstituencyCadreVO> getLocationTypeWiseCadreCount(final Long locationTypeId,final List<Long> locationValues){
+	public List<ConstituencyCadreVO> getLocationTypeWiseCadreCount(final Long locationTypeId,final List<Long> locationValues,final String year){
 		List<ConstituencyCadreVO> resultList = new ArrayList<ConstituencyCadreVO>(0);
 		try{
-			List<Object[]> rtrnCaderCountObjLst = tdpCadreEnrollmentInfoDAO.getLocationTypeWiseCadreCount(locationTypeId,locationValues);
+			List<Object[]> rtrnCaderCountObjLst = tdpCadreEnrollmentInfoDAO.getLocationTypeWiseCadreCount(locationTypeId,locationValues,year);
 			if(rtrnCaderCountObjLst != null && rtrnCaderCountObjLst.size() > 0){
 				for (Object[] param : rtrnCaderCountObjLst) {
 					  ConstituencyCadreVO enrollmentYearVO = new ConstituencyCadreVO();
