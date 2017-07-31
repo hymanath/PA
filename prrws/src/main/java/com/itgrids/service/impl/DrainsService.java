@@ -207,7 +207,7 @@ public class DrainsService implements IDrainsService {
 				String output = response.getEntity(String.class);
 				
 				
-				if(vo.getQuestionsList() !=null && vo.getQuestionsList().size()>1){
+				if(vo.getSelectedDates() !=null && vo.getSelectedDates().size()>1){
 					voList = setIvrComparisonDetailsToList(output,voList);
 				}else{
 					if(output != null && !output.isEmpty()){
@@ -267,7 +267,7 @@ public class DrainsService implements IDrainsService {
  	    						
  	    						JSONObject datesObj = (JSONObject)datesArr.get(j);
  	    						StatusVO dateVo = new StatusVO();
- 	    						dateVo.setName(datesObj.getString("name"));
+ 	    						dateVo.setName(datesObj.getString("date1"));
  	    						
  	    						JSONArray subListArr  = datesObj.getJSONArray("subList1");
  	    						if(subListArr!=null && subListArr.length()>0){
