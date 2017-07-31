@@ -288,7 +288,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String  getLocationWiseMeetingsCount(){
 		 try {
 			jObj = new JSONObject(getTask());
-			locationVotersVOList = locationDashboardService.getLocationWiseMeetingsCount(jObj.getString("locationtype"),jObj.getLong("constituencyId"));
+			locationVotersVOList = locationDashboardService.getLocationWiseMeetingsCount(jObj.getString("locationType"),jObj.getLong("constituencyId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseMeetingsCount", e);
 		}
@@ -347,7 +347,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 					locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
 				} 
 			}
-			cadreDtlsList = locationDashboardService.getLocationTypeWiseCadreCount(jObj.getLong("locationTypeId"),locationValues);
+			cadreDtlsList = locationDashboardService.getLocationTypeWiseCadreCount(jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationTypeWiseCadreCount in LocationDashboardAction class", e);
 		}
@@ -401,7 +401,14 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getPositionWiseMemberCount(){
 		 try{
 			 jObj = new JSONObject(getTask());
-			 keyValueVOList = locationDashboardService.getPositionWiseMemberCount(jObj.getLong("constituencyId"),jObj.getString("fromDateStr"),jObj.getString("toDateStr"));
+			 JSONArray locationValues = jObj.getJSONArray("locationValuesArr");  
+				List<Long> locationValuesList = new ArrayList<Long>();
+				if(locationValues != null && locationValues.length() > 0){
+					for (int i = 0; i < locationValues.length(); i++){
+						locationValuesList.add(Long.parseLong(locationValues.getString(i)));          
+					}
+				}
+			 keyValueVOList = locationDashboardService.getPositionWiseMemberCount(locationValuesList,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"));
 		 }catch(Exception e){
 			 LOG.error("Exception raised at getPositionWiseMemberCount() of LocationDashboardAction{}", e);
 		 }
