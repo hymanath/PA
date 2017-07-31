@@ -1195,22 +1195,21 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 						  if(inputvo.getAtrPoints() !=null && inputvo.getAtrPoints().size()>0){ //get cadre ids
 							   List<String> cadreIds=inputvo.getAtrPoints();
 							   for(String cadreId:cadreIds){
+								   String[] cadreIdWithSession=cadreId.split(",");
 								   Attendance attendance=new Attendance();
-								   attendance.setTdpCadreId(Long.valueOf(cadreId));
+								   attendance.setTdpCadreId(Long.valueOf(cadreIdWithSession[0]));
 								   attendance.setAttendedTime(new SimpleDateFormat("yyyy-MM-dd").parse(inputvo.getStartDateStr()));
 								   attendance.setInsertedTime(date.getCurrentDateAndTime());
 								   Attendance savedAttendance=attendanceDAO.save(attendance);
 								   if(savedAttendance !=null){
 									   Long attendanceId=savedAttendance.getAttendanceId();
 									   if(attendanceId !=null){
-										   for(Long partyMeetingSessionId:partyMeetingSessionIds){
 										   PartyMeetingAttendance partyMeetingAttendance=new PartyMeetingAttendance();
 										   partyMeetingAttendance.setPartyMeetingId(inputvo.getPartyMeetingId());
 										   partyMeetingAttendance.setAttendance(attendanceDAO.get(attendanceId));
 										   partyMeetingAttendance.setInsertedTime(date.getCurrentDateAndTime());
-										   partyMeetingAttendance.setPartyMeetingSessionId(partyMeetingSessionId);
+										   partyMeetingAttendance.setPartyMeetingSessionId(Long.valueOf(cadreIdWithSession[1]));
 										   partyMeetingAttendanceDAO.save(partyMeetingAttendance);
-										   }
 									   }
 								   }
 							   }
@@ -1418,7 +1417,7 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 		          return idAndNameVO;
 		      }*/
 		  
-		  public IdAndNameVO getPartyMeetingInviteesDetailsAttendence(Long meetingId){
+		  public IdAndNameVO getPartyMeetingInviteesDetailsAttendence(Long meetingId,Long sessionId){
 		        IdAndNameVO idAndNameVO=null;
 		        try{
 		        List<String> notAttendedList =null;
@@ -1427,7 +1426,7 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 		        List<String> invitesList=null;
 		        Map<String,String> memberShipIdAndCommentMap=null;
 		            //get the attendance list membership ids
-		            List<String> attendedList=partyMeetingAttendanceDAO.getPartyMeetingInviteesDetailsAttendence(meetingId);
+		            List<String> attendedList=partyMeetingAttendanceDAO.getPartyMeetingInviteesDetailsAttendence(meetingId,sessionId);
 		            //get the invitess list membership ids
 		            List<Object[]> invitesObjs=partyMeetingInviteeDAO.getPartyMeetingInvitteesMembershipNo(meetingId);
 		            if(invitesObjs !=null && invitesObjs.size() > 0L){
