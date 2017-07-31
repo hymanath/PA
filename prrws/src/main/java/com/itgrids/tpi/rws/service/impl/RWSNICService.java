@@ -29,10 +29,12 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.NregaLocationOverviewVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
 import com.itgrids.dto.WaterSourceVO;
+import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.IConstants;
@@ -60,6 +62,8 @@ public class RWSNICService implements IRWSNICService{
 	private IRwsDistrictDAO rwsDistrictDAO;
 	@Autowired
 	private IRwsConstituencyDAO rwsConstituencyDAO;
+	@Autowired
+	private WebServiceUtilService webServiceUtilService;
 	/*
 	 * Date : 15/06/2017
 	 * Author :Sandeep
@@ -2139,4 +2143,163 @@ public class RWSNICService implements IRWSNICService{
 			return inputVO;
 		}
 	}
+	
+	public String convertingInputVOToString(InputVO inputVO){
+		String str = "";
+		try {
+			/*if(inputVO.getLocationId() != null)
+				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
+					if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
+						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+				}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+					if(inputVO.getLocationId().longValue() > 0l)
+						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+				}*/
+				
+			str = "{";
+			
+			if(inputVO.getFromMonth() != null )
+				str += "\"fromMonth\" : \""+inputVO.getFromMonth()+"\",";
+			if(inputVO.getToMonth() != null)
+				str += "\"toMonth\" : \""+inputVO.getToMonth()+"\",";
+			if(inputVO.getLocation() != null)
+				str += "\"Location\" : \""+inputVO.getLocation()+"\",";
+			/*if(inputVO.getLocationIdStr() != null)
+				str += "\"locationId\" : \""+inputVO.getLocationIdStr()+"\",";else*/
+			 if(inputVO.getLocationId() != null)
+				str += "\"locationID\" : \""+inputVO.getLocationId()+"\",";
+			if(inputVO.getSubLocation() != null)
+				str += "\"subLocation\" : \""+inputVO.getSubLocation()+"\",";
+			
+			if(str.length() > 1)
+				str = str.substring(0,str.length()-1);
+			
+			str += "}";
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in convertingInputVOToString() method, Exception - ",e);
+		}
+		return str;
+	}
+	
+	/**
+	  * @param  InputVO inputVO which contain fromMonth,toMonth,location and locationId
+	  * @return NregaLocationOverviewVO
+	  * @author Nandhini 
+	  * @Description :This Service Method is used to get SwachaBharat(IHHL) Abstract And Overview Data(MGNREGSTCS Service).
+	  * @since 29/7/19
+	  */
+	public NregaLocationOverviewVO getIHHLOverviewData(InputVO inputVO){
+		NregaLocationOverviewVO resultVO = new NregaLocationOverviewVO();
+		try {
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/Home/Overview_IHHLData", str);
+			
+		    if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject jsonObject = new JSONObject(output);
+	 	    		JSONArray abstArr = jsonObject.getJSONArray("MinisterDashBoardStateOverView");
+	 	    		JSONArray overViewArr = jsonObject.getJSONArray("MinisterDashBoardLocOverView");
+	 	    		//Abstarct
+	 	    		if(abstArr != null && abstArr.length() > 0){
+	 	    			resultVO.setSubList1(new ArrayList<NregaLocationOverviewVO>());
+	 	    			for(int i=0;i<abstArr.length();i++){
+	 	    				JSONObject jObj = (JSONObject) abstArr.get(i);
+	 	    				NregaLocationOverviewVO vo = getIHHLAbstractData(jObj);
+	 	    				resultVO.getSubList1().add(vo);
+	 	    			}	
+	 	    		}
+	 	    		//OverView Data
+	 	    		if(overViewArr != null && overViewArr.length() > 0){
+	 	    			resultVO.setSubList2(new ArrayList<NregaLocationOverviewVO>());
+	 	    			for(int i=0;i<overViewArr.length();i++){
+	 	    				JSONObject jObj = (JSONObject) overViewArr.get(i);
+	 	    				NregaLocationOverviewVO vo = getIHHLOverviewData(jObj);
+	 	    				resultVO.getSubList2().add(vo);
+	 	    			}	
+	 	    		}
+	 	    	}
+	 	      }  
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getIHHLOverviewData() method, Exception - ",e);
+		}
+		return resultVO;
+	}
+	public NregaLocationOverviewVO getIHHLAbstractData(JSONObject jObj){
+		NregaLocationOverviewVO vo = new NregaLocationOverviewVO();
+		try {
+			    vo.setTarget(jObj.getLong("TARGET"));
+				vo.setGrounded(jObj.getLong("GROUNDED"));
+				vo.setNoTGrounded(jObj.getLong("NOT_GROUNDED"));
+				vo.setCompleted(jObj.getLong("COMPLETED"));
+				vo.setPercentage(new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		} catch(Exception e){
+			LOG.error("Exception Occured in getIHHLAbstractData() method, Exception - ",e);
+		}
+		return vo;
+	}
+	public NregaLocationOverviewVO getIHHLOverviewData(JSONObject jObj){
+		NregaLocationOverviewVO vo = new NregaLocationOverviewVO();
+		try {
+			    vo.setType(jObj.getString("TYPE"));
+				vo.setGreen(jObj.getLong("GREEN"));
+				vo.setRed(jObj.getLong("RED"));
+				vo.setOrange(jObj.getLong("ORANGE"));
+				vo.setTotal(jObj.getLong("TOTAL"));
+		} catch(Exception e){
+			LOG.error("Exception Occured in getIHHLOverviewData() method, Exception - ",e);
+		}
+		return vo;
+	}
+	/**
+	  * @param  InputVO inputVO which contain fromMonth,toMonth,location,locationId and subLocation
+	  * @return List<NregaLocationOverviewVO>
+	  * @author Nandhini 
+	  * @Description :This Service Method is used to get SwachhABharat(IHHL) location Level wise details(MGNREGSTCS Service).
+	  * @since 29/7/19
+	  */
+	public List<NregaLocationOverviewVO> getIHHLlocationLvlWiseData(InputVO inputVO){
+		List<NregaLocationOverviewVO> resultList = new ArrayList<NregaLocationOverviewVO>(0);
+		try {
+			
+			String str = convertingInputVOToString(inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/values/Location_IHHLData", str);
+			
+			if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject jsonObject = new JSONObject(output);
+	 	    		JSONArray locationDtlsArr = jsonObject.getJSONArray("MinisterDashBoardLocationData");
+	 	    		if(locationDtlsArr != null && locationDtlsArr.length() > 0){
+	 	    			for(int i=0;i<locationDtlsArr.length();i++){
+	 	    				NregaLocationOverviewVO locationVO = new NregaLocationOverviewVO();
+	 	    				JSONObject jObj = (JSONObject) locationDtlsArr.get(i);
+	 	    				locationVO.setUniqueId(jObj.getString("UNIQUEID"));
+	 	    				locationVO.setDistrict(jObj.getString("DISTRICT"));
+	 	    				locationVO.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				locationVO.setMandal(jObj.getString("MANDAL"));
+	 	    				locationVO.setPanchayt(jObj.getString("PANCHAYAT"));
+	 	    				locationVO.setTarget(jObj.getLong("TARGET"));
+	 	    				locationVO.setGrounded(jObj.getLong("GROUNDED"));
+	 	    				locationVO.setNoTGrounded(jObj.getLong("NOT_GROUNDED"));
+	 	    				locationVO.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				locationVO.setPercentage(new BigDecimal(jObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				resultList.add(locationVO);
+	 	    			}	
+	 	    		}
+	 	    	}
+	 	      }  
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getIHHLlocationLvlWiseData() method, Exception - ",e);
+		}
+		return resultList;
+	}
+	
  }

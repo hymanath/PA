@@ -4523,4 +4523,64 @@
 				});
 			}
 		$(".prev,.next").css("width","70px !important");	
-	} 
+	}
+//getIHHLOverviewData();
+function getIHHLOverviewData(){
+		
+		var json = {
+				fromMonth:"201704",
+				toMonth:"201707",
+				location:"state",
+				locationId:"01"
+				}
+		
+		$.ajax({                
+			type:'POST',    
+			url: 'getIHHLOverviewData',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			/* if(result !=null && result.length>0){
+				buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount);
+			}else{
+				
+				$("#modalSchemsTable").html('No Data Available');
+			} */
+			
+		});
+	}
+getIHHLlocationLvlWiseData();
+function getIHHLlocationLvlWiseData(){
+		
+		var json = {
+			fromMonth:"201704",
+			toMonth:"201707",
+			location:"state",
+			locationId:"01",
+			subLocation : "constituencies"
+				
+		}
+		
+		$.ajax({                
+			type:'POST',    
+			url: 'getIHHLlocationLvlWiseData',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			/* if(result !=null && result.length>0){
+				buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount);
+			}else{
+				
+				$("#modalSchemsTable").html('No Data Available');
+			} */
+			
+		});
+	}

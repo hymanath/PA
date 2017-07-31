@@ -72,10 +72,13 @@ public class InputVO implements Serializable {
 	private Long parliamentId;
 	private String location;
 	private String subLocation;
+	private String fromMonth;
+	private String toMonth;
 	
 	private Long entityType;
 	private List<Long> questionsList;
 	private List<String> selectedDates;
+	
 	
 	public String getLocationIdStr() {
 		return locationIdStr;
@@ -469,6 +472,16 @@ public class InputVO implements Serializable {
 		this.selectedDates = selectedDates;
 	}
 	
-    	
-	
+	public String getFromMonth() {
+		return fromMonth;
+	}
+	public void setFromMonth(String fromMonth) {
+		this.fromMonth = fromMonth;
+	}
+	public String getToMonth() {
+		return toMonth;
+	}
+	public void setToMonth(String toMonth) {
+		this.toMonth = toMonth;
+	}	
 }

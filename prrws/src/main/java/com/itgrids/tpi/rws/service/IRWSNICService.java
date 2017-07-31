@@ -9,6 +9,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.NregaLocationOverviewVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
@@ -46,4 +47,6 @@ public interface IRWSNICService {
 	public List<KeyValueVO> getTehsilsForConstituency(IdNameVO idNameVO);
 	public List<WaterSourceVO> getWaterSourceDeatils2(InputVO vo);
 	public List<RwsClickVO> getHamletWiseIvrStatusList(InputVO vo);
+	public NregaLocationOverviewVO getIHHLOverviewData(InputVO inputVO);
+	public List<NregaLocationOverviewVO> getIHHLlocationLvlWiseData(InputVO inputVO);
 }

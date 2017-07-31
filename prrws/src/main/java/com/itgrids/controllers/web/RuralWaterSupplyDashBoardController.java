@@ -7,15 +7,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.AddressVO;
@@ -26,6 +23,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.NregaLocationOverviewVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.RwsClickVO;
 import com.itgrids.dto.StatusVO;
@@ -394,6 +392,26 @@ public class RuralWaterSupplyDashBoardController {
 
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseHamletLis - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getIHHLlocationLvlWiseData")
+	public @ResponseBody List<NregaLocationOverviewVO> getIHHLlocationLvlWiseData(@RequestBody InputVO inputVO) {
+		try {
+			return rWSNICService.getIHHLlocationLvlWiseData(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getIHHLlocationLvlWiseData - RuralWaterSupplyDashBoardController controller", e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getIHHLOverviewData")
+	public @ResponseBody NregaLocationOverviewVO getIHHLOverviewData(@RequestBody InputVO inputVO) {
+		try {
+			return rWSNICService.getIHHLOverviewData(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getIHHLOverviewData - RuralWaterSupplyDashBoardController controller", e);
 		}
 		return null;
 	}
