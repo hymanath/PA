@@ -94,6 +94,15 @@ public class DrainsController {
 			LOG.error("Exception raised at  getIvrSurveyDates - DrainsController controller", e);
 		}
 		return null;
-	} 
+	}
+	@PostMapping("/getIvrQuestions")
+	public @ResponseBody List<KeyValueVO> getIvrQuestions(@RequestBody InputVO inputVO){
+		try {
+			return drainsService.getIvrQuestions(inputVO);			
+		} catch (Exception e) {
+			LOG.error("Exception raised at  getIvrQuestions - DrainsController controller", e);
+		}
+		return null;
+	}
 
 }
