@@ -37,7 +37,9 @@
 	<section>
 		<div class="row">
 			<div id="candidateProfile"></div>
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="constituencyVoters">
 			<div id="consCountsId"></div>
+			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="election">
 				 <h3 class="text-capitalize">Election Information Assembly Constituency</h3>
 				 <h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>
@@ -58,21 +60,8 @@
 						 </div>
 					</div>
 				</div>
-				<div class="block">
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<h4 class="text-capitalize">Assembly Election Details</h4>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div id="assemblyElectionDetails"></div>
-							<div id="assemblyElectionDetails1"></div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div id="assemblyElectionDetailsView"></div>
-						</div>
-					</div>
-				 </div>
 			</div>
+			
 			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="news">
 				<h3>News <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>		
 				<div class="block">
