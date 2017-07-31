@@ -335,16 +335,16 @@ function getDrainsInfoStateWise(locId,locationType){
 function getDrainsInfoLocationWise(locationType,filterId,filterType,subFilterId,subFilterType,divId,locId){
 	
 	$("#"+divId+"TableDivId").html(spinner);
-		var json = {
-			fromDate : globalFromDate,
-			toDate : globalToDate,
-			locationId:locId,
-			locationType:locationType,
-			filterType:filterType,
-			filterId:filterId,
-			subFilterId:subFilterId,
-			subFilterType:subFilterType
-		}
+	var json = {
+		fromDate : globalFromDate,
+		toDate : globalToDate,
+		locationId:locId,
+		locationType:locationType,
+		filterType:filterType,
+		filterId:filterId,
+		subFilterId:subFilterId,
+		subFilterType:subFilterType
+	}
 	
 	$.ajax({                
 		type:'POST',    
@@ -805,107 +805,230 @@ function getAllDistricts(divId,levelName){
 	}
 	
 	//IVR
-	ivrResponseDatesView();
-	buildIvrTableView();
-	function ivrResponseDatesView(){
-		
-		var str='';
-		
-		str+='<div class="col-sm-12">';
-			str+='<div class="row m_top10">';
-				str+='<div class="col-sm-1" style="border-right:1px solid #000;">';
-					str+='<button class="btn btn-sm btn-success">OverAll</button>';
-				str+='</div>';
-				str+='<div class="col-sm-9">';
-					str+='<ul class="list-inline ivrDatesClr slider1">';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-						str+='<li><input type="checkbox"> 12 july 2017</li>';
-					str+='</ul>';
-				str+='</div>';
-				str+='<div class="col-sm-2 text-center" style="border-left:1px solid #000;">';
-					str+='<ul class="list-inline">';
-						str+='<li><input type="checkbox"></br><span style="color:#000;">COMPARISION</span></li>';
-						str+='<li><button class="btn btn-sm btn-success">Submit</button></li>';
-					str+='</ul>';
-				str+='</div>';
-			str+='</div>';
+	//ivrResponseDatesView();
+	
+	
+	$(document).on("click",".ivrDatesClr li",function(e){
+		//$(".ivrDatesClr li").removeClass("activeDateCls");
+		$(this).addClass("activeDateCls");
+		var arrLength = [];
+		$(".ivrDateCheckbox").each(function(){
+			if($(this).is(":checked"))
+			{
+				arrLength.push($(this).val());
+			}else{
+				arrLength.splice(0,1);
+			}
 			
+		});
+		
+		if(arrLength.length > 1)
+		{
+			
+			$(".comparisonList li:first-child").find("input").attr("checked",true);
+		}else{
+			$(".comparisonList li:first-child").find("input").attr("checked",false);
+		}
+	});
+	
+	
+getOverAllIvrDetails('');
+getOverAllIvrDetails('panchayat');
+getDrainsIvrStatusCounts();
+getIvrSurveyDates();
+function getOverAllIvrDetails(type)
+{
+	if(type != 'panchayat')
+	{
+		$("#totalIvrResponse").html(spinner);
+	}else{
+		$("#totalPanchayatResponse").html(spinner);
+	}
+	var json = {
+		"fromDate":"01-01-2016",
+		"toDate":"26-07-2017",
+		"entityType":7,
+		"questionsList":[],
+		"type":""
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getOverAllIvrDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		console.log(result);
+		
+		if(type != 'panchayat')
+		{
+			var str='';
+			str+='<div class="row">';
+				str+='<div class="col-sm-4">';
+					str+='<div class="media">';
+						str+='<div class="media-left img_middle">';
+							str+='<img class="media-object" src="Assests/icons/house_icon.png" alt="house_icon"/>';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<h5 class="m_top10"><b>TOTAL IVR RESPONSE</b></h5>';
+							str+='<h5 class="m_top5 title_align"><b>'+result[0].total+'</b></h5>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				for(var i in result)
+				{
+					str+='<div class="col-sm-4">';
+						str+='<h5 class="m_top20 title_align"><b>'+result[i].count+'</b><small>('+result[i].percentage+')</small></h5>';
+					str+='</div>';
+				}
+			str+='</div>';
+			$("#totalIvrResponse").html(str);
+		}else{
+			var str='';
+			str+='<div class="row">';
+				str+='<div class="col-sm-4">';
+					str+='<div class="media">';
+						str+='<div class="media-left img_middle">';
+							str+='<img class="media-object" src="Assests/icons/house_icon.png" alt="house_icon"/>';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<h5 class="m_top10"><b>TOTAL PANCHAYATS</b></h5>';
+							str+='<h5 class="m_top5 title_align"><b>'+result[0].total+'</b></h5>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				for(var i in result)
+				{
+					str+='<div class="col-sm-4">';
+						str+='<h5 class=""><b>'+result[i].name+'</b></h5>';
+						str+='<h5 class="m_top20 title_align"><b>'+result[i].count+'</b><small>('+result[i].percentage+')</small></h5>';
+					str+='</div>';
+				}
+			str+='</div>';
+			$("#totalPanchayatResponse").html(str);
+
+		}
+		
+	});
+}
+function getDrainsIvrStatusCounts()
+{
+	$("#ivrTableView").html(spinner);
+	var json ={
+		"fromDate":"",
+		"toDate":"",
+		"locationTypeId":"4",
+		"locationValues":[],
+		"blockLevelId":2,
+		"levelValues":[1],
+		"entityType":7,
+		"questionsList":[],
+		"selectedDates":["11-07-2017","12-07-2017"]
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getDrainsIvrStatusCounts',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		console.log(result);
+		buildIvrTableView(result);
+	});
+}
+function buildIvrTableView(result){
+	var str='';
+		str+='<table class="table table-condensed">';
+			str+='<thead>';
+			str+='<tr>';
+				str+='<th>DISTRICT</th>';
+				str+='<th>TOTAL VILLAGES</th>';
+				str+='<th>GREEN</th>';
+				str+='<th>%</th>';
+				str+='<th>ORANGE</th>';
+				str+='<th>%</th>';
+				str+='<th>RED</th>';
+				str+='<th>%</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				for(var i in result)
+				{
+					str+='<tr>';
+						str+='<td>'+result[i].name+'</td>';
+						str+='<td>100</td>';
+						str+='<td>20</td>';
+						str+='<td>100</td>';
+						str+='<td>20</td>';
+						str+='<td>100</td>';
+						str+='<td>20</td>';
+						str+='<td>100</td>';
+					str+='</tr>';
+				}
+			str+='</tbody>';
+		str+='</table>';
+		$("#ivrTableView").html(str);
+}
+function getIvrSurveyDates()
+{
+	$("#ivrResponseDatesDivId").html(spinner);
+	var json ={
+		"fromDate":"01-01-2016",
+		"toDate":"26-07-2017",
+		"entityType":7,
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getIvrSurveyDates',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		ivrResponseDatesView(result)
+	});
+}
+function ivrResponseDatesView(result){
+	
+	var str='';
+	
+	str+='<div class="col-sm-12">';
+		str+='<div class="row m_top10">';
+			str+='<div class="col-sm-1" style="border-right:1px solid #000;">';
+				str+='<button class="btn btn-sm btn-success">OverAll</button>';
+			str+='</div>';
+			str+='<div class="col-sm-9">';
+				str+='<ul class="list-inline ivrDatesClr slider1">';
+					for(var i in result)
+					{
+						str+='<li><label class="checkbox-inline"><input type="checkbox" class="ivrDateCheckbox" value="'+i+'"> <span class="ivrDate">'+result[i].value+'</span></label></li>';
+					}
+				str+='</ul>';
+			str+='</div>';
+			str+='<div class="col-sm-2 text-center" style="border-left:1px solid #000;">';
+				str+='<ul class="list-inline comparisonList">';
+					str+='<li><input type="checkbox"></br><span style="color:#000;">COMPARISION</span></li>';
+					str+='<li><button class="btn btn-sm btn-success">Submit</button></li>';
+				str+='</ul>';
+			str+='</div>';
 		str+='</div>';
 		
-		$("#ivrResponseDatesDivId").html(str);
-		$(".slider1").slick({
-			slides:'li',
-			infinite: false,
-			slidesToShow: 7,
-			slidesToScroll: 2,
-			variableWidth: true
-		})
-	}
-	$(document).on("click",".ivrDatesClr li",function(e){
-		$(".ivrDatesClr li").removeClass("activeDateCls");
-		$(this).addClass("activeDateCls");
-	});
-	function buildIvrTableView(){
-		var str='';
-			str+='<table class="table table-condensed">';
-				str+='<thead>';
-				str+='<tr>';
-					str+='<th>DISTRICT</th>';
-					str+='<th>TOTAL VILLAGES</th>';
-					str+='<th>GREEN</th>';
-					str+='<th>%</th>';
-					str+='<th>ORANGE</th>';
-					str+='<th>%</th>';
-					str+='<th>RED</th>';
-					str+='<th>%</th>';
-					str+='</tr>';
-				str+='</thead>';
-				str+='<tbody>';
-					str+='<tr>';
-						str+='<td>SRIKAKULAM</td>';
-						str+='<td>100</td>';
-						str+='<td>20</td>';
-						str+='<td>100</td>';
-						str+='<td>20</td>';
-						str+='<td>100</td>';
-						str+='<td>20</td>';
-						str+='<td>100</td>';
-						
-					str+='</tr>';
-					str+='<tr>';
-						str+='<td>SRIKAKULAM</td>';
-						str+='<td>100</td>';
-						str+='<td>20</td>';
-						str+='<td>100</td>';
-						str+='<td>20</td>';
-						str+='<td>100</td>';
-						str+='<td>20</td>';
-						str+='<td>100</td>';
-						
-					str+='</tr>';
-					str+='<tr>';
-						str+='<td>SRIKAKULAM</td>';
-						str+='<td>100</td>';
-						str+='<td>20</td>';
-						str+='<td>100</td>';
-						str+='<td>20</td>';
-						str+='<td>100</td>';
-						str+='<td>20</td>';
-						str+='<td>100</td>';
-						
-					str+='</tr>';
-				str+='</tbody>';
-			str+='</table>';
-			$("#ivrTableView").html(str);
-	}
+	str+='</div>';
+	
+	$("#ivrResponseDatesDivId").html(str);
+	$(".slider1").slick({
+		slides:'li',
+		infinite: false,
+		slidesToShow: 7,
+		slidesToScroll: 2,
+		variableWidth: true
+	})
+}
