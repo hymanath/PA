@@ -96,7 +96,8 @@
 							</a>
 						</div>
 						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-						  	<div class="panel-body pad_0">
+						<div id="leadersInNewsDiv"></div>
+						  	<!--  <div class="panel-body pad_0">
 								<table class="table table-noborder f-12">
 									<thead class="bg-E9 text-capitalize">
 										<th>leader name</th>
@@ -131,7 +132,7 @@
 										</tr>
 									</tbody>
 								</table>
-						  	</div>
+						  	</div>-->
 						</div>
 					  </div>
 					</div>
