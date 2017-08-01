@@ -70,6 +70,9 @@ public class InputVO implements Serializable {
 	private String locationIdStr;
 	private String menuLvelValue;
 	private Long parliamentId;
+	private List<Long> diseasesIdList;
+	private Long scopeId;
+	private String rangeType;
 	private String location;
 	private String subLocation;
 	private List<Long> GrantTypeIdsList;
@@ -441,6 +444,24 @@ public class InputVO implements Serializable {
 	}
 	public void setParliamentId(Long parliamentId) {
 		this.parliamentId = parliamentId;
+	}
+	public List<Long> getDiseasesIdList() {
+		return diseasesIdList;
+	}
+	public void setDiseasesIdList(List<Long> diseasesIdList) {
+		this.diseasesIdList = diseasesIdList;
+	}
+	public Long getScopeId() {
+		return scopeId;
+	}
+	public void setScopeId(Long scopeId) {
+		this.scopeId = scopeId;
+	}
+	public String getRangeType() {
+		return rangeType;
+	}
+	public void setRangeType(String rangeType) {
+		this.rangeType = rangeType;
 	}
 	public String getLocation() {
 		return location;

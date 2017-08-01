@@ -4,8 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -443,6 +445,40 @@ public class DateUtilService {
 			}
 	    }
 	    return dateStrList;
+	}
+	public static LinkedHashMap<String,List<String>> getTotalWeeksMap(Date startdate, Date enddate){
+		try{
+			List<String> dayList = getDaysBetweenDatesStringFormat(startdate,enddate);
+			Collections.reverse(dayList);
+			int length = dayList.size();
+			int noOfWeek = length / 7;
+			int rem = length % 7;
+			if(rem > 0){
+				noOfWeek += 1;
+			}
+			List<String> weekList = new ArrayList<String>();
+			for(int i = 1 ; i <= noOfWeek ; i++ ){
+				weekList.add("week_"+i);
+			}
+			LinkedHashMap<String,List<String>> weekAndDaysMap = new LinkedHashMap<String,List<String>>();
+			List<String> days = null;
+			int j = 0;
+			for(String str : weekList){
+				days = new ArrayList<String>();
+				for(int k=1;k<=7;k++){
+					if(dayList.size() == j){
+						break;
+					}
+					days.add(dayList.get(j));
+					weekAndDaysMap.put(str, days);
+					j++;
+				}
+			}
+			return weekAndDaysMap;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
