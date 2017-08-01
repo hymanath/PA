@@ -874,7 +874,8 @@ function getAllDistricts(divId,levelName){
 		$("#"+divId).html('');
 		$("#"+divId).trigger('chosen:updated');
 		var json = {
-			parliamentId:parseInt(value)
+			parliamentId:parseInt(value),
+			type:"URBAN"
 			}
 		$.ajax({                
 			type:'POST',    

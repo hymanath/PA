@@ -8,7 +8,7 @@ import com.itgrids.model.ParliamentAssembly;
 
 public interface IParliamentAssemblyDAO extends GenericDao<ParliamentAssembly,Long>{
 	public List<Object[]> getParliamentIdAndName(Long districtId);
-	public List<Object[]> getParliamentByConstIdAndName(Long parliamentId);
+	public List<Object[]> getParliamentByConstIdAndName(Long parliamentId,String type);
 	public List<Object[]> getConsParlimentIds();
 	public List<Object[]> getFMSLocationIdfromRWSLocationId(String searchLevelValue);
 	public List<Object[]> getFMSLocationIdfromMGNREGSLocationId(String searchLevelValue);

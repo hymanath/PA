@@ -13,6 +13,6 @@ public interface IPrisSurveyDashBaordService{
 	public List<IdNameVO> getAllDistricts();
 	public List<IdNameVO> getAllParliaments();
 	public List<IdNameVO> getAllConstituenciesForDistrict(InputVO inputVo);
-	public List<IdNameVO> getAllConstituenciesForParliament(Long parliamentId);
+	public List<IdNameVO> getAllConstituenciesForParliament(Long parliamentId,String type);
 	public PrisOverviewVo getPIRSSurveyInfoStateLevel(InputVO inputVO);
 }

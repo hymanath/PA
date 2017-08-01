@@ -326,11 +326,11 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 		 }	
 		  	return  idNameVOList;
 	}
-	public List<IdNameVO> getAllConstituenciesForParliament(Long parliamentId){
+	public List<IdNameVO> getAllConstituenciesForParliament(Long parliamentId,String type){
 		  List<IdNameVO> idNameVOList= new ArrayList<IdNameVO>(0);
 		  try
 		 {
-			List<Object[]> objList= parliamentAssemblyDAO.getParliamentByConstIdAndName(parliamentId);
+			List<Object[]> objList= parliamentAssemblyDAO.getParliamentByConstIdAndName(parliamentId,type);
 			
 			if(objList!=null && objList.size()>0){
 				for (Object[] objects : objList){

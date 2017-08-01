@@ -2529,7 +2529,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				locationList = panchayatDAO.getPanchayatIdAndName(locationId);
 			}else if(levelId != null && levelId == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){//get  parlaiamentIds
 				//locationList =parliamentAssemblyDAO.getParliamentIdAndName(locationId);
-				locationList =parliamentAssemblyDAO.getParliamentByConstIdAndName(locationId);
+				locationList =parliamentAssemblyDAO.getParliamentByConstIdAndName(locationId,null);
 			}	
 			if(locationList != null && locationList.size() > 0){
 				for(Object[] param : locationList){
