@@ -4249,7 +4249,6 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	 if (output != null && output.length() > 0) {
 	 	    		 JSONArray paymentOverviewDataArr = new JSONArray(output);	 
-	 	    		 DecimalFormat f = new DecimalFormat("##.00");
 	 	    		 if (paymentOverviewDataArr != null && paymentOverviewDataArr.length() > 0) {
 	 	    			  for (int i = 0 ;i < paymentOverviewDataArr.length() ;i++) {
 	 	    				  
@@ -4264,57 +4263,57 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				paymentDtlsVO.setGeneratedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("GENERATED_WAGES_AMT")));
 	 	    				paymentDtlsVO.setGeneratedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("GENERATED_MATERIAL_AMT")));
 	 	    				  
-	 	    				paymentDtlsVO.setTotalGeneratesAmount(f.format(Double.valueOf(paymentDtlsVO.getGeneratedWageAmount())+Double.valueOf(paymentDtlsVO.getGeneratedMaterialAmount())));
+	 	    				paymentDtlsVO.setTotalGeneratesAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("GENERATED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("GENERATED_MATERIAL_AMT")))));
 	 	    				  
 	 	    				paymentDtlsVO.setNotGeneratedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_GENERATED_WAGES_AMT")));
 	 	    				paymentDtlsVO.setNotGeneratedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT")));
 	 	    				  
-	 	    				paymentDtlsVO.setTotalNotGeneratedAmount(f.format(Double.valueOf(paymentDtlsVO.getNotGeneratedWagesAmount())+Double.valueOf(paymentDtlsVO.getNotGeneratedMaterialAmount())));
+	 	    				paymentDtlsVO.setTotalNotGeneratedAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT")))));
 	 	    				  
 	 	    				paymentDtlsVO.setUploadedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("UPLOADED_WAGES_AMT")));
 	 	    				paymentDtlsVO.setUploadedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("UPLOADED_MATERIAL_AMT")));
 	 	    				  
-	 	    				paymentDtlsVO.setTotalUploadsAmount(f.format(Double.valueOf(paymentDtlsVO.getUploadedWageAmount())+Double.valueOf(paymentDtlsVO.getUploadedMaterialAmount())));
+	 	    				paymentDtlsVO.setTotalUploadsAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("UPLOADED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("UPLOADED_MATERIAL_AMT")))));
 	 	    				  
 	 	    				paymentDtlsVO.setNotUploadedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_UPLOADED_WAGES_AMT")));
 	 	    				paymentDtlsVO.setNotUploadedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT")));
 	 	    				  
-	 	    				paymentDtlsVO.setTotalNotUploadedAmount(f.format(Double.valueOf(paymentDtlsVO.getNotUploadedWagesAmount())+Double.valueOf(paymentDtlsVO.getNotUploadedWagesAmount())));
+	 	    				paymentDtlsVO.setTotalNotUploadedAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_UPLOADED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT")))));
 	 	    				  
 	 	    				paymentDtlsVO.setSentBankWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("SENTPFMS_WAGES_AMT")));
 	 	    				paymentDtlsVO.setSentBankMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("SENTPFMS_MATERIAL_AMT")));
 	 	    				  
-	 	    				paymentDtlsVO.setTotalSentBankAmount(f.format(Double.valueOf(paymentDtlsVO.getSentBankWageAmount())+Double.valueOf(paymentDtlsVO.getSentBankMaterialAmount())));
+	 	    				paymentDtlsVO.setTotalSentBankAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("SENTPFMS_WAGES_AMT"))+Double.valueOf(jsonObj.getString("SENTPFMS_MATERIAL_AMT")))));
 	 	    				  
 	 	    				paymentDtlsVO.setNotSentBankWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT")));
 	 	    				paymentDtlsVO.setNotSentBankMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT")));
 	 	    				  
-	 	    				paymentDtlsVO.setTotalNotSentBankAmount(f.format(Double.valueOf(paymentDtlsVO.getNotSentBankWageAmount())+Double.valueOf(paymentDtlsVO.getNotSentBankMaterialAmount())));
+	 	    				paymentDtlsVO.setTotalNotSentBankAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT")))));
 	 	    				  
 	 	    				paymentDtlsVO.setCompletedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("COMPLETED_WAGES_AMT")));
 	 	    				paymentDtlsVO.setCompletedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("COMPLETED_MATERIAL_AMT")));
 	 	    				  
-	 	    				paymentDtlsVO.setTotalCompletedAmount(f.format(Double.valueOf(paymentDtlsVO.getCompletedWageAmount())+Double.valueOf(paymentDtlsVO.getCompletedMaterialAmount())));
+	 	    				paymentDtlsVO.setTotalCompletedAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("COMPLETED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("COMPLETED_MATERIAL_AMT")))));
 	 	    				  
 	 	    				paymentDtlsVO.setRejectedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REJECT_WAGES_AMT")));
 	 	    				paymentDtlsVO.setRejectedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REJECT_MATERIAL_AMT")));
 	 	    				  
-	 	    				paymentDtlsVO.setTotalRejectedAmount(f.format(Double.valueOf(paymentDtlsVO.getRejectedWagesAmount())+Double.valueOf(paymentDtlsVO.getRejectedMaterialAmount())));
+	 	    				paymentDtlsVO.setTotalRejectedAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT"))+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT")))));
 	 	    				
 	 	    				paymentDtlsVO.setReleasePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RELEASE_PENDING_WAGES_AMT")));
 	 	    				paymentDtlsVO.setReleasePendingMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")));
 	 	    				 
-	 	    				paymentDtlsVO.setTotalReleasePendingAmount(f.format(Double.valueOf(paymentDtlsVO.getReleasePendingWageAmount())+Double.valueOf(paymentDtlsVO.getReleasePendingMaterialAmount())));
+	 	    				paymentDtlsVO.setTotalReleasePendingAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("RELEASE_PENDING_WAGES_AMT"))+Double.valueOf(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")))));
 	 	    				 
 	 	    				paymentDtlsVO.setResponsePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RESPONSE_PENDING_WAGES_AMT")));
 	 	    				paymentDtlsVO.setResponsePendingMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")));
 	 	    				
-	 	    				paymentDtlsVO.setTotalResponsePendingAmount(f.format(Double.valueOf(paymentDtlsVO.getResponsePendingWageAmount())+Double.valueOf(paymentDtlsVO.getResponsePendingMaterialAmount())));
+	 	    				paymentDtlsVO.setTotalResponsePendingAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("RESPONSE_PENDING_WAGES_AMT"))+Double.valueOf(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")))));
 	 	    				
 	 	    				paymentDtlsVO.setReprocessPendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REPROCESS_PENDING_WAGES_AMT")));
 	 	    				paymentDtlsVO.setReprocessPendingMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REPROCESS_PENDING_MATERIAL_AMT")));
 	 	    				
-	 	    				paymentDtlsVO.setTotalReprocessPendingAmount(f.format(Double.valueOf(paymentDtlsVO.getReprocessPendingWageAmount())+Double.valueOf(paymentDtlsVO.getReprocessPendingMaterialAmount())));
+	 	    				paymentDtlsVO.setTotalReprocessPendingAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("REPROCESS_PENDING_WAGES_AMT"))+Double.valueOf(jsonObj.getString("REPROCESS_PENDING_MATERIAL_AMT")))));
 	 	    				  
 	 	    				resultList.add(paymentDtlsVO);
 	 	    				  
@@ -4377,10 +4376,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    					 resultList.add(locationVO);
 	 	    				 }
 	 	    			  }
-	 	    		 }
-	 	    		 if (inputVO != null && inputVO.getSublocationType() != null && inputVO.getType().equalsIgnoreCase("All") && !inputVO.getSublocationType().equalsIgnoreCase("state") && resultList.size() > 0) { 
-	 	    			 calculateGrandTotal(resultList);
-	 	    		 }
+	 	    		 } 	
 	 	    	 }
 	 	      }
 		} catch (Exception e){
@@ -4421,31 +4417,8 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at getPaymentDtlsData - NREGSTCSService service", e);
 		}
 	}
-	public void calculateGrandTotal(List<NregaPaymentsVO> resultList) {
-		NregaPaymentsVO grandTotalVO = new NregaPaymentsVO();
-		 try {
-			       setDefaultValue(grandTotalVO);//setting default value
-			       DecimalFormat f = new DecimalFormat("##.00");
-			 for (NregaPaymentsVO paymentDtlsVO : resultList) {
-				    grandTotalVO.setTotalAmount(f.format((Double.valueOf(grandTotalVO.getTotalAmount())+Double.valueOf(paymentDtlsVO.getTotalAmount()))));
-				    grandTotalVO.setGeneratedWageAmount(f.format((Double.valueOf(grandTotalVO.getGeneratedWageAmount())+Double.valueOf(paymentDtlsVO.getGeneratedWageAmount()))));
-				    grandTotalVO.setNotGeneratedWagesAmount(f.format((Double.valueOf(grandTotalVO.getNotGeneratedWagesAmount())+Double.valueOf(paymentDtlsVO.getNotGeneratedWagesAmount()))));
-				    grandTotalVO.setUploadedWageAmount(f.format((Double.valueOf(grandTotalVO.getUploadedWageAmount())+Double.valueOf(paymentDtlsVO.getUploadedWageAmount()))));
-				    grandTotalVO.setNotUploadedWagesAmount(f.format((Double.valueOf(grandTotalVO.getNotUploadedWagesAmount())+Double.valueOf(paymentDtlsVO.getNotUploadedWagesAmount()))));
-				    grandTotalVO.setSentBankWageAmount(f.format((Double.valueOf(grandTotalVO.getSentBankWageAmount())+Double.valueOf(paymentDtlsVO.getSentBankWageAmount()))));
-				    grandTotalVO.setNotSentBankWageAmount(f.format((Double.valueOf(grandTotalVO.getNotSentBankWageAmount())+Double.valueOf(paymentDtlsVO.getNotSentBankWageAmount()))));
-				    grandTotalVO.setCompletedWageAmount(f.format((Double.valueOf(grandTotalVO.getCompletedWageAmount())+Double.valueOf(paymentDtlsVO.getCompletedWageAmount()))));
-				    grandTotalVO.setRejectedWagesAmount(f.format((Double.valueOf(grandTotalVO.getRejectedWagesAmount())+Double.valueOf(paymentDtlsVO.getRejectedWagesAmount()))));
-				    grandTotalVO.setReleasePendingWageAmount(f.format((Double.valueOf(grandTotalVO.getReleasePendingWageAmount())+Double.valueOf(paymentDtlsVO.getReleasePendingWageAmount()))));
-				    grandTotalVO.setResponsePendingWageAmount(f.format((Double.valueOf(grandTotalVO.getResponsePendingWageAmount())+Double.valueOf(paymentDtlsVO.getResponsePendingWageAmount()))));
-				    grandTotalVO.setReprocessPendingWageAmount(f.format((Double.valueOf(grandTotalVO.getReprocessPendingWageAmount())+Double.valueOf(paymentDtlsVO.getReprocessPendingWageAmount()))));
-			}
-			resultList.add(grandTotalVO); 
-		 } catch (Exception e) {
-			 LOG.error("Exception raised at calculateGrandTotal - NREGSTCSService service", e);
-		 }
-	}
-	public void setBaseLocationByLocationType(JSONObject jObj,NregaPaymentsVO locatioVO,String subLocation){
+	
+  public void setBaseLocationByLocationType(JSONObject jObj,NregaPaymentsVO locatioVO,String subLocation){
 		try {
 				if (subLocation != null && subLocation.trim().equalsIgnoreCase("district") || subLocation.trim().equalsIgnoreCase("constituency") || subLocation != null && subLocation.trim().equalsIgnoreCase("mandal") || subLocation.trim().equalsIgnoreCase("panchayat")){
 					locatioVO.setDistrictName(jObj.getString("DISTRICT"));
@@ -4463,19 +4436,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at getNregaPaymentsDtlsLocationWise - NREGSTCSService service", e);
 		}
 	}
-	public void  setDefaultValue(NregaPaymentsVO grandTotalVO) {
-		grandTotalVO.setType("Grand Total");
-		grandTotalVO.setTotalAmount("0");
-		grandTotalVO.setGeneratedWageAmount("0");
-		grandTotalVO.setUploadedWageAmount("0");
-		grandTotalVO.setSentBankWageAmount("0");
-		grandTotalVO.setCompletedWageAmount("0");
-	}
 	public String cnvrtRupeesIntoCrores(String value){
 		String returnVal = "0";
 		try {
 			if(value != null) {
 				returnVal = new BigDecimal(Double.valueOf(value)/10000000.00d).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				returnVal = returnVal + " CR";
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at cnvrtRupeesIntoCrores - NREGSTCSService service", e);
