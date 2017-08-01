@@ -4169,8 +4169,8 @@ function getLocationIhhlData()
 	});
 }
 
-getNregaPaymentsAbsAndOverviewDtls();
-getNregaPaymentsDtlsLocationWise();
+//getNregaPaymentsAbsAndOverviewDtls();
+//getNregaPaymentsDtlsLocationWise();
 function getNregaPaymentsAbsAndOverviewDtls()
 {
 	var json = {
