@@ -513,7 +513,7 @@ function buildingTable(result,locationType,divId){
 						if(result[i].kachaCleaned !=null && result[i].kachaCleaned >0){
 							str+='<td style="background-color:#d9c5f2">'+result[i].kachaCleaned+'</td>';
 						}else{
-							str+='<td> - </td>';
+							str+='<td style="background-color:#d9c5f2"> - </td>';
 						}
 						
 						if(result[i].kachaCleanedKM !=null && result[i].kachaCleanedKM >0){
