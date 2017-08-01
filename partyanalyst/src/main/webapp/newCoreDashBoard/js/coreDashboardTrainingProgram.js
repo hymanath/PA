@@ -60,7 +60,7 @@ var getDocumentWidth = $(document).width();
 		             userAccessLevelId : globalUserAccessLevelId,
 					 userAccessLevelValuesArray : globalUserAccessLevelValues,
 					 stateId : globalStateId,
-					 dateStr : dateStr,
+					 dateStr : "01/01/2000",
 					 enrollmentYearIdsList :enrollmentYrIds
 				  }
 		$.ajax({
@@ -114,6 +114,16 @@ var getDocumentWidth = $(document).width();
 						str+='<p class="text-muted text-capital">yet to train</p>';
 					str+='</td>';
 				str+='</tr>';
+				for(var j in programList[i].locationList)
+         {
+          str+='<tr>';
+            str+='<td>'+programList[i].locationList[j].name+'</td>';
+            str+='<td>'+programList[i].locationList[j].totalAttenedCount+'</td>';
+            str+='<td>'+programList[i].locationList[j].inviteeAttended+'</td>';
+            str+='<td>'+programList[i].locationList[j].nonInviteeAttended+'</td>';
+            str+='<td>'+programList[i].totalNotAttenedCount+'</td>';
+          str+='</tr>';
+         }
 			str+='</table>';
 			str+='<hr class="m_0"/>';
 		 str+='</div>';	
@@ -153,6 +163,16 @@ var getDocumentWidth = $(document).width();
 				str1+='<h4>'+villageWardRslt.totalNotAttenedCount+'&nbsp;<span class="font-10 text-danger"> '+villageWardRslt.totalNotAttenedCountPer+'%</span></h4>';
 			str1+='</td>';
 		str1+='</tr>';
+		for(var j in villageWardRslt.locationList)
+         {
+			str1+='<tr>';
+            str1+='<td>'+villageWardRslt.locationList[j].name+'</td>';
+            str1+='<td>'+villageWardRslt.locationList[j].totalAttenedCount+'</td>';
+            str1+='<td>'+villageWardRslt.locationList[j].inviteeAttended+'</td>';
+            str1+='<td>'+villageWardRslt.locationList[j].nonInviteeAttended+'</td>';
+			str1+='<td>'+villageWardRslt.totalNotAttenedCount+'</td>';
+            str1+='</tr>';
+         }
 	str1+='</table>';		
 	}else{
 	str1+='NO DATA AVAILABLE';	
@@ -190,6 +210,16 @@ var getDocumentWidth = $(document).width();
 				str2+='<h4>'+mandalTwnDivRslt.totalNotAttenedCount+' <span class="font-10 text-danger">'+mandalTwnDivRslt.totalNotAttenedCountPer+'%</span></h4>';
 			str2+='</td>';
 		str2+='</tr>';
+		for(var j in mandalTwnDivRslt.locationList)
+         {
+			str2+='<tr>';
+            str2+='<td>'+mandalTwnDivRslt.locationList[j].name+'</td>';
+            str2+='<td>'+mandalTwnDivRslt.locationList[j].totalAttenedCount+'</td>';
+            str2+='<td>'+mandalTwnDivRslt.locationList[j].inviteeAttended+'</td>';
+            str2+='<td>'+mandalTwnDivRslt.locationList[j].nonInviteeAttended+'</td>';
+			str2+='<td>'+mandalTwnDivRslt.totalNotAttenedCount+'</td>';
+            str2+='</tr>';
+         }
 	 str2+='</table>';		
 	}else{
 	 str2+='NO DATA AVAILABLE';		
@@ -687,7 +717,7 @@ function stateLevelCampDetails(){
 	var jsObj={
 		programIdArr : programIdArr,
 		stateId : globalStateId,
-		dateStr : dateStr,
+		dateStr : "01/01/2000",
 		enrollmentYrIds:enrollmentYrIds,
 		option : "total" 
 	}
@@ -727,7 +757,8 @@ function buildStateLevelCampAttendedDetails(result){
 				str+='<tr>';
 					str+='<td>';
 						str+='<p class="text-muted text-capitalize">eligible</p>';
-						str+='<p class="responsiveFont">'+result[i].count+'</p>';
+						//str+='<p class="responsiveFont">'+result[i].count+'</p>';
+						str+='<p class="responsiveFont">-</p>';
 					str+='</td>';
 					str+='<td>';
 					str+='<p class="text-muted text-capitalize">Total Attended</p>';
@@ -750,6 +781,16 @@ function buildStateLevelCampAttendedDetails(result){
 								
 					str+='</td>';
 				str+='</tr>';
+			for(var j in result[i].idnameList)
+			 {
+			  str+='<tr>';
+				str+='<td>'+result[i].idnameList[j].name+'</td>';
+				str+='<td>'+result[i].idnameList[j].totalCount+'</td>';
+				str+='<td>'+result[i].idnameList[j].inviteeAttnd+'</td>';
+				str+='<td>'+result[i].idnameList[j].nonInviteeAttnd+'</td>';
+				
+			  str+='</tr>';
+			 }
 			str+='</tbody>';
 		str+='</table>';  
 		if($(window).width() < 300)
@@ -1165,7 +1206,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 				   userAccessLevelValuesArray : globalUserAccessLevelValues,
 				   reportType :"selectedUserType",
 				   stateId : globalStateId,
-				   dateStr : dateStr,
+				   dateStr : "01/01/2000",
 				   enrollmentYearIdsList :enrollmentYrIds,
 				   programIdArr:programIdArr
 				 }
@@ -1268,10 +1309,22 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 					 str+='<td>'+result[i].totalAttenedCount+'</td>';					
 					 str+='<td>'+result[i].inviteeAttendedCnt+'</td>';					 
 					 str+='<td>'+result[i].nonInviteeAttendedCnt+'</td>';
-					  str+='<td>'+result[i].totalAttenedCountPer+'%</td>';
+					 str+='<td>'+result[i].totalAttenedCountPer+'%</td>';
 					 str+='<td>'+result[i].totalNotAttenedCount+'</td>';
 					 str+='<td>'+result[i].totalNotAttenedCountPer+'%</td>';
 				 str+='</tr>';
+				 for(var j in result[i].daysList)
+				 {
+					str+='<tr>';
+						str+='<td>'+result[i].daysList[j].name+'</td>';
+						str+='<td>'+result[i].daysList[j].totalAttenedCount+'</td>';
+						str+='<td>'+result[i].daysList[j].inviteeAttended+'</td>';
+						str+='<td>'+result[i].daysList[j].nonInviteeAttended+'</td>';
+						str+='<td>'+result[i].daysList[j].totalAttenedCountPer+'%</td>';
+						str+='<td>'+result[i].totalNotAttenedCount+'</td>';
+						str+='<td>'+result[i].totalNotAttenedCountPer+'%</td>';
+					str+='</tr>';
+				 }
 			 str+='</table>';
 		 str+='</div>';
 	 str+='</div> ';
@@ -1390,7 +1443,7 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 			         childUserTypeIdsArray : childUserTypeIdsArray,
 					 reportType : "directChild",
 					 stateId : globalStateId,
-					 dateStr : dateStr,
+					 dateStr : "01/01/2000",
 					 enrollmentYearIdsList :enrollmentYrIds,
 					 programIdArr:programIdArr
 				  }
@@ -1434,6 +1487,12 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 					str+='<th style="text-align:center;"  title="Invitee Attended %"> IA %</th>';
 					str+='<th style="text-align:center;">Not Attended</th>';
 					str+='<th style="text-align:center;">%</th>';
+					str+='<th style="text-align:center;">1 day</th>';
+					str+='<th style="text-align:center;">%</th>';
+					str+='<th style="text-align:center;">2 day</th>';
+					str+='<th style="text-align:center;">%</th>';
+					str+='<th style="text-align:center;">3 day</th>';
+					str+='<th style="text-align:center;">%</th>';
 				str+'=</thead>';
 		str+='<tbody>';
 		var rank=1;
@@ -1459,6 +1518,13 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 			str+='<td style="text-align:center;">'+result[i].totalAttenedCountPer+'</td>';
 			str+='<td style="text-align:center;">'+result[i].totalNotAttenedCount+'</td>';
 			str+='<td style="text-align:center;">'+result[i].totalNotAttenedCountPer+'</td>';
+			
+			for(var j in result[i].daysList)
+			{
+				str+='<td style="text-align:center;">'+result[i].daysList[j].inviteeAttended+'</td>';
+				str+='<td style="text-align:center;">'+result[i].daysList[j].totalAttenedCountPer+'</td>';
+			}
+			
 		 str+='</tr>';
 		str+='<tr class="showHideTr" style="display:none" attr_id = "subChildLevelMemDtslId'+result[i].userTypeId+''+i+'">';
 		str+='<td colspan="8"  id="subChildLevelMemDtslId'+result[i].userTypeId+''+i+'">';
@@ -2038,7 +2104,7 @@ function getStateLevelCampCount(programIdArr){
 	var jsObj={  
 		programIdArr : progIds,
 		stateId : globalStateId,
-		dateStr : dateStr,
+		dateStr : "01/01/2000",
 		enrollmentYrIds:enrollmentYrIds,
 		option : "dayWise"   
 	} 
