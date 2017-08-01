@@ -4365,7 +4365,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    					     locationVO = getBaseLocationByLocationType(jsonObj,subLocation);
 		 	    					 locationVO.setId(locationId);
 		 	    					 locationVO.setType(type);
-		 	    					 setPaymentDtlsData(jsonObj,locationVO,type);//setting payment details data
+		 	    					 setPaymentDtlsData(jsonObj,locationVO,subLocation);//setting payment details data
 		 	    					 resultList.add(locationVO);
 		 	    			 } 
 	 	    				 if (inputVO != null && inputVO.getType().equalsIgnoreCase("All")) {//overAll
@@ -4373,7 +4373,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    					     locationVO = getBaseLocationByLocationType(jsonObj,subLocation);
 		 	    					 locationVO.setType(type);
 		 	    					 locationVO.setId(locationId);
-		 	    					 setPaymentDtlsData(jsonObj,locationVO,type);//setting payment details data
+		 	    					 setPaymentDtlsData(jsonObj,locationVO,subLocation);//setting payment details data
 		 	    					 resultList.add(locationVO);
 	 	    				 }
 	 	    			  }
@@ -4388,9 +4388,23 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return resultList;
 	}
-	public void setPaymentDtlsData(JSONObject jsonObj,NregaPaymentsVO paymentDtlsVO, String type){
+	public void setPaymentDtlsData(JSONObject jsonObj,NregaPaymentsVO paymentDtlsVO, String subLocationType){
 		try {
-			 	paymentDtlsVO.setTotalAmount(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_AMOUNT")));
+			 if(subLocationType != null && subLocationType.equalsIgnoreCase("mandal") || subLocationType.equalsIgnoreCase("panchayat")){
+			 	paymentDtlsVO.setTotalAmount(jsonObj.getString("TOTAL_AMOUNT"));
+				paymentDtlsVO.setGeneratedWageAmount(jsonObj.getString("GENERATED_AMT"));
+				paymentDtlsVO.setNotGeneratedWagesAmount(jsonObj.getString("NOT_GENERATED_AMT"));
+				paymentDtlsVO.setUploadedWageAmount(jsonObj.getString("UPLOADED_AMT"));
+				paymentDtlsVO.setNotUploadedWagesAmount(jsonObj.getString("NOT_UPLOADED_AMT"));
+				paymentDtlsVO.setSentBankWageAmount(jsonObj.getString("SENTPFMS_AMT"));
+				paymentDtlsVO.setNotSentBankWageAmount(jsonObj.getString("NOT_SENTPFMS_AMT"));
+				paymentDtlsVO.setCompletedWageAmount(jsonObj.getString("COMPLETED_AMT"));
+				paymentDtlsVO.setRejectedWagesAmount(jsonObj.getString("REJECT_AMT"));
+				paymentDtlsVO.setReleasePendingWageAmount(jsonObj.getString("RELEASE_PENDING_AMT"));
+				paymentDtlsVO.setResponsePendingWageAmount(jsonObj.getString("RESPONSE_PENDING_AMT"));
+				paymentDtlsVO.setReprocessPendingWageAmount(jsonObj.getString("REPROCESS_PENDING_AMT"));
+			 } else {
+				paymentDtlsVO.setTotalAmount(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_AMOUNT")));
 				paymentDtlsVO.setGeneratedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("GENERATED_AMT")));
 				paymentDtlsVO.setNotGeneratedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_GENERATED_AMT")));
 				paymentDtlsVO.setUploadedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("UPLOADED_AMT")));
@@ -4402,6 +4416,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				paymentDtlsVO.setReleasePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RELEASE_PENDING_AMT")));
 				paymentDtlsVO.setResponsePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RESPONSE_PENDING_AMT")));
 				paymentDtlsVO.setReprocessPendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REPROCESS_PENDING_AMT")));
+				}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getPaymentDtlsData - NREGSTCSService service", e);
 		}
@@ -4422,7 +4437,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				    grandTotalVO.setCompletedWageAmount(f.format((Double.valueOf(grandTotalVO.getCompletedWageAmount())+Double.valueOf(paymentDtlsVO.getCompletedWageAmount()))));
 				    grandTotalVO.setRejectedWagesAmount(f.format((Double.valueOf(grandTotalVO.getRejectedWagesAmount())+Double.valueOf(paymentDtlsVO.getRejectedWagesAmount()))));
 				    grandTotalVO.setReleasePendingWageAmount(f.format((Double.valueOf(grandTotalVO.getReleasePendingWageAmount())+Double.valueOf(paymentDtlsVO.getReleasePendingWageAmount()))));
-				    paymentDtlsVO.setResponsePendingWageAmount(f.format((Double.valueOf(grandTotalVO.getResponsePendingWageAmount())+Double.valueOf(paymentDtlsVO.getResponsePendingWageAmount()))));
+				    grandTotalVO.setResponsePendingWageAmount(f.format((Double.valueOf(grandTotalVO.getResponsePendingWageAmount())+Double.valueOf(paymentDtlsVO.getResponsePendingWageAmount()))));
 				    grandTotalVO.setReprocessPendingWageAmount(f.format((Double.valueOf(grandTotalVO.getReprocessPendingWageAmount())+Double.valueOf(paymentDtlsVO.getReprocessPendingWageAmount()))));
 			}
 			resultList.add(grandTotalVO); 
@@ -4462,7 +4477,6 @@ public class NREGSTCSService implements INREGSTCSService{
 		String returnVal = "0";
 		try {
 			if(value != null) {
-				
 				returnVal = new BigDecimal(Double.valueOf(value)/10000000.00d).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 			}
 		} catch (Exception e) {
