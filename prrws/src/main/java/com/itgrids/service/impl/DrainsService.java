@@ -196,8 +196,8 @@ public class DrainsService implements IDrainsService {
 	public List<StatusVO> getDrainsIvrStatusCounts(InputVO vo) {
 		List<StatusVO> voList = new ArrayList<StatusVO>(0);
 		try {
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getDrainsIvrStatusCounts");
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getDrainsIvrStatusCounts");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getDrainsIvrStatusCounts");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getDrainsIvrStatusCounts");
 	        
 	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
 	        
@@ -300,8 +300,8 @@ public class DrainsService implements IDrainsService {
 	public List<StatusVO> getOverAllIvrDetails(InputVO vo){
 		List<StatusVO> finalList = new ArrayList<StatusVO>(0);
 		try {
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getOverAllIvrDetails");
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getOverAllIvrDetails");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getOverAllIvrDetails");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getOverAllIvrDetails");
 	        
 	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, vo);
 	        
@@ -337,8 +337,8 @@ public class DrainsService implements IDrainsService {
 	public List<KeyValueVO> getIvrSurveyDates(InputVO inputVo){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>(0);
 		try {
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getIvrSurveyDates");
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getIvrSurveyDates");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getIvrSurveyDates");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getIvrSurveyDates");
 	        
 	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVo);
 	        
@@ -367,8 +367,8 @@ public class DrainsService implements IDrainsService {
 	public List<KeyValueVO> getIvrSurveyQuestions(InputVO inputVo){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>(0);
 		try {
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getIvrSurveyDates");
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getIvrSurveyQuestions");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getIvrSurveyDates");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.148:8080/PartyAnalyst/WebService/getIvrSurveyQuestions");
 	        
 	        ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVo);
 	        
