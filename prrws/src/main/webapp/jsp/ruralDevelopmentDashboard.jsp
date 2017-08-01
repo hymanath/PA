@@ -205,6 +205,6 @@
 <script src="Assests/Plugins/DateTime/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
-<script src="Assests/MGNREGS/ruralDevelopment.js" type="text/javscript"></script>
+<script src="Assests/MGNREGS/ruralDevelopment.js" type="text/javascript"></script>
 </body>
 </html>
