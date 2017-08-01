@@ -2841,11 +2841,11 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  	 * @description : To get GovtSubProgramsDetails
  	 * @return  List<LocationFundDetailsVO>
  	 */
-    public List<LocationFundDetailsVO> getGovtGrantTypeDetails(Long govtSchemesId){
+    public List<LocationFundDetailsVO> getGovtGrantTypeDetails(Long programId, Long govtSchemesId){
  		  List<LocationFundDetailsVO> finalReturnList= null;
  		  try{
  			finalReturnList=new ArrayList<LocationFundDetailsVO>();
- 		    List<Object[]> govtSubPrgrmObjs =grantTypeDAO.getGovtGrantTypeDetails(govtSchemesId);
+ 		    List<Object[]> govtSubPrgrmObjs =grantTypeDAO.getGovtGrantTypeDetails(programId,govtSchemesId);
  		    if(govtSubPrgrmObjs != null && govtSubPrgrmObjs.size()>0 && !govtSubPrgrmObjs.isEmpty()){
  		    	for(Object[] Obj: govtSubPrgrmObjs){
  		    		LocationFundDetailsVO vo=new LocationFundDetailsVO();

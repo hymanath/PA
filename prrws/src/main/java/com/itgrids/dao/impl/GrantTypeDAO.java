@@ -25,23 +25,20 @@ public class GrantTypeDAO extends GenericDaoHibernate<GrantType, Long> implement
 		return query.list();
 	}
 	
-	public List<Object[]> getGovtGrantTypeDetails(Long govtSchemesId){
+	public List<Object[]> getGovtGrantTypeDetails(Long programId,Long govtSchemesId){
 		
-	    
-	    if(govtSchemesId == null || govtSchemesId.longValue() == 0L){
-	    	StringBuilder sb = new StringBuilder();
-		    sb.append(" select distinct model.grantTypeId,model.type from GrantType model ");
-		    Query query = getSession().createQuery(sb.toString());
-		    return query.list(); 
-		}
-		else if (govtSchemesId.longValue() > 0L){
-			StringBuilder sb = new StringBuilder();
-		    sb.append(" select distinct model.grantType.grantTypeId,model.grantType.type from FundSanction model "+
-		               " where isDeleted= 'N' and model.govtSchemeId =:govtSchemesId ");
-		    Query query = getSession().createQuery(sb.toString());
-		    query.setParameter("govtSchemesId",govtSchemesId);
-		    return query.list(); 
-		}
-		return null;	  
+		StringBuilder sb = new StringBuilder();
+		 sb.append(" select distinct model.grantType.grantTypeId,model.grantType.type from FundSanction model  where isDeleted= 'N' ");
+		 if (govtSchemesId.longValue() > 0L)
+			 sb.append(" and model.govtSchemeId =:govtSchemesId ");
+		 if (programId.longValue() > 0L)
+			 sb.append(" and model.subProgramId =:programId ");
+		 Query query = getSession().createQuery(sb.toString());
+		 if (govtSchemesId.longValue() > 0L)
+			 query.setParameter("govtSchemesId",govtSchemesId);
+		 if (programId.longValue() > 0L)
+			 query.setParameter("programId",programId);
+		 
+		return query.list();	  
 	}
 }

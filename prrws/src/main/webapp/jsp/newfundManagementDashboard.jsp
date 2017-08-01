@@ -189,7 +189,7 @@
 				<div class="panel panel-default panel-black">
 					<div class="panel-heading" role="tab" id="headi123">
 						<a role="button"  class="panelCollapseIcon " data-toggle="collapse" data-parent="#accordion122" href="#coll123" aria-expanded="true" aria-controls="coll123">
-							<h4 class="panel-title">Funds Overview</h4>
+							<h4 class="panel-title text-capital">Funds Overview</h4>
 						</a>
 					</div>
 					<div id="coll123" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headi123">
@@ -205,7 +205,7 @@
 				<div class="panel panel-default panel-black">
 					<div class="panel-heading" role="tab" id="headi1234">
 						<a role="button" class="panelCollapseIcon " data-toggle="collapse" data-parent="#accordion1234" href="#coll1234" aria-expanded="false" aria-controls="coll1234">
-							<h4 class="panel-title">Funds Overview Details</h4>
+							<h4 class="panel-title text-capital">Program Wise Location Highlights</h4>
 						</a>
 					</div>
 					<div id="coll1234" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headi1234">
