@@ -4338,7 +4338,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregaPaymentsVO> getNregaPaymentsDtlsLocationWise(InputVO inputVO){
 		List<NregaPaymentsVO> resultList = new ArrayList<NregaPaymentsVO>(0);
 		try {
-			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l){
+			if (inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l) {
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			}
 				
@@ -4348,32 +4348,32 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
 	        
-	        if(response.getStatus() != 200){
+	        if(response.getStatus() != 200) {
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-	 	      }else{
+	 	    }else {
 	 	    	 String output = response.getEntity(String.class);
 	 	    	 if (output != null && !output.isEmpty()) {
 	 	    		 JSONArray paymentDataArr = new JSONArray(output);	 
 	 	    		 if(paymentDataArr != null && paymentDataArr.length() > 0) {
-	 	    			  for(int i = 0 ;i < paymentDataArr.length() ;i++){
+	 	    			  for (int i = 0 ;i < paymentDataArr.length() ;i++) {
 	 	    				 JSONObject jsonObj = (JSONObject) paymentDataArr.get(i);
 	 	    				 String locationId = jsonObj.getString("UNIQUEID");
 	 	    				 String type = jsonObj.getString("TYPE");
 	 	    				 String subLocation = inputVO.getSublocaType().trim();
-	 	    				 if(inputVO != null && inputVO.getType().equalsIgnoreCase(type)){//in the case of M-Material ,W-Wages and subTotal
+	 	    				 if (inputVO != null && inputVO.getType().equalsIgnoreCase(type)) {//in the case of M-Material ,W-Wages and subTotal
 	 	    					     NregaPaymentsVO locationVO = new NregaPaymentsVO();
 	 	    					     locationVO = getBaseLocationByLocationType(jsonObj,subLocation);
 		 	    					 locationVO.setId(locationId);
 		 	    					 locationVO.setType(type);
-		 	    					 setPaymentDtlsData(jsonObj,locationVO,type);//setting payment data
+		 	    					 setPaymentDtlsData(jsonObj,locationVO,type);//setting payment details data
 		 	    					 resultList.add(locationVO);
 		 	    			 } 
-	 	    				 if(inputVO != null && inputVO.getType().equalsIgnoreCase("All")){//overAll
+	 	    				 if (inputVO != null && inputVO.getType().equalsIgnoreCase("All")) {//overAll
 			 	    				 NregaPaymentsVO locationVO = new NregaPaymentsVO();
 	 	    					     locationVO = getBaseLocationByLocationType(jsonObj,subLocation);
 		 	    					 locationVO.setType(type);
 		 	    					 locationVO.setId(locationId);
-		 	    					 setPaymentDtlsData(jsonObj,locationVO,type);//setting payment data
+		 	    					 setPaymentDtlsData(jsonObj,locationVO,type);//setting payment details data
 		 	    					 resultList.add(locationVO);
 	 	    				 }
 	 	    			  }
@@ -4390,32 +4390,18 @@ public class NREGSTCSService implements INREGSTCSService{
 	}
 	public void setPaymentDtlsData(JSONObject jsonObj,NregaPaymentsVO paymentDtlsVO, String type){
 		try {
-		
 			 	paymentDtlsVO.setTotalAmount(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_AMOUNT")));
-				paymentDtlsVO.setTotalWage(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_WAGE_AMT")));
-				paymentDtlsVO.setTotalMaterial(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_MATERIAL_AMT")));
-				paymentDtlsVO.setGeneratedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("GENERATED_WAGES_AMT")));
-				paymentDtlsVO.setGeneratedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("GENERATED_MATERIAL_AMT")));
-				paymentDtlsVO.setNotGeneratedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_GENERATED_WAGES_AMT")));
-				paymentDtlsVO.setNotGeneratedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT")));
-				paymentDtlsVO.setUploadedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("UPLOADED_WAGES_AMT")));
-				paymentDtlsVO.setUploadedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("UPLOADED_MATERIAL_AMT")));
-				paymentDtlsVO.setNotUploadedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_UPLOADED_WAGES_AMT")));
-				paymentDtlsVO.setNotUploadedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT")));
-				paymentDtlsVO.setSentBankWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("SENTPFMS_WAGES_AMT")));
-				paymentDtlsVO.setSentBankMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("SENTPFMS_MATERIAL_AMT")));
-				paymentDtlsVO.setNotSentBankWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT")));
-				paymentDtlsVO.setNotSentBankMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT")));
-				paymentDtlsVO.setCompletedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("COMPLETED_WAGES_AMT")));
-				paymentDtlsVO.setCompletedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("COMPLETED_MATERIAL_AMT")));
-				paymentDtlsVO.setRejectedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REJECT_WAGES_AMT")));
-				paymentDtlsVO.setRejectedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REJECT_MATERIAL_AMT")));
-				paymentDtlsVO.setReleasePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RELEASE_PENDING_WAGES_AMT")));
-				paymentDtlsVO.setReleasePendingMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")));
-				paymentDtlsVO.setResponsePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RESPONSE_PENDING_WAGES_AMT")));
-				paymentDtlsVO.setResponsePendingMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")));
-				paymentDtlsVO.setReprocessPendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REPROCESS_PENDING_WAGES_AMT")));
-				paymentDtlsVO.setReprocessPendingMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REPROCESS_PENDING_MATERIAL_AMT")));
+				paymentDtlsVO.setGeneratedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("GENERATED_AMT")));
+				paymentDtlsVO.setNotGeneratedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_GENERATED_AMT")));
+				paymentDtlsVO.setUploadedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("UPLOADED_AMT")));
+				paymentDtlsVO.setNotUploadedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_UPLOADED_AMT")));
+				paymentDtlsVO.setSentBankWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("SENTPFMS_AMT")));
+				paymentDtlsVO.setNotSentBankWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_SENTPFMS_AMT")));
+				paymentDtlsVO.setCompletedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("COMPLETED_AMT")));
+				paymentDtlsVO.setRejectedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REJECT_AMT")));
+				paymentDtlsVO.setReleasePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RELEASE_PENDING_AMT")));
+				paymentDtlsVO.setResponsePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RESPONSE_PENDING_AMT")));
+				paymentDtlsVO.setReprocessPendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REPROCESS_PENDING_AMT")));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getPaymentDtlsData - NREGSTCSService service", e);
 		}
@@ -4426,79 +4412,55 @@ public class NREGSTCSService implements INREGSTCSService{
 			       setDefaultValue(grandTotalVO);//setting default value
 			       DecimalFormat f = new DecimalFormat("##.00");
 			 for (NregaPaymentsVO paymentDtlsVO : resultList) {
-				
 				    grandTotalVO.setTotalAmount(f.format((Double.valueOf(grandTotalVO.getTotalAmount())+Double.valueOf(paymentDtlsVO.getTotalAmount()))));
-				    grandTotalVO.setTotalWage(f.format((Double.valueOf(grandTotalVO.getTotalWage())+Double.valueOf(paymentDtlsVO.getTotalWage()))));
-				    grandTotalVO.setTotalMaterial(f.format((Double.valueOf(grandTotalVO.getTotalMaterial())+Double.valueOf(paymentDtlsVO.getTotalMaterial()))));
 				    grandTotalVO.setGeneratedWageAmount(f.format((Double.valueOf(grandTotalVO.getGeneratedWageAmount())+Double.valueOf(paymentDtlsVO.getGeneratedWageAmount()))));
-				    grandTotalVO.setGeneratedMaterialAmount(f.format((Double.valueOf(grandTotalVO.getGeneratedMaterialAmount())+Double.valueOf(paymentDtlsVO.getGeneratedMaterialAmount()))));
-				    
 				    grandTotalVO.setNotGeneratedWagesAmount(f.format((Double.valueOf(grandTotalVO.getNotGeneratedWagesAmount())+Double.valueOf(paymentDtlsVO.getNotGeneratedWagesAmount()))));
-				    grandTotalVO.setNotGeneratedMaterialAmount(f.format((Double.valueOf(grandTotalVO.getNotGeneratedMaterialAmount())+Double.valueOf(paymentDtlsVO.getNotGeneratedMaterialAmount()))));
 				    grandTotalVO.setUploadedWageAmount(f.format((Double.valueOf(grandTotalVO.getUploadedWageAmount())+Double.valueOf(paymentDtlsVO.getUploadedWageAmount()))));
-				    grandTotalVO.setUploadedMaterialAmount(f.format((Double.valueOf(grandTotalVO.getUploadedMaterialAmount())+Double.valueOf(paymentDtlsVO.getUploadedMaterialAmount()))));
-				    
 				    grandTotalVO.setNotUploadedWagesAmount(f.format((Double.valueOf(grandTotalVO.getNotUploadedWagesAmount())+Double.valueOf(paymentDtlsVO.getNotUploadedWagesAmount()))));
-				    paymentDtlsVO.setNotUploadedMaterialAmount(f.format((Double.valueOf(grandTotalVO.getNotUploadedMaterialAmount())+Double.valueOf(paymentDtlsVO.getNotUploadedMaterialAmount()))));
 				    grandTotalVO.setSentBankWageAmount(f.format((Double.valueOf(grandTotalVO.getSentBankWageAmount())+Double.valueOf(paymentDtlsVO.getSentBankWageAmount()))));
-				    grandTotalVO.setSentBankMaterialAmount(f.format((Double.valueOf(grandTotalVO.getSentBankMaterialAmount())+Double.valueOf(paymentDtlsVO.getSentBankMaterialAmount()))));
 				    grandTotalVO.setNotSentBankWageAmount(f.format((Double.valueOf(grandTotalVO.getNotSentBankWageAmount())+Double.valueOf(paymentDtlsVO.getNotSentBankWageAmount()))));
-				    
-				    grandTotalVO.setNotSentBankMaterialAmount(f.format((Double.valueOf(grandTotalVO.getNotSentBankMaterialAmount())+Double.valueOf(paymentDtlsVO.getNotSentBankMaterialAmount()))));
 				    grandTotalVO.setCompletedWageAmount(f.format((Double.valueOf(grandTotalVO.getCompletedWageAmount())+Double.valueOf(paymentDtlsVO.getCompletedWageAmount()))));
-				    grandTotalVO.setCompletedMaterialAmount(f.format((Double.valueOf(grandTotalVO.getCompletedMaterialAmount())+Double.valueOf(paymentDtlsVO.getCompletedMaterialAmount()))));
 				    grandTotalVO.setRejectedWagesAmount(f.format((Double.valueOf(grandTotalVO.getRejectedWagesAmount())+Double.valueOf(paymentDtlsVO.getRejectedWagesAmount()))));
-				    grandTotalVO.setRejectedMaterialAmount(f.format((Double.valueOf(grandTotalVO.getRejectedMaterialAmount())+Double.valueOf(paymentDtlsVO.getRejectedMaterialAmount()))));
-				  
 				    grandTotalVO.setReleasePendingWageAmount(f.format((Double.valueOf(grandTotalVO.getReleasePendingWageAmount())+Double.valueOf(paymentDtlsVO.getReleasePendingWageAmount()))));
-				    grandTotalVO.setReleasePendingMaterialAmount(f.format((Double.valueOf(grandTotalVO.getReleasePendingMaterialAmount())+Double.valueOf(paymentDtlsVO.getReleasePendingMaterialAmount()))));
 				    paymentDtlsVO.setResponsePendingWageAmount(f.format((Double.valueOf(grandTotalVO.getResponsePendingWageAmount())+Double.valueOf(paymentDtlsVO.getResponsePendingWageAmount()))));
-				    grandTotalVO.setResponsePendingMaterialAmount(f.format((Double.valueOf(grandTotalVO.getResponsePendingMaterialAmount())+Double.valueOf(paymentDtlsVO.getResponsePendingMaterialAmount()))));
 				    grandTotalVO.setReprocessPendingWageAmount(f.format((Double.valueOf(grandTotalVO.getReprocessPendingWageAmount())+Double.valueOf(paymentDtlsVO.getReprocessPendingWageAmount()))));
-				    grandTotalVO.setReprocessPendingMaterialAmount(f.format((Double.valueOf(grandTotalVO.getReprocessPendingMaterialAmount())+Double.valueOf(paymentDtlsVO.getReprocessPendingMaterialAmount()))));
 			}
 			resultList.add(grandTotalVO); 
-		 } catch (Exception e){
+		 } catch (Exception e) {
 			 LOG.error("Exception raised at calculateGrandTotal - NREGSTCSService service", e);
 		 }
-	}
-	public void  setDefaultValue(NregaPaymentsVO grandTotalVO){
-		grandTotalVO.setTotalAmount("0");
-		grandTotalVO.setTotalWage("0");
-		grandTotalVO.setTotalMaterial("0");
-		grandTotalVO.setGeneratedWageAmount("0");
-		grandTotalVO.setGeneratedMaterialAmount("0");
-		grandTotalVO.setUploadedWageAmount("0");
-		grandTotalVO.setUploadedMaterialAmount("0");
-		grandTotalVO.setSentBankWageAmount("0");
-		grandTotalVO.setSentBankMaterialAmount("0");
-		grandTotalVO.setCompletedWageAmount("0");
-		grandTotalVO.setCompletedMaterialAmount("0");
 	}
 	public NregaPaymentsVO getBaseLocationByLocationType(JSONObject jObj,String subLocation){
 		NregaPaymentsVO locatioVO = new NregaPaymentsVO();
 		try {
-				if(subLocation != null && subLocation.trim().equalsIgnoreCase("district") || subLocation.trim().equalsIgnoreCase("constituency") || subLocation != null && subLocation.trim().equalsIgnoreCase("mandal") || subLocation.trim().equalsIgnoreCase("panchayat")){
+				if (subLocation != null && subLocation.trim().equalsIgnoreCase("district") || subLocation.trim().equalsIgnoreCase("constituency") || subLocation != null && subLocation.trim().equalsIgnoreCase("mandal") || subLocation.trim().equalsIgnoreCase("panchayat")){
 					locatioVO.setDistrictName(jObj.getString("DISTRICT"));
 				}
-				if(subLocation != null && subLocation.trim().equalsIgnoreCase("constituency") || subLocation != null && subLocation.trim().equalsIgnoreCase("mandal") || subLocation.trim().equalsIgnoreCase("panchayat")){
+				if (subLocation != null && subLocation.trim().equalsIgnoreCase("constituency") || subLocation != null && subLocation.trim().equalsIgnoreCase("mandal") || subLocation.trim().equalsIgnoreCase("panchayat")){
 					locatioVO.setConstName(jObj.getString("CONSTITUENCY"));
 				}
-				if(subLocation != null && subLocation.trim().equalsIgnoreCase("mandal") || subLocation.trim().equalsIgnoreCase("panchayat")){
+				if (subLocation != null && subLocation.trim().equalsIgnoreCase("mandal") || subLocation.trim().equalsIgnoreCase("panchayat")){
 					locatioVO.setMandalName(jObj.getString("MANDAL"));
 				}
-				if(subLocation != null && subLocation.trim().equalsIgnoreCase("panchayat")){
+				if (subLocation != null && subLocation.trim().equalsIgnoreCase("panchayat")){
 					locatioVO.setPanchayatName(jObj.getString("PANCHAYAT"));
 				}
-		} catch (Exception e){
+		} catch (Exception e) {
 			LOG.error("Exception raised at getNregaPaymentsDtlsLocationWise - NREGSTCSService service", e);
 		}
 		return locatioVO;
 	}
+	public void  setDefaultValue(NregaPaymentsVO grandTotalVO) {
+		grandTotalVO.setTotalAmount("0");
+		grandTotalVO.setGeneratedWageAmount("0");
+		grandTotalVO.setUploadedWageAmount("0");
+		grandTotalVO.setSentBankWageAmount("0");
+		grandTotalVO.setCompletedWageAmount("0");
+	}
 	public String cnvrtRupeesIntoCrores(String value){
 		String returnVal = "0";
 		try {
-			if(value != null){
+			if(value != null) {
 				
 				returnVal = new BigDecimal(Double.valueOf(value)/10000000.00d).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 			}
