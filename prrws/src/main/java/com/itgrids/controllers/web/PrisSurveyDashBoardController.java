@@ -98,7 +98,7 @@ public class PrisSurveyDashBoardController {
 	public @ResponseBody List<IdNameVO> getAllConstituenciesForParliament(@RequestBody InputVO inputVO){
 		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>(0);
 		try {
-			returnVoList = surveyDashBaordService.getAllConstituenciesForParliament(inputVO.getParliamentId());
+			returnVoList = surveyDashBaordService.getAllConstituenciesForParliament(inputVO.getParliamentId(),inputVO.getType());
 		} catch (Exception e){
 			LOG.error("Exception raised at getAllConstituenciesForParliament - PrisSurveyDashBoardController controller", e);
 		}
