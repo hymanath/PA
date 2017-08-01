@@ -64,15 +64,12 @@ $(document).on("click",".menuDataCollapse",function(){
 		for(var i in overViewArr)
 		{
 			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
-			if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD' || overViewArr[i] == 'MPT_PT' || overViewArr[i] == 'GC Works' || overViewArr[i] == 'CD_CW')
+			if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD' || overViewArr[i] == 'MPT_PT' || overViewArr[i] == 'GC Works' || overViewArr[i] == 'CD_CW' || overViewArr[i] == 'WaterBudget' || overViewArr[i] == 'GH')
 			{
-				getNREGSAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId,'onLoad');
+				getRDAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId,'onLoad');
 			}else if(overViewArr[i] == 'Ntr Jalasiri')
 			{
 				getNtrJalaSiriAbstract(overViewArr[i],'district',locId,levelId,'abstract');
-			}else if(overViewArr[i] == 'WaterBudget')
-			{
-				getRDAbstractDataByType(overViewArr[i],'district',locId,levelId,'abstract');
 			}
 		}
 	}else if(levelId == 4)
@@ -80,15 +77,12 @@ $(document).on("click",".menuDataCollapse",function(){
 		for(var i in overViewArr)
 		{
 			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
-			if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD' || overViewArr[i] == 'MPT_PT' || overViewArr[i] == 'GC Works' || overViewArr[i] == 'CD_CW')
+			if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD' || overViewArr[i] == 'MPT_PT' || overViewArr[i] == 'GC Works' || overViewArr[i] == 'CD_CW' || overViewArr[i] == 'WaterBudget' || overViewArr[i] == 'GH')
 			{
-				getNREGSAbstractDataByType(overViewArr[i],'constituency',locId,blockName,levelId,'onLoad');
+				getRDAbstractDataByType(overViewArr[i],'constituency',locId,blockName,levelId,'onLoad');
 			}else if(overViewArr[i] == 'Ntr Jalasiri')
 			{
 				getNtrJalaSiriAbstract(overViewArr[i],'constituency',locId,levelId,'abstract');
-			}else if(overViewArr[i] == 'WaterBudget')
-			{
-				getRDAbstractDataByType(overViewArr[i],'constituency',locId,levelId,'abstract');
 			}
 		}
 	}else if(levelId == 2)
@@ -96,15 +90,12 @@ $(document).on("click",".menuDataCollapse",function(){
 		for(var i in overViewArr)
 		{
 			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
-			if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD' || overViewArr[i] == 'MPT_PT' || overViewArr[i] == 'GC Works' || overViewArr[i] == 'CD_CW')
+			if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD' || overViewArr[i] == 'MPT_PT' || overViewArr[i] == 'GC Works' || overViewArr[i] == 'CD_CW' || overViewArr[i] == 'WaterBudget' || overViewArr[i] == 'GH')
 			{
-				getNREGSAbstractDataByType(overViewArr[i],'state',locId,blockName,levelId,'onLoad');
+				getRDAbstractDataByType(overViewArr[i],'state',locId,blockName,levelId,'onLoad');
 			}else if(overViewArr[i] == 'Ntr Jalasiri')
 			{
 				getNtrJalaSiriAbstract(overViewArr[i],'state',locId,levelId,'abstract');
-			}else if(overViewArr[i] == 'WaterBudget')
-			{
-				getRDAbstractDataByType(overViewArr[i],'state',locId,levelId,'abstract');
 			}
 		}
 	}
@@ -193,16 +184,32 @@ $(document).on('click','[overview-level]', function(){
 			{
 				if(levelType == "state" || levelType == "district")
 				{
-					theadArr = [levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
+					theadArr = [levelType,'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
 				}else if(levelType == "constituency")
 				{
-					theadArr = ["district",levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
+					theadArr = ["district",levelType,'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
 				}else if(levelType == "mandal")
 				{
-					theadArr = ["district","constituency",levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
+					theadArr = ["district","constituency",levelType,'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
 				}else if(levelType == "panchayat")
 				{
-					theadArr = ["district","constituency","mandal",levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
+					theadArr = ["district","constituency","mandal",levelType,'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
+				}
+			}
+			if(globalDivName == 'GH')
+			{
+				if(levelType == "state" || levelType == "district")
+				{
+					theadArr = [levelType,'District Target','Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+				}else if(levelType == "constituency")
+				{
+					theadArr = ["district",levelType,'Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+				}else if(levelType == "mandal")
+				{
+					theadArr = ["district","constituency",levelType,'Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+				}else if(levelType == "panchayat")
+				{
+					theadArr = ["district","constituency","mandal",levelType,'Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
 				}
 			}
 			
@@ -212,9 +219,9 @@ $(document).on('click','[overview-level]', function(){
 			{
 				if(divId == 'Ntr Jalasiri')
 				{
-					getNtrJalaSiriLvlWiseData(tableId,levelType,theadArr,menuLocationType,menuLocationId);
+					getNtrJalaSiriLvlWiseData(divId,levelType,theadArr,menuLocationType,menuLocationId);
 				}else{
-					getNregaLevelsWiseData(tableId,levelType,theadArr,menuLocationType,menuLocationId);
+					getRDLevelsWiseData(divId,levelType,theadArr,menuLocationType,menuLocationId);
 				}
 			}
 		}
@@ -231,14 +238,12 @@ for(var i in overViewArr)
 {
 	$("[overview-block='"+overViewArr[i]+"']").append(spinner);
 	$("[overview-block='"+overViewArr[i]+"']").append(spinner);
-	if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD' || overViewArr[i] == 'MPT_PT' || overViewArr[i] == 'GC Works' || overViewArr[i] == 'CD_CW')
+	if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD' || overViewArr[i] == 'MPT_PT' || overViewArr[i] == 'GC Works' || overViewArr[i] == 'CD_CW' || overViewArr[i] == 'WaterBudget' || overViewArr[i] == 'GH')
 	{
-		getNREGSAbstractDataByType(overViewArr[i],'state',"0",'',2);
+		getRDAbstractDataByType(overViewArr[i],'state',"0",'',2);
 	}else if(overViewArr[i] == 'Ntr Jalasiri')
 	{
 		getNtrJalaSiriAbstract(overViewArr[i],'state',0,'',2);
-	}else if(overViewArr[i] == 'WaterBudget' || overViewArr[i] == 'GH'){
-		getRDAbstractDataByType(overViewArr[i],'state',"0",'',2,'onLoad');
 	}
 }
 buildOverviewAbstract();
@@ -246,22 +251,60 @@ var stateArr = [{'name':'Andhra Pradesh','type':1}];
 collapseMenu(1,stateArr,'multi-level-selection-menu');
 function buildOverviewAbstract()
 {
+	
 	var str='';
-	for(var i in overViewArr)
-	{
-		
-		str+='<div class="col-sm-2 m_top10">';
-			str+='<div class="panel-block-white text-center" overview-block="'+overViewArr[i]+'">';
-				if(overViewArr[i].length > 12)
-				{
-					str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+overViewArr[i]+'">'+overViewArr[i].substr(0,12)+'..</h4>';
-				}else{
-					str+='<h4 class="panel-block-white-title text-capitalize text-center">'+overViewArr[i]+'</h4>';
-				}
+	str+='<div class="row">';
+		str+='<div class="col-sm-12">';
+			str+='<div class="block-border">';
+				str+='<h5 class="text-danger">Neeru Chettu</h5>';
+				str+='<div class="row">';	
+					for(var i in overViewArr)
+					{
+						if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD'|| overViewArr[i] == 'MPT_PT'|| overViewArr[i] == 'GC Works'|| overViewArr[i] == 'CD_CW'|| overViewArr[i] == 'WaterBudget')
+						{
+							str+='<div class="col-sm-2 m_top10">';
+								str+='<div class="panel-block-white text-center" overview-block="'+overViewArr[i]+'">';
+									if(overViewArr[i].length > 12)
+									{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+overViewArr[i]+'">'+overViewArr[i].substr(0,12)+'..</h4>';
+									}else{
+										str+='<h4 class="panel-block-white-title text-capitalize text-center">'+overViewArr[i]+'</h4>';
+									}
+								str+='</div>';
+							str+='</div>';
+						}else if(overViewArr[i] == 'GH'){
+							str+='<div class="col-sm-2 m_top10">';
+								str+='<div class="panel-block-white text-center" overview-block="'+overViewArr[i]+'">';
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Greening O..</h4>';
+								str+='</div>';
+							str+='</div>';
+						}
+					}
+				str+='</div>';
 			str+='</div>';
 		str+='</div>';
-	}
+	str+='</div>';
+	str+='<div class="row">';
+		for(var i in overViewArr)
+		{
+			if(overViewArr[i] == 'Ntr Jalasiri')
+			{
+				str+='<div class="col-sm-2 m_top10">';
+					str+='<div class="panel-block-white text-center" overview-block="'+overViewArr[i]+'">';
+						if(overViewArr[i].length > 12)
+						{
+							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+overViewArr[i]+'">'+overViewArr[i].substr(0,12)+'..</h4>';
+						}else{
+							str+='<h4 class="panel-block-white-title text-capitalize text-center">'+overViewArr[i]+'</h4>';
+						}
+					str+='</div>';
+				str+='</div>';
+			}
+		}
+	str+='</div>';
+	
 	$("#overViewAbstract").html(str);
+	$("[overview-block]").append(spinner);
 }
 function getNtrJalaSiriAbstract(type,locType,locId,blockName,levelId)
 {
@@ -275,31 +318,6 @@ function getNtrJalaSiriAbstract(type,locType,locId,blockName,levelId)
 	}
 	$.ajax({
 		url: 'getNtrJalaSiriAbstract',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-		  xhr.setRequestHeader("Accept", "application/json");
-		  xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId);
-		}
-	});
-}
-function getNREGSAbstractDataByType(type,locType,locId,blockName,levelId)
-{
-	$("#nregsOverviewBodyId").html(spinner);
-	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-		toDate : glEndDate,
-		type : type,
-		locationType: locType,
-		locationId : locId
-	}
-	$.ajax({
-		url: 'getNREGSAbstractDataByType',
 		data: JSON.stringify(json),
 		type: "POST",
 		dataType: 'json', 
@@ -351,6 +369,12 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}else if(type == 'CD_CW')
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Check Dams and Check Walls">Check Dam..</h4>';
+					}else if(type == 'GH')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Greening O..</h4>';
+					}else if(type == 'WaterBudget')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Water Budget</h4>';
 					}else if(type.length > 12)
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
@@ -635,37 +659,26 @@ function overviewData(divId,levelId,locationId)
 	{
 		getNtrJalaSiriOverview(divId)
 	}else{
-		getNregasOverview(divId,menuLocationType,menuLocationId);	
+		getRDOverview(divId,menuLocationType,menuLocationId);	
 	}
 		
 	
 }
-function getNregasOverview(projectDivId,menuLocationType,menuLocationId)
+function getRDOverview(divId,menuLocationType,menuLocationId)
 {
-	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
-	if(projectDivId == 'FAperformance')
-	{
-		var json = {
-			year : "2017",
-			fromDate : glStartDate,
-			toDate : '2017-05-30',
-			divType : globalDivName,
-			locationType : menuLocationType,
-			locationId : menuLocationId
-		}
-	}else{
-		var json = {
-			year : "2017",
-			fromDate : glStartDate,
-	        toDate : glEndDate,
-			divType : globalDivName,
-			locationType : menuLocationType,
-			locationId : menuLocationId
-		}
+	$("#projectOvervw"+divId.replace(/\s+/g, '')).html(spinner);
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		divType : divId,
+		locationType : menuLocationType,
+		locationId : menuLocationId
 	}
 	
+	
 	$.ajax({
-		url: 'getNregasOverview',
+		url: 'getRDOverview',
 		data: JSON.stringify(json),
 		type: "POST",
 		dataType: 'json', 
@@ -674,7 +687,7 @@ function getNregasOverview(projectDivId,menuLocationType,menuLocationId)
 		  xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			buildNregasOverViewBlock(ajaxresp,projectDivId,menuLocationType,menuLocationId);
+			buildNregasOverViewBlock(ajaxresp,divId,menuLocationType,menuLocationId);
 		}
 	});
 }
@@ -1210,16 +1223,33 @@ function projectData(divId,levelId,locationId)
 	{
 		if(dataArr[0] == "state" || dataArr[0] == "district")
 		{
-			theadArr = [dataArr[0],'Targeted Bore Wells','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
+			theadArr = [dataArr[0],'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
 		}else if(dataArr[0] == "constituency")
 		{
-			theadArr = ["district",dataArr[0],'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
+			theadArr = ["district",dataArr[0],'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
 		}else if(dataArr[0] == "mandal")
 		{
-			theadArr = ["district","constituency",dataArr[0],'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
+			theadArr = ["district","constituency",dataArr[0],'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
 		}else if(dataArr[0] == "panchayat")
 		{
-			theadArr = ["district","constituency","mandal",dataArr[0],'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
+			theadArr = ["district","constituency","mandal",dataArr[0],'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
+		}
+		
+	}
+	if(globalDivName == 'GH')
+	{
+		if(dataArr[0] == "state" || dataArr[0] == "district")
+		{
+			theadArr = [dataArr[0],'District Target','Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+		}else if(dataArr[0] == "constituency")
+		{
+			theadArr = ["district",dataArr[0],'Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+		}else if(dataArr[0] == "mandal")
+		{
+			theadArr = ["district","constituency",dataArr[0],'Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+		}else if(dataArr[0] == "panchayat")
+		{
+			theadArr = ["district","constituency","mandal",dataArr[0],'Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
 		}
 	}
 	
@@ -1227,9 +1257,9 @@ function projectData(divId,levelId,locationId)
 	var tableId = divId.replace(/\s+/g, '')+''+dataArr[0];
 	if(divId == 'Ntr Jalasiri')
 	{
-		getNtrJalaSiriLvlWiseData(tableId,dataArr[0],theadArr,menuLocationType,menuLocationId);
+		getNtrJalaSiriLvlWiseData(divId,dataArr[0],theadArr,menuLocationType,menuLocationId);
 	}else{
-		getNregaLevelsWiseData(tableId,dataArr[0],theadArr,menuLocationType,menuLocationId);
+		getRDLevelsWiseData(divId,dataArr[0],theadArr,menuLocationType,menuLocationId);
 	}
 }
 function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId)
@@ -1517,7 +1547,6 @@ function tableViewOld(blockId,theadArr,result,locationType)
 		});
 	}
 }
-//getRDAbstractDataByType();
 function getRDAbstractDataByType(type,locType,locId,blockName,levelId)
 {
 	var json = {
@@ -1543,46 +1572,19 @@ function getRDAbstractDataByType(type,locType,locId,blockName,levelId)
 		}
 	}); 
 }
-//getRDOverview();
-function getRDOverview()
+
+function getRDLevelsWiseData(divId,subLocationType,theadArr,locationTypeNew,menuLocationId)
 {
-	
-		var json = {
-			year : "2017",
-			fromDate : "2017-04-01",
-	        toDate : "2017-07-30",
-			divType : "SMC Trench",
-			locationType : "constituency",
-			locationId : "01120"
-		}
-	
-	
-	$.ajax({
-		url: 'getRDOverview',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-		  xhr.setRequestHeader("Accept", "application/json");
-		  xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			//buildNregasOverViewBlock(ajaxresp,projectDivId,menuLocationType,menuLocationId);
-		}
-	});
-}
-getRDLevelsWiseData();
-function getRDLevelsWiseData()
-{
-	//$("#"+divIdd).html(spinner);
+	var tableId = divId.replace(/\s+/g, '')+''+subLocationType;
+	$("#"+tableId).html(spinner);
 	var json = {
 		year : "2017",
-		fromDate : "2017-04-01",
-		toDate : "2017-07-30",
-		locationType: "constituency",
-		divType : "SMC Trench",
-		locationId : "10293",
-		sublocaType : "constituency"
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locationTypeNew,
+		divType : divId,
+		locationId : menuLocationId,
+		sublocaType : subLocationType
 	}
 	$.ajax({
 		url: 'getRDLevelsWiseData',
@@ -1594,7 +1596,87 @@ function getRDLevelsWiseData()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-								
+			var str = '';
+			if(ajaxresp != null && ajaxresp.length > 0){
+				for(var i in ajaxresp){
+						str+='<tr>';
+							if(subLocationType == "state"){
+							  str+='<td class="text-capital">'+subLocationType+'</td>';
+							}
+							else if(subLocationType == "district"){
+							  str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							}
+							else if(subLocationType == "constituency"){
+							  str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							  str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							}
+							else if(subLocationType == "mandal"){
+							  str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							  str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							  str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							}
+							else if(subLocationType == "panchayat"){
+							  str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+							  str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+							  str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+							  str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+							}
+							if(globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW'){
+							  str+='<td>'+ajaxresp[i].target+'</td>';
+							if(subLocationType == "state" || subLocationType == "district"){
+							  str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
+							  
+							}
+							str+='<td>'+ajaxresp[i].grounded+'</td>';
+							str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+							str+='<td>'+ajaxresp[i].inProgress+'</td>';
+							str+='<td>'+ajaxresp[i].completed+'</td>';
+							if(ajaxresp[i].percentage < 50){
+							  str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+							  str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 80){
+							  str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
+							}
+							
+							if(subLocationType == "state" || subLocationType == "district"){
+							  if(ajaxresp[i].percSant < 50){
+								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
+							  }else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
+								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
+							  }else if(ajaxresp[i].percSant >= 80){
+								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
+							  }
+							}
+						  }else if(globalDivName == "WaterBudget"){
+							str+='<td>'+ajaxresp[i].target+'</td>';
+							str+='<td>'+ajaxresp[i].achivement+'</td>';
+							str+='<td>'+ajaxresp[i].achmtGT0+'</td>';
+							str+='<td>'+ajaxresp[i].achmtLT0+'</td>';
+							str+='<td>'+ajaxresp[i].balance+'</td>';
+							str+='<td>'+ajaxresp[i].area+'</td>';
+							str+='<td>'+ajaxresp[i].gross+'</td>';
+							str+='<td>'+ajaxresp[i].stroageCap+'</td>';
+							str+='<td>'+ajaxresp[i].balanceRunOff+'</td>';
+							
+						  }else if(globalDivName == "GH"){
+								if(subLocationType == 'state' || subLocationType == 'district')
+								{
+									str+='<td>'+ajaxresp[i].target+'</td>';
+								}
+								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
+								str+='<td>'+ajaxresp[i].pittingKMS+'</td>';
+								str+='<td>'+ajaxresp[i].plantingKMS+'</td>';
+								str+='<td>'+ajaxresp[i].percentage+'</td>';
+							}
+									
+					str+='</tr>';
+				}
+						
+					
+			}
+			
+			tableView(tableId,theadArr,str,subLocationType);
 		} 
 	});
 }
@@ -1634,4 +1716,26 @@ function collapseMenu(id,resultArr,buildId)
 	}
 	collapse+='</div>';
 	$("."+buildId).html(collapse);
+}
+function getAllNregaSubLocationDetails(divId,levelId,locationScopeId,type){
+	$("."+divId).html(spinner);
+	//var type = 'constituency' //district to constituency (only consider type like this)
+	var json = {
+		searchLevelId		: levelId,//3
+		menuLvelValue		: locationScopeId,//"03"
+		type 				: type//"constituency"//		  
+	}
+	$.ajax({
+		url : "getAllNregaSubLocationDetails",     
+		data : JSON.stringify(json),
+		type : "POST",  
+		dataTypa : 'json',   
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success : function(result){   
+			collapseMenu(levelId,result,divId)
+		}
+	});
 }
