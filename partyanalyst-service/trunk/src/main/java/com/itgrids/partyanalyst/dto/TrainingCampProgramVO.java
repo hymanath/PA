@@ -27,7 +27,16 @@ public class TrainingCampProgramVO {
 	private String lastUpdatedTime;
 	private Long InviteeAttended = 0l;
 	private Long nonInviteeAttended=0l;
+	private Long othersCount = 0l;
+	  
 	
+	public Long getOthersCount() {
+	    return othersCount;
+	  }
+	  public void setOthersCount(Long othersCount) {
+	    this.othersCount = othersCount;
+	  }
+	  
  	public Long getId() {
 		return id;
 	}

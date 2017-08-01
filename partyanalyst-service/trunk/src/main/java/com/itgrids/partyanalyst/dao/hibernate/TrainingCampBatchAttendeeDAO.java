@@ -1138,7 +1138,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 			queryString.append("  TCM.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId , ");
 		}else if(userAccessLvlId != null && userAccessLvlId.longValue() == 8l){
 			queryString.append("  TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId , ");
-		}else if(userAccessLvlId != null && userAccessLvlId.longValue() == 8l){
+		}else if(userAccessLvlId != null && userAccessLvlId.longValue() == 9l){
 			queryString.append("  TCM.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId , ");
 		}
 		queryString.append(" count(distinct TCBA.tdpCadreId),TCM.tdpCommitteeRole.tdpRolesId from TrainingCampBatchAttendee TCBA, TdpCommitteeMember TCM " +  
@@ -1171,7 +1171,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 			queryString.append("  TCM.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId in (:userAccessLvlVals) and ");
 		}else if(userAccessLvlId != null && userAccessLvlId.longValue() == 8l){
 			queryString.append("  TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId in (:userAccessLvlVals) and ");
-		}else if(userAccessLvlId != null && userAccessLvlId.longValue() == 8l){
+		}else if(userAccessLvlId != null && userAccessLvlId.longValue() == 9l){
 			queryString.append("  TCM.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId in (:userAccessLvlVals) and ");
 		}
 		queryString.append(" TCBA.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId and TCBA.isDeleted = 'false' and TCBA.trainingCampBatch.isCancelled='false' " +
@@ -1190,7 +1190,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 			queryString.append(" group by  TCM.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId,TCM.tdpCommitteeRole.tdpRolesId  ");
 		}else if(userAccessLvlId != null && userAccessLvlId.longValue() == 8l){
 			queryString.append(" group by  TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId,TCM.tdpCommitteeRole.tdpRolesId ");
-		}else if(userAccessLvlId != null && userAccessLvlId.longValue() == 8l){
+		}else if(userAccessLvlId != null && userAccessLvlId.longValue() == 9l){
 			queryString.append(" group by  TCM.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId,TCM.tdpCommitteeRole.tdpRolesId  ");
 		}
 						   
@@ -1211,4 +1211,22 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 		return query.list();       
 		
 	}
+   
+   public List<Object[]> getDayWiseTrainingCampDetailsCount(Long programId,String startDate,String endDate,Long enrollemntYrId,Long basicCommitteeId,String committeeLvlIds,Long locationScopeId,String loctionVals)
+   
+   {
+	   
+	   Long committeeEnrollmetYrId = null;
+	   if(enrollemntYrId == 4l){
+		   committeeEnrollmetYrId=2l;
+	   }else if(enrollemntYrId == 3l){
+		   committeeEnrollmetYrId=1l;
+	   }
+	   
+	Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_details(:programId,:startDate,:endDate,:enrollemntYrId,:basicCommitteeId,:committeeLvlIds,:locationScopeId,:levelVals)")
+   			.setParameter("programId", programId).setParameter("startDate", startDate).setParameter("endDate", endDate).setParameter("enrollemntYrId", committeeEnrollmetYrId).setParameter("basicCommitteeId", basicCommitteeId)
+   			.setParameter("committeeLvlIds", committeeLvlIds).setParameter("locationScopeId", locationScopeId).setParameter("levelVals", loctionVals);
+   	
+   	return query.list();
+   }
 }

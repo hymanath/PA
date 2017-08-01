@@ -2182,7 +2182,7 @@ String committeType){
 		  */
 	   public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverview(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,List<Long> enrollmentYearIds,List<Long> programIdList){
 			 
-		     TrainingCampProgramVO finalResultVO = new TrainingCampProgramVO();
+		     /*TrainingCampProgramVO finalResultVO = new TrainingCampProgramVO();
 			 Map<Long,TrainingCampProgramVO> trainingCampProgramDtlsMap = new HashMap<Long, TrainingCampProgramVO>();
 			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			 Date toDate=null;
@@ -2249,7 +2249,11 @@ String committeType){
 			 }catch(Exception e){
 				 LOG.error("Error occured at getTotalEligibleAttendedAndNotAttenedOverviewCount() in CoreDashboardMainService {}",e);
 			 }
-			 return finalResultVO;
+			 return finalResultVO;*/
+		   
+		   TrainingCampProgramVO obj = getTrainingCampBasicDetailsCntOverviewDayWise(userAccessLevelId,userAccessLevelValues, stateId, toDateStr, enrollmentYearIds,programIdList);
+
+			return obj;
 		}
 	public void setElibibleAndAttendedMemberCntToMap(List<Object[]> rtrnTtlAttendedMmbrObjList,TrainingCampProgramVO resultVO,String levelType){
 	try{
@@ -2999,7 +3003,7 @@ String committeType){
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	Date toDate=null;
 	try{
-		if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+		/*if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
 			 toDate = sdf.parse(toDateStr);
 		 }
 		   //calling generic method to get childActivityMembers and there location level and values
@@ -3121,7 +3125,8 @@ String committeType){
 		  if(resultList != null && resultList.size() > 0)
 		  {
 			  Collections.sort(resultList, trainingMemberEligibleAttendedPercDesc);
-		  }
+		  }*/
+		 resultList =getSelectedChildTypeMembersForTrainingProgramForDayWise( parentActivityMemberId, childUserTypeIds, locationLevelId, locationLevelValues, reportType, stateId, toDateStr, enrollmentYearIds, programIdsList);
 	}catch(Exception e){
 		LOG.error("Error occured at getSelectedChildTypeMembersForTrainingProgram() in CoreDashboardMainService ",e);
 	}
@@ -4404,7 +4409,7 @@ public List<UserDataVO> getbasicCommitteeDetails(){
 }//state lvl.
 public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,Long stateId,String dateStr,String option,List<Long> enrollYrIds){    
 	LOG.info(" entered in to getStateLevelCampAttendedDetails() of CoreDashBoardMainService ");
-	try{
+	/*try{
 		DateUtilService dateUtilService = new DateUtilService();
 		Date toDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -4515,7 +4520,11 @@ public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,
 		e.printStackTrace();
 		LOG.error("Error occured at getStateLevelCampAttendedDetails() in CoreDashBoardMainService ",e); 
 	}
-	return null;  
+	return null;  */
+	
+	List<IdNameVO> vo = getStateLevelCampAttendedDetailsDyaWise(programIdList, stateId, dateStr, option, enrollYrIds);
+
+	return vo;
 }
 
 public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> programIdList, Long stateId, String dateStr,List<Long> enrollYrIds){
@@ -6178,5 +6187,807 @@ public void setTotalAttendedAndNonInviteeAttended(List<Object[]> rtrnTtlAttended
 		 LOG.error("Error occured at setElibibleAndAttendedMemberCntToMap() in CoreDashboardMainService {}",e); 
 	}
 	}
+
+/**
+* @param  Long parentActivityMemberId
+* @param  Long childUserTypeId
+* @param  Long userAccessLevelId
+* @param List<Long> userAccessLevelValues
+* @param String reportType
+*  @param Long stateId 
+* @return List<UserTypeVO>
+* @author Hymavathi 
+* @Description :This Service Method is used to get selected child member and for userType..and For Day wise 
+*  @since 10-NOV-2016
+*/
+public List<UserTypeVO> getSelectedChildTypeMembersForTrainingProgramForDayWise(Long parentActivityMemberId,List<Long> childUserTypeIds,Long locationLevelId,List<Long> locationLevelValues,String reportType,Long stateId,String toDateStr,List<Long> enrollmentYearIds,List<Long> programIdsList){
+
+List<UserTypeVO> resultList = new ArrayList<UserTypeVO>(0);
+Map<String,TrainingCampProgramVO> eligibleAndAttendedCntMap = new HashMap<String, TrainingCampProgramVO>(0);  
+SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+Date toDate=null;
+try{
+	if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+		 toDate = sdf.parse(toDateStr);
+	 }
+	   //calling generic method to get childActivityMembers and there location level and values
+	  ActivityMemberVO activityMemberVO=null;
+	  Map<Long,UserTypeVO> childActivityMembersMap=null;
+	  
+	  
+	  Map<Long,Set<Long>> locationLevelIdsMap=null;
+	  Map<String,String>     nameForLocationMap=null;
+	  if(reportType != null && reportType.equalsIgnoreCase("selectedUserType")){
+		 // activityMemberVO= coreDashboardGenericService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId);
+		  activityMemberVO = coreDashboardGenericService.getRequiredSubLevelActivityMembersDetails(parentActivityMemberId,childUserTypeIds);
+		  childActivityMembersMap= activityMemberVO.getActivityMembersMap();
+		  locationLevelIdsMap= activityMemberVO.getLocationLevelIdsMap();
+	  }else if(reportType != null && reportType.equalsIgnoreCase("directChild")){
+		  if(childUserTypeIds != null && childUserTypeIds.size()>0){
+			   activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(parentActivityMemberId,childUserTypeIds.get(0));//activityMemerId,userTypeId
+		  }
+		   childActivityMembersMap = activityMemberVO.getActivityMembersMap();
+		   locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+	  }
+	   
+	  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+		  nameForLocationMap = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
+	  }
+	  	List<Long> inviteeRoles = new ArrayList<Long>();
+		inviteeRoles.add(1l);
+		inviteeRoles.add(2l);
+		inviteeRoles.add(3l);
+		
+ 	    if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+			  for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+				    Long accessLevelValue =0l;	
+				     if(entry.getKey().longValue() == 4l){// user level 4 means parliament constituency in the case of core dashboard
+				    	 accessLevelValue = 10l; //region scope 10  means parliament constituency in intermediate table so that we are replacing value
+				     }else if(entry.getKey().longValue()==5l){// user level 5 means constituency in the case of core dashboard
+				    	 accessLevelValue = 4l;  //region scope 4  means constituency in intermediate table so that we are replacing value
+				     }else{
+				    	 accessLevelValue = entry.getKey();	 
+				     }
+				     List<Object[]> returnObjList = trainingCampDetailsInfoDAO.getTrainingCampProgramEligibleAndAttendedMemberLocationWise(accessLevelValue,new ArrayList<Long>(entry.getValue()), toDate,enrollmentYearIds,programIdsList);
+					   if(returnObjList != null && returnObjList.size() > 0){
+						   for (Object[] param : returnObjList) {
+							   String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
+							   TrainingCampProgramVO eligibleAndAttendedVO = new TrainingCampProgramVO();
+							   eligibleAndAttendedVO.setTotalEligibleCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+							   eligibleAndAttendedVO.getLocationList().addAll(getDaysList());
+							  // eligibleAndAttendedVO.setInviteeAttended(commonMethodsUtilService.getLongValueForObject(param[2]));
+							  // eligibleAndAttendedVO.setTotalNotAttenedCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+							   eligibleAndAttendedCntMap.put(locationLevelAndId,eligibleAndAttendedVO);
+						}
+					   }
+					   Map<Long,Map<Long,Long>> batchMemdaysMap = new HashMap<Long, Map<Long,Long>>();
+					   
+					   List<Long> committeeLvlIds = new ArrayList<Long>();
+					   committeeLvlIds.add(5l);
+					   committeeLvlIds.add(6l);
+					   committeeLvlIds.add(7l);
+					   committeeLvlIds.add(8l);
+					   committeeLvlIds.add(9l);
+					   String fromDate = null;
+					   SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+
+					   fromDate = sdf1.format(toDate);
+					   DateUtilService dateUtilService = new DateUtilService();
+					   Date currentDate = dateUtilService.getCurrentDateAndTime();
+					   String toDay = sdf1.format(currentDate);
+					   
+					   String levelVals = getListToString(new ArrayList<Long>(entry.getValue()));
+					   String committeeLvlVals = getListToString(committeeLvlIds);
+					   
+					 //List<Object[]> totalAttnd = trainingCampBatchAttendeeDAO.getTotalLocationWiseAttendeeCount(programIdsList,1l, toDate,enrollmentYearIds,accessLevelValue,new ArrayList<Long>(entry.getValue()));
+					   List<Object[]> totalAttnd = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount( programIdsList.get(0),fromDate,toDay,enrollmentYearIds.get(0),1l,committeeLvlVals,accessLevelValue,levelVals);
+					   //0 locationId,1 batchId,2 tdpCadreId,3 roleId
+					   if(totalAttnd != null && totalAttnd.size() > 0){
+						   for (Object[] param : totalAttnd) {
+							    Map<Long,Long> memDaysMap = batchMemdaysMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+							    if(memDaysMap == null){
+							    	memDaysMap = new HashMap<Long,Long>();
+							    	memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), 1l);
+							    	batchMemdaysMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), memDaysMap);
+							    }
+							   Long attendedDaysforBatch = memDaysMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+							    if(attendedDaysforBatch == null){
+							    	memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), 1l);
+							    }else{
+							    	memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), attendedDaysforBatch+1l);
+							    }
+							}
+					   }
+					   
+					   List<TrainingCampProgramVO> daysList = new ArrayList<TrainingCampProgramVO>();
+					   
+					   Map<Long,Long> memCnt = new HashMap<Long,Long>();
+					   Map<Long,Long> memMaxDayCnt = getMaxDaysAttendedInBatch( batchMemdaysMap , totalAttnd);
+					   if(totalAttnd != null && totalAttnd.size() > 0){
+						   for (Object[] param : totalAttnd) {
+							   String locationLevelAndId = entry.getKey()+"-"+param[6].toString();
+							   TrainingCampProgramVO eligibleAndAttendedVO = eligibleAndAttendedCntMap.get(locationLevelAndId);
+							   if(eligibleAndAttendedVO != null){
+								  // eligibleAndAttendedVO.setTotalAttenedCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+								   Long attendedDaysforBatch = memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+								   
+								    	TrainingCampProgramVO dayVO = getMatchVOList(eligibleAndAttendedVO.getLocationList(),attendedDaysforBatch);
+								    		if(dayVO != null){
+								    			
+								    		Long count =memCnt.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+								    		if(count == null){
+								    			memCnt.put(commonMethodsUtilService.getLongValueForObject(param[0]), 1l);
+								    		}else{
+								    			memCnt.put(commonMethodsUtilService.getLongValueForObject(param[0]), count+1l);
+								    		}
+								    		if(count == null){
+									    		if(!inviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(param[3]))){
+													if(dayVO.getNonInviteeAttended() != null )
+														dayVO.setNonInviteeAttended(dayVO.getNonInviteeAttended()+1l);
+													else
+														dayVO.setNonInviteeAttended(1l);
+													
+												}else if(inviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(param[3]))){
+													if(dayVO.getInviteeAttended() != null )
+														dayVO.setInviteeAttended(dayVO.getInviteeAttended()+1l);
+													else
+														dayVO.setInviteeAttended(1l);
+													
+												}else{
+													eligibleAndAttendedVO.setTotalAttenedCount(eligibleAndAttendedVO.getTotalAttenedCount()+1l);
+												}
+									    		
+									    		dayVO.setTotalAttenedCount(dayVO.getInviteeAttended()+dayVO.getNonInviteeAttended());
+									    		dayVO.setTotalAttenedCountPer(calculatePercantage(dayVO.getNonInviteeAttended(),eligibleAndAttendedVO.getTotalEligibleCount()));  //day wise InviteeAttended  Percentage
+									    		
+								    		}
+								    	}
+								   }
+							   }
+						   }
+					   }
+			   }  
+		  
+	  //Pushing Required Count
+	 	  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+		      for(UserTypeVO vo:childActivityMembersMap.values()){
+		    	  vo.setDaysList(getDaysList());
+		    	   for(Long locationValueId:vo.getLocationValuesSet()){
+		    		   String key = vo.getLocationLevelId()+"-"+locationValueId;   
+		    			 if(eligibleAndAttendedCntMap.get(key) != null){
+		    				 TrainingCampProgramVO eligibleAndAttendedVO = eligibleAndAttendedCntMap.get(key);
+		    				// vo.setDaysList(eligibleAndAttendedVO.getLocationList());
+		    				 Long inviteeAttended = 0l;
+		    				 Long nonInviteeAttnd = 0l;
+		    				 Long totalAttnd = 0l;
+		    				 for(TrainingCampProgramVO locDayVO :eligibleAndAttendedVO.getLocationList()){
+		    					 TrainingCampProgramVO memDayVo = getMatchVOList(vo.getDaysList(), locDayVO.getId());
+		    					 if(memDayVo != null){
+		    						 inviteeAttended = inviteeAttended+locDayVO.getInviteeAttended();
+		    						 nonInviteeAttnd = nonInviteeAttnd+locDayVO.getNonInviteeAttended();
+		    						 totalAttnd =totalAttnd+locDayVO.getTotalAttenedCount();
+		    						 memDayVo.setNonInviteeAttended(memDayVo.getNonInviteeAttended()+locDayVO.getNonInviteeAttended());
+		    						 memDayVo.setInviteeAttended(memDayVo.getInviteeAttended()+locDayVO.getInviteeAttended());
+		    						 memDayVo.setTotalAttenedCount(memDayVo.getTotalAttenedCount()+locDayVO.getTotalAttenedCount());
+		    						 memDayVo.setTotalAttenedCountPer(calculatePercantage(memDayVo.getNonInviteeAttended(),eligibleAndAttendedVO.getTotalEligibleCount()));  //day wise InviteeAttended  Percentage
+		    						 
+							    	eligibleAndAttendedVO.setNonInviteeAttended(eligibleAndAttendedVO.getNonInviteeAttended()+locDayVO.getNonInviteeAttended());
+									eligibleAndAttendedVO.setInviteeAttended(eligibleAndAttendedVO.getInviteeAttended()+locDayVO.getInviteeAttended());
+									eligibleAndAttendedVO.setTotalAttenedCount(eligibleAndAttendedVO.getTotalAttenedCount()+locDayVO.getTotalAttenedCount());
+		    					 }
+		    				 }
+		    				 eligibleAndAttendedVO.setTotalNotAttenedCount(eligibleAndAttendedVO.getTotalEligibleCount()-inviteeAttended);
+		    				 
+		    				 vo.setTotalEligibleCount(vo.getTotalEligibleCount()+eligibleAndAttendedVO.getTotalEligibleCount()); 
+		    				 vo.setInviteeAttendedCnt(vo.getInviteeAttendedCnt()+inviteeAttended); 
+		    				 vo.setNonInviteeAttendedCnt(vo.getNonInviteeAttendedCnt()+nonInviteeAttnd);
+		    				 vo.setTotalAttenedCount(vo.getTotalAttenedCount()+totalAttnd);
+		    	    		 vo.setTotalNotAttenedCount(vo.getTotalNotAttenedCount()+eligibleAndAttendedVO.getTotalNotAttenedCount());
+		    	    	 }
+		    	   }
+		    	   
+		      }
+	   }  
+	  //Setting Location name
+			  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			      for(UserTypeVO vo:childActivityMembersMap.values()){
+			    	  for(Long locationValueId:vo.getLocationValuesSet()){
+			    		  String key = vo.getLocationLevelId()+"_"+locationValueId;
+			    		  if(vo.getLocationName() == null || vo.getLocationName().isEmpty()){
+			    			  vo.setLocationName(nameForLocationMap.get(key));
+						   }else{
+							   vo.setLocationName(vo.getLocationName()+","+ nameForLocationMap.get(key) );  
+						   }
+			    	  }
+			      }
+		    }    
+		//Calculating percentage
+	  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+		      for(UserTypeVO vo:childActivityMembersMap.values()){
+		    	  //vo.getInviteeAttendedCnt() means who are presidents, vice-presidents and General Secretery only eligible people for trainings
+		    	 	 vo.setTotalAttenedCountPer(calculatePercantage(vo.getInviteeAttendedCnt(),vo.getTotalEligibleCount()));  
+		    	 	 vo.setTotalNotAttenedCountPer(calculatePercantage(vo.getTotalNotAttenedCount(),vo.getTotalEligibleCount()));	
+		      }
+		}
+	  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+		  resultList.addAll(childActivityMembersMap.values());
+	  }
+	  if(resultList != null && resultList.size() > 0)
+	  {
+		  Collections.sort(resultList, trainingMemberEligibleAttendedPercDesc);
+	  }
+}catch(Exception e){
+	LOG.error("Error occured at getSelectedChildTypeMembersForTrainingProgramForDayWise() in CoreDashboardMainService ",e);
+}
+return resultList;	
+}
+
+public List<TrainingCampProgramVO> getDaysList(){
+	List<TrainingCampProgramVO> daysList = new ArrayList<TrainingCampProgramVO>();
+	TrainingCampProgramVO day1 = new TrainingCampProgramVO();
+	day1.setId(1l);
+	day1.setName("1 Day");
+	TrainingCampProgramVO day2 = new TrainingCampProgramVO();
+	day2.setId(2l);
+	day2.setName("2 Days");
+	TrainingCampProgramVO day3 = new TrainingCampProgramVO();
+	day3.setId(3l);
+	day3.setName("3 Days");
+	daysList.add(day1);
+	daysList.add(day2);
+	daysList.add(day3);
+	return daysList;
+}
+public TrainingCampProgramVO getMatchVOList(List<TrainingCampProgramVO> returnList,Long dayId){
+		if(returnList == null )
+			return null;
+		for(TrainingCampProgramVO dayVO:returnList){
+			 if(dayVO.getId().equals(dayId)){
+				 return dayVO;
+			 }
+		}
+		return null;
+}
+
+public Map<Long,Long> getMaxDaysAttendedInBatch(Map<Long,Map<Long,Long>> batchMemdaysMap ,List<Object[]> list){
+	Map<Long,Long> memMaxDayCnt = new HashMap<Long,Long>();
+	try{
+		if(list != null && list.size() > 0){
+			   for (Object[] param : list) {
+				   Map<Long,Long> memDaysMap = batchMemdaysMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+				    if(memDaysMap != null){
+				    	Long attendedDaysforBatch = memDaysMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				    	if(memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(param[0])) == null){
+				    		memMaxDayCnt.put(commonMethodsUtilService.getLongValueForObject(param[0]), attendedDaysforBatch);
+				    	}else if(memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(param[0]))< attendedDaysforBatch){
+				    		memMaxDayCnt.put(commonMethodsUtilService.getLongValueForObject(param[0]), attendedDaysforBatch);	
+					    }
+				    }
+			   }
+			}
+		
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Error occured at getMaxDaysAttendedForBatch() in CoreDashboardMainService ",e);
+	}
+	
+	return memMaxDayCnt;
+}
+public List<IdNameVO> getStateLevelCampAttendedDetailsDyaWise(
+		List<Long> programIdList, Long stateId, String dateStr,
+		String option, List<Long> enrollYrIds) {
+	LOG.info(" entered in to getStateLevelCampAttendedDetails() of CoreDashBoardMainService ");
+	try {
+		DateUtilService dateUtilService = new DateUtilService();
+		Date toDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");
+		Date currentDate = dateUtilService.getCurrentDateAndTime();
+
+		if (dateStr != null && !dateStr.isEmpty() && dateStr.length() > 0) {
+			toDate = sdf.parse(dateStr);
+		}
+		IdNameVO idNameVO = null;
+		Map<Long, IdNameVO> idAndIdNameVoMap = new HashMap<Long, IdNameVO>();
+		List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+
+		List<Object[]> inviteCountList = trainingCampBatchAttendeeDAO
+				.getTotalInvitedForTrainingCampStateLevel(programIdList,
+						stateId, currentDate, enrollYrIds);
+		List<Object[]> attendedCountList = null;
+		if (option.equalsIgnoreCase("dayWise") && programIdList.size() == 1
+				&& programIdList.get(0) != 6) {
+			List<Object[]> fromAndToDate = trainingCampBatchDAO
+					.getFromAndToDate(programIdList.get(0));
+			String frmDateStr = "";
+			String toDateStr = "";
+			Date fromDate = null;
+			Date toDt = null;
+			if (fromAndToDate != null && fromAndToDate.size() > 0) {
+				frmDateStr = fromAndToDate.get(0)[0].toString().substring(
+						0, 10);
+				toDateStr = fromAndToDate.get(0)[1].toString().substring(0,
+						10);
+				fromDate = sdf1.parse(frmDateStr);
+				toDt = sdf1.parse(toDateStr);
+			}
+
+			List<String> dateStrList = dateUtilService
+					.getDaysBetweenDatesStringFormat(fromDate, toDt);
+			List<Date> dateList = new ArrayList<Date>();
+			if (dateStrList != null && dateStrList.size() > 0) {
+				for (String param : dateStrList) {
+					dateList.add(sdf1.parse(param));
+				}
+			}
+			attendedCountList = trainingCampAttendanceDAO
+					.getTotalAttendedForTrainingCampStateLevel(
+							programIdList, stateId, toDate, dateList,
+							option, enrollYrIds);
+			if (attendedCountList != null && attendedCountList.size() > 0) {
+				for (Object[] param : attendedCountList) {
+					idNameVO = new IdNameVO();
+					idNameVO.setId(param[0] != null ? (Long) param[0] : 0l);
+					idNameVO.setName(param[1] != null ? param[1].toString()
+							: "");
+					idNameVO.setDateStr(param[2] != null ? param[2]
+							.toString() : "");
+					idNameVO.setActualCount(param[3] != null ? (Long) param[3]
+							: 0l);
+					if(inviteCountList != null && inviteCountList.size()>0){
+					idNameVO.setCount(inviteCountList.get(0)[2] != null ? (Long) inviteCountList
+							.get(0)[2] : 0l);
+					}
+					idNameVOs.add(idNameVO);
+				}
+				//return idNameVOs;
+			}
+		} else {
+			attendedCountList = trainingCampAttendanceDAO
+					.getTotalAttendedForTrainingCampStateLevel(
+							programIdList, stateId, toDate, null, option,
+							enrollYrIds);
+		}
+
+		if (inviteCountList != null && inviteCountList.size() > 0) {
+			for (Object[] obj : inviteCountList) {
+				idNameVO = new IdNameVO();
+				idNameVO.setId(obj[0] != null ? (Long) obj[0] : 0l);
+				idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+				idNameVO.setCount(obj[2] != null ? (Long) obj[2] : 0l);
+				idNameVO.setIdnameList(getDaysListTemplate());
+				idAndIdNameVoMap.put(obj[0] != null ? (Long) obj[0] : 0l,
+						idNameVO);
+			}
+		}
+		if (attendedCountList != null && attendedCountList.size() > 0) {
+			for (Object[] obj : attendedCountList) {
+				idNameVO = idAndIdNameVoMap
+						.get(obj[0] != null ? (Long) obj[0] : 0l);
+				if (idNameVO != null) {
+					idNameVO.setActualCount(obj[2] != null ? (Long) obj[2]
+							: 0l);
+				}
+			}
+		}
+		List<Long> inviteeRoles = new ArrayList<Long>();
+		inviteeRoles.add(1l);
+		inviteeRoles.add(2l);
+		inviteeRoles.add(3l);
+
+		List<Long> loctionVals = new ArrayList<Long>();
+		loctionVals.add(stateId);
+
+		String levelVals = "1";
+		String committeeLvlVals = "5,6,7,8,9";
+		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+		String fromDate = sd.format(toDate);
+		
+		String today = sd.format(currentDate);
+		Long locationScopeId =2L;
+        // List<Object[]> invAttndNonInvAttnd =
+		// trainingCampBatchAttendeeDAO.getInviteeAttndAndNonInviteeAttnded(programIdList,
+		// stateId, toDate,enrollYrIds);
+		List<Object[]> invAttndNonInvAttnd = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIdList.get(0),fromDate, today, enrollYrIds.get(0), 1L,committeeLvlVals, locationScopeId, levelVals);
+		Map<Long, Map<Long, Long>> batchMemdaysMap = new HashMap<Long, Map<Long, Long>>();
+		if (invAttndNonInvAttnd != null && invAttndNonInvAttnd.size() > 0) {
+			for (Object[] param : invAttndNonInvAttnd) {
+				Map<Long, Long> memDaysMap = batchMemdaysMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+				if (memDaysMap == null) {
+					memDaysMap = new HashMap<Long, Long>(0);
+				}
+				Long attendedDaysforBatch = memDaysMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				if (attendedDaysforBatch == null) {
+					memDaysMap.put(commonMethodsUtilService	.getLongValueForObject(param[0]), 1l);
+				} else {
+					memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),attendedDaysforBatch + 1l);
+				}
+				batchMemdaysMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), memDaysMap);
+			}
+		}
+		Map<Long, Long> totalCountMap = new HashMap<Long, Long>();// tdpCadre adding Count to days
+		
+		Map<Long, Long> memMaxDayCnt = getCountOfMaxDaysAttendedInBatch(
+				batchMemdaysMap, invAttndNonInvAttnd);// Tdp CAdre max days Vo getting
+		Long inviteeAtt = 0l;
+		Long nonInviteeAtt = 0l;
+		if (invAttndNonInvAttnd != null && invAttndNonInvAttnd.size() > 0) {
+			for (Object[] param : invAttndNonInvAttnd) {
+				idNameVO = idAndIdNameVoMap.get(commonMethodsUtilService.getLongValueForObject(8));
+				if (idNameVO != null) {
+
+					Long memattendedforBatch = memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+
+					Long memCnt = totalCountMap.get(commonMethodsUtilService
+									.getLongValueForObject(param[0]));
+					if (memCnt == null) {
+						totalCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), 1L);
+					} else {
+						totalCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),memCnt + 1);
+
+					}
+					IdNameVO dayVO = getMatchVOList(idNameVO.getIdnameList(), memattendedforBatch);
+					if (memCnt == null && dayVO != null) {
+						if (inviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(param[3])) && 
+								 commonMethodsUtilService.getLongValueForObject(param[4])!=0l) {
+							if (dayVO.getInviteeAttnd() != null)
+								dayVO.setInviteeAttnd(dayVO.getInviteeAttnd() + 1L);
+							else
+								dayVO.setInviteeAttnd(1L);
+							inviteeAtt =inviteeAtt+1L;
+						}
+						else {
+							if (dayVO.getNonInviteeAttnd() != null)
+								dayVO.setNonInviteeAttnd(dayVO.getNonInviteeAttnd() + 1L);
+							else
+								dayVO.setNonInviteeAttnd(1L);
+							nonInviteeAtt =nonInviteeAtt+1L;
+						} 
+						dayVO.setTotalCount(dayVO.getInviteeAttnd()+ dayVO.getNonInviteeAttnd());
+					}
+				}
+			}
+		}
+		
+		idNameVO.setInviteeAttnd(inviteeAtt);
+		idNameVO.setNonInviteeAttnd(nonInviteeAtt);
+		idNameVO.setTotalCount(inviteeAtt+nonInviteeAtt);
+		
+		idNameVOs = new ArrayList<IdNameVO>(idAndIdNameVoMap.values());
+		Collections.sort(idNameVOs, new Comparator<IdNameVO>() {
+			public int compare(IdNameVO obj1, IdNameVO obj2) {
+				if (obj1.getId() == obj2.getId()) {
+					return 0;
+				} else {
+					return obj1.getId() > obj2.getId() ? -1 : 1;
+				}
+			}
+		});
+
+		return idNameVOs;
+
+	}
+
+	catch (Exception e) {
+		e.printStackTrace();
+		LOG.error(
+				"Error occured at getStateLevelCampAttendedDetailsDyaWise() in CoreDashBoardMainService ",
+				e);
+	}
+	return null;
+}
+
+public List<IdNameVO> getDaysListTemplate() {
+	List<IdNameVO> daysList = new ArrayList<IdNameVO>();
+	IdNameVO day1 = new IdNameVO();
+	day1.setId(1l);
+	day1.setName("1 Day");
+	IdNameVO day2 = new IdNameVO();
+	day2.setId(2l);
+	day2.setName("2 Days");
+	IdNameVO day3 = new IdNameVO();
+	day3.setId(3l);
+	day3.setName("3 Days");
+	daysList.add(day1);
+	daysList.add(day2);
+	daysList.add(day3);
+	return daysList;
+}
+
+public String getListToString(List<Long> list) {
+	String listString = "";
+	for (Long val : list) {
+		listString += val + ",";
+	}
+
+	return listString;
+}
+
+public TrainingCampProgramVO getMatchVO(
+		List<TrainingCampProgramVO> returnList, Long dayId) {
+	if (returnList == null)
+		return null;
+	for (TrainingCampProgramVO dayVO : returnList) {
+		if (dayVO.getId().equals(dayId)) {
+			return dayVO;
+		}
+	}
+	return null;
+}
+
+public IdNameVO getMatchVOList(List<IdNameVO> returnList, Long dayId) {
+	if (returnList == null)
+		return null;
+	for (IdNameVO dayVO : returnList) {
+		if (dayVO.getId().equals(dayId)) {
+			return dayVO;
+		}
+	}
+	return null;
+}
+
+public Map<Long, Long> getCountOfMaxDaysAttendedInBatch(
+		Map<Long, Map<Long, Long>> batchMemdaysMap, List<Object[]> list) {
+	Map<Long, Long> memMaxDayCnt = new HashMap<Long, Long>();
+	try {
+		if (list != null && list.size() > 0) {
+			for (Object[] param : list) {
+				Map<Long, Long> memDaysMap = batchMemdaysMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+				if (memDaysMap != null) {
+					Long attendedDaysforBatch = memDaysMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if (memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(param[0])) == null) {
+						memMaxDayCnt.put(commonMethodsUtilService.getLongValueForObject(param[0]),attendedDaysforBatch);
+					} else if (memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(param[0])) < attendedDaysforBatch) {
+						memMaxDayCnt.put(commonMethodsUtilService.getLongValueForObject(param[0]),attendedDaysforBatch);
+					}
+					if (memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null && 
+							memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(param[0]))>3L)
+							memMaxDayCnt.put(commonMethodsUtilService.getLongValueForObject(param[0]),3L);
+				}
+			}
+		}
+
+	} catch (Exception e) {
+		e.printStackTrace();
+		LOG.error(
+				"Error occured at getMaxDaysAttendedForBatch() in CoreDashboardMainService ",
+				e);
+	}
+
+	return memMaxDayCnt;
+}
+
+public void setTotalAttendedAndNonInviteeAttended1(List<Object[]> rtrnTtlAttendedMmbrObjList,TrainingCampProgramVO resultVO, String levelType,Map<Long, Long> memMaxDayCnt) {
+	try {
+
+		List<Long> inviteeRoles = new ArrayList<Long>();
+		inviteeRoles.add(1l);
+		inviteeRoles.add(2l);
+		inviteeRoles.add(3l);
+		Long inviteeAtt = 0l;
+		Long nonInviteeAtt = 0l;
+		Map<Long, Long> totalCountMap = new HashMap<Long, Long>();
+
+		if (rtrnTtlAttendedMmbrObjList != null && rtrnTtlAttendedMmbrObjList.size() > 0) {
+			for (Object[] param : rtrnTtlAttendedMmbrObjList) {
+				Long levelId = commonMethodsUtilService.getLongValueForObject(param[4]);
+				Long memattendedforBatch = memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				TrainingCampProgramVO dayVO = getMatchVO(resultVO.getLocationList(),memattendedforBatch);
+				
+				if (levelType.equalsIgnoreCase("villageWard") && (levelId.longValue() == 6l || levelId.longValue() == 8l)) {
+					if (levelId.longValue() == 6l || levelId.longValue() == 8l) {
+						
+						Long memCnt = totalCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if (memCnt == null) {
+							totalCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), 1L);
+						} else {
+							totalCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),memCnt + 1);
+						}
+						
+						if (memCnt == null) {
+							if (inviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(param[3])) && levelId.longValue() != 0l) {
+								if (dayVO.getInviteeAttended() != null)
+									dayVO.setInviteeAttended(dayVO.getInviteeAttended() + 1L);
+								else
+									dayVO.setInviteeAttended(1L);
+								inviteeAtt = inviteeAtt+1l;
+							}else{
+								if (dayVO.getNonInviteeAttended() != null)
+									dayVO.setNonInviteeAttended(dayVO.getNonInviteeAttended() + 1L);
+								else
+									dayVO.setNonInviteeAttended(1L);
+								nonInviteeAtt = nonInviteeAtt+1l;
+							}
+							dayVO.setTotalAttenedCount(dayVO.getInviteeAttended()+ dayVO.getNonInviteeAttended());
+
+						}
+					}
+				}else if (levelType.equalsIgnoreCase("mandalTwnDiv") && (levelId.longValue() == 5l || levelId.longValue() == 7l || levelId.longValue() == 9l)) {
+						if (levelId.longValue() == 5l || levelId.longValue() == 7l || levelId.longValue() == 9l) {
+							
+							
+							Long memCnt = totalCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+							if (memCnt == null) {
+								totalCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),1L);
+							} else {
+								totalCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),memCnt + 1);
+							}
+							if (memCnt == null && dayVO != null) {
+								if (inviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(param[3])) && levelId != 0l) {
+									if (dayVO.getInviteeAttended() != null)
+										dayVO.setInviteeAttended(dayVO.getInviteeAttended() + 1L);
+									else
+										dayVO.setInviteeAttended(1L);
+									inviteeAtt = inviteeAtt+1l;
+								}else{
+									if (dayVO.getNonInviteeAttended() != null)
+										dayVO.setNonInviteeAttended(dayVO.getNonInviteeAttended() + 1L);
+									else
+										dayVO.setNonInviteeAttended(1L);
+									nonInviteeAtt = nonInviteeAtt+1l;
+								}
+								dayVO.setTotalAttenedCount(dayVO.getInviteeAttended()+ dayVO.getNonInviteeAttended());
+							}
+						}
+				}
+			}
+		}
+		resultVO.setInviteeAttended(resultVO.getInviteeAttended()+inviteeAtt);
+		resultVO.setNonInviteeAttended(resultVO.getNonInviteeAttended()+nonInviteeAtt );
+		resultVO.setTotalAttenedCount(resultVO.getInviteeAttended()+ resultVO.getNonInviteeAttended());
+		resultVO.setTotalNotAttenedCount(resultVO.getTotalEligibleCount()- resultVO.getInviteeAttended());
+	} catch (Exception e) {
+		LOG.error("Error occured at setElibibleAndAttendedMemberCntToMap() in CoreDashboardMainService {}",e);
+	}
+}
+
+public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long userAccessLevelId, List<Long> userAccessLevelValues,Long stateId, String toDateStr, List<Long> enrollmentYearIds,List<Long> programIdList) {
+	TrainingCampProgramVO finalResultVO = new TrainingCampProgramVO();
+	Map<Long, TrainingCampProgramVO> trainingCampProgramDtlsMap = new HashMap<Long, TrainingCampProgramVO>();
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	Date toDate = null;
+	try {
+		if (toDateStr != null && !toDateStr.isEmpty()
+				&& toDateStr.length() > 0) {
+			toDate = sdf.parse(toDateStr);
+		}
+		Long accessLevelValue = 0l;
+		if (userAccessLevelId.longValue() == 4l) {// user level 4 means
+													// parliament
+													// constituency in the
+													// case of core
+													// dashboard
+			accessLevelValue = 10l; // region scope 10 means parliament
+									// constituency in intermediate table so
+									// that we are replacing value
+		} else if (userAccessLevelId.longValue() == 5l) {// user level 5
+															// means
+															// constituency
+															// in the case
+															// of core
+															// dashboard
+			accessLevelValue = 4l; // region scope 4 means constituency in
+									// intermediate table so that we are
+									// replacing value
+		} else {
+			accessLevelValue = userAccessLevelId;
+		}
+		List<Long> tdpCommitteeLvlIds = new ArrayList<Long>();
+		tdpCommitteeLvlIds.add(6l);
+		tdpCommitteeLvlIds.add(8l);
+		tdpCommitteeLvlIds.add(5l);
+		tdpCommitteeLvlIds.add(7l);
+		tdpCommitteeLvlIds.add(9l);
+
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+		String fromDate = sdf1.format(toDate);
+		DateUtilService dateUtilService = new DateUtilService();
+        Date currentDate = dateUtilService.getCurrentDateAndTime();
+        String toDay = sdf1.format(currentDate);			
+		String levelVals = getListToString(userAccessLevelValues);
+		//String levelVals = "517,11,12,13,14,15,17,16,19,18,21,20,23,22";
+		String committeeLvlVals = "5,6,7,8,9";
+		// List<Object[]> attendedList =
+		// trainingCampBatchAttendeeDAO.getTotalAttendeeCount(programIdList,1l,toDate,enrollmentYearIds,accessLevelValue,userAccessLevelValues,tdpCommitteeLvlIds);
+		//'8','2000-01-01','2017-07-27','2','1','5,7,9,6,8,','3','517,11,12,13,14,15,17,16,19,18,21,20,23,22,'
+		List<Object[]> attendedList = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIdList.get(0),fromDate,toDay,enrollmentYearIds.get(0),1L,committeeLvlVals,userAccessLevelId,levelVals);
+
+		List<Object[]> rtrnCommiteeLevelEligibleAndAttendedObjLst = trainingCampDetailsInfoDAO
+				.getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(
+						accessLevelValue, userAccessLevelValues, toDate,
+						enrollmentYearIds, programIdList);
+
+		Map<Long, Map<Long, Long>> batchMemdaysMap = new HashMap<Long, Map<Long, Long>>();
+		if (attendedList != null && attendedList.size() > 0) {
+			for (Object[] param : attendedList) {
+				Map<Long, Long> memDaysMap = batchMemdaysMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+				if (memDaysMap == null) {
+					memDaysMap = new HashMap<Long, Long>(0);
+					memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), 1l);
+					batchMemdaysMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), memDaysMap);
+				}
+				Long attendedDaysforBatch = memDaysMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				if (attendedDaysforBatch == null) {
+					memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), 1l);
+				} else {
+					memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),attendedDaysforBatch + 1l);
+				}
+
+			}
+		}
+		Map<Long, Long> memMaxDayCnt = getCountOfMaxDaysAttendedInBatch(batchMemdaysMap, attendedList);// Tdp CAdre max days Vo getting
+		TrainingCampProgramVO villageWardVO = new TrainingCampProgramVO();
+		villageWardVO.setName("Village/Ward");
+		setElibibleAndAttendedMemberCntToMap(rtrnCommiteeLevelEligibleAndAttendedObjLst, villageWardVO,	"villageWard");
+		villageWardVO.getLocationList().addAll(getDaysList());
+		setTotalAttendedAndNonInviteeAttended1(attendedList, villageWardVO,	"villageWard", memMaxDayCnt);
+		villageWardVO.setTotalAttenedCountPer(calculatePercantage(villageWardVO.getTotalAttenedCount(),	villageWardVO.getTotalEligibleCount()));
+		villageWardVO.setTotalNotAttenedCountPer(calculatePercantage(villageWardVO.getTotalNotAttenedCount(),villageWardVO.getTotalEligibleCount()));
+		finalResultVO.setVillageWardVO(villageWardVO);
+		TrainingCampProgramVO manTwnDivVO = new TrainingCampProgramVO();
+		manTwnDivVO.setName("Mandal/Town/Division");
+		manTwnDivVO.getLocationList().addAll(getDaysList());
+		setElibibleAndAttendedMemberCntToMap(rtrnCommiteeLevelEligibleAndAttendedObjLst, manTwnDivVO,"mandalTwnDiv");
+		setTotalAttendedAndNonInviteeAttended1(attendedList, manTwnDivVO,"mandalTwnDiv", memMaxDayCnt);
+		manTwnDivVO.setTotalAttenedCountPer(calculatePercantage(manTwnDivVO.getTotalAttenedCount(),	manTwnDivVO.getTotalEligibleCount()));
+		manTwnDivVO.setTotalNotAttenedCountPer(calculatePercantage(	manTwnDivVO.getTotalNotAttenedCount(),manTwnDivVO.getTotalEligibleCount()));
+		finalResultVO.setMandalTownDivisionVO(manTwnDivVO);
+
+		List<Object[]> rtrnObjLst = trainingCampDetailsInfoDAO.getTrainingCampProgramEligibleAndAttendedDetails(accessLevelValue, userAccessLevelValues, toDate,enrollmentYearIds, programIdList);
+		if (rtrnObjLst != null && rtrnObjLst.size() > 0) {
+			for (Object[] param : rtrnObjLst) {
+				TrainingCampProgramVO programVO = new TrainingCampProgramVO();
+				programVO.getLocationList().addAll(getDaysList());
+				setDayWiseCountToProgramWiseVO(programVO,manTwnDivVO.getLocationList());
+				setDayWiseCountToProgramWiseVO(programVO,villageWardVO.getLocationList());
+				programVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				programVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				programVO.setTotalEligibleCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+				// programVO.setInviteeAttended(commonMethodsUtilService.getLongValueForObject(param[3]));
+				programVO.setInviteeAttended(villageWardVO.getInviteeAttended()+ manTwnDivVO.getInviteeAttended());
+				programVO.setNonInviteeAttended(villageWardVO.getNonInviteeAttended()+ manTwnDivVO.getNonInviteeAttended()+villageWardVO.getOthersCount());
+				programVO.setTotalAttenedCount(programVO.getInviteeAttended()	+ programVO.getNonInviteeAttended());
+				// programVO.setTotalNotAttenedCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+				programVO.setTotalNotAttenedCount(villageWardVO.getTotalNotAttenedCount()+ manTwnDivVO.getTotalNotAttenedCount());
+				programVO.setTotalAttenedCountPer(calculatePercantage(programVO.getTotalAttenedCount(),programVO.getTotalEligibleCount()));
+				programVO.setTotalNotAttenedCountPer(calculatePercantage(programVO.getTotalNotAttenedCount(),	programVO.getTotalEligibleCount()));
+				// programVO.setNonInviteeAttended(programVO.getTotalAttenedCount()-programVO.getInviteeAttended());
+				
+				trainingCampProgramDtlsMap.put(programVO.getId(), programVO);
+			}
+		}
+		if (trainingCampProgramDtlsMap != null	&& trainingCampProgramDtlsMap.size() > 0) {
+			finalResultVO.setTrainingProgramList(new ArrayList<TrainingCampProgramVO>(trainingCampProgramDtlsMap.values()));
+		}
+	} catch (Exception e) {
+		LOG.error(
+				"Error occured at getTotalEligibleAttendedAndNotAttenedOverviewCount() in CoreDashboardMainService {}",
+				e);
+	}
+	return finalResultVO;
+}
+
+public void setDayWiseCountToProgramWiseVO(TrainingCampProgramVO programVO,List<TrainingCampProgramVO> list){
+	try{
+		
+		if(list != null && list.size() >0){
+			for(TrainingCampProgramVO dayVo :list){
+				TrainingCampProgramVO matchedVO = getMatchVO(programVO.getLocationList(),dayVo.getId());
+				if(matchedVO != null){
+					matchedVO.setNonInviteeAttended(matchedVO.getNonInviteeAttended() + dayVo.getNonInviteeAttended());
+					matchedVO.setInviteeAttended(matchedVO.getInviteeAttended() + dayVo.getInviteeAttended());
+					matchedVO.setOthersCount(dayVo.getOthersCount());
+				} 
+				matchedVO.setTotalAttenedCount(matchedVO.getTotalAttenedCount()+ dayVo.getTotalAttenedCount()+dayVo.getOthersCount());
+				}
+			}
+		
+	}catch(Exception e){
+		
+	}
+}
+
+
 }  
 
