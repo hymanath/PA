@@ -58,6 +58,7 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
 	 	    				vo.setTarget(jObj.getString("TARGET"));
 	 	    				vo.setCompleted(jObj.getString("GROUNDED"));
+	 	    				vo.setType(inputVO.getLocationType());
 	 	    				returnList.add(vo);
 	 	    			}
 	 	    		}
