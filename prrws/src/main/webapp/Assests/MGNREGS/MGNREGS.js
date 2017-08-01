@@ -112,7 +112,7 @@ function onLoadCalls()
 				getNREGSProjectsAbstractNew(overViewArr[i],locType,locId,'',levelId);
 			}else if(overViewArr[i] == 'Payments')
 			{
-				getNregaPaymentsAbsAndOverview(overViewArr[i],locType,locId,levelId,'abstract');
+				getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],locType,locId,levelId,'abstract');
 			}else
 			{
 				getNREGSAbstractDataByType(overViewArr[i],locType,locId,'',levelId,'dateChange');
@@ -124,7 +124,7 @@ function onLoadCalls()
 					getNREGSProjectsAbstractNewFrConstituency(overViewArr[i],locType,locId,districtId,'',levelId);
 				}else if(overViewArr[i] == 'Payments')
 				{
-					getNregaPaymentsAbsAndOverview(overViewArr[i],locType,locId,levelId,'abstract');
+					getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],locType,locId,levelId,'abstract');
 				}else{
 					getNREGSAbstractDataByTypeFrConstituency(overViewArr[i],locType,locId,districtId,'',levelId);
 				}
@@ -162,7 +162,7 @@ function onLoadCalls()
 				getNREGSProjectsAbstractNew(overViewArr[i],locType,locId,'',levelId);
 			}else if(overViewArr[i] == 'Payments')
 			{
-				getNregaPaymentsAbsAndOverview(overViewArr[i],locType,locId,levelId,'abstract');
+				getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],locType,locId,levelId,'abstract');
 			}else
 			{
 				getNREGSAbstractDataByType(overViewArr[i],locType,locId,'',levelId,'dateChange');
@@ -174,7 +174,7 @@ function onLoadCalls()
 					getNREGSProjectsAbstractNewFrConstituency(overViewArr[i],locType,locId,districtId,'',levelId);
 				}else if(overViewArr[i] == 'Payments')
 				{
-					getNregaPaymentsAbsAndOverview(overViewArr[i],locType,locId,levelId,'abstract');
+					getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],locType,locId,levelId,'abstract');
 				}else{
 					getNREGSAbstractDataByTypeFrConstituency(overViewArr[i],locType,locId,districtId,'',levelId);
 				}
@@ -241,7 +241,7 @@ function onLoadCalls()
 				else if(divId == "CC Roads")//
 					getNregaLevelsWiseDataForCCRoads(tableId,levelType,menuLocationType,menuLocationId);
 				else if(divId == "Payments" ) //&& (levelType == "state" || levelType == "district" || levelType == "mandal"))
-					getNregaLevelsWiseDataForNewFTOPayments(tableId,levelType,menuLocationType,menuLocationId,'Wage');
+					getNregaPaymentsDtlsLocationWise(tableId,levelType,menuLocationType,menuLocationId,'Wage');
 				else if(divId == "FAperformance")
 					getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId);
 				else
@@ -348,9 +348,18 @@ function onLoadCalls()
 		str+='</div>';
 		$("#webserviceDetailsModalId").html(str);
 		$("#webserviceHealthDetailsTableId").dataTable({
-			"dom": 'Bfrtip',
+			"dom": 'Blfrtip',
 			buttons: [
-				'copy', 'excel', 'pdf', 'print'
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV'
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF'
+				}
 			]
 		});
 		
@@ -531,7 +540,7 @@ function projectData(divId,levelId,locationId)
 		else if(divId == "CC Roads")//
 			getNregaLevelsWiseDataForCCRoads(tableId,dataArr[0],menuLocationType,menuLocationId);
 		else if(divId == "Payments")//
-			getNregaLevelsWiseDataForNewFTOPayments(tableId,dataArr[0],menuLocationType,menuLocationId,'Wage');
+			getNregaPaymentsDtlsLocationWise(tableId,dataArr[0],menuLocationType,menuLocationId,'Wage');
 		else if(divId == "FAperformance")
 			getNregaLevelsWiseDataForFAPerformance(tableId,dataArr[0],menuLocationType,menuLocationId);
 		else
@@ -604,7 +613,7 @@ function overviewData(divId,levelId,locationId)
 	if(divId == 'Labour Budget')
 		getNREGSLabourBudgetOverview(divId,menuLocationType,menuLocationId);
 	else if(divId == 'Payments')
-		getNregaPaymentsAbsAndOverview(divId,menuLocationType,menuLocationId,2,'overview');
+		getNregaPaymentsAbsAndOverviewDtls(divId,menuLocationType,menuLocationId,2,'overview');
 	else
 		getNregasOverview(divId,menuLocationType,menuLocationId);
 }
@@ -631,10 +640,19 @@ function tableView(blockId,theadArr,result,locationType)
 		$(".dataTable"+blockId).dataTable({
 			"iDisplayLength": 15,
 			"aaSorting": [],
-			"dom": 'Bfrtip',
+			"dom": 'Blfrtip',
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 			buttons: [
-				'copy', 'excel', 'pdf', 'print'
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV'
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF'
+				}
 			]
 		});
 	}else if(locationType == 'district')
@@ -643,9 +661,18 @@ function tableView(blockId,theadArr,result,locationType)
 			"iDisplayLength": 20,
 			"aaSorting": [],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			"dom": 'Bfrtip',
+			"dom": 'Blfrtip',
 			buttons: [
-				'copy', 'excel', 'pdf', 'print'
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV'
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF'
+				}
 			]
 		});
 	}
@@ -2135,15 +2162,33 @@ function buildDistrictsPopupDetails(result,dataArr){
 	$("#nregsConsitenBodyId").html(str);
 	$(".dataTableCls").dataTable({
 		"order": [[ 1, "asc" ]],
-		"dom": 'Bfrtip',
+		"dom": 'Blfrtip',
 		buttons: [
-			'copy', 'excel', 'pdf', 'print'
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV'
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o"></i>',
+				titleAttr: 'PDF'
+			}
 		]
 	});
 	$(".dataTableClsDist").dataTable({
-		"dom": 'Bfrtip',
+		"dom": 'Blfrtip',
 		buttons: [
-			'copy', 'excel', 'pdf', 'print'
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV'
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o"></i>',
+				titleAttr: 'PDF'
+			}
 		]
 	});
 	
@@ -2933,7 +2978,7 @@ for(var i in overViewArr)
 		getNREGSProjectsAbstractNew(overViewArr[i],'state',"0",'',2);
 	}else if(overViewArr[i] == 'Payments')
 	{
-		getNregaPaymentsAbsAndOverview(overViewArr[i],'state',0,2,'abstract');
+		getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'state',0,2,'abstract');
 	}else{
 		getNREGSAbstractDataByType(overViewArr[i],'state',"0",'',2,'onLoad');
 	}
@@ -3205,6 +3250,65 @@ function buildPaymentsOverviewData(result,projectDivId)
 	var str= '';
 	str+='<div class="row">';
 		str+='<div class="col-sm-12">';
+			str+='<div class="bg_color" style="padding:15px">';
+				str+='<div class="row">';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Total</h5>';
+							str+='<p>Total Amount Generated : '+result[0].totalAmount+'</p>	';
+							str+='<p>Wage Amount : '+result[0].totalWage+'</p>';
+							str+='<p>Material Amount : '+result[0].totalMaterial+'</p>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">FTO Generated / Not Generated</h5>';
+							str+='<p>Total Amount : '+result[0].totalGeneratesAmount+' / '+result[0].totalNotGeneratedAmount+'</p>';
+							str+='<p>Wage Amount : '+result[0].generatedWageAmount+' / '+result[0].notGeneratedWagesAmount+'</p>';
+							str+='<p>Material Amount : '+result[0].generatedMaterialAmount+' / '+result[0].notGeneratedMaterialAmount+'</p>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">FTO s Uploaded / Not Uploaded</h5>';
+							str+='<p>Total Amount : '+result[0].totalUploadsAmount+' / '+result[0].totalNotUploadedAmount+'</p>';
+							str+='<p>Wage Amount : '+result[0].uploadedWageAmount+' / '+result[0].notUploadedWagesAmount+'</p>';
+							str+='<p>Material Amount : '+result[0].uploadedMaterialAmount+' / '+result[0].notUploadedMaterialAmount+'</p>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">FTO s Sent to Bank / Pending at Server</h5>';
+							str+='<p>Total Amount : '+result[0].totalSentBankAmount+' / '+result[0].totalNotSentBankAmount+'</p>';
+							str+='<p>Wage Amount : '+result[0].sentBankWageAmount+' / '+result[0].notSentBankWageAmount+'</p>';
+							str+='<p>Material Amount : '+result[0].sentBankMaterialAmount+' / '+result[0].notSentBankMaterialAmount+'</p>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<p><h5 class="text-danger">Success / Rejected / Response Pending</h5>';
+							str+='<p>Total Amount : '+result[0].totalCompletedAmount+' / '+result[0].totalRejectedAmount+' / '+result[0].totalResponsePendingAmount+'</p>';
+							str+='<p>Wage Amount : '+result[0].completedWageAmount+' / '+result[0].rejectedWagesAmount+' / '+result[0].responsePendingWageAmount+'</p>';
+							str+='<p>Material Amount : '+result[0].completedMaterialAmount+' / '+result[0].rejectedMaterialAmount+' / '+result[0].responsePendingMaterialAmount+' </p>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Release Pending / Rejected Regenerate</h5>';
+							str+='<p>Total Amount : '+result[0].totalReleasePendingAmount+' / '+result[0].totalReprocessPendingAmount+'</p>';
+							str+='<p>Wage Amount :'+result[0].releasePendingWageAmount+' / '+result[0].reprocessPendingWageAmount+'</p>';
+							str+='<p>Material Amount : '+result[0].releasePendingMaterialAmount+' / '+result[0].reprocessPendingMaterialAmount+'</p>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
+	/* str+='<div class="row">';
+		str+='<div class="col-sm-12">';
 			str+='<h4 class="text-center"><strong>Fund Transfer Order - Payments</strong></h4>';
 			str+='<div class="row">';
 				str+='<div class="col-sm-4">';
@@ -3283,7 +3387,7 @@ function buildPaymentsOverviewData(result,projectDivId)
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
-	str+='</div>';
+	str+='</div>'; */
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str);
 }
 
@@ -3334,7 +3438,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	$("[overview-block='"+type+"']").attr("attr_locationId",locId);
 	if(type == 'Payments' && result != null)
 	{
-		str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding:7px 5px">';
+		str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding:24px 15px">';
 			if(type.length > 12)
 			{
 				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
@@ -3342,19 +3446,18 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				str+='<h4 class="panel-block-white-title text-capitalize text-center">'+type+'</h4>';
 			}
 			str+='<small class="text-center">Total Pending</small>';
-			if(result.totalPendinAmount != null && result.totalPendinAmount.length > 0)
+			if(result[0].totalPendinAmount != null && result[0].totalPendinAmount.length > 0)
 			{
-				str+='<h1 class="text-center" style="font-size:26px"><i class="fa fa-inr"></i> '+result.totalPendinAmount+'</h1>';
-				str+='<small>('+result.totalPendings+')</small>';
+				str+='<h1 class="text-center" style="font-size:26px"><i class="fa fa-inr"></i> '+result[0].totalPendinAmount+'</h1>';
 			}else{
 				str+='<h1 class="text-center">0</h1>';
 			}
 			str+='<div class="row">';
 				str+='<div class="col-sm-6 text-center pad_right0">';
 					str+='<label>Wage</label>';
-					if(result.pendingWage != null && result.pendingWage.length > 0)
+					if(result[0].pendingWage != null && result[0].pendingWage.length > 0)
 					{
-						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result.pendingWageAmount+'</h4> <small>('+result.pendingWage+')</small>';
+						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result[0].pendingWage+'</h4>';
 					}else{
 						str+='<h4>0</h4>';
 					}
@@ -3362,9 +3465,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				str+='</div>';
 				str+='<div class="col-sm-6 text-center pad_left0">';
 					str+='<label>Material</label>';
-					if(result.pendingMaterial != null && result.pendingMaterial.length > 0)
+					if(result[0].pendingMaterial != null && result[0].pendingMaterial.length > 0)
 					{
-						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result.pendingMaterialAmount+'</h4><small> ('+result.pendingMaterial+')</small>';
+						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result[0].pendingMaterial+'</h4>';
 					}else{
 						str+='<h4>0</h4>';
 					}
@@ -3372,7 +3475,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			str+='</div>';
 		str+='</div>';
 	}
-	if(result != null && result.length > 0)
+	if(result != null && result.length > 0 && type != 'Payments')
 	{
 		for(var i in result)
 		{
@@ -3449,7 +3552,13 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}
 						str+='</div>';
 						str+='<div class="col-sm-6 text-center">';
-							str+='<label>Completed</label>';
+							if(type == 'FAperformance')
+							{
+								str+='<label>Achieved</label>';
+							}else{
+								str+='<label>Completed</label>';
+							}
+							
 							if(result[i].completed != null && result[i].completed.length > 0)
 							{
 								if(result[i].parameter == 'Labour Budget' && levelId == 2)
@@ -3655,7 +3764,7 @@ $(document).on("click",".menuDataCollapse",function(){
 				getNREGSProjectsAbstractNew(overViewArr[i],'district',locId,blockName,levelId);
 			}else if(overViewArr[i] == 'Payments')
 			{
-				getNregaPaymentsAbsAndOverview(overViewArr[i],'district',locId,levelId,'abstract');
+				getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'district',locId,levelId,'abstract');
 			}else
 			{
 				getNREGSAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId,'onLoad');
@@ -3671,7 +3780,7 @@ $(document).on("click",".menuDataCollapse",function(){
 				getNREGSProjectsAbstractNewFrConstituency(overViewArr[i],'constituency',locId,districtId,'',levelId);
 			}else if(overViewArr[i] == 'Payments')
 			{
-				getNregaPaymentsAbsAndOverview(overViewArr[i],'constituency',locId,levelId,'abstract');
+				getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'constituency',locId,levelId,'abstract');
 			}else{
 				getNREGSAbstractDataByTypeFrConstituency(overViewArr[i],'constituency',locId,districtId,'',levelId);
 			}
@@ -3686,7 +3795,7 @@ $(document).on("click",".menuDataCollapse",function(){
 				getNREGSProjectsAbstractNew(overViewArr[i],'state',locId,blockName,levelId);
 			}else if(overViewArr[i] == 'Payments')
 			{
-				getNregaPaymentsAbsAndOverview(overViewArr[i],'state',locId,levelId,'abstract');
+				getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'state',locId,levelId,'abstract');
 			}else
 			{
 				getNREGSAbstractDataByType(overViewArr[i],'state',locId,blockName,levelId,'onLoad');
@@ -3902,9 +4011,18 @@ function buildLabourBudgetPanExpData(result,viewType,range){
 		str+='</div>';
 		$("#LabBudgtPanExBodyId").html(str);
 		$("#larBudExpTableId").dataTable({
-			"dom": 'Bfrtip',
+			"dom": 'Blfrtip',
 			buttons: [
-				'copy', 'excel', 'pdf', 'print'
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV'
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF'
+				}
 			]
 		});
 	}else if(viewType == 'overView'){
@@ -3982,9 +4100,18 @@ function buildLabourBudgetPanExpData(result,viewType,range){
 		//$(".blockHeights").height("400px");
 		$(".blockHeightsScroll").mCustomScrollbar();
 		$(".dataTableCls").dataTable({
-			"dom": 'Bfrtip',
+			"dom": 'Blfrtip',
 			buttons: [
-				'copy', 'excel', 'pdf', 'print'
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV'
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF'
+				}
 			]
 		});
 	}
@@ -4012,7 +4139,7 @@ $(document).on("click","[attr_radioBtn]",function(){
 		menuLocationId = locationId;
 		menuLocationType = "district";
 	}
-	getNregaLevelsWiseDataForNewFTOPayments(blockName,locationType,menuLocationType,menuLocationId,buildType);
+	getNregaPaymentsDtlsLocationWise(blockName,locationType,menuLocationType,menuLocationId,buildType);
 });
 //getNregaParliamentDataFrPayments();
 /* function getNregaParliamentDataFrPayments()
@@ -4171,15 +4298,15 @@ function getLocationIhhlData()
 
 //getNregaPaymentsAbsAndOverviewDtls();
 //getNregaPaymentsDtlsLocationWise();
-function getNregaPaymentsAbsAndOverviewDtls()
+function getNregaPaymentsAbsAndOverviewDtls(type,locType,locId,levelId,buildType)
 {
 	var json = {
 		year : "2017",
-		fromDate : "2017-01-01",
-		toDate : "2017-06-30",
-		locationType: "state",
-		locationId : "-1",
-		sublocaType :"state"
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locType,
+		locationId : locId,
+		sublocaType :locType
 	}
 	$.ajax({
 		url: 'getNregaPaymentsAbsAndOverviewDtls',
@@ -4191,20 +4318,60 @@ function getNregaPaymentsAbsAndOverviewDtls()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			console.log(ajaxresp);
+			if(buildType == 'abstract')
+			{
+				buildNREGSAbstractDataByTypeNew(type,ajaxresp,'',locId,locType,levelId);
+			}else if(buildType == 'overview')
+			{
+				buildPaymentsOverviewData(ajaxresp,type);
+			}
 		}
 	});
 }
-function getNregaPaymentsDtlsLocationWise()
+function getNregaPaymentsDtlsLocationWise(divIdd,locationType,menuLocationType,menuLocationId,buildType)
 {
+	$("#"+divIdd).html(spinner);
+	var theadArr = [locationType,'Type','Total Amount','FTO not generated Amount','FTO generated Amount','FTO not uploaded Amount','FTO uploaded Amount','Not Sent to Bank Amount','Sent to PFMS Amount','Success Amount','Rejected Amount','Release Pending Amount','Response Pending Amount','Reprocess Amount'];
+	if(locationType == "constituency")
+		theadArr = ["district",locationType,'Type','Total Amount','FTO not generated Amount','FTO generated Amount','FTO not uploaded Amount','FTO uploaded Amount','Not Sent to Bank Amount','Sent to PFMS Amount','Success Amount','Rejected Amount','Release Pending Amount','Response Pending Amount','Reprocess Amount'];
+	else if(locationType == "mandal")
+		theadArr = ["district","constituency",locationType,'Type','Total Amount','FTO not generated Amount','FTO generated Amount','FTO not uploaded Amount','FTO uploaded Amount','Not Sent to Bank Amount','Sent to PFMS Amount','Success Amount','Rejected Amount','Release Pending Amount','Response Pending Amount','Reprocess Amount'];
+	else if(locationType == "panchayat")
+		theadArr = ["district","constituency","mandal",locationType,'Type','Total Amount','FTO not generated Amount','FTO generated Amount','FTO not uploaded Amount','FTO uploaded Amount','Not Sent to Bank Amount','Sent to PFMS Amount','Success Amount','Rejected Amount','Release Pending Amount','Response Pending Amount','Reprocess Amount'];
+	
+	var menuSelName = $("#selectedName").text();
+	if(buildType == 'Wage')
+	{
+		buildType = 'W'
+		
+	}else if(buildType == 'Material')
+	{
+		buildType = 'M'
+	}else if(buildType == 'All')
+	{
+		buildType = 'All'
+	}else if(buildType == 'Total')
+	{
+		if(locationType == 'state')
+		{
+			buildType = '-Total'
+		}else if(locationType == 'district')
+		{
+			buildType = '-Sub Total'
+		}else
+		{
+			buildType = 'Sub Total'
+		}
+		
+	}
 	var json = {
 		year : "2017",
-		fromDate : "2017-01-01",
-		toDate : "2017-06-30",
-		locationType: "state",
-		locationId : "-1",
-		sublocaType :"district",
-		type:"All"
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: menuLocationType,
+		locationId : menuLocationId,
+		sublocaType :locationType,
+		type:buildType
 	}
 	$.ajax({
 		url: 'getNregaPaymentsDtlsLocationWise',
@@ -4216,7 +4383,75 @@ function getNregaPaymentsDtlsLocationWise()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			console.log(ajaxresp);
+			if(buildType == 'W')
+			{
+				buildType = 'Wage'
+				
+			}else if(buildType == 'M')
+			{
+				buildType = 'Material'
+			}else if(buildType == 'All')
+			{
+				buildType = 'All'
+			}
+			if(locationType == 'state')
+			{
+				if(buildType == 'Total')
+				{
+					buildType = 'Total'
+				}
+			}else if(locationType == 'district')
+			{
+				buildType = 'Sub Total'
+			}else
+			{
+				buildType = 'Sub Total'
+			}
+			var str = '';
+			if(ajaxresp != null && ajaxresp.length > 0){
+				for(var i in ajaxresp){
+					str+='<tr>';
+						if(locationType == "state"){
+							str+='<td class="text-capital">'+locationType+'</td>';
+						}
+						else if(locationType == "district" && menuLocationType == "district"){
+							str+='<td class="text-capital">'+menuSelName+'</td>';
+						}
+						else if(locationType == "district"){
+							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
+						}
+						else if(locationType == "constituency"){
+							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constName+'</td>';
+						}
+						else if(locationType == "mandal"){
+							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constName+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandalName+'</td>';
+						}
+						else if(locationType == "panchayat"){
+							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].constName+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].mandalName+'</td>';
+							str+='<td class="text-capital">'+ajaxresp[i].panchayatName+'</td>';
+						}
+						str+='<td>'+ajaxresp[i].type+'</td>';
+						str+='<td>'+ajaxresp[i].totalAmount+'</td>';
+						str+='<td>'+ajaxresp[i].notGeneratedWagesAmount+'</td>';
+						str+='<td>'+ajaxresp[i].generatedWageAmount+'</td>';
+						str+='<td>'+ajaxresp[i].notUploadedWagesAmount+'</td>';
+						str+='<td>'+ajaxresp[i].uploadedWageAmount+'</td>';
+						str+='<td>'+ajaxresp[i].notSentBankWageAmount+'</td>';
+						str+='<td>'+ajaxresp[i].sentBankWageAmount+'</td>';
+						str+='<td>'+ajaxresp[i].completedWageAmount+'</td>';
+						str+='<td>'+ajaxresp[i].rejectedWagesAmount+'</td>';
+						str+='<td>'+ajaxresp[i].releasePendingWageAmount+'</td>';
+						str+='<td>'+ajaxresp[i].responsePendingWageAmount+'</td>';
+						str+='<td>'+ajaxresp[i].reprocessPendingWageAmount+'</td>';
+					str+='</tr>';
+				}
+			}
+			tableView(divIdd,theadArr,str,locationType);
 		}
 	});
 }
