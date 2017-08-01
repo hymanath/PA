@@ -4230,10 +4230,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	  * @Description :This Service Method is used to get payment overview details.
 	  * @since 31-JULY-2017
 	  */
-	public List<NregaPaymentsVO> getNregaPaymentsAbsAndOverviewDtls(InputVO inputVO){
+	public List<NregaPaymentsVO> getNregaPaymentsAbsAndOverviewDtls(InputVO inputVO) {
 		List<NregaPaymentsVO> resultList = new ArrayList<NregaPaymentsVO>(0);
 		try {
-			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l){
+			if (inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l) {
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
 			}
 				
@@ -4243,15 +4243,15 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
 	        
-	        if(response.getStatus() != 200){
+	        if (response.getStatus() != 200) {
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-	 	      }else{
+	 	      } else {
 	 	    	 String output = response.getEntity(String.class);
 	 	    	 if (output != null && output.length() > 0) {
 	 	    		 JSONArray paymentOverviewDataArr = new JSONArray(output);	 
 	 	    		 DecimalFormat f = new DecimalFormat("##.00");
-	 	    		 if(paymentOverviewDataArr != null && paymentOverviewDataArr.length() > 0) {
-	 	    			  for(int i = 0 ;i < paymentOverviewDataArr.length() ;i++){
+	 	    		 if (paymentOverviewDataArr != null && paymentOverviewDataArr.length() > 0) {
+	 	    			  for (int i = 0 ;i < paymentOverviewDataArr.length() ;i++) {
 	 	    				  
 	 	    				 NregaPaymentsVO paymentDtlsVO = new NregaPaymentsVO();
 	 	    				 JSONObject jsonObj = (JSONObject) paymentOverviewDataArr.get(i);
@@ -4323,7 +4323,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 }
 	 	    	 
 	 	      }
-		} catch (Exception e){
+		} catch (Exception e) {
 			LOG.error("Exception raised at getNregaPaymentsAbsAndOverviewDtls - NREGSTCSService service", e);
 		}
 		return resultList;
@@ -4335,7 +4335,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	  * @Description :This Service Method is used to get payment details location wise.
 	  * @since 31-JULY-2017
 	  */
-	public List<NregaPaymentsVO> getNregaPaymentsDtlsLocationWise(InputVO inputVO){
+	public List<NregaPaymentsVO> getNregaPaymentsDtlsLocationWise(InputVO inputVO) {
 		List<NregaPaymentsVO> resultList = new ArrayList<NregaPaymentsVO>(0);
 		try {
 			if (inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l) {
@@ -4354,7 +4354,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	 if (output != null && !output.isEmpty()) {
 	 	    		 JSONArray paymentDataArr = new JSONArray(output);	 
-	 	    		 if(paymentDataArr != null && paymentDataArr.length() > 0) {
+	 	    		 if (paymentDataArr != null && paymentDataArr.length() > 0) {
 	 	    			  for (int i = 0 ;i < paymentDataArr.length() ;i++) {
 	 	    				 JSONObject jsonObj = (JSONObject) paymentDataArr.get(i);
 	 	    				 String locationId = jsonObj.getString("UNIQUEID");
@@ -4362,7 +4362,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				 String subLocation = inputVO.getSublocaType().trim();
 	 	    				 if (inputVO != null && inputVO.getType().equalsIgnoreCase(type)) {//in the case of M-Material ,W-Wages and subTotal
 	 	    					     NregaPaymentsVO locationVO = new NregaPaymentsVO();
-	 	    					     locationVO = getBaseLocationByLocationType(jsonObj,subLocation);
+	 	    					     setBaseLocationByLocationType(jsonObj,locationVO,subLocation);
 		 	    					 locationVO.setId(locationId);
 		 	    					 locationVO.setType(type);
 		 	    					 setPaymentDtlsData(jsonObj,locationVO,subLocation);//setting payment details data
@@ -4370,7 +4370,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    			 } 
 	 	    				 if (inputVO != null && inputVO.getType().equalsIgnoreCase("All")) {//overAll
 			 	    				 NregaPaymentsVO locationVO = new NregaPaymentsVO();
-	 	    					     locationVO = getBaseLocationByLocationType(jsonObj,subLocation);
+	 	    					     setBaseLocationByLocationType(jsonObj,locationVO,subLocation);
 		 	    					 locationVO.setType(type);
 		 	    					 locationVO.setId(locationId);
 		 	    					 setPaymentDtlsData(jsonObj,locationVO,subLocation);//setting payment details data
@@ -4378,7 +4378,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				 }
 	 	    			  }
 	 	    		 }
-	 	    		 if(inputVO != null && inputVO.getSublocationType() != null && inputVO.getType().equalsIgnoreCase("All") && !inputVO.getSublocationType().equalsIgnoreCase("state") && resultList.size() > 0){ 
+	 	    		 if (inputVO != null && inputVO.getSublocationType() != null && inputVO.getType().equalsIgnoreCase("All") && !inputVO.getSublocationType().equalsIgnoreCase("state") && resultList.size() > 0) { 
 	 	    			 calculateGrandTotal(resultList);
 	 	    		 }
 	 	    	 }
@@ -4390,7 +4390,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	}
 	public void setPaymentDtlsData(JSONObject jsonObj,NregaPaymentsVO paymentDtlsVO, String subLocationType){
 		try {
-			 if(subLocationType != null && subLocationType.equalsIgnoreCase("mandal") || subLocationType.equalsIgnoreCase("panchayat")){
+			 if (subLocationType != null && subLocationType.equalsIgnoreCase("mandal") || subLocationType.equalsIgnoreCase("panchayat")) {
 			 	paymentDtlsVO.setTotalAmount(jsonObj.getString("TOTAL_AMOUNT"));
 				paymentDtlsVO.setGeneratedWageAmount(jsonObj.getString("GENERATED_AMT"));
 				paymentDtlsVO.setNotGeneratedWagesAmount(jsonObj.getString("NOT_GENERATED_AMT"));
@@ -4445,8 +4445,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			 LOG.error("Exception raised at calculateGrandTotal - NREGSTCSService service", e);
 		 }
 	}
-	public NregaPaymentsVO getBaseLocationByLocationType(JSONObject jObj,String subLocation){
-		NregaPaymentsVO locatioVO = new NregaPaymentsVO();
+	public void setBaseLocationByLocationType(JSONObject jObj,NregaPaymentsVO locatioVO,String subLocation){
 		try {
 				if (subLocation != null && subLocation.trim().equalsIgnoreCase("district") || subLocation.trim().equalsIgnoreCase("constituency") || subLocation != null && subLocation.trim().equalsIgnoreCase("mandal") || subLocation.trim().equalsIgnoreCase("panchayat")){
 					locatioVO.setDistrictName(jObj.getString("DISTRICT"));
@@ -4463,7 +4462,6 @@ public class NREGSTCSService implements INREGSTCSService{
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNregaPaymentsDtlsLocationWise - NREGSTCSService service", e);
 		}
-		return locatioVO;
 	}
 	public void  setDefaultValue(NregaPaymentsVO grandTotalVO) {
 		grandTotalVO.setType("Grand Total");
