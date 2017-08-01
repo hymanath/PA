@@ -269,7 +269,7 @@ public class FundManagementDashboardController {
 				        consumes = MediaType.APPLICATION_JSON_VALUE)
 				        public @ResponseBody List<LocationFundDetailsVO> getGovtGrantTypeDetails(@RequestBody Map<String,Long> map){
 					    
-				             List<LocationFundDetailsVO>  govtSubProgramsList=fundManagementDashboardService.getGovtGrantTypeDetails(map.get("govtSchemesId"));
+				             List<LocationFundDetailsVO>  govtSubProgramsList=fundManagementDashboardService.getGovtGrantTypeDetails(map.get("programId"), map.get("govtSchemesId"));
 				             return govtSubProgramsList;
 				        }
 }
