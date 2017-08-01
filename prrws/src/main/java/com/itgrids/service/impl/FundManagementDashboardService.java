@@ -312,11 +312,14 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			if(returnList != null && returnList.size() > 0){
 				returnList = prepareCumulativeView(returnList);
 				returnList = updateAmountAndCount(returnList);
-				
+				return returnList;
 			}
+		}else{
+			//financial year wise update amount and count.
+			updateAmountAndCountForYearWise(returnList);
+			return returnList;
 		}
-		
-		return returnList;
+		return null;
 	}
 	public List<FundSchemeVO> prepareCumulativeView(List<FundSchemeVO> inputList){
 		try{
@@ -420,6 +423,36 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			LOG.error(" Exception occured in FundManagementDashboardService ,updateAmountAndCount() ",e);
 		}
 		return null;
+	}
+	public void updateAmountAndCountForYearWise(List<FundSchemeVO> inputList){
+		try{
+			//List<FundSchemeVO> returnList = new ArrayList<FundSchemeVO>();
+			for(FundSchemeVO param : inputList){
+				if(param != null && param.getSubList() != null && param.getSubList().size() > 0 ){
+					for(FundSchemeVO midParam : param.getSubList()){
+						midParam.setCount(0L);
+						midParam.setAmount("0.0");
+						if(midParam != null && midParam.getSubList() != null && midParam.getSubList().size() > 0 ){
+							for(FundSchemeVO innerParam : midParam.getSubList()){
+								midParam.setCount(midParam.getCount()+innerParam.getCount());
+								String amountStr1 = midParam.getAmount();
+								double amountDouble1 = Double.parseDouble(amountStr1);
+								String amountStr2 = innerParam.getAmount();
+								double amountDouble2 = Double.parseDouble(amountStr2);
+								midParam.setAmount(commonMethodsUtilService.roundUptoTwoDecimalPoint(new Double(amountDouble1+amountDouble2)).toString());
+							}
+						}
+					}
+				}
+				/*if(param.getCount().longValue() != 0L){
+					returnList.add(param);
+				}*/
+			}
+			//return inputList;
+		}catch(Exception e){
+			LOG.error(" Exception occured in FundManagementDashboardService ,updateAmountAndCount() ",e);
+		}
+		//return null;
 	}
 	public static Comparator<FundSchemeVO> nameWiseAscendingOrder = new Comparator<FundSchemeVO>() {
     	public int compare(FundSchemeVO o1, FundSchemeVO o2) {
