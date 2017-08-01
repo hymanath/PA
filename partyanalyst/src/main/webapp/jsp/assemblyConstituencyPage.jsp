@@ -71,6 +71,369 @@
 				</div>
 			</div>
 			
+			<!--constituency voters info starting  -->
+			 
+			 <div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="constituencyVoters">
+				 <h3 class="text-capitalize">constituency voters information</h3>
+			</div>
+			<div class="col-md-6 col-xs-12 col-sm-6 m_top20 text-right">
+				<label>Select Publication</label>
+				<select>
+					<option>2014-04-19</option>
+				</select>
+			</div>
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div class="block">
+					<table class="table tableVoters">
+						<thead>
+							<th>
+								<img src="coreApi/img/tableHead.png" alt="voters"/>
+								<h4 class="text-capitalize">total population</h4>
+								<h3>12500</h3>
+							</th>
+							<th>
+								<img src="coreApi/img/tableHead.png" alt="voters"/>
+								<h4 class="text-capitalize">total population</h4>
+								<h3>12500</h3>
+							</th>
+							<th>
+								<img src="coreApi/img/tableHead1.png" alt="voters"/>
+								<h4 class="text-capitalize">total population</h4>
+								<h3>12500</h3>
+							</th>
+							<th>
+								<img src="coreApi/img/tableHead.png" alt="voters"/>
+								<h4 class="text-capitalize">total population</h4>
+								<h3>12500</h3>
+							</th>
+							<th>
+								<img src="coreApi/img/tableHead1.png" alt="voters"/>
+								<h4 class="text-capitalize">total population</h4>
+								<h3>12500</h3>
+							</th>
+							<th>
+								<img src="coreApi/img/tableHead.png" alt="voters"/>
+								<h4 class="text-capitalize">total population</h4>
+								<h3>12500</h3>
+							</th>
+							<th>
+								<img src="coreApi/img/tableHead1.png" alt="voters"/>
+								<h4 class="text-capitalize">total population</h4>
+								<h3>12500</h3>
+							</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<b>&lt; 20</b>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<b>&lt; 20</b>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<b>&lt; 20</b>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<b>&lt; 20</b>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+								<td>
+									2000
+									<span class="pull-right text-success">
+										2%
+									</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="row m_top20">
+						<div class="col-md-12 col-xs-12 col-sm-12 text-right">
+							<button class="btn btn-success btn-success-white text-capital">detailed information</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			 <!-- constituency voters info ending -->
+			 
+			 
+			 <!--cadre info starting -->
+			 <div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="cadreInfor">
+				<h3>Cadre Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<div class="block">
+					<ul class="list-inline cadre-info-list">
+						<li class="bottom-arrow">
+							<div class="row">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<h4 class="text-capital">2016-2018 cadre</h4>
+								</div>
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<div id="cadreInfoGraph0" class="graph"></div>
+								</div>
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<table class="table table-noborder">
+										<tr>
+											<td>6000 new <span class=""></span></td>
+											<td>6000 new <span class=""></span></td>
+											<td>=</td>
+											<td>6000 new <span class=""></span></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="row">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<h4 class="text-capital">2016-2018 cadre</h4>
+								</div>
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<div id="cadreInfoGraph1" class="graph"></div>
+								</div>
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<table class="table table-noborder">
+										<tr>
+											<td>6000 new <span class=""></span></td>
+											<td>6000 new <span class=""></span></td>
+											<td>=</td>
+											<td>6000 new <span class=""></span></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</li>
+					</ul>
+					<div id="cadreInfoGraphBar"></div>
+					<table class="table table-noborder table-noborder-hover m_top10">
+						<thead class="bg-E9">
+							<th></th>
+							<th>Total</th>
+							<th><span class="text-success">%</span></th>
+							<th>Male</th>
+							<th><span class="text-success">%</span></th>
+							<th>Female</th>
+							<th><span class="text-success">%</span></th>
+							<th>OC</th>
+							<th><span class="text-success">%</span></th>
+							<th>BC</th>
+							<th><span class="text-success">%</span></th>
+							<th>SC</th>
+							<th><span class="text-success">%</span></th>
+						</thead>
+						<tbody>
+							<tr>
+								<td> &lt; 20 years</td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+							</tr>
+							<tr>
+								<td> &lt; 20 years</td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+							</tr>
+							<tr>
+								<td> &lt; 20 years</td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+								<td>2000</td>
+								<td><span class="text-success">2%</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="block">
+					<button class="btn btn-success btn-success-white text-capital">detailed caste information</button>
+				</div>
+			</div>
+			 
+			 <!--cadre info ending  -->
+			 		
 			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="news">
 				<h3>News <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>		
 				<div class="block">

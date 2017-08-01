@@ -35,7 +35,7 @@ function onLoadAjaxCalls()
 	getLocationWiseMeetingsCount();
 	//cadre
 	 getLocationTypeWiseCadreCount();
-	// getAgeRangeGenerAndCasteGroupByCadreCount();
+	 getAgeRangeGenerAndCasteGroupByCadreCount();
 	//Benefit
 	getPositionWiseMemberCount();
 	getNominatedPostApplicationDetails();
