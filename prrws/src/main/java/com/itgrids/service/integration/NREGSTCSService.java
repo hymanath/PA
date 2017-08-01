@@ -4451,6 +4451,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		return locatioVO;
 	}
 	public void  setDefaultValue(NregaPaymentsVO grandTotalVO) {
+		grandTotalVO.setType("Grand Total");
 		grandTotalVO.setTotalAmount("0");
 		grandTotalVO.setGeneratedWageAmount("0");
 		grandTotalVO.setUploadedWageAmount("0");
