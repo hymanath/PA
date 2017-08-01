@@ -16,6 +16,7 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/SlickSliderNew/slick.less" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/SlickSliderNew/slick-theme.less" type="text/less" rel="stylesheet"/>
+<link href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" type="text/css" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
 </head>
@@ -302,7 +303,34 @@
 										</ul>
 									</div>
 								</div>
-								<div id="districtViewTableDivId"></div>
+								<div id="districtViewTableDivId" class="row"></div>
+								<div class="panel panel-black panel-default">
+									<div class="panel-heading ivrReponseStyle" >
+										<div class="row">
+											<div class="col-sm-4">
+												<h4 class="text-capital">IVR RESPONSE OVERVIEW</h4>
+											</div>
+											<div class="col-sm-3 pull-right">
+												<div id="districtViewivrQuestions"></div>
+											</div>
+										</div>
+										<div class="row">
+											<div id="districtViewivrResponseDatesDivId"></div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<h4 id="districtViewselectedQuestion"></h4>
+										<div id="districtViewtotalPanchayatResponse"></div>
+										<div class="callerBKClr">
+											<div id="districtViewtotalIvrResponse"></div>
+										</div>
+										<div class="row m_top10">
+											<div class="col-sm-12">
+												<div id="districtViewivrTableView"></div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
                     </div>
@@ -333,15 +361,46 @@
 										<div id="assemblyViewTableDivId"></div>
 									</div>
 								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="panel panel-black panel-default">
+											<div class="panel-heading ivrReponseStyle" >
+												<div class="row">
+													<div class="col-sm-4">
+														<h4 class="text-capital">IVR RESPONSE OVERVIEW</h4>
+													</div>
+													<div class="col-sm-3 pull-right">
+														<div id="assemblyViewivrQuestions"></div>
+													</div>
+												</div>
+												<div class="row">
+													<div id="assemblyViewivrResponseDatesDivId"></div>
+												</div>
+											</div>
+											<div class="panel-body">
+												<h4 id="assemblyViewselectedQuestion"></h4>
+												<div id="assemblyViewtotalPanchayatResponse"></div>
+												<div class="callerBKClr">
+													<div id="assemblyViewtotalIvrResponse"></div>
+												</div>
+												<div class="row m_top10">
+												
+													<div class="col-sm-12">
+														<div id="assemblyViewivrTableView"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
                     </div>
                     <div class="panel panel-black panel-default" overview-level="mandal">
                         <div class="panel-heading">
-						<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                            <h4 class="panel-title text-capital">MANDAL LEVEL OVERVIEW</h4>
-                        
-						</a>
+							<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+								<h4 class="panel-title text-capital">MANDAL LEVEL OVERVIEW</h4>
+							</a>
 						</div>
 						<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
 							<div class="panel-body">
@@ -368,43 +427,38 @@
 										<div id="mandalViewTableDivId"></div>
 									</div>
 								</div>
+								<div class="panel panel-black panel-default">
+									<div class="panel-heading ivrReponseStyle" >
+										<div class="row">
+											<div class="col-sm-4">
+												<h4 class="text-capital">IVR RESPONSE OVERVIEW</h4>
+											</div>
+											<div class="col-sm-3 pull-right">
+												<div id="mandalViewivrQuestions"></div>
+											</div>
+										</div>
+										<div class="row">
+											<div id="mandalViewivrResponseDatesDivId"></div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<h4 id="mandalViewselectedQuestion"></h4>
+										<div id="mandalViewtotalPanchayatResponse"></div>
+										<div class="callerBKClr">
+											<div id="mandalViewtotalIvrResponse"></div>
+										</div>
+										<div class="row m_top10">
+										
+											<div class="col-sm-12">
+												<div id="mandalViewivrTableView"></div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
                     </div>
-					<!--<div class="panel panel-black panel-default">
-						<div class="panel-heading ivrReponseStyle" >
-							<div class="row">
-								<div class="col-sm-4">
-									<h4 class="text-capital">IVR RESPONSE OVERVIEW</h4>
-								</div>
-								<div class="col-sm-3 pull-right">
-									<select class="form-control chosen-select">
-										<option value="1">Select Question</option>
-										<option value="1">Select Question</option>
-										<option value="1">Select Question</option>
-									</select>
-								</div>
-							</div>
-							<div class="row">
-								<div id="ivrResponseDatesDivId"></div>
-							</div>
-						</div>
-						<div class="panel-body">
-							<h4>CC Roads needs to be in kms</h4>
-								
-								<div id="totalPanchayatResponse"></div>
-								<div class="callerBKClr">
-									<div id="totalIvrResponse"></div>
-								</div>
-								<div class="row m_top10">
-								
-									<div class="col-sm-12">
-										<div id="ivrTableView"></div>
-									</div>
-								</div>
-							
-						</div>-->
-					</div>
+					
                 </div>
             </div>
         </div>
@@ -421,6 +475,12 @@
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/Plugins/SlickSliderNew/slick.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js" type="text/javascript"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
 <script src="Assests/drainDashBoard/drainDashBoard.js" type="text/javascript"></script>
 </body>
