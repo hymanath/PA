@@ -7539,7 +7539,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	                     +" and ISV.is_deleted ='false'" +
 	                     "  and ISA.is_deleted ='false'" +
 	                     " and ISE.is_deleted ='false'" +
-	                     " and ISA.is_valid ='Y' ");
+	                     " and ISA.is_valid ='Y' " +
+	                     " and IRL.is_deleted ='N' ");
 	       
 	       /*if(year!=null && !year.trim().isEmpty()){
 	         sbe.append(" and year(ISV.start_date) =:year  ");
@@ -7712,7 +7713,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 				" and model.ivrSurveyEntityType.isDeleted='false'" +
 				" and ISA.isDeleted ='false' " +
 				" and ISA.ivrSurvey.isDeleted ='false' " +
-				" and ISA.isValid ='Y' " );
+				" and ISA.isValid ='Y' " +
+				" and IRL.isDeleted ='N' " );
 		
 		if(questionsList !=null && questionsList.size()>0){
 			str.append(" and ISA.ivrSurveyQuestion.ivrSurveyQuestionId in (:questionsList) " +
@@ -7770,7 +7772,8 @@ public List<Object[]> getOverAllIvrDetails(Date fromDate,Date toDate,Long entity
 				" and ISA.isDeleted ='false' " +
 				" and ISA.ivrSurvey.isDeleted ='false' " +
 				" and ISA.isValid ='Y'" +
-				" and ISA.ivrOption.isDeleted ='false' " );
+				" and ISA.ivrOption.isDeleted ='false' " +
+				" and IRL.isDeleted ='N' " );
 		
 		if(questionsList !=null && questionsList.size()>0){
 			str.append(" and ISA.ivrSurveyQuestion.ivrSurveyQuestionId in (:questionsList) " +
