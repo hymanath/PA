@@ -34,19 +34,22 @@ function onloadCalls(){
 		$(".tableMenu li:nth-child(1)").addClass("active");
 		$(".tableMenu li:nth-child(2)").show();
 		$("[overview-level]").show();
-		//DefaultValuesSetMainBlock();
+		DefaultValuesSetMainBlock();
 		$("#constituencyDistrictNames_chosen").show();
 		$("#mandalDistrictNames_chosen").show();
 		$("#mandalConstituencyNames_chosen").show();
-		//getDrainsInfoStateWise(0,"district");
-		//getAllDistricts("constituencyDistrictNames","DISTRICTS");
-		//getAllDistricts("mandalDistrictNames","DISTRICTS");
+		getDrainsInfoStateWise(0,"district");
+		getAllDistricts("constituencyDistrictNames","DISTRICTS");
+		getAllDistricts("mandalDistrictNames","DISTRICTS");
 		//District
-		//getDrainsInfoLocationWise("district",'0','','0','',"districtView",0);
+		getDrainsInfoLocationWise("district",'0','','0','',"districtView",0);
+		getIvrSurveyQuestions("districtView");
 		//constituency
-		//getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",0);
+		getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",0);
+		getIvrSurveyQuestions("assemblyView");
 		//Mandal
 		getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView",0);
+		getIvrSurveyQuestions("mandalView");
 	}else if(globallevelId == 3){
 		$(".tableMenu li:nth-child(1)").addClass("active");
 		$(".tableMenu li:nth-child(2)").hide();
@@ -108,6 +111,73 @@ function onloadCalls(){
 	$(document).on("click",function(){
 		$(".menu-data-cls").hide();
 	});
+	$(document).on("change","#ivrQuestionsSelect",function(){
+		$("#selectedQuestion").html($("#ivrQuestionsSelect").html());
+	});
+	$(document).on("click","#customDatesSubmitBtndistrictView",function(){
+		var arrLength = [];
+		$(".ivrDateCheckboxdistrictView").each(function(){
+			if($(this).is(":checked"))
+			{
+				arrLength.push($(this).val());
+				$(this).addClass("activeDateCls")
+			}
+		});
+		var questionsArrCons = [];
+		questionsArrCons.push($("#ivrQuestionsSelectassemblyView").val());
+		var locValArr = [];
+		locValArr.push(globallocId);
+		if(arrLength.length >= 1)
+		{
+			getDrainsIvrStatusCounts(questionsArrDist,"districtView","3",locValArr,2,searchLevelValueArr)			
+		}else{
+			$(".customDatesSubmitBtnErrdistrictView").html("Please Select Atleast One Date");
+		}
+		
+	});
+	$(document).on("click","#customDatesSubmitBtnassemblyView",function(){
+		var arrLength = [];
+		$(".ivrDateCheckboxassemblyView").each(function(){
+			if($(this).is(":checked"))
+			{
+				arrLength.push($(this).val());
+				$(this).addClass("activeDateCls")
+			}
+		});
+		var questionsArrDist = [];
+		questionsArrDist.push($("#ivrQuestionsSelectdistrictView").val());
+		var locValArr = [];
+		locValArr.push(globallocId);
+		if(arrLength.length >= 1)
+		{
+			getDrainsIvrStatusCounts(questionsArrCons,"assemblyView","4",locValArr,2,searchLevelValueArr)
+		}else{
+			$(".customDatesSubmitBtnErrassemblyView").html("Please Select Atleast One Date");
+		}
+		
+	});
+	$(document).on("click","#customDatesSubmitBtnmandalView",function(){
+		var arrLength = [];
+		$(".ivrDateCheckboxdistrictView").each(function(){
+			if($(this).is(":checked"))
+			{
+				arrLength.push($(this).val());
+				$(this).addClass("activeDateCls")
+			}
+		});
+		
+		var questionsArrMandal = [];
+		questionsArrMandal.push($("#ivrQuestionsSelectmandalView").val());
+		var locValArr = [];
+		locValArr.push(globallocId);
+		if(arrLength.length >= 1)
+		{
+			getDrainsIvrStatusCounts(questionsArrMandal,"mandalView","5",locValArr,2,searchLevelValueArr)
+		}else{
+			$(".customDatesSubmitBtnErrdistrictView").html("Please Select Atleast One Date");
+		}
+		
+	});
 }
 
 $("#singleDateRangePicker").daterangepicker({
@@ -129,11 +199,23 @@ $(document).on("click",".menuDataCollapse",function(){
 	globallocId = $(this).attr("attr_id");
 	globallevelId = $(this).attr("attr_levelidvalue");
 	globalLocationName=$(this).attr("attr_name");
+	var questionsArrDist = [];
+	questionsArrDist.push($("#ivrQuestionsSelectdistrictView").val());
+	var questionsArrCons = [];
+	questionsArrCons.push($("#ivrQuestionsSelectassemblyView").val());
+	var questionsArrMandal = [];
+	questionsArrMandal.push($("#ivrQuestionsSelectmandalView").val());
+	
+	var searchLevelValueArr = ['1']
 	$("#selectedName").text($(this).html());
 	$("#selectedName").attr("attr_id",globallocId);
 	$("#selectedName").attr("attr_levelidvalue",globallevelId);
 	$("#selectedName").attr("attr_name",globalLocationName);
-	
+	var locValArr = [];
+		locValArr.push(globallocId);
+	getDrainsIvrStatusCounts(questionsArrDist,"districtView","3",locValArr,2,searchLevelValueArr)
+	getDrainsIvrStatusCounts(questionsArrCons,"assemblyView","4",locValArr,2,searchLevelValueArr)
+	getDrainsIvrStatusCounts(questionsArrMandal,"mandalView","5",locValArr,2,searchLevelValueArr)
 	if(globallevelId == 2 || globallevelId == 0){
 		$(".tableMenu li").removeClass("active");
 		$(".tableMenu li:nth-child(1)").addClass("active");
@@ -146,6 +228,8 @@ $(document).on("click",".menuDataCollapse",function(){
 		getDrainsInfoStateWise(0,"district");
 		getAllDistricts("constituencyDistrictNames","DISTRICTS");
 		getAllDistricts("mandalDistrictNames","DISTRICTS");
+		
+		
 		//District
 		getDrainsInfoLocationWise("district",'0','','0','',"districtView",0);
 		//constituency
@@ -214,23 +298,27 @@ $(document).on('click','.calendar_active_cls li', function(){
 	{
 		globalFromDate = moment().format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
-		
+		$("#selectedDateIvr").html("TODAY");
 	}else if(date == 'Week'){
 		globalFromDate = moment().subtract(1,'week').format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
-		
+		$("#selectedDateIvr").html("WEEK");
 	}else if(date == 'Month'){
 		globalFromDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
+		$("#selectedDateIvr").html("MONTH");
 	}else if(date == '3Months'){
 		globalFromDate = moment().subtract(3,'month').startOf("month").format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
+		$("#selectedDateIvr").html("3 MONTHS");
 	}else if(date == '6Months'){
 		globalFromDate = moment().subtract(6,'month').startOf("month").format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
+		$("#selectedDateIvr").html("6 MONTHS");
 	}else if(date == 'Overall'){
 		globalFromDate = moment().subtract(15,'years').startOf("year").format('DD-MM-YYYY');
 		globalToDate = moment().format('DD-MM-YYYY');
+		$("#selectedDateIvr").html("OVERALL");
 	}
 	
 	$(this).closest("ul").find("li").removeClass("active");
@@ -590,9 +678,13 @@ function buildingTable(result,locationType,divId){
     str+='</div>';
 	$("#"+divId+"TableDivId").html(str);
 	$("#datatable"+locationType).dataTable({
-					"iDisplayLength": 10,
-					"aaSorting": [],
-					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+		"dom": 'Blfrtip',
+		buttons: [
+			'copy', 'excel', 'pdf', 'print'
+		]
 	});	
 }
 
@@ -804,52 +896,116 @@ function getAllDistricts(divId,levelName){
 		});
 	}
 	
-	//IVR
-	//ivrResponseDatesView();
-	
-	
-	$(document).on("click",".ivrDatesClr li",function(e){
-		//$(".ivrDatesClr li").removeClass("activeDateCls");
-		$(this).addClass("activeDateCls");
+	$(document).on("click",".ivrDateCheckboxdistrictView",function(e){
 		var arrLength = [];
-		$(".ivrDateCheckbox").each(function(){
+		$(".ivrDateCheckboxdistrictView").each(function(){
 			if($(this).is(":checked"))
 			{
 				arrLength.push($(this).val());
+				$(this).closest("li").addClass("activeDateCls")
 			}else{
 				arrLength.splice(0,1);
+				$(this).closest("li").removeClass("activeDateCls")
 			}
 			
 		});
 		
+		if(arrLength.length >= 1)
+		{
+			$(".customDatesSubmitBtnErrdistrictView").html("");
+			$("#selectedDateIvrdistrictView").attr("disabled",true);
+		}
+		if(arrLength.length == 0)
+		{
+			$("#selectedDateIvrdistrictView").attr("disabled",false);
+		}
 		if(arrLength.length > 1)
 		{
-			
-			$(".comparisonList li:first-child").find("input").attr("checked",true);
+			$("#comparisonSelectdistrictView").prop("checked",true);
 		}else{
-			$(".comparisonList li:first-child").find("input").attr("checked",false);
+			$("#comparisonSelectdistrictView").prop("checked",false);
+		}
+	});
+	$(document).on("click",".ivrDateCheckboxassemblyView",function(e){
+		var arrLength = [];
+		$(".ivrDateCheckboxassemblyView").each(function(){
+			if($(this).is(":checked"))
+			{
+				arrLength.push($(this).val());
+				$(this).closest("li").addClass("activeDateCls")
+			}else{
+				arrLength.splice(0,1);
+				$(this).closest("li").removeClass("activeDateCls")
+			}
+			
+		});
+		
+		if(arrLength.length >= 1)
+		{
+			$(".customDatesSubmitBtnErrassemblyView").html("");
+			$("#selectedDateIvrassemblyView").attr("disabled",true);
+		}
+		if(arrLength.length == 0)
+		{
+			$("#selectedDateIvrassemblyView").attr("disabled",false);
+		}
+		if(arrLength.length > 1)
+		{
+			$("#comparisonSelectassemblyView").prop("checked",true);
+		}else{
+			$("#comparisonSelectassemblyView").prop("checked",false);
+		}
+	});
+	$(document).on("click",".ivrDateCheckboxmandalView",function(e){
+		var arrLength = [];
+		$(".ivrDateCheckboxmandalView").each(function(){
+			if($(this).is(":checked"))
+			{
+				arrLength.push($(this).val());
+				$(this).closest("li").addClass("activeDateCls")
+			}else{
+				arrLength.splice(0,1);
+				$(this).closest("li").removeClass("activeDateCls")
+			}
+			
+		});
+		
+		if(arrLength.length >= 1)
+		{
+			$(".customDatesSubmitBtnErrmandalView").html("");
+			$("#selectedDateIvrmandalView").attr("disabled",true);
+		}
+		if(arrLength.length == 0)
+		{
+			$("#selectedDateIvrmandalView").attr("disabled",false);
+		}
+		if(arrLength.length > 1)
+		{
+			$("#comparisonSelectmandalView").prop("checked",true);
+		}else{
+			$("#comparisonSelectmandalView").prop("checked",false);
 		}
 	});
 	
 	
-getOverAllIvrDetails('');
-getOverAllIvrDetails('panchayat');
-getDrainsIvrStatusCounts();
-getIvrSurveyDates();
-function getOverAllIvrDetails(type)
+
+
+
+
+function getOverAllIvrDetails(type,questionsArr,divId)
 {
 	if(type != 'panchayat')
 	{
-		$("#totalIvrResponse").html(spinner);
+		$("#"+divId+"totalIvrResponse").html(spinner);
 	}else{
-		$("#totalPanchayatResponse").html(spinner);
+		$("#"+divId+"totalPanchayatResponse").html(spinner);
 	}
 	var json = {
-		"fromDate":"01-01-2016",
-		"toDate":"26-07-2017",
+		"fromDate":globalFromDate,
+		"toDate":globalToDate,
 		"entityType":7,
-		"questionsList":[],
-		"type":""
+		"questionsList":questionsArr,
+		"type":type
 	}
 	$.ajax({                
 		type:'POST',    
@@ -861,72 +1017,94 @@ function getOverAllIvrDetails(type)
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
 		
 		if(type != 'panchayat')
 		{
-			var str='';
-			str+='<div class="row">';
-				str+='<div class="col-sm-4">';
-					str+='<div class="media">';
-						str+='<div class="media-left img_middle">';
-							str+='<img class="media-object" src="Assests/icons/house_icon.png" alt="house_icon"/>';
-						str+='</div>';
-						str+='<div class="media-body">';
-							str+='<h5 class="m_top10"><b>TOTAL IVR RESPONSE</b></h5>';
-							str+='<h5 class="m_top5 title_align"><b>'+result[0].total+'</b></h5>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-				for(var i in result)
-				{
+			if(result != null && result.length > 0)
+			{
+				var str='';
+				str+='<div class="row">';
 					str+='<div class="col-sm-4">';
-						str+='<h5 class="m_top20 title_align"><b>'+result[i].count+'</b><small>('+result[i].percentage+')</small></h5>';
+						str+='<div class="media">';
+							str+='<div class="media-left img_middle">';
+								str+='<img class="media-object" src="Assests/icons/house_icon.png" alt="house_icon"/>';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<h5 class="m_top10"><b>TOTAL IVR RESPONSE</b></h5>';
+								str+='<h5 class="m_top5 title_align"><b>'+result[0].total+'</b></h5>';
+							str+='</div>';
+						str+='</div>';
 					str+='</div>';
-				}
-			str+='</div>';
-			$("#totalIvrResponse").html(str);
+					for(var i in result)
+					{
+						str+='<div class="col-sm-4">';
+							str+='<h5 class="m_top20 title_align"><b>'+result[i].count+'</b><small>('+result[i].percentage+')</small></h5>';
+						str+='</div>';
+					}
+				str+='</div>';
+				$("#"+divId+"totalIvrResponse").html(str);
+			}else{
+				$("#"+divId+"totalIvrResponse").html("NO DATA AVAILABLE");
+			}
 		}else{
-			var str='';
-			str+='<div class="row">';
-				str+='<div class="col-sm-4">';
-					str+='<div class="media">';
-						str+='<div class="media-left img_middle">';
-							str+='<img class="media-object" src="Assests/icons/house_icon.png" alt="house_icon"/>';
-						str+='</div>';
-						str+='<div class="media-body">';
-							str+='<h5 class="m_top10"><b>TOTAL PANCHAYATS</b></h5>';
-							str+='<h5 class="m_top5 title_align"><b>'+result[0].total+'</b></h5>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-				for(var i in result)
-				{
+			
+			if(result != null && result.length > 0)
+			{
+				var str='';
+				str+='<div class="row">';
 					str+='<div class="col-sm-4">';
-						str+='<h5 class=""><b>'+result[i].name+'</b></h5>';
-						str+='<h5 class="m_top20 title_align"><b>'+result[i].count+'</b><small>('+result[i].percentage+')</small></h5>';
+						str+='<div class="media">';
+							str+='<div class="media-left img_middle">';
+								str+='<img class="media-object" src="Assests/icons/house_icon.png" alt="house_icon"/>';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<h5 class="m_top10"><b>TOTAL PANCHAYATS</b></h5>';
+								str+='<h5 class="m_top5 title_align"><b>'+result[0].total+'</b></h5>';
+							str+='</div>';
+						str+='</div>';
 					str+='</div>';
-				}
-			str+='</div>';
-			$("#totalPanchayatResponse").html(str);
-
+					for(var i in result)
+					{
+						str+='<div class="col-sm-4">';
+							str+='<h5 class=""><b>'+result[i].name+'</b></h5>';
+							str+='<h5 class="m_top20 title_align"><b>'+result[i].count+'</b><small>('+result[i].percentage+')</small></h5>';
+						str+='</div>';
+					}
+				str+='</div>';
+				$("#"+divId+"totalPanchayatResponse").html(str);
+			}else{
+				$("#"+divId+"totalPanchayatResponse").html("NO DATA AVAILABLE");
+			}
+			
 		}
-		
 	});
 }
-function getDrainsIvrStatusCounts()
+function getDrainsIvrStatusCounts(questionsArr,divId,locType,locValue,searchLevelId,searchLevelValue)
 {
-	$("#ivrTableView").html(spinner);
+	$("#"+divId+"ivrTableView").html(spinner);
+	var selectedDatesArr = [];
+	$(".ivrDateCheckbox"+divId+"").each(function(){
+		if($(this).is(":checked"))
+		{
+			selectedDatesArr.push($(this).val());
+		}
+	});
+	if(selectedDatesArr.length >= 1)
+	{
+		globalFromDate = '';
+		globalToDate = '';
+	}
+	
 	var json ={
-		"fromDate":"",
-		"toDate":"",
-		"locationTypeId":"4",
-		"locationValues":[],
-		"blockLevelId":2,
-		"levelValues":[1],
+		"fromDate":globalFromDate,
+		"toDate":globalToDate,
+		"locationTypeId":locType,
+		"locationValues":locValue,
+		"blockLevelId":searchLevelId,
+		"levelValues":searchLevelValue,
 		"entityType":7,
-		"questionsList":[],
-		"selectedDates":["11-07-2017","12-07-2017"]
+		"questionsList":questionsArr,
+		"selectedDates":selectedDatesArr
 	}
 	$.ajax({                
 		type:'POST',    
@@ -938,49 +1116,169 @@ function getDrainsIvrStatusCounts()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
-		buildIvrTableView(result);
+		if(selectedDatesArr.length > 1)
+		{
+			buildIvrTableView(result,'comparison',divId);
+		}else{
+			buildIvrTableView(result,'normal',divId);
+		}
+		
 	});
 }
-function buildIvrTableView(result){
-	var str='';
-		str+='<table class="table table-condensed">';
+function buildIvrTableView(result,resultType,divId){
+	if(resultType == 'comparison')
+	{
+		var str='';
+		str+='<table class="table table-condensed" id="datatableIvr'+divId+'">';
 			str+='<thead>';
-			str+='<tr>';
-				str+='<th>DISTRICT</th>';
-				str+='<th>TOTAL VILLAGES</th>';
-				str+='<th>GREEN</th>';
-				str+='<th>%</th>';
-				str+='<th>ORANGE</th>';
-				str+='<th>%</th>';
-				str+='<th>RED</th>';
-				str+='<th>%</th>';
+				str+='<tr>';
+					if(divId == 'districtView')
+					{
+						str+='<th rowspan="2">DISTRICT</th>';
+					}else if(divId == 'assemblyView')
+					{
+						str+='<th rowspan="2">CONSTITUENCY</th>';	
+					}else if(divId == 'mandalView')
+					{
+						str+='<th rowspan="2">MANDAL</th>';
+					}
+					
+					//str+='<th rowspan="2">TOTAL VILLAGES</th>';
+					for(var i in result[0].statusList)
+					{
+						str+='<th class="text-center" colspan="'+((result[0].statusList[0].statusList.length)*2)+'">'+result[0].statusList[i].name+'</th>';
+					}
+					
+				str+='</tr>';
+				str+='<tr>';
+					for(var i in result[0].statusList)
+					{
+						for(var j in result[0].statusList[i].statusList)
+						{
+							if(result[0].statusList[i].statusList[j].name == 'green')
+							{
+								str+='<th style="color:#339800" class="text-capital">'+result[0].statusList[i].statusList[j].name+'</th>';
+								str+='<th style="color:#339800" class="text-capital">%</th>';
+							}else if(result[0].statusList[i].statusList[j].name == 'orange'){
+								str+='<th style="color:#F8821B" class="text-capital">'+result[0].statusList[i].statusList[j].name+'</th>';
+								str+='<th style="color:#F8821B" class="text-capital">%</th>';
+							}else if(result[0].statusList[i].statusList[j].name == 'red'){
+								str+='<th style="color:#FE3436" class="text-capital">'+result[0].statusList[i].statusList[j].name+'</th>';
+								str+='<th style="color:#FE3436" class="text-capital">%</th>';
+							}
+						}
+					}
+					
+					
 				str+='</tr>';
 			str+='</thead>';
 			str+='<tbody>';
 				for(var i in result)
 				{
 					str+='<tr>';
-						str+='<td>'+result[i].name+'</td>';
-						str+='<td>100</td>';
-						str+='<td>20</td>';
-						str+='<td>100</td>';
-						str+='<td>20</td>';
-						str+='<td>100</td>';
-						str+='<td>20</td>';
-						str+='<td>100</td>';
+						str+='<td class="text-capital">'+result[i].name+'</td>';
+						//str+='<td>'+((result[i].statusList[0].statusList[0].count)+(result[i].statusList[0].statusList[1].count)+(result[i].statusList[0].statusList[2].count))+'</td>';
+						for(var j in result[i].statusList)
+						{
+							for(var k in result[i].statusList[j].statusList)
+							{
+								if(result[i].statusList[j].statusList[k].name == 'green')
+								{
+									str+='<td style="color:#339800">'+result[i].statusList[j].statusList[k].count+'</td>';
+									str+='<td style="color:#339800">'+result[i].statusList[j].statusList[k].percentage+'</td>';
+								}else if(result[i].statusList[j].statusList[k].name == 'orange'){
+									str+='<td style="color:#F8821B">'+result[i].statusList[j].statusList[k].count+'</td>';
+									str+='<td style="color:#F8821B">'+result[i].statusList[j].statusList[k].percentage+'</td>';
+								}else if(result[i].statusList[j].statusList[k].name == 'red'){
+									str+='<td style="color:#FE3436">'+result[i].statusList[j].statusList[k].count+'</td>';
+									str+='<td style="color:#FE3436">'+result[i].statusList[j].statusList[k].percentage+'</td>';
+								}
+							}
+							
+							
+						}
 					str+='</tr>';
 				}
 			str+='</tbody>';
 		str+='</table>';
-		$("#ivrTableView").html(str);
+		
+	}else if(resultType == 'normal'){
+		var str='';
+		str+='<table class="table table-condensed" id="datatableIvr'+divId+'">';
+			str+='<thead>';
+			str+='<tr>';
+				if(divId == 'districtView')
+				{
+					str+='<th>DISTRICT</th>';
+				}else if(divId == 'assemblyView')
+				{
+					str+='<th>CONSTITUENCY</th>';	
+				}else if(divId == 'mandalView')
+				{
+					str+='<th>MANDAL</th>';
+				}
+				
+				str+='<th>TOTAL</th>';
+				for(var i in result[0].statusList)
+				{
+					if(result[0].statusList[i].name == 'green')
+					{
+						str+='<th style="color:#339800" class="text-capital">'+result[0].statusList[i].name+'</th>';
+						str+='<th style="color:#339800" class="text-capital">%</th>';
+					}else if(result[0].statusList[i].name == 'orange'){
+						str+='<th style="color:#F8821B" class="text-capital">'+result[0].statusList[i].name+'</th>';
+						str+='<th style="color:#F8821B" class="text-capital">%</th>';
+					}else if(result[0].statusList[i].name == 'red'){
+						str+='<th class="text-danger" class="text-capital">'+result[0].statusList[i].name+'</th>';
+						str+='<th class="text-danger" class="text-capital">%</th>';
+					}
+				}
+				
+			str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				for(var i in result)
+				{
+					str+='<tr>';
+						str+='<td class="text-capital">'+result[i].name+'</td>';
+						str+='<td>'+((result[i].statusList[0].count)+(result[i].statusList[1].count)+(result[i].statusList[2].count))+'</td>';
+						for(var j in result[i].statusList)
+						{
+							if(result[i].statusList[j].name == 'green')
+							{
+								str+='<td style="color:#339800">'+result[i].statusList[j].count+'</td>';
+								str+='<td style="color:#339800">'+result[i].statusList[j].percentage+'</td>';
+							}else if(result[i].statusList[j].name == 'orange'){
+								str+='<td style="color:#F8821B">'+result[i].statusList[j].count+'</td>';
+								str+='<td style="color:#F8821B">'+result[i].statusList[j].percentage+'</td>';
+							}else if(result[i].statusList[j].name == 'red'){
+								str+='<td style="color:#FE3436">'+result[i].statusList[j].count+'</td>';
+								str+='<td style="color:#FE3436">'+result[i].statusList[j].percentage+'</td>';
+							}
+							
+						}
+					str+='</tr>';
+				}
+			str+='</tbody>';
+		str+='</table>';
+	}
+	$("#"+divId+"ivrTableView").html(str);
+	$("#datatableIvr"+divId+"").dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+		"dom": 'Blfrtip',
+		buttons: [
+			'copy', 'excel', 'pdf', 'print'
+		]
+	});
 }
-function getIvrSurveyDates()
+function getIvrSurveyDates(divId)
 {
-	$("#ivrResponseDatesDivId").html(spinner);
+	$("#"+divId+"ivrResponseDatesDivId").html(spinner);
 	var json ={
-		"fromDate":"01-01-2016",
-		"toDate":"26-07-2017",
+		"fromDate":globalFromDate,
+		"toDate":globalToDate,
 		"entityType":7,
 	}
 	$.ajax({                
@@ -993,42 +1291,90 @@ function getIvrSurveyDates()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		ivrResponseDatesView(result)
+		ivrResponseDatesView(result,divId)
 	});
 }
-function ivrResponseDatesView(result){
+function ivrResponseDatesView(result,divId){
 	
 	var str='';
 	
 	str+='<div class="col-sm-12">';
 		str+='<div class="row m_top10">';
 			str+='<div class="col-sm-1" style="border-right:1px solid #000;">';
-				str+='<button class="btn btn-sm btn-success">OverAll</button>';
+				str+='<button class="btn btn-sm btn-success" id="selectedDateIvr'+divId+'">'+$(".calendar_active_cls li.active").attr("attr_val")+'</button>';
 			str+='</div>';
 			str+='<div class="col-sm-9">';
-				str+='<ul class="list-inline ivrDatesClr slider1">';
+				str+='<ul class="list-inline ivrDatesClr ivrDatesClr'+divId+' slider1'+divId+'">';
 					for(var i in result)
 					{
-						str+='<li><label class="checkbox-inline"><input type="checkbox" class="ivrDateCheckbox" value="'+i+'"> <span class="ivrDate">'+result[i].value+'</span></label></li>';
+						str+='<li><label class="checkbox-inline"><input type="checkbox" class="ivrDateCheckbox'+divId+'" value="'+result[i].value+'"> <span class="ivrDate">'+result[i].value+'</span></label></li>';
 					}
 				str+='</ul>';
 			str+='</div>';
 			str+='<div class="col-sm-2 text-center" style="border-left:1px solid #000;">';
 				str+='<ul class="list-inline comparisonList">';
-					str+='<li><input type="checkbox"></br><span style="color:#000;">COMPARISION</span></li>';
-					str+='<li><button class="btn btn-sm btn-success">Submit</button></li>';
+					str+='<li><input type="checkbox" id="comparisonSelect'+divId+'"></br><span style="color:#000;">COMPARISION</span></li>';
+					str+='<li><button class="btn btn-sm btn-success"  id="customDatesSubmitBtn'+divId+'">Submit</button><span class="customDatesSubmitBtnErr'+divId+'"></span></li>';
 				str+='</ul>';
 			str+='</div>';
 		str+='</div>';
 		
 	str+='</div>';
 	
-	$("#ivrResponseDatesDivId").html(str);
-	$(".slider1").slick({
+	$("#"+divId+"ivrResponseDatesDivId").html(str);
+	$(".slider1"+divId+"").slick({
 		slides:'li',
 		infinite: false,
 		slidesToShow: 7,
 		slidesToScroll: 2,
 		variableWidth: true
 	})
+}
+function getIvrSurveyQuestions(divId)
+{
+	$("#"+divId+"ivrQuestions").html(spinner);
+	var json =	{
+		"fromDate":globalFromDate,
+		"toDate":globalToDate,
+		"entityType":7,
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getIvrSurveyQuestions',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		var selectBox = '';
+		selectBox+='<select class="form-control" id="ivrQuestionsSelect'+divId+'">';
+			for(var i in result)
+			{
+				selectBox+='<option value="'+result[i].key+'">'+result[i].value+'</option>';
+			}
+		selectBox+='</select>';
+		$("#"+divId+"ivrQuestions").html(selectBox);
+		$("#ivrQuestionsSelect"+divId+"").chosen();
+		var questionsArr = [];
+		questionsArr.push(result[0].key);
+		getOverAllIvrDetails('',questionsArr,divId);
+		getOverAllIvrDetails('panchayat',questionsArr,divId);
+		getIvrSurveyDates(divId);
+		//getDrainsIvrStatusCounts(questionsArr,divId,locType,locValue,searchLevelId,searchLevelValue)
+		var locValueArr = []
+		var searchLevelValueArr = ['1']
+		if(divId == 'districtView')
+		{
+			getDrainsIvrStatusCounts(questionsArr,divId,"3",locValueArr,2,searchLevelValueArr)
+		}else if(divId == 'assemblyView')
+		{
+			getDrainsIvrStatusCounts(questionsArr,divId,"4",locValueArr,2,searchLevelValueArr)
+		}else if(divId == 'mandalView')
+		{
+			getDrainsIvrStatusCounts(questionsArr,divId,"5",locValueArr,2,searchLevelValueArr)
+		}
+		
+	});
 }
