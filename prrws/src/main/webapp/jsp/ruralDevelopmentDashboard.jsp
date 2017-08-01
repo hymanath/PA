@@ -12,7 +12,9 @@
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+<script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
 <header>
 	<nav>
@@ -25,10 +27,7 @@
 					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
 					<p>Rural Development - AP</p>
 				</div>
-				<div class="col-sm-2 col-xs-12 col-sm-offset-3">
-					<img src="Assests/images/NREGS-LOGO.png" class="m_top5"/>
-				</div>
-				<div class="col-sm-1 col-xs-12">
+				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
@@ -107,8 +106,8 @@
 											<div class="col-sm-12 m_top10">
 												<div class="menu-block" style="background-color:#ff1c5e">
 													<a href="RuralDevelopmentDashboard">
-														<h3>RD</h3>
-														<p>Rural Development Dashboard</p>
+														<h3>IWMP</h3>
+														<p>Integrated Watershed Management Programme</p>
 													</a>
 												</div>
 											</div>
@@ -205,6 +204,12 @@
 <script src="Assests/Plugins/DateTime/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js" type="text/javascript"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/ruralDevelopment.js" type="text/javascript"></script>
 </body>
 </html>

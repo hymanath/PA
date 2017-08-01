@@ -155,11 +155,11 @@ $(document).on('click','[overview-level]', function(){
 			var theadArr = [];
 			if((globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') )
 			{
-				theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+				theadArr = [levelType,'Target','Sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','Sanctioned Percentage'];
 				if(levelType == "constituency")
-					theadArr = ["district",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["District",levelType,'Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				else if(levelType == "mandal")
-					theadArr = ["district","constituency",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["District","Constituency",levelType,'Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				else if(levelType == "panchayat")
 					theadArr = ["district","constituency","mandal",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				
@@ -180,36 +180,37 @@ $(document).on('click','[overview-level]', function(){
 					theadArr = ["district","constituency","mandal",levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
 				}
 			}
+			
 			if(globalDivName == 'WaterBudget')
 			{
 				if(levelType == "state" || levelType == "district")
 				{
-					theadArr = [levelType,'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
+					theadArr = [levelType,'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)'];
 				}else if(levelType == "constituency")
 				{
-					theadArr = ["district",levelType,'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
+					theadArr = ["district",levelType,'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)'];
 				}else if(levelType == "mandal")
 				{
-					theadArr = ["district","constituency",levelType,'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
+					theadArr = ["district","constituency",levelType,'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)'];
 				}else if(levelType == "panchayat")
 				{
-					theadArr = ["district","constituency","mandal",levelType,'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
+					theadArr = ["district","constituency","mandal",levelType,'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)'];
 				}
 			}
 			if(globalDivName == 'GH')
 			{
 				if(levelType == "state" || levelType == "district")
 				{
-					theadArr = [levelType,'District Target','Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+					theadArr = [levelType,'District Target(in Hectars)','Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
 				}else if(levelType == "constituency")
 				{
-					theadArr = ["district",levelType,'Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+					theadArr = ["district",levelType,'Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
 				}else if(levelType == "mandal")
 				{
-					theadArr = ["district","constituency",levelType,'Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+					theadArr = ["district","constituency",levelType,'Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
 				}else if(levelType == "panchayat")
 				{
-					theadArr = ["district","constituency","mandal",levelType,'Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+					theadArr = ["district","constituency","mandal",levelType,'Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
 				}
 			}
 			
@@ -374,7 +375,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Greening O..</h4>';
 					}else if(type == 'WaterBudget')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Water Budget</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Water Budget">Water Bu..</h4>';
 					}else if(type.length > 12)
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
@@ -622,6 +623,12 @@ function overviewData(divId,levelId,locationId)
 							}else if(divId == 'CD_CW')
 							{
 								collapse+='<h4 class="panel-title text-capital">Check Dams and Check Walls overview</h4>';
+							}else if(divId == 'WaterBudget')
+							{
+								collapse+='<h4 class="panel-title text-capital">Water Budget overview</h4>';
+							}else if(divId == 'GH')
+							{
+								collapse+='<h4 class="panel-title text-capital">Greening Of Hillocks</h4>';
 							}else{
 								collapse+='<h4 class="panel-title text-capital">'+divId+' overview</h4>';
 							}
@@ -1151,6 +1158,12 @@ function projectData(divId,levelId,locationId)
 									}else if(divId == 'CD_CW')
 									{
 										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Check Dams and Check Walls</h4>';
+									}else if(divId == 'WaterBudget')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Water Budget</h4>';
+									}else if(divId == 'GH')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Greening Of Hillocks</h4>';
 									}else{
 										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - '+divId+'</h4>';
 									}
@@ -1223,16 +1236,16 @@ function projectData(divId,levelId,locationId)
 	{
 		if(dataArr[0] == "state" || dataArr[0] == "district")
 		{
-			theadArr = [dataArr[0],'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
+			theadArr = [dataArr[0],'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)'];
 		}else if(dataArr[0] == "constituency")
 		{
-			theadArr = ["district",dataArr[0],'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
+			theadArr = ["district",dataArr[0],'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)'];
 		}else if(dataArr[0] == "mandal")
 		{
-			theadArr = ["district","constituency",dataArr[0],'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
+			theadArr = ["district","constituency",dataArr[0],'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)'];
 		}else if(dataArr[0] == "panchayat")
 		{
-			theadArr = ["district","constituency","mandal",dataArr[0],'Targeted','Achievement','Achievement GT','Achievement LT','Balance','Area','Gross','Storage CAP','Balance Runoff'];
+			theadArr = ["district","constituency","mandal",dataArr[0],'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)'];
 		}
 		
 	}
@@ -1240,16 +1253,16 @@ function projectData(divId,levelId,locationId)
 	{
 		if(dataArr[0] == "state" || dataArr[0] == "district")
 		{
-			theadArr = [dataArr[0],'District Target','Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+			theadArr = [dataArr[0],'District Target(in Hectars)','Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
 		}else if(dataArr[0] == "constituency")
 		{
-			theadArr = ["district",dataArr[0],'Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+			theadArr = ["district",dataArr[0],'Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
 		}else if(dataArr[0] == "mandal")
 		{
-			theadArr = ["district","constituency",dataArr[0],'Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+			theadArr = ["district","constituency",dataArr[0],'Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
 		}else if(dataArr[0] == "panchayat")
 		{
-			theadArr = ["district","constituency","mandal",dataArr[0],'Sanctioned Target','Pitting Extention','Planting Extension','Expn'];
+			theadArr = ["district","constituency","mandal",dataArr[0],'Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
 		}
 	}
 	
@@ -1380,10 +1393,19 @@ function tableView(blockId,theadArr,result,locationType)
 		$(".dataTable"+blockId).dataTable({
 			"iDisplayLength": 15,
 			"aaSorting": [],
-			"dom": 'Bfrtip',
+			"dom": 'Blfrtip',
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 			buttons: [
-				'copy', 'excel', 'pdf', 'print'
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV'
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF'
+				}
 			]
 		});
 	}else if(locationType == 'district')
@@ -1392,9 +1414,18 @@ function tableView(blockId,theadArr,result,locationType)
 			"iDisplayLength": 20,
 			"aaSorting": [],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			"dom": 'Bfrtip',
+			"dom": 'Blfrtip',
 			buttons: [
-				'copy', 'excel', 'pdf', 'print'
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV'
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF'
+				}
 			]
 		});
 	}
@@ -1402,7 +1433,8 @@ function tableView(blockId,theadArr,result,locationType)
 }
 function getNtrJalaSiriLvlWiseData(divId,locationType,theadArr,menuLocationType,menuLocationId)
 {
-	$("#"+divId).html(spinner);	
+	var tableId = divId.replace(/\s+/g, '')+''+locationType;
+		$("#"+tableId).html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
@@ -1465,7 +1497,7 @@ function getNtrJalaSiriLvlWiseData(divId,locationType,theadArr,menuLocationType,
 					str+='</tr>';
 				}
 			}
-			tableView(divId,theadArr,str,locationType);
+			tableView(tableId,theadArr,str,locationType);
 		}
 	});
 }
@@ -1536,14 +1568,40 @@ function tableViewOld(blockId,theadArr,result,locationType)
 		$(".dataTable"+blockId).dataTable({
 			"iDisplayLength": 15,
 			"aaSorting": [],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": 'Blfrtip',
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV'
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF'
+				}
+			]
 		});
 	}else if(locationType == 'district')
 	{
 		$(".dataTable"+blockId).dataTable({
 			"iDisplayLength": 20,
 			"aaSorting": [],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": 'Blfrtip',
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV'
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF'
+				}
+			]
 		});
 	}
 }
@@ -1651,9 +1709,9 @@ function getRDLevelsWiseData(divId,subLocationType,theadArr,locationTypeNew,menu
 						  }else if(globalDivName == "WaterBudget"){
 							str+='<td>'+ajaxresp[i].target+'</td>';
 							str+='<td>'+ajaxresp[i].achivement+'</td>';
+							str+='<td>'+ajaxresp[i].balance+'</td>';
 							str+='<td>'+ajaxresp[i].achmtGT0+'</td>';
 							str+='<td>'+ajaxresp[i].achmtLT0+'</td>';
-							str+='<td>'+ajaxresp[i].balance+'</td>';
 							str+='<td>'+ajaxresp[i].area+'</td>';
 							str+='<td>'+ajaxresp[i].gross+'</td>';
 							str+='<td>'+ajaxresp[i].stroageCap+'</td>';
@@ -1667,6 +1725,7 @@ function getRDLevelsWiseData(divId,subLocationType,theadArr,locationTypeNew,menu
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 								str+='<td>'+ajaxresp[i].pittingKMS+'</td>';
 								str+='<td>'+ajaxresp[i].plantingKMS+'</td>';
+								str+='<td>'+(((ajaxresp[i].plantingKMS)*(100.00))/(ajaxresp[i].sanctionedTarget)).toFixed(2)+'</td>';
 								str+='<td>'+ajaxresp[i].percentage+'</td>';
 							}
 									
