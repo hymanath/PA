@@ -32,7 +32,10 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 	private DateUtilService dateUtilService;
 	@Autowired
 	private IDepartmentDiseasesInfoDAO departmentDiseasesInfoDAO;
-	
+	/*
+	 * Author : Swadhin K Lenka
+	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getCaseCountDiseasesWise(java.lang.String, java.lang.String, java.util.List, java.util.List)
+	 */
 	@Override
 	public List<DiseasesVO> getCaseCountDiseasesWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList){
 		try{
@@ -170,6 +173,10 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 			LOG.error(" Exception occured in HealthMedicalAndFamilyWelfareService ,buildCaseCountDiseasesWise() ",e);
 		}
 	}
+	/*
+	 * Swadhin K Lenka
+	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getCaseCountLocationWise(java.lang.String, java.lang.String, java.util.List, java.util.List, java.lang.Long)
+	 */
 	@Override
 	public List<DiseasesVO> getCaseCountLocationWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long scope){
 		try{
@@ -212,6 +219,10 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 			LOG.error(" Exception occured in HealthMedicalAndFamilyWelfareService ,buildCaseCountLocationWise() ",e);
 		}
 	}
+	/*
+	 * Swadhin K Lenka
+	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getCaseCountDateWise(java.lang.String, java.lang.String, java.util.List, java.util.List, java.lang.String)
+	 */
 	@Override
 	public List<DiseasesVO> getCaseCountDateWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,String rangeType){
 		try{
