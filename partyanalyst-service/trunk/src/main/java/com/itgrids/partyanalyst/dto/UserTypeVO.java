@@ -90,7 +90,7 @@ public class UserTypeVO implements Serializable{
 	private Double notConductedPerc = 0.0d;
 	private Long imgesCoveredCount = 0l;
 	private Double imagesCvredCountPerc = 0.0d;
-	
+	private List<TrainingCampProgramVO> daysList = new ArrayList<TrainingCampProgramVO>(0);
 	
 	public Long getId() {
 		return id;
@@ -501,4 +501,12 @@ public class UserTypeVO implements Serializable{
 	public void setInvitAttndMbrsList(List<Long> invitAttndMbrsList) {
 		this.invitAttndMbrsList = invitAttndMbrsList;
 	}
+	public List<TrainingCampProgramVO> getDaysList() {
+		return daysList;
+	}
+	public void setDaysList(List<TrainingCampProgramVO> daysList) {
+		this.daysList = daysList;
+	}
+	
+	
 }

@@ -120,8 +120,8 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String tehsilName;
 	private String panchayatName;
 	private String municipalityName;
-	private Long inviteeAttnd;
-	private Long nonInviteeAttnd;
+	private Long inviteeAttnd = 0l;
+	private Long nonInviteeAttnd = 0l;
 	
 	private Set<Long> inviteeIds = new HashSet<Long>(0);
 	private Set<Long> nonInviteeIds = new HashSet<Long>(0);
