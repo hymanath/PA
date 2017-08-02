@@ -4104,4 +4104,7 @@
 	  <bean id="boothInchargeSerialNoRangeDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeSerialNoRangeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="momAtrSourceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MomAtrSourceTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		

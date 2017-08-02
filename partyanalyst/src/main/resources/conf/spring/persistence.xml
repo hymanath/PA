@@ -1301,7 +1301,8 @@
 		      		   <value>com.itgrids.partyanalyst.model.MeekosamGrievanceReferDetails</value>
 		      		   <value>com.itgrids.partyanalyst.model.AmsOfficerOtpDetails</value>
 		      		   <value>com.itgrids.partyanalyst.model.BoothInchargeCommittee</value>
-		      		    <value>com.itgrids.partyanalyst.model.BoothInchargeSerialNoRange</value>
+		      		   <value>com.itgrids.partyanalyst.model.BoothInchargeSerialNoRange</value>
+		      		   <value>com.itgrids.partyanalyst.model.MomAtrSourceType</value>
 				  </list>
 			
 		</property>
