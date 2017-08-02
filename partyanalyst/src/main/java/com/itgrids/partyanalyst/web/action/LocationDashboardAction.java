@@ -59,15 +59,22 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private InsuranceStatusCountsVO insuranceVO;
 	private List<GrivenceStatusVO> grivenceVO;
 	private List<BasicVO> activityStatusList;
+	private List<BasicVO> electionTypes;
 	private List<LocationWiseBoothDetailsVO> locationVOList;
 	private ICadreCommitteeService cadreCommitteeService;
 
-	
+
 	public List<LocationWiseBoothDetailsVO> getLocationVOList() {
 		return locationVOList;
 	}
 	public void setLocationVOList(List<LocationWiseBoothDetailsVO> locationVOList) {
 		this.locationVOList = locationVOList;
+	}
+	public List<BasicVO> getElectionTypes() {
+		return electionTypes;
+	}
+	public void setElectionTypes(List<BasicVO> electionTypes) {
+		this.electionTypes = electionTypes;
 	}
 	public List<BasicVO> getActivityStatusList() {
 		return activityStatusList;
@@ -439,6 +446,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			 enrollmentYears = locationDashboardService.getEnrollmentIds();
 		 }catch(Exception e){
 			 LOG.error("Exception raised at getEnrollemtYears() of LocationDashboardAction{}", e);
+		 }
+		 return Action.SUCCESS;
+	 }
+	 
+	 public String getElectionTypesList(){
+		 try{
+			 jObj = new JSONObject(getTask());
+			 electionTypes = locationDashboardService.getElectionTypes();
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getElectionTypes() of LocationDashboardAction{}", e);
 		 }
 		 return Action.SUCCESS;
 	 }

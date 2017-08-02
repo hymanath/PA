@@ -5,6 +5,7 @@ function onLoadAjaxCalls()
 {
 	getLocationWiseCommitteesCount();
 	getEnrollmentIds();
+	getElectionTypes();
 	getAgeRangeGenerAndCasteGroupByCadreCount();//cadre info
 	getLevelWiseMeetingStatusCounts();
 	getLocationWiseInsuranceStatusCount();
@@ -1300,6 +1301,20 @@ function getEnrollmentIds(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
     	//console.log(result);
+	});	
+}
+
+function getElectionTypes(){
+	var jsObj={
+			
+	}
+	 $.ajax({
+      type : "GET",
+      url : "getElectionTypesAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	console.log(result);
 	});	
 }
 //Location wise insurance status counts
