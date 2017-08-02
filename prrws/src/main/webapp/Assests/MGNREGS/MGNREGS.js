@@ -217,7 +217,7 @@ function onLoadCalls()
 			else if(levelType == "panchayat")
 				theadArr = ["district","constituency","mandal",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 			
-			if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state")
+			if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && levelType == "state")
 				theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 			
 			if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (levelType == "state" || levelType == "district"))
