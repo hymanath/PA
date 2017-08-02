@@ -24,7 +24,9 @@ import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -57,8 +59,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private InsuranceStatusCountsVO insuranceVO;
 	private List<GrivenceStatusVO> grivenceVO;
 	private List<BasicVO> activityStatusList;
+	private List<LocationWiseBoothDetailsVO> locationVOList;
+	private ICadreCommitteeService cadreCommitteeService;
+
 	
-	
+	public List<LocationWiseBoothDetailsVO> getLocationVOList() {
+		return locationVOList;
+	}
+	public void setLocationVOList(List<LocationWiseBoothDetailsVO> locationVOList) {
+		this.locationVOList = locationVOList;
+	}
 	public List<BasicVO> getActivityStatusList() {
 		return activityStatusList;
 	}
@@ -133,6 +143,14 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setCandidateDetailsForConstituencyTypesVO(
 			CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituencyTypesVO) {
 		this.candidateDetailsForConstituencyTypesVO = candidateDetailsForConstituencyTypesVO;
+	}
+	
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
 	}
 	public ILocationDashboardService getLocationDashboardService() {
 		return locationDashboardService;
@@ -505,4 +523,43 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
 	
+	public String getAllDistrictsForLoationDashBoard(){
+		try{
+			jObj = new JSONObject(getTask());
+			locationVOList= locationDashboardService.getAllDistricts(jObj.getLong("stateId"));
+		}catch(Exception e){
+			LOG.error("Exception Occured In getAllDistricts method "+e);			
+		}
+		return Action.SUCCESS;
+	}
+	public String getConstituenciesByDistrictForLoationDashBoard(){
+		try{
+			jObj = new JSONObject(getTask());
+			locationVOList= locationDashboardService.getAllConstituenciesByDistrict(jObj.getLong("districtId"));
+		}catch(Exception e){
+			LOG.error("Exception Occured In getAllDistricts method "+e);			
+		}
+		return Action.SUCCESS;
+	}
+	public String getMandalsByConstituencyForLoationDashBoard(){
+		try{
+			jObj = new JSONObject(getTask());
+			locationVOList = cadreCommitteeService.getMandalsByConstituency(jObj.getLong("constituencyId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getMandalsByConstituency ",e);
+		}
+	   return Action.SUCCESS;
+	}
+	public String getPanchayatWardByMandalForLoationDashBoardAction(){
+		try{
+			jObj = new JSONObject(getTask());
+			String mandalId = jObj.getString("mandalId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			locationVOList=cadreCommitteeService.getPanchayatWardByMandalId(mandalId,constituencyId);
+			
+		}catch(Exception e){	
+			LOG.error("Exception occured in getPanchayatWardByMandal() method ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
