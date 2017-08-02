@@ -17,10 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IDepartmentDiseasesInfoDAO;
 import com.itgrids.dto.DiseasesVO;
+import com.itgrids.dto.FundSchemeVO;
 import com.itgrids.service.IHealthMedicalAndFamilyWelfareService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
+import com.itgrids.utils.SetterAndGetterUtilService;
 @Service
 @Transactional
 public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFamilyWelfareService {
@@ -32,6 +34,8 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 	private DateUtilService dateUtilService;
 	@Autowired
 	private IDepartmentDiseasesInfoDAO departmentDiseasesInfoDAO;
+	@Autowired
+	private SetterAndGetterUtilService setterAndGetterUtilService;
 	/*
 	 * Author : Swadhin K Lenka
 	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getCaseCountDiseasesWise(java.lang.String, java.lang.String, java.util.List, java.util.List)
@@ -45,21 +49,23 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 			deptIdList = commonMethodsUtilService.makeEmptyListByZeroValue(deptIdList);
 			
 			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getCaseCountDiseasesWise(startDate,endDate,diseasesIdList,deptIdList);
+			Date today = dateUtilService.getCurrentDateAndTime();
+			List<Object[]> todayDiseasesList = departmentDiseasesInfoDAO.getCaseCountDiseasesWise(today,today,diseasesIdList,deptIdList);
 			List<DiseasesVO> diseasesVOs = new ArrayList<DiseasesVO>();
 			
 			//only diseases wise count
-			buildCaseCountDiseasesWise(startDate,endDate,diseasesIdList,deptIdList,diseasesVOs,diseasesList);
+			buildCaseCountDiseasesWise(diseasesVOs,diseasesList,todayDiseasesList);
 			return diseasesVOs;
 		}catch(Exception e){
 			LOG.error(" Exception occured in HealthMedicalAndFamilyWelfareService ,getCaseCountDiseasesWise() ",e);
 		}
 		return null;
 	}
-	public void buildCaseCountDiseasesWise(Date startDate,Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,List<DiseasesVO> diseasesVOs,List<Object[]> diseasesList){
+	public void buildCaseCountDiseasesWise(List<DiseasesVO> diseasesVOs,List<Object[]> diseasesList,List<Object[]> todayDiseasesList){
 		try{
-			Map<Long,Long> diseasesIdAndCountMap = new HashMap<Long,Long>();
-			List<DiseasesVO> tempVOList = null;
+			List<DiseasesVO> tempVOList = new ArrayList<DiseasesVO>();
 			DiseasesVO diseasesVO = null;
+			DiseasesVO diseasesVOTemp = null;
 			Long totalCount = 0L;
 			if(diseasesList != null && diseasesList.size() > 0){
 				for(Object[] param : diseasesList){
@@ -68,107 +74,59 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 					diseasesVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
 					totalCount = totalCount + commonMethodsUtilService.getLongValueForObject(param[2]);
-					diseasesVOs.add(diseasesVO);
-					diseasesIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
-				}
-			}
-			if(diseasesVOs != null && diseasesVOs.size() > 0){
-				for(DiseasesVO param : diseasesVOs){
-					param.setPercent(commonMethodsUtilService.calculatePercantage(param.getCount(),totalCount));
-				}
-			}
-			//get top districts for all diseases.
-			List<Object[]> distCountList = departmentDiseasesInfoDAO.getTotLocationsDiseasesWiseCount(startDate,endDate,diseasesIdList,deptIdList,IConstants.DISTRICT_LEVEL_SCOPE_ID);
-			if(distCountList != null && distCountList.size() > 0){
-				tempVOList = new ArrayList<DiseasesVO>();
-				for(Object[] param : distCountList){
-					diseasesVO = new DiseasesVO();
-					diseasesVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					diseasesVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					diseasesVO.setPercent(commonMethodsUtilService.calculatePercantage(commonMethodsUtilService.getLongValueForObject(param[2]),totalCount));
 					tempVOList.add(diseasesVO);
 				}
-				diseasesVOs.get(0).getDistCountList().addAll(tempVOList);
 			}
-			//get top mandals for all diseases.
-			List<Object[]> mandalCountList = departmentDiseasesInfoDAO.getTotLocationsDiseasesWiseCount(startDate,endDate,diseasesIdList,deptIdList,IConstants.MANDAL_LEVEL_SCOPE_ID);
-			if(mandalCountList != null && mandalCountList.size() > 0){
-				tempVOList = new ArrayList<DiseasesVO>();
-				for(Object[] param : mandalCountList){
-					diseasesVO = new DiseasesVO();
-					diseasesVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					diseasesVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					diseasesVO.setPercent(commonMethodsUtilService.calculatePercantage(commonMethodsUtilService.getLongValueForObject(param[2]),totalCount));
-					tempVOList.add(diseasesVO);
+			
+			//total count
+			diseasesVO = new DiseasesVO();
+			diseasesVO.setId(0L);
+			diseasesVO.setName("Dengue & Malaria Cases");
+			diseasesVO.setCount(totalCount);
+			diseasesVOs.add(diseasesVO);
+			
+			//Malaria count
+			diseasesVO = new DiseasesVO();
+			diseasesVO.setId(1L);
+			diseasesVO.setName("Malaria");
+			diseasesVO.setTodayCount(0L);
+			diseasesVOTemp = (DiseasesVO) setterAndGetterUtilService.getMatchedVOfromList(tempVOList, "id", "1");
+			if(diseasesVOTemp != null){
+				diseasesVO.setCount(diseasesVOTemp.getCount());
+				diseasesVO.setPercent(commonMethodsUtilService.calculatePercantage(diseasesVOTemp.getCount(),totalCount));
+			}else{
+				diseasesVO.setPercent(0.0D);
+				diseasesVO.setCount(0L);
+			}
+			diseasesVOs.add(diseasesVO);
+			
+			//Dengue count
+			diseasesVO = new DiseasesVO();
+			diseasesVO.setId(2L);
+			diseasesVO.setName("Dengue");
+			diseasesVO.setTodayCount(0L);
+			diseasesVOTemp = (DiseasesVO) setterAndGetterUtilService.getMatchedVOfromList(tempVOList, "id", "2");
+			if(diseasesVOTemp != null){
+				diseasesVO.setCount(diseasesVOTemp.getCount());
+				diseasesVO.setPercent(commonMethodsUtilService.calculatePercantage(diseasesVOTemp.getCount(),totalCount));
+			}else{
+				diseasesVO.setPercent(0.0D);
+				diseasesVO.setCount(0L);
+			}
+			diseasesVOs.add(diseasesVO);
+			
+			//set deseases wise case count on today.
+			Long todayTotal = 0L;
+			if(todayDiseasesList != null && todayDiseasesList.size() > 0){
+				for(Object[] param : todayDiseasesList){
+					diseasesVOTemp = (DiseasesVO) setterAndGetterUtilService.getMatchedVOfromList(diseasesVOs, "id", commonMethodsUtilService.getLongValueForObject(param[0]).toString());
+					diseasesVOTemp.setTodayCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					todayTotal = todayTotal + commonMethodsUtilService.getLongValueForObject(param[2]);
 				}
-				diseasesVOs.get(0).getMandalCountList().addAll(tempVOList);
 			}
-			//get top districts for Malaria.
-			diseasesIdList.clear();
-			diseasesIdList.add(1L);//Iconst
-			List<Object[]> distCountForMalariaList = departmentDiseasesInfoDAO.getTotLocationsDiseasesWiseCount(startDate,endDate,diseasesIdList,deptIdList,IConstants.DISTRICT_LEVEL_SCOPE_ID);
-			if(distCountForMalariaList != null && distCountForMalariaList.size() > 0){
-				tempVOList = new ArrayList<DiseasesVO>();
-				for(Object[] param : distCountForMalariaList){
-					diseasesVO = new DiseasesVO();
-					diseasesVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					diseasesVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					diseasesVO.setPercent(commonMethodsUtilService.calculatePercantage(commonMethodsUtilService.getLongValueForObject(param[2]),diseasesIdAndCountMap.get(1L)));
-					tempVOList.add(diseasesVO);
-				}
-				diseasesVOs.get(0).getDistCountForMalariaList().addAll(tempVOList);
-			}
-			//get top mandals for Malaria.
-			diseasesIdList.clear();
-			diseasesIdList.add(1L);//Iconst
-			List<Object[]> mandalCountForMalariaList = departmentDiseasesInfoDAO.getTotLocationsDiseasesWiseCount(startDate,endDate,diseasesIdList,deptIdList,IConstants.MANDAL_LEVEL_SCOPE_ID);
-			if(mandalCountForMalariaList != null && mandalCountForMalariaList.size() > 0){
-				tempVOList = new ArrayList<DiseasesVO>();
-				for(Object[] param : mandalCountForMalariaList){
-					diseasesVO = new DiseasesVO();
-					diseasesVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					diseasesVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					diseasesVO.setPercent(commonMethodsUtilService.calculatePercantage(commonMethodsUtilService.getLongValueForObject(param[2]),diseasesIdAndCountMap.get(1L)));
-					tempVOList.add(diseasesVO);
-				}
-				diseasesVOs.get(0).getMandalCountForMalariaList().addAll(tempVOList);
-			}
-			//get top districts for Dengue.
-			diseasesIdList.clear();
-			diseasesIdList.add(2L);
-			List<Object[]> distCountForDengueList = departmentDiseasesInfoDAO.getTotLocationsDiseasesWiseCount(startDate,endDate,diseasesIdList,deptIdList,IConstants.DISTRICT_LEVEL_SCOPE_ID);
-			if(distCountForDengueList != null && distCountForDengueList.size() > 0){
-				tempVOList = new ArrayList<DiseasesVO>();
-				for(Object[] param : distCountForDengueList){
-					diseasesVO = new DiseasesVO();
-					diseasesVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					diseasesVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					diseasesVO.setPercent(commonMethodsUtilService.calculatePercantage(commonMethodsUtilService.getLongValueForObject(param[2]),diseasesIdAndCountMap.get(2L)));
-					tempVOList.add(diseasesVO);
-				}
-				diseasesVOs.get(0).getDistCountForDengueList().addAll(tempVOList);
-			}
-			//get top mandals for Dengue.
-			diseasesIdList.clear();
-			diseasesIdList.add(2L);
-			List<Object[]> mandalCountForDengueList = departmentDiseasesInfoDAO.getTotLocationsDiseasesWiseCount(startDate,endDate,diseasesIdList,deptIdList,IConstants.MANDAL_LEVEL_SCOPE_ID);
-			if(mandalCountForDengueList != null && mandalCountForDengueList.size() > 0){
-				tempVOList = new ArrayList<DiseasesVO>();
-				for(Object[] param : mandalCountForDengueList){
-					diseasesVO = new DiseasesVO();
-					diseasesVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					diseasesVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					diseasesVO.setPercent(commonMethodsUtilService.calculatePercantage(commonMethodsUtilService.getLongValueForObject(param[2]),diseasesIdAndCountMap.get(2L)));
-					tempVOList.add(diseasesVO);
-				}
-				diseasesVOs.get(0).getMandalCountForDengueList().addAll(tempVOList);
-			}
+			//set today total
+			diseasesVOTemp = (DiseasesVO) setterAndGetterUtilService.getMatchedVOfromList(diseasesVOs, "id", "0");
+			diseasesVOTemp.setTodayCount(todayTotal);
 		}catch(Exception e){
 			LOG.error(" Exception occured in HealthMedicalAndFamilyWelfareService ,buildCaseCountDiseasesWise() ",e);
 		}
