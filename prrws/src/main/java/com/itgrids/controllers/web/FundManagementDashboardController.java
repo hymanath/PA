@@ -255,21 +255,31 @@ public class FundManagementDashboardController {
 			return locationFundDetailsVOList;
 		}
 		
-				@RequestMapping(value = "/getSchemeWiseOverviewDetails", method = RequestMethod.POST,
-				produces = MediaType.APPLICATION_JSON_VALUE,
-				consumes = MediaType.APPLICATION_JSON_VALUE)
-				  public @ResponseBody LocationFundDetailsVO getSchemeWiseOverviewDetails(@RequestBody InputVO inputVO)
-				  {		
-					LocationFundDetailsVO  returnVO = fundManagementDashboardService.getSchemeWiseOverviewDetails(inputVO);
-					return returnVO;
-				  }
-				
-				@RequestMapping(value="/getGovtGrantTypeDetails", method = RequestMethod.POST,
-				        produces = MediaType.APPLICATION_JSON_VALUE,
-				        consumes = MediaType.APPLICATION_JSON_VALUE)
-				        public @ResponseBody List<LocationFundDetailsVO> getGovtGrantTypeDetails(@RequestBody Map<String,Long> map){
-					    
-				             List<LocationFundDetailsVO>  govtSubProgramsList=fundManagementDashboardService.getGovtGrantTypeDetails(map.get("programId"), map.get("govtSchemesId"));
-				             return govtSubProgramsList;
-				        }
+		@RequestMapping(value = "/getSchemeWiseOverviewDetails", method = RequestMethod.POST,
+		produces = MediaType.APPLICATION_JSON_VALUE,
+		consumes = MediaType.APPLICATION_JSON_VALUE)
+		  public @ResponseBody LocationFundDetailsVO getSchemeWiseOverviewDetails(@RequestBody InputVO inputVO)
+		  {		
+			LocationFundDetailsVO  returnVO = fundManagementDashboardService.getSchemeWiseOverviewDetails(inputVO);
+			return returnVO;
+		  }
+		
+		@RequestMapping(value="/getGovtGrantTypeDetails", method = RequestMethod.POST,
+		produces = MediaType.APPLICATION_JSON_VALUE,
+		consumes = MediaType.APPLICATION_JSON_VALUE)
+		public @ResponseBody List<LocationFundDetailsVO> getGovtGrantTypeDetails(@RequestBody Map<String,Long> map){
+		
+		     List<LocationFundDetailsVO>  govtSubProgramsList=fundManagementDashboardService.getGovtGrantTypeDetails(map.get("programId"), map.get("govtSchemesId"));
+		     return govtSubProgramsList;
+		}
+		
+		@RequestMapping(value="/getGovtSchemsTypeDetails", method = RequestMethod.POST,
+		produces = MediaType.APPLICATION_JSON_VALUE,
+		consumes = MediaType.APPLICATION_JSON_VALUE)
+		public @ResponseBody List<LocationFundDetailsVO> getGovtSchemsTypeDetails(@RequestBody Map<String,Long> map){
+		
+		     List<LocationFundDetailsVO>  govtSubProgramsList=fundManagementDashboardService.getGovtSchemsTypeDetails(map.get("programId"), map.get("grantTypeId"));
+		     return govtSubProgramsList;
+		}
+
 }

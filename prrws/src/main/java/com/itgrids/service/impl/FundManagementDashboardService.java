@@ -2857,9 +2857,34 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 
  		  }catch(Exception e){
  		   // e.printStackTrace();
- 		    LOG.error(" Exception raised in getConstituencies (); ");
+ 		    LOG.error(" Exception raised in getGovtGrantTypeDetails (); ");
  		  }
  		return finalReturnList;  
  		}
+    
+    /*
+ 	 * Date : 02/08/2017
+ 	 * Author : Srishailam Pittala
+ 	 * @description : To get GovtSubProgramsDetails
+ 	 * @return  List<LocationFundDetailsVO>
+ 	 */
+    public List<LocationFundDetailsVO> getGovtSchemsTypeDetails(Long programId, Long grantTypeId){
+ 		  List<LocationFundDetailsVO> finalReturnList= null;
+ 		  try{
+ 			finalReturnList=new ArrayList<LocationFundDetailsVO>();
+ 		    List<Object[]> govtSubPrgrmObjs =grantTypeDAO.getGovtSchemsTypeDetails(programId,grantTypeId);
+ 		    if(govtSubPrgrmObjs != null && govtSubPrgrmObjs.size()>0 && !govtSubPrgrmObjs.isEmpty()){
+ 		    	for(Object[] Obj: govtSubPrgrmObjs){
+ 		    		LocationFundDetailsVO vo=new LocationFundDetailsVO();
+ 		    		vo.setId(commonMethodsUtilService.getLongValueForObject(Obj[0]));
+ 		    		vo.setName(commonMethodsUtilService.getStringValueForObject(Obj[1]));
+ 		    		finalReturnList.add(vo);
+ 		    	}
+ 		    }
+ 		  }catch(Exception e){
+ 		    LOG.error(" Exception raised in getGovtSchemsTypeDetails (); ");
+ 		  }
+ 		return finalReturnList;  
+ 	}
   
 }

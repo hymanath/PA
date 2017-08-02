@@ -256,15 +256,19 @@
 											<div class="col-sm-12 showHideStatePgramsCls m_top10" style="display:none;">
 												<div class="row">
 													<div class="col-sm-3">
+														<label>PROGRAMS</label>
 														<select class="form-control chosenSelect" id="programNamesState" >
 														</select>
 													</div>
 													<div class="col-sm-3">
-														<select class="form-control chosenSelect" id="subProgramNamesState" >
+														<label>SUB PROGRAMS</label>
+														<select class="form-control chosenSelect" id="grantTypeState" >
 														</select>
+														
 													</div>
 													<div class="col-sm-3">
-														<select class="form-control chosenSelect" id="grantTypeState" >
+														<label>SCHEMS</label>
+														<select class="form-control chosenSelect" id="subProgramNamesState" >
 														</select>
 													</div>
 												</div>
@@ -348,12 +352,13 @@
 											</div>
 											<div class="col-sm-4">
 												<label>SUB PROGRAMS</label>
-												<select class="form-control chosenSelect" id="subProgramNamesDistrict" >
+												<select class="form-control chosenSelect" id="grantTypeDistrict" >
 												</select>
+												
 											</div>
 											<div class="col-sm-4">
-												<label>GRANT TYPE</label>
-												<select class="form-control chosenSelect" id="grantTypeDistrict" >
+												<label>SCHEMS</label>
+												<select class="form-control chosenSelect" id="subProgramNamesDistrict" >
 												</select>
 											</div>
 										</div>
@@ -491,12 +496,13 @@
 										</div>
 										<div class="col-sm-3 showHideConstituencyPgramsCls" style="display:none;">
 											<label>SUB PROGRAMS</label>
-											<select class="form-control chosenSelect" id="subProgramNamesConst" >
+											<select class="form-control chosenSelect" id="grantTypeConst" >
 											</select>
+											
 										</div>
 										<div class="col-sm-3 showHideConstituencyPgramsCls" style="display:none;">
-											<label>GRANT TYPE</label>
-											<select class="form-control chosenSelect" id="grantTypeConst" >
+											<label>SCHEMS</label>
+											<select class="form-control chosenSelect" id="subProgramNamesConst" >
 											</select>
 										</div>
 										<div class="col-sm-3 constiLevelDistCls " >
@@ -641,12 +647,13 @@
 										</div>
 										<div class="col-sm-3 showHideMandalPgramsCls" style="display:none;">
 											<label>SUB PROGRAMS</label>
-											<select class="form-control chosenSelect" id="subProgramNamesMandal" >
+											<select class="form-control chosenSelect" id="grantTypeMandal" >
 											</select>
+											
 										</div>
 										<div class="col-sm-3 showHideMandalPgramsCls" style="display:none;">
-											<label>GRANT TYPE</label>
-											<select class="form-control chosenSelect" id="grantTypeMandal" >
+											<label>SCHEMS</label>
+											<select class="form-control chosenSelect" id="subProgramNamesMandal" >
 											</select>
 										</div>
 										<div class="col-sm-3 mandalLevelDistCls" >
@@ -799,12 +806,13 @@
 										</div>
 										<div class="col-sm-3 showHideVillagePgramsCls" style="display:none;">
 											<label>SUB PROGRAMS</label>
-											<select class="form-control chosenSelect" id="subProgramNamesVillage" >
+											<select class="form-control chosenSelect" id="grantTypeVillage" >
 											</select>
+											
 										</div>
 										<div class="col-sm-3 showHideVillagePgramsCls" style="display:none;">
-											<label>GRANT TYPE</label>
-											<select class="form-control chosenSelect" id="grantTypeVillage" >
+											<label>SCHEMS</label>
+											<select class="form-control chosenSelect" id="subProgramNamesVillage" >
 											</select>
 										</div>
 								
