@@ -847,7 +847,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 	
 	public String updateMeetingPoint(final Long minuteId,final String minuteText,final Long updatedBy,final Long partyMeetingId,
 			final Long levelId,final Long levelValue,final String isActionable,final Long statusId,
-			final Long stateId,final Long districtId,final Long constituencyId,final Long tehsilId,final Long panchayatId){
+			final Long stateId,final Long districtId,final Long constituencyId,final Long tehsilId,final Long panchayatId,final Long isGovtParty){
 			String updateStatusString="failed";
 		try {
 			LOG.info("Entered into updateMeetingPoint");
@@ -870,7 +870,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 						pmmh.setUpdatedById(pmm.getUpdatedBy().getUserId());
 						pmmh.setInsertedTime(pmm.getInsertedTime());
 						pmmh.setUpdatedTime(pmm.getUpdatedTime());
-												
+						pmmh.setMomAtrSourceTypeId(pmm.getMomAtrSourceTypeId());						
 						partyMeetingMinuteHistoryDAO.save(pmmh);
 						
 						UserAddress returnUA =null;
@@ -880,7 +880,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 						
 						Integer updateStatus =null;
 							updateStatus = partyMeetingMinuteDAO.updateMeetingPoint(minuteId,minuteText,updatedBy,new DateUtilService().getCurrentDateAndTime(),
-									levelId,levelValue,isActionable,statusId,returnUA);
+									levelId,levelValue,isActionable,statusId,returnUA,isGovtParty);
 						
 						
 						
@@ -906,6 +906,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 					pmm.setUpdatedById(updatedBy);
 					pmm.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 					pmm.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					pmm.setMomAtrSourceTypeId(isGovtParty != null && isGovtParty> 0l ? isGovtParty:null);
 					pmm.setIsDeleted("N");
 					
 					if(isActionable !=null && !isActionable.trim().isEmpty() && isActionable.trim().equalsIgnoreCase("Y")){
@@ -4210,7 +4211,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 		PMMinuteVO vo = null;
 	    try{
 	      
-	      //0.minuteId,1.minutePoint,2.isActionable,3.statusId,4.userAddress,5.partyMeetingId,6.locationLevel
+	      //0.minuteId,1.minutePoint,2.isActionable,3.statusId,4.userAddress,5.partyMeetingId,6.locationLevel,7-momAtrSourceTypeId
 	      List<Object[]> minuteObjList=partyMeetingMinuteDAO.getPartyMeetingMinuteRetrieveDetails(minuteId);
 	      
 	      if(minuteObjList !=null && minuteObjList.size()>0){
@@ -4219,6 +4220,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 	    		  vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 	    		  vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 	    		  vo.setActionType(commonMethodsUtilService.getStringValueForObject(objects[2]));
+	    		  vo.setIsGovtParty(objects[7] != null && (Long)objects[7] > 0l ? (Long)objects[7]:0l);
 	    		  vo.setStatusId(commonMethodsUtilService.getLongValueForObject(objects[3]));
 	    		  vo.setUserAddressId(commonMethodsUtilService.getLongValueForObject(objects[4]));
 	    		  vo.setPartyMeetingId(commonMethodsUtilService.getLongValueForObject(objects[5]));

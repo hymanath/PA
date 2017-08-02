@@ -46,6 +46,7 @@ public class PMMinuteVO implements Serializable{
 	private List<IdNameVO> tourTypeList = new ArrayList<IdNameVO>(0);
 	
 	private Long count=0l;
+	private Long isGovtParty=0l;
 	
 	public Long getWardId() {
 		return wardId;
@@ -232,6 +233,12 @@ public class PMMinuteVO implements Serializable{
 	}
 	public void setCount(Long count) {
 		this.count = count;
+	}
+	public Long getIsGovtParty() {
+		return isGovtParty;
+	}
+	public void setIsGovtParty(Long isGovtParty) {
+		this.isGovtParty = isGovtParty;
 	}
 	
 }
