@@ -787,6 +787,7 @@ getUserAccessLocationDetails();
    //$("#mainheading").html(" PARTY MEETINGS - MOM & ATR ");
 </script>
 <script>
+var jsonGlob = "";
 	function getTheMeetingLevelDetails(){
 		$("#searchDataImgForMeetingsList").show();
 		var jsObj =	{}
@@ -1068,7 +1069,7 @@ getUserAccessLocationDetails();
 						startDate:startDate,
 						endDate:endDate
 					}
-					
+		jsonGlob = jsObj;	
 		$.ajax(
 		{
 			type: "POST",
@@ -1082,6 +1083,47 @@ getUserAccessLocationDetails();
 			var str='';
 			if(result!=null && result.length>0){
 				str+='<h4><b>'+result[0].meetingType+'</b></h4>';
+				str+='<div class="table-responsive">'
+				str+='<table class="m_top20 table table-bordered m_top10 table-condensed">'
+				str+='<thead>';
+				str+='<th>Total Meeting</th>';				
+				str+='<th>MOM Files</th>';
+				str+='<th>MOM Text</th>';
+				str+='<th>ATR Files</th>';
+				str+='<th>ATR Text</th>';				
+				str+='</thead>';
+				str+='<tbody>';
+				str+='<tr>'
+				str+='<td>'+result.length+'</td>';
+				var momFiles=0,momText=0,atrFiles=0,atrText=0;
+				for(var i in result){
+					if(result[i].docTxtInfo != null){
+						momFiles = result[i].docTxtInfo.momFilesCount != null && result[i].docTxtInfo.momFilesCount > 0 ? momFiles+result[i].docTxtInfo.momFilesCount : momFiles;
+						momText = result[i].docTxtInfo.momPointsCount != null && result[i].docTxtInfo.momPointsCount > 0 ? momText+result[i].docTxtInfo.momPointsCount : momText;
+						atrFiles = result[i].docTxtInfo.atrFilesCount != null && result[i].docTxtInfo.atrFilesCount > 0 ? atrFiles+result[i].docTxtInfo.atrFilesCount : atrFiles;
+						atrText = result[i].docTxtInfo.atrTextCount != null && result[i].docTxtInfo.atrTextCount > 0 ? atrText+result[i].docTxtInfo.atrTextCount : atrText;
+					}					
+				}
+				str+='<td attr_type="MINUTE"';
+				if(momFiles > 0)
+					str+=' class="allMomAtrCountsCls"';
+				str+='>'+momFiles+'</td>';
+				str+='<td attr_type="momText"';
+				if(momText > 0)
+					str+=' class="allMomAtrCountsCls"';
+				str+='>'+momText+'</td>';
+				str+='<td attr_type="ATR"';
+				if(atrFiles > 0)
+					str+=' class="allMomAtrCountsCls"';
+				str+='>'+atrFiles+'</td>';
+				str+='<td attr_type="atrText"';
+				if(atrText > 0)
+					str+=' class="allMomAtrCountsCls"';
+				str+='>'+atrText+'</td>';
+				str+='</tr>'
+				str+='</tbody>';
+				str+='</table>'
+				str+='</div>';
 				str+='<div class="table-responsive">';
 				str+='<table class="m_top20 table table-bordered m_top10 table-condensed" id="meetingTableId">';
 				/* str+='<thead class="bg_d">';
@@ -2182,6 +2224,21 @@ function getVillagesForDistrictId(){
 			}
 		});
  }
+	
+	$(document).on("click",".allMomAtrCountsCls",function(){
+		var type = $(this).attr("attr_type");
+		jsonGlob["type"]=$(this).attr("attr_type");
+		console.log(jsonGlob);
+		/* $.ajax({
+			type:"POST",
+			url :"getAllMomAtrClickDetailsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsonGlob)}
+		}).done(function(result){
+			
+		}); */
+	});
+	
  function meetingLevelWiseHideShow(){
 	 if($("#meetingLocationLevel").val()== 2 ){
 				$("#stateShowId").show();
@@ -2249,6 +2306,7 @@ function getVillagesForDistrictId(){
 			}
 		
 }
+		
 </script>
 
 </body>
