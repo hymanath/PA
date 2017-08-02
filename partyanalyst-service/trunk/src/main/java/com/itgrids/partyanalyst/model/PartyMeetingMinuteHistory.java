@@ -40,6 +40,7 @@ public class PartyMeetingMinuteHistory extends BaseModel implements Serializable
 	private Long partyMeetingId;
 	private Long insertedById;
 	private Long updatedById;
+	private Long momAtrSourceTypeId;
 	
 	public PartyMeetingMinuteHistory(){}
 
@@ -165,4 +166,12 @@ public class PartyMeetingMinuteHistory extends BaseModel implements Serializable
 		this.updatedById = updatedById;
 	}
 
+	@Column(name="mom_atr_source_type_id")
+	public Long getMomAtrSourceTypeId() {
+		return momAtrSourceTypeId;
+	}
+
+	public void setMomAtrSourceTypeId(Long momAtrSourceTypeId) {
+		this.momAtrSourceTypeId = momAtrSourceTypeId;
+	}
 }

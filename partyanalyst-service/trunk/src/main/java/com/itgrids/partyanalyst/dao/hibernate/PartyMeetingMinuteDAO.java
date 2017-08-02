@@ -54,20 +54,24 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 	}
 	
 	public Integer updateMeetingPoint(Long minuteId,String minuteText,Long updatedBy,Date updateTime,Long levelId,Long levelValue,String isActionable,Long statusId,
-			UserAddress userAddress){
+			UserAddress userAddress,Long isGovtParty){
 		
 		StringBuilder query = new StringBuilder();
 		query.append("update PartyMeetingMinute model set model.minutePoint = :minuteText,model.updatedBy.userId=:updatedBy,model.updatedTime=:updateTime" +
 				",model.isActionable =:isActionable,model.locationLevel=:levelId,model.locationValue=:levelValue,model.statusId=:statusId," +
-				"model.userAddressId=:userAddressId " +
-				" where model.partyMeetingMinuteId = :minuteId");
+				"model.userAddressId=:userAddressId");
+		if(isGovtParty != null && isGovtParty > 0l){
+			query.append(",model.momAtrSourceTypeId=:isGovtParty ");
+		}
+		
+		query.append(" where model.partyMeetingMinuteId = :minuteId");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter("minuteText", minuteText);
 		queryObject.setParameter("updatedBy", updatedBy);
 		queryObject.setParameter("updateTime", updateTime);
 		queryObject.setParameter("minuteId", minuteId);
-		
+		queryObject.setParameter("isGovtParty", isGovtParty);
 		queryObject.setParameter("isActionable", isActionable);
 		if(levelId !=null && levelId>0l){
 			queryObject.setParameter("levelId", levelId);
@@ -139,7 +143,7 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" SELECT model.partyMeetingMinuteId,model.minutePoint,model.isActionable,model.statusId," +
-				" model.userAddressId,model.partyMeetingId,model.locationLevel " +
+				" model.userAddressId,model.partyMeetingId,model.locationLevel,model.momAtrSourceTypeId " +
 				" FROM PartyMeetingMinute model " +
 				" WHERE model.isDeleted = 'N'" +
 				" and model.partyMeetingMinuteId =:minuteId ");

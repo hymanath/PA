@@ -48,6 +48,7 @@ public class PartyMeetingMinute extends BaseModel implements Serializable{
 	private Long userAddressId;
 	
 	private PartyMeetingMinuteStatus partyMeetingMinuteStatus;
+	private Long momAtrSourceTypeId;
 	
 	
 	public PartyMeetingMinute(){}
@@ -231,9 +232,13 @@ public class PartyMeetingMinute extends BaseModel implements Serializable{
 	public void setUserAddressId(Long userAddressId) {
 		this.userAddressId = userAddressId;
 	}
-	
-	
-	
-	
-	
+
+	@Column(name="mom_atr_source_type_id")
+	public Long getMomAtrSourceTypeId() {
+		return momAtrSourceTypeId;
+	}
+
+	public void setMomAtrSourceTypeId(Long momAtrSourceTypeId) {
+		this.momAtrSourceTypeId = momAtrSourceTypeId;
+	}
 }
