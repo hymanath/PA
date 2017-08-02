@@ -2469,7 +2469,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 		PartyMeetingVO vo = new PartyMeetingVO();
 		try {
 			LOG.info("Entered into getSummaryForAMeeting service");
-			List<String> temp = new ArrayList<String>();
+			List<String> temp = new ArrayList<String>(0);
 			
 			List<Long> valuesList = new ArrayList<Long>();
 			if(accessType !=null && accessType.trim().equalsIgnoreCase("MP")){
@@ -2486,7 +2486,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				if(qryrslt != null && qryrslt.size()>0){
 					for (Object[] objects : qryrslt) {
 						if(objects[2]!=null){
-							temp.add(objects[2].toString());
+							temp.add(objects[2].toString()+(objects[10] != null && !objects[10].toString().trim().isEmpty()?" - "+objects[10].toString().trim():""));
 							vo.setSubName(objects[9].toString());
 						}
 					}

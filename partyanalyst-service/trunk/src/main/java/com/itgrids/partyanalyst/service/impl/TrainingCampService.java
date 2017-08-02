@@ -3671,11 +3671,11 @@ class TrainingCampService implements ITrainingCampService{
 			Date startDate=sdf.parse(startDateString);
 			Date endDate=sdf.parse(endDateString);
 			
-			List<Long> mandalList=new ArrayList<Long>();
-			List<Long> townList=new ArrayList<Long>();
-			List<Long> divisonList=new ArrayList<Long>();
-			List<Long> villageList=new ArrayList<Long>();
-			List<Long> wardList=new ArrayList<Long>();
+			List<Long> mandalList=new ArrayList<Long>(0);
+			List<Long> townList=new ArrayList<Long>(0);
+			List<Long> divisonList=new ArrayList<Long>(0);
+			List<Long> villageList=new ArrayList<Long>(0);
+			List<Long> wardList=new ArrayList<Long>(0);
 			
 			List<Object[]> meetings = new ArrayList<Object[]>(0);
 			
@@ -3776,23 +3776,23 @@ class TrainingCampService implements ITrainingCampService{
 			
 			
 			
-			List<Long> level1List = new ArrayList<Long>();
-			List<Long> level2List = new ArrayList<Long>();
-			List<Long> level3List = new ArrayList<Long>();
-			List<Long> level4List = new ArrayList<Long>();
-			List<Long> level5List = new ArrayList<Long>();
-			List<Long> level6List = new ArrayList<Long>();
-			List<Long> level7List = new ArrayList<Long>();
-			List<Long> level8List = new ArrayList<Long>();
+			List<Long> level1List = new ArrayList<Long>(0);
+			List<Long> level2List = new ArrayList<Long>(0);
+			List<Long> level3List = new ArrayList<Long>(0);
+			List<Long> level4List = new ArrayList<Long>(0);
+			List<Long> level5List = new ArrayList<Long>(0);
+			List<Long> level6List = new ArrayList<Long>(0);
+			List<Long> level7List = new ArrayList<Long>(0);
+			List<Long> level8List = new ArrayList<Long>(0);
 						
-			Map<Long,String> level1Map = new HashMap<Long,String>();
-			Map<Long,String> level2Map = new HashMap<Long,String>();
-			Map<Long,String> level3Map = new HashMap<Long,String>();
-			Map<Long,String> level4Map = new HashMap<Long,String>();
-			Map<Long,String> level5Map = new HashMap<Long,String>();
-			Map<Long,String> level6Map = new HashMap<Long,String>();
-			Map<Long,String> level7Map = new HashMap<Long,String>();
-			Map<Long,String> level8Map = new HashMap<Long,String>();
+			Map<Long,String> level1Map = new HashMap<Long,String>(0);
+			Map<Long,String> level2Map = new HashMap<Long,String>(0);
+			Map<Long,String> level3Map = new HashMap<Long,String>(0);
+			Map<Long,String> level4Map = new HashMap<Long,String>(0);
+			Map<Long,String> level5Map = new HashMap<Long,String>(0);
+			Map<Long,String> level6Map = new HashMap<Long,String>(0);
+			Map<Long,String> level7Map = new HashMap<Long,String>(0);
+			Map<Long,String> level8Map = new HashMap<Long,String>(0);
 						
 			if(meetings!=null && meetings.size()>0){
 				for (Object[] objects : meetings) {
@@ -3899,14 +3899,14 @@ class TrainingCampService implements ITrainingCampService{
 				}
 			}
 			
-			List<Long> partyMeetingIdsList = new ArrayList<Long>();
+			List<Long> partyMeetingIdsList = new ArrayList<Long>(0);
 			if(meetings!=null && meetings.size()>0){
 				for (Object[] objects : meetings) {
 					partyMeetingIdsList.add((Long)objects[9]);
 				}
 			}
 			
-			List<PartyMeetingSummaryVO> momAndAtrRsltLst = new ArrayList<PartyMeetingSummaryVO>();
+			List<PartyMeetingSummaryVO> momAndAtrRsltLst = new ArrayList<PartyMeetingSummaryVO>(0);
 			if(partyMeetingIdsList!=null && partyMeetingIdsList.size()>0){
 				momAndAtrRsltLst = partyMeetingService.getAtrAndMOMOfMeetings(partyMeetingIdsList);
 			}
