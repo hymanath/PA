@@ -1224,7 +1224,33 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   }
 	   
 	Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_details(:programId,:startDate,:endDate,:enrollemntYrId,:basicCommitteeId,:committeeLvlIds,:locationScopeId,:levelVals)")
-   			.setParameter("programId", programId).setParameter("startDate", startDate).setParameter("endDate", endDate).setParameter("enrollemntYrId", committeeEnrollmetYrId).setParameter("basicCommitteeId", basicCommitteeId)
+			.addScalar("tdp_cadre_id", Hibernate.LONG)
+			.addScalar("date(A.attended_time)", Hibernate.STRING)
+			.addScalar("training_camp_batch_id", Hibernate.LONG)
+			.addScalar("tdp_roles_id", Hibernate.LONG)
+			.addScalar("tdp_committee_level_id", Hibernate.LONG)
+			.addScalar("state_id", Hibernate.LONG)
+			.addScalar("scope_value", Hibernate.LONG)
+			.addScalar("Attended_Status", Hibernate.STRING)
+			.addScalar("training_camp_program_id", Hibernate.LONG)
+			.addScalar("state_id", Hibernate.LONG)
+			.addScalar("state_name", Hibernate.STRING)
+			.addScalar("district_id", Hibernate.LONG)
+			.addScalar("district_name", Hibernate.STRING)
+			.addScalar("parliament_constituency_id", Hibernate.LONG)
+			.addScalar("parliament_constituency_name", Hibernate.STRING)
+			.addScalar("constituency_id", Hibernate.LONG)
+			.addScalar("constituency", Hibernate.STRING)
+			.addScalar("tehsil_id", Hibernate.LONG)
+			.addScalar("tehsil_name", Hibernate.STRING)
+			.addScalar("local_election_body", Hibernate.LONG)
+			.addScalar("town", Hibernate.STRING)
+			.addScalar("panchayat_id", Hibernate.LONG)
+			.addScalar("panchayat_name", Hibernate.STRING)
+			.addScalar("ward_id", Hibernate.LONG)
+			.addScalar("ward_name", Hibernate.STRING);
+	
+			query.setParameter("programId", programId).setParameter("startDate", startDate).setParameter("endDate", endDate).setParameter("enrollemntYrId", committeeEnrollmetYrId).setParameter("basicCommitteeId", basicCommitteeId)
    			.setParameter("committeeLvlIds", committeeLvlIds).setParameter("locationScopeId", locationScopeId).setParameter("levelVals", loctionVals);
    	
    	return query.list();

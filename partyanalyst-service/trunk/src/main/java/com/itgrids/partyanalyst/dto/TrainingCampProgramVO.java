@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TrainingCampProgramVO {
 
@@ -27,16 +29,57 @@ public class TrainingCampProgramVO {
 	private String lastUpdatedTime;
 	private Long InviteeAttended = 0l;
 	private Long nonInviteeAttended=0l;
+	private Long only1dayCount =0L;
+	private Long only2daysCount =0L;
+	private Long only3daysCount =0L;
 	private Long othersCount = 0l;
-	  
+	 
+	private Set<Long> inviteesIds = new HashSet<Long>(0);
+	private Set<Long> nonInviteesIds = new HashSet<Long>(0);
+	private Set<Long> othersIds = new HashSet<Long>(0);
 	
+	public Set<Long> getInviteesIds() {
+		return inviteesIds;
+	}
+	public void setInviteesIds(Set<Long> inviteesIds) {
+		this.inviteesIds = inviteesIds;
+	}
+	public Set<Long> getNonInviteesIds() {
+		return nonInviteesIds;
+	}
+	public void setNonInviteesIds(Set<Long> nonInviteesIds) {
+		this.nonInviteesIds = nonInviteesIds;
+	}
+	public Set<Long> getOthersIds() {
+		return othersIds;
+	}
+	public void setOthersIds(Set<Long> othersIds) {
+		this.othersIds = othersIds;
+	}
 	public Long getOthersCount() {
 	    return othersCount;
 	  }
 	  public void setOthersCount(Long othersCount) {
 	    this.othersCount = othersCount;
 	  }
-	  
+	   public Long getOnly1dayCount() {
+	    return only1dayCount;
+	  }
+	  public void setOnly1dayCount(Long only1dayCount) {
+	    this.only1dayCount = only1dayCount;
+	  }
+	  public Long getOnly2daysCount() {
+	    return only2daysCount;
+	  }
+	  public void setOnly2daysCount(Long only2daysCount) {
+	    this.only2daysCount = only2daysCount;
+	  }
+	  public Long getOnly3daysCount() {
+	    return only3daysCount;
+	  }
+	  public void setOnly3daysCount(Long only3daysCount) {
+	    this.only3daysCount = only3daysCount;
+	  }
  	public Long getId() {
 		return id;
 	}
