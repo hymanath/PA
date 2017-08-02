@@ -218,7 +218,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			
 			status = partyMeetingService.updateMeetingPoint(minuteId,minuteText,loggedUser,jObj.getLong("partyMeetingId"),jObj.getLong("levelId"),jObj.getLong("levelValue"),
 					jObj.getString("isActionable"),jObj.getLong("statusId"),
-					jObj.getLong("stateId"),jObj.getLong("districtId"),jObj.getLong("constituencyId"),jObj.getLong("tehsilId"),jObj.getLong("panchayatId"));
+					jObj.getLong("stateId"),jObj.getLong("districtId"),jObj.getLong("constituencyId"),jObj.getLong("tehsilId"),jObj.getLong("panchayatId"),jObj.getLong("isGovtParty"));
 		} catch (Exception e) {
 			LOG.error("Exception raise at updateMeetingPoint", e);
 		}

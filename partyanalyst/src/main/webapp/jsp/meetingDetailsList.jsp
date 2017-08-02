@@ -370,6 +370,14 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 						<option>Select Village/Ward</option>
 					</select>
 				</div>
+				<div class="col-md-4 col-xs-12 col-sm-6">
+					<label>MOM Source Type</label>
+					<select class="form-control" id="isGovtPartySelId">
+						<option value="0">Select Source Type</option>
+						<option value="1">Govt</option>
+						<option value="2">Party</option>
+					</select>
+				</div>
 			</div>
 		</div>
 	  </div>
@@ -552,7 +560,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#constituencyId").val("");
 			$("#manTowDivId").val("");
 			$("#villWardDivId").val("");
-			
+			$("#isGovtPartySelId").val(0);
 			$("#saveBtnMeetMin").html("Save");
 			
 	 }); 	
@@ -1095,7 +1103,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			panchayatId:panchayatId,
 			isActionable:isActionable,
 			levelId:levelId,
-			levelValue:levelValue
+			levelValue:levelValue,
+			isGovtParty:$("#isGovtPartySelId").val()
 		}
 		$("#loadingImgMinitSaveId").show();
 		$.ajax({
@@ -2032,6 +2041,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					
 					if(res.name != null && res.name.trim()!="")
 						$("#meetRaised").val(res.name);
+					
+					if(res.isGovtParty != null)
+						$("#isGovtPartySelId").val(res.isGovtParty);
+					else
+						$("#isGovtPartySelId").val(0);
 					
 					if(res.actionType =='N'){
 						$('#meetingTypeGeneralRadioId').prop('checked', true);
