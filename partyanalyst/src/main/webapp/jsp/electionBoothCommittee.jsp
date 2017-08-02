@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Committee Management</title>
-	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
     <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
@@ -17,6 +17,7 @@
 	<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
 	<link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
 	<link href="Assets/css/boothIncharge.less" rel="stylesheet" type="text/less">
+	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<script src="https://use.fontawesome.com/07d3416f74.js"></script>
 	<script src="Assets/js/less.js"></script>
    	
@@ -92,9 +93,12 @@
 									<select onchange="populateDefaultValue(1);getBoothInchargeRoles();gettingBoothInchargeRoleDetails();" class="form-control" id="committeeLocationId1" ><option value="0">Select Booth </option></select >
 								</div>		
 																
-								<div class="col-sm-12 m_top20" >
+								<div class="col-sm-8 m_top20" >
 									<div class="panel-title" id='cadreSerialNoWiseId'></div>
-										<div  id="cadreDetailsDiv1"></div>
+									<div class="scrollDiv">
+										<div  id="cadreDetailsDiv1">
+										</div>
+									</div>	
 									</div>
 								</div>
 								<div class="row">
@@ -257,12 +261,12 @@
 <link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/> 
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="Assets/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/newmultiselect/chosen.jquery.js" type="text/javascript"></script>
-<script src="Assets/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
-<script src="Assets/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/cadreCommittee/electionBoothCommittee.js"></script>
 <script type="text/javascript">
  validateSearchType('3');
