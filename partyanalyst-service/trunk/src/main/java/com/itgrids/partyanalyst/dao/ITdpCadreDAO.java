@@ -539,4 +539,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<TdpCadre> isMembershipIdVAlidOrNotValid(String membershipNo);
 	  public List<TdpCadre> isMebershipIdValid(String membershipId);
 	  public List<Object[]> isVoterDeleted(Set<Long> tdpCadreIds);
+	  public List<Object[]> getCadreBasicDetailsByVoterIds(Long constituencyId,Long publicationDateId,Long  boothId,String type);
 } 

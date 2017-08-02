@@ -22246,10 +22246,11 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		    	
 		    	BoothIncharge boothIncharge = boothInchargeDAO.getExistingMember(tdpCadreId,"addOption");
 				if(boothIncharge != null){
-					boothIncharge.setIsActive("Y");
-					boothIncharge.setUpdatedBy(userId);
 					boothIncharge.setBoothInchargeSerialNoRangeId(1L);
+					boothIncharge.setBoothInchargeRoleConditionMappingId(boothInchrgRoleId);
+					boothIncharge.setUpdatedBy(userId);
 					boothIncharge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					boothIncharge.setIsActive("Y");
 					boothIncharge.setIsDeleted("N");
 					boothInchargeDAO.save(boothIncharge);
 				}else{
@@ -22566,7 +22567,6 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			 boothIncharge.setUpdatedBy(userId);
 			 boothIncharge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 			 boothInchargeDAO.save(boothIncharge);
-			 
 			 status.setResultCode(0);
 		  }
 	}catch(Exception e){
@@ -22649,5 +22649,88 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		return locationsList;
 	}
 
+ public CadreCommitteeVO getCadreVoterBthSerilNo(Long locationId,String houseNo,String gender){
+	   List<Object[]> votersList = null;
+	  CadreCommitteeVO returnVO = new CadreCommitteeVO();
+	 try{
+			 Long boothId =houseNo != null && houseNo.trim().length()>0?Long.valueOf(houseNo):0L;
+			 List<Long> serialNoIdLists=new ArrayList<Long>();
+			 List<Long> boothIdsList = new ArrayList<Long>(0);
+			 Map<Long,Long> voterSerialNoMap = new HashMap<Long, Long>(0);
+			 boothIdsList.add(boothId);
+			
+			votersList = boothDAO.getVoterDetailsByBoothId(boothId);
+			if(commonMethodsUtilService.isListOrSetValid(votersList)){
+				for (Object[] param : votersList) {
+					voterSerialNoMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			
+			Long serialNoId = 0L;
+			List<Object[]> tdpcadreIdObjsList = tdpCadreDAO.getCadreBasicDetailsByVoterIds(locationId, IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID,boothId,"OwnVoterId");
+			List<Object[]> familyTdpcadreIdObjsList = tdpCadreDAO.getCadreBasicDetailsByVoterIds(locationId, IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID,boothId,"FamilyVoterId");
+			
+			if(!commonMethodsUtilService.isListOrSetValid(tdpcadreIdObjsList))
+				tdpcadreIdObjsList = new ArrayList<Object[]>(0);
+			if(commonMethodsUtilService.isListOrSetValid(familyTdpcadreIdObjsList))	
+				tdpcadreIdObjsList.addAll(familyTdpcadreIdObjsList);
+			
+			if(tdpcadreIdObjsList != null && tdpcadreIdObjsList.size() >0){
+				for(Object[] obj: tdpcadreIdObjsList){
+					Long voterId = commonMethodsUtilService.getLongValueForObject(obj[5]);
+					if(voterId==null || voterId.longValue()==0L)
+						 voterId = commonMethodsUtilService.getLongValueForObject(obj[6]);
+					serialNoId = commonMethodsUtilService.getLongValueForObject(obj[4]);
+					if(voterSerialNoMap.keySet().contains(voterId))
+						serialNoIdLists.add(serialNoId);
+				}
+			}
+			
+			List<CadreCommitteeVO> rangeList  = new ArrayList<CadreCommitteeVO>();
+			if(votersList !=null && votersList.size() > 0){
+					int sizeList = (int) votersList.size() / 100;
+			
+					String valueSize =String.valueOf(votersList.size());
+					Integer valueSizeVal=valueSize.length();
+					Integer lenghLstIndx=valueSizeVal-2;
+					String lstTwodigit=valueSize.substring(lenghLstIndx, valueSizeVal);
+					Integer integerVal =Integer.parseInt(lstTwodigit);
+					Integer remainder=100-integerVal;
+					String cnvrtedBfrStr=String.valueOf(sizeList)+"00";
+			Integer cnvrtedBfrVal=Integer.parseInt(cnvrtedBfrStr);
+			int cnvrtedAftVal=cnvrtedBfrVal+integerVal+remainder;
+			
+			int rangeCount = (int) cnvrtedAftVal / 100;
+			for(Long i=1l ; i<= rangeCount ; i++){
+				String startRange =i+"00";
+			Long maxRange=Long.parseLong(startRange);
+			Long minRange =Long.parseLong(startRange)-99;
+			
+			String finalRange=minRange+" - "+maxRange;
+						CadreCommitteeVO cadreCommetteeVO=new CadreCommitteeVO();
+						cadreCommetteeVO.setMinRange(minRange);
+						cadreCommetteeVO.setMaxRange(maxRange);
+						cadreCommetteeVO.setFinalRangeStr(finalRange);
+						rangeList.add(cadreCommetteeVO);
+					}
+					if(commonMethodsUtilService.isListOrSetValid(rangeList)){
+						for (Long id : voterSerialNoMap.keySet()) {
+							Long serialNo = voterSerialNoMap.get(id);
+							if(serialNoIdLists.contains(serialNo)){
+								for (CadreCommitteeVO rangeVO : rangeList) {
+									if(serialNo.longValue()>=rangeVO.getMinRange() && serialNo.longValue()<=rangeVO.getMaxRange()){
+										rangeVO.setTotalCount(rangeVO.getTotalCount().longValue()+1L);
+									}
+								}
+							}
+						}
+					}
+				}
+			   returnVO.getCasteList().addAll(rangeList);
+	 }catch(Exception e){
+		 LOG.error("Exception raised in CadreCommitteeService of getCadreVoterBthSerilNo", e);
+	 }
+		return returnVO;
+ }
  
 }

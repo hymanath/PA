@@ -61,7 +61,17 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String isDeletedVoter="";
 	private Long cadreVoterId;
 	private String isDuplicate="";
+	private Long minRange;
+	private Long maxRange;
+	private String finalRangeStr;
+	private Long totalCount =0L;
 	
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
 	public String getIsDuplicate() {
 		return isDuplicate;
 	}
@@ -600,6 +610,24 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	}
 	public void setIsDeletedVoter(String isDeletedVoter) {
 		this.isDeletedVoter = isDeletedVoter;
+	}
+	public Long getMinRange() {
+		return minRange;
+	}
+	public void setMinRange(Long minRange) {
+		this.minRange = minRange;
+	}
+	public Long getMaxRange() {
+		return maxRange;
+	}
+	public void setMaxRange(Long maxRange) {
+		this.maxRange = maxRange;
+	}
+	public String getFinalRangeStr() {
+		return finalRangeStr;
+	}
+	public void setFinalRangeStr(String finalRangeStr) {
+		this.finalRangeStr = finalRangeStr;
 	}
 	
 	
