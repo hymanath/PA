@@ -40,4 +40,5 @@ public interface IFundManagementDashboardService {
 	 public LocationFundDetailsVO getSchemeWiseOverviewDetails(InputVO inputVO);
 	public List<LocationFundDetailsVO> getAllSubLocationsOnsuperLocation(InputVO inputVO);
 	public List<LocationFundDetailsVO> getGovtGrantTypeDetails(Long programId,Long govtSchemesId);
+	public List<LocationFundDetailsVO> getGovtSchemsTypeDetails(Long programId, Long grantTypeId);
 }

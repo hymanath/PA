@@ -41,4 +41,22 @@ public class GrantTypeDAO extends GenericDaoHibernate<GrantType, Long> implement
 		 
 		return query.list();	  
 	}
+	
+	public List<Object[]> getGovtSchemsTypeDetails(Long programId,Long grantTypeId){
+		
+		StringBuilder sb = new StringBuilder();
+		 sb.append(" select distinct model.govtScheme.govtSchemeId,model.govtScheme.schemeName from FundSanction model  where isDeleted= 'N' ");
+		 if (grantTypeId != null && grantTypeId.longValue() > 0L)
+			 sb.append(" and model.grantType.grantTypeId =:grantTypeId ");
+		 if (programId != null && programId.longValue() > 0L)
+			 sb.append(" and model.subProgramId =:programId ");
+		 Query query = getSession().createQuery(sb.toString());
+		 if (grantTypeId != null && grantTypeId.longValue() > 0L)
+			 query.setParameter("grantTypeId",grantTypeId);
+		 if (programId.longValue() > 0L)
+			 query.setParameter("programId",programId);
+		 
+		return query.list();	  
+	}
+
 }
