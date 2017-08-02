@@ -6627,7 +6627,7 @@ public List<IdNameVO> getStateLevelCampAttendedDetailsDyaWise(
 						totalCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),memCnt + 1);
 
 					}
-					IdNameVO dayVO = getMatchVOList(idNameVO.getIdnameList(), memattendedforBatch);
+					IdNameVO dayVO = getTrainingsMatchVOList(idNameVO.getIdnameList(), memattendedforBatch);
 					if (memCnt == null && dayVO != null) {
 						if (inviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(param[3])) && 
 								 commonMethodsUtilService.getLongValueForObject(param[4])!=0l) {
@@ -6716,7 +6716,7 @@ public TrainingCampProgramVO getMatchVO(
 	return null;
 }
 
-public IdNameVO getMatchVOList(List<IdNameVO> returnList, Long dayId) {
+public IdNameVO getTrainingsMatchVOList(List<IdNameVO> returnList, Long dayId) {
 	if (returnList == null)
 		return null;
 	for (IdNameVO dayVO : returnList) {
