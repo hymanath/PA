@@ -102,7 +102,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 			 queryStr.append(" and model.selfAppraisalCandidateId=:selfAppraisalCandidateId");  
 		   }
 		   if(candiateIds != null && candiateIds.size() > 0){
-			   queryStr.append(" and model.selfAppraisalCandidateId.selfAppraisalToursMonthId in (:candiateIds)");    
+			   queryStr.append(" and model.selfAppraisalCandidateId in (:candiateIds)");    
 		   }
 		   if(type.equalsIgnoreCase("tourCategory")){
 			   queryStr.append(" and model.tourTypeId not in ("+IConstants.GOVT_TOUR_TYPE_ID+")");
