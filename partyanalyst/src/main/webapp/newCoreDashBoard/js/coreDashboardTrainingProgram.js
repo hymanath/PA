@@ -756,7 +756,7 @@ function buildStateLevelCampAttendedDetails(result){
 			str+='<tbody>';
 				str+='<tr>';
 					str+='<td>';
-						str+='<p class="text-muted text-capitalize">eligible</p>';
+						str+='<p class="text-muted text-capitalize">Days</p>';
 						//str+='<p class="responsiveFont">'+result[i].count+'</p>';
 						str+='<p class="responsiveFont">-</p>';
 					str+='</td>';
@@ -1726,7 +1726,7 @@ function buildTrainingProgramRslt(result){
 		              userTypeId : userTypeId,
 					  activityMemberId:activityMemberId,
 					  stateId : globalStateId,
-					  dateStr : dateStr,
+					  dateStr : "01/01/2000",
 					  enrollmentYearIdsList :enrollmentYrIds,
 					  programIdArr:programIdArr
 				  }
@@ -1839,24 +1839,35 @@ function buildTrainingProgramRslt(result){
 		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 			str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations&nbsp&nbsp('+selectedUserName+" - "+userType+')</span></b>';
 		str+='</div>';
-	   str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
+	   str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+	   str+='<table class="table tableCumulative">';
+	   str+='<tr>';
+	   str+='<td></td>';
 	  if(userTypeId!= null && userTypeId==3 || userTypeId==2){
-		str+='<p class="text-capital">districts<span style="margin-left:200px">Attended Percentage</span></p>';  
+		//str+='<p class="text-capital">districts<span style="display:inline-block">Attended Percentage</span><span style="display:inline-block">1 DAY</span><span style="display:inline-block">2 Days</span><span style="display:inline-block">3 Days</span></p>'; 
+		str+='<td style="text-transform:uppercase">District</td>';
 		resultListFirst = result.districtList;
 		resultListSecond = result.constituencyList;
 	  }
 	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6 || userTypeId==12 || userTypeId==14){
-		 str+='<p class="text-capital">Constituencies<span style="margin-left:140px">Attended Percentage</span></p>';  
+		 //str+='<p class="text-capital">Constituencies<span style="margin-left:140px">Attended Percentage</span></p>';  
+		 str+='<td style="text-transform:uppercase">Constituencies</td>';
 		resultListFirst = result.constituencyList;
 		resultListSecond = result.mandalList;  
 	  }
-	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
-		 str+='<p class="text-capital">Mandal/Town/Division<span style="margin-left:100px">Attended Percentage</span></p>';  
+	  if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
+		 //str+='<p class="text-capital">Mandal/Town/Division<span style="margin-left:100px">Attended Percentage</span></p>';  
+		 str+='<td style="text-transform:uppercase">Mandal/Town/Division</td>';
 		resultListFirst = result.mandalList;
 		resultListSecond = result.villageList;  
 	  }
-	  
-      str+='<table class="table tableCumulative">';
+	  str+='<td></td>';
+	  str+='<td class="text-capital">Attended Percentage</td>';
+	  str+='<td>1 DAY</td>';
+	  str+='<td>2 DAYS</td>';
+	  str+='<td>3 DAYS</td>';
+	  str+='</tr>';
+     
       if(resultListFirst != null && resultListFirst.length > 0){
 		  var order=1;
 		  var BGColor = 1;
@@ -1873,29 +1884,45 @@ function buildTrainingProgramRslt(result){
 				str+='</div>';
 			str+='</td>';
 			str+='<td class="text-danger">'+resultListFirst[i].totalAttenedCountPer+'%</td>';
+			for(var j in resultListFirst[i].locationList)
+				str+='<td class="text-danger">'+resultListFirst[i].locationList[j].totalAttenedCountPer+'%</td>';
 			str+='</tr>';
 			order=order+1;
 			if(order==6)
 				break;
 			BGColor = BGColor - 0.2;
 			}
-			str+='</table>';
+			
 	  }else{
 		  str+='No Data Available';
-	  }	  
+	  }	
+	str+='</table>';	  
 	  str+='</div>';
 	  
-	  str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
+	  str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+	  
+	   str+='<table class="table tableCumulative">';
+	   str+='<tr>';
+	   str+='<td></td>';
 	   if(userTypeId!= null && userTypeId==3 || userTypeId==2){
-		str+='<p class="text-capital">Constituencies<span style="margin-left:140px">Attended Percentage</span></p>';  
+		//str+='<p class="text-capital">Constituencies<span style="margin-left:140px">Attended Percentage</span></p>'; 
+		str+='<td style="text-transform:uppercase">Constituencies</td>';		
 	  }
 	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6 || userTypeId==12 || userTypeId==14){
-		 str+='<p class="text-capital">Mandal/Town/Division<span style="margin-left:100px">Attended Percentage</span></p>';  
+		// str+='<p class="text-capital">Mandal/Town/Division<span style="margin-left:100px">Attended Percentage</span></p>'; 
+		str+='<td style="text-transform:uppercase">Mandal/Town/Division</td>';			
 	  }
 	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
-		 str+='<p class="text-capital">Village/Ward<span style="margin-left:170px">Attended Percentage</span></p>';  
+		// str+='<p class="text-capital">Village/Ward<span style="margin-left:170px">Attended Percentage</span></p>'; 
+			str+='<td style="text-transform:uppercase">Village/Ward</td>';	
 	  }
-	  str+='<table class="table tableCumulative">';
+	  
+	  str+='<td></td>';
+	  str+='<td class="text-capital">Attended Percentage</td>';
+	  str+='<td>1 DAY</td>';
+	  str+='<td>2 DAYS</td>';
+	  str+='<td>3 DAYS</td>';
+	  str+='</tr>';
       if(resultListSecond != null && resultListSecond.length > 0){
 		  var order=1;
 		  var BGColor = 1;
@@ -1912,16 +1939,19 @@ function buildTrainingProgramRslt(result){
 			str+='</div>';
 			str+='</td>';
 			str+='<td class="text-danger">'+resultListSecond[i].totalAttenedCountPer+'%</td>';
+			for(var j in resultListSecond[i].locationList)
+				str+='<td class="text-danger">'+resultListSecond[i].locationList[j].totalAttenedCountPer+'%</td>';
 			str+='</tr>';
 			order=order+1;
 			if(order==6)
 				break;
 			BGColor = BGColor - 0.2;
 			}
-			str+='</table>';
+			
 			}else{
 			 str+='No Data Available';	
 			}
+			str+='</table>';
 	        str+='</div>';
 																				
 	 $("#poorPerformancTrainingPrograLocationsDivId").html(str);	
