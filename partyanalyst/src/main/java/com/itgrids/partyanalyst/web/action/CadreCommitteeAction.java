@@ -2912,4 +2912,18 @@ public String updateCommitteeMemberDesignationByCadreId(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getCadreVoterBthSerilNo()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			Long locationValue = jObj.getLong("locationValue");
+			String houseNo = jObj.getString("houseNo");
+			String gender = jObj.getString("gender");
+			cadreCommitteeVO = cadreCommitteeService.getCadreVoterBthSerilNo(locationValue,houseNo,gender);
+		} catch (Exception e) {
+			LOG.error("Exception occured in getCadreVoterBthSerilNo() At CadreCommitteeAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }

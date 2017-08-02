@@ -1691,6 +1691,7 @@ function getBoothUserDetailsbuild(result,locationName,boothId){
 	var str = '';
 	//str+='<div class="table-responsive">';
 	str +='<h4><a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothExportExcelReport\')}"  style="margin-bottom: 7px;"> Export Excel</a></h4>';
+		str +='<div class="table-responsive">';
 		  str +='<table class="table table-bordered" id="rangeWiseBoothReport">';
 				 str +='<thead>';
 					 str +='<tr class="text-center">';
@@ -1813,6 +1814,7 @@ function getBoothUserDetailsbuild(result,locationName,boothId){
 							}
 			  str +='</tbody>';
 			  str +='</table>';
+			str +='</div>';
 			 // str+='</div>';
 			   $("#userDetailsId").html(str);
 				$("#rangeWiseBoothReport").dataTable({
@@ -1863,3 +1865,60 @@ $(document).on("click","#deleteMembrsBtn",function(){
 			});
 	
 });
+$(document).on("change","#committeeLocationId1",function(){
+	$("#cadreSerialNoWiseId").html('');
+	$("#cadreSerialNoWiseId").show();
+	$("#cadreDetailsDiv1").html('');
+  var boothNO = $("#committeeLocationId1").val();
+  var jsObj =
+		{
+			locationValue:globalLocationId,
+			gender:"summary",
+			houseNo:boothNO
+			
+		}
+	
+		$.ajax({
+				type : "POST",
+				url : "getCadreVoterBthSerilNoAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result != null){
+					buildBoothSearchDetails(result);
+				}else{
+					$("#cadreDetailsDiv1").html('No Data Available');
+					$("#cadreSerialNoWiseId").hide();
+				}
+			}); 
+	
+});
+
+function buildBoothSearchDetails(result){
+	
+	$("#cadreDetailsDiv1").html('');
+	
+	$("#cadreSerialNoWiseId").html('SERIAL NO WISE CADRE DETAILS');
+	
+	var str='';
+	 sublist = result.casteList;
+	
+	str+='<table class ="table table-bordered" id="bothWiseRangeId">';
+		str +='<thead>';
+			str +='<tr class="text-center">';
+			for (var i in sublist){
+		
+				str +='<th style="background-color:#d3d3d3;">'+sublist[i].finalRangeStr+'</th>';
+			}
+			str +='</tr>';
+		str +='</thead>';
+		str +='<tbody>';
+			str +='<tr>';
+				for (var i in sublist){
+					
+					str +='<td>'+sublist[i].totalCount+'</td>';
+				}
+				str +='</tr>';
+				$("#cadreDetailsDiv1").html(str);
+		str +='</tbody>';
+	str+='</table>';
+}
