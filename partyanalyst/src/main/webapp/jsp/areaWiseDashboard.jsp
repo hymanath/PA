@@ -768,38 +768,7 @@
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="activities">
 				<h3 >Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
-				<div class="block pad_0">
-					<table class="table table-bordered">
-						<thead class="text-capitalize">
-							<th>Activity Name</th>
-							<th>level</th>
-							<th>status</th>
-						</thead>
-						<tbody>
-							<tr>
-								<td>legendary blood donation jan-2017</td>
-								<td>constituency</td>
-								<td>100%</td>
-							</tr>
-							<tr>
-								<td rowspan="2">janmaboomi - 2017 </td>
-								<td>constituency</td>
-								<td>100%</td>
-							</tr>
-							<tr>
-								<td>constituency</td>
-								<td>100%</td>
-							</tr>
-							<tr>
-								<td>jana chaitanya yatra</td>
-								<td>constituency</td>
-								<td>100%</td>
-							</tr>
-						</tbody>
-					</table>
-					<div class="pad_10">
-						<button class="btn btn-success btn-success-white text-capital">detailed information</button>
-					</div>
+				<div class="block pad_0" id ="activitesId">
 				</div>
 			</div>
 			<div class="col-md-12 col-xs-12 col-ms-12 m_top20" navbar-index="alerts">
