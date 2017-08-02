@@ -219,4 +219,5 @@ public interface ICadreCommitteeService {
 	 public ResultStatus removeMbrFromCurentLocation(Long userId,Long tdpCadreId);
 	 public LocationWiseBoothDetailsVO getTotalBoothsCountByConstituenctIds(Long constituencyId);
 	 public List<LocationWiseBoothDetailsVO> getTdpCommitteeMunicipalityByWards(String mandalId,Long constituencyId,Long enrollmentId);
+	 public CadreCommitteeVO getCadreVoterBthSerilNo(Long locationId,String houseNo,String gender);
 }

@@ -4641,6 +4641,29 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			  return query.list();
 	  }
 	  
+	  public List<Object[]> getCadreBasicDetailsByVoterIds(Long constituencyId,Long publicationDateId,Long  boothId,String type)
+	  {
+		  StringBuilder str = new StringBuilder();
+		  str.append(" select model.tdpCadre.firstname,model.tdpCadre.mobileNo,model.tdpCadre.casteState.caste.casteName," +
+		  			"  model.tdpCadre.tdpCadreId,model2.serialNo,model.tdpCadre.voterId,model.tdpCadre.familyVoterId from TdpCadreEnrollmentYear model, " +
+		  			" BoothPublicationVoter model2 where  " +
+			  		" model.enrollmentYearId = 4 and model.tdpCadre.enrollmentYear = 2014 and model.isDeleted = 'N'  and model.tdpCadre.isDeleted = 'N' " +
+			  		" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId  ");
+		  if(boothId != null && boothId.longValue()>0L)
+			  str.append(" and model2.booth.boothId = :boothId ");
+		  if(type != null && type.equalsIgnoreCase("OwnVoterId"))
+			  str.append(" and model.tdpCadre.familyVoter is null and  model.tdpCadre.voterId = model2.voter.voterId ");
+		  else if(type != null && type.equalsIgnoreCase("FamilyVoterId"))
+			  str.append(" and model.tdpCadre.voter  is null and model.tdpCadre.familyVoterId = model2.voter.voterId ");
+		  Query query = getSession().createQuery(str.toString());
+		  query.setParameter("constituencyId",constituencyId);
+		  query.setParameter("publicationDateId",publicationDateId);
+		  if(boothId != null && boothId.longValue()>0L)
+			  query.setParameter("boothId",boothId);
+		  
+		 return query.list();
+	  }
+	  
 	  public List<Object[]> getFamilyCadreBasicDetailsByVoterId(Long constituencyId,Long publicationDateId,String partNo,Long voterId)
 	  {
 		  Query query = getSession().createQuery("select model.firstname,model.mobileNo,model.casteState.caste.casteName from TdpCadre model,BoothPublicationVoter model2 where model.familyVoter.voterId = model2.voter.voterId and " +
