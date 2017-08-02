@@ -1284,12 +1284,14 @@ function updateFamilyInfo()
 			$('#'+errStrDiv+'').html(strErr);
 			return;
 		}
+   if($("#nameId").val() != null && $("#nameId").val() != "undefined"){
          var numericExpression =  /^[a-z,A-Z," "]+$/;
 				if(!$("#nameId").val().match(numericExpression)){
 					strErr+="Enter characters Only.";
 					$('#'+errStrDiv+'').html(strErr);
 					 return;
 					}
+    }
 		if(name != null && name.trim().length < 3)
 		{
 			strErr+=" Please enter Minimum 3 Characters.";

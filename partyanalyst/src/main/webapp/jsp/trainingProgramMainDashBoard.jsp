@@ -384,18 +384,23 @@ function buildAttendedCountByProgramOrCampOrBatch(result,fromType)
 				str+='<tbody>';
 				
 				for(var i in result){
-					if(result[i].count != 0 || result[i].total != 0){
+					var nonInviteeAttendedCount =0;
+					if( (result[i].count != null &&  result[i].count != 0 ) ||( result[i].total  != null && result[i].total != 0 )){
 					  if(result[i].name != "Others"){
-						
 							str+='<tr>';
 								str+='<td>'+result[i].name+'</td>';
-								str+='<td>'+result[i].count+' IA&nbsp;-'+result[i].total+' NIA</td>';
+								//str+='<td>'+result[i].count+' IA&nbsp;-'+result[i].total+' NIA</td>';
+								if(result[i].count != null ||  result[i].total != null){
+								if(result[i].total != null)
+									nonInviteeAttendedCount = result[i].total;
+								str+='<td>'+result[i].count+' IA&nbsp;-'+nonInviteeAttendedCount+' NIA</td>';
+							}
 								for(var j in result[i].simpleVOList1){
 									if(result[i].simpleVOList1[j].id==5 || result[i].simpleVOList1[j].id==6 || result[i].simpleVOList1[j].id==11){
 									  str+='<td>'+result[i].simpleVOList1[j].totalCount+'</td>';
 									}
 								}
-							 str+='<td>'+result[i].total+'</td>';	
+							 str+='<td>'+result[i].totl+'</td>';	
 							str+='</tr>';
 						
 					}
