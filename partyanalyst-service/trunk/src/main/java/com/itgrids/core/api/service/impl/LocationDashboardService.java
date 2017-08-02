@@ -29,6 +29,8 @@ import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.IGovtSchemeBeneficiaryDetailsDAO;
 import com.itgrids.partyanalyst.dao.IInsuranceStatusDAO;
@@ -58,6 +60,7 @@ import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.model.CasteCategory;
 import com.itgrids.partyanalyst.model.EnrollmentYear;
@@ -97,7 +100,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	//Activity
 	private IActivityDAO activityDAO;
 	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
-	
+	private IDistrictDAO districtDAO;
+	private IDistrictConstituenciesDAO districtConstituenciesDAO;
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
 	public void setConstituencyCensusDetailsDAO(IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO) {
 		this.constituencyCensusDetailsDAO = constituencyCensusDetailsDAO;
 	}
@@ -282,7 +293,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public void setBoardLevelDAO(IBoardLevelDAO boardLevelDAO) {
 		this.boardLevelDAO = boardLevelDAO;
 	}
-
+	
+	public IDistrictConstituenciesDAO getDistrictConstituenciesDAO() {
+		return districtConstituenciesDAO;
+	}
+	public void setDistrictConstituenciesDAO(
+			IDistrictConstituenciesDAO districtConstituenciesDAO) {
+		this.districtConstituenciesDAO = districtConstituenciesDAO;
+	}
 	@SuppressWarnings("unchecked")
 	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId) {
 		String electionType = "";
@@ -2327,5 +2345,79 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		return finalList;
 	}
 	
+	@Override
+	public List<LocationWiseBoothDetailsVO> getAllDistricts(Long stateId){
+		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
+		try {
+			LocationWiseBoothDetailsVO vo1 = new LocationWiseBoothDetailsVO();
+			vo1.setLocationId(0l);
+			vo1.setLocationName("Select Districts");
+			idNameVOList.add(vo1);
+			List<Long> newDistrictArr = new ArrayList<Long>();
+			Long[] ids = IConstants.AP_NEW_DISTRICTS_IDS;
+			for (Long param : ids) {
+				newDistrictArr.add(param);
+			}
+			List<Object[]> districtList = districtDAO.getAllNewDistrictDetailsForAState(1l, newDistrictArr);
+			if (districtList != null && districtList.size() > 0) {
+				for (Object[] objects : districtList) {
+					LocationWiseBoothDetailsVO idNameVO = new LocationWiseBoothDetailsVO();
+					idNameVO.setLocationId((Long) objects[0]);
+					idNameVO.setLocationName(objects[1].toString());
+					idNameVOList.add(idNameVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getAllDistricts", e);
+		}
+		return idNameVOList;
+	}
+	@Override
+	public List<LocationWiseBoothDetailsVO> getAllConstituenciesByDistrict(Long districtId) {
+		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
+		try {
+			LocationWiseBoothDetailsVO vo1 = new LocationWiseBoothDetailsVO();
+			vo1.setLocationId(0l);
+			vo1.setLocationName("Select Constituency");
+			idNameVOList.add(vo1);
+			if (districtId.compareTo(IConstants.VISHAKAPATNAM_IDS.get(0)) == 0) {
+				List<Object[]> constituencyList = constituencyDAO.getAllConstituenciesInADistrict(districtId);
+				if (constituencyList != null && constituencyList.size() > 0) {
+					for (Object[] objects : constituencyList) {
+						LocationWiseBoothDetailsVO idNameVO = new LocationWiseBoothDetailsVO();
+						idNameVO.setLocationId((Long) objects[0]);
+						idNameVO.setLocationName(objects[1].toString());
+						idNameVOList.add(idNameVO);
+					}
+				}
+			}
+			if (IConstants.VISHAKAPATNAM_IDS.contains(districtId)) {
+				List<Object[]> constituencyDistrictList = districtConstituenciesDAO.getAllConstituenciesInADistrict(IConstants.VISHAKAPATNAM_IDS.get(1));
+				if (districtId.compareTo(IConstants.VISHAKAPATNAM_IDS.get(0)) == 0) {
+					for (Object[] param : constituencyDistrictList) {
+						for (int i = 0; i <= idNameVOList.size() - 1; i++) {
+							if (idNameVOList.get(i).getLocationId().compareTo(commonMethodsUtilService.getLongValueForObject(param[0])) == 0) {
+								idNameVOList.remove(i);
+							}
+						}
+
+					}
+				} else if (districtId.compareTo(IConstants.VISHAKAPATNAM_IDS.get(1)) == 0) {
+					if (constituencyDistrictList != null && constituencyDistrictList.size() > 0) {
+						for (Object[] objects : constituencyDistrictList) {
+							LocationWiseBoothDetailsVO idNameVO = new LocationWiseBoothDetailsVO();
+							idNameVO.setLocationId((Long) objects[0]);
+							idNameVO.setLocationName(objects[1].toString());
+							idNameVOList.add(idNameVO);
+						}
+					}
+				}
+
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getAllConstituencysForADistrict", e);
+		}
+		return idNameVOList;
+	}
 	
 }
