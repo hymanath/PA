@@ -13,6 +13,7 @@ function onLoadAjaxCalls()
 	
 	//caste information
 	getCasteGroupNAgeWiseVoterNCadreCounts("voter")
+	getActivityStatusList();
 }
 function getCandidateAndPartyInfoForConstituency(){
    var jsObj={
@@ -350,4 +351,46 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result,groupType){
 			str+='</tbody>';
 		str+='</table>';
 		$("#leftSideCasteGroupWiseDivId").html(str);
+}
+function getActivityStatusList(){
+	var jsObj={
+			"fromDate" : "",
+			"toDate":"",
+			"year":"",
+			"locationValues" : [12],
+			"locationId" : 3
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getActivityStatusListAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	//console.log(result);
+		var str = '';
+		var per='%';
+		str+='<div class="pad_10">'
+		str+='<table class="table table-striped">';
+		str+='<thead class="text-capitalize bg-E9">';
+		str+='<th>Activity Name</th>';
+		str+='<th>level</th>';
+		str+='<th>status</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		if(result!=null && result.length>0){
+			for(var i in result){
+		str+='<tr>';
+		str+='<td>'+result[i].name+'</td>';
+		str+='<td>'+result[i].description+'</td>';
+		str+='<td>'+result[i].perc+''+per+'</td>';
+		str+='</tr>';
+			}
+			
+		}
+		str+='<tr><td><button class="btn btn-success btn-success-white text-capital">detailed information</button><td></tr>';
+		str+='</tbody>';
+		str+='</table>';
+		str+='</div>'
+		$("#activitesId").html(str);
+	});	
 }
