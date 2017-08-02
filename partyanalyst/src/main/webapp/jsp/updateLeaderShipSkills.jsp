@@ -253,7 +253,8 @@ function myDateFunction(){
 	$("#addMoreDateDiv").append(str);
 	
 	var datePickerId ="#goalsDateId"+globalDateCount;
-	$(datePickerId).datetimepicker({format: "MM/DD/YYYY"});
+	$(datePickerId).datetimepicker({format: "MM/DD/YYYY",
+	minDate: moment()});
    }
 function myFunction(){
 	var str='';
