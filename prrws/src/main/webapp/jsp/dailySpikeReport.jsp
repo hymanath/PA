@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FMS DASHBOARD</title>
+<title>DAILY SPIKE REPORT</title>
 <link href="Assests/css/bootstrap.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/css/custom.less" type="text/less" rel="stylesheet"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
@@ -15,125 +15,103 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
-<style>
-         .heading-bgColor {
-			background-color: rgb(74, 88, 99);
-         }
-         .heading-textColor {
-			color: rgb(255, 255, 255);
-         }
-         .pad_5 {
-			padding: 5px;
-         }
-         .bg_ED {
-			background-color: rgb(237, 238, 240);
-         }
-         .m_top10 {
-			margin-top: 10px !important;
-         }
-		 
-</style>
 </head>
 <body>
-<div class="container">
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="panel panel-default panel-black">
-				<div class="panel-heading" style="background: rgb(255, 194, 31);">
-					<div class="row">
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<h4 class="m_0 panel-title text-capital fontColor">Total Overview</h4>
-						</div>
-					</div>
+<header>
+	<nav>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-1 col-xs-3 pad_left0">
+					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
-				<div class="panel-body">
-					<div class="row bg_ED pad_5">
-						<div class="col-xs-12 col-md-6">
-							<span><h3>Total Dengue and Malaria Cases Registered : <span id="totalCase">100</span></h3></span>
-						</div>
-					</div>
-					<div class="row m_top20">   
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div class="panel panel-default panel-black">
-								<div class="panel-heading" style="background: rgb(255, 194, 31);">
-									<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Districts</h4>
+				<div class="col-sm-4 m_top10 col-xs-9">
+					<h4 class="text-capital">DAILY SPIKE REPORT</h4>
+					<p>DASHBOARD</p>
+				</div>
+				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
+					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
+					<div class="menu-data-cls">
+						<div class="arrow_box_top">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="menu-block" style="background-color:#FFBA00">
+										<a href="newfundManagementDashboard">
+											<h3>FMS</h3>
+											<p>Fund Management System</p>
+										</a>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="menu-block" style="background-color:#56A3C5">
+										<a href="ruralWaterSupplyDashBoard">
+											<h3>RWS</h3>
+											<p>RURAL WATER SUPPLY</p>
+										</a>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>PANCHAYATI RAJ</h4>
+										<div class="row">
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#0F685C">
+													<a href="prisDashBoard">
+														<h3>PRIS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#31B8B7">
+													<a href="drainDashBoard">
+														<h3>DRAINS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#2C546C">
+													<a href="#">
+														<h3>ENC</h3>
+														<p>ENGINEERING DEPARTMENT</p>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-xs-12">
-											<table class="table table-bordered table-hover">
-												<thead>
-												  <tr>
-													<th>Firstname</th>
-													<th>Lastname</th>
-													<th>Email</th>
-												  </tr>
-												</thead>
-												<tbody>
-												  <tr>
-													<td>John</td>
-													<td>Doe</td>
-													<td>john@example.com</td>
-												  </tr>
-												  <tr>
-													<td>Mary</td>
-													<td>Moe</td>
-													<td>mary@example.com</td>
-												  </tr>
-												  <tr>
-													<td>July</td>
-													<td>Dooley</td>
-													<td>july@example.com</td>
-												  </tr>
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div class="panel panel-default panel-black">
-								<div class="panel-heading" style="background: rgb(255, 194, 31);">
-									<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Mandals</h4>
-										</div>
-									</div>
-								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-xs-12">
-											<table class="table table-bordered table-hover">
-												<thead>
-												  <tr>
-													<th>Firstname</th>
-													<th>Lastname</th>
-													<th>Email</th>
-												  </tr>
-												</thead>
-												<tbody>
-												  <tr>
-													<td>John</td>
-													<td>Doe</td>
-													<td>john@example.com</td>
-												  </tr>
-												  <tr>
-													<td>Mary</td>
-													<td>Moe</td>
-													<td>mary@example.com</td>
-												  </tr>
-												  <tr>
-													<td>July</td>
-													<td>Dooley</td>
-													<td>july@example.com</td>
-												  </tr>
-												</tbody>
-											</table>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>RURAL DEVELOPMENT</h4>
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#88186B">
+													<h3>MGNREGS</h3>
+													<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+													<div class="row">
+														<div class="col-sm-6 m_top10">
+															<div class="menu-block" style="background-color:#FFBA00">
+																<a href="MGNREGSDashboard">
+																	<p>Dashboard</p>
+																</a>
+															</div>
+														</div>
+														<div class="col-sm-6 m_top10">
+															<div class="menu-block" style="background-color:#56A3C5">
+																<a href="NregaConsolidatedDashboard">
+																	<p>Consolidated</p>
+																</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#ff1c5e">
+													<a href="RuralDevelopmentDashboard">
+														<h3>IWMP</h3>
+														<p>Integrated Watershed Management Programme</p>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -143,11 +121,92 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</nav>
+	<section class="navbar-section">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-6">
+					<ul class="list-inline calendar_active_cls">
+						<li attr_val="Overall"><img src="Assests/icons/Overall_icon.png"/>&nbsp;&nbsp;<b><span>Overall</span></b></li>
+						<li attr_val="Day" class="active"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
+						<li attr_val="Week"><img src="Assests/icons/Week_icon.png"/>&nbsp;&nbsp;<b><span> Week</span></b></li>
+						<li attr_val="Month"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Month</span></b></li>
+						</li>
+					</ul>  
+				</div>
+				<div class="col-sm-6"> 
+					<div class="input-group dateRangePickerCls pull-right" >
+						<span class="input-group-addon" >
+							<i class="glyphicon glyphicon-calendar" ></i>
+						</span>
+						<input type="text" class="" style="width:200px;" id="reportrange">
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</header>
+<div class="container-fluid m_top20">
+	<!-- all  -->
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="panel panel-default panel-black">
-				<div class="panel-heading" style="background: rgb(255, 194, 31);">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<h4 class="m_0 panel-title text-capital fontColor">Total Overview</h4>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row bg_ED pad_5">
+						<div class="col-xs-12 col-md-6">
+							<span><h3>Total Dengue and Malaria Cases Registered : <span id="totalCases">0</span></h3></span>
+						</div>
+					</div>    
+					<div class="row m_top20">   
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<div class="panel panel-default panel-black">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Districts</h4>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-xs-12" id="allDiseasesTotDist"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<div class="panel panel-default panel-black">
+								<div class="panel-heading" >
+									<div class="row">
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Mandals</h4>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-xs-12" id="allDiseasesTotMandal"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- disease wise  -->
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-default panel-black">
+				<div class="panel-heading" >
 					<div class="row">
 						<div class="col-md-6 col-xs-12 col-sm-6">
 							<h4 class="m_0 panel-title text-capital fontColor">Diseases Wise Overview</h4>
@@ -156,12 +215,12 @@
 				</div>
 				<div class="panel-body">
 					<div class="row bg_ED pad_5">
-						<span><h3  style="margin-left:15px;">Total Dengue Registered : <span id="totalCase">60</span><span>60%</span></h3></span>
+						<span><h3  style="margin-left:15px;">Total Dengue Registered : <span id="dengueTotalCases">0</span>(<span id="dengueTotalPercent">0</span>%)</h3></span>
 					</div>
-					<div class="row m_top20">   
+					<div class="row m_top20">         
 						<div class="col-md-6 col-xs-12 col-sm-6">
 							<div class="panel panel-default panel-black">
-								<div class="panel-heading" style="background: rgb(255, 194, 31);">
+								<div class="panel-heading" >
 									<div class="row">
 										<div class="col-md-6 col-xs-12 col-sm-6">
 											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Districts</h4>
@@ -170,41 +229,14 @@
 								</div>
 								<div class="panel-body">
 									<div class="row">
-										<div class="col-xs-12">
-											<table class="table table-bordered table-hover">
-												<thead>
-												  <tr>
-													<th>Firstname</th>
-													<th>Lastname</th>
-													<th>Email</th>
-												  </tr>
-												</thead>
-												<tbody>
-												  <tr>
-													<td>John</td>
-													<td>Doe</td>
-													<td>john@example.com</td>
-												  </tr>
-												  <tr>
-													<td>Mary</td>
-													<td>Moe</td>
-													<td>mary@example.com</td>
-												  </tr>
-												  <tr>
-													<td>July</td>
-													<td>Dooley</td>
-													<td>july@example.com</td>
-												  </tr>
-												</tbody>
-											</table>
-										</div>
-									</div>
+										<div class="col-xs-12" id="topDistForDengue"></div>
+									</div>  
 								</div>
-							</div>
+							</div>   
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-6">
 							<div class="panel panel-default panel-black">
-								<div class="panel-heading" style="background: rgb(255, 194, 31);">
+								<div class="panel-heading" >
 									<div class="row">
 										<div class="col-md-6 col-xs-12 col-sm-6">
 											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Mandals</h4>
@@ -213,46 +245,19 @@
 								</div>
 								<div class="panel-body">
 									<div class="row">
-										<div class="col-xs-12">
-											<table class="table table-bordered table-hover">
-												<thead>
-												  <tr>
-													<th>Firstname</th>
-													<th>Lastname</th>
-													<th>Email</th>
-												  </tr>
-												</thead>
-												<tbody>
-												  <tr>
-													<td>John</td>
-													<td>Doe</td>
-													<td>john@example.com</td>
-												  </tr>
-												  <tr>
-													<td>Mary</td>
-													<td>Moe</td>
-													<td>mary@example.com</td>
-												  </tr>
-												  <tr>
-													<td>July</td>
-													<td>Dooley</td>
-													<td>july@example.com</td>
-												  </tr>
-												</tbody>
-											</table>
-										</div>
+										<div class="col-xs-12" id="topMandalForDengue"></div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row bg_ED pad_5">
-						<span><h3  style="margin-left:15px;">Total Malaria Registered : <span id="totalCase">40</span></h3></span>
+						<span><h3  style="margin-left:15px;">Total Malaria Registered : <span id="malariaTotalCases">0</span>(<span id="malariaTotalPercent">0</span>%)</h3></span>
 					</div>
 					<div class="row m_top20">   
 						<div class="col-md-6 col-xs-12 col-sm-6">
 							<div class="panel panel-default panel-black">
-								<div class="panel-heading" style="background: rgb(255, 194, 31);">
+								<div class="panel-heading" >
 									<div class="row">
 										<div class="col-md-6 col-xs-12 col-sm-6">
 											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Districts</h4>
@@ -261,81 +266,65 @@
 								</div>
 								<div class="panel-body">
 									<div class="row">
-										<div class="col-xs-12">
-											<table class="table table-bordered table-hover">
-												<thead>
-												  <tr>
-													<th>Firstname</th>
-													<th>Lastname</th>
-													<th>Email</th>
-												  </tr>
-												</thead>
-												<tbody>
-												  <tr>
-													<td>John</td>
-													<td>Doe</td>
-													<td>john@example.com</td>
-												  </tr>
-												  <tr>
-													<td>Mary</td>
-													<td>Moe</td>
-													<td>mary@example.com</td>
-												  </tr>
-												  <tr>
-													<td>July</td>
-													<td>Dooley</td>
-													<td>july@example.com</td>
-												  </tr>
-												</tbody>
-											</table>
-										</div>
+										<div class="col-xs-12" id="topDistForMalaria"></div>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-6">
 							<div class="panel panel-default panel-black">
-								<div class="panel-heading" style="background: rgb(255, 194, 31);">
+								<div class="panel-heading" >
 									<div class="row">
 										<div class="col-md-6 col-xs-12 col-sm-6">
 											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Mandals</h4>
 										</div>
 									</div>
-								</div>
+								</div>  
 								<div class="panel-body">
 									<div class="row">
-										<div class="col-xs-12">
-											<table class="table table-bordered table-hover">
-												<thead>
-												  <tr>
-													<th>Firstname</th>
-													<th>Lastname</th>
-													<th>Email</th>
-												  </tr>
-												</thead>
-												<tbody>
-												  <tr>
-													<td>John</td>
-													<td>Doe</td>
-													<td>john@example.com</td>
-												  </tr>
-												  <tr>
-													<td>Mary</td>
-													<td>Moe</td>
-													<td>mary@example.com</td>
-												  </tr>
-												  <tr>
-													<td>July</td>
-													<td>Dooley</td>
-													<td>july@example.com</td>
-												  </tr>
-												</tbody>
-											</table>
-										</div>
+										<div class="col-xs-12" id="topMandalForMalaria"></div>
 									</div>
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- day, week and month wise -->
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-default panel-black">
+				<div class="panel-heading" >
+					<div class="row">
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<h4 class="m_0 panel-title text-capital fontColor">Chronological</h4>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-xs-12" id="chronologicalId"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Location wise -->
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-default panel-black">
+				<div class="panel-heading" >
+					<div class="row">
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<h4 class="m_0 panel-title text-capital fontColor">Location Wise</h4>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-xs-12" id="locationWiseCaseCount"></div>
 					</div>
 				</div>
 			</div>
@@ -351,84 +340,8 @@
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
-<script>
-//getCaseCountDiseasesWise();
-function getCaseCountDiseasesWise(){
-	var diseasesIdArr=[];
-	diseasesIdArr.push(1);
-	diseasesIdArr.push(2);
-	var json = {
-		fromDate : '01/07/2017',
-		toDate : '31/07/2017', 
-		diseasesIdList : diseasesIdArr
-    }
-    $.ajax({
-      url : "getCaseCountDiseasesWise",       
-      data : JSON.stringify(json),
-      type : "POST",  
-      dataTypa : 'json',   
-      beforeSend: function(xhr) {
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Content-Type", "application/json");
-      },
-      success : function(ajaxresp){
-		      
-      }
-    
-    });
-}
-//getCaseCountLocationWise();
-function getCaseCountLocationWise(){
-	var diseasesIdArr=[];
-	diseasesIdArr.push(1);
-	//diseasesIdArr.push(2);
-	var json = {
-		fromDate : '01/07/2017',
-		toDate : '31/07/2017', 
-		diseasesIdList : diseasesIdArr,
-		scopeId : 3        
-    }
-    $.ajax({
-      url : "getCaseCountLocationWise",       
-      data : JSON.stringify(json),
-      type : "POST",  
-      dataTypa : 'json',   
-      beforeSend: function(xhr) {
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Content-Type", "application/json");
-      },
-      success : function(ajaxresp){
-		      
-      }
-    
-    });
-}
-getCaseCountDateWise();
-function getCaseCountDateWise(){
-	var diseasesIdArr=[];
-	diseasesIdArr.push(1);
-	diseasesIdArr.push(2);
-	var json = {
-		fromDate : '01/07/2017',
-		toDate : '31/07/2017', 
-		diseasesIdList : diseasesIdArr,
-		rangeType : 'month'          
-    }
-    $.ajax({
-      url : "getCaseCountDateWise",           
-      data : JSON.stringify(json),
-      type : "POST",  
-      dataTypa : 'json',   
-      beforeSend: function(xhr) {
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Content-Type", "application/json");
-      },
-      success : function(ajaxresp){
-		      
-      }
-    
-    });
-}
+<script src="Assests/dailySpileReport/dailySpileReport.js" type="text/javascript"></script> 
+<script>      
 </script>
 </body>
 </html>

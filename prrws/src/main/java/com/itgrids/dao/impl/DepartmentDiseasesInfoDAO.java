@@ -54,7 +54,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		return query.list();
 	}
 	@Override
-	public List<Object[]> getCaseCountLocationWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId){
+	public List<Object[]> getCaseCountLocationWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId,Long superLocationId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select ");
 		if(scopeId != null && scopeId.longValue() > 0){
@@ -84,6 +84,9 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		if(deptIdList != null && deptIdList.size() > 0){
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
 		}
+		if(scopeId != null && scopeId.longValue() > 0 && scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID && superLocationId != null && superLocationId.longValue() > 0){
+			sb.append(" and departmentDiseasesInfo.locationAddress.district.districtId = :superLocationId ");
+		}
 		sb.append("group by ");
 		if(scopeId != null && scopeId.longValue() > 0){
 			if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
@@ -107,6 +110,9 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		if(deptIdList != null && deptIdList.size() > 0){
 			query.setParameterList("deptIdList", deptIdList);
+		}
+		if(scopeId != null && scopeId.longValue() > 0 && scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID && superLocationId != null && superLocationId.longValue() > 0){
+			query.setParameter("superLocationId", superLocationId);
 		}
 		return query.list();
 	}
