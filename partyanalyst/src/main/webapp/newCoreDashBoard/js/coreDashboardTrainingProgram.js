@@ -745,9 +745,9 @@ function buildStateLevelCampAttendedDetails(result){
 	}      
 	var str = '';
 	str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-		str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><span style="background-color:#fff;margin-left:5px;" attr_program_id="'+programIdsStr+'" class="stateLevelTraining" expand-icon-inner="training" state-level="true" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen" ></i></span></h4>';
+		str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><!--<span style="background-color:#fff;margin-left:5px;" attr_program_id="'+programIdsStr+'" class="stateLevelTraining" expand-icon-inner="training" state-level="true" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen"></i>--></span></h4>';
 		for(var i in result){    
-		str+='<h5 class="text-capital m_top10">'+result[i].name+'<span style="background-color:#fff;margin-left:5px;border:0px;padding:2px;" state-level="true" expand-icon-inner="training" class="stateLevelTrainingInd" attr_program_id="'+result[i].id+'" attr_location="'+result[i].name+'"><i class="glyphicon glyphicon-fullscreen"></i></span></h5>';  
+		str+='<h5 class="text-capital m_top10">'+result[i].name+'<span style="background-color:#fff;margin-left:5px;border:0px;padding:2px;" state-level="true" expand-icon-inner="training" class="stateLevelTrainingInd" attr_program_id="'+result[i].id+'" attr_location="'+result[i].name+'"> <!--<i class="glyphicon glyphicon-fullscreen"></i>--></span></h5>';  
 		if($(window).width() < 300)
 		{
 			str+='<div class="table-responsive">';
