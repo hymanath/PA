@@ -122,10 +122,27 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String municipalityName;
 	private Long inviteeAttnd = 0l;
 	private Long nonInviteeAttnd = 0l;
-	
+	private Long othersAttnd=0L;
 	private Set<Long> inviteeIds = new HashSet<Long>(0);
 	private Set<Long> nonInviteeIds = new HashSet<Long>(0);
+	private Set<Long> otherIds = new HashSet<Long>(0);
 	
+	public Long getOthersAttnd() {
+		return othersAttnd;
+	}
+
+	public void setOthersAttnd(Long othersAttnd) {
+		this.othersAttnd = othersAttnd;
+	}
+
+	public Set<Long> getOtherIds() {
+		return otherIds;
+	}
+
+	public void setOtherIds(Set<Long> otherIds) {
+		this.otherIds = otherIds;
+	}
+
 	public Set<Long> getInviteeIds() {
 		return inviteeIds;
 	}
