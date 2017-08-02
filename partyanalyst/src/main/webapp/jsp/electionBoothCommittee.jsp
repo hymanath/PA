@@ -1540,6 +1540,7 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 			
 	}
 function gePanchayatOrBooth(){
+	$("#cadreDetailsDiv1,#cadreSerialNoWiseId").html('');
 	var num =$("#panchayatWardByMandal").val();
 	$('#userDetailsId,#locationDivId,#cadreDetailsDiv').html('');
 	$('#addMembrsBtn,#boothInchargeRoleDivId,#committeeDesigDivId,#searchcadrenewDiv,#cadreDetailsDiv').hide();
@@ -1842,6 +1843,7 @@ function getBoothInchargeRoles()
 	function gettingBoothInchargeRoleDetails(){
 		
 		$("#boothInchargeRoleDivId,#locationDivId").html('');
+		$("#cadreDetailsDiv1,#cadreSerialNoWiseId").html('');
 		var boothId = $('#committeeLocationId1').val();
 		//$('#addMembrsBtn').show();
 		$('#searchBy').val('');
@@ -1902,6 +1904,7 @@ function getBoothInchargeRoles()
 	function updateRangeIdsOfBoothIncharge(boothId)
 	{	
 	//var boothId = $("#committeeLocationId1").val();
+	$("#cadreDetailsDiv1,#cadreSerialNoWiseId").html('');
 	var boothIncrgRoleId = $("#committeeDesignationId").val();
 	var enrollmentYrIds = [];
 	enrollmentYrIds.push(1);

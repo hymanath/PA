@@ -1675,8 +1675,10 @@ $(document).on("click",".remveMbrCls",function(){
 			}).done(function(result){
 				if(result.resultCode == 0){
 					alert("Member removed successfully.....");
+					$("#cadreDetailsDiv1,#cadreSerialNoWiseId").html('');
 					setTimeout(function(){
-						//getCadreDetailsForBoothBySearchCriteria();
+						gePanchayatOrBooth();
+						updateRangeIdsOfBoothIncharge(committeeLocationId);
 					},1200);
 				}else{
 					alert("Member removed failed.Please try again.");
@@ -1859,6 +1861,8 @@ $(document).on("click","#deleteMembrsBtn",function(){
 					alert("Member deleted successfully.....");
 					gettingBoothInchargeRoleDetails();
 					getBoothUserDetails();
+					gePanchayatOrBooth();
+					updateRangeIdsOfBoothIncharge(committeeLocationId);
 				}else{
 					alert("Member deleted failed.Please try again.");
 				}
@@ -1870,6 +1874,7 @@ $(document).on("change","#committeeLocationId1",function(){
 	
 	$("#cadreSerialNoWiseId").html('');
 	$("#cadreSerialNoWiseId").show();
+	$("#cadreDetailsDiv1,#cadreSerialNoWiseId").html('');
 	$("#cadreDetailsDiv1").html('<img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
   var boothNO = $("#committeeLocationId1").val();
   var jsObj =
