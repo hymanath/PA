@@ -19,7 +19,7 @@ public class SimpleVO implements java.io.Serializable{
    
    private Long count;
    private Long total;
-   private Long totalCount;
+   private Long totalCount =0l;
    private String isAttended = "-";
    
    private List<SimpleVO> simpleVOList1;
@@ -106,6 +106,7 @@ public class SimpleVO implements java.io.Serializable{
    private String caste;
    
    private Long confirmedCount=0L;
+   private Long totl=0l;
 
    
    
@@ -600,5 +601,12 @@ public void setNonInvitee(boolean nonInvitee) {
 			Long threeDaysNonInvitedAttendedCount) {
 		this.threeDaysNonInvitedAttendedCount = threeDaysNonInvitedAttendedCount;
 	}
+	public Long getTotl() {
+		return totl;
+	}
+	public void setTotl(Long totl) {
+		this.totl = totl;
+	}
+	
 	
    }

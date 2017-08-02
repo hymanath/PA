@@ -220,13 +220,36 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 
  }
  
- public List<Object[]> getCompletedCounts(List<Long> batchIds){
-		Query query = getSession().createQuery(" select model.trainingCampBatch.trainingCampBatchId, count(distinct model.attendance.tdpCadre.tdpCadreId) " +
-				" from TrainingCampAttendance model,TrainingCampBatchAttendee model1 " +
-				" where model.trainingCampBatch.trainingCampBatchId in (:batchIds) and model.trainingCampBatch.trainingCampBatchId=model1.trainingCampBatch.trainingCampBatchId and model.attendance.tdpCadre.tdpCadreId=model1.tdpCadre.tdpCadreId " +
-				" and model1.isDeleted='false' and model.trainingCampBatch.isCancelled='false' and model.trainingCampBatch.attendeeType.attendeeTypeId=1 and model.trainingCampBatch.attendeeType.isDeleted='false' " +
-				" group by model.trainingCampBatch.trainingCampBatchId ");
+ public List<Object[]> getCompletedCounts(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds){
+	 StringBuilder sb = new StringBuilder();
+	   sb.append(" select model.trainingCampBatch.trainingCampBatchId, " +
+	   		    "  count(distinct model.attendance.tdpCadre.tdpCadreId) " +
+				" from TrainingCampAttendance model,TrainingCampBatchAttendee model1 " );
+	   sb.append(" where " );
+	   if(batchIds != null && batchIds.size()>0){
+	    sb.append(" model.trainingCampBatch.trainingCampBatchId in (:batchIds) and " );
+	   }
+	   sb.append("  model.trainingCampBatch.trainingCampBatchId=model1.trainingCampBatch.trainingCampBatchId " +
+	   		" and model.attendance.tdpCadre.tdpCadreId=model1.tdpCadre.tdpCadreId " +
+				" and model1.isDeleted='false' and model.trainingCampBatch.isCancelled='false' " +
+				" and model.trainingCampBatch.attendeeType.attendeeTypeId=1 and model.trainingCampBatch.attendeeType.isDeleted='false' " );
+	   if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		   sb.append(" and model.trainingCampSchedule.enrollmentYear.enrollmentYearId in(:enrollmentYearIds)");
+	   }
+      if(programYearIds != null && programYearIds.size()>0){
+    	  sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
+	   }
+	   sb.append(" group by model.trainingCampBatch.trainingCampBatchId ");
+	   Query query=getSession().createQuery(sb.toString());
+	   if(batchIds != null && batchIds.size()>0){
 		query.setParameterList("batchIds", batchIds);
+	   }
+      if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+    	  query.setParameterList("enrollmentYearIds", enrollmentYearIds);  
+	   }
+      if(programYearIds != null && programYearIds.size()>0){
+    	  query.setParameterList("programYearIds", programYearIds); 
+	   }
 		return query.list();
  }
  
@@ -982,7 +1005,6 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  }
 	  return query.list();
   }
-
   public List<Long> getInviteeCadreIdsForADay(Long batchId,Date date,List<Long> enrollmentYearIds,List<Long> programYearIds){
 	  StringBuilder sb = new StringBuilder();
 	  sb.append("  select distinct model.attendance.tdpCadre.tdpCadreId " +
