@@ -12,4 +12,5 @@ public interface IDistrictConstituenciesDAO extends GenericDao<DistrictConstitue
 	public List<Object[]> getConstituenciesOfDistrictStateWise(Long stateId);
 	public List<Long> getConstituenciesOfDistrictById(Long districtId);	
 	public List<Object[]> getDistrictByConstituenciesIds(Set<Long> constituenciesIds);
+	public List<Object[]> getAllConstituenciesInADistrict(Long districtId);
 }
