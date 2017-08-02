@@ -49,7 +49,7 @@ public class PartyMeetingMinute extends BaseModel implements Serializable{
 	
 	private PartyMeetingMinuteStatus partyMeetingMinuteStatus;
 	private Long momAtrSourceTypeId;
-	
+	private MomAtrSourceType momAtrSourceType;
 	
 	public PartyMeetingMinute(){}
 
@@ -240,5 +240,17 @@ public class PartyMeetingMinute extends BaseModel implements Serializable{
 
 	public void setMomAtrSourceTypeId(Long momAtrSourceTypeId) {
 		this.momAtrSourceTypeId = momAtrSourceTypeId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="mom_atr_source_type_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public MomAtrSourceType getMomAtrSourceType() {
+		return momAtrSourceType;
+	}
+
+	public void setMomAtrSourceType(MomAtrSourceType momAtrSourceType) {
+		this.momAtrSourceType = momAtrSourceType;
 	}
 }

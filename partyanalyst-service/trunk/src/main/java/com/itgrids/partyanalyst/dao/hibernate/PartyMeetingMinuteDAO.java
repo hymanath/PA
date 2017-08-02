@@ -33,8 +33,10 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.partyMeetingMinuteId,model.partyMeeting.partyMeetingId,model.minutePoint,model.insertedBy.userId,model.insertedBy.firstName," +
 				"model.updatedBy.userId,model.updatedBy.firstName,model.insertedTime," +
-				"model.updatedTime,model.partyMeeting.meetingName " +
-				" from PartyMeetingMinute model where " +
+				"model.updatedTime,model.partyMeeting.meetingName,momAtrSourceType.sourceType " +
+				" from PartyMeetingMinute model " +
+				" left join model.momAtrSourceType momAtrSourceType " +
+				" where " +
 				"  model.partyMeeting.partyMeetingId=:partyMeetingId and model.isDeleted='N' ");
 		
 		if(accessType !=null && accessType.equalsIgnoreCase("MP") && accessValues.size()>0){
