@@ -17507,6 +17507,11 @@
   	<action name="locationDashboardAction" class="locationDashboardAction" method="locationDashboard" >
 		<result name="success">/jsp/assemblyConstituencyPage.jsp</result>
 	</action>
+	
+	<action name="areaWiseDashboardAction" class="locationDashboardAction" method="locationDashboard" >
+		<result name="success">/jsp/areaWiseDashboard.jsp</result>
+	</action>
+	
 	<action name="districtDashboardAction" class="locationDashboardAction" method="districtDashboard" >
 		<result name="success">/jsp/districtDashboard.jsp</result>
 	</action>
