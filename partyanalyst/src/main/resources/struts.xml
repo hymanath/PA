@@ -17921,5 +17921,10 @@
 				<param name="root">locationVOList</param>
 			</result>
 	</action>
+	<action name="getCadreVoterBthSerilNoAction" class="cadreCommitteeAction"  method="getCadreVoterBthSerilNo">
+		<result type="json" name="success">    
+			<param name="root">cadreCommitteeVO</param>       
+		</result> 
+   </action>
  </package>
 </struts>
