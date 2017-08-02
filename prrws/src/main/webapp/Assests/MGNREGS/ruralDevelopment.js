@@ -3,7 +3,7 @@ $("#dateRangePickerMGNF").val('2017-04-01');
 $("#dateRangePickerMGNT").val(moment().format("YYYY-MM")+'-30');
 var glStartDate = '2017-04-01'//moment().startOf('year').format("YYYY-MM")+'-1';
 var glEndDate = moment().format("YYYY-MM")+'-30';
-onLoadCalls();
+
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
 	$(".menu-data-cls").toggle();
@@ -21,11 +21,37 @@ $("#dateRangePickerMGNT").datetimepicker({
 });
 $('#dateRangePickerMGNF').on('dp.change', function(e){ 
 	glStartDate = e.date.format("YYYY-MM")+"-31";
-	onLoadCalls()
+	for(var i in overViewArr)
+	{
+		$("[overview-block='"+overViewArr[i]+"']").append(spinner);
+		$("[overview-block='"+overViewArr[i]+"']").append(spinner);
+		if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD' || overViewArr[i] == 'MPT_PT' || overViewArr[i] == 'GC Works' || overViewArr[i] == 'CD_CW' || overViewArr[i] == 'WaterBudget' || overViewArr[i] == 'GH')
+		{
+			getRDAbstractDataByType(overViewArr[i],'state',"0",'',2);
+		}else if(overViewArr[i] == 'Ntr Jalasiri')
+		{
+			getNtrJalaSiriAbstract(overViewArr[i],'state',0,'',2);
+		}
+	}
+
+	buildOverviewAbstract();
 });
 $('#dateRangePickerMGNT').on('dp.change', function(e){ 
 	glEndDate = e.date.format("YYYY-MM")+"-31";
-	onLoadCalls()
+	for(var i in overViewArr)
+	{
+		$("[overview-block='"+overViewArr[i]+"']").append(spinner);
+		$("[overview-block='"+overViewArr[i]+"']").append(spinner);
+		if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD' || overViewArr[i] == 'MPT_PT' || overViewArr[i] == 'GC Works' || overViewArr[i] == 'CD_CW' || overViewArr[i] == 'WaterBudget' || overViewArr[i] == 'GH')
+		{
+			getRDAbstractDataByType(overViewArr[i],'state',"0",'',2);
+		}else if(overViewArr[i] == 'Ntr Jalasiri')
+		{
+			getNtrJalaSiriAbstract(overViewArr[i],'state',0,'',2);
+		}
+	}
+
+	buildOverviewAbstract();
 });
 $(document).on('click','[overview-block]', function(){
 	$("[overview-state],[overview-district]").removeClass("active");
@@ -228,11 +254,6 @@ $(document).on('click','[overview-level]', function(){
 		}
 		
 	});
-function onLoadCalls()
-{
-	//getNtrJalaSiriOverview();
-	//projectData('NTR Jala Siri',2,'');
-}
 
 var overViewArr = ['Ntr Jalasiri','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','WaterBudget','GH'];
 for(var i in overViewArr)
@@ -247,9 +268,10 @@ for(var i in overViewArr)
 		getNtrJalaSiriAbstract(overViewArr[i],'state',0,'',2);
 	}
 }
-buildOverviewAbstract();
+
 var stateArr = [{'name':'Andhra Pradesh','type':1}];
 collapseMenu(1,stateArr,'multi-level-selection-menu');
+buildOverviewAbstract();
 function buildOverviewAbstract()
 {
 	
@@ -1610,7 +1632,7 @@ function getRDAbstractDataByType(type,locType,locId,blockName,levelId)
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
-		toDate : glStartDate,
+		toDate : glEndDate,
 		type : type,
 		locationType: locType,
 		locationId : locId
