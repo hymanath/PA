@@ -18,7 +18,7 @@ public interface ITrainingCampBatchAttendeeDAO extends GenericDao<TrainingCampBa
 	public Object[] getCadreDetailsByCadreIdAndBatchId(Long tdpCadreId,Long batchId,Long enrollmentYearId);
 	
 	public List<String> getAttendeesForATrainingCampBatch(Long trainingCampBatchId);
-	public List<Object[]> getRunningUpcomingCounts(List<Long> batchIds);
+	public List<Object[]> getRunningUpcomingCounts(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds);
     
 	public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList,List<Long> programYearIds,List<Long> enrollmentYearIds);
 	public List<Object[]> getConfirmedCadreByBatch(Long batchId,Long enrollmentYearId);

@@ -196,13 +196,32 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 	   return query.list();
    }
 	
-   public List<Object[]> getRunningUpcomingCounts(List<Long> batchIds){
-	   Query query = getSession().createQuery(" select model.trainingCampBatchId,count(distinct model.tdpCadreId) " +
+   public List<Object[]> getRunningUpcomingCounts(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds){
+	   StringBuilder sb=new StringBuilder();
+	   sb.append(" select model.trainingCampBatchId,count(distinct model.tdpCadreId) " +
 	   		" from TrainingCampBatchAttendee model " +
-	   		" where model.trainingCampBatchId in (:batchIds) and model.isDeleted = 'false' " +
-	   		" and model.trainingCampBatch.attendeeType.attendeeTypeId=1 and model.trainingCampBatch.attendeeType.isDeleted='false' and model.trainingCampBatch.isCancelled='false'  " +
-	   		" group by model.trainingCampBatchId ");
-	   query.setParameterList("batchIds", batchIds);
+	   		" where" );
+	   if(batchIds != null && batchIds.size()>0){
+	   	 sb.append(" model.trainingCampBatchId in (:batchIds) and " );
+	    }
+	   	sb.append("  model.isDeleted = 'false' " +
+	   		" and model.trainingCampBatch.attendeeType.attendeeTypeId=1 and model.trainingCampBatch.attendeeType.isDeleted='false' and model.trainingCampBatch.isCancelled='false'  " );
+	   	if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+	   	 sb.append(" and model.trainingCampBatch.trainingCampSchedule.enrollmentYear.enrollmentYearId in(:enrollmentYearIds)");
+	   	}
+	   if(programYearIds != null && programYearIds.size()>0){
+		   sb.append(" and  model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)");
+	   	}
+		sb.append(" group by model.trainingCampBatchId ");
+	   Query query =getSession().createQuery(sb.toString());
+	   if(batchIds != null && batchIds.size()>0)
+	      query.setParameterList("batchIds", batchIds);
+	   if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+		   query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+	   	}
+	   if(programYearIds != null && programYearIds.size()>0){
+		   query.setParameterList("programYearIds", programYearIds);
+	   	}
 	   return query.list();
    }
    

@@ -14,7 +14,7 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	
 	public List<Object[]> getAttendedCadreCountByBatchIds(List<Long> batchIds,String type,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	public List<Object[]> getInvitedCadreCountByBatchIds(List<Long> batchIds,String type,List<Long> enrollmentYearIds,List<Long> programYearIds);
-	public List<Object[]> getCompletedCounts(List<Long> batchIds);
+	public List<Object[]> getCompletedCounts(List<Long> batchIds,List<Long> enrollmentYearIds,List<Long> programYearIds);
 	
 	public List<Object[]> getAttendedlocWiseCountsByProgramOrCampOrBatch(String queryString,List<Long> programId,Long campId,Long batchId,Date fromDate,Date toDate,Date currDate,String callFrom,List<Long> enrollmentYrIds);
 	public Long getAttendedCountByBatch(Long batchId,Date fromDate,Date todate,List<Long> programYearIds,List<Long> enrollmentYearIds);
