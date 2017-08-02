@@ -17901,5 +17901,25 @@
 		    <param name="root">partyMeetingWSVOList</param>
 		</result>
 	</action>
+   <action name="getAllDistrictsForLoationDashBoardAction" class="locationDashboardAction"  method="getAllDistrictsForLoationDashBoard">
+		<result type="json" name="success">    
+			<param name="root">locationVOList</param>       
+		</result>
+  	</action>
+    <action name="getConstituenciesByDistrictForLoationDashBoardAction" class="locationDashboardAction"  method="getConstituenciesByDistrictForLoationDashBoard">
+		<result type="json" name="success">    
+			<param name="root">locationVOList</param>       
+		</result>
+  	</action>
+ 	<action name="getMandalsForConstituenciesForLoationDashBoardAction" class="locationDashboardAction" method="getMandalsByConstituencyForLoationDashBoard">
+	    <result type="json" name="success">		   
+		    <param name="root">locationVOList</param>
+		</result>
+	</action>
+	<action name="getPanchayatWardByMandalForLoationDashBoardAction" class="locationDashboardAction" method="getPanchayatWardByMandalForLoationDashBoardAction">
+			<result type="json" name="success">
+				<param name="root">locationVOList</param>
+			</result>
+	</action>
  </package>
 </struts>
