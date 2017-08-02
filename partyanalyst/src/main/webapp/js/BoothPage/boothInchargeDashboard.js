@@ -1,6 +1,7 @@
     var globalBoothInchargeEnrollmentId=1;
- 	var globalFromDate=moment().startOf('month').format("DD/MM/YYYY");
-    var globalToDate=moment().endOf('month').format("DD/MM/YYYY");
+	var globalFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+	var globalToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
+ 	
 	$(".selectBoxCls").chosen();
 	$('#daterangePickerId').daterangepicker({
 		opens: 'left',
@@ -10,7 +11,7 @@
 			  format: 'DD/MM/YYYY'
 			},
 		ranges: {
-			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+			'All' :[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
 			'Today' : [moment(), moment()],
 		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
@@ -21,15 +22,28 @@
 		   'This Year': [moment().startOf('Year'), moment()]
 		}
 	});
+	
+	var dates= $("#daterangePickerId").val();
+	var pickerDates = globalFromDate+' - '+globalToDate
+	if(dates == pickerDates)
+	{
+		$("#daterangePickerId").val('All');
+	}
 
 	$('#daterangePickerId').on('apply.daterangepicker', function(ev, picker) {
-		var filterLevel = $(this).attr("accessType");//filterLevel is nothing but user accessType
-        var filterValue = $(this).attr("accessValue");////filterValue is nothing but user accessValue
 		globalFromDate = picker.startDate.format('DD/MM/YYYY');
 		globalToDate = picker.endDate.format('DD/MM/YYYY');
-	     ajaxCallBasedOnUserAccessLevel(filterLevel,filterValue);
+		var filterLevel = $(this).attr("accessType");//filterLevel is nothing but user accessType
+        var filterValue = $(this).attr("accessValue");////filterValue is nothing but user accessValue
+		if(picker.chosenLabel == 'All')
+		{
+			$("#daterangePickerId").val('All');
+		}
 		
+		 ajaxCallBasedOnUserAccessLevel(filterLevel,filterValue);
 	});
+	
+	
 	$(document).on("change","#boothCommitteeDashbrdRolesId",function(){
 		var filterLevel = $(this).attr("accessType");//filterLevel is nothing but user accessType
         var filterValue = $(this).attr("accessValue");////filterValue is nothing but user accessValue
