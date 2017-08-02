@@ -272,4 +272,5 @@ public interface IWebServiceHandlerService {
     public List<AlertVO> getOverAllIvrDetails(String fromDateStr,String toDateStr,Long entityType,List<Long> questionsList,String type);
     public List<IdNameVO> getIvrSurveyDates(String fromDateStr,String toDateStr,Long entityType);
     public List<IdNameVO> getIvrSurveyQuestions(String fromDateStr,String toDateStr,Long entityType);
+    public List<BasicVO> getElectionTypes();
 }

@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
@@ -63,6 +64,7 @@ import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.model.CasteCategory;
+import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.EnrollmentYear;
 import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
@@ -97,6 +99,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private INominatedPostDAO nominatedPostDAO;
 	private INominatedPostApplicationDAO nominatedPostApplicationDAO;
 	private IBoardLevelDAO boardLevelDAO;
+	private IElectionTypeDAO electionTypeDAO;
 	//Activity
 	private IActivityDAO activityDAO;
 	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
@@ -108,6 +111,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	}
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
+	}
+	public IElectionTypeDAO getElectionTypeDAO() {
+		return electionTypeDAO;
+	}
+	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
+		this.electionTypeDAO = electionTypeDAO;
 	}
 	public void setConstituencyCensusDetailsDAO(IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO) {
 		this.constituencyCensusDetailsDAO = constituencyCensusDetailsDAO;
@@ -1226,13 +1235,36 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return finalList;
 	}
+	
+	/*
+     * @author R Nagarjuna Gowd
+     * @return BasicVO object contains electionTypes table data
+     * (non-Javadoc)
+     * @see com.itgrids.core.api.service.ILocationDashboardService#getElectionTypes()
+     * Date 02-08-2017
+     */
+	
+	public List<BasicVO> getElectionTypes() {
+		List<BasicVO> finalList = new ArrayList<BasicVO>();
+		List<ElectionType> electionTypes = electionTypeDAO.getAll();
+		for (ElectionType electionType : electionTypes) {
+			BasicVO electionTypesData = new BasicVO();
+			electionTypesData.setId(electionType.getElectionTypeId());
+			electionTypesData.setName(electionType.getElectionType());
+			electionTypesData.setDescription(electionType.getScope());
+			finalList.add(electionTypesData);
+		}
+		return finalList;
+	}
+	
+	
 	/*
 	 * @param String fromDateStr
 	 * @param String toDateStr
 	 * @param Long locationType
 	 * @param Long locationValue
 	 * @author R Nagarjuna Gowd
-	 * @return List<List<AlertOverviewVO>> we have three list in final list 1.village/ward counts 2.mandal/town/division list 3.Constituency counts list
+	 * @return List<AlertOverviewVO> we have three list in final list 1.village/ward counts 2.mandal/town/division list 3.Constituency counts list
 	 * (non-Javadoc)
 	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLevelWiseMeetingStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
 	 */
@@ -2344,7 +2376,6 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return finalList;
 	}
-	
 	@Override
 	public List<LocationWiseBoothDetailsVO> getAllDistricts(Long stateId){
 		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
@@ -2419,5 +2450,5 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return idNameVOList;
 	}
-	
+		
 }

@@ -5370,4 +5370,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		return null;
 	}
+	
+	public List<BasicVO> getElectionTypes(){
+		 try{
+			 return locationDashboardService.getElectionTypes();
+		 }catch(Exception e){
+			 log.error("Exception raised at getElectionTypes", e);
+		 }
+		return null;
+	 }
 }
