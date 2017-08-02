@@ -1,4 +1,4 @@
-
+var spinner = '<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'
 	function showAndHideTabs(searchType)
 	{
 		 $('#basicCommitteeTab, #publicrepresantativeTab, #mandalaffiliatedTab').removeClass('arrow_selected');
@@ -1865,10 +1865,12 @@ $(document).on("click","#deleteMembrsBtn",function(){
 			});
 	
 });
+//$("#cadreSerialNoWiseId").hide();
 $(document).on("change","#committeeLocationId1",function(){
+	
 	$("#cadreSerialNoWiseId").html('');
 	$("#cadreSerialNoWiseId").show();
-	$("#cadreDetailsDiv1").html('');
+	$("#cadreDetailsDiv1").html('<img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
   var boothNO = $("#committeeLocationId1").val();
   var jsObj =
 		{
@@ -1894,31 +1896,37 @@ $(document).on("change","#committeeLocationId1",function(){
 });
 
 function buildBoothSearchDetails(result){
-	
-	$("#cadreDetailsDiv1").html('');
-	
+$("#cadreDetailsDiv1").show();
+//$("#cadreDetailsDiv1").html(spinner);
 	$("#cadreSerialNoWiseId").html('SERIAL NO WISE CADRE DETAILS');
 	
 	var str='';
-	 sublist = result.casteList;
-	
+	var total=0;
+	 var sublist = result.casteList;
+	 
 	str+='<table class ="table table-bordered" id="bothWiseRangeId">';
 		str +='<thead>';
-			str +='<tr class="text-center">';
-			for (var i in sublist){
-		
-				str +='<th style="background-color:#d3d3d3;">'+sublist[i].finalRangeStr+'</th>';
-			}
-			str +='</tr>';
 		str +='</thead>';
 		str +='<tbody>';
-			str +='<tr>';
-				for (var i in sublist){
-					
-					str +='<td>'+sublist[i].totalCount+'</td>';
-				}
+		str +='<tr style="background-color:#d3d3d3">';
+			str +='<th class="text-center">'+'SERIAL NO RANGE'+'</th>';
+				str +='<th class="text-center">'+'AVAILABLE CADRE'+'</th>';
 				str +='</tr>';
-				$("#cadreDetailsDiv1").html(str);
+			for (var i in sublist){
+				str +='<tr class="text-center">';
+				str +='<td class="text-center">'+sublist[i].finalRangeStr+'</td>';
+
+				str +='<td class="text-center">'+sublist[i].totalCount+'</td>';
+				total=total+sublist[i].totalCount;
+				str +='</tr>';
+			}
+			str +='<tr class="text-center">';
+			str +='<td class="text-center">'+'TOTAL'+'</td>';
+				str +='<td class="text-center">'+total+'</td>';
+				str +='</tr>';
+				
 		str +='</tbody>';
 	str+='</table>';
-}
+	$("#cadreDetailsDiv1").html(str);
+	
+} 
