@@ -1791,6 +1791,7 @@
 	<bean id="locationDashboardAction" class="com.itgrids.partyanalyst.web.action.LocationDashboardAction" singleton="false">
 		<property name="locationDashboardService" ref="locationDashboardService"/>
 		<property name="constituencyPageService" ref="constituencyPageService"/>
+		<property name="cadreCommitteeService" ref="cadreCommitteeService"/>
 	</bean>	
 	<bean id="cadrePartyMeetingManagementAction" class="com.itgrids.partyanalyst.web.action.CadrePartyMeetingManagementAction" singleton="false">
 			<property name="cadrePartyMeetingManagementService" ref="cadrePartyMeetingManagementService"/>
