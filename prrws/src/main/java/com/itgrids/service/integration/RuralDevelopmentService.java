@@ -270,19 +270,28 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 	 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().equalsIgnoreCase("WaterBudget")){
-	 	    					vo.setTarget(jObj.getLong("TGT"));
-	 	    					vo.setAchivement(jObj.getString("ACHMT"));
-		 	    				vo.setAchmtGT0(jObj.getString("ACHMTGT0"));
-		 	    				vo.setAchmtLT0(jObj.getString("ACHMTLT0"));
-		 	    				vo.setBalance(jObj.getString("BALANCE"));
+	 	    					if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat"))
+	 	    						vo.setWaterBudgtUploaded(jObj.getString("WTR_BDGT_UPLDED"));
+	 	    					else{
+	 	    						vo.setTarget(jObj.getLong("TGT"));
+	 	    						vo.setAchivement(jObj.getString("ACHMT"));
+			 	    				vo.setAchmtGT0(jObj.getString("ACHMTGT0"));
+			 	    				vo.setAchmtLT0(jObj.getString("ACHMTLT0"));
+			 	    				vo.setBalance(jObj.getString("BALANCE"));
+	 	    					}
+	 	    					
 		 	    				vo.setArea(jObj.getString("AREA"));
 		 	    				vo.setGross(jObj.getString("GROSS"));
 		 	    				vo.setStroageCap(jObj.getString("STRG_CAP"));
 		 	    				vo.setBalanceRunOff(jObj.getString("BALANCERUNOFF"));
+		 	    				if(vo.getTarget() != null && vo.getTarget().longValue() > 0l && vo.getAchivement() != null && Long.valueOf(vo.getAchivement()) > 0l)
+	 	    						vo.setPercSant(new BigDecimal(Long.valueOf(vo.getAchivement())*100.00/vo.getTarget()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    					else
+	 	    						vo.setPercSant("0.00");
 	 	    				}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().equalsIgnoreCase("GH")){
 	 	    					
-	 	    					if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("state") || inputVO.getLocationType().trim().equalsIgnoreCase("district")) &&
-	 	    					   inputVO.getSublocationType() != null && (inputVO.getSublocationType().trim().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().equalsIgnoreCase("district")))
+	 	    					if(inputVO.getSublocationType() != null && (inputVO.getSublocationType().trim().equalsIgnoreCase("state") || 
+	 	    					   inputVO.getSublocationType().trim().equalsIgnoreCase("district")))
 	 	    							vo.setTarget(jObj.getLong("DISTRICT_TARGET"));
 	 	    					
 	 	    					vo.setSanctionedTarget(jObj.getString("SANCTION_TARGET"));

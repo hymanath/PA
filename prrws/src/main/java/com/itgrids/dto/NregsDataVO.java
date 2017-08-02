@@ -12,7 +12,7 @@ public class NregsDataVO implements Serializable{
 	private String constituency;
 	private String mandal;
 	private String panchayat;
-	private Long targetPersonDays = 0l;
+	private String targetPersonDays;
 	private Long generatedPersonDays = 0l;
 	private String perAppLB = "0";
 	private String avgWageRate;
@@ -115,6 +115,7 @@ public class NregsDataVO implements Serializable{
 	private String gross;
 	private String stroageCap;
 	private String balanceRunOff;
+	private String waterBudgtUploaded;
 	
 	
 	public String getAchmtGT0() {
@@ -477,12 +478,6 @@ public class NregsDataVO implements Serializable{
 	public void setPanchayat(String panchayat) {
 		this.panchayat = panchayat;
 	}
-	public Long getTargetPersonDays() {
-		return targetPersonDays;
-	}
-	public void setTargetPersonDays(Long targetPersonDays) {
-		this.targetPersonDays = targetPersonDays;
-	}
 	public Long getGeneratedPersonDays() {
 		return generatedPersonDays;
 	}
@@ -686,6 +681,18 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setCompletedKms(String completedKms) {
 		this.completedKms = completedKms;
+	}
+	public String getWaterBudgtUploaded() {
+		return waterBudgtUploaded;
+	}
+	public void setWaterBudgtUploaded(String waterBudgtUploaded) {
+		this.waterBudgtUploaded = waterBudgtUploaded;
+	}
+	public String getTargetPersonDays() {
+		return targetPersonDays;
+	}
+	public void setTargetPersonDays(String targetPersonDays) {
+		this.targetPersonDays = targetPersonDays;
 	}
 	
 }

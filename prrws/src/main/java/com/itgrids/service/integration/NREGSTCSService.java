@@ -319,6 +319,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PernnialService/PernnialOverview";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnnualsService/AnnualsOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("UGDrainage"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/UGDrainageService/UGDrainageOverview";
 			
 			String str = convertingInputVOToString(inputVO);
 			
@@ -342,7 +344,8 @@ public class NREGSTCSService implements INREGSTCSService{
  	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Rural House") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
  	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
  	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
- 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs") && inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")))){
+ 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs") && inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")) ||
+ 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("UGDrainage") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")))){
 	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
 	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
 	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
@@ -610,7 +613,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
-	 	    				vo.setTargetPersonDays(jObj.getLong("TARGETPERSONDAYS"));
+	 	    				vo.setTargetPersonDays(jObj.getString("TARGETPERSONDAYS"));
 	 	    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
 	 	    				vo.setPerAppLB(jObj.getString("PER_APP_LB"));
 	 	    				vo.setWageExpenditure(jObj.getString("WAGEEXPENDITURE"));
@@ -794,6 +797,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PernnialService/PernnialData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnnualsService/AnnualsData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("UGDrainage"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/UGDrainageService/UGDrainageData";
 			
 			 str = convertingInputVOToString(inputVO);
 			 
@@ -815,7 +820,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 			 	    				vo.setMandal(jObj.getString("MANDAL"));
 			 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
-			 	    				vo.setTargetPersonDays(jObj.getLong("TARGETPERSONDAYS"));
+			 	    				vo.setTargetPersonDays(jObj.getString("TARGETPERSONDAYS"));
 			 	    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
 			 	    				vo.setPerAppLB(jObj.getString("PER_APP_LB"));
 			 	    				vo.setWageExpenditure(jObj.getString("WAGEEXPENDITURE"));
@@ -925,7 +930,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				
 				 	    				list.add(nregsDataVO);	 
 				 	    			}
-			 	    		}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CC Roads")){
+			 	    		}else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("CC Roads") || inputVO.getDivType().trim().toString().equalsIgnoreCase("UGDrainage"))){
 			 	    			for(int i=0;i<finalArray.length();i++){
 			 	    				NregsDataVO nregsDataVO=new NregsDataVO();
 			 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
@@ -2027,7 +2032,9 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CC Roads"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CCRoadsServicesNew/CCRoadsDataNew";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CCRoadsService/CCRoadsData
-			 
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("UGDrainage"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/UGDrainageService/UGDrainageData";
+			
 			String str = convertingInputVOToString(inputVO);
 			
 			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
@@ -2169,7 +2176,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 			 	    				vo.setMandal(jObj.getString("MANDAL"));
 			 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
-			 	    				vo.setTargetPersonDays(jObj.getLong("TARGETPERSONDAYS"));
+			 	    				vo.setTargetPersonDays(jObj.getString("TARGETPERSONDAYS"));
 			 	    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
 			 	    				vo.setPerAppLB(jObj.getString("PER_APP_LB"));
 			 	    				vo.setWageExpenditure(jObj.getString("WAGEEXPENDITURE"));

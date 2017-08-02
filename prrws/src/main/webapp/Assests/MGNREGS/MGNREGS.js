@@ -238,7 +238,7 @@ function onLoadCalls()
 					getNregaLevelsWiseDataFrHorticulture(tableId,levelType,menuLocationType,menuLocationId);
 				else if(divId == "Avenue")//
 					getNregaLevelsWiseDataFrAvenue(tableId,levelType,menuLocationType,menuLocationId);
-				else if(divId == "CC Roads")//
+				else if(divId == "CC Roads"  || divId == "UGDrainage")//
 					getNregaLevelsWiseDataForCCRoads(tableId,levelType,menuLocationType,menuLocationId);
 				else if(divId == "Payments" ) //&& (levelType == "state" || levelType == "district" || levelType == "mandal"))
 					getNregaPaymentsDtlsLocationWise(tableId,levelType,menuLocationType,menuLocationId,'Wage');
@@ -537,7 +537,7 @@ function projectData(divId,levelId,locationId)
 			getNregaLevelsWiseDataFrHorticulture(tableId,dataArr[0],menuLocationType,menuLocationId);
 		else if(divId == "Avenue")//
 			getNregaLevelsWiseDataFrAvenue(tableId,dataArr[0],menuLocationType,menuLocationId);
-		else if(divId == "CC Roads")//
+		else if(divId == "CC Roads" || divId == "UGDrainage")//
 			getNregaLevelsWiseDataForCCRoads(tableId,dataArr[0],menuLocationType,menuLocationId);
 		else if(divId == "Payments")//
 			getNregaPaymentsDtlsLocationWise(tableId,dataArr[0],menuLocationType,menuLocationId,'Wage');
@@ -778,7 +778,7 @@ function buildNREGSProjectsOverview(result,blockName)
 				str+='<div class="row">';
 					for(var i in result)
 					{
-						if(result[i] == "CC Roads" || result[i] == "Anganwadi Buildings" || result[i] == "GP Buildings" || result[i] == "Mandal Buildings"){
+						if(result[i] == "CC Roads" || result[i] == "Anganwadi Buildings" || result[i] == "GP Buildings" || result[i] == "Mandal Buildings" || result[i] == "UGDrainage"){
 							str+='<div class="col-sm-2 m_top10">';
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 									if(result[i].length > 12)
@@ -2968,7 +2968,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 
 
 //var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','CC Roads','Anganwadi','Gram Panchayat Buildings','Mandal buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk worm','Cattle drinking water trough','Raising of Perinnial Fodder','Solid Waste Management','Play Fields','Burial Grounds','Fish Drying Platforms','Fish Ponds','Agriculture Activities','Average Wage','Avg days of emp per HH','HH Comp 100 days','Timely Payments','Horticulture','Avenue'];
-var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','Solid Waste Management','Burial Grounds','Play Fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads','Anganwadi Buildings','GP Buildings','Mandal Buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Cattle Drinking Water Troughs','Raising of Perinnial Fodders','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','NTR Rural House','OPGK-Perinnials','OPGK-Annuals'];
+var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','Solid Waste Management','Burial Grounds','Play Fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads','Anganwadi Buildings','GP Buildings','Mandal Buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Cattle Drinking Water Troughs','Raising of Perinnial Fodders','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','NTR Rural House','OPGK-Perinnials','OPGK-Annuals','UGDrainage'];
 buildNREGSProjectsOverview(overViewArr,'')
 for(var i in overViewArr)
 {
