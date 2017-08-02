@@ -90,7 +90,12 @@
 								<div class="col-sm-4">
 									<label for="committeeLocationId1">SELECT BOOTH <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
 									<select onchange="populateDefaultValue(1);getBoothInchargeRoles();gettingBoothInchargeRoleDetails();" class="form-control" id="committeeLocationId1" ><option value="0">Select Booth </option></select >
-								</div>								
+								</div>		
+																
+								<div class="col-sm-12 m_top20" >
+									<div class="panel-title" id='cadreSerialNoWiseId'></div>
+										<div  id="cadreDetailsDiv1"></div>
+									</div>
 								</div>
 								<div class="row">
 									<div class="col-sm-4" style="margin-top:25px;margin-left:325px;">
