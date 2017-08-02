@@ -1319,4 +1319,5 @@ public interface IConstants {
 	public static final String TRAINING_INVITEE_ROLE_IDS = "1,2,3";
 	public static final List<Long> PARTY_ALERT_SMS_STATUS_IDS = Arrays.asList(2l,3l); 
 	public static final Long PARTY_ALERT_TYPE_ID=1l;
+	public static final List<Long> VISHAKAPATNAM_IDS=Arrays.asList(13l,517l);
 }
