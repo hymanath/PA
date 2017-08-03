@@ -49,4 +49,6 @@ public interface IConstants {
     public static final String MANDAL = "mandal";
     public static final String DISTRICT = "district";
     public static final String CONSTITUENCY = "constituency";
+    public static final String SERVER = "server";
+    public static final String DEFAULT_SCHEDULER_SEVER = "localhost";
 }
