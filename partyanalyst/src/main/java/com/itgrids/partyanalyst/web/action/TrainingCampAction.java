@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.FeedbackInputVO;
 import com.itgrids.partyanalyst.dto.FeedbackQuestionVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -131,8 +132,17 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private String updateStatusId;
 	private Long updateFinalyzeMeetingId;
 	private List<PartyMeetingWSVO> partyMeetingWSVOList;
+	private List<KeyValueVO> keyValueVOlist;
 	
 	
+	public List<KeyValueVO> getKeyValueVOlist() {
+		return keyValueVOlist;
+	}
+
+	public void setKeyValueVOlist(List<KeyValueVO> keyValueVOlist) {
+		this.keyValueVOlist = keyValueVOlist;
+	}
+
 	public List<PartyMeetingWSVO> getPartyMeetingWSVOList() {
 		return partyMeetingWSVOList;
 	}
@@ -1364,11 +1374,11 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			LOG.info("entered into getAllMeetings");
 			jObj = new JSONObject(getTask());
 			
-			List<Long> stateIds = new ArrayList<Long>();
-			List<Long> distIds = new ArrayList<Long>();
-			List<Long> constIds = new ArrayList<Long>();
-			List<Long> manTowDivIds = new ArrayList<Long>();
-			List<Long> villWardIds = new ArrayList<Long>();
+			List<Long> stateIds = new ArrayList<Long>(0);
+			List<Long> distIds = new ArrayList<Long>(0);
+			List<Long> constIds = new ArrayList<Long>(0);
+			List<Long> manTowDivIds = new ArrayList<Long>(0);
+			List<Long> villWardIds = new ArrayList<Long>(0);
 			
 			JSONArray jsonArray = jObj.getJSONArray("sateId");
 			for (int i = 0; i < jsonArray.length(); i++) {
@@ -3283,6 +3293,74 @@ public String getCommentsMeetingDetails(){
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getattendedcountByFeedBacksCounts Action", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getAllMomAtrClickDetails(){
+		try {
+
+			LOG.info("entered into getAllMeetings");
+			
+			String accessType=null;
+			String accessValue=null;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO !=null){
+				accessType = regVO.getAccessType();
+				accessValue = regVO.getAccessValue();
+			}
+			
+			jObj = new JSONObject(getTask());
+			
+			List<Long> stateIds = new ArrayList<Long>();
+			List<Long> distIds = new ArrayList<Long>();
+			List<Long> constIds = new ArrayList<Long>();
+			List<Long> manTowDivIds = new ArrayList<Long>();
+			List<Long> villWardIds = new ArrayList<Long>();
+			
+			JSONArray jsonArray = jObj.getJSONArray("sateId");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				Long sateId1 = Long.valueOf(jsonArray.get(i).toString());
+				stateIds.add(sateId1);
+			}
+			
+			JSONArray jsonArray1 = jObj.getJSONArray("districtId");
+			for (int i = 0; i < jsonArray1.length(); i++) {
+				Long distId1 = Long.valueOf(jsonArray1.get(i).toString());
+				distIds.add(distId1);
+			}
+			
+			JSONArray jsonArray2 = jObj.getJSONArray("constituencyId");
+			for (int i = 0; i < jsonArray2.length(); i++) {
+				Long constId1 = Long.valueOf(jsonArray2.get(i).toString());
+				constIds.add(constId1);
+			}
+			
+			JSONArray jsonArray3 = jObj.getJSONArray("mandalTownDivisonId");
+			for (int i = 0; i < jsonArray3.length(); i++) {
+				Long mtdId1 = Long.valueOf(jsonArray3.get(i).toString());
+				manTowDivIds.add(mtdId1);
+			}
+			
+			JSONArray jsonArray4 = jObj.getJSONArray("villageWardId");
+			for (int i = 0; i < jsonArray4.length(); i++) {
+				Long vwId1 = Long.valueOf(jsonArray4.get(i).toString());
+				villWardIds.add(vwId1);
+			}
+			
+			Long meetingType = jObj.getLong("meetingType");
+			Long locationLevel = jObj.getLong("locationLevel");
+			
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			
+			
+			
+			keyValueVOlist = trainingCampService.getAllMomAtrClickDetails(meetingType,locationLevel,stateIds,distIds,constIds,manTowDivIds,villWardIds,startDate,endDate,jObj.getString("type"),accessType,accessValue);
+			
+		
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllMomAtrClickDetails Action", e);
 		}
 		return Action.SUCCESS;
 	}

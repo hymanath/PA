@@ -1106,19 +1106,19 @@ var jsonGlob = "";
 				}
 				str+='<td attr_type="MINUTE"';
 				if(momFiles > 0)
-					str+=' class="allMomAtrCountsCls"';
+					str+=' class="allMomAtrCountsCls" style="color:green;cursor:pointer"';
 				str+='>'+momFiles+'</td>';
 				str+='<td attr_type="momText"';
 				if(momText > 0)
-					str+=' class="allMomAtrCountsCls"';
+					str+=' class="allMomAtrCountsCls" style="color:green;cursor:pointer"';
 				str+='>'+momText+'</td>';
 				str+='<td attr_type="ATR"';
 				if(atrFiles > 0)
-					str+=' class="allMomAtrCountsCls"';
+					str+=' class="allMomAtrCountsCls" style="color:green;cursor:pointer"';
 				str+='>'+atrFiles+'</td>';
 				str+='<td attr_type="atrText"';
 				if(atrText > 0)
-					str+=' class="allMomAtrCountsCls"';
+					str+=' class="allMomAtrCountsCls" style="color:green;cursor:pointer"';
 				str+='>'+atrText+'</td>';
 				str+='</tr>'
 				str+='</tbody>';
@@ -2228,15 +2228,28 @@ function getVillagesForDistrictId(){
 	$(document).on("click",".allMomAtrCountsCls",function(){
 		var type = $(this).attr("attr_type");
 		jsonGlob["type"]=$(this).attr("attr_type");
-		console.log(jsonGlob);
-		/* $.ajax({
+		$.ajax({
 			type:"POST",
 			url :"getAllMomAtrClickDetailsAction.action",
 			dataType: 'json',
 			data: {task:JSON.stringify(jsonGlob)}
 		}).done(function(result){
-			
-		}); */
+			if(result != null && result.length > 0){
+				var str='';
+				if(type == "MINUTE" || type == "ATR"){
+					for(var i in result){
+						var temp=result[i].name.split("-path-");
+						str+='<div style="border-bottom:1px dashed; padding:5px;"><a href="https://mytdp.com/DocFiles/'+temp[0]+'" target="_tab">'+temp[1]+'</a></div>';
+					}
+				}else if(type == "momText" || type == "atrText"){
+					for(var i in result){
+						str+='<div style="border-bottom:1px dashed; padding:5px;">'+result[i].name+'</div>';
+					}
+				}
+				$("#modelBody").html(str);
+				$("#myModal").modal("show");
+			}
+		});
 	});
 	
  function meetingLevelWiseHideShow(){
