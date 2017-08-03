@@ -17,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -3308,14 +3309,17 @@ public class WebServiceHandler {
 	@Path("/KAIZALA/getKaizalaAlertInfo")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void  getKaizalaAlertInfo(JSONObject obj) {
+	public Response  getKaizalaAlertInfo(JSONObject obj) {
 		try {
 			System.out.println("Kaizala Info : " +obj + "\n New Kaizala Info " + obj.toString());
-			LOG.info("Kaizala Info : " +obj + "\n New Kaizala Info " + obj.toString());
+			LOG.error("Kaizala Info : " +obj + "\n New Kaizala Info " + obj.toString());
+			if(obj !=null)
+				return Response.status(200).entity(obj).build();//set Response 200
 		} catch (Exception e) {
-			System.out.println("Ecxception Occured for  Kaizala Info : " +obj);
+			System.out.println("Exception Occured for  Kaizala Info : " +obj);
 			LOG.error("Exception raised at getKaizalaAlertInfo -", e);
 		}
+		return null;
 	}
 	
 }
