@@ -107,7 +107,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    					Integer z = 56;
 	 	    					long x = y.longValue();
 	 	    					long k = z.longValue();
-	 	    					List<LightMonitoring> LM = districtDAO.getLiveDateForCurrentDateSelection(dateUtilService.getCurrentDateAndTime());
+	 	    					List<LightMonitoring> LM = lightMonitoringDAO.getLiveDateForCurrentDateSelection(dateUtilService.getCurrentDateAndTime());
 	 	    					if(LM != null && LM.size() >0){
 	 	    						for (LightMonitoring lightMonitoring : LM) {
 	 	    							lightMonitoring.setIsDeleted("Y");
@@ -126,7 +126,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 		 		 	    		lightMonitoring.setWorkingLights(x);
 		 		 	    		lightMonitoring.setOnLights(x);
 		 		 	    		lightMonitoring.setOffLights(x);
-		 		 	    		lightMonitoring.setInsertredTime(dateUtilService.getCurrentDateAndTime());
+		 		 	    		lightMonitoring.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		 		 	    		lightMonitoring.setSurveyDate(dateUtilService.getCurrentDateAndTime());
 								lightMonitoring = lightMonitoringDAO.save(lightMonitoring);
 		 		 	    		 
