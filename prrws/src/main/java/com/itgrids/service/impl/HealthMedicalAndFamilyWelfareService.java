@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IDepartmentDiseasesInfoDAO;
 import com.itgrids.dto.DiseasesVO;
-import com.itgrids.dto.FundSchemeVO;
 import com.itgrids.service.IHealthMedicalAndFamilyWelfareService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
@@ -144,37 +143,174 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 			deptIdList = commonMethodsUtilService.makeEmptyListByZeroValue(deptIdList);
 			
 			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,scope,superLocationId);
-			List<DiseasesVO> diseasesVOs = new ArrayList<DiseasesVO>();
+			Date today = dateUtilService.getCurrentDateAndTime();
+			List<Object[]> diseasesListToday = departmentDiseasesInfoDAO.getCaseCountLocationWise(today,today,diseasesIdList,deptIdList,scope,superLocationId);
 			
 			//only diseases wise count
-			buildCaseCountLocationWise(diseasesVOs,diseasesList);
+			List<DiseasesVO> diseasesVOs = buildCaseCountLocationWise(diseasesList,diseasesListToday,scope);
 			return diseasesVOs;
 		}catch(Exception e){
 			LOG.error(" Exception occured in HealthMedicalAndFamilyWelfareService ,getCaseCountLocationWise() ",e);
 		}
 		return null;
 	}
-	public void buildCaseCountLocationWise(List<DiseasesVO> diseasesVOs,List<Object[]> diseasesList){
+	public List<DiseasesVO> buildCaseCountLocationWise(List<Object[]> diseasesList,List<Object[]> diseasesListToday,Long scopeId){
 		try{
+			Map<Long,List<DiseasesVO>> diseasesWiseLocMap = new HashMap<Long,List<DiseasesVO>>();
 			DiseasesVO diseasesVO = null;
-			Long totalCount = 0L;
+			//create Id and name map.
+			Map<Long,String> locIdAndNameMap = new HashMap<Long,String>();
+			initializeVOForCalculation(diseasesWiseLocMap,locIdAndNameMap,diseasesList,scopeId);
+			//build template
+			List<DiseasesVO> diseasesVOs2 = new ArrayList<DiseasesVO>();
+			if(locIdAndNameMap != null && locIdAndNameMap.size() > 0){
+				for(Entry<Long,String> param : locIdAndNameMap.entrySet()){
+					diseasesVO = new DiseasesVO();
+					diseasesVO.setId(param.getKey());
+					diseasesVO.setName(param.getValue());
+					
+					diseasesVO.setTotal(0L);
+					diseasesVO.setTodayTotal(0L);
+					diseasesVO.setTotalPercent(0.0D);
+					
+					diseasesVO.setDengueToday(0L);
+					diseasesVO.setDengueTotal(0L);
+					diseasesVO.setDenguePercent(0.0D);
+					
+					diseasesVO.setMalariaToday(0L);
+					diseasesVO.setMalariaTotal(0L);
+					diseasesVO.setMalariaPercent(0.0D);
+					
+					diseasesVOs2.add(diseasesVO);
+				}
+			}
+			
+			List<DiseasesVO> malariaList = new ArrayList<DiseasesVO>();
+			DiseasesVO tempDiseasesVo = null;
+			//push malaria count
+			if(diseasesWiseLocMap != null && diseasesWiseLocMap.size() > 0){
+				if(diseasesWiseLocMap.get(1L) != null && diseasesWiseLocMap.get(1L).size() > 0){
+					malariaList = diseasesWiseLocMap.get(1L);
+					for(DiseasesVO param : malariaList){
+						tempDiseasesVo = (DiseasesVO) setterAndGetterUtilService.getMatchedVOfromList(diseasesVOs2, "id", param.getId().toString());
+						tempDiseasesVo.setMalariaTotal(param.getCount());
+					}
+				}
+			}
+			//push dengue count
+			if(diseasesWiseLocMap != null && diseasesWiseLocMap.size() > 0){
+				if(diseasesWiseLocMap.get(2L) != null && diseasesWiseLocMap.get(2L).size() > 0){
+					malariaList = diseasesWiseLocMap.get(2L);
+					for(DiseasesVO param : malariaList){
+						tempDiseasesVo = (DiseasesVO) setterAndGetterUtilService.getMatchedVOfromList(diseasesVOs2, "id", param.getId().toString());
+						tempDiseasesVo.setMalariaTotal(param.getCount());
+					}
+				}
+			}
+			//push today count for dengue and malaria->diseasesListToday
+			Map<Long,List<DiseasesVO>> diseasesWiseLocMapForToday = new HashMap<Long,List<DiseasesVO>>();
+			Map<Long,String> locIdAndNameMapForToday = new HashMap<Long,String>();
+			initializeVOForCalculation(diseasesWiseLocMapForToday,locIdAndNameMapForToday,diseasesListToday,scopeId);
+			
+			//push malaria count today
+			if(diseasesWiseLocMapForToday != null && diseasesWiseLocMapForToday.size() > 0){
+				if(diseasesWiseLocMapForToday.get(1L) != null && diseasesWiseLocMapForToday.get(1L).size() > 0){
+					malariaList = diseasesWiseLocMapForToday.get(1L);
+					for(DiseasesVO param : malariaList){
+						tempDiseasesVo = (DiseasesVO) setterAndGetterUtilService.getMatchedVOfromList(diseasesVOs2, "id", param.getId().toString());
+						tempDiseasesVo.setMalariaToday(param.getCount());
+						tempDiseasesVo.setMalariaPercent(commonMethodsUtilService.calculatePercantage(tempDiseasesVo.getMalariaToday(),tempDiseasesVo.getMalariaTotal()));
+					}
+				}
+			}
+			
+			//push dengue count today
+			if(diseasesWiseLocMapForToday != null && diseasesWiseLocMapForToday.size() > 0){
+				if(diseasesWiseLocMapForToday.get(2L) != null && diseasesWiseLocMapForToday.get(2L).size() > 0){
+					malariaList = diseasesWiseLocMapForToday.get(2L);
+					for(DiseasesVO param : malariaList){
+						tempDiseasesVo = (DiseasesVO) setterAndGetterUtilService.getMatchedVOfromList(diseasesVOs2, "id", param.getId().toString());
+						tempDiseasesVo.setDengueToday(param.getCount());
+						tempDiseasesVo.setDenguePercent(commonMethodsUtilService.calculatePercantage(tempDiseasesVo.getDengueToday(),tempDiseasesVo.getDengueTotal()));
+					}
+				}
+			}
+			
+			//push total count
+			if(diseasesVOs2 != null && diseasesVOs2.size() > 0){
+				for(DiseasesVO param : diseasesVOs2){
+					param.setTodayTotal(param.getMalariaToday() + param.getDengueToday());
+					param.setTotal(param.getMalariaTotal() + param.getDengueTotal());
+					param.setTotalPercent(commonMethodsUtilService.calculatePercantage(param.getTodayTotal(),param.getTotal()));
+					if(param.getTotal().longValue() >= 70){
+						param.setColor("red");
+					}else if(param.getTotal().longValue() >= 31){
+						param.setColor("yellow");
+					}else{
+						param.setColor("green");
+					}
+				}
+			}
+			return diseasesVOs2;
+			
+		}catch(Exception e){
+			LOG.error(" Exception occured in HealthMedicalAndFamilyWelfareService ,buildCaseCountLocationWise() ",e);
+		}
+		return null;
+	}
+	public void initializeVOForCalculation(Map<Long,List<DiseasesVO>> diseasesWiseLocMap,Map<Long,String> locIdAndNameMap,List<Object[]> diseasesList,Long scopeId){
+		try{
+			List<DiseasesVO> tempList = null;
+			DiseasesVO diseasesVO = null;
 			if(diseasesList != null && diseasesList.size() > 0){
 				for(Object[] param : diseasesList){
 					diseasesVO = new DiseasesVO();
-					diseasesVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					diseasesVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					totalCount = totalCount + commonMethodsUtilService.getLongValueForObject(param[2]);
-					diseasesVOs.add(diseasesVO);
-				}
-			}
-			if(diseasesVOs != null && diseasesVOs.size() > 0){
-				for(DiseasesVO param : diseasesVOs){
-					param.setPercent(commonMethodsUtilService.calculatePercantage(param.getCount(),totalCount));
+					diseasesVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[4]));
+					diseasesVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[5]));
+					diseasesVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[6]));
+					diseasesVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					diseasesVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[8]));
+					diseasesVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[9]));
+					diseasesVO.setMandalId(commonMethodsUtilService.getLongValueForObject(param[10]));
+					diseasesVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[11]));
+					diseasesVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[12]));
+					diseasesVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[13]));
+					if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+						diseasesVO.setId(diseasesVO.getDistrictId());
+						diseasesVO.setName(diseasesVO.getDistrictName());
+						locIdAndNameMap.put(diseasesVO.getDistrictId(), diseasesVO.getDistrictName());
+					}else if(scopeId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+						diseasesVO.setId(diseasesVO.getParliamentId());
+						diseasesVO.setName(diseasesVO.getParliamentName());
+						locIdAndNameMap.put(diseasesVO.getParliamentId(), diseasesVO.getParliamentName());
+					}else if(scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+						diseasesVO.setId(diseasesVO.getConstituencyId());
+						diseasesVO.setName(diseasesVO.getConstituencyName());
+						locIdAndNameMap.put(diseasesVO.getConstituencyId(), diseasesVO.getConstituencyName());
+					}else if(scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+						diseasesVO.setId(diseasesVO.getMandalId());
+						diseasesVO.setName(diseasesVO.getMandalName());
+						locIdAndNameMap.put(diseasesVO.getMandalId(), diseasesVO.getMandalName());
+					}else if(scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
+						diseasesVO.setId(diseasesVO.getPanchayatId());
+						diseasesVO.setName(diseasesVO.getPanchayatName());
+						locIdAndNameMap.put(diseasesVO.getPanchayatId(), diseasesVO.getPanchayatName());
+					}
+					
+					diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+					
+					tempList = diseasesWiseLocMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(tempList == null){
+						tempList = new ArrayList<DiseasesVO>();
+						tempList.add(diseasesVO);
+					}else{
+						tempList.add(diseasesVO);
+					}
+					diseasesWiseLocMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), tempList);
 				}
 			}
 		}catch(Exception e){
-			LOG.error(" Exception occured in HealthMedicalAndFamilyWelfareService ,buildCaseCountLocationWise() ",e);
+			LOG.error(" Exception occured in HealthMedicalAndFamilyWelfareService ,initializeVOForCalculation() ",e);
 		}
 	}
 	/*

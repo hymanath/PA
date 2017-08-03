@@ -77,9 +77,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 				+ " left join locationAddress.constituency constituency "
 				+ " left join locationAddress.parliament parliament "
 				+ " left join locationAddress.tehsil  tehsil "
-				+ " left join locationAddress.panchayat panchayat "
-				
-				);
+				+ " left join locationAddress.panchayat panchayat ");
 		queryStr.append(" where model.isDeleted ='N' ");
 		
 		if(searchScopeValuesList != null && searchScopeValuesList.size()>0){
