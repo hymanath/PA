@@ -109,8 +109,8 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    					long k = z.longValue();
 	 	    					List<LightMonitoring> LM = districtDAO.getLiveDateForCurrentDateSelection(dateUtilService.getCurrentDateAndTime());
 	 	    					if(LM != null && LM.size() >0){
-	 	    						for (LightMonitoring lightMonitor : LM) {
-	 	    							lightMonitor.setIsDeleted("Y");
+	 	    						for (LightMonitoring lightMonitoring : LM) {
+	 	    							lightMonitoring.setIsDeleted("Y");
 	 	    							
 	 	    							lightMonitoringDAO.save(lightMonitoring);
 									}
