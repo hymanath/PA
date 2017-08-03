@@ -16,4 +16,5 @@ public interface IPartyMeetingMinuteDAO extends GenericDao<PartyMeetingMinute,Lo
 	public List<Object[]> getMinuteDetailsForMeetings(List<Long> partyMeetingIds);
 	public List<Long> getMOMHavingMeetings(List<Long> partyMeetingIds);
 	public List<Object[]> getPartyMeetingMinuteRetrieveDetails(Long minuteId);
+	public List<Object[]> getMinuteDetailsForMeetingsList(List<Long> partymeetingIdsList,String accessType,List<Long> accessValues);
 }

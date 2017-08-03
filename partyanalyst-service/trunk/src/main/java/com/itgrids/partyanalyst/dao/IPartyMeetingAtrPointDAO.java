@@ -13,4 +13,5 @@ public interface IPartyMeetingAtrPointDAO extends GenericDao<PartyMeetingAtrPoin
 	public Integer deleteMeetingAtrPoint(Long atrId,Long updatedBy,Date updatedTime);
 	public List<Object[]> getAtrPointsOfMeetings(List<Long> partyMeetingIds);
 	public List<Long> getAtrHavingMeetings(List<Long> partyMeetingIds);
+	public List<Object[]> getAtrDetailsForMeetingsList(List<Long> partyMeetingIdsList);
 }

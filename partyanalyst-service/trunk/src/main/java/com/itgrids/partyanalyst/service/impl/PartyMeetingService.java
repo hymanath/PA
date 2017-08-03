@@ -4608,7 +4608,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 	public PartyMeetingVO getDocumentsForMeetingId(Long partyMeetingId){
 		PartyMeetingVO returnVO = new PartyMeetingVO();
 		try{
-			List<Long> updationDetIdList = new ArrayList<Long>();
+			List<Long> updationDetIdList = new ArrayList<Long>(0);
 			List<PartyMeetingVO> returnList = new ArrayList<PartyMeetingVO>();
 			Map<Long,List<String>> filePathMap = new LinkedHashMap<Long, List<String>>();
 			List<Object[]> docmentList = partyMeetingUpdationDetailsDAO.getDocumentList(partyMeetingId);
