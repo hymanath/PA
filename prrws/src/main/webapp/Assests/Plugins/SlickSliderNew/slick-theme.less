@@ -8,9 +8,10 @@
 @slick-arrow-color: white;
 @slick-dot-color: black;
 @slick-dot-color-active: @slick-dot-color;
-@slick-prev-character: "←";
-@slick-next-character: "→";
-@slick-dot-character: "•";
+@slick-prev-character: "\e091";
+@slick-next-character: "\e092";
+@glyphicon-font : 'Glyphicons Halflings';
+@slick-dot-character: "�";
 @slick-dot-size: 6px;
 @slick-opacity-default: 0.75;
 @slick-opacity-on-hover: 1;
@@ -85,9 +86,11 @@
     }
     &:before {
         content: @slick-prev-character;
+		font-family:@glyphicon-font;
 		color:@black_color;
         &[dir="rtl"] {
             content: @slick-next-character;
+			font-family:@glyphicon-font;
 			color:@black_color;
         }
     }
@@ -103,9 +106,11 @@
     }
     &:before {
         content: @slick-next-character;
+		font-family:@glyphicon-font;
 		color:@black_color;
         &[dir="rtl"] {
             content: @slick-prev-character;
+			font-family:@glyphicon-font;
 			color:@black_color;
         }
     }
