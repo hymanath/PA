@@ -43,13 +43,13 @@ function onloadCalls(){
 		getAllDistricts("mandalDistrictNames","DISTRICTS");
 		//District
 		getDrainsInfoLocationWise("district",'0','','0','',"districtView",0);
-		getIvrSurveyQuestions("districtView");
+		//getIvrSurveyQuestions("districtView");
 		//constituency
 		getDrainsInfoLocationWise("assembly",'0','','0','',"assemblyView",0);
-		getIvrSurveyQuestions("assemblyView");
+		//getIvrSurveyQuestions("assemblyView");
 		//Mandal
 		getDrainsInfoLocationWise("mandal",'0','','0','',"mandalView",0);
-		getIvrSurveyQuestions("mandalView");
+		//getIvrSurveyQuestions("mandalView");
 	}else if(globallevelId == 3){
 		$(".tableMenu li:nth-child(1)").addClass("active");
 		$(".tableMenu li:nth-child(2)").hide();
@@ -681,9 +681,29 @@ function buildingTable(result,locationType,divId){
 		"iDisplayLength": 10,
 		"aaSorting": [],
 		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-		"dom": 'Blfrtip',
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 		buttons: [
-			'copy', 'excel', 'pdf', 'print'
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV',
+				title:	   locationType,
+				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o"></i>',
+				titleAttr: 'PDF',
+				title:	   locationType,
+				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				orientation: "landscape",
+				pageSize:'A3',
+				customize: function (doc) {
+					doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+				}
+			}
 		]
 	});	
 }
@@ -1268,9 +1288,29 @@ function buildIvrTableView(result,resultType,divId){
 		"iDisplayLength": 10,
 		"aaSorting": [],
 		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-		"dom": 'Blfrtip',
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 		buttons: [
-			'copy', 'excel', 'pdf', 'print'
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV',
+				title:	   divId,
+				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o"></i>',
+				titleAttr: 'PDF',
+				title:	   divId,
+				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				orientation: "landscape",
+				pageSize:'A3',
+				customize: function (doc) {
+					doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+				}
+			}
 		]
 	});
 }
