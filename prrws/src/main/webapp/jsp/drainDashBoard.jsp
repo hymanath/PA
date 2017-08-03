@@ -304,7 +304,7 @@
 									</div>
 								</div>
 								<div id="districtViewTableDivId" class="row"></div>
-								<div class="panel panel-black panel-default">
+								<!--<div class="panel panel-black panel-default">
 									<div class="panel-heading ivrReponseStyle" >
 										<div class="row">
 											<div class="col-sm-4">
@@ -330,7 +330,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div>-->
 							</div>
 						</div>
                     </div>
@@ -361,7 +361,7 @@
 										<div id="assemblyViewTableDivId"></div>
 									</div>
 								</div>
-								<div class="row">
+								<!--<div class="row">
 									<div class="col-sm-12">
 										<div class="panel panel-black panel-default">
 											<div class="panel-heading ivrReponseStyle" >
@@ -392,7 +392,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div>-->
 							</div>
 						</div>
                     </div>
@@ -427,7 +427,7 @@
 										<div id="mandalViewTableDivId"></div>
 									</div>
 								</div>
-								<div class="panel panel-black panel-default">
+								<!--<div class="panel panel-black panel-default">
 									<div class="panel-heading ivrReponseStyle" >
 										<div class="row">
 											<div class="col-sm-4">
@@ -454,7 +454,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div>-->
 							</div>
 						</div>
                     </div>
