@@ -45,4 +45,9 @@ public class HealthMedicalAndFamilyWelfareController {
 		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getCaseCountDateWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getRangeType());
 		return diseasesList;
 	}
+	@PostMapping("/getLocationDtlsRankWise")
+	public @ResponseBody List<DiseasesVO> getLocationDtlsRankWise(@RequestBody InputVO inputVO){
+		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getLocationDtlsRankWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList());
+		return diseasesList;
+	}
 }

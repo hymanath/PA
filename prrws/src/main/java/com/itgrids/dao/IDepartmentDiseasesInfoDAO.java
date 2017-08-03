@@ -13,4 +13,5 @@ public interface IDepartmentDiseasesInfoDAO extends GenericDao<DepartmentDisease
 	public List<Object[]> getCaseCountDateWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList);
 	public List<Object[]> getTotLocationsDiseasesWiseCount(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId);
 	public List<String> getMonthAndYear(Date fromDate,Date toDate);
+	public List<Object[]> getLocationDtlsRankWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId);
 }
