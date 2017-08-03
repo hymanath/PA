@@ -98,15 +98,11 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    	 {
 	 	    		List<LightMonitoringVO> resultData = processLightData(output);
 	 	    		 
-	 	    		/* if(resultData != null && resultData.size() > 0)
-	 	    		 {*/
-	 	    			 /*for(LightMonitoringVO lightMonitoringVO : resultData)
-	 	    			 {*/
+	 	    		if(resultData != null && resultData.size() > 0)
+	 	    		 {
+	 	    			 for(LightMonitoringVO lightMonitoringVO : resultData)
+	 	    			 {
 	 	    				 try{
-	 	    					Integer y = 1;
-	 	    					Integer z = 56;
-	 	    					long x = y.longValue();
-	 	    					long k = z.longValue();
 	 	    					List<LightMonitoring> LM = lightMonitoringDAO.getLiveDateForCurrentDateSelection(dateUtilService.getCurrentDateAndTime());
 	 	    					if(LM != null && LM.size() >0){
 	 	    						for (LightMonitoring lightMonitoring : LM) {
@@ -118,42 +114,41 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    					
 		 	    				LightMonitoring lightMonitoring = new LightMonitoring();
 		 	    				
-		 		 	    		lightMonitoring.setPanchayatId(k);
-		 		 	    		lightMonitoring.setTotalPanels(x);
-		 		 	    		lightMonitoring.setTotalPoles(x);
-		 		 	    		lightMonitoring.setTotalLights(x);
-		 		 	    		lightMonitoring.setNotWorkingLights(x);
-		 		 	    		lightMonitoring.setWorkingLights(x);
-		 		 	    		lightMonitoring.setOnLights(x);
-		 		 	    		lightMonitoring.setOffLights(x);
+		 		 	    		lightMonitoring.setPanchayatId(lightMonitoringVO.getPanchayatId());
+		 		 	    		lightMonitoring.setTotalPanels(lightMonitoringVO.getTotalPanels());
+		 		 	    		lightMonitoring.setTotalPoles(lightMonitoringVO.getTotalPoles());
+		 		 	    		lightMonitoring.setTotalLights(lightMonitoringVO.getTotalLights());
+		 		 	    		lightMonitoring.setNotWorkingLights(lightMonitoringVO.getNotWorkingLights());
+		 		 	    		lightMonitoring.setWorkingLights(lightMonitoringVO.getWorkingLights());
+		 		 	    		lightMonitoring.setOnLights(lightMonitoringVO.getOnLights());
+		 		 	    		lightMonitoring.setOffLights(lightMonitoringVO.getOffLights());
 		 		 	    		lightMonitoring.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		 		 	    		lightMonitoring.setSurveyDate(dateUtilService.getCurrentDateAndTime());
 								lightMonitoring = lightMonitoringDAO.save(lightMonitoring);
 		 		 	    		 
-		 		 	    		/*List<LightWattageVO> wattageList =  lightMonitoringVO.getWattageList();
+		 		 	    		List<LightWattageVO> wattageList =  lightMonitoringVO.getWattageList();
 		 		 	    		
 		 		 	    		if(wattageList != null && wattageList.size()>0)
 		 		 	    		{
 		 		 	    			for(LightWattageVO lightWattageVO : wattageList)
-		 		 	    			{*/
+		 		 	    			{
 										LightWattage wattage = new LightWattage();
-		 		 	    				wattage.setWattage(x);
-		 		 	    				wattage.setLightCount(x);
+										wattage.setWattage(lightWattageVO.getWattage());
+		 		 	    				wattage.setLightCount(lightWattageVO.getLightCount());
 		 		 	    				wattage.setLightMonitoringId(lightMonitoring.getLightMonitoringId());
 		 		 	    	            lightWattageDAO.save(wattage);	 		 		 	    		
-		 		 		 	    	//}
-		 		 		 	  //  }	 		 	    				 	    				
-		 		 	    	}
-	 	    			 catch (Exception e) {
+		 		 		 	    	}
+		 		 		 	    }	 		 	    				 	    				
+		 		 	    	}catch (Exception e) {
 	 	    				 LOG.error(e);
 	 	    			 }
 	 	    			 
 	 	    		}
 	 	    		   status.setStatusCode(0);
 	 		 		   status.setMessage("SUCCESS");
-	 	    	  }
-	 	     // }
-	 	      //}	  
+	 	    		 }
+	 	    	 }
+	 	       }	  
 	 	     } catch (Exception e) {
 				 status.setStatusCode(1);
 	 		 	 status.setMessage("FALURE");
