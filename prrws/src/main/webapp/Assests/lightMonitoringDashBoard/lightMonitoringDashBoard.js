@@ -1,4 +1,4 @@
-alert("hai");
+
 getStatusByLightMonitoringOverview();
 getStatusByLightMonitoringVillagesData();
 
@@ -39,4 +39,22 @@ function getStatusByLightMonitoringVillagesData(){
 		
 	});
 	
+}
+saveRealtimeStatusByVillages();
+function saveRealtimeStatusByVillages(){
+		var json = {
+
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'saveRealtimeStatusByVillages',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+		});
+		
 }
