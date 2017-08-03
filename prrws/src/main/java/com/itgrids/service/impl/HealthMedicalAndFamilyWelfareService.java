@@ -569,10 +569,67 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 				}
 		   }
     	}catch(Exception e){
-    		LOG.error("Error occured getMonthWeekAndDays() method of AlertManagementSystemService",e);
+    		LOG.error("Error occured getMonthWeekAndDays() method of HealthMedicalAndFamilyWelfareService",e);
     	}
 		
 		return returnDays;
+	}
+	/*
+	 * Swadhin K Lenka
+	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getLocationDtlsRankWise(java.lang.String, java.lang.String, java.util.List, java.util.List)
+	 */
+	public List<DiseasesVO> getLocationDtlsRankWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList){
+		try{
+			
+			DiseasesVO diseasesVO = null;
+			List<DiseasesVO> diseasesVOs = new ArrayList<DiseasesVO>();
+			
+			Date startDate = commonMethodsUtilService.stringTODateConvertion(fromDateStr,"dd/MM/yyyy","");
+			Date endDate = commonMethodsUtilService.stringTODateConvertion(toDateStr,"dd/MM/yyyy","");
+			diseasesIdList = commonMethodsUtilService.makeEmptyListByZeroValue(diseasesIdList);
+			deptIdList = commonMethodsUtilService.makeEmptyListByZeroValue(deptIdList);
+			Long scopeId = 5L;
+			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getLocationDtlsRankWise(startDate,endDate,diseasesIdList,deptIdList,scopeId);
+			
+			if(diseasesList != null && diseasesList.size() > 0){
+				for(Object[] param : diseasesList){
+					diseasesVO = new DiseasesVO();
+					diseasesVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[3]));
+					diseasesVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[4]));
+					diseasesVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[5]));
+					diseasesVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[6]));
+					diseasesVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[7]));
+					diseasesVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[8]));
+					diseasesVO.setMandalId(commonMethodsUtilService.getLongValueForObject(param[9]));
+					diseasesVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[10]));
+					diseasesVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[11]));
+					diseasesVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[12]));
+					if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+						diseasesVO.setId(diseasesVO.getDistrictId());
+						diseasesVO.setName(diseasesVO.getDistrictName());
+					}else if(scopeId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+						diseasesVO.setId(diseasesVO.getParliamentId());
+						diseasesVO.setName(diseasesVO.getParliamentName());
+					}else if(scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+						diseasesVO.setId(diseasesVO.getConstituencyId());
+						diseasesVO.setName(diseasesVO.getConstituencyName());
+					}else if(scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+						diseasesVO.setId(diseasesVO.getMandalId());
+						diseasesVO.setName(diseasesVO.getMandalName());
+					}else if(scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
+						diseasesVO.setId(diseasesVO.getPanchayatId());
+						diseasesVO.setName(diseasesVO.getPanchayatName());
+					}
+					
+					diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					diseasesVOs.add(diseasesVO);
+				}
+			}
+			return diseasesVOs;
+		}catch(Exception e){
+			LOG.error("Error occured getLocationDtlsRankWise() method of HealthMedicalAndFamilyWelfareService",e);
+		}
+		return null;
 	}
 	/*public void buildCaseCountLocationWise(List<DiseasesVO> diseasesVOs,List<Object[]> diseasesList){
 		try{

@@ -122,7 +122,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 				sb.append(" panchayat.panchayatId ");
 			}
 		}
-		sb.append("order by sum(departmentDiseasesInfo.noOfCases) ");
+		sb.append("order by departmentDiseasesInfo.diseasesId ");
 		Query query = getSession().createQuery(sb.toString());
 		if(startDate != null && endDate != null){
 			query.setDate("startDate", startDate);
@@ -229,6 +229,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		//query.setMaxResults(5);
 		return query.list();
 	}
+	@Override
 	public List<String> getMonthAndYear(Date fromDate,Date toDate){
         StringBuilder queryStr = new StringBuilder();
         
@@ -256,4 +257,86 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
           sqlQuery.setDate("toDate", toDate);
           return sqlQuery.list();
    }
+	@Override
+	public List<Object[]> getLocationDtlsRankWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select ");
+		if(scopeId != null && scopeId.longValue() > 0){
+			if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+				sb.append(" district.districtId, "//0
+						+ " district.districtName, ");//1
+			}else if(scopeId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+				sb.append(" parliament.constituencyId, "
+						+ " parliament.name, ");
+			}else if(scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+				sb.append(" constituency.constituencyId, "
+						+ " constituency.name, ");
+			}else if(scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+				sb.append(" tehsil.tehsilId, "
+						+ " tehsil.tehsilName, ");
+			}else if(scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
+				sb.append(" panchayat.panchayatId, "
+						+ " panchayat.panchayatName, ");
+			}
+		}
+		sb.append(" sum(departmentDiseasesInfo.noOfCases), "//2
+				+ " district.districtId,"//3
+				+ " district.districtName, "//4
+				+ " parliament.constituencyId, "//5
+				+ " parliament.name, "//6
+				+ " constituency.constituencyId, "//7
+				+ " constituency.name, "//8
+				+ " tehsil.tehsilId, "//9
+				+ " tehsil.tehsilName, "//10
+				+ " panchayat.panchayatId, "//11
+				+ " panchayat.panchayatName, ");//12
+		sb.append(" sum(departmentDiseasesInfo.noOfCases) "
+				+ " from DepartmentDiseasesInfo departmentDiseasesInfo "
+				+ " left join departmentDiseasesInfo.locationAddress locationAddress "
+				+ " left join locationAddress.district district "
+				+ " left join locationAddress.state state "
+				+ " left join locationAddress.constituency constituency "
+				+ " left join locationAddress.parliament parliament "
+				+ " left join locationAddress.tehsil tehsil "
+				+ " left join locationAddress.panchayat panchayat "
+				+ " where departmentDiseasesInfo.isDeleted = 'N' ");
+		
+		
+		if(startDate != null && endDate != null){
+			sb.append(" and date(departmentDiseasesInfo.reportedDate) between :startDate and :endDate ");
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.diseases.diseasesId in (:diseasesIdList) ");
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		sb.append("group by ");
+		if(scopeId != null && scopeId.longValue() > 0){
+			if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+				sb.append(" district.districtId ");
+			}else if(scopeId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+				sb.append(" parliament.constituencyId ");
+			}else if(scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+				sb.append(" constituency.constituencyId ");
+			}else if(scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+				sb.append(" tehsil.tehsilId ");
+			}else if(scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
+				sb.append(" panchayat.panchayatId ");
+			}
+		}
+		sb.append("order by sum(departmentDiseasesInfo.noOfCases) desc ");
+		Query query = getSession().createQuery(sb.toString());
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			query.setParameterList("diseasesIdList", diseasesIdList);
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			query.setParameterList("deptIdList", deptIdList);
+		}
+		return query.list();
+	}
 }
