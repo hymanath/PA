@@ -66,7 +66,11 @@ $(document).on("click","[collapse-click]",function(){
 		subLocType = 'constituency';
 		divId = $(this).attr("overview-level");
 	}
-	if(divId == 'constituency')
+	if(divId == 'district')
+	{
+		subLocType = 'district';
+	}
+	else if(divId == 'constituency')
 	{
 		subLocType = 'constituency';
 	}else if(divId == 'mandal')

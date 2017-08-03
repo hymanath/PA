@@ -284,9 +284,9 @@ function onLoadCalls()
 		getWebserviceHealthDetails(glStartDateForWebservice,glEndDateForWebservice);
 	});
 	function getWebserviceHealthDetails(fromDate,toDate){
-	$("#webserviceDetailsModalDivId").modal('show');
-	$("#webserviceDetailsModalId").html(spinner);    
-	var json = {
+		$("#webserviceDetailsModalDivId").modal('show');
+		$("#webserviceDetailsModalId").html(spinner);    
+		var json = {
 					fromDate : fromDate,    
 					toDate : toDate, 
 				};
@@ -624,10 +624,42 @@ function tableView(blockId,theadArr,result,locationType)
 	tableView+='<div class="table-responsive">';
 		tableView+='<table class="table table-bordered dataTable'+blockId+'">';
 			tableView+='<thead class="text-capital">';
-				for(var i in theadArr)
+				if(theadArr == 'Payments')
 				{
-					tableView+='<th>'+theadArr[i]+'</th>';
+					tableView+='<tr>';
+						if(locationType == 'state')
+						{
+							tableView+='<th rowspan="2">State</th>';
+						}else if(locationType == 'district'){
+							tableView+='<th rowspan="2">District</th>';
+						}else if(locationType == 'constituency'){
+							tableView+='<th rowspan="2">District</th>';
+							tableView+='<th rowspan="2">Constituency</th>';
+						}else if(locationType == 'mandal'){
+							tableView+='<th rowspan="2">District</th>';
+							tableView+='<th rowspan="2">Constituency</th>';
+							tableView+='<th rowspan="2">Mandal</th>';
+						}
+						tableView+='<th rowspan="2">Type</th>';
+						tableView+='<th rowspan="2">Total Amount Generated</th>';
+						tableView+='<th rowspan="2">Total Pending</th>';
+						tableView+='<th colspan="5">Details Of Pending Amount</th>';
+						tableView+='<th rowspan="2">Regenerated out of rejected</th>';
+					tableView+='</tr>';
+					tableView+='<tr>';
+						tableView+='<th>FTO s not generated</th>';
+						tableView+='<th>FTO s not uploaded</th>';
+						tableView+='<th>Not sent to Bank</th>';
+						tableView+='<th>Pending at Bank</th>';
+						tableView+='<th>Rejected</th>';
+					tableView+='</tr>';
+				}else{
+					for(var i in theadArr)
+					{
+						tableView+='<th>'+theadArr[i]+'</th>';
+					}					
 				}
+				
 			tableView+='</thead>';
 			tableView+='<tbody>';
 				tableView+=result;
@@ -3063,100 +3095,6 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 	});
 }
 
-function getNregaLevelsWiseDataForNewFTOPayments(divIdd,locationType,menuLocationType,menuLocationId,buildType)
-{
-	$("#"+divIdd).html(spinner);
-	var theadArr = [locationType,'Type','Total Payments','Total Amount','total pending amount','Not Generated fto Amount','Not Uploaded fto Amount','Not sent To Bank fto Amount','Pending at bank FTO Amount','Failed Transaction fto Amount'];
-	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Type','Total Payments','Total Amount','total pending amount','Not Generated fto Amount','Not Uploaded fto Amount','Not sent To Bank fto Amount','Pending at bank FTO Amount','Failed Transaction fto Amount'];
-	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Type','Total Payments','Total Amount','total pending amount','Not Generated fto Amount','Not Uploaded fto Amount','Not sent To Bank fto Amount','Pending at bank FTO Amount','Failed Transaction fto Amount'];
-	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Type','Total Payments','Total Amount','total pending amount','Not Generated fto Amount','Not Uploaded fto Amount','Not sent To Bank fto Amount','Pending at bank FTO Amount','Failed Transaction fto Amount'];
-	
-	var menuSelName = $("#selectedName").text();
-	
-	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-		toDate : glEndDate,
-		locationType: menuLocationType,
-		divType : globalDivName,
-		locationId : menuLocationId,
-		sublocaType : locationType,
-		type:buildType
-	}
-	$.ajax({
-		url: 'getNregaLevelsWiseDataForNewFTOPayments',
-		data: JSON.stringify(json),
-		type: "POST",
-		dataType: 'json', 
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success: function(ajaxresp) {
-			var str = '';
-			if(ajaxresp != null && ajaxresp.length > 0){
-				for(var i in ajaxresp){
-					str+='<tr>';
-						if(locationType == "state"){
-							str+='<td class="text-capital">'+locationType+'</td>';
-						}
-						else if(locationType == "district" && menuLocationType == "district"){
-							str+='<td class="text-capital">'+menuSelName+'</td>';
-						}
-						else if(locationType == "district"){
-							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
-						}
-						else if(locationType == "constituency"){
-							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constName+'</td>';
-						}
-						else if(locationType == "mandal"){
-							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constName+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandalName+'</td>';
-						}
-						else if(locationType == "panchayat"){
-							str+='<td class="text-capital">'+ajaxresp[i].districtName+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].constName+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].mandalName+'</td>';
-							str+='<td class="text-capital">'+ajaxresp[i].panchayatName+'</td>';
-						}
-						 /* if(locationType == "state")
-							str+='<td class="text-capital">'+locationType+'</td>';
-						else if(locationType == "district")
-							str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
-						else if(locationType == "constituency")
-							str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
-						else if(locationType == "mandal")
-							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-						else if(locationType == "panchayat")
-							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>'; */ 
-						
-						str+='<td>'+ajaxresp[i].type+'</td>';
-						str+='<td>'+ajaxresp[i].totalPayments+'</td>';
-						str+='<td>'+ajaxresp[i].totalAmount+'</td>';
-						//str+='<td>'+ajaxresp[i].totalPendings+'</td>';
-						str+='<td>'+ajaxresp[i].totalPendinAmount+'</td>';
-						//str+='<td>'+ajaxresp[i].generatedPendingQuantity+'</td>';
-						str+='<td>'+ajaxresp[i].generatedPendingAmount+'</td>';
-						//str+='<td>'+ajaxresp[i].uploadPendingQunatity+'</td>';
-						str+='<td>'+ajaxresp[i].uploadPendingAmount+'</td>';
-						//str+='<td>'+ajaxresp[i].sentToBankPendingQuantity+'</td>';
-						str+='<td>'+ajaxresp[i].sentToBankPendingAmount+'</td>';
-						//str+='<td>'+ajaxresp[i].pendingAtBankQuantity+'</td>';
-						str+='<td>'+ajaxresp[i].pendingAtBankAmount+'</td>';
-						//str+='<td>'+ajaxresp[i].failedTransactionQuantity+'</td>';
-						str+='<td>'+ajaxresp[i].failedTransactionAmount+'</td>';
-					str+='</tr>';
-				}
-			}
-			tableView(divIdd,theadArr,str,locationType);
-		}
-	});
-}
  //getNregaParliamentData();
 function getNregaParliamentData()
 {
@@ -3254,12 +3192,21 @@ function buildPaymentsOverviewData(result,projectDivId)
 				str+='<div class="row">';
 					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Total</h5>';
-							str+='<p>Total Amount Generated : '+result[0].totalAmount+'</p>	';
-							str+='<p>Wage Amount : '+result[0].totalWage+'</p>';
-							str+='<p>Material Amount : '+result[0].totalMaterial+'</p>';
+							str+='<h5 class="text-danger">Total Generated / Total Pending</h5>';
+							str+='<p>Total Amount Generated : '+result[0].totalAmount+' / '+result[0].totalPendinAmount+'</p>	';
+							str+='<p>Wage Amount : '+result[0].totalWage+' / '+result[0].pendingWage+'</p>';
+							str+='<p>Material Amount : '+result[0].totalMaterial+' / '+result[0].pendingMaterial+'</p>';
 						str+='</div>';
 					str+='</div>';
+					//demodata
+					/*str+='<div class="col-sm-4">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Total Generated / Total Pending</h5>';
+							str+='<p>Total Amount : '+result[0].totalAmount+' / '+result[0].totalReprocessPendingAmount+'</p>';
+							str+='<p>Wage Amount :'+result[0].releasePendingWageAmount+' / '+result[0].reprocessPendingWageAmount+'</p>';
+							str+='<p>Material Amount : '+result[0].releasePendingMaterialAmount+' / '+result[0].reprocessPendingMaterialAmount+'</p>';
+						str+='</div>';
+					str+='</div>';*/
 					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
 							str+='<h5 class="text-danger">FTO Generated / Not Generated</h5>';
@@ -3306,88 +3253,6 @@ function buildPaymentsOverviewData(result,projectDivId)
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
-	
-	/* str+='<div class="row">';
-		str+='<div class="col-sm-12">';
-			str+='<h4 class="text-center"><strong>Fund Transfer Order - Payments</strong></h4>';
-			str+='<div class="row">';
-				str+='<div class="col-sm-4">';
-					str+='<h4 class="panel-title text-capital">total fto - '+result.totalPayments+' (<i class="fa fa-inr"></i> '+result.totalAmount+')</h4>';
-					str+='<div class="row m_top10">';
-						str+='<div class="col-sm-6">';
-							str+='<p class="text-capital"><strong>wages - '+result.totalWage+'</strong></p>';
-							str+='<p class="text-capitalize m_top10">Completed</p>';
-							str+='<p><strong>'+result.completedWage+'</strong> (<i class="fa fa-inr"></i> '+result.completedWageAmount+')</p>';
-							str+='<p class="text-capitalize">Pending</p>';
-							str+='<p><strong>'+result.pendingWage+'</strong> (<i class="fa fa-inr"></i> '+result.pendingWageAmount+')</p>';
-							str+='<p class="text-capitalize">Failed</p>';
-							str+='<p><strong>'+result.failedWage+'</strong> (<i class="fa fa-inr"></i> '+result.failedWageAmount+')</p>';
-						str+='</div>';
-						str+='<div class="col-sm-6">';
-							str+='<p class="text-capital"><strong>material - '+result.totalMaterial+'</strong></p>';
-							str+='<p class="text-capitalize m_top10">Completed</p>';
-							str+='<p><strong>'+result.completedMaterial+'</strong> (<i class="fa fa-inr"></i> '+result.completedMaterialAmount+')</p>';
-							str+='<p class="text-capitalize">Pending</p>';
-							str+='<p><strong>'+result.pendingMaterial+'</strong> (<i class="fa fa-inr"></i> '+result.pendingMaterialAmount+')</p>';
-							str+='<p class="text-capitalize">Failed</p>';
-							str+='<p><strong>'+result.failedMaterial+'</strong> (<i class="fa fa-inr"></i> '+result.failedMaterialAmount+')</p>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-8 m_top20">';
-					str+='<table class="table table-bordered">';
-						str+='<thead>';
-							str+='<th style="padding:20px;">';
-								str+='<div class="row">';
-									str+='<div class="col-sm-12">';
-										str+='<h4 class="text-capital panel-title text-center"><p style="padding:3px 8px;background-color:#ccc">generated - '+result.totalGenerates+'</p> <p class="m_top3">(<i class="fa fa-inr"></i> '+result.totalGeneratesAmount+')</p></h4>';
-									str+='</div>';
-									str+='<div class="col-sm-6 m_top20">';
-										str+='<p>Wages</p>';
-										str+='<p>'+result.generatedWage+' </p> <p class="">(<i class="fa fa-inr"></i> '+result.generatedWageAmount+')</p>';
-									str+='</div>';
-									str+='<div class="col-sm-6 m_top20">';
-										str+='<p>Material</p>';
-										str+='<p>'+result.generatedMaterial+' </p> <p class="">(<i class="fa fa-inr"></i> '+result.generatedMaterialAmount+')</p>';
-									str+='</div>';
-								str+='</div>';
-							str+='</th>';
-							str+='<th style="padding:20px;">';
-								str+='<div class="row">';
-									str+='<div class="col-sm-12">';
-										str+='<h4 class="text-capital panel-title text-center"><p style="padding:3px 8px;background-color:#ccc">uploaded - '+result.totalUploads+' </p> <p class="m_top3">(<i class="fa fa-inr"></i> '+result.totalUploadsAmount+')</p></h4>';
-									str+='</div>';
-									str+='<div class="col-sm-6 m_top20">';
-										str+='<p>Wages</p>';
-										str+='<p>'+result.uploadWage+' </p> <p class="">(<i class="fa fa-inr"></i> '+result.uploadedWageAmount+')</p>';
-									str+='</div>';
-									str+='<div class="col-sm-6 m_top20">';
-										str+='<p>Material</p>';
-										str+='<p>'+result.uploadMaterial+' </p> <p class="">(<i class="fa fa-inr"></i> '+result.uploadedMaterialAmount+')</p>';
-									str+='</div>';
-								str+='</div>';
-							str+='</th>';
-							str+='<th style="padding:20px;">';
-								str+='<div class="row">';
-									str+='<div class="col-sm-12">';
-										str+='<h4 class="text-capital panel-title text-center"><p style="padding:3px 8px;background-color:#ccc">sent to bank - '+result.totalSentBankS+' </p> <p class="m_top3">(<i class="fa fa-inr"></i> '+result.totalSentBankAmount+')</p></h4>';
-									str+='</div>';
-									str+='<div class="col-sm-6 m_top20">';
-										str+='<p>Wages</p>';
-										str+='<p>'+result.sentBankWage+' </p> <p class="">(<i class="fa fa-inr"></i> '+result.sentBankWageAmount+')</p>';
-									str+='</div>';
-									str+='<div class="col-sm-6 m_top20">';
-										str+='<p>Material</p>';
-										str+='<p>'+result.sentBankMaterial+' </p> <p class="">(<i class="fa fa-inr"></i> '+result.sentBankMaterialAmount+')</p>';
-									str+='</div>';
-								str+='</div>';
-							str+='</th>';
-						str+='</thead>';
-					str+='</table>';
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-	str+='</div>'; */
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str);
 }
 
@@ -4331,13 +4196,7 @@ function getNregaPaymentsAbsAndOverviewDtls(type,locType,locId,levelId,buildType
 function getNregaPaymentsDtlsLocationWise(divIdd,locationType,menuLocationType,menuLocationId,buildType)
 {
 	$("#"+divIdd).html(spinner);
-	var theadArr = [locationType,'Type','Total Amount','FTO not generated Amount','FTO generated Amount','FTO not uploaded Amount','FTO uploaded Amount','Not Sent to Bank Amount','Sent to PFMS Amount','Success Amount','Rejected Amount','Release Pending Amount','Response Pending Amount','Reprocess Amount'];
-	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Type','Total Amount','FTO not generated Amount','FTO generated Amount','FTO not uploaded Amount','FTO uploaded Amount','Not Sent to Bank Amount','Sent to PFMS Amount','Success Amount','Rejected Amount','Release Pending Amount','Response Pending Amount','Reprocess Amount'];
-	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Type','Total Amount','FTO not generated Amount','FTO generated Amount','FTO not uploaded Amount','FTO uploaded Amount','Not Sent to Bank Amount','Sent to PFMS Amount','Success Amount','Rejected Amount','Release Pending Amount','Response Pending Amount','Reprocess Amount'];
-	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Type','Total Amount','FTO not generated Amount','FTO generated Amount','FTO not uploaded Amount','FTO uploaded Amount','Not Sent to Bank Amount','Sent to PFMS Amount','Success Amount','Rejected Amount','Release Pending Amount','Response Pending Amount','Reprocess Amount'];
+	var theadArr = 'Payments';
 	
 	var menuSelName = $("#selectedName").text();
 	if(buildType == 'Wage')
@@ -4435,18 +4294,21 @@ function getNregaPaymentsDtlsLocationWise(divIdd,locationType,menuLocationType,m
 							str+='<td class="text-capital">'+ajaxresp[i].mandalName+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayatName+'</td>';
 						}
+						var pending = 
 						str+='<td>'+ajaxresp[i].type+'</td>';
 						str+='<td>'+ajaxresp[i].totalAmount+'</td>';
+						str+='<td>'+ajaxresp[i].totalPendinAmount+'</td>';
 						str+='<td>'+ajaxresp[i].notGeneratedWagesAmount+'</td>';
-						str+='<td>'+ajaxresp[i].generatedWageAmount+'</td>';
+						//str+='<td>'+ajaxresp[i].generatedWageAmount+'</td>';
 						str+='<td>'+ajaxresp[i].notUploadedWagesAmount+'</td>';
-						str+='<td>'+ajaxresp[i].uploadedWageAmount+'</td>';
+						//str+='<td>'+ajaxresp[i].uploadedWageAmount+'</td>';
 						str+='<td>'+ajaxresp[i].notSentBankWageAmount+'</td>';
-						str+='<td>'+ajaxresp[i].sentBankWageAmount+'</td>';
-						str+='<td>'+ajaxresp[i].completedWageAmount+'</td>';
+						//str+='<td>'+ajaxresp[i].sentBankWageAmount+'</td>';
+						//str+='<td>'+ajaxresp[i].completedWageAmount+'</td>';
+						
+						str+='<td>'+ajaxresp[i].pendingAtBankAmount+'</td>';
 						str+='<td>'+ajaxresp[i].rejectedWagesAmount+'</td>';
-						str+='<td>'+ajaxresp[i].releasePendingWageAmount+'</td>';
-						str+='<td>'+ajaxresp[i].responsePendingWageAmount+'</td>';
+						//str+='<td>'+ajaxresp[i].responsePendingWageAmount+'</td>';
 						str+='<td>'+ajaxresp[i].reprocessPendingWageAmount+'</td>';
 					str+='</tr>';
 				}

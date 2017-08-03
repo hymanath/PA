@@ -4425,6 +4425,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				paymentDtlsVO.setReleasePendingWageAmount(jsonObj.getString("RELEASE_PENDING_AMT"));
 				paymentDtlsVO.setResponsePendingWageAmount(jsonObj.getString("RESPONSE_PENDING_AMT"));
 				paymentDtlsVO.setReprocessPendingWageAmount(jsonObj.getString("REPROCESS_PENDING_AMT"));
+				
+				paymentDtlsVO.setTotalPendinAmount(String.valueOf(Double.valueOf(jsonObj.getString("TOTAL_AMOUNT")) - Double.valueOf(jsonObj.getString("COMPLETED_AMT"))));
+				paymentDtlsVO.setPendingAtBankAmount(String.valueOf(Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")) + Double.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT"))));
 			 } else {
 				paymentDtlsVO.setTotalAmount(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_AMOUNT")));
 				paymentDtlsVO.setGeneratedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("GENERATED_AMT")));
@@ -4438,6 +4441,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				paymentDtlsVO.setReleasePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RELEASE_PENDING_AMT")));
 				paymentDtlsVO.setResponsePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RESPONSE_PENDING_AMT")));
 				paymentDtlsVO.setReprocessPendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REPROCESS_PENDING_AMT")));
+				
+				paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("TOTAL_AMOUNT")) - Double.valueOf(jsonObj.getString("COMPLETED_AMT")))));
+				paymentDtlsVO.setPendingAtBankAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")) + Double.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT")))));
 				}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getPaymentDtlsData - NREGSTCSService service", e);
