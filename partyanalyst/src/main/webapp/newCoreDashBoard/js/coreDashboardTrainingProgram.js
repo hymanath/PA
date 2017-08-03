@@ -102,7 +102,7 @@ var getDocumentWidth = $(document).width();
 						str+='<p class="text-muted text-capital">Total Attended </p>';
 					str+='</td>';
 					str+='<td>';
-						str+='<h4>'+programList[i].inviteeAttended+'&nbsp;</h4>';
+						str+='<h4>'+programList[i].inviteeAttended+'&nbsp;<span class="font-10 text-danger"> '+programList[i].totalAttenedCountPer+'%</span></h4>';
 						str+='<p class="text-muted text-capital">Invitee Attended </p>';
 					str+='</td>';
 					str+='<td>';
@@ -119,7 +119,7 @@ var getDocumentWidth = $(document).width();
           str+='<tr>';
             str+='<td>'+programList[i].locationList[j].name+'</td>';
             str+='<td>'+programList[i].locationList[j].totalAttenedCount+'</td>';
-            str+='<td>'+programList[i].locationList[j].inviteeAttended+'</td>';
+            str+='<td>'+programList[i].locationList[j].inviteeAttended+'<span class="font-10 text-danger"> '+programList[i].locationList[j].totalAttenedCountPer+'%</span></td>';
             str+='<td>'+programList[i].locationList[j].nonInviteeAttended+'</td>';
             str+='<td>'+programList[i].totalNotAttenedCount+'</td>';
           str+='</tr>';
@@ -152,7 +152,7 @@ var getDocumentWidth = $(document).width();
 			str1+='</td>';
 			str1+='<td>';
 				str1+='<p class="text-muted text-capitalize">Invitee Attended</p>';
-				str1+='<h4>'+villageWardRslt.inviteeAttended+'&nbsp;</h4>'
+				str1+='<h4>'+villageWardRslt.inviteeAttended+'&nbsp;<span class="font-10 text-danger"> '+programList[i].totalAttenedCountPer+'%</span></h4>'
 			str1+='</td>';
 			str1+='<td>';
 				str1+='<p class="text-muted text-capitalize">Non Invitee Attended</p>';
@@ -168,7 +168,7 @@ var getDocumentWidth = $(document).width();
 			str1+='<tr>';
             str1+='<td>'+villageWardRslt.locationList[j].name+'</td>';
             str1+='<td>'+villageWardRslt.locationList[j].totalAttenedCount+'</td>';
-            str1+='<td>'+villageWardRslt.locationList[j].inviteeAttended+'</td>';
+            str1+='<td>'+villageWardRslt.locationList[j].inviteeAttended+'<span class="font-10 text-danger"> '+villageWardRslt.locationList[j].totalAttenedCountPer+'%</span></td>';
             str1+='<td>'+villageWardRslt.locationList[j].nonInviteeAttended+'</td>';
 			str1+='<td>'+villageWardRslt.totalNotAttenedCount+'</td>';
             str1+='</tr>';
@@ -199,7 +199,7 @@ var getDocumentWidth = $(document).width();
 			str2+='</td>';
 			str2+='<td>';
 				str2+='<p class="text-muted text-capitalize">Invitee Attended</p>';
-				str2+='<h4>'+mandalTwnDivRslt.inviteeAttended+' </h4>'
+				str2+='<h4>'+mandalTwnDivRslt.inviteeAttended+'&nbsp;<span class="font-10 text-danger"> '+programList[i].totalAttenedCountPer+'%</span> </h4>'
 			str2+='</td>';
 			str2+='<td>';
 				str2+='<p class="text-muted text-capitalize">Non Invitee Attended</p>';
@@ -215,7 +215,7 @@ var getDocumentWidth = $(document).width();
 			str2+='<tr>';
             str2+='<td>'+mandalTwnDivRslt.locationList[j].name+'</td>';
             str2+='<td>'+mandalTwnDivRslt.locationList[j].totalAttenedCount+'</td>';
-            str2+='<td>'+mandalTwnDivRslt.locationList[j].inviteeAttended+'</td>';
+            str2+='<td>'+mandalTwnDivRslt.locationList[j].inviteeAttended+'<span class="font-10 text-danger"> '+mandalTwnDivRslt.locationList[j].totalAttenedCountPer+'%</span></td>';
             str2+='<td>'+mandalTwnDivRslt.locationList[j].nonInviteeAttended+'</td>';
 			str2+='<td>'+mandalTwnDivRslt.totalNotAttenedCount+'</td>';
             str2+='</tr>';
@@ -786,7 +786,7 @@ function buildStateLevelCampAttendedDetails(result){
 			  str+='<tr>';
 				str+='<td>'+result[i].idnameList[j].name+'</td>';
 				str+='<td>'+result[i].idnameList[j].totalCount+'</td>';
-				str+='<td>'+result[i].idnameList[j].inviteeAttnd+'</td>';
+				str+='<td>'+result[i].idnameList[j].inviteeAttnd+'&nbsp;<span class="font-10 text-danger"> '+result[i].idnameList[j].percentage+'%</span></td>';
 				str+='<td>'+result[i].idnameList[j].nonInviteeAttnd+'</td>';
 				
 			  str+='</tr>';
