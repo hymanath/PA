@@ -1,5 +1,6 @@
 package com.itgrids.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.model.District;
+import com.itgrids.model.LightMonitoring;
 
 @Repository
 public class DistrictDAO extends GenericDaoHibernate<District, Long> implements IDistrictDAO {
@@ -408,5 +410,11 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("searchLevelValue", searchLevelValue);
 		return query.list();
+	}
+	public List<LightMonitoring> getLiveDateForCurrentDateSelection(Date date){
+		Query query = getSession().createQuery(" select model from LightMonitoring model where date(model.surveyDate) = :date ");
+		
+		      query.setDate("date", date);
+		return  query.list();
 	}
 }
