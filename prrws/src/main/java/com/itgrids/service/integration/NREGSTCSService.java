@@ -407,10 +407,11 @@ public class NREGSTCSService implements INREGSTCSService{
 					if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
 						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
 				}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
-					if(inputVO.getLocationId().longValue() > 0l)
-						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+					if(inputVO.getDistrictId().longValue() > 0l && inputVO.getDistrictId().longValue() <= 9l){
+						if(inputVO.getLocationId().longValue() > 0l)
+							inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+					}
 				}
-				
 			str = "{";
 			
 			if(inputVO.getFromDate() != null )
@@ -3411,7 +3412,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			inputVO.setLocationId(districtId);
 			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Ground"))
 	    		  inputVO.setType("Burial Grounds");
-	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi "))
+	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi"))
 	    		  inputVO.setType("Anganwadi Buildings");
 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Gram Panchayat Buildings"))
 	    		  inputVO.setType(" GP Buildings");
@@ -3470,7 +3471,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
 		 	    				vo.setPercentage(jObj.getString("PERC"));
 		 	    				
-		 	    				if(voList != null && voList.get(0) != null && voList.size() > 0l){
+		 	    				if(voList != null && voList.size() > 0l){
 		 	    					voList.get(0).getSubList().add(vo);
 		 	    				}else{
 		 	    					NregsProjectsVO newVO = new NregsProjectsVO();
@@ -3744,7 +3745,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				else if(vo.getParameter().contains("district") || vo.getParameter().contains("District") || vo.getParameter().contains("DISTRICT"))
 	 	    					vo.setType("DISTRICT");
 	 	    				
-	 	    				if(returnList.get(0) != null && returnList.size() > 0l){
+	 	    				if(returnList != null && returnList.size() > 0l){
 	 	    					returnList.get(0).getSubList().add(vo);
 	 	    				}else{
 	 	    					NregsProjectsVO newVO = new NregsProjectsVO();
