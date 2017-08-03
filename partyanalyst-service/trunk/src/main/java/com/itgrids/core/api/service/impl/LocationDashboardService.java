@@ -24,6 +24,7 @@ import org.jfree.util.Log;
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
@@ -58,6 +59,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
+import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -69,6 +71,7 @@ import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.EnrollmentYear;
 import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -108,6 +111,17 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
 	private IDistrictDAO districtDAO;
 	private IDistrictConstituenciesDAO districtConstituenciesDAO;
+	private ICandidateDAO candidateDAO;
+	private ICadreCommitteeService cadreCommitteeService;
+	
+	
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
 	
 	public IPublicationDateDAO getPublicationDateDAO() {
 		return publicationDateDAO;
@@ -319,7 +333,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			IDistrictConstituenciesDAO districtConstituenciesDAO) {
 		this.districtConstituenciesDAO = districtConstituenciesDAO;
 	}
-	@SuppressWarnings("unchecked")
+
+	public ICandidateDAO getCandidateDAO() {
+		return candidateDAO;
+	}
+	public void setCandidateDAO(ICandidateDAO candidateDAO) {
+		this.candidateDAO = candidateDAO;
+	}
 	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId) {
 		String electionType = "";
 		String deformDate = "";
@@ -2409,6 +2429,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return finalList;
 	}
+	
+	/**
+	 * @param  Long stateId
+	 * @return List<LocationWiseBoothDetailsVO>
+	 * @author sanjeev 
+	 * @Description :This Service Method is used to get All Distrits in a State
+	 *  @since 02-AUG-2017
+	 */
 	@Override
 	public List<LocationWiseBoothDetailsVO> getAllDistricts(Long stateId){
 		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
@@ -2436,6 +2464,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return idNameVOList;
 	}
+	
+	/**
+	 * @param  Long districtId
+	 * @return List<LocationWiseBoothDetailsVO>
+	 * @author sanjeev 
+	 * @Description :This Service Method is used to get All Constituencies in a District
+	 *  @since 02-AUG-2017
+	 */
 	@Override
 	public List<LocationWiseBoothDetailsVO> getAllConstituenciesByDistrict(Long districtId) {
 		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
@@ -2482,6 +2518,79 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			LOG.error("Exception raised in getAllConstituencysForADistrict", e);
 		}
 		return idNameVOList;
+	}
+	
+	/**
+	 * @param  String fromDate,toDate
+	 * @param loctionType,locationValue
+	 * @param electionScopeIds
+	 * @return List<ElectionInformationVO>
+	 * @author Sanjeev 
+	 * @Description :This Service Method is used to get All party results based on location
+	 *  @since 02-AUG-2017
+	 */
+	@Override
+	public List<ElectionInformationVO> getElectionInformationLocationWise(String fromDateStr, String toDateStr, Long locationTypeId,Long locationValue, List<Long> electionScopeIds) {
+		List<ElectionInformationVO> electionInformationVOList= new ArrayList<ElectionInformationVO>();
+		try{
+			List<Long> yearsList=  new ArrayList<Long>();
+			List<Long> tehsilIds = new ArrayList<Long>();
+			List<Long> electionBodyIds =new ArrayList<Long>();
+				List<LocationWiseBoothDetailsVO> mandalsAndElecBdy= cadreCommitteeService.getMandalsByConstituency(locationValue);
+				for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : mandalsAndElecBdy) {
+					if(locationWiseBoothDetailsVO != null){
+						if(locationWiseBoothDetailsVO.getLocationId().compareTo(0l)!=0){
+							char c= locationWiseBoothDetailsVO.getLocationId().toString().charAt(0);
+							if(c=='2'){
+								Long tehsilId=Long.valueOf(locationWiseBoothDetailsVO.getLocationId().toString().substring(1));
+								tehsilIds.add(tehsilId);
+							}else if(c=='1'){
+								electionBodyIds.add(Long.valueOf(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
+							}
+						}
+						
+					}
+				}
+				
+			if(fromDateStr != null && !fromDateStr.trim().isEmpty() && toDateStr != null && !toDateStr.trim().isEmpty()){
+				Long fromYear = Long.parseLong(fromDateStr.split("-")[2]);
+				Long toYear = Long.parseLong(toDateStr.split("-")[2]);
+				
+				for (Long i = fromYear; i <= toYear; i++) {
+					yearsList.add(i);
+				}
+			}
+			List<Object[]> resultArray= candidateDAO.getElectionInformationLocationWise(yearsList, locationTypeId, locationValue, electionScopeIds, electionBodyIds, tehsilIds);
+			for (Object[] param : resultArray) {
+				if(param!=null){
+					ElectionInformationVO electionInformationVO = new ElectionInformationVO();
+					electionInformationVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					electionInformationVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					electionInformationVO.setElectionId(commonMethodsUtilService.getLongValueForObject(param[2]));
+					electionInformationVO.setElectionYear(commonMethodsUtilService.getStringValueForObject(param[3]));
+					electionInformationVO.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[4]));
+					electionInformationVO.setElectionType(commonMethodsUtilService.getStringValueForObject(param[5]));
+					electionInformationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[6]));
+					electionInformationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					electionInformationVO.setTotalVoters(commonMethodsUtilService.getLongValueForObject(param[8]));
+					electionInformationVO.setValidVoters(commonMethodsUtilService.getLongValueForObject(param[9]));
+					electionInformationVO.setMissedVotes(commonMethodsUtilService.getLongValueForObject(param[10]));
+					electionInformationVO.setRejectedVotes(commonMethodsUtilService.getLongValueForObject(param[11]));
+					electionInformationVO.setEarnedVotes(commonMethodsUtilService.getLongValueForObject(param[12]));
+					electionInformationVO.setEarnedVotesPerc(commonMethodsUtilService.getLongValueForObject(param[13]));
+					electionInformationVO.setMarginVotes(commonMethodsUtilService.getLongValueForObject(param[14]));
+					electionInformationVO.setWonSeatsCount(commonMethodsUtilService.getLongValueForObject(param[15]));
+					electionInformationVOList.add(electionInformationVO);
+				}
+				
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in getElectionInformationLocationWise", e);
+
+		}
+		
+		return electionInformationVOList;
 	}
 		
 }
