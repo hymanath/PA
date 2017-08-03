@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
+import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationTargetDAO;
@@ -66,6 +67,7 @@ import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.model.CasteCategory;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.EnrollmentYear;
+import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -100,12 +102,19 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private INominatedPostApplicationDAO nominatedPostApplicationDAO;
 	private IBoardLevelDAO boardLevelDAO;
 	private IElectionTypeDAO electionTypeDAO;
+	private IPublicationDateDAO publicationDateDAO;
 	//Activity
 	private IActivityDAO activityDAO;
 	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
 	private IDistrictDAO districtDAO;
 	private IDistrictConstituenciesDAO districtConstituenciesDAO;
-
+	
+	public IPublicationDateDAO getPublicationDateDAO() {
+		return publicationDateDAO;
+	}
+	public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
+		this.publicationDateDAO = publicationDateDAO;
+	}
 	public IDistrictDAO getDistrictDAO() {
 		return districtDAO;
 	}
@@ -1253,6 +1262,30 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			electionTypesData.setName(electionType.getElectionType());
 			electionTypesData.setDescription(electionType.getScope());
 			finalList.add(electionTypesData);
+		}
+		return finalList;
+	}
+	
+	
+	/*
+     * @author R Nagarjuna Gowd
+     * @return BasicVO object contains publication table data
+     * (non-Javadoc)
+     * @see com.itgrids.core.api.service.ILocationDashboardService#getElectionTypes()
+     * Date 02-08-2017
+     */
+	
+	public List<BasicVO> getPublications() {
+		List<BasicVO> finalList = new ArrayList<BasicVO>();
+		List<PublicationDate> publications = publicationDateDAO.getAll();
+		for (PublicationDate publication : publications) {
+			BasicVO publicationData = new BasicVO();
+			publicationData.setId(publication.getPublicationDateId());
+			publicationData.setName(publication.getName());
+			publicationData.setDate(publication.getDate().toString());
+			publicationData.setDay(publication.getMonth().longValue());//month
+			publicationData.setTotalResult(publication.getYear().longValue());//year
+			finalList.add(publicationData);
 		}
 		return finalList;
 	}

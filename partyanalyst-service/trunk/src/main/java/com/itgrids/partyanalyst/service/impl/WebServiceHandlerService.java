@@ -5379,4 +5379,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 }
 		return null;
 	 }
+	
+	public List<BasicVO> getPublications(){
+		 try{
+			 return locationDashboardService.getPublications();
+		 }catch(Exception e){
+			 log.error("Exception raised at getPublications", e);
+		 }
+		return null;
+	}
 }
