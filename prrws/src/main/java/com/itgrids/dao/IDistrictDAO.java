@@ -46,5 +46,4 @@ public interface IDistrictDAO extends GenericDao<District,Long>{
 	public List<Object[]> getMGNREGSLocationIdfromMGNREGSLocationId(String searchLocationValue);
 	public List<Object[]> getPRISLocationIdfromPRISLocationId(String searchLocationValue);
 	public List<Object[]> getENSLocationIdfromENSLocationId(String searchLocationValue);
-	public List<LightMonitoring> getLiveDateForCurrentDateSelection(Date date);
 }

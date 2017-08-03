@@ -1,53 +1,56 @@
 package com.itgrids.model;
 
-
-
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-/*
- * Date : 02/08/2017
- * Author :Swapna
- * @description : saveRealtimeStatusByVillages
- */
+
 @Entity
 @Table(name = "light_monitoring")
-public class LightMonitoring  {
-	
-	
-	private Long lightMonitoringId;	
-	private Panchayat panchayat;
-	private Long totalLights;
-	private Long totalPanels;
-	private Long totalPoles;
-    private Long workingLights;
-	private Long onLights;
-	private Long offLights;
-	private Long notWorkingLights;
-	private String isDeleted;
-	private Date insertredTime;
-	private Date surveyDate;
-	
-	private Long panchayatId;
+public class LightMonitoring {
+
+	public Long lightMonitoringId;
+	public Long panchayatId;
+	public Long panchayatName;
+	public Long totalLights;
+	public Long totalPoles;
+	public Long totalPanels;
+	public Long workingLights;
+	public Long notWorkingLights;
+	public Long onLights;
+	public Long offLights;
+	public Date surveyDate;
+	public Date insertedTime;
+	public String isDeleted;
 	
 	@Id
-	@Column(name = "light_monitoring_id")
+	@Column(name="light_monitoring_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	public Long getLightMonitoringId() {
 		return lightMonitoringId;
 	}
-	
 	public void setLightMonitoringId(Long lightMonitoringId) {
 		this.lightMonitoringId = lightMonitoringId;
+	}
+	
+	@Column(name="panchayat_id")
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	
+	@Column(name="panchayat_name")
+	public Long getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(Long panchayatName) {
+		this.panchayatName = panchayatName;
 	}
 	
 	@Column(name="total_lights")
@@ -58,14 +61,6 @@ public class LightMonitoring  {
 		this.totalLights = totalLights;
 	}
 	
-	@Column(name="total_panels")
-	public Long getTotalPanels() {
-		return totalPanels;
-	}
-	public void setTotalPanels(Long totalPanels) {
-		this.totalPanels = totalPanels;
-	}
-	
 	@Column(name="total_poles")
 	public Long getTotalPoles() {
 		return totalPoles;
@@ -74,20 +69,12 @@ public class LightMonitoring  {
 		this.totalPoles = totalPoles;
 	}
 	
-	@Column(name="on_lights")
-	public Long getOnLights() {
-		return onLights;
+	@Column(name="total_panels")
+	public Long getTotalPanels() {
+		return totalPanels;
 	}
-	public void setOnLights(Long onLights) {
-		this.onLights = onLights;
-	}
-	@Column(name="off_lights")
-	public Long getOffLights() {
-		return offLights;
-	}
-	
-	public void setOffLights(Long offLights) {
-		this.offLights = offLights;
+	public void setTotalPanels(Long totalPanels) {
+		this.totalPanels = totalPanels;
 	}
 	
 	@Column(name="working_lights")
@@ -106,50 +93,45 @@ public class LightMonitoring  {
 		this.notWorkingLights = notWorkingLights;
 	}
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "panchayat_id", insertable = false, updatable = false)
-	public Panchayat getPanchayat() {
-		return panchayat;
+	@Column(name="on_lights")
+	public Long getOnLights() {
+		return onLights;
 	}
-
-	public void setPanchayat(Panchayat panchayat) {
-		this.panchayat = panchayat;
+	public void setOnLights(Long onLights) {
+		this.onLights = onLights;
 	}
-
-	@Column(name="is_deleted")
-	public String getIsDeleted() {
-		return isDeleted;
+	
+	@Column(name="off_lights")
+	public Long getOffLights() {
+		return offLights;
 	}
-
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setOffLights(Long offLights) {
+		this.offLights = offLights;
 	}
-
-	@Column(name="inserted_time")
-	public Date getInsertredTime() {
-		return insertredTime;
-	}
-
-	public void setInsertredTime(Date insertredTime) {
-		this.insertredTime = insertredTime;
-	}
-
+	
 	@Column(name="survey_date")
 	public Date getSurveyDate() {
 		return surveyDate;
 	}
-
 	public void setSurveyDate(Date surveyDate) {
 		this.surveyDate = surveyDate;
 	}
-
-	@Column(name="panchayat_id")
-	public Long getPanchayatId() {
-		return panchayatId;
+	
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
 	}
-
-	public void setPanchayatId(Long panchayatId) {
-		this.panchayatId = panchayatId;
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}
+	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 	
 }
