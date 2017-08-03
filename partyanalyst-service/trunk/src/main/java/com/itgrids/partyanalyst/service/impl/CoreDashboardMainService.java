@@ -3384,10 +3384,14 @@ String committeType){
 		  List<Object[]> rtrnDistAttendedObj,String locationType,Map<Long,Long> memMaxDayCnt){
 		 try{
 			 
-			 List<Long> inviteeRoles = new ArrayList<Long>();
-				inviteeRoles.add(1l);
-				inviteeRoles.add(2l);
-				inviteeRoles.add(3l);
+			 List<Long> mandalTownDivisionInviteeRoles = new ArrayList<Long>();
+			  	mandalTownDivisionInviteeRoles.add(1l);
+				mandalTownDivisionInviteeRoles.add(2l);
+				mandalTownDivisionInviteeRoles.add(3l);
+
+				List<Long> villageWardInviteeRoles = new ArrayList<Long>();
+				villageWardInviteeRoles.add(1l);
+				villageWardInviteeRoles.add(3l);
 				Long inviteeAttendeForLoc = 0l;
 				Long nonInvitAttForLoc = 0l;
 				Map<Long,Set<Long>> locCadreIdsMap = new HashMap<Long,Set<Long>>();
@@ -3429,18 +3433,20 @@ String committeType){
 						 locCadreIdsMap.put(locId, cadreIds);
 					 }
 					 cadreIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
-					 
+					 Long levelId = commonMethodsUtilService.getLongValueForObject(obj[4]);
 					 if(cadreIds.contains(commonMethodsUtilService.getLongValueForObject(obj[0]))){
 						 Long maxDayForAtt = memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
 						 
 						 TrainingCampProgramVO dayVO = getMatchVOList(vo.getLocationList(), maxDayForAtt);
 						 if(dayVO != null){
-							 	if(inviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(obj[3])) && commonMethodsUtilService.getLongValueForObject(obj[4]) != 0l){
-							 		dayVO.setInviteeAttended(dayVO.getInviteeAttended()+1l);
-							 		 vo.setInviteeAttended(vo.getInviteeAttended()+1l);
+							 if(levelId.longValue()==0L && (levelId != 5L && levelId != 7L && levelId != 9L && levelId != 6L && levelId != 8L)){
+									dayVO.getOthersIds().add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+								}else if((levelId.longValue() == 5L || levelId.longValue() == 7L || levelId.longValue() == 9L) && mandalTownDivisionInviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(obj[3]))){
+									dayVO.getInviteesIds().add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+								}else if((levelId.longValue() == 6L || levelId.longValue() == 8L) && villageWardInviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(obj[3]))){
+									dayVO.getInviteesIds().add(commonMethodsUtilService.getLongValueForObject(obj[0]));
 								}else{
-									dayVO.setNonInviteeAttended(dayVO.getNonInviteeAttended()+1l);
-									vo.setNonInviteeAttended(vo.getNonInviteeAttended()+1l);
+									dayVO.getNonInviteesIds().add(commonMethodsUtilService.getLongValueForObject(obj[0]));
 								}
 						 }
 					 }
@@ -3456,13 +3462,22 @@ String committeType){
 						  else
 							  vo.setNonInviteeAttended(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					  }*/
-					 
-					  
-					  
-					  
 				}
 			 }
 			 
+			 if(commonMethodsUtilService.isMapValid(eligibleMembersMap)){
+		 		  for(TrainingCampProgramVO eligibleAndAttendedVO:eligibleMembersMap.values()){
+						for(TrainingCampProgramVO dayVO :eligibleAndAttendedVO.getLocationList()){
+							dayVO.setInviteeAttended(Long.valueOf(String.valueOf(dayVO.getInviteesIds().size())));
+							dayVO.setNonInviteeAttended(Long.valueOf(String.valueOf(dayVO.getNonInviteesIds().size())));
+							dayVO.setOthersCount(Long.valueOf(String.valueOf(dayVO.getOthersIds().size())));
+							dayVO.setTotalAttenedCount(dayVO.getInviteeAttended()+dayVO.getNonInviteeAttended());
+							eligibleAndAttendedVO.setInviteeAttended(eligibleAndAttendedVO.getInviteeAttended()+dayVO.getInviteeAttended());
+							eligibleAndAttendedVO.setNonInviteeAttended(eligibleAndAttendedVO.getNonInviteeAttended()+dayVO.getNonInviteeAttended());
+							dayVO.getInviteesIds().clear();dayVO.getNonInviteesIds().clear();dayVO.getOthersIds().clear();
+						}
+					}
+				}
 			 if(rtrnDistEligibleObj != null && rtrnDistEligibleObj.size() > 0){
 				 for(Object[] obj : rtrnDistEligibleObj) {
 					TrainingCampProgramVO vo =   eligibleMembersMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
@@ -6399,10 +6414,14 @@ try{
 	  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 		  nameForLocationMap = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
 	  }
-	  	List<Long> inviteeRoles = new ArrayList<Long>();
-		inviteeRoles.add(1l);
-		inviteeRoles.add(2l);
-		inviteeRoles.add(3l);
+	  List<Long> mandalTownDivisionInviteeRoles = new ArrayList<Long>();
+	  	mandalTownDivisionInviteeRoles.add(1l);
+		mandalTownDivisionInviteeRoles.add(2l);
+		mandalTownDivisionInviteeRoles.add(3l);
+
+		List<Long> villageWardInviteeRoles = new ArrayList<Long>();
+		villageWardInviteeRoles.add(1l);
+		villageWardInviteeRoles.add(3l);
 		
  	    if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 			  for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
@@ -6467,7 +6486,7 @@ try{
 					   
 					   List<TrainingCampProgramVO> daysList = new ArrayList<TrainingCampProgramVO>();
 					   
-					   Map<Long,Long> memCnt = new HashMap<Long,Long>();
+					  // Map<Long,Long> memCnt = new HashMap<Long,Long>();
 					   Map<Long,Long> memMaxDayCnt = getMaxDaysAttendedInBatch( batchMemdaysMap , totalAttnd);
 					   if(totalAttnd != null && totalAttnd.size() > 0){
 						   for (Object[] param : totalAttnd) {
@@ -6476,44 +6495,39 @@ try{
 							   if(eligibleAndAttendedVO != null){
 								  // eligibleAndAttendedVO.setTotalAttenedCount(commonMethodsUtilService.getLongValueForObject(param[1]));
 								   Long attendedDaysforBatch = memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-								   
+								   Long levelId = commonMethodsUtilService.getLongValueForObject(param[4]);
 								    	TrainingCampProgramVO dayVO = getMatchVOList(eligibleAndAttendedVO.getLocationList(),attendedDaysforBatch);
 								    		if(dayVO != null){
 								    			
-								    		Long count =memCnt.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-								    		if(count == null){
-								    			memCnt.put(commonMethodsUtilService.getLongValueForObject(param[0]), 1l);
-								    		}else{
-								    			memCnt.put(commonMethodsUtilService.getLongValueForObject(param[0]), count+1l);
-								    		}
-								    		if(count == null){
-									    		if(!inviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(param[3]))){
-													if(dayVO.getNonInviteeAttended() != null )
-														dayVO.setNonInviteeAttended(dayVO.getNonInviteeAttended()+1l);
-													else
-														dayVO.setNonInviteeAttended(1l);
-													
-												}else if(inviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(param[3]))){
-													if(dayVO.getInviteeAttended() != null )
-														dayVO.setInviteeAttended(dayVO.getInviteeAttended()+1l);
-													else
-														dayVO.setInviteeAttended(1l);
-													
+								    			if(levelId.longValue()==0L && (levelId != 5L && levelId != 7L && levelId != 9L && levelId != 6L && levelId != 8L)){
+													dayVO.getOthersIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+												}else if((levelId.longValue() == 5L || levelId.longValue() == 7L || levelId.longValue() == 9L) && mandalTownDivisionInviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(param[3]))){
+													dayVO.getInviteesIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+												}else if((levelId.longValue() == 6L || levelId.longValue() == 8L) && villageWardInviteeRoles.contains(commonMethodsUtilService.getLongValueForObject(param[3]))){
+													dayVO.getInviteesIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 												}else{
-													eligibleAndAttendedVO.setTotalAttenedCount(eligibleAndAttendedVO.getTotalAttenedCount()+1l);
+													dayVO.getNonInviteesIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 												}
-									    		
-									    		dayVO.setTotalAttenedCount(dayVO.getInviteeAttended()+dayVO.getNonInviteeAttended());
-									    		dayVO.setTotalAttenedCountPer(calculatePercantage(dayVO.getNonInviteeAttended(),eligibleAndAttendedVO.getTotalEligibleCount()));  //day wise InviteeAttended  Percentage
-									    		
-								    		}
 								    	}
 								   }
 							   }
 						   }
+					   
 					   }
 			   }  
-		  
+ 	   if(commonMethodsUtilService.isMapValid(eligibleAndAttendedCntMap)){
+ 		  for(TrainingCampProgramVO eligibleAndAttendedVO:eligibleAndAttendedCntMap.values()){
+				for(TrainingCampProgramVO dayVO :eligibleAndAttendedVO.getLocationList()){
+					dayVO.setInviteeAttended(Long.valueOf(String.valueOf(dayVO.getInviteesIds().size())));
+					dayVO.setNonInviteeAttended(Long.valueOf(String.valueOf(dayVO.getNonInviteesIds().size())));
+					dayVO.setOthersCount(Long.valueOf(String.valueOf(dayVO.getOthersIds().size())));
+					dayVO.setTotalAttenedCount(dayVO.getInviteeAttended()+dayVO.getNonInviteeAttended());
+					
+					
+					dayVO.getInviteesIds().clear();dayVO.getNonInviteesIds().clear();dayVO.getOthersIds().clear();
+				}
+			}
+		}
 	  //Pushing Required Count
 	 	  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 		      for(UserTypeVO vo:childActivityMembersMap.values()){
@@ -6535,11 +6549,10 @@ try{
 		    						 memDayVo.setNonInviteeAttended(memDayVo.getNonInviteeAttended()+locDayVO.getNonInviteeAttended());
 		    						 memDayVo.setInviteeAttended(memDayVo.getInviteeAttended()+locDayVO.getInviteeAttended());
 		    						 memDayVo.setTotalAttenedCount(memDayVo.getTotalAttenedCount()+locDayVO.getTotalAttenedCount());
-		    						 memDayVo.setTotalAttenedCountPer(calculatePercantage(memDayVo.getNonInviteeAttended(),eligibleAndAttendedVO.getTotalEligibleCount()));  //day wise InviteeAttended  Percentage
 		    						 
-							    	eligibleAndAttendedVO.setNonInviteeAttended(eligibleAndAttendedVO.getNonInviteeAttended()+locDayVO.getNonInviteeAttended());
-									eligibleAndAttendedVO.setInviteeAttended(eligibleAndAttendedVO.getInviteeAttended()+locDayVO.getInviteeAttended());
-									eligibleAndAttendedVO.setTotalAttenedCount(eligibleAndAttendedVO.getTotalAttenedCount()+locDayVO.getTotalAttenedCount());
+		    						 //eligibleAndAttendedVO.setNonInviteeAttended(eligibleAndAttendedVO.getNonInviteeAttended()+locDayVO.getNonInviteeAttended());
+									//eligibleAndAttendedVO.setInviteeAttended(eligibleAndAttendedVO.getInviteeAttended()+locDayVO.getInviteeAttended());
+									//eligibleAndAttendedVO.setTotalAttenedCount(eligibleAndAttendedVO.getTotalAttenedCount()+locDayVO.getTotalAttenedCount());
 		    					 }
 		    				 }
 		    				 eligibleAndAttendedVO.setTotalNotAttenedCount(eligibleAndAttendedVO.getTotalEligibleCount()-inviteeAttended);
@@ -6572,7 +6585,10 @@ try{
 		      for(UserTypeVO vo:childActivityMembersMap.values()){
 		    	  //vo.getInviteeAttendedCnt() means who are presidents, vice-presidents and General Secretery only eligible people for trainings
 		    	 	 vo.setTotalAttenedCountPer(calculatePercantage(vo.getInviteeAttendedCnt(),vo.getTotalEligibleCount()));  
-		    	 	 vo.setTotalNotAttenedCountPer(calculatePercantage(vo.getTotalNotAttenedCount(),vo.getTotalEligibleCount()));	
+		    	 	 vo.setTotalNotAttenedCountPer(calculatePercantage(vo.getTotalNotAttenedCount(),vo.getTotalEligibleCount()));
+		    	 	for(TrainingCampProgramVO dayVo:vo.getDaysList()){
+		    	 		dayVo.setTotalAttenedCountPer(calculatePercantage(dayVo.getInviteeAttended(),vo.getInviteeAttendedCnt()));  //day wise InviteeAttended  Percentage
+		    	 	}
 		      }
 		}
 	  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
@@ -6813,10 +6829,20 @@ public List<IdNameVO> getStateLevelCampAttendedDetailsDyaWise(
 						
 						dayVO.getInviteeIds().clear();dayVO.getNonInviteeIds().clear();dayVO.getOtherIds().clear();
 					}
+					
 				}
 			}
 		}
-		
+		if(commonMethodsUtilService.isMapValid(idAndIdNameVoMap)){
+			for (Long programId : idAndIdNameVoMap.keySet()) {
+				IdNameVO programVO = idAndIdNameVoMap.get(programId);
+				if(commonMethodsUtilService.isListOrSetValid(programVO.getIdnameList())){
+					for (IdNameVO dayVO : programVO.getIdnameList()) {
+						dayVO.setPercentage(String.valueOf(calculatePercantage(dayVO.getInviteeAttnd(), programVO.getInviteeAttnd())));
+					}
+				}
+			}
+		}
 		
 		
 		idNameVOs = new ArrayList<IdNameVO>(idAndIdNameVoMap.values());
@@ -6974,6 +7000,11 @@ public void setTotalAttendedAndNonInviteeAttended1(List<Object[]> rtrnTtlAttende
 			}
 		}
 		
+		if(commonMethodsUtilService.isListOrSetValid(resultVO.getLocationList())){
+			for (TrainingCampProgramVO dayVO : resultVO.getLocationList()) {
+				dayVO.setTotalAttenedCountPer(calculatePercantage(dayVO.getInviteeAttended(),	resultVO.getInviteeAttended()));
+			}
+		}
 		resultVO.setTotalNotAttenedCount(resultVO.getTotalEligibleCount()- resultVO.getInviteeAttended());
 	} catch (Exception e) {
 		LOG.error("Error occured at setElibibleAndAttendedMemberCntToMap() in CoreDashboardMainService {}",e);
@@ -7045,13 +7076,13 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 					memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), 1l);
 					batchMemdaysMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), memDaysMap);
 				}
+				
 				Long attendedDaysforBatch = memDaysMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 				if (attendedDaysforBatch == null) {
 					memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), 1l);
 				} else {
 					memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),attendedDaysforBatch + 1l);
 				}
-
 			}
 		}
 		Map<Long, Long> memMaxDayCnt = getCountOfMaxDaysAttendedInBatch(batchMemdaysMap, attendedList);// Tdp CAdre max days Vo getting
@@ -7060,7 +7091,7 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 		setElibibleAndAttendedMemberCntToMap(rtrnCommiteeLevelEligibleAndAttendedObjLst, villageWardVO,	"villageWard");
 		villageWardVO.getLocationList().addAll(getDaysList());
 		setTotalAttendedAndNonInviteeAttended1(attendedList, villageWardVO,	"villageWard", memMaxDayCnt);
-		villageWardVO.setTotalAttenedCountPer(calculatePercantage(villageWardVO.getTotalAttenedCount(),	villageWardVO.getTotalEligibleCount()));
+		villageWardVO.setTotalAttenedCountPer(calculatePercantage(villageWardVO.getInviteeAttended(),	villageWardVO.getTotalEligibleCount()));
 		villageWardVO.setTotalNotAttenedCountPer(calculatePercantage(villageWardVO.getTotalNotAttenedCount(),villageWardVO.getTotalEligibleCount()));
 		finalResultVO.setVillageWardVO(villageWardVO);
 		TrainingCampProgramVO manTwnDivVO = new TrainingCampProgramVO();
@@ -7068,7 +7099,7 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 		manTwnDivVO.getLocationList().addAll(getDaysList());
 		setElibibleAndAttendedMemberCntToMap(rtrnCommiteeLevelEligibleAndAttendedObjLst, manTwnDivVO,"mandalTwnDiv");
 		setTotalAttendedAndNonInviteeAttended1(attendedList, manTwnDivVO,"mandalTwnDiv", memMaxDayCnt);
-		manTwnDivVO.setTotalAttenedCountPer(calculatePercantage(manTwnDivVO.getTotalAttenedCount(),	manTwnDivVO.getTotalEligibleCount()));
+		manTwnDivVO.setTotalAttenedCountPer(calculatePercantage(manTwnDivVO.getInviteeAttended(),	manTwnDivVO.getTotalEligibleCount()));
 		manTwnDivVO.setTotalNotAttenedCountPer(calculatePercantage(	manTwnDivVO.getTotalNotAttenedCount(),manTwnDivVO.getTotalEligibleCount()));
 		finalResultVO.setMandalTownDivisionVO(manTwnDivVO);
 
@@ -7077,8 +7108,7 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 			for (Object[] param : rtrnObjLst) {
 				TrainingCampProgramVO programVO = new TrainingCampProgramVO();
 				programVO.getLocationList().addAll(getDaysList());
-				setDayWiseCountToProgramWiseVO(programVO,manTwnDivVO.getLocationList());
-				setDayWiseCountToProgramWiseVO(programVO,villageWardVO.getLocationList());
+				
 				programVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 				programVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 				programVO.setTotalEligibleCount(commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -7088,10 +7118,11 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 				programVO.setTotalAttenedCount(programVO.getInviteeAttended()	+ programVO.getNonInviteeAttended());
 				// programVO.setTotalNotAttenedCount(commonMethodsUtilService.getLongValueForObject(param[4]));
 				programVO.setTotalNotAttenedCount(villageWardVO.getTotalNotAttenedCount()+ manTwnDivVO.getTotalNotAttenedCount());
-				programVO.setTotalAttenedCountPer(calculatePercantage(programVO.getTotalAttenedCount(),programVO.getTotalEligibleCount()));
+				programVO.setTotalAttenedCountPer(calculatePercantage(programVO.getInviteeAttended(),programVO.getTotalEligibleCount()));
 				programVO.setTotalNotAttenedCountPer(calculatePercantage(programVO.getTotalNotAttenedCount(),	programVO.getTotalEligibleCount()));
 				// programVO.setNonInviteeAttended(programVO.getTotalAttenedCount()-programVO.getInviteeAttended());
-				
+				setDayWiseCountToProgramWiseVO(programVO,manTwnDivVO.getLocationList());
+				setDayWiseCountToProgramWiseVO(programVO,villageWardVO.getLocationList());
 				trainingCampProgramDtlsMap.put(programVO.getId(), programVO);
 			}
 		}
@@ -7111,13 +7142,14 @@ public void setDayWiseCountToProgramWiseVO(TrainingCampProgramVO programVO,List<
 		
 		if(list != null && list.size() >0){
 			for(TrainingCampProgramVO dayVo :list){
-				TrainingCampProgramVO matchedVO = getMatchVO(programVO.getLocationList(),dayVo.getId());
-				if(matchedVO != null){
-					matchedVO.setNonInviteeAttended(matchedVO.getNonInviteeAttended() + dayVo.getNonInviteeAttended());
-					matchedVO.setInviteeAttended(matchedVO.getInviteeAttended() + dayVo.getInviteeAttended());
-					matchedVO.setOthersCount(dayVo.getOthersCount());
-				} 
-				matchedVO.setTotalAttenedCount(matchedVO.getTotalAttenedCount()+ dayVo.getTotalAttenedCount()+dayVo.getOthersCount());
+					TrainingCampProgramVO matchedVO = getMatchVO(programVO.getLocationList(),dayVo.getId());
+						if(matchedVO != null){
+							matchedVO.setNonInviteeAttended(matchedVO.getNonInviteeAttended() + dayVo.getNonInviteeAttended());
+							matchedVO.setInviteeAttended(matchedVO.getInviteeAttended() + dayVo.getInviteeAttended());
+							matchedVO.setOthersCount(dayVo.getOthersCount());
+						} 
+					matchedVO.setTotalAttenedCount(matchedVO.getTotalAttenedCount()+ dayVo.getTotalAttenedCount()+dayVo.getOthersCount());
+					matchedVO.setTotalAttenedCountPer(calculatePercantage(matchedVO.getInviteeAttended(),	programVO.getInviteeAttended()));
 				}
 			}
 		
