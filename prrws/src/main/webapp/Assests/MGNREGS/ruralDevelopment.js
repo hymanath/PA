@@ -211,32 +211,32 @@ $(document).on('click','[overview-level]', function(){
 			{
 				if(levelType == "state" || levelType == "district")
 				{
-					theadArr = [levelType,'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)','Achievement Percentage'];
+					theadArr = [levelType,'Targeted','Achievement','Balance','Gps with RunOff > 0','Gps with RunOff < 0','Area(In Ha)','Gross RunOff(Lakh cum)','Storage Capacity(Lakh cum)','Balance Runoff(Lakh cum)','Achievement Percentage'];
 				}else if(levelType == "constituency")
 				{
-					theadArr = ["district",levelType,'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)','Achievement Percentage'];
+					theadArr = ["district",levelType,'Targeted','Achievement','Balance','Gps With RunOff > 0','Gps Witth RunOff < 0','Area(In Ha)','Gross RunOff(Lakh cum)','Storage Capacity(Lakh cum)','Balance Runoff(Lakh cum)','Achievement Percentage'];
 				}else if(levelType == "mandal")
 				{
-					theadArr = ["district","constituency",levelType,'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)','Achievement Percentage'];
+					theadArr = ["district","constituency",levelType,'Targeted','Achievement','Balance','Gps With RunOff > 0','Gps With RunOff < 0','Area(In Ha)','Gross RunOff(Lakh cum)','Storage Capacity(Lakh cum)','Balance Runoff(Lakh cum)','Achievement Percentage'];
 				}else if(levelType == "panchayat")
 				{
-					theadArr = ["district","constituency","mandal",levelType,'Water Budget Uploaded','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)'];
+					theadArr = ["district","constituency","mandal",levelType,'Water Budget Uploaded','Area(In Ha)','Gross RunOff(Lakh cum)','Storage Capacity(Lakh cum)','Balance Runoff(Lakh cum)'];
 				}
 			}
 			if(globalDivName == 'GH')
 			{
 				if(levelType == "state" || levelType == "district")
 				{
-					theadArr = [levelType,'District Target(in Hectars)','Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = [levelType,'District Target(in Ha)','Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
 				}else if(levelType == "constituency")
 				{
-					theadArr = ["district",levelType,'Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = ["district",levelType,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
 				}else if(levelType == "mandal")
 				{
-					theadArr = ["district","constituency",levelType,'Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = ["district","constituency",levelType,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
 				}else if(levelType == "panchayat")
 				{
-					theadArr = ["district","constituency","mandal",levelType,'Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = ["district","constituency","mandal",levelType,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
 				}
 			}
 			
@@ -1142,13 +1142,13 @@ function projectData(divId,levelId,locationId)
 	var dataArr = '';
 	if(levelId == 2)
 	{
-		dataArr = ['state','district','constituency','mandal'];
+		dataArr = ['state','district','constituency','mandal','panchayat'];
 	}else if(levelId == 3)
 	{
-		dataArr = ['district','constituency','mandal'];
+		dataArr = ['district','constituency','mandal','panchayat'];
 	}else if(levelId == 4)
 	{
-		dataArr = ['constituency','mandal'];
+		dataArr = ['constituency','mandal','panchayat'];
 	}
 	
 	collapse+='<section>';
@@ -1258,17 +1258,16 @@ function projectData(divId,levelId,locationId)
 	{
 		if(dataArr[0] == "state" || dataArr[0] == "district")
 		{
-			theadArr = [dataArr[0],'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)','Achievement Percentage'];
+			theadArr = [dataArr[0],'Targeted','Achievement','Balance','Gps with RunOff > 0','Gps with RunOff < 0','Area(In Ha)','Gross RunOff(Lakh cum)','Storage Capacity(Lakh cum)','Balance Runoff(Lakh cum)','Achievement Percentage'];
 		}else if(dataArr[0] == "constituency")
 		{
-			theadArr = ["district",dataArr[0],'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)','Achievement Percentage'];
+			theadArr = ["district",dataArr[0],'Targeted','Achievement','Balance','Gps With RunOff > 0','Gps Witth RunOff < 0','Area(In Ha)','Gross RunOff(Lakh cum)','Storage Capacity(Lakh cum)','Balance Runoff(Lakh cum)','Achievement Percentage'];
 		}else if(dataArr[0] == "mandal")
 		{
-			theadArr = ["district","constituency",dataArr[0],'Targeted','Achievement','Balance','RunOff > 0','RunOff < 0','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)','Achievement Percentage'];
+			theadArr = ["district","constituency",dataArr[0],'Targeted','Achievement','Balance','Gps With RunOff > 0','Gps With RunOff < 0','Area(In Ha)','Gross RunOff(Lakh cum)','Storage Capacity(Lakh cum)','Balance Runoff(Lakh cum)','Achievement Percentage'];
 		}else if(dataArr[0] == "panchayat")
 		{
-			//theadArr = ["district","constituency","mandal",dataArr[0],'Water Budget Uploaded','Area','Gross','Storage CAP','Balance Runoff'];
-			theadArr = ["district","constituency","mandal",dataArr[0],'Water Budget Uploaded','Area(In Hectars)','Gross RunOff','Storage Capacity','Balance Runoff(Lakhs cum liters)'];
+			theadArr = ["district","constituency","mandal",dataArr[0],'Water Budget Uploaded','Area(In Ha)','Gross RunOff(Lakh cum)','Storage Capacity(Lakh cum)','Balance Runoff(Lakh cum)'];
 		}
 		
 	}
@@ -1276,16 +1275,16 @@ function projectData(divId,levelId,locationId)
 	{
 		if(dataArr[0] == "state" || dataArr[0] == "district")
 		{
-			theadArr = [dataArr[0],'District Target(in Hectars)','Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
+			theadArr = [dataArr[0],'District Target(in Ha)','Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
 		}else if(dataArr[0] == "constituency")
 		{
-			theadArr = ["district",dataArr[0],'Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
+			theadArr = ["district",dataArr[0],'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
 		}else if(dataArr[0] == "mandal")
 		{
-			theadArr = ["district","constituency",dataArr[0],'Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
+			theadArr = ["district","constituency",dataArr[0],'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
 		}else if(dataArr[0] == "panchayat")
 		{
-			theadArr = ["district","constituency","mandal",dataArr[0],'Sanctioned Target','Pitting Extention','Planting Extension','Acheivement Percentage','Expenditure(in Lakhs)'];
+			theadArr = ["district","constituency","mandal",dataArr[0],'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
 		}
 	}
 	
