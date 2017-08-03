@@ -6,6 +6,7 @@ function onLoadAjaxCalls()
 	getLocationWiseCommitteesCount();
 	getEnrollmentIds();
 	getElectionTypes();
+	getPublications();
 	getAgeRangeGenerAndCasteGroupByCadreCount();//cadre info
 	getLevelWiseMeetingStatusCounts();
 	getLocationWiseInsuranceStatusCount();
@@ -796,7 +797,7 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(){
 	$("#casteGroupInfoChartDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div></div>');
 	jsObj={
 		constituencyId:232,
-    	publicationDateId:22
+    	publicationDateId:"22"
     }
 	 $.ajax({
       type : "GET",
@@ -1057,7 +1058,7 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(){
 	jsObj={
 		locationType:"constituency",
 		locationValue:232,
-		enrollmentYearId:4
+		enrollmentYearId:"4"
 	}
 	 $.ajax({
       type : "POST",
@@ -1311,6 +1312,20 @@ function getElectionTypes(){
 	 $.ajax({
       type : "GET",
       url : "getElectionTypesAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	console.log(result);
+	});	
+}
+
+function getPublications(){
+	var jsObj={
+			
+	}
+	 $.ajax({
+      type : "GET",
+      url : "getPublicationsAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  

@@ -62,10 +62,17 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<BasicVO> electionTypes;
 	private List<LocationWiseBoothDetailsVO> locationVOList;
 	private ICadreCommitteeService cadreCommitteeService;
+	private List<BasicVO> publicationsData;
 
 
 	public List<LocationWiseBoothDetailsVO> getLocationVOList() {
 		return locationVOList;
+	}
+	public List<BasicVO> getPublicationsData() {
+		return publicationsData;
+	}
+	public void setPublicationsData(List<BasicVO> publicationsData) {
+		this.publicationsData = publicationsData;
 	}
 	public void setLocationVOList(List<LocationWiseBoothDetailsVO> locationVOList) {
 		this.locationVOList = locationVOList;
@@ -459,6 +466,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		 }
 		 return Action.SUCCESS;
 	 }
+	 
+	 public String getPublicationsList(){
+		 try{
+			 jObj = new JSONObject(getTask());
+			 publicationsData = locationDashboardService.getPublications();
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getElectionTypes() of LocationDashboardAction{}", e);
+		 }
+		 return Action.SUCCESS;
+	 } 
 	 
 	 public String getLocationWiseCommitteesCount(){
 		 try{
