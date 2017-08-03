@@ -60,6 +60,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 		}
 		return null;
 	}
+	@SuppressWarnings("static-access")
 	public void buildCaseCountDiseasesWise(List<DiseasesVO> diseasesVOs,List<Object[]> diseasesList,List<Object[]> todayDiseasesList){
 		try{
 			List<DiseasesVO> tempVOList = new ArrayList<DiseasesVO>();
@@ -154,10 +155,12 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 		}
 		return null;
 	}
+	@SuppressWarnings("static-access")
 	public List<DiseasesVO> buildCaseCountLocationWise(List<Object[]> diseasesList,List<Object[]> diseasesListToday,Long scopeId){
 		try{
 			Map<Long,List<DiseasesVO>> diseasesWiseLocMap = new HashMap<Long,List<DiseasesVO>>();
 			DiseasesVO diseasesVO = null;
+			DiseasesVO tempDiseasesVO = null;
 			//create Id and name map.
 			Map<Long,String> locIdAndNameMap = new HashMap<Long,String>();
 			initializeVOForCalculation(diseasesWiseLocMap,locIdAndNameMap,diseasesList,scopeId);
@@ -169,14 +172,33 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 					diseasesVO.setId(param.getKey());
 					diseasesVO.setName(param.getValue());
 					
+					if(diseasesWiseLocMap != null){
+						if(diseasesWiseLocMap.get(1L) != null && setterAndGetterUtilService.getMatchedVOfromList(diseasesWiseLocMap.get(1L), "id", diseasesVO.getId().toString()) != null){
+							tempDiseasesVO = (DiseasesVO)setterAndGetterUtilService.getMatchedVOfromList(diseasesWiseLocMap.get(1L), "id", diseasesVO.getId().toString());
+						}else{
+							tempDiseasesVO = (DiseasesVO)setterAndGetterUtilService.getMatchedVOfromList(diseasesWiseLocMap.get(2L), "id", diseasesVO.getId().toString());
+						}
+					}
+					
+					diseasesVO.setDistrictId(tempDiseasesVO.getDistrictId());
+					diseasesVO.setDistrictName(tempDiseasesVO.getDistrictName());
+					diseasesVO.setParliamentId(tempDiseasesVO.getParliamentId());
+					diseasesVO.setParliamentName(tempDiseasesVO.getParliamentName());
+					diseasesVO.setConstituencyId(tempDiseasesVO.getConstituencyId());
+					diseasesVO.setConstituencyName(tempDiseasesVO.getConstituencyName());
+					diseasesVO.setMandalId(tempDiseasesVO.getMandalId());
+					diseasesVO.setMandalName(tempDiseasesVO.getMandalName());
+					diseasesVO.setPanchayatId(tempDiseasesVO.getPanchayatId());
+					diseasesVO.setPanchayatName(tempDiseasesVO.getPanchayatName());
+					//total
 					diseasesVO.setTotal(0L);
 					diseasesVO.setTodayTotal(0L);
 					diseasesVO.setTotalPercent(0.0D);
-					
+					//Dengue
 					diseasesVO.setDengueToday(0L);
 					diseasesVO.setDengueTotal(0L);
 					diseasesVO.setDenguePercent(0.0D);
-					
+					//Malaria
 					diseasesVO.setMalariaToday(0L);
 					diseasesVO.setMalariaTotal(0L);
 					diseasesVO.setMalariaPercent(0.0D);
@@ -484,6 +506,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 			LOG.error(" Exception occured in HealthMedicalAndFamilyWelfareService ,buildDayWiseCaseCount() ",e);
 		}
 	}
+	@SuppressWarnings("static-access")
 	public LinkedHashMap<String,List<String>> getMonthWeekAndDaysList(String startDate,String endDate,String type){
 		LinkedHashMap<String,List<String>> returnDays = new LinkedHashMap<String, List<String>>();
     	try{
