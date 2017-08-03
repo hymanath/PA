@@ -388,7 +388,7 @@ function buildLevelWiseDetailsBlock(){
 	}
 	
 }
-function buildTableData(result,blockId,blockName,subBlockName,viewType){
+function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 		if(viewType == 'tableView')
 		{
 			var tableView='';
@@ -585,21 +585,15 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){
 			tableView+='</div>';
 			$("#"+blockName+'_'+blockId).html(tableView);
 			//$("#chosen"+blockName)
-			if(blockId == '4' || blockId == '5'){
+			if(blockId == '3' || blockId == '4' || blockId == '5'){
 				$(".dataTable"+blockId).dataTable({
+					"iDisplayLength": 10,
 					"aaSorting": [],
-					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
-				});
-			}
-			if(blockId == '3'){
-				$(".dataTable"+blockId).dataTable({
-					 "paging":   false,
-					 "info":     false,
-					 "searching": false,
-					 "autoWidth": true,
-					 "sDom": '<"top"iflp>rt<"bottom"><"clear">',
-					 "order": [ 0, 'asc' ],
-					 "aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+					"dom": 'Blfrtip',
+					buttons: [
+						'copy', 'excel', 'pdf', 'print'
+					]
 				});
 			}
 		}
