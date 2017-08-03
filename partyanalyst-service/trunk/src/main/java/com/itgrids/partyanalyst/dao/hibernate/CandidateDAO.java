@@ -7,26 +7,16 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.CandidateColumnNames;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ElectionScope;
-import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -360,5 +350,88 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	{
 		Query query = getSession().createQuery("select model.candidateId,model.lastname from Candidate model where (model.lastname like '%"+candidateName+"%' )");
 		return query.list();
+	}
+	
+	@Override
+	public List<Object[]> getElectionInformationLocationWise(List<Long> yearsList, Long locationTypeId,
+			Long locationValue,List<Long> electionScopeIds, List<Long> electionBodyIds,List<Long> tehsilIds) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("select p.party_id as partyId,p.short_name as partyName ,e.election_id as electionId ,e.election_year as electionYear,"
+				+ " et.election_type_id as electionTypeId,et.election_type as electionType,c1.constituency_id as locationId ,"
+				+ " c1.name as locationName,cer.total_votes as totalVoters,cer.valid_votes as validVoters,"
+				+ " cer.missing_votes as missedVotes,cer.rejected_votes as rejectedVotes,cr.votes_earned as earnedVotes,"
+				+ " cr.votes_percentage as earnedVotesPerc,cr.margin_votes as marginVotes,count(n.party_id) as wonSeatsCount");
+
+		sb.append(" from candidate c, party p,nomination n,constituency_election ce,constituency_election_result cer, " 
+				+ " election e ,election_scope es,election_type et,constituency c1 ,candidate_result cr ");
+		
+		sb.append(" where e.election_scope_id = es.election_scope_id and "
+				+ " es.election_type_id = et.election_type_id and "
+				+ " ce.election_id = e.election_id and "
+				+ " ce.consti_elec_id = cer.consti_elec_id AND "
+				+ " n.consti_elec_id = ce.consti_elec_id AND "
+				+ " n.party_id = p.party_id and"
+				+ " n.candidate_id = c.candidate_id and "
+				+ " ce.constituency_id = c1.constituency_id and"
+				+ " cr.nomination_id = n.nomination_id and "
+				+ " cr.rank = 1 and ");
+		if (yearsList != null && yearsList.size() > 0) {
+			sb.append(" e.election_year in(:years) and");
+		}
+		if(electionScopeIds != null && electionScopeIds.size()>0){
+			sb.append(" es.election_scope_id in (:electionScopeIds ) and ");
+		}
+		if (locationTypeId != null && locationTypeId.longValue() > 0l) {
+
+			if (locationTypeId == 2l) {
+				sb.append("  c1.state_id =:locationValue ");
+			} else if (locationTypeId == 3l) {
+				sb.append(" c1.district_id =:locationValue ");
+			} else if (locationTypeId == 4l) {
+				sb.append("(c1.constituency_id =:locationValue OR ( c1.tehsil_id in (:tehsilIds)) or "
+						+ "(c1.local_election_body_id in(:electionBodys))) ");
+			} else if (locationTypeId == 5l) {
+				sb.append(" c1.tehsil_id  =:locationValue ");
+			}
+
+		}
+		sb.append(" group by et.election_type,e.election_year,p.party_id ORDER BY e.election_year,et.election_type");
+
+		SQLQuery query = getSession().createSQLQuery(sb.toString());
+				query.addScalar("partyId",Hibernate.LONG);
+				query.addScalar("partyName",Hibernate.STRING);
+				query.addScalar("electionId",Hibernate.LONG);
+				query.addScalar("electionYear",Hibernate.STRING);
+				query.addScalar("electionTypeId",Hibernate.LONG);
+				query.addScalar("electionType",Hibernate.STRING);
+				query.addScalar("locationId",Hibernate.LONG);
+				query.addScalar("locationName",Hibernate.STRING);
+				query.addScalar("totalVoters",Hibernate.LONG);
+				query.addScalar("validVoters",Hibernate.LONG);
+				query.addScalar("missedVotes",Hibernate.LONG);
+				query.addScalar("rejectedVotes",Hibernate.LONG);
+				query.addScalar("earnedVotes",Hibernate.LONG);
+				query.addScalar("earnedVotesPerc",Hibernate.LONG);
+				query.addScalar("marginVotes",Hibernate.LONG);
+				query.addScalar("wonSeatsCount",Hibernate.LONG);
+				
+				
+		if(yearsList!=null && yearsList.size()>0){
+	         query.setParameterList("years", yearsList);
+	       }
+	      
+	      if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValue !=null && locationValue.longValue()>0l){
+	    	  query.setParameter("locationValue", locationValue);
+	    	  if (locationTypeId == 4l) {
+	    		  query.setParameterList("tehsilIds",tehsilIds);
+	    		  query.setParameterList("electionBodys",electionBodyIds);
+				} 
+	      }
+	      if(electionScopeIds != null && electionScopeIds.size()>0){
+	    	  query.setParameterList("electionScopeIds",electionScopeIds);
+	      }
+		return query.list();
+
 	}
 }
