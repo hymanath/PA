@@ -411,10 +411,4 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 		query.setParameter("searchLevelValue", searchLevelValue);
 		return query.list();
 	}
-	public List<LightMonitoring> getLiveDateForCurrentDateSelection(Date date){
-		Query query = getSession().createQuery(" select model from LightMonitoring model where date(model.surveyDate) = :date ");
-		
-		      query.setDate("date", date);
-		return  query.list();
-	}
 }
