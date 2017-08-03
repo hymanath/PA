@@ -17,12 +17,12 @@ public class Scheduler {
 	private ILightMonitoring lightMonitoringService;
 
 	
-	@Scheduled(cron = "0 0 20 * * * *")
+	/*@Scheduled(cron = "0 0 20 * * * *")
 	public void runTheSchedulerEveryDay()
 	{
-		/*if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
-			return;*/
+		if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+			return;
 		lightMonitoringService.saveRealtimeStatusByVillages();
-	}
+	}*/
 	
 }
