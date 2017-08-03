@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.ILightMonitoringDAO;
+import com.itgrids.model.District;
 import com.itgrids.model.LightMonitoring;
 
 
@@ -33,14 +34,20 @@ import com.itgrids.model.LightMonitoring;
 public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring ,Long> implements ILightMonitoringDAO{
 
 	@Autowired
-	SessionFactory sessionFactory;
-	public LightMonitoringDAO()
-	{
-	super(LightMonitoring.class);
+	SessionFactory sessionFactory; 
 
-}
-	    
+	public LightMonitoringDAO() {
+		super(LightMonitoring.class);
 	}
+	public List<LightMonitoring> getLiveDateForCurrentDateSelection(Date date){
+		//Query query = getSession().createQuery(" select model from LightMonitoring model where date(model.surveyDate) = :date ");
+		Query query = getSession().createQuery(" select model.isDeleted from LightMonitoring model where date(model.surveyDate) = :date ");
+		
+		      query.setDate("date", date);
+		return  query.list();
+	}
+	
+}
 
 
 			
