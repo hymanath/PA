@@ -102,6 +102,7 @@ import com.itgrids.partyanalyst.dto.FeedBackOptionVO;
 import com.itgrids.partyanalyst.dto.FeedbackInputVO;
 import com.itgrids.partyanalyst.dto.FeedbackQuestionVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -12412,5 +12413,171 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 			 LOG.error(" Error Occured in getAttendedlocWiseCountsByProgramOrCampOrBatch method in TraininingCampService class" ,e);
 		 }
 		 return queryString;
+	}
+	
+	public List<KeyValueVO> getAllMomAtrClickDetails(Long meetingType,Long locationLevel,List<Long> stateIds,List<Long> districtIds,List<Long> constituencyIds,List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString,String type,String accessType,String accessValue){
+		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date startDate=sdf.parse(startDateString);
+			Date endDate=sdf.parse(endDateString);
+			
+			List<Long> mandalList=new ArrayList<Long>(0);
+			List<Long> townList=new ArrayList<Long>(0);
+			List<Long> divisonList=new ArrayList<Long>(0);
+			List<Long> villageList=new ArrayList<Long>(0);
+			List<Long> wardList=new ArrayList<Long>(0);
+			
+			List<Object[]> meetings = new ArrayList<Object[]>(0);
+			
+			if(locationLevel==4l){
+				
+				if( !(mandalTownDivisonIds.get(0) !=null &&  mandalTownDivisonIds.get(0).longValue() ==0l )){
+					for(int i=0;i<mandalTownDivisonIds.size();i++){
+						String manTowDiv = mandalTownDivisonIds.get(i).toString();
+						char temp = manTowDiv.charAt(0);
+						locationLevel=Long.parseLong(temp+"");
+						if(locationLevel==4l){
+							mandalList.add(Long.parseLong(manTowDiv.substring(1)));
+						}
+						if(locationLevel==5l){
+							townList.add(Long.parseLong(manTowDiv.substring(1)));
+						}
+						if(locationLevel==6l){
+							divisonList.add(Long.parseLong(manTowDiv.substring(1)));
+						}
+						
+					}
+				
+					meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+							townList,divisonList,villageList,wardList,startDate,endDate,0l);
+					
+					
+				}else{
+					
+					List<Object[]> meetingsMandal = partyMeetingDAO.getAllMeetings(meetingType,4l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l);
+					List<Object[]> meetingsTowns = partyMeetingDAO.getAllMeetings(meetingType,5l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l);
+					List<Object[]> meetingsDivs = partyMeetingDAO.getAllMeetings(meetingType,6l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l);
+					
+					
+					meetings.addAll(meetingsMandal);
+					meetings.addAll(meetingsTowns);
+					meetings.addAll(meetingsDivs);
+				}
+			}
+			
+			else if(locationLevel==5l){
+				
+				if( !(villageWardIds.get(0) !=null &&  villageWardIds.get(0).longValue() ==0l )){
+				for(int i=0;i<villageWardIds.size();i++){
+					String vilwrdId = villageWardIds.get(i).toString();
+					char temp = vilwrdId.charAt(0);
+					locationLevel=Long.parseLong(temp+"");
+					
+					if(locationLevel==7l){
+						villageList.add(Long.parseLong(vilwrdId.substring(1)));
+					}
+					if(locationLevel==8l){
+						wardList.add(Long.parseLong(vilwrdId.substring(1)));
+					}
+				}
+				
+				meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l);
+				
+			 }else{
+				 
+				 
+				 if(mandalTownDivisonIds !=null && mandalTownDivisonIds.size()>0 && mandalTownDivisonIds.get(0).longValue() !=0l){
+					 
+					 for(int i=0;i<mandalTownDivisonIds.size();i++){
+						 String manTowDiv = mandalTownDivisonIds.get(i).toString();
+							char temp = manTowDiv.charAt(0);
+							Long firstChar=Long.parseLong(temp+"");
+							if(firstChar==4l){
+								mandalList.add(Long.parseLong(manTowDiv.substring(1)));
+							}
+							else if(firstChar==5l){
+								townList.add(Long.parseLong(manTowDiv.substring(1)));
+							}
+							else if(firstChar==6l){
+								divisonList.add(Long.parseLong(manTowDiv.substring(1)));
+							}
+					 }
+					 
+				 }
+				 
+				 
+				 List<Object[]> meetingsVillage = partyMeetingDAO.getAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l);
+					List<Object[]> meetingsWards = partyMeetingDAO.getAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l);
+					
+					meetings.addAll(meetingsVillage);
+					meetings.addAll(meetingsWards);
+			 }
+			}else{
+				meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l);
+			}
+			
+			List<Long> partymeetingIdsList = new ArrayList<Long>(0);
+			if(meetings != null && meetings.size() > 0){
+				for (Object[] obj : meetings) {
+					if(obj[9] != null && (Long)obj[9] > 0l)
+						partymeetingIdsList.add((Long)obj[9]);
+				}
+			}
+			
+			if(partymeetingIdsList != null && partymeetingIdsList.size() > 0){
+				List<Long> valuesList = new ArrayList<Long>(0);
+				if(accessType !=null && accessType.trim().equalsIgnoreCase("MP")){
+					valuesList = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentId(Long.valueOf(accessValue));
+				}else{
+					valuesList.add(Long.valueOf(accessValue));
+				}
+				
+				List<Object[]> qryrslt=null;
+				if(type.equalsIgnoreCase("momText")){
+					qryrslt = partyMeetingMinuteDAO.getMinuteDetailsForMeetingsList(partymeetingIdsList,accessType,valuesList);
+					
+					if(qryrslt != null && qryrslt.size()>0){
+						for (Object[] objects : qryrslt) {
+							if(objects[2]!=null){
+								KeyValueVO vo = new KeyValueVO();
+								vo.setName(objects[2].toString()+(objects[10] != null && !objects[10].toString().trim().isEmpty()?" - "+objects[10].toString().trim():""));
+								voList.add(vo);
+							}
+						}
+					}
+				}else if(type.equalsIgnoreCase("atrText")){
+					qryrslt = partyMeetingAtrPointDAO.getAtrDetailsForMeetingsList(partymeetingIdsList);
+					if(qryrslt != null && qryrslt.size()>0){
+						for (Object[] objects : qryrslt) {
+							if(objects[2]!=null){
+								KeyValueVO vo = new KeyValueVO();
+								vo.setName(objects[2].toString());
+								voList.add(vo);
+							}
+						}
+					}
+				}else{
+					qryrslt = partyMeetingDocumentDAO.getMinuteAtrDocumentSummaryForMeetingsList(partymeetingIdsList,type,accessType,valuesList);
+					if(qryrslt != null && qryrslt.size()>0){
+						for (Object[] objects : qryrslt) {
+							KeyValueVO vo = new KeyValueVO();
+							vo.setName(objects[0].toString()+"-path-"+objects[1].toString());
+							voList.add(vo);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" Error Occured in getAllMomAtrClickDetails method in TraininingCampService class" ,e);
+		}
+		return voList;
 	}
 }
