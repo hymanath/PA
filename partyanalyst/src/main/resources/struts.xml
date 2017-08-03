@@ -17916,7 +17916,7 @@
 		    <param name="root">locationVOList</param>
 		</result>
 	</action>
-	<action name="getPanchayatWardByMandalForLoationDashBoardAction" class="locationDashboardAction" method="getPanchayatWardByMandalForLoationDashBoardAction">
+	<action name="getPanchayatWardByMandalForLoationDashBoardAction" class="locationDashboardAction" method="getPanchayatWardByMandalForLoationDashBoard">
 			<result type="json" name="success">
 				<param name="root">locationVOList</param>
 			</result>
@@ -17926,6 +17926,11 @@
 			<param name="root">cadreCommitteeVO</param>       
 		</result> 
    </action>
+	<action name="getElectionInformationLocationWiseAction" class="locationDashboardAction" method="getElectionInformationLocationWise">
+			<result type="json" name="success">
+				<param name="root">electioninformationList</param>
+			</result>
+	</action>
    
    <action name="getAllMomAtrClickDetailsAction" class="trainingCampAction" method="getAllMomAtrClickDetails">
 	    <result type="json" name="success">		   
