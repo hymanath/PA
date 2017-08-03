@@ -3304,4 +3304,18 @@ public class WebServiceHandler {
 		return null;
 	}
 	
+	@POST
+	@Path("/KAIZALA/getKaizalaAlertInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void  getKaizalaAlertInfo(JSONObject obj) {
+		try {
+			System.out.println("Kaizala Info : " +obj + "\n New Kaizala Info " + obj.toString());
+			LOG.info("Kaizala Info : " +obj + "\n New Kaizala Info " + obj.toString());
+		} catch (Exception e) {
+			System.out.println("Ecxception Occured for  Kaizala Info : " +obj);
+			LOG.error("Exception raised at getKaizalaAlertInfo -", e);
+		}
+	}
+	
 }
