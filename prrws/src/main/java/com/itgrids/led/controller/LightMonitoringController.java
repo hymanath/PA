@@ -27,6 +27,12 @@ public class LightMonitoringController {
 	private static final Logger logger  =  LoggerFactory.getLogger(LightMonitoringController.class);	
 	@Autowired
 	private ILightMonitoring  lightMonitoring;	
+	
+	@RequestMapping(value ="/getlightsMonitoringDashboard", method = RequestMethod.GET)
+	public String firstPage(ModelMap model) {
+			return "lightsMonitoringDashboard";
+    }
+	
 	@RequestMapping(value = "/saveRealtimeStatusByVillages", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody  ResultVO   saveRealtimeStatusByVillages()
