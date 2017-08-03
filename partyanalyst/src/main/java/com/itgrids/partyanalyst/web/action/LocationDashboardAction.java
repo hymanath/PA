@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -61,6 +62,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<BasicVO> activityStatusList;
 	private List<BasicVO> electionTypes;
 	private List<LocationWiseBoothDetailsVO> locationVOList;
+	private List<ElectionInformationVO> electioninformationList;
 	private ICadreCommitteeService cadreCommitteeService;
 	private List<BasicVO> publicationsData;
 
@@ -235,6 +237,13 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setCadreDtlsList(List<ConstituencyCadreVO> cadreDtlsList) {
 		this.cadreDtlsList = cadreDtlsList;
 	}
+	
+	public List<ElectionInformationVO> getElectioninformationList() {
+		return electioninformationList;
+	}
+	public void setElectioninformationList(List<ElectionInformationVO> electioninformationList) {
+		this.electioninformationList = electioninformationList;
+	}
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
 			  jObj=new JSONObject(getTask());
@@ -333,14 +342,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			 String fromDateStr = jObj.getString("fromDate");
 			 String toDateStr = jObj.getString("toDate");
 			 String year = jObj.getString("year");
-			 JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
-				List<Long> locationValues = new ArrayList<Long>();
-				if(locationValuesArr != null && locationValuesArr.length() > 0){
-					for (int i = 0; i < locationValuesArr.length(); i++){
-						locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
-					} 
-				}
-			 tourDesignationList = locationDashboardService.getLocationWiseTourMembersComplainceDtls(locationTypeId,locationValues,fromDateStr,toDateStr,year);
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+			 tourDesignationList = locationDashboardService.getLocationWiseTourMembersComplainceDtls(locationTypeId,locationValuesList,fromDateStr,toDateStr,year);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseTourMembersComplainceDtls in LocationDashboardAction class", e);
 		}
@@ -372,14 +375,9 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String  getLocationTypeWiseCadreCount(){
 		 try {
 			jObj = new JSONObject(getTask());
-			JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
-			List<Long> locationValues = new ArrayList<Long>();
-			if(locationValuesArr != null && locationValuesArr.length() > 0){
-				for (int i = 0; i < locationValuesArr.length(); i++){
-					locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
-				} 
-			}
-			cadreDtlsList = locationDashboardService.getLocationTypeWiseCadreCount(jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+
+			cadreDtlsList = locationDashboardService.getLocationTypeWiseCadreCount(jObj.getLong("locationTypeId"),locationValuesList,jObj.getString("year"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationTypeWiseCadreCount in LocationDashboardAction class", e);
 		}
@@ -398,13 +396,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getNominatedPostStatusWiseCount(){
 		 try{
 			 jObj = new JSONObject(getTask());
-			 JSONArray locationValues = jObj.getJSONArray("locationValues");  
-				List<Long> locationValuesList = new ArrayList<Long>();
-				if(locationValues != null && locationValues.length() > 0){
-					for (int i = 0; i < locationValues.length(); i++){
-						locationValuesList.add(Long.parseLong(locationValues.getString(i)));          
-					}
-				}
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValues"));  
 			 keyValueVOList = locationDashboardService.getNominatedPostStatusWiseCount(
 					 jObj.getLong("locationTypeId"),locationValuesList,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getString("year"));
 			 }catch(Exception e){
@@ -415,14 +407,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getNominatedPostApplicationStatusWiseCount(){
 		 try{
 			 jObj = new JSONObject(getTask());
-			 JSONArray locationValues = jObj.getJSONArray("locationValues");  
-				List<Long> locationValuesList = new ArrayList<Long>();
-				if(locationValues != null && locationValues.length() > 0){
-					for (int i = 0; i < locationValues.length(); i++){
-						locationValuesList.add(Long.parseLong(locationValues.getString(i)));          
-					}
-				}
-					 
+				List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValues"));  
+ 
 			 keyValueVOList = locationDashboardService.getNominatedPostApplicationStatusWiseCount(
 					 jObj.getLong("locationTypeId"),locationValuesList,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getString("year"));
 		 }catch(Exception e){
@@ -433,14 +419,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getPositionWiseMemberCount(){
 		 try{
 			 jObj = new JSONObject(getTask());
-			 JSONArray locationValues = jObj.getJSONArray("locationValuesArr");  
-				List<Long> locationValuesList = new ArrayList<Long>();
-				if(locationValues != null && locationValues.length() > 0){
-					for (int i = 0; i < locationValues.length(); i++){
-						locationValuesList.add(Long.parseLong(locationValues.getString(i)));          
-					}
-				}
-			 keyValueVOList = locationDashboardService.getPositionWiseMemberCount(locationValuesList,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"));
+				List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+			 keyValueVOList = locationDashboardService.getPositionWiseMemberCount(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"));
 		 }catch(Exception e){
 			 LOG.error("Exception raised at getPositionWiseMemberCount() of LocationDashboardAction{}", e);
 		 }
@@ -490,13 +470,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public String getLevelWiseMeetingStatusCounts(){
 		try{
 			jObj = new JSONObject(getTask());
-			JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
-			List<Long> locationValues = new ArrayList<Long>();
-			if(locationValuesArr != null && locationValuesArr.length() > 0){
-				for (int i = 0; i < locationValuesArr.length(); i++){
-					locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
-				} 
-			}
+			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
 			
 			alertVO = locationDashboardService.getLevelWiseMeetingStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
 		}catch(Exception e){
@@ -509,13 +483,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public String getLocationWiseInsuranceStatusCounts(){
 		try{
 			jObj = new JSONObject(getTask());
-			JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
-			List<Long> locationValues = new ArrayList<Long>();
-			if(locationValuesArr != null && locationValuesArr.length() > 0){
-				for (int i = 0; i < locationValuesArr.length(); i++){
-					locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
-				} 
-			}
+			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
 			insuranceVO = locationDashboardService.getLocationWiseInsuranceStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getLocationWiseInsuranceStatusCount() of LocationDashboardAction{}",e);
@@ -526,14 +494,9 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public String getLocationWiseGrivanceTrustStatusCounts(){
 		try{
 			jObj = new JSONObject(getTask());
-			JSONArray locationValuesArr = jObj.getJSONArray("locationValuesArr");  
-			List<Long> locationValues = new ArrayList<Long>();
-			if(locationValuesArr != null && locationValuesArr.length() > 0){
-				for (int i = 0; i < locationValuesArr.length(); i++){
-					locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
-				} 
-			}
-			grivenceVO = locationDashboardService.getGrivenceTrustStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+
+			grivenceVO = locationDashboardService.getGrivenceTrustStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValuesList,jObj.getString("year"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getLocationWiseInsuranceStatusCount() of LocationDashboardAction{}",e);
 		}
@@ -543,13 +506,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public String getLocationWiseActivityStatusList(){
 		try{
 			jObj = new JSONObject(getTask());
-			JSONArray locationValues = jObj.getJSONArray("locationValues");  
-			List<Long> locationValuesList = new ArrayList<Long>();
-			if(locationValues != null && locationValues.length() > 0){
-				for (int i = 0; i < locationValues.length(); i++){
-					locationValuesList.add(Long.parseLong(locationValues.getString(i)));          
-				}
-			}
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValues"));  ;
+			
 			activityStatusList = locationDashboardService.getLocationWiseActivitysStatus(jObj.getString("fromDate"), jObj.getString("toDate"),jObj.getString("year"),locationValuesList, jObj.getLong("locationId"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getActivityStatusList() of LocationDashboardAction{}",e);
@@ -584,7 +542,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		}
 	   return Action.SUCCESS;
 	}
-	public String getPanchayatWardByMandalForLoationDashBoardAction(){
+	public String getPanchayatWardByMandalForLoationDashBoard(){
 		try{
 			jObj = new JSONObject(getTask());
 			String mandalId = jObj.getString("mandalId");
@@ -595,5 +553,33 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			LOG.error("Exception occured in getPanchayatWardByMandal() method ",e);
 		}
 		return Action.SUCCESS;
+	}
+	public String getElectionInformationLocationWise(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> electionScopeIds = convertJsonStringList(jObj.getJSONArray("electionScopeIds"));
+					
+			electioninformationList=locationDashboardService.getElectionInformationLocationWise(jObj.getString("fromDate"),jObj.getString("toDate"),
+					jObj.getLong("locationId"),jObj.getLong("locationValue"),electionScopeIds);
+		
+//getElectionInformationLocationWise(String fromDate, String toDate, Long locationTypeId,Long locationValue, List<Long> electionScopeIds)			
+			
+		}catch(Exception e){
+			LOG.error("Exception occured in getElectionInformationLocationWise() method ",e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public List<Long> convertJsonStringList(JSONArray jsonArray){
+		List<Long> idsList=  new ArrayList<Long>();
+		if(jsonArray!=null && jsonArray.length()>0){
+			for(int i =0; i< jsonArray.length();i++){
+				idsList.add(Long.parseLong(jsonArray.getString(i)));        
+			}
+		}
+		return idsList;
+		
 	}
 }
