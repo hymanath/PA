@@ -1945,11 +1945,13 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
 	 	    					vo.setTargetACRES(jObj.getString("TARGETACRES"));
 		 	    				vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
+		 	    				vo.setTargetPittingPerc(new BigDecimal((Double.valueOf(jObj.getString("PITTINGAREA"))*100.00)/Double.valueOf(jObj.getString("TARGETACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				}
 	 	    				vo.setSanctionedACRES(jObj.getString("SANCTIONEDACRES"));
 	 	    				vo.setPittingArea(jObj.getString("PITTINGAREA"));
 	 	    				vo.setPlantingArea(jObj.getString("PLANTINGAREA"));
 	 	    				vo.setPencentageOfPlanting(jObj.getString("PERCENTAGEOFPLANTING"));
+	 	    				vo.setSancTrgtPittingPerc(new BigDecimal((Double.valueOf(jObj.getString("PITTINGAREA"))*100.00)/Double.valueOf(jObj.getString("SANCTIONEDACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				voList.add(vo);
 	 	    			}
 	 	    		}

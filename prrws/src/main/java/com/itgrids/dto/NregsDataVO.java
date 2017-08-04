@@ -62,6 +62,8 @@ public class NregsDataVO implements Serializable{
 	private String pittingArea = "0";
 	private String plantingArea = "0";
 	private String pencentageOfPlanting = "0";
+	private String targetPittingPerc;
+	private String sancTrgtPittingPerc;
 	
 	private String pittingKMS;
 	private String plantingKMS;
@@ -118,6 +120,18 @@ public class NregsDataVO implements Serializable{
 	private String waterBudgtUploaded;
 	
 	
+	public String getTargetPittingPerc() {
+		return targetPittingPerc;
+	}
+	public void setTargetPittingPerc(String targetPittingPerc) {
+		this.targetPittingPerc = targetPittingPerc;
+	}
+	public String getSancTrgtPittingPerc() {
+		return sancTrgtPittingPerc;
+	}
+	public void setSancTrgtPittingPerc(String sancTrgtPittingPerc) {
+		this.sancTrgtPittingPerc = sancTrgtPittingPerc;
+	}
 	public String getAchmtGT0() {
 		return achmtGT0;
 	}
