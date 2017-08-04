@@ -316,13 +316,15 @@
 					str+='</ul>';	
 					str+='</div>';
 					str+='</div>';
+					/*
 					if(committeeMngntTypeId == 1)
 					{
 						str+='<div class="form-inline ">';
 						str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+',\'existingRole'+i+'\','+result[i].voterId+')}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
 						str+='</div>	';	
 					}
-					else if(committeeMngntTypeId == 2)
+					*/
+					if(committeeMngntTypeId == 2)
 					{
 
 						str+='<div class="form-inline  m_top5" id="elecroleDiv'+result[i].tdpCadreId+'" ">';
