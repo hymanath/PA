@@ -2003,7 +2003,32 @@
 				
 				$("#alertStatus"+locationType).html(tableView);
 				if(locationType !="state" || locationType !="district"){
-					$(".dataTableAlert"+locationType).dataTable();
+					$(".dataTableAlert"+locationType).dataTable({
+						"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+							"<'row'<'col-sm-12'tr>>" +
+							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+						buttons: [
+							{
+								extend:    'csvHtml5',
+								text:      '<i class="fa fa-file-text-o"></i>',
+								titleAttr: 'CSV',
+								title:	   locationType,
+								filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+							},
+							{
+								extend:    'pdfHtml5',
+								text:      '<i class="fa fa-file-pdf-o"></i>',
+								titleAttr: 'PDF',
+								title:	   locationType,
+								filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+								orientation: "landscape",
+								pageSize:'A3',
+								customize: function (doc) {
+									doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+								}
+							}
+						]
+					});
 				}
 				
 				
@@ -2067,7 +2092,32 @@
 				
 				$("#drinking"+locationType).html(tableView);
 				if(locationType !="state" || locationType !="district"){
-					$(".dataTableDrinking"+locationType).dataTable();
+					$(".dataTableDrinking"+locationType).dataTable({
+						"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+							"<'row'<'col-sm-12'tr>>" +
+							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+						buttons: [
+							{
+								extend:    'csvHtml5',
+								text:      '<i class="fa fa-file-text-o"></i>',
+								titleAttr: 'CSV',
+								title:	   locationType,
+								filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+							},
+							{
+								extend:    'pdfHtml5',
+								text:      '<i class="fa fa-file-pdf-o"></i>',
+								titleAttr: 'PDF',
+								title:	   locationType,
+								filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+								orientation: "landscape",
+								pageSize:'A3',
+								customize: function (doc) {
+									doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+								}
+							}
+						]
+					});
 				}
 			}
 			
@@ -2400,28 +2450,175 @@
 									"info":     false,
 									"searching": false,
 									"autoWidth": true,
-									"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-									"order": [ 0, 'desc' ]
+									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+										"<'row'<'col-sm-12'tr>>" +
+										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+									buttons: [
+										{
+											extend:    'csvHtml5',
+											text:      '<i class="fa fa-file-text-o"></i>',
+											titleAttr: 'CSV',
+											title:	   locationType,
+											filename:  locationType+divId[k].id+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+										},
+										{
+											extend:    'pdfHtml5',
+											text:      '<i class="fa fa-file-pdf-o"></i>',
+											titleAttr: 'PDF',
+											title:	   locationType,
+											filename:  locationType+divId[k].id+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+											orientation: "landscape",
+											pageSize:'A3',
+											customize: function (doc) {
+												doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+											}
+										}
+									]
 								});
 							}else{
 								if(locationType != 'state')
-								$("#dataTable1"+locationType+divId[k].id).dataTable();
+								$("#dataTable1"+locationType+divId[k].id).dataTable({
+									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+										"<'row'<'col-sm-12'tr>>" +
+										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+									buttons: [
+										{
+											extend:    'csvHtml5',
+											text:      '<i class="fa fa-file-text-o"></i>',
+											titleAttr: 'CSV',
+											title:	   blockId,
+											filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+										},
+										{
+											extend:    'pdfHtml5',
+											text:      '<i class="fa fa-file-pdf-o"></i>',
+											titleAttr: 'PDF',
+											title:	   blockId,
+											filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+											orientation: "landscape",
+											pageSize:'A3',
+											customize: function (doc) {
+												doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+											}
+										}
+									]
+								});
 							}
 						}else if(divId[k].id=="performance"){
 							if(locationType !="state" && locationType !="district"){
-								$("#dataTable"+locationType+divId[k].id).dataTable();
+								$("#dataTable"+locationType+divId[k].id).dataTable({
+									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+										"<'row'<'col-sm-12'tr>>" +
+										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+									buttons: [
+										{
+											extend:    'csvHtml5',
+											text:      '<i class="fa fa-file-text-o"></i>',
+											titleAttr: 'CSV',
+											title:	   locationType,
+											filename:  locationType+divId[k].id+' '+moment().format("DD/MMMM/YYYY  HH:MM"),
+										},
+										{
+											extend:    'pdfHtml5',
+											text:      '<i class="fa fa-file-pdf-o"></i>',
+											titleAttr: 'PDF',
+											title:	   locationType,
+											filename:  locationType+divId[k].id+' '+moment().format("DD/MMMM/YYYY  HH:MM"),
+											orientation: "landscape",
+											pageSize:'A3',
+											customize: function (doc) {
+												doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+											}
+										}
+									]
+								});
 							}
 						}else if(divId[k].id=="schemeId"){
 							if(locationType !="state" && locationType !="district"){
-								$("#dataTable3"+locationType+divId[k].id).dataTable();
+								$("#dataTable3"+locationType+divId[k].id).dataTable({
+									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+										"<'row'<'col-sm-12'tr>>" +
+										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+									buttons: [
+										{
+											extend:    'csvHtml5',
+											text:      '<i class="fa fa-file-text-o"></i>',
+											titleAttr: 'CSV',
+											title:	   locationType,
+											filename:  locationType+divId[k].id+' '+moment().format("DD/MMMM/YYYY  HH:MM"),
+										},
+										{
+											extend:    'pdfHtml5',
+											text:      '<i class="fa fa-file-pdf-o"></i>',
+											titleAttr: 'PDF',
+											title:	   locationType,
+											filename:  locationType+divId[k].id+' '+moment().format("DD/MMMM/YYYY  HH:MM"),
+											orientation: "landscape",
+											pageSize:'A3',
+											customize: function (doc) {
+												doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+											}
+										}
+									]
+								});
 							}
 						}else if(divId[k].id=="assestsId"){
 							if(locationType !="state" && locationType !="district"){
-								$("#dataTable2"+locationType+divId[k].id).dataTable();
+								$("#dataTable2"+locationType+divId[k].id).dataTable({
+									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+										"<'row'<'col-sm-12'tr>>" +
+										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+									buttons: [
+										{
+											extend:    'csvHtml5',
+											text:      '<i class="fa fa-file-text-o"></i>',
+											titleAttr: 'CSV',
+											title:	   locationType,
+											filename:  locationType+divId[k].id+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+										},
+										{
+											extend:    'pdfHtml5',
+											text:      '<i class="fa fa-file-pdf-o"></i>',
+											titleAttr: 'PDF',
+											title:	   locationType,
+											filename:  locationType+divId[k].id+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+											orientation: "landscape",
+											pageSize:'A3',
+											customize: function (doc) {
+												doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+											}
+										}
+									]
+								});
 							}
 						}else if(divId[k].id=="waterSourceId"){
 							if(locationType !="state" && locationType !="district"){
-								$("#dataTable4"+locationType+divId[k].id).dataTable();
+								$("#dataTable4"+locationType+divId[k].id).dataTable({
+									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+										"<'row'<'col-sm-12'tr>>" +
+										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+									buttons: [
+										{
+											extend:    'csvHtml5',
+											text:      '<i class="fa fa-file-text-o"></i>',
+											titleAttr: 'CSV',
+											title:	   locationType,
+											filename:  locationType+divId[k].id+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+										},
+										{
+											extend:    'pdfHtml5',
+											text:      '<i class="fa fa-file-pdf-o"></i>',
+											titleAttr: 'PDF',
+											title:	   locationType,
+											filename:  locationType+divId[k].id+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+											orientation: "landscape",
+											pageSize:'A3',
+											customize: function (doc) {
+												doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+											}
+										}
+									]
+								});
 								
 							}
 						}
@@ -4300,10 +4497,33 @@
 			"paging":   false,
 			"info":     false,
 			"searching": false,
-			"autoWidth": true,
-			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"autoWidth": true,			
 			"order": [ 0, 'desc' ],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
 		});
 			if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
@@ -4352,9 +4572,32 @@
 			"info":     false,
 			"searching": false,
 			"autoWidth": true,
-			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 			"order": [ 0, 'desc' ],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
 		});
 		if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
@@ -4410,9 +4653,31 @@
 			"info":     false,
 			"searching": false,
 			"autoWidth": true,
-			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 			"order": [ 0, 'desc' ],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
 		});
 		if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
@@ -4462,9 +4727,31 @@
 			"info":     false,
 			"searching": false,
 			"autoWidth": true,
-			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 			"order": [ 0, 'desc' ],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
 		});
 		if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
@@ -4519,9 +4806,32 @@
 			"info":     false,
 			"searching": false,
 			"autoWidth": true,
-			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 			"order": [ 0, 'desc' ],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
 		});
 	}
 	//ivr buld
@@ -4559,9 +4869,32 @@
 			"info":     false,
 			"searching": false,
 			"autoWidth": true,
-			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 			"order": [ 0, 'desc' ],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
 		});
 	}
 	
@@ -4597,9 +4930,32 @@
 			"info":     false,
 			"searching": false,
 			"autoWidth": true,
-			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 			"order": [ 0, 'desc' ],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
 		});
 		
 		if(startIndex == 0 && totalCount > 0){
@@ -5078,9 +5434,29 @@ function getIHHLlocationLvlWiseData(locationType){
 							"iDisplayLength": 20,
 							"aaSorting": [],
 							"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-							"dom": 'Blfrtip',
+							"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+								"<'row'<'col-sm-12'tr>>" +
+								"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 							buttons: [
-								'copy', 'excel', 'pdf', 'print'
+								{
+									extend:    'csvHtml5',
+									text:      '<i class="fa fa-file-text-o"></i>',
+									titleAttr: 'CSV',
+									title:	   locationType,
+									filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+								},
+								{
+									extend:    'pdfHtml5',
+									text:      '<i class="fa fa-file-pdf-o"></i>',
+									titleAttr: 'PDF',
+									title:	   locationType,
+									filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+									orientation: "landscape",
+									pageSize:'A3',
+									customize: function (doc) {
+										doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+									}
+								}
 							]
 						});
 					}
