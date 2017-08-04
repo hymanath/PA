@@ -14,7 +14,7 @@ import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.ILightMonitoringDAO;
 import com.itgrids.dao.ILightWattageDAO;
 import com.itgrids.dao.IWebserviceCallDetailsDAO;
-import com.itgrids.dto.LedDistrictVO;
+import com.itgrids.dto.LedOverviewVo;
 import com.itgrids.dto.LightMonitoringVO;
 import com.itgrids.dto.LightWattageVO;
 import com.itgrids.dto.ResultVO;
@@ -237,17 +237,17 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	 * Author :Swapna
 	 	 * @description : saveRealtimeStatusByVillages
 	 	 */
-	     
 	     @Override
-			public List<LightMonitoringVO> getRealtimeStatusByVillages() {
-				   List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
-				   LightWattageVO wattagVO=new LightWattageVO();
-				   
-				try{					
-				     List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails();
-				     if(lightMonitoringData!=null && lightMonitoringData.size()>0 && !lightMonitoringData.isEmpty()){
-				    	 LightMonitoringVO lightMonitoringVO= new LightMonitoringVO();
-					     for (Object[] objects : lightMonitoringData) {						
+	public List<LightMonitoringVO> getBasicLedOverviewDetails() {
+		   List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
+		   LightWattageVO wattagVO=new LightWattageVO();
+		   
+		try{					
+		     List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails();
+		     
+		     if(lightMonitoringData!=null && lightMonitoringData.size()>0 && !lightMonitoringData.isEmpty()){
+		    	 LightMonitoringVO lightMonitoringVO= new LightMonitoringVO();
+			     for (Object[] objects : lightMonitoringData) {						
 					    lightMonitoringVO.setTotalPoles((Long)objects[0]);
 					    lightMonitoringVO.setTotalPanels((Long)objects[1]);				    
 					    lightMonitoringVO.setTotalLights((Long)objects[2]);
@@ -255,64 +255,49 @@ public class LightMonitoringService  implements ILightMonitoring{
 					    lightMonitoringVO.setOffLights((Long)objects[4]);
 				        lightMonitoringVO.setWorkingLights((Long)objects[5]);
 				        lightMonitoringVO.setNotWorkingLights((Long)objects[6]);
-				
-				       List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege();
-				       if(wattegeCount!=null && wattegeCount.size()>0 && !wattegeCount.isEmpty())
-				    	for (Object[] objects2 : wattegeCount) {				    	
-				    	wattagVO.setWattage((Long)objects2[0]);
-				    	wattagVO.setLightCount((Long)objects2[1]);		    	
-				       	lightMonitoringVO.getWattageList().add(wattagVO); 	
-				        }
-				       list.add(lightMonitoringVO);
-				       }
-				       }
-				       }
-				    catch (Exception e) {
-						 LOG.error(e);
-					}
-				return list;
-	             }
+		
+				  List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege();
+		       
+			       if(wattegeCount!=null && wattegeCount.size()>0 && !wattegeCount.isEmpty()){
+			    	   for (Object[] objects2 : wattegeCount) {				    	
+					    	wattagVO.setWattage((Long)objects2[0]);
+					    	wattagVO.setLightCount((Long)objects2[1]);		    	
+					       	lightMonitoringVO.getWattageList().add(wattagVO); 	
+					    }
+			        }
+		       list.add(lightMonitoringVO);
+		     }
+		  }
+       }catch (Exception e) {
+    	   LOG.error("Exception raised at getBasicLedOverviewDetails - LightMonitoringService service", e);
+       }
+		return list;
+   }
 	     /*
 	 	 * Date : 03/08/2017
 	 	 * Author :Swapna
 	 	 * @description : getDistrictLevelCount
 	 	 */
-
-		@Override
-		public List<LedDistrictVO> getDistrictLevelCount() {
-		  List<LedDistrictVO>listVO=new ArrayList<LedDistrictVO>(0);
-		  try
-		  {
-			  List<Object[]> count= lightMonitoringDAO.getTotalSurveyDetails();
-			  if(count!=null && count.size()>0 &&!count.isEmpty())
+	public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(){
+	  List<LedOverviewVo>listVO=new ArrayList<LedOverviewVo>(0);
+	  try
+	  {
+		  List<Object[]> counts = lightMonitoringDAO.getTotalSurveyDetails();
+			  if(counts!=null && counts.size()>0 &&!counts.isEmpty())
 			  {				  
-				  for (Object[] objects : count) {
-					  LedDistrictVO  ledDistrictVO=new LedDistrictVO();
-					  ledDistrictVO.setDistrictId((Long) objects[0]);
-					  ledDistrictVO.setDistrictName((String) objects[1]);
-					  ledDistrictVO.setTehsilId((Long) objects[2]);	  					
-					  ledDistrictVO.setPanchayatId((Long) objects[3]);	  
-					  listVO.add(ledDistrictVO);
-					  }
-				      }
-		              }
-		 			 catch (Exception e) {
-					 LOG.error(e);
-				   }
-		        return listVO;
-                  }
-                  }
-			  
-		
-			  
-			  
-			  
-			  
-		  
-		  
+				 for (Object[] objects : counts) {
+				  LedOverviewVo  resultVo = new LedOverviewVo();
+				  		resultVo.setTotalDistCnt((Long) objects[0]);//No of districts 
+				  		resultVo.setTotalConstituencyCnt((Long) objects[1]);
+				  		resultVo.setTotalMandalCnt((Long) objects[2]);	  //no of constituencies					
+				  		resultVo.setTotalpanchayatCnt((Long) objects[3]);// no of mandal	  
+					  listVO.add(resultVo);
+				  }
+			  }
+		}catch (Exception e) {
+			LOG.error("Exception raised at getLedOverviewForStatedLocationsDetailsCounts - LightMonitoringService service", e);
+		}
+	       return listVO;
+	  }
 
-	 	
-		
-
-		 
-	
+}
