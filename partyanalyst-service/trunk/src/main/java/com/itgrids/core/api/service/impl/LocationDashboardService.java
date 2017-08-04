@@ -1147,14 +1147,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLocationWiseCommitteesCount(java.lang.String, java.lang.Long, java.lang.Long)
 	 */
 
-	public CommitteeBasicVO getLocationWiseCommitteesCount(String locationType, Long locationId,
-			Long enrollmentId) {
+	public CommitteeBasicVO getLocationWiseCommitteesCount(String locationType, Long locationId,Long tdpCommitteeEnrollmentYearId) {
 
 		CommitteeBasicVO committeeCounts = new CommitteeBasicVO();
 		try {
 			// 0-tdp_base_comitteeId,1-levelId,2-levelName,3-committeeConfrimed,4-start
 			// Date,5-completed Date
-			List<Object[]> objList = tdpCommitteeDAO.getLocationWiseCommittees(locationType, locationId, enrollmentId);
+			List<Object[]> objList = tdpCommitteeDAO.getLocationWiseCommittees(locationType, locationId, tdpCommitteeEnrollmentYearId);
             Long mainMandalCompletedCount = 0l;
             Long mainMandalStartCount = 0l;
             Long mainVillageCompletedCount = 0l;
@@ -1171,11 +1170,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
             
 			if (objList != null) {
 				for (Object[] objects : objList) {
-					if ((Long)objects[0] == 1l) {
+					if (commonMethodsUtilService.getLongValueForObject(objects[0]) == 1l) {
 						if ((Long)objects[1] == 5l || (Long)objects[1] == 7l || (Long)objects[1] == 9l) {
 							if (objects[3].toString().trim().equalsIgnoreCase("Y")) {
 								mainMandalCompletedCount++;
-							} else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]!=null) {
+							} else if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null  ) {
 								mainMandalStartCount++;
 							}else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]==null && objects[5]==null ){
 								mainMandalNotStarted++;
@@ -1184,19 +1183,17 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						} else if ((Long)objects[1] == 6l || (Long)objects[1] == 8l) {
 							if (objects[3].toString().trim().equalsIgnoreCase("Y")) {
 								mainVillageCompletedCount++;
-							} else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]!=null) {
+							} else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null ) {
 								mainVillageStartCount++;
 							}else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]==null && objects[5]==null ){
 								mainVillageNotStarted++;
 							}
 						}
 					} else {
-						
-						
 						if ((Long)objects[1] == 5l || (Long)objects[1] == 7l || (Long)objects[1] == 9l) {
 							if (objects[3].toString().trim().equalsIgnoreCase("Y")) {
 								affliatedMandalCompletedCount++;
-							} else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]!=null) {
+							} else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null  ) {
 								affliatedMandalStartCount++;
 							}else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]==null && objects[5]==null ){
 								affliatedMandalNotStarted++;
@@ -1205,7 +1202,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						} else if ((Long)objects[1] == 6l || (Long)objects[1] == 8l) {
 							if (objects[3].toString().trim().equalsIgnoreCase("Y")) {
 								affliatedVillageCompletedCount++;
-							} else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]!=null)  {
+							} else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null  )  {
 								affliatedVillageStartCount++;
 							}else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]==null && objects[5]==null ){
 								affliatedVillageNotStarted++;
@@ -1243,7 +1240,6 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseCommitteesCount", e);
 		}
-
 		return committeeCounts;
 	}
     /*
