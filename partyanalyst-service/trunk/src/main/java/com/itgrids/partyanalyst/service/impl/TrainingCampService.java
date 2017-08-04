@@ -3664,7 +3664,7 @@ class TrainingCampService implements ITrainingCampService{
 	}
 	
 	public List<CallStatusVO> getAllMeetings(Long meetingType,Long locationLevel,List<Long> stateIds,List<Long> districtIds,List<Long> constituencyIds,List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString){
-		List<CallStatusVO> allMeetings = new ArrayList<CallStatusVO>();
+		List<CallStatusVO> allMeetings = new ArrayList<CallStatusVO>(0);
 		try {
 			LOG.info("Entered into getAllMeetings");
 			

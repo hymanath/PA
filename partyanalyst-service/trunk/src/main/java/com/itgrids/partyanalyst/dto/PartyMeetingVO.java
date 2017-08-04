@@ -27,12 +27,7 @@ public class PartyMeetingVO implements java.io.Serializable{
 	public List<PartyMeetingVO> partyMeetingVOList = new ArrayList<PartyMeetingVO>(0);
 	private Long partyMeetingTypeId;
 	private Long partyMeetingSubTypeId;
-	public Long getPartyMeetingSubTypeId() {
-		return partyMeetingSubTypeId;
-	}
-	public void setPartyMeetingSubTypeId(Long partyMeetingSubTypeId) {
-		this.partyMeetingSubTypeId = partyMeetingSubTypeId;
-	}
+	
 	private String partyMeetingType;
 	private Long meetingLevelId;
 	private String meetingLevel;
@@ -96,15 +91,45 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private Long stateId;
 	private List<SessionVO> sessionVOList=new ArrayList<SessionVO>(0);
 	private List<Long> tdpCadreIds;
+	private Long momFilesCount=0l,momPointsCount=0l,atrFilesCount=0l,atrTextCount=0l;
 	
-	 
-	 private List<Long> sessionTypeId= new ArrayList<Long>(0);
-	 private List<String> startTimeList = new ArrayList<String>(0);
-	 private List<String> endTimeList = new ArrayList<String>(0);
-	 private List<String> lateTimeList = new ArrayList<String>(0);
-	 private List<String> cadreWithComments = new ArrayList<String>(0);
+	private List<Long> sessionTypeId= new ArrayList<Long>(0);
+	private List<String> startTimeList = new ArrayList<String>(0);
+	private List<String> endTimeList = new ArrayList<String>(0);
+	private List<String> lateTimeList = new ArrayList<String>(0);
+	private List<String> cadreWithComments = new ArrayList<String>(0);
 	    
 	
+	public Long getMomFilesCount() {
+		return momFilesCount;
+	}
+	public void setMomFilesCount(Long momFilesCount) {
+		this.momFilesCount = momFilesCount;
+	}
+	public Long getMomPointsCount() {
+		return momPointsCount;
+	}
+	public void setMomPointsCount(Long momPointsCount) {
+		this.momPointsCount = momPointsCount;
+	}
+	public Long getAtrFilesCount() {
+		return atrFilesCount;
+	}
+	public void setAtrFilesCount(Long atrFilesCount) {
+		this.atrFilesCount = atrFilesCount;
+	}
+	public Long getAtrTextCount() {
+		return atrTextCount;
+	}
+	public void setAtrTextCount(Long atrTextCount) {
+		this.atrTextCount = atrTextCount;
+	}
+	public Long getPartyMeetingSubTypeId() {
+		return partyMeetingSubTypeId;
+	}
+	public void setPartyMeetingSubTypeId(Long partyMeetingSubTypeId) {
+		this.partyMeetingSubTypeId = partyMeetingSubTypeId;
+	}
 	public Long getStateId() {
 		return stateId;
 	}
