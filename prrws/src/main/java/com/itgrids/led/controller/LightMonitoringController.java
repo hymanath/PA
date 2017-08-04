@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.itgrids.dto.LedDistrictVO;
+import com.itgrids.dto.LedOverviewVo;
 import com.itgrids.dto.LightMonitoringVO;
 import com.itgrids.dto.ResultVO;
 import com.itgrids.led.service.ILightMonitoring;
@@ -42,19 +42,19 @@ public class LightMonitoringController {
 		return voList;
 	}
 
-	@RequestMapping(value = "/getRealtimeStatusByVillages", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,
+	@RequestMapping(value = "/getBasicLedOverviewDetails", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody  List<LightMonitoringVO>  getRealtimeStatusByVillages()
+	public @ResponseBody  List<LightMonitoringVO>  getBasicLedOverviewDetails()
 	{
-		List<LightMonitoringVO>  voList= lightMonitoring.getRealtimeStatusByVillages();
+		List<LightMonitoringVO>  voList= lightMonitoring.getBasicLedOverviewDetails();
 		return voList;
 	}	
 	
-	@RequestMapping(value = "/getDistrictLevelCount", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,
+	@RequestMapping(value = "/getLedOverviewForStartedLocationsDetailsCounts", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody  List<LedDistrictVO>  getDistrictLevelCount()
+	public @ResponseBody  List<LedOverviewVo>  getLedOverviewForStartedLocationsDetailsCountsv()
 	{
-		List<LedDistrictVO>  voList= lightMonitoring.getDistrictLevelCount();
+		List<LedOverviewVo>  voList= lightMonitoring.getLedOverviewForStartedLocationsDetailsCounts();
 		return voList;
 	}
 	
