@@ -2370,7 +2370,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return casteCategoryList;
 	}
-	@Override
+
 	public List<BasicVO> getLocationWiseActivitysStatus(String fromDateStr, String toDateStr, String year,List<Long> locationValues, Long locationTypeId) {
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		try{
@@ -2434,7 +2434,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @Description :This Service Method is used to get All Distrits in a State
 	 *  @since 02-AUG-2017
 	 */
-	@Override
+	
 	public List<LocationWiseBoothDetailsVO> getAllDistricts(Long stateId){
 		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
 		try {
@@ -2469,7 +2469,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @Description :This Service Method is used to get All Constituencies in a District
 	 *  @since 02-AUG-2017
 	 */
-	@Override
+	
 	public List<LocationWiseBoothDetailsVO> getAllConstituenciesByDistrict(Long districtId) {
 		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
 		try {
@@ -2526,7 +2526,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @Description :This Service Method is used to get All party results based on location
 	 *  @since 02-AUG-2017
 	 */
-	@Override
+	
 	public List<ElectionInformationVO> getElectionInformationLocationWise(String fromDateStr, String toDateStr, Long locationTypeId,Long locationValue, List<Long> electionScopeIds) {
 		List<ElectionInformationVO> electionInformationVOList= new ArrayList<ElectionInformationVO>();
 		try{
