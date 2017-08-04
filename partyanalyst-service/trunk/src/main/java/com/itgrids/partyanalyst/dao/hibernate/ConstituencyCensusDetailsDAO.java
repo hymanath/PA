@@ -75,7 +75,7 @@ public class ConstituencyCensusDetailsDAO extends GenericDaoHibernate<Constituen
 		return getHibernateTemplate().find("select model.constituencyId from ConstituencyCensusDetails model where model.constituencyId = ? and model.year = ? ",params);	
 	}
 	
-	@Override
+	
 	public List<Object[]> getTotalCensusPopulation(Set<Long> locationIdSet,Long year){
 			
 		StringBuilder sb = new StringBuilder();

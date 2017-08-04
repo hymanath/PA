@@ -493,7 +493,7 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 		  return query.list();
 	  }
 
-	@Override
+	
 	public List<Object[]> getTotalCensusPopulation(Set<Long> locationIdSet,Long year) {
 		
 		Query query = getSession().createQuery("select model.totalPopulation, model.tehsilId from Census  model " +
