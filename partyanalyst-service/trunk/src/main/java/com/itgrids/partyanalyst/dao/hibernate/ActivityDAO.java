@@ -241,7 +241,6 @@ public class ActivityDAO extends GenericDaoHibernate<Activity, Long> implements 
 		return query.list();
 	}
 
-	@Override
 	public List<Object[]> getConductedInfoCount(Date fromDate, Date toDate, String year, List<Long> locationValues,Long locationTypeId) {
 		   StringBuilder sb = new StringBuilder();
 	       StringBuilder sbm = new StringBuilder();
