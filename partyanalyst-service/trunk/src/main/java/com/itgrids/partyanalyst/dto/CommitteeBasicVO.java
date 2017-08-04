@@ -38,8 +38,79 @@ public class CommitteeBasicVO {
 	private double affMandalNotPer = 0.0;
 	private double affVillageNotPer = 0.0;
 	
+	private long mainMandalCompletedCount = 0l;
+	private long mainMandalStartedCount = 0l;
+	private long mainvillageCompletedCount = 0l;
+	private long mainVillageStartedCount = 0l;
+	private long mainMandalNotYetStartedCount = 0l;
+	private long mainVillageNotYetStartedCount = 0l;
+	
+	private long affliatedMandalCompletedCount = 0l;
+	private long affliatedMandalStartedCount = 0l;
+	private long affliatedVillageCompletedCount = 0l;
+	private long affliatedVillageStartedCount = 0l;
 	
 	
+	public long getMainMandalCompletedCount() {
+		return mainMandalCompletedCount;
+	}
+	public void setMainMandalCompletedCount(long mainMandalCompletedCount) {
+		this.mainMandalCompletedCount = mainMandalCompletedCount;
+	}
+	public long getMainMandalStartedCount() {
+		return mainMandalStartedCount;
+	}
+	public void setMainMandalStartedCount(long mainMandalStartedCount) {
+		this.mainMandalStartedCount = mainMandalStartedCount;
+	}
+	public long getMainvillageCompletedCount() {
+		return mainvillageCompletedCount;
+	}
+	public void setMainvillageCompletedCount(long mainvillageCompletedCount) {
+		this.mainvillageCompletedCount = mainvillageCompletedCount;
+	}
+	public long getMainVillageStartedCount() {
+		return mainVillageStartedCount;
+	}
+	public void setMainVillageStartedCount(long mainVillageStartedCount) {
+		this.mainVillageStartedCount = mainVillageStartedCount;
+	}
+	public long getMainMandalNotYetStartedCount() {
+		return mainMandalNotYetStartedCount;
+	}
+	public void setMainMandalNotYetStartedCount(long mainMandalNotYetStartedCount) {
+		this.mainMandalNotYetStartedCount = mainMandalNotYetStartedCount;
+	}
+	public long getMainVillageNotYetStartedCount() {
+		return mainVillageNotYetStartedCount;
+	}
+	public void setMainVillageNotYetStartedCount(long mainVillageNotYetStartedCount) {
+		this.mainVillageNotYetStartedCount = mainVillageNotYetStartedCount;
+	}
+	public long getAffliatedMandalCompletedCount() {
+		return affliatedMandalCompletedCount;
+	}
+	public void setAffliatedMandalCompletedCount(long affliatedMandalCompletedCount) {
+		this.affliatedMandalCompletedCount = affliatedMandalCompletedCount;
+	}
+	public long getAffliatedMandalStartedCount() {
+		return affliatedMandalStartedCount;
+	}
+	public void setAffliatedMandalStartedCount(long affliatedMandalStartedCount) {
+		this.affliatedMandalStartedCount = affliatedMandalStartedCount;
+	}
+	public long getAffliatedVillageCompletedCount() {
+		return affliatedVillageCompletedCount;
+	}
+	public void setAffliatedVillageCompletedCount(long affliatedVillageCompletedCount) {
+		this.affliatedVillageCompletedCount = affliatedVillageCompletedCount;
+	}
+	public long getAffliatedVillageStartedCount() {
+		return affliatedVillageStartedCount;
+	}
+	public void setAffliatedVillageStartedCount(long affliatedVillageStartedCount) {
+		this.affliatedVillageStartedCount = affliatedVillageStartedCount;
+	}
 	public double getMainMandalNotPer() {
 		return mainMandalNotPer;
 	}
