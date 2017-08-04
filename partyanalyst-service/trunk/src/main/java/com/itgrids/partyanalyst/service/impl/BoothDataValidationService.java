@@ -1232,7 +1232,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	public String deleteRoleMemberDetails(final Long boothInchargeMappingId,final Long boothInchargeId,final Long userId,final Long boothId,final Long boothInchargeEnrollementId){
 		   String status = "";	
 		   status = (String)transactionTemplate.execute(new TransactionCallback() {
-				@Override
+				
 				public Object doInTransaction(TransactionStatus arg0) {
 					String status="";
 					try {
