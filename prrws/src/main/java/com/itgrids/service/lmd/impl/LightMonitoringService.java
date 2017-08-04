@@ -287,10 +287,10 @@ public class LightMonitoringService  implements ILightMonitoring{
 			  {				  
 				 for (Object[] objects : counts) {
 				  LedOverviewVo  resultVo = new LedOverviewVo();
-				  		resultVo.setTotalDistCnt((Long) objects[0]);//No of districts 
-				  		resultVo.setTotalConstituencyCnt((Long) objects[1]);
-				  		resultVo.setTotalMandalCnt((Long) objects[2]);	  //no of constituencies					
-				  		resultVo.setTotalpanchayatCnt((Long) objects[3]);// no of mandal	  
+				  		resultVo.setTotalDistCnt(commonMethodsUtilService.getLongValueForObject(objects[0]));//No of districts 
+				  		resultVo.setTotalConstituencyCnt(commonMethodsUtilService.getLongValueForObject(objects[1]));//no of constituencies
+				  		resultVo.setTotalMandalCnt(commonMethodsUtilService.getLongValueForObject(objects[2]));// no of mandal	  					
+				  		resultVo.setTotalpanchayatCnt(commonMethodsUtilService.getLongValueForObject(objects[3]));//No of panchayats	  
 					  listVO.add(resultVo);
 				  }
 			  }
