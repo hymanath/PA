@@ -352,7 +352,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		return query.list();
 	}
 	
-	@Override
+	
 	public List<Object[]> getElectionInformationLocationWise(List<Long> yearsList, Long locationTypeId,
 			Long locationValue,List<Long> electionScopeIds, List<Long> electionBodyIds,List<Long> tehsilIds) {
 
