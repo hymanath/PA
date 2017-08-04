@@ -2847,13 +2847,13 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
-	 var theadArr = [locationType,'Target','Sanctioned Area (in Acres)','Sanctioned Percentage','Pitting  Area (in Acres)','Planting  Area (in Acres)','Achievement Percentage'];
+	 var theadArr = [locationType,'Target(in Acres)','Sanctioned Area (in Acres)','Sanctioned Percentage','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc Based on Target','Pitting Perc Based on Sanctioned Area','Achievement Percentage'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Achievement Percentage'];
+		theadArr = ["district",locationType,'Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc Based on Sanctioned Area','Achievement Percentage'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Achievement Percentage'];
+		theadArr = ["district","constituency",locationType,'Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc Based on Sanctioned Area','Achievement Percentage'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Achievement Percentage'];
+		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc Based on Sanctioned Area','Achievement Percentage'];
 	
 	var json = {
 		year : "2017",
@@ -2906,6 +2906,22 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 						str+='<td>'+ajaxresp[i].pittingArea+'</td>';
 						str+='<td>'+ajaxresp[i].plantingArea+'</td>';
+						if(locationType == "state" || locationType == "district"){
+							if(ajaxresp[i].targetPittingPerc < 50)
+								str+='<td style="background-color:#FF0000">'+ajaxresp[i].targetPittingPerc+'</td>';
+							else if(ajaxresp[i].targetPittingPerc >= 50 && ajaxresp[i].targetPittingPerc < 80)
+								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].targetPittingPerc+'</td>';
+							else if(ajaxresp[i].targetPittingPerc >= 80)
+								str+='<td style="background-color:#00AF50">'+ajaxresp[i].targetPittingPerc+'</td>';
+						}
+						
+						if(ajaxresp[i].sancTrgtPittingPerc < 50)
+							str+='<td style="background-color:#FF0000">'+ajaxresp[i].sancTrgtPittingPerc+'</td>';
+						else if(ajaxresp[i].sancTrgtPittingPerc >= 50 && ajaxresp[i].sancTrgtPittingPerc < 80)
+							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].sancTrgtPittingPerc+'</td>';
+						else if(ajaxresp[i].sancTrgtPittingPerc >= 80)
+							str+='<td style="background-color:#00AF50">'+ajaxresp[i].sancTrgtPittingPerc+'</td>';
+						
 						if(ajaxresp[i].pencentageOfPlanting < 50){
 							str+='<td style="background-color:#FF0000">'+ajaxresp[i].pencentageOfPlanting+'</td>';
 						}else if(ajaxresp[i].pencentageOfPlanting >= 50 && ajaxresp[i].pencentageOfPlanting < 80){
