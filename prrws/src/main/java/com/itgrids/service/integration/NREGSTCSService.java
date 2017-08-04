@@ -321,6 +321,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnnualsService/AnnualsOverview";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("UGDrainage"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/UGDrainageService/UGDrainageOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GH"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GreeningHillocksService/GreeningHillocksOverview";
 			
 			String str = convertingInputVOToString(inputVO);
 			
@@ -340,7 +342,7 @@ public class NREGSTCSService implements INREGSTCSService{
  	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payment") || 
  	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Horticulture") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Avenue") ||
  	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries") ||	inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance") ||
- 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("WaterBudget") ||
+ 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("WaterBudget") || inputVO.getDivType().trim().toString().equalsIgnoreCase("GH") ||
  	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Rural House") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
  	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
  	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
@@ -513,6 +515,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PernnialService/PernnialData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnnualsService/AnnualsData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GH"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GreeningHillocksService/GreeningHillocksData";
 			
 			String str = convertingInputVOToString(inputVO);
 			
@@ -534,42 +538,62 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
-	 	    				vo.setTarget(jObj.getLong("TARGET"));
-	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
-	 	    				if(jObj.getString("NOTGROUNDED").trim().contains("-"))
-	 	    					vo.setNotGrounded("0");
-	 	    				else
-	 	    					vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
-	 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
-	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
-	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
-	 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worms")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle drinking water troughs")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising of Perinnial Fodders"))
-	 	    							&& inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state")){
-	 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
-	 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
-	 	    					vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Long.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				}
-	 	    				
-	 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Ponds")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Drying Platforms")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Anganwadi Buildings") 
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("SMC Trench")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Imp to CD")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("MPT_PT")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GC Works")
-	 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CD_CW"))
-	 	    						&& (inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state")
-	 	    								|| inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district"))){
-	 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
-	 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
-	 	    					if(vo.getCompleted() != null && vo.getCompleted().longValue() > 0l && vo.getSanctionedTarget() != null && Long.valueOf(vo.getSanctionedTarget()) > 0l)
-	 	    						vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Long.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    					else
-	 	    						vo.setPercSant("0.00");
-	 	    				}
+	 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GH")){
+								if(inputVO.getSublocationType() != null && (inputVO.getSublocationType().trim().equalsIgnoreCase("state") 
+									|| inputVO.getSublocationType().trim().equalsIgnoreCase("district")))
+	 	    					vo.setTarget(jObj.getLong("DISTRICT_TARGET"));
+	 	    					
+	 	    					vo.setSanctionedTarget(jObj.getString("SANCTION_TARGET"));
+		 	    				vo.setPittingKMS(jObj.getString("PITTING_EXT"));
+		 	    				vo.setPlantingKMS(jObj.getString("PLNTNG_EXT"));
+		 	    				vo.setTotalExpenditure(jObj.getString("EXPN"));
+		 	    				if(vo.getPlantingKMS() != null && Double.valueOf(vo.getPlantingKMS()) > 0 && vo.getSanctionedTarget() != null
+										&& Double.valueOf(vo.getSanctionedTarget()) > 0){
+		 	    					vo.setPercentage(new BigDecimal(Double.valueOf(vo.getPlantingKMS()) * 100.00
+											/ Double.valueOf(vo.getSanctionedTarget()))
+													.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								} else {
+									vo.setPercentage("0.00");
+								}
+							}
+	 	    				else{
+	 	    					vo.setTarget(jObj.getLong("TARGET"));
+		 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+		 	    				if(jObj.getString("NOTGROUNDED").trim().contains("-"))
+		 	    					vo.setNotGrounded("0");
+		 	    				else
+		 	    					vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+		 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+		 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+		 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery")
+		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worms")
+		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle drinking water troughs")
+		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Raising of Perinnial Fodders"))
+		 	    							&& inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state")){
+		 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
+		 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
+		 	    					vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Long.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				}
+		 	    				
+		 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Ponds")
+		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Drying Platforms")
+		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Anganwadi Buildings") 
+		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("SMC Trench")
+		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Imp to CD")
+		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("MPT_PT")
+		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GC Works")
+		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("CD_CW"))
+		 	    						&& (inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state")
+		 	    								|| inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district"))){
+		 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
+		 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
+		 	    					if(vo.getCompleted() != null && vo.getCompleted().longValue() > 0l && vo.getSanctionedTarget() != null && Long.valueOf(vo.getSanctionedTarget()) > 0l)
+		 	    						vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Long.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    					else
+		 	    						vo.setPercSant("0.00");
+		 	    				}
+		 	    			}
 	 	    				
 	 	    				voList.add(vo);
 	 	    			}
@@ -678,6 +702,10 @@ public class NREGSTCSService implements INREGSTCSService{
 								divType != null && divType.trim().toString().equalsIgnoreCase("CD_CW") ||divType != null && divType.trim().toString().equalsIgnoreCase("Anganwadi Buildings")) && 
 								(subLocationType != null && subLocationType.trim().equalsIgnoreCase("district"))){
 							percValue = new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						}else if(divType != null && divType.trim().toString().equalsIgnoreCase("GH")) {
+							percValue = new BigDecimal(Double.valueOf(jObj.getString("PLNTNG_EXT")) * 100.00
+									/ Double.valueOf(jObj.getString("SANCTION_TARGET")))
+											.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 						}else{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						}
@@ -800,6 +828,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnnualsService/AnnualsData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("UGDrainage"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/UGDrainageService/UGDrainageData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GH"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GreeningHillocksService/GreeningHillocksData";
 			
 			 str = convertingInputVOToString(inputVO);
 			 
@@ -1000,7 +1030,36 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				
 				 	    				list.add(vo);
 				 	    			}
-			 	    		}else{
+			 	    		}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GH")){
+								for (int i = 0; i < finalArray.length(); i++){
+									NregsDataVO nregsDataVO = new NregsDataVO();
+									JSONObject jObj = (JSONObject) finalArray.get(i);
+									nregsDataVO.setUniqueId(jObj.getLong("UNIQUEID"));
+									nregsDataVO.setDistrict(jObj.getString("DISTRICT"));
+									nregsDataVO.setConstituency(jObj.getString("CONSTITUENCY"));
+									nregsDataVO.setMandal(jObj.getString("MANDAL"));
+									nregsDataVO.setPanchayat(jObj.getString("PANCHAYAT"));
+									if(inputVO.getSublocationType() != null && (inputVO.getSublocationType().trim().equalsIgnoreCase("state") 
+											|| inputVO.getSublocationType().trim().equalsIgnoreCase("district")))
+										nregsDataVO.setTarget(jObj.getLong("DISTRICT_TARGET"));
+			 	    					
+									nregsDataVO.setSanctionedTarget(jObj.getString("SANCTION_TARGET"));
+									nregsDataVO.setPittingKMS(jObj.getString("PITTING_EXT"));
+									nregsDataVO.setPlantingKMS(jObj.getString("PLNTNG_EXT"));
+									nregsDataVO.setTotalExpenditure(jObj.getString("EXPN"));
+									if(nregsDataVO.getPlantingKMS() != null
+											&& Double.valueOf(nregsDataVO.getPlantingKMS()) > 0
+											&& nregsDataVO.getSanctionedTarget() != null
+											&& Double.valueOf(nregsDataVO.getSanctionedTarget()) > 0){
+										nregsDataVO.setPercentage(new BigDecimal(Double.valueOf(nregsDataVO.getPlantingKMS()) * 100.00
+												/ Double.valueOf(nregsDataVO.getSanctionedTarget()))
+														.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+									}else{
+										nregsDataVO.setPercentage("0.00");
+									}
+									list.add(nregsDataVO);
+								}
+							}else{
 		 	    				for(int i=0;i<finalArray.length();i++){
 			 	    				NregsDataVO nregsDataVO=new NregsDataVO();
 			 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
@@ -1344,6 +1403,10 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGEOFPLANTING")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						}else if(divType != null && divType.trim().toString().equalsIgnoreCase("FAperformance")){
 							percValue = new BigDecimal(jObj.getString("AVG_TOT_MARKS")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						}else if(divType != null && divType.trim().toString().equalsIgnoreCase("GH")) {
+							percValue = new BigDecimal(Double.valueOf(jObj.getString("PLNTNG_EXT")) * 100.00
+									/ Double.valueOf(jObj.getString("SANCTION_TARGET")))
+											.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 						}else{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						} 
@@ -1403,6 +1466,10 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGEOFPLANTING")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						}else if(divType != null && divType.trim().toString().equalsIgnoreCase("FAperformance")){
 							percValue = new BigDecimal(jObj.getString("AVG_TOT_MARKS")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						}else if(divType != null && divType.trim().toString().equalsIgnoreCase("GH")) {
+							percValue = new BigDecimal(Double.valueOf(jObj.getString("PLNTNG_EXT")) * 100.00
+									/ Double.valueOf(jObj.getString("SANCTION_TARGET")))
+											.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 						}else{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						} 
@@ -1627,6 +1694,10 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGEOFPLANTING")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						}else if(divType != null && divType.trim().toString().equalsIgnoreCase("FAperformance")){
 							percValue = new BigDecimal(jObj.getString("AVG_TOT_MARKS")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						}else if(divType != null && divType.trim().toString().equalsIgnoreCase("GH")) {
+							percValue = new BigDecimal(Double.valueOf(jObj.getString("PLNTNG_EXT")) * 100.00
+									/ Double.valueOf(jObj.getString("SANCTION_TARGET")))
+											.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 						}else{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						} 
@@ -1686,6 +1757,10 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGEOFPLANTING")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						}else if(divType != null && divType.trim().toString().equalsIgnoreCase("FAperformance")){
 							percValue = new BigDecimal(jObj.getString("AVG_TOT_MARKS")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						}else if(divType != null && divType.trim().toString().equalsIgnoreCase("GH")) {
+							percValue = new BigDecimal(Double.valueOf(jObj.getString("PLNTNG_EXT")) * 100.00
+									/ Double.valueOf(jObj.getString("SANCTION_TARGET")))
+											.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 						}else{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						} 
@@ -1742,6 +1817,10 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGEOFPLANTING")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						}else if(divType != null && divType.trim().toString().equalsIgnoreCase("FAperformance")){
 							percValue = new BigDecimal(jObj.getString("AVG_TOT_MARKS")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
+						}else if(divType != null && divType.trim().toString().equalsIgnoreCase("GH")) {
+							percValue = new BigDecimal(Double.valueOf(jObj.getString("PLNTNG_EXT")) * 100.00
+									/ Double.valueOf(jObj.getString("SANCTION_TARGET")))
+											.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 						}else{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						} 
@@ -2595,8 +2674,17 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<NregsProjectsVO> getNREGSAbstractDataByType(InputVO inputVO){
 		List<NregsProjectsVO> returnList = new ArrayList<>();
 		try {
-			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
+			String str = null;
+			ClientResponse response = null;
+			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
+				str = convertingInputVOToStringForIWMP(inputVO);
+			else
+				str = convertingInputVOToString(inputVO);
+			
+			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
+				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str);
+			else
+				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
 			
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -2645,6 +2733,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    					vo.setFTONOTSENTCNT(jObj.getString("FTONOTSENTCNT"));
 	 	    					vo.setREJECTCNT(jObj.getString("REJECTCNT"));
 	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("GH")){
+								vo.setTarget(jObj.getString("TARGET"));
+								vo.setCompleted(jObj.getString("ACHMT"));
+							}
 	 	    				else{
 	 	    					vo.setTarget(jObj.getString("TARGET"));
 		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
@@ -2661,7 +2753,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("HH Completed 100 Days")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Timely Payment")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue"))
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("GH"))
 	 	    					vo.setPercentage(jObj.getString("PER"));
 	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Payments"))
 	 	    					vo.setPENDINGRESPONSECNT(jObj.getString("PENDINGRESPONSECNT"));
@@ -3605,8 +3698,17 @@ public class NREGSTCSService implements INREGSTCSService{
 			Long constituencyId = inputVO.getLocationId();
 			Long districtId = inputVO.getDistrictId();
 			
-			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
+			String str = null;
+			ClientResponse response = null;
+			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
+				str = convertingInputVOToStringForIWMP(inputVO);
+			else
+				str = convertingInputVOToString(inputVO);
+			
+			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
+				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str);
+			else
+				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
 			
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -3644,7 +3746,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue")){
 	 	    					vo.setTarget(jObj.getString("TARGET"));
 		 	    				vo.setCompleted(jObj.getString("ACHIVEMENT"));
-	 	    				}
+	 	    				}else if(inputVO.getType().toString().trim().equalsIgnoreCase("GH")){
+								vo.setTarget(jObj.getString("TARGET"));
+								vo.setCompleted(jObj.getString("ACHMT"));
+							}
 	 	    				else{
 	 	    					vo.setTarget(jObj.getString("TARGET"));
 		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
@@ -3661,7 +3766,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("HH Completed 100 Days")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Timely Payment")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue"))
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("GH"))
 	 	    					vo.setPercentage(jObj.getString("PER"));
 	 	    				else
 	 	    					vo.setPercentage(jObj.getString("PERCENTAGE"));
@@ -3675,8 +3781,18 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			inputVO.setLocationType("district");
 			inputVO.setLocationId(districtId);
-			String str1 = convertingInputVOToString(inputVO);
-			ClientResponse distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1);
+			String str1 = null;
+			ClientResponse distResponse = null;
+			
+			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
+				str1 = convertingInputVOToStringForIWMP(inputVO);
+			else
+				str1 = convertingInputVOToString(inputVO);
+			
+			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
+				distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str1);
+			else
+				distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1);
 			
 			if(distResponse.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ distResponse.getStatus());
@@ -3721,6 +3837,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    					vo.setFTONOTSENTCNT(jObj.getString("FTONOTSENTCNT"));
 	 	    					vo.setREJECTCNT(jObj.getString("REJECTCNT"));
 	 	    				}
+	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("GH")){
+								vo.setTarget(jObj.getString("TARGET"));
+								vo.setCompleted(jObj.getString("ACHMT"));
+							}
 	 	    				else{
 	 	    					vo.setTarget(jObj.getString("TARGET"));
 		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
@@ -3737,7 +3857,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("HH Completed 100 Days")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Timely Payment")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue"))
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Horticulture") || inputVO.getType().toString().trim().equalsIgnoreCase("Avenue")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("GH"))
 	 	    					vo.setPercentage(jObj.getString("PER"));
 	 	    				else
 	 	    					vo.setPercentage(jObj.getString("PERCENTAGE"));

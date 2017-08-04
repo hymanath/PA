@@ -208,20 +208,37 @@ function onLoadCalls()
 				menuLocationId = locationId;
 				menuLocationType = "constituency";
 			}
+			var theadArr;
+			if(globalDivName == "GH"){
+				if(levelType == "state" || levelType == "district")
+				{
+					theadArr = [levelType,'District Target(in Ha)','Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+				}else if(levelType == "constituency")
+				{
+					theadArr = ["district",levelType,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+				}else if(levelType == "mandal")
+				{
+					theadArr = ["district","constituency",levelType,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+				}else if(levelType == "panchayat")
+				{
+					theadArr = ["district","constituency","mandal",levelType,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+				}
+			}else{
+				theadArr = [levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				if(levelType == "constituency")
+					theadArr = ["district",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				else if(levelType == "mandal")
+					theadArr = ["district","constituency",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				else if(levelType == "panchayat")
+					theadArr = ["district","constituency","mandal",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				
+				if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && levelType == "state")
+					theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+				
+				if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (levelType == "state" || levelType == "district"))
+					theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+			}
 			
-			var theadArr = [levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-			if(levelType == "constituency")
-				theadArr = ["district",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-			else if(levelType == "mandal")
-				theadArr = ["district","constituency",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-			else if(levelType == "panchayat")
-				theadArr = ["district","constituency","mandal",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-			
-			if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && levelType == "state")
-				theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
-			
-			if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (levelType == "state" || levelType == "district"))
-				theadArr = [levelType,'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 			
 			var tableId = divId.replace(/\s+/g, '')+''+levelType;
 			$("#"+tableId).html(spinner);
@@ -509,21 +526,37 @@ function projectData(divId,levelId,locationId)
 		menuLocationId = locationId;
 		menuLocationType = "constituency";
 	}
-	
-	
-		var theadArr = [dataArr[0],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-		if(dataArr[0] == "constituency")
-			theadArr = ["district",dataArr[0],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-		else if(dataArr[0] == "mandal")
-			theadArr = ["district","constituency",dataArr[0],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
-		else if(dataArr[0] == "panchayat")
-			theadArr = ["district","constituency","mandal",dataArr[0],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+	var theadArr;
+		if(globalDivName == "GH"){
+			if(dataArr[0] == "state" || dataArr[0] == "district")
+				{
+					theadArr = [dataArr[0],'District Target(in Ha)','Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+				}else if(dataArr[0] == "constituency")
+				{
+					theadArr = ["district",dataArr[0],'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+				}else if(dataArr[0] == "mandal")
+				{
+					theadArr = ["district","constituency",dataArr[0],'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+				}else if(dataArr[0] == "panchayat")
+				{
+					theadArr = ["district","constituency","mandal",dataArr[0],'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+				}
+		}else{
+			 theadArr = [dataArr[0],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			if(dataArr[0] == "constituency")
+				theadArr = ["district",dataArr[0],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			else if(dataArr[0] == "mandal")
+				theadArr = ["district","constituency",dataArr[0],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			else if(dataArr[0] == "panchayat")
+				theadArr = ["district","constituency","mandal",dataArr[0],'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			
+			if((divId == 'Mulbery' || divId == 'Silk worms' || divId == 'Cattle drinking water troughs' || divId == 'Raising of Perinnial Fodders') && dataArr[0] == "state")
+				theadArr = [dataArr[0],'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+			
+			if((divId == 'Fish Ponds' || divId == 'Fish Drying Platforms' || divId == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (dataArr[0] == "state" || dataArr[0] == "district"))
+				theadArr = [dataArr[0],'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+		}
 		
-		if((divId == 'Mulbery' || divId == 'Silk worms' || divId == 'Cattle drinking water troughs' || divId == 'Raising of Perinnial Fodders') && dataArr[0] == "state")
-			theadArr = [dataArr[0],'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
-		
-		if((divId == 'Fish Ponds' || divId == 'Fish Drying Platforms' || divId == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (dataArr[0] == "state" || dataArr[0] == "district"))
-			theadArr = [dataArr[0],'TARGET','sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 		
 		var tableId = divId.replace(/\s+/g, '')+''+dataArr[0];
 		$("#"+tableId).html(spinner);
@@ -743,10 +776,10 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-					str+='<div class="row">';
+					str+='<div class="row">';'SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','WaterBudget','GH'
 					for(var i in result)
 					{
-						if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "Solid Waste Management" || result[i] == "Play Fields" || result[i] == "Burial Grounds" || result[i] == "Agriculture Activities" || result[i] == "Payments" || result[i] == "FAperformance" || result[i] == "SMC Trench" || result[i] == "Imp to CD" || result[i] == "MPT_PT" || result[i] == "GC Works" || result[i] == "CD_CW"){
+						if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "SMC Trench" || result[i] == "Imp to CD" || result[i] == "MPT_PT" || result[i] == "GC Works" || result[i] == "CD_CW" || result[i] == "GH" || result[i] == "Solid Waste Management" || result[i] == "Play Fields" || result[i] == "Burial Grounds" || result[i] == "Agriculture Activities" || result[i] == "Payments" || result[i] == "FAperformance" || result[i] == "SMC Trench" || result[i] == "Imp to CD" || result[i] == "MPT_PT" || result[i] == "GC Works" || result[i] == "CD_CW"){
 							str+='<div class="col-sm-2 m_top10">';
 							if(result[i] == "FAperformance"){
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
@@ -1500,6 +1533,14 @@ function buildDistrictsPopupDetails(result,dataArr){
 					theadArr = ["district","constituency",dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achivement(5)','Total Average(100)'];
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achivement(5)','Total Average(100)'];
+			}else if(globalDivName == "GH"){
+				theadArr = [dataArr,'District Target(in Ha)','Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+				if(dataArr == "constituency")
+					theadArr = ["district",dataArr,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+				else if(dataArr == "mandal")
+					theadArr = ["district","constituency",dataArr,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+				else if(dataArr == "panchayat")
+					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
 			}else{
 				theadArr = [dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 				if(dataArr == "constituency")
@@ -1831,6 +1872,40 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
 										}
 										
+									str+='</tr>';
+									}else if(globalDivName == "GH"){
+										str+='<tr>';
+										if(dataArr == "district"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+										}
+										else if(dataArr == "constituency"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+										}
+										else if(dataArr == "mandal"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+										}
+										else if(dataArr == "panchayat"){
+											str+='<td class="text-capital">'+result.distList[i].district+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].constituency+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
+											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
+										}
+										if(dataArr == "district")
+										str+='<td>'+result.distList[i].target+'</td>';
+										str+='<td>'+result.distList[i].sanctionedTarget+'</td>';
+										str+='<td>'+result.distList[i].pittingKMS+'</td>';
+										str+='<td>'+result.distList[i].plantingKMS+'</td>';
+										str+='<td>'+result.distList[i].totalExpenditure+'</td>';
+										if(result.distList[i].percentage < 50){
+											str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
+											str+='<td style="background-color:#FFBA00">'+result.distList[i].percentage+'</td>';
+										}else if(result.distList[i].percentage >= 80){
+											str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
+										}
 									str+='</tr>';
 									}else{
 										str+='<tr>';
@@ -2570,46 +2645,66 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}
-						str+='<td>'+ajaxresp[i].target+'</td>';
-						if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
-							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
-							//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
-						}
-						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
-							str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
-							//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
-						}
-						
-						str+='<td>'+ajaxresp[i].grounded+'</td>';
-						str+='<td>'+ajaxresp[i].notGrounded+'</td>';
-						str+='<td>'+ajaxresp[i].inProgress+'</td>';
-						str+='<td>'+ajaxresp[i].completed+'</td>';
-						if(ajaxresp[i].percentage < 50){
-							str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
-						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
-						}else if(ajaxresp[i].percentage >= 80){
-							str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
-						}
-						
-						if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
-							if(ajaxresp[i].percSant < 50){
-								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
-							}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
-								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
-							}else if(ajaxresp[i].percSant >= 80){
-								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
+						if(globalDivName == 'GH'){
+							if(locationTypeNew == 'state' || locationTypeNew == 'district')
+								{
+									str+='<td>'+ajaxresp[i].target+'</td>';
+								}
+								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
+								str+='<td>'+ajaxresp[i].pittingKMS+'</td>';
+								str+='<td>'+ajaxresp[i].plantingKMS+'</td>';
+								str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
+								if(ajaxresp[i].percentage < 50){
+									str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
+								}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+									str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
+								}else if(ajaxresp[i].percentage >= 80){
+									str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
+								}
+								str+='<td>'+ajaxresp[i].percentage+'</td>';
+						}else{
+							str+='<td>'+ajaxresp[i].target+'</td>';
+							if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
+								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
+								//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+							}
+							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
+								//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
+							}
+							
+							str+='<td>'+ajaxresp[i].grounded+'</td>';
+							str+='<td>'+ajaxresp[i].notGrounded+'</td>';
+							str+='<td>'+ajaxresp[i].inProgress+'</td>';
+							str+='<td>'+ajaxresp[i].completed+'</td>';
+							if(ajaxresp[i].percentage < 50){
+								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 80){
+								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
+							}
+							
+							if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
+								if(ajaxresp[i].percSant < 50){
+									str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
+									str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 80){
+									str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
+								}
+							}
+							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
+								if(ajaxresp[i].percSant < 50){
+									str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
+									str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
+								}else if(ajaxresp[i].percSant >= 80){
+									str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
+								}
 							}
 						}
-						if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
-							if(ajaxresp[i].percSant < 50){
-								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
-							}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
-								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
-							}else if(ajaxresp[i].percSant >= 80){
-								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
-							}
-						}
+						
 					str+='</tr>';
 				}
 			}
@@ -3019,7 +3114,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 
 
 //var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','CC Roads','Anganwadi','Gram Panchayat Buildings','Mandal buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk worm','Cattle drinking water trough','Raising of Perinnial Fodder','Solid Waste Management','Play Fields','Burial Grounds','Fish Drying Platforms','Fish Ponds','Agriculture Activities','Average Wage','Avg days of emp per HH','HH Comp 100 days','Timely Payments','Horticulture','Avenue'];
-var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','Solid Waste Management','Burial Grounds','Play Fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads','Anganwadi Buildings','GP Buildings','Mandal Buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Cattle Drinking Water Troughs','Raising of Perinnial Fodders','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','NTR Rural House','OPGK-Perinnials','OPGK-Annuals','UGDrainage'];
+var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','GH','Solid Waste Management','Burial Grounds','Play Fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads','Anganwadi Buildings','GP Buildings','Mandal Buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Cattle Drinking Water Troughs','Raising of Perinnial Fodders','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','NTR Rural House','OPGK-Perinnials','OPGK-Annuals','UGDrainage'];
 buildNREGSProjectsOverview(overViewArr,'')
 for(var i in overViewArr)
 {
