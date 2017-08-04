@@ -11,7 +11,10 @@
 <link href="coreApi/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="coreApi/css/custom.css" rel="stylesheet" type="text/css">
 <link href="coreApi/css/responsive.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="coreApi/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
+<link href="dist/slick/slick.css" type="text/less" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
 <body>
@@ -126,15 +129,14 @@
 									<li attr_type="cadre">Cadre</li>
 								</ul>
 							</h4>
-							<div class="m_top20" id="casteGroupVoters"></div>
+							<div class="m_top20" id="casteGroupVoters" style="width:330px;height:260px"></div>
 							<div id="leftSideCasteGroupWiseDivId"></div>
-							<!--<h5>Caste Wise Voters</h5>
-							<div class="m_top20" id="casteWiseVoters"></div>-->
+							<!--<div id="leftSideCasteGroupWiseGraphId"></div>-->
 						</div>
 						
-						<div class="col-md-8 col-xs-12 col-sm-8">
+						<!--<div class="col-md-8 col-xs-12 col-sm-8">
 							<div>
-							  <!-- Nav tabs -->
+							  
 							  <select class="form-control" role="tabListMobile">
 								  <option tab_id="OC">OC</option>
 								  <option tab_id="BC">BC</option>
@@ -147,7 +149,7 @@
 								<li role="presentation"><a href="#SC" aria-controls="SC" role="tab" data-toggle="tab">SC</a></li>
 								<li role="presentation"><a href="#ST" aria-controls="ST" role="tab" data-toggle="tab">ST</a></li>
 							  </ul>
-							  <!-- Tab panes -->
+							  
 							  <div class="tab-content">
 								<div role="tabpanel" class="tab-pane active pad_10" id="OC">
 									<h4 class="panel-title text-capitalize">Caste Wise - Voter & Cadre Information b/w age group</h4>
@@ -227,60 +229,17 @@
 
 							</div>
 							
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<button class="btn btn-success btn-success-white text-capital">detailed caste information</button>
-						</div>
+						</div>-->
+						
 					</div>
 				</div>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="cadreInfor">
 				<h3>Cadre Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
 				<div class="block">
-					<ul class="list-inline cadre-info-list">
-						<li class="bottom-arrow">
-							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									<h4 class="text-capital">2016-2018 cadre</h4>
-								</div>
-								<div class="col-md-6 col-xs-12 col-sm-6">
-									<div id="cadreInfoGraph0" class="graph"></div>
-								</div>
-								<div class="col-md-6 col-xs-12 col-sm-6">
-									<table class="table table-noborder">
-										<tr>
-											<td>6000 new <span class=""></span></td>
-											<td>6000 new <span class=""></span></td>
-											<td>=</td>
-											<td>6000 new <span class=""></span></td>
-										</tr>
-									</table>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									<h4 class="text-capital">2016-2018 cadre</h4>
-								</div>
-								<div class="col-md-6 col-xs-12 col-sm-6">
-									<div id="cadreInfoGraph1" class="graph"></div>
-								</div>
-								<div class="col-md-6 col-xs-12 col-sm-6">
-									<table class="table table-noborder">
-										<tr>
-											<td>6000 new <span class=""></span></td>
-											<td>6000 new <span class=""></span></td>
-											<td>=</td>
-											<td>6000 new <span class=""></span></td>
-										</tr>
-									</table>
-								</div>
-							</div>
-						</li>
-					</ul>
+					<div id="cadreInfoGraphDivId"></div>
 					<div id="cadreInfoGraphBar"></div>
-					<table class="table table-noborder table-noborder-hover m_top10">
+					<!--<table class="table table-noborder table-noborder-hover m_top10">
 						<thead class="bg-E9">
 							<th></th>
 							<th>Total</th>
@@ -343,91 +302,16 @@
 								<td><span class="text-success">2%</span></td>
 							</tr>
 						</tbody>
-					</table>
+					</table>-->
 				</div>
-				<div class="block">
-					<button class="btn btn-success btn-success-white text-capital">detailed caste information</button>
-				</div>
+				
 			</div>
 			
 			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="news">
 				<h3>News <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>		
 				<div class="block">
-					<div class="row">
-						<div class="col-dm-6 col-xs-12 col-sm-6 pad_right0">
-							<div class="block pad_5">
-								<h4 class="text-capitalize"><img src="coreApi/img/news.png"/>print media</h4>
-								<table class="table table-noborder m_top10">
-									<thead class="text-capitalize f-12 bg-E9">
-										<tr>
-											<th>total articles</th>
-											<th>positive</th>
-											<th>negative</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<div class="col-dm-6 col-xs-12 col-sm-6 pad_left0">
-							<div class="block pad_5">
-								<h4 class="text-capitalize"><img src="coreApi/img/electronic.png"/>electronic media</h4>
-								<table class="table table-noborder m_top10">
-									<thead class="text-capitalize f-12 bg-E9">
-										<tr>
-											<th>total articles</th>
-											<th>positive</th>
-											<th>negative</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-					<div class="panel-group m_top10" id="newsCollapse" role="tablist" aria-multiselectable="true">
+					<div id="newsMainBlockDivId"></div>
+					<!--<div class="panel-group m_top10" id="newsCollapse" role="tablist" aria-multiselectable="true">
 					  <div class="panel panel-default">
 						<div class="panel-heading bg-fff" role="tab" id="headingOne">
 							<a role="button" data-toggle="collapse" class="collapseIcon" data-parent="#newsCollapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -452,22 +336,6 @@
 											<td>50%</td>
 											<td>40%</td>
 										</tr>
-										<tr>
-											<td>
-												<img src="coreApi/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
-											</td>
-											<td>secretary</td>
-											<td>50%</td>
-											<td>40%</td>
-										</tr>
-										<tr>
-											<td>
-												<img src="coreApi/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
-											</td>
-											<td>secretary</td>
-											<td>50%</td>
-											<td>40%</td>
-										</tr>
 									</tbody>
 								</table>
 						  	</div>
@@ -476,73 +344,19 @@
 					</div>
 					<div class="pad_10">
 						<button class="btn btn-success btn-success-white">detailed news information</button>
-					</div>
+					</div>-->
 				</div>
 			</div>
 			
 			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="problems">
 				<h3>Problems <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>						
 				<div class="block pad_5">
-					<div class="row">
-						<div class="col-md-6 col-xs-12 col-sm-12">
-							<table class="table table-noborder f-12">
-								<thead class="bg-E9 text-capitalize">
-									<th>status</th>
-									<th>total</th>
-									<th>%</th>
-								</thead>
-								<tbody>
-									<tr>
-										<td>no need of money</td>
-										<td>38</td>
-										<td>35%</td>
-									</tr>
-									<tr>
-										<td>no need of money</td>
-										<td>38</td>
-										<td>35%</td>
-									</tr>
-									<tr>
-										<td>no need of money</td>
-										<td>38</td>
-										<td>35%</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-12 text-center">
-							<div id="problemsDetailedGraph" style="height:200px"></div>
-							<button class="btn btn-success btn-success-white">detailed information</button>
-						</div>
-					</div>
-					<div class="panel-group m_top10" id="problemsCollapse" role="tablist" aria-multiselectable="true">
-					  <div class="panel panel-default">
-						<div class="panel-heading bg-fff" role="tab" id="headingProb">
-							<a role="button" data-toggle="collapse" class="collapseIcon" data-parent="#problemsCollapse" href="#collapseProb" aria-expanded="true" aria-controls="collapseProb">
-							  	<h4 class="panel-title text-capital">problems can be solved without money</h4>
-							</a>
-						</div>
-						<div id="collapseProb" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingProb">
-						  	<div class="panel-body">
-								<div class="row">
-									<div class="col-md-7 col-xs-12 col-sm-7">
-										
-									</div>
-									<div class="col-md-5 col-xs-12 col-sm-5">
-										<div id="problemsSolveGraph" style="height:160px;"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					  </div>
-					</div>
-					<div class="pad_10">
-						<button class="btn btn-success btn-success-white">detailed news information</button>
-					</div>
+					<div id="overAllAnalysisProbDivId"></div>
+					
 				</div>
 			</div>
 			
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="committees">
+			<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="committees">
 				<div class="row">
 					<div class="col-md-6 col-xs-12 col-sm-6">
 						<h3>Committees <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>						
@@ -687,7 +501,7 @@
 				<h3>Benefits</h3>
 				<div class="block pad_0">
 					<div class="row">
-					  <!-- Nav tabs -->
+					
 					  <div class="col-md-3 col-xs-12 col-sm-3 pad_right0">
 						  <select class="form-control" role="tabListMobile">
 							  <option tab_id="benefits1">OC (20)</option>
@@ -702,7 +516,7 @@
 							<li><a href="#benefits4" aria-controls="benefits4" role="tab" data-toggle="tab">BC Corp Beneficiery</a></li>
 						  </ul>
 					  </div>
-					  <!-- Tab panes -->
+					 
 					  <div class="col-md-9 col-xs-12 col-sm-9 pad_left0">
 						  <div class="tab-content">
 							<div role="tabpanel" class="tab-pane active pad_10" id="benefits1">
@@ -765,13 +579,13 @@
 
 					</div>
 				</div>
-			</div>
+			</div>-->
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="activities">
 				<h3 >Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
 				<div class="block pad_0" id ="activitesId">
 				</div>
 			</div>
-			<div class="col-md-12 col-xs-12 col-ms-12 m_top20" navbar-index="alerts">
+			<!--<div class="col-md-12 col-xs-12 col-ms-12 m_top20" navbar-index="alerts">
 				<h3>Alerts <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
 				<div class="block">
 					<div class="row">
@@ -797,7 +611,7 @@
 									<div id="overallAlerts" style="height:200px"></div>
 								</div>
 								<div class="col-md-7 col-xs-12 col-sm-7">
-									 <!-- Nav tabs -->
+									
 								  <select class="form-control" role="tabListMobile">
 									  <option tab_id="alerts1">OC</option>
 									  <option tab_id="alerts2">BC</option>
@@ -813,7 +627,7 @@
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-6 pad_left0">
 							<div>
-							  <!-- Tab panes -->
+							  
 							  <div class="tab-content">
 								<div role="tabpanel" class="tab-pane active pad_10" id="alerts1">
 									<table class="table table-noborder">
@@ -920,13 +734,15 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 	</div>
 </section>
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<script src="coreApi/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="coreApi/js/custom.js" type="text/javascript"></script>
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
 </body>
