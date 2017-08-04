@@ -19,6 +19,8 @@ public class LightWattage {
 	private Long lightCount;
 	private LightMonitoring lightMonitoring ;
 	private Long lightMonitoringId;	
+	
+	
 	@Id
 	@Column(name="light_wattage_info_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
@@ -43,13 +45,6 @@ public class LightWattage {
 	public void setLightCount(Long lightCount) {
 		this.lightCount = lightCount;
 	}
-	@Column(name="light_monitoring_id")
-	public Long getLightMonitoringId() {
-		return lightMonitoringId;
-	}
-	public void setLightMonitoringId(Long lightMonitoringId) {
-		this.lightMonitoringId = lightMonitoringId;
-	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "light_monitoring_id",insertable = false, updatable = false)
 	public LightMonitoring getLightMonitoring() {
@@ -58,6 +53,14 @@ public class LightWattage {
 	public void setLightMonitoring(LightMonitoring lightMonitoring) {
 		this.lightMonitoring = lightMonitoring;
 	}
+	@Column(name="light_monitoring_id")
+	public Long getLightMonitoringId() {
+		return lightMonitoringId;
+	}
+	public void setLightMonitoringId(Long lightMonitoringId) {
+		this.lightMonitoringId = lightMonitoringId;
+	}
+	
 	
 	
 }
