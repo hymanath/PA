@@ -283,7 +283,7 @@ function buildOverviewAbstract()
 				str+='<div class="row">';	
 					for(var i in overViewArr)
 					{
-						if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD'|| overViewArr[i] == 'MPT_PT'|| overViewArr[i] == 'GC Works'|| overViewArr[i] == 'CD_CW'|| overViewArr[i] == 'WaterBudget')
+						if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD'|| overViewArr[i] == 'MPT_PT'|| overViewArr[i] == 'GC Works'|| overViewArr[i] == 'CD_CW')
 						{
 							str+='<div class="col-sm-2 m_top10">';
 								str+='<div class="panel-block-white text-center" overview-block="'+overViewArr[i]+'">';
@@ -310,7 +310,7 @@ function buildOverviewAbstract()
 	str+='<div class="row">';
 		for(var i in overViewArr)
 		{
-			if(overViewArr[i] == 'Ntr Jalasiri')
+			if(overViewArr[i] == 'Ntr Jalasiri' || overViewArr[i] == 'WaterBudget')
 			{
 				str+='<div class="col-sm-2 m_top10">';
 					str+='<div class="panel-block-white text-center" overview-block="'+overViewArr[i]+'">';
