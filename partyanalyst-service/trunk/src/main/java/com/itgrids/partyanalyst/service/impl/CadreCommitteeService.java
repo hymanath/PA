@@ -22657,6 +22657,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			 List<Long> serialNoIdLists=new ArrayList<Long>();
 			 List<Long> boothIdsList = new ArrayList<Long>(0);
 			 Map<Long,Long> voterSerialNoMap = new HashMap<Long, Long>(0);
+			 Map<Long,String> genderMap = new HashMap<Long,String>();
 			 boothIdsList.add(boothId);
 			
 			votersList = boothDAO.getVoterDetailsByBoothId(boothId);
@@ -22678,11 +22679,14 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			if(tdpcadreIdObjsList != null && tdpcadreIdObjsList.size() >0){
 				for(Object[] obj: tdpcadreIdObjsList){
 					Long voterId = commonMethodsUtilService.getLongValueForObject(obj[5]);
+					 gender = commonMethodsUtilService.getStringValueForObject(obj[7]);
 					if(voterId==null || voterId.longValue()==0L)
 						 voterId = commonMethodsUtilService.getLongValueForObject(obj[6]);
 					serialNoId = commonMethodsUtilService.getLongValueForObject(obj[4]);
+					gender =commonMethodsUtilService.getStringValueForObject(obj[7]);
 					if(voterSerialNoMap.keySet().contains(voterId))
 						serialNoIdLists.add(serialNoId);
+					  genderMap.put(voterId, gender);
 				}
 			}
 			
@@ -22716,10 +22720,16 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					if(commonMethodsUtilService.isListOrSetValid(rangeList)){
 						for (Long id : voterSerialNoMap.keySet()) {
 							Long serialNo = voterSerialNoMap.get(id);
+							String gender1 = genderMap.get(id);
 							if(serialNoIdLists.contains(serialNo)){
 								for (CadreCommitteeVO rangeVO : rangeList) {
 									if(serialNo.longValue()>=rangeVO.getMinRange() && serialNo.longValue()<=rangeVO.getMaxRange()){
 										rangeVO.setTotalCount(rangeVO.getTotalCount().longValue()+1L);
+										if(gender1.equalsIgnoreCase("M") || gender1.equalsIgnoreCase("MALE")){
+											rangeVO.setMaleCount(rangeVO.getMaleCount()+1);
+										}else if(gender1.equalsIgnoreCase("F") || gender1.equalsIgnoreCase("FEMALE")){
+											rangeVO.setFemaleCount(rangeVO.getFemaleCount()+1);
+										}
 									}
 								}
 							}

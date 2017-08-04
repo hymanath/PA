@@ -4645,7 +4645,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 	  {
 		  StringBuilder str = new StringBuilder();
 		  str.append(" select model.tdpCadre.firstname,model.tdpCadre.mobileNo,model.tdpCadre.casteState.caste.casteName," +
-		  			"  model.tdpCadre.tdpCadreId,model2.serialNo,model.tdpCadre.voterId,model.tdpCadre.familyVoterId from TdpCadreEnrollmentYear model, " +
+		  			"  model.tdpCadre.tdpCadreId,model2.serialNo,model.tdpCadre.voterId,model.tdpCadre.familyVoterId,model.tdpCadre.gender from TdpCadreEnrollmentYear model, " +
 		  			" BoothPublicationVoter model2 where  " +
 			  		" model.enrollmentYearId = 4 and model.tdpCadre.enrollmentYear = 2014 and model.isDeleted = 'N'  and model.tdpCadre.isDeleted = 'N' " +
 			  		" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId  ");

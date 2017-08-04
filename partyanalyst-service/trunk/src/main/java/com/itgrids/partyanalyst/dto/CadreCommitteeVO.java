@@ -65,6 +65,8 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private Long maxRange;
 	private String finalRangeStr;
 	private Long totalCount =0L;
+	private Long maleCount =0l;
+	private Long femaleCount =0l;
 	
 	public Long getTotalCount() {
 		return totalCount;
@@ -629,6 +631,16 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	public void setFinalRangeStr(String finalRangeStr) {
 		this.finalRangeStr = finalRangeStr;
 	}
-	
-	
+	public Long getMaleCount() {
+		return maleCount;
+	}
+	public void setMaleCount(Long maleCount) {
+		this.maleCount = maleCount;
+	}
+	public Long getFemaleCount() {
+		return femaleCount;
+	}
+	public void setFemaleCount(Long femaleCount) {
+		this.femaleCount = femaleCount;
+	}	
 }
