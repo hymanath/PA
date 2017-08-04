@@ -62,7 +62,7 @@ $(document).on("click","[collapse-click]",function(){
 		divId = $(this).attr("overview-level");
 	}else if(levelId == 4)
 	{
-		locationType = 'district';
+		locationType = 'constituency';
 		subLocType = 'constituency';
 		divId = $(this).attr("overview-level");
 	}
@@ -1057,7 +1057,7 @@ function projectData(levelId,locId)
 		divId = 'district'
 	}else if(levelId == 4)
 	{
-		locationType = 'district';
+		locationType = 'constituency';
 		subLocType = 'constituency';
 		divId = 'constituency'
 	}
