@@ -585,12 +585,22 @@ function buildNREGSProjectsOverview(result,blockName,locId,levelId)
 		$("[overview-block='"+overViewArr[i].name+"']").html(spinner);
 		if(overViewArr[i].name == 'Solid Waste Management' || overViewArr[i].name == 'Burial Grounds' || overViewArr[i].name == 'Play Fields' || overViewArr[i].name == 'CC Roads' || overViewArr[i].name == 'Anganwadi Buildings' || overViewArr[i].name == 'GP Buildings' || overViewArr[i].name == 'Mandal Buildings' || overViewArr[i].name == 'NTR 90 Days' || overViewArr[i].name == 'Production of Bricks' || overViewArr[i].name == 'Mulbery' || overViewArr[i].name == 'Silk Worms' || overViewArr[i].name == 'Cattle Drinking Water Troughs' || overViewArr[i].name == 'Raising of Perinnial Fodders' || overViewArr[i].name == 'Fish Ponds' || overViewArr[i].name == 'Fish Drying Platforms')
 		{
-			getNREGSProjectsAbstractNew(overViewArr[i].name,locType,locId,blockName,levelId);
+			if(levelId == 4 || levelId == "4"){
+				getNREGSProjectsAbstractNewFrConstituency(overViewArr[i].name,locType,locId,"0",blockName,levelId);
+			}else{
+				getNREGSProjectsAbstractNew(overViewArr[i].name,locType,locId,blockName,levelId);
+			}
+			
 		}else if(overViewArr[i].name == 'Payments')
 		{
 			getNregaPaymentsAbsAndOverview(overViewArr[i].name,locId,blockName,levelId,'abstract');
 		}else{
-			getNREGSAbstractDataByType(overViewArr[i].name,locType,locId,blockName,levelId,'onLoad');
+			if(levelId == 4 || levelId == "4"){
+				getNREGSAbstractDataByTypeFrConstituency(overViewArr[i].name,locType,locId,"0",blockName,levelId);
+			}else{
+				getNREGSAbstractDataByType(overViewArr[i].name,locType,locId,blockName,levelId,'onLoad');
+			}
+			
 		}
 	}
 
@@ -1139,4 +1149,58 @@ function tableView(result,divId)
 			]
 		});
 	}
+}
+
+function getNREGSProjectsAbstractNewFrConstituency(type,locType,locId,districtId,blockName,levelId)
+{
+	var districtId = $("#selectedName").attr("attr_distId");
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		type : type,
+		locationType: locType,
+		locationId : locId,
+		districtId : districtId
+	}
+	$.ajax({
+		url: 'getNREGSProjectsAbstractNewFrConstituency',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId)
+		}
+	});
+}
+function getNREGSAbstractDataByTypeFrConstituency(type,locType,locId,districtId,blockName,levelId)
+{
+	var districtId = $("#selectedName").attr("attr_distId");
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		type : type,
+		locationType: locType,
+		locationId : locId,
+		districtId : districtId
+	}
+	
+	$.ajax({
+		url: 'getNREGSAbstractDataByTypeFrConstituency',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildNREGSAbstractDataByTypeNew(type,ajaxresp,blockName,locId,locType,levelId)
+		}
+	});
 }
