@@ -2851,23 +2851,29 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	
-	public List<Object[]> getLocationWiseCommittees(String locationType,Long locationId,Long enrollmentId){
+	public List<Object[]> getLocationWiseCommittees(String locationType,Long locationId,Long tdpCommitteeEnrollmentYearId){
 		
 		//0-tdp_base_comitteeId,1-levelId,2-levelName,3-committeeConfrimed,4-start Date,5-completed Date
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("select model.tdpBasicCommitteeId,model.tdpCommitteeLevelId,model.tdpCommitteeLevel.tdpCommitteeLevel,model.isCommitteeConfirmed,model.startedDate,model.completedDate"
+		sb.append("select distinct model.tdpBasicCommitteeId,model.tdpCommitteeLevelId,model.tdpCommitteeLevel.tdpCommitteeLevel,model.isCommitteeConfirmed,model.startedDate,model.completedDate"
 				+ " from TdpCommittee model "
-				+ " where model.tdpCommitteeEnrollmentId= :enrollmentId ");
+				+ " where model.tdpCommitteeEnrollmentId= :tdpCommitteeEnrollmentYearId ");
 		
 		if(locationType.equalsIgnoreCase("constituency")){
 			sb.append(" and model.userAddress.constituency.constituencyId=:locationId");
 		}else if(locationType.equalsIgnoreCase("district")){
 			sb.append(" and model.userAddress.district.districtId=:locationId");
+		}else if(locationType.equalsIgnoreCase("state")){
+			sb.append(" and model.userAddress.state.stateId=:locationId");
+		}else if(locationType.equalsIgnoreCase("mandal")){
+			sb.append(" and model.userAddress.tehsil.tehsilId=:locationId");
+		}else if(locationType.equalsIgnoreCase("village")){
+			sb.append(" and model.userAddress.panchayat.panchayatId=:locationId");
 		}
 		sb.append(" order by model.tdpCommitteeId ");
 		Query query = getSession().createQuery(sb.toString());
-		query.setParameter("enrollmentId", enrollmentId);
+		query.setParameter("tdpCommitteeEnrollmentYearId", tdpCommitteeEnrollmentYearId);
 		query.setParameter("locationId", locationId);
 		return query.list();
 	}
