@@ -92,12 +92,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private ICadreDetailsService cadreDetailsService;
 	private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
-    //tour daos
+	//tour daos
 	private ISelfAppraisalCandidateLocationNewDAO selfAppraisalCandidateLocationNewDAO;
 	private ISelfAppraisalDesignationTargetDAO selfAppraisalDesignationTargetDAO;
 	private ISelfAppraisalCandidateDetailsNewDAO selfAppraisalCandidateDetailsNewDAO;
 	private ISelfAppraisalToursMonthDAO selfAppraisalToursMonthDAO;
-	
+
 	private IGovtSchemeBeneficiaryDetailsDAO govtSchemeBeneficiaryDetailsDAO;
 	private ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO;
 	private IInsuranceStatusDAO insuranceStatusDAO;
@@ -113,8 +113,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IDistrictConstituenciesDAO districtConstituenciesDAO;
 	private ICandidateDAO candidateDAO;
 	private ICadreCommitteeService cadreCommitteeService;
-	
-	
+
+
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
 	}
@@ -122,7 +122,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			ICadreCommitteeService cadreCommitteeService) {
 		this.cadreCommitteeService = cadreCommitteeService;
 	}
-	
+
 	public IPublicationDateDAO getPublicationDateDAO() {
 		return publicationDateDAO;
 	}
@@ -148,14 +148,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		this.censusDAO = censusDAO;
 	}
 	private ICensusDAO censusDAO;
-	
+
 	public IConstituencyCensusDetailsDAO getConstituencyCensusDetailsDAO(){
 		return constituencyCensusDetailsDAO;
-		
+
 	}
 	public ICensusDAO getCensusDAO(){
 		return censusDAO;
-		
+
 	}
 	public IActivityDAO getActivityDAO() {
 		return activityDAO;
@@ -266,7 +266,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public void setNominationDAO(INominationDAO nominationDAO) {
 		this.nominationDAO = nominationDAO;
 	}
-	
+
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -281,7 +281,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public INominatedPostApplicationDAO getNominatedPostApplicationDAO() {
 		return nominatedPostApplicationDAO;
 	}
-    public void setSelfAppraisalCandidateLocationNewDAO(
+	public void setSelfAppraisalCandidateLocationNewDAO(
 			ISelfAppraisalCandidateLocationNewDAO selfAppraisalCandidateLocationNewDAO) {
 		this.selfAppraisalCandidateLocationNewDAO = selfAppraisalCandidateLocationNewDAO;
 	}
@@ -300,15 +300,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			ISelfAppraisalToursMonthDAO selfAppraisalToursMonthDAO) {
 		this.selfAppraisalToursMonthDAO = selfAppraisalToursMonthDAO;
 	}
-   public void setCommonMethodsUtilService(
+	public void setCommonMethodsUtilService(
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
-   public void setGovtSchemeBeneficiaryDetailsDAO(
-		IGovtSchemeBeneficiaryDetailsDAO govtSchemeBeneficiaryDetailsDAO) {
-	this.govtSchemeBeneficiaryDetailsDAO = govtSchemeBeneficiaryDetailsDAO;
-   }
-   public void setTdpCadreEnrollmentInfoDAO(
+	public void setGovtSchemeBeneficiaryDetailsDAO(
+			IGovtSchemeBeneficiaryDetailsDAO govtSchemeBeneficiaryDetailsDAO) {
+		this.govtSchemeBeneficiaryDetailsDAO = govtSchemeBeneficiaryDetailsDAO;
+	}
+	public void setTdpCadreEnrollmentInfoDAO(
 			ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO) {
 		this.tdpCadreEnrollmentInfoDAO = tdpCadreEnrollmentInfoDAO;
 	}
@@ -317,7 +317,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			INominatedPostApplicationDAO nominatedPostApplicationDAO) {
 		this.nominatedPostApplicationDAO = nominatedPostApplicationDAO;
 	}
-	
+
 	public IBoardLevelDAO getBoardLevelDAO() {
 		return boardLevelDAO;
 	}
@@ -325,7 +325,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public void setBoardLevelDAO(IBoardLevelDAO boardLevelDAO) {
 		this.boardLevelDAO = boardLevelDAO;
 	}
-	
+
 	public IDistrictConstituenciesDAO getDistrictConstituenciesDAO() {
 		return districtConstituenciesDAO;
 	}
@@ -409,7 +409,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						IConstants.PARLIAMENT_ELECTION_TYPE, 1L);
 				if (result.size() != 0) {
 					candidateDetailsForConstituencyTypesVO
-							.setParliamentCandidateInfo(extractCandidateNPartyDataFromList(result).get(0));
+					.setParliamentCandidateInfo(extractCandidateNPartyDataFromList(result).get(0));
 				} else {
 					LOG.error("Assembly candidate data for this constituency is not present");
 					candidateDetailsForConstituencyTypesVO.setParliamentCandidateInfo(null);
@@ -455,7 +455,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 				if (result.size() != 0) {
 					candidateDetailsForConstituencyTypesVO
-							.setAssemblyCandidateInfo(extractCandidateNPartyDataFromList(result));
+					.setAssemblyCandidateInfo(extractCandidateNPartyDataFromList(result));
 				} else {
 					LOG.error("Parliament candidate data for this constituency is not present");
 					candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(null);
@@ -546,7 +546,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				Long totalCadres = 0l, maleTotalCadres = 0l, femaleTotalCadres = 0l;
 				for (Entry<String, LocationVotersVO> entry : map.entrySet()) {
 					entry.getValue()
-							.setTotalCadres(entry.getValue().getMaleCadres() + entry.getValue().getFemaleCadres());
+					.setTotalCadres(entry.getValue().getMaleCadres() + entry.getValue().getFemaleCadres());
 					totalCadres = totalCadres + entry.getValue().getMaleCadres() + entry.getValue().getFemaleCadres();
 					maleTotalCadres = maleTotalCadres + entry.getValue().getMaleCadres();
 					femaleTotalCadres = femaleTotalCadres + entry.getValue().getFemaleCadres();
@@ -555,24 +555,24 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				for (Entry<String, LocationVotersVO> entry : map.entrySet()) {
 					if (totalCadres > 0l)
 						entry.getValue()
-								.setTotalCadrePerc(((entry.getValue().getTotalCadres() * 100) / totalCadres) + "");
+						.setTotalCadrePerc(((entry.getValue().getTotalCadres() * 100) / totalCadres) + "");
 					if (maleTotalCadres > 0l)
 						entry.getValue()
-								.setMaleCadrePerc(((entry.getValue().getMaleCadres() * 100) / maleTotalCadres) + "");
+						.setMaleCadrePerc(((entry.getValue().getMaleCadres() * 100) / maleTotalCadres) + "");
 					if (femaleTotalCadres > 0l)
 						entry.getValue().setFemaleCadrePerc(
 								((entry.getValue().getFemaleCadres() * 100) / femaleTotalCadres) + "");
 
 					voForTotalCounts
-							.setTotalVoters(voForTotalCounts.getTotalVoters() + entry.getValue().getTotalVoters());
+					.setTotalVoters(voForTotalCounts.getTotalVoters() + entry.getValue().getTotalVoters());
 					voForTotalCounts
-							.setTotalCadres(voForTotalCounts.getTotalCadres() + entry.getValue().getTotalCadres());
+					.setTotalCadres(voForTotalCounts.getTotalCadres() + entry.getValue().getTotalCadres());
 					voForTotalCounts.setMaleVoters(voForTotalCounts.getMaleVoters() + entry.getValue().getMaleVoters());
 					voForTotalCounts.setMaleCadres(voForTotalCounts.getMaleCadres() + entry.getValue().getMaleCadres());
 					voForTotalCounts
-							.setFemaleVoters(voForTotalCounts.getFemaleVoters() + entry.getValue().getFemaleVoters());
+					.setFemaleVoters(voForTotalCounts.getFemaleVoters() + entry.getValue().getFemaleVoters());
 					voForTotalCounts
-							.setFemaleCadres(voForTotalCounts.getFemaleCadres() + entry.getValue().getFemaleCadres());
+					.setFemaleCadres(voForTotalCounts.getFemaleCadres() + entry.getValue().getFemaleCadres());
 				}
 
 				voList.addAll(map.values());
@@ -620,11 +620,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					LocationVotersVO matchedVO = casteGroupMap.get(objects[1].toString());
 					matchedVO.setTotalVoters(matchedVO.getTotalVoters() + (Long) objects[4]);
 					matchedVO
-							.setTotalVotersPerc(
-									matchedVO.getTotalVotersPerc() != ""
-											? (Float.parseFloat(matchedVO.getTotalVotersPerc())
-													+ Float.parseFloat(objects[5].toString())) + ""
-											: objects[5].toString());
+					.setTotalVotersPerc(
+							matchedVO.getTotalVotersPerc() != ""
+							? (Float.parseFloat(matchedVO.getTotalVotersPerc())
+									+ Float.parseFloat(objects[5].toString())) + ""
+									: objects[5].toString());
 
 					if (casteMap.get(objects[3].toString()) == null) {
 						LocationVotersVO inVO = new LocationVotersVO();
@@ -636,11 +636,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					LocationVotersVO matchedVO1 = casteMap.get(objects[3].toString());
 					matchedVO1.setTotalVoters(matchedVO.getTotalVoters() + (Long) objects[4]);
 					matchedVO1
-							.setTotalVotersPerc(
-									matchedVO1.getTotalVotersPerc() != ""
-											? (Float.parseFloat(matchedVO1.getTotalVotersPerc())
-													+ Float.parseFloat(objects[5].toString())) + ""
-											: objects[5].toString());
+					.setTotalVotersPerc(
+							matchedVO1.getTotalVotersPerc() != ""
+							? (Float.parseFloat(matchedVO1.getTotalVotersPerc())
+									+ Float.parseFloat(objects[5].toString())) + ""
+									: objects[5].toString());
 
 				}
 				voList.addAll(casteGroupMap.values());
@@ -690,7 +690,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				if (casteGroupMap != null && casteGroupMap.size() > 0 && totalCadreCount > 0) {
 					for (Entry<String, LocationVotersVO> entry : casteGroupMap.entrySet()) {
 						entry.getValue()
-								.setTotalVotersPerc(((entry.getValue().getTotalVoters() * 100) / totalCadreCount) + "");
+						.setTotalVotersPerc(((entry.getValue().getTotalVoters() * 100) / totalCadreCount) + "");
 					}
 					voList.addAll(casteGroupMap.values());
 				}
@@ -698,7 +698,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				if (casteMap != null && casteMap.size() > 0 && totalCadreCount > 0) {
 					for (Entry<String, LocationVotersVO> entry : casteMap.entrySet()) {
 						entry.getValue()
-								.setTotalVotersPerc(((entry.getValue().getTotalVoters() * 100) / totalCadreCount) + "");
+						.setTotalVotersPerc(((entry.getValue().getTotalVoters() * 100) / totalCadreCount) + "");
 					}
 					voList.addAll(casteMap.values());
 				}
@@ -891,9 +891,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						totalMaleCadres = 0l, totalFemaleCadres = 0l;
 				for (Entry<Long, LocationVotersVO> entry : map.entrySet()) {
 					entry.getValue()
-							.setTotalVoters(entry.getValue().getMaleVoters() + entry.getValue().getFemaleVoters());
+					.setTotalVoters(entry.getValue().getMaleVoters() + entry.getValue().getFemaleVoters());
 					entry.getValue()
-							.setTotalCadres(entry.getValue().getMaleCadres() + entry.getValue().getFemaleCadres());
+					.setTotalCadres(entry.getValue().getMaleCadres() + entry.getValue().getFemaleCadres());
 
 					totalVoters = totalVoters + entry.getValue().getMaleVoters() + entry.getValue().getFemaleVoters();
 					totalMaleVoters = totalMaleVoters + entry.getValue().getMaleVoters();
@@ -919,14 +919,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return voList;
 	}
-	
-	public static double round(double value, int places) {
-	    if (places < 0) throw new IllegalArgumentException();
 
-	    long factor = (long) Math.pow(10, places);
-	    value = value * factor;
-	    long tmp = Math.round(value);
-	    return (double) tmp / factor;
+	public static double round(double value, int places) {
+		if (places < 0) throw new IllegalArgumentException();
+
+		long factor = (long) Math.pow(10, places);
+		value = value * factor;
+		long tmp = Math.round(value);
+		return (double) tmp / factor;
 	}
 
 	public List<KeyValueVO> getEnrollmentYearWiseCadres() {
@@ -1154,25 +1154,25 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			// 0-tdp_base_comitteeId,1-levelId,2-levelName,3-committeeConfrimed,4-start
 			// Date,5-completed Date
 			List<Object[]> objList = tdpCommitteeDAO.getLocationWiseCommittees(locationType, locationId, tdpCommitteeEnrollmentYearId);
-            Long mainMandalCompletedCount = 0l;
-            Long mainMandalStartCount = 0l;
-            Long mainVillageCompletedCount = 0l;
-            Long mainVillageStartCount = 0l;
-            Long mainMandalNotStarted = 0l;
-            Long mainVillageNotStarted = 0l;
-            
-            Long affliatedMandalCompletedCount = 0l;
-            Long affliatedMandalStartCount = 0l;
-            Long affliatedVillageCompletedCount = 0l;
-            Long affliatedVillageStartCount = 0l;
-            Long affliatedMandalNotStarted = 0l;
-            Long affliatedVillageNotStarted = 0l;
-            
+			Long mainMandalCompletedCount = 0l;
+			Long mainMandalStartCount = 0l;
+			Long mainVillageCompletedCount = 0l;
+			Long mainVillageStartCount = 0l;
+			Long mainMandalNotStarted = 0l;
+			Long mainVillageNotStarted = 0l;
+
+			Long affliatedMandalCompletedCount = 0l;
+			Long affliatedMandalStartCount = 0l;
+			Long affliatedVillageCompletedCount = 0l;
+			Long affliatedVillageStartCount = 0l;
+			Long affliatedMandalNotStarted = 0l;
+			Long affliatedVillageNotStarted = 0l;
+
 			if (objList != null) {
 				for (Object[] objects : objList) {
 					if (commonMethodsUtilService.getLongValueForObject(objects[0]) == 1l) {
-						if ((Long)objects[1] == 5l || (Long)objects[1] == 7l || (Long)objects[1] == 9l) {
-							if (objects[3].toString().trim().equalsIgnoreCase("Y")) {
+						if (commonMethodsUtilService.getLongValueForObject(objects[1]) == 5l || commonMethodsUtilService.getLongValueForObject(objects[1]) == 7l ||commonMethodsUtilService.getLongValueForObject(objects[1]) == 9l) {
+							if (commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("Y")) {
 								mainMandalCompletedCount++;
 							} else if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null  ) {
 								mainMandalStartCount++;
@@ -1180,75 +1180,76 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 								mainMandalNotStarted++;
 							}
 
-						} else if ((Long)objects[1] == 6l || (Long)objects[1] == 8l) {
-							if (objects[3].toString().trim().equalsIgnoreCase("Y")) {
+						} else if (commonMethodsUtilService.getLongValueForObject(objects[1]) == 6l || commonMethodsUtilService.getLongValueForObject(objects[1]) == 8l) {
+							if (commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("Y")) {
 								mainVillageCompletedCount++;
-							} else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null ) {
+							} else if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null ) {
 								mainVillageStartCount++;
-							}else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]==null && objects[5]==null ){
+							}else if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("N") && objects[4]==null && objects[5]==null ){
 								mainVillageNotStarted++;
 							}
 						}
 					} else {
-						if ((Long)objects[1] == 5l || (Long)objects[1] == 7l || (Long)objects[1] == 9l) {
-							if (objects[3].toString().trim().equalsIgnoreCase("Y")) {
+						if (commonMethodsUtilService.getLongValueForObject(objects[1]) == 5l || commonMethodsUtilService.getLongValueForObject(objects[1]) == 7l || commonMethodsUtilService.getLongValueForObject(objects[1]) == 9l) {
+							if (commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("Y")) {
 								affliatedMandalCompletedCount++;
-							} else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null  ) {
+							} else if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null  ) {
 								affliatedMandalStartCount++;
-							}else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]==null && objects[5]==null ){
+							}else if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("N") && objects[4]==null && objects[5]==null ){
 								affliatedMandalNotStarted++;
 							}
 
-						} else if ((Long)objects[1] == 6l || (Long)objects[1] == 8l) {
-							if (objects[3].toString().trim().equalsIgnoreCase("Y")) {
+						} else if (commonMethodsUtilService.getLongValueForObject(objects[1]) == 6l || commonMethodsUtilService.getLongValueForObject(objects[1]) == 8l) {
+							if (commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("Y")) {
 								affliatedVillageCompletedCount++;
-							} else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null  )  {
+							} else if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("N") && objects[4]!=null && objects[5]==null  )  {
 								affliatedVillageStartCount++;
-							}else if(objects[3].toString().trim().equalsIgnoreCase("N") && objects[4]==null && objects[5]==null ){
+							}else if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("N") && objects[4]==null && objects[5]==null ){
 								affliatedVillageNotStarted++;
 							}
 						}
 					}
-					
+
 				}
-				committeeCounts.setMainCommCompletedCount(mainMandalCompletedCount);//main committee mandal/town/division count
-				committeeCounts.setMainCommStartedCount(mainMandalStartCount);//main committee mandal/town/division count
+				committeeCounts.setMainMandalCompletedCount(mainMandalCompletedCount);//main committee mandal/town/division count
+				committeeCounts.setMainMandalStartedCount(mainMandalStartCount);//main committee mandal/town/division count
 				committeeCounts.setMainMandalTotal(mainMandalCompletedCount+mainMandalStartCount+mainMandalNotStarted);
-				committeeCounts.setMainCommTotalCount(mainVillageCompletedCount);//main committee village/ward count
-				committeeCounts.setMainCommTotalMembers(mainVillageStartCount);//main committee village/ward count
+				committeeCounts.setMainvillageCompletedCount(mainVillageCompletedCount);//main committee village/ward count
+				committeeCounts.setMainVillageStartedCount(mainVillageStartCount);//main committee village/ward count
 				committeeCounts.setMainVillageTotal(mainVillageCompletedCount+mainVillageStartCount+mainVillageNotStarted);
-				committeeCounts.setMainCommNotYetStarted(mainMandalNotStarted);//main committee not yet started count 
-				committeeCounts.setMainCommVillageNotStarted(mainVillageNotStarted);//main committee not started count
+				committeeCounts.setMainMandalNotYetStartedCount(mainMandalNotStarted);//main committee not yet started count 
+				committeeCounts.setMainVillageNotYetStartedCount(mainVillageNotStarted);//main committee not started count
 				committeeCounts.setMainMandalCompletePer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getMainMandalTotal(), mainMandalCompletedCount))));
 				committeeCounts.setMainMandalStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getMainMandalTotal(), mainMandalStartCount))));
 				committeeCounts.setMainVillageCompletePer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getMainVillageTotal(), mainVillageCompletedCount))));
-				committeeCounts.setMainMandalStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getMainVillageTotal(), mainVillageStartCount))));
-				
-				committeeCounts.setAffiCommCompletedCount(affliatedMandalCompletedCount);
-				committeeCounts.setAffiCommStartedCount(affliatedMandalStartCount);
+				committeeCounts.setMainVillageStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getMainVillageTotal(), mainVillageStartCount))));
+
+				committeeCounts.setAffliatedMandalCompletedCount(affliatedMandalCompletedCount);
+				committeeCounts.setAffliatedMandalStartedCount(affliatedMandalStartCount);
 				committeeCounts.setAffMandalTotal(affliatedMandalCompletedCount+affliatedMandalStartCount);
-				committeeCounts.setAffiCommTotalCount(affliatedVillageCompletedCount);//affliated committee village/ward count
-				committeeCounts.setAffiCommTotalMembers(affliatedVillageStartCount);//affliated committee village/ward count
+				committeeCounts.setAffliatedVillageCompletedCount(affliatedVillageCompletedCount);//affliated committee village/ward count
+				committeeCounts.setAffliatedVillageStartedCount(affliatedVillageStartCount);//affliated committee village/ward count
 				committeeCounts.setAffVillageTotal(affliatedVillageCompletedCount+affliatedVillageStartCount);
 				committeeCounts.setAffiCommMandalNotStarted(affliatedMandalNotStarted);
 				committeeCounts.setAffiCommVillageNotStarted(affliatedVillageNotStarted);
 				committeeCounts.setAffMandalCompletePer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffMandalTotal(), affliatedMandalCompletedCount))));
-	            committeeCounts.setAffMandalStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffMandalTotal(), affliatedMandalStartCount))));
-	            committeeCounts.setAffVillageCompletePer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffVillageTotal(), affliatedVillageCompletedCount))));
-	            committeeCounts.setAffVillageStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffVillageTotal(), affliatedVillageStartCount))));
+				committeeCounts.setAffMandalStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffMandalTotal(), affliatedMandalStartCount))));
+				committeeCounts.setAffVillageCompletePer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffVillageTotal(), affliatedVillageCompletedCount))));
+				committeeCounts.setAffVillageStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffVillageTotal(), affliatedVillageStartCount))));
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseCommitteesCount", e);
 		}
+
 		return committeeCounts;
 	}
-    /*
-     * @author R Nagarjuna Gowd
-     * @return BasicVO object contains enrollmentIds and Years
-     * (non-Javadoc)
-     * @see com.itgrids.core.api.service.ILocationDashboardService#getEnrollmentIds()
-     */
-	
+	/*
+	 * @author R Nagarjuna Gowd
+	 * @return BasicVO object contains enrollmentIds and Years
+	 * (non-Javadoc)
+	 * @see com.itgrids.core.api.service.ILocationDashboardService#getEnrollmentIds()
+	 */
+
 	public List<BasicVO> getEnrollmentIds() {
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		List<TdpCommitteeEnrollment> tdpCommitteeEnrollment = tdpCommitteeEnrollmentDAO.getAll();
@@ -1260,15 +1261,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return finalList;
 	}
-	
+
 	/*
-     * @author R Nagarjuna Gowd
-     * @return BasicVO object contains electionTypes table data
-     * (non-Javadoc)
-     * @see com.itgrids.core.api.service.ILocationDashboardService#getElectionTypes()
-     * Date 02-08-2017
-     */
-	
+	 * @author R Nagarjuna Gowd
+	 * @return BasicVO object contains electionTypes table data
+	 * (non-Javadoc)
+	 * @see com.itgrids.core.api.service.ILocationDashboardService#getElectionTypes()
+	 * Date 02-08-2017
+	 */
+
 	public List<BasicVO> getElectionTypes() {
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		List<ElectionType> electionTypes = electionTypeDAO.getAll();
@@ -1281,16 +1282,16 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return finalList;
 	}
-	
-	
+
+
 	/*
-     * @author R Nagarjuna Gowd
-     * @return BasicVO object contains publication table data
-     * (non-Javadoc)
-     * @see com.itgrids.core.api.service.ILocationDashboardService#getElectionTypes()
-     * Date 02-08-2017
-     */
-	
+	 * @author R Nagarjuna Gowd
+	 * @return BasicVO object contains publication table data
+	 * (non-Javadoc)
+	 * @see com.itgrids.core.api.service.ILocationDashboardService#getElectionTypes()
+	 * Date 02-08-2017
+	 */
+
 	public List<BasicVO> getPublications() {
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		List<PublicationDate> publications = publicationDateDAO.getAll();
@@ -1305,8 +1306,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return finalList;
 	}
-	
-	
+
+
 	/*
 	 * @param String fromDateStr
 	 * @param String toDateStr
@@ -1317,7 +1318,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * (non-Javadoc)
 	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLevelWiseMeetingStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
 	 */
-	
+
 	public List<AlertOverviewVO> getLevelWiseMeetingStatusCounts(String fromDateStr, String toDateStr, Long locationTypeId,
 			List<Long> locationValues,String year) {
 		List<AlertOverviewVO> meetingStatusCounts = new ArrayList<AlertOverviewVO>();
@@ -1336,7 +1337,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
 		// 0-partyMeetingLevelId,1-LevelName,2-meeting Status,3-Meetings Count
 		List<Object[]> objList = partyMeetingStatusDAO.getLevelWiseMeetingStatusCount(frmDate, toDate, locationTypeId,
@@ -1344,35 +1345,35 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		try {
 			if (objList != null) {
 				for (Object[] objects : objList) {
-					if ((Long)objects[0] == 7l || (Long)objects[0] == 8l) {
-                         
-						if (objects[2].toString().trim().equalsIgnoreCase("Y")) {
+					if (commonMethodsUtilService.getLongValueForObject(objects[0]) == 7l || commonMethodsUtilService.getLongValueForObject(objects[0]) == 8l) {
+
+						if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("Y")) {
 							vwStatus.setCompletedCnt(vwStatus.getCompletedCnt()+(Long)objects[3]);
-						} else if (objects[2].toString().trim().equalsIgnoreCase("N")) {
+						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("N")) {
 							vwStatus.setPendingCnt(vwStatus.getPendingCnt()+(Long)objects[3]);
-						} else if (objects[2].toString().trim().equalsIgnoreCase("NU")) {
+						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("NU")) {
 							vwStatus.setNotifiedCnt(vwStatus.getNotifiedCnt()+(Long)objects[3]);
-						} else if (objects[2].toString().trim().equalsIgnoreCase("M")) {
+						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("M")) {
 							vwStatus.setUnabletoResolveCnt(vwStatus.getUnabletoResolveCnt()+(Long)objects[3]);
 						}
-					} else if ((Long)objects[0] == 4l || (Long)objects[0] == 5l || (Long)objects[0] == 6l) {
-						if (objects[2].toString().trim().equalsIgnoreCase("Y")) {
+					} else if (commonMethodsUtilService.getLongValueForObject(objects[0]) == 4l || commonMethodsUtilService.getLongValueForObject(objects[0]) == 5l || commonMethodsUtilService.getLongValueForObject(objects[0]) == 6l) {
+						if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("Y")) {
 							mtdStatus.setCompletedCnt(mtdStatus.getCompletedCnt()+(Long)objects[3]);
-						} else if (objects[2].toString().trim().equalsIgnoreCase("N")) {
+						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("N")) {
 							mtdStatus.setPendingCnt(mtdStatus.getPendingCnt()+(Long)objects[3]);
-						} else if (objects[2].toString().trim().equalsIgnoreCase("NU")) {
+						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("NU")) {
 							mtdStatus.setNotifiedCnt(mtdStatus.getNotifiedCnt()+(Long)objects[3]);
-						} else if (objects[2].toString().trim().equalsIgnoreCase("M")) {
+						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("M")) {
 							mtdStatus.setUnabletoResolveCnt(mtdStatus.getUnabletoResolveCnt()+(Long)objects[3]);
 						}
-					} else if ((Long)objects[0] == 3l) {
-						if (objects[2].toString().trim().equalsIgnoreCase("Y")) {
+					} else if (commonMethodsUtilService.getLongValueForObject(objects[0]) == 3l) {
+						if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("Y")) {
 							cStatus.setCompletedCnt(cStatus.getCompletedCnt()+(Long)objects[3]);
-						} else if (objects[2].toString().trim().equalsIgnoreCase("N")) {
+						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("N")) {
 							cStatus.setPendingCnt(cStatus.getPendingCnt()+(Long)objects[3]);
-						} else if (objects[2].toString().trim().equalsIgnoreCase("NU")) {
+						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("NU")) {
 							cStatus.setNotifiedCnt(cStatus.getNotifiedCnt()+(Long)objects[3]);
-						} else if (objects[2].toString().trim().equalsIgnoreCase("M")) {
+						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("M")) {
 							cStatus.setUnabletoResolveCnt(cStatus.getUnabletoResolveCnt()+(Long)objects[3]);
 						}
 					}
@@ -1383,18 +1384,18 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 			}
 		} catch (Exception e) {
-            Log.error("Exception raised in meetings method"+e);
+			Log.error("Exception raised in meetings method"+e);
 		}
 		return meetingStatusCounts;
 	} 
 	/*
 	 * Swadhin K Lenka
 	 */
-	
+
 	public List<KeyValueVO> getNominatedPostStatusWiseCount(Long locationTypeId,List<Long> locationValuesList,String fromDateStr, String toDateStr,String year){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			
+
 			Date startDate = null;
 			Date endDate = null;
 			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
@@ -1422,12 +1423,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	/*
 	 * Swadhin K Lenka
 	 */
-	
+
 	public List<KeyValueVO> getNominatedPostApplicationStatusWiseCount(Long locationTypeId,List<Long> locationValuesList,String fromDateStr,
 			String toDateStr,String year){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			
+
 			Date startDate = null;
 			Date endDate = null;
 			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
@@ -1478,11 +1479,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	/*
 	 * Swadhin K Lenka
 	 */
-	
+
 	public List<KeyValueVO> getPositionWiseMemberCount(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			
+
 			Date startDate = null;
 			Date endDate = null;
 			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
@@ -1518,7 +1519,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 				keyValueVOs.add(keyValueVO);
 			}
-			
+
 			//combine :Village,Ward
 			if(keyValueVOs != null && keyValueVOs.size() > 0){
 				keyValueVO = new KeyValueVO();
@@ -1544,11 +1545,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			if(finalList != null && finalList.size() > 0){
 				ArrayList<KeyValueVO> tempArray = new ArrayList<KeyValueVO>(finalList);
 				Collections.sort(tempArray, new Comparator<KeyValueVO>(){
-					
+
 					public int compare(KeyValueVO obj1,KeyValueVO obj2) {
 						return obj1.getId().compareTo(obj2.getId());
 					}
-					
+
 				});
 			}
 			return finalList;
@@ -1580,7 +1581,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				}
 				finalList.add(keyValueVO);
 			}
-			
+
 			//combine :Village,Ward
 			if(finalList != null && finalList.size() > 0){
 				keyValueVO = new KeyValueVO();
@@ -1612,397 +1613,397 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		return null;
 	}
 	/**
-	  * @param String fromDateStr
-	  * @param String toDateStr
-	  * @param String locationType
-	  * @param String locationValue
-	  * @return List<ToursBasicVO>
-	  * @author Santosh 
-	  * @Description :This Service Method is used to get tour leader over all complaince details designation wise. 
-	  *  @since 7-JULY-2017
-	  */
+	 * @param String fromDateStr
+	 * @param String toDateStr
+	 * @param String locationType
+	 * @param String locationValue
+	 * @return List<ToursBasicVO>
+	 * @author Santosh 
+	 * @Description :This Service Method is used to get tour leader over all complaince details designation wise. 
+	 *  @since 7-JULY-2017
+	 */
 	public List<ToursBasicVO> getLocationWiseTourMembersComplainceDtls(final Long locationTypeId,final List<Long> locationValues,final String fromDateStr,final String toDateStr,final String year){
 		List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>(0);
 		Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String,List<ToursBasicVO>>>(0);
-	    Map<String,String> categoryIdNameMap = new HashMap<String, String>(0);
-	    Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>(0);
+		Map<String,String> categoryIdNameMap = new HashMap<String, String>(0);
+		Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>(0);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	    Date fromDate=null;
+		Date fromDate=null;
 		Date toDate=null;
-		
+
 		try{
 			LOG.info("Entered into getLocationWiseTourMembersComplainceDtls() in LocationDashboardService class");
-			
+
 			if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
-				 fromDate = sdf.parse(fromDateStr);
-				 toDate = sdf.parse(toDateStr);
-			 }
-			
-			 //Get month year in string format based on fromDate and toDate
-			 List<String> monthYear = selfAppraisalToursMonthDAO.getMonthAndYear(fromDate, toDate);
-			 //Get month year ids based on month year 
-			 List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
-			 
-			 List<Object[]> rtrnCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getLocationWiseTourMemberDetails(getUserAccessLevel(locationTypeId), locationTypeId, locationValues,year);
-			 //getting designation wise target
-			 ToursBasicVO basicDtlsVO = getRequiredData(rtrnCandiateObjLst);
-			  if(monthyearIds != null && monthyearIds.size() > 0 && basicDtlsVO.getComplaincandidateIdsSet() != null && basicDtlsVO.getNoNComplaincandidateIdsSet() != null){
-				  List<Object[]> dsgntnWsTurCtgryTrgtObjLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds, "tourCategory", new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds
-				  setDesignationWiseTarget(dsgntnWsTurCtgryTrgtObjLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
-				  List<Object[]> dsgntnWsTurTypeTrgtObjLst  = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds, "tourType", new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds
-				  setDesignationWiseTarget(dsgntnWsTurTypeTrgtObjLst,designationWiseTargetMap,categoryIdNameMap,"tourType");
-			  }
-			  //setting candidate wise target
-			  setCandidateDtls(rtrnCandiateObjLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap);
-			  //getting tour submitted details candidate wise
-			  if(monthyearIds != null && monthyearIds.size() > 0 && basicDtlsVO.getComplaincandidateIdsSet() != null && basicDtlsVO.getNoNComplaincandidateIdsSet() != null){
-				  List<Object[]> tourSubmittedDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourCategory", monthyearIds,  new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()),  new ArrayList<Long>(basicDtlsVO.getNoNComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds and getNoNComplaincandidateIdsSet() contains candidate ids
-				  setMonthWiseComplainceDetails(tourSubmittedDtlsObjLst,candiateDtlsMap,"tourCategory");
-				  List<Object[]> rtrnGovtDaysToursObjLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourType", monthyearIds,  new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()),  new ArrayList<Long>(basicDtlsVO.getNoNComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds and getNoNComplaincandidateIdsSet() contains candidate ids
-				  setMonthWiseComplainceDetails(rtrnGovtDaysToursObjLst,candiateDtlsMap,"tourType");
-			  }
-			  
-			  //Calculating Category wise complaince
-			  calculateCategoryWiseComplaince(candiateDtlsMap);
-			  //Calculating OverAll percentage
-			  calculatteOverAllPercentage(candiateDtlsMap);
-			  
-			  //Preparing final list
-			  if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
-				  for(Entry<Long,Map<Long,ToursBasicVO>> entry:candiateDtlsMap.entrySet()){
-					  ToursBasicVO designationVO = new ToursBasicVO();  
-					  designationVO.setDesignationId(entry.getKey());
-					  if(basicDtlsVO != null){
-						  designationVO.setDesignation(basicDtlsVO.getSubMap().get(entry.getKey()));  
-					  }
-					  designationVO.setIsComplaince("False");
-					  if(entry.getValue() != null && entry.getValue().size() > 0){
-						  for(Entry<Long,ToursBasicVO> candiateEntry:entry.getValue().entrySet()){
-							  if(candiateEntry.getValue().getComplaincePer()>=100d){
-								  designationVO.setComplainceCnt(designationVO.getComplainceCnt()+1);
-								  designationVO.setIsComplaince("True");
-							  }
-							  designationVO.getSubList().add(candiateEntry.getValue());
-						  }
-					  }
-					  resultList.add(designationVO);
-				  }
-			  }
-			  
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+
+			//Get month year in string format based on fromDate and toDate
+			List<String> monthYear = selfAppraisalToursMonthDAO.getMonthAndYear(fromDate, toDate);
+			//Get month year ids based on month year 
+			List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
+
+			List<Object[]> rtrnCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getLocationWiseTourMemberDetails(getUserAccessLevel(locationTypeId), locationTypeId, locationValues,year);
+			//getting designation wise target
+			ToursBasicVO basicDtlsVO = getRequiredData(rtrnCandiateObjLst);
+			if(monthyearIds != null && monthyearIds.size() > 0 && basicDtlsVO.getComplaincandidateIdsSet() != null && basicDtlsVO.getNoNComplaincandidateIdsSet() != null){
+				List<Object[]> dsgntnWsTurCtgryTrgtObjLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds, "tourCategory", new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds
+				setDesignationWiseTarget(dsgntnWsTurCtgryTrgtObjLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
+				List<Object[]> dsgntnWsTurTypeTrgtObjLst  = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds, "tourType", new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds
+				setDesignationWiseTarget(dsgntnWsTurTypeTrgtObjLst,designationWiseTargetMap,categoryIdNameMap,"tourType");
+			}
+			//setting candidate wise target
+			setCandidateDtls(rtrnCandiateObjLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap);
+			//getting tour submitted details candidate wise
+			if(monthyearIds != null && monthyearIds.size() > 0 && basicDtlsVO.getComplaincandidateIdsSet() != null && basicDtlsVO.getNoNComplaincandidateIdsSet() != null){
+				List<Object[]> tourSubmittedDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourCategory", monthyearIds,  new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()),  new ArrayList<Long>(basicDtlsVO.getNoNComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds and getNoNComplaincandidateIdsSet() contains candidate ids
+				setMonthWiseComplainceDetails(tourSubmittedDtlsObjLst,candiateDtlsMap,"tourCategory");
+				List<Object[]> rtrnGovtDaysToursObjLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourType", monthyearIds,  new ArrayList<Long>(basicDtlsVO.getComplaincandidateIdsSet()),  new ArrayList<Long>(basicDtlsVO.getNoNComplaincandidateIdsSet()));//getComplaincandidateIdsSet() set contain designationIds and getNoNComplaincandidateIdsSet() contains candidate ids
+				setMonthWiseComplainceDetails(rtrnGovtDaysToursObjLst,candiateDtlsMap,"tourType");
+			}
+
+			//Calculating Category wise complaince
+			calculateCategoryWiseComplaince(candiateDtlsMap);
+			//Calculating OverAll percentage
+			calculatteOverAllPercentage(candiateDtlsMap);
+
+			//Preparing final list
+			if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
+				for(Entry<Long,Map<Long,ToursBasicVO>> entry:candiateDtlsMap.entrySet()){
+					ToursBasicVO designationVO = new ToursBasicVO();  
+					designationVO.setDesignationId(entry.getKey());
+					if(basicDtlsVO != null){
+						designationVO.setDesignation(basicDtlsVO.getSubMap().get(entry.getKey()));  
+					}
+					designationVO.setIsComplaince("False");
+					if(entry.getValue() != null && entry.getValue().size() > 0){
+						for(Entry<Long,ToursBasicVO> candiateEntry:entry.getValue().entrySet()){
+							if(candiateEntry.getValue().getComplaincePer()>=100d){
+								designationVO.setComplainceCnt(designationVO.getComplainceCnt()+1);
+								designationVO.setIsComplaince("True");
+							}
+							designationVO.getSubList().add(candiateEntry.getValue());
+						}
+					}
+					resultList.add(designationVO);
+				}
+			}
+
 		}catch(Exception e){
 			Log.error("Exception Occured at getLocationWiseTourMembersComplainceDtls() in LocationDashboardService class",e);
 		}
 		return resultList;
 	}
 	public void setMonthWiseComplainceDetails(List<Object[]> objList, Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap,String type){
-		 try{
-			 if(objList != null && objList.size() > 0){
-				 for(Object[] param:objList){
-					 Long designationId = commonMethodsUtilService.getLongValueForObject(param[0]);
-					 Long candidateId = commonMethodsUtilService.getLongValueForObject(param[2]);
-					 String idStr = commonMethodsUtilService.getStringValueForObject(param[3]);//categoryId or tourTypeId 
-					   if(type.equalsIgnoreCase("tourType")){
-							 idStr = "0"+idStr;/* We are appending 0 before tourTypeId for Identification purpose because in single list
+		try{
+			if(objList != null && objList.size() > 0){
+				for(Object[] param:objList){
+					Long designationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					Long candidateId = commonMethodsUtilService.getLongValueForObject(param[2]);
+					String idStr = commonMethodsUtilService.getStringValueForObject(param[3]);//categoryId or tourTypeId 
+					if(type.equalsIgnoreCase("tourType")){
+						idStr = "0"+idStr;/* We are appending 0 before tourTypeId for Identification purpose because in single list
 		                      					i am sending tour category and tour type which both has same id */ 
-					   }
-					  Long monthId = commonMethodsUtilService.getLongValueForObject(param[4]);
-					  Long tourDaysCntPerMonth = commonMethodsUtilService.getLongValueForObject(param[5]);
-					  
-					  if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
-						  
-						    Map<Long,ToursBasicVO> candiateMap = candiateDtlsMap.get(designationId);
-						      
-							 if(candiateMap != null && candiateMap.size() > 0){
-								 
-								   ToursBasicVO candiateVO = candiateMap.get(candidateId); 
-								   
-								   if(candiateVO != null ){
-									   
-									   ToursBasicVO categoryVO = getCategoryMatchVO(candiateVO.getSubList3(),idStr);
-									   
-										 if(categoryVO != null){
-											 
-											  ToursBasicVO monthVO = getMonthMatchVO(categoryVO.getMonthList(),monthId);
-											  
-											   if(monthVO != null){
-												   
-												   if(tourDaysCntPerMonth >= monthVO.getTargetDays()){
-												    	
-												    	monthVO.setComplainceDays(tourDaysCntPerMonth);
-												    	Double complaincePer = calculatePercantage(monthVO.getComplainceDays(),monthVO.getTargetDays());
-													 if(complaincePer > 100d){
-														 monthVO.setComplaincePer(100d);
-													 }else{
-														 monthVO.setComplaincePer(complaincePer);	 
-													 }
-												 }else{
-													 
-													 monthVO.setComplainceDays(tourDaysCntPerMonth);
-													 Double complaincePer = calculatePercantage(monthVO.getComplainceDays(),monthVO.getTargetDays());
-													 monthVO.setComplaincePer(complaincePer);	 
-												}
-										 }
-							       }	    
-								 }
-								
-							}  
-					  }
-				 }
-			 }
-		 }catch(Exception e){
-			 LOG.error("Exception Occured in setMonthWiseComplainceDetails() in LocationDashboardService  : ",e);	 
-		 }
-	 }
+					}
+					Long monthId = commonMethodsUtilService.getLongValueForObject(param[4]);
+					Long tourDaysCntPerMonth = commonMethodsUtilService.getLongValueForObject(param[5]);
+
+					if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
+
+						Map<Long,ToursBasicVO> candiateMap = candiateDtlsMap.get(designationId);
+
+						if(candiateMap != null && candiateMap.size() > 0){
+
+							ToursBasicVO candiateVO = candiateMap.get(candidateId); 
+
+							if(candiateVO != null ){
+
+								ToursBasicVO categoryVO = getCategoryMatchVO(candiateVO.getSubList3(),idStr);
+
+								if(categoryVO != null){
+
+									ToursBasicVO monthVO = getMonthMatchVO(categoryVO.getMonthList(),monthId);
+
+									if(monthVO != null){
+
+										if(tourDaysCntPerMonth >= monthVO.getTargetDays()){
+
+											monthVO.setComplainceDays(tourDaysCntPerMonth);
+											Double complaincePer = calculatePercantage(monthVO.getComplainceDays(),monthVO.getTargetDays());
+											if(complaincePer > 100d){
+												monthVO.setComplaincePer(100d);
+											}else{
+												monthVO.setComplaincePer(complaincePer);	 
+											}
+										}else{
+
+											monthVO.setComplainceDays(tourDaysCntPerMonth);
+											Double complaincePer = calculatePercantage(monthVO.getComplainceDays(),monthVO.getTargetDays());
+											monthVO.setComplaincePer(complaincePer);	 
+										}
+									}
+								}	    
+							}
+
+						}  
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in setMonthWiseComplainceDetails() in LocationDashboardService  : ",e);	 
+		}
+	}
 	public void setDesignationWiseTarget(List<Object[]> objLst,Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap,Map<String,String> categoryIdNameMap,String type){
-		 try{
-			 if(objLst != null && objLst.size() > 0){
-				 for(Object[] param:objLst){
-					  Map<String,List<ToursBasicVO>> categoryMap = designationWiseTargetMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-					 	if(categoryMap == null){
-					 		categoryMap = new LinkedHashMap<String, List<ToursBasicVO>>(0);
-					 		designationWiseTargetMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), categoryMap);
-					 	}
-					 	 String idStr = commonMethodsUtilService.getStringValueForObject(param[2]);
-						 if(type.equalsIgnoreCase("tourType")){
-							 idStr = "0"+idStr;/* We are appending 0 before tourTypeId for Identification purpose because in single list
+		try{
+			if(objLst != null && objLst.size() > 0){
+				for(Object[] param:objLst){
+					Map<String,List<ToursBasicVO>> categoryMap = designationWiseTargetMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(categoryMap == null){
+						categoryMap = new LinkedHashMap<String, List<ToursBasicVO>>(0);
+						designationWiseTargetMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), categoryMap);
+					}
+					String idStr = commonMethodsUtilService.getStringValueForObject(param[2]);
+					if(type.equalsIgnoreCase("tourType")){
+						idStr = "0"+idStr;/* We are appending 0 before tourTypeId for Identification purpose because in single list
 							                      i am sending tour category and tour type which both has same id */ 
-						 }
-					 	  List<ToursBasicVO> monthList = categoryMap.get(idStr);
-					 	  if(monthList == null){
-					 		 monthList = new ArrayList<ToursBasicVO>();
-					 		 categoryIdNameMap.put(idStr, commonMethodsUtilService.getStringValueForObject(param[3]));
-					 		 categoryMap.put(idStr, monthList);
-					 	  }
-					 	ToursBasicVO monthVO = new ToursBasicVO();
-					 	monthVO.setId(commonMethodsUtilService.getLongValueForObject(param[4]));//monthId
-					 	String year = commonMethodsUtilService.getStringValueForObject(param[7]);
-					 	monthVO.setName(commonMethodsUtilService.getStringValueForObject(param[5]).substring(0, 3)+"-"+year.substring(year.length()-2));//monthName & Year
-					 	monthVO.setYear(commonMethodsUtilService.getLongValueForObject(param[7]));
-					 	monthVO.setTargetDays(commonMethodsUtilService.getLongValueForObject(param[6]));
-					 	monthList.add(monthVO);
-				 }
-			 }
-		 }catch(Exception e){
-			 LOG.error("Exception Occured in setDesignationWiseTarget() in LocationDashboardService  : ",e);
-		 }
-	 }
+					}
+					List<ToursBasicVO> monthList = categoryMap.get(idStr);
+					if(monthList == null){
+						monthList = new ArrayList<ToursBasicVO>();
+						categoryIdNameMap.put(idStr, commonMethodsUtilService.getStringValueForObject(param[3]));
+						categoryMap.put(idStr, monthList);
+					}
+					ToursBasicVO monthVO = new ToursBasicVO();
+					monthVO.setId(commonMethodsUtilService.getLongValueForObject(param[4]));//monthId
+					String year = commonMethodsUtilService.getStringValueForObject(param[7]);
+					monthVO.setName(commonMethodsUtilService.getStringValueForObject(param[5]).substring(0, 3)+"-"+year.substring(year.length()-2));//monthName & Year
+					monthVO.setYear(commonMethodsUtilService.getLongValueForObject(param[7]));
+					monthVO.setTargetDays(commonMethodsUtilService.getLongValueForObject(param[6]));
+					monthList.add(monthVO);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in setDesignationWiseTarget() in LocationDashboardService  : ",e);
+		}
+	}
 	public void setCandidateDtls(List<Object[]> rtrnMemberDtls,Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap, Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap, Map<String,String> categoryIdNameMap){
-		 try{
-			 if(rtrnMemberDtls != null && rtrnMemberDtls.size() > 0){
-				 for(Object[] param:rtrnMemberDtls){
-					 Long designationId = commonMethodsUtilService.getLongValueForObject(param[0]);
-					 Map<Long,ToursBasicVO> candidateMap = candiateDtlsMap.get(designationId);
-					 if(candidateMap == null ){
-						 candidateMap = new LinkedHashMap<Long,ToursBasicVO>();
-						 candiateDtlsMap.put(designationId, candidateMap);
-					 }
-					 ToursBasicVO candiateVO = candidateMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));//candiateId
-					 if(candiateVO == null ){
-						 candiateVO = new ToursBasicVO();
-						 candiateVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[0]));
-						 candiateVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
-						 candiateVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
-						 candiateVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
-						 candiateVO.setLocationScopeId(commonMethodsUtilService.getLongValueForObject(param[4]));
-						 List<ToursBasicVO> categoryList = setRequiredTargetDesignationWise(candiateVO.getDesignationId(),designationWiseTargetMap,categoryIdNameMap);
-						 if(categoryList != null && categoryList.size() > 0){
-							 candiateVO.setSubList3(new ArrayList<ToursBasicVO>(categoryList));
-						 }
-						 candidateMap.put(candiateVO.getId(), candiateVO);
-					 }
-					 candiateVO.getLocationSet().add(commonMethodsUtilService.getLongValueForObject(param[5]));//location value
-				 }
-			 }
-		 }catch(Exception e){
-			 LOG.error("Exception Occured in setCandidateDtls() in LocationDashboardService  : ",e);
-		 }
-	 }
+		try{
+			if(rtrnMemberDtls != null && rtrnMemberDtls.size() > 0){
+				for(Object[] param:rtrnMemberDtls){
+					Long designationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					Map<Long,ToursBasicVO> candidateMap = candiateDtlsMap.get(designationId);
+					if(candidateMap == null ){
+						candidateMap = new LinkedHashMap<Long,ToursBasicVO>();
+						candiateDtlsMap.put(designationId, candidateMap);
+					}
+					ToursBasicVO candiateVO = candidateMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));//candiateId
+					if(candiateVO == null ){
+						candiateVO = new ToursBasicVO();
+						candiateVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						candiateVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
+						candiateVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						candiateVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+						candiateVO.setLocationScopeId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						List<ToursBasicVO> categoryList = setRequiredTargetDesignationWise(candiateVO.getDesignationId(),designationWiseTargetMap,categoryIdNameMap);
+						if(categoryList != null && categoryList.size() > 0){
+							candiateVO.setSubList3(new ArrayList<ToursBasicVO>(categoryList));
+						}
+						candidateMap.put(candiateVO.getId(), candiateVO);
+					}
+					candiateVO.getLocationSet().add(commonMethodsUtilService.getLongValueForObject(param[5]));//location value
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in setCandidateDtls() in LocationDashboardService  : ",e);
+		}
+	}
 	public List<ToursBasicVO> setRequiredTargetDesignationWise(Long designationId,Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap,Map<String,String> categoryIdNameMap){
-		 try{
-			 if(designationWiseTargetMap != null && designationWiseTargetMap.size() > 0){
-				 
-				 List<ToursBasicVO> categoryList = new ArrayList<ToursBasicVO>();
-				 
-				 Map<String,List<ToursBasicVO>> categroyMap = designationWiseTargetMap.get(designationId);
-				 
-				 if(categroyMap != null && categroyMap.size() > 0){
-					 
-					 for(Entry<String, List<ToursBasicVO>> entry:categroyMap.entrySet()){
-						 
-						 ToursBasicVO categoryVO = new ToursBasicVO();
-						 categoryVO.setIdStr(entry.getKey());
-						 if(categoryIdNameMap != null && categoryIdNameMap.size() > 0){
-							 categoryVO.setName(categoryIdNameMap.get(entry.getKey()));	 
-						 }
-						 if(entry.getValue() != null && entry.getValue().size() > 0){
-							 for(ToursBasicVO mntVO:entry.getValue()){
+		try{
+			if(designationWiseTargetMap != null && designationWiseTargetMap.size() > 0){
+
+				List<ToursBasicVO> categoryList = new ArrayList<ToursBasicVO>();
+
+				Map<String,List<ToursBasicVO>> categroyMap = designationWiseTargetMap.get(designationId);
+
+				if(categroyMap != null && categroyMap.size() > 0){
+
+					for(Entry<String, List<ToursBasicVO>> entry:categroyMap.entrySet()){
+
+						ToursBasicVO categoryVO = new ToursBasicVO();
+						categoryVO.setIdStr(entry.getKey());
+						if(categoryIdNameMap != null && categoryIdNameMap.size() > 0){
+							categoryVO.setName(categoryIdNameMap.get(entry.getKey()));	 
+						}
+						if(entry.getValue() != null && entry.getValue().size() > 0){
+							for(ToursBasicVO mntVO:entry.getValue()){
 								ToursBasicVO monthVO = new ToursBasicVO(); 
 								monthVO.setId(mntVO.getId());
 								monthVO.setName(mntVO.getName());
 								monthVO.setYear(mntVO.getYear());
 								monthVO.setTargetDays(mntVO.getTargetDays());
-							   categoryVO.getMonthList().add(monthVO);
-							 }
-						 }
-						 categoryList.add(categoryVO);
-					 }
-				 }
-			    return categoryList;
-			 } 
-		 }catch(Exception e){
-			 LOG.error("Exception Occured in setRequiredTargetDesignationWise() in LocationDashboardService  : ",e);	 
-		 }
-		 return null;
-	 }
-	public void calculateCategoryWiseComplaince(Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap){
-		 try{
-			 if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
-				 
-				 for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:candiateDtlsMap.entrySet()){
-					 
-					 if(designationEntry.getValue() != null && designationEntry.getValue().size() > 0){
-						 
-						 for(Entry<Long,ToursBasicVO> candiateEntry:designationEntry.getValue().entrySet()){
-							 
-							 ToursBasicVO candiateVO = candiateEntry.getValue();
-							 
-							 if(candiateVO != null){
-								 
-								 if(candiateVO.getSubList3() != null && candiateVO.getSubList3().size() > 0){
-									 
-									 for(ToursBasicVO categoryVO:candiateVO.getSubList3()){
-										 
-										 List<ToursBasicVO> monthList = categoryVO.getMonthList();
-										 
-										 if(monthList != null && monthList.size() > 0){
-											 
-											   Double totalPer= 0.0d;
-											   Long targetDays =0l;
-											   Long complainceDays =0l;
-											   
-											   for(ToursBasicVO monthVO:monthList){
-												   
-												   totalPer = totalPer+monthVO.getComplaincePer();
-												   targetDays = targetDays + monthVO.getTargetDays();
-												   complainceDays = complainceDays + monthVO.getComplainceDays();
-											   }
-											   
-											   Integer totalCount =0;
-											   
-											   if(monthList != null && monthList.size() > 0){
-												   
-												    totalCount = monthList.size() * 100;   
-											   }
-											   
-										       Double percentage = calculatePercantageBasedOnDouble(totalPer,totalCount.doubleValue());
-										       if(percentage > 100){
-										    	   categoryVO.setComplaincePer(100d);
-										       }else{
-										    	   categoryVO.setComplaincePer(percentage);   
-										       }
-										       categoryVO.setTargetDays(targetDays);
-										       categoryVO.setComplainceDays(complainceDays);
-									 }
-								 }	 
+								categoryVO.getMonthList().add(monthVO);
 							}
-						 }
-					 }
-				 }
-				 }
-			 }
-		 }catch(Exception e){
-			 LOG.error("Exception Occured in calculateCategoryWiseComplaince() in LocationDashboardService  : ",e); 
-		 }
-	 }
+						}
+						categoryList.add(categoryVO);
+					}
+				}
+				return categoryList;
+			} 
+		}catch(Exception e){
+			LOG.error("Exception Occured in setRequiredTargetDesignationWise() in LocationDashboardService  : ",e);	 
+		}
+		return null;
+	}
+	public void calculateCategoryWiseComplaince(Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap){
+		try{
+			if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
+
+				for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:candiateDtlsMap.entrySet()){
+
+					if(designationEntry.getValue() != null && designationEntry.getValue().size() > 0){
+
+						for(Entry<Long,ToursBasicVO> candiateEntry:designationEntry.getValue().entrySet()){
+
+							ToursBasicVO candiateVO = candiateEntry.getValue();
+
+							if(candiateVO != null){
+
+								if(candiateVO.getSubList3() != null && candiateVO.getSubList3().size() > 0){
+
+									for(ToursBasicVO categoryVO:candiateVO.getSubList3()){
+
+										List<ToursBasicVO> monthList = categoryVO.getMonthList();
+
+										if(monthList != null && monthList.size() > 0){
+
+											Double totalPer= 0.0d;
+											Long targetDays =0l;
+											Long complainceDays =0l;
+
+											for(ToursBasicVO monthVO:monthList){
+
+												totalPer = totalPer+monthVO.getComplaincePer();
+												targetDays = targetDays + monthVO.getTargetDays();
+												complainceDays = complainceDays + monthVO.getComplainceDays();
+											}
+
+											Integer totalCount =0;
+
+											if(monthList != null && monthList.size() > 0){
+
+												totalCount = monthList.size() * 100;   
+											}
+
+											Double percentage = calculatePercantageBasedOnDouble(totalPer,totalCount.doubleValue());
+											if(percentage > 100){
+												categoryVO.setComplaincePer(100d);
+											}else{
+												categoryVO.setComplaincePer(percentage);   
+											}
+											categoryVO.setTargetDays(targetDays);
+											categoryVO.setComplainceDays(complainceDays);
+										}
+									}	 
+								}
+							}
+						}
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in calculateCategoryWiseComplaince() in LocationDashboardService  : ",e); 
+		}
+	}
 	public void calculatteOverAllPercentage(Map<Long,Map<Long,ToursBasicVO>> memberDtlsMap){
-		 try{
-			 if(memberDtlsMap != null && memberDtlsMap.size() > 0){
-				 
-				  for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:memberDtlsMap.entrySet()){
-					  
-					  if(designationEntry != null && designationEntry.getValue().size() >0){
-						  
-						  for(Entry<Long,ToursBasicVO> candiateEntry:designationEntry.getValue().entrySet()){
-							  
-							  List<ToursBasicVO> categoryList = candiateEntry.getValue().getSubList3();
-							  
-							   if(categoryList != null && categoryList.size() > 0){
-								   
-								   Double totalPer =0.0d;
-								   Long complainceDays=0l;
-								   for(ToursBasicVO VO:categoryList){
-									   totalPer = totalPer+VO.getComplaincePer(); 
-									   complainceDays = complainceDays +VO.getComplainceDays();
-								   }
-								   Integer totalCount =0;
-								   if(categoryList != null && categoryList.size() > 0){
-									    totalCount = categoryList.size() * 100;   
-								   }
-								   
-								   Double percentage = calculatePercantageBasedOnDouble(totalPer,totalCount.doubleValue());
-								   candiateEntry.getValue().setComplainceDays(complainceDays);
-								   if(percentage > 100d){
-									   candiateEntry.getValue().setComplaincePer(100d);
-								   }else{
-									   candiateEntry.getValue().setComplaincePer(percentage);  
-								   }
-							   }
-						  }
-					  }
-				  }
-			  }	 
-		 }catch(Exception e){
-			 LOG.error("Exception Occured in calculatteOverAllPercentage() in LocationDashboardService  : ",e);	 
-		 }
-	 }
+		try{
+			if(memberDtlsMap != null && memberDtlsMap.size() > 0){
+
+				for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:memberDtlsMap.entrySet()){
+
+					if(designationEntry != null && designationEntry.getValue().size() >0){
+
+						for(Entry<Long,ToursBasicVO> candiateEntry:designationEntry.getValue().entrySet()){
+
+							List<ToursBasicVO> categoryList = candiateEntry.getValue().getSubList3();
+
+							if(categoryList != null && categoryList.size() > 0){
+
+								Double totalPer =0.0d;
+								Long complainceDays=0l;
+								for(ToursBasicVO VO:categoryList){
+									totalPer = totalPer+VO.getComplaincePer(); 
+									complainceDays = complainceDays +VO.getComplainceDays();
+								}
+								Integer totalCount =0;
+								if(categoryList != null && categoryList.size() > 0){
+									totalCount = categoryList.size() * 100;   
+								}
+
+								Double percentage = calculatePercantageBasedOnDouble(totalPer,totalCount.doubleValue());
+								candiateEntry.getValue().setComplainceDays(complainceDays);
+								if(percentage > 100d){
+									candiateEntry.getValue().setComplaincePer(100d);
+								}else{
+									candiateEntry.getValue().setComplaincePer(percentage);  
+								}
+							}
+						}
+					}
+				}
+			}	 
+		}catch(Exception e){
+			LOG.error("Exception Occured in calculatteOverAllPercentage() in LocationDashboardService  : ",e);	 
+		}
+	}
 	public ToursBasicVO getCategoryMatchVO(List<ToursBasicVO> categoryList,String id){
-		 try{
-			 if(categoryList == null || categoryList.size() == 0)
-				 return null;
-			 for(ToursBasicVO vo:categoryList){
-				 if(vo.getIdStr().equalsIgnoreCase(id.trim())){
-					 return vo;
-				 }
-			 }
-		 }catch(Exception e){
-			 LOG.error("Exception Occured in getCategoryMatchVO() in LocationDashboardService  : ",e);	 
-		 }
-		 return null;
-	 }
-	 public ToursBasicVO getMonthMatchVO(List<ToursBasicVO> monthList,Long id){
-		 try{
-			 if(monthList == null || monthList.size() == 0)
-				 return null;
-			 for(ToursBasicVO vo:monthList){
-				 if(vo.getId().equals(id)){
-					 return vo;
-				 }
-			 }
-		 }catch(Exception e){
-			 LOG.error("Exception Occured in getCategoryMatchVO() in LocationDashboardService  : ",e);	 
-		 }
-		 return null;
-	 }
-	 public Double calculatePercantage(Long subCount,Long totalCount){
-			Double d=0.0d;
-			if(subCount.longValue()>0l && totalCount.longValue()==0l)
+		try{
+			if(categoryList == null || categoryList.size() == 0)
+				return null;
+			for(ToursBasicVO vo:categoryList){
+				if(vo.getIdStr().equalsIgnoreCase(id.trim())){
+					return vo;
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in getCategoryMatchVO() in LocationDashboardService  : ",e);	 
+		}
+		return null;
+	}
+	public ToursBasicVO getMonthMatchVO(List<ToursBasicVO> monthList,Long id){
+		try{
+			if(monthList == null || monthList.size() == 0)
+				return null;
+			for(ToursBasicVO vo:monthList){
+				if(vo.getId().equals(id)){
+					return vo;
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in getCategoryMatchVO() in LocationDashboardService  : ",e);	 
+		}
+		return null;
+	}
+	public Double calculatePercantage(Long subCount,Long totalCount){
+		Double d=0.0d;
+		if(subCount.longValue()>0l && totalCount.longValue()==0l)
 			LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
 
-			if(totalCount.longValue() > 0l){
-				 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
-			}
-			return d;
-	 }
-	 public Double calculatePercantageBasedOnDouble(Double subCount,Double totalCount){
-			Double d=0.0d;
-			if(subCount.longValue()>0l && totalCount.longValue()==0l)
+		if(totalCount.longValue() > 0l){
+			d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
+		}
+		return d;
+	}
+	public Double calculatePercantageBasedOnDouble(Double subCount,Double totalCount){
+		Double d=0.0d;
+		if(subCount.longValue()>0l && totalCount.longValue()==0l)
 			LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
 
-			if(totalCount.longValue() > 0l){
-				 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
-			}
-			return d;
-	 }
+		if(totalCount.longValue() > 0l){
+			d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
+		}
+		return d;
+	}
 	public Long getUserAccessLevel(Long locationTypeId){
 		Long userAccessLevelId=0l;
 		/*if(locationTypeId != null){
@@ -2036,13 +2037,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		return vo;
 	}
 	/**
-	  * @param String locationType
-	  * @param String locationValue
-	  * @return List<BenefitCandidateVO>
-	  * @author Santosh 
-	  * @Description :This Service Method is used for getting government scheme wise benefit member count 
-	  *  @since 7-JULY-2017
-	  */
+	 * @param String locationType
+	 * @param String locationValue
+	 * @return List<BenefitCandidateVO>
+	 * @author Santosh 
+	 * @Description :This Service Method is used for getting government scheme wise benefit member count 
+	 *  @since 7-JULY-2017
+	 */
 	public List<BenefitCandidateVO> getGovtSchemeWiseBenefitMembersCount(final Long locationType, final Long locationValue) {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
@@ -2054,9 +2055,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return resultList;
 	}
-	
+
 	private List<Object[]> getCensusPopulation(List<Object[]> benefitMemberObjLst,String locationType, Long locationValue) {
-		
+
 		Set<Long> locationIdSet = new HashSet<Long>();
 		List<Object[]> censusPopList = null;
 		if(locationType == "constituency"){	
@@ -2071,16 +2072,16 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			censusPopList= censusDAO.getTotalCensusPopulation(locationIdSet, 2011l);
 		}
 		return censusPopList;
-		
+
 	}
 	/**
-	  * @param String locationType
-	  * @param String locationValue
-	  * @return List<BenefitCandidateVO>
-	  * @author Santosh 
-	  * @Description :This Service Method is used for getting mandal wise benefit member count 
-	  *  @since 7-JULY-2017
-	  */
+	 * @param String locationType
+	 * @param String locationValue
+	 * @return List<BenefitCandidateVO>
+	 * @author Santosh 
+	 * @Description :This Service Method is used for getting mandal wise benefit member count 
+	 *  @since 7-JULY-2017
+	 */
 	public List<BenefitCandidateVO> getMandalWiseBenefitMembersCount(final Long locationType, final Long locationValue,final Long govtSchemeId) {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
@@ -2116,11 +2117,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 								returnList.add(vo);
 							}
 						}
-						
+
 					}
-					
+
 				}
-	
+
 			}
 		} catch (Exception e) {
 			Log.error("Exception Occured at getGovtSchemeBenefitMemberDlstList() in LocationDashboardService class",e);
@@ -2142,51 +2143,51 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		InsuranceStatusCountsVO insuranceStatusCounts = new InsuranceStatusCountsVO();
 		try{
 			Date fromDate = null;
- 			Date toDate = null;
- 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
- 			// Here converting stirng to date formatte 
- 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
- 				fromDate = sdf.parse(fromDateStr);
- 				toDate = sdf.parse(toDateStr);
- 			}
- 			//0-locationValue(DIstrict or ConstituencyId),1-locationName,2-Status,3-StatusId,4-Count
- 			List<Object[]> insuranceStatus = insuranceStatusDAO.getConstituencyWiseInsuranceStatusCounts(fromDate, toDate,locationTypeId,locationValues,year);
- 			if(insuranceStatus!=null){
- 				//Here set the values for object 
- 				for (Object[] objects : insuranceStatus) {
- 					if((Long)objects[3]==1){
- 						insuranceStatusCounts.setWaitingForDocs(insuranceStatusCounts.getWaitingForDocs()+(Long)objects[4]);
- 					}else if((Long)objects[3]==2){
- 						insuranceStatusCounts.setSubmittedInparty(insuranceStatusCounts.getSubmittedInparty()+(Long)objects[4]);
- 					}else if((Long)objects[3]==3){
- 						insuranceStatusCounts.setForeadedToInsurance(insuranceStatusCounts.getForeadedToInsurance()+(Long)objects[4]);
- 					}else if((Long)objects[3]==4){
- 						insuranceStatusCounts.setClosedAtInsurance(insuranceStatusCounts.getClosedAtInsurance()+(Long)objects[4]);
- 					}else if((Long)objects[3]==5){
- 						insuranceStatusCounts.setClosedAtParty(insuranceStatusCounts.getClosedAtParty()+(Long)objects[4]);
- 					}else if((Long)objects[3]==6){
- 						insuranceStatusCounts.setApproved(insuranceStatusCounts.getApproved()+(Long)objects[4]);
- 					}else if((Long)objects[3]==7){
- 						insuranceStatusCounts.setClosedLetters(insuranceStatusCounts.getClosedLetters()+(Long)objects[4]);
- 					}else if((Long)objects[3]==8){
- 						insuranceStatusCounts.setAccountRejected(insuranceStatusCounts.getAccountRejected()+(Long)objects[4]);
- 					}
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			// Here converting stirng to date formatte 
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			//0-locationValue(DIstrict or ConstituencyId),1-locationName,2-Status,3-StatusId,4-Count
+			List<Object[]> insuranceStatus = insuranceStatusDAO.getConstituencyWiseInsuranceStatusCounts(fromDate, toDate,locationTypeId,locationValues,year);
+			if(insuranceStatus!=null){
+				//Here set the values for object 
+				for (Object[] objects : insuranceStatus) {
+					if((Long)objects[3]==1){
+						insuranceStatusCounts.setWaitingForDocs(insuranceStatusCounts.getWaitingForDocs()+(Long)objects[4]);
+					}else if((Long)objects[3]==2){
+						insuranceStatusCounts.setSubmittedInparty(insuranceStatusCounts.getSubmittedInparty()+(Long)objects[4]);
+					}else if((Long)objects[3]==3){
+						insuranceStatusCounts.setForeadedToInsurance(insuranceStatusCounts.getForeadedToInsurance()+(Long)objects[4]);
+					}else if((Long)objects[3]==4){
+						insuranceStatusCounts.setClosedAtInsurance(insuranceStatusCounts.getClosedAtInsurance()+(Long)objects[4]);
+					}else if((Long)objects[3]==5){
+						insuranceStatusCounts.setClosedAtParty(insuranceStatusCounts.getClosedAtParty()+(Long)objects[4]);
+					}else if((Long)objects[3]==6){
+						insuranceStatusCounts.setApproved(insuranceStatusCounts.getApproved()+(Long)objects[4]);
+					}else if((Long)objects[3]==7){
+						insuranceStatusCounts.setClosedLetters(insuranceStatusCounts.getClosedLetters()+(Long)objects[4]);
+					}else if((Long)objects[3]==8){
+						insuranceStatusCounts.setAccountRejected(insuranceStatusCounts.getAccountRejected()+(Long)objects[4]);
+					}
 				}
- 			}
+			}
 		}catch(Exception e){
 			Log.error("Exception raised at insurance status counts service"+e);
 		}
 		return insuranceStatusCounts;
 	}
-    /* @param String fromDateStr
+	/* @param String fromDateStr
 	 * @param String toDateStr
 	 * @param Long locationId
 	 * @param Long locationValue
 	 * @author R Nagarjuna Gowd
 	 * @return List<List<GrivenceStatusVO>> we have two lists in final list 1.Grivence counts(Govt,party,welfare) 2.Trust counts
-     * (non-Javadoc)
-     * @see com.itgrids.core.api.service.ILocationDashboardService#getGrivenceTrustStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
-     */
+	 * (non-Javadoc)
+	 * @see com.itgrids.core.api.service.ILocationDashboardService#getGrivenceTrustStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
+	 */
 
 	public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year) {
 		List<GrivenceStatusVO> finalList = new ArrayList<GrivenceStatusVO>();
@@ -2194,56 +2195,56 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		GrivenceStatusVO trustStatusCount = new GrivenceStatusVO();
 		try{
 			Date fromDate = null;
- 			Date toDate = null;
- 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
- 		    // Here converting stirng to date formatte
- 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
- 				fromDate = sdf.parse(fromDateStr);
- 				toDate = sdf.parse(toDateStr);
- 			}
- 			//0-consId,1-Status,2-typeOfIssue,3-count
- 			List<Object[]> grivenceTrustList = insuranceStatusDAO.getGrivenceTrustStatusCounts(fromDate, toDate,locationTypeId,locationValues,year);
- 			if(grivenceTrustList!=null){
- 				//  Here set the Grivence values for object
- 				for (Object[] objects : grivenceTrustList) {
- 					if(objects[2].toString().trim().equalsIgnoreCase("Govt") || objects[2].toString().trim().equalsIgnoreCase("Party")  || 
- 							objects[2].toString().trim().equalsIgnoreCase("Welfare")){
- 						if(objects[1].toString().trim().equalsIgnoreCase("Not Verified") ){
- 							grivenceStatusCount.setNotVerified(grivenceStatusCount.getNotVerified()+(Long)objects[3] );
- 						}else if(objects[1].toString().trim().equalsIgnoreCase("in progress")){
- 							grivenceStatusCount.setInProgress(grivenceStatusCount.getInProgress()+(Long)objects[3]);
- 						}else if(objects[1].toString().trim().equalsIgnoreCase("Not Eligible")){
- 							grivenceStatusCount.setNotEligible(grivenceStatusCount.getNotEligible()+(Long)objects[3]);
- 						}else if(objects[1].toString().trim().equalsIgnoreCase("not possible")){
- 							grivenceStatusCount.setNotPossible(grivenceStatusCount.getNotPossible()+(Long)objects[3]);
- 						}else if(objects[1].toString().trim().equalsIgnoreCase("approved")){
- 							grivenceStatusCount.setApproves(grivenceStatusCount.getApproves()+(Long)objects[3]);
- 						}else if(objects[1].toString().trim().equalsIgnoreCase("completed")){
- 							grivenceStatusCount.setCompleted(grivenceStatusCount.getCompleted()+(Long)objects[3]);
- 						}
- 						
- 					}
- 				     //  Here set the Trust values for object
- 					else if(objects[2].toString().trim().equalsIgnoreCase("Trust Education Support"))
- 					{
- 						if(objects[1].toString().trim().equalsIgnoreCase("Not Verified") ){
- 							trustStatusCount.setNotVerified(trustStatusCount.getNotVerified()+(Long)objects[3]);
- 						}else if(objects[1].toString().trim().equalsIgnoreCase("in progress")){
- 							trustStatusCount.setInProgress(trustStatusCount.getInProgress()+(Long)objects[3]);
- 						}else if(objects[1].toString().trim().equalsIgnoreCase("Not Eligible")){
- 							trustStatusCount.setNotEligible(trustStatusCount.getNotEligible()+(Long)objects[3]);
- 						}else if(objects[1].toString().trim().equalsIgnoreCase("not possible")){
- 							trustStatusCount.setNotPossible(trustStatusCount.getNotPossible()+(Long)objects[3]);
- 						}else if(objects[1].toString().trim().equalsIgnoreCase("approved")){
- 							trustStatusCount.setApproves(trustStatusCount.getApproves()+(Long)objects[3]);
- 						}else if(objects[1].toString().trim().equalsIgnoreCase("completed")){
- 							trustStatusCount.setCompleted(trustStatusCount.getCompleted()+(Long)objects[3]);
- 						}
- 					}
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			// Here converting stirng to date formatte
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			//0-consId,1-Status,2-typeOfIssue,3-count
+			List<Object[]> grivenceTrustList = insuranceStatusDAO.getGrivenceTrustStatusCounts(fromDate, toDate,locationTypeId,locationValues,year);
+			if(grivenceTrustList!=null){
+				//  Here set the Grivence values for object
+				for (Object[] objects : grivenceTrustList) {
+					if(objects[2].toString().trim().equalsIgnoreCase("Govt") || objects[2].toString().trim().equalsIgnoreCase("Party")  || 
+							objects[2].toString().trim().equalsIgnoreCase("Welfare")){
+						if(objects[1].toString().trim().equalsIgnoreCase("Not Verified") ){
+							grivenceStatusCount.setNotVerified(grivenceStatusCount.getNotVerified()+(Long)objects[3] );
+						}else if(objects[1].toString().trim().equalsIgnoreCase("in progress")){
+							grivenceStatusCount.setInProgress(grivenceStatusCount.getInProgress()+(Long)objects[3]);
+						}else if(objects[1].toString().trim().equalsIgnoreCase("Not Eligible")){
+							grivenceStatusCount.setNotEligible(grivenceStatusCount.getNotEligible()+(Long)objects[3]);
+						}else if(objects[1].toString().trim().equalsIgnoreCase("not possible")){
+							grivenceStatusCount.setNotPossible(grivenceStatusCount.getNotPossible()+(Long)objects[3]);
+						}else if(objects[1].toString().trim().equalsIgnoreCase("approved")){
+							grivenceStatusCount.setApproves(grivenceStatusCount.getApproves()+(Long)objects[3]);
+						}else if(objects[1].toString().trim().equalsIgnoreCase("completed")){
+							grivenceStatusCount.setCompleted(grivenceStatusCount.getCompleted()+(Long)objects[3]);
+						}
+
+					}
+					//  Here set the Trust values for object
+					else if(objects[2].toString().trim().equalsIgnoreCase("Trust Education Support"))
+					{
+						if(objects[1].toString().trim().equalsIgnoreCase("Not Verified") ){
+							trustStatusCount.setNotVerified(trustStatusCount.getNotVerified()+(Long)objects[3]);
+						}else if(objects[1].toString().trim().equalsIgnoreCase("in progress")){
+							trustStatusCount.setInProgress(trustStatusCount.getInProgress()+(Long)objects[3]);
+						}else if(objects[1].toString().trim().equalsIgnoreCase("Not Eligible")){
+							trustStatusCount.setNotEligible(trustStatusCount.getNotEligible()+(Long)objects[3]);
+						}else if(objects[1].toString().trim().equalsIgnoreCase("not possible")){
+							trustStatusCount.setNotPossible(trustStatusCount.getNotPossible()+(Long)objects[3]);
+						}else if(objects[1].toString().trim().equalsIgnoreCase("approved")){
+							trustStatusCount.setApproves(trustStatusCount.getApproves()+(Long)objects[3]);
+						}else if(objects[1].toString().trim().equalsIgnoreCase("completed")){
+							trustStatusCount.setCompleted(trustStatusCount.getCompleted()+(Long)objects[3]);
+						}
+					}
 				}
- 			}
- 			finalList.add(grivenceStatusCount);
- 			finalList.add(trustStatusCount);
+			}
+			finalList.add(grivenceStatusCount);
+			finalList.add(trustStatusCount);
 		}catch(Exception e){
 			Log.error("Exception raised at grivence and trust counts service"+e);
 		}
@@ -2263,13 +2264,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			List<Object[]> rtrnCaderCountObjLst = tdpCadreEnrollmentInfoDAO.getLocationTypeWiseCadreCount(locationTypeId,locationValues,year);
 			if(rtrnCaderCountObjLst != null && rtrnCaderCountObjLst.size() > 0){
 				for (Object[] param : rtrnCaderCountObjLst) {
-					  ConstituencyCadreVO enrollmentYearVO = new ConstituencyCadreVO();
-					  enrollmentYearVO.setEnrollmentYearId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					  enrollmentYearVO.setEnrollmentYear(commonMethodsUtilService.getStringValueForObject(param[1]));
-					  enrollmentYearVO.setToalCadreCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					  enrollmentYearVO.setNewCaderCount(commonMethodsUtilService.getLongValueForObject(param[3]));
-					  enrollmentYearVO.setRenewalCadreCount(commonMethodsUtilService.getLongValueForObject(param[4]));
-					  resultList.add(enrollmentYearVO);
+					ConstituencyCadreVO enrollmentYearVO = new ConstituencyCadreVO();
+					enrollmentYearVO.setEnrollmentYearId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					enrollmentYearVO.setEnrollmentYear(commonMethodsUtilService.getStringValueForObject(param[1]));
+					enrollmentYearVO.setToalCadreCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					enrollmentYearVO.setNewCaderCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+					enrollmentYearVO.setRenewalCadreCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+					resultList.add(enrollmentYearVO);
 				}
 			}
 		}catch(Exception e){
@@ -2340,19 +2341,19 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		return resultList;
 	}
 	public ConstituencyCadreVO getCasteCategoryMatchVO(List<ConstituencyCadreVO> categoryList,Long id){
-		 try{
-			 if(categoryList == null || categoryList.size() == 0)
-				 return null;
-			 for(ConstituencyCadreVO vo:categoryList){
-				 if(vo.getId().equals(id)){
-					 return vo;
-				 }
-			 }
-		 }catch(Exception e){
-			 LOG.error("Exception Occured in getCasteCategoryMatchVO() in LocationDashboardService  : ",e);	 
-		 }
-		 return null;
-	 }
+		try{
+			if(categoryList == null || categoryList.size() == 0)
+				return null;
+			for(ConstituencyCadreVO vo:categoryList){
+				if(vo.getId().equals(id)){
+					return vo;
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in getCasteCategoryMatchVO() in LocationDashboardService  : ",e);	 
+		}
+		return null;
+	}
 	public List<ConstituencyCadreVO> getCasteCategoryList(List<Object[]> objList) {
 		List<ConstituencyCadreVO> casteCategoryList = new ArrayList<ConstituencyCadreVO>(0);
 		try {
@@ -2388,7 +2389,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			List<Object[]> conductedInfoTotal = activityDAO.getConductedInfoTotal(fromDate, toDate, year, locationValues, locationTypeId);
 			//0-activity_scope_id 1-activity_name 2-level 3-conductedCount
 			List<Object[]> conductedCount = activityDAO.getConductedInfoCount(fromDate, toDate, year, locationValues, locationTypeId);
-			
+
 			for (Object[] object1 : activityTotal) {
 				for (Object[] object2 : activityConductedCount) {
 					BasicVO vo = new BasicVO();
@@ -2401,7 +2402,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					}
 					if(vo.getPerc()!=null){
 						finalList.add(vo);
-				}
+					}
 				}
 			}
 			for (Object[] object3 : conductedInfoTotal) {
@@ -2416,16 +2417,16 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					}
 					if(vo.getPerc()!=null){
 						finalList.add(vo);
-						}
+					}
 				}
 			}
-			
+
 		}catch(Exception e){
 			LOG.error("Exception raised at getActivityStatusList() in LocationDashBoardService class",e);
 		}
 		return finalList;
 	}
-	
+
 	/**
 	 * @param  Long stateId
 	 * @return List<LocationWiseBoothDetailsVO>
@@ -2460,7 +2461,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return idNameVOList;
 	}
-	
+
 	/**
 	 * @param  Long districtId
 	 * @return List<LocationWiseBoothDetailsVO>
@@ -2515,7 +2516,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return idNameVOList;
 	}
-	
+
 	/**
 	 * @param  String fromDate,toDate
 	 * @param loctionType,locationValue
@@ -2532,26 +2533,26 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			List<Long> yearsList=  new ArrayList<Long>();
 			List<Long> tehsilIds = new ArrayList<Long>();
 			List<Long> electionBodyIds =new ArrayList<Long>();
-				List<LocationWiseBoothDetailsVO> mandalsAndElecBdy= cadreCommitteeService.getMandalsByConstituency(locationValue);
-				for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : mandalsAndElecBdy) {
-					if(locationWiseBoothDetailsVO != null){
-						if(locationWiseBoothDetailsVO.getLocationId().compareTo(0l)!=0){
-							char c= locationWiseBoothDetailsVO.getLocationId().toString().charAt(0);
-							if(c=='2'){
-								Long tehsilId=Long.valueOf(locationWiseBoothDetailsVO.getLocationId().toString().substring(1));
-								tehsilIds.add(tehsilId);
-							}else if(c=='1'){
-								electionBodyIds.add(Long.valueOf(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
-							}
+			List<LocationWiseBoothDetailsVO> mandalsAndElecBdy= cadreCommitteeService.getMandalsByConstituency(locationValue);
+			for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : mandalsAndElecBdy) {
+				if(locationWiseBoothDetailsVO != null){
+					if(locationWiseBoothDetailsVO.getLocationId().compareTo(0l)!=0){
+						char c= locationWiseBoothDetailsVO.getLocationId().toString().charAt(0);
+						if(c=='2'){
+							Long tehsilId=Long.valueOf(locationWiseBoothDetailsVO.getLocationId().toString().substring(1));
+							tehsilIds.add(tehsilId);
+						}else if(c=='1'){
+							electionBodyIds.add(Long.valueOf(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
 						}
-						
 					}
+
 				}
-				
+			}
+
 			if(fromDateStr != null && !fromDateStr.trim().isEmpty() && toDateStr != null && !toDateStr.trim().isEmpty()){
 				Long fromYear = Long.parseLong(fromDateStr.split("-")[2]);
 				Long toYear = Long.parseLong(toDateStr.split("-")[2]);
-				
+
 				for (Long i = fromYear; i <= toYear; i++) {
 					yearsList.add(i);
 				}
@@ -2578,15 +2579,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					electionInformationVO.setWonSeatsCount(commonMethodsUtilService.getLongValueForObject(param[15]));
 					electionInformationVOList.add(electionInformationVO);
 				}
-				
+
 			}
-			
+
 		}catch(Exception e){
 			LOG.error("Exception raised in getElectionInformationLocationWise", e);
 
 		}
-		
+
 		return electionInformationVOList;
 	}
-		
+
 }
