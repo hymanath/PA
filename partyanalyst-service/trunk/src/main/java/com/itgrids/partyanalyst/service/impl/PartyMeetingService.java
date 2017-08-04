@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -3652,6 +3653,56 @@ public class PartyMeetingService implements IPartyMeetingService{
 					
 				}
 			}
+			
+			
+			//level wise mom and atr counts -- start
+			//0-partymeetingLevelId,1-level,2-meeingId
+			List<Object[]> locWiseMeetingIds = partyMeetingDAO.getPartyMeetingIdsLevelwise(startDate,endDate,level,levelValues,levelMap.keySet());
+			Map<Long,List<Long>> levelWisemeetingIds = new HashMap<Long, List<Long>>(0);
+			if(locWiseMeetingIds != null && locWiseMeetingIds.size() > 0){
+				for (Object[] objects : locWiseMeetingIds) {
+					if(levelWisemeetingIds.get((Long)objects[0]) == null){
+						List<Long> ids = new ArrayList<Long>(0);
+						ids.add((Long)objects[2]);
+						levelWisemeetingIds.put((Long)objects[0],ids);
+					}else{
+						levelWisemeetingIds.get((Long)objects[0]).add((Long)objects[2]);
+					}
+				}
+			}
+			
+			
+			if(levelWisemeetingIds != null && levelWisemeetingIds.size() > 0){
+				for (Entry<Long, List<Long>> entry : levelWisemeetingIds.entrySet()) {
+					List<Long> partyMeetingIdsList = entry.getValue();
+					
+					List<PartyMeetingSummaryVO> momAndAtrRsltLst = new ArrayList<PartyMeetingSummaryVO>(0);
+					if(partyMeetingIdsList!=null && partyMeetingIdsList.size()>0){
+						momAndAtrRsltLst = getAtrAndMOMOfMeetings(partyMeetingIdsList);
+						if(momAndAtrRsltLst!=null && momAndAtrRsltLst.size()>0){
+							Long momFilesCount = 0l,momPointsCount=0l,atrFilesCount=0l,atrTextCount=0l;
+							for (PartyMeetingSummaryVO pmsvo : momAndAtrRsltLst) {
+								momFilesCount = pmsvo.getMomFilesCount() != null && pmsvo.getMomFilesCount() > 0 ? momFilesCount + pmsvo.getMomFilesCount() : momFilesCount;
+								momPointsCount = pmsvo.getMomPointsCount() != null && pmsvo.getMomPointsCount() > 0 ? momPointsCount + pmsvo.getMomPointsCount() : momPointsCount;
+								atrFilesCount = pmsvo.getAtrFilesCount() != null && pmsvo.getAtrFilesCount() > 0 ? atrFilesCount + pmsvo.getAtrFilesCount() : atrFilesCount;
+								atrTextCount = pmsvo.getAtrTextCount() != null && pmsvo.getAtrTextCount()> 0 ? atrTextCount + pmsvo.getAtrTextCount() : atrTextCount;
+							}
+							
+							if(levelMap.get(entry.getKey()) != null){
+								PartyMeetingVO vo = levelMap.get(entry.getKey());
+								vo.setMomFilesCount(momFilesCount);
+								vo.setMomPointsCount(momPointsCount);
+								vo.setAtrFilesCount(atrFilesCount);
+								vo.setAtrTextCount(atrTextCount);
+							}
+							
+						}
+					}
+					
+				}
+			}
+			
+			//level wise mom and atr counts -- end
 			
 			if(levelMap !=null && levelMap.size()>0){
 					finalList = new ArrayList<PartyMeetingVO>(levelMap.values());
