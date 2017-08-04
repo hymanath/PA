@@ -858,7 +858,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 				 	    				vo.setMandal(jObj.getString("MANDAL"));
 				 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
-				 	    				vo.setTarget(jObj.getLong("TARGET"));
+				 	    				vo.setTargetPersonDays(jObj.getString("TARGET"));
 				 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 				 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture Activities")){
 				 	    					vo.setAchivement(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -1815,11 +1815,13 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 		 	    				vo.setMandal(jObj.getString("MANDAL"));
 		 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
-		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Completed 100 Days"))
+		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Completed 100 Days")){
 		 	    					if(inputVO.getSublocationType().trim().equalsIgnoreCase("state"))
 		 	    						vo.setTarget(jObj.getLong("TERGET"));
 		 	    					else
 		 	    						vo.setTarget(jObj.getLong("TARGET"));
+		 	    				}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries"))
+		 	    					vo.setTargetPersonDays(jObj.getString("TARGET"));
 		 	    				else
 		 	    					vo.setTarget(jObj.getLong("TARGET"));
 		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries"))
@@ -1868,7 +1870,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				NregsDataVO vo = new NregsDataVO();
 		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 		 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
-		 	    				vo.setTarget(jObj.getLong("TARGET"));
+		 	    				vo.setTargetPersonDays(jObj.getString("TARGET"));
 		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 		 	    				vo.setAchivement(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    				vo.setPercentage(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -1884,7 +1886,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 		 	    				vo.setMandal(jObj.getString("MANDAL"));
 		 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
-		 	    				vo.setTarget(jObj.getLong("TARGET"));
+		 	    				vo.setTargetPersonDays(jObj.getString("TARGET"));
 		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 		 	    				vo.setAchivement(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    				vo.setPercentage(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -2214,7 +2216,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
 				 	    				vo.setMandal(jObj.getString("MANDAL"));
 				 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
-				 	    				vo.setTarget(jObj.getLong("TARGET"));
+				 	    				vo.setTargetPersonDays(jObj.getString("TARGET"));
 				 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
 				 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture Activities")){
 				 	    					vo.setAchivement(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -3420,7 +3422,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	    		  inputVO.setType("Silk Worms");
 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Cattle drinking water trough"))
 	    		  inputVO.setType("Cattle Drinking Water Troughs");
-	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Raising of Perinnial Fodder "))
+	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Raising of Perinnial Fodder"))
 	 	    	  inputVO.setType("Raising of Perinnial Fodders");
 			String str1 = convertingInputVOToString(inputVO);
 			
