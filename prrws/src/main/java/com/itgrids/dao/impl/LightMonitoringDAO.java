@@ -51,22 +51,24 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring ,Lon
  	 * Author :Swapna
  	  */
      
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object[]> getTotalSurveyDetails() {
 		 StringBuilder sb = new StringBuilder();
-		 sb.append(" select  count( distinct D.districtId),"
-		 		+ " count(distinct C.constituencyId),"
-		 		+ " count(distinct T.tehsilId),"
-		 		+ " count(distinct P.panchayatId)"
-		 		+ "  from "
-		 		+ " LEFT OUTER JOIN panchayat P on LM.panchayatId = P.panchayatId"
-		 		+ " LEFT OUTER JOIN location_address LA on P.locationAddressId = LA.locationAddressId "
-		 		+ " LEFT OUTER JOIN tehsil T on LA.tehsilId = T.tehsilId "
-		 		+ " LEFT OUTER JOIN district D on LA.districtId = D.districtId "
-		 		+ " LEFT OUTER JOIN constituency C on LA.constituencyId = C.constituencyId ");
+		 sb.append(" SELECT COUNT(DISTINCT D.district_id),"
+		 		+ " COUNT(DISTINCT C.constituency_id),"
+		 		+ " COUNT(DISTINCT T.tehsil_id),"
+		 		+ " COUNT(DISTINCT P.panchayat_id) "
+		 		+ " FROM "
+		 		+ " light_monitoring LM "
+		 		+ " LEFT OUTER JOIN panchayat P on LM.panchayat_id = P.panchayat_id "
+		 		+ " LEFT OUTER JOIN location_address LA on P.location_address_id = LA.location_address_id "
+		 		+ " LEFT OUTER JOIN tehsil T on LA.tehsil_id = T.tehsil_id "
+		 		+ " LEFT OUTER JOIN district D on LA.district_id = D.district_id "
+		 		+ " LEFT OUTER JOIN constituency C on LA.constituency_id =C.constituency_id ");
 		 
-		 sb.append(" where  model.locationAddress.district.districtId between 11 and 23 ");
-	 Query query = getSession().createQuery(sb.toString());
+		 sb.append(" where D.district_id between 11 and 23 ");
+	 Query query = getSession().createSQLQuery(sb.toString());
 	 return query.list();
 	}
 	
