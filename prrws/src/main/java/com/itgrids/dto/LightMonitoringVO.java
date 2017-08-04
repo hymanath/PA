@@ -1,11 +1,12 @@
 package com.itgrids.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LightMonitoringVO implements Serializable{
 	
-	private static final long serialVersionUID = -3940676855454173539L;
+	private static long serialVersionUID = -3940676855454173539L;
 	
 	private Long panchayatId;
 	private Long totalLights = 0L;
@@ -17,7 +18,7 @@ public class LightMonitoringVO implements Serializable{
 	private Long notWorkingLights = 0L;
 	private Long lightCount = 0L;	
 	private Long wattage = 0L;
-	private List<LightWattageVO> WattageList;
+	private List<LightWattageVO> WattageList = new ArrayList<LightWattageVO>(0);
 
 	public List<LightWattageVO> getWattageList() {
 		return WattageList;
@@ -86,7 +87,13 @@ public class LightMonitoringVO implements Serializable{
 	public void setPanchayatId(Long panchayatId) {
 		this.panchayatId = panchayatId;
 	}
-	
-	
+	 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public static void setSerialversionuid(long serialversionuid) {
+		serialVersionUID = serialversionuid;
+	}
+
 
 }
