@@ -2483,7 +2483,6 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		return query.list();
     }
 
-	@Override
 	public int updateAbsenteeRemark(Long cadreId, Long partyMeetingId,String comment) {
 		StringBuilder queryStr = new StringBuilder();
 	     queryStr.append(" update PartyMeetingInvitee model set model.absenteeRemark=:comment"+
