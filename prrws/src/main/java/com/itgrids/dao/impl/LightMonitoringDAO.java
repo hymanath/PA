@@ -54,11 +54,16 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring ,Lon
 	@Override
 	public List<Object[]> getTotalSurveyDetails() {
 		 StringBuilder sb = new StringBuilder();
-		 sb.append(" select  count( distinct model.locationAddress.district.districtId),"
-		 		+ " count(distinct model.locationAddress.constituency.constituencyId),"
-		 		+ " count(distinct model.locationAddress.tehsil.tehsilId),"
-		 		+ " count(distinct model.locationAddress.panchayat.panchayatId)"
-		 		+ "  from Panchayat model ");
+		 sb.append(" select  count( distinct D.districtId),"
+		 		+ " count(distinct C.constituencyId),"
+		 		+ " count(distinct T.tehsilId),"
+		 		+ " count(distinct P.panchayatId)"
+		 		+ "  from "
+		 		+ " LEFT OUTER JOIN panchayat P on LM.panchayatId = P.panchayatId"
+		 		+ " LEFT OUTER JOIN location_address LA on P.locationAddressId = LA.locationAddressId "
+		 		+ " LEFT OUTER JOIN tehsil T on LA.tehsilId = T.tehsilId "
+		 		+ " LEFT OUTER JOIN district D on LA.districtId = D.districtId "
+		 		+ " LEFT OUTER JOIN constituency C on LA.constituencyId = C.constituencyId ");
 		 
 		 sb.append(" where  model.locationAddress.district.districtId between 11 and 23 ");
 	 Query query = getSession().createQuery(sb.toString());
