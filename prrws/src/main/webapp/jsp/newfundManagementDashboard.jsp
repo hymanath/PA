@@ -1035,13 +1035,11 @@
 <script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
 <script type="text/javascript" src="Assests/fundManagament/newfundManagementDashboard.js"></script>
 <!--Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations-->
-
 <script>
 var glSearchLevelId =2;
 var glSearchLevelValue ="1";
 var glFromPage="FMS";
 var glToPage="";
 </script>
-
 </body>
 </html>

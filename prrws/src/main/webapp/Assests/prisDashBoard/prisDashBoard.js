@@ -590,10 +590,64 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 					"iDisplayLength": 10,
 					"aaSorting": [],
 					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-					"dom": 'Blfrtip',
+					"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+						"<'row'<'col-sm-12'tr>>" +
+						"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 					buttons: [
-						'copy', 'excel', 'pdf', 'print'
+						{
+							extend:    'csvHtml5',
+							text:      '<i class="fa fa-file-text-o"></i>',
+							titleAttr: 'CSV',
+							title:	   blockName+'_'+blockId,
+							filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+						},
+						{
+							extend:    'pdfHtml5',
+							text:      '<i class="fa fa-file-pdf-o"></i>',
+							titleAttr: 'PDF',
+							title:	   blockName,
+							filename:  blockName+'_'+blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+							orientation: "landscape",
+							pageSize:'A3',
+							customize: function (doc) {
+								doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+							}
+						}
 					]
+				});
+			}
+			if(blockId == '3'){
+				$(".dataTable"+blockId).dataTable({
+					 "paging":   false,
+					 "info":     false,
+					 "searching": false,
+					 "autoWidth": true,
+					 "order": [ 0, 'asc' ],
+					 "aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+					 "dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+							"<'row'<'col-sm-12'tr>>" +
+							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+					 buttons: [
+							{
+								extend:    'csvHtml5',
+								text:      '<i class="fa fa-file-text-o"></i>',
+								titleAttr: 'CSV',
+								title:	   blockId,
+								filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+							},
+							{
+								extend:    'pdfHtml5',
+								text:      '<i class="fa fa-file-pdf-o"></i>',
+								titleAttr: 'PDF',
+								title:	   blockId,
+								filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+								orientation: "landscape",
+								pageSize:'A3',
+								customize: function (doc) {
+									doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+								}
+							}
+						]
 				});
 			}
 		}

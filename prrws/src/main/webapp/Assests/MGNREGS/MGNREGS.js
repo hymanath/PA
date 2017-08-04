@@ -5,7 +5,7 @@ var glStartDateForWebservice = moment().format("DD/MM/YYYY");
 var glEndDateForWebservice = moment().format("DD/MM/YYYY");
 var globalDivName;
 var $windowWidth = $(window).width();
-onLoadCalls();
+
 function onLoadCalls()
 {
 	$("#selectedName").tooltip();
@@ -35,7 +35,9 @@ function onLoadCalls()
 		});
 	} */
 	$(document).on('click','[overview-block]', function(){
-		$("[overview-state],[overview-district]").removeClass("active");
+		$("#consolidatedView").hide();
+		$("#projectOverviewBlock,#projectData").show();
+		$("[overview-state],[overview-district],.tableMenu li").removeClass("active");
 		var projectDivId = $(this).attr("overview-block");
 		var levelId = $(this).attr("attr_levelId");
 		var locationId = $(this).attr("attr_locationId");
@@ -365,17 +367,28 @@ function onLoadCalls()
 		str+='</div>';
 		$("#webserviceDetailsModalId").html(str);
 		$("#webserviceHealthDetailsTableId").dataTable({
-			"dom": 'Blfrtip',
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
 				{
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o"></i>',
-					titleAttr: 'CSV'
+					titleAttr: 'CSV',
+					title:	   blockId,
+					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				},
 				{
 					extend:    'pdfHtml5',
 					text:      '<i class="fa fa-file-pdf-o"></i>',
-					titleAttr: 'PDF'
+					titleAttr: 'PDF',
+					title:	   blockId,
+					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
 				}
 			]
 		});
@@ -700,23 +713,35 @@ function tableView(blockId,theadArr,result,locationType)
 		tableView+='</table>';
 	tableView+='</div>';
 	$("#"+blockId).html(tableView);	
+	
 	if(locationType == 'constituency' || locationType == 'mandal' || locationType == 'panchayat')
 	{
 		$(".dataTable"+blockId).dataTable({
 			"iDisplayLength": 15,
 			"aaSorting": [],
-			"dom": 'Blfrtip',
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 			buttons: [
 				{
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o"></i>',
-					titleAttr: 'CSV'
+					titleAttr: 'CSV',
+					title:	   blockId,
+					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				},
 				{
 					extend:    'pdfHtml5',
 					text:      '<i class="fa fa-file-pdf-o"></i>',
-					titleAttr: 'PDF'
+					titleAttr: 'PDF',
+					title:	   blockId,
+					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
 				}
 			]
 		});
@@ -726,17 +751,28 @@ function tableView(blockId,theadArr,result,locationType)
 			"iDisplayLength": 20,
 			"aaSorting": [],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			"dom": 'Blfrtip',
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
 				{
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o"></i>',
-					titleAttr: 'CSV'
+					titleAttr: 'CSV',
+					title:	   blockId,
+					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				},
 				{
 					extend:    'pdfHtml5',
 					text:      '<i class="fa fa-file-pdf-o"></i>',
-					titleAttr: 'PDF'
+					titleAttr: 'PDF',
+					title:	   blockId,
+					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
 				}
 			]
 		});
@@ -776,7 +812,7 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-					str+='<div class="row">';'SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','WaterBudget','GH'
+					str+='<div class="row">';//'SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','WaterBudget','GH'
 					for(var i in result)
 					{
 						if(result[i] == "Farm Ponds" || result[i] == "IHHL" || result[i] == "Vermi Compost" || result[i] == "SMC Trench" || result[i] == "Imp to CD" || result[i] == "MPT_PT" || result[i] == "GC Works" || result[i] == "CD_CW" || result[i] == "GH" || result[i] == "Solid Waste Management" || result[i] == "Play Fields" || result[i] == "Burial Grounds" || result[i] == "Agriculture Activities" || result[i] == "Payments" || result[i] == "FAperformance" || result[i] == "SMC Trench" || result[i] == "Imp to CD" || result[i] == "MPT_PT" || result[i] == "GC Works" || result[i] == "CD_CW"){
@@ -2269,32 +2305,54 @@ function buildDistrictsPopupDetails(result,dataArr){
 	$("#nregsConsitenBodyId").html(str);
 	$(".dataTableCls").dataTable({
 		"order": [[ 1, "asc" ]],
-		"dom": 'Blfrtip',
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 		buttons: [
 			{
 				extend:    'csvHtml5',
 				text:      '<i class="fa fa-file-text-o"></i>',
-				titleAttr: 'CSV'
+				titleAttr: 'CSV',
+				title:	   blockId,
+				filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 			},
 			{
 				extend:    'pdfHtml5',
 				text:      '<i class="fa fa-file-pdf-o"></i>',
-				titleAttr: 'PDF'
+				titleAttr: 'PDF',
+				title:	   blockId,
+				filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				orientation: "landscape",
+				pageSize:'A3',
+				customize: function (doc) {
+					doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+				}
 			}
 		]
 	});
 	$(".dataTableClsDist").dataTable({
-		"dom": 'Blfrtip',
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 		buttons: [
 			{
 				extend:    'csvHtml5',
 				text:      '<i class="fa fa-file-text-o"></i>',
-				titleAttr: 'CSV'
+				titleAttr: 'CSV',
+				title:	   blockId,
+				filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 			},
 			{
 				extend:    'pdfHtml5',
 				text:      '<i class="fa fa-file-pdf-o"></i>',
-				titleAttr: 'PDF'
+				titleAttr: 'PDF',
+				title:	   blockId,
+				filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				orientation: "landscape",
+				pageSize:'A3',
+				customize: function (doc) {
+					doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+				}
 			}
 		]
 	});
@@ -3115,7 +3173,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 
 //var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','CC Roads','Anganwadi','Gram Panchayat Buildings','Mandal buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk worm','Cattle drinking water trough','Raising of Perinnial Fodder','Solid Waste Management','Play Fields','Burial Grounds','Fish Drying Platforms','Fish Ponds','Agriculture Activities','Average Wage','Avg days of emp per HH','HH Comp 100 days','Timely Payments','Horticulture','Avenue'];
 var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','GH','Solid Waste Management','Burial Grounds','Play Fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads','Anganwadi Buildings','GP Buildings','Mandal Buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Cattle Drinking Water Troughs','Raising of Perinnial Fodders','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','NTR Rural House','OPGK-Perinnials','OPGK-Annuals','UGDrainage'];
-buildNREGSProjectsOverview(overViewArr,'')
+/* buildNREGSProjectsOverview(overViewArr,'')
 for(var i in overViewArr)
 {
 	$("[overview-block='"+overViewArr[i]+"']").append(spinner);
@@ -3129,7 +3187,7 @@ for(var i in overViewArr)
 		getNREGSAbstractDataByType(overViewArr[i],'state',"0",'',2,'onLoad');
 	}
 }
-
+ */
 function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
@@ -3714,7 +3772,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	}
 	
 }
-$(document).on("click",".menuDataCollapse",function(){
+/* $(document).on("click",".menuDataCollapse",function(){
 	$(".multi-level-selection-menu").css("display","none");
 	$(".arrowIconChanged").find('.fa').removeClass("fa-chevron-up");
 	$(".arrowIconChanged").find('.fa').addClass("fa-chevron-down");
@@ -3783,7 +3841,7 @@ $(document).on("click",".menuDataCollapse",function(){
 	}
 	
 });
-
+ */
 var stateArr = [{'name':'Andhra Pradesh','type':1}];
 collapseMenu(1,stateArr,'multi-level-selection-menu');
 function getAllNregaSubLocationDetails(divId,levelId,locationScopeId,type){
@@ -3990,17 +4048,28 @@ function buildLabourBudgetPanExpData(result,viewType,range){
 		str+='</div>';
 		$("#LabBudgtPanExBodyId").html(str);
 		$("#larBudExpTableId").dataTable({
-			"dom": 'Blfrtip',
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
 				{
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o"></i>',
-					titleAttr: 'CSV'
+					titleAttr: 'CSV',
+					title:	   blockId,
+					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				},
 				{
 					extend:    'pdfHtml5',
 					text:      '<i class="fa fa-file-pdf-o"></i>',
-					titleAttr: 'PDF'
+					titleAttr: 'PDF',
+					title:	   blockId,
+					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
 				}
 			]
 		});
@@ -4079,17 +4148,28 @@ function buildLabourBudgetPanExpData(result,viewType,range){
 		//$(".blockHeights").height("400px");
 		$(".blockHeightsScroll").mCustomScrollbar();
 		$(".dataTableCls").dataTable({
-			"dom": 'Blfrtip',
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
 				{
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o"></i>',
-					titleAttr: 'CSV'
+					titleAttr: 'CSV',
+					title:	   blockId,
+					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				},
 				{
 					extend:    'pdfHtml5',
 					text:      '<i class="fa fa-file-pdf-o"></i>',
-					titleAttr: 'PDF'
+					titleAttr: 'PDF',
+					title:	   blockId,
+					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
 				}
 			]
 		});

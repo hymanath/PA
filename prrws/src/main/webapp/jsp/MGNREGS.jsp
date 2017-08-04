@@ -96,22 +96,6 @@
 												<div class="menu-block" style="background-color:#88186B">
 													<h3>MGNREGS</h3>
 													<p>Mahatma Gandhi Rural employement guarantee scheme</p>
-													<div class="row">
-														<div class="col-sm-6 m_top10">
-															<div class="menu-block" style="background-color:#FFBA00">
-																<a href="MGNREGSDashboard">
-																	<p>Dashboard</p>
-																</a>
-															</div>
-														</div>
-														<div class="col-sm-6 m_top10">
-															<div class="menu-block" style="background-color:#56A3C5">
-																<a href="NregaConsolidatedDashboard">
-																	<p>Consolidated</p>
-																</a>
-															</div>
-														</div>
-													</div>
 												</div>
 											</div>
 											<div class="col-sm-12 m_top10">
@@ -170,12 +154,20 @@
 					</div>
 				</div>
 				<div class="col-sm-4 m_top5">
-					<ul class="list-inline">
+					<ul class="list-inline pull-left">
 						<li><span class="color-label color-label-success"></span> 80% and above</li>
 						<li><span class="color-label color-label-default"></span> 50% - 79%</li>
 						<li><span class="color-label color-label-danger"></span> 0% - 49%&nbsp;&nbsp;&nbsp;</li>
-						<li><button type="button" class="btn btn-primary btn-xs" title="Webservice Details" id="getWebserviceDetailsId">WS Details</button> </li>
+						<li><button type="button" class="btn btn-primary btn-xs" title="Webservice Details" id="getWebserviceDetailsId">WS</button> </li>
 					</ul>  
+					<div class="menu-top-selection">
+						<i class="glyphicon glyphicon-cog menu-top-selection-icon"></i>
+						<div class="arrow_box_top">
+							<div class="row">
+								<div id="navTabsMenuSelectionId"></div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -183,36 +175,51 @@
 </header>
 <main>
 	<div class="container-fluid">
-		<section>
-			<div class="row">
-				<div class="col-sm-12 text-right">
-					<p class="text-danger">Note: Amount in lakhs</p>
-				</div>
-				<div class="col-sm-12">
-					<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-						<div class="panel panel-default panel-black">
-							<div class="panel-heading" role="tab" id="headingOne">
-								<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-									<h4 class="panel-title">MGNREGS PROJECTS</h4>
-								</a>
-							</div>
-							<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-								<div class="panel-body">
-									<div id="projectsOverview"></div>
-								</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<ul class="nav navbar-nav tableMenu list-inline pull-right" id="viewSwitchBtn">
+					<li class="active" attr_name="consolidated">Consolidated</li>
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 text-right">
+				<p class="text-danger">Note: Amount in lakhs</p>
+			</div>
+			<div class="col-sm-12">
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default panel-black">
+						<div class="panel-heading" role="tab" id="headingOne">
+							<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+								<h4 class="panel-title">MGNREGS PROJECTS</h4>
+							</a>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<div class="panel-body">
+								<div id="projectsOverviewConsolidated"></div>
+								<!--<div id="projectsOverview"></div>-->
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</section>
-		<div id="nregasAvgOverData"></div>
-		<div id="nregasOverData"></div>
-		<div id="projectOverviewBlock"></div>
-		<div id="projectData"></div>
-		<div id="projectDetails"></div>
-		
+		</div>
 	</div>
+	<section id="dashboardView">
+		<div class="container-fluid">
+			<div id="nregasAvgOverData"></div>
+			<div id="nregasOverData"></div>
+			<div id="projectOverviewBlock"></div>
+			<div id="projectData"></div>
+			<div id="projectDetails"></div>
+		</div>
+	</section>
+	<section id="consolidatedView">
+		<div class="container-fluid m_top20">
+			<div id="projectDataConsolidated" class="m_top20"></div>
+		</div>
+	</section>
+	
 	<div class="modal fade" id="webserviceDetailsModalDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document" style="width:80%;margin:auto">
 			<div class="modal-content">    
@@ -292,6 +299,18 @@
 <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/pptxgen.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/MGNREGS.js" type="text/javascript"></script>
+<script src="Assests/MGNREGS/NregaConsolidated.js" type="text/javascript"></script>
+<script type="text/javascript">
+onLoadCalls();
+onLoadCallsConsolidated();
+$(document).on("click","#viewSwitchBtn li",function(){
+	$("[overview-state],[overview-district]").removeClass("active");
+	$(this).addClass("active");
+	$("#consolidatedView").show();
+	$("#projectData,#projectOverviewBlock").hide();
+});
+</script>
 </body>
 </html>
