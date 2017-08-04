@@ -496,7 +496,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(deptIdsList != null && deptIdsList.size()>0)
 			query.setParameterList("deptIdsList", deptIdsList);
 		if(sourceIdsList != null && sourceIdsList.size()>0)
-			query.setParameterList("sourceIdsList", sourceIdsList);
+			;
+			//query.setParameterList("sourceIdsList", sourceIdsList);
 		if(schemeIdsList != null && schemeIdsList.size()>0)
 			query.setParameterList("schemeIdsList", schemeIdsList);
 		
