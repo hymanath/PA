@@ -671,7 +671,6 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		return (Long)query.uniqueResult();
 	}
 
-	@Override
 	public List<Object[]> levelWiseBasicCommitteesCount(CommitteeInputVO committeeBO) {
 		
 
@@ -763,7 +762,6 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		
 	}
 
-	@Override
 	public List<Object[]> getTopPoorCommitteeLocations(CommitteeInputVO committeeBO) {
     	
     	StringBuilder sbS = new StringBuilder();
@@ -866,7 +864,6 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		return query.list();
 	}
 
-	@Override
 	public List<Object[]> committeesPerformanceCohort(CommitteeInputVO committeeBO) {
     	
     	StringBuilder sbS = new StringBuilder();

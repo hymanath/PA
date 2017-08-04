@@ -2988,7 +2988,6 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			  
 		  }
 
-		@Override
 		public List<Object[]> getLocationWiseCommitteesCountByLocIds(CommitteeInputVO committeeBO) {
 
 			StringBuilder sbS = new StringBuilder();
@@ -3028,7 +3027,6 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			return query.list();
 		}
 
-		@Override
 		public List<Object[]> levelWiseBasicCommitteesCount(CommitteeInputVO committeeBO) {
 
 			
