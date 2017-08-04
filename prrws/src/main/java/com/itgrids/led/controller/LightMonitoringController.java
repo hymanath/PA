@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.LedDistrictVO;
 import com.itgrids.dto.LightMonitoringVO;
 import com.itgrids.dto.ResultVO;
 import com.itgrids.led.service.ILightMonitoring;
@@ -26,20 +27,34 @@ public class LightMonitoringController {
 
 	private static final Logger logger  =  LoggerFactory.getLogger(LightMonitoringController.class);	
 	@Autowired
-	private ILightMonitoring  lightMonitoring;	
-	
+	private ILightMonitoring  lightMonitoring;
 	@RequestMapping(value ="/getlightsMonitoringDashboard", method = RequestMethod.GET)
-	public String firstPage(ModelMap model) {
-			return "lightsMonitoringDashboard";
+    public String firstPage(ModelMap model) {
+		return "lightsMonitoringDashboard";
     }
+	
 	
 	@RequestMapping(value = "/saveRealtimeStatusByVillages", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody  ResultVO   saveRealtimeStatusByVillages()
 	{
-		        ResultVO  voList= lightMonitoring.saveRealtimeStatusByVillages();
-		 
-		 
+		ResultVO  voList= lightMonitoring.saveRealtimeStatusByVillages();
+		return voList;
+	}
+
+	@RequestMapping(value = "/getRealtimeStatusByVillages", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody  List<LightMonitoringVO>  getRealtimeStatusByVillages()
+	{
+		List<LightMonitoringVO>  voList= lightMonitoring.getRealtimeStatusByVillages();
+		return voList;
+	}	
+	
+	@RequestMapping(value = "/getDistrictLevelCount", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody  List<LedDistrictVO>  getDistrictLevelCount()
+	{
+		List<LedDistrictVO>  voList= lightMonitoring.getDistrictLevelCount();
 		return voList;
 	}
 	
