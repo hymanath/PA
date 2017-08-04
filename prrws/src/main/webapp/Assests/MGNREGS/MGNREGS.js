@@ -1575,7 +1575,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
 											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
 										}
-										str+='<td>'+result.distList[i].target+'</td>';
+										str+='<td>'+result.distList[i].targetPersonDays+'</td>';
 										str+='<td>'+result.distList[i].completed+'</td>';
 										if(result.distList[i].achivement < 50){
 											str+='<td style="background-color:#FF0000">'+result.distList[i].achivement+'</td>';
@@ -1782,7 +1782,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
 											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
 										}
-										str+='<td>'+result.distList[i].target+'</td>';
+										str+='<td>'+result.distList[i].targetPersonDays+'</td>';
 										str+='<td>'+result.distList[i].completed+'</td>';
 										if(result.distList[i].percentage < 50){
 											str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
@@ -2750,7 +2750,10 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}
-						str+='<td>'+ajaxresp[i].target+'</td>';
+						if(globalDivName == "Nurseries")
+							str+='<td>'+ajaxresp[i].targetPersonDays+'</td>';
+						else
+							str+='<td>'+ajaxresp[i].target+'</td>';
 						str+='<td>'+ajaxresp[i].achivement+'</td>';
 						if(ajaxresp[i].percentage < 50){
 							str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
@@ -2823,7 +2826,7 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 							str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}
-						str+='<td>'+ajaxresp[i].target+'</td>';
+						str+='<td>'+ajaxresp[i].targetPersonDays+'</td>';
 						str+='<td>'+ajaxresp[i].completed+'</td>';
 						if(ajaxresp[i].achivement < 50){
 							str+='<td style="background-color:#FF0000">'+ajaxresp[i].achivement+'</td>';
@@ -4062,14 +4065,27 @@ function getNREGSProjectsAbstractNewFrConstituency(type,locType,locId,districtId
 
 function getNREGSAbstractDataByTypeFrConstituency(type,locType,locId,districtId,blockName,levelId)
 {
-	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-		toDate : glEndDate,
-		type : type,
-		locationType: locType,
-		locationId : locId,
-		districtId : districtId
+	if(type == 'FAperformance')
+	{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : '2017-05-30',
+			type : type,
+			locationType: locType,
+			locationId : locId,
+			districtId : districtId
+		}
+	}else{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			type : type,
+			locationType: locType,
+			locationId : locId,
+			districtId : districtId
+		}
 	}
 	
 	$.ajax({
