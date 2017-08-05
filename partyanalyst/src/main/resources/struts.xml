@@ -17811,13 +17811,25 @@
 	
 	<action name="getLevelWiseMeetingStatusCountsAction" class="locationDashboardAction" method="getLevelWiseMeetingStatusCounts">
 	    <result type="json" name="success">
-	   		 <param name="root">alertVO</param>
+	   		 <param name="root">meetingsVO</param>
 	    </result>
     </action>
 	    
 	 <action name="getEnrollmentYearsAction" class="locationDashboardAction" method="getEnrollmentYearsList">
 	 		<result type="json" name="success">
 	 			<param name="root">enrollmentYears</param>
+	 		</result>			   
+	 </action>
+	 
+	  <action name="getElectionTypesAction" class="locationDashboardAction" method="getElectionTypesList">
+	 		<result type="json" name="success">
+	 			<param name="root">electionTypes</param>
+	 		</result>			   
+	 </action>
+	 
+	 <action name="getPublicationsAction" class="locationDashboardAction" method="getPublicationsList">
+	 		<result type="json" name="success">
+	 			<param name="root">publicationsData</param>
 	 		</result>			   
 	 </action>
 	 
