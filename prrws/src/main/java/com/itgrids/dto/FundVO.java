@@ -18,6 +18,7 @@ public class FundVO implements Serializable{
 	private String lowCroreAmt;
 	private String avgCroreAmt;
 	private Long avgAmt;
+	private Long levelId;
 	
 	public Long getId() {
 		return id;
@@ -92,6 +93,13 @@ public class FundVO implements Serializable{
 	public void setLowCroreAmt(String lowCroreAmt) {
 		this.lowCroreAmt = lowCroreAmt;
 	}
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
+	
 	
 	
 	

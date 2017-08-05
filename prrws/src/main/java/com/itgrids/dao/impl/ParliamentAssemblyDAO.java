@@ -395,4 +395,34 @@ public class ParliamentAssemblyDAO extends GenericDaoHibernate<ParliamentAssembl
 		
 		return query.list();
 	}
+	public List<Object[]> getParliamentWiseConstituency(Long parliamentId) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model1.parliamentId,model2.name,model3.constituencyId,model3.name,model3.district.districtId,model3.district.districtName,model3.prConstituency.constituencyCode " +
+				       " from  ParliamentAssembly model1,Constituency model2,Constituency model3 " +
+					   " where " +
+					   " model1.parliamentId=model2.constituencyId and model1.assemblyId=model3.constituencyId  ");
+		if (parliamentId != null && parliamentId.longValue() > 0 ){
+			queryStr.append(" and model1.parliamentId =:parliamentId");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		if (parliamentId != null && parliamentId.longValue() > 0 ){
+			query.setParameter("parliamentId", parliamentId);
+		}
+	    return query.list();
+	}
+	public List<Object[]> getParliamentIds(Long parliamentId) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model1.parliamentId,model1.parliamentId " +
+				       " from  ParliamentAssembly model1,Constituency model2 " +
+					   " where " +
+					   " model1.parliamentId=model2.constituencyId ");
+		if (parliamentId != null && parliamentId.longValue() > 0 ){
+			queryStr.append(" and model1.parliamentId =:parliamentId");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		if (parliamentId != null && parliamentId.longValue() > 0 ){
+			query.setParameter("parliamentId", parliamentId);
+		}
+	    return query.list();
+	}
 }

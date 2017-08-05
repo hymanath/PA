@@ -44,4 +44,6 @@ public interface IConstituencyDAO extends GenericDao<Constituency,Long>{
 	public List<Object[]> getPRISLocationIdfromPRISLocationId(String searchLocationValue);
 	public List<Object[]> getENSLocationIdfromENSLocationId(String searchLocationValue);
 	public List<Object[]> getConstituencyListByDistrictId(Long districtId,String type);
+	
+	public List<Object[]> getMgnregsConstituencyMappingCode(Long constituencyId);
 }

@@ -411,4 +411,16 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 		query.setParameter("searchLevelValue", searchLevelValue);
 		return query.list();
 	}
+	public List<Object[]> getMgnregsDistrictMappingCode(Long districtId){
+		StringBuilder queryStr = new StringBuilder();
+		 queryStr.append("select distinct model.districtId,model.prDistrict.districtCode from District model ");
+		 if(districtId != null && districtId.longValue() > 0) {
+			 queryStr.append(" where model.districtId=:districtId ");
+		 }
+		 Query query = getSession().createQuery(queryStr.toString());
+		 if(districtId != null && districtId.longValue() > 0) {
+			 query.setParameter("districtId", districtId);
+		 }
+		 return query.list();
+	}
 }

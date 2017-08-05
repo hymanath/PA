@@ -32,6 +32,11 @@ public class LocationFundDetailsVO implements Serializable{
 	private List<LocationFundDetailsVO> schemeDetailsVOs;
 	private List<FundVO> fundList = new ArrayList<FundVO>();
 	
+	private String districtName;
+	private String constituencyName;
+	private String mandalName;
+	private Double totalExpenditure=0.0d;
+	
 	public Long getTotSchemes() {
 		return totSchemes;
 	}
@@ -164,6 +169,30 @@ public class LocationFundDetailsVO implements Serializable{
 	}
 	public void setFundList(List<FundVO> fundList) {
 		this.fundList = fundList;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+	public Double getTotalExpenditure() {
+		return totalExpenditure;
+	}
+	public void setTotalExpenditure(Double totalExpenditure) {
+		this.totalExpenditure = totalExpenditure;
 	}
 	
 	

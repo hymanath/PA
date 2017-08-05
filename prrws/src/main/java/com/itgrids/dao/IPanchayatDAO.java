@@ -41,4 +41,5 @@ public interface IPanchayatDAO extends GenericDao<Panchayat, Long>  {
 	public List<Object[]> getMGNREGSLocationIdfromMGNREGSLocationId(String searchLocationValue);
 	public List<Object[]> getPRISLocationIdfromPRISLocationId(String searchLocationValue);
 	public List<Object[]> getENSLocationIdfromENSLocationId(String searchLocationValue);
+	public List<Object[]> getMgnregsPanchayatMappingCode(Long panchayatId);
 }

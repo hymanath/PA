@@ -40,6 +40,12 @@ public class AddressVO implements java.io.Serializable{
 	
 	private Long hamletId;
 	private String hamletName;
+	
+	private String locationIdStr;
+	private String panchayatIdStr;
+	private String tehsilIdStr;
+	private String assemblyIdStr;
+	
 	public Long getId() {
 		return id;
 	}
@@ -201,6 +207,30 @@ public class AddressVO implements java.io.Serializable{
 	}
 	public void setHamletName(String hamletName) {
 		this.hamletName = hamletName;
+	}
+	public String getLocationIdStr() {
+		return locationIdStr;
+	}
+	public void setLocationIdStr(String locationIdStr) {
+		this.locationIdStr = locationIdStr;
+	}
+	public String getPanchayatIdStr() {
+		return panchayatIdStr;
+	}
+	public void setPanchayatIdStr(String panchayatIdStr) {
+		this.panchayatIdStr = panchayatIdStr;
+	}
+   public String getTehsilIdStr() {
+		return tehsilIdStr;
+	}
+	public void setTehsilIdStr(String tehsilIdStr) {
+		this.tehsilIdStr = tehsilIdStr;
+	}
+	public String getAssemblyIdStr() {
+		return assemblyIdStr;
+	}
+	public void setAssemblyIdStr(String assemblyIdStr) {
+		this.assemblyIdStr = assemblyIdStr;
 	}
 	
 }

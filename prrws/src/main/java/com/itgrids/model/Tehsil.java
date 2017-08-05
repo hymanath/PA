@@ -27,8 +27,10 @@ public class Tehsil {
 	private String tehsilName;
 	private Long districtId;
 	private Long rwsTehsilId;
+	private Long prTehsilId;
 	
 	private District district;
+	private PrTehsil prTehsil;
 	
 	@Id
 	@Column(name="tehsil_id")
@@ -72,5 +74,21 @@ public class Tehsil {
 	public void setRwsTehsilId(Long rwsTehsilId) {
 		this.rwsTehsilId = rwsTehsilId;
 	}
+	@Column(name="pr_tehsil_id")
+	public Long getPrTehsilId() {
+		return prTehsilId;
+	}
+	public void setPrTehsilId(Long prTehsilId) {
+		this.prTehsilId = prTehsilId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pr_tehsil_id", insertable = false, updatable = false)
+	public PrTehsil getPrTehsil() {
+		return prTehsil;
+	}
+	public void setPrTehsil(PrTehsil prTehsil) {
+		this.prTehsil = prTehsil;
+	}
+	
 	
 }

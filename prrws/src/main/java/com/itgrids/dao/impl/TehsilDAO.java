@@ -372,4 +372,16 @@ public class TehsilDAO extends GenericDaoHibernate<Tehsil,Long> implements ITehs
 		return query.list();
 	}
 	
+	public List<Object[]> getMgnregsTehsilMappingCode(Long tehsilId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.tehsilId,model.prTehsil.uniqueCode from Tehsil model");
+		if(tehsilId != null && tehsilId.longValue() > 0 ){
+			queryStr.append(" where model.tehsilId=:tehsilId");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		if(tehsilId != null && tehsilId.longValue() > 0 ){
+			query.setParameter("tehsilId", tehsilId);
+		}
+		return query.list();
+	}
 }
