@@ -177,6 +177,26 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 								componentName = "Nurseries";
 							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("FaPerformanceServiceNew/FaPerformanceDataNew"))
 								componentName = "FAperformance";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("StaggeredService/StaggeredData"))
+								componentName = "SMC Trench";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("ImprovmentsService/ImprovmentsData"))
+								componentName = "Imp to CD";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("MiniPercolationService/MiniPercolationData"))
+								componentName = "MPT_PT";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("GCWorkService/GCWorkData"))
+								componentName = "GC Works";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("CheckDamService/CheckDamData"))
+								componentName = "CD_CW";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("GreeningHillocksService/GreeningHillocksData"))
+								componentName = "GH";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("NTRRuralService/NTRRuralData"))
+								componentName = "NTR Rural House";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("PernnialService/PernnialData"))
+								componentName = "OPGK-Perinnials";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("AnnualsService/AnnualsData"))
+								componentName = "OPGK-Annuals";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("UGDrainageService/UGDrainageData"))
+								componentName = "UGDrainage";
 							/*else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("SilkwarmServiceNew/SilkwarmDataNew"))
 								componentName = "Silk Worms";*/
 							
@@ -217,6 +237,25 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Anganwadi Buildings")){
 													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("SMC Trench")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Imp to CD")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("MPT_PT")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("GC Works")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("CD_CW")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("GH")){
+													componentvo.setPercentage(new BigDecimal(Double.valueOf(jObj.getString("PLNTNG_EXT"))*100.00/Double.valueOf(jObj.getString("SANCTION_TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												
 												//levelvo.getSubList().add(componentvo);
 													
 												locationMap.put("state", levelvo);
@@ -245,6 +284,24 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 												
 												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Anganwadi Buildings")){
 													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("SMC Trench")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Imp to CD")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("MPT_PT")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("GC Works")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("CD_CW")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("GH")){
+													componentvo.setPercentage(new BigDecimal(Double.valueOf(jObj.getString("PLNTNG_EXT"))*100.00/Double.valueOf(jObj.getString("SANCTION_TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 												}
 												//levelvo.getSubList().add(componentvo);
 												//}
@@ -310,6 +367,24 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 													if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Anganwadi Buildings") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
 														componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 													}
+													if(componentName != null && componentName.toString().trim().equalsIgnoreCase("SMC Trench") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
+														componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+													}
+													if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Imp to CD") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
+														componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+													}
+													if(componentName != null && componentName.toString().trim().equalsIgnoreCase("MPT_PT") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
+														componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+													}
+													if(componentName != null && componentName.toString().trim().equalsIgnoreCase("GC Works") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
+														componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+													}
+													if(componentName != null && componentName.toString().trim().equalsIgnoreCase("CD_CW") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
+														componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+													}
+													if(componentName != null && componentName.toString().trim().equalsIgnoreCase("GH")){
+														componentvo.setPercentage(new BigDecimal(Double.valueOf(jObj.getString("PLNTNG_EXT"))*100.00/Double.valueOf(jObj.getString("SANCTION_TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+													}
 													//levelvo.getSubList().add(componentvo);
 													
 												if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
@@ -357,6 +432,24 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 												
 												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Anganwadi Buildings") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
 													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("SMC Trench") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("Imp to CD") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("MPT_PT") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("GC Works") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("CD_CW") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
+													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Long.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+												}
+												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("GH")){
+													componentvo.setPercentage(new BigDecimal(Double.valueOf(jObj.getString("PLNTNG_EXT"))*100.00/Double.valueOf(jObj.getString("SANCTION_TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 												}
 												//levelvo.getSubList().add(componentvo);
 												//}
@@ -550,7 +643,10 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 									   inputVO.getComponentName().trim().equalsIgnoreCase("Agriculture Activities") || inputVO.getComponentName().trim().equalsIgnoreCase("Average Wage") ||
 									   inputVO.getComponentName().trim().equalsIgnoreCase("Average Days of Employment") || inputVO.getComponentName().trim().equalsIgnoreCase("HH Completed 100 Days") || 
 									   inputVO.getComponentName().trim().equalsIgnoreCase("Timely Payment") || inputVO.getComponentName().trim().equalsIgnoreCase("Horticulture") ||
-									   inputVO.getComponentName().trim().equalsIgnoreCase("Avenue") || inputVO.getComponentName().trim().equalsIgnoreCase("Nurseries")){
+									   inputVO.getComponentName().trim().equalsIgnoreCase("Avenue") || inputVO.getComponentName().trim().equalsIgnoreCase("Nurseries") ||
+									   inputVO.getComponentName().trim().equalsIgnoreCase("SMC Trench") || inputVO.getComponentName().trim().equalsIgnoreCase("Imp to CD") ||
+									   inputVO.getComponentName().trim().equalsIgnoreCase("MPT_PT") || inputVO.getComponentName().trim().equalsIgnoreCase("GC Works") ||
+									   inputVO.getComponentName().trim().equalsIgnoreCase("CD_CW")){
 										
 										NregsProjectsVO vo = new NregsProjectsVO();
 				 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
