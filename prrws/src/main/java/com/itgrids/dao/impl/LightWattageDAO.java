@@ -24,13 +24,17 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 
 }
 	@Override
-	public List<Object[]> getTotalWattege() {
+	public List<Object[]> getTotalWattege(Date fromDate,Date toDate) {
 		StringBuilder sb = new StringBuilder();
 		 sb.append("select LWT.wattage,LWT.lightCount "
 				 +"from "
 				+ "LightWattage LWT, LightMonitoring LM  "
-		 		+ " where LM.lightMonitoringId = LWT.lightMonitoringId "
-		 		+ " group by  LWT.wattage" );
+		 		+ " where LM.lightMonitoringId = LWT.lightMonitoringId ");
+		 
+		 if(fromDate != null && toDate != null){
+			 sb.append(" and LM.surveyDate between :fromDate and :toDate ");
+		 }
+		 		 sb.append(" group by  LWT.wattage" );
 		 Query query = getSession().createQuery(sb.toString());
 		 
 		return query.list();
