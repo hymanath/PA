@@ -2926,4 +2926,19 @@ public String updateCommitteeMemberDesignationByCadreId(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getSerialNoAvailbleCadreRangeWise()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			Long mandalId = jObj.getLong("mandalId");
+			Long boothId = jObj.getLong("boothId");
+			String range = jObj.getString("range");
+			String gender = jObj.getString("gender");
+			cadreCommitteeVO = cadreCommitteeService.getSerialNoAvailbleCadreRangeWise(mandalId,boothId,range,gender);
+		} catch (Exception e) {
+			LOG.error("Exception occured in getSerialNoAvailbleCadreRangeWise() At CadreCommitteeAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
