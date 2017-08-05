@@ -1228,4 +1228,17 @@ public Long getBoothTotalAddedMember(Long boothId,Long boothInchargeEnrollmentId
 	query.setParameter("boothId",boothId);
 	return (Long)query.uniqueResult();
 }
+public List<Object[]> getActiveBoothMemeberDetails(Long boothId){
+	StringBuilder sb = new StringBuilder();
+	sb.append(" select distinct model.tdpCadre.voterId,model.tdpCadreId from BoothIncharge model " +
+			  " where model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId =:boothId" +
+			  " and model.tdpCadre.isDeleted ='N'" +
+			  " and model.isActive = 'Y' and model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRoleId in (2) ");// only memeber position only
+	
+	 Query qry = getSession().createQuery(sb.toString());
+	 if(boothId != null && boothId.longValue() >0l){
+		 qry.setParameter("boothId", boothId);
+		}
+	   return qry.list();
+}
 }
