@@ -1,5 +1,7 @@
 package com.itgrids.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +19,9 @@ public class LightWattage {
 	private Long lightWattageInfoId;
 	private  Long wattage;
 	private Long lightCount;
+	private Date insertedTime;
+	private String isDeleted; 
+	
 	private LightMonitoring lightMonitoring ;
 	private Long lightMonitoringId;	
 	
@@ -59,6 +64,20 @@ public class LightWattage {
 	}
 	public void setLightMonitoringId(Long lightMonitoringId) {
 		this.lightMonitoringId = lightMonitoringId;
+	}
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 	
 	
