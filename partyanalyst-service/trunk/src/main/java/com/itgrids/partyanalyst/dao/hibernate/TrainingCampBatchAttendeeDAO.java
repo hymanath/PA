@@ -1231,14 +1231,14 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 		
 	}
    
-   public List<Object[]> getDayWiseTrainingCampDetailsCount(Long programId,String startDate,String endDate,Long enrollemntYrId,Long basicCommitteeId,String committeeLvlIds,Long locationScopeId,String loctionVals)
+   public List<Object[]> getDayWiseTrainingCampDetailsCount(String programId,String startDate,String endDate,String enrollemntYrId,Long basicCommitteeId,String committeeLvlIds,Long locationScopeId,String loctionVals)
    
    {
 	   
 	   Long committeeEnrollmetYrId = null;
-	   if(enrollemntYrId == 4l){
+	   if(enrollemntYrId.equalsIgnoreCase("4")){
 		   committeeEnrollmetYrId=2l;
-	   }else if(enrollemntYrId == 3l){
+	   }else if(enrollemntYrId.equalsIgnoreCase("3")){
 		   committeeEnrollmetYrId=1l;
 	   }
 	   

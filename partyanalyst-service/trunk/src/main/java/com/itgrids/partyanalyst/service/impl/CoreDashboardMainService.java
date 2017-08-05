@@ -3160,7 +3160,8 @@ String committeType){
 	        Date currentDate = dateUtilService.getCurrentDateAndTime();
 	        String toDay = sdf1.format(currentDate);
 	        
-	        
+	        String programIds = getListToString(programIdList);
+	        String enrollmentYrs = getListToString(enrollmentYearIds);
 		  
 	        List<Object[]> rtrnUserAccessLevelIdAndValuesObjList=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
 		   if(rtrnUserAccessLevelIdAndValuesObjList != null && rtrnUserAccessLevelIdAndValuesObjList.size() > 0){
@@ -3179,7 +3180,7 @@ String committeType){
 			   for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
 				   String levelVals = getListToString(new ArrayList<Long>(entry.getValue()));
 				  // List<Object[]> rtrnDistAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"District",stateId,toDate,enrollmentYearIds,programIdList); // userAccessLevelId & values   
-				   List<Object[]> rtrnDistAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIdList.get(0),fromDate,toDay,enrollmentYearIds.get(0),1L,"5,6,7,8,9",entry.getKey(),levelVals);
+				   List<Object[]> rtrnDistAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrs,1L,"5,6,7,8,9",entry.getKey(),levelVals);
 				   List<Object[]> rtrnDistEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "District",stateId);// userAccessLevelId & values 	 
 				  // setAttendedMembersCntToMap(rtrnDistAttendedObj,attendedMembersMap);
 				   Map<Long, Map<Long, Long>> batchMemdaysMap = getBatchWiseAttendedCountMap( rtrnDistAttendedObj);
@@ -3199,7 +3200,7 @@ String committeType){
 			for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
 				String levelVals = getListToString(new ArrayList<Long>(entry.getValue()));
 				 // List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(), new ArrayList<Long>(entry.getValue()),"Constituency",stateId,toDate,enrollmentYearIds,programIdList);   
-				List<Object[]> rtrnConsAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIdList.get(0),fromDate,toDay,enrollmentYearIds.get(0),1L,"5,6,7,8,9",entry.getKey(),levelVals);
+				List<Object[]> rtrnConsAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrs,1L,"5,6,7,8,9",entry.getKey(),levelVals);
 				List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(), new ArrayList<Long>(entry.getValue()), "Constituency",stateId); 	 
 				 Map<Long, Map<Long, Long>> batchMemdaysMap = getBatchWiseAttendedCountMap( rtrnConsAttendedObj);
 				 Map<Long, Long> memMaxDayCnt = getCountOfMaxDaysAttendedInBatch(batchMemdaysMap, rtrnConsAttendedObj);// Tdp CAdre max days Vo getting 
@@ -3220,7 +3221,7 @@ String committeType){
 			   for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
 				  // List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"Mandal",stateId,toDate,enrollmentYearIds,programIdList);   
 				   String levelVals = getListToString(new ArrayList<Long>(entry.getValue()));
-				   List<Object[]> rtrnConsAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIdList.get(0),fromDate,toDay,enrollmentYearIds.get(0),1L,"5,6,7,8,9",entry.getKey(),levelVals);
+				   List<Object[]> rtrnConsAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrs,1L,"5,6,7,8,9",entry.getKey(),levelVals);
 				   List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "Mandal",stateId); 	 
 				  // setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
 				   Map<Long, Map<Long, Long>> batchMemdaysMap = getBatchWiseAttendedCountMap( rtrnConsAttendedObj);
@@ -3250,7 +3251,7 @@ String committeType){
 			   for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
 				  // List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"Village",stateId,toDate,enrollmentYearIds,programIdList);   
 				   String levelVals = getListToString(new ArrayList<Long>(entry.getValue()));
-				   List<Object[]> rtrnConsAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIdList.get(0),fromDate,toDay,enrollmentYearIds.get(0),1L,"5,6,7,8,9",entry.getKey(),levelVals);
+				   List<Object[]> rtrnConsAttendedObj = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrs,1L,"5,6,7,8,9",entry.getKey(),levelVals);
 				   List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "Village",stateId); 	 
 				  // setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
 				   Map<Long, Map<Long, Long>> batchMemdaysMap = getBatchWiseAttendedCountMap( rtrnConsAttendedObj);
@@ -6422,7 +6423,8 @@ try{
 		List<Long> villageWardInviteeRoles = new ArrayList<Long>();
 		villageWardInviteeRoles.add(1l);
 		villageWardInviteeRoles.add(3l);
-		
+		String programIds = getListToString(programIdsList);
+        String enrollmentYrs = getListToString(enrollmentYearIds);
  	    if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 			  for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
 				    Long accessLevelValue =0l;	
@@ -6465,7 +6467,7 @@ try{
 					   String committeeLvlVals = getListToString(committeeLvlIds);
 					   
 					 //List<Object[]> totalAttnd = trainingCampBatchAttendeeDAO.getTotalLocationWiseAttendeeCount(programIdsList,1l, toDate,enrollmentYearIds,accessLevelValue,new ArrayList<Long>(entry.getValue()));
-					   List<Object[]> totalAttnd = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount( programIdsList.get(0),fromDate,toDay,enrollmentYearIds.get(0),1l,committeeLvlVals,accessLevelValue,levelVals);
+					   List<Object[]> totalAttnd = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount( programIds,fromDate,toDay,enrollmentYrs,1l,committeeLvlVals,accessLevelValue,levelVals);
 					   //0 locationId,1 batchId,2 tdpCadreId,3 roleId
 					   if(totalAttnd != null && totalAttnd.size() > 0){
 						   for (Object[] param : totalAttnd) {
@@ -6666,7 +6668,8 @@ public List<IdNameVO> getStateLevelCampAttendedDetailsDyaWise(
 		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");
 		Date currentDate = dateUtilService.getCurrentDateAndTime();
-
+		String programIds = getListToString(programIdList);
+        String enrollmentYrs = getListToString(enrollYrIds);
 		if (dateStr != null && !dateStr.isEmpty() && dateStr.length() > 0) {
 			toDate = sdf.parse(dateStr);
 		}
@@ -6768,7 +6771,7 @@ public List<IdNameVO> getStateLevelCampAttendedDetailsDyaWise(
         // List<Object[]> invAttndNonInvAttnd =
 		// trainingCampBatchAttendeeDAO.getInviteeAttndAndNonInviteeAttnded(programIdList,
 		// stateId, toDate,enrollYrIds);
-		List<Object[]> invAttndNonInvAttnd = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIdList.get(0),fromDate, today, enrollYrIds.get(0), 1L,committeeLvlVals, locationScopeId, levelVals);
+		List<Object[]> invAttndNonInvAttnd = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate, today, enrollmentYrs, 1L,committeeLvlVals, locationScopeId, levelVals);
 		Map<Long, Map<Long, Long>> batchMemdaysMap = new HashMap<Long, Map<Long, Long>>();
 		if (invAttndNonInvAttnd != null && invAttndNonInvAttnd.size() > 0) {
 			for (Object[] param : invAttndNonInvAttnd) {
@@ -6793,7 +6796,7 @@ public List<IdNameVO> getStateLevelCampAttendedDetailsDyaWise(
 		//Long nonInviteeAtt = 0l;
 		if (invAttndNonInvAttnd != null && invAttndNonInvAttnd.size() > 0) {
 			for (Object[] param : invAttndNonInvAttnd) {
-				idNameVO = idAndIdNameVoMap.get(commonMethodsUtilService.getLongValueForObject(8));
+				idNameVO = idAndIdNameVoMap.get(commonMethodsUtilService.getLongValueForObject(param[8]));
 				if (idNameVO != null) {
 					Long memattendedforBatch = memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					Long levelId = commonMethodsUtilService.getLongValueForObject(param[4]);
@@ -6888,8 +6891,14 @@ public List<IdNameVO> getDaysListTemplate() {
 
 public String getListToString(List<Long> list) {
 	String listString = "";
+	Long count = 0l;
 	for (Long val : list) {
-		listString += val + ",";
+		count++;
+		if(list.size() >count)
+			listString += val + ",";
+		else
+			listString += val;
+		
 	}
 
 	return listString;
@@ -7057,10 +7066,12 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 		String levelVals = getListToString(userAccessLevelValues);
 		//String levelVals = "517,11,12,13,14,15,17,16,19,18,21,20,23,22";
 		String committeeLvlVals = "5,6,7,8,9";
+		String programIds = getListToString(programIdList);
+		String enrollmentYrIds = getListToString(enrollmentYearIds);
 		// List<Object[]> attendedList =
 		// trainingCampBatchAttendeeDAO.getTotalAttendeeCount(programIdList,1l,toDate,enrollmentYearIds,accessLevelValue,userAccessLevelValues,tdpCommitteeLvlIds);
 		//'8','2000-01-01','2017-07-27','2','1','5,7,9,6,8,','3','517,11,12,13,14,15,17,16,19,18,21,20,23,22,'
-		List<Object[]> attendedList = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIdList.get(0),fromDate,toDay,enrollmentYearIds.get(0),1L,committeeLvlVals,userAccessLevelId,levelVals);
+		List<Object[]> attendedList = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrIds,1L,committeeLvlVals,userAccessLevelId,levelVals);
 
 		List<Object[]> rtrnCommiteeLevelEligibleAndAttendedObjLst = trainingCampDetailsInfoDAO
 				.getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(
