@@ -247,7 +247,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 		try{	
 			Date fromDate = null;
 			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
 				fromDate = sdf.parse(startDate);
 				toDate = sdf.parse(endDate);
@@ -293,7 +293,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	  {
 		    Date fromDate = null;
 			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
 				fromDate = sdf.parse(startDate);
 				toDate = sdf.parse(endDate);
