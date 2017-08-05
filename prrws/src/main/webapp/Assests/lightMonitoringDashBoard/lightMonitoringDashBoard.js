@@ -22,7 +22,9 @@ function getLedOverviewForStartedLocationsDetailsCounts(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
+		if(result != null){
+			buildLedOverviewForStartedLocationsDetailsCounts(result);	
+		}
 	});
 }
 function getBasicLedOverviewDetails(){
@@ -39,10 +41,71 @@ function getBasicLedOverviewDetails(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
 		buildBasicLedOverviewDetails(result);
 	});		
 }
+function buildLedOverviewForStartedLocationsDetailsCounts(result){
+var str='';
+	str+='<div class="col-sm-12 border_top padding_10" style="background-color:#F9F9F9;">';
+				str+='<div class="col-sm-2 media">';
+					str+='<div class="media-left">';
+						str+='<img src="Assests/icons/Start_Date_icon.png" alt="start_date">';
+				   str+=' </div>';
+				   str+=' <div class="media-body">';
+					   str+=' <h5>SURVEY START</h5>';
+					   str+=' <h3>01 JUN 2017</h3>';
+					str+='</div>';
+				str+='</div>';
+			   str+=' <div class="col-sm-2 media">';
+					str+='<div class="media-left">';
+					   str+=' <img src="Assests/icons/End_Date_icon.png" alt="end_date">';
+					str+='</div>';
+				   str+=' <div class="media-body">';
+						str+='<h5>SURVEY END</h5>';
+					   str+=' <p>Expected Date</p>';
+						str+='<h3>20 JUN 2017</h3>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-2 media">';
+					str+='<div class="media-left">';
+					   str+=' <img src="Assests/icons/District_Survy_icon.png" alt="start_date">';
+				   str+=' </div>';
+					str+='<div class="media-body">';
+						str+='<h5>NO OF <span style="color:#827C13;">DISTRICTS</span> SURVEY SATRTED</h5>';
+					   str+=' <h3>'+result[0].totalDistCnt+'</h3>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-2 media">';
+					str+='<div class="media-left">';
+						str+='<img src="Assests/icons/Constituency_Survy_icon.png" alt="start_date">';
+				   str+=' </div>';
+				   str+=' <div class="media-body">';
+					   str+=' <h5>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span>SURVEY STARTED</h5>';
+						str+='<h3>'+result[0].totalConstituencyCnt+'</h3>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-2 media">';
+					str+='<div class="media-left">';
+					   str+=' <img src="Assests/icons/Mandal_survy_icon.png" alt="start_date">';
+				   str+=' </div>';
+					str+='<div class="media-body">';
+						str+='<h5>NO OF <span style="color:#00BFE8;">MANDALS</span>SURVEY SATRTED</h5>';
+							str+='<h3>'+result[0].totalMandalCnt+'</h3>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-2 media">';
+					str+='<div class="media-left">';
+						str+='<img src="Assests/icons/GPs_survey_icon.png" alt="start_date">';
+					str+='</div>';
+					str+='<div class="media-body">';
+						str+='<h5>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span>SURVEY STARTED</h5>';
+						str+='<h3>'+result[0].totalpanchayatCnt+'</h3>';
+					str+='</div>';
+				str+='</div>';
+   str+='</div>';
+  $("#ledOverViewDiv").html(str);
+}
+
 function buildBasicLedOverviewDetails(result)
 {
 	var str='';
