@@ -22710,6 +22710,8 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					String cnvrtedBfrStr=String.valueOf(sizeList)+"00";
 			Integer cnvrtedBfrVal=Integer.parseInt(cnvrtedBfrStr);
 			int cnvrtedAftVal=cnvrtedBfrVal+integerVal+remainder;
+			if(remainder == 100L)
+				cnvrtedAftVal=cnvrtedBfrVal;
 			
 			int rangeCount = (int) cnvrtedAftVal / 100;
 			for(Long i=1l ; i<= rangeCount ; i++){
