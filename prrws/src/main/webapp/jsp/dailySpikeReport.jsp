@@ -111,7 +111,7 @@
 													<a href="RuralDevelopmentDashboard">
 														<h3>IWMP</h3>
 														<p>Integrated Watershed Management Programme</p>
-													</a>
+													</a>    
 												</div>
 											</div>
 										</div>
@@ -128,14 +128,9 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-6">
-					<ul class="list-inline calendar_active_cls">
-						<li attr_val="Day" class="active" id="defaultButtonId"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
-						<li attr_val="Week"><img src="Assests/icons/Week_icon.png"/>&nbsp;&nbsp;<b><span> Week</span></b></li>
-						<li attr_val="Month"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Month</span></b></li>
-						</li>
-					</ul>  
-				</div>   
-				<div class="col-sm-6 pull-right"> 
+					 
+				</div>      
+				<div class="col-sm-3 pull-right"> 
 					<div class="input-group dateRangePickerCls" >
 						<span class="input-group-addon" >
 							<i class="glyphicon glyphicon-calendar" ></i>
@@ -229,7 +224,14 @@
 			<div class="col-sm-12">
 				<div class="row">
 					<div class="col-sm-12">
-						<div class="white_block">
+						<div class="white_block chartDateWise">
+							<div class="col-sm-12">
+								 <ul class="list-inline calendar_active_cls pull-right">
+									<li attr_val="Day" class="active" id="defaultButtonId"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
+								<li attr_val="Week"><img src="Assests/icons/Week_icon.png"/>&nbsp;&nbsp;<b><span> Week</span></b></li>
+								<li attr_val="Month"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Month</span></b></li>
+								</ul>
+							</div>
 							<div  id="chronologicalId"></div>
 						</div>
 					</div>

@@ -66,19 +66,30 @@ $(document).on('click','.calendar_active_cls li', function(){
 	$(this).addClass("active");
 	
 });
-onRequestCall();
+
+onRequestCall();   
 function onRequestCall(){
 	getCaseCountDiseasesWise();
 	getLocationDtlsRankWise();
 	getCaseCountDateWise("day");
-	for(var i in blockNames){
+	  
+	for(var i in blockNames){  
 		if(blockNames[i] == 'DISTRICT'){
+			
 			getCaseCountLocationWise(3,blockNames[i],"Districts",0);    
 			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames");
 		}else if(blockNames[i] == 'CONSTITUENCY'){
+			$("#constLevelConstNames").html('');   
+			$("#constLevelConstNames").trigger('chosen:updated');  
+			
 			getCaseCountLocationWise(4,blockNames[i],"Districts",0);
 			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"constLevelDistNames");
 		}else if(blockNames[i] == 'MANDAL'){
+			$("#mandalLevelConstNames").html('');     
+			$("#mandalLevelConstNames").trigger('chosen:updated');
+			$("#mandalLevelMandalNames").html('');             
+			$("#mandalLevelMandalNames").trigger('chosen:updated');
+			
 			getCaseCountLocationWise(5,blockNames[i],"Districts",0);
 			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames");
 		}
@@ -183,7 +194,7 @@ function buildLocationDtlsRankWise(ajaxresp){
 	}); 
 }
 
-
+          
 
 function getCaseCountDateWise(dayType){
 	$("#chronologicalId").html(spinner);
@@ -265,12 +276,12 @@ function buildChronologicalGraph(chronologicalList,caseCountList,name,graphId){
 	});
 }
 
-collapseBlock();
+
 $(document).on('click','[table-menu-active] li',function(){
 	$(this).closest("ul").find("li").removeClass("active");
 	$(this).addClass("active");
 });
-
+collapseBlock();          
 function collapseBlock(){
 	var collapse='';
 	if(blockNames != null){
@@ -354,7 +365,7 @@ function collapseBlock(){
 										collapse+='</select>';
 									collapse+='</div>';    
 								}
-								collapse+='<div class="col-sm-3">';  
+								/* collapse+='<div class="col-sm-3">';  
 									collapse+='<ul class="nav navbar-nav casesPercentage">';
 										collapse+='<li>Cases</li>';
 										collapse+='<li>';
@@ -370,7 +381,7 @@ function collapseBlock(){
 												collapse+='<span>0 to 30</span>';
 										collapse+='</li>';
 									collapse+='</ul>';
-								collapse+='</div>';
+								collapse+='</div>'; */
 							collapse+='</div>';
 							collapse+='<div class="m_top20" id="'+blockNames[i]+'-tableDivId"></div>'
 						collapse+='</div>';
@@ -686,7 +697,7 @@ function getCaseCountLocationWise(scopeId,blockName,filterType,locationId){
     $.ajax({
       url : "getCaseCountLocationWise",       
       data : JSON.stringify(json),
-      type : "POST",  
+      type : "POST",    
       dataTypa : 'json',   
       beforeSend: function(xhr) {
       xhr.setRequestHeader("Accept", "application/json");
