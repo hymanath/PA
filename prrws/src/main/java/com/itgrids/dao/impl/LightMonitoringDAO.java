@@ -47,6 +47,10 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring ,Lon
 			 sb.append(" and  model.surveyDate between :fromDate and :toDate ");
 		 }
 		 Query query = getSession().createQuery(sb.toString());
+		 if(fromDate != null && toDate != null){
+			 query.setDate("fromDate", fromDate);
+			 query.setDate("toDate", toDate);
+		 }
 		 
 		 return query.list();
 	}
@@ -73,9 +77,13 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring ,Lon
 		 
 		 sb.append(" where D.district_id between 11 and 23 and LM.is_deleted = 'N' ");
 		 if(startDate != null && toDate != null){
-			 sb.append(" and LM.survey_date between :startDate and :endDate ");
+			 sb.append(" and LM.survey_date between :startDate and :toDate ");
 		 }
 	 Query query = getSession().createSQLQuery(sb.toString());
+		 if(startDate != null && toDate != null){
+			 query.setDate("startDate", startDate);
+			 query.setDate("toDate", toDate);
+		 }
 	 return query.list();
 	}
 	/*
@@ -99,6 +107,10 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring ,Lon
 		 		sb.append(" GROUP BY  LA.districtId ");
         
 	 Query query = getSession().createQuery(sb.toString());
+	 	if(startDate!= null && endDate!=null){
+	 		 query.setDate("startDate", startDate);
+			 query.setDate("endDate", endDate);
+		}
 	 return query.list();
 	}
 	/*

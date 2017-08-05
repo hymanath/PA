@@ -34,9 +34,12 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 		 if(fromDate != null && toDate != null){
 			 sb.append(" and LM.surveyDate between :fromDate and :toDate ");
 		 }
-		 		 sb.append(" group by  LWT.wattage" );
+		 sb.append(" group by  LWT.wattage" );
 		 Query query = getSession().createQuery(sb.toString());
-		 
+		 if(fromDate != null && toDate != null){
+			 query.setDate("fromDate", fromDate);
+			 query.setDate("toDate", toDate);
+		 }
 		return query.list();
 	}
 	@Override
