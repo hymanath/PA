@@ -1198,7 +1198,7 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLo
 function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocationId){
 	var $windowWidth = $(window).width();
 	var str1="";
-	if(result.averagePerDistrict != null)
+	/* if(result.averagePerDistrict != null)
 	{
 		str1+='<div class="table-responsive">';
 			str1+='<table class="table table-bordered" >';
@@ -1240,7 +1240,7 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 				str1+='</tbody>';
 			str1+='</table>';
 		str1+='</div>';
-	}
+	} */
 	if(result.maleLabour != null){
 		str1+='<div class="table-responsive">';
 			str1+='<table class="table table-bordered m_top10">';
@@ -1417,7 +1417,7 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 		str1+='</table>';
 	str1+='</div>';
 
-	if(result.targettedPersonDays != null)
+	/* if(result.targettedPersonDays != null)
 	{
 		str1+='<div id="projectExp'+projectDivId.replace(/\s+/g, '')+'" style="margin-top:10px;"></div>';
 		str1+='<div class="table-responsive">';
@@ -1443,9 +1443,9 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 				str1+='</tr>';
 			str1+='</table>';
 		str1+='</div>';
-		getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId);
-	}
-	
+		
+	} */
+	getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId);
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str1);
 	
 }
@@ -2313,15 +2313,11 @@ function buildDistrictsPopupDetails(result,dataArr){
 				extend:    'csvHtml5',
 				text:      '<i class="fa fa-file-text-o"></i>',
 				titleAttr: 'CSV',
-				title:	   blockId,
-				filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 			},
 			{
 				extend:    'pdfHtml5',
 				text:      '<i class="fa fa-file-pdf-o"></i>',
 				titleAttr: 'PDF',
-				title:	   blockId,
-				filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				orientation: "landscape",
 				pageSize:'A3',
 				customize: function (doc) {
@@ -2338,16 +2334,12 @@ function buildDistrictsPopupDetails(result,dataArr){
 			{
 				extend:    'csvHtml5',
 				text:      '<i class="fa fa-file-text-o"></i>',
-				titleAttr: 'CSV',
-				title:	   blockId,
-				filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				titleAttr: 'CSV'
 			},
 			{
 				extend:    'pdfHtml5',
 				text:      '<i class="fa fa-file-pdf-o"></i>',
 				titleAttr: 'PDF',
-				title:	   blockId,
-				filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				orientation: "landscape",
 				pageSize:'A3',
 				customize: function (doc) {
