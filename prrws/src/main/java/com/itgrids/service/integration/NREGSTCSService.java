@@ -336,7 +336,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject Obj = new JSONObject(output);
 	 	    		if(Obj!=null && Obj.length()>0){
-	 	    			if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("Average Wage") || 
+	 	    			/*if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("Average Wage") || 
  	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Average Days of Employment") || 
  	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Completed 100 Days") || 
  	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payment") || 
@@ -347,7 +347,7 @@ public class NREGSTCSService implements INREGSTCSService{
  	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
  	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
  	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs") && inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")) ||
- 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("UGDrainage") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")))){
+ 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("UGDrainage") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")))){*/
 	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
 	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
 	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
@@ -364,7 +364,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				finalVO.setVillagesInOrange(Obj.getLong("VILLAGESINORANGE"));
 	 	    				finalVO.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
 	 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
-	 	    			}else{
+	 	    			/*}else{
 	 	    				finalVO.setAveragePerDistrict(new BigDecimal(Obj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				finalVO.setAveragePerConstituency(new BigDecimal(Obj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				finalVO.setAveragePerMandal(new BigDecimal(Obj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -388,7 +388,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				finalVO.setVillagesInOrange(Obj.getLong("VILLAGESINORANGE"));
 	 	    				finalVO.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
 	 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
-	 	    			}
+	 	    			}*/
 	 	    				
 	 	    		}
 	 	    	}
@@ -573,7 +573,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    							&& inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state")){
 		 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
 		 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
-		 	    					vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Long.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    					vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Double.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    				}
 		 	    				
 		 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Ponds")
@@ -588,8 +588,8 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    								|| inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district"))){
 		 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
 		 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
-		 	    					if(vo.getCompleted() != null && vo.getCompleted().longValue() > 0l && vo.getSanctionedTarget() != null && Long.valueOf(vo.getSanctionedTarget()) > 0l)
-		 	    						vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Long.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    					if(vo.getCompleted() != null && vo.getCompleted().longValue() > 0l && vo.getSanctionedTarget() != null && Double.valueOf(vo.getSanctionedTarget()) > 0)
+		 	    						vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Double.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    					else
 		 	    						vo.setPercSant("0.00");
 		 	    				}
@@ -947,9 +947,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("district")){
 				 	    					nregsDataVO.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
 				 	    					nregsDataVO.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
-				 	    					if(nregsDataVO.getCompleted() != null && nregsDataVO.getCompleted().longValue() > 0l && nregsDataVO.getSanctionedTarget() != null && Long.valueOf(nregsDataVO.getSanctionedTarget()).longValue() > 0l){
-				 	    						nregsDataVO.setPercSant(new BigDecimal(nregsDataVO.getCompleted()*100.00/Long.valueOf(nregsDataVO.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-				 	    						nregsDataVO.setPercentage(new BigDecimal(nregsDataVO.getCompleted()*100.00/Long.valueOf(nregsDataVO.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    					if(nregsDataVO.getCompleted() != null && nregsDataVO.getCompleted().longValue() > 0l && nregsDataVO.getSanctionedTarget() != null && Double.valueOf(nregsDataVO.getSanctionedTarget()) > 0){
+				 	    						nregsDataVO.setPercSant(new BigDecimal(nregsDataVO.getCompleted()*100.00/Double.valueOf(nregsDataVO.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    						nregsDataVO.setPercentage(new BigDecimal(nregsDataVO.getCompleted()*100.00/Double.valueOf(nregsDataVO.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				 	    					}else{
 				 	    						nregsDataVO.setPercSant("0.00");
 				 	    						nregsDataVO.setPercentage("0.00");
