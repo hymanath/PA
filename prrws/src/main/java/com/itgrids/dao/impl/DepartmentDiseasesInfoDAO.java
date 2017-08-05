@@ -54,7 +54,7 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		return query.list();
 	}
 	@Override
-	public List<Object[]> getCaseCountLocationWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId,Long superLocationId){
+	public List<Object[]> getCaseCountLocationWise(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId, Long locationLevelId, Long locationId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select "
 				+ " departmentDiseasesInfo.diseasesId, ");//0
@@ -108,6 +108,21 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		if(deptIdList != null && deptIdList.size() > 0){
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
 		}
+		
+		if(locationId != null && locationId.longValue() > 0){
+			if(locationLevelId != null && locationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+				sb.append(" and district.districtId =:locationId ");
+			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
+				sb.append(" and parliament.constituencyId =:locationId ");
+			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+				sb.append(" and constituency.constituencyId =:locationId ");
+			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+				sb.append(" and tehsil.tehsilId =:locationId ");
+			}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
+				sb.append(" and panchayat.panchayatId =:locationId ");
+			}
+		}
+		
 		sb.append("group by departmentDiseasesInfo.diseasesId, ");
 		if(scopeId != null && scopeId.longValue() > 0){
 			if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
@@ -133,6 +148,9 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		if(deptIdList != null && deptIdList.size() > 0){
 			query.setParameterList("deptIdList", deptIdList);
+		}
+		if(locationId != null && locationId.longValue() > 0 && locationLevelId != null && locationLevelId.longValue() > 0L){
+			query.setParameter("locationId", locationId);
 		}
 		return query.list();
 	}
@@ -327,6 +345,210 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		sb.append("order by sum(departmentDiseasesInfo.noOfCases) desc ");
 		Query query = getSession().createQuery(sb.toString());
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			query.setParameterList("diseasesIdList", diseasesIdList);
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			query.setParameterList("deptIdList", deptIdList);
+		}
+		return query.list();
+	}
+	@Override
+	public List<Object[]> getAllParliamentByStateId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct ");
+		sb.append(" departmentDiseasesInfo.locationAddress.parliament.constituencyId, "
+				+ " departmentDiseasesInfo.locationAddress.parliament.name "
+				+ " from "
+				+ " DepartmentDiseasesInfo departmentDiseasesInfo "
+				+ " where departmentDiseasesInfo.isDeleted = 'N'  "
+				+ " and departmentDiseasesInfo.locationAddress.state.stateId =:superLocationId ");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(departmentDiseasesInfo.reportedDate) between :startDate and :endDate ");
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.diseases.diseasesId in (:diseasesIdList) ");
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		sb.append(" order by departmentDiseasesInfo.locationAddress.parliament.name ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("superLocationId", superLocationId);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			query.setParameterList("diseasesIdList", diseasesIdList);
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			query.setParameterList("deptIdList", deptIdList);
+		}
+		return query.list();
+	}
+	@Override
+	public List<Object[]> getAllDistrictByStateId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct ");
+		sb.append(" departmentDiseasesInfo.locationAddress.district.districtId, "
+				+ " departmentDiseasesInfo.locationAddress.district.districtName "
+				+ " from "
+				+ " DepartmentDiseasesInfo departmentDiseasesInfo "
+				+ " where departmentDiseasesInfo.isDeleted = 'N'  "
+				+ " and departmentDiseasesInfo.locationAddress.state.stateId =:superLocationId ");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(departmentDiseasesInfo.reportedDate) between :startDate and :endDate ");
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.diseases.diseasesId in (:diseasesIdList) ");
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		sb.append(" order by departmentDiseasesInfo.locationAddress.district.districtName ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("superLocationId", superLocationId);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			query.setParameterList("diseasesIdList", diseasesIdList);
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			query.setParameterList("deptIdList", deptIdList);
+		}
+		return query.list();
+	}
+	@Override
+	public List<Object[]> getAllConstituencyByDistrictId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct ");
+		sb.append(" departmentDiseasesInfo.locationAddress.constituency.constituencyId, "
+				+ " departmentDiseasesInfo.locationAddress.constituency.name "
+				+ " from "
+				+ " DepartmentDiseasesInfo departmentDiseasesInfo "
+				+ " where departmentDiseasesInfo.isDeleted = 'N'  "
+				+ " and departmentDiseasesInfo.locationAddress.district.districtId =:superLocationId ");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(departmentDiseasesInfo.reportedDate) between :startDate and :endDate ");
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.diseases.diseasesId in (:diseasesIdList) ");
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		sb.append(" order by departmentDiseasesInfo.locationAddress.constituency.name ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("superLocationId", superLocationId);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			query.setParameterList("diseasesIdList", diseasesIdList);
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			query.setParameterList("deptIdList", deptIdList);
+		}
+		return query.list();
+	}
+	@Override
+	public List<Object[]> getAllTehsilByConstituencyId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct ");
+		sb.append(" departmentDiseasesInfo.locationAddress.tehsil.tehsilId, "
+				+ " departmentDiseasesInfo.locationAddress.tehsil.tehsilName "
+				+ " from "
+				+ " DepartmentDiseasesInfo departmentDiseasesInfo "
+				+ " where departmentDiseasesInfo.isDeleted = 'N'  "
+				+ " and departmentDiseasesInfo.locationAddress.constituency.constituencyId =:superLocationId ");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(departmentDiseasesInfo.reportedDate) between :startDate and :endDate ");
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.diseases.diseasesId in (:diseasesIdList) ");
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		sb.append(" order by departmentDiseasesInfo.locationAddress.tehsil.tehsilName ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("superLocationId", superLocationId);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			query.setParameterList("diseasesIdList", diseasesIdList);
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			query.setParameterList("deptIdList", deptIdList);
+		}
+		return query.list();
+	}
+	@Override
+	public List<Object[]> getAllPanchayatByTehsilId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct ");
+		sb.append(" departmentDiseasesInfo.locationAddress.panchayat.panchayatId, "
+				+ " departmentDiseasesInfo.locationAddress.panchayat.panchayatName "
+				+ " from "
+				+ " DepartmentDiseasesInfo departmentDiseasesInfo "
+				+ " where departmentDiseasesInfo.isDeleted = 'N'  "
+				+ " and departmentDiseasesInfo.locationAddress.tehsil.tehsilId =:superLocationId ");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(departmentDiseasesInfo.reportedDate) between :startDate and :endDate ");
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.diseases.diseasesId in (:diseasesIdList) ");
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		sb.append(" order by departmentDiseasesInfo.locationAddress.panchayat.panchayatName ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("superLocationId", superLocationId);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			query.setParameterList("diseasesIdList", diseasesIdList);
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			query.setParameterList("deptIdList", deptIdList);
+		}
+		return query.list();
+	}
+	@Override
+	public List<Object[]> getAllConstituencyByParliamentConstId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct ");
+		sb.append(" departmentDiseasesInfo.locationAddress.constituency.constituencyId, "
+				+ " departmentDiseasesInfo.locationAddress.constituency.name "
+				+ " from "
+				+ " DepartmentDiseasesInfo departmentDiseasesInfo "
+				+ " where departmentDiseasesInfo.isDeleted = 'N'  "
+				+ " and departmentDiseasesInfo.locationAddress.parliament.constituencyId =:superLocationId ");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(departmentDiseasesInfo.reportedDate) between :startDate and :endDate ");
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.diseases.diseasesId in (:diseasesIdList) ");
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		sb.append(" order by departmentDiseasesInfo.locationAddress.constituency.name ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("superLocationId", superLocationId);
 		if(startDate != null && endDate != null){
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);

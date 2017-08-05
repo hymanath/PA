@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.DiseasesVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.service.IHealthMedicalAndFamilyWelfareService;
 
@@ -37,7 +38,7 @@ public class HealthMedicalAndFamilyWelfareController {
 	}
 	@PostMapping("/getCaseCountLocationWise")
 	public @ResponseBody List<DiseasesVO> getCaseCountLocationWise(@RequestBody InputVO inputVO){
-		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getCaseCountLocationWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getScopeId(),inputVO.getSuperLocationId());
+		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getCaseCountLocationWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getScopeId(),inputVO.getLocationId());
 		return diseasesList;
 	}
 	@PostMapping("/getCaseCountDateWise")
@@ -49,5 +50,10 @@ public class HealthMedicalAndFamilyWelfareController {
 	public @ResponseBody List<DiseasesVO> getLocationDtlsRankWise(@RequestBody InputVO inputVO){
 		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getLocationDtlsRankWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList());
 		return diseasesList;
+	}
+	@PostMapping("/getSubLocationsBySuperLocationId")
+	public @ResponseBody List<LocationFundDetailsVO> getAllSubLocationsBySuperLocationId(@RequestBody InputVO inputVO){
+		List<LocationFundDetailsVO> locationList = healthMedicalAndFamilyWelfareService.getAllSubLocationsBySuperLocationId(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getSuperLocationId());
+		return locationList;
 	}
 }

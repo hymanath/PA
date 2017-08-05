@@ -13,11 +13,13 @@
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
+<link href="Assests/Plugins/SlickSliderNew/slick.less" type="text/less" rel="stylesheet"/>
+<link href="Assests/Plugins/SlickSliderNew/slick-theme.less" type="text/less" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
 </head>
 <body>
-<header>
+<header>  
 	<nav>
 		<div class="container-fluid">
 			<div class="row">
@@ -25,8 +27,8 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">DAILY SPIKE REPORT</h4>
-					<p>DASHBOARD</p>
+					<h4 class="text-capital">HM&FW DEPARTMENT</h4>
+					<p>Government Of Andhra Pradesh</p>
 				</div>
 				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
@@ -127,15 +129,14 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<ul class="list-inline calendar_active_cls">
-						<li attr_val="Overall"><img src="Assests/icons/Overall_icon.png"/>&nbsp;&nbsp;<b><span>Overall</span></b></li>
-						<li attr_val="Day" class="active"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
+						<li attr_val="Day" class="active" id="defaultButtonId"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Day</span></b></li>
 						<li attr_val="Week"><img src="Assests/icons/Week_icon.png"/>&nbsp;&nbsp;<b><span> Week</span></b></li>
 						<li attr_val="Month"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Month</span></b></li>
 						</li>
 					</ul>  
-				</div>
-				<div class="col-sm-6"> 
-					<div class="input-group dateRangePickerCls pull-right" >
+				</div>   
+				<div class="col-sm-6 pull-right"> 
+					<div class="input-group dateRangePickerCls" >
 						<span class="input-group-addon" >
 							<i class="glyphicon glyphicon-calendar" ></i>
 						</span>
@@ -146,191 +147,108 @@
 		</div>
 	</section>
 </header>
-<div class="container-fluid m_top20">
-	<!-- all  -->
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="panel panel-default panel-black">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<h4 class="m_0 panel-title text-capital fontColor">Total Overview</h4>
-						</div>
-					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row bg_ED pad_5">
-						<div class="col-xs-12 col-md-6">
-							<span><h3>Total Dengue and Malaria Cases Registered : <span id="totalCases">0</span></h3></span>
-						</div>
-					</div>    
-					<div class="row m_top20">   
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div class="panel panel-default panel-black">
-								<div class="panel-heading">
-									<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Districts</h4>
-										</div>
-									</div>
+<main>
+	<section>
+		<div class="container-fluid">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="col-sm-12 white_block">
+							<div class="col-sm-3">
+								<img src="Assests/img/Dengue&maleria_Bg.png">
+							</div>
+							<div class="col-sm-9">
+								<div class="col-sm-8">
+									<h2>Dengue & Malaria Cases</h2>
 								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-xs-12" id="allDiseasesTotDist"></div>
-									</div>
+								<div class="col-sm-4">
+									<h1 style="color:#FF0000" id="totalCasesId">0</h1>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div class="panel panel-default panel-black">
-								<div class="panel-heading" >
-									<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Mandals</h4>
-										</div>
-									</div>
-								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-xs-12" id="allDiseasesTotMandal"></div>
-									</div>
-								</div>
+							<div class="col-sm-12 counts_block">
+								<p style="display:none;">Rural -<span>600</span></p>
+								<p style="display:none;">Urban -<span>400</span></p>
+								<p class="pull-right">Today -<span id="todayTotalCasesId">0</span></p>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- disease wise  -->
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="panel panel-default panel-black">
-				<div class="panel-heading" >
-					<div class="row">
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<h4 class="m_0 panel-title text-capital fontColor">Diseases Wise Overview</h4>
-						</div>
-					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row bg_ED pad_5">
-						<span><h3  style="margin-left:15px;">Total Dengue Registered : <span id="dengueTotalCases">0</span>(<span id="dengueTotalPercent">0</span>%)</h3></span>
-					</div>
-					<div class="row m_top20">         
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div class="panel panel-default panel-black">
-								<div class="panel-heading" >
-									<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Districts</h4>
-										</div>
-									</div>
-								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-xs-12" id="topDistForDengue"></div>
-									</div>  
-								</div>
-							</div>   
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div class="panel panel-default panel-black">
-								<div class="panel-heading" >
-									<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Mandals</h4>
-										</div>
-									</div>
-								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-xs-12" id="topMandalForDengue"></div>
-									</div>
-								</div>
+					<div class="col-sm-3">
+						<div class="col-sm-12 white_block">
+							<div class="col-sm-6">
+								<h2>Dengue</h2>
+								<img src="Assests/img/Dengue_bg.png">
+							</div>
+							<div class="col-sm-6 text-center">
+								<h1 style="color:#E8007C" id="dengueCountId">0</h1>
+								<span id="denguePercentId">0</span><span>% Percent</span>
+							</div>
+							<div class="col-sm-12 counts_block">
+								<p style="display:none;">Rural -<span>600</span></p>
+								<p style="display:none;">Urban -<span>400</span></p>
+								<p class="pull-right">Today -<span id="dengueTodayId">0</span></p>
 							</div>
 						</div>
 					</div>
-					<div class="row bg_ED pad_5">
-						<span><h3  style="margin-left:15px;">Total Malaria Registered : <span id="malariaTotalCases">0</span>(<span id="malariaTotalPercent">0</span>%)</h3></span>
-					</div>
-					<div class="row m_top20">   
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div class="panel panel-default panel-black">
-								<div class="panel-heading" >
-									<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Districts</h4>
-										</div>
-									</div>
-								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-xs-12" id="topDistForMalaria"></div>
-									</div>
-								</div>
+					<div class="col-sm-3">
+						<div class="col-sm-12 white_block">
+							<div class="col-sm-6">
+								<h2>Malaria</h2>
+								<img src="Assests/img/maleria_Bg.png">
 							</div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div class="panel panel-default panel-black">
-								<div class="panel-heading" >
-									<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4 class="m_0 panel-title text-capital fontColor">Top 5 Mandals</h4>
-										</div>
-									</div>
-								</div>  
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-xs-12" id="topMandalForMalaria"></div>
-									</div>
-								</div>
+							<div class="col-sm-6 text-center">
+								<h1 style="color:#006BF7" id="malariaCountId">0</h1>
+								<span id="malariaPercentId">0</span><span>% Percent</span>
+							</div>
+							<div class="col-sm-12 counts_block">
+								<p style="display:none;">Rural -<span>600</span></p>
+								<p style="display:none;">Urban -<span>400</span></p>
+								<p class="pull-right">Today -<span id="malariaTodayId">0</span></p>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- day, week and month wise -->
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="panel panel-default panel-black">
-				<div class="panel-heading" >
-					<div class="row">
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<h4 class="m_0 panel-title text-capital fontColor">Chronological</h4>
-						</div>
+	</section>
+	<section class="m_top20">     
+		<div class="container-fluid">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-12">
+						<p class="m_top10"><span class="pull-right">D - DISTRICT , C - CONSTITUENCY , M - MANDAL , T -  TOWN , D - DIVISION</span></p>
 					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-xs-12" id="chronologicalId"></div>
+					<div class="col-sm-12">
+						<div  id="rankDivId"></div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- Location wise -->
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="panel panel-default panel-black">
-				<div class="panel-heading" >
-					<div class="row">
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<h4 class="m_0 panel-title text-capital fontColor">Location Wise</h4>
+	</section>  
+	<section class="m_top20">
+		<div class="container-fluid">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="white_block">
+							<div  id="chronologicalId"></div>
 						</div>
-					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-xs-12" id="locationWiseCaseCount"></div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
+	</section>
+	<section class="m_top20">
+		<div class="container-fluid">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="levelBlock"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
 <script type="text/javascript" src="Assests/js/jquery-1.11.3.js"></script>        
 <script type="text/javascript" src="Assests/js/bootstrap.js"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
@@ -340,8 +258,11 @@
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
+<script src="Assests/Plugins/SlickSliderNew/slick.min.js" type="text/javascript"></script>   
 <script src="Assests/dailySpileReport/dailySpileReport.js" type="text/javascript"></script> 
-<script>      
+
+<script>   
+  
 </script>
 </body>
 </html>

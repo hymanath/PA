@@ -1,52 +1,97 @@
+var globalLevelObj =  {"distLevelDistrictNames":"DISTRICT","constLevelDistNames":"DISTRICT","mandalLevelDistNames":"DISTRICT","constLevelConstNames":"CONSTITUENCY","mandalLevelConstNames":"CONSTITUENCY","mandalLevelMandalNames":"MANDAL","villageLevelDistNames":"DISTRICT",'villageLevelConstNames':'CONSTITUENCY','villageLevelMandalNames':'MANDAL','villageLevelNames':'VILLAGE','constLevelParliaNames':'PARLIAMENT','parliamentLevelConstNames':'PARLIAMENT','villageLeveParliNames':'PARLIAMENT','distLevelParliamentNames':'PARLIAMENT','mandalLevelParliNames':'PARLIAMENT'};
+var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var globalScopeIds = {"DISTRICT":"3","CONSTITUENCY":"4","MANDAL":"5"};
+var blockNames = ['DISTRICT','CONSTITUENCY','MANDAL'];
+var globalStateIdForSelectBox = 21;
+var glStartDate = moment().startOf('month').format("DD/MM/YYYY");
+var glEndDate = moment().format("DD/MM/YYYY");
 
-var globalFromDate = moment().startOf("month").format('DD-MM-YYYY');
-var globalToDate = moment().format('DD-MM-YYYY');
-
-$("#reportrange").daterangepicker({
-		opens: 'left',
-		startDate: globalFromDate,
-		endDate: globalToDate,
-		locale: {
-		  format: 'DD-MM-YYYY'
+function onLoadInitialisations(){
+	$(document).keydown(function(event){
+		if(event.keyCode==123){
+			alert("Hoo no! don't try to expose me");
+			return false;
+		}else if(event.ctrlKey && event.shiftKey && event.keyCode==73){        
+			alert("Hoo no! don't try to expose me");
+			return false;  //Prevent from ctrl+shift+i
 		}
 	});
+	var width = $(window).width()
+}
+
+$("#reportrange").daterangepicker({
+			opens: 'left',
+			startDate: glStartDate,
+			endDate: glEndDate,
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().format("DD/MM/YYYY")],
+			'Today' : [moment(), moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
+		   'Last 3 Year': [moment().subtract(3, 'Year'), moment()],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()]
+		}
+});
+
 $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-	
-	globalFromDate = picker.startDate.format('DD-MM-YYYY')
-	globalToDate = picker.endDate.format('DD-MM-YYYY')
-	//
+	glStartDate = picker.startDate.format('DD/MM/YYYY')
+	glEndDate = picker.endDate.format('DD/MM/YYYY')
+	if(picker.chosenLabel == 'All'){
+		$("#reportrange").val('All');
+	}
+	$('.calendar_active_cls li').removeClass("active");
+	$("#defaultButtonId").addClass("active");
+	onRequestCall();
 	
 });
+
 $(document).on('click','.calendar_active_cls li', function(){
 	var date = $(this).attr("attr_val");
-	
-	if(date == 'Day')
-	{
-		globalFromDate = moment().format('DD-MM-YYYY');
-		globalToDate = moment().format('DD-MM-YYYY');
-		
+	if(date == 'Day'){
+		getCaseCountDateWise(date);
 	}else if(date == 'Week'){
-		globalFromDate = moment().subtract(1,'week').format('DD-MM-YYYY');
-		globalToDate = moment().format('DD-MM-YYYY');
-		
+		getCaseCountDateWise(date);
 	}else if(date == 'Month'){
-		globalFromDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
-		globalToDate = moment().format('DD-MM-YYYY');
+		getCaseCountDateWise(date);
 	}
-	
 	$(this).closest("ul").find("li").removeClass("active");
 	$(this).addClass("active");
-	//
 	
 });
-getCaseCountDiseasesWise();
+onRequestCall();
+function onRequestCall(){
+	getCaseCountDiseasesWise();
+	getLocationDtlsRankWise();
+	getCaseCountDateWise("day");
+	for(var i in blockNames){
+		if(blockNames[i] == 'DISTRICT'){
+			getCaseCountLocationWise(3,blockNames[i],"Districts",0);    
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames");
+		}else if(blockNames[i] == 'CONSTITUENCY'){
+			getCaseCountLocationWise(4,blockNames[i],"Districts",0);
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"constLevelDistNames");
+		}else if(blockNames[i] == 'MANDAL'){
+			getCaseCountLocationWise(5,blockNames[i],"Districts",0);
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames");
+		}
+	}
+}
+
 function getCaseCountDiseasesWise(){
 	var diseasesIdArr=[];
-	diseasesIdArr.push(1);
+	diseasesIdArr.push(1);  
 	diseasesIdArr.push(2);
 	var json = {
-		fromDate : '01/07/2017',
-		toDate : '31/07/2017', 
+		fromDate : glStartDate,
+		toDate : glEndDate, 
 		diseasesIdList : diseasesIdArr
     }
     $.ajax({
@@ -69,111 +114,28 @@ function getCaseCountDiseasesWise(){
     });
 }
 function buildOverviewBlock(ajaxresp){
-	var totalCases = 0;
-	var dengueTotalCases = 0;
-	var dengueTotalPercent = 0;
-	var malariaTotalCases = 0;
-	var malariaTotalPercent = 0;
-	for(var i in ajaxresp){
-		totalCases = totalCases + parseInt(ajaxresp[i].count);
-		if(ajaxresp[i].name == "dengue"){
-			dengueTotalCases = ajaxresp[i].count;
-			dengueTotalPercent = ajaxresp[i].percent;
-		}
-		if(ajaxresp[i].name == "malaria"){
-			malariaTotalCases = ajaxresp[i].count;
-			malariaTotalPercent = ajaxresp[i].percent;
-		}
-	}
-	$("#totalCases").html(totalCases);
-	$("#dengueTotalCases").html(dengueTotalCases);
-	$("#dengueTotalPercent").html(dengueTotalPercent);
-	$("#malariaTotalCases").html(malariaTotalCases);
-	$("#malariaTotalPercent").html(malariaTotalPercent);
-	if(ajaxresp[0].distCountList != null && ajaxresp[0].distCountList.length > 0){
-		var distLen = ajaxresp[0].distCountList.length;
-		if(distLen > 5){
-			distLen = 4;
-		}
-		buildTopFiveLocation(distLen,ajaxresp[0].distCountList,"allDiseasesTotDist","distId");
-	}
-	if(ajaxresp[0].mandalCountList != null && ajaxresp[0].mandalCountList.length > 0){
-		var distLen = ajaxresp[0].mandalCountList.length;
-		if(distLen > 5){
-			distLen = 4;
-		}
-		buildTopFiveLocation(distLen,ajaxresp[0].mandalCountList,"allDiseasesTotMandal","mandalId");
-	}
-	if(ajaxresp[0].distCountForDengueList != null && ajaxresp[0].distCountForDengueList.length > 0){
-		var distLen = ajaxresp[0].distCountForDengueList.length;
-		if(distLen > 5){
-			distLen = 4;
-		}
-		buildTopFiveLocation(distLen,ajaxresp[0].distCountForDengueList,"topDistForDengue","distDengueId");
-	}
-	if(ajaxresp[0].mandalCountForDengueList != null && ajaxresp[0].mandalCountForDengueList.length > 0){
-		var distLen = ajaxresp[0].mandalCountForDengueList.length;
-		if(distLen > 5){
-			distLen = 4;
-		}
-		buildTopFiveLocation(distLen,ajaxresp[0].mandalCountForDengueList,"topMandalForDengue","mandalDengueId");
-	}
-	if(ajaxresp[0].distCountForMalariaList != null && ajaxresp[0].distCountForMalariaList.length > 0){
-		var distLen = ajaxresp[0].distCountForMalariaList.length;
-		if(distLen > 5){
-			distLen = 4;
-		}
-		buildTopFiveLocation(distLen,ajaxresp[0].distCountForMalariaList,"topDistForMalaria","distMalariaId");
-	}
-	if(ajaxresp[0].mandalCountForMalariaList != null && ajaxresp[0].mandalCountForMalariaList.length > 0){
-		var distLen = ajaxresp[0].mandalCountForMalariaList.length;
-		if(distLen > 5){
-			distLen = 4;
-		}
-		buildTopFiveLocation(distLen,ajaxresp[0].mandalCountForMalariaList,"topMandalForMalaria","mandalMalariaId");
-	}
+	$("#totalCasesId").html(ajaxresp[0].count);
+	$("#todayTotalCasesId").html(ajaxresp[0].todayCount);
+	$("#dengueCountId").html(ajaxresp[2].count);
+	$("#denguePercentId").html(ajaxresp[2].percent);
+	$("#dengueTodayId").html(ajaxresp[2].todayCount);
+	$("#malariaCountId").html(ajaxresp[1].count);
+	$("#malariaPercentId").html(ajaxresp[1].percent);
+	$("#malariaTodayId").html(ajaxresp[1].todayCount);  
 }
-function buildTopFiveLocation(distLen,locArray,tableDivId,tableId){
-	var str = '';
-		str+='<table class="table table-bordered table-hover" id="'+tableId+'">';
-		str+='<thead>';
-		  str+='<tr>';
-			str+='<th>District</th>';
-			str+='<th>Cases</th>'; 
-			str+='<th>%</th>';
-		  str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-		for(i = 0; i <= distLen; i++){
-			str+='<tr>';
-				str+='<td>'+locArray[i].locationName+'</td>';
-				str+='<td>'+locArray[i].count+'</td>';
-				str+='<td>'+locArray[i].percent+'</td>';
-			str+='</tr>';
-		}
-		str+='</tbody>';
-		str+='</table>';
-		$("#"+tableDivId).html(str);
-		$("#"+tableId).dataTable({
-			"aaSorting": [1,"desc"],
-			"searching": false,
-			"paging": false
-		});   
-}
-getCaseCountLocationWise();
-function getCaseCountLocationWise(){
-	var diseasesIdArr=[];
+
+function getLocationDtlsRankWise(){
+	$("#rankDivId").html(spinner);
+	var diseasesIdArr=[];       
 	diseasesIdArr.push(1);
 	diseasesIdArr.push(2);
 	var json = {
-		fromDate : '01/07/2017',
-		toDate : '31/07/2017', 
-		diseasesIdList : diseasesIdArr,
-		scopeId : 5,
-		superLocationId : 11     
+		fromDate : glStartDate,  
+		toDate : glEndDate,   
+		diseasesIdList : diseasesIdArr       
     }
     $.ajax({
-      url : "getCaseCountLocationWise",       
+      url : "getLocationDtlsRankWise",           
       data : JSON.stringify(json),
       type : "POST",  
       dataTypa : 'json',   
@@ -183,49 +145,56 @@ function getCaseCountLocationWise(){
       },
       success : function(ajaxresp){
 		  if(ajaxresp != null && ajaxresp.length > 0){
-			  buildLocationBlock(ajaxresp);
+			  buildLocationDtlsRankWise(ajaxresp);
 		  }else{
-			  
+			  $("#rankDivId").html("No Data Available");
 		  }
       }
-    
     });
-}
-function buildLocationBlock(ajaxresp){
+}  
+function buildLocationDtlsRankWise(ajaxresp){
 	var str = '';
-	str+='<table class="table table-bordered table-hover" id="locationTableId">';
-	str+='<thead>';
-	  str+='<tr>';
-		str+='<th>District</th>';
-		str+='<th>Cases</th>';  
-		str+='<th>%</th>';
-	  str+='</tr>';
-	str+='</thead>';
-	str+='<tbody>';
-	for(var i in ajaxresp){
-		str+='<tr>';
-			str+='<td>'+ajaxresp[i].name+'</td>';
-			str+='<td>'+ajaxresp[i].count+'</td>';
-			str+='<td>'+ajaxresp[i].percent+'</td>';
-		str+='</tr>';
-	}    
-	str+='</tbody>';
-	str+='</table>';
-	$("#locationWiseCaseCount").html(str);
-	$("#locationTableId").dataTable({
-		"aaSorting": [1,"desc"]
-	});   
+	str+='<div style="padding:10px 15px;background-color:#fff;box-shadow:0 0 3px 3px rgba(0, 0, 0, 0.4)">';
+		str+='<ul class="list-inline" id="rankWiseScrollId">';
+		for(var i in ajaxresp){
+			str+='<li style="border-left:1px solid #ccc;padding:10px;position:relative;">';
+				str+='<div class="row">';
+					str+='<div class="col-sm-9">';
+						str+='<p><span style="padding:5px 10px;font-size:18px;border-radius:50%;background-color:#676767;color:#fff;">'+(parseInt(i)+1)+'</span></p>';  
+						str+='<p style="margin-top:5px;"><span class="text-success">D</span> - '+ajaxresp[i].districtName+'</p>';
+						str+='<p><span class="text-success">C</span> - '+ajaxresp[i].constituencyName+'</p>';
+						str+='<p style="font-weight: bold;"><span class="text-success">M</span> - '+ajaxresp[i].mandalName+'</p>';
+					str+='</div>';
+					str+='<div class="col-sm-3">';
+						str+='<h1 style="color:#FF0000;margin-top:40px;font-weight: bold;">'+ajaxresp[i].count+'</h1>';
+					str+='</div>';
+				str+='</div>';
+			str+='</li>';
+		}  
+		str+='</ul>';
+	str+='</div>';
+	$("#rankDivId").html(str);
+	$("#rankWiseScrollId").slick({
+		slides:'li',
+		infinite: false,
+		slidesToShow: 5,    
+		slidesToScroll: 2,
+		variableWidth: true
+	}); 
 }
-getCaseCountDateWise();
-function getCaseCountDateWise(){
+
+
+
+function getCaseCountDateWise(dayType){
+	$("#chronologicalId").html(spinner);
 	var diseasesIdArr=[];
 	diseasesIdArr.push(1);
 	diseasesIdArr.push(2);
 	var json = {
-		fromDate : '01/07/2017',  
-		toDate : '31/07/2017',   
+		fromDate : glStartDate,  
+		toDate : glEndDate,   
 		diseasesIdList : diseasesIdArr,
-		rangeType : 'day'          
+		rangeType : dayType            
     }
     $.ajax({
       url : "getCaseCountDateWise",           
@@ -240,7 +209,7 @@ function getCaseCountDateWise(){
 		  if(ajaxresp != null && ajaxresp.length > 0){
 			  buildGraph(ajaxresp,diseasesIdArr);
 		  }else{
-			  
+			  $("#chronologicalId").html("No Data Available");
 		  }
       }
     });
@@ -260,35 +229,680 @@ function buildGraph(ajaxresp,diseasesIdArr){
 	}else if(diseasesIdArr[0] == 2){
 		name = "Dengue";
 	}
-	Highcharts.chart('chronologicalId', {
-    chart: {
-        type: 'line'
-    },
-    title: {
-        text: 'Number Of Cases Registered'
-    },
-    subtitle: {
-        text: 'Source: Govt Of Andhrapradesh'
-    },
-    xAxis: {
-        categories: chronologicalList
-    },
-    yAxis: {
-        title: {
-            text: 'Number Of Cases'  
-        }
-    },
-    plotOptions: {
-        line: {
-            dataLabels: {
-                enabled: true
-            },
-            enableMouseTracking: false
-        }
-    },
-    series: [{
-        name: name,
-        data: caseCountList
-    }]
+	buildChronologicalGraph(chronologicalList,caseCountList,name,"chronologicalId");
+}
+function buildChronologicalGraph(chronologicalList,caseCountList,name,graphId){
+	Highcharts.chart(graphId, {
+		chart: {
+			type: 'line'  
+		},
+		title: {
+			text: 'Number Of Cases Registered'
+		},
+		subtitle: {
+			text: 'Source: Govt Of Andhrapradesh'
+		},
+		xAxis: {
+			categories: chronologicalList
+		},
+		yAxis: {
+			title: {
+				text: 'Number Of Cases'  
+			}
+		},
+		plotOptions: {
+			line: {
+				dataLabels: {
+					enabled: true
+				},
+				enableMouseTracking: false
+			}
+		},
+		series: [{
+			name: name,
+			data: caseCountList
+		}]
+	});
+}
+
+collapseBlock();
+$(document).on('click','[table-menu-active] li',function(){
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
 });
+
+function collapseBlock(){
+	var collapse='';
+	if(blockNames != null){
+	collapse+='<div class="row">';
+		collapse+='<div class="col-sm-12">'
+			for(var i in blockNames){
+			collapse+='<div class="panel-group " id="accordion'+blockNames[i]+'" role="tablist" aria-multiselectable="true">';
+				collapse+='<div class="panel panel-default panel-black">';
+					collapse+='<div class="panel-heading" role="tab" id="headingOne'+blockNames[i]+'">';
+						if(blockNames[i] == 'DISTRICT'){
+							collapse+='<a role="button" class="panelCollapseIcon collapsed buildCollapse heagingFor'+blockNames[i]+'" data-toggle="collapse" data-parent="#accordion'+blockNames[i]+'" href="#collapseOne'+blockNames[i]+'" aria-expanded="true" aria-controls="collapseOne'+blockNames[i]+'">';
+						}else if(blockNames[i] == 'CONSTITUENCY'){
+							collapse+='<a role="button" class="panelCollapseIcon collapsed buildCollapse heagingFor'+blockNames[i]+'" data-toggle="collapse" data-parent="#accordion'+blockNames[i]+'" href="#collapseOne'+blockNames[i]+'" aria-expanded="true" aria-controls="collapseOne'+blockNames[i]+'">';
+						}else if(blockNames[i] == 'MANDAL'){
+							collapse+='<a role="button" class="panelCollapseIcon collapsed buildCollapse heagingFor'+blockNames[i]+'" data-toggle="collapse" data-parent="#accordion'+blockNames[i]+'" href="#collapseOne'+blockNames[i]+'" aria-expanded="true" aria-controls="collapseOne'+blockNames[i]+'">';
+						}
+							collapse+='<h4 class="panel-title">'+blockNames[i]+' LEVEL - OVERVIEW</h4>';
+						collapse+='</a>';
+					collapse+='</div>';
+					collapse+='<div id="collapseOne'+blockNames[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+blockNames[i]+'">';
+						collapse+='<div class="panel-body">';
+							collapse+='<div class="row">';
+								collapse+='<div class="col-sm-3" table-menu-active="'+blockNames[i]+'">';
+								if(blockNames[i] == 'DISTRICT'){
+									collapse+='<ul class="nav navbar-nav tableMenu" table-menu="'+blockNames[i]+'">';
+										collapse+='<li class="active" attr-active="Districts">Districts</li>';
+										collapse+='<li attr-active="Parliaments">Parliaments</li>';
+									collapse+='</ul>'; 
+								} 
+								else if(blockNames[i] == 'CONSTITUENCY'){
+									collapse+='<ul class="nav navbar-nav tableMenu" table-menu="'+blockNames[i]+'">';
+										collapse+='<li class="active" attr-active="Districts">Districts</li>';
+										collapse+='<li attr-active="Parliaments">Parliaments</li>';
+									collapse+='</ul>';
+								} 
+								else if(blockNames[i] == 'MANDAL'){
+									collapse+='<ul class="nav navbar-nav tableMenu" table-menu="'+blockNames[i]+'">';
+										collapse+='<li class="active" attr-active="Districts">Districts</li>';
+										collapse+='<li attr-active="Parliaments">Parliaments</li>';
+									collapse+='</ul>';
+								}
+								collapse+='</div>';
+								
+								if(blockNames[i] == 'DISTRICT'){
+									collapse+='<div class="col-md-2 toggleClassForDistBlock">';   
+										collapse+='<select class="form-control chosenSelect" attr_filter_type="Districts" attr_block_name="'+blockNames[i]+'" attr_scope_id="'+globalScopeIds[blockNames[i]]+'" id="distLevelDistrictNames">';
+										collapse+='</select>';
+									collapse+='</div>';
+									collapse+='<div class="col-md-2 toggleClassForDistBlock" style="display:none;">';   
+										collapse+='<select class="form-control chosenSelect" attr_filter_type="Districts" attr_block_name="'+blockNames[i]+'" attr_scope_id="10" id="distLevelParliamentNames">';   
+										collapse+='</select>';
+									collapse+='</div>';
+								}else if(blockNames[i] == 'CONSTITUENCY'){
+									collapse+='<div class="col-md-2 toggleClassForConstBlock">';   
+										collapse+='<select class="form-control chosenSelect" attr_filter_type="Districts" attr_block_name="'+blockNames[i]+'" attr_scope_id="'+globalScopeIds[blockNames[i]]+'" is_parent="no" attr_dependant_id="constLevelConstNames" id="constLevelDistNames">';
+										collapse+='</select>';
+									collapse+='</div>';
+									collapse+='<div class="col-md-2 toggleClassForConstBlock" style="display:none;">';   
+										collapse+='<select class="form-control chosenSelect" attr_filter_type="Districts" attr_block_name="'+blockNames[i]+'" attr_scope_id="'+globalScopeIds[blockNames[i]]+'" is_parent="no" attr_dependant_id="constLevelConstNames" id="constLevelParliaNames">';
+										collapse+='</select>';
+									collapse+='</div>';
+									collapse+='<div class="col-md-2">';   
+										collapse+='<select class="form-control chosenSelect" attr_filter_type="Districts" attr_block_name="'+blockNames[i]+'" attr_scope_id="'+globalScopeIds[blockNames[i]]+'" is_parent="yes" attr_parent="constLevelDistNames" id="constLevelConstNames">';
+										collapse+='</select>';
+									collapse+='</div>';
+								}else if(blockNames[i] == 'MANDAL'){
+									collapse+='<div class="col-md-2 toggleClassForMandalBlock">';   
+										collapse+='<select class="form-control chosenSelect" attr_filter_type="Districts" attr_block_name="'+blockNames[i]+'" attr_scope_id="'+globalScopeIds[blockNames[i]]+'" is_parent="no" attr_dependant_id="mandalLevelConstNames" id="mandalLevelDistNames">';
+										collapse+='</select>';
+									collapse+='</div>';
+									collapse+='<div class="col-md-2 toggleClassForMandalBlock" style="display:none;">';   
+										collapse+='<select class="form-control chosenSelect" attr_filter_type="Districts" attr_block_name="'+blockNames[i]+'" attr_scope_id="'+globalScopeIds[blockNames[i]]+'" is_parent="no" attr_dependant_id="mandalLevelConstNames" id="mandalLevelParliNames">';
+										collapse+='</select>';
+									collapse+='</div>';
+									collapse+='<div class="col-md-2">';   
+										collapse+='<select class="form-control chosenSelect" attr_filter_type="Districts" attr_block_name="'+blockNames[i]+'" attr_scope_id="'+globalScopeIds[blockNames[i]]+'" is_parent="yes" attr_parent="mandalLevelDistNames" attr_dependant_id="mandalLevelMandalNames" id="mandalLevelConstNames">';
+										collapse+='</select>';
+									collapse+='</div>';
+									collapse+='<div class="col-md-2">';      
+										collapse+='<select class="form-control chosenSelect" attr_filter_type="Districts" attr_block_name="'+blockNames[i]+'" attr_scope_id="'+globalScopeIds[blockNames[i]]+'" is_parent="yes" attr_parent="mandalLevelConstNames" id="mandalLevelMandalNames">';
+										collapse+='</select>';
+									collapse+='</div>';    
+								}
+								collapse+='<div class="col-sm-3">';  
+									collapse+='<ul class="nav navbar-nav casesPercentage">';
+										collapse+='<li>Cases</li>';
+										collapse+='<li>';
+												collapse+='<div class="circle" style="background-color:#FF0000"></div>';
+												collapse+='<span>70 & Above</span>';
+										collapse+='</li>';
+										collapse+='<li>';
+												collapse+='<div class="circle" style="background-color:#FFBB00"></div>';
+												collapse+='<span>30 to 70</span>';
+										collapse+='</li>';
+										collapse+='<li>';
+												collapse+='<div class="circle" style="background-color:#00A521"></div>';
+												collapse+='<span>0 to 30</span>';
+										collapse+='</li>';
+									collapse+='</ul>';
+								collapse+='</div>';
+							collapse+='</div>';
+							collapse+='<div class="m_top20" id="'+blockNames[i]+'-tableDivId"></div>'
+						collapse+='</div>';
+					collapse+='</div>';
+				collapse+='</div>';
+			collapse+='</div>'  
+			}
+		collapse+='</div>'
+	collapse+='</div>';
+	}
+	$("#levelBlock").html(collapse);
+	initializeClickEventOnTableDiv();
+	for(var i in blockNames){
+		if(blockNames[i] == 'DISTRICT'){
+			getCaseCountLocationWise(3,blockNames[i],"Districts",0);    
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames");
+		}else if(blockNames[i] == 'CONSTITUENCY'){
+			getCaseCountLocationWise(4,blockNames[i],"Districts",0);
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"constLevelDistNames");
+		}else if(blockNames[i] == 'MANDAL'){
+			getCaseCountLocationWise(5,blockNames[i],"Districts",0);
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames");
+		}
+	}
+}
+
+function initializeClickEventOnTableDiv(){
+	$(".heagingForDISTRICT").addClass("collapsed");
+	$(".heagingForCONSTITUENCY").addClass("collapsed");
+	$(".heagingForMANDAL").addClass("collapsed");
+	$("#collapseOneDISTRICT").removeClass("in");		
+	$("#collapseOneCONSTITUENCY").removeClass("in");		
+	$("#collapseOneMANDAL").removeClass("in");		
+	$(".chosenSelect").chosen();
+	$(document).on("click",".tableMenu",function(){         
+		var blockLevel=$(this).attr("table-menu");
+		var filterType = '';
+		$(this).find("li").each(function(){
+			if($(this).hasClass("active")){
+				filterType = $(this).attr("attr-active");
+			}
+		});
+		if(blockLevel == 'DISTRICT'){
+			if(filterType == "Districts"){
+				$("#distLevelDistrictNames").attr("attr_filter_type","Districts");
+				getCaseCountLocationWise(3,blockLevel,filterType,0);
+			}else{
+				$("#distLevelParliamentNames").attr("attr_filter_type","Parliaments");
+				getCaseCountLocationWise(10,blockLevel,filterType,0);
+			}
+		}else if(blockLevel == 'CONSTITUENCY'){
+			if(filterType == "Districts"){
+				$("#constLevelDistNames").attr("attr_filter_type","Districts");
+				$("#constLevelParliaNames").attr("attr_filter_type","Districts");
+				$("#constLevelConstNames").attr("attr_filter_type","Districts");
+			}else{
+				$("#constLevelDistNames").attr("attr_filter_type","Parliaments");
+				$("#constLevelParliaNames").attr("attr_filter_type","Parliaments");
+				$("#constLevelConstNames").attr("attr_filter_type","Parliaments");
+			}
+			getCaseCountLocationWise(4,blockLevel,filterType,0);
+		}else if(blockLevel == 'MANDAL'){
+			if(filterType == "Districts"){
+				$("#mandalLevelDistNames").attr("attr_filter_type","Districts");
+				$("#mandalLevelParliNames").attr("attr_filter_type","Districts");
+				$("#mandalLevelConstNames").attr("attr_filter_type","Districts");
+				$("#mandalLevelMandalNames").attr("attr_filter_type","Districts");
+			}else{
+				$("#mandalLevelDistNames").attr("attr_filter_type","Parliaments");
+				$("#mandalLevelParliNames").attr("attr_filter_type","Parliaments");
+				$("#mandalLevelConstNames").attr("attr_filter_type","Parliaments");
+				$("#mandalLevelMandalNames").attr("attr_filter_type","Parliaments");
+			}
+			getCaseCountLocationWise(5,blockLevel,filterType,0);
+		}
+		//DISTRICT   
+		if(blockLevel == 'DISTRICT' && filterType == "Parliaments"){
+			$(".toggleClassForDistBlock").toggle();
+			getSubLocationsBySuperLocationId(11,"distLevelParliamentNames");
+		}else if(blockLevel == 'DISTRICT' && filterType == "Districts"){
+			$(".toggleClassForDistBlock").toggle();
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames");   
+		}
+		
+		//CONSTITUENCY
+		if(blockLevel == 'CONSTITUENCY' && filterType == "Parliaments"){
+			$(".toggleClassForConstBlock").toggle();
+			
+			var dependantDivId = $("#constLevelParliaNames").attr("attr_dependant_id");
+			
+			$("#"+dependantDivId).html('');   
+			$("#"+dependantDivId).trigger('chosen:updated');
+			
+			//UPDATE ATTR_PARENT OF constLevelConstNames SECTION
+			$("#constLevelConstNames").attr("attr_parent","constLevelParliaNames");
+			
+			getSubLocationsBySuperLocationId(11,"constLevelParliaNames");
+		}else if(blockLevel == 'CONSTITUENCY' && filterType == "Districts"){
+			$(".toggleClassForConstBlock").toggle();
+			
+			var dependantDivId = $("#constLevelDistNames").attr("attr_dependant_id");
+			
+			$("#"+dependantDivId).html('');   
+			$("#"+dependantDivId).trigger('chosen:updated');
+			
+			//UPDATE ATTR_PARENT OF constLevelConstNames SECTION
+			$("#constLevelConstNames").attr("attr_parent","constLevelDistNames");
+			
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"constLevelDistNames");   
+		}
+		
+		//MANDAL
+		if(blockLevel == 'MANDAL' && filterType == "Parliaments"){
+			$(".toggleClassForMandalBlock").toggle();
+			
+			var dependantDivId = $("#mandalLevelParliNames").attr("attr_dependant_id");
+			
+			$("#"+dependantDivId).html('');   
+			$("#"+dependantDivId).trigger('chosen:updated');
+			
+			var nextDependantDivId = $("#"+dependantDivId).attr("attr_dependant_id");
+			
+			$("#"+nextDependantDivId).html('');   
+			$("#"+nextDependantDivId).trigger('chosen:updated');
+			
+			//UPDATE ATTR_PARENT OF mandalLevelConstNames SECTION
+			$("#mandalLevelConstNames").attr("attr_parent","mandalLevelParliNames");
+			
+			
+			getSubLocationsBySuperLocationId(11,"mandalLevelParliNames");
+		}else if(blockLevel == 'MANDAL' && filterType == "Districts"){
+			$(".toggleClassForMandalBlock").toggle();
+			
+			var dependantDivId = $("#mandalLevelDistNames").attr("attr_dependant_id");
+			
+			$("#"+dependantDivId).html('');   
+			$("#"+dependantDivId).trigger('chosen:updated');
+			
+			var nextDependantDivId = $("#"+dependantDivId).attr("attr_dependant_id");
+			
+			$("#"+nextDependantDivId).html('');       
+			$("#"+nextDependantDivId).trigger('chosen:updated');
+			
+			//UPDATE ATTR_PARENT OF mandalLevelConstNames SECTION
+			$("#mandalLevelConstNames").attr("attr_parent","mandalLevelDistNames");
+			
+			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames");   
+		}
+		
+	});
+	
+	$(document).on("change","#constLevelDistNames",function(){
+		var dependantDivId = $("#constLevelDistNames").attr("attr_dependant_id");
+		var dependantId = $("#constLevelDistNames").val();
+		if(dependantId == 0){
+			$("#"+dependantDivId).html('');   
+			$("#"+dependantDivId).trigger('chosen:updated');
+		}
+		getSubLocationsBySuperLocationId(dependantId,dependantDivId);
+	});
+	
+	$(document).on("change","#mandalLevelDistNames",function(){
+		var dependantDivId = $("#mandalLevelDistNames").attr("attr_dependant_id");
+		var dependantId = $("#mandalLevelDistNames").val();
+		if(dependantId == 0){
+			$("#"+dependantDivId).html('');   
+			$("#"+dependantDivId).trigger('chosen:updated');
+			
+			var nextDependantDivId = $("#"+dependantDivId).attr("attr_dependant_id");
+			$("#"+nextDependantDivId).html('');   
+			$("#"+nextDependantDivId).trigger('chosen:updated');
+			
+		}
+		getSubLocationsBySuperLocationId(dependantId,dependantDivId);
+	});
+	
+	$(document).on("change","#mandalLevelConstNames",function(){
+		var dependantDivId = $("#mandalLevelConstNames").attr("attr_dependant_id");
+		var dependantId = $("#mandalLevelConstNames").val();
+		if(dependantId == 0){
+			$("#"+dependantDivId).html('');   
+			$("#"+dependantDivId).trigger('chosen:updated');
+		}  
+		getSubLocationsBySuperLocationId(dependantId,dependantDivId);
+	});
+	
+	$(document).on("change","#constLevelParliaNames",function(){
+		var dependantDivId = $("#constLevelParliaNames").attr("attr_dependant_id");
+		var dependantId = $("#constLevelParliaNames").val();
+		if(dependantId == 0){  
+			$("#"+dependantDivId).html('');   
+			$("#"+dependantDivId).trigger('chosen:updated');
+		}
+		getSubLocationsBySuperLocationId(dependantId,dependantDivId);
+	});
+	
+	$(document).on("change","#mandalLevelParliNames",function(){
+		var dependantDivId = $("#mandalLevelParliNames").attr("attr_dependant_id");
+		var dependantId = $("#mandalLevelParliNames").val();
+		if(dependantId == 0){
+			$("#"+dependantDivId).html('');      
+			$("#"+dependantDivId).trigger('chosen:updated');
+			
+			var nextDependantDivId = $("#"+dependantDivId).attr("attr_dependant_id");
+			$("#"+nextDependantDivId).html('');   
+			$("#"+nextDependantDivId).trigger('chosen:updated');
+			
+		}
+		getSubLocationsBySuperLocationId(dependantId,dependantDivId);   
+	});
+	
+	//ON CHANGE AJAX CALLS
+	//DISTRICT ON CHANGE
+	$(document).on("change","#distLevelDistrictNames",function(){
+		var scopeId = $("#distLevelDistrictNames").attr("attr_scope_id");
+		var blockName = $("#distLevelDistrictNames").attr("attr_block_name");
+		var filterType = $("#distLevelDistrictNames").attr("attr_filter_type");
+		var locationId = $("#distLevelDistrictNames").val();
+		getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+	});
+	$(document).on("change","#distLevelParliamentNames",function(){
+		var scopeId = $("#distLevelParliamentNames").attr("attr_scope_id");
+		var blockName = $("#distLevelParliamentNames").attr("attr_block_name");
+		var filterType = $("#distLevelParliamentNames").attr("attr_filter_type");
+		var locationId = $("#distLevelParliamentNames").val();
+		getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+	});
+	//CONSTITUENCY ON CHANGE
+	$(document).on("change","#constLevelDistNames",function(){
+		var scopeId = $("#constLevelDistNames").attr("attr_scope_id");
+		var blockName = $("#constLevelDistNames").attr("attr_block_name");
+		var filterType = $("#constLevelDistNames").attr("attr_filter_type");
+		var locationId = $("#constLevelDistNames").val();
+		getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+	});
+	$(document).on("change","#constLevelParliaNames",function(){
+		var scopeId = $("#constLevelParliaNames").attr("attr_scope_id");
+		var blockName = $("#constLevelParliaNames").attr("attr_block_name");
+		var filterType = $("#constLevelParliaNames").attr("attr_filter_type");
+		var locationId = $("#constLevelParliaNames").val();
+		getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+	});
+	$(document).on("change","#constLevelConstNames",function(){
+		var scopeId = $("#constLevelConstNames").attr("attr_scope_id");
+		var blockName = $("#constLevelConstNames").attr("attr_block_name");
+		var filterType = $("#constLevelConstNames").attr("attr_filter_type");
+		var locationId = $("#constLevelConstNames").val();
+		if(locationId == 0){
+			var parentDivId = $("#constLevelConstNames").attr("attr_parent");
+			locationId = $("#"+parentDivId).val();  
+			getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+		}else{
+			getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+		}
+		
+	});
+	//MANDAL ON CHANGE
+	$(document).on("change","#mandalLevelDistNames",function(){
+		var scopeId = $("#mandalLevelDistNames").attr("attr_scope_id");
+		var blockName = $("#mandalLevelDistNames").attr("attr_block_name");
+		var filterType = $("#mandalLevelDistNames").attr("attr_filter_type");
+		var locationId = $("#mandalLevelDistNames").val();
+		getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+	});
+	$(document).on("change","#mandalLevelParliNames",function(){
+		var scopeId = $("#mandalLevelParliNames").attr("attr_scope_id");
+		var blockName = $("#mandalLevelParliNames").attr("attr_block_name");
+		var filterType = $("#mandalLevelParliNames").attr("attr_filter_type");
+		var locationId = $("#mandalLevelParliNames").val();
+		getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+	});
+	$(document).on("change","#mandalLevelConstNames",function(){
+		var scopeId = $("#mandalLevelConstNames").attr("attr_scope_id");
+		var blockName = $("#mandalLevelConstNames").attr("attr_block_name");
+		var filterType = $("#mandalLevelConstNames").attr("attr_filter_type");
+		var locationId = $("#mandalLevelConstNames").val();
+		if(locationId == 0){
+			var parentDivId = $("#mandalLevelConstNames").attr("attr_parent");
+			locationId = $("#"+parentDivId).val();  
+			getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+		}else{
+			getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+		}
+		
+	});
+	$(document).on("change","#mandalLevelMandalNames",function(){
+		var scopeId = $("#mandalLevelMandalNames").attr("attr_scope_id");
+		var blockName = $("#mandalLevelMandalNames").attr("attr_block_name");
+		var filterType = $("#mandalLevelMandalNames").attr("attr_filter_type");
+		var locationId = $("#mandalLevelMandalNames").val();
+		if(locationId == 0){
+			var parentDivId = $("#mandalLevelMandalNames").attr("attr_parent");
+			locationId = $("#"+parentDivId).val();  
+			getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+		}else{
+			getCaseCountLocationWise(scopeId,blockName,filterType,locationId);
+		}
+	});
+}
+
+function getCaseCountLocationWise(scopeId,blockName,filterType,locationId){
+	$("#"+blockName+"-tableDivId").html(spinner);
+	var diseasesIdArr=[];     
+	diseasesIdArr.push(1);
+	diseasesIdArr.push(2);
+	var json = {
+		fromDate : glStartDate,
+		toDate : glEndDate, 
+		diseasesIdList : diseasesIdArr,
+		scopeId : scopeId,              
+		locationId : locationId
+    }
+    $.ajax({
+      url : "getCaseCountLocationWise",       
+      data : JSON.stringify(json),
+      type : "POST",  
+      dataTypa : 'json',   
+      beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      },
+      success : function(ajaxresp){
+		  if(ajaxresp != null && ajaxresp.length > 0){
+			  buildTableData(ajaxresp,blockName,filterType);
+		  }else{
+			  $("#"+blockName+"-tableDivId").html("No Data Available");
+		  }
+      }
+    
+    });
+}
+
+function buildTableData(ajaxresp,blockName,filterType){
+	var buildTable='';
+	buildTable+='<div class="row">';
+		buildTable+='<div class="col-sm-12">';
+			buildTable+='<div class="table-responsive">';
+				buildTable+='<table class="table dataTable'+blockName+'" id="build'+blockName+'-tableId" style="width:100%">';
+					buildTable+='<thead>';
+						buildTable+='<tr>';
+							if(blockName == 'DISTRICT'){
+								if(filterType == "Districts"){
+									buildTable+='<th></th>';
+								}else{
+									buildTable+='<th></th>';
+									buildTable+='<th></th>';
+								}
+							}
+							else if(blockName == 'CONSTITUENCY'){
+								if(filterType == "Districts"){
+									buildTable+='<th></th>';
+									buildTable+='<th></th>';
+								}else{
+									buildTable+='<th></th>';
+									buildTable+='<th></th>';
+									buildTable+='<th></th>';
+								}
+							}
+							else if(blockName == 'MANDAL'){
+								if(filterType == "Districts"){
+									buildTable+='<th></th>';
+									buildTable+='<th></th>';
+									buildTable+='<th></th>';
+								}else{
+									buildTable+='<th></th>';
+									buildTable+='<th></th>';
+									buildTable+='<th></th>';
+									buildTable+='<th></th>';
+								}
+							}
+							buildTable+='<th colspan="3"><img src="Assests/img/Dengue&maleria_Sm.png">Dengue & Malaria Cases</th>';
+							buildTable+='<th colspan="3"><img src="Assests/img/Dengue_Sm.png">Dengue</th>';
+							buildTable+='<th colspan="3"><img src="Assests/img/maleria_Sm.png">Malaria</th>';
+						buildTable+='</tr>';
+						buildTable+'<tr>';
+							
+							if(blockName=='DISTRICT'){
+								if(filterType == "Districts"){
+									buildTable+='<th>DISTRICT</th>';
+								}else{
+									buildTable+='<th>DISTRICT</th>';
+									buildTable+='<th>PARLIAMENT</th>';
+								}
+							}else if(blockName=='CONSTITUENCY'){
+								if(filterType == "Districts"){
+									buildTable+='<th>DISTRICT</th>';
+									buildTable+='<th>CONSTITUENCY</th>';
+								}else{
+									buildTable+='<th>DISTRICT</th>';
+									buildTable+='<th>PARLIAMENT</th>';
+									buildTable+='<th>CONSTITUENCY</th>';
+								}
+							}else if(blockName=='MANDAL'){
+								if(filterType == "Districts"){
+									buildTable+='<th>DISTRICT</th>';
+									buildTable+='<th>CONSTITUENCY</th>';
+									buildTable+='<th>MANDAL</th>';
+								}else{
+									buildTable+='<th>DISTRICT</th>';
+									buildTable+='<th>PARLIAMENT</th>';
+									buildTable+='<th>CONSTITUENCY</th>';
+									buildTable+='<th>MANDAL</th>';
+								}
+							}
+							buildTable+='<th style="background-color:#F3F3F3">TODAY</th>';
+							buildTable+='<th style="background-color:#F3F3F3">TOTAL</th>';
+							buildTable+='<th style="background-color:#F3F3F3">%</th>';
+							buildTable+='<th style="background-color:#FDE5F2">TODAY</th>';
+							buildTable+='<th style="background-color:#FDE5F2">TOTAL</th>';
+							buildTable+='<th style="background-color:#FDE5F2">%</th>';
+							buildTable+='<th style="background-color:#E5F0F5">TODAY</th>';
+							buildTable+='<th style="background-color:#E5F0F5">TOTAL</th>';
+							buildTable+='<th style="background-color:#E5F0F5">%</th>';
+						buildTable+'</tr>';
+					buildTable+='</thead>';	
+					buildTable+='<tbody>';
+						for(var i in ajaxresp){
+							buildTable+='<tr>';
+								if(blockName=='DISTRICT'){
+									if(filterType == "Districts"){
+										buildTable+='<td>'+ajaxresp[i].name+'</td>';
+									}else{
+										buildTable+='<td>'+ajaxresp[i].districtName+'</td>';
+										buildTable+='<td>'+ajaxresp[i].name+'</td>';
+									}
+								}else if(blockName=='CONSTITUENCY'){
+									if(filterType == "Districts"){
+										buildTable+='<td>'+ajaxresp[i].districtName+'</td>';
+										buildTable+='<td>'+ajaxresp[i].name+'</td>';
+									}else{
+										buildTable+='<td>'+ajaxresp[i].districtName+'</td>';
+										buildTable+='<td>'+ajaxresp[i].parliamentName+'</td>';
+										buildTable+='<td>'+ajaxresp[i].name+'</td>';
+									}
+								}else if(blockName=='MANDAL'){
+									if(filterType == "Districts"){
+										buildTable+='<td>'+ajaxresp[i].districtName+'</td>';
+										buildTable+='<td>'+ajaxresp[i].constituencyName+'</td>';
+										buildTable+='<td>'+ajaxresp[i].name+'</td>';
+									}else{
+										buildTable+='<td>'+ajaxresp[i].districtName+'</td>';
+										buildTable+='<td>'+ajaxresp[i].parliamentName+'</td>';
+										buildTable+='<td>'+ajaxresp[i].constituencyName+'</td>';
+										buildTable+='<td>'+ajaxresp[i].name+'</td>';
+									}
+								}
+								if(ajaxresp[i].todayTotal > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].todayTotal+'</td>';
+								}else{
+									buildTable+='<td style="background-color:#F3F3F3">-</td>';
+								}
+								if(ajaxresp[i].total > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].total+'</td>';
+								}else{
+									buildTable+='<td style="background-color:#F3F3F3">-</td>';
+								}
+								if(ajaxresp[i].totalPercent > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].totalPercent+'</td>';
+								}else{
+									buildTable+='<td style="background-color:#F3F3F3">-</td>';
+								}
+								if(ajaxresp[i].dengueToday > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].dengueToday+'</td>';
+								}else{
+									buildTable+='<td style="background-color:#F3F3F3">-</td>';
+								}
+								if(ajaxresp[i].dengueTotal > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].dengueTotal+'</td>';
+								}else{
+									buildTable+='<td style="background-color:#F3F3F3">-</td>';
+								}
+								if(ajaxresp[i].denguePercent > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].denguePercent+'</td>';
+								}else{
+									buildTable+='<td style="background-color:#F3F3F3">-</td>';
+								}
+								if(ajaxresp[i].malariaToday > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].malariaToday+'</td>';
+								}else{
+									buildTable+='<td style="background-color:#F3F3F3">-</td>';
+								}
+								if(ajaxresp[i].malariaTotal > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].malariaTotal+'</td>';
+								}else{
+									buildTable+='<td style="background-color:#F3F3F3">-</td>';
+								}
+								if(ajaxresp[i].malariaPercent > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].malariaPercent+'</td>';
+								}else{
+									buildTable+='<td style="background-color:#F3F3F3">-</td>';
+								}
+							buildTable+='</tr>';
+						}
+					buildTable+='</tbody>';
+				buildTable+='</table>';
+			buildTable+='</div>';
+		buildTable+='</div>';
+	buildTable+='</div>';
+	$("#"+blockName+"-tableDivId").html(buildTable);
+	$("#build"+blockName+"-tableId").dataTable({
+		
+	});
+}
+
+function getSubLocationsBySuperLocationId(globalStateIdForSelectBox,divId){
+	var diseasesIdArr=[];
+	diseasesIdArr.push(1);
+	diseasesIdArr.push(2);
+	var json = {
+		fromDate : glStartDate,
+		toDate : glEndDate,                 
+		diseasesIdList : diseasesIdArr,
+		superLocationId : globalStateIdForSelectBox       
+    }
+    $.ajax({
+      url : "getSubLocationsBySuperLocationId",       
+      data : JSON.stringify(json),
+      type : "POST",  
+      dataTypa : 'json',   
+      beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      },
+      success : function(ajaxresp){
+			if(ajaxresp !=null && ajaxresp.length>0){
+			$("#"+divId).html('');
+			$("#"+divId).append('<option value="0">ALL '+globalLevelObj[divId]+'</option>');
+			for(var i in ajaxresp){
+				$("#"+divId).append('<option value="'+ajaxresp[i].id+'">'+ajaxresp[i].name+'</option>');
+			}
+		}	
+		$("#"+divId).trigger('chosen:updated');
+      }
+    });
 }
