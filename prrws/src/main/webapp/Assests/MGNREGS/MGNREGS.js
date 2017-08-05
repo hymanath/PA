@@ -375,15 +375,11 @@ function onLoadCalls()
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o"></i>',
 					titleAttr: 'CSV',
-					title:	   blockId,
-					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				},
 				{
 					extend:    'pdfHtml5',
 					text:      '<i class="fa fa-file-pdf-o"></i>',
 					titleAttr: 'PDF',
-					title:	   blockId,
-					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 					orientation: "landscape",
 					pageSize:'A3',
 					customize: function (doc) {

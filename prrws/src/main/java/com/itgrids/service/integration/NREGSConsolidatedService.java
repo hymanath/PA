@@ -455,7 +455,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Double.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 												}
 												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("GC Works") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
-													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Double.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+													if(Double.valueOf(jObj.getString("SANCTIONEDTARGET")) != null && Double.valueOf(jObj.getString("SANCTIONEDTARGET")) > 0)
+														componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Double.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 												}
 												if(componentName != null && componentName.toString().trim().equalsIgnoreCase("CD_CW") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district")){
 													componentvo.setPercentage(new BigDecimal(jObj.getLong("COMPLETED")*100.00/Double.valueOf(jObj.getString("SANCTIONEDTARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
