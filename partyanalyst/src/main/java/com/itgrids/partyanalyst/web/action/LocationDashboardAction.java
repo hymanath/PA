@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
-import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
@@ -26,6 +25,7 @@ import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.MeetingsVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
@@ -56,7 +56,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<ConstituencyCadreVO> cadreDtlsList;
 	private List<BasicVO> enrollmentYears;
 	private CommitteeBasicVO committeeBasicVO;
-	private List<AlertOverviewVO> alertVO;
+	private List<MeetingsVO> meetingsVO;
 	private InsuranceStatusCountsVO insuranceVO;
 	private List<GrivenceStatusVO> grivenceVO;
 	private List<BasicVO> activityStatusList;
@@ -103,11 +103,11 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setInsuranceVO(InsuranceStatusCountsVO insuranceVO) {
 		this.insuranceVO = insuranceVO;
 	}
-	public List<AlertOverviewVO> getAlertVO() {
-		return alertVO;
+	public List<MeetingsVO> getMeetingsVO() {
+		return meetingsVO;
 	}
-	public void setAlertVO(List<AlertOverviewVO> alertVO) {
-		this.alertVO = alertVO;
+	public void setMeetingsVO(List<MeetingsVO> meetingsVO) {
+		this.meetingsVO = meetingsVO;
 	}
 	public CommitteeBasicVO getCommitteeBasicVO() {
 		return committeeBasicVO;
@@ -472,7 +472,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			jObj = new JSONObject(getTask());
 			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
 			
-			alertVO = locationDashboardService.getLevelWiseMeetingStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
+			meetingsVO = locationDashboardService.getLevelWiseMeetingStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getLocationWiseMeetingCount() of LocationDashboardAction{}",e);
 		}
