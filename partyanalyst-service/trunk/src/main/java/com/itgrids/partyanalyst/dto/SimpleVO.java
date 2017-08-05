@@ -18,7 +18,7 @@ public class SimpleVO implements java.io.Serializable{
    private String mobileNo;
    
    private Long count;
-   private Long total;
+   private Long total =0l;
    private Long totalCount =0l;
    private String isAttended = "-";
    
@@ -107,7 +107,7 @@ public class SimpleVO implements java.io.Serializable{
    
    private Long confirmedCount=0L;
    private Long totl=0l;
-
+   private Long nonInviteeAtendedCount =0l;
    
    
 public Long getConfirmedCount() {
@@ -606,6 +606,12 @@ public void setNonInvitee(boolean nonInvitee) {
 	}
 	public void setTotl(Long totl) {
 		this.totl = totl;
+	}
+	public Long getNonInviteeAtendedCount() {
+		return nonInviteeAtendedCount;
+	}
+	public void setNonInviteeAtendedCount(Long nonInviteeAtendedCount) {
+		this.nonInviteeAtendedCount = nonInviteeAtendedCount;
 	}
 	
 	
