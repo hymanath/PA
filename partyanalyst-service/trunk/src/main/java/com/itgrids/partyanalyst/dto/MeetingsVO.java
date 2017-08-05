@@ -21,10 +21,38 @@ public class MeetingsVO implements Serializable{
 	
 	private int villageWardSerialNo = 0;
 	private int mandalTownSerialNo = 0;
+	private Long yesCount = 0l;
+	private Long noCount = 0l;
+	private Long mayBeCount = 0l;
+	private Long notUpDatedCount = 0l;
 	   
 	private List<MeetingsVO> villageWardList;
 	private List<MeetingsVO> mandalTownList;
 	
+	public Long getYesCount() {
+		return yesCount;
+	}
+	public void setYesCount(Long yesCount) {
+		this.yesCount = yesCount;
+	}
+	public Long getNoCount() {
+		return noCount;
+	}
+	public void setNoCount(Long noCount) {
+		this.noCount = noCount;
+	}
+	public Long getMayBeCount() {
+		return mayBeCount;
+	}
+	public void setMayBeCount(Long mayBeCount) {
+		this.mayBeCount = mayBeCount;
+	}
+	public Long getNotUpDatedCount() {
+		return notUpDatedCount;
+	}
+	public void setNotUpDatedCount(Long notUpDatedCount) {
+		this.notUpDatedCount = notUpDatedCount;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
