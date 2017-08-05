@@ -22743,4 +22743,68 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		return returnVO;
  }
  
+ public CadreCommitteeVO getSerialNoAvailbleCadreRangeWise(Long mandalId, Long boothId,String range,String gender){
+	
+	 CadreCommitteeVO returnVO= new CadreCommitteeVO();
+	 Long minRange=0l;
+	 Long maxRange=0l;
+	 if(!range.equalsIgnoreCase("0")){
+		 String[] str=range.trim().split(" - ");
+		 minRange=Long.parseLong(str[0].toString());
+		 maxRange=Long.parseLong(str[1].toString());
+	 }
+	 try{
+		 Map<Long,Long> voterSerialNoMap = new HashMap<Long, Long>(0);
+		 
+		 List<Object[]> votersList = boothDAO.getVoterDetailsByBoothId(boothId);
+		 Long serialNo=0l;
+		 if(commonMethodsUtilService.isListOrSetValid(votersList)){
+			 
+				for (Object[] param : votersList) {	
+					serialNo=commonMethodsUtilService.getLongValueForObject(param[1]);	
+					if(!range.trim().equalsIgnoreCase("0")){						
+						if(serialNo.longValue()>=minRange && serialNo.longValue()<=maxRange){
+							voterSerialNoMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1]));	
+						}
+					}else{
+						voterSerialNoMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+				}
+		    }	
+				List<Object[]> tdpcadreIdObjsList = tdpCadreDAO.getRangeWiseTdpCadreDtlsObjs(voterSerialNoMap.keySet());
+					
+
+					if(tdpcadreIdObjsList !=null && tdpcadreIdObjsList.size() > 0){
+					 
+					 for(Object[] Obj: tdpcadreIdObjsList){
+						 CadreCommitteeVO finalVO = new CadreCommitteeVO();
+						 
+						 finalVO.setName(commonMethodsUtilService.getStringValueForObject(Obj[0]));
+						 finalVO.setRelativeName(commonMethodsUtilService.getStringValueForObject(Obj[1]));
+						 finalVO.setAge(commonMethodsUtilService.getStringValueForObject(Obj[2]));
+						 finalVO.setGender(commonMethodsUtilService.getStringValueForObject(Obj[3]));
+						 finalVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(Obj[4]));
+						 finalVO.setCasteName(commonMethodsUtilService.getStringValueForObject(Obj[5]));
+						 finalVO.setVoterId(commonMethodsUtilService.getLongValueForObject(Obj[6]));
+						 finalVO.setImageURL(commonMethodsUtilService.getStringValueForObject(Obj[7]));
+						 finalVO.setTehsil(commonMethodsUtilService.getStringValueForObject(Obj[8]));
+						 finalVO.setPanchayat(commonMethodsUtilService.getStringValueForObject(Obj[9]));
+						 finalVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(Obj[10]));
+						 finalVO.setGender(commonMethodsUtilService.getStringValueForObject(Obj[3]));
+						 
+						 finalVO.setSerialNo(voterSerialNoMap.get(commonMethodsUtilService.getLongValueForObject(Obj[6])).toString());
+						 if(commonMethodsUtilService.getStringValueForObject(Obj[3]).equalsIgnoreCase(gender)){
+							 returnVO.getCasteList().add(finalVO);
+						 } else if (gender.equalsIgnoreCase("0")){
+							 returnVO.getCasteList().add(finalVO);
+						 }
+					 }
+				  }
+			
+		 }catch(Exception e){
+			 LOG.error("Exception raised in CadreCommitteeService of getSerialNoAvailbleCadreRangeWise", e);
+		 }
+	 return returnVO;
+	 }
+ 
 }

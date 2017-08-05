@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -9804,5 +9805,25 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		    Query  query = getSession().createQuery("select tc.tdpCadreId,tc.isDeletedVoter from TdpCadre tc where tc.isDeletedVoter='Y' and tc.tdpCadreId in (:tdpCadreIds)");
 		    query.setParameterList("tdpCadreIds", tdpCadreIds);
 		    return query.list();
+	   }
+	   
+	   public List<Object[]> getRangeWiseTdpCadreDtlsObjs(Set<Long> voterIds){
+		   StringBuilder sb = new StringBuilder();
+		   sb.append("select model.tdpCadre.firstname, model.tdpCadre.relativename, model.tdpCadre.age, model.tdpCadre.gender, model.tdpCadre.mobileNo, " +
+		   		" model.tdpCadre.casteState.caste.casteName, " +
+		   		" model.tdpCadre.voterId, model.tdpCadre.image, model.tdpCadre.userAddress.tehsil.tehsilName, model.tdpCadre.userAddress.panchayat.panchayatName, model.tdpCadre.tdpCadreId " +
+		   		" from TdpCadreEnrollmentYear model " +
+		   		" where " +
+		   		" model.enrollmentYearId = 4 and model.tdpCadre.enrollmentYear = 2014 and model.isDeleted = 'N'  and model.tdpCadre.isDeleted = 'N' ");
+		   		if(voterIds !=null && voterIds.size() > 0L){
+		   		 sb.append(" and model.tdpCadre.voterId in (:voterIds)");
+	   			}
+		   				
+		   Query query = getSession().createQuery(sb.toString());
+		   if(voterIds !=null && voterIds.size() > 0){
+			   query.setParameterList("voterIds", voterIds);
+		   }
+		    return query.list();
+		   
 	   }
 }
