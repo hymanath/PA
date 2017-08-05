@@ -65,6 +65,14 @@
 	{
 		padding-left:15px;
 	}
+	.menu-top-selection .arrow_box_top
+	{
+		width:250px;
+		position:absolute;
+		right:5px;
+		top:30px;
+		z-index:99;
+	}
 }
 @media (min-width: 500px) and (max-width:767px) 
 {
@@ -122,6 +130,14 @@
 	.pad_left0
 	{
 		padding-left:15px;
+	}
+	.menu-top-selection .arrow_box_top
+	{
+		width:350px;
+		position:absolute;
+		right:5px;
+		top:30px;
+		z-index:99;
 	}
 }
 @media (min-width:769px) and  (max-width:991px){
