@@ -1,6 +1,8 @@
 package com.itgrids.service.lmd.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -238,12 +240,19 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	 * @description : saveRealtimeStatusByVillages
 	 	 */
 	     @Override
-	public List<LightMonitoringVO> getBasicLedOverviewDetails() {
+	public List<LightMonitoringVO> getBasicLedOverviewDetails(String startDate,String endDate) {
 		   List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
 		   LightWattageVO wattagVO=new LightWattageVO();
 		   
-		try{					
-		     List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails();
+		try{	
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+				fromDate = sdf.parse(startDate);
+				toDate = sdf.parse(endDate);
+			}
+		     List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate);
 		     
 		     if(lightMonitoringData!=null && lightMonitoringData.size()>0 && !lightMonitoringData.isEmpty()){
 		    	 LightMonitoringVO lightMonitoringVO= new LightMonitoringVO();
@@ -256,7 +265,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 				        lightMonitoringVO.setWorkingLights((Long)objects[5]);
 				        lightMonitoringVO.setNotWorkingLights((Long)objects[6]);
 		
-				  List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege();
+				  List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege(fromDate,toDate);
 		       
 			       if(wattegeCount!=null && wattegeCount.size()>0 && !wattegeCount.isEmpty()){
 			    	   for (Object[] objects2 : wattegeCount) {				    	
@@ -278,11 +287,19 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	 * Author :Swapna
 	 	 * @description : getDistrictLevelCount
 	 	 */
-	public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(){
+	public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate){
 	  List<LedOverviewVo>listVO=new ArrayList<LedOverviewVo>(0);
 	  try
 	  {
-		  List<Object[]> counts = lightMonitoringDAO.getTotalSurveyDetails();
+		    Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+				fromDate = sdf.parse(startDate);
+				toDate = sdf.parse(endDate);
+			}
+		  
+		  List<Object[]> counts = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate);
 			  if(counts!=null && counts.size()>0 &&!counts.isEmpty())
 			  {				  
 				 for (Object[] objects : counts) {
