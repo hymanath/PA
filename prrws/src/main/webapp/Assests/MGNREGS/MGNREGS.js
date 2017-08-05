@@ -2365,8 +2365,8 @@ function getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,m
 		var json = {
 			year : "2017",
 			fromDate : glStartDate,
-			toDate : glEndDate,
-			locationType: locationType,
+			toDate : '2017-05-30',
+			locationType: menuLocationType,
 			divType : globalDivName,
 			type  : type,
 			locationId : menuLocationId,
@@ -2813,14 +2813,27 @@ function getNregasOverview(projectDivId,menuLocationType,menuLocationId)
 function getNregasPopupOverview(menuLocationType,menuLocationId)
 {
 	$("#nregsOverviewBodyId").html(spinner);
-	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-        toDate : glEndDate,
-		divType : globalDivName,
-		locationType : menuLocationType,
-		locationId : menuLocationId
+	if(globalDivName == 'FAperformance')
+	{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : '2017-05-30',
+			divType : globalDivName,
+			locationType : menuLocationType,
+			locationId : menuLocationId
+		}
+	}else{
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			divType : globalDivName,
+			locationType : menuLocationType,
+			locationId : menuLocationId
+		}
 	}
+	
 	$.ajax({
 		url: 'getNregasOverview',
 		data: JSON.stringify(json),
