@@ -17935,7 +17935,13 @@
    <action name="getAllMomAtrClickDetailsAction" class="trainingCampAction" method="getAllMomAtrClickDetails">
 	    <result type="json" name="success">		   
 		    <param name="root">keyValueVOlist</param>
-		</result>
+   		</result>
+	</action>
+	
+	<action name="getSerialNoAvailbleCadreRangeWiseAction" class="cadreCommitteeAction" method="getSerialNoAvailbleCadreRangeWise">
+	    <result type="json" name="success">		   
+		    <param name="root">cadreCommitteeVO</param>
+   		</result>
 	</action>
  </package>
 </struts>
