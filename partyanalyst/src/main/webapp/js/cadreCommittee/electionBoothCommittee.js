@@ -1913,7 +1913,7 @@ $("#cadreDetailsDiv1").show();
 				str +='<th class="text-center">MALE</th>';
 				str +='<th class="text-center">FEMALE</th>';
 				str +='<th class="text-center">AVAILABLE CADRE</th>';
-				str +='<th class="text-center">STATUS</th>';
+				//str +='<th class="text-center">STATUS</th>';
 				str +='</tr>';
 			for (var i in sublist){
 				str +='<tr class="text-center">';
@@ -1921,10 +1921,10 @@ $("#cadreDetailsDiv1").show();
 				str +='<td class="text-center">'+sublist[i].maleCount+'</td>';
 				str +='<td class="text-center">'+sublist[i].femaleCount+'</td>';
 				str +='<td class="text-center">'+sublist[i].totalCount+'</td>';
-				if(sublist[i].alreadyRegistered == null || sublist[i].alreadyRegistered.length == 0 )
+				/* if(sublist[i].alreadyRegistered == null || sublist[i].alreadyRegistered.length == 0 )
 					str +='<td class="text-center" style="color:red;"> NOT ADDED </td>';
 				else
-					str +='<td class="text-center" style="color:green;" >'+sublist[i].alreadyRegistered+'</td>';
+					str +='<td class="text-center" style="color:green;" >'+sublist[i].alreadyRegistered+'</td >';*/
 				total=total+sublist[i].totalCount;
 				totalMale=totalMale+sublist[i].maleCount;
 				totalFemale =totalFemale+sublist[i].femaleCount;
