@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IDepartmentDiseasesInfoDAO;
 import com.itgrids.dto.DiseasesVO;
+import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.service.IHealthMedicalAndFamilyWelfareService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
@@ -136,16 +137,33 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getCaseCountLocationWise(java.lang.String, java.lang.String, java.util.List, java.util.List, java.lang.Long)
 	 */
 	@Override
-	public List<DiseasesVO> getCaseCountLocationWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long scope,Long superLocationId){
+	public List<DiseasesVO> getCaseCountLocationWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long scope,Long locationId){
 		try{
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(fromDateStr,"dd/MM/yyyy","");
 			Date endDate = commonMethodsUtilService.stringTODateConvertion(toDateStr,"dd/MM/yyyy","");
 			diseasesIdList = commonMethodsUtilService.makeEmptyListByZeroValue(diseasesIdList);
 			deptIdList = commonMethodsUtilService.makeEmptyListByZeroValue(deptIdList);
 			
-			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,scope,superLocationId);
+			String locationLevelIdStr = "";
+ 			String locationIdStr = locationId.toString();
+ 			
+ 			locationLevelIdStr =locationIdStr.substring(0, 1);
+ 			
+			locationIdStr = locationIdStr.substring(1);
+			
+			if(locationIdStr != null && locationIdStr.trim().length() > 0){
+				locationId = Long.parseLong(locationIdStr);
+			}
+			
+			Long locationLevelId = Long.parseLong(locationLevelIdStr);
+			
+			if(locationLevelId.longValue()== 9L){
+				locationLevelId = 10L;
+			}
+			
+			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,scope,locationLevelId,locationId);
 			Date today = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> diseasesListToday = departmentDiseasesInfoDAO.getCaseCountLocationWise(today,today,diseasesIdList,deptIdList,scope,superLocationId);
+			List<Object[]> diseasesListToday = departmentDiseasesInfoDAO.getCaseCountLocationWise(today,today,diseasesIdList,deptIdList,scope,locationLevelId,locationId);
 			
 			//only diseases wise count
 			List<DiseasesVO> diseasesVOs = buildCaseCountLocationWise(diseasesList,diseasesListToday,scope);
@@ -225,7 +243,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 					malariaList = diseasesWiseLocMap.get(2L);
 					for(DiseasesVO param : malariaList){
 						tempDiseasesVo = (DiseasesVO) setterAndGetterUtilService.getMatchedVOfromList(diseasesVOs2, "id", param.getId().toString());
-						tempDiseasesVo.setMalariaTotal(param.getCount());
+						tempDiseasesVo.setDengueTotal(param.getCount());
 					}
 				}
 			}
@@ -631,42 +649,75 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 		}
 		return null;
 	}
-	/*public void buildCaseCountLocationWise(List<DiseasesVO> diseasesVOs,List<Object[]> diseasesList){
-		try{
-			DiseasesVO diseasesVO = null;
-			List<DiseasesVO> tempList = null;
-			Map<Long,List<DiseasesVO>> diseasesWiseLocMap = new HashMap<Long,List<DiseasesVO>>();
+	/*
+ 	 * Swadhin K Lenka
+ 	 * (non-Javadoc)
+ 	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getAllSubLocationsBySuperLocationId(com.itgrids.dto.InputVO)
+ 	 */
+ 	@Override
+ 	public List<LocationFundDetailsVO> getAllSubLocationsBySuperLocationId(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long superLocationId){
+ 		try{
+ 			List<LocationFundDetailsVO> detailsVOs = new ArrayList<LocationFundDetailsVO>();
+ 			LocationFundDetailsVO locationFundDetailsVO = null;
+ 			List<Object[]> locationList = null;
+ 			String lvlIdStr = "";
+ 			Date sDate = commonMethodsUtilService.stringTODateConvertion(fromDateStr,"dd/MM/yyyy","");
+ 			Date eDate = commonMethodsUtilService.stringTODateConvertion(toDateStr,"dd/MM/yyyy","");
+ 			
+ 			diseasesIdList = commonMethodsUtilService.makeEmptyListByZeroValue(diseasesIdList);
+ 			deptIdList = commonMethodsUtilService.makeEmptyListByZeroValue(deptIdList);
+ 			
+ 			String superLocationLevelIdStr = "";
+ 			String superLocationIdStr = superLocationId.toString();
+ 			
+ 			superLocationLevelIdStr = superLocationIdStr.substring(0, 1);
+ 			
+			superLocationIdStr = superLocationIdStr.substring(1);
 			
-			if(diseasesList != null && diseasesList.size() > 0){
-				for(Object[] param : diseasesList)
-				{
-					diseasesVO = new DiseasesVO();
-					diseasesVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					diseasesVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					diseasesVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[2]));
-					diseasesVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[3]));
-					diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[4]));
-					tempList = diseasesWiseLocMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-					if(tempList == null){
-						tempList = new ArrayList<DiseasesVO>();
-						tempList.add(diseasesVO);
-					}else{
-						tempList.add(diseasesVO);
-					}
-					diseasesWiseLocMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), tempList);
+			if(superLocationIdStr != null && superLocationIdStr.trim().length() > 0){
+				superLocationId = Long.parseLong(superLocationIdStr);
+			}
+			
+			Long superLocationLevelId = Long.parseLong(superLocationLevelIdStr);
+			
+			if(superLocationLevelId.longValue()== 9L){
+				superLocationLevelId = 10L;
+			}
+			
+			if(superLocationLevelId != null && superLocationLevelId.longValue() == 1L){//get parliaments
+				locationList = departmentDiseasesInfoDAO.getAllParliamentByStateId(sDate,eDate,superLocationId,diseasesIdList,deptIdList);
+				lvlIdStr = "9";
+			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){//get districtIds
+				locationList = departmentDiseasesInfoDAO.getAllDistrictByStateId(sDate,eDate,superLocationId,diseasesIdList,deptIdList);
+				lvlIdStr = IConstants.DISTRICT_LEVEL_SCOPE_ID.toString();
+			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){//get constituencyIds
+				locationList = departmentDiseasesInfoDAO.getAllConstituencyByDistrictId(sDate,eDate,superLocationId,diseasesIdList,deptIdList);
+				lvlIdStr = IConstants.CONSTITUENCY_LEVEL_SCOPE_ID.toString();
+			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){//get tehsilIds
+				locationList = departmentDiseasesInfoDAO.getAllTehsilByConstituencyId(sDate,eDate,superLocationId,diseasesIdList,deptIdList);
+				lvlIdStr = IConstants.MANDAL_LEVEL_SCOPE_ID.toString();
+			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){//get panchayatIds
+				locationList = departmentDiseasesInfoDAO.getAllPanchayatByTehsilId(sDate,eDate,superLocationId,diseasesIdList,deptIdList);
+				lvlIdStr = IConstants.VILLAGE_LEVEL_SCOPE_ID.toString();
+			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){//get constituencyIds
+				locationList = departmentDiseasesInfoDAO.getAllConstituencyByParliamentConstId(sDate,eDate,superLocationId,diseasesIdList,deptIdList);
+				lvlIdStr = IConstants.CONSTITUENCY_LEVEL_SCOPE_ID.toString();  
+			}	
+			if(locationList != null && locationList.size() > 0){
+				for(Object[] param : locationList){
+					locationFundDetailsVO = new LocationFundDetailsVO();
+					String locId = commonMethodsUtilService.getStringValueForObject(param[0]);
+					locId = lvlIdStr.concat(locId);
+					locationFundDetailsVO.setId(Long.parseLong(locId));
+					 String nameStr=commonMethodsUtilService.getStringValueForObject(param[1]);
+						locationFundDetailsVO.setName(commonMethodsUtilService.toConvertStringToTitleCase(nameStr));
+						detailsVOs.add(locationFundDetailsVO);
 				}
 			}
-			if(diseasesWiseLocMap != null && diseasesWiseLocMap.size() > 0){
-				for(Entry<Long,List<DiseasesVO>> param : diseasesWiseLocMap.entrySet()){
-					diseasesVO = new DiseasesVO();
-					diseasesVO.getSubList1().addAll(param.getValue());
-					diseasesVO.setId(param.getValue().get(0).getId());
-					diseasesVO.setName(param.getValue().get(0).getName());
-					diseasesVOs.add(diseasesVO);
-				}
-			}
-		}catch(Exception e){
-			LOG.error(" Exception occured in HealthMedicalAndFamilyWelfareService ,getDiseasesWiseThenLocationWiseCount() ",e);
-		}
-	}*/
+			return detailsVOs;
+ 		}catch(Exception e){
+ 			LOG.error("Exception Occurred in getAllSubLocationsBySuperLocationId() of FundManagementDashboardService ", e);
+ 			return null;
+ 		}
+ 	}
 }

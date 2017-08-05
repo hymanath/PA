@@ -1669,6 +1669,86 @@ header
 	color:#fff !important;
 	border:0px !important;
 }
+.white_block{
+	background-color: white;
+	padding: 20px 0px;
+	box-shadow:0px 0px 3px 3px rgba(0,0,0,0.4);
+}
+.counts_block{
+	padding-top: 5px;
+	p{
+		display: inline-block;
+		padding: 0px 5px;
+	}
+}
+.tableMenu{
+	border: 1px solid grey;
+	padding: 2px;
+	li{
+		padding: 6px 15px;
+	}
+	li.active{
+		background-color: #333;
+		color: white;
+	}
+}
+
+.casesPercentage{
+	padding: 8px 0px;
+	.circle{
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		border-radius: 20px;
+		margin: 0px 2px 0px 16px;
+	}
+	span{
+		position: relative;
+		bottom: 4px;
+	}
+}
+.dates-block{
+	li.media:first-child{
+		margin-top: 15px;
+	}
+	li{
+		padding: 0px 10px;
+		display: inline-block ;
+		.media-body{
+			width: auto;
+		}
+	}
+}
+
+	.buildCollapse{
+		.panelCollapseIcon
+	{
+		&:before {
+			font-family:'Glyphicons Halflings';
+			content:"\2212";
+			float: right;
+			font-size:10px;
+			font-weight:400 !important;
+			margin-left:-24px;
+			color:#333333;
+			//border:1px solid grey;
+			padding:3px 5px;
+			background-color: @white_color;      
+			.rounded-corners(4px);
+			height:20px;
+			width:20px;
+			display:block;
+		}
+		
+	}
+	.panelCollapseIcon.collapsed
+	{
+	   &:before {
+		content:"\002b";
+	   }
+	}
+	}
+
 .poles_block{
     .border_dashed{
         border-top: 1px dashed grey;
