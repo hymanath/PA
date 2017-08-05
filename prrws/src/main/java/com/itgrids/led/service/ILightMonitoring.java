@@ -9,9 +9,9 @@ import com.itgrids.dto.ResultVO;
 
 public interface ILightMonitoring {
 	
-	public List<LightMonitoringVO> getBasicLedOverviewDetails();	
+	public List<LightMonitoringVO> getBasicLedOverviewDetails(String fromDate,String toDate);	
 	//public List<LightMonitoringVO> getVillageIdBasedDetails();
       public ResultVO saveRealtimeStatusByVillages();
-      public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts();
+      public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate);
 
 }
