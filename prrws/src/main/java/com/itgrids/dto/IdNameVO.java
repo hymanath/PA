@@ -16,7 +16,20 @@ public class IdNameVO implements Serializable{
 	private String minDate;
 	private String maxDate;
 	
-	
+	public IdNameVO() {
+		super();
+	}
+	public IdNameVO(Long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+	public IdNameVO(Long id, String name, String totl) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.totl = totl;
+	}
 	public String getMinDate() {
 		return minDate;
 	}

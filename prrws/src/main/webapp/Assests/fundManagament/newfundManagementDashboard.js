@@ -1011,15 +1011,29 @@ getAllDepartments();
 				  xhr.setRequestHeader("Content-Type", "application/json");
 		}  
 		}).done(function(result){
-			overviewSelectBoxData = result;
-		  if(result !=null && result.length>0){
-				 $("#"+divId).append('<option value="0">ALL</option>');
-				for(var i in result){
-					$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+			var departmentArr = $("#DepartmentsId").val();
+			for(var i in departmentArr){
+				if(departmentArr[i] == 3 || departmentArr[i] == 0){
+					if(departmentArr.length == 1 && departmentArr[i] == 3){
+						result = [];
+					}
+					if(divId == "overviewSelect"){
+						result.push({"id":"-1","name":"MGNREGS"})
+					}
+					
 				}
 			}
-		
-			$("#"+divId).trigger('chosen:updated');
+			overviewSelectBoxData = result;
+			if(result !=null && result.length>0){
+				   $("#"+divId).append('<option value="0">ALL</option>');
+					for(var i in result){
+						$("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					}
+					
+				}
+				$("#"+divId).trigger('chosen:updated');
+			
+			
 			
 			if(divId == 'overviewSelect')
 			{
@@ -1028,7 +1042,7 @@ getAllDepartments();
 				overviewTable+='<div class="col-sm-12">';
 					overviewTable+='<div class="panel panel-default">';
 						overviewTable+='<div class="panel-body">';
-							overviewTable+='<div class="table-responsive">';
+							overviewTable+='<div class="">';
 								overviewTable+='<table class="table">';
 									overviewTable+='<thead>';
 										overviewTable+='<th><select id="overviewSelect" >';
@@ -1053,12 +1067,12 @@ getAllDepartments();
 										var k = 1;					
 										for(var i in result)
 										{
-											overviewTable+='<tr id="blockProgram'+k+'">';
+											overviewTable+='<tr id="blockProgram'+result[i].id+'">';
 												overviewTable+='<td class="text-capital clearCls" style="border-right:2px dashed #777;"><h4>'+result[i].name+'</h4></td>';
-												overviewTable+='<td class="total'+k+' text-center clearCls"></td>';
-												overviewTable+='<td class="district'+k+' clearCls"></td>';
-												overviewTable+='<td class="constituency'+k+' clearCls"></td>';
-												overviewTable+='<td class="mandal'+k+' clearCls"></td>';
+												overviewTable+='<td class="total'+result[i].id+' text-center clearCls"></td>';
+												overviewTable+='<td class="district'+result[i].id+' clearCls"></td>';
+												overviewTable+='<td class="constituency'+result[i].id+' clearCls"></td>';
+												overviewTable+='<td class="mandal'+result[i].id+' clearCls"></td>';
 											overviewTable+='</tr>';
 											k = k +1;
 										}
@@ -1288,7 +1302,10 @@ getAllDepartments();
 	});
 	var departmentArrGlob =[];
 	departmentArrGlob.push("0");
+	var departmentArrGlob1 =[];
+	departmentArrGlob1.push("3");
 	$(document).on("change","#DepartmentsId",function(){//ara1
+		var values = $(this).val();//debugger;
 		/* $('#tabVill a[href="#villageLevelTable"]').trigger('click');
 		$('#tabMan a[href="#mandalLevelTable"]').trigger('click');
 		$('#tabSt a[href="#stateLevelTable"]').trigger('click');
@@ -1318,6 +1335,81 @@ getAllDepartments();
 		$(".showHideDistrictPgramsCls").hide();
 		$(".showHideVillagePgramsCls").hide();
 		$(".showHideMandalPgramsCls").hide();
+		
+		var firstIndexVal=0;
+		var secondIndexVal=0;
+		if(values !=null){
+			if(values.length == 2 || values.length==1){
+				if(values.length == 2){
+					for(var i in values){
+						if(i == 0){
+							firstIndexVal=values[i];
+						}else{
+							secondIndexVal=values[i];
+						}
+					} 
+					
+					if(firstIndexVal == 0 && secondIndexVal == 3){
+						$(".advancedSearchStyle").hide();
+						$(".comaprisionViewShow").hide();
+						$(".showHideStatePgramsCls").hide();
+						$(".showHideDistrictPgramsCls").hide();
+						$(".showHideConstituencyPgramsCls").hide();
+						$(".showHideMandalPgramsCls").hide();
+						$(".showHideVillagePgramsCls").hide();
+						$(".selectBoxCommonCls").hide();
+					}else {
+					   $(".advancedSearchStyle").show();	
+					   $(".comaprisionViewShow").show();
+						$(".showHideStatePgramsCls").show();
+						$(".showHideDistrictPgramsCls").show();
+						$(".showHideConstituencyPgramsCls").show();
+						$(".showHideMandalPgramsCls").show();
+						$(".showHideVillagePgramsCls").show();
+						$(".selectBoxCommonCls").show();
+					}
+				}
+			
+				if(values.length == 1){
+					for(var i in values){
+					  firstIndexVal=values[i];
+					} 
+					if(firstIndexVal == 3){
+							$(".advancedSearchStyle").hide();
+							$(".comaprisionViewShow").hide();
+							$(".showHideStatePgramsCls").hide();
+							$(".showHideDistrictPgramsCls").hide();
+							$(".showHideConstituencyPgramsCls").hide();
+							$(".showHideMandalPgramsCls").hide();
+							$(".showHideVillagePgramsCls").hide();
+							$(".selectBoxCommonCls").hide();
+					}else {
+							 $(".advancedSearchStyle").show();
+							 $(".comaprisionViewShow").show();
+							 $(".showHideStatePgramsCls").show();
+							 $(".showHideDistrictPgramsCls").show();
+							 $(".showHideConstituencyPgramsCls").show();
+							 $(".showHideMandalPgramsCls").show();
+							 $(".showHideVillagePgramsCls").show();
+							$(".selectBoxCommonCls").show();
+					}
+				}
+			
+			} else {
+					$(".advancedSearchStyle").show();
+					$(".comaprisionViewShow").show();
+					$(".showHideStatePgramsCls").show();
+					$(".showHideDistrictPgramsCls").show();
+					$(".showHideConstituencyPgramsCls").show();
+					$(".showHideMandalPgramsCls").show();
+					$(".showHideVillagePgramsCls").show();
+					$(".selectBoxCommonCls").show();
+			}
+		}
+		
+		
+	
+		
 		
 		//district
 		$(".distLevelparliamentCls").hide();
@@ -1359,7 +1451,6 @@ getAllDepartments();
 		$("#collapseThree").removeClass("in");		
 		$("#collapseFour").removeClass("in");		
 		$("#collapseFive").removeClass("in");		
-		var values = $(this).val();//debugger;
 		
 		if(values != null && values.length > 0){
 			for(var i=0; i<values.length; i++) {
@@ -1455,7 +1546,7 @@ getAllDepartments();
 					$("#DepartmentsId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
 				}
 			}
-			
+			//$("#DepartmentsId").append("<option value='3'>MGNREGS</option>");
 			$("#DepartmentsId").val(0)
 			$("#DepartmentsId").trigger("chosen:updated");
 		});
@@ -1523,7 +1614,11 @@ getAllDepartments();
 			fromDateStr : glStartDate,       
 			toDateStr : glEndDate,		
 			searchLevelId:globalLocationLevelTypeId,
-			searchLvlVals:glSearchLevelValue
+			searchLvlVals:glSearchLevelValue,
+			year : "2017", //For MGNREGS SERVICE
+			fromDate : getDateInRequiredFormat(glStartDate),
+			toDate : getDateInRequiredFormat(glEndDate)
+			
 		}
 		$.ajax({
 			url : "getALlProgramesAmountDetails",     
@@ -1658,7 +1753,11 @@ getAllDepartments();
 			glSearchLevelValue :[],
 			glSearchLevelId :1,
 			viewType :viewType,
-			grantTypeIdsList:grantTypeIdsList
+			grantTypeIdsList:grantTypeIdsList,
+			year : "2017", //For MGNREGS SERVICE
+			fromDate : getDateInRequiredFormat(glStartDate),
+			toDate : getDateInRequiredFormat(glEndDate),
+			subFilterType:"parliament"
 		}
 		$.ajax({
 			url : "getFinancialYearWiseScheameDetails",  
@@ -1717,7 +1816,7 @@ getAllDepartments();
 						if(levelId == '2')
 						{
 							table+='<th>STATE</th>';
-							if(departmentId != 1)
+							if(departmentId != 1 && departmentId != 3)
 							table+='<th></th>';
 							if(viewType == "cumulative"){
 								table+='<th>TOTAL</th>';
@@ -1727,7 +1826,7 @@ getAllDepartments();
 							var blockType = getblockType();
 							
 							table+='<th>DISTRICT</th>';
-							if(departmentId != 1)
+							if(departmentId != 1 && departmentId != 3)
 							table+='<th></th>';
 							if(viewType == "cumulative"){
 								table+='<th>TOTAL</th>';
@@ -1745,13 +1844,13 @@ getAllDepartments();
 						{
 							var blockType = getblockTypeCons();
 							table+='<th>DISTRICT</th>';
-							if(departmentId != 1)
+							if(departmentId != 1 && departmentId != 3)
 							table+='<th></th>';
 							if(blockType == "parliamentType"){
 								table+='<th>PARLIAMENT</th>';
 							}
 							table+='<th>CONSTITUENCY</th>';
-							if(departmentId != 1)
+							if(departmentId != 1 && departmentId != 3)
 							table+='<th></th>';
 							if(viewType == "cumulative"){
 								table+='<th>TOTAL</th>';
@@ -1760,16 +1859,16 @@ getAllDepartments();
 						{
 							var blockType = getblockTypeMandal();
 							table+='<th>DISTRICT</th>';
-							if(departmentId != 1)
+							if(departmentId != 1 && departmentId != 3)
 							table+='<th></th>';
 							if(blockType == "parliamentType"){
 								table+='<th>PARLIAMENT</th>';
 							}
 							table+='<th>CONSTITUENCY</th>';
-							if(departmentId != 1)
+							if(departmentId != 1 && departmentId != 3)
 							table+='<th></th>';
 							table+='<th>MANDAL</th>';
-							if(departmentId != 1)
+							if(departmentId != 1 && departmentId != 3)
 							table+='<th></th>';
 							if(viewType == "cumulative"){
 								table+='<th>TOTAL</th>';
@@ -1789,7 +1888,7 @@ getAllDepartments();
 							}
 						}
 						table+='<th class="text-center">YEAR</th>';
-						for(var j in result[0].subList[0].subList){
+						for(var j in result[0].subList[0].subList){//qa
 							table+='<th class="text-center">'+result[0].subList[0].subList[j].name+'</th>';
 						}
 					table+='</tr>';
@@ -1815,7 +1914,7 @@ getAllDepartments();
 								lvlVal =1;
 								//table+='<td>1</td>';
 									table+='<td>Andhra Pradesh </td>';
-									if(departmentId != 1){
+									if(departmentId != 1 && departmentId != 3){
 										table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="2" attr_rws_locationId="1" attr_district_val ="" attr_type="state" attr_location_name="Andhra Pradesh">R</span></td>';
 									}
 									
@@ -1831,7 +1930,7 @@ getAllDepartments();
 								levelName = "DISTRICT";
 								var blockType = getblockType();
 								table+='<td>'+result[i].addressVO.districtName+' </td>';
-								if(departmentId != 1){
+								if(departmentId != 1 && departmentId != 3){
 									table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="3" attr_rws_locationId="'+lvlVal+'" attr_district_val ="" attr_type="district" attr_location_name="'+result[i].addressVO.districtName+'">R</span></td>';
 								}
 								
@@ -1862,7 +1961,7 @@ getAllDepartments();
 								levelName = "CONTITUENCY";
 								locatioName =result[i].addressVO.assemblyName;
 								table+='<td>'+result[i].addressVO.districtName+' </td>';
-								if(departmentId != 1){
+								if(departmentId != 1 && departmentId != 3){
 									table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="4" attr_rws_locationId="'+districtId+'" attr_district_val ="" attr_type="district" attr_location_name="'+result[i].addressVO.districtName+'">R</span></td>';
 								}
 								
@@ -1870,7 +1969,7 @@ getAllDepartments();
 										table+='<td>'+result[i].addressVO.parliamentName+'</td>';
 									}
 									table+='<td>'+result[i].addressVO.assemblyName+' </td>';
-										if(departmentId != 1){
+										if(departmentId != 1 && departmentId != 3){
 											table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="4" attr_rws_locationId="'+lvlVal+'" attr_district_val ="" attr_type="constituency" attr_location_name="'+result[i].addressVO.assemblyName+'">R</span></td>';
 										}
 									
@@ -1889,7 +1988,7 @@ getAllDepartments();
 								var districtId =result[i].addressVO.districtId;
 								var constituencyId =result[i].addressVO.assemblyId;
 								table+='<td>'+result[i].addressVO.districtName+' </td>';
-								if(departmentId != 1){
+								if(departmentId != 1 && departmentId != 3){
 									table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="5" attr_rws_locationId="'+districtId+'" attr_district_val ="" attr_type="district" attr_location_name="'+result[i].addressVO.districtName+'">R</span></td>';
 								}
 								
@@ -1897,12 +1996,12 @@ getAllDepartments();
 										table+='<td>'+result[i].addressVO.parliamentName+'</td>';
 									}
 									table+='<td>'+result[i].addressVO.assemblyName+' </td>';
-									if(departmentId != 1){
+									if(departmentId != 1 && departmentId != 3){
 										table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="5" attr_rws_locationId="'+constituencyId+'" attr_district_val ="" attr_type="constituency" attr_location_name="'+result[i].addressVO.assemblyName+'">R</span></td>';
 									}
 									
 									table+='<td>'+result[i].addressVO.tehsilName+' </td>';
-									if(departmentId != 1){
+									if(departmentId != 1 && departmentId != 3){
 										table+='<td><span class="icon-text rwsModalClickView" attr_rws_levelId="5" attr_rws_locationId="'+lvlVal+'" attr_district_val ="'+districtId+'" attr_type="mandal" attr_location_name="'+result[i].addressVO.tehsilName+'">R</span></td>';
 									}
 									
@@ -1944,19 +2043,20 @@ getAllDepartments();
 								}else{
 									newYearId = $("#financialYearId").val();
 								} 
+								//santosh
 									if(levelId != '2'){
-										if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
+										if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count == 0){//in the case of MGNREGS count will come zero
 											
-											table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" attr_location_name="'+locatioName+'" attr_level_name="'+levelName+'">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls">&nbsp;&nbsp;(<u><span style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</span> </u>)</small></td>';
+											table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'</small></td>';
 											
 										}else{
-											table+='<td class="text-center no-right-border">-</td>';
+											table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" attr_location_name="'+locatioName+'" attr_level_name="'+levelName+'">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls">&nbsp;&nbsp;(<u><span style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</span> </u>)</small></td>';
 										}
 									}else{
-										if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count > 0){
-											table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls" >&nbsp;&nbsp;('+result[i].subList[j].subList[k].count+')</small></td>';
+										if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count == 0){
+											table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'</td>';
 										}else{
-											table+='<td class="text-center no-right-border">-</td>';
+											table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls" >&nbsp;&nbsp;('+result[i].subList[j].subList[k].count+')</small></td>';
 										}
 									}
 								
@@ -2008,6 +2108,7 @@ getAllDepartments();
 					var NABARDArr =[];
 					var NREGPArr =[];
 					var APDRPGRANTArr=[];
+					var MGNREGSArr=[];
 					var totalCountArr = [];
 					var totalCount2 = '';
 					for(var i in result){
@@ -2073,6 +2174,8 @@ getAllDepartments();
 											 }else if(result[i].subList[j].subList[k].id == 11){
 												 //APDRPGRANTArr.push({"y":result[i].subList[j].subList[k].totalCount})
 												 APDRPGRANTArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":result[i].subList[j].subList[k].count})
+											 }else if(result[i].subList[j].subList[k].id == 0){
+												 MGNREGSArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":0})
 											 }
 										}
 										 totalCountArr.push(totalCount2);
@@ -2114,6 +2217,11 @@ getAllDepartments();
 						if(APDRPGRANTArr != null && APDRPGRANTArr.length > 0){
 							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#18BGGD"});  
 						}
+						if(MGNREGSArr != null && MGNREGSArr.length > 0){
+							mainJosnObjArr.push({name:'MGNREGS',data:MGNREGSArr,color:"#01A64D"});  
+						}
+						
+						
 					}
 					$(".chart"+divId).highcharts({
 						chart: {
@@ -2225,6 +2333,7 @@ getAllDepartments();
 					var NABARDArr =[];
 					var NREGPArr =[];
 					var APDRPGRANTArr=[];
+					var MGNREGSArr=[];
 					
 					var totalCountArr = [];
                     var totalCount2 = '';
@@ -2316,6 +2425,8 @@ getAllDepartments();
 											 }else if(result[i].subList[j].subList[k].id == 11){
 												 //APDRPGRANTArr.push({"y":result[i].subList[j].subList[k].totalCount})
 												 APDRPGRANTArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id+"-"+locationName+"-"+levelName,"extra":result[i].subList[j].subList[k].count})
+											 }else if(result[i].subList[j].subList[k].id == 0){
+												 MGNREGSArr.push({"y":parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, "")),appData:levelId+"-"+locationId+"-"+result[i].subList[j].yearId+"-"+result[i].subList[j].subList[k].id,"extra":0})
 											 }
 											
 										}
@@ -2357,6 +2468,9 @@ getAllDepartments();
 						}
 						if(APDRPGRANTArr != null && APDRPGRANTArr.length > 0){
 							mainJosnObjArr.push({name:'APDRP GRANT',data:APDRPGRANTArr,color:"#18BGGD"});  
+						}
+						if(MGNREGSArr != null && MGNREGSArr.length > 0){
+							mainJosnObjArr.push({name:'MGNREGS',data:MGNREGSArr,color:"#01A64D"});  
 						}
 					}
 					var heightOfDiv = assemblyShemeNameArr.length ;
@@ -2512,7 +2626,13 @@ getAllDepartments();
 			schemeIdsList:schemeIdsList,
 			subProgIds:subProgIds,
 			searchLevelId:globalLocationLevelTypeId,
-			searchLvlVals:glSearchLevelValue
+			searchLvlVals:glSearchLevelValue,
+			year : "2017", //For MGNREGS SERVICE
+			fromDate : getDateInRequiredFormat(glStartDate),
+			toDate : getDateInRequiredFormat(glEndDate)
+			
+		
+			
 		}
 		$.ajax({
 			url : "getSchemeWiseOverviewDetails",     
@@ -2585,12 +2705,27 @@ getAllDepartments();
 		$("#"+divId).html('');
 		var financialYrIdList = $('#financialYearId').val();
 		var deptIdsArr = $('#DepartmentsId').val();
-		
+		var mgrwsIdsArr=[];
+		for(var i in deptIdsArr){
+			if(deptIdsArr[i] == 3){
+				if(deptIdsArr[i].length == 1){
+					mgrwsIdsArr=[];
+					mgrwsIdsArr.push(0);
+				
+				}
+			}
+		}
+		for(var i in deptIdsArr){
+			if(deptIdsArr[i] != 3){
+				mgrwsIdsArr.push(deptIdsArr[i]);
+				
+			}
+		}
 		var sourceId = 0;
 		var json = {
 		  blockLevelId:levelId,
 		  superLocationId : locationScopeId, 
-		  deptIdsList : deptIdsArr,
+		  deptIdsList : mgrwsIdsArr,
 		  sourceId : sourceId,
 		  financialYrIdList : financialYrIdList,  
 		  fromDateStr : glStartDate,       
@@ -3843,7 +3978,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 					$("#govtOrderDocumentBodyId").html(str);       
 			}   
 		}		
-	});
+	})
 	
 	
 	$(document).on("change","#overviewSelect",function(){
@@ -3920,6 +4055,7 @@ $(document).on('click','.closeShowPdfCls',function(){
 											for(var i in overviewSelectBoxData){
 												overviewTable+='<option value="'+overviewSelectBoxData[i].id+'">'+overviewSelectBoxData[i].name+' </option>';
 											}
+											
 										overviewTable+='</select></th>';
 										overviewTable+='<th class="text-center"><span class="rounded-circle fa fa-inr"></span><p class="text-capital">total amount</p></th>';
 										overviewTable+='<th><span class="rounded-circle">D</span><p class="text-capital m_top10">district</p></th>';
@@ -3937,15 +4073,16 @@ $(document).on('click','.closeShowPdfCls',function(){
 										var k = 1;					
 										for(var i in overviewSelectBoxData)
 										{
-											overviewTable+='<tr id="blockProgram'+k+'">';
+											overviewTable+='<tr id="blockProgram'+overviewSelectBoxData[i].id+'">';
 												overviewTable+='<td class="text-capital clearCls" style="border-right:2px dashed #777;"><h4>'+overviewSelectBoxData[i].name+'</h4></td>';
-												overviewTable+='<td class="total'+k+' text-center clearCls"></td>';
-												overviewTable+='<td class="district'+k+' clearCls"></td>';
-												overviewTable+='<td class="constituency'+k+' clearCls"></td>';
-												overviewTable+='<td class="mandal'+k+' clearCls"></td>';
+												overviewTable+='<td class="total'+overviewSelectBoxData[i].id+' text-center clearCls"></td>';
+												overviewTable+='<td class="district'+overviewSelectBoxData[i].id+' clearCls"></td>';
+												overviewTable+='<td class="constituency'+overviewSelectBoxData[i].id+' clearCls"></td>';
+												overviewTable+='<td class="mandal'+overviewSelectBoxData[i].id+' clearCls"></td>';
 											overviewTable+='</tr>';
 											k = k +1;
 										}
+										 
 									overviewTable+='</tbody>';
 								overviewTable+='</table>';
 							overviewTable+='</div>';
@@ -4225,15 +4362,20 @@ $(document).on('click','.closeShowPdfCls',function(){
 	});	
 	$(document).on("click","[role='tablist'] a",function(){	
 		var value = $(this).attr("attr_compision");
-		
-		if(value == 'Comparision')
-		{
-		  $(this).closest("[role='tabpanel']").find(".selectboxsShowHide").hide();
-		
-		}else{
-			 $(this).closest("[role='tabpanel']").find(".selectboxsShowHide").show();
-			 //  $(".stateProSubProCls").trigger('click');
+		var departmentIds = $("#DepartmentsId").val();
+		if(departmentIds !=3){
+			if(value == 'Comparision')
+			{
+			  $(this).closest("[role='tabpanel']").find(".selectboxsShowHide").hide();
+			
+			}else{
+				 $(this).closest("[role='tabpanel']").find(".selectboxsShowHide").show();
+				 //  $(".stateProSubProCls").trigger('click');
+			}
 		}
+		
+		
+		
 	});
 	$(document).on("click",".rwsModalClickView",function(){	
 		$("#rwsModalDivId").modal("show");
@@ -4767,3 +4909,9 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
 	
 });
 
+ function getDateInRequiredFormat(date){
+	 var dateStr="";
+	 var dateArr = date.split("/");
+	  dateStr = dateArr[2]+"-"+dateArr[1]+"-"+dateArr[0];
+	  return dateStr;
+ }

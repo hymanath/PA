@@ -42,4 +42,6 @@ public interface IParliamentAssemblyDAO extends GenericDao<ParliamentAssembly,Lo
 	public List<Object[]> getENSLocationIdfromENSLocationId(String searchLocationValue);
 	
 	public List<Object[]> getAllParliaments();
+	public List<Object[]> getParliamentWiseConstituency(Long parliamentId);
+	public List<Object[]> getParliamentIds(Long parliamentId);
 }

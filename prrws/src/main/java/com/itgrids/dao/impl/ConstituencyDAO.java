@@ -457,4 +457,16 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 		  return query.list();
 		  
 	  }
+	public List<Object[]> getMgnregsConstituencyMappingCode(Long constituencyId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.constituencyId,model.prConstituency.constituencyCode from Constituency model");
+		if (constituencyId != null && constituencyId.longValue() > 0) {
+			queryStr.append(" where model.constituencyId =:constituencyId");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		if (constituencyId != null && constituencyId.longValue() > 0) {
+			query.setParameter("constituencyId", constituencyId);
+		}
+		return query.list();
+	}
 }

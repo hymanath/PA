@@ -2,6 +2,7 @@ package com.itgrids.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class FundSchemeVO implements java.io.Serializable{
 
@@ -15,6 +16,7 @@ public class FundSchemeVO implements java.io.Serializable{
 	private String amount;
 	private AddressVO addressVO;
 	private List<FundSchemeVO> subList = new ArrayList<FundSchemeVO>(0);
+	private String locationIdStr;
 	
 	public String getAmount() {
 		return amount;
@@ -75,5 +77,11 @@ public class FundSchemeVO implements java.io.Serializable{
 	}
 	public void setAddressVO(AddressVO addressVO) {
 		this.addressVO = addressVO;
+	}
+	public String getLocationIdStr() {
+		return locationIdStr;
+	}
+	public void setLocationIdStr(String locationIdStr) {
+		this.locationIdStr = locationIdStr;
 	}
 }

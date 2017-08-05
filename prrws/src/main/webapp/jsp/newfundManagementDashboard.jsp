@@ -672,7 +672,7 @@
 											<select class="form-control chosenSelect" id="mandalLevelConstNames" >
 											</select>
 										</div>
-										<div class="col-sm-3 mandalLevelCls" >
+										<div class="col-sm-3 mandalLevelCls selectBoxCommonCls" >
 											<label>MANDAL</label>
 											<select class="form-control chosenSelect" id="mandalLevelMandalNames" >
 											</select>
@@ -832,12 +832,12 @@
 											<select class="form-control chosenSelect" id="villageLevelConstNames" >
 											</select>
 										</div>
-										<div class="col-sm-3 villageLevelMandalCls" >
+										<div class="col-sm-3 villageLevelMandalCls selectBoxCommonCls" >
 											<label>MANDAL</label>
 											<select class="form-control chosenSelect" id="villageLevelMandalNames" >
 											</select>
 										</div>
-										<div class="col-sm-3 villageLevelCls" >
+										<div class="col-sm-3 villageLevelCls selectBoxCommonCls" >
 											<label>VILLAGE</label>
 											<select class="form-control chosenSelect" id="villageLevelNames" >
 											</select>

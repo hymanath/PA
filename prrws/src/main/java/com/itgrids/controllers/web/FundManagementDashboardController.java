@@ -125,7 +125,7 @@ public class FundManagementDashboardController {
 		public @ResponseBody List<FundSchemeVO> getFinancialYearWiseScheameDetails(@RequestBody InputVO inputVO){
 			List<FundSchemeVO> ajaxResult = fundManagementDashboardService.getFinancialYearWiseSchemeDetails(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),inputVO.getSchemeIdsList(),
 					inputVO.getFromDateStr(),inputVO.getToDateStr(),inputVO.getSearchLevelId(),inputVO.getLevelValues(),inputVO.getOrder(),inputVO.getSortingType(),inputVO.getBlockLevelId(),inputVO.getGovtSchmeIdsList(),
-					inputVO.getSubProgramIdsList(),inputVO.getGlSearchLevelId(),inputVO.getGlSearchLevelValue(),inputVO.getViewType(),inputVO.getGrantTypeIdsList());
+					inputVO.getSubProgramIdsList(),inputVO.getGlSearchLevelId(),inputVO.getGlSearchLevelValue(),inputVO.getViewType(),inputVO.getGrantTypeIdsList(),inputVO);
 			return ajaxResult;
 		}	
 		
