@@ -160,14 +160,7 @@
 						<li><span class="color-label color-label-danger"></span> 0% - 49%&nbsp;&nbsp;&nbsp;</li>
 						<li><button type="button" class="btn btn-primary btn-xs" title="Webservice Details" id="getWebserviceDetailsId">WS</button> </li>
 					</ul>  
-					<div class="menu-top-selection">
-						<i class="glyphicon glyphicon-cog menu-top-selection-icon"></i>
-						<div class="arrow_box_top">
-							<div class="row">
-								<div id="navTabsMenuSelectionId"></div>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -177,6 +170,14 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-12">
+				<div class="menu-top-selection pull-right" style="padding: 6px 7px;border: 1px solid #333;border-radius: 50%;margin-left: 10px;margin-top: 3px;">
+					<i class="glyphicon glyphicon-cog menu-top-selection-icon" title="Setup Components For Consolidated View"></i>
+					<div class="arrow_box_top">
+						<div class="row">
+							<div id="navTabsMenuSelectionId"></div>
+						</div>
+					</div>
+				</div>
 				<ul class="nav navbar-nav tableMenu list-inline pull-right" id="viewSwitchBtn">
 					<li class="active" attr_name="consolidated">Consolidated</li>
 				</ul>
@@ -196,8 +197,8 @@
 						</div>
 						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 							<div class="panel-body">
-								<div id="projectsOverviewConsolidated"></div>
-								<!--<div id="projectsOverview"></div>-->
+								<!--<div id="projectsOverviewConsolidated"></div>-->
+								<div id="projectsOverview"></div>
 							</div>
 						</div>
 					</div>
@@ -303,8 +304,9 @@
 <script src="Assests/MGNREGS/MGNREGS.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/NregaConsolidated.js" type="text/javascript"></script>
 <script type="text/javascript">
-onLoadCalls();
+$(".menu-top-selection-icon").tooltip();
 onLoadCallsConsolidated();
+onLoadCalls();
 $(document).on("click","#viewSwitchBtn li",function(){
 	$("[overview-state],[overview-district]").removeClass("active");
 	$(this).addClass("active");

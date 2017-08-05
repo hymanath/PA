@@ -484,6 +484,9 @@ function projectData(divId,levelId,locationId)
 									}else if(divId == 'CD_CW')
 									{
 										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Check Dams and Check Walls</h4>';
+									}else if(divId == 'GH')
+									{
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - Greening Of Hillocks</h4>';
 									}else{
 										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview - '+divId+'</h4>';
 									}
@@ -621,6 +624,9 @@ function overviewData(divId,levelId,locationId)
 							}else if(divId == 'CD_CW')
 							{
 								collapse+='<h4 class="panel-title text-capital">Check Dams and Check Walls overview</h4>';
+							}else if(divId == 'GH')
+							{
+								collapse+='<h4 class="panel-title text-capital">Greening Of Hillocks overview</h4>';
 							}else{
 								collapse+='<h4 class="panel-title text-capital">'+divId+' overview</h4>';
 							}
@@ -845,6 +851,11 @@ function buildNREGSProjectsOverview(result,blockName)
 							{
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
 									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Check Dams and Check Walls">Check Dam..</h4>';
+								str+='</div>';
+							}else if(result[i] == 'GH')
+							{
+								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
+									str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Greening O..</h4>';
 								str+='</div>';
 							}else{
 								str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';	
@@ -2703,7 +2714,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 								str+='<td>'+ajaxresp[i].pittingKMS+'</td>';
 								str+='<td>'+ajaxresp[i].plantingKMS+'</td>';
-								str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
+								
 								if(ajaxresp[i].percentage < 50){
 									str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
 								}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
@@ -2711,7 +2722,8 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								}else if(ajaxresp[i].percentage >= 80){
 									str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
 								}
-								str+='<td>'+ajaxresp[i].percentage+'</td>';
+								str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
+								//str+='<td>'+ajaxresp[i].percentage+'</td>';
 						}else{
 							str+='<td>'+ajaxresp[i].target+'</td>';
 							if((globalDivName == 'Mulbery' || globalDivName == 'Silk worms' || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
@@ -3165,7 +3177,8 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 
 //var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','CC Roads','Anganwadi','Gram Panchayat Buildings','Mandal buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk worm','Cattle drinking water trough','Raising of Perinnial Fodder','Solid Waste Management','Play Fields','Burial Grounds','Fish Drying Platforms','Fish Ponds','Agriculture Activities','Average Wage','Avg days of emp per HH','HH Comp 100 days','Timely Payments','Horticulture','Avenue'];
 var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','GH','Solid Waste Management','Burial Grounds','Play Fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads','Anganwadi Buildings','GP Buildings','Mandal Buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Cattle Drinking Water Troughs','Raising of Perinnial Fodders','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','NTR Rural House','OPGK-Perinnials','OPGK-Annuals','UGDrainage'];
-/* buildNREGSProjectsOverview(overViewArr,'')
+
+buildNREGSProjectsOverview(overViewArr,'')
 for(var i in overViewArr)
 {
 	$("[overview-block='"+overViewArr[i]+"']").append(spinner);
@@ -3179,7 +3192,7 @@ for(var i in overViewArr)
 		getNREGSAbstractDataByType(overViewArr[i],'state',"0",'',2,'onLoad');
 	}
 }
- */
+
 function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,menuLocationId)
 {
 	$("#"+divIdd).html(spinner);
@@ -3539,6 +3552,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}else if(type == 'CD_CW')
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Check Dams and Check Walls">Check Dam..</h4>';
+					}else if(type == 'GH')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Greening O..</h4>';
 					}else if(type.length > 12)
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
@@ -3764,7 +3780,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	}
 	
 }
-/* $(document).on("click",".menuDataCollapse",function(){
+$(document).on("click",".menuDataCollapse",function(){
 	$(".multi-level-selection-menu").css("display","none");
 	$(".arrowIconChanged").find('.fa').removeClass("fa-chevron-up");
 	$(".arrowIconChanged").find('.fa').addClass("fa-chevron-down");
@@ -3833,7 +3849,6 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	}
 	
 });
- */
 var stateArr = [{'name':'Andhra Pradesh','type':1}];
 collapseMenu(1,stateArr,'multi-level-selection-menu');
 function getAllNregaSubLocationDetails(divId,levelId,locationScopeId,type){
