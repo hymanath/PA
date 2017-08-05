@@ -67,7 +67,7 @@
 					</div>
 				</div>
             </div>
-            <div class="col-sm-12 border_top padding_10" style="background-color:#F9F9F9;">
+            <!--<div class="col-sm-12 border_top padding_10" style="background-color:#F9F9F9;">
                         <div class="col-sm-2 media">
                             <div class="media-left">
                                 <img src="Assests/icons/Start_Date_icon.png" alt="start_date">
@@ -127,7 +127,8 @@ SURVEY STARTED</h5>
                             </div>
                         </div>
                         
-                    </div>
+                    </div> -->
+				<div id="ledOverViewDiv"></div>
         
         </div>
         </section>
