@@ -154,6 +154,7 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String reportDate;
 	private String year;
 	private Long boothNumber;
+	private String name;
 
 	public Long getBoothNumber() {
 		return boothNumber;
@@ -630,6 +631,12 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	}
 	public void setFinalRangeStr(String finalRangeStr) {
 		this.finalRangeStr = finalRangeStr;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public Long getMaleCount() {
 		return maleCount;
