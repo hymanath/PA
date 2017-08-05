@@ -65,6 +65,7 @@ import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.MeetingsVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.model.CasteCategory;
 import com.itgrids.partyanalyst.model.ElectionType;
@@ -1319,12 +1320,15 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLevelWiseMeetingStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
 	 */
 
-	public List<AlertOverviewVO> getLevelWiseMeetingStatusCounts(String fromDateStr, String toDateStr, Long locationTypeId,
+	public List<MeetingsVO> getLevelWiseMeetingStatusCounts(String fromDateStr, String toDateStr, Long locationTypeId,
 			List<Long> locationValues,String year) {
-		List<AlertOverviewVO> meetingStatusCounts = new ArrayList<AlertOverviewVO>();
-		AlertOverviewVO vwStatus = new AlertOverviewVO();
-		AlertOverviewVO mtdStatus = new AlertOverviewVO();
-		AlertOverviewVO cStatus = new AlertOverviewVO();
+		List<MeetingsVO> meetingStatusCounts = new ArrayList<MeetingsVO>();
+		MeetingsVO vwStatus = new MeetingsVO();
+		vwStatus.setLocationName("village/ward");
+		MeetingsVO mtdStatus = new MeetingsVO();
+		mtdStatus.setLocationName("mandal/town/division");
+		MeetingsVO cStatus = new MeetingsVO();
+		cStatus.setLocationName("constituncy");
 		Date frmDate = null;
 		Date toDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -1348,33 +1352,33 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 					if (commonMethodsUtilService.getLongValueForObject(objects[0]) == 7l || commonMethodsUtilService.getLongValueForObject(objects[0]) == 8l) {
 
 						if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("Y")) {
-							vwStatus.setCompletedCnt(vwStatus.getCompletedCnt()+(Long)objects[3]);
+							vwStatus.setYesCount(vwStatus.getYesCount()+(Long)objects[3]);
 						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("N")) {
-							vwStatus.setPendingCnt(vwStatus.getPendingCnt()+(Long)objects[3]);
+							vwStatus.setNoCount(vwStatus.getNoCount()+(Long)objects[3]);
 						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("NU")) {
-							vwStatus.setNotifiedCnt(vwStatus.getNotifiedCnt()+(Long)objects[3]);
+							vwStatus.setNotUpDatedCount(vwStatus.getNotUpDatedCount()+(Long)objects[3]);
 						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("M")) {
-							vwStatus.setUnabletoResolveCnt(vwStatus.getUnabletoResolveCnt()+(Long)objects[3]);
+							vwStatus.setMayBeCount(vwStatus.getMayBeCount()+(Long)objects[3]);
 						}
 					} else if (commonMethodsUtilService.getLongValueForObject(objects[0]) == 4l || commonMethodsUtilService.getLongValueForObject(objects[0]) == 5l || commonMethodsUtilService.getLongValueForObject(objects[0]) == 6l) {
 						if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("Y")) {
-							mtdStatus.setCompletedCnt(mtdStatus.getCompletedCnt()+(Long)objects[3]);
+							mtdStatus.setYesCount(mtdStatus.getYesCount()+(Long)objects[3]);
 						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("N")) {
-							mtdStatus.setPendingCnt(mtdStatus.getPendingCnt()+(Long)objects[3]);
+							mtdStatus.setNoCount(mtdStatus.getNoCount()+(Long)objects[3]);
 						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("NU")) {
-							mtdStatus.setNotifiedCnt(mtdStatus.getNotifiedCnt()+(Long)objects[3]);
+							mtdStatus.setNotUpDatedCount(mtdStatus.getNotUpDatedCount()+(Long)objects[3]);
 						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("M")) {
-							mtdStatus.setUnabletoResolveCnt(mtdStatus.getUnabletoResolveCnt()+(Long)objects[3]);
+							mtdStatus.setMayBeCount(mtdStatus.getMayBeCount()+(Long)objects[3]);
 						}
 					} else if (commonMethodsUtilService.getLongValueForObject(objects[0]) == 3l) {
 						if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("Y")) {
-							cStatus.setCompletedCnt(cStatus.getCompletedCnt()+(Long)objects[3]);
+							cStatus.setYesCount(cStatus.getYesCount()+(Long)objects[3]);
 						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("N")) {
-							cStatus.setPendingCnt(cStatus.getPendingCnt()+(Long)objects[3]);
+							cStatus.setNoCount(cStatus.getNoCount()+(Long)objects[3]);
 						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("NU")) {
-							cStatus.setNotifiedCnt(cStatus.getNotifiedCnt()+(Long)objects[3]);
+							cStatus.setNotUpDatedCount(cStatus.getNotUpDatedCount()+(Long)objects[3]);
 						} else if (commonMethodsUtilService.getStringValueForObject(objects[2]).equalsIgnoreCase("M")) {
-							cStatus.setUnabletoResolveCnt(cStatus.getUnabletoResolveCnt()+(Long)objects[3]);
+							cStatus.setMayBeCount(cStatus.getMayBeCount()+(Long)objects[3]);
 						}
 					}
 				}
@@ -2370,7 +2374,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return casteCategoryList;
 	}
-
+	@Override
 	public List<BasicVO> getLocationWiseActivitysStatus(String fromDateStr, String toDateStr, String year,List<Long> locationValues, Long locationTypeId) {
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		try{
