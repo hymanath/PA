@@ -1303,6 +1303,12 @@
 		      		   <value>com.itgrids.partyanalyst.model.BoothInchargeCommittee</value>
 		      		   <value>com.itgrids.partyanalyst.model.BoothInchargeSerialNoRange</value>
 		      		   <value>com.itgrids.partyanalyst.model.MomAtrSourceType</value>
+		      		   
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaActions</value>
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaAnswerInfo</value>
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaAnswers</value>
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaQuestions</value>
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaResponderInfo</value>
 				  </list>
 			
 		</property>

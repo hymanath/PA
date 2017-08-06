@@ -4107,4 +4107,22 @@
 	 <bean id="momAtrSourceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MomAtrSourceTypeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="kaizalaActionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaActionsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
+	 <bean id="kaizalaResponderInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaResponderInfoDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
+	 <bean id="kaizalaAnswersDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaAnswersDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
+	 <bean id="kaizalaAnswerInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaAnswerInfoDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="kaizalaQuestionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaQuestionsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
