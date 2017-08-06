@@ -2470,6 +2470,7 @@
 	   <property name="alertManagementSystemService" ref="alertManagementSystemService"/>
 	   <property name="cccDashboardService" ref="cccDashboardService"/>
 	   <property name="locationDashboardService" ref="locationDashboardService"/>
+	   <property name="kaizalaInfoService" ref="kaizalaInfoService"/>
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
@@ -4400,7 +4401,16 @@
 		 <property name="stateDAO" ref="stateDAO" />
 		 <property name="userDAO" ref="userDAO" />
 		 <property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
-		  <property name="attendanceDAO" ref="attendanceDAO" />
+		 <property name="attendanceDAO" ref="attendanceDAO" />
     </bean>
+    										
+    <bean name="kaizalaInfoService" class="com.itgrids.partyanalyst.service.impl.KaizalaInfoService" >
+    	 <property name="transactionTemplate" ref="transactionTemplate" />
+    	 <property name="kaizalaActionsDAO" ref="kaizalaActionsDAO" />
+    	 <property name="kaizalaResponderInfoDAO" ref="kaizalaResponderInfoDAO" />
+    	 <property name="kaizalaAnswerInfoDAO" ref="kaizalaAnswerInfoDAO" />
+    	 <property name="kaizalaQuestionsDAO" ref="kaizalaQuestionsDAO" />
+    	 <property name="kaizalaAnswersDAO" ref="kaizalaAnswersDAO" />
+    </bean> 
 </beans>			
 	
