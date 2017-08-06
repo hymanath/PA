@@ -173,6 +173,7 @@ import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.service.IFieldMonitoringService;
 import com.itgrids.partyanalyst.service.IGISVisualizationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
+import com.itgrids.partyanalyst.service.IKaizalaInfoService;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -286,8 +287,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IAlertManagementSystemService alertManagementSystemService;
     
     private ICccDashboardService cccDashboardService;
+    private IKaizalaInfoService kaizalaInfoService;
    
     
+	public IKaizalaInfoService getKaizalaInfoService() {
+		return kaizalaInfoService;
+	}
+
+	public void setKaizalaInfoService(IKaizalaInfoService kaizalaInfoService) {
+		this.kaizalaInfoService = kaizalaInfoService;
+	}
+
 	public void setLocationDashboardService(ILocationDashboardService locationDashboardService) {
 		this.locationDashboardService = locationDashboardService;
 	}
@@ -5387,5 +5397,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			 log.error("Exception raised at getPublications", e);
 		 }
 		return null;
+	}
+	
+	public void saveKaizalAnswerInfo(String anserObjStr){
+		try {
+			kaizalaInfoService.saveKaizalAnswerInfo(anserObjStr);
+		} catch (Exception e) {
+			 log.error("Exception raised at saveKaizalAnswerInfo", e);
+		}
 	}
 }
