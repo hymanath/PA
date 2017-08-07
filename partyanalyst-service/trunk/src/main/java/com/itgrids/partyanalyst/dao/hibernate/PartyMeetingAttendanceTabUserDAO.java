@@ -51,7 +51,7 @@ public class PartyMeetingAttendanceTabUserDAO extends GenericDaoHibernate<PartyM
 					"model.attendanceTabUser.mobile, "+//4
 					"model.partyMeetingAttendanceTabUserId "+//5
 			       " from PartyMeetingAttendanceTabUser model "+
-			        " where model.partyMeeting.partyMeetingId=:partyMeetingId and model.isDeleted='Y' ");
+			        " where model.partyMeeting.partyMeetingId=:partyMeetingId and model.isDeleted='N' ");
 			Query query = getSession().createQuery(sb.toString());
 			if(partyMeetingId !=null && partyMeetingId.longValue() > 0L)
 			query.setParameter("partyMeetingId",partyMeetingId);
@@ -67,7 +67,7 @@ public class PartyMeetingAttendanceTabUserDAO extends GenericDaoHibernate<PartyM
 		              "model.insertedTime "+
 		              " from PartyMeetingAttendanceTabUser model "+
 		              "where model.partyMeeting.partyMeetingId=:partyMeetingId and "+
-		              "model.attendanceTabUser.attendanceTabUserId in (:attendanceTabUserIdList) and model.isDeleted='Y' ");
+		              "model.attendanceTabUser.attendanceTabUserId in (:attendanceTabUserIdList) and model.isDeleted='N' ");
 		      Query query = getSession().createQuery(sb.toString());
 		      query.setParameter("partyMeetingId",partyMeetingId);
 		       query.setParameterList("attendanceTabUserIdList", attendanceTabUserIdList);
@@ -75,4 +75,10 @@ public class PartyMeetingAttendanceTabUserDAO extends GenericDaoHibernate<PartyM
 		  
 		      
 		    }
+		
+		public Integer updatePartyMeetingAttendance(Long meetingId){
+	        Query query=getSession().createQuery(" update PartyMeetingAttendanceTabUser model set model.isDeleted = 'Y' where model.partyMeetingId =:meetingId ");    
+	        query.setParameter("meetingId",meetingId);
+	        return  query.executeUpdate();
+	      }
 }
