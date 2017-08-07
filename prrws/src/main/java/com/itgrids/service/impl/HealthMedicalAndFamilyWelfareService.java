@@ -3,6 +3,8 @@ package com.itgrids.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itgrids.dao.IDepartmentDiseasesInfoDAO;
 import com.itgrids.dto.DiseasesVO;
 import com.itgrids.dto.LocationFundDetailsVO;
+import com.itgrids.dto.LocationVO;
 import com.itgrids.service.IHealthMedicalAndFamilyWelfareService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
@@ -162,9 +165,45 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 			}
 			
 			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,scope,locationLevelId,locationId);
+			List<Object[]> diseasesListForTown = null;
+			Long tempScopeId = null;
+			if(scope != null && scope.longValue() == 5L){
+				if(locationLevelId != null && locationLevelId.longValue() > 0L && locationLevelId.longValue() != 7L){
+					tempScopeId = 7L;
+					diseasesListForTown = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,tempScopeId,locationLevelId,locationId);
+				}else if(locationLevelId != null && locationLevelId.longValue() == 0L){
+					tempScopeId = 7L;
+					diseasesListForTown = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,tempScopeId,locationLevelId,locationId);
+				}
+				if(diseasesListForTown != null && diseasesListForTown.size() > 0){
+					if(diseasesList == null){
+						diseasesList = new ArrayList<Object[]>();
+						mergeMandalAndTownList(diseasesList,diseasesListForTown);
+					}else{
+						mergeMandalAndTownList(diseasesList,diseasesListForTown);
+					}
+				}
+			}
+			List<Object[]> diseasesListTodayForTown = null;
 			Date today = dateUtilService.getCurrentDateAndTime();
 			List<Object[]> diseasesListToday = departmentDiseasesInfoDAO.getCaseCountLocationWise(today,today,diseasesIdList,deptIdList,scope,locationLevelId,locationId);
-			
+			if(scope != null && scope.longValue() == 5L){
+				if(locationLevelId != null && locationLevelId.longValue() > 0L && locationLevelId.longValue() != 7L){
+					tempScopeId = 7L;
+					diseasesListTodayForTown = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,tempScopeId,locationLevelId,locationId);
+				}else if(locationLevelId != null && locationLevelId.longValue() == 0L){
+					tempScopeId = 7L;
+					diseasesListTodayForTown = departmentDiseasesInfoDAO.getCaseCountLocationWise(startDate,endDate,diseasesIdList,deptIdList,tempScopeId,locationLevelId,locationId);
+				}
+				if(diseasesListTodayForTown != null && diseasesListTodayForTown.size() > 0){
+					if(diseasesListToday == null){
+						diseasesListToday = new ArrayList<Object[]>();
+						mergeMandalAndTownList(diseasesListToday,diseasesListTodayForTown);
+					}else{
+						mergeMandalAndTownList(diseasesListToday,diseasesListTodayForTown);
+					}
+				}
+			}
 			//only diseases wise count
 			List<DiseasesVO> diseasesVOs = buildCaseCountLocationWise(diseasesList,diseasesListToday,scope);
 			return diseasesVOs;
@@ -172,6 +211,9 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 			LOG.error(" Exception occured in HealthMedicalAndFamilyWelfareService ,getCaseCountLocationWise() ",e);
 		}
 		return null;
+	}
+	public void mergeMandalAndTownList(List<Object[]> diseasesList, List<Object[]> diseasesListForTown){
+		diseasesList.addAll(diseasesListForTown);
 	}
 	@SuppressWarnings("static-access")
 	public List<DiseasesVO> buildCaseCountLocationWise(List<Object[]> diseasesList,List<Object[]> diseasesListToday,Long scopeId){
@@ -206,6 +248,8 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 					diseasesVO.setConstituencyName(tempDiseasesVO.getConstituencyName());
 					diseasesVO.setMandalId(tempDiseasesVO.getMandalId());
 					diseasesVO.setMandalName(tempDiseasesVO.getMandalName());
+					diseasesVO.setLocalElectionBodyId(tempDiseasesVO.getLocalElectionBodyId());
+					diseasesVO.setLocalElectionBodyName(diseasesVO.getLocalElectionBodyName());
 					diseasesVO.setPanchayatId(tempDiseasesVO.getPanchayatId());
 					diseasesVO.setPanchayatName(tempDiseasesVO.getPanchayatName());
 					//total
@@ -304,6 +348,9 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 			DiseasesVO diseasesVO = null;
 			if(diseasesList != null && diseasesList.size() > 0){
 				for(Object[] param : diseasesList){
+					if(param[1] == null){
+						continue;
+					}
 					diseasesVO = new DiseasesVO();
 					diseasesVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[4]));
 					diseasesVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[5]));
@@ -315,6 +362,8 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 					diseasesVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[11]));
 					diseasesVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[12]));
 					diseasesVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[13]));
+					diseasesVO.setLocalElectionBodyId(commonMethodsUtilService.getLongValueForObject(param[14]));
+					diseasesVO.setLocalElectionBodyName(commonMethodsUtilService.getStringValueForObject(param[15]));
 					if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
 						diseasesVO.setId(diseasesVO.getDistrictId());
 						diseasesVO.setName(diseasesVO.getDistrictName());
@@ -328,9 +377,16 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 						diseasesVO.setName(diseasesVO.getConstituencyName());
 						locIdAndNameMap.put(diseasesVO.getConstituencyId(), diseasesVO.getConstituencyName());
 					}else if(scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
-						diseasesVO.setId(diseasesVO.getMandalId());
-						diseasesVO.setName(diseasesVO.getMandalName());
-						locIdAndNameMap.put(diseasesVO.getMandalId(), diseasesVO.getMandalName());
+						if(diseasesVO.getMandalId() != null && diseasesVO.getMandalId().longValue() > 0L){
+							diseasesVO.setId(diseasesVO.getMandalId());
+							diseasesVO.setName(diseasesVO.getMandalName());
+							locIdAndNameMap.put(diseasesVO.getMandalId(), diseasesVO.getMandalName());
+						}else{
+							diseasesVO.setId(diseasesVO.getLocalElectionBodyId());
+							diseasesVO.setName(diseasesVO.getLocalElectionBodyName());
+							locIdAndNameMap.put(diseasesVO.getLocalElectionBodyId(), diseasesVO.getLocalElectionBodyName());
+						}
+						
 					}else if(scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
 						diseasesVO.setId(diseasesVO.getPanchayatId());
 						diseasesVO.setName(diseasesVO.getPanchayatName());
@@ -600,47 +656,43 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 		try{
 			
 			DiseasesVO diseasesVO = null;
-			List<DiseasesVO> diseasesVOs = new ArrayList<DiseasesVO>();
+			List<DiseasesVO> diseasesVOs = new ArrayList<DiseasesVO>(); 
 			
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(fromDateStr,"dd/MM/yyyy","");
 			Date endDate = commonMethodsUtilService.stringTODateConvertion(toDateStr,"dd/MM/yyyy","");
 			diseasesIdList = commonMethodsUtilService.makeEmptyListByZeroValue(diseasesIdList);
 			deptIdList = commonMethodsUtilService.makeEmptyListByZeroValue(deptIdList);
 			Long scopeId = 5L;
-			List<Object[]> diseasesList = departmentDiseasesInfoDAO.getLocationDtlsRankWise(startDate,endDate,diseasesIdList,deptIdList,scopeId);
+			List<Object[]> diseasesListForManal = departmentDiseasesInfoDAO.getLocationDtlsRankWise(startDate,endDate,diseasesIdList,deptIdList,scopeId);
+			if(diseasesListForManal != null && diseasesListForManal.size() > 0){
+				createVOList(diseasesVOs,diseasesListForManal);
+			}
 			
-			if(diseasesList != null && diseasesList.size() > 0){
-				for(Object[] param : diseasesList){
-					diseasesVO = new DiseasesVO();
-					diseasesVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[3]));
-					diseasesVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[4]));
-					diseasesVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[5]));
-					diseasesVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[6]));
-					diseasesVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[7]));
-					diseasesVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[8]));
-					diseasesVO.setMandalId(commonMethodsUtilService.getLongValueForObject(param[9]));
-					diseasesVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[10]));
-					diseasesVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[11]));
-					diseasesVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[12]));
-					if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
-						diseasesVO.setId(diseasesVO.getDistrictId());
-						diseasesVO.setName(diseasesVO.getDistrictName());
-					}else if(scopeId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
-						diseasesVO.setId(diseasesVO.getParliamentId());
-						diseasesVO.setName(diseasesVO.getParliamentName());
-					}else if(scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
-						diseasesVO.setId(diseasesVO.getConstituencyId());
-						diseasesVO.setName(diseasesVO.getConstituencyName());
-					}else if(scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
-						diseasesVO.setId(diseasesVO.getMandalId());
-						diseasesVO.setName(diseasesVO.getMandalName());
-					}else if(scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
-						diseasesVO.setId(diseasesVO.getPanchayatId());
-						diseasesVO.setName(diseasesVO.getPanchayatName());
+			scopeId = 7L;
+			List<Object[]> diseasesListForTown = departmentDiseasesInfoDAO.getLocationDtlsRankWise(startDate,endDate,diseasesIdList,deptIdList,scopeId);
+			if(diseasesListForTown != null && diseasesListForTown.size() > 0){
+				createVOList(diseasesVOs,diseasesListForTown);
+			}
+			//sort the list based on count.
+			Collections.sort(diseasesVOs, diseasesCaseWiseAscOrder);
+			
+			Long rank = 1L;
+			Long caseCount = 0L;
+			int count = 0;
+			if(diseasesVOs != null && diseasesVOs.size() > 0){
+				for(DiseasesVO param : diseasesVOs){
+					count = count + 1;
+					if(count == 1){
+						param.setRankId(rank);
+						caseCount = param.getCount();
 					}
-					
-					diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					diseasesVOs.add(diseasesVO);
+					if(caseCount.longValue() == param.getCount().longValue()){
+						param.setRankId(rank);
+					}else{
+						caseCount = param.getCount();
+						rank = rank + 1L;
+						param.setRankId(rank);
+					}
 				}
 			}
 			return diseasesVOs;
@@ -649,6 +701,38 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 		}
 		return null;
 	}
+	public void createVOList(List<DiseasesVO> diseasesVOs,List<Object[]> diseasesListForManal){
+		DiseasesVO diseasesVO = null;
+		if(diseasesListForManal.get(0)[0] == null){
+			diseasesListForManal.remove(0);
+		}
+		for(Object[] param : diseasesListForManal){
+			diseasesVO = new DiseasesVO();
+			diseasesVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[3]));
+			diseasesVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[4]));
+			diseasesVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[5]));
+			diseasesVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[6]));
+			diseasesVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[7]));
+			diseasesVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[8]));
+			diseasesVO.setMandalId(commonMethodsUtilService.getLongValueForObject(param[9]));
+			diseasesVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[10]));
+			diseasesVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[11]));
+			diseasesVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[12]));
+			diseasesVO.setLocalElectionBodyId(commonMethodsUtilService.getLongValueForObject(param[13]));
+			diseasesVO.setLocalElectionBodyName(commonMethodsUtilService.getStringValueForObject(param[14]));
+			
+			diseasesVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+			diseasesVOs.add(diseasesVO);
+		}
+	}
+	public static Comparator<DiseasesVO> diseasesCaseWiseAscOrder = new Comparator<DiseasesVO>() {
+    	public int compare(DiseasesVO obj2, DiseasesVO obj1) {
+    		Long vo2 = obj2.getCount();
+    		Long vo1 = obj1.getCount();
+    		//descending order of percantages.
+    		return vo1.compareTo(vo2);
+    	}
+	};
 	/*
  	 * Swadhin K Lenka
  	 * (non-Javadoc)
