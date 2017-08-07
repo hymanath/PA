@@ -10,4 +10,5 @@ public interface IPartyMeetingTypeDAO extends GenericDao<PartyMeetingType,Long>{
 	public List<Object[]> getMeetingTypesBasedOnLocationLevelNew(List<Long> locationLevels);
 	public List<Object[]> getPartyMeetingTypeByPartyMeetingMainType(Long partyMeetingMainTypeId);
 	public List<Object[]> getPartyMeetingTypeIds(List<Long> mainMeetingIdsList);
+	public List<Object[]> getPartyMeetingLevels(Long partyMeetingTypeId);
 }
