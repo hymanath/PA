@@ -14,13 +14,12 @@ public interface ILightMonitoringDAO extends GenericDao<LightMonitoring, Long > 
 	
 	public List<Object[]> getTotalVillagesDetails(Date startDate,Date endDate);
 	public List<Object[]> getTotalSurveyDetails(Date startDate,Date endDate);
-	public List<Object[]> getAllDitrictWiseSurveyDetails(Date startDate,Date endDate);
+	public List<Object[]> getAllDitrictWiseSurveyDetails(Date fromDate,Date toDate,String year,List<Long> locationValues,Long locationTypeId,
+			 Long searchlevelId,List<Long> searchLevelValues);
 	public List<Object[]> getConstituencyLevelWiseSurveyDetails();
 	public List<Object[]> getMandalLevelWiseSurveyDetails();
-	public List<LightMonitoring> getLiveDateForCurrentDateSelection(Date date);
-	public List<Object[]> getParlaimentWiseSurveyDetails();
+     public List<LightMonitoring> getLiveDateForCurrentDateSelection(Date date);
+     public List<Object[]> getParlaimentWiseSurveyDetails();
 	
-	
-
 
 }
