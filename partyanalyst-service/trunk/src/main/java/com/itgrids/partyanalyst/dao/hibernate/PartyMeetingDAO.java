@@ -4214,21 +4214,23 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    } 
 
 	 
-		public List<Object[]> getCadrePartyMeetngDeatils(Date fromDate,Date toDate,Long meetigLevelId,int startIndex,int maxIndex){
+		/* public List<Object[]> getCadrePartyMeetngDeatils(Date fromDate,Date toDate,Long meetigLevelId,int startIndex,int maxIndex){
 			 StringBuilder sb = new StringBuilder();
 			 sb.append(" select  model.partyMeetingId,");	//0  meeting Id
 			 sb.append("model.meetingName," ); 				//1  meeting name
 			 sb.append("model.partyMeetingLevel.level," );	//2   meeting level
 			 sb.append("model.partyMeetingType.type,");     //3   meeting type
-			 sb.append("TRIM( '00:00:00.0' from model.startDate ) " );        //4	  meeting start time
+			 sb.append(" model.startDate " );    //4	  meeting start time
 			 sb.append(",meetingAddress.district.districtName ");  //5  district name
 			 sb.append(	",meetingAddress.constituency.name " );  //6
 			 sb.append(",meetingAddress.tehsil.tehsilName "); //7
 			 sb.append(",meetingAddress.panchayat.panchayatName "); //8
-			 sb.append(",TRIM( '00:00:00.0' from model.endDate ) "); //9
-			 sb.append(",model.isConducted  " ); //10
+			 sb.append(",meetingAddress.state.stateName ");//9
+			 sb.append(",model.endDate "); 				 //10 end date
+			 sb.append(",model.isConducted  " ); //11
 			 sb.append(" from PartyMeeting model " +
-					"left join model.meetingAddress meetingAddress " +
+					"left join model.meetingAddress meetingAddress  " +
+					"left join meetingAddress.state state " +
 					"left join meetingAddress.district district " +
 					"left join meetingAddress.constituency constituency " +
 					"left join meetingAddress.tehsil tehsil " +
@@ -4256,16 +4258,16 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			 query.setMaxResults(maxIndex);
 				}
 			 return query.list();
-		 }
+		 }*/
 		 	// for meetings count
-	public Long getCadrePartyMeetngDeatilsCount(Date fromDate,Date toDate,Long meetigLevelId){
+  /*	public Long getCadrePartyMeetngDeatilsCount(Date fromDate,Date toDate,Long meetigLevelId){
 		 StringBuilder sb = new StringBuilder();
-		 sb.append("select distinct count(model.partyMeetingId) from PartyMeeting model  where ");
+		 sb.append("select distinct count(model.partyMeetingId) from PartyMeeting model  where  model.isActive='Y' ");
 			 if(meetigLevelId !=null && meetigLevelId.longValue() > 0L){
-				 sb.append(" model.partyMeetingLevelId=:meetigLevelId and ");
+				 sb.append(" and model.partyMeetingLevelId=:meetigLevelId  ");
 			 }
 			 if(fromDate!=null && toDate!=null){
-					sb.append(" (date (model.startDate) between :fromDate and :toDate) " );
+					sb.append(" and (date (model.startDate) between :fromDate and :toDate) " );
 			     }
 			 Query query = getSession().createQuery(sb.toString());
 			 if(fromDate != null && toDate != null){
@@ -4276,7 +4278,79 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 				 query.setParameter("meetigLevelId",meetigLevelId);
 			 }
 		return (Long)query.uniqueResult();
-	}
+	}*/
+	 
+	 public List<Object[]> getCadrePartyMeetngDeatils(Date fromDate,Date toDate,List<Long> meetigLevelId,int startIndex,int maxIndex){
+	       StringBuilder sb = new StringBuilder();
+	       sb.append(" select  model.partyMeetingId,");  //0  meeting Id
+	       sb.append("model.meetingName," );         //1  meeting name
+	       sb.append("model.partyMeetingLevel.level," );  //2   meeting level
+	       sb.append("model.partyMeetingType.type,");     //3   meeting type
+	       sb.append("TRIM( '00:00:00.0' from model.startDate ) " );        //4    meeting start time
+	       sb.append(",meetingAddress.district.districtName ");  //5  district name
+	       sb.append(  ",meetingAddress.constituency.name " );  //6
+	       sb.append(",meetingAddress.tehsil.tehsilName "); //7
+	       sb.append(",meetingAddress.panchayat.panchayatName "); //8
+	       sb.append(",meetingAddress.localElectionBody.name "); /////9
+	       sb.append(",meetingAddress.ward.name "); /////10
+	       sb.append(",meetingAddress.state.stateName ");//9///11
+	       sb.append(",TRIM( '00:00:00.0' from model.endDate ) "); //10///12
+	       sb.append(",model.isConducted  " ); //11///13
+	       sb.append(" from PartyMeeting model " +
+	          "left join model.meetingAddress meetingAddress " +
+	          "left join meetingAddress.district district " +
+	          "left join meetingAddress.constituency constituency " +
+	          "left join meetingAddress.tehsil tehsil " +
+	          "left join meetingAddress.panchayat panchayat " +
+	          "left join meetingAddress.localElectionBody localElectionBody  "+
+	          "left join meetingAddress.ward ward  "+
+	          "where model.isActive='Y' ");
+	      
+	       if(fromDate!=null && toDate!=null){
+	        sb.append(" and (date (model.startDate) between :fromDate and :toDate) " );
+	            }
+	       if(meetigLevelId !=null && !meetigLevelId.contains(0l)){
+	         sb.append("and  model.partyMeetingLevelId in (:meetigLevelId) ");
+	       }
+	       sb.append(" order by model.partyMeetingId desc");
+	       Query query = getSession().createQuery(sb.toString());
+	       if(fromDate != null && toDate != null){
+	          query.setDate("fromDate", fromDate);
+	        query.setDate("toDate", toDate);
+	        }
+	       if(meetigLevelId !=null && !meetigLevelId.contains(0l)){
+	         query.setParameterList("meetigLevelId",meetigLevelId);
+	       }
+	       if(maxIndex > 0)
+	        {
+	       query.setFirstResult(startIndex);
+	       query.setMaxResults(maxIndex);
+	        }
+	       return query.list();
+	     }
+	 
+	 
+		public Long getCadrePartyMeetngDeatilsCount(Date fromDate,Date toDate,List<Long> meetigLevelId){
+		     StringBuilder sb = new StringBuilder();
+			 sb.append("select distinct count(model.partyMeetingId) from PartyMeeting model  where  model.isActive='Y' ");
+		       if(meetigLevelId !=null && !meetigLevelId.contains(0l)){
+		         sb.append(" and model.partyMeetingLevelId in (:meetigLevelId) ");
+		       }
+		       if(fromDate!=null && toDate!=null){
+		          sb.append(" and (date (model.startDate) between :fromDate and :toDate) " );
+		           }
+		       Query query = getSession().createQuery(sb.toString());
+		       if(fromDate != null && toDate != null){
+		          query.setDate("fromDate", fromDate);
+		        query.setDate("toDate", toDate);
+		        }
+		       if(meetigLevelId !=null && !meetigLevelId.contains(0l)){
+		         query.setParameterList("meetigLevelId",meetigLevelId);
+		       }
+		    return (Long)query.uniqueResult();
+		  }
+		
+		
 	public List<Object[]> getPartyMeetingDetailsByPartyMeetingId(Long patyMeetingId) {
         StringBuilder sb = new StringBuilder();
         sb.append(" select  PM.partyMeetingId, PM.meetingName" ); //00 MEETINiD,01 name
@@ -4286,7 +4360,8 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         sb.append(",meetingAddress.tehsil.tehsilId,meetingAddress.panchayat.panchayatId");//08 tehsilId,09 panchayatId
         sb.append(",PM.partyMeetingType.partyMeetingMainTypeId,");//10  meting main typeid,
         sb.append("meetingAddress.state.stateId,PM.isConducted " ); //11 STATEiD,12 isConducted
-        sb.append("from PartyMeeting PM left join PM.meetingAddress meetingAddress " );
+        sb.append("from PartyMeeting PM left join PM.meetingAddress meetingAddress  " );
+        sb.append("left join meetingAddress.state state  ");
         sb.append("left join meetingAddress.district district ");
         sb.append("left join meetingAddress.constituency constituency " );
         sb.append("left join meetingAddress.tehsil tehsil " );
