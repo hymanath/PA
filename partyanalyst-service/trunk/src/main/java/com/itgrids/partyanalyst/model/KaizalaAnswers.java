@@ -20,6 +20,8 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.itgrids.partyanalyst.dao.hibernate.KaizalaAnswerInfoDAO;
+
 @Entity
 @Table(name = "kaizala_answers")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -29,8 +31,11 @@ public class KaizalaAnswers extends BaseModel implements Serializable {
 	private Long kaizalaQuestionsId;
 	private String answer;
 	private String eventId;
+	private Long kaizalaAnswerInfoId;
+	private Date insertedTime;
 	
 	private KaizalaQuestions kaizalaQuestions;
+	private KaizalaAnswerInfoDAO kaizalaAnswerInfo;
 	
 	
 	@Id
@@ -76,5 +81,34 @@ public class KaizalaAnswers extends BaseModel implements Serializable {
 	}
 	public void setKaizalaQuestions(KaizalaQuestions kaizalaQuestions) {
 		this.kaizalaQuestions = kaizalaQuestions;
+	}
+	
+	@Column(name="kaizala_answer_info_id")
+	public Long getKaizalaAnswerInfoId() {
+		return kaizalaAnswerInfoId;
+	}
+	public void setKaizalaAnswerInfoId(Long kaizalaAnswerInfoId) {
+		this.kaizalaAnswerInfoId = kaizalaAnswerInfoId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "kaizala_answer_info_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public KaizalaAnswerInfoDAO getKaizalaAnswerInfo() {
+		return kaizalaAnswerInfo;
+	}
+	public void setKaizalaAnswerInfo(KaizalaAnswerInfoDAO kaizalaAnswerInfo) {
+		this.kaizalaAnswerInfo = kaizalaAnswerInfo;
+	}
+	
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}	
+	
+	
 }
