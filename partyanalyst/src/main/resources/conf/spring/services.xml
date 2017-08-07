@@ -4402,6 +4402,8 @@
 		 <property name="userDAO" ref="userDAO" />
 		 <property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
 		 <property name="attendanceDAO" ref="attendanceDAO" />
+		 <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		 <property name="wardDAO" ref="wardDAO" />
     </bean>
     										
     <bean name="kaizalaInfoService" class="com.itgrids.partyanalyst.service.impl.KaizalaInfoService" >
