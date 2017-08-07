@@ -7,6 +7,7 @@ function onLoadCalls()
 {
 	getLedOverviewForStartedLocationsDetailsCounts();
 	getBasicLedOverviewDetails();
+	getLevelWiseOverviewDetailsDetails();
 	projectData('',2)
 }
 function getLedOverviewForStartedLocationsDetailsCounts(){
@@ -108,6 +109,31 @@ var str='';
 				str+='</div>';
    str+='</div>';
   $("#ledOverViewDiv").html(str);
+}
+function getLevelWiseOverviewDetailsDetails(){
+	var json = {
+		
+
+			"fromDateStr"      :"03-08-2017",
+			"toDateStr"        :"03-08-2017",
+			"year"             : "2017" ,
+			"locationValues"   : [0],
+			"locationTypeId"   : 2,
+			"searchLevelId"    :  2,
+			"searchLevelValues": [0]
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getLevelWiseOverviewDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+	});
+	
 }
 
 function buildBasicLedOverviewDetails(result)
