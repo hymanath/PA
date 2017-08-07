@@ -22657,7 +22657,8 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			 List<Long> serialNoIdLists=new ArrayList<Long>();
 			 List<Long> boothIdsList = new ArrayList<Long>(0);
 			 Map<Long,Long> voterSerialNoMap = new HashMap<Long, Long>(0);
-			 Map<Long,String> genderMap = new HashMap<Long,String>();
+			 Map<Long,Map<Long,String>> cadreGenderMap = new HashMap<Long,Map<Long,String>>(0);
+			
 			 Map<Long,Long> boothCadreMap =new HashMap<Long,Long>();
 			 boothIdsList.add(boothId);
 			
@@ -22670,7 +22671,10 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			List<Object[]> boothCadreObjsLst = boothInchargeDAO.getActiveBoothMemeberDetails(boothId);
 			if(commonMethodsUtilService.isListOrSetValid(boothCadreObjsLst)){
 				for(Object[] cadreObj : boothCadreObjsLst){
-					boothCadreMap.put(commonMethodsUtilService.getLongValueForObject(cadreObj[0]), commonMethodsUtilService.getLongValueForObject(cadreObj[1]));
+					if(commonMethodsUtilService.getLongValueForObject(cadreObj[0]) >0L)
+						boothCadreMap.put(commonMethodsUtilService.getLongValueForObject(cadreObj[0]), commonMethodsUtilService.getLongValueForObject(cadreObj[1]));
+					else if(commonMethodsUtilService.getLongValueForObject(cadreObj[2])>0L)
+						boothCadreMap.put(commonMethodsUtilService.getLongValueForObject(cadreObj[2]), commonMethodsUtilService.getLongValueForObject(cadreObj[1]));
 				}
 			}
 			
@@ -22693,7 +22697,10 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					gender =commonMethodsUtilService.getStringValueForObject(obj[7]);
 					if(voterSerialNoMap.keySet().contains(voterId))
 						serialNoIdLists.add(serialNoId);
-					  genderMap.put(voterId, gender);
+					
+					 Map<Long,String> genderMap = new HashMap<Long,String>();
+					 genderMap.put(voterId, gender);
+					 cadreGenderMap.put(commonMethodsUtilService.getLongValueForObject(obj[3]), genderMap);
 				}
 			}
 			
@@ -22714,12 +22721,13 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 				cnvrtedAftVal=cnvrtedBfrVal;
 			
 			int rangeCount = (int) cnvrtedAftVal / 100;
-			for(Long i=1l ; i<= rangeCount ; i++){
-				String startRange =i+"00";
-			Long maxRange=Long.parseLong(startRange);
-			Long minRange =Long.parseLong(startRange)-99;
-			
-			String finalRange=minRange+" - "+maxRange;
+					for(Long i=1l ; i<= rangeCount ; i++){
+						String startRange =i+"00";
+						Long maxRange=Long.parseLong(startRange);
+						Long minRange =Long.parseLong(startRange)-99;
+						
+						String finalRange=minRange+" - "+maxRange;
+						
 						CadreCommitteeVO cadreCommetteeVO=new CadreCommitteeVO();
 						cadreCommetteeVO.setMinRange(minRange);
 						cadreCommetteeVO.setMaxRange(maxRange);
@@ -22728,20 +22736,30 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					}
 					if(commonMethodsUtilService.isListOrSetValid(rangeList)){
 						for (Long id : voterSerialNoMap.keySet()) {
-							Long serialNo = voterSerialNoMap.get(id);
-							String gender1 = genderMap.get(id);
-							if(serialNoIdLists.contains(serialNo)){
-								for (CadreCommitteeVO rangeVO : rangeList) {
-									if(serialNo.longValue()>=rangeVO.getMinRange() && serialNo.longValue()<=rangeVO.getMaxRange()){
-										rangeVO.setTotalCount(rangeVO.getTotalCount().longValue()+1L);
-										if(gender1.equalsIgnoreCase("M") || gender1.equalsIgnoreCase("MALE")){
-											rangeVO.setMaleCount(rangeVO.getMaleCount()+1);
-											if(boothCadreMap.get(id) !=null)
-												rangeVO.setAlreadyRegistered("ADDED");
-										}else if(gender1.equalsIgnoreCase("F") || gender1.equalsIgnoreCase("FEMALE")){
-											rangeVO.setFemaleCount(rangeVO.getFemaleCount()+1);
-											if(boothCadreMap.get(id) !=null)
-												rangeVO.setAlreadyRegistered("ADDED");
+							
+							if(commonMethodsUtilService.isMapValid(cadreGenderMap)){
+								for (Long tdpCadreId : cadreGenderMap.keySet()) {
+									Map<Long,String> genderMap = cadreGenderMap.get(tdpCadreId);
+									Long serialNo = voterSerialNoMap.get(id);
+									String gender1 = genderMap.get(id);
+									if(gender1 != null && !gender1.isEmpty() && serialNoIdLists.contains(serialNo)){
+										for (CadreCommitteeVO rangeVO : rangeList) {
+											if(serialNo.longValue()>=rangeVO.getMinRange() && serialNo.longValue()<=rangeVO.getMaxRange()){
+												rangeVO.setTotalCount(rangeVO.getTotalCount().longValue()+1L);
+												if(gender1.equalsIgnoreCase("M") || gender1.equalsIgnoreCase("MALE")){
+													rangeVO.setMaleCount(rangeVO.getMaleCount()+1L);
+													if(boothCadreMap.get(id) !=null){
+														rangeVO.setAlreadyRegistered("ADDED");
+														rangeVO.setAddedCount(rangeVO.getAddedCount()+1L);
+													}
+												}else if(gender1.equalsIgnoreCase("F") || gender1.equalsIgnoreCase("FEMALE")){
+													rangeVO.setFemaleCount(rangeVO.getFemaleCount()+1L);
+													if(boothCadreMap.get(id) !=null){
+														rangeVO.setAlreadyRegistered("ADDED");
+														rangeVO.setAddedCount(rangeVO.getAddedCount()+1L);
+													}
+												}
+											}
 										}
 									}
 								}
@@ -22770,6 +22788,8 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		 Map<Long,Long> voterSerialNoMap = new HashMap<Long, Long>(0);
 		 
 		 List<Object[]> votersList = boothDAO.getVoterDetailsByBoothId(boothId);
+		 List<Long> boothIdsList = new ArrayList<Long>(0);
+		 boothIdsList.add(boothId);
 		 Long serialNo=0l;
 		 if(commonMethodsUtilService.isListOrSetValid(votersList)){
 			 
@@ -22784,9 +22804,15 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					}
 				}
 		    }	
-				List<Object[]> tdpcadreIdObjsList = tdpCadreDAO.getRangeWiseTdpCadreDtlsObjs(voterSerialNoMap.keySet());
+				List<Object[]> tdpcadreIdObjsList = tdpCadreDAO.getRangeWiseTdpCadreDtlsObjs(voterSerialNoMap.keySet(),"OwnVoterId");
+				List<Object[]> familyTdpcadreIdObjsList = tdpCadreDAO.getRangeWiseTdpCadreDtlsObjs(voterSerialNoMap.keySet(),"FamilyVoterId");
 					
-
+				if(!commonMethodsUtilService.isListOrSetValid(tdpcadreIdObjsList))
+					tdpcadreIdObjsList = new ArrayList<Object[]>(0);
+				if(commonMethodsUtilService.isListOrSetValid(familyTdpcadreIdObjsList))	
+					tdpcadreIdObjsList.addAll(familyTdpcadreIdObjsList);
+				
+					Map<Long,CadreCommitteeVO> cadreMap = new HashMap<Long, CadreCommitteeVO>(0);
 					if(tdpcadreIdObjsList !=null && tdpcadreIdObjsList.size() > 0){
 					 
 					 for(Object[] Obj: tdpcadreIdObjsList){
@@ -22804,14 +22830,57 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 						 finalVO.setPanchayat(commonMethodsUtilService.getStringValueForObject(Obj[9]));
 						 finalVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(Obj[10]));
 						 finalVO.setGender(commonMethodsUtilService.getStringValueForObject(Obj[3]));
+						 finalVO.setMemberShipCardId(commonMethodsUtilService.getStringValueForObject(Obj[11]));
+						 finalVO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(Obj[12]));
+						 if(finalVO.getVoterCardNo() == null || finalVO.getVoterCardNo().length()==0){
+							 finalVO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(Obj[13]));
+							 finalVO.setVoterId(commonMethodsUtilService.getLongValueForObject(Obj[14]));
+						 }
 						 
-						 finalVO.setSerialNo(voterSerialNoMap.get(commonMethodsUtilService.getLongValueForObject(Obj[6])).toString());
-						 if(commonMethodsUtilService.getStringValueForObject(Obj[3]).equalsIgnoreCase(gender)){
+						 finalVO.setType("Not Added");
+						 finalVO.setIsDuplicate("");
+						 finalVO.setSerialNo(voterSerialNoMap.get(finalVO.getVoterId()).toString());
+						/* if(commonMethodsUtilService.getStringValueForObject(Obj[3]).equalsIgnoreCase(gender)){
 							 returnVO.getCasteList().add(finalVO);
 						 } else if (gender.equalsIgnoreCase("0")){
 							 returnVO.getCasteList().add(finalVO);
-						 }
+						 }*/
+						 
+						  	if(commonMethodsUtilService.getStringValueForObject(Obj[3]).equalsIgnoreCase(gender)){
+							  cadreMap.put(finalVO.getTdpCadreId(), finalVO);
+							 } else if (gender.equalsIgnoreCase("0")){
+								 cadreMap.put(finalVO.getTdpCadreId(), finalVO);
+							 }
 					 }
+					 List<Object[]> boothCadreIdList = boothInchargeDAO.getCadreIdsForLocation(boothIdsList,0L);
+						if(boothCadreIdList != null && boothCadreIdList.size() > 0l){
+							List<String> addedSerialNoList = new ArrayList<String>(0);
+							for(Object[] Obj: boothCadreIdList){
+								 CadreCommitteeVO vo = cadreMap.get(commonMethodsUtilService.getLongValueForObject(Obj[0]));
+								if(vo != null){
+									 vo.setType("Added Member");
+									 vo.setRoleName(commonMethodsUtilService.getStringValueForObject(Obj[7]));
+									 vo.setBoothNumber(commonMethodsUtilService.getLongValueForObject(Obj[1]));
+									 vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(Obj[2]));
+									 vo.setTehsilId(commonMethodsUtilService.getLongValueForObject(Obj[3]));
+									 vo.setLocalElectionId(commonMethodsUtilService.getLongValueForObject(Obj[5]));
+									 if(Obj[3] == null){
+										 vo.setLocalElectionBody(commonMethodsUtilService.getStringValueForObject(Obj[6]));	 
+									 }else{
+										 vo.setTehsil(commonMethodsUtilService.getStringValueForObject(Obj[4]));
+									 }
+									 vo.setIsDuplicate("No");
+									 if(addedSerialNoList.contains(vo.getSerialNo().trim())){
+										 vo.setIsDuplicate("Yes");
+									 }
+									addedSerialNoList.add(vo.getSerialNo().trim());
+								}
+							}
+						}
+						
+						if(commonMethodsUtilService.isMapValid(cadreMap)){
+							 returnVO.getCasteList().addAll(cadreMap.values());
+						}
 				  }
 			
 		 }catch(Exception e){
