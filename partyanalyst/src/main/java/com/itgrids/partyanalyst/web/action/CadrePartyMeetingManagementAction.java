@@ -208,12 +208,12 @@ public class CadrePartyMeetingManagementAction extends ActionSupport implements 
 				}
 			}
 			if(user.getIsAdmin() != null && user.getIsAdmin().equalsIgnoreCase("true")){
-				return Action.SUCCESS;
+				return Action.SUCCESS; 
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised in execute method in CadreRegistrationAction Action",e);
 		}
-		return Action.ERROR;
+		return Action.SUCCESS;
 		
 	}
     
@@ -401,14 +401,24 @@ public String getPanchayatWardByMandal(){
 		     return Action.SUCCESS;
 		    }
  
- public String getPartyMeetingLevels(){
+ /*public String getPartyMeetingLevels(){
 		try {	
 			partyMeetingVOList= cadrePartyMeetingManagementService.getPartyMeetingLevels();
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getPartyMeetingLevels  method, Exception - ",e); 
 		}
 		return Action.SUCCESS;
-	 }
+	 } */
+		 public String getPartyMeetingLevels(){
+			    try {  
+			      jObj = new JSONObject(getTask());
+			         Long partyMeetingSubTypeId = jObj.getLong("partyMeetingMainTypeId");
+			      partyMeetingVOList= cadrePartyMeetingManagementService.getPartyMeetingLevels(partyMeetingSubTypeId);
+			    } catch (Exception e) {
+			      LOG.error("Exception Occured in getPartyMeetingLevels  method, Exception - ",e); 
+			    }
+			    return Action.SUCCESS;
+			   }
  
  public String getAllSessionType(){
 		try {
@@ -486,7 +496,7 @@ public String getPanchayatWardByMandal(){
 									    
 	                                 }
 	                                 else{
-	                                	 resultString="Please upload csv format";
+	                                	 resultString="Please Upload Csv or Excel Format";
 									   
 										//vo.se
 	                                  // successMsg="The File should be in csv format. So Please upload in correct Format.";
@@ -497,7 +507,7 @@ public String getPanchayatWardByMandal(){
 	                 }
 					 
 	     }catch(Exception e){
-	          LOG.error("Exception rised in savepartymeetingDetailsWithExcel",e);
+	          LOG.error("Exception rised in getMemberShipIdsFromExcel",e);
 	        }   
 	   return Action.SUCCESS;
 	}
