@@ -320,7 +320,7 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 		return returnList;
 	
 	}
-	/*
+	/**
 	 * Date : 27/06/2017
 	 * Author :pavan kumar
 	 * @description : getConstituencyBasedOnDistrictId 
@@ -593,63 +593,7 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 			return finalList;
 	  }
 	
-	    /**
-		 * @author  Babu kurakula <href:kondababu.kurakula@itgrids.com >
-		 * @Date 28th June,2017
-		 * @description to  get party meeting detailes
-		 * @param loctionLevelId, start date end date
-		 * @return List of PartyMeetingsVO 
-	 */
-		/*public List<PartyMeetingsVO> getCadrePartyMeetngDeatils(String startDateStr,String endDateStr,Long meetigLevelId,int startIndex,int maxIndex){
-			List<PartyMeetingsVO> finalList=null;
-			Long totalMeetingCount=0L;
-			try{
-			  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			  SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
-		      Date fromDate = null;
-		      Date	toDate = null;
-		      if(startDateStr != null && endDateStr != null){
-		        fromDate = sdf.parse(startDateStr.trim());
-		        toDate = sdf.parse(endDateStr.trim());
-		      }			
-		     totalMeetingCount= partyMeetingDAO.getCadrePartyMeetngDeatilsCount(fromDate,toDate,meetigLevelId);
-			List<Object[]> objectList=partyMeetingDAO.getCadrePartyMeetngDeatils(fromDate,toDate,meetigLevelId, startIndex,maxIndex);
-			if(objectList !=null && objectList.size() > 0){
-				finalList=new ArrayList<PartyMeetingsVO>();
-				for(Object[] objcts: objectList){
-					PartyMeetingsVO partyMeetingVO=new PartyMeetingsVO();
-					partyMeetingVO.setId(commonMethodsUtilService.getLongValueForObject(objcts[0]));// meeting id
-					partyMeetingVO.setMeetingName(commonMethodsUtilService.getStringValueForObject(objcts[1]));// meeting name
-					partyMeetingVO.setRemarks(commonMethodsUtilService.getStringValueForObject(objcts[2]));//meeting level
-					partyMeetingVO.setMeetingType(commonMethodsUtilService.getStringValueForObject(objcts[3]));//meeting type
-					String startStr[]=commonMethodsUtilService.getStringValueForObject(objcts[4]).split("\\s");
-			        partyMeetingVO.setUpdatedTime(startStr[0]);// meeting start date
-					partyMeetingVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(objcts[5]));// district name
-					partyMeetingVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objcts[6]));//constincy name
-					partyMeetingVO.setTeshilName(commonMethodsUtilService.getStringValueForObject(objcts[7]));// tesil name
-					partyMeetingVO.setName(commonMethodsUtilService.getStringValueForObject(objcts[8]));// village name.
-					partyMeetingVO.setStateName(commonMethodsUtilService.getStringValueForObject(objcts[9]));// State Name
-					String []endDate=commonMethodsUtilService.getStringValueForObject(objcts[10]).split("\\s");
-					partyMeetingVO.setMonth(endDate[0]);// end date
-					partyMeetingVO.setIsCondacted(commonMethodsUtilService.getStringValueForObject(objcts[11]));
-					Date currrentdate=sdf2.parse(dateUtilService.getCurrentDateInStringFormat());
-					Long daysCount=dateUtilService.noOfDayBetweenDates(endDate[0],dateUtilService.getDateInStringFormatByDate(currrentdate,"yyyy-MM-dd"));
-					if(daysCount <=2){
-						partyMeetingVO.setFlage("true");// sett flage to set meeting Edit button 
-					}
-					finalList.add(partyMeetingVO);
-				}
-				
-			}
-			if(finalList != null && finalList.size() > 0){
-			finalList.get(0).setTotalCount(totalMeetingCount);
-			}
-			}catch(Exception e){
-				LOG.error("Exception Occured in getCadrePartyMeetngDeatils  method, Exception - ",e); 
-			}
-			return finalList;
-		}
-		*/
+	  
 	  /*  public List<PartyMeetingsVO> getPartyMeetingLevels(){
 			List<PartyMeetingsVO> finalList=null;
 			try{
@@ -669,6 +613,13 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 			return finalList;
 		} */
 	    
+	    /**
+	  		 * @author  Babu kurakula <href:kondababu.kurakula@itgrids.com >
+	  		 * @Date 28th June,2017
+	  		 * @description to  get party meeting detailes
+	  		 * @param loctionLevelId, start date end date
+	  		 * @return List of PartyMeetingsVO 
+	  	 */
 	    public List<PartyMeetingsVO> getCadrePartyMeetngDeatils(String startDateStr,String endDateStr,Long meetigLevelId,int startIndex,int maxIndex){
 	        List<PartyMeetingsVO> finalList=null;
 	        Long totalMeetingCount=0L;
@@ -695,7 +646,8 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 	            partyMeetingVO.setMeetingName(commonMethodsUtilService.getStringValueForObject(objcts[1]));// meeting name
 	            partyMeetingVO.setRemarks(commonMethodsUtilService.getStringValueForObject(objcts[2]));//meeting level
 	            partyMeetingVO.setMeetingType(commonMethodsUtilService.getStringValueForObject(objcts[3]));//meeting type
-	            partyMeetingVO.setUpdatedTime(commonMethodsUtilService.getStringValueForObject(objcts[4]));// meeting start date
+	            String []startDateArr=commonMethodsUtilService.getStringValueForObject(objcts[4]).split("\\s");
+	            partyMeetingVO.setUpdatedTime(startDateArr[0]);// meeting start date
 	            partyMeetingVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(objcts[5]));// district name
 	            partyMeetingVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objcts[6]));//constincy name
 	            partyMeetingVO.setTeshilName(commonMethodsUtilService.getStringValueForObject(objcts[7]));// tesil name
@@ -715,7 +667,7 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 	          }
 	          
 	        }
-	        if(totalMeetingCount != null ){
+	        if(finalList !=null && finalList.size() >0 ){
 	        finalList.get(0).setTotalCount(totalMeetingCount);
 	        }
 	        }catch(Exception e){
@@ -799,7 +751,9 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 			 SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
 			try{
 				List<IdAndNameVO> inviteeDeatilsVOS= null;
+				//get party meeting details
 				List<Object[]> objectList=partyMeetingDAO.getPartyMeetingDetailsByPartyMeetingId(meetingId);
+				//get meeting invitee mebbershipsnumbers
 				List<Object[]> inviteeObjs=partyMeetingInviteeDAO.getPartyMeetingInviteeDetaisByPartyMeetingId(meetingId);
 				List<String> memberShipiNoList=null;
 				//tdp cadreId set
@@ -813,7 +767,7 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 						memberShipiNoList.add(commonMethodsUtilService.getStringValueForObject(objcts[2]));
 						//positions List
 					}
-				}
+				}  //get the invitee full details with membership numbers
 				if(memberShipiNoList != null && memberShipiNoList.size() >0){
 					 inviteeDeatilsVOS= getTdpCadreDetailsForInveetMeeting(memberShipiNoList);
 				}
@@ -824,9 +778,6 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 							PartyMeetingsVO partyMeetingVO=new PartyMeetingsVO();
 							partyMeetingVO.setId(commonMethodsUtilService.getLongValueForObject(objcts[0]));         // meeting id
 							partyMeetingVO.setName(commonMethodsUtilService.getStringValueForObject(objcts[1]));      //meeting name
-							
-							//partyMeetingVO.setConductedDate(commonMethodsUtilService.getStringValueForObject(objcts[2])); // start date
-							//partyMeetingVO.setUpdatedTime(commonMethodsUtilService.getStringValueForObject(objcts[3]));    // end date
 							String startDate=commonMethodsUtilService.getStringValueForObject(objcts[2]);//.split("\\s");
                             String []endDate=commonMethodsUtilService.getStringValueForObject(objcts[3]).split("\\s");
 							partyMeetingVO.setConductedDate(startDate); // start date
@@ -843,13 +794,11 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 							Date currrentdate=sdf2.parse(dateUtilService.getCurrentDateInStringFormat());
 							Long daysCount=dateUtilService.noOfDayBetweenDates(endDate[0],dateUtilService.getDateInStringFormatByDate(currrentdate,"yyyy-MM-dd"));
 							if(daysCount <=1){
-								partyMeetingVO.setFlage("true");// sett flage to set meeting Edit button 
+								partyMeetingVO.setFlage("true");// set flage for hide the edit  invitees text area and file uploads 
 							}
 							if(inviteeDeatilsVOS !=null && inviteeDeatilsVOS.size() >0){
-								partyMeetingVO.setInvetteList(inviteeDeatilsVOS);
+								partyMeetingVO.setInvetteList(inviteeDeatilsVOS);//invite details set to vo for UI building
 							}
-							
-						
 							finalList.add(partyMeetingVO);
 						}
 					}
@@ -925,7 +874,7 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 			                     }
 		                        if(!StringUtils.isNumeric(cadreIdList[column2])){
 		                        	  membershipIdList.clear();
-			                          membershipIdList.add("Please Enter Membership Ids");
+			                          membershipIdList.add("Please Enter Membership Ids In Numbers Only");
 			                          br = null;
 			                     }  
 		                      if(!cadreIdList[column2].isEmpty() && !cadreIdList[column2].contains(" ") && StringUtils.isNumeric(cadreIdList[column2])){
@@ -1610,51 +1559,51 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 		  public IdAndNameVO getPartyMeetingInviteesDetailsAttendence(Long meetingId,Long sessionId){
 		        IdAndNameVO idAndNameVO=null;
 		        try{
-		        List<String> notAttendedList =null;
-		        List<IdAndNameVO> notAttendedFinalList=null;
-		        List<IdAndNameVO> finalAttendanceList=null;
-		        List<String> invitesList=null;
-		        Map<String,String> memberShipIdAndCommentMap=null;
-		            //get the attendance list membership ids
-		            List<String> attendedList=partyMeetingAttendanceDAO.getPartyMeetingInviteesDetailsAttendence(meetingId,sessionId);
-		            //get the invitess list membership ids
-		            List<Object[]> invitesObjs=partyMeetingInviteeDAO.getPartyMeetingInvitteesMembershipNo(meetingId);
-		            if(invitesObjs !=null && invitesObjs.size() > 0L){
-		            	invitesList=new ArrayList<String>();
-		            	memberShipIdAndCommentMap=new HashMap<String,String>();
-		            	for(Object[] inviobj : invitesObjs){
-		            		invitesList.add(commonMethodsUtilService.getStringValueForObject(inviobj[0]));
-		            		memberShipIdAndCommentMap.put(commonMethodsUtilService.getStringValueForObject(inviobj[0]), commonMethodsUtilService.getStringValueForObject(inviobj[1]));
-		            		
-		            	}
-		            }
-		           
-		            if(invitesList !=null && invitesList.size()>0){
-		                   notAttendedList=new ArrayList<String>();
-		                   for(String invitee:invitesList){
-		                     if(!attendedList.contains(invitee)){// comparing attendlist and invettelist membership ids
-		                       notAttendedList.add(invitee);//non-attend list
-		                     }
-		                   }
-		                   if(attendedList !=null && attendedList.size()>0){
-		                     finalAttendanceList= getTdpCadreDetailsForInveetMeeting(attendedList);
-		                     if(finalAttendanceList !=null && finalAttendanceList.size() >0L){
-			                    for(IdAndNameVO idVo : finalAttendanceList){
-			                    	String memerShipNo=idVo.getMembershipNo();
-			                    	idVo.setQuestion(memberShipIdAndCommentMap.get(memerShipNo));//comment for attendace
-			                    }
-		                     }
-		                   }
-		                   if(notAttendedList !=null && notAttendedList.size()>0){
-		                   notAttendedFinalList= getTdpCadreDetailsForInveetMeeting(notAttendedList);
-		                 }
-		            if(notAttendedList !=null || attendedList !=null){
-		                   idAndNameVO=new IdAndNameVO();
-		                   idAndNameVO.setNotAttendanceList(notAttendedFinalList);
-		                   idAndNameVO.setAttendanceList(finalAttendanceList);
-		                   
-		                 }
-		            }
+			        List<String> notAttendedList =null;
+			        List<IdAndNameVO> notAttendedFinalList=null;
+			        List<IdAndNameVO> finalAttendanceList=null;
+			        List<String> invitesList=null;
+			        Map<String,String> memberShipIdAndCommentMap=null;
+			            //get the attendance list membership ids
+			            List<String> attendedList=partyMeetingAttendanceDAO.getPartyMeetingInviteesDetailsAttendence(meetingId,sessionId);
+			            //get the invitess list membership ids
+			            List<Object[]> invitesObjs=partyMeetingInviteeDAO.getPartyMeetingInvitteesMembershipNo(meetingId);
+			            if(invitesObjs !=null && invitesObjs.size() > 0L){
+			            	invitesList=new ArrayList<String>();
+			            	memberShipIdAndCommentMap=new HashMap<String,String>();
+			            	for(Object[] inviobj : invitesObjs){
+			            		invitesList.add(commonMethodsUtilService.getStringValueForObject(inviobj[0]));
+			            		memberShipIdAndCommentMap.put(commonMethodsUtilService.getStringValueForObject(inviobj[0]), commonMethodsUtilService.getStringValueForObject(inviobj[1]));
+			            		
+			            	}
+			            }
+			           
+			            if(invitesList !=null && invitesList.size()>0){
+			                   notAttendedList=new ArrayList<String>();
+			                   for(String invitee:invitesList){
+			                     if(!attendedList.contains(invitee)){// comparing attendlist and invettelist membership ids
+			                       notAttendedList.add(invitee);//non-attend list
+			                     }
+			                   }
+			                   if(attendedList !=null && attendedList.size()>0){
+			                     finalAttendanceList= getTdpCadreDetailsForInveetMeeting(attendedList);
+			                     if(finalAttendanceList !=null && finalAttendanceList.size() >0L){
+				                    for(IdAndNameVO idVo : finalAttendanceList){
+				                    	String memerShipNo=idVo.getMembershipNo();
+				                    	idVo.setQuestion(memberShipIdAndCommentMap.get(memerShipNo));//comment for attendace
+				                    }
+			                     }
+			                   }
+			                   if(notAttendedList !=null && notAttendedList.size()>0){
+			                   notAttendedFinalList= getTdpCadreDetailsForInveetMeeting(notAttendedList);
+			                 }
+			            if(notAttendedList !=null || attendedList !=null){
+			                   idAndNameVO=new IdAndNameVO();
+			                   idAndNameVO.setNotAttendanceList(notAttendedFinalList);
+			                   idAndNameVO.setAttendanceList(finalAttendanceList);
+			                   
+			                 }
+			            }
 		      }catch(Exception e){
 		        LOG.error("Exception Occured in getPartyMeetingInviteesDetailsAttendence  method, Exception - ",e); 
 		      }
@@ -1698,37 +1647,37 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 			  List<String> existingMembersList=null;
 			  List<String> notExistingMembersList=null;
 			  try{
-			  //to get the invitee deatails
-			  List<Object[]> invitesObjs=partyMeetingInviteeDAO.getPartyMeetingInvitteesMembershipNo(meetingId);
-	            if(invitesObjs !=null && invitesObjs.size() > 0L){
-	            	 invitesList=new HashSet<String>();
-	            	for(Object[] inviobj : invitesObjs){//set membershipIds
-	            		invitesList.add(commonMethodsUtilService.getStringValueForObject(inviobj[0]));
-	    	        }
-	            }
-	            if(invitesList !=null && invitesList.size() >0 && memberShipIds !=null && memberShipIds.size() >0){
-	            	existingMembersList=new ArrayList<String>();//comparing membershipIds  existing or Not
-	            	notExistingMembersList=new ArrayList<String>();
-	            	for(String memberStr: memberShipIds){
-	            		if(!invitesList.contains(memberStr)){
-	            			notExistingMembersList.add(memberStr);//not exiting membershipIds
-	            		}else{
-	            			existingMembersList.add(memberStr);	// exiting membershipIds
-	            		}
-	            	}
-	            }
-	          // get not exiting membershipIds details
-	            if(notExistingMembersList !=null && notExistingMembersList.size() >0){
-	            	tdpCaderDetilsList=getTdpCadreDetailsForInveetMeeting(notExistingMembersList);
-	            }
-	            if(invitesList==null){
-	            	tdpCaderDetilsList=getTdpCadreDetailsForInveetMeeting(memberShipIds);
-	            }
-	            
-	            //set the UI
-	              finalidAndNameVO =new IdAndNameVO();
-	            finalidAndNameVO.setAttendanceList(tdpCaderDetilsList);
-	            finalidAndNameVO.setEnrollmentYears(existingMembersList);
+				  //to get the invitee deatails
+				  List<Object[]> invitesObjs=partyMeetingInviteeDAO.getPartyMeetingInvitteesMembershipNo(meetingId);
+		            if(invitesObjs !=null && invitesObjs.size() > 0L){
+		            	 invitesList=new HashSet<String>();
+		            	for(Object[] inviobj : invitesObjs){//set membershipIds
+		            		invitesList.add(commonMethodsUtilService.getStringValueForObject(inviobj[0]));
+		    	        }
+		            }
+		            if(invitesList !=null && invitesList.size() >0 && memberShipIds !=null && memberShipIds.size() >0){
+		            	existingMembersList=new ArrayList<String>();//comparing membershipIds  existing or Not
+		            	notExistingMembersList=new ArrayList<String>();
+		            	for(String memberStr: memberShipIds){
+		            		if(!invitesList.contains(memberStr)){
+		            			notExistingMembersList.add(memberStr);//not exiting membershipIds
+		            		}else{
+		            			existingMembersList.add(memberStr);	// exiting membershipIds
+		            		}
+		            	}
+		            }
+		          // get not exiting membershipIds details
+		            if(notExistingMembersList !=null && notExistingMembersList.size() >0){
+		            	tdpCaderDetilsList=getTdpCadreDetailsForInveetMeeting(notExistingMembersList);
+		            }
+		            if(invitesList==null){
+		            	tdpCaderDetilsList=getTdpCadreDetailsForInveetMeeting(memberShipIds);
+		            }
+		            
+		            //set the UI
+		              finalidAndNameVO =new IdAndNameVO();
+		            finalidAndNameVO.setAttendanceList(tdpCaderDetilsList);
+		            finalidAndNameVO.setEnrollmentYears(existingMembersList);
 			  }catch(Exception e){
 					LOG.error("Exception Occured in getInviteeExistingAndNotExistingOfMeetingDetails  method, Exception - ",e); 
 
