@@ -76,6 +76,7 @@ label
 	position: relative;
 	background: #fff;
 	border: 1px solid #fff;
+	cursor:pointer;
 }
 .top-arrow , .right-arrow,.bottom-arrow{
 	position: relative;
@@ -187,6 +188,26 @@ label
 	color: #fff;
 	border-radius: 14px;
 }
+.switch-btn-caste
+{
+	padding:2px;
+	background-color: #ddd;
+	display: inline-block;
+	border-radius: 14px;
+}
+.switch-btn-caste li
+{
+	list-style:none;
+	display: inline-block;
+	padding: 4px 8px;
+	cursor: pointer;
+}
+.switch-btn-caste li.active
+{
+	background-color:  rgb(76, 174, 76);
+	color: #fff;
+	border-radius: 14px;
+}
 .bg-E9
 {
 	background-color: #E9F1FC
@@ -206,7 +227,7 @@ label
     font-weight: 800;
     padding: 5px !important;;
 }
-
+.table-noborder tbody tr td small{font-size:12px}
 .td-expand-body td
 {
 	background-color: #F1F1F1
@@ -545,4 +566,7 @@ label
 	margin-top: 3px;
 	position: absolute;
 	width: 10px;
+}
+.cadreBorderStyle{
+	border: 2px solid #c69c6c !important;
 }
