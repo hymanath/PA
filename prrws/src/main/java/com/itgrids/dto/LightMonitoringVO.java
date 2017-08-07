@@ -18,6 +18,14 @@ public class LightMonitoringVO implements Serializable{
 	private Long notWorkingLights = 0L;
 	private Long lightCount = 0L;	
 	private Long wattage = 0L;
+	private Long districtId;
+	private String districtName;
+	private Long constituencyId;
+	private String name;
+	private Long parliamentId;
+	private Long tehsilId;
+	private String tehsilName;
+	
 	private List<LightWattageVO> WattageList = new ArrayList<LightWattageVO>(0);
 
 	public List<LightWattageVO> getWattageList() {
@@ -94,6 +102,56 @@ public class LightMonitoringVO implements Serializable{
 	public static void setSerialversionuid(long serialversionuid) {
 		serialVersionUID = serialversionuid;
 	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+	public static void setSerialVersionUID(long serialVersionUID) {
+		LightMonitoringVO.serialVersionUID = serialVersionUID;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+	public String getTehsilName() {
+		return tehsilName;
+	}
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
+	}
+	
+	
 
 
 }
