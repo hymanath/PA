@@ -89,10 +89,18 @@ public class PartyMeetingsVO implements Serializable{
 	private Time startTime;
 	private Time endTime;
 	private Time lateTime;
+	private String wardName;
 	
 	
 	
 	
+
+	public String getWardName() {
+		return wardName;
+	}
+	public void setWardName(String wardName) {
+		this.wardName = wardName;
+	}
 	public String getStateName() {
 		return stateName;
 	}
