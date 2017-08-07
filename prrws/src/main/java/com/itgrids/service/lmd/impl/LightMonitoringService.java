@@ -3,7 +3,9 @@ package com.itgrids.service.lmd.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -257,20 +259,20 @@ public class LightMonitoringService  implements ILightMonitoring{
 		     if(lightMonitoringData!=null && lightMonitoringData.size()>0 && !lightMonitoringData.isEmpty()){
 		    	 LightMonitoringVO lightMonitoringVO= new LightMonitoringVO();
 			     for (Object[] objects : lightMonitoringData) {						
-					    lightMonitoringVO.setTotalPoles((Long)objects[0]);
-					    lightMonitoringVO.setTotalPanels((Long)objects[1]);				    
-					    lightMonitoringVO.setTotalLights((Long)objects[2]);
-					    lightMonitoringVO.setOnLights((Long)objects[3]);
-					    lightMonitoringVO.setOffLights((Long)objects[4]);
-				        lightMonitoringVO.setWorkingLights((Long)objects[5]);
-				        lightMonitoringVO.setNotWorkingLights((Long)objects[6]);
+					    lightMonitoringVO.setTotalPoles(objects[0]!=null?(Long)objects[0]:0l);
+					    lightMonitoringVO.setTotalPanels(objects[1]!=null?(Long)objects[1]:0l);				    
+					    lightMonitoringVO.setTotalLights(objects[2]!=null?(Long)objects[2]:0l);
+					    lightMonitoringVO.setOnLights(objects[3]!=null?(Long)objects[3]:0l);
+					    lightMonitoringVO.setOffLights(objects[4]!=null?(Long)objects[4]:0l);
+				        lightMonitoringVO.setWorkingLights(objects[5]!=null?(Long)objects[5]:0l);
+				        lightMonitoringVO.setNotWorkingLights(objects[6]!=null?(Long)objects[6]:0l);
 		
 				  List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege(fromDate,toDate);
 		       
 			       if(wattegeCount!=null && wattegeCount.size()>0 && !wattegeCount.isEmpty()){
 			    	   for (Object[] objects2 : wattegeCount) {				    	
-					    	wattagVO.setWattage((Long)objects2[0]);
-					    	wattagVO.setLightCount((Long)objects2[1]);		    	
+					    	wattagVO.setWattage(objects2[0]!=null?(Long)objects2[0]:0l);
+					    	wattagVO.setLightCount(objects2[1]!=null?(Long)objects2[1]:0l);		    	
 					       	lightMonitoringVO.getWattageList().add(wattagVO); 	
 					    }
 			        }
@@ -316,5 +318,44 @@ public class LightMonitoringService  implements ILightMonitoring{
 		}
 	       return listVO;
 	  }
-
+	 /*
+ 	 * Date : 07/08/2017
+ 	 * Author :Swapna
+ 	 * @description : getDistrictLevelCount
+ 	 */
+	@Override
+	public List<LightMonitoringVO> getLevelWiseOverviewDetails(String fromDateStr, String toDateStr, String year,
+			List<Long> locationValues, Long locationTypeId, Long searchlevelId, List<Long> searchLevelValues) {
+		    List<LightMonitoringVO> finalList = new ArrayList<LightMonitoringVO>();
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}		
+			List<Object[]> listOfCount = lightMonitoringDAO.getAllDitrictWiseSurveyDetails(fromDate, toDate, year, locationValues, locationTypeId, searchlevelId, searchLevelValues);
+	        for (Object[] objects : listOfCount) {
+	        	  LightMonitoringVO vo=new LightMonitoringVO();
+	        	  vo.setTotalLights(objects[0]!=null?(Long)objects[0]:0l);
+	        	  vo.setTotalPanels(objects[1]!=null?(Long)objects[1]:0l);
+	        	  vo.setTotalPoles(objects[2]!=null?(Long)objects[2]:0l);
+	        	  vo.setWorkingLights(objects[3]!=null?(Long)objects[3]:0l);
+                  vo.setOnLights(objects[4]!=null?(Long)objects[4]:0l);	
+                  vo.setOffLights(objects[5]!=null?(Long)objects[5]:0l);
+                  vo.setDistrictId(objects[6]!=null?(Long)objects[6]:0l);
+                  vo.setDistrictName(objects[7]!=null?(String)objects[7]:"");
+                  vo.setConstituencyId(objects[8]!=null?(Long)objects[8]:0l);
+                  vo.setTehsilId(objects[9]!=null?(Long)objects[9]:0l);
+                  vo.setTehsilName(objects[10]!=null?(String)objects[10]:"");
+                  vo.setParliamentId(objects[11]!=null?(Long)objects[11]:0l);
+	        	  finalList.add(vo);	        	
+	        }
+		}catch (Exception e) {
+			LOG.error("Exception raised at getLedOverviewForStatedLocationsDetailsCounts - LightMonitoringService service", e);
+		}
+		return finalList; 	
+	}
 }
+	        	
