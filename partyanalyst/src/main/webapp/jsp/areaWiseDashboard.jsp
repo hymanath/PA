@@ -131,105 +131,9 @@
 							</h4>
 							<div class="m_top20" id="casteGroupVoters" style="width:330px;height:260px"></div>
 							<div id="leftSideCasteGroupWiseDivId"></div>
-							<!--<div id="leftSideCasteGroupWiseGraphId"></div>-->
+							<div id="leftSideCasteGroupWiseGraphId"></div>
 						</div>
-						
-						<!--<div class="col-md-8 col-xs-12 col-sm-8">
-							<div>
-							  
-							  <select class="form-control" role="tabListMobile">
-								  <option tab_id="OC">OC</option>
-								  <option tab_id="BC">BC</option>
-								  <option tab_id="SC">SC</option>
-								  <option tab_id="ST">ST</option>
-							  </select>
-							  <ul class="nav nav-tabs" role="tablist">
-								<li role="presentation" class="active"><a href="#OC" aria-controls="OC" role="tab" data-toggle="tab">OC</a></li>
-								<li role="presentation"><a href="#BC" aria-controls="BC" role="tab" data-toggle="tab">BC</a></li>
-								<li role="presentation"><a href="#SC" aria-controls="SC" role="tab" data-toggle="tab">SC</a></li>
-								<li role="presentation"><a href="#ST" aria-controls="ST" role="tab" data-toggle="tab">ST</a></li>
-							  </ul>
-							  
-							  <div class="tab-content">
-								<div role="tabpanel" class="tab-pane active pad_10" id="OC">
-									<h4 class="panel-title text-capitalize">Caste Wise - Voter & Cadre Information b/w age group</h4>
-									<table class="table table-noborder">
-										<thead class="text-capitalize">
-											<th>Caste Name</th>
-											<th>voters <span class="text-success">%</span></th>
-											<th>cadres <span class="text-success">%</span></th>
-											<th>Male(V) <span class="text-success">%</span></th>
-											<th>Male(C) <span class="text-success">%</span></th>
-											<th>FeMale(V) <span class="text-success">%</span></th>
-											<th>FeMale(C) <span class="text-success">%</span></th>
-										</thead>
-										<tbody>
-											<tr>
-												<td><i class="glyphicon glyphicon-plus td-expand-icon" collapseid="td-expand-one"></i> Brahmin</td>
-												<td>2 <span class="text-success">2%</span></td>
-												<td>2 <span class="text-success">2%</span></td>
-												<td>2 <span class="text-success">2%</span></td>
-												<td>2 <span class="text-success">2%</span></td>
-												<td>2 <span class="text-success">2%</span></td>
-												<td>2 <span class="text-success">2%</span></td>
-											</tr>
-											<tr class="td-expand-body" collapseBodyId="td-expand-one">
-												<td colspan="7" class="top-arrow">
-													<i class="glyphicon glyphicon-remove td-expand-hide"></i>
-													<h4 class="panel-title"><span class="text-capital">brahmin caste</span> - <span class="text-capitalize">voter and cadre information b/w age group</span></h4>
-													<p class="text-muted text-right">
-														<span class="f-11"><i class="glyphicon glyphicon-info-sign"></i> _(C) = Cadres ; _(V) = Voter</span>
-													</p>
-													<table class="table table-noborder m_top10">
-														<thead class="text-capitalize">
-															<th>Caste Name</th>
-															<th>voters <span class="text-success">%</span></th>
-															<th>cadres <span class="text-success">%</span></th>
-															<th>Male(V) <span class="text-success">%</span></th>
-															<th>Male(C) <span class="text-success">%</span></th>
-															<th>FeMale(V) <span class="text-success">%</span></th>
-															<th>FeMale(C) <span class="text-success">%</span></th>
-														</thead>
-														<tbody>
-															<tr>
-																<td>Brahmin</td>
-																<td>2 <span class="text-success">2%</span></td>
-																<td>2 <span class="text-success">2%</span></td>
-																<td>2 <span class="text-success">2%</span></td>
-																<td>2 <span class="text-success">2%</span></td>
-																<td>2 <span class="text-success">2%</span></td>
-																<td>2 <span class="text-success">2%</span></td>
-															</tr>
-															<tr>
-																<td>Brahmin</td>
-																<td>2 <span class="text-success">2%</span></td>
-																<td>2 <span class="text-success">2%</span></td>
-																<td>2 <span class="text-success">2%</span></td>
-																<td>2 <span class="text-success">2%</span></td>
-																<td>2 <span class="text-success">2%</span></td>
-																<td>2 <span class="text-success">2%</span></td>
-															</tr>
-														</tbody>
-													</table>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-								<div role="tabpanel" class="tab-pane pad_10" id="BC">
-									
-								</div>
-								<div role="tabpanel" class="tab-pane pad_10" id="SC">
-									  
-								</div>
-								<div role="tabpanel" class="tab-pane pad_10" id="ST">
-									  
-								</div>
-							  </div>
-
-							</div>
-							
-						</div>-->
+						<div id="rightSideCasreGroupDtsDivId"></div>
 						
 					</div>
 				</div>
@@ -238,7 +142,8 @@
 				<h3>Cadre Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
 				<div class="block">
 					<div id="cadreInfoGraphDivId"></div>
-					<div id="cadreInfoGraphBar"></div>
+					<div id="cadreInfoGraphBar" style="height:200px;"></div>
+					<div id="cadreInfoTableView"></div>
 					<!--<table class="table table-noborder table-noborder-hover m_top10">
 						<thead class="bg-E9">
 							<th></th>
@@ -743,7 +648,7 @@
 <script src="coreApi/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
-<script src="coreApi/js/custom.js" type="text/javascript"></script>
+<!--<script src="coreApi/js/custom.js" type="text/javascript"></script>-->
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
 </body>
 </html>
