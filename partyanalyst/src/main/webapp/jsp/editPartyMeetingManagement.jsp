@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
    pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -14,86 +13,105 @@
       <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
       <link href="daterangepicker/bootstrap-datetimepicker.css" type="text/css" rel="stylesheet"/>
       <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+	    <style>
+     .commentError{
+	 color: red;
+	 margin-left:8px;
+ }
+ label.error{
+	 color: red;
+	 margin-left:8px;
+ }
+ .scrollit {
+    overflow:scroll;
+    height:350px;
+}
+select {
+  text-transform:capitalize
+}
+ </style>
    </head>
    <body>
     <input type="hidden" id="refresh" value="no">
       <div class="container">
+	  <form id="editMeetingValidationId">
          <div class="panel panel-default">
             <div class="panel-heading">
                <h4 class="panel-title">Edit Party Meeting </h4>
             </div>
+			
             <div class="panel-body">
                <div class="row">
                   <div class="col-sm-4">
                      <label for="designation">Meeting Name:</label>
-                     <input type="text" class="form-control" id="editMeetingNameId"/>
+                     <input type="text" class="form-control" id="editMeetingNameId" name="editMeetingName" data-rule-required="true" data-msg-required="Please Enter Meeting Name"/>
                   </div>
                   <input type="hidden" value="" id="modalMeetingId"/>
                   <div class="col-sm-4">
                      <label for="startDate">Start Date:</label>
-                     <input type="text" class="form-control startDateCls"  id="startDateModelId" />
+                     <input type="text" class="form-control startDateCls"  id="startDateModelId" name="startDateModel" data-rule-required="true" data-msg-required="Please Enter Start Date"/>
                   </div>
                   <div class="col-sm-4">
                      <label for="endDate">End Date:</label>
-                     <input type="text" class="form-control endDateCls"  id="endDateModelId"/>
+                     <input type="text" class="form-control endDateCls"  id="endDateModelId" name="endDateModel" data-rule-required="true" data-msg-required="Please Enter End Date"/>
                   </div>
+				  <div class="clearfix"></div>
                   <div class="col-sm-4">
                      <label for="meetingType">Meeting Main Type:</label>
-                     <select class="form-control" id="meetingTypeModelId">
-                        <option value="0">Select Meeting Type</option>
+                     <select class="form-control" id="meetingTypeModelId" name="meetingTypeModel" data-rule-required="true" data-msg-required="Please Select Meeting Main Type">
+                        <option value="">Select Meeting Type</option>
                      </select>
                   </div>
                   <div class="col-sm-4">
                      <label for="meetingType2">Meeting Sub-Type:</label>
-                     <select class="form-control" id="meetingTypeSubTypeModelId">
-                        <option value="4">Select Meeting Type2</option>
+                     <select class="form-control" id="meetingTypeSubTypeModelId" name="meetingTypeSubTypeModel" data-rule-required="true" data-msg-required="Please Select Meeting Sub Type">
+                        <option value="">Select Meeting Type2</option>
                      </select>
                   </div>
                   <div class="col-sm-4">
                      <label for="meetingLevel">Meeting Level:</label>
-                     <select class="form-control meetingLevels" id="meetingLevelModelId">
-                        <option value="0">Select Meeting Level</option>
+                     <select class="form-control meetingLevels" id="meetingLevelModelId" name="meetingLevelModel" data-rule-required="true" data-msg-required="Please Select Meeting Level">
+                        <option value="">Select Meeting Level</option>
                      </select>
                   </div>
                </div>
                <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-sm-12" id="editLocationId">
                      <h4 class="panel-title" >Location:</h4>
                   </div>
                   <div id="stateModelDivId" class="col-sm-4" style="display:none;">
                      <label for="state">State:</label>
-                     <select class="form-control" id="stateModelId">
-                        <option value="0">Select State</option>
-                        <option value="1">Andhra Pradesh</option>
-                        <option value="36">Telangana</option>
+                     <select class="form-control" id="stateModelId" name="stateModel" data-rule-required="true" data-msg-required="Please Select State">
+                        <option value="">Select State</option>
                      </select>
                   </div>
                   <div id="districtModelDivId" class="col-sm-4" style="display:none;">
                      <label for="district">District:</label>
-                     <select class="form-control" id="districtModelId">
-                        <option value="0">Select District</option>
+                     <select class="form-control" id="districtModelId" name="districtModel" data-rule-required="true" data-msg-required="Please Select District">
+                        <option value="">Select District</option>
                      </select>
                   </div>
                   <div id="constituencyModelDivId" class="col-sm-4" style="display:none;">
                      <label for="constituency">Constituency:</label>
-                     <select class="form-control" id="constituencyModelId">
-                        <option value="0">Select Constituency</option>
+                     <select class="form-control" id="constituencyModelId" name="constituencyModel" data-rule-required="true" data-msg-required="Please Select Constituency">
+                        <option value="">Select Constituency</option>
                      </select>
                   </div>
                   <div id="mandalModelDivId" class="col-sm-4" style="display:none;">
                      <label for="mandal">Mandal:</label>
-                     <select class="form-control" id="mandalModelId">
-                        <option value="0">Select Mandal</option>
+                     <select class="form-control" id="mandalModelId" name="mandalModel" data-rule-required="true" data-msg-required="Please Select Mandal">
+                        <option value="">Select Mandal</option>
                      </select>
                   </div>
                   <div id="villageModelDivId" class="col-sm-4" style="display:none;">
                      <label for="village">Village:</label>
-                     <select class="form-control" id="villageModelId">
-                        <option value="0">Select Village</option>
+                     <select class="form-control" id="villageModelId" name="villageModel" data-rule-required="true" data-msg-required="Please Select Village">
+                        <option value="">Select Village</option>
                      </select>
                   </div>
                </div>
             </div>
+			
          </div>
          <div class="panel panel-default">
             <div class="panel-heading" style="background-color:#ffff;margin-color:#ffff;">
@@ -102,7 +120,7 @@
                      <h4>Sessions</h4>
                   </div>
                   <div class="col-md-2">
-                     <button class='btn btn-primary addButForModel' >Add Sessions 
+                     <button type="button" class='btn btn-primary addButForModel' >Add Sessions 
                      <i class='fa fa-plus' aria-hidden='true'></i>
                      </button>
                   </div>
@@ -111,7 +129,9 @@
             <div class="panel-body" >
                <div id="sessionModelId"></div>
             </div>
+
          </div>
+		 </form>
          <div class="panel panel-default">
             <div class="panel-body">
                <div class="panel panel-default">
@@ -121,7 +141,7 @@
                            <h4 class="panel-title">Tab User Details</h4>
                         </div>
                         <div class="col-sm-1">
-                           <span id="editTabUserTabButton" data-toggle="collapse" data-target="#editTabUserExpandCollapseId" class="tabUserExpandCollapse">
+                           <span id="editTabUserTabButton" data-toggle="collapse" data-target="#editTabUserExpandCollapseId" class="tabUserExpandCollapse" style="cursor:pointer;">
                            <i class="glyphicon glyphicon-plus"></i>
                            </span>
                         </div>
@@ -135,7 +155,7 @@
                   <div class="panel-heading">
                      <div class="row">
                         <div class="col-sm-9">
-                           <h4 class="panel-title m_top5">Attended Invitiees</h4>
+                           <h4 class="panel-title m_top5">Attended Invitees</h4>
                         </div>
 						<div class="col-sm-2">
 						 <div id="attendanceSessionWiseDivId">
@@ -145,7 +165,7 @@
                         </div>
 						</div>
                         <div class="col-sm-1">
-                           <span id="attendedInvitieesTabButton" data-toggle="collapse" data-target="#attendedInvitieesTable" class="attendedInvitieesTabExpandCollapse">
+                           <span id="attendedInvitieesTabButton" data-toggle="collapse" data-target="#attendedInvitieesTable" class="attendedInvitieesTabExpandCollapse" style="cursor:pointer;">
                            <i class="glyphicon glyphicon-plus"></i>
                            </span>
                         </div>
@@ -160,10 +180,10 @@
                   <div class="panel-heading">
                      <div class="row">
                         <div class="col-sm-11">
-                           <h4 class="panel-title m_top5">Non-Attended Invitiees</h4>
+                           <h4 class="panel-title m_top5">Non-Attended Invitees</h4>
                         </div>
                         <div class="col-sm-1">
-                           <span id="nonAttendedInvitieesTabButton" data-toggle="collapse" data-target="#nonAttendedInvitieesTable" class="nonAttendedInvitieesTabExpandCollapse">
+                           <span id="nonAttendedInvitieesTabButton" data-toggle="collapse" data-target="#nonAttendedInvitieesTable" class="nonAttendedInvitieesTabExpandCollapse" style="cursor:pointer;">
                            <i class="glyphicon glyphicon-plus"></i>
                            </span>
                         </div>
@@ -211,6 +231,7 @@
                         <h4 class="modal-title">TDP MEMBERS DETAILS</h4>
                      </div>
                      <div class="modal-body" id="modalBodyId">
+					 <div id="tdpCadreTableId" class="m_top10"></div>
 						<div id="inviterAlredyExistDivId"></div>
                         <div id="tdpCadreDetailsTableDivId"></div>
                         <div id="inveeteenotAvableId"></div>
@@ -225,7 +246,8 @@
                         <input type="hidden"  id="hiddenConstituencyId" value="" name="partyMeetingVO.constituencyId"/>   
                         <input type="hidden"  id="hiddenMandalId" value="" name="partyMeetingVO.tehsilId"/>
                         <input type="hidden"  id="hiddenvillageId" value="" name="partyMeetingVO.villageId"/>
-                        <input type="hidden" id="tabuserModelId" value="1" name="partyMeetingVO.insertedById"/> 
+                        <input type="hidden" id="tabuserModelId" value="1" name="partyMeetingVO.insertedById"/>
+                        <div id="hiddenFieldsId"></div>							
                      </div>
                      <div class="modal-footer">
                         <button type="button" class="btn btn-success" id="savingMeetingWithInviteesID">Submit</button>
@@ -293,6 +315,13 @@ function getUrlVars() {
 var meetingId = getUrlVars()["meetingId"];
 
 getAttendanceForMeeting(meetingId,"0");
+getStates();
+function getStates(){
+	$("#stateModelId").html(" ");	
+	$("#stateModelId").append('<option value=' + " " + '>' + "Select State" + '</option>');
+	$("#stateModelId").append('<option value=' + "1" + '>' + "Andhra Pradesh" + '</option>');
+	$("#stateModelId").append('<option value=' + "36" + '>' + "Telangana" + '</option>');
+}
 getPartyMeetingDeatilesForMeetingEdit();
 
 function getPartyMeetingDeatilesForMeetingEdit() {
@@ -339,12 +368,29 @@ function padrtyMeetingEditDetails(results) {
     var type = "model";
     $("#modalMeetingId").val(results[0].id);
     $("#editMeetingNameId").attr('value', results[0].name);
-    $("#startDateModelId").attr('value', results[0].conductedDate);
-    $("#endDateModelId").attr('value', results[0].updatedTime);
+	var onlyStartDate=results[0].conductedDate.split(" ");	
+	var onlyYear=onlyStartDate[0].substr(0,4);
+	var onlyDD=onlyStartDate[0].substr(8);
+	var onlyMM=onlyStartDate[0].substr(5,2);
+	
+	var totalStartFormat=onlyDD+"-"+onlyMM+"-"+onlyYear;	
+    $("#startDateModelId").attr('value', totalStartFormat);
+	
+	var onlyEndDate=results[0].updatedTime.split(" ");
+	var onlyEndYear=onlyEndDate[0].substr(0,4);
+	var onlyEndDD=onlyEndDate[0].substr(8);
+	var onlyEndMM=onlyEndDate[0].substr(5,2);
+	
+	var totalEndFormat=onlyEndDD+"-"+onlyEndMM+"-"+onlyEndYear;
+    $("#endDateModelId").attr('value', totalEndFormat);
+	
 	$("#stateModelId option[value=" + results[0].stateName + "]").attr('selected', 'selected');
     getDistrictsAction(results[0].stateName, type, results[0].districtId);
-    $("#meetingLevelModelId option[value=" + results[0].meetingTypeId + "]").attr('selected', 'selected');
-    getMeetingLevels($("#meetingLevelModelId").val());
+	
+	getPartyMeetingLevels(results[0].mandalTwnDivisionId,results[0].meetingTypeId);
+    //$("#meetingLevelModelId option[value=" + results[0].meetingTypeId + "]").attr('selected', 'selected');
+	
+    getMeetingLevels(results[0].meetingTypeId);
     $("#meetingTypeSubTypeModelId option[value=" + results[0].mandalTwnDivisionId + "]").attr('selected', 'selected');
     $("#meetingTypeModelId option[value=" + results[0].meetingMainTypeId + "]").attr('selected', 'selected');
     var districtId = $("#districtModelId").val();
@@ -363,7 +409,7 @@ function padrtyMeetingEditDetails(results) {
 
 function getMeetingSubTypeAction(mainMeetingTypeId, model, selId) {
     $("#meetingTypeSubTypeModelId").html("");
-    $("#meetingTypeSubTypeModelId").append('<option value=' + 0 + '>' + "Select Meeting Sub-Type" + '</option>');
+    $("#meetingTypeSubTypeModelId").append('<option value="">' + "Select Meeting Sub-Type" + '</option>');
     var jsObj = {
         partyMeetingMainTypeId: mainMeetingTypeId
     }
@@ -374,7 +420,6 @@ function getMeetingSubTypeAction(mainMeetingTypeId, model, selId) {
             task: JSON.stringify(jsObj)
         }
     }).done(function(results) {
-        console.log(results)
         for (var i in results) {
             $("#meetingTypeSubTypeModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
         }
@@ -386,10 +431,12 @@ function getMeetingSubTypeAction(mainMeetingTypeId, model, selId) {
 }
 
 $('.startDateCls').datetimepicker({
-	format:'YYYY-MM-DD HH:mm:ss'
+	format:'DD-MM-YYYY',
+	minDate:new Date()
 });
 $('.endDateCls').datetimepicker({
-	format:'YYYY-MM-DD HH:mm:ss'
+	format:'DD-MM-YYYY',
+	minDate:new Date()
 });
 
 $('.timeCls').datetimepicker({
@@ -401,11 +448,12 @@ function buildInveeteeDetailsTable(results) {
     str += "<table id='inviteeTavbleId' class='table-bordered' style='display:none;'>";
     str += "<thead>";
     str += "<tr>";
-    str += "<th>S.NO</th>";
+    str += "<th>S.N0</th>";
+    
+    //str += "<th>Desiganation</th>";
+    str += "<th>Membership ID</th>";
     str += "<th>Name</th>";
-    str += "<th>Desiganation</th>";
-    str += "<th>Membership No</th>";
-    str += "<th>Mobile No</th>";
+    str += "<th>Mobile</th>";
     str += "</tr>";
     str += "<thead>";
     str += "<tbody>";
@@ -414,13 +462,14 @@ function buildInveeteeDetailsTable(results) {
             var sNo = parseInt(j) + parseInt(1);
             str += "<tr>";
             str += "<td>" + sNo + "</td>";
+            str += "<td>" + results[i].invetteList[j].membershipNo + "</td>";
             str += "<td >" + results[i].invetteList[j].name + "</td>";
-            if (results[i].invetteList[j].partyName != null && results[i].invetteList[j].partyName.length > 0) {
+           /* if (results[i].invetteList[j].partyName != null && results[i].invetteList[j].partyName.length > 0) {
                 str += "<td>" + results[i].invetteList[j].partyName + "</td>";
             } else {
                 str += "<td>-</td>";
-            }
-            str += "<td>" + results[i].invetteList[j].membershipNo + "</td>";
+            }*/
+            
             if (results[i].invetteList[j].mobileNumber != null && results[i].invetteList[j].mobileNumber.length > 0) {
                 str += "<td>" + results[i].invetteList[j].mobileNumber + "</td>";
             } else {
@@ -434,7 +483,7 @@ function buildInveeteeDetailsTable(results) {
     $("#meetingInveteeTableId").html(str);
 }
 
-getPartyMeetingLevels();
+//getPartyMeetingLevels();
 getPartyMeetingsTabUserNameByDistrict();
 
 function getPartyMeetingsTabUserNameByDistrict() {
@@ -457,11 +506,12 @@ function getPartyMeetingsTabUserNameByDistrict() {
 }
 
 function buildTabUserDetails(results, meetingId) {
-    var str = '';
+    var str = "";
+	str += " <div class='scrollit'>";
     str += "<table id='tabUserTableId' class='table table-bordered tabUserTableCls'>";
 
     str += "<thead>";
-    str += "<tr >";
+    str += "<tr>";
     str += "<th  class='text-captal text-center'>User Name</th>";
     str += "<th class='text-captal text-center'>Mobile Number</th>";
     str += "<th class='text-captal text-center'>District Name</th>";
@@ -480,8 +530,10 @@ function buildTabUserDetails(results, meetingId) {
     }
     str += "</tbody>";
     str += "</table>";
+	str += "</div>";
     $("#tabUserTableDivId").html(str);
-    $(".tabUserTableCls").dataTable();
+  
+	
     if (meetingId != null) {
         getPartyMeetingTabUserDetailsAction(meetingId);
     }
@@ -498,6 +550,7 @@ function getPartyMeetingTabUserDetailsAction(partyMeetingId) {
             task: JSON.stringify(jsObj)
         }
     }).done(function(results) {
+		console.log(results);
         for (var i in results) {
             $("input[value=" + results[i].id + "]").attr('checked', 'checked');
             $("#tabUserTableDivId").append("<ul class='list-inline'><li>User Name:" + results[i].name + "</li><li>District Name:" + results[i].constituencyName + "</li><li>Mobile Number:" + results[i].remarks + "</li></ul>");
@@ -509,6 +562,7 @@ function getPartyMeetingTabUserDetailsAction(partyMeetingId) {
 
 
 function getMeetingLevels(meetingLevelId) {
+	 //$("editLocationId").show();
     if (meetingLevelId == 1 || meetingLevelId == 9) {
         $("#stateModelDivId").show();
         $("#districtModelDivId").hide();
@@ -545,6 +599,17 @@ function getMeetingLevels(meetingLevelId) {
         $("#villageModelDivId").show();
     }
     if (meetingLevelId == 0) {
+		getStates();		
+        $("#districtModelId").html(" ");
+        $("#constituencyModelId").html(" ");
+        $("#mandalModelId").html(" ");
+        $("#villageModelId").html(" ");
+		
+        $("#districtModelId").append('<option value=' + " " + '>' + "Select District" + '</option>');
+        $("#constituencyModelId").append('<option value=' + " " + '>' + "Select Constituency" + '</option>');
+        $("#mandalModelId").append('<option value=' + " " + '>' + "Select Mandal" + '</option>');
+        $("#villageModelId").append('<option value=' + " " + '>' + "Select Village" + '</option>'); 
+		
         $("#stateModelDivId").hide();
         $("#districtModelDivId").hide();
         $("#constituencyModelDivId").hide();
@@ -567,10 +632,10 @@ function getConstituencyAction(districtId, editType, id, theshilId, panchayatId)
     }).done(function(results) {
         for (var i in results) {
             if (editType == null) {
-                $("#constituencyModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
+                $("#constituencyModelId").append('<option value=' + results[i].id + '>' + results[i].name.toLowerCase() + '</option>');
             } else {
 
-                $("#constituencyModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
+                $("#constituencyModelId").append('<option value=' + results[i].id + '>' + results[i].name.toLowerCase() + '</option>');
                 $("#constituencyModelId option[value=" + id + "]").attr('selected', 'selected');
 
             }
@@ -612,17 +677,27 @@ function getDistrictsAction(stateId, editType, selectedDistrictId) {
 $(document).on("change", "#meetingTypeModelId", function() {
     var mainMeetingTypeId = $("#meetingTypeModelId").val();
     getMeetingSubTypeAction(mainMeetingTypeId);
+	$("#editLocationId").hide();
+	$("#meetingLevelModelId").html("");
+	$("#meetingLevelModelId").append('<option value=' + " " + '>' + "Select Meeting Level" + '</option>');
+    getMeetingLevels(0);
 
 });
 
 $(document).on("change", "#districtModelId", function() {
     var districtId = $('#districtModelId').val();
     getConstituencyAction(districtId);
+	    $("#mandalModelId").html(" ");
+        $("#villageModelId").html(" ");
+        $("#mandalModelId").append('<option value=' + " " + '>' + "Select Mandal" + '</option>');
+        $("#villageModelId").append('<option value=' + " " + '>' + "Select Village" + '</option>'); 
 });
 
 $(document).on("change", "#constituencyModelId", function() {
     var constituencyId = $('#constituencyModelId').val();
     getMandalBasedOnConstituencyAction(constituencyId);
+	$("#villageModelId").html(" ");
+    $("#villageModelId").append('<option value=' + " " + '>' + "Select Village" + '</option>'); 
 });
 
 
@@ -658,9 +733,9 @@ $(document).on("change", "#mandalModelId", function() {
     getPanchayatWardByMandalAction(mandalId);
 });
 
-function getPanchayatWardByMandalAction(mandalId, constituencyId, type, panchayatId) {
+function getPanchayatWardByMandalAction(mandalId, constituencyId, editType, panchayatId) {
     $('#villageModelId').html(" ");
-    $("#villageModelId").append('<option value=' + 0 + '>' + "Select Village" + '</option>');
+    $("#villageModelId").append('<option value="">' + "Select Village" + '</option>');
     var jsObj = {
         mandalId: mandalId
     }
@@ -673,17 +748,21 @@ function getPanchayatWardByMandalAction(mandalId, constituencyId, type, panchaya
     }).done(function(results) {
 
         for (var i in results) {
-            $("#villageModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
+            $("#villageModelId").append('<option value=' + results[i].id + '>' + results[i].name.toLowerCase() + '</option>');
 
         }
-        if (type == "model") {
+        if (editType == "model") {
             $("#villageModelId option[value=" + panchayatId + "]").attr('selected', 'selected');
         }
     });
 }
 
-function getPartyMeetingLevels() {
-    var jsObj = {}
+function getPartyMeetingLevels(subTypeId,meetingLevelId) {
+	$("#meetingLevelModelId").html(" ");
+	$("#meetingLevelModelId").append('<option value=' + "" + '>' + "select Meeting Level" + '</option>');
+    var jsObj = {
+		partyMeetingMainTypeId:subTypeId
+	}
     $.ajax({
         type: "GET",
         url: "getPartyMeetingLevelsAction.action",
@@ -692,9 +771,12 @@ function getPartyMeetingLevels() {
         }
     }).done(function(results) {
         for (var i in results) {
-            $("#meetingLevelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
-            $("#meetingLevelModelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
+            //$("#meetingLevelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
+            $("#meetingLevelModelId").append('<option value=' + results[i].id + '>' + results[i].name.toLowerCase() + '</option>');
         }
+		if(meetingLevelId){
+		$("#meetingLevelModelId option[value=" + meetingLevelId + "]").attr('selected', 'selected');
+		}
     });
 }
 
@@ -716,7 +798,6 @@ function getAttendanceForMeeting(meetingId,bydefaultSessionId) {
             task: JSON.stringify(jsObj)
         }
     }).done(function(results) {
-        console.log(results);
         buildAttendaceOfInveiteesTable(results);
         //buildNotAttendacInveiteesTable(results);
         
@@ -738,7 +819,6 @@ function getNoneAttenedInvettesForMeeting(meetingId,bydefaultSessionId) {
             task: JSON.stringify(jsObj)
         }
     }).done(function(results) {
-        console.log(results);
        // buildAttendaceOfInveiteesTable(results);
         buildNotAttendacInveiteesTable(results);
        
@@ -785,8 +865,6 @@ function getNoneAttenedInvettesForMeeting(meetingId,bydefaultSessionId) {
 
 
     function buildNotAttendacInveiteesTable(results) {
-		//getSessionsForAttendedInviteesByMeetingId(meetingId,"notEmpty","true");
-		console.log(seesionResults);
         var str = "";
         str += "<table id='nonAttendedInvitieestableId' class='table-bordered'>";
         str += "<thead class='text-capital'>";
@@ -797,8 +875,8 @@ function getNoneAttenedInvettesForMeeting(meetingId,bydefaultSessionId) {
         str += "<th class='text-center'>Membership No</th>";
         str += "<th class='text-center'>Mobile No</th>";
         str += "<th class='text-center'>Comment</th>";
-        str += "<th class='text-captal text-center'>Add Attendance</th>";
-		 str += "<th class='text-captal text-center'>Select Session</th>";
+        str += "<th class='text-captal text-center'>Select Session</th>";
+		 str += "<th class='text-captal text-center'>Add Attendance</th>";
         str += "</tr>";
         str += "<thead>";
         str += "<tbody class='text-center'>";
@@ -809,10 +887,9 @@ function getNoneAttenedInvettesForMeeting(meetingId,bydefaultSessionId) {
             str += "<td>" + results.notAttendanceList[i].name + "</td>";
             str += "<td>" + results.notAttendanceList[i].partyName + "</td>";
             str += "<td>" + results.notAttendanceList[i].membershipNo + "</td>";
-            //str+="<td>"+results.notAttendanceList[i].membershipNo+"</td>";
             str += "<td>" + results.notAttendanceList[i].mobileNumber + "</td>";
-            str += "<td><input class='nonAttenededComment' type='text' id='" + results.notAttendanceList[i].id + "' placeholder='Enter Comment'/></td>";
-	        str += "<td><select class='form-control addAttendanceSessionId'><option value='0'>Select Village</option>";
+            str += "<td><input class='nonAttenededComment' type='text' id='" + results.notAttendanceList[i].id + "' placeholder='Enter Comment'/><div class='commentError'></div></td>";
+	        str += "<td><select class='form-control addAttendanceSessionId'><option value=''>Select Session</option>";
 			for(var j in seesionResults){
            str+="<option value='"+ seesionResults[j].id + "'>" + seesionResults[j].name + "</option>";
 		   }
@@ -847,7 +924,6 @@ function getNoneAttenedInvettesForMeeting(meetingId,bydefaultSessionId) {
             str += "<td>" + results.nonInviteeAttendancList[i].name + "</td>";
             str += "<td>" + results.nonInviteeAttendancList[i].partyName + "</td>";
             str += "<td>" + results.nonInviteeAttendancList[i].membershipNo + "</td>";
-            //str+="<td>"+results.nonInviteeAttendancList[i].membershipNo+"</td>";
             str += "<td>" + results.nonInviteeAttendancList[i].mobileNumber + "</td>";
             str += "</tr>";
         }
@@ -867,7 +943,13 @@ $(document).on("change", "#meetingLevelModelId", function() {
 
 $(document).on("change", "#stateModelId", function() {
     var stateId = $('#stateModelId').val();
-    getDistrictsAction(stateId);
+    getDistrictsAction(stateId);	  
+        $("#constituencyModelId").html(" ");
+        $("#mandalModelId").html(" ");
+        $("#villageModelId").html(" ");
+        $("#constituencyModelId").append('<option value=' + " " + '>' + "Select Constituency" + '</option>');
+        $("#mandalModelId").append('<option value=' + " " + '>' + "Select Mandal" + '</option>');
+        $("#villageModelId").append('<option value=' + " " + '>' + "Select Village" + '</option>'); 
 });
 $('#nonAttendedInvitieesTable').hide();
 $('#nonAttendedInvitieesTabButton').on("click", function() {
@@ -954,10 +1036,14 @@ function generateExcelReport() {
         return count;
 	}
 $(document).on("click", "#editMeetingId", function() {
+	
+	 $("#hiddenFieldsId").html(' ');
     $('#validationId').html("");
    var availableSessions=[];
     $('.sessionTypeIdForModel').each(function() {
-	   availableSessions.push($('option:selected', $(this)).text());    
+		if(!$('option:selected', $(this)).text() =="Select Session"){
+	   availableSessions.push($('option:selected', $(this)).text()); 
+		}	   
     });
 	
 	var duplicateSessions = availableSessions.reduce(function(acc, el, i, arr) {
@@ -1016,6 +1102,10 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
   if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) acc.push(el); return acc;
 }, []);
 
+var commentErrorCount="";
+$(".commentError").each(function(index, elem) {
+	    commentErrorCount=$(this).text();
+    })
 
   if(duplicateSessions.length > 0 ||
 	 duplicateStartTime.length > 0 || duplicateEndTime.length>0 || duplicateLateTime.length>0 || errorCount >0){
@@ -1023,9 +1113,7 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
 	  if(duplicateSessions.length > 0){
       $('#validationId').append("<p>Please Avoid Duplicate Sessions</p><p>"+duplicateSessions+"</p>");
 	  }
-	 /* if(notValidLateTime.length > 0){
-      $('#validationId').append("<p>Late Time should be B/w Start and End Time</p><p>"+notValidLateTime+"</p>");
-	  } */
+	 
 	  if(duplicateStartTime.length > 0){
        $('#validationId').append("<p>Please Avoid Duplicate StartTime</p><p>"+duplicateStartTime+"</p>");
 	  }
@@ -1039,8 +1127,9 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
       $(".validationStatus").modal('hide');
        }, 3000);
 	 }
-	 
-	else{
+		
+	if(commentErrorCount.length == 0 && duplicateSessions.length == 0 &&
+	 duplicateStartTime.length == 0 && duplicateEndTime.length == 0 && duplicateLateTime.length == 0 && errorCount == 0 && $('#editMeetingValidationId').valid()){
     if ($("#editPartyMeetingId").val().length == 0 && $("#editTextAreaId").val().length == 0) {
   
   var r = 0;
@@ -1048,16 +1137,16 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
 	    var sessionId=($(this).closest("td").prev("td").find("select").val());
 		var cadreIdWithSessonId=$(elem).val()+","+sessionId;
             var dynamicElement = "<input type='hidden' value='" + cadreIdWithSessonId + "' name='partyMeetingVO.atrPoints[" + r + "]'/> ";
-            $('#modalBodyId').append(dynamicElement);
+            $('#hiddenFieldsId').append(dynamicElement);
             r = r + 1;
     })
-	   var uploadHandler = {
+	
+	 var uploadHandler = {
             upload: function(o) {
                 uploadResult = o.responseText;
-                console.log(uploadResult);
                 $(".resultStatus").modal('show');
                 $('#submitSuccessId').html("");
-                $('#submitSuccessId').append("<p>DATA SAVED SUCESSFULLY</p>");
+                $('#submitSuccessId').append("<p>Meeting Edited Successfully</p>");
                 setTimeout(function() {
                     $(".resultStatus").modal('hide');
 					var redirectWindow=window.open('editPartyMeetingManagementAction.action?meetingId='+meetingId+'','_self');
@@ -1096,7 +1185,9 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
     //}
 });
 function getInviteeExistingAndNotExistingOfMeetingDetails(memebershipIds,meetingId){
-		
+		  $("#tdpCadreTableId").html("");
+         $("#tdpCadreTableId").html(spinner);
+	 
 		$("#tdpCadreDetailsTableDivId").html('');
 		$("#inveeteenotAvableId").html('');
 		$("#inviterAlredyExistDivId").html('');
@@ -1105,23 +1196,19 @@ function getInviteeExistingAndNotExistingOfMeetingDetails(memebershipIds,meeting
 				meetingId:meetingId
 			}
 			$.ajax({
-				type: "GET",
+				type: "POST",
 				url: "getInviteeExistingAndNotExistingOfMeetingDetailsAction.action",
 				data: {
 					task: JSON.stringify(jsObj)
 				}
 			}).done(function(results) {
-					
+				
 					buildInveeteeCreateDatails(results);
-			
-				
-				 
-			   if(results.enrollmentYears !=null && results.enrollmentYears.length >0){
-				
-				   showAlredyExistingInviteemembers(results);
-			
+					 
+			   if(results !=null && results.enrollmentYears !=null && results.enrollmentYears.length >0){				
+				   showAlredyExistingInviteemembers(results);			
 			   }
-			   if(results.attendanceList[0].enrollmentYears  !=null && results.attendanceList[0].enrollmentYears .length >0){
+			   if( results !=null && results.attendanceList[0].enrollmentYears !=null && results.attendanceList[0].enrollmentYears.length >0){
 					showNotExistingTdpCadreMembershipNumbers(results);
 			   }
 			});
@@ -1130,6 +1217,7 @@ function getInviteeExistingAndNotExistingOfMeetingDetails(memebershipIds,meeting
 function callActionMethod() {
     var uploadHandler = {
         upload: function(o) {
+			 $('#submitSuccessId').html("");
             uploadResult = o.responseText;
 
             uploadResult = uploadResult.replace("<pre>", "");
@@ -1138,22 +1226,39 @@ function callActionMethod() {
             uploadResult = uploadResult.replace("\"", "");
             uploadResult = uploadResult.replace(/\"/g, "");
             uploadResult = uploadResult.replace("<pre style=word-wrap: break-word; white-space: pre-wrap;>", "");
-            console.log(uploadResult);
-            if (uploadResult == "Please upload csv format") {
+            if (uploadResult == "Please Upload Csv or Excel Format") {
                 $('#submitSuccessId').html("");
                 $(".resultStatus").modal('show');
-                $('#submitSuccessId').append("<p>Please upload csv format</p>");
+                $('#submitSuccessId').append("<p>Please Upload Csv Format</p>");
                 setTimeout(function() {
                     $(".resultStatus").modal('hide');
-					var redirectWindow=window.open('editPartyMeetingManagementAction.action?meetingId='+meetingId+'','_self');
+					//var redirectWindow=window.open('editPartyMeetingManagementAction.action?meetingId='+meetingId+'','_self');
+					$("#editPartyMeetingId").val('');
                 }, 3000);
 
-            } else {
-                $("#tdpCadreDetailsModalId").modal('show');
-                var memeberShipArr = uploadResult.split(",");
-                getInviteeExistingAndNotExistingOfMeetingDetails(memeberShipArr,meetingId)
-                createHiddenFields();
-            }
+            }else if(uploadResult == "Please upload Excel in given Format"){
+				  $(".resultStatus").modal('show');
+                 $('#submitSuccessId').append("<p>Please upload Excel in given Format</p>");
+                 setTimeout(function() {
+                     $(".resultStatus").modal('hide');
+					  $("#partyMeetingId").val('');
+                 }, 3000);
+			 }
+			 else if(uploadResult == "Please Enter Membership Ids"){
+				  $(".resultStatus").modal('show');
+                 $('#submitSuccessId').append("<p>Please Enter Membership Ids</p>");
+                 setTimeout(function() {
+                     $(".resultStatus").modal('hide');
+					  $("#partyMeetingId").val('');
+                 }, 3000);
+			 }
+			 else {
+                 $("#tdpCadreDetailsModalId").modal('show');
+                 var memeberShipArr = uploadResult.split(",");
+                 //getTdpCadreDetailsForInveetMeeting(memeberShipArr);
+				 getInviteeExistingAndNotExistingOfMeetingDetails(memeberShipArr,meetingId);
+                 createHiddenFields();
+             }
         }
 
     }
@@ -1168,8 +1273,21 @@ function callActionMethod() {
 function createHiddenFields() {
     $("#hiddenPartyMeetingId").val(meetingId);
     $("#hiddenMeetingNameId").val($("#editMeetingNameId").val());
-    $("#hiddenStartDateId").val($("#startDateModelId").val());
-    $("#hiddenEndDateId").val($("#endDateModelId").val());
+	
+	/*$("#startDateModelId").val($("#startDateModelId").val().replace("/","-"));
+	$("#startDateModelId").val($("#startDateModelId").val().replace("/","-"));  // 01-08-2017  yyyy-MM-dd */
+		
+	var splitedStartDate=$("#startDateModelId").val().split("-");	
+	var onlyStartDate=splitedStartDate[2]+"-"+splitedStartDate[1]+"-"+splitedStartDate[0];  
+    $("#hiddenStartDateId").val(onlyStartDate);
+     
+	/*$("#endDateModelId").val($("#endDateModelId").val().replace("/","-"));
+	$("#endDateModelId").val($("#endDateModelId").val().replace("/","-")); */
+	
+	var splitedEndDate=$("#endDateModelId").val().split("-");
+	var onlyEndDate=splitedEndDate[2]+"-"+splitedEndDate[1]+"-"+splitedEndDate[0];  
+    $("#hiddenEndDateId").val(onlyEndDate);
+	
     $("#hiddenMeetingTypeSubTypeId").val($("#meetingTypeSubTypeModelId").val());
     $("#hiddenMeetingLevelId").val($("#meetingLevelModelId").val());
     $("#hiddenStateId").val($("#stateModelId").val());
@@ -1179,9 +1297,10 @@ function createHiddenFields() {
     } else {
         $("#hiddenConstituencyId").val($("#constituencyModelId").val());
     }
-	 var trimTeshil=$("#mandalModelId").val();
-	 var removedTeshil = trimTeshil.substring(1); 
-    $("#hiddenMandalId").val(removedTeshil);
+	 //var trimTeshil=$("#mandalModelId").val();
+	 //var removedTeshil = trimTeshil.substring(1); 
+    //$("#hiddenMandalId").val(removedTeshil);
+	 $("#hiddenMandalId").val($("#mandalModelId").val());
     $("#hiddenvillageId").val($("#villageModelId").val());
 
 
@@ -1192,24 +1311,24 @@ function createHiddenFields() {
     $('.startTimeForModel').each(function() {
         var dynamicElement = "<input type='hidden' value=" + $(this).val() + " name='partyMeetingVO.startTimeList[" + i + "]'/>";
 
-        $('#modalBodyId').append(dynamicElement);
+        $('#hiddenFieldsId').append(dynamicElement);
         i = i + 1;
     });
     $('.endTimeForModel').each(function() {
         var dynamicElement = "<input type='hidden' value=" + $(this).val() + " name='partyMeetingVO.endTimeList[" + j + "]'/> ";
-        $('#modalBodyId').append(dynamicElement);
+        $('#hiddenFieldsId').append(dynamicElement);
         j = j + 1;
     });
     $('.lateTimeForModel').each(function() {
         var dynamicElement = "<input type='hidden' value=" + $(this).val() + " name='partyMeetingVO.lateTimeList[" + k + "]'/> ";
 
-        $('#modalBodyId').append(dynamicElement);
+        $('#hiddenFieldsId').append(dynamicElement);
         k = k + 1;
 
     });
     $('.sessionTypeIdForModel').each(function() {
         var dynamicElement = "<input type='hidden' value=" + $(this).val() + " name='partyMeetingVO.sessionTypeId[" + l + "]'/> ";
-        $('#modalBodyId').append(dynamicElement);
+        $('#hiddenFieldsId').append(dynamicElement);
 
         l = l + 1;
     });
@@ -1218,7 +1337,7 @@ function createHiddenFields() {
     var n = 0;
     $(".tabUserCheckBoxCls:checked").each(function(index, elem) {
         var dynamicElement = "<input type='hidden' value=" + $(elem).val() + " name='partyMeetingVO.attendedList[" + n + "]'/> ";
-        $('#modalBodyId').append(dynamicElement);
+        $('#hiddenFieldsId').append(dynamicElement);
         n = n + 1;
     })
     var p = 0;
@@ -1226,7 +1345,7 @@ function createHiddenFields() {
         var cadreIdAndComment = $(this).attr('id') + "," + $(this).val();
         var dynamicElement = "<input type='hidden' value=' " + cadreIdAndComment + " ' name='partyMeetingVO.cadreWithComments[" + p + "]'/>";
 
-        $('#modalBodyId').append(dynamicElement);
+        $('#hiddenFieldsId').append(dynamicElement);
         p = p + 1;
 
     });
@@ -1238,7 +1357,7 @@ $(document).on("click", "#savingMeetingWithInviteesID", function() {
     var m = 0;
     $(".checkCls:checked").each(function(index, elem) {
         var dynamicElement = "<input type='hidden' value=" + $(elem).val() + " name='partyMeetingVO.tdpCadreIds[" + m + "]'/>";
-        $('#modalBodyId').append(dynamicElement);
+        $('#hiddenFieldsId').append(dynamicElement);
         m = m + 1;
     });
     var u = 0;
@@ -1246,17 +1365,16 @@ $(document).on("click", "#savingMeetingWithInviteesID", function() {
 		 var sessionId=($(this).closest("td").prev("td").find("select").val());
 		var cadreIdWithSessonId=$(elem).val()+","+sessionId;
         var dynamicElement = "<input type='hidden' value='" + cadreIdWithSessonId + "' name='partyMeetingVO.atrPoints[" + r + "]'/> ";
-        $('#modalBodyId').append(dynamicElement);
+        $('#hiddenFieldsId').append(dynamicElement); 
         u = u + 1;
     })
     var uploadHandler = {
         upload: function(o) {
             uploadResult = o.responseText;
-            console.log(uploadResult);
             $('#closeModalId').click();
             $(".resultStatus").modal('show');
             $('#submitSuccessId').html("");
-            $('#submitSuccessId').append("<p>DATA SAVED SUCESSFULLY</p>");
+            $('#submitSuccessId').append("<p>Meeting Edited Successfully</p>");
             setTimeout(function() {
                 $(".resultStatus").modal('hide');
                 var redirectWindow=window.open('editPartyMeetingManagementAction.action?meetingId='+meetingId+'','_self');
@@ -1316,7 +1434,8 @@ function buildInveeteeCreateDatails(results) {
     str += "<tbody>";
    
 	if( results.attendanceList !=null && results.attendanceList.length >0 && results.attendanceList[0].membershipNo !=null && results.attendanceList[0].membershipNo.length > 0){
-        for (var i in results.attendanceList) {
+			
+		for (var i in results.attendanceList) {
 		
             str += "<tr>";
 			if(results.attendanceList[i].membershipNo !=null && results.attendanceList[i].membershipNo.length >0){
@@ -1338,27 +1457,51 @@ function buildInveeteeCreateDatails(results) {
 			str += "</tr>";
 			
         }
+		
+		 $("#tdpCadreTableId").html("");
     }
     str += "</tbody>";
     str += "</table>";
     $("#tdpCadreDetailsTableDivId").html(str);
-    cadreTable = $('#inviteeTableId').dataTable();
+   $('#inviteeTableId').dataTable({
+		    paging: false,
+			scrollY: 300,
+			scrollX: false
+	});
 	$(".checkCls").prop("checked", true);
+	if( results.attendanceList !=null && results.attendanceList.length >0 && results.attendanceList[0].membershipNo !=null && results.attendanceList[0].membershipNo.length > 0){
+
 	$("#checkAllCheckBoxId").prop("checked", true);
+	}
 
 }
 function showAlredyExistingInviteemembers(results){
+	
 	 var str2 = '';
     str2 += "<div style='margin-top:10px;'><h5>These MemberShip Numbers Are Already Exist </h5></div>";
-    str2 += "<div style='margin-top:20px;'><h5>" + results.enrollmentYears + "</h5></div>";
+	str2+="<ul class='list-inline'>";
+    str2 += "<div style='margin-top:20px;'></div>";
+	str2+="<ul class='list-inline'>";
+	for(var i in results.enrollmentYears){
+		str2+="<li><h5>" + results.enrollmentYears[i] + ",</h5></li>";
+	}
+	str2+="</ul>";
     $("#inviterAlredyExistDivId").html(str2);
+    $("#tdpCadreTableId").html("");
 }
 function showNotExistingTdpCadreMembershipNumbers(results) {
-
+	
     var str2 = '';
-    str2 += "<div style='margin-top:10px;'><h5>These MemberShip Numbers Are Not Exist </h5></div>";
-    str2 += "<div style='margin-top:20px;'><h5>" + results.attendanceList[0].enrollmentYears + "</h5></div>";
+    str2 += "<div style='margin-top:30px;'><h5>These MemberShip Numbers Are Not Exist </h5></div>";
+    str2 += "<div style='margin-top:20px;'></div>";
+	str2+="<ul class='list-inline'>";
+	
+	for(var i in results.attendanceList[0].enrollmentYears){
+		str2+="<li><h5>" + results.attendanceList[0].enrollmentYears[i] + ",</h5></li>";
+	}
+	str2+="</ul>";
     $("#inveeteenotAvableId").html(str2);
+$("#tdpCadreTableId").html("");
 }
 $(document).on("click","#checkAllCheckBoxId", function() {
     if ($(this).is(":checked")) {
@@ -1392,7 +1535,6 @@ function getSessionsForModelByMeetingId(partyMeetingId) {
 
 
     var selectedSessionModel = [];
-    console.log(partyMeetingId);
     var dbIds = [];
     var dynamicId = [];
     var jsObj = {
@@ -1408,13 +1550,14 @@ function getSessionsForModelByMeetingId(partyMeetingId) {
         var numberOfSessions = $('.deleteSessionsForModel').length;
         for (i in results) {
 
-            sessionInModel += "<div class='deleteSessionsForModel'><div class='col-sm-4'><label for='session'>Session:</label>" +
-                "<select class='form-control sessionTypeIdForModel' id='sessionIdFOrModel" + numberOfSessions + "'><option value='0'>Select Session</option></select></div>" +
-                "<div class='col-sm-2'><label for='startDate'>Start Time:</label><input type='text' class='form-control timeCls startTimeForModel' id='startTime'  value=" + results[i].startDateStr + "></div>" +
-                "<div class='col-sm-2'><label for='startDate'>End Time:</label><input type='text' class='form-control timeCls endTimeForModel' id='endTime' value=" + results[i].endDateStr + "></div>" +
-                "<div class='col-sm-2'><label for='startDate'>Late Time:</label><input type='text' class='form-control timeCls lateTimeForModel' id='lateTime' value=" + results[i].meetingLevelStr + "></div>";
+            sessionInModel += "<div class='row deleteSessionsForModel'><div class='col-sm-4'><label for='session'>Session:</label>" +
+                "<select class='form-control sessionTypeIdForModel' id='sessionIdFOrModel" + numberOfSessions + "' name='partySession" + numberOfSessions + "' data-rule-required='true' data-msg-required='Please Select Session'><option value=''>Select Session</option></select></div>" +
+                "<div class='col-sm-2'><label for='startDate'>Start Time:</label><input type='text' class='form-control timeCls startTimeForModel' id='startTime" + numberOfSessions + "'  value=" + results[i].startDateStr + " name='partyStartTime" + numberOfSessions + "' data-rule-required='true' data-msg-required='Please Enter Start Time'></div>" +
+                "<div class='col-sm-2'><label for='startDate'>End Time:</label><input type='text' class='form-control timeCls endTimeForModel' id='endTime" + numberOfSessions + "'  value=" + results[i].endDateStr + " name='partyEndTime" + numberOfSessions + "' data-rule-required='true' data-msg-required='Please Enter End Time'></div>" +
+                "<div class='col-sm-2'><label for='startDate'>Late Time:</label><input type='text' class='form-control timeCls lateTimeForModel' id='lateTime" + numberOfSessions + "'  value=" + results[i].meetingLevelStr + " name='partyLateTime" + numberOfSessions + "' data-rule-required='true' data-msg-required='Please Enter Late Time'></div>";
 
-            sessionInModel = sessionInModel + "<div class='col-sm-2 '><button class='btn btn-danger deletSessionBtncls delButForModel' id=" + results[i].id + " style='margin-top:20px;'>Delete Sessions <i class='glyphicon glyphicon-trash' aria-hidden='true'></i></button></div></div>";
+            sessionInModel = sessionInModel + "<div class='col-sm-2 '><button type='button' class='btn btn-danger deletSessionBtncls delButForModel' id=" + results[i].id + " style='margin-top:20px;'>Delete Sessions <i class='glyphicon glyphicon-trash' aria-hidden='true'></i></button></div></div>";
+	
             dbIds.push(results[i].id);
             dynamicId.push("sessionIdFOrModel" + numberOfSessions);
 
@@ -1438,8 +1581,6 @@ function getSessionsForModelByMeetingId(partyMeetingId) {
             addSessionsListForModel(dynamicId[sess], sessId, selecteddbIds, existing);
         }
         addDateTimePickerForModel(startTimeForModel, endTimeForModel, lateTimeForModel);
-
-        console.log(results);
     });
 
 }
@@ -1447,6 +1588,9 @@ function getSessionsForModelByMeetingId(partyMeetingId) {
 var seesionResults={};
 getSessionsForAttendedInviteesByMeetingId(meetingId);
 function getSessionsForAttendedInviteesByMeetingId(partyMeetingId) {
+	seesionResults=null;
+ $("#attendanceSessionWiseId").html(" ");
+ $("#attendanceSessionWiseId").append('<option value="">' + "Select Session"+ '</option>');
     var jsObj = {
         partyMeetingId: partyMeetingId
 		
@@ -1531,14 +1675,13 @@ function addDateTimePickerForModel(stfm, etfm, ltfm) {
 
 
 $(document).on("click", ".addButForModel", function() {
-    console.log($('.deleteSessionsForModel').length);
     var numberOfSessions = $('.deleteSessionsForModel').length;
     if ($('.deleteSessionsForModel').length <= 3) {
-        $('#sessionModelId').append("<div class='deleteSessionsForModel'><div class='col-sm-4'><label for='session'>Session:</label>" +
-            "<select class='form-control sessionTypeIdForModel' id='sessionIdFOrModel" + numberOfSessions + "'><option value=''>Select Session</option></select></div>" +
-            "<div class='col-sm-2'><label for='startTimeForNewEditModel'>Start Time:</label><input type='text' class='form-control timeCls startTimeForModel' id='startTime'  value=' '></div>" +
-            "<div class='col-sm-2'><label for='endTimeForNewEditModel'>End Time:</label><input type='text' class='form-control timeCls endTimeForModel' id='endTime' value=' '></div>" +
-            "<div class='col-sm-2'><label for='lateTimeForNewEditModel'>Late Time:</label><input type='text' class='form-control timeCls lateTimeForModel' id='lateTime' value=' '></div><div class='col-sm-2 '><button class='btn btn-danger delButForModel' style='margin-top:20px;'>Delete Sessions <i class='glyphicon glyphicon-trash' aria-hidden='true'></i></button></div></div>");
+        $('#sessionModelId').append("<div class='row deleteSessionsForModel'><div class='col-sm-4'><label for='session'>Session:</label>" +
+            "<select class='form-control sessionTypeIdForModel' id='sessionIdFOrModel" + numberOfSessions + "' name='partySessionType"+numberOfSessions + "'  data-rule-required='true' data-msg-required='Please Select Session'><option value=''>Select Session</option></select></div>" +
+            "<div class='col-sm-2'><label for='startTimeForNewEditModel'>Start Time:</label><input type='text' class='form-control timeCls startTimeForModel' id='startTime" + numberOfSessions + "' name='partyStartTime" + numberOfSessions + "' data-rule-required='true' data-msg-required='Please Enter Start Time'></div>" +
+            "<div class='col-sm-2'><label for='endTimeForNewEditModel'>End Time:</label><input type='text' class='form-control timeCls endTimeForModel' id='endTime" + numberOfSessions + "' name='partyEndTime" + numberOfSessions + "' data-rule-required='true' data-msg-required='Please Enter End Time'></div>" +
+            "<div class='col-sm-2'><label for='lateTimeForNewEditModel'>Late Time:</label><input type='text' class='form-control timeCls lateTimeForModel' id='lateTime" + numberOfSessions + "' name='partyLateTime" + numberOfSessions + "' data-rule-required='true' data-msg-required='Please Enter Late Time'></div><div class='col-sm-2 '><button type='button' class='btn btn-danger delButForModel' style='margin-top:20px;'>Delete Sessions <i class='glyphicon glyphicon-trash' aria-hidden='true'></i></button></div></div>");
     }
     var startTimeForModel = $('.startTimeForModel');
     var startTimeForModel = $('.startTimeForModel');
@@ -1560,6 +1703,12 @@ $(document).on("click", ".addButForModel", function() {
 $(document).on("click", ".delButForModel", function() {
     var sessionId = $(this).attr("id");
     if (sessionId == null) {
+		 $(".resultStatus").modal('show');
+                $('#submitSuccessId').html("");
+               $('#submitSuccessId').append("<p>Session Deleted Successfully</p>");
+                setTimeout(function() {
+                $(".resultStatus").modal('hide');
+            }, 3000);
         $(this).parent().parent().remove();
     } else {
         deletesessionconformation(sessionId,this);
@@ -1585,12 +1734,74 @@ function deletesessionconformation(meetingSessionId,id) {
 				getSessionsForAttendedInviteesByMeetingId(meetingId);
 				getAttendanceForMeeting(meetingId,"0");
                 getNoneAttenedInvettesForMeeting(meetingId,"0");
+				
+				 $(".resultStatus").modal('show');
+                 $('#submitSuccessId').html("");
+               $('#submitSuccessId').append("<p>Session Deleted Successfully</p>");
+                setTimeout(function() {
+                $(".resultStatus").modal('hide');
+            }, 3000);
             } 
 
         });
     }
 	
 }
+
+$(document).on("change", "#meetingTypeSubTypeModelId", function() {
+	var subTypeId=$("#meetingTypeSubTypeModelId").val();
+   getPartyMeetingLevels(subTypeId);
+   $("#editLocationId").hide();
+   getMeetingLevels(0);
+});
+
+$(document).on("change", ".sessionTypeIdForModel", function() {
+	 var sessionId=$(this).attr('id');
+    //alert(sessionId);
+	var id=$(this).val();
+	alert(id);
+   var jsObj = {
+            partyMeetingSessionId: id
+        }
+        $.ajax({
+            type: "GET",
+            url: "getPartyMeetingSessionAction.action",
+            data: {
+                task: JSON.stringify(jsObj)
+            }
+        }).done(function(results) {
+                console.log(results);
+               if(results == null){
+                var position=sessionId.substr(sessionId.length-1, 1);
+                $("#startTime"+position).val("");
+				$("#endTime"+position).val("");
+				$("#lateTime"+position).val("");
+               }else{
+				var position=sessionId.substr(sessionId.length-1, 1);
+                $("#startTime"+position).html("");
+				$("#endTime"+position).html("");
+				$("#lateTime"+position).html("");
+				$("#startTime"+position).val(results[0].startTime.substr(11, 5));
+				$("#endTime"+position).val(results[0].endTime.substr(11, 5));
+				$("#lateTime"+position).val(results[0].lateTime.substr(11, 5));
+				
+				$("#startTime"+position).valid();
+				$("#endTime"+position).valid();
+				$("#lateTime"+position).valid();
+			}
+        }); 
+});
+$(document).on("click",".nonattendedCheckBoxCls",function(){
+	$(this).closest("td").prev("td").prev("td").find("div").html("");
+	if($(this).is(":checked")){
+	var commentStr=$(this).closest("td").prev("td").prev("td").find("input").val();
+	if(commentStr.length ==0){
+		$(this).closest("td").prev("td").prev("td").find("div").append("Please Enter Comment");
+		$(this).prop("checked",false);
+	}
+	}
+		
+});
 
 </script>
 
