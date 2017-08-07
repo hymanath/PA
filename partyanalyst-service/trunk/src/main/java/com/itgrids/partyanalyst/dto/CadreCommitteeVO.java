@@ -67,7 +67,14 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private Long totalCount =0L;
 	private Long maleCount =0l;
 	private Long femaleCount =0l;
+	private Long addedCount=0L;
 	
+	public Long getAddedCount() {
+		return addedCount;
+	}
+	public void setAddedCount(Long addedCount) {
+		this.addedCount = addedCount;
+	}
 	public Long getTotalCount() {
 		return totalCount;
 	}

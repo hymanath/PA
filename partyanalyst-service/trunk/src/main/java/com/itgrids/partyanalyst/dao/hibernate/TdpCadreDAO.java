@@ -9807,18 +9807,30 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		    return query.list();
 	   }
 	   
-	   public List<Object[]> getRangeWiseTdpCadreDtlsObjs(Set<Long> voterIds){
+	   public List<Object[]> getRangeWiseTdpCadreDtlsObjs(Set<Long> voterIds,String searchType){
 		   StringBuilder sb = new StringBuilder();
-		   sb.append("select model.tdpCadre.firstname, model.tdpCadre.relativename, model.tdpCadre.age, model.tdpCadre.gender, model.tdpCadre.mobileNo, " +
-		   		" model.tdpCadre.casteState.caste.casteName, " +
-		   		" model.tdpCadre.voterId, model.tdpCadre.image, model.tdpCadre.userAddress.tehsil.tehsilName, model.tdpCadre.userAddress.panchayat.panchayatName, model.tdpCadre.tdpCadreId " +
+		   sb.append("select   model.tdpCadre.firstname, model.tdpCadre.relativename, model.tdpCadre.age, model.tdpCadre.gender, model.tdpCadre.mobileNo, " +
+		   		" caste.casteName, " +
+		   		" model.tdpCadre.voterId, model.tdpCadre.image, tehsil.tehsilName, panc.panchayatName, model.tdpCadre.tdpCadreId, model.tdpCadre.memberShipNo, voter.voterIDCardNo,familyVoter.voterIDCardNo, familyVoter.voterId " +
 		   		" from TdpCadreEnrollmentYear model " +
+		   		" left join model.tdpCadre.casteState.caste caste " +
+		   		" left join model.tdpCadre.userAddress userAddress "+
+		   		" left join userAddress.tehsil tehsil " +
+		   		" left join userAddress.panchayat panc " +
+		   		" left join model.tdpCadre.voter voter "+
+		   		" left join model.tdpCadre.familyVoter familyVoter "+
 		   		" where " +
 		   		" model.enrollmentYearId = 4 and model.tdpCadre.enrollmentYear = 2014 and model.isDeleted = 'N'  and model.tdpCadre.isDeleted = 'N' ");
-		   		if(voterIds !=null && voterIds.size() > 0L){
-		   		 sb.append(" and model.tdpCadre.voterId in (:voterIds)");
+		   if(searchType != null && searchType.equalsIgnoreCase("OwnVoterId")){		
+		   if(voterIds !=null && voterIds.size() > 0){
+		   		 sb.append(" and voter.voterId in (:voterIds) ");
 	   			}
-		   				
+		   }
+		   if(searchType != null && searchType.equalsIgnoreCase("FamilyVoterId")){
+		   		if(voterIds !=null && voterIds.size() > 0){
+		   			sb.append(" and familyVoter.voterId in (:voterIds) ");
+		   			}	
+		   }	
 		   Query query = getSession().createQuery(sb.toString());
 		   if(voterIds !=null && voterIds.size() > 0){
 			   query.setParameterList("voterIds", voterIds);
