@@ -13,4 +13,5 @@ public interface IPartyMeetingAttendanceTabUserDAO extends GenericDao<PartyMeeti
 	public List<Object[]> getPartyMeetingsTabUserNameByDistrict(Long districtId);
 	public List<Object[]> getPartyMeetingTabUserDetails(Long partyMeetingId);
 	public List<Object[]> getTabuserTotaldetailsFromMeetingId(Long partyMeetingId,List<Long>attendanceTabUserIdList);
+	public Integer updatePartyMeetingAttendance(Long meetingId);
 }
