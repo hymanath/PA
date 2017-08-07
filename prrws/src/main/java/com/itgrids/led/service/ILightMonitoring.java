@@ -1,5 +1,6 @@
 package com.itgrids.led.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.dto.LedOverviewVo;
@@ -13,5 +14,8 @@ public interface ILightMonitoring {
 	//public List<LightMonitoringVO> getVillageIdBasedDetails();
       public ResultVO saveRealtimeStatusByVillages();
       public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate);
+      public	List<LightMonitoringVO> getLevelWiseOverviewDetails(String fromDateStr, String toDateStr, String year,
+				List<Long> locationValues, Long locationTypeId, Long searchlevelId, List<Long> searchLevelValues);
+      
 
 }
