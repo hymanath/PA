@@ -4286,7 +4286,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	       sb.append("model.meetingName," );         //1  meeting name
 	       sb.append("model.partyMeetingLevel.level," );  //2   meeting level
 	       sb.append("model.partyMeetingType.type,");     //3   meeting type
-	       sb.append("TRIM( '00:00:00.0' from model.startDate ) " );        //4    meeting start time
+	       sb.append("model.startDate" );        //4    meeting start time
 	       sb.append(",meetingAddress.district.districtName ");  //5  district name
 	       sb.append(  ",meetingAddress.constituency.name " );  //6
 	       sb.append(",meetingAddress.tehsil.tehsilName "); //7
@@ -4294,7 +4294,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	       sb.append(",meetingAddress.localElectionBody.name "); /////9
 	       sb.append(",meetingAddress.ward.name "); /////10
 	       sb.append(",meetingAddress.state.stateName ");//9///11
-	       sb.append(",TRIM( '00:00:00.0' from model.endDate ) "); //10///12
+	       sb.append(",model.endDate "); //10///12
 	       sb.append(",model.isConducted  " ); //11///13
 	       sb.append(" from PartyMeeting model " +
 	          "left join model.meetingAddress meetingAddress " +
