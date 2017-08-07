@@ -13,6 +13,22 @@
       <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
       <link href="daterangepicker/bootstrap-datetimepicker.css" type="text/css" rel="stylesheet"/>
       <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+	   <style>
+ label.error{
+	 color: red;
+	 margin-left:8px;
+ }
+ table.dataTable tbody th, table.dataTable tbody td {
+    padding: 8px 1px;
+}
+select {
+  text-transform:capitalize
+}
+.scrollit {
+    overflow:scroll;
+    height:350px;
+}
+ </style>
    </head>
    <body>
    <input type="hidden" id="refresh" value="no">
@@ -34,7 +50,7 @@
                   </div>
                </div>
                <div class="col-sm-1">
-                  <span id="partyMeetingTabButton" data-toggle="collapse" data-target="#partyMeetingTable" class="cadrePartyMeetingTabExpandCollapse">
+                  <span id="partyMeetingTabButton" data-toggle="collapse" data-target="#partyMeetingTable" class="cadrePartyMeetingTabExpandCollapse" style="cursor:pointer;">
                   <i class="glyphicon glyphicon-plus"></i>
                   </span>
                </div>
@@ -45,13 +61,18 @@
                <li role="presentation"  class="meetingLevelCls active" meeting_levelId_attr="0" level_attr="all"><a href="#all" id="home" aria-controls="home" role="tab" data-toggle="tab">All</a></li>
                <li role="presentation"  class="meetingLevelCls" meeting_levelId_attr="1" level_attr="statelevel"><a href="#statelevelDivId" aria-controls="profile" role="tab" data-toggle="tab">State Level</a></li>
                <li role="presentation" class="meetingLevelCls"  meeting_levelId_attr="2" level_attr="districtlevel"><a href="#districtlevelDivId" aria-controls="messages" role="tab" data-toggle="tab">District Level</a></li>
-               <li role="presentation"   class="meetingLevelCls"  meeting_levelId_attr="3" level_attr="constituencylevel"><a href="#constituencylevelDivId" aria-controls="settings" role="tab" data-toggle="tab">Constituencyl Level</a></li>
-               <li role="presentation"   class="meetingLevelCls"  meeting_levelId_attr="4" level_attr="mandallevel"><a href="#mandallevelDivId" aria-controls="settings" role="tab" data-toggle="tab">Mandal Level</a></li>
-               <li role="presentation"   class="meetingLevelCls"  meeting_levelId_attr="7" level_attr="villagelevel"><a href="#villagelevelDivId" aria-controls="settings" role="tab" data-toggle="tab">Village Level</a></li>
+			   <li role="presentation"   class="meetingLevelCls"  meeting_levelId_attr="5" level_attr="townevel"><a href="#townlevelDivId" aria-controls="settings" role="tab" data-toggle="tab">Town Level</a></li>
+               <li role="presentation"   class="meetingLevelCls"  meeting_levelId_attr="3" level_attr="constituencylevel"><a href="#constituencylevelDivId" aria-controls="settings" role="tab" data-toggle="tab">Constituency Level</a></li>
+			   <li role="presentation"   class="meetingLevelCls"  meeting_levelId_attr="6" level_attr="divisionlevel"><a href="#divisionlevelDivId" aria-controls="settings" role="tab" data-toggle="tab">Division Level</a></li>
+			   <li role="presentation"   class="meetingLevelCls"  meeting_levelId_attr="4" level_attr="mandallevel"><a href="#mandallevelDivId" aria-controls="settings" role="tab" data-toggle="tab">Mandal Level</a></li>              
+			   <li role="presentation"   class="meetingLevelCls"  meeting_levelId_attr="7" level_attr="villagelevel"><a href="#villagelevelDivId" aria-controls="settings" role="tab" data-toggle="tab">Village Level</a></li>
+               <li role="presentation"   class="meetingLevelCls"  meeting_levelId_attr="8" level_attr="wardlevel"><a href="#wardlevelDivId" aria-controls="settings" role="tab" data-toggle="tab">Ward Level</a></li>
+
             </ul>
             <div class="tab-content">
                <div id="meetingTableId" class="m_top10"></div>
-               <div id="paginationDivId" class="m_top20"></div>
+			    <div id="paginationCountDivId" class="m_top20 pull-right"></div>
+               <div id="paginationDivId" class="m_top20"></div> 	  
             </div>
          </div>
       </div>
@@ -60,35 +81,36 @@
             <h4 class="panel-title">Create Meeting </h4>
          </div>
          <div class="panel-body">
+		 <form id="meetingValidationId">
             <div class="row">
                <div class="col-sm-4">   
                   <label for="designation">Meeting Name:</label>
-                  <input type="text" class="form-control" id="meetingName" name="meetingName"/>
+                  <input type="text" class="form-control" id="meetingName" name="partyMeetingName" data-rule-required="true" data-msg-required="Please Enter Meeting Name"/>
                </div>
                <div class="col-sm-4">
                   <label for="startDate">Start Date:</label>
-                  <input type="text" class="form-control startDateCls" id="startDate" name="startDate"/>
+                  <input type="text" class="form-control startDateCls" id="startDate" name="partyStartDate" data-rule-required="true" data-msg-required="Please Enter Start Date"/>
                </div>
                <div class="col-sm-4">
                   <label for="endDate">End Date:</label>
-                  <input type="text" class="form-control endDateCls" id="endDate" name="endDate"/>
+                  <input type="text" class="form-control endDateCls" id="endDate" name="partyEndDate" data-rule-required="true" data-msg-required="Please Enter End Date"/> 
                </div>
                <div class="col-sm-4">
                   <label for="meetingType">Meeting Main Type:</label>
-                  <select class="form-control" id="meetingTypeId">
-                     <option value="">Select Meeting Type</option>
+                  <select class="form-control" id="meetingTypeId" name="partyMeetingMainType" data-rule-required="true" data-msg-required="Please Select Meeting Main Type">
+                     <option value="">Select Meeting Type</option> 
                   </select>
                </div>
                <div class="col-sm-4">
                   <label for="meetingSubType">Meeting Sub-Type:</label>
-                  <select class="form-control" id="meetingTypeSubTypeId" name="partyMeetingTypeId" >
+                  <select class="form-control" id="meetingTypeSubTypeId" name="partyMeetingSubType" data-rule-required="true" data-msg-required="Please Select Meeting Sub Type">
                      <option value="">Select Meeting Sub-Type</option>
                   </select>
                </div>
                <div class="col-sm-4">
                   <label for="meetingLevel">Meeting Level:</label>
-                  <select class="form-control meetingLevels" id="meetingLevelId" name="meetingLevelId" >
-                     <option value="0">Select Meeting Level</option>
+                  <select class="form-control meetingLevels" id="meetingLevelId" name="partyMeetingLevel" data-rule-required="true" data-msg-required="Please Select Meeting Level">
+                     <option value="">Select Meeting Level</option>
                   </select>
                </div>
             </div>
@@ -98,37 +120,35 @@
                </div>
                <div id="stateDivId" class="col-sm-4" style="display:none;">
                   <label for="state">State:</label>
-                  <select class="form-control" id="state" name="stateId" >
+                  <select class="form-control" id="state" name="partyState" data-rule-required="true" data-msg-required="Please Select State">
                      <option value="">Select State</option>
-                     <option value="1">Andhra Pradesh</option>
-                     <option value="36">Telangana</option>
                   </select>
                </div>
                <div id="districtDivId" class="col-sm-4" style="display:none;">
                   <label for="district">District:</label>
                   <span id="districtSpinnerId" ><i class="fa fa-spinner fa-spin"></i></span>
-                  <select class="form-control" id="district" name="districtId" >
+                  <select class="form-control" id="district" name="partyDistrict" data-rule-required="true" data-msg-required="Please Select District">
                      <option value="">Select District</option>
                   </select>
                </div>
                <div id="constituencyDivId" class="col-sm-4" style="display:none;">
                   <label for="constituency">Constituency:</label>
                   <span id="constituencySpinnerId" ><i class="fa fa-spinner fa-spin"></i></span>
-                  <select class="form-control" id="constituency" name="constituencyId" >
+                  <select class="form-control" id="constituency" name="partyConstituency" data-rule-required="true" data-msg-required="Please Select Constituency">
                      <option value="">Select Constituency</option>
                   </select>
                </div>
                <div id="mandalDivId" class="col-sm-4" style="display:none;">
                   <label for="mandal">Mandal/ Town/ Division:</label>
                   <span id="mandalSpinnerId" ><i class="fa fa-spinner fa-spin"></i></span>
-                  <select class="form-control" id="mandal" name="tehsilId">
+                  <select class="form-control" id="mandal" name="partyTehsil" data-rule-required="true" data-msg-required="Please Select Mandal">
                      <option value="">Select Mandal</option>
                   </select>
                </div>
                <div id="villageDivId" class="col-sm-4" style="display:none;">
                   <label for="village">Village / Ward:</label>
                   <span id="villageSpinnerId" ><i class="fa fa-spinner fa-spin"></i></span>
-                  <select class="form-control" id="village" name="villageId">
+                  <select class="form-control" id="village" name="partyVillage" data-rule-required="true" data-msg-required="Please Select Village">
                      <option value="">Select Village</option>
                   </select>
                </div>
@@ -136,21 +156,21 @@
             <div class="row">
                <div class="col-sm-4">
                   <label for="session">Session:</label>
-                  <select class="form-control sessionTypeId" id="sessionId">
+                  <select class="form-control sessionTypeId" id="sessionId" name="partySession" data-rule-required="true" data-msg-required="Please Select Session">
                      <option value="">Select Session</option>
                   </select>
                </div>
                <div class="col-sm-2">
                   <label for="startDate">Start Time:</label>
-                  <input type="text" class="form-control timeCls startTime" id="startTime"  />
+                  <input type="text" class="form-control timeCls startTime" id="startTime"  name="partyStartTime" data-rule-required="true" data-msg-required="Please Enter Start Time"/>
                </div>
                <div class="col-sm-2">
                   <label for="startDate">End Time:</label>
-                  <input type="text" class="form-control timeCls endTime" id="endTime"/>
+                  <input type="text" class="form-control timeCls endTime" id="endTime"  name="partyEndTime" data-rule-required="true" data-msg-required="Please Enter End Time"/>
                </div>
                <div class="col-sm-2">
                   <label for="startDate">Late Time:</label>
-                  <input type="text" class="form-control timeCls lateTime" id="lateTime"/>
+                  <input type="text" class="form-control timeCls lateTime" id="lateTime" name="partyLateTime" data-rule-required="true" data-msg-required="Please Enter Late Time"/>
                </div>
                <div class="col-sm-2" style="margin-top:20px;">
                   <button type="button" class="btn btn-primary" id="addSession">Add Session
@@ -159,6 +179,7 @@
                </div>
             </div>
             <div id="createSession"></div>
+			</form>
          </div>
       </div>
       <div class="panel panel-default">
@@ -168,7 +189,7 @@
                   <h4 class="panel-title">Tab User Details</h4>
                </div>
                <div class="col-sm-1">
-                  <span id="tabUserTabButton" data-toggle="collapse" data-target="#tabUserExpandCollapseId" class="tabUserExpandCollapse">
+                  <span id="tabUserTabButton" data-toggle="collapse" data-target="#tabUserExpandCollapseId" class="tabUserExpandCollapse" style="cursor:pointer;">
                   <i class="glyphicon glyphicon-plus"></i>
                   </span>
                </div>
@@ -213,12 +234,15 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">TDP MEMBERS DETAILS</h4>
                      </div>
-                     <div class="modal-body" id="modalBodyId">
+                     <div class="modal-body" id="modalBodyId"> 
+					
+					 <div id="tdpCadreTableId" class="m_top10"></div>
                         <div id="tdpCadreDetailsTableDivId"></div>
                         <div id="inveeteenotAvableId"></div>
+						
                         <input type="hidden"  id="hiddenMeetingNameId" value="" name="partyMeetingVO.name"/>
-                        <input type="hidden"  id="hiddenStartDateId" value="" name="partyMeetingVO.startDate"/>
-                        <input type="hidden"  id="hiddenEndDateId" value="" name="partyMeetingVO.endDate"/>
+                        <input type="hidden"  id="hiddenStartDateId" value="" name="partyMeetingVO.startDateStr"/>
+                        <input type="hidden"  id="hiddenEndDateId" value="" name="partyMeetingVO.endDateStr"/>
                         <input type="hidden"  id="hiddenMeetingTypeSubTypeId" value="" name="partyMeetingVO.partyMeetingTypeId"/>
                         <input type="hidden"  id="hiddenMeetingLevelId" value="" name="partyMeetingVO.meetingLevelId"/>
                         <input type="hidden"  id="hiddenStateId" value="" name="partyMeetingVO.stateId"/>
@@ -227,6 +251,7 @@
                         <input type="hidden"  id="hiddenMandalId" value="" name="partyMeetingVO.tehsilId"/>
                         <input type="hidden"  id="hiddenvillageId" value="" name="partyMeetingVO.villageId"/>
                         <input type="hidden" id="tabuserModelId" value="1" name="partyMeetingVO.insertedById"/> 
+						<div id="hiddenFieldsId"></div>						
                      </div>
                      <div class="modal-footer">
                         <button type="button" class="btn btn-success" id="savingMeetingWithInviteesID">Submit</button>
@@ -322,9 +347,12 @@ function validSessionLateTime(strtTimeHours,endTimeHours,lateTimeHours,startTime
 	}
 
  $(document).on("click", "#applicatioSubmitId", function() {
+	 $("#hiddenFieldsId").html(' ');
    var availableSessions=[];
     $('.sessionTypeId').each(function() {
+		if(!$('option:selected', $(this)).text() =="Select Session"){
 	   availableSessions.push($('option:selected', $(this)).text());
+		}
     });
 	
 	var duplicateSessions = availableSessions.reduce(function(acc, el, i, arr) {
@@ -381,10 +409,55 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
   if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) acc.push(el); return acc;
 }, []);
 
+if ($('#meetingValidationId').valid() && duplicateSessions.length == 0 &&
+	 duplicateStartTime.length == 0 && duplicateEndTime.length==0 && duplicateLateTime.length==0 && errorCount ==0) {
+		  if ($("#textAreaId").val().length > 0 && $("#partyMeetingId").val().length > 0) {
+         $(".resultStatus").modal('show');
+         $('#submitSuccessId').html("");
+         $('#submitSuccessId').append("<p>Please upload csv file or use TextArea to enter Membership Id's</p>");
+         setTimeout(function() {
+             $(".resultStatus").modal('hide');
+			 $("#textAreaId").val('');
+			 $("#partyMeetingId").val('');
+         }, 3000);
+     } 
+	 else if($("#partyMeetingId").val().length > 0) {
+         callActionMethod();
+     }
+	 else if($("#textAreaId").val().length > 0) {
+         var textAreaIds = $("#textAreaId").val();
+         var memebershipIds = textAreaIds.split(",");
+         $("#tdpCadreDetailsModalId").modal('show');
+         getTdpCadreDetailsForInveetMeeting(memebershipIds);
+         createHiddenFields();
+     } 
+	 else if($("#partyMeetingId").val().length == 0 && $("#textAreaId").val().length == 0) {
+		    createHiddenFields();
+			var uploadHandler = {
+             upload: function(o) {
+             uploadResult = o.responseText;
+             $('#closeModalId').click();
+             $(".resultStatus").modal('show');
+             $('#submitSuccessId').html("");
+             $('#submitSuccessId').append("<p>Meeting Created Successfully</p>");
+             setTimeout(function() {
+                 $(".resultStatus").modal('hide');
+				 var redirectWindow=window.open('cadrePartyMeetingManagementAction.action','_self');
+             }, 3000);
 
+
+         }
+     };
+     YAHOO.util.Connect.setForm('meetingDetailsWithInviteesSubmit', true);
+     YAHOO.util.Connect.asyncRequest('POST', 'savepartymeetingDetailsAction.action', uploadHandler);
+     }
+	 else{
+	 }
+}
   if(duplicateSessions.length > 0 ||
 	 duplicateStartTime.length > 0 || duplicateEndTime.length>0 || duplicateLateTime.length>0 || errorCount >0){
       $(".validationStatus").modal('show');
+	  $('#validationId').html("");
 	  if(duplicateSessions.length > 0){
       $('#validationId').append("<p>Please Avoid Duplicate Sessions</p><p>"+duplicateSessions+"</p>");
 	  }
@@ -401,53 +474,48 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
       $(".validationStatus").modal('hide');
        }, 3000);
 	 }
-	 
- else{
- if ($("#textAreaId").val().length > 0 && $("#partyMeetingId").val().length > 0) {
-         $(".resultStatus").modal('show');
-         $('#submitSuccessId').html("");
-         $('#submitSuccessId').append("<p>Please upload csv file or use TextArea to enter Membership Id's</p>");
-         setTimeout(function() {
-             $(".resultStatus").modal('hide');
-			 $("#textAreaId").val('');
-			 $("#partyMeetingId").val('');
-         }, 3000);
-     } else if ($("#partyMeetingId").val().length > 0) {
-         callActionMethod();
-     } else if ($("#textAreaId").val().length > 0) {
-         var textAreaIds = $("#textAreaId").val();
-         var memebershipIds = textAreaIds.split(",");
-         $("#tdpCadreDetailsModalId").modal('show');
-         getTdpCadreDetailsForInveetMeeting(memebershipIds);
-         createHiddenFields();
-     } else {
 
-     }
-}
  });
 
  function callActionMethod() {
      var uploadHandler = {
          upload: function(o) {
+			  $('#submitSuccessId').html("");
              uploadResult = o.responseText;
-
+              
              uploadResult = uploadResult.replace("<pre>", "");
              uploadResult = uploadResult.replace("</pre>", "");
              uploadResult = uploadResult.replace(",\"", "");
              uploadResult = uploadResult.replace("\"", "");
              uploadResult = uploadResult.replace(/\"/g, "");
              uploadResult = uploadResult.replace("<pre style=word-wrap: break-word; white-space: pre-wrap;>", "");
-             console.log(uploadResult);
-             if (uploadResult == "Please upload csv format") {
-                 $('#submitSuccessId').html("");
+             if (uploadResult == "Please Upload Csv or Excel Format") {
                  $(".resultStatus").modal('show');
-                 $('#submitSuccessId').append("<p>Please upload csv format</p>");
+                 $('#submitSuccessId').append("<p>Please Upload Csv Format</p>");
                  setTimeout(function() {
                      $(".resultStatus").modal('hide');
 					  $("#partyMeetingId").val('');
                  }, 3000);
 
-             } else {
+             }
+			 
+               else if(uploadResult == "Please upload Excel in given Format"){
+				  $(".resultStatus").modal('show');
+                 $('#submitSuccessId').append("<p>Please upload Excel in given Format</p>");
+                 setTimeout(function() {
+                     $(".resultStatus").modal('hide');
+					  $("#partyMeetingId").val('');
+                 }, 3000);
+			 }
+			 else if(uploadResult == "Please Enter Membership Ids"){
+				  $(".resultStatus").modal('show');
+                 $('#submitSuccessId').append("<p>Please Enter Membership Ids</p>");
+                 setTimeout(function() {
+                     $(".resultStatus").modal('hide');
+					  $("#partyMeetingId").val('');
+                 }, 3000);
+			 }
+			 else {
                  $("#tdpCadreDetailsModalId").modal('show');
                  var memeberShipArr = uploadResult.split(",");
                  getTdpCadreDetailsForInveetMeeting(memeberShipArr);
@@ -464,8 +532,23 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
 
  function createHiddenFields() {
      $("#hiddenMeetingNameId").val($("#meetingName").val());
-     $("#hiddenStartDateId").val($("#startDate").val());
-     $("#hiddenEndDateId").val($("#endDate").val());
+	 
+	/*$("#startDate").val($("#startDate").val().replace("/","-"));
+	$("#startDate").val($("#startDate").val().replace("/","-"));  // 01-08-2017  yyyy-MM-dd */
+		
+	var splitedStartDate=$("#startDate").val().split("-");	
+	var onlyStartDate=splitedStartDate[2]+"-"+splitedStartDate[1]+"-"+splitedStartDate[0];  
+    $("#hiddenStartDateId").val(onlyStartDate);
+     
+	/*$("#endDate").val($("#endDate").val().replace("/","-"));
+	$("#endDate").val($("#endDate").val().replace("/","-")); */
+	
+	var splitedEndDate=$("#endDate").val().split("-");
+	var onlyEndDate=splitedEndDate[2]+"-"+splitedEndDate[1]+"-"+splitedEndDate[0];  
+    $("#hiddenEndDateId").val(onlyEndDate);
+	
+     //$("#hiddenStartDateId").val($("#startDate").val());
+     //$("#hiddenEndDateId").val($("#endDate").val());
      $("#hiddenMeetingTypeSubTypeId").val($("#meetingTypeSubTypeId").val());
      $("#hiddenMeetingLevelId").val($("#meetingLevelId").val());
      $("#hiddenStateId").val($("#state").val());
@@ -476,8 +559,9 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
          $("#hiddenConstituencyId").val($("#constituency").val());
      }
 	 var trimTeshil=$("#mandal").val();
-	 var removedTeshil = trimTeshil.substring(1); 
-     $("#hiddenMandalId").val(removedTeshil);
+	 //var removedTeshil = trimTeshil.substring(1); 
+     //$("#hiddenMandalId").val(removedTeshil);
+	 $("#hiddenMandalId").val($("#mandal").val());
      $("#hiddenvillageId").val($("#village").val());
 
 
@@ -494,24 +578,24 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
      $('.startTime').each(function() {
          var dynamicElement = "<input type='hidden' value=" + $(this).val() + " name='partyMeetingVO.startTimeList[" + i + "]'/>";
 
-         $('#modalBodyId').append(dynamicElement);
+         $('#hiddenFieldsId').append(dynamicElement);
          i = i + 1;
      });
      $('.endTime').each(function() {
          var dynamicElement = "<input type='hidden' value=" + $(this).val() + " name='partyMeetingVO.endTimeList[" + j + "]'/> ";
-         $('#modalBodyId').append(dynamicElement);
+         $('#hiddenFieldsId').append(dynamicElement);
          j = j + 1;
      });
      $('.lateTime').each(function() {
          var dynamicElement = "<input type='hidden' value=" + $(this).val() + " name='partyMeetingVO.lateTimeList[" + k + "]'/> ";
 
-         $('#modalBodyId').append(dynamicElement);
+         $('#hiddenFieldsId').append(dynamicElement);
          k = k + 1;
 
      });
      $('.sessionTypeId').each(function() {
          var dynamicElement = "<input type='hidden' value=" + $(this).val() + " name='partyMeetingVO.sessionTypeId[" + l + "]'/> ";
-         $('#modalBodyId').append(dynamicElement);
+         $('#hiddenFieldsId').append(dynamicElement);
 
          l = l + 1;
      });
@@ -520,26 +604,26 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
      var n = 0;
      $(".tabUserCheckBoxCls:checked").each(function(index, elem) {
          var dynamicElement = "<input type='hidden' value=" + $(elem).val() + " name='partyMeetingVO.attendedList[" + n + "]'/> ";
-         $('#modalBodyId').append(dynamicElement);
+         $('#hiddenFieldsId').append(dynamicElement);
          n = n + 1;
      })
  }
 
  function getTdpCadreDetailsForInveetMeeting(memeberShipArr) {
-
+	  $("#tdpCadreTableId").html("");
+     $("#tdpCadreTableId").html(spinner);
      $("#tdpCadreDetailsTableDivId").html('');
      $("#inveeteenotAvableId").html('');
      var jsObj = {
          memberShipNos: memeberShipArr
      }
      $.ajax({
-         type: "GET",
+         type: "POST",
          url: "getTdpCadreDetailsForInveetMeetingAction.action",
          data: {
              task: JSON.stringify(jsObj)
          }
      }).done(function(results) {
-
          if (results != null && results[0].membershipNo != null && results[0].membershipNo.length > 0) {
              buildInveeteeCreateDatails(results);
          }
@@ -552,6 +636,7 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
  var cadreTable = '';
 
  function buildInveeteeCreateDatails(results) {
+	
      var str = '';
      str += "<h5 class='pull-right'>Select All<input type='checkBox' class='checkAllCheckBoxCls'></h5>";
      str += "<table id='inviteeTableId' class='table table-bordered'>";
@@ -570,19 +655,23 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
      if (results[0].membershipNo != null && results[0].membershipNo.length > 0) {
          for (var i in results) {
              str += "<tr>";
-             str += "<td>" + results[i].membershipNo + "</td>";
-             str += "<td><img src='https://www.mytdp.com/images/cadre_images/" + results[i].imagePathStr + "' style='width:50px;height:50px;' ></img></td>";
-             str += "<td>" + results[i].name + "</td>";
-             str += "<td>" + results[i].partyName + "</td>";
-             str += "<td>" + results[i].mobileNumber + "</td>";
+             str += "<td class='text-center'>" + results[i].membershipNo + "</td>";
+             str += "<td class='text-center'><img src='https://www.mytdp.com/images/cadre_images/" + results[i].imagePathStr + "' style='width:50px;height:50px;' ></img></td>";
+             str += "<td class='text-center'>" + results[i].name + "</td>";
+             str += "<td class='text-center'>" + results[i].partyName + "</td>";
+             str += "<td class='text-center'>" + results[i].mobileNumber + "</td>";
              str += "<th><input  class='checkCls' type='checkBox' value=" + results[i].id + " /></th>";
              str += "</tr>";
          }
+		  $("#tdpCadreTableId").html("");
      }
      str += "</tbody>";
      str += "</table>";
      $("#tdpCadreDetailsTableDivId").html(str);
-     cadreTable = $('#inviteeTableId').dataTable();
+     cadreTable = $('#inviteeTableId').dataTable({
+		 paging:false,
+		 scrollY:"400"
+	 });
      $(".checkCls").prop("checked", true);
 	 $(".checkAllCheckBoxCls").prop("checked", true);
  }
@@ -592,6 +681,7 @@ var duplicateLateTime = completeLateTime.reduce(function(acc, el, i, arr) {
      str2 += "<div style='margin-top:10px;'><h5>These MemberShip Numbers Are Not Exist </h5></div>";
      str2 += "<div style='margin-top:20px;'><h5>" + results[0].enrollmentYears + "</h5></div>";
      $("#inveeteenotAvableId").html(str2);
+     $("#tdpCadreTableId").html("");
  }
 
  function showSbmitStatusNew(uploadResult) { //success
@@ -625,24 +715,20 @@ $(document).on("click",".checkCls",function(){
 	}
 });
  $(document).on("click", "#savingMeetingWithInviteesID", function() {
-
-     caderIdArr = [];
-     var dataOfServerResponse;
      var m = 0;
      $(".checkCls:checked").each(function(index, elem) {
          var dynamicElement = "<input type='hidden' value=" + $(elem).val() + " name='partyMeetingVO.tdpCadreIds[" + m + "]'/>";
-         $('#modalBodyId').append(dynamicElement);
+         $('#hiddenFieldsId').append(dynamicElement);
          m = m + 1;
      });
 
      var uploadHandler = {
          upload: function(o) {
              uploadResult = o.responseText;
-             console.log(uploadResult);
              $('#closeModalId').click();
              $(".resultStatus").modal('show');
              $('#submitSuccessId').html("");
-             $('#submitSuccessId').append("<p>DATA SAVED SUCESSFULLY</p>");
+             $('#submitSuccessId').append("<p>Meeting Created successfully</p>");
              setTimeout(function() {
                  $(".resultStatus").modal('hide');
 				 var redirectWindow=window.open('cadrePartyMeetingManagementAction.action','_self');
@@ -651,7 +737,6 @@ $(document).on("click",".checkCls",function(){
 
          }
      };
-     console.log(uploadHandler);
      YAHOO.util.Connect.setForm('meetingDetailsWithInviteesSubmit', true);
      YAHOO.util.Connect.asyncRequest('POST', 'savepartymeetingDetailsAction.action', uploadHandler);
 
@@ -696,7 +781,6 @@ $(document).on("click",".checkCls",function(){
          var uploadHandler = {
              upload: function(o) {
                  uploadResult = o.responseText;
-                 console.log(uploadResult);
                  uploadResult = uploadResult.replace("<pre>", "");
                  uploadResult = uploadResult.replace("</pre>", "");
                  uploadResult = uploadResult.replace(",\"", "");
@@ -704,11 +788,10 @@ $(document).on("click",".checkCls",function(){
                  uploadResult = uploadResult.replace(/\"/g, "");
 
                  uploadResult = uploadResult.replace("<pre style=word-wrap: break-word; white-space: pre-wrap;>", "");
-                 console.log(uploadResult);
-                 if (uploadResult == "Please upload csv format") {
+                 if (uploadResult == "Please Upload Csv or Excel Format") {
                      $('#submitSuccessId').html("");
                      $(".resultStatus").modal('show');
-                     $('#submitSuccessId').append("<p>Please upload csv format</p>");
+                     $('#submitSuccessId').append("<p>Please Upload Csv</p>");
                      setTimeout(function() {
                          $(".resultStatus").modal('hide');
                      }, 3000);
