@@ -35,7 +35,7 @@ public class KaizalaAnswers extends BaseModel implements Serializable {
 	private Date insertedTime;
 	
 	private KaizalaQuestions kaizalaQuestions;
-	private KaizalaAnswerInfoDAO kaizalaAnswerInfo;
+	private KaizalaAnswerInfo kaizalaAnswerInfo;
 	
 	
 	@Id
@@ -95,10 +95,10 @@ public class KaizalaAnswers extends BaseModel implements Serializable {
 	@JoinColumn(name = "kaizala_answer_info_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public KaizalaAnswerInfoDAO getKaizalaAnswerInfo() {
+	public KaizalaAnswerInfo getKaizalaAnswerInfo() {
 		return kaizalaAnswerInfo;
 	}
-	public void setKaizalaAnswerInfo(KaizalaAnswerInfoDAO kaizalaAnswerInfo) {
+	public void setKaizalaAnswerInfo(KaizalaAnswerInfo kaizalaAnswerInfo) {
 		this.kaizalaAnswerInfo = kaizalaAnswerInfo;
 	}
 	
@@ -106,6 +106,7 @@ public class KaizalaAnswers extends BaseModel implements Serializable {
 	public Date getInsertedTime() {
 		return insertedTime;
 	}
+	
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}	
