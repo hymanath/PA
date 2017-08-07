@@ -2616,7 +2616,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
-	 	    	  if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Grounds"))
+	 	    	  if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Ground"))
 	 	    		  inputVO.setType("Burial Ground");
 	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi Buildings"))
 	 	    		  inputVO.setType("Anganwadi");
@@ -2742,9 +2742,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
 	 	    				}
 	 	    				
-	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("IHHL") || inputVO.getType().toString().trim().equalsIgnoreCase("Vermi Compost")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Agriculture Activities")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Farm Ponds")
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Agriculture Activities")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("SMC Trench") || inputVO.getType().toString().trim().equalsIgnoreCase("Imp to CD")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("MPT_PT") || inputVO.getType().toString().trim().equalsIgnoreCase("GC Works")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("CD_CW"))
@@ -3468,7 +3466,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
-	 	    	  if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Grounds"))
+	 	    	  if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Ground"))
 	 	    		  inputVO.setType("Burial Ground");
 	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi Buildings"))
 	 	    		  inputVO.setType("Anganwadi");
@@ -3526,7 +3524,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	        if(distResponse.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ distResponse.getStatus());
 	 	      }else{
-	 	    	  if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Grounds"))
+	 	    	  if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Ground"))
 	 	    		  inputVO.setType("Burial Ground");
 	 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi Buildings"))
 	 	    		  inputVO.setType("Anganwadi");
@@ -3755,9 +3753,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
 	 	    				}
 	 	    				
-	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("IHHL") || inputVO.getType().toString().trim().equalsIgnoreCase("Vermi Compost")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Agriculture Activities")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Farm Ponds")
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Agriculture Activities")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("SMC Trench") || inputVO.getType().toString().trim().equalsIgnoreCase("Imp to CD")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("MPT_PT") || inputVO.getType().toString().trim().equalsIgnoreCase("GC Works")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("CD_CW"))
