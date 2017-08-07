@@ -82,8 +82,15 @@ public class InputVO implements Serializable {
 	private Long entityType;
 	private List<Long> questionsList;
 	private List<String> selectedDates;
+	private List<Long> searchLevelValues;
 	
 	
+	public List<Long> getSearchLevelValues() {
+		return searchLevelValues;
+	}
+	public void setSearchLevelValues(List<Long> searchLevelValues) {
+		this.searchLevelValues = searchLevelValues;
+	}
 	public String getLocationIdStr() {
 		return locationIdStr;
 	}
