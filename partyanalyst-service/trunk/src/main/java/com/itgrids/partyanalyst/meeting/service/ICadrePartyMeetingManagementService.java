@@ -19,7 +19,7 @@ public interface ICadrePartyMeetingManagementService {
 	public List<PartyMeetingsVO> getMeetingMainType();
 	public List<PartyMeetingsVO> getMeetingSubType(Long partyMeetingMainTypeId);
 	public List<PartyMeetingsVO> getCadrePartyMeetngDeatils(String startDateStr,String endDateStr,Long meetigLevelId,int startIndex,int maxIndex);
-	public List<PartyMeetingsVO> getPartyMeetingLevels();
+	public List<PartyMeetingsVO> getPartyMeetingLevels(Long partyMeetingSubTypeId);
 	public List<PartyMeetingsVO> getAllSessionType();
 	public List<PartyMeetingsVO> getPartyMeetingsTabUserNameByDistrict();
 	public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Long meetingId);
