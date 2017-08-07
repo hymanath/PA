@@ -25,6 +25,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IAttendanceTabUserDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceTabUserDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
@@ -40,6 +41,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -83,8 +85,27 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 	private IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO;
 	private  ResultStatus resultStatus;
     private IAttendanceDAO attendanceDAO;
+    private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IWardDAO wardDAO;
+    
 	
-	 public ResultStatus getResultStatus() {
+	 public IWardDAO getWardDAO() {
+		return wardDAO;
+	}
+
+	public void setWardDAO(IWardDAO wardDAO) {
+		this.wardDAO = wardDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
 
@@ -579,7 +600,7 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 		 * @param loctionLevelId, start date end date
 		 * @return List of PartyMeetingsVO 
 	 */
-		public List<PartyMeetingsVO> getCadrePartyMeetngDeatils(String startDateStr,String endDateStr,Long meetigLevelId,int startIndex,int maxIndex){
+		/*public List<PartyMeetingsVO> getCadrePartyMeetngDeatils(String startDateStr,String endDateStr,Long meetigLevelId,int startIndex,int maxIndex){
 			List<PartyMeetingsVO> finalList=null;
 			Long totalMeetingCount=0L;
 			try{
@@ -601,14 +622,16 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 					partyMeetingVO.setMeetingName(commonMethodsUtilService.getStringValueForObject(objcts[1]));// meeting name
 					partyMeetingVO.setRemarks(commonMethodsUtilService.getStringValueForObject(objcts[2]));//meeting level
 					partyMeetingVO.setMeetingType(commonMethodsUtilService.getStringValueForObject(objcts[3]));//meeting type
-					partyMeetingVO.setUpdatedTime(commonMethodsUtilService.getStringValueForObject(objcts[4]));// meeting start date
+					String startStr[]=commonMethodsUtilService.getStringValueForObject(objcts[4]).split("\\s");
+			        partyMeetingVO.setUpdatedTime(startStr[0]);// meeting start date
 					partyMeetingVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(objcts[5]));// district name
 					partyMeetingVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objcts[6]));//constincy name
 					partyMeetingVO.setTeshilName(commonMethodsUtilService.getStringValueForObject(objcts[7]));// tesil name
 					partyMeetingVO.setName(commonMethodsUtilService.getStringValueForObject(objcts[8]));// village name.
-					String []endDate=commonMethodsUtilService.getStringValueForObject(objcts[9]).split("\\s");
+					partyMeetingVO.setStateName(commonMethodsUtilService.getStringValueForObject(objcts[9]));// State Name
+					String []endDate=commonMethodsUtilService.getStringValueForObject(objcts[10]).split("\\s");
 					partyMeetingVO.setMonth(endDate[0]);// end date
-					partyMeetingVO.setIsCondacted(commonMethodsUtilService.getStringValueForObject(objcts[10]));
+					partyMeetingVO.setIsCondacted(commonMethodsUtilService.getStringValueForObject(objcts[11]));
 					Date currrentdate=sdf2.parse(dateUtilService.getCurrentDateInStringFormat());
 					Long daysCount=dateUtilService.noOfDayBetweenDates(endDate[0],dateUtilService.getDateInStringFormatByDate(currrentdate,"yyyy-MM-dd"));
 					if(daysCount <=2){
@@ -618,7 +641,7 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 				}
 				
 			}
-			if(totalMeetingCount != null ){
+			if(finalList != null && finalList.size() > 0){
 			finalList.get(0).setTotalCount(totalMeetingCount);
 			}
 			}catch(Exception e){
@@ -626,7 +649,8 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 			}
 			return finalList;
 		}
-	    public List<PartyMeetingsVO> getPartyMeetingLevels(){
+		*/
+	  /*  public List<PartyMeetingsVO> getPartyMeetingLevels(){
 			List<PartyMeetingsVO> finalList=null;
 			try{
 				List<Object[]> objectList=partyMeetingLevelDAO.getPartyMeetingLevels();
@@ -643,7 +667,84 @@ public class CadrePartyMeetingManagementService implements ICadrePartyMeetingMan
 				LOG.error("Exception Occured in getPartyMeetingLevels  method, Exception - ",e); 
 			}
 			return finalList;
-		}
+		} */
+	    
+	    public List<PartyMeetingsVO> getCadrePartyMeetngDeatils(String startDateStr,String endDateStr,Long meetigLevelId,int startIndex,int maxIndex){
+	        List<PartyMeetingsVO> finalList=null;
+	        Long totalMeetingCount=0L;
+	         List<Long> meetingLevels=null;
+	        try{
+	          SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	          SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+	            Date fromDate = null;
+	            Date  toDate = null;
+	            if(startDateStr != null && endDateStr != null){
+	              fromDate = sdf.parse(startDateStr.trim());
+	              toDate = sdf.parse(endDateStr.trim());
+	            }  
+	            meetingLevels=new ArrayList<Long>();
+	  	         meetingLevels.add(meetigLevelId);
+	            
+	           totalMeetingCount= partyMeetingDAO.getCadrePartyMeetngDeatilsCount(fromDate,toDate,meetingLevels);
+	        List<Object[]> objectList=partyMeetingDAO.getCadrePartyMeetngDeatils(fromDate,toDate,meetingLevels, startIndex,maxIndex);
+	        if(objectList !=null && objectList.size() > 0){
+	          finalList=new ArrayList<PartyMeetingsVO>();
+	          for(Object[] objcts: objectList){
+	            PartyMeetingsVO partyMeetingVO=new PartyMeetingsVO();
+	            partyMeetingVO.setId(commonMethodsUtilService.getLongValueForObject(objcts[0]));// meeting id
+	            partyMeetingVO.setMeetingName(commonMethodsUtilService.getStringValueForObject(objcts[1]));// meeting name
+	            partyMeetingVO.setRemarks(commonMethodsUtilService.getStringValueForObject(objcts[2]));//meeting level
+	            partyMeetingVO.setMeetingType(commonMethodsUtilService.getStringValueForObject(objcts[3]));//meeting type
+	            partyMeetingVO.setUpdatedTime(commonMethodsUtilService.getStringValueForObject(objcts[4]));// meeting start date
+	            partyMeetingVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(objcts[5]));// district name
+	            partyMeetingVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objcts[6]));//constincy name
+	            partyMeetingVO.setTeshilName(commonMethodsUtilService.getStringValueForObject(objcts[7]));// tesil name
+	            partyMeetingVO.setName(commonMethodsUtilService.getStringValueForObject(objcts[8]));// village name.
+	            partyMeetingVO.setWardName(commonMethodsUtilService.getStringValueForObject(objcts[10]));//ward Name
+	            partyMeetingVO.setMandalTwnDivision(commonMethodsUtilService.getStringValueForObject(objcts[9]));//localelection body
+	            partyMeetingVO.setStateName(commonMethodsUtilService.getStringValueForObject(objcts[11]));//state name
+	            String []endDate=commonMethodsUtilService.getStringValueForObject(objcts[12]).split("\\s");
+	            partyMeetingVO.setMonth(endDate[0]);// end date
+	            partyMeetingVO.setIsCondacted(commonMethodsUtilService.getStringValueForObject(objcts[13]));
+	            Date currrentdate=sdf2.parse(dateUtilService.getCurrentDateInStringFormat());
+	            Long daysCount=dateUtilService.noOfDayBetweenDates(endDate[0],dateUtilService.getDateInStringFormatByDate(currrentdate,"yyyy-MM-dd"));
+	            if(daysCount <=2){
+	              partyMeetingVO.setFlage("true");// sett flag to set meeting Edit button 
+	            }
+	            finalList.add(partyMeetingVO);
+	          }
+	          
+	        }
+	        if(totalMeetingCount != null ){
+	        finalList.get(0).setTotalCount(totalMeetingCount);
+	        }
+	        }catch(Exception e){
+	          LOG.error("Exception Occured in getCadrePartyMeetngDeatils  method, Exception - ",e); 
+	        }
+	        return finalList;
+	      }
+	    
+	    
+	    
+	    
+		public List<PartyMeetingsVO> getPartyMeetingLevels(Long partyMeetingSubTypeId){
+		      List<PartyMeetingsVO> finalList=null;
+		      try{
+		        List<Object[]> objectList=partyMeetingTypeDAO.getPartyMeetingLevels(partyMeetingSubTypeId);
+		        if(objectList !=null && objectList.size() > 0){
+		          finalList=new ArrayList<PartyMeetingsVO>();
+		          for(Object[] objcts: objectList){
+		            PartyMeetingsVO partyMeetingVO=new PartyMeetingsVO();
+		            partyMeetingVO.setId(commonMethodsUtilService.getLongValueForObject(objcts[0]));
+		            partyMeetingVO.setName(commonMethodsUtilService.getStringValueForObject(objcts[1]));
+		            finalList.add(partyMeetingVO);
+		          }
+		          }
+		      }catch(Exception e){
+		        LOG.error("Exception Occured in getPartyMeetingLevels  method, Exception - ",e); 
+		      }
+		      return finalList;
+		    }
 		
 	    public List<PartyMeetingsVO> getAllSessionType(){
 			List<PartyMeetingsVO> finalList=null;
@@ -794,39 +895,58 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 		                BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		                String strLineStr;
 		                 
+		               boolean excelValid=true;
 		               
-		                while ((strLineStr = br.readLine()) != null) {
+		                while (br != null && (strLineStr = br.readLine()) != null) {
 		                  String[] cadreIdList = strLineStr.split(",");
 		                  
 		                  if(cadreIdList != null && cadreIdList.length>0){
+		                	  if(rowCount == 1l){
+		                		  if(cadreIdList.length == 4 && cadreIdList[0].equalsIgnoreCase("S.N0") && cadreIdList[1].equalsIgnoreCase("Membership ID") && cadreIdList[2].equalsIgnoreCase("Name") && cadreIdList[3].equalsIgnoreCase("Mobile"))
+		                		  {
+		                			  excelValid=true;
+		                		  }
+		                		  else{
+		                			  excelValid=false;
+		                			  membershipIdList.add("Please upload Excel in given Format");
+		                			  br = null;
+		                		  }
+		                	  }
+		                	  if(excelValid){
 		                      if(rowCount>1l){
-		                        Long readNumberColums=0l;
+		                        int column2=1;
 		                    for (int i = 0; i < cadreIdList.length; i++) {
-		                    	if(!cadreIdList[i].isEmpty()){
-		                    		if(!cadreIdList[i].contains(" ")){
-		                      if(StringUtils.isNumeric(cadreIdList[i])){
-		                        readNumberColums++;
+		                      if(column2 == i){
+		                    	  String membershipId="";
+		                    	  if(cadreIdList[column2].isEmpty() || cadreIdList[column2].contains(" ")){
+		                        	  membershipIdList.clear();
+			                          membershipIdList.add("Please Enter Membership Ids");
+			                          br = null;
+			                     }
+		                        if(!StringUtils.isNumeric(cadreIdList[column2])){
+		                        	  membershipIdList.clear();
+			                          membershipIdList.add("Please Enter Membership Ids");
+			                          br = null;
+			                     }  
+		                      if(!cadreIdList[column2].isEmpty() && !cadreIdList[column2].contains(" ") && StringUtils.isNumeric(cadreIdList[column2])){
+			                        if(cadreIdList[i].length()==7){
+				                          membershipId+="0"+cadreIdList[i];
+				                          membershipIdList.add(membershipId);
+				                        }
+				                        else{
+				                          membershipId=cadreIdList[i];
+				                          membershipIdList.add(membershipId);
+				                        }
+			                      }
 		                      }
-		                      }
-		                    }
-		                      String membershipId="";
-		                      if(readNumberColums==2l){
-		                        if(cadreIdList[i].length()==7){
-		                          membershipId+="0"+cadreIdList[i];
-		                          membershipIdList.add(membershipId);
-		                        }
-		                        else{
-		                          membershipId=cadreIdList[i];
-		                          membershipIdList.add(membershipId);
-		                        }
-		                      }
-		                        //break;
 		                    }
 		                  }
+		               }
 		                      rowCount++;  
 		                  
 		                  }
 		                }
+		              
 		            
 		              }catch(Exception e) {
 		                e.printStackTrace();
@@ -841,7 +961,9 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 		 * @return: List of IdAndNameVO  contais tdpCadreid,name,memberShipId,desiganation,mobilNumber 
 		            and members Not avaible List
 	 */
-		public List<IdAndNameVO> getTdpCadreDetailsForInveetMeeting(List<String> memberShipIds){
+		public List<IdAndNameVO> getTdpCadreDetailsForInveetMeeting(List<String> inputMemberShipIds){
+			Set<String> removeDuplicates=new HashSet<String>(inputMemberShipIds); 
+			List<String> memberShipIds=new ArrayList<String>(removeDuplicates);
 			List<IdAndNameVO> finalList=null;
 			List<String> memberShipNotAvailbleList=null;
 			try{
@@ -960,8 +1082,8 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 		                  partymeeting.setPartyMeetingLevelId(inputvo.getMeetingLevelId());
 		                  partymeeting.setLocationValue(inputvo.getLocationValue());
 		                  partymeeting.setPartyMeetingOccurrenceId(1L);
-		                  partymeeting.setStartDate(inputvo.getStartDate());
-	                      partymeeting.setEndDate(inputvo.getEndDate());
+		                  partymeeting.setStartDate((new SimpleDateFormat("yyyy-MM-dd").parse(inputvo.getStartDateStr())));
+	                      partymeeting.setEndDate((new SimpleDateFormat("yyyy-MM-dd").parse(inputvo.getEndDateStr())));
 		                  
 		                    UserAddress userAddress=new UserAddress();
 		                    if(inputvo.getMeetingLevelId() == 1l){
@@ -979,15 +1101,30 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 		                    if(inputvo.getMeetingLevelId() == 4l || inputvo.getMeetingLevelId() == 5l ||inputvo.getMeetingLevelId() == 6l){
 		                    	 userAddress.setState(stateDAO.get(inputvo.getStateId()));
 				                 userAddress.setDistrict(districtDAO.get(inputvo.getDistrictId()));
-		                    	 userAddress.setConstituency(constituencyDAO.get(inputvo.getConstituencyId()));
-		                    	 userAddress.setTehsil(tehsilDAO.get(inputvo.getTehsilId()));
+				                 userAddress.setConstituency(constituencyDAO.get(inputvo.getConstituencyId()));
+				                 String teshilId=inputvo.getTehsilId().toString();
+				                 if(teshilId.startsWith("2")){
+				                	 userAddress.setTehsil(tehsilDAO.get(Long.valueOf(teshilId.substring(1))));
+				                 }
+				                 if(teshilId.startsWith("1")){
+				                	 userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(teshilId.substring(1))));
+				                 }		                    	 
 			                    }
 		                    if(inputvo.getMeetingLevelId() == 7l ||inputvo.getMeetingLevelId() ==8l){
 		                    	 userAddress.setState(stateDAO.get(inputvo.getStateId()));
 				                 userAddress.setDistrict(districtDAO.get(inputvo.getDistrictId()));
 		                    	 userAddress.setConstituency(constituencyDAO.get(inputvo.getConstituencyId()));
-		                    	 userAddress.setTehsil(tehsilDAO.get(inputvo.getTehsilId()));
-		                    	 userAddress.setPanchayatId(inputvo.getVillageId());
+		                    	// userAddress.setTehsil(tehsilDAO.get(inputvo.getTehsilId()));
+		                    	 //userAddress.setPanchayatId(inputvo.getVillageId());
+		                    	 String teshilId=inputvo.getTehsilId().toString();
+		                    	 if(teshilId.startsWith("2")){
+		                    		 userAddress.setTehsil(tehsilDAO.get(Long.valueOf(teshilId.substring(1))));
+				                	 userAddress.setPanchayatId(inputvo.getVillageId());
+				                 }
+				                 if(teshilId.startsWith("1")){
+				                	 userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(teshilId.substring(1)))); 
+				                	 userAddress.setWard(constituencyDAO.get(inputvo.getVillageId()));
+				                 }	
 			                    }
 		             
 		                  UserAddress returnedUserAddress=userAddressDAO.save(userAddress);
@@ -1050,7 +1187,7 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 						   if(attendedList !=null && attendedList.size()>0){
 			                    for(int i=0;i<attendedList.size();i++){
 						   PartyMeetingAttendanceTabUser partyMeetingAttendanceTabUser=new PartyMeetingAttendanceTabUser();
-						   partyMeetingAttendanceTabUser.setIsDeleted("Y");
+						   partyMeetingAttendanceTabUser.setIsDeleted("N");
 						   partyMeetingAttendanceTabUser.setPartyMeetingId(retunedObj.getPartyMeetingId());
 						   partyMeetingAttendanceTabUser.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 						   partyMeetingAttendanceTabUser.setAttendanceTabUserId((Long.valueOf(attendedList.get(i))));
@@ -1102,14 +1239,29 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 			                    	changedUserAddress.setState(stateDAO.get(inputvo.getStateId()));
 			                    	changedUserAddress.setDistrict(districtDAO.get(inputvo.getDistrictId()));
 			                    	changedUserAddress.setConstituency(constituencyDAO.get(inputvo.getConstituencyId()));
-			                    	changedUserAddress.setTehsil(tehsilDAO.get(inputvo.getTehsilId()));
+			                    	 String teshilId=inputvo.getTehsilId().toString();
+					                 if(teshilId.startsWith("2")){
+					                	 changedUserAddress.setTehsil(tehsilDAO.get(Long.valueOf(teshilId.substring(1))));
+					                	 changedUserAddress.setPanchayatId(null);
+					                 }
+					                 if(teshilId.startsWith("1")){
+					                	 changedUserAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(teshilId.substring(1))));
+					                	 changedUserAddress.setWard(null);
+					                 }		
 				                    }
 			                    if(inputvo.getMeetingLevelId() == 7l ||inputvo.getMeetingLevelId() ==8l){
 			                    	changedUserAddress.setState(stateDAO.get(inputvo.getStateId()));
 			                    	 changedUserAddress.setDistrict(districtDAO.get(inputvo.getDistrictId()));
 			                    	 changedUserAddress.setConstituency(constituencyDAO.get(inputvo.getConstituencyId()));
-			                    	 changedUserAddress.setTehsil(tehsilDAO.get(inputvo.getTehsilId()));
-			                    	 changedUserAddress.setPanchayatId(inputvo.getVillageId());
+			                    	 String teshilId=inputvo.getTehsilId().toString();
+			                    	 if(teshilId.startsWith("2")){
+			                    		 changedUserAddress.setTehsil(tehsilDAO.get(Long.valueOf(teshilId.substring(1))));
+			                    		 changedUserAddress.setPanchayatId(inputvo.getVillageId());
+					                 }
+					                 if(teshilId.startsWith("1")){
+					                	 changedUserAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(teshilId.substring(1)))); 
+					                	 changedUserAddress.setWard(constituencyDAO.get(inputvo.getVillageId()));
+					                 }	
 				                    }
 		                         userAddressDAO.save(changedUserAddress);
 		                    }
@@ -1139,7 +1291,7 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 									  dbPartyMeetingSession.setLateTime(lateTime);  
 									  dbPartyMeetingSession.setPartyMeetingId(retunedObj.getPartyMeetingId());  
 									  dbPartyMeetingSession.setIsDeleted("N");
-									  dbPartyMeetingSession.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+									  //dbPartyMeetingSession.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 									  dbPartyMeetingSession.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 									  partyMeetingSessionDAO.save(dbPartyMeetingSession);
 								  }
@@ -1185,9 +1337,14 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 							   List<String> cadreWithComments=inputvo.getCadreWithComments();
 							   for(String cadreIdWithComment:cadreWithComments){
 								   String idAndComment[]=cadreIdWithComment.split(",");
+								   if(idAndComment.length >1){
 								   Long cadreId=Long.valueOf(idAndComment[0].trim());
 								   String comment=idAndComment[1].trim();
+								   if(!comment.isEmpty() && !comment.equalsIgnoreCase("\\s+"))
 								   updatedCount +=partyMeetingInviteeDAO.updateAbsenteeRemark(cadreId,inputvo.getPartyMeetingId(),comment);
+								   }else{
+									   updatedCount=0;
+								   }
 							   }
 							}
 						   
@@ -1208,7 +1365,11 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 										   partyMeetingAttendance.setPartyMeetingId(inputvo.getPartyMeetingId());
 										   partyMeetingAttendance.setAttendance(attendanceDAO.get(attendanceId));
 										   partyMeetingAttendance.setInsertedTime(date.getCurrentDateAndTime());
+										   if(cadreIdWithSession.length >1){
 										   partyMeetingAttendance.setPartyMeetingSessionId(Long.valueOf(cadreIdWithSession[1]));
+										   }else{
+											   partyMeetingAttendance.setPartyMeetingSessionId(null);
+										   }
 										   partyMeetingAttendanceDAO.save(partyMeetingAttendance);
 									   }
 								   }
@@ -1231,7 +1392,7 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 			                 for(int i=0;i<attendedList.size();i++){  
 			                	 if(!partyMeetingAttendanceTabUserId.contains((Long.valueOf(attendedList.get(i))))){
 			                		 PartyMeetingAttendanceTabUser partyMeetingAttendanceTabUser=new PartyMeetingAttendanceTabUser();
-									   partyMeetingAttendanceTabUser.setIsDeleted("Y");
+									   partyMeetingAttendanceTabUser.setIsDeleted("N");
 									   partyMeetingAttendanceTabUser.setPartyMeetingId(retunedObj.getPartyMeetingId());
 									   partyMeetingAttendanceTabUser.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 									   partyMeetingAttendanceTabUser.setAttendanceTabUserId((Long.valueOf(attendedList.get(i))));
@@ -1250,7 +1411,7 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 			                 for(int i=0;i<primaryAttendanceTabUserId.size();i++){ 
                 				 if(!attendedList.contains((Long.valueOf(dBpartyMeetingAttendanceTabUserId.get(i))))){
                 					  PartyMeetingAttendanceTabUser partyMeetingAttendance=partyMeetingAttendanceTabUserDAO.get(primaryAttendanceTabUserId.get(i));
-			                		  partyMeetingAttendance.setIsDeleted("N");
+			                		  partyMeetingAttendance.setIsDeleted("Y");
 			                		  partyMeetingAttendanceTabUserDAO.save(partyMeetingAttendance);
                 				 }
                 		     }
@@ -1260,7 +1421,7 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 				                 if(dBPartyMeetingAttendanceTabUserDetails != null){
 									  for(Object[] obj:dBPartyMeetingAttendanceTabUserDetails){
 										  PartyMeetingAttendanceTabUser partyMeetingAttendance=partyMeetingAttendanceTabUserDAO.get((Long) obj[5]);
-				                		  partyMeetingAttendance.setIsDeleted("N");
+				                		  partyMeetingAttendance.setIsDeleted("Y");
 				                		  partyMeetingAttendanceTabUserDAO.save(partyMeetingAttendance);
 									  }
 				                 }
@@ -1318,20 +1479,49 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 			  
 			  return finalList;
 		  }
-		  public ResultStatus deletePartyMeetingDatails(Long meetingId){
-				ResultStatus  resultStatus = new ResultStatus();
-				try{
-					partyMeetingDAO.updatePartyMeetingDetails(meetingId);
-					 resultStatus.setResultCode(0);
-					 resultStatus.setMessage("Success");
-				}catch(Exception e){
-					 resultStatus.setResultCode(0);
-					 resultStatus.setMessage("Failed");
-					LOG.error("Exception Occured in deletePartyMeetingDatails  method, Exception - ",e); 
+		
+		/*  public ResultStatus deletePartyMeetingDatails(Long meetingId){
+		        ResultStatus  resultStatus = new ResultStatus();
+		        try{
+		          partyMeetingDAO.updatePartyMeetingDetails(meetingId);
+		          List<Object[]> objectLis=partyMeetingSessionDAO.getSessionsDetailsByMeetingId(meetingId);
+		          for(Object[] obj: objectLis){
+		          partyMeetingSessionDAO.updatePartyMeetingSession(commonMethodsUtilService.getLongValueForObject(obj[1]));
+		          }
+		           resultStatus.setResultCode(0);
+		           resultStatus.setMessage("Success");
+		        }catch(Exception e){
+		           resultStatus.setResultCode(0);
+		           resultStatus.setMessage("Failed");
+		          LOG.error("Exception Occured in deletePartyMeetingDatails  method, Exception - ",e); 
 
-				}
-				return resultStatus;
-			}
+		        }
+		        return resultStatus;
+		      } */
+		  
+		  public ResultStatus deletePartyMeetingDatails(Long meetingId){
+		        ResultStatus  resultStatus = new ResultStatus();
+		        try{
+		          partyMeetingDAO.updatePartyMeetingDetails(meetingId);
+		          List<Object[]> objectLis=partyMeetingSessionDAO.getSessionsDetailsByMeetingId(meetingId);
+		          for(Object[] obj: objectLis){
+		          partyMeetingSessionDAO.updatePartyMeetingSession(commonMethodsUtilService.getLongValueForObject(obj[1]));
+		          }
+		          List<Object[]> objectList=partyMeetingAttendanceTabUserDAO.getPartyMeetingTabUserDetails(meetingId);
+		          for(Object[] obj: objectLis){
+		            partyMeetingAttendanceTabUserDAO.updatePartyMeetingAttendance(commonMethodsUtilService.getLongValueForObject(obj[0]));
+		            }
+		           resultStatus.setResultCode(0);
+		           resultStatus.setMessage("Success");
+		        }catch(Exception e){
+		           resultStatus.setResultCode(0);
+		           resultStatus.setMessage("Failed");
+		          LOG.error("Exception Occured in deletePartyMeetingDatails  method, Exception - ",e); 
+
+		        }
+		        return resultStatus;
+		      }
+		  
 		  public List<PartyMeetingVO> getSessionsDetailsByMeetingId(Long meetingId){
 				List<PartyMeetingVO> finalSessioList=null;
 				try{
@@ -1531,6 +1721,10 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 	            if(notExistingMembersList !=null && notExistingMembersList.size() >0){
 	            	tdpCaderDetilsList=getTdpCadreDetailsForInveetMeeting(notExistingMembersList);
 	            }
+	            if(invitesList==null){
+	            	tdpCaderDetilsList=getTdpCadreDetailsForInveetMeeting(memberShipIds);
+	            }
+	            
 	            //set the UI
 	              finalidAndNameVO =new IdAndNameVO();
 	            finalidAndNameVO.setAttendanceList(tdpCaderDetilsList);
