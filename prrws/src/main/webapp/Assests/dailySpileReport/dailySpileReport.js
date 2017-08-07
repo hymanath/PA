@@ -171,10 +171,15 @@ function buildLocationDtlsRankWise(ajaxresp){
 			str+='<li style="border-left:1px solid #ccc;padding:10px;position:relative;">';
 				str+='<div class="row">';
 					str+='<div class="col-sm-9">';
-						str+='<p><span style="padding:5px 10px;font-size:18px;border-radius:50%;background-color:#676767;color:#fff;">'+(parseInt(i)+1)+'</span></p>';  
+						str+='<p><span style="padding:5px 10px;font-size:18px;border-radius:50%;background-color:#676767;color:#fff;">'+ajaxresp[i].rankId+'</span></p>';  
 						str+='<p style="margin-top:5px;"><span class="text-success">D</span> - '+ajaxresp[i].districtName+'</p>';
 						str+='<p><span class="text-success">C</span> - '+ajaxresp[i].constituencyName+'</p>';
-						str+='<p style="font-weight: bold;"><span class="text-success">M</span> - '+ajaxresp[i].mandalName+'</p>';
+						if(ajaxresp[i].mandalName.length > 0){
+							str+='<p style="font-weight: bold;"><span class="text-success">M</span> - '+ajaxresp[i].mandalName+'</p>';
+						}else{
+							str+='<p style="font-weight: bold;"><span class="text-success">T</span> - '+ajaxresp[i].localElectionBodyName+'</p>';
+						}
+						
 					str+='</div>';
 					str+='<div class="col-sm-3">';
 						str+='<h1 style="color:#FF0000;margin-top:40px;font-weight: bold;">'+ajaxresp[i].count+'</h1>';

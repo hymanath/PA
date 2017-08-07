@@ -24,6 +24,7 @@ public class LocationAddress{
 	private Long panchayatId;
 	private Long stateId;
 	private Long parliamentId;
+	private Long localElectionBodyId;
 	
 	private Constituency constituency;
 	private District district;
@@ -32,6 +33,7 @@ public class LocationAddress{
 	private State state;
 	private Constituency parliament;
 	private Hamlet hamlet;
+	private LocalElectionBody localElectionBody;
 
 	@Id
 	@Column(name="location_address_id")
@@ -151,6 +153,21 @@ public class LocationAddress{
 	}
 	public void setHamlet(Hamlet hamlet) {
 		this.hamlet = hamlet;
+	}
+	@Column(name="local_election_body_id")
+	public Long getLocalElectionBodyId() {
+		return localElectionBodyId;
+	}
+	public void setLocalElectionBodyId(Long localElectionBodyId) {
+		this.localElectionBodyId = localElectionBodyId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "local_election_body_id", insertable = false, updatable = false)
+	public LocalElectionBody getLocalElectionBody() {
+		return localElectionBody;
+	}
+	public void setLocalElectionBody(LocalElectionBody localElectionBody) {
+		this.localElectionBody = localElectionBody;
 	}
 	
 	

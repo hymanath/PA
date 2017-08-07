@@ -20,6 +20,9 @@ public class DiseasesVO implements Serializable {
 	private Long mandalId;
 	private String mandalName;
 	
+	private Long localElectionBodyId;
+	private String localElectionBodyName;
+	
 	private Long panchayatId;
 	private String panchayatName;
 	
@@ -44,6 +47,7 @@ public class DiseasesVO implements Serializable {
 	private Double malariaPercent;
 	
 	private String color;
+	private Long rankId;
 	
 	private List<DiseasesVO> subList1;
 	
@@ -271,6 +275,24 @@ public class DiseasesVO implements Serializable {
 	}
 	public void setColor(String color) {
 		this.color = color;
+	}
+	public Long getRankId() {
+		return rankId;
+	}
+	public void setRankId(Long rankId) {
+		this.rankId = rankId;
+	}
+	public Long getLocalElectionBodyId() {
+		return localElectionBodyId;
+	}
+	public void setLocalElectionBodyId(Long localElectionBodyId) {
+		this.localElectionBodyId = localElectionBodyId;
+	}
+	public String getLocalElectionBodyName() {
+		return localElectionBodyName;
+	}
+	public void setLocalElectionBodyName(String localElectionBodyName) {
+		this.localElectionBodyName = localElectionBodyName;
 	}
 	
 	
