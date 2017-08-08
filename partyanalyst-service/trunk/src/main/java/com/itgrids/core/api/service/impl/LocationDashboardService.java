@@ -2451,10 +2451,6 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public List<LocationWiseBoothDetailsVO> getAllDistricts(Long stateId){
 		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
 		try {
-			LocationWiseBoothDetailsVO vo1 = new LocationWiseBoothDetailsVO();
-			vo1.setLocationId(0l);
-			vo1.setLocationName("Select Districts");
-			idNameVOList.add(vo1);
 			List<Long> newDistrictArr = new ArrayList<Long>();
 			Long[] ids = IConstants.AP_NEW_DISTRICTS_IDS;
 			for (Long param : ids) {
@@ -2486,11 +2482,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	public List<LocationWiseBoothDetailsVO> getAllConstituenciesByDistrict(Long districtId) {
 		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
 		try {
-			LocationWiseBoothDetailsVO vo1 = new LocationWiseBoothDetailsVO();
-			vo1.setLocationId(0l);
-			vo1.setLocationName("Select Constituency");
-			idNameVOList.add(vo1);
-			if (districtId.compareTo(IConstants.VISHAKAPATNAM_IDS.get(0)) == 0) {
+			if (districtId.compareTo(IConstants.VISHAKAPATNAM_IDS.get(1)) != 0) {
 				List<Object[]> constituencyList = constituencyDAO.getAllConstituenciesInADistrict(districtId);
 				if (constituencyList != null && constituencyList.size() > 0) {
 					for (Object[] objects : constituencyList) {
