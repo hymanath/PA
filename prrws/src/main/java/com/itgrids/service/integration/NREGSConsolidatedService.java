@@ -314,7 +314,9 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 											}
 										}else{
 											NregaConsolidatedDataVO levelvo = null;
-											if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+											if(componentName != null && componentName.trim().equalsIgnoreCase("GH") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district") && jObj.getString("DISTRICT").trim().equalsIgnoreCase("Cuddapah"))
+												levelvo = locationMap.get("Kadapa");
+											else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 												levelvo = locationMap.get(jObj.getString("DISTRICT_DESCRIPTION").trim());
 											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 												levelvo = locationMap.get(jObj.getString("DISTRICT").trim());
@@ -328,7 +330,9 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 											if(levelvo == null){
 												levelvo = new NregaConsolidatedDataVO();
 												levelvo.setSubList(getNregaComponentsList(list));
-												if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+												if(componentName != null && componentName.trim().equalsIgnoreCase("GH") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district") && jObj.getString("DISTRICT").trim().equalsIgnoreCase("Cuddapah"))
+													levelvo.setDistrict("Kadapa");
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 													levelvo.setDistrict(jObj.getString("DISTRICT_DESCRIPTION").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 													levelvo.setDistrict(jObj.getString("DISTRICT").trim());
@@ -342,7 +346,9 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 												if(componentvo == null)
 													componentvo = new NregaConsolidatedDataVO();	
 													
-													if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+													if(componentName != null && componentName.trim().equalsIgnoreCase("GH") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district") && jObj.getString("DISTRICT").trim().equalsIgnoreCase("Cuddapah"))
+														componentvo.setName("Kadapa");
+													else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 														componentvo.setName(jObj.getString("DISTRICT_DESCRIPTION").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 														componentvo.setName(jObj.getString("DISTRICT").trim());
@@ -395,8 +401,10 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														componentvo.setPercentage(new BigDecimal(Double.valueOf(jObj.getString("PLNTNG_EXT"))*100.00/Double.valueOf(jObj.getString("SANCTION_TARGET"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 													}*/
 													//levelvo.getSubList().add(componentvo);
-													
-												if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+												
+												if(componentName != null && componentName.trim().equalsIgnoreCase("GH") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district") && jObj.getString("DISTRICT").trim().equalsIgnoreCase("Cuddapah"))
+													locationMap.put("Kadapa", levelvo);
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 													locationMap.put(jObj.getString("DISTRICT_DESCRIPTION").trim(), levelvo);
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 													locationMap.put(jObj.getString("DISTRICT").trim(), levelvo);
@@ -410,8 +418,9 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 												NregaConsolidatedDataVO componentvo = getMatchedVOByString(levelvo.getSubList(), componentName);
 												if(componentvo == null)
 													componentvo = new NregaConsolidatedDataVO();
-													
-												if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
+												if(componentName != null && componentName.trim().equalsIgnoreCase("GH") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district") && jObj.getString("DISTRICT").trim().equalsIgnoreCase("Cuddapah"))
+													componentvo.setName("Kadapa");
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 													componentvo.setName(jObj.getString("DISTRICT_DESCRIPTION").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 													componentvo.setName(jObj.getString("DISTRICT").trim());
