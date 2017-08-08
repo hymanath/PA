@@ -13,6 +13,7 @@
       <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
       <link href="daterangepicker/bootstrap-datetimepicker.css" type="text/css" rel="stylesheet"/>
       <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+	  <link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
 	   <style>
  label.error{
 	 color: red;
@@ -301,13 +302,13 @@ select {
 <script type="text/javascript" src="daterangepicker/bootstrap-datetimepicker.min.js"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
+<script src="dist/newmultiselect/chosen.jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="partyMeetingManagement/js/createPartyMeeting.js"></script>
 <script type="text/javascript">
-    $('#constituencySpinnerId').hide();
+ $('#constituencySpinnerId').hide();
  $('#mandalSpinnerId').hide();
  $('#villageSpinnerId').hide();
  $('#districtSpinnerId').hide();
-
 
 function validSessionLateTime(strtTimeHours,endTimeHours,lateTimeHours,startTimeMins,endTimeMins,lateTimeMins){
 		var count=0;
@@ -532,23 +533,15 @@ if ($('#meetingValidationId').valid() && duplicateSessions.length == 0 &&
 
  function createHiddenFields() {
      $("#hiddenMeetingNameId").val($("#meetingName").val());
-	 
-	/*$("#startDate").val($("#startDate").val().replace("/","-"));
-	$("#startDate").val($("#startDate").val().replace("/","-"));  // 01-08-2017  yyyy-MM-dd */
 		
 	var splitedStartDate=$("#startDate").val().split("-");	
 	var onlyStartDate=splitedStartDate[2]+"-"+splitedStartDate[1]+"-"+splitedStartDate[0];  
     $("#hiddenStartDateId").val(onlyStartDate);
-     
-	/*$("#endDate").val($("#endDate").val().replace("/","-"));
-	$("#endDate").val($("#endDate").val().replace("/","-")); */
-	
+  
 	var splitedEndDate=$("#endDate").val().split("-");
 	var onlyEndDate=splitedEndDate[2]+"-"+splitedEndDate[1]+"-"+splitedEndDate[0];  
     $("#hiddenEndDateId").val(onlyEndDate);
 	
-     //$("#hiddenStartDateId").val($("#startDate").val());
-     //$("#hiddenEndDateId").val($("#endDate").val());
      $("#hiddenMeetingTypeSubTypeId").val($("#meetingTypeSubTypeId").val());
      $("#hiddenMeetingLevelId").val($("#meetingLevelId").val());
      $("#hiddenStateId").val($("#state").val());
@@ -559,8 +552,6 @@ if ($('#meetingValidationId').valid() && duplicateSessions.length == 0 &&
          $("#hiddenConstituencyId").val($("#constituency").val());
      }
 	 var trimTeshil=$("#mandal").val();
-	 //var removedTeshil = trimTeshil.substring(1); 
-     //$("#hiddenMandalId").val(removedTeshil);
 	 $("#hiddenMandalId").val($("#mandal").val());
      $("#hiddenvillageId").val($("#village").val());
 
