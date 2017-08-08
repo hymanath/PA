@@ -1645,39 +1645,42 @@ public List<PartyMeetingsVO> getPartyMeetingDeatilesForMeetingEditByMeetingId(Lo
 			  List<IdAndNameVO> tdpCaderDetilsList=null;
 			  Set<String> invitesList=null;
 			  List<String> existingMembersList=null;
+			  Set<String> existingMembersSet=null;
 			  List<String> notExistingMembersList=null;
 			  try{
-				  //to get the invitee deatails
-				  List<Object[]> invitesObjs=partyMeetingInviteeDAO.getPartyMeetingInvitteesMembershipNo(meetingId);
-		            if(invitesObjs !=null && invitesObjs.size() > 0L){
-		            	 invitesList=new HashSet<String>();
-		            	for(Object[] inviobj : invitesObjs){//set membershipIds
-		            		invitesList.add(commonMethodsUtilService.getStringValueForObject(inviobj[0]));
-		    	        }
-		            }
-		            if(invitesList !=null && invitesList.size() >0 && memberShipIds !=null && memberShipIds.size() >0){
-		            	existingMembersList=new ArrayList<String>();//comparing membershipIds  existing or Not
-		            	notExistingMembersList=new ArrayList<String>();
-		            	for(String memberStr: memberShipIds){
-		            		if(!invitesList.contains(memberStr)){
-		            			notExistingMembersList.add(memberStr);//not exiting membershipIds
-		            		}else{
-		            			existingMembersList.add(memberStr);	// exiting membershipIds
-		            		}
-		            	}
-		            }
-		          // get not exiting membershipIds details
-		            if(notExistingMembersList !=null && notExistingMembersList.size() >0){
-		            	tdpCaderDetilsList=getTdpCadreDetailsForInveetMeeting(notExistingMembersList);
-		            }
-		            if(invitesList==null){
-		            	tdpCaderDetilsList=getTdpCadreDetailsForInveetMeeting(memberShipIds);
-		            }
-		            
-		            //set the UI
-		              finalidAndNameVO =new IdAndNameVO();
-		            finalidAndNameVO.setAttendanceList(tdpCaderDetilsList);
-		            finalidAndNameVO.setEnrollmentYears(existingMembersList);
+			  //to get the invitee deatails
+			  List<Object[]> invitesObjs=partyMeetingInviteeDAO.getPartyMeetingInvitteesMembershipNo(meetingId);
+	            if(invitesObjs !=null && invitesObjs.size() > 0L){
+	            	 invitesList=new HashSet<String>();
+	            	for(Object[] inviobj : invitesObjs){//set membershipIds
+	            		invitesList.add(commonMethodsUtilService.getStringValueForObject(inviobj[0]));
+	    	        }
+	            }
+	            if(invitesList !=null && invitesList.size() >0 && memberShipIds !=null && memberShipIds.size() >0){
+	            		//comparing membershipIds  existing or Not
+	            	notExistingMembersList=new ArrayList<String>();
+	            	existingMembersSet=new HashSet<String>();
+	            	for(String memberStr: memberShipIds){
+	            		if(!invitesList.contains(memberStr)){
+	            			notExistingMembersList.add(memberStr);//not exiting membershipIds
+	            		}else{
+	            			existingMembersSet.add(memberStr);// exiting membershipIds
+	            		}
+	            	}
+	            	existingMembersList=new ArrayList<String>(existingMembersSet);  	
+	            }
+	          // get not exiting membershipIds details
+	            if(notExistingMembersList !=null && notExistingMembersList.size() >0){
+	            	tdpCaderDetilsList=getTdpCadreDetailsForInveetMeeting(notExistingMembersList);
+	            }
+	            if(invitesList==null){
+	            	tdpCaderDetilsList=getTdpCadreDetailsForInveetMeeting(memberShipIds);
+	            }
+	            
+	            //set the UI
+	              finalidAndNameVO =new IdAndNameVO();
+	            finalidAndNameVO.setAttendanceList(tdpCaderDetilsList);
+	            finalidAndNameVO.setEnrollmentYears(existingMembersList);
 			  }catch(Exception e){
 					LOG.error("Exception Occured in getInviteeExistingAndNotExistingOfMeetingDetails  method, Exception - ",e); 
 
