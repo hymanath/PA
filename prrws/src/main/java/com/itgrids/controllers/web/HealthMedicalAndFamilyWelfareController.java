@@ -48,7 +48,7 @@ public class HealthMedicalAndFamilyWelfareController {
 	}
 	@PostMapping("/getLocationDtlsRankWise")
 	public @ResponseBody List<DiseasesVO> getLocationDtlsRankWise(@RequestBody InputVO inputVO){
-		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getLocationDtlsRankWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList());
+		List<DiseasesVO> diseasesList = healthMedicalAndFamilyWelfareService.getLocationDtlsRankWise(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getMinVal(),inputVO.getMaxVal());
 		return diseasesList;
 	}
 	@PostMapping("/getSubLocationsBySuperLocationId")

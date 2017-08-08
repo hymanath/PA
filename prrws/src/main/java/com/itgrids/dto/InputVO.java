@@ -83,7 +83,8 @@ public class InputVO implements Serializable {
 	private List<Long> questionsList;
 	private List<String> selectedDates;
 	private List<Long> searchLevelValues;
-	
+	private Long minVal;
+	private Long maxVal;
 	
 	public List<Long> getSearchLevelValues() {
 		return searchLevelValues;
@@ -520,5 +521,19 @@ public class InputVO implements Serializable {
 	}
 	public void setToMonth(String toMonth) {
 		this.toMonth = toMonth;
+	}
+	
+	public Long getMinVal() {
+		return minVal;
+	}
+	public void setMinVal(Long minVal) {
+		this.minVal = minVal;
+	}
+	public Long getMaxVal() {
+		return maxVal;
+	}
+	public void setMaxVal(Long maxVal) {
+		this.maxVal = maxVal;
 	}	
+	
 }

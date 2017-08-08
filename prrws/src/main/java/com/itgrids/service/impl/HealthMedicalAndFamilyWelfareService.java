@@ -657,7 +657,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 	 * Swadhin K Lenka
 	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getLocationDtlsRankWise(java.lang.String, java.lang.String, java.util.List, java.util.List)
 	 */
-	public List<DiseasesVO> getLocationDtlsRankWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList){
+	public List<DiseasesVO> getLocationDtlsRankWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long minVal,Long maxVal){
 		try{
 			
 			DiseasesVO diseasesVO = null;
@@ -699,6 +699,14 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 						param.setRankId(rank);
 					}
 				}
+			}
+			List<DiseasesVO> finalList = new ArrayList<DiseasesVO>();
+			if(diseasesVOs != null && diseasesVOs.size() > 0 && minVal != null && minVal.longValue() != 0 && maxVal != null && maxVal != 0){
+				int min = Integer.parseInt(Long.valueOf(minVal).toString());
+				min = min - 1;
+				int max = Integer.parseInt(Long.valueOf(maxVal).toString());
+				finalList = diseasesVOs.subList(min, max);
+				return finalList;
 			}
 			return diseasesVOs;
 		}catch(Exception e){
