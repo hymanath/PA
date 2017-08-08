@@ -248,23 +248,23 @@ function onLoadCalls()
 			{
 				
 				if(divId == 'Labour Budget')
-					getNREGSLabBugdtLelwiseData(tableId,levelType,menuLocationType,menuLocationId);
+					getNREGSLabBugdtLelwiseData(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == "Agriculture Activities")
-					getNregaLevelsWiseDataFrAgriculture(tableId,levelType,menuLocationType,menuLocationId);
+					getNregaLevelsWiseDataFrAgriculture(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries" || divId == "Timely Payment")
 					getNregaLevelsWiseDataFrNewCalls(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == "Horticulture")//
-					getNregaLevelsWiseDataFrHorticulture(tableId,levelType,menuLocationType,menuLocationId);
+					getNregaLevelsWiseDataFrHorticulture(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == "Avenue")//
-					getNregaLevelsWiseDataFrAvenue(tableId,levelType,menuLocationType,menuLocationId);
+					getNregaLevelsWiseDataFrAvenue(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == "CC Roads"  || divId == "UGDrainage")//
-					getNregaLevelsWiseDataForCCRoads(tableId,levelType,menuLocationType,menuLocationId);
+					getNregaLevelsWiseDataForCCRoads(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == "Payments" ) //&& (levelType == "state" || levelType == "district" || levelType == "mandal"))
-					getNregaPaymentsDtlsLocationWise(tableId,levelType,menuLocationType,menuLocationId,'Wage');
+					getNregaPaymentsDtlsLocationWise(tableId,levelType,menuLocationType,menuLocationId,'Wage',divId);
 				else if(divId == "FAperformance")
-					getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId);
+					getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else
-					getNregaLevelsWiseData(tableId,levelType,theadArr,menuLocationType,menuLocationId);
+					getNregaLevelsWiseData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId);
 			}
 		}
 		
@@ -573,23 +573,23 @@ function projectData(divId,levelId,locationId)
 		var tableId = divId.replace(/\s+/g, '')+''+dataArr[0];
 		$("#"+tableId).html(spinner);
 		if(divId == 'Labour Budget')
-			getNREGSLabBugdtLelwiseData(tableId,dataArr[0],menuLocationType,menuLocationId);
+			getNREGSLabBugdtLelwiseData(tableId,dataArr[0],menuLocationType,menuLocationId,divId);
 		else if(divId == "Agriculture Activities")
-			getNregaLevelsWiseDataFrAgriculture(tableId,dataArr[0],menuLocationType,menuLocationId);
+			getNregaLevelsWiseDataFrAgriculture(tableId,dataArr[0],menuLocationType,menuLocationId,divId);
 		else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries" || divId == "Timely Payment")
 			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[0],menuLocationType,menuLocationId,divId);
 		else if(divId == "Horticulture")//
-			getNregaLevelsWiseDataFrHorticulture(tableId,dataArr[0],menuLocationType,menuLocationId);
+			getNregaLevelsWiseDataFrHorticulture(tableId,dataArr[0],menuLocationType,menuLocationId,divId);
 		else if(divId == "Avenue")//
-			getNregaLevelsWiseDataFrAvenue(tableId,dataArr[0],menuLocationType,menuLocationId);
+			getNregaLevelsWiseDataFrAvenue(tableId,dataArr[0],menuLocationType,menuLocationId,divId);
 		else if(divId == "CC Roads" || divId == "UGDrainage")//
-			getNregaLevelsWiseDataForCCRoads(tableId,dataArr[0],menuLocationType,menuLocationId);
+			getNregaLevelsWiseDataForCCRoads(tableId,dataArr[0],menuLocationType,menuLocationId,divId);
 		else if(divId == "Payments")//
-			getNregaPaymentsDtlsLocationWise(tableId,dataArr[0],menuLocationType,menuLocationId,'Wage');
+			getNregaPaymentsDtlsLocationWise(tableId,dataArr[0],menuLocationType,menuLocationId,'Wage',divId);
 		else if(divId == "FAperformance")
-			getNregaLevelsWiseDataForFAPerformance(tableId,dataArr[0],menuLocationType,menuLocationId);
+			getNregaLevelsWiseDataForFAPerformance(tableId,dataArr[0],menuLocationType,menuLocationId,divId);
 		else
-			getNregaLevelsWiseData(tableId,dataArr[0],theadArr,menuLocationType,menuLocationId);
+			getNregaLevelsWiseData(tableId,dataArr[0],theadArr,menuLocationType,menuLocationId,divId);
 	
 }
 function overviewData(divId,levelId,locationId)
@@ -665,7 +665,7 @@ function overviewData(divId,levelId,locationId)
 	else
 		getNregasOverview(divId,menuLocationType,menuLocationId);
 }
-function tableView(blockId,theadArr,result,locationType)
+function tableView(blockId,theadArr,result,locationType,blockName)
 {
 	var tableView='';
 	
@@ -730,15 +730,15 @@ function tableView(blockId,theadArr,result,locationType)
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o"></i>',
 					titleAttr: 'CSV',
-					title:	   blockId,
-					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					title:	   blockName,
+					filename:  blockName+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				},
 				{
 					extend:    'pdfHtml5',
 					text:      '<i class="fa fa-file-pdf-o"></i>',
 					titleAttr: 'PDF',
-					title:	   blockId,
-					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					title:	   blockName,
+					filename:  blockName+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 					orientation: "landscape",
 					pageSize:'A3',
 					customize: function (doc) {
@@ -1117,7 +1117,7 @@ function getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocat
 }
 
 //LabourBudget LevelWise Data Call נSravanth
-function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLocationId)
+function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
 	var theadArr = [locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
 	if(locationType == "constituency")
@@ -1197,7 +1197,7 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLo
 					str+='</tr>';
 				}
 			}
-			tableView(divIdd,theadArr,str,locationType);
+			tableView(divIdd,theadArr,str,locationType,blockName);
 		}
 	});
 }
@@ -2577,7 +2577,7 @@ function getLabourBudgetClickingOverview(menuLocationType,menuLocationId)
 	});
 }
 
-function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocationType,menuLocationId)
+function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocationType,menuLocationId,blockName)
 {
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozgar Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FlagShip Programme Achivement(5)','Total Average(100)'];
@@ -2651,11 +2651,11 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocat
 					str+='</tr>';
 				}
 			}
-			tableView(divIdd,theadArr,str,locationTypeNew);
+			tableView(divIdd,theadArr,str,locationTypeNew,blockName);
 		}
 	});
 }
-function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId)
+function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName)
 {
 	$("#"+divIdd).html(spinner);
 	var json = {
@@ -2766,7 +2766,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 					str+='</tr>';
 				}
 			}
-			tableView(divIdd,theadArr,str,locationTypeNew);
+			tableView(divIdd,theadArr,str,locationTypeNew,blockName);
 		}
 	});
 }
@@ -2932,12 +2932,12 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 					str+='</tr>';
 				}
 			}
-			tableView(divIdd,theadArr,str,locationType);
+			tableView(divIdd,theadArr,str,locationType,divId);
 		}
 	});
 }
 
-function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationType,menuLocationId)
+function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Total Expenditure','Expenditure on Agriculture & Allied Activities','ACHIVEMENT PERCENTAGE'];
@@ -3005,12 +3005,12 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 					str+='</tr>';
 				}
 			}
-			tableView(divIdd,theadArr,str,locationType);
+			tableView(divIdd,theadArr,str,locationType,blockName);
 		}
 	});
 }
 
-function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationType,menuLocationId)
+function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
 	$("#"+divIdd).html(spinner);
 	 var theadArr = [locationType,'Target(in Acres)','Sanctioned Area (in Acres)','Sanctioned Percentage','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc Based on Target','Pitting Perc Based on Sanctioned Area','Achievement Percentage'];
@@ -3100,12 +3100,12 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 					str+='</tr>';
 				}
 			}
-			tableView(divIdd,theadArr,str,locationType);
+			tableView(divIdd,theadArr,str,locationType,blockName);
 		}
 	});
 }
 
-function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,menuLocationId)
+function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
 	$("#"+divIdd).html(spinner);
 	 var theadArr = [locationType,'Target','Sanctioned Area (in Kms)','Sanctioned Percentage','Pitting  Area (in Kms)','Planting  Area (in Kms)','Achievement Percentage'];
@@ -3178,7 +3178,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 					str+='</tr>';
 				}
 			}
-			tableView(divIdd,theadArr,str,locationType);
+			tableView(divIdd,theadArr,str,locationType,blockName);
 		}
 	});
 }
@@ -3202,7 +3202,7 @@ for(var i in overViewArr)
 	}
 }
 
-function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,menuLocationId)
+function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
@@ -3276,7 +3276,7 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 					str+='</tr>';
 				}
 			}
-			tableView(divIdd,theadArr,str,locationType);
+			tableView(divIdd,theadArr,str,locationType,blockName);
 		}
 	});
 }
@@ -4072,15 +4072,15 @@ function buildLabourBudgetPanExpData(result,viewType,range){
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o"></i>',
 					titleAttr: 'CSV',
-					title:	   blockId,
-					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					title:	   'Labour Budget',
+					filename:  'Labour Budget'+moment().format("DD/MMMM/YYYY  HH:MM"),
 				},
 				{
 					extend:    'pdfHtml5',
 					text:      '<i class="fa fa-file-pdf-o"></i>',
 					titleAttr: 'PDF',
-					title:	   blockId,
-					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					title:	   'Labour Budget',
+					filename:  'Labour Budget'+moment().format("DD/MMMM/YYYY  HH:MM"),
 					orientation: "landscape",
 					pageSize:'A3',
 					customize: function (doc) {
@@ -4172,15 +4172,15 @@ function buildLabourBudgetPanExpData(result,viewType,range){
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o"></i>',
 					titleAttr: 'CSV',
-					title:	   blockId,
-					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					title:	   'Labour Budget',
+					filename:  'Labour Budget'+moment().format("DD/MMMM/YYYY  HH:MM"),
 				},
 				{
 					extend:    'pdfHtml5',
 					text:      '<i class="fa fa-file-pdf-o"></i>',
 					titleAttr: 'PDF',
-					title:	   blockId,
-					filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					title:	   'Labour Budget',
+					filename:  'Labour Budget'+moment().format("DD/MMMM/YYYY  HH:MM"),
 					orientation: "landscape",
 					pageSize:'A3',
 					customize: function (doc) {
@@ -4214,7 +4214,7 @@ $(document).on("click","[attr_radioBtn]",function(){
 		menuLocationId = locationId;
 		menuLocationType = "district";
 	}
-	getNregaPaymentsDtlsLocationWise(blockName,locationType,menuLocationType,menuLocationId,buildType);
+	getNregaPaymentsDtlsLocationWise(blockName,locationType,menuLocationType,menuLocationId,buildType,'');
 });
 //getNregaParliamentDataFrPayments();
 /* function getNregaParliamentDataFrPayments()
@@ -4384,8 +4384,6 @@ function getLocationIhhlData()
 	});
 }
 
-//getNregaPaymentsAbsAndOverviewDtls();
-//getNregaPaymentsDtlsLocationWise();
 function getNregaPaymentsAbsAndOverviewDtls(type,locType,locId,levelId,buildType)
 {
 	var json = {
@@ -4416,7 +4414,7 @@ function getNregaPaymentsAbsAndOverviewDtls(type,locType,locId,levelId,buildType
 		}
 	});
 }
-function getNregaPaymentsDtlsLocationWise(divIdd,locationType,menuLocationType,menuLocationId,buildType)
+function getNregaPaymentsDtlsLocationWise(divIdd,locationType,menuLocationType,menuLocationId,buildType,blockName)
 {
 	$("#"+divIdd).html(spinner);
 	var theadArr = 'Payments';
@@ -4536,7 +4534,7 @@ function getNregaPaymentsDtlsLocationWise(divIdd,locationType,menuLocationType,m
 					str+='</tr>';
 				}
 			}
-			tableView(divIdd,theadArr,str,locationType);
+			tableView(divIdd,theadArr,str,locationType,blockName);
 		}
 	});
 }
