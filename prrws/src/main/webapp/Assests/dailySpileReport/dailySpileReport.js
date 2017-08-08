@@ -5,15 +5,54 @@ var blockNames = ['DISTRICT','CONSTITUENCY','MANDAL'];
 var globalStateIdForSelectBox = 21;
 var glStartDate = moment().startOf('month').format("DD/MM/YYYY");
 var glEndDate = moment().format("DD/MM/YYYY");
+getSizeForRank(0,0,"");
+function getSizeForRank(min,max,status){  
+	var diseasesIdArr=[];       
+	diseasesIdArr.push(1);
+	diseasesIdArr.push(2);
+	var json = {
+		fromDate : glStartDate,  
+		toDate : glEndDate,   
+		diseasesIdList : diseasesIdArr,
+		minVal : min,
+		maxVal : max
+    }
+    $.ajax({
+      url : "getLocationDtlsRankWise",           
+      data : JSON.stringify(json),
+      type : "POST",  
+      dataTypa : 'json',   
+      beforeSend: function(xhr) {
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      },
+      success : function(ajaxresp){  
+		  if(ajaxresp != null && ajaxresp.length > 0){
+			  var len = ajaxresp.length;
+			  initializeRank(ajaxresp[len-1].rankId,status);      
+		  }else{
+			  $("#rankDivId").html("No Data Available");
+		  }
+      }
+    });
+} 
+function initializeRank(maxVal,status){
+	if(status=="dateChange"){
+		$("#tourSlider").rangeSlider("destroy");
+		$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: maxVal},defaultValues:{min: 1, max: maxVal}}); 
+	}else{
+		$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: maxVal},defaultValues:{min: 1, max: maxVal}}); 
+	}
+}
 initializeGlobalIds();
 function initializeGlobalIds(){
 	$(document).on("click","#getRangeId",function(){
 		initializeSliderRange();
 	});
 }
-setTimeout(function(){
+/* setTimeout(function(){
 	$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: 174},defaultValues:{min: 1, max: 174}});   
-},1000)
+},1000) */
 
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
@@ -65,8 +104,7 @@ $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
 	}
 	$('.calendar_active_cls li').removeClass("active");
 	$("#defaultButtonId").addClass("active");
-	$("#tourSlider").rangeSlider("destroy");   
-	$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: 174},defaultValues:{min: 1, max: 174}});
+	getSizeForRank(0,0,"dateChange");
 	onRequestCall();
 	
 });
@@ -219,10 +257,10 @@ function getLocationDtlsRankWise(min,max){
       }
     });
 } 
-function initializeSliderRange(){
+function initializeSliderRange(){  
 	var min = $("#tourSlider").rangeSlider("min").toFixed(0);
 	var max = $("#tourSlider").rangeSlider("max").toFixed(0);
-	getLocationDtlsRankWise(min,max);  
+	getLocationDtlsRankWise(min,max);      
 } 
 
 function buildLocationDtlsRankWise(ajaxresp){

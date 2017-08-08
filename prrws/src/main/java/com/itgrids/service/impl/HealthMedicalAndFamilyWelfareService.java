@@ -700,12 +700,14 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 					}
 				}
 			}
+			
 			List<DiseasesVO> finalList = new ArrayList<DiseasesVO>();
 			if(diseasesVOs != null && diseasesVOs.size() > 0 && minVal != null && minVal.longValue() != 0 && maxVal != null && maxVal != 0){
-				int min = Integer.parseInt(Long.valueOf(minVal).toString());
-				min = min - 1;
-				int max = Integer.parseInt(Long.valueOf(maxVal).toString());
-				finalList = diseasesVOs.subList(min, max);
+				for(DiseasesVO param : diseasesVOs){
+					if(param.getRankId().longValue() >= minVal.longValue() && param.getRankId().longValue() <= maxVal.longValue()){
+						finalList.add(param);
+					}
+				}
 				return finalList;
 			}
 			return diseasesVOs;
