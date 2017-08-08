@@ -570,4 +570,19 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		query.setParameter("programId", programId);
 		return query.list();
 	}
+	public List<Long> getRunningBatchIds(Date todayDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.trainingCampBatchId" +
+				" from TrainingCampBatch model" +
+				" where model.attendeeType.attendeeTypeId = 1 and model.isCancelled = 'false'");
+		if(todayDate != null)
+				sb.append(" and model.fromDate >= todayDate and model.toDate <= todayDate");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(todayDate != null)
+			query.setDate("todayDate", todayDate);
+		
+		return query.list();
+		
+	}
 }

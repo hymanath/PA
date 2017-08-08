@@ -2335,5 +2335,12 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		   }
 		   return (List<Object[]>)query.list();
 	   }
+	
+	 public List<Object[]> getDayWiseTrainingCampDetailsCount()
+	 { 
+		Query query = getSession().createSQLQuery("call get_training_camp_attendance_details ('8','2010-07-23','2017-08-02','2','1','5,7,9,6,8','2','1')");
+		
+		return query.list();
+	   }
 }
 
