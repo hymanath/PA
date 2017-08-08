@@ -570,3 +570,72 @@ label
 .cadreBorderStyle{
 	border: 2px solid #c69c6c !important;
 }
+.glyphicon-refresh
+{
+	cursor:pointer;
+}
+.breadcrumb
+{
+	background-color:#fff;
+	padding:0px;
+	margin-bottom:6px;
+}
+.breadcrumb > li + li::before
+{
+	content:'\e127' !important;
+	font-family:'Glyphicons Halflings';
+	color:#333;
+}
+.menu-dropdown
+{
+	z-index:99;
+	position:absolute;
+	width:100%;
+	box-shadow:0px 5px 3px 3px rgba(0,0,0,0.4);
+	padding:20px;
+	background-color:#fff;
+}
+.menu-dropdown ul
+{
+	padding-left:0px;
+	border-right:1px solid #ddd;
+}
+.menu-dropdown ul li
+{
+	list-style:none;
+	padding:6px;
+	position:relative;
+	cursor:pointer;
+}
+.menu-dropdown ul li.active:after
+{
+	content:'\e127' !important;
+	font-family:'Glyphicons Halflings';
+	color:#333;
+	position:absolute;
+	right:-1px;
+	padding:6px;
+	background-color:#fff;
+	top:0px;
+}
+.menu-dropdown ul li.active
+{
+	border-left: 1px solid #ddd;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+span[menu-name]
+{
+	cursor:pointer;
+}
+span[menu-name].active
+{
+	padding: 8px 5px;
+	background-color: #fff;
+	border-top: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-radius: 8px 8px 0px 0px;
+	box-shadow: 0px -3px 2px 2px rgba(0,0,0,0.4);
+	z-index: 99;
+}
