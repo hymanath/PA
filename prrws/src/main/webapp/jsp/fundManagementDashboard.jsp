@@ -46,48 +46,68 @@
 									<div class="menu-block" style="background-color:#56A3C5">
 										<a href="ruralWaterSupplyDashBoard">
 											<h3>RWS</h3>
-											<p>RURAL WATER SUPPLY</p>
+											<p>Rural Water Supply</p>
 										</a>
 									</div>
 								</div>
 								<div class="col-sm-12 m_top10">
 									<div class="menu-heading-block">
 										<h4>PANCHAYATI RAJ</h4>
-									</div>
-								</div>
-								<div class="col-sm-6 m_top10">
-									<div class="menu-block" style="background-color:#0F685C">
-										<a href="prisDashBoard">
-											<h3>PRIS</h3>
-										</a>
-									</div>
-								</div>
-								<div class="col-sm-6 m_top10">
-									<div class="menu-block" style="background-color:#31B8B7">
-										<a href="drainDashBoard">
-											<h3>DRAINS</h3>
-										</a>
-									</div>
-								</div>
-								<div class="col-sm-12 m_top10">
-									<div class="menu-block" style="background-color:#2C546C">
-										<a href="#">
-											<h3>ENC</h3>
-											<p>ENGINEERING DEPARTMENT</p>
-										</a>
+										<div class="row">
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#0F685C">
+													<a href="prisDashBoard">
+														<h3>PRIS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#31B8B7">
+													<a href="drainDashBoard">
+														<h3>DRAINS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#2C546C">
+													<a href="#">
+														<h3>ENC</h3>
+														<p>Engineering Dept</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#512507">
+													<a href="getdailySpikeReport">
+														<h3>SA</h3>
+														<p>Spike Analysis</p>
+													</a>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="col-sm-12 m_top10">
 									<div class="menu-heading-block">
 										<h4>RURAL DEVELOPMENT</h4>
-									</div>
-								</div>
-								<div class="col-sm-12 m_top10">
-									<div class="menu-block" style="background-color:#88186B">
-										<a href="MGNREGSDashboard">
-											<h3>MGNREGS</h3>
-											<p>Mahatma Gandhi Rural employement guarantee scheme</p>
-										</a>
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#88186B">
+													<a href="MGNREGSDashboard">
+														<h3>MGNREGS</h3>
+														<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#ff1c5e">
+													<a href="RuralDevelopmentDashboard">
+														<h3>RD</h3>
+														<p>Rural Development Dashboard</p>
+													</a>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>

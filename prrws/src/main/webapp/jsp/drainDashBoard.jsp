@@ -54,7 +54,7 @@
 									<div class="menu-block" style="background-color:#56A3C5">
 										<a href="ruralWaterSupplyDashBoard">
 											<h3>RWS</h3>
-											<p>RURAL WATER SUPPLY</p>
+											<p>Rural Water Supply</p>
 										</a>
 									</div>
 								</div>
@@ -76,11 +76,19 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-12 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#2C546C">
 													<a href="#">
 														<h3>ENC</h3>
-														<p>ENGINEERING DEPARTMENT</p>
+														<p>Engineering Dept</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#512507">
+													<a href="getdailySpikeReport">
+														<h3>SA</h3>
+														<p>Spike Analysis</p>
 													</a>
 												</div>
 											</div>
@@ -93,24 +101,10 @@
 										<div class="row">
 											<div class="col-sm-12 m_top10">
 												<div class="menu-block" style="background-color:#88186B">
-													<h3>MGNREGS</h3>
-													<p>Mahatma Gandhi Rural employement guarantee scheme</p>
-													<div class="row">
-														<div class="col-sm-6 m_top10">
-															<div class="menu-block" style="background-color:#FFBA00">
-																<a href="MGNREGSDashboard">
-																	<p>Dashboard</p>
-																</a>
-															</div>
-														</div>
-														<div class="col-sm-6 m_top10">
-															<div class="menu-block" style="background-color:#56A3C5">
-																<a href="NregaConsolidatedDashboard">
-																	<p>Consolidated</p>
-																</a>
-															</div>
-														</div>
-													</div>
+													<a href="MGNREGSDashboard">
+														<h3>MGNREGS</h3>
+														<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+													</a>
 												</div>
 											</div>
 											<div class="col-sm-12 m_top10">

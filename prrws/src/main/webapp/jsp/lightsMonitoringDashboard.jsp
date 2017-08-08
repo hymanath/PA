@@ -18,20 +18,104 @@
     </style>
 </head>
 <body>
-    
-    <header>
+   <header>
 	<nav>
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-1 pad_left0">
-					<img src="Assests/img/aplogo.png" class="logo"/>
+				<div class="col-sm-1 col-xs-3 pad_left0">
+					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
-				<div class="col-sm-4 m_top10">
-					<h4 class="text-capital">Panchayati Raj</h4>
-					<p>Andhra Pradesh</p>
+				<div class="col-sm-4 m_top10 col-xs-9">
+					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
+					<p>MGNREGS - AP</p>
 				</div>
-				<div class="col-sm-1 pull-right">
-					<i class="fa fa-th fa-2x" aria-hidden="true" style="padding-top:20px;"></i>
+				<div class="col-sm-2 col-xs-12 col-sm-offset-3">
+					<img src="Assests/images/NREGS-LOGO.png" class="m_top5"/>
+				</div>
+				<div class="col-sm-1 col-xs-12">
+					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
+					<div class="menu-data-cls">
+						<div class="arrow_box_top">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="menu-block" style="background-color:#FFBA00">
+										<a href="newfundManagementDashboard">
+											<h3>FMS</h3>
+											<p>Fund Management System</p>
+										</a>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="menu-block" style="background-color:#56A3C5">
+										<a href="ruralWaterSupplyDashBoard">
+											<h3>RWS</h3>
+											<p>Rural Water Supply</p>
+										</a>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>PANCHAYATI RAJ</h4>
+										<div class="row">
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#0F685C">
+													<a href="prisDashBoard">
+														<h3>PRIS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#31B8B7">
+													<a href="drainDashBoard">
+														<h3>DRAINS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#2C546C">
+													<a href="#">
+														<h3>ENC</h3>
+														<p>Engineering Dept</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#512507">
+													<a href="getdailySpikeReport">
+														<h3>SA</h3>
+														<p>Spike Analysis</p>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>RURAL DEVELOPMENT</h4>
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#88186B">
+													<a href="MGNREGSDashboard">
+														<h3>MGNREGS</h3>
+														<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#ff1c5e">
+													<a href="RuralDevelopmentDashboard">
+														<h3>RD</h3>
+														<p>Rural Development Dashboard</p>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
