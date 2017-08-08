@@ -79,7 +79,7 @@ $(document).on("click","[collapse-click-consolidated]",function(){
 		}
 		if(divId != "state")
 		{
-			var tableId = 'collapseConsolidatedView'+divId
+			var tableId = 'ConsolidatedView'+divId
 			getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,tableId);
 		}
 	}	
@@ -1115,24 +1115,24 @@ function projectDataConsolidated(levelId,locId)
 	{
 		locationType = 'state';
 		subLocType = 'state';
-		divId = 'collapseConsolidatedViewstate'
+		divId = 'ConsolidatedViewstate'
 	}else if(levelId == 3)
 	{
 		locationType = 'district';
 		subLocType = 'district';
-		divId = 'collapseConsolidatedViewdistrict'
+		divId = 'ConsolidatedViewdistrict'
 	}else if(levelId == 4)
 	{
 		locationType = 'constituency';
 		subLocType = 'constituency';
-		divId = 'collapseConsolidatedViewconstituency'
+		divId = 'ConsolidatedViewconstituency'
 	}
 	getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,divId);
 	
 }
 function getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocationType,locationId,divId)
 {
-	$("#"+divId).html(spinnerConsolidated);
+	$("#collapse"+divId).html(spinnerConsolidated);
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
@@ -1202,40 +1202,37 @@ function tableViewConsolidated(result,divId,subLocationType)
 			tableView+='</tbody>';
 		tableView+='</table>';
 	tableView+='</div>';
-	$("#"+divId).html(tableView);	
-	if(divId != 'state')
-	{
-		$(".dataTable"+divId).dataTable({
-			"iDisplayLength": 20,
-			"aaSorting": [],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			//"dom": 'lfBrtip',
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
-			"<'row'<'col-sm-12'tr>>" +
-			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			buttons: [
-				{
-					extend:    'csvHtml5',
-					text:      '<i class="fa fa-file-text-o"></i>',
-					titleAttr: 'CSV',
-					title:	   divId,
-					filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-				},
-				{
-					extend:    'pdfHtml5',
-					text:      '<i class="fa fa-file-pdf-o"></i>',
-					titleAttr: 'PDF',
-					title:	   divId,
-					filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-					orientation: "landscape",
-					pageSize:'A3',
-					customize: function (doc) {
-						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-					}
+	$("#collapse"+divId).html(tableView);	
+	$(".dataTable"+divId).dataTable({
+		"iDisplayLength": 20,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+		//"dom": 'lfBrtip',
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV',
+				title:	   divId,
+				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o"></i>',
+				titleAttr: 'PDF',
+				title:	   divId,
+				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				orientation: "landscape",
+				pageSize:'A3',
+				customize: function (doc) {
+					doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
 				}
-			]
-		});
-	}
+			}
+		]
+	});
 }
 
 function getNREGSProjectsAbstractNewFrConstituency(type,locType,locId,districtId,blockName,levelId)
