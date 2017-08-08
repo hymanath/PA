@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
+import com.itgrids.partyanalyst.dto.BoothInchargesVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
@@ -50,4 +51,6 @@ public interface ILocationDashboardService {
     public List<LocationWiseBoothDetailsVO> getAllDistricts(Long stateId);
 	public List<LocationWiseBoothDetailsVO> getAllConstituenciesByDistrict(Long districtId);
 	public List<ElectionInformationVO> getElectionInformationLocationWise(String fromDate, String toDate, Long locationTypeId,Long locationValue, List<Long> electionScopeIds);
+	public BoothInchargesVO getBoothAssignInchargeCount(String fromDateStr, String toDateStr, Long locationTypeId,Long locationValue,
+			List<Long> committeeEnrollmentYearsIdsLst);
 }
