@@ -7002,7 +7002,7 @@ public void setTotalAttendedAndNonInviteeAttended1(List<Object[]> rtrnTtlAttende
 				dayVO.setTotalAttenedCount(dayVO.getInviteeAttended()+dayVO.getNonInviteeAttended());
 				
 				resultVO.setInviteeAttended(resultVO.getInviteeAttended()+dayVO.getInviteeAttended());
-				resultVO.setNonInviteeAttended(resultVO.getNonInviteeAttended()+dayVO.getNonInviteeAttended()+dayVO.getOthersCount());
+				resultVO.setNonInviteeAttended(resultVO.getNonInviteeAttended()+dayVO.getNonInviteeAttended());
 				resultVO.setTotalAttenedCount(resultVO.getInviteeAttended()+resultVO.getNonInviteeAttended());
 				
 				dayVO.getInviteesIds().clear();dayVO.getNonInviteesIds().clear();dayVO.getOthersIds().clear();
@@ -7123,17 +7123,19 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 				programVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 				programVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 				programVO.setTotalEligibleCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+				setDayWiseCountToProgramWiseVO(programVO,manTwnDivVO.getLocationList());
+				setDayWiseCountToProgramWiseVO(programVO,villageWardVO.getLocationList());
+				setInviteeAndNonInviteeCount(programVO);
 				// programVO.setInviteeAttended(commonMethodsUtilService.getLongValueForObject(param[3]));
-				programVO.setInviteeAttended(villageWardVO.getInviteeAttended()+ manTwnDivVO.getInviteeAttended());
-				programVO.setNonInviteeAttended(villageWardVO.getNonInviteeAttended()+ manTwnDivVO.getNonInviteeAttended()+villageWardVO.getOthersCount());
-				programVO.setTotalAttenedCount(programVO.getInviteeAttended()	+ programVO.getNonInviteeAttended());
+				//programVO.setInviteeAttended(villageWardVO.getInviteeAttended()+ manTwnDivVO.getInviteeAttended());
+				//programVO.setNonInviteeAttended(villageWardVO.getNonInviteeAttended()+ manTwnDivVO.getNonInviteeAttended()+villageWardVO.getOthersCount());
+				//programVO.setTotalAttenedCount(programVO.getInviteeAttended()	+ programVO.getNonInviteeAttended());
 				// programVO.setTotalNotAttenedCount(commonMethodsUtilService.getLongValueForObject(param[4]));
 				programVO.setTotalNotAttenedCount(villageWardVO.getTotalNotAttenedCount()+ manTwnDivVO.getTotalNotAttenedCount());
 				programVO.setTotalAttenedCountPer(calculatePercantage(programVO.getInviteeAttended(),programVO.getTotalEligibleCount()));
 				programVO.setTotalNotAttenedCountPer(calculatePercantage(programVO.getTotalNotAttenedCount(),	programVO.getTotalEligibleCount()));
 				// programVO.setNonInviteeAttended(programVO.getTotalAttenedCount()-programVO.getInviteeAttended());
-				setDayWiseCountToProgramWiseVO(programVO,manTwnDivVO.getLocationList());
-				setDayWiseCountToProgramWiseVO(programVO,villageWardVO.getLocationList());
+				
 				trainingCampProgramDtlsMap.put(programVO.getId(), programVO);
 			}
 		}
@@ -7156,20 +7158,34 @@ public void setDayWiseCountToProgramWiseVO(TrainingCampProgramVO programVO,List<
 					TrainingCampProgramVO matchedVO = getMatchVO(programVO.getLocationList(),dayVo.getId());
 						if(matchedVO != null){
 							matchedVO.setNonInviteeAttended(matchedVO.getNonInviteeAttended() + dayVo.getNonInviteeAttended()+dayVo.getOthersCount());
-							matchedVO.setOthersCount(dayVo.getOthersCount());
+							matchedVO.setOthersCount(matchedVO.getOthersCount()+dayVo.getOthersCount());
 							matchedVO.setInviteeAttended(matchedVO.getInviteeAttended() + dayVo.getInviteeAttended());
-							
 						} 
-					matchedVO.setTotalAttenedCount( matchedVO.getNonInviteeAttended()+matchedVO.getInviteeAttended());
-					matchedVO.setTotalAttenedCountPer(calculatePercantage(matchedVO.getInviteeAttended(),	programVO.getInviteeAttended()));
+						
+						matchedVO.setTotalAttenedCount( matchedVO.getNonInviteeAttended()+matchedVO.getInviteeAttended());
+						matchedVO.setTotalAttenedCountPer(calculatePercantage(matchedVO.getInviteeAttended(),	programVO.getInviteeAttended()));
 				}
 			}
 		
 	}catch(Exception e){
-		
+		e.printStackTrace();
+		LOG.error("Error occured at setDayWiseCountToProgramWiseVO() in CoreDashboardMainService {}",e);
 	}
 }
-
+public void setInviteeAndNonInviteeCount(TrainingCampProgramVO programVO){
+	try{
+		
+		for(TrainingCampProgramVO dayVo :programVO.getLocationList()){
+				programVO.setInviteeAttended(programVO.getInviteeAttended()+dayVo.getInviteeAttended());
+				programVO.setNonInviteeAttended(programVO.getNonInviteeAttended()+dayVo.getNonInviteeAttended());
+				programVO.setTotalAttenedCount(programVO.getInviteeAttended()+programVO.getNonInviteeAttended());
+		}
+			
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Error occured at setInviteeAndNonInviteeCount() in CoreDashboardMainService {}",e);
+	}
+}
 
 }  
 
