@@ -24,15 +24,16 @@ import org.jfree.util.Log;
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
+import com.itgrids.partyanalyst.dao.IBoothInchargeCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
-import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.IGovtSchemeBeneficiaryDetailsDAO;
 import com.itgrids.partyanalyst.dao.IInsuranceStatusDAO;
@@ -52,9 +53,9 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeEnrollmentDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
-import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
+import com.itgrids.partyanalyst.dto.BoothInchargesVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
@@ -114,6 +115,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IDistrictConstituenciesDAO districtConstituenciesDAO;
 	private ICandidateDAO candidateDAO;
 	private ICadreCommitteeService cadreCommitteeService;
+	private IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO;
 
 
 	public ICadreCommitteeService getCadreCommitteeService() {
@@ -340,6 +342,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	}
 	public void setCandidateDAO(ICandidateDAO candidateDAO) {
 		this.candidateDAO = candidateDAO;
+	}
+	public IBoothInchargeCommitteeDAO getBoothInchargeCommitteeDAO() {
+		return boothInchargeCommitteeDAO;
+	}
+	public void setBoothInchargeCommitteeDAO(
+			IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO) {
+		this.boothInchargeCommitteeDAO = boothInchargeCommitteeDAO;
 	}
 	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId) {
 		String electionType = "";
@@ -2594,4 +2603,32 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		return electionInformationVOList;
 	}
 
+	public BoothInchargesVO getBoothAssignInchargeCount(String fromDateStr, String toDateStr, Long locationTypeId,Long locationValue,
+			List<Long> committeeEnrollmentYearsIdsLst){
+		BoothInchargesVO inchargeVo = new BoothInchargesVO();
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			Long startedCount= boothInchargeCommitteeDAO.getElectionBoothDetails(fromDate, toDate,locationTypeId, locationValue, "started",
+					committeeEnrollmentYearsIdsLst);
+			Long completedCount= boothInchargeCommitteeDAO.getElectionBoothDetails(fromDate, toDate,locationTypeId, locationValue, "completed",
+					committeeEnrollmentYearsIdsLst);
+			Long totalCount= boothInchargeCommitteeDAO.getElectionBoothDetails(fromDate, toDate,locationTypeId, locationValue, null,
+					committeeEnrollmentYearsIdsLst);
+			inchargeVo.setTotalCount(totalCount);
+			inchargeVo.setStartedCount(startedCount);
+			inchargeVo.setCompletedCount(completedCount);
+			inchargeVo.setNotStartedCount(totalCount-(completedCount+startedCount));
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in getBoothAssignInchargeCount", e);
+
+		}
+		return inchargeVo;
+	}
 }
