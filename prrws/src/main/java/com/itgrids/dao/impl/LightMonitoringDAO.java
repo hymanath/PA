@@ -129,57 +129,60 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		StringBuilder sbm = new StringBuilder();
 		StringBuilder sbe = new StringBuilder();
 		StringBuilder sbg = new StringBuilder();
+		
 		sb.append("SELECT  sum(LM.totalPoles),sum(LM.totalPanels),sum(LM.totalLights),sum(LM.workingLights),sum(LM.onLights),sum(LM.offLights) ");
-		sbm.append("FROM  LightMonitoring  LM, Panchayat P, LocationAddress  LA  ");
-		sbe.append("WHERE  LM.panchayatId = P.panchayatId  AND   P.locationAddressId  = LA.locationAddressId ");
+		sbm.append(" FROM  LightMonitoring  LM, Panchayat P, LocationAddress  LA  ");
+		sbe.append(" WHERE  LM.panchayatId = P.panchayatId  AND  P.locationAddressId  = LA.locationAddressId ");
 
-		if (year != null && !year.trim().isEmpty()) {
+		if (year != null && !year.trim().isEmpty()) 
+		{
 			sbe.append(" and year(LM.surveyDate) =:year  ");
-		} else if (fromDate != null && toDate != null) {
-			sb.append(" date(LM.surveyDate) between :fromDate and :toDate and ");
+		} 
+		else if (fromDate != null && toDate != null) {
+			sb.append(" and date(LM.surveyDate) between :fromDate and :toDate ");
 		}
+		
 		sbg.append(" GROUP BY ");
-		if (locationTypeId != null && locationTypeId.longValue() > 0l) {
-			if (locationTypeId == 2l) {
-				sb.append(" S.stateId , S.stateName  ");
-				sbm.append("  ,State S ");
-				sbe.append("  AND LA.stateId = S.stateId ");
+		
+		if (locationTypeId != null && locationTypeId.longValue() > 0l) 
+		{
+			if (locationTypeId == 2l) 
+			{
+				sb.append(" ,LA.district.state.stateId , LA.district.state.stateName  ");
 				sbg.append(" LA.stateId ");
 				if (locationValues != null && locationValues.size() > 0) {
-					sbe.append(" and  S.stateId  in  (:locationValues) ");
+					sbe.append(" and  LA.district.state.stateId in (:locationValues) ");
 				}
-			} else if (locationTypeId == 3l) {
-				sb.append("  D.districtId ,D.districtName, count(T.tehsilId)  ");
-				sbm.append(" ,District D ");
-				sbe.append(" AND  LA.districtId = D.districtId ");
+			}
+			else if (locationTypeId == 3l) {
+				sb.append("  LA.district.districtId ,LA.district.districtName, COUNT(DISTINCT LA.tehsil.tehsilId) ");
 				sbg.append(" LA.districtId ");
+				
 				if (locationValues != null && locationValues.size() > 0) {
-					sbe.append(" and D.districtId in (:locationValues)  ");
+					sbe.append(" AND LA.district.districtId IN (:locationValues)  ");
 				}
-			} else if (locationTypeId == 4l) {
-				sb.append(" C.constituencyId ");
-				sbm.append("  ,Constituency C ");
-				sbe.append(" AND LA.constituencyId = C.constituencyId");
+			} 
+			else if (locationTypeId == 4l) {
+				sb.append(" LA.constituency.constituencyId ");
 				sbg.append(" LA.constituencyId ");
 
 				if (locationValues != null && locationValues.size() > 0) {
-					sbe.append(" and C.constituencyId in (:locationValues) ");
+					sbe.append(" and LA.constituency.constituencyId in (:locationValues) ");
 				}
-			} else if (locationTypeId == 5l) {
-				sb.append("  T.tehsilId,T.tehsilName ");
-				sbm.append("   ,Tehsil T ");
-				sbe.append(" AND LA.tehsilId = T.tehsilId ");
-				sbg.append(" LA.tehsilId ");
+			}
+			else if (locationTypeId == 5l) {
+				sb.append("  LA.tehsil.tehsilId,LA.tehsil.tehsilName ");
+				sbg.append(" LA.tehsil.tehsilId ");
 				if (locationValues != null && locationValues.size() > 0) {
-					sbe.append(" and T.tehsilId  in (:locationValues) ");
+					sbe.append(" AND LA.tehsil.tehsilId  IN (:locationValues) ");
 				}
-			} else if (locationTypeId == 10l) {
-				sb.append(" PA.parliamentId ");
-				sbm.append("  ,ParliamentAssembly PA ");
-				sbe.append(" AND LA.parliamentId = PA.parliamentId");
-				sbg.append(" LA.parliamentId ");
+			} 
+			else if (locationTypeId == 10l) 
+			{
+				sb.append(" LA.parliament.constituencyId, LA.parliament.name ");
+				sbg.append(" LA.parliament.constituencyId ");
 				if (locationValues != null && locationValues.size() > 0) {
-					sbe.append(" and PA.parliamentId in (:locationValues) ");
+					sbe.append(" AND PA.parliament.constituencyId IN (:locationValues) ");
 				}
 			}
 		}
@@ -198,7 +201,9 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				sbe.append(" and LA.tehsilId  in (:searchLevelValues) ");
 			}
 		}
-
+		
+		
+		
 		sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
 		System.out.println(sb.toString());
 
