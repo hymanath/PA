@@ -10,12 +10,20 @@ var url = window.location.href;
 		wurl = url.substr(0,(url.indexOf(".in")+3));
 	
 onLoadAjaxCalls();
+
 function onLoadAjaxCalls()
 {
 	minimise('.right-nav-list li',5);
 	rightNav();
 	collapseClick();
 	responsiveTabs();
+	
+	//Menu Calls
+	menuCalls(2,'1','');
+	menuCalls(3,'01','');
+	menuCalls(4,'232','');
+	menuCalls(5,'248','232');
+	
 	//candidate Profiles 1st block
 	getCandidateAndPartyInfoForConstituency();
 	//Second Block
@@ -25,7 +33,7 @@ function onLoadAjaxCalls()
 	
 	//caste information
 	getCasteGroupNAgeWiseVoterNCadreCounts("voter")
-	getActivityStatusList();
+	//getActivityStatusList();
 	
 	//cadre Information Block
 	getLocationTypeWiseCadreCount();
@@ -39,7 +47,125 @@ function onLoadAjaxCalls()
 	for(var i in propertyIdGlobalStr){
 		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i])
 	}
-	
+}
+
+function menuCalls(levelId,levelValue,higherLevelVal)
+{
+	if(levelId == '2')
+	{
+		$("#districtsMenu").html(spinner);
+		var jsObj={
+			"stateId":levelValue
+		}
+		$.ajax({
+			type : "GET",
+			url : "getAllDistrictsForLoationDashBoardAction.action",
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			return buildResult('districts',result);
+		});
+	}else if(levelId == '3')
+	{
+		$("#constituencysMenu").html(spinner);
+		var jsObj={
+			"districtId":levelValue
+		}
+		$.ajax({
+			type : "GET",
+			url : "getConstituenciesByDistrictForLoationDashBoardAction.action",
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			return buildResult('constituencys',result);
+		});
+	}else if(levelId == '4')
+	{
+		$("#mandalsMenu").html(spinner);
+		var jsObj={
+			"constituencyId":levelValue
+		}
+		$.ajax({
+			type : "GET",
+			url:"getMandalsForConstituenciesForLoationDashBoardAction.action",
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			return buildResult('mandals',result);
+		});
+	}else if(levelId == '5')
+	{
+		$("#panchayatsMenu").html(spinner);
+		var jsObj={
+			"mandalId":levelValue,
+			"constituencyId":higherLevelVal
+		}
+		$.ajax({
+			type : "GET",
+			url:"getPanchayatWardByMandalForLoationDashBoardAction.action",
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			return buildResult('panchayats',result);
+		});
+	}
+	function buildResult(divId,result)
+	{
+		levelId = parseInt(levelId) + 1;
+		var menu='';
+		menu+='<div class="scroller'+divId+'">';
+			menu+='<ul>';
+				for(var i in result)
+				{
+					if(levelId != '6' || levelId != 6)
+					{
+						if(i == 0)
+						{
+							menu+='<li menu-click="'+result[i].locationId+'" menu-levelname="'+divId+'" class="active" levelId="'+levelId+'">'+result[i].locationName+'</li>';
+						}else{
+							menu+='<li menu-click="'+result[i].locationId+'" menu-levelname="'+divId+'" levelId="'+levelId+'">'+result[i].locationName+'</li>';
+						}
+					}else{
+						menu+='<li constituencyId="'+$("#constituencysMenu li.active").attr("menu-click")+'" menu-levelname="'+divId+'" menu-click="'+result[i].locationId+'" levelId="'+levelId+'">'+result[i].locationName+'</li>';
+					}
+				}
+			menu+='</ul>';
+		menu+='</div>';
+		$("#"+divId+"Menu").html(menu);
+		if(result.length > 13)
+		{
+			$(".scroller"+divId).mCustomScrollbar({setHeight:'480px'})
+		}
+	}
+	$(document).on("click","[menu-click]",function()
+	{
+		var levelId = $(this).attr("levelId");
+		var locationId = $(this).attr("menu-click");
+		var levelName = $(this).attr("menu-levelname");
+		$("[menu-name="+levelName+"]").html($(this).html());
+		$("[levelId="+levelId+"],[menu-name]").removeClass("active");
+		$(this).addClass("active");
+		$("[menu-name="+levelName+"]").addClass("active");
+		if(levelId != '5' || levelId != 5)
+		{
+			menuCalls(levelId,locationId,'')
+		}else{
+			menuCalls(levelId,locationId,$("#constituencysMenu li.active").attr("menu-click"))
+		}	
+	});
+	$(document).on("click","[menu-name]",function(e){
+		e.stopPropagation();
+		$(".menu-dropdown").show();
+		$("[menu-name]").removeClass("active");
+		$(this).addClass("active");
+	});
+	$(document).on("click",".menu-dropdown",function(e){
+		e.stopPropagation();
+	});
+	$(document).on("click",function(e){
+		$(".menu-dropdown").hide();
+		$("[menu-name]").removeClass("active");
+	});
 }
 function subStr(name,noOfChar){
 	ellipsetext=".."
@@ -143,9 +269,8 @@ $(document).on("change","[role='tabListMobile']",function(){
 		$("#"+id).addClass("active");
 });
 function getCandidateAndPartyInfoForConstituency(){
-	$("#mlaSpinnerId").html(spinner);
-	$("#mpSpinnerId").html(spinner);
-   var jsObj={
+	$("#mlaSpinnerId,#mpSpinnerId").html(spinner);
+	var jsObj={
     	constituencyId: 232
     }
     $.ajax({
@@ -447,7 +572,7 @@ function highcharts(id,type,data,plotOptions,title,tooltip){
 }
 var globalCasteWiseResult="";
 function getCasteGroupNAgeWiseVoterNCadreCounts(groupType){
-	$("#leftSideCasteGroupWiseDivId").html(spinner);
+	$("#leftSideCasteGroupWiseDivId,#casteGroupVoters,#rightSideCasreGroupDtsDivId").html(spinner);
 	jsObj={
 		constituencyId:232,
     	publicationDateId:22
@@ -461,7 +586,7 @@ function getCasteGroupNAgeWiseVoterNCadreCounts(groupType){
 		if(result !=null && result.length>0){
 			buildCasteGroupNAgeWiseVoterNCadreCounts(result,groupType);
 			buildCasteGroupDetailsViewBlock(result);
-			globalCasteWiseResult =result; 
+			globalCasteWiseResult = result; 
 		}
 	});	
 }
@@ -483,18 +608,18 @@ function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName){
 			var str='';
 			str+='<h4 class="panel-title" style="padding: 5px; font-weight: 600;"><span class="text-capital">'+casteName+'</span> - <span class="text-capitalize">voter and cadre information b/w age group</span></h4>';
 			str+='<p class="text-muted text-right">';
-			str+='<span class="f-11"><i class="glyphicon glyphicon-info-sign"></i> _(C) = Cadres ; _(V) = Voter</span>';
+				str+='<span class="f-11"><i class="glyphicon glyphicon-info-sign"></i> _(C) = Cadres ; _(V) = Voter</span>';
 			str+='</p>';
 			str+='<table class="table table-noborder m_top10">';
-			str+='<thead class="text-capitalize">';
-			str+='<th></th>';
-			str+='<th>Voters</th>';
-			str+='<th>cadres </th>';
-			str+='<th>Male(V) </th>';
-			str+='<th>Male(C) </th>';
-			str+='<th>FeMale(V)</th>';
-			str+='<th>FeMale(C)</th>';
-			str+='</thead>';
+				str+='<thead class="text-capitalize">';
+					str+='<th></th>';
+					str+='<th>Voters</th>';
+					str+='<th>cadres </th>';
+					str+='<th>Male(V) </th>';
+					str+='<th>Male(C) </th>';
+					str+='<th>FeMale(V)</th>';
+					str+='<th>FeMale(C)</th>';
+				str+='</thead>';
 			str+='<tbody>';
 			for(var i in result){
 				str+='<tr>';
@@ -520,15 +645,15 @@ function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName){
 function buildCasteGroupNAgeWiseVoterNCadreCounts(result,groupType){
 	
 	var str='';
-		str+='<table class="table table-bordered bg-E9">';
-			str+='<thead>';
+	str+='<table class="table table-bordered bg-E9">';
+		str+='<thead>';
 			str+='<tr>';
 			for(var i in result){
 				str+='<th>'+result[i].ageRange+'</th>';
 			}
 			str+='</tr>';
-			str+='</thead>';
-			str+='<tbody>';
+		str+='</thead>';
+		str+='<tbody>';
 			str+='<tr>';
 			for(var i in result){
 				if(groupType == "voter"){
@@ -539,269 +664,300 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result,groupType){
 					
 			}
 			str+='</tr>';	
-			str+='</tbody>';
-		str+='</table>';
-		
-		str+='<h4 class="m_top10"><b>Caste Wise Voters</b></h4>';
-			str+='<ul class="switch-btn-caste m_top10 casteGroupTypeDiv">';
-			for(var i in result){
-				if(result[i].ageRange == "BC"){
-					str+='<li class="active" attr_type ="'+result[i].ageRange+'">'+result[i].ageRange+'</li>';
-				}else{
-					str+='<li attr_type ="'+result[i].ageRange+'">'+result[i].ageRange+'</li>';
-				}
-				
-			}
-			str+='</ul>';
-			str+='<div class="scollerDiv">';
-				str+='<div class="m_top20" id="casteWiseVoters"></div>';
-			str+='</div>';
-		$("#leftSideCasteGroupWiseDivId").html(str);
-		
-		var mainArr=[];
-		for(var i in result){
-			var casteName = result[i].ageRange;
-			var count=0;
-			if(groupType == "voter"){
-				count = result[i].totalVoters
-			}else{
-				count = result[i].totalCadres
-			}
-			var colorsId = globalCasteColorObj[result[i].ageRange.trim()];
-			
-			var obj = {
-				name: casteName,
-				y:count,
-				color:colorsId
-			}
-			mainArr.push(obj);
+		str+='</tbody>';
+	str+='</table>';
+	
+	str+='<h4 class="m_top10"><b>Caste Wise Voters</b></h4>';
+	str+='<ul class="switch-btn-caste m_top10 casteGroupTypeDiv">';
+	for(var i in result){
+		if(result[i].ageRange == "BC"){
+			str+='<li class="active" attr_type ="'+result[i].ageRange+'">'+result[i].ageRange+'</li>';
+		}else{
+			str+='<li attr_type ="'+result[i].ageRange+'">'+result[i].ageRange+'</li>';
 		}
-		console.log(mainArr)
-		var id = 'casteGroupVoters';
-			var type = {
-				type: 'pie',
-				backgroundColor:'transparent',
-				options3d: {
-					enabled: true,
-					alpha: 25
-				}
-			};
-			var title = {
-				text: ''
-			};
-			var tooltip={};
-			var plotOptions ={ 
-				pie: {
-					innerSize: 115,
-					depth: 225,
-					dataLabels:{
-						useHTML: true,
-						enabled: true,
-						  formatter: function() {
-								if (this.y === 0) {
-									return null;
-								} else {
-									return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
-								}
-							} 
-					},
-					showInLegend: false
-				},
-			};
-			var data = [{
-				name: '',
-				data: mainArr
-			}];
-			highcharts(id,type,data,plotOptions,title,tooltip);
-			buildCasteGroupNAgeWiseGraphView(result,groupType,"BC");
+		
+	}
+	str+='</ul>';
+	str+='<div class="scollerDiv">';
+		str+='<div class="m_top20" id="casteWiseVoters"></div>';
+	str+='</div>';
+	$("#leftSideCasteGroupWiseDivId").html(str);
+		
+	var mainArr=[];
+	for(var i in result){
+		var casteName = result[i].ageRange;
+		var count=0;
+		if(groupType == "voter"){
+			count = result[i].totalVoters
+		}else{
+			count = result[i].totalCadres
+		}
+		var colorsId = globalCasteColorObj[result[i].ageRange.trim()];
+		
+		var obj = {
+			name: casteName,
+			y:count,
+			color:colorsId
+		}
+		mainArr.push(obj);
+	}
+
+	var id = 'casteGroupVoters';
+	var type = {
+		type: 'pie',
+		backgroundColor:'transparent',
+		options3d: {
+			enabled: true,
+			alpha: 25
+		}
+	};
+	var title = {
+		text: ''
+	};
+	var tooltip={};
+	var plotOptions ={ 
+		pie: {
+			innerSize: 115,
+			depth: 225,
+			dataLabels:{
+				useHTML: true,
+				enabled: true,
+				  formatter: function() {
+						if (this.y === 0) {
+							return null;
+						} else {
+							return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+						}
+					} 
+			},
+			showInLegend: false
+		},
+	};
+	var data = [{
+		name: '',
+		data: mainArr
+	}];
+	highcharts(id,type,data,plotOptions,title,tooltip);
+	buildCasteGroupNAgeWiseGraphView(result,groupType,"BC");
 }
 function buildCasteGroupNAgeWiseGraphView(result,groupType,casteType){
-		var dataArr = [];
-		var casteNamesArr=[];
-		for(var i in result){
-			if(result[i].locationVotersVOList !=null && result[i].locationVotersVOList.length>0){
-				for(var j in result[i].locationVotersVOList){
-					
-					var tempArr = [];
-					if(result[i].ageRange == casteType){
-						if(groupType == "voter"){
-							if(result[i].locationVotersVOList[j].totalVoters !=null && result[i].locationVotersVOList[j].totalVoters>0){
-								casteNamesArr.push(result[i].locationVotersVOList[j].ageRange)
-								tempArr.push(result[i].locationVotersVOList[j].totalVoters);
-								dataArr.push(tempArr);
-							}
-							
-						}else{
-							if(result[i].locationVotersVOList[j].totalCadres !=null && result[i].locationVotersVOList[j].totalCadres>0){
-								casteNamesArr.push(result[i].locationVotersVOList[j].ageRange)
-								tempArr.push(result[i].locationVotersVOList[j].totalCadres);
-								dataArr.push(tempArr);
-							}
-							
+	var dataArr = [];
+	var casteNamesArr=[];
+	for(var i in result){
+		if(result[i].locationVotersVOList !=null && result[i].locationVotersVOList.length>0){
+			for(var j in result[i].locationVotersVOList){
+				
+				var tempArr = [];
+				if(result[i].ageRange == casteType){
+					if(groupType == "voter"){
+						if(result[i].locationVotersVOList[j].totalVoters !=null && result[i].locationVotersVOList[j].totalVoters>0){
+							casteNamesArr.push(result[i].locationVotersVOList[j].ageRange)
+							tempArr.push(result[i].locationVotersVOList[j].totalVoters);
+							dataArr.push(tempArr);
+						}
+						
+					}else{
+						if(result[i].locationVotersVOList[j].totalCadres !=null && result[i].locationVotersVOList[j].totalCadres>0){
+							casteNamesArr.push(result[i].locationVotersVOList[j].ageRange)
+							tempArr.push(result[i].locationVotersVOList[j].totalCadres);
+							dataArr.push(tempArr);
 						}
 						
 					}
+					
 				}
 			}
-			
 		}
-		var heightOfDiv = casteNamesArr.length;
-		if(heightOfDiv >10){
-			heightOfDiv = heightOfDiv * 30;
-			$("#casteWiseVoters").css("height",heightOfDiv);
-			$(".scollerDiv").mCustomScrollbar({setHeight:'400px'})
-		}else{
-			$("#casteWiseVoters").css("height","auto");
-			$(".scollerDiv").removeAttr('style')
-			$(".scollerDiv").mCustomScrollbar('destroy');
-		  }
-		$('#casteWiseVoters').highcharts({
-			chart: {
-				type: 'bar'
-			},
+		
+	}
+	var heightOfDiv = casteNamesArr.length;
+	if(heightOfDiv >10){
+		heightOfDiv = heightOfDiv * 30;
+		$("#casteWiseVoters").css("height",heightOfDiv);
+		$(".scollerDiv").mCustomScrollbar({setHeight:'300px'})
+	}else{
+		$("#casteWiseVoters").css("height","auto");
+		$(".scollerDiv").removeAttr('style')
+		$(".scollerDiv").mCustomScrollbar('destroy');
+	}
+	$('#casteWiseVoters').highcharts({
+		chart: {
+			type: 'bar'
+		},
+		title: {
+			text: ''
+		},
+		subtitle: {
+			text: ''
+		},
+		xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: casteNamesArr,
+			labels: {
+					useHTML:true,
+					formatter: function() {
+						
+						if(this.value.toString().length >= 5){
+							return '<p>'+this.value.toString().substring(0, 5)+'..'+'</p>';
+						}else{
+							return '<p>'+this.value+'</p>';
+						}
+						
+						
+					},
+					style: {
+					 color: '#000',
+					 font: 'bold 13px "Lato", sans-serif'
+				  } 
+					
+				}
+		},
+		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
 			title: {
 				text: ''
-			},
-			subtitle: {
-				text: ''
-			},
-			xAxis: {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: casteNamesArr,
-				labels: {
-						useHTML:true,
-						formatter: function() {
-							
-							if(this.value.toString().length >= 5){
-								return '<p>'+this.value.toString().substring(0, 5)+'..'+'</p>';
-							}else{
-								return '<p>'+this.value+'</p>';
-							}
-							
-							
-						},
-						style: {
-						 color: '#000',
-						 font: 'bold 13px "Lato", sans-serif'
-					  } 
-						
-					}
-			},
-			yAxis: {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				title: {
-					text: ''
-				}
-			},
-			legend: {
-				enabled: false
-			},
-			tooltip: {
-				pointFormat: ''
-			},
-			series: [{
-				name: '',
-				data: dataArr,
-				dataLabels: {
-					enabled: true,
-					color: '#000',
-					align: 'center',
-				}
-			}]
-		});
-		
+			}
+		},
+		legend: {
+			enabled: false
+		},
+		tooltip: {
+			pointFormat: ''
+		},
+		series: [{
+			name: '',
+			data: dataArr,
+			dataLabels: {
+				enabled: true,
+				color: '#000',
+				align: 'center',
+			}
+		}]
+	});	
 }
 
 function buildCasteGroupDetailsViewBlock(result){
 	if(result !=null && result.length>0){
 		var str='';
-			str+='<div class="col-sm-8">';
-			str+='<select class="form-control" role="tabListMobile">';
-			for(var i in result){
-					  str+='<option tab_id="'+result[i].ageRange+'">'+result[i].ageRange+'</option>';
-			} 
-			str+='</select>';
-			str+=' <ul class="nav nav-tabs" role="tablist">';
-			for(var i in result){
-				if(i==0){
-					str+='<li role="presentation" class="active"><a href="#'+result[i].ageRange+'" aria-controls="'+result[i].ageRange+'" role="tab" data-toggle="tab">'+result[i].ageRange+'</a></li>';
-				}else{
-					str+='<li role="presentation" class=""><a href="#'+result[i].ageRange+'" aria-controls="'+result[i].ageRange+'" role="tab" data-toggle="tab">'+result[i].ageRange+'</a></li>';
-				}
-				 	
+		str+='<select class="form-control" role="tabListMobile">';
+		for(var i in result){
+			str+='<option tab_id="'+result[i].ageRange+'">'+result[i].ageRange+'</option>';
+		} 
+		str+='</select>';
+		str+=' <ul class="nav nav-tabs" role="tablist">';
+		for(var i in result){
+			if(i==0){
+				str+='<li role="presentation" class="active"><a href="#'+result[i].ageRange+'" aria-controls="'+result[i].ageRange+'" role="tab" data-toggle="tab">'+result[i].ageRange+'</a></li>';
+			}else{
+				str+='<li role="presentation" class=""><a href="#'+result[i].ageRange+'" aria-controls="'+result[i].ageRange+'" role="tab" data-toggle="tab">'+result[i].ageRange+'</a></li>';
 			}
-			str+='</ul>';
-			str+='<div class="tab-content">';
-			for(var i in result){
-					if(i==0){
-						str+='<div role="tabpanel" class="tab-pane active pad_10" id="'+result[i].ageRange+'">';
-					}else{
-						str+='<div role="tabpanel" class="tab-pane  pad_10" id="'+result[i].ageRange+'">';
-					}
-				 	
-						str+='<h4 class="panel-title text-capitalize">Caste Wise - Voter & Cadre Information b/w age group</h4>';
-						str+='<table class="table table-noborder">';
-							str+='<thead class="text-capitalize">';
-								str+='<th>Caste Name</th>';
-								str+='<th>voters</th>';
-								str+='<th>cadres </th>';
-								str+='<th>Male(V) </th>';
-								str+='<th>Male(C) </th>';
-								str+='<th>FeMale(V) </th>';
-								str+='<th>FeMale(C) </th>';
-							str+='</thead>';
-							str+='<tbody>';
-							for(var j in result[i].locationVotersVOList){
-								str+='<tr>';
-									str+='<td><i class="glyphicon glyphicon-plus td-expand-icon expandCasteIconCls" collapseid="td-expand-'+result[i].locationVotersVOList[j].ageRangeId+'" attr_caste_name="'+result[i].locationVotersVOList[j].ageRange+'" attr_caste_group_id="'+result[i].ageRangeId+'" attr_caste_id="'+result[i].locationVotersVOList[j].ageRangeId+'"></i> '+result[i].locationVotersVOList[j].ageRange+'</td>';
-									str+='<td>'+result[i].locationVotersVOList[j].totalVoters+' <small class="text-success">'+result[i].locationVotersVOList[j].totalVotersPerc+'%</small></td>';
-									str+='<td>'+result[i].locationVotersVOList[j].totalCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].totalCadrePerc+'</small></td>';
-									str+='<td>'+result[i].locationVotersVOList[j].maleVoters+' <small class="text-success">'+result[i].locationVotersVOList[j].maleVotersPerc+'</small></td>';
-									str+='<td>'+result[i].locationVotersVOList[j].maleCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].maleCadrePerc+'</small></td>';
-									str+='<td>'+result[i].locationVotersVOList[j].femaleVoters+' <small class="text-success">'+result[i].locationVotersVOList[j].femaleVoters+'</small></td>';
-									str+='<td>'+result[i].locationVotersVOList[j].femaleCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].femaleCadrePerc+'</small></td>';
-								str+='</tr>';
-								str+='<tr class="td-expand-body" collapseBodyId="td-expand-'+result[i].locationVotersVOList[j].ageRangeId+'">';
-								str+='<td colspan="8" class="top-arrow" id="expandCaste'+result[i].locationVotersVOList[j].ageRangeId+'"></td></tr>';
-							}
-								
-								
-							str+='</tbody>';
-						str+='</table>';
-					str+='</div>';
+				
+		}
+		str+='</ul>';
+		str+='<div class="tab-content">';
+		for(var i in result){
+			if(i==0){
+				str+='<div role="tabpanel" class="tab-pane active pad_10" id="'+result[i].ageRange+'">';
+			}else{
+				str+='<div role="tabpanel" class="tab-pane  pad_10" id="'+result[i].ageRange+'">';
 			}
+				
+				
+			str+='<h4 class="panel-title text-capitalize">Caste Wise - Voter & Cadre Information b/w age group</h4>';
+				str+='<div class="scroller'+result[i].ageRange+'">';
+					str+='<table class="table table-noborder">';
+						str+='<thead class="text-capitalize">';
+							str+='<th>Caste Name</th>';
+							str+='<th>voters</th>';
+							str+='<th>cadres </th>';
+							str+='<th>Male(V) </th>';
+							str+='<th>Male(C) </th>';
+							str+='<th>FeMale(V) </th>';
+							str+='<th>FeMale(C) </th>';
+						str+='</thead>';
+						str+='<tbody>';
+						for(var j in result[i].locationVotersVOList){
+							str+='<tr>';
+								str+='<td><i class="glyphicon glyphicon-plus td-expand-icon expandCasteIconCls" collapseid="td-expand-'+result[i].locationVotersVOList[j].ageRangeId+'" attr_caste_name="'+result[i].locationVotersVOList[j].ageRange+'" attr_caste_group_id="'+result[i].ageRangeId+'" attr_caste_id="'+result[i].locationVotersVOList[j].ageRangeId+'"></i> '+result[i].locationVotersVOList[j].ageRange+'</td>';
+								str+='<td>'+result[i].locationVotersVOList[j].totalVoters+' <small class="text-success">'+result[i].locationVotersVOList[j].totalVotersPerc+'%</small></td>';
+								str+='<td>'+result[i].locationVotersVOList[j].totalCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].totalCadrePerc+'</small></td>';
+								str+='<td>'+result[i].locationVotersVOList[j].maleVoters+' <small class="text-success">'+result[i].locationVotersVOList[j].maleVotersPerc+'</small></td>';
+								str+='<td>'+result[i].locationVotersVOList[j].maleCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].maleCadrePerc+'</small></td>';
+								str+='<td>'+result[i].locationVotersVOList[j].femaleVoters+' <small class="text-success">'+result[i].locationVotersVOList[j].femaleVoters+'</small></td>';
+								str+='<td>'+result[i].locationVotersVOList[j].femaleCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].femaleCadrePerc+'</small></td>';
+							str+='</tr>';
+							str+='<tr class="td-expand-body" collapseBodyId="td-expand-'+result[i].locationVotersVOList[j].ageRangeId+'">';
+							str+='<td colspan="8" class="top-arrow" id="expandCaste'+result[i].locationVotersVOList[j].ageRangeId+'"></td></tr>';
+						}
+							
+							
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
 			str+='</div>';
+		}
 		str+='</div>';
 		$("#rightSideCasreGroupDtsDivId").html(str);		 
-	}
-	
+		responsiveTabs();
+		for(var i in result)
+		{
+			if(result[i].locationVotersVOList.length > 20)
+			{
+				$(".scroller"+result[i].ageRange).mCustomScrollbar({setHeight: '700px'});
+			}
+		}
+	}	
 }
 
+$(document).on("click","#getLocationDetails",function(){	
+	
+});
+$(document).on("click","[refresh]",function(){	
+	var blockName = $(this).attr("refresh");
+	if(blockName == 'casteInfo')
+	{
+		getCasteGroupNAgeWiseVoterNCadreCounts("voter")
+	}else if(blockName == 'cadreInfor')
+	{
+		getLocationTypeWiseCadreCount();
+		getAgeRangeGenerAndCasteGroupByCadreCount(1);
+	}else if(blockName == 'news')
+	{
+		getPrintMediaCountsForConstituencyPage()
+		getLeadersInNewsForConstituencyPage();
+	}else if(blockName == 'problems')
+	{
+		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage("overAll")
+		for(var i in propertyIdGlobalStr){
+			getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i])
+		}
+	}
+});
 $(document).on("click","[role='casteGrouplist'] li",function(){	
-		$(this).parent("ul").find("li").removeClass("active");
-		$(this).addClass("active");
-		var groupType = $(this).attr("attr_type");
-		$(".casteGroupTypeDiv li").removeClass("active")
-		$(".casteGroupTypeDiv li:nth-child(1)").addClass("active");
-		buildCasteGroupNAgeWiseVoterNCadreCounts(globalCasteWiseResult,groupType);
-		buildCasteGroupNAgeWiseGraphView(globalCasteWiseResult,groupType,"BC")
+	$(this).parent("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+	var groupType = $(this).attr("attr_type");
+	$(".casteGroupTypeDiv li").removeClass("active")
+	$(".casteGroupTypeDiv li:nth-child(1)").addClass("active");
+	buildCasteGroupNAgeWiseVoterNCadreCounts(globalCasteWiseResult,groupType);
+	buildCasteGroupNAgeWiseGraphView(globalCasteWiseResult,groupType,"BC")
 });
 
 $(document).on("click",".casteGroupTypeDiv li",function(){
-		$(this).parent("ul").find("li").removeClass("active");
-		$(this).addClass("active");
-		var casteType = $(this).attr("attr_type");
-		var groupType="";
-		 $("[role='casteGrouplist'] li").each(function(){
-			if($(this).hasClass("active")){
-				groupType =$(this).attr("attr_type"); 
-			}
-		});
-		buildCasteGroupNAgeWiseGraphView(globalCasteWiseResult,groupType,casteType);
+	$(this).parent("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+	var casteType = $(this).attr("attr_type");
+	var groupType="";
+	 $("[role='casteGrouplist'] li").each(function(){
+		if($(this).hasClass("active")){
+			groupType =$(this).attr("attr_type"); 
+		}
+	});
+	buildCasteGroupNAgeWiseGraphView(globalCasteWiseResult,groupType,casteType);
 });
 
 
@@ -977,13 +1133,13 @@ function buildLocationTypeWiseCadreCount(result){
 }
 
 $(document).on("click",".yearCadreDetails",function(){
-		$(".yearCadreDetails").removeClass("cadreBorderStyle");
-		$(this).addClass("cadreBorderStyle");
-		var yearId = $(this).attr("attr_enrollmentId");
-		getAgeRangeGenerAndCasteGroupByCadreCount(yearId)
-	});
+	$(".yearCadreDetails").removeClass("cadreBorderStyle");
+	$(this).addClass("cadreBorderStyle");
+	var yearId = $(this).attr("attr_enrollmentId");
+	getAgeRangeGenerAndCasteGroupByCadreCount(yearId)
+});
 function getAgeRangeGenerAndCasteGroupByCadreCount(yearId){
-	$("#cadreInfoGraphBar").html(spinner);
+	$("#cadreInfoGraphBar,#cadreInfoTableView").html(spinner);
 	jsObj={
 		locationType:"constituency",
 		locationValue:232,
@@ -1002,6 +1158,47 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(yearId){
 	});	
 }
 function buildAgeRangeGenerAndCasteGroupByCadreCount(result,yearId){
+	if(result !=null && result.length>0){
+		var str='';
+		var totalCount=0;
+		var totalPerc=0;
+		str+='<table class="table table-noborder table-noborder-hover m_top10">';
+			str+='<thead class="bg-E9">';
+				str+='<th ></th>';
+				str+='<th class="text-center">Total</th>';
+				//str+='<th><span class="text-success">%</span></th>';
+				if(result[0].casteGroupList !=null && result[0].casteGroupList.length>0){
+					str+='<th class="text-center">Male</th>';
+					str+='<th class="text-center"><span class="text-success">%</span></th>';
+					str+='<th class="text-center">Female</th>';
+					str+='<th class="text-center"><span class="text-success">%</span></th>';
+					for(var i in result[0].casteGroupList){
+						str+='<th class="text-center">'+result[0].casteGroupList[i].name+'</th>';
+						str+='<th class="text-center"><span class="text-success">%</span></th>';
+					}
+				}
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td class="text-center">'+result[i].name+'</td>';
+					str+='<td class="text-center">'+result[i].toalCadreCount+'</td>';
+					str+='<td class="text-center">'+result[i].maleCount+'</td>';
+					str+='<td class="text-center">'+result[i].malePercentage+'</td>';
+					str+='<td class="text-center">'+result[i].femaleCount+'</td>';
+					str+='<td class="text-center">'+result[i].femalePercentage+'</td>';
+					if(result[i].casteGroupList !=null && result[i].casteGroupList.length>0){
+						for(var j in result[i].casteGroupList){
+							str+='<td class="text-center">'+result[i].casteGroupList[j].toalCadreCount+'</td>';
+							str+='<td class="text-center">'+result[i].casteGroupList[j].percentage+'</td>';
+						}		
+					}
+				str+='</tr>';
+			}
+			str+='</tbody>';
+		str+='</table>';
+		$("#cadreInfoTableView").html(str);
+	}
 		var ageRangeNameArr =[];
 		var cadreCntArr = [];
 		var count = [];
@@ -1108,7 +1305,7 @@ function buildAgeRangeGenerAndCasteGroupByCadreCount(result,yearId){
 	}
 }
 function getPrintMediaCountsForConstituencyPage(){
-	
+	$("#newsMainBlockDivId").html(spinner);
 	var userAccessLevelValuesArray=[232];
 	var userAccessLevelId=5;
 	var state="ap";
@@ -1219,11 +1416,11 @@ function getLeadersInNewsForConstituencyPage(){
 		url: "http://localhost:8080/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+stateId
 		
 	}).then(function(result){
-		
+		buildLeadersInNewsForConstituencyPage(result)
 	});
 }	
 function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
-	
+	$("#overAllAnalysisProbDivId").html(spinner);
 	var userAccessLevelValuesArray=232;
 	var userAccessLevelId=5;
 	var state="ap";
@@ -1280,43 +1477,43 @@ function buildDetailedGovtOverAllAnalysisProblemsForView(result,typeValue){
 				str+='</div>';
 			str+='</div>';
 			
-				str+='<div class="panel-group m_top10" id="problemsCollapse" role="tablist" aria-multiselectable="true">';
-				for(var i in result){
-					str+='<div class="panel panel-default">';
-						str+='<div class="panel-heading bg-fff" role="tab" id="heading'+i+'">';
-						if(i == 0){
-							str+='<a role="button"  data-toggle="collapse" class="collapseIcon" data-parent="#problemsCollapse" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
-							  	str+='<h4 class="panel-title text-capital"><b>Probem Can be Solved'+result[i].name+'</b></h4>';
-							str+='</a>';
-						}else{
-							str+='<a role="button" class = "collapsed collapseIcon" data-toggle="collapse"  data-parent="#problemsCollapse" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
-							  	str+='<h4 class="panel-title text-capital"><b>Probem Can be Solved '+result[i].name+'</b></h4>';
-							str+='</a>';
-						}
-							
-							
-						str+='</div>';
-					
-						if(i == 0){
-							str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
-						}else{
-							str+='<div id="collapse'+i+'" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading'+i+'">';
-						}
+			str+='<div class="panel-group m_top10" id="problemsCollapse" role="tablist" aria-multiselectable="true">';
+			for(var i in result){
+				str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading bg-fff" role="tab" id="heading'+i+'">';
+					if(i == 0){
+						str+='<a role="button"  data-toggle="collapse" class="collapseIcon" data-parent="#problemsCollapse" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+							str+='<h4 class="panel-title text-capital"><b>Probem Can be Solved'+result[i].name+'</b></h4>';
+						str+='</a>';
+					}else{
+						str+='<a role="button" class = "collapsed collapseIcon" data-toggle="collapse"  data-parent="#problemsCollapse" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+							str+='<h4 class="panel-title text-capital"><b>Probem Can be Solved '+result[i].name+'</b></h4>';
+						str+='</a>';
+					}
 						
-						  	str+='<div class="panel-body">';
-								str+='<div class="row">';
-									str+='<div class="col-sm-12">';
-										str+='<div id="problemsContsDivId'+i+'"></div>';
-									str+='</div>';
+						
+					str+='</div>';
+				
+					if(i == 0){
+						str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+					}else{
+						str+='<div id="collapse'+i+'" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading'+i+'">';
+					}
+					
+						str+='<div class="panel-body">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-12">';
+									str+='<div id="problemsContsDivId'+result[i].id+'"></div>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
-					 str+=' </div>';
-				}
-					  
-					 
 					str+='</div>';
-					
+				 str+=' </div>';
+			}
+				  
+				 
+			str+='</div>';
+				
 			$("#overAllAnalysisProbDivId").html(str);
 			
 			var overAllAnalysisMainArr=[];
@@ -1334,62 +1531,97 @@ function buildDetailedGovtOverAllAnalysisProblemsForView(result,typeValue){
 				overAllAnalysisMainArr.push(obj);
 			}
 			var id = 'problemsDetailedGraph';
-				var type = {
-					type: 'pie',
-					backgroundColor:'transparent',
-					options3d: {
-						enabled: true,
-						alpha: 25
-					}
-				};
-				var title = {
-					text: ''
-				};
-				var tooltip={};
-				var plotOptions ={ 
-					pie: {
-						innerSize: 110,
-						depth: 80,
-						dataLabels:{
-							useHTML: true,
-							enabled: false,
-							  formatter: function() {
-									if (this.y === 0) {
-										return null;
-									} else {
-										return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
-									}
-								} 
-						},
-						showInLegend: false
+			var type = {
+				type: 'pie',
+				backgroundColor:'transparent',
+				options3d: {
+					enabled: true,
+					alpha: 25
+				}
+			};
+			var title = {
+				text: ''
+			};
+			var tooltip={};
+			var plotOptions ={ 
+				pie: {
+					innerSize: 110,
+					depth: 80,
+					dataLabels:{
+						useHTML: true,
+						enabled: false,
+						  formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+								}
+							} 
 					},
-				};
-				var data = [{
-					name: '',
-					data: overAllAnalysisMainArr
-				}];
+					showInLegend: false
+				},
+			};
+			var data = [{
+				name: '',
+				data: overAllAnalysisMainArr
+			}];
 				
-					highcharts(id,type,data,plotOptions,title,tooltip);
+			highcharts(id,type,data,plotOptions,title,tooltip);
 		}
 	}else{
 		var collapse='';
-			collapse+='<table class="table table-noborder f-12">';
-				for(var i in result){
-					collapse+='<tr>';
-						collapse+='<td><p><span class="overAllProbClr" style="background-color:'+globalColorNews[result[i].name]+'"></span>&nbsp;&nbsp;&nbsp; <span style="margin-left: 10px;">'+result[i].name+'</span></p></td>';
-						collapse+='<td>'+result[i].count+'</td>';
-					collapse+='</tr>';
-				}
-			collapse+='</table>';
-			
-				if(typeValue == 26){
-					$("#problemsContsDivId0").html(collapse);
-				}else if(typeValue == 28){
-					$("#problemsContsDivId1").html(collapse);
-				}else if(typeValue == 29){
-					$("#problemsContsDivId2").html(collapse);
-				}else if(typeValue == 32){
-					$("#problemsContsDivId3").html(collapse);
-				}
+		collapse+='<table class="table table-noborder f-12">';
+			for(var i in result){
+				collapse+='<tr>';
+					collapse+='<td><p><span class="overAllProbClr" style="background-color:'+globalColorNews[result[i].name]+'"></span>&nbsp;&nbsp;&nbsp; <span style="margin-left: 10px;">'+result[i].name+'</span></p></td>';
+					collapse+='<td>'+result[i].count+'</td>';
+				collapse+='</tr>';
+			}
+		collapse+='</table>';
+		
+		if(typeValue == 28){
+			$("#problemsContsDivId"+typeValue).html(collapse);
+        }else if(typeValue == 29){
+			$("#problemsContsDivId"+typeValue).html(collapse);
+        }else if(typeValue == 32){
+			$("#problemsContsDivId"+typeValue).html(collapse);
+        }else if(typeValue == 26){
+			$("#problemsContsDivId"+typeValue).html(collapse);
+        }
+	}
+}
+
+function  buildLeadersInNewsForConstituencyPage(result){
+	if(result !=null && result.length>0){
+		var str='';
+		str+='<div class="panel panel-default">';
+			str+='<div class="panel-heading bg-fff">';
+				str+='<h4 class="panel-title">leaders in news</h4>';
+			str+='</div>';
+			str+='<div class="panel-body pad_0">';
+				str+='<table class="table table-noborder f-12">';
+					str+='<thead class="bg-E9 text-capitalize">';
+						str+='<th>leader name</th>';
+						str+='<th>designation</th>';
+						str+='<th>positive</th>';
+						str+='<th>negative</th>';
+					str+='</thead>';
+					str+='<tbody>';
+					for(var i in result){
+						str+='<tr>';
+							str+='<td>';
+								str+='<img src="images/candidates/'+result[i].name+'.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/>'+result[i].name+'';
+							str+='</td>';
+							str+='<td>'+result[i].isNewsBulletin+'</td>';
+							str+='<td class="text-center">'+result[i].positiveCount+'</td>';
+							str+='<td class="text-center">'+result[i].negativeCount+'</td>';
+						str+='</tr>';
+					}
+            
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+		$("#leadersMainBlockDivId").html(str);
 	}
 }
