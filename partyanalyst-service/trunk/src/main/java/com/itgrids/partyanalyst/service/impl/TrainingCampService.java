@@ -12595,16 +12595,48 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 						}
 					}
 				}else{
+					//srujana
+					Long partMeetingId = null;
+					KeyValueVO vo  = null;
+					List<Long>	partMeetingIds = new ArrayList<Long>();
+					Map<Long,KeyValueVO> map= new HashMap<Long,KeyValueVO>();
 					qryrslt = partyMeetingDocumentDAO.getMinuteAtrDocumentSummaryForMeetingsList(partymeetingIdsList,type,accessType,valuesList);
 					if(qryrslt != null && qryrslt.size()>0){
 						for (Object[] objects : qryrslt) {
-							KeyValueVO vo = new KeyValueVO();
-							vo.setName(objects[0].toString()+"-path-"+objects[1].toString());
-							voList.add(vo);
+							  vo = new KeyValueVO();
+							vo.setName(objects[1].toString()+"-path-"+objects[2].toString());
+							vo.setPath(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							vo.setPartyMetingName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							vo.setDate(commonMethodsUtilService.getStringValueForObject(objects[4]));
+							vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							partMeetingId =commonMethodsUtilService.getLongValueForObject(objects[0]);
+							map.put(partMeetingId, vo);
+							partMeetingIds.add(partMeetingId);
+							//voList.add(vo);
+						}
+					}
+					String path = "";
+					if(partMeetingIds != null && partMeetingIds.size()>0){
+					List<Object[]>	meetingPath = partyMeetingDocumentDAO.getPartyMeetingFilesId(partMeetingIds,type);
+					if(partMeetingIds != null && partMeetingIds.size()>0){
+						for(Object[] param : meetingPath){
+							partMeetingId = commonMethodsUtilService.getLongValueForObject(param[0]);
+							path =commonMethodsUtilService.getStringValueForObject(param[1]);
+							vo = map.get(partMeetingId);
+							if(vo != null){
+								vo.getImageList().add(path);
+							}
+						}
+					  }
+						
+					}
+					if(commonMethodsUtilService.isMapValid(map) ){
+						for (Map.Entry<Long, KeyValueVO> entrySet : map.entrySet()) {
+							voList.add(entrySet.getValue());
 						}
 					}
 				}
-			}
+			}			 
 		} catch (Exception e) {
 			LOG.error(" Error Occured in getAllMomAtrClickDetails method in TraininingCampService class" ,e);
 		}

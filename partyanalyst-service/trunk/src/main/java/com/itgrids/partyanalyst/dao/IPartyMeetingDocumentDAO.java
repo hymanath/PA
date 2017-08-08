@@ -31,4 +31,5 @@ public interface IPartyMeetingDocumentDAO extends GenericDao<PartyMeetingDocumen
 	
 	public List<Object[]> getImagesCountsForPartyMeetings(List<Long> partyMeetingIds);
 	public List<Object[]> getMinuteAtrDocumentSummaryForMeetingsList(List<Long> partyMeetingIds,String type,String accessType,List<Long> accessValue);
+	public List<Object[]> getPartyMeetingFilesId(List<Long> partMeetingIds,String type);
 }

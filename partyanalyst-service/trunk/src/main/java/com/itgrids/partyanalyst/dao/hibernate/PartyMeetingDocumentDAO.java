@@ -700,19 +700,23 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 		
 		StringBuilder str = new StringBuilder();
 		
-		 str.append(" select model.path,model.documentName,model.partyMeeting.meetingName from PartyMeetingDocument model " +
-				" where model.isDeleted='N' and model.partyMeeting.partyMeetingId in (:partyMeetingIds) and model.documentType=:type ");
+		 str.append(" select distinct model.partyMeeting.partyMeetingId,model.path,model.documentName,model.partyMeeting.meetingName,date(model.partyMeeting.startDate) from PartyMeetingDocument model " +
+				" where model.isDeleted='N' and model.partyMeeting.partyMeetingId in (:partyMeetingIds)");
 		
 		if(accessType !=null && accessType.equalsIgnoreCase("MP") && accessValues.size()>0){
 			str.append(" and  model.partyMeeting.meetingAddress.constituency.constituencyId in (:accessValues) ");
 		}else if(accessType !=null && accessType.equalsIgnoreCase("DISTRICT") && accessValues.size()>0){
 			str.append(" and  model.partyMeeting.meetingAddress.district.districtId in (:accessValues) ");
 		}
-		
+		if(type != null && type.equalsIgnoreCase("momText") || type != null && type.equalsIgnoreCase("ATR") || type != null && type.equalsIgnoreCase("MINUTE") || type != null && type.equalsIgnoreCase("atrText") ){
+			str.append(" and model.documentType=:type ");
+		}
 		Query query = getSession().createQuery(str.toString());
 		
-		query.setParameterList("partyMeetingIds", partyMeetingIds);
-		query.setParameter("type", type);
+		   query.setParameterList("partyMeetingIds", partyMeetingIds);
+		if(type != null && type.equalsIgnoreCase("momText") || type != null && type.equalsIgnoreCase("ATR") || type != null && type.equalsIgnoreCase("MINUTE") || type != null && type.equalsIgnoreCase("atrText") ){
+		   query.setParameter("type", type);
+		}
 		
 		if(accessType !=null && ( accessType.equalsIgnoreCase("MP") || accessType.equalsIgnoreCase("DISTRICT") ) &&  accessValues.size()>0){
 			query.setParameterList("accessValues", accessValues);
@@ -722,4 +726,24 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 		
 	
 	}
+public List<Object[]> getPartyMeetingFilesId(List<Long> partMeetingIds,String type){
+		StringBuilder str = new StringBuilder();
+		 str.append(" select distinct model.partyMeeting.partyMeetingId,model.path from PartyMeetingDocument model " +
+				" where model.isDeleted='N' " );
+		 if(partMeetingIds != null && partMeetingIds.size()>0){
+			 str.append(" and model.partyMeeting.partyMeetingId in(:partMeetingIds) ");
+		 }
+		 if(type != null && type.equalsIgnoreCase("momText") || type != null && type.equalsIgnoreCase("ATR") || type != null && type.equalsIgnoreCase("MINUTE") || type != null && type.equalsIgnoreCase("atrText") ){
+				str.append(" and model.documentType=:type ");
+			}
+		Query query = getSession().createQuery(str.toString());
+		if(partMeetingIds != null && partMeetingIds.size()>0){
+			query.setParameterList("partMeetingIds", partMeetingIds);
+		 }
+		if(type != null && type.equalsIgnoreCase("momText") || type != null && type.equalsIgnoreCase("ATR") || type != null && type.equalsIgnoreCase("MINUTE") || type != null && type.equalsIgnoreCase("atrText") ){
+			query.setParameter("type", type);
+		}
+		return query.list();	
+	}
+
 }

@@ -1704,10 +1704,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 					}
 					if(obj[1].toString().equalsIgnoreCase("ATR")){
 						temp.setAtrFilesExist(true);
-						temp.setAtrFilesCount(Long.valueOf(obj[2].toString()));
-					}else{
+						temp.setAtrFilesCount(temp.getAtrFilesCount()+Long.valueOf(obj[2].toString()));
+					}else if(obj[1].toString().equalsIgnoreCase("MINUTE")){
 						temp.setMomFilesExist(true);
-						temp.setMomFilesCount(Long.valueOf(obj[2].toString()));
+						temp.setMomFilesCount(temp.getMomFilesCount()+Long.valueOf(obj[2].toString()));
 					}
 					if(isNew){
 						finalVOLst.add(temp);
@@ -1726,7 +1726,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 						temp.setMeetingId(meetingId);
 					}
 					temp.setMomTextExist(true);
-					temp.setMomPointsCount(Long.valueOf(obj[1].toString()));
+					temp.setMomPointsCount(temp.getMomPointsCount()+Long.valueOf(obj[1].toString()));
 					
 					if(isNew){
 						finalVOLst.add(temp);
@@ -1745,7 +1745,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 						temp.setMeetingId(meetingId);
 					}
 					temp.setAtrTextExist(true);
-					temp.setAtrTextCount(Long.valueOf(obj[1].toString()));
+					temp.setAtrTextCount(temp.getAtrTextCount()+Long.valueOf(obj[1].toString()));
 					
 					if(isNew){
 						finalVOLst.add(temp);
