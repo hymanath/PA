@@ -217,9 +217,14 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-sm-12">
+							<div class="col-sm-11">
 								<div id="tourSlider"></div>
 							</div>
+							<div class="col-sm-1">
+								<div><button type="button" class="btn btn-primary btn-sm" style="border-top-width: 1px; padding-top: 5px; margin-top: 20px;" id="getRangeId">submit</button></div>
+							</div>
+						</div>
+						<div class="row">
 							<div class="col-sm-12 m_top20">
 								<div  id="rankDivId"></div>
 							</div>
