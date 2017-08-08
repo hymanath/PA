@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DAILY SPIKE REPORT</title>
 <link href="Assests/css/bootstrap.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/css/custom.less" type="text/less" rel="stylesheet"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -202,20 +204,30 @@
 	<section class="m_top20">     
 		<div class="container-fluid">
 			<div class="col-sm-12">
-				<div class="row">
-					<div class="col-sm-4">
-						<h3>RANK WISE ANALYSIS</h3>   
-					</div>   
-					<div class="col-sm-8">
-						<p class="m_top10"><span class="pull-right">D - DISTRICT , C - CONSTITUENCY , M - MANDAL , T -  TOWN , D - DIVISION</span></p>
+				<div class="panel panel-default panel-black">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-sm-4">
+								<h4 class="panel-title">RANK WISE ANALYSIS</h4>
+							</div>   
+							<div class="col-sm-8">
+								<p><span class="pull-right">D - DISTRICT , C - CONSTITUENCY , M - MANDAL , T -  TOWN , D - DIVISION</span></p>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-12">
+								<div id="tourSlider"></div>
+							</div>
+							<div class="col-sm-12 m_top20">
+								<div  id="rankDivId"></div>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div class="row">
-					
-					<div class="col-sm-12">
-						<div  id="rankDivId"></div>
-					</div>
-				</div>
+				
+				
 			</div>
 		</div>
 	</section>  
@@ -261,10 +273,8 @@
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="Assests/Plugins/SlickSliderNew/slick.min.js" type="text/javascript"></script>   
+<script src="Assests/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>   
+<script src="Assests/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>   
 <script src="Assests/dailySpileReport/dailySpileReport.js" type="text/javascript"></script> 
-
-<script>   
-  
-</script>
 </body>
 </html>
