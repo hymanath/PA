@@ -6657,9 +6657,7 @@ public Map<Long,Long> getMaxDaysAttendedInBatch(Map<Long,Map<Long,Long>> batchMe
 	
 	return memMaxDayCnt;
 }
-public List<IdNameVO> getStateLevelCampAttendedDetailsDyaWise(
-		List<Long> programIdList, Long stateId, String dateStr,
-		String option, List<Long> enrollYrIds) {
+public List<IdNameVO> getStateLevelCampAttendedDetailsDyaWise(List<Long> programIdList, Long stateId, String dateStr,String option, List<Long> enrollYrIds) {
 	LOG.info(" entered in to getStateLevelCampAttendedDetails() of CoreDashBoardMainService ");
 	try {
 		DateUtilService dateUtilService = new DateUtilService();
@@ -7163,7 +7161,7 @@ public void setDayWiseCountToProgramWiseVO(TrainingCampProgramVO programVO,List<
 						} 
 						
 						matchedVO.setTotalAttenedCount( matchedVO.getNonInviteeAttended()+matchedVO.getInviteeAttended());
-						matchedVO.setTotalAttenedCountPer(calculatePercantage(matchedVO.getInviteeAttended(),	programVO.getInviteeAttended()));
+						
 				}
 			}
 		
@@ -7180,6 +7178,9 @@ public void setInviteeAndNonInviteeCount(TrainingCampProgramVO programVO){
 				programVO.setNonInviteeAttended(programVO.getNonInviteeAttended()+dayVo.getNonInviteeAttended());
 				programVO.setTotalAttenedCount(programVO.getInviteeAttended()+programVO.getNonInviteeAttended());
 		}
+		for(TrainingCampProgramVO dayVo :programVO.getLocationList()){
+			dayVo.setTotalAttenedCountPer(calculatePercantage(dayVo.getInviteeAttended(),	programVO.getInviteeAttended()));
+	}
 			
 	}catch(Exception e){
 		e.printStackTrace();
