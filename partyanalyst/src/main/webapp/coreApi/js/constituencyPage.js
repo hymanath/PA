@@ -42,13 +42,41 @@ function onLoadAjaxCalls()
 	//News Block
 	getPrintMediaCountsForConstituencyPage()
 	getLeadersInNewsForConstituencyPage();
-	
+	getActivityStatusList();
 	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage("overAll")
 	for(var i in propertyIdGlobalStr){
 		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i])
 	}
 }
-
+$(document).on("click","[menu-click]",function()
+{
+	var levelId = $(this).attr("levelId");
+	var locationId = $(this).attr("menu-click");
+	var levelName = $(this).attr("menu-levelname");
+	$("[menu-name="+levelName+"]").html($(this).html());
+	$("[levelId="+levelId+"],[menu-name]").removeClass("active");
+	$(this).addClass("active");
+	$("[menu-name="+levelName+"]").addClass("active");
+	if(levelId != '5' || levelId != 5)
+	{
+		menuCalls(levelId,locationId,'')
+	}else{
+		menuCalls(levelId,locationId,$("#constituencysMenu li.active").attr("menu-click"))
+	}	
+});
+$(document).on("click","[menu-name]",function(e){
+	e.stopPropagation();
+	$(".menu-dropdown").show();
+	$("[menu-name]").removeClass("active");
+	$(this).addClass("active");
+});
+$(document).on("click",".menu-dropdown",function(e){
+	e.stopPropagation();
+});
+$(document).on("click",function(e){
+	$(".menu-dropdown").hide();
+	$("[menu-name]").removeClass("active");
+});
 function menuCalls(levelId,levelValue,higherLevelVal)
 {
 	if(levelId == '2')
@@ -137,35 +165,7 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 			$(".scroller"+divId).mCustomScrollbar({setHeight:'480px'})
 		}
 	}
-	$(document).on("click","[menu-click]",function()
-	{
-		var levelId = $(this).attr("levelId");
-		var locationId = $(this).attr("menu-click");
-		var levelName = $(this).attr("menu-levelname");
-		$("[menu-name="+levelName+"]").html($(this).html());
-		$("[levelId="+levelId+"],[menu-name]").removeClass("active");
-		$(this).addClass("active");
-		$("[menu-name="+levelName+"]").addClass("active");
-		if(levelId != '5' || levelId != 5)
-		{
-			menuCalls(levelId,locationId,'')
-		}else{
-			menuCalls(levelId,locationId,$("#constituencysMenu li.active").attr("menu-click"))
-		}	
-	});
-	$(document).on("click","[menu-name]",function(e){
-		e.stopPropagation();
-		$(".menu-dropdown").show();
-		$("[menu-name]").removeClass("active");
-		$(this).addClass("active");
-	});
-	$(document).on("click",".menu-dropdown",function(e){
-		e.stopPropagation();
-	});
-	$(document).on("click",function(e){
-		$(".menu-dropdown").hide();
-		$("[menu-name]").removeClass("active");
-	});
+	
 }
 function subStr(name,noOfChar){
 	ellipsetext=".."
