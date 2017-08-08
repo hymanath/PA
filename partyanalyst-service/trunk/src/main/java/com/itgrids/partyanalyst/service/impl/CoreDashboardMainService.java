@@ -7155,11 +7155,12 @@ public void setDayWiseCountToProgramWiseVO(TrainingCampProgramVO programVO,List<
 			for(TrainingCampProgramVO dayVo :list){
 					TrainingCampProgramVO matchedVO = getMatchVO(programVO.getLocationList(),dayVo.getId());
 						if(matchedVO != null){
-							matchedVO.setNonInviteeAttended(matchedVO.getNonInviteeAttended() + dayVo.getNonInviteeAttended());
-							matchedVO.setInviteeAttended(matchedVO.getInviteeAttended() + dayVo.getInviteeAttended());
+							matchedVO.setNonInviteeAttended(matchedVO.getNonInviteeAttended() + dayVo.getNonInviteeAttended()+dayVo.getOthersCount());
 							matchedVO.setOthersCount(dayVo.getOthersCount());
+							matchedVO.setInviteeAttended(matchedVO.getInviteeAttended() + dayVo.getInviteeAttended());
+							
 						} 
-					matchedVO.setTotalAttenedCount(matchedVO.getTotalAttenedCount()+ dayVo.getTotalAttenedCount()+dayVo.getOthersCount());
+					matchedVO.setTotalAttenedCount( matchedVO.getNonInviteeAttended()+matchedVO.getInviteeAttended());
 					matchedVO.setTotalAttenedCountPer(calculatePercantage(matchedVO.getInviteeAttended(),	programVO.getInviteeAttended()));
 				}
 			}
