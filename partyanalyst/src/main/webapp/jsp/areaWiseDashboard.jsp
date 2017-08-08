@@ -11,7 +11,7 @@
 <link href="coreApi/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="coreApi/css/custom.css" rel="stylesheet" type="text/css">
 <link href="coreApi/css/responsive.css" rel="stylesheet" type="text/css">
-<link href="coreApi/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
+<link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="dist/slick/slick.css" type="text/less" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
@@ -43,6 +43,37 @@
 <section>
 	<div class="container">
 		<div class="row">
+		 	<div class="col-md-12 col-xs-12 col-sm-12">
+				<h2>Kavali Constituency Information</h2>
+				<ol class="breadcrumb">
+					<!--<li>State : <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>-->
+					<li>District : <span menu-name="districts" levelId="2" locationId="01" class="districtsMenuName">Andhra Pradesh</span></li>
+					<li>Constituency :<span menu-name="constituencys" levelId="3" locationId="01" class="constituencysMenuName"> Andhra Pradesh</span></li>
+					<li>Mandal :<span menu-name="mandals" levelId="4" locationId="01" class="mandalsMenuName"> Andhra Pradesh</span></li>
+					<li>Panchayat :<span menu-name="panchayats" levelId="5" locationId="01" class="panchayatsMenuName"> Andhra Pradesh</span></li>
+				</ol>
+				<div class="menu-dropdown" style="display:none;">
+					<div class="row">
+						<div class="col-sm-3">
+							<div id="districtsMenu"></div>
+						</div>
+						<div class="col-sm-3">
+							<div id="constituencysMenu"></div>
+						</div>
+						<div class="col-sm-3">
+							<div id="mandalsMenu"></div>
+						</div>
+						<div class="col-sm-3">
+							<div id="panchayatsMenu"></div>
+						</div>
+						<div class="col-sm-12 text-right m_top20">
+							<button class="btn btn-success">GET DETAILS</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row m_top20">
 		 	<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="block">
 					<div class="row">
@@ -118,7 +149,7 @@
 				<div id="constituencyVoterInfo"></div>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="casteInfo">
-				<h3>Caste Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<h3>Caste Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="casteInfo"></i></span></h3>
 				<div class="block">
 					<div class="row">
 						
@@ -133,128 +164,32 @@
 							<div id="leftSideCasteGroupWiseDivId"></div>
 							<div id="leftSideCasteGroupWiseGraphId"></div>
 						</div>
-						<div id="rightSideCasreGroupDtsDivId"></div>
-						
+						<div class="col-sm-8">
+							<div id="rightSideCasreGroupDtsDivId"></div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="cadreInfor">
-				<h3>Cadre Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<h3>Cadre Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="cadreInfor"></i></span></h3>
 				<div class="block">
 					<div id="cadreInfoGraphDivId"></div>
 					<div id="cadreInfoGraphBar" style="height:200px;"></div>
 					<div id="cadreInfoTableView"></div>
-					<!--<table class="table table-noborder table-noborder-hover m_top10">
-						<thead class="bg-E9">
-							<th></th>
-							<th>Total</th>
-							<th><span class="text-success">%</span></th>
-							<th>Male</th>
-							<th><span class="text-success">%</span></th>
-							<th>Female</th>
-							<th><span class="text-success">%</span></th>
-							<th>OC</th>
-							<th><span class="text-success">%</span></th>
-							<th>BC</th>
-							<th><span class="text-success">%</span></th>
-							<th>SC</th>
-							<th><span class="text-success">%</span></th>
-						</thead>
-						<tbody>
-							<tr>
-								<td> &lt; 20 years</td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-							</tr>
-							<tr>
-								<td> &lt; 20 years</td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-							</tr>
-							<tr>
-								<td> &lt; 20 years</td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-								<td>2000</td>
-								<td><span class="text-success">2%</span></td>
-							</tr>
-						</tbody>
-					</table>-->
 				</div>
 				
 			</div>
 			
 			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="news">
-				<h3>News <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>		
+				<h3>News <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="news"></i></span></h3>		
 				<div class="block">
 					<div id="newsMainBlockDivId"></div>
-					<!--<div class="panel-group m_top10" id="newsCollapse" role="tablist" aria-multiselectable="true">
-					  <div class="panel panel-default">
-						<div class="panel-heading bg-fff" role="tab" id="headingOne">
-							<a role="button" data-toggle="collapse" class="collapseIcon" data-parent="#newsCollapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-							  	<h4 class="panel-title">leaders in news</h4>
-							</a>
-						</div>
-						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-						  	<div class="panel-body pad_0">
-								<table class="table table-noborder f-12">
-									<thead class="bg-E9 text-capitalize">
-										<th>leader name</th>
-										<th>designation</th>
-										<th>positive</th>
-										<th>negative</th>
-									</thead>
-									<tbody>
-										<tr>
-											<td>
-												<img src="coreApi/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
-											</td>
-											<td>secretary</td>
-											<td>50%</td>
-											<td>40%</td>
-										</tr>
-									</tbody>
-								</table>
-						  	</div>
-						</div>
-					  </div>
-					</div>
-					<div class="pad_10">
-						<button class="btn btn-success btn-success-white">detailed news information</button>
-					</div>-->
+					<div id="leadersMainBlockDivId"></div>
 				</div>
 			</div>
 			
 			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="problems">
-				<h3>Problems <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>						
+				<h3>Problems <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="problems"></i></span></h3>						
 				<div class="block pad_5">
 					<div id="overAllAnalysisProbDivId"></div>
 					
@@ -486,7 +421,7 @@
 				</div>
 			</div>-->
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="activities">
-				<h3 >Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<h3 >Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="activities"></i></span></h3>
 				<div class="block pad_0" id ="activitesId">
 				</div>
 			</div>
@@ -646,7 +581,8 @@
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
-<script src="coreApi/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <!--<script src="coreApi/js/custom.js" type="text/javascript"></script>-->
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
