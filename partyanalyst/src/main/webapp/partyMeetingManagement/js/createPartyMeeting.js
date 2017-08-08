@@ -64,16 +64,16 @@ function getStates(){
 }
 $(document).on("change", ".meetingLevels", function() {
     $("#locationDivId").show();
-    //$('#mandalSpinnerId').show();
     var meetingLevelId = $('.meetingLevels').val();
 	if(meetingLevelId == ""){
 		 $("#locationDivId").hide();
 	}
    showHideLocation(meetingLevelId);
-    //getMandalBasedOnConstituencyAction(constituencyId);  mandalDivId villageDivId
 });
 
 function showHideLocation(meetingLevelId){
+	
+	
 	 if (meetingLevelId == 1 || meetingLevelId == 9) {
         $("#stateDivId").show();
         $("#districtDivId").hide();
@@ -87,6 +87,7 @@ function showHideLocation(meetingLevelId){
         $("#constituencyDivId").hide();
         $("#mandalDivId").hide();
         $("#villageDivId").hide();
+		
     }
     if (meetingLevelId == 3) {
         $("#stateDivId").show();
@@ -111,13 +112,11 @@ function showHideLocation(meetingLevelId){
     }
     if (meetingLevelId == 0 || meetingLevelId=="") {
 		getStates();
-		//$("#state").html(" ");
         $("#district").html(" ");
         $("#constituency").html(" ");
         $("#mandal").html(" ");
         $("#village").html(" ");
 		
-		//$("#state").append('<option value=' + " " + '>' + "Select State" + '</option>');
         $("#district").append('<option value=' + " " + '>' + "Select District" + '</option>');
         $("#constituency").append('<option value=' + " " + '>' + "Select Constituency" + '</option>');
         $("#mandal").append('<option value=' + " " + '>' + "Select Mandal" + '</option>');
@@ -240,9 +239,7 @@ function getPartyMeetingsTabUserNameByDistrict(type) {
                 if (type == null) {
                     $('#tabusermobilenumberId').html("  " + results[i].constituencyName);
                     $('#tabuserDistrictId').html("  " + results[i].name);
-                    //$('#tabuserId').val(results[i].id);    
                 } else {
-                    //$('#tabuserModelId').val(results[i].id);
                     $('#tabusermobilenumberModelId').html("  " + results[i].constituencyName);
                     $('#tabuserDistrictModelId').html("  " + results[i].name);
                 }
@@ -280,11 +277,6 @@ function buildTabUserDetails(results, meetingId) {
     str += "</table>";
 	str += "</div>";
     $("#tabUserTableDivId").html(str);
-    // $("#tabUserIdDetailsModal").html(str);
-   /* $(".tabUserTableCls").dataTable({
-			paging:false,
-			scrollY:300
-	});*/
     if (meetingId != null) {
         getPartyMeetingTabUserDetailsAction(meetingId);
     }
@@ -458,6 +450,7 @@ function getMandalBasedOnConstituencyAction(constituencyId, type, theshilId, pan
             var mandalId = $("#mandalModelId").val();
             getPanchayatWardByMandalAction(mandalId, constituencyId, type, panchayatId)
         }
+		 
     });
 }
 
@@ -609,11 +602,8 @@ function buildInveeteeDetailsTable(results) {
             str += "+<td>";
             for (var k in results[i].subList[j].inviteeList) {
                 str2 = results[i].subList[j].inviteeList[k];
-                // str+="<td>"+results[i].subList[j].inviteeList[k]+"</td>";
                 str += str2 + ', ';
             }
-
-            // str+="+<td>"str2+"</td>";
 
             str += "</td>";
             str += "<td>" + results[i].subList[j].mandalTwnDivision + "</td>";
@@ -677,7 +667,7 @@ function inviteeDetails(results) {
         var meetSubSeVar = results[0].mandalTwnDivisionId;
         getMeetingSubTypeAction(meetingMainTypeId, type, meetSubSeVar);
     }
-    //var count = 0;
+
 function getConstituencyAction(districtId, type, id, theshilId, panchayatId) {
     $('#constituency').html(" ");
     var jsObj = {
@@ -711,8 +701,6 @@ function getConstituencyAction(districtId, type, id, theshilId, panchayatId) {
 }
 
 $("#addSession").on("click", function() {
-    //$(".formIdFind").html(' ');
-    //count++;
     var numberOfSessionTags = $("#createSession > .delSession").length;
     if (numberOfSessionTags < 3) {
         $("#sessionId" + numberOfSessionTags).html(' ');
@@ -902,7 +890,6 @@ function getTdpCadreDetailsForPartyMeetingAction() {
 
 $(document).on("click", ".meetingEditCls", function(){ 
     var meetingId = $(this).attr('id');
-    //var redirectWindow = window.open('editPartyMeetingManagementAction.action?meetingId=' + meetingId + '');
 	var redirectWindow=window.open('editPartyMeetingManagementAction.action?meetingId='+meetingId+'','_self');
 
 });
@@ -953,6 +940,9 @@ function deletePartyMeetingConformation(meetingId,id) {
 $(document).on("change", ".sessionTypeId", function() {
 	 var sessionId=$(this).attr('id');
 	var id=$(this).val();
+	if(id == ""){
+      id=0;
+	}
    var jsObj = {
             partyMeetingSessionId: id
         }
