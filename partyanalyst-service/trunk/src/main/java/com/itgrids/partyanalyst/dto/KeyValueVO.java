@@ -13,7 +13,10 @@ public class KeyValueVO implements Serializable {
 	private Long totalCount = 0l;
 	private List<KeyValueVO> subList = new ArrayList<KeyValueVO>(0);
 	private Long scopeValue = 0l;
-	
+	private String partyMetingName;
+	private String date;
+	private List<String> imageList = new ArrayList<String>(0);
+	private String path;
 	
 	public Long getId() {
 		return id;
@@ -57,4 +60,30 @@ public class KeyValueVO implements Serializable {
 	public void setScopeValue(Long scopeValue) {
 		this.scopeValue = scopeValue;
 	}
+	public String getPartyMetingName() {
+		return partyMetingName;
+	}
+	public void setPartyMetingName(String partyMetingName) {
+		this.partyMetingName = partyMetingName;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public List<String> getImageList() {
+		return imageList;
+	}
+	public void setImageList(List<String> imageList) {
+		this.imageList = imageList;
+	}
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
+	
 }

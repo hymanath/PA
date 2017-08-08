@@ -43,10 +43,10 @@ public class PartyMeetingSummaryVO implements Serializable{
 	private String absentPercentage;
 	private PartyMeetingSummaryVO attendanceInfo; 
 	
-	private Long momPointsCount;
-	private Long momFilesCount;
-	private Long atrFilesCount;
-	private Long atrTextCount;
+	private Long momPointsCount =0l;
+	private Long momFilesCount =0l;
+	private Long atrFilesCount =0l;
+	private Long atrTextCount =0l;
 	private PartyMeetingSummaryVO docTxtInfo;
 	
 	private int meetingsCount;
