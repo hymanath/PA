@@ -545,6 +545,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		try{
 			jObj = new JSONObject(getTask());
 			locationVOList = cadreCommitteeService.getMandalsByConstituency(jObj.getLong("constituencyId"));
+			locationVOList.remove(0);
 		}catch(Exception e){
 			LOG.error("Exception occured in getMandalsByConstituency ",e);
 		}
@@ -556,7 +557,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			String mandalId = jObj.getString("mandalId");
 			Long constituencyId = jObj.getLong("constituencyId");
 			locationVOList=cadreCommitteeService.getPanchayatWardByMandalId(mandalId,constituencyId);
-			
+			locationVOList.remove(0);
 		}catch(Exception e){	
 			LOG.error("Exception occured in getPanchayatWardByMandal() method ",e);
 		}
