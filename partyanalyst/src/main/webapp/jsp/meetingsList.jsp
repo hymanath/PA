@@ -17,10 +17,27 @@
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
 
 <style>
+.modalImagesUl li {
+    background-color: #672f0a;
+    border: 2px solid;
+    color: #fff;
+    display: table-cell;
+    margin: 0 3px;
+    padding: 3px;
+    text-align: center;
+    vertical-align: middle;
+}
+.modalImagesUl li img {
+    display: block;
+    margin: auto;
+}
 .panelWidthCols
 {
 	width:20%;
@@ -139,7 +156,21 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 {
 	margin-top:10px;
 }
-
+.slick-list
+{
+	margin:0px 20px !important;
+}
+.slick-prev ,.slick-next
+{
+	background:#fff;
+	color:#333
+}
+.modalImagesUl
+{ 
+  padding:7px;
+  width:100%;
+  white-space: nowrap;
+}
 </style>
 
 </head>
@@ -520,7 +551,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
     </div>
 </main>
 <div class="modal fade" id="editConductedBtnModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
+  <div class="modal-dialog" role="document" style="width: 80%;">
     <div class="modal-content">
       <div class="modal-body" id="editConductedModalBody">
 		<!--<label>Change Status</label>-->
@@ -548,14 +579,16 @@ h1,h2,h3,h4,h5,h6,p,ul,table
   </div>
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog" role="document"  style="width: 80%;">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="modelTitle"></h4>
       </div>
-      <div class="modal-body" id="modelBody">
-      
+      <div class="modal-body">
+		<div class="row">
+			<div  id="modelBody"></div>
+		</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -563,6 +596,26 @@ h1,h2,h3,h4,h5,h6,p,ul,table
     </div>
   </div>
 </div>
+<!-- srujana-->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:80%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close imageCloseBtnCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modelTitle1"></h4>
+      </div>
+      <div class="modal-body">
+		<div class="row">
+			<div  id="modelBody1"></div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default imageCloseBtnCls" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--<footer>
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>-->
@@ -573,6 +626,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.js" type="text/javascript"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <!--<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>-->
 <script type="text/javascript">
 
@@ -1104,21 +1158,21 @@ var jsonGlob = "";
 						atrText = result[i].docTxtInfo.atrTextCount != null && result[i].docTxtInfo.atrTextCount > 0 ? atrText+result[i].docTxtInfo.atrTextCount : atrText;
 					}					
 				}
-				str+='<td attr_type="MINUTE"';
+				str+='<td attr_type="MINUTE" attr_action_id="'+1+'"';
 				if(momFiles > 0)
 					str+=' class="allMomAtrCountsCls" style="color:green;cursor:pointer"';
 				str+='>'+momFiles+'</td>';
 				str+='<td attr_type="momText"';
 				if(momText > 0)
-					str+=' class="allMomAtrCountsCls" style="color:green;cursor:pointer"';
+					str+=' class="allMomAtrCountsCls" attr_action_id="'+1+'" style="color:green;cursor:pointer"';
 				str+='>'+momText+'</td>';
 				str+='<td attr_type="ATR"';
 				if(atrFiles > 0)
-					str+=' class="allMomAtrCountsCls" style="color:green;cursor:pointer"';
+					str+=' class="allMomAtrCountsCls" attr_action_id="'+1+'" style="color:green;cursor:pointer"';
 				str+='>'+atrFiles+'</td>';
 				str+='<td attr_type="atrText"';
 				if(atrText > 0)
-					str+=' class="allMomAtrCountsCls" style="color:green;cursor:pointer"';
+					str+=' class="allMomAtrCountsCls" attr_action_id="'+1+'" style="color:green;cursor:pointer"';
 				str+='>'+atrText+'</td>';
 				str+='</tr>'
 				str+='</tbody>';
@@ -1226,26 +1280,26 @@ var jsonGlob = "";
 					}
 					
 					
-					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.momFilesCount!=null){
-						str+='<td style="cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="MINUTE">'+result[i].docTxtInfo.momFilesCount+'</td>';
+					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.momFilesCount!=null && result[i].docTxtInfo.momFilesCount>0){
+						str+='<td style="color:green;cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="MINUTE" >'+result[i].docTxtInfo.momFilesCount+'</td>';
 					}else{
 						str+='<td>0</td>';
 					}
 					
-					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.momPointsCount!=null){
-						str+='<td style="cursor:pointer" class="getSummary"  data-toggle="modal" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="momText">'+result[i].docTxtInfo.momPointsCount+'</td>';
+					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.momPointsCount!=null  && result[i].docTxtInfo.momPointsCount>0){
+						str+='<td style="color:green;cursor:pointer" class="getSummary"  data-toggle="modal" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="momText">'+result[i].docTxtInfo.momPointsCount+'</td>';
 					}else{
 						str+='<td>0</td>';
 					}
 					
-					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.atrFilesCount!=null){
-						str+='<td style="cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="ATR">'+result[i].docTxtInfo.atrFilesCount+'</td>';
+					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.atrFilesCount!=null && result[i].docTxtInfo.atrFilesCount>0){
+						str+='<td style="color:green;cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="ATR">'+result[i].docTxtInfo.atrFilesCount+'</td>';
 					}else{
 						str+='<td>0</td>';
 					}
 					
-					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.atrTextCount!=null){
-						str+='<td style="cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="atrText">'+result[i].docTxtInfo.atrTextCount+'</td>';
+					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.atrTextCount!=null && result[i].docTxtInfo.atrTextCount>0){
+						str+='<td style="color:green;cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="atrText">'+result[i].docTxtInfo.atrTextCount+'</td>';
 					}else{
 						str+='<td>0</td>';
 					}
@@ -1727,6 +1781,18 @@ function getLevelWiseMeetingDetails(){
 					{
 						str+='<div class="col-md-4 col-xs-12 col-sm-6">';
 					}
+					var locationLevel;
+					if(result[i].name != null && result[i].name == "STATE"){
+						locationLevel =1;
+					}else if(result[i].name != null && result[i].name == "DISTRICT"){
+						locationLevel =2;
+					}else if(result[i].name != null && result[i].name == "CONSTITUENCY"){
+						locationLevel =3;
+					}else if(result[i].name != null && result[i].name == "MANDAL"){
+						locationLevel =4;
+					}else if(result[i].name != null && result[i].name == "VILLAGE"){
+						locationLevel =5;
+					}
 					
 					
                        	  str+='<div class="panel panel-default panelMeetings">';
@@ -1792,10 +1858,26 @@ function getLevelWiseMeetingDetails(){
 											str+='<td class="tesxt-capital">ATR Text</td>';
 										str+='</tr>';
 										str+='<tr>';
-											str+='<td>'+result[i].momFilesCount+'</td>';
-											str+='<td>'+result[i].momPointsCount+'</td>';
+										  if(result[i].momFilesCount != null && result[i].momFilesCount>0){
+											  str+='<td  style="color:green;cursor:pointer"  class="allMomAtrCountsCls" attr_type="MINUTE" attr_action_id="'+2+'" attr_level_id="'+locationLevel+'"  attr_location_name ="'+result[i].name+'">'+result[i].momFilesCount+'</td>';
+										  }else{
+											 str+='<td>'+result[i].momFilesCount+'</td>';
+										  }
+										  if(result[i].momPointsCount != null && result[i].momPointsCount>0){
+											str+='<td style="color:green;cursor:pointer"  class="allMomAtrCountsCls" attr_type="momText" attr_action_id="'+2+'" attr_level_id="'+locationLevel+'"  attr_location_name ="'+result[i].name+'">'+result[i].momPointsCount+'</td>';
+											}else{
+												str+='<td>'+result[i].momPointsCount+'</td>';
+											}
+										  if(result[i].atrFilesCount != null && result[i].atrFilesCount>0){
+												str+='<td style="color:green;cursor:pointer"  class="allMomAtrCountsCls" attr_type="ATR" attr_action_id="'+2+'" attr_level_id="'+locationLevel+'"  attr_location_name ="'+result[i].name+'" >'+result[i].atrFilesCount+'</td>';
+											}else{
 											str+='<td>'+result[i].atrFilesCount+'</td>';
-											str+='<td>'+result[i].atrTextCount+'</td>';
+											}
+										  if(result[i].atrTextCount != null && result[i].atrTextCount>0){
+												str+='<td style="color:green;cursor:pointer"  class="allMomAtrCountsCls" attr_type="atrText" attr_action_id="'+2+'" attr_level_id="'+locationLevel+'"  attr_location_name ="'+result[i].name+'" >'+result[i].atrTextCount+'</td>';
+											}else{
+											    str+='<td>'+result[i].atrTextCount+'</td>';
+											}
 										str+='</tr>';
 									str+='</tbody>';
 								str+='</table>';
@@ -2243,8 +2325,19 @@ function getVillagesForDistrictId(){
 			}
 		});
  }
-	
-	$(document).on("click",".allMomAtrCountsCls",function(){
+	   var globalImgsMdlCnt = 0;
+	  var jsonGlob1 = "";
+	$(document).on("click",".allMomAtrCountsCls ",function(){
+		$("#modelBody").html("");
+		var id =$(this).attr("attr_action_id");
+		var locationName;
+		var allImages ="";
+				globalImgsMdlCnt = 1;
+		if(id == 1){
+			var modalType = "first";
+			if($("#meetingLocationLevel").val() != null && $("#meetingLocationLevel").val() != 0)
+			 locationName =$("#meetingLocationLevel").val();
+			$("#modelTitle").html(locationName+" "+"Monthly Co-Ordination Meeting");
 		var type = $(this).attr("attr_type");
 		jsonGlob["type"]=$(this).attr("attr_type");
 		$.ajax({
@@ -2255,20 +2348,69 @@ function getVillagesForDistrictId(){
 		}).done(function(result){
 			if(result != null && result.length > 0){
 				var str='';
-				if(type == "MINUTE" || type == "ATR"){
-					for(var i in result){
-						var temp=result[i].name.split("-path-");
-						str+='<div style="border-bottom:1px dashed; padding:5px;"><a href="https://mytdp.com/DocFiles/'+temp[0]+'" target="_tab">'+temp[1]+'</a></div>';
-					}
+			if(type == "MINUTE" || type == "ATR"){
+			        buildAllMonAtrClickDetails(result,type,"","",modalType,"");
 				}else if(type == "momText" || type == "atrText"){
 					for(var i in result){
 						str+='<div style="border-bottom:1px dashed; padding:5px;">'+result[i].name+'</div>';
 					}
+					$("#modelBody").html(str);
+				    $("#myModal").modal("show");
 				}
-				$("#modelBody").html(str);
-				$("#myModal").modal("show");
 			}
 		});
+	}else if(id == 2){
+		var modalType = "second";
+		 locationName =$(this).attr("attr_location_name");
+			$("#modelTitle").html(locationName+" "+" Co-Ordination Meeting");
+		var meetingType = 0;
+		var locationLevel = $(this).attr("attr_level_id");
+		var districtId=[0];
+		var constituencyId=[0];
+		var mandalTownDivisonId=[0];
+		var villageWardId =[0];
+		var dates = $("#datePickerBlockId").val();
+		var startDate = "";
+		var endDate ="";
+		if(dates !=null && dates.length>0){
+			startDate = dates.split("-")[0];
+			endDate = dates.split("-")[1];
+		}
+		var stateId =[1,36];
+		var type = $(this).attr("attr_type");
+		var jsObj =	{
+						meetingType:meetingType,
+						locationLevel:locationLevel,
+						sateId:stateId,
+						districtId:districtId,
+						constituencyId:constituencyId,
+						mandalTownDivisonId:mandalTownDivisonId,
+						villageWardId:villageWardId,
+						startDate:startDate,
+						endDate:endDate,
+						type :type
+					}
+		jsonGlob1 = jsObj;
+		$.ajax({
+			type:"POST",
+			url :"getAllMomAtrClickDetailsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsonGlob1)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				var str='';
+			if(type == "MINUTE" || type == "ATR"){
+			        buildAllMonAtrClickDetails(result,type,"","",modalType,locationLevel);
+				}else if(type == "momText" || type == "atrText"){
+					for(var i in result){
+						str+='<div style="border-bottom:1px dashed; padding:5px;">'+result[i].name+'</div>';
+					}
+					$("#modelBody").html(str);
+				    $("#myModal").modal("show");
+				}
+			}
+		});
+	}
 	});
 	
  function meetingLevelWiseHideShow(){
@@ -2338,8 +2480,205 @@ function getVillagesForDistrictId(){
 			}
 		
 }
-		
 </script>
+<script>
+$(document).on("click",".allMomAtrCountsTypeCls ",function(){
+	$("#modelBody1").html("");
+	$("#myModal1").modal("show");
+	var meetingName =$(this).attr("attr_name");
+	$("#modelTitle1").html(meetingName+" "+"Images");
+	var modalType= $(this).attr("attr_modal_type");
+	var allImages ="viewAll";
+	var meetingId =$(this).attr("attr_id");
+	if(modalType == "first"){
+		var type = $(this).attr("attr_type");
+		var meetingId =$(this).attr("attr_id");
+		jsonGlob["type"]=$(this).attr("attr_type");
+		$.ajax({
+			type:"POST",
+			url :"getAllMomAtrClickDetailsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsonGlob)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildAllMonAtrClickDetails(result,type,allImages,meetingId,modalType,"");
+			}
+		});
+	}else if(modalType == "second"){
+		var meetingType = 0;
+		var locationLevel=$(this).attr("attr_location_level");
+		var districtId=[0];
+		var constituencyId=[0];
+		var mandalTownDivisonId=[0];
+		var villageWardId =[0];
+		var dates = $("#datePickerBlockId").val();
+		var startDate = "";
+		var endDate ="";
+		if(dates !=null && dates.length>0){
+			startDate = dates.split("-")[0];
+			endDate = dates.split("-")[1];
+		}
+		var stateId =[1,36];
+		var type = $(this).attr("attr_type");
+		var jsObj =	{
+						meetingType:meetingType,
+						locationLevel:locationLevel,
+						sateId:stateId,
+						districtId:districtId,
+						constituencyId:constituencyId,
+						mandalTownDivisonId:mandalTownDivisonId,
+						villageWardId:villageWardId,
+						startDate:startDate,
+						endDate:endDate,
+						type :type
+					}
+		jsonGlob1 = jsObj;
+		$.ajax({
+			type:"POST",
+			url :"getAllMomAtrClickDetailsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsonGlob1)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildAllMonAtrClickDetails(result,type,allImages,meetingId,modalType,locationLevel);
+			}
+		});
+	}
+	});
+function buildAllMonAtrClickDetails(result,type,allImages,meetingId,modalType,locationLevel){
+	var str ='';
+	var extension;
+	str +='<div class="col-sm-12">';
 
+		if(type == "MINUTE" || type == "ATR"){
+		if(allImages != "viewAll"){
+			str+='<div class="table-responsive">';
+	        str +='<table class="table table-bordered" id="tableId">'; 
+	        str +='<thead>';
+	        str +='<th style="text-transform: uppercase;"> partyMeeting Name</th>';
+	        str +='<th style="text-transform: uppercase;"> partyMeeting Date</th>';
+	        str +='<th style="text-transform: uppercase;"> Images</th>';
+	        str +='</thead>';
+	        str +='<tbody>';
+			for(var i in result){		
+			str+='<tr>';
+			if(result[i].partyMetingName != null){
+			str+='<td style="text-transform: uppercase;">'+result[i].partyMetingName+'</td>';
+		    }else{
+			str+='<td>-</td>';
+		   }
+		if(result[i].date != null){
+			str+='<td style="text-transform: uppercase;">'+result[i].date+'</td>';
+		      }else{
+			 str+='<td>-</td>';
+		  }
+			str+='<td>';
+			if(result[i].imageList.length>0){
+				str+='<ul class="list-inline ">';
+				 extension = getExtension(''+result[i].imageList[0]+'');
+				if(result[i].imageList[0] != null){
+					if(extension == 'pdf'){
+						str+='<li>';
+							str+='<object data="https://mytdp.com/DocFiles/'+result[i].imageList[0]+'" type="application/pdf" width="80px" height="80px">';
+							  str+='alt : <a href="https://mytdp.com/DocFiles/'+result[i].imageList[0]+'" style="width: 80px;height: 80px;">pdf</a>';
+							str+='</object>';
+						str+='</li>';
+					}else{
+						str+='<li>';
+							str+='<img src="https://mytdp.com/DocFiles/'+result[i].imageList[0]+'" style="width:80px;height:80px;background-color: #672f0a;" />';
+						str+='</li>';
+					   
+					}
+				}
+		  /*  if(result[i].imageList[1]!= null){
+				 extension = getExtension(''+result[i].imageList[1]+'');
+				 if(extension == 'pdf'){
+					 str+='<li>';
+						str+='<object data="https://mytdp.com/DocFiles/'+result[i].imageList[1]+'" type="application/pdf"  width="80px" height="80px">';
+						  str+='alt : <a href="https://mytdp.com/DocFiles/'+result[i].imageList[1]+'" style="width: 80px;height: 80px;">pdf</a>';
+						str+='</object>';
+					str+='</li>';
+				 }else{
+					 str+='<li>';
+						str+='<img src="https://mytdp.com/DocFiles/'+result[i].imageList[1]+'"  style="width:80px;height:80px;background-color: #672f0a;"/>';
+					str+='</li>';
+
+				 }
+			}*/
+				str+='<li>';
+					str+='<span class="allMomAtrCountsTypeCls" style="cursor: pointer; background-color: rgb(103, 47, 10); display: inline-block;padding:10px;color: white;font-weight: bold" attr_type ="'+type+'" attr_id="'+result[i].id+'" attr_name ="'+result[i].partyMetingName+'" attr_location_level="'+locationLevel+'" attr_modal_type="'+modalType+'">View All</span>';
+				str+='</li>';
+		     str+='</ul>';
+			}
+			 str+='</td>';
+		     str+='</tr>';
+			}
+			 str +='</tbody>';
+	         str +='</table>';
+	        str +='</div>';
+			}else if(allImages == "viewAll" ){
+				str+='<ul class="list-inline modalImagesUl">';
+			   for(var i in result){
+               if(result[i].id == meetingId){
+					var resultLength=result[i].imageList.length;
+					if(result[i].imageList.length>0){
+						for(var k=0;k<result[i].imageList.length;k++){
+							extension = getExtension(''+result[i].imageList[k]+'');
+					if(extension == 'pdf'){
+						 str+='<li>';
+							str+='<object data="https://mytdp.com/DocFiles/'+result[i].imageList[k]+'" type="application/pdf" width="500px" height="500px">';
+							  str+='alt : <a href="https://mytdp.com/DocFiles/'+result[i].imageList[k]+'">pdf</a>';
+							str+='</object>';
+						str+='</li>';
+					}else{
+						 str+='<li>';
+							str+='<img src="https://mytdp.com/DocFiles/'+result[i].imageList[k]+'"  style="width:100%;height:500px;background-color: #672f0a;"/>';
+						str+='</li>';
+					}
+				}
+				 }
+				 
+				}
+				}
+				str+='</ul>';
+			}
+		}
+	str +='</div>';
+if(allImages == "viewAll"){
+	$("#modelBody1").html(str);
+}else{
+	$("#modelBody").html(str);
+}
+$("#tableId").dataTable();
+if(resultLength>2)
+			{
+			$(".modalImagesUl").slick({
+			 slide: 'li',
+			 slidesToShow: 1,
+			 slidesToScroll: 1,
+			 infinite: false,
+			 variableWidth: true
+		});
+			}
+	$("#myModal").modal("show");      
+}
+function getExtension(path) {
+    var basename = path.split(/[\\/]/).pop(),  // extract file name from full path ...
+                                               // (supports `\\` and `/` separators)
+        pos = basename.lastIndexOf(".");       // get last position of `.`
+
+    if (basename === "" || pos < 1)            // if file name is empty or ...
+        return "";                             //  `.` not found (-1) or comes first (0)
+
+    return basename.slice(pos + 1);            // extract extension ignoring `.`
+}
+$(document).on('click','.imageCloseBtnCls',function(){ 
+	if(globalImgsMdlCnt > 0){
+		setTimeout(function(){
+			$('body').addClass("modal-open");
+		}, 500);
+	}
+});	
+</script>
 </body>
 </html>
