@@ -386,9 +386,7 @@ function padrtyMeetingEditDetails(results) {
 	
 	$("#stateModelId option[value=" + results[0].stateName + "]").attr('selected', 'selected');
     getDistrictsAction(results[0].stateName, type, results[0].districtId);
-	
 	getPartyMeetingLevels(results[0].mandalTwnDivisionId,results[0].meetingTypeId);
-    //$("#meetingLevelModelId option[value=" + results[0].meetingTypeId + "]").attr('selected', 'selected');
 	
     getMeetingLevels(results[0].meetingTypeId);
     $("#meetingTypeSubTypeModelId option[value=" + results[0].mandalTwnDivisionId + "]").attr('selected', 'selected');
@@ -450,7 +448,6 @@ function buildInveeteeDetailsTable(results) {
     str += "<tr>";
     str += "<th>S.N0</th>";
     
-    //str += "<th>Desiganation</th>";
     str += "<th>Membership ID</th>";
     str += "<th>Name</th>";
     str += "<th>Mobile</th>";
@@ -463,13 +460,7 @@ function buildInveeteeDetailsTable(results) {
             str += "<tr>";
             str += "<td>" + sNo + "</td>";
             str += "<td>" + results[i].invetteList[j].membershipNo + "</td>";
-            str += "<td >" + results[i].invetteList[j].name + "</td>";
-           /* if (results[i].invetteList[j].partyName != null && results[i].invetteList[j].partyName.length > 0) {
-                str += "<td>" + results[i].invetteList[j].partyName + "</td>";
-            } else {
-                str += "<td>-</td>";
-            }*/
-            
+            str += "<td >" + results[i].invetteList[j].name + "</td>"; 
             if (results[i].invetteList[j].mobileNumber != null && results[i].invetteList[j].mobileNumber.length > 0) {
                 str += "<td>" + results[i].invetteList[j].mobileNumber + "</td>";
             } else {
@@ -483,7 +474,6 @@ function buildInveeteeDetailsTable(results) {
     $("#meetingInveteeTableId").html(str);
 }
 
-//getPartyMeetingLevels();
 getPartyMeetingsTabUserNameByDistrict();
 
 function getPartyMeetingsTabUserNameByDistrict() {
@@ -532,7 +522,9 @@ function buildTabUserDetails(results, meetingId) {
     str += "</table>";
 	str += "</div>";
     $("#tabUserTableDivId").html(str);
-  
+     $("#tabUserTableId").dataTable({
+		 paging:false
+	 });
 	
     if (meetingId != null) {
         getPartyMeetingTabUserDetailsAction(meetingId);
@@ -562,7 +554,6 @@ function getPartyMeetingTabUserDetailsAction(partyMeetingId) {
 
 
 function getMeetingLevels(meetingLevelId) {
-	 //$("editLocationId").show();
     if (meetingLevelId == 1 || meetingLevelId == 9) {
         $("#stateModelDivId").show();
         $("#districtModelDivId").hide();
@@ -771,7 +762,6 @@ function getPartyMeetingLevels(subTypeId,meetingLevelId) {
         }
     }).done(function(results) {
         for (var i in results) {
-            //$("#meetingLevelId").append('<option value=' + results[i].id + '>' + results[i].name + '</option>');
             $("#meetingLevelModelId").append('<option value=' + results[i].id + '>' + results[i].name.toLowerCase() + '</option>');
         }
 		if(meetingLevelId){
@@ -783,8 +773,6 @@ function getPartyMeetingLevels(subTypeId,meetingLevelId) {
 
 
 function getAttendanceForMeeting(meetingId,bydefaultSessionId) {
-
-   // $("#nonAttendedInvitieesDivId").html(' ');
     $("#attendceOfInviteeDivId").html(' ');
 	$("#attendceOfInviteeDivId").html(spinner);
     var jsObj = {
@@ -799,7 +787,6 @@ function getAttendanceForMeeting(meetingId,bydefaultSessionId) {
         }
     }).done(function(results) {
         buildAttendaceOfInveiteesTable(results);
-        //buildNotAttendacInveiteesTable(results);
         
     });
 }
@@ -807,7 +794,6 @@ function getAttendanceForMeeting(meetingId,bydefaultSessionId) {
 function getNoneAttenedInvettesForMeeting(meetingId,bydefaultSessionId) {
 
     $("#nonAttendedInvitieesDivId").html(' ');
-    //$("#attendceOfInviteeDivId").html(' ');
     var jsObj = {
         partyMeetingId: meetingId,
 		partyMeetingSessionId:bydefaultSessionId
@@ -819,7 +805,6 @@ function getNoneAttenedInvettesForMeeting(meetingId,bydefaultSessionId) {
             task: JSON.stringify(jsObj)
         }
     }).done(function(results) {
-       // buildAttendaceOfInveiteesTable(results);
         buildNotAttendacInveiteesTable(results);
        
     });
@@ -847,7 +832,6 @@ function getNoneAttenedInvettesForMeeting(meetingId,bydefaultSessionId) {
             str += "<td>" + results.attendanceList[i].name + "</td>";
             str += "<td>" + results.attendanceList[i].partyName + "</td>";
             str += "<td>" + results.attendanceList[i].membershipNo + "</td>";
-            //str+="<td>"+results.attendanceList[i].membershipNo+"</td>";
             str += "<td>" + results.attendanceList[i].mobileNumber + "</td>";
             if (results.attendanceList[i].question != null && results.attendanceList[i].question.length > 0) {
                 str += "<td>" + results.attendanceList[i].question + "</td>";
@@ -1168,7 +1152,6 @@ $(".commentError").each(function(index, elem) {
             $(".resultStatus").modal('hide');
 			$("#editTextAreaId").val('');
 			$("#editPartyMeetingId").val('');
-            //var redirectWindow=window.open('editPartyMeetingManagementAction.action?meetingId='+meetingId+'','_self');
         }, 3000);
     } else if ($("#editPartyMeetingId").val().length > 0) {
         callActionMethod();
@@ -1182,7 +1165,6 @@ $(".commentError").each(function(index, elem) {
     } 
 	}
 
-    //}
 });
 function getInviteeExistingAndNotExistingOfMeetingDetails(memebershipIds,meetingId){
 		  $("#tdpCadreTableId").html("");
@@ -1232,7 +1214,6 @@ function callActionMethod() {
                 $('#submitSuccessId').append("<p>Please Upload Csv Format</p>");
                 setTimeout(function() {
                     $(".resultStatus").modal('hide');
-					//var redirectWindow=window.open('editPartyMeetingManagementAction.action?meetingId='+meetingId+'','_self');
 					$("#editPartyMeetingId").val('');
                 }, 3000);
 
@@ -1255,7 +1236,6 @@ function callActionMethod() {
 			 else {
                  $("#tdpCadreDetailsModalId").modal('show');
                  var memeberShipArr = uploadResult.split(",");
-                 //getTdpCadreDetailsForInveetMeeting(memeberShipArr);
 				 getInviteeExistingAndNotExistingOfMeetingDetails(memeberShipArr,meetingId);
                  createHiddenFields();
              }
@@ -1274,16 +1254,10 @@ function createHiddenFields() {
     $("#hiddenPartyMeetingId").val(meetingId);
     $("#hiddenMeetingNameId").val($("#editMeetingNameId").val());
 	
-	/*$("#startDateModelId").val($("#startDateModelId").val().replace("/","-"));
-	$("#startDateModelId").val($("#startDateModelId").val().replace("/","-"));  // 01-08-2017  yyyy-MM-dd */
-		
 	var splitedStartDate=$("#startDateModelId").val().split("-");	
 	var onlyStartDate=splitedStartDate[2]+"-"+splitedStartDate[1]+"-"+splitedStartDate[0];  
     $("#hiddenStartDateId").val(onlyStartDate);
-     
-	/*$("#endDateModelId").val($("#endDateModelId").val().replace("/","-"));
-	$("#endDateModelId").val($("#endDateModelId").val().replace("/","-")); */
-	
+    
 	var splitedEndDate=$("#endDateModelId").val().split("-");
 	var onlyEndDate=splitedEndDate[2]+"-"+splitedEndDate[1]+"-"+splitedEndDate[0];  
     $("#hiddenEndDateId").val(onlyEndDate);
@@ -1297,9 +1271,7 @@ function createHiddenFields() {
     } else {
         $("#hiddenConstituencyId").val($("#constituencyModelId").val());
     }
-	 //var trimTeshil=$("#mandalModelId").val();
-	 //var removedTeshil = trimTeshil.substring(1); 
-    //$("#hiddenMandalId").val(removedTeshil);
+	
 	 $("#hiddenMandalId").val($("#mandalModelId").val());
     $("#hiddenvillageId").val($("#villageModelId").val());
 
@@ -1590,7 +1562,7 @@ getSessionsForAttendedInviteesByMeetingId(meetingId);
 function getSessionsForAttendedInviteesByMeetingId(partyMeetingId) {
 	seesionResults=null;
  $("#attendanceSessionWiseId").html(" ");
- $("#attendanceSessionWiseId").append('<option value="">' + "Select Session"+ '</option>');
+ $("#attendanceSessionWiseId").append('<option value="0">' + "Select Session"+ '</option>');
     var jsObj = {
         partyMeetingId: partyMeetingId
 		
@@ -1628,9 +1600,6 @@ function addSessionsListForModel(idModel, dataOfSelected, dbIds, existing) {
                 task: JSON.stringify(jsObj)
             }
         }).done(function(results) {
-
-            //$(idModel).html(" ");
-
             for (var allSessions in results) {
 
                 for (var existingSession in dataOfSelected) {
@@ -1759,7 +1728,38 @@ $(document).on("change", ".sessionTypeIdForModel", function() {
 	 var sessionId=$(this).attr('id');
     //alert(sessionId);
 	var id=$(this).val();
-	alert(id);
+	if(id == ""){
+		id=0;
+	}
+	if(id > 4){
+		
+		var jsObj = {
+        partyMeetingId: meetingId
+    }
+		$.ajax({
+        type: "GET",
+        url: "getSessionsDetailsByMeetingIdAction.action",
+        data: {
+            task: JSON.stringify(jsObj)
+        }
+    }).done(function(results) {
+        var numberOfSessions = $('.deleteSessionsForModel').length;
+        for (i in results) {
+			console.log(results);
+			if(results[i].id == id){
+			var position=sessionId.substr(sessionId.length-1, 1);
+                $("#startTime"+position).html("");
+				$("#endTime"+position).html("");
+				$("#lateTime"+position).html("");
+				$("#startTime"+position).val(results[i].startDateStr.substr(0, 5));
+				$("#endTime"+position).val(results[i].endDateStr.substr(0, 5));
+				$("#lateTime"+position).val(results[i].meetingLevelStr.substr(0, 5));
+			  }
+            }
+        
+    });
+	}
+	else{
    var jsObj = {
             partyMeetingSessionId: id
         }
@@ -1790,12 +1790,13 @@ $(document).on("change", ".sessionTypeIdForModel", function() {
 				$("#lateTime"+position).valid();
 			}
         }); 
+	}
 });
 $(document).on("click",".nonattendedCheckBoxCls",function(){
 	$(this).closest("td").prev("td").prev("td").find("div").html("");
 	if($(this).is(":checked")){
 	var commentStr=$(this).closest("td").prev("td").prev("td").find("input").val();
-	if(commentStr.length ==0){
+	if(commentStr.length ==0 || commentStr=="undefined" ||commentStr==null ||commentStr==0){
 		$(this).closest("td").prev("td").prev("td").find("div").append("Please Enter Comment");
 		$(this).prop("checked",false);
 	}
