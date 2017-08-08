@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
+import com.itgrids.partyanalyst.dto.BoothInchargesVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
@@ -65,7 +66,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<ElectionInformationVO> electioninformationList;
 	private ICadreCommitteeService cadreCommitteeService;
 	private List<BasicVO> publicationsData;
-
+	private BoothInchargesVO boothInchargesVO;
 
 	public List<LocationWiseBoothDetailsVO> getLocationVOList() {
 		return locationVOList;
@@ -243,6 +244,13 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	}
 	public void setElectioninformationList(List<ElectionInformationVO> electioninformationList) {
 		this.electioninformationList = electioninformationList;
+	}
+	
+	public BoothInchargesVO getBoothInchargesVO() {
+		return boothInchargesVO;
+	}
+	public void setBoothInchargesVO(BoothInchargesVO boothInchargesVO) {
+		this.boothInchargesVO = boothInchargesVO;
 	}
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
@@ -581,5 +589,20 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		}
 		return idsList;
 		
+	}
+	
+	public String getBoothAssignInchargeCount(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> committeeEnrollmentYearsIdsLst = convertJsonStringList(jObj.getJSONArray("committeeEnrollmentYearsIdsLst"));
+					
+			boothInchargesVO =locationDashboardService.getBoothAssignInchargeCount(jObj.getString("fromDate"),jObj.getString("toDate"), jObj.getLong("locationId"),jObj.getLong("locationValue"),
+					committeeEnrollmentYearsIdsLst);
+		}catch(Exception e){
+			LOG.error("Exception occured in getBoothAssignInchargeCount() method ",e);
+
+		}
+		return Action.SUCCESS;
 	}
 }
