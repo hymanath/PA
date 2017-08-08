@@ -1077,10 +1077,10 @@ function buildSurveyDetails(result)
 			if(result != null && result.length > 0){
 				str+='<table class="table table-bordered" id="cadreDetailsTableId">';
 				str+='<thead>';
-				str+='<th>Image</th>';
-				str+='<th>Name</th>';
-				str+='<th>Mobile No</th>';
-				str+='<th>DOB</th>';
+				str+='<th>IMAGE</th>';
+				str+='<th>NAME</th>';
+				str+='<th>MOBILE NO</th>';
+				str+='<th>MEMBERSHIP NO</th>';
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
@@ -1088,7 +1088,7 @@ function buildSurveyDetails(result)
 					str+='<td><img style="height:50px;width:50px;" src='+result[i].imgStr+'></td>';
 					str+='<td>'+result[i].name+'</td>';
 					str+='<td>'+result[i].mobileNo+'</td>';
-					str+='<td>'+result[i].dateOfBirth+'</td>';
+					str+='<td>'+result[i].memberShipNo+'</td>';
 					str+='</tr>';
 				}
 				str+='</tbody>';
