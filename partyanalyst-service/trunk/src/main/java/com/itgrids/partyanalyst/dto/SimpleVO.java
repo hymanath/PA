@@ -55,8 +55,8 @@ public class SimpleVO implements java.io.Serializable{
    private List<Long> nonInviteeAttendedlist=new ArrayList<Long>(0);
    
    private Long inviteeCount;
-   private Long inviteeAttendedCount;
-   private int nonInviteeAttendedCount;
+   private Long inviteeAttendedCount = 0l;
+   private int nonInviteeAttendedCount = 0;
    private String partyBenefitStr;
    private Long cadreId;
    private Long campId;

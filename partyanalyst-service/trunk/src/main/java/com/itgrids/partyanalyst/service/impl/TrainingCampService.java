@@ -10967,22 +10967,49 @@ class TrainingCampService implements ITrainingCampService{
 				}
 			}
 			
-			// currently running batch Details
-			Date currentDate = new DateUtilService().getCurrentDateAndTime();
+			// TrainingCamp Batch batch Details
+			List<Object[]> campDetailsList = null;
+			campDetailsList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount();//Procedure Call
+			
 			Long upComingConfirmedCount=  0L;//trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(null, currentDate, currentDate,"upcoming",staffcadreIdsLsit,null,enrollmentYearIds);
 			Long runningConfirmedCount=  0L;//trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(null, currentDate, currentDate,"running",staffcadreIdsLsit,null,enrollmentYearIds);
 			Long completedConfirmedCount=  0L;//trainingCampBatchAttendeeDAO.getConfirmedCountsByBatch(null, currentDate, currentDate,"completed",staffcadreIdsLsit,null,enrollmentYearIds);
-			 
-			Long runningInviteedAttendenceCount =  trainingCampAttendanceDAO.getInviteesAttendedCountByBatch(null, currentDate, currentDate,"running",staffcadreIdsLsit,enrollmentYearIds);
-			Long runningNonInviteedAttendenceCount =  trainingCampAttendanceDAO.getNonInviteesAttendedCountByBatch(null, currentDate, currentDate,"running",staffcadreIdsLsit,enrollmentYearIds);
-			Long completedInviteesAttendenceCount = trainingCampAttendanceDAO.getInviteesAttendedCountByBatch(null, currentDate, currentDate,"completed",staffcadreIdsLsit,enrollmentYearIds);
-			Long completedNonInviteesAttendenceCount = trainingCampAttendanceDAO.getNonInviteesAttendedCountByBatch(null, currentDate, currentDate,"completed",staffcadreIdsLsit,enrollmentYearIds);
+			Long runningInviteedAttendenceCount = 0l; 
+			Long runningNonInviteedAttendenceCount = 0l;
 			
-			Long totalAttendedCount = trainingCampAttendanceDAO.getTotalAttendedCountByBatch(null, currentDate, currentDate,"completed",staffcadreIdsLsit,enrollmentYearIds);
+			Long completedInviteedAttendenceCount = 0l; 
+			Long completedNonInviteedAttendenceCount = 0l;
+			
+			//Running And Completed Details
+			List<Long> runingBatchIdsList = trainingCampBatchDAO.getRunningBatchIds(dateUtilService.getCurrentDateAndTime());
+			if(commonMethodsUtilService.isListOrSetValid(campDetailsList)){
+				for (Object[] param : campDetailsList) {
+					String attendStatus = commonMethodsUtilService.getStringValueForObject(param[7]);
+					Long batcId= commonMethodsUtilService.getLongValueForObject(param[2]);
+					if(runingBatchIdsList.contains(batcId)){
+						if(attendStatus.equalsIgnoreCase("Invitee"))
+							runningInviteedAttendenceCount = runningInviteedAttendenceCount+1L;
+						else 
+							runningNonInviteedAttendenceCount = runningNonInviteedAttendenceCount+1l;
+					}else{
+						if(attendStatus.equalsIgnoreCase("Invitee"))
+							completedInviteedAttendenceCount = completedInviteedAttendenceCount+1L;
+						else 
+							completedNonInviteedAttendenceCount = completedNonInviteedAttendenceCount+1l;
+					}
+						
+				}
+			}
+			
+			//Long runningInviteedAttendenceCount =  trainingCampAttendanceDAO.getInviteesAttendedCountByBatch(null, currentDate, currentDate,"running",staffcadreIdsLsit,enrollmentYearIds);
+			//Long runningNonInviteedAttendenceCount =  trainingCampAttendanceDAO.getNonInviteesAttendedCountByBatch(null, currentDate, currentDate,"running",staffcadreIdsLsit,enrollmentYearIds);
+			//Long completedInviteesAttendenceCount = trainingCampAttendanceDAO.getInviteesAttendedCountByBatch(null, currentDate, currentDate,"completed",staffcadreIdsLsit,enrollmentYearIds);
+			//Long completedNonInviteesAttendenceCount = trainingCampAttendanceDAO.getNonInviteesAttendedCountByBatch(null, currentDate, currentDate,"completed",staffcadreIdsLsit,enrollmentYearIds);
+			
+			//Long totalAttendedCount = trainingCampAttendanceDAO.getTotalAttendedCountByBatch(null, currentDate, currentDate,"completed",staffcadreIdsLsit,enrollmentYearIds);
 			
 			Long totalConfirmedCount=0L;
-			Long totalInviteesAttendedCount  = 0L;
-			Long totalNonInviteesAttendedCount = 0L;
+			
 			
 			if(upComingConfirmedCount == null)
 				upComingConfirmedCount = 0L;
@@ -10997,17 +11024,6 @@ class TrainingCampService implements ITrainingCampService{
 				completedConfirmedCount = 0L;
 			
 			
-			if(runningInviteedAttendenceCount == null)
-				runningInviteedAttendenceCount = 0L;
-			if(runningNonInviteedAttendenceCount == null)
-				runningNonInviteedAttendenceCount = 0L;
-			if(completedInviteesAttendenceCount == null)
-				completedInviteesAttendenceCount = 0L;
-			if(completedNonInviteesAttendenceCount == null)
-				completedNonInviteesAttendenceCount = 0L;
-			
-			
-
 			SimpleVO runningBatchsVO = new SimpleVO();
 			runningBatchsVO.setConfirmedCount(runningConfirmedCount);
 			runningBatchsVO.setInviteeAttendedCount(runningInviteedAttendenceCount);
@@ -11016,22 +11032,36 @@ class TrainingCampService implements ITrainingCampService{
 			
 			SimpleVO completedBatchsVO = new SimpleVO();
 			completedBatchsVO.setConfirmedCount(completedConfirmedCount);
-			completedBatchsVO.setInviteeAttendedCount(completedInviteesAttendenceCount);
-			completedBatchsVO.setNonInviteeAttendedCount(Integer.valueOf(completedNonInviteesAttendenceCount.toString()));
+			completedBatchsVO.setInviteeAttendedCount(completedInviteedAttendenceCount);
+			completedBatchsVO.setNonInviteeAttendedCount(Integer.valueOf(completedNonInviteedAttendenceCount.toString()));
 			trainingCampDetlsVOList.add(completedBatchsVO);
 			
 			
 			totalConfirmedCount = upComingConfirmedCount+runningConfirmedCount+completedConfirmedCount;
-			totalInviteesAttendedCount = runningInviteedAttendenceCount+completedInviteesAttendenceCount;
-			totalNonInviteesAttendedCount = runningNonInviteedAttendenceCount+completedNonInviteesAttendenceCount;
+			//totalInviteesAttendedCount = runningInviteedAttendenceCount+completedInviteesAttendenceCount;
+			//totalNonInviteesAttendedCount = runningNonInviteedAttendenceCount+completedNonInviteesAttendenceCount;
 			
 			SimpleVO totalBatchsVO = new SimpleVO();
-			totalBatchsVO.setInviteeAttendedCount(totalInviteesAttendedCount);
-			totalBatchsVO.setNonInviteeAttendedCount(Integer.valueOf(totalNonInviteesAttendedCount.toString()));
+			
+			if(commonMethodsUtilService.isListOrSetValid(campDetailsList)){
+				for (Object[] objects : campDetailsList) {
+					String attendStatus = commonMethodsUtilService.getStringValueForObject(objects[7]);
+					if(attendStatus != null && attendStatus.trim().equalsIgnoreCase("Invitee")){
+						totalBatchsVO.setInviteeAttendedCount(totalBatchsVO.getInviteeAttendedCount()+1);
+					}else{
+						totalBatchsVO.setNonInviteeAttendedCount(totalBatchsVO.getNonInviteeAttendedCount()+1);
+					}
+				}
+			}
+			//SimpleVO totalBatchsVO = new SimpleVO();
+			//totalBatchsVO.setInviteeAttendedCount(totalInviteesAttendedCount);
+			//totalBatchsVO.setNonInviteeAttendedCount(Integer.valueOf(totalNonInviteesAttendedCount.toString()));
 			totalBatchsVO.setConfirmedCount(totalConfirmedCount);
 			
-			if(totalAttendedCount != null && totalAttendedCount.longValue()>0L)
-				totalBatchsVO.setTotalCount(totalAttendedCount);
+			/*if(totalAttendedCount != null && totalAttendedCount.longValue()>0L)
+				totalBatchsVO.setTotalCount(totalAttendedCount);*/
+			if(campDetailsList != null && campDetailsList.size() >0)
+				totalBatchsVO.setTotalCount(Long.valueOf(campDetailsList.size()));
 			else
 				totalBatchsVO.setTotalCount(0L);
 			
