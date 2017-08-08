@@ -578,4 +578,38 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		return query.list();
 	}
+	@Override
+	public List<Object[]> getAllLocalElectionBodyByConstituencyId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct ");
+		sb.append(" departmentDiseasesInfo.locationAddress.localElectionBody.localElectionBodyId, "
+				+ " departmentDiseasesInfo.locationAddress.localElectionBody.name "
+				+ " from "
+				+ " DepartmentDiseasesInfo departmentDiseasesInfo "
+				+ " where departmentDiseasesInfo.isDeleted = 'N'  "
+				+ " and departmentDiseasesInfo.locationAddress.constituency.constituencyId =:superLocationId ");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(departmentDiseasesInfo.reportedDate) between :startDate and :endDate ");
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.diseases.diseasesId in (:diseasesIdList) ");
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		sb.append(" order by departmentDiseasesInfo.locationAddress.localElectionBody.name ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("superLocationId", superLocationId);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			query.setParameterList("diseasesIdList", diseasesIdList);
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			query.setParameterList("deptIdList", deptIdList);
+		}
+		return query.list();
+	}
 }

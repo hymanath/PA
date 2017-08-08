@@ -72,8 +72,9 @@ function onRequestCall(){
 	getCaseCountDiseasesWise();
 	getLocationDtlsRankWise();
 	getCaseCountDateWise("day");
-	  
-	for(var i in blockNames){  
+	$("#levelBlock").html('');        
+	collapseBlock(); 
+	/* for(var i in blockNames){  
 		if(blockNames[i] == 'DISTRICT'){
 			
 			getCaseCountLocationWise(3,blockNames[i],"Districts",0);    
@@ -93,7 +94,7 @@ function onRequestCall(){
 			getCaseCountLocationWise(5,blockNames[i],"Districts",0);
 			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames");
 		}
-	}
+	} */
 }
 
 function getCaseCountDiseasesWise(){
@@ -286,7 +287,7 @@ $(document).on('click','[table-menu-active] li',function(){
 	$(this).closest("ul").find("li").removeClass("active");
 	$(this).addClass("active");
 });
-collapseBlock();          
+//collapseBlock();          
 function collapseBlock(){
 	var collapse='';
 	if(blockNames != null){
@@ -783,12 +784,12 @@ function buildTableData(ajaxresp,blockName,filterType){
 								if(filterType == "Districts"){
 									buildTable+='<th>DISTRICT</th>';
 									buildTable+='<th>CONSTITUENCY</th>';
-									buildTable+='<th>MANDAL</th>';
+									buildTable+='<th>MANDAL/TOWN</th>';
 								}else{
 									buildTable+='<th>DISTRICT</th>';
 									buildTable+='<th>PARLIAMENT</th>';
 									buildTable+='<th>CONSTITUENCY</th>';
-									buildTable+='<th>MANDAL</th>';
+									buildTable+='<th>MANDAL/TOWN</th>';
 								}
 							}
 							buildTable+='<th style="background-color:#F3F3F3">TODAY</th>';
@@ -887,7 +888,7 @@ function buildTableData(ajaxresp,blockName,filterType){
 	buildTable+='</div>';
 	$("#"+blockName+"-tableDivId").html(buildTable);
 	$("#build"+blockName+"-tableId").dataTable({
-		
+		"aLengthMenu": [[10, 15, 20,100, -1], [10, 15, 20,100, "All"]]   
 	});
 }
 
