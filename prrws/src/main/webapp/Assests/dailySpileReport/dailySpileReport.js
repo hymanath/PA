@@ -1,14 +1,18 @@
-var globalLevelObj =  {"distLevelDistrictNames":"DISTRICT","constLevelDistNames":"DISTRICT","mandalLevelDistNames":"DISTRICT","constLevelConstNames":"CONSTITUENCY","mandalLevelConstNames":"CONSTITUENCY","mandalLevelMandalNames":"MANDAL","villageLevelDistNames":"DISTRICT",'villageLevelConstNames':'CONSTITUENCY','villageLevelMandalNames':'MANDAL','villageLevelNames':'VILLAGE','constLevelParliaNames':'PARLIAMENT','parliamentLevelConstNames':'PARLIAMENT','villageLeveParliNames':'PARLIAMENT','distLevelParliamentNames':'PARLIAMENT','mandalLevelParliNames':'PARLIAMENT'};
+var globalLevelObj =  {"distLevelDistrictNames":"DISTRICT","constLevelDistNames":"DISTRICT","mandalLevelDistNames":"DISTRICT","constLevelConstNames":"CONSTITUENCY","mandalLevelConstNames":"CONSTITUENCY","mandalLevelMandalNames":"MANDAL/TOWN","villageLevelDistNames":"DISTRICT",'villageLevelConstNames':'CONSTITUENCY','villageLevelMandalNames':'MANDAL','villageLevelNames':'VILLAGE','constLevelParliaNames':'PARLIAMENT','parliamentLevelConstNames':'PARLIAMENT','villageLeveParliNames':'PARLIAMENT','distLevelParliamentNames':'PARLIAMENT','mandalLevelParliNames':'PARLIAMENT'};
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalScopeIds = {"DISTRICT":"3","CONSTITUENCY":"4","MANDAL":"5"};
 var blockNames = ['DISTRICT','CONSTITUENCY','MANDAL'];
 var globalStateIdForSelectBox = 21;
 var glStartDate = moment().startOf('month').format("DD/MM/YYYY");
 var glEndDate = moment().format("DD/MM/YYYY");
+initializeGlobalIds();
+function initializeGlobalIds(){
+	$(document).on("click","#getRangeId",function(){
+		initializeSliderRange();
+	});
+}
 setTimeout(function(){
-	$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 0, max: 670},defaultValues:{min: 0, max: 60}});
-	console.log($("#tourSlider").rangeSlider("min").toFixed(0));
-	console.log($("#tourSlider").rangeSlider("max").toFixed(0));
+	$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: 174},defaultValues:{min: 1, max: 174}});   
 },1000)
 
 $("header").on("click",".menu-cls",function(e){
@@ -19,7 +23,7 @@ $(document).on("click",function(){
 	$(".menu-data-cls").hide();
 });
 function onLoadInitialisations(){
-	$(document).keydown(function(event){
+	$(document).keydown(function(event){   
 		if(event.keyCode==123){
 			alert("Hoo no! don't try to expose me");
 			return false;
@@ -61,6 +65,8 @@ $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
 	}
 	$('.calendar_active_cls li').removeClass("active");
 	$("#defaultButtonId").addClass("active");
+	$("#tourSlider").rangeSlider("destroy");   
+	$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: 174},defaultValues:{min: 1, max: 174}});
 	onRequestCall();
 	
 });
@@ -82,13 +88,22 @@ $(document).on('click','.calendar_active_cls li', function(){
 onRequestCall();   
 function onRequestCall(){
 	getCaseCountDiseasesWise();
-	getLocationDtlsRankWise();
+	getLocationDtlsRankWise(0,0);
 	getCaseCountDateWise("day");
-	$("#levelBlock").html('');        
-	collapseBlock(); 
-	/* for(var i in blockNames){  
-		if(blockNames[i] == 'DISTRICT'){
-			
+	var position = 0;
+	$(".tableMenu").each(function(){
+		var filterType = '';
+		$(this).find("li").each(function(){
+			if($(this).hasClass("active")){
+				filterType = $(this).attr("attr-active");
+			}
+		});
+		position = position + 1;
+		initializeDistrictAsDefaultFilter(filterType,position);
+	});
+	
+	for(var i in blockNames){  
+		if(blockNames[i] == 'DISTRICT'){ 
 			getCaseCountLocationWise(3,blockNames[i],"Districts",0);    
 			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"distLevelDistrictNames");
 		}else if(blockNames[i] == 'CONSTITUENCY'){
@@ -106,9 +121,35 @@ function onRequestCall(){
 			getCaseCountLocationWise(5,blockNames[i],"Districts",0);
 			getSubLocationsBySuperLocationId(globalStateIdForSelectBox,"mandalLevelDistNames");
 		}
-	} */
+	}
+}
+function initializeDistrictAsDefaultFilter(filterType,position){
+	if(filterType == 'Parliaments'){
+		if(position == 1){
+			initializeDistBlock();
+		}else if(position == 2){
+			initializeConstBlock();
+		}else if(position == 3){
+			initializeMandalBlock();
+		}
+	}
 }
 
+function initializeDistBlock(){  
+	$(".toggleClassForDistBlock").toggle();
+	$("[table-menu='DISTRICT']").find("li").removeClass("active");
+	$("[table-menu='DISTRICT'] li:first-child").addClass("active");
+}
+function initializeConstBlock(){
+	$(".toggleClassForConstBlock").toggle();
+	$("[table-menu='CONSTITUENCY']").find("li").removeClass("active");
+	$("[table-menu='CONSTITUENCY'] li:first-child").addClass("active");
+}
+function initializeMandalBlock(){   
+	$(".toggleClassForMandalBlock").toggle();
+	$("[table-menu='MANDAL']").find("li").removeClass("active");
+	$("[table-menu='MANDAL'] li:first-child").addClass("active");
+}
 function getCaseCountDiseasesWise(){
 	var diseasesIdArr=[];
 	diseasesIdArr.push(1);  
@@ -148,7 +189,7 @@ function buildOverviewBlock(ajaxresp){
 	$("#malariaTodayId").html(ajaxresp[1].todayCount);  
 }
 
-function getLocationDtlsRankWise(){
+function getLocationDtlsRankWise(min,max){
 	$("#rankDivId").html(spinner);
 	var diseasesIdArr=[];       
 	diseasesIdArr.push(1);
@@ -156,7 +197,9 @@ function getLocationDtlsRankWise(){
 	var json = {
 		fromDate : glStartDate,  
 		toDate : glEndDate,   
-		diseasesIdList : diseasesIdArr       
+		diseasesIdList : diseasesIdArr,
+		minVal : min,
+		maxVal : max
     }
     $.ajax({
       url : "getLocationDtlsRankWise",           
@@ -167,7 +210,7 @@ function getLocationDtlsRankWise(){
       xhr.setRequestHeader("Accept", "application/json");
       xhr.setRequestHeader("Content-Type", "application/json");
       },
-      success : function(ajaxresp){
+      success : function(ajaxresp){  
 		  if(ajaxresp != null && ajaxresp.length > 0){
 			  buildLocationDtlsRankWise(ajaxresp);
 		  }else{
@@ -175,7 +218,13 @@ function getLocationDtlsRankWise(){
 		  }
       }
     });
-}  
+} 
+function initializeSliderRange(){
+	var min = $("#tourSlider").rangeSlider("min").toFixed(0);
+	var max = $("#tourSlider").rangeSlider("max").toFixed(0);
+	getLocationDtlsRankWise(min,max);  
+} 
+
 function buildLocationDtlsRankWise(ajaxresp){
 	var str = '';
 	str+='<div style="padding:10px 15px;background-color:#fff;box-shadow:0 0 3px 3px rgba(0, 0, 0, 0.4)">';
@@ -299,7 +348,7 @@ $(document).on('click','[table-menu-active] li',function(){
 	$(this).closest("ul").find("li").removeClass("active");
 	$(this).addClass("active");
 });
-//collapseBlock();          
+collapseBlock();                  
 function collapseBlock(){
 	var collapse='';
 	if(blockNames != null){
@@ -434,6 +483,7 @@ function initializeClickEventOnTableDiv(){
 	$("#collapseOneCONSTITUENCY").removeClass("in");		
 	$("#collapseOneMANDAL").removeClass("in");		
 	$(".chosenSelect").chosen();
+	
 	$(document).on("click",".tableMenu",function(){         
 		var blockLevel=$(this).attr("table-menu");
 		var filterType = '';
