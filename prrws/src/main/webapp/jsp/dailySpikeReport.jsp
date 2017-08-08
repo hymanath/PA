@@ -210,6 +210,11 @@
 			<div class="col-sm-12">
 				<div class="row">
 					<div class="col-sm-12">
+						<h3>RANK WISE ANALYSIS</h3>   
+					</div>   
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
 						<p class="m_top10"><span class="pull-right">D - DISTRICT , C - CONSTITUENCY , M - MANDAL , T -  TOWN , D - DIVISION</span></p>
 					</div>
 					<div class="col-sm-12">
