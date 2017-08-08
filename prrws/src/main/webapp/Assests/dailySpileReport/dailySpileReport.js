@@ -5,7 +5,13 @@ var blockNames = ['DISTRICT','CONSTITUENCY','MANDAL'];
 var globalStateIdForSelectBox = 21;
 var glStartDate = moment().startOf('month').format("DD/MM/YYYY");
 var glEndDate = moment().format("DD/MM/YYYY");
-
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
 function onLoadInitialisations(){
 	$(document).keydown(function(event){
 		if(event.keyCode==123){
