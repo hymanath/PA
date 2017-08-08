@@ -59,6 +59,7 @@ public class DiseasesVO implements Serializable {
 	
 	private List<DiseasesVO> distCountForDengueList;
 	private List<DiseasesVO> mandalCountForDengueList;
+	private Long size;
 	
 	public Long getId() {
 		return id;
@@ -293,6 +294,12 @@ public class DiseasesVO implements Serializable {
 	}
 	public void setLocalElectionBodyName(String localElectionBodyName) {
 		this.localElectionBodyName = localElectionBodyName;
+	}
+	public Long getSize() {
+		return size;
+	}
+	public void setSize(Long size) {
+		this.size = size;
 	}
 	
 	
