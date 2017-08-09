@@ -306,10 +306,10 @@ public class LightMonitoringService  implements ILightMonitoring{
 			  {				  
 				 for (Object[] objects : counts) {
 				  LedOverviewVo  resultVo = new LedOverviewVo();
-				  		resultVo.setTotalDistCnt(commonMethodsUtilService.getLongValueForObject(objects[0]));//No of districts 
-				  		resultVo.setTotalConstituencyCnt(commonMethodsUtilService.getLongValueForObject(objects[1]));//no of constituencies
-				  		resultVo.setTotalMandalCnt(commonMethodsUtilService.getLongValueForObject(objects[2]));// no of mandal	  					
-				  		resultVo.setTotalpanchayatCnt(commonMethodsUtilService.getLongValueForObject(objects[3]));//No of panchayats	  
+				  		resultVo.setTotalDistCnt(commonMethodsUtilService.getLongValueForObject(objects[0])!=null?(Long)objects[0]:0l);//No of districts 
+				  		resultVo.setTotalConstituencyCnt(commonMethodsUtilService.getLongValueForObject(objects[1])!=null?(Long)objects[1]:0l);//no of constituencies
+				  		resultVo.setTotalMandalCnt(commonMethodsUtilService.getLongValueForObject(objects[2])!=null?(Long)objects[2]:0l);// no of mandal	  					
+				  		resultVo.setTotalpanchayatCnt(commonMethodsUtilService.getLongValueForObject(objects[3])!=null?(Long)objects[3]:0l);//No of panchayats	  
 					  listVO.add(resultVo);
 				  }
 			  }
@@ -357,5 +357,47 @@ public class LightMonitoringService  implements ILightMonitoring{
 		}
 		return finalList; 	
 	}
+
+	@Override
+	public List<LightMonitoringVO> getDistrictLevelWiseOverviewDetails(String fromDateStr, String toDateStr,
+			 List<Long> locationValues, Long locationTypeId) {
+		 List<LightMonitoringVO> finalList = new ArrayList<LightMonitoringVO>();
+			try{
+				Date fromDate = null;
+				Date toDate = null;
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				}		
+				List<Object[]> listOfCount = lightMonitoringDAO.getDistrictLevelWise(fromDate, toDate, locationValues, locationTypeId);
+		        for (Object[] objects : listOfCount) {
+		        	  LightMonitoringVO vo=new LightMonitoringVO();
+		        	  vo.setTotalLights(objects[0]!=null?(Long)objects[0]:0l);
+		        	  vo.setTotalPanels(objects[1]!=null?(Long)objects[1]:0l);
+		        	  vo.setTotalPoles(objects[2]!=null?(Long)objects[2]:0l);
+		        	  vo.setWorkingLights(objects[3]!=null?(Long)objects[3]:0l);
+	                  vo.setOnLights(objects[4]!=null?(Long)objects[4]:0l);	
+	                  vo.setOffLights(objects[5]!=null?(Long)objects[5]:0l);
+	                  vo.setDistrictId(objects[6]!=null?(Long)objects[6]:0l);
+	                  vo.setDistrictName(objects[7]!=null?(String)objects[7]:"");
+	                  vo.setTehsilId(objects[8]!=null?(Long)objects[8]:0l);
+	                  vo.setPanchayatId(objects[9]!=null?(Long)objects[9]:0l);
+	                  
+		        	  finalList.add(vo);	        	
+		        }
+			}catch (Exception e) {
+				LOG.error("Exception raised at getLedOverviewForStatedLocationsDetailsCounts - LightMonitoringService service", e);
+			}
+			return finalList;
+	}
+
+	@Override
+	public List<LightMonitoringVO> getDistrictLevelWiseOverviewDetails(String fromDateStr, String toDateStr,
+			String year, List<Long> locationValues, Long locationTypeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
+	
 	        	
