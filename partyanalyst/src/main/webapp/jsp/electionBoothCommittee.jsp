@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
@@ -92,14 +92,21 @@
 									<label for="committeeLocationId1">SELECT BOOTH <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
 									<select onchange="populateDefaultValue(1);getBoothInchargeRoles();gettingBoothInchargeRoleDetails();" class="form-control" id="committeeLocationId1" ><option value="0">Select Booth </option></select >
 								</div>		
-																
+								
+								<div class="col-sm-4" id="committeeDesigDivId1" >
+									<label for="committeeDesigId">SELECT DESIGNATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
+									<select  class="form-control" id="committeeDesignationId">
+										<option value="0">Select Designation</option>
+									</select>
+								</div>
+								
 								<div class="col-sm-8 m_top20" >
+									<div id="boothInchargeRoleDivId1"></div>
 									<div class="panel-title" id='cadreSerialNoWiseId'></div>
 									<div class="scrollDiv">
 										<div  id="cadreDetailsDiv1">
 										</div>
 									</div>	
-									</div>
 								</div>
 								<div class="row">
 									<div class="col-sm-4" style="margin-top:25px;margin-left:325px;">
@@ -110,14 +117,14 @@
 										<img id="viewDataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
 									</div>
 								</div>
-								<div class="col-sm-4" id="committeeDesigDivId" style="display:none">
+								<!--<div class="col-sm-4" id="committeeDesigDivId" style="display:none">
 									<label for="committeeDesigId">SELECT DESIGNATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
 									<select  class="form-control" id="committeeDesignationId">
 										<option value="0">Select Designation</option>
 									</select>
-								</div>
+								</div>-->
 								<div class="col-sm-12">
-									<div id="boothInchargeRoleDivId" style="display:none;"></div>
+									<!--<div id="boothInchargeRoleDivId" style="display:none;"></div>-->
 									<div id="locationDivId"></div>
 									<div id="userDetailsId"></div>
 								</div>
@@ -252,13 +259,14 @@
 		<!-- end mandal committee Block  -->
 		
 		
+	</div>
+	<div class="col-sm-8 col-sm-offset-2 m_top20">
+		<div id="cadreAvailableDetailsDivId"></div>
 	</div>	
 	<!--<footer class="text-center m_top20">
 			&copy; 2015 Telugu Desam Party
 	</footer>-->
 
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/> 
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
@@ -1540,7 +1548,8 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 			
 	}
 function gePanchayatOrBooth(){
-	$("#cadreDetailsDiv1,#cadreSerialNoWiseId").html('');
+	$("#cadreDetailsDiv1,#cadreSerialNoWiseId,#boothInchargeRoleDivId1").html('');
+	$("#cadreAvailableDetailsDivId").html('');
 	var num =$("#panchayatWardByMandal").val();
 	$('#userDetailsId,#locationDivId,#cadreDetailsDiv').html('');
 	$('#addMembrsBtn,#boothInchargeRoleDivId,#committeeDesigDivId,#searchcadrenewDiv,#cadreDetailsDiv').hide();
@@ -1585,16 +1594,24 @@ $(document).on("click","#committeeDesignationId",function(){
 	$('#searchcadrenewDiv').hide();
 	$('#searchBy').val('');
 	if(id>0){
-		$('#searchcadrenewDiv').show();	
+		//$('#searchcadrenewDiv').show();	
 	}
 });
 
 function showSearchDiv(){
+	$('#searchcadrenewDiv').show();
+	$('#cadreAvailableDetailsDivId').hide();
+	var id =$('#committeeDesignationId').val();
+	$('#searchBy').val('');
+	if(id>0){
+		$('#searchcadrenewDiv').show();	
+	}
+	
 	var errMsg ="";
-	$('#committeeDesignationId').val(0);
+	//$('#committeeDesignationId').val(0);
 	$("#userDetailsId").html("");
 	$("#searchBy,#locationDivId").html('');
-	$('#searchcadrenewDiv,#boothInchargeRoleDivId').hide();
+	//$('#searchcadrenewDiv,#boothInchargeRoleDivId').hide();
 	$('#searchBy').val('');
 	var mandalId = $("#panchayatWardByMandal").val();	
 	var boothId = $("#committeeLocationId1").val();
@@ -1614,7 +1631,9 @@ function showSearchDiv(){
 }
 
 function getBoothUserDetails(){
-	
+	$('#locationDivId').show();
+	$('#userDetailsId').show();
+	$('#cadreAvailableDetailsDivId').hide();
 	$("#searchcadrenewDiv").hide();
 	$('#searchBy').val('');
 	$("#committeeDesigDivId").hide();
@@ -1681,6 +1700,7 @@ function getBoothUserDetails(){
 			if(result != null && result != ''){
 			  getBoothUserDetailsbuild(result,selectLocationName,boothId);
 			}else{
+				$("#userDetailsId").show();
 				$("#userDetailsId").html(' <center> No Data available... </center>');
 			}
 		});
@@ -1842,7 +1862,7 @@ function getBoothInchargeRoles()
 	
 	function gettingBoothInchargeRoleDetails(){
 		
-		$("#boothInchargeRoleDivId,#locationDivId").html('');
+		$("#boothInchargeRoleDivId1,#locationDivId").html('');
 		$("#cadreDetailsDiv1,#cadreSerialNoWiseId").html('');
 		var boothId = $('#committeeLocationId1').val();
 		//$('#addMembrsBtn').show();
@@ -1899,7 +1919,7 @@ function getBoothInchargeRoles()
 	str +='</div>';
 	str +='</div>';
 	str +='</div>';
-	$("#boothInchargeRoleDivId").html(str);
+	$("#boothInchargeRoleDivId1").html(str);
 }
 	function updateRangeIdsOfBoothIncharge(boothId)
 	{	

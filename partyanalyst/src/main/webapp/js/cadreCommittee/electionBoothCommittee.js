@@ -1612,16 +1612,20 @@ function getCadreDetailsForBoothBySearchCriteria()
 	}
 
 function saveBoothDetails(tdpCadreId){
+	$('#addProfileId').show();
+	$("#addProfileId").html('<img id="dataLoadingImg" src="images/icons/loading.gif" style="width:50px;height:40px;"/>');
 	var committeeLocationId =$("#committeeLocationId1").val();
 	var boothNo =$("#committeeLocationId1 option:selected").text();
 	var committeePositionStr = $('#committeeDesignationId option:selected').text().trim();
 	var confm = confirm(" Are you sure want to add this cadre as "+committeePositionStr+" Position for " +boothNo+ " ");
     if (confm == true) {
-
     } else {
+		$('#addProfileId').hide();
 		return;
     }
 	var boothIncrgRoleId = $("#committeeDesignationId").val();
+	var boothIncrgeDesiText = $("#committeeDesignationId option:selected").text();
+	
 	$('.addProfileCls').hide();
 	var enrollmentYrIds = [];
 	enrollmentYrIds.push(1);
@@ -1636,10 +1640,12 @@ function saveBoothDetails(tdpCadreId){
 		$.ajax({
 				type : "POST",
 				url : "saveElectionBoothCommitteeDetailsAction.action",
-				data : {task:JSON.stringify(jsObj)} ,
+				data : {task:JSON.stringify(jsObj)}
 			}).done(function(result){
+				$("#addProfileId").hide();
 				 if(result.resultCode == 0){
-					 alert("Member added successfully.....")
+					 alert(boothIncrgeDesiText+" added successfully.....");
+					 $('#boothInchargeRoleDivId1').html('');
 					/* $("#errMsgId").html("<span style='color:green;'>Member added successfully.....</span>"); */
 					setTimeout(function(){
 						gePanchayatOrBooth();
@@ -1655,7 +1661,7 @@ function saveBoothDetails(tdpCadreId){
 					/* $("#errMsgId").html("<span style='color:green;'>Member added failed.Please try again..</span>"); */
 				}else {
 					$('.addProfileCls').show();
-					alert("Member added failed.Please try again..")
+					alert(boothIncrgeDesiText+" added failed.Please try again..")
 					/* $("#errMsgId").html("<span style='color:green;'>Member added failed.Please try again..</span>"); */
 				}
 			});
@@ -1744,7 +1750,7 @@ function getBoothUserDetailsbuild(result,locationName,boothId){
 								//str +='<td>'+result[i].boothName+'</td>';
 																
 								if(result[i].status != null && (result[i].status=="N" || result[i].status=="N " || result[i].status==" N" || result[i].status==" N "))	
-									str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_booth_id='+boothId+' attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' attr_role="'+result[i].roleName+'" value="DELETE" type="button"></td>';
+									str +='<td><input id="deleteMembrsBtn" class="btn btn-success btn-xs" attr_booth_id='+boothId+' attr_incharge_id='+result[i].inchargeId+' attr_roleMapping_id ='+result[i].roleMappingId+' attr_role="'+result[i].roleName+'" value="DELETE" type="button"><img id="deleteImageId"></img></td>';
 								else
 								
                                   	str +='<td>  -  </td>';								  
@@ -1830,8 +1836,11 @@ function exportToExcel(tableId)
 }
 
 $(document).on("click","#deleteMembrsBtn",function(){
+	$('#deleteImageId').show();
+	$("#deleteImageId").html('<img id="dataLoadingImg" src="images/icons/loading.gif" style="width:50px;height:40px;"/>');
 	 var roleName = $(this).attr('attr_role');
 	if(!confirm(" Are You sure want to remove this "+roleName+" Position Cadre ?")){
+		$('#deleteImageId').hide();
 		return ;
 	}
 	$(this).hide();
@@ -1851,21 +1860,23 @@ $(document).on("click","#deleteMembrsBtn",function(){
 					url : "deleteRoleMemberDetailsAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				$('#deleteImageId').hide();
 				if(result == "delete Successfully"){
-					alert("Member deleted successfully.....");
+					alert(roleName+" deleted successfully.....");
+					$('#boothInchargeRoleDivId1').html('');
 					gettingBoothInchargeRoleDetails();
 					getBoothUserDetails();
 					gePanchayatOrBooth();
-					updateRangeIdsOfBoothIncharge(committeeLocationId);
+					updateRangeIdsOfBoothIncharge(boothId);
 				}else{
-					alert("Member deleted failed.Please try again.");
+					alert(roleName+" deleted failed.Please try again.");
 				}
 			});
 	
 });
 //$("#cadreSerialNoWiseId").hide();
 $(document).on("change","#committeeLocationId1",function(){
-	
+	$("#cadreAvailableDetailsDivId").html('');
 	$("#cadreSerialNoWiseId").html('');
 	$("#cadreSerialNoWiseId").show();
 	$("#cadreDetailsDiv1,#cadreSerialNoWiseId").html('');
@@ -1895,15 +1906,17 @@ $(document).on("change","#committeeLocationId1",function(){
 });
 
 function buildBoothSearchDetails(result){
-$("#cadreDetailsDiv1").show();
+	$('#committeeDesigDivId1').show();
+    $("#cadreDetailsDiv1").show();
 //$("#cadreDetailsDiv1").html(spinner);
 	$("#cadreSerialNoWiseId").html('SERIAL NO WISE CADRE DETAILS');
 	var str='';
 	var total=0;
 	var totalMale =0;
 	var totalFemale =0;
+	var addedCount=0	
 	 var sublist = result.casteList;
-	 
+	 var countList=0;
 	str+='<table class ="table table-bordered" id="bothWiseRangeId">';
 		str +='<thead>';
 		str +='</thead>';
@@ -1913,33 +1926,188 @@ $("#cadreDetailsDiv1").show();
 				str +='<th class="text-center">MALE</th>';
 				str +='<th class="text-center">FEMALE</th>';
 				str +='<th class="text-center">AVAILABLE CADRE</th>';
-				//str +='<th class="text-center">STATUS</th>';
+				str +='<th class="text-center">STATUS</th>';
 				str +='</tr>';
 			for (var i in sublist){
 				str +='<tr class="text-center">';
-				str +='<td class="text-center">'+sublist[i].finalRangeStr+'</td>';
-				str +='<td class="text-center">'+sublist[i].maleCount+'</td>';
-				str +='<td class="text-center">'+sublist[i].femaleCount+'</td>';
-				str +='<td class="text-center">'+sublist[i].totalCount+'</td>';
-				/* if(sublist[i].alreadyRegistered == null || sublist[i].alreadyRegistered.length == 0 )
+				str +='<td class="text-center "><label id="rangeId'+i+'">'+sublist[i].finalRangeStr+'</label></td>';
+
+				if(parseInt(sublist[i].maleCount) >0){				
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="M"><u>'+sublist[i].maleCount+'</u></label></td>';
+				}else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="M">'+sublist[i].maleCount+'</label></td>';
+				}if(parseInt(sublist[i].femaleCount) >0){
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="F"><u>'+sublist[i].femaleCount+'</u></label></td>';
+				}else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="F">'+sublist[i].femaleCount+'</label></td>';
+				}if(parseInt(sublist[i].totalCount) >0){					
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0"><u>'+sublist[i].totalCount+'</u></label></td>';
+				}else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" style="color:green;cursor:pointer;" attr_gender_id="0">'+sublist[i].totalCount+'</label></td>';
+				}
+				 if(sublist[i].alreadyRegistered == null || sublist[i].alreadyRegistered.length == 0 ){
 					str +='<td class="text-center" style="color:red;"> NOT ADDED </td>';
-				else
-					str +='<td class="text-center" style="color:green;" >'+sublist[i].alreadyRegistered+'</td >';*/
+				}else{
+					if(parseInt(sublist[i].addedCount)>0){
+						str +='<td class="text-center" style="color:green;" >'+sublist[i].alreadyRegistered+'('+sublist[i].addedCount+')</td>';
+					
+					//str +='<td class="text-center" style="color:green;" >'+sublist[i].alreadyRegistered+'('+'M'+')</td>';
+					addedCount=parseInt(addedCount)+1;
+					}else{
+						
+						str +='<td class="text-center" style="color:green;">'+sublist[i].alreadyRegistered+'</td>';
+						
+					}
+				}
 				total=total+sublist[i].totalCount;
 				totalMale=totalMale+sublist[i].maleCount;
 				totalFemale =totalFemale+sublist[i].femaleCount;
 				
 				str +='</tr>';
+				countList++;
 			}
+			
 			str +='<tr class="text-center">';
-			str +='<td class="text-center">'+'TOTAL'+'</td>';
-				str +='<td class="text-center">'+totalMale+'</td>';
-				str +='<td class="text-center">'+totalFemale+'</td>';
-				str +='<td class="text-center">'+total+'</td>';
+			
+			str +='<td class="text-center"><label class="totalClass" id="totalCountId'+0+'" attr_gender_id="0">'+'TOTAL'+'</label></td>';
+				
+				if(parseInt(totalMale) >0){
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M"><u>'+totalMale+'</u></label></td>';
+				}else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M">'+totalMale+'</label></td>';	
+				}if(parseInt(totalFemale) >0){
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalFmailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="F"><u>'+totalFemale+'</u></label></td>';
+				}else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalFmailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="F">'+totalFemale+'</label></td>';
+				}if(parseInt(total) >0 ){
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalGenderId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="0"><u>'+total+'</u></label></td>';
+				} else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalGenderId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="0">'+total+'</label></td>';
+				}
 				str +='</tr>';
 				
+				 
 		str +='</tbody>';
 	str+='</table>';
 	$("#cadreDetailsDiv1").html(str);
-	
 } 
+
+$(document).on("click",".totalClass",function(){
+	$('#locationDivId').hide();
+	$('#userDetailsId').hide();
+	$("#searchcadrenewDiv").hide();
+	$("#cadreDetailsDiv").hide();
+	
+		var roleId = $('#committeeDesignationId').val();
+		if(parseInt(roleId) ==0){
+			alert("Please select Designation.");
+			return;
+		}
+	
+	$('#committeeDesigDivId1').removeClass("designationHideCls");
+	$('#cadreAvailableDetailsDivId').html('');
+	$("#cadreAvailableDetailsDivId").html('<img id="dataLoadingImg" src="images/icons/loading.gif" style="width:50px;height:40px;"/>');
+	var mandalId=$('#panchayatWardByMandal').val();
+	var boothId=$('#committeeLocationId1').val();
+	var range=$(this).closest('tr').find("td:first").find('label').text();
+	var gender=$(this).attr("attr_gender_id");
+	var count=$(this).attr("id");
+	
+	if(range == "TOTAL"){
+		range='0';
+	}
+	 var jsObj =
+		{			
+			mandalId:mandalId,
+			boothId:boothId,
+			range:range	,
+			gender:gender
+		}
+	
+		$.ajax({
+				type : "POST",
+				url : "getSerialNoAvailbleCadreRangeWiseAction.action",
+				data : {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result != null){
+					//buildCadreDetails(result,0);
+					getAvailableCadreDetails(result);
+				}else{
+					$('#cadreAvailableDetailsDivId').html('No Data Available....???');
+				}
+			}); 
+	
+});
+
+function getAvailableCadreDetails(result){
+$('#cadreAvailableDetailsDivId').show();
+		var str ='';
+		var committeeMngntTypeId = $('#committeeMngtType').val();
+		var elegRolCnt=0;
+		var dtCnt = 0;
+		var sublist = result.casteList;
+		if(sublist != null)
+		{
+			str+='<div class="media"><h4 class="text-center">CADRE DETAILS</h4></div>';
+			for(var i in sublist)
+			{
+				var addressVO = sublist[i].addressVO;
+				str+='<div class="media" style="background-color: rgb(204, 204, 204); padding: 8px; border-bottom: 1px solid rgb(51, 51, 51);">';
+				str+='<span href="#" class="media-left">';
+				str+='<img style="width: 64px; height: 64px;" src="https://www.mytdp.com/images/cadre_images/'+sublist[i].imageURL+'" />';
+				str+='</span>';
+				str+='<div class="media-body">';
+				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+sublist[i].name+' ; ';				
+				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+sublist[i].relativeName+' </h5>';
+				str+='<ul class="list-inline">';
+				str+='<li>Age:'+sublist[i].age+';</li>';
+				str+='<li>Gender: '+sublist[i].gender+'</li>';
+				str+='<li>MemberShipCard No: '+sublist[i].memberShipCardId+'</li>';
+				str+='<li>Mobile No: '+sublist[i].mobileNo+'</li>';
+				str+='<li>Caste: '+sublist[i].casteName+'</li>';
+				str+='<li>Voter ID: '+sublist[i].voterCardNo+'</li>';
+				str+='<li> <span style="font-weight:bold;color:red;"> Serial No : '+sublist[i].serialNo+' </span></li>';
+				  if(addressVO != null ){
+						//str+='<li>Mandal : '+addressVO.mandalName+'</li>';
+						str+='<li>Panchayat : '+addressVO.panchayat+'</li>';				
+					}
+				str+='</ul>';
+				
+				if(sublist[i].type != null && sublist[i].type.trim() == 'Added Member')
+				{
+					str+='<ul  style="color:#449D44;">';
+					if(sublist[i].type != null && sublist[i].type.trim().length > 0){						
+						if(sublist[i].tehsil == null )
+							str+='<li style="font-weight:bold;"> Already added as  <span style="color:#000;"> '+sublist[i].roleName+'</span> Position for  Booth No - '+sublist[i].boothNumber+' ,'+sublist[i].panchayat+' Panchayat , '+sublist[i].tehsil+' Mandal. </li>';	
+						else if(sublist[i].tehsil == null )
+							str+='<li style="font-weight:bold;"> Already added as  <span style="color:#000;"> '+sublist[i].roleName+'</span> Position for Booth No - '+sublist[i].boothNumber+' , '+sublist[i].tehsil+' Muncipality. </li>';	
+						else 
+							str+='<li style="font-weight:bold;"> Already added as  <span style="color:#000;"> '+sublist[i].roleName+'</span>  Position for Booth No - '+sublist[i].boothNumber+' ,'+sublist[i].tehsil+' Mandal/Muncipality. </li>';	
+					}
+					str+='</ul>';	
+					str+='</div>';
+					str+='</div>';
+													
+				}
+				else{
+					str+='</div>';
+					str+='</div>';
+					
+					if(sublist[i].type == "Not Added" && (sublist[i].isDuplicate=="No" || sublist[i].isDuplicate==""))
+					{
+						str+='<div class="form-inline ">';
+						str+='<a onclick="javascript:{saveBoothDetails('+sublist[i].tdpCadreId+')}" class="btn btn-success btn-medium m_top5 addProfileCls" > ADD PROFILE</a><img id="addProfileId"></img><span id="errMsgId"></span>';
+						str+='</div>';
+						
+					}else if(sublist[i].isDuplicate=="Yes") {
+						str+='<div class="form-inline " style="color:red;" title="This cadre may or may not registered with Own voterId or Family Voter Id." > No access to add .  Because This Serial No already added as incharger.</div> ';	
+					}
+				}
+				elegRolCnt++;
+				dtCnt++;
+			}
+		}
+		
+		$('#cadreAvailableDetailsDivId').html(str);
+}
+		

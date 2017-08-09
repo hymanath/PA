@@ -1048,11 +1048,13 @@ function validateBoothToMakeConfirm(boothId,boothName,filterLevel,filterValue){
 		dataType : 'json',
 		data : {task :JSON.stringify(jObj)} 
 	}).done(function(result){ 
-	  if(result != null && result.status=="Success"){
+	   if(result != null && result.status=="Success"){
 		   alert("BOOTH CONFIRM SUCCESSFULLY.");
 		  getLocationLevelWiseBoothDetails(filterLevel,filterValue,"All");
-	  }else {
+	  }else if(result != null && result.status=="Faliure"){
 		  alert("Failure");
+	  }else{
+		   alert(result.status);
 	  }
 	});
 }
