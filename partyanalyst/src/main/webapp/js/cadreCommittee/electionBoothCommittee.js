@@ -1926,7 +1926,7 @@ function buildBoothSearchDetails(result){
 				str +='<th class="text-center">MALE</th>';
 				str +='<th class="text-center">FEMALE</th>';
 				str +='<th class="text-center">AVAILABLE CADRE</th>';
-				str +='<th class="text-center">STATUS</th>';
+				str +='<th class="text-center">STATUS(ONLY FOR MEMBER POSITION)</th>';
 				str +='</tr>';
 			for (var i in sublist){
 				str +='<tr class="text-center">';
