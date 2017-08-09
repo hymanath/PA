@@ -25,6 +25,7 @@ import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeCommitteeDAO;
+import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICensusDAO;
@@ -116,7 +117,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private ICandidateDAO candidateDAO;
 	private ICadreCommitteeService cadreCommitteeService;
 	private IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO;
-
+	private IBoothInchargeDAO boothInchargeDAO;
+	 
 
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
@@ -350,6 +352,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO) {
 		this.boothInchargeCommitteeDAO = boothInchargeCommitteeDAO;
 	}
+	public IBoothInchargeDAO getBoothInchargeDAO() {
+		return boothInchargeDAO;
+	}
+	public void setBoothInchargeDAO(IBoothInchargeDAO boothInchargeDAO) {
+		this.boothInchargeDAO = boothInchargeDAO;
+	}
+	
 	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId) {
 		String electionType = "";
 		String deformDate = "";
@@ -1340,7 +1349,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		cStatus.setLocationName("constituncy");
 		Date frmDate = null;
 		Date toDate = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		//Here converting string to date formatte
 		if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 			try {
@@ -2152,8 +2161,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @see com.itgrids.core.api.service.ILocationDashboardService#getLocationWiseInsuranceStatusCounts(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
 	 */
 
-	public InsuranceStatusCountsVO getLocationWiseInsuranceStatusCounts(String fromDateStr, String toDateStr, Long locationTypeId,List<Long> locationValues,String year) {
-		InsuranceStatusCountsVO insuranceStatusCounts = new InsuranceStatusCountsVO();
+	public GrivenceStatusVO getLocationWiseInsuranceStatusCounts(String fromDateStr, String toDateStr, Long locationTypeId,List<Long> locationValues,String year) {
+		GrivenceStatusVO insuranceStatusCounts = new GrivenceStatusVO();
 		try{
 			Date fromDate = null;
 			Date toDate = null;
@@ -2165,27 +2174,33 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			}
 			//0-locationValue(DIstrict or ConstituencyId),1-locationName,2-Status,3-StatusId,4-Count
 			List<Object[]> insuranceStatus = insuranceStatusDAO.getConstituencyWiseInsuranceStatusCounts(fromDate, toDate,locationTypeId,locationValues,year);
+			List<Object[]> statusList = insuranceStatusDAO.grievanceInsuranceStatusId();
+			Map<String,GrivenceStatusVO> InsuranceStatusMap = new LinkedHashMap<String, GrivenceStatusVO>(0);
 			if(insuranceStatus!=null){
 				//Here set the values for object 
 				for (Object[] objects : insuranceStatus) {
-					if((Long)objects[3]==1){
-						insuranceStatusCounts.setWaitingForDocs(insuranceStatusCounts.getWaitingForDocs()+(Long)objects[4]);
-					}else if((Long)objects[3]==2){
-						insuranceStatusCounts.setSubmittedInparty(insuranceStatusCounts.getSubmittedInparty()+(Long)objects[4]);
-					}else if((Long)objects[3]==3){
-						insuranceStatusCounts.setForeadedToInsurance(insuranceStatusCounts.getForeadedToInsurance()+(Long)objects[4]);
-					}else if((Long)objects[3]==4){
-						insuranceStatusCounts.setClosedAtInsurance(insuranceStatusCounts.getClosedAtInsurance()+(Long)objects[4]);
-					}else if((Long)objects[3]==5){
-						insuranceStatusCounts.setClosedAtParty(insuranceStatusCounts.getClosedAtParty()+(Long)objects[4]);
-					}else if((Long)objects[3]==6){
-						insuranceStatusCounts.setApproved(insuranceStatusCounts.getApproved()+(Long)objects[4]);
-					}else if((Long)objects[3]==7){
-						insuranceStatusCounts.setClosedLetters(insuranceStatusCounts.getClosedLetters()+(Long)objects[4]);
-					}else if((Long)objects[3]==8){
-						insuranceStatusCounts.setAccountRejected(insuranceStatusCounts.getAccountRejected()+(Long)objects[4]);
+					if(!commonMethodsUtilService.isMapValid(InsuranceStatusMap) && commonMethodsUtilService.isListOrSetValid(statusList)){
+						for (Object[] status : statusList) {
+							GrivenceStatusVO vo = new GrivenceStatusVO();
+							vo.setName(commonMethodsUtilService.getStringValueForObject(status[1]));
+							vo.setCount(0L);
+							InsuranceStatusMap.put(vo.getName(), vo);
+						}
+					}
+					GrivenceStatusVO vo = InsuranceStatusMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					if(vo != null){
+						vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[3]));
+					}
+				
+				}
+				if(commonMethodsUtilService.isMapValid(InsuranceStatusMap)){
+					GrivenceStatusVO grivenceStatusCount = new GrivenceStatusVO();
+					grivenceStatusCount.setGrivenceType("Insurance");
+					for (String status : InsuranceStatusMap.keySet()) {
+						grivenceStatusCount.getSubList().add(InsuranceStatusMap.get(status));
 					}
 				}
+				
 			}
 		}catch(Exception e){
 			Log.error("Exception raised at insurance status counts service"+e);
@@ -2204,8 +2219,6 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 	public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr, String toDateStr,Long locationTypeId,List<Long> locationValues,String year) {
 		List<GrivenceStatusVO> finalList = new ArrayList<GrivenceStatusVO>();
-		GrivenceStatusVO grivenceStatusCount = new GrivenceStatusVO();
-		GrivenceStatusVO trustStatusCount = new GrivenceStatusVO();
 		try{
 			Date fromDate = null;
 			Date toDate = null;
@@ -2217,47 +2230,68 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			}
 			//0-consId,1-Status,2-typeOfIssue,3-count
 			List<Object[]> grivenceTrustList = insuranceStatusDAO.getGrivenceTrustStatusCounts(fromDate, toDate,locationTypeId,locationValues,year);
+			List<String> statusList = insuranceStatusDAO.getGrivenceStatus();
 			if(grivenceTrustList!=null){
 				//  Here set the Grivence values for object
+				
+				Map<String,GrivenceStatusVO> grievanceStatusMap = new LinkedHashMap<String, GrivenceStatusVO>(0);
+				Map<String,GrivenceStatusVO> trustStatusMap = new LinkedHashMap<String, GrivenceStatusVO>(0);
 				for (Object[] objects : grivenceTrustList) {
 					if(objects[2].toString().trim().equalsIgnoreCase("Govt") || objects[2].toString().trim().equalsIgnoreCase("Party")  || 
 							objects[2].toString().trim().equalsIgnoreCase("Welfare")){
-						if(objects[1].toString().trim().equalsIgnoreCase("Not Verified") ){
-							grivenceStatusCount.setNotVerified(grivenceStatusCount.getNotVerified()+(Long)objects[3] );
-						}else if(objects[1].toString().trim().equalsIgnoreCase("in progress")){
-							grivenceStatusCount.setInProgress(grivenceStatusCount.getInProgress()+(Long)objects[3]);
-						}else if(objects[1].toString().trim().equalsIgnoreCase("Not Eligible")){
-							grivenceStatusCount.setNotEligible(grivenceStatusCount.getNotEligible()+(Long)objects[3]);
-						}else if(objects[1].toString().trim().equalsIgnoreCase("not possible")){
-							grivenceStatusCount.setNotPossible(grivenceStatusCount.getNotPossible()+(Long)objects[3]);
-						}else if(objects[1].toString().trim().equalsIgnoreCase("approved")){
-							grivenceStatusCount.setApproves(grivenceStatusCount.getApproves()+(Long)objects[3]);
-						}else if(objects[1].toString().trim().equalsIgnoreCase("completed")){
-							grivenceStatusCount.setCompleted(grivenceStatusCount.getCompleted()+(Long)objects[3]);
+						
+						if(!commonMethodsUtilService.isMapValid(grievanceStatusMap) && commonMethodsUtilService.isListOrSetValid(statusList)){
+							for (String status : statusList) {
+								GrivenceStatusVO vo = new GrivenceStatusVO();
+								vo.setName(status);
+								vo.setCount(0L);
+								grievanceStatusMap.put(status, vo);
+							}
 						}
-
+						GrivenceStatusVO vo = grievanceStatusMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						if(vo != null){
+							vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[3]));
+						}
 					}
 					//  Here set the Trust values for object
 					else if(objects[2].toString().trim().equalsIgnoreCase("Trust Education Support"))
 					{
-						if(objects[1].toString().trim().equalsIgnoreCase("Not Verified") ){
-							trustStatusCount.setNotVerified(trustStatusCount.getNotVerified()+(Long)objects[3]);
-						}else if(objects[1].toString().trim().equalsIgnoreCase("in progress")){
-							trustStatusCount.setInProgress(trustStatusCount.getInProgress()+(Long)objects[3]);
-						}else if(objects[1].toString().trim().equalsIgnoreCase("Not Eligible")){
-							trustStatusCount.setNotEligible(trustStatusCount.getNotEligible()+(Long)objects[3]);
-						}else if(objects[1].toString().trim().equalsIgnoreCase("not possible")){
-							trustStatusCount.setNotPossible(trustStatusCount.getNotPossible()+(Long)objects[3]);
-						}else if(objects[1].toString().trim().equalsIgnoreCase("approved")){
-							trustStatusCount.setApproves(trustStatusCount.getApproves()+(Long)objects[3]);
-						}else if(objects[1].toString().trim().equalsIgnoreCase("completed")){
-							trustStatusCount.setCompleted(trustStatusCount.getCompleted()+(Long)objects[3]);
+						if(!commonMethodsUtilService.isMapValid(trustStatusMap) && commonMethodsUtilService.isListOrSetValid(statusList)){
+							for (String status : statusList) {
+								GrivenceStatusVO vo = new GrivenceStatusVO();
+								vo.setName(status);
+								vo.setCount(0L);
+								trustStatusMap.put(status, vo);
+							}
+						}
+						GrivenceStatusVO vo = trustStatusMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						if(vo != null){
+							vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[3]));
 						}
 					}
 				}
+				
+				/*Map<String,GrivenceStatusVO> grievanceStatusMap = new LinkedHashMap<String, GrivenceStatusVO>(0);
+				Map<String,GrivenceStatusVO> trustStatusMap = new LinkedHashMap<String, GrivenceStatusVO>(0);*/
+				
+				if(commonMethodsUtilService.isMapValid(grievanceStatusMap)){
+					GrivenceStatusVO grivenceStatusCount = new GrivenceStatusVO();
+					grivenceStatusCount.setGrivenceType("Grivence");
+					for (String status : grievanceStatusMap.keySet()) {
+						grivenceStatusCount.getSubList().add(grievanceStatusMap.get(status));
+					}
+					finalList.add(grivenceStatusCount);
+				}
+				if(commonMethodsUtilService.isMapValid(trustStatusMap)){
+					GrivenceStatusVO trustStatusCount = new GrivenceStatusVO();
+					trustStatusCount.setGrivenceType("NTR Trust");
+					for (String status : trustStatusMap.keySet()) {
+						trustStatusCount.getSubList().add(trustStatusMap.get(status));
+					}
+					finalList.add(trustStatusCount);
+				}
+				
 			}
-			finalList.add(grivenceStatusCount);
-			finalList.add(trustStatusCount);
 		}catch(Exception e){
 			Log.error("Exception raised at grivence and trust counts service"+e);
 		}
@@ -2389,7 +2423,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		try{
 			Date fromDate = null;
 			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
@@ -2601,7 +2635,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		try{
 			Date fromDate = null;
 			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
@@ -2623,4 +2657,125 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return inchargeVo;
 	}
+	@Override
+	public List<BoothInchargesVO>getBoothCommitteeInchargesCount(Long locationId,Long locationValue,List<Long> boothCommitteeEnrollmentYearsIdsLst,String fromDateStr,String toDateStr){
+		List<BoothInchargesVO> returnList = new ArrayList<BoothInchargesVO>(0);
+		try{
+			Date startDate = null;
+			Date endDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+		    List<Object[]> boothInchargs = boothInchargeCommitteeDAO.getBoothInchargeCountDetails(locationId, locationValue, boothCommitteeEnrollmentYearsIdsLst, startDate, endDate);
+		    setCountForBoothCommitteeIncharges(returnList,"defaultData",0l,null);
+		    Map<Long,Long> boothMap = new HashMap<Long,Long>();
+		    if(boothInchargs != null && boothInchargs.size() >0){
+		    	for(Object[] obj :boothInchargs){
+		    		Long cnt =boothMap.get(obj[0]);
+		    		
+		    		if(cnt != null && cnt.longValue() >0l){
+		    			boothMap.put((Long)obj[0], cnt+1l);
+		    		}else{
+		    			boothMap.put((Long)obj[0], 1l);
+		    		}
+		    		
+		    	}
+		    }
+		    
+		    if(boothMap != null && boothMap.size() >0){
+		    	for(Object[] obj :boothInchargs){
+		    		Long cnt =boothMap.get(obj[0]);
+		    		if(cnt != null && cnt.longValue() >0l){
+		    			//boothMap.put((Long)obj[0], cnt+1l);
+		    			setCountForBoothCommitteeIncharges(returnList,"matchedVO",cnt,obj);
+		    		}else{
+		    			//boothMap.put((Long)obj[0], 1l);
+		    			setCountForBoothCommitteeIncharges(returnList,"matchedVO",1l,obj);
+		    		}
+		    	}
+		    }
+		    
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.error("Exception raised at getBoothCommitteeInchargesCount", e);
+		}
+		
+		return returnList;
+	}
+
+	public void setCountForBoothCommitteeIncharges(List<BoothInchargesVO> returnList, String type, Long cnt,
+			Object[] obj) {
+		try {
+
+			if (type != null && type.equalsIgnoreCase("defaultData")) {
+				List<String> boothIncharges = new ArrayList<String>(0);
+				boothIncharges.add("1");
+				boothIncharges.add("2");
+				boothIncharges.add("3");
+				boothIncharges.add("4");
+				boothIncharges.add("5-10");
+				boothIncharges.add("10-Above");
+				for (String str : boothIncharges) {
+					BoothInchargesVO vo = new BoothInchargesVO();
+					vo.setBoothInchargesAssnd(str);
+					returnList.add(vo);
+				}
+			} else {
+				BoothInchargesVO matchedVO = null;
+				if (cnt != null && cnt == 1l) {
+					matchedVO = getMatchVO(returnList, "1");
+				} else if (cnt != null && cnt == 2l) {
+					matchedVO = getMatchVO(returnList, "2");
+				} else if (cnt != null && cnt == 3l) {
+					matchedVO = getMatchVO(returnList, "3");
+				} else if (cnt != null && cnt == 4l) {
+					matchedVO = getMatchVO(returnList, "4");
+				} else if (cnt != null && cnt >= 5l && cnt <= 10l) {
+					matchedVO = getMatchVO(returnList, "5-10");
+				} else if (cnt != null && cnt >= 10l) {
+					matchedVO = getMatchVO(returnList, "10-Above");
+				}
+
+				if (matchedVO != null) {
+					Long boothId = (Long) obj[0];
+					matchedVO.getBoothIds().add(boothId);// booths
+					if (matchedVO.getTdpCadreId() != null && matchedVO.getTdpCadreId().longValue() > 0)
+						matchedVO.setTdpCadreId(matchedVO.getTdpCadreId() + 1l);// no  of booth  incharges
+					else
+						matchedVO.setTdpCadreId(1l);// no of booth incharges
+					if (obj[2] != null) {
+						String gender = (String) obj[2];
+						if (gender.equalsIgnoreCase("M")) {
+							if (matchedVO.getMaleCnt() != null && matchedVO.getMaleCnt().longValue() > 0)
+								matchedVO.setMaleCnt(matchedVO.getMaleCnt() + 1l);
+							else
+								matchedVO.setMaleCnt(1l);
+						} else if (gender.equalsIgnoreCase("F")) {
+							if (matchedVO.getFemaleCnt() != null && matchedVO.getFemaleCnt().longValue() > 0)
+								matchedVO.setFemaleCnt(matchedVO.getFemaleCnt() + 1l);
+							else
+								matchedVO.setFemaleCnt(1l);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public BoothInchargesVO getMatchVO(List<BoothInchargesVO> returnList, String boothInchrgAss) {
+		if (returnList == null || returnList.size() == 1)
+			return null;
+		for (BoothInchargesVO boothIncharg : returnList) {
+			if (boothIncharg.getBoothInchargesAssnd().equalsIgnoreCase(
+					boothInchrgAss)) {
+				return boothIncharg;
+			}
+		}
+		return null;
+	}
+
 }
