@@ -261,27 +261,122 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 	return query.list();
 	
 	}
-}
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	       
-	       
-	       
-	       	
-		
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocationsForLEDDashboard(String locationType,String displayType,String filterType,Long locationId)
+	{
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sbc = new StringBuilder();
+		StringBuilder sbg = new StringBuilder();
+		boolean filterFlag = false;
+		
+		sb.append("SELECT COUNT(DISTINCT LM.panchayat.locationAddress.tehsil.tehsilId), COUNT(DISTINCT LM.panchayat.panchayatId) ");
+		
+		if(locationType.equalsIgnoreCase("district"))
+		{
+			sb.append(",P.locationAddress.district.districtId, P.locationAddress.district.districtName ");
+			sbg.append(" GROUP BY P.locationAddress.district.districtId ORDER BY P.locationAddress.district.districtId ");
+		}
+		else if(locationType.equalsIgnoreCase("parliament"))
+		{
+			sb.append(",P.locationAddress.parliament.constituencyId, P.locationAddress.parliament.name ");
+			sbg.append(" GROUP BY P.locationAddress.parliament.constituencyId ORDER BY P.locationAddress.parliament.name ");
+		}
+		else if(locationType.equalsIgnoreCase("constituency"))
+		{
+			sb.append(",P.locationAddress.constituency.constituencyId, P.locationAddress.constituency.name ");
+			sbg.append(" GROUP BY P.locationAddress.constituency.constituencyId ORDER BY P.locationAddress.district.districtId,P.locationAddress.constituency.name ");
+		}
+		
+		else if(locationType.equalsIgnoreCase("mandal"))
+		{
+			sb.append(",P.locationAddress.tehsil.tehsilId, P.locationAddress.tehsil.tehsilName ");
+			sbg.append(" GROUP BY P.locationAddress.tehsil.tehsilId ORDER BY P.locationAddress.district.districtId,P.locationAddress.constituency.name,P.locationAddress.tehsil.tehsilName ");
+		}
+			
+		if(displayType != null && displayType.trim().length() > 0)
+		{
+			if(displayType.equalsIgnoreCase("district"))
+				sb.append(", P.locationAddress.district.districtId, P.locationAddress.district.districtName ");
+			else if(displayType.equalsIgnoreCase("parliament"))	
+				sb.append(", P.locationAddress.parliament.constituencyId, P.locationAddress.parliament.name ");
+		}
+		
+		sb.append(" FROM LightMonotoring LM WHERE LM.panchayat.locationAddress.state.stateId = 1 ");
+		
+		if(filterType != null && filterType.trim().length() > 0 && locationId != null && locationId.longValue() > 0)
+		{
+			filterFlag = true;
+			if(filterType.equalsIgnoreCase("district"))
+				sbc.append(" AND P.locationAddress.district.districtId = :locationId ");
+			else if(filterType.equalsIgnoreCase("parliament"))
+				sbc.append(" AND P.locationAddress.parliament.constituencyId = :locationId ");
+			else if(filterType.equalsIgnoreCase("constituency"))
+				sbc.append(" AND P.locationAddress.constituency.constituencyId = :locationId ");
+			
+		}
+		
+		String queryStr = sb.toString() + sbc.toString()+sbg.toString();
+		Query query = getSession().createQuery(queryStr);
+		
+		if(filterFlag)
+			query.setParameter("locationId",locationId);
+		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocationWiseDataForLEDDashboard(String locationType,String filterType,Long locationId)
+	{
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sbc = new StringBuilder();
+		StringBuilder sbg = new StringBuilder();
+		boolean filterFlag = false;
+		
+		sb.append(" SELECT COUNT(DISTINCT LM.panchayat.locationAddress.tehsil.tehsilId), COUNT(DISTINCT LM.panchayat.panchayatId) ");
+		sb.append(",SUM(LM.totalPoles),SUM(LM.totalPanels),SUM(LM.totalLights),SUM(LM.workingLights),SUM(LM.onLights),sum(LM.offLights) ");
+		
+		if(locationType.equalsIgnoreCase("district"))
+		{	
+			sb.append(",LM.panchayat.locationAddress.district.districtId ");
+			sbg.append(" GROUP BY LM.panchayat.locationAddress.district.districtId ");
+		}
+		else if(locationType.equalsIgnoreCase("parliament"))
+		{
+			sb.append(",LM.panchayat.locationAddress.parliament.constituencyId ");
+			sbg.append(" GROUP BY LM.panchayat.locationAddress.parliament.constituencyId ");
+		}
+		else if(locationType.equalsIgnoreCase("constituency"))
+		{
+			sb.append(",LM.panchayat.locationAddress.constituency.constituencyId ");
+			sbg.append(" GROUP BY LM.panchayat.locationAddress.constituency.constituencyId ");
+		}
+		else if(locationType.equalsIgnoreCase("mandal"))
+		{
+			sb.append(",LM.panchayat.locationAddress.tehsil.tehsilId ");
+			sbg.append(" GROUP BY LM.panchayat.locationAddress.tehsil.tehsilId ");
+		}
+		
+		sb.append(" FROM LightMonitoring LM WHERE LM.panchayat.locationAddress.state.stateId = 1 ");
+		
+		if(filterType != null && filterType.trim().length() > 0 && locationId != null && locationId.longValue() > 0)
+		{
+			filterFlag = true;
+			if(filterType.equalsIgnoreCase("district"))
+				sbc.append(" AND LM.panchayat.locationAddress.district.districtId = :locationId ");
+			else if(filterType.equalsIgnoreCase("parliament"))
+				sbc.append(" AND LM.panchayat.locationAddress.parliament.constituencyId = :locationId ");
+			else if(filterType.equalsIgnoreCase("constituency"))
+				sbc.append(" AND LM.panchayat.locationAddress.constituency.constituencyId = :locationId ");
+			
+		}
+		
+		String queryStr = sb.toString() + sbc.toString()+sbg.toString();
+		Query query = getSession().createQuery(queryStr);
+		
+		if(filterFlag)
+			query.setParameter("locationId",locationId);
+		
+		return query.list();
+	}
+}
