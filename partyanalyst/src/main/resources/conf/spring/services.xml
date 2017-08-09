@@ -4416,6 +4416,7 @@
     	 <property name="kaizalaAnswerInfoDAO" ref="kaizalaAnswerInfoDAO" />
     	 <property name="kaizalaQuestionsDAO" ref="kaizalaQuestionsDAO" />
     	 <property name="kaizalaAnswersDAO" ref="kaizalaAnswersDAO" />
+    	 <property name="kaizalaGroupsDAO" ref="kaizalaGroupsDAO" />
     </bean> 
 </beans>			
 	
