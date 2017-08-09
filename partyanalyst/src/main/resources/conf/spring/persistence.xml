@@ -1309,6 +1309,8 @@
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaAnswers</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaQuestions</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaResponderInfo</value>
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaGroupType</value>
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaGroups</value>
 				  </list>
 			
 		</property>
