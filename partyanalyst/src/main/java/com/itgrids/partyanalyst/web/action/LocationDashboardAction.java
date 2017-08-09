@@ -67,6 +67,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private ICadreCommitteeService cadreCommitteeService;
 	private List<BasicVO> publicationsData;
 	private BoothInchargesVO boothInchargesVO;
+	private List<BoothInchargesVO> boothInchargesVOList;
 
 	public List<LocationWiseBoothDetailsVO> getLocationVOList() {
 		return locationVOList;
@@ -252,6 +253,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setBoothInchargesVO(BoothInchargesVO boothInchargesVO) {
 		this.boothInchargesVO = boothInchargesVO;
 	}
+	
+	public List<BoothInchargesVO> getBoothInchargesVOList() {
+		return boothInchargesVOList;
+	}
+
+	public void setBoothInchargesVOList(List<BoothInchargesVO> boothInchargesVOList) {
+		this.boothInchargesVOList = boothInchargesVOList;
+	}
+	
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
 			  jObj=new JSONObject(getTask());
@@ -492,7 +502,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		try{
 			jObj = new JSONObject(getTask());
 			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
-			insuranceVO = locationDashboardService.getLocationWiseInsuranceStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
+			grivenceVO = locationDashboardService.getLocationWiseInsuranceStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getLocationWiseInsuranceStatusCount() of LocationDashboardAction{}",e);
 		}
@@ -600,6 +610,21 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 					
 			boothInchargesVO =locationDashboardService.getBoothAssignInchargeCount(jObj.getString("fromDate"),jObj.getString("toDate"), jObj.getLong("locationId"),jObj.getLong("locationValue"),
 					committeeEnrollmentYearsIdsLst);
+		}catch(Exception e){
+			LOG.error("Exception occured in getBoothAssignInchargeCount() method ",e);
+
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getElectionBoothCommitteeInchargesCount(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> boothCommitteeEnrollmentYearsIdsLst = convertJsonStringList(jObj.getJSONArray("boothcommitteeEnrollmentYearsIdsLst"));
+					
+			boothInchargesVOList=locationDashboardService.getBoothCommitteeInchargesCount( jObj.getLong("locationId"),jObj.getLong("locationValue"),
+					boothCommitteeEnrollmentYearsIdsLst,jObj.getString("fromDate"),jObj.getString("toDate"));
 		}catch(Exception e){
 			LOG.error("Exception occured in getBoothAssignInchargeCount() method ",e);
 
