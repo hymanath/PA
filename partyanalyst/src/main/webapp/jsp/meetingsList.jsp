@@ -1621,6 +1621,8 @@ function getMandalVillageDetails(locationLevel){
 	
 	$(document).on('click','.getSummary', function() {
 	  var fromType = $(this).attr("attr_type");
+	  var meetingId = $(this).attr("attr_meetingId");
+	  globalImgsMdlCnt = 1;
 	  var jsObj =	{
 			meetingId : $(this).attr("attr_meetingId"),
 			type:$(this).attr("attr_type")
@@ -1655,17 +1657,7 @@ function getMandalVillageDetails(locationLevel){
 				$("#modelTitle").html(result.subName);
 				$("#myModal").modal('toggle');
 			}else{
-				if(result!=null && result.docsList!=null && result.docsList.length>0){
-					var str='';
-					for(var i in result.docsList){
-						str+='<div style="border-bottom:1px dashed; padding:5px;">';
-						str+='<a target="_tab" href="https://mytdp.com/DocFiles/'+result.docsList[i].path+'">'+result.docsList[i].name+'</a>';
-						str+='</div>';
-					}
-					$("#modelBody").html(str);
-				}
-				$("#modelTitle").html(result.docsList[0].subName);
-				$("#myModal").modal('toggle');
+				buildSummaryForAMeeting(result,meetingId,fromType);
 			}
 			
 		});
@@ -2679,6 +2671,115 @@ $(document).on('click','.imageCloseBtnCls',function(){
 		}, 500);
 	}
 });	
+function buildSummaryForAMeeting(result,meetingId,type){
+	if(result!=null && result.docsList!=null && result.docsList.length>0){
+		var length = result.docsList;
+		var str='';
+	str+='<div class="table-responsive">';
+	        str +='<table class="table table-bordered" id="summaryTableId">'; 
+	        str +='<thead>';
+	        str +='<th style="text-transform: uppercase;"> partyMeeting Name</th>';
+	        str +='<th style="text-transform: uppercase;"> partyMeeting Date</th>';
+	        str +='<th style="text-transform: uppercase;"> Images</th>';
+	        str +='</thead>';
+	        str +='<tbody>';
+			str+='<tr>';
+		if(result.docsList[0].subName != null){
+			str+='<td style="text-transform: uppercase;">'+result.docsList[0].subName+'</td>';
+		    }else{
+			str+='<td>-</td>';
+		   }
+		  if(result.docsList[0].startDateStr!= null){
+			str+='<td style="text-transform: uppercase;">'+result.docsList[0].startDateStr+'</td>';
+		      }else{
+			 str+='<td>-</td>';
+		   }	
+			str+='<td>';
+			if(result.docsList.length>0){
+				str+='<ul class="list-inline ">';
+				 extension = getExtension(''+result.docsList[0].path+'');
+				if(result.docsList[0].path != null){
+					if(extension == 'pdf'){
+						str+='<li>';
+							str+='<object data="https://mytdp.com/DocFiles/'+result.docsList[0].path+'" type="application/pdf" width="80px" height="80px">';
+							  str+='alt : <a href="https://mytdp.com/DocFiles/'+result.docsList[0].path+'" style="width: 80px;height: 80px;">pdf</a>';
+							str+='</object>';
+						str+='</li>';
+					}else{
+						str+='<li>';
+							str+='<img src="https://mytdp.com/DocFiles/'+result.docsList[0].path+'" style="width:80px;height:80px;background-color: #672f0a;" />';
+						str+='</li>';
+					   
+					}
+				}
+				str+='<li>';
+					str+='<span class="locationWiseCountCls" style="cursor: pointer; background-color: rgb(103, 47, 10); display: inline-block;padding:10px;color: white;font-weight: bold"  attr_meeting_Id="'+meetingId+'" attr_type ="'+type+'" >View All</span>';
+				str+='</li>';
+		     str+='</ul>';
+			}
+			 str+='</td>';
+		     str+='</tr>';
+			 str +='</tbody>';
+	         str +='</table>';
+	        str +='</div>';
+			$("#modelBody").html(str);
+			$("#summaryTableId").dataTable();
+}
+      $("#modelTitle").html(result.docsList[0].subName);
+				$("#myModal").modal('toggle');
+}
+$(document).on('click','.locationWiseCountCls', function() {
+	  var fromType = $(this).attr("attr_type");
+	  var meetingId = $(this).attr("attr_meeting_Id");
+	  var jsObj =	{
+			meetingId : meetingId,
+			type:fromType
+			}
+			
+		$.ajax({
+			type: "POST",
+			url:"getSummaryForAMeetingAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			buildLocationWiseCount(result);
+		});
+	 
+  });
+function buildLocationWiseCount(result){
+	if(result!=null && result.docsList!=null && result.docsList.length>0){
+					var str='';
+					str+='<ul class="list-inline modalImagesUl">';
+					for(var i in result.docsList){
+						 extension = getExtension(''+result.docsList[i].path+'');
+						if(extension == 'pdf'){
+						str+='<li>';
+							str+='<object data="https://mytdp.com/DocFiles/'+result.docsList[i].path+'" type="application/pdf" width="500px" height="500px">';
+							  str+='alt : <a href="https://mytdp.com/DocFiles/'+result.docsList[i].path+'">pdf</a>';
+							str+='</object>';
+						str+='</li>';
+						}else{
+							str+='<li>';
+							str+='<img src="https://mytdp.com/DocFiles/'+result.docsList[i].path+'"  style="width:100%;height:500px;background-color: #672f0a;"/>';
+						    str+='</li>';
+						}
+					
+					}
+					str+='</ul>';
+					$("#modelBody1").html(str);
+				}
+		if(result.docsList.length>2)
+			{
+			$(".modalImagesUl").slick({
+			 slide: 'li',
+			 slidesToShow: 1,
+			 slidesToScroll: 1,
+			 infinite: false,
+			 variableWidth: true
+		});
+			}
+				$("#modelTitle1").html(result.docsList[0].subName);
+				$("#myModal1").modal('toggle');
+}
 </script>
 </body>
 </html>
