@@ -87,6 +87,7 @@ var getDocumentWidth = $(document).width();
 		  for(var i in programList){
 			 lastUPdatedTime= programList[0].lastUpdatedTime;
 	       str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		   str+='<div> <b>NOTE :</b> Same Cadre is attending for multiple batches. So, we are considering them individually in batch wise report and those cadres are unique in Camp wise/State wise report.</div><br>';
 			 str+='<h4 class="text-capital " attr_program_id='+programList[i].id+'><span class="bg_49 pad_custom">'+programList[i].name+'</span>';
 			 str+='<span class="programSkillsCls"  state-level="false" expand-icon-inner="training" style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to expand">';
 				str+='<i class="glyphicon glyphicon-fullscreen"></i>';
