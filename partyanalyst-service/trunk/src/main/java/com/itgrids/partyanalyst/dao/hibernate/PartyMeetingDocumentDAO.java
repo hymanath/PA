@@ -117,7 +117,7 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 		
 		StringBuilder str = new StringBuilder();
 		
-		 str.append(" select model.path,model.documentName,model.partyMeeting.meetingName from PartyMeetingDocument model " +
+		 str.append(" select model.path,model.documentName,model.partyMeeting.meetingName,date(model.partyMeeting.startDate) from PartyMeetingDocument model " +
 				" where model.isDeleted='N' and model.partyMeeting.partyMeetingId=:meetingId and model.documentType=:type ");
 		
 		if(accessType !=null && accessType.equalsIgnoreCase("MP") && accessValues.size()>0){
