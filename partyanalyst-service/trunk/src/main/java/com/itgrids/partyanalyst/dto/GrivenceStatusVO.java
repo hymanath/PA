@@ -1,49 +1,41 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GrivenceStatusVO {
 	
-	private Long notVerified=0l;
-	private Long inProgress=0l;
-	private Long notEligible=0l;
-	private Long notPossible=0l;
-	private Long approves=0l;
-	private Long completed=0l;
 	
-	public Long getNotVerified() {
-		return notVerified;
+	private String grivenceType;
+	private String name;
+	private Long count;
+	private List<GrivenceStatusVO> subList=new ArrayList<GrivenceStatusVO>(0);
+	
+	public String getGrivenceType() {
+		return grivenceType;
 	}
-	public void setNotVerified(Long notVerified) {
-		this.notVerified = notVerified;
+	public void setGrivenceType(String grivenceType) {
+		this.grivenceType = grivenceType;
 	}
-	public Long getInProgress() {
-		return inProgress;
+	public String getName() {
+		return name;
 	}
-	public void setInProgress(Long inProgress) {
-		this.inProgress = inProgress;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public Long getNotEligible() {
-		return notEligible;
+	
+	public Long getCount() {
+		return count;
 	}
-	public void setNotEligible(Long notEligible) {
-		this.notEligible = notEligible;
+	public void setCount(Long count) {
+		this.count = count;
 	}
-	public Long getNotPossible() {
-		return notPossible;
+	public List<GrivenceStatusVO> getSubList() {
+		return subList;
 	}
-	public void setNotPossible(Long notPossible) {
-		this.notPossible = notPossible;
+	public void setSubList(List<GrivenceStatusVO> subList) {
+		this.subList = subList;
 	}
-	public Long getApproves() {
-		return approves;
-	}
-	public void setApproves(Long approves) {
-		this.approves = approves;
-	}
-	public Long getCompleted() {
-		return completed;
-	}
-	public void setCompleted(Long completed) {
-		this.completed = completed;
-	}
+	
 	
 }
