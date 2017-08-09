@@ -2162,7 +2162,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 */
 
 	public GrivenceStatusVO getLocationWiseInsuranceStatusCounts(String fromDateStr, String toDateStr, Long locationTypeId,List<Long> locationValues,String year) {
-		GrivenceStatusVO insuranceStatusCounts = new GrivenceStatusVO();
+		GrivenceStatusVO grivenceStatusCount = new GrivenceStatusVO();
 		try{
 			Date fromDate = null;
 			Date toDate = null;
@@ -2175,7 +2175,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			//0-locationValue(DIstrict or ConstituencyId),1-locationName,2-Status,3-StatusId,4-Count
 			List<Object[]> insuranceStatus = insuranceStatusDAO.getConstituencyWiseInsuranceStatusCounts(fromDate, toDate,locationTypeId,locationValues,year);
 			List<Object[]> statusList = insuranceStatusDAO.grievanceInsuranceStatusId();
-			Map<String,GrivenceStatusVO> InsuranceStatusMap = new LinkedHashMap<String, GrivenceStatusVO>(0);
+			Map<Long,GrivenceStatusVO> InsuranceStatusMap = new LinkedHashMap<Long, GrivenceStatusVO>(0);
 			if(insuranceStatus!=null){
 				//Here set the values for object 
 				for (Object[] objects : insuranceStatus) {
@@ -2184,20 +2184,21 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 							GrivenceStatusVO vo = new GrivenceStatusVO();
 							vo.setName(commonMethodsUtilService.getStringValueForObject(status[1]));
 							vo.setCount(0L);
-							InsuranceStatusMap.put(vo.getName(), vo);
+							InsuranceStatusMap.put(commonMethodsUtilService.getLongValueForObject(status[0]), vo);
 						}
 					}
-					GrivenceStatusVO vo = InsuranceStatusMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					
+					GrivenceStatusVO vo = InsuranceStatusMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
 					if(vo != null){
-						vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[3]));
+						vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[4]));
 					}
 				
 				}
 				if(commonMethodsUtilService.isMapValid(InsuranceStatusMap)){
-					GrivenceStatusVO grivenceStatusCount = new GrivenceStatusVO();
 					grivenceStatusCount.setGrivenceType("Insurance");
-					for (String status : InsuranceStatusMap.keySet()) {
-						grivenceStatusCount.getSubList().add(InsuranceStatusMap.get(status));
+					for (Long status : InsuranceStatusMap.keySet()) {
+						GrivenceStatusVO list= InsuranceStatusMap.get(status);
+						grivenceStatusCount.getSubList().add(list);
 					}
 				}
 				
@@ -2205,7 +2206,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}catch(Exception e){
 			Log.error("Exception raised at insurance status counts service"+e);
 		}
-		return insuranceStatusCounts;
+		return grivenceStatusCount;
 	}
 	/* @param String fromDateStr
 	 * @param String toDateStr
@@ -2243,12 +2244,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						if(!commonMethodsUtilService.isMapValid(grievanceStatusMap) && commonMethodsUtilService.isListOrSetValid(statusList)){
 							for (String status : statusList) {
 								GrivenceStatusVO vo = new GrivenceStatusVO();
-								vo.setName(status);
+								vo.setName(status.toUpperCase());
 								vo.setCount(0L);
-								grievanceStatusMap.put(status, vo);
+								grievanceStatusMap.put(status.toUpperCase(), vo);
 							}
 						}
-						GrivenceStatusVO vo = grievanceStatusMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						GrivenceStatusVO vo = grievanceStatusMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]).toUpperCase());
 						if(vo != null){
 							vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[3]));
 						}
@@ -2259,12 +2260,12 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 						if(!commonMethodsUtilService.isMapValid(trustStatusMap) && commonMethodsUtilService.isListOrSetValid(statusList)){
 							for (String status : statusList) {
 								GrivenceStatusVO vo = new GrivenceStatusVO();
-								vo.setName(status);
+								vo.setName(status.toUpperCase());
 								vo.setCount(0L);
-								trustStatusMap.put(status, vo);
+								trustStatusMap.put(status.toUpperCase(), vo);
 							}
 						}
-						GrivenceStatusVO vo = trustStatusMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						GrivenceStatusVO vo = trustStatusMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]).toUpperCase());
 						if(vo != null){
 							vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[3]));
 						}
