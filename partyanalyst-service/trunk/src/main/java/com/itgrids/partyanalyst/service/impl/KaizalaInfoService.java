@@ -14,10 +14,12 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IKaizalaActionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAnswerInfoDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAnswersDAO;
+import com.itgrids.partyanalyst.dao.IKaizalaGroupsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderInfoDAO;
 import com.itgrids.partyanalyst.model.KaizalaAnswerInfo;
 import com.itgrids.partyanalyst.model.KaizalaAnswers;
+import com.itgrids.partyanalyst.model.KaizalaGroups;
 import com.itgrids.partyanalyst.model.KaizalaResponderInfo;
 import com.itgrids.partyanalyst.service.IKaizalaInfoService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -30,8 +32,15 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	private IKaizalaAnswerInfoDAO kaizalaAnswerInfoDAO; 
 	private IKaizalaQuestionsDAO kaizalaQuestionsDAO;
 	private IKaizalaAnswersDAO kaizalaAnswersDAO;
+	private IKaizalaGroupsDAO kaizalaGroupsDAO;
 	
 	
+	public IKaizalaGroupsDAO getKaizalaGroupsDAO() {
+		return kaizalaGroupsDAO;
+	}
+	public void setKaizalaGroupsDAO(IKaizalaGroupsDAO kaizalaGroupsDAO) {
+		this.kaizalaGroupsDAO = kaizalaGroupsDAO;
+	}
 	public IKaizalaAnswersDAO getKaizalaAnswersDAO() {
 		return kaizalaAnswersDAO;
 	}
@@ -104,10 +113,17 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						
 						JSONObject dataObj = jsonObj.getJSONObject("data");
 						
+						Long id = kaizalaGroupsDAO.checkGroupExistence(dataObj.getString("groupId"));
+						if(id == null || id == 0l){
+							KaizalaGroups kg = new KaizalaGroups();
+							kg.setGroupId(dataObj.getString("groupId"));
+							id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
+						}
+						
 						List<Long>  kaizalaActionsIds = kaizalaActionsDAO.getKaizalaActionId(dataObj.getString("actionId"));
 						if(kaizalaActionsIds != null && kaizalaActionsIds.size() > 0){
 							KaizalaAnswerInfo kaiAnsInfo = new KaizalaAnswerInfo();
-							kaiAnsInfo.setGroupId(dataObj.getString("groupId"));
+							kaiAnsInfo.setKaizalaGroupsId(id);
 							kaiAnsInfo.setEventType(jsonObj.getString("eventType"));
 							kaiAnsInfo.setEventId(jsonObj.getString("eventId"));
 							

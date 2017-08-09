@@ -36,8 +36,10 @@ public class KaizalaActions extends BaseModel implements Serializable {
 	private String isAnonymous;
 	private String acceptMultiresponse;
 	private Date expiryDate;
-	private String groupId;
+	private Long kaizalaGroupsId;
 	private String isDeleted;
+	
+	private KaizalaGroups kaizalaGroups;
 	
 	@Id
 	@Column(name="kaizala_actions_id")
@@ -118,12 +120,23 @@ public class KaizalaActions extends BaseModel implements Serializable {
 	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
 	}
-	@Column(name="group_id")
-	public String getGroupId() {
-		return groupId;
+	@Column(name="kaizala_groups_id")
+	public Long getKaizalaGroupsId() {
+		return kaizalaGroupsId;
 	}
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
+	public void setKaizalaGroupsId(Long kaizalaGroupsId) {
+		this.kaizalaGroupsId = kaizalaGroupsId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "kaizala_groups_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public KaizalaGroups getKaizalaGroups() {
+		return kaizalaGroups;
+	}
+	public void setKaizalaGroups(KaizalaGroups kaizalaGroups) {
+		this.kaizalaGroups = kaizalaGroups;
 	}
 	@Column(name="is_deleted")
 	public String getIsDeleted() {
