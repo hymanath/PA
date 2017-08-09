@@ -2515,6 +2515,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 						pmVO.setPath(objects[0].toString());
 						pmVO.setName(objects[1].toString());
 						pmVO.setSubName(objects[2].toString());
+						pmVO.setStartDateStr(commonMethodsUtilService.getStringValueForObject(objects[3]));
 						voList.add(pmVO);
 					}
 				}
