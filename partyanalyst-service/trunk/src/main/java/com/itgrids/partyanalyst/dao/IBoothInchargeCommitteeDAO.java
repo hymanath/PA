@@ -12,4 +12,7 @@ public interface IBoothInchargeCommitteeDAO extends GenericDao<BoothInchargeComm
 	public Long getElectionBoothDetails(Date startDate, Date endDate,Long locationTypeId, Long locationValue, String type,
 			List<Long> committeeEnrollmentYearsIdsLst);
 
+	public List<Object[]> getBoothInchargeCountDetails(Long locationId,Long locationValue, List<Long> committeeEnrlmntYrIds,
+			Date startDate, Date endDate);
+
 }
