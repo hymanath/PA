@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IWardBoothDAO;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.WardBooth;
 
 public class WardBoothDAO  extends GenericDaoHibernate<WardBooth, Long> implements IWardBoothDAO{
@@ -30,4 +31,11 @@ public class WardBoothDAO  extends GenericDaoHibernate<WardBooth, Long> implemen
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
+	
+	public List<Constituency> getWardDetailsByBoothId(Long boothId){
+		Query query = getSession().createQuery("select model.ward from WardBooth model where model.booth.boothId = :boothId ");
+		query.setParameter("boothId", boothId);
+		return query.list();
+	}
+	
 }

@@ -576,7 +576,7 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 				" from TrainingCampBatch model" +
 				" where model.attendeeType.attendeeTypeId = 1 and model.isCancelled = 'false'");
 		if(todayDate != null)
-				sb.append(" and model.fromDate >= todayDate and model.toDate <= todayDate");
+				sb.append(" and model.fromDate <= :todayDate and model.toDate >= :todayDate");
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(todayDate != null)
