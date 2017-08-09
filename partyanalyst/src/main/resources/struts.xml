@@ -17835,7 +17835,7 @@
 	 
 	 <action name="getLocationWiseInsuranceStatusCountAction" class="locationDashboardAction" method="getLocationWiseInsuranceStatusCounts">
 	     <result type="json" name="success">
-	        <param name="root">grivenceVO</param>
+	        <param name="root">insuranceVO</param>
 	    </result>
    </action>
    
