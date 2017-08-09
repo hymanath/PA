@@ -3338,7 +3338,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			    LocationFundDetailsVO poorPerformancMandalVO = null;
 			    List<FundVO> locationList = new ArrayList<FundVO>(0);
 			    
-				if(inputVO.getSearchLevelId() == 0l || inputVO.getSearchLevelId()==3l) //state or district 
+				if(inputVO.getSearchLevelId() == 0l || inputVO.getSearchLevelId()==IConstants.DISTRICT_LEVEL_SCOPE_ID) //0-state or district 
 				{
 				   inputVO.setSublocationType("district");
 				   str = convertingInputVOToString(inputVO);
@@ -3353,7 +3353,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 					}
 				}
 				
-				if(inputVO.getSearchLevelId() == 0l ||  inputVO.getSearchLevelId()==3l || inputVO.getSearchLevelId()==4l)////state or district or Constituency 
+				if(inputVO.getSearchLevelId() == 0l ||  inputVO.getSearchLevelId()==IConstants.DISTRICT_LEVEL_SCOPE_ID || inputVO.getSearchLevelId()==IConstants.CONSTITUENCY_LEVEL_SCOPE_ID)////state or district or Constituency 
 				{
 					 inputVO.setSublocationType("constituency");
 					 str = convertingInputVOToString(inputVO);
@@ -3362,7 +3362,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 					 if (list.size() > 0 ){
 						 topPerformancMandalVO = list.get(0);
 				    	 poorPerformancMandalVO = list.get(list.size()-1);
-				    	 if(inputVO.getSearchLevelId() == 4L) { 
+				    	 if(inputVO.getSearchLevelId() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID) { 
 				    		 //overall
 				    		 resultVO.getSubList().addAll(topPerformancMandalVO.getSubList());
 					    	 setResultToFinalList(locationList,3l,"District",0l,topPerformancMandalVO.getDistrictName(),topPerformancMandalVO.getTotalExpenditure(),poorPerformancMandalVO.getId(),poorPerformancMandalVO.getDistrictName(),poorPerformancMandalVO.getTotalExpenditure(),topPerformancMandalVO.getAvrgeAmt());
@@ -3373,7 +3373,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 					 }
 				}
 				
-				if(inputVO.getSearchLevelId() == 0l || inputVO.getSearchLevelId()==3l  || inputVO.getSearchLevelId()==4l || inputVO.getSearchLevelId()==5l)//state or district or Constituency or Mandal 
+				if(inputVO.getSearchLevelId() == 0l || inputVO.getSearchLevelId()==IConstants.DISTRICT_LEVEL_SCOPE_ID  || inputVO.getSearchLevelId()==IConstants.CONSTITUENCY_LEVEL_SCOPE_ID || inputVO.getSearchLevelId()==IConstants.MANDAL_LEVEL_SCOPE_ID)//state or district or Constituency or Mandal 
 				{
 					 inputVO.setSublocationType("mandal");
 					 str = convertingInputVOToString(inputVO);
@@ -3382,7 +3382,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				     if(list.size() > 0){
 				    	 topPerformancMandalVO = list.get(0);
 				    	 poorPerformancMandalVO = list.get(list.size()-1);
-				    	 if(inputVO.getSearchLevelId() == 5L) { 
+				    	 if(inputVO.getSearchLevelId() == IConstants.MANDAL_LEVEL_SCOPE_ID) { 
 				    		 //overall
 				    		 resultVO.getSubList().addAll(topPerformancMandalVO.getSubList());
 					    	 setResultToFinalList(locationList,3l,"District",0l,topPerformancMandalVO.getDistrictName(),topPerformancMandalVO.getTotalExpenditure(),poorPerformancMandalVO.getId(),poorPerformancMandalVO.getDistrictName(),poorPerformancMandalVO.getTotalExpenditure(),topPerformancMandalVO.getAvrgeAmt());
@@ -3489,8 +3489,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	public void prpareRquiredParameter(InputVO inputVO, String type) {
 		try {
 			if (type.equalsIgnoreCase("overview")) {
-				if (inputVO.getSearchLvlVals() != null
-						&& inputVO.getSearchLvlVals().size() > 0) {
+				if (inputVO.getSearchLvlVals() != null && inputVO.getSearchLvlVals().size() > 0) {
 					inputVO.getLevelValues().clear();
 					inputVO.getLevelValues().addAll(inputVO.getSearchLvlVals());
 				}
@@ -3577,9 +3576,9 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		 	    				mgnresDtlsVO.setCount(mgnresDtlsVO.getCount()+count);
 		 	    				for (IdNameVO typeVO : mgnresDtlsVO.getSubList()) {
 									if (typeVO.getId().longValue() == 1l) {
-										typeVO.setTotl(cnvrtLakhIntoCrores(String.valueOf(Double.valueOf(mgnresDtlsVO.getTtlAmt())+Double.valueOf(jObj.getString("WAGEEXPENDITURE")))));
+										typeVO.setTotl(cnvrtLakhIntoCrores(String.valueOf(Double.valueOf(typeVO.getTotl())+Double.valueOf(jObj.getString("WAGEEXPENDITURE")))));
 									} else {
-										typeVO.setTotl(cnvrtLakhIntoCrores(String.valueOf(Double.valueOf(mgnresDtlsVO.getTtlAmt())+Double.valueOf(jObj.getString("MATERIALEXPENDITURE")))));
+										typeVO.setTotl(cnvrtLakhIntoCrores(String.valueOf(Double.valueOf(typeVO.getTotl())+Double.valueOf(jObj.getString("MATERIALEXPENDITURE")))));
 									}
 								}
 		 	    			}
@@ -3595,8 +3594,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	public List<IdNameVO> getMgnresTemplate() {
 		List<IdNameVO> resultList = new ArrayList<IdNameVO>(0);
 		try {
-			resultList.add(new IdNameVO(1l, "WAGE EXP"));
-			resultList.add(new IdNameVO(2l, "MATERIAL EXP"));
+			resultList.add(new IdNameVO(1l, "WAGE EXP","0.0"));
+			resultList.add(new IdNameVO(2l, "MATERIAL EXP","0.0"));
 		} catch (Exception e) {LOG.error(" Exception occured at getMgnresTemplate() in FundManagementDashboardService class ",e);
 		}
 		return resultList;

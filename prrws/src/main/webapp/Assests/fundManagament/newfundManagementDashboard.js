@@ -852,8 +852,9 @@ getAllDepartments();
 				}
 			}
 	});
-	
+	//tab click
 	$(document).on("click","[tab-switch] li",function(){
+		
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
 		var blockName = $(this).closest("ul").attr("tab-switch");
@@ -991,6 +992,17 @@ getAllDepartments();
 				getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload',0);
 			}
 		}
+		// hiding select box in the case of MGNREGS department.
+		  var deptIdArr = $("#DepartmentsId").val();
+		  var deptId = 0;
+		  if (deptIdArr != null && deptIdArr.length==1){
+			 deptId = deptIdArr[0];
+		  }
+		  if (deptId == 3){//In the case MGNREGS we are hiding select box.
+			 $(".selectBoxCommonCls").hide();
+		  }else {
+			 $(".selectBoxCommonCls").show();
+		  }
 		
 	});
 	var overviewSelectBoxData = '';
@@ -1358,6 +1370,9 @@ getAllDepartments();
 						$(".showHideMandalPgramsCls").hide();
 						$(".showHideVillagePgramsCls").hide();
 						$(".selectBoxCommonCls").hide();
+						$("#financialYearId").html('');
+						var finalYearArr =[{"financialYearId":"4","financialYear":"2017-2018"}];
+						buildFinancialYearRlst(finalYearArr);
 					}else {
 					   $(".advancedSearchStyle").show();	
 					   $(".comaprisionViewShow").show();
@@ -1367,6 +1382,7 @@ getAllDepartments();
 						$(".showHideMandalPgramsCls").show();
 						$(".showHideVillagePgramsCls").show();
 						$(".selectBoxCommonCls").show();
+						getAllFiniancialYears();
 					}
 				}
 			
@@ -1383,6 +1399,9 @@ getAllDepartments();
 							$(".showHideMandalPgramsCls").hide();
 							$(".showHideVillagePgramsCls").hide();
 							$(".selectBoxCommonCls").hide();
+							$("#financialYearId").html('');
+							var finalYearArr =[{"financialYearId":"4","financialYear":"2017-2018"}];
+						      buildFinancialYearRlst(finalYearArr);
 					}else {
 							 $(".advancedSearchStyle").show();
 							 $(".comaprisionViewShow").show();
@@ -1392,6 +1411,7 @@ getAllDepartments();
 							 $(".showHideMandalPgramsCls").show();
 							 $(".showHideVillagePgramsCls").show();
 							$(".selectBoxCommonCls").show();
+							getAllFiniancialYears();
 					}
 				}
 			
@@ -1404,6 +1424,7 @@ getAllDepartments();
 					$(".showHideMandalPgramsCls").show();
 					$(".showHideVillagePgramsCls").show();
 					$(".selectBoxCommonCls").show();
+					getAllFiniancialYears();
 			}
 		}
 		
@@ -1569,7 +1590,13 @@ getAllDepartments();
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$("#financialYearId").append("<option value='0'>All</option>");
+			buildFinancialYearRlst(result);
+		});
+		onLoadInitialisations();
+   }
+   function buildFinancialYearRlst(result) {
+	     
+	       $("#financialYearId").append("<option value='0'>All</option>");
 			if(result != null && result.length >0){
 				for(var i in result){
 					$("#financialYearId").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
@@ -1586,11 +1613,7 @@ getAllDepartments();
 			$(".compSingleFinancialYear").trigger('chosen:updated');
 			$("#financialYearId_chosen").find(".search-choice-close").attr("data-option-array-index","0").addClass("clicked")
 			
-			
-		});
-		onLoadInitialisations();
    }
-   
    function getALlProgramesAmountDetails(){
 	   $("#overviewBlock").html(spinner);
 		var financialYrIdList = $('#financialYearId').val();
@@ -1919,7 +1942,12 @@ getAllDepartments();
 									}
 									
 										if(viewType == "cumulative"){
-											table+='<td>'+result[i].amount+'  ('+result[i].count+')</td>';
+											if(result[i].count == 0) { // in the case MGNREGS we are sending count is zero and we are not displaying it.
+											  table+='<td>'+result[i].amount+'</td>';	
+											}else {
+											  table+='<td>'+result[i].amount+'  ('+result[i].count+')</td>';	
+											}
+											
 										}
 								
 							}
@@ -1935,8 +1963,12 @@ getAllDepartments();
 								}
 								
 									if(viewType == "cumulative"){
-										table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
-										//table+='<td>'+result[i].amount+'</td>';
+											if(result[i].count == 0) { // in the case MGNREGS we are sending count is zero and we are not displaying it.
+											   table+='<td>'+result[i].amount+'</td>';	
+											}else {
+											  table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
+										      //table+='<td>'+result[i].amount+'</td>';		
+											}
 									}
 								
 								
@@ -1949,8 +1981,12 @@ getAllDepartments();
 								var blockType = getblockType();
 								table+='<td>'+result[i].addressVO.parliamentName+'</td>';
 									if(viewType == "cumulative"){
-										table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
-										//table+='<td>'+result[i].amount+'</td>';
+										    if(result[i].count == 0) { // in the case MGNREGS we are sending count is zero and we are not displaying it.
+											   table+='<td>'+result[i].amount+'</td>';	
+											}else{
+										      table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
+										      //table+='<td>'+result[i].amount+'</td>';
+											}
 									}
 							}
 							else if(levelId == '4')
@@ -1974,8 +2010,12 @@ getAllDepartments();
 										}
 									
 									if(viewType == "cumulative"){
-										table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "CONSTITUENCY" >'+result[i].count+')</small></td>';
-										//table+='<td>'+result[i].amount+'</td>';
+										    if(result[i].count == 0) { // in the case MGNREGS we are sending count is zero and we are not displaying it.
+											   table+='<td>'+result[i].amount+'</td>';	
+											}else{
+										      table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "CONSTITUENCY" >'+result[i].count+')</small></td>';
+										      //table+='<td>'+result[i].amount+'</td>';
+											}
 									}
 								
 								
@@ -2006,8 +2046,12 @@ getAllDepartments();
 									}
 									
 									if(viewType == "cumulative"){
-										table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "MANDAL">'+result[i].count+')</small></td>';
-										//table+='<td>'+result[i].amount+'</td>';
+										 if(result[i].count == 0) { // in the case MGNREGS we are sending count is zero and we are not displaying it.
+											   table+='<td>'+result[i].amount+'</td>';	
+										}else{
+										  table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "MANDAL">'+result[i].count+')</small></td>';
+										   //table+='<td>'+result[i].amount+'</td>';
+										}
 									}
 								
 							}else if(levelId == '6')
@@ -2030,8 +2074,12 @@ getAllDepartments();
 										
 										table+='<td>'+result[i].addressVO.panchayatName+'</td>';
 										if(viewType == "cumulative"){
-											table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "VILLAGE">'+result[i].count+')</small></td>';
-											//table+='<td>'+result[i].amount+'</td>';
+											 if(result[i].count == 0) { // in the case MGNREGS we are sending count is zero and we are not displaying it.
+											   table+='<td>'+result[i].amount+'</td>';	
+											 }else{
+												table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "VILLAGE">'+result[i].count+')</small></td>';
+												//table+='<td>'+result[i].amount+'</td>';
+											 }
 										}
 								
 							}
@@ -2043,7 +2091,7 @@ getAllDepartments();
 								}else{
 									newYearId = $("#financialYearId").val();
 								} 
-								//santosh
+								 //location block
 									if(levelId != '2'){
 										if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count == 0){//in the case of MGNREGS count will come zero
 											
@@ -2301,6 +2349,9 @@ getAllDepartments();
 										var levlValue = value[1];
 										var financialYrId = value[2];
 										var schemeId = value[3];
+										if(schemeId==0){ //MGNREGS schemeId id  is zero we are sending from service and in that case we are stopping click call.
+											return; 
+										}
 										var locationName="";
 										var levelName="STATE";
 										getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,0,locationName,levelName);
@@ -2577,6 +2628,9 @@ getAllDepartments();
 										var schemeId = value[3];
 										var locationName = value[4];
 										var LevelName = value[5];
+										if(schemeId==0){ //MGNREGS schemeId id  is zero we are sending from service  and in that case we are stopping click call.
+											return; 
+										}
 										getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,0,locationName,LevelName);
 									}
 								}
