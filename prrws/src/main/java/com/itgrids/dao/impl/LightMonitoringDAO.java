@@ -73,7 +73,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		if (startDate != null && toDate != null) {
 			sb.append(" and LM.surveyDate between :startDate and :toDate ");
 		}
-		Query query = getSession().createSQLQuery(sb.toString());
+		Query query = getSession().createQuery(sb.toString());
 		if (startDate != null && toDate != null) {
 			query.setDate("startDate", startDate);
 			query.setDate("toDate", toDate);
@@ -138,7 +138,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		{
 			sbe.append(" and year(LM.surveyDate) =:year  ");
 		} 
-		else if (fromDate != null && toDate != null) {
+		 if (fromDate != null && toDate != null) {
 			sb.append(" and date(LM.surveyDate) between :fromDate and :toDate ");
 		}
 		
@@ -150,40 +150,28 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			{
 				sb.append(" ,LA.district.state.stateId , LA.district.state.stateName  ");
 				sbg.append(" LA.stateId ");
-				if (locationValues != null && locationValues.size() > 0) {
-					sbe.append(" and  LA.district.state.stateId in (:locationValues) ");
 				}
-			}
 			else if (locationTypeId == 3l) {
-				sb.append("  LA.district.districtId ,LA.district.districtName, COUNT(DISTINCT LA.tehsil.tehsilId) ");
+				sb.append("  LA.district.districtId ,LA.district.districtName, COUNT(DISTINCT LA.tehsil.tehsilId),COUNT(DISTINCT LA.panchayat.panchayatId), ");
 				sbg.append(" LA.districtId ");
 				
-				if (locationValues != null && locationValues.size() > 0) {
-					sbe.append(" AND LA.district.districtId IN (:locationValues)  ");
-				}
+				
 			} 
 			else if (locationTypeId == 4l) {
-				sb.append(" LA.constituency.constituencyId ");
+				sb.append(" LA.constituency.constituencyId,COUNT(DISTINCT LA.panchayat.panchayatId) ");
 				sbg.append(" LA.constituencyId ");
 
-				if (locationValues != null && locationValues.size() > 0) {
-					sbe.append(" and LA.constituency.constituencyId in (:locationValues) ");
-				}
-			}
+							}
 			else if (locationTypeId == 5l) {
-				sb.append("  LA.tehsil.tehsilId,LA.tehsil.tehsilName ");
+				sb.append("  LA.tehsil.tehsilId,LA.tehsil.tehsilName ,COUNT(DISTINCT LA.panchayat.panchayatId)");
 				sbg.append(" LA.tehsil.tehsilId ");
-				if (locationValues != null && locationValues.size() > 0) {
-					sbe.append(" AND LA.tehsil.tehsilId  IN (:locationValues) ");
-				}
+				
 			} 
 			else if (locationTypeId == 10l) 
 			{
 				sb.append(" LA.parliament.constituencyId, LA.parliament.name ");
 				sbg.append(" LA.parliament.constituencyId ");
-				if (locationValues != null && locationValues.size() > 0) {
-					sbe.append(" AND PA.parliament.constituencyId IN (:locationValues) ");
-				}
+				
 			}
 		}
 
@@ -200,27 +188,18 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			} else if (searchlevelId == 5l) {
 				sbe.append(" and LA.tehsilId  in (:searchLevelValues) ");
 			}
-		}
-		
-		
-		
+		}		
 		sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
 		System.out.println(sb.toString());
 
 		Query query = getSession().createQuery(sb.toString());
-		if (fromDate != null && toDate != null) {
+		if (year != null && !year.trim().isEmpty()) {
+			query.setParameter("year", Integer.parseInt(year));
+		}else if (fromDate != null && toDate != null) {
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
 		}
 
-		if (year != null && !year.trim().isEmpty()) {
-			query.setParameter("year", Integer.parseInt(year));
-		}
-
-		if (locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null
-				&& locationValues.size() > 0) {
-			query.setParameterList("locationValues", locationValues);
-		}
 		if (searchlevelId != null && searchlevelId.longValue() > 0l && searchLevelValues != null
 				&& searchLevelValues.size() > 0) {
 			query.setParameterList("searchLevelValues", searchLevelValues);
@@ -232,7 +211,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 	
 	@Override
 	public List<Object[]> getConstituencyLevelWiseSurveyDetails() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -247,4 +226,62 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 
 		return null;
 	}
+
+	@Override
+	public List<Object[]> getDistrictLevelWise(Date fromDate, Date toDate, List<Long> locationValues,Long locationTypeId) {
+	StringBuilder sb = new StringBuilder();
+	StringBuilder sbm = new StringBuilder();
+    StringBuilder sbe = new StringBuilder();
+    StringBuilder sbg = new StringBuilder();
+    
+    sb.append("SELECT  sum(LM.totalPoles),sum(LM.totalPanels),sum(LM.totalLights),sum(LM.workingLights),sum(LM.onLights),sum(LM.offLights) ");
+    sbm.append("FROM  LightMonitoring  LM, Panchayat P, LocationAddress  LA ");
+    sbe.append(" WHERE  LM.panchayatId = P.panchayatId  AND  P.locationAddressId  = LA.locationAddressId  ");
+        if (fromDate != null && toDate != null) {
+    	 sbe.append(" and date(LM.surveyDate) between :fromDate and :toDate ");
+	}
+	
+	sbg.append(" GROUP BY ");
+	
+	if (locationTypeId != null && locationTypeId.longValue() > 0l) 
+	{
+		if (locationTypeId == 2l) 
+		{
+			sb.append(" ,LA.district.districtId ,LA.district.districtName, COUNT(DISTINCT LA.tehsil.tehsilId),COUNT(DISTINCT LA.panchayat.panchayatId) ");
+			sbg.append(" LA.districtId");
+			}
+   	      }
+	
+	sb.append(sbm.toString()).append(sbe.toString()).append(sbg.toString());
+	Query query = getSession().createQuery(sb.toString());
+	if (fromDate != null && toDate != null) {
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+	}
+	return query.list();
+	
+	}
 }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	       
+	       
+	       
+	       	
+		
+	
