@@ -99,11 +99,18 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 				
 				List<ClientResponse> responseList = new ArrayList<ClientResponse>();
 				String str = convertingInputVOToString(inputVO);
+				String faStr = convertingInputVOToStringForFA(inputVO);
 				if(urlsList != null && !urlsList.isEmpty()){
 					ExecutorService executor = Executors.newFixedThreadPool(30);
 					for (NregaConsolidatedInputVO urlvo : urlsList) {
-						 Runnable worker = new NREGSCumulativeThread(urlvo.getUrl(),responseList,str);
-						 executor.execute(worker);
+						if(urlvo.getId() != null && urlvo.getId().longValue() == 14l){
+							Runnable worker = new NREGSCumulativeThread(urlvo.getUrl(),responseList,faStr);
+							executor.execute(worker);
+						}
+						else{
+							Runnable worker = new NREGSCumulativeThread(urlvo.getUrl(),responseList,str);
+							executor.execute(worker);
+						}
 					}	 
 					executor.shutdown();
 					while (!executor.isTerminated()) {
@@ -197,6 +204,10 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 								componentName = "OPGK-Annuals";
 							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("UGDrainageService/UGDrainageData"))
 								componentName = "UGDrainage";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("CheckDamServiceNew/CheckDamDataNew"))
+								componentName = "Check Dam";
+							else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("RockfillDamService/RockfillDamData"))
+								componentName = "Rock fill dams";
 							/*else if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("SilkwarmServiceNew/SilkwarmDataNew"))
 								componentName = "Silk Worms";*/
 							
@@ -557,6 +568,52 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at convertingInputVOToString - NREGSConsolidatedService service", e);
+		}
+		return str;
+	}
+	
+	/*
+	 * Date : 09/08/2017
+	 * Author :Sravanth
+	 * @description : convertingInputVOToStringForFA
+	 * 
+	 */
+	public String convertingInputVOToStringForFA(NregaConsolidatedInputVO inputVO){
+		String str = "";
+		try {
+			/*if(inputVO.getLocationId() != null)
+				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
+					if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
+						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+				}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+					if(inputVO.getLocationId().longValue() > 0l)
+						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+				}*/
+				
+			str = "{";
+			
+			if(inputVO.getFromDate() != null )
+				str += "\"fromDate\" : \""+inputVO.getFromDate()+"\",";
+			if(inputVO.getToDate() != null)
+				str += "\"toDate\" : \"2017-05-30\",";
+			if(inputVO.getYear() != null)
+				str += "\"year\" : \""+inputVO.getYear()+"\",";
+			if(inputVO.getLocationType() != null)
+				str += "\"locationType\" : \""+inputVO.getLocationType()+"\",";
+			if(inputVO.getLocationIdStr() != null)
+				str += "\"locationId\" : \""+inputVO.getLocationIdStr()+"\",";
+			if(inputVO.getSubLocationType() != null)
+				str += "\"SublocationType\" : \""+inputVO.getSubLocationType()+"\",";
+			if(inputVO.getComponentName() != null)
+				str += "\"type\" : \""+inputVO.getComponentName()+"\",";
+			
+			if(str.length() > 1)
+				str = str.substring(0,str.length()-1);
+			
+			str += "}";
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at convertingInputVOToStringForFA - NREGSConsolidatedService service", e);
 		}
 		return str;
 	}
