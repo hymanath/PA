@@ -1200,4 +1200,16 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
    	}
 		return query.list();
 	}
+
+	@Override
+	public List<String> getGrivenceStatus() {
+		Query query = getSession().createSQLQuery("select distinct Completed_Status from complaint_master where Completed_Status is not null");
+		return query.list();
+	}
+	
+	@Override
+	public List<Object[]> grievanceInsuranceStatusId() {
+		Query query = getSession().createSQLQuery("select grievance_insurance_status_id, status from grievance_insurance_status ");
+		return query.list();
+	}
 }

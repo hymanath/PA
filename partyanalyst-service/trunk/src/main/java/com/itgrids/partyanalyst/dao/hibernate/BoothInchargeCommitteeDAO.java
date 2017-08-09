@@ -24,7 +24,7 @@ public class BoothInchargeCommitteeDAO extends GenericDaoHibernate<BoothIncharge
 
 		queryStr.append(" select  count(distinct model.boothInchargeCommitteeId) "
 				+ " from BoothInchargeCommittee model where "
-				+ " model.isDeleted = 'N' ");
+				+ " model.isDeleted = 'N' and model.booth.publicationDate.publicationDateId = :publicationDate");
 
 		if (locationTypeId != null && locationTypeId.longValue() == 1l) {
 			queryStr.append(" and model.address.state.stateId =:locationValue ");
@@ -62,6 +62,7 @@ public class BoothInchargeCommitteeDAO extends GenericDaoHibernate<BoothIncharge
 		}
 		Query qry = getSession().createQuery(queryStr.toString());
 
+		qry.setParameter("publicationDate", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
 		if (locationValue != null && locationValue.longValue() > 0) {
 			qry.setParameter("locationValue", locationValue);
 		}
@@ -78,6 +79,59 @@ public class BoothInchargeCommitteeDAO extends GenericDaoHibernate<BoothIncharge
 
 		return (Long) qry.uniqueResult();
 
+	}
+
+	@Override
+	public List<Object[]> getBoothInchargeCountDetails(Long locationId,Long locationValue, List<Long> boothCommEnrollYrIds,
+			Date startDate, Date endDate) {
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.boothId,model.tdpCadre.tdpCadreId,model.tdpCadre.gender  from BoothIncharge model " +
+				" where  model.isActive ='Y' and model.isDeleted='N' " +
+				" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.booth.publicationDate.publicationDateId = :publicationDate "); 
+	
+		
+		if(locationId != null && locationId.longValue()==1l){
+			   queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.state.stateId =:locationValue");  
+			 }else if(locationId != null && locationId.longValue()==2l){
+			   queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.district.districtId =:locationValue");  
+			 }/*else if(locationId != null && locationId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+		        queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId =:locationValue ");  
+			 }*/else if(locationId != null && locationId.longValue()==4l){
+		        queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.constituency.constituencyId =:locationValue ");  
+			 }else if(locationId != null && locationId.longValue()==5l){
+			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.tehsil.tehsilId =:locationValue");  
+			 }else if(locationId != null && locationId.longValue()==6l){ //  town/division
+			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.localElectionBody.localElectionBodyId =:locationValue"); 
+			 }else if(locationId != null && locationId.longValue()==7l){ 
+			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.panchayat.panchayatId =:locationValue"); 
+			 }else if(locationId != null && locationId.longValue()==8l){ 
+			    queryStr.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.address.ward.constituencyId =:locationValue"); 
+			 }
+		
+		if(boothCommEnrollYrIds !=null && boothCommEnrollYrIds.size() > 0){
+			 queryStr.append(" and model.boothInchargeEnrollment.boothInchargeEnrollmentId in (:boothCommEnrollYrIds) " );
+		}
+		
+		if(startDate != null && endDate != null){
+			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
+		}
+		Query qry = getSession().createQuery(queryStr.toString());
+		
+		if(locationValue != null && locationValue.longValue() > 0l){
+			qry.setParameter("locationValue", locationValue);
+		 }
+		qry.setParameter("publicationDate", IConstants.BOOTH_INCHARGE_COMMITTEE_PUBLICATION_DATE_ID);
+		if(boothCommEnrollYrIds !=null && boothCommEnrollYrIds.size() > 0){
+			qry.setParameterList("boothCommEnrollYrIds", boothCommEnrollYrIds);
+		}
+		
+		if(startDate != null && endDate != null){
+			qry.setDate("startDate", startDate);
+			qry.setDate("endDate", endDate);
+		}
+		return qry.list();
 	}
 
 }
