@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,7 +24,6 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class KaizalaAnswerInfo extends BaseModel implements Serializable {
 	private Long kaizalaAnswerInfoId;
-	private String groupId;
 	private String eventType;
 	private String eventId;
 	private Long kaizalaActionsId;
@@ -36,9 +34,11 @@ public class KaizalaAnswerInfo extends BaseModel implements Serializable {
 	private String address;
 	private String responseTime;
 	private String isDeleted;
+	private Long kaizalaGroupsId;
 	
 	private KaizalaActions kaizalaActions;
 	private KaizalaResponderInfo kaizalaResponderInfo;
+	private KaizalaGroups kaizalaGroups;
 	
 	
 	
@@ -51,15 +51,6 @@ public class KaizalaAnswerInfo extends BaseModel implements Serializable {
 
 	public void setKaizalaAnswerInfoId(Long kaizalaAnswerInfoId) {
 		this.kaizalaAnswerInfoId = kaizalaAnswerInfoId;
-	}
-
-	@Column(name = "group_id")
-	public String getGroupId() {
-		return groupId;
-	}
-
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
 	}
 
 	@Column(name = "event_type")
@@ -176,4 +167,26 @@ public class KaizalaAnswerInfo extends BaseModel implements Serializable {
 		this.kaizalaResponderInfo = kaizalaResponderInfo;
 	}
 
+	@Column(name = "kaizala_groups_id")
+	public Long getKaizalaGroupsId() {
+		return kaizalaGroupsId;
+	}
+
+	public void setKaizalaGroupsId(Long kaizalaGroupsId) {
+		this.kaizalaGroupsId = kaizalaGroupsId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "kaizala_groups_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public KaizalaGroups getKaizalaGroups() {
+		return kaizalaGroups;
+	}
+
+	public void setKaizalaGroups(KaizalaGroups kaizalaGroups) {
+		this.kaizalaGroups = kaizalaGroups;
+	}
+	
+	
 }
