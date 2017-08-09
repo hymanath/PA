@@ -2336,11 +2336,48 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		   return (List<Object[]>)query.list();
 	   }
 	
-	 public List<Object[]> getDayWiseTrainingCampDetailsCount()
+	 public List<Object[]> getDayWiseTrainingCampDetailsCount(List<Long> enrollmentYearIds,List<Long> programIdsList)
 	 { 
-		Query query = getSession().createSQLQuery("call get_training_camp_attendance_details ('8','2010-07-23','2017-08-02','2','1','5,7,9,6,8','2','1')");
+		//Query query = getSession().createSQLQuery("call get_training_camp_attendance_details('8','2010-07-23','2050-08-02','2','1','5,7,9,6,8','2','1')");
 		
-		return query.list();
+		//return query.list();
+	 
+	 	Long committeeEnrollmetYrId = null;
+	   if(enrollmentYearIds.contains(4L)){
+		   committeeEnrollmetYrId=2l;
+	   }else if(enrollmentYearIds.contains(3L)){
+		   committeeEnrollmetYrId=1l;
 	   }
+	   
+	   Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_details(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8','2','1')")
+			.addScalar("tdp_cadre_id", Hibernate.LONG)
+			.addScalar("date(A.attended_time)", Hibernate.STRING)
+			.addScalar("training_camp_batch_id", Hibernate.LONG)
+			.addScalar("tdp_roles_id", Hibernate.LONG)
+			.addScalar("tdp_committee_level_id", Hibernate.LONG)
+			.addScalar("state_id", Hibernate.LONG)
+			.addScalar("scope_value", Hibernate.LONG)
+			.addScalar("Attended_Status", Hibernate.STRING)
+			.addScalar("training_camp_program_id", Hibernate.LONG)
+			.addScalar("state_id", Hibernate.LONG)
+			.addScalar("state_name", Hibernate.STRING)
+			.addScalar("district_id", Hibernate.LONG)
+			.addScalar("district_name", Hibernate.STRING)
+			.addScalar("parliament_constituency_id", Hibernate.LONG)
+			.addScalar("parliament_constituency_name", Hibernate.STRING)
+			.addScalar("constituency_id", Hibernate.LONG)
+			.addScalar("constituency", Hibernate.STRING)
+			.addScalar("tehsil_id", Hibernate.LONG)
+			.addScalar("tehsil_name", Hibernate.STRING)
+			.addScalar("local_election_body", Hibernate.LONG)
+			.addScalar("town", Hibernate.STRING)
+			.addScalar("panchayat_id", Hibernate.LONG)
+			.addScalar("panchayat_name", Hibernate.STRING)
+			.addScalar("ward_id", Hibernate.LONG)
+			.addScalar("ward_name", Hibernate.STRING);
+	
+			query.setParameter("programId", programIdsList.get(0)).setParameter("enrollemntYrId", committeeEnrollmetYrId).setParameter("basicCommitteeId", 1L); 	
+			return query.list();
+	}
 }
 
