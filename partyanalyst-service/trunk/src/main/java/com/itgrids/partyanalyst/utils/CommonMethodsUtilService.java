@@ -856,7 +856,10 @@ public class CommonMethodsUtilService {
 					 }
 				 }else{
 					 Long tempNo = Long.valueOf(checkWithSerialNoStr.toString().substring(checkWithSerialNoStr.trim().length()-2, checkWithSerialNoStr.trim().length()));
-					 Long remainingCountToNext_100 = 100-tempNo;								
+					 Long remainingCountToNext_100 = 0l;
+					 if(tempNo.longValue()>0L)
+						 remainingCountToNext_100 = 100-tempNo;
+					 
 					 maxValue = checkWithSerialNo+remainingCountToNext_100;
 					 minValue = (maxValue-100)+1;
 					 Long tempSerialNo = serialNo;//Long.valueOf(vo.getSerialNo());

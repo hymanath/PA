@@ -31,9 +31,9 @@ import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
-import com.itgrids.partyanalyst.dao.hibernate.BoothInchargeCommitteeDAO;
 import com.itgrids.partyanalyst.dto.BoothAddressVO;
 import com.itgrids.partyanalyst.dto.BoothInchargeDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.model.BoothInchargeSerialNoRange;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IBoothDataValidationService;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -73,7 +74,17 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	private IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO;
 	private TransactionTemplate transactionTemplate = null;
+	private ICadreCommitteeService cadreCommitteeService;
 	
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
+
 	public IBoothInchargeSerialNoRangeDAO getBoothInchargeSerialNoRangeDAO() {
 		return boothInchargeSerialNoRangeDAO;
 	}
@@ -1056,6 +1067,21 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	public BoothInchargeDetailsVO validateBoothToMakeConfirm(Long boothId,Long boothInchargeEnrollmentId){
 		BoothInchargeDetailsVO resultVO = new BoothInchargeDetailsVO();
 		try {
+			
+			 CadreCommitteeVO cadreCommitteeVO = cadreCommitteeService.getCadreVoterBthSerilNo(boothDAO.get(boothId).getConstituency().getConstituencyId(),boothId.toString(),"0");
+		       boolean dontConfirm=false;
+		       if(cadreCommitteeVO != null && commonMethodsUtilService.isListOrSetValid(cadreCommitteeVO.getCasteList())){ 
+		         for (CadreCommitteeVO vo : cadreCommitteeVO.getCasteList()) {
+		           if(vo.getAddedCount() != null && vo.getAddedCount().longValue()>1L)
+		             dontConfirm=true;
+		         }
+		       }
+		       if(dontConfirm){
+		    	   resultVO.setStatus("Multiple members are added within the Serial No ranges mentioned.Please check once.");
+		           return resultVO;
+		       }
+		       
+			
 			List<Object[]> requiredBoothMemberObjLst = boothInchargeRoleConditionMappingDAO. getBoothMinMaxRequiredMemberRoleWise(boothId, boothInchargeEnrollmentId);
 			List<Object[]> addedBoothMemberObjLst = boothInchargeDAO.getAddedMemberInBoothRoleWise(boothId, boothInchargeEnrollmentId);
 			Map<Long,BoothInchargeDetailsVO> boothDtlsMap = getBoothRequiredData(requiredBoothMemberObjLst);
@@ -1231,7 +1257,8 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	
 	public String deleteRoleMemberDetails(final Long boothInchargeMappingId,final Long boothInchargeId,final Long userId,final Long boothId,final Long boothInchargeEnrollementId){
 		   String status = "";	
-		   status = (String)transactionTemplate.execute(new TransactionCallback() {
+		   try {
+			   status = (String)transactionTemplate.execute(new TransactionCallback() {
 				
 				public Object doInTransaction(TransactionStatus arg0) {
 					String status="";
@@ -1265,6 +1292,11 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 					return status;
 				}
 			});
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception raised at deleteRoleMemberDetails in BoothDataValidationService class", e);
+			}
 			return status;
 			
 	}

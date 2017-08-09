@@ -22711,14 +22711,16 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					String valueSize =String.valueOf(votersList.size());
 					Integer valueSizeVal=valueSize.length();
 					Integer lenghLstIndx=valueSizeVal-2;
-					String lstTwodigit=valueSize.substring(lenghLstIndx, valueSizeVal);
+					String lstTwodigit="0";
+					if(valueSizeVal>2)
+						valueSize.substring(lenghLstIndx, valueSizeVal);
 					Integer integerVal =Integer.parseInt(lstTwodigit);
 					Integer remainder=100-integerVal;
 					String cnvrtedBfrStr=String.valueOf(sizeList)+"00";
 			Integer cnvrtedBfrVal=Integer.parseInt(cnvrtedBfrStr);
 			int cnvrtedAftVal=cnvrtedBfrVal+integerVal+remainder;
-			if(remainder == 100L)
-				cnvrtedAftVal=cnvrtedBfrVal;
+			//if(remainder == 100L)
+				//cnvrtedAftVal=cnvrtedBfrVal;
 			
 			int rangeCount = (int) cnvrtedAftVal / 100;
 					for(Long i=1l ; i<= rangeCount ; i++){

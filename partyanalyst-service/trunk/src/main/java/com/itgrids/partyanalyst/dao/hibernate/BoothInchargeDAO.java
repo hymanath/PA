@@ -102,7 +102,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 				" where model.isActive = 'Y' and model.isDeleted = 'N' ");
 		if(roleId != null && roleId.longValue()>0L)
 			sb.append(" and model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRoleId not in (:roleId)  ");
-		if(boothIdsList != null && boothIdsList.size() > 0l)
+		if(boothIdsList != null && boothIdsList.size() > 0)
 		{ 
 			sb.append(" and model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId in (:boothIdsList)");
 		}
@@ -455,7 +455,7 @@ public List<Object[]> getBoothInchargeRangeIds(Long boothId,Long boothInchrgRole
 		
 		if(boothId != null && boothId.longValue() >0l)
 			sb.append(" and model2.booth.boothId = :boothId ");
-		if(boothId != null && boothId.longValue() >0l)
+		if(boothInchrgRoleId != null && boothInchrgRoleId.longValue() >0l)
 			sb.append("and  model.boothInchargeRoleConditionMapping.boothInchargeRoleConditionMappingId = :boothInchrgRoleId ");
 		if(boothEnrollmentYrIds != null && boothEnrollmentYrIds.size() >0)
 			sb.append(" and  model.boothInchargeEnrollment.boothInchargeEnrollmentId in (:boothEnrollmentYrIds) ");
@@ -1230,7 +1230,7 @@ public Long getBoothTotalAddedMember(Long boothId,Long boothInchargeEnrollmentId
 }
 public List<Object[]> getActiveBoothMemeberDetails(Long boothId){
 	StringBuilder sb = new StringBuilder();
-	sb.append(" select distinct model.tdpCadre.voterId,model.tdpCadreId from BoothIncharge model " +
+	sb.append(" select distinct model.tdpCadre.voterId,model.tdpCadreId,model.tdpCadre.familyVoterId from BoothIncharge model " +
 			  " where model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId =:boothId" +
 			  " and model.tdpCadre.isDeleted ='N'" +
 			  " and model.isActive = 'Y' and model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRoleId in (2) ");// only memeber position only
