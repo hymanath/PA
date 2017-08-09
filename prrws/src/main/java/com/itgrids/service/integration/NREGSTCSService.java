@@ -323,6 +323,10 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/UGDrainageService/UGDrainageOverview";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GH"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GreeningHillocksService/GreeningHillocksOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Check Dam"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CheckDamServiceNew/CheckDamOverviewNew";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Rock fill dams"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/RockfillDamService/RockfillDamOverview";
 			
 			String str = convertingInputVOToString(inputVO);
 			
@@ -517,6 +521,10 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AnnualsService/AnnualsData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GH"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GreeningHillocksService/GreeningHillocksData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Check Dam"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CheckDamServiceNew/CheckDamDataNew";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Rock fill dams"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/RockfillDamService/RockfillDamData";
 			
 			String str = convertingInputVOToString(inputVO);
 			
@@ -2745,7 +2753,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Agriculture Activities")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("SMC Trench") || inputVO.getType().toString().trim().equalsIgnoreCase("Imp to CD")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("MPT_PT") || inputVO.getType().toString().trim().equalsIgnoreCase("GC Works")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("CD_CW"))
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("CD_CW")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Check Dam") || inputVO.getType().toString().trim().equalsIgnoreCase("Rock fill dams"))
 	 	    					vo.setPercentage(jObj.getString("PERC"));
 	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")
@@ -3756,7 +3765,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Agriculture Activities")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("SMC Trench") || inputVO.getType().toString().trim().equalsIgnoreCase("Imp to CD")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("MPT_PT") || inputVO.getType().toString().trim().equalsIgnoreCase("GC Works")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("CD_CW"))
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("CD_CW")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Check Dam") || inputVO.getType().toString().trim().equalsIgnoreCase("Rock fill dams"))
 	 	    					vo.setPercentage(jObj.getString("PERC"));
 	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")
@@ -3847,7 +3857,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Farm Ponds")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("SMC Trench") || inputVO.getType().toString().trim().equalsIgnoreCase("Imp to CD")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("MPT_PT") || inputVO.getType().toString().trim().equalsIgnoreCase("GC Works")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("CD_CW"))
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("CD_CW")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Check Dam") || inputVO.getType().toString().trim().equalsIgnoreCase("Rock fill dams"))
 	 	    					vo.setPercentage(jObj.getString("PERC"));
 	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")

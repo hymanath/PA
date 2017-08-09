@@ -977,6 +977,30 @@ function buildNREGSProjectsOverview(result,blockName)
 						str+='</div>';
 					str+='</div>';
 			
+					str+='<div class="col-sm-6">';
+						str+='<div class="block-border">';
+							str+='<h5 class="text-danger">Forest</h5>';
+							str+='<div class="row">';	
+								for(var i in result)
+								{
+									if(result[i] == "Nurseries" || result[i] == "Check Dam" || result[i] == "Rock fill dams"){
+										str+='<div class="col-sm-4 m_top10">';
+											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
+												if(result[i].length > 12)
+												{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
+												}else{
+													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
+												}
+											str+='</div>';
+										str+='</div>';
+									}
+								}
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="row m_top20">';
 					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
 							str+='<h5 class="text-danger">SERP</h5>';
@@ -999,30 +1023,6 @@ function buildNREGSProjectsOverview(result,blockName)
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-					str+='<div class="col-sm-2">';
-						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Forest</h5>';
-							str+='<div class="row">';	
-								for(var i in result)
-								{
-									if(result[i] == "Nurseries"){
-										str+='<div class="col-sm-12 m_top10">';
-											str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
-												if(result[i].length > 12)
-												{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i]+'">'+result[i].substr(0,12)+'..</h4>';
-												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i]+'</h4>';
-												}
-											str+='</div>';
-										str+='</div>';
-									}
-								}
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="row m_top20">';
 					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
 							str+='<h5 class="text-danger">Fisheries</h5>';
@@ -1423,7 +1423,7 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 			str1+='</tbody>';
 		str1+='</table>';
 	str1+='</div>';
-
+	str1+='<div id="projectExp'+projectDivId.replace(/\s+/g, '')+'" style="margin-top:10px;"></div>';
 	/* if(result.targettedPersonDays != null)
 	{
 		str1+='<div id="projectExp'+projectDivId.replace(/\s+/g, '')+'" style="margin-top:10px;"></div>';
@@ -1452,7 +1452,8 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 		str1+='</div>';
 		
 	} */
-	getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId);
+	if(projectDivId == 'Labour Budget')
+		getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId);
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(str1);
 	
 }
@@ -3185,7 +3186,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 
 
 //var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','CC Roads','Anganwadi','Gram Panchayat Buildings','Mandal buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk worm','Cattle drinking water trough','Raising of Perinnial Fodder','Solid Waste Management','Play Fields','Burial Grounds','Fish Drying Platforms','Fish Ponds','Agriculture Activities','Average Wage','Avg days of emp per HH','HH Comp 100 days','Timely Payments','Horticulture','Avenue'];
-var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','GH','Solid Waste Management','Burial Ground','Play fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads','Anganwadi Buildings','GP Buildings','Mandal Buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Cattle Drinking Water Troughs','Raising of Perinnial Fodders','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','NTR Rural House','OPGK-Perinnials','OPGK-Annuals','UGDrainage'];
+var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','GH','Check Dam','Rock fill dams','Solid Waste Management','Burial Ground','Play fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads','Anganwadi Buildings','GP Buildings','Mandal Buildings','NTR 90 Days','Production of Bricks','Mulbery','Silk Worms','Cattle Drinking Water Troughs','Raising of Perinnial Fodders','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','NTR Rural House','OPGK-Perinnials','OPGK-Annuals','UGDrainage'];
 
 buildNREGSProjectsOverview(overViewArr,'')
 for(var i in overViewArr)
@@ -4515,7 +4516,7 @@ function getNregaPaymentsDtlsLocationWise(divIdd,locationType,menuLocationType,m
 							str+='<td class="text-capital">'+ajaxresp[i].mandalName+'</td>';
 							str+='<td class="text-capital">'+ajaxresp[i].panchayatName+'</td>';
 						}
-						var pending = 
+						//var pending = 
 						str+='<td>'+ajaxresp[i].type+'</td>';
 						str+='<td>'+ajaxresp[i].totalAmount+'</td>';
 						str+='<td>'+ajaxresp[i].totalPendinAmount+'</td>';
