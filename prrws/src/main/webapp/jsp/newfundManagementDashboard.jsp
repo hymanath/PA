@@ -357,12 +357,12 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-sm-3 distLevelCls distLevelCls1" >
+									<div class="col-sm-3 distLevelCls distLevelCls1 selectBoxCommonCls" >
 										<label>DISTRICT</label>
 										<select class="form-control chosenSelect" id="distLevelDistrictNames" >
 										</select>
 									</div>
-									<div class="col-sm-3 distLevelparliamentCls distLevelCls1" style="display:none;">
+									<div class="col-sm-3 distLevelparliamentCls distLevelCls1 selectBoxCommonCls" style="display:none;">
 										<label>PARLIAMENT</label>
 										<select class="form-control chosenSelect" id="distLevelParliamentNames" >
 										</select>
@@ -499,18 +499,18 @@
 											<select class="form-control chosenSelect" id="subProgramNamesConst" >
 											</select>
 										</div>
-										<div class="col-sm-3 constiLevelDistCls " >
+										<div class="col-sm-3 constiLevelDistCls selectBoxCommonCls" >
 											<label>DISTRICT</label>
 											<select class="form-control chosenSelect " id="constLevelDistNames" >
 												<option value="0"> SELECT DISTRICT</option>
 											</select>
 										</div>
-										<div class="col-sm-3 parlaiLevelDistCls " style="display:none;">
+										<div class="col-sm-3 parlaiLevelDistCls selectBoxCommonCls" style="display:none;">
 											<label>PARLIAMENT</label>
 											<select class="form-control chosenSelect" id="constLevelParliaNames" >
 											</select>
 										</div>
-										<div class="col-sm-3 constiLevelCls " >
+										<div class="col-sm-3 constiLevelCls selectBoxCommonCls" >
 											<label>CONSTITUENCY</label>
 											<select class="form-control chosenSelect" id="constLevelConstNames" >
 											</select>
@@ -650,18 +650,18 @@
 											<select class="form-control chosenSelect" id="subProgramNamesMandal" >
 											</select>
 										</div>
-										<div class="col-sm-3 mandalLevelDistCls" >
+										<div class="col-sm-3 mandalLevelDistCls selectBoxCommonCls" >
 											<label>DISTRICT</label>
 											<select class="form-control chosenSelect" id="mandalLevelDistNames" >
 												<option value="0"> SELECT DISTRICT</option>
 											</select>
 										</div>
-										<div class="col-sm-3 levelparliamentConstiCls" style="display:none">
+										<div class="col-sm-3 levelparliamentConstiCls selectBoxCommonCls" style="display:none">
 											<label>PARLIAMENT</label>
 											<select class="form-control chosenSelect" id="parliamentLevelConstNames" >
 											</select>
 										</div>
-										<div class="col-sm-3 levelmandalConstiCls" >
+										<div class="col-sm-3 levelmandalConstiCls selectBoxCommonCls" >
 											<label>CONSTITUENCY</label>
 											<select class="form-control chosenSelect" id="mandalLevelConstNames" >
 											</select>
@@ -810,23 +810,23 @@
 											</select>
 										</div>
 								
-										<div class="col-sm-3 villageLevelDistCls" >
+										<div class="col-sm-3 villageLevelDistCls selectBoxCommonCls" >
 											<label>DISTRICT</label>
 											<select class="form-control chosenSelect" id="villageLevelDistNames" >
 												<option value="0"> SELECT DISTRICT</option>
 											</select>
 										</div>
-										<div class="col-sm-3 villageLevelParliCls" style="display:none">
+										<div class="col-sm-3 villageLevelParliCls selectBoxCommonCls" style="display:none">
 											<label>PARLIAMENT</label>
 											<select class="form-control chosenSelect" id="villageLeveParliNames" >
 											</select>
 										</div>
-										<div class="col-sm-2 villageLevelConstiCls" >
+										<div class="col-sm-2 villageLevelConstiCls selectBoxCommonCls" >
 											<label>CONSTITUENCY</label>
 											<select class="form-control chosenSelect" id="villageLevelConstNames" >
 											</select>
 										</div>
-										<div class="col-sm-3 villageLevelMandalCls selectBoxCommonCls" >
+										<div class="col-sm-3 villageLevelMandalCls selectBoxCommonCls " >
 											<label>MANDAL</label>
 											<select class="form-control chosenSelect" id="villageLevelMandalNames" >
 											</select>
