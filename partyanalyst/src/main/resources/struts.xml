@@ -17835,7 +17835,7 @@
 	 
 	 <action name="getLocationWiseInsuranceStatusCountAction" class="locationDashboardAction" method="getLocationWiseInsuranceStatusCounts">
 	     <result type="json" name="success">
-	        <param name="root">insuranceVO</param>
+	        <param name="root">grivenceVO</param>
 	    </result>
    </action>
    
@@ -17961,5 +17961,10 @@
 		    <param name="root">boothInchargesVO</param>
 		</result>
 	</action>
+	<action name="getElectionBoothCommitteeInchargesCountAction" class="locationDashboardAction" method="getElectionBoothCommitteeInchargesCount">
+		<result type="json" name="success">
+			<param name="root">boothInchargesVOList</param>
+		</result>
+	</action>	
  </package>
 </struts>
