@@ -20,6 +20,7 @@ public interface ILightMonitoringDAO extends GenericDao<LightMonitoring, Long > 
 	public List<Object[]> getMandalLevelWiseSurveyDetails();
      public List<LightMonitoring> getLiveDateForCurrentDateSelection(Date date);
      public List<Object[]> getParlaimentWiseSurveyDetails();
+ 	public List<Object[]> getDistrictLevelWise(Date fromDate, Date toDate,  List<Long> locationValues,	Long locationTypeId); 
 	
 
 }
