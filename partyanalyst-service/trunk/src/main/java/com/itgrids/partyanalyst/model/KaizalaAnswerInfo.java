@@ -38,7 +38,7 @@ public class KaizalaAnswerInfo extends BaseModel implements Serializable {
 	
 	private KaizalaActions kaizalaActions;
 	private KaizalaResponderInfo kaizalaResponderInfo;
-	private KaizalaGroups kaizalaGroups;
+	//private KaizalaGroups kaizalaGroups;
 	
 	
 	
@@ -176,7 +176,7 @@ public class KaizalaAnswerInfo extends BaseModel implements Serializable {
 		this.kaizalaGroupsId = kaizalaGroupsId;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "kaizala_groups_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
@@ -186,7 +186,7 @@ public class KaizalaAnswerInfo extends BaseModel implements Serializable {
 
 	public void setKaizalaGroups(KaizalaGroups kaizalaGroups) {
 		this.kaizalaGroups = kaizalaGroups;
-	}
+	}*/
 	
 	
 }
