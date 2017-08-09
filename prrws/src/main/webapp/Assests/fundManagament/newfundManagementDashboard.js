@@ -2309,7 +2309,14 @@ getAllDepartments();
 									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 								},
 								formatter: function() {
-									return '<span style="top:30px; position: absolute;"><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
+									var str='';
+									str+='<span style="top:30px; position: absolute;"><i class="fa fa-inr"></i>: '+this.total
+									 var count = this.options.qTotals[this.x];
+									 if(count > 0) {
+										str +=' -('+this.options.qTotals[this.x]+')';
+									 }
+									 str+='</span>';
+									return str;
 									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
 									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
 									//return (this.total);
@@ -2324,10 +2331,15 @@ getAllDepartments();
 							var s = '<b>' + this.x + '</b>';
 
 								$.each(this.points, function () {
-									if(this.series.name != "Series 1")  
-									s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :<i class="fa fa-inr"></i> ' +
-									this.y+'-'+'('+(this.point.extra)+')'/* +' - ' +
-									(Highcharts.numberFormat(this.percentage,1)+'%'); */
+									if(this.series.name != "Series 1"){
+									  s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :<i class="fa fa-inr"></i> ' +
+									  this.y/* +' - ' +
+									  (Highcharts.numberFormat(this.percentage,1)+'%'); */
+									   var count = (this.point.extra);
+									   if (count > 0){
+										   s+='-('+(this.point.extra)+')'
+									   }
+									}  
 								});
 								
 								return s;
@@ -2586,7 +2598,14 @@ getAllDepartments();
 									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 								},
 								formatter: function() {
-									return '<span style="top:30px; position: absolute;"><i class="fa fa-inr"></i>: '+this.total+'-('+this.options.qTotals[this.x]+')</span>';
+									 var str = '';
+									 str +='<span style="top:30px; position: absolute;"><i class="fa fa-inr"></i>: '+this.total
+									 var count = this.options.qTotals[this.x];
+									 if(count > 0) {
+										str +=' -('+this.options.qTotals[this.x]+')';
+									 }
+									 str+='</span>';
+									return str;
 									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
 									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
 									//return (this.total);
@@ -2601,10 +2620,15 @@ getAllDepartments();
 							var s = '<b>' + this.x + '</b>';
 
 								$.each(this.points, function () {
-									if(this.series.name != "Series 1")  
-									s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :<i class="fa fa-inr"></i> ' +
-									this.y+'-'+'('+(this.point.extra)+')'/* +' - ' +
-									(Highcharts.numberFormat(this.percentage,1)+'%'); */
+									if(this.series.name != "Series 1")  {
+										s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :<i class="fa fa-inr"></i> ' +
+										this.y/*+'-'+'('+(this.point.extra)+')'/* +' - ' +
+										(Highcharts.numberFormat(this.percentage,1)+'%'); */
+										  var count = (this.point.extra);
+										   if (count > 0){
+											   s+='-('+(this.point.extra)+')'
+										   }
+									}
 								});
 								
 								return s;
