@@ -17,5 +17,8 @@ public interface ILightMonitoring {
       public	List<LightMonitoringVO> getLevelWiseOverviewDetails(String fromDateStr, String toDateStr, String year,
 				List<Long> locationValues, Long locationTypeId, Long searchlevelId, List<Long> searchLevelValues);
       
-
+      public	List<LightMonitoringVO> getDistrictLevelWiseOverviewDetails(String fromDateStr, String toDateStr, String year,
+  				List<Long> locationValues, Long locationTypeId);
+	List<LightMonitoringVO> getDistrictLevelWiseOverviewDetails(String fromDateStr, String toDateStr,
+			List<Long> locationValues, Long locationTypeId);
 }
