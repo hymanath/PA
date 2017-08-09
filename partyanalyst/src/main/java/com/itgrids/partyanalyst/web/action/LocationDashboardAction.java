@@ -58,7 +58,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<BasicVO> enrollmentYears;
 	private CommitteeBasicVO committeeBasicVO;
 	private List<MeetingsVO> meetingsVO;
-	private InsuranceStatusCountsVO insuranceVO;
+	private GrivenceStatusVO insuranceVO;
 	private List<GrivenceStatusVO> grivenceVO;
 	private List<BasicVO> activityStatusList;
 	private List<BasicVO> electionTypes;
@@ -99,10 +99,10 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setGrivenceVO(List<GrivenceStatusVO> grivenceVO) {
 		this.grivenceVO = grivenceVO;
 	}
-	public InsuranceStatusCountsVO getInsuranceVO() {
+	public GrivenceStatusVO getInsuranceVO() {
 		return insuranceVO;
 	}
-	public void setInsuranceVO(InsuranceStatusCountsVO insuranceVO) {
+	public void setInsuranceVO(GrivenceStatusVO insuranceVO) {
 		this.insuranceVO = insuranceVO;
 	}
 	public List<MeetingsVO> getMeetingsVO() {
@@ -502,7 +502,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		try{
 			jObj = new JSONObject(getTask());
 			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
-			grivenceVO = locationDashboardService.getLocationWiseInsuranceStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
+			insuranceVO = locationDashboardService.getLocationWiseInsuranceStatusCounts(jObj.getString("fromDate"), jObj.getString("toDate"), jObj.getLong("locationTypeId"),locationValues,jObj.getString("year"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getLocationWiseInsuranceStatusCount() of LocationDashboardAction{}",e);
 		}
