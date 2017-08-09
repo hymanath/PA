@@ -7,7 +7,8 @@ function onLoadCalls()
 {
 	getLedOverviewForStartedLocationsDetailsCounts();
 	getBasicLedOverviewDetails();
-	getLevelWiseOverviewDetailsDetails();
+	getLevelWiseOverviewDetailsData();
+	getLevelWiseOverviewDetails();
 	projectData('',2)
 }
 function getLedOverviewForStartedLocationsDetailsCounts(){
@@ -39,6 +40,27 @@ function getBasicLedOverviewDetails(){
 	$.ajax({                
 		type:'POST',    
 		url: 'getBasicLedOverviewDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		buildBasicLedOverviewDetails(result);
+	});		
+}
+function getLevelWiseOverviewDetailsData(){
+	$("#overviewBlockId").html(spinner);
+	var json = {
+		"fromDateStr": "01-08-2017",
+		"toDateStr": "01-08-2017",
+		"locationTypeId" : 2,
+		"locationValues" : [0]
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getDistrictLevelWiseOverviewDetails',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -110,7 +132,7 @@ var str='';
    str+='</div>';
   $("#ledOverViewDiv").html(str);
 }
-function getLevelWiseOverviewDetailsDetails(){
+function getLevelWiseOverviewDetails(){
 	var json = {
 		
 
