@@ -2630,6 +2630,17 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		return electionInformationVOList;
 	}
 
+	/**
+	 *
+	 * @param  String fromDate,toDate
+	 * @param loctionType,locationValue
+	 * @param electionScopeIds
+	 * @return BoothInchargesVO
+	 * @author Sanjeev 
+	 * @Description :This Service Method is used to get All party results based on location
+	 * @since 06-AUG-2017
+	 * 
+	 */
 	public BoothInchargesVO getBoothAssignInchargeCount(String fromDateStr, String toDateStr, Long locationTypeId,Long locationValue,
 			List<Long> committeeEnrollmentYearsIdsLst){
 		BoothInchargesVO inchargeVo = new BoothInchargesVO();
@@ -2658,6 +2669,17 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return inchargeVo;
 	}
+	/**
+	 *
+	 * @param  String fromDate,toDate
+	 * @param loctionType,locationValue
+	 * @param boothCommitteeEnrollmentYearsIdsLst
+	 * @return List<BoothInchargesVO>
+	 * @author Sanjeev 
+	 * @Description :This Service Method is used to get All party results based on location
+	 * @since 07-AUG-2017
+	 * 
+	 */
 	@Override
 	public List<BoothInchargesVO>getBoothCommitteeInchargesCount(Long locationId,Long locationValue,List<Long> boothCommitteeEnrollmentYearsIdsLst,String fromDateStr,String toDateStr){
 		List<BoothInchargesVO> returnList = new ArrayList<BoothInchargesVO>(0);
