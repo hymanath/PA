@@ -39,7 +39,7 @@ public class KaizalaActions extends BaseModel implements Serializable {
 	private Long kaizalaGroupsId;
 	private String isDeleted;
 	
-	private KaizalaGroups kaizalaGroups;
+	//private KaizalaGroups kaizalaGroups;
 	
 	@Id
 	@Column(name="kaizala_actions_id")
@@ -128,7 +128,7 @@ public class KaizalaActions extends BaseModel implements Serializable {
 		this.kaizalaGroupsId = kaizalaGroupsId;
 	}
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "kaizala_groups_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
@@ -137,7 +137,7 @@ public class KaizalaActions extends BaseModel implements Serializable {
 	}
 	public void setKaizalaGroups(KaizalaGroups kaizalaGroups) {
 		this.kaizalaGroups = kaizalaGroups;
-	}
+	}*/
 	@Column(name="is_deleted")
 	public String getIsDeleted() {
 		return isDeleted;
