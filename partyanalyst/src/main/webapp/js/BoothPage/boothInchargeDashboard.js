@@ -877,17 +877,18 @@ function buildCadreDetails(result,locationLevel,boothName){
 				//str = str +" "+locationSpecificHeadingStr;
 				//	str+='<th>DISTRICT</th>';
 				//	str+='<th>PARLIAMENT CONSTITUENCY</th>';
+					
+					str+='<th>MEMBERSHIP NO</th>';
+					str+='<th>IMAGE</th>';
+					str+='<th>CADRE NAME</th>';
+					str+='<th>MOBILE NO</th>';
+					str+='<th>DESIGNATION</th>';
+					str+='<th>SERIAL NO</th>';
+					str+='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
+					str+='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
 					str+='<th>CONSTITUENCY</th>';
 					str+='<th>TEHSIL</th>';
 					str+='<th>VILLAGE/WARD</th>';
-					str+='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
-					str+='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
-					str+='<th>NAME</th>';
-					str+='<th>IMAGE</th>';
-					str+='<th>SERIAL NO</th>';
-					str+='<th>MOBILE NO</th>';
-					str+='<th>MEMBERSHIP NO</th>';
-					str+='<th>DESIGNATION</th>';
 				str+='</tr>';
 			str+='</thead>';
 			 str+='<tbody>';
@@ -897,14 +898,8 @@ function buildCadreDetails(result,locationLevel,boothName){
 						 //str = str +" "+boothAddressStr;
 					//	str+='<td>'+result[i].districtName+'</td>';
 					//	str+='<td>'+result[i].parliamentConstituency+'</td>';
-						str+='<td>'+result[i].constituencyName+'</td>';
-						str+='<td>'+result[i].tehsilName+'</td>';
-						str+='<td>'+result[i].panchayat+'</td>';
-						str+='<td>BOOTH&nbsp;NO-'+result[i].boothName+'</td>';
-						str+='<td>BOOTH&nbsp;NO-'+boothName+'</td>';
-						
-						if(result[i].cadreName != null){
-							str+='<td class="text-center;">'+result[i].cadreName+'</td>';
+					   if(result[i].memberShipNo != null){
+							str+='<td class="text-center;">'+result[i].memberShipNo+'</td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
@@ -913,8 +908,8 @@ function buildCadreDetails(result,locationLevel,boothName){
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-						if(result[i].serialNo != null){
-							str+='<td class="text-center;">'+result[i].serialNo+'</td>';
+						if(result[i].cadreName != null){
+							str+='<td class="text-center;">'+result[i].cadreName+'</td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
@@ -923,16 +918,21 @@ function buildCadreDetails(result,locationLevel,boothName){
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-						if(result[i].memberShipNo != null){
-							str+='<td class="text-center;">'+result[i].memberShipNo+'</td>';
-						}else{
-							str+='<td class="text-center;">-</td>';	
-						}
 						if(result[i].role != null){
 							str+='<td class="text-center;">'+result[i].role+'</td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
+						if(result[i].serialNo != null){
+							str+='<td class="text-center;">'+result[i].serialNo+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						str+='<td>BOOTH&nbsp;NO-'+boothName+'</td>';
+						str+='<td>BOOTH&nbsp;NO-'+result[i].boothName+'</td>';
+						str+='<td>'+result[i].constituencyName+'</td>';
+						str+='<td>'+result[i].tehsilName+'</td>';
+						str+='<td>'+result[i].panchayat+'</td>';
 				str+='</tr>';
 			   }
 			str+='</tbody>';
@@ -941,44 +941,30 @@ function buildCadreDetails(result,locationLevel,boothName){
 		 str+='<table class="table table-bordered" style="display:none;" id="cadreDetailsExportDataTableId">';
 			str+='<thead>';
 				str+='<tr>';
+					str+='<th>MEMBERSHIP NO</th>';
+					str+='<th>CADRE NAME</th>';
+					str+='<th>MOBILE NO</th>';
+					str+='<th>DESIGNATION</th>';
+					str+='<th>SERIAL NO</th>';
+					str+='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
+					str+='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
 					str+='<th>DISTRICT</th>';
 					str+='<th>PARLIAMENT CONSTITUENCY</th>';
 					str+='<th>CONSTITUENCY</th>';
 					str+='<th>TEHSIL</th>';
 					str+='<th>VILLAGE/WARD</th>';
-					str+='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';
-					str+='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
-					str+='<th>NAME</th>';
-					//str+='<th>IMAGE</th>';
-					str+='<th>SERIAL NO</th>';
-					str+='<th>MOBILE NO</th>';
-					str+='<th>MEMBERSHIP NO</th>';
-					str+='<th>DESIGNATION</th>';
 				str+='</tr>';
 			str+='</thead>';
 			 str+='<tbody>';
 				for(var i in result){
 					str+='<tr>';
-						str+='<td>'+result[i].districtName+'</td>';
-						str+='<td>'+result[i].parliamentConstituency+'</td>';
-						str+='<td>'+result[i].constituencyName+'</td>';
-						str+='<td>'+result[i].tehsilName+'</td>';
-						str+='<td>'+result[i].panchayat+'</td>';
-						str+='<td>BOOTH&nbsp;NO-'+result[i].boothName+'</td>';
-						str+='<td>BOOTH&nbsp;NO-'+boothName+'</td>';
-						
-						if(result[i].cadreName != null){
-							str+='<td class="text-center;">'+result[i].cadreName+'</td>';
+					if(result[i].memberShipNo != null){
+							str+='<td class="text-center;">'+result[i].memberShipNo+'</td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-						if(result[i].image != null && result[i].image.length > 0){
-							//str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].image+'" style="width: 50px; height: 50px;"></td>';
-						}else{
-							//str+='<td class="text-center;">-</td>';	
-						}
-						if(result[i].serialNo != null){
-							str+='<td class="text-center;">'+result[i].serialNo+'</td>';
+						if(result[i].cadreName != null){
+							str+='<td class="text-center;">'+result[i].cadreName+'</td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
@@ -987,15 +973,28 @@ function buildCadreDetails(result,locationLevel,boothName){
 						}else{
 							str+='<td class="text-center;">-</td>';	
 						}
-						if(result[i].memberShipNo != null){
-							str+='<td class="text-center;">'+result[i].memberShipNo+'</td>';
-						}else{
-							str+='<td class="text-center;">-</td>';	
-						}
 						if(result[i].role != null){
 							str+='<td class="text-center;">'+result[i].role+'</td>';
 						}else{
 							str+='<td class="text-center;">-</td>';	
+						}
+						if(result[i].serialNo != null){
+							str+='<td class="text-center;">'+result[i].serialNo+'</td>';
+						}else{
+							str+='<td class="text-center;">-</td>';	
+						}
+						str+='<td>BOOTH&nbsp;NO-'+boothName+'</td>';
+						str+='<td>BOOTH&nbsp;NO-'+result[i].boothName+'</td>';
+						str+='<td>'+result[i].districtName+'</td>';
+						str+='<td>'+result[i].parliamentConstituency+'</td>';
+						str+='<td>'+result[i].constituencyName+'</td>';
+						str+='<td>'+result[i].tehsilName+'</td>';
+						str+='<td>'+result[i].panchayat+'</td>';
+
+						if(result[i].image != null && result[i].image.length > 0){
+							//str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].image+'" style="width: 50px; height: 50px;"></td>';
+						}else{
+							//str+='<td class="text-center;">-</td>';	
 						}
 				str+='</tr>';
 			   }
