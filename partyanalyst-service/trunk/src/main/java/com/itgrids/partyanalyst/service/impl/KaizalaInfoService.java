@@ -1,12 +1,13 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
-import org.hsqldb.lib.HashMap;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -17,12 +18,18 @@ import com.itgrids.partyanalyst.dao.IKaizalaAnswersDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaGroupsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderInfoDAO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
+import com.itgrids.partyanalyst.model.KaizalaActions;
 import com.itgrids.partyanalyst.model.KaizalaAnswerInfo;
 import com.itgrids.partyanalyst.model.KaizalaAnswers;
 import com.itgrids.partyanalyst.model.KaizalaGroups;
+import com.itgrids.partyanalyst.model.KaizalaQuestions;
 import com.itgrids.partyanalyst.model.KaizalaResponderInfo;
 import com.itgrids.partyanalyst.service.IKaizalaInfoService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 public class KaizalaInfoService implements IKaizalaInfoService{
 	private TransactionTemplate transactionTemplate = null;
@@ -33,8 +40,17 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	private IKaizalaQuestionsDAO kaizalaQuestionsDAO;
 	private IKaizalaAnswersDAO kaizalaAnswersDAO;
 	private IKaizalaGroupsDAO kaizalaGroupsDAO;
+	private CommonMethodsUtilService commonMethodsUtilService;
 	
 	
+	
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
 	public IKaizalaGroupsDAO getKaizalaGroupsDAO() {
 		return kaizalaGroupsDAO;
 	}
@@ -117,10 +133,32 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 						if(id == null || id == 0l){
 							KaizalaGroups kg = new KaizalaGroups();
 							kg.setGroupId(dataObj.getString("groupId"));
+							kg.setIsDeleted("N");
+							kg.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 							id = kaizalaGroupsDAO.save(kg).getKaizalaGroupsId();
 						}
 						
+						boolean newAction = false;
 						List<Long>  kaizalaActionsIds = kaizalaActionsDAO.getKaizalaActionId(dataObj.getString("actionId"));
+						if(kaizalaActionsIds == null || kaizalaActionsIds.size() == 0){
+							newAction = true;
+							KaizalaActions ka = new KaizalaActions();
+							ka.setActionId(dataObj.getString("actionId"));
+							List<String> list = getActionDetails(dataObj.getString("groupId"),dataObj.getString("actionId"));
+							//0-title,1-actiontype,2-acceptmultires,3-expirydate
+							if(list != null && list.size() > 0){
+								ka.setTitle(list.get(0));
+								ka.setActionType(list.get(1));
+								ka.setAcceptMultiresponse(list.get(2));
+								if(!list.get(3).equals(""))
+									ka.setExpiryDate(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(list.get(3)));
+							}
+							ka.setKaizalaGroupsId(id);
+							ka.setIsDeleted("N");
+							ka.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							kaizalaActionsIds.add(kaizalaActionsDAO.save(ka).getKaizalaActionsId());
+							
+						}
 						if(kaizalaActionsIds != null && kaizalaActionsIds.size() > 0){
 							KaizalaAnswerInfo kaiAnsInfo = new KaizalaAnswerInfo();
 							kaiAnsInfo.setKaizalaGroupsId(id);
@@ -141,13 +179,19 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 								kri = kaizalaResponderInfoDAO.save(kri);
 								kaiAnsInfo.setKaizalaResponderInfoId(kri.getKaizalaResponderInfoId());
 							}
-							
+							List<KeyValueVO> newQuestionsList = new ArrayList<KeyValueVO>(0);
 							if(dataObj.getJSONObject("responseDetails") != null){
 								JSONObject inObj1 = dataObj.getJSONObject("responseDetails");
 								JSONArray inObjArr = inObj1.getJSONArray("responseWithQuestions");
 								if(inObjArr != null && inObjArr.length() > 0){
 									for (int i = 0; i < inObjArr.length(); i++) {
 										JSONObject obj = (JSONObject)inObjArr.get(i);
+										if(newAction){
+											KeyValueVO vo = new KeyValueVO();
+											vo.setName(obj.getString("title"));
+											vo.setDate(obj.getString("type"));
+											newQuestionsList.add(vo);
+										}
 										if(obj.getString("title").equalsIgnoreCase("Responder Location") && obj.getString("type").equalsIgnoreCase("location")){
 											JSONObject answerObj = obj.getJSONObject("answer");
 											kaiAnsInfo.setLangitude(answerObj.getString("lg"));
@@ -163,6 +207,17 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							kaiAnsInfo.setIsDeleted("N");
 							
 							kaiAnsInfo = kaizalaAnswerInfoDAO.save(kaiAnsInfo);
+							
+							if(newAction && newQuestionsList != null && newQuestionsList.size() > 0){
+								for (KeyValueVO keyValueVO : newQuestionsList) {
+									KaizalaQuestions kq = new KaizalaQuestions();
+									kq.setKaizalaActionsId(kaizalaActionsIds != null && kaizalaActionsIds.size() > 0 ? kaizalaActionsIds.get(kaizalaActionsIds.size()-1):null);
+									kq.setQuestion(keyValueVO.getName());
+									kq.setType(keyValueVO.getDate());
+									kq.setIsDeleted("N");
+									kaizalaQuestionsDAO.save(kq);
+								}
+							}
 							
 							List<Object[]> objList = kaizalaQuestionsDAO.getQuestionsForKizalaActionId(kaiAnsInfo.getKaizalaActionsId());
 							Map<String,Long> questionsMap = new java.util.HashMap<String, Long>(0);
@@ -212,5 +267,65 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 			}
 		});
 		
+	}
+	
+	public List<String> getActionDetails(String groupId,String actionId){
+		List<String> actiondetails = null;
+		try {
+			 WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://api.kaiza.la/v1/groups/"+groupId+"/actions/"+actionId);
+				
+				WebResource.Builder builder = webResource.getRequestBuilder();
+				
+				builder.header("applicationId", "7FA7D81370298643999D1610852D5734F6A832EE485E6D23DFF98353811F8DB8");
+			    builder.header("accessToken", getAccessToken());
+			    
+			    builder.accept("application/json");
+			    builder.type("application/json");
+			    
+			    ClientResponse response = builder.get(ClientResponse.class);
+			    if(response.getStatus() != 200){
+		        	throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	    }else{
+		 	    	actiondetails = new ArrayList<String>(0);
+		 	    	String output = response.getEntity(String.class);
+		 	    	JSONObject jsonObj = new JSONObject(output);
+		 	    	if(jsonObj.has("actionDetails")){
+		 	    		JSONObject adObject = jsonObj.getJSONObject("actionDetails");//0-title,1-actiontype,2-acceptmultires,3-expirydate
+		 	    		if(adObject.has("title"))
+		 	    			actiondetails.add(0, adObject.getString("title"));
+		 	    		else
+		 	    			actiondetails.add(0, "");
+		 	    		
+		 	    		if(jsonObj.has("actionType"))
+		 	    			actiondetails.add(1, jsonObj.getString("actionType"));
+		 	    		else
+		 	    			actiondetails.add(1, "");
+		 	    		
+		 	    		if(adObject.has("acceptMultipleResponses"))
+		 	    			actiondetails.add(2, adObject.getString("acceptMultipleResponses"));
+		 	    		else
+		 	    			actiondetails.add(2, "");
+		 	    		
+		 	    		if(adObject.has("expiryDate"))
+		 	    			actiondetails.add(3, adObject.getString("expiryDate"));
+		 	    		else
+		 	    			actiondetails.add(3,"");		 	    			
+		 	    	}
+		 	    }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getActionTitle", e);
+		}
+		return actiondetails;
+	}
+	
+	public String getAccessToken(){
+		String accessToken = null;
+		try {
+			accessToken = kaizalaActionsDAO.getAccessToken();
+			//System.out.println(dateUtilService.getCurrentDateAndTimeInStringFormat()+"::"+accessToken);
+		} catch (Exception e) {
+			LOG.error(" Error occured in getAccessToken method in getAllGroupsInfo class ");
+		}
+		return accessToken;
 	}
 }

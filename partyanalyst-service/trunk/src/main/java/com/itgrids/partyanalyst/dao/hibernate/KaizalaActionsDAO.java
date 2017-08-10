@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IKaizalaActionsDAO;
@@ -20,6 +21,12 @@ public class KaizalaActionsDAO extends GenericDaoHibernate<KaizalaActions, Long>
 		query.setParameter("actionId", actionId);
 		
 		return query.list();
+		
+	}
+	
+	public String getAccessToken(){
+		Query query = getSession().createSQLQuery(" select kit.access_token as token from kaizala_token_info kit").addScalar("token", Hibernate.STRING);
+		return (String) query.uniqueResult();
 		
 	}
 }
