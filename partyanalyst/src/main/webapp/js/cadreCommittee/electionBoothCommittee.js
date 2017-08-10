@@ -1922,8 +1922,9 @@ function buildBoothSearchDetails(result){
 	var total=0;
 	var totalMale =0;
 	var totalFemale =0;
-	var addedCount=0	
+	var addedCount=0;
 	 var sublist = result.casteList;
+	 var subListLength=sublist.length;
 	 var countList=0;
 	str+='<table class ="table table-bordered" id="bothWiseRangeId">';
 		str +='<thead>';
@@ -1936,7 +1937,9 @@ function buildBoothSearchDetails(result){
 				str +='<th class="text-center">AVAILABLE CADRE</th>';
 				str +='<th class="text-center">MEMBER STATUS</th>';
 				str +='<th class="text-center">CONVENOR STATUS</th>';
-				str +='</tr>';
+				str +='</tr>';	
+		 if(isAvailableOrNOt == "true"){
+			$('#committeeDesigDivId1').show();
 			for (var i in sublist){
 				str +='<tr class="text-center">';
 				str +='<td class="text-center "><label id="rangeId'+i+'">'+sublist[i].finalRangeStr+'</label></td>';
@@ -1961,7 +1964,7 @@ function buildBoothSearchDetails(result){
 						str +='<td class="text-center" style="color:green;" >'+sublist[i].alreadyRegistered+'('+sublist[i].addedCount+')</td>';
 					
 					//str +='<td class="text-center" style="color:green;" >'+sublist[i].alreadyRegistered+'('+'M'+')</td>';
-					addedCount=parseInt(addedCount)+1;
+					
 					}else{
 						
 						str +='<td class="text-center" style="color:green;">'+sublist[i].alreadyRegistered+'</td>';
@@ -1986,8 +1989,8 @@ function buildBoothSearchDetails(result){
 				
 				if(parseInt(totalMale) >0){
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M"><u>'+totalMale+'</u></label></td>';
-				}else{
-					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M">'+totalMale+'</label></td>';	
+				} else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M">'+totalMale+'</label></td>'; 	
 				}if(parseInt(totalFemale) >0){
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="totalClass" id="totalFmailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="F"><u>'+totalFemale+'</u></label></td>';
 				}else{
@@ -1998,6 +2001,72 @@ function buildBoothSearchDetails(result){
 					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalGenderId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="0">'+total+'</label></td>';
 				}
 				str +='</tr>';
+				
+		}else {
+			$('#committeeDesigDivId1').hide();
+			for (var i in sublist){
+				str +='<tr class="text-center">';
+				str +='<td class="text-center "><label id="rangeId'+i+'">'+sublist[i].finalRangeStr+'</label></td>';
+
+				if(parseInt(sublist[i].maleCount) >0){				
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="M">'+sublist[i].maleCount+'</label></td>';
+				}else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="M">'+sublist[i].maleCount+'</label></td>';
+				}if(parseInt(sublist[i].femaleCount) >0){
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="F">'+sublist[i].femaleCount+'</label></td>';
+				}else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="F">'+sublist[i].femaleCount+'</label></td>';
+				}if(parseInt(sublist[i].totalCount) >0){					
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="0">'+sublist[i].totalCount+'</label></td>';
+				}else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalCountId'+countList+'" attr_gender_id="0">'+sublist[i].totalCount+'</label></td>';
+				}
+				 if(sublist[i].alreadyRegistered == null || sublist[i].alreadyRegistered.length == 0 ){
+					str +='<td class="text-center" style="color:red;"> NOT ADDED </td>';
+				}else{
+					if(parseInt(sublist[i].addedCount)>0){
+						str +='<td class="text-center" style="color:green;" >'+sublist[i].alreadyRegistered+'('+sublist[i].addedCount+')</td>';
+					
+					//str +='<td class="text-center" style="color:green;" >'+sublist[i].alreadyRegistered+'('+'M'+')</td>';
+					
+					}else{
+						
+						str +='<td class="text-center" style="color:green;">'+sublist[i].alreadyRegistered+'</td>';
+						
+					}
+				}if(sublist[i].convenerAddedCount != null && parseInt(sublist[i].convenerAddedCount) > 0 ){
+					str +='<td class="text-center" style="color:green;;"> ADDED </td>';
+				}else{
+					str +='<td class="text-center" style=""> - </td>';
+				}
+				total=total+sublist[i].totalCount;
+				totalMale=totalMale+sublist[i].maleCount;
+				totalFemale =totalFemale+sublist[i].femaleCount;
+				
+				str +='</tr>';
+				countList++;
+			}
+			
+			str +='<tr class="text-center">';
+			
+			str +='<td class="text-center"><label class="" id="totalCountId'+0+'" attr_gender_id="0">'+'TOTAL'+'</label></td>';
+				
+				if(parseInt(totalMale) >0){
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalMailId'+countList+'" attr_gender_id="M">'+totalMale+'</label></td>';
+				}else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalMailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="M">'+totalMale+'</label></td>';	
+				}if(parseInt(totalFemale) >0){
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalFmailId'+countList+'" attr_gender_id="F">'+totalFemale+'</label></td>';
+				}else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalFmailId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="F">'+totalFemale+'</label></td>';
+				}if(parseInt(total) >0 ){
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalGenderId'+countList+'" attr_gender_id="0">'+total+'</label></td>';
+				} else{
+					str +='<td class="text-center" attr_range_id='+sublist[i].finalRangeStr+'><label class="" id="totalGenderId'+countList+'" style="color:green;cursor:pointer" attr_gender_id="0">'+total+'</label></td>';
+				}
+				str +='</tr>';
+			
+		}			
 				
 				 
 		str +='</tbody>';
@@ -2097,7 +2166,7 @@ $('#cadreAvailableDetailsDivId').show();
 						else 
 							str+='<li style="font-weight:bold;"> Already added as  <span style="color:#000;"> '+sublist[i].roleName+'</span>  Position for Booth No - '+sublist[i].boothNumber+' ,'+sublist[i].tehsil+' Mandal/Muncipality. </li>';	
 					}
-					str+='</ul>';	
+					str+='</ul>';
 					str+='</div>';
 					str+='</div>';
 													
