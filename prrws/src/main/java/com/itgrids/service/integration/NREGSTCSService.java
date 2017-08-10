@@ -277,7 +277,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SolidWasteManagementServices/SolidWasteManagementOverview";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SWMService/SWMOverview
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Play Fields"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFieldsServices/PlayFieldsOverview";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFields/PlayFieldsOverview
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial Grounds"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial Ground"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialGroundsServices/BurialGroundsOverview";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialService/BurialOverview
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture Activities"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgricultureServices/AgricultureOverview";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgriService/AgriOverview
@@ -495,7 +495,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SolidWasteManagementServices/SolidWasteManagementData";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SWMService/SWMData
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Play Fields"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFieldsServices/PlayFieldsData";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFields/PlayFieldsData
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial Grounds"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial Ground"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialGroundsServices/BurialGroundsData";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialService/BurialData
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture Activities"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgricultureServices/AgricultureData";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgriService/AgriData
@@ -647,7 +647,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 	 	    				vo.setTargetPersonDays(jObj.getString("TARGETPERSONDAYS"));
-	 	    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
+	 	    				vo.setGeneratedPersonDays(jObj.getString("GENERATEDPERSONDAYS"));
 	 	    				vo.setPerAppLB(jObj.getString("PER_APP_LB"));
 	 	    				vo.setWageExpenditure(jObj.getString("WAGEEXPENDITURE"));
 	 	    				vo.setMaterialExpenditure(jObj.getString("MATERIALEXPENDITURE"));
@@ -838,6 +838,10 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/UGDrainageService/UGDrainageData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("GH"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/GreeningHillocksService/GreeningHillocksData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Check Dam"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CheckDamServiceNew/CheckDamDataNew";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Rock fill dams"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/RockfillDamService/RockfillDamData";
 			
 			 str = convertingInputVOToString(inputVO);
 			 
@@ -860,7 +864,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				vo.setMandal(jObj.getString("MANDAL"));
 			 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 			 	    				vo.setTargetPersonDays(jObj.getString("TARGETPERSONDAYS"));
-			 	    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
+			 	    				vo.setGeneratedPersonDays(jObj.getString("GENERATEDPERSONDAYS"));
 			 	    				vo.setPerAppLB(jObj.getString("PER_APP_LB"));
 			 	    				vo.setWageExpenditure(jObj.getString("WAGEEXPENDITURE"));
 			 	    				vo.setMaterialExpenditure(jObj.getString("MATERIALEXPENDITURE"));
@@ -897,7 +901,10 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				vo.setMandal(jObj.getString("MANDAL"));
 				 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 				 	    				vo.setTargetPersonDays(jObj.getString("TARGET"));
-				 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+				 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture Activities"))
+				 	    					vo.setArgicultureExpenditure(jObj.getString("COMPLETED"));
+				 	    				else
+				 	    					vo.setCompleted(jObj.getLong("COMPLETED"));
 				 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture Activities")){
 				 	    					vo.setAchivement(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				 	    					vo.setPercentage(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -990,6 +997,10 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				nregsDataVO.setExpenditureAmount(jObj.getString("EXPENDITUREAMOUNT"));
 			 	    				nregsDataVO.setCompletedKMS(jObj.getString("COMPLETEDKMS"));
 			 	    				nregsDataVO.setPercentage(jObj.getString("PERCENTAGE"));
+			 	    				if(nregsDataVO.getCompletedKMS() != null && Double.valueOf(nregsDataVO.getCompletedKMS()) > 0 && nregsDataVO.getSanctionedKMS() != null && Long.valueOf(nregsDataVO.getSanctionedKMS()) > 0l)
+			 	    					nregsDataVO.setPercSant(new BigDecimal(Double.valueOf(nregsDataVO.getCompletedKMS())*100.00/Long.valueOf(nregsDataVO.getSanctionedKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    					else
+		 	    						nregsDataVO.setPercSant("0.00");
 			 	    				
 			 	    				list.add(nregsDataVO);
 			 	    			}
@@ -1914,7 +1925,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries"))
 		 	    					vo.setAchivement(new BigDecimal(jObj.getString("COMPLETED")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    				else
-		 	    					vo.setAchivement(new BigDecimal(jObj.getString("ACHIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    					vo.setAchivement(jObj.getString("ACHIVEMENT"));
 		 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    				voList.add(vo);
 		 	    			}
@@ -1958,7 +1969,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 		 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
 		 	    				vo.setTargetPersonDays(jObj.getString("TARGET"));
-		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+		 	    				vo.setArgicultureExpenditure(jObj.getString("COMPLETED"));
 		 	    				vo.setAchivement(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    				vo.setPercentage(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    				voList.add(vo);
@@ -1974,7 +1985,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				vo.setMandal(jObj.getString("MANDAL"));
 		 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 		 	    				vo.setTargetPersonDays(jObj.getString("TARGET"));
-		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+		 	    				vo.setArgicultureExpenditure(jObj.getString("COMPLETED"));
 		 	    				vo.setAchivement(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    				vo.setPercentage(new BigDecimal(jObj.getString("ACHEIVEMENT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		 	    				voList.add(vo);
@@ -2159,6 +2170,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setExpenditureAmount(jObj.getString("EXPENDITUREAMOUNT"));
 	 	    				vo.setCompletedKMS(jObj.getString("COMPLETEDKMS"));
 	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				if(vo.getCompletedKMS() != null && Double.valueOf(vo.getCompletedKMS()) > 0 && vo.getSanctionedKMS() != null && Long.valueOf(vo.getSanctionedKMS()) > 0l)
+ 	    						vo.setPercSant(new BigDecimal(Double.valueOf(vo.getCompletedKMS())*100.00/Long.valueOf(vo.getSanctionedKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+ 	    					else
+ 	    						vo.setPercSant("0.00");
 	 	    				
 	 	    				voList.add(vo);
 	 	    			}
@@ -2269,7 +2284,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				vo.setMandal(jObj.getString("MANDAL"));
 			 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 			 	    				vo.setTargetPersonDays(jObj.getString("TARGETPERSONDAYS"));
-			 	    				vo.setGeneratedPersonDays(jObj.getLong("GENERATEDPERSONDAYS"));
+			 	    				vo.setGeneratedPersonDays(jObj.getString("GENERATEDPERSONDAYS"));
 			 	    				vo.setPerAppLB(jObj.getString("PER_APP_LB"));
 			 	    				vo.setWageExpenditure(jObj.getString("WAGEEXPENDITURE"));
 			 	    				vo.setMaterialExpenditure(jObj.getString("MATERIALEXPENDITURE"));
@@ -3515,7 +3530,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	        inputVO.setLocationType("district");
 			inputVO.setLocationId(districtId);
 			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Ground"))
-	    		  inputVO.setType("Burial Grounds");
+	    		  inputVO.setType("Burial Ground");
 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi"))
 	    		  inputVO.setType("Anganwadi Buildings");
 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Gram Panchayat Buildings"))
@@ -3852,9 +3867,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				vo.setCompleted(jObj.getString("COMPLETED"));
 	 	    				}
 	 	    				
-	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("IHHL") || inputVO.getType().toString().trim().equalsIgnoreCase("Vermi Compost")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Agriculture Activities")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Farm Ponds")
+	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Agriculture Activities")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("SMC Trench") || inputVO.getType().toString().trim().equalsIgnoreCase("Imp to CD")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("MPT_PT") || inputVO.getType().toString().trim().equalsIgnoreCase("GC Works")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("CD_CW")
@@ -4558,8 +4571,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				paymentDtlsVO.setResponsePendingWageAmount(jsonObj.getString("RESPONSE_PENDING_AMT"));
 				paymentDtlsVO.setReprocessPendingWageAmount(jsonObj.getString("REPROCESS_PENDING_AMT"));
 				
-				paymentDtlsVO.setTotalPendinAmount(String.valueOf(Double.valueOf(jsonObj.getString("TOTAL_AMOUNT")) - Double.valueOf(jsonObj.getString("COMPLETED_AMT"))));
-				paymentDtlsVO.setPendingAtBankAmount(String.valueOf(Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")) + Double.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT"))));
+				paymentDtlsVO.setTotalPendinAmount(String.valueOf(Long.valueOf(jsonObj.getString("TOTAL_AMOUNT")) - Long.valueOf(jsonObj.getString("COMPLETED_AMT"))));
+				paymentDtlsVO.setPendingAtBankAmount(String.valueOf(Long.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")) + Long.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT"))));
 			 } else {
 				paymentDtlsVO.setTotalAmount(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_AMOUNT")));
 				paymentDtlsVO.setGeneratedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("GENERATED_AMT")));
@@ -4574,8 +4587,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				paymentDtlsVO.setResponsePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RESPONSE_PENDING_AMT")));
 				paymentDtlsVO.setReprocessPendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REPROCESS_PENDING_AMT")));
 				
-				paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("TOTAL_AMOUNT")) - Double.valueOf(jsonObj.getString("COMPLETED_AMT")))));
-				paymentDtlsVO.setPendingAtBankAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")) + Double.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT")))));
+				paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCrores(String.valueOf(Long.valueOf(jsonObj.getString("TOTAL_AMOUNT")) - Long.valueOf(jsonObj.getString("COMPLETED_AMT")))));
+				paymentDtlsVO.setPendingAtBankAmount(cnvrtRupeesIntoCrores(String.valueOf(Long.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")) + Long.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT")))));
 				}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getPaymentDtlsData - NREGSTCSService service", e);

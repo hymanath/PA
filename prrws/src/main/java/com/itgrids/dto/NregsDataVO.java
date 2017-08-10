@@ -13,7 +13,7 @@ public class NregsDataVO implements Serializable{
 	private String mandal;
 	private String panchayat;
 	private String targetPersonDays;
-	private Long generatedPersonDays = 0l;
+	private String generatedPersonDays;
 	private String perAppLB = "0";
 	private String avgWageRate;
 	private String totalExpenditure = "0";
@@ -492,10 +492,10 @@ public class NregsDataVO implements Serializable{
 	public void setPanchayat(String panchayat) {
 		this.panchayat = panchayat;
 	}
-	public Long getGeneratedPersonDays() {
+	public String getGeneratedPersonDays() {
 		return generatedPersonDays;
 	}
-	public void setGeneratedPersonDays(Long generatedPersonDays) {
+	public void setGeneratedPersonDays(String generatedPersonDays) {
 		this.generatedPersonDays = generatedPersonDays;
 	}
 	public String getPerAppLB() {

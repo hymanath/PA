@@ -687,6 +687,11 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 							tableView+='<th rowspan="2">District</th>';
 							tableView+='<th rowspan="2">Constituency</th>';
 							tableView+='<th rowspan="2">Mandal</th>';
+						}else if(locationType == 'panchayat'){
+							tableView+='<th rowspan="2">District</th>';
+							tableView+='<th rowspan="2">Constituency</th>';
+							tableView+='<th rowspan="2">Mandal</th>';
+							tableView+='<th rowspan="2">Panchayat</th>';
 						}
 						tableView+='<th rowspan="2">Type</th>';
 						tableView+='<th rowspan="2">Total Amount Generated</th>';
@@ -1538,13 +1543,13 @@ function buildDistrictsPopupDetails(result,dataArr){
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 			}else if(globalDivName == "CC Roads"){
-				theadArr = [dataArr,'TARGET Length[IN KMS]','Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Percentage Of Sanctioned Length','Expenditure','Completed Length[IN KMS]','Achivement Percentage'];
+				theadArr = [dataArr,'TARGET Length[IN KMS]','Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Percentage Of Sanctioned Length','Expenditure','Completed Length[IN KMS]','Achivement per based on Sanctioned length','Achivement Percentage'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achivement Percentage'];
+					theadArr = ["district",dataArr,'Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achivement per based on Sanctioned length','Achivement Percentage'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achivement Percentage'];
+					theadArr = ["district","constituency",dataArr,'Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achivement per based on Sanctioned length','Achivement Percentage'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achivement Percentage'];
+					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achivement per based on Sanctioned length','Achivement Percentage'];
 			}else if(globalDivName == "Horticulture"){
 				theadArr = [dataArr,'TARGET','Sanctioned Area[IN ACRES]','Sanctioned Percentage','Pitting Area[In ACRES]','Planting Area[In ACRES]','Achivement Percentage'];
 				if(dataArr == "constituency")
@@ -1661,7 +1666,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
 										}
 										str+='<td>'+result.distList[i].targetPersonDays+'</td>';
-										str+='<td>'+result.distList[i].completed+'</td>';
+										str+='<td>'+result.distList[i].argicultureExpenditure+'</td>';
 										if(result.distList[i].achivement < 50){
 											str+='<td style="background-color:#FF0000">'+result.distList[i].achivement+'</td>';
 										}else if(result.distList[i].achivement >= 50 && result.distList[i].achivement < 80){
@@ -1757,12 +1762,18 @@ function buildDistrictsPopupDetails(result,dataArr){
 										
 										str+='<td>'+result.distList[i].expenditureAmount+'</td>';
 										str+='<td>'+result.distList[i].completedKMS+'</td>';
+										if(result.distList[i].percSant < 50){
+											str+='<td style="background-color:#FF0000">'+result.distList[i].percSant+'</td>';
+										}else if(result.distList[i].percSant >= 50 && result.distList[i].percSant < 80){
+											str+='<td style="background-color:#FFBA00">'+result.distList[i].percSant+'</td>';
+										}else if(result.distList[i].percSant >= 80){
+											str+='<td style="background-color:#00AF50">'+result.distList[i].percSant+'</td>';
+										}
 										if(result.distList[i].percentage < 50){
 											str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
 											str+='<td style="background-color:#FFBA00">'+result.distList[i].percentage+'</td>';
-										}else if(result.distList[i].percentage >= 80)
-										{
+										}else if(result.distList[i].percentage >= 80){
 											str+='<td style="background-color:#00AF50">'+result.distList[i].percentage+'</td>';
 										}
 										//str+='<td>'+result.distList[i].percentage+'</td>';
@@ -2994,7 +3005,7 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 							str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
 						}
 						str+='<td>'+ajaxresp[i].targetPersonDays+'</td>';
-						str+='<td>'+ajaxresp[i].completed+'</td>';
+						str+='<td>'+ajaxresp[i].argicultureExpenditure+'</td>';
 						if(ajaxresp[i].achivement < 50){
 							str+='<td style="background-color:#FF0000">'+ajaxresp[i].achivement+'</td>';
 						}else if(ajaxresp[i].achivement >= 50 && ajaxresp[i].achivement < 80){
@@ -3206,13 +3217,13 @@ for(var i in overViewArr)
 function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
 	$("#"+divIdd).html(spinner);
-	var theadArr = [locationType,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+	var theadArr = [locationType,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','Achivement per based on Sanctioned length','ACHIVEMENT PERCENTAGE'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+		theadArr = ["district",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achivement per based on Sanctioned length','ACHIVEMENT PERCENTAGE'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+		theadArr = ["district","constituency",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achivement per based on Sanctioned length','ACHIVEMENT PERCENTAGE'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achivement per based on Sanctioned length','ACHIVEMENT PERCENTAGE'];
 	
 	var json = {
 		year : "2017",
@@ -3266,6 +3277,13 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 							str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
 						str+='<td>'+ajaxresp[i].expenditureAmount+'</td>';
 						str+='<td>'+ajaxresp[i].completedKMS+'</td>';
+						if(ajaxresp[i].percSant < 50){
+							str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
+						}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
+							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percSant+'</td>';
+						}else if(ajaxresp[i].percSant >= 80){
+							str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
+						}
 						if(ajaxresp[i].percentage < 50){
 							str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
 						}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
