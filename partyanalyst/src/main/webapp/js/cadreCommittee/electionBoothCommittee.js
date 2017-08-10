@@ -1934,7 +1934,8 @@ function buildBoothSearchDetails(result){
 				str +='<th class="text-center">MALE</th>';
 				str +='<th class="text-center">FEMALE</th>';
 				str +='<th class="text-center">AVAILABLE CADRE</th>';
-				str +='<th class="text-center">STATUS(ONLY FOR MEMBER POSITION)</th>';
+				str +='<th class="text-center">MEMBER STATUS</th>';
+				str +='<th class="text-center">CONVENOR STATUS</th>';
 				str +='</tr>';
 			for (var i in sublist){
 				str +='<tr class="text-center">';
@@ -1966,6 +1967,10 @@ function buildBoothSearchDetails(result){
 						str +='<td class="text-center" style="color:green;">'+sublist[i].alreadyRegistered+'</td>';
 						
 					}
+				}if(sublist[i].convenerAddedCount != null && parseInt(sublist[i].convenerAddedCount) > 0 ){
+					str +='<td class="text-center" style="color:green;;"> ADDED </td>';
+				}else{
+					str +='<td class="text-center" style=""> - </td>';
 				}
 				total=total+sublist[i].totalCount;
 				totalMale=totalMale+sublist[i].maleCount;
