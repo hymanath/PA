@@ -26,7 +26,7 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 	@Override
 	public List<Object[]> getTotalWattege(Date fromDate,Date toDate) {
 		StringBuilder sb = new StringBuilder();
-		 sb.append("select sum(model.wattage),sum(model.lightCount) "
+		 sb.append("select model.wattage ,sum(model.lightCount) "
 				 +"from "
 				+ "LightWattage model  "
 		 		+ " where model.isDeleted = 'N' and model.lightMonitoring.isDeleted ='N' ");
