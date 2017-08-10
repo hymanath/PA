@@ -3534,7 +3534,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Anganwadi"))
 	    		  inputVO.setType("Anganwadi Buildings");
 	    	  else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Gram Panchayat Buildings"))
-	    		  inputVO.setType(" GP Buildings");
+	    		  inputVO.setType("GP Buildings");
 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Silk worm"))
 	    		  inputVO.setType("Silk Worms");
 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Cattle drinking water trough"))
