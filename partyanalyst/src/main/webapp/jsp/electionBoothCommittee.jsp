@@ -9,20 +9,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Committee Management</title>
-	<script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
     <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 	<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
 	<link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
-	<link href="Assets/css/boothIncharge.less" rel="stylesheet" type="text/less">
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<script src="https://use.fontawesome.com/07d3416f74.js"></script>
-	<script src="Assets/js/less.js"></script>
-   	
+  	
 	
 	<style>
+	.dataTables_wrapper .dataTables_paginate .paginate_button
+	{
+		padding:0px;
+	}
 	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationsDiv,
 	#designationDivId,#step1Id,#step2Id,#step3Id,#cadreDetailsDiv
 	{
