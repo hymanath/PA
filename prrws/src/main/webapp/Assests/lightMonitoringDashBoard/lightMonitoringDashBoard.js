@@ -8,7 +8,6 @@ function onLoadCalls()
 	getLedOverviewForStartedLocationsDetailsCounts();
 	getBasicLedOverviewDetails();
 	getLevelWiseOverviewDetailsData();
-	getLevelWiseOverviewDetails();
 	projectData('',2)
 }
 function getLedOverviewForStartedLocationsDetailsCounts(){
@@ -132,21 +131,16 @@ var str='';
    str+='</div>';
   $("#ledOverViewDiv").html(str);
 }
-function getLevelWiseOverviewDetails(){
+function getAllLevelWiseDataOverView(locType,displayType,filterType,locId,divId){
 	var json = {
-		
-
-			"fromDateStr"      :"03-08-2017",
-			"toDateStr"        :"03-08-2017",
-			"year"             : "2017" ,
-			"locationValues"   : [0],
-			"locationTypeId"   : 2,
-			"searchLevelId"    :  2,
-			"searchLevelValues": [0]
-	}
+			"locationType"      :locType,
+			"displayType"        :displayType,
+			"filterType"         : filterType ,
+			"locationId"   : locId,
+		}
 	$.ajax({                
 		type:'POST',    
-		url: 'getLevelWiseOverviewDetails',
+		url: 'getAllLevelWiseDataOverView',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -154,6 +148,13 @@ function getLevelWiseOverviewDetails(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			tableView(result,divId);
+		}else{
+			$("#"+divId+"TableId").html("NO DATA");
+		}
+		
 	});
 	
 }
@@ -275,10 +276,10 @@ function projectData(divId,levelId)
 	for(var i in dataArr)
 	{
 		$("#"+dataArr[i]+"TableId").html(spinner);
-		tableView(dataArr[i]);
+		getAllLevelWiseDataOverView(dataArr[i],dataArr[i],dataArr[i],"",dataArr[i]);
 	}				
 }
-function tableView(divId)
+function tableView(result,divId)
 {
 	var tableView = '';
 	tableView+='<table class="table" id="districtTable">';
@@ -296,9 +297,9 @@ function tableView(divId)
 				}
 				
 				tableView+='<th><img src="Assests/icons/mandals_icon.png"><br/>TOTAL MANDALS</th>';
-				tableView+='<th><img src="Assests/icons/Mandal_survy_icon.png"><br/>SURVEY STARTED MANDALS</th>';
+				//tableView+='<th><img src="Assests/icons/Mandal_survy_icon.png"><br/>SURVEY STARTED MANDALS</th>';
 				tableView+='<th><img src="Assests/icons/GPs_icon.png"><br/>TOTAL GPs</th>';
-				tableView+='<th><img src="Assests/icons/GPs_survey_icon.png"><br/>SURVEY STARTEDGPs</th>';
+				//tableView+='<th><img src="Assests/icons/GPs_survey_icon.png"><br/>SURVEY STARTEDGPs</th>';
 				tableView+='<th><img src="Assests/icons/Poles_icon.png"><br/>TOTAL POLES SURVEYED</th>';
 				tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png"><br/>TOTAL CCMS-BOX/ PANELS INSTALLED</th>';
 				tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png"><br/>TOTAL LED LIGHTS INSTALLED</th>';
@@ -308,19 +309,29 @@ function tableView(divId)
 			tableView+='</tr>';
 		tableView+='</thead>';
 		tableView+='<tbody>';
-			tableView+='<tr>';
-				tableView+='<td>Srikakulam</td>';
-				tableView+='<td>38</td>';
-				tableView+='<td>38</td>';
-				tableView+='<td>38</td>';
-				tableView+='<td>38</td>';
-				tableView+='<td>38</td>';
-				tableView+='<td>38</td>';
-				tableView+='<td>38</td>';
-				tableView+='<td>38</td>';
-				tableView+='<td>38</td>';
-				tableView+='<td>38</td>';
-			tableView+='</tr>';
+			for(var i in result)
+			{
+				tableView+='<tr>';
+				if(divId == 'district')
+				{
+					tableView+='<td>'+result[i].districtName+'</td>';
+				}else if(divId == 'constituency'){
+					tableView+='<td>'+result[i].constituencyName+'</td>';
+				}else if(divId == 'mandal'){
+					tableView+='<td>'+result[i].mandalName+'</td>';
+				}
+					tableView+='<td>'+result[i].totalMandals+'</td>';
+					//tableView+='<td>'+result[].+'</td>';
+					tableView+='<td>'+result[i].totalGps+'</td>';
+					//tableView+='<td>38</td>';
+					tableView+='<td>'+result[i].totalPoles+'</td>';
+					tableView+='<td>'+result[i].totalPanels+'</td>';
+					tableView+='<td>'+result[i].totalLights+'</td>';
+					tableView+='<td>'+result[i].workingLights+'</td>';
+					tableView+='<td>'+result[i].onLights+'</td>';
+					tableView+='<td>'+result[i].offLights+'</td>';
+				tableView+='</tr>';
+			}
 		tableView+='</tbody>';
 	tableView+='</table>';
 
