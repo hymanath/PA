@@ -7074,14 +7074,16 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 				Map<Long, Long> memDaysMap = batchMemdaysMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
 				if (memDaysMap == null) {
 					memDaysMap = new HashMap<Long, Long>(0);
+					memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), 1l);
+					batchMemdaysMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), memDaysMap);
 				}
+				
 				Long attendedDaysforBatch = memDaysMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 				if (attendedDaysforBatch == null) {
-					memDaysMap.put(commonMethodsUtilService	.getLongValueForObject(param[0]), 1l);
+					memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), 1l);
 				} else {
 					memDaysMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),attendedDaysforBatch + 1l);
 				}
-				batchMemdaysMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), memDaysMap);
 			}
 		}
 		Map<Long, Long> memMaxDayCnt = getCountOfMaxDaysAttendedInBatch(batchMemdaysMap, attendedList);// Tdp CAdre max days Vo getting
