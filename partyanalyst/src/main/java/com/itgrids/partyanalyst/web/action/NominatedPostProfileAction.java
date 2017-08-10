@@ -2388,4 +2388,12 @@ public String execute()
 		}
 		return Action.SUCCESS;
 	}
+	public String getQuickApprovalNominatedPost(){
+		 try{  
+			 return Action.SUCCESS;	
+		 }catch(Exception e) {
+			 LOG.error("Exception Occured in getQuickApprovalNominatedPost() in NominatedPostProfileAction ",e);
+		}
+	   return Action.SUCCESS;	
+	 }  
 }

@@ -668,6 +668,7 @@
 	 <pattern>/rescheduledCandidateAction*</pattern>
 	 <pattern>/updateActivityNewAction*</pattern>
 	 <pattern>/eventReportDashBoardAction*</pattern>
+	  <pattern>/applyQuickApprovalNominatedPostAction*</pattern>
 	 
 	 <!-- debate start -->
 	 	<pattern>/debateAction*</pattern>
