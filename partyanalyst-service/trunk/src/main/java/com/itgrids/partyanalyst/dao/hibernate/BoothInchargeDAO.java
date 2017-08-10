@@ -1230,10 +1230,11 @@ public Long getBoothTotalAddedMember(Long boothId,Long boothInchargeEnrollmentId
 }
 public List<Object[]> getActiveBoothMemeberDetails(Long boothId){
 	StringBuilder sb = new StringBuilder();
-	sb.append(" select distinct model.tdpCadre.voterId,model.tdpCadreId,model.tdpCadre.familyVoterId from BoothIncharge model " +
+	sb.append(" select distinct model.tdpCadre.voterId,model.tdpCadreId,model.tdpCadre.familyVoterId," +
+			" model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRoleId from BoothIncharge model " +
 			  " where model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId =:boothId" +
 			  " and model.tdpCadre.isDeleted ='N'" +
-			  " and model.isActive = 'Y' and model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRoleId in (2) ");// only memeber position only
+			  " and model.isActive = 'Y'  ");
 	
 	 Query qry = getSession().createQuery(sb.toString());
 	 if(boothId != null && boothId.longValue() >0l){
