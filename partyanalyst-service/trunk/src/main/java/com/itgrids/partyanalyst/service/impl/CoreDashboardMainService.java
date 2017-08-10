@@ -6465,7 +6465,8 @@ try{
 					   
 					   String levelVals = getListToString(new ArrayList<Long>(entry.getValue()));
 					   String committeeLvlVals = getListToString(committeeLvlIds);
-					   
+					   if(entry.getKey().longValue() == 4l)
+						   accessLevelValue = 5l;
 					 //List<Object[]> totalAttnd = trainingCampBatchAttendeeDAO.getTotalLocationWiseAttendeeCount(programIdsList,1l, toDate,enrollmentYearIds,accessLevelValue,new ArrayList<Long>(entry.getValue()));
 					   List<Object[]> totalAttnd = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount( programIds,fromDate,toDay,enrollmentYrs,1l,committeeLvlVals,accessLevelValue,levelVals);
 					   //0 locationId,1 batchId,2 tdpCadreId,3 roleId
@@ -6557,13 +6558,14 @@ try{
 									//eligibleAndAttendedVO.setTotalAttenedCount(eligibleAndAttendedVO.getTotalAttenedCount()+locDayVO.getTotalAttenedCount());
 		    					 }
 		    				 }
-		    				 eligibleAndAttendedVO.setTotalNotAttenedCount(eligibleAndAttendedVO.getTotalEligibleCount()-inviteeAttended);
+		    				 
 		    				 
 		    				 vo.setTotalEligibleCount(vo.getTotalEligibleCount()+eligibleAndAttendedVO.getTotalEligibleCount()); 
+		    				 eligibleAndAttendedVO.setTotalNotAttenedCount(eligibleAndAttendedVO.getTotalEligibleCount()-inviteeAttended);
 		    				 vo.setInviteeAttendedCnt(vo.getInviteeAttendedCnt()+inviteeAttended); 
 		    				 vo.setNonInviteeAttendedCnt(vo.getNonInviteeAttendedCnt()+nonInviteeAttnd);
 		    				 vo.setTotalAttenedCount(vo.getTotalAttenedCount()+totalAttnd);
-		    	    		 vo.setTotalNotAttenedCount(vo.getTotalNotAttenedCount()+eligibleAndAttendedVO.getTotalNotAttenedCount());
+		    	    		 vo.setTotalNotAttenedCount(Math.abs(vo.getTotalNotAttenedCount()+eligibleAndAttendedVO.getTotalNotAttenedCount()));
 		    	    	 }
 		    	   }
 		    	   
@@ -7029,14 +7031,8 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 			toDate = sdf.parse(toDateStr);
 		}
 		Long accessLevelValue = 0l;
-		if (userAccessLevelId.longValue() == 4l) {// user level 4 means
-													// parliament
-													// constituency in the
-													// case of core
-													// dashboard
-			accessLevelValue = 10l; // region scope 10 means parliament
-									// constituency in intermediate table so
-									// that we are replacing value
+		if (userAccessLevelId.longValue() == 4l) {// user level 4 means parliament constituency in the case of core dashboard
+			accessLevelValue = 10l; // region scope 10 means parliament constituency in intermediate table so that we are replacing value
 		} else if (userAccessLevelId.longValue() == 5l) {// user level 5
 															// means
 															// constituency
@@ -7062,13 +7058,9 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
         Date currentDate = dateUtilService.getCurrentDateAndTime();
         String toDay = sdf1.format(currentDate);			
 		String levelVals = getListToString(userAccessLevelValues);
-		//String levelVals = "517,11,12,13,14,15,17,16,19,18,21,20,23,22";
 		String committeeLvlVals = "5,6,7,8,9";
 		String programIds = getListToString(programIdList);
 		String enrollmentYrIds = getListToString(enrollmentYearIds);
-		// List<Object[]> attendedList =
-		// trainingCampBatchAttendeeDAO.getTotalAttendeeCount(programIdList,1l,toDate,enrollmentYearIds,accessLevelValue,userAccessLevelValues,tdpCommitteeLvlIds);
-		//'8','2000-01-01','2017-07-27','2','1','5,7,9,6,8,','3','517,11,12,13,14,15,17,16,19,18,21,20,23,22,'
 		List<Object[]> attendedList = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrIds,1L,committeeLvlVals,userAccessLevelId,levelVals);
 
 		List<Object[]> rtrnCommiteeLevelEligibleAndAttendedObjLst = trainingCampDetailsInfoDAO
@@ -7115,23 +7107,15 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 			for (Object[] param : rtrnObjLst) {
 				TrainingCampProgramVO programVO = new TrainingCampProgramVO();
 				programVO.getLocationList().addAll(getDaysList());
-				
 				programVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 				programVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 				programVO.setTotalEligibleCount(commonMethodsUtilService.getLongValueForObject(param[2]));
 				setDayWiseCountToProgramWiseVO(programVO,manTwnDivVO.getLocationList());
 				setDayWiseCountToProgramWiseVO(programVO,villageWardVO.getLocationList());
 				setInviteeAndNonInviteeCount(programVO);
-				// programVO.setInviteeAttended(commonMethodsUtilService.getLongValueForObject(param[3]));
-				//programVO.setInviteeAttended(villageWardVO.getInviteeAttended()+ manTwnDivVO.getInviteeAttended());
-				//programVO.setNonInviteeAttended(villageWardVO.getNonInviteeAttended()+ manTwnDivVO.getNonInviteeAttended()+villageWardVO.getOthersCount());
-				//programVO.setTotalAttenedCount(programVO.getInviteeAttended()	+ programVO.getNonInviteeAttended());
-				// programVO.setTotalNotAttenedCount(commonMethodsUtilService.getLongValueForObject(param[4]));
 				programVO.setTotalNotAttenedCount(villageWardVO.getTotalNotAttenedCount()+ manTwnDivVO.getTotalNotAttenedCount());
 				programVO.setTotalAttenedCountPer(calculatePercantage(programVO.getInviteeAttended(),programVO.getTotalEligibleCount()));
 				programVO.setTotalNotAttenedCountPer(calculatePercantage(programVO.getTotalNotAttenedCount(),	programVO.getTotalEligibleCount()));
-				// programVO.setNonInviteeAttended(programVO.getTotalAttenedCount()-programVO.getInviteeAttended());
-				
 				trainingCampProgramDtlsMap.put(programVO.getId(), programVO);
 			}
 		}
