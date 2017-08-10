@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +29,7 @@ public class KaizalaGroups {
 	private String groupName;
 	private Long kaizalaGroupTypeId;
 	private String isDeleted;
+	private Date insertedTime;
 	
 	private KaizalaGroupType kaizalaGroupType;
 
@@ -89,5 +92,14 @@ public class KaizalaGroups {
 		this.kaizalaGroupType = kaizalaGroupType;
 	}
 
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	
 
 }

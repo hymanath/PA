@@ -38,6 +38,7 @@ public class KaizalaActions extends BaseModel implements Serializable {
 	private Date expiryDate;
 	private Long kaizalaGroupsId;
 	private String isDeleted;
+	private Date insertedTime;
 	
 	//private KaizalaGroups kaizalaGroups;
 	
@@ -144,6 +145,14 @@ public class KaizalaActions extends BaseModel implements Serializable {
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}
 	
 	

@@ -33,6 +33,11 @@ import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 
 
 public class CommonMethodsUtilService {
@@ -873,5 +878,15 @@ public class CommonMethodsUtilService {
 				LOG.error("Exception Occured in isAvaiableBetweenPreAndPost_100_Distance() Method");
 			}
 			return result;
+		}
+		
+		public WebResource getWebResourceObject(String url){
+			ClientConfig clientConfig = new DefaultClientConfig();
+			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	        Client client = Client.create(clientConfig);
+	         
+	        WebResource webResource = client.resource(url);
+	        
+	        return webResource;
 		}
 }
