@@ -22660,6 +22660,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			 Map<Long,Map<Long,String>> cadreGenderMap = new HashMap<Long,Map<Long,String>>(0);
 			
 			 Map<Long,Long> boothCadreMap =new HashMap<Long,Long>();
+			 Map<Long,Long> convenerBoothCadreMap =new HashMap<Long,Long>();
 			 boothIdsList.add(boothId);
 			
 			votersList = boothDAO.getVoterDetailsByBoothId(boothId);
@@ -22671,10 +22672,17 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			List<Object[]> boothCadreObjsLst = boothInchargeDAO.getActiveBoothMemeberDetails(boothId);
 			if(commonMethodsUtilService.isListOrSetValid(boothCadreObjsLst)){
 				for(Object[] cadreObj : boothCadreObjsLst){
-					if(commonMethodsUtilService.getLongValueForObject(cadreObj[0]) >0L)
-						boothCadreMap.put(commonMethodsUtilService.getLongValueForObject(cadreObj[1]), commonMethodsUtilService.getLongValueForObject(cadreObj[0]));
-					else if(commonMethodsUtilService.getLongValueForObject(cadreObj[2])>0L)
-						boothCadreMap.put(commonMethodsUtilService.getLongValueForObject(cadreObj[1]), commonMethodsUtilService.getLongValueForObject(cadreObj[2]));
+					if(commonMethodsUtilService.getLongValueForObject(cadreObj[3]) == 2L){//memeber position 
+						if(commonMethodsUtilService.getLongValueForObject(cadreObj[0]) >0L)
+							boothCadreMap.put(commonMethodsUtilService.getLongValueForObject(cadreObj[1]), commonMethodsUtilService.getLongValueForObject(cadreObj[0]));
+						else if(commonMethodsUtilService.getLongValueForObject(cadreObj[2])>0L)
+							boothCadreMap.put(commonMethodsUtilService.getLongValueForObject(cadreObj[1]), commonMethodsUtilService.getLongValueForObject(cadreObj[2]));
+					}else if(commonMethodsUtilService.getLongValueForObject(cadreObj[3]) == 1L){//convener position 
+						if(commonMethodsUtilService.getLongValueForObject(cadreObj[0]) >0L)
+							convenerBoothCadreMap.put(commonMethodsUtilService.getLongValueForObject(cadreObj[1]), commonMethodsUtilService.getLongValueForObject(cadreObj[0]));
+						else if(commonMethodsUtilService.getLongValueForObject(cadreObj[2])>0L)
+							convenerBoothCadreMap.put(commonMethodsUtilService.getLongValueForObject(cadreObj[1]), commonMethodsUtilService.getLongValueForObject(cadreObj[2]));
+					}
 				}
 			}
 			
@@ -22753,12 +22761,16 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 													if(boothCadreMap.get(tdpCadreId) !=null){
 														rangeVO.setAlreadyRegistered("ADDED");
 														rangeVO.setAddedCount(rangeVO.getAddedCount()+1L);
+													}else if(convenerBoothCadreMap.get(tdpCadreId) !=null){
+														rangeVO.setConvenerAddedCount(rangeVO.getConvenerAddedCount()+1L);
 													}
 												}else if(gender1.equalsIgnoreCase("F") || gender1.equalsIgnoreCase("FEMALE")){
 													rangeVO.setFemaleCount(rangeVO.getFemaleCount()+1L);
 													if(boothCadreMap.get(tdpCadreId) !=null){
 														rangeVO.setAlreadyRegistered("ADDED");
 														rangeVO.setAddedCount(rangeVO.getAddedCount()+1L);
+													}else if(convenerBoothCadreMap.get(tdpCadreId) !=null){
+														rangeVO.setConvenerAddedCount(rangeVO.getConvenerAddedCount()+1L);
 													}
 												}
 											}
