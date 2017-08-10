@@ -76,6 +76,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreBasicPerformaceVO;
@@ -89,7 +90,9 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.LocationsVO;
+import com.itgrids.partyanalyst.dto.NominatedPostCandidateDtlsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
@@ -108,6 +111,7 @@ import com.itgrids.partyanalyst.model.NominatedPostGovtOrder;
 import com.itgrids.partyanalyst.model.NominatedPostReferDetails;
 import com.itgrids.partyanalyst.model.NominationPostCandidate;
 import com.itgrids.partyanalyst.model.SchedulersInfo;
+import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
@@ -8908,6 +8912,186 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 			}
 	return finalList;
 	 }
+	  
+	    /**
+		 * @Author : Santosh 
+		 * @param  :  NominatedPostDetailsVO nominatedPostDtlsVO 
+		 * @param  :  Long userId
+		 * @return : ResultStatus
+		 * description :  This service method is used to saving nominated post candidate details.
+		 */
+	  public ResultStatus saveNominatedPostProfileDtls(final NominatedPostDetailsVO nominatedPostDtlsVO,final Long userId){
+		  ResultStatus statusVO = new ResultStatus();	
+		   try {
+			   statusVO = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					ResultStatus statusVO = new ResultStatus();
+					
+					if (nominatedPostDtlsVO.getSubList() != null && nominatedPostDtlsVO.getSubList().size() > 0) { // candiate saving
+						
+						 for (NominatedPostDetailsVO positioDetailsVO : nominatedPostDtlsVO.getSubList()) {
+							 
+							  if (positioDetailsVO.getSubList1() != null && positioDetailsVO.getSubList1().size() > 0 ) {
+								  
+								   for (NominatedPostCandidateDtlsVO postCandiateVO : positioDetailsVO.getSubList1()) {
+									   List<Long> candiateIdList = nominationPostCandidateDAO.getNominatedPostCondidates(postCandiateVO.getTdpCadreId());
+									   Long nominatedPostCandiateId = 0l;
+									   if (candiateIdList != null && candiateIdList.size() > 0 ) {
+										   nominatedPostCandiateId = candiateIdList.get(0);
+									   } else {
+										   NominationPostCandidate nominationPostCandidate = new NominationPostCandidate(); 
+										   TdpCadre tdpCadre = tdpCadreDAO.get(postCandiateVO.getTdpCadreId());
+										   nominationPostCandidate.setTdpCadreId(postCandiateVO.getTdpCadreId());
+										   nominationPostCandidate.setVoterId(tdpCadre.getVoterId());
+										   nominationPostCandidate.setCandidateName(tdpCadre.getFirstname());
+										   nominationPostCandidate.setMobileNo(tdpCadre.getMobileNo());
+										   nominationPostCandidate.setHouseno(tdpCadre.getHouseNo());
+										   nominationPostCandidate.setGender(tdpCadre.getGender());
+										   nominationPostCandidate.setAge(tdpCadre.getAge());
+										   nominationPostCandidate.setDob1(tdpCadre.getDateOfBirth());
+										   nominationPostCandidate.setNominatedPostAgeRangeId(null);//need to run script at backend
+										   nominationPostCandidate.setRelativename(tdpCadre.getRelativename());
+										   nominationPostCandidate.setRelativetype(tdpCadre.getRelativeType());
+										   nominationPostCandidate.setImageurl(tdpCadre.getImage());
+										   nominationPostCandidate.setCastestateId(tdpCadre.getCasteStateId());
+										   nominationPostCandidate.setAddressId(tdpCadre.getUserAddress().getUserAddressId());
+										   nominationPostCandidate.setInsertedBy(userId);
+										   nominationPostCandidate.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+										   nominationPostCandidate.setUpdatedBy(userId);
+										   nominationPostCandidate.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										   nominationPostCandidate.setIsDeleted("N");
+										   nominationPostCandidate = nominationPostCandidateDAO.save(nominationPostCandidate);
+
+										   nominatedPostCandiateId = nominationPostCandidate.getNominationPostCandidateId();
+										   
+									   }
+									   /*Setting nominatedPostCandiateId  to save in other place*/
+									   postCandiateVO.setNominatedPostCandiateId(nominatedPostCandiateId);
+									   
+									  /*getting nominatedPostMemberId,boardlevelId,levelvalue and addressId */
+									   List<Object[]> objList = nominatedPostMemberDAO.getNominatedPostPositionDtls(postCandiateVO.getDepartmentId(), postCandiateVO.getBoardId(), postCandiateVO.getPositionId());
+									    if (objList != null && objList.size() > 0 ){
+									    	Object[] obj = objList.get(0);
+									    	 if (obj.length > 0) {
+									    		 postCandiateVO.setNominatedPostMemberId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+									    		 postCandiateVO.setBoardLevelId(commonMethodsUtilService.getLongValueForObject(obj[1]));
+									    		 postCandiateVO.setLevelValue(commonMethodsUtilService.getLongValueForObject(obj[2]));
+									    		 postCandiateVO.setAddressId(commonMethodsUtilService.getLongValueForObject(obj[3]));
+									    		 
+									    	 }
+									    }
+									    
+									    NominatedPostApplication nominatedPostApplication = new NominatedPostApplication(); 
+									    nominatedPostApplication.setNominationPostCandidateId(postCandiateVO.getNominatedPostCandiateId());
+									    nominatedPostApplication.setNominatedPostMemberId(postCandiateVO.getNominatedPostMemberId());
+									    nominatedPostApplication.setDepartmentId(postCandiateVO.getDepartmentId());
+									    nominatedPostApplication.setBoardId(postCandiateVO.getBoardId());
+									    nominatedPostApplication.setPositionId(postCandiateVO.getPositionId());
+									    nominatedPostApplication.setAddressId(postCandiateVO.getAddressId());
+									    nominatedPostApplication.setBoardLevelId(postCandiateVO.getBoardLevelId());
+									    nominatedPostApplication.setLocationValue(postCandiateVO.getLevelValue());
+									    nominatedPostApplication.setPostTypeId(1l);//1 - nominatedPost
+									    nominatedPostApplication.setApplicationStatusId(5l);//5-confirm 
+									    nominatedPostApplication.setInsertedBy(userId);
+									    nominatedPostApplication.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+									    nominatedPostApplication.setUpdatedBy(userId);
+									    nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									    nominatedPostApplication.setIsDeleted("N");
+									    nominatedPostApplication.setIsExpired("N");
+									    nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
+									    
+									    /*setting nominatedPostApplicationId in candidateVO */ 
+									    postCandiateVO.setNominatedPostApplicationId(nominatedPostApplication.getNominatedPostApplicationId());
+									    
+									    
+									    NominatedPostApplicationHistory nominatedPostApplicationHistory = new NominatedPostApplicationHistory(); 
+									    nominatedPostApplicationHistory.setTrackedTime(dateUtilService.getCurrentDateAndTime());
+									    nominatedPostApplicationHistory.setNominatedPostApplicationId(postCandiateVO.getNominatedPostApplicationId());
+									    nominatedPostApplicationHistory.setNominationPostCandidateId(postCandiateVO.getNominatedPostCandiateId());
+									    nominatedPostApplicationHistory.setDepartmentId(postCandiateVO.getDepartmentId());
+									    nominatedPostApplicationHistory.setBoardId(postCandiateVO.getBoardId());
+									    nominatedPostApplicationHistory.setPositionId(postCandiateVO.getPositionId());
+									    nominatedPostApplicationHistory.setBoardLevelId(postCandiateVO.getBoardLevelId());
+									    nominatedPostApplicationHistory.setLocationValue(postCandiateVO.getLevelValue());
+									    nominatedPostApplicationHistory.setApplicationStatusId(5l);//5-confirm 
+									    nominatedPostApplicationHistory.setInsertedBy(userId);
+									    nominatedPostApplicationHistory.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+									    nominatedPostApplicationHistory.setUpdatedBy(userId);
+									    nominatedPostApplicationHistory.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									    nominatedPostApplicationHistory.setIsDeleted("N");
+									    nominatedPostApplicationHistoryDAO.save(nominatedPostApplicationHistory);
+									    
+									    
+									    /* getting nominatedPosId by nominatedPostMemberid */
+									     if (postCandiateVO.getNominatedPostMemberId() != null && postCandiateVO.getNominatedPostMemberId() > 0 ) {
+									    	 List<Long> nominatedPostIds = nominatedPostDAO.getNominatedPostIdByMemberId(postCandiateVO.getNominatedPostMemberId());
+										     if (nominatedPostIds != null && nominatedPostIds.size() > 0 ) {
+										    	 postCandiateVO.setNominatedPostCandiateId(nominatedPostIds.get(0));
+										     } 
+									     }
+									    
+									    NominatedPostFinal nominatedPostFinal = new NominatedPostFinal();
+									    nominatedPostFinal.setNominatedPostMemberId(postCandiateVO.getNominatedPostMemberId());
+									    nominatedPostFinal.setNominationPostCandidateId(postCandiateVO.getNominatedPostCandiateId());
+									    nominatedPostFinal.setNominatedPostApplicationId(postCandiateVO.getNominatedPostApplicationId());
+									    nominatedPostFinal.setNominatedPostId(postCandiateVO.getNominatedPostId());
+									    nominatedPostFinal.setApplicationStatusId(5l);//5-confirm
+									    nominatedPostFinal.setInsertedBy(userId);
+									    nominatedPostFinal.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+									    nominatedPostFinal.setUpdatedBy(userId);
+									    nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									    nominatedPostFinal.setIsDeleted("N");
+									    nominatedPostFinal.setIsExpired("N");
+									    /* saving isPrefered Y if referal member is there else N */
+									     if (nominatedPostDtlsVO.getSubList2() != null && nominatedPostDtlsVO.getSubList2() .size() > 0 ) {
+									    	 nominatedPostFinal.setIsPrefered("Y");
+									     } else {
+									    	 nominatedPostFinal.setIsPrefered("N");
+									     }
+									      nominatedPostFinalDAO.save(nominatedPostFinal);
+									      
+									      /* Updating Nominated post */
+									      if (postCandiateVO.getNominatedPostId() != null && postCandiateVO.getNominatedPostId().longValue() > 0 ) {
+									    	  NominatedPost nominatedPost = nominatedPostDAO.get(postCandiateVO.getNominatedPostId());
+									    	  nominatedPost.setNominatedPostMemberId(postCandiateVO.getNominatedPostMemberId());
+									    	  nominatedPost.setNominationPostCandidateId(postCandiateVO.getNominatedPostCandiateId());
+									    	  nominatedPost.setNominatedPostStatusId(3l);//3 - confirm
+									    	  nominatedPost.setUpdatedBy(userId);
+									    	  nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									    	  nominatedPostDAO.save(nominatedPost);
+									    	  
+									      }
+									     /*saving referal details if exist*/
+									     if (nominatedPostDtlsVO.getSubList2() != null && nominatedPostDtlsVO.getSubList2() .size() > 0 ) {
+									    	 for (NominatedPostCandidateDtlsVO refCandidVO : nominatedPostDtlsVO.getSubList2()) {
+												 NominatedPostReferDetails nominatedPostReferDetails = new NominatedPostReferDetails();
+												 nominatedPostReferDetails.setNominationPostCandidateId(postCandiateVO.getNominatedPostCandiateId());
+												 nominatedPostReferDetails.setNominatedPostApplicationId(postCandiateVO.getNominatedPostApplicationId());
+												 nominatedPostReferDetails.setReferCadreId(refCandidVO.getTdpCadreId());
+												 nominatedPostReferDetails.setInsertedBy(userId);
+												 nominatedPostReferDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+												 nominatedPostReferDetails.setUpdatedBy(userId);
+												 nominatedPostReferDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+												 nominatedPostReferDetails.setIsDeleted("N");
+												 nominatedPostReferDetailsDAO.save(nominatedPostReferDetails);
+											}
+									     }
+								}
+							  }
+						}
+						statusVO.setMessage("Saved Successfully");
+						statusVO.setResultCode(1);
+					}
+					return statusVO;
+				}
+			});
+			} catch (Exception e) {
+				 statusVO.setMessage("Exception Occured.Pls Try Again");
+				 statusVO.setResultCode(0);
+				Log.error("Exception raised at saveNominatedPostProfileDtls in NominatedPostProfileService class", e);
+			}
+			return statusVO;
+	}
  }
 
 

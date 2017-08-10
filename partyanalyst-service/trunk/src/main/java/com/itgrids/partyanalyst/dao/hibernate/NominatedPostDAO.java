@@ -2151,4 +2151,16 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 }
 	 return query.list();
  }
+     List<Long> getNominatedPostIdByMemberId(Long nominatedPostMemberId) {
+	    StringBuilder queryStr = new StringBuilder();
+	    queryStr.append("select model.nominatedPostId from NominatedPost model " +
+	   		           " where model.nominationPostCandidateId is null " +
+	   		           " and model.nominatedPostStatusId=1 " +
+	   		           " and model.isDeleted='N' and model.isExpired='N' " +
+	   		           " and model.nominatedPostMemberId=:nominatedPostMemberId  ");
+	    Query query = getSession().createQuery(queryStr.toString());
+	    query.setParameter("nominatedPostMemberId", nominatedPostMemberId);
+	    return query.list();
+	   
+  }
 }

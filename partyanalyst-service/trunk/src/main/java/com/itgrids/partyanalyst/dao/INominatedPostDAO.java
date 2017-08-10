@@ -67,4 +67,5 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	 public List<Object[]> getOpenPostCandidates(Long departmentId,Long boardId,Long positionId);
 		public List<Object[]> getNominatedPostStatusWiseCount(Long locationTypeId,List<Long> locationValuesList, Date fromDateStr,Date toDateStr, String year);
 	 public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year);
+	 List<Long> getNominatedPostIdByMemberId(Long nominatedPostMemberId);
 }
