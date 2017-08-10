@@ -2,12 +2,20 @@ package com.itgrids.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "light_monitoring")
@@ -26,6 +34,7 @@ public class LightMonitoring {
 	public Date surveyDate;
 	public Date insertedTime;
 	public String isDeleted;
+	public Panchayat panchayat;
 	
 	@Id
 	@Column(name="light_monitoring_id")
@@ -131,6 +140,16 @@ public class LightMonitoring {
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "panchayat_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Panchayat getPanchayat() {
+		return panchayat;
+	}
+	public void setPanchayat(Panchayat panchayat) {
+		this.panchayat = panchayat;
 	}
 	
 	
