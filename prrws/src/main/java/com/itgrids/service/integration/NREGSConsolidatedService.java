@@ -331,6 +331,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 												levelvo = locationMap.get(jObj.getString("DISTRICT_DESCRIPTION").trim());
 											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 												levelvo = locationMap.get(jObj.getString("DISTRICT").trim());
+											else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
+												levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 												levelvo = locationMap.get(jObj.getString("CONSTITUENCY").trim());
 											else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
@@ -347,6 +349,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 													levelvo.setDistrict(jObj.getString("DISTRICT_DESCRIPTION").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 													levelvo.setDistrict(jObj.getString("DISTRICT").trim());
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
+													levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 													levelvo.setConstituency(jObj.getString("CONSTITUENCY").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
@@ -363,6 +367,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 														componentvo.setName(jObj.getString("DISTRICT_DESCRIPTION").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 														componentvo.setName(jObj.getString("DISTRICT").trim());
+													else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
+														levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 														componentvo.setName(jObj.getString("CONSTITUENCY").trim());
 													else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
@@ -419,6 +425,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 													locationMap.put(jObj.getString("DISTRICT_DESCRIPTION").trim(), levelvo);
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 													locationMap.put(jObj.getString("DISTRICT").trim(), levelvo);
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
+													levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 													locationMap.put(jObj.getString("CONSTITUENCY").trim(), levelvo);
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))
@@ -435,6 +443,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 													componentvo.setName(jObj.getString("DISTRICT_DESCRIPTION").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("district"))
 													componentvo.setName(jObj.getString("DISTRICT").trim());
+												else if(componentName != null && componentName.trim().equalsIgnoreCase("FAperformance") && inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
+													levelvo = locationMap.get(jObj.getString("ASSEMBLY").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("constituency"))
 													componentvo.setName(jObj.getString("CONSTITUENCY").trim());
 												else if(inputVO.getSubLocationType().trim().equalsIgnoreCase("mandal"))

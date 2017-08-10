@@ -1543,13 +1543,13 @@ function buildDistrictsPopupDetails(result,dataArr){
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
 			}else if(globalDivName == "CC Roads"){
-				theadArr = [dataArr,'TARGET Length[IN KMS]','Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Percentage Of Sanctioned Length','Expenditure','Completed Length[IN KMS]','Achivement per based on Sanctioned length','Achivement Percentage'];
+				theadArr = [dataArr,'TARGET Length[IN KMS]','Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Percentage Of Sanctioned Length','Expenditure','Completed Length[IN KMS]','Achv perc based on Sanc length','Achivement Percentage'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achivement per based on Sanctioned length','Achivement Percentage'];
+					theadArr = ["district",dataArr,'Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achv perc based on Sanc length','Achivement Percentage'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achivement per based on Sanctioned length','Achivement Percentage'];
+					theadArr = ["district","constituency",dataArr,'Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achv perc based on Sanc length','Achivement Percentage'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achivement per based on Sanctioned length','Achivement Percentage'];
+					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Estimate Cost','Sanctioned Length[IN KMS]','Expenditure','Completed Length[IN KMS]','Achv perc based on Sanc length','Achivement Percentage'];
 			}else if(globalDivName == "Horticulture"){
 				theadArr = [dataArr,'TARGET','Sanctioned Area[IN ACRES]','Sanctioned Percentage','Pitting Area[In ACRES]','Planting Area[In ACRES]','Achivement Percentage'];
 				if(dataArr == "constituency")
@@ -3217,13 +3217,13 @@ for(var i in overViewArr)
 function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
 	$("#"+divIdd).html(spinner);
-	var theadArr = [locationType,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','Achivement per based on Sanctioned length','ACHIVEMENT PERCENTAGE'];
+	var theadArr = [locationType,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achivement per based on Sanctioned length','ACHIVEMENT PERCENTAGE'];
+		theadArr = ["district",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achivement per based on Sanctioned length','ACHIVEMENT PERCENTAGE'];
+		theadArr = ["district","constituency",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achivement per based on Sanctioned length','ACHIVEMENT PERCENTAGE'];
+		theadArr = ["district","constituency","mandal",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
 	
 	var json = {
 		year : "2017",
