@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LED Dashboard</title>
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="Assests/css/custom.less" rel="stylesheet" type="text/less">
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
-<link href="Assests/css/custom.less" rel="stylesheet" type="text/css">
+<link href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/css/custom.less" rel="stylesheet" type="text/less">
 <script src="Assests/Plugins/Less/less.js"></script>
     <style>
         
@@ -231,6 +231,12 @@ SURVEY STARTED</h5>
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js" type="text/javascript"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js" type="text/javascript"></script>
 <script src="Assests/lightMonitoringDashBoard/lightMonitoringDashBoard.js" type="text/javascript"></script>
 </body>
 </html>
