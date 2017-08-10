@@ -1270,9 +1270,9 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 			 str+='</table>';
 	    $("#trainingChildActivityMemberDivId").html(str);
 		$("#trainingMembersDtlsDataTblId").dataTable({
-			"aaSorting": [],
-			"iDisplayLength" : 5	
-		});
+		"iDisplayLength": 5,
+		"aLengthMenu": [[5, 20, 100, -1], [5, 20, 100, "All"]]
+		}); 
 	  getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);
 	  }else{
 	  str+='<ul class="list-inline slickPanelSliderTraining">';
