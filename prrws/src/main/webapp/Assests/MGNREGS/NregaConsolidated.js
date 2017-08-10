@@ -7,31 +7,33 @@ var overViewArrConsolidated = [];
 
 var overViewIdsArr = [];
 $("#projectsOverviewConsolidated").html(spinnerConsolidated);
-$("#dateRangePickerMGNF").val('2017-04-01');
-$("#dateRangePickerMGNT").val(moment().format("YYYY-MM")+'-30');
 
-
-$("#dateRangePickerMGNF").datetimepicker({
-	format: 'YYYY-MM',
-	viewMode:'months'
-});
-$("#dateRangePickerMGNT").datetimepicker({
-	format: 'YYYY-MM',
-	viewMode:'months'
-});
 $('#dateRangePickerMGNF').on('dp.change', function(e){ 
 	glStartDate = e.date.format("YYYY-MM")+"-31";
 	var locId = $("#selectedName").attr("attr_id");
 	var levelId = $("#selectedName").attr("attr_levelid");
-	buildNREGSProjectsOverviewConsolidated(overViewArr,'',locId,levelId);
-	projectDataConsolidated(levelId,locId);
+	var districtId = $("#selectedName").attr("attr_distid");
+	//buildNREGSProjectsOverviewConsolidated(overViewArr,'',locId,levelId);
+	if(levelId == 4)
+	{
+		projectDataConsolidated(levelId,locId,districtId);
+	}else{
+		projectDataConsolidated(levelId,locId,'');
+	}
+	
 });
 $('#dateRangePickerMGNT').on('dp.change', function(e){ 
 	glEndDate = e.date.format("YYYY-MM")+"-31";
 	var locId = $("#selectedName").attr("attr_id");
 	var levelId = $("#selectedName").attr("attr_levelid");
-	buildNREGSProjectsOverviewConsolidated(overViewArr,'',locId,levelId);
-	projectDataConsolidated(levelId,locId);
+	var districtId = $("#selectedName").attr("attr_distid");
+	//buildNREGSProjectsOverviewConsolidated(overViewArr,'',locId,levelId);
+	if(levelId == 4)
+	{
+		projectDataConsolidated(levelId,locId,districtId);
+	}else{
+		projectDataConsolidated(levelId,locId,'');
+	}
 });
 
 
@@ -48,21 +50,25 @@ $(document).on("click","[collapse-click-consolidated]",function(){
 		var locId = $("#selectedName").attr("attr_id");
 		var levelId = $("#selectedName").attr("attr_levelid");
 		var locationType = '';
+		var districtId = $("#selectedName").attr("attr_distId");
 		if(levelId == 2)
 		{
 			locationType = 'state';
 			subLocType = 'state';
+			districtId = '';
 			divId = $(this).attr("overview-level-consolidated");
 		}else if(levelId == 3)
 		{
 			locationType = 'district';
 			subLocType = 'district';
+			districtId = '';
 			divId = $(this).attr("overview-level-consolidated");
 		}else if(levelId == 4)
 		{
 			locationType = 'constituency';
 			subLocType = 'constituency';
 			divId = $(this).attr("overview-level-consolidated");
+			districtId = '';
 		}
 		if(divId == 'district')
 		{
@@ -80,7 +86,7 @@ $(document).on("click","[collapse-click-consolidated]",function(){
 		if(divId != "state")
 		{
 			var tableId = 'ConsolidatedView'+divId
-			getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,tableId);
+			getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,tableId,districtId);
 		}
 	}	
 });
@@ -93,23 +99,6 @@ $(document).on("click",".selectAllCheckbox",function(){
 	}else{
 		$("."+checkBoxClass).prop("checked",false);
 	}
-});
-$(document).on("click",".menuDataCollapse",function(){
-	var blockName = '';
-	$(".panel-block-white").each(function(){
-		if($(this).hasClass("active"))
-		{
-			blockName = $(this).attr("overview-block");
-		}
-	});
-	$(".panel-block-white").removeClass("active");
-	var locId = $(this).attr("attr_id");
-	$("#selectedName").html($(this).html())
-	var districtId = $("#selectedName").attr("attr_distId");
-	var levelId = $(this).attr("attr_levelIdValue");
-	$("#selectedName").attr("attr_levelid",levelId);
-	$("#selectedName").attr("attr_id",locId);
-	projectDataConsolidated(levelId,locId);
 });
 $(".menu-top-selection .arrow_box_top").hide();
 $(document).on("click",".menu-top-selection-icon",function(e){
@@ -177,7 +166,7 @@ $(document).on("click","#selectedName",function(e){
 });
 
 var stateArr = [{'name':'Andhra Pradesh','type':1}];
-collapseMenuConsolidated(1,stateArr,'multi-level-selection-menu');
+/* collapseMenuConsolidated(1,stateArr,'multi-level-selection-menu');
 function getAllNregaSubLocationDetails(divId,levelId,locationScopeId,type){
 	$("."+divId).html(spinnerConsolidated);
 	//var type = 'constituency' //district to constituency (only consider type like this)
@@ -237,7 +226,7 @@ function collapseMenuConsolidated(id,resultArr,buildId)
 	collapse+='</div>';
 	$("."+buildId).html(collapse);
 }
-
+ */
 /* Menu End*/
 function getAllConvergenceTypesConsolidated()
 {
@@ -350,322 +339,7 @@ function buildComponentByConvergType(result,divId,convergenceId)
 	}
 }
 
-function buildNREGSProjectsOverviewConsolidated(result,blockName,locId,levelId)
-{
-	var str='';
-	
-	str+='<div class="row">';
-		str+='<div class="col-sm-12">';
-			str+='<div class=" bg_color"  style="border: 5px solid #fff;padding:15px;">';
-				str+='<h4 class="text-center m_top10"><b>NON-CONVERGENCE</b></h4>';
-					str+='<div class="row">';
-						str+='<div class="col-sm-12">';
-							str+='<div class="block-border">';
-								str+='<h5 class="text-danger">Labour Budget</h5>';
-								str+='<div class="row">';	
-									for(var i in result)
-									{
-										if(result[i].name == "Labour Budget" || result[i].name == "Average Wage" || result[i].name == "Average Days of Employment" || result[i].name == "HH Completed 100 Days" || result[i].name == "Timely Payment")
-										{
-											str+='<div class="col-sm-2 m_top10">';
-												str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';
-													if(result[i].name.length > 12)
-													{
-														str+='<h4 class="panel-block-white-title text-capitalize toolTipTitleCls text-center" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
-													}else{
-														str+='<h4 class="panel-block-white-title text-capitalize toolTipTitleCls text-center">'+result[i].name+'</h4>';
-													}
-												str+='</div>';
-											str+='</div>';
-										}
-									}
-								str+='</div>';
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-					str+='<div class="row">';
-					for(var i in result)
-					{
-						if(result[i].name == "Farm Ponds" || result[i].name == "IHHL" || result[i].name == "Vermi Compost" || result[i].name == "Solid Waste Management" || result[i].name == "Play Fields" || result[i].name == "Burial Grounds" || result[i].name == "Agriculture Activities" || result[i].name == "Payments" || result[i].name == "FAperformance" || result[i].name == 'SMC Trench' || result[i].name == 'Imp to CD' || result[i].name == 'MPT_PT' || result[i].name == 'GC Works' || result[i].name == 'CD_CW' || result[i].name == 'GH'){
-							str+='<div class="col-sm-2 m_top10">';
-							if(result[i].name == "FAperformance"){
-								str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';	
-									str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="Field Assistant Performance">FA Performan..</h4>';
-								str+='</div>';
-							}
-							else{
-								str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';	
-									if(result[i].name.length > 12)
-									{
-										str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
-									}else{
-										str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
-									}
-								str+='</div>';
-							}
-							str+='</div>';
-						}
-					}
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-		
-		str+='<div class="col-sm-12">';
-			str+='<div class=" bg_color"  style="border: 5px solid #fff;padding:15px;">';
-				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-PR DEPTS</b></h4>';
-				str+='<div class="row">';
-					for(var i in result)
-					{
-						if(result[i].name == "CC Roads" || result[i].name == "Anganwadi Buildings" || result[i].name == "GP Buildings" || result[i].name == "Mandal Buildings"){
-							str+='<div class="col-sm-2 m_top10">';
-								str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';	
-									if(result[i].name.length > 12)
-									{
-										str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
-									}else{
-										str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
-									}
-								str+='</div>';
-							str+='</div>';
-						}
-					}
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-		
-		str+='<div class="col-sm-12">';
-			str+='<div class=" bg_color"  style="border: 5px solid #fff;padding:15px;">';
-				str+='<h4 class="m_top10 text-center"><b>CONVERGENCE-OTHER DEPTS</b></h4>';
-				str+='<div class="row m_top20">';
-					str+='<div class="col-sm-8">';
-						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Animal Husbandry</h5>';
-							str+='<div class="row">';	
-								for(var i in result)
-								{
-									if(result[i].name == "Cattle Drinking Water Troughs" || result[i].name == "Raising of Perinnial Fodders" || result[i].name == "OPGK-Perinnials" || result[i].name == "OPGK-Annuals"){
-										str+='<div class="col-sm-3 m_top10">';
-											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';
-												if(result[i].name.length > 12)
-												{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
-												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].name+'</h4>';
-												}
-											str+='</div>';
-										str+='</div>';
-									}
-								}
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-					
-					str+='<div class="col-sm-4">';
-						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Sericulture</h5>';
-							str+='<div class="row">';	
-								for(var i in result)
-								{
-									if(result[i].name == "Mulbery" || result[i].name == "Silk Worms" ){
-										str+='<div class="col-sm-6 m_top10">';
-											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';	
-												if(result[i].name.length > 12)
-												{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
-												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center">'+result[i].name+'</h4>';
-												}
-											str+='</div>';
-										str+='</div>';
-									}
-								}
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="row m_top20">';
-					str+='<div class="col-sm-4">';
-						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Housing</h5>';
-							str+='<div class="row">';	
-								for(var i in result)
-								{
-									if(result[i].name == "NTR 90 Days" || result[i].name == "Production of Bricks"){
-										str+='<div class="col-sm-6 m_top10">';
-											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';	
-												if(result[i].name.length > 12)
-												{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
-												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
-												}
-											str+='</div>';
-										str+='</div>';
-									}
-								}
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-					str+='<div class="col-sm-4">';
-						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Sericulture</h5>';
-							str+='<div class="row">';	
-								for(var i in result)
-								{
-									if(result[i].name == "Mulbery" || result[i].name == "Silk Worms" ){
-										str+='<div class="col-sm-6 m_top10">';
-											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';	
-												if(result[i].name.length > 12)
-												{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
-												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
-												}
-											str+='</div>';
-										str+='</div>';
-									}
-								}
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-					str+='<div class="col-sm-4">';
-						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Animal Husbandry</h5>';
-							str+='<div class="row">';	
-								for(var i in result)
-								{
-									if(result[i].name == "Cattle Drinking Water Troughs" || result[i].name == "Raising of Perinnial Fodders"){
-										str+='<div class="col-sm-6 m_top10">';
-											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';
-												if(result[i].name.length > 12)
-												{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
-												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
-												}
-											str+='</div>';
-										str+='</div>';
-									}
-								}
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="row m_top20">';
-					str+='<div class="col-sm-4">';
-						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">SERP</h5>';
-							str+='<div class="row">';	
-								for(var i in result)
-								{
-									if(result[i].name == "Horticulture" || result[i].name == "Avenue"){
-										str+='<div class="col-sm-6 m_top10">';
-											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';
-												if(result[i].name.length > 12)
-												{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
-												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
-												}
-											str+='</div>';
-										str+='</div>';
-									}
-								}
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-					str+='<div class="col-sm-4">';
-						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Fisheries</h5>';
-							str+='<div class="row">';	
-								for(var i in result)
-								{
-									if(result[i].name == "Fish Drying Platforms" || result[i].name == "Fish Ponds" ){
-										str+='<div class="col-sm-6 m_top10">';
-											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';
-												if(result[i].name.length > 12)
-												{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
-												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
-												}
-											str+='</div>';
-										str+='</div>';
-									}
-								}
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-					str+='<div class="col-sm-4">';
-						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Forest</h5>';
-							str+='<div class="row">';	
-								for(var i in result)
-								{
-									if(result[i].name == "Nurseries"){
-										str+='<div class="col-sm-6 m_top10">';
-											str+='<div class="panel-block-white text-center" overview-block="'+result[i].name+'">';
-												if(result[i].name.length > 12)
-												{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls" title="'+result[i].name+'">'+result[i].name.substr(0,12)+'..</h4>';
-												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center toolTipTitleCls">'+result[i].name+'</h4>';
-												}
-											str+='</div>';
-										str+='</div>';
-									}
-								}
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-	str+='</div>';
-	$("#projectsOverviewConsolidated").html(str);
-
-	$(".toolTipTitleCls").tooltip();
-	if(blockName != null)
-	{
-		$('[overview-block]').removeClass("active");
-		$('[overview-block="'+blockName+'"]').addClass("active");
-		$('[overview-block="'+blockName+'"]').trigger('click');
-	}
-	var locType = '';
-	if(levelId == 2 || levelId == "2")
-	{
-		locType = 'state';
-	}else if(levelId == 3 || levelId == "3")
-	{
-		locType = 'district';
-	}else if(levelId == 4 || levelId == "4")
-	{
-		locType = 'constituency';
-	}
-	for(var i in overViewArr)
-	{
-		$("[overview-block='"+overViewArr[i].name+"']").html(spinnerConsolidated);
-		if(overViewArr[i].name == 'Solid Waste Management' || overViewArr[i].name == 'Burial Grounds' || overViewArr[i].name == 'Play Fields' || overViewArr[i].name == 'CC Roads' || overViewArr[i].name == 'Anganwadi Buildings' || overViewArr[i].name == 'GP Buildings' || overViewArr[i].name == 'Mandal Buildings' || overViewArr[i].name == 'NTR 90 Days' || overViewArr[i].name == 'Production of Bricks' || overViewArr[i].name == 'Mulbery' || overViewArr[i].name == 'Silk Worms' || overViewArr[i].name == 'Cattle Drinking Water Troughs' || overViewArr[i].name == 'Raising of Perinnial Fodders' || overViewArr[i].name == 'Fish Ponds' || overViewArr[i].name == 'Fish Drying Platforms')
-		{
-			if(levelId == 4 || levelId == "4"){
-				getNREGSProjectsAbstractNewFrConstituency(overViewArr[i].name,locType,locId,"0",blockName,levelId);
-			}else{
-				getNREGSProjectsAbstractNewConsolidated(overViewArr[i].name,locType,locId,blockName,levelId);
-			}
-		}else if(overViewArr[i].name == 'Payments')
-		{
-			getNregaPaymentsAbsAndOverviewConsolidated(overViewArr[i].name,locType,locId,levelId,'abstract');
-		}else{
-			if(levelId == 4 || levelId == "4"){
-				getNREGSAbstractDataByTypeFrConstituency(overViewArr[i].name,locType,locId,"0",blockName,levelId);
-			}else{
-				getNREGSAbstractDataByTypeConsolidated(overViewArr[i].name,locType,locId,blockName,levelId,'onLoad');
-			}
-		}
-	}
-
-}
-function getNREGSProjectsAbstractNewConsolidated(type,locType,locId,blockName,levelId)
+/* function getNREGSProjectsAbstractNewConsolidated(type,locType,locId,blockName,levelId)
 {
 	//$("#projectsOverviewConsolidated").html(spinnerConsolidated);
 	var json = {
@@ -689,7 +363,7 @@ function getNREGSProjectsAbstractNewConsolidated(type,locType,locId,blockName,le
 			buildNREGSAbstractDataByTypeNewConsolidated(type,ajaxresp,blockName,locId,locType,levelId);
 		}
 	});
-}
+} */
 
 function getNregaPaymentsAbsAndOverviewConsolidated(type,locType,locId,levelId,buildType)
 {
@@ -724,7 +398,7 @@ function getNregaPaymentsAbsAndOverviewConsolidated(type,locType,locId,levelId,b
 		}
 	});
 }
-function getNREGSAbstractDataByTypeConsolidated(type,locType,locId,blockName,levelId,buildDateType)
+/* function getNREGSAbstractDataByTypeConsolidated(type,locType,locId,blockName,levelId,buildDateType)
 {
 	if(buildDateType == 'onLoad' && type == 'FAperformance')
 	{
@@ -761,8 +435,8 @@ function getNREGSAbstractDataByTypeConsolidated(type,locType,locId,blockName,lev
 			buildNREGSAbstractDataByTypeNewConsolidated(type,ajaxresp,blockName,locId,locType,levelId);
 		}
 	}); 
-}
-function buildNREGSAbstractDataByTypeNewConsolidated(type,result,blockName,locId,locType,levelId)
+} */
+/* function buildNREGSAbstractDataByTypeNewConsolidated(type,result,blockName,locId,locType,levelId)
 {
 	$("[overview-block='"+type+"']").removeClass("panel-block-white");
 	var str='';
@@ -825,6 +499,8 @@ function buildNREGSAbstractDataByTypeNewConsolidated(type,result,blockName,locId
 					}else if(result[i].percentage >= 80)
 					{
 						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+					}else{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 					}
 						if(type.length > 12)
 						{
@@ -849,6 +525,9 @@ function buildNREGSAbstractDataByTypeNewConsolidated(type,result,blockName,locId
 						}else if(result[i].percentage >= 80)
 						{
 							str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+						}else
+						{
+							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
 						}
 						str+='<div class="row">';
 							str+='<div class="col-sm-6 text-center">';
@@ -933,6 +612,8 @@ function buildNREGSAbstractDataByTypeNewConsolidated(type,result,blockName,locId
 						}else if(result[i].percentage >= 80)
 						{
 							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+						}else{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 						}
 							if(type.length > 12)
 							{
@@ -957,6 +638,9 @@ function buildNREGSAbstractDataByTypeNewConsolidated(type,result,blockName,locId
 							}else if(result[i].percentage >= 80)
 							{
 								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else
+							{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
 							}
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
@@ -1019,6 +703,8 @@ function buildNREGSAbstractDataByTypeNewConsolidated(type,result,blockName,locId
 						}else if(result[i].percentage >= 80)
 						{
 							str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+						}else{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 						}
 							str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
@@ -1051,9 +737,9 @@ function buildNREGSAbstractDataByTypeNewConsolidated(type,result,blockName,locId
 		$("[overview-block='"+blockName+"']").trigger("click");
 	}
 	
-}
+} */
 
-function projectDataConsolidated(levelId,locId)
+function projectDataConsolidated(levelId,locId,districtId)
 {
 	var collapse='';
 	var dataArr = '';
@@ -1111,6 +797,7 @@ function projectDataConsolidated(levelId,locId)
 	
 	$("#projectDataConsolidated").html(collapse);
 	var locId = $("#selectedName").attr("attr_id");
+	var districtId = '';
 	if(levelId == 2)
 	{
 		locationType = 'state';
@@ -1125,13 +812,15 @@ function projectDataConsolidated(levelId,locId)
 	{
 		locationType = 'constituency';
 		subLocType = 'constituency';
-		divId = 'ConsolidatedViewconstituency'
+		divId = 'ConsolidatedViewconstituency';
+		districtId = $("#selectedName").attr("attr_distId");
 	}
-	getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,divId);
+	getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,divId,districtId);
 	
 }
-function getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocationType,locationId,divId)
+function getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocationType,locationId,divId,districtId)
 {
+	var districtId = $("#selectedName").attr("attr_distId");
 	$("#collapse"+divId).html(spinnerConsolidated);
 	var json = {
 		year : "2017",
@@ -1140,7 +829,9 @@ function getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,su
 		locationType: locationType,
 		locationIdStr : locationId,
 		subLocationType : subLocationType,
-		componentIds : overViewIdsArr
+		districtId : districtId,
+		componentIds : overViewIdsArr,
+		
 	}
 	$.ajax({
 		url: 'getNREGSLevelWiseConsolidatedReport',
@@ -1192,7 +883,7 @@ function tableViewConsolidated(result,divId,subLocationType)
 								}else if(result[i].subList[j].percentage >= 80)
 								{
 									tableView+='<td style="background-color:#00AF50;color:#fff">'+result[i].subList[j].percentage+'</td>';
-								}	
+								}
 							}else{
 								tableView+='<td>-</td>';
 							}
@@ -1235,7 +926,7 @@ function tableViewConsolidated(result,divId,subLocationType)
 	});
 }
 
-function getNREGSProjectsAbstractNewFrConstituency(type,locType,locId,districtId,blockName,levelId)
+/* function getNREGSProjectsAbstractNewFrConstituency(type,locType,locId,districtId,blockName,levelId)
 {
 	var districtId = $("#selectedName").attr("attr_distId");
 	var json = {
@@ -1260,8 +951,8 @@ function getNREGSProjectsAbstractNewFrConstituency(type,locType,locId,districtId
 			buildNREGSAbstractDataByTypeNewConsolidated(type,ajaxresp,blockName,locId,locType,levelId)
 		}
 	});
-}
-function getNREGSAbstractDataByTypeFrConstituency(type,locType,locId,districtId,blockName,levelId)
+} */
+/* function getNREGSAbstractDataByTypeFrConstituency(type,locType,locId,districtId,blockName,levelId)
 {
 	var districtId = $("#selectedName").attr("attr_distId");
 	var json = {
@@ -1287,4 +978,4 @@ function getNREGSAbstractDataByTypeFrConstituency(type,locType,locId,districtId,
 			buildNREGSAbstractDataByTypeNewConsolidated(type,ajaxresp,blockName,locId,locType,levelId)
 		}
 	});
-}
+} */
