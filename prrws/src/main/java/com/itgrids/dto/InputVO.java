@@ -25,6 +25,7 @@ public class InputVO implements Serializable {
 	private Long searchLevelId;
 	private Long searchLevelValue;
 	private List<Long> searchLvlVals;
+	private String displayType;
 	
 	private String year;
 	private String locationType;
@@ -534,6 +535,13 @@ public class InputVO implements Serializable {
 	}
 	public void setMaxVal(Long maxVal) {
 		this.maxVal = maxVal;
-	}	
+	}
+	public String getDisplayType() {
+		return displayType;
+	}
+	public void setDisplayType(String displayType) {
+		this.displayType = displayType;
+	}
+	
 	
 }
