@@ -19,11 +19,11 @@ public class LightWattage {
 	private Long lightWattageInfoId;
 	private  Long wattage;
 	private Long lightCount;
-	private Date insertedTime;
-	private String isDeleted; 
-	
 	private LightMonitoring lightMonitoring ;
 	private Long lightMonitoringId;	
+	public String isDeleted;
+	private Date insertedTime;
+	
 	
 	
 	@Id
@@ -65,6 +65,8 @@ public class LightWattage {
 	public void setLightMonitoringId(Long lightMonitoringId) {
 		this.lightMonitoringId = lightMonitoringId;
 	}
+	
+	
 	@Column(name="inserted_time")
 	public Date getInsertedTime() {
 		return insertedTime;
