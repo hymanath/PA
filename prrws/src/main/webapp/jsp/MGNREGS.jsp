@@ -130,7 +130,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-2 border_right m_top5">
-					<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
+					<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_distId="" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
 					<div class="multi-level-selection-menu arrow_box_top"></div>
 				</div>
 				<div class="col-sm-3 border_right">
@@ -310,7 +310,6 @@
 <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js" type="text/javascript"></script>
-<script src="Assests/Plugins/DataTable/pptxgen.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/MGNREGS.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/NregaConsolidated.js" type="text/javascript"></script>
 <script type="text/javascript">
