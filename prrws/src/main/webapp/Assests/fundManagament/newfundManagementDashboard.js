@@ -1035,7 +1035,11 @@ getAllDepartments();
 					
 				}
 			}
-			overviewSelectBoxData = result;
+			
+			if(divId == "overviewSelect"){
+				overviewSelectBoxData = result;
+			}
+			
 			if(result !=null && result.length>0){
 				   $("#"+divId).append('<option value="0">ALL</option>');
 					for(var i in result){
