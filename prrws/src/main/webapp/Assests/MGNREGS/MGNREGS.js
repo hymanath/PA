@@ -244,6 +244,7 @@ function onLoadCalls()
 			
 			var tableId = divId.replace(/\s+/g, '')+''+levelType;
 			$("#"+tableId).html(spinner);
+			var districtId = $("#selectedName").attr("attr_distId");
 			if(levelType == 'district' || levelType == 'constituency' || levelType == 'panchayat' || levelType == 'mandal')
 			{
 				
@@ -264,7 +265,7 @@ function onLoadCalls()
 				else if(divId == "FAperformance")
 					getNregaLevelsWiseDataForFAPerformance(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else
-					getNregaLevelsWiseData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId);
+					getNregaLevelsWiseData(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId);
 			}
 		}
 		
@@ -572,6 +573,7 @@ function projectData(divId,levelId,locationId)
 		
 		var tableId = divId.replace(/\s+/g, '')+''+dataArr[0];
 		$("#"+tableId).html(spinner);
+		var districtId = $("#selectedName").attr("attr_distId");
 		if(divId == 'Labour Budget')
 			getNREGSLabBugdtLelwiseData(tableId,dataArr[0],menuLocationType,menuLocationId,divId);
 		else if(divId == "Agriculture Activities")
@@ -589,7 +591,7 @@ function projectData(divId,levelId,locationId)
 		else if(divId == "FAperformance")
 			getNregaLevelsWiseDataForFAPerformance(tableId,dataArr[0],menuLocationType,menuLocationId,divId);
 		else
-			getNregaLevelsWiseData(tableId,dataArr[0],theadArr,menuLocationType,menuLocationId,divId);
+			getNregaLevelsWiseData(tableId,dataArr[0],theadArr,menuLocationType,menuLocationId,divId,districtId);
 	
 }
 function overviewData(divId,levelId,locationId)
@@ -643,6 +645,7 @@ function overviewData(divId,levelId,locationId)
 	//For Menu
 	var menuLocationId = '';
 	var menuLocationType = '';
+	var districtId = '';
 	if(levelId == 2)
 	{
 		menuLocationId = "-1";
@@ -655,6 +658,7 @@ function overviewData(divId,levelId,locationId)
 	{
 		menuLocationId = locationId;
 		menuLocationType = "constituency";
+		districtId = $("#selectedName").attr("attr_distId");
 	}
 	
 	
@@ -663,7 +667,7 @@ function overviewData(divId,levelId,locationId)
 	else if(divId == 'Payments')
 		getNregaPaymentsAbsAndOverviewDtls(divId,menuLocationType,menuLocationId,2,'overview');
 	else
-		getNregasOverview(divId,menuLocationType,menuLocationId);
+		getNregasOverview(divId,menuLocationType,menuLocationId,districtId);
 }
 function tableView(blockId,theadArr,result,locationType,blockName)
 {
@@ -1071,6 +1075,7 @@ function buildNREGSProjectsOverview(result,blockName)
 //LabourBudget Overview Call נSravanth
 function getNREGSLabourBudgetOverview(projectDivId,menuLocationType,menuLocationId)
 {
+	var districtId = $("#selectedName").attr("attr_distid");
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	var json = {
 		year : "2017",
@@ -1078,7 +1083,8 @@ function getNREGSLabourBudgetOverview(projectDivId,menuLocationType,menuLocation
         toDate : glEndDate,
 		divType : globalDivName,
 		locationType : menuLocationType,
-		locationId : menuLocationId
+		locationId : menuLocationId,
+		districtId:districtId
 	}
 	$.ajax({
 		url: 'getLabourBudgetOverview',
@@ -1098,13 +1104,15 @@ function getNREGSLabourBudgetOverview(projectDivId,menuLocationType,menuLocation
 //LabourBudget Expenditure Call  נSravanth
 function getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId)
 {
+	var districtId = $("#selectedName").attr("attr_distid");
 	$("#projectOvervw"+projectDivId).html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
         toDate : glEndDate,
         locationType : menuLocationType,
-        locationId : menuLocationId
+        locationId : menuLocationId,
+		districtId:districtId
 	}
   $.ajax({
     url: 'getLabourBudgetExpenditure',
@@ -1124,6 +1132,7 @@ function getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocat
 //LabourBudget LevelWise Data Call נSravanth
 function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
+	var districtId = $("#selectedName").attr("attr_distid");
 	var theadArr = [locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
 	if(locationType == "constituency")
 		theadArr = ["district",locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
@@ -1139,7 +1148,8 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLo
 		locationType: menuLocationType,
 		divType : globalDivName,
 		locationId : menuLocationId,
-		sublocaType : locationType 
+		sublocaType : locationType,
+		districtId:districtId
 	}
 	$.ajax({
 		url: 'getNregaLevelwiseOverviewForLabourBudgetData',
@@ -2667,7 +2677,7 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocat
 		}
 	});
 }
-function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName)
+function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName,districtId)
 {
 	$("#"+divIdd).html(spinner);
 	var json = {
@@ -2677,7 +2687,8 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 		locationType: menuLocationType,
 		divType : globalDivName,
 		locationId : menuLocationId,
-		sublocaType : locationTypeNew
+		sublocaType : locationTypeNew,
+		districtId:districtId
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseData',
@@ -2783,7 +2794,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 	});
 }
 
-function getNregasOverview(projectDivId,menuLocationType,menuLocationId)
+function getNregasOverview(projectDivId,menuLocationType,menuLocationId,districtId)
 {
 	$("#projectOvervw"+projectDivId.replace(/\s+/g, '')).html(spinner);
 	if(projectDivId == 'FAperformance')
@@ -2794,7 +2805,8 @@ function getNregasOverview(projectDivId,menuLocationType,menuLocationId)
 			toDate : '2017-05-30',
 			divType : globalDivName,
 			locationType : menuLocationType,
-			locationId : menuLocationId
+			locationId : menuLocationId,
+			districtId:districtId
 		}
 	}else{
 		var json = {
@@ -2803,7 +2815,8 @@ function getNregasOverview(projectDivId,menuLocationType,menuLocationId)
 	        toDate : glEndDate,
 			divType : globalDivName,
 			locationType : menuLocationType,
-			locationId : menuLocationId
+			locationId : menuLocationId,
+			districtId:districtId
 		}
 	}
 	
@@ -2863,6 +2876,7 @@ function getNregasPopupOverview(menuLocationType,menuLocationId)
 
 function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,menuLocationId,divId)
 {
+	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Target','Achivement','Percentage'];
 	if(divId == 'Timely Payment')
@@ -2891,7 +2905,8 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 		locationType: menuLocationType,
 		divType : globalDivName,
 		locationId : menuLocationId,
-		sublocaType : locationType
+		sublocaType : locationType,
+		districtId : districtId
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataFrNewCalls',
@@ -2951,6 +2966,7 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 
 function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
+	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Total Expenditure','Expenditure on Agriculture & Allied Activities','ACHIVEMENT PERCENTAGE'];
 	if(locationType == "constituency")
@@ -2967,7 +2983,8 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 		locationType: menuLocationType,
 		divType : globalDivName,
 		locationId : menuLocationId,
-		sublocaType : locationType
+		sublocaType : locationType,
+		districtId:districtId
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataFrAgriculture',
@@ -3024,6 +3041,7 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 
 function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
+	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
 	 var theadArr = [locationType,'Target(in Acres)','Sanctioned Area (in Acres)','Sanctioned Percentage','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc Based on Target','Pitting Perc Based on Sanctioned Area','Achievement Percentage'];
 	if(locationType == "constituency")
@@ -3040,7 +3058,8 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 		locationType: menuLocationType,
 		divType : globalDivName,
 		locationId : menuLocationId,
-		sublocaType : locationType
+		sublocaType : locationType,
+		districtId:districtId
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataFrHorticulture',
@@ -3119,6 +3138,7 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 
 function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
+	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
 	 var theadArr = [locationType,'Target','Sanctioned Area (in Kms)','Sanctioned Percentage','Pitting  Area (in Kms)','Planting  Area (in Kms)','Achievement Percentage'];
 	if(locationType == "constituency")
@@ -3135,7 +3155,8 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 		locationType: menuLocationType,
 		divType : globalDivName,
 		locationId : menuLocationId,
-		sublocaType : locationType
+		sublocaType : locationType,
+		districtId:districtId
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataFrAvenue',
@@ -3216,6 +3237,7 @@ for(var i in overViewArr)
 
 function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
+	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
 	var theadArr = [locationType,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
 	if(locationType == "constituency")
@@ -3232,7 +3254,8 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 		locationType: menuLocationType,
 		divType : globalDivName,
 		locationId : menuLocationId,
-		sublocaType : locationType
+		sublocaType : locationType,
+		districtId:districtId
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataForCCRoads',
@@ -3561,6 +3584,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				}else if(result[i].percentage >= 80)
 				{
 					str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+				}else
+				{
+					str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 				}
 					if(type == 'FAperformance')
 					{
@@ -3606,6 +3632,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}else if(result[i].percentage >= 80)
 					{
 						str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+					}else
+					{
+						str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
 					}
 					str+='<div class="row">';
 						str+='<div class="col-sm-6 text-center">';
@@ -3718,6 +3747,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}else if(result[i].percentage >= 80)
 							{
 								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else
+							{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
 							}
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
@@ -3780,6 +3812,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						}else if(result[i].percentage >= 80)
 						{
 							str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+						}else
+						{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 						}
 							str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
@@ -3809,71 +3844,92 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	
 }
 $(document).on("click",".menuDataCollapse",function(){
-	$(".multi-level-selection-menu").css("display","none");
-	$(".arrowIconChanged").find('.fa').removeClass("fa-chevron-up");
-	$(".arrowIconChanged").find('.fa').addClass("fa-chevron-down");
-	$("#projectData,#projectOverviewBlock").html('');
-	var blockName = '';
-	$(".panel-block-white").each(function(){
-		if($(this).hasClass("active"))
+	
+		$(".multi-level-selection-menu").css("display","none");
+		$(".arrowIconChanged").find('.fa').removeClass("fa-chevron-up");
+		$(".arrowIconChanged").find('.fa').addClass("fa-chevron-down");
+		$("#projectData,#projectOverviewBlock").html('');
+		var blockName = '';
+		$(".panel-block-white").each(function(){
+			if($(this).hasClass("active"))
+			{
+				blockName = $(this).attr("overview-block");
+			}
+		});
+		$(".panel-block-white").removeClass("active");
+		var locId = $(this).attr("attr_id");
+		$("#selectedName").html($(this).html())
+		var districtId = $("#selectedName").attr("attr_distId");
+		var levelId = $(this).attr("attr_levelIdValue");
+		$("#selectedName").attr("attr_levelid",levelId);
+		$("#selectedName").attr("attr_id",locId)
+		if(levelId == 3)
 		{
-			blockName = $(this).attr("overview-block");
-		}
-	});
-	$(".panel-block-white").removeClass("active");
-	var locId = $(this).attr("attr_id");
-	$("#selectedName").html($(this).html())
-	var districtId = $("#selectedName").attr("attr_distId");
-	var levelId = $(this).attr("attr_levelIdValue");
-	$("#selectedName").attr("attr_levelid",levelId);
-	$("#selectedName").attr("attr_id",locId)
-	if(levelId == 3)
-	{
-		for(var i in overViewArr)
+			for(var i in overViewArr)
+			{
+				$("[overview-block='"+overViewArr[i]+"']").html(spinner);
+				if(overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
+				{
+					getNREGSProjectsAbstractNew(overViewArr[i],'district',locId,blockName,levelId);
+				}else if(overViewArr[i] == 'Payments')
+				{
+					getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'district',locId,levelId,'abstract');
+				}else
+				{
+					getNREGSAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId,'onLoad');
+				}
+			}
+			
+		}else if(levelId == 4)
 		{
-			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
-			if(overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
+			for(var i in overViewArr)
 			{
-				getNREGSProjectsAbstractNew(overViewArr[i],'district',locId,blockName,levelId);
-			}else if(overViewArr[i] == 'Payments')
+				$("[overview-block='"+overViewArr[i]+"']").html(spinner);
+				if(overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
+				{
+					getNREGSProjectsAbstractNewFrConstituency(overViewArr[i],'constituency',locId,districtId,'',levelId);
+				}else if(overViewArr[i] == 'Payments')
+				{
+					getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'constituency',locId,levelId,'abstract');
+				}else{
+					getNREGSAbstractDataByTypeFrConstituency(overViewArr[i],'constituency',locId,districtId,'',levelId);
+				}
+			}
+		}else if(levelId == 2)
+		{
+			for(var i in overViewArr)
 			{
-				getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'district',locId,levelId,'abstract');
-			}else
-			{
-				getNREGSAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId,'onLoad');
+				$("[overview-block='"+overViewArr[i]+"']").html(spinner);
+				if(overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
+				{
+					getNREGSProjectsAbstractNew(overViewArr[i],'state',locId,blockName,levelId);
+				}else if(overViewArr[i] == 'Payments')
+				{
+					getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'state',locId,levelId,'abstract');
+				}else
+				{
+					getNREGSAbstractDataByType(overViewArr[i],'state',locId,blockName,levelId,'onLoad');
+				}
 			}
 		}
-	}else if(levelId == 4)
+		
+	if($("#viewSwitchBtn li").hasClass("active"))
 	{
-		for(var i in overViewArr)
-		{
-			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
-			if(overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
+		var blockName = '';
+		$(".panel-block-white").each(function(){
+			if($(this).hasClass("active"))
 			{
-				getNREGSProjectsAbstractNewFrConstituency(overViewArr[i],'constituency',locId,districtId,'',levelId);
-			}else if(overViewArr[i] == 'Payments')
-			{
-				getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'constituency',locId,levelId,'abstract');
-			}else{
-				getNREGSAbstractDataByTypeFrConstituency(overViewArr[i],'constituency',locId,districtId,'',levelId);
+				blockName = $(this).attr("overview-block");
 			}
-		}
-	}else if(levelId == 2)
-	{
-		for(var i in overViewArr)
-		{
-			$("[overview-block='"+overViewArr[i]+"']").html(spinner);
-			if(overViewArr[i] == 'CC Roads' || overViewArr[i] == 'Anganwadi Buildings' || overViewArr[i] == 'GP Buildings' || overViewArr[i] == 'Mandal Buildings' || overViewArr[i] == 'NTR 90 Days' || overViewArr[i] == 'Production of Bricks' || overViewArr[i] == 'Mulbery' || overViewArr[i] == 'Silk Worms' || overViewArr[i] == 'Cattle Drinking Water Troughs' || overViewArr[i] == 'Raising of Perinnial Fodders' || overViewArr[i] == 'Fish Ponds' || overViewArr[i] == 'Fish Drying Platforms' || overViewArr[i] == 'NTR Rural House' || overViewArr[i] == 'OPGK-Perinnials' || overViewArr[i] == 'OPGK-Annuals')
-			{
-				getNREGSProjectsAbstractNew(overViewArr[i],'state',locId,blockName,levelId);
-			}else if(overViewArr[i] == 'Payments')
-			{
-				getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'state',locId,levelId,'abstract');
-			}else
-			{
-				getNREGSAbstractDataByType(overViewArr[i],'state',locId,blockName,levelId,'onLoad');
-			}
-		}
+		});
+		$(".panel-block-white").removeClass("active");
+		var locId = $(this).attr("attr_id");
+		$("#selectedName").html($(this).html())
+		var districtId = $("#selectedName").attr("attr_distId");
+		var levelId = $(this).attr("attr_levelIdValue");
+		$("#selectedName").attr("attr_levelid",levelId);
+		$("#selectedName").attr("attr_id",locId);
+		projectDataConsolidated(levelId,locId,districtId);
 	}
 	
 });
@@ -3944,7 +4000,7 @@ $(document).on("click",".panelCollapseIconClick",function(e){
 	var buildId = $(this).attr("attr_targetId");
 	var locationScopeId = $(this).attr("attr_id");
 	var levelId = $(this).attr("attr_levelIdValue");
-	
+	$("#selectedName").attr("attr_distid","");
 	var type = '';
 	if(levelId == 4)
 	{
@@ -4291,6 +4347,7 @@ function getNREGSProjectsAbstractNewFrConstituency(type,locType,locId,districtId
 
 function getNREGSAbstractDataByTypeFrConstituency(type,locType,locId,districtId,blockName,levelId)
 {
+	var districtId = $("#selectedName").attr("attr_distId");
 	if(type == 'FAperformance')
 	{
 		var json = {
@@ -4470,7 +4527,7 @@ function getNregaPaymentsDtlsLocationWise(divIdd,locationType,menuLocationType,m
 		locationType: menuLocationType,
 		locationId : menuLocationId,
 		sublocaType :locationType,
-		type:buildType
+		type:buildType,
 	}
 	$.ajax({
 		url: 'getNregaPaymentsDtlsLocationWise',
