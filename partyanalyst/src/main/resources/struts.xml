@@ -17965,6 +17965,10 @@
 		<result type="json" name="success">
 			<param name="root">boothInchargesVOList</param>
 		</result>
-	</action>	
+	</action>
+	<action name="applyQuickApprovalNominatedPostAction" class="nominatedPostProfileAction" method="getQuickApprovalNominatedPost">
+			<result name="success">/jsp/applyQuickApprovalNominatedPost.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>	
+	</action> 	
  </package>
 </struts>
