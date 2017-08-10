@@ -1697,9 +1697,13 @@ function getBoothUserDetailsbuild(result,locationName,boothId){
 	$("#userDetailsId").show();
 	$("#locationDivId").html('<center><h4>'+locationName+' Committee Details.</center></h4>');
 	var str = '';
-	//str+='<div class="table-responsive">';
-	str +='<h4><a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothExportExcelReport\')}"  style="margin-bottom: 7px;"> Export Excel</a></h4>';
-		str +='<div class="table-responsive">';
+	
+	str +='<div class="row">';
+		str +='<div class="col-sm-12">';
+			str +='<a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothExportExcelReport\')}"  style="margin-bottom: 7px;"> Export Excel</a>';
+		str +='</div>';
+		str +='<div class="col-sm-12">';
+			str +='<div class="table-responsive">';
 		  str +='<table class="table table-bordered" id="rangeWiseBoothReport">';
 				 str +='<thead>';
 					 str +='<tr class="text-center">';
@@ -1768,7 +1772,7 @@ function getBoothUserDetailsbuild(result,locationName,boothId){
 						str +='<th>AGE</th>';
 						str +='<th>MOBILE&nbsp;NO</th>';
 						str +='<th>DESIGNATION</th>';
-						str +='<th>SERIAL&nbsp;nO</th>';	
+						str +='<th>SERIAL&nbsp;NO</th>';	
                         str +='<th>INCHARGE&nbsp;BOOTH&nbsp;NO</th>';
 	                    str +='<th>OWN&nbsp;BOOTH&nbsp;NO</th>';						
 						str +='<th>CONSTITUENCY&nbsp;</th>';
@@ -1817,6 +1821,10 @@ function getBoothUserDetailsbuild(result,locationName,boothId){
 			  str +='</tbody>';
 			  str +='</table>';
 			str +='</div>';
+		str +='</div>';
+	str +='</div>';
+	
+		
 			 // str+='</div>';
 			   $("#userDetailsId").html(str);
 				$("#rangeWiseBoothReport").dataTable({
