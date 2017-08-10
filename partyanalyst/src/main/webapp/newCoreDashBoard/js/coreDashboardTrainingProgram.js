@@ -748,7 +748,7 @@ function buildStateLevelCampAttendedDetails(result){
 	str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 		str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><!--<span style="background-color:#fff;margin-left:5px;" attr_program_id="'+programIdsStr+'" class="stateLevelTraining" expand-icon-inner="training" state-level="true" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen"></i>--></span></h4>';
 		for(var i in result){    
-		str+='<h5 class="text-capital m_top10">'+result[i].name+'<span style="background-color:#fff;margin-left:5px;border:0px;padding:2px;" state-level="true" expand-icon-inner="training" class="stateLevelTrainingInd" attr_program_id="'+result[i].id+'" attr_location="'+result[i].name+'"> <!--<i class="glyphicon glyphicon-fullscreen"></i>--></span></h5>';  
+		str+='<h5 class="text-capital m_top10">'+result[i].name+'<span style="background-color:#fff;margin-left:5px;border:0px;padding:2px;" state-level="true" expand-icon-inner="training" class="" attr_program_id="'+result[i].id+'" attr_location="'+result[i].name+'"> <!--<i class="glyphicon glyphicon-fullscreen"></i>--></span></h5>';  
 		if($(window).width() < 300)
 		{
 			str+='<div class="table-responsive">';
@@ -1278,7 +1278,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 	  str+='<ul class="list-inline slickPanelSliderTraining">';
 	  var rank=1; 
 	   for(var i in result){
-	str+='<li style="cursor:pointer;" class="activityMemberCls"  attr_selectedusertype="'+result[i].userType+'"  attr_id="userTypeWiseChildDtlsTabId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' style="width:380px !important;">';
+	str+='<li style="cursor:pointer;" class="activityMemberCls"  attr_selectedusertype="'+result[i].userType+'"  attr_id="userTypeWiseChildDtlsTabId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' style="width:400px !important;">';
 	     if(i==0){
 			str+='<div class="panel panel-default panelSlick panelActiveSlick">';
 		  }else{
@@ -1338,6 +1338,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 			 slidesToShow: 3,
 			 slidesToScroll: 3,
 			 infinite: false,
+			 variableWidth: true,
 			  responsive: [
 				{
 				  breakpoint: 1024,
@@ -1406,6 +1407,7 @@ $(document).on("click",".remveSlcUsrType",function(){
 		 $("#"+removeSelected).closest('.showHideTr').hide();
 	});
 $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function(){
+		$('tr.showHideTr').hide(); 
 	    $(this).next('tr.showHideTr').show(); 
 		var activityMemberId = $(this).attr("attr_activitymemberid");  
 		var userTypeId = $(this).attr("attr_usertypeid"); 
@@ -1528,7 +1530,7 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 			
 		 str+='</tr>';
 		str+='<tr class="showHideTr" style="display:none" attr_id = "subChildLevelMemDtslId'+result[i].userTypeId+''+i+'">';
-		str+='<td colspan="8"  id="subChildLevelMemDtslId'+result[i].userTypeId+''+i+'">';
+		str+='<td colspan="16"  id="subChildLevelMemDtslId'+result[i].userTypeId+''+i+'">';
 		str+='</td>';
 		 rank=rank+1;
 		 }
@@ -1617,10 +1619,10 @@ function buildTrainingProgramRslt(result){
 			  ]
 		}); 
 	if(result != null && result.length > 0){
-		var  jsonDataArrAttended=[];
-		var  jsonDataArrYettotrain=[];
+		
 		  for(var i in result){
-			
+			var  jsonDataArrAttended=[];
+			var  jsonDataArrYettotrain=[];
 			//jsonDataArr.push({name:"Total Eligible",data:[result[i].totalEligibleCountPer,result[i].totalEligibleCountPer]});
 			//jsonDataArrAttended.push({name:"Attended",data:[result[i].totalAttenedCountPer,0]});
 			jsonDataArrAttended.push(result[i].totalAttenedCountPer);
