@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.ILightMonitoringDAO;
 import com.itgrids.dao.ILightWattageDAO;
 import com.itgrids.dao.IWebserviceCallDetailsDAO;
+import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LedOverviewVo;
 import com.itgrids.dto.LightMonitoringVO;
 import com.itgrids.dto.LightWattageVO;
@@ -318,86 +320,82 @@ public class LightMonitoringService  implements ILightMonitoring{
 		}
 	       return listVO;
 	  }
-	 /*
- 	 * Date : 07/08/2017
- 	 * Author :Swapna
- 	 * @description : getDistrictLevelCount
- 	 */
+	
 	@Override
-	public List<LightMonitoringVO> getLevelWiseOverviewDetails(String fromDateStr, String toDateStr, String year,
-			List<Long> locationValues, Long locationTypeId, Long searchlevelId, List<Long> searchLevelValues) {
-		    List<LightMonitoringVO> finalList = new ArrayList<LightMonitoringVO>();
+	public List<LightMonitoringVO> getAllLevelWiseDataOverView(String locationType, String displayType,String filterType, Long locationId) {
+		List<Object[]> listOfLMCount =  null;
+		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>();
 		try{
-			Date fromDate = null;
-			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
-				fromDate = sdf.parse(fromDateStr);
-				toDate = sdf.parse(toDateStr);
-			}		
-			List<Object[]> listOfCount = lightMonitoringDAO.getAllDitrictWiseSurveyDetails(fromDate, toDate, year, locationValues, locationTypeId, searchlevelId, searchLevelValues);
-	        for (Object[] objects : listOfCount) {
-	        	  LightMonitoringVO vo=new LightMonitoringVO();
-	        	  vo.setTotalLights(objects[0]!=null?(Long)objects[0]:0l);
-	        	  vo.setTotalPanels(objects[1]!=null?(Long)objects[1]:0l);
-	        	  vo.setTotalPoles(objects[2]!=null?(Long)objects[2]:0l);
-	        	  vo.setWorkingLights(objects[3]!=null?(Long)objects[3]:0l);
-                  vo.setOnLights(objects[4]!=null?(Long)objects[4]:0l);	
-                  vo.setOffLights(objects[5]!=null?(Long)objects[5]:0l);
-                  vo.setDistrictId(objects[6]!=null?(Long)objects[6]:0l);
-                  vo.setDistrictName(objects[7]!=null?(String)objects[7]:"");
-                  vo.setConstituencyId(objects[8]!=null?(Long)objects[8]:0l);
-                  vo.setTehsilId(objects[9]!=null?(Long)objects[9]:0l);
-                  vo.setTehsilName(objects[10]!=null?(String)objects[10]:"");
-                  vo.setParliamentId(objects[11]!=null?(Long)objects[11]:0l);
-	        	  finalList.add(vo);	        	
-	        }
+		List<Object[]> listOfDisConManCount =lightMonitoringDAO. getLocationsForLEDDashboard(locationType, displayType, filterType, locationId);
+		 Map<Long, LightMonitoringVO>map=new LinkedHashMap<Long, LightMonitoringVO>();
+		 if(listOfDisConManCount!=null && listOfDisConManCount.size()>0 &&!listOfDisConManCount.isEmpty())
+			 for (Object[] objects : listOfDisConManCount) {
+				 LightMonitoringVO vo=new LightMonitoringVO();
+				 vo.setTotalMandals(objects[0]!=null?(Long)objects[0]:0l);
+                 vo.setTotalGps(objects[1]!=null?(Long)objects[1]:0l);           
+                        
+                 
+                 if(locationType.equalsIgnoreCase("district"))
+          		{	
+                	 vo.setDistrictId(objects[2]!=null?(Long)objects[2]:0l);
+                     vo.setDistrictName(objects[3]!=null?(String)objects[3]:"");
+                	 listOfLMCount=   lightMonitoringDAO.getLocationWiseDataForLEDDashboard(locationType,filterType,vo.getDistrictId()) ;	
+                	 map.put(vo.getDistrictId(), vo); 
+          		}
+          		else if(locationType.equalsIgnoreCase("parliament"))
+          		{
+          			vo.setParliamentId(objects[2]!=null?(Long)objects[2]:0l);
+                    vo.setParliamentName(objects[3]!=null?(String)objects[3]:"");
+        	        listOfLMCount =   lightMonitoringDAO.getLocationWiseDataForLEDDashboard(locationType,filterType,vo.getConstituencyId()) ;	
+        	        map.put(vo.getConstituencyId(), vo); 
+          		}	 
+          		else if(locationType.equalsIgnoreCase("constituency"))
+        		{
+          			 vo.setConstituencyId(objects[2]!=null?(Long)objects[2]:0l);
+                     vo.setConstituencyName(objects[3]!=null?(String)objects[3]:"");
+          			 listOfLMCount =   lightMonitoringDAO.getLocationWiseDataForLEDDashboard(locationType,filterType,vo.getConstituencyId()) ;	
+            	     map.put(vo.getConstituencyId(), vo); 	
+        		}
+          		else if(locationType.equalsIgnoreCase("mandal"))
+        		{ 
+          			 vo.setTehsilId(objects[2]!=null?(Long)objects[2]:0l);
+                     vo.setTehsilName(objects[3]!=null?(String)objects[3]:""); 
+          			 listOfLMCount =   lightMonitoringDAO.getLocationWiseDataForLEDDashboard(locationType,filterType,vo.getTehsilId()) ;	
+            	     map.put(vo.getTehsilId(), vo); 	
+        		}
+                 
+                 if(listOfLMCount!=null && listOfLMCount.size()>0 &&!listOfLMCount.isEmpty())
+                 {	 
+                	 for (Object[] params : listOfLMCount) 
+                	 {
+                		 Long locationIds = (Long) params[7];
+                		 
+                		 LightMonitoringVO lightVO = map.get(locationIds);
+                		 
+                		 if(lightVO != null)
+                		 {
+                		 lightVO.setTotalLights(params[0]!=null?(Long)params[0]:0l);
+                		 lightVO.setTotalPanels(params[1]!=null?(Long)params[1]:0l);
+                		 lightVO.setTotalPoles(params[2]!=null?(Long)params[2]:0l);
+                		 lightVO.setWorkingLights(params[3]!=null?(Long)params[3]:0l);
+                		 lightVO.setOnLights(params[4]!=null?(Long)params[4]:0l);	
+                		 lightVO.setOffLights(params[5]!=null?(Long)params[5]:0l); 
+                	    }						
+				    }                 
+                  } 			   
+                 }
+		 
+		 if(commonMethodsUtilService.isMapValid(map)){
+			 returnList.addAll(map.values());
+		 }
 		}catch (Exception e) {
-			LOG.error("Exception raised at getLedOverviewForStatedLocationsDetailsCounts - LightMonitoringService service", e);
+			LOG.error("Exception raised at getAllLevelWiseDataOverView - LightMonitoringService service", e);
 		}
-		return finalList; 	
+		return returnList;
+		
 	}
-
-	@Override
-	public List<LightMonitoringVO> getDistrictLevelWiseOverviewDetails(String fromDateStr, String toDateStr,
-			 List<Long> locationValues, Long locationTypeId) {
-		 List<LightMonitoringVO> finalList = new ArrayList<LightMonitoringVO>();
-			try{
-				Date fromDate = null;
-				Date toDate = null;
-				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
-					fromDate = sdf.parse(fromDateStr);
-					toDate = sdf.parse(toDateStr);
-				}		
-				List<Object[]> listOfCount = lightMonitoringDAO.getDistrictLevelWise(fromDate, toDate, locationValues, locationTypeId);
-		        for (Object[] objects : listOfCount) {
-		        	  LightMonitoringVO vo=new LightMonitoringVO();
-		        	  vo.setTotalLights(objects[0]!=null?(Long)objects[0]:0l);
-		        	  vo.setTotalPanels(objects[1]!=null?(Long)objects[1]:0l);
-		        	  vo.setTotalPoles(objects[2]!=null?(Long)objects[2]:0l);
-		        	  vo.setWorkingLights(objects[3]!=null?(Long)objects[3]:0l);
-	                  vo.setOnLights(objects[4]!=null?(Long)objects[4]:0l);	
-	                  vo.setOffLights(objects[5]!=null?(Long)objects[5]:0l);
-	                  vo.setDistrictId(objects[6]!=null?(Long)objects[6]:0l);
-	                  vo.setDistrictName(objects[7]!=null?(String)objects[7]:"");
-	                  vo.setTehsilId(objects[8]!=null?(Long)objects[8]:0l);
-	                  vo.setPanchayatId(objects[9]!=null?(Long)objects[9]:0l);
-	                  
-		        	  finalList.add(vo);	        	
-		        }
-			}catch (Exception e) {
-				LOG.error("Exception raised at getLedOverviewForStatedLocationsDetailsCounts - LightMonitoringService service", e);
-			}
-			return finalList;
-	}
-
-	@Override
-	public List<LightMonitoringVO> getDistrictLevelWiseOverviewDetails(String fromDateStr, String toDateStr,
-			String year, List<Long> locationValues, Long locationTypeId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
 }
 	
 	        	
