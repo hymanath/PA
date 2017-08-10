@@ -282,7 +282,7 @@ function projectData(divId,levelId)
 function tableView(result,divId)
 {
 	var tableView = '';
-	tableView+='<table class="table" id="districtTable">';
+	tableView+='<table class="table" id="'+divId+'Table">';
 		tableView+='<thead>';
 			tableView+='<tr>';
 				if(divId == 'district')
@@ -336,4 +336,26 @@ function tableView(result,divId)
 	tableView+='</table>';
 
 	$("#"+divId+"TableId").html(tableView);
+	$("#"+divId+"Table").dataTable({
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV',
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o"></i>',
+				titleAttr: 'PDF',
+				orientation: "landscape",
+				pageSize:'A3',
+				customize: function (doc) {
+					doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+				}
+			}
+		]
+	});
 }
