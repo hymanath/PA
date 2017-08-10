@@ -61,15 +61,12 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 	@Override
 	public List<Object[]> getTotalSurveyDetails(Date startDate, Date toDate) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(" SELECT COUNT(DISTINCT D.districtId)," + " COUNT(DISTINCT C.constituencyId),"
-				+ " COUNT(DISTINCT T.tehsilId)," + " COUNT(DISTINCT P.panchayatId) " + " FROM " + " LightMonitoring LM "
-				+ " LEFT OUTER JOIN Panchayat P on LM.panchayatId = P.panchayatId "
-				+ " LEFT OUTER JOIN LocationAddress LA on P.locationAddressId= LA.locationAddressId "
-				+ " LEFT OUTER JOIN Tehsil T on LA.tehsilId = T.tehsilId "
-				+ " LEFT OUTER JOIN District D on LA.districtId = D.districtId "
-				+ " LEFT OUTER JOIN Constituency C on LA.constituencyId =C.constituencyId ");
+		sb.append("SELECT COUNT(DISTINCT LM.panchayat.locationAddress.district.districtId),"
+				 + "COUNT(DISTINCT LM.panchayat.locationAddress.constituency.constituencyId),"
+				+ " COUNT(DISTINCT LM.panchayat.locationAddress.tehsil.tehsilId), "
+				+ "COUNT(DISTINCT LM.panchayat.panchayatId)  from  LightMonitoring  LM  ");
 
-		sb.append(" where D.districtId between 11 and 23 and LM.isDeleted = 'N' ");
+		sb.append(" where LM.panchayat.locationAddress.district.districtId  between 11 and 23 and LM.isDeleted = 'N' ");
 		if (startDate != null && toDate != null) {
 			sb.append(" and LM.surveyDate between :startDate and :toDate ");
 		}
@@ -274,45 +271,45 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		
 		if(locationType.equalsIgnoreCase("district"))
 		{
-			sb.append(",P.locationAddress.district.districtId, P.locationAddress.district.districtName ");
-			sbg.append(" GROUP BY P.locationAddress.district.districtId ORDER BY P.locationAddress.district.districtId ");
+			sb.append(",LM.panchayat.locationAddress.district.districtId, LM.panchayat.locationAddress.district.districtName ");
+			sbg.append(" GROUP BY LM.panchayat.locationAddress.district.districtId ORDER BY LM.panchayat.locationAddress.district.districtId ");
 		}
 		else if(locationType.equalsIgnoreCase("parliament"))
 		{
-			sb.append(",P.locationAddress.parliament.constituencyId, P.locationAddress.parliament.name ");
-			sbg.append(" GROUP BY P.locationAddress.parliament.constituencyId ORDER BY P.locationAddress.parliament.name ");
+			sb.append(",LM.panchayat.locationAddress.parliament.constituencyId, LM.panchayat.locationAddress.parliament.name ");
+			sbg.append(" GROUP BY LM.panchayat.locationAddress.parliament.constituencyId ORDER BY LM.panchayat.locationAddress.parliament.name ");
 		}
 		else if(locationType.equalsIgnoreCase("constituency"))
 		{
-			sb.append(",P.locationAddress.constituency.constituencyId, P.locationAddress.constituency.name ");
-			sbg.append(" GROUP BY P.locationAddress.constituency.constituencyId ORDER BY P.locationAddress.district.districtId,P.locationAddress.constituency.name ");
+			sb.append(",LM.panchayat.locationAddress.constituency.constituencyId, LM.panchayat.locationAddress.constituency.name ");
+			sbg.append(" GROUP BY LM.panchayat.locationAddress.constituency.constituencyId ORDER BY LM.panchayat.locationAddress.district.districtId,LM.panchayat.locationAddress.constituency.name ");
 		}
 		
 		else if(locationType.equalsIgnoreCase("mandal"))
 		{
-			sb.append(",P.locationAddress.tehsil.tehsilId, P.locationAddress.tehsil.tehsilName ");
-			sbg.append(" GROUP BY P.locationAddress.tehsil.tehsilId ORDER BY P.locationAddress.district.districtId,P.locationAddress.constituency.name,P.locationAddress.tehsil.tehsilName ");
+			sb.append(",LM.panchayat.locationAddress.tehsil.tehsilId, LM.panchayat.locationAddress.tehsil.tehsilName ");
+			sbg.append(" GROUP BY LM.panchayat.locationAddress.tehsil.tehsilId ORDER BY LM.panchayat.locationAddress.district.districtId,LM.panchayat.locationAddress.constituency.name,LM.panchayat.locationAddress.tehsil.tehsilName ");
 		}
 			
 		if(displayType != null && displayType.trim().length() > 0)
 		{
 			if(displayType.equalsIgnoreCase("district"))
-				sb.append(", P.locationAddress.district.districtId, P.locationAddress.district.districtName ");
+				sb.append(",LM.panchayat.locationAddress.district.districtId, LM.panchayat.locationAddress.district.districtName ");
 			else if(displayType.equalsIgnoreCase("parliament"))	
-				sb.append(", P.locationAddress.parliament.constituencyId, P.locationAddress.parliament.name ");
+				sb.append(", LM.panchayat.locationAddress.parliament.constituencyId,LM.panchayat.locationAddress.parliament.name ");
 		}
 		
-		sb.append(" FROM LightMonotoring LM WHERE LM.panchayat.locationAddress.state.stateId = 1 ");
+		sb.append(" FROM LightMonitoring LM WHERE LM.panchayat.locationAddress.state.stateId = 1 ");
 		
 		if(filterType != null && filterType.trim().length() > 0 && locationId != null && locationId.longValue() > 0)
 		{
 			filterFlag = true;
 			if(filterType.equalsIgnoreCase("district"))
-				sbc.append(" AND P.locationAddress.district.districtId = :locationId ");
+				sbc.append(" AND LM.panchayat.locationAddress.district.districtId = :locationId ");
 			else if(filterType.equalsIgnoreCase("parliament"))
-				sbc.append(" AND P.locationAddress.parliament.constituencyId = :locationId ");
+				sbc.append(" AND LM.panchayat.locationAddress.parliament.constituencyId = :locationId ");
 			else if(filterType.equalsIgnoreCase("constituency"))
-				sbc.append(" AND P.locationAddress.constituency.constituencyId = :locationId ");
+				sbc.append(" AND LM.panchayat.locationAddress.constituency.constituencyId = :locationId ");
 			
 		}
 		
@@ -357,7 +354,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			sbg.append(" GROUP BY LM.panchayat.locationAddress.tehsil.tehsilId ");
 		}
 		
-		sb.append(" FROM LightMonitoring LM WHERE LM.panchayat.locationAddress.state.stateId = 1 ");
+		sb.append(" FROM LightMonitoring LM  WHERE LM.panchayat.locationAddress.state.stateId = 1 ");
 		
 		if(filterType != null && filterType.trim().length() > 0 && locationId != null && locationId.longValue() > 0)
 		{
