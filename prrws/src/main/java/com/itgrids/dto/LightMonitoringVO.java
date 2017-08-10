@@ -29,6 +29,9 @@ public class LightMonitoringVO implements Serializable{
 	private String locationName;
 	private Long totalMandals;
 	private Long totalGps;
+	private String panchayatName;
+	private String parliamentName;
+	private String constituencyName;
 	
 	
 	private List<LightWattageVO> WattageList = new ArrayList<LightWattageVO>(0);
@@ -178,6 +181,25 @@ public class LightMonitoringVO implements Serializable{
 	}
 	public void setTotalGps(Long totalGps) {
 		this.totalGps = totalGps;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+	
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public String getParliamentName() {
+		return parliamentName;
+	}
+	public void setParliamentName(String parliamentName) {
+		this.parliamentName = parliamentName;
 	}
 	
 	
