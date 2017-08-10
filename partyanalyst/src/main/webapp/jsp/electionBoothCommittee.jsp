@@ -298,6 +298,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 		var isFirstCommityIdSettingValues = true;
 		var isFirstCadreRoleIdSettingValues = true;
 		var afflicatedCommIds=new Array();
+		var isAvailableOrNOt="true";
 		
 		 pancayatId = '${panchayatId}';
 		 commityTypeId = '${committeeTypeId}';
@@ -1548,6 +1549,7 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 			
 	}
 function gePanchayatOrBooth(){
+	$('#committeeDesigDivId1').show();
 	$("#cadreDetailsDiv1,#cadreSerialNoWiseId,#boothInchargeRoleDivId1").html('');
 	$("#cadreAvailableDetailsDivId").html('');
 	var num =$("#panchayatWardByMandal").val();
@@ -1851,10 +1853,13 @@ function getBoothInchargeRoles()
 			url : "getBoothInchargeRolesAction.action",
 			data : {task:JSON.stringify(jsObj)} 
 		}).done(function(result){
-			if(result != null){
+			if(result != null && result != 0){
+				isAvailableOrNOt="true";
 				for(var i in result){
 					$("#committeeDesignationId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				}
+			}else{
+				isAvailableOrNOt="false";
 			}
 		});
 	}
