@@ -368,18 +368,17 @@ public class LightMonitoringService  implements ILightMonitoring{
                  {	 
                 	 for (Object[] params : listOfLMCount) 
                 	 {
-                		 Long locationIds = (Long) params[7];
-                		 
-                		 LightMonitoringVO lightVO = map.get(locationIds);
-                		 
-                		 if(lightVO != null)
-                		 {
-                		 lightVO.setTotalLights(params[0]!=null?(Long)params[0]:0l);
-                		 lightVO.setTotalPanels(params[1]!=null?(Long)params[1]:0l);
-                		 lightVO.setTotalPoles(params[2]!=null?(Long)params[2]:0l);
-                		 lightVO.setWorkingLights(params[3]!=null?(Long)params[3]:0l);
-                		 lightVO.setOnLights(params[4]!=null?(Long)params[4]:0l);	
-                		 lightVO.setOffLights(params[5]!=null?(Long)params[5]:0l); 
+                		Long locationIds = (Long) params[8];                		 
+                		LightMonitoringVO lightVO = map.get(locationIds);                		
+                		if(lightVO != null)
+                		 {                			 
+                			lightVO.setTotalLights(params[0]!=null?(Long)params[0]:0l);
+                			lightVO.setTotalPanels(params[1]!=null?(Long)params[1]:0l);
+                			lightVO.setTotalPoles(params[2]!=null?(Long)params[2]:0l);
+                			lightVO.setWorkingLights(params[3]!=null?(Long)params[3]:0l);
+                			lightVO.setOnLights(params[4]!=null?(Long)params[4]:0l);	
+                			lightVO.setOffLights(params[5]!=null?(Long)params[5]:0l); 
+                			returnList.add(lightVO);
                 	    }						
 				    }                 
                   } 			   
