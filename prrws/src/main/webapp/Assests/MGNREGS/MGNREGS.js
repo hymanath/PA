@@ -1569,7 +1569,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Area[IN ACRES]','Pitting Area[In ACRES]','Planting Area[In ACRES]','Achivement Percentage'];
 			}else if(globalDivName == "Avenue"){
-				theadArr = [dataArr,'TARGET','Sanctioned Area[IN KMS]','Sanctioned Percentage','Pitting Area[In KMS]','Planting Area[In KMS]','Achivement Percentage'];
+				theadArr = [dataArr,'TARGET','Sanctioned Area[IN KMS]','Sanctioned Percentage','Pitting Area[In KMS]','Planting Area[In KMS]','Achivement Percentage','Sanctioned Percentage'];
 				if(dataArr == "constituency")
 					theadArr = ["district",dataArr,'Sanctioned Area[IN KMS]','Pitting Area[In KMS]','Planting Area[In KMS]','Achivement Percentage'];
 				else if(dataArr == "mandal")
@@ -1862,9 +1862,17 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td style="background-color:#FF0000">'+result.distList[i].pencentageOfPlanting+'</td>';
 										}else if(result.distList[i].pencentageOfPlanting >= 50 && result.distList[i].pencentageOfPlanting < 80){
 											str+='<td style="background-color:#FFBA00">'+result.distList[i].pencentageOfPlanting+'</td>';
-										}else if(result.distList[i].pencentageOfPlanting >= 80)
-										{
+										}else if(result.distList[i].pencentageOfPlanting >= 80){
 											str+='<td style="background-color:#00AF50">'+result.distList[i].pencentageOfPlanting+'</td>';
+										}
+										if(dataArr == "district"){
+											if(result.distList[i].sanctionedPerc < 50){
+												str+='<td style="background-color:#FF0000">'+result.distList[i].sanctionedPerc+'</td>';
+											}else if(result.distList[i].sanctionedPerc >= 50 && result.distList[i].sanctionedPerc < 80){
+												str+='<td style="background-color:#FFBA00">'+result.distList[i].sanctionedPerc+'</td>';
+											}else if(result.distList[i].sanctionedPerc >= 80){
+												str+='<td style="background-color:#00AF50">'+result.distList[i].sanctionedPerc+'</td>';
+											}
 										}
 										//str+='<td>'+result.distList[i].pencentageOfPlanting+'</td>';
 									str+='</tr>';
@@ -2749,7 +2757,11 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td>'+ajaxresp[i].totalExpenditure+'</td>';
 								//str+='<td>'+ajaxresp[i].percentage+'</td>';
 						}else{
-							str+='<td>'+ajaxresp[i].target+'</td>';
+							if(globalDivName == 'Mulbery')
+								str+='<td>'+ajaxresp[i].mulbTarget+'</td>';
+							else
+								str+='<td>'+ajaxresp[i].target+'</td>';
+							
 							if((globalDivName == 'Mulbery' || globalDivName == 'Silk Worms' || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
 								str+='<td>'+ajaxresp[i].sanctionedTarget+'</td>';
 								//str+='<td>'+ajaxresp[i].sanctionedPerventage+'</td>';
@@ -2761,17 +2773,24 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 							
 							str+='<td>'+ajaxresp[i].grounded+'</td>';
 							str+='<td>'+ajaxresp[i].notGrounded+'</td>';
-							str+='<td>'+ajaxresp[i].inProgress+'</td>';
-							str+='<td>'+ajaxresp[i].completed+'</td>';
-							if(ajaxresp[i].percentage < 50){
-								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
-							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
-								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
-							}else if(ajaxresp[i].percentage >= 80){
-								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
+							if(globalDivName == 'Mulbery')
+								str+='<td>'+ajaxresp[i].mulbInprogress+'</td>';
+							else
+								str+='<td>'+ajaxresp[i].inProgress+'</td>';
+							if(globalDivName == 'Mulbery')
+								str+='<td>'+ajaxresp[i].mulbCompleted+'</td>';
+							else
+								str+='<td>'+ajaxresp[i].completed+'</td>';
+							if((globalDivName == 'Mulbery'  || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
+								if(ajaxresp[i].sanctionedPerc < 50){
+									str+='<td style="background-color:#FF0000">'+ajaxresp[i].sanctionedPerc+'</td>';
+								}else if(ajaxresp[i].sanctionedPerc >= 50 && ajaxresp[i].sanctionedPerc < 80){
+									str+='<td style="background-color:#FFBA00">'+ajaxresp[i].sanctionedPerc+'</td>';
+								}else if(ajaxresp[i].sanctionedPerc >= 80){
+									str+='<td style="background-color:#00AF50">'+ajaxresp[i].sanctionedPerc+'</td>';
+								}
 							}
-							
-							if((globalDivName == 'Mulbery' || globalDivName == 'Silk Worms' || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
+							if((globalDivName == 'Silk Worms') && locationTypeNew == "state"){
 								if(ajaxresp[i].percSant < 50){
 									str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
 								}else if(ajaxresp[i].percSant >= 50 && ajaxresp[i].percSant < 80){
@@ -2780,6 +2799,15 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 									str+='<td style="background-color:#00AF50">'+ajaxresp[i].percSant+'</td>';
 								}
 							}
+							
+							if(ajaxresp[i].percentage < 50){
+								str+='<td style="background-color:#FF0000">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 50 && ajaxresp[i].percentage < 80){
+								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 80){
+								str+='<td style="background-color:#00AF50">'+ajaxresp[i].percentage+'</td>';
+							}
+							
 							if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms' || globalDivName == 'Anganwadi Buildings' || globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (locationTypeNew == "state" || locationTypeNew == "district")){
 								if(ajaxresp[i].percSant < 50){
 									str+='<td style="background-color:#FF0000">'+ajaxresp[i].percSant+'</td>';
@@ -3148,7 +3176,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 {
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
-	 var theadArr = [locationType,'Target','Sanctioned Area (in Kms)','Sanctioned Percentage','Pitting  Area (in Kms)','Planting  Area (in Kms)','Achievement Percentage'];
+	 var theadArr = [locationType,'Target','Sanctioned Area (in Kms)','Sanctioned Percentage','Pitting  Area (in Kms)','Planting  Area (in Kms)','Achievement Percentage','Sanctioned Percentage'];
 	if(locationType == "constituency")
 		theadArr = ["district",locationType,'Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Achievement Percentage'];
 	else if(locationType == "mandal")
@@ -3212,9 +3240,17 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 							str+='<td style="background-color:#FF0000">'+ajaxresp[i].pencentageOfPlanting+'</td>';
 						}else if(ajaxresp[i].pencentageOfPlanting >= 50 && ajaxresp[i].pencentageOfPlanting < 80){
 							str+='<td style="background-color:#FFBA00">'+ajaxresp[i].pencentageOfPlanting+'</td>';
-						}else if(ajaxresp[i].pencentageOfPlanting >= 80)
-						{
+						}else if(ajaxresp[i].pencentageOfPlanting >= 80){
 							str+='<td style="background-color:#00AF50">'+ajaxresp[i].pencentageOfPlanting+'</td>';
+						}
+						if(locationType == "state" || locationType == "district"){
+							if(ajaxresp[i].sanctionedPerc < 50){
+								str+='<td style="background-color:#FF0000">'+ajaxresp[i].sanctionedPerc+'</td>';
+							}else if(ajaxresp[i].sanctionedPerc >= 50 && ajaxresp[i].sanctionedPerc < 80){
+								str+='<td style="background-color:#FFBA00">'+ajaxresp[i].sanctionedPerc+'</td>';
+							}else if(ajaxresp[i].sanctionedPerc >= 80){
+								str+='<td style="background-color:#00AF50">'+ajaxresp[i].sanctionedPerc+'</td>';
+							}
 						}
 					str+='</tr>';
 				}

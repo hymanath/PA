@@ -118,6 +118,11 @@ public class NregsDataVO implements Serializable{
 	private String stroageCap;
 	private String balanceRunOff;
 	private String waterBudgtUploaded;
+	private String sanctionedPerc;
+	private String mulbTarget;
+	private String mulbCompleted;
+	private String mulbInprogress;
+	
 	
 	
 	public String getTargetPittingPerc() {
@@ -708,5 +713,28 @@ public class NregsDataVO implements Serializable{
 	public void setTargetPersonDays(String targetPersonDays) {
 		this.targetPersonDays = targetPersonDays;
 	}
-	
+	public String getSanctionedPerc() {
+		return sanctionedPerc;
+	}
+	public void setSanctionedPerc(String sanctionedPerc) {
+		this.sanctionedPerc = sanctionedPerc;
+	}
+	public String getMulbTarget() {
+		return mulbTarget;
+	}
+	public void setMulbTarget(String mulbTarget) {
+		this.mulbTarget = mulbTarget;
+	}
+	public String getMulbCompleted() {
+		return mulbCompleted;
+	}
+	public void setMulbCompleted(String mulbCompleted) {
+		this.mulbCompleted = mulbCompleted;
+	}
+	public String getMulbInprogress() {
+		return mulbInprogress;
+	}
+	public void setMulbInprogress(String mulbInprogress) {
+		this.mulbInprogress = mulbInprogress;
+	}
 }

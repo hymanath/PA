@@ -565,14 +565,24 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 	 	    				else{
-	 	    					vo.setTarget(jObj.getLong("TARGET"));
+	 	    					if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+	 	    						vo.setMulbTarget(jObj.getString("TARGET"));
+	 	    					else
+	 	    						vo.setTarget(jObj.getLong("TARGET"));
 		 	    				vo.setGrounded(jObj.getString("GROUNDED"));
 		 	    				if(jObj.getString("NOTGROUNDED").trim().contains("-"))
 		 	    					vo.setNotGrounded("0");
 		 	    				else
 		 	    					vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
-		 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
-		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+		 	    					vo.setMulbInprogress(jObj.getString("INPROGRESS"));
+	 	    					else
+	 	    						vo.setInProgress(jObj.getLong("INPROGRESS"));
+		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+		 	    					vo.setMulbCompleted(jObj.getString("COMPLETED"));
+	 	    					else
+	 	    						vo.setCompleted(jObj.getLong("COMPLETED"));
+		 	    				
 		 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
 		 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery")
 		 	    						|| inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Silk worms")
@@ -581,7 +591,24 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    							&& inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state")){
 		 	    					vo.setSanctionedTarget(jObj.getString("SANCTIONEDTARGET"));
 		 	    					vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
-		 	    					vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Double.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    					
+		 	    					if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+		 	    						vo.setPercSant(new BigDecimal(Double.valueOf(vo.getMulbCompleted())*100.00/Double.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    					else
+		 	    						vo.setPercSant(new BigDecimal(vo.getCompleted()*100.00/Double.valueOf(vo.getSanctionedTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    					
+		 	    					if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery")){
+		 	    						if(vo.getMulbCompleted() != null && Double.valueOf(vo.getMulbCompleted()) > 0 && vo.getMulbTarget() != null && Double.valueOf(vo.getMulbTarget()) > 0)
+			 	    						vo.setSanctionedPerc(new BigDecimal(Double.valueOf(vo.getMulbCompleted())*100.00/Double.valueOf(vo.getMulbTarget())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    					else
+			 	    						vo.setSanctionedPerc("0.00");
+		 	    					}else{
+		 	    						if(vo.getCompleted() != null && vo.getCompleted().longValue() > 0l && vo.getTarget() != null && vo.getTarget() > 0l)
+			 	    						vo.setSanctionedPerc(new BigDecimal(vo.getCompleted()*100.00/vo.getTarget()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    					else
+			 	    						vo.setSanctionedPerc("0.00");
+		 	    					}
+		 	    					
 		 	    				}
 		 	    				
 		 	    				if((inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Fish Ponds")
@@ -1022,6 +1049,13 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				vo.setPlantingKMS(jObj.getString("PLANTINGKMS"));
 			 	    				vo.setPencentageOfPlanting(jObj.getString("PERCENTAGEOFPLANTING"));
 			 	    				vo.setPercentage(jObj.getString("PERCENTAGEOFPLANTING"));
+			 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
+			 	    					if(vo.getPlantingKMS() != null && Double.valueOf(vo.getPlantingKMS()) > 0l && vo.getTargetKMS() != null && Double.valueOf(vo.getTargetKMS()) > 0l)
+			 	    						vo.setSanctionedPerc(new BigDecimal(Double.valueOf(vo.getPlantingKMS())*100.00/Double.valueOf(vo.getTargetKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    					else
+			 	    						vo.setSanctionedPerc("0.00");
+				 	    			}
+			 	    				
 			 	    				list.add(vo);
 			 	    			}
 			 	    		}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance")){
@@ -2102,10 +2136,16 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
 	 	    					vo.setTargetKMS(jObj.getString("TARGETKMS"));
 		 	    				vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
-	 	    				}
+		 	    			}
 	 	    				vo.setSanctionedKMS(jObj.getString("SANCTIONEDKMS"));
 	 	    				vo.setPittingKMS(jObj.getString("PITTINGKMS"));
 	 	    				vo.setPlantingKMS(jObj.getString("PLANTINGKMS"));
+	 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
+	 	    					if(vo.getPlantingKMS() != null && Double.valueOf(vo.getPlantingKMS()) > 0l && vo.getTargetKMS() != null && Double.valueOf(vo.getTargetKMS()) > 0l)
+	 	    						vo.setSanctionedPerc(new BigDecimal(Double.valueOf(vo.getPlantingKMS())*100.00/Double.valueOf(vo.getTargetKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    					else
+	 	    						vo.setSanctionedPerc("0.00");
+		 	    			}
 	 	    				vo.setPencentageOfPlanting(jObj.getString("PERCENTAGEOFPLANTING"));
 	 	    				voList.add(vo);
 	 	    			}
