@@ -39,6 +39,13 @@ function globalFunction()
 	$(window,document).on('resize', function(){
 		responsiveTabs();
 	});
+	$(document).("click","[refresh-type]",function(){
+		var blockName = $(this).("refresh-type");
+		if(blockName == "")
+		{
+			
+		}
+	});
 }
 function responsiveTabs()
 {

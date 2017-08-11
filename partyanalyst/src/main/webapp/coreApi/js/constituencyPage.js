@@ -3,37 +3,48 @@ var globalConsId = 232;
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalCasteColorObj = {"BC":"#867DC0","Minority":"#99CC67","SC":"#65A7E1","ST":"#7DC1C2","OC":"#E58D45"};
 var globalColorNews = {"Without Money":"#F36E8F","<10L":"#0C9516",">10L":"#8E4654","State Wide Issue":"#FE9900"};
+var globalFromDate = moment().subtract(1,'year').format("DD/MM/YYYY");
+var globalToDate = moment().format("DD/MM/YYYY");
 var propertyIdGlobalStr=[26,28,29,32];
+var stateId = $("#getMenuLocations").attr("menu-location-state");
+var districtId = $("#getMenuLocations").attr("menu-location-districts");
+var constituencyId = $("#getMenuLocations").attr("menu-location-constituencys");
+var mandalId = $("#getMenuLocations").attr("menu-location-mandals");
+var panchayatId = $("#getMenuLocations").attr("menu-location-panchayats");
+var locationLevelName = $("#getMenuLocations").attr("menu-location-levelName");
+var locationLevelId = $("#getMenuLocations").attr("menu-location-levelid");
+var publicationId = '22'
 var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	if(wurl.length == 3)
 		wurl = url.substr(0,(url.indexOf(".in")+3));
 	
+onLoadInitialisations();
 onLoadAjaxCalls();
-
-function onLoadAjaxCalls()
+function onLoadInitialisations()
 {
-	minimise('.right-nav-list li',5);
+	minimise('.right-nav-list li',8);
 	rightNav();
 	collapseClick();
 	responsiveTabs();
-	
 	//Menu Calls
 	menuCalls(2,'1','');
-	menuCalls(3,'01','');
-	menuCalls(4,'232','');
-	menuCalls(5,'248','232');
-	
-	//candidate Profiles 1st block
+	//menuCalls(3,'01','');
+	//menuCalls(4,'232','');
+	//menuCalls(5,'248','232');
+}
+function onLoadAjaxCalls()
+{
+	/* //candidate Profiles 1st block
 	getCandidateAndPartyInfoForConstituency();
 	//Second Block
 	getCountsForConstituency();
 	//Constituency Voter Information
 	getVotersAndcadreAgeWiseCount();
 	
-	//caste information
+	///caste information
 	getCasteGroupNAgeWiseVoterNCadreCounts("voter")
-	//getActivityStatusList();
+	getActivityStatusList();
 	
 	//cadre Information Block
 	getLocationTypeWiseCadreCount();
@@ -42,21 +53,60 @@ function onLoadAjaxCalls()
 	//News Block
 	getPrintMediaCountsForConstituencyPage()
 	getLeadersInNewsForConstituencyPage();
-	getActivityStatusList();
+	
 	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage("overAll")
 	for(var i in propertyIdGlobalStr){
 		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i])
 	}
+	
+	//Grievance And Insurance
+	getLocationWiseGrivanceTrustStatusCounts();
+	
+	// Nominated Posts
+	getPositionWiseMemberCount();
+	getNominatedPostApplicationDetails();
+	getNominatedPostStatusWiseCount();
+	
+	//Meetings
+	getLocationWiseMeetingsCount();
+	
+	//Tours 
+	getLocationWiseTourMembersComplainceDtls();
+	 
+	//Committee
+	getLocationWiseCommitteesCount();
+	*/
+	
+	// Benefits
+	getGovtSchemeWiseBenefitMembersCount();
 }
-$(document).on("click","[menu-click]",function()
-{
+$(document).on("click","[menu-click]",function(){
 	var levelId = $(this).attr("levelId");
 	var locationId = $(this).attr("menu-click");
 	var levelName = $(this).attr("menu-levelname");
 	$("[menu-name="+levelName+"]").html($(this).html());
 	$("[levelId="+levelId+"],[menu-name]").removeClass("active");
 	$(this).addClass("active");
+	$("[menu-name="+levelName+"]").closest("li").show();
 	$("[menu-name="+levelName+"]").addClass("active");
+	$("#getMenuLocations").attr("menu-location-"+levelName+"",locationId);
+	$("#getMenuLocations").attr("menu-location-levelId",((levelId)-(1)));
+	$("#getMenuLocations").attr("menu-location-levelName",levelName);
+	locationLevelId = ((levelId)-(1));
+	locationLevelName = levelName;
+	if(levelId == 3)
+	{
+		districtId = locationId
+	}else if(levelId == 4)
+	{
+		constituencyId = locationId
+	}else if(levelId == 5)
+	{
+		mandalId = locationId
+	}else if(levelId == 6)
+	{
+		panchayatId = locationId
+	}
 	if(levelId != '5' || levelId != 5)
 	{
 		menuCalls(levelId,locationId,'')
@@ -77,6 +127,56 @@ $(document).on("click",function(e){
 	$(".menu-dropdown").hide();
 	$("[menu-name]").removeClass("active");
 });
+function highChartsDonut(id,data,legend,title,height)
+{
+	$('#'+id).highcharts({
+		chart: {
+			height: height,
+            type: 'pie',
+			backgroundColor: 'transparent',
+            options3d: {
+                enabled: false,
+                alpha: 45
+            }
+        },	
+		title: {
+			text: title
+		},
+		subtitle: {
+			text: ''
+		},
+		plotOptions: {	
+			pie: {
+                innerSize: 40,
+                depth: 50,
+				showInLegend: legend,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+		},
+		legend: {
+			itemStyle: {
+				fontWeight: 'normal',
+				'font-family':'roboto',
+				'font-size':'16px'
+            },
+			enabled: true,
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+			useHTML: true,
+			
+			labelFormatter: function() {
+				return '<span style="color:'+this.color+'">'+this.name + '-' + this.y + '';
+			}
+		},
+		series:[{
+            name : 'Count',
+            data: data
+        }]
+	});
+}
 function menuCalls(levelId,levelValue,higherLevelVal)
 {
 	if(levelId == '2')
@@ -147,14 +247,15 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 				{
 					if(levelId != '6' || levelId != 6)
 					{
-						if(i == 0)
+						/* if(i == 0)
 						{
 							menu+='<li menu-click="'+result[i].locationId+'" menu-levelname="'+divId+'" class="active" levelId="'+levelId+'">'+result[i].locationName+'</li>';
 						}else{
 							menu+='<li menu-click="'+result[i].locationId+'" menu-levelname="'+divId+'" levelId="'+levelId+'">'+result[i].locationName+'</li>';
-						}
+						} */
+						menu+='<li menu-click="'+result[i].locationId+'" menu-levelname="'+divId+'" levelId="'+levelId+'" class="text-capitalize">'+result[i].locationName+'</li>';
 					}else{
-						menu+='<li constituencyId="'+$("#constituencysMenu li.active").attr("menu-click")+'" menu-levelname="'+divId+'" menu-click="'+result[i].locationId+'" levelId="'+levelId+'">'+result[i].locationName+'</li>';
+						menu+='<li constituencyId="'+$("#constituencysMenu li.active").attr("menu-click")+'" class="text-capitalize" menu-levelname="'+divId+'" menu-click="'+result[i].locationId+'" levelId="'+levelId+'">'+result[i].locationName+'</li>';
 					}
 				}
 			menu+='</ul>';
@@ -167,6 +268,7 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 	}
 	
 }
+
 function subStr(name,noOfChar){
 	ellipsetext=".."
 	var showChar = noOfChar;
@@ -271,7 +373,7 @@ $(document).on("change","[role='tabListMobile']",function(){
 function getCandidateAndPartyInfoForConstituency(){
 	$("#mlaSpinnerId,#mpSpinnerId").html(spinner);
 	var jsObj={
-    	constituencyId: 232
+    	constituencyId: constituencyId
     }
     $.ajax({
       type : "GET",
@@ -333,16 +435,15 @@ function buildCandidateAndPartyInfoForConstituency(result){
 function getCountsForConstituency(){
 	$("#levelWiseCountDivId").html(spinner);
 	var tehsilId=0;
-	var publicationDateId = 22;
 	var type = 'constituency';
 	id = 232;
 	var jsObj=
 	{
 		tehsilId:tehsilId,
-		type:type,	
+		type:locationLevelName,	
 		id:id,
-		publicationDateId:publicationDateId,
-		constituencyId:232,
+		publicationDateId:publicationId,
+		constituencyId:constituencyId,
 		task:"getCountForLevel"
 	}
 	$.ajax({
@@ -427,8 +528,8 @@ function buildCountsForConstituency(results){
 function getVotersAndcadreAgeWiseCount(){
 	$("#constituencyVoterInfo").html(spinner);
     jsObj={
-    	constituencyId:232,
-    	publicationDateId:22
+    	constituencyId:constituencyId,
+    	publicationDateId:publicationId
     }
     $.ajax({
       type : "GET",
@@ -574,8 +675,8 @@ var globalCasteWiseResult="";
 function getCasteGroupNAgeWiseVoterNCadreCounts(groupType){
 	$("#leftSideCasteGroupWiseDivId,#casteGroupVoters,#rightSideCasreGroupDtsDivId").html(spinner);
 	jsObj={
-		constituencyId:232,
-    	publicationDateId:22
+		constituencyId:constituencyId,
+    	publicationDateId:publicationId
     }
 	 $.ajax({
       type : "GET",
@@ -595,7 +696,7 @@ function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName){
 	jsObj={
 		casteGroupId:casteGroupId,
 		casteId:casteId,
-		constituencyId:232,
+		constituencyId:constituencyId,
     	publicationDateId:22
     }
 	 $.ajax({
@@ -891,10 +992,8 @@ function buildCasteGroupDetailsViewBlock(result){
 								str+='<td>'+result[i].locationVotersVOList[j].femaleCadres+' <small class="text-success">'+result[i].locationVotersVOList[j].femaleCadrePerc+'</small></td>';
 							str+='</tr>';
 							str+='<tr class="td-expand-body" collapseBodyId="td-expand-'+result[i].locationVotersVOList[j].ageRangeId+'">';
-							str+='<td colspan="8" class="top-arrow" id="expandCaste'+result[i].locationVotersVOList[j].ageRangeId+'"></td></tr>';
+							str+='<td colspan="7" class="top-arrow" id="expandCaste'+result[i].locationVotersVOList[j].ageRangeId+'"></td></tr>';
 						}
-							
-							
 						str+='</tbody>';
 					str+='</table>';
 				str+='</div>';
@@ -914,7 +1013,18 @@ function buildCasteGroupDetailsViewBlock(result){
 }
 
 $(document).on("click","#getLocationDetails",function(){	
+	var name = '';
+	if(locationLevelId == 2)
+	{
+		name = $("#districtsMenu").find("li.active").html();
+		$("#selectedMenuName").html(name+' '+locationLevelName);
+	}else if(locationLevelId == 3)
+	{
+		name = $("#constituencysMenu").find("li.active").html();
+		$("#selectedMenuName").html(name+' '+locationLevelName);
+	}
 	
+	onLoadAjaxCalls();
 });
 $(document).on("click","[refresh]",function(){	
 	var blockName = $(this).attr("refresh");
@@ -935,6 +1045,23 @@ $(document).on("click","[refresh]",function(){
 		for(var i in propertyIdGlobalStr){
 			getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i])
 		}
+	}else if(blockName == 'grievance')
+	{
+		getLocationWiseGrivanceTrustStatusCounts();
+	}else if(blockName == 'meetings')
+	{
+		getLocationWiseMeetingsCount();
+	}else if(blockName == 'tours')
+	{
+		getLocationWiseTourMembersComplainceDtls();
+	}else if(blockName == 'committees')
+	{
+		getLocationWiseCommitteesCount();
+	}else if(blockName == 'nominatedPosts')
+	{
+		getPositionWiseMemberCount();
+		getNominatedPostApplicationDetails();
+		getNominatedPostStatusWiseCount();
 	}
 });
 $(document).on("click","[role='casteGrouplist'] li",function(){	
@@ -970,12 +1097,27 @@ $(document).on("click",".expandCasteIconCls",function(){
 
 function getActivityStatusList(){
 	$("#activitesId").html(spinner);
+	var locationLevelValArr = []
+	if(locationLevelId == '2')
+	{
+		locationLevelValArr.push(districtId)
+	}else if(locationLevelId == '3')
+	{
+		locationLevelValArr.push(constituencyId)
+	}else if(locationLevelId == '4')
+	{
+		locationLevelValArr.push(mandalId)
+	}else if(locationLevelId == '4')
+	{
+		locationLevelValArr.push(panchayatId)
+	}
+	
 	var jsObj={
-			"fromDate" : "",
-			"toDate":"",
+			"fromDate" : globalFromDate,
+			"toDate": globalToDate,
 			"year":"",
-			"locationValues" : [12],
-			"locationId" : 3
+			"locationValues" : locationLevelValArr,
+			"locationId" : locationLevelId
 		}
 	 $.ajax({
       type : "POST",
@@ -1014,9 +1156,11 @@ function getActivityStatusList(){
 }
 function getLocationTypeWiseCadreCount(){
 	$("#cadreInfoGraphDivId").html(spinner);	
+	var locationValuesArr = [];
+	locationValuesArr.push(constituencyId);
 	jsObj={
 		locationTypeId:4,
-		locationValuesArr:[232],
+		locationValuesArr:locationValuesArr,
 		year:""
 	}
 	 $.ajax({
@@ -1306,10 +1450,23 @@ function buildAgeRangeGenerAndCasteGroupByCadreCount(result,yearId){
 }
 function getPrintMediaCountsForConstituencyPage(){
 	$("#newsMainBlockDivId").html(spinner);
-	var userAccessLevelValuesArray=[232];
-	var userAccessLevelId=5;
+	if(locationLevelId == '2')
+	{
+		userAccessLevelValuesArray.push(districtId)
+	}else if(locationLevelId == '3')
+	{
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '4')
+	{
+		userAccessLevelValuesArray.push(mandalId)
+	}else if(locationLevelId == '4')
+	{
+		userAccessLevelValuesArray.push(panchayatId)
+	}
+	var userAccessLevelValuesArray=[];
+	var userAccessLevelId=locationLevelId;
 	var state="ap";
-	var startDate="18-03-2015",endDate="18-03-2017";
+	var startDate=globalFromDate,endDate=globalToDate;
     var newsPaperIdsStr=[1,2,3,10,11,12];
     var impactScopeIdsStr=[1,2,3,4,5,6,8];
     var benefitIdsStr=[1,2];
@@ -1407,192 +1564,35 @@ function buildPrintMediaCountsForConstituencyPage(result){
 }
 
 function getLeadersInNewsForConstituencyPage(){
-	var userAccessLevelValuesArray=[232];
-	var userAccessLevelId=5;
-	var stateId=1;
-	var startDate="18-03-2015",endDate="18-03-2017";
+	if(locationLevelId == '2')
+	{
+		userAccessLevelValuesArray.push(districtId)
+	}else if(locationLevelId == '3')
+	{
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '4')
+	{
+		userAccessLevelValuesArray.push(mandalId)
+	}else if(locationLevelId == '4')
+	{
+		userAccessLevelValuesArray.push(panchayatId)
+	}
+	var userAccessLevelValuesArray=[];
+	var userAccessLevelId=locationLevelId;
+	var stateId=stateId;
+	var startDate=globalFromDate,endDate=globalToDate;
 	$.ajax({
 		//url: wurl+"/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+state
 		url: "http://localhost:8080/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+stateId
 		
 	}).then(function(result){
-		buildLeadersInNewsForConstituencyPage(result)
-	});
-}	
-function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
-	$("#overAllAnalysisProbDivId").html(spinner);
-	var userAccessLevelValuesArray=232;
-	var userAccessLevelId=5;
-	var state="ap";
-	var startDate="18-03-2016",endDate="18-03-2017";
-	var npIdsStr=" ";
-	
-	var propertyIdStr=" ";
-	if(typeValue != "overAll"){
-		propertyIdStr=typeValue;
-	}
-	var impactScopeIdsStr=[1,2];
-	var orgIdsStr="";
-	var isDept="N";
-	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
-		
-	}).then(function(result){
 		if(result !=null && result.length>0){
-			buildDetailedGovtOverAllAnalysisProblemsForView(result,typeValue);
+			return buildLeadersInNewsForConstituencyPage(result)
+		}else{
+			$("#leadersMainBlockDivId").html("NO DATA");
 		}
 	});
-}
-
-
-function buildDetailedGovtOverAllAnalysisProblemsForView(result,typeValue){
-	if(typeValue == "overAll"){
-		if(result !=null && result.length>0){
-			var str='';
-			str+='<div class="row">';
-				str+='<div class="col-md-6 col-xs-12 col-sm-12">';
-					str+='<table class="table table-noborder f-12">';
-						str+='<thead class="bg-E9 text-capitalize">';
-							str+='<th>status</th>';
-							str+='<th>total</th>';
-							str+='<th>%</th>';
-						str+='</thead>';
-						str+='<tbody>';
-						for(var i in result){
-							str+='<tr>';
-								str+='<td><p><span class="overAllProbClr" style="background-color:'+globalColorNews[result[i].name]+'"></span>&nbsp;&nbsp;&nbsp; <span style="margin-left: 10px;">'+result[i].name+'</span></p></td>';
-								str+='<td>'+result[i].count+'</td>';
-								str+='<td>'+result[i].positivePerc+' %</td>';
-							str+='</tr>';
-						}
-							
-						str+='</tbody>';
-					
-					str+='</table>';
-				
-				str+='</div>';
-				str+='<div class="col-md-6 col-xs-12 col-sm-12 text-center">';
-					str+='<div id="problemsDetailedGraph" style="height:200px;"></div>';
-				str+='</div>';
-			str+='</div>';
-			
-			str+='<div class="panel-group m_top10" id="problemsCollapse" role="tablist" aria-multiselectable="true">';
-			for(var i in result){
-				str+='<div class="panel panel-default">';
-					str+='<div class="panel-heading bg-fff" role="tab" id="heading'+i+'">';
-					if(i == 0){
-						str+='<a role="button"  data-toggle="collapse" class="collapseIcon" data-parent="#problemsCollapse" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
-							str+='<h4 class="panel-title text-capital"><b>Probem Can be Solved'+result[i].name+'</b></h4>';
-						str+='</a>';
-					}else{
-						str+='<a role="button" class = "collapsed collapseIcon" data-toggle="collapse"  data-parent="#problemsCollapse" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
-							str+='<h4 class="panel-title text-capital"><b>Probem Can be Solved '+result[i].name+'</b></h4>';
-						str+='</a>';
-					}
-						
-						
-					str+='</div>';
-				
-					if(i == 0){
-						str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
-					}else{
-						str+='<div id="collapse'+i+'" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading'+i+'">';
-					}
-					
-						str+='<div class="panel-body">';
-							str+='<div class="row">';
-								str+='<div class="col-sm-12">';
-									str+='<div id="problemsContsDivId'+result[i].id+'"></div>';
-								str+='</div>';
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-				 str+=' </div>';
-			}
-				  
-				 
-			str+='</div>';
-				
-			$("#overAllAnalysisProbDivId").html(str);
-			
-			var overAllAnalysisMainArr=[];
-			for(var i in result){
-				var name = result[i].name;
-				var Perc=result[i].positivePerc;
-				
-				var colorsId = globalColorNews[result[i].name.trim()];
-				
-				var obj = {
-					name: name,
-					y:Perc,
-					color:colorsId
-				}
-				overAllAnalysisMainArr.push(obj);
-			}
-			var id = 'problemsDetailedGraph';
-			var type = {
-				type: 'pie',
-				backgroundColor:'transparent',
-				options3d: {
-					enabled: true,
-					alpha: 25
-				}
-			};
-			var title = {
-				text: ''
-			};
-			var tooltip={};
-			var plotOptions ={ 
-				pie: {
-					innerSize: 110,
-					depth: 80,
-					dataLabels:{
-						useHTML: true,
-						enabled: false,
-						  formatter: function() {
-								if (this.y === 0) {
-									return null;
-								} else {
-									return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
-								}
-							} 
-					},
-					showInLegend: false
-				},
-			};
-			var data = [{
-				name: '',
-				data: overAllAnalysisMainArr
-			}];
-				
-			highcharts(id,type,data,plotOptions,title,tooltip);
-		}
-	}else{
-		var collapse='';
-		collapse+='<table class="table table-noborder f-12">';
-			for(var i in result){
-				collapse+='<tr>';
-					collapse+='<td><p><span class="overAllProbClr" style="background-color:'+globalColorNews[result[i].name]+'"></span>&nbsp;&nbsp;&nbsp; <span style="margin-left: 10px;">'+result[i].name+'</span></p></td>';
-					collapse+='<td>'+result[i].count+'</td>';
-				collapse+='</tr>';
-			}
-		collapse+='</table>';
-		
-		if(typeValue == 28){
-			$("#problemsContsDivId"+typeValue).html(collapse);
-        }else if(typeValue == 29){
-			$("#problemsContsDivId"+typeValue).html(collapse);
-        }else if(typeValue == 32){
-			$("#problemsContsDivId"+typeValue).html(collapse);
-        }else if(typeValue == 26){
-			$("#problemsContsDivId"+typeValue).html(collapse);
-        }
-	}
-}
-
-function  buildLeadersInNewsForConstituencyPage(result){
-	if(result !=null && result.length>0){
+	function buildLeadersInNewsForConstituencyPage(result){
 		var str='';
 		str+='<div class="panel panel-default">';
 			str+='<div class="panel-heading bg-fff">';
@@ -1617,11 +1617,912 @@ function  buildLeadersInNewsForConstituencyPage(result){
 							str+='<td class="text-center">'+result[i].negativeCount+'</td>';
 						str+='</tr>';
 					}
-            
+			
 					str+='</tbody>';
 				str+='</table>';
 			str+='</div>';
 		str+='</div>';
 		$("#leadersMainBlockDivId").html(str);
+	}
+}	
+function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
+	$("#overAllAnalysisProbDivId").html(spinner);
+	if(locationLevelId == '2')
+	{
+		userAccessLevelValuesArray.push(districtId)
+	}else if(locationLevelId == '3')
+	{
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '4')
+	{
+		userAccessLevelValuesArray.push(mandalId)
+	}else if(locationLevelId == '4')
+	{
+		userAccessLevelValuesArray.push(panchayatId)
+	}
+	var userAccessLevelValuesArray='';
+	var userAccessLevelId=locationLevelId;
+	var state="ap";
+	var startDate=globalFromDate,endDate=globalToDate;
+	var npIdsStr=" ";
+	
+	var propertyIdStr=" ";
+	if(typeValue != "overAll"){
+		propertyIdStr=typeValue;
+	}
+	var impactScopeIdsStr=[1,2];
+	var orgIdsStr="";
+	var isDept="N";
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
+		
+	}).then(function(result){
+		if(result !=null && result.length>0){
+			buildDetailedGovtOverAllAnalysisProblemsForView(result,typeValue);
+		}
+	});
+	function buildDetailedGovtOverAllAnalysisProblemsForView(result,typeValue){
+		if(typeValue == "overAll"){
+			if(result !=null && result.length>0){
+				var str='';
+				str+='<div class="row">';
+					str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+						str+='<table class="table table-noborder f-12">';
+							str+='<thead class="bg-E9 text-capitalize">';
+								str+='<th>status</th>';
+								str+='<th>total</th>';
+								str+='<th>%</th>';
+							str+='</thead>';
+							str+='<tbody>';
+							for(var i in result){
+								str+='<tr>';
+									str+='<td><p><span class="overAllProbClr" style="background-color:'+globalColorNews[result[i].name]+'"></span>&nbsp;&nbsp;&nbsp; <span style="margin-left: 10px;">'+result[i].name+'</span></p></td>';
+									str+='<td>'+result[i].count+'</td>';
+									str+='<td>'+result[i].positivePerc+' %</td>';
+								str+='</tr>';
+							}
+								
+							str+='</tbody>';
+						
+						str+='</table>';
+					
+					str+='</div>';
+					str+='<div class="col-md-6 col-xs-12 col-sm-12 text-center">';
+						str+='<div id="problemsDetailedGraph" style="height:200px;"></div>';
+					str+='</div>';
+				str+='</div>';
+				
+				str+='<div class="panel-group m_top10" id="problemsCollapse" role="tablist" aria-multiselectable="true">';
+				for(var i in result){
+					str+='<div class="panel panel-default">';
+						str+='<div class="panel-heading bg-fff" role="tab" id="heading'+i+'">';
+						if(i == 0){
+							str+='<a role="button"  data-toggle="collapse" class="collapseIcon" data-parent="#problemsCollapse" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+								str+='<h4 class="panel-title text-capital"><b>Probem Can be Solved'+result[i].name+'</b></h4>';
+							str+='</a>';
+						}else{
+							str+='<a role="button" class = "collapsed collapseIcon" data-toggle="collapse"  data-parent="#problemsCollapse" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+								str+='<h4 class="panel-title text-capital"><b>Probem Can be Solved '+result[i].name+'</b></h4>';
+							str+='</a>';
+						}
+							
+							
+						str+='</div>';
+					
+						if(i == 0){
+							str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+						}else{
+							str+='<div id="collapse'+i+'" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading'+i+'">';
+						}
+						
+							str+='<div class="panel-body">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-12">';
+										str+='<div id="problemsContsDivId'+result[i].id+'"></div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					 str+=' </div>';
+				}
+					  
+					 
+				str+='</div>';
+					
+				$("#overAllAnalysisProbDivId").html(str);
+				
+				var overAllAnalysisMainArr=[];
+				for(var i in result){
+					var name = result[i].name;
+					var Perc=result[i].positivePerc;
+					
+					var colorsId = globalColorNews[result[i].name.trim()];
+					
+					var obj = {
+						name: name,
+						y:Perc,
+						color:colorsId
+					}
+					overAllAnalysisMainArr.push(obj);
+				}
+				var id = 'problemsDetailedGraph';
+				var type = {
+					type: 'pie',
+					backgroundColor:'transparent',
+					options3d: {
+						enabled: true,
+						alpha: 25
+					}
+				};
+				var title = {
+					text: ''
+				};
+				var tooltip={};
+				var plotOptions ={ 
+					pie: {
+						innerSize: 110,
+						depth: 80,
+						dataLabels:{
+							useHTML: true,
+							enabled: false,
+							  formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+									}
+								} 
+						},
+						showInLegend: false
+					},
+				};
+				var data = [{
+					name: '',
+					data: overAllAnalysisMainArr
+				}];
+					
+				highcharts(id,type,data,plotOptions,title,tooltip);
+			}else{
+				$("#overAllAnalysisProbDivId").html("NO DATA");
+			}
+		}else{
+			var collapse='';
+			if(result !=null && result.length>0){
+				collapse+='<table class="table table-noborder f-12">';
+					for(var i in result){
+						collapse+='<tr>';
+							collapse+='<td><p><span class="overAllProbClr" style="background-color:'+globalColorNews[result[i].name]+'"></span>&nbsp;&nbsp;&nbsp; <span style="margin-left: 10px;">'+result[i].name+'</span></p></td>';
+							collapse+='<td>'+result[i].count+'</td>';
+						collapse+='</tr>';
+					}
+				collapse+='</table>';
+				if(typeValue == 28){
+					$("#problemsContsDivId"+typeValue).html(collapse);
+				}else if(typeValue == 29){
+					$("#problemsContsDivId"+typeValue).html(collapse);
+				}else if(typeValue == 32){
+					$("#problemsContsDivId"+typeValue).html(collapse);
+				}else if(typeValue == 26){
+					$("#problemsContsDivId"+typeValue).html(collapse);
+				}
+			}else{
+				if(typeValue == 28){
+					$("#problemsContsDivId"+typeValue).html("NO DATA");
+				}else if(typeValue == 29){
+					$("#problemsContsDivId"+typeValue).html("NO DATA");
+				}else if(typeValue == 32){
+					$("#problemsContsDivId"+typeValue).html("NO DATA");
+				}else if(typeValue == 26){
+					$("#problemsContsDivId"+typeValue).html("NO DATA");
+				}
+			}
+			
+		}
+	}
+}
+function getLocationWiseGrivanceTrustStatusCounts(){
+	$("#grivanceId,#trustId").html(spinner);
+	var locationValuesArr = [];
+	if(locationLevelId == '2')
+	{
+		locationValuesArr.push(districtId)
+	}else if(locationLevelId == '3')
+	{
+		locationValuesArr.push(constituencyId)
+	}else if(locationLevelId == '4')
+	{
+		locationValuesArr.push(mandalId)
+	}else if(locationLevelId == '4')
+	{
+		locationValuesArr.push(panchayatId)
+	}
+	var jsObj={
+			"fromDate" : globalFromDate,
+			"toDate":globalToDate,
+			"locationTypeId" : locationLevelId,
+			"locationValuesArr" :locationValuesArr,
+			"year":""
+		}
+	$.ajax({
+		type : "POST",
+		url : "getLocationWiseGrivanceTrustStatusCountsAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result!=null && result.length>0){
+			return buildGraph(result);
+		}else{
+			$("#grivanceId,#trustId").html("NO DATA");
+		}
+	});	
+	function buildGraph(result)
+	{
+		var grievance = [];
+		var trust = [];
+		var depth = 60;
+		var grivanceId  = 'grivanceId';
+		var trustId = 'trustId';
+	
+		for(var i in result)
+		{
+			for(var j in result[i].subList)
+			{
+				var subObj = '';
+				if(result[i].grivenceType == 'Grivence')
+				{
+					Obj = {"name":result[i].subList[j].name,"y":result[i].subList[j].count}
+					grievance.push(Obj);
+				}else if(result[i].grivenceType == 'NTR Trust'){
+					Obj = {"name":result[i].subList[j].name,"y":result[i].subList[j].count}
+					trust.push(Obj);
+				}
+			}			
+		}
+		highChartsDonut(grivanceId,grievance,true,'Grievance',250)
+		highChartsDonut(trustId,trust,true,'Trust Education',250)
+	
+	}
+}
+function getPositionWiseMemberCount(){
+	$("#positionsWiseMemberCount").html(spinner);
+		var locationValuesArr = [];
+	if(locationLevelId == '2')
+	{
+		locationValuesArr.push(districtId)
+	}else if(locationLevelId == '3')
+	{
+		locationValuesArr.push(constituencyId)
+	}else if(locationLevelId == '4')
+	{
+		locationValuesArr.push(mandalId)
+	}else if(locationLevelId == '4')
+	{
+		locationValuesArr.push(panchayatId)
+	}
+	var jsObj={
+			"fromDateStr" : globalFromDate,
+			"toDateStr":globalToDate,
+			"locationValuesArr":locationValuesArr,
+			"locationTypeId":locationLevelId,
+			"year":""
+		}
+	$.ajax({
+		type : "POST",
+		url : "getPositionWiseMemberCountAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result!=null && result.length>0){
+			return build(result);
+		}else{
+			$("#positionsWiseMemberCount").html("NO DATA");
+		}
+		function build(result)
+		{
+			var str='';
+			str+='<ul class="list-border">';
+			for(var i in result){
+				str+='<li>';
+					str+='<h3>'+result[i].count+'</h3>';
+					str+='<p class="text-capitalize">'+result[i].name+'</p>';
+				str+='</li>';
+			}
+			str+='</ul>';
+			$("#positionsWiseMemberCount").html(str);
+		}
+	});	
+}
+function getNominatedPostApplicationDetails(){
+	$("#nominatedPostApplicationDetails").html(spinner);
+	var locationValuesArr = [];
+	if(locationLevelId == '2')
+	{
+		locationValuesArr.push(districtId)
+	}else if(locationLevelId == '3')
+	{
+		locationValuesArr.push(constituencyId)
+	}else if(locationLevelId == '4')
+	{
+		locationValuesArr.push(mandalId)
+	}else if(locationLevelId == '4')
+	{
+		locationValuesArr.push(panchayatId)
+	}
+	var jsObj={
+			"year":"",
+			"fromDateStr" :globalFromDate,
+			"toDateStr":globalToDate,
+			"locationTypeId":locationLevelId,
+			"locationValues":locationValuesArr
+		}
+	$.ajax({
+		type : "POST",
+		url : "getNominatedPostApplicationStatusWiseCountAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result!=null && result.length>0){
+			return buildGraph(result);
+		}else{
+			$("#nominatedPostApplicationDetails").html("NO DATA");
+		}
+		function buildGraph(result)
+		{
+			var mainArr = [];
+			for(var i in result){
+				var subArr = [];
+				var name = "",
+				name = result[i].name;
+				subArr={name:result[i].name,y:parseInt(result[i].count)};
+				mainArr.push(subArr);			
+			}
+			$('#nominatedPostApplicationDetails').highcharts({
+				chart: {
+					height:'180',
+					type: 'pie',
+					backgroundColor: 'transparent',
+					options3d: {
+						enabled: false,
+						alpha: 45
+					}
+				},	
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: ''
+				},
+				plotOptions: {	
+					pie: {
+						innerSize: 40,
+						depth: 50,
+						showInLegend: true,
+						dataLabels: {
+							enabled: false,
+						}
+					}, 
+				},
+				legend: {
+					itemStyle: {
+						fontWeight: 'normal',
+						'font-family':'roboto',
+						'font-size':'14px'
+					},
+					enabled: true,
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'middle',
+					useHTML: true,
+					symbolHeight:'0',
+					labelFormatter: function() {
+						return '<ul class="graph-legend" style="width:240px"><li style="background-color:'+this.color+';color:#fff"><span class="statusBox" style="background-color:'+this.color+';box-shadow:0px 0px 1px 1px rgba(0,0,0,0.4)"></span>'+this.name + '<span style="margin-left:8px;position: absolute;right: 10px;">' + this.y + '</span></li></ul>';
+						//return '<div style="padding:5px;background-color:'+this.color+'"><span style="color:#fff">'+this.name + '-' + this.y + '</span></div>';
+					}
+				},
+				series:[{
+					name : 'Count',
+					data: mainArr
+				}]
+			});
+		}
+		
+	});	
+}
+function getNominatedPostStatusWiseCount(){
+	$("#nominatedPostStatusWiseCount").html(spinner);
+	var locationValuesArr = [];
+	if(locationLevelId == '2')
+	{
+		locationValuesArr.push(districtId)
+	}else if(locationLevelId == '3')
+	{
+		locationValuesArr.push(constituencyId)
+	}else if(locationLevelId == '4')
+	{
+		locationValuesArr.push(mandalId)
+	}else if(locationLevelId == '4')
+	{
+		locationValuesArr.push(panchayatId)
+	}
+	var jsObj={
+			"year":"",
+			"fromDateStr" : globalFromDate,
+			"toDateStr":globalToDate,
+			"locationTypeId":locationLevelId,
+			"locationValues":locationValuesArr
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getNominatedPostStatusWiseCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result!=null && result.length>0){
+			return buildGraph(result);
+		}else{
+			$("#nominatedPostStatusWiseCount").html("NO DATA");
+		}
+	});	
+	function buildGraph(result)
+	{
+		var str='';
+		var subArr = [];
+		var colors = ['#0FBE08','#FF0909','#FFBA00','#FFBAB0']
+		var colorsArr = ['rgba(15, 190, 8, 0.5)','rgba(255, 9, 9, 0.5)','rgba(255, 186, 0, 0.5)','rgba(255, 186, 176, 0.5)']
+		var mainArr =[];
+		var totArr=[];
+		var totalCount =0;
+		str+='<div class="row">';
+			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+				str+='<div id="nominatedPostStatusWiseCountGraph"></div>';
+			str+='</div>';
+			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+				str+='<ul class="graph-legend">';
+				for(var i in result){
+					str+='<li style="background-color:'+colorsArr[i]+'"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+'<span class="count">'+result[i].count+'</span></li>';
+				}
+				str+='</ul>';
+			str+='</div>';
+		str+='</div>';
+		$("#nominatedPostStatusWiseCount").html(str);
+	
+		for(var i in result){
+			var subArr = [];
+			totalCount=totalCount+result[i].count;
+			subArr={name:result[i].name,y:result[i].count};
+			mainArr.push(subArr);
+		}
+		//totArr={name:'Total',y:totalCount};	
+		//mainArr.push(totArr);
+		$('#nominatedPostStatusWiseCountGraph').highcharts({
+			chart: {
+				type: 'column',
+				height:200,
+				backgroundColor: 'transparent',
+				options3d: {
+					enabled: false,
+					alpha: 45
+					}
+			},
+			colors: colors,
+			title: {
+				text: null
+			},
+			subtitle: {
+				text: ''
+			},
+			plotOptions: {	
+				column: {
+					colorByPoint: true
+				}, 
+			},
+			legend:{
+				enabled:false
+			},
+			xAxis: {
+				min: 0,
+				gridLineWidth: 0,  
+				minorGridLineWidth: 0,
+				type: 'category',
+				labels: {
+					rotation: -45,
+					style: {
+						fontSize: '13px',
+						fontFamily: 'Verdana, sans-serif'
+					}
+				}
+			},
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				labels:
+				{
+				  enabled: false
+				}
+			},
+			series:[{
+				name: 'Posts Count',
+				data: mainArr,
+				dataLabels: {
+					enabled: false,
+					rotation: -90,
+					color: '#FFFFFF',
+					align: 'right',
+					format: '{point.y}', 
+					y: 10, 
+					style: {
+						fontSize: '13px',
+						fontFamily: 'Verdana, sans-serif'
+					}
+				}
+			}]
+		});
+		
+	}
+}
+function getLocationWiseMeetingsCount(){
+	$("#locationWiseMeetingsCount").html(spinner);
+	jsObj={
+		locationType:locationLevelName,
+		constituencyId:constituencyId
+	}
+	 $.ajax({
+      type : "GET",
+      url : "getLocationWiseMeetingsCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+		if(result!=null && result.length>0){
+			return buildTable(result);
+		}else{
+			$("#locationWiseMeetingsCount").html("NO DATA");
+		}
+	});	
+	function buildTable(result)
+	{
+		var tableView = '';
+		tableView+='<table class="table table-bordered">';
+			tableView+='<thead class="text-capitalize">';
+				tableView+='<th></th>';
+				for(var i in result[0].locationVotersVOList)
+				{
+						tableView+='<th class="bg-E9">'+result[0].locationVotersVOList[i].ageRange+'</th>';
+					
+				}
+			tableView+='</thead>';
+			tableView+='<tbody>';
+				for(var i in result)
+				{
+					tableView+='<tr>';
+						tableView+='<td>'+result[i].ageRange+'</td>';
+						for(var j in result[i].locationVotersVOList)
+						{
+							tableView+='<td>'+result[i].locationVotersVOList[j].totalVoters+'</td>';
+						}
+					tableView+='</tr>';
+				}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#locationWiseMeetingsCount").html(tableView);
+	}
+}
+
+function getLocationWiseCommitteesCount(){
+	
+	var jsObj={
+			locationType : locationLevelName,
+			locationId : constituencyId,
+			enrollmentId : 2
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getLocationWiseCommitteesCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	console.log(result);
+		var str='';
+		var mainMandal = [];
+		var mainVillage= [];
+		var affMandal = [];
+		var affVillage = [];
+		var mainMandalId = '';
+		var mainVillageId = '';
+		var affMandalId = '';
+		var affVillageId = '';
+		var depth = 60;
+		if(result != null){
+			var mainMandalTotal=result.mainCommStartedCount+result.mainCommCompletedCount+result.mainCommNotYetStarted;
+			var affltdAffltedTotal=result.affiCommStartedCount+result.affiCommCompletedCount+result.affiCommMandalNotStarted;
+			var mainVlgTotal=result.mainCommTotalMembers+result.mainCommTotalCount+result.mainCommVillageNotStarted;
+			var affltdVlgTotal=result.affiCommTotalMembers+result.affiCommTotalCount+result.affiCommVillageNotStarted;
+			var mandalNotStartedPer= Math.round((result.mainCommNotYetStarted/mainMandalTotal)*100);
+			var affltdMandalNotStartedPer= Math.round((result.affiCommMandalNotStarted/affltdAffltedTotal)*100);
+			var mainVlgNotStartedPer= Math.round((result.mainCommVillageNotStarted/mainVlgTotal)*100);
+			var affltdVlgNotStartedPer= Math.round((result.affiCommVillageNotStarted/affltdVlgTotal)*100);
+
+			str+='<table class="table table-bordered">';
+				str+='<thead>';
+					str+='<tr class="text-capital">';
+						str+='<th rowspan="2"></th>';
+						str+='<th colspan="3">main committee</th>';
+						str+='<th colspan="3">affliated committee</th>';
+					str+='</tr>';
+					str+='<tr class="text-capitalize bg-E9">';
+						str+='<th>total</th>';
+						str+='<th>started</th>';
+						str+='<th>completed</th>';
+						str+='<th>NotStarted</th>';
+						str+='<th>total</th>';
+						str+='<th>started</th>';
+						str+='<th>completed</th>';
+						str+='<th>NotStarted</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody class="text-capitalize">';
+					str+='<tr>';
+						str+='<td>mandal/town/division</td>';
+						str+='<td>'+mainMandalTotal+'</td>';
+						str+='<td>'+result.mainCommStartedCount+'</td>';
+						str+='<td>'+result.mainCommCompletedCount+'</td>';
+						str+='<td>'+result.mainCommNotYetStarted+'</td>';
+						str+='<td>'+affltdAffltedTotal+'</td>';
+						str+='<td>'+result.affiCommStartedCount+'</td>';
+						str+='<td>'+result.affiCommCompletedCount+'</td>';
+						str+='<td>'+result.affiCommMandalNotStarted+'</td>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<td>village/ward</td>';
+						str+='<td>'+mainVlgTotal+'</td>';
+						str+='<td>'+result.mainCommTotalMembers+'</td>';
+						str+='<td>'+result.mainCommTotalCount+'</td>';
+						str+='<td>'+result.mainCommVillageNotStarted+'</td>';
+						str+='<td>'+affltdVlgTotal+'</td>';
+						str+='<td>'+result.affiCommTotalMembers+'</td>';
+						str+='<td>'+result.affiCommTotalCount+'</td>';
+						str+='<td>'+result.affiCommVillageNotStarted+'</td>';
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+
+			mainMandal=[{name:'Completed',y:result['mainMandalCompletePer'],color:'#eda809'},
+						{name:'Started',y:result['mainMandalStartPer'],color:'#862d59'},
+						{name:'NotStarted',y:mandalNotStartedPer,color:'#c3c6c3'}];	
+			mainVillage=[{name:'Completed',y:result['mainVillageCompletePer'],color:'#eda809'},
+						 {name:'Started',y:result['mainVillageStartPer'],color:'#862d59'},
+						 {name:'NotStarted',y:mainVlgNotStartedPer,color:'#c3c6c3'}];	
+			affMandal = [{name:'Completed',y:result['affMandalCompletePer'],color:'#eda809'},
+						 {name:'Started',y:result['affMandalStartPer'],color:'#862d59'},
+						 {name:'NotStarted',y:affltdMandalNotStartedPer,color:'#c3c6c3'}];
+		    affVillage = [{name:'Completed',y:result['affVillageCompletePer'],color:'#eda809'},
+						  {name:'Started',y:result['affVillageStartPer'],color:'#862d59'},
+						  {name:'NotStarted',y:affltdVlgNotStartedPer,color:'#c3c6c3'}];
+			mainMandalId = 'mandalLevelGraph';
+			mainVillageId = 'villageLevelGraph';
+			affMandalId = 'affMandalLevelGraph';
+			affVillageId = 'affVillageLevelGraph';
+		
+			//$("#"+mainMandalId).html(str);
+			highChartsDonut(mainMandalId,mainMandal,true,'mandal/town level',200);
+			//$("#"+mainVillageId).html(str);
+			highChartsDonut(mainVillageId,mainVillage,true,'vilalge/ward level',200);
+			//$("#"+affMandalId).html(str);
+			highChartsDonut(affMandalId,affMandal,true,'mandal/town level',200);
+			//$("#"+affVillageId).html(str);
+			highChartsDonut(affVillageId,affVillage,true,'vilalge/ward level',200);
+			$("#committees").append(str);
+		}
+		 
+	});	
+}
+function getLocationWiseTourMembersComplainceDtls(){
+	$("#locationWiseTourMembersComplainceDtls").html(spinner);
+	var locationValuesArr = [];
+	if(locationLevelId == '2')
+	{
+		locationValuesArr.push(districtId)
+	}else if(locationLevelId == '3')
+	{
+		locationValuesArr.push(constituencyId)
+	}else if(locationLevelId == '4')
+	{
+		locationValuesArr.push(mandalId)
+	}else if(locationLevelId == '4')
+	{
+		locationValuesArr.push(panchayatId)
+	}
+	jsObj={
+		locationTypeId:4,
+		locationValuesArr:locationValuesArr,
+		fromDate:globalFromDate,
+		toDate:globalToDate,
+		year:""
+	}
+	 $.ajax({
+      type : "POST",
+      url : "getLocationWiseTourMembersComplainceDtlsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+		if(result!=null && result.length>0){
+			return buildTable(result);
+		}else{
+			$("#locationWiseTourMembersComplainceDtls").html("NO DATA");
+		}
+	});	
+	function buildTable(result)
+	{
+		var tableView = '';
+		tableView+='<table class="table table-hover">';
+			tableView+='<thead class="text-capitalize bg-E9">';
+				tableView+='<th>Designation</th>';
+				tableView+='<th>status</th>';
+			tableView+='</thead>';
+			tableView+='<tbody>';
+				for(var i in result)
+				{
+					tableView+='<tr>';
+						tableView+='<td>MP LOKSABHA</td>';
+						if(result[i].isComplaince=="False"){
+							tableView+='<td><span class="text-danger">Non-Complaince</span></td>';	
+						}else{
+							tableView+='<td><span class="text-success">Complaince</span></td>';	
+						}
+					tableView+='</tr>';
+				}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#locationWiseTourMembersComplainceDtls").html(tableView);
+	}
+}
+function getGovtSchemeWiseBenefitMembersCount(){
+	$("#benefitsBlockId").html(spinner);
+	jsObj={
+		locationType:4,
+		locationValue:232
+	}
+	 $.ajax({
+      type : "POST",
+      url : "getGovtSchemeWiseBenefitMembersCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+		//console.log(result);
+		if(result!=null && result.length>0){
+			return buildTabs(result);
+		}else{
+			$("#benefitsBlockId").html("NO DATA");
+		}
+	});	
+	function buildTabs(result)
+	{
+		var navTabs = '';
+		navTabs+='';
+		navTabs+='<div class="col-md-3 col-xs-12 col-sm-3 pad_right0">';
+			navTabs+='<select class="form-control" role="tabListMobile">';
+				for(var i in result)
+				{
+					navTabs+='<option tab_id="benefits'+result[i].id+'">'+result[i].name+' ('+result[i].totalCount+')</option>';
+				}
+				
+			navTabs+='</select>';
+			navTabs+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
+				for(var i in result)
+				{
+					if(i == 0)
+					{
+						navTabs+='<li class="active"><a href="#benefits'+result[i].id+'" navTabs-click="'+result[i].id+'" aria-controls="benefits'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+' <span class="pull-right">'+result[i].totalCount+'</span></a></li>';
+					}else{
+						navTabs+='<li><a href="#benefits'+result[i].id+'" navTabs-click="'+result[i].id+'" aria-controls="benefits'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+' <span class="pull-right">'+result[i].totalCount+'</span></a></li>';
+					}
+				}
+			navTabs+='</ul>';
+		navTabs+='</div>';
+		navTabs+='<div class="col-md-9 col-xs-12 col-sm-9 pad_left0">';
+			navTabs+='<div class="tab-content">';
+				for(var i in result)
+				{
+					if(i == 0)
+					{
+						navTabs+='<div role="tabpanel" class="tab-pane active pad_10" id="benefits'+result[i].id+'"></div>';
+					}else{
+						navTabs+='<div role="tabpanel" class="tab-pane pad_10" id="benefits'+result[i].id+'"></div>';
+					}
+				}
+			navTabs+='</div>';
+		navTabs+='</div>';
+		$("#benefitsBlockId").html(navTabs);
+		responsiveTabs();
+		getMandalWiseBenefitMembersCount(result[0].id)
+	}
+}
+$(document).on("click","[navTabs-click]",function(){
+	var id = $(this).attr("navTabs-click");
+	getMandalWiseBenefitMembersCount(id)
+});
+function getMandalWiseBenefitMembersCount(id){
+	$("#benefits"+id).html(spinner);
+	jsObj={
+		locationType:4,
+		locationValue:232,
+		govtSchemeId:id
+	}
+	$.ajax({
+	  type : "POST",
+	  url : "getMandalWiseBenefitMembersCountAction.action",
+	  dataType : 'json',
+	  data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){  
+		if(result!=null && result.length>0){
+			return buildTabsBody(result);
+		}else{
+			$("#benefits"+id).html("NO DATA");
+		}
+	});
+	var colors = ['#0FBE08','#FF0909','#FFBA00','#FFBAB0']
+	var totalPopulation = 0;
+	var totalBenefited = 0;
+	function buildTabsBody(result)
+	{
+		for(var i in result)
+		{
+			totalPopulation = totalPopulation + result[i].totalPopulation;
+			totalBenefited = totalBenefited + result[i].totalCount;
+		}
+		var navTabBody = '';
+		navTabBody+='<div class="row">';
+			navTabBody+='<div class="col-md-6 col-xs-12 col-sm-6">';
+				navTabBody+='<div id="benefitsGraph'+id+'" style="height:200px"></div>';
+			navTabBody+='</div>';
+			navTabBody+='<div class="col-md-6 col-xs-12 col-sm-6">';
+				navTabBody+='<table class="table table-noborder">';
+					navTabBody+='<thead class="text-capitalize bg-E9">';
+						navTabBody+='<th></th>';
+						navTabBody+='<th>Total</th>';
+						navTabBody+='<th>%</th>';
+					navTabBody+='</thead>';
+					navTabBody+='<tbody class="text-capitalize">';
+						navTabBody+='<tr>';
+							navTabBody+='<td><span class="chart-legend-color" style="background-color:#fc8db7"></span>Population</td>';
+							navTabBody+='<td>'+totalPopulation+'</td>';
+						navTabBody+='</tr>';
+						navTabBody+='<tr>';
+							navTabBody+='<td><span class="chart-legend-color" style="background-color:#27b720"></span>Benefited</td>';
+							navTabBody+='<td>'+totalBenefited+'</td>';
+						navTabBody+='</tr>';
+					navTabBody+='</tbody>';
+				navTabBody+='</table>';
+			navTabBody+='</div>';
+			navTabBody+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+				navTabBody+='<table class="table table-noborder">';
+					navTabBody+='<thead class="text-capitalize bg-E9">';
+						navTabBody+='<th>Mandal Name</th>';
+						navTabBody+='<th>Population</th>';
+						navTabBody+='<th>Benefited</th>';
+						navTabBody+='<th>%</th>';
+					navTabBody+='</thead>';
+					navTabBody+='<tbody class="text-capitalize">';
+						for(var i in result)
+						{
+							navTabBody+='<tr>';
+								navTabBody+='<td>'+result[i].name+'</td>';
+								navTabBody+='<td>'+result[i].totalPopulation+'</td>';
+								navTabBody+='<td>'+result[i].totalCount+'</td>';
+								navTabBody+='<td>'+(((result[i].totalCount)/(result[i].totalPopulation))*100).toFixed(2)+'%</td>';
+							navTabBody+='</tr>';
+						}
+					navTabBody+='</tbody>';
+				navTabBody+='</table>';
+			navTabBody+='</div>';
+		navTabBody+='</div>';
+		$("#benefits"+id).html(navTabBody);
+		mainMandal1=[{name:'Population',y:totalPopulation,color:'#fc8db7'},
+					{name:'Benfited',y:totalBenefited,color:'#27b720'}];
+		highChartsDonut('benefitsGraph'+id+'',mainMandal1,true,name,200)
 	}
 }
