@@ -267,49 +267,49 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		StringBuilder sbg = new StringBuilder();
 		boolean filterFlag = false;
 		
-		sb.append("SELECT COUNT(DISTINCT LM.panchayat.locationAddress.tehsil.tehsilId), COUNT(DISTINCT LM.panchayat.panchayatId) ");
+		sb.append("SELECT COUNT(DISTINCT P.locationAddress.tehsil.tehsilId), COUNT(DISTINCT P.panchayatId) ");
 		
 		if(locationType.equalsIgnoreCase("district"))
 		{
-			sb.append(",LM.panchayat.locationAddress.district.districtId, LM.panchayat.locationAddress.district.districtName ");
-			sbg.append(" GROUP BY LM.panchayat.locationAddress.district.districtId ORDER BY LM.panchayat.locationAddress.district.districtId ");
+			sb.append(",P.locationAddress.district.districtId, P.locationAddress.district.districtName ");
+			sbg.append(" GROUP BY P.locationAddress.district.districtId ORDER BY P.locationAddress.district.districtId ");
 		}
 		else if(locationType.equalsIgnoreCase("parliament"))
 		{
-			sb.append(",LM.panchayat.locationAddress.parliament.constituencyId, LM.panchayat.locationAddress.parliament.name ");
-			sbg.append(" GROUP BY LM.panchayat.locationAddress.parliament.constituencyId ORDER BY LM.panchayat.locationAddress.parliament.name ");
+			sb.append(",P.locationAddress.parliament.constituencyId, P.locationAddress.parliament.name ");
+			sbg.append(" GROUP BY P.locationAddress.parliament.constituencyId ORDER BY P.locationAddress.parliament.name ");
 		}
 		else if(locationType.equalsIgnoreCase("constituency"))
 		{
-			sb.append(",LM.panchayat.locationAddress.constituency.constituencyId, LM.panchayat.locationAddress.constituency.name ");
-			sbg.append(" GROUP BY LM.panchayat.locationAddress.constituency.constituencyId ORDER BY LM.panchayat.locationAddress.district.districtId,LM.panchayat.locationAddress.constituency.name ");
+			sb.append(",P.locationAddress.constituency.constituencyId, P.locationAddress.constituency.name ");
+			sbg.append(" GROUP BY P.locationAddress.constituency.constituencyId ORDER BY P.locationAddress.district.districtId,P.locationAddress.constituency.name ");
 		}
 		
 		else if(locationType.equalsIgnoreCase("mandal"))
 		{
-			sb.append(",LM.panchayat.locationAddress.tehsil.tehsilId, LM.panchayat.locationAddress.tehsil.tehsilName ");
-			sbg.append(" GROUP BY LM.panchayat.locationAddress.tehsil.tehsilId ORDER BY LM.panchayat.locationAddress.district.districtId,LM.panchayat.locationAddress.constituency.name,LM.panchayat.locationAddress.tehsil.tehsilName ");
+			sb.append(",P.locationAddress.tehsil.tehsilId, P.locationAddress.tehsil.tehsilName ");
+			sbg.append(" GROUP BY P.locationAddress.tehsil.tehsilId ORDER BY P.locationAddress.district.districtId,P.locationAddress.constituency.name,P.locationAddress.tehsil.tehsilName ");
 		}
 			
 		if(displayType != null && displayType.trim().length() > 0)
 		{
 			if(displayType.equalsIgnoreCase("district"))
-				sb.append(",LM.panchayat.locationAddress.district.districtId, LM.panchayat.locationAddress.district.districtName ");
+				sb.append(",P.locationAddress.district.districtId, P.locationAddress.district.districtName ");
 			else if(displayType.equalsIgnoreCase("parliament"))	
-				sb.append(", LM.panchayat.locationAddress.parliament.constituencyId,LM.panchayat.locationAddress.parliament.name ");
+				sb.append(", P.locationAddress.parliament.constituencyId,P.locationAddress.parliament.name ");
 		}
 		
-		sb.append(" FROM LightMonitoring LM WHERE LM.panchayat.locationAddress.state.stateId = 1 ");
+		sb.append(" FROM Panchayat P WHERE P.locationAddress.state.stateId = 1 ");
 		
 		if(filterType != null && filterType.trim().length() > 0 && locationId != null && locationId.longValue() > 0)
 		{
 			filterFlag = true;
 			if(filterType.equalsIgnoreCase("district"))
-				sbc.append(" AND LM.panchayat.locationAddress.district.districtId = :locationId ");
+				sbc.append(" AND P.locationAddress.district.districtId = :locationId ");
 			else if(filterType.equalsIgnoreCase("parliament"))
-				sbc.append(" AND LM.panchayat.locationAddress.parliament.constituencyId = :locationId ");
+				sbc.append(" AND P.locationAddress.parliament.constituencyId = :locationId ");
 			else if(filterType.equalsIgnoreCase("constituency"))
-				sbc.append(" AND LM.panchayat.locationAddress.constituency.constituencyId = :locationId ");
+				sbc.append(" AND P.locationAddress.constituency.constituencyId = :locationId ");
 			
 		}
 		
