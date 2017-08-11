@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.LocationsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
@@ -92,8 +93,16 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private List<CadreEventsVO> cadreReportVO;
 	private List<CadrePerformanceVO> cadreTraingVO;
 	private List<EventDetailsVO> eventDetilsList;
+	private NominatedPostDetailsVO nominatedPostDetailsVO = new NominatedPostDetailsVO();
 	
-	
+
+	public NominatedPostDetailsVO getNominatedPostDetailsVO() {
+		return nominatedPostDetailsVO;
+	}
+	public void setNominatedPostDetailsVO(
+			NominatedPostDetailsVO nominatedPostDetailsVO) {
+		this.nominatedPostDetailsVO = nominatedPostDetailsVO;
+	}
 	public List<GeoLevelListVO> getGeoLevelListVO() {
 		return geoLevelListVO;
 	}
@@ -2396,4 +2405,23 @@ public String execute()
 		}
 	   return Action.SUCCESS;	
 	 }  
+	public String saveNominatedPostProfileDtls(){
+		try{
+			LOG.info("Enterd into nominatedPostProfileAction of saveNominatedPostProfileDtlss");
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO !=null){
+				Long userId = regVO.getRegistrationID();
+				resultStatus = nominatedPostProfileService.saveNominatedPostProfileDtls(nominatedPostDetailsVO,userId);
+			} else {
+				resultStatus = new ResultStatus();
+				resultStatus.setMessage("Exception Occured.Pls Try Again");
+				resultStatus.setResultCode(0);
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in saveNominatedPostProfileDtls() in NominatedPostProfileAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
