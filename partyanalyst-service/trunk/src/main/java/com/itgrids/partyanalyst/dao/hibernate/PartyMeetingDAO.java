@@ -122,7 +122,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            }
 	            if(mandalList !=null && mandalList.size()<=0){
 	                sb.append(" and model.meetingAddress.tehsil.tehsilId is not null ");
-	            }else if(mandalList !=null ){
+	            }else if(mandalList !=null && mandalList.size()>0){
 	                sb.append(" and model.meetingAddress.tehsil.tehsilId in (:mandalList) ");
 	            }
 	        }else if(locationLevel!=null && locationLevel==5l){//town level
@@ -143,7 +143,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            }
 	            if(townList !=null && townList.size()<=0){
 	                sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId is not null ");
-	            }else if(townList !=null){
+	            }else if(townList !=null && townList.size()>0){
 	                sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId in (:townList) ");
 	            }
 	        }else if((locationLevel!=null) && (locationLevel==6l || locationLevel==8l)){//divison or ward level
@@ -165,7 +165,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            if(locationLevel==6l){
 	                if(divisonList !=null && divisonList.size()<=0){
 	                    sb.append(" and model.meetingAddress.ward.constituencyId is not null ");
-	                }else if(divisonList !=null){
+	                }else if(divisonList !=null && divisonList.size()>0){
 	                    sb.append(" and model.meetingAddress.ward.constituencyId in (:divisonList) ");
 	                }
 	            }else{
@@ -176,7 +176,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	                }*/
 	            	 if(townList !=null && townList.size()<=0){
 	 	                sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId is not null ");
-	 	            }else if(townList !=null){
+	 	            }else if(townList !=null && townList.size()>0){
 	 	                sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId in (:townList) ");
 	 	            }
 	            	
@@ -203,12 +203,12 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            }else{
 	                sb.append(" and model.meetingAddress.constituency.constituencyId in (:constituencyList) ");
 	            }
-	            if(mandalList !=null &&mandalList.size()<=0){
+	            if(mandalList !=null && mandalList.size()<=0){
 	                sb.append(" and model.meetingAddress.tehsil.tehsilId is not null ");
-	            }else if(mandalList !=null ){
+	            }else if(mandalList !=null && mandalList.size()>0){
 	                sb.append(" and model.meetingAddress.tehsil.tehsilId in (:mandalList) ");
 	            }
-	            if(villageList !=null &&villageList.size()<=0){
+	            if(villageList !=null && villageList.size()<=0){
 	                sb.append(" and model.meetingAddress.panchayat.panchayatId is not null ");
 	            }else if(villageList !=null){
 	                sb.append(" and model.meetingAddress.panchayat.panchayatId in (:villageList) ");
