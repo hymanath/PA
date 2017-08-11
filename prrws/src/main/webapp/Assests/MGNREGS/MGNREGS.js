@@ -2383,6 +2383,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 function getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,menuLocationId)
 {
 	$("#nregsConsitenBodyId").html(spinner);
+	var districtId = $("#selectedName").attr("attr_distId");
 	if(globalDivName == 'FAperformance'){
 		var json = {
 			year : "2017",
@@ -2392,7 +2393,8 @@ function getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,m
 			divType : globalDivName,
 			type  : type,
 			locationId : menuLocationId,
-			sublocaType : locationType
+			sublocaType : locationType,
+			districtId:districtId
 		}
 	}else{
 		var json = {
@@ -2403,7 +2405,8 @@ function getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,m
 			divType : globalDivName,
 			type  : type,
 			locationId : menuLocationId,
-			sublocaType : locationType
+			sublocaType : locationType,
+			districtId:districtId
 		}
 	}
 	
@@ -2602,6 +2605,7 @@ function getLabourBudgetClickingOverview(menuLocationType,menuLocationId)
 function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocationType,menuLocationId,blockName)
 {
 	$("#"+divIdd).html(spinner);
+	var districtId = $("#selectedName").attr("attr_distid");
 	var theadArr = [locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozgar Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FlagShip Programme Achivement(5)','Total Average(100)'];
 	if(locationTypeNew == "constituency")
 		theadArr = ["district",locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozgar Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FlagShip Programme Achivement(5)','Total Average(100)'];
@@ -2617,7 +2621,8 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocat
 		locationType: menuLocationType,
 		divType : globalDivName,
 		locationId : menuLocationId,
-		sublocaType : locationTypeNew
+		sublocaType : locationTypeNew,
+		districtId:districtId
 	}
 	$.ajax({
 		url: 'getNregaLevelsWiseDataForFAPerformance',
@@ -2837,6 +2842,7 @@ function getNregasOverview(projectDivId,menuLocationType,menuLocationId,district
 
 function getNregasPopupOverview(menuLocationType,menuLocationId)
 {
+	var districtId = $("#selectedName").attr("attr_distId");
 	$("#nregsOverviewBodyId").html(spinner);
 	if(globalDivName == 'FAperformance')
 	{
@@ -2846,7 +2852,8 @@ function getNregasPopupOverview(menuLocationType,menuLocationId)
 			toDate : '2017-05-30',
 			divType : globalDivName,
 			locationType : menuLocationType,
-			locationId : menuLocationId
+			locationId : menuLocationId,
+			districtId:districtId
 		}
 	}else{
 		var json = {
@@ -2855,7 +2862,8 @@ function getNregasPopupOverview(menuLocationType,menuLocationId)
 			toDate : glEndDate,
 			divType : globalDivName,
 			locationType : menuLocationType,
-			locationId : menuLocationId
+			locationId : menuLocationId,
+			districtId:districtId
 		}
 	}
 	
