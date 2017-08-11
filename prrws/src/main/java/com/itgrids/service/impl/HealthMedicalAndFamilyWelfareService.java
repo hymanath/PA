@@ -718,10 +718,10 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 	}
 	public void createVOList(List<DiseasesVO> diseasesVOs,List<Object[]> diseasesListForManal){
 		DiseasesVO diseasesVO = null;
-		if(diseasesListForManal.get(0)[0] == null){
-			diseasesListForManal.remove(0);
-		}
 		for(Object[] param : diseasesListForManal){
+			if(param[0] == null){
+				continue;  
+			}
 			diseasesVO = new DiseasesVO();
 			diseasesVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[3]));
 			diseasesVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[4]));
