@@ -1,4 +1,4 @@
-labelbody
+body
 {
 	font-size: 14px;
 	background-color: #ECF1F5 !important;
@@ -411,11 +411,19 @@ label
 {
 	float: right;
 }
+.list-border
+{
+	table-layout: fixed;
+	width: 100%;
+	display: table;
+}
 .list-border li
 {
 	border-right: 1px solid #ccc;
 	padding: 10px 20px;
 	text-align: center;
+	display: table-cell;
+	width: auto;
 }
 .list-border li:last-child
 {

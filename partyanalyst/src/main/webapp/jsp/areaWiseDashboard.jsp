@@ -15,6 +15,7 @@
 <link href="dist/slick/slick.css" type="text/less" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
 <body>
@@ -44,13 +45,13 @@
 	<div class="container">
 		<div class="row">
 		 	<div class="col-md-12 col-xs-12 col-sm-12">
-				<h2>Kavali Constituency Information</h2>
-				<ol class="breadcrumb">
+				<h2><span id="selectedMenuName" class="text-capitalize">Kavali Constituency</span> Information</h2>
+				<ol class="breadcrumb" id="getMenuLocations" menu-location-state="1" menu-location-districts="19" menu-location-constituencys="232" menu-location-mandals="" menu-location-panchayats="" menu-location-levelId="3" menu-location-levelName="constituency" >
 					<!--<li>State : <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>-->
-					<li>District : <span menu-name="districts" levelId="2" locationId="01" class="districtsMenuName">Andhra Pradesh</span></li>
-					<li>Constituency :<span menu-name="constituencys" levelId="3" locationId="01" class="constituencysMenuName"> Andhra Pradesh</span></li>
-					<li>Mandal :<span menu-name="mandals" levelId="4" locationId="01" class="mandalsMenuName"> Andhra Pradesh</span></li>
-					<li>Panchayat :<span menu-name="panchayats" levelId="5" locationId="01" class="panchayatsMenuName"> Andhra Pradesh</span></li>
+					<li>District : <span menu-name="districts" levelId="2" locationId="01" class="districtsMenuName">Nellore</span></li>
+					<li style="display:none">Constituency :<span menu-name="constituencys" levelId="3" locationId="01" class="constituencysMenuName"> Andhra Pradesh</span></li>
+					<li style="display:none">Mandal :<span menu-name="mandals" levelId="4" locationId="01" class="mandalsMenuName"> Andhra Pradesh</span></li>
+					<li style="display:none">Panchayat :<span menu-name="panchayats" levelId="5" locationId="01" class="panchayatsMenuName"> Andhra Pradesh</span></li>
 				</ol>
 				<div class="menu-dropdown" style="display:none;">
 					<div class="row">
@@ -67,7 +68,7 @@
 							<div id="panchayatsMenu"></div>
 						</div>
 						<div class="col-sm-12 text-right m_top20">
-							<button class="btn btn-success">GET DETAILS</button>
+							<button class="btn btn-success" id="getLocationDetails">GET DETAILS</button>
 						</div>
 					</div>
 				</div>
@@ -196,10 +197,10 @@
 				</div>
 			</div>
 			
-			<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="committees">
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="committees">
 				<div class="row">
 					<div class="col-md-6 col-xs-12 col-sm-6">
-						<h3>Committees <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>						
+						<h3>Committees <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="committees"></i></span></h3>						
 					</div>
 					<div class="col-md-6 col-xs-12 col-sm-6 text-right">
 						<select>
@@ -208,7 +209,8 @@
 						</select>
 					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12">
-						<div class="block">
+						<div id="committees"></div>
+						<!--<div class="block">
 							<div class="row">
 								<div class="col-md-6 col-xs-12 col-sm-6">
 									<h4 class="panel-title text-capital">main committee formation</h4>
@@ -279,60 +281,24 @@
 							<div class="pad_10">
 								<button class="btn btn-success btn-success-white text-capital">detailed information</button>
 							</div>
-						</div>
+						</div>-->
 						
 					</div>
 				</div>
 			</div>
 			<div class="col-md-8 col-xs-12 col-sm-8 m_top20" navbar-index="meetings">
-				<h3>Meetings <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<h3>Meetings <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="meetings"></i></span></h3>
 				<p class="f-12 text-muted">Evertymonth: 9th/10th/11th</p>
 				<div class="block pad_0">
-					<table class="table table-bordered">
-						<thead class="text-capitalize">
-							<th></th>
-							<th class="bg-E9">Village / Ward</th>
-							<th class="bg-E9">mandal/town/division</th>
-							<th class="bg-E9">constituency</th>
-						</thead>
-						<tbody>
-							<tr>
-								<td>total</td>
-								<td>1600</td>
-								<td>80</td>
-								<td>1</td>
-							</tr>
-						</tbody>
-					</table>
-					<div class="pad_10">
-						<button class="btn btn-success btn-success-white text-capital">detailed information</button>
-					</div>
+					<div id="locationWiseMeetingsCount"></div>
 				</div>
 			</div>
 			
 			<div class="col-md-4 col-xs-12 col-sm-4 m_top20" navbar-index="tours">
-				<h3>Tours <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<h3>Tours <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="tours"></i></span></h3>
 				<p class="f-12 text-muted">Last Month Jan 2017</p>
 				<div class="block pad_0">
-					<table class="table table-hover">
-						<thead class="text-capitalize bg-E9">
-							<th>Designation</th>
-							<th>status</th>
-						</thead>
-						<tbody>
-							<tr>
-								<td>MP LOKSABHA</td>
-								<td><span class="text-success">Compliance</span></td>
-							</tr>
-							<tr>
-								<td>MP LOKSABHA</td>
-								<td><span class="text-danger">Non-Compliance</span></td>
-							</tr>
-						</tbody>
-					</table>
-					<div class="block pad_10">
-						<button class="btn btn-success btn-success-white text-capital">detailed information</button>
-					</div>
+					<div id="locationWiseTourMembersComplainceDtls"></div>
 				</div>
 			</div>
 			
@@ -341,85 +307,10 @@
 				<h3>Benefits</h3>
 				<div class="block pad_0">
 					<div class="row">
-					
-					  <div class="col-md-3 col-xs-12 col-sm-3 pad_right0">
-						  <select class="form-control" role="tabListMobile">
-							  <option tab_id="benefits1">OC (20)</option>
-							  <option tab_id="benefits2">OC (20)</option>
-							  <option tab_id="benefits3">OC (20)</option>
-							  <option tab_id="benefits4">OC (20)</option>
-						  </select>
-						  <ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">
-							<li class="active"><a href="#benefits1" aria-controls="OC" role="tab" data-toggle="tab">CM Relief Fund <span class="pull-right">20</span></a></li>
-							<li><a href="#benefits2" aria-controls="benefits2" role="tab" data-toggle="tab">Brahmin Corporation</a></li>
-							<li><a href="#benefits3" aria-controls="benefits3" role="tab" data-toggle="tab">Muslim Minorities</a></li>
-							<li><a href="#benefits4" aria-controls="benefits4" role="tab" data-toggle="tab">BC Corp Beneficiery</a></li>
-						  </ul>
-					  </div>
-					 
-					  <div class="col-md-9 col-xs-12 col-sm-9 pad_left0">
-						  <div class="tab-content">
-							<div role="tabpanel" class="tab-pane active pad_10" id="benefits1">
-								<div class="row">
-									<div class="col-md-6 col-xs-12 col-sm-6">
-										<div id="benefitsGraph" style="height:200px"></div>
-									</div>
-									<div class="col-md-6 col-xs-12 col-sm-6">
-										<table class="table table-noborder">
-											<thead class="text-capitalize bg-E9">
-												<th></th>
-												<th>Total</th>
-												<th>%</th>
-											</thead>
-											<tbody class="text-capitalize">
-												<tr>
-													<td><span class="chart-legend-color"></span>Population</td>
-													<td>5000</td>
-													<td>40%</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-										<table class="table table-noborder">
-											<thead class="text-capitalize bg-E9">
-												<th>mandal name</th>
-												<th>population</th>
-												<th>eligible</th>
-												<th>benefited</th>
-												<th>non-eligible benefited</th>
-											</thead>
-											<tbody class="text-capitalize">
-												<tr>
-													<td>allur mandal</td>
-													<td>5000</td>
-													<td>2000 <span class="text-success">40%</span></td>
-													<td>2000 <span class="text-success">40%</span></td>
-													<td>2000 <span class="text-success">40%</span></td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-									<button class="btn btn-success btn-success-white text-capital">detailed caste information</button>
-								</div>
-							</div>
-							<div role="tabpanel" class="tab-pane pad_10" id="benefits2">
-								a
-							</div>
-							<div role="tabpanel" class="tab-pane pad_10" id="benefits3">
-								b
-							</div>
-							<div role="tabpanel" class="tab-pane pad_10" id="benefits4">
-								c
-							</div>
-						  </div>
-					  </div>
-
+						<div id="benefitsBlockId"></div>
 					</div>
 				</div>
-			</div>-->
+			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="activities">
 				<h3 >Activities <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="activities"></i></span></h3>
 				<div class="block pad_0" id ="activitesId">
@@ -489,39 +380,20 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div>-->
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="nominatedPosts">
-				<h3>Nominated Post <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<h3>Nominated Post <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="nominatedPosts"></i></span></h3>
 				<div class="block">
 					<div class="row">
 						<div class="col-md-6 col-xs-12 col-sm-6">
 							<h5 class="m_left10">Posts</h5>
-							<div class="row">
-								<div class="col-md-6 col-xs-12 col-sm-6">
-									<div id="posts" style="height:80px;"></div>
-								</div>
-								<div class="col-md-6 col-xs-12 col-sm-6">
-									<ul class="graph-legend">
-                                    	<li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                        <li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                        <li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                    </ul>
-								</div>
-							</div>
-							
+							<div id="nominatedPostStatusWiseCount"></div>
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-6">
 							<h5 class="m_left10">Applications</h5>
 							<div class="row">
-								<div class="col-md-6 col-xs-12 col-sm-6">
-									<div id="applications" style="height:120px;"></div>
-								</div>
-								<div class="col-md-6 col-xs-12 col-sm-6">
-									<ul class="graph-legend">
-                                    	<li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                        <li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                        <li><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                    </ul>
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div id="nominatedPostApplicationDetails"></div>
 								</div>
 							</div>
 						</div>
@@ -532,25 +404,9 @@
 							<h4 class="text-capital text-center m_top-10"><span class="bg-fff pad_10">position level</span></h4>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-							<ul class="list-border list-inline">
-								<li>
-									<h3>2</h3>
-									<p class="text-capitalize">central</p>
-								</li>
-								<li>
-									<h3>2</h3>
-									<p class="text-capitalize">central</p>
-								</li>
-								<li>
-									<h3>2</h3>
-									<p class="text-capitalize">central</p>
-								</li>
-							</ul>
+							<div id="positionsWiseMemberCount"></div>
 						</div>
 					</div>
-				</div>
-				<div class="block">
-					<button class="btn btn-success btn-success-white">detailed information</button>
 				</div>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20"  navbar-index="grievance">
@@ -558,23 +414,18 @@
 				<div class="block">
 					<div class="row">
 						<div class="col-md-4 col-xs-12 col-sm-4">
-							<h4 class="panel-title text-capital text-center">Grievance</h4>
-							<div id="grievanceDetails0"></div>
+							<div id="grivanceId"></div>
 						</div>
 						<div class="col-md-4 col-xs-12 col-sm-4">
 							<h4 class="panel-title text-capital text-center">Insurance</h4>
 							<div id="grievanceDetails1"></div>
 						</div>
 						<div class="col-md-4 col-xs-12 col-sm-4">
-							<h4 class="panel-title text-capital text-center">Trust Education</h4>
-							<div id="grievanceDetails2"></div>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top15">
-							<button class="btn btn-success btn-success-white text-capital">detailed information</button>
+							<div id="trustId"></div>
 						</div>
 					</div>
 				</div>
-			</div>-->
+			</div>
 		</div>
 	</div>
 </section>
@@ -584,7 +435,8 @@
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
-<!--<script src="coreApi/js/custom.js" type="text/javascript"></script>-->
+<script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
 </body>
 </html>
