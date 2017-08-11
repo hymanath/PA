@@ -2781,7 +2781,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 								str+='<td>'+ajaxresp[i].mulbCompleted+'</td>';
 							else
 								str+='<td>'+ajaxresp[i].completed+'</td>';
-							if((globalDivName == 'Mulbery'  || globalDivName == 'Cattle drinking water troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
+							if((globalDivName == 'Mulbery'  || globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && locationTypeNew == "state"){
 								if(ajaxresp[i].sanctionedPerc < 50){
 									str+='<td style="background-color:#FF0000">'+ajaxresp[i].sanctionedPerc+'</td>';
 								}else if(ajaxresp[i].sanctionedPerc >= 50 && ajaxresp[i].sanctionedPerc < 80){
