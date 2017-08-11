@@ -26,6 +26,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBatchStatusDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreComminicationSkillsStatusDAO;
 import com.itgrids.partyanalyst.dao.ICadreHealthStatusDAO;
 import com.itgrids.partyanalyst.dao.ICadreLeadershipLevelDAO;
@@ -227,7 +228,7 @@ class TrainingCampService implements ITrainingCampService{
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	private IPartyMeetingUpdationDocumentsDAO partyMeetingUpdationDocumentsDAO;
 	private IPartyMeetingStatusDAO partyMeetingStatusDAO;
-	
+	private IBoothDAO boothDAO;
 	
 	public IPartyMeetingStatusDAO getPartyMeetingStatusDAO() {
 		return partyMeetingStatusDAO;
@@ -738,6 +739,15 @@ class TrainingCampService implements ITrainingCampService{
 	public void setPartyMeetingUpdationDetailsDAO(
 			IPartyMeetingUpdationDetailsDAO partyMeetingUpdationDetailsDAO) {
 		this.partyMeetingUpdationDetailsDAO = partyMeetingUpdationDetailsDAO;
+	}
+	
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
 	}
 
 	public void setTdpCommitteeLevelDAO(ITdpCommitteeLevelDAO tdpCommitteeLevelDAO) {
@@ -3761,12 +3771,20 @@ class TrainingCampService implements ITrainingCampService{
 				 }
 				 
 				 
-				 List<Object[]> meetingsVillage = partyMeetingDAO.getAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,
-							divisonList,villageList,wardList,startDate,endDate,0l);
-					List<Object[]> meetingsWards = partyMeetingDAO.getAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,
-							divisonList,villageList,wardList,startDate,endDate,0l);
-					
-					meetings.addAll(meetingsVillage);
+				 List<Object[]> meetingsVillage = null;
+				 List<Object[]> meetingsWards = null;
+				  if(commonMethodsUtilService.isListOrSetValid(mandalList)){
+					 meetingsVillage =  partyMeetingDAO.getAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,divisonList,villageList,wardList,startDate,endDate,0l);
+				 }else if(commonMethodsUtilService.isListOrSetValid(townList) || commonMethodsUtilService.isListOrSetValid(divisonList)){
+					 meetingsWards = partyMeetingDAO.getAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,divisonList,villageList,wardList,startDate,endDate,0l);
+				 }else if(!commonMethodsUtilService.isListOrSetValid(mandalList)){
+					 meetingsVillage =  partyMeetingDAO.getAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,divisonList,villageList,wardList,startDate,endDate,0l);
+					 meetingsWards = partyMeetingDAO.getAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,divisonList,villageList,wardList,startDate,endDate,0l);
+				 }
+					//List<Long> panchayatIds = boothDAO.getBoothWisePanchayatIds(mandalList);
+					if(meetingsVillage != null && meetingsVillage.size()>0)
+					 meetings.addAll(meetingsVillage);
+					if(meetingsWards != null && meetingsWards.size()>0)
 					meetings.addAll(meetingsWards);
 			 }
 			}else{
