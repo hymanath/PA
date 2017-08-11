@@ -2326,7 +2326,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 				{
 					setCurrentDesignation(cadreCommitteeList,tdpCadreIdsList);
-					setCurrentElectrolInfo(cadreCommitteeList,tdpCadreIdsList);
+					//setCurrentElectrolInfo(cadreCommitteeList,tdpCadreIdsList);
 					checkIsAlreadyRegistered(cadreCommitteeList, tdpCadreIdsList);
 					setAddressForCadre(cadreCommitteeList,tdpCadreIdsList);
 					
