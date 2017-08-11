@@ -2151,7 +2151,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 }
 	 return query.list();
  }
-     List<Long> getNominatedPostIdByMemberId(Long nominatedPostMemberId) {
+   public List<Long> getNominatedPostIdByMemberId(Long nominatedPostMemberId) {
 	    StringBuilder queryStr = new StringBuilder();
 	    queryStr.append("select model.nominatedPostId from NominatedPost model " +
 	   		           " where model.nominationPostCandidateId is null " +
