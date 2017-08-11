@@ -216,7 +216,7 @@
 						</div>
 					</div>
 					<div class="panel-body">
-						<div class="row">
+						<div class="row" id="showHideRangeId">
 							<div class="col-sm-11">
 								<div id="tourSlider"></div>
 							</div>
