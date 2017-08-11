@@ -8915,8 +8915,9 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 	  
 	    /**
 		 * @Author : Santosh 
-		 * @param  :  NominatedPostDetailsVO nominatedPostDtlsVO 
-		 * @param  :  Long userId
+		 * @Date   : 10/08/2017
+		 * @param  : NominatedPostDetailsVO nominatedPostDtlsVO 
+		 * @param  : Long userId
 		 * @return : ResultStatus
 		 * description :  This service method is used to saving nominated post candidate details.
 		 */
