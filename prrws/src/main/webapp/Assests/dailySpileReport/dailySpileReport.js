@@ -38,10 +38,21 @@ function getSizeForRank(min,max,status){
 } 
 function initializeRank(maxVal,status){
 	if(status=="dateChange"){
-		$("#tourSlider").rangeSlider("destroy");
-		$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: maxVal},defaultValues:{min: 1, max: maxVal}}); 
+		if(maxVal==1){
+			$("#showHideRangeId").hide();
+		}else{
+			$("#showHideRangeId").show();   
+			$("#tourSlider").rangeSlider("destroy");
+			$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: maxVal},defaultValues:{min: 1, max: maxVal}});
+		}
+		 
 	}else{
-		$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: maxVal},defaultValues:{min: 1, max: maxVal}}); 
+		if(maxVal==1){
+			$("#showHideRangeId").hide();
+		}else{
+			$("#showHideRangeId").show();   
+			$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 1, max: maxVal},defaultValues:{min: 1, max: maxVal}});
+		}
 	}
 }
 initializeGlobalIds();
