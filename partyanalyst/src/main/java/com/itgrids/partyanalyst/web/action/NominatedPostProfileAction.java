@@ -2412,7 +2412,7 @@ public String execute()
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(regVO !=null){
 				Long userId = regVO.getRegistrationID();
-				resultStatus = nominatedPostProfileService.saveNominatedPostProfileDtls(nominatedPostDetailsVO,userId);
+				resultStatus = null;//nominatedPostProfileService.saveNominatedPostProfileDtls(nominatedPostDetailsVO,userId);
 			} else {
 				resultStatus = new ResultStatus();
 				resultStatus.setMessage("Exception Occured.Pls Try Again");
