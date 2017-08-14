@@ -714,7 +714,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	    			for(int i=0;i<finalArray.length();i++){
 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 	    				if(divType != null && divType.trim().toString().equalsIgnoreCase("FAperformance")){
-	    					if(locationType != null && locationType.trim().equalsIgnoreCase("district")){
+	    					if(subLocationType != null && subLocationType.trim().equalsIgnoreCase("district")){
 	    						distrName = jObj.getString("DISTRICT_DESCRIPTION");
 	    					}else{
 	    						distrName = jObj.getString("DISTRICT");
@@ -821,7 +821,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SolidWasteManagementServices/SolidWasteManagementData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Play Fields"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFieldsServices/PlayFieldsData";
-			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial Grounds"))
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial Ground"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialGroundsServices/BurialGroundsData";
 			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Agriculture Activities"))
 				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgricultureServices/AgricultureData";
@@ -1063,7 +1063,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				NregsDataVO vo = new NregsDataVO();
 				 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 				 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
-				 	    				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district"))
+				 	    				if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().equalsIgnoreCase("district"))
 				 	    					vo.setDistrict(jObj.getString("DISTRICT_DESCRIPTION"));
 				 	    				else
 				 	    					vo.setDistrict(jObj.getString("DISTRICT"));
@@ -1156,9 +1156,9 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    	if(inputVO.getSublocationType().trim().equalsIgnoreCase("district"))
 		 	    	{
 		 	    		String sublocationType = inputVO.getSublocationType();
-		 	    		if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
+		 	    		/*if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
 		 	    			inputVO.setLocationType("constituency");
-		 	    		else
+		 	    		else*/
 		 	    			inputVO.setSublocationType("constituency");
 			 	    		
 			 	    		str = convertingInputVOToString(inputVO);
@@ -1179,9 +1179,9 @@ public class NREGSTCSService implements INREGSTCSService{
 									distConstMap.put(nregsDataVO.getDistrict(),filterVo);
 								}
 				 	    	 }
-				 	    	if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
+				 	    	/*if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
 				 	    		inputVO.setLocationType("mandal");
-				 	    	else
+				 	    	else*/
 				 	    		inputVO.setSublocationType("mandal");
 				 	    	str = convertingInputVOToString(inputVO);
 				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
@@ -1190,7 +1190,7 @@ public class NREGSTCSService implements INREGSTCSService{
 					 	      }else{
 					 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
 					 	    	 
-					 	    	  disMandallist = getNregsMandalsCuntFrDistrict(mandalOutput,distConstMap,inputVO.getDivType(),inputVO.getLocationType());
+					 	    	  disMandallist = getNregsMandalsCuntFrDistrict(mandalOutput,distConstMap,inputVO.getDivType(),inputVO.getSublocationType());
 					 	      }
 				 	    	
 				 	    	distConstMap.clear();
@@ -1201,9 +1201,9 @@ public class NREGSTCSService implements INREGSTCSService{
 									distConstMap.put(nregsDataVO.getDistrict(),filterVo);
 								}
 				 	    	 }
-				 	    	if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
+				 	    	/*if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
 				 	    		inputVO.setLocationType("panchayat");
-				 	    	else
+				 	    	else*/
 				 	    		inputVO.setSublocationType("panchayat");
 				 	    	str = convertingInputVOToString(inputVO);
 				 	    	ClientResponse panchayatResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
@@ -1212,7 +1212,7 @@ public class NREGSTCSService implements INREGSTCSService{
 					 	      }else{
 					 	    	 String panchayatOutput = panchayatResponse.getEntity(String.class);
 					 	    	 
-					 	    	disVillageslist = getNregsVillageCuntFrDistrict(panchayatOutput,distConstMap,inputVO.getDivType(),inputVO.getLocationType());
+					 	    	disVillageslist = getNregsVillageCuntFrDistrict(panchayatOutput,distConstMap,inputVO.getDivType(),inputVO.getSublocationType());
 					 	      }
 				 	    	
 				 	    	
@@ -1249,9 +1249,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    			constMandMap.put(nregsDataVO.getConstituency(),filterVo);
 								}
 				 	    	 }
-				 	    	if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
+				 	    	/*if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
 				 	    		inputVO.setLocationType("mandal");
-				 	    	else
+				 	    	else*/
 			 	    		inputVO.setSublocationType("mandal");
 			 	    		str = convertingInputVOToString(inputVO);
 				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
@@ -1270,9 +1270,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    			constMandMap.put(nregsDataVO.getConstituency(),filterVo);
 								}
 				 	    	 }
-				 	    	if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
+				 	    	/*if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
 				 	    		inputVO.setLocationType("panchayat");
-				 	    	else
+				 	    	else*/
 				 	    		inputVO.setSublocationType("panchayat");
 				 	    	str = convertingInputVOToString(inputVO);
 				 	    	ClientResponse panchaytResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
@@ -1334,9 +1334,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    			mandalVillaMap.put(nregsDataVO.getMandal(),filterVo);
 								}
 				 	    	 }
-			 	    		if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
+			 	    		/*if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance"))
 				 	    		inputVO.setLocationType("panchayat");
-			 	    		else
+			 	    		else*/
 			 	    			inputVO.setSublocationType("panchayat");
 			 	    		str = convertingInputVOToString(inputVO);
 				 	    	ClientResponse panchayResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
@@ -1507,7 +1507,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	    			for(int i=0;i<finalArray.length();i++){
 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 	    				if(divType != null && divType.trim().toString().equalsIgnoreCase("FAperformance"))
-	    					constName = jObj.getString("Assembly");
+	    					constName = jObj.getString("ASSEMBLY");
 	    				else
 	    					constName = jObj.getString("CONSTITUENCY");
 						NregsDataVO vo = cntMap.get(constName);
@@ -1798,7 +1798,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	    			for(int i=0;i<finalArray.length();i++){
 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 	    				if(divType != null && divType.trim().toString().equalsIgnoreCase("FAperformance"))
-	    					constName = jObj.getString("Assembly");
+	    					constName = jObj.getString("ASSEMBLY");
 	    				else
 	    					constName = jObj.getString("CONSTITUENCY");
 						NregsDataVO vo = cntMap.get(constName);
@@ -2083,7 +2083,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setPittingArea(jObj.getString("PITTINGAREA"));
 	 	    				vo.setPlantingArea(jObj.getString("PLANTINGAREA"));
 	 	    				vo.setPencentageOfPlanting(jObj.getString("PERCENTAGEOFPLANTING"));
-	 	    				vo.setSancTrgtPittingPerc(new BigDecimal((Double.valueOf(jObj.getString("PITTINGAREA"))*100.00)/Double.valueOf(jObj.getString("SANCTIONEDACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				if(jObj.getString("PITTINGAREA") != null && Double.valueOf(jObj.getString("PITTINGAREA")) >0 && jObj.getString("SANCTIONEDACRES") != null && Double.valueOf(jObj.getString("SANCTIONEDACRES")) > 0)
+	 	    					vo.setSancTrgtPittingPerc(new BigDecimal((Double.valueOf(jObj.getString("PITTINGAREA"))*100.00)/Double.valueOf(jObj.getString("SANCTIONEDACRES"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				else
+	 	    					vo.setSancTrgtPittingPerc("0.00");
 	 	    				voList.add(vo);
 	 	    			}
 	 	    		}
