@@ -4077,6 +4077,7 @@ $(document).on("click",".cuntCls",function(){
 	var range = $(this).attr("attr_range");
 	var locationType = $(this).attr("attr_location_type");
 	var locationId = $(this).attr("attr_loaction_id");
+	var districtId = $("#selectedName").attr("attr_distid");
 	var rangeArr;
 	var fromRange;
 	var toRange;
@@ -4102,7 +4103,8 @@ $(document).on("click",".cuntCls",function(){
 		locationType: locationType,
 		locationId : locationId,
 		fromRange : fromRange,
-		toRange : toRange
+		toRange : toRange,
+		districtId : districtId
 		
 	}
 	$.ajax({
