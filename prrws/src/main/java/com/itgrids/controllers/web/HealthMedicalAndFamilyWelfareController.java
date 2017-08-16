@@ -1,6 +1,7 @@
 package com.itgrids.controllers.web;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.DiseasesVO;
 import com.itgrids.dto.InputVO;
-import com.itgrids.dto.LocationFundDetailsVO;
-import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.LocationIdNameVO;
 import com.itgrids.service.IHealthMedicalAndFamilyWelfareService;
 
 @Controller
@@ -52,8 +52,8 @@ public class HealthMedicalAndFamilyWelfareController {
 		return diseasesList;
 	}
 	@PostMapping("/getSubLocationsBySuperLocationId")
-	public @ResponseBody List<LocationFundDetailsVO> getAllSubLocationsBySuperLocationId(@RequestBody InputVO inputVO){
-		List<LocationFundDetailsVO> locationList = healthMedicalAndFamilyWelfareService.getAllSubLocationsBySuperLocationId(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getSuperLocationId());
+	public @ResponseBody Set<LocationIdNameVO> getAllSubLocationsBySuperLocationId(@RequestBody InputVO inputVO){
+		Set<LocationIdNameVO> locationList = healthMedicalAndFamilyWelfareService.getAllSubLocationsBySuperLocationId(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getSuperLocationId());
 		return locationList;
 	}
 }

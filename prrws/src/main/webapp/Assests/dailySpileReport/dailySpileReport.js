@@ -869,10 +869,10 @@ function buildTableData(ajaxresp,blockName,filterType){
 									buildTable+='<th></th>';
 								}
 							}
-							buildTable+='<th colspan="3"><img src="Assests/img/Dengue&maleria_Sm.png">Dengue & Malaria Cases</th>';
-							buildTable+='<th colspan="3"><img src="Assests/img/Dengue_Sm.png">Dengue</th>';
-							buildTable+='<th colspan="3"><img src="Assests/img/maleria_Sm.png">Malaria</th>';
-						buildTable+='</tr>';
+							buildTable+='<th colspan="4"><img src="Assests/img/Dengue&maleria_Sm.png">Dengue & Malaria Cases</th>';
+							buildTable+='<th colspan="2" style="background-color:#FDE5F2"><img src="Assests/img/Dengue_Sm.png">Dengue</th>';
+							buildTable+='<th colspan="2" style="background-color:#E5F0F5"><img src="Assests/img/maleria_Sm.png">Malaria</th>';
+						buildTable+='</tr>';    
 						buildTable+'<tr>';
 							
 							if(blockName=='DISTRICT'){
@@ -903,14 +903,15 @@ function buildTableData(ajaxresp,blockName,filterType){
 									buildTable+='<th>MANDAL/TOWN</th>';
 								}
 							}
-							buildTable+='<th style="background-color:#F3F3F3">TODAY</th>';
+							buildTable+='<th style="background-color:#F3F3F3">OVERALL</th>';
+							buildTable+='<th style="background-color:#F3F3F3">TODAY DENGUE CASES</th>';
+							buildTable+='<th style="background-color:#F3F3F3">TODAY MALARIA CASES</th>';
 							buildTable+='<th style="background-color:#F3F3F3">TOTAL</th>';
-							buildTable+='<th style="background-color:#F3F3F3">%</th>';
-							buildTable+='<th style="background-color:#FDE5F2">TODAY</th>';
-							buildTable+='<th style="background-color:#FDE5F2">TOTAL</th>';
+							
+							buildTable+='<th style="background-color:#FDE5F2">DENGUE TOTAL</th>';
 							buildTable+='<th style="background-color:#FDE5F2">%</th>';
-							buildTable+='<th style="background-color:#E5F0F5">TODAY</th>';
-							buildTable+='<th style="background-color:#E5F0F5">TOTAL</th>';
+							
+							buildTable+='<th style="background-color:#E5F0F5">MALARIA TOTAL</th>';
 							buildTable+='<th style="background-color:#E5F0F5">%</th>';
 						buildTable+'</tr>';
 					buildTable+='</thead>';	
@@ -945,51 +946,56 @@ function buildTableData(ajaxresp,blockName,filterType){
 										buildTable+='<td>'+ajaxresp[i].name+'</td>';
 									}
 								}
-								if(ajaxresp[i].todayTotal > 0){
-									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].todayTotal+'</td>';
+								
+								if(ajaxresp[i].overAll > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].overAll+'</td>';
 								}else{
 									buildTable+='<td style="background-color:#F3F3F3">-</td>';
 								}
-								if(ajaxresp[i].total > 0){
-									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].total+'</td>';
-								}else{
-									buildTable+='<td style="background-color:#F3F3F3">-</td>';
-								}
-								if(ajaxresp[i].totalPercent > 0){
-									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].totalPercent+'</td>';
-								}else{
-									buildTable+='<td style="background-color:#F3F3F3">-</td>';
-								}
+								
 								if(ajaxresp[i].dengueToday > 0){
 									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].dengueToday+'</td>';
 								}else{
 									buildTable+='<td style="background-color:#F3F3F3">-</td>';
 								}
-								if(ajaxresp[i].dengueTotal > 0){
-									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].dengueTotal+'</td>';
-								}else{
-									buildTable+='<td style="background-color:#F3F3F3">-</td>';
-								}
-								if(ajaxresp[i].denguePercent > 0){
-									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].denguePercent+'</td>';
-								}else{
-									buildTable+='<td style="background-color:#F3F3F3">-</td>';
-								}
+								
 								if(ajaxresp[i].malariaToday > 0){
 									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].malariaToday+'</td>';
 								}else{
 									buildTable+='<td style="background-color:#F3F3F3">-</td>';
 								}
+								
+								if(ajaxresp[i].total > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].total+'</td>';
+								}else{
+									buildTable+='<td style="background-color:#F3F3F3">-</td>';
+								}
+								
+								if(ajaxresp[i].dengueTotal > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].dengueTotal+'</td>';
+								}else{
+									buildTable+='<td style="background-color:#F3F3F3">-</td>';
+								}
+								
+								if(ajaxresp[i].denguePercent > 0){
+									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].denguePercent+'</td>';
+								}else{
+									buildTable+='<td style="background-color:#F3F3F3">-</td>';
+								}
+								
 								if(ajaxresp[i].malariaTotal > 0){
 									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].malariaTotal+'</td>';
 								}else{
 									buildTable+='<td style="background-color:#F3F3F3">-</td>';
 								}
+								
 								if(ajaxresp[i].malariaPercent > 0){
 									buildTable+='<td style="background-color:#F3F3F3">'+ajaxresp[i].malariaPercent+'</td>';
 								}else{
 									buildTable+='<td style="background-color:#F3F3F3">-</td>';
 								}
+								
+								
 							buildTable+='</tr>';
 						}
 					buildTable+='</tbody>';
