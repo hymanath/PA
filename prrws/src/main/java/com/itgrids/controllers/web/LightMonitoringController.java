@@ -1,4 +1,4 @@
-package com.itgrids.led.controller;
+package com.itgrids.controllers.web;
 
 import java.util.Date;
 import java.util.List;
@@ -20,10 +20,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LedOverviewVo;
 import com.itgrids.dto.LightMonitoringVO;
 import com.itgrids.dto.ResultVO;
-import com.itgrids.led.service.ILightMonitoring;
-
-
-
+import com.itgrids.service.ILightMonitoring;
 
 
 @EnableAutoConfiguration
