@@ -1242,6 +1242,8 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				committeeCounts.setMainMandalStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getMainMandalTotal(), mainMandalStartCount))));
 				committeeCounts.setMainVillageCompletePer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getMainVillageTotal(), mainVillageCompletedCount))));
 				committeeCounts.setMainVillageStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getMainVillageTotal(), mainVillageStartCount))));
+				committeeCounts.setMainVillageNotPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getMainVillageTotal(), mainVillageNotStarted))));
+				committeeCounts.setMainMandalNotPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getMainMandalTotal(), mainMandalNotStarted))));
 
 				committeeCounts.setAffliatedMandalCompletedCount(affliatedMandalCompletedCount);
 				committeeCounts.setAffliatedMandalStartedCount(affliatedMandalStartCount);
@@ -1255,6 +1257,9 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				committeeCounts.setAffMandalStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffMandalTotal(), affliatedMandalStartCount))));
 				committeeCounts.setAffVillageCompletePer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffVillageTotal(), affliatedVillageCompletedCount))));
 				committeeCounts.setAffVillageStartPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffVillageTotal(), affliatedVillageStartCount))));
+				committeeCounts.setAffVillageNotPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffVillageTotal(), affliatedVillageNotStarted))));
+				committeeCounts.setAffMandalNotPer((Double.parseDouble(cadreDetailsService.calculatePercentage(committeeCounts.getAffMandalTotal(), affliatedMandalNotStarted))));
+
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseCommitteesCount", e);
