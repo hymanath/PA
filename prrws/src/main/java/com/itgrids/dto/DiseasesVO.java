@@ -46,6 +46,8 @@ public class DiseasesVO implements Serializable {
 	private Long malariaTotal;
 	private Double malariaPercent;
 	
+	private Long overAll;
+	
 	private String color;
 	private Long rankId;
 	
@@ -300,6 +302,12 @@ public class DiseasesVO implements Serializable {
 	}
 	public void setSize(Long size) {
 		this.size = size;
+	}
+	public Long getOverAll() {
+		return overAll;
+	}
+	public void setOverAll(Long overAll) {
+		this.overAll = overAll;
 	}
 	
 	
