@@ -43,7 +43,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				+ " from  LightMonitoring model where model.isDeleted ='N' ");
 
 		if (fromDate != null && toDate != null) {
-			sb.append(" and  model.surveyDate between :fromDate and :toDate ");
+			sb.append(" and  date(model.surveyDate) between :fromDate and :toDate ");
 		}
 		Query query = getSession().createQuery(sb.toString());
 		if (fromDate != null && toDate != null) {
@@ -66,7 +66,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				+ " COUNT(DISTINCT LM.panchayat.locationAddress.tehsil.tehsilId), "
 				+ "COUNT(DISTINCT LM.panchayat.panchayatId)  from  LightMonitoring  LM  ");
 
-		sb.append(" where LM.panchayat.locationAddress.district.districtId  between 11 and 23 and LM.isDeleted = 'N' ");
+		sb.append(" where LM.panchayat.locationAddress.district.districtId  between 11 and 23 and LM.isDeleted = 'N' and LM.surveyDate is not null ");
 		if (startDate != null && toDate != null) {
 			sb.append(" and LM.surveyDate between :startDate and :toDate ");
 		}
@@ -260,12 +260,11 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getLocationsForLEDDashboard(String locationType,String displayType,String filterType,Long locationId)
+	public List<Object[]> getLocationsForLEDDashboard(String locationType,String filterType,Long locationId)
 	{
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbc = new StringBuilder();
 		StringBuilder sbg = new StringBuilder();
-		boolean filterFlag = false;
 		
 		sb.append("SELECT COUNT(DISTINCT P.locationAddress.tehsil.tehsilId), COUNT(DISTINCT P.panchayatId) ");
 		
@@ -291,47 +290,41 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			sbg.append(" GROUP BY P.locationAddress.tehsil.tehsilId ORDER BY P.locationAddress.district.districtId,P.locationAddress.constituency.name,P.locationAddress.tehsil.tehsilName ");
 		}
 			
-		if(displayType != null && displayType.trim().length() > 0)
-		{
-			if(displayType.equalsIgnoreCase("district"))
-				sb.append(",P.locationAddress.district.districtId, P.locationAddress.district.districtName ");
-			else if(displayType.equalsIgnoreCase("parliament"))	
-				sb.append(", P.locationAddress.parliament.constituencyId,P.locationAddress.parliament.name ");
-		}
-		
 		sb.append(" FROM Panchayat P WHERE P.locationAddress.state.stateId = 1 ");
 		
 		if(filterType != null && filterType.trim().length() > 0 && locationId != null && locationId.longValue() > 0)
 		{
-			filterFlag = true;
-			if(filterType.equalsIgnoreCase("district"))
+			if(filterType.equalsIgnoreCase("district")){
 				sbc.append(" AND P.locationAddress.district.districtId = :locationId ");
-			else if(filterType.equalsIgnoreCase("parliament"))
+			}else if(filterType.equalsIgnoreCase("parliament")){
 				sbc.append(" AND P.locationAddress.parliament.constituencyId = :locationId ");
-			else if(filterType.equalsIgnoreCase("constituency"))
+			}else if(filterType.equalsIgnoreCase("constituency")){
 				sbc.append(" AND P.locationAddress.constituency.constituencyId = :locationId ");
+			}
+				
 			
 		}
 		
 		String queryStr = sb.toString() + sbc.toString()+sbg.toString();
 		Query query = getSession().createQuery(queryStr);
 		
-		if(filterFlag)
+		if(filterType != null && filterType.trim().length() > 0 && locationId != null && locationId.longValue() > 0)
+		{
 			query.setParameter("locationId",locationId);
-		
+		}
 		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getLocationWiseDataForLEDDashboard(String locationType,String filterType,Long locationId)
+	public List<Object[]> getLocationWiseDataForLEDDashboard(String locationType,String filterType,Long filterValue,Date fromDate,Date toDate)
 	{
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbc = new StringBuilder();
 		StringBuilder sbg = new StringBuilder();
-		boolean filterFlag = false;
-		
+	
 		sb.append(" SELECT COUNT(DISTINCT LM.panchayat.locationAddress.tehsil.tehsilId), COUNT(DISTINCT LM.panchayat.panchayatId) ");
-		sb.append(",SUM(LM.totalPoles),SUM(LM.totalPanels),SUM(LM.totalLights),SUM(LM.workingLights),SUM(LM.onLights),sum(LM.offLights) ");
+		sb.append(",SUM(LM.totalPoles),SUM(LM.totalPanels),SUM(LM.totalLights),SUM(LM.workingLights),SUM(LM.onLights),sum(LM.offLights) ");	
+		
 		
 		if(locationType.equalsIgnoreCase("district"))
 		{	
@@ -354,25 +347,34 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			sbg.append(" GROUP BY LM.panchayat.locationAddress.tehsil.tehsilId ");
 		}
 		
-		sb.append(" FROM LightMonitoring LM  WHERE LM.panchayat.locationAddress.state.stateId = 1 ");
+		sb.append(" FROM LightMonitoring LM  WHERE LM.panchayat.locationAddress.state.stateId = 1 and LM.isDeleted='N' ");
 		
-		if(filterType != null && filterType.trim().length() > 0 && locationId != null && locationId.longValue() > 0)
+		if(filterType != null && filterType.trim().length() > 0 && filterValue != null && filterValue.longValue() > 0)
 		{
-			filterFlag = true;
-			if(filterType.equalsIgnoreCase("district"))
-				sbc.append(" AND LM.panchayat.locationAddress.district.districtId = :locationId ");
-			else if(filterType.equalsIgnoreCase("parliament"))
-				sbc.append(" AND LM.panchayat.locationAddress.parliament.constituencyId = :locationId ");
-			else if(filterType.equalsIgnoreCase("constituency"))
-				sbc.append(" AND LM.panchayat.locationAddress.constituency.constituencyId = :locationId ");
-			
+			if(filterType.equalsIgnoreCase("district")){
+				sbc.append(" AND LM.panchayat.locationAddress.district.districtId = :filterValue ");
+			}else if(filterType.equalsIgnoreCase("parliament")){
+				sbc.append(" AND LM.panchayat.locationAddress.parliament.constituencyId = :filterValue ");
+			} else if(filterType.equalsIgnoreCase("constituency")) {
+				sbc.append(" AND LM.panchayat.locationAddress.constituency.constituencyId = :filterValue ");
+			}
+		}
+		if (fromDate != null && toDate != null) {
+			 sbc.append(" and  date(LM.surveyDate) between :fromDate and :toDate ");
 		}
 		
 		String queryStr = sb.toString() + sbc.toString()+sbg.toString();
 		Query query = getSession().createQuery(queryStr);
 		
-		if(filterFlag)
-			query.setParameter("locationId",locationId);
+		if(filterType != null && filterType.trim().length() > 0 && filterValue != null && filterValue.longValue() > 0)
+		{
+			query.setParameter("filterValue",filterValue);
+		}
+		if (fromDate != null && toDate != null) {
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+	
 		
 		return query.list();
 	}

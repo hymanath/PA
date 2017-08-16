@@ -32,6 +32,9 @@ public class LightMonitoringVO implements Serializable{
 	private String panchayatName;
 	private String parliamentName;
 	private String constituencyName;
+	private Long surveyStartedtotalMandals=0l;
+	private Long surveyStartedtotalGps=0l;
+	private Long totalLedLIghtInstalledCount=0l;
 	
 	
 	private List<LightWattageVO> WattageList = new ArrayList<LightWattageVO>(0);
@@ -201,6 +204,25 @@ public class LightMonitoringVO implements Serializable{
 	public void setParliamentName(String parliamentName) {
 		this.parliamentName = parliamentName;
 	}
+	public Long getSurveyStartedtotalMandals() {
+		return surveyStartedtotalMandals;
+	}
+	public void setSurveyStartedtotalMandals(Long surveyStartedtotalMandals) {
+		this.surveyStartedtotalMandals = surveyStartedtotalMandals;
+	}
+	public Long getSurveyStartedtotalGps() {
+		return surveyStartedtotalGps;
+	}
+	public void setSurveyStartedtotalGps(Long surveyStartedtotalGps) {
+		this.surveyStartedtotalGps = surveyStartedtotalGps;
+	}
+	public Long getTotalLedLIghtInstalledCount() {
+		return totalLedLIghtInstalledCount;
+	}
+	public void setTotalLedLIghtInstalledCount(Long totalLedLIghtInstalledCount) {
+		this.totalLedLIghtInstalledCount = totalLedLIghtInstalledCount;
+	}
+	
 	
 	
 

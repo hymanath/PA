@@ -13,12 +13,10 @@
 <link href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less">
 <script src="Assests/Plugins/Less/less.js"></script>
-    <style>
-        
-    </style>
+    
 </head>
 <body>
-   <header>
+   <header style = "box-shadow:none;background-color:#fff;">
 	<nav>
 		<div class="container-fluid">
 			<div class="row">
@@ -27,12 +25,10 @@
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
-					<p>MGNREGS - AP</p>
+					<p>LED - Dashboard</p>
 				</div>
-				<div class="col-sm-2 col-xs-12 col-sm-offset-3">
-					<img src="Assests/images/NREGS-LOGO.png" class="m_top5"/>
-				</div>
-				<div class="col-sm-1 col-xs-12">
+				
+				<div class="col-sm-3 col-xs-12 pull-right">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
@@ -120,21 +116,32 @@
 			</div>
 		</div>
 	</nav>
-	<section>
+	<section class="navbar-section">
 		<div class="container-fluid padding_10">
-			
-				<div class="col-sm-12">
+				<div class="row">
                     <div class="col-sm-3">
-                        <select>
-                        <option>ANDHRA PRADESH</option>
-                    </select>
-                    </div>
+						<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
+					</div>
 					<div class="col-sm-9">
-                        <ul class="nav navbar-nav pull-right sub-menu" style="background-color:lightgrey;">
-                            <li class="active">LIVE</li>
-                            <li id="historicalData">HISTORICAL</li>
+                        <ul class="nav navbar-nav pull-right sub-menu">
+					        <li class="daterangeViewLiveCls">LIVE</li>
+                            <li class="active daterangeViewLiveCls">TODAY</li>
+                            <li id="historicalData" class="daterangeViewCls">HISTORICAL</li>
                         </ul>
                     </div>
+				</div>
+				<div class="row dateRangeWiseDetails" style="display:none;">
+					<ul class="list-inline pull-right calendar_active_cls">
+						<li attr_val="Overall"><img src="Assests/icons/Overall_icon.png"/>&nbsp;&nbsp;<b><span>Overall</span></b></li>
+						<li attr_val="Today"><img src="Assests/icons/Today_icon.png"/>&nbsp;&nbsp;<b><span>Today</span></b></li>
+						<li attr_val="Week"><img src="Assests/icons/Week_icon.png"/>&nbsp;&nbsp;<b><span> Week</span></b></li>
+						<li class="active" attr_val="Month"><img src="Assests/icons/Month_icon.png"/>&nbsp;&nbsp;<b><span>Month</span></b></li>
+						<li attr_val="3Months"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>3Months</span></b></li>
+						<li attr_val="6Months"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>6Months</span></b></li>
+						<li attr_val="Year"><img src="Assests/icons/3612months_icon.png"/>&nbsp;&nbsp;<b><span>Year</span></b></li>
+						<li attr_val="custom" id="singleDateRangePicker"><img src="Assests/icons/CustomRange_icon.png"/>&nbsp;&nbsp;<b>Custom Range</b></li>
+						</li>
+					</ul> 
 				</div>
 		</div>
 	</section>
@@ -144,7 +151,7 @@
     <div class="container-fluid">
             <div class="row">
 				<div class="col-sm-12">
-					<div class=" white-block poles_block m_top20">
+					<div class="white-block poles_block m_top20">
 						<div class="row">
 							<div id="overviewBlockId"></div>
 						</div>

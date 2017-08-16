@@ -1,17 +1,87 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var glStartDate = '2017-04-01'//moment().startOf('year').format("YYYY-MM")+'-1';
-var glEndDate = moment().format("YYYY-MM")+'-30';
-
+//var glStartDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
+var glStartDate = moment().format('DD-MM-YYYY');
+var glEndDate = moment().format('DD-MM-YYYY');
 onLoadCalls();
 function onLoadCalls()
 {
 	getLedOverviewForStartedLocationsDetailsCounts();
 	getBasicLedOverviewDetails();
-	getLevelWiseOverviewDetailsData();
-	getAllLevelWiseDataOverViewData();
 	projectData('',2)
+	
+	$(".chosen-select").chosen();
+	
+	$("header").on("click",".menu-cls",function(e){
+		e.stopPropagation();
+		$(".menu-data-cls").toggle();
+	});
+	$(document).on("click",function(){
+		$(".menu-data-cls").hide();
+	});
 }
+$(document).on('click','.calendar_active_cls li', function(){
+	var date = $(this).attr("attr_val");
+	$(".tableMenu li").removeClass("active");
+	$(".tableMenu li:first-child").addClass("active");
+	
+	
+	if(date == 'Today')
+	{
+		glStartDate = moment().format('DD-MM-YYYY');
+		glEndDate = moment().format('DD-MM-YYYY');
+		$("#selectedDateIvr").html("TODAY");
+	}else if(date == 'Week'){
+		glStartDate = moment().subtract(1,'week').format('DD-MM-YYYY');
+		glEndDate = moment().format('DD-MM-YYYY');
+		$("#selectedDateIvr").html("WEEK");
+	}else if(date == 'Month'){
+		glStartDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
+		glEndDate = moment().format('DD-MM-YYYY');
+		$("#selectedDateIvr").html("MONTH");
+	}else if(date == '3Months'){
+		glStartDate = moment().subtract(3,'month').startOf("month").format('DD-MM-YYYY');
+		glEndDate = moment().format('DD-MM-YYYY');
+		$("#selectedDateIvr").html("3 MONTHS");
+	}else if(date == '6Months'){
+		glStartDate = moment().subtract(6,'month').startOf("month").format('DD-MM-YYYY');
+		glEndDate = moment().format('DD-MM-YYYY');
+		$("#selectedDateIvr").html("6 MONTHS");
+	}else if(date == 'Overall'){
+		glStartDate = moment().subtract(15,'years').startOf("year").format('DD-MM-YYYY');
+		glEndDate = moment().format('DD-MM-YYYY');
+		$("#selectedDateIvr").html("OVERALL");
+	}
+	
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+	if(date != "custom"){
+		onLoadCalls();
+	}
+	
+});
+$("#singleDateRangePicker").daterangepicker({
+		opens: 'left',
+		startDate: glStartDate,
+		endDate: glEndDate,
+		locale: {
+		  format: 'DD-MM-YYYY'
+		}
+	});
+$('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+	
+	glStartDate = picker.startDate.format('DD-MM-YYYY')
+	glEndDate = picker.endDate.format('DD-MM-YYYY')
+	onLoadCalls();
+	
+});
+$(document).on("click",".daterangeViewCls",function(){
+		$(".dateRangeWiseDetails").show();
+});
+$(document).on("click",".daterangeViewLiveCls",function(){
+		$(".dateRangeWiseDetails").hide();
+});
 function getLedOverviewForStartedLocationsDetailsCounts(){
+	$("#ledOverViewDiv").html(spinner);
 	var json = {
 		fromDate:glStartDate,
 		toDate:glEndDate
@@ -26,6 +96,7 @@ function getLedOverviewForStartedLocationsDetailsCounts(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$("#ledOverViewDiv").html('');
 		if(result != null){
 			buildLedOverviewForStartedLocationsDetailsCounts(result);	
 		}
@@ -47,59 +118,20 @@ function getBasicLedOverviewDetails(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		buildBasicLedOverviewDetails(result);
-	});		
-}
-function getLevelWiseOverviewDetailsData(){
-	$("#overviewBlockId").html(spinner);
-	var json = {
-		"fromDateStr": "01-08-2017",
-		"toDateStr": "01-08-2017",
-		"locationTypeId" : 2,
-		"locationValues" : [0]
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getDistrictLevelWiseOverviewDetails',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
+		if (result != null ) {
+		 buildBasicLedOverviewDetails(result);	
 		}
-	}).done(function(result){
-		buildBasicLedOverviewDetails(result);
-	});		
-}
-function getAllLevelWiseDataOverViewData(){
-		$("#overviewBlockId").html(spinner);
-	var json = {
-		locationType: "district",
-		displayType: "district",
-		filterType : "district",
-		locationId : 11
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getAllLevelWiseDataOverView',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		buildBasicLedOverviewDetails(result);
+		
 	});		
 }
 function buildLedOverviewForStartedLocationsDetailsCounts(result){
-var str='';
+	var str='';
 	str+='<div class="col-sm-12 border_top padding_10" style="background-color:#F9F9F9;">';
-				str+='<div class="col-sm-2 media">';
+				 /*str+='<div class="col-sm-2 media">';
 					str+='<div class="media-left">';
 						str+='<img src="Assests/icons/Start_Date_icon.png" alt="start_date">';
 				   str+=' </div>';
-				   str+=' <div class="media-body">';
+				 str+=' <div class="media-body">';
 					   str+=' <h5>SURVEY START</h5>';
 					   str+=' <h3>01 JUN 2017</h3>';
 					str+='</div>';
@@ -113,8 +145,8 @@ var str='';
 					   str+=' <p>Expected Date</p>';
 						str+='<h3>20 JUN 2017</h3>';
 					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-2 media">';
+				str+='</div>';*/
+				str+='<div class="col-sm-3 media">';
 					str+='<div class="media-left">';
 					   str+=' <img src="Assests/icons/District_Survy_icon.png" alt="start_date">';
 				   str+=' </div>';
@@ -123,7 +155,7 @@ var str='';
 					   str+=' <h3>'+result[0].totalDistCnt+'</h3>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-2 media">';
+				str+='<div class="col-sm-3 media">';
 					str+='<div class="media-left">';
 						str+='<img src="Assests/icons/Constituency_Survy_icon.png" alt="start_date">';
 				   str+=' </div>';
@@ -132,16 +164,16 @@ var str='';
 						str+='<h3>'+result[0].totalConstituencyCnt+'</h3>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-2 media">';
+				str+='<div class="col-sm-3 media">';
 					str+='<div class="media-left">';
-					   str+=' <img src="Assests/icons/Mandal_survy_icon.png" alt="start_date">';
+					   str+=' <img src="Assests/icons/Mandal_Survy_icon.png" alt="">';
 				   str+=' </div>';
 					str+='<div class="media-body">';
 						str+='<h5>NO OF <span style="color:#00BFE8;">MANDALS</span>SURVEY SATRTED</h5>';
 							str+='<h3>'+result[0].totalMandalCnt+'</h3>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-2 media">';
+				str+='<div class="col-sm-3 media">';
 					str+='<div class="media-left">';
 						str+='<img src="Assests/icons/GPs_survey_icon.png" alt="start_date">';
 					str+='</div>';
@@ -154,11 +186,13 @@ var str='';
   $("#ledOverViewDiv").html(str);
 }
 function getAllLevelWiseDataOverView(locType,displayType,filterType,locId,divId){
+	$("#"+divId+"TableId").html(spinner);
 	var json = {
 			"locationType"      :locType,
-			"displayType"        :displayType,
 			"filterType"         : filterType ,
 			"locationId"   : locId,
+			"fromDate": glStartDate,
+		    "toDate": glEndDate
 		}
 	$.ajax({                
 		type:'POST',    
@@ -170,15 +204,14 @@ function getAllLevelWiseDataOverView(locType,displayType,filterType,locId,divId)
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$("#"+divId+"TableId").html('');
 		if(result != null && result.length > 0)
 		{
 			tableView(result,divId);
 		}else{
-			$("#"+divId+"TableId").html("NO DATA");
+			$("#"+divId+"TableId").html("NO DATA AVAILABLE.");
 		}
-		
 	});
-	
 }
 
 function buildBasicLedOverviewDetails(result)
@@ -259,7 +292,6 @@ function projectData(divId,levelId)
 	{
 		dataArr = ['constituency','mandal'];
 	}
-	
 	collapse+='<section>';
 		collapse+='<div class="row">';
 			collapse+='<div class="col-sm-12">';
@@ -274,7 +306,12 @@ function projectData(divId,levelId)
 								}else{
 									collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+dataArr[i]+'" href="#collapse'+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+dataArr[i]+'">';
 								}
-									collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview</h4>';
+								    if(dataArr[i]=="district"){
+									    collapse+='<h4 class="panel-title text-capital districtLevelHeadingDivCls">'+dataArr[i]+' level overview</h4>';	
+									} else {
+										collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level overview</h4>';
+									}
+									
 								collapse+='</a>';
 							collapse+='</div>';
 							if(i == 0)
@@ -285,6 +322,36 @@ function projectData(divId,levelId)
 							}
 							
 								collapse+='<div class="panel-body">';
+									collapse+='<div class="row m_top10">';
+										collapse+='<div class="col-sm-12">';
+										collapse+='<div class="col-sm-3">';
+											collapse+='<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu" attr_blockId="3">';
+												collapse+='<li class="active ledResultTypeCls"  attr_location_level='+dataArr[i]+'  attr_tab_type="district">Districts</li>';
+												collapse+='<li class="ledResultTypeCls" attr_location_level='+dataArr[i]+' attr_tab_type="parliament">Parliament</li>';
+											collapse+='</ul>';
+										collapse+='</div>';
+									if(dataArr[i] == "constituency"){
+										collapse+='<div class="col-sm-3">';
+											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="consLvlLedDistrictSelectBoxId" attr_location_level="constituency" attr_filter_type="district" attr_sub_location_type="" id="consLvlLedDistrictSelectBoxId">';
+											collapse+='<option>ALL DISTRICT</option>';
+											collapse+='</select>';
+										collapse+='</div>';
+										
+									}
+									if(dataArr[i] == "mandal"){
+										collapse+='<div class="col-sm-3">';
+											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="mandalLvlLedConstituencySelectBoxId" attr_child_div_id="mandalLvlLedConstituencySelectBoxId" attr_location_level="mandal" attr_filter_type="district" attr_sub_location_type="constituency" id="mandalLvlLedDistrictSelectBoxId">';
+											collapse+='<option>ALL DISTRICT</option>';
+											collapse+='</select>';
+										collapse+='</div>';
+										collapse+='<div class="col-sm-3">';
+											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="mandalLvlLedDistrictSelectBoxId" attr_location_level="mandal" attr_filter_type="constituency" attr_sub_location_type="" id="mandalLvlLedConstituencySelectBoxId">';
+											collapse+='<option>SELECT CONSTITUENCY</option>';
+											collapse+='</select>';
+										collapse+='</div>';
+									}
+									collapse+='</div>';
+									collapse+='</div>';
 									collapse+='<div id="'+dataArr[i]+'TableId"></div>';
 								collapse+='</div>';
 							collapse+='</div>';
@@ -299,7 +366,8 @@ function projectData(divId,levelId)
 	{
 		$("#"+dataArr[i]+"TableId").html(spinner);
 		getAllLevelWiseDataOverView(dataArr[i],dataArr[i],dataArr[i],"",dataArr[i]);
-	}				
+	}	
+   getLocationBasedOnSelection("district","",0,"");
 }
 function tableView(result,divId)
 {
@@ -319,9 +387,9 @@ function tableView(result,divId)
 				}
 				
 				tableView+='<th><img src="Assests/icons/mandals_icon.png"><br/>TOTAL MANDALS</th>';
-				//tableView+='<th><img src="Assests/icons/Mandal_survy_icon.png"><br/>SURVEY STARTED MANDALS</th>';
+				tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png"><br/>SURVEY STARTED MANDALS</th>';
 				tableView+='<th><img src="Assests/icons/GPs_icon.png"><br/>TOTAL GPs</th>';
-				//tableView+='<th><img src="Assests/icons/GPs_survey_icon.png"><br/>SURVEY STARTEDGPs</th>';
+				tableView+='<th><img src="Assests/icons/GPs_survey_icon.png"><br/>SURVEY STARTEDGPs</th>';
 				tableView+='<th><img src="Assests/icons/Poles_icon.png"><br/>TOTAL POLES SURVEYED</th>';
 				tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png"><br/>TOTAL CCMS-BOX/ PANELS INSTALLED</th>';
 				tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png"><br/>TOTAL LED LIGHTS INSTALLED</th>';
@@ -334,16 +402,23 @@ function tableView(result,divId)
 			for(var i in result)
 			{
 				tableView+='<tr>';
-				
 					tableView+='<td>'+result[i].locationName+'</td>';
-				
 					tableView+='<td>'+result[i].totalMandals+'</td>';
-					//tableView+='<td>'+result[].+'</td>';
+					if(divId!="district"){
+						if (result[i].surveyStartedtotalMandals > 0) {
+							tableView+='<td>Yes</td>';
+						} else {
+						   tableView+='<td>No</td>';	
+						}
+					}else{
+						tableView+='<td>'+result[i].surveyStartedtotalMandals+'</td>';
+					}
+					
 					tableView+='<td>'+result[i].totalGps+'</td>';
-					//tableView+='<td>38</td>';
+					tableView+='<td>'+result[i].surveyStartedtotalGps+'</td>';
 					tableView+='<td>'+result[i].totalPoles+'</td>';
 					tableView+='<td>'+result[i].totalPanels+'</td>';
-					tableView+='<td>'+result[i].totalLights+'</td>';
+					tableView+='<td>'+result[i].totalLedLIghtInstalledCount+'</td>';
 					tableView+='<td>'+result[i].workingLights+'</td>';
 					tableView+='<td>'+result[i].onLights+'</td>';
 					tableView+='<td>'+result[i].offLights+'</td>';
@@ -375,4 +450,88 @@ function tableView(result,divId)
 			}
 		]
 	});
+}
+
+/* Filter Block Start */
+$(document).on("click",".ledResultTypeCls",function() {
+	$(this).parent().find(".ledResultTypeCls").removeClass("active");
+	$(this).addClass("active");
+	var locationLevel = $(this).attr("attr_location_level");
+	var resultType = $(this).attr("attr_tab_type");
+	var filterType="";
+	var filterValue=0;
+	if (locationLevel != null && locationLevel=="district") {
+		if (resultType != null && resultType=="district" || resultType=="parliament") {
+		  getAllLevelWiseDataOverView(resultType,resultType,filterType,filterValue,locationLevel);
+		  $(".districtLevelHeadingDivCls").html(resultType+" level overview");
+		} 
+	}else if(locationLevel=="constituency" || locationLevel=="mandal") {
+		var divId = '';
+		 if(locationLevel=="constituency") {
+			 divId = "consLvlLedDistrictSelectBoxId";
+		 } else if (locationLevel=="mandal") {
+			 divId = "mandalLvlLedDistrictSelectBoxId";
+		 }
+		$("#"+divId).attr("attr_filter_type",resultType);
+		getLocationBasedOnSelection(resultType,filterType,filterValue,divId);
+		getAllLevelWiseDataOverView(locationLevel,locationLevel,filterType,filterValue,locationLevel);
+	}
+});
+
+$(document).on("change",".lebSelectBoxCls",function(){
+	var locationValue = $(this).val();
+	var locationLevel=$(this).attr("attr_location_level");
+	var parentDivId=$(this).attr("attr_parent_div_id");
+	var childDivId=$(this).attr("attr_child_div_id");
+	var filterType = $(this).attr("attr_filter_type");
+	var subLevel = $(this).attr("attr_sub_location_type");
+	if(subLevel!='') {
+		getLocationBasedOnSelection(subLevel,filterType,locationValue,childDivId);	
+	}
+	if (filterType=="constituency" && locationValue==0) {
+		filterType = $("#"+parentDivId).attr("attr_filter_type");
+		locationValue = $("#"+parentDivId).val();
+	}
+	
+	getAllLevelWiseDataOverView(locationLevel,locationLevel,filterType,locationValue,locationLevel);
+});
+
+/* End */
+
+function getLocationBasedOnSelection(locationType,filterType,filterValue,divId){
+	var json = {
+			"locationType"  : locationType,
+			"filterType"    : filterType ,
+			"locationId"    : filterValue,
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getLocationBasedOnSelection',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+	   if (result != null && result.length > 0) {
+		   buildSelextBoxRlst(result,divId,locationType)
+	   }
+	});
+	function buildSelextBoxRlst(result,divId,locationType) {
+		$("#"+divId).html('');
+		  var str='';
+		  str+='<option value="0">'+'ALL '+locationType.toUpperCase()+'</option>';
+		 for(var i in result) {
+			  str+='<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>';
+		 }
+		  if (locationType=="district") {
+			  $("#consLvlLedDistrictSelectBoxId,#mandalLvlLedDistrictSelectBoxId").html(' ');
+			  $("#consLvlLedDistrictSelectBoxId,#mandalLvlLedDistrictSelectBoxId").html(str);
+			  $("#consLvlLedDistrictSelectBoxId,#mandalLvlLedDistrictSelectBoxId").trigger("chosen:updated");
+		  } else {
+			$("#"+divId).html(str);
+			$("#"+divId).trigger("chosen:updated");
+		  }
+	}
 }
