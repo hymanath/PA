@@ -21,8 +21,7 @@ public interface ILightMonitoringDAO extends GenericDao<LightMonitoring, Long > 
     public List<Object[]> getParlaimentWiseSurveyDetails();
  	public List<Object[]> getDistrictLevelWise(Date fromDate, Date toDate,  List<Long> locationValues,	Long locationTypeId); 
  	
- 	public List<Object[]> getLocationsForLEDDashboard(String locationType,String displayType,String filterType,Long locationId);
- 	
- 	public List<Object[]> getLocationWiseDataForLEDDashboard(String locationType,String filterType,Long locationId);
+ 	public List<Object[]> getLocationsForLEDDashboard(String locationType,String filterType,Long locationId);
+ 	public List<Object[]> getLocationWiseDataForLEDDashboard(String locationType,String filterType,Long locationId,Date formDate,Date toDate);
 
 }
