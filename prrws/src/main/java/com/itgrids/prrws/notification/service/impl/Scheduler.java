@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.itgrids.service.ILightMonitoring;
+import com.itgrids.utils.IConstants;
 
 @Configuration
 @EnableScheduling
@@ -17,12 +18,12 @@ public class Scheduler {
 	private ILightMonitoring lightMonitoringService;
 
 	
-	/*@Scheduled(cron = "0 0 20 * * * *")
+	@Scheduled(cron = "0 0 20 * * * ")
 	public void runTheSchedulerEveryDay()
 	{
 		if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
 			return;
 		lightMonitoringService.saveRealtimeStatusByVillages();
-	}*/
+	}
 	
 }
