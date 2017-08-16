@@ -1592,12 +1592,12 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 		 Map<Long, Map<String,Set<Long>>> meetingWiseLateAbsentDetailsMap = new HashMap<Long,Map<String, Set<Long>>>(0);
 		Map<Long, Map<Long,List<Long>>> sessionWiseAbsentsMap = new HashMap<Long, Map<Long,List<Long>>>(0);
 		 List<Long> hasSessionpartyIds = new ArrayList<Long>(0);
-		 hasSessionpartyIds.addAll(partyMeetingIdsLsit);
+		 hasSessionpartyIds.addAll(partyMeetingIdsLsit);//all the meeting are here
 		 if(commonMethodsUtilService.isListOrSetValid(partyMeetingsSessionWiseAttendanceDetsils)){
 			 for (Object[] param : partyMeetingsSessionWiseAttendanceDetsils) {
 				 Long partyMeetingId =commonMethodsUtilService.getLongValueForObject(param[1]);
 				 if(partyMeetingIdsLsit.contains(partyMeetingId)){
-					 hasSessionpartyIds.remove(partyMeetingId);
+					 hasSessionpartyIds.remove(partyMeetingId);// remove meeting those are having session, means this list contains meetingid those are no session.
 				 }
 			}
 		 }
@@ -1608,10 +1608,10 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 				 if(!commonMethodsUtilService.isListOrSetValid(partyMeetingsSessionWiseAttendanceDetsils)){
 					 partyMeetingsSessionWiseAttendanceDetsils = new ArrayList<Object[]>(0);
 				 }
-				 partyMeetingsSessionWiseAttendanceDetsils.addAll(partyMeetingsWithoutSessionWiseAttendanceDetsils);
+				 partyMeetingsSessionWiseAttendanceDetsils.addAll(partyMeetingsWithoutSessionWiseAttendanceDetsils);//
 			 }		 
 		}
-		
+		//meeting wise invitee cadres, collect in a map says : partyMeetingInviteesMap
 		 List<Object[]> inviteesForPartyMeetingsDetls = partyMeetingInviteeDAO.getInviteesForPartyMeetings(new ArrayList<Long>(partyMeetingIdsLsit));
 		 if(commonMethodsUtilService.isListOrSetValid(inviteesForPartyMeetingsDetls)){
 			 for (Object[] param : inviteesForPartyMeetingsDetls) {
@@ -1622,7 +1622,7 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 					 tdpCadreList = partyMeetingInviteesMap.get(partyMeetingId);
 				 }
 				 tdpCadreList.add(tdpCadreId);
-				 partyMeetingInviteesMap.put(partyMeetingId, tdpCadreList);
+				 partyMeetingInviteesMap.put(partyMeetingId, tdpCadreList);//this map contains meeting wise all the invited cadres
 			}
 		 }
 		 
@@ -2062,6 +2062,7 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 				 }
 			 }
 			 finalList.addAll(meetingTypeVOMap.values());
+			 //update final list here, 
 		 }
 	}catch(Exception e){
 		LOG.error("exception occurred in getPartyMeetingsMainTypeOverViewData()", e);
