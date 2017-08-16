@@ -1,4 +1,4 @@
-package com.itgrids.service.lmd.impl;
+package com.itgrids.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,14 +19,13 @@ import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.ILightMonitoringDAO;
 import com.itgrids.dao.ILightWattageDAO;
 import com.itgrids.dao.IWebserviceCallDetailsDAO;
-import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LedOverviewVo;
 import com.itgrids.dto.LightMonitoringVO;
 import com.itgrids.dto.LightWattageVO;
 import com.itgrids.dto.ResultVO;
-import com.itgrids.led.service.ILightMonitoring;
 import com.itgrids.model.LightMonitoring;
 import com.itgrids.model.LightWattage;
+import com.itgrids.service.ILightMonitoring;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
