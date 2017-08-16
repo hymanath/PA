@@ -377,7 +377,7 @@ function tableView(result,divId,locType)
 			tableView+='<tr>';
 				if(divId == 'district')
 				{
-					tableView+='<th>'+locType+'</th>';
+					tableView+='<th>'+locType.toUpperCase()+'</th>';
 				}else if(divId == 'constituency')
 				{
 					tableView+='<th>CONSTITUENCY</th>';
