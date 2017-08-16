@@ -8,6 +8,7 @@ function onLoadCalls()
 	getLedOverviewForStartedLocationsDetailsCounts();
 	getBasicLedOverviewDetails();
 	getLevelWiseOverviewDetailsData();
+	getAllLevelWiseDataOverViewData();
 	projectData('',2)
 }
 function getLedOverviewForStartedLocationsDetailsCounts(){
@@ -60,6 +61,27 @@ function getLevelWiseOverviewDetailsData(){
 	$.ajax({                
 		type:'POST',    
 		url: 'getDistrictLevelWiseOverviewDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		buildBasicLedOverviewDetails(result);
+	});		
+}
+function getAllLevelWiseDataOverViewData(){
+		$("#overviewBlockId").html(spinner);
+	var json = {
+		locationType: "district",
+		displayType: "district",
+		filterType : "district",
+		locationId : 11
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getAllLevelWiseDataOverView',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -165,7 +187,7 @@ function buildBasicLedOverviewDetails(result)
 	str+='<div class="col-sm-2 lightsBlock">';
 		str+='<img src="Assests/icons/On_Off_light_icon.png">';
 		str+='<p>ON/OFF LIGHTS</p>';
-		str+='<h4>'+result[0].offLights+'/'+result[0].onLights+'</h4>';
+		str+='<h4>'+result[0].onLights+'/'+result[0].offLights+'</h4>';
 	str+='</div>';
 	str+='<div class="col-sm-10" style="padding-top:13px;">';
 		str+='<div class="col-sm-2 media">';
@@ -312,14 +334,9 @@ function tableView(result,divId)
 			for(var i in result)
 			{
 				tableView+='<tr>';
-				if(divId == 'district')
-				{
-					tableView+='<td>'+result[i].districtName+'</td>';
-				}else if(divId == 'constituency'){
-					tableView+='<td>'+result[i].constituencyName+'</td>';
-				}else if(divId == 'mandal'){
-					tableView+='<td>'+result[i].mandalName+'</td>';
-				}
+				
+					tableView+='<td>'+result[i].locationName+'</td>';
+				
 					tableView+='<td>'+result[i].totalMandals+'</td>';
 					//tableView+='<td>'+result[].+'</td>';
 					tableView+='<td>'+result[i].totalGps+'</td>';
