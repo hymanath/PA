@@ -185,7 +185,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
    str+='</div>';
   $("#ledOverViewDiv").html(str);
 }
-function getAllLevelWiseDataOverView(locType,displayType,filterType,locId,divId){
+function getAllLevelWiseDataOverView(locType,filterType,locId,divId){
 	$("#"+divId+"TableId").html(spinner);
 	var json = {
 			"locationType"      :locType,
@@ -207,7 +207,7 @@ function getAllLevelWiseDataOverView(locType,displayType,filterType,locId,divId)
 		$("#"+divId+"TableId").html('');
 		if(result != null && result.length > 0)
 		{
-			tableView(result,divId);
+			tableView(result,divId,locType);
 		}else{
 			$("#"+divId+"TableId").html("NO DATA AVAILABLE.");
 		}
@@ -365,11 +365,11 @@ function projectData(divId,levelId)
 	for(var i in dataArr)
 	{
 		$("#"+dataArr[i]+"TableId").html(spinner);
-		getAllLevelWiseDataOverView(dataArr[i],dataArr[i],dataArr[i],"",dataArr[i]);
+		getAllLevelWiseDataOverView(dataArr[i],dataArr[i],"",dataArr[i]);
 	}	
    getLocationBasedOnSelection("district","",0,"");
 }
-function tableView(result,divId)
+function tableView(result,divId,locType)
 {
 	var tableView = '';
 	tableView+='<table class="table" id="'+divId+'Table">';
@@ -377,7 +377,7 @@ function tableView(result,divId)
 			tableView+='<tr>';
 				if(divId == 'district')
 				{
-					tableView+='<th>DISTRICT</th>';
+					tableView+='<th>'+locType+'</th>';
 				}else if(divId == 'constituency')
 				{
 					tableView+='<th>CONSTITUENCY</th>';
@@ -385,8 +385,10 @@ function tableView(result,divId)
 				{
 					tableView+='<th>MANDAL</th>';
 				}
+				if(divId == 'district'){
+				  tableView+='<th><img src="Assests/icons/mandals_icon.png"><br/>TOTAL MANDALS</th>';	
+				}
 				
-				tableView+='<th><img src="Assests/icons/mandals_icon.png"><br/>TOTAL MANDALS</th>';
 				tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png"><br/>SURVEY STARTED MANDALS</th>';
 				tableView+='<th><img src="Assests/icons/GPs_icon.png"><br/>TOTAL GPs</th>';
 				tableView+='<th><img src="Assests/icons/GPs_survey_icon.png"><br/>SURVEY STARTEDGPs</th>';
@@ -403,7 +405,9 @@ function tableView(result,divId)
 			{
 				tableView+='<tr>';
 					tableView+='<td>'+result[i].locationName+'</td>';
-					tableView+='<td>'+result[i].totalMandals+'</td>';
+					if(divId == 'district'){
+				     tableView+='<td>'+result[i].totalMandals+'</td>';	
+				    }
 					if(divId!="district"){
 						if (result[i].surveyStartedtotalMandals > 0) {
 							tableView+='<td>Yes</td>';
@@ -462,8 +466,9 @@ $(document).on("click",".ledResultTypeCls",function() {
 	var filterValue=0;
 	if (locationLevel != null && locationLevel=="district") {
 		if (resultType != null && resultType=="district" || resultType=="parliament") {
-		  getAllLevelWiseDataOverView(resultType,resultType,filterType,filterValue,locationLevel);
+		  getAllLevelWiseDataOverView(resultType,filterType,filterValue,locationLevel);
 		  $(".districtLevelHeadingDivCls").html(resultType+" level overview");
+		  $("#districtLelvdlDistrictHeadingId").html(resultType.toUpperCase());
 		} 
 	}else if(locationLevel=="constituency" || locationLevel=="mandal") {
 		var divId = '';
@@ -474,7 +479,7 @@ $(document).on("click",".ledResultTypeCls",function() {
 		 }
 		$("#"+divId).attr("attr_filter_type",resultType);
 		getLocationBasedOnSelection(resultType,filterType,filterValue,divId);
-		getAllLevelWiseDataOverView(locationLevel,locationLevel,filterType,filterValue,locationLevel);
+		getAllLevelWiseDataOverView(locationLevel,filterType,filterValue,locationLevel);
 	}
 });
 
@@ -493,7 +498,7 @@ $(document).on("change",".lebSelectBoxCls",function(){
 		locationValue = $("#"+parentDivId).val();
 	}
 	
-	getAllLevelWiseDataOverView(locationLevel,locationLevel,filterType,locationValue,locationLevel);
+	getAllLevelWiseDataOverView(locationLevel,filterType,locationValue,locationLevel);
 });
 
 /* End */
