@@ -35,6 +35,7 @@ public class LightMonitoringVO implements Serializable{
 	private Long surveyStartedtotalMandals=0l;
 	private Long surveyStartedtotalGps=0l;
 	private Long totalLedLIghtInstalledCount=0l;
+	private AddressVO addressVO ;
 	
 	
 	private List<LightWattageVO> WattageList = new ArrayList<LightWattageVO>(0);
@@ -222,9 +223,10 @@ public class LightMonitoringVO implements Serializable{
 	public void setTotalLedLIghtInstalledCount(Long totalLedLIghtInstalledCount) {
 		this.totalLedLIghtInstalledCount = totalLedLIghtInstalledCount;
 	}
-	
-	
-	
-
-
+	public AddressVO getAddressVO() {
+		return addressVO;
+	}
+	public void setAddressVO(AddressVO addressVO) {
+		this.addressVO = addressVO;
+	}
 }
