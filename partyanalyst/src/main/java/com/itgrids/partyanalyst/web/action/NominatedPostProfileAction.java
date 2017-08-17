@@ -2412,7 +2412,32 @@ public String execute()
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(regVO !=null){
 				Long userId = regVO.getRegistrationID();
-				resultStatus = null;//nominatedPostProfileService.saveNominatedPostProfileDtls(nominatedPostDetailsVO,userId);
+				Map<File,String> mapfiles = new HashMap<File,String>();
+				MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			       Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			       String fileUrl = "" ;
+			       List<String> filePaths = null;
+			   		while(fileParams.hasMoreElements())
+			   		{
+			   			String key = fileParams.nextElement();
+			   			
+					   			File[] files = multiPartRequestWrapper.getFiles(key);
+					   			filePaths = new ArrayList<String>();
+					   			int i = 0;
+					   			if(files != null && files.length > 0)
+					   			for(File f : files)
+					   			{
+					   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[i].split("\\.");
+					   	            String ext = "";
+					   	            if(extension.length > 1){
+					   	            	ext = extension[extension.length-1];
+					   	            	mapfiles.put(f,ext);
+					   	            	i++;
+					   	            }
+					   	        
+					   			}
+			   		}
+				resultStatus = nominatedPostProfileService.saveNominatedPostProfileDtls(nominatedPostDetailsVO,userId,mapfiles);
 			} else {
 				resultStatus = new ResultStatus();
 				resultStatus.setMessage("Exception Occured.Pls Try Again");
