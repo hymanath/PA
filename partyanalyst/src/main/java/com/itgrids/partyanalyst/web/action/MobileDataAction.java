@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.EntitlementVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.PollManagementSummaryVO;
@@ -70,6 +71,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private PollManagementVO	pollManagementVO;
 	private List<PollManagementVO> pollManagementVOList;
 	private List<PollManagementSummaryVO> pollManagementSummaryVOList;
+	private List<LocationWiseBoothDetailsVO> idNamevoList1;
 	
 	
 	public List<IdNameVO> getIdNamevoList() {
@@ -323,6 +325,14 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	public void setPollManagementSummaryVOList(
 			List<PollManagementSummaryVO> pollManagementSummaryVOList) {
 		this.pollManagementSummaryVOList = pollManagementSummaryVOList;
+	}
+	
+	public List<LocationWiseBoothDetailsVO> getIdNamevoList1() {
+		return idNamevoList1;
+	}
+
+	public void setIdNamevoList1(List<LocationWiseBoothDetailsVO> idNamevoList1) {
+		this.idNamevoList1 = idNamevoList1;
 	}
 
 	public String execute()
@@ -677,16 +687,16 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		return Action.SUCCESS;
 	}
 	
-	public String getUserWiseDivisionSummary(){
+	/*public String getUserWiseDivisionSummary(){
 
 		try{
-			/*RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			if(user==null){
 				mobileAppUserDetailsVO = new MobileAppUserDetailsVO();
 				mobileAppUserDetailsVO.setErrorCode(1);
 				mobileAppUserDetailsVO.setStatusMsg("Session Expired, Please Check");
 				return Action.ERROR;
-			}*/
+			}
 			
 			jObj = new JSONObject(getTask());
 			JSONArray usersArr = jObj.getJSONArray("usersArr");
@@ -705,9 +715,9 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			e.printStackTrace();
 		}
 		return Action.SUCCESS;
-	}
+	}*/
 	
-	public String getmobileAppDivisionWiseUsers(){
+	/*public String getmobileAppDivisionWiseUsers(){
 		try {
 			// LOGIN 
 			RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
@@ -715,6 +725,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 				return Action.ERROR;
 			}
 			Long userId = user.getRegistrationID();
+			String accessValue = user.getAccessValue();
 			
 			idNamevoList = mobileService.getAssignedWardsByUser(userId);
 			
@@ -722,7 +733,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			LOG.error("Exception raised at getmobileAppDivisionWiseUsers()", e);
 		}
 		return Action.SUCCESS;
-	}
+	}*/
 	
 	public String showMapForMobileAppUserVoter(){
 		try {
@@ -849,5 +860,50 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getUserWiseDivisionSummary(){
+
+		try{
+			/*RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user==null){
+				mobileAppUserDetailsVO = new MobileAppUserDetailsVO();
+				mobileAppUserDetailsVO.setErrorCode(1);
+				mobileAppUserDetailsVO.setStatusMsg("Session Expired, Please Check");
+				return Action.ERROR;
+			}*/
+			
+			jObj = new JSONObject(getTask());
+			JSONArray usersArr = jObj.getJSONArray("usersArr");
+			List<String> usersList = new ArrayList<String>();
+			if(usersArr != null && usersArr.length() > 0){
+				for (int i = 0; i < usersArr.length(); i++) {
+					String userStr = usersArr.getString(i);
+					usersList.add(userStr);
+				}
+			}
+			
+			mobileAppUserDetailsVO = mobileService.getUserWiseDivisionSummary(jObj.getLong("locationId"), jObj.getLong("levelId"), jObj.getString("startDate"), jObj.getString("endDate"),jObj.getLong("publicationDateId"),jObj.getLong("electionYearId"),usersList);
+			mobileAppUserDetailsVO.setErrorCode(0);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	public String getmobileAppDivisionWiseUsers(){
+		try {
+			// LOGIN 
+			RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(user==null){
+				return Action.ERROR;
+			}
+			Long userId = user.getRegistrationID();
+			String accessValue = user.getAccessValue();
+			
+			idNamevoList1 = mobileService.getAssignedWardsByUser(accessValue,userId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getmobileAppDivisionWiseUsers()", e);
+		}
+		return Action.SUCCESS;
+	}
 }
