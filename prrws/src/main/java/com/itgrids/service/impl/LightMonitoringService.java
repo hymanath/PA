@@ -61,7 +61,12 @@ public class LightMonitoringService  implements ILightMonitoring{
 	public ResultVO saveRealtimeStatusByVillages() {
 		ResultVO status=new ResultVO();
 		try {			
-			ClientResponse response = webServiceUtilService.callWebService("http://54.254.103.213/PremiumDev/api/RestRealtimeAPI/GetRealtimeStatusByVillages","");
+			   String inputStr = "";
+			   inputStr = "{";
+			   inputStr += "\"ClientId\" : \"AP_GOV\"";
+			   inputStr += "}";
+			
+			ClientResponse response = webServiceUtilService.callWebService("http://54.254.103.213/PremiumDev/api/RestRealtimeAPI/GetRealtimeStatusByVillages",inputStr);
 	        
 	        if(response.getStatus() != 200)
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -98,6 +103,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 		 		 	    		lightMonitoring.setOffLights(lightMonitoringVO.getOffLights());
 		 		 	    		lightMonitoring.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		 		 	    		lightMonitoring.setSurveyDate(dateUtilService.getCurrentDateAndTime());
+		 		 	    		lightMonitoring.setIsDeleted("N");
 								lightMonitoring = lightMonitoringDAO.save(lightMonitoring);
 		 		 	    		 
 		 		 	    		List<LightWattageVO> wattageList =  lightMonitoringVO.getWattageList();
@@ -110,6 +116,8 @@ public class LightMonitoringService  implements ILightMonitoring{
 										wattage.setWattage(lightWattageVO.getWattage());
 		 		 	    				wattage.setLightCount(lightWattageVO.getLightCount());
 		 		 	    				wattage.setLightMonitoringId(lightMonitoring.getLightMonitoringId());
+		 		 	    				wattage.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		 		 	    				wattage.setIsDeleted("N");
 		 		 	    				lightWattageDAO.save(wattage);	 		 		 	    		
 		 		 		 	    	}
 		 		 		 	    }	 		 	    				 	    				
@@ -129,76 +137,80 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 			LOG.error("Exception raised at saveRealtimeStatusByVillages - LED service", e);
 	 		}
 		return status;    	
-
-	
-	 	 }
+	 }
 	
 	     public List<LightMonitoringVO> processLightData(String output)
 	     {
 	    	 List<LightMonitoringVO> resultData = null;
 	    	 try{
 	    	 
-	    		 JSONArray finalArray = new JSONArray(output);
+	    		 JSONObject responseJsonObj = new JSONObject(output);
 	    		 
-	    		 if(finalArray != null && finalArray.length() > 0)
+	    		 if(responseJsonObj != null && responseJsonObj.length() > 0)
  	    		 {
 	    			 resultData = new ArrayList<LightMonitoringVO>(0);
-	    			 
-	    			 for(int i=0;i<finalArray.length();i++)
-	    			 {
-	    				 try{
-	    					 
-	    					 JSONObject jObj = (JSONObject) finalArray.get(i);
-	    					 Long panchayatId = jObj.getLong("VillageId");
-	    					 
-	    					 if(panchayatId != null)
-	    					 {
-	    						 LightMonitoringVO lightMonitoringVO = new LightMonitoringVO();
-	    						 lightMonitoringVO.setPanchayatId(panchayatId);
-	    						 lightMonitoringVO.setTotalPanels(jObj.getLong("TotalPanels"));
-	    						 lightMonitoringVO.setTotalPoles(jObj.getLong("TotalPoles"));
-	    						 lightMonitoringVO.setTotalLights(jObj.getLong("TotalLights"));
-		    					 lightMonitoringVO.setNotWorkingLights(jObj.getLong("NonOperationalLights"));
-		    					 lightMonitoringVO.setWorkingLights(jObj.getLong("OperationalLights"));
-		    					 lightMonitoringVO.setOnLights(jObj.getLong("ONLights"));
-		    					 lightMonitoringVO.setOffLights(jObj.getLong("OFFLights"));
-		    					 
-		    					 JSONArray arr =  jObj.getJSONArray("Wattages");
-			 		 	    		
-		 		 	    		if(arr != null && arr.length() > 0)
-		 		 	    		{
-		 		 	    			List<LightWattageVO> wattageList = new ArrayList<LightWattageVO>(0);
-		 		 	    			
-		 		 	    			for(int j=0;j<arr.length();j++)
-		 		 	    			{
-		 		 	    				try{
-		 		 	    				JSONObject jsonob = (JSONObject) arr.get(j);
-		 		 	    				LightWattageVO lightWattageVO = null;
-		 		 	    				
-		 		 	    				if(jsonob != null)
-		 		 	    				{
-											lightWattageVO = new LightWattageVO();
-											lightWattageVO.setWattage(jsonob.getLong("Wattage"));
-											lightWattageVO.setLightCount(jsonob.getLong("LightCount"));
-											wattageList.add(lightWattageVO);
-		 		 	    				}
-		 		 	    			}catch (Exception e) {
-		 		 	    				LOG.error(e);
-		 		 	    			}
-		 		 		 	    	}
-		 		 	    			lightMonitoringVO.setWattageList(wattageList);
-		 		 		 	    }
-		 		 	    		resultData.add(lightMonitoringVO);
-	    					 }
-	    					 
-	    				 }catch (Exception e) {
-	    					 LOG.error(e);
-	    				 }
+	    			 JSONObject dataObj = responseJsonObj.getJSONObject("responseData");
+	    			 JSONArray finalArray = null;
+	    			 if (dataObj != null && dataObj.length() > 0 ){
+	    				  finalArray = dataObj.getJSONArray("VillageInfo");
 	    			 }
+	    			 if (finalArray != null && finalArray.length() > 0 ){
+	    				 for(int i=0;i<finalArray.length();i++)
+		    			 {
+		    				 try{
+		    					 
+		    					 JSONObject jObj = (JSONObject) finalArray.get(i);
+		    					 Long panchayatId = jObj.getLong("VillageId");
+		    					 
+		    					 if(panchayatId != null)
+		    					 {
+		    						 LightMonitoringVO lightMonitoringVO = new LightMonitoringVO();
+		    						 lightMonitoringVO.setPanchayatId(56l);
+		    						 lightMonitoringVO.setTotalPanels(jObj.getLong("TotalPanels"));
+		    						 lightMonitoringVO.setTotalPoles(jObj.getLong("TotalPoles"));
+		    						 lightMonitoringVO.setTotalLights(jObj.getLong("TotalLights"));
+			    					 lightMonitoringVO.setNotWorkingLights(jObj.getLong("NonOperationalLights"));
+			    					 lightMonitoringVO.setWorkingLights(jObj.getLong("OperationalLights"));
+			    					 lightMonitoringVO.setOnLights(jObj.getLong("ONLights"));
+			    					 lightMonitoringVO.setOffLights(jObj.getLong("OFFLights"));
+			    					 
+			    					 JSONArray arr =  jObj.getJSONArray("Wattages");
+				 		 	    		
+			 		 	    		if(arr != null && arr.length() > 0)
+			 		 	    		{
+			 		 	    			List<LightWattageVO> wattageList = new ArrayList<LightWattageVO>(0);
+			 		 	    			
+			 		 	    			for(int j=0;j<arr.length();j++)
+			 		 	    			{
+			 		 	    				try{
+			 		 	    				JSONObject jsonob = (JSONObject) arr.get(j);
+			 		 	    				LightWattageVO lightWattageVO = null;
+			 		 	    				
+			 		 	    				if(jsonob != null)
+			 		 	    				{
+												lightWattageVO = new LightWattageVO();
+												lightWattageVO.setWattage(jsonob.getLong("Wattage"));
+												lightWattageVO.setLightCount(jsonob.getLong("LightCount"));
+												wattageList.add(lightWattageVO);
+			 		 	    				}
+			 		 	    			}catch (Exception e) {
+			 		 	    				LOG.error(e);
+			 		 	    			}
+			 		 		 	    	}
+			 		 	    			lightMonitoringVO.setWattageList(wattageList);
+			 		 		 	    }
+			 		 	    		resultData.add(lightMonitoringVO);
+		    					 }
+		    					 
+		    				 }catch (Exception e) {
+		    					 LOG.error(e);
+		    				 }
+		    			 }
+	    			 }
+	    			
  	    		 }
-	    		 
 	    	 }catch (Exception e) {
-	    		 LOG.error(e);
+	    		 LOG.error("Exception raised at processLightData - LightMonitoringService service", e);
 	    	 }
 	    	 return resultData;
 	     }
