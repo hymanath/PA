@@ -524,7 +524,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public String getLocationWiseActivityStatusList(){
 		try{
 			jObj = new JSONObject(getTask());
-			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValues"));  ;
+			List<Long> locationValuesList = convertJsonStringList(jObj.getJSONArray("locationValues")); 
 			
 			activityStatusList = locationDashboardService.getLocationWiseActivitysStatus(jObj.getString("fromDate"), jObj.getString("toDate"),jObj.getString("year"),locationValuesList, jObj.getLong("locationId"));
 		}catch(Exception e){
@@ -627,6 +627,28 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 					boothCommitteeEnrollmentYearsIdsLst,jObj.getString("fromDate"),jObj.getString("toDate"));
 		}catch(Exception e){
 			LOG.error("Exception occured in getBoothAssignInchargeCount() method ",e);
+
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getAllParlimentsForLocationDashBoard(){
+		
+		try{	
+			locationVOList = locationDashboardService.getAllParlimentsForLocationDashBoard();
+		}catch(Exception e){
+			LOG.error("Exception occured in getAllParlimentsForLocationDashBoard() method ",e);
+
+		}
+		return Action.SUCCESS;
+	}
+	public String getAllConstituencyByParlimentId(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			locationVOList = locationDashboardService.getAllConstituencyByParlimentId(jObj.getLong("parlimentId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getAllParlimentsForLocationDashBoard() method ",e);
 
 		}
 		return Action.SUCCESS;
