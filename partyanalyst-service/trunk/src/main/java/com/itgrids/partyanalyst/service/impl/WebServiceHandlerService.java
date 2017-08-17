@@ -288,7 +288,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     
     private ICccDashboardService cccDashboardService;
     private IKaizalaInfoService kaizalaInfoService;
-   
+       
     
 	public IKaizalaInfoService getKaizalaInfoService() {
 		return kaizalaInfoService;
@@ -5405,5 +5405,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		} catch (Exception e) {
 			 log.error("Exception raised at saveKaizalAnswerInfo", e);
 		}
+	}
+	
+	public Long getAddressId(Long locationScopeId, Long locationValue){
+		try{
+			return cadreDetailsService.saveUserAddressDetails(locationScopeId, locationValue);
+		}catch (Exception e) {
+			log.error("Exception raised at getAddressId for kaizala user addressId", e);
+		}
+		return null;
 	}
 }
