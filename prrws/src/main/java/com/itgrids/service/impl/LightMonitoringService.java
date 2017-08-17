@@ -221,7 +221,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	 * @description : saveRealtimeStatusByVillages
 	 	 */
 	     @Override
-	public List<LightMonitoringVO> getBasicLedOverviewDetails(String startDate,String endDate) {
+	public List<LightMonitoringVO> getBasicLedOverviewDetails(String startDate,String endDate, String locationType,Long locationValues) {
 		   List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
 		 
 		try{	
@@ -232,7 +232,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 				fromDate = sdf.parse(startDate);
 				toDate = sdf.parse(endDate);
 			}
-		     List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate);
+		     List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,locationValues );
 		     if(lightMonitoringData!=null && lightMonitoringData.size()>0 && !lightMonitoringData.isEmpty()){
 		    	 LightMonitoringVO lightMonitoringVO= new LightMonitoringVO();
 			     for (Object[] objects : lightMonitoringData) {			
@@ -244,7 +244,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 					     lightMonitoringVO.setOffLights(objects[5] !=null ?(Long)objects[5]:0l);
 				         lightMonitoringVO.setNotWorkingLights(objects[6] !=null ?(Long)objects[6]:0l);
 		
-				         List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege(fromDate,toDate);
+				         List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,locationValues);
 					       
 					       if(wattegeCount!=null && wattegeCount.size()>0 && !wattegeCount.isEmpty()){
 					    	   for (Object[] objects2 : wattegeCount) {	
@@ -267,7 +267,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	 * Author :Swapna
 	 	 * @description : getDistrictLevelCount
 	 	 */
-	public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate){
+	public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate,String locationType, Long locationValues){
 	  List<LedOverviewVo>listVO=new ArrayList<LedOverviewVo>(0);
 	  try
 	  {
@@ -279,7 +279,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 				toDate = sdf.parse(endDate);
 			}
 		  
-		  List<Object[]> counts = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate);
+		  List<Object[]> counts = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType, locationValues);
 			  if (counts!=null && counts.size()>0 &&!counts.isEmpty())
 			  {				  
 				 for (Object[] objects : counts) {

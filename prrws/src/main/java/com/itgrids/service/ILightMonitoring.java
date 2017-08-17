@@ -11,9 +11,9 @@ import com.itgrids.dto.ResultVO;
 
 public interface ILightMonitoring {
 	
-	public List<LightMonitoringVO> getBasicLedOverviewDetails(String fromDate,String toDate);	
+	public List<LightMonitoringVO> getBasicLedOverviewDetails(String fromDate,String toDate,String locationType,Long locationValues);	
     public ResultVO saveRealtimeStatusByVillages();
-    public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate);
+    public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate,String locationType, Long locationValues);
 	public List<LightMonitoringVO> getAllLevelWiseDataOverView(String locationType,String filterType, Long locationId,String fromDateStr,String toDateStr );
 	public List<LightMonitoringVO> getLocationBasedOnSelection(String locationType,String filterType, Long filterValue);
 }

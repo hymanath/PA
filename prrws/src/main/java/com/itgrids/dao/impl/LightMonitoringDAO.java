@@ -36,12 +36,23 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 	 */
 
 	@Override
-	public List<Object[]> getTotalVillagesDetails(Date fromDate, Date toDate) {
+	public List<Object[]> getTotalVillagesDetails(Date fromDate, Date toDate, String locationType,Long locationValues) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("select sum(model.totalLights),sum(model.totalPanels),sum(model.totalPoles),"
 				+ "sum(model.workingLights),sum(model.onLights),sum(model.offLights),sum(model.notWorkingLights) "
 				+ " from  LightMonitoring model where model.isDeleted ='N' ");
 
+		if( locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.longValue() > 0){
+			if(locationType.equalsIgnoreCase("district")){
+				sb.append(" AND model.panchayat.locationAddress.district.districtId = :locationValue ");
+			}else if(locationType.equalsIgnoreCase("parliament")){
+				sb.append(" AND model.panchayat.locationAddress.parliament.constituencyId = :locationValue ");
+			}else if(locationType.equalsIgnoreCase("constituency")){
+				sb.append(" AND model.panchayat.locationAddress.constituency.constituencyId = :locationValue ");
+			}else if(locationType.equalsIgnoreCase("mandal")){
+				sb.append(" AND model.panchayat.locationAddress.tehsil.tehsilId = :locationValue ");
+			}
+		}
 		if (fromDate != null && toDate != null) {
 			sb.append(" and  date(model.surveyDate) between :fromDate and :toDate ");
 		}
@@ -50,7 +61,9 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-
+		if(locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.longValue() > 0){
+			query.setParameter("locationValue",locationValues);
+		}	
 		return query.list();
 	}
 	/*
@@ -59,18 +72,36 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object[]> getTotalSurveyDetails(Date startDate, Date toDate) {
+	public List<Object[]> getTotalSurveyDetails(Date startDate, Date toDate, String locationType,Long locationValues) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT COUNT(DISTINCT LM.panchayat.locationAddress.district.districtId),"
-				 + "COUNT(DISTINCT LM.panchayat.locationAddress.constituency.constituencyId),"
-				+ " COUNT(DISTINCT LM.panchayat.locationAddress.tehsil.tehsilId), "
-				+ "COUNT(DISTINCT LM.panchayat.panchayatId)  from  LightMonitoring  LM  ");
-
-		sb.append(" where LM.panchayat.locationAddress.district.districtId  between 11 and 23 and LM.isDeleted = 'N' and LM.surveyDate is not null ");
+		StringBuilder sbc = new StringBuilder();
+		StringBuilder sbg = new StringBuilder();
+		
+		sb.append("SELECT COUNT(DISTINCT P.locationAddress.district.districtId),"
+				 + "COUNT(DISTINCT P.locationAddress.constituency.constituencyId),"
+				+ " COUNT(DISTINCT P.locationAddress.tehsil.tehsilId), "
+				+ "COUNT(DISTINCT P.panchayatId) ");
+		sb.append("  FROM LightMonitoring LM  WHERE LM.panchayat.locationAddress.state.stateId = 1  ");
+		
+		if( locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.longValue() > 0){
+			if(locationType.equalsIgnoreCase("district")){
+				sbc.append(" AND LM.panchayat.locationAddress.district.districtId = :locationValue ");
+			}else if(locationType.equalsIgnoreCase("parliament")){
+				sbc.append(" AND LM.panchayat.locationAddress.parliament.constituencyId = :locationValue ");
+			}else if(locationType.equalsIgnoreCase("constituency")){
+				sbc.append(" AND LM.panchayat.locationAddress.constituency.constituencyId = :locationValue ");
+			}else if(locationType.equalsIgnoreCase("mandal")){
+				sbc.append(" AND LM.panchayat.locationAddress.tehsil.tehsilId = :locationValue ");
+			}
+		}
+		String queryStr = sb.toString() + sbc.toString()+sbg.toString();
+		Query query = getSession().createQuery(queryStr);
+		if(locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.longValue() > 0){
+			query.setParameter("locationValue",locationValues);
+		}		
 		if (startDate != null && toDate != null) {
 			sb.append(" and LM.surveyDate between :startDate and :toDate ");
 		}
-		Query query = getSession().createQuery(sb.toString());
 		if (startDate != null && toDate != null) {
 			query.setDate("startDate", startDate);
 			query.setDate("toDate", toDate);

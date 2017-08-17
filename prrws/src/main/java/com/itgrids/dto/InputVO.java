@@ -86,6 +86,7 @@ public class InputVO implements Serializable {
 	private List<Long> searchLevelValues;
 	private Long minVal;
 	private Long maxVal;
+	private Long locationValue;
 	
 	public List<Long> getSearchLevelValues() {
 		return searchLevelValues;
@@ -542,6 +543,12 @@ public class InputVO implements Serializable {
 	public void setDisplayType(String displayType) {
 		this.displayType = displayType;
 	}
-	
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+   	
 	
 }

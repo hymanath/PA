@@ -45,13 +45,13 @@ public class LightMonitoringController {
 
 	@RequestMapping(value = "/getBasicLedOverviewDetails", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody  List<LightMonitoringVO>  getBasicLedOverviewDetails(@RequestBody InputVO inputVO){
-		List<LightMonitoringVO>  voList= lightMonitoring.getBasicLedOverviewDetails(inputVO.getFromDate(),inputVO.getToDate());
+		List<LightMonitoringVO>  voList= lightMonitoring.getBasicLedOverviewDetails(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue());
 		return voList;
 	}	
 	
 	@RequestMapping(value = "/getLedOverviewForStartedLocationsDetailsCounts", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody  List<LedOverviewVo>  getLedOverviewForStartedLocationsDetailsCountsv(@RequestBody InputVO inputVO){
-		List<LedOverviewVo>  voList= lightMonitoring.getLedOverviewForStartedLocationsDetailsCounts(inputVO.getFromDate(),inputVO.getToDate());
+		List<LedOverviewVo>  voList= lightMonitoring.getLedOverviewForStartedLocationsDetailsCounts(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue());
 		return voList;
 	}
 	
