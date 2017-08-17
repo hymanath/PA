@@ -76,7 +76,6 @@ import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreBasicPerformaceVO;
@@ -8921,7 +8920,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 		 * @return : ResultStatus
 		 * description :  This service method is used to saving nominated post candidate details.
 		 */
-	  public ResultStatus saveNominatedPostProfileDtls(final NominatedPostDetailsVO nominatedPostDtlsVO,final Long userId){
+	  public ResultStatus saveNominatedPostProfileDtls(final NominatedPostDetailsVO nominatedPostDtlsVO,final Long userId,final Map<File,String> mapfiles){
 		  ResultStatus statusVO = new ResultStatus();	
 		   try {
 			   statusVO = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
@@ -8931,10 +8930,11 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 					if (nominatedPostDtlsVO.getSubList() != null && nominatedPostDtlsVO.getSubList().size() > 0) { // candiate saving
 						
 						 for (NominatedPostDetailsVO positioDetailsVO : nominatedPostDtlsVO.getSubList()) {
-							 
+							 if(positioDetailsVO != null){
 							  if (positioDetailsVO.getSubList1() != null && positioDetailsVO.getSubList1().size() > 0 ) {
 								  
 								   for (NominatedPostCandidateDtlsVO postCandiateVO : positioDetailsVO.getSubList1()) {
+									   if(postCandiateVO != null){
 									   List<Long> candiateIdList = nominationPostCandidateDAO.getNominatedPostCondidates(postCandiateVO.getTdpCadreId());
 									   Long nominatedPostCandiateId = 0l;
 									   if (candiateIdList != null && candiateIdList.size() > 0 ) {
@@ -9003,7 +9003,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 									    
 									    /*setting nominatedPostApplicationId in candidateVO */ 
 									    postCandiateVO.setNominatedPostApplicationId(nominatedPostApplication.getNominatedPostApplicationId());
-									    
+									    saveApplicationDocuments(nominatedPostApplication.getNominatedPostApplicationId(),postCandiateVO.getNominatedPostCandiateId(),mapfiles);
 									    
 									    NominatedPostApplicationHistory nominatedPostApplicationHistory = new NominatedPostApplicationHistory(); 
 									    nominatedPostApplicationHistory.setTrackedTime(dateUtilService.getCurrentDateAndTime());
@@ -9077,9 +9077,11 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 												 nominatedPostReferDetailsDAO.save(nominatedPostReferDetails);
 											}
 									     }
-								}
-							  }
-						}
+									   }
+								   }
+							    }
+							 }
+						 }
 						statusVO.setMessage("Saved Successfully");
 						statusVO.setResultCode(1);
 					}
