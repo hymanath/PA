@@ -66,7 +66,11 @@ public class LightMonitoringController {
     List<LightMonitoringVO>  voList= lightMonitoring.getLocationBasedOnSelection(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationId());
     return voList;
    }
-
+   @RequestMapping(value = "/callWebService", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+   public @ResponseBody  ResultVO calllWebSerice(@RequestBody InputVO inputVO){
+	   ResultVO  statusVO= lightMonitoring.saveRealtimeStatusByVillages();
+    return statusVO;
+   }
 	
 	
 }

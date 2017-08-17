@@ -15,5 +15,8 @@ public interface ILightMonitoringDAO extends GenericDao<LightMonitoring, Long > 
 	public List<LightMonitoring> getLiveDateForCurrentDateSelection(Date date);
   	public List<Object[]> getLocationsForLEDDashboard(String locationType,String filterType,Long locationId);
  	public List<Object[]> getLocationWiseDataForLEDDashboard(String locationType,String filterType,Long locationId,Date formDate,Date toDate);
+ 	public List<Long> getLightMonitroingIds(Date date);
+ 	public Integer updateLightMoitoringData(Date date);
+ 	public Integer updateLightWattageMoitoringData(List<Long> lightMonitroingIds);
 
 }

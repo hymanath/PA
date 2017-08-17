@@ -30,6 +30,7 @@ import com.itgrids.service.ILightMonitoring;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
+import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
 
 @Service
@@ -68,7 +69,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 			   inputStr += "}";
 			
 			ClientResponse response = webServiceUtilService.callWebService("http://54.254.103.213/PremiumDev/api/RestRealtimeAPI/GetRealtimeStatusByVillages",inputStr);
-	        
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	        if(response.getStatus() != 200)
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	        else{
@@ -83,15 +84,22 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    			 for(LightMonitoringVO lightMonitoringVO : resultData)
 	 	    			 {
 	 	    				 try{
-	 	    					List<LightMonitoring> LM = lightMonitoringDAO.getLiveDateForCurrentDateSelection(dateUtilService.getCurrentDateAndTime());
+	 	    					/*List<LightMonitoring> LM = lightMonitoringDAO.getLiveDateForCurrentDateSelection(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
 	 	    					if(LM != null && LM.size() >0){
 	 	    						for (LightMonitoring lightMonitoring : LM) {
 	 	    							lightMonitoring.setIsDeleted("Y");
 	 	    							
 	 	    							lightMonitoringDAO.save(lightMonitoring);
 									}
+	 	    					}*/
+	 	    					 List<Long> lighMonitoringIds = lightMonitoringDAO.getLightMonitroingIds(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
+	 	    					int updatedCount = lightMonitoringDAO.updateLightMoitoringData(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
+	 	    					
+	 	    					if (lighMonitoringIds != null && lighMonitoringIds.size() > 0 ) {
+	 	    						int updatedLightWattageCount = lightMonitoringDAO.updateLightWattageMoitoringData(lighMonitoringIds);	
 	 	    					}	 	    					
-		 	    				LightMonitoring lightMonitoring = new LightMonitoring();
+		 	    				
+	 	    					LightMonitoring lightMonitoring = new LightMonitoring();
 		 	    				
 		 		 	    		lightMonitoring.setPanchayatId(lightMonitoringVO.getPanchayatId());
 		 		 	    		lightMonitoring.setTotalPanels(lightMonitoringVO.getTotalPanels());
@@ -329,6 +337,7 @@ public class LightMonitoringService  implements ILightMonitoring{
                       		    locationVO.setWorkingLights(commonMethodsUtilService.getLongValueForObject(param[5]));
                       		    locationVO.setOnLights(commonMethodsUtilService.getLongValueForObject(param[6]));	
                       		    locationVO.setOffLights(commonMethodsUtilService.getLongValueForObject(param[7])); 
+                      		     locationVO.setNotWorkingLights(commonMethodsUtilService.getLongValueForObject(param[8]));
                       		    locationVO.setTotalLedLIghtInstalledCount(locationVO.getOnLights()+locationVO.getOffLights());
                 		      }
                     }                 

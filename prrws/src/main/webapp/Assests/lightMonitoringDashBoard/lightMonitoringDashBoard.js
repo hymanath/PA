@@ -486,7 +486,7 @@ function tableView(result,divId,locType)
 					}						
 					
 				}
-				if(divId == 'district'){
+				if(divId != 'mandal'){
 				  tableView+='<th><img src="Assests/icons/mandals_icon.png"><br/>TOTAL MANDALS</th>';	
 				}
 				
@@ -538,10 +538,10 @@ function tableView(result,divId,locType)
 						
 						
 					}
-					if(divId == 'district'){
+					if(divId == 'district' || divId=="constituency"){
 				     tableView+='<td>'+result[i].totalMandals+'</td>';	
 				    }
-					if(divId!="district"){
+					if(divId=="mandal"){
 						if (result[i].surveyStartedtotalMandals > 0) {
 							tableView+='<td>Yes</td>';
 						} else {
@@ -676,4 +676,32 @@ function getLocationBasedOnSelection(locationType,filterType,filterValue,divId){
 			$("#"+divId).trigger("chosen:updated");
 		  }
 	}
+}
+$(document).on("click",".liveDataCls",function() {
+	callWebService();
+});
+$(document).on("click",".todayDataCls",function() {
+	 glStartDate = moment().format('DD-MM-YYYY');
+     glEndDate = moment().format('DD-MM-YYYY');
+	 onLoadCalls();
+});
+function callWebService(){
+	var json = {
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'callWebService',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		 if (result.statusCode==0 && result.message=="SUCCESS"){
+			  glStartDate = moment().format('DD-MM-YYYY');
+			  glEndDate = moment().format('DD-MM-YYYY');
+			  onLoadCalls();
+		 }
+	});
 }
