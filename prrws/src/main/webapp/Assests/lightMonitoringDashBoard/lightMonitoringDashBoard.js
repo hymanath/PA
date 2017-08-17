@@ -2,15 +2,14 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 //var glStartDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
 var glStartDate = moment().format('DD-MM-YYYY');
 var glEndDate = moment().format('DD-MM-YYYY');
+var globallocId = 0;
+var globallevelId = 0;
+var globalLocationName='';
+$("#selectedName").attr("attr_id","0");
+$("#selectedName").attr("attr_levelidvalue","2");
 onLoadCalls();
 function onLoadCalls()
 {
-	getLedOverviewForStartedLocationsDetailsCounts();
-	getBasicLedOverviewDetails();
-	projectData('',2)
-	
-	$(".chosen-select").chosen();
-	
 	$("header").on("click",".menu-cls",function(e){
 		e.stopPropagation();
 		$(".menu-data-cls").toggle();
@@ -18,47 +17,47 @@ function onLoadCalls()
 	$(document).on("click",function(){
 		$(".menu-data-cls").hide();
 	});
+	$(".chosen-select").chosen();
+	getLedOverviewForStartedLocationsDetailsCounts();
+	getBasicLedOverviewDetails();
+	menuWiseDetails();
 }
-$(document).on('click','.calendar_active_cls li', function(){
-	var date = $(this).attr("attr_val");
-	$(".tableMenu li").removeClass("active");
-	$(".tableMenu li:first-child").addClass("active");
-	
-	
-	if(date == 'Today')
-	{
-		glStartDate = moment().format('DD-MM-YYYY');
-		glEndDate = moment().format('DD-MM-YYYY');
-		$("#selectedDateIvr").html("TODAY");
-	}else if(date == 'Week'){
-		glStartDate = moment().subtract(1,'week').format('DD-MM-YYYY');
-		glEndDate = moment().format('DD-MM-YYYY');
-		$("#selectedDateIvr").html("WEEK");
-	}else if(date == 'Month'){
-		glStartDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
-		glEndDate = moment().format('DD-MM-YYYY');
-		$("#selectedDateIvr").html("MONTH");
-	}else if(date == '3Months'){
-		glStartDate = moment().subtract(3,'month').startOf("month").format('DD-MM-YYYY');
-		glEndDate = moment().format('DD-MM-YYYY');
-		$("#selectedDateIvr").html("3 MONTHS");
-	}else if(date == '6Months'){
-		glStartDate = moment().subtract(6,'month').startOf("month").format('DD-MM-YYYY');
-		glEndDate = moment().format('DD-MM-YYYY');
-		$("#selectedDateIvr").html("6 MONTHS");
-	}else if(date == 'Overall'){
-		glStartDate = moment().subtract(15,'years').startOf("year").format('DD-MM-YYYY');
-		glEndDate = moment().format('DD-MM-YYYY');
-		$("#selectedDateIvr").html("OVERALL");
-	}
-	
-	$(this).closest("ul").find("li").removeClass("active");
-	$(this).addClass("active");
-	if(date != "custom"){
-		onLoadCalls();
-	}
-	
+
+$(document).on("click",".menuDataCollapse",function(){
+	globallocId = $(this).attr("attr_id");
+	globallevelId = $(this).attr("attr_levelidvalue");
+	globalLocationName=$(this).attr("attr_name");
+	$("#selectedName").text($(this).html());
+	$("#selectedName").attr("attr_id",globallocId);
+	$("#selectedName").attr("attr_levelidvalue",globallevelId);
+	$("#selectedName").attr("attr_name",globalLocationName);
+	getLedOverviewForStartedLocationsDetailsCounts();
+	getBasicLedOverviewDetails();
+	menuWiseDetails();
 });
+function menuWiseDetails(){
+	if(globallevelId == 2 || globallevelId == 0){
+		projectData('',2);
+		$("#consLvlLedDistrictSelectBoxId_chosen").show();
+		$("#mandalLvlLedDistrictSelectBoxId_chosen").show();
+		$("#mandalLvlLedConstituencySelectBoxId_chosen").show();
+	}else if(globallevelId == 3){
+		projectData('',3)
+		$("#consLvlLedDistrictSelectBoxId_chosen").hide();
+		$("#mandalLvlLedDistrictSelectBoxId_chosen").hide();
+		$("#mandalLvlLedConstituencySelectBoxId_chosen").hide();
+	}else if(globallevelId == 4){
+		projectData('',4)
+		$("#consLvlLedDistrictSelectBoxId_chosen").hide();
+		$("#mandalLvlLedDistrictSelectBoxId_chosen").hide();
+		$("#mandalLvlLedConstituencySelectBoxId_chosen").hide();
+	}else if(globallevelId == 5){
+		projectData('',5)
+		$("#consLvlLedDistrictSelectBoxId_chosen").hide();
+		$("#mandalLvlLedDistrictSelectBoxId_chosen").hide();
+		$("#mandalLvlLedConstituencySelectBoxId_chosen").hide();
+	}
+}
 $("#singleDateRangePicker").daterangepicker({
 		opens: 'left',
 		startDate: glStartDate,
@@ -82,11 +81,27 @@ $(document).on("click",".daterangeViewLiveCls",function(){
 });
 function getLedOverviewForStartedLocationsDetailsCounts(){
 	$("#ledOverViewDiv").html(spinner);
+	var locationType="";
+	var locationValue=0;
+	if(globallevelId == 2 || globallevelId == 0){
+		locationType = "";
+		locationValue=0;
+	}else if(globallevelId == 3){
+		locationType = "district";
+		locationValue=globallocId;
+	}else if(globallevelId == 4){
+		locationType = "constituency";
+		locationValue=globallocId;
+	}else if(globallevelId == 5){
+		locationType = "mandal";
+		locationValue=globallocId;
+	}
+	
 	var json = {
 		fromDate:glStartDate,
 		toDate:glEndDate,
-		locationType:"",
-		locationValue:0
+		locationType:locationType,
+		locationValue:locationValue
 	}
 	$.ajax({                
 		type:'POST',    
@@ -106,11 +121,27 @@ function getLedOverviewForStartedLocationsDetailsCounts(){
 }
 function getBasicLedOverviewDetails(){
 	$("#overviewBlockId").html(spinner);
+	var locationType="";
+	var locationValue=0;
+	if(globallevelId == 2 || globallevelId == 0){
+		locationType = "";
+		locationValue=0;
+	}else if(globallevelId == 3){
+		locationType = "district";
+		locationValue=globallocId;
+	}else if(globallevelId == 4){
+		locationType = "constituency";
+		locationValue=globallocId;
+	}else if(globallevelId == 5){
+		locationType = "mandal";
+		locationValue=globallocId;
+	}
+	
 	var json = {
 		fromDate:glStartDate,
 		toDate:glEndDate,
-		locationType:"",
-		locationValue:0
+		locationType:locationType,
+		locationValue:locationValue
 	}
 	$.ajax({                
 		type:'POST',    
@@ -130,60 +161,58 @@ function getBasicLedOverviewDetails(){
 }
 function buildLedOverviewForStartedLocationsDetailsCounts(result){
 	var str='';
-	str+='<div class="col-sm-12 border_top padding_10" style="background-color:#F9F9F9;">';
-				 /*str+='<div class="col-sm-2 media">';
-					str+='<div class="media-left">';
-						str+='<img src="Assests/icons/Start_Date_icon.png" alt="start_date">';
-				   str+=' </div>';
-				 str+=' <div class="media-body">';
-					   str+=' <h5>SURVEY START</h5>';
-					   str+=' <h3>01 JUN 2017</h3>';
-					str+='</div>';
-				str+='</div>';
-			   str+=' <div class="col-sm-2 media">';
-					str+='<div class="media-left">';
-					   str+=' <img src="Assests/icons/End_Date_icon.png" alt="end_date">';
-					str+='</div>';
-				   str+=' <div class="media-body">';
-						str+='<h5>SURVEY END</h5>';
-					   str+=' <p>Expected Date</p>';
-						str+='<h3>20 JUN 2017</h3>';
-					str+='</div>';
-				str+='</div>';*/
-				str+='<div class="col-sm-3 media">';
+	str+='<div class="col-sm-12 border_top padding_10" style="background-color:#F9F9F9;padding: 10px;">';
+				str+='<div class="col-sm-3">';
 					str+='<div class="media-left">';
 					   str+=' <img src="Assests/icons/District_Survy_icon.png" alt="start_date">';
 				   str+=' </div>';
 					str+='<div class="media-body">';
-						str+='<h5>NO OF <span style="color:#827C13;">DISTRICTS</span> SURVEY SATRTED</h5>';
-					   str+=' <h3>'+result[0].totalDistCnt+'</h3>';
+						str+='<h5>NO OF <span style="color:#827C13;"><b>DISTRICTS</b></span><br/>SURVEY SATRTED</h5>';
+						if(result[0].totalDistCnt !=null && result[0].totalDistCnt>0){
+							str+=' <h3>'+result[0].totalDistCnt+'</h3>';
+						}else{
+							str+=' <h3>0</h3>';
+						}
+					   
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-3 media">';
+				str+='<div class="col-sm-3">';
 					str+='<div class="media-left">';
 						str+='<img src="Assests/icons/Constituency_Survy_icon.png" alt="start_date">';
 				   str+=' </div>';
 				   str+=' <div class="media-body">';
-					   str+=' <h5>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span>SURVEY STARTED</h5>';
-						str+='<h3>'+result[0].totalConstituencyCnt+'</h3>';
+					   str+=' <h5>NO OF <span style="color:#02B0AC;"><b>CONSTITUENCIES</b></span><br/>SURVEY STARTED</h5>';
+					   if(result[0].totalConstituencyCnt !=null && result[0].totalConstituencyCnt>0){
+							str+=' <h3>'+result[0].totalConstituencyCnt+'</h3>';
+						}else{
+							str+=' <h3>0</h3>';
+						}
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-3 media">';
+				str+='<div class="col-sm-3">';
 					str+='<div class="media-left">';
 					   str+=' <img src="Assests/icons/Mandal_Survy_icon.png" alt="">';
 				   str+=' </div>';
 					str+='<div class="media-body">';
-						str+='<h5>NO OF <span style="color:#00BFE8;">MANDALS</span>SURVEY SATRTED</h5>';
-							str+='<h3>'+result[0].totalMandalCnt+'</h3>';
+						str+='<h5>NO OF <span style="color:#00BFE8;"><b>MANDALS</b></span><br/>SURVEY SATRTED</h5>';
+						if(result[0].totalMandalCnt !=null && result[0].totalMandalCnt>0){
+							str+=' <h3>'+result[0].totalMandalCnt+'</h3>';
+						}else{
+							str+=' <h3>0</h3>';
+						}
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-3 media">';
+				str+='<div class="col-sm-3">';
 					str+='<div class="media-left">';
 						str+='<img src="Assests/icons/GPs_survey_icon.png" alt="start_date">';
 					str+='</div>';
 					str+='<div class="media-body">';
-						str+='<h5>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span>SURVEY STARTED</h5>';
-						str+='<h3>'+result[0].totalpanchayatCnt+'</h3>';
+						str+='<h5>NO OF <span style="color:#F45CB5;"><b>GRAM PANCHAYAT</b></span><br/>SURVEY STARTED</h5>';
+						if(result[0].totalpanchayatCnt !=null && result[0].totalpanchayatCnt>0){
+							str+=' <h3>'+result[0].totalpanchayatCnt+'</h3>';
+						}else{
+							str+=' <h3>0</h3>';
+						}
 					str+='</div>';
 				str+='</div>';
    str+='</div>';
@@ -191,12 +220,33 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 }
 function getAllLevelWiseDataOverView(locType,filterType,locId,divId){
 	$("#"+divId+"TableId").html(spinner);
+		var locationId='';
+		var locationType='';
+		var filterTypeVal='';
+		
+		if(globallevelId ==2 || globallevelId ==0){
+			locationId = locId;
+			locationType =locType;
+			filterTypeVal = filterType;	
+		}else if(globallevelId ==3){
+			locationId = globallocId;
+			locationType =locType;
+			filterTypeVal = "district";	
+		}else if(globallevelId ==4){
+			locationId = globallocId;
+			locationType =locType;
+			filterTypeVal = "constituency";	
+		}else if(globallevelId ==5){
+			locationId = globallocId;
+			locationType =locType;
+			filterTypeVal = "mandal";	
+		}
 	var json = {
-			"locationType"      :locType,
-			"filterType"         : filterType ,
-			"locationId"   : locId,
-			"fromDate": glStartDate,
-		    "toDate": glEndDate
+			"locationType":locationType,
+			"filterType"  :filterTypeVal ,
+			"locationId"  :locationId,
+			"fromDate"	  :glStartDate,
+		    "toDate"	  :glEndDate
 		}
 	$.ajax({                
 		type:'POST',    
@@ -221,13 +271,14 @@ function getAllLevelWiseDataOverView(locType,filterType,locId,divId){
 function buildBasicLedOverviewDetails(result)
 {
 	var str='';
+	str+='<div class="col-sm-12 white-block poles_block"  style="border-bottom: 1px solid gray;">';
 	str+='<div class="col-sm-2 lightsBlock">';
 		str+='<img src="Assests/icons/On_Off_light_icon.png">';
 		str+='<p>ON/OFF LIGHTS</p>';
 		str+='<h4>'+result[0].onLights+'/'+result[0].offLights+'</h4>';
 	str+='</div>';
-	str+='<div class="col-sm-10" style="padding-top:13px;">';
-		str+='<div class="col-sm-2 media">';
+	str+='<div class="col-sm-10" >';
+		str+='<div class="col-sm-2 media m_top5">';
 			str+='<div class="media-left">';
 				str+='<img src="Assests/icons/Poles_icon.png" alt="poles_icon">';
 			str+='</div>';
@@ -236,7 +287,7 @@ function buildBasicLedOverviewDetails(result)
 				str+='<h3>'+result[0].totalPoles+'</h3>';
 			str+='</div>';
 		str+='</div>';
-		str+='<div class="col-sm-3 media">';
+		str+='<div class="col-sm-3 media m_top5">';
 			str+='<div class="media-left">';
 				str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
 			str+='</div>';
@@ -245,7 +296,7 @@ function buildBasicLedOverviewDetails(result)
 				str+='<h3>'+result[0].totalPanels+'</h3>';
 			str+='</div>';
 		str+='</div>';
-		str+='<div class="col-sm-2 media">';
+		str+='<div class="col-sm-2 media m_top5">';
 			str+='<div class="media-left">';
 				str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon">';
 			str+='</div>';
@@ -255,7 +306,7 @@ function buildBasicLedOverviewDetails(result)
 			str+='</div>';
 		str+='</div>';
 	
-		str+='<div class="col-sm-2 media">';
+		str+='<div class="col-sm-2 media m_top5">';
 			str+='<div class="media-left">';
 				str+='<img src="Assests/icons/Operational_LED_Light_Icon.png" alt="poles_icon">';
 			str+='</div>';
@@ -265,7 +316,7 @@ function buildBasicLedOverviewDetails(result)
 			str+='</div>';
 		str+='</div>';
 	
-		str+='<div class="col-sm-2 media">';
+		str+='<div class="col-sm-2 media m_top5">';
 			str+='<div class="media-left">';
 				str+='<img src="Assests/icons/Non_Operational_LED_Light_Ico.png" alt="poles_icon">';
 			str+='</div>';
@@ -283,18 +334,22 @@ function buildBasicLedOverviewDetails(result)
 			str+='</ul>';
 		str+='</div>';
 	str+='</div>';
+	str+='</div>';
 	$("#overviewBlockId").html(str);
 }
 function projectData(divId,levelId)
 {
 	var collapse='';
 	var dataArr = '';
-	if(levelId == 2)
+	if(levelId == 2 || levelId == 3)
 	{
 		dataArr = ['district','constituency','mandal'];
-	}else if(levelId == 3)
+	}else if(levelId == 4)
 	{
 		dataArr = ['constituency','mandal'];
+	}else if(levelId == 5)
+	{
+		dataArr = ['mandal'];
 	}
 	collapse+='<section>';
 		collapse+='<div class="row">';
@@ -329,7 +384,7 @@ function projectData(divId,levelId)
 									collapse+='<div class="row m_top10">';
 										collapse+='<div class="col-sm-12">';
 										collapse+='<div class="col-sm-3">';
-											collapse+='<ul class="nav navbar-nav list_inline tableMenu" role="tabDrains_menu" attr_blockId="3">';
+											collapse+='<ul class="nav navbar-nav list_inline tableMenu tableMenu'+dataArr[i]+'" role="tabDrains_menu" attr_blockId="3">';
 												collapse+='<li class="active ledResultTypeCls"  attr_location_level='+dataArr[i]+'  attr_tab_type="district">Districts</li>';
 												collapse+='<li class="ledResultTypeCls" attr_location_level='+dataArr[i]+' attr_tab_type="parliament">Parliament</li>';
 											collapse+='</ul>';
@@ -366,6 +421,7 @@ function projectData(divId,levelId)
 		collapse+='</div>';
 	collapse+='</section>';
 	$("#projectData").html(collapse);
+	$(".chosen-select").chosen();
 	for(var i in dataArr)
 	{
 		$("#"+dataArr[i]+"TableId").html(spinner);
@@ -376,39 +432,112 @@ function projectData(divId,levelId)
 function tableView(result,divId,locType)
 {
 	var tableView = '';
-	tableView+='<table class="table" id="'+divId+'Table">';
+	var viewTypeDist='';
+	var viewTypeCons='';
+	var viewTypeman='';
+		$('.tableMenudistrict li').each(function(i, obj){
+				 if($(this).hasClass('active')){
+					viewTypeDist = $(this).attr("attr_tab_type");
+				 }
+		});
+		$('.tableMenuconstituency li').each(function(i, obj){
+				 if($(this).hasClass('active')){
+					viewTypeCons = $(this).attr("attr_tab_type");
+				 }
+		});
+		$('.tableMenumandal li').each(function(i, obj){
+				 if($(this).hasClass('active')){
+					viewTypeman = $(this).attr("attr_tab_type");
+				 }
+		});
+	tableView+='<div calss="table-responsive">';	
+	tableView+='<table class="table tableStyleLed" id="'+divId+'Table">';
 		tableView+='<thead>';
 			tableView+='<tr>';
 				if(divId == 'district')
 				{
-					tableView+='<th>'+locType.toUpperCase()+'</th>';
+					
+					if(viewTypeDist == "district"){
+						tableView+='<th>DISTRICTS</th>';
+					}else{
+						tableView+='<th>PARLIAMENTS</th>';
+					}	
+					
 				}else if(divId == 'constituency')
 				{
-					tableView+='<th>CONSTITUENCY</th>';
+					if(viewTypeCons == "district"){
+						tableView+='<th>DISTRICT</th>';
+						tableView+='<th>CONSTITUENCY</th>';
+					}else{
+						tableView+='<th>PARLIAMENTS</th>';
+						tableView+='<th>CONSTITUENCY</th>';
+					}	
+					
 				}else if(divId == 'mandal')
 				{
-					tableView+='<th>MANDAL</th>';
+					if(viewTypeman == "district"){
+						tableView+='<th>DISTRICT</th>';
+						tableView+='<th>CONSTITUENCY</th>';
+						tableView+='<th>MANDAL</th>';
+					}else{
+						tableView+='<th>PARLIAMENTS</th>';
+						tableView+='<th>CONSTITUENCY</th>';
+						tableView+='<th>MANDAL</th>';
+					}						
+					
 				}
 				if(divId == 'district'){
 				  tableView+='<th><img src="Assests/icons/mandals_icon.png"><br/>TOTAL MANDALS</th>';	
 				}
 				
-				tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png"><br/>SURVEY STARTED MANDALS</th>';
-				tableView+='<th><img src="Assests/icons/GPs_icon.png"><br/>TOTAL GPs</th>';
-				tableView+='<th><img src="Assests/icons/GPs_survey_icon.png"><br/>SURVEY STARTEDGPs</th>';
-				tableView+='<th><img src="Assests/icons/Poles_icon.png"><br/>TOTAL POLES SURVEYED</th>';
-				tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png"><br/>TOTAL CCMS-BOX/ PANELS INSTALLED</th>';
-				tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png"><br/>TOTAL LED LIGHTS INSTALLED</th>';
-				tableView+='<th><img src="Assests/icons/Operational_LED_Light_Icon.png"><br/>OPERATIONAL</th>';
-				tableView+='<th><img src="Assests/icons/On_light_icon.png"><br/>ON</th>';
-				tableView+='<th><img src="Assests/icons/Off_Light_Icon.png"><br/>OFF</th>';
+				tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>SURVEY STARTED MANDALS</th>';
+				tableView+='<th><img src="Assests/icons/GPs_icon.png" class="imageWidthLed"><br/>TOTAL GPs</th>';
+				tableView+='<th><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>SURVEY STARTEDGPs</th>';
+				tableView+='<th><img src="Assests/icons/Poles_icon.png" class="imageWidthLed"><br/>TOTAL POLES SURVEYED</th>';
+				tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"><br/>TOTAL CCMS-BOX/ PANELS INSTALLED</th>';
+				tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed"><br/>TOTAL LED LIGHTS INSTALLED</th>';
+				tableView+='<th><img src="Assests/icons/Operational_LED_Light_Icon.png" class="imageWidthLed"><br/>OPERATIONAL</th>';
+				tableView+='<th><img src="Assests/icons/On_light_icon.png" class="imageWidthLed"><br/>ON</th>';
+				tableView+='<th><img src="Assests/icons/Off_Light_Icon.png" class="imageWidthLed"><br/>OFF</th>';
 			tableView+='</tr>';
 		tableView+='</thead>';
 		tableView+='<tbody>';
 			for(var i in result)
 			{
 				tableView+='<tr>';
-					tableView+='<td>'+result[i].locationName+'</td>';
+					if(divId == 'district')
+					{
+						if(viewTypeDist == "district"){
+							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+						}else{
+							tableView+='<td>'+result[i].addressVO.parliamentName+'</td>';
+						}
+						
+					}else if(divId == 'constituency')
+					{
+						if(viewTypeCons == "district"){
+							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+						}else{
+							tableView+='<td>'+result[i].addressVO.parliamentName+'</td>';
+							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+						}
+						
+						
+					}else if(divId == 'mandal')
+					{
+						if(viewTypeman == "district"){
+							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+							tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
+						}else{
+							tableView+='<td>'+result[i].addressVO.parliamentName+'</td>';
+							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+							tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
+						}
+						
+						
+					}
 					if(divId == 'district'){
 				     tableView+='<td>'+result[i].totalMandals+'</td>';	
 				    }
@@ -434,6 +563,7 @@ function tableView(result,divId,locType)
 			}
 		tableView+='</tbody>';
 	tableView+='</table>';
+	tableView+='</div>';
 
 	$("#"+divId+"TableId").html(tableView);
 	$("#"+divId+"Table").dataTable({
@@ -479,6 +609,9 @@ $(document).on("click",".ledResultTypeCls",function() {
 		 if(locationLevel=="constituency") {
 			 divId = "consLvlLedDistrictSelectBoxId";
 		 } else if (locationLevel=="mandal") {
+			 $("#mandalLvlLedConstituencySelectBoxId").html('');
+			 $("#mandalLvlLedConstituencySelectBoxId").append('<option value="0">SELECT CONSTITUENCY</option>');
+			 $("#mandalLvlLedConstituencySelectBoxId").trigger("chosen:updated")
 			 divId = "mandalLvlLedDistrictSelectBoxId";
 		 }
 		$("#"+divId).attr("attr_filter_type",resultType);
