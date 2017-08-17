@@ -199,7 +199,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		StringBuilder sbg = new StringBuilder();
 	
 		sb.append(" SELECT COUNT(DISTINCT LM.panchayat.locationAddress.tehsil.tehsilId), COUNT(DISTINCT LM.panchayat.panchayatId) ");
-		sb.append(",SUM(LM.totalPoles),SUM(LM.totalPanels),SUM(LM.totalLights),SUM(LM.workingLights),SUM(LM.onLights),sum(LM.offLights),sum(LM.offLights),sum(LM.notWorkingLights) ");	
+		sb.append(",SUM(LM.totalPoles),SUM(LM.totalPanels),SUM(LM.totalLights),SUM(LM.workingLights),SUM(LM.onLights),sum(LM.offLights),sum(LM.notWorkingLights) ");	
 		
 		
 		if(locationType.equalsIgnoreCase("district"))
