@@ -1,7 +1,7 @@
 @media (min-width: 100px) and (max-width:500px) {
 	.right-nav
 	{
-		
+		display:none;
 	}
 	.pad_left0
 	{
@@ -34,7 +34,7 @@
 @media (min-width: 500px) and (max-width:767px) {
 	.right-nav
 	{
-		
+		display:none;
 	}
 	.pad_left0
 	{
