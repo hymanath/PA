@@ -54,4 +54,6 @@ public interface ILocationDashboardService {
 	public BoothInchargesVO getBoothAssignInchargeCount(String fromDateStr, String toDateStr, Long locationTypeId,Long locationValue,
 			List<Long> committeeEnrollmentYearsIdsLst);
 	public List<BoothInchargesVO> getBoothCommitteeInchargesCount(Long locationId,Long locationValue,List<Long> boothCommitteeEnrollmentYearsIdsLst,String fromDateStr,String toDateStr);
+	public List<LocationWiseBoothDetailsVO> getAllParlimentsForLocationDashBoard();
+	public List<LocationWiseBoothDetailsVO> getAllConstituencyByParlimentId(Long parliamentIds);
 }
