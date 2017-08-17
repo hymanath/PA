@@ -40,7 +40,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		StringBuilder sb = new StringBuilder();
 		sb.append("select sum(model.totalLights),sum(model.totalPanels),sum(model.totalPoles),"
 				+ "sum(model.workingLights),sum(model.onLights),sum(model.offLights),sum(model.notWorkingLights) "
-				+ " from  LightMonitoring model where model.isDeleted ='N' ");
+				+ " from  LightMonitoring model where model.isDeleted ='N' and model.panchayat.locationAddress.state.stateId = 1 ");
 
 		if( locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.longValue() > 0){
 			if(locationType.equalsIgnoreCase("district")){
@@ -77,11 +77,11 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		StringBuilder sbc = new StringBuilder();
 		StringBuilder sbg = new StringBuilder();
 		
-		sb.append("SELECT COUNT(DISTINCT P.locationAddress.district.districtId),"
-				 + "COUNT(DISTINCT P.locationAddress.constituency.constituencyId),"
-				+ " COUNT(DISTINCT P.locationAddress.tehsil.tehsilId), "
-				+ "COUNT(DISTINCT P.panchayatId) ");
-		sb.append("  FROM LightMonitoring LM  WHERE LM.panchayat.locationAddress.state.stateId = 1  ");
+		sb.append("SELECT COUNT(DISTINCT LM.panchayat.locationAddress.district.districtId),"
+				 + "COUNT(DISTINCT LM.panchayat.locationAddress.constituency.constituencyId),"
+				+ " COUNT(DISTINCT LM.panchayat.locationAddress.tehsil.tehsilId), "
+				+ "COUNT(DISTINCT LM.panchayat.panchayatId)  ");
+		sb.append("  FROM LightMonitoring LM  WHERE LM.isDeleted ='N' and LM.panchayat.locationAddress.state.stateId = 1  ");
 		
 		if( locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.longValue() > 0){
 			if(locationType.equalsIgnoreCase("district")){
@@ -100,7 +100,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			query.setParameter("locationValue",locationValues);
 		}		
 		if (startDate != null && toDate != null) {
-			sb.append(" and LM.surveyDate between :startDate and :toDate ");
+			sb.append(" and date(LM.surveyDate) between :startDate and :toDate ");
 		}
 		if (startDate != null && toDate != null) {
 			query.setDate("startDate", startDate);
