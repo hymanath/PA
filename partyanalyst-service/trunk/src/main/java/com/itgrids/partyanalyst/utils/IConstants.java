@@ -1321,6 +1321,6 @@ public interface IConstants {
 	public static final Long PARTY_ALERT_TYPE_ID=1l;
 	public static final List<Long> VISHAKAPATNAM_IDS=Arrays.asList(13l,517l);
 	//DEBATE STATE ID
-	public static final Long DEBATE_AP_STATE_ID = 20441102L;
-	public static final Long DEBATE_TS_STATE_ID = 20441103L;
+	public static final Long DEBATE_AP_STATE_ID = 1L;
+	public static final Long DEBATE_TS_STATE_ID = 36L;
 }
