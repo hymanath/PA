@@ -326,7 +326,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 			      
 			      if(lightMonObjLst!=null && lightMonObjLst.size()>0) {	 
                 	 for (Object[] param : lightMonObjLst) {
-                		    Long locationId = commonMethodsUtilService.getLongValueForObject(param[8]);
+                		    Long locationId = commonMethodsUtilService.getLongValueForObject(param[9]);
                 		    LightMonitoringVO locationVO = locationMap.get(locationId);
                 		      if (locationVO != null ){
                 		    	locationVO.setSurveyStartedtotalMandals(commonMethodsUtilService.getLongValueForObject(param[0]));
@@ -337,7 +337,7 @@ public class LightMonitoringService  implements ILightMonitoring{
                       		    locationVO.setWorkingLights(commonMethodsUtilService.getLongValueForObject(param[5]));
                       		    locationVO.setOnLights(commonMethodsUtilService.getLongValueForObject(param[6]));	
                       		    locationVO.setOffLights(commonMethodsUtilService.getLongValueForObject(param[7])); 
-                      		     locationVO.setNotWorkingLights(commonMethodsUtilService.getLongValueForObject(param[8]));
+                      		    locationVO.setNotWorkingLights(commonMethodsUtilService.getLongValueForObject(param[8]));
                       		    locationVO.setTotalLedLIghtInstalledCount(locationVO.getOnLights()+locationVO.getOffLights());
                 		      }
                     }                 
