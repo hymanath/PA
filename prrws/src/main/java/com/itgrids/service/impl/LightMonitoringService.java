@@ -19,6 +19,7 @@ import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.ILightMonitoringDAO;
 import com.itgrids.dao.ILightWattageDAO;
 import com.itgrids.dao.IWebserviceCallDetailsDAO;
+import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.LedOverviewVo;
 import com.itgrids.dto.LightMonitoringVO;
 import com.itgrids.dto.LightWattageVO;
@@ -346,6 +347,22 @@ public class LightMonitoringService  implements ILightMonitoring{
 					   locationVO.setTotalGps(commonMethodsUtilService.getLongValueForObject(param[1]));//survey started village
 					   locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[2]));
 					   locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					   
+					    AddressVO addressVO = new AddressVO();
+						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[5]));
+						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[7]));
+						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[8]));
+						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[9]));
+						addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[10]));
+						addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[11]));
+						addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[12]));
+						addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[13]));
+						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[14]));
+						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[15]));
+						locationVO.setAddressVO(addressVO);
+					   
 					   locationDtlsMap.put(locationVO.getLocationId(), locationVO);
 				}
 			  }
