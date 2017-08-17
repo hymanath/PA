@@ -216,7 +216,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			} else if(filterType.equalsIgnoreCase("constituency")) {
 				sbc.append(" AND LM.panchayat.locationAddress.constituency.constituencyId = :filterValue ");
 			}else if(filterType.equalsIgnoreCase("mandal")) {
-				sbc.append(" AND LM.panchayat.locationAddress.tehsil.tehsilId = :locationId ");
+				sbc.append(" AND LM.panchayat.locationAddress.tehsil.tehsilId = :filterValue ");
 			}
 		}
 		if (fromDate != null && toDate != null) {
