@@ -147,7 +147,7 @@ IDelimitationConstituencyMandalDAO {
 	public List<Constituency> getConstituencyByTehsilId(Long tehsilId){
 		
 		return getHibernateTemplate()
-				.find("select model.delimitationConstituency.constituency from model where model.tehsil.tehsilId = ?",
+				.find("select model.delimitationConstituency.constituency from DelimitationConstituencyMandal model where model.tehsil.tehsilId = ?",
 						tehsilId);
 	
 	}
