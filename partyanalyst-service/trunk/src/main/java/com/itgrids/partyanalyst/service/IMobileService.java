@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
@@ -70,7 +71,7 @@ public interface IMobileService {
 	public ResultStatus sendSmsToUserForUpdations(String message,String mobileNo);
 	public ResultStatus createSurveySqliteFileForAParliamnetConstituency(RegistrationVO reVo);
 	
-	public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId, String locationType, String startDate, String endDate,List<String> userType);
+	//public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId, String locationType, String startDate, String endDate,List<String> userType);
 	public List<MobileUserVO> locationWiseOverView(String startDateString,String endDateString,List<Long> locationIds,String locationType,List<String> userTypes);
 	public MobileUserVO overAllDivisionsSummary(String startDateString,String endDateString,List<Long> locationIds,List<String> userTypes);
 	public List<TabDetailsVO> showMapForMobileAppUserVoter(Long userId,Long divisonId,List<String> dateStrList);
@@ -86,4 +87,6 @@ public interface IMobileService {
 	public List<CadreVoterVO> getVoterInfoForBooth(MobileAppUserVoterVO inputVO);
 	
 	public ResultStatus create2016CadreDataSqliteFileForAParliamnetConstituency(RegistrationVO reVo);
+	public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId,Long levelId,String startDateString, String endDateString,Long publicationDateId,Long electionYearId,List<String> userType);
+	public List<LocationWiseBoothDetailsVO> getAssignedWardsByUser(String accessValue,Long userId);
 }

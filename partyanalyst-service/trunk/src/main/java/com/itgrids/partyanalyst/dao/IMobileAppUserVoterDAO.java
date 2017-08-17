@@ -40,5 +40,7 @@ public interface IMobileAppUserVoterDAO extends GenericDao<MobileAppUserVoter, L
 	public List<Object[]> getBoothsBasedOnRating(List<Long> rating);
 	public List<Object[]> getVotersInfo(Long boothId,Long wardId,String isVoted,String resultType);
 	public List<Long> mobileAppUserVoterIds(List<String> mobileNos);
-	
+	public List<Object[]> getUserStartEndTimeByLevelId(Long locationId, Long levelId, Date fromDate, Date toDate,Long publicationDateId,List<String> userType);
+	public List<Object[]> getUserCollectedDetailsByLvelId(Long locationId,Long levelId, Date fromDate, Date toDate,Long publicationDateId,List<String> userType);
+	public List<Object[]> getUserCollectedRatingDetailsByLvelId(Long locationId,Long levelId, Date fromDate, Date toDate,Long publicationDateId,List<String> userType);
 }	

@@ -103,6 +103,7 @@ import com.itgrids.partyanalyst.dao.IWardBoothDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
@@ -158,9 +159,12 @@ import com.itgrids.partyanalyst.model.VoterReportLevel;
 import com.itgrids.partyanalyst.model.VotingTrendz;
 import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
 import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
@@ -240,7 +244,8 @@ public class MobileService implements IMobileService{
  private IGreaterMuncipalWardDAO		greaterMuncipalWardDAO;
  DecimalFormat decimalFormat = new DecimalFormat("#.##");
  private IUserAccessLevelValueDAO		userAccessLevelValueDAO;
- 
+ private ICadreCommitteeService cadreCommitteeService;
+ private IRegionServiceData regionServiceDataImp;
  
 public IUserAccessLevelValueDAO getUserAccessLevelValueDAO() {
 	return userAccessLevelValueDAO;
@@ -792,6 +797,22 @@ public IBloodGroupDAO getBloodGroupDAO() {
 public void setMobileAppUserVoterDAO(
 			IMobileAppUserVoterDAO mobileAppUserVoterDAO) {
 		this.mobileAppUserVoterDAO = mobileAppUserVoterDAO;
+	}
+
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+	
+	public void setCadreCommitteeService(ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
+
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
 	}
 
 public List<SelectOptionVO> getConstituencyList()
@@ -5502,7 +5523,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				return ratingsList;
 			}
 			
-			public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId, String locationType, String startDateString, String endDateString,List<String> userType){
+			/*public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId, String locationType, String startDateString, String endDateString,List<String> userType){
 				MobileAppUserDetailsVO finalVO = new MobileAppUserDetailsVO();
 				try {
 					SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -5652,7 +5673,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				}
 			
 				return finalVO;
-			}
+			}*/
 			
 			public List<MobileAppUserDetailsVO> getBasicRatings(){
 				List<MobileAppUserDetailsVO> ratings = new ArrayList<MobileAppUserDetailsVO>();
@@ -6631,5 +6652,186 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		}
 		return returnList;
 		 
+	 }
+	 public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId,Long levelId,String startDateString, String endDateString,Long publicationDateId,Long electionYearId,List<String> userType){
+			MobileAppUserDetailsVO finalVO = new MobileAppUserDetailsVO();
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				
+				Date fromDate=null;
+				Date toDate=null;
+				if(startDateString!=null && startDateString.trim().length()>0){
+					fromDate=sdf.parse(startDateString);
+				}
+				if(endDateString!=null && endDateString.trim().length()>0){
+					toDate=sdf.parse(endDateString);
+				}
+
+				  
+				finalVO.setRatings(getBasicRatings());
+				
+				List<MobileAppUserDetailsVO> fnlLst  = new ArrayList<MobileAppUserDetailsVO>(); 
+				List<Object[]> list = mobileAppUserVoterDAO.getUserStartEndTimeByLevelId(locationId, levelId, fromDate, toDate,publicationDateId,userType);
+				List<Object[]> list1 = mobileAppUserVoterDAO.getUserCollectedDetailsByLvelId(locationId, levelId, fromDate, toDate,publicationDateId,userType);
+				List<Long> divisionIds = new ArrayList<Long>(0);
+				divisionIds.add(locationId);
+				
+				Long totalVoters = boothPublicationVoterDAO.getDivisionWiseVoters(locationId,levelId,publicationDateId);
+				if(totalVoters != null && totalVoters.longValue()>0l)
+				{
+					finalVO.setTotalVoters(Integer.valueOf(String.valueOf(totalVoters)));
+					
+				}
+				
+				List<Long> usrIds = new ArrayList<Long>();
+				if(list!=null && !list.isEmpty()){
+					for(Object[] obj:list){
+						MobileAppUserDetailsVO temp = new MobileAppUserDetailsVO();
+						temp.setMobileAppUserId(obj[0]!=null?Long.valueOf(obj[0].toString()):null);
+						temp.setName(obj[1]!=null?obj[1].toString():"");
+						temp.setUserName(obj[8] != null ? obj[8].toString():"");
+						temp.setMobileNo(obj[2]!=null?obj[2].toString():"");
+						temp.setUniqueCode(obj[4]!=null?obj[4].toString():"");
+						temp.setDate(obj[5]!=null?obj[5].toString():"");
+						temp.setRatings(getBasicRatings());
+						SimpleDateFormat innrSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+						SimpleDateFormat reqSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						String stDate = "";
+						String edDate = "";
+						
+						if(obj[6]!=null){
+							Date reqDate1 = innrSdf.parse(obj[6].toString());
+							stDate = reqSdf.format(reqDate1);
+						}
+						
+						if(obj[7]!=null){
+							Date reqDate2 = innrSdf.parse(obj[7].toString());
+							edDate = reqSdf.format(reqDate2);
+						}
+						
+						temp.setStartTime(stDate);
+						temp.setEndtime(edDate);
+						
+						if(obj[0]!=null && !usrIds.contains(Long.valueOf(obj[0].toString()))){
+							usrIds.add(Long.valueOf(obj[0].toString()));
+						}
+						
+						fnlLst.add(temp);
+					}
+				}
+				
+				finalVO.setUsersCount(usrIds.size());
+				
+				List<Object[]> list3 = mobileAppUserVoterDAO.getUserCollectedRatingDetailsByLvelId(locationId, levelId, fromDate, toDate,publicationDateId,userType);
+				if(list3!=null && !list3.isEmpty()){
+					for(Object[] obj:list3){
+						MobileAppUserDetailsVO mv = getMatchedMobileAppUserDetailsVO(fnlLst, Long.valueOf(obj[0].toString()), obj[1].toString());
+						if(mv!=null){
+							List<MobileAppUserDetailsVO> ratings = mv.getRatings();
+							if(ratings!=null && !ratings.isEmpty()){
+								int ratingId = obj[2]!=null?Integer.parseInt(obj[2].toString()):0;
+								MobileAppUserDetailsVO ratingVO = getMatchedRatingVO(ratings, ratingId);
+								if(ratingVO!=null){
+									int count = obj[3]!=null?Integer.parseInt(obj[3].toString()):0;
+									ratingVO.setRatingCount(count);
+									MobileAppUserDetailsVO mainRtngVO = getMatchedRatingVO(finalVO.getRatings(), ratingId);
+									if(mainRtngVO==null){
+										mainRtngVO.setRatingCount(count);
+									}else{
+										mainRtngVO.setRatingCount(mainRtngVO.getRatingCount()+count);
+									}
+								}
+								
+							}
+						}
+					}
+				}
+				
+				int ttlMbls = 0;
+				int ttlVtrs = 0;
+				int ttlUnqeVtrs = 0;
+				
+				if(list1!=null && !list1.isEmpty()){
+					for(Object[] obj:list1){
+						MobileAppUserDetailsVO mv = getMatchedMobileAppUserDetailsVO(fnlLst, Long.valueOf(obj[0].toString()), obj[1].toString());
+						if(mv!=null){
+							int mbls = obj[2]!=null?Integer.parseInt(obj[2].toString()):0;
+							int vtrs = obj[3]!=null?Integer.parseInt(obj[3].toString()):0;
+							int unqVtrs = obj[4]!=null?Integer.parseInt(obj[4].toString()):0;
+							
+							mv.setNoOfMobiles(mbls);
+							mv.setVoterIdsCollected(vtrs);
+							mv.setUniqueVoters(unqVtrs);
+							
+							ttlMbls += mbls;
+							ttlVtrs += vtrs;
+							ttlUnqeVtrs += unqVtrs;
+						}
+					}
+				}
+				
+				finalVO.setNoOfMobiles(ttlMbls);
+				finalVO.setVoterIdsCollected(ttlVtrs);
+				finalVO.setUniqueVoters(ttlUnqeVtrs);
+				
+				List<MobileAppUserSmsStatus> list2 = null;//mobileAppUserSmsStatusDAO.getUsersLatestData(usrIds, fromDate, toDate,userType);
+				if(list2!=null && !list2.isEmpty()){
+					List<Long> updtdUsrs = new ArrayList<Long>();
+					for(MobileAppUserSmsStatus obj:list2){
+						SimpleDateFormat innrSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+						SimpleDateFormat reqSdf = new SimpleDateFormat("yyyy-MM-dd");
+						
+						Long userId = Long.valueOf(obj.getMobileAppUserId().toString());
+						Date reqDate = innrSdf.parse(obj.getStatusDate().toString());
+						String date = reqSdf.format(reqDate);
+						MobileAppUserDetailsVO mv = getMatchedMobileAppUserDetailsVO(fnlLst, userId, date);
+						if(mv!=null && !updtdUsrs.contains(userId)){
+							mv.setNoOfSmsSent(Integer.parseInt(obj.getSentSms().toString()));
+							updtdUsrs.add(userId);
+						}
+					}
+				}
+				
+				finalVO.setUserRslt(fnlLst);
+			} catch (Exception e) {
+				LOG.error("Exception Raised in getUserWiseDivisionSummary",e);
+			}
+		
+			return finalVO;
+		}
+	 public List<LocationWiseBoothDetailsVO> getAssignedWardsByUser(String accessValue,Long userId){
+		 List<LocationWiseBoothDetailsVO> finalList = new ArrayList<LocationWiseBoothDetailsVO>();
+		 try {
+			 Long constituencyId = Long.valueOf(accessValue);
+			String areaType = constituencyDAO.getLocalBodyElectionTypeByConstituencyId(constituencyId);
+			if(areaType != null && areaType.trim().equalsIgnoreCase("RURAL-URBAN")){
+				finalList = cadreCommitteeService.getMandalMunicCorpDetailsNew(constituencyId);
+			}else if(areaType != null && areaType.trim().equalsIgnoreCase("URBAN")){
+				//finalList = cadreCommitteeService.getPanchayatWardDivisionDetailsNew(constituencyId);
+				List<Object[]> wardList = userAccessLevelValueDAO.getAssignedWardsByUser(userId);
+				if(wardList != null && wardList.size() > 0){
+					 for (Object[] obj : wardList) {
+						 LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+						vo.setId((Long) (obj[0] != null ? obj[0]:0l));
+							String wardName = obj[1] != null ? obj[1].toString():"";
+							String divisionName = obj[2] != null ? obj[2].toString():"";
+						vo.setName(divisionName+" - ("+wardName+") ");
+						finalList.add(vo);
+					}
+				 }
+			}else{
+				List<SelectOptionVO> locations = regionServiceDataImp.getAllMandalsByConstituencyID(constituencyId);
+				for(SelectOptionVO location:locations){
+					LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+		        	vo.setLocationId(Long.valueOf("2"+location.getId()));
+		        	vo.setLocationName(location.getName()+" Mandal");
+		        	finalList.add(vo);
+		        }
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAssignedWardsByUser", e);
+		}
+		return finalList;
 	 }
 }
