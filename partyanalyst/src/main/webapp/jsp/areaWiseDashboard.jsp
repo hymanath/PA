@@ -48,15 +48,16 @@
 				<h2><span id="selectedMenuName" class="text-capitalize">Kavali Constituency</span> Information</h2>
 				<ol class="breadcrumb" id="getMenuLocations" menu-location-state="1" menu-location-districts="19" menu-location-constituencys="232" menu-location-mandals="" menu-location-panchayats="" menu-location-levelId="4" menu-location-levelName="constituency" >
 					<!--<li>State : <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>-->
-					<li>District : <span menu-name="districts" levelId="3" locationId="01" class="districtsMenuName">Nellore</span></li>
-					<li style="display:none">Constituency :<span menu-name="constituency" levelId="4" locationId="01" class="constituencyMenuName"> Andhra Pradesh</span></li>
-					<li style="display:none">Mandal :<span menu-name="mandals" levelId="5" locationId="01" class="mandalsMenuName"> Andhra Pradesh</span></li>
-					<li style="display:none">Panchayat :<span menu-name="panchayats" levelId="6" locationId="01" class="panchayatsMenuName"> Andhra Pradesh</span></li>
+					<li>District : <span menu-name="districts" levelId="3" locationId="01" class="districtsMenuName text-capital">Nellore</span></li>
+					<li style="display:none">Constituency :<span menu-name="constituency" levelId="4" locationId="01" class="constituencyMenuName text-capital"> Andhra Pradesh</span></li>
+					<li style="display:none">Mandal :<span menu-name="mandals" levelId="5" locationId="01" class="mandalsMenuName text-capital"> Andhra Pradesh</span></li>
+					<li style="display:none">Panchayat :<span menu-name="panchayats" levelId="6" locationId="01" class="panchayatsMenuName text-capital"> Andhra Pradesh</span></li>
 				</ol>
 				<div class="menu-dropdown" style="display:none;">
 					<div class="row">
 						<div class="col-sm-3">
 							<div id="districtsMenu"></div>
+							<div id="parliamentsMenu" class="m_top20"></div>
 						</div>
 						<div class="col-sm-3">
 							<div id="constituencyMenu"></div>
@@ -67,7 +68,7 @@
 						<div class="col-sm-3">
 							<div id="panchayatsMenu"></div>
 						</div>
-						<div class="col-sm-12 text-right m_top20">
+						<div class="col-sm-12 text-right" style="border-top:1px solid #ddd;padding-top:10px;margin-top:10px;">
 							<button class="btn btn-success" id="getLocationDetails">GET DETAILS</button>
 						</div>
 					</div>
