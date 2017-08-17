@@ -2354,6 +2354,8 @@
         <property name="userLocationTrackingDAO" ref="userLocationTrackingDAO" />
 	  <property name="greaterMuncipalWardDAO" ref="greaterMuncipalWardDAO" />
 	  <property name="userAccessLevelValueDAO" ref="userAccessLevelValueDAO" />
+	  <property name="cadreCommitteeService" ref="cadreCommitteeService" />
+	  <property name="regionServiceDataImp" ref="regionServiceDataImp" />
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">

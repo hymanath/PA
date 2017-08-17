@@ -37,10 +37,10 @@
 var locationArr = [];
 var locatinId = '${divisionId}';
 
-    <c:forEach items="${idNamevoList}" var="current">
+    <c:forEach items="${idNamevoList1}" var="current">
 		var obj ={
-			id:'${current.id}',
-			name: '${current.name}'
+			id:'${current.locationId}',
+			name: '${current.locationName}'
 		}
 		locationArr.push(obj);
     </c:forEach>
@@ -54,19 +54,19 @@ var locatinId = '${divisionId}';
 				<div class="panel-heading bg_cc" style="padding:5px 15px;">
 					<div class="panel-title">
 						<div class="row">
-							<div class="col-md-4">
-								<!--<s:select theme="simple" cssClass="" id="divisionList" list="idNamevoList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Division "/>-->
+							<div class="col-md-4" style="margin-left:57px;">
+								<!--<s:select theme="simple" cssClass="" id="divisionList" list="idNamevoList1" listKey="locationId" listValue="locationName" headerKey="0" headerValue=" Select Division "/>-->
 								<select name='role' id="divisionList" onchange="getDetails();">									
 								</select>
 							</div>
-							<div class="col-md-5" style="margin-top:5px">
+							<div class="col-md-5" style="margin-top:5px;display:none;">
 								<label class="font-12"><input type="checkbox" id="allUsersId" checked="true" class="usersClsAll" value="All"> All &nbsp;&nbsp;</label>
 								<label class="font-12"><input type="checkbox" id="bbbUserId" checked="true" class="usersCls" value="BBB User"> BBB User &nbsp;&nbsp;</label>
 								<label class="font-12"><input type="checkbox" id="fieldUserId" checked="true" class="usersCls" value="Field User"> Field User &nbsp;&nbsp;</label>
 								<label class="font-12"><input type="checkbox" id="geoUserId" checked="true" class="usersCls" value="Geo User"> Geo User &nbsp;&nbsp;</label>
 								<button class="btn btn-success btn-xs" id="getDetailsId">Get Details</button>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-3" style="margin-left:410px;">
 								<div class="input-group inputGroupCustom">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
 										<span class="caret"></span>
@@ -178,6 +178,7 @@ var locatinId = '${divisionId}';
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
 <script type="text/javascript">
+var accessValue = '${sessionScope.USER.accessValue}';
 $("#Date").daterangepicker({opens:"left"});
 jQuery( document ).ready(function( $ ) {
 	$("#Date").daterangepicker({opens:"left"});
@@ -187,26 +188,27 @@ jQuery( document ).ready(function( $ ) {
 });
 
 $(document).on('click','.applyBtn',function(){
-	getUsersSummary(2,userArr);
+	getUsersSummary(["All"]);
 });
-getUsersSummary(1,["All"]);
+getUsersSummary(["All"]);
 //getUsersSummary('${param.divisionId}','${param.fromDate}','${param.toDate}');
 
 function buildAccessValues(){
 	if(locationArr != null && locationArr.length>0)
 	{
+		$('#divisionList').append('<option value="0">ALL</option>');
 		for(var i in locationArr)
 		{
 			if(locationArr[i].id == locatinId)
-				$('#divisionList').append('<option value="'+locationArr[i].id+'" selected="selected">'+locationArr[i].name+' DIVISION REPORT </option>');
+				$('#divisionList').append('<option value="'+locationArr[i].id+'" selected="selected">'+locationArr[i].name+'</option>');
 			else
-				$('#divisionList').append('<option value="'+locationArr[i].id+'">'+locationArr[i].name+' DIVISION REPORT</option>');
+				$('#divisionList').append('<option value="'+locationArr[i].id+'">'+locationArr[i].name+'</option>');
 		}
 	}
 	$("#divisionList").dropkick();
 }
 
-function getUsersSummary(searchTypeId,userArr){
+/* function getUsersSummary(searchTypeId,userArr){
 	
 	var locationId = '';
 	var locationType = "ward";
@@ -224,6 +226,8 @@ function getUsersSummary(searchTypeId,userArr){
 	$('#ttlUsrs').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
 	$('#mainRtng').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
 	
+	alert(searchTypeId)
+	alert(${param.divisionId})
 	if(searchTypeId == 1){
 		locationId = '${param.divisionId}';
 		locationType = "ward";
@@ -265,7 +269,7 @@ function getUsersSummary(searchTypeId,userArr){
 	}).done(function(result){
 		buildSummary(result);
 	});
-}
+} */
 	function buildSummary(result){
 		$("#ttlUsrs").html(result.usersCount);		
 		$("#ttlVtrs").html(result.totalVoters);
@@ -306,9 +310,9 @@ function getUsersSummary(searchTypeId,userArr){
 	}
 
 
-	$(document).on("click",".openTab",function(){
+	/* $(document).on("click",".openTab",function(){
 		window.open("showGoogleMapDetails.action?userId="+$(this).attr("attr_userId")+"&divisonId="+$(this).attr("attr_divisonId")+"&surveyDate="+$(this).attr("attr_surveydate"), "new window", "scrollbars=1,height=900,width=1300");
-	});
+	}); */
 	
 	var userArr = [];
 $(document).on('click','#getDetailsId',function(){
@@ -330,7 +334,7 @@ $(document).on('click','#getDetailsId',function(){
 		$("#errDivId").html("Please Select Atleast One User");
 		return;
 	}
-	getUsersSummary(2,userArr);
+	getUsersSummary(userArr);
 });
 
 function getDetails(){
@@ -351,7 +355,7 @@ function getDetails(){
 		$("#errDivId").html("Please Select Atleast One User");
 		return;
 	}
-	getUsersSummary(2,userArr);
+	getUsersSummary(userArr);
 }
 
 
@@ -374,6 +378,67 @@ $(".usersCls").change(function () {
 	if(isAllChecked)
 		 $("input:checkbox").prop('checked', $(this).prop("checked"));
 });
+
+function getUsersSummary(userArr){
+	$("#ttlUsrs").html("");		
+	$("#ttlVtrs").html("");
+	$("#ttlVtrsCaptrd").html("");
+	$("#ttlMblCaptrd").html("");
+	
+	$('#ttlVtrs').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
+	$('#usrRtng').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
+	$('#ttlVtrsCaptrd').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
+	$('#ttlMblCaptrd').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
+	$('#ttlUsrs').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
+	$('#mainRtng').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
+	
+	var locId;
+	var lvlId;
+	var startDate;
+	var endDate;
+	var locationId = $("#divisionList").val();
+	
+	if(locationId == 0 || locationId == null){
+		locId= accessValue;
+		lvlId = 4;
+	}else{
+		locationId = $("#divisionList").val();
+		var subStrValue = locationId.substr(0,1);
+		if(subStrValue != null){
+			if(subStrValue == 1){
+				locId = locationId.substr(1);
+				lvlId = 7;
+			}else if(subStrValue == 2){
+				locId = locationId.substr(1);
+				lvlId = 5;
+			}
+		}
+		
+	}
+	var dates=$('#Date').val();
+	if(dates != null && dates.length >0){
+		var dateArray=dates.split("-");
+		startDate=dateArray[0].trim();
+		endDate=dateArray[1].trim();	
+	}
+	var jsObj = {
+		locationId : locId,
+		levelId:lvlId,
+		startDate:startDate,//"01/01/2017",//startDate,
+		endDate:endDate,//"08/01/2017",//endDate,//"08/17/2020",
+		publicationDateId : 25,
+		electionYearId : 3,
+		usersArr : userArr
+	};
+	$.ajax({
+		type : "GET",
+		url : "getUserWiseDivisionSummaryAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildSummary(result);
+	});
+}
 </script>
 </body>
 </html>
