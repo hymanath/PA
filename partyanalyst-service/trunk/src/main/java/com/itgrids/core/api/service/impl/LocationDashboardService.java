@@ -63,13 +63,13 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCadreVO;
 import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
-import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.model.CasteCategory;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.EnrollmentYear;
 import com.itgrids.partyanalyst.model.PublicationDate;
@@ -2805,5 +2805,42 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return null;
 	}
+	@Override
+	public List<LocationWiseBoothDetailsVO> getAllParlimentsForLocationDashBoard() {
+		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
+		List<Long> districtids = new ArrayList<Long>();
+		Long[] ids = IConstants.AP_NEW_DISTRICTS_IDS;
+		for (Long obj : ids) {
+			districtids.add(obj);
+		}
+		List<Object[]> parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByStateId(districtids);
+		
+		for (Object[] objects : parlimentList) {
+			if(objects!=null){
+				LocationWiseBoothDetailsVO locationVo= new LocationWiseBoothDetailsVO();
+				locationVo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				locationVo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				idNameVOList.add(locationVo);
+			}
+			
+		}
+		return idNameVOList;
+	}	 
 
+	@Override
+	public List<LocationWiseBoothDetailsVO> getAllConstituencyByParlimentId(Long parliamentIds) {
+		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
+		
+		List<Constituency> list = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(parliamentIds,2009l);		
+		for (Constituency objects : list) {
+			if(objects!=null){
+				LocationWiseBoothDetailsVO locationVo= new LocationWiseBoothDetailsVO();
+				locationVo.setLocationId(objects.getConstituencyId());
+				locationVo.setLocationName(objects.getName());
+				idNameVOList.add(locationVo);
+			}
+			
+		}
+		return idNameVOList;
+	}
 }
