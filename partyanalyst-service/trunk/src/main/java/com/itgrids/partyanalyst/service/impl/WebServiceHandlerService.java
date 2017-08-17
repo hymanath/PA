@@ -3822,6 +3822,20 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   List<MobileAppUserAccessLocation> list1 = mobileAppUserAccessLocationDAO.getMobileAppUserAccessLocations(inputVO.getMobileAppUserId());
 		   if(list1 != null && list1.size() > 0)
 		   {
+			   List<Long> boothIdsList = new ArrayList<Long>(0); 
+			   for(MobileAppUserAccessLocation location  : list1)
+			   {
+				   if(location.getLocationLevelId() != null && location.getLocationLevelId().longValue()==9L)
+					   boothIdsList.add(location.getLocationValue());
+			   }
+			   List<Object[]> boothDetailsList = boothDAO.getConstityencysByBooths(boothIdsList);
+			   Map<Long,Long> boothConstituencyMap = new HashMap<Long, Long>(0);
+				if(commonMethodsUtilService.isListOrSetValid(boothDetailsList)){
+				   for (Object[] param : boothDetailsList) {
+					   boothConstituencyMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[0]));
+					}
+			   }
+				
 			   for(MobileAppUserAccessLocation location  : list1)
 			   {
 				   MobileAppUserVO vo = getMatchedAppUser(returnList,location.getMobileAppUserId());
@@ -3829,14 +3843,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				   {
 					   AccessLocationVO subVo = new AccessLocationVO();
 					   subVo.setLevelId(location.getLocationLevelId());
-					   subVo.setLevelValue(location.getLocationValue());
+					   if(location.getLocationLevelId() != null && location.getLocationLevelId().longValue()==8L){
+						   subVo.setLevelValue(location.getLocationValue());
+					   }else{
+						   subVo.setBoothId(location.getLocationValue());
+						   subVo.setConstituencyId(boothConstituencyMap.get(location.getLocationValue()));
+					   }
 					   if(vo.getAccessLocations() == null)
 					   {
 						   vo.setAccessLocations(new ArrayList<AccessLocationVO>());
 					   }
 					   vo.getAccessLocations().add(subVo);
 				   }
-						   
 			   }
 		   }
 		 
@@ -3862,7 +3880,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   ResultStatus rs = new ResultStatus();
 		   try {
 			   Log.info("Entered into saveMobileAppUserVoterData ");
-			   SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+			   SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		   MobileAppUserVoter mobileAppUserVoter = new MobileAppUserVoter();
 		   mobileAppUserVoter.setBoothId(inputVo.getBoothId());
 		   mobileAppUserVoter.setLatitude(inputVo.getLatitude());
@@ -3871,7 +3889,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   mobileAppUserVoter.setMobileNo(inputVo.getMobileNum());
 		   mobileAppUserVoter.setRating(inputVo.getRating());
 		   mobileAppUserVoter.setUniqueKey(inputVo.getUniqueKey());
-		   mobileAppUserVoter.setWardId(inputVo.getWardId());
+		   if(inputVo.getWardId() != null && inputVo.getWardId().longValue()>0L)
+			   mobileAppUserVoter.setWardId(inputVo.getWardId());
 		   mobileAppUserVoter.setVoterId(inputVo.getVoterId());
 		   mobileAppUserVoter.setInsertedTime(date.getCurrentDateAndTime());
 		   if(inputVo.getSurveyTime() != null && !inputVo.getSurveyTime().isEmpty())
@@ -3968,7 +3987,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				   
 				   if(location != null)
 				   sb.append("Location : "+location+"\n");
-				   sb.append("Vote on 02-FEB-2016 07:00 AM - 05:00 PM.\n");
+				   sb.append("Polling Date : 23-AUGUST-2017 07:00 AM - 05:00 PM.\n");
 				   
 				   if(latitude != null && longitude != null)
 				   {
@@ -3976,7 +3995,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					   sb.append("Route to Polling Station\n");
 					   sb.append(url);
 				   }
-				   result = smsGatewayService.sendSMS(mobileNo,sb.toString(),IConstants.ITGRIDS_USERNAME_FOR_SMS,IConstants.ITGRIDS_PASSWORD_FOR_SMS);		 
+				   result = smsGatewayService.sendSMS(mobileNo,sb.toString(),IConstants.ADMIN_USERNAME_FOR_SMS_FOR_OTP,IConstants.ADMIN_PASSWORD_FOR_SMS_FOR_OTP);		 
 			   }
 			      
 		   }catch(Exception e)
@@ -4002,7 +4021,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			  list.add("9999999999");
 			  list.add("0000000000");
 			  
-			  if(list.contains(mobileNo))
+			  if(list.contains(mobileNo) || mobileNo.length()<10)
 				  return false;
 			  
 		  }catch(Exception e)

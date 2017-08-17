@@ -374,8 +374,8 @@ public class SchedulerService implements ISchedulerService{
 	    	cal.getTime();
 	    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 			LOG.info( sdf.format(cal.getTime()));
-			int ctpCount = surveyDetailsInfoDAO.saveDailyCallCenterVerifiedDetails(fromDate);
-			int smsCount =  surveyDetailsInfoDAO.saveSMSMobileNumbers(fromDate);
+			int ctpCount = 0;//surveyDetailsInfoDAO.saveDailyCallCenterVerifiedDetails(fromDate);
+			int smsCount =  0;//surveyDetailsInfoDAO.saveSMSMobileNumbers(fromDate);
 			LOG.info(ctpCount+" No of Records Are Inserted into mobile numbers form CTP");
 			LOG.info(smsCount+" No of Records Are Inserted into mobile numbers form SMS");
 			

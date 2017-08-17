@@ -7,6 +7,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.service.ISmsGatewayService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SmsGatewayService implements ISmsGatewayService{
 
@@ -15,6 +16,9 @@ public class SmsGatewayService implements ISmsGatewayService{
 	public String sendSMS(String mobileNo,String message,String username,String password)
 	{
 
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+			return "success";
+			
 		HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
 		client.getHttpConnectionManager().getParams().setConnectionTimeout(
 			Integer.parseInt("30000"));
