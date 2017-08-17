@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
-import com.itgrids.partyanalyst.dto.CadreEventsVO;
 import com.itgrids.partyanalyst.dto.CadrePerformanceVO;
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.GovtOrderVO;
@@ -14,8 +13,9 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.LocationsVO;
-import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
+import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -93,5 +93,6 @@ public interface INominatedPostProfileService {
 	 public void setBrdWisNominPstAppliedDepOrCorpApplledDetails(List<Object[]> depOCorpList,List<Long> apllicationIds,List<NominatedPostVO> returnVoList,String status);
 	 public List<CadrePerformanceVO> getCampDetails(List<Long> tdpCadreIdsList);
 	 public List<EventDetailsVO> getMahanaduEventDetilsByCadreIdDetils(Long parentEventId,Long tdpCadreId);
+	 public ResultStatus saveNominatedPostProfileDtls(final NominatedPostDetailsVO nominatedPostDtlsVO,final Long userId,final Map<File,String> mapfiles);
 	 
 }
