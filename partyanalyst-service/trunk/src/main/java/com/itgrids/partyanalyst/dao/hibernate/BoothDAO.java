@@ -1302,7 +1302,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getConstityencysByBooths(List<Long> Ids)
 		{
-			Query query = getSession().createQuery("select distinct model.constituency.constituencyId,model.constituency.name from Booth model where " +
+			Query query = getSession().createQuery("select distinct model.constituency.constituencyId,model.constituency.name, model.boothId from Booth model where " +
 					"  model.boothId in (:Ids)");
 			query.setParameterList("Ids", Ids);
 			return query.list();
