@@ -29,10 +29,8 @@ function onLoadInitialisations()
 	collapseClick();
 	responsiveTabs();
 	//Menu Calls
-	menuCalls(2,'1','');
-	//menuCalls(3,'01','');
-	//menuCalls(4,'232','');
-	//menuCalls(5,'248','232');
+	menuCalls(2,'1','');	
+	menuCalls(9,'1','');	
 }
 function onLoadAjaxCalls()
 {
@@ -81,10 +79,12 @@ function onLoadAjaxCalls()
 	
 }
 $(document).on("click","[menu-click]",function(){
+	var length = $(this).text().length;
 	var levelId = $(this).attr("levelId");
 	var locationId = $(this).attr("menu-click");
 	var levelName = $(this).attr("menu-levelname");
 	$("[menu-name="+levelName+"]").html($(this).html());
+	//$("[menu-name="+levelName+"]").width(((length)*(10)));
 	$("[levelId="+levelId+"],[menu-name]").removeClass("active");
 	$(this).addClass("active");
 	$("[menu-name="+levelName+"]").closest("li").show();
@@ -96,7 +96,8 @@ $(document).on("click","[menu-click]",function(){
 	locationLevelName = levelName;
 	if(levelId == 3)
 	{
-		districtId = locationId
+		districtId = locationId;
+		$("#districtsMenu").closest(".col-sm-12").removeClass("col-sm-12").addClass("col-sm-3");
 	}else if(levelId == 4)
 	{
 		constituencyId = locationId
@@ -106,6 +107,9 @@ $(document).on("click","[menu-click]",function(){
 	}else if(levelId == 6)
 	{
 		panchayatId = locationId
+	}else if(levelId == 9){
+		//parliaments
+		$("#scrollerdistricts").find("li").removeClass("active");
 	}
 	if(levelId != '5' || levelId != 5)
 	{
@@ -143,6 +147,20 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 			data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
 			return buildResult('districts',result);
+		});
+	}else if(levelId == '9')
+	{
+		$("#parliamentsMenu").html(spinner);
+		var jsObj={
+			"stateId":levelValue
+		}
+		$.ajax({
+			type : "GET",
+			url : "getAllDistrictsForLoationDashBoardAction.action",
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			return buildResult('parliaments',result);
 		});
 	}else if(levelId == '3')
 	{
@@ -190,20 +208,18 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 	}
 	function buildResult(divId,result)
 	{
-		levelId = parseInt(levelId) + 1;
+		if(levelId != '9' || levelId != 9)
+		{
+			levelId = parseInt(levelId) + 1;
+		}
 		var menu='';
+		menu+='<h4 class="panel-title text-capital">'+divId+'</h4>';
 		menu+='<div class="scroller'+divId+'">';
 			menu+='<ul>';
 				for(var i in result)
 				{
 					if(levelId != '6' || levelId != 6)
 					{
-						/* if(i == 0)
-						{
-							menu+='<li menu-click="'+result[i].locationId+'" menu-levelname="'+divId+'" class="active" levelId="'+levelId+'">'+result[i].locationName+'</li>';
-						}else{
-							menu+='<li menu-click="'+result[i].locationId+'" menu-levelname="'+divId+'" levelId="'+levelId+'">'+result[i].locationName+'</li>';
-						} */
 						menu+='<li menu-click="'+result[i].locationId+'" menu-levelname="'+divId+'" levelId="'+levelId+'" class="text-capitalize">'+result[i].locationName+'</li>';
 					}else{
 						menu+='<li constituencyId="'+$("#constituencyMenu li.active").attr("menu-click")+'" class="text-capitalize" menu-levelname="'+divId+'" menu-click="'+result[i].locationId+'" levelId="'+levelId+'">'+result[i].locationName+'</li>';
@@ -212,10 +228,12 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 			menu+='</ul>';
 		menu+='</div>';
 		$("#"+divId+"Menu").html(menu);
-		if(result.length > 13)
+		if(levelId == '3' || levelId == '9')
 		{
-			$(".scroller"+divId).mCustomScrollbar({setHeight:'480px'})
-		}
+			$(".scroller"+divId).mCustomScrollbar({setHeight:'240px'})
+		}else if(result.length > 14){
+			$(".scroller"+divId).mCustomScrollbar({setHeight:'500px'})
+		}		
 	}
 	
 }
@@ -963,6 +981,7 @@ function buildCasteGroupDetailsViewBlock(result){
 }
 
 $(document).on("click","#getLocationDetails",function(){	
+	$(".menu-dropdown").hide();
 	var name = '';
 	if(locationLevelId == 2)
 	{
