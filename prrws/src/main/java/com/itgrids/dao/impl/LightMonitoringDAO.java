@@ -24,9 +24,27 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 
 	@Override
 	public List<LightMonitoring> getLiveDateForCurrentDateSelection(Date date) {
-		Query query = getSession().createQuery(
-				" select model from LightMonitoring model where date(model.surveyDate) = :date and model.isDeleted ='N' ");
 
+		//Query query = getSession().createQuery("select distinct model from LightMonitoring model where date(model.surveyDate) = :date and model.isDeleted ='N' ");
+		Query query = getSession().createQuery("update  LightMonitoring model set model.isDeleted='Y' where date(model.surveyDate) = :date and model.isDeleted ='N' ");
+		query.setDate("date", date);
+		return query.list();
+	}
+	@Override
+	public Integer updateLightMoitoringData(Date date) {
+		Query query = getSession().createQuery("update  LightMonitoring model set model.isDeleted='Y' where date(model.surveyDate) = :date and model.isDeleted ='N' ");
+		query.setDate("date", date);
+		return query.executeUpdate();
+	}
+	@Override
+	public Integer updateLightWattageMoitoringData(List<Long> lightMonitoringIds) {
+		Query query = getSession().createQuery("update  LightWattage model set model.isDeleted='Y' where model.lightMonitoringId in (:lightMonitoringIds) and model.isDeleted ='N' ");
+		query.setParameterList("lightMonitoringIds", lightMonitoringIds);
+		return query.executeUpdate();
+	}
+	@Override
+	public List<Long> getLightMonitroingIds(Date date) {
+		Query query = getSession().createQuery("select distinct model.lightMonitoringId from  LightMonitoring model where date(model.surveyDate) = :date and model.isDeleted ='N' ");
 		query.setDate("date", date);
 		return query.list();
 	}
@@ -181,7 +199,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		StringBuilder sbg = new StringBuilder();
 	
 		sb.append(" SELECT COUNT(DISTINCT LM.panchayat.locationAddress.tehsil.tehsilId), COUNT(DISTINCT LM.panchayat.panchayatId) ");
-		sb.append(",SUM(LM.totalPoles),SUM(LM.totalPanels),SUM(LM.totalLights),SUM(LM.workingLights),SUM(LM.onLights),sum(LM.offLights) ");	
+		sb.append(",SUM(LM.totalPoles),SUM(LM.totalPanels),SUM(LM.totalLights),SUM(LM.workingLights),SUM(LM.onLights),sum(LM.offLights),sum(LM.offLights),sum(LM.notWorkingLights) ");	
 		
 		
 		if(locationType.equalsIgnoreCase("district"))

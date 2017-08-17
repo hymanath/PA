@@ -127,9 +127,9 @@
 					</div>
 					<div class="col-sm-9">
                         <ul class="nav navbar-nav pull-right sub-menu">
-					        <li class="daterangeViewLiveCls">LIVE</li>
-                            <li class="active daterangeViewLiveCls">TODAY</li>
-                            <li id="singleDateRangePicker" class="daterangeViewCls">HISTORICAL</li>
+					        <li class="daterangeViewLiveCls liveDataCls" style="cursor:pointer;">LIVE</li>
+                            <li class="active daterangeViewLiveCls todayDataCls" style="cursor:pointer;">TODAY</li>
+                            <li id="singleDateRangePicker" class="daterangeViewCls" style="cursor:pointer;">HISTORICAL</li>
                         </ul>
                     </div>
 				</div>
