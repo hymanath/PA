@@ -84,7 +84,9 @@ function getLedOverviewForStartedLocationsDetailsCounts(){
 	$("#ledOverViewDiv").html(spinner);
 	var json = {
 		fromDate:glStartDate,
-		toDate:glEndDate
+		toDate:glEndDate,
+		locationType:"",
+		locationValue:0
 	}
 	$.ajax({                
 		type:'POST',    
@@ -106,7 +108,9 @@ function getBasicLedOverviewDetails(){
 	$("#overviewBlockId").html(spinner);
 	var json = {
 		fromDate:glStartDate,
-		toDate:glEndDate
+		toDate:glEndDate,
+		locationType:"",
+		locationValue:0
 	}
 	$.ajax({                
 		type:'POST',    
