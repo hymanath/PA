@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -8816,6 +8817,73 @@ public List<Object[]> getVoterIdDetailsByPublicationIdAndCardNo(String voterCard
 	query.setParameter("publicationId", publicationId);
 	return query.list();
 }
-
+public Long getDivisionWiseVoters(Long locationId,Long levelId, Long publicationDateId){
+	StringBuilder sb = new StringBuilder();
+	sb.append(" select count(distinct model.voter.voterId)" +
+			" from BoothPublicationVoter model" +
+			" left join model.booth.constituency.district district" +
+			" left join model.booth.constituency constituency" +
+			" left join model.booth.tehsil tehsil" +
+			" left join model.booth.localBody localBody" +
+			" left join model.booth.panchayat panchayat" +
+			" left join model.booth.localBodyWard ward" +
+			" where model.booth.publicationDate.publicationDateId = :publicationDateId");
+	/*if(fromDate != null && toDate != null)
+		sb.append(" and ( date(model.surveyTime) between :fromDate and :toDate ) ");*/
+	
+	/*if(locationType.equalsIgnoreCase("Ward")){
+		sb.append(" and model.wardId=:locationId");
+	}*/
+	if(levelId != null && levelId.longValue() > 0l){
+		if(levelId == IConstants.DISTRICT_SCOPE_ID){
+			sb.append(" and district.districtId = :locationId");
+		}else if(levelId == IConstants.CONSTITUENCY_SCOPE_ID){
+			sb.append(" and constituency.constituencyId = :locationId");
+		}else if(levelId == IConstants.TEHSIL_SCOPE_ID){
+			sb.append(" and tehsil.tehsilId = :locationId");
+		}else if(levelId == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID){
+			sb.append(" and localBody.localElectionBodyId = :locationId");
+		}else if(levelId == 6l){
+			sb.append(" and panchayat.panchayatId = :locationId");
+		}else if(levelId == 8l){
+			sb.append(" and ward.constituencyId = :locationId");
+		}else if(levelId == 9l){
+			sb.append(" and model.booth.boothId = :locationId");
+		}
+	}
+	
+	/*if(!(userType.contains("All")))
+		sb.append(" and model.mobileAppUser.type in (:userType) ");*/
+	if(levelId != null && levelId.longValue() > 0l){
+		if(levelId == IConstants.DISTRICT_SCOPE_ID){
+			sb.append(" group by district.districtId");
+		}else if(levelId == IConstants.CONSTITUENCY_SCOPE_ID){
+			sb.append(" group by constituency.constituencyId");
+		}else if(levelId == IConstants.TEHSIL_SCOPE_ID){
+			sb.append(" group by tehsil.tehsilId");
+		}else if(levelId == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID){
+			sb.append(" group by localBody.localElectionBodyId");
+		}else if(levelId == 6l){
+			sb.append(" group by panchayat.panchayatId");
+		}else if(levelId == 8l){
+			sb.append(" group by ward.constituencyId");
+		}else if(levelId == 9l){
+			sb.append(" group by model.booth.boothId");
+		}
+	}
+	
+	Query query = getSession().createQuery(sb.toString());
+	/*if(fromDate != null && toDate != null){
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+	}*/
+	if(levelId != null && levelId.longValue() > 0l)
+		query.setParameter("locationId", locationId);
+	//if(publicationDateId != null && publicationDateId.longValue() > 0l)
+		query.setParameter("publicationDateId", publicationDateId);
+	/*if(!(userType.contains("All")))
+		query.setParameterList("userType", userType);*/
+	return (Long) query.uniqueResult();
+}
 
 }

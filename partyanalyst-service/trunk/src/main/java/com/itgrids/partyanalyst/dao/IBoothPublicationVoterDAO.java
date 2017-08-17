@@ -1,6 +1,7 @@
 
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -752,4 +753,5 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getTotalVoterGroupByLocationUrb(String location, Long constId );
 	  public List<Object[]> getTotalVoterGroupByLocationUrbWard(String location, Long constId );
 	  public List<Object[]> getBoothsOfVoterIds(List<Long> voterIds,Long publicationDateId);
+	  public Long getDivisionWiseVoters(Long locationId,Long levelId, Long publicationDateId);
 }
