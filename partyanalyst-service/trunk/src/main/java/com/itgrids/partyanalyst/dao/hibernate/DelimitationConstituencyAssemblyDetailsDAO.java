@@ -622,6 +622,15 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	   "        pc.electionScope.electionScopeId = 1 and pc.deformDate is null and dc.year = 2009 and pc.state.stateId = 1 ");
 	   return query.list();
 	}
+
+	@Override
+	public List<Object[]> getAllParliamentConstituencyByStateId(List<Long> districtids) {
+		Query query = getSession().createQuery("select distinct model.delimitationConstituency.constituency.constituencyId," +
+				"model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year =2009 " +
+				" and model.constituency.district.districtId in(:districtIds)");
+		query.setParameterList("districtIds", districtids);
+		  return query.list();
+	}
 	
 	
 	
