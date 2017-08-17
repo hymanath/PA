@@ -17968,12 +17968,14 @@
 	</action>
 	<action name="applyQuickApprovalNominatedPostAction" class="nominatedPostProfileAction" method="getQuickApprovalNominatedPost">
 			<result name="success">/jsp/applyQuickApprovalNominatedPost.jsp</result>
-			<result name="error">/jsp/loginForm.jsp</result>	
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=applyQuickApprovalNominatedPostAction</result>	
 	</action> 	
 	<action name="saveNominatedPostProfileDtlsAction" class="nominatedPostProfileAction" method="saveNominatedPostProfileDtls">
 		<result type="json" name="success">
 			<param name="root">resultStatus</param>
 		</result>
 	</action>
+	
  </package>
 </struts>

@@ -191,7 +191,7 @@ label
 }
 .btnSearch
 {
-	padding:21px 10px;
+	
 	border-radius:0px;
 }
 .navTabsCustom
@@ -1594,3 +1594,71 @@ div.dataTables_wrapper div.clear
 	 padding-bottom:6px;  
    }
 }
+/*Newly added css*/
+.selectSearch{
+	background-color: #ccc;
+	padding-bottom: 14px;
+}
+.iconBlock{
+    display: inline-block;
+    background-color: #95989A;
+    padding: 6px 2px;
+    border-radius: 25px;
+    width: 50px;
+    height: 50px;
+}
+#searchResultsBlock .panel-heading .fa-user,#showPositionBlock .panel-heading .fa-user{
+	background-color: #95989A;
+	color: #fff;
+}
+.panelCollapseIconChange:before
+{
+	font-family:'Glyphicons Halflings';
+		content:"\2212";
+		float: right;
+		font-size:10px;
+		font-weight:400 !important;
+		margin-left:-4px;
+		color:#fff;
+		background-color: #333;
+		border:1px solid #333;
+		padding:2px 4px;
+		border-radius: 4px;
+}
+.panelCollapseIconChange.collapsed:before
+{
+	content:"\002b";
+}
+
+.panel-heading a{
+	color: #333;
+	text-decoration: none;
+}
+.panel-heading .deleteMember{
+		display: inline-block;
+		position: absolute;
+		width: 25px;
+		height: 25px;
+		border: 1px solid grey;
+		border-radius: 20px;
+		right: -11px;
+		top: -1px;
+	}
+.memberDetails{
+    margin: 12px 0px;
+    span{
+        border: 1px solid grey;
+        padding: 4px 7px;
+        border-radius: 20px;
+        margin-right: 12px;
+    }
+}
+.memberDetails{
+	margin: 12px 0px !important;
+}
+.memberDetails  span{
+        border: 1px solid grey;
+        padding: 4px 7px;
+        border-radius: 20px;
+        margin-right: 12px;
+    }
