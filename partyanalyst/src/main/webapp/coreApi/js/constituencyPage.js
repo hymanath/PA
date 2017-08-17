@@ -1,5 +1,8 @@
  //ajaxcalls through newconstituencypage.js
-var globalConsId = 232;
+ 	var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf(".com")+4));
+	if(wurl.length == 3)
+		wurl = url.substr(0,(url.indexOf(".in")+3));	
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalCasteColorObj = {"BC":"#867DC0","Minority":"#99CC67","SC":"#65A7E1","ST":"#7DC1C2","OC":"#E58D45"};
 var globalColorNews = {"Without Money":"#F36E8F","<10L":"#0C9516",">10L":"#8E4654","State Wide Issue":"#FE9900"};
@@ -12,12 +15,10 @@ var constituencyId = $("#getMenuLocations").attr("menu-location-constituencys");
 var mandalId = $("#getMenuLocations").attr("menu-location-mandals");
 var panchayatId = $("#getMenuLocations").attr("menu-location-panchayats");
 var locationLevelName = $("#getMenuLocations").attr("menu-location-levelName");
-var locationLevelId = $("#getMenuLocations").attr("menu-location-levelid");
-var publicationId = '22'
-var url = window.location.href;
-	var wurl = url.substr(0,(url.indexOf(".com")+4));
-	if(wurl.length == 3)
-		wurl = url.substr(0,(url.indexOf(".in")+3));
+var locationLevelId = $("#getMenuLocations").attr("menu-location-levelId");
+var publicationId = '22';
+var userAccessLevelValuesArray=[];
+var commitessArr=["mandalLevelGraph","villageLevelGraph","affMandalLevelGraph","affVillageLevelGraph"]
 	
 onLoadInitialisations();
 onLoadAjaxCalls();
@@ -35,14 +36,14 @@ function onLoadInitialisations()
 }
 function onLoadAjaxCalls()
 {
-	/* //candidate Profiles 1st block
+	//candidate Profiles 1st block
 	getCandidateAndPartyInfoForConstituency();
 	//Second Block
 	getCountsForConstituency();
 	//Constituency Voter Information
 	getVotersAndcadreAgeWiseCount();
 	
-	///caste information
+	//caste information
 	getCasteGroupNAgeWiseVoterNCadreCounts("voter")
 	getActivityStatusList();
 	
@@ -56,29 +57,28 @@ function onLoadAjaxCalls()
 	
 	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage("overAll")
 	for(var i in propertyIdGlobalStr){
-		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i])
+		getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(propertyIdGlobalStr[i]) 
 	}
 	
-	//Grievance And Insurance
-	getLocationWiseGrivanceTrustStatusCounts();
-	
-	// Nominated Posts
-	getPositionWiseMemberCount();
-	getNominatedPostApplicationDetails();
-	getNominatedPostStatusWiseCount();
-	
+	//Committee
+	getLocationWiseCommitteesCount();
 	//Meetings
 	getLocationWiseMeetingsCount();
 	
 	//Tours 
 	getLocationWiseTourMembersComplainceDtls();
-	 
-	//Committee
-	getLocationWiseCommitteesCount();
-	*/
 	
 	// Benefits
 	getGovtSchemeWiseBenefitMembersCount();
+	
+	//Grievance And Insurance
+	getLocationWiseGrivanceTrustStatusCounts();
+	getLocationWiseInsuranceStatusCount()
+	 // Nominated Posts
+	getPositionWiseMemberCount();
+	getNominatedPostApplicationDetails();
+	getNominatedPostStatusWiseCount();
+	
 }
 $(document).on("click","[menu-click]",function(){
 	var levelId = $(this).attr("levelId");
@@ -90,7 +90,7 @@ $(document).on("click","[menu-click]",function(){
 	$("[menu-name="+levelName+"]").closest("li").show();
 	$("[menu-name="+levelName+"]").addClass("active");
 	$("#getMenuLocations").attr("menu-location-"+levelName+"",locationId);
-	$("#getMenuLocations").attr("menu-location-levelId",((levelId)-(1)));
+	$("#getMenuLocations").attr("menu-location-levelId",((levelId)));
 	$("#getMenuLocations").attr("menu-location-levelName",levelName);
 	locationLevelId = ((levelId)-(1));
 	locationLevelName = levelName;
@@ -111,7 +111,7 @@ $(document).on("click","[menu-click]",function(){
 	{
 		menuCalls(levelId,locationId,'')
 	}else{
-		menuCalls(levelId,locationId,$("#constituencysMenu li.active").attr("menu-click"))
+		menuCalls(levelId,locationId,$("#constituencyMenu li.active").attr("menu-click"))
 	}	
 });
 $(document).on("click","[menu-name]",function(e){
@@ -127,56 +127,7 @@ $(document).on("click",function(e){
 	$(".menu-dropdown").hide();
 	$("[menu-name]").removeClass("active");
 });
-function highChartsDonut(id,data,legend,title,height)
-{
-	$('#'+id).highcharts({
-		chart: {
-			height: height,
-            type: 'pie',
-			backgroundColor: 'transparent',
-            options3d: {
-                enabled: false,
-                alpha: 45
-            }
-        },	
-		title: {
-			text: title
-		},
-		subtitle: {
-			text: ''
-		},
-		plotOptions: {	
-			pie: {
-                innerSize: 40,
-                depth: 50,
-				showInLegend: legend,
-				dataLabels: {
-                    enabled: false,
-				}
-            }, 
-		},
-		legend: {
-			itemStyle: {
-				fontWeight: 'normal',
-				'font-family':'roboto',
-				'font-size':'16px'
-            },
-			enabled: true,
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-			useHTML: true,
-			
-			labelFormatter: function() {
-				return '<span style="color:'+this.color+'">'+this.name + '-' + this.y + '';
-			}
-		},
-		series:[{
-            name : 'Count',
-            data: data
-        }]
-	});
-}
+
 function menuCalls(levelId,levelValue,higherLevelVal)
 {
 	if(levelId == '2')
@@ -195,7 +146,7 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 		});
 	}else if(levelId == '3')
 	{
-		$("#constituencysMenu").html(spinner);
+		$("#constituencyMenu").html(spinner);
 		var jsObj={
 			"districtId":levelValue
 		}
@@ -205,7 +156,7 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			return buildResult('constituencys',result);
+			return buildResult('constituency',result);
 		});
 	}else if(levelId == '4')
 	{
@@ -255,7 +206,7 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 						} */
 						menu+='<li menu-click="'+result[i].locationId+'" menu-levelname="'+divId+'" levelId="'+levelId+'" class="text-capitalize">'+result[i].locationName+'</li>';
 					}else{
-						menu+='<li constituencyId="'+$("#constituencysMenu li.active").attr("menu-click")+'" class="text-capitalize" menu-levelname="'+divId+'" menu-click="'+result[i].locationId+'" levelId="'+levelId+'">'+result[i].locationName+'</li>';
+						menu+='<li constituencyId="'+$("#constituencyMenu li.active").attr("menu-click")+'" class="text-capitalize" menu-levelname="'+divId+'" menu-click="'+result[i].locationId+'" levelId="'+levelId+'">'+result[i].locationName+'</li>';
 					}
 				}
 			menu+='</ul>';
@@ -436,12 +387,11 @@ function getCountsForConstituency(){
 	$("#levelWiseCountDivId").html(spinner);
 	var tehsilId=0;
 	var type = 'constituency';
-	id = 232;
 	var jsObj=
 	{
 		tehsilId:tehsilId,
 		type:locationLevelName,	
-		id:id,
+		id:constituencyId,
 		publicationDateId:publicationId,
 		constituencyId:constituencyId,
 		task:"getCountForLevel"
@@ -697,7 +647,7 @@ function getCasteNAgeWiseVoterNCadreCounts(casteGroupId,casteId,casteName){
 		casteGroupId:casteGroupId,
 		casteId:casteId,
 		constituencyId:constituencyId,
-    	publicationDateId:22
+    	publicationDateId:publicationId
     }
 	 $.ajax({
       type : "GET",
@@ -1020,7 +970,7 @@ $(document).on("click","#getLocationDetails",function(){
 		$("#selectedMenuName").html(name+' '+locationLevelName);
 	}else if(locationLevelId == 3)
 	{
-		name = $("#constituencysMenu").find("li.active").html();
+		name = $("#constituencyMenu").find("li.active").html();
 		$("#selectedMenuName").html(name+' '+locationLevelName);
 	}
 	
@@ -1097,27 +1047,32 @@ $(document).on("click",".expandCasteIconCls",function(){
 
 function getActivityStatusList(){
 	$("#activitesId").html(spinner);
-	var locationLevelValArr = []
+	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
 	{
-		locationLevelValArr.push(districtId)
+		userAccessLevelValuesArray.push(stateId)
 	}else if(locationLevelId == '3')
 	{
-		locationLevelValArr.push(constituencyId)
+		userAccessLevelValuesArray.push(districtId)
 	}else if(locationLevelId == '4')
 	{
-		locationLevelValArr.push(mandalId)
-	}else if(locationLevelId == '4')
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5')
 	{
-		locationLevelValArr.push(panchayatId)
+		userAccessLevelValuesArray.push(mandalId)
+	}else if(locationLevelId == '6')
+	{
+		userAccessLevelValuesArray.push(panchayatId)
 	}
 	
+	var userAccessLevelId=locationLevelId;
+	
 	var jsObj={
-			"fromDate" : globalFromDate,
-			"toDate": globalToDate,
-			"year":"",
-			"locationValues" : locationLevelValArr,
-			"locationId" : locationLevelId
+			fromDate : globalFromDate,
+			toDate: globalToDate,
+			year:"",
+			locationValues : userAccessLevelValuesArray,
+			locationId : userAccessLevelId
 		}
 	 $.ajax({
       type : "POST",
@@ -1286,7 +1241,7 @@ function getAgeRangeGenerAndCasteGroupByCadreCount(yearId){
 	$("#cadreInfoGraphBar,#cadreInfoTableView").html(spinner);
 	jsObj={
 		locationType:"constituency",
-		locationValue:232,
+		locationValue:constituencyId,
 		enrollmentYearId:yearId
 	}
 	 $.ajax({
@@ -1450,31 +1405,39 @@ function buildAgeRangeGenerAndCasteGroupByCadreCount(result,yearId){
 }
 function getPrintMediaCountsForConstituencyPage(){
 	$("#newsMainBlockDivId").html(spinner);
+	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
 	{
-		userAccessLevelValuesArray.push(districtId)
+		userAccessLevelValuesArray.push(stateId)
 	}else if(locationLevelId == '3')
 	{
-		userAccessLevelValuesArray.push(constituencyId)
+		userAccessLevelValuesArray.push(districtId)
 	}else if(locationLevelId == '4')
 	{
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5')
+	{
 		userAccessLevelValuesArray.push(mandalId)
-	}else if(locationLevelId == '4')
+	}else if(locationLevelId == '6')
 	{
 		userAccessLevelValuesArray.push(panchayatId)
 	}
-	var userAccessLevelValuesArray=[];
+	
 	var userAccessLevelId=locationLevelId;
 	var state="ap";
-	var startDate=globalFromDate,endDate=globalToDate;
-    var newsPaperIdsStr=[1,2,3,10,11,12];
+	var date1 = globalFromDate.split('/');
+	var date2 = globalToDate.split('/');
+	var startDate = date1[0]+'-'+date1[1]+'-'+date1[2]
+	var endDate = date2[0]+'-'+date2[1]+'-'+date2[2]
+	var newsPaperIdsStr=[1,2,3,10,11,12];
     var impactScopeIdsStr=[1,2,3,4,5,6,8];
     var benefitIdsStr=[1,2];
     var orgIdsStr=[163,265,269,362,514,872,1117,1853];
     var type="Print";
     var isDept="N";
+	
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+1+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
+		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
 		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
 	}).then(function(result){
 		if(result !=null){
@@ -1555,32 +1518,39 @@ function buildPrintMediaCountsForConstituencyPage(result){
 		str+='</div>';
 		
 		$("#newsMainBlockDivId").html(str);
-		var maxHeight = 0;
+		/* var maxHeight = 0;
 		 $(".blockHeights").each(function(){
 		   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 		});
-		$(".blockHeights").height(maxHeight);
+		$(".blockHeights").height(maxHeight); */
 	}
 }
 
 function getLeadersInNewsForConstituencyPage(){
+	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
 	{
-		userAccessLevelValuesArray.push(districtId)
+		userAccessLevelValuesArray.push(stateId)
 	}else if(locationLevelId == '3')
 	{
-		userAccessLevelValuesArray.push(constituencyId)
+		userAccessLevelValuesArray.push(districtId)
 	}else if(locationLevelId == '4')
 	{
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5')
+	{
 		userAccessLevelValuesArray.push(mandalId)
-	}else if(locationLevelId == '4')
+	}else if(locationLevelId == '6')
 	{
 		userAccessLevelValuesArray.push(panchayatId)
 	}
-	var userAccessLevelValuesArray=[];
+	
 	var userAccessLevelId=locationLevelId;
-	var stateId=stateId;
-	var startDate=globalFromDate,endDate=globalToDate;
+	var stateId=1;
+	var date1 = globalFromDate.split('/');
+	var date2 = globalToDate.split('/');
+	var startDate = date1[0]+'-'+date1[1]+'-'+date1[2]
+	var endDate = date2[0]+'-'+date2[1]+'-'+date2[2]
 	$.ajax({
 		//url: wurl+"/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+state
 		url: "http://localhost:8080/CommunityNewsPortal/webservice/getLeadersInNewsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+startDate+"/"+endDate+"/"+stateId
@@ -1594,10 +1564,12 @@ function getLeadersInNewsForConstituencyPage(){
 	});
 	function buildLeadersInNewsForConstituencyPage(result){
 		var str='';
+		
 		str+='<div class="panel panel-default">';
 			str+='<div class="panel-heading bg-fff">';
 				str+='<h4 class="panel-title">leaders in news</h4>';
 			str+='</div>';
+			str+='<div class="scrollerNewsDiv">';
 			str+='<div class="panel-body pad_0">';
 				str+='<table class="table table-noborder f-12">';
 					str+='<thead class="bg-E9 text-capitalize">';
@@ -1608,6 +1580,7 @@ function getLeadersInNewsForConstituencyPage(){
 					str+='</thead>';
 					str+='<tbody>';
 					for(var i in result){
+						
 						str+='<tr>';
 							str+='<td>';
 								str+='<img src="images/candidates/'+result[i].name+'.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/>'+result[i].name+'';
@@ -1621,29 +1594,41 @@ function getLeadersInNewsForConstituencyPage(){
 					str+='</tbody>';
 				str+='</table>';
 			str+='</div>';
+			str+='</div>';
 		str+='</div>';
 		$("#leadersMainBlockDivId").html(str);
+		if(result.length > 20)
+			{
+				$(".scrollerNewsDiv").mCustomScrollbar({setHeight: '600px'});
+			}
 	}
 }	
 function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 	$("#overAllAnalysisProbDivId").html(spinner);
+	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
 	{
-		userAccessLevelValuesArray.push(districtId)
+		userAccessLevelValuesArray.push(stateId)
 	}else if(locationLevelId == '3')
 	{
-		userAccessLevelValuesArray.push(constituencyId)
+		userAccessLevelValuesArray.push(districtId)
 	}else if(locationLevelId == '4')
 	{
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5')
+	{
 		userAccessLevelValuesArray.push(mandalId)
-	}else if(locationLevelId == '4')
+	}else if(locationLevelId == '6')
 	{
 		userAccessLevelValuesArray.push(panchayatId)
 	}
-	var userAccessLevelValuesArray='';
+	
 	var userAccessLevelId=locationLevelId;
 	var state="ap";
-	var startDate=globalFromDate,endDate=globalToDate;
+	var date1 = globalFromDate.split('/');
+	var date2 = globalToDate.split('/');
+	var startDate = date1[0]+'-'+date1[1]+'-'+date1[2]
+	var endDate = date2[0]+'-'+date2[1]+'-'+date2[2]
 	var npIdsStr=" ";
 	
 	var propertyIdStr=" ";
@@ -1719,6 +1704,7 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 							str+='<div class="panel-body">';
 								str+='<div class="row">';
 									str+='<div class="col-sm-12">';
+										str+='<div class="scrollerProblemsDiv'+result[i].id+'">';
 										str+='<div id="problemsContsDivId'+result[i].id+'"></div>';
 									str+='</div>';
 								str+='</div>';
@@ -1797,114 +1783,513 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 						collapse+='</tr>';
 					}
 				collapse+='</table>';
-				if(typeValue == 28){
-					$("#problemsContsDivId"+typeValue).html(collapse);
-				}else if(typeValue == 29){
-					$("#problemsContsDivId"+typeValue).html(collapse);
-				}else if(typeValue == 32){
-					$("#problemsContsDivId"+typeValue).html(collapse);
-				}else if(typeValue == 26){
-					$("#problemsContsDivId"+typeValue).html(collapse);
+				for(var i in propertyIdGlobalStr){
+					$("#problemsContsDivId"+propertyIdGlobalStr[i]).html(collapse);
+					$(".scrollerProblemsDiv"+propertyIdGlobalStr[i]).mCustomScrollbar({setHeight:'320px'})
 				}
+				
 			}else{
-				if(typeValue == 28){
-					$("#problemsContsDivId"+typeValue).html("NO DATA");
-				}else if(typeValue == 29){
-					$("#problemsContsDivId"+typeValue).html("NO DATA");
-				}else if(typeValue == 32){
-					$("#problemsContsDivId"+typeValue).html("NO DATA");
-				}else if(typeValue == 26){
-					$("#problemsContsDivId"+typeValue).html("NO DATA");
+				for(var i in propertyIdGlobalStr){
+					$("#problemsContsDivId"+propertyIdGlobalStr[i]).html("NO DATA");
 				}
 			}
 			
 		}
 	}
 }
-function getLocationWiseGrivanceTrustStatusCounts(){
-	$("#grivanceId,#trustId").html(spinner);
-	var locationValuesArr = [];
-	if(locationLevelId == '2')
-	{
-		locationValuesArr.push(districtId)
-	}else if(locationLevelId == '3')
-	{
-		locationValuesArr.push(constituencyId)
-	}else if(locationLevelId == '4')
-	{
-		locationValuesArr.push(mandalId)
-	}else if(locationLevelId == '4')
-	{
-		locationValuesArr.push(panchayatId)
-	}
+function getLocationWiseCommitteesCount(){
+	
 	var jsObj={
-			"fromDate" : globalFromDate,
-			"toDate":globalToDate,
-			"locationTypeId" : locationLevelId,
-			"locationValuesArr" :locationValuesArr,
-			"year":""
+			locationType : locationLevelName,
+			locationId : constituencyId,
+			enrollmentId : 2
 		}
-	$.ajax({
-		type : "POST",
-		url : "getLocationWiseGrivanceTrustStatusCountsAction.action",
-		dataType : 'json',
-		data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){
-		if(result!=null && result.length>0){
-			return buildGraph(result);
-		}else{
-			$("#grivanceId,#trustId").html("NO DATA");
+	 $.ajax({
+      type : "POST",
+      url : "getLocationWiseCommitteesCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	if(result !=null){
+			buildLocationWiseCommitteesCount(result);
 		}
 	});	
-	function buildGraph(result)
+}
+
+function buildLocationWiseCommitteesCount(result){
+	if(result !=null){
+		var str='';
+		str+='<table class="table table-bordered">';
+			str+='<thead>';
+				str+='<tr class="text-capital">';
+					str+='<th rowspan="2"></th>';
+					str+='<th colspan="4">main committee</th>';
+					str+='<th colspan="4"> affliated committee</th>';
+				str+='</tr>';
+				str+='<tr class="text-capitalize bg-E9">';
+					str+='<th>total</th>';
+					str+='<th>started</th>';
+					str+='<th>completed</th>';
+					str+='<th>Not Started</th>';
+					
+					str+='<th>total</th>';
+					str+='<th>started</th>';
+					str+='<th>completed</th>';
+					str+='<th>Not Started</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody class="text-capitalize">';
+				str+='<tr>';
+					str+='<td>mandal/town/division</td>';
+					str+='<td>'+result.mainMandalTotal+'</td>';
+					str+='<td>'+result.mainCommStartedCount+'</td>';
+					str+='<td>'+result.mainCommCompletedCount+'</td>';
+					str+='<td>'+result.mainCommNotYetStarted+'</td>';
+					
+					str+='<td>'+result.affMandalTotal+'</td>';
+					str+='<td>'+result.affiCommStartedCount+'</td>';
+					str+='<td>'+result.affiCommCompletedCount+'</td>';
+					str+='<td>'+result.affiCommMandalNotStarted+'</td>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<td>village/ward</td>';
+					str+='<td>'+result.mainVillageTotal+'</td>';
+					str+='<td>'+result.mainVillageStartedCount+'</td>';
+					str+='<td>'+result.mainvillageCompletedCount+'</td>';
+					str+='<td>'+result.mainVillageNotYetStartedCount+'</td>';
+					
+					str+='<td>'+result.affVillageTotal+'</td>';
+					str+='<td>'+result.affliatedVillageStartedCount+'</td>';
+					str+='<td>'+result.affliatedVillageCompletedCount+'</td>';
+					str+='<td>'+result.affiCommVillageNotStarted+'</td>';
+				str+='</tr>';
+			str+='</tbody>';
+		str+='</table>';
+			
+		$("#committesTableDivId").html(str);		
+		var completedCount=0;
+		var startedCount=0;
+		var notStartedCount=0;
+		for(var i in commitessArr){
+			if(commitessArr[i] == "mandalLevelGraph"){
+				completedCount=result.mainMandalCompletePer
+				startedCount=result.mainMandalStartPer
+				notStartedCount=result.mainMandalNotPer
+			}else if(commitessArr[i] == "villageLevelGraph"){
+				completedCount=result.mainVillageCompletePer
+				startedCount=result.mainVillageStartPer
+				notStartedCount=result.mainVillageNotPer
+			}else if(commitessArr[i] == "affMandalLevelGraph"){
+				completedCount=result.affMandalCompletePer
+				startedCount=result.affMandalStartPer
+				notStartedCount=result.affMandalNotPer
+			}else if(commitessArr[i] == "affVillageLevelGraph"){
+				completedCount=result.affVillageCompletePer
+				startedCount=result.affVillageStartPer
+				notStartedCount=result.affVillageNotPer
+			}
+			var id = commitessArr[i];
+			var type = {
+				type: 'pie',
+				backgroundColor:'transparent',
+				options3d: {
+					enabled: true,
+					alpha: 25
+				}
+			};
+			var title = {
+				text: ''
+			};
+			var tooltip = {
+				useHTML: true,
+				backgroundColor: '#FCFFC5', 
+				formatter: function() {
+					var cnt = this.point.count;
+					return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+				}  
+			}; 
+			var plotOptions ={
+				pie: {
+					innerSize: 110,
+					depth: 10,
+					dataLabels:{
+						useHTML: true,
+						enabled: false,
+						  formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+								}
+							} 
+					},
+					showInLegend: false
+				},
+			};
+			var data = [{
+				name: '',
+				data: [
+					{
+					  name: 'Completed',
+					  y: completedCount,
+					  color:"#8D4653"
+					},
+					{
+					  name: 'Started',
+					  y: startedCount,
+					  color:"#FF9900"
+					},
+					{
+					  name: 'Not Started',
+					  y: notStartedCount,
+					  color:"#FF9900"
+					}
+				]
+			}];
+			highcharts(id,type,data,plotOptions,title,tooltip);
+		}	
+	}
+}
+function getLocationWiseMeetingsCount(){
+	$("#locationWiseMeetingsCount").html(spinner);
+	jsObj={
+		locationType:locationLevelName,
+		constituencyId:constituencyId
+	}
+	 $.ajax({
+      type : "GET",
+      url : "getLocationWiseMeetingsCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+		if(result!=null && result.length>0){
+			return buildTable(result);
+		}else{
+			$("#locationWiseMeetingsCount").html("NO DATA");
+		}
+	});	
+	function buildTable(result)
 	{
-		var grievance = [];
-		var trust = [];
-		var depth = 60;
-		var grivanceId  = 'grivanceId';
-		var trustId = 'trustId';
+		var tableView = '';
+		tableView+='<table class="table table-bordered">';
+			tableView+='<thead class="text-capitalize">';
+				tableView+='<th></th>';
+				for(var i in result[0].locationVotersVOList)
+				{
+						tableView+='<th class="bg-E9">'+result[0].locationVotersVOList[i].ageRange+'</th>';
+					
+				}
+			tableView+='</thead>';
+			tableView+='<tbody>';
+				for(var i in result)
+				{
+					tableView+='<tr>';
+						tableView+='<td>'+result[i].ageRange+'</td>';
+						for(var j in result[i].locationVotersVOList)
+						{
+							tableView+='<td>'+result[i].locationVotersVOList[j].totalVoters+'</td>';
+						}
+					tableView+='</tr>';
+				}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#locationWiseMeetingsCount").html(tableView);
+	}
+}
+function getLocationWiseTourMembersComplainceDtls(){
+	$("#locationWiseTourMembersComplainceDtls").html(spinner);
+	userAccessLevelValuesArray=[];
+	if(locationLevelId == '2')
+	{
+		userAccessLevelValuesArray.push(stateId)
+	}else if(locationLevelId == '3')
+	{
+		userAccessLevelValuesArray.push(districtId)
+	}else if(locationLevelId == '4')
+	{
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5')
+	{
+		userAccessLevelValuesArray.push(mandalId)
+	}else if(locationLevelId == '6')
+	{
+		userAccessLevelValuesArray.push(panchayatId)
+	}
+	
+	var userAccessLevelId=locationLevelId;
+	jsObj={
+		locationTypeId:userAccessLevelId,
+		locationValuesArr:userAccessLevelValuesArray,
+		fromDate:globalFromDate,
+		toDate:globalToDate,
+		year:""
+	}
+	 $.ajax({
+      type : "POST",
+      url : "getLocationWiseTourMembersComplainceDtlsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+		if(result!=null && result.length>0){
+			return buildTable(result);
+		}else{
+			$("#locationWiseTourMembersComplainceDtls").html("NO DATA");
+		}
+	});	
+	function buildTable(result)
+	{
+		var tableView = '';
+		tableView+='<table class="table table-hover">';
+			tableView+='<thead class="text-capitalize bg-E9">';
+				tableView+='<th>Designation</th>';
+				tableView+='<th>status</th>';
+			tableView+='</thead>';
+			tableView+='<tbody>';
+				for(var i in result)
+				{
+					tableView+='<tr>';
+						tableView+='<td>MP LOKSABHA</td>';
+						if(result[i].isComplaince=="False"){
+							tableView+='<td><span class="text-danger">Non-Complaince</span></td>';	
+						}else{
+							tableView+='<td><span class="text-success">Complaince</span></td>';	
+						}
+					tableView+='</tr>';
+				}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#locationWiseTourMembersComplainceDtls").html(tableView);
+	}
+}
+function getGovtSchemeWiseBenefitMembersCount(){
+	$("#benefitsBlockId").html(spinner);
+	var userAccessLevelId=locationLevelId;
+	
+	jsObj={
+		locationType:userAccessLevelId,
+		locationValue:constituencyId
+	}
+	 $.ajax({
+      type : "POST",
+      url : "getGovtSchemeWiseBenefitMembersCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+		//console.log(result);
+		if(result!=null && result.length>0){
+			return buildTabs(result);
+		}else{
+			$("#benefitsBlockId").html("NO DATA");
+		}
+	});	
+	function buildTabs(result)
+	{
+		var navTabs = '';
+		navTabs+='';
+		navTabs+='<div class="col-md-3 col-xs-12 col-sm-3 pad_right0">';
+			navTabs+='<select class="form-control" role="tabListMobile">';
+				for(var i in result)
+				{
+					navTabs+='<option tab_id="benefits'+result[i].id+'">'+result[i].name+' ('+result[i].totalCount+')</option>';
+				}
+				
+			navTabs+='</select>';
+			navTabs+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
+				for(var i in result)
+				{
+					if(i == 0)
+					{
+						navTabs+='<li class="active"><a href="#benefits'+result[i].id+'" navTabs-click="'+result[i].id+'" aria-controls="benefits'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+' <span class="pull-right">'+result[i].totalCount+'</span></a></li>';
+					}else{
+						navTabs+='<li><a href="#benefits'+result[i].id+'" navTabs-click="'+result[i].id+'" aria-controls="benefits'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+' <span class="pull-right">'+result[i].totalCount+'</span></a></li>';
+					}
+				}
+			navTabs+='</ul>';
+		navTabs+='</div>';
+		navTabs+='<div class="col-md-9 col-xs-12 col-sm-9 pad_left0">';
+			navTabs+='<div class="tab-content">';
+				for(var i in result)
+				{
+					if(i == 0)
+					{
+						navTabs+='<div role="tabpanel" class="tab-pane active pad_10" id="benefits'+result[i].id+'"></div>';
+					}else{
+						navTabs+='<div role="tabpanel" class="tab-pane pad_10" id="benefits'+result[i].id+'"></div>';
+					}
+				}
+			navTabs+='</div>';
+		navTabs+='</div>';
+		$("#benefitsBlockId").html(navTabs);
+		responsiveTabs();
+		getMandalWiseBenefitMembersCount(result[0].id)
+	}
+}
+$(document).on("click","[navTabs-click]",function(){
+	var id = $(this).attr("navTabs-click");
+	getMandalWiseBenefitMembersCount(id)
+});
+function getMandalWiseBenefitMembersCount(id){
+	$("#benefits"+id).html(spinner);
+	var userAccessLevelId=locationLevelId;
+	jsObj={
+		locationType:userAccessLevelId,
+		locationValue:constituencyId,
+		govtSchemeId:id
+	}
+	$.ajax({
+	  type : "POST",
+	  url : "getMandalWiseBenefitMembersCountAction.action",
+	  dataType : 'json',
+	  data : {task :JSON.stringify(jsObj)}
+	}).done(function(result){  
+		if(result!=null && result.length>0){
+			return buildTabsBody(result,id);
+		}else{
+			$("#benefits"+id).html("NO DATA");
+		}
+	});
+	//var colors = ['#0FBE08','#FF0909','#FFBA00','#FFBAB0']
+	
+	function buildTabsBody(result,id)
+	{
+		var totalPopulation = 0;
+		var totalBenefited = 0;
 	
 		for(var i in result)
 		{
-			for(var j in result[i].subList)
-			{
-				var subObj = '';
-				if(result[i].grivenceType == 'Grivence')
-				{
-					Obj = {"name":result[i].subList[j].name,"y":result[i].subList[j].count}
-					grievance.push(Obj);
-				}else if(result[i].grivenceType == 'NTR Trust'){
-					Obj = {"name":result[i].subList[j].name,"y":result[i].subList[j].count}
-					trust.push(Obj);
-				}
-			}			
+			totalPopulation = totalPopulation + result[i].totalPopulation;
+			totalBenefited = totalBenefited + result[i].totalCount;
 		}
-		highChartsDonut(grivanceId,grievance,true,'Grievance',250)
-		highChartsDonut(trustId,trust,true,'Trust Education',250)
-	
+		var navTabBody = '';
+		navTabBody+='<div class="row">';
+			navTabBody+='<div class="col-md-6 col-xs-12 col-sm-6">';
+				navTabBody+='<div id="benefitsGraph'+id+'" style="height:200px"></div>';
+			navTabBody+='</div>';
+			navTabBody+='<div class="col-md-6 col-xs-12 col-sm-6">';
+				navTabBody+='<table class="table table-noborder">';
+					navTabBody+='<thead class="text-capitalize bg-E9">';
+						navTabBody+='<th></th>';
+						navTabBody+='<th>Total</th>';
+						navTabBody+='<th>%</th>';
+					navTabBody+='</thead>';
+					navTabBody+='<tbody class="text-capitalize">';
+						navTabBody+='<tr>';
+							navTabBody+='<td><span class="chart-legend-color" style="background-color:#fc8db7"></span>Population</td>';
+							navTabBody+='<td>'+totalPopulation+'</td>';
+						navTabBody+='</tr>';
+						navTabBody+='<tr>';
+							navTabBody+='<td><span class="chart-legend-color" style="background-color:#27b720"></span>Benefited</td>';
+							navTabBody+='<td>'+totalBenefited+'</td>';
+						navTabBody+='</tr>';
+					navTabBody+='</tbody>';
+				navTabBody+='</table>';
+			navTabBody+='</div>';
+			navTabBody+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+				navTabBody+='<table class="table table-noborder">';
+					navTabBody+='<thead class="text-capitalize bg-E9">';
+						navTabBody+='<th>Mandal Name</th>';
+						navTabBody+='<th>Population</th>';
+						navTabBody+='<th>Benefited</th>';
+						navTabBody+='<th>%</th>';
+					navTabBody+='</thead>';
+					navTabBody+='<tbody class="text-capitalize">';
+						for(var i in result)
+						{
+							navTabBody+='<tr>';
+								navTabBody+='<td>'+result[i].name+'</td>';
+								navTabBody+='<td>'+result[i].totalPopulation+'</td>';
+								navTabBody+='<td>'+result[i].totalCount+'</td>';
+								navTabBody+='<td>'+(((result[i].totalCount)/(result[i].totalPopulation))*100).toFixed(2)+'%</td>';
+							navTabBody+='</tr>';
+						}
+					navTabBody+='</tbody>';
+				navTabBody+='</table>';
+			navTabBody+='</div>';
+		navTabBody+='</div>';
+		$("#benefits"+id).html(navTabBody);
+		
+		var id = 'benefitsGraph'+id;
+			var type = {
+				type: 'pie',
+				backgroundColor:'transparent',
+				options3d: {
+					enabled: true,
+					alpha: 25
+				}
+			};
+			var title = {
+				text: ''
+			};
+			var tooltip = {
+				useHTML: true,
+				backgroundColor: '#FCFFC5', 
+				formatter: function() {
+					var cnt = this.point.count;
+					return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+				}  
+			}; 
+			var plotOptions ={
+				pie: {
+					innerSize: 110,
+					depth: 10,
+					dataLabels:{
+						useHTML: true,
+						enabled: false,
+						  formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+								}
+							} 
+					},
+					showInLegend: false
+				},
+			};
+			var data = [{
+				name: '',
+				data: [
+					{
+					  name: 'Population',
+					  y: totalPopulation,
+					  color:"#fc8db7"
+					},
+					{
+					  name: 'Benfited',
+					  y: totalBenefited,
+					  color:"#27b720"
+					}
+				]
+			}];
+			highcharts(id,type,data,plotOptions,title,tooltip);
 	}
 }
 function getPositionWiseMemberCount(){
 	$("#positionsWiseMemberCount").html(spinner);
-		var locationValuesArr = [];
+	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
 	{
-		locationValuesArr.push(districtId)
+		userAccessLevelValuesArray.push(stateId)
 	}else if(locationLevelId == '3')
 	{
-		locationValuesArr.push(constituencyId)
+		userAccessLevelValuesArray.push(districtId)
 	}else if(locationLevelId == '4')
 	{
-		locationValuesArr.push(mandalId)
-	}else if(locationLevelId == '4')
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5')
 	{
-		locationValuesArr.push(panchayatId)
+		userAccessLevelValuesArray.push(mandalId)
+	}else if(locationLevelId == '6')
+	{
+		userAccessLevelValuesArray.push(panchayatId)
 	}
+	
+	var userAccessLevelId=locationLevelId;
 	var jsObj={
 			"fromDateStr" : globalFromDate,
 			"toDateStr":globalToDate,
-			"locationValuesArr":locationValuesArr,
-			"locationTypeId":locationLevelId,
+			"locationValuesArr":userAccessLevelValuesArray,
+			"locationTypeId":userAccessLevelId,
 			"year":""
 		}
 	$.ajax({
@@ -1935,26 +2320,31 @@ function getPositionWiseMemberCount(){
 }
 function getNominatedPostApplicationDetails(){
 	$("#nominatedPostApplicationDetails").html(spinner);
-	var locationValuesArr = [];
+	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
 	{
-		locationValuesArr.push(districtId)
+		userAccessLevelValuesArray.push(stateId)
 	}else if(locationLevelId == '3')
 	{
-		locationValuesArr.push(constituencyId)
+		userAccessLevelValuesArray.push(districtId)
 	}else if(locationLevelId == '4')
 	{
-		locationValuesArr.push(mandalId)
-	}else if(locationLevelId == '4')
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5')
 	{
-		locationValuesArr.push(panchayatId)
+		userAccessLevelValuesArray.push(mandalId)
+	}else if(locationLevelId == '6')
+	{
+		userAccessLevelValuesArray.push(panchayatId)
 	}
+	
+	var userAccessLevelId=locationLevelId;
 	var jsObj={
 			"year":"",
 			"fromDateStr" :globalFromDate,
 			"toDateStr":globalToDate,
-			"locationTypeId":locationLevelId,
-			"locationValues":locationValuesArr
+			"locationTypeId":userAccessLevelId,
+			"locationValues":userAccessLevelValuesArray
 		}
 	$.ajax({
 		type : "POST",
@@ -2031,26 +2421,31 @@ function getNominatedPostApplicationDetails(){
 }
 function getNominatedPostStatusWiseCount(){
 	$("#nominatedPostStatusWiseCount").html(spinner);
-	var locationValuesArr = [];
+	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
 	{
-		locationValuesArr.push(districtId)
+		userAccessLevelValuesArray.push(stateId)
 	}else if(locationLevelId == '3')
 	{
-		locationValuesArr.push(constituencyId)
+		userAccessLevelValuesArray.push(districtId)
 	}else if(locationLevelId == '4')
 	{
-		locationValuesArr.push(mandalId)
-	}else if(locationLevelId == '4')
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5')
 	{
-		locationValuesArr.push(panchayatId)
+		userAccessLevelValuesArray.push(mandalId)
+	}else if(locationLevelId == '6')
+	{
+		userAccessLevelValuesArray.push(panchayatId)
 	}
+	
+	var userAccessLevelId=locationLevelId;
 	var jsObj={
 			"year":"",
 			"fromDateStr" : globalFromDate,
 			"toDateStr":globalToDate,
-			"locationTypeId":locationLevelId,
-			"locationValues":locationValuesArr
+			"locationTypeId":userAccessLevelId,
+			"locationValues":userAccessLevelValuesArray
 		}
 	 $.ajax({
       type : "POST",
@@ -2068,42 +2463,42 @@ function getNominatedPostStatusWiseCount(){
 	{
 		var str='';
 		var subArr = [];
-		var colors = ['#0FBE08','#FF0909','#FFBA00','#FFBAB0']
-		var colorsArr = ['rgba(15, 190, 8, 0.5)','rgba(255, 9, 9, 0.5)','rgba(255, 186, 0, 0.5)','rgba(255, 186, 176, 0.5)']
+		var colors = ['#E58D45','#DD675D','#7CB4E5']
+		var colorsArr = ['#F4D1B5','#F2C2BE','#C2DCF3']
 		var mainArr =[];
 		var totArr=[];
 		var totalCount =0;
+		for(var i in result){
+			totalCount=totalCount+result[i].count;
+		}
 		str+='<div class="row">';
-			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+			str+='<div class="col-md-6 col-xs-12 col-sm-6 ">';
 				str+='<div id="nominatedPostStatusWiseCountGraph"></div>';
 			str+='</div>';
-			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+			str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top40">';
 				str+='<ul class="graph-legend">';
+				str+='<li style="background-color:#FEEE99"><span class="statusBox" style="background-color:#FED501"></span>TOTAL POSTS<span class="count">'+totalCount+'</span></li>';
 				for(var i in result){
-					str+='<li style="background-color:'+colorsArr[i]+'"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+'<span class="count">'+result[i].count+'</span></li>';
+					str+='<li style="background-color:'+colorsArr[i]+'"><span class="statusBox" style="background-color:'+colors[i]+'"></span>'+result[i].name+' POSTS<span class="count">'+result[i].count+'</span></li>';
 				}
 				str+='</ul>';
 			str+='</div>';
 		str+='</div>';
 		$("#nominatedPostStatusWiseCount").html(str);
-	
+		totArr={name:'Total',y:totalCount,color:"#FDD501"};	
+		mainArr.push(totArr);
 		for(var i in result){
 			var subArr = [];
-			totalCount=totalCount+result[i].count;
 			subArr={name:result[i].name,y:result[i].count};
 			mainArr.push(subArr);
 		}
-		//totArr={name:'Total',y:totalCount};	
-		//mainArr.push(totArr);
+		
 		$('#nominatedPostStatusWiseCountGraph').highcharts({
 			chart: {
 				type: 'column',
-				height:200,
+				height:150,
 				backgroundColor: 'transparent',
-				options3d: {
-					enabled: false,
-					alpha: 45
-					}
+				
 			},
 			colors: colors,
 			title: {
@@ -2114,6 +2509,8 @@ function getNominatedPostStatusWiseCount(){
 			},
 			plotOptions: {	
 				column: {
+					pointWidth: 30,
+					gridLineWidth: 15,
 					colorByPoint: true
 				}, 
 			},
@@ -2124,13 +2521,8 @@ function getNominatedPostStatusWiseCount(){
 				min: 0,
 				gridLineWidth: 0,  
 				minorGridLineWidth: 0,
-				type: 'category',
 				labels: {
-					rotation: -45,
-					style: {
-						fontSize: '13px',
-						fontFamily: 'Verdana, sans-serif'
-					}
+					enabled: false
 				}
 			},
 			yAxis: {
@@ -2140,9 +2532,8 @@ function getNominatedPostStatusWiseCount(){
 				title: {
 					text: null
 				},
-				labels:
-				{
-				  enabled: false
+				labels: {
+					enabled: false
 				}
 			},
 			series:[{
@@ -2165,364 +2556,85 @@ function getNominatedPostStatusWiseCount(){
 		
 	}
 }
-function getLocationWiseMeetingsCount(){
-	$("#locationWiseMeetingsCount").html(spinner);
-	jsObj={
-		locationType:locationLevelName,
-		constituencyId:constituencyId
-	}
-	 $.ajax({
-      type : "GET",
-      url : "getLocationWiseMeetingsCountAction.action",
-      dataType : 'json',
-      data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){  
-		if(result!=null && result.length>0){
-			return buildTable(result);
-		}else{
-			$("#locationWiseMeetingsCount").html("NO DATA");
-		}
-	});	
-	function buildTable(result)
-	{
-		var tableView = '';
-		tableView+='<table class="table table-bordered">';
-			tableView+='<thead class="text-capitalize">';
-				tableView+='<th></th>';
-				for(var i in result[0].locationVotersVOList)
-				{
-						tableView+='<th class="bg-E9">'+result[0].locationVotersVOList[i].ageRange+'</th>';
-					
-				}
-			tableView+='</thead>';
-			tableView+='<tbody>';
-				for(var i in result)
-				{
-					tableView+='<tr>';
-						tableView+='<td>'+result[i].ageRange+'</td>';
-						for(var j in result[i].locationVotersVOList)
-						{
-							tableView+='<td>'+result[i].locationVotersVOList[j].totalVoters+'</td>';
-						}
-					tableView+='</tr>';
-				}
-			tableView+='</tbody>';
-		tableView+='</table>';
-		$("#locationWiseMeetingsCount").html(tableView);
-	}
-}
-
-function getLocationWiseCommitteesCount(){
-	
-	var jsObj={
-			locationType : locationLevelName,
-			locationId : constituencyId,
-			enrollmentId : 2
-		}
-	 $.ajax({
-      type : "POST",
-      url : "getLocationWiseCommitteesCountAction.action",
-      dataType : 'json',
-      data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){  
-    	console.log(result);
-		var str='';
-		var mainMandal = [];
-		var mainVillage= [];
-		var affMandal = [];
-		var affVillage = [];
-		var mainMandalId = '';
-		var mainVillageId = '';
-		var affMandalId = '';
-		var affVillageId = '';
-		var depth = 60;
-		if(result != null){
-			var mainMandalTotal=result.mainCommStartedCount+result.mainCommCompletedCount+result.mainCommNotYetStarted;
-			var affltdAffltedTotal=result.affiCommStartedCount+result.affiCommCompletedCount+result.affiCommMandalNotStarted;
-			var mainVlgTotal=result.mainCommTotalMembers+result.mainCommTotalCount+result.mainCommVillageNotStarted;
-			var affltdVlgTotal=result.affiCommTotalMembers+result.affiCommTotalCount+result.affiCommVillageNotStarted;
-			var mandalNotStartedPer= Math.round((result.mainCommNotYetStarted/mainMandalTotal)*100);
-			var affltdMandalNotStartedPer= Math.round((result.affiCommMandalNotStarted/affltdAffltedTotal)*100);
-			var mainVlgNotStartedPer= Math.round((result.mainCommVillageNotStarted/mainVlgTotal)*100);
-			var affltdVlgNotStartedPer= Math.round((result.affiCommVillageNotStarted/affltdVlgTotal)*100);
-
-			str+='<table class="table table-bordered">';
-				str+='<thead>';
-					str+='<tr class="text-capital">';
-						str+='<th rowspan="2"></th>';
-						str+='<th colspan="3">main committee</th>';
-						str+='<th colspan="3">affliated committee</th>';
-					str+='</tr>';
-					str+='<tr class="text-capitalize bg-E9">';
-						str+='<th>total</th>';
-						str+='<th>started</th>';
-						str+='<th>completed</th>';
-						str+='<th>NotStarted</th>';
-						str+='<th>total</th>';
-						str+='<th>started</th>';
-						str+='<th>completed</th>';
-						str+='<th>NotStarted</th>';
-					str+='</tr>';
-				str+='</thead>';
-				str+='<tbody class="text-capitalize">';
-					str+='<tr>';
-						str+='<td>mandal/town/division</td>';
-						str+='<td>'+mainMandalTotal+'</td>';
-						str+='<td>'+result.mainCommStartedCount+'</td>';
-						str+='<td>'+result.mainCommCompletedCount+'</td>';
-						str+='<td>'+result.mainCommNotYetStarted+'</td>';
-						str+='<td>'+affltdAffltedTotal+'</td>';
-						str+='<td>'+result.affiCommStartedCount+'</td>';
-						str+='<td>'+result.affiCommCompletedCount+'</td>';
-						str+='<td>'+result.affiCommMandalNotStarted+'</td>';
-					str+='</tr>';
-					str+='<tr>';
-						str+='<td>village/ward</td>';
-						str+='<td>'+mainVlgTotal+'</td>';
-						str+='<td>'+result.mainCommTotalMembers+'</td>';
-						str+='<td>'+result.mainCommTotalCount+'</td>';
-						str+='<td>'+result.mainCommVillageNotStarted+'</td>';
-						str+='<td>'+affltdVlgTotal+'</td>';
-						str+='<td>'+result.affiCommTotalMembers+'</td>';
-						str+='<td>'+result.affiCommTotalCount+'</td>';
-						str+='<td>'+result.affiCommVillageNotStarted+'</td>';
-					str+='</tr>';
-				str+='</tbody>';
-			str+='</table>';
-
-			mainMandal=[{name:'Completed',y:result['mainMandalCompletePer'],color:'#eda809'},
-						{name:'Started',y:result['mainMandalStartPer'],color:'#862d59'},
-						{name:'NotStarted',y:mandalNotStartedPer,color:'#c3c6c3'}];	
-			mainVillage=[{name:'Completed',y:result['mainVillageCompletePer'],color:'#eda809'},
-						 {name:'Started',y:result['mainVillageStartPer'],color:'#862d59'},
-						 {name:'NotStarted',y:mainVlgNotStartedPer,color:'#c3c6c3'}];	
-			affMandal = [{name:'Completed',y:result['affMandalCompletePer'],color:'#eda809'},
-						 {name:'Started',y:result['affMandalStartPer'],color:'#862d59'},
-						 {name:'NotStarted',y:affltdMandalNotStartedPer,color:'#c3c6c3'}];
-		    affVillage = [{name:'Completed',y:result['affVillageCompletePer'],color:'#eda809'},
-						  {name:'Started',y:result['affVillageStartPer'],color:'#862d59'},
-						  {name:'NotStarted',y:affltdVlgNotStartedPer,color:'#c3c6c3'}];
-			mainMandalId = 'mandalLevelGraph';
-			mainVillageId = 'villageLevelGraph';
-			affMandalId = 'affMandalLevelGraph';
-			affVillageId = 'affVillageLevelGraph';
-		
-			//$("#"+mainMandalId).html(str);
-			highChartsDonut(mainMandalId,mainMandal,true,'mandal/town level',200);
-			//$("#"+mainVillageId).html(str);
-			highChartsDonut(mainVillageId,mainVillage,true,'vilalge/ward level',200);
-			//$("#"+affMandalId).html(str);
-			highChartsDonut(affMandalId,affMandal,true,'mandal/town level',200);
-			//$("#"+affVillageId).html(str);
-			highChartsDonut(affVillageId,affVillage,true,'vilalge/ward level',200);
-			$("#committees").append(str);
-		}
-		 
-	});	
-}
-function getLocationWiseTourMembersComplainceDtls(){
-	$("#locationWiseTourMembersComplainceDtls").html(spinner);
-	var locationValuesArr = [];
+function getLocationWiseInsuranceStatusCount(){
+	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
 	{
-		locationValuesArr.push(districtId)
+		userAccessLevelValuesArray.push(stateId)
 	}else if(locationLevelId == '3')
 	{
-		locationValuesArr.push(constituencyId)
+		userAccessLevelValuesArray.push(districtId)
 	}else if(locationLevelId == '4')
 	{
-		locationValuesArr.push(mandalId)
-	}else if(locationLevelId == '4')
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5')
 	{
-		locationValuesArr.push(panchayatId)
+		userAccessLevelValuesArray.push(mandalId)
+	}else if(locationLevelId == '6')
+	{
+		userAccessLevelValuesArray.push(panchayatId)
 	}
-	jsObj={
-		locationTypeId:4,
-		locationValuesArr:locationValuesArr,
-		fromDate:globalFromDate,
-		toDate:globalToDate,
-		year:""
-	}
+	
+	var userAccessLevelId=locationLevelId;
+	var jsObj={
+			"fromDate" : globalFromDate,
+			"toDate":globalToDate,
+			"locationTypeId" : userAccessLevelId,
+			"locationValuesArr" :userAccessLevelValuesArray,
+			"year":""
+			
+		}
 	 $.ajax({
       type : "POST",
-      url : "getLocationWiseTourMembersComplainceDtlsAction.action",
+      url : "getLocationWiseInsuranceStatusCountAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-		if(result!=null && result.length>0){
-			return buildTable(result);
+    	if(result!=null && result.length>0){
+			//return buildGraph(result);
 		}else{
-			$("#locationWiseTourMembersComplainceDtls").html("NO DATA");
+			$("#grivanceId,#trustId").html("NO DATA");
 		}
 	});	
-	function buildTable(result)
-	{
-		var tableView = '';
-		tableView+='<table class="table table-hover">';
-			tableView+='<thead class="text-capitalize bg-E9">';
-				tableView+='<th>Designation</th>';
-				tableView+='<th>status</th>';
-			tableView+='</thead>';
-			tableView+='<tbody>';
-				for(var i in result)
-				{
-					tableView+='<tr>';
-						tableView+='<td>MP LOKSABHA</td>';
-						if(result[i].isComplaince=="False"){
-							tableView+='<td><span class="text-danger">Non-Complaince</span></td>';	
-						}else{
-							tableView+='<td><span class="text-success">Complaince</span></td>';	
-						}
-					tableView+='</tr>';
-				}
-			tableView+='</tbody>';
-		tableView+='</table>';
-		$("#locationWiseTourMembersComplainceDtls").html(tableView);
-	}
 }
-function getGovtSchemeWiseBenefitMembersCount(){
-	$("#benefitsBlockId").html(spinner);
-	jsObj={
-		locationType:4,
-		locationValue:232
+function getLocationWiseGrivanceTrustStatusCounts(){
+	$("#grivanceId,#trustId").html(spinner);
+	userAccessLevelValuesArray=[];
+	if(locationLevelId == '2')
+	{
+		userAccessLevelValuesArray.push(stateId)
+	}else if(locationLevelId == '3')
+	{
+		userAccessLevelValuesArray.push(districtId)
+	}else if(locationLevelId == '4')
+	{
+		userAccessLevelValuesArray.push(constituencyId)
+	}else if(locationLevelId == '5')
+	{
+		userAccessLevelValuesArray.push(mandalId)
+	}else if(locationLevelId == '6')
+	{
+		userAccessLevelValuesArray.push(panchayatId)
 	}
-	 $.ajax({
-      type : "POST",
-      url : "getGovtSchemeWiseBenefitMembersCountAction.action",
-      dataType : 'json',
-      data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){  
-		//console.log(result);
-		if(result!=null && result.length>0){
-			return buildTabs(result);
-		}else{
-			$("#benefitsBlockId").html("NO DATA");
+	
+	var userAccessLevelId=locationLevelId;
+	var jsObj={
+			"fromDate" : globalFromDate,
+			"toDate":globalToDate,
+			"locationTypeId" : userAccessLevelId,
+			"locationValuesArr" :userAccessLevelValuesArray,
+			"year":""
 		}
-	});	
-	function buildTabs(result)
-	{
-		var navTabs = '';
-		navTabs+='';
-		navTabs+='<div class="col-md-3 col-xs-12 col-sm-3 pad_right0">';
-			navTabs+='<select class="form-control" role="tabListMobile">';
-				for(var i in result)
-				{
-					navTabs+='<option tab_id="benefits'+result[i].id+'">'+result[i].name+' ('+result[i].totalCount+')</option>';
-				}
-				
-			navTabs+='</select>';
-			navTabs+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
-				for(var i in result)
-				{
-					if(i == 0)
-					{
-						navTabs+='<li class="active"><a href="#benefits'+result[i].id+'" navTabs-click="'+result[i].id+'" aria-controls="benefits'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+' <span class="pull-right">'+result[i].totalCount+'</span></a></li>';
-					}else{
-						navTabs+='<li><a href="#benefits'+result[i].id+'" navTabs-click="'+result[i].id+'" aria-controls="benefits'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+' <span class="pull-right">'+result[i].totalCount+'</span></a></li>';
-					}
-				}
-			navTabs+='</ul>';
-		navTabs+='</div>';
-		navTabs+='<div class="col-md-9 col-xs-12 col-sm-9 pad_left0">';
-			navTabs+='<div class="tab-content">';
-				for(var i in result)
-				{
-					if(i == 0)
-					{
-						navTabs+='<div role="tabpanel" class="tab-pane active pad_10" id="benefits'+result[i].id+'"></div>';
-					}else{
-						navTabs+='<div role="tabpanel" class="tab-pane pad_10" id="benefits'+result[i].id+'"></div>';
-					}
-				}
-			navTabs+='</div>';
-		navTabs+='</div>';
-		$("#benefitsBlockId").html(navTabs);
-		responsiveTabs();
-		getMandalWiseBenefitMembersCount(result[0].id)
-	}
-}
-$(document).on("click","[navTabs-click]",function(){
-	var id = $(this).attr("navTabs-click");
-	getMandalWiseBenefitMembersCount(id)
-});
-function getMandalWiseBenefitMembersCount(id){
-	$("#benefits"+id).html(spinner);
-	jsObj={
-		locationType:4,
-		locationValue:232,
-		govtSchemeId:id
-	}
 	$.ajax({
-	  type : "POST",
-	  url : "getMandalWiseBenefitMembersCountAction.action",
-	  dataType : 'json',
-	  data : {task :JSON.stringify(jsObj)}
-	}).done(function(result){  
+		type : "POST",
+		url : "getLocationWiseGrivanceTrustStatusCountsAction.action",
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){
 		if(result!=null && result.length>0){
-			return buildTabsBody(result);
+			//return buildGraph(result);
 		}else{
-			$("#benefits"+id).html("NO DATA");
+			$("#grivanceId,#trustId").html("NO DATA");
 		}
-	});
-	var colors = ['#0FBE08','#FF0909','#FFBA00','#FFBAB0']
-	var totalPopulation = 0;
-	var totalBenefited = 0;
-	function buildTabsBody(result)
-	{
-		for(var i in result)
-		{
-			totalPopulation = totalPopulation + result[i].totalPopulation;
-			totalBenefited = totalBenefited + result[i].totalCount;
-		}
-		var navTabBody = '';
-		navTabBody+='<div class="row">';
-			navTabBody+='<div class="col-md-6 col-xs-12 col-sm-6">';
-				navTabBody+='<div id="benefitsGraph'+id+'" style="height:200px"></div>';
-			navTabBody+='</div>';
-			navTabBody+='<div class="col-md-6 col-xs-12 col-sm-6">';
-				navTabBody+='<table class="table table-noborder">';
-					navTabBody+='<thead class="text-capitalize bg-E9">';
-						navTabBody+='<th></th>';
-						navTabBody+='<th>Total</th>';
-						navTabBody+='<th>%</th>';
-					navTabBody+='</thead>';
-					navTabBody+='<tbody class="text-capitalize">';
-						navTabBody+='<tr>';
-							navTabBody+='<td><span class="chart-legend-color" style="background-color:#fc8db7"></span>Population</td>';
-							navTabBody+='<td>'+totalPopulation+'</td>';
-						navTabBody+='</tr>';
-						navTabBody+='<tr>';
-							navTabBody+='<td><span class="chart-legend-color" style="background-color:#27b720"></span>Benefited</td>';
-							navTabBody+='<td>'+totalBenefited+'</td>';
-						navTabBody+='</tr>';
-					navTabBody+='</tbody>';
-				navTabBody+='</table>';
-			navTabBody+='</div>';
-			navTabBody+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
-				navTabBody+='<table class="table table-noborder">';
-					navTabBody+='<thead class="text-capitalize bg-E9">';
-						navTabBody+='<th>Mandal Name</th>';
-						navTabBody+='<th>Population</th>';
-						navTabBody+='<th>Benefited</th>';
-						navTabBody+='<th>%</th>';
-					navTabBody+='</thead>';
-					navTabBody+='<tbody class="text-capitalize">';
-						for(var i in result)
-						{
-							navTabBody+='<tr>';
-								navTabBody+='<td>'+result[i].name+'</td>';
-								navTabBody+='<td>'+result[i].totalPopulation+'</td>';
-								navTabBody+='<td>'+result[i].totalCount+'</td>';
-								navTabBody+='<td>'+(((result[i].totalCount)/(result[i].totalPopulation))*100).toFixed(2)+'%</td>';
-							navTabBody+='</tr>';
-						}
-					navTabBody+='</tbody>';
-				navTabBody+='</table>';
-			navTabBody+='</div>';
-		navTabBody+='</div>';
-		$("#benefits"+id).html(navTabBody);
-		mainMandal1=[{name:'Population',y:totalPopulation,color:'#fc8db7'},
-					{name:'Benfited',y:totalBenefited,color:'#27b720'}];
-		highChartsDonut('benefitsGraph'+id+'',mainMandal1,true,name,200)
-	}
+	});	
 }

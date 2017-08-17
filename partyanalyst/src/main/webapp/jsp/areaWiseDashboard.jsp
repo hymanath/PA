@@ -46,12 +46,12 @@
 		<div class="row">
 		 	<div class="col-md-12 col-xs-12 col-sm-12">
 				<h2><span id="selectedMenuName" class="text-capitalize">Kavali Constituency</span> Information</h2>
-				<ol class="breadcrumb" id="getMenuLocations" menu-location-state="1" menu-location-districts="19" menu-location-constituencys="232" menu-location-mandals="" menu-location-panchayats="" menu-location-levelId="3" menu-location-levelName="constituency" >
+				<ol class="breadcrumb" id="getMenuLocations" menu-location-state="1" menu-location-districts="19" menu-location-constituencys="232" menu-location-mandals="" menu-location-panchayats="" menu-location-levelId="4" menu-location-levelName="constituency" >
 					<!--<li>State : <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>-->
-					<li>District : <span menu-name="districts" levelId="2" locationId="01" class="districtsMenuName">Nellore</span></li>
-					<li style="display:none">Constituency :<span menu-name="constituencys" levelId="3" locationId="01" class="constituencysMenuName"> Andhra Pradesh</span></li>
-					<li style="display:none">Mandal :<span menu-name="mandals" levelId="4" locationId="01" class="mandalsMenuName"> Andhra Pradesh</span></li>
-					<li style="display:none">Panchayat :<span menu-name="panchayats" levelId="5" locationId="01" class="panchayatsMenuName"> Andhra Pradesh</span></li>
+					<li>District : <span menu-name="districts" levelId="3" locationId="01" class="districtsMenuName">Nellore</span></li>
+					<li style="display:none">Constituency :<span menu-name="constituency" levelId="4" locationId="01" class="constituencyMenuName"> Andhra Pradesh</span></li>
+					<li style="display:none">Mandal :<span menu-name="mandals" levelId="5" locationId="01" class="mandalsMenuName"> Andhra Pradesh</span></li>
+					<li style="display:none">Panchayat :<span menu-name="panchayats" levelId="6" locationId="01" class="panchayatsMenuName"> Andhra Pradesh</span></li>
 				</ol>
 				<div class="menu-dropdown" style="display:none;">
 					<div class="row">
@@ -59,7 +59,7 @@
 							<div id="districtsMenu"></div>
 						</div>
 						<div class="col-sm-3">
-							<div id="constituencysMenu"></div>
+							<div id="constituencyMenu"></div>
 						</div>
 						<div class="col-sm-3">
 							<div id="mandalsMenu"></div>
@@ -210,78 +210,40 @@
 					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12">
 						<div id="committees"></div>
-						<!--<div class="block">
+						<div class="block">
+						
 							<div class="row">
-								<div class="col-md-6 col-xs-12 col-sm-6">
+								<div class="col-sm-6">
 									<h4 class="panel-title text-capital">main committee formation</h4>
 									<div class="row m_top15">
-										<div class="col-md-6 col-xs-12 col-sm-6">
+										<div class="col-sm-6">
 											<h4 class="panel-title text-capital">mandal/town/division level</h4>
-											<div id="mandalLevelGraph"></div>
+											<div id="mandalLevelGraph" style="height:200px;"></div>
 										</div>
-										<div class="col-md-6 col-xs-12 col-sm-6">
+										<div class="col-sm-6">
 											<h4 class="panel-title text-capital">vilalge/ward level</h4>
-											<div id="villageLevelGraph"></div>
+											<div id="villageLevelGraph" style="height:200px;"></div>
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6 col-xs-12 col-sm-6">
+								<div class="col-sm-6">
 									<h4 class="panel-title text-capital">affliated committee formation</h4>
 									<div class="row m_top15">
-										<div class="col-md-6 col-xs-12 col-sm-6">
+										<div class="col-sm-6">
 											<h4 class="panel-title text-capital">mandal/town/division level</h4>
-											<div id="affMandalLevelGraph"></div>
+											<div id="affMandalLevelGraph" style="height:200px;"></div>
 										</div>
-										<div class="col-md-6 col-xs-12 col-sm-6">
+										<div class="col-sm-6">
 											<h4 class="panel-title text-capital">vilalge/ward level</h4>
-											<div id="affVillageLevelGraph"></div>
+											<div id="affVillageLevelGraph" style="height:200px;"></div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="block pad_0">
-							<table class="table table-bordered">
-								<thead>
-									<tr class="text-capital">
-										<th rowspan="2"></th>
-										<th colspan="3">main committee</th>
-										<th colspan="3"> affliated committee</th>
-									</tr>
-									<tr class="text-capitalize bg-E9">
-										<th>total</th>
-										<th>started</th>
-										<th>completed</th>
-										<th>total</th>
-										<th>started</th>
-										<th>completed</th>
-									</tr>
-								</thead>
-								<tbody class="text-capitalize">
-									<tr>
-										<td>mandal/town/division</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-									</tr>
-									<tr>
-										<td>village/ward</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-										<td>50</td>
-									</tr>
-								</tbody>
-							</table>
-							<div class="pad_10">
-								<button class="btn btn-success btn-success-white text-capital">detailed information</button>
-							</div>
-						</div>-->
+							<div id="committesTableDivId"></div>
+						</div>
 						
 					</div>
 				</div>
@@ -389,14 +351,14 @@
 							<h5 class="m_left10">Posts</h5>
 							<div id="nominatedPostStatusWiseCount"></div>
 						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6">
+						<!--<div class="col-md-6 col-xs-12 col-sm-6">
 							<h5 class="m_left10">Applications</h5>
 							<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									<div id="nominatedPostApplicationDetails"></div>
 								</div>
 							</div>
-						</div>
+						</div>-->
 					</div>
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
@@ -409,7 +371,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20"  navbar-index="grievance">
+			<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20"  navbar-index="grievance">
 				<h3>Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
 				<div class="block">
 					<div class="row">
@@ -425,7 +387,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 	</div>
 </section>
