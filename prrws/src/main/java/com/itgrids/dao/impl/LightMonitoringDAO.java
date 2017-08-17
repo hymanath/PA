@@ -94,14 +94,14 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				sbc.append(" AND LM.panchayat.locationAddress.tehsil.tehsilId = :locationValue ");
 			}
 		}
+		if (startDate != null && toDate != null) {
+			sbc.append(" and date(LM.surveyDate) between :startDate and :toDate ");
+		}
 		String queryStr = sb.toString() + sbc.toString()+sbg.toString();
 		Query query = getSession().createQuery(queryStr);
 		if(locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.longValue() > 0){
 			query.setParameter("locationValue",locationValues);
 		}		
-		if (startDate != null && toDate != null) {
-			sb.append(" and date(LM.surveyDate) between :startDate and :toDate ");
-		}
 		if (startDate != null && toDate != null) {
 			query.setDate("startDate", startDate);
 			query.setDate("toDate", toDate);
