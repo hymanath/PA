@@ -108,6 +108,14 @@
 													</a>
 												</div>
 											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#888420">
+													<a href="getlightsMonitoringDashboard">
+														<h3>LED</h3>
+														<p>Light Monitoring Dashboard</p>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -127,9 +135,9 @@
 					</div>
 					<div class="col-sm-9">
                         <ul class="nav navbar-nav pull-right sub-menu">
-					        <li class="daterangeViewLiveCls liveDataCls" style="cursor:pointer;">LIVE</li>
-                            <li class="active daterangeViewLiveCls todayDataCls" style="cursor:pointer;">TODAY</li>
-                            <li id="singleDateRangePicker" class="daterangeViewCls" style="cursor:pointer;">HISTORICAL</li>
+					        <li class="daterangeViewLiveCls liveDataCls commonViewCls" style="cursor:pointer;">LIVE</li>
+                            <li class="active daterangeViewLiveCls todayDataCls commonViewCls" style="cursor:pointer;">TODAY</li>
+                            <li id="singleDateRangePicker" class="daterangeViewCls commonViewCls" style="cursor:pointer;">HISTORICAL</li>
                         </ul>
                     </div>
 				</div>

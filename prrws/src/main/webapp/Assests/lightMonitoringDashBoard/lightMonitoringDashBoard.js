@@ -677,6 +677,10 @@ function getLocationBasedOnSelection(locationType,filterType,filterValue,divId){
 		  }
 	}
 }
+$(document).on("click",".commonViewCls",function(){
+	$(".commonViewCls").removeClass("active");
+	 $(this).addClass("active");
+});
 $(document).on("click",".liveDataCls",function() {
 	callWebService();
 });
@@ -686,6 +690,9 @@ $(document).on("click",".todayDataCls",function() {
 	 onLoadCalls();
 });
 function callWebService(){
+	$("#ledOverViewDiv").html(spinner);
+	$("#overviewBlockId").html(spinner);
+	$("#districtTableId").html(spinner);
 	var json = {
 		}
 	$.ajax({                
