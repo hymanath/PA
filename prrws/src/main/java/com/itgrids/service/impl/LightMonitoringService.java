@@ -173,7 +173,13 @@ public class LightMonitoringService  implements ILightMonitoring{
 		    					 if(panchayatId != null)
 		    					 {
 		    						 LightMonitoringVO lightMonitoringVO = new LightMonitoringVO();
-		    						 lightMonitoringVO.setPanchayatId(56l);
+		    						 Long villageId = jObj.getLong("VillageId");
+		    						  if (villageId == null || villageId == 0l){//temporary purpose because web service villageId is coming zero .so we are giving one static mandal Id for testing purpose
+		    							  lightMonitoringVO.setPanchayatId(56l);	  
+		    						  } else {
+		    							  lightMonitoringVO.setPanchayatId(villageId);
+		    						  }
+		    						 
 		    						 lightMonitoringVO.setTotalPanels(jObj.getLong("TotalPanels"));
 		    						 lightMonitoringVO.setTotalPoles(jObj.getLong("TotalPoles"));
 		    						 lightMonitoringVO.setTotalLights(jObj.getLong("TotalLights"));
