@@ -355,7 +355,8 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 
 		
 		
-			sb.append(" model.debateParticipant.debate.debateId = model2.debate.debateId and model2.debate.isDeleted = 'N'  ");
+		sb.append(" model.debateParticipant.debate.debateId = model2.debate.debateId and model2.debate.isDeleted = 'N'  ");
+		
 		
 		if(fromDate !=null && toDate !=null){
 			sb.append(" and date(model2.debate.startTime) >= :fromDate and date(model2.debate.startTime) <= :toDate " );
