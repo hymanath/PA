@@ -17976,6 +17976,16 @@
 			<param name="root">resultStatus</param>
 		</result>
 	</action>
+	 <action name="getParlimentConstituenciesForLoationDashBoardAction" class="locationDashboardAction"  method="getAllParlimentsForLocationDashBoard">
+		<result type="json" name="success">    
+			<param name="root">locationVOList</param>       
+		</result>
+  	</action>
+  	 <action name="getAllConstituencyByParlimentIdForLoationDashBoardAction" class="locationDashboardAction"  method="getAllConstituencyByParlimentId">
+		<result type="json" name="success">    
+			<param name="root">locationVOList</param>       
+		</result>
+  	</action>
 	
  </package>
 </struts>
