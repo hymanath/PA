@@ -90,8 +90,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    							
 	 	    							lightMonitoringDAO.save(lightMonitoring);
 									}
-	 	    					}
-	 	    					
+	 	    					}	 	    					
 		 	    				LightMonitoring lightMonitoring = new LightMonitoring();
 		 	    				
 		 		 	    		lightMonitoring.setPanchayatId(lightMonitoringVO.getPanchayatId());
@@ -218,7 +217,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	     /*
 	 	 * Date : 03/08/2017
 	 	 * Author :Swapna
-	 	 * @description : saveRealtimeStatusByVillages
+	 	 * @description : getBasicLedOverviewDetails
 	 	 */
 	     @Override
 	public List<LightMonitoringVO> getBasicLedOverviewDetails(String startDate,String endDate, String locationType,Long locationValues) {
@@ -265,7 +264,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	     /*
 	 	 * Date : 03/08/2017
 	 	 * Author :Swapna
-	 	 * @description : getDistrictLevelCount
+	 	 * @description : getLedOverviewForStartedLocationsDetailsCounts
 	 	 */
 	public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate,String locationType, Long locationValues){
 	  List<LedOverviewVo>listVO=new ArrayList<LedOverviewVo>(0);
@@ -296,7 +295,12 @@ public class LightMonitoringService  implements ILightMonitoring{
 		}
 	       return listVO;
 	  }
-	
+	  
+	/*
+ 	 * Date : 11/08/2017
+ 	 * Author :Swapna
+ 	 * @description : getAllLevelWiseDataOverView
+ 	 */
 	@Override
 	public List<LightMonitoringVO> getAllLevelWiseDataOverView(String locationType,String filterType, Long filterValue,String fromDateStr,String toDateStr) {
 		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>();
@@ -371,6 +375,11 @@ public class LightMonitoringService  implements ILightMonitoring{
 		 }
 		 return locationDtlsMap;
 	}
+	/*
+ 	 * Date : 17/08/2017
+ 	 * Author :Swapna
+ 	 * @description : getLocationBasedOnSelection
+ 	 */
 	@Override
 	public List<LightMonitoringVO> getLocationBasedOnSelection(String locationType,String filterType, Long filterValue) {
 		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>();
@@ -385,7 +394,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 			  }
 		 }		
 	         }catch (Exception e) {
-			LOG.error("Exception raised at getAllFilterWiseDataOverView - LightMonitoringService service", e);
+			LOG.error("Exception raised at getLocationBasedOnSelection - LightMonitoringService service", e);
 		}		
 		return returnList;
 	}
