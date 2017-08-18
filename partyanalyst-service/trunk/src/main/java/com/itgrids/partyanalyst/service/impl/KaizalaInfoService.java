@@ -12,6 +12,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IKaizalaActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaActionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAnswerInfoDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAnswersDAO;
@@ -44,8 +45,15 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	private IKaizalaGroupsDAO kaizalaGroupsDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
 	private IKaizalaOptionsDAO kaizalaOptionsDAO;
+	private IKaizalaActionTypeDAO kaizalaActionTypeDAO; 
 	
 	
+	public IKaizalaActionTypeDAO getKaizalaActionTypeDAO() {
+		return kaizalaActionTypeDAO;
+	}
+	public void setKaizalaActionTypeDAO(IKaizalaActionTypeDAO kaizalaActionTypeDAO) {
+		this.kaizalaActionTypeDAO = kaizalaActionTypeDAO;
+	}
 	public IKaizalaOptionsDAO getKaizalaOptionsDAO() {
 		return kaizalaOptionsDAO;
 	}
@@ -156,7 +164,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							//0-title,1-actiontype,2-acceptmultires,3-expirydate
 							if(list != null && list.size() > 0){
 								ka.setTitle(list.get(0));
-								ka.setActionType(list.get(1));
+								ka.setActionType(list.get(1).trim().isEmpty()?"Custom Action":list.get(1).trim());
+								ka.setKaizalaActionTypeId(kaizalaActionTypeDAO.getActionTypeId(ka.getActionType()));
 								ka.setAcceptMultiresponse(list.get(2));
 								if(!list.get(3).equals(""))
 									ka.setExpiryDate(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(list.get(3)));

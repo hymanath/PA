@@ -39,8 +39,9 @@ public class KaizalaActions extends BaseModel implements Serializable {
 	private Long kaizalaGroupsId;
 	private String isDeleted;
 	private Date insertedTime;
+	private Long kaizalaActionTypeId;
 	
-	//private KaizalaGroups kaizalaGroups;
+	private KaizalaActionType kaizalaActionType;
 	
 	@Id
 	@Column(name="kaizala_actions_id")
@@ -153,6 +154,25 @@ public class KaizalaActions extends BaseModel implements Serializable {
 	}
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
+	}
+	
+	@Column(name="kaizala_action_type_id")
+	public Long getKaizalaActionTypeId() {
+		return kaizalaActionTypeId;
+	}
+	public void setKaizalaActionTypeId(Long kaizalaActionTypeId) {
+		this.kaizalaActionTypeId = kaizalaActionTypeId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "kaizala_action_type_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public KaizalaActionType getKaizalaActionType() {
+		return kaizalaActionType;
+	}
+	public void setKaizalaActionType(KaizalaActionType kaizalaActionType) {
+		this.kaizalaActionType = kaizalaActionType;
 	}
 	
 	
