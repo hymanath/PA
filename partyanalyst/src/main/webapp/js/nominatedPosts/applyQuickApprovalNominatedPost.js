@@ -33,7 +33,9 @@ function getBoardLevels(id){
   }		
 		
 $('.chosenSelect').chosen({width:'100%'});
+
 function searchResultBlock(result){
+	var position = $("#deptBoardPostnId option:selected").text();
 	var block='';
 	block+='<h5 style="font-weight:600">SEARCH RESULTS  <span style="font-size:12px;font-weight:normal">   -Found '+result.length+' Results</span></h5>';
 	block+='<ul class="nav navbar-nav col-sm-12" id="membersScrollId" style="margin-top:15px !important">';
@@ -55,7 +57,7 @@ function searchResultBlock(result){
 			block+='</div>';
             block+='<div class="panel-footer">';
                 block+='<div class="checkbox">';
-                    block+='<label class="checkbox" id=""><input type="checkbox" value="">Select Member</label>';
+					block+='<label class="checkbox " ><input type="checkbox" value="" class="selectMember" attr_position_type="'+position+'">Select Member</label>';
                 block+='</div>';
             block+='</div>';
         block+='</div>';
@@ -64,6 +66,7 @@ function searchResultBlock(result){
 	block+='<ul>';
 	
     $("#searchResultsBlock").html(block);
+	
 	$("#membersScrollId").slick({
 		slides:'li',
 		infinite: false,
@@ -71,9 +74,29 @@ function searchResultBlock(result){
 		slidesToScroll: 2,
 		variableWidth: true
 	}); 
+	
 }
-
-function buildPanelBlock(){
+var globalPosiDivs = 0;
+var globalPositionsArr = [];
+$(document).on('click','.selectMember',function(){
+		var selPosition = $(this).attr("attr_position_type");
+			var appendBlock=$(this).closest("ul").html();
+			if(globalPositionsArr == null || globalPositionsArr == ""){
+				buildPanelBlock(selPosition,appendBlock);
+			}else{
+				if(globalPositionsArr.indexOf(selPosition) > -1){
+					$("#addmember"+selPosition).append(appendBlock);
+				}else{
+					buildPanelBlock(selPosition,appendBlock);
+				}
+			}
+					
+				
+	});
+	
+function buildPanelBlock(selPosition,appendBlock){
+	
+	if(globalPositionsArr == null || globalPositionsArr == ""){
 	var collapse='';
 	collapse+='<div class="panel-group" id="accordionOne" role="tablist" aria-multiselectable="true">';
 		collapse+='<div class="panel panel-default">';
@@ -85,37 +108,29 @@ function buildPanelBlock(){
 			collapse+='</div>';
 			collapse+='<div id="collapsetwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">';
 				collapse+='<div class="panel-body">';
-					collapse+='<div class="col-sm-9" style="border-right:1px solid grey" id="buildPositionWiseBlock">';
+					collapse+='<div class="col-sm-9" style="border-right:1px solid grey" id="buildPositionWiseBlock'+globalPosiDivs+'">';
 						collapse+='<h5 ><span style="color:#FF0000">STEP-3</span></h5>';
-						  for(var i in positionNames){
-    collapse+='<div class="col-sm-12 m_top20" style="border:1px solid grey;">';
-        collapse+='<div class="panel-group m_top20" id="accordion'+positionNames[i]+'" role="tablist" aria-multiselectable="true">';
+						
+    collapse+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition+'">';
+        collapse+='<div class="panel-group m_top20" id="accordion'+selPosition+'" role="tablist" aria-multiselectable="true">';
             collapse+='<div class="panel panel-default">';
-                collapse+='<div class="panel-heading" role="tab" id="headingOne'+positionNames[i]+'" style="background-color:transparent">';
-                    if(i==0){
-                        collapse+='<a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordion'+positionNames[i]+'" href="#collapseOne'+positionNames[i]+'" aria-expanded="true" aria-controls="collapseOne'+positionNames[i]+'">';
-                    }else{
-                         collapse+='<a role="button" class="panelCollapseIconChange collapsed" data-toggle="collapse" data-parent="#accordion'+positionNames[i]+'" href="#collapseOne'+positionNames[i]+'" aria-expanded="true" aria-controls="collapseOne'+positionNames[i]+'">';
-                    }
-                        collapse+='<h4 class="panel-title">'+positionNames[i]+' - Members Added</h4>';
+                collapse+='<div class="panel-heading" role="tab" id="headingOne'+selPosition+'" style="background-color:transparent">';
+                        collapse+='<a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordion'+selPosition+'" href="#collapseOne'+selPosition+'" aria-expanded="true" aria-controls="collapseOne'+selPosition+'">';
+						collapse+='<h4 class="panel-title">'+selPosition+' - Members Added</h4>';
                     collapse+='</a>';
                 collapse+='</div>';
-                if(i==0){
-                    collapse+=' <div id="collapseOne'+positionNames[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+positionNames[i]+'">';
-                }
-                else{
-                    collapse+=' <div id="collapseOne'+positionNames[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+positionNames[i]+'">';
-                }
-                    collapse+='<div class="panel-body" id="show'+positionNames[i]+'">';
-						collapse+='<ul class="nav navbar-nav col-sm-12" id="addmember'+positionNames[i]+'">';
-							
+					collapse+=' <div id="collapseOne'+selPosition+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+selPosition+'">';
+                
+                    collapse+='<div class="panel-body" id="show'+selPosition+'">';
+						collapse+='<ul class="nav navbar-nav col-sm-12" id="addmember'+selPosition+'">';
+							collapse+=appendBlock;
 						collapse+='</ul>';
                     collapse+='</div>';
                 collapse+='</div>';
             collapse+='</div>';
         collapse+='</div>';
     collapse+='</div>';
-    }
+    
 					collapse+='</div>';
 					collapse+='<div class="col-sm-3">';
 						collapse+='<h5 style="font-weight:600"><span style="color:#FF0000">STEP-4</span></h5>';
@@ -130,10 +145,39 @@ function buildPanelBlock(){
 			collapse+='</div>';
 		collapse+='</div>';
 	collapse+='</div>';
+	 $("#addPositionsBlock").html(collapse);
+	}else{
+		var  collapse1 = "";
+		collapse1+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition+'">';
+        collapse1+='<div class="panel-group m_top20" id="accordion'+selPosition+'" role="tablist" aria-multiselectable="true">';
+            collapse1+='<div class="panel panel-default">';
+                collapse1+='<div class="panel-heading" role="tab" id="headingOne'+selPosition+'" style="background-color:transparent">';
+                        collapse1+='<a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordion'+selPosition+'" href="#collapseOne'+selPosition+'" aria-expanded="true" aria-controls="collapseOne'+selPosition+'">';
+						collapse1+='<h4 class="panel-title">'+selPosition+' - Members Added</h4>';
+                    collapse1+='</a>';
+                collapse1+='</div>';
+					collapse1+=' <div id="collapseOne'+selPosition+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+selPosition+'">';
+                
+                    collapse1+='<div class="panel-body" id="show'+selPosition+'">';
+						collapse1+='<ul class="nav navbar-nav col-sm-12" id="addmember'+selPosition+'">';
+							collapse1+=appendBlock;
+						collapse1+='</ul>';
+                    collapse1+='</div>';
+                collapse1+='</div>';
+            collapse1+='</div>';
+        collapse1+='</div>';
+    collapse1+='</div>';
+	var currentDiv = globalPosiDivs-1;
+	$("#buildPositionWiseBlock"+currentDiv).append(collapse1);
+	}
   
-    $("#addPositionsBlock").html(collapse);
+   
 	$(".slick-slide").css("display","inline-block");
+	globalPosiDivs++;
+	globalPositionsArr.push(selPosition);
 }
+
+
 function getDepartments(){
 	  //$("#searchDataImgForDist").show();
 	  $("#errdeptBoardPostnId").html("");
@@ -279,10 +323,15 @@ function getDepartments(){
 	   $("#deptBoardPostnId").trigger("chosen:updated");
    });
   }
+   $(document).on('change','#deptBoardPostnId',function(){
+		var getPosition = $(this).find("option:selected").text();
+		//buildPanelBlock(getPosition);
+		})
   function getDepartmentBoardPositions(){
 	$("#searchDataImgForPos").show();
 	$("#errdeptBoardPostnId").html("");
-	 var postTypeId=1;
+	
+	var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId").val();
 
 	   var searchLevelValue=1;
@@ -343,44 +392,6 @@ function getDepartments(){
 	   $("#errdeptBoardPostnId").html('<b style="color:red;"> Already applied to this position.</b>');
 	   $("#deptBoardPostnId").trigger("chosen:updated");
    }
-   $(document).on('click','#deptBoardPostnId option',function(){
-		var getPosition = $(this).val();
-		alert(getPosition);
-	  })
-   /*for(var i in result){
-			 var collapse = '';
-    collapse+='<div class="col-sm-12 m_top20" style="border:1px solid grey;">';
-        collapse+='<div class="panel-group m_top20" id="accordion'+result[i].name+'" role="tablist" aria-multiselectable="true">';
-            collapse+='<div class="panel panel-default">';
-                collapse+='<div class="panel-heading" role="tab" id="headingOne'+result[i].name+'" style="background-color:transparent">';
-                    if(i==0){
-                        collapse+='<a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordion'+result[i].name+'" href="#collapseOne'+result[i].name+'" aria-expanded="true" aria-controls="collapseOne'+result[i].name+'">';
-                    }else{
-                         collapse+='<a role="button" class="panelCollapseIconChange collapsed" data-toggle="collapse" data-parent="#accordion'+result[i].name+'" href="#collapseOne'+result[i].name+'" aria-expanded="true" aria-controls="collapseOne'+result[i].name+'">';
-                    }
-                        collapse+='<h4 class="panel-title">'+result[i].name+' - Members Added</h4>';
-                    collapse+='</a>';
-                collapse+='</div>';
-                if(i==0){
-                    collapse+=' <div id="collapseOne'+result[i].name+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+result[i].name+'">';
-                }
-                else{
-                    collapse+=' <div id="collapseOne'+result[i].name+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+result[i].name+'">';
-                }
-                    collapse+='<div class="panel-body" id="show'+result[i].name+'">';
-						collapse+='<ul class="nav navbar-nav col-sm-12" id="addmember'+result[i].name+'">';
-							
-						collapse+='</ul>';
-                    collapse+='</div>';
-                collapse+='</div>';
-            collapse+='</div>';
-        collapse+='</div>';
-    collapse+='</div>';
-    }
-   	  $("#buildPositionWiseBlock").html(collapse);*/
-	  
-	   buildPanelBlock();
-	   	
    });
   }
   
@@ -841,8 +852,7 @@ function refreshExistingDetails(){
 /*check box*/
 $('input[type="checkbox"]').click(function(){
 			if($(this).prop("checked") == true){
-			   var appendBlock=$(this).closest("li").html();
-			   $("#showPositionBlock .panel-body #showCHAIRMAN").append(appendBlock);
-			   $(".panel-footer").hide();
+			   //var appendBlock=$(this).closest("li").html();
+			   
 			}
  });
