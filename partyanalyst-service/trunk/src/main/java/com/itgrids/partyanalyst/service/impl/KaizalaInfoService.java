@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IKaizalaActionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAnswerInfoDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAnswersDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaGroupsDAO;
+import com.itgrids.partyanalyst.dao.IKaizalaOptionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderInfoDAO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -23,6 +24,7 @@ import com.itgrids.partyanalyst.model.KaizalaActions;
 import com.itgrids.partyanalyst.model.KaizalaAnswerInfo;
 import com.itgrids.partyanalyst.model.KaizalaAnswers;
 import com.itgrids.partyanalyst.model.KaizalaGroups;
+import com.itgrids.partyanalyst.model.KaizalaOptions;
 import com.itgrids.partyanalyst.model.KaizalaQuestions;
 import com.itgrids.partyanalyst.model.KaizalaResponderInfo;
 import com.itgrids.partyanalyst.service.IKaizalaInfoService;
@@ -41,9 +43,15 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	private IKaizalaAnswersDAO kaizalaAnswersDAO;
 	private IKaizalaGroupsDAO kaizalaGroupsDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
+	private IKaizalaOptionsDAO kaizalaOptionsDAO;
 	
 	
-	
+	public IKaizalaOptionsDAO getKaizalaOptionsDAO() {
+		return kaizalaOptionsDAO;
+	}
+	public void setKaizalaOptionsDAO(IKaizalaOptionsDAO kaizalaOptionsDAO) {
+		this.kaizalaOptionsDAO = kaizalaOptionsDAO;
+	}
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -190,6 +198,11 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 											KeyValueVO vo = new KeyValueVO();
 											vo.setName(obj.getString("title"));
 											vo.setDate(obj.getString("type"));
+											if(obj.getJSONArray("options") != null && obj.getJSONArray("options").length() > 0){
+												for(int t=0;t<obj.getJSONArray("options").length();t++){
+													vo.getImageList().add(obj.getJSONArray("options").getJSONObject(t).getString("title"));
+												}
+											}
 											newQuestionsList.add(vo);
 										}
 										if(obj.getString("title").equalsIgnoreCase("Responder Location") && obj.getString("type").equalsIgnoreCase("location")){
@@ -215,7 +228,16 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 									kq.setQuestion(keyValueVO.getName());
 									kq.setType(keyValueVO.getDate());
 									kq.setIsDeleted("N");
-									kaizalaQuestionsDAO.save(kq);
+									kq = kaizalaQuestionsDAO.save(kq);
+									
+									if(keyValueVO .getImageList() != null && keyValueVO.getImageList().size() > 0){
+										for (String option : keyValueVO.getImageList()) {
+											KaizalaOptions kaiOpt = new KaizalaOptions();
+											kaiOpt.setKaizalaQuestionsId(kq.getKaizalaQuestionsId());
+											kaiOpt.setTitle(option);
+											kaizalaOptionsDAO.save(kaiOpt);
+										}
+									}
 								}
 							}
 							
@@ -246,8 +268,13 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 												JSONArray ansArr = obj.getJSONArray("answer");
 												for (int j = 0; j < ansArr.length(); j++) {
 													KaizalaAnswers answer = new KaizalaAnswers();
-													answer.setKaizalaQuestionsId(questionsMap.get(obj.getString("title")) != null ? questionsMap.get(obj.getString("title")):null);
+													answer.setKaizalaQuestionsId(questionsMap.get(obj.getString("title")) != null && questionsMap.get(obj.getString("title")) != null ? questionsMap.get(obj.getString("title")):null);
 													answer.setAnswer(ansArr.get(j).toString());
+													if(answer.getKaizalaQuestionsId() != null && answer.getKaizalaQuestionsId() > 0l){
+														Long optionId = kaizalaOptionsDAO.getOptionId(answer.getKaizalaQuestionsId(),answer.getAnswer());
+														if(optionId != null && optionId > 0l)
+															answer.setKaizalaOptionsId(optionId);
+													}
 													answer.setEventId(kaiAnsInfo.getEventId());
 													answer.setKaizalaAnswerInfoId(kaiAnsInfo.getKaizalaAnswerInfoId());
 													answer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
