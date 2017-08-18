@@ -4135,5 +4135,7 @@
 	 <bean id="kaizalaOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaOptionsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
-	 
+	<bean id="kaizalaActionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaActionTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>	 
 </beans>		
