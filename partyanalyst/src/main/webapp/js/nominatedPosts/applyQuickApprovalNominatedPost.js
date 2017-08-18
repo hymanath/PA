@@ -57,7 +57,7 @@ function searchResultBlock(result){
 			block+='</div>';
             block+='<div class="panel-footer">';
                 block+='<div class="checkbox">';
-					block+='<label class="checkbox " ><input type="checkbox" value="" class="selectMember" attr_position_type="'+position+'">Select Member</label>';
+					block+='<label class="checkbox " ><input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+position+'">Select Member</label>';
                 block+='</div>';
             block+='</div>';
         block+='</div>';
@@ -79,25 +79,37 @@ function searchResultBlock(result){
 var globalPosiDivs = 0;
 	var globalPositionsArr = [];
 $(document).on('click','.selectMember',function(){
+	var departmentId=$("#depmtsId").val();
+	var boardId = $("#deptBoardId").val();
+	var positionId = $("#deptBoardPostnId").val();
 		var selPosition = $(this).attr("attr_position_type");
-			var appendBlock=$(this).closest("ul").html();
+			var appendBlock=$(this).closest("li").html();
+			var cadreId = $(this).attr("attr_cadreId");
 			if(globalPositionsArr == null || globalPositionsArr == ""){
-				buildPanelBlock(selPosition,appendBlock);
+				buildPanelBlock(selPosition,appendBlock,cadreId);
 			}else{
 				if(globalPositionsArr.indexOf(selPosition) > -1){
-					$("#addmember"+selPosition).append(appendBlock);
+					var count = $("#addmember"+selPosition).attr("attr_member_count");
+					var posiCnt = $("#addmember"+selPosition).attr("attr_posi_count");
+					count++;
+					$("#addmember"+selPosition).attr("attr_member_count",count);
+					$("#addmember"+selPosition).append('<li><input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].tdpCadreId"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].departmentId" value="'+departmentId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].boardId" value="'+boardId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].positionId" value="'+positionId+'">'+appendBlock+'</li>');
 				}else{
-					buildPanelBlock(selPosition,appendBlock);
+					buildPanelBlock(selPosition,appendBlock,cadreId);
 				}
 			}
 					
 				
 	});
 	
-function buildPanelBlock(selPosition,appendBlock){
-	
+function buildPanelBlock(selPosition,appendBlock,cadreId){
+	var departmentId=$("#depmtsId").val();
+	var boardId = $("#deptBoardId").val();
+	var positionId = $("#deptBoardPostnId").val();
 	if(globalPositionsArr == null || globalPositionsArr == ""){
 	var collapse='';
+	var count = 0;
+		collapse+='<input type="hidden" id="positionDiv'+selPosition+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+']">';
 	collapse+='<div class="panel-group" id="accordionOne" role="tablist" aria-multiselectable="true">';
 		collapse+='<div class="panel panel-default">';
 			collapse+='<div class="panel-heading" role="tab" id="headingTwo">';
@@ -111,7 +123,7 @@ function buildPanelBlock(selPosition,appendBlock){
 					collapse+='<div class="col-sm-9" style="border-right:1px solid grey" id="buildPositionWiseBlock'+globalPosiDivs+'">';
 						collapse+='<h5 ><span style="color:#FF0000">STEP-3</span></h5>';
 						
-    collapse+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition+'">';
+		collapse+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition+'">';
         collapse+='<div class="panel-group m_top20" id="accordion'+selPosition+'" role="tablist" aria-multiselectable="true">';
             collapse+='<div class="panel panel-default">';
                 collapse+='<div class="panel-heading" role="tab" id="headingOne'+selPosition+'" style="background-color:transparent">';
@@ -122,8 +134,14 @@ function buildPanelBlock(selPosition,appendBlock){
 					collapse+=' <div id="collapseOne'+selPosition+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+selPosition+'">';
                 
                     collapse+='<div class="panel-body" id="show'+selPosition+'">';
-						collapse+='<ul class="nav navbar-nav col-sm-12" id="addmember'+selPosition+'">';
+						collapse+='<ul class="nav navbar-nav col-sm-12" id="addmember'+selPosition+'" attr_member_count="'+count+'" attr_posi_count="'+globalPosiDivs+'">';
+						collapse+='<li>';
+							collapse+='<input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].tdpCadreId">';
+							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].departmentId" value="'+departmentId+'">';
+							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].boardId" value="'+boardId+'">';
+							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].positionId" value="'+positionId+'">';
 							collapse+=appendBlock;
+							collapse+='</li>';
 						collapse+='</ul>';
                     collapse+='</div>';
                 collapse+='</div>';
@@ -141,7 +159,7 @@ function buildPanelBlock(selPosition,appendBlock){
 							collapse+='<h5>UPLOAD SCAN COPY</h5>';
 						collapse+='</div>';
 						collapse+='<div class="col-sm-12">';
-							collapse+='<button class="btn btn-success btn-block btn-lg" type="button">SUBMIT APPLICATION</button>';
+							collapse+='<button class="btn btn-success btn-block btn-lg" type="button" onclick="savingApplication();">SUBMIT APPLICATION</button>';
 						collapse+='</div>';
 					collapse+='</div>';
 				collapse+='</div>';
@@ -151,6 +169,8 @@ function buildPanelBlock(selPosition,appendBlock){
 	 $("#addPositionsBlock").html(collapse);
 	}else{
 		var  collapse1 = "";
+		var count = 0;
+		collapse1+='<input type="hidden" id="positionDiv'+selPosition+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+']">';
 		collapse1+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition+'">';
         collapse1+='<div class="panel-group m_top20" id="accordion'+selPosition+'" role="tablist" aria-multiselectable="true">';
             collapse1+='<div class="panel panel-default">';
@@ -162,8 +182,14 @@ function buildPanelBlock(selPosition,appendBlock){
 					collapse1+=' <div id="collapseOne'+selPosition+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+selPosition+'">';
                 
                     collapse1+='<div class="panel-body" id="show'+selPosition+'">';
-						collapse1+='<ul class="nav navbar-nav col-sm-12" id="addmember'+selPosition+'">';
+						collapse1+='<ul class="nav navbar-nav col-sm-12" id="addmember'+selPosition+'" attr_member_count="'+count+'" attr_posi_count="'+globalPosiDivs+'">';
+						collapse1+='<li>';
+						collapse1+='<input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].tdpCadreId">';
+						collapse1+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].departmentId" value="'+departmentId+'">';
+							collapse1+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].boardId" value="'+boardId+'">';
+							collapse1+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].positionId" value="'+positionId+'">';
 							collapse1+=appendBlock;
+							collapse1+='</li>';
 						collapse1+='</ul>';
                     collapse1+='</div>';
                 collapse1+='</div>';
@@ -179,7 +205,21 @@ function buildPanelBlock(selPosition,appendBlock){
 	globalPosiDivs++;
 	globalPositionsArr.push(selPosition);
 }
-
+function savingApplication(){
+			
+			var uploadHandler = {
+				upload: function(o) {
+					//$("#savingAjaxImg").css("display","none");
+					uploadResult = o.responseText;
+					//showSbmitStatus(uploadResult);
+				}
+			};
+		
+			YAHOO.util.Connect.setForm('submitApplication',true);
+			YAHOO.util.Connect.asyncRequest('POST','saveNominatedPostProfileDtlsAction.action',uploadHandler);
+			
+	}
+		
 
 function getDepartments(){
 	  //$("#searchDataImgForDist").show();
@@ -852,10 +892,3 @@ function refreshExistingDetails(){
 	$("#membershipId").prop("checked", true);
  }
 	
-/*check box*/
-$('input[type="checkbox"]').click(function(){
-			if($(this).prop("checked") == true){
-			   //var appendBlock=$(this).closest("li").html();
-			   
-			}
- });
