@@ -33,9 +33,11 @@ public class KaizalaAnswers extends BaseModel implements Serializable {
 	private String eventId;
 	private Long kaizalaAnswerInfoId;
 	private Date insertedTime;
+	private Long kaizalaOptionsId;
 	
 	private KaizalaQuestions kaizalaQuestions;
 	private KaizalaAnswerInfo kaizalaAnswerInfo;
+	private KaizalaOptions kaizalaOptions;
 	
 	
 	@Id
@@ -109,6 +111,25 @@ public class KaizalaAnswers extends BaseModel implements Serializable {
 	
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
+	}
+	
+	@Column(name="kaizala_options_id")
+	public Long getKaizalaOptionsId() {
+		return kaizalaOptionsId;
+	}
+	public void setKaizalaOptionsId(Long kaizalaOptionsId) {
+		this.kaizalaOptionsId = kaizalaOptionsId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "kaizala_options_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public KaizalaOptions getKaizalaOptions() {
+		return kaizalaOptions;
+	}
+	public void setKaizalaOptions(KaizalaOptions kaizalaOptions) {
+		this.kaizalaOptions = kaizalaOptions;
 	}	
 	
 	
