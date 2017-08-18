@@ -1312,6 +1312,7 @@
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaGroupType</value>
 		      		   <value>com.itgrids.partyanalyst.model.KaizalaGroups</value>
 		      		   <value>com.itgrids.partyanalyst.model.DebateParticipantLocation</value>
+		      		   <value>com.itgrids.partyanalyst.model.KaizalaOptions</value>
 				  </list>
 			
 		</property>
