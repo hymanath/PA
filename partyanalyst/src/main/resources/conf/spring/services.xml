@@ -4421,6 +4421,7 @@
     	 <property name="kaizalaAnswersDAO" ref="kaizalaAnswersDAO" />
     	 <property name="kaizalaGroupsDAO" ref="kaizalaGroupsDAO" />
     	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+    	 <property name="kaizalaOptionsDAO" ref="kaizalaOptionsDAO" />
     </bean> 
 </beans>			
 	

@@ -4132,4 +4132,8 @@
 	 <bean id="debateParticipantLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateParticipantLocationDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="kaizalaOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaOptionsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
 </beans>		
