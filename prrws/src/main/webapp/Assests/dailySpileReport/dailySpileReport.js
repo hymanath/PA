@@ -274,7 +274,7 @@ function initializeSliderRange(){
 	getLocationDtlsRankWise(min,max);      
 } 
 
-function buildLocationDtlsRankWise(ajaxresp){
+function buildLocationDtlsRankWise(ajaxresp){    
 	var str = '';
 	str+='<div style="padding:10px 15px;background-color:#fff;box-shadow:0 0 3px 3px rgba(0, 0, 0, 0.4)">';
 		str+='<ul class="list-inline" id="rankWiseScrollId">';
@@ -283,12 +283,12 @@ function buildLocationDtlsRankWise(ajaxresp){
 				str+='<div class="row">';
 					str+='<div class="col-sm-9">';
 						str+='<p><span style="padding:5px 10px;font-size:18px;border-radius:50%;background-color:#676767;color:#fff;">'+ajaxresp[i].rankId+'</span></p>';  
-						str+='<p style="margin-top:5px;"><span class="text-success">D</span> - '+ajaxresp[i].districtName+'</p>';
-						str+='<p><span class="text-success">C</span> - '+ajaxresp[i].constituencyName+'</p>';
+						str+='<p style="margin-top:5px;"><span class="text-success">D</span> - <span style="text-transform:capitalize">'+ajaxresp[i].districtName+'</span></p>';
+						str+='<p><span class="text-success">C</span> - <span style="text-transform:capitalize">'+ajaxresp[i].constituencyName+'</span></p>';
 						if(ajaxresp[i].mandalName.length > 0){
-							str+='<p style="font-weight: bold;"><span class="text-success">M</span> - '+ajaxresp[i].mandalName+'</p>';
+							str+='<p style="font-weight: bold;"><span class="text-success">M</span> - <span style="text-transform:capitalize">'+ajaxresp[i].mandalName+'</span></p>';
 						}else{
-							str+='<p style="font-weight: bold;"><span class="text-success">T</span> - '+ajaxresp[i].localElectionBodyName+'</p>';
+							str+='<p style="font-weight: bold;"><span class="text-success">T</span> - <span style="text-transform:capitalize">'+ajaxresp[i].localElectionBodyName+'</span></p>';
 						}
 						
 					str+='</div>';
@@ -869,9 +869,10 @@ function buildTableData(ajaxresp,blockName,filterType){
 									buildTable+='<th></th>';
 								}
 							}
-							buildTable+='<th colspan="4"><img src="Assests/img/Dengue&maleria_Sm.png">Dengue & Malaria Cases</th>';
-							buildTable+='<th colspan="2" style="background-color:#FDE5F2"><img src="Assests/img/Dengue_Sm.png">Dengue</th>';
-							buildTable+='<th colspan="2" style="background-color:#E5F0F5"><img src="Assests/img/maleria_Sm.png">Malaria</th>';
+							buildTable+='<th colspan="3" style="text-align:center"><img src="Assests/img/Dengue&maleria_Sm.png">Dengue & Malaria Cases</th>';
+							buildTable+='<th colspan="1" style="background-color:#F3FFFF"></th>';
+							buildTable+='<th colspan="2" style="background-color:#FDE5F2;text-align:center"><img src="Assests/img/Dengue_Sm.png">Dengue</th>';
+							buildTable+='<th colspan="2" style="background-color:#E5F0F5;text-align:center"><img src="Assests/img/maleria_Sm.png">Malaria</th>';
 						buildTable+='</tr>';    
 						buildTable+'<tr>';
 							
@@ -903,10 +904,10 @@ function buildTableData(ajaxresp,blockName,filterType){
 									buildTable+='<th>MANDAL/TOWN</th>';
 								}
 							}
-							buildTable+='<th style="background-color:#F3F3F3">OVERALL</th>';
+							buildTable+='<th style="background-color:#F3F3F3">TILL NOW</th>';
 							buildTable+='<th style="background-color:#F3F3F3">TODAY DENGUE CASES</th>';
 							buildTable+='<th style="background-color:#F3F3F3">TODAY MALARIA CASES</th>';
-							buildTable+='<th style="background-color:#F3F3F3">TOTAL</th>';
+							buildTable+='<th style="background-color:#F3FFFF">TOTAL</th>';
 							
 							buildTable+='<th style="background-color:#FDE5F2">DENGUE TOTAL</th>';
 							buildTable+='<th style="background-color:#FDE5F2">%</th>';
