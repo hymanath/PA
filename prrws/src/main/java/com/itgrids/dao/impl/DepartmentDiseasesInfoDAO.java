@@ -617,29 +617,21 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		sb.append(" select ");
 		if(scopeId != null && scopeId.longValue() > 0){
 			if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
-				sb.append(" district.districtId, ");//1
+				sb.append(" departmentDiseasesInfo.locationAddress.district.districtId, ");//0
 			}else if(scopeId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
-				sb.append(" parliament.constituencyId, ");
+				sb.append(" departmentDiseasesInfo.locationAddress.parliament.constituencyId, ");
 			}else if(scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
-				sb.append(" constituency.constituencyId, ");
+				sb.append(" departmentDiseasesInfo.locationAddress.constituency.constituencyId, ");
 			}else if(scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
-				sb.append(" tehsil.tehsilId, ");
+				sb.append(" departmentDiseasesInfo.locationAddress.tehsil.tehsilId, ");
 			}else if(scopeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_LEVEL_SCOPE_ID){
-				sb.append(" localElectionBody.localElectionBodyId , ");
+				sb.append(" departmentDiseasesInfo.locationAddress.localElectionBody.localElectionBodyId , ");
 			}else if(scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
-				sb.append(" panchayat.panchayatId, ");
+				sb.append(" departmentDiseasesInfo.locationAddress.panchayat.panchayatId, ");
 			}
 		}
-		sb.append(" sum(departmentDiseasesInfo.noOfCases) ");//14
+		sb.append(" sum(departmentDiseasesInfo.noOfCases) ");//1
 		sb.append(" from DepartmentDiseasesInfo departmentDiseasesInfo "
-				+ " left join departmentDiseasesInfo.locationAddress locationAddress "
-				+ " left join locationAddress.district district "
-				+ " left join locationAddress.state state "
-				+ " left join locationAddress.constituency constituency "
-				+ " left join locationAddress.parliament parliament "
-				+ " left join locationAddress.tehsil tehsil "
-				+ " left join locationAddress.localElectionBody localElectionBody "
-				+ " left join locationAddress.panchayat panchayat "
 				+ " where departmentDiseasesInfo.isDeleted = 'N' ");
 		
 		
@@ -650,35 +642,21 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		if(deptIdList != null && deptIdList.size() > 0){
 			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
 		}
-		if(scopeId != null && scopeId.longValue() > 0){
-			if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
-				sb.append(" and district.districtId is not null ");
-			}else if(scopeId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
-				sb.append(" and parliament.constituencyId is not null ");
-			}else if(scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
-				sb.append(" and constituency.constituencyId is not null ");
-			}else if(scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
-				sb.append(" and tehsil.tehsilId is not null ");
-			}else if(scopeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_LEVEL_SCOPE_ID){
-				sb.append(" and localElectionBody.localElectionBodyId is not null ");
-			}else if(scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
-				sb.append(" and panchayat.panchayatId is not null ");
-			}
-		}
+		
 		sb.append(" group by ");
 		if(scopeId != null && scopeId.longValue() > 0){
 			if(scopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
-				sb.append(" district.districtId ");
+				sb.append(" departmentDiseasesInfo.locationAddress.district.districtId ");
 			}else if(scopeId.longValue() == IConstants.PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID){
-				sb.append(" parliament.constituencyId ");
+				sb.append(" departmentDiseasesInfo.locationAddress.parliament.constituencyId ");
 			}else if(scopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
-				sb.append(" constituency.constituencyId ");
+				sb.append(" departmentDiseasesInfo.locationAddress.constituency.constituencyId ");
 			}else if(scopeId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
-				sb.append(" tehsil.tehsilId ");
+				sb.append(" departmentDiseasesInfo.locationAddress.tehsil.tehsilId ");
 			}else if(scopeId.longValue() == IConstants.MUNICIPAL_CORP_GMC_LEVEL_SCOPE_ID){
-				sb.append(" localElectionBody.localElectionBodyId ");
+				sb.append(" departmentDiseasesInfo.locationAddress.localElectionBody.localElectionBodyId ");
 			}else if(scopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID){
-				sb.append(" panchayat.panchayatId ");
+				sb.append(" departmentDiseasesInfo.locationAddress.panchayat.panchayatId ");
 			}
 		}
 		Query query = getSession().createQuery(sb.toString());
