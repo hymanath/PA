@@ -77,7 +77,7 @@ function searchResultBlock(result){
 	
 }
 var globalPosiDivs = 0;
-var globalPositionsArr = [];
+	var globalPositionsArr = [];
 $(document).on('click','.selectMember',function(){
 		var selPosition = $(this).attr("attr_position_type");
 			var appendBlock=$(this).closest("ul").html();
@@ -139,6 +139,9 @@ function buildPanelBlock(selPosition,appendBlock){
 						collapse+='</div>';
 						collapse+='<div class="col-sm-12 m_top20">';
 							collapse+='<h5>UPLOAD SCAN COPY</h5>';
+						collapse+='</div>';
+						collapse+='<div class="col-sm-12">';
+							collapse+='<button class="btn btn-success btn-block btn-lg" type="button">SUBMIT APPLICATION</button>';
 						collapse+='</div>';
 					collapse+='</div>';
 				collapse+='</div>';
