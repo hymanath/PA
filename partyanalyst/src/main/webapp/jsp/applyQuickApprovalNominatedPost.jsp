@@ -152,6 +152,7 @@
 		<div class="container-fluid">
 			<div class="">
 				<div class="row">
+				<form name="submitApplication" id="submitApplication"  method="post" enctype="multipart/form-data">
 					<div class="" id="addPositionsBlock">
 						<!--<div class="panel-group" id="accordionOne" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-default">
@@ -181,6 +182,7 @@
                             </div>
                         </div>-->
 					</div>
+					</form>
 				</div>
 			</div>
 		</div>
