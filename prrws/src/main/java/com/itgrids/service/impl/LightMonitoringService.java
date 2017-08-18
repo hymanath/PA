@@ -58,7 +58,6 @@ public class LightMonitoringService  implements ILightMonitoring{
 	/*
 	 * Date : 02/08/2017
 	 * Author :Swapna
-	 * @description : saveRealtimeStatusByVillages
 	 */
 	public ResultVO saveRealtimeStatusByVillages() {
 		ResultVO status=new ResultVO();
@@ -67,7 +66,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 			   inputStr = "{";
 			   inputStr += "\"ClientId\" : \"AP_GOV\"";
 			   inputStr += "}";
-			
+			   
 			ClientResponse response = webServiceUtilService.callWebService("http://54.254.103.213/PremiumDev/api/RestRealtimeAPI/GetRealtimeStatusByVillages",inputStr);
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	        if(response.getStatus() != 200)
@@ -92,7 +91,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    							lightMonitoringDAO.save(lightMonitoring);
 									}
 	 	    					}*/
-	 	    					 List<Long> lighMonitoringIds = lightMonitoringDAO.getLightMonitroingIds(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
+	 	    					List<Long> lighMonitoringIds = lightMonitoringDAO.getLightMonitroingIds(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
 	 	    					int updatedCount = lightMonitoringDAO.updateLightMoitoringData(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
 	 	    					
 	 	    					if (lighMonitoringIds != null && lighMonitoringIds.size() > 0 ) {
@@ -231,7 +230,6 @@ public class LightMonitoringService  implements ILightMonitoring{
 	     /*
 	 	 * Date : 03/08/2017
 	 	 * Author :Swapna
-	 	 * @description : getBasicLedOverviewDetails
 	 	 */
 	     @Override
 	public List<LightMonitoringVO> getBasicLedOverviewDetails(String startDate,String endDate, String locationType,Long locationValues) {
@@ -278,8 +276,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	     /*
 	 	 * Date : 03/08/2017
 	 	 * Author :Swapna
-	 	 * @description : getLedOverviewForStartedLocationsDetailsCounts
-	 	 */
+	  	 */
 	public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate,String locationType, Long locationValues){
 	  List<LedOverviewVo>listVO=new ArrayList<LedOverviewVo>(0);
 	  try
@@ -313,7 +310,6 @@ public class LightMonitoringService  implements ILightMonitoring{
 	/*
  	 * Date : 11/08/2017
  	 * Author :Swapna
- 	 * @description : getAllLevelWiseDataOverView
  	 */
 	@Override
 	public List<LightMonitoringVO> getAllLevelWiseDataOverView(String locationType,String filterType, Long filterValue,String fromDateStr,String toDateStr) {
@@ -389,11 +385,10 @@ public class LightMonitoringService  implements ILightMonitoring{
 			 LOG.error("Exception raised at setStartedSurveryDataLocationWise - LightMonitoringService service", e);
 		 }
 		 return locationDtlsMap;
-	}
+	 }
 	/*
  	 * Date : 17/08/2017
  	 * Author :Swapna
- 	 * @description : getLocationBasedOnSelection
  	 */
 	@Override
 	public List<LightMonitoringVO> getLocationBasedOnSelection(String locationType,String filterType, Long filterValue) {
