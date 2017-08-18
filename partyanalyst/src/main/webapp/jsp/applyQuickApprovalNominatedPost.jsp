@@ -13,6 +13,8 @@
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,700italic,900,900italic,400italic,500italic,300italic,300,100italic,100' rel='stylesheet' type='text/css'>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+<link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
+<link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />
 <link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/slick/slick.css" rel="stylesheet" type="text/css"/>
 
@@ -193,9 +195,11 @@
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/slick/slick.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/nominatedPosts/applyQuickApprovalNominatedPost.js"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>
 <script src="dist/activityDashboard/Date/moment.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/Date/daterangepicker.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/nominatedPosts/applyQuickApprovalNominatedPost.js"></script>
 
 <script>
 $(document).ready(function(){
