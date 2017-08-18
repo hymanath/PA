@@ -3323,13 +3323,13 @@ public class WebServiceHandler {
 		return null;
 	}
 	
-	@POST
-	@Path("/getAddressIdForKaizalaResInfo")
+	@GET
+	@Path("/getAddressIdForKaizalaResInfo/{locationScopeId}/{locationValue}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Long getAddressIdForKaizalaResInfo(JSONObject jObj){
+	public Long getAddressIdForKaizalaResInfo(@PathParam("locationScopeId") Long locationScopeId , @PathParam("locationValue") Long locationValue ){
 		try {			
-			return webServiceHandlerService.getAddressId(jObj.getLong("locationScopeId"),jObj.getLong("locationValue"));			
+			return webServiceHandlerService.getAddressId(locationScopeId,locationValue);			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getIvrSurveyQuestions() Method, Exception is ",e);
 		}
