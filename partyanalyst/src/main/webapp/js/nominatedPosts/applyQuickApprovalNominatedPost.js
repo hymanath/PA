@@ -37,6 +37,7 @@ $('.chosenSelect').chosen({width:'100%'});
 function searchResultBlock(result){
 	var position = $("#deptBoardPostnId option:selected").text();
 	var block='';
+	
 	block+='<h5 style="font-weight:600">SEARCH RESULTS  <span style="font-size:12px;font-weight:normal">   -Found '+result.length+' Results</span></h5>';
 	block+='<ul class="nav navbar-nav col-sm-12" id="membersScrollId" style="margin-top:15px !important">';
 	for(var i in result){
@@ -79,10 +80,11 @@ function searchResultBlock(result){
 var globalPosiDivs = 0;
 	var globalPositionsArr = [];
 $(document).on('click','.selectMember',function(){
-	var departmentId=$("#depmtsId").val();
+		var departmentId=$("#depmtsId").val();
 	var boardId = $("#deptBoardId").val();
 	var positionId = $("#deptBoardPostnId").val();
 		var selPosition = $(this).attr("attr_position_type");
+			if($(this).is(':checked')){
 			var appendBlock=$(this).closest("li").html();
 			var cadreId = $(this).attr("attr_cadreId");
 			if(globalPositionsArr == null || globalPositionsArr == ""){
@@ -99,7 +101,7 @@ $(document).on('click','.selectMember',function(){
 				}
 			}
 					
-				
+			}	
 	});
 	
 function buildPanelBlock(selPosition,appendBlock,cadreId){
@@ -154,11 +156,20 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 						collapse+='<h5 style="font-weight:600"><span style="color:#FF0000">STEP-4</span></h5>';
 						collapse+='<div class="col-sm-12 m_top20">';
 							collapse+='<h5>REFERED MEMBER</h5>';
+							collapse+='<div class="involveBlockNew m_top10" btn-attr = "involve" style="border:1px solid grey;padding:18px">';
+                            	collapse+='<div class="media">';
+                                	collapse+='<div class="media-left" style="font-size:36px">+</div>'
+                                    collapse+='<div class="media-body"><p style="padding-top:8px">Click to Search Referral Details to this Candidate</p></div>';
+                                collapse+='</div>';
+                            collapse+='</div>';
 						collapse+='</div>';
 						collapse+='<div class="col-sm-12 m_top20">';
 							collapse+='<h5>UPLOAD SCAN COPY</h5>';
+							collapse+='<div class="hideDivCls m_top10" id="uploadFlDivId" style="border:1px solid grey;padding:18px">';
+								collapse+='<input type="file" id="filer_input3" multiple="multiple"  name="fileImage" class="m_top20"/>';
+							collapse+='</div>';
 						collapse+='</div>';
-						collapse+='<div class="col-sm-12">';
+						collapse+='<div class="col-sm-12 m_top10">';
 							collapse+='<button class="btn btn-success btn-block btn-lg" type="button" onclick="savingApplication();">SUBMIT APPLICATION</button>';
 						collapse+='</div>';
 					collapse+='</div>';
@@ -199,8 +210,6 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	var currentDiv = globalPosiDivs-1;
 	$("#buildPositionWiseBlock"+currentDiv).append(collapse1);
 	}
-  
-   
 	$(".slick-slide").css("display","inline-block");
 	globalPosiDivs++;
 	globalPositionsArr.push(selPosition);
@@ -797,6 +806,7 @@ else if(selectVal==2)
 var isFree =true;
 function getNominatedPostApplication()
 		{
+			$('#cadreSearchDtls').html('<img style="height: 150px;" id="" class="col-md-4 col-md-offset-2 col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3" src="images/icons/cadreSearch.gif">');
 		//var searchRadioType =$('.searchTypeCls:checked').attr("attr_type");
 		var locationLevel = 0;
 		var locationValue = 0;
@@ -845,6 +855,7 @@ function getNominatedPostApplication()
 				url : "getCadreSearchDetailsAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				
 				searchResultBlock(result.previousRoles);
 				globalSelectedMemberIdsArr = []; // Clearing Array 
 				$("#textId").hide();
@@ -862,6 +873,7 @@ function getNominatedPostApplication()
 				{
 					//$('#membersCountId').show();
 					//buildCadreDetails(result.previousRoles,"cadre"); 
+					
 					
 				}
 				 else
