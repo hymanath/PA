@@ -39,39 +39,43 @@ public class LightMonitoringController {
 	
 	@RequestMapping(value = "/saveRealtimeStatusByVillages", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody  ResultVO   saveRealtimeStatusByVillages(){
-		ResultVO  voList= lightMonitoring.saveRealtimeStatusByVillages();
+		ResultVO  voList = lightMonitoring.saveRealtimeStatusByVillages();
 		return voList;
 	}
 
 	@RequestMapping(value = "/getBasicLedOverviewDetails", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody  List<LightMonitoringVO>  getBasicLedOverviewDetails(@RequestBody InputVO inputVO){
-		List<LightMonitoringVO>  voList= lightMonitoring.getBasicLedOverviewDetails(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue());
+		List<LightMonitoringVO>  voList = lightMonitoring.getBasicLedOverviewDetails(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue());
 		return voList;
 	}	
 	
 	@RequestMapping(value = "/getLedOverviewForStartedLocationsDetailsCounts", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody  List<LedOverviewVo>  getLedOverviewForStartedLocationsDetailsCountsv(@RequestBody InputVO inputVO){
-		List<LedOverviewVo>  voList= lightMonitoring.getLedOverviewForStartedLocationsDetailsCounts(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue());
+		List<LedOverviewVo>  voList = lightMonitoring.getLedOverviewForStartedLocationsDetailsCounts(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue());
 		return voList;
 	}
 	
 	@RequestMapping(value = "/getAllLevelWiseDataOverView", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody  List<LightMonitoringVO> getAllLevelWiseDataOverView(@RequestBody InputVO inputVO){
-		List<LightMonitoringVO>  voList= lightMonitoring.getAllLevelWiseDataOverView(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationId(),inputVO.getFromDate(),inputVO.getToDate());
+		List<LightMonitoringVO>  voList = lightMonitoring.getAllLevelWiseDataOverView(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationId(),inputVO.getFromDate(),inputVO.getToDate());
 		return voList;
 	}
 	
    @RequestMapping(value = "/getLocationBasedOnSelection", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
    public @ResponseBody  List<LightMonitoringVO> getAllFilterWiseDataOverView(@RequestBody InputVO inputVO){
-    List<LightMonitoringVO>  voList= lightMonitoring.getLocationBasedOnSelection(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationId());
+    List<LightMonitoringVO>  voList = lightMonitoring.getLocationBasedOnSelection(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationId());
     return voList;
    }
    @RequestMapping(value = "/callWebService", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
    public @ResponseBody  ResultVO calllWebSerice(@RequestBody InputVO inputVO){
-	   ResultVO  statusVO= lightMonitoring.saveRealtimeStatusByVillages();
+	   ResultVO  statusVO = lightMonitoring.saveRealtimeStatusByVillages();
     return statusVO;
    }
-	
+   @RequestMapping(value = "/getCompanyWiseLightMonitoringDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+   public @ResponseBody  LightMonitoringVO  getCompanyWiseLightMonitoringDtls(@RequestBody InputVO inputVO){
+		LightMonitoringVO  reusltVO = lightMonitoring.getCompanyWiseLightMonitoringDtls(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue());
+  return reusltVO;
+ }	
 	
 }
 		

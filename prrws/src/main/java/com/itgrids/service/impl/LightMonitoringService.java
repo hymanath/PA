@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -231,19 +230,26 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	 * Date : 03/08/2017
 	 	 * Author :Swapna
 	 	 */
-	     @Override
-	public List<LightMonitoringVO> getBasicLedOverviewDetails(String startDate,String endDate, String locationType,Long locationValues) {
+	 @Override
+	public List<LightMonitoringVO> getBasicLedOverviewDetails(String startDate,String endDate, String locationType,final Long locationValue) {
 		   List<LightMonitoringVO> list = new ArrayList<LightMonitoringVO>() ;
 		 
 		try{	
 			Date fromDate = null;
 			Date toDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			
+			List<Long> loccationIds = new ArrayList<Long>();
+			if (locationValue != null && locationValue.longValue() > 0l) {
+				loccationIds.add(locationValue);
+			}
+			
+			
 			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
 				fromDate = sdf.parse(startDate);
 				toDate = sdf.parse(endDate);
 			}
-		     List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,locationValues );
+		     List<Object[]> lightMonitoringData  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,loccationIds);
 		     if(lightMonitoringData!=null && lightMonitoringData.size()>0 && !lightMonitoringData.isEmpty()){
 		    	 LightMonitoringVO lightMonitoringVO= new LightMonitoringVO();
 			     for (Object[] objects : lightMonitoringData) {			
@@ -255,7 +261,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 					     lightMonitoringVO.setOffLights(objects[5] !=null ?(Long)objects[5]:0l);
 				         lightMonitoringVO.setNotWorkingLights(objects[6] !=null ?(Long)objects[6]:0l);
 		
-				         List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,locationValues);
+				         List<Object[]> wattegeCount = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,loccationIds);
 					       
 					       if(wattegeCount!=null && wattegeCount.size()>0 && !wattegeCount.isEmpty()){
 					    	   for (Object[] objects2 : wattegeCount) {	
@@ -277,7 +283,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	 * Date : 03/08/2017
 	 	 * Author :Swapna
 	  	 */
-	public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate,String locationType, Long locationValues){
+	public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate,String locationType, final Long locationValue){
 	  List<LedOverviewVo>listVO=new ArrayList<LedOverviewVo>(0);
 	  try
 	  {
@@ -288,8 +294,11 @@ public class LightMonitoringService  implements ILightMonitoring{
 				fromDate = sdf.parse(startDate);
 				toDate = sdf.parse(endDate);
 			}
-		  
-		  List<Object[]> counts = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType, locationValues);
+			List<Long> loccationIds = new ArrayList<Long>();
+			if (locationValue != null && locationValue.longValue() > 0l) {
+				loccationIds.add(locationValue);
+			}
+		  List<Object[]> counts = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType,loccationIds);
 			  if (counts!=null && counts.size()>0 &&!counts.isEmpty())
 			  {				  
 				 for (Object[] objects : counts) {
@@ -408,6 +417,119 @@ public class LightMonitoringService  implements ILightMonitoring{
 		}		
 		return returnList;
 	}
+	
+    @Override
+	public LightMonitoringVO getCompanyWiseLightMonitoringDtls(String startDate,String endDate, String locationType,Long locationValue) {
+		 LightMonitoringVO finalVO = new LightMonitoringVO();
+		 List<Long> nredcapDistrictIdList = new ArrayList<Long>(){{add(11l);add(12l);add(13l);add(14l);add(15l);add(16l);add(21l);}};
+		 List<Long> eeslDistrictIdList = new ArrayList<Long>(){{add(17l);add(18l);add(19l);add(20l);add(22l);add(23l);}};
+		try{	
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+				fromDate = sdf.parse(startDate);
+				toDate = sdf.parse(endDate);
+			}
+			 //Prepare Parameter
+			 if (locationValue != null && locationValue > 0l) {
+				 if (nredcapDistrictIdList.contains(locationValue)) {
+					 nredcapDistrictIdList.clear();
+					 nredcapDistrictIdList.add(locationValue);
+				 } else {
+					 nredcapDistrictIdList.clear();
+				 }
+                 if (eeslDistrictIdList.contains(locationValue)) {
+                	 eeslDistrictIdList.clear();
+                	 eeslDistrictIdList.add(locationValue);
+				 } else {
+					 eeslDistrictIdList.clear();
+				 }
+			 }
+			 if(locationType== null || locationType.trim().length()==0){
+				 locationType = "district";
+			 }
+			 
+			  if (nredcapDistrictIdList.size() > 0) {
+				     List<Object[]>  nredcaplightMonitoringObjLst  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,nredcapDistrictIdList);
+				     List<Object[]> nredcapwattegeObjList = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,nredcapDistrictIdList);
+				     List<Object[]> nredcapSurveryStaredLocObjLst = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType, nredcapDistrictIdList); 
+				    
+				     LightMonitoringVO nredDltsVO = getSurveyStartedLocation(nredcapSurveryStaredLocObjLst);
+				     nredDltsVO.setWattageList(getLightWattageList(nredcapwattegeObjList));
+				     setRequiredData(nredcaplightMonitoringObjLst,nredDltsVO);
+				     finalVO.setNredcapVO(nredDltsVO);
+			  }
+			  
+		      if (eeslDistrictIdList.size() > 0 ) {
+		    	     List<Object[]>  eesllightMonitoringObjLst  =  lightMonitoringDAO.getTotalVillagesDetails(fromDate,toDate,locationType,eeslDistrictIdList);
+				     List<Object[]> eeslwattegeObjList = lightWattageDAO.getTotalWattege(fromDate,toDate,locationType,eeslDistrictIdList);
+				     List<Object[]> eeslSurveryStaredLocObjLst = lightMonitoringDAO.getTotalSurveyDetails(fromDate,toDate, locationType, eeslDistrictIdList); 
+				     
+				     LightMonitoringVO eeslDltsVO = getSurveyStartedLocation(eeslSurveryStaredLocObjLst);
+				     eeslDltsVO.setWattageList(getLightWattageList(eeslwattegeObjList));
+				     setRequiredData(eesllightMonitoringObjLst,eeslDltsVO);
+				     finalVO.setEeslVO(eeslDltsVO);
+		      }
+		      
+	   } catch (Exception e) {
+    	   LOG.error("Exception raised at getCompanyWiseLightMonitoringDtls - LightMonitoringService service", e);
+       }
+		return finalVO;
+   }
+
+	public void setRequiredData(List<Object[]> objList,LightMonitoringVO resultVO) {
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] objects : objList) {
+					resultVO.setTotalLights(objects[0] != null ? (Long) objects[0] : 0l);
+					resultVO.setTotalPanels(objects[1] != null ? (Long) objects[1] : 0l);
+					resultVO.setTotalPoles(objects[2] != null ? (Long) objects[2]  : 0l);
+					resultVO.setWorkingLights(objects[3] != null ? (Long) objects[3]: 0l);
+					resultVO.setOnLights(objects[4] != null ? (Long) objects[4] : 0l);
+					resultVO.setOffLights(objects[5] != null ? (Long) objects[5] : 0l);
+					resultVO.setNotWorkingLights(objects[6] != null ? (Long) objects[6] : 0l);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getBasicLedOverviewDetails - LightMonitoringService service",e);
+		}
+	}
+
+	public List<LightWattageVO> getLightWattageList(List<Object[]> objList) {
+		List<LightWattageVO> lightWattageList = new ArrayList<>(0);
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					LightWattageVO wattagVO = new LightWattageVO();
+					wattagVO.setWattage(param[0] != null ? (Long) param[0] : 0l);
+					wattagVO.setLightCount(param[1] != null ? (Long) param[1]: 0l);
+					lightWattageList.add(wattagVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLightWattageList - LightMonitoringService service",e);
+		}
+		return lightWattageList;
+	}
+
+	public LightMonitoringVO getSurveyStartedLocation(List<Object[]> objList) {
+		LightMonitoringVO surveyStaredDtlsVO = new LightMonitoringVO();
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] objects : objList) {
+					surveyStaredDtlsVO.setSurveyStartedtotalDistricts(commonMethodsUtilService.getLongValueForObject(objects[0]) != null ? (Long) objects[0]: 0l);// No of districts
+					surveyStaredDtlsVO.setSurveyStartedtotalConstituencys(commonMethodsUtilService.getLongValueForObject(objects[1]) != null ? (Long) objects[1]: 0l);// no of constituencies
+					surveyStaredDtlsVO.setSurveyStartedtotalMandals(commonMethodsUtilService.getLongValueForObject(objects[2]) != null ? (Long) objects[2]: 0l);// no of mandal
+					surveyStaredDtlsVO.setSurveyStartedtotalGps(commonMethodsUtilService.getLongValueForObject(objects[3]) != null ? (Long) objects[3]: 0l);// No of panchayats
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at setSurveyStartedLocation - LightMonitoringService service",e);
+		}
+		return surveyStaredDtlsVO;
+	}
+	  
 }
 	
 	        	
