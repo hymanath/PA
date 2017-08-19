@@ -63,22 +63,34 @@ public class LightMonitoringService  implements ILightMonitoring{
 		try {			
 			   String inputStr = "";
 			   inputStr = "{";
-			   inputStr += "\"ClientId\" : \"AP_GOV\"";
+			   inputStr += "\"ClientId\" : \"AP_GOVT\"";
 			   inputStr += "}";
 			   
-			ClientResponse response = webServiceUtilService.callWebService("http://54.254.103.213/PremiumDev/api/RestRealtimeAPI/GetRealtimeStatusByVillages",inputStr);
+			ClientResponse response = webServiceUtilService.callWebService("http://greenlightt.monitormymeter.com/api/RestRealtimeAPI/GetRealtimeStatusByVillages",inputStr);
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	        if(response.getStatus() != 200)
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	        else{
 	 	    	 String output = response.getEntity(String.class);
-	 	    	  
-	 	    	 if(output != null && !output.isEmpty())
+	 	    	 JSONObject responseJsonObj = new JSONObject(output);
+	 	    	 JSONObject dataObj = responseJsonObj.getJSONObject("responseData");
+	 	    	 JSONObject statusObj = dataObj.getJSONObject("requestStatus");
+	 	    	 Long statusCode = statusObj.getLong("StatusCode");
+	 	    	 String statusMessage = statusObj.getString("Message");
+	 	    	 if(output != null && !output.isEmpty() && statusCode!= null && statusCode.longValue() ==0l && statusMessage != null && statusMessage.equalsIgnoreCase("Success"))
 	 	    	 {
 	 	    		List<LightMonitoringVO> resultData = processLightData(output);
 	 	    		 
 	 	    		if(resultData != null && resultData.size() > 0)
 	 	    		 {
+	 	    			   /*Update lightMonitoring Data */
+	 	    			    List<Long> lighMonitoringIds = lightMonitoringDAO.getLightMonitroingIds(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
+	    					int updatedCount = lightMonitoringDAO.updateLightMoitoringData(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
+	    					
+	    					if (lighMonitoringIds != null && lighMonitoringIds.size() > 0 ) {
+	    						int updatedLightWattageCount = lightMonitoringDAO.updateLightWattageMoitoringData(lighMonitoringIds);	
+	    					}	
+	    					
 	 	    			 for(LightMonitoringVO lightMonitoringVO : resultData)
 	 	    			 {
 	 	    				 try{
@@ -90,13 +102,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    							lightMonitoringDAO.save(lightMonitoring);
 									}
 	 	    					}*/
-	 	    					List<Long> lighMonitoringIds = lightMonitoringDAO.getLightMonitroingIds(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
-	 	    					int updatedCount = lightMonitoringDAO.updateLightMoitoringData(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
 	 	    					
-	 	    					if (lighMonitoringIds != null && lighMonitoringIds.size() > 0 ) {
-	 	    						int updatedLightWattageCount = lightMonitoringDAO.updateLightWattageMoitoringData(lighMonitoringIds);	
-	 	    					}	 	    					
-		 	    				
 	 	    					LightMonitoring lightMonitoring = new LightMonitoring();
 		 	    				
 		 		 	    		lightMonitoring.setPanchayatId(lightMonitoringVO.getPanchayatId());
@@ -135,6 +141,9 @@ public class LightMonitoringService  implements ILightMonitoring{
 	 	    		   status.setStatusCode(0);
 	 		 		   status.setMessage("SUCCESS");
 	 	    		 }
+	 	    	 } else {
+	 	    		 status.setStatusCode(1);
+		 		 	 status.setMessage("FALURE");
 	 	    	 }
 	 	       }	  
 	 	     } catch (Exception e) {
@@ -168,23 +177,17 @@ public class LightMonitoringService  implements ILightMonitoring{
 		    					 JSONObject jObj = (JSONObject) finalArray.get(i);
 		    					 Long panchayatId = jObj.getLong("VillageId");
 		    					 
-		    					 if(panchayatId != null)
+		    					 if(panchayatId != null && panchayatId.longValue() > 0l)
 		    					 {
-		    						 LightMonitoringVO lightMonitoringVO = new LightMonitoringVO();
-		    						 Long villageId = jObj.getLong("VillageId");
-		    						  if (villageId == null || villageId == 0l){//temporary purpose because web service villageId is coming zero .so we are giving one static mandal Id for testing purpose
-		    							  lightMonitoringVO.setPanchayatId(56l);	  
-		    						  } else {
-		    							  lightMonitoringVO.setPanchayatId(villageId);
-		    						  }
-		    						 
-		    						 lightMonitoringVO.setTotalPanels(jObj.getLong("TotalPanels"));
-		    						 lightMonitoringVO.setTotalPoles(jObj.getLong("TotalPoles"));
-		    						 lightMonitoringVO.setTotalLights(jObj.getLong("TotalLights"));
-			    					 lightMonitoringVO.setNotWorkingLights(jObj.getLong("NonOperationalLights"));
-			    					 lightMonitoringVO.setWorkingLights(jObj.getLong("OperationalLights"));
-			    					 lightMonitoringVO.setOnLights(jObj.getLong("ONLights"));
-			    					 lightMonitoringVO.setOffLights(jObj.getLong("OFFLights"));
+		    						   LightMonitoringVO lightMonitoringVO = new LightMonitoringVO();
+		    						   lightMonitoringVO.setPanchayatId(panchayatId);
+		    						   lightMonitoringVO.setTotalPanels(jObj.getLong("TotalPanels"));
+		    						   lightMonitoringVO.setTotalPoles(jObj.getLong("TotalPoles"));
+		    						   lightMonitoringVO.setTotalLights(jObj.getLong("TotalLights"));
+			    					   lightMonitoringVO.setNotWorkingLights(jObj.getLong("NonOperationalLights"));
+			    					   lightMonitoringVO.setWorkingLights(jObj.getLong("OperationalLights"));
+			    					   lightMonitoringVO.setOnLights(jObj.getLong("ONLights"));
+			    					   lightMonitoringVO.setOffLights(jObj.getLong("OFFLights"));
 			    					 
 			    					 JSONArray arr =  jObj.getJSONArray("Wattages");
 				 		 	    		
@@ -212,8 +215,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 			 		 	    			lightMonitoringVO.setWattageList(wattageList);
 			 		 		 	    }
 			 		 	    		resultData.add(lightMonitoringVO);
-		    					 }
-		    					 
+		    					}
 		    				 }catch (Exception e) {
 		    					 LOG.error(e);
 		    				 }
