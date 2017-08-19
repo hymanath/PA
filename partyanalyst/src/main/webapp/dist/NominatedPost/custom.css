@@ -1680,6 +1680,24 @@ div.dataTables_wrapper div.clear
 .removeMember-icon{
 	display:none;
 }
+.membersSelectionDivCls li:hover
+{
+	border:1px solid red;
+	cursor:pointer;
+}
+.membersSelectionDivCls li:hover .removeMember-icon
+{
+	background-color: #fff;
+    border: 1px solid red;
+    border-radius: 18px;
+    color: red;
+    cursor: pointer;
+    display: block;
+    padding: 4px 6px;
+    position: absolute;
+    right: -12px;
+    top: -13px;
+}
 [attr_remove_member="remove-member"] li.active i.active{
 	display:block;
 }
