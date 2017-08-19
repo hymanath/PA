@@ -1243,8 +1243,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 				{
 					candidateIds = null;						
 				}
-				
-				debateReportList = debateAnalysisService.getPartyCandidatePerfortmanceTopicWise(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds);
+				Long stateId = jObj.getLong("stateId");
+				debateReportList = debateAnalysisService.getPartyCandidatePerfortmanceTopicWise(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds,stateId);
 				
 			//debateReportList = debateAnalysisService.getPartyCandidatePerfortmanceTopicWise();
 			
@@ -1371,8 +1371,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 					candidateIds = null;						
 				}
 				
-				
-			debateAnalysisList = debateAnalysisService.partyWiseCandidatePerformance(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds);
+			Long stateId = jObj.getLong("stateId");	
+			debateAnalysisList = debateAnalysisService.partyWiseCandidatePerformance(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds,stateId);
 			
 			return Action.SUCCESS;
 		} catch (Exception e) {
@@ -1497,8 +1497,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 					candidateIds = null;						
 				}
 				
-				
-				overllPartyWiseList = debateAnalysisService.getPartyWiseOverAllPerformance(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds);
+				Long stateId = jObj.getLong("stateId");
+				overllPartyWiseList = debateAnalysisService.getPartyWiseOverAllPerformance(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds,stateId);
 			
 			//overllPartyWiseList = debateAnalysisService.getPartyWiseOverAllPerformance();
 			
@@ -1625,8 +1625,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 					candidateIds = null;						
 				}
 				
-				
-				debateReportList = debateAnalysisService.getPartyWiseStrongAndWeakTopicAndCandidates(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds);
+				Long stateId = jObj.getLong("stateId");
+				debateReportList = debateAnalysisService.getPartyWiseStrongAndWeakTopicAndCandidates(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds,stateId);
 			
 			//debateReportList = debateAnalysisService.getPartyWiseStrongAndWeakTopicAndCandidates();
 			
@@ -1656,7 +1656,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			
 			jObj = new JSONObject(getTask());
 			
-			overllPartyWiseList = debateService.getPartyWiseOverAllPerformance(jObj.getLong("tdpCadreId"));
+			overllPartyWiseList = debateService.getPartyWiseOverAllPerformance(jObj.getLong("tdpCadreId"),null);
 			
 		}catch (Exception e) {
 			LOG.error(" Exception occured in getPartyWiseOverAllPerformance() in DebateAction class. "+e);

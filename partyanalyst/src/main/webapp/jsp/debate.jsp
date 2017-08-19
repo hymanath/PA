@@ -601,14 +601,31 @@ window.location.href = uri + base64(format(template, ctx))
 		<div id="analysisDiv"></div>
 	</div>
 	
-	<div id="newDebateAnalysisDiv" style="display:none;" >
+	<div id="newDebateAnalysisDiv" style="display:none;">
+		
 		<div class="container">
 		<div id="RRerrDiv"></div>
-			<legend class="boxHeading">Debate Analysis Report :</legend>
-			<h4>  </h4>
+		<div class="row-fluid">
+			<div class="span8">
+				<h3>Debate Analysis Report</h3>   
+			</div>
+			<div class="span4" style="margin-top: 20px;display:none;">
+				<div class="pull-right">
+				<label class="radio inline">
+					<input type="radio" name="stateSelection4" value="1" type="radio" class="debateReportRadioStateCls"/>AP
+				</label>
+				<label class="radio inline">
+					<input type="radio" name="stateSelection4" value="36" type="radio" class="debateReportRadioStateCls"/>TS
+				</label>
+				<label class="radio inline">
+					<input type="radio" name="stateSelection4" value="0" checked type="radio" class="debateReportRadioStateCls"/>All
+				</label>
+				</div>
+			</div>
+		</div>
 			
 		<div class="row-fluid" >
-					<div class="span4" > 
+					<div class="span4" >           
 					<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">From Date  <font class="requiredFont">*</font></label> <input type="text" id="startDateId"></input>
 					</div>
 					
