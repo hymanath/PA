@@ -1597,7 +1597,7 @@ div.dataTables_wrapper div.clear
 /*Newly added css*/
 .selectSearch{
 	background-color: #ccc;
-	padding-bottom: 14px;
+	padding: 7px;
 }
 .iconBlock{
     display: inline-block;
