@@ -9065,6 +9065,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 									     /*saving referal details if exist*/
 									     if (nominatedPostDtlsVO.getSubList2() != null && nominatedPostDtlsVO.getSubList2() .size() > 0 ) {
 									    	 for (NominatedPostCandidateDtlsVO refCandidVO : nominatedPostDtlsVO.getSubList2()) {
+									    		 if(refCandidVO != null){
 												 NominatedPostReferDetails nominatedPostReferDetails = new NominatedPostReferDetails();
 												 nominatedPostReferDetails.setNominationPostCandidateId(postCandiateVO.getNominatedPostCandiateId());
 												 nominatedPostReferDetails.setNominatedPostApplicationId(postCandiateVO.getNominatedPostApplicationId());
@@ -9075,6 +9076,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 												 nominatedPostReferDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 												 nominatedPostReferDetails.setIsDeleted("N");
 												 nominatedPostReferDetailsDAO.save(nominatedPostReferDetails);
+									    	 }
 											}
 									     }
 									   }
