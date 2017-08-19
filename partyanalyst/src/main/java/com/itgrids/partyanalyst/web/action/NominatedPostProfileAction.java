@@ -2408,7 +2408,7 @@ public String execute()
 	public String saveNominatedPostProfileDtls(){
 		try{
 			LOG.info("Enterd into nominatedPostProfileAction of saveNominatedPostProfileDtlss");
-			jObj = new JSONObject(getTask());
+			//jObj = new JSONObject(getTask());
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(regVO !=null){
 				Long userId = regVO.getRegistrationID();
