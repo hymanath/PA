@@ -2156,7 +2156,7 @@ public class DebateService implements IDebateService{
 		 
 	 }
 	 
-	 public List<DebatePartyWiseCountVO> getPartyWiseOverAllPerformance(Long cadreId){
+	 public List<DebatePartyWiseCountVO> getPartyWiseOverAllPerformance(Long cadreId,Long stateId){
 		 
 		 List<DebatePartyWiseCountVO> finalList = new ArrayList<DebatePartyWiseCountVO>(0);
 		 
@@ -2166,7 +2166,7 @@ public class DebateService implements IDebateService{
 			 partyIdsList.add(IConstants.TDP_PARTY_ID);
 			 
 			List<Long> candidatesIds = tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
-			finalList = debateAnalysisService.getPartyWiseOverAllPerformance(null,null,null,partyIdsList,candidatesIds);
+			finalList = debateAnalysisService.getPartyWiseOverAllPerformance(null,null,null,partyIdsList,candidatesIds,null);
 			 
 			 
 		 }catch (Exception e) {
@@ -2184,7 +2184,7 @@ public class DebateService implements IDebateService{
 			 
 			List<Long> candidatesIds = tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
 			 
-			finalList = debateAnalysisService.getPartyWiseStrongAndWeakTopicAndCandidates(null,null,null,partyIdsList,candidatesIds);
+			finalList = debateAnalysisService.getPartyWiseStrongAndWeakTopicAndCandidates(null,null,null,partyIdsList,candidatesIds,null);
 			 
 		 }catch (Exception e) {
 			 LOG.error(" Exception Occured in getPartyWiseStrongAndWeakTopicAndCandidates method, Exception - ",e);
