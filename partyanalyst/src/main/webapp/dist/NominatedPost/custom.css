@@ -1608,7 +1608,6 @@ div.dataTables_wrapper div.clear
     height: 50px;
 }
 #searchResultsBlock .panel-heading .fa-user,#showPositionBlock .panel-heading .fa-user{
-	background-color: #95989A;
 	color: #fff;
 }
 .panelCollapseIconChange:before
@@ -1662,3 +1661,25 @@ div.dataTables_wrapper div.clear
         border-radius: 20px;
         margin-right: 12px;
     }
+.removeMember-icon.active{
+		position: absolute;
+		right: -10px;
+		top: -11px;
+		border: 1px solid red;
+		padding: 4px 6px;
+		border-radius: 18px;
+		color:red;
+	}
+.removeMember-icon.active:hover{
+	cursor: pointer;
+}
+[attr_remove_member="remove-member"] li.active{
+	border: 1px solid red;
+	position: relative;
+}
+.removeMember-icon{
+	display:none;
+}
+[attr_remove_member="remove-member"] li.active i.active{
+	display:block;
+}
