@@ -109,9 +109,11 @@ $(document).on('click','.selectMember',function(){
 						globalMemrsCnt++;
 						$("#selTotPosCnt").text(globalPosiDivs);$("#selTotMemCnt").text(globalMemrsCnt);
 						$("#addmember"+selPosition).attr("attr_member_count",count);
-						$("#addmember"+selPosition).append('<li><input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].tdpCadreId"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].departmentId" value="'+departmentId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].boardId" value="'+boardId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].positionId" value="'+positionId+'"><i class="fa fa-times removeMember-icon" aria-hidden="true"></i>'+appendBlock+'</li>');
+						$("#addmember"+selPosition).append('<li style="margin:0px 5px;"><input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].tdpCadreId"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].departmentId" value="'+departmentId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].boardId" value="'+boardId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].positionId" value="'+positionId+'"><i class="fa fa-times removeMember-icon" aria-hidden="true"></i>'+appendBlock+'</li>');
+						$("#addmember"+selPosition).find("li div.panel-footer").remove();
 					}else{
 						buildPanelBlock(selPosition,appendBlock,cadreId);
+						$("#addmember"+selPosition).find("li div.panel-footer").remove();
 					}
 				}
 			}
@@ -154,9 +156,9 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 					collapse+=' <div id="collapseOne'+selPosition+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+selPosition+'">';
                 
                     collapse+='<div class="panel-body" id="show'+selPosition+'">';
-						collapse+='<ul class="nav navbar-nav col-sm-12" id="addmember'+selPosition+'" attr_remove_member="remove-member" attr_member_count="'+count+'" attr_posi_count="'+globalPosiDivs+'">';
-						collapse+='<li>';
-							collapse+='<i class="fa fa-times removeMember-icon" aria-hidden="true" style="margin:2px 12px"></i>';
+						collapse+='<ul class="nav navbar-nav membersSelectionDivCls" id="addmember'+selPosition+'" attr_remove_member="remove-member" attr_member_count="'+count+'" attr_posi_count="'+globalPosiDivs+'">';
+						collapse+='<li style="margin:0px 5px;">';
+							collapse+='<i class="fa fa-times removeMember-icon" aria-hidden="true"></i>';
 							collapse+='<input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].tdpCadreId">';
 							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].departmentId" value="'+departmentId+'">';
 							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].boardId" value="'+boardId+'">';
@@ -170,12 +172,10 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
         collapse+='</div>';
     collapse+='</div>';
 	
-    collapse+='</div>';
-					collapse+='</div>';
+	collapse+='</div>';
 					collapse+='<div class="col-sm-12">';
 						collapse+='<h5 style="font-weight:600"><span style="color:#FF0000">STEP-4</span></h5>';
-						
-						collapse+='<div class="row m_top10" id="addedRefferalsDiv" >';
+								collapse+='<div class="row m_top10" id="addedRefferalsDiv" >';
 							collapse+='<div class="col-md-12 col-sm-12 col-xs-12 m_top10">';
 								collapse+='<h4 class="text-success text-capital">refered members to this candidate<small class="text-muted text-capitalize" id="involvedMembers">(0 - Members added)</small></h4>';
 							collapse+='</div>';
@@ -191,6 +191,7 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 							collapse+='</div>';
 						collapse+='</div>';
 						collapse+='<div class="col-sm-12 m_top20">';
+							collapse+='<h5 style="font-weight:600"><span style="color:#FF0000">STEP-5</span></h5>';
 							collapse+='<h5>UPLOAD SCAN COPY</h5>';
 							collapse+='<div class="hideDivCls m_top10" id="uploadFlDivId" style="border:1px solid grey;padding:18px">';
 								collapse+='<input type="file" id="imageId" multiple="multiple"  name="fileImage" class="m_top20"/>';
@@ -199,8 +200,9 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 						collapse+='<div class="col-sm-12 m_top10">';
 							collapse+='<button class="btn btn-success btn-block btn-lg" type="button" onclick="savingApplication();">SUBMIT APPLICATION</button>';
 						collapse+='</div>';
-					collapse+='</div>';
+					
 				collapse+='</div>';
+			collapse+='</div>';
 			collapse+='</div>';
 		collapse+='</div>';
 	collapse+='</div>';
@@ -248,12 +250,12 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	
 	globalPositionsArr.push(selPosition);
 }
-$(document).on('click','[attr_remove_member="remove-member"] li',function(){
+/* $(document).on('click','[attr_remove_member="remove-member"] li',function(){
 	$(this).toggleClass("active");
 	$(this).find("i").toggleClass("active");
-})
-$(document).on('click','.removeMember-icon.active',function(){
-	$(this).closest("li").css("display","none");
+}) */
+$(document).on('click','.removeMember-icon',function(){
+	$(this).closest("li").remove();
 })
 function savingApplication(){
 			
