@@ -1,5 +1,6 @@
 var positionNames = ['CHAIRMAN','VICECHAIRMAN'];
 var positionDetails = ['Nominated Post Level','Department','Corporation/Board Name','Position Name'];
+var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 onLoadCalls();
 
 function onLoadCalls(){
@@ -64,9 +65,7 @@ function searchResultBlock(result){
                 block+='<p class="memberDetails"><span>C</span>'+result[i].enrollmentYears+'</p>';
 			block+='</div>';
             block+='<div class="panel-footer">';
-                block+='<div class="checkbox">';
-					block+='<label class="checkbox " ><input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+position+'">Select Member</label>';
-                block+='</div>';
+                block+='<label class="checkbox-inline" ><input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+position+'">Select Member</label>';
             block+='</div>';
         block+='</div>';
     block+='</li>';
@@ -89,18 +88,19 @@ var globalPositionsArr = [];
 var globalCadreIds =[];
 var globalMemrsCnt = 0;
 $(document).on('click','.selectMember',function(){
-		var departmentId=$("#depmtsId").val();
+	var departmentId=$("#depmtsId").val();
 	var boardId = $("#deptBoardId").val();
 	var positionId = $("#deptBoardPostnId").val();
-		var selPosition = $(this).attr("attr_position_type");
-			if($(this).is(':checked')){
-			var appendBlock=$(this).closest("li").html();
+	var selPosition = $(this).attr("attr_position_type");
+		if($(this).is(':checked')){
+			var appendBlock = $(this).closest("li").html();
 			var cadreId = $(this).attr("attr_cadreId");
 			if(globalCadreIds.indexOf(cadreId) > -1){
 				$("#errMessageId").html('<b style="color:red;"> Duplicate person adding.</b>');
 			}else{
 					if(globalPositionsArr == null || globalPositionsArr == ""){
 					buildPanelBlock(selPosition,appendBlock,cadreId);
+					$("#addmember"+selPosition).find("li div.panel-footer").remove();
 				}else{
 					if(globalPositionsArr.indexOf(selPosition) > -1){
 						var count = $("#addmember"+selPosition).attr("attr_member_count");
@@ -115,8 +115,8 @@ $(document).on('click','.selectMember',function(){
 					}
 				}
 			}
-			globalCadreIds.push(cadreId);		
-			}	
+			globalCadreIds.push(cadreId);	
+		}	
 	});
 	
 function buildPanelBlock(selPosition,appendBlock,cadreId){
@@ -139,51 +139,50 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 			collapse+='</div>';
 			collapse+='<div id="collapsetwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">';
 				collapse+='<div class="panel-body">';
-					collapse+='<div class="col-sm-9" style="border-right:1px solid grey" id="buildPositionWiseBlock'+globalPosiDivs+'">';
-						collapse+='<h5 ><span style="color:#FF0000">STEP-3</span></h5>';
-						
-		collapse+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition+'">';
-        collapse+='<div class="panel-group m_top20" id="accordion'+selPosition+'" role="tablist" aria-multiselectable="true">';
-            collapse+='<div class="panel panel-default">';
-                collapse+='<div class="panel-heading" role="tab" id="headingOne'+selPosition+'" style="background-color:transparent">';
-                        collapse+='<a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordion'+selPosition+'" href="#collapseOne'+selPosition+'" aria-expanded="true" aria-controls="collapseOne'+selPosition+'">';
-						collapse+='<h4 class="panel-title">'+selPosition+' - Members Added</h4>';
-                    collapse+='</a>';
-                collapse+='</div>';
-					collapse+=' <div id="collapseOne'+selPosition+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+selPosition+'">';
-                
-                    collapse+='<div class="panel-body" id="show'+selPosition+'">';
-						collapse+='<ul class="nav navbar-nav col-sm-12" id="addmember'+selPosition+'" attr_member_count="'+count+'" attr_posi_count="'+globalPosiDivs+'">';
-						collapse+='<li>';
-							collapse+='<input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].tdpCadreId">';
-							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].departmentId" value="'+departmentId+'">';
-							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].boardId" value="'+boardId+'">';
-							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].positionId" value="'+positionId+'">';
-							collapse+=appendBlock;
-							collapse+='</li>';
-						collapse+='</ul>';
-                    collapse+='</div>';
-                collapse+='</div>';
-            collapse+='</div>';
-        collapse+='</div>';
-    collapse+='</div>';
-    
+					collapse+='<div class="row">';
+						collapse+='<div class="col-sm-9" style="border-right:1px solid grey" id="buildPositionWiseBlock'+globalPosiDivs+'">';
+							collapse+='<h5 ><span style="color:#FF0000">STEP-3</span></h5>';
+							
+							collapse+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition+'">';
+								collapse+='<div class="panel-group m_top20" id="accordion'+selPosition+'" role="tablist" aria-multiselectable="true">';
+									collapse+='<div class="panel panel-default">';
+										collapse+='<div class="panel-heading" role="tab" id="headingOne'+selPosition+'" style="background-color:transparent">';
+											collapse+='<a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordion'+selPosition+'" href="#collapseOne'+selPosition+'" aria-expanded="true" aria-controls="collapseOne'+selPosition+'">';
+												collapse+='<h4 class="panel-title">'+selPosition+' - Members Added</h4>';
+											collapse+='</a>';
+										collapse+='</div>';
+										collapse+=' <div id="collapseOne'+selPosition+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+selPosition+'">';
+											collapse+='<div class="panel-body" id="show'+selPosition+'">';
+												collapse+='<ul class="list-inline col-sm-12" id="addmember'+selPosition+'" attr_member_count="'+count+'" attr_posi_count="'+globalPosiDivs+'">';
+													collapse+='<li>';
+														collapse+='<input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].tdpCadreId">';
+														collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].departmentId" value="'+departmentId+'">';
+														collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].boardId" value="'+boardId+'">';
+														collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].positionId" value="'+positionId+'">';
+													collapse+=appendBlock;
+												collapse+='</li>';
+											collapse+='</ul>';
+										collapse+='</div>';
+									collapse+='</div>';
+								collapse+='</div>';
+							collapse+='</div>';
+						collapse+='</div>';
 					collapse+='</div>';
 					collapse+='<div class="col-sm-3">';
 						collapse+='<h5 style="font-weight:600"><span style="color:#FF0000">STEP-4</span></h5>';
 						collapse+='<div class="col-sm-12 m_top20">';
 							collapse+='<h5>REFERED MEMBER</h5>';
 							collapse+='<div class="involveBlockNew m_top10" btn-attr = "involve" style="border:1px solid grey;padding:18px">';
-                            	collapse+='<div class="media">';
-                                	collapse+='<div class="media-left" style="font-size:36px">+</div>'
-                                    collapse+='<div class="media-body"><p style="padding-top:8px">Click to Search Referral Details to this Candidate</p></div>';
-                                collapse+='</div>';
-                            collapse+='</div>';
+								collapse+='<div class="media">';
+									collapse+='<div class="media-left" style="font-size:36px">+</div>'
+									collapse+='<div class="media-body"><p style="padding-top:8px">Click to Search Referral Details to this Candidate</p></div>';
+								collapse+='</div>';
+							collapse+='</div>';
 						collapse+='</div>';
 						collapse+='<div class="col-sm-12 m_top20">';
 							collapse+='<h5>UPLOAD SCAN COPY</h5>';
 							collapse+='<div class="hideDivCls m_top10" id="uploadFlDivId" style="border:1px solid grey;padding:18px">';
-								collapse+='<input type="file" id="filer_input3" multiple="multiple"  name="fileImage" class="m_top20"/>';
+								collapse+='<input type="file" id="imageId" multiple="multiple"  name="fileImage" class="m_top20"/>';
 							collapse+='</div>';
 						collapse+='</div>';
 						collapse+='<div class="col-sm-12 m_top10">';
@@ -195,6 +194,8 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 		collapse+='</div>';
 	collapse+='</div>';
 	 $("#addPositionsBlock").html(collapse);
+	 $("#addmember"+selPosition).find("li div.panel-footer").remove();
+	 initializeFile()
 	}else{
 		globalMemrsCnt++;
 		globalPosiDivs++;
@@ -828,8 +829,8 @@ else if(selectVal==2)
 
 var isFree =true;
 function getNominatedPostApplication()
-		{
-			$('#cadreSearchDtls').html('<img style="height: 150px;" id="" class="col-md-4 col-md-offset-2 col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3" src="images/icons/cadreSearch.gif">');
+{
+		$('#searchResultsBlock').html(spinner);
 		//var searchRadioType =$('.searchTypeCls:checked').attr("attr_type");
 		var locationLevel = 0;
 		var locationValue = 0;
@@ -874,10 +875,10 @@ function getNominatedPostApplication()
 		}
 		
 		$.ajax({
-				type : "POST",
-				url : "getCadreSearchDetailsAction.action",
-				data : {task:JSON.stringify(jsObj)} ,
-			}).done(function(result){
+			type : "POST",
+			url : "getCadreSearchDetailsAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
 				
 				searchResultBlock(result.previousRoles);
 				globalSelectedMemberIdsArr = []; // Clearing Array 
@@ -885,7 +886,7 @@ function getNominatedPostApplication()
 				 isFree =true;
 				  //$("#cadreSearchDtls").html('');
 			$(".paginationDivId").show();
-				 if(typeof result == "string"){
+				if(typeof result == "string"){
 					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 					  location.reload(); 
 					}
@@ -906,9 +907,9 @@ function getNominatedPostApplication()
 					//$('#cadreSearchDtls').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
 				} 
 			});  
-		}
+}
 	//hideDetails();
-	function hideDetails(){
+function hideDetails(){
 	$('.ramakrishnaCls').hide();
 	//$('#searchDivId').hide();
 	$("#uploadFlDivId").hide();
@@ -926,7 +927,7 @@ function refreshExistingDetails(){
 	$('#searchBy').val('');
 	$("#membershipId").prop("checked", true);
  }
- 
+  
  $(document).on("click",".involveBlockNew",function(){
 	$("#searchMemberAjax").css("display","none");
 	$("#myModal").modal('show')
