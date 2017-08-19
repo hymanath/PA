@@ -71,7 +71,8 @@ function searchResultBlock(result){
     block+='</li>';
 	}
 	block+='<ul>';
-	
+	block+='<div class="clearfix"></div>';
+	block+='<p class="m_top20">Note:   1) Please select matches profile     2) You Can add Multiple members to above selected Post Name</p>';
     $("#searchResultsBlock").html(block);
 	
 	$("#membersScrollId").slick({
@@ -173,15 +174,15 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
     collapse+='</div>';
 	
 	collapse+='</div>';
-					collapse+='<div class="col-sm-12">';
+					collapse+='<div class="col-sm-3">';
 						collapse+='<h5 style="font-weight:600"><span style="color:#FF0000">STEP-4</span></h5>';
-								collapse+='<div class="row m_top10" id="addedRefferalsDiv" >';
+								collapse+='<div class="row m_top10" id="addedRefferalsDiv">';
 							collapse+='<div class="col-md-12 col-sm-12 col-xs-12 m_top10">';
 								collapse+='<h4 class="text-success text-capital">refered members to this candidate<small class="text-muted text-capitalize" id="involvedMembers">(0 - Members added)</small></h4>';
 							collapse+='</div>';
 							collapse+='<div class="membersBlock">';
 							collapse+='</div>';
-							collapse+='<div class="col-md-3 col-xs-12 col-sm-6 m_top10">';
+							collapse+='<div class="col-md-12 col-xs-12 col-sm-6 m_top10">';
 								collapse+='<div class="involveBlockNew" btn-attr = "involve">';
 									collapse+='<div class="media">';
                                 	collapse+='<div class="media-left" style="font-size:36px">+</div>';
@@ -190,18 +191,17 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 								collapse+='</div>';
 							collapse+='</div>';
 						collapse+='</div>';
-						collapse+='<div class="col-sm-12 m_top20">';
+				collapse+='</div>';
+				collapse+='<div class="col-sm-12 m_top20">';
 							collapse+='<h5 style="font-weight:600"><span style="color:#FF0000">STEP-5</span></h5>';
 							collapse+='<h5>UPLOAD SCAN COPY</h5>';
 							collapse+='<div class="hideDivCls m_top10" id="uploadFlDivId" style="border:1px solid grey;padding:18px">';
 								collapse+='<input type="file" id="imageId" multiple="multiple"  name="fileImage" class="m_top20"/>';
 							collapse+='</div>';
 						collapse+='</div>';
-						collapse+='<div class="col-sm-12 m_top10">';
+						collapse+='<div class="col-sm-4 col-sm-offset-4 m_top10">';
 							collapse+='<button class="btn btn-success btn-block btn-lg" type="button" onclick="savingApplication();">SUBMIT APPLICATION</button>';
 						collapse+='</div>';
-					
-				collapse+='</div>';
 			collapse+='</div>';
 			collapse+='</div>';
 		collapse+='</div>';
@@ -1344,7 +1344,7 @@ function setDefaultImage(img){
 			   var mobile = $(this).attr("attr_mobile");
 			
 			var str ='';
-			str+='<div id="involveBlockParent'+attrId+'" class="col-md-3 col-xs-12 col-sm-6 m_top10">';
+			str+='<div id="involveBlockParent'+attrId+'" class="col-md-12 col-xs-12 col-sm-6 m_top10">';
             str+='<div class="involveBlock" attr_cadreId="'+attrId+'">';
 			str+='<div class="media"><div class="media-left">';
 			str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
