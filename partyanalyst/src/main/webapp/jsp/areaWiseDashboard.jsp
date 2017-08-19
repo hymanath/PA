@@ -10,12 +10,14 @@
 <title>Constituency Page</title>
 <link href="coreApi/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="coreApi/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="coreApi/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="dist/slick/slick.css" type="text/less" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
+
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 </head>
 <body>
@@ -137,24 +139,37 @@
 						 </div>
 					 </div>
 				 </div>
+				 <div class="block">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h4 class="text-capitalize">Assembly Election Details</h4>
+							<div class="col-sm-6">
+								<div id="assemblyElectionGraphDetails"></div>
+							</div>
+							<div class="col-sm-6">
+								<div id="assemblyElectionDetails"></div>
+							</div>
+							
+						</div>
+					</div>
+				 </div>
 			</div>-->
 			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="constituencyVoters">
 				 <h3 class="text-capitalize">constituency voters information</h3>
 			</div>
-			<div class="col-md-6 col-xs-12 col-sm-6 m_top20 text-right">
-				<label>Select Publication</label>
-				<select>
-					<option>2014-04-19</option>
-				</select>
+			<div class="col-md-6 col-xs-12 col-sm-6 m_top20">
+				<div class="row">
+					<div class="col-sm-4 pull-right"><div id="publicationsDivId"></div></div>
+				</div>
+				
 			</div>
-			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div class="col-md-12 col-xs-12 col-sm-12  m_top5">
 				<div id="constituencyVoterInfo"></div>
 			</div>
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="casteInfo">
+			<div class="col-sm-12 m_top20" navbar-index="casteInfo">
 				<h3>Caste Information <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="casteInfo"></i></span></h3>
 				<div class="block">
 					<div class="row">
-						
 						<div class="col-md-4 col-xs-12 col-sm-4" style="border-right:1px solid #d3d3d3">
 							<h4 class="panel-title"><b>Caste Group Wise Voters</b>
 								<ul class="switch-btn" role="casteGrouplist">
@@ -372,34 +387,38 @@
 					</div>
 				</div>
 			</div>
-			<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20"  navbar-index="grievance">
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20"  navbar-index="grievance">
 				<h3>Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
 				<div class="block">
 					<div class="row">
 						<div class="col-md-4 col-xs-12 col-sm-4">
-							<div id="grivanceId"></div>
+							<h4 class="panel-title text-capital text-center">Grivance</h4>
+							<div id="grivanceId0" style="height:300px;"></div>
 						</div>
 						<div class="col-md-4 col-xs-12 col-sm-4">
 							<h4 class="panel-title text-capital text-center">Insurance</h4>
-							<div id="grievanceDetails1"></div>
+							<div id="insuranceDetails" style="height:300px;"></div>
 						</div>
 						<div class="col-md-4 col-xs-12 col-sm-4">
-							<div id="trustId"></div>
+						<h4 class="panel-title text-capital text-center">NTR TRUST</h4>
+							<div id="grivanceId1" style="height:300px;"></div>
 						</div>
 					</div>
 				</div>
-			</div>-->
+			</div>
 		</div>
 	</div>
 </section>
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
+<script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
+
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
 </body>
 </html>
