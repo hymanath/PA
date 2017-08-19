@@ -1663,8 +1663,8 @@ div.dataTables_wrapper div.clear
     }
 .removeMember-icon.active{
 		position: absolute;
-		right: -10px;
-		top: -11px;
+		right: -25px;
+		top: -15px;
 		border: 1px solid red;
 		padding: 4px 6px;
 		border-radius: 18px;
