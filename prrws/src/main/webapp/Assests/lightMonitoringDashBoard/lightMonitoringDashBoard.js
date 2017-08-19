@@ -778,7 +778,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 			str+='<div class="col-sm-6">';
 			str+='<div class="white-block block_Led_styles blockHeights">';
 			if(result.eeslVO !=null && result.eeslVO != 'undefined'){
-				str+='<div class="row" style="padding: 10px; border-bottom: 1px dashed gray;">';
+				str+='<div class="row" style="padding: 15px; border-bottom: 1px dashed gray;">';
 					str+='<h3>EESL</h3>';
 					str+='<p>Energy Efficiency Services Limited</p>';
 					str+='<div class="media">';
@@ -882,7 +882,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 		str+='<div class="col-sm-6">';
 			str+='<div class="white-block block_Led_styles blockHeights">';
 			if(result.nredcapVO !=null && result.nredcapVO != 'undefined'){
-				str+='<div class="row" style="padding: 10px; border-bottom: 1px dashed gray;">';
+				str+='<div class="row" style="padding: 15px; border-bottom: 1px dashed gray;">';
 					str+='<h3>NREDCAP</h3>';
 					str+='<p>New & Renewable Energy Development Corporation of Andhra Pradesh Ltd.</p>';
 					str+='<div class="media">';
