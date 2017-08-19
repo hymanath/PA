@@ -202,8 +202,8 @@ public class DebateAnalysisAction extends ActionSupport implements ServletReques
 				{
 					candidateIds = null;						
 				}
-				
-				candidateCharcDetails = debateAnalysisService.getPartyWiseCandidateCharacteristicsDetails(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds);
+				Long stateId = jObj.getLong("stateId");
+				candidateCharcDetails = debateAnalysisService.getPartyWiseCandidateCharacteristicsDetails(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds,stateId);
 			//candidateCharcDetails = debateAnalysisService.getPartyWiseCandidateCharacteristicsDetails();
 		}
 		catch (Exception e){

@@ -2058,14 +2058,21 @@ function getEachTopicWisePartyAndCandidateDetails()
 		candidateIds.push("0");
 	}
 	$('#searchDataImg').show();
+	var stateId=0;
+	$(".debateReportRadioStateCls").each(function(){
+		if($(this).prop('checked')==true){
+		   stateId = $(this).val();
+		}
+	});
 	var jsObj = { 
 		fromDate : startDate,
 		toDate : endDate,
 		channelIdArr : channelIds,
 		partyIdArr : partyIds,
 		candidateIdArr : candidateIds,	
-		task:"getEachTopicWisePartyAndCandidateDetails"
-	}
+		task:"getEachTopicWisePartyAndCandidateDetails",
+		stateId : stateId
+	}        
 	
 	$.ajax({
           type:'GET',
@@ -2228,17 +2235,23 @@ $('#candidatePartyPerformanceId').html('');
 	}
 	
 	$('#searchDataImg').show();
-	
+	var stateId=0;
+	$(".debateReportRadioStateCls").each(function(){
+		if($(this).prop('checked')==true){
+		   stateId = $(this).val();
+		}
+	});
 	var jsObj = { 
 		fromDate : startDate,
 		toDate : endDate,
 		channelIdArr : channelIds,
 		partyIdArr : partyIds,
 		candidateIdArr : candidateIds,	
-		task:"candidateDetails"
+		task:"candidateDetails",
+		stateId : stateId
 	}
 	
-	$.ajax({
+	$.ajax({   
           type:'GET',
           url: 'getCandidateCharacteristicsDetailsAction.action',
           dataType: 'json',
@@ -2429,13 +2442,20 @@ function partyWiseCandidatePerformance()
 	}
 	
 	$('#searchDataImg').show();
+	var stateId=0;
+	$(".debateReportRadioStateCls").each(function(){
+		if($(this).prop('checked')==true){
+		   stateId = $(this).val();
+		}
+	});
 	var jsObj = { 
 		fromDate : startDate,
 		toDate : endDate,
 		channelIdArr : channelIds,
 		partyIdArr : partyIds,
 		candidateIdArr : candidateIds,	
-		task:"partyWiseCandidatePerformance"
+		task:"partyWiseCandidatePerformance",
+		stateId : stateId    
 	}
 
 	
@@ -2591,14 +2611,20 @@ function getPartyWiseOverAllSummery()
 		candidateIds.push("0");
 	}
 	$('#searchDataImg').show();
-	
+	var stateId=0;
+	$(".debateReportRadioStateCls").each(function(){
+		if($(this).prop('checked')==true){
+		   stateId = $(this).val();
+		}
+	});
 	var jsObj = { 
 		fromDate : startDate,
 		toDate : endDate,
 		channelIdArr : channelIds,
 		partyIdArr : partyIds,
 		candidateIdArr : candidateIds,	
-		task:"getPartyWiseOverAllSummery"
+		task:"getPartyWiseOverAllSummery",  
+		stateId : stateId  
 	}
 	
 	$.ajax({
@@ -2761,14 +2787,20 @@ $('#topicwiseStrongAndWeak').html('');
 		candidateIds.push("0");
 	}
 	$('#searchDataImg').show();
-	
+	var stateId=0;
+	$(".debateReportRadioStateCls").each(function(){
+		if($(this).prop('checked')==true){
+		   stateId = $(this).val();
+		}
+	});
 	var jsObj = { 
 		fromDate : startDate,
 		toDate : endDate,
 		channelIdArr : channelIds,
 		partyIdArr : partyIds,
 		candidateIdArr : candidateIds,	
-		task:"getStrongAndWeakTopicsByPartyWise"
+		task:"getStrongAndWeakTopicsByPartyWise",
+		stateId : stateId  
 	}
 	
 	$.ajax({
