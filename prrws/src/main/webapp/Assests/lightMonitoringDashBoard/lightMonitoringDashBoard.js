@@ -460,6 +460,7 @@ function tableView(result,divId,locType)
 				{
 					
 					if(viewTypeDist == "district"){
+						tableView+='<th> </th>';	
 						tableView+='<th>DISTRICTS</th>';
 					}else{
 						tableView+='<th>PARLIAMENTS</th>';
@@ -510,6 +511,13 @@ function tableView(result,divId,locType)
 					if(divId == 'district')
 					{
 						if(viewTypeDist == "district"){
+							tableView+='<td>';
+							if(result[i].locationId == 17 || result[i].locationId == 18 || result[i].locationId == 19 || result[i].locationId == 20 || result[i].locationId == 22 || result[i].locationId == 23){
+								tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
+							}else if(result[i].locationId == 16 || result[i].locationId == 11 || result[i].locationId == 14 || result[i].locationId == 15 || 	result[i].locationId == 12 || result[i].locationId == 13 || result[i].locationId == 21){
+								tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';	
+							}
+							tableView+='</td>';
 							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
 						}else{
 							tableView+='<td>'+result[i].addressVO.parliamentName+'</td>';
@@ -695,6 +703,7 @@ function callWebService(){
 	$("#ledOverViewDiv").html(spinner);
 	$("#overviewBlockId").html(spinner);
 	$("#districtTableId").html(spinner);
+	$("#esslAndNredcapDivId").html(spinner);
 	var json = {
 		}
 	$.ajax({                
@@ -715,7 +724,14 @@ function callWebService(){
 	});
 }
 function getCompanyWiseLightMonitoringDtls(){
-	//$("#overviewBlockId").html(spinner);
+	$("#esslAndNredcapDivId").html(spinner);
+	if (globallevelId == 2 || globallevelId == 0 || globallevelId ==3){
+		$("#esslAndNredcapDivId").show();
+	}else{
+		$("#esslAndNredcapDivId").hide();
+		return;
+	}
+	
 	var locationType="";
 	var locationValue=0;
 	if(globallevelId == 2 || globallevelId == 0){
@@ -731,6 +747,8 @@ function getCompanyWiseLightMonitoringDtls(){
 		locationType = "mandal";
 		locationValue=globallocId;
 	}
+	
+	
 	var json = {
 		fromDate:glStartDate,
 		toDate:glEndDate,
@@ -747,6 +765,228 @@ function getCompanyWiseLightMonitoringDtls(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		console.log(result);
+		if(result !=null){
+			buildCompanyWiseLightMonitoringDtls(result)
+		}
+		
 	});		
+}
+
+function buildCompanyWiseLightMonitoringDtls(result){
+	var str='';
+	if(result !=null){
+			str+='<div class="col-sm-6">';
+			str+='<div class="white-block block_Led_styles blockHeights">';
+			if(result.eeslVO !=null && result.eeslVO != 'undefined'){
+				str+='<div class="row" style="padding: 10px; border-bottom: 1px dashed gray;">';
+					str+='<h3>EESL</h3>';
+					str+='<p>Energy Efficiency Services Limited</p>';
+					str+='<div class="media">';
+						  str+='<div class="media-left img_middle">';
+							 str+='<img class="media-object" src="Assests/icons/Essl.jpg" alt="Essl">';
+						 str+='</div>';
+						  str+='<div class="media-body">';
+							str+='<div class="col-sm-12">';
+								str+='<div class="col-sm-4 media m_top5">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/Poles_icon.png" alt="poles_icon">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 style="color:#669FF5;">TOTAL POLES</h5>';
+										str+='<h3>'+result.eeslVO.totalPoles+'</h3>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-sm-8 media m_top5">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 style="color:#669FF5;">TOTAL CCMS-BOX/ PANELS</h5>';
+										str+='<h3>'+result.eeslVO.totalPanels+'</h3>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-12 m_top5">';
+								str+='<div class="col-sm-4 media m_top5">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon" style="width: 25px; height: 35px;">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h6 style="color:#827C13">TOTAL LIGHTS</h6>';
+										str+='<h4>'+result.eeslVO.totalLights+'</h4>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-sm-3 media m_top5">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/Operational_LED_Light_Icon.png" alt="poles_icon" style="width: 25px; height: 35px;">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h6 style="color:#339900;">OPERATIONAL</h6>';
+										str+='<h4>'+result.eeslVO.workingLights+'</h4>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-sm-5 media m_top5">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/Non_Operational_LED_Light_Ico.png" alt="poles_icon" style="width: 25px; height: 35px;">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h6 style="color:#FF3333;">NON-OPERATIONAL</h6>';
+										str+='<h4>'+result.eeslVO.notWorkingLights+'</h4>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						  str+='</div>';
+					str+='</div>';
+					str+='</div>';
+					str+='<div class="row poles_block" style="padding:10px;border-bottom:1px solid grey">';
+						str+='<ul class="nav navbar-nav" style="float:none;">';
+						if(result.eeslVO.wattageList !=null && result.eeslVO.wattageList.length>0){
+							for(var i in result.eeslVO.wattageList){
+								str+='<li><b>'+result.eeslVO.wattageList[i].wattage+'W = '+result.eeslVO.wattageList[i].lightCount+'</b></li>';
+							}
+						}else{
+							str+='<li><b>0W = 0</b></li>';
+						}
+						
+						str+='</ul>';
+					str+='</div>';
+					str+='<div class="row m_top10" style="padding:10px;">';
+						str+='<div class="col-sm-3">';
+							str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h3>'+result.eeslVO.surveyStartedtotalDistricts+'</h3>';
+						str+='</div>';
+						str+='<div class="col-sm-3">';
+							str+='<h6><b>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h3>'+result.eeslVO.surveyStartedtotalConstituencys+'</h3>';
+						str+='</div>';
+						str+='<div class="col-sm-3">';
+							str+='<h6><b>NO OF <span style="color:#00BFE8;">MANDALS</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h3>'+result.eeslVO.surveyStartedtotalMandals+'</h3>';
+						str+='</div>';
+						str+='<div class="col-sm-3">';
+							str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h3>'+result.eeslVO.surveyStartedtotalGps+'</h3>';
+						str+='</div>';
+					str+='</div>';
+			}else{
+				str+='<div class="row" style="padding: 10px;">';
+					str+='<h3>EESL</h3>';
+					str+='<p>Energy Efficiency Services Limited</p>';
+					str+='<div style="text-align:center"><img src="Assests/icons/NODATA.png" alt="NODATA"></div>';
+				str+='</div>';
+			}
+				
+			str+='</div>';
+			
+		str+='</div>';
+		str+='<div class="col-sm-6">';
+			str+='<div class="white-block block_Led_styles blockHeights">';
+			if(result.nredcapVO !=null && result.nredcapVO != 'undefined'){
+				str+='<div class="row" style="padding: 10px; border-bottom: 1px dashed gray;">';
+					str+='<h3>NREDCAP</h3>';
+					str+='<p>New & Renewable Energy Development Corporation of Andhra Pradesh Ltd.</p>';
+					str+='<div class="media">';
+						  str+='<div class="media-left img_middle">';
+							 str+='<img class="media-object" src="Assests/icons/Nredp.jpg" alt="Nredp">';
+						 str+='</div>';
+						  str+='<div class="media-body">';
+							str+='<div class="col-sm-12">';
+								str+='<div class="col-sm-4 media m_top5">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/Poles_icon.png" alt="poles_icon">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 style="color:#669FF5;">TOTAL POLES</h5>';
+										str+='<h3>'+result.nredcapVO.totalPoles+'</h3>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-sm-8 media m_top5">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 style="color:#669FF5;">TOTAL CCMS-BOX/ PANELS</h5>';
+										str+='<h3>'+result.nredcapVO.totalPanels+'</h3>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-12 m_top5">';
+								str+='<div class="col-sm-4 media m_top5">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon" style="width: 25px; height: 35px;">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h6 style="color:#827C13">TOTAL LIGHTS</h6>';
+										str+='<h4>'+result.nredcapVO.totalLights+'</h4>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-sm-3 media m_top5">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/Operational_LED_Light_Icon.png" alt="poles_icon" style="width: 25px; height: 35px;">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h6 style="color:#339900;">OPERATIONAL</h6>';
+										str+='<h4>'+result.nredcapVO.workingLights+'</h4>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-sm-5 media m_top5">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/Non_Operational_LED_Light_Ico.png" alt="poles_icon" style="width: 25px; height: 35px;">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h6 style="color:#FF3333;">NON-OPERATIONAL</h6>';
+										str+='<h4>'+result.nredcapVO.notWorkingLights+'</h4>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						  str+='</div>';
+					str+='</div>';
+					str+='</div>';
+					str+='<div class="row poles_block" style="padding:10px;border-bottom:1px solid grey">';
+						str+='<ul class="nav navbar-nav" style="float:none;">';
+							if(result.nredcapVO.wattageList !=null && result.nredcapVO.wattageList.length>0){
+								for(var i in result.nredcapVO.wattageList){
+									str+='<li><b>'+result.nredcapVO.wattageList[i].wattage+'W = '+result.nredcapVO.wattageList[i].lightCount+'</b></li>';
+								}
+							}else{
+								str+='<li><b>0W = 0</b></li>';
+							}
+						str+='</ul>';
+					str+='</div>';
+					str+='<div class="row m_top10" style="padding:10px;">';
+						str+='<div class="col-sm-3">';
+							str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h3>'+result.nredcapVO.surveyStartedtotalDistricts+'</h3>';
+						str+='</div>';
+						str+='<div class="col-sm-3">';
+							str+='<h6><b>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h3>'+result.nredcapVO.surveyStartedtotalConstituencys+'</h3>';
+						str+='</div>';
+						str+='<div class="col-sm-3">';
+							str+='<h6><b>NO OF <span style="color:#00BFE8;">MANDALS</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h3>'+result.nredcapVO.surveyStartedtotalMandals+'</h3>';
+						str+='</div>';
+						str+='<div class="col-sm-3">';
+							str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY SATRTED</b></h6>';
+							str+='<h3>'+result.nredcapVO.surveyStartedtotalGps+'</h3>';
+						str+='</div>';
+					str+='</div>';
+			}else{
+				str+='<div class="row" style="padding: 10px;">';
+					str+='<h3>NREDCAP</h3>';
+					str+='<p>New & Renewable Energy Development Corporation of Andhra Pradesh Ltd.</p>';
+					str+='<div style="text-align:center"><img src="Assests/icons/NODATA.png" alt="NODATA"></div>';
+				str+='</div>';
+			}
+			str+='</div>';
+			
+		str+='</div>';
+	}
+	
+	$("#esslAndNredcapDivId").html(str);
+	var maxHeight = 0;
+	 $(".blockHeights").each(function(){
+	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+	});
+	$(".blockHeights").height(maxHeight);
 }

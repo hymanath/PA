@@ -157,6 +157,9 @@
 			</div>
 		</div>
 		<div class="row m_top10">
+				<div id="esslAndNredcapDivId"></div>
+		</div>
+		<div class="row m_top10">
 			<div class="col-sm-12">
 				<div id="projectData"></div>
 			</div>
