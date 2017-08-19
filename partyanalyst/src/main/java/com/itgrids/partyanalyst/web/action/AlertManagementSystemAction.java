@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
+import com.itgrids.partyanalyst.dto.LocationAlertVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
@@ -103,7 +104,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<IdAndNameVO> specialGrievanceTypeList;
 	private List<IdAndNameVO> generalGrievanceTypeList;
 	private String officerMobileNo;
-	
+	private LocationAlertVO locationAlertVO;
 	
 	public List<IdAndNameVO> getMondayGrievanceTypeList() {
 		return mondayGrievanceTypeList;
@@ -449,6 +450,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		this.officerMobileNo = officerMobileNo;
 	}
 
+	public LocationAlertVO getLocationAlertVO() {
+		return locationAlertVO;
+	}
+
+	public void setLocationAlertVO(LocationAlertVO locationAlertVO) {
+		this.locationAlertVO = locationAlertVO;
+	}
+	
 	public String execute(){
 		    session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
@@ -6360,7 +6369,7 @@ public String getAlertSourceWiseAlert(){
 						locationValues.add(Long.parseLong(locationValuesArr.getString(i)));        
 					} 
 				}
-				alertVOs = alertManagementSystemService.getTotalAlertDetailsForConstituencyInfo(fromDateStr,toDateStr,locationValues,alertTypeIds,locationTypeId,year);
+				locationAlertVO = alertManagementSystemService.getTotalAlertDetailsForConstituencyInfo(fromDateStr,toDateStr,locationValues,alertTypeIds,locationTypeId,year);
 				
 		 }catch(Exception e){
 			 successMsg = "failure";
@@ -6368,4 +6377,5 @@ public String getAlertSourceWiseAlert(){
 		 }
 		 return Action.SUCCESS;
 	 }
+
 }
