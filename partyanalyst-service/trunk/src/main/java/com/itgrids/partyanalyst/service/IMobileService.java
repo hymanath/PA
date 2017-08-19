@@ -89,4 +89,5 @@ public interface IMobileService {
 	public ResultStatus create2016CadreDataSqliteFileForAParliamnetConstituency(RegistrationVO reVo);
 	public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId,Long levelId,String startDateString, String endDateString,Long publicationDateId,Long electionYearId,List<String> userType);
 	public List<LocationWiseBoothDetailsVO> getAssignedWardsByUser(String accessValue,Long userId);
+	public List<TabDetailsVO> showMapForMobileAppUserVoter(Long userId,Long locationId,Long levelId,List<String> dateStrList);
 }

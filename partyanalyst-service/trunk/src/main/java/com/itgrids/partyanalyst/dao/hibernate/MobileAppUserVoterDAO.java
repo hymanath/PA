@@ -803,4 +803,132 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		query.setParameterList("userType", userType);
 		return query.list();
 	}
+	public List<Object[]> getLatiLongi(Long userId,Long locationId,Long levelId,List<Date> datesList){
+		StringBuilder sb =  new StringBuilder();
+		sb.append(" select model.latitude,model.longitude,model.surveyTime,constituency.name,''," +
+				" model.voter.name,model.voter.relativeName,model.voter.voterIDCardNo,model.mobileNo,model.rating,model.booth.partNo " +
+				" from MobileAppUserVoter model" +
+				" left join model.booth.constituency.district district" +
+				" left join model.booth.constituency constituency" +
+				" left join model.booth.tehsil tehsil" +
+				" left join model.booth.localBody localBody" +
+				" left join model.booth.panchayat panchayat" +
+				" left join model.booth.localBodyWard ward " +
+				" where model.mobileAppUserId =:userId ");
+		
+		if(levelId != null && levelId.longValue() > 0l){
+			if(levelId == IConstants.DISTRICT_SCOPE_ID){
+				sb.append(" and district.districtId = :locationId");
+			}else if(levelId == IConstants.CONSTITUENCY_SCOPE_ID){
+				sb.append(" and constituency.constituencyId = :locationId");
+			}else if(levelId == IConstants.TEHSIL_SCOPE_ID){
+				sb.append(" and tehsil.tehsilId = :locationId");
+			}else if(levelId == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID){
+				sb.append(" and localBody.localElectionBodyId = :locationId");
+			}else if(levelId == 6l){
+				sb.append(" and panchayat.panchayatId = :locationId");
+			}else if(levelId == 8l){
+				sb.append(" and ward.constituencyId = :locationId");
+			}else if(levelId == 9l){
+				sb.append(" and model.booth.boothId = :locationId");
+			}
+		}
+		if(datesList != null && datesList.size() > 0l)
+			sb.append(" and date(model.surveyTime) in (:datesList)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("userId", userId);
+		
+		if(levelId != null && levelId.longValue() > 0l)
+			query.setParameter("locationId", locationId);
+		if(datesList != null && datesList.size() > 0l)
+			query.setParameterList("datesList", datesList);
+		
+		return query.list();
+	}
+	public List<Object> getAllAvailableForUser(Long userId,Long locationId,Long levelId,List<Date> datesList){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct date(model.surveyTime) " +
+				" from MobileAppUserVoter model " +
+				" left join model.booth.constituency.district district" +
+				" left join model.booth.constituency constituency" +
+				" left join model.booth.tehsil tehsil" +
+				" left join model.booth.localBody localBody" +
+				" left join model.booth.panchayat panchayat" +
+				" left join model.booth.localBodyWard ward " +
+				" where model.mobileAppUserId =:userId");
+		
+		if(levelId != null && levelId.longValue() > 0l){
+			if(levelId == IConstants.DISTRICT_SCOPE_ID){
+				sb.append(" and district.districtId = :locationId");
+			}else if(levelId == IConstants.CONSTITUENCY_SCOPE_ID){
+				sb.append(" and constituency.constituencyId = :locationId");
+			}else if(levelId == IConstants.TEHSIL_SCOPE_ID){
+				sb.append(" and tehsil.tehsilId = :locationId");
+			}else if(levelId == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID){
+				sb.append(" and localBody.localElectionBodyId = :locationId");
+			}else if(levelId == 6l){
+				sb.append(" and panchayat.panchayatId = :locationId");
+			}else if(levelId == 8l){
+				sb.append(" and ward.constituencyId = :locationId");
+			}else if(levelId == 9l){
+				sb.append(" and model.booth.boothId = :locationId");
+			}
+		}
+		if(datesList != null && datesList.size() > 0l)
+			sb.append(" and date(model.surveyTime) in (:datesList)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("userId", userId);
+		
+		if(levelId != null && levelId.longValue() > 0l)
+			query.setParameter("locationId", locationId);
+		if(datesList != null && datesList.size() > 0l)
+			query.setParameterList("datesList", datesList);
+		
+		return query.list();
+	}
+	public Long getNumberOfNumsCollected(Long userId,Long locationId,Long levelId,List<Date> datesList){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select count(distinct model.mobileNo) " +
+				" from MobileAppUserVoter model " +
+				" left join model.booth.constituency.district district" +
+				" left join model.booth.constituency constituency" +
+				" left join model.booth.tehsil tehsil" +
+				" left join model.booth.localBody localBody" +
+				" left join model.booth.panchayat panchayat" +
+				" left join model.booth.localBodyWard ward " +
+				" where model.mobileAppUserId =:userId");
+		
+		if(levelId != null && levelId.longValue() > 0l){
+			if(levelId == IConstants.DISTRICT_SCOPE_ID){
+				sb.append(" and district.districtId = :locationId");
+			}else if(levelId == IConstants.CONSTITUENCY_SCOPE_ID){
+				sb.append(" and constituency.constituencyId = :locationId");
+			}else if(levelId == IConstants.TEHSIL_SCOPE_ID){
+				sb.append(" and tehsil.tehsilId = :locationId");
+			}else if(levelId == IConstants.MUNICIPAL_CORP_GMC_SCOPE_ID){
+				sb.append(" and localBody.localElectionBodyId = :locationId");
+			}else if(levelId == 6l){
+				sb.append(" and panchayat.panchayatId = :locationId");
+			}else if(levelId == 8l){
+				sb.append(" and ward.constituencyId = :locationId");
+			}else if(levelId == 9l){
+				sb.append(" and model.booth.boothId = :locationId");
+			}
+		}
+		if(datesList != null && datesList.size() > 0l)
+			sb.append(" and date(model.surveyTime) in (:datesList)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("userId", userId);
+		
+		if(levelId != null && levelId.longValue() > 0l)
+			query.setParameter("locationId", locationId);
+		if(datesList != null && datesList.size() > 0l)
+			query.setParameterList("datesList", datesList);
+		
+		return (Long)query.uniqueResult();
+		
+	}
 }
