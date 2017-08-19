@@ -1348,7 +1348,7 @@ function setDefaultImage(img){
 			str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
 			str+='</div>';
 			str+='<div class="media-body">';
-			str+='<input type="hidden" class="form-control memberDatacls" name="nominatedPostDtlsVO.subList2['+cloneCount'+].tdpCadreId" value="'+attrId+'"/>';
+			str+='<input type="hidden" class="form-control memberDatacls" name="nominatedPostDtlsVO.subList2['+cloneCount+'].tdpCadreId" value="'+attrId+'"/>';
 			str+='<div class="col-md-12"><b>'+name+'</b></div>';
 			str+='<div class="col-md-12"><b>'+mobile+'</b></div>';
 			str+='<div class="col-md-12"><label>'+attrConsti+'</label></div>';
