@@ -10,7 +10,7 @@ function onLoadCalls(){
 $(document).on('click','#searchbtn',function(){
 	$("#errMessageId").html('');
 	getNominatedPostApplication();
-	$("#addedRefferalsDiv").hide();
+	//$("#addedRefferalsDiv").hide();
 })
 $(document).on('change','#deptBoardPostnId',function(){
 	$("#searchResultsBlock").html("");
@@ -32,7 +32,7 @@ function getBoardLevels(id){
    if(result != null && result.length >0){
 		 $("#"+id).append('<option value="0">Select Post Level </option>');
      for(var i in result){
-		 if(result[i].id != 7)
+		 if(result[i].id != 1 && result[i].id != 2 && result[i].id != 3 && result[i].id != 7)
 			$("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	 }
    }
@@ -335,7 +335,7 @@ function getDepartments(){
 	   if(result != null && result.length >0){
 		   $("#depmtsId").append('<option value=" ">Select Department</option>'); 
 		   
-			$("#depmtsId").append('<option value="0">Any</option>'); 
+			//$("#depmtsId").append('<option value="0">Any</option>'); 
 		
 		 for(var i in result){
 			 if(globaldeptId == result[i].id){
@@ -935,7 +935,7 @@ function hideDetails(){
 	//$('#searchDivId').hide();
 	$("#uploadFlDivId").hide();
 	$("#submitBtnId").hide();
-	$("#addedRefferalsDiv").hide();
+	//$("#addedRefferalsDiv").hide();
 }
 function refreshExistingDetails(){ 	
 		hideDetails();    
@@ -1350,7 +1350,7 @@ function setDefaultImage(img){
 			str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
 			str+='</div>';
 			str+='<div class="media-body">';
-			str+='<input type="hidden" class="form-control memberDatacls" name="nominatedPostDtlsVO.subList2['+cloneCount+'].tdpCadreId" value="'+attrId+'"/>';
+			str+='<input type="hidden" class="form-control memberDatacls" name="nominatedPostDetailsVO.subList2['+cloneCount+'].tdpCadreId" value="'+attrId+'"/>';
 			str+='<div class="col-md-12"><b>'+name+'</b></div>';
 			str+='<div class="col-md-12"><b>'+mobile+'</b></div>';
 			str+='<div class="col-md-12"><label>'+attrConsti+'</label></div>';
