@@ -18,8 +18,10 @@ var locationLevelName = $("#getMenuLocations").attr("menu-location-levelName");
 var locationLevelId = $("#getMenuLocations").attr("menu-location-levelId");
 var publicationId = '22';
 var userAccessLevelValuesArray=[];
-var commitessArr=["mandalLevelGraph","villageLevelGraph","affMandalLevelGraph","affVillageLevelGraph"]
-	
+var commitessArr=["mandalLevelGraph","villageLevelGraph","affMandalLevelGraph","affVillageLevelGraph"];
+var grivanceIdsArr=["grivanceId","trustId"];
+var grivanceColorObj={"APPROVED":"#2DCC70","COMPLETED":"#449C43","IN PROGRESS":"#FFB84F","NOT ELIGIBLE":"#C0392B","NOT POSSIBLE":"#EF8379","NOT VERIFIED":"#31708F"}
+var insuranceColorObj={"Waiting For Documents":"#2DCC70","Documents Submitted In Party":"#449C43","Forwarded to Insurance":"#FFB84F","Closed at Insurance":"#8F43AF","Closed at Party":"#9B88B3","Approved - Compensated":"#2BCD72","Closed Letters":"#32708F","Account Rejected":"#65CBCC"}	
 onLoadInitialisations();
 onLoadAjaxCalls();
 function onLoadInitialisations()
@@ -39,8 +41,10 @@ function onLoadAjaxCalls()
 	//Second Block
 	getCountsForConstituency();
 	//Constituency Voter Information
-	getVotersAndcadreAgeWiseCount();
-	
+	getPublications();
+	getVotersAndcadreAgeWiseCount(22);
+	//Assembly Block
+	getDetailedElectionInformaction()
 	//caste information
 	getCasteGroupNAgeWiseVoterNCadreCounts("voter")
 	getActivityStatusList();
@@ -77,6 +81,8 @@ function onLoadAjaxCalls()
 	getNominatedPostApplicationDetails();
 	getNominatedPostStatusWiseCount();
 	
+	getTotalAlertDetailsForConstituencyInfo();
+	
 }
 $(document).on("click","[menu-click]",function(){
 	var length = $(this).text().length;
@@ -86,7 +92,6 @@ $(document).on("click","[menu-click]",function(){
 	$("[menu-name="+levelName+"]").html($(this).html());
 	//$("[menu-name="+levelName+"]").width(((length)*(10)));
 	$("[levelId="+levelId+"],[menu-name]").removeClass("active");
-	
 	$(this).addClass("active");
 	$("[menu-name="+levelName+"]").closest("li").show();
 	$("[menu-name="+levelName+"]").addClass("active");
@@ -191,7 +196,7 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 		}).done(function(result){
 			return buildResult('mandals',result);
 		});
-	}else if(levelId == '5' || levelId == '12')
+	}else if(levelId == '5'  || levelId == '12')
 	{
 		$("#panchayatsMenu").html(spinner);
 		var jsObj={
@@ -209,8 +214,8 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 	}
 	function buildResult(divId,result)
 	{
-		/* if(levelId != '9' || levelId != 9)
-		{ */
+		//if(levelId != '9' || levelId != 9)
+		//{
 			levelId = parseInt(levelId) + 1;
 		//}
 		var menu='';
@@ -494,11 +499,11 @@ function buildCountsForConstituency(results){
 	$("#levelWiseCountDivId").html(str);
 }
 
-function getVotersAndcadreAgeWiseCount(){
+function getVotersAndcadreAgeWiseCount(pubId){
 	$("#constituencyVoterInfo").html(spinner);
-    jsObj={
+	jsObj={
     	constituencyId:constituencyId,
-    	publicationDateId:publicationId
+    	publicationDateId:pubId
     }
     $.ajax({
       type : "GET",
@@ -627,7 +632,7 @@ function buildVotersAndcadreAgeWiseCount(result){
 	}
 	
 }
-function highcharts(id,type,data,plotOptions,title,tooltip){
+function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 	'use strict';
 	$('#'+id).highcharts({
 		 chart: type,
@@ -637,6 +642,7 @@ function highcharts(id,type,data,plotOptions,title,tooltip){
 			text: null
 		},
 		plotOptions: plotOptions,
+		legend:legend,
 		series: data
 	});
 }
@@ -803,11 +809,12 @@ function buildCasteGroupNAgeWiseVoterNCadreCounts(result,groupType){
 			showInLegend: false
 		},
 	};
+	var legend = {enabled: false};
 	var data = [{
 		name: '',
 		data: mainArr
 	}];
-	highcharts(id,type,data,plotOptions,title,tooltip);
+	highcharts(id,type,data,plotOptions,title,tooltip,legend);
 	buildCasteGroupNAgeWiseGraphView(result,groupType,"BC");
 }
 function buildCasteGroupNAgeWiseGraphView(result,groupType,casteType){
@@ -1231,6 +1238,7 @@ function buildLocationTypeWiseCadreCount(result){
 					showInLegend: false
 				},
 			};
+			var legend={enabled: false};
 			var data = [{
 				name: '',
 				data: [
@@ -1246,7 +1254,7 @@ function buildLocationTypeWiseCadreCount(result){
 					}
 				]
 			}];
-			highcharts(id,type,data,plotOptions,title,tooltip);
+			highcharts(id,type,data,plotOptions,title,tooltip,legend);
 		}
 	}	
 }
@@ -1783,12 +1791,13 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 						showInLegend: false
 					},
 				};
+				var legend={enabled: false};
 				var data = [{
 					name: '',
 					data: overAllAnalysisMainArr
 				}];
 					
-				highcharts(id,type,data,plotOptions,title,tooltip);
+				highcharts(id,type,data,plotOptions,title,tooltip,legend);
 			}else{
 				$("#overAllAnalysisProbDivId").html("NO DATA");
 			}
@@ -1946,6 +1955,7 @@ function buildLocationWiseCommitteesCount(result){
 					showInLegend: false
 				},
 			};
+			var legend={enabled: false};
 			var data = [{
 				name: '',
 				data: [
@@ -1966,7 +1976,7 @@ function buildLocationWiseCommitteesCount(result){
 					}
 				]
 			}];
-			highcharts(id,type,data,plotOptions,title,tooltip);
+			highcharts(id,type,data,plotOptions,title,tooltip,legend);
 		}	
 	}
 }
@@ -2266,6 +2276,7 @@ function getMandalWiseBenefitMembersCount(id){
 					showInLegend: false
 				},
 			};
+			var legend={enabled: false};
 			var data = [{
 				name: '',
 				data: [
@@ -2281,7 +2292,7 @@ function getMandalWiseBenefitMembersCount(id){
 					}
 				]
 			}];
-			highcharts(id,type,data,plotOptions,title,tooltip);
+			highcharts(id,type,data,plotOptions,title,tooltip,legend);
 	}
 }
 function getPositionWiseMemberCount(){
@@ -2577,6 +2588,7 @@ function getNominatedPostStatusWiseCount(){
 	}
 }
 function getLocationWiseInsuranceStatusCount(){
+	$("#insuranceDetails").html(spinner);
 	userAccessLevelValuesArray=[];
 	if(locationLevelId == '2')
 	{
@@ -2597,8 +2609,8 @@ function getLocationWiseInsuranceStatusCount(){
 	
 	var userAccessLevelId=locationLevelId;
 	var jsObj={
-			"fromDate" : globalFromDate,
-			"toDate":globalToDate,
+			"fromDate" : "",
+			"toDate":"",
 			"locationTypeId" : userAccessLevelId,
 			"locationValuesArr" :userAccessLevelValuesArray,
 			"year":""
@@ -2610,12 +2622,79 @@ function getLocationWiseInsuranceStatusCount(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-    	if(result!=null && result.length>0){
-			//return buildGraph(result);
+    	if(result!=null){
+			return buildGraph(result);
 		}else{
-			$("#grivanceId,#trustId").html("NO DATA");
+			$("#insuranceDetails").html("NO DATA");
 		}
 	});	
+	function buildGraph(result){
+		if(result !=null){
+				var mainArr=[];
+				for(var j in result.subList){
+					var colorsId = insuranceColorObj[result.subList[j].name.trim()];
+					var obj1 = {
+						name: result.subList[j].name,
+						y:result.subList[j].count,
+						color:colorsId
+					}
+					mainArr.push(obj1);
+				}
+				var id = 'insuranceDetails';
+				var type = {
+					type: 'pie',
+					backgroundColor:'transparent',
+					options3d: {
+						enabled: true,
+						alpha: 25
+					}
+				};
+				var title = {
+					text: ''
+				};
+				var tooltip = {
+					useHTML: true,
+					backgroundColor: '#FCFFC5', 
+					formatter: function() {
+						var cnt = this.point.count;
+						return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+					}  
+				}; 
+				var plotOptions ={
+					pie: {
+						innerSize: 100,
+						depth: 70,
+						dataLabels:{
+							useHTML: true,
+							enabled: false,
+							  formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+(this.y)+")</b>";
+									}
+								} 
+						},
+						showInLegend: legend
+					},
+				};
+				var legend = {
+					enabled: true,
+					align: 'left',
+					verticalAlign: 'bottom',
+					useHTML: true,
+					labelFormatter: function() {
+						return '<span style="color:'+this.color+'">'+this.name + '-' + this.y + '';
+					}
+				};
+				var data = [{
+					name: '',
+					data: mainArr
+				}];
+				highcharts(id,type,data,plotOptions,title,tooltip,legend);
+			
+		}
+	}
 }
 function getLocationWiseGrivanceTrustStatusCounts(){
 	$("#grivanceId,#trustId").html(spinner);
@@ -2652,9 +2731,190 @@ function getLocationWiseGrivanceTrustStatusCounts(){
 		data : {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result!=null && result.length>0){
-			//return buildGraph(result);
+			return buildGraph(result);
 		}else{
 			$("#grivanceId,#trustId").html("NO DATA");
 		}
+	});
+
+	function buildGraph(result){
+		if(result !=null && result.length>0){
+			for(var i in result){
+				var mainArr=[];
+				if(result[i].grivenceType == "Grivence"){
+					for(var j in result[i].subList){
+						var colorsId = grivanceColorObj[result[i].subList[j].name.trim()];
+						var obj = {
+							name: result[i].subList[j].name,
+							y:result[i].subList[j].count,
+							color:colorsId
+						}
+						mainArr.push(obj);
+					}
+				}else if(result[i].grivenceType == "NTR Trust"){
+					for(var j in result[i].subList){
+						var colorsId = grivanceColorObj[result[i].subList[j].name.trim()];
+						var obj1 = {
+							name: result[i].subList[j].name,
+							y:result[i].subList[j].count,
+							color:colorsId
+						}
+						mainArr.push(obj1);
+					}
+				}
+				
+				var id = 'grivanceId'+i;
+				var type = {
+					type: 'pie',
+					backgroundColor:'transparent',
+					options3d: {
+						enabled: true,
+						alpha: 25
+					}
+				};
+				var title = {
+					text: ''
+				};
+				var tooltip = {
+					useHTML: true,
+					backgroundColor: '#FCFFC5', 
+					formatter: function() {
+						var cnt = this.point.count;
+						return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+					}  
+				}; 
+				var plotOptions ={
+					pie: {
+						innerSize: 100,
+						depth: 70,
+						dataLabels:{
+							useHTML: true,
+							enabled: false,
+							  formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+(this.y)+")</b>";
+									}
+								} 
+						},
+						showInLegend: legend
+					},
+				};
+				var legend = {
+					enabled: true,
+					layout: 'vertical',
+					align: 'center',
+					verticalAlign: 'bottom',
+					useHTML: true,
+					
+					labelFormatter: function() {
+						return '<div><span style="color:'+this.color+'">'+this.name + '-' + this.y + '</span></div>';
+					}
+				};
+				var data = [{
+					name: '',
+					data: mainArr
+				}];
+				highcharts(id,type,data,plotOptions,title,tooltip,legend);
+			}
+		}
+	}	
+}
+
+function getPublications(){
+	var jsObj={
+			
+	}
+	 $.ajax({
+      type : "GET",
+      url : "getPublicationsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	if(result !=null && result.length>0){
+			return buildPublications(result);
+		}
 	});	
+	function buildPublications(result){
+		var str='';
+		str+='<select class="chosen-select publicationChangeCls" id="publicationChangeId">';
+		str+='<option value = "0">Select Publication</option>';
+		for(var i in result){
+			if(result[i].date == "2016-01-01"){
+				str+='<option value = "'+result[i].id+'" selected>'+result[i].date+'</option>';
+			}else{
+				str+='<option value = "'+result[i].id+'">'+result[i].date+'</option>';
+			}
+			
+		}
+		str+='</select>';
+		
+		$("#publicationsDivId").html(str);
+		$(".chosen-select").chosen();
+		
+	}
+}
+$(document).on("change","#publicationChangeId",function(){
+	var pubId = $("#publicationChangeId").val();
+	getVotersAndcadreAgeWiseCount(pubId);
+});
+function getDetailedElectionInformaction(){
+	
+	jsObj={
+    	constituencyId:constituencyId
+    }
+    $.ajax({
+      type : "GET",
+      url : "getDetailedElectionInformactionAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+		return buildAssemblyResultsTable(result)
+	});
+	
+	function buildAssemblyResultsTable(result){
+		
+  }	
+}
+  function getTotalAlertDetailsForConstituencyInfo(){
+	  userAccessLevelValuesArray=[];
+		if(locationLevelId == '2')
+		{
+			userAccessLevelValuesArray.push(stateId)
+		}else if(locationLevelId == '3')
+		{
+			userAccessLevelValuesArray.push(districtId)
+		}else if(locationLevelId == '4')
+		{
+			userAccessLevelValuesArray.push(constituencyId)
+		}else if(locationLevelId == '5')
+		{
+			userAccessLevelValuesArray.push(mandalId)
+		}else if(locationLevelId == '6')
+		{
+			userAccessLevelValuesArray.push(panchayatId)
+		}
+	var userAccessLevelId=locationLevelId;
+	var jsObj={
+			fromDateStr 	  	:globalFromDate,
+			toDateStr		  	:globalToDate,
+			locationValuesArr 	:userAccessLevelValuesArray,
+			alertTypeIdsStr 	:[1,2,3],
+			locationTypeId		:userAccessLevelId,
+			year  				:""
+
+		}
+	 $.ajax({
+      type : "POST",
+      url : "getTotalAlertDetailsForConstituencyInfoAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+    	return buildAlertsTable(result);
+	});	
+	function buildAlertsTable(result){
+		
+		
+	}
 }
