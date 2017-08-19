@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -735,7 +736,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		return Action.SUCCESS;
 	}*/
 	
-	public String showMapForMobileAppUserVoter(){
+	/*public String showMapForMobileAppUserVoter(){
 		try {
 			jObj = new JSONObject(getTask());
 			
@@ -753,7 +754,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		}
 		
 		return Action.SUCCESS;
-	}
+	}*/
 	
 	public String showGoogleMapDetails()
 	{
@@ -904,6 +905,26 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		} catch (Exception e) {
 			LOG.error("Exception raised at getmobileAppDivisionWiseUsers()", e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String showMapForMobileAppUserVoter(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			List<String> datesStrList = new ArrayList<String>(0);
+			JSONArray jArray = jObj.getJSONArray("datesArr");
+			
+			for (int i = 0; i < jArray.length(); i++) 
+			{
+				datesStrList.add(jArray.getString(i));
+			}
+			
+			tabDetailsVOList = mobileService.showMapForMobileAppUserVoter(jObj.getLong("userId"),jObj.getLong("locationId"),jObj.getLong("levelId"),datesStrList);
+		} catch (Exception e) {
+			LOG.error("Exception riased at showMapForMobileAppUserVoter", e);
+		}
+		
 		return Action.SUCCESS;
 	}
 }
