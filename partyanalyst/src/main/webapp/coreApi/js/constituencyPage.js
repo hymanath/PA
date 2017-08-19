@@ -86,6 +86,7 @@ $(document).on("click","[menu-click]",function(){
 	$("[menu-name="+levelName+"]").html($(this).html());
 	//$("[menu-name="+levelName+"]").width(((length)*(10)));
 	$("[levelId="+levelId+"],[menu-name]").removeClass("active");
+	
 	$(this).addClass("active");
 	$("[menu-name="+levelName+"]").closest("li").show();
 	$("[menu-name="+levelName+"]").addClass("active");
@@ -97,7 +98,7 @@ $(document).on("click","[menu-click]",function(){
 	if(levelId == 3)
 	{
 		districtId = locationId;
-		$("#districtsMenu").closest(".col-sm-12").removeClass("col-sm-12").addClass("col-sm-3");
+		
 	}else if(levelId == 4)
 	{
 		constituencyId = locationId
@@ -107,9 +108,9 @@ $(document).on("click","[menu-click]",function(){
 	}else if(levelId == 6)
 	{
 		panchayatId = locationId
-	}else if(levelId == 9){
+	}else if(levelId == 10){
 		//parliaments
-		$("#scrollerdistricts").find("li").removeClass("active");
+		districtId = locationId;
 	}
 	if(levelId != '5' || levelId != 5)
 	{
@@ -156,13 +157,13 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 		}
 		$.ajax({
 			type : "GET",
-			url : "getAllDistrictsForLoationDashBoardAction.action",
+			url : "getParlimentConstituenciesForLoationDashBoardAction.action",
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
 			return buildResult('parliaments',result);
 		});
-	}else if(levelId == '3')
+	}else if(levelId == '3' || levelId == '10')
 	{
 		$("#constituencyMenu").html(spinner);
 		var jsObj={
@@ -176,7 +177,7 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 		}).done(function(result){
 			return buildResult('constituency',result);
 		});
-	}else if(levelId == '4')
+	}else if(levelId == '4' || levelId == '11')
 	{
 		$("#mandalsMenu").html(spinner);
 		var jsObj={
@@ -190,7 +191,7 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 		}).done(function(result){
 			return buildResult('mandals',result);
 		});
-	}else if(levelId == '5')
+	}else if(levelId == '5' || levelId == '12')
 	{
 		$("#panchayatsMenu").html(spinner);
 		var jsObj={
@@ -208,10 +209,10 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 	}
 	function buildResult(divId,result)
 	{
-		if(levelId != '9' || levelId != 9)
-		{
+		/* if(levelId != '9' || levelId != 9)
+		{ */
 			levelId = parseInt(levelId) + 1;
-		}
+		//}
 		var menu='';
 		menu+='<h4 class="panel-title text-capital">'+divId+'</h4>';
 		menu+='<div class="scroller'+divId+'">';
@@ -228,7 +229,7 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 			menu+='</ul>';
 		menu+='</div>';
 		$("#"+divId+"Menu").html(menu);
-		if(levelId == '3' || levelId == '9')
+		if(levelId == '3' || levelId == '10')
 		{
 			$(".scroller"+divId).mCustomScrollbar({setHeight:'240px'})
 		}else if(result.length > 14){
@@ -1433,13 +1434,13 @@ function getPrintMediaCountsForConstituencyPage(){
 		userAccessLevelValuesArray.push(districtId)
 	}else if(locationLevelId == '4')
 	{
-		userAccessLevelValuesArray.push(constituencyId)
+		userAccessLevelValuesArray.push("5")
 	}else if(locationLevelId == '5')
 	{
-		userAccessLevelValuesArray.push(mandalId)
+		userAccessLevelValuesArray.push("6")
 	}else if(locationLevelId == '6')
 	{
-		userAccessLevelValuesArray.push(panchayatId)
+		userAccessLevelValuesArray.push("8")
 	}
 	
 	var userAccessLevelId=locationLevelId;
