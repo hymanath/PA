@@ -69,7 +69,6 @@ import com.itgrids.partyanalyst.dao.IGovtProposalPropertyCategoryTrackingDAO;
 import com.itgrids.partyanalyst.dao.IGovtRejoinderActionDAO;
 import com.itgrids.partyanalyst.dao.IGovtSmsActionTypeDAO;
 import com.itgrids.partyanalyst.dao.INewsPaperDAO;
-import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
@@ -96,6 +95,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
+import com.itgrids.partyanalyst.dto.LocationAlertVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -15894,11 +15894,8 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 	   * Author :Teja
 	   * @description : getTotalAlertDetailsForConstituencyInfo(Getting Alert details for constituency page)
 	   */
-	public  List<AlertVO> getTotalAlertDetailsForConstituencyInfo(String fromDateStr ,String toDateStr,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
-		List<AlertVO> finalVoList = new ArrayList<AlertVO>();
-		List<IdNameVO> totalList = new ArrayList<IdNameVO>();
-		List<IdNameVO> involvedList = new ArrayList<IdNameVO>();
-		List<IdNameVO> assignList = new ArrayList<IdNameVO>();
+	public  LocationAlertVO getTotalAlertDetailsForConstituencyInfo(String fromDateStr ,String toDateStr,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
+		LocationAlertVO finalVO = new LocationAlertVO();
 		try {
 			Date fromDate = null;
 			Date toDate = null;
@@ -15908,210 +15905,185 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				toDate = sdf.parse(toDateStr);
 			}
 			List<Object[]> alertStatusLst = alertDAO.getAlertStatusWiseDetailsForConstituencyInfo(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
-			setStatusWiseData(alertStatusLst,finalVoList);
-			
-			List<Object[]> scopeList = alertImpactScopeDAO.getAlertImpactScope();
-			setImpactScopeSkeletonNew(scopeList,finalVoList);
+			finalVO.setSubList(getStatusWiseData(alertStatusLst));
 			
 			List<Object[]> alertImpactLevelLst  = alertDAO.getAlertImpactLevelWiseDetailsForConstituencyInfo(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
-			setImpactLevelData(alertImpactLevelLst,finalVoList);
+			finalVO.setImpactScopeList(getImpactLevelData(alertImpactLevelLst));
 			
-			List<Object[]> totalAlertCnt = alertDAO.getTotalAlertDetailsCount(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
-			setAlertData(totalAlertCnt,totalList);
+			List<Object[]> totalAlertCntObjList = alertDAO.getTotalAlertDetailsCount(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
+			List<Object[]> involvedMembersObjList = alertCandidateDAO.getInvolvedMemberAlertDetails(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
+			List<Object[]> assignMembersObjList = alertAssignedOfficerNewDAO.getAssignedMemberAlertDetails(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
 			
-			List<Object[]> involvedMembersList = alertCandidateDAO.getInvolvedMemberAlertDetails(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
-			setAlertData(involvedMembersList,involvedList);
+			finalVO.setTotalAlertCount(getRequirdTotalCount(totalAlertCntObjList));
+			finalVO.setInvolveMemberCount(getRequirdTotalCount(involvedMembersObjList));
+			finalVO.setAssignedMemberCount(getRequirdTotalCount(assignMembersObjList));
 			
-			List<Object[]> assignMembersList = alertAssignedOfficerNewDAO.getAssignedMemberAlertDetails(fromDate, toDate, locationValues, alertTypeIds,locationTypeId,year);
-			setAlertData(assignMembersList,assignList);
-			
-			if(finalVoList != null && finalVoList.size() > 0){
-				finalVoList.get(0).getIdNamesList().addAll(totalList);
-				finalVoList.get(0).getDocList().addAll(involvedList);
-				finalVoList.get(0).getAssignList().addAll(assignList);
-			}
-
-			if(finalVoList != null && finalVoList.size() > 0){
-				for (AlertVO finalVo : finalVoList){
-					if(finalVo.getSubList1() != null && finalVo.getSubList1().size() >0){
-						Long totalCount= 0l;
-						for (AlertVO subVo : finalVo.getSubList1()) {
-							totalCount = totalCount+subVo.getCount()+subVo.getAlertCnt();
-						}
-						finalVo.setSatisfiedCount(totalCount);
-					}
-				}
-			}
-			
-			if(finalVoList != null && finalVoList.size() > 0){
-				Long statusCount= 0l;
-				for (AlertVO finalVo : finalVoList){
-					if(finalVo.getSubList2() != null && finalVo.getSubList2().size() >0){
-						Long totalCount= 0l;
-						for (AlertVO subVo : finalVo.getSubList2()) {
-							totalCount = totalCount+subVo.getCount()+subVo.getAlertCnt();
-							statusCount = statusCount+totalCount;
-						}
-						finalVo.setLocationCnt(totalCount);
-					}
-					finalVo.setStatusCount(statusCount);
-					if(finalVo.getStatusCount() > 0){
-						finalVo.setPercentage(caclPercantage(finalVo.getLocationCnt(),finalVo.getStatusCount()));
-					}
-				}
-			}
-			if(finalVoList != null && finalVoList.size() > 0){
-				Long totalCount1 = 0l;
-				for (AlertVO finalVo : finalVoList){
-					if(finalVo.getIdNamesList() != null && finalVo.getIdNamesList().size() > 0){
-						for (IdNameVO subVo :finalVo.getIdNamesList()) {
-							totalCount1 = totalCount1+subVo.getCount()+subVo.getActualCount();
-						}
-					}
-					finalVo.setNoOfDays(totalCount1);
-				}
-			}
-			if(finalVoList != null && finalVoList.size() > 0){
-				Long totalCot = 0l;
-				for (AlertVO finalVo : finalVoList){
-					if(finalVo.getDocList() != null && finalVo.getDocList().size() > 0){
-						for (IdNameVO subVo :finalVo.getDocList()) {
-							totalCot = totalCot+subVo.getCount()+subVo.getActualCount();
-						}
-					}
-					finalVo.setProposalAmount(totalCot);
-				}
-			}
-			if(finalVoList != null && finalVoList.size() > 0){
-				Long totalCont = 0l;
-				for (AlertVO finalVo : finalVoList){
-					if(finalVo.getAssignList() != null && finalVo.getAssignList().size() > 0){
-						for (IdNameVO subVo :finalVo.getAssignList()) {
-							totalCont = totalCont+subVo.getCount()+subVo.getActualCount();
-						}
-					}
-					finalVo.setApprovedAmount(totalCont);
-				}
-			}
 		} catch (Exception e) {
 			LOG.error("Error occured getTotalAlertDetailsForConstituencyInfo() method of AlertManagementSystemService",e);
 		}
-		return finalVoList;
+		return finalVO;
 	}
-	public void setAlertData(List<Object[]> objList,List<IdNameVO> dataLst){
-		if(objList != null && objList.size() > 0){
-			for (Object[] objects : objList){
-				IdNameVO totalVo = new IdNameVO();
-				totalVo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-				totalVo.setTitle(commonMethodsUtilService.getStringValueForObject(objects[1]));
-				if(commonMethodsUtilService.getLongValueForObject(objects[0]) == 1l){
-					totalVo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
-				}else{
-					totalVo.setActualCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+	public Long getRequirdTotalCount(List<Object[]> objList ){
+		Long totalCount = 0l;
+		 try {
+			  if (objList != null && objList.size() > 0){
+				  for (Object[] param : objList) {
+					 totalCount = totalCount + commonMethodsUtilService.getLongValueForObject(param[2]);
 				}
-				dataLst.add(totalVo);
-			}
-		}
+			  }
+		 } catch (Exception e){
+			 LOG.error("Error occured getTotalCount() method of AlertManagementSystemService",e);
+		 }
+		 return totalCount;
 	}
-	public void setImpactLevelData(List<Object[]> objList,List<AlertVO> finalVOList){
-		if(objList != null && objList.size() > 0){
-			for (Object[] objects : objList) {
-				AlertVO matchedVO = getmatchedAlertVo(finalVOList.get(0).getSubList1(),(Long)objects[0]);
-				if(matchedVO == null){
-					matchedVO = new AlertVO();
-					matchedVO.setId((Long)objects[0]);
-					matchedVO.setStatus(objects[1].toString());
-					
-					/*AlertVO alertTypeVo = new AlertVO();
-						alertTypeVo.setId((Long)objects[2]);
-						alertTypeVo.setStatus(objects[3].toString());*/
-					
-					if((Long)objects[2] == 1l){
-						matchedVO.setCount((Long)objects[4]);//For party
+ public List<LocationAlertVO> getImpactLevelData(List<Object[]> objList){
+	 List<LocationAlertVO> impactScopeList = null;
+	   try {
+		     List<Object[]> scopeList = alertImpactScopeDAO.getAlertImpactScope();
+			 impactScopeList = setImpactScopeSkeletonNew(scopeList);
+			 if (objList != null && objList.size() > 0 ){
+				    for (Object[] param : objList) {
+						Long impactScopeId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						Long alertCount = commonMethodsUtilService.getLongValueForObject(param[4]);
+						LocationAlertVO matchVO = getImpactScopeMatchVO(impactScopeList,impactScopeId);
+						 if (matchVO != null ){
+							 matchVO.setCount(alertCount);
+						 }
 					}
-					else if((Long)objects[2] == 2l){
-						matchedVO.setAlertCnt((Long)objects[4]);//For Govt
-					}
-					finalVOList.add(matchedVO);
-				}else{
-					if((Long)objects[2] == 1l){
-						matchedVO.setCount((Long)objects[4]);//For party
-					}
-					else if((Long)objects[2] == 2l){
-						matchedVO.setAlertCnt((Long)objects[4]);//For Govt
-					}
-				}
-			}
-		}
+			   }
+		   
+	   }catch(Exception e ){
+		   LOG.error("Exception occured at getImpactLevelData( )",e);
+	   }
+	return impactScopeList;
 	}
-	public void setImpactScopeSkeletonNew(List<Object[]> scopeDetlsLst,List<AlertVO> finalVOList){
-		if(finalVOList != null && finalVOList.size() >0){
+	public LocationAlertVO getImpactScopeMatchVO(List<LocationAlertVO> impactScopeList,Long impactScopeId ){
+		try {
+			 if (impactScopeList == null && impactScopeList.size() == 0 )
+				 return null;
+			 for (LocationAlertVO locationAlertVO : impactScopeList) {
+				  if (locationAlertVO.getId().equals(impactScopeId)){
+					  return locationAlertVO;
+				  }
+			}
+		} catch (Exception e){
+			LOG.error("Exception occured at getImpactScopeMatchVO( )",e);
+		}
+		return null;
+	}
+	public List<LocationAlertVO> setImpactScopeSkeletonNew(List<Object[]> scopeDetlsLst){
+		List<LocationAlertVO> finalVOList = new ArrayList<LocationAlertVO>();
 			if(scopeDetlsLst != null && scopeDetlsLst.size() > 0){
 				for (Object[] objects : scopeDetlsLst){
-					AlertVO vo = new AlertVO();
+					LocationAlertVO vo = new LocationAlertVO();
 						vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
-						finalVOList.get(0).getSubList1().add(vo);
+						finalVOList.add(vo);
 			   }
 			}
-		}
+		return finalVOList;
 	}
 	//0-statusId,1-status,2-color,3-impactScopeId,4-impactScope,5-alertTypeId,alertType-6,7-count
-	public void setStatusWiseData(List<Object[]> objList,List<AlertVO> finalVOList){
-		if(objList != null && objList.size() > 0){
-			for (Object[] objects : objList) {
-				AlertVO matchedLocationVO = getmatchedAlertVo(finalVOList,(Long)objects[3]);
-				if(matchedLocationVO == null){
-					matchedLocationVO = new AlertVO();
-					matchedLocationVO.setId((Long)objects[3]);
-					matchedLocationVO.setStatus(objects[4].toString());
-					
-					AlertVO statusWiseVO =  new AlertVO();
-					statusWiseVO.setId((Long)objects[0]);
-					statusWiseVO.setStatus(objects[1].toString());
-					statusWiseVO.setColor(objects[2].toString());
-					statusWiseVO.setAlertTypeId((Long)objects[5]);
-					statusWiseVO.setAlertTypeName(objects[6].toString());
-					if((Long)objects[5] == 1l){
-						statusWiseVO.setCount((Long)objects[7]);
-					}else if((Long)objects[5] == 2l){
-						statusWiseVO.setAlertCnt((Long)objects[7]);
+	public List<LocationAlertVO> getStatusWiseData(List<Object[]> objList) {
+		try {
+			List<LocationAlertVO> finalVOList= new ArrayList<LocationAlertVO>();
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					Long locationId=commonMethodsUtilService.getLongValueForObject(objects[3]);
+					String locatioName = "";
+					if(locationId ==12l){
+						locationId= 5l;
+						locatioName="Madal/Muncipality";
+					} else {
+						locatioName = commonMethodsUtilService.getStringValueForObject(objects[4]);
 					}
-					
-					matchedLocationVO.getSubList2().add(statusWiseVO);
-					finalVOList.add(matchedLocationVO);
-				}else{
-					
-					AlertVO matchedStatusWiseVO =  getmatchedAlertVo(matchedLocationVO.getSubList2(),(Long)objects[3]);
-					if(matchedStatusWiseVO == null){
-						matchedStatusWiseVO = new AlertVO();
-						matchedStatusWiseVO.setId((Long)objects[0]);
-						matchedStatusWiseVO.setStatus(objects[1].toString());
-						matchedStatusWiseVO.setColor(objects[2].toString());
-						matchedStatusWiseVO.setAlertTypeId((Long)objects[5]);
-						matchedStatusWiseVO.setAlertTypeName(objects[6].toString());
+					LocationAlertVO matchedLocationVO = getmatchedLocationAlertVo(finalVOList,locationId);
+					if(matchedLocationVO == null){
+						matchedLocationVO = new LocationAlertVO();
+						matchedLocationVO.setLocationId(locationId);
+						matchedLocationVO.setLocationName(locatioName);
+						
+						LocationAlertVO statusWiseVO =  new LocationAlertVO();
+						statusWiseVO.setId((Long)objects[0]);
+						statusWiseVO.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						statusWiseVO.setColour(commonMethodsUtilService.getStringValueForObject(objects[2]));
+						statusWiseVO.setAlertTypeId(commonMethodsUtilService.getLongValueForObject(objects[5]));
+						statusWiseVO.setAlertType(commonMethodsUtilService.getStringValueForObject(objects[6]));
 						if((Long)objects[5] == 1l){
-							matchedStatusWiseVO.setCount((Long)objects[7]);
+							statusWiseVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[7]));
 						}else if((Long)objects[5] == 2l){
-							matchedStatusWiseVO.setAlertCnt((Long)objects[7]);
+							statusWiseVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(objects[7]));
 						}
 						
-						matchedLocationVO.getSubList2().add(matchedStatusWiseVO);
+						matchedLocationVO.getSubList().add(statusWiseVO);
+						finalVOList.add(matchedLocationVO);
 					}else{
-						if((Long)objects[5] == 1l){
-							matchedStatusWiseVO.setCount((Long)objects[7]);
-						}else if((Long)objects[5] == 2l){
-							matchedStatusWiseVO.setAlertCnt((Long)objects[7]);
+						
+						LocationAlertVO matchedStatusWiseVO =  getmatchedLocationAlertVo(matchedLocationVO.getSubList(),locationId);
+						if(matchedStatusWiseVO == null){
+							matchedStatusWiseVO = new LocationAlertVO();
+							matchedStatusWiseVO.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							matchedStatusWiseVO.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							matchedStatusWiseVO.setColour(commonMethodsUtilService.getStringValueForObject(objects[2]));
+							matchedStatusWiseVO.setAlertTypeId(commonMethodsUtilService.getLongValueForObject(objects[5]));
+							matchedStatusWiseVO.setAlertType(commonMethodsUtilService.getStringValueForObject(objects[6]));
+							if(commonMethodsUtilService.getLongValueForObject(objects[5]) == 1l){
+								matchedStatusWiseVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[7]));
+							}else if(commonMethodsUtilService.getLongValueForObject(objects[5]) == 2l){
+								matchedStatusWiseVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(objects[7]));
+							}
+							
+							matchedLocationVO.getSubList().add(matchedStatusWiseVO);
+						}else{
+							if(commonMethodsUtilService.getLongValueForObject(objects[5]) == 1l){
+								matchedStatusWiseVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[7]));
+							}else if(commonMethodsUtilService.getLongValueForObject(objects[5]) == 2l){
+								matchedStatusWiseVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(objects[7]));
+							}
 						}
 					}
 				}
 			}
+			for (LocationAlertVO locationAlertVO : finalVOList) {
+				if (locationAlertVO != null) {
+
+					for (int i = 0; i < locationAlertVO.getSubList().size(); i++) {
+						for (int j = i + 1; j < locationAlertVO.getSubList().size(); j++) {
+							if (locationAlertVO.getSubList().get(i).getId() == locationAlertVO.getSubList().get(j).getId()) {
+								Long count = locationAlertVO.getSubList().get(i).getCount()+ locationAlertVO.getSubList().get(j).getCount();
+								Long AlertCount= locationAlertVO.getSubList().get(i).getAlertCount()+ locationAlertVO.getSubList().get(j).getAlertCount();
+								locationAlertVO.getSubList().get(i).setCount(count);
+								locationAlertVO.getSubList().get(i).setAlertCount(AlertCount);
+								locationAlertVO.getSubList().remove(j);
+							}
+							
+						}
+					}
+				}
+
+			}
+			return finalVOList;
+		
+		} catch (Exception e) {
+			LOG.error("Exception occured at getStatusWiseData()", e);
+			return null;
 		}
+
 	}
 	public AlertVO getmatchedAlertVo(List<AlertVO> finalVOList,Long orgId){
 		if(finalVOList != null && finalVOList.size() > 0){
 			for (AlertVO vo : finalVOList) {
 				if(vo.getId() != null && vo.getId().equals(orgId)){
+					return vo;
+				}
+			}
+		}
+		return null;
+	}
+	public LocationAlertVO getmatchedLocationAlertVo(List<LocationAlertVO> loationList,Long locationId){
+		if(loationList != null && loationList.size() > 0){
+			for (LocationAlertVO vo : loationList) {
+				if(vo.getLocationId() != null && vo.getLocationId().equals(locationId)){
 					return vo;
 				}
 			}
