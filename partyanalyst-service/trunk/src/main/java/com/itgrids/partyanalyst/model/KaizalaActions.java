@@ -40,6 +40,7 @@ public class KaizalaActions extends BaseModel implements Serializable {
 	private String isDeleted;
 	private Date insertedTime;
 	private Long kaizalaActionTypeId;
+	private String actionPackegeId;
 	
 	private KaizalaActionType kaizalaActionType;
 	
@@ -174,7 +175,13 @@ public class KaizalaActions extends BaseModel implements Serializable {
 	public void setKaizalaActionType(KaizalaActionType kaizalaActionType) {
 		this.kaizalaActionType = kaizalaActionType;
 	}
-	
+	@Column(name="action_packageId")
+	public String getActionPackegeId() {
+		return actionPackegeId;
+	}
+	public void setActionPackegeId(String actionPackegeId) {
+		this.actionPackegeId = actionPackegeId;
+	}
 	
 	
 	

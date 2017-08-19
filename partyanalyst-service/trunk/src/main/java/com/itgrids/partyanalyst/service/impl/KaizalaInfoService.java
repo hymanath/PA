@@ -160,6 +160,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							newAction = true;
 							KaizalaActions ka = new KaizalaActions();
 							ka.setActionId(dataObj.getString("actionId"));
+							ka.setActionPackegeId(dataObj.has("actionPackageId")?dataObj.getString("actionPackageId"):null);
 							List<String> list = getActionDetails(dataObj.getString("groupId"),dataObj.getString("actionId"));
 							//0-title,1-actiontype,2-acceptmultires,3-expirydate
 							if(list != null && list.size() > 0){
