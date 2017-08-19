@@ -169,16 +169,24 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
             collapse+='</div>';
         collapse+='</div>';
     collapse+='</div>';
+	
     collapse+='</div>';
 					collapse+='</div>';
-					collapse+='<div class="col-sm-3">';
+					collapse+='<div class="col-sm-12">';
 						collapse+='<h5 style="font-weight:600"><span style="color:#FF0000">STEP-4</span></h5>';
-						collapse+='<div class="col-sm-12 m_top20">';
-							collapse+='<h5>REFERED MEMBER</h5>';
-							collapse+='<div class="involveBlockNew m_top10" btn-attr = "involve" style="border:1px solid grey;padding:18px">';
-								collapse+='<div class="media">';
-									collapse+='<div class="media-left" style="font-size:36px">+</div>'
-									collapse+='<div class="media-body"><p style="padding-top:8px">Click to Search Referral Details to this Candidate</p></div>';
+						
+						collapse+='<div class="row m_top10" id="addedRefferalsDiv" >';
+							collapse+='<div class="col-md-12 col-sm-12 col-xs-12 m_top10">';
+								collapse+='<h4 class="text-success text-capital">refered members to this candidate<small class="text-muted text-capitalize" id="involvedMembers">(0 - Members added)</small></h4>';
+							collapse+='</div>';
+							collapse+='<div class="membersBlock">';
+							collapse+='</div>';
+							collapse+='<div class="col-md-3 col-xs-12 col-sm-6 m_top10">';
+								collapse+='<div class="involveBlockNew" btn-attr = "involve">';
+									collapse+='<div class="media">';
+                                	collapse+='<div class="media-left" style="font-size:36px">+</div>';
+                                    collapse+='<div class="media-body">Click to Search Referral Details to this Candidate</div>';
+                                collapse+='</div>';
 								collapse+='</div>';
 							collapse+='</div>';
 						collapse+='</div>';
@@ -1319,6 +1327,7 @@ function setDefaultImage(img){
 	var cloneCount=1;
 	var involvedCadreIds = [];
 	var globalSelectedMemberIdsArr = [];
+	
    $(document).on("click",".apptDetailsDiv",function(){
 		
 		 if($(this).is(':checked')){
@@ -1339,7 +1348,7 @@ function setDefaultImage(img){
 			str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
 			str+='</div>';
 			str+='<div class="media-body">';
-			str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
+			str+='<input type="hidden" class="form-control memberDatacls" name="nominatedPostDtlsVO.subList2['+cloneCount'+].tdpCadreId" value="'+attrId+'"/>';
 			str+='<div class="col-md-12"><b>'+name+'</b></div>';
 			str+='<div class="col-md-12"><b>'+mobile+'</b></div>';
 			str+='<div class="col-md-12"><label>'+attrConsti+'</label></div>';
