@@ -22,6 +22,10 @@
 <link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/slick/slick.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
+.jFiler-input-dragDrop
+{
+	width:100%;
+}
 .involveBlock {
     background: #f8f9fb none repeat scroll 0 0;
     border: 1px solid #ddd;
