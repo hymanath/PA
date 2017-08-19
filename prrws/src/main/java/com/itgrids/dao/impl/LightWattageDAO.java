@@ -24,21 +24,21 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 
 }
 	@Override
-	public List<Object[]> getTotalWattege(Date fromDate,Date toDate, String locationType,Long locationValue) {
+	public List<Object[]> getTotalWattege(Date fromDate,Date toDate, String locationType,List<Long> locationValues) {
 		StringBuilder sb = new StringBuilder();
 		 sb.append("select model.wattage ,sum(model.lightCount) "
 				 +" from "
 				+ " LightWattage model  "
 		 		+ " where model.isDeleted = 'N' and model.lightMonitoring.isDeleted ='N' ");
-		 if( locationType != null && locationType.trim().length() > 0 && locationValue != null && locationValue.longValue() > 0){
+		 if( locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.size() > 0){
 				if(locationType.equalsIgnoreCase("district")){
-					sb.append(" AND model.lightMonitoring.panchayat.locationAddress.district.districtId = :locationValue ");
+					sb.append(" AND model.lightMonitoring.panchayat.locationAddress.district.districtId in(:locationValues) ");
 				}else if(locationType.equalsIgnoreCase("parliament")){
-					sb.append(" AND model.lightMonitoring.panchayat.locationAddress.parliament.constituencyId = :locationValue ");
+					sb.append(" AND model.lightMonitoring.panchayat.locationAddress.parliament.constituencyId in(:locationValues) ");
 				}else if(locationType.equalsIgnoreCase("constituency")){
-					sb.append(" AND model.lightMonitoring.panchayat.locationAddress.constituency.constituencyId = :locationValue ");
+					sb.append(" AND model.lightMonitoring.panchayat.locationAddress.constituency.constituencyId in(:locationValues) ");
 				}else if(locationType.equalsIgnoreCase("mandal")){
-					sb.append(" AND model.lightMonitoring.panchayat.locationAddress.tehsil.tehsilId = :locationValue ");
+					sb.append(" AND model.lightMonitoring.panchayat.locationAddress.tehsil.tehsilId in(:locationValues) ");
 				}
 			}
 		 if(fromDate != null && toDate != null){
@@ -51,8 +51,8 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 			 query.setDate("fromDate", fromDate);
 			 query.setDate("toDate", toDate);
 		 }
-		 if(locationType != null && locationType.trim().length() > 0 && locationValue != null && locationValue.longValue() > 0){
-				query.setParameter("locationValue",locationValue);
+		 if(locationType != null && locationType.trim().length() > 0 && locationValues != null && locationValues.size() > 0){
+				query.setParameterList("locationValues",locationValues);
 		 }
 		return query.list();
 	}

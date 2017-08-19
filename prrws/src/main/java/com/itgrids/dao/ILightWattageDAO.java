@@ -9,7 +9,7 @@ import com.itgrids.model.LightWattage;
 
 public interface ILightWattageDAO  extends GenericDao<LightWattage, Long > {
 
-	public List<Object[]> getTotalWattege(Date fromDate,Date toDate,String locationType,Long locationValues);
+	public List<Object[]> getTotalWattege(Date fromDate,Date toDate,String locationType,List<Long> locationValues);
 	public int deleteAllLightWattageDetails(Date surveyDate);
 
 }

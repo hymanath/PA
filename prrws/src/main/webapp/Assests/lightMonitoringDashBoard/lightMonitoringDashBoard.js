@@ -20,6 +20,7 @@ function onLoadCalls()
 	$(".chosen-select").chosen();
 	getLedOverviewForStartedLocationsDetailsCounts();
 	getBasicLedOverviewDetails();
+	getCompanyWiseLightMonitoringDtls();
 	menuWiseDetails();
 }
 
@@ -33,6 +34,7 @@ $(document).on("click",".menuDataCollapse",function(){
 	$("#selectedName").attr("attr_name",globalLocationName);
 	getLedOverviewForStartedLocationsDetailsCounts();
 	getBasicLedOverviewDetails();
+	getCompanyWiseLightMonitoringDtls();
 	menuWiseDetails();
 });
 function menuWiseDetails(){
@@ -711,4 +713,40 @@ function callWebService(){
 			  onLoadCalls();
 		 }
 	});
+}
+function getCompanyWiseLightMonitoringDtls(){
+	//$("#overviewBlockId").html(spinner);
+	var locationType="";
+	var locationValue=0;
+	if(globallevelId == 2 || globallevelId == 0){
+		locationType = "";
+		locationValue=0;
+	}else if(globallevelId == 3){
+		locationType = "district";
+		locationValue=globallocId;
+	}else if(globallevelId == 4){
+		locationType = "constituency";
+		locationValue=globallocId;
+	}else if(globallevelId == 5){
+		locationType = "mandal";
+		locationValue=globallocId;
+	}
+	var json = {
+		fromDate:glStartDate,
+		toDate:glEndDate,
+		locationType:locationType,
+		locationValue:locationValue
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getCompanyWiseLightMonitoringDtls',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		console.log(result);
+	});		
 }

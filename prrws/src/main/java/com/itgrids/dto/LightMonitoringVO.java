@@ -32,10 +32,16 @@ public class LightMonitoringVO implements Serializable{
 	private String panchayatName;
 	private String parliamentName;
 	private String constituencyName;
+	
+	private Long surveyStartedtotalDistricts=0l;
+	private Long surveyStartedtotalConstituencys=0l;
 	private Long surveyStartedtotalMandals=0l;
 	private Long surveyStartedtotalGps=0l;
 	private Long totalLedLIghtInstalledCount=0l;
 	private AddressVO addressVO ;
+	
+	private LightMonitoringVO nredcapVO;
+	private LightMonitoringVO eeslVO;
 	
 	
 	private List<LightWattageVO> WattageList = new ArrayList<LightWattageVO>(0);
@@ -229,4 +235,30 @@ public class LightMonitoringVO implements Serializable{
 	public void setAddressVO(AddressVO addressVO) {
 		this.addressVO = addressVO;
 	}
+	public Long getSurveyStartedtotalDistricts() {
+		return surveyStartedtotalDistricts;
+	}
+	public void setSurveyStartedtotalDistricts(Long surveyStartedtotalDistricts) {
+		this.surveyStartedtotalDistricts = surveyStartedtotalDistricts;
+	}
+	public Long getSurveyStartedtotalConstituencys() {
+		return surveyStartedtotalConstituencys;
+	}
+	public void setSurveyStartedtotalConstituencys(
+			Long surveyStartedtotalConstituencys) {
+		this.surveyStartedtotalConstituencys = surveyStartedtotalConstituencys;
+	}
+	public LightMonitoringVO getNredcapVO() {
+		return nredcapVO;
+	}
+	public void setNredcapVO(LightMonitoringVO nredcapVO) {
+		this.nredcapVO = nredcapVO;
+	}
+	public LightMonitoringVO getEeslVO() {
+		return eeslVO;
+	}
+	public void setEeslVO(LightMonitoringVO eeslVO) {
+		this.eeslVO = eeslVO;
+	}
+	
 }

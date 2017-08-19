@@ -2,6 +2,9 @@ package com.itgrids.dto;
 
 public class LightWattageVO {
 	
+	private  Long Wattage;
+	private Long lightCount;
+	
 	public Long getWattage() {
 		return Wattage;
 	}
@@ -14,10 +17,6 @@ public class LightWattageVO {
 	public void setLightCount(Long lightCount) {
 		this.lightCount = lightCount;
 	}
-	private  Long Wattage;
-	private Long lightCount;
-	
-	
 	
 
 }
