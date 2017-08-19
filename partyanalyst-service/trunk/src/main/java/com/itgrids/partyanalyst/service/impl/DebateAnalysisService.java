@@ -61,13 +61,13 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	 * Date 23-09-2014
 	 * @return returnList
 	 */
-	public List<DebatePartyWiseCountVO> getPartyWiseOverAllPerformance(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds)
+	public List<DebatePartyWiseCountVO> getPartyWiseOverAllPerformance(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds,Long stateId)
 	{
 		List<DebatePartyWiseCountVO> returnList = null;
 		try {
-			Map<Long,DebatePartyWiseCountVO> partyWiseTotalDebatesMap = getPartyWiseTotalDebatesAndScalesService(fromDate,toDate,channelIds,partyIdsList,candidatesIds);
-			Map<Long,DebatePartyWiseCountVO> partyWiseTotalDebatesCharsMap = getPartyWiseTotalDebatePartiCharsCountService(partyWiseTotalDebatesMap,fromDate,toDate,channelIds,partyIdsList,candidatesIds);
-			Map<Long,DebateRankingVO> rankingMap = calucateEachDebateWiseRanking(fromDate,toDate,channelIds,partyIdsList,candidatesIds);
+			Map<Long,DebatePartyWiseCountVO> partyWiseTotalDebatesMap = getPartyWiseTotalDebatesAndScalesService(fromDate,toDate,channelIds,partyIdsList,candidatesIds,stateId);
+			Map<Long,DebatePartyWiseCountVO> partyWiseTotalDebatesCharsMap = getPartyWiseTotalDebatePartiCharsCountService(partyWiseTotalDebatesMap,fromDate,toDate,channelIds,partyIdsList,candidatesIds,stateId);
+			Map<Long,DebateRankingVO> rankingMap = calucateEachDebateWiseRanking(fromDate,toDate,channelIds,partyIdsList,candidatesIds,stateId);
 			if(partyWiseTotalDebatesMap != null && partyWiseTotalDebatesMap.size() > 0 && partyWiseTotalDebatesCharsMap != null && partyWiseTotalDebatesCharsMap.size() > 0)
 			{
 				returnList = new ArrayList<DebatePartyWiseCountVO>();
@@ -94,12 +94,12 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	 * Date 22-09-2014
 	 * @return returnMap
 	 */
-	public Map<Long,DebatePartyWiseCountVO> getPartyWiseTotalDebatesAndScalesService(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds)
+	public Map<Long,DebatePartyWiseCountVO> getPartyWiseTotalDebatesAndScalesService(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds,Long stateId)
 	{
 		Map<Long,DebatePartyWiseCountVO> returnMap = null;
 		try {
 			
-			List<Object[]> partyDebateCount = debateParticipantCharcsDAO.getPartyWiseTotalDebatesAndScalForSelection(fromDate,toDate,channelIds, partyIdsList, candidatesIds);
+			List<Object[]> partyDebateCount = debateParticipantCharcsDAO.getPartyWiseTotalDebatesAndScalForSelection(fromDate,toDate,channelIds, partyIdsList, candidatesIds,stateId);
 			if(partyDebateCount != null && partyDebateCount.size() > 0)
 			{
 				returnMap = new TreeMap<Long, DebatePartyWiseCountVO>();
@@ -134,12 +134,12 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	 * Date 22-09-2014
 	 * @return returnMap
 	 */
-	public Map<Long,DebatePartyWiseCountVO> getPartyWiseTotalDebatePartiCharsCountService(Map<Long,DebatePartyWiseCountVO> partyWiseTotalDebatesMap,Date fromDate,Date toDate,List<Long> channelIds,List<Long>  partyIdsList,List<Long>  candidatesIds)
+	public Map<Long,DebatePartyWiseCountVO> getPartyWiseTotalDebatePartiCharsCountService(Map<Long,DebatePartyWiseCountVO> partyWiseTotalDebatesMap,Date fromDate,Date toDate,List<Long> channelIds,List<Long>  partyIdsList,List<Long>  candidatesIds,Long stateId)
 	{
 		Map<Long,DebatePartyWiseCountVO> returnMap = null;
 		try {
 			
-			List<Object[]> debatePariCharsList = debateParticipantCharcsDAO.getPartyWiseDebatePartiCharsCountsForSelection(fromDate,toDate, channelIds,  partyIdsList,candidatesIds);
+			List<Object[]> debatePariCharsList = debateParticipantCharcsDAO.getPartyWiseDebatePartiCharsCountsForSelection(fromDate,toDate, channelIds,  partyIdsList,candidatesIds,stateId);
 			if(debatePariCharsList != null && debatePariCharsList.size() > 0)
 			{
 				returnMap = new HashMap<Long, DebatePartyWiseCountVO>();
@@ -188,12 +188,12 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	 * @return returnMap
 	 */
 	
-	public Map<Long,DebateRankingVO> calucateEachDebateWiseRanking(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds)
+	public Map<Long,DebateRankingVO> calucateEachDebateWiseRanking(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds,Long stateId)
 	{
 		Map<Long,DebateRankingVO> returnMap = null;
 		try {
 			
-			List<Object[]> result = debateParticipantCharcsDAO.getPartyWiseEachDebateCharsCounttsForSelection(fromDate,toDate,channelIds, partyIdsList, candidatesIds);
+			List<Object[]> result = debateParticipantCharcsDAO.getPartyWiseEachDebateCharsCounttsForSelection(fromDate,toDate,channelIds, partyIdsList, candidatesIds,stateId);
 			if(result != null && result.size() > 0)
 			{
 				Map<Long,DebatePartyWiseCountVO> resultMap = new HashMap<Long, DebatePartyWiseCountVO>();
@@ -254,13 +254,13 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	 * Date 22-09-2014
 	 * @return returnList
 	 */
-	public List<DebateTopicVO> getPartyCandidatePerfortmanceTopicWise(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds )
+	public List<DebateTopicVO> getPartyCandidatePerfortmanceTopicWise(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds, Long stateId )
 	{
 		List<DebateTopicVO> returnList = null;
 		try {
 			Map<Long,List<DebateTopicVO>> subjectWiseMap = new HashMap<Long, List<DebateTopicVO>>();
 			
-			List<Object[]> result =   debateParticipantCharcsDAO.getPartyCandidateDetailsTopicWiseForSelection(fromDate, toDate, channelIds, partyIdsList, candidatesIds);
+			List<Object[]> result =   debateParticipantCharcsDAO.getPartyCandidateDetailsTopicWiseForSelection(fromDate, toDate, channelIds, partyIdsList, candidatesIds,stateId);
 			
 			if(result != null && result.size() > 0)
 			{
@@ -292,7 +292,7 @@ public class DebateAnalysisService implements IDebateAnalysisService
 				List<Object[]> partiesList = null;
 				
 				//if(partyIdsList != null && partyIdsList.size()>0)
-					partiesList = debateParticipantDAO.getDistinctDebatePartiesForSelection(fromDate, toDate,partyIdsList);					
+					partiesList = debateParticipantDAO.getDistinctDebatePartiesForSelection(fromDate, toDate,partyIdsList,stateId);					
 				//else
 				//	partiesList = debateParticipantDAO.getDistinctDebateParties();
 				
@@ -368,14 +368,14 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	}
 	
 	
-	public DebateCandidateCharcVO getPartyWiseCandidateCharacteristicsDetails(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds)
+	public DebateCandidateCharcVO getPartyWiseCandidateCharacteristicsDetails(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds,Long stateId)
 	{
 		DebateCandidateCharcVO resultVO = new DebateCandidateCharcVO();
 		try 
 		{
 		LOG.info("Enterd into getPartyWiseCandidateCharacteristicsDetails method");
 		 
-	 	List<Object[]> list = debateParticipantDAO.getDebateCandidateCharacteristicsDetailForSelection(fromDate,toDate,channelIds,partyIdsList,candidatesIds);
+	 	List<Object[]> list = debateParticipantDAO.getDebateCandidateCharacteristicsDetailForSelection(fromDate,toDate,channelIds,partyIdsList,candidatesIds,stateId);
 	 	
 	 	List<DebateCandidateCharcVO> debateSubjectList = new ArrayList<DebateCandidateCharcVO>();
 	 	//List<DebateCandidateCharcVO> debatePartiesList = null;
@@ -523,7 +523,7 @@ public class DebateAnalysisService implements IDebateAnalysisService
 		return debatePartiesList;
 	}
 	
-	public List<DebateAnalysisVO> partyWiseCandidatePerformance(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds)
+	public List<DebateAnalysisVO> partyWiseCandidatePerformance(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds,Long stateId)
 	{
 		Map<Long, DebateAnalysisVO> partiesAndCandidatesMap=null;
 		Map<Long, Double> performanceCountMap=null;
@@ -534,21 +534,21 @@ public class DebateAnalysisService implements IDebateAnalysisService
 		try {
 			LOG.info("Entered into partyWiseCandidatePerformance method in DebateAnalysisService Class");
 			
-			List<Object[]> result1 = debateParticipantDAO.getPartiesAndCanidatesIdForSelection(fromDate, toDate, channelIds, partyIdsList, candidatesIds);
+			List<Object[]> result1 = debateParticipantDAO.getPartiesAndCanidatesIdForSelection(fromDate, toDate, channelIds, partyIdsList, candidatesIds,stateId);
 			if(result1 != null && result1.size() > 0)
 			{
 				partiesAndCandidatesMap = new HashMap<Long, DebateAnalysisVO>();
 				setPartiesAndCandidatesInfo(result1,partiesAndCandidatesMap);
 			}
 			
-			List<Object[]> result2 = debateParticipantCharcsDAO.getDebatePerformanceCountsForSelection(fromDate, toDate, channelIds, partyIdsList, candidatesIds);
+			List<Object[]> result2 = debateParticipantCharcsDAO.getDebatePerformanceCountsForSelection(fromDate, toDate, channelIds, partyIdsList, candidatesIds,stateId);
 			if(result2 != null && result2.size() > 0)
 			{
 				performanceCountMap = new HashMap<Long, Double>();
 				setPerformanceCountInfo(result2,performanceCountMap);
 			}
 			
-			List<Object[]> result3 = debateParticipantCharcsDAO.getDebatePerformanceCountCharForSelection(fromDate, toDate, channelIds, partyIdsList, candidatesIds);
+			List<Object[]> result3 = debateParticipantCharcsDAO.getDebatePerformanceCountCharForSelection(fromDate, toDate, channelIds, partyIdsList, candidatesIds,stateId);
 			if(result3 != null && result3.size() > 0)
 			{
 				charsCountMap = new HashMap<Long, DebateAnalysisVO>();
@@ -687,13 +687,13 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	 * Date 24-09-2014 
 	 * @return returnList
 	 */
-	public List<DebateTopicVO> getPartyWiseStrongAndWeakTopicAndCandidates(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds)
+	public List<DebateTopicVO> getPartyWiseStrongAndWeakTopicAndCandidates(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds,Long stateId)
 	{  
 		List<DebateTopicVO> returnList = null;
 		try {
 			Map<Long,DebateTopicVO> topTopicesMap = null;
 			Map<Long,List<DebateTopicVO>> topTopicesPartyWiseMap = null;
-			List<Object[]> topTopicesList = debateParticipantCharcsDAO.getTopicWiseStrongOrWeakCandidatsForSelection(fromDate,toDate,channelIds,partyIdsList,candidatesIds,"desc");
+			List<Object[]> topTopicesList = debateParticipantCharcsDAO.getTopicWiseStrongOrWeakCandidatsForSelection(fromDate,toDate,channelIds,partyIdsList,candidatesIds,"desc",stateId);
 			if(topTopicesList != null)
 			{
 				topTopicesMap = new LinkedHashMap<Long, DebateTopicVO>();
@@ -702,7 +702,7 @@ public class DebateAnalysisService implements IDebateAnalysisService
 			}
 			Map<Long,DebateTopicVO> weakTopicesMap = null;
 			Map<Long,List<DebateTopicVO>> weakTopicesPartyWiseMap = null;
-			List<Object[]> weakTopicesList = debateParticipantCharcsDAO.getTopicWiseStrongOrWeakCandidatsForSelection(fromDate,toDate,channelIds,partyIdsList,candidatesIds,"asc");
+			List<Object[]> weakTopicesList = debateParticipantCharcsDAO.getTopicWiseStrongOrWeakCandidatsForSelection(fromDate,toDate,channelIds,partyIdsList,candidatesIds,"asc",stateId);
 			if(weakTopicesList != null)
 			{
 				weakTopicesMap = new LinkedHashMap<Long, DebateTopicVO>();
@@ -713,7 +713,7 @@ public class DebateAnalysisService implements IDebateAnalysisService
 			List<Object[]> partiesList = null;
 			
 			//if(partyIdsList != null && partyIdsList.size()>0)
-				partiesList = debateParticipantDAO.getDistinctDebatePartiesForSelection(fromDate, toDate,partyIdsList);					
+				partiesList = debateParticipantDAO.getDistinctDebatePartiesForSelection(fromDate, toDate,partyIdsList,stateId);					
 			//else
 			//	partiesList = debateParticipantDAO.getDistinctDebateParties();
 			

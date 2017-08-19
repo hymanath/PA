@@ -152,14 +152,25 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 		return query.list();
 	}
 	
-	public List<Object[]> getPartiesAndCanidatesIdForSelection(Date fromDate,Date toDate,List<Long> channelIds,List<Long> partyIds,List<Long> candidateIds)
+	public List<Object[]> getPartiesAndCanidatesIdForSelection(Date fromDate,Date toDate,List<Long> channelIds,List<Long> partyIds,List<Long> candidateIds,Long stateId)
 	{
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("select DP.partyId ,DP.party.shortName, DP.candidateId ,DP.candidate.lastname, count(*) " +
-				                                       "from DebateParticipant DP  ");	
+				                                       "from DebateParticipant DP  ");
+		if(stateId != null && stateId.longValue() > 0){
+			sb.append(" , DebateParticipantLocation model3 ");
+		}
 		sb.append(" where DP.debate.debateId = DP.debateId and DP.debate.isDeleted = 'N'  ");
 
+		if(stateId != null && stateId.longValue() > 0){
+			sb.append(" and DP.debateParticipantId = model3.debateParticipant.debateParticipantId and model3.isDeleted = 'N' ");
+		}
+		if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 1L){
+			sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_AP_STATE_ID);
+		}else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
+			sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_TS_STATE_ID);
+		}
 		if(fromDate !=null && toDate !=null){
 			sb.append(" and date(DP.debate.startTime) >= :fromDate and date(DP.debate.startTime) <= :toDate ");
 		}
@@ -212,16 +223,27 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 		return query.list();
 	}
 	
-public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date fromDate,Date toDate,List<Long> channelIds,List<Long> partyIds,List<Long> candidateIds)
+public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date fromDate,Date toDate,List<Long> channelIds,List<Long> partyIds,List<Long> candidateIds,Long stateId)
 	{
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("select DP.party.partyId ,DP.party.shortName, DS.debateSubjectId ,DS.subject, " +
 				" DP.candidate.candidateId,DP.candidate.lastname, " +
 				" DPC.characteristics.characteristicsId ,DPC.characteristics.name, sum(DPC.scale)  ");	
-		sb.append("  from DebateSubject DS , DebateParticipant DP , DebateParticipantCharcs DPC where ");
+		sb.append("  from DebateSubject DS , DebateParticipant DP , DebateParticipantCharcs DPC ");
+		if(stateId != null && stateId.longValue() > 0){
+			sb.append(" , DebateParticipantLocation DPL ");
+		}
+		sb.append(" where DS.debate.debateId = DP.debate.debateId and DP.debateParticipantId = DPC.debateParticipant.debateParticipantId ");
 		
-		sb.append(" DS.debate.debateId = DP.debate.debateId and DP.debateParticipantId = DPC.debateParticipant.debateParticipantId ");
+		if(stateId != null && stateId.longValue() > 0){
+			sb.append(" and DP.debateParticipantId = DPL.debateParticipant.debateParticipantId and DPL.isDeleted = 'N' ");
+		}
+		if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 1L){
+			sb.append(" and DPL.address.state.stateId="+IConstants.DEBATE_AP_STATE_ID);
+		}else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
+			sb.append(" and DPL.address.state.stateId="+IConstants.DEBATE_TS_STATE_ID);
+		}
 		sb.append(" and DPC.characteristics.isDeleted = 'N' and DS.debate.isDeleted = 'N' ");
 		
 		if(fromDate !=null && toDate !=null){
@@ -273,11 +295,24 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		return query.list();
 	}
 	
-	public List<Object[]> getDistinctDebatePartiesForSelection(Date fromDate,Date toDate, List<Long> partyIds)
+	public List<Object[]> getDistinctDebatePartiesForSelection(Date fromDate,Date toDate, List<Long> partyIds, Long stateId)
 	{
 		StringBuilder br = new StringBuilder();
-		br.append(" select distinct model.party.partyId,model.party.shortName from DebateParticipant model where model.debate.isDeleted = 'N'" );
-				
+		br.append(" select distinct model.party.partyId,model.party.shortName from DebateParticipant model ");
+		if(stateId != null && stateId.longValue() > 0){
+			br.append(" , DebateParticipantLocation model3 ");
+		}
+		br.append(" where model.debate.isDeleted = 'N'" );
+		
+		if(stateId != null && stateId.longValue() > 0){
+			br.append(" and model.debateParticipantId = model3.debateParticipant.debateParticipantId and model3.isDeleted = 'N' ");
+		}
+		if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 1L){
+			br.append(" and model3.address.state.stateId="+IConstants.DEBATE_AP_STATE_ID);
+		}else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
+			br.append(" and model3.address.state.stateId="+IConstants.DEBATE_TS_STATE_ID);
+		}
+		
 		if(fromDate !=null && toDate  !=null){
 			br.append(" and date(model.debate.startTime) >= :fromDate and date(model.debate.endTime) <= :toDate  ");
 		}			
@@ -619,4 +654,6 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		
 		return query.list();
 	}
+
+
 }

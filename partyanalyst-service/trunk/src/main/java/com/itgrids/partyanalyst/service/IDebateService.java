@@ -68,7 +68,7 @@ public interface IDebateService {
 	 
 	 public String deleteSelectedDEbate(Long debateId);
 	 public List<DebateVO> getTotalAttendedDebatesOfCadre(Long tdpCadreId);
-	 public List<DebatePartyWiseCountVO> getPartyWiseOverAllPerformance(Long cadreId);
+	 public List<DebatePartyWiseCountVO> getPartyWiseOverAllPerformance(Long cadreId,Long stateId);
 	 public List<DebateTopicVO> getPartyWiseStrongAndWeakTopicAndCandidates(Long cadreId);
 	 public Long getTotalAttendedDebatesOfCadreNew(Long tdpCadreId);
 	 public void convertDebateContentToUnicode();
