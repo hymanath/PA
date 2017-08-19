@@ -183,8 +183,8 @@
 									
 									<div class="row m_top20">
 										<form name="searchMember" id="searchMember">
-											<div class="col-sm-3">
-												<div class=" selectSearch">
+											<div class="col-sm-3" style="padding-right:0px">
+												<div class=" selectSearch" style="padding:6px">
 													<label class="radio-inline">
 														<input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="membershipId" value="1" attr_type="memberShipNumber"/>Membership No
 													</label>
@@ -193,11 +193,11 @@
 													</label>
 												</div>
 											</div>
-											<div class="col-sm-9">
+											<div class="col-sm-9" style="padding-left:0px">
 												<div class="input-group">
 													<input type="text" class="form-control" placeholder="Enter Number" name="memberField" id="searchBy" required/>
 													<span class="input-group-btn">
-														<button type = "button" class="btn btn-success btn-block btnSearch" id="searchbtn">SEARCH</button>
+														<button type = "button" class="btn btn-success btn-block btnSearch" id="searchbtn" style="width:auto">SEARCH</button>
 													</span>
 												</div>
 											</div>
@@ -604,6 +604,7 @@ var gsId = 0;
 		$('[data-toggle="tooltip"]').tooltip()
 		$('.check').tooltip()
 		$('#searchedMembersId').DataTable({
+			
 			
 		});
 		//applyPagination();
