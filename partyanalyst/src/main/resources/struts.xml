@@ -17773,7 +17773,7 @@
 	</action>
 	<action name="getTotalAlertDetailsForConstituencyInfoAction" class="alertManagementSystemAction" method="getTotalAlertDetailsForConstituencyInfo">
 		<result type="json" name="success">    
-		<param name="root">alertVOs</param>
+		<param name="root">locationAlertVO</param>
 		</result>        
 	</action>
 	<action name="getLocationWiseTourMembersComplainceDtlsAction" class="locationDashboardAction"  method="getLocationWiseTourMembersComplainceDtls">
