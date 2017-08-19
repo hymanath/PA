@@ -22,10 +22,6 @@
 <link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/slick/slick.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
-.jFiler-input-dragDrop
-{
-	width:100%;
-}
 .involveBlock {
     background: #f8f9fb none repeat scroll 0 0;
     border: 1px solid #ddd;
@@ -212,7 +208,7 @@
 								<div class="col-sm-12 m_top20" id="">
 								<div class="errMessageId" style="color:red;"></div>
 									<div class="m_top20" id="searchResultsBlock"></div>
-									<p class="m_top20">Note:   1) Please select matches profile     2) You Can add Multiple members to above selected Post Name</p>
+									
 								</div>
 							</div>
 						</div>
