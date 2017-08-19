@@ -96,9 +96,9 @@ $(document).on('click','.selectMember',function(){
 			var appendBlock = $(this).closest("li").html();
 			var cadreId = $(this).attr("attr_cadreId");
 			if(globalCadreIds.indexOf(cadreId) > -1){
-				$("#errMessageId").html('<b style="color:red;"> Duplicate person adding.</b>');
+				$("#errMessageId").html('Duplicate person adding.');
 			}else{
-					if(globalPositionsArr == null || globalPositionsArr == ""){
+				if(globalPositionsArr == null || globalPositionsArr == ""){
 					buildPanelBlock(selPosition,appendBlock,cadreId);
 					$("#addmember"+selPosition).find("li div.panel-footer").remove();
 				}else{
@@ -314,7 +314,7 @@ function getDepartments(){
 	   if(result != null && result.length >0){
 		   $("#depmtsId").append('<option value=" ">Select Department</option>'); 
 		   
-			$("#depmtsId").append('<option value="0">Any</option>'); 
+			//$("#depmtsId").append('<option value="0">Any</option>'); 
 		
 		 for(var i in result){
 			 if(globaldeptId == result[i].id){
@@ -379,7 +379,7 @@ function getDepartments(){
      $("#deptBoardPostnId").empty();   
    if(result != null && result.length >0){
 	       $("#deptBoardId").append('<option value=" ">Select Department Board</option>');
-			$("#deptBoardId").append('<option value="0">Any</option>');
+			//$("#deptBoardId").append('<option value="0">Any</option>');
 	   
 	   if(depmtId > 0 ){
 				for(var i in result){
@@ -450,11 +450,11 @@ function getDepartments(){
 	   $("#searchDataImgForPos").hide();
     $("#deptBoardPostnId").empty();
    if(result != null && result.length >0){
-	  //$("#deptBoardPostnId"+num).append('<option value="" >Select Board Position</option>');
+	  $("#deptBoardPostnId").append('<option value="" >Select Board Position</option>');
 	  
-	   if(result[0].status != "Applied"){
+	   /* if(result[0].status != "Applied"){
 		   $("#deptBoardPostnId").append('<option value="0">Any</option>');
-	  } 
+	  }  */
 		for(var i in result){
 			if(result[i].name != null && result[i].id == globalposId){
 					$("#deptBoardPostnId").append('<option selected="selected" value='+result[i].id+' id="position'+result[i].name+'">'+result[i].name+'</option>');
