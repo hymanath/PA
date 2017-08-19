@@ -7,12 +7,18 @@ function onLoadCalls(){
 }
 
 $(document).on('click','#searchbtn',function(){
+	$("#errMessageId").html('');
 	getNominatedPostApplication();
 	$("#addedRefferalsDiv").hide();
 })
-
+$(document).on('change','#deptBoardPostnId',function(){
+	$("#searchResultsBlock").html("");
+	$("#searchBy").val("");
+})
 getBoardLevels("boardLvlId");	
 function getBoardLevels(id){
+	$("#searchResultsBlock").html("");
+	$("#searchBy").val("");
 	var jsObj = {}
     $.ajax({
           type:'GET',
@@ -81,6 +87,7 @@ function searchResultBlock(result){
 var globalPosiDivs = 0;
 var globalPositionsArr = [];
 var globalCadreIds =[];
+var globalMemrsCnt = 0;
 $(document).on('click','.selectMember',function(){
 		var departmentId=$("#depmtsId").val();
 	var boardId = $("#deptBoardId").val();
@@ -99,6 +106,8 @@ $(document).on('click','.selectMember',function(){
 						var count = $("#addmember"+selPosition).attr("attr_member_count");
 						var posiCnt = $("#addmember"+selPosition).attr("attr_posi_count");
 						count++;
+						globalMemrsCnt++;
+						$("#selTotPosCnt").text(globalPosiDivs);$("#selTotMemCnt").text(globalMemrsCnt);
 						$("#addmember"+selPosition).attr("attr_member_count",count);
 						$("#addmember"+selPosition).append('<li><input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].tdpCadreId"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].departmentId" value="'+departmentId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].boardId" value="'+boardId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].positionId" value="'+positionId+'">'+appendBlock+'</li>');
 					}else{
@@ -118,13 +127,14 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	var collapse='';
 	var count = 0;
 	globalPosiDivs++;
+	globalMemrsCnt++;
 		collapse+='<input type="hidden" id="positionDiv'+selPosition+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+']">';
 	collapse+='<div class="panel-group" id="accordionOne" role="tablist" aria-multiselectable="true">';
 		collapse+='<div class="panel panel-default">';
 			collapse+='<div class="panel-heading" role="tab" id="headingTwo">';
 				collapse+=' <a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordionOne" href="#collapsetwo" aria-expanded="true" aria-controls="collapseTwo">';
 					collapse+='<h4 class="panel-title" style="font-weight:600">SELECTED POSITON & SEARCH MEMBERS</h4>';
-					collapse+='<p>'+globalPosiDivs+' Positions & 1 Members</p>';
+					collapse+='<p><span id="selTotPosCnt">'+globalPosiDivs+'</span> Positions & <span id="selTotMemCnt">'+globalMemrsCnt+'</span> Members</p>';
 				collapse+='</a>';
 			collapse+='</div>';
 			collapse+='<div id="collapsetwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">';
@@ -186,9 +196,12 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	collapse+='</div>';
 	 $("#addPositionsBlock").html(collapse);
 	}else{
+		globalMemrsCnt++;
 		globalPosiDivs++;
 		var  collapse1 = "";
 		var count = 0;
+		$("#selTotPosCnt").text(globalPosiDivs);$("#selTotMemCnt").text(globalMemrsCnt);
+		//$("#accordionOne").closest("h4").html('<p>'+globalPosiDivs+' Positions & '+globalMemrsCnt+' Members</p>');
 		collapse1+='<input type="hidden" id="positionDiv'+selPosition+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+']">';
 		collapse1+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition+'">';
         collapse1+='<div class="panel-group m_top20" id="accordion'+selPosition+'" role="tablist" aria-multiselectable="true">';
@@ -240,6 +253,8 @@ function savingApplication(){
 
 function getDepartments(){
 	  //$("#searchDataImgForDist").show();
+	  $("#searchResultsBlock").html("");
+		$("#searchBy").val("");
 	  $("#errdeptBoardPostnId").html("");
 	 var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId").val();
@@ -321,6 +336,8 @@ function getDepartments(){
   
    function getDepartmentBoards(){
 		$("#errdeptBoardPostnId").html("");
+		$("#searchResultsBlock").html("");
+		$("#searchBy").val("");
 	$("#searchDataImgForDep").show();
 	 var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId").val();
@@ -383,14 +400,12 @@ function getDepartments(){
 	   $("#deptBoardPostnId").trigger("chosen:updated");
    });
   }
-   $(document).on('change','#deptBoardPostnId',function(){
-		var getPosition = $(this).find("option:selected").text();
-		//buildPanelBlock(getPosition);
-		})
+
   function getDepartmentBoardPositions(){
 	$("#searchDataImgForPos").show();
 	$("#errdeptBoardPostnId").html("");
-	
+	$("#searchResultsBlock").html("");
+	$("#searchBy").val("");
 	var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId").val();
 
