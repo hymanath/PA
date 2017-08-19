@@ -94,7 +94,8 @@ var pathArr = [];
 			
 		var jsObj={
 			userId:"${param.userId}",
-			divisonId:"${param.divisonId}",
+			locationId:"${param.divisonId}",
+			levelId:"${param.levelIdId}",
 			datesArr:datesArr
 		}
 						
@@ -113,7 +114,7 @@ var pathArr = [];
 					temp.push(result[i].longitude);
 					locations.push(temp);
 				}
-				buildMap(locations);
+				buildMap(locations,result[i].latitude,result[i].longitude);
 				
 				var str='';
 				str+='<tr><td>USER ID</td><td>'+result[0].currentTabUserId+'</td></tr>';
@@ -133,7 +134,7 @@ var pathArr = [];
 				if(result[0].mobileNosCount==null)result[0].mobileNosCount=0;
 				str+='<tr><td>NO OF MOBILES NO COLLECTED</td><td>'+result[0].mobileNosCount+'</td></tr>';
 				
-				$("#userHeadingId").html("USER - "+result[0].currentTabUserId);
+				$("#userHeadingId").html("USER - "+result[0].name);
 				$("#useDetailsTableId").html(str);
 				
 				var str1='';
@@ -185,11 +186,11 @@ var pathArr = [];
 	
 	}
 
-    function buildMap(locations){
+    function buildMap(locations,latitude,longitude){
 		var map='';
 		map = new google.maps.Map(document.getElementById('map'), {
-		  zoom: 10,
-		  center: new google.maps.LatLng(17.4277287, 78.4129442),
+		  zoom: 8,
+		  center: new google.maps.LatLng(latitude,longitude),
 		  mapTypeId: google.maps.MapTypeId.ROADMAP
 		});
 
@@ -249,8 +250,10 @@ var pathArr = [];
 		//console.log(pathArray);
 		var infoWindow;
 		var map1 = new google.maps.Map(document.getElementById('map1'), {
-			zoom: 10,
-			center: {lat: 17.3700, lng: 78.4800},
+			zoom: 8,
+			//center: {lat: 17.3700, lng: 78.4800},
+			center: {lat: pathArray[0].lat, lng:pathArray[0].lng},
+			//center: {lat: 15.478569, lng:78.483093},//Nadyal 
 			mapTypeId: google.maps.MapTypeId.TERRAIN
 		});
 		

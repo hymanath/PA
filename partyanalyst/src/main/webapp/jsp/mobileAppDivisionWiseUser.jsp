@@ -8,7 +8,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> DIVISION WISE USERS </title>
+<title> VOTER SLIP DASHBOARD </title>
 <link href="dist/mobileApp/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/mobileApp/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/mobileApp/Daterange/daterangepicker.css" rel="stylesheet" type="text/css">
@@ -286,7 +286,7 @@ function buildAccessValues(){
 		var str1 = "";
 		for(var i in result.userRslt){
 			str1+="<tr class='bg_FFF'>";
-			str1+="<td class='openTab' attr_divisonId="+'${param.divisionId}'+" attr_surveydate="+result.userRslt[i].date+" attr_userId="+result.userRslt[i].mobileAppUserId+" style='cursor:pointer;'><a href='javascript:{}' style='color:green;font-weight:bold;'>"+result.userRslt[i].name+"</a></td>";
+			str1+="<td class='openTab' attr_divisonId="+locId+" attr_surveydate="+result.userRslt[i].date+" attr_userId="+result.userRslt[i].mobileAppUserId+" attr_levelId="+lvlId+" style='cursor:pointer;'><a href='javascript:{}' style='color:green;font-weight:bold;'>"+result.userRslt[i].name+"</a></td>";
 			if(result.userRslt[i].userName.trim().length > 0){
 				str1+="<td>"+result.userRslt[i].userName+"</td>";
 			}
@@ -310,9 +310,9 @@ function buildAccessValues(){
 	}
 
 
-	/* $(document).on("click",".openTab",function(){
-		window.open("showGoogleMapDetails.action?userId="+$(this).attr("attr_userId")+"&divisonId="+$(this).attr("attr_divisonId")+"&surveyDate="+$(this).attr("attr_surveydate"), "new window", "scrollbars=1,height=900,width=1300");
-	}); */
+	 $(document).on("click",".openTab",function(){
+		window.open("showGoogleMapDetails.action?userId="+$(this).attr("attr_userId")+"&divisonId="+$(this).attr("attr_divisonId")+"&surveyDate="+$(this).attr("attr_surveydate")+"&levelIdId="+$(this).attr("attr_levelId"), "new window", "scrollbars=1,height=900,width=1300");
+	}); 
 	
 	var userArr = [];
 $(document).on('click','#getDetailsId',function(){
@@ -378,7 +378,8 @@ $(".usersCls").change(function () {
 	if(isAllChecked)
 		 $("input:checkbox").prop('checked', $(this).prop("checked"));
 });
-
+var locId = accessValue;
+var lvlId = 4;
 function getUsersSummary(userArr){
 	$("#ttlUsrs").html("");		
 	$("#ttlVtrs").html("");
@@ -392,8 +393,6 @@ function getUsersSummary(userArr){
 	$('#ttlUsrs').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
 	$('#mainRtng').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
 	
-	var locId;
-	var lvlId;
 	var startDate;
 	var endDate;
 	var locationId = $("#divisionList").val();
