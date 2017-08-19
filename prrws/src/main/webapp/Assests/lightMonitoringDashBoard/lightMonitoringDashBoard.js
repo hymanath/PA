@@ -43,21 +43,29 @@ function menuWiseDetails(){
 		$("#consLvlLedDistrictSelectBoxId_chosen").show();
 		$("#mandalLvlLedDistrictSelectBoxId_chosen").show();
 		$("#mandalLvlLedConstituencySelectBoxId_chosen").show();
+		$(".tableMenu li:nth-child(1)").addClass("active");
+		$(".tableMenu li:nth-child(2)").show();
 	}else if(globallevelId == 3){
 		projectData('',3)
 		$("#consLvlLedDistrictSelectBoxId_chosen").hide();
 		$("#mandalLvlLedDistrictSelectBoxId_chosen").hide();
 		$("#mandalLvlLedConstituencySelectBoxId_chosen").hide();
+		$(".tableMenu li:nth-child(1)").addClass("active");
+		$(".tableMenu li:nth-child(2)").hide();
 	}else if(globallevelId == 4){
 		projectData('',4)
 		$("#consLvlLedDistrictSelectBoxId_chosen").hide();
 		$("#mandalLvlLedDistrictSelectBoxId_chosen").hide();
 		$("#mandalLvlLedConstituencySelectBoxId_chosen").hide();
+		$(".tableMenu li:nth-child(1)").addClass("active");
+		$(".tableMenu li:nth-child(2)").hide();
 	}else if(globallevelId == 5){
 		projectData('',5)
 		$("#consLvlLedDistrictSelectBoxId_chosen").hide();
 		$("#mandalLvlLedDistrictSelectBoxId_chosen").hide();
 		$("#mandalLvlLedConstituencySelectBoxId_chosen").hide();
+		$(".tableMenu li:nth-child(1)").addClass("active");
+		$(".tableMenu li:nth-child(2)").hide();
 	}
 }
 $("#singleDateRangePicker").daterangepicker({
@@ -70,8 +78,12 @@ $("#singleDateRangePicker").daterangepicker({
 	});
 $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	
-	glStartDate = picker.startDate.format('DD-MM-YYYY')
-	glEndDate = picker.endDate.format('DD-MM-YYYY')
+/* 	glStartDate = picker.startDate.format('DD-MM-YYYY');
+	glEndDate = picker.endDate.format('DD-MM-YYYY'); */
+	var tartDate = picker.startDate.format('DD-MM-YYYY');
+	var endDate = picker.endDate.format('DD-MM-YYYY');
+	glStartDate = endDate;
+	glEndDate = endDate;
 	onLoadCalls();
 	
 });
@@ -331,7 +343,9 @@ function buildBasicLedOverviewDetails(result)
 			str+='<ul class="nav navbar-nav">';
 				for(var i in result[0].wattageList)
 				{
-					str+='<li><b>'+result[0].wattageList[i].wattage+'W = '+result[0].wattageList[i].lightCount+'</b></li>';
+					if (result[0].wattageList[i].wattage !=0 && result[0].wattageList[i].lightCount!=0){
+					 str+='<li><b>'+result[0].wattageList[i].wattage+'W = '+result[0].wattageList[i].lightCount+'</b></li>';
+					}
 				}
 			str+='</ul>';
 		str+='</div>';
@@ -700,10 +714,11 @@ $(document).on("click",".todayDataCls",function() {
 	 onLoadCalls();
 });
 function callWebService(){
-	$("#ledOverViewDiv").html(spinner);
+	$("#webServiceMessageStatusId").show();
+	/* $("#ledOverViewDiv").html(spinner);
 	$("#overviewBlockId").html(spinner);
 	$("#districtTableId").html(spinner);
-	$("#esslAndNredcapDivId").html(spinner);
+	$("#esslAndNredcapDivId").html(spinner); */
 	var json = {
 		}
 	$.ajax({                
@@ -716,10 +731,13 @@ function callWebService(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$("#webServiceMessageStatusId").hide();
 		 if (result.statusCode==0 && result.message=="SUCCESS"){
 			  glStartDate = moment().format('DD-MM-YYYY');
 			  glEndDate = moment().format('DD-MM-YYYY');
 			  onLoadCalls();
+		 } else {
+			    alert("Exception Occured While Saving data into database.");
 		 }
 	});
 }
@@ -777,8 +795,8 @@ function buildCompanyWiseLightMonitoringDtls(result){
 	if(result !=null){
 			str+='<div class="col-sm-6">';
 			str+='<div class="white-block block_Led_styles blockHeights">';
-			if(result.eeslVO !=null && result.eeslVO != 'undefined'){
-				str+='<div class="row" style="padding: 15px; border-bottom: 1px dashed gray;">';
+			if(result.eeslVO !=null && result.eeslVO != 'undefined' && result.eeslVO.surveyStartedtotalDistricts !=0){
+				str+='<div class="row" style="padding: 10px; border-bottom: 1px dashed gray;">';
 					str+='<h3>EESL</h3>';
 					str+='<p>Energy Efficiency Services Limited</p>';
 					str+='<div class="media">';
@@ -842,7 +860,9 @@ function buildCompanyWiseLightMonitoringDtls(result){
 						str+='<ul class="nav navbar-nav" style="float:none;">';
 						if(result.eeslVO.wattageList !=null && result.eeslVO.wattageList.length>0){
 							for(var i in result.eeslVO.wattageList){
-								str+='<li><b>'+result.eeslVO.wattageList[i].wattage+'W = '+result.eeslVO.wattageList[i].lightCount+'</b></li>';
+								if (result.eeslVO.wattageList[i].wattage !=0 && result.eeslVO.wattageList[i].lightCount!=0){
+								 str+='<li><b>'+result.eeslVO.wattageList[i].wattage+'W = '+result.eeslVO.wattageList[i].lightCount+'</b></li>';
+								}
 							}
 						}else{
 							str+='<li><b>0W = 0</b></li>';
@@ -869,11 +889,13 @@ function buildCompanyWiseLightMonitoringDtls(result){
 						str+='</div>';
 					str+='</div>';
 			}else{
-				str+='<div class="row" style="padding: 10px;">';
+				  var str1 = getRequiredTemplate('EESL');
+				  str = str+''+str1;
+				/* str+='<div class="row" style="padding: 10px;">';
 					str+='<h3>EESL</h3>';
 					str+='<p>Energy Efficiency Services Limited</p>';
 					str+='<div style="text-align:center"><img src="Assests/icons/NODATA.png" alt="NODATA"></div>';
-				str+='</div>';
+				str+='</div>'; */
 			}
 				
 			str+='</div>';
@@ -881,8 +903,8 @@ function buildCompanyWiseLightMonitoringDtls(result){
 		str+='</div>';
 		str+='<div class="col-sm-6">';
 			str+='<div class="white-block block_Led_styles blockHeights">';
-			if(result.nredcapVO !=null && result.nredcapVO != 'undefined'){
-				str+='<div class="row" style="padding: 15px; border-bottom: 1px dashed gray;">';
+			if(result.nredcapVO !=null && result.nredcapVO != 'undefined' && result.nredcapVO.surveyStartedtotalDistricts !=0){
+				str+='<div class="row" style="padding: 10px; border-bottom: 1px dashed gray;">';
 					str+='<h3>NREDCAP</h3>';
 					str+='<p>New & Renewable Energy Development Corporation of Andhra Pradesh Ltd.</p>';
 					str+='<div class="media">';
@@ -946,7 +968,10 @@ function buildCompanyWiseLightMonitoringDtls(result){
 						str+='<ul class="nav navbar-nav" style="float:none;">';
 							if(result.nredcapVO.wattageList !=null && result.nredcapVO.wattageList.length>0){
 								for(var i in result.nredcapVO.wattageList){
-									str+='<li><b>'+result.nredcapVO.wattageList[i].wattage+'W = '+result.nredcapVO.wattageList[i].lightCount+'</b></li>';
+									if (result.nredcapVO.wattageList[i].wattage !=0 && result.nredcapVO.wattageList[i].lightCount!=0){
+									 str+='<li><b>'+result.nredcapVO.wattageList[i].wattage+'W = '+result.nredcapVO.wattageList[i].lightCount+'</b></li>';	
+									}
+									
 								}
 							}else{
 								str+='<li><b>0W = 0</b></li>';
@@ -972,11 +997,13 @@ function buildCompanyWiseLightMonitoringDtls(result){
 						str+='</div>';
 					str+='</div>';
 			}else{
-				str+='<div class="row" style="padding: 10px;">';
+				var str1 = getRequiredTemplate('NREDCAP');
+				str = str+''+str1;
+				/* str+='<div class="row" style="padding: 10px;">';
 					str+='<h3>NREDCAP</h3>';
 					str+='<p>New & Renewable Energy Development Corporation of Andhra Pradesh Ltd.</p>';
 					str+='<div style="text-align:center"><img src="Assests/icons/NODATA.png" alt="NODATA"></div>';
-				str+='</div>';
+				str+='</div>'; */
 			}
 			str+='</div>';
 			
@@ -989,4 +1016,99 @@ function buildCompanyWiseLightMonitoringDtls(result){
 	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 	});
 	$(".blockHeights").height(maxHeight);
+}
+function getRequiredTemplate(type){
+		var str='';
+			str+='<div class="row" style="padding: 10px; border-bottom: 1px dashed gray;">';
+			if(type=="NREDCAP") {
+				str+='<h3>NREDCAP</h3>';
+				str+='<p>New & Renewable Energy Development Corporation of Andhra Pradesh Ltd.</p>';
+				str+='<div class="media">';
+					  str+='<div class="media-left img_middle">';
+						 str+='<img class="media-object" src="Assests/icons/Nredp.jpg" alt="Nredp">';	
+			} else if(type=="EESL") {
+				str+='<h3>EESL</h3>';
+				str+='<p>Energy Efficiency Services Limited</p>';
+				str+='<div class="media">';
+					  str+='<div class="media-left img_middle">';
+						 str+='<img class="media-object" src="Assests/icons/Essl.jpg" alt="Essl">';
+			}
+			 str+='</div>';
+			  str+='<div class="media-body">';
+				str+='<div class="col-sm-12">';
+					str+='<div class="col-sm-4 media m_top5">';
+						str+='<div class="media-left">';
+							str+='<img src="Assests/icons/Poles_icon.png" alt="poles_icon">';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<h5 style="color:#669FF5;">TOTAL POLES</h5>';
+							str+='<h3>0</h3>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-8 media m_top5">';
+						str+='<div class="media-left">';
+							str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<h5 style="color:#669FF5;">TOTAL CCMS-BOX/ PANELS</h5>';
+							str+='<h3>0</h3>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-12 m_top5">';
+					str+='<div class="col-sm-4 media m_top5">';
+						str+='<div class="media-left">';
+							str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon" style="width: 25px; height: 35px;">';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<h6 style="color:#827C13">TOTAL LIGHTS</h6>';
+							str+='<h4>0</h4>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-3 media m_top5">';
+						str+='<div class="media-left">';
+							str+='<img src="Assests/icons/Operational_LED_Light_Icon.png" alt="poles_icon" style="width: 25px; height: 35px;">';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<h6 style="color:#339900;">OPERATIONAL</h6>';
+							str+='<h4>0</h4>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-5 media m_top5">';
+						str+='<div class="media-left">';
+							str+='<img src="Assests/icons/Non_Operational_LED_Light_Ico.png" alt="poles_icon" style="width: 25px; height: 35px;">';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<h6 style="color:#FF3333;">NON-OPERATIONAL</h6>';
+							str+='<h4>0</h4>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			  str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		str+='<div class="row poles_block" style="padding:10px;border-bottom:1px solid grey">';
+			str+='<ul class="nav navbar-nav" style="float:none;">';
+					str+='<li><b>0W = 0</b></li>';
+			str+='</ul>';
+		str+='</div>';
+		str+='<div class="row m_top10" style="padding:10px;">';
+			str+='<div class="col-sm-3">';
+				str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY SATRTED</b></h6>';
+				str+='<h3>0</h3>';
+			str+='</div>';
+			str+='<div class="col-sm-3">';
+				str+='<h6><b>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span><br/>SURVEY SATRTED</b></h6>';
+				str+='<h3>0</h3>';
+			str+='</div>';
+			str+='<div class="col-sm-3">';
+				str+='<h6><b>NO OF <span style="color:#00BFE8;">MANDALS</span><br/>SURVEY SATRTED</b></h6>';
+				str+='<h3>0</h3>';
+			str+='</div>';
+			str+='<div class="col-sm-3">';
+				str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY SATRTED</b></h6>';
+				str+='<h3>0</h3>';
+			str+='</div>';
+		str+='</div>';
+ return str;
 }
