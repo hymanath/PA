@@ -134,7 +134,7 @@
 						<div class="multi-level-selection-menu arrow_box_top"></div>
 					</div>
 					<div class="col-sm-9">
-					<span style="color:green;display:none;font-size:16px;" id="webServiceMessageStatusId">Please wait data is being process from live server.then page will refresh...</span>
+					<span style="color:green;display:none;font-size:16px;" id="webServiceMessageStatusId">Please wait data is being process from live server,Then page will refresh...</span>
                         <ul class="nav navbar-nav pull-right sub-menu">
 					        <li class="daterangeViewLiveCls liveDataCls commonViewCls" style="cursor:pointer;">LIVE</li>
                             <li class="active daterangeViewLiveCls todayDataCls commonViewCls" style="cursor:pointer;">TODAY</li>
