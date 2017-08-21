@@ -18,6 +18,8 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	 * 
 	 */
 	private static final long serialVersionUID = -5903894658175665595L;
+	private Long id;
+	private String name;
 	private Long electionId;
 	private String electionType;
 	private String electionYear;
@@ -42,12 +44,34 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	private Boolean resultsFlag;
 	private String chartName;
 	private List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>();
+	private List<ConstituencyElectionResultsVO> subList = new ArrayList<ConstituencyElectionResultsVO>();
 	private Set<String> participatedParties;
 	private Double censusReportPercent = 0.0;
 	
 	//getters and setters
 	public Long getElectionId() {
 		return electionId;
+	}
+	
+	public List<ConstituencyElectionResultsVO> getSubList() {
+		return subList;
+	}
+
+	public void setSubList(List<ConstituencyElectionResultsVO> subList) {
+		this.subList = subList;
+	}
+
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public void setElectionId(Long electionId) {
 		this.electionId = electionId;
