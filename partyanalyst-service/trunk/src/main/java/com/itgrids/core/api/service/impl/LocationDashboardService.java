@@ -2807,40 +2807,55 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	}
 	@Override
 	public List<LocationWiseBoothDetailsVO> getAllParlimentsForLocationDashBoard() {
-		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
-		List<Long> districtids = new ArrayList<Long>();
-		Long[] ids = IConstants.AP_NEW_DISTRICTS_IDS;
-		for (Long obj : ids) {
-			districtids.add(obj);
-		}
-		List<Object[]> parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByStateId(districtids);
-		
-		for (Object[] objects : parlimentList) {
-			if(objects!=null){
-				LocationWiseBoothDetailsVO locationVo= new LocationWiseBoothDetailsVO();
-				locationVo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-				locationVo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-				idNameVOList.add(locationVo);
+		try{
+			List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
+			List<Long> districtids = new ArrayList<Long>();
+			Long[] ids = IConstants.AP_NEW_DISTRICTS_IDS;
+			for (Long obj : ids) {
+				districtids.add(obj);
 			}
+			List<Object[]> parlimentList= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentConstituencyByStateId(districtids);
 			
+			for (Object[] objects : parlimentList) {
+				if(objects!=null){
+					LocationWiseBoothDetailsVO locationVo= new LocationWiseBoothDetailsVO();
+					locationVo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					locationVo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					idNameVOList.add(locationVo);
+				}
+				
+			}
+			return idNameVOList;
+		}catch(Exception e){
+			Log.error("Exception raised at getAllParlimentsForLocationDashBoard", e);
+			return null;
 		}
-		return idNameVOList;
+	
+		
 	}	 
 
 	@Override
 	public List<LocationWiseBoothDetailsVO> getAllConstituencyByParlimentId(Long parliamentIds) {
-		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
-		
-		List<Constituency> list = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(parliamentIds,2009l);		
-		for (Constituency objects : list) {
-			if(objects!=null){
-				LocationWiseBoothDetailsVO locationVo= new LocationWiseBoothDetailsVO();
-				locationVo.setLocationId(objects.getConstituencyId());
-				locationVo.setLocationName(objects.getName());
-				idNameVOList.add(locationVo);
-			}
+		try{
+			List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
 			
+			@SuppressWarnings("unchecked")
+			List<Object[]> findAssembliesConstituencies = (List<Object[]>) delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(parliamentIds);
+			
+			for (Object[] objects : findAssembliesConstituencies) {
+				if(objects!=null){
+					LocationWiseBoothDetailsVO locationVo= new LocationWiseBoothDetailsVO();
+					locationVo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					locationVo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					idNameVOList.add(locationVo);
+				}
+				
+			}
+			return idNameVOList;
+		}catch(Exception e){
+			Log.error("Exception raised at getAllConstituencyByParlimentId", e);
+			return null;
 		}
-		return idNameVOList;
+		
 	}
 }
