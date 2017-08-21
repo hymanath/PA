@@ -16000,10 +16000,10 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			for (Object[] objects : objList) {
 				Long locationId=commonMethodsUtilService.getLongValueForObject(objects[3]);
 				String locationName = "";
-				if(locationId ==7l){
+				if(locationId ==7l || locationId== 5l){
 					locationId= 5l;
 					locationName="Madal/Muncipality";
-				} else if(locationId == 8l){
+				} else if(locationId == 8l || locationId == 6l){
 					locationId= 6l;
 					locationName="Village/Ward";
 				}else {
