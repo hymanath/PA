@@ -509,7 +509,7 @@ function tableView(result,divId,locType)
 				
 				tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>SURVEY STARTED MANDALS</th>';
 				tableView+='<th><img src="Assests/icons/GPs_icon.png" class="imageWidthLed"><br/>TOTAL GPs</th>';
-				tableView+='<th><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>SURVEY STARTEDGPs</th>';
+				tableView+='<th><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>SURVEY STARTED GPs</th>';
 				tableView+='<th><img src="Assests/icons/Poles_icon.png" class="imageWidthLed"><br/>TOTAL POLES SURVEYED</th>';
 				tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"><br/>TOTAL CCMS-BOX/ PANELS INSTALLED</th>';
 				tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed"><br/>TOTAL LED LIGHTS INSTALLED</th>';
@@ -590,7 +590,11 @@ function tableView(result,divId,locType)
 	tableView+='</div>';
 
 	$("#"+divId+"TableId").html(tableView);
-	$("#"+divId+"Table").dataTable({
+	
+	if(divId == 'district' && viewTypeDist=='district'){
+		return;
+	}
+		$("#"+divId+"Table").dataTable({
 		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 		"<'row'<'col-sm-12'tr>>" +
 		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -611,7 +615,7 @@ function tableView(result,divId,locType)
 				}
 			}
 		]
-	});
+	 });
 }
 
 /* Filter Block Start */
