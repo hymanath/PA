@@ -23,6 +23,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -113,6 +114,7 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.CandidatePartyInfoVOComparator;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.ConstituencyOrMandalVOComparator;
 import com.itgrids.partyanalyst.utils.ConstituencyOrMandalVOComparatorMandal;
 import com.itgrids.partyanalyst.utils.ElectionDetailsVOComparator;
@@ -166,7 +168,17 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IVoterReportService voterReportService;	
 	
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
 	}
@@ -472,8 +484,11 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		{
 			List<ConstituencyElectionResult> constituencyElectionResults = constituencyElectionResultDAO.findByConstituency(constituencyId);
 			List<ConstituencyElectionResultsVO> constituencyElectionResultList = new ArrayList<ConstituencyElectionResultsVO>(0);
+			List<ConstituencyElectionResultsVO> returnList = new ArrayList<ConstituencyElectionResultsVO>(0);
 			ConstituencyElectionResultsVO constElecResultVO = null;
 			Map<Long,SelectOptionVO> partiesList = new HashMap<Long,SelectOptionVO>();
+			Map<Long,SelectOptionVO> electionYearMap = new TreeMap<Long, SelectOptionVO>();
+			Map<Long,ConstituencyElectionResultsVO> partyMap = new HashMap<Long, ConstituencyElectionResultsVO>(0);
 			Election election = null;
 		
 			if(constituencyElectionResults != null)
@@ -488,6 +503,11 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					 constElecResultVO.setElectionType(election.getElectionScope().getElectionType().getElectionType());
 					 constElecResultVO.setElectionDate(result.getConstituencyElection().getElectionDate());
 					 constElecResultVO.setElectionYear(election.getElectionYear());
+					 
+					 if(electionYearMap.get(election.getElectionYear()) == null)
+						 electionYearMap.put(Long.valueOf(constElecResultVO.getElectionYear()), new SelectOptionVO(Long.valueOf(constElecResultVO.getElectionYear()),constElecResultVO.getElectionType()));
+					 
+					 
 					 List<Nomination> nominationsList = new ArrayList<Nomination>(result.getConstituencyElection().getNominations());
 					 CandidateWonVO candidateWon = getCandidateWon(nominationsList);
 				 
@@ -521,6 +541,40 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				Collections.sort(constituencyElectionResultList,new ElectionDetailsVOComparator());
 				getPartyResultsOverviewForChart(partiesList,constituencyElectionResultList);
 				
+				if(commonMethodsUtilService.isMapValid(partiesList))
+				{
+					for (Long partyId : partiesList.keySet()) {
+						ConstituencyElectionResultsVO partyVO = partyMap.get(partyId);
+						if(partyVO == null){
+							partyVO = new ConstituencyElectionResultsVO();
+							SelectOptionVO mainPartyVO = partiesList.get(partyId);
+							partyVO.setId(mainPartyVO.getId());
+							partyVO.setName(mainPartyVO.getName());
+							
+							if(commonMethodsUtilService.isMapValid(electionYearMap)){
+								for (Long year : electionYearMap.keySet()) {
+									SelectOptionVO tempVO = electionYearMap.get(year);
+									
+									ConstituencyElectionResultsVO yearVO = new ConstituencyElectionResultsVO();
+									yearVO.setId(tempVO.getId());// election Year 
+									yearVO.setName(tempVO.getName()); // election Year
+									yearVO.setVotingPercentage("0.0");
+									
+									if(commonMethodsUtilService.isListOrSetValid(constituencyElectionResultList)){
+										ConstituencyElectionResultsVO electionVO = getElectionYearResultMatchedVO(constituencyElectionResultList,tempVO.getId());// election year
+										if(electionVO != null){
+											PartyResultsVO tempPartyVO =  getPartyResultMatchedVO(electionVO.getPartyResultsVO(),mainPartyVO.getId());// partyId
+											 if(tempPartyVO != null)
+												 yearVO.setVotingPercentage(tempPartyVO.getPercentage());
+										}
+									}
+									partyVO.getSubList().add(yearVO);
+								}
+							}
+							partyMap.put(partyId, partyVO);
+						}
+					}
+				}
 				if(!partiesList.isEmpty())
 				{
 					List<SelectOptionVO> partysListVO = new ArrayList<SelectOptionVO>();
@@ -529,11 +583,13 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					{
 					 SelectOptionVO optionVO = partiesList.get(partyId);
 					 partysListVO.add(optionVO);
+					 
+					 ConstituencyElectionResultsVO partyVO = partyMap.get(partyId);
+					 constituencyElectionResultList.get(0).getSubList().add(partyVO);
 					}
-				 constituencyElectionResultList.get(0).setPartiesList(partysListVO);
+					constituencyElectionResultList.get(0).setPartiesList(partysListVO);
 				}
-			 
-			 
+				
 				return constituencyElectionResultList;
 		 }
 		 return null;
@@ -543,7 +599,39 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}
 	}
 	
+	public ConstituencyElectionResultsVO getElectionYearResultMatchedVO(List<ConstituencyElectionResultsVO> returnList,Long id){
+		ConstituencyElectionResultsVO resultVO = null;
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(returnList)){
+				for (ConstituencyElectionResultsVO electionVO : returnList) {
+					if(electionVO != null && electionVO.getElectionYear() != null && electionVO.getId().longValue() == id.longValue()){
+						return electionVO;
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error("Exception occured in getElectionYearResultMatchedVO() Method, - ",e);
+			return null;
+		}
+		return resultVO;
+	}
 	
+	public PartyResultsVO getPartyResultMatchedVO(List<PartyResultsVO> returnList,Long id){
+		PartyResultsVO resultVO = null;
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(returnList)){
+				for (PartyResultsVO partyVO : returnList) {
+					if(partyVO != null && partyVO.getPartyId() != null && partyVO.getPartyId().longValue() == id.longValue()){
+						return partyVO;
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error("Exception occured in getPartyResultMatchedVO() Method, - ",e);
+			return null;
+		}
+		return resultVO;
+	}
 	public void getPartyResultsOverviewForChart(Map<Long,SelectOptionVO> partiesList,List<ConstituencyElectionResultsVO> constituencyElectionResultList){
 		
 		log.debug("Inside getPartyResultsOverviewForChart Method ....");
