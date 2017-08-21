@@ -18,7 +18,8 @@ public class Scheduler {
 	private ILightMonitoring lightMonitoringService;
 
 	
-	@Scheduled(cron = "0 0 8 * * * ")
+	//@Scheduled(cron = "0 0 8,20 * * * ")
+	@Scheduled(cron = "0 30 2,14 * * * ")
 	public void runTheSchedulerEveryDay()
 	{
 		if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
