@@ -10561,7 +10561,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
       public List<Object[]> getAlertStatusWiseDetailsForConstituencyInfo(Date fromDate , Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year){
 	 		StringBuilder queryStr = new StringBuilder();
 	 			queryStr.append(" SELECT model.alertStatus.alertStatusId,model.alertStatus.alertStatus," +
-	 					" model.alertStatus.color,model.alertImpactScope.alertImpactScopeId,model.alertImpactScope.impactScope," +
+	 					" model.alertStatus.color,model.regionScopes.regionScopesId,model.regionScopes.scope," +
 	 					" model.alertType.alertTypeId,model.alertType.alertType, " +
 	 					" count(distinct model.alertId) " +
 	 				    " FROM Alert model " +

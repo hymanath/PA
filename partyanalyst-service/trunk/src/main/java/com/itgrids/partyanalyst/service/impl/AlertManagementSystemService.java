@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dao.IAlertMeekosamPetitionerDAO;
 import com.itgrids.partyanalyst.dao.IAlertSeverityDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertSubTaskStatusDAO;
+import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
 import com.itgrids.partyanalyst.dao.IAmsOfficerOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEditionsDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
@@ -198,6 +199,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private ImageAndStringConverter imageAndStringConverter;
 	
 	private ICadreDetailsService cadreDetailsService;
+	private IAlertTypeDAO alertTypeDAO;
 	//private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	
 	
@@ -214,6 +216,12 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	public void setImageAndStringConverter(
 			ImageAndStringConverter imageAndStringConverter) {
 		this.imageAndStringConverter = imageAndStringConverter;
+	}
+	public IAlertTypeDAO getAlertTypeDAO() {
+		return alertTypeDAO;
+	}
+	public void setAlertTypeDAO(IAlertTypeDAO alertTypeDAO) {
+		this.alertTypeDAO = alertTypeDAO;
 	}
 	public IGovtDepartmentLevelDAO getGovtDepartmentLevelDAO() {
 		return govtDepartmentLevelDAO;
@@ -15986,94 +15994,83 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 	//0-statusId,1-status,2-color,3-impactScopeId,4-impactScope,5-alertTypeId,alertType-6,7-count
 	public List<LocationAlertVO> getStatusWiseData(List<Object[]> objList) {
 		try {
-			List<LocationAlertVO> finalVOList= new ArrayList<LocationAlertVO>();
-			if(objList != null && objList.size() > 0){
-				for (Object[] objects : objList) {
-					Long locationId=commonMethodsUtilService.getLongValueForObject(objects[3]);
-					String locatioName = "";
-					if(locationId ==12l){
-						locationId= 5l;
-						locatioName="Madal/Muncipality";
-					} else {
-						locatioName = commonMethodsUtilService.getStringValueForObject(objects[4]);
-					}
-					LocationAlertVO matchedLocationVO = getmatchedLocationAlertVo(finalVOList,locationId);
-					if(matchedLocationVO == null){
-						matchedLocationVO = new LocationAlertVO();
-						matchedLocationVO.setLocationId(locationId);
-						matchedLocationVO.setLocationName(locatioName);
-						
-						LocationAlertVO statusWiseVO =  new LocationAlertVO();
-						statusWiseVO.setId((Long)objects[0]);
-						statusWiseVO.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
-						statusWiseVO.setColour(commonMethodsUtilService.getStringValueForObject(objects[2]));
-						statusWiseVO.setAlertTypeId(commonMethodsUtilService.getLongValueForObject(objects[5]));
-						statusWiseVO.setAlertType(commonMethodsUtilService.getStringValueForObject(objects[6]));
-						if((Long)objects[5] == 1l){
-							statusWiseVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[7]));
-						}else if((Long)objects[5] == 2l){
-							statusWiseVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(objects[7]));
-						}
-						
-						matchedLocationVO.getSubList().add(statusWiseVO);
-						finalVOList.add(matchedLocationVO);
-					}else{
-						
-						LocationAlertVO matchedStatusWiseVO =  getmatchedLocationAlertVo(matchedLocationVO.getSubList(),locationId);
-						if(matchedStatusWiseVO == null){
-							matchedStatusWiseVO = new LocationAlertVO();
-							matchedStatusWiseVO.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-							matchedStatusWiseVO.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
-							matchedStatusWiseVO.setColour(commonMethodsUtilService.getStringValueForObject(objects[2]));
-							matchedStatusWiseVO.setAlertTypeId(commonMethodsUtilService.getLongValueForObject(objects[5]));
-							matchedStatusWiseVO.setAlertType(commonMethodsUtilService.getStringValueForObject(objects[6]));
-							if(commonMethodsUtilService.getLongValueForObject(objects[5]) == 1l){
-								matchedStatusWiseVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[7]));
-							}else if(commonMethodsUtilService.getLongValueForObject(objects[5]) == 2l){
-								matchedStatusWiseVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(objects[7]));
-							}
-							
-							matchedLocationVO.getSubList().add(matchedStatusWiseVO);
-						}else{
-							if(commonMethodsUtilService.getLongValueForObject(objects[5]) == 1l){
-								matchedStatusWiseVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[7]));
-							}else if(commonMethodsUtilService.getLongValueForObject(objects[5]) == 2l){
-								matchedStatusWiseVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(objects[7]));
-							}
-						}
-					}
+			Map<Long,LocationAlertVO> locationLevelMap = new HashMap<Long, LocationAlertVO>();
+			List<Object[]> alertTypeList = alertTypeDAO.getAlertType();
+			List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			for (Object[] objects : objList) {
+				Long locationId=commonMethodsUtilService.getLongValueForObject(objects[3]);
+				String locationName = "";
+				if(locationId ==7l){
+					locationId= 5l;
+					locationName="Madal/Muncipality";
+				} else if(locationId == 8l){
+					locationId= 6l;
+					locationName="Village/Ward";
+				}else {
+					locationName = commonMethodsUtilService.getStringValueForObject(objects[4]);
 				}
-			}
-			for (LocationAlertVO locationAlertVO : finalVOList) {
-				if (locationAlertVO != null) {
-
-					for (int i = 0; i < locationAlertVO.getSubList().size(); i++) {
-						for (int j = i + 1; j < locationAlertVO.getSubList().size(); j++) {
-							if (locationAlertVO.getSubList().get(i).getId() == locationAlertVO.getSubList().get(j).getId()) {
-								Long count = locationAlertVO.getSubList().get(i).getCount()+ locationAlertVO.getSubList().get(j).getCount();
-								Long AlertCount= locationAlertVO.getSubList().get(i).getAlertCount()+ locationAlertVO.getSubList().get(j).getAlertCount();
-								locationAlertVO.getSubList().get(i).setCount(count);
-								locationAlertVO.getSubList().get(i).setAlertCount(AlertCount);
-								locationAlertVO.getSubList().remove(j);
-							}
-							
-						}
+					LocationAlertVO locationVO = locationLevelMap.get(locationId);
+					if(locationVO == null){
+						locationVO =new LocationAlertVO();
+						locationVO.setLocationId(locationId);
+						locationVO.setLocationName(locationName);
+						locationVO.setSubList(getStatusListVO(alertTypeList,statusList));
+						locationLevelMap.put(locationId,locationVO);
 					}
-				}
-
+					if(locationVO != null){
+						LocationAlertVO subVO = getmatchedLocationAlertVo(locationVO.getSubList(),commonMethodsUtilService.getLongValueForObject(objects[0]));
+						if(subVO!=null){
+							LocationAlertVO innerSubVo= getmatchedLocationAlertVo(subVO.getSubList(), commonMethodsUtilService.getLongValueForObject(objects[5]));
+							if(innerSubVo!=null){
+								innerSubVo.setCount(innerSubVo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[7]));
+								locationVO.setCount(locationVO.getCount()+innerSubVo.getCount());
+							}
+							subVO.setCount(subVO.getCount()+innerSubVo.getCount());
+						}
+					
+					}
+					
 			}
+			List<LocationAlertVO> finalVOList= new ArrayList<LocationAlertVO>(locationLevelMap.values());
+
 			return finalVOList;
-		
 		} catch (Exception e) {
 			LOG.error("Exception occured at getStatusWiseData()", e);
 			return null;
 		}
 
 	}
+	private List<LocationAlertVO> getStatusListVO(List<Object[]> alertTypeList,List<Object[]> statusListArr) {
+		List<LocationAlertVO> statusListVo= new ArrayList<LocationAlertVO>();
+		for (Object[] param : statusListArr) {
+			LocationAlertVO statusVo = new LocationAlertVO(); 
+			statusVo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+			statusVo.setStatus(commonMethodsUtilService.getStringValueForObject(param[1]));
+			statusVo.setColour(commonMethodsUtilService.getStringValueForObject(param[2]));
+			statusVo.setSubList(getAlertTypelist(alertTypeList));
+			statusListVo.add(statusVo);
+		}
+		
+		return statusListVo;
+	}
+	private List<LocationAlertVO> getAlertTypelist(List<Object[]> alertTypeList) {
+		List<LocationAlertVO> alertTypeListVo= new ArrayList<LocationAlertVO>();
+		for (Object[] param : alertTypeList) {
+			LocationAlertVO alertTypeVo = new LocationAlertVO(); 
+			alertTypeVo.setAlertTypeId(commonMethodsUtilService.getLongValueForObject(param[0]));
+			alertTypeVo.setAlertType(commonMethodsUtilService.getStringValueForObject(param[1]));
+			alertTypeVo.setCount(0l);
+			alertTypeListVo.add(alertTypeVo);
+		}
+		
+		return alertTypeListVo;
+	}
 	public AlertVO getmatchedAlertVo(List<AlertVO> finalVOList,Long orgId){
 		if(finalVOList != null && finalVOList.size() > 0){
 			for (AlertVO vo : finalVOList) {
 				if(vo.getId() != null && vo.getId().equals(orgId)){
+					return vo;
+				}else if(vo.getAlertId()!=null && vo.getAlertId().equals(orgId)){
 					return vo;
 				}
 			}
@@ -16083,7 +16080,9 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 	public LocationAlertVO getmatchedLocationAlertVo(List<LocationAlertVO> loationList,Long locationId){
 		if(loationList != null && loationList.size() > 0){
 			for (LocationAlertVO vo : loationList) {
-				if(vo.getLocationId() != null && vo.getLocationId().equals(locationId)){
+				if(vo.getId() != null && vo.getId().equals(locationId)){
+					return vo;
+				}else if(vo.getAlertTypeId()!=null && vo.getAlertTypeId().equals(locationId)){
 					return vo;
 				}
 			}
