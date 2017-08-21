@@ -134,7 +134,7 @@
 						<div class="multi-level-selection-menu arrow_box_top"></div>
 					</div>
 					<div class="col-sm-9">
-					<span style="color:green;display:none;font-size:16px;" id="webServiceMessageStatusId">Please wait data is being process from live server,Then page will refresh...</span>
+					<!--<span style="color:green;display:none;font-size:16px;" id="webServiceMessageStatusId">Please wait data is being process from live server,Then page will refresh...</span>-->
                         <ul class="nav navbar-nav pull-right sub-menu">
 					        <li class="daterangeViewLiveCls liveDataCls commonViewCls" style="cursor:pointer;">LIVE</li>
                             <li class="active daterangeViewLiveCls todayDataCls commonViewCls" style="cursor:pointer;">TODAY</li>
@@ -168,6 +168,16 @@
 	</section>
 </div>
 </main>
+<div class="modal fade" id="modalMessageDivId" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" >
+    <div class="modal-content modal-custom">
+      <div class="modal-body">
+       <h4 style="text-align: center; color: green; font-weight: bold;">Building Live Panels & Lights Information Please Wait...</h4>
+	   <div id="processingImage"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>

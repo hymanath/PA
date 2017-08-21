@@ -710,6 +710,8 @@ $(document).on("click",".commonViewCls",function(){
 	 $(this).addClass("active");
 });
 $(document).on("click",".liveDataCls",function() {
+	$("#modalMessageDivId").modal("show");
+	$("#processingImage").html(spinner);
 	callWebService();
 });
 $(document).on("click",".todayDataCls",function() {
@@ -718,7 +720,6 @@ $(document).on("click",".todayDataCls",function() {
 	 onLoadCalls();
 });
 function callWebService(){
-	$("#webServiceMessageStatusId").show();
 	/* $("#ledOverViewDiv").html(spinner);
 	$("#overviewBlockId").html(spinner);
 	$("#districtTableId").html(spinner);
@@ -735,7 +736,8 @@ function callWebService(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		$("#webServiceMessageStatusId").hide();
+		$("#modalMessageDivId").modal("hide");
+	    $("#processingImage").html('');
 		 if (result.statusCode==0 && result.message=="SUCCESS"){
 			  glStartDate = moment().format('DD-MM-YYYY');
 			  glEndDate = moment().format('DD-MM-YYYY');
