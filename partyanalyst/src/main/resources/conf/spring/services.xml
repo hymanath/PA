@@ -4309,6 +4309,7 @@
 		<property name="alertMeekosamPetitionerDAO" ref="alertMeekosamPetitionerDAO" ></property>			  
 		<property name="imageAndStringConverter" ref="imageAndStringConverter" ></property>	
 		<property name="cadreDetailsService" ref="cadreDetailsService" ></property>
+		<property name="alertTypeDAO" ref="alertTypeDAO" ></property>
 		<!-- <property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO" ></property>	 -->			
    </bean>
    <bean name="meekosamGrievanceService" class="com.itgrids.partyanalyst.service.impl.MeekosamGrievanceService">
