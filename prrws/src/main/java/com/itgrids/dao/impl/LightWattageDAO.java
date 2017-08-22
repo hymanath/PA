@@ -63,7 +63,67 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 		query.setParameter("surveyDate", surveyDate);
 		return query.executeUpdate();	
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocationWiseLightWattageDtls(String locationType,String filterType,Long filterValue,Date fromDate,Date toDate)
+	{
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sbc = new StringBuilder();
+		StringBuilder sbg = new StringBuilder();
 	
+		sb.append(" SELECT  LM.wattage,sum(LM.lightCount) ");
+		if(locationType.equalsIgnoreCase("district"))
+		{	
+			sb.append(",LM.lightMonitoring.panchayat.locationAddress.district.districtId ");
+			sbg.append(" GROUP BY LM.lightMonitoring.panchayat.locationAddress.district.districtId ");
+		}
+		else if(locationType.equalsIgnoreCase("parliament"))
+		{
+			sb.append(",LM.lightMonitoring.panchayat.locationAddress.parliament.constituencyId ");
+			sbg.append(" GROUP BY LM.lightMonitoring.panchayat.locationAddress.parliament.constituencyId ");
+		}
+		else if(locationType.equalsIgnoreCase("constituency"))
+		{
+			sb.append(",LM.lightMonitoring.panchayat.locationAddress.constituency.constituencyId ");
+			sbg.append(" GROUP BY LM.lightMonitoring.panchayat.locationAddress.constituency.constituencyId ");
+		}
+		else if(locationType.equalsIgnoreCase("mandal"))
+		{
+			sb.append(",LM.lightMonitoring.panchayat.locationAddress.tehsil.tehsilId ");
+			sbg.append(" GROUP BY LM.lightMonitoring.panchayat.locationAddress.tehsil.tehsilId ");
+		}
+		sbg.append(",LM.wattage");
+		
+		sb.append(" FROM LightWattage LM  WHERE LM.lightMonitoring.panchayat.locationAddress.state.stateId = 1 and LM.isDeleted='N' and LM.lightMonitoring.isDeleted='N' ");
+		
+		if(filterType != null && filterType.trim().length() > 0 && filterValue != null && filterValue.longValue() > 0)
+		{
+			if(filterType.equalsIgnoreCase("district")){
+				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.district.districtId = :filterValue ");
+			}else if(filterType.equalsIgnoreCase("parliament")){
+				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.parliament.constituencyId = :filterValue ");
+			} else if(filterType.equalsIgnoreCase("constituency")) {
+				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.constituency.constituencyId = :filterValue ");
+			}else if(filterType.equalsIgnoreCase("mandal")) {
+				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.tehsil.tehsilId = :filterValue ");
+			}
+		}
+		if (fromDate != null && toDate != null) {
+			 sbc.append(" and  date(LM.lightMonitoring.surveyDate) between :fromDate and :toDate ");
+		}
+		
+		String queryStr = sb.toString() + sbc.toString()+sbg.toString();
+		Query query = getSession().createQuery(queryStr);
+		
+		if(filterType != null && filterType.trim().length() > 0 && filterValue != null && filterValue.longValue() > 0)
+		{
+			query.setParameter("filterValue",filterValue);
+		}
+		if (fromDate != null && toDate != null) {
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		return query.list();
+	}
 	
 	
 }

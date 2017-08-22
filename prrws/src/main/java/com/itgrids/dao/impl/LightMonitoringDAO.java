@@ -156,8 +156,8 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			sbg.append(" GROUP BY tehsil.tehsilId ORDER BY tehsil.tehsilName ");
 		}
 		sb.append(", state.stateId, state.stateName,district.districtId,district.districtName," +
-				 " constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName, "
-				 +"panchayat.panchayatId,panchayat.panchayatName,parliament.constituencyId,parliament.name ");
+				 "  constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName, "
+				 +" parliament.constituencyId,parliament.name ");
 		
 		sb.append("  FROM Panchayat model  ");
 		sb.append("  left join model.locationAddress locationAddress "
@@ -165,8 +165,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				 + " left join locationAddress.state state "
 				 + " left join locationAddress.constituency constituency "
 				 + " left join locationAddress.parliament parliament "
-				 + " left join locationAddress.tehsil  tehsil "
-				 + " left join locationAddress.panchayat panchayat ");
+				 + " left join locationAddress.tehsil  tehsil ");
 		sb.append(" where state.stateId =1 ");
 		if(filterType != null && filterType.trim().length() > 0 && locationId != null && locationId.longValue() > 0)
 		{
