@@ -127,7 +127,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getLocationsForLEDDashboard(String locationType,String filterType,Long locationId)
+	public List<Object[]> getLocationsForLEDDashboard(String locationType,String filterType,Long locationId,String subLocationType)
 	{
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbc = new StringBuilder();
@@ -154,10 +154,19 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		{
 			sb.append(",tehsil.tehsilId,tehsil.tehsilName ");
 			sbg.append(" GROUP BY tehsil.tehsilId ORDER BY tehsil.tehsilName ");
+			
+		} else if(locationType.equalsIgnoreCase("panchayat")) {
+			sb.append(",model.panchayatId,model.panchayatName ");
+			sbg.append(" GROUP BY model.panchayatId ORDER BY model.panchayatName ");
 		}
 		sb.append(", state.stateId, state.stateName,district.districtId,district.districtName," +
 				 "  constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName, "
 				 +" parliament.constituencyId,parliament.name ");
+		
+		if(locationType.equalsIgnoreCase("panchayat")) {
+				sb.append(",model.panchayatId,model.panchayatName ");
+		}
+		
 		
 		sb.append("  FROM Panchayat model  ");
 		sb.append("  left join model.locationAddress locationAddress "
@@ -166,7 +175,12 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				 + " left join locationAddress.constituency constituency "
 				 + " left join locationAddress.parliament parliament "
 				 + " left join locationAddress.tehsil  tehsil ");
-		sb.append(" where state.stateId =1 ");
+		if (locationType.equalsIgnoreCase("panchayat") || subLocationType.equalsIgnoreCase("panchayat")){
+			sb.append(",LightMonitoring lm where lm.panchayatId=model.panchayatId and state.stateId =1");
+		}else{
+			sb.append(" where state.stateId = 1 ");	
+		}
+		
 		if(filterType != null && filterType.trim().length() > 0 && locationId != null && locationId.longValue() > 0)
 		{
 			if(filterType.equalsIgnoreCase("district")){
@@ -177,6 +191,8 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				sbc.append(" AND constituency.constituencyId = :locationId ");
 			}else if(filterType.equalsIgnoreCase("mandal")) {
 				sbc.append(" AND tehsil.tehsilId = :locationId ");
+			}else if(filterType.equalsIgnoreCase("panchayat")) {
+				sbc.append(" AND model.panchayatId = :locationId ");
 			}
 		}
 		
@@ -221,6 +237,11 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			sb.append(",LM.panchayat.locationAddress.tehsil.tehsilId ");
 			sbg.append(" GROUP BY LM.panchayat.locationAddress.tehsil.tehsilId ");
 		}
+		else if(locationType.equalsIgnoreCase("panchayat")) {
+			sb.append(",LM.panchayat.panchayatId ");
+			sbg.append(" GROUP BY LM.panchayat.panchayatId ");
+		}
+
 		
 		sb.append(" FROM LightMonitoring LM  WHERE LM.panchayat.locationAddress.state.stateId = 1 and LM.isDeleted='N' ");
 		
@@ -234,6 +255,8 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				sbc.append(" AND LM.panchayat.locationAddress.constituency.constituencyId = :filterValue ");
 			}else if(filterType.equalsIgnoreCase("mandal")) {
 				sbc.append(" AND LM.panchayat.locationAddress.tehsil.tehsilId = :filterValue ");
+			}else if(filterType.equalsIgnoreCase("panchayat")) {
+				sbc.append(" AND LM.panchayat.panchayatId = :filterValue ");
 			}
 		}
 		if (fromDate != null && toDate != null) {
