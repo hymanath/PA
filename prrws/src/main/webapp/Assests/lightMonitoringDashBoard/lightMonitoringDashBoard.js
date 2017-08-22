@@ -743,7 +743,8 @@ function callWebService(){
 			  glEndDate = moment().format('DD-MM-YYYY');
 			  onLoadCalls();
 		 } else {
-			    alert("Exception Occured While Saving data into database.");
+			    console.log("Exception Occured While Saving data into database.");
+			    alert("Exception Occured,Please try again.");
 		 }
 	});
 }
