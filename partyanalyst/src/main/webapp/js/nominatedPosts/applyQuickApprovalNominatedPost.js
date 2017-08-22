@@ -58,7 +58,7 @@ function searchResultBlock(myresult){
         block+='<div class="panel panel-default">';
             block+='<div class="panel-heading">';
 				/*block+='<div class="deleteMember"><i class="fa fa-times" aria-hidden="true" style="padding: 0px 6px 5px;"></i></div>';*/
-                block+='<div class="text-center"><p class="iconBlock"><i class="fa fa-user" aria-hidden="true" style="font-size:36px;"></i></p></div>'
+                block+='<div class="text-center"><p class="iconBlock memberDetails"><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" style="width: 50px; height: 50px; margin-left: -2px; margin-top: -6px;"></p></div>';
             block+='</div>';
             block+='<div class="panel-body">';
 				block+='<p class="memberDetails cadreName" value="5"><span>N</span>'+result[i].cadreName+'</p>';
