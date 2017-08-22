@@ -336,7 +336,10 @@ public class LightMonitoringService  implements ILightMonitoring{
 				}
 			      List<Object[]> totalLocObj =lightMonitoringDAO. getLocationsForLEDDashboard(locationType, filterType, filterValue);//getting location template
 			      List<Object[]> lightMonObjLst =   lightMonitoringDAO.getLocationWiseDataForLEDDashboard(locationType,filterType,filterValue,fromDate,toDate) ;//getting survey data	
-			      Map<Long,LightMonitoringVO> locationMap = setStartedSurveryDataLocationWise(totalLocObj);
+			      List<Object[]> lightWattageObjLst = lightWattageDAO.getLocationWiseLightWattageDtls(locationType, filterType, filterValue, fromDate, toDate);//getting location wise wattage details.
+			      
+			      Map<Long,List<LightWattageVO>> lightWattageMap = getLightWattageDtls(lightWattageObjLst);
+			      Map<Long,LightMonitoringVO> locationMap = setStartedSurveryDataLocationWise(totalLocObj,lightWattageMap);
 			      
 			      if(lightMonObjLst!=null && lightMonObjLst.size()>0) {	 
                 	 for (Object[] param : lightMonObjLst) {
@@ -364,7 +367,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 		}
 		return returnList;
 	}
-	public Map<Long,LightMonitoringVO> setStartedSurveryDataLocationWise(List<Object[]> objList ) {
+	public Map<Long,LightMonitoringVO> setStartedSurveryDataLocationWise(List<Object[]> objList,Map<Long,List<LightWattageVO>> wattageMap) {
 		Map<Long,LightMonitoringVO> locationDtlsMap = new HashMap<>(0);
 		 try {
 			  if (objList != null && objList.size() > 0 ){
@@ -374,6 +377,9 @@ public class LightMonitoringService  implements ILightMonitoring{
 					   locationVO.setTotalGps(commonMethodsUtilService.getLongValueForObject(param[1]));//survey started village
 					   locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[2]));
 					   locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					   if (wattageMap.get(locationVO.getLocationId()) != null ){ //setting WATTAGE details based on location.
+						   locationVO.setWattageList(wattageMap.get(locationVO.getLocationId()));
+					   }
 					   
 					    AddressVO addressVO = new AddressVO();
 						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[4]));
@@ -384,10 +390,8 @@ public class LightMonitoringService  implements ILightMonitoring{
 						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[9]));
 						addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[10]));
 						addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[11]));
-						addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[12]));
-						addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[13]));
-						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[14]));
-						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[15]));
+						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[12]));
+						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[13]));
 						locationVO.setAddressVO(addressVO);
 					   
 					   locationDtlsMap.put(locationVO.getLocationId(), locationVO);
@@ -397,6 +401,28 @@ public class LightMonitoringService  implements ILightMonitoring{
 			 LOG.error("Exception raised at setStartedSurveryDataLocationWise - LightMonitoringService service", e);
 		 }
 		 return locationDtlsMap;
+	 }
+	 public Map<Long,List<LightWattageVO>> getLightWattageDtls(List<Object[]> objList) {
+		 Map<Long,List<LightWattageVO>> lightWattageDtlsMap = new HashMap<>();
+		  try {
+			   if (objList != null && !objList.isEmpty() ) {
+				    for (Object[] param : objList) {
+						 Long locationId = commonMethodsUtilService.getLongValueForObject(param[2]);
+						 List<LightWattageVO> wattageList = lightWattageDtlsMap.get(locationId);
+						  if (wattageList == null ) {
+							  wattageList = new ArrayList<>();
+							  lightWattageDtlsMap.put(locationId, wattageList);
+						  }
+						    LightWattageVO wattagVO = new LightWattageVO();
+							wattagVO.setWattage(commonMethodsUtilService.getLongValueForObject(param[0]));
+							wattagVO.setLightCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+							wattageList.add(wattagVO);
+					}
+			   }
+		  } catch (Exception e) {
+			  LOG.error("Exception raised at getLightWattageDtls - LightMonitoringService service", e);
+		  }
+		  return lightWattageDtlsMap;
 	 }
 	/*
  	 * Date : 17/08/2017

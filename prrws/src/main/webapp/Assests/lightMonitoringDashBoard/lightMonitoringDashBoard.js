@@ -516,6 +516,7 @@ function tableView(result,divId,locType)
 				tableView+='<th><img src="Assests/icons/Operational_LED_Light_Icon.png" class="imageWidthLed"><br/>OPERATIONAL</th>';
 				tableView+='<th><img src="Assests/icons/On_light_icon.png" class="imageWidthLed"><br/>ON</th>';
 				tableView+='<th><img src="Assests/icons/Off_Light_Icon.png" class="imageWidthLed"><br/>OFF</th>';
+				tableView+='<th>WATTAGE</th>';
 			tableView+='</tr>';
 		tableView+='</thead>';
 		tableView+='<tbody>';
@@ -583,6 +584,32 @@ function tableView(result,divId,locType)
 					tableView+='<td>'+result[i].workingLights+'</td>';
 					tableView+='<td>'+result[i].onLights+'</td>';
 					tableView+='<td>'+result[i].offLights+'</td>';
+					tableView+='<td>';
+					tableView+='<div class="dropup">';
+						tableView+='<span class="pull-right dropdown-toggle" style="font-weight: 600; cursor: pointer; font-size: 18px;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+							if(result[i].wattageList.length >=4){
+								tableView+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar" aria-labelledby="dropdownMenu2" style="padding:10px;width:500px;">';
+							}else{
+								tableView+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+							}
+							
+							tableView+='<div class="poles_block">';
+							tableView+='<ul class="nav navbar-nav" style="float:none;">';
+								if(result[i].wattageList !=null && result[i].wattageList.length>0){
+									for(var l in result[i].wattageList){
+										if (result[i].wattageList[l].wattage !=0 && result[i].wattageList[l].lightCount!=0){
+										 tableView+='<li><b>'+result[i].wattageList[l].wattage+'W = '+result[i].wattageList[l].lightCount+'</b></li>';
+										}
+									}
+								}else{
+									tableView+='<li><b>0W = 0</b></li>';
+								}
+								
+								tableView+='</ul>';
+							tableView+='</div>';
+							tableView+='</div>';
+						tableView+='</div>';
+					tableView+='</td>';
 				tableView+='</tr>';
 			}
 		tableView+='</tbody>';
