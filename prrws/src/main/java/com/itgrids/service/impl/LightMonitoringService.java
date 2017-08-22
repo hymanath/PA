@@ -182,7 +182,8 @@ public class LightMonitoringService  implements ILightMonitoring{
 		    						   LightMonitoringVO lightMonitoringVO = new LightMonitoringVO();
 		    						   lightMonitoringVO.setPanchayatId(panchayatId);
 		    						   lightMonitoringVO.setTotalPanels(jObj.getLong("TotalPanels"));
-		    						   lightMonitoringVO.setTotalPoles(jObj.getLong("TotalPoles"));
+		    						   //lightMonitoringVO.setTotalPoles(jObj.getLong("TotalPoles"));
+		    						   lightMonitoringVO.setTotalPoles(jObj.getLong("TotalLights"));//total light is nothing but total poles
 		    						   lightMonitoringVO.setTotalLights(jObj.getLong("TotalLights"));
 			    					   lightMonitoringVO.setNotWorkingLights(jObj.getLong("NonOperationalLights"));
 			    					   lightMonitoringVO.setWorkingLights(jObj.getLong("OperationalLights"));
