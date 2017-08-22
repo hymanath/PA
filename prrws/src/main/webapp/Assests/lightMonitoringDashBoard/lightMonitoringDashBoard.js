@@ -287,7 +287,7 @@ function buildBasicLedOverviewDetails(result)
 	var str='';
 	str+='<div class="col-sm-12 white-block poles_block"  style="border-bottom: 1px solid gray;">';
 	str+='<div class="col-sm-2 lightsBlock">';
-		str+='<img src="Assests/icons/On_Off_light_icon.png">';
+		str+='<img src="Assests/icons/BulbAp.jpg" style="width: 110px; height: 90px;">';
 		str+='<p>ON/OFF LIGHTS</p>';
 		str+='<h4>'+result[0].onLights+'/'+result[0].offLights+'</h4>';
 	str+='</div>';
@@ -344,7 +344,12 @@ function buildBasicLedOverviewDetails(result)
 				for(var i in result[0].wattageList)
 				{
 					if (result[0].wattageList[i].wattage !=0 && result[0].wattageList[i].lightCount!=0){
-					 str+='<li><b>'+result[0].wattageList[i].wattage+'W = '+result[0].wattageList[i].lightCount+'</b></li>';
+						if(result[0].wattageList[i].wattage == 24 || result[0].wattageList[i].wattage == 32 || result[0].wattageList[i].wattage == 75){
+							 str+='<li class="ledWattageColor"><b>'+result[0].wattageList[i].wattage+'W = '+result[0].wattageList[i].lightCount+'</b></li>';
+						}else{
+							str+='<li class=""><b>'+result[0].wattageList[i].wattage+'W = '+result[0].wattageList[i].lightCount+'</b></li>';
+						}
+					
 					}
 				}
 			str+='</ul>';
@@ -400,7 +405,7 @@ function projectData(divId,levelId)
 									collapse+='<div class="row m_top10">';
 										collapse+='<div class="col-sm-12">';
 										collapse+='<div class="col-sm-3">';
-											collapse+='<ul class="nav navbar-nav list_inline tableMenu tableMenu'+dataArr[i]+'" role="tabDrains_menu" attr_blockId="3">';
+											collapse+='<ul class="nav navbar-nav list_inline tableMenu tableMenu'+dataArr[i]+'" role="tabDrains_menu" attr_blockId="3" style="padding:0px">';
 												collapse+='<li class="active ledResultTypeCls"  attr_location_level='+dataArr[i]+'  attr_tab_type="district">Districts</li>';
 												collapse+='<li class="ledResultTypeCls" attr_location_level='+dataArr[i]+' attr_tab_type="parliament">Parliament</li>';
 											collapse+='</ul>';
@@ -466,7 +471,7 @@ function tableView(result,divId,locType)
 					viewTypeman = $(this).attr("attr_tab_type");
 				 }
 		});
-	tableView+='<div calss="table-responsive">';	
+	tableView+='<div class="table-responsive m_top10">';	
 	tableView+='<table class="table tableStyleLed" id="'+divId+'Table">';
 		tableView+='<thead>';
 			tableView+='<tr>';
@@ -504,7 +509,7 @@ function tableView(result,divId,locType)
 					
 				}
 				if(divId != 'mandal'){
-				  tableView+='<th><img src="Assests/icons/mandals_icon.png"><br/>TOTAL MANDALS</th>';	
+				  tableView+='<th><img src="Assests/icons/mandals_icon.png" class="imageWidthLed"><br/>TOTAL MANDALS</th>';	
 				}
 				
 				tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>SURVEY STARTED MANDALS</th>';
@@ -513,10 +518,10 @@ function tableView(result,divId,locType)
 				tableView+='<th><img src="Assests/icons/Poles_icon.png" class="imageWidthLed"><br/>TOTAL POLES SURVEYED</th>';
 				tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"><br/>TOTAL CCMS-BOX/ PANELS INSTALLED</th>';
 				tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed"><br/>TOTAL LED LIGHTS INSTALLED</th>';
-				tableView+='<th><img src="Assests/icons/Operational_LED_Light_Icon.png" class="imageWidthLed"><br/>OPERATIONAL</th>';
-				tableView+='<th><img src="Assests/icons/On_light_icon.png" class="imageWidthLed"><br/>ON</th>';
-				tableView+='<th><img src="Assests/icons/Off_Light_Icon.png" class="imageWidthLed"><br/>OFF</th>';
-				tableView+='<th>WATTAGE</th>';
+				tableView+='<th><img src="Assests/icons/Operational_LED_Light_Icon.png" class="" style="width:35px;height:35px;">OPERATIONAL<br/>&nbsp;</th>';
+				tableView+='<th><img src="Assests/icons/On_light_icon.png" class="imageWidthLed">ON<br/>&nbsp;</th>';
+				tableView+='<th><img src="Assests/icons/Off_Light_Icon.png" class="imageWidthLed">OFF<br/>&nbsp;</th>';
+				tableView+='<th>WATTAGE<br/>&nbsp;</th>';
 			tableView+='</tr>';
 		tableView+='</thead>';
 		tableView+='<tbody>';
@@ -586,7 +591,7 @@ function tableView(result,divId,locType)
 					tableView+='<td>'+result[i].offLights+'</td>';
 					tableView+='<td>';
 					tableView+='<div class="dropup">';
-						tableView+='<span class="pull-right dropdown-toggle" style="font-weight: 600; cursor: pointer; font-size: 18px;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+						tableView+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Wattage Details">&#9432;</span>';
 							if(result[i].wattageList.length >=4){
 								tableView+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar" aria-labelledby="dropdownMenu2" style="padding:10px;width:500px;">';
 							}else{
@@ -598,7 +603,12 @@ function tableView(result,divId,locType)
 								if(result[i].wattageList !=null && result[i].wattageList.length>0){
 									for(var l in result[i].wattageList){
 										if (result[i].wattageList[l].wattage !=0 && result[i].wattageList[l].lightCount!=0){
-										 tableView+='<li><b>'+result[i].wattageList[l].wattage+'W = '+result[i].wattageList[l].lightCount+'</b></li>';
+											if(result[i].wattageList[l].wattage == 24 || result[i].wattageList[l].wattage == 32 || result[i].wattageList[l].wattage == 75){
+												tableView+='<li class="ledWattageColor"><b>'+result[i].wattageList[l].wattage+'W = '+result[i].wattageList[l].lightCount+'</b></li>';
+											}else{
+												tableView+='<li class=""><b>'+result[i].wattageList[l].wattage+'W = '+result[i].wattageList[l].lightCount+'</b></li>';
+											}
+										 
 										}
 									}
 								}else{
@@ -617,11 +627,42 @@ function tableView(result,divId,locType)
 	tableView+='</div>';
 
 	$("#"+divId+"TableId").html(tableView);
-	
+	$(".tooltipWattCls").tooltip();
 	if(divId == 'district' && viewTypeDist=='district'){
-		return;
-	}
 		$("#"+divId+"Table").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": true,
+			"autoWidth": true,
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
+		 });
+	}else{
+		$("#"+divId+"Table").dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 		"<'row'<'col-sm-12'tr>>" +
 		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -643,6 +684,8 @@ function tableView(result,divId,locType)
 			}
 		]
 	 });
+	}
+		
 }
 
 /* Filter Block Start */
@@ -895,7 +938,12 @@ function buildCompanyWiseLightMonitoringDtls(result){
 						if(result.eeslVO.wattageList !=null && result.eeslVO.wattageList.length>0){
 							for(var i in result.eeslVO.wattageList){
 								if (result.eeslVO.wattageList[i].wattage !=0 && result.eeslVO.wattageList[i].lightCount!=0){
-								 str+='<li><b>'+result.eeslVO.wattageList[i].wattage+'W = '+result.eeslVO.wattageList[i].lightCount+'</b></li>';
+									if(result.eeslVO.wattageList[i].wattage == 24 || result.eeslVO.wattageList[i].wattage == 32 || result.eeslVO.wattageList[i].wattage == 75){
+										str+='<li class="ledWattageColor"><b>'+result.eeslVO.wattageList[i].wattage+'W = '+result.eeslVO.wattageList[i].lightCount+'</b></li>';
+									}else{
+										str+='<li class=""><b>'+result.eeslVO.wattageList[i].wattage+'W = '+result.eeslVO.wattageList[i].lightCount+'</b></li>';
+									}
+								 
 								}
 							}
 						}else{
@@ -1003,7 +1051,12 @@ function buildCompanyWiseLightMonitoringDtls(result){
 							if(result.nredcapVO.wattageList !=null && result.nredcapVO.wattageList.length>0){
 								for(var i in result.nredcapVO.wattageList){
 									if (result.nredcapVO.wattageList[i].wattage !=0 && result.nredcapVO.wattageList[i].lightCount!=0){
-									 str+='<li><b>'+result.nredcapVO.wattageList[i].wattage+'W = '+result.nredcapVO.wattageList[i].lightCount+'</b></li>';	
+										if(result.nredcapVO.wattageList[i].wattage == 24 || result.nredcapVO.wattageList[i].wattage == 32 || result.nredcapVO.wattageList[i].wattage == 75){
+											str+='<li class="ledWattageColor"><b>'+result.nredcapVO.wattageList[i].wattage+'W = '+result.nredcapVO.wattageList[i].lightCount+'</b></li>';
+										}else{
+											str+='<li class=""><b>'+result.nredcapVO.wattageList[i].wattage+'W = '+result.nredcapVO.wattageList[i].lightCount+'</b></li>';
+										}
+									 	
 									}
 									
 								}
