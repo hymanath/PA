@@ -3105,7 +3105,8 @@
    			<property name="requiredAttributeDAO" ref="requiredAttributeDAO" />
    			<property name="boothInchargeDAO" ref="boothInchargeDAO" />
    			<property name="boothInchargeRoleConditionMappingDAO" ref="boothInchargeRoleConditionMappingDAO" />  
-   			<property name="boothInchargeCommitteeDAO" ref="boothInchargeCommitteeDAO" />  
+   			<property name="boothInchargeCommitteeDAO" ref="boothInchargeCommitteeDAO" />
+   			<property name="nominatedPostDAO" ref="nominatedPostDAO"/>  
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">

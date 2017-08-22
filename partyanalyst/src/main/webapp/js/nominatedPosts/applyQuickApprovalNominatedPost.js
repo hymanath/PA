@@ -2,7 +2,7 @@ var positionNames = ['CHAIRMAN','VICECHAIRMAN'];
 var positionDetails = ['Nominated Post Level','Department','Corporation/Board Name','Position Name'];
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 onLoadCalls();
-
+var globalObjArr = [];
 function onLoadCalls(){
   getDepartments();
 }
@@ -42,8 +42,13 @@ function getBoardLevels(id){
 		
 $('.chosenSelect').chosen({width:'100%'});
 
-function searchResultBlock(result){
+function searchResultBlock(myresult){
+	var result = myresult.previousRoles;
+	
 	var position = $("#deptBoardPostnId option:selected").text();
+	var postionArr = position.split("(");
+	position = postionArr[0];
+	var postitonCunt = postionArr[1].trim().replace(")", "");
 	var block='';
 	
 	block+='<h5 style="font-weight:600">SEARCH RESULTS  <span style="font-size:12px;font-weight:normal">   -Found '+result.length+' Results</span></h5>';
@@ -65,7 +70,16 @@ function searchResultBlock(result){
                 block+='<p class="memberDetails"><span>C</span>'+result[i].enrollmentYears+'</p>';
 			block+='</div>';
             block+='<div class="panel-footer">';
-                block+='<label class="checkbox-inline" ><input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+position+'">Select Member</label>';
+			
+			if(myresult.previousElections != null && myresult.previousElections.length>0){
+				for(var s in myresult.previousElections){
+					block+=''+parseInt(parseInt(s)+1)+') <label>'+myresult.previousElections[s].casteName+' &nbsp&nbsp&nbsp<i class="fa fa-info" style="cursor:pointer;" title="'+myresult.previousElections[s].electionType+':'+myresult.previousElections[s].roleName+' --> '+myresult.previousElections[s].occupation+' Dept --> '+myresult.previousElections[s].role+' --> '+myresult.previousElections[s].casteCategory+'"> </i></label> <br> ';
+				}
+			}else{
+				 block+='<label class="checkbox-inline" ><input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+position+'" attr_postion_count="'+postitonCunt+'">Select Member</label>';
+			}
+               
+				
             block+='</div>';
         block+='</div>';
     block+='</li>';
@@ -88,39 +102,48 @@ var globalPosiDivs = 0;
 var globalPositionsArr = [];
 var globalCadreIds =[];
 var globalMemrsCnt = 0;
+var globalMembersCount = 0;
+var globalMemAddedCunt = 0;
 $(document).on('click','.selectMember',function(){
-	var departmentId=$("#depmtsId").val();
-	var boardId = $("#deptBoardId").val();
-	var positionId = $("#deptBoardPostnId").val();
-	var selPosition = $(this).attr("attr_position_type");
-		if($(this).is(':checked')){
-			var appendBlock = $(this).closest("li").html();
-			var cadreId = $(this).attr("attr_cadreId");
-			if(globalCadreIds.indexOf(cadreId) > -1){
-				$("#errMessageId").html('Duplicate person adding.');
-			}else{
-				if(globalPositionsArr == null || globalPositionsArr == ""){
-					buildPanelBlock(selPosition,appendBlock,cadreId);
-					$("#addmember"+selPosition).find("li div.panel-footer").remove();
+	var positionCount = $(this).attr("attr_postion_count");
+	if(positionCount != globalMembersCount ){
+		var departmentId=$("#depmtsId").val();
+		var boardId = $("#deptBoardId").val();
+		var positionId = $("#deptBoardPostnId").val();
+		var selPosition = $(this).attr("attr_position_type");
+		globalMembersCount++;
+		globalMemAddedCunt = globalMemAddedCunt+globalMembersCount;
+			if($(this).is(':checked')){
+				var appendBlock = $(this).closest("li").html();
+				var cadreId = $(this).attr("attr_cadreId");
+				if(globalCadreIds.indexOf(cadreId) > -1){
+					$("#errMessageId").html('Duplicate person adding.');
 				}else{
-					if(globalPositionsArr.indexOf(selPosition) > -1){
-						var count = $("#addmember"+selPosition).attr("attr_member_count");
-						var posiCnt = $("#addmember"+selPosition).attr("attr_posi_count");
-						count++;
-						globalMemrsCnt++;
-						$("#selTotPosCnt").text(globalPosiDivs);$("#selTotMemCnt").text(globalMemrsCnt);
-						$("#addmember"+selPosition).attr("attr_member_count",count);
-						$("#addmember"+selPosition).append('<li style="margin:0px 5px;"><input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].tdpCadreId"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].departmentId" value="'+departmentId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].boardId" value="'+boardId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].positionId" value="'+positionId+'"><i class="fa fa-times removeMember-icon" aria-hidden="true"></i>'+appendBlock+'</li>');
-						$("#addmember"+selPosition).find("li div.panel-footer").remove();
-					}else{
+					if(globalPositionsArr == null || globalPositionsArr == ""){
 						buildPanelBlock(selPosition,appendBlock,cadreId);
 						$("#addmember"+selPosition).find("li div.panel-footer").remove();
+					}else{
+						if(globalPositionsArr.indexOf(selPosition) > -1){
+							var count = $("#addmember"+selPosition).attr("attr_member_count");
+							var posiCnt = $("#addmember"+selPosition).attr("attr_posi_count");
+							count++;
+							globalMemrsCnt++;
+							$("#selTotPosCnt").text(globalPosiDivs);$("#selTotMemCnt").text(globalMemAddedCunt);
+							$("#addmember"+selPosition).attr("attr_member_count",count);
+							$("#addmember"+selPosition).append('<li style="margin:0px 5px;"><input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].tdpCadreId"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].departmentId" value="'+departmentId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].boardId" value="'+boardId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].positionId" value="'+positionId+'"><i class="fa fa-times removeMember-icon" aria-hidden="true"></i>'+appendBlock+'</li>');
+							$("#addmember"+selPosition).find("li div.panel-footer").remove();
+						}else{
+							buildPanelBlock(selPosition,appendBlock,cadreId);
+							$("#addmember"+selPosition).find("li div.panel-footer").remove();
+						}
 					}
 				}
+				globalCadreIds.push(cadreId);
 			}
-			globalCadreIds.push(cadreId);	
-		}	
-	});
+		}else{
+			alert("Posts Are completed");
+		}
+});
 
 function buildPanelBlock(selPosition,appendBlock,cadreId){
 	var departmentId=$("#depmtsId").val();
@@ -137,7 +160,7 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 			collapse+='<div class="panel-heading" role="tab" id="headingTwo">';
 				collapse+=' <a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordionOne" href="#collapsetwo" aria-expanded="true" aria-controls="collapseTwo">';
 					collapse+='<h4 class="panel-title" style="font-weight:600">SELECTED POSITON & SEARCH MEMBERS</h4>';
-					collapse+='<p><span id="selTotPosCnt">'+globalPosiDivs+'</span> Positions & <span id="selTotMemCnt">'+globalMemrsCnt+'</span> Members</p>';
+					collapse+='<p><span id="selTotPosCnt">'+globalPosiDivs+'</span> Positions & <span id="selTotMemCnt">'+globalMemAddedCunt+'</span> Members</p>';
 				collapse+='</a>';
 			collapse+='</div>';
 			collapse+='<div id="collapsetwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">';
@@ -214,7 +237,7 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 		globalPosiDivs++;
 		var  collapse1 = "";
 		var count = 0;
-		$("#selTotPosCnt").text(globalPosiDivs);$("#selTotMemCnt").text(globalMemrsCnt);
+		$("#selTotPosCnt").text(globalPosiDivs);$("#selTotMemCnt").text(globalMemAddedCunt);
 		//$("#accordionOne").closest("h4").html('<p>'+globalPosiDivs+' Positions & '+globalMemrsCnt+' Members</p>');
 		collapse1+='<input type="hidden" id="positionDiv'+selPosition+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+']">';
 		collapse1+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition+'">';
@@ -256,7 +279,9 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 }) */
 $(document).on('click','.removeMember-icon',function(){
 	$(this).closest("li").remove();
-})
+	globalMembersCount--;
+});
+
 function savingApplication(){
 			
 			var uploadHandler = {
@@ -478,12 +503,21 @@ function getDepartments(){
 	  }  */
 		for(var i in result){
 			if(result[i].name != null && result[i].id == globalposId){
-					$("#deptBoardPostnId").append('<option selected="selected" value='+result[i].id+' id="position'+result[i].name+'">'+result[i].name+'</option>');
+					$("#deptBoardPostnId").append('<option selected="selected" value='+result[i].id+' id="position'+result[i].name+'">'+result[i].name+'(' +result[i].count+ ')</option>');
 				}else if(result[i].name != null){
-					$("#deptBoardPostnId").append('<option value='+result[i].id+' id="position'+result[i].name+'">'+result[i].name+'</option>');
+					$("#deptBoardPostnId").append('<option value='+result[i].id+' id="position'+result[i].name+'">'+result[i].name+'(' +result[i].count+')</option>');
 					
 				}
+				/* var object = {
+					memberId : result[i].MemberId,
+					positionId : result[i].id,
+					positionName : result[i].name,
+					vacancies : result[i].count,
+					filled : 0
+				}
+				globalObjArr.push(object); */
 			}
+			
 		$("#deptBoardPostnId").trigger("chosen:updated");
    }else{
 	   $("#errdeptBoardPostnId").html('<b style="color:red;"> Already applied to this position.</b>');
@@ -901,7 +935,7 @@ function getNominatedPostApplication()
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
 				
-				searchResultBlock(result.previousRoles);
+				searchResultBlock(result);
 				globalSelectedMemberIdsArr = []; // Clearing Array 
 				$("#textId").hide();
 				 isFree =true;
@@ -1827,4 +1861,8 @@ function getDetailsBySrch()
 		select.refresh();
 		var select = new Dropkick("#referpanchayatId"+index);
 		select.refresh();
-  } 
+  }
+
+$(document).on("change","#deptBoardPostnId",function(){
+	globalMembersCount = 0;
+});  
