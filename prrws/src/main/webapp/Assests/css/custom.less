@@ -36,7 +36,7 @@
 @light_rose_color:#FCDDEF;
 @ivr_color:#E37A1F;
 @ivr_ash_color:#F2F2F2;
-@nonLedColor:#FF5F5F;
+@nonLedColor:#f9dc7e;
 @ledColor:#7FBE60;
 .rounded-corners(@radius:5px)
 {
@@ -1757,7 +1757,7 @@ header
             padding: 5px 12px;
             border: 1px solid #F9DC7E;
             margin: 4px;
-            border-radius: 10px;
+            border-radius: 16px;
             background-color: #FEF8E5;
         }
     }
@@ -1919,12 +1919,31 @@ header
 	margin: 3px 4px !important;
 }
 .ledWattageColor{
-	background-color: green !important;
-    border: 1px solid #fff !important;
+	background-color: rgba(0,128,0,0.6) !important;
+    border: 1px solid rgba(0,128,0,1) !important;
     color: #fff !important;
 }
-.nonledWattageColor{
-	background-color: @nonLedColor !important;
-    border: 1px solid #fff !important;
-    color: #fff !important;
+.led-list
+{
+	margin-right:20px;
+	li
+	{
+		padding:5px;
+	}
+}
+.ledColorView{
+	width:10px;
+	height:10px;
+	display:inline-block;
+	border-radius:15px;
+	margin-right:5px;
+	background-color:@ledColor
+}
+.nonLedColorView{
+	width:10px;
+	height:10px;
+	display:inline-block;
+	border-radius:15px;
+	margin-right:5px;
+	background-color:@nonLedColor
 }

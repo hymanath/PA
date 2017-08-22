@@ -63,7 +63,7 @@ public class LightMonitoringController {
 	
    @RequestMapping(value = "/getLocationBasedOnSelection", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
    public @ResponseBody  List<LightMonitoringVO> getAllFilterWiseDataOverView(@RequestBody InputVO inputVO){
-    List<LightMonitoringVO>  voList = lightMonitoring.getLocationBasedOnSelection(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationId());
+    List<LightMonitoringVO>  voList = lightMonitoring.getLocationBasedOnSelection(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationId(),inputVO.getSublocaType());
     return voList;
    }
    @RequestMapping(value = "/callWebService", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)

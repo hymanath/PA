@@ -135,13 +135,20 @@
 						<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
 						<div class="multi-level-selection-menu arrow_box_top"></div>
 					</div>
-					<div class="col-sm-9">
+					<div class="col-sm-6">
+						<ul class="list-inline pull-right led-list">
+							<li><span class="ledColorView"></span>LED WATTAGE</li>
+							<li><span class="nonLedColorView"></span>NON LED WATTAGE</li>
+						</ul>
+					</div>
+					<div class="col-sm-3">
 					<!--<span style="color:green;display:none;font-size:16px;" id="webServiceMessageStatusId">Please wait data is being process from live server,Then page will refresh...</span>-->
-                        <ul class="nav navbar-nav pull-right sub-menu">
+                        <ul class="list-inline pull-right sub-menu">
 					        <li class="daterangeViewLiveCls liveDataCls commonViewCls" style="cursor:pointer;">LIVE</li>
                             <li class="active daterangeViewLiveCls todayDataCls commonViewCls" style="cursor:pointer;">TODAY</li>
                             <li id="singleDateRangePicker" class="daterangeViewCls commonViewCls" style="cursor:pointer;">HISTORICAL</li>
                         </ul>
+						
                     </div>
 				</div>
 				

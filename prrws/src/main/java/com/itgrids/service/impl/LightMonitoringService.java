@@ -334,12 +334,12 @@ public class LightMonitoringService  implements ILightMonitoring{
 					fromDate = sdf.parse(fromDateStr);
 					toDate = sdf.parse(toDateStr);
 				}
-			      List<Object[]> totalLocObj =lightMonitoringDAO. getLocationsForLEDDashboard(locationType, filterType, filterValue);//getting location template
+			      List<Object[]> totalLocObj =lightMonitoringDAO.getLocationsForLEDDashboard(locationType, filterType, filterValue," ");//getting location template
 			      List<Object[]> lightMonObjLst =   lightMonitoringDAO.getLocationWiseDataForLEDDashboard(locationType,filterType,filterValue,fromDate,toDate) ;//getting survey data	
 			      List<Object[]> lightWattageObjLst = lightWattageDAO.getLocationWiseLightWattageDtls(locationType, filterType, filterValue, fromDate, toDate);//getting location wise wattage details.
 			      
 			      Map<Long,List<LightWattageVO>> lightWattageMap = getLightWattageDtls(lightWattageObjLst);
-			      Map<Long,LightMonitoringVO> locationMap = setStartedSurveryDataLocationWise(totalLocObj,lightWattageMap);
+			      Map<Long,LightMonitoringVO> locationMap = setStartedSurveryDataLocationWise(totalLocObj,lightWattageMap,locationType);
 			      
 			      if(lightMonObjLst!=null && lightMonObjLst.size()>0) {	 
                 	 for (Object[] param : lightMonObjLst) {
@@ -367,7 +367,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 		}
 		return returnList;
 	}
-	public Map<Long,LightMonitoringVO> setStartedSurveryDataLocationWise(List<Object[]> objList,Map<Long,List<LightWattageVO>> wattageMap) {
+	public Map<Long,LightMonitoringVO> setStartedSurveryDataLocationWise(List<Object[]> objList,Map<Long,List<LightWattageVO>> wattageMap,String locationType) {
 		Map<Long,LightMonitoringVO> locationDtlsMap = new HashMap<>(0);
 		 try {
 			  if (objList != null && objList.size() > 0 ){
@@ -392,6 +392,10 @@ public class LightMonitoringService  implements ILightMonitoring{
 						addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[11]));
 						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[12]));
 						addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[13]));
+						if (locationType != null && locationType.equalsIgnoreCase("panchayat")) {
+							addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[14]));
+							addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[15]));
+						}
 						locationVO.setAddressVO(addressVO);
 					   
 					   locationDtlsMap.put(locationVO.getLocationId(), locationVO);
@@ -429,10 +433,10 @@ public class LightMonitoringService  implements ILightMonitoring{
  	 * Author :Swapna
  	 */
 	@Override
-	public List<LightMonitoringVO> getLocationBasedOnSelection(String locationType,String filterType, Long filterValue) {
+	public List<LightMonitoringVO> getLocationBasedOnSelection(String locationType,String filterType, Long filterValue,String subLocationType) {
 		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>();
 		try{
-			 List<Object[]> totalFilterObj =lightMonitoringDAO. getLocationsForLEDDashboard(locationType, filterType, filterValue);
+			 List<Object[]> totalFilterObj =lightMonitoringDAO.getLocationsForLEDDashboard(locationType, filterType, filterValue,subLocationType);
 			if(totalFilterObj!=null && totalFilterObj.size()>0){
 		    for (Object[] objects : totalFilterObj) {
 		       LightMonitoringVO locationVO = new LightMonitoringVO();

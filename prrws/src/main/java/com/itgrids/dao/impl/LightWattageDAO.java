@@ -91,6 +91,10 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 			sb.append(",LM.lightMonitoring.panchayat.locationAddress.tehsil.tehsilId ");
 			sbg.append(" GROUP BY LM.lightMonitoring.panchayat.locationAddress.tehsil.tehsilId ");
 		}
+		else if(locationType.equalsIgnoreCase("panchayat")) {
+			sb.append(",LM.lightMonitoring.panchayat.panchayatId ");
+			sbg.append(" GROUP BY LM.lightMonitoring.panchayat.panchayatId ");
+		}
 		sbg.append(",LM.wattage");
 		
 		sb.append(" FROM LightWattage LM  WHERE LM.lightMonitoring.panchayat.locationAddress.state.stateId = 1 and LM.isDeleted='N' and LM.lightMonitoring.isDeleted='N' ");
@@ -105,6 +109,8 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.constituency.constituencyId = :filterValue ");
 			}else if(filterType.equalsIgnoreCase("mandal")) {
 				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.tehsil.tehsilId = :filterValue ");
+			}else if(filterType.equalsIgnoreCase("panchayat")) {
+				sbc.append(" AND LM.lightMonitoring.panchayat.panchayatId = :filterValue ");
 			}
 		}
 		if (fromDate != null && toDate != null) {
