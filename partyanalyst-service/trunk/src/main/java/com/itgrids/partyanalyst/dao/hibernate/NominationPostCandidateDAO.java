@@ -170,4 +170,20 @@ public List<Long> getNominatedPostCondidates(Long tdpCadreId){
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
 	}
+ public List<Long> getNominatedPstCandidateIds(List<Long> tdpCadreIds){
+	 StringBuilder sb = new StringBuilder();
+	 sb.append("select distinct model.nominationPostCandidateId" +
+	 		" from NominationPostCandidate model" +
+	 		" where model.isDeleted = 'N'");
+	 if(tdpCadreIds != null && tdpCadreIds.size() > 0l){
+		 sb.append(" and model.tdpCadre.tdpCadreId in (:tdpCadreIds)");
+	 }
+	 
+	 Query query = getSession().createQuery(sb.toString());
+	 if(tdpCadreIds != null && tdpCadreIds.size() > 0l)
+		 query.setParameterList("tdpCadreIds", tdpCadreIds);
+	 
+	 return query.list();
+	 
+ }
 }

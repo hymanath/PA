@@ -706,6 +706,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Long> appliedPositionIds = new ArrayList<Long>();
 			List<Long> updatedPositionIds = new ArrayList<Long>();
 			List<Object[]> appltnIds = null;
+			List<Long> memberIds = new ArrayList<Long>();
+			Map<Long,IdNameVO> posCuntMap = new HashMap<Long, IdNameVO>();
 			if(nominatedPostCandId != null && nominatedPostCandId.longValue() > 0l){
 				 //appltnIds = nominatedPostApplicationDAO.getApplicationIdsByCAndidateId(nominatedPostCandId);
 				appliedPositions = nominatedPostApplicationDAO.getAppliedPositionsForCandidate(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,nominatedPostCandId);
@@ -801,11 +803,35 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 			}
+			List<Long> membIds = nominatedPostDAO.getMemberIds(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,applicationId);
+			if(commonMethodsUtilService.isListOrSetValid(membIds)){
+				memberIds.addAll(membIds);
+			}
+			List<Object[]> postionCountList = nominatedPostDAO.getNominatedPostStatusByPositionId(memberIds);
+			if(commonMethodsUtilService.isListOrSetValid(postionCountList)){
+				for (Object[] param : postionCountList) {
+					IdNameVO vo = new IdNameVO();
+					vo.setCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+					vo.setMemberId(commonMethodsUtilService.getLongValueForObject(param[2]));
+					posCuntMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),vo);
+				}
+			}
+			
 			if(commonMethodsUtilService.isListOrSetValid(nonAppliedPostns)){
 				String[] setterPropertiesList = {"id","name"};
 				returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(nonAppliedPostns, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
 			}
+			
 			if(returnList !=  null && returnList.size()  >0){
+				for (IdNameVO finalVO : returnList) {
+					Long postitonId = finalVO.getId();
+					IdNameVO vo = posCuntMap.get(postitonId);
+					if(vo != null){
+						finalVO.setMemberId(vo.getMemberId());
+						finalVO.setCount(vo.getCount());
+					}
+					
+				}
 			returnList.get(0).setStatus(positnAnyAppld);
 			}else{
 				if(positnAnyAppld.equalsIgnoreCase("NotApplied")){
