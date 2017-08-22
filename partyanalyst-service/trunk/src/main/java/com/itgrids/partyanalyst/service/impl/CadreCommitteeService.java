@@ -96,6 +96,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.ILocationInfoDAO;
 import com.itgrids.partyanalyst.dao.INewDistrictConstituencyDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -126,6 +127,7 @@ import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.NominatedPostDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityLocationInfoDatesDAO;
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
@@ -304,7 +306,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IBoothInchargeDAO boothInchargeDAO;
 	private IBoothInchargeRoleConditionMappingDAO boothInchargeRoleConditionMappingDAO;
 	private IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO;
+	private INominatedPostDAO nominatedPostDAO;
 	
+	public INominatedPostDAO getNominatedPostDAO() {
+		return nominatedPostDAO;
+	}
+
+	public void setNominatedPostDAO(INominatedPostDAO nominatedPostDAO) {
+		this.nominatedPostDAO = nominatedPostDAO;
+	}
+
 	public IBoothInchargeCommitteeDAO getBoothInchargeCommitteeDAO() {
 		return boothInchargeCommitteeDAO;
 	}
@@ -2346,7 +2357,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					}
 				}
 			}
-			
+			List<CadreCommitteeVO> memberList = getMemberStatusDetails(tdpCadreIdsNominatedIdsList);
+			if(memberList != null && memberList.size() > 0l){
+				cadreCommitteeVO.setPreviousElections(memberList);
+			}
 			cadreCommitteeVO.setPreviousRoles(cadreCommitteeList);
 			
 		} catch (Exception e) {
@@ -22902,5 +22916,63 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		 }
 	 return returnVO;
 	 }
+ 
+ public List<CadreCommitteeVO> getMemberStatusDetails(List<Long> tdpCadreIds){
+	 List<CadreCommitteeVO> finalList = new ArrayList<CadreCommitteeVO>();
+	 try {
+		 List<Long> npCandIds = null;
+		 if(commonMethodsUtilService.isListOrSetValid(tdpCadreIds)){
+			 npCandIds = nominationPostCandidateDAO.getNominatedPstCandidateIds(tdpCadreIds);
+		 }
+		 if(commonMethodsUtilService.isListOrSetValid(npCandIds)){
+			 List<Object[]> memberDetails = nominatedPostDAO.getMemberStatusDetails(npCandIds);
+			 if(commonMethodsUtilService.isListOrSetValid(memberDetails)){
+				 for (Object[] param : memberDetails) {
+					CadreCommitteeVO vo = new CadreCommitteeVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));//NPId
+					vo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[1]));//NPCandId
+					vo.setCasteStateId(commonMethodsUtilService.getLongValueForObject(param[2]));//StatusId
+					vo.setCasteName(commonMethodsUtilService.getStringValueForObject(param[3]));//Status
+					vo.setCasteCategoryId(commonMethodsUtilService.getLongValueForObject(param[4]));//positionId
+					vo.setCasteCategory(commonMethodsUtilService.getStringValueForObject(param[5]));//postion Name
+					vo.setOccupation(commonMethodsUtilService.getStringValueForObject(param[6]));//DeptName
+					vo.setRole(commonMethodsUtilService.getStringValueForObject(param[7]));//BoardName
+					vo.setElectionTypeId(commonMethodsUtilService.getLongValueForObject(param[8]));//BoardLevelId
+					vo.setElectionType(commonMethodsUtilService.getStringValueForObject(param[9]));//BoardLevelName
+					
+					vo.setRoleName(commonMethodsUtilService.getStringValueForObject(param[10]));//StateName
+					vo.setCadreName(commonMethodsUtilService.getStringValueForObject(param[11]));//DistrictName
+					vo.setConstituency(commonMethodsUtilService.getStringValueForObject(param[12]));
+					vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[13]));
+					vo.setLocalElectionBody(commonMethodsUtilService.getStringValueForObject(param[14]));
+					vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[15]));
+					vo.setRelativeName(commonMethodsUtilService.getStringValueForObject(param[16]));//WardName
+					
+					
+					if(vo.getCadreName() != null && vo.getCadreName().length()>0)
+						vo.setRoleName(vo.getCadreName());
+					if(vo.getConstituency() != null && vo.getConstituency().length()>0)
+						vo.setRoleName(vo.getConstituency());
+					if(vo.getTehsil() != null && vo.getTehsil().length()>0)
+						vo.setRoleName(vo.getTehsil());
+					if(vo.getLocalElectionBody() != null && vo.getLocalElectionBody().length()>0)
+						vo.setRoleName(vo.getLocalElectionBody());
+					if(vo.getPanchayat() != null && vo.getPanchayat().length()>0)
+						vo.setRoleName(vo.getPanchayat());
+					if(vo.getRelativeName() != null && vo.getRelativeName().length()>0)
+						vo.setRoleName(vo.getRelativeName());
+					
+					finalList.add(vo);
+				}
+			 }
+		 }
+		 
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised in CadreCommitteeService of getMemberStatusDetails", e);
+	}
+	 return finalList;
+ }
+ 
  
 }

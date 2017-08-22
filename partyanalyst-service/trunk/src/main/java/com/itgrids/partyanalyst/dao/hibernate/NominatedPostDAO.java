@@ -614,7 +614,8 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		   StringBuilder queryStr = new StringBuilder();
 		   
 		    queryStr.append(" select distinct model.nominatedPostMember.nominatedPostPosition.position.positionId," +
-		    		        " model.nominatedPostMember.nominatedPostPosition.position.positionName from NominatedPost " +
+		    		        " model.nominatedPostMember.nominatedPostPosition.position.positionName" +
+		    		        " from NominatedPost " +
 		    		        " model where model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.nominatedPostMember.isDeleted='N'  " +
 	    		       		"  and model.isDeleted='N' and model.nominationPostCandidateId is null ");
 		    		        
@@ -2163,4 +2164,125 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	    return query.list();
 	   
   }
+   
+   public List<Object[]> getNominatedPostStatusByPositionId(List<Long> memberIds){
+	   
+	   StringBuilder queryStr = new StringBuilder();
+	   
+	    queryStr.append(" select distinct model.nominatedPostMember.nominatedPostPosition.position.positionId," +
+	    		        " count(model.nominatedPostMember.nominatedPostPosition.position.positionId)," +
+	    		        " model.nominatedPostMember.nominatedPostMemberId " +
+	    		        " from NominatedPost " +
+	    		        " model where model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.nominatedPostMember.isDeleted='N'  " +
+    		       		"  and model.isDeleted='N' and model.nominationPostCandidateId is null and model.nominatedPostStatus.nominatedPostStatusId = 1 ");
+	    		        
+	    if(memberIds != null && memberIds.size() > 0l){
+	    	queryStr.append(" and model.nominatedPostMember.nominatedPostMemberId in (:memberIds)");
+	    }
+	   
+	    queryStr.append(" group by model.nominatedPostMember.nominatedPostPosition.position.positionId");
+	    
+	    Query query = getSession().createQuery(queryStr.toString());
+	    if(memberIds != null && memberIds.size() > 0l)
+	    	query.setParameterList("memberIds", memberIds);
+		 	
+	    return query.list();
+ }
+   public List<Long> getMemberIds(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long searchlevelId,Long applicationId){
+	   
+	   StringBuilder queryStr = new StringBuilder();
+	   
+	    queryStr.append(" select distinct model.nominatedPostMember.nominatedPostMemberId from NominatedPost " +
+	    		        " model where model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.nominatedPostMember.isDeleted='N'  " +
+    		       		"  and model.isDeleted='N' and model.nominationPostCandidateId is null ");
+	    		        
+	    
+	       if(departmentId != null && departmentId.longValue()> 0L){
+		      queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId =:deapartmentId ");	
+		    }
+           if(boardId != null && boardId.longValue()> 0){
+		      queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId =:boardId ");	
+		    }
+           if(boardLevelId != null && boardLevelId.longValue() > 0L){
+        	   if(boardLevelId.longValue() !=5L)
+        		   queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
+        	   else
+        		   queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+        	   //if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
+				//   queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
+  	      }
+           
+           if(searchlevelId != null && searchlevelId.longValue()>0L){
+				if(searchlevelId.longValue() == 1L)
+					queryStr.append(" and model.nominatedPostMember.locationValue  = :searchLevelValue ");
+				else if(searchlevelId.longValue() ==2L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.state.stateId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.district.districtId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==4L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.constituency.constituencyId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==5L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.tehsil.tehsilId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==6L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.panchayatId =:searchLevelValue ");
+			}
+		    else
+		    	 queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
+           
+           
+           
+		    Query query = getSession().createQuery(queryStr.toString()+" order by model.nominatedPostMember.nominatedPostPosition.position.positionName asc ");
+		    
+			 if(departmentId != null && departmentId.longValue()> 0L){
+					query.setParameter("deapartmentId", departmentId);
+			 }
+			 if(boardId != null && boardId.longValue()> 0L){
+					query.setParameter("boardId", boardId); 
+			 }
+			 if(boardLevelId != null && boardLevelId.longValue() > 0L && boardLevelId.longValue() !=5L){
+			    	query.setParameter("boardLevelId", boardLevelId);
+			  }
+			 if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
+			    	query.setParameter("searchLevelValue", searchLevelValue);
+	    return query.list();
+ }
+   public List<Object[]> getMemberStatusDetails(List<Long> nominatedPostCandidateIds){
+	   StringBuilder sb = new StringBuilder();
+	   sb.append("select distinct model.nominatedPostId,model.nominationPostCandidate.nominationPostCandidateId,model.nominatedPostStatus.nominatedPostStatusId," +
+		   		" model.nominatedPostStatus.status," +//3
+		   		" model.nominatedPostMember.nominatedPostPosition.position.positionId," +//4
+		   		" model.nominatedPostMember.nominatedPostPosition.position.positionName," +//5
+		   		" model.nominatedPostMember.nominatedPostPosition.departments.deptName," +//6
+		   		" model.nominatedPostMember.nominatedPostPosition.board.boardName," +//7
+		   		" model.nominatedPostMember.boardLevel.boardLevelId," +//8
+		   		" model.nominatedPostMember.boardLevel.level," +//9
+		   		" state.stateName," +//10
+		   		" district.districtName," +//11
+		   		" constituency.name," +//12
+		   		" tehsil.tehsilName," +//13
+		   		" localElectionBody.name," +//14
+		   		" panchayat.panchayatName," +//15
+		   		" ward.name" +//16
+		   		" from NominatedPost model" +
+		   		" left join model.nominatedPostMember.address.state state " +
+		   		" left join model.nominatedPostMember.address.district district" +
+		   		" left join model.nominatedPostMember.address.constituency constituency" +
+		   		" left join model.nominatedPostMember.address.tehsil tehsil" +
+		   		" left join model.nominatedPostMember.address.localElectionBody localElectionBody" +
+		   		" left join model.nominatedPostMember.address.panchayat panchayat" +
+		   		" left join model.nominatedPostMember.address.ward ward" +
+		   		" where model.isDeleted = 'N' and model.isExpired = 'N'");
+	   
+	   if(nominatedPostCandidateIds != null && nominatedPostCandidateIds.size() > 0l){
+		   sb.append(" and model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)");
+	   }
+	   
+	   Query query = getSession().createQuery(sb.toString());
+	   if(nominatedPostCandidateIds != null && nominatedPostCandidateIds.size() > 0l)
+		   query.setParameterList("nominatedPostCandidateIds", nominatedPostCandidateIds);
+	   
+	   return query.list();
+   }
 }
