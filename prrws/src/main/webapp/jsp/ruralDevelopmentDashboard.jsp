@@ -82,6 +82,14 @@
 													</a>
 												</div>
 											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#888420">
+													<a href="getlightsMonitoringDashboard">
+														<h3>LED</h3>
+														<p>Light Monitoring Dashboard</p>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -105,14 +113,7 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-12 m_top10">
-												<div class="menu-block" style="background-color:#888420">
-													<a href="getlightsMonitoringDashboard">
-														<h3>LED</h3>
-														<p>Light Monitoring Dashboard</p>
-													</a>
-												</div>
-											</div>
+											
 										</div>
 									</div>
 								</div>
