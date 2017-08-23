@@ -24,6 +24,10 @@ $(document).on('click','#searchbtn',function(){
 $(document).on('change','#deptBoardPostnId',function(){
 	$("#searchResultsBlock").html("");
 	$("#searchBy").val("");
+	
+})
+$(document).on('change','#deptBoardPostnId',function(){
+	$("#showSearchResult").show();
 })
 getBoardLevels("boardLvlId");	
 function getBoardLevels(id){
@@ -50,6 +54,8 @@ function getBoardLevels(id){
   }		
 		
 $('.chosenSelect').chosen({width:'100%'});
+
+
 
 function searchResultBlock(myresult){
 	var result = myresult.previousRoles;
@@ -105,7 +111,6 @@ function searchResultBlock(myresult){
 		slidesToScroll: 2,
 		variableWidth: true
 	}); 
-	
 }
 
 function updateAddedPosiAndAddedMemCnt(){
@@ -133,6 +138,8 @@ $(document).on('click','.selectMember',function(){
 			if($(this).is(':checked')){
 				var appendBlock = $(this).closest("li").html();
 				var cadreId = $(this).attr("attr_cadreId");
+				$("#searchBy").val(" ");
+				$("#searchResultsBlock").html(" ");
 				if(globalCadreIds.indexOf(cadreId) > -1){
 					$("#errMessageId").html('Duplicate person adding.');
 				}else{
@@ -451,6 +458,7 @@ function getDepartments(){
 		$("#searchResultsBlock").html("");
 		$("#searchBy").val("");
 	$("#searchDataImgForDep").show();
+	
 	 var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId").val();
 	   var searchLevelValue=1;
@@ -512,12 +520,13 @@ function getDepartments(){
 	   $("#deptBoardPostnId").trigger("chosen:updated");
    });
   }
-
+  
   function getDepartmentBoardPositions(){
 	$("#searchDataImgForPos").show();
 	$("#errdeptBoardPostnId").html("");
 	$("#searchResultsBlock").html("");
 	$("#searchBy").val("");
+	
 	var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId").val();
 
@@ -562,15 +571,18 @@ function getDepartments(){
     $("#deptBoardPostnId").empty();
    if(result != null && result.length >0){
 	  $("#deptBoardPostnId").append('<option value="" >Select Board Position</option>');
+	 
 	  
 	   /* if(result[0].status != "Applied"){
 		   $("#deptBoardPostnId").append('<option value="0">Any</option>');
 	  }  */
 		for(var i in result){
 			if(result[i].name != null && result[i].id == globalposId){
-					$("#deptBoardPostnId").append('<option selected="selected" value='+result[i].id+' id="position'+result[i].name+'">'+result[i].name+'(' +result[i].count+ ')</option>');
+					$("#deptBoardPostnId").append('<option selected="selected" value='+result[i].id+' id="position'+result[i].name+'" attr_getposition="selected-position">'+result[i].name+'(' +result[i].count+ ')</option>');
+					
+					
 				}else if(result[i].name != null){
-					$("#deptBoardPostnId").append('<option value='+result[i].id+' id="position'+result[i].name+'">'+result[i].name+'(' +result[i].count+')</option>');
+					$("#deptBoardPostnId").append('<option value='+result[i].id+' id="position'+result[i].name+'" attr_getposition="selected-position">'+result[i].name+'(' +result[i].count+')</option>');
 					
 				}
 				/* var object = {
@@ -584,13 +596,16 @@ function getDepartments(){
 			}
 			
 		$("#deptBoardPostnId").trigger("chosen:updated");
+		
    }else{
 	   $("#errdeptBoardPostnId").html('<b style="color:red;"> Already applied to this position.</b>');
 	   $("#deptBoardPostnId").trigger("chosen:updated");
+	   
    }
    });
   }
   
+	
   function getOpenPositionConstituenciesForDistrict(district,id,num){
 	if(num == 0)
 		  num='';
