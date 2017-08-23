@@ -124,6 +124,7 @@ var globalMemrsCnt = 0;
 var globalMembersCount = 0;
 var globalMemAddedCunt = 0;
 $(document).on('click','.selectMember',function(){
+	$("#errMessageId").html('');
 	 globalMembersCount = 0;
 	var positionCount = $(this).attr("attr_postion_count");
 	globalMembersCount=0;
@@ -310,6 +311,7 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	$(this).find("i").toggleClass("active");
 }) */
 $(document).on('click','.removeMember-icon',function(){
+	$("#errMessageId").html('');
 	var ulLength = $(this).closest("ul").attr("id"); 
 	ulLength = $("#"+ulLength+" li").length
 	if(ulLength == 1)
@@ -1015,7 +1017,7 @@ function getNominatedPostApplication()
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
 				
-				searchResultBlock(result);
+				
 				globalSelectedMemberIdsArr = []; // Clearing Array 
 				$("#textId").hide();
 				 isFree =true;
@@ -1032,13 +1034,15 @@ function getNominatedPostApplication()
 				{
 					//$('#membersCountId').show();
 					//buildCadreDetails(result.previousRoles,"cadre"); 
-					
+					searchResultBlock(result);
 					
 				}
 				 else
 				{
+					$('#searchResultsBlock').html('');
 					//$('#cadreSearchDtls').html("");
 					  $('#textId').html("");
+					  $("#searchResultsBlock").html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
 					//$('#cadreSearchDtls').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
 				} 
 			});  
