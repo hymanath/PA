@@ -138,7 +138,7 @@
 					<div class="col-sm-6">
 						<ul class="list-inline pull-right led-list">
 							<li><span class="ledColorView"></span>LED WATTAGE</li>
-							<li><span class="nonLedColorView"></span>NON LED WATTAGE</li>
+							<li><span class="nonLedColorView"></span>NON-LED WATTAGE</li>
 						</ul>
 					</div>
 					<div class="col-sm-3">
@@ -187,6 +187,26 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<div class="modal fade" id="surveryStartedLocationDtlsModelDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:90%;margin:auto">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    <h4 class="modal-title text-capital" id="surveryStartedLocHeadingId" style="text-align: center; font-weight: bold;background-color:"></h4> 
+      <div class="modal-body">
+        <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div id="surveyStartedLocationDtlsDivId"></div> 
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default modalCloseCls" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>

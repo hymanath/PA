@@ -198,7 +198,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 					str+='<div class="media-body">';
 						str+='<h5>NO OF <span style="color:#827C13;"><b>DISTRICTS</b></span><br/>SURVEY SATRTED</h5>';
 						if(result[0].totalDistCnt !=null && result[0].totalDistCnt>0){
-							str+=' <h3>'+result[0].totalDistCnt+'</h3>';
+							str+=' <h3 attr_location_type="district" attr_result_type="surveryStartedLocation" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].totalDistCnt+'</h3>';
 						}else{
 							str+=' <h3>0</h3>';
 						}
@@ -212,7 +212,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 				   str+=' <div class="media-body">';
 					   str+=' <h5>NO OF <span style="color:#02B0AC;"><b>CONSTITUENCIES</b></span><br/>SURVEY STARTED</h5>';
 					   if(result[0].totalConstituencyCnt !=null && result[0].totalConstituencyCnt>0){
-							str+=' <h3>'+result[0].totalConstituencyCnt+'</h3>';
+							str+=' <h3 attr_location_type="constituency" attr_result_type="surveryStartedLocation" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].totalConstituencyCnt+'</h3>';
 						}else{
 							str+=' <h3>0</h3>';
 						}
@@ -225,7 +225,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 					str+='<div class="media-body">';
 						str+='<h5>NO OF <span style="color:#00BFE8;"><b>MANDALS</b></span><br/>SURVEY SATRTED</h5>';
 						if(result[0].totalMandalCnt !=null && result[0].totalMandalCnt>0){
-							str+=' <h3>'+result[0].totalMandalCnt+'</h3>';
+							str+=' <h3 attr_location_type="mandal" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" class="surveyStartedLocationCountCls">'+result[0].totalMandalCnt+'</h3>';
 						}else{
 							str+=' <h3>0</h3>';
 						}
@@ -238,7 +238,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 					str+='<div class="media-body">';
 						str+='<h5>NO OF <span style="color:#F45CB5;"><b>GRAM PANCHAYAT</b></span><br/>SURVEY STARTED</h5>';
 						if(result[0].totalpanchayatCnt !=null && result[0].totalpanchayatCnt>0){
-							str+=' <h3>'+result[0].totalpanchayatCnt+'</h3>';
+							str+=' <h3 attr_location_type="panchayat" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" class="surveyStartedLocationCountCls">'+result[0].totalpanchayatCnt+'</h3>';
 						}else{
 							str+=' <h3>0</h3>';
 						}
@@ -308,7 +308,11 @@ function buildBasicLedOverviewDetails(result)
 	str+='<div class="col-sm-2 lightsBlock">';
 		str+='<img src="Assests/icons/BulbAp.jpg" style="width: 110px; height: 90px;">';
 		str+='<p>ON/OFF LIGHTS</p>';
-		str+='<h4>'+result[0].onLights+'/'+result[0].offLights+'</h4>';
+		 if (result[0].onLights ==0 && result[0].offLights == 0) {
+			str+='<h4>0/0</h4>';
+		 } else {
+			 str+='<h4 attr_location_type="panchayat" attr_result_type="onOff" style="cursor:pointer;color:rgb(51, 122, 183)" class="surveyStartedLocationCountCls">'+result[0].onLights+'/'+result[0].offLights+'</h4>';
+		 }
 	str+='</div>';
 	str+='<div class="col-sm-10" >';
 		str+='<div class="col-sm-2 media m_top5">';
@@ -566,12 +570,12 @@ function tableView(result,divId,locType)
 				  tableView+='<th><img src="Assests/icons/mandals_icon.png" class="imageWidthLed"><br/>TOTAL MANDALS</th>';	
 				}
 				
-				tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>SURVEY STARTED MANDALS</th>';
+				tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>MANDALS STARTED</th>';
 				tableView+='<th><img src="Assests/icons/GPs_icon.png" class="imageWidthLed"><br/>TOTAL GPs</th>';
-				tableView+='<th><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>SURVEY STARTED GPs</th>';
-				tableView+='<th><img src="Assests/icons/Poles_icon.png" class="imageWidthLed"><br/>TOTAL POLES SURVEYED</th>';
-				tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"><br/>TOTAL CCMS-BOX/ PANELS INSTALLED</th>';
-				tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed"><br/>TOTAL LED LIGHTS INSTALLED</th>';
+				tableView+='<th><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>GPs STARTED</th>';
+				//tableView+='<th><img src="Assests/icons/Poles_icon.png" class="imageWidthLed"><br/>TOTAL POLES SURVEYED</th>';
+				tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"><br/>TOTAL CCMS-BOX INSTALLED</th>';
+				tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed"><br/>TOTAL LED LIGHTS RETROFITTED</th>';
 				tableView+='<th><img src="Assests/icons/Operational_LED_Light_Icon.png" class="" style="width:35px;height:35px;">OPERATIONAL<br/>&nbsp;</th>';
 				tableView+='<th><img src="Assests/icons/On_light_icon.png" class="imageWidthLed">ON<br/>&nbsp;</th>';
 				tableView+='<th><img src="Assests/icons/Off_Light_Icon.png" class="imageWidthLed">OFF<br/>&nbsp;</th>';
@@ -652,7 +656,7 @@ function tableView(result,divId,locType)
 					
 					tableView+='<td>'+result[i].totalGps+'</td>';
 					tableView+='<td>'+result[i].surveyStartedtotalGps+'</td>';
-					tableView+='<td>'+result[i].totalPoles+'</td>';
+					//tableView+='<td>'+result[i].totalPoles+'</td>';
 					tableView+='<td>'+result[i].totalPanels+'</td>';
 					tableView+='<td>'+result[i].totalLedLIghtInstalledCount+'</td>';
 					tableView+='<td>'+result[i].workingLights+'</td>';
@@ -677,7 +681,6 @@ function tableView(result,divId,locType)
 											}else{
 												tableView+='<li class=""><b>'+result[i].wattageList[l].wattage+'W = '+result[i].wattageList[l].lightCount+'</b></li>';
 											}
-										 
 										}
 									}
 								}else{
@@ -1278,3 +1281,218 @@ function getRequiredTemplate(type){
 		str+='</div>';
  return str;
 }
+
+/* Click Functionality started */
+$(document).on("click",".surveyStartedLocationCountCls",function (){
+	var locationType = $(this).attr("attr_location_type");
+	var resultType = $(this).attr("attr_result_type");
+	if (resultType=="onOff") {
+		$("#surveryStartedLocHeadingId").html('PANCHAYAT WISE ON/OFF LIGHTS DETAILS')
+	} else {
+		$("#surveryStartedLocHeadingId").html('Survey Started Location Details');
+	}
+	getSurveryStartedLocation(locationType,resultType);
+});
+
+function getSurveryStartedLocation(locType,resultType){
+	 $("#surveryStartedLocationDtlsModelDivId").modal("show");
+	 $("#surveyStartedLocationDtlsDivId").html(spinner);
+		var locationId='';
+		var filterTypeVal='';
+		if(globallevelId ==2 || globallevelId ==0){
+			locationId = 0;
+			filterTypeVal = '';	
+		}else if(globallevelId ==3){
+			locationId = globallocId;
+			filterTypeVal = "district";	
+		}else if(globallevelId ==4){
+			locationId = globallocId;
+			filterTypeVal = "constituency";	
+		}else if(globallevelId ==5){
+			locationId = globallocId;
+			filterTypeVal = "mandal";	
+		}
+	var json = {
+			"locationType":locType,
+			"filterType"  :filterTypeVal ,
+			"locationId"  :locationId,
+			"fromDate"	  :glStartDate,
+		    "toDate"	  :glEndDate
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getAllLevelWiseDataOverView',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		 $("#surveyStartedLocationDtlsDivId").html(' ');
+	     if (result != null && tableView.length > 0 ){
+			 buildSurveryStartedLocationDtls(result,locType,resultType);
+		 }else {
+			 $("#surveyStartedLocationDtlsDivId").html('NO DATA AVAILABLE.');
+		 }
+	});
+}
+
+function buildSurveryStartedLocationDtls(result,divId,resultType){
+	var tableView = '';
+	tableView+='<div class="table-responsive m_top10">';	
+	tableView+='<table class="table tableStyleLed" id="surveyStartedLocationDtlsDataTblId">';
+		tableView+='<thead>';
+			tableView+='<tr>';
+				if(divId == 'district'){
+						tableView+='<th> </th>';	
+						tableView+='<th>DISTRICTS</th>';
+				}else if(divId == 'constituency'){
+						tableView+='<th>DISTRICT</th>';
+						tableView+='<th>CONSTITUENCY</th>';
+				}else if(divId == 'mandal'){
+						tableView+='<th>DISTRICT</th>';
+						tableView+='<th>CONSTITUENCY</th>';
+						tableView+='<th>MANDAL</th>';
+				}else if(divId == 'panchayat'){
+						tableView+='<th>DISTRICT</th>';
+						tableView+='<th>CONSTITUENCY</th>';
+						tableView+='<th>MANDAL</th>';
+						tableView+='<th>PANCHAYAT</th>';
+				}
+				if (resultType !="onOff") { 
+					if(divId != 'mandal' && divId!='panchayat'){
+					  tableView+='<th><img src="Assests/icons/mandals_icon.png" class="imageWidthLed"><br/>TOTAL MANDALS</th>';	
+					}
+					tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>MANDALS STARTED</th>';
+					tableView+='<th><img src="Assests/icons/GPs_icon.png" class="imageWidthLed"><br/>TOTAL GPs</th>';
+					tableView+='<th><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>GPs STARTED</th>';
+					tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"><br/>TOTAL CCMS-BOX INSTALLED</th>';
+					tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed"><br/>TOTAL LED LIGHTS RETROFITTED</th>';
+				} else {
+				   tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed"><br/>TOTAL LED LIGHTS RETROFITTED</th>';
+				   tableView+='<th><img src="Assests/icons/Operational_LED_Light_Icon.png" class="" style="width:35px;height:35px;">OPERATIONAL<br/>&nbsp;</th>';
+				   tableView+='<th><img src="Assests/icons/On_light_icon.png" class="imageWidthLed">ON<br/>&nbsp;</th>';
+				   tableView+='<th><img src="Assests/icons/Off_Light_Icon.png" class="imageWidthLed">OFF<br/>&nbsp;</th>';
+				}
+				
+			tableView+='</tr>';
+		tableView+='</thead>';
+		tableView+='<tbody>';
+			for(var i in result){
+				if (result[i].surveyStartedtotalMandals > 0 ){
+					tableView+='<tr>';
+					if(divId == 'district'){
+							tableView+='<td>';
+							if(result[i].locationId == 17 || result[i].locationId == 18 || result[i].locationId == 19 || result[i].locationId == 20 || result[i].locationId == 22 || result[i].locationId == 23){
+								tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
+							}else if(result[i].locationId == 16 || result[i].locationId == 11 || result[i].locationId == 14 || result[i].locationId == 15 || 	result[i].locationId == 12 || result[i].locationId == 13 || result[i].locationId == 21){
+								tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';	
+							}
+							tableView+='</td>';
+							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+					}else if(divId == 'constituency'){
+							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+					}else if(divId == 'mandal'){
+							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+							tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
+					}else if(divId == 'panchayat'){
+							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
+							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
+							tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
+							tableView+='<td>'+result[i].addressVO.panchayatName+'</td>';
+					}
+					
+					if (resultType !="onOff") {
+						if(divId == 'district' || divId=="constituency"){
+						 tableView+='<td>'+result[i].totalMandals+'</td>';	
+						}
+						if(divId=="mandal" || divId=='panchayat'){
+							if (result[i].surveyStartedtotalMandals > 0) {
+								tableView+='<td>Yes</td>';
+							} else {
+							   tableView+='<td>No</td>';	
+							}
+						}else{
+							tableView+='<td>'+result[i].surveyStartedtotalMandals+'</td>';
+						}
+						tableView+='<td>'+result[i].totalGps+'</td>';
+						tableView+='<td>'+result[i].surveyStartedtotalGps+'</td>';
+						tableView+='<td>'+result[i].totalPanels+'</td>';
+						tableView+='<td>'+result[i].totalLedLIghtInstalledCount+'</td>';
+					} else {
+						tableView+='<td>'+result[i].totalLedLIghtInstalledCount+'</td>';
+						tableView+='<td>'+result[i].workingLights+'</td>';
+						tableView+='<td>'+result[i].onLights+'</td>';
+						tableView+='<td>'+result[i].offLights+'</td>';
+				
+					}
+				 tableView+='</tr>';
+				}
+			}
+		tableView+='</tbody>';
+	tableView+='</table>';
+	tableView+='</div>';
+	$("#surveyStartedLocationDtlsDivId").html(tableView);
+	if(divId == 'district'){
+		$("#surveyStartedLocationDtlsDataTblId").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": true,
+			"autoWidth": true,
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
+		 });
+	}else{
+		$("#surveyStartedLocationDtlsDataTblId").dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV',
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o"></i>',
+				titleAttr: 'PDF',
+				orientation: "landscape",
+				pageSize:'A3',
+				customize: function (doc) {
+					doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+				}
+			}
+		]
+	 });
+	}
+}
+/* End */
+
