@@ -158,7 +158,7 @@
 <main class="m_top5">
 <div class="container-fluid">
 	<section>
-		<div class="row m_top20">
+		<div class="row m_top10">
 			<div class="col-sm-12">
 				<div id="overviewBlockId"></div>
 			</div>

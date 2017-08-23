@@ -1297,7 +1297,7 @@ $(document).on("click",".surveyStartedLocationCountCls",function (){
 	if (resultType=="onOff") {
 		$("#surveryStartedLocHeadingId").html('PANCHAYAT WISE ON/OFF LIGHTS DETAILS')
 	} else {
-		$("#surveryStartedLocHeadingId").html('Survey Started Location Details');
+		$("#surveryStartedLocHeadingId").html('LED RETROFITTED Started Location Details');
 	}
 	    var locationId='';
 		var filterType='';
@@ -1324,7 +1324,7 @@ $(document).on("click",".companyTypeCls",function (){
 	var locationType = $(this).attr("attr_location_type");
 	var resultType = $(this).attr("attr_result_type");
 	var companyType = $(this).attr("attr_company_type");
-	$("#surveryStartedLocHeadingId").html(''+companyType+' Survey Started Location Details');
+	$("#surveryStartedLocHeadingId").html(''+companyType+' LED RETROFITTED Started Location Details');
 	 var nredcapArr = [11,12,13,14,15,16,21];
      var eeslArr = [17,18,19,20,22,23];
      var locationIdArr = [];
