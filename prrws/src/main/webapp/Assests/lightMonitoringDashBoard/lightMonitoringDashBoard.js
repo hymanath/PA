@@ -85,6 +85,7 @@ $("#singleDateRangePicker").daterangepicker({
 		opens: 'left',
 		startDate: glStartDate,
 		endDate: glEndDate,
+		singleDatePicker:true,
 		locale: {
 		  format: 'DD-MM-YYYY'
 		}
@@ -93,7 +94,7 @@ $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	
 /* 	glStartDate = picker.startDate.format('DD-MM-YYYY');
 	glEndDate = picker.endDate.format('DD-MM-YYYY'); */
-	var tartDate = picker.startDate.format('DD-MM-YYYY');
+	var startDate = picker.startDate.format('DD-MM-YYYY');
 	var endDate = picker.endDate.format('DD-MM-YYYY');
 	glStartDate = endDate;
 	glEndDate = endDate;
