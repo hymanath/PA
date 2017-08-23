@@ -9053,7 +9053,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 									     if (postCandiateVO.getNominatedPostMemberId() != null && postCandiateVO.getNominatedPostMemberId() > 0 ) {
 									    	 List<Long> nominatedPostIds = nominatedPostDAO.getNominatedPostIdByMemberId(postCandiateVO.getNominatedPostMemberId());
 										     if (nominatedPostIds != null && nominatedPostIds.size() > 0 ) {
-										    	 postCandiateVO.setNominatedPostCandiateId(nominatedPostIds.get(0));
+										    	 postCandiateVO.setNominatedPostId(nominatedPostIds.get(0));
 										     } 
 									     }
 									    
