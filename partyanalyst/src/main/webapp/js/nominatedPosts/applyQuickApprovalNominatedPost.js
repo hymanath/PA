@@ -61,13 +61,13 @@ function searchResultBlock(myresult){
                 block+='<div class="text-center"><p class="iconBlock memberDetails"><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" style="width: 50px; height: 50px; margin-left: -2px; margin-top: -6px;"></p></div>';
             block+='</div>';
             block+='<div class="panel-body">';
-				block+='<p class="memberDetails cadreName" value="5"><span>N</span>'+result[i].cadreName+'</p>';
+				block+='<p class="memberDetails cadreName" value="5" data-toggle="tooltip" data-placement="top" title="Cadre Name"><span>N</span>'+result[i].cadreName+'</p>';
 				
-                block+='<p class="memberDetails"><span style="padding:4px 8px">V</span>'+result[i].voterCardNo+'</p>';
-                block+='<p class="memberDetails"><span style="padding:4px 6px">M</span>'+result[i].memberShipCardId+'</p>';
-                block+='<p class="memberDetails"><span style="padding:4px 6px">M</span>'+result[i].mobileNo+'</p>';
-                block+='<p class="memberDetails"><span>A</span>'+result[i].addressVO.constituencyName+'</p>';
-                block+='<p class="memberDetails"><span>C</span>'+result[i].enrollmentYears+'</p>';
+                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Voter Id"><span style="padding:4px 8px">V</span>'+result[i].voterCardNo+'</p>';
+                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="MemberShip Number"><span style="padding:4px 6px">M</span>'+result[i].memberShipCardId+'</p>';
+                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Mobile Number"><span style="padding:4px 6px">M</span>'+result[i].mobileNo+'</p>';
+                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Constituency Name"><span>A</span>'+result[i].addressVO.constituencyName+'</p>';
+                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Enrollment Years"><span>C</span>'+result[i].enrollmentYears+'</p>';
 			block+='</div>';
             block+='<div class="panel-footer">';
 			
@@ -106,6 +106,7 @@ var globalMembersCount = 0;
 var globalMemAddedCunt = 0;
 $(document).on('click','.selectMember',function(){
 	var positionCount = $(this).attr("attr_postion_count");
+	globalMembersCount=0;
 	if(positionCount != globalMembersCount ){
 		var departmentId=$("#depmtsId").val();
 		var boardId = $("#deptBoardId").val();
@@ -199,7 +200,7 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	collapse+='</div>';
 					collapse+='<div class="col-sm-3">';
 						collapse+='<h5 style="font-weight:600"><span style="color:#FF0000">STEP-4</span></h5>';
-								collapse+='<div class="row m_top10" id="addedRefferalsDiv">';
+								collapse+='<div class="row m_top10" id="addedRefferalsDiv" style="overflow-Y:scroll;height:450px;">';
 							collapse+='<div class="col-md-12 col-sm-12 col-xs-12 m_top10">';
 								collapse+='<h4 class="text-success text-capital">refered members to this candidate<small class="text-muted text-capitalize" id="involvedMembers">(0 - Members added)</small></h4>';
 							collapse+='</div>';
@@ -280,6 +281,8 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 $(document).on('click','.removeMember-icon',function(){
 	$(this).closest("li").remove();
 	globalMembersCount--;
+	globalMemAddedCunt--;
+	$("#selTotPosCnt").text(globalPosiDivs);$("#selTotMemCnt").text(globalMemAddedCunt);
 });
 
 function savingApplication(){
@@ -307,10 +310,10 @@ function showSubmitStatus(myResult){
 		   statusCode=statusCode[1];
 		  
 	if(statusCode== 1 && statusCode !=null){	
-		alert("Application Form Submitted Successfully");
+		alert("Application  Submitted Successfully");
 		location.reload(); 
 	}else{
-		alert("Application Form Not Submitted Please Try Again ")
+		alert("Application  Not Submitted Please Try Again ")
 	}
 	
 }	
