@@ -210,7 +210,7 @@
 									
 								</div>
 								<div class="col-sm-12 m_top20" id="">
-								<div class="errMessageId" style="color:red;"></div>
+								<div id="errMessageId" style="color:red;"></div>
 									<div class="m_top20" id="searchResultsBlock"></div>
 									
 								</div>
