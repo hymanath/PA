@@ -9,7 +9,16 @@ function onLoadCalls(){
 $(".dropkickClass").dropkick();
 $(document).on('click','#searchbtn',function(){
 	$("#errMessageId").html('');
-	getNominatedPostApplication();
+	var searchValue = $("#searchBy").val() ;
+		if(searchValue.length == 0 || searchValue == null)
+			{
+				$('#notCadreErrMsg').html('Please Enter Value.');
+				return;
+			}else{
+				$('#notCadreErrMsg').html('');
+				getNominatedPostApplication();
+			}
+	
 	//$("#addedRefferalsDiv").hide();
 })
 $(document).on('change','#deptBoardPostnId',function(){
@@ -58,7 +67,7 @@ function searchResultBlock(myresult){
         block+='<div class="panel panel-default">';
             block+='<div class="panel-heading">';
 				/*block+='<div class="deleteMember"><i class="fa fa-times" aria-hidden="true" style="padding: 0px 6px 5px;"></i></div>';*/
-                block+='<div class="text-center"><p class="iconBlock memberDetails"><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" style="width: 50px; height: 50px; margin-left: -2px; margin-top: -6px;"></p></div>';
+                block+='<div class="text-center"><p class="iconBlock memberDetails"><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" style="width: 50px; height: 50px; margin-left: -2px; margin-top: -6px;border-radius:50%;"></p></div>';
             block+='</div>';
             block+='<div class="panel-body">';
 				block+='<p class="memberDetails cadreName" value="5" data-toggle="tooltip" data-placement="top" title="Cadre Name"><span>N</span>'+result[i].cadreName+'</p>';
@@ -98,6 +107,11 @@ function searchResultBlock(myresult){
 	}); 
 	
 }
+
+function updateAddedPosiAndAddedMemCnt(){
+	$("#selTotPosCnt").text(globalPosiDivs);
+	$("#selTotMemCnt").text(globalMemAddedCunt);
+}
 var globalPosiDivs = 0;
 var globalPositionsArr = [];
 var globalCadreIds =[];
@@ -105,6 +119,7 @@ var globalMemrsCnt = 0;
 var globalMembersCount = 0;
 var globalMemAddedCunt = 0;
 $(document).on('click','.selectMember',function(){
+	 globalMembersCount = 0;
 	var positionCount = $(this).attr("attr_postion_count");
 	globalMembersCount=0;
 	if(positionCount != globalMembersCount ){
@@ -114,6 +129,7 @@ $(document).on('click','.selectMember',function(){
 		var selPosition = $(this).attr("attr_position_type");
 		globalMembersCount++;
 		globalMemAddedCunt = globalMemAddedCunt+globalMembersCount;
+		$("#addmember"+selPosition).closest(".panel-group").parent().show();
 			if($(this).is(':checked')){
 				var appendBlock = $(this).closest("li").html();
 				var cadreId = $(this).attr("attr_cadreId");
@@ -129,9 +145,13 @@ $(document).on('click','.selectMember',function(){
 							var posiCnt = $("#addmember"+selPosition).attr("attr_posi_count");
 							count++;
 							globalMemrsCnt++;
-							$("#selTotPosCnt").text(globalPosiDivs);$("#selTotMemCnt").text(globalMemAddedCunt);
+							updateAddedPosiAndAddedMemCnt();
+							var posiMemCnt = $("#posiMemCnt"+selPosition).text();
+							posiMemCnt++;
+							$("#posiMemCnt"+selPosition).text(posiMemCnt);
 							$("#addmember"+selPosition).attr("attr_member_count",count);
-							$("#addmember"+selPosition).append('<li style="margin:0px 5px;"><input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].tdpCadreId"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].departmentId" value="'+departmentId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].boardId" value="'+boardId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].positionId" value="'+positionId+'"><i class="fa fa-times removeMember-icon" aria-hidden="true"></i>'+appendBlock+'</li>');
+							$("#addmember"+selPosition).append('<li style="margin:0px 5px;"><input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].tdpCadreId"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].departmentId" value="'+departmentId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].boardId" value="'+boardId+'"><input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+posiCnt+'].subList1['+count+'].positionId" value="'+positionId+'"><i class="fa fa-times removeMember-icon" attr_cadre_id="'+cadreId+'" aria-hidden="true" attr_posi_text="'+selPosition+'"></i>'+appendBlock+'</li>');
+							
 							$("#addmember"+selPosition).find("li div.panel-footer").remove();
 						}else{
 							buildPanelBlock(selPosition,appendBlock,cadreId);
@@ -175,7 +195,7 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
             collapse+='<div class="panel panel-default">';
                 collapse+='<div class="panel-heading" role="tab" id="headingOne'+selPosition+'" style="background-color:transparent">';
                         collapse+='<a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordion'+selPosition+'" href="#collapseOne'+selPosition+'" aria-expanded="true" aria-controls="collapseOne'+selPosition+'">';
-						collapse+='<h4 class="panel-title">'+selPosition+' - Members Added</h4>';
+						collapse+='<h4 class="panel-title">'+selPosition+' -<span id="posiMemCnt'+selPosition+'">1</span> Members Added</h4>';
                     collapse+='</a>';
                 collapse+='</div>';
 					collapse+=' <div id="collapseOne'+selPosition+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+selPosition+'">';
@@ -183,7 +203,7 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
                     collapse+='<div class="panel-body" id="show'+selPosition+'">';
 						collapse+='<ul class="nav navbar-nav membersSelectionDivCls" id="addmember'+selPosition+'" attr_remove_member="remove-member" attr_member_count="'+count+'" attr_posi_count="'+globalPosiDivs+'">';
 						collapse+='<li style="margin:0px 5px;">';
-							collapse+='<i class="fa fa-times removeMember-icon" aria-hidden="true"></i>';
+							collapse+='<i class="fa fa-times removeMember-icon" attr_posi_text="'+selPosition+'" attr_cadre_id="'+cadreId+'"  aria-hidden="true"></i>';
 							collapse+='<input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].tdpCadreId">';
 							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].departmentId" value="'+departmentId+'">';
 							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].boardId" value="'+boardId+'">';
@@ -238,7 +258,7 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 		globalPosiDivs++;
 		var  collapse1 = "";
 		var count = 0;
-		$("#selTotPosCnt").text(globalPosiDivs);$("#selTotMemCnt").text(globalMemAddedCunt);
+		updateAddedPosiAndAddedMemCnt();
 		//$("#accordionOne").closest("h4").html('<p>'+globalPosiDivs+' Positions & '+globalMemrsCnt+' Members</p>');
 		collapse1+='<input type="hidden" id="positionDiv'+selPosition+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+']">';
 		collapse1+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition+'">';
@@ -246,15 +266,15 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
             collapse1+='<div class="panel panel-default">';
                 collapse1+='<div class="panel-heading" role="tab" id="headingOne'+selPosition+'" style="background-color:transparent">';
                         collapse1+='<a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordion'+selPosition+'" href="#collapseOne'+selPosition+'" aria-expanded="true" aria-controls="collapseOne'+selPosition+'">';
-						collapse1+='<h4 class="panel-title">'+selPosition+' - Members Added</h4>';
+						collapse1+='<h4 class="panel-title">'+selPosition+' - <span id="posiMemCnt'+selPosition+'">1</span>Members Added</h4>';
                     collapse1+='</a>';
                 collapse1+='</div>';
 					collapse1+=' <div id="collapseOne'+selPosition+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+selPosition+'">';
                 
                     collapse1+='<div class="panel-body" id="show'+selPosition+'">';
-						collapse1+='<ul class="nav navbar-nav col-sm-12" id="addmember'+selPosition+'" attr_remove_member="remove-member" attr_member_count="'+count+'" attr_posi_count="'+globalPosiDivs+'">';
+						collapse1+='<ul class="nav navbar-nav col-sm-12 membersSelectionDivCls" id="addmember'+selPosition+'" attr_remove_member="remove-member" attr_member_count="'+count+'" attr_posi_count="'+globalPosiDivs+'">';
 						collapse1+='<li>';
-						collapse1+='<i class="fa fa-times removeMember-icon" aria-hidden="true" style="margin:2px 12px"></i>';
+						collapse1+='<i class="fa fa-times removeMember-icon" attr_posi_text="'+selPosition+'" attr_cadre_id="'+cadreId+'" aria-hidden="true" style="margin:2px 12px"></i>';
 						collapse1+='<input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].tdpCadreId">';
 						collapse1+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].departmentId" value="'+departmentId+'">';
 							collapse1+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].boardId" value="'+boardId+'">';
@@ -267,7 +287,11 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
             collapse1+='</div>';
         collapse1+='</div>';
     collapse1+='</div>';
-	var currentDiv = globalPosiDivs-1;
+	if(globalPosiDivs != 0){
+		var currentDiv = globalPosiDivs-1;
+	}else{
+		var currentDiv = globalPosiDivs;
+	}
 	$("#buildPositionWiseBlock"+currentDiv).append(collapse1);
 	}
 	$(".slick-slide").css("display","inline-block");
@@ -279,10 +303,31 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	$(this).find("i").toggleClass("active");
 }) */
 $(document).on('click','.removeMember-icon',function(){
+	var ulLength = $(this).closest("ul").attr("id"); 
+	ulLength = $("#"+ulLength+" li").length
+	if(ulLength == 1)
+	{
+		globalPosiDivs--;
+		$(this).closest(".panel-group").parent().hide();
+	}
+	var selPosition = $(this).attr("attr_posi_text");
+	var posiMemCnt = $("#posiMemCnt"+selPosition).text();
+	posiMemCnt--;
+	$("#posiMemCnt"+selPosition).text(posiMemCnt);
 	$(this).closest("li").remove();
+	$(".selectMember").prop("checked",false);
+	var cadreId = $(this).attr("attr_cadre_id");
 	globalMembersCount--;
 	globalMemAddedCunt--;
-	$("#selTotPosCnt").text(globalPosiDivs);$("#selTotMemCnt").text(globalMemAddedCunt);
+	for(var i in globalCadreIds){
+		if(globalCadreIds[i] == cadreId)
+		globalCadreIds.splice(i, 1);
+	}
+	for(var i in globalPositionsArr){
+		if(globalPositionsArr[i] == selPosition)
+		globalPositionsArr.splice(i, 1);
+	}
+	updateAddedPosiAndAddedMemCnt();
 });
 
 function savingApplication(){
