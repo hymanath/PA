@@ -85,7 +85,6 @@ $("#singleDateRangePicker").daterangepicker({
 		opens: 'left',
 		startDate: glStartDate,
 		endDate: glEndDate,
-		singleDatePicker:true,
 		locale: {
 		  format: 'DD-MM-YYYY'
 		}
@@ -94,7 +93,7 @@ $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	
 /* 	glStartDate = picker.startDate.format('DD-MM-YYYY');
 	glEndDate = picker.endDate.format('DD-MM-YYYY'); */
-	var startDate = picker.startDate.format('DD-MM-YYYY');
+	var tartDate = picker.startDate.format('DD-MM-YYYY');
 	var endDate = picker.endDate.format('DD-MM-YYYY');
 	glStartDate = endDate;
 	glEndDate = endDate;
@@ -579,10 +578,10 @@ function tableView(result,divId,locType)
 				tableView+='<th><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>GPs STARTED</th>';
 				//tableView+='<th><img src="Assests/icons/Poles_icon.png" class="imageWidthLed"><br/>TOTAL POLES SURVEYED</th>';
 				tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"><br/>TOTAL CCMS-BOX INSTALLED</th>';
-				tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed"><br/>TOTAL LED LIGHTS RETROFITTED</th>';
-				tableView+='<th><img src="Assests/icons/Operational_LED_Light_Icon.png" class="" style="width:35px;height:35px;">OPERATIONAL<br/>&nbsp;</th>';
-				tableView+='<th><img src="Assests/icons/On_light_icon.png" class="imageWidthLed">ON<br/>&nbsp;</th>';
-				tableView+='<th><img src="Assests/icons/Off_Light_Icon.png" class="imageWidthLed">OFF<br/>&nbsp;</th>';
+				tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed" style="height: 35px;"><br/>TOTAL LED LIGHTS RETROFITTED</th>';
+				tableView+='<th style="vertical-align: middle;"><img src="Assests/icons/Operational_LED_Light_Icon.png" class="" style="width: 28px; height: 35px;"><br/>OPERATIONAL&nbsp;</th>';
+				tableView+='<th style="vertical-align: middle;"><img src="Assests/icons/On_light_icon.png" class="imageWidthLed" style="width: 40px; height: 40px;"><br/>ON&nbsp;</th>';
+				tableView+='<th style="vertical-align: middle;"><img src="Assests/icons/Off_Light_Icon.png" class="imageWidthLed" style="width: 33px; height: 33px;"><br/>OFF&nbsp;</th>';
 				tableView+='<th>WATTAGE<br/>&nbsp;</th>';
 			tableView+='</tr>';
 		tableView+='</thead>';
