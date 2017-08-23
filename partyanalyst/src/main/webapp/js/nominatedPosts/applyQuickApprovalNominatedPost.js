@@ -6,7 +6,7 @@ var globalObjArr = [];
 function onLoadCalls(){
   getDepartments();
 }
-
+$(".dropkickClass").dropkick();
 $(document).on('click','#searchbtn',function(){
 	$("#errMessageId").html('');
 	getNominatedPostApplication();
@@ -283,20 +283,37 @@ $(document).on('click','.removeMember-icon',function(){
 });
 
 function savingApplication(){
-			
+
 			var uploadHandler = {
 				upload: function(o) {
 					//$("#savingAjaxImg").css("display","none");
 					uploadResult = o.responseText;
-					//showSbmitStatus(uploadResult);
+					showSubmitStatus(uploadResult);
 				}
 			};
-		
 			YAHOO.util.Connect.setForm('submitApplication',true);
 			YAHOO.util.Connect.asyncRequest('POST','saveNominatedPostProfileDtlsAction.action',uploadHandler);
 			
+	
 	}
 		
+
+
+function showSubmitStatus(myResult){
+	
+	var result = (String)(myResult);
+		   var resultAray = result.split(',');
+		   var statusCode = resultAray[6].split(":");
+		   statusCode=statusCode[1];
+		  
+	if(statusCode== 1 && statusCode !=null){	
+		alert("Application Form Submitted Successfully");
+		location.reload(); 
+	}else{
+		alert("Application Form Not Submitted Please Try Again ")
+	}
+	
+}	
 
 function getDepartments(){
 	  //$("#searchDataImgForDist").show();
