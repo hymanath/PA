@@ -36,7 +36,6 @@
     background: #f8f9fb none repeat scroll 0 0;
     border: 1px dashed #ddd;
     cursor: pointer;
-    height: 105px;
 }
 .involveBlockNew .media-left, .involveBlockNew .media-body {
     padding: 17px;
@@ -204,6 +203,7 @@
 														<button type = "button" class="btn btn-success btn-block btnSearch" id="searchbtn" style="width:auto">SEARCH</button>
 													</span>
 												</div>
+												<div id="notCadreErrMsg" style="color:red;"></div>
 											</div>
 										</form>
 									</div>
