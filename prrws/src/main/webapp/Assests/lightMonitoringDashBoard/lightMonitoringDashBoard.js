@@ -1310,7 +1310,7 @@ function checkIsDataExist(){
 		if (result.status=="YES") {
 			onLoadCalls();
 		} else {
-			$("#statusHeadingId").html("DATA DON'T EXIST BETWEEN THIS DATE RANGE");
+			$("#statusHeadingId").html("DATA DON'T EXIST IN SELECTED DATE");
 	        $("#modalMessageDivId").modal("show");
 			setTimeout(function(){ $("#modalMessageDivId").modal("hide"); }, 5000);
 		}
