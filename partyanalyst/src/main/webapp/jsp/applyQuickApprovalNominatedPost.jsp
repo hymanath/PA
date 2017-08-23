@@ -22,6 +22,10 @@
 <link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/slick/slick.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
+#searchedMembersId thead th , #searchedMembersId_info,#searchedMembersId_length
+{
+	display:none;
+}
 .involveBlock {
     background: #f8f9fb none repeat scroll 0 0;
     border: 1px solid #ddd;
@@ -604,7 +608,6 @@ var gsId = 0;
 		$('[data-toggle="tooltip"]').tooltip()
 		$('.check').tooltip()
 		$('#searchedMembersId').DataTable({
-			
 			
 		});
 		//applyPagination();
