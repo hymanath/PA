@@ -324,7 +324,7 @@ public class LightMonitoringService  implements ILightMonitoring{
  	 * Author :Swapna
  	 */
 	@Override
-	public List<LightMonitoringVO> getAllLevelWiseDataOverView(String locationType,String filterType, Long filterValue,String fromDateStr,String toDateStr) {
+	public List<LightMonitoringVO> getAllLevelWiseDataOverView(String locationType,String filterType, List<Long> filterValues,String fromDateStr,String toDateStr) {
 		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>();
 		try {
 				Date fromDate = null;
@@ -334,9 +334,9 @@ public class LightMonitoringService  implements ILightMonitoring{
 					fromDate = sdf.parse(fromDateStr);
 					toDate = sdf.parse(toDateStr);
 				}
-			      List<Object[]> totalLocObj =lightMonitoringDAO.getLocationsForLEDDashboard(locationType, filterType, filterValue," ");//getting location template
-			      List<Object[]> lightMonObjLst =   lightMonitoringDAO.getLocationWiseDataForLEDDashboard(locationType,filterType,filterValue,fromDate,toDate) ;//getting survey data	
-			      List<Object[]> lightWattageObjLst = lightWattageDAO.getLocationWiseLightWattageDtls(locationType, filterType, filterValue, fromDate, toDate);//getting location wise wattage details.
+			      List<Object[]> totalLocObj =lightMonitoringDAO.getLocationsForLEDDashboard(locationType, filterType, filterValues," ");//getting location template
+			      List<Object[]> lightMonObjLst =   lightMonitoringDAO.getLocationWiseDataForLEDDashboard(locationType,filterType,filterValues,fromDate,toDate) ;//getting survey data	
+			      List<Object[]> lightWattageObjLst = lightWattageDAO.getLocationWiseLightWattageDtls(locationType, filterType, filterValues, fromDate, toDate);//getting location wise wattage details.
 			      
 			      Map<Long,List<LightWattageVO>> lightWattageMap = getLightWattageDtls(lightWattageObjLst);
 			      Map<Long,LightMonitoringVO> locationMap = setStartedSurveryDataLocationWise(totalLocObj,lightWattageMap,locationType);
@@ -433,10 +433,10 @@ public class LightMonitoringService  implements ILightMonitoring{
  	 * Author :Swapna
  	 */
 	@Override
-	public List<LightMonitoringVO> getLocationBasedOnSelection(String locationType,String filterType, Long filterValue,String subLocationType) {
+	public List<LightMonitoringVO> getLocationBasedOnSelection(String locationType,String filterType, List<Long> filterValues,String subLocationType) {
 		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>();
 		try{
-			 List<Object[]> totalFilterObj =lightMonitoringDAO.getLocationsForLEDDashboard(locationType, filterType, filterValue,subLocationType);
+			 List<Object[]> totalFilterObj =lightMonitoringDAO.getLocationsForLEDDashboard(locationType, filterType, filterValues,subLocationType);
 			if(totalFilterObj!=null && totalFilterObj.size()>0){
 		    for (Object[] objects : totalFilterObj) {
 		       LightMonitoringVO locationVO = new LightMonitoringVO();

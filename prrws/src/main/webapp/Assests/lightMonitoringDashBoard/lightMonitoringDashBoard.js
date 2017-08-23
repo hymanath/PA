@@ -274,10 +274,14 @@ function getAllLevelWiseDataOverView(locType,filterType,locId,divId){
 			locationType =locType;
 			filterTypeVal = "mandal";	
 		} */
+		var locationIdArr = [];
+		 if (locationId > 0) {
+			 locationIdArr.push(locationId);
+		 }
 	var json = {
 			"locationType":locationType,
 			"filterType"  :filterTypeVal ,
-			"locationId"  :locationId,
+			"locationIds"  :locationIdArr,
 			"fromDate"	  :glStartDate,
 		    "toDate"	  :glEndDate
 		}
@@ -818,10 +822,14 @@ $(document).on("change",".lebSelectBoxCls",function(){
 /* End */
 
 function getLocationBasedOnSelection(locationType,filterType,filterValue,divId,sublocaType){
+	    var locationIdArr = [];
+		 if (filterValue > 0) {
+			 locationIdArr.push(filterValue);
+		 }
 	var json = {
 			"locationType"  : locationType,
 			"filterType"    : filterType ,
-			"locationId"    : filterValue,
+			"locationIds"    : locationIdArr,
 			"sublocaType"   : sublocaType
 		}
 	$.ajax({                
@@ -1037,19 +1045,19 @@ function buildCompanyWiseLightMonitoringDtls(result){
 					str+='<div class="row m_top10" style="padding:10px;">';
 						str+='<div class="col-sm-3">';
 							str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY SATRTED</b></h6>';
-							str+='<h3>'+result.eeslVO.surveyStartedtotalDistricts+'</h3>';
+							str+='<h3 attr_location_type="district" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="EESL" class="companyTypeCls">'+result.eeslVO.surveyStartedtotalDistricts+'</h3>';
 						str+='</div>';
 						str+='<div class="col-sm-3">';
 							str+='<h6><b>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span><br/>SURVEY SATRTED</b></h6>';
-							str+='<h3>'+result.eeslVO.surveyStartedtotalConstituencys+'</h3>';
+							str+='<h3 attr_location_type="constituency" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="EESL" class="companyTypeCls">'+result.eeslVO.surveyStartedtotalConstituencys+'</h3>';
 						str+='</div>';
 						str+='<div class="col-sm-3">';
 							str+='<h6><b>NO OF <span style="color:#00BFE8;">MANDALS</span><br/>SURVEY SATRTED</b></h6>';
-							str+='<h3>'+result.eeslVO.surveyStartedtotalMandals+'</h3>';
+							str+='<h3 attr_location_type="mandal" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="EESL" class="companyTypeCls">'+result.eeslVO.surveyStartedtotalMandals+'</h3>';
 						str+='</div>';
 						str+='<div class="col-sm-3">';
 							str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY SATRTED</b></h6>';
-							str+='<h3>'+result.eeslVO.surveyStartedtotalGps+'</h3>';
+							str+='<h3 attr_location_type="panchayat" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="EESL" class="companyTypeCls">'+result.eeslVO.surveyStartedtotalGps+'</h3>';
 						str+='</div>';
 					str+='</div>';
 			}else{
@@ -1150,19 +1158,19 @@ function buildCompanyWiseLightMonitoringDtls(result){
 					str+='<div class="row m_top10" style="padding:10px;">';
 						str+='<div class="col-sm-3">';
 							str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY SATRTED</b></h6>';
-							str+='<h3>'+result.nredcapVO.surveyStartedtotalDistricts+'</h3>';
+							str+='<h3 attr_location_type="district" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="NREDCAP" class="companyTypeCls">'+result.nredcapVO.surveyStartedtotalDistricts+'</h3>';
 						str+='</div>';
 						str+='<div class="col-sm-3">';
 							str+='<h6><b>NO OF <span style="color:#02B0AC;">CONSTITUENCIES</span><br/>SURVEY SATRTED</b></h6>';
-							str+='<h3>'+result.nredcapVO.surveyStartedtotalConstituencys+'</h3>';
+							str+='<h3 attr_location_type="constituency" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="NREDCAP" class="companyTypeCls">'+result.nredcapVO.surveyStartedtotalConstituencys+'</h3>';
 						str+='</div>';
 						str+='<div class="col-sm-3">';
 							str+='<h6><b>NO OF <span style="color:#00BFE8;">MANDALS</span><br/>SURVEY SATRTED</b></h6>';
-							str+='<h3>'+result.nredcapVO.surveyStartedtotalMandals+'</h3>';
+							str+='<h3 attr_location_type="mandal" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="NREDCAP" class="companyTypeCls">'+result.nredcapVO.surveyStartedtotalMandals+'</h3>';
 						str+='</div>';
 						str+='<div class="col-sm-3">';
 							str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY SATRTED</b></h6>';
-							str+='<h3>'+result.nredcapVO.surveyStartedtotalGps+'</h3>';
+							str+='<h3 attr_location_type="panchayat" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="NREDCAP" class="companyTypeCls">'+result.nredcapVO.surveyStartedtotalGps+'</h3>';
 						str+='</div>';
 					str+='</div>';
 			}else{
@@ -1291,31 +1299,56 @@ $(document).on("click",".surveyStartedLocationCountCls",function (){
 	} else {
 		$("#surveryStartedLocHeadingId").html('Survey Started Location Details');
 	}
-	getSurveryStartedLocation(locationType,resultType);
-});
-
-function getSurveryStartedLocation(locType,resultType){
-	 $("#surveryStartedLocationDtlsModelDivId").modal("show");
-	 $("#surveyStartedLocationDtlsDivId").html(spinner);
-		var locationId='';
-		var filterTypeVal='';
+	    var locationId='';
+		var filterType='';
 		if(globallevelId ==2 || globallevelId ==0){
 			locationId = 0;
-			filterTypeVal = '';	
+			filterType = '';	
 		}else if(globallevelId ==3){
 			locationId = globallocId;
-			filterTypeVal = "district";	
+			filterType = "district";	
 		}else if(globallevelId ==4){
 			locationId = globallocId;
-			filterTypeVal = "constituency";	
+			filterType = "constituency";	
 		}else if(globallevelId ==5){
 			locationId = globallocId;
-			filterTypeVal = "mandal";	
+			filterType = "mandal";	
 		}
+		var locationIdArr = [];
+		 if (locationId > 0) {
+			 locationIdArr.push(locationId);
+		 }
+	getSurveryStartedLocation(locationType,resultType,filterType,locationIdArr);
+});
+$(document).on("click",".companyTypeCls",function (){
+	var locationType = $(this).attr("attr_location_type");
+	var resultType = $(this).attr("attr_result_type");
+	var companyType = $(this).attr("attr_company_type");
+	$("#surveryStartedLocHeadingId").html(''+companyType+' Survey Started Location Details');
+	 var nredcapArr = [11,12,13,14,15,16,21];
+     var eeslArr = [17,18,19,20,22,23];
+     var locationIdArr = [];
+	 var filterType='district';
+		if(globallevelId ==2 || globallevelId ==0){
+			if (companyType=="EESL") {
+				locationIdArr = eeslArr;
+			} else if (companyType == "NREDCAP") {
+				locationIdArr = nredcapArr;
+			}
+		}else if(globallevelId ==3){
+			locationIdArr.push(globallocId);
+		}
+	getSurveryStartedLocation(locationType,resultType,filterType,locationIdArr);
+});
+
+
+function getSurveryStartedLocation(locType,resultType,filterType,locationIdArr){
+	 $("#surveryStartedLocationDtlsModelDivId").modal("show");
+	 $("#surveyStartedLocationDtlsDivId").html(spinner);
 	var json = {
 			"locationType":locType,
-			"filterType"  :filterTypeVal ,
-			"locationId"  :locationId,
+			"filterType"  :filterType ,
+			"locationIds"  :locationIdArr,
 			"fromDate"	  :glStartDate,
 		    "toDate"	  :glEndDate
 		}

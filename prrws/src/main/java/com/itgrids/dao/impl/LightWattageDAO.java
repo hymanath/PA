@@ -64,7 +64,7 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 		return query.executeUpdate();	
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getLocationWiseLightWattageDtls(String locationType,String filterType,Long filterValue,Date fromDate,Date toDate)
+	public List<Object[]> getLocationWiseLightWattageDtls(String locationType,String filterType,List<Long> filterValues,Date fromDate,Date toDate)
 	{
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbc = new StringBuilder();
@@ -99,18 +99,18 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 		
 		sb.append(" FROM LightWattage LM  WHERE LM.lightMonitoring.panchayat.locationAddress.state.stateId = 1 and LM.isDeleted='N' and LM.lightMonitoring.isDeleted='N' ");
 		
-		if(filterType != null && filterType.trim().length() > 0 && filterValue != null && filterValue.longValue() > 0)
+		if(filterType != null && filterType.trim().length() > 0 && filterValues != null && filterValues.size() > 0)
 		{
 			if(filterType.equalsIgnoreCase("district")){
-				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.district.districtId = :filterValue ");
+				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.district.districtId  in(:filterValues) ");
 			}else if(filterType.equalsIgnoreCase("parliament")){
-				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.parliament.constituencyId = :filterValue ");
+				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.parliament.constituencyId in(:filterValues) ");
 			} else if(filterType.equalsIgnoreCase("constituency")) {
-				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.constituency.constituencyId = :filterValue ");
+				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.constituency.constituencyId in(:filterValues) ");
 			}else if(filterType.equalsIgnoreCase("mandal")) {
-				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.tehsil.tehsilId = :filterValue ");
+				sbc.append(" AND LM.lightMonitoring.panchayat.locationAddress.tehsil.tehsilId in(:filterValues) ");
 			}else if(filterType.equalsIgnoreCase("panchayat")) {
-				sbc.append(" AND LM.lightMonitoring.panchayat.panchayatId = :filterValue ");
+				sbc.append(" AND LM.lightMonitoring.panchayat.panchayatId in(:filterValues) ");
 			}
 		}
 		if (fromDate != null && toDate != null) {
@@ -120,9 +120,9 @@ public class LightWattageDAO extends GenericDaoHibernate<LightWattage ,Long> imp
 		String queryStr = sb.toString() + sbc.toString()+sbg.toString();
 		Query query = getSession().createQuery(queryStr);
 		
-		if(filterType != null && filterType.trim().length() > 0 && filterValue != null && filterValue.longValue() > 0)
+		if(filterType != null && filterType.trim().length() > 0 && filterValues != null && filterValues.size() > 0)
 		{
-			query.setParameter("filterValue",filterValue);
+			query.setParameterList("filterValues",filterValues);
 		}
 		if (fromDate != null && toDate != null) {
 			query.setDate("fromDate", fromDate);

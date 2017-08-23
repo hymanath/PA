@@ -14,7 +14,7 @@ public interface ILightMonitoring {
 	public List<LightMonitoringVO> getBasicLedOverviewDetails(String fromDate,String toDate,String locationType,Long locationValues);	
     public ResultVO saveRealtimeStatusByVillages();
     public List<LedOverviewVo> getLedOverviewForStartedLocationsDetailsCounts(String startDate,String endDate,String locationType, Long locationValues);
-	public List<LightMonitoringVO> getAllLevelWiseDataOverView(String locationType,String filterType, Long locationId,String fromDateStr,String toDateStr );
-	public List<LightMonitoringVO> getLocationBasedOnSelection(String locationType,String filterType, Long filterValue,String subLocationType);
+	public List<LightMonitoringVO> getAllLevelWiseDataOverView(String locationType,String filterType, List<Long> locationIds,String fromDateStr,String toDateStr );
+	public List<LightMonitoringVO> getLocationBasedOnSelection(String locationType,String filterType, List<Long> filterValues,String subLocationType);
 	public LightMonitoringVO getCompanyWiseLightMonitoringDtls(String startDate,String endDate, String locationType,Long locationValue);
 }
