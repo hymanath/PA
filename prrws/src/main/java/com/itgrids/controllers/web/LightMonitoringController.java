@@ -74,9 +74,15 @@ public class LightMonitoringController {
    @RequestMapping(value = "/getCompanyWiseLightMonitoringDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
    public @ResponseBody  LightMonitoringVO  getCompanyWiseLightMonitoringDtls(@RequestBody InputVO inputVO){
 		LightMonitoringVO  reusltVO = lightMonitoring.getCompanyWiseLightMonitoringDtls(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValue());
-  return reusltVO;
+   return reusltVO;
  }	
 	
+   @RequestMapping(value = "/checkIsDataExist", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+   public @ResponseBody  InputVO  checkIsDataExist(@RequestBody InputVO inputVO){
+		InputVO  statusVO = lightMonitoring.checkIdDataExist(inputVO.getFromDate(),inputVO.getToDate());
+   return statusVO;
+ }	
+   
 }
 		
 	

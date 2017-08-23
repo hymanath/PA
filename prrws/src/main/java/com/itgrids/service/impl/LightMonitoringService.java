@@ -19,6 +19,7 @@ import com.itgrids.dao.ILightMonitoringDAO;
 import com.itgrids.dao.ILightWattageDAO;
 import com.itgrids.dao.IWebserviceCallDetailsDAO;
 import com.itgrids.dto.AddressVO;
+import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LedOverviewVo;
 import com.itgrids.dto.LightMonitoringVO;
 import com.itgrids.dto.LightWattageVO;
@@ -562,7 +563,27 @@ public class LightMonitoringService  implements ILightMonitoring{
 		}
 		return surveyStaredDtlsVO;
 	}
-	  
+    public InputVO checkIdDataExist(String startDate,String endDate) {
+    	InputVO statusVO = new InputVO();
+    	 try {
+    		Date fromDate = null;
+ 			Date toDate = null;
+ 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+ 			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+ 				fromDate = sdf.parse(startDate);
+ 				toDate = sdf.parse(endDate);
+ 			}
+ 			List<Long> lightMonitoringIds = lightMonitoringDAO.isDataExist(fromDate, toDate);
+ 			 if (lightMonitoringIds != null && lightMonitoringIds.size() > 0){
+ 				statusVO.setStatus("YES");
+ 			 } else {
+ 				statusVO.setStatus("NO");
+ 			 }
+    	 }  catch (Exception e) {
+    		 LOG.error("Exception raised at setSurveyStartedLocation - LightMonitoringService service",e);
+    	 }
+    	 return statusVO;
+    }
 }
 	
 	        	
