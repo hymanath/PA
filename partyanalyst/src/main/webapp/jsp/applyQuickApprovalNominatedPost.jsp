@@ -181,7 +181,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-sm-12 m_top20">
+								<div class="col-sm-12 m_top20" id="showSearchResult" style="display:none">
 									<h5 style="font-weight:600"><span style="color:#FF0000;padding-right:20px;">STEP-2</span>SEARCH APPLICANT</h5>
 									
 									<div class="row m_top20">
