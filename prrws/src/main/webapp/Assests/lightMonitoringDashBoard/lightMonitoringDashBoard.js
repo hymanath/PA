@@ -1390,7 +1390,7 @@ function getSurveryStartedLocation(locType,resultType,filterType,locationIdArr){
 		}
 	}).done(function(result){
 		 $("#surveyStartedLocationDtlsDivId").html(' ');
-	     if (result != null && tableView.length > 0 ){
+	     if (result != null && result.length > 0 ){
 			 buildSurveryStartedLocationDtls(result,locType,resultType);
 		 }else {
 			 $("#surveyStartedLocationDtlsDivId").html('NO DATA AVAILABLE.');
