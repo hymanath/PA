@@ -181,7 +181,7 @@
   <div class="modal-dialog" role="document" >
     <div class="modal-content modal-custom">
       <div class="modal-body">
-       <h4 style="text-align: center; color: green; font-weight: bold;">Building Live Panels & Lights Information Please Wait...</h4>
+       <h4 id="statusHeadingId" style="text-align: center; color: green; font-weight: bold;">Building Live Panels & Lights Information Please Wait...</h4>
 	   <div id="processingImage"></div>
       </div>
     </div><!-- /.modal-content -->

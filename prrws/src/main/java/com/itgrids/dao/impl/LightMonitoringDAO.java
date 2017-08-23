@@ -278,4 +278,19 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		
 		return query.list();
 	}
+	@Override
+	public List<Long> isDataExist(Date fromDate, Date toDate) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.lightMonitoringId from  LightMonitoring model where model.isDeleted ='N' and model.panchayat.locationAddress.state.stateId = 1 ");
+		if (fromDate != null && toDate != null) {
+			sb.append(" and  date(model.surveyDate) between :fromDate and :toDate ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if (fromDate != null && toDate != null) {
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+			
+		return query.list();
+	}
 }

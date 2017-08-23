@@ -97,8 +97,7 @@ $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	var endDate = picker.endDate.format('DD-MM-YYYY');
 	glStartDate = endDate;
 	glEndDate = endDate;
-	onLoadCalls();
-	
+	checkIsDataExist();
 });
 $(document).on("click",".daterangeViewCls",function(){
 		$(".dateRangeWiseDetails").show();
@@ -874,6 +873,7 @@ $(document).on("click",".commonViewCls",function(){
 	 $(this).addClass("active");
 });
 $(document).on("click",".liveDataCls",function() {
+	$("#statusHeadingId").html("Building Live Panels & Lights Information Please Wait...");
 	$("#modalMessageDivId").modal("show");
 	$("#processingImage").html(spinner);
 	callWebService();
@@ -1288,6 +1288,32 @@ function getRequiredTemplate(type){
 			str+='</div>';
 		str+='</div>';
  return str;
+}
+
+function checkIsDataExist(){
+	$("#processingImage").html('');
+	var json = {
+		fromDate:glStartDate,
+		toDate:glEndDate
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'checkIsDataExist',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if (result.status=="YES") {
+			onLoadCalls();
+		} else {
+			$("#statusHeadingId").html("DATA DON'T EXIST BETWEEN THIS DATE RANGE");
+	        $("#modalMessageDivId").modal("show");
+			setTimeout(function(){ $("#modalMessageDivId").modal("hide"); }, 5000);
+		}
+	});
 }
 
 /* Click Functionality started */
