@@ -504,6 +504,7 @@ function tableView(result,divId,locType)
 	var viewTypeDist='';
 	var viewTypeCons='';
 	var viewTypeman='';
+	var viewTypePan='';
 		$('.tableMenudistrict li').each(function(i, obj){
 				 if($(this).hasClass('active')){
 					viewTypeDist = $(this).attr("attr_tab_type");
@@ -517,6 +518,11 @@ function tableView(result,divId,locType)
 		$('.tableMenumandal li').each(function(i, obj){
 				 if($(this).hasClass('active')){
 					viewTypeman = $(this).attr("attr_tab_type");
+				 }
+		});
+		$('.tableMenupanchayat li').each(function(i, obj){
+				 if($(this).hasClass('active')){
+					viewTypePan = $(this).attr("attr_tab_type");
 				 }
 		});
 	tableView+='<div class="table-responsive m_top10">';	
@@ -557,7 +563,7 @@ function tableView(result,divId,locType)
 					
 				}else if(divId == 'panchayat')
 				{
-					if(viewTypeman == "district"){
+					if(viewTypePan == "district"){
 						tableView+='<th>DISTRICT</th>';
 						tableView+='<th>CONSTITUENCY</th>';
 						tableView+='<th>MANDAL</th>';
@@ -631,7 +637,7 @@ function tableView(result,divId,locType)
 						
 					}else if(divId == 'panchayat')
 					{
-						if(viewTypeman == "district"){
+						if(viewTypePan == "district"){
 							tableView+='<td>'+result[i].addressVO.districtName+'</td>';
 							tableView+='<td>'+result[i].addressVO.assemblyName+'</td>';
 							tableView+='<td>'+result[i].addressVO.tehsilName+'</td>';
