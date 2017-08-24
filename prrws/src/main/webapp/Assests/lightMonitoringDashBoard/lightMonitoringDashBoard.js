@@ -94,11 +94,8 @@ $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	
 /* 	glStartDate = picker.startDate.format('DD-MM-YYYY');
 	glEndDate = picker.endDate.format('DD-MM-YYYY'); */
-	var startDate = picker.startDate.format('DD-MM-YYYY');
-	var endDate = picker.endDate.format('DD-MM-YYYY');
-	glStartDate = endDate;
-	glEndDate = endDate;
-	checkIsDataExist();
+	var selectDate = picker.endDate.format('DD-MM-YYYY');
+	checkIsDataExist(selectDate);
 });
 $(document).on("click",".daterangeViewCls",function(){
 		$(".dateRangeWiseDetails").show();
@@ -579,9 +576,10 @@ function tableView(result,divId,locType)
 				if(divId != 'mandal' && divId!='panchayat'){
 				  tableView+='<th><img src="Assests/icons/mandals_icon.png" class="imageWidthLed"><br/>TOTAL MANDALS</th>';	
 				}
-				
-				tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>MANDALS STARTED</th>';
-				tableView+='<th><img src="Assests/icons/GPs_icon.png" class="imageWidthLed"><br/>TOTAL GPs</th>';
+				if (divId!='panchayat') {
+					tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>MANDALS STARTED</th>';
+				    tableView+='<th><img src="Assests/icons/GPs_icon.png" class="imageWidthLed"><br/>TOTAL GPs</th>';
+				}
 				tableView+='<th><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>GPs STARTED</th>';
 				//tableView+='<th><img src="Assests/icons/Poles_icon.png" class="imageWidthLed"><br/>TOTAL POLES SURVEYED</th>';
 				tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"><br/>TOTAL CCMS-BOX INSTALLED</th>';
@@ -654,18 +652,28 @@ function tableView(result,divId,locType)
 					if(divId == 'district' || divId=="constituency"){
 				     tableView+='<td>'+result[i].totalMandals+'</td>';	
 				    }
-					if(divId=="mandal" || divId=='panchayat'){
-						if (result[i].surveyStartedtotalMandals > 0) {
+					if (divId!='panchayat') {
+						if(divId=="mandal"){
+						    if (result[i].surveyStartedtotalMandals > 0) {
+								tableView+='<td>Yes</td>';
+							} else {
+							   tableView+='<td>No</td>';	
+							}
+						}else{
+							tableView+='<td>'+result[i].surveyStartedtotalMandals+'</td>';
+						}
+						
+						tableView+='<td>'+result[i].totalGps+'</td>';
+					}
+					if(divId=="panchayat"){
+						if (result[i].surveyStartedtotalGps > 0) {
 							tableView+='<td>Yes</td>';
 						} else {
 						   tableView+='<td>No</td>';	
 						}
 					}else{
-						tableView+='<td>'+result[i].surveyStartedtotalMandals+'</td>';
+						tableView+='<td>'+result[i].surveyStartedtotalGps+'</td>';
 					}
-					
-					tableView+='<td>'+result[i].totalGps+'</td>';
-					tableView+='<td>'+result[i].surveyStartedtotalGps+'</td>';
 					//tableView+='<td>'+result[i].totalPoles+'</td>';
 					tableView+='<td>'+result[i].totalPanels+'</td>';
 					tableView+='<td>'+result[i].totalLedLIghtInstalledCount+'</td>';
@@ -1297,11 +1305,11 @@ function getRequiredTemplate(type){
  return str;
 }
 
-function checkIsDataExist(){
+function checkIsDataExist(selectDate){
 	$("#processingImage").html('');
 	var json = {
-		fromDate:glStartDate,
-		toDate:glEndDate
+		fromDate:selectDate,
+		toDate:selectDate
 	}
 	$.ajax({                
 		type:'POST',    
@@ -1314,6 +1322,8 @@ function checkIsDataExist(){
 		}
 	}).done(function(result){
 		if (result.status=="YES") {
+			glStartDate = selectDate;
+	        glEndDate = selectDate;
 			onLoadCalls();
 		} else {
 			$("#statusHeadingId").html("DATA DON'T EXIST IN SELECTED DATE");
@@ -1427,11 +1437,13 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 						tableView+='<th>PANCHAYAT</th>';
 				}
 				if (resultType !="onOff") { 
-					if(divId != 'mandal' && divId!='panchayat'){
+					if(divId == 'district' || divId=='constituency'){
 					  tableView+='<th><img src="Assests/icons/mandals_icon.png" class="imageWidthLed"><br/>TOTAL MANDALS</th>';	
 					}
-					tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>MANDALS STARTED</th>';
-					tableView+='<th><img src="Assests/icons/GPs_icon.png" class="imageWidthLed"><br/>TOTAL GPs</th>';
+					if(divId !='panchayat') {
+						tableView+='<th><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>MANDALS STARTED</th>';
+					    tableView+='<th><img src="Assests/icons/GPs_icon.png" class="imageWidthLed"><br/>TOTAL GPs</th>';
+					}
 					tableView+='<th><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>GPs STARTED</th>';
 					tableView+='<th><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"><br/>TOTAL CCMS-BOX INSTALLED</th>';
 					tableView+='<th><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed"><br/>TOTAL LED LIGHTS RETROFITTED</th>';
@@ -1475,17 +1487,27 @@ function buildSurveryStartedLocationDtls(result,divId,resultType){
 						if(divId == 'district' || divId=="constituency"){
 						 tableView+='<td>'+result[i].totalMandals+'</td>';	
 						}
-						if(divId=="mandal" || divId=='panchayat'){
-							if (result[i].surveyStartedtotalMandals > 0) {
-								tableView+='<td>Yes</td>';
-							} else {
-							   tableView+='<td>No</td>';	
+						if (divId !='panchayat'){
+							if(divId=="mandal"){
+								if (result[i].surveyStartedtotalMandals > 0) {
+									tableView+='<td>Yes</td>';
+								} else {
+								   tableView+='<td>No</td>';	
+								}
+							}else{
+								tableView+='<td>'+result[i].surveyStartedtotalMandals+'</td>';
 							}
-						}else{
-							tableView+='<td>'+result[i].surveyStartedtotalMandals+'</td>';
+							tableView+='<td>'+result[i].totalGps+'</td>';
 						}
-						tableView+='<td>'+result[i].totalGps+'</td>';
-						tableView+='<td>'+result[i].surveyStartedtotalGps+'</td>';
+						if (divId =='panchayat'){
+						        if (result[i].surveyStartedtotalGps > 0) {
+									tableView+='<td>Yes</td>';
+								} else {
+								   tableView+='<td>No</td>';	
+								}	
+						}else {
+						    tableView+='<td>'+result[i].surveyStartedtotalGps+'</td>';	
+						}
 						tableView+='<td>'+result[i].totalPanels+'</td>';
 						tableView+='<td>'+result[i].totalLedLIghtInstalledCount+'</td>';
 					} else {
