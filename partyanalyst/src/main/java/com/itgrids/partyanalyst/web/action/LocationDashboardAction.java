@@ -22,7 +22,6 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionInformationVO;
 import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
-import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -347,7 +346,8 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String  getLocationWiseMeetingsCount(){
 		 try {
 			jObj = new JSONObject(getTask());
-			locationVotersVOList = locationDashboardService.getLocationWiseMeetingsCount(jObj.getString("locationType"),jObj.getLong("constituencyId"));
+			List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValues"));
+			locationVotersVOList = locationDashboardService.getLocationWiseMeetingsCount(jObj.getLong("locationTypeId"),locationValues);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseMeetingsCount", e);
 		}
@@ -370,9 +370,9 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String  getGovtSchemeWiseBenefitMembersCount(){
 		 try {
 			 jObj = new JSONObject(getTask());
-			 Long locationType = jObj.getLong("locationType");
+			 Long locationTypeId = jObj.getLong("locationTypeId");
 			 Long locationValue = jObj.getLong("locationValue");
-			 govtSchemeMemberBenefitList = locationDashboardService.getGovtSchemeWiseBenefitMembersCount(locationType,locationValue);
+			 govtSchemeMemberBenefitList = locationDashboardService.getGovtSchemeWiseBenefitMembersCount(locationTypeId,locationValue);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getGovtSchemeWiseBenefitMembersCount in LocationDashboardAction class", e);
 		}
@@ -381,10 +381,10 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String  getMandalWiseBenefitMembersCount(){
 		 try {
 			 jObj = new JSONObject(getTask());
-			 Long locationType = jObj.getLong("locationType");
+			 Long locationTypeId = jObj.getLong("locationTypeId");
 			 Long locationValue = jObj.getLong("locationValue");
 			 Long govtSchemeId = jObj.getLong("govtSchemeId");
-			 govtSchemeMemberBenefitList = locationDashboardService.getMandalWiseBenefitMembersCount(locationType,locationValue,govtSchemeId);
+			 govtSchemeMemberBenefitList = locationDashboardService.getMandalWiseBenefitMembersCount(locationTypeId,locationValue,govtSchemeId);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getMandalWiseBenefitMembersCount in LocationDashboardAction class", e);
 		}
@@ -404,7 +404,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String  getAgeRangeGenerAndCasteGroupByCadreCount(){
 		 try {
 			jObj = new JSONObject(getTask());
-			cadreDtlsList = locationDashboardService.getAgeRangeGenerAndCasteGroupByCadreCount(jObj.getString("locationType"),jObj.getLong("locationValue"),jObj.getLong("enrollmentYearId"));
+			cadreDtlsList = locationDashboardService.getAgeRangeGenerAndCasteGroupByCadreCount(jObj.getLong("locationTypeId"),jObj.getLong("locationValue"),jObj.getLong("enrollmentYearId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAgeRangeGenerAndCasteGroupByCadreCount in LocationDashboardAction class", e);
 		}
@@ -478,7 +478,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getLocationWiseCommitteesCount(){
 		 try{
 			 jObj = new JSONObject(getTask());
-			 committeeBasicVO = locationDashboardService.getLocationWiseCommitteesCount(jObj.getString("locationType"), jObj.getLong("locationId"), jObj.getLong("enrollmentId"));
+			 committeeBasicVO = locationDashboardService.getLocationWiseCommitteesCount(jObj.getString("locationTypeId"), jObj.getLong("locationId"), jObj.getLong("enrollmentId"));
 		 }catch(Exception e){
 			 LOG.error("Exception raised at getLocationWiseCommitteesCount() of LocationDashboardAction{}",e);
 		 }
