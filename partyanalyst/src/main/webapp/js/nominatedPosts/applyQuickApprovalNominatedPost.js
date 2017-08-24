@@ -20,14 +20,21 @@ $(document).on('click','#searchbtn',function(){
 			}
 	
 	//$("#addedRefferalsDiv").hide();
+	var selOption = $("#deptBoardPostnId option:selected").val();
+	if(selOption == null || selOption.length == 0){
+		$("#errdeptBoardPostnId").html("Please Select Position");
+	}
+	
 })
 $(document).on('change','#deptBoardPostnId',function(){
 	$("#searchResultsBlock").html("");
 	$("#searchBy").val("");
 	
+	
 })
 $(document).on('change','#deptBoardPostnId',function(){
 	$("#showSearchResult").show();
+	//$("#errdeptBoardPostnId").html("Please Select The Position")
 })
 getBoardLevels("boardLvlId");	
 function getBoardLevels(id){
