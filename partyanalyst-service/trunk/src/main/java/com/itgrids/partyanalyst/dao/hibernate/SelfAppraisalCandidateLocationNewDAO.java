@@ -243,10 +243,12 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 	 	        	queryStr.append(" and SACL.userAddress.tehsil.tehsilId in(:locationValues) ");
 	 	        }else if(locationTypeId == 6l){
 	 	        	queryStr.append(" and SACL.userAddress.panchayat.panchayatId in(:locationValues) ");
+	 	        }else if(locationTypeId == 10l){
+	 	        	queryStr.append(" and SACL.userAddress.parliamentConstituency.constituencyId in(:locationValues) ");
 	 	        }
 	 	    }
 		   if(year != null && !year.trim().isEmpty()){
-	 	    	//queryStr.append(" and year(model.createdTime) =:year ");   
+	 	    	queryStr.append(" and year(model.createdTime) =:year ");   
 	 	   }
 		   if(userAccessLevelId != null && userAccessLevelId.longValue()  > 0){
 			   queryStr.append(" and SACL.locationScopeId=:userAccessLevelId");
@@ -267,6 +269,8 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 	 	        }else if(locationTypeId == 5l){
 	 	        	query.setParameterList("locationValues", locationValues);
 	 	        }else if(locationTypeId == 6l){
+	 	        	query.setParameterList("locationValues", locationValues);
+	 	        }else if(locationTypeId == 10l){
 	 	        	query.setParameterList("locationValues", locationValues);
 	 	        }
 	 	    }

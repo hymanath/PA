@@ -2870,6 +2870,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			sb.append(" and model.userAddress.tehsil.tehsilId=:locationId");
 		}else if(locationType.equalsIgnoreCase("village")){
 			sb.append(" and model.userAddress.panchayat.panchayatId=:locationId");
+		}else if(locationType.equalsIgnoreCase("Parliament")){
+			sb.append(" and model.userAddress.parliamentConstituency.constituencyId=:locationId");
 		}
 		sb.append(" order by model.tdpCommitteeId ");
 		Query query = getSession().createQuery(sb.toString());

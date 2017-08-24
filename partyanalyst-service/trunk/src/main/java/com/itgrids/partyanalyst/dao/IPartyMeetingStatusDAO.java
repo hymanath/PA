@@ -38,6 +38,7 @@ public interface IPartyMeetingStatusDAO extends GenericDao<PartyMeetingStatus,Lo
    public List<Object[]> getPartyMeetingComulativeCommentDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment,Long locationId,String locationType,String reportType,String type);
    
    public PartyMeetingStatus getObjectByPartyMeetingId(Long partyMeetingId);
-   public List<Object[]> getLocationWiseMeetings(String locationType,Long constituencyId);
+   public List<Object[]> getLocationWiseMeetings(List<Long> locationValues,Long locationTypeId);
+  //getLocationWiseMeetings(String locationType,Long constituencyId);
    public List<Object[]> getLevelWiseMeetingStatusCount(Date fromDate,Date toDate,Long locationTypeId,List<Long> locationValues,String year);
 }

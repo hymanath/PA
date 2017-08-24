@@ -69,7 +69,6 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.model.CasteCategory;
-import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.EnrollmentYear;
 import com.itgrids.partyanalyst.model.PublicationDate;
@@ -369,8 +368,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		 * DAO method call to get the election type and delimitation info.If
 		 * delimitation info is null returning null.
 		 */
-		List constituencyTypeDetails = constituencyDAO
-				.getConstituencyTypeAndDelimitationInfoByConstituencyId(constituencyId);
+		List constituencyTypeDetails = constituencyDAO.getConstituencyTypeAndDelimitationInfoByConstituencyId(constituencyId);
 		if (constituencyTypeDetails != null && constituencyTypeDetails.size() > 0) {
 			Object[] obj = (Object[]) constituencyTypeDetails.get(0);
 			electionType = (String) obj[0];
@@ -1075,8 +1073,13 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		}
 		return voList;
 	}
-
-	public List<LocationVotersVO> getLocationWiseMeetingsCount(String locationType, Long constituencyId) {
+/**
+ * 
+ * LocationWise Meetings
+ * Inputs locationid and type,
+ * 
+ */
+	public List<LocationVotersVO> getLocationWiseMeetingsCount(Long locationTypeId, List<Long> locationValues) {
 		List<LocationVotersVO> voList = new ArrayList<LocationVotersVO>(0);
 		try {
 			Map<String, LocationVotersVO> finalMap = new LinkedHashMap<String, LocationVotersVO>();
@@ -1087,11 +1090,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			finalMap.put("NU", null);
 
 			// 0-meetingStatus,1-levelId,2-level,3-count
-			List<Object[]> objList = partyMeetingStatusDAO.getLocationWiseMeetings(locationType, constituencyId);
+			List<Object[]> objList = partyMeetingStatusDAO.getLocationWiseMeetings(locationValues, locationTypeId);
 			if (objList != null && objList.size() > 0) {
 				for (Object[] objects : objList) {
 					if (finalMap.get(objects[0].toString()) == null) {
-						finalMap.put(objects[0].toString(), getPartyMeetingSkeleton(objects[0].toString()));
+						finalMap.put(objects[0].toString(), getPartyMeetingSkeleton(objects[0].toString(),locationTypeId));
 					}
 
 					LocationVotersVO matchedLocationVO = getMatchedLocationVO(
@@ -1132,7 +1135,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		return null;
 	}
 
-	public LocationVotersVO getPartyMeetingSkeleton(String type) {
+	public LocationVotersVO getPartyMeetingSkeleton(String type, Long locationTypeId) {
 		String type1 = type.equals("Y") ? "YES"
 				: type.equals("N") ? "NO" : type.equals("M") ? "MAYBE" : type.equals("NU") ? "NOT UPDATED" : type;
 
@@ -1147,14 +1150,26 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 
 		LocationVotersVO mtdVO = new LocationVotersVO();
 		mtdVO.setAgeRangeId(4l);
-		mtdVO.setAgeRange("Mandal/Town/Divison");
+		mtdVO.setAgeRange("Mandal/Town/Division");
 		vo.getLocationVotersVOList().add(mtdVO);
 
 		LocationVotersVO constVO = new LocationVotersVO();
 		constVO.setAgeRangeId(3l);
 		constVO.setAgeRange("Constituency");
 		vo.getLocationVotersVOList().add(constVO);
-
+		
+		if(locationTypeId!=null && (locationTypeId == 3l || locationTypeId == 10l )){
+		LocationVotersVO distVo = new LocationVotersVO();
+		distVo.setAgeRangeId(2l);
+		distVo.setAgeRange("District");
+		vo.getLocationVotersVOList().add(distVo);
+		}
+		if(locationTypeId!=null && locationTypeId == 10l){
+		LocationVotersVO pconstVO = new LocationVotersVO();
+		pconstVO.setAgeRangeId(1l);
+		pconstVO.setAgeRange("State");
+		vo.getLocationVotersVOList().add(pconstVO);
+		}
 		return vo;
 	}
 	/* @param String locationType
@@ -2071,11 +2086,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @Description :This Service Method is used for getting government scheme wise benefit member count 
 	 *  @since 7-JULY-2017
 	 */
-	public List<BenefitCandidateVO> getGovtSchemeWiseBenefitMembersCount(final Long locationType, final Long locationValue) {
+	public List<BenefitCandidateVO> getGovtSchemeWiseBenefitMembersCount(final Long locationTypeId, final Long locationValue) {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
-			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getGovtSchemeWiseBenefitMemberCount(locationType,locationValue);
-			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,"constituency",locationValue);
+			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getGovtSchemeWiseBenefitMemberCount(locationTypeId,locationValue);
+			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,locationValue,locationTypeId);
 			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst,censusPopList,"constituency");
 		} catch (Exception e) {
 			Log.error("Exception Occured at getGovtSchemeWiseBenefitMembersCount() in LocationDashboardService class",e);
@@ -2083,15 +2098,36 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 		return resultList;
 	}
 
-	private List<Object[]> getCensusPopulation(List<Object[]> benefitMemberObjLst,String locationType, Long locationValue) {
+	private List<Object[]> getCensusPopulation(List<Object[]> benefitMemberObjLst, Long locationValue, Long locationTypeId) {
 
 		Set<Long> locationIdSet = new HashSet<Long>();
-		List<Object[]> censusPopList = null;
-		if(locationType == "constituency"){	
+		List<Object[]> censusPopList = new ArrayList<Object[]>();
+		List<Long> yearList = new ArrayList<Long>();
+		if(locationTypeId == 3l){
+			censusPopList.clear();
+			yearList.add(2011l);
+			censusPopList=censusDAO.getDistrictPopulationForDifferentYears(locationValue, yearList);
+			
+		}else if(locationTypeId == 10l){
+			censusPopList.clear();
+			yearList.add(locationValue);
+			List<Long> list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(yearList);
+			locationIdSet.addAll(list);
+			List<Object[]> list1= constituencyCensusDetailsDAO.getTotalCensusPopulation(locationIdSet, 2011l);
+			Long count=0l;
+			for (Object[] objects : list1) {
+				count=commonMethodsUtilService.getLongValueForObject(objects[0])+count;
+			}
+			Object[] obj = new Object[] {count,locationValue};
+			censusPopList.add(obj);
+		}
+		if(locationTypeId == 4l){	
+			censusPopList.clear();
 			locationIdSet.add(locationValue);
 			censusPopList= constituencyCensusDetailsDAO.getTotalCensusPopulation(locationIdSet, 2011l);
-		}else if(locationType == "tehsil"){
+		}else if(locationTypeId == 5l){
 			if (benefitMemberObjLst != null && benefitMemberObjLst.size() > 0) {
+				censusPopList.clear();
 				for (Object[] param : benefitMemberObjLst) {
 					locationIdSet.add(commonMethodsUtilService.getLongValueForObject(param[0]));
 				}
@@ -2109,11 +2145,11 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @Description :This Service Method is used for getting mandal wise benefit member count 
 	 *  @since 7-JULY-2017
 	 */
-	public List<BenefitCandidateVO> getMandalWiseBenefitMembersCount(final Long locationType, final Long locationValue,final Long govtSchemeId) {
+	public List<BenefitCandidateVO> getMandalWiseBenefitMembersCount(final Long locationTypeId, final Long locationValue,final Long govtSchemeId) {
 		List<BenefitCandidateVO> resultList = new ArrayList<BenefitCandidateVO>(0);
 		try {
-			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getMandalWiseBenefitMemberCountByGovtScheme(locationType,locationValue, govtSchemeId);
-			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,"tehsil",locationValue);
+			List<Object[]> benefitMemberObjLst = govtSchemeBeneficiaryDetailsDAO.getMandalWiseBenefitMemberCountByGovtScheme(locationTypeId,locationValue, govtSchemeId);
+			List<Object[]> censusPopList = getCensusPopulation(benefitMemberObjLst,locationValue,5l);
 			resultList = getGovtSchemeBenefitMemberDlstList(benefitMemberObjLst,censusPopList,"tehsil");
 		} catch (Exception e) {
 			Log.error("Exception Occured at getMandalWiseBenefitMembersCount() in LocationDashboardService class",e);
@@ -2311,10 +2347,23 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @Description :This Service Method is used to location type cadre count details 
 	 *  @since 27-JUNE-2017
 	 */
-	public List<ConstituencyCadreVO> getLocationTypeWiseCadreCount(final Long locationTypeId,final List<Long> locationValues,final String year){
+	public List<ConstituencyCadreVO> getLocationTypeWiseCadreCount(Long locationTypeId,List<Long> locationValues,String year){
 		List<ConstituencyCadreVO> resultList = new ArrayList<ConstituencyCadreVO>(0);
 		try{
-			List<Object[]> rtrnCaderCountObjLst = tdpCadreEnrollmentInfoDAO.getLocationTypeWiseCadreCount(locationTypeId,locationValues,year);
+			if(locationTypeId == 3l){
+				List<Object[]> locationValuesObj = constituencyDAO.getDistrictConstituenciesList(locationValues);
+				locationValues.clear();
+				for (Object[] objects : locationValuesObj) {
+					if(objects!=null){
+						locationValues.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					}
+				}
+				
+			}else if(locationTypeId == 10l){
+				locationValues = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationValues);
+			}
+			
+			List<Object[]> rtrnCaderCountObjLst = tdpCadreEnrollmentInfoDAO.getLocationTypeWiseCadreCount(4l,locationValues,year);
 			if(rtrnCaderCountObjLst != null && rtrnCaderCountObjLst.size() > 0){
 				for (Object[] param : rtrnCaderCountObjLst) {
 					ConstituencyCadreVO enrollmentYearVO = new ConstituencyCadreVO();
@@ -2340,10 +2389,10 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	 * @Description :This Service Method is for getting ageRange,gender,caste group by cadre count. 
 	 *  @since 5-JULY-2017
 	 */
-	public List<ConstituencyCadreVO> getAgeRangeGenerAndCasteGroupByCadreCount(final String locationType, final Long locationValue,final Long enrollmentYearId) {
+	public List<ConstituencyCadreVO> getAgeRangeGenerAndCasteGroupByCadreCount(final Long locationTypeId, final Long locationValue,final Long enrollmentYearId) {
 		List<ConstituencyCadreVO> resultList = new ArrayList<ConstituencyCadreVO>(0);
 		try {
-			List<Object[]> rtrnCaderObjLst = tdpCadreEnrollmentYearDAO.getAgeGenerAndCasteGroupWiseCadresCount(locationType,locationValue, enrollmentYearId);
+			List<Object[]> rtrnCaderObjLst = tdpCadreEnrollmentYearDAO.getAgeGenerAndCasteGroupWiseCadresCount(locationTypeId,locationValue, enrollmentYearId);
 
 			Map<Long, ConstituencyCadreVO> ageRangeMap = new LinkedHashMap<Long, ConstituencyCadreVO>(0);
 
