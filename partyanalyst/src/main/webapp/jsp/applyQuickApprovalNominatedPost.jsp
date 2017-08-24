@@ -168,7 +168,7 @@
 												<select attr_no=""  class="chosenSelect deptBoardPostnCls" id="deptBoardPostnId" name="nominatedPostVO.nominatdList[0].positions" data-placeholder ="Select Board Position">
 												<option value="0">Select Board Position</option>
 												</select><br>
-												<span id="errdeptBoardPostnId" class="errdeptBoardPostnCls"></span>
+												<span id="errdeptBoardPostnId" class="errdeptBoardPostnCls" style="color:red"></span>
 											</div>
 										
 											<input type="hidden" class="tdpCadreId" name="nominatedPostVO.id">
