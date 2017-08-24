@@ -27,7 +27,7 @@ public interface ILocationDashboardService {
 	public List<LocationVotersVO> getEnrollmentYearAgeGroupWiseCadres(Long constituencyId,Long enrollmentYearId);
 	
 	//meetings
-	public List<LocationVotersVO> getLocationWiseMeetingsCount(String locationType,Long constituencyId);
+	public List<LocationVotersVO> getLocationWiseMeetingsCount(Long locationTypeId, List<Long> locationValues);
 	
 	//committees
 	public CommitteeBasicVO getLocationWiseCommitteesCount(String locationType,Long locationId,Long enrollmentId);
@@ -44,7 +44,7 @@ public interface ILocationDashboardService {
 	public List<BenefitCandidateVO> getGovtSchemeWiseBenefitMembersCount(final Long locationType, final Long locationValue);
 	public List<BenefitCandidateVO> getMandalWiseBenefitMembersCount(final Long locationType, final Long locationValue,final Long govtSchemeId);
 	public List<ConstituencyCadreVO> getLocationTypeWiseCadreCount(final Long locationTypeId,final List<Long> locationValues,final String year);
-	public List<ConstituencyCadreVO> getAgeRangeGenerAndCasteGroupByCadreCount(final String locationType, final Long locationValue,final Long enrollmentYearId);
+	public List<ConstituencyCadreVO> getAgeRangeGenerAndCasteGroupByCadreCount(Long locationTypeId, Long locationValue,Long enrollmentYearId);
 	public GrivenceStatusVO getLocationWiseInsuranceStatusCounts(String fromDateStr,String toDateStr,Long locationTypeId,List<Long> locationValues,String year);
     public List<GrivenceStatusVO> getGrivenceTrustStatusCounts(String fromDateStr,String toDateStr,Long locationTypeId,List<Long> locationValues,String year);
     public List<BasicVO> getLocationWiseActivitysStatus(String fromDateStr,String toDateStr,String year,List<Long> locationValues,Long locationTypeId);

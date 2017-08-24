@@ -47,5 +47,5 @@ public interface ITdpCadreEnrollmentYearDAO extends GenericDao<TdpCadreEnrollmen
 	 public List<Object[]> getCadresCasteNAgeGroupWiseCounts(Long casteGroupId,Long casteId,Long constituencyId);
 	 public List<Object[]> getEnrollmentYearWiseCadres();
 	 public List<Object[]> getEnrollmentYearAgeGroupWiseCadres(Long constituencyId,Long enrollmentYearId);
-	 public List<Object[]> getAgeGenerAndCasteGroupWiseCadresCount(String locationType,Long locationValue,Long enrollmentYearId);
+	 public List<Object[]> getAgeGenerAndCasteGroupWiseCadresCount(Long locationTypeId,Long locationValue,Long enrollmentYearId);
 }

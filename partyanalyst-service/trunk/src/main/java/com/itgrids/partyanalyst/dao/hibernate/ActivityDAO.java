@@ -67,6 +67,11 @@ public class ActivityDAO extends GenericDaoHibernate<Activity, Long> implements 
 		        	   sbe.append(" and ua.tehsil_id  in (:locationValues) ");
 		           }
 		           
+		         }else if(locationTypeId ==10l){
+			           
+			           if(locationValues !=null && locationValues.size()>0){
+			        	   sbe.append(" and ua.parliament_constituency_id  in (:locationValues) ");
+			           }
 		         }else if(locationTypeId ==6l){
 		           if(locationValues !=null && locationValues.size()>0){
 		        	   sbe.append( "  and ua.panchayat_id in  (:locationValues)  " );
@@ -144,6 +149,11 @@ public class ActivityDAO extends GenericDaoHibernate<Activity, Long> implements 
 		           if(locationValues !=null && locationValues.size()>0){
 		        	   sbe.append( "  and ua.panchayat_id in  (:locationValues)  " );
 		           }	           
+		         }else if(locationTypeId ==10l){
+			           
+			           if(locationValues !=null && locationValues.size()>0){
+			        	   sbe.append(" and ua.parliament_constituency_id  in (:locationValues) ");
+			           }
 		         }
 		         
 		       }
@@ -215,6 +225,11 @@ public class ActivityDAO extends GenericDaoHibernate<Activity, Long> implements 
 		           if(locationValues !=null && locationValues.size()>0){
 		        	   sbe.append( "  and ua.panchayat_id in  (:locationValues)  " );
 		           }	           
+		         }else if(locationTypeId ==10l){
+			           
+			           if(locationValues !=null && locationValues.size()>0){
+			        	   sbe.append(" and ua.parliament_constituency_id  in (:locationValues) ");
+			           }
 		         }
 		         
 		       }
@@ -286,6 +301,11 @@ public class ActivityDAO extends GenericDaoHibernate<Activity, Long> implements 
 		           if(locationValues !=null && locationValues.size()>0){
 		        	   sbe.append( "  and ua.panchayat_id in  (:locationValues)  " );
 		           }	           
+		         }else if(locationTypeId ==10l){
+			           
+			           if(locationValues !=null && locationValues.size()>0){
+			        	   sbe.append(" and ua.parliament_constituency_id  in (:locationValues) ");
+			           }
 		         }
 		         
 		       }

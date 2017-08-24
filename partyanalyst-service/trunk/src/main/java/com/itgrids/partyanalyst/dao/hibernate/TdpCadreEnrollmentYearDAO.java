@@ -1098,7 +1098,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			
 			return query.list();
 		}
-		public List<Object[]> getAgeGenerAndCasteGroupWiseCadresCount(String locationType,Long locationValue,Long enrollmentYearId){
+		public List<Object[]> getAgeGenerAndCasteGroupWiseCadresCount(Long locationTypeId,Long locationValue,Long enrollmentYearId){
 			StringBuilder  queryStr = new StringBuilder();
 			
 			queryStr.append(" select " +
@@ -1112,15 +1112,16 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 					" and model.tdpCadre.enrollmentYear = 2014 " +
 					" and model.enrollmentYearId = :enrollmentYearId "); 
 			
-			        if(locationType != null && locationValue != null && locationValue.longValue()>0l){
-			        	if(locationType.equalsIgnoreCase("District")){
+			        if(locationTypeId != null && locationValue != null && locationValue.longValue()>0l){
+			        	if(locationTypeId==3l){
 			        		queryStr.append(" and model.tdpCadre.userAddress.district.districtId = :locationValue ");
-			        	}else if(locationType.equalsIgnoreCase("ParliamentConstitueny")){
+			        	}else if(locationTypeId==10l){
 			        		queryStr.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId = :locationValue ");
-			        	}else if(locationType.equalsIgnoreCase("Constituency")){
+			        	}else if(locationTypeId == 4l){
 			        		queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationValue ");	
+			        	}else if(locationTypeId ==5l)
+			        		queryStr.append(" and model.tdpCadre.userAddress.tehsil.tehsilId = :locationValue");
 			        	}
-			        }
 					
 			        queryStr.append(" group by " +
 					" model.tdpCadre.voterAgeRange.voterAgeRangeId," +

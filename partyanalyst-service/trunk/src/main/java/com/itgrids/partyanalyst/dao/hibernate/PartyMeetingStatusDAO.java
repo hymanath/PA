@@ -843,7 +843,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		  return (PartyMeetingStatus) query.uniqueResult();
 	  }
    
-   public List<Object[]> getLocationWiseMeetings(String locationtype,Long constituencyId){
+   public List<Object[]> getLocationWiseMeetings(List<Long> locationValues,Long locationTypeId){
 	   
 	   //0-meetingStatus,1-levelId,2-level,3-count
 	   StringBuilder sb = new StringBuilder();
@@ -851,17 +851,36 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 	   sb.append(" select model.mettingStatus,model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.partyMeetingLevel.level,count(model.partyMeetingStatusId) " +
 		   		" from PartyMeetingStatus model ");
 	   
-	   if(locationtype.equalsIgnoreCase("constituency")){
+	   if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
+	        if(locationTypeId == 4l){
+	        	sb.append(" where model.partyMeeting.meetingAddress.constituency.constituencyId in(:locationValues) " +
+	        			"and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (7,8,4,5,6,3)");
+	        }else if(locationTypeId == 3l){
+	        	sb.append(" where model.partyMeeting.meetingAddress.district.districtId in(:locationValues) " +
+	        			"and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (2,3,4,5,6,7,8)");
+	        }else if(locationTypeId == 5l){
+	        	sb.append(" where model.partyMeeting.meetingAddress.tehsil.tehsilId in(:locationValues) " +
+	        			"and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (7,8,4,5,6)");
+	        }else if(locationTypeId == 6l){
+	        	sb.append(" where model.partyMeeting.meetingAddress.panchayat.panchayatId in(:locationValues) " +
+	        			"and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (7,8)");
+	        }else if(locationTypeId==10l){
+	        	sb.append(" where model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in(:locationValues) " +
+	        			"and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (1,2,3,4,5,7,8,6,9)");
+	        }
+	    }
+	   
+	  /* if(locationtype.equalsIgnoreCase("constituency")){
 		   sb.append(" where model.partyMeeting.meetingAddress.constituency.constituencyId = :constituencyId " +
 		   		" and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (7,8,4,5,6,3) ");
-	   }
+	   }*/
 	   
 	   sb.append(" group by model.mettingStatus,model.partyMeeting.partyMeetingLevel.partyMeetingLevelId ");
 	   
 	   Query query = getSession().createQuery(sb.toString());
 	   
-	   if(locationtype.equalsIgnoreCase("constituency")){
-		   query.setParameter("constituencyId", constituencyId);
+	   if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+		   query.setParameterList("locationValues", locationValues);
 	   }
 	   
 	   return query.list();
