@@ -642,7 +642,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
 			Long applicationId =0L;
-			List<Object[]> list =nominatedPostDAO.getBoardLevelWiseDepartments(postTpe,boardLevelId,searchLevelValue,seachLevelId,applicationId,positionId);
+			String levelVal ="";
+			if(boardLevelId == 5l || boardLevelId == 6l){
+				 levelVal =searchLevelValue.toString().substring(1);
+			}else{
+				levelVal =searchLevelValue.toString();
+			}
+			List<Object[]> list =nominatedPostDAO.getBoardLevelWiseDepartments(postTpe,boardLevelId,Long.valueOf(levelVal),seachLevelId,applicationId,positionId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"id","name"};
 				returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -666,8 +672,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			//Long applicationId =0L;
 			List<Object[]> list = null;
 			Object[] obj = null;
+			String levelVal ="";
+			if(boardLevlId == 5l || boardLevlId == 6l){
+				 levelVal =searchLevelValue.toString().substring(1);
+			}else{
+				levelVal =searchLevelValue.toString();
+			}
 			if(applicationId == 0l){
-			 list = nominatedPostDAO.getLevelWiseDepartmentsBoard(depmtId,boardLevlId,searchLevelValue,seachLevelId,applicationId);
+			 list = nominatedPostDAO.getLevelWiseDepartmentsBoard(depmtId,boardLevlId,Long.valueOf(levelVal),seachLevelId,applicationId);
 			}else{
 				obj = nominatedPostApplicationDAO.getBoardLevel(applicationId);
 			}
@@ -708,9 +720,15 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> appltnIds = null;
 			List<Long> memberIds = new ArrayList<Long>();
 			Map<Long,IdNameVO> posCuntMap = new HashMap<Long, IdNameVO>();
+			String levelVal ="";
+			if(boardLevlId == 5l || boardLevlId == 6l){
+				 levelVal =searchLevelValue.toString().substring(1);
+			}else{
+				levelVal =searchLevelValue.toString();
+			}
 			if(nominatedPostCandId != null && nominatedPostCandId.longValue() > 0l){
 				 //appltnIds = nominatedPostApplicationDAO.getApplicationIdsByCAndidateId(nominatedPostCandId);
-				appliedPositions = nominatedPostApplicationDAO.getAppliedPositionsForCandidate(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,nominatedPostCandId);
+				appliedPositions = nominatedPostApplicationDAO.getAppliedPositionsForCandidate(deptId, boardId,boardLevlId,Long.valueOf(levelVal),seachLevelId,nominatedPostCandId);
 				if(commonMethodsUtilService.isListOrSetValid(appliedPositions)){
 					for(Object[] appltnId : appliedPositions){
 						IdNameVO vo = new IdNameVO();
@@ -723,7 +741,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						}
 					}
 			}
-			linkedPositions = nominatedPostFinalDAO.getLinkedPositions(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,nominatedPostCandId);
+			linkedPositions = nominatedPostFinalDAO.getLinkedPositions(deptId, boardId,boardLevlId,Long.valueOf(levelVal),seachLevelId,nominatedPostCandId);
 			if(commonMethodsUtilService.isListOrSetValid(linkedPositions)){
 				for(Object[] appltnId : linkedPositions){
 					IdNameVO vo = null;
@@ -782,7 +800,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			
 				
-			List<Object[]>  list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,applicationId);
+			List<Object[]>  list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId,Long.valueOf(levelVal),seachLevelId,applicationId);
 			List<Object[]> nonAppliedPostns = new ArrayList<Object[]>();
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for(Object[] obj : list){
@@ -803,7 +821,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 			}
-			List<Long> membIds = nominatedPostDAO.getMemberIds(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,applicationId);
+			List<Long> membIds = nominatedPostDAO.getMemberIds(deptId, boardId,boardLevlId,Long.valueOf(levelVal),seachLevelId,applicationId);
 			if(commonMethodsUtilService.isListOrSetValid(membIds)){
 				memberIds.addAll(membIds);
 			}
@@ -830,7 +848,6 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						finalVO.setMemberId(vo.getMemberId());
 						finalVO.setCount(vo.getCount());
 					}
-					
 				}
 			returnList.get(0).setStatus(positnAnyAppld);
 			}else{
