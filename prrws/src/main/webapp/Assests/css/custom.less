@@ -1762,7 +1762,7 @@ header
     }
     
     .lightsBlock{
-        padding: 15px;
+        padding: 12px;
     }
    .media:first-child{
 		margin-top: 15px;
@@ -1946,3 +1946,42 @@ header
 	margin-right:5px;
 	background-color:@nonLedColor
 }
+.backgroundImgLED{
+	background-image: url("./AP.png");
+	background-repeat: no-repeat; 
+	background-size: 130px 80px; 
+	margin-top: 2px;
+}
+.arrow_box_top_led
+	{
+	position: absolute;
+	background-color:@white_color;
+	border: 1px solid @white_color;
+	box-shadow:0px 0px 3px 3px rgba(0,0,0,0.4);
+	padding:10px;
+	&:before , &:after
+	{
+		bottom: 100%;
+		right: 0;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+	&:after
+	{
+		border-color: rgba(136, 183, 213, 0);
+		border-bottom-color: @white_color;
+		border-width: 15px;
+		margin-left: -15px;
+	}
+	&:before 
+	{
+		border-color: rgba(194, 225, 245, 0);
+		border-bottom-color: @white_color;
+		border-width: 16px;
+		margin-left: -16px;
+	}
+	}
