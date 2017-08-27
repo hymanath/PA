@@ -306,8 +306,8 @@ function buildBasicLedOverviewDetails(result)
 {
 	var str='';
 	str+='<div class="col-sm-12 white-block poles_block"  style="border-bottom: 1px solid gray;">';
-	str+='<div class="col-sm-2 lightsBlock">';
-		str+='<img src="Assests/icons/BulbAp.jpg" style="width: 110px; height: 90px;">';
+	str+='<div class="col-sm-2 lightsBlock backgroundImgLED">';
+		str+='<img src="Assests/icons/On_Off_light_icon.png" style="height: 39px; width: 40px;margin-left: 19px;">';
 		str+='<p>ON/OFF LIGHTS</p>';
 		 if (result[0].onLights ==0 && result[0].offLights == 0) {
 			str+='<h4>0/0</h4>';
@@ -362,8 +362,29 @@ function buildBasicLedOverviewDetails(result)
 				str+='<h5 style="color:#FF3333;">NON-OPERATIONAL</h5>';
 				str+='<h3>'+result[0].notWorkingLights+'</h3>';
 			str+='</div>';
-		str+='</div>';
-		str+='<div class="col-sm-12 border_dashed padding_10">';
+		str+='</div>';//ara
+		str+='<div class="col-sm-12">';
+		str+='<div class="dropdown">';
+			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Wattage Details">&#9432;</span>';
+				str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar arrow_box_top_led" aria-labelledby="dropdownMenu" style="margin-top: 32px;">';
+				str+='<div class="poles_block">';
+				str+='<ul class="nav navbar-nav">';
+				str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+						for(var i in result[0].wattageList)
+						{
+							if (result[0].wattageList[i].wattage !=0 && result[0].wattageList[i].lightCount!=0){
+								if(result[0].wattageList[i].wattage == 24 || result[0].wattageList[i].wattage == 32 || result[0].wattageList[i].wattage == 75){
+									 str+='<li class="ledWattageColor"><b>'+result[0].wattageList[i].wattage+'W = '+result[0].wattageList[i].lightCount+'</b></li>';
+								}else{
+									str+='<li class=""><b>'+result[0].wattageList[i].wattage+'W = '+result[0].wattageList[i].lightCount+'</b></li>';
+								}
+							
+							}
+						}
+					str+='</ul>';
+				str+='</div>';
+				str+='</div>';
+/* 		str+='<div class="col-sm-12 border_dashed padding_10">';
 			str+='<ul class="nav navbar-nav">';
 				for(var i in result[0].wattageList)
 				{
@@ -377,7 +398,7 @@ function buildBasicLedOverviewDetails(result)
 					}
 				}
 			str+='</ul>';
-		str+='</div>';
+		str+='</div>'; */
 	str+='</div>';
 	str+='</div>';
 	$("#overviewBlockId").html(str);
@@ -978,7 +999,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 			str+='<div class="col-sm-6">';
 			str+='<div class="white-block block_Led_styles blockHeights">';
 			if(result.eeslVO !=null && result.eeslVO != 'undefined' && result.eeslVO.surveyStartedtotalDistricts !=0){
-				str+='<div class="row" style="padding: 10px; border-bottom: 1px dashed gray;">';
+				str+='<div class="row" style="padding: 10px;border-bottom:1px solid grey;">';
 					str+='<h3>EESL</h3>';
 					str+='<p>Energy Efficiency Services Limited</p>';
 					str+='<div class="media">';
@@ -1037,8 +1058,33 @@ function buildCompanyWiseLightMonitoringDtls(result){
 							str+='</div>';
 						  str+='</div>';
 					str+='</div>';
+					str+='<div class="dropdown">';
+					str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Wattage Details">&#9432;</span>';
+						str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar arrow_box_top_led" aria-labelledby="dropdownMenu3" style="margin-top: 32px;">';
+							str+='<div class="poles_block">';
+							str+='<ul class="nav navbar-nav">';
+							 str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+							if(result.eeslVO.wattageList !=null && result.eeslVO.wattageList.length>0){
+								for(var i in result.eeslVO.wattageList){
+									if (result.eeslVO.wattageList[i].wattage !=0 && result.eeslVO.wattageList[i].lightCount!=0){
+										if(result.eeslVO.wattageList[i].wattage == 24 || result.eeslVO.wattageList[i].wattage == 32 || result.eeslVO.wattageList[i].wattage == 75){
+											str+='<li class="ledWattageColor"><b>'+result.eeslVO.wattageList[i].wattage+'W = '+result.eeslVO.wattageList[i].lightCount+'</b></li>';
+										}else{
+											str+='<li class=""><b>'+result.eeslVO.wattageList[i].wattage+'W = '+result.eeslVO.wattageList[i].lightCount+'</b></li>';
+										}
+									 
+									}
+								}
+							}else{
+								str+='<li><b>0W = 0</b></li>';
+							}
+							
+							str+='</ul>';
+						str+='</div>';
+						str+='</div>';
 					str+='</div>';
-					str+='<div class="row poles_block" style="padding:10px;border-bottom:1px solid grey">';
+					str+='</div>';
+					/* str+='<div class="row poles_block" style="padding:10px;border-bottom:1px solid grey">';
 						str+='<ul class="nav navbar-nav" style="float:none;">';
 						if(result.eeslVO.wattageList !=null && result.eeslVO.wattageList.length>0){
 							for(var i in result.eeslVO.wattageList){
@@ -1056,7 +1102,8 @@ function buildCompanyWiseLightMonitoringDtls(result){
 						}
 						
 						str+='</ul>';
-					str+='</div>';
+					str+='</div>'; */
+					
 					str+='<div class="row m_top10" style="padding:10px;">';
 						str+='<div class="col-sm-3">';
 							str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY SATRTED</b></h6>';
@@ -1091,7 +1138,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 		str+='<div class="col-sm-6">';
 			str+='<div class="white-block block_Led_styles blockHeights">';
 			if(result.nredcapVO !=null && result.nredcapVO != 'undefined' && result.nredcapVO.surveyStartedtotalDistricts !=0){
-				str+='<div class="row" style="padding: 10px; border-bottom: 1px dashed gray;">';
+				str+='<div class="row" style="padding: 10px;border-bottom:1px solid grey;">';
 					str+='<h3>NREDCAP</h3>';
 					str+='<p>New & Renewable Energy Development Corporation of Andhra Pradesh Ltd.</p>';
 					str+='<div class="media">';
@@ -1150,8 +1197,33 @@ function buildCompanyWiseLightMonitoringDtls(result){
 							str+='</div>';
 						  str+='</div>';
 					str+='</div>';
+					str+='<div class="dropdown">';
+					str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Wattage Details">&#9432;</span>';
+						str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar arrow_box_top_led" aria-labelledby="dropdownMenu4" style="margin-top: 32px;">';
+						str+='<div class="poles_block">';
+							str+='<ul class="nav navbar-nav">';
+							str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+							if(result.nredcapVO.wattageList !=null && result.nredcapVO.wattageList.length>0){
+								for(var i in result.nredcapVO.wattageList){
+									if (result.nredcapVO.wattageList[i].wattage !=0 && result.nredcapVO.wattageList[i].lightCount!=0){
+										if(result.nredcapVO.wattageList[i].wattage == 24 || result.nredcapVO.wattageList[i].wattage == 32 || result.nredcapVO.wattageList[i].wattage == 75){
+											str+='<li class="ledWattageColor"><b>'+result.nredcapVO.wattageList[i].wattage+'W = '+result.nredcapVO.wattageList[i].lightCount+'</b></li>';
+										}else{
+											str+='<li class=""><b>'+result.nredcapVO.wattageList[i].wattage+'W = '+result.nredcapVO.wattageList[i].lightCount+'</b></li>';
+										}
+									 	
+									}
+									
+								}
+							}else{
+								str+='<li><b>0W = 0</b></li>';
+							}
+						str+='</ul>';
+						str+='</div>';
+						str+='</div>';
 					str+='</div>';
-					str+='<div class="row poles_block" style="padding:10px;border-bottom:1px solid grey">';
+					str+='</div>';
+					/* str+='<div class="row poles_block" style="padding:10px;border-bottom:1px solid grey">';
 						str+='<ul class="nav navbar-nav" style="float:none;">';
 							if(result.nredcapVO.wattageList !=null && result.nredcapVO.wattageList.length>0){
 								for(var i in result.nredcapVO.wattageList){
@@ -1169,7 +1241,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 								str+='<li><b>0W = 0</b></li>';
 							}
 						str+='</ul>';
-					str+='</div>';
+					str+='</div>'; */
 					str+='<div class="row m_top10" style="padding:10px;">';
 						str+='<div class="col-sm-3">';
 							str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY SATRTED</b></h6>';
