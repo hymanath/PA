@@ -126,6 +126,8 @@ var globalPositionsArr = [];
 var globalCadreIds =[];
 var globalMembersCount = 0;
 var globalMemAddedCunt = 0;
+var globalMemrsCnt = 0;
+
 $(document).on('click','.selectMember',function(){
 	$("#errMessageId").html('');
 	 globalMembersCount = 0;
@@ -265,6 +267,8 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 			collapse+='</div>';
 		collapse+='</div>';
 	collapse+='</div>';
+	 $("#addPositionsBlock").html(collapse);
+	 
 	$("#addmember"+selPosition.replace(/\s+/g, '')).find("li div.panel-footer").remove();
 	 initializeFile()
 	}else{
