@@ -265,12 +265,6 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 			collapse+='</div>';
 		collapse+='</div>';
 	collapse+='</div>';
-	 $("#addPositionsBlock").html(collapse);
-	 $(".membersSelectionDivCls").slick({
-		slides:'li'
-	});
-	$(".membersSelectionDivCls").slick('destroy');
-	$(".membersSelectionDivCls").slick('reinit');
 	$("#addmember"+selPosition.replace(/\s+/g, '')).find("li div.panel-footer").remove();
 	 initializeFile()
 	}else{
