@@ -124,7 +124,6 @@ function updateAddedPosiAndAddedMemCnt(){
 var globalPosiDivs = 0;
 var globalPositionsArr = [];
 var globalCadreIds =[];
-var globalMemrsCnt = 0;
 var globalMembersCount = 0;
 var globalMemAddedCunt = 0;
 $(document).on('click','.selectMember',function(){
@@ -158,7 +157,6 @@ $(document).on('click','.selectMember',function(){
 							var count = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_member_count");
 							var posiCnt = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_posi_count");
 							count++;
-							globalMemrsCnt++;
 							updateAddedPosiAndAddedMemCnt();
 							var posiMemCnt = $("#posiMemCnt"+selPosition.replace(/\s+/g, '')).text();
 							posiMemCnt++;
@@ -189,7 +187,7 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	var count = 0;
 	globalPosiDivs++;
 	globalMemrsCnt++;
-		collapse+='<input type="hidden" id="positionDiv'+selPosition.replace(/\s+/g, '')+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+']">';
+	collapse+='<input type="hidden" id="positionDiv'+selPosition.replace(/\s+/g, '')+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+']">';
 	collapse+='<div class="panel-group" id="accordionOne" role="tablist" aria-multiselectable="true">';
 		collapse+='<div class="panel panel-default">';
 			collapse+='<div class="panel-heading" role="tab" id="headingTwo">';
@@ -276,12 +274,10 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	$("#addmember"+selPosition.replace(/\s+/g, '')).find("li div.panel-footer").remove();
 	 initializeFile()
 	}else{
-		globalMemrsCnt++;
 		globalPosiDivs++;
 		var  collapse1 = "";
 		var count = 0;
 		updateAddedPosiAndAddedMemCnt();
-		//$("#accordionOne").closest("h4").html('<p>'+globalPosiDivs+' Positions & '+globalMemrsCnt+' Members</p>');
 		collapse1+='<input type="hidden" id="positionDiv'+selPosition.replace(/\s+/g, '')+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+']">';
 		collapse1+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition.replace(/\s+/g, '')+'">';
         collapse1+='<div class="panel-group m_top20" id="accordion'+selPosition.replace(/\s+/g, '')+'" role="tablist" aria-multiselectable="true">';
