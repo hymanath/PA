@@ -124,11 +124,8 @@ function updateAddedPosiAndAddedMemCnt(){
 var globalPosiDivs = 0;
 var globalPositionsArr = [];
 var globalCadreIds =[];
-var globalMemrsCnt = 0;
 var globalMembersCount = 0;
 var globalMemAddedCunt = 0;
-
-
 $(document).on('click','.selectMember',function(){
 	$("#errMessageId").html('');
 	 globalMembersCount = 0;
@@ -160,7 +157,6 @@ $(document).on('click','.selectMember',function(){
 							var count = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_member_count");
 							var posiCnt = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_posi_count");
 							count++;
-							globalMemrsCnt++;
 							updateAddedPosiAndAddedMemCnt();
 							var posiMemCnt = $("#posiMemCnt"+selPosition.replace(/\s+/g, '')).text();
 							posiMemCnt++;
@@ -191,7 +187,6 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	var count = 0;
 	globalPosiDivs++;
 	globalMemrsCnt++;
-	//collapse+='<input type="hidden" id="positionDiv'+selPosition.replace(/\s+/g, '')+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+']">';
 	collapse+='<input type="hidden" id="positionDiv'+selPosition.replace(/\s+/g, '')+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+']">';
 	collapse+='<div class="panel-group" id="accordionOne" role="tablist" aria-multiselectable="true">';
 		collapse+='<div class="panel panel-default">';
