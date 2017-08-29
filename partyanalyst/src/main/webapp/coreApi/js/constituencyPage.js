@@ -100,29 +100,26 @@ $(document).on("click","[menu-click]",function(){
 	$("#getMenuLocations").attr("menu-location-levelName",levelName);
 	locationLevelId = ((levelId)-(1));
 	locationLevelName = levelName;
-	if(levelId == 3)
+	if(levelId == 3 || levelId == 10)
 	{
 		districtId = locationId;
 		
-	}else if(levelId == 4)
+	}else if(levelId == 4 || levelId == 11)
 	{
 		constituencyId = locationId
-	}else if(levelId == 5)
+	}else if(levelId == 5 || levelId == 12)
 	{
 		mandalId = locationId
-	}else if(levelId == 6)
+	}else if(levelId == 6 || levelId == 13)
 	{
 		panchayatId = locationId
-	}else if(levelId == 10){
-		//parliaments
-		districtId = locationId;
 	}
-	if(levelId != '5' || levelId != 5)
+	/* if(levelId != '5' || levelId != 5)
 	{
 		menuCalls(levelId,locationId,'')
-	}else{
+	}else{ */
 		menuCalls(levelId,locationId,$("#constituencyMenu li.active").attr("menu-click"))
-	}	
+	//}	
 });
 $(document).on("click","[menu-name]",function(e){
 	e.stopPropagation();
@@ -168,7 +165,7 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 		}).done(function(result){
 			return buildResult('parliaments',result);
 		});
-	}else if(levelId == '3' || levelId == '10')
+	}else if(levelId == '3')
 	{
 		$("#constituencyMenu").html(spinner);
 		var jsObj={
@@ -177,6 +174,20 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 		$.ajax({
 			type : "GET",
 			url : "getConstituenciesByDistrictForLoationDashBoardAction.action",
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			return buildResult('constituency',result);
+		});
+	}else if(levelId == '10')
+	{
+		$("#constituencyMenu").html(spinner);
+		var jsObj={
+			"parlimentId":levelValue
+		}
+		$.ajax({
+			type : "GET",
+			url : "getAllConstituencyByParlimentIdForLoationDashBoardAction.action",
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -219,7 +230,7 @@ function menuCalls(levelId,levelValue,higherLevelVal)
 			levelId = parseInt(levelId) + 1;
 		//}
 		var menu='';
-		menu+='<h4 class="panel-title text-capital">'+divId+'</h4>';
+		menu+='<h4 class="panel-title text-capitalize"><b>'+divId+'</b></h4>';
 		menu+='<div class="scroller'+divId+'">';
 			menu+='<ul>';
 				for(var i in result)
@@ -1733,12 +1744,13 @@ function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(typeValue){
 								str+='<div class="row">';
 									str+='<div class="col-sm-12">';
 										str+='<div class="scrollerProblemsDiv'+result[i].id+'">';
-										str+='<div id="problemsContsDivId'+result[i].id+'"></div>';
+											str+='<div id="problemsContsDivId'+result[i].id+'"></div>';
+										str+='</div>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-						str+='</div>';
-					 str+=' </div>';
+						str+=' </div>';
+					str+=' </div>';
 				}
 					  
 					 
