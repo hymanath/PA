@@ -197,7 +197,7 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 		collapse+='<div class="panel panel-default">';
 			collapse+='<div class="panel-heading" role="tab" id="headingTwo">';
 				collapse+=' <a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordionOne" href="#collapsetwo" aria-expanded="true" aria-controls="collapseTwo">';
-					collapse+='<h4 class="panel-title" style="font-weight:600">SELECTED POSITON & SEARCH MEMBERS</h4>';
+					collapse+='<h4 class="panel-title" style="font-weight:600">SELECTED POSITION & SEARCH MEMBERS</h4>';
 					collapse+='<p><span id="selTotPosCnt">'+globalPosiDivs+'</span> Positions & <span id="selTotMemCnt">'+globalMemAddedCunt+'</span> Members</p>';
 				collapse+='</a>';
 			collapse+='</div>';
