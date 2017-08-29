@@ -554,7 +554,7 @@
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
 									debates - <small class="text-muted debatesDate">today</small>
-									<label class="radio-inline">
+									<!--<label class="radio-inline">
 								<input type="radio" name="stateSelection" value="0" checked type="radio" class="radioStateCls"/>All
 							   </label>
 							  <label class="radio-inline">
@@ -563,6 +563,9 @@
 							  <label class="radio-inline">
 								<input type="radio" name="stateSelection" value="36" type="radio" class="radioStateCls"/>TS
 							 </label>
+							 <label class="radio-inline">
+								<input type="radio" name="stateSelection" value="2" type="radio" class="radioStateCls"/>Others
+							 </label>-->
 								</h4>
 								<div class="col-md-3 col-sm-3 col-xs-12">
 								
