@@ -555,6 +555,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 				 JSONObject particepentObj = (JSONObject) particepentArray.get(i);
 				 participantVO.setId(particepentObj.getLong("candidateId"));
 				 participantVO.setPartyId(particepentObj.getLong("partyId"));
+				 participantVO.setLocationId(particepentObj.getLong("locationId"));
 				 participantVO.setSummery(particepentObj.getString("summery")!= null && particepentObj.getString("summery").trim().length() > 0 ?particepentObj.getString("summery"):null );
 				 
 				 JSONArray scalsArray = particepentObj.getJSONArray("scale");
@@ -637,6 +638,16 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			 debateDetailsVO.setSmaOptionsList(smsOptionsList);
 			 debateDetailsVO.setUserId(regVO.getRegistrationID());
 			 debateDetailsVO.setYoutubeUrl(debateObj.getString("youtubeUrl"));
+			 debateDetailsVO.setStateId(jObj.getLong("stateId"));
+			 //debateDetailsVO.setDebateCandidateLocationId(jObj.getLong("debateCandidateLocationId"));
+			 /*JSONArray candidatesArray = jObj.getJSONArray("candidatesArray");
+			 List<SelectOptionVO> candidatesList = new ArrayList<SelectOptionVO>();
+			 for (int i = 0; i < candidatesArray.length(); i++) {
+				 SelectOptionVO selectOptionVO = new SelectOptionVO();
+				 selectOptionVO.setName(candidatesArray.get(i).toString());
+				 candidatesList.add(selectOptionVO);
+			 }*/
+			 debateDetailsVO.setCandidatesList(candidatesList);
 			 resultStatus = debateService.saveDebateDetails(debateDetailsVO);
 		} 
 		catch (Exception e)
@@ -658,7 +669,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 				return Action.ERROR;
 			}*/
 			 jObj = new JSONObject(getTask());
-			debateVO = debateService.getDebateDetailsForSelected(jObj.getLong("debateId"));
+			debateVO = debateService.getDebateDetailsForSelected(jObj.getLong("debateId"),jObj.getLong("stateId"));
 		} 
 		catch (Exception e)
 		{
@@ -852,9 +863,9 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 				 String direction = " ";
 				 int minIndex  =  jObj.getInt("startIndex");
 				 int maxResults  = jObj.getInt("maxIndex");
-				 
+				 Long stateId =jObj.getLong("stateId");
 				//debateVO = debateService.getDebateDetailsForSelectedCriteria(sdf.parse(startDate), sdf.parse(endDate),selectedChannelId,selectedPartyId,politicianId, sortBy,direction, minIndex, maxResults);
-				 debateVO = debateService.getDebateDetailsForSelectedCriteria(sdf.parse(startDate), sdf.parse(endDate),channelIds,partyIds,candidateIds, sortBy,direction, minIndex, maxResults);
+				 debateVO = debateService.getDebateDetailsForSelectedCriteria(sdf.parse(startDate), sdf.parse(endDate),channelIds,partyIds,candidateIds, sortBy,direction, minIndex, maxResults,stateId);
 		} 
 		catch (Exception e)
 		{
@@ -874,9 +885,10 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 					return Action.ERROR;
 			Long debateId = jObj.getLong("debateId");
 			String description = jObj.getString("description");
+			Long stateId = jObj.getLong("stateId");
 			Long userId = regVo.getRegistrationID();
 			String path = request.getRequestURL().toString().replace("generateKeyReportAction.action","genereateReportAction.action?");
-			status = debateService.saveDebateReportForPdf(userId,debateId,description, path);
+			status = debateService.saveDebateReportForPdf(userId,debateId,description, path,stateId);
 		}
 		catch (Exception e) 
 		{
@@ -977,17 +989,18 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			jObj = new JSONObject(getTask());
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
+			Long stateId =jObj.getLong("stateId");
 			if(jObj.getString("task").equalsIgnoreCase("smsPole"))
 			{
-				debateDetails = debateService.getDebateSMSQuestions(jObj.getString("fromDate"),jObj.getString("toDate"));
+				debateDetails = debateService.getDebateSMSQuestions(jObj.getString("fromDate"),jObj.getString("toDate"),stateId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("candidate"))
 			{
-				debateDetails = debateService.getDebateAnalysisBycandidateForScaling(sdf.parse(fromDateStr),sdf.parse(toDateStr));;
+				debateDetails = debateService.getDebateAnalysisBycandidateForScaling(sdf.parse(fromDateStr),sdf.parse(toDateStr),stateId);;
 			}
 			else
 			{
-				debateDetails = debateService.getDebateAnalysisByPartyForScaling(sdf.parse(fromDateStr),sdf.parse(toDateStr));;
+				debateDetails = debateService.getDebateAnalysisByPartyForScaling(sdf.parse(fromDateStr),sdf.parse(toDateStr),stateId);;
 			}
 			
 		}
@@ -1643,7 +1656,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		
 		try{
 			jObj = new JSONObject(getTask());
-			debateVOList = debateService.getTotalAttendedDebatesOfCadre(jObj.getLong("tdpCadreId"));
+			debateVOList = debateService.getTotalAttendedDebatesOfCadre(jObj.getLong("tdpCadreId"),jObj.getLong("stateId"));
 			
 		}catch (Exception e) {
 			LOG.error(" Exception occured in getTotalAttendedDebatesOfCadre() in DebateAction class. "+e);

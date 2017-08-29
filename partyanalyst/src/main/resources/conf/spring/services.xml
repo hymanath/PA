@@ -3587,7 +3587,7 @@
    		<property name="debateReportDAO" ref="debateReportDAO" />
    		<property name="debateAnalysisService" ref="debateAnalysisService" />
    		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" />
-   		
+   		<property name="debateParticipantLocationDAO" ref="debateParticipantLocationDAO" />
    </bean>
 
 	<bean name="debateAnalysisService" class="com.itgrids.partyanalyst.service.impl.DebateAnalysisService">

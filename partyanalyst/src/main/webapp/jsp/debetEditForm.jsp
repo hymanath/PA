@@ -90,7 +90,18 @@
 	<table style="margin-top: 24px;"><tr>
 	<td> Party Name </td>
 	<td><!-- <select id="partySelectNewList"> --><span id="presentParty"></span>
-	</select></td></tr>
+	</select></td>
+	<!--<td><div class="span4">
+					   <label class="radio inline">
+							<input type="radio" name="stateSelection6"  checked value="0"   class="radioDebateLoctionDetailsStateCls"/>All
+						</label>
+						<label class="radio inline">
+							<input type="radio" name="stateSelection6" value="1"  class="radioDebateLoctionDetailsStateCls"/>AP
+						</label>
+						<label class="radio inline">
+							<input type="radio" name="stateSelection6" value="36"  class="radioDebateLoctionDetailsStateCls"/>TS
+						</label>
+				   </div></td>--></tr>
 
 	<tr><td>Candidate Name</td>
 	<td><input type="text" id="newCandidateName" onkeypress="return onlyAlphabets(event,this);"/></td></tr>
@@ -106,7 +117,10 @@ var debateId = '${debateId}';
 	var channelEdit			= '${channel}';
 	var partyIdEdit 		= '${partyId}';
 	var candidateIdEdit 	= '${candidateId}';
-	
+	var stateId = '${param.stateId}';
+	var debateCandidateLocationId ='${param.debateCandidateLocationId}';
+alert(1);
+alert(debateCandidateLocationId);
 //Code related to Google Translator START
 var control;
  google.load("elements", "1", {
@@ -231,12 +245,21 @@ var observerArray = new Array();
 
 </script>
 <script>
-
+$(".radioDebateStateCls").each(function(){
+	alert(234567);
+	if($(this).val() == stateId)
+	{
+		alert(890);
+		$(this).prop("checked",true);
+	}
+	
+});
 var candCunt = 1;
 function getSelectedDebate()
 {
 	var jsObj = {
 				debateId :debateId,
+				stateId : stateId,
 				task : "getDebateDetails"	
 		};
 		
@@ -257,8 +280,26 @@ function prepopulateDebateForm(result)
 	str += '<div id="successMsg" style="display:none;" align="center"></div>';
 	str += '<div id="debateDiv" class="container" style="font-size: 17px;font-weight: bold;line-height: 1.5;">';
 	str += '<div class="row-fluid" >';
-	str += '<legend class="boxHeading">Debate Information : </legend>';
-
+	<!--str += '<legend class="boxHeading">Debate Information : </legend>';-->
+       str += '<div class="span3">';
+				str += '<h5 class="boxHeading">Debate Information </h5>';
+				str += '</div>';
+				str += '<div class="span4">';
+				str += '<span id="debateLocationErrDiv" class="errDiv clearErrCls"></span>';
+				str +='<span><h5>Debate Location</h5></span>';
+				/*str += '<label class="radio inline">';
+					str += '<input type="radio" name="stateSelection9"  checked value="0"   class="radioDebateStateCls"/>All';
+					str += '</label>';*/
+					str += '<label class="radio inline">';
+					str += '<input type="radio" name="stateSelection9" value="1"  class="radioDebateStateCls"/>AP';
+					str += '</label>';
+					str += '<label class="radio inline">';
+					str += '<input type="radio" name="stateSelection9" value="36"  class="radioDebateStateCls"/>TS';
+					str += '</label>';
+					str += '<label class="radio inline">';
+					str += '<input type="radio" name="stateSelection9" value="2"  class="radioDebateStateCls"/>Others';
+					str += '</label>';
+				str += '</div>';
 	str += '<div class="row-fluid" >';
 	str += '<div class="span12">';
 	str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Subject : <font class="requiredFont">*</font><span id="subject1Err" class="errDiv" style="margin-left: 100px;"> </span><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreSubject();"><i class="icon-plus" style="margin-left:15px;"></i></a></label>';
@@ -329,7 +370,7 @@ function prepopulateDebateForm(result)
 	str += '<div id="participantInnerDiv1"  class="participantDetailsClass scrollit">';
 	
 	str +='<table id="participantTable" class="table table-bordered particepatedTable" style="width: 100%;overflow-x: scroll;">';
-	str +='<thead><tr><th>Party</th><th> Candidate</th>';
+	str +='<thead><tr><th>Party</th><th> Candidate</th><th style="min-width: 140px;"> Candidate Location</th>';
 	for(var i in charsArray){
 		str +='<th>'+charsArray[i].name+'</th>';
 	}
@@ -355,6 +396,23 @@ function prepopulateDebateForm(result)
 		//str+='<option value="'+result.participantsList[p].id+'"> '+result.participantsList[p].name+'</option>';
 		str +='</select>';
 		str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="img/user.png" class="createNewCandidate" id="candidate'+candCunt+'"></span></a><span id="candidate'+candCunt+'Err" class="errDiv"></span></td>';
+		str +='<td>';
+		str +='<span id="debateCandidateLocationErrDiv" class="errDiv clearErrCls"></span>';
+			str+='<select class="form-control radioDebateDetailsStateCls1" id="stateSelection'+candCunt+'">';
+				str+='<option value="0">All</option>';
+				str+='<option value="1">AP</option>';
+				str+='<option value="36">TS</option>';
+			str+='</select></td>';
+				/* str +='<label class="radio inline">';
+					str +='<input type="radio" name="stateSelection'+candCunt+'"  checked value="0"   class="radioDebateDetailsStateCls1"/>All';
+					str +='</label>';
+					str +='<label class="radio inline">';
+					str +='<input type="radio" name="stateSelection'+candCunt+'" value="1"  class="radioDebateDetailsStateCls1"/>AP';
+					str +='</label>';
+					str +='<label class="radio inline">';
+						str +='<input type="radio" name="stateSelection'+candCunt+'" value="36"  class="radioDebateDetailsStateCls1"/>TS';
+					str +='</label>'; */
+				str +='</div>';
 	    for(var i in result.participantsList[p].scaleList)
 		{
 	
@@ -679,6 +737,22 @@ function addMoreCandidatesForEdit()
 	str +='<option value="0"> Select </option>';
 	str +='</select>  <span id="candidate'+candCunt+'Err" class="errDiv"></span>';
 	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate'+candCunt+'\',\'party'+candCunt+'\','+candCunt+')"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="img/user.png" class="createNewCandidate" id="candidate'+candCunt+'"></span></a></td>';
+	str +='<td>';
+	str+='<select class="form-control radioDebateDetailsStateCls1" id="stateSelection'+candCunt+'">';
+				str+='<option value="0">All</option>';
+				str+='<option value="1">AP</option>';
+				str+='<option value="36">TS</option>';
+			str+='</select>';
+				/* str +='<label class="radio inline">';
+					str +='<input type="radio" name="stateSelection'+candCunt+'"  checked value="0"   class="radioDebateDetailsStateCls1"/>All';
+					str +='</label>';
+					str +='<label class="radio inline">';
+					str +='<input type="radio" name="stateSelection'+candCunt+'" value="1"  class="radioDebateDetailsStateCls1"/>AP';
+					str +='</label>';
+					str +='<label class="radio inline">';
+					str +='<input type="radio" name="stateSelection'+candCunt+'" value="36"  class="radioDebateDetailsStateCls1"/>TS';
+					str +='</label>'; */
+				str +='</td>';
 	for(var i in charsArray){
 		var myclass =charsArray[i].name+''+candCunt;
 		str +='<td>';
@@ -970,6 +1044,28 @@ function validateFieldsForEdit(){
 			$("#participantErrSpanId").html('Please add minimum one Participant.');
 				flag = false;			
 		}
+		//srujana validation
+     var count=1;
+	 var debateCandidateLocationId =0;
+	 var sateId=0;
+			for(var i = 0;i < $("#participantTable tbody tr").length ; i++)
+			{
+			   debateCandidateLocationId = $('#stateSelection'+count+'').val();
+			if(debateCandidateLocationId<0 || debateCandidateLocationId == "undefined" || debateCandidateLocationId == null || debateCandidateLocationId == 0){
+					$("#debateCandidateLocationErrDiv").html(" Candidate Location required ");
+					flag = false;
+				}
+				count = count+1;
+			}
+		$(".radioDebateStateCls").each(function(){
+			var stateId = $('input[name=stateSelection9]:checked').val();
+						 if(stateId == 0 || stateId<0 || stateId =="undefined" || stateId == null){
+							 $("#debateLocationErrDiv").html("debate location required");
+							 flag =false;
+						 }
+				
+			});		
+	return flag;
 
 	return flag;
 
@@ -977,6 +1073,7 @@ function validateFieldsForEdit(){
 $(document).on("keypress",".participntRoles",function(event){
          return isNumberAndDecimal(event, this);
 });
+
 
 </script>
 </body>

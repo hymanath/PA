@@ -1844,7 +1844,7 @@ public String getPartyWiseTotalDebateDetails(){
 	
 	try{
 		jObj = new JSONObject(getTask());
-		codeDebateVoList = coreDashboardMainService.getPartyWiseTotalDebateDetails(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"));
+		codeDebateVoList = coreDashboardMainService.getPartyWiseTotalDebateDetails(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),jObj.getLong("stateId"));
 		
 	}catch (Exception e) {
 		LOG.error("Exception raised at getPartyWiseTotalDebateDetails() method of CoreDashBoardAction", e);
@@ -1857,7 +1857,7 @@ public String getSpokesPersonWiseDebate(){
 	try{
 		
 		jObj = new JSONObject(getTask());
-		codeDebateVoList = coreDashboardMainService.getSpokesPersonWiseDebate(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"),jObj.getString("state"));
+		codeDebateVoList = coreDashboardMainService.getSpokesPersonWiseDebate(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"),jObj.getString("state"),jObj.getLong("stateId"));
 		
 	}catch (Exception e) {
 		LOG.error("Exception raised at getSpokesPersonWiseDebate() method of CoreDashBoardAction", e);
@@ -1870,7 +1870,7 @@ public String getScaleBasedPerformanceCohort(){
 	try{
 		
 		jObj = new JSONObject(getTask());
-		codeDebateVoList = coreDashboardMainService.getScaleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"));
+		codeDebateVoList = coreDashboardMainService.getScaleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),jObj.getLong("stateId"));
 		
 	}catch (Exception e) {
 		LOG.error("Exception raised at getScaleBasedPerformanceCohort() method of CoreDashBoardAction", e);
@@ -1882,7 +1882,7 @@ public String getCandidateOverAllPerformanceCohort(){
 	try{
 		
 		jObj = new JSONObject(getTask());
-		codeDebateVoList = coreDashboardMainService.getCandidateOverAllPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"));
+		codeDebateVoList = coreDashboardMainService.getCandidateOverAllPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),jObj.getLong("stateId"));
 		
 	}catch (Exception e) {
 		LOG.error("Exception raised at getCandidateOverAllPerformanceCohort() method of CoreDashBoardAction", e);
@@ -1895,7 +1895,7 @@ public String getChannelAndPartyWiseDetails(){
 	try{
 		
 		jObj = new JSONObject(getTask());
-		codeDebateVoList = coreDashboardMainService.getChannelAndPartyWiseDetails(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"));
+		codeDebateVoList = coreDashboardMainService.getChannelAndPartyWiseDetails(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),jObj.getLong("stateId"));
 		
 	}catch (Exception e) {
 		LOG.error("Exception raised at getChannelAndPartyWiseDetails() method of CoreDashBoardAction", e);
@@ -1907,7 +1907,7 @@ public String getRoleBasedPerformanceCohort(){
 	try{
 		
 		jObj = new JSONObject(getTask());
-		codeDebateVoList = coreDashboardMainService.getRoleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"));
+		codeDebateVoList = coreDashboardMainService.getRoleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),jObj.getLong("stateId"));
 				
 	}catch (Exception e) {
 		LOG.error("Exception raised at getRoleBasedPerformanceCohort() method of CoreDashBoardAction", e);
@@ -2107,7 +2107,7 @@ public String getRolesPerformanceOfCandidate(){
 				roles.add(roleId);
 			}
 			
-			codeDebateVoList = coreDashboardMainService.getRolesPerformanceOfCandidate(jObj.getString("startDate"),jObj.getString("endDate"),roles,jObj.getString("state"));
+			codeDebateVoList = coreDashboardMainService.getRolesPerformanceOfCandidate(jObj.getString("startDate"),jObj.getString("endDate"),roles,jObj.getString("state"),jObj.getLong("stateId"));
 					
 		}catch (Exception e) {
 			LOG.error("Exception raised at getRolesPerformanceOfCandidate() method of CoreDashBoardAction", e);
@@ -2117,7 +2117,8 @@ public String getRolesPerformanceOfCandidate(){
 }
 
 public String getDebateRolesNew(){
-	try{		
+	try{
+		
 		idNameVoList = coreDashboardMainService.getDebateRolesNew();
 	}
 	catch (Exception e) {
@@ -3005,7 +3006,7 @@ public String getCoreDebateBasicDetailsOfParty(){
 	try{
 		jObj = new JSONObject(getTask()); 
 		
-		codeDebateVoList = coreDashboardMainService.getCoreDebateBasicDetailsOfParty(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"),jObj.getLong("candidateId"));
+		codeDebateVoList = coreDashboardMainService.getCoreDebateBasicDetailsOfParty(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"),jObj.getLong("candidateId"),jObj.getLong("stateId"));
 		
 	}catch(Exception e){
 		LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
@@ -4138,7 +4139,7 @@ public String getCandidateWiseDebateDetailsOfCore(){
 		
 		jObj = new JSONObject(getTask()); 
 		
-		codeDebateVoList = coreDashboardMainService.getCandidateWiseDebateDetailsOfCore(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getLong("candidateId"));
+		codeDebateVoList = coreDashboardMainService.getCandidateWiseDebateDetailsOfCore(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getLong("candidateId"),jObj.getLong("stateId"));
 		
 	} catch (Exception e) {
 		LOG.info("\n\n getCandidateWiseDebateDetailsOfCore ");

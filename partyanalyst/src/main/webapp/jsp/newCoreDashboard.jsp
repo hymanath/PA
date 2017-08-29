@@ -554,8 +554,21 @@
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
 									debates - <small class="text-muted debatesDate">today</small>
+									<label class="radio-inline">
+								<input type="radio" name="stateSelection" value="0" checked type="radio" class="radioStateCls"/>All
+							   </label>
+							  <label class="radio-inline">
+								<input type="radio" name="stateSelection" value="1" type="radio" class="radioStateCls"/>AP
+							  </label>
+							  <label class="radio-inline">
+								<input type="radio" name="stateSelection" value="36" type="radio" class="radioStateCls"/>TS
+							 </label>
 								</h4>
+								<div class="col-md-3 col-sm-3 col-xs-12">
+								
 							</div>
+							</div>
+							
 							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="debates">
 								<span class="settingsIcon pull-right">
 								   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
