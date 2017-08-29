@@ -1215,7 +1215,7 @@ function buildDebateModelDetails(result,type,stateId){
 		
 }
 function buildCoreDebatesBasicDetailsOfParty(result,type,stateId){
-	alert(stateId);
+	//alert(stateId);
 	var str = '';
 		if(result !=null && result.length>0){
 								
