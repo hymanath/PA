@@ -2137,19 +2137,19 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 	 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
-	 	    					vo.setTargetKMS(jObj.getString("TARGETKMS"));
-		 	    				vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));
+	 	    					vo.setTargetKMS(jObj.getString("TARGETACRES"));//TARGETKMS
+		 	    				vo.setSanctionedPerventage(jObj.getString("SANCTIONEDPERCENTAGE"));//SANCTIONEDPERCENTAGE
 		 	    			}
-	 	    				vo.setSanctionedKMS(jObj.getString("SANCTIONEDKMS"));
-	 	    				vo.setPittingKMS(jObj.getString("PITTINGKMS"));
-	 	    				vo.setPlantingKMS(jObj.getString("PLANTINGKMS"));
+	 	    				vo.setSanctionedKMS(jObj.getString("SANCTIONEDACRES"));//SANCTIONEDKMS
+	 	    				vo.setPittingKMS(jObj.getString("PITTINGAREA"));//PITTINGKMS
+	 	    				vo.setPlantingKMS(jObj.getString("PLANTINGAREA"));//PLANTINGKMS
 	 	    				if(inputVO.getSublocationType().trim().toString().equalsIgnoreCase("state") || inputVO.getSublocationType().trim().toString().equalsIgnoreCase("district")){
 	 	    					if(vo.getPlantingKMS() != null && Double.valueOf(vo.getPlantingKMS()) > 0l && vo.getTargetKMS() != null && Double.valueOf(vo.getTargetKMS()) > 0l)
 	 	    						vo.setSanctionedPerc(new BigDecimal(Double.valueOf(vo.getPlantingKMS())*100.00/Double.valueOf(vo.getTargetKMS())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    					else
 	 	    						vo.setSanctionedPerc("0.00");
 		 	    			}
-	 	    				vo.setPencentageOfPlanting(jObj.getString("PERCENTAGEOFPLANTING"));
+	 	    				vo.setPencentageOfPlanting(jObj.getString("PERCENTAGEOFPLANTING"));//PERCENTAGEOFPLANTING
 	 	    				voList.add(vo);
 	 	    			}
 	 	    		}
