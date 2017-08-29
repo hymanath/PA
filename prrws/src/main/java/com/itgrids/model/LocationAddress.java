@@ -25,6 +25,7 @@ public class LocationAddress{
 	private Long stateId;
 	private Long parliamentId;
 	private Long localElectionBodyId;
+	private Long predDdoId;
 	
 	private Constituency constituency;
 	private District district;
@@ -34,7 +35,8 @@ public class LocationAddress{
 	private Constituency parliament;
 	private Hamlet hamlet;
 	private LocalElectionBody localElectionBody;
-
+    private PredDdo predddo;
+	
 	@Id
 	@Column(name="location_address_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
@@ -168,6 +170,21 @@ public class LocationAddress{
 	}
 	public void setLocalElectionBody(LocalElectionBody localElectionBody) {
 		this.localElectionBody = localElectionBody;
+	}
+	@Column(name="pred_ddo_id")
+	public Long getPredDdoId() {
+		return predDdoId;
+	}
+	public void setPredDdoId(Long predDdoId) {
+		this.predDdoId = predDdoId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pred_ddo_id", insertable = false, updatable = false)
+	public PredDdo getPredddo() {
+		return predddo;
+	}
+	public void setPredddo(PredDdo predddo) {
+		this.predddo = predddo;
 	}
 	
 	
