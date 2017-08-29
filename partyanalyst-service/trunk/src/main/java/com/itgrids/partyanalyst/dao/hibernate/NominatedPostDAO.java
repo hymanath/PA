@@ -2103,7 +2103,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 sb.append(" select " +
 	 		   " nominatedPost.nominatedPostMember.boardLevel.boardLevelId, " +
 	 		   " nominatedPost.nominatedPostMember.boardLevel.level, " +
-	 		   " count(distinct nominatedPost.nominatedPostMember.nominatedPostMemberId) " +
+	 		   " count(distinct nominatedPost.nominatedPostId) " +
 	 		   " from NominatedPost nominatedPost where " +
 			  // " nominatedPost.nominatedPostMember.address.constituency.constituencyId = :constituencyId " +
 			   " nominatedPost.isDeleted = 'N' " +
@@ -2112,13 +2112,13 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 
 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
 	        if(locationTypeId == 4l){
-	        	sb.append(" and nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValues) ");
+	        	sb.append(" and nominatedPost.nominationPostCandidate.address.constituency.constituencyId in(:locationValues) ");
 	        }else if(locationTypeId == 3l){
-	        	sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValues) ");
+	        	sb.append(" and nominatedPost.nominationPostCandidate.address.district.districtId in(:locationValues) ");
 	        }else if(locationTypeId == 5l){
-	        	sb.append(" and nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValues) ");
+	        	sb.append(" and nominatedPost.nominationPostCandidate.address.tehsil.tehsilId in(:locationValues) ");
 	        }else if(locationTypeId == 6l){
-	        	sb.append(" and nominatedPost.nominatedPostMember.address.panchayat.panchayatId in(:locationValues) ");
+	        	sb.append(" and nominatedPost.nominationPostCandidate.address.panchayat.panchayatId in(:locationValues) ");
 	        }
 	    }
 	 if(startDate != null && endDate != null){
@@ -2285,4 +2285,9 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	   
 	   return query.list();
    }
+   
+	public List<Object[]> getAllNominatedStatusList(){
+		Query query = getSession().createQuery("select model.nominatedPostStatusId,model.status from NominatedPostStatus model ");
+		return query.list();
+	}
 }

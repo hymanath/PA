@@ -1445,22 +1445,71 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				endDate = sdf.parse(toDateStr);
 			}
 			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostStatusWiseCount(locationTypeId, locationValuesList, startDate, endDate,year);
-			List<KeyValueVO> keyValueVOs = new ArrayList<KeyValueVO>();
+			List<Object[]> nominatedPostStatusList = nominatedPostDAO.getAllNominatedStatusList();
+			List<KeyValueVO> keyValueVOs = new CopyOnWriteArrayList<KeyValueVO>();
 			KeyValueVO keyValueVO = null;
+			for (Object[] statusList : nominatedPostStatusList) {
+				keyValueVO = new KeyValueVO();
+				keyValueVO.setId(commonMethodsUtilService.getLongValueForObject(statusList[0]));
+				keyValueVO.setName(commonMethodsUtilService.getStringValueForObject(statusList[1]).toUpperCase());
+				keyValueVO.setCount(0l);
+				keyValueVO.setTotalCount(0l);
+				keyValueVOs.add(keyValueVO);
+			}
+			
+			Long totalCount= 0l;
 			if(nominatedPostList != null && nominatedPostList.size() > 0){
 				for(Object[] param : nominatedPostList){
-					keyValueVO = new KeyValueVO();
-					keyValueVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					keyValueVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					keyValueVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					keyValueVOs.add(keyValueVO);
+					KeyValueVO vo = getMactchedKeyValueVO(keyValueVOs,commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(vo!=null){
+					vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+					totalCount= totalCount+commonMethodsUtilService.getLongValueForObject(param[2]);
 				}
 			}
+			if(keyValueVOs != null && keyValueVOs.size() > 0){
+				keyValueVO = new KeyValueVO();
+				keyValueVO.setId(4L);
+				keyValueVO.setName("GO ISSUED");
+				for(KeyValueVO param : keyValueVOs){
+					if(param.getId().longValue() == 4L || param.getId().longValue() == 3L){
+						keyValueVO.setCount(keyValueVO.getCount()+param.getCount());
+						keyValueVOs.remove(param);
+					}
+					
+				}
+				keyValueVOs.add(keyValueVO);
+			}
+			keyValueVOs.get(0).setTotalCount(totalCount);
+			for (KeyValueVO finalVo : keyValueVOs) {
+				if(finalVo!=null){
+					Long  percentage= (finalVo.getCount()*100)/totalCount;
+					finalVo.setPercent(percentage);
+				}
+			}
+			
 			return keyValueVOs;
 		}catch(Exception e){
 			Log.error("Exception raised in getNominatedPostStatusWiseCount method of LocationDashboardService"+e);
 		}
 		return null;
+	}
+	
+	private KeyValueVO getMactchedKeyValueVO(List<KeyValueVO> keyValueVOs,Long id) {
+
+		try{
+			if(keyValueVOs != null && keyValueVOs.size() > 0){
+				for(KeyValueVO param : keyValueVOs){
+					if(param.getId().longValue() == id){
+						return param;
+					}
+				}
+			}
+		}catch(Exception e){
+			Log.error("Exception raised in getMactchedKeyValueVO method of LocationDashboardService"+e);
+		}
+		return null;
+	
 	}
 	/*
 	 * Swadhin K Lenka
@@ -1480,27 +1529,52 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 			List<Object[]> nominatedPostApplicationList = nominatedPostApplicationDAO.getNominatedPostApplicationStatusWiseCount(locationTypeId,locationValuesList,startDate,endDate);
 			List<KeyValueVO> keyValueVOs = new CopyOnWriteArrayList<KeyValueVO>();
 			KeyValueVO keyValueVO = null;
+			Long totalCount=0l;
+			
 			if(nominatedPostApplicationList != null && nominatedPostApplicationList.size() > 0){
 				for(Object[] param : nominatedPostApplicationList){
 					keyValueVO = new KeyValueVO();
 					keyValueVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					keyValueVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					keyValueVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]).toUpperCase());
 					keyValueVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
 					keyValueVOs.add(keyValueVO);
+					totalCount= totalCount+commonMethodsUtilService.getLongValueForObject(param[2]);
 				}
 			}
 			//combine :Rejected,Rejected in Final Review,Rejected in Finalized
 			if(keyValueVOs != null && keyValueVOs.size() > 0){
 				keyValueVO = new KeyValueVO();
 				keyValueVO.setId(2L);
-				keyValueVO.setName("Rejected");
+				keyValueVO.setName("REJECTED");
 				for(KeyValueVO param : keyValueVOs){
 					if(param.getId().longValue() == 2L || param.getId().longValue() == 4L || param.getId().longValue() == 8L){
 						keyValueVO.setCount(keyValueVO.getCount()+param.getCount());
 						keyValueVOs.remove(param);
 					}
+					
 				}
 				keyValueVOs.add(keyValueVO);
+			}
+			//combine :confirmed,go passed
+			if(keyValueVOs != null && keyValueVOs.size() > 0){
+				keyValueVO = new KeyValueVO();
+				keyValueVO.setId(5L);
+				keyValueVO.setName("COMPLETED");
+				for(KeyValueVO param : keyValueVOs){
+					if(param.getId().longValue() == 5L || param.getId().longValue() == 7L){
+						keyValueVO.setCount(keyValueVO.getCount()+param.getCount());
+						keyValueVOs.remove(param);
+					}
+					
+				}
+				keyValueVOs.add(keyValueVO);
+			}
+			keyValueVOs.get(0).setTotalCount(totalCount);
+			for (KeyValueVO finalVo : keyValueVOs) {
+				if(finalVo!=null){
+					Long  percentage= (finalVo.getCount()*100)/totalCount;
+					finalVo.setPercent(percentage);
+				}
 			}
 			ArrayList<KeyValueVO> tempArray = null;
 			if(keyValueVOs != null && keyValueVOs.size() > 0){
