@@ -592,7 +592,9 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		      str.append(" and model3.address.state.stateId ="+IConstants.DEBATE_AP_STATE_ID);
 		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
 		      str.append(" and model3.address.state.stateId="+IConstants.DEBATE_TS_STATE_ID);
-		    }
+		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 2L){
+			      str.append(" and model3.address.state.stateId="+IConstants.DEBATE_OTHERS_ID);
+			    }
 	 	if(state !=null && state.trim().equalsIgnoreCase("ap")){
 			str.append(" and model1.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
 		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
