@@ -634,7 +634,11 @@ var debateDetails={
 						$("#loadingImgForSaveId").hide();
 						if(uploadResult.resultCode == 0)
 						{
+							if(type == 'save'){
 							$('#successMsg').html('<b style="color:green;">Debate Created Successfully</b>');
+							}else if(type == 'edit'){
+								$('#successMsg').html('<b style="color:green;">Debate Details Updated Successfully</b>');
+							}
 							//$('#successMsg').delay( 2000 );
 							$('html, body').animate({
 								 scrollTop: $("#successMsg").offset().top
