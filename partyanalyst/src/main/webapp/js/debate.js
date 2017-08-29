@@ -1301,9 +1301,9 @@ function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidate
 		 $(".radioStateCls").each(function(){
 				if($(this).prop('checked')==true){
 					     stateId = $(this).val();
-						 alert(12000);
+						 //alert(12000);
 				}
-				alert(stateId);
+				//alert(stateId);
 			}); 
 /*var count =1;			
 for(var i = 0;i < $("#participantTable tbody tr").length ; i++)
@@ -1318,7 +1318,7 @@ for(var i = 0;i < $("#participantTable tbody tr").length ; i++)
 				}
 				
 			}); 
-			alert(debateCandidateLocationId);
+			//alert(debateCandidateLocationId);
   if(partyId != null){
 		partyIdArr = partyId;
 	}else{
