@@ -17,6 +17,7 @@ public class KeyValueVO implements Serializable {
 	private String date;
 	private List<String> imageList = new ArrayList<String>(0);
 	private String path;
+	private Long percent;
 	
 	public Long getId() {
 		return id;
@@ -83,6 +84,12 @@ public class KeyValueVO implements Serializable {
 	}
 	public void setPath(String path) {
 		this.path = path;
+	}
+	public Long getPercent() {
+		return percent;
+	}
+	public void setPercent(Long percent) {
+		this.percent = percent;
 	}
 	
 	

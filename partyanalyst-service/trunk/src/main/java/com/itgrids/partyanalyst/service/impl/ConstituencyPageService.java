@@ -504,7 +504,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					 constElecResultVO.setElectionDate(result.getConstituencyElection().getElectionDate());
 					 constElecResultVO.setElectionYear(election.getElectionYear());
 					 
-					 if(electionYearMap.get(election.getElectionYear()) == null)
+					 if(electionYearMap.get(Long.valueOf(election.getElectionYear())) == null)
 						 electionYearMap.put(Long.valueOf(constElecResultVO.getElectionYear()), new SelectOptionVO(Long.valueOf(constElecResultVO.getElectionYear()),constElecResultVO.getElectionType()));
 					 
 					 
