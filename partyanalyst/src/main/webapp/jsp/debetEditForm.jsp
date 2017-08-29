@@ -119,8 +119,8 @@ var debateId = '${debateId}';
 	var candidateIdEdit 	= '${candidateId}';
 	var stateId = '${param.stateId}';
 	var debateCandidateLocationId ='${param.debateCandidateLocationId}';
-alert(1);
-alert(debateCandidateLocationId);
+//alert(1);
+//alert(debateCandidateLocationId);
 //Code related to Google Translator START
 var control;
  google.load("elements", "1", {
@@ -246,10 +246,10 @@ var observerArray = new Array();
 </script>
 <script>
 $(".radioDebateStateCls").each(function(){
-	alert(234567);
+	//alert(234567);
 	if($(this).val() == stateId)
 	{
-		alert(890);
+		//alert(890);
 		$(this).prop("checked",true);
 	}
 	

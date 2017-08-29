@@ -120,8 +120,8 @@ $(document).on("click",".youtubeVideo",function(){
 var debateId = '${debateId}';
 var stateId = '${param.stateId}';
 var debateCandidateLocationId ='${param.debateCandidateLocationId}';
-alert(1);
-alert(debateCandidateLocationId);
+//alert(1);
+//alert(debateCandidateLocationId);
 getSelectedDebate();
 
 function getSelectedDebate()
