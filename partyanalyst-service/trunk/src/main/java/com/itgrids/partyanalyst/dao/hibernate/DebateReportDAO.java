@@ -5,6 +5,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDebateReportDAO;
 import com.itgrids.partyanalyst.model.DebateReport;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class DebateReportDAO extends GenericDaoHibernate<DebateReport, Long> implements IDebateReportDAO{
 
@@ -31,12 +32,32 @@ public class DebateReportDAO extends GenericDaoHibernate<DebateReport, Long> imp
 		return i;
 	}
 	
-	public String getDebateDatils(Long userId,Long debateId)
+	public String getDebateDatils(Long userId,Long debateId,Long stateId)
 	{
-		Query query = getSession().createQuery("select distinct model.key from DebateReport model " +
-				" where model.user.userId = :userId and model.debate.debateId =:debateId ");
-		query.setParameter("userId", userId);
-		query.setParameter("debateId", debateId);
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.key from DebateReport model " );
+		if(stateId != null && stateId.longValue() > 0){
+		      sb.append(" , DebateParticipantLocation model3 ");
+		    }
+		sb.append(" where ");
+		if(debateId != null && debateId.longValue()>0)
+			sb.append("  model.debate.debateId =:debateId ");
+		if(userId != null && userId.longValue()>0)
+			sb.append(" and model.user.userId =:userId ");
+		if(stateId != null && stateId.longValue() > 0){
+		      sb.append(" and model.debate.debateId = model3.debateParticipant.debateId and model3.isDeleted = 'N' ");
+		    }
+		    if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 1L){
+		      sb.append(" and model3.address.state.stateId ="+ IConstants.DEBATE_AP_STATE_ID );
+		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
+		      sb.append(" and model3.address.state.stateId ="+ IConstants.DEBATE_TS_STATE_ID );
+		    }
+		Query query = getSession().createQuery(sb.toString());
+		if(userId != null && userId.longValue()>0)
+		  query.setParameter("userId", userId);
+		if(debateId != null && debateId.longValue()>0)
+		  query.setParameter("debateId", debateId);
+		
 		return (String)query.uniqueResult();
 	}
 

@@ -1323,4 +1323,5 @@ public interface IConstants {
 	//DEBATE STATE ID
 	public static final Long DEBATE_AP_STATE_ID = 1L;
 	public static final Long DEBATE_TS_STATE_ID = 36L;
+	public static final Long DEBATE_OTHERS_ID = 2L;
 }

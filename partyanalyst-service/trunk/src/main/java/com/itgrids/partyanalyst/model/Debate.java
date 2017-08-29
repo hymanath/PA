@@ -47,6 +47,8 @@ public class Debate extends BaseModel implements java.io.Serializable{
 	private Date updatedTime;
 	private Long insertedBy;
 	private Long updatedBy;
+	private Long addressId;
+	private UserAddress address;
 	
 	//private Set<DebateObserver> debateObserver = new HashSet<DebateObserver>(0);
 	//private Set<DebateParticipant> debateParticipant = new HashSet<DebateParticipant>(0);
@@ -221,7 +223,23 @@ public class Debate extends BaseModel implements java.io.Serializable{
 	public void setDebateParticipant(Set<DebateParticipant> debateParticipant) {
 		this.debateParticipant = debateParticipant;
 	}*/
-	
+	@Column(name="address_id")
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public UserAddress getAddress() {
+		return address;
+	}
+	public void setAddress(UserAddress address) {
+		this.address = address;
+	}
 	
 	
 	

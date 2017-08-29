@@ -3749,7 +3749,7 @@ public List<TrainingCampProgramVO> getTrainingCampProgramsBasicCountDetails(Long
 
 
 
-public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,String endDateStr,String state){		
+public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,String endDateStr,String state,Long stateId){		
 	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();		
 	try{
 		Date startDate = null;
@@ -3764,10 +3764,10 @@ public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,Str
 		Map<Long,CoreDebateVO> countMap = new LinkedHashMap<Long, CoreDebateVO>();
 		
 		//0.partyId,1.shortName,2.debateCount,3.candidateCount
-		List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate,state);	
+		List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate,state,stateId);	
 		
 		//0.partyId,1.shortName,2.characteristicsId,3.name,4.scale
-		List<Object[]> scaleCountObjList = debateParticipantCharcsDAO.getPartyWiseScalesOfEachCharecter(startDate,endDate,state);
+		List<Object[]> scaleCountObjList = debateParticipantCharcsDAO.getPartyWiseScalesOfEachCharecter(startDate,endDate,state,stateId);
 		
 		List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
 		
@@ -3860,7 +3860,7 @@ public Map<Long,CoreDebateVO> setScaleVauesToParty(List<Object[]> ObjList,Map<Lo
 	}
 	return countMap;
 }	
-public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String endDateStr,String searchType,String state){
+public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String endDateStr,String searchType,String state,Long stateId){
 
 	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
 	
@@ -3878,10 +3878,10 @@ public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String e
 		//Map<Long,CoreDebateVO> candidateMap= new HashMap<Long, CoreDebateVO>();
 		
 		//0.partyId,1.name,2.candidateId,3.name,4.scale
-		List<Object[]> candidateObjList =  debateParticipantCharcsDAO.getPartywiseCandidateScaling(startDate,endDate,searchType,state);
+		List<Object[]> candidateObjList =  debateParticipantCharcsDAO.getPartywiseCandidateScaling(startDate,endDate,searchType,state,stateId);
 		
 		//0.partyId,1.name,2.candidateId,3.name,4.debateCount
-		 List<Object[]> debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachCandidateNew(startDate, endDate,state);
+		 List<Object[]> debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachCandidateNew(startDate, endDate,state,stateId);
 		 
 		 List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
 					 
@@ -4001,7 +4001,7 @@ public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String e
 		}
 	};
 
-public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,String endDateStr,String state){
+public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,String endDateStr,String state,Long stateId){
 	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
 	try{
 		
@@ -4015,9 +4015,9 @@ public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,Str
 		}
 		
 		Map<Long,CoreDebateVO> countMap = new LinkedHashMap<Long, CoreDebateVO>();			
-		List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate,state);			
+		List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate,state,stateId);			
 		//0.partyId,1.shortName,2.characteristicsId,3.name,4.scale
-		List<Object[]> scaleCountObjList = debateParticipantCharcsDAO.getPartyWiseScalesOfEachCharecter(startDate,endDate,state);
+		List<Object[]> scaleCountObjList = debateParticipantCharcsDAO.getPartyWiseScalesOfEachCharecter(startDate,endDate,state,stateId);
 		
 		if(commonMethodsUtilService.isListOrSetValid(debateCountObjList)){			
 			countMap = setDebateValuesToMap(debateCountObjList,countMap);
@@ -4080,7 +4080,7 @@ public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,Str
 	return returnList;
 }
 
-public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateStr,String endDateStr,String state){
+public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateStr,String endDateStr,String state,Long stateId){
 	
 	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
 	
@@ -4097,10 +4097,10 @@ public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateS
 		Map<Long,Map<Long,List<CoreDebateVO>>> countMap = new LinkedHashMap<Long, Map<Long,List<CoreDebateVO>>>();
 				
 		//0.partyId,1.name,2.candidateId,3.name,4.charecterId,5.name,6.scale
-		List<Object[]> charecterObjList =  debateParticipantCharcsDAO.getPartywiseCandidateCharectersScaling(startDate,endDate,state);
+		List<Object[]> charecterObjList =  debateParticipantCharcsDAO.getPartywiseCandidateCharectersScaling(startDate,endDate,state,stateId);
 		
 		//0.partyId,1.name,2.candidateId,3.name,4.debateCount
-		 List<Object[]> debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachCandidateNew(startDate, endDate,state);
+		 List<Object[]> debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachCandidateNew(startDate, endDate,state,stateId);
 		 
 		 List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
 		
@@ -4185,7 +4185,7 @@ public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateS
 	return returnList;
 }
 
-public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,String endDateStr,String state){
+public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,String endDateStr,String state,Long stateId){
 	
 	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
 	
@@ -4201,10 +4201,10 @@ public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,Stri
 		
 		Map<Long,Map<Long,CoreDebateVO>> channelMap = new LinkedHashMap<Long, Map<Long,CoreDebateVO>>();			
 		//0.channelId,1.channel,2.partyId,3.partyName,4.scaleCount
-		List<Object[]> channelScaleObjList = debateParticipantCharcsDAO.getChannelAndPartyWiseCharecter(startDate,endDate,state);
+		List<Object[]> channelScaleObjList = debateParticipantCharcsDAO.getChannelAndPartyWiseCharecter(startDate,endDate,state,stateId);
 		
 		//0.channelId,1.channel,2.partyId,3.partyName,4.debateCount
-		List<Object[]> channelObjList = debateParticipantDAO.getChannelWiseDebateDetails(startDate,endDate,state);
+		List<Object[]> channelObjList = debateParticipantDAO.getChannelWiseDebateDetails(startDate,endDate,state,stateId);
 		
 		List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();		
 				
@@ -4378,7 +4378,7 @@ public Map<Long,Map<Long,CoreDebateVO>> setDebateDetailsToMapNew(List<Object[]> 
 	
 }
 
-public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,String endDateStr,String state){
+public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,String endDateStr,String state,Long stateId){
 	
 	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>(0);
 	
@@ -4394,10 +4394,10 @@ public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,Stri
 		
 		Map<Long,Map<Long,CoreDebateVO>> rolesMap = new LinkedHashMap<Long, Map<Long,CoreDebateVO>>();			
 		//0.partyId,1.name,2.rolesId,3.role,4.scale,5.debatesCount
-		List<Object[]> roleObjList = debateParticipantCharcsDAO.getRoleBasedPerformanceCohort(startDate, endDate,state);
+		List<Object[]> roleObjList = debateParticipantCharcsDAO.getRoleBasedPerformanceCohort(startDate, endDate,state,stateId);
 		
 		//0.partyId,1.shortName,2.debateCount,3.candidatesCount
-		List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate,state);
+		List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate,state,stateId);
 		
 		List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
 		
@@ -4448,7 +4448,7 @@ public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,Stri
 	return returnList;
 }
 
-public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,String endDateStr,List<Long> roles,String state){
+public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,String endDateStr,List<Long> roles,String state,Long stateId){
 	
 	List<CoreDebateVO> candidateScaleList = new ArrayList<CoreDebateVO>();
 	
@@ -4467,9 +4467,9 @@ public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,Str
 		//0.candidateId,1.name,2.partyId,3.name,4.scale,5.debateCount	
 		List<Object[]> candidateScaleObj = null;
 		if(roles !=null && roles.size()>0){
-			candidateScaleObj = debateParticipantCharcsDAO.getScaleOfCandidateNew(startDate,endDate,roles,state);
+			candidateScaleObj = debateParticipantCharcsDAO.getScaleOfCandidateNew(startDate,endDate,roles,state,stateId);
 		}else{
-			candidateScaleObj = debateParticipantCharcsDAO.getScaleOfCandidate(startDate, endDate, roles, state);
+			candidateScaleObj = debateParticipantCharcsDAO.getScaleOfCandidate(startDate, endDate, roles, state,stateId);
 		}
 		
 		
@@ -5575,7 +5575,7 @@ public String getLatestDebate(){
 	return time;		
 }
 
-public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String startDateStr,String endDateStr,String searchType,Long candidateId){
+public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String startDateStr,String endDateStr,String searchType,Long candidateId,Long stateId){
 	
 	List<CoreDebateVO> finalList = new ArrayList<CoreDebateVO>();		
 	try{
@@ -5602,7 +5602,7 @@ public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String s
 		Set<Long> debateIds = new LinkedHashSet<Long>(0);
 		Map<Long,CoreDebateVO> mainMap = new LinkedHashMap<Long, CoreDebateVO>(0);
 		//0.candidateId,1.candidateName,2.debateId,3.startTime,4.endTime,5.debateObserverid,6.observer,7.channelId,8.channelName
-		List<Object[]> listObj = debateParticipantDAO.getPartyWiseDebates(partyIds,startDate,endDate,null,searchType,candidateId);
+		List<Object[]> listObj = debateParticipantDAO.getPartyWiseDebates(partyIds,startDate,endDate,null,searchType,candidateId,stateId);
 		
 		if(listObj !=null && listObj.size()>0){			
 			for(Object[] obj:listObj){
@@ -5630,7 +5630,7 @@ public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String s
 		Map<Long,List<String>> subjectsMap = new HashMap<Long, List<String>>();
 		
 		if(debateIds !=null && debateIds.size()>0){
-			List<Object[]> subjectsList = debateSubjectDAO.getDebateSubjectDetailsOfList(debateIds);			
+			List<Object[]> subjectsList = debateSubjectDAO.getDebateSubjectDetailsOfList(debateIds,stateId);			
 			//List<String> debateSubject = new ArrayList<String>(0);
 			if(subjectsList != null && subjectsList.size() > 0)
 			{
@@ -6029,7 +6029,7 @@ public List<List<IdNameVO>> getStateLevelCampDetailsDayWise(List<Long> programId
 	return null;
 }
 
-public List<CoreDebateVO> getCandidateWiseDebateDetailsOfCore(Long partyId,String startDateStr,String endDateStr,Long candidateId){
+public List<CoreDebateVO> getCandidateWiseDebateDetailsOfCore(Long partyId,String startDateStr,String endDateStr,Long candidateId,Long stateId){
 	
 	List<CoreDebateVO> finalList = new ArrayList<CoreDebateVO>();		
 	try{
@@ -6057,7 +6057,7 @@ public List<CoreDebateVO> getCandidateWiseDebateDetailsOfCore(Long partyId,Strin
 		Set<Long> debateIds = new LinkedHashSet<Long>(0);
 		Map<Long,CoreDebateVO> mainMap = new LinkedHashMap<Long, CoreDebateVO>(0);
 		//0.candidateId,1.candidateName,2.debateId,3.startTime,4.endTime,5.debateObserverid,6.observer,7.channelId,8.channelName
-		List<Object[]> listObj = debateParticipantDAO.getPartyAndCandidateWiseDebates(partyIds,startDate,endDate,null,searchType,candidateIds);
+		List<Object[]> listObj = debateParticipantDAO.getPartyAndCandidateWiseDebates(partyIds,startDate,endDate,null,searchType,candidateIds,stateId);
 		
 		if(listObj !=null && listObj.size()>0){			
 			for(Object[] obj:listObj){
@@ -6084,7 +6084,7 @@ public List<CoreDebateVO> getCandidateWiseDebateDetailsOfCore(Long partyId,Strin
 		
 		if(debateIds !=null && debateIds.size()>0){	
 			//get Subjects Of Debate
-			getDebateSubjects(debateIds,subjectsMap);			
+			getDebateSubjects(debateIds,subjectsMap,stateId);			
 			
 			for(CoreDebateVO VO:finalList){				
 				List<String> subjects = subjectsMap.get(VO.getId());
@@ -6102,10 +6102,10 @@ public List<CoreDebateVO> getCandidateWiseDebateDetailsOfCore(Long partyId,Strin
 
 }
 
-public void getDebateSubjects(Set<Long> debateIds,Map<Long,List<String>> subjectsMap){
+public void getDebateSubjects(Set<Long> debateIds,Map<Long,List<String>> subjectsMap,Long stateId){
 	try {
 		
-		List<Object[]> subjectsList = debateSubjectDAO.getDebateSubjectDetailsOfList(debateIds);			
+		List<Object[]> subjectsList = debateSubjectDAO.getDebateSubjectDetailsOfList(debateIds,stateId);			
 		if(subjectsList != null && subjectsList.size() > 0)
 		{
 			for(Object[] obj:subjectsList){										

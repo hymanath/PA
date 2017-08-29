@@ -43,6 +43,7 @@ public class DebateVO implements Serializable {
 	
 	private String youtubeUrl;
 	
+	private Long debateLocId;
 	
 	public String getYoutubeUrl() {
 		return youtubeUrl;
@@ -219,6 +220,12 @@ public class DebateVO implements Serializable {
 	}
 	public void setCandidateId(Long candidateId) {
 		this.candidateId = candidateId;
+	}
+	public Long getDebateLocId() {
+		return debateLocId;
+	}
+	public void setDebateLocId(Long debateLocId) {
+		this.debateLocId = debateLocId;
 	}
 	
 	

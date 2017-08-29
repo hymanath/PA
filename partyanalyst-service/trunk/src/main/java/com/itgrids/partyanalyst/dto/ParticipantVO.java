@@ -21,6 +21,7 @@ public class ParticipantVO implements Serializable{
 	private String expRoles;
 	private Double perc;
 	private List<SelectOptionVO> candidatesList;
+	private Long locationId;
 	
 	
 	public List<SelectOptionVO> getCandidatesList() {
@@ -95,6 +96,12 @@ public class ParticipantVO implements Serializable{
 	}
 	public void setPerc(Double perc) {
 		this.perc = perc;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
 	}
 	
 	

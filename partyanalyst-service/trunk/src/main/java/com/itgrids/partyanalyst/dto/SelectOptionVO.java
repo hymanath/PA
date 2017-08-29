@@ -54,7 +54,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Long inchargeId;
 	private Long serialNo;
 	private String originalLocation;
-	
+	private Long locationId;
 	public String getOriginalLocation() {
 		return originalLocation;
 	}
@@ -488,6 +488,14 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 
 	public void setSerialNo(Long serialNo) {
 		this.serialNo = serialNo;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
 	}
 	
 	
