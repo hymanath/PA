@@ -20,13 +20,14 @@ public class DebateDetailsVO implements Serializable {
 	private List<SelectOptionVO> questionsList;
 	private List<SelectOptionVO> smsQuestionList;
 	private List<SelectOptionVO> smaOptionsList;
+	private List<SelectOptionVO> candidatesList;
 	private String type;
 	
 	private String youtubeUrl;
 	private Long userId;
-	
-	
-	
+	private Long stateId;
+	private Long debateCandidateLocationId;
+		
 	public Long getUserId() {
 		return userId;
 	}
@@ -117,7 +118,23 @@ public class DebateDetailsVO implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public Long getDebateCandidateLocationId() {
+		return debateCandidateLocationId;
+	}
+	public void setDebateCandidateLocationId(Long debateCandidateLocationId) {
+		this.debateCandidateLocationId = debateCandidateLocationId;
+	}
+	public List<SelectOptionVO> getCandidatesList() {
+		return candidatesList;
+	}
+	public void setCandidatesList(List<SelectOptionVO> candidatesList) {
+		this.candidatesList = candidatesList;
+	}
 	
 }
