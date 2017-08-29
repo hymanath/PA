@@ -31,7 +31,6 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
-import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.util.IWebConstants;
