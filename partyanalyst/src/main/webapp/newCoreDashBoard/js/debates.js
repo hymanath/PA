@@ -41,7 +41,7 @@ function globalDebateCalls(type)
 	}
 }
 
-	$(document).on("click",".debatesRefresh",function(){
+	$(document).on("click",".debatesRefresh,.radioStateCls",function(){
 		globalDebateCalls('');
 	});
 $(document).ready(function(){
@@ -122,11 +122,19 @@ $(document).ready(function(){
  function getPartyWiseTotalDebateDetails(){
 		
 		$("#partyWiseTotalDebateDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		
+		//var stateId=1;
+		var stateId=0;
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               stateId = $(this).val();
+        }
+        
+      });
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
-			state:globalState
+			state:globalState,
+			stateId:stateId
 		}
 		$.ajax({
 			type : 'POST',
@@ -134,12 +142,12 @@ $(document).ready(function(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildPartyWiseTotalDebateDetails(result);			
+			buildPartyWiseTotalDebateDetails(result,stateId);			
 		});
 	}
 
 
-function buildPartyWiseTotalDebateDetails(result)
+function buildPartyWiseTotalDebateDetails(result,stateId)
 {
 	var str='';
 	if(result !=null){
@@ -161,11 +169,11 @@ function buildPartyWiseTotalDebateDetails(result)
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">total debates</p>';
-							str+='<h4><a href="#" class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_type="debate">'+result[i].debateCount+'</a></h4>';
+							str+='<h4><a href="#" class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_state_id ="'+stateId+'" attr_type="debate">'+result[i].debateCount+'</a></h4>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">total spokes persons</p>';
-							str+='<h4><a href="#" class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_type="candidate">'+result[i].candidateCount+'</a></h4>';
+							str+='<h4><a href="#" class="partyWiseDebateCls" attr_partyId='+result[i].id+'  attr_state_id ="'+stateId+'" attr_type="candidate">'+result[i].candidateCount+'</a></h4>';
 						str+='</td>';
 						str+='<td>';
 						if(result[i].scalePerc !=null){
@@ -205,10 +213,19 @@ $(document).on("click","#collapseOneId",function(){
 function getScaleBasedPerformanceCohort(){
 		
 		$("#scaleBasedPerformanceCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		//var stateId=1;
+		var stateId=0;
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               stateId = $(this).val();
+        }
+        
+      });
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
-			state:globalState
+			state:globalState,
+			stateId :stateId
 		}
 	    $.ajax({
 			type : 'POST',
@@ -216,10 +233,10 @@ function getScaleBasedPerformanceCohort(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildScaleBasedPerformanceCohort(result);
+			buildScaleBasedPerformanceCohort(result,stateId);
 		});
 	}
-function buildScaleBasedPerformanceCohort(result)
+function buildScaleBasedPerformanceCohort(result,stateId)
 {
 	var str='';
 	if(result !=null){
@@ -235,7 +252,7 @@ function buildScaleBasedPerformanceCohort(result)
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">overall debates</p>';
-							str+='<h4><span class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_type="debate" style="cursor:pointer;"><a>'+result[i].debateCount+'</a></span></h4>';
+							str+='<h4><span class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_state_id="'+stateId+'" attr_type="debate" style="cursor:pointer;"><a>'+result[i].debateCount+'</a></span></h4>';
 						str+='</td>';
 						
 						str+='<td>';
@@ -290,10 +307,19 @@ function buildScaleBasedPerformanceCohort(result)
 function getCandidateOverAllPerformanceCohort(){
 		
 		$("#candidateOverAllPerformanceCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		//var stateId=1;
+		var stateId=0;
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               stateId = $(this).val();
+        }
+        
+      });
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
-			state:globalState
+			state:globalState,
+			stateId:stateId
 		}
 	    $.ajax({
 			type : 'POST',
@@ -301,10 +327,10 @@ function getCandidateOverAllPerformanceCohort(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			BuildCandidateOverAllPerformanceCohort(result);
+			BuildCandidateOverAllPerformanceCohort(result,stateId);
 		});
 	}
-function BuildCandidateOverAllPerformanceCohort(result)
+function BuildCandidateOverAllPerformanceCohort(result,stateId)
 {
 	var str='';
 	
@@ -348,7 +374,7 @@ function BuildCandidateOverAllPerformanceCohort(result)
 													//str+='<td class="text-capitalize">'+canidateName+'</td>';
 													str+='<td class="text-capitalize">'+canidateName.toUpperCase()+'</td>';
 													str+='<td>';
-															str+='<h5 ><a class="overAllCandidateCls" attr_party_id ='+result[i].coreDebateVOList[0].coreDebateVOList[0].id+' attr_candidate_id='+result[i].coreDebateVOList[j].coreDebateVOList[0].candidateId+'  style="cursor:pointer;">'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+'</a></h5>';
+															str+='<h5 ><a class="overAllCandidateCls" attr_party_id ='+result[i].coreDebateVOList[0].coreDebateVOList[0].id+' attr_candidate_id='+result[i].coreDebateVOList[j].coreDebateVOList[0].candidateId+' attr_state_id ='+stateId+' style="cursor:pointer;">'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+'</a></h5>';
 													str+='</td>';
 													
 													if(result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc !=null){
@@ -419,10 +445,19 @@ function BuildCandidateOverAllPerformanceCohort(result)
 function getChannelAndPartyWiseDetails(){
 		
 		$("#channelAndPartyWiseDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		//var stateId =1;
+		var stateId=0;
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               stateId = $(this).val();
+        }
+        
+      });
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
-			state:globalState
+			state:globalState,
+			stateId:stateId
 		}
 	    $.ajax({
 			type : 'POST',
@@ -486,11 +521,20 @@ function buildChannelAndPartyWiseDetails(result)
 function getSpokesPersonWiseDebate(searchType){
 		
 		$("#SpokesPersonWiseDebate").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		//var stateId= 1;
+		var stateId=0;
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               stateId = $(this).val();
+        }
+        
+      });
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
 			searchType:searchType,
-			state:globalState
+			state:globalState,
+			stateId :stateId
 		}
 	    $.ajax({
 			type : 'POST',
@@ -616,10 +660,19 @@ function buildSpokesPersonWiseDebate(result){
 function getRoleBasedPerformanceCohort(){
 		
 		$("#roleBasedPerformanceCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		//var stateId=1;
+		var stateId=0;
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               stateId = $(this).val();
+        }
+        
+      });
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
-			state:globalState
+			state:globalState,
+			stateId:stateId
 		}
 	    $.ajax({
 			type : 'POST',
@@ -627,10 +680,10 @@ function getRoleBasedPerformanceCohort(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildRoleBasedPerformanceCohort(result);
+			buildRoleBasedPerformanceCohort(result,stateId);
 		});
 	}
-function buildRoleBasedPerformanceCohort(result)
+function buildRoleBasedPerformanceCohort(result,stateId)
 {
 	var str='';
 	if(result !=null){
@@ -649,7 +702,7 @@ function buildRoleBasedPerformanceCohort(result)
 						str+='<td>';
 							str+='<p class="text-capital">overall debates</p>';
 							if(result[i].coreDebateVOList[0].overAllDebateCount !=null && result[i].coreDebateVOList[0].overAllDebateCount>0){
-							  str+='<h4><span class="partyWiseDebateCls" attr_partyId='+result[i].coreDebateVOList[0].id+' attr_type="debate" style="cursor:pointer;"><a>'+result[i].coreDebateVOList[0].overAllDebateCount+'</a></span></h4>';
+							  str+='<h4><span class="partyWiseDebateCls" attr_partyId='+result[i].coreDebateVOList[0].id+' attr_state_id ='+stateId+' attr_type="debate" style="cursor:pointer;"><a>'+result[i].coreDebateVOList[0].overAllDebateCount+'</a></span></h4>';
 							}
 							
 						str+='</td>';
@@ -807,12 +860,20 @@ function getTitleContent(name,showCharVal){
 function getRolesPerformanceOfCandidate(roleId){
 		
 		$("#candidateRolesPerformanceNewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		
+		//var stateId =1;
+		var stateId=0;
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               stateId = $(this).val();
+        }
+        
+      });
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
 			state:globalState,
-			roleId:roleId
+			roleId:roleId,
+			stateId:stateId
 		}
 		$.ajax({
 			type : 'POST',
@@ -820,10 +881,10 @@ function getRolesPerformanceOfCandidate(roleId){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildRolesPerformanceOfCandidate(result);			
+			buildRolesPerformanceOfCandidate(result,stateId);			
 		});
 	}
-	function buildRolesPerformanceOfCandidate(result){
+	function buildRolesPerformanceOfCandidate(result,stateId){
 		var str='';
 		if(result !=null && result.length>0){
 			str+='<div class="table-responsive">';
@@ -837,7 +898,7 @@ function getRolesPerformanceOfCandidate(roleId){
 							str+='</td>';
 							str+='<td class="text-capital">';
 								str+='<p>debates</p>';
-								str+='<p class="text-muted"><span class="perforamnceDebateCls" attr_partyId='+result[i].candidateId+' attr_type="debate" style="cursor:pointer;" attr_candidateId='+result[i].id+'><a>'+result[i].debateCount+'</a></span></p>';
+								str+='<p class="text-muted"><span class="perforamnceDebateCls" attr_partyId='+result[i].candidateId+' attr_state_id ="'+stateId+'" attr_type="debate" style="cursor:pointer;" attr_candidateId='+result[i].id+'><a>'+result[i].debateCount+'</a></span></p>';
 							str+='</td>';
 							
 							//Digit Adding
@@ -1031,18 +1092,26 @@ $(document).on("click",".partyWiseDebateCls",function(){
 	$("#debateModelDivId").modal("show");
 	var partyId = $(this).attr("attr_partyId");
 	var type = $(this).attr("attr_type");
-	getCoreDebateBasicDetailsOfParty(partyId,type);
+	var stateId =$(this).attr("attr_state_id");
+	getCoreDebateBasicDetailsOfParty(partyId,type,stateId);
 });
-function getCoreDebateBasicDetailsOfParty(partyId,type){
+function getCoreDebateBasicDetailsOfParty(partyId,type,stateId){
 	$(".debateModelCls").html("");	
 	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	
+	/*var stateId=0;
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               stateId = $(this).val();
+        }
+        
+      });*/
 	var jsObj={
 		partyId:partyId,
 		startDate:customStartDate,
 		endDate:customEndDate,
 		searchType:type,
-		candidateId:0
+		candidateId:0,
+		stateId:stateId
 	}		
 	$.ajax({
 	 type: "POST",
@@ -1054,36 +1123,39 @@ function getCoreDebateBasicDetailsOfParty(partyId,type){
 }
 
 $(document).on("click",".debateDetailsCls",function(){
-		var debateId = $(this).attr("attr_debateId");		
+		var debateId = $(this).attr("attr_debateId");
+        var  stateId = $(this).attr("attr_state_id");
+		//window.open("debateReportAction.action?debateId="+debateId+"&stateId="+stateId+"");
 		window.open('debateReportAction.action?debateId='+debateId+'','_blank');		 
 	});
 	
 	$(document).on("click",".overAllCandidateCls",function(){
 		$("#debateModelDivId").modal("show");
 		var partyId = $(this).attr("attr_party_id");		
-		var candidateId = $(this).attr("attr_candidate_id");		
-		getCandidateWiseDebateDetailsOfCore(partyId,candidateId);		
+		var candidateId = $(this).attr("attr_candidate_id");	
+        var stateId =$(this).attr("attr_state_id");		
+		getCandidateWiseDebateDetailsOfCore(partyId,candidateId,stateId);		
 	});
 	
-function getCandidateWiseDebateDetailsOfCore(partyId,candidateId){
+function getCandidateWiseDebateDetailsOfCore(partyId,candidateId,stateId){
 	$(".debateModelCls").html("");	
 	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	
 	var jsObj={
 		partyId:partyId,
 		startDate:customStartDate,
 		endDate:customEndDate,
-		candidateId:candidateId
+		candidateId:candidateId,
+		stateId:stateId
 	}		
 	$.ajax({
 	 type: "POST",
 	 url: "getCandidateWiseDebateDetailsOfCoreAction.action",
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		buildDebateModelDetails(result,"debate");
+		buildDebateModelDetails(result,"debate",stateId);
 	});
 }
-function buildDebateModelDetails(result,type){
+function buildDebateModelDetails(result,type,stateId){
 		var str = '';
 		if(result !=null && result.length>0){
 								
@@ -1117,9 +1189,9 @@ function buildDebateModelDetails(result,type){
 										candiName=getTitleContent(result[i].candidateName,30);
 							}		
 						if(type =="candidate"){
-							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' attr_state_id="'+stateId+'" style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
 						}							
-							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+subject+'</a></td>';
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' attr_state_id="'+stateId+'" style="cursor:pointer;"><a>'+subject+'</a></td>';
 							str+='<td>'+result[i].startTime+'</td>';
 							str+='<td>'+result[i].endTime+'</td>';
 							str+='<td>'+result[i].observerName+'</td>';
@@ -1129,7 +1201,7 @@ function buildDebateModelDetails(result,type){
 					
 				str+= '</tbody>';
 			str+= '</table>';
-			str+= '</div>';
+			str+= '</div>';""
 			str+= '</div>';
 			str+= '</div>';
 			str+= '</div>';
@@ -1142,7 +1214,8 @@ function buildDebateModelDetails(result,type){
 		}
 		
 }
-function buildCoreDebatesBasicDetailsOfParty(result,type){
+function buildCoreDebatesBasicDetailsOfParty(result,type,stateId){
+	alert(stateId);
 	var str = '';
 		if(result !=null && result.length>0){
 								
@@ -1176,9 +1249,9 @@ function buildCoreDebatesBasicDetailsOfParty(result,type){
 										candiName=getTitleContent(result[i].candidateName,30);
 							}		
 						if(type =="candidate"){
-							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' attr_state_id="'+stateId+'" style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
 						}							
-							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+subject+'</a></td>';
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+'  attr_state_id="'+stateId+'" style="cursor:pointer;"><a>'+subject+'</a></td>';
 							str+='<td>'+result[i].startTime+'</td>';
 							str+='<td>'+result[i].endTime+'</td>';
 							str+='<td>'+result[i].observerName+'</td>';
@@ -1208,19 +1281,26 @@ $(document).on("click",".perforamnceDebateCls",function(){
 	var candidateId = $(this).attr("attr_candidateId");
 	$(".debateModelCls").html("");	
 	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	
+	var stateId=$(this).attr("attr_state_id");
+     /* $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               stateId = $(this).val();
+        }
+        
+      }); */
 	var jsObj={
 		partyId:partyId,
 		startDate:customStartDate,
 		endDate:customEndDate,
 		searchType:type,
-		candidateId:candidateId
+		candidateId:candidateId,
+		stateId:stateId
 	}		
 	$.ajax({
 	 type: "POST",
 	 url: "getCoreDebateBasicDetailsOfPartyAction.action",
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		buildCoreDebatesBasicDetailsOfParty(result,type);
+		buildCoreDebatesBasicDetailsOfParty(result,type,stateId);
 	});	
 });

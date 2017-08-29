@@ -118,7 +118,10 @@ $(document).on("click",".youtubeVideo",function(){
 	$("#youtubeVideoModal").modal('show')
 });
 var debateId = '${debateId}';
-
+var stateId = '${param.stateId}';
+var debateCandidateLocationId ='${param.debateCandidateLocationId}';
+alert(1);
+alert(debateCandidateLocationId);
 getSelectedDebate();
 
 function getSelectedDebate()
@@ -126,10 +129,13 @@ function getSelectedDebate()
 	$("#debateDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jsObj = {
 				debateId :debateId,
+				stateId : stateId,
+				//debateCandidateLocationId:debateCandidateLocationId,
 				task : "getDebateDetails"	
 		};
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		
 		var url = "retriveDebateDetailsAction.action?"+rparam;
 		callAjax(jsObj,url);
 }

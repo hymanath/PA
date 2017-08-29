@@ -252,7 +252,27 @@ function validateFields(){
 			$("#participantErrSpanId").html('Please add minimum one Participant.');
 				flag = false;			
 		}
-
+//srujana validation
+     var count=1;
+	 var debateCandidateLocationId =0;
+	 var sateId=0;
+			for(var i = 0;i < $("#participantTable tbody tr").length ; i++)
+			{
+			   debateCandidateLocationId = $('#stateSelection'+count+'').val();
+			if(debateCandidateLocationId<0 || debateCandidateLocationId == "undefined" || debateCandidateLocationId == null || debateCandidateLocationId == 0){
+					$("#debateCandidateLocationErrDiv").html(" Candidate Location required ");
+					flag = false;
+				}
+				count = count+1;
+			}
+		$(".radioStateCls").each(function(){
+			var stateId = $('input[name=stateSelection11]:checked').val();
+						 if(stateId == 0 || stateId<0 || stateId =="undefined" || stateId == null){
+							 $("#debateLocationErrDiv").html("debate location required");
+							 flag =false;
+						 }
+				
+			});		
 	return flag;
 
 }
@@ -410,16 +430,55 @@ function updateAttributeField(id){
 
 function submitForm(type)
 {
+	var stateId=0;
+	var debateCandidateLocationId = 0;
 	if(type == 'edit'){
+		 $(".radioDebateStateCls").each(function(){
+				if($(this).prop('checked')==true){
+					     stateId = $(this).val();
+				}
+				
+			}); 
+			/* $(".radioDebateDetailsStateCls1").each(function(){
+				if($(this).prop('checked')==true){
+					     debateCandidateLocationId = $(this).val();
+				}
+				
+			});  */
+			var count=1;
+			var candidateValue =[];
+			/*for(var i = 0;i < $("#participantTable tbody tr").length ; i++)
+			{
+				//alert(3);
+			    debateCandidateLocationId = $('input[name="stateSelection'+count+'"]:checked').val();
+				candidateValue.push(debateCandidateLocationId);
+				count = count+1;
+				alert(candidateValue);
+			}*/
 		clearFields(type);
 		if(validateFieldsForEdit()){
-				saveDetails(type)
+				saveDetails(type,stateId)
 		}
-	}
-	else if(type == 'save'){
+	}else if(type == 'save'){
+		 $(".radioStateCls").each(function(){
+				if($(this).prop('checked')==true){
+					     stateId = $(this).val();
+				}
+				
+			}); 
+			var length = $("#participantTable tr").length
+			var count=1;
+			/*var candidateValue =[];
+			for(var i = 0;i < $("#participantTable tbody tr").length ; i++)
+			{
+				alert(2);
+			   debateCandidateLocationId = $('input[name="stateSelection'+count+'"]:checked').val();
+				candidateValue.push(debateCandidateLocationId);
+				count = count+1;
+			}*/
 		clearFields(type);
 		if(validateFields()){
-			saveDetails(type)
+			saveDetails(type,stateId)
 		}			
 	}
 	else{
@@ -427,7 +486,7 @@ function submitForm(type)
 	}
 }
 
-function saveDetails(type){ 
+function saveDetails(type,stateId){ 
 	$("#loadingImgForSaveId").show();
 var debateDetails={
 			endTime : '',
@@ -451,13 +510,17 @@ var debateDetails={
 			debateDetails.channelId       = $('#channel option:selected').val();
 			//debateDetails.telecastTimeId  = $('#telecastTime option:selected').val();
 			observer.push($('#observer option:selected').val());
+			
 			$('.particepntDetailsRow').each(function() {
+				
+				var count=1;
 				var participantObj = {
 					  partyId: '' ,
 					  candidateId : '' ,
 					  summery     : '',
 					  participantRoles:[],
 					  expparticipantRoles:[],
+					  locationId : 0,
 					  scale : [
 					  {
 						 scaleId : '',
@@ -468,6 +531,34 @@ var debateDetails={
 				
 				participantObj.partyId  = $(this).closest("tr").find('.partysClass').val();
 				participantObj.candidateId = $(this).closest("tr").find('.candidatesClass').val();
+				participantObj.locationId = $(this).closest("tr").find('.radioDebateDetailsStateCls1').val();
+				/*var partyIdName  = $(this).closest("tr").find('.partysClass').val();
+				alert(partyIdName)
+				if($("input[name='stateSelection"+partyIdName+"'].radioDebateDetailsStateCls").is(':checked')) {
+					participantObj.locationId = $("input[name='stateSelection"+partyIdName+"].radioDebateDetailsStateCls:checked").val();
+					alert(participantObj.locationId);
+				}*/
+				
+				/* for(var i = 0;i < $("#participantTable tbody tr").length ; i++){
+					if($("input[name='stateSelection"+count+"'].radioDebateDetailsStateCls1").is(':checked')) {
+						
+						participantObj.locationId = $("input[name='stateSelection"+count+"'].radioDebateDetailsStateCls1:checked").val();
+						alert(participantObj.locationId);
+					}
+					count = count+1;
+				} */
+				
+				//participantObj.locationId = $(this).closest("tr").find('.radioDebateDetailsStateCls1').attr("attr_val");
+				//alert($(this).closest("tr").find('.radioDebateDetailsStateCls1').html())
+				/* for(var i = 0;i < $("#participantTable tbody tr").length ; i++)
+			    {
+				alert(47);
+				alert('input[name="stateSelection'+count+'"]:checked');
+			    participantObj.locationId = $('input[name="stateSelection'+count+'"]:checked').val();
+				count = count+1;
+			    }
+				alert(400); */
+				
 				//console.log(charsArray);
 				 var scaleObj = {
 					 scaleId : '',
@@ -521,6 +612,7 @@ var debateDetails={
 				debateDetails.youtubeUrl = $('#youtubeUrl').val();
 			else
 				debateDetails.youtubeUrl = "";
+			//return;
 				var jsObj = {
 						debateDetails :debateDetails,
 						participant   : participant,
@@ -529,6 +621,8 @@ var debateDetails={
 						questionAnswer : questionAnswer,
 						smsPole : smsPole,
 						type : type,
+						stateId :stateId,
+						//candidatesArray :candidateValue,
 						task : "saveDebateDetails"	
 				};
 					 $("#getDebateDetails").val(YAHOO.lang.JSON.stringify(jsObj));
@@ -565,6 +659,7 @@ function getValues(){
 	var str ='';
 	str +='<table id="participantTable" class="table table-bordered particepatedTable" style="width: 100%;overflow-x: scroll;">';
 	str +='<thead><tr><th>Party</th><th> Candidate</th>';
+	str +='<th style="min-width: 140px;"> Candidate Location</th>';
 	for(var i in charsArray){
 		str +='<th>'+charsArray[i].name+'</th>';
 	}
@@ -582,6 +677,24 @@ function getValues(){
 	str+='<option value="0"> Select </option>';
 	str +='</select>';
 	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="img/user.png" class="createNewCandidate" id="candidate1"></span></a> <span id="candidate1Err" class="errDiv clearErrCls"></span></td>';
+	//srujana
+			str +='<td>';
+			str +='<span id="debateCandidateLocationErrDiv" class="errDiv clearErrCls" style ="display:block;"></span>';
+			str+='<select class="form-control radioDebateDetailsStateCls1" id="stateSelection1">';
+				str+='<option value="0">All</option>';
+				str+='<option value="1">AP</option>';
+				str+='<option value="36">TS</option>';
+			str+='</select>';
+		/* 		str +='<label class="radio inline">';
+					str +='<input type="radio" name="stateSelection1"  checked value="0" attr_val="0" class="radioDebateDetailsStateCls1"/>All';
+					str +='</label>';
+					str +='<label class="radio inline">';
+					str +='<input type="radio" name="stateSelection1" value="1"  attr_val="1" class="radioDebateDetailsStateCls1"/>AP';
+					str +='</label>';
+					str +='<label class="radio inline">';
+						str +='<input type="radio" name="stateSelection1" value="36" attr_val="36"  class="radioDebateDetailsStateCls1"/>TS';
+					str +='</label>'; */
+				str +='</td>'; 
 		for(var i in charsArray){
 		var myClass1 = charsArray[i].name+"1";
 		str +='<td>';
@@ -645,6 +758,7 @@ var isConfirm = confirm("Are you want to delete ?")
 
 function addMoreCandidates()
 {
+	var i=0;
 	var str ='';
 	str += "<tr id='row"+candCount+"' class='particepntDetailsRow'>";
 	str += "<td><select name='party"+candCount+"'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id,"+candCount+");' class='partysClass'><option value='0' selected='selected'>Select</option>";
@@ -659,6 +773,25 @@ function addMoreCandidates()
 	str +='<option value="0"> Select </option>';
 	str +='</select> <span id="candidate'+candCount+'Err" class="errDiv clearErrCls"></span>';
 	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate'+candCount+'\',\'party'+candCount+'\','+candCount+')"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="img/user.png" class="createNewCandidate" id="candidate'+candCount+'"></span></a></td>';
+
+	str +='<td>';
+	 str +='<span id="debateCandidateLocationErrDiv" class="errDiv clearErrCls"></span>';
+		str+='<select class="form-control radioDebateDetailsStateCls1" id="stateSelection'+candCount+'">';
+				str+='<option value="0">All</option>';
+				str+='<option value="1">AP</option>';
+				str+='<option value="36">TS</option>';
+			str+='</select>';
+				/* str +='<label class="radio inline">';
+					str +='<input type="radio" name="stateSelection'+candCount+'"  checked value="0" attr_val="0"  class="radioDebateDetailsStateCls1"/>All';
+					str +='</label>';
+					str +='<label class="radio inline">';
+					str +='<input type="radio" name="stateSelection'+candCount+'" value="1" attr_val="1" class="radioDebateDetailsStateCls1"/>AP';
+					str +='</label>';
+					str +='<label class="radio inline">';
+					str +='<input type="radio" name="stateSelection'+candCount+'" value="36"  attr_val="36" class="radioDebateDetailsStateCls1"/>TS';
+					str +='</label>'; */
+				str +='</td>'; 
+
 	for(var i in charsArray){
 		var myclass =charsArray[i].name+''+candCount;
 		str +='<td>';
@@ -896,32 +1029,47 @@ function buildSmsPoleDetails(myResults)
 		 str += '<th>NO</th>';
 		 str += '</tr>';
 		  str +='</thead><tbody>';
-		 for(var i in myResults)
-		 {
-			if(myResults[i].name != "")
+		  var k = 0;
+		   for(var i in myResults)
+		  {
+			if(myResults[i].name != "" )
 			{
-				str += '<tr>';
-				str += '<td>'+myResults[i].url+'</td>';
-				str += '<td>'+myResults[i].partno+'</td>';
-				str += '<td>'+myResults[i].name+'</td>';
-				if(myResults[i].selectOptionsList.length>1 && myResults[i].selectOptionsList.length<=2){
-						for(var j in myResults[i].selectOptionsList)
-						{
-							str += '<td>'+myResults[i].selectOptionsList[j].perc+'</td>';
-						}
-				}else if(myResults[i].selectOptionsList.length==1){
-					str += '<td>'+myResults[i].selectOptionsList[0].perc+'</td>';
-					str += '<td>0</td>';
-				}else{
-					for(var j in myResults[i].selectOptionsList)
-						{
-							str += '<td>'+myResults[i].selectOptionsList[j].perc+'</td>';
-						}
-				}
-			
-				str += '</tr>';
+				k = 1;
 			}
 			
+		  }
+		 if(k == 1){
+			  for(var i in myResults)
+			 {
+				if(myResults[i].name != "" )
+				{
+					//k = 1;
+					str += '<tr>';
+					str += '<td>'+myResults[i].url+'</td>';
+					str += '<td>'+myResults[i].partno+'</td>';
+					str += '<td>'+myResults[i].name+'</td>';
+					if(myResults[i].selectOptionsList.length>1 && myResults[i].selectOptionsList.length<=2){
+							for(var j in myResults[i].selectOptionsList)
+							{
+								str += '<td>'+myResults[i].selectOptionsList[j].perc+'</td>';
+							}
+					}else if(myResults[i].selectOptionsList.length==1){
+						str += '<td>'+myResults[i].selectOptionsList[0].perc+'</td>';
+						str += '<td>0</td>';
+					}else{
+						for(var j in myResults[i].selectOptionsList)
+							{
+								str += '<td>'+myResults[i].selectOptionsList[j].perc+'</td>';
+							}
+					}
+				
+					str += '</tr>';
+				}
+			 }
+		 }else{
+			str += '<tr >';
+				str+='<td colspan="5" style="text-align:center;">No Data Availabale</td>';
+			str += '</tr>';
 		 }
 		 str += '</tbody></table>';
 		 $('#analysisDiv').html(str);
@@ -1149,15 +1297,52 @@ function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidate
 	   jsonp: null,
 	   jsonpCallback: null
 	}); 
-
+   var stateId=0;
+		 $(".radioStateCls").each(function(){
+				if($(this).prop('checked')==true){
+					     stateId = $(this).val();
+						 alert(12000);
+				}
+				alert(stateId);
+			}); 
+/*var count =1;			
+for(var i = 0;i < $("#participantTable tbody tr").length ; i++)
+			{
+			   debateCandidateLocationId = $('#stateSelection'+count+'').val();
+				count = count+1;
+			}*/			
+  var debateCandidateLocationId =0;
+			$(".radioStateCls1").each(function(){
+				if($(this).prop('checked')==true){
+					    debateCandidateLocationId = $(this).val();
+				}
+				
+			}); 
+			alert(debateCandidateLocationId);
+  if(partyId != null){
+		partyIdArr = partyId;
+	}else{
+		var partyIdArr =[];
+	}
+	if(channelId != null){
+		channelIdArr = channelId;
+	}else{
+		  var channelIdArr =[];
+	}
+	if(candidateId != null){
+		candidateIdArr = candidateId;
+	}else{
+		var candidateIdArr =[];
+	}
 	var jsObj = { 
 		fromDate : fromDate,
 		toDate : toDate,
-		channelIdArr : channelId,
-		partyIdArr : partyId,
-		candidateIdArr : candidateId,	
+		channelIdArr : channelIdArr,
+		partyIdArr : partyIdArr,
+		candidateIdArr : candidateIdArr,	
 		startIndex : startIndex,
 		maxIndex : endIndex,
+		stateId : stateId,
 		task:"getAllNewsReportsForAUser"
 	}
 	
@@ -1168,7 +1353,7 @@ function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidate
 	  data : {task:JSON.stringify(jsObj)} ,
 		 
 	  success: function(results){ 
-		   buildgetDebatesDetailsBetwinDates(results,fromDate,toDate,channelId,partyId,candidateId,startIndex,endIndex);
+		   buildgetDebatesDetailsBetwinDates(results,fromDate,toDate,channelId,partyId,candidateId,startIndex,endIndex,stateId,debateCandidateLocationId);
 	 },
 	  error:function() { 
 	  }
@@ -1176,7 +1361,7 @@ function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidate
 
 }
 
-function buildgetDebatesDetailsBetwinDates(result,fromDate,toDate,channelId,partyId,candidateId,startIndexValue,maxIndexValue)
+function buildgetDebatesDetailsBetwinDates(result,fromDate,toDate,channelId,partyId,candidateId,startIndexValue,maxIndexValue,stateId,debateCandidateLocationId)
 {
 
 	var str = '';
@@ -1202,13 +1387,13 @@ function buildgetDebatesDetailsBetwinDates(result,fromDate,toDate,channelId,part
 			str+='<td>'+result.smsPoleList[i].name+'  </td>';
 			str+='<td>'+result.smsPoleList[i].type+'  </td>';
 			
-			str +='<td><a class="btn btn-info" value="'+result.smsPoleList[i].id+'" onClick="openDebateReport('+result.smsPoleList[i].id+')"> view </a></td>';
+			str +='<td><a class="btn btn-info" value="'+result.smsPoleList[i].id+'" stateValue ="'+stateId+'" onClick="openDebateReport('+result.smsPoleList[i].id+',\''+stateId+'\')"> view </a></td>';
 			
-			str+='<td><a class="btn btn-info" value="'+result.smsPoleList[i].id+'" onClick="editDebateReport('+result.smsPoleList[i].id+')">Edit</a> </td>';
+            str+='<td><a class="btn btn-info" value="'+result.smsPoleList[i].id+'" stateValue ="'+stateId+'" onClick="editDebateReport('+result.smsPoleList[i].id+',\''+stateId+'\',\''+debateCandidateLocationId+'\')">Edit</a> </td>';
 			
-			str +='<td><a class="btn btn-info" value="'+result.smsPoleList[i].id+'" onClick="deleteDebateReport('+result.smsPoleList[i].id+')">Delete</a></td>';
+			str +='<td><a class="btn btn-info" value="'+result.smsPoleList[i].id+'" stateValue ="'+stateId+'" onClick="deleteDebateReport('+result.smsPoleList[i].id+',\''+stateId+'\')">Delete</a></td>';
 		
-			str+='<td><input type="button" class="btn btn-info" value="Generate URL " onCLick="generateURL('+result.smsPoleList[i].id+',\'reportId'+result.smsPoleList[i].id+'\',\''+result.smsPoleList[i].name+'\')"/>  </td>';
+			str+='<td><input type="button" class="btn btn-info" value="Generate URL " stateValue ="'+stateId+'" onCLick="generateURL('+result.smsPoleList[i].id+',\'reportId'+result.smsPoleList[i].id+'\',\''+result.smsPoleList[i].name+'\',\''+stateId+'\')"/>  </td>';
 			str+='<td> <textarea id="reportId'+result.smsPoleList[i].id+'" placeholder="Generated URL Details..."></textarea> </td>';
 			str +='</tr>';
 		}
@@ -1346,6 +1531,14 @@ function getDebateAnalysisDetails(task)
 {
 	var startDate = $('#fromDateIdForAnalysis').val();
 	var endDate = $('#toDateIdForAnalysis').val();
+	//var stateId =1;
+	var stateId=0;
+		 $(".radioStateCls2").each(function(){
+				if($(this).prop('checked')==true){
+					     stateId = $(this).val();
+				}
+				
+			}); 
 	$("#RerrDivForAnalysis").html('');
 	if(startDate != undefined && startDate.length <=0){
 		$("#RerrDivForAnalysis").html("From Date is Required.");
@@ -1389,6 +1582,7 @@ function getDebateAnalysisDetails(task)
 	var jsObj = {
 				fromDate : $('#fromDateIdForAnalysis').val(),
 				toDate   : $('#toDateIdForAnalysis').val(),
+				stateId : stateId,
 				task     : task	
 		};
 		
@@ -1497,13 +1691,13 @@ function getDebateDetailsBtDates()
 	
 }
 
-function openDebateReport(debateId)
+function openDebateReport(debateId,stateId)
 {
-	window.open("debateReportAction.action?debateId="+debateId+"");
+	window.open("debateReportAction.action?debateId="+debateId+"&stateId="+stateId+"");
 }
 
 
-function editDebateReport(debateId)
+function editDebateReport(debateId,stateId,debateCandidateLocationId)
 {
 	var fromDate = $('#fromDateId').val();
 	var toDate = $('#toDateId').val();
@@ -1511,10 +1705,10 @@ function editDebateReport(debateId)
 	var partyId = $('#partySelecction').val();
 	var candidateId = $('#candidateSelecction').val();
 	
-	window.location="debateEditAction.action?debateId="+debateId+"&fromDate="+fromDate+"&toDate="+toDate+"&channel="+channel+"&partyId="+partyId+"&candidateId="+candidateId+"&";
+	window.location="debateEditAction.action?debateId="+debateId+"&fromDate="+fromDate+"&toDate="+toDate+"&channel="+channel+"&partyId="+partyId+"&candidateId="+candidateId+"&stateId="+stateId+"&debateCandidateLocationId="+debateCandidateLocationId+"&";
 }
 
-function deleteDebateReport(debateId)
+function deleteDebateReport(debateId,stateId)
 {
 
 	var isConfirm = confirm("Are you want to delete ?")
@@ -1534,12 +1728,13 @@ function deleteDebateReport(debateId)
 	}
 	
 }
-function generateURL(debateId,div,description)
+function generateURL(debateId,div,description,stateId)
 {
 	    var jsObj = {
 				debateId : debateId,
 				description   : description,
 				div:  div,
+				stateId:stateId,
 				task     : "generateURL"	
 		};
 		
@@ -1567,7 +1762,7 @@ function  buildDebateBTDatesTable(results)
 		str +='<td>'+results[i].name+'</td>';
 		str +='<td>'+results[i].type+'</td>';
 		str +='<td><a class="btn btn-info" value="'+results[i].id+'"';
-		str +='onClick="openDebateReport('+results[i].id+')">view</a></td>';
+		str +='onClick="openDebateReport('+result[i].id+',\''+stateId+'\')">view</a></td>';
 		str +='<td><input type="button" class="btn btn-info" value="Generate URL " onCLick="generateURL('+results[i].id+',\'reportId'+results[i].id+'\',\''+results[i].name+'\')"/></td>';
 		str +='<td><textarea id="reportId'+results[i].id+'" placeholder="Generated URL..."></textarea></td>';
 		str +='</tr>';
@@ -1696,7 +1891,7 @@ function createNewCandidate(listId,party,id){
 	$('#presentParty').html('');
 	$('#errorMsgDiv').html('');
 	$('#newCandidateName').val('');
-
+	var locationLevelsArr=[{id:"1",name:"AP"},{id:"36",name:"TS"}]
 	var partyName = $('#'+party+' :selected').text();
 	var partyId = $('#'+party+'').val();
 	debateNewCandiPartyId = partyId;
@@ -1706,7 +1901,15 @@ function createNewCandidate(listId,party,id){
 		$('#'+party+'').css("border","1px solid #D14719");
 		return;
 	}
-
+	var str='';
+	var k=0;
+	for(var i in locationLevelsArr){
+		k=k+1;
+		str+='<label class="radio inline">';
+		str+='<input type="radio"  name="stateSelection" value="'+locationLevelsArr[i].id+'" class="radioDebateDetailsStateCls"/>'+locationLevelsArr[i].name+'';
+		str+='</label>';
+	}
+	$("#appendCandidateLocationDiv").html(str);
 	$('#presentParty').html(''+partyName+'');
 	$("#createCandidateDiv").dialog({
 		modal: true,

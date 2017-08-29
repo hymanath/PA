@@ -348,7 +348,7 @@ window.location.href = uri + base64(format(template, ctx))
 				
 				<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'DEBATE_ENTITLEMENT' )  ||
 						fn:contains(sessionScope.USER.entitlements, 'DEBATE_ADMIN_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'DEBATE_CREATE_ENTITLEMENT' ) }">
-					<li class="active"><a data-toggle="tab" value="Upload News" style="cursor:pointer;color: #005580;" onclick="showNewDebateDiv();" style="cursor:pointer;color: #005580;" > Create Debate </a>	
+					<li class="active"><a  id="createId" data-toggle="tab" value="Upload News" style="cursor:pointer;color: #005580;" onclick="showNewDebateDiv();" style="cursor:pointer;color: #005580;" > Create Debate </a>	
 					</li>
 				</c:if>
 					<!--<li class="">
@@ -396,12 +396,34 @@ window.location.href = uri + base64(format(template, ctx))
 
 	<div id="newDibateDiv">
 	<div>
-		<span class="pull-right" style="margin-top: 10px;"> <b style="">NOTE</b> : Press Alt+t to toggle between Telugu &amp; English </span>
+		
 	</div>
 		<div id="successMsg" style="display:none;" align="center"></div>
 			<div id="debateDiv" class="container" style="font-size: 17px;font-weight: bold;line-height: 1.5;">
-				<div class="row-fluid" >
-					<legend class="boxHeading">Debate Information : </legend>
+				<div class="row-fluid">
+					<div class="span3">
+						<h5 class="boxHeading">Debate Information </h5>
+					</div>
+					<div class="span4">
+					<span><h5>Debate Location</h5></span>
+					   <!--<label class="radio inline">
+							<input type="radio" name="stateSelection11"  checked value="0"   class="radioStateCls"/>All
+						</label>-->
+						<label class="radio inline">
+							<input type="radio" name="stateSelection11" value="1"  class="radioStateCls"/>AP
+						</label>
+						<label class="radio inline">
+							<input type="radio" name="stateSelection11" value="36"  class="radioStateCls"/>TS
+						</label>
+						<label class="radio inline">
+							<input type="radio" name="stateSelection11" value="2"  class="radioStateCls"/>Others
+						</label>
+						<span id="debateLocationErrDiv" class="errDiv clearErrCls" style ="display:block;"></span>
+				   </div>
+					<div class="span5">
+						<p style="margin-top: 10px;font-size:12px;"> <b style="">NOTE</b> : Press Alt+t to toggle between Telugu &amp; English </p>
+					</div>
+					
 
 				<div class="row-fluid" >
 						<div class="span12">
@@ -546,7 +568,22 @@ window.location.href = uri + base64(format(template, ctx))
 
 			<div id="debateRport" >
 			<div id="RerrDiv"></div>
-			<legend class="boxHeading">Generate Debate Report :</legend>
+			<div class="row-fluid" >
+			<div class="span3">
+			  <h5 class="boxHeading">Generate Debate Report :</h5>
+			</div>
+			<div class="span4">
+			            <label class="radio inline">
+							<input type="radio" name="stateSelection2"  checked value="0"   class="radioStateCls1"/>All
+						</label>
+						<label class="radio inline">
+							<input type="radio" name="stateSelection2" value="1"  class="radioStateCls1"/>AP
+						</label>
+						<label class="radio inline">
+							<input type="radio" name="stateSelection2" value="36"  class="radioStateCls1"/>TS
+						</label>
+				</div>
+				</div>
 			<h4>  </h4>
 				<div class="row-fluid" >
 					<div class="span4" > 
@@ -578,7 +615,26 @@ window.location.href = uri + base64(format(template, ctx))
 		
 	<div id="debateAnalysisDiv"  style="display:none;">
 		<div id="RerrDivForAnalysis"></div>
-		<legend class="boxHeading">Debate Analysis : </legend>
+		<!--<legend class="boxHeading">Debate Analysis : </legend>-->
+		<div class="row-fluid" >
+			<div class="span3">
+			  <h5 class="boxHeading">Debate Analysis : </h5>
+			</div>
+			<div class="span4">
+			            <label class="radio inline">
+							<input type="radio" name="stateSelection3" value="0" checked  class="radioStateCls2"/>All
+						</label>
+						<label class="radio inline">
+							<input type="radio" name="stateSelection3" value="1"  class="radioStateCls2"/>AP
+						</label>
+						<label class="radio inline">
+							<input type="radio" name="stateSelection3" value="36" class="radioStateCls2"/>TS
+						</label>
+						<label class="radio inline">
+							<input type="radio" name="stateSelection3" value="2" class="radioStateCls2"/>Others
+						</label>
+				</div>
+				</div>
 		<div class="row-fluid m_top10 text-center" >
 			<div class="span4 offset2" > 
 			<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">From Date  <font class="requiredFont">*</font></label> <input type="text" id="fromDateIdForAnalysis"></input>
@@ -609,7 +665,7 @@ window.location.href = uri + base64(format(template, ctx))
 			<div class="span8">
 				<h3>Debate Analysis Report</h3>   
 			</div>
-			<div class="span4" style="margin-top: 20px;display:none;">
+			<div class="span4" style="margin-top: 20px;">
 				<div class="pull-right">
 				<label class="radio inline">
 					<input type="radio" name="stateSelection4" value="1" type="radio" class="debateReportRadioStateCls"/>AP
@@ -746,14 +802,35 @@ window.location.href = uri + base64(format(template, ctx))
 				</select></td></tr>
 
 				<tr><td>Candidate Name</td>
-				<td><input type="text" id="newCandidateName" onkeypress="return onlyAlphabets(event,this);"/></td></tr>
-				
+				<td><input type="text" id="newCandidateName" onkeypress="return onlyAlphabets(event,this);"/></td>
+				</tr>
+				<tr><!--<td>Location Level</td>
+				<td>
+					
+					   <label class="radio inline">
+							<input type="radio" name="stateSelection1" value="1"  class="radioDebateDetailsStateCls"/>AP
+						</label>
+						<label class="radio inline">
+							<input type="radio" name="stateSelection1" value="36"  class="radioDebateDetailsStateCls"/>TS
+						</label>
+				</td>-->
+				</tr>
 				</table>
 				<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
 
 			</div>
 </div>
 <script>
+$("#createId,#AnalysisNewsId,#detailsNewsId,#newDebateAnalysis").on("click",function(){
+	$( 'input[name="stateSelection1"][value="0"]').trigger("click");
+	$( 'input[name="stateSelection2"][value="0"]').trigger("click");
+	$( 'input[name="stateSelection3"][value="0"]').trigger("click");
+	$( 'input[name="stateSelection4"][value="0"]').trigger("click");
+});
+/*$(".radioStateCls1").on("click",function(){
+	alert(4);
+	$("#debateReportDiv").html('');
+});*/
 </script>
 </body>
 </html>
