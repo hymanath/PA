@@ -186,7 +186,6 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	var collapse='';
 	var count = 0;
 	globalPosiDivs++;
-	globalMemrsCnt++;
 	collapse+='<input type="hidden" id="positionDiv'+selPosition.replace(/\s+/g, '')+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+']">';
 	collapse+='<div class="panel-group" id="accordionOne" role="tablist" aria-multiselectable="true">';
 		collapse+='<div class="panel panel-default">';
@@ -270,7 +269,6 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	$("#addmember"+selPosition.replace(/\s+/g, '')).find("li div.panel-footer").remove();
 	 initializeFile()
 	}else{
-		globalMemrsCnt++;
 		globalPosiDivs++;
 		var  collapse1 = "";
 		var count = 0;
