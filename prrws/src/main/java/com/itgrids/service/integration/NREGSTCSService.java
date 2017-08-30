@@ -567,6 +567,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				else{
 	 	    					if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
 	 	    						vo.setMulbTarget(jObj.getString("TARGET"));
+	 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") || inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals")))
+	 	    						vo.setOpgkTarget(jObj.getString("TARGET"));
 	 	    					else
 	 	    						vo.setTarget(jObj.getLong("TARGET"));
 		 	    				vo.setGrounded(jObj.getString("GROUNDED"));
@@ -576,7 +578,9 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    					vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
 		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
 		 	    					vo.setMulbInprogress(jObj.getString("INPROGRESS"));
-	 	    					else
+		 	    				else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") ||  inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals")))
+	 	    						vo.setOpgkInProgress(jObj.getString("INPROGRESS"));
+		 	    				else
 	 	    						vo.setInProgress(jObj.getLong("INPROGRESS"));
 		 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
 		 	    					vo.setMulbCompleted(jObj.getString("COMPLETED"));
@@ -1121,14 +1125,29 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				nregsDataVO.setConstituency(jObj.getString("CONSTITUENCY"));
 			 	    				nregsDataVO.setMandal(jObj.getString("MANDAL"));
 			 	    				nregsDataVO.setPanchayat(jObj.getString("PANCHAYAT"));
-			 	    				nregsDataVO.setTarget(jObj.getLong("TARGET"));
+			 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+			 	    					nregsDataVO.setMulbTarget(jObj.getString("TARGET"));
+		 	    					else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") || inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals")))
+		 	    						nregsDataVO.setOpgkTarget(jObj.getString("TARGET"));
+		 	    					else
+		 	    						nregsDataVO.setTarget(jObj.getLong("TARGET"));
+			 	    				
 			 	    				nregsDataVO.setGrounded(jObj.getString("GROUNDED"));
 			 	    				if(jObj.getString("NOTGROUNDED").trim().contains("-"))
 			 	    					nregsDataVO.setNotGrounded("0");
 			 	    				else
 			 	    					nregsDataVO.setNotGrounded(jObj.getString("NOTGROUNDED"));
-			 	    				nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
-			 	    				nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
+			 	    				
+			 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+			 	    					nregsDataVO.setMulbInprogress(jObj.getString("INPROGRESS"));
+			 	    				else if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") ||  inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals")))
+			 	    					nregsDataVO.setOpgkInProgress(jObj.getString("INPROGRESS"));
+			 	    				else
+			 	    					nregsDataVO.setInProgress(jObj.getLong("INPROGRESS"));
+			 	    				if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Mulbery"))
+			 	    					nregsDataVO.setMulbCompleted(jObj.getString("COMPLETED"));
+		 	    					else
+		 	    						nregsDataVO.setCompleted(jObj.getLong("COMPLETED"));
 			 	    				nregsDataVO.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	 	    				
 			 	    				list.add(nregsDataVO);	 
 			 	    			}
