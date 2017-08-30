@@ -97,7 +97,7 @@
 				   </div>
 				   <div class="media-body">
 					  <h4>Gross-Amount</h4>
-					  <h4><i class="fa fa-inr"></i> 645612933</h4>
+					  <h4><i class="fa fa-inr"></i> <div id="grossId">0</div></h4>
 				   </div>
 				</div>
 			 </div>
@@ -110,9 +110,9 @@
 						 <img  src="Assests/img/Deductions_icon.png">
 					  </div>
 				   </div>
-				   <div class="media-body">
+				   <div class="media-body">   
 					  <h4>DEDUCTIONS</h4>
-					  <h4><i class="fa fa-inr"></i> 83480713</h4>
+					  <h4><i class="fa fa-inr"></i> <div id="deductionId">0</div></h4>
 				   </div>
 				</div>
 			 </div>
@@ -127,7 +127,7 @@
 				   </div>
 				   <div class="media-body">
 					  <h4>NET AMOUNT</h4>
-					  <h4><i class="fa fa-inr"></i> 562132220</h4>
+					  <h4><i class="fa fa-inr"></i> <div id="netId">0</div></h4>
 				   </div>
 				</div>
 			 </div>

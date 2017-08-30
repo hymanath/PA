@@ -23,6 +23,26 @@ public class PRExpenditureService implements IPRExpenditureService {
 	private IPredExpenditureLocationDAO predExpenditureLocationDAO;
 	@Autowired
 	private CommonMethodsUtilService commonMethodsUtilService;
+	/*
+	 * Swadhin
+	 * @see com.itgrids.service.IPRExpenditureService#getTotalAmountForOverview(com.itgrids.dto.InputVO)
+	 */
+	public PrExpenditureVO getTotalAmountForOverview(InputVO inputVO){
+		try{
+			PrExpenditureVO expenditureVO = new PrExpenditureVO();
+			Object[] totalVal = predExpenditureLocationDAO.getTotalAmountForOverview(inputVO.getFilterType(),inputVO.getLocationIds());
+			if(null != totalVal){
+				expenditureVO.setGrossAmount(commonMethodsUtilService.getLongValueForObject(totalVal[0]).toString());
+				expenditureVO.setDeductions(commonMethodsUtilService.getLongValueForObject(totalVal[1]).toString());
+				expenditureVO.setNetAmount(commonMethodsUtilService.getLongValueForObject(totalVal[2]).toString());
+			}
+			return expenditureVO;
+		}catch(Exception e){
+			LOG.error("Exception occured at getTotalAmountForOverview() in  PRExpenditureService class ",e);
+		}
+		return null;
+	}
+	
 	
 	/*
 	 * @Author: Santosh 

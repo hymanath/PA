@@ -8,4 +8,5 @@ import com.itgrids.dto.PrExpenditureVO;
 public interface IPRExpenditureService {
 
 	public List<PrExpenditureVO> getLocationWisePrExpenditureDtls(InputVO inputVO);
+	public PrExpenditureVO getTotalAmountForOverview(InputVO inputVO);
 }

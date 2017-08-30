@@ -21,6 +21,42 @@ public class PredExpenditureLocationDAO extends GenericDaoHibernate<PredExpendit
 		 super(PredExpenditureLocation.class);
 	 }
 	 
+	 public Object[] getTotalAmountForOverview(String filterType,List<Long> locationIds){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select sum(model.predExpenditure.grossAmount), sum(model.predExpenditure.deductions),sum(model.predExpenditure.netAmount) "
+		 		+ "  from PredExpenditureLocation model ");
+		 sb.append(" left join model.locationAddress locationAddress "
+					+ "  left join locationAddress.district district "
+					+ "  left join locationAddress.state state "
+					+ "  left join locationAddress.constituency constituency "
+					+ "  left join locationAddress.parliament parliament "
+					+ "  left join locationAddress.tehsil  tehsil"
+					+ "  left join locationAddress.panchayat  panchayat"
+					+ "  left join locationAddress.predddo  predddo " 
+					+ "  where "
+					+ "  state.stateId = 1 and model.isDeleted='N' ");
+		 if (filterType != null && filterType.trim().length() > 0 && locationIds != null && locationIds.size() > 0) {
+				if (filterType.equalsIgnoreCase("district")) {
+					sb.append(" AND district.districtId in(:locationIds) ");
+				} else if (filterType.equalsIgnoreCase("parliament")) {
+					sb.append(" AND parliament.constituencyId in(:locationIds) ");
+				} else if (filterType.equalsIgnoreCase("constituency")) {
+					sb.append(" AND constituency.constituencyId in(:locationIds) ");
+				} else if (filterType.equalsIgnoreCase("mandal")) {
+					sb.append(" AND tehsil.tehsilId in(:locationIds) ");
+				} else if (filterType.equalsIgnoreCase("panchayat")) {
+					sb.append(" AND panchayat.panchayatId in(:locationIds) ");
+				} else if (filterType.equalsIgnoreCase("division")) {
+					sb.append(" AND predddo.predDdoId in(:locationIds) ");
+				}
+			}
+		 Query query = getSession().createQuery(sb.toString());
+		 if (filterType != null && filterType.trim().length() > 0 && locationIds != null && locationIds.size() > 0) {
+			 query.setParameterList("locationIds", locationIds);
+		 }
+		 return (Object[])query.uniqueResult();
+	 }
+	 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getLocationWisePrExpenditureDtls(String locationType,String filterType, List<Long> locationIds) {
 		StringBuilder sbs = new StringBuilder();
