@@ -1,10 +1,14 @@
 package com.itgrids.controllers.web;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.itgrids.service.IPRExpenditureService;
 
@@ -15,4 +19,9 @@ public class PRExpenditureController {
 	private static final Logger LOG = Logger.getLogger(PRExpenditureController.class);
 	@Autowired
 	private IPRExpenditureService prExpenditureService;
+	
+	@RequestMapping(value ="/prExpenditureDashboard", method = RequestMethod.GET)
+    public String getPRExpenditureDashboard(ModelMap model,HttpSession session) {
+		return "prExpenditureDashboard";
+    }
 }
