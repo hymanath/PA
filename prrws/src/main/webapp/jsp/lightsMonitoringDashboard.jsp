@@ -144,8 +144,8 @@
 					<div class="col-sm-3">
 					<!--<span style="color:green;display:none;font-size:16px;" id="webServiceMessageStatusId">Please wait data is being process from live server,Then page will refresh...</span>-->
                         <ul class="list-inline pull-right sub-menu">
-					        <li class="daterangeViewLiveCls liveDataCls commonViewCls" style="cursor:pointer;">LIVE</li>
-                            <li class="active daterangeViewLiveCls todayDataCls commonViewCls" style="cursor:pointer;">TODAY</li>
+					        <li class="daterangeViewLiveCls liveDataCls commonViewCls active" style="cursor:pointer;">LIVE</li>
+                            <!--<li class=" daterangeViewLiveCls todayDataCls commonViewCls" style="cursor:pointer;">TODAY</li>-->
                             <li id="singleDateRangePicker" class="daterangeViewCls commonViewCls" style="cursor:pointer;">HISTORICAL</li>
                         </ul>
 						
