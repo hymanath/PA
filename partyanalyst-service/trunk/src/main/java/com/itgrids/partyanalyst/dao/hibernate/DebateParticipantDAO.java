@@ -25,24 +25,24 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.candidate.lastname," +
 				" model.party.shortName,model.summary ,model.candidate.candidateId , model.party.partyId ");
-		if(stateId != null && stateId.longValue() > 0){
+		//if(stateId != null && stateId.longValue() > 0){
 		sb.append(" ,model3.address.state.stateId " );
-		}
+		//}
 		sb.append(" from DebateParticipant model " );
-		if(stateId != null && stateId.longValue() > 0){
+		//if(stateId != null && stateId.longValue() > 0){
 		      sb.append(" , DebateParticipantLocation model3 ");
-		    }
+		    //}
 		sb.append(" where" );
 		if(debateId != null && debateId.longValue()>0)
 		  sb.append(" model.debate.debateId = :debateId  ");
-		if(stateId != null && stateId.longValue() > 0){
+		//if(stateId != null && stateId.longValue() > 0){
 		      sb.append(" and  model.debateParticipantId = model3.debateParticipant.debateParticipantId  and model3.isDeleted = 'N' ");
-		    }
-		 if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 1L){
+		    //}
+		 /*if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 1L){
 		      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_AP_STATE_ID);
 		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
 		      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_TS_STATE_ID);
-		    }
+		    }*/
 		 Query query = getSession().createQuery(sb.toString());
 		if(debateId != null && debateId.longValue()>0)
 		 query.setParameter("debateId", debateId);

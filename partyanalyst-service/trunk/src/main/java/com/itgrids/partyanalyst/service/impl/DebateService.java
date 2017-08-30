@@ -628,7 +628,8 @@ public class DebateService implements IDebateService{
 						paticepentSummery.setLocation(parms[0] != null ? parms[0].toString() :"");//candidate
 						paticepentSummery.setName(parms[2] != null ? StringEscapeUtils.unescapeJava(parms[2].toString()) :"");//summery
 						paticepentSummery.setId(parms[3] != null ? (Long)parms[3] : 0l);//candidateId
-						paticepentSummery.setCount(parms[3] != null ? (Long)parms[3] : 0l);//partyId
+						paticepentSummery.setCount(parms[4] != null ? (Long)parms[4] : 0l);//partyId
+						paticepentSummery.setLocationId(parms[5] != null ? (Long)parms[5] :0l);//participant Location
 						debatePaticepentDetailsList.add(paticepentSummery);
 					}
 				}

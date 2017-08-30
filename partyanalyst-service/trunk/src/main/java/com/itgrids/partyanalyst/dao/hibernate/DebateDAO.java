@@ -27,7 +27,7 @@ public class DebateDAO  extends GenericDaoHibernate<Debate, Long> implements IDe
 		sb.append(" select model.debateId,model.startTime," +
 				" model.endTime," +
 				" model.channel.channelId,model.channel.channelName , " +
-				" model.summary,model.youtubeUrl, model.address.state.stateId from Debate model " );
+				" model.summary,model.youtubeUrl,model.address.state.stateId from Debate model " );
 		/*if(stateId != null && stateId.longValue() > 0){
 		      sb.append(" , Debate model3 ");
 		    }*/
