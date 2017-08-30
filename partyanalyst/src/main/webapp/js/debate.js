@@ -1302,7 +1302,7 @@ function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidate
 	   jsonpCallback: null
 	}); 
    var stateId=0;
-		 $(".radioStateCls").each(function(){
+		 $(".radioStateCls1").each(function(){
 				if($(this).prop('checked')==true){
 					     stateId = $(this).val();
 						 //alert(12000);
