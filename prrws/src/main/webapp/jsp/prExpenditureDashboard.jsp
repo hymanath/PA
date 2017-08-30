@@ -133,7 +133,7 @@
 			 </div>
 		  </div>
 	   </div>
-	   <div class="block-border m_top20">
+	   <div class="block-border m_top20" style="display:none;">
 		  <div class="row">
 			 <div class="col-sm-12 ">
 				<h4>GRAMAPANCHAYAT TRANSACTIONS</h4>
