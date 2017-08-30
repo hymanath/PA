@@ -342,10 +342,10 @@ function onloadCall() {
 		 str+='<thead>';
 		 str+='<tr>';
 		 if(divId == 'District'){
-			 str+='<th> DISTRICTS </th>';
+			 str+='<th> DISTRICT</th>';
 		 }
 		 if(divId == 'Division'){
-			 str+='<th> Divisions </th>';
+			 str+='<th>DIVISION</th>';
 		 } 
 	  
 	    str+='<th><img src="Assests/img/Gross_Amount_icon.png"><br/>Grossamount</th>';
