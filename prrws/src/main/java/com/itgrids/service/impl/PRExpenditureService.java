@@ -9,5 +9,5 @@ import com.itgrids.service.integration.NREGSTCSService;
 @Service
 @Transactional
 public class PRExpenditureService implements IPRExpenditureService {
-	private static final Logger LOG = Logger.getLogger(NREGSTCSService.class);
+	private static final Logger LOG = Logger.getLogger(PRExpenditureService.class);
 }
