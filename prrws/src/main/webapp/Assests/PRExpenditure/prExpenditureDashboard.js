@@ -1,3 +1,4 @@
+var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 Highcharts.setOptions({
                      colors: ['#3BCCBF', '#3BCCBF', '#3BCCBF', '#3BCCBF', '#3BCCBF']
          
@@ -70,204 +71,7 @@ Highcharts.setOptions({
 					 }]
 				});
 		  var dataArr = '';
-	projectDataConstruction()
-  function projectDataConstruction(){
-	  var collapse='';
 	
-	  dataArr = ['District','Division','Mandal'];
-	  
-	 
-		collapse+='<div class="row">';
-			collapse+='<div class="col-sm-12">';
-	  collapse+='<div class="panel-group" id="accordionOverview" role="tablist" aria-multiselectable="true">';
-	  for(var i in dataArr)
-				{
-				
-				collapse+='<div class="panel panel-default panel-black">';
-			    collapse+='<div class="panel-heading" role="tab" id="headingConsolidated'+dataArr[i]+'">';  
-				if(i == 0)
-				{
-					collapse+='<a role="button" class="panelCollapseIcon" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordionOverview" href="#collapseConsolidated'+dataArr[i]+'" aria-expanded="true" aria-controls="collapseConsolidated'+dataArr[i]+'">';
-				}else{
-					collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordionOverview" href="#collapseConsolidated'+dataArr[i]+'" aria-expanded="true" aria-controls="collapseConsolidated'+dataArr[i]+'">';
-				}
-				
-				collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level - overview</h4>';
-				collapse+='</a>';
-				collapse+='</div>';
-				if(i == 0)
-				{
-					collapse+='<div id="collapseConsolidated'+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingConsolidated'+dataArr[i]+'">';
-				}else{
-					collapse+='<div id="collapseConsolidated'+dataArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingConsolidated'+dataArr[i]+'">';
-				}
-				
-				collapse+='<div class="panel-body">';
-				collapse+='<div class="row">';
-				collapse+='<div class="col-sm-12">';
-				collapse+='<div class="col-sm-3">';
-				collapse+='<ul class="list-inline tableMenu" attr_block_name="'+dataArr[i]+'">';
-				collapse+='<li class="active" id="districtId'
-				+dataArr[i]+'" attr_location_type="district">District</li>';
-				collapse+='<li id="parlimentId'+dataArr[i]+'" attr_location_type="parliament">Parliment</li>';
-                collapse+='</ul>';
-				collapse+='</div>';
-				if(i == 1){
-				collapse+='<div class="col-sm-3">';
-				collapse+='<select class="form-control chosen-select" id="consitituencyLevelDistricts">';
-				collapse+='</select>';
-				collapse+='</div>';
-				collapse+='<div class="col-sm-3">';
-				collapse+='<select class="form-control chosen-select" id="consitituencyLevelRevenueDivision">';
-				collapse+='</select>';
-				collapse+='</div>';
-				}
-				if(i == 2){
-				collapse+='<div class="col-sm-3">';
-				collapse+='<select class="form-control chosen-select" id="manadalLevelDistricts">';
-				collapse+='</select>';
-				collapse+='</div>';
-				collapse+='<div class="col-sm-3">';
-				collapse+='<select class="form-control chosen-select" id="mandalLevelRevenueDivision">';
-				collapse+='</select>';
-				collapse+='</div>';
-				collapse+='<div class="col-sm-3">';
-				collapse+='<select class="form-control chosen-select" id="mandalLevelSubDivision">';
-				collapse+='</select>';
-				collapse+='</div>';
-				}
-				collapse+='</div>';
-				collapse+='</div>';
-				collapse+='<div class="row">';
-				collapse+='<div class="col-sm-12">'
-				collapse+='<div id="collapseConsolidatedView'+dataArr[i]+'"></div>';
-				collapse+='</div>';
-				collapse+='</div>';
-				collapse+='</div>';
-				collapse+='</div>';
-				}
-				collapse+='</div>';
-				collapse+='</div>';
-				collapse+='</div>';
-				
-				$("#projectDataOverview").html(collapse);
-				for(var i in dataArr){
-				 tableView(dataArr[i]);	
-                   				 
-     }
-  }
- //$('.chosen-select').chosen();
-  function tableView(divId)
-  {
-	  var str='';
-	  var location_type='';
-	  	$('.tableMenu li').each(function(){
-					if($(this).hasClass('active')){
-				  location_type = $(this).attr("attr_location_type");
-				
-			    }
-				});
-		
-	 str+='<table class="table table-condensed table-striped" id="datatable'+divId+'" style="width:100%;">';
-	 str+='<thead>';
-     str+='<tr>';
-	 if(divId == 'District'){
-		 if(location_type == 'district'){
-		 str+='<th> DISTRICTS </th>';
-		 str+='<th> MANDALS </th>';
-		 }else{
-			str+='<th> Parliments </th>';
-		    str+='<th> MANDALS </th>';
-		}
-	 }
-	 if(divId == 'Mandal'){
-		  if(location_type == 'district'){
-		 str+='<th> MANDAL </th>';
-		 str+='<th> MANDALID </th>';
-	 }else{
-		 str+='<th> Parliment </th>';
-		 str+='<th> MANDALID </th>';
-	  }
-	 }
-	 if(divId == 'Division'){
-		  if(location_type == 'district'){
-		 str+='<th> Divisions </th>';
-		  str+='<th> DDOCode </th>';
-		  str+='<th> TDDOCode </th>';
-	 }else{
-		 str+='<th> Parliment </th>';
-		  str+='<th> DDOCode </th>';
-		  str+='<th> TDDOCode </th>';
-	  }   
-	 } 
-	   str+="<th> GP's </th>";
-	   str+='<th><img src="Assests/img/Gross_Amount_icon.png"><br/>Grossamount</th>';
-		str+='<th><img src="Assests/img/Deductions_icon.png"><br/>Deductions</th>';
-		str+='<th><img src="Assests/img/Netamount_icon.png"><br/>Netamount</th>';
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-		if(divId == "District"){
-		   str+='<tr>';
-			str+='<td>Srikakulam</td>';
-			str+='<td>11</td>';
-			str+='<td>90</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='</tr>';
-			str+='<tr>';
-			str+='<td>Srikakulam</td>';
-			str+='<td>11</td>';
-			str+='<td>90</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='</tr>';
-			//str+='</tbody>';
-		}else if(divId == "Division"){
-			 str+='<tr>';
-			str+='<td>EE, PRI Division, Chittoor</td>';
-			str+='<td>03PRR010</td>';
-			str+='<td>11012202074</td>';
-			str+='<td>90</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='</tr>';
-			 str+='<tr>';
-			str+='<td>EE, PRI Division, Chittoor</td>';
-			str+='<td>03PRR010</td>';
-			str+='<td>11012202074</td>';
-			str+='<td>90</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='</tr>';
-			
-		}else{
-			 str+='<tr>';
-			str+='<td class="gpsClickView" style="cursor:pointer;text-decoration:underline" >Ananthapur</td>';
-			str+='<td>200</td>';
-			str+='<td>18</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='</tr>';
-			str+='<tr>';
-			str+='<td>Ananthapur</td>';
-			str+='<td>200</td>';
-			str+='<td>18</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='<td><i class="fa fa-inr"></i> 645612933</td>';
-			str+='</tr>';
-		}
-		str+='</tbody>';
-	  $("#collapseConsolidatedView"+divId).html(str);
-	  
-  }
-	  
 	  
   $(document).on("click",".tableMenu li",function(){
 	  $(this).closest("ul").find("li").removeClass("active")
@@ -408,13 +212,110 @@ Highcharts.setOptions({
 		   
 		   
 
-		   getLocationWisePrExpenditureDtls();
+		   
+/* Location wise scripts start */		
+onloadCall();
+function onloadCall() {
+	 projectDataConstruction();
+}   
 
-		   function getLocationWisePrExpenditureDtls(){
+  function projectDataConstruction(){
+	  dataArr = ['District','Division'];
+	  
+	    var collapse='';
+		collapse+='<div class="row">';
+			collapse+='<div class="col-sm-12">';
+	  collapse+='<div class="panel-group" id="accordionOverview" role="tablist" aria-multiselectable="true">';
+	  for(var i in dataArr)
+				{
+				
+				collapse+='<div class="panel panel-default panel-black">';
+			    collapse+='<div class="panel-heading" role="tab" id="headingConsolidated'+dataArr[i]+'">';  
+				if(i == 0)
+				{
+					collapse+='<a role="button" class="panelCollapseIcon" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordionOverview" href="#collapseConsolidated'+dataArr[i]+'" aria-expanded="true" aria-controls="collapseConsolidated'+dataArr[i]+'">';
+				}else{
+					collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordionOverview" href="#collapseConsolidated'+dataArr[i]+'" aria-expanded="true" aria-controls="collapseConsolidated'+dataArr[i]+'">';
+				}
+				
+				collapse+='<h4 class="panel-title text-capital">'+dataArr[i]+' level - overview</h4>';
+				collapse+='</a>';
+				collapse+='</div>';
+				if(i == 0)
+				{
+					collapse+='<div id="collapseConsolidated'+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingConsolidated'+dataArr[i]+'">';
+				}else{
+					collapse+='<div id="collapseConsolidated'+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingConsolidated'+dataArr[i]+'">';
+				}
+				
+				collapse+='<div class="panel-body">';
+				/* collapse+='<div class="row">';
+				collapse+='<div class="col-sm-12">';
+				collapse+='<div class="col-sm-3">';
+				collapse+='<ul class="list-inline tableMenu" attr_block_name="'+dataArr[i]+'">';
+				collapse+='<li class="active" id="districtId'
+				+dataArr[i]+'" attr_location_type="district">District</li>';
+				collapse+='<li id="parlimentId'+dataArr[i]+'" attr_location_type="parliament">Parliment</li>';
+                collapse+='</ul>';
+				collapse+='</div>';
+				if(i == 1){
+				collapse+='<div class="col-sm-3">';
+				collapse+='<select class="form-control chosen-select" id="consitituencyLevelDistricts">';
+				collapse+='</select>';
+				collapse+='</div>';
+				collapse+='<div class="col-sm-3">';
+				collapse+='<select class="form-control chosen-select" id="consitituencyLevelRevenueDivision">';
+				collapse+='</select>';
+				collapse+='</div>';
+				}
+				if(i == 2){
+				collapse+='<div class="col-sm-3">';
+				collapse+='<select class="form-control chosen-select" id="manadalLevelDistricts">';
+				collapse+='</select>';
+				collapse+='</div>';
+				collapse+='<div class="col-sm-3">';
+				collapse+='<select class="form-control chosen-select" id="mandalLevelRevenueDivision">';
+				collapse+='</select>';
+				collapse+='</div>';
+				collapse+='<div class="col-sm-3">';
+				collapse+='<select class="form-control chosen-select" id="mandalLevelSubDivision">';
+				collapse+='</select>';
+				collapse+='</div>';
+				}
+				collapse+='</div>';
+				collapse+='</div>'; */
+				collapse+='<div class="row">';
+				collapse+='<div class="col-sm-12">'
+				collapse+='<div id="collapseConsolidatedView'+dataArr[i]+'"></div>';
+				collapse+='</div>';
+				collapse+='</div>';
+				collapse+='</div>';
+				collapse+='</div>';
+				}
+				collapse+='</div>';
+				collapse+='</div>';
+				collapse+='</div>';
+				
+				$("#projectDataOverview").html(collapse);
+				for(var i in dataArr){
+					var locationType = dataArr[i];
+				    getLocationWisePrExpenditureDtls(locationType,"",0);
+                 }
+  }
+  
+    function getLocationWisePrExpenditureDtls(locationType,filterType,locationId){
+		  $("#collapseConsolidatedView"+locationType).html(spinner);
+		    var locationIds = [];
+		    if (locationId != null && locationId > 0 ){
+				locationIds.push(locationId);
+			}
+			if (locationType == null){
+				locationType =""
+			}
 		   	var json = {
-		   			"locationType":"district",
-		   			"filterType"  :"" ,
-		   			"locationIds"  :[],
+		   			"locationType":locationType,
+		   			"filterType"  :filterType ,
+		   			"locationIds"  :locationIds
 		   		}
 		   	$.ajax({                
 		   		type:'POST',    
@@ -426,6 +327,43 @@ Highcharts.setOptions({
 		   			xhr.setRequestHeader("Content-Type", "application/json");
 		   		}
 		   	}).done(function(result){
-		   		 console.log(result);
+		   	   if (result != null && result.length > 0) {
+				    buildLocationWiseResult(result,locationType);
+			   } else {
+				   $("#collapseConsolidatedView"+locationType).html("NO DATA AVAILABLE");
+			   }
 		   	});
-		   }
+	}
+ //$('.chosen-select').chosen();
+  function buildLocationWiseResult(result,divId)
+  {
+		var str='';
+		 str+='<table class="table table-condensed table-striped" id="datatable'+divId+'" style="width:100%;">';
+		 str+='<thead>';
+		 str+='<tr>';
+		 if(divId == 'District'){
+			 str+='<th> DISTRICTS </th>';
+		 }
+		 if(divId == 'Division'){
+			 str+='<th> Divisions </th>';
+		 } 
+	  
+	    str+='<th><img src="Assests/img/Gross_Amount_icon.png"><br/>Grossamount</th>';
+		str+='<th><img src="Assests/img/Deductions_icon.png"><br/>Deductions</th>';
+		str+='<th><img src="Assests/img/Netamount_icon.png"><br/>Netamount</th>';
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		 for (var i in result ) {
+			str+='<tr>';
+			str+='<td>'+result[i].locationName+'</td>';
+			str+='<td><i class="fa fa-inr"></i>'+result[i].grossAmount+'</td>';
+			str+='<td><i class="fa fa-inr"></i>'+result[i].deductions+'</td>';
+			str+='<td><i class="fa fa-inr"></i>'+result[i].netAmount+'</td>';
+			str+='</tr>';
+		 }
+		str+='</tbody>';
+	  $("#collapseConsolidatedView"+divId).html(str);
+	  
+  }
+	  
