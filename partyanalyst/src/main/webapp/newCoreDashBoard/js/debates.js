@@ -1125,8 +1125,8 @@ function getCoreDebateBasicDetailsOfParty(partyId,type,stateId){
 $(document).on("click",".debateDetailsCls",function(){
 		var debateId = $(this).attr("attr_debateId");
         var  stateId = $(this).attr("attr_state_id");
-		//window.open("debateReportAction.action?debateId="+debateId+"&stateId="+stateId+"");
-		window.open('debateReportAction.action?debateId='+debateId+'','_blank');		 
+		window.open("debateReportAction.action?debateId="+debateId+"&stateId="+stateId+"");
+		//window.open('debateReportAction.action?debateId='+debateId+'','_blank');		 
 	});
 	
 	$(document).on("click",".overAllCandidateCls",function(){
