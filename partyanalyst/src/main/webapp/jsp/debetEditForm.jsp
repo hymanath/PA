@@ -245,21 +245,13 @@ var observerArray = new Array();
 
 </script>
 <script>
-$(".radioDebateStateCls").each(function(){
-	//alert(234567);
-	if($(this).val() == stateId)
-	{
-		//alert(890);
-		$(this).prop("checked",true);
-	}
-	
-});
+
 var candCunt = 1;
 function getSelectedDebate()
 {
 	var jsObj = {
 				debateId :debateId,
-				stateId : stateId,
+				stateId : 0,
 				task : "getDebateDetails"	
 		};
 		
@@ -291,13 +283,13 @@ function prepopulateDebateForm(result)
 					str += '<input type="radio" name="stateSelection9"  checked value="0"   class="radioDebateStateCls"/>All';
 					str += '</label>';*/
 					str += '<label class="radio inline">';
-					str += '<input type="radio" name="stateSelection9" value="1"  class="radioDebateStateCls"/>AP';
+					str += '<input type="radio" name="stateSelection9" value="1"  id="radioButtonId1" class="radioDebateStateCls"/>AP';
 					str += '</label>';
 					str += '<label class="radio inline">';
-					str += '<input type="radio" name="stateSelection9" value="36"  class="radioDebateStateCls"/>TS';
+					str += '<input type="radio" name="stateSelection9" value="36" id="radioButtonId2" class="radioDebateStateCls"/>TS';
 					str += '</label>';
 					str += '<label class="radio inline">';
-					str += '<input type="radio" name="stateSelection9" value="2"  class="radioDebateStateCls"/>Others';
+					str += '<input type="radio" name="stateSelection9" value="2" id="radioButtonId3" class="radioDebateStateCls"/>Others';
 					str += '</label>';
 				str += '</div>';
 	str += '<div class="row-fluid" >';
@@ -649,6 +641,7 @@ function prepopulateDebateForm(result)
 	{
 		$('#party'+pCount+'').val(result.participantsList[p].partyId);
 		$('#candidate'+pCount+'').val(result.participantsList[p].id);
+	    $('#stateSelection'+pCount+'').val(result.candidateSummery[p].locationId);	
 		$('#participantRoles'+pCount+'').multiselect({	
 			multiple: true,
 			selectedList: 1,
@@ -1044,7 +1037,7 @@ function validateFieldsForEdit(){
 			$("#participantErrSpanId").html('Please add minimum one Participant.');
 				flag = false;			
 		}
-		//srujana validation
+		//srujana validations
      var count=1;
 	 var debateCandidateLocationId =0;
 	 var sateId=0;
@@ -1067,13 +1060,21 @@ function validateFieldsForEdit(){
 			});		
 	return flag;
 
-	return flag;
+	//return flag;
 
 }
 $(document).on("keypress",".participntRoles",function(event){
          return isNumberAndDecimal(event, this);
 });
-
+/* $(document).ready(function() {
+$(".radioDebateStateCls").each(function(){
+	alert(456);
+	if($(this).val() == stateId){
+		alert(10);
+      $(this).checked = true;  
+	}
+  });
+}); */
 
 </script>
 </body>
