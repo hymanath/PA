@@ -22,7 +22,7 @@ public class PredExpenditureLocation implements Serializable {
 	private Long predExpenditureLocationId;
 	private Long predExpenditureId;
 	private Long locationAddressId;
-	private Long isDeleted;
+	private String isDeleted;
 	
 	private LocationAddress locationAddress;
 	private PredExpenditure predExpenditure;
@@ -51,10 +51,10 @@ public class PredExpenditureLocation implements Serializable {
 		this.locationAddressId = locationAddressId;
 	}
 	@Column(name = "is_deleted")
-	public Long getIsDeleted() {
+	public String getIsDeleted() {
 		return isDeleted;
 	}
-	public void setIsDeleted(Long isDeleted) {
+	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
