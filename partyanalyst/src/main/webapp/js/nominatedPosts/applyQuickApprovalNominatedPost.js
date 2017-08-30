@@ -11,7 +11,7 @@ $(document).on('click','#searchbtn',function(){
 	$("#searchResultsBlock").show();
 	$("#errMessageId").html('');
 	var searchValue = $("#searchBy").val() ;
-		if(searchValue.length == 0 || searchValue == null)
+	if(searchValue.length == 0 || searchValue == null || searchValue == " ")
 			{
 				$('#notCadreErrMsg').html('Please Enter Value.');
 				return;
@@ -128,17 +128,15 @@ var globalMembersCount = 0;
 var globalMemAddedCunt = 0;
 $(document).on('click','.selectMember',function(){
 	$("#errMessageId").html('');
-	 globalMembersCount = 0;
 	var positionCount = $(this).attr("attr_postion_count");
 	
-	globalMembersCount=0;
 	if(positionCount != globalMembersCount ){
 		var departmentId=$("#depmtsId").val();
 		var boardId = $("#deptBoardId").val();
 		var positionId = $("#deptBoardPostnId").val();
 		var selPosition = $(this).attr("attr_position_type");
 		globalMembersCount++;
-		globalMemAddedCunt = globalMemAddedCunt+globalMembersCount;
+		globalMemAddedCunt = globalMemAddedCunt+1;
 		$("#addmember"+selPosition.replace(/\s+/g, '')).closest(".panel-group").parent().show();
 			if($(this).is(':checked')){
 				var appendBlock = $(this).closest("li").html();
@@ -153,6 +151,7 @@ $(document).on('click','.selectMember',function(){
 						buildPanelBlock(selPosition,appendBlock,cadreId);
 						$("#addmember"+selPosition.replace(/\s+/g, '')).find("li div.panel-footer").remove();
 					}else{
+						
 						if(globalPositionsArr.indexOf(selPosition) > -1){
 							var count = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_member_count");
 							var posiCnt = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_posi_count");
@@ -308,9 +307,7 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 	$("#buildPositionWiseBlock"+currentDiv).append(collapse1);
 	
 	}
-	
-		
-	globalPositionsArr.push(selPosition);
+	globalPositionsArr.push(selPosition.replace(/\s+/g, ''));
 }
 /* $(document).on('click','[attr_remove_member="remove-member"] li',function(){
 	$(this).toggleClass("active");
@@ -319,29 +316,33 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 $(document).on('click','.removeMember-icon',function(){
 	$("#errMessageId").html('');
 	var ulLength = $(this).closest("ul").attr("id"); 
+	var selPosition = $(this).attr("attr_posi_text");
 	ulLength = $("#"+ulLength+" li").length
 	if(ulLength == 1)
 	{
 		globalPosiDivs--;
 		$(this).closest(".panel-group").parent().hide();
+		for(var i in globalPositionsArr){
+			if(globalPositionsArr[i] == selPosition)
+			globalPositionsArr.splice(i, 1);
+		}
 	}
-	var selPosition = $(this).attr("attr_posi_text");
+	
 	var posiMemCnt = $("#posiMemCnt"+selPosition.replace(/\s+/g, '')).text();
 	posiMemCnt--;
 	$("#posiMemCnt"+selPosition.replace(/\s+/g, '')).text(posiMemCnt);
 	$(this).closest("li").remove();
 	$(".selectMember").prop("checked",false);
 	var cadreId = $(this).attr("attr_cadre_id");
-	globalMembersCount--;
-	globalMemAddedCunt--;
+	if(globalMembersCount >= 1)
+		globalMembersCount--;
+	if(globalMemAddedCunt >= 1)
+		globalMemAddedCunt--;
 	for(var i in globalCadreIds){
 		if(globalCadreIds[i] == cadreId)
 		globalCadreIds.splice(i, 1);
 	}
-	for(var i in globalPositionsArr){
-		if(globalPositionsArr[i] == selPosition)
-		globalPositionsArr.splice(i, 1);
-	}
+	
 	updateAddedPosiAndAddedMemCnt();
 });
 
@@ -1650,7 +1651,7 @@ function getDetailsBySrch()
 		var searchType;
 		var searchValue = "";
 		var districtId=0;
-		var constituencyId=0;
+		var constituencyId="";
 		var mandalId = 0;
 		var panchayatId=0;
 		var levelId=0;
@@ -1955,4 +1956,264 @@ function getDetailsBySrch()
 
 $(document).on("change","#deptBoardPostnId",function(){
 	globalMembersCount = 0;
-});  
+}); 
+function getLevelByDesignation()
+ {
+  
+    $("#alertlevelId").find('option').remove();
+     var stateGrpIds = ["7","12","16"];
+   var distGrpIds = ["6","14","15","23","19","20"];
+   var mandalGrpIds =["3","25"];
+   var constiGrpIds =["2","4","5","8","10","1","9","11","13","17","18","22","21"];
+   var designationId =$("#advanceDesignationId").val();
+  
+   var str ='';
+    if(jQuery.inArray(designationId, stateGrpIds ) > -1)
+   {
+     str+='<option value="2">State</option>';
+    
+     $("#alertlevelId").append(str);
+   }
+  else if(jQuery.inArray(designationId, distGrpIds ) > -1)
+   {
+     str+='<option value="2">State</option>';
+     str+='<option value="3">District</option>';
+     $("#alertlevelId").append(str);
+   }
+   else if(jQuery.inArray(designationId, distGrpIds ) > -1)
+   {
+     str+='<option value="2">State</option>';
+     str+='<option value="3">District</option>';
+      str+='<option value="4">Constituency</option>';
+     $("#alertlevelId").append(str);
+   }
+   else if(jQuery.inArray(designationId, mandalGrpIds ) > -1)
+   {
+     str+='<option value="2">State</option>';
+     str+='<option value="3">District</option>';
+     str+='<option value="5">Mandal/Muncipality</option>';
+     $("#alertlevelId").append(str);
+   }
+   
+  else
+   {
+      str+='<option value="2">State</option>';
+      str+='<option value="3">District</option>';
+       str+='<option value="4">Constituency</option>';
+      //str+='<option value="5">Mandal/Muncipality</option>';
+      //str+='<option value="6">Village/Ward</option>';
+      $("#alertlevelId").append(str);
+   }
+     $("#alertlevelId").dropkick();
+       var select = new Dropkick("#alertlevelId");
+       select.refresh();
+           disableByLevel('');
+     } 
+	 
+	 $(document).on("change","#filterStateId",function(){
+	var stateId = $(this).val();
+	getFilterDistrictsForStates(stateId);
+});
+
+function getFilterDistrictsForStates(state){
+   var jsObj=
+   {				
+		stateId:state,				
+		task:"getDistrictsForState"		
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getNewDistrictsOfStateSplittedAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+		$("#filterDistrictId  option").remove();
+		$("#filterDistrictId").append('<option value="0">Select District</option>');			
+		if(result !=null && result.length>0){
+			for(var i in result){
+				if(result[i].id != 517){
+					$("#filterDistrictId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
+			}
+		}
+		$("#filterDistrictId").dropkick();
+		 var select = new Dropkick("#filterDistrictId");
+		 select.refresh();
+	});
+}
+
+$(document).on("change","#filterDistrictId",function(){
+	var districtId = $(this).val();
+	var stateId = $("#filterStateId").val();
+	getConstituenciesForDistrictsOfAddChnge(districtId,stateId);
+});
+
+function getConstituenciesForDistrictsOfAddChnge(district,stateId){
+	var jsObj={				
+		districtId:district
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getConstituenciesListForDistrictAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	 $("#filterManTowDivId  option").remove();
+	 $("#filterConstituencyId  option").remove();
+	 $("#filterManTowDivId").append('<option value="0">Select Mandal/Muncipality/Corporation</option>');
+	 $("#filterConstituencyId").append('<option value="0">Select Constituency</option>');
+	 if(result !=null && result.length>0){
+		 for(var i in result){			  
+			$("#filterConstituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		   }
+		}	
+		$("#filterConstituencyId").dropkick();
+		 var select = new Dropkick("#filterConstituencyId");
+		 select.refresh();
+	});
+}
+$(document).on("change","#filterConstituencyId",function(){
+	var constituencyId=$(this).val();
+	var stateId = $("#filterStateId").val();
+	getMandalVillageDetails(constituencyId,stateId);
+});
+function getMandalVillageDetails(constituencyId,stateId){
+   var jsObj={				
+		constituencyId : constituencyId
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getMandalsForConstituencyAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+		$("#filterManTowDivId  option").remove();
+		$("#filterManTowDivId").append("<option value='0'>Select Mandal/Muncipality</option>");			  
+		for(var i in result){
+			$("#filterManTowDivId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		}
+		$("#filterManTowDivId").dropkick();
+		 var select = new Dropkick("#filterManTowDivId");
+		 select.refresh();
+	});
+}
+getAllAgeRangesByOrder("filterAgeId");
+getAllCasteDetailsForVoters("filterCasteId");
+getAllCasteCategoryDetails("filterCasteGroupId");
+getEducationalQualifications("filterEducationId");
+
+function getAllAgeRangesByOrder(divId){
+   var jsObj={				
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getAllAgeRangesByOrderAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(divId == "filterAgeId"){
+		   $("#filterAgeId  option").remove();
+			$("#filterAgeId").append("<option value='0'>Select Age Range</option>");			  
+			for(var i in result){
+				$("#filterAgeId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#filterAgeId").dropkick();
+			 var select = new Dropkick("#filterAgeId");
+			 select.refresh();
+	   }
+		else{
+			$("#advancSearchSelectId").append("<option value='0'>Select Age Range</option>");			  
+			for(var i in result){
+				$("#advancSearchSelectId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#advancSearchSelectId").trigger('chosen:updated');
+		}
+	});
+}
+
+function getAllCasteDetailsForVoters(divId){
+   var jsObj={				
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getAllCasteDetailsForVotersAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(divId == "filterCasteId"){
+		   $("#filterCasteId  option").remove();
+			$("#filterCasteId").append("<option value='0'>Select Caste</option>");			  
+			for(var i in result){
+				$("#filterCasteId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#filterCasteId").dropkick();
+			 var select = new Dropkick("#filterCasteId");
+			 select.refresh();
+	   }
+		else{
+			$("#advancSearchSelectId").append("<option value='0'>Select Caste</option>");			  
+			for(var i in result){
+				$("#advancSearchSelectId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#advancSearchSelectId").trigger('chosen:updated');
+		}
+	});
+}
+
+function getAllCasteCategoryDetails(divId){
+   var jsObj={				
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getAllCasteCategoryDetailsAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(divId == "filterCasteGroupId"){
+		   $("#filterCasteGroupId  option").remove();
+			$("#filterCasteGroupId").append("<option value='0'>Select Caste Group</option>");			  
+			for(var i in result){
+				$("#filterCasteGroupId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#filterCasteGroupId").dropkick();
+			 var select = new Dropkick("#filterCasteGroupId");
+			 select.refresh();
+	   }
+		else{
+			$("#advancSearchSelectId").append("<option value='0'>Select Caste Group</option>");			  
+			for(var i in result){
+				$("#advancSearchSelectId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#advancSearchSelectId").trigger('chosen:updated');
+		}
+	});
+}
+
+function getEducationalQualifications(divId){
+   var jsObj={				
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getEducationalQualificationsAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(divId == "filterEducationId"){
+		   $("#filterEducationId  option").remove();
+			$("#filterEducationId").append("<option value='0'>Select Education</option>");			  
+			for(var i in result){
+				$("#filterEducationId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#filterEducationId").dropkick();
+			 var select = new Dropkick("#filterEducationId");
+			 select.refresh();
+	   }
+		else{
+			$("#advancSearchSelectId").append("<option value='0'>Select Education</option>");			  
+			for(var i in result){
+				$("#advancSearchSelectId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#advancSearchSelectId").trigger('chosen:updated');
+		}
+	});
+}
