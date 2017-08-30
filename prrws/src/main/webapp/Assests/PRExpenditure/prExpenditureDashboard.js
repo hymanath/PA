@@ -216,9 +216,34 @@ Highcharts.setOptions({
 /* Location wise scripts start */		
 onloadCall();
 function onloadCall() {
+	 getTotalAmountForOverview();
 	 projectDataConstruction();
 }   
-
+function getTotalAmountForOverview(){
+	var filterType = '';
+	var locationIdArr = [];
+	var json = {
+		filterType : filterType,
+		locationIds : locationIdArr
+	}
+	$.ajax({
+	  url : "getTotalAmountForOverview",           
+	  data : JSON.stringify(json),    
+	  type : "POST",  
+	  dataTypa : 'json',   
+	  beforeSend: function(xhr) {
+	  xhr.setRequestHeader("Accept", "application/json");
+	  xhr.setRequestHeader("Content-Type", "application/json");
+	  },
+	  success : function(ajaxresp){  
+		 if(ajaxresp != null){
+			 $("#grossId").html(ajaxresp.grossAmount);
+			 $("#deductionId").html(ajaxresp.deductions);
+			 $("#netId").html(ajaxresp.netAmount);
+		 }
+	  }
+	});
+}
   function projectDataConstruction(){
 	  dataArr = ['District','Division'];
 	  
