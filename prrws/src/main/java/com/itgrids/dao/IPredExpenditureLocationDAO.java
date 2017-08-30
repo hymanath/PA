@@ -9,4 +9,5 @@ import com.itgrids.model.PredExpenditureLocation;
 public interface IPredExpenditureLocationDAO extends GenericDao<PredExpenditureLocation, Long> {
 
 	public List<Object[]> getLocationWisePrExpenditureDtls(String locationType,String filterType, List<Long> locationIds);
+	public Object[] getTotalAmountForOverview(String filterType,List<Long> locationIds);
 }

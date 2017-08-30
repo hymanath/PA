@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +32,11 @@ public class PRExpenditureController {
     public String getPRExpenditureDashboard(ModelMap model,HttpSession session) {
 		return "prExpenditureDashboard";
     }
+	@PostMapping("/getTotalAmountForOverview")
+	public @ResponseBody PrExpenditureVO getTotalAmountForOverview(@RequestBody InputVO inputVO){
+		PrExpenditureVO prExpenditureVO = prExpenditureService.getTotalAmountForOverview(inputVO);
+		return prExpenditureVO;
+	}
 	@RequestMapping(value ="/getLocationWisePrExpenditureDtls",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<PrExpenditureVO> getLocationWisePrExpenditureDls(@RequestBody InputVO inputVO) {
 		List<PrExpenditureVO> resultList = null;
