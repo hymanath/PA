@@ -122,6 +122,8 @@ public class NregsDataVO implements Serializable{
 	private String mulbTarget;
 	private String mulbCompleted;
 	private String mulbInprogress;
+	private String opgkInProgress;
+	private String opgkTarget;
 	
 	
 	
@@ -736,5 +738,17 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setMulbInprogress(String mulbInprogress) {
 		this.mulbInprogress = mulbInprogress;
+	}
+	public String getOpgkInProgress() {
+		return opgkInProgress;
+	}
+	public void setOpgkInProgress(String opgkInProgress) {
+		this.opgkInProgress = opgkInProgress;
+	}
+	public String getOpgkTarget() {
+		return opgkTarget;
+	}
+	public void setOpgkTarget(String opgkTarget) {
+		this.opgkTarget = opgkTarget;
 	}
 }

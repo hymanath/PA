@@ -2004,11 +2004,27 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td class="text-capital">'+result.distList[i].mandal+'</td>';
 											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
 										}
-										str+='<td>'+result.distList[i].target+'</td>';
+										if(globalDivName == 'Mulbery')
+											str+='<td>'+result.distList[i].mulbTarget+'</td>';
+										else if(globalDivName == 'OPGK-Perinnials' || globalDivName == 'OPGK-Annuals')
+											str+='<td>'+result.distList[i].opgkTarget+'</td>';
+										else
+											str+='<td>'+result.distList[i].target+'</td>';
+										//str+='<td>'+result.distList[i].target+'</td>';
 										str+='<td>'+result.distList[i].grounded+'</td>';
 										str+='<td>'+result.distList[i].notGrounded+'</td>';
-										str+='<td>'+result.distList[i].inProgress+'</td>';
-										str+='<td>'+result.distList[i].completed+'</td>';
+										if(globalDivName == 'Mulbery')
+											str+='<td>'+result.distList[i].mulbInprogress+'</td>';
+										else if(globalDivName == 'OPGK-Perinnials' || globalDivName == 'OPGK-Annuals')
+											str+='<td>'+result.distList[i].opgkInProgress+'</td>';
+										else
+											str+='<td>'+result.distList[i].inProgress+'</td>';
+										//str+='<td>'+result.distList[i].inProgress+'</td>';
+										if(globalDivName == 'Mulbery')
+											str+='<td>'+result.distList[i].mulbCompleted+'</td>';
+										else
+											str+='<td>'+result.distList[i].completed+'</td>';
+										//str+='<td>'+result.distList[i].completed+'</td>';
 										if(result.distList[i].percentage < 50){
 											str+='<td style="background-color:#FF0000">'+result.distList[i].percentage+'</td>';
 										}else if(result.distList[i].percentage >= 50 && result.distList[i].percentage < 80){
@@ -2763,6 +2779,8 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 						}else{
 							if(globalDivName == 'Mulbery')
 								str+='<td>'+ajaxresp[i].mulbTarget+'</td>';
+							else if(globalDivName == 'OPGK-Perinnials' || globalDivName == 'OPGK-Annuals')
+								str+='<td>'+ajaxresp[i].opgkTarget+'</td>';
 							else
 								str+='<td>'+ajaxresp[i].target+'</td>';
 							
@@ -2779,6 +2797,8 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 							str+='<td>'+ajaxresp[i].notGrounded+'</td>';
 							if(globalDivName == 'Mulbery')
 								str+='<td>'+ajaxresp[i].mulbInprogress+'</td>';
+							else if(globalDivName == 'OPGK-Perinnials' || globalDivName == 'OPGK-Annuals')
+								str+='<td>'+ajaxresp[i].opgkInProgress+'</td>';
 							else
 								str+='<td>'+ajaxresp[i].inProgress+'</td>';
 							if(globalDivName == 'Mulbery')
