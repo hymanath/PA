@@ -405,3 +405,27 @@ Highcharts.setOptions({
 		   $("#mandalLevelSubDivision").html('');
 		    $("#mandalLevelSubDivision").append("<option value=0>Select Revenue Sub-Division</option>");
 		   $("#mandalLevelSubDivision").trigger("chosen:updated");
+		   
+		   
+
+		   getLocationWisePrExpenditureDtls();
+
+		   function getLocationWisePrExpenditureDtls(){
+		   	var json = {
+		   			"locationType":"district",
+		   			"filterType"  :"" ,
+		   			"locationIds"  :[],
+		   		}
+		   	$.ajax({                
+		   		type:'POST',    
+		   		url: 'getLocationWisePrExpenditureDtls',
+		   		dataType: 'json',
+		   		data : JSON.stringify(json),
+		   		beforeSend :   function(xhr){
+		   			xhr.setRequestHeader("Accept", "application/json");
+		   			xhr.setRequestHeader("Content-Type", "application/json");
+		   		}
+		   	}).done(function(result){
+		   		 console.log(result);
+		   	});
+		   }

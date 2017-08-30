@@ -17,7 +17,9 @@ public class PredDdo implements Serializable{
 	
 	private Long predDdoId;
 	private String division;
+	private String ddocode;
 	private String tddocode;
+	
 	
 	@Id
 	@Column(name = "pred_ddo_id")
@@ -42,5 +44,13 @@ public class PredDdo implements Serializable{
 	public void setTddocode(String tddocode) {
 		this.tddocode = tddocode;
 	}
+	@Column(name = "ddocode")
+	public String getDdocode() {
+		return ddocode;
+	}
+	public void setDdocode(String ddocode) {
+		this.ddocode = ddocode;
+	}
+	
 	
 }
