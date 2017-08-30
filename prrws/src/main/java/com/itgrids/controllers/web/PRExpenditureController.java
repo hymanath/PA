@@ -12,7 +12,7 @@ import com.itgrids.service.IPRExpenditureService;
 @Controller
 @RequestMapping("/")
 public class PRExpenditureController {
-	private static final Logger LOG = Logger.getLogger(DrainsController.class);
+	private static final Logger LOG = Logger.getLogger(PRExpenditureController.class);
 	@Autowired
 	private IPRExpenditureService prExpenditureService;
 }
