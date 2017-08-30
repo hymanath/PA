@@ -822,7 +822,7 @@ function getCaseCountLocationWise(scopeId,blockName,filterType,locationId){
       },
       success : function(ajaxresp){
 		  if(ajaxresp != null && ajaxresp.length > 0){
-			  buildTableData(ajaxresp,blockName,filterType);
+			  buildTableData(ajaxresp,blockName,filterType,glStartDate,glEndDate);
 		  }else{
 			  $("#"+blockName+"-tableDivId").html("No Data Available");
 		  }
@@ -831,13 +831,47 @@ function getCaseCountLocationWise(scopeId,blockName,filterType,locationId){
     });
 }
 
-function buildTableData(ajaxresp,blockName,filterType){
+function buildTableData(ajaxresp,blockName,filterType,glStartDate,glEndDate){
 	var buildTable='';
 	buildTable+='<div class="row">';
 		buildTable+='<div class="col-sm-12">';
 			buildTable+='<div class="table-responsive">';
 				buildTable+='<table class="table dataTable'+blockName+'" id="build'+blockName+'-tableId" style="width:100%">';
 					buildTable+='<thead>';
+						buildTable+='<tr>';
+							if(blockName == 'DISTRICT'){
+								if(filterType == "Districts"){
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+								}else{
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+								}
+							}
+							else if(blockName == 'CONSTITUENCY'){
+								if(filterType == "Districts"){
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+								}else{
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+								}
+							}
+							else if(blockName == 'MANDAL'){
+								if(filterType == "Districts"){
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+								}else{
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+									buildTable+='<th style="background-color:#FFFFFF;"></th>';
+								}
+							}
+							buildTable+='<th colspan="3" style="background-color:#FFFFFF;"></th>';
+							buildTable+='<th colspan="5" style="background-color:#F3FFFF;text-align:center;">'+glStartDate+'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'+glEndDate+'</th>'; 
+						buildTable+='</tr>';    
 						buildTable+='<tr>';
 							if(blockName == 'DISTRICT'){
 								if(filterType == "Districts"){
@@ -869,10 +903,10 @@ function buildTableData(ajaxresp,blockName,filterType){
 									buildTable+='<th></th>';
 								}
 							}
-							buildTable+='<th colspan="3" style="text-align:center"><img src="Assests/img/Dengue&maleria_Sm.png">Dengue & Malaria Cases</th>';
+							buildTable+='<th colspan="3" style="text-align:center"><img style="width: 50px; height: 30px;" src="Assests/img/Dengue&maleria_Sm.png">Dengue & Malaria Cases</th>';
 							buildTable+='<th colspan="1" style="background-color:#F3FFFF"></th>';
-							buildTable+='<th colspan="2" style="background-color:#FDE5F2;text-align:center"><img src="Assests/img/Dengue_Sm.png">Dengue</th>';
-							buildTable+='<th colspan="2" style="background-color:#E5F0F5;text-align:center"><img src="Assests/img/maleria_Sm.png">Malaria</th>';
+							buildTable+='<th colspan="2" style="background-color:#FDE5F2;text-align:center"><img style="width: 50px; height: 30px;" src="Assests/img/Dengue_Sm.png">Dengue</th>';
+							buildTable+='<th colspan="2" style="background-color:#E5F0F5;text-align:center"><img style="width: 50px; height: 30px;" src="Assests/img/maleria_Sm.png">Malaria</th>';
 						buildTable+='</tr>';    
 						buildTable+'<tr>';
 							
@@ -907,6 +941,7 @@ function buildTableData(ajaxresp,blockName,filterType){
 							buildTable+='<th style="background-color:#F3F3F3">TILL NOW</th>';
 							buildTable+='<th style="background-color:#F3F3F3">TODAY DENGUE CASES</th>';
 							buildTable+='<th style="background-color:#F3F3F3">TODAY MALARIA CASES</th>';
+							
 							buildTable+='<th style="background-color:#F3FFFF">TOTAL</th>';
 							
 							buildTable+='<th style="background-color:#FDE5F2">DENGUE TOTAL</th>';
