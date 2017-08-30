@@ -209,7 +209,7 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 		if(debateIds != null && debateIds.size()>0)
 		   str.append(" model.debate.debateId in (:debateIds)");
 		if(stateId != null && stateId.longValue() > 0){
-		      str.append(" and model.debateId = model3.debateId  and model3.isDeleted ='N' ");
+		      str.append(" and model.debate.debateId = model3.debateId  and model3.isDeleted ='N' ");
 		    }
 		   if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 1L){
 		      str.append(" and model3.address.state.stateId ="+IConstants.DEBATE_AP_STATE_ID);
