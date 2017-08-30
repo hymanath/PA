@@ -190,7 +190,9 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 		      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_AP_STATE_ID);
 		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
 		      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_TS_STATE_ID);
-		    }
+		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 2L){
+			      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_OTHERS_ID);
+			    }
 		sb.append(" group by model1.party.partyId,model1.candidate.candidateId ");
 		Query query = getSession().createQuery(sb.toString());
 		
@@ -227,7 +229,9 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 			      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_AP_STATE_ID);
 			    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
 			      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_TS_STATE_ID);
-			    }
+			    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 2L){
+				      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_OTHERS_ID);
+				    }
 			 sb.append("  group by model1.party.partyId,model1.candidate.candidateId");
 		Query query = getSession().createQuery(sb.toString());
 		if(fromDate != null)
@@ -261,7 +265,9 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 		      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_AP_STATE_ID);
 		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
 		      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_TS_STATE_ID);
-		    }
+		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 2L){
+			      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_OTHERS_ID);
+			    }
 		Query query = getSession().createQuery(sb.toString());
 		if(fromDate != null)
 		 query.setParameter("fromDate", fromDate);
