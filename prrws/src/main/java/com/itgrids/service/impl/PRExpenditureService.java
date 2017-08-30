@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.service.IPRExpenditureService;
-import com.itgrids.service.integration.NREGSTCSService;
 @Service
 @Transactional
 public class PRExpenditureService implements IPRExpenditureService {
