@@ -20,11 +20,14 @@ public class Scheduler {
 	@Scheduled(cron = "0 30 2,14 * * * ")
 	public void runTheSchedulerEveryDay()
 	{
-		if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		{	
+			LOG.error("Cron Job For LED Dashboard Started");
+			lightMonitoringService.saveRealtimeStatusByVillages();
+			LOG.error("Cron Job For LED Dashboard Completed");
+		}
+		else 
 			return;
-		LOG.error("Cron Job For LED Dashboard Started");
-		lightMonitoringService.saveRealtimeStatusByVillages();
-		LOG.error("Cron Job For LED Dashboard Completed");
 	}
 	
 }
