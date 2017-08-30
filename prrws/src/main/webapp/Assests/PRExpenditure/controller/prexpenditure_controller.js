@@ -38,7 +38,6 @@
 		PrexpenditureService.postData('getLocationWisePrExpenditureDtls',data).
 		then(
 		function(responceData){
-			console.log(responceData);
 		    if (locationType == "district") {
 				 self.districtData = responceData;
 			} else if (locationType == "division") {
