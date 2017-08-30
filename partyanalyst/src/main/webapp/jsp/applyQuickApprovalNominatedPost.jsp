@@ -484,7 +484,7 @@ var gsId = 0;
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 									str+='<div class="media">';
 										str+='<div class="media-left">';
-											str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
+											str+='<img class="media-object thumbnailSearch thumbnail" src="http://www.mytdp.com/'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
 										str+='</div>';
 										str+='<div class="media-body">';
 										
