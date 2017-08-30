@@ -200,6 +200,8 @@ $( document ).ready(function() {
 	$("#createCandidateId").live("click",function(){
 		
 		$("#errorMsgDiv").html('');
+		//$("input:radio:checked").previous("name", "stateSelection").attr("name","stateSelection1");
+		//$("input:radio:checked").attr("name","stateSelection1");
 		//var partyId = $("#partySelectNewList").val();
 		var candidateName = $.trim($("#newCandidateName").val());
 		//var designationId = $("#designationsList").val();
@@ -668,14 +670,17 @@ window.location.href = uri + base64(format(template, ctx))
 			<div class="span4" style="margin-top: 20px;">
 				<div class="pull-right">
 				<label class="radio inline">
-					<input type="radio" name="stateSelection4" value="1" type="radio" class="debateReportRadioStateCls"/>AP
+					<input name="stateSelection4" value="0"  type="radio" checked class="debateReportRadioStateCls"/>All
 				</label>
 				<label class="radio inline">
-					<input type="radio" name="stateSelection4" value="36" type="radio" class="debateReportRadioStateCls"/>TS
+					<input  name="stateSelection4" value="1" type="radio" class="debateReportRadioStateCls"/>AP
 				</label>
 				<label class="radio inline">
-					<input type="radio" name="stateSelection4" value="0" checked type="radio" class="debateReportRadioStateCls"/>All
+					<input  name="stateSelection4" value="36" type="radio" class="debateReportRadioStateCls"/>TS
 				</label>
+				<!--<label class="radio inline">
+					<input type="radio" name="stateSelection4" value="2"  class="debateReportRadioStateCls"/>Others
+				</label>-->
 				</div>
 			</div>
 		</div>
@@ -804,16 +809,15 @@ window.location.href = uri + base64(format(template, ctx))
 				<tr><td>Candidate Name</td>
 				<td><input type="text" id="newCandidateName" onkeypress="return onlyAlphabets(event,this);"/></td>
 				</tr>
-				<tr><!--<td>Location Level</td>
+				<tr><td>Candidate Location</td>
 				<td>
-					
 					   <label class="radio inline">
-							<input type="radio" name="stateSelection1" value="1"  class="radioDebateDetailsStateCls"/>AP
+							<input type="radio" name="stateSelection" value="1"  class="radioDebateDetailsStateCls1"/>AP
 						</label>
 						<label class="radio inline">
-							<input type="radio" name="stateSelection1" value="36"  class="radioDebateDetailsStateCls"/>TS
+							<input type="radio" name="stateSelection" value="36"  class="radioDebateDetailsStateCls1"/>TS
 						</label>
-				</td>-->
+				</td>
 				</tr>
 				</table>
 				<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
@@ -827,10 +831,11 @@ $("#createId,#AnalysisNewsId,#detailsNewsId,#newDebateAnalysis").on("click",func
 	$( 'input[name="stateSelection3"][value="0"]').trigger("click");
 	$( 'input[name="stateSelection4"][value="0"]').trigger("click");
 });
-/*$(".radioStateCls1").on("click",function(){
-	alert(4);
-	$("#debateReportDiv").html('');
-});*/
+$(".radioStateCls1,.radioStateCls2").on("click",function(){
+	$("#dateWiseReportDiv,#paginationAtEnd,#analysisDiv").html('');
+	
+});
+
 </script>
 </body>
 </html>
