@@ -79,7 +79,7 @@
 
 </style>
 </head>
-<body class="bg_color">
+<body class="bg_color" ng-app="prexpenditureApp" ng-controller="PrexpenditureController as cntrl">
 	<div class="container ">
 	   <div class="row">
 		  <div class="col-sm-12">
@@ -97,7 +97,7 @@
 				   </div>
 				   <div class="media-body">
 					  <h4>Gross-Amount</h4>
-					  <h4><i class="fa fa-inr"></i> <div id="grossId">0</div></h4>
+					  <h4><i class="fa fa-inr"></i> <div id="grossId">{{cntrl.grossAmount}}</div></h4>
 				   </div>
 				</div>
 			 </div>
@@ -112,7 +112,7 @@
 				   </div>
 				   <div class="media-body">   
 					  <h4>DEDUCTIONS</h4>
-					  <h4><i class="fa fa-inr"></i> <div id="deductionId">0</div></h4>
+					  <h4><i class="fa fa-inr"></i> <div id="deductionId">{{cntrl.deductions}}</div></h4>
 				   </div>
 				</div>
 			 </div>
@@ -127,7 +127,7 @@
 				   </div>
 				   <div class="media-body">
 					  <h4>NET AMOUNT</h4>
-					  <h4><i class="fa fa-inr"></i> <div id="netId">0</div></h4>
+					  <h4><i class="fa fa-inr"></i> <div id="netId">{{cntrl.netAmount}}</div></h4>
 				   </div>
 				</div>
 			 </div>
@@ -283,9 +283,87 @@
 		  </div>
 	   </div>	
 		<section>
-			<div class="m_top20">
-				<div id="projectDataOverview" class="m_top20"></div>
+	<div class="m_top20">
+				<!--<div id="projectDataOverview" class="m_top20"></div>-->
+				<div class="m_top20">
+				<div class="row">
+			   <div class="col-sm-12">
+				  <div class="panel-group" id="accordionOverview" role="tablist" aria-multiselectable="true">
+					 <div class="panel panel-default panel-black">
+						<div class="panel-heading" role="tab" id="headingConsolidatedDistrict">
+						   <a role="button" class="panelCollapseIcon" overview-level="District" data-toggle="collapse" data-parent="#accordionOverview" href="#collapseConsolidatedDistrict" aria-expanded="true" aria-controls="collapseConsolidatedDistrict">
+							  <h4 class="panel-title text-capital">District level - overview</h4>
+						   </a>
+						</div>
+						<div id="collapseConsolidatedDistrict" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingConsolidatedDistrict">
+						   <div class="panel-body">
+							  <div class="row">
+								 <div class="col-sm-12">
+									<div id="collapseConsolidatedViewDistrict">
+									   <table class="table table-condensed table-striped" id="datatableDistrict" style="width:100%;">
+										  <thead>
+											 <tr>
+												<th> DISTRICT</th>
+												<th><img src="Assests/img/Gross_Amount_icon.png"><br>Grossamount</th>
+												<th><img src="Assests/img/Deductions_icon.png"><br>Deductions</th>
+												<th><img src="Assests/img/Netamount_icon.png"><br>Netamount</th>
+											 </tr>
+										  </thead>
+										  <tbody>
+											 <tr ng-repeat="district in cntrl.districtData">
+												<td>{{district.locationName}}</td>
+												<td><i class="fa fa-inr"></i>{{district.grossAmount}}</td>
+												<td><i class="fa fa-inr"></i>{{district.deductions}}</td>
+												<td><i class="fa fa-inr"></i>{{district.netAmount}}</td>
+											 </tr>
+										  </tbody>
+									   </table>
+									</div>
+								 </div>
+							  </div>
+						   </div>
+						</div>
+						<div class="panel panel-default panel-black">
+						   <div class="panel-heading" role="tab" id="headingConsolidatedDivision">
+							  <a role="button" class="panelCollapseIcon collapsed" overview-level="Division" data-toggle="collapse" data-parent="#accordionOverview" href="#collapseConsolidatedDivision" aria-expanded="true" aria-controls="collapseConsolidatedDivision">
+								 <h4 class="panel-title text-capital">Division level - overview</h4>
+							  </a>
+						   </div>
+						   <div id="collapseConsolidatedDivision" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingConsolidatedDivision">
+							  <div class="panel-body">
+								 <div class="row">
+									<div class="col-sm-12">
+									   <div id="collapseConsolidatedViewDivision">
+										  <table class="table table-condensed table-striped" id="datatableDivision" style="width:100%;">
+											 <thead>
+												<tr>
+												   <th>DIVISION</th>
+												   <th><img src="Assests/img/Gross_Amount_icon.png"><br>Grossamount</th>
+												   <th><img src="Assests/img/Deductions_icon.png"><br>Deductions</th>
+												   <th><img src="Assests/img/Netamount_icon.png"><br>Netamount</th>
+												</tr>
+											 </thead>
+											 <tbody>
+												 <tr ng-repeat="district in cntrl.divisionData">
+													<td>{{district.locationName}}</td>
+													<td><i class="fa fa-inr"></i>{{district.grossAmount}}</td>
+													<td><i class="fa fa-inr"></i>{{district.deductions}}</td>
+													<td><i class="fa fa-inr"></i>{{district.netAmount}}</td>
+											     </tr>
+											 </tbody>
+										  </table>
+									   </div>
+									</div>
+								 </div>
+							  </div>
+						   </div>
+						</div>
+					 </div>
+				  </div>
+			   </div>
 			</div>
+		</div>
+	</div>
 		</section>
 	   <div class="modal fade" id="modalGsDivId" tabindex="-1" role="dialog">
 		  <div class="modal-dialog" role="document" style="width: 95%;">
@@ -373,6 +451,7 @@
 	   </div>
 	</div>
 <script type="text/javascript" src="Assests/js/jquery-1.11.3.js"></script>        
+<script type="text/javascript" src="Assests/js/angular.js"></script>        
 <script type="text/javascript" src="Assests/js/bootstrap.js"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
@@ -384,7 +463,10 @@
 <script src="Assests/Plugins/SlickSliderNew/slick.min.js" type="text/javascript"></script>   
 <script src="Assests/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>   
 <script src="Assests/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>   
-<script src="Assests/PRExpenditure/prExpenditureDashboard.js" type="text/javascript"></script> 
+<!--<script src="Assests/PRExpenditure/prExpenditureDashboard.js" type="text/javascript"></script>-->
+<script src="Assests/PRExpenditure/prexpenditureApp.js" type="text/javascript"></script> 
+<script src="Assests/PRExpenditure/service/prexpenditure_service.js" type="text/javascript"></script> 
+<script src="Assests/PRExpenditure/controller/prexpenditure_controller.js" type="text/javascript"></script> 
 
 <script type="text/javascript">
 /* $(".range_03").ionRangeSlider({
