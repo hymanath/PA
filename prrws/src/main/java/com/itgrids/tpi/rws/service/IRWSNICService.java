@@ -49,4 +49,6 @@ public interface IRWSNICService {
 	public List<RwsClickVO> getHamletWiseIvrStatusList(InputVO vo);
 	public NregaLocationOverviewVO getIHHLOverviewData(InputVO inputVO);
 	public List<NregaLocationOverviewVO> getIHHLlocationLvlWiseData(InputVO inputVO);
+	public NregaLocationOverviewVO getSBPaymentsAbstract(InputVO inputVO);
+	public List<NregaLocationOverviewVO> getSBPaymentsLevelsWiseData(InputVO inputVO);
 }

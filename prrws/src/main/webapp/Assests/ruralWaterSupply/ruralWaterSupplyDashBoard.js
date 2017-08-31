@@ -33,6 +33,7 @@
 			
 			getHamletWiseIvrStatusCounts('graph','','state',"","",2);
 			getIHHLOverviewData("abstract");
+			getSBPaymentsAbstract();
 			//locationType,filterType,filterValue,districtValue,divId
 			//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
 			//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
@@ -2476,8 +2477,8 @@
 									]
 								});
 							}else{
-								if(locationType != 'state')
-								$("#dataTable1"+locationType+divId[k].id).dataTable({
+								if(locationType != 'state'){
+									$("#dataTable1"+locationType+divId[k].id).dataTable({
 									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 										"<'row'<'col-sm-12'tr>>" +
 										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -2486,15 +2487,15 @@
 											extend:    'csvHtml5',
 											text:      '<i class="fa fa-file-text-o"></i>',
 											titleAttr: 'CSV',
-											title:	   blockId,
-											filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+											title:	   locationType,
+											filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 										},
 										{
 											extend:    'pdfHtml5',
 											text:      '<i class="fa fa-file-pdf-o"></i>',
 											titleAttr: 'PDF',
-											title:	   blockId,
-											filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+											title:	   locationType,
+											filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 											orientation: "landscape",
 											pageSize:'A3',
 											customize: function (doc) {
@@ -2503,6 +2504,8 @@
 										}
 									]
 								});
+								}
+								
 							}
 						}else if(divId[k].id=="performance"){
 							if(locationType !="state" && locationType !="district"){
@@ -5098,32 +5101,19 @@
 	}
 	
 	$(document).on("click",".overViewDtlsSwatchBharatCls",function(){
-		
+		$("#sbModalDivId").modal('show');
 		var str='';
-		str+='<div class="panel-group" id="accordion">';
-			str+='<div class="panel panel-default panel-black">';
-				str+='<div class="panel-heading" role="tab" id="headingSBM">';
-					str+='<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseSBM" aria-expanded="true" aria-controls="collapseSBM">';
-						str+='<h4 class="panel-title text-capital">Swatch Bharat - IHHL</h4>';
-					str+='</a>';
-					
-				str+='</div>';
-				str+='<div id="collapseSBM" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSBM">';
-					str+='<div class="panel-body">';
-						str+='<div id="overViewBlockId"></div>';
-						str+='<div id="levelWiseSwatchBharatId"></div>';
-					str+='</div>';
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
+		str+='<div id="overViewBlockId"></div>';
+		str+='<div id="levelWiseSwatchBharatId"></div>';
 		
-		$("#sbmIhhlBlockId").html(str);
+		$("#sbDataDivId").html(str);
+		//$("#sbmIhhlBlockId").html(str);
 		
 		overviewData("IHHL");
 		levelWiseSBData("IHHL");
-		$('html,body').animate({
+		/* $('html,body').animate({
 			scrollTop: $("#overViewBlockId").offset().top},
-        'slow');
+        'slow'); */
 	});
 	
 	function overviewData(divId){
@@ -5300,17 +5290,37 @@ function levelWiseSBData(divId)
 			collapse+='</div>';
 			collapse+='</div>';
 			collapse+='</section>';
-			
-	$("#levelWiseSwatchBharatId").html(collapse);
+	
+	if(divId == "IHHL"){
+		$("#levelWiseSwatchBharatId").html(collapse);
+	}else if(divId == "Payments"){
+		$("#levelWiseSwatchBharatPaymentsId").html(collapse);
+	}	
+	
 	
 	setTimeout(function(){ 
 		for(var i in levelWiseSBArr){
 			if(levelWiseSBArr[i] == "state"){
-				getIHHLlocationLvlWiseData("state")
+				if(divId == "IHHL"){
+					getIHHLlocationLvlWiseData("state")
+				}else if(divId == "Payments"){
+					getSBPaymentsLvlWiseData("state")
+				}
+				
 			}else if(levelWiseSBArr[i] == "district"){
-				getIHHLlocationLvlWiseData("district")
+				if(divId == "IHHL"){
+					getIHHLlocationLvlWiseData("district")
+				}else if(divId == "Payments"){
+					getSBPaymentsLvlWiseData("district")
+				}
+				
 			}else if(levelWiseSBArr[i] == "constituencies"){
-				getIHHLlocationLvlWiseData("constituencies")
+				if(divId == "IHHL"){
+					getIHHLlocationLvlWiseData("constituencies")
+				}else if(divId == "Payments"){
+					getSBPaymentsLvlWiseData("constituency")
+				}
+				
 			}
 		}	
 	
@@ -5322,6 +5332,12 @@ $(document).on("click",".IHHLmandal",function(){
 });
 $(document).on("click",".IHHLpanchayat",function(){
 	getIHHLlocationLvlWiseData("panchayat")
+});	
+$(document).on("click",".Paymentsmandal",function(){
+		getSBPaymentsLvlWiseData("mandal")
+});
+$(document).on("click",".Paymentspanchayat",function(){
+	getSBPaymentsLvlWiseData("panchayat")
 });	
 function getIHHLlocationLvlWiseData(locationType){
 		$("#IHHL"+locationType).html(spinner);
@@ -5431,6 +5447,248 @@ function getIHHLlocationLvlWiseData(locationType){
 					
 					if(locationType !="state" || locationType !="district"){
 						$(".dataTable"+locationType).dataTable({
+							"iDisplayLength": 20,
+							"aaSorting": [],
+							"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+							"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+								"<'row'<'col-sm-12'tr>>" +
+								"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+							buttons: [
+								{
+									extend:    'csvHtml5',
+									text:      '<i class="fa fa-file-text-o"></i>',
+									titleAttr: 'CSV',
+									title:	   locationType,
+									filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+								},
+								{
+									extend:    'pdfHtml5',
+									text:      '<i class="fa fa-file-pdf-o"></i>',
+									titleAttr: 'PDF',
+									title:	   locationType,
+									filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+									orientation: "landscape",
+									pageSize:'A3',
+									customize: function (doc) {
+										doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+									}
+								}
+							]
+						});
+					}
+				}
+		}
+
+
+function getSBPaymentsAbstract(){
+		
+		$("#swatchBharatPaymentsDivId").html(spinner);
+		var json = {
+			fromDate:"201704",
+			toDate:"201708",
+			location:"state",
+			locationId:"01",
+			subLocation :"state"
+				
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getSBPaymentsAbstract',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null){
+				buildSBPaymentsAbstract(result);
+			}
+		});
+	}
+		
+	function buildSBPaymentsAbstract(result){
+		
+		var amountArr=[];
+		var ftoAmountArr=[];
+		
+		amountArr.push(result.ttlAmt);
+		amountArr.push(result.paidAmt);
+		amountArr.push(result.pndgAmt);
+		
+		
+		ftoAmountArr.push(result.ttlFTO)
+		ftoAmountArr.push(result.paiidFTO)
+		ftoAmountArr.push(result.pndgFTO)
+		console.log(amountArr)
+		console.log(ftoAmountArr)
+		$('#swatchBharatPaymentsDivId').highcharts({
+			chart: {
+				type: 'bar'
+			},
+			title: {
+				text: ''
+			},
+			subtitle: {
+				text: ''
+			},
+			xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: [
+					'Total',
+					'Paid',
+					'Pending'
+				],
+				crosshair: true
+			},
+			yAxis: {
+				min: 0,
+				title: {
+					text: ''
+				}
+			},
+			tooltip: {
+				headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+				pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+					'<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+				footerFormat: '</table>',
+				shared: false,
+				useHTML: true
+			},
+			plotOptions: {
+				bar: {
+					pointPadding: 0.2,
+					borderWidth: 0
+				}
+			},
+			series: [{
+				name: 'Amount',
+				data: amountArr
+
+			},{
+				name: 'FTO',
+				data: ftoAmountArr
+
+			}]
+		});
+	}
+	$(document).on("click",".overViewDtlsSwatchBharatPaymentCls",function(){
+		$("#sbPaymentModalDivId").modal('show');
+		var str='';
+			str+='<div id="levelWiseSwatchBharatPaymentsId"></div>';
+		$("#sbPaymentDataDivId").html(str);
+		
+		levelWiseSBData("Payments")
+		//$('html,body').animate({
+		//	scrollTop: $("#overViewBlockId").offset().top},
+        //'slow');
+	});
+	
+	function getSBPaymentsLvlWiseData(locationType){
+		$("#Payments"+locationType).html(spinner);
+		
+		var json = {
+			fromDate:"201704",
+			toDate:"201708",
+			location:"state",
+			locationId:"01",
+			subLocation :locationType
+				
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getSBPaymentsLevelsWiseData',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				buildSBPaymentsLvlWiseData(result,locationType);
+			}
+	});
+}
+	
+	
+	function buildSBPaymentsLvlWiseData(ajaxresp,locationType){
+			if(ajaxresp != null && ajaxresp.length > 0){
+					var str = '';
+					str+='<div class="table-responsive">';
+						str+='<table class="table table-bordered dataTablePayments'+locationType+'">';
+							str+='<thead class="text-capital">';
+								if(locationType == "state"){
+									str+='<th class="text-capital">'+locationType+'</th>';
+								}
+								else if(locationType == "district"){
+									str+='<th class="text-capital">district</th>';
+								}
+								else if(locationType == "constituency"){
+									str+='<th class="text-capital">district</th>';
+									str+='<th class="text-capital">constituency</th>';
+								}
+								else if(locationType == "mandal"){
+									str+='<th class="text-capital">district</th>';
+									str+='<th class="text-capital">constituency</th>';
+									str+='<th class="text-capital">mandal</th>';
+								}
+								else if(locationType == "panchayat"){
+									str+='<th class="text-capital">district</th>';
+									str+='<th class="text-capital">constituency</th>';
+									str+='<th class="text-capital">mandal</th>';
+									str+='<th class="text-capital">panchayat</th>';
+								}
+								str+='<th class="text-capital">TOTAL FTO</th>';
+								str+='<th class="text-capital">Total Amount</th>';
+								str+='<th class="text-capital">Paid Fto</th>';
+								str+='<th class="text-capital">Paid Amount</th>';
+								str+='<th class="text-capital">Pending Fto</th>';
+								str+='<th class="text-capital">Pending AMount</th>';
+								
+							str+='</thead>';
+							str+='<tbody>';
+								for(var i in ajaxresp){
+									str+='<tr>';
+										if(locationType == "state"){
+											str+='<td class="text-capital">'+locationType+'</td>';
+										}
+										else if(locationType == "district"){
+											str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+										}
+										else if(locationType == "constituency"){
+											str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+										}
+										else if(locationType == "mandal"){
+											str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+										}
+										else if(locationType == "panchayat"){
+											str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
+											str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+										}
+										str+='<td class="text-capital">'+ajaxresp[i].totalFTO+'</td>';										
+										str+='<td class="text-capital">'+ajaxresp[i].totalAmount+'</td>';										
+										str+='<td class="text-capital">'+ajaxresp[i].paidFTO+'</td>';										
+										str+='<td class="text-capital">'+ajaxresp[i].paidAmount+'</td>';										
+										str+='<td class="text-capital">'+ajaxresp[i].pendingFTO+'</td>';	
+										str+='<td class="text-capital">'+ajaxresp[i].pendingAmount+'</td>';	
+										
+									str+='</tr>';
+								}
+							str+='</tbody>';
+						str+='</table>';
+					str+='</div>';
+					$("#Payments"+locationType).html(str);
+					
+					if(locationType !="state" || locationType !="district"){
+						$(".dataTablePayments"+locationType).dataTable({
 							"iDisplayLength": 20,
 							"aaSorting": [],
 							"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
