@@ -5509,70 +5509,72 @@ function getSBPaymentsAbstract(){
 		
 	function buildSBPaymentsAbstract(result){
 		
-		var amountArr=[];
-		var ftoAmountArr=[];
+		var dataArr=[];
 		
-		amountArr.push(result.ttlAmt);
-		amountArr.push(result.paidAmt);
-		amountArr.push(result.pndgAmt);
-		
-		
-		ftoAmountArr.push(result.ttlFTO)
-		ftoAmountArr.push(result.paiidFTO)
-		ftoAmountArr.push(result.pndgFTO)
-		console.log(amountArr)
-		console.log(ftoAmountArr)
-		$('#swatchBharatPaymentsDivId').highcharts({
-			chart: {
-				type: 'bar'
-			},
-			title: {
-				text: ''
-			},
-			subtitle: {
-				text: ''
-			},
-			xAxis: {
+		dataArr.push({"y":result.ttlAmt,"extra":result.totalAmount});
+		dataArr.push({"y":result.paidAmt,"extra":result.paidAmount});
+		dataArr.push({"y":result.pndgAmt,"extra":result.pendingAmount});
+		var colors = ['#14BBAE'];
+		var id = 'swatchBharatPaymentsDivId';
+			var type = {
+				type: 'bar',
+				backgroundColor:'transparent'
+			};
+			var legend = {
+				enabled: false
+			};
+			
+			var title = {
+				text: '',
+				align:'left',
+				 style: {
+					 color: '#777',
+					 font: 'bold 8px "Lato", sans-serif'
+				  } 
+			};
+			var yAxis = {
 				min: 0,
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,
-				categories: [
-					'Total',
-					'Paid',
-					'Pending'
-				],
-				crosshair: true
-			},
-			yAxis: {
-				min: 0,
 				title: {
-					text: ''
+					text: null
+				},
+			};
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: ["TOTAL","PAID","PENDING"]
+				
+			};
+			var plotOptions ={ bar: {
+					colorByPoint: true
+				}};
+			var tooltip = {
+				useHTML:true,
+				formatter: function () {
+					//var pcnt = (this.y / totalCount) * 100;
+					return '<b>' + this.x + ' Amount</b><br/>' +
+						this.point.extra;
 				}
-			},
-			tooltip: {
-				headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-				pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-					'<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-				footerFormat: '</table>',
-				shared: false,
-				useHTML: true
-			},
-			plotOptions: {
-				bar: {
-					pointPadding: 0.2,
-					borderWidth: 0
+			};
+
+			var data = [{
+				name: '',
+				data: dataArr,
+
+				dataLabels: {
+					enabled: true,
+					color: '#000',
+					align: 'canter',
+					formatter: function() {
+							//var pcnt = (this.y / totalCount) * 100;
+							//return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+							return '<span>'+this.point.extra+'</span>';
+					} 
 				}
-			},
-			series: [{
-				name: 'Amount',
-				data: amountArr
-
-			},{
-				name: 'FTO',
-				data: ftoAmountArr
-
-			}]
-		});
+			}];
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
 	}
 	$(document).on("click",".overViewDtlsSwatchBharatPaymentCls",function(){
 		$("#sbPaymentModalDivId").modal('show');
@@ -5685,8 +5687,11 @@ function getSBPaymentsAbstract(){
 							str+='</tbody>';
 						str+='</table>';
 					str+='</div>';
-					$("#Payments"+locationType).html(str);
-					
+					if(locationType == "constituency"){
+						$("#Paymentsconstituencies").html(str);
+					}else{
+						$("#Payments"+locationType).html(str);
+					}
 					if(locationType !="state" || locationType !="district"){
 						$(".dataTablePayments"+locationType).dataTable({
 							"iDisplayLength": 20,
