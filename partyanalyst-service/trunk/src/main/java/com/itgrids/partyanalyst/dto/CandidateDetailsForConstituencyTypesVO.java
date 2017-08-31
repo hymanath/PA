@@ -7,7 +7,8 @@ public class CandidateDetailsForConstituencyTypesVO {
 	private CandidateInfoForConstituencyVO parliamentCandidateInfo;
 	private List<CandidateInfoForConstituencyVO> assemblyCandidateInfo;
 	private String ispartial;
-	
+	private List<CandidateDetailsForConstituencyTypesVO> subList;
+
 	public CandidateInfoForConstituencyVO getParliamentCandidateInfo() {
 		return parliamentCandidateInfo;
 	}
@@ -28,5 +29,13 @@ public class CandidateDetailsForConstituencyTypesVO {
 	public void setIspartial(String ispartial) {
 		this.ispartial = ispartial;
 	}
-	
+
+	public List<CandidateDetailsForConstituencyTypesVO> getSubList() {
+		return subList;
+	}
+
+	public void setSubList(List<CandidateDetailsForConstituencyTypesVO> subList) {
+		this.subList = subList;
+	}
+
 }
