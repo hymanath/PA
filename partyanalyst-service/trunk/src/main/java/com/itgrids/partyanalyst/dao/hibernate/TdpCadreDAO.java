@@ -6675,7 +6675,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			StringBuilder str=new StringBuilder();
 			
 			str.append(" select distinct model.tdpCadreId ,model.firstname,model.mobileNo," );
-			if(inputVo.getDesignationIds().contains(12l))//MLC
+			if(inputVo.getDesignationIds().contains(12l) || inputVo.getDesignationIds().contains(16l))//MLC
 				str.append("'',");
 			else
 				str.append("model2.userAddress.constituency.name,");
