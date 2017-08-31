@@ -285,6 +285,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 	
 	
 	
+	public void setKaizalaLocationAddressDAO(
+			IKaizalaLocationAddressDAO kaizalaLocationAddressDAO) {
+		this.kaizalaLocationAddressDAO = kaizalaLocationAddressDAO;
+	}
 	public IEnrollmentYearDAO getEnrollmentYearDAO() {
 		return enrollmentYearDAO;
 	}
