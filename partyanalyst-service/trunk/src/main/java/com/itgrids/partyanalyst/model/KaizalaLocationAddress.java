@@ -19,12 +19,13 @@ public class KaizalaLocationAddress {
 	private Long stateId;
 	private Long districtId;
 	private Long parliamentId;
-	private Long constituencyId;
+	private Long assemblyId;
 	private Long tehsilId;
 	private Long localElectionBodyId;
 	private Long panchayatId;
 	private Long hamletId;
-
+	private Long wardId;
+	
 	private State state;
 	private District district;
 	private Constituency assembly;
@@ -33,6 +34,8 @@ public class KaizalaLocationAddress {
 	private Panchayat panchayat;
 	private Hamlet hamlet;
 	private LocalElectionBody localElectionBody;
+	private Constituency ward;
+	
 	@Id
 	@Column(name="kaizala_location_address_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
@@ -42,56 +45,56 @@ public class KaizalaLocationAddress {
 	public void setKaizalaLocationAddressId(Long kaizalaLocationAddressId) {
 		this.kaizalaLocationAddressId = kaizalaLocationAddressId;
 	}
-	@Column(name="state_id")
+	@Column(name="state_id", insertable = false, updatable = false)
 	public Long getStateId() {
 		return stateId;
 	}
 	public void setStateId(Long stateId) {
 		this.stateId = stateId;
 	}
-	@Column(name="district_id")
+	@Column(name="district_id", insertable = false, updatable = false)
 	public Long getDistrictId() {
 		return districtId;
 	}
 	public void setDistrictId(Long districtId) {
 		this.districtId = districtId;
 	}
-	@Column(name="parliament_id")
+	@Column(name="parliament_id", insertable = false, updatable = false)
 	public Long getParliamentId() {
 		return parliamentId;
 	}
 	public void setParliamentId(Long parliamentId) {
 		this.parliamentId = parliamentId;
 	}
-	@Column(name="constituency_id")
-	public Long getConstituencyId() {
-		return constituencyId;
+	@Column(name="constituency_id", insertable = false, updatable = false)
+	public Long getAssemblyId() {
+		return assemblyId;
 	}
-	public void setConstituencyId(Long constituencyId) {
-		this.constituencyId = constituencyId;
+	public void setAssemblyId(Long assemblyId) {
+		this.assemblyId = assemblyId;
 	}
-	@Column(name="tehsil_id")
+	@Column(name="tehsil_id", insertable = false, updatable = false)
 	public Long getTehsilId() {
 		return tehsilId;
 	}
 	public void setTehsilId(Long tehsilId) {
 		this.tehsilId = tehsilId;
 	}
-	@Column(name="local_election_body_id")
+	@Column(name="local_election_body_id", insertable = false, updatable = false)
 	public Long getLocalElectionBodyId() {
 		return localElectionBodyId;
 	}
 	public void setLocalElectionBodyId(Long localElectionBodyId) {
 		this.localElectionBodyId = localElectionBodyId;
 	}
-	@Column(name="panchayat_id")
+	@Column(name="panchayat_id", insertable = false, updatable = false)
 	public Long getPanchayatId() {
 		return panchayatId;
 	}
 	public void setPanchayatId(Long panchayatId) {
 		this.panchayatId = panchayatId;
 	}
-	@Column(name="hamlet_id")
+	@Column(name="hamlet_id", insertable = false, updatable = false)
 	public Long getHamletId() {
 		return hamletId;
 	}
@@ -99,7 +102,7 @@ public class KaizalaLocationAddress {
 		this.hamletId = hamletId;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "state_id", insertable = false, updatable = false)
+	@JoinColumn(name = "state_id")
 	public State getState() {
 		return state;
 	}
@@ -107,7 +110,7 @@ public class KaizalaLocationAddress {
 		this.state = state;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "district_id", insertable = false, updatable = false)
+	@JoinColumn(name = "district_id")
 	public District getDistrict() {
 		return district;
 	}
@@ -115,7 +118,7 @@ public class KaizalaLocationAddress {
 		this.district = district;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "constituency_id", insertable = false, updatable = false)
+	@JoinColumn(name = "constituency_id")
 	public Constituency getAssembly() {
 		return assembly;
 	}
@@ -123,7 +126,7 @@ public class KaizalaLocationAddress {
 		this.assembly = assembly;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "parliament_id", insertable = false, updatable = false)
+	@JoinColumn(name = "parliament_id")
 	public Constituency getParliament() {
 		return parliament;
 	}
@@ -131,7 +134,7 @@ public class KaizalaLocationAddress {
 		this.parliament = parliament;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "tehsil_id", insertable = false, updatable = false)
+	@JoinColumn(name = "tehsil_id")
 	public Tehsil getTehsil() {
 		return tehsil;
 	}
@@ -139,7 +142,7 @@ public class KaizalaLocationAddress {
 		this.tehsil = tehsil;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "panchayat_id", insertable = false, updatable = false)
+	@JoinColumn(name = "panchayat_id")
 	public Panchayat getPanchayat() {
 		return panchayat;
 	}
@@ -147,7 +150,7 @@ public class KaizalaLocationAddress {
 		this.panchayat = panchayat;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "hamlet_id", insertable = false, updatable = false)
+	@JoinColumn(name = "hamlet_id")
 	public Hamlet getHamlet() {
 		return hamlet;
 	}
@@ -155,12 +158,29 @@ public class KaizalaLocationAddress {
 		this.hamlet = hamlet;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "local_election_body_id", insertable = false, updatable = false)
+	@JoinColumn(name = "local_election_body_id")
 	public LocalElectionBody getLocalElectionBody() {
 		return localElectionBody;
 	}
 	public void setLocalElectionBody(LocalElectionBody localElectionBody) {
 		this.localElectionBody = localElectionBody;
 	}
+	@Column(name = "ward", insertable = false, updatable = false)
+	public Long getWardId() {
+		return wardId;
+	}
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "ward")
+	public Constituency getWard() {
+		return ward;
+	}
+	public void setWard(Constituency ward) {
+		this.ward = ward;
+	}
+	
+	
 	
 }
