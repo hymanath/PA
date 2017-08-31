@@ -3344,7 +3344,7 @@ public class WebServiceHandler {
 		try {			
 			return webServiceHandlerService.getKaizalaAddressId(locationScopeId,locationValue);			
 		} catch (Exception e) {
-			LOG.error("Exception Occured in getIvrSurveyQuestions() Method, Exception is ",e);
+			LOG.error("Exception Occured in getAddressIdForKaizalaResInfo() Method, Exception is ",e);
 		}
 		return null;
 	}
