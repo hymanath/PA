@@ -1006,6 +1006,11 @@
 										<a href="updateNominationPostCandidateDetailsAction.action"><i class="fa fa-file ico-white"></i><span>&nbsp;&nbsp;Upload Documnets</span></a>
 										</li>
 				                           </c:if>
+										   <c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_QUICK_APPROVAL_ENTITLEMENT')}">
+											   <li>
+												<a href="applyQuickApprovalNominatedPostAction.action"><i class="fa fa-file ico-white"></i><span>&nbsp;&nbsp;Apply Quick Approval Post</span></a>
+											   </li>
+										   </c:if>
 										   
 										</li>
 										 </ul>
