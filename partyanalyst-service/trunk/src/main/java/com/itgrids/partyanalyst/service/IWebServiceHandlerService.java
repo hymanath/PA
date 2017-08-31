@@ -274,5 +274,6 @@ public interface IWebServiceHandlerService {
     public List<IdNameVO> getIvrSurveyQuestions(String fromDateStr,String toDateStr,Long entityType);
     public List<BasicVO> getElectionTypes();
     public void saveKaizalAnswerInfo(String anserObj);
-    public Long getAddressId(Long locationScopeId, Long locationValue);
+    //public Long getAddressId(Long locationScopeId, Long locationValue);
+    public Long getKaizalaAddressId(Long locationScopeId, Long locationValue);
 }
