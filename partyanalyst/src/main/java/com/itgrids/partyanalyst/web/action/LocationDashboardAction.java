@@ -45,7 +45,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private String 								task;
 	private Long locationLevelId;
 	private ILocationDashboardService locationDashboardService;
-	private CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituencyTypesVO;
+	private List<CandidateDetailsForConstituencyTypesVO> candidateDetailsForConstituencyTypesVO;
 	private ConstituencyInfoVO constituencyDetails;
 	private IConstituencyPageService constituencyPageService;
 	private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
@@ -154,11 +154,10 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setConstituencyDetails(ConstituencyInfoVO constituencyDetails) {
 		this.constituencyDetails = constituencyDetails;
 	}
-	public CandidateDetailsForConstituencyTypesVO getCandidateDetailsForConstituencyTypesVO() {
+	public List<CandidateDetailsForConstituencyTypesVO> getCandidateDetailsForConstituencyTypesVO() {
 		return candidateDetailsForConstituencyTypesVO;
 	}
-	public void setCandidateDetailsForConstituencyTypesVO(
-			CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituencyTypesVO) {
+	public void setCandidateDetailsForConstituencyTypesVO(List<CandidateDetailsForConstituencyTypesVO> candidateDetailsForConstituencyTypesVO) {
 		this.candidateDetailsForConstituencyTypesVO = candidateDetailsForConstituencyTypesVO;
 	}
 	
@@ -264,8 +263,9 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public String getCandidateAndPartyInfoForConstituency(){
 		  try{
 			  jObj=new JSONObject(getTask());
-			  Long constituencyId = jObj.getLong("constituencyId");
-			  candidateDetailsForConstituencyTypesVO = locationDashboardService.getCandidateAndPartyInfoForConstituency(constituencyId);
+			  Long locationTypeId = jObj.getLong("locationTypeId");
+			  Long locationValue = jObj.getLong("locationValue");
+			  candidateDetailsForConstituencyTypesVO = locationDashboardService.getCandidateAndPartyInfoForConstituency(locationValue,locationTypeId);
 			  
 		  }catch(Exception e){
 			  LOG.error("Entered into getCandidateAndPartyInfoForConstituency method in locationDashboardAction....");
