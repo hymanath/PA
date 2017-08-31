@@ -1651,7 +1651,7 @@ function getDetailsBySrch()
 		var searchType;
 		var searchValue = "";
 		var districtId=0;
-		var constituencyId="";
+		var constituencyId=0;
 		var mandalId = 0;
 		var panchayatId=0;
 		var levelId=0;
@@ -2031,9 +2031,9 @@ function getFilterDistrictsForStates(state){
 		$("#filterDistrictId").append('<option value="0">Select District</option>');			
 		if(result !=null && result.length>0){
 			for(var i in result){
-				if(result[i].id != 517){
+				//if(result[i].id != 517){
 					$("#filterDistrictId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-				}
+				//}
 			}
 		}
 		$("#filterDistrictId").dropkick();
@@ -2045,7 +2045,8 @@ function getFilterDistrictsForStates(state){
 $(document).on("change","#filterDistrictId",function(){
 	var districtId = $(this).val();
 	var stateId = $("#filterStateId").val();
-	getConstituenciesForDistrictsOfAddChnge(districtId,stateId);
+	//getConstituenciesForDistrictsOfAddChnge(districtId,stateId);
+	getConstituenciesForDistricts(districtId,stateId)
 });
 
 function getConstituenciesForDistrictsOfAddChnge(district,stateId){
@@ -2072,6 +2073,35 @@ function getConstituenciesForDistrictsOfAddChnge(district,stateId){
 		 select.refresh();
 	});
 }
+function getConstituenciesForDistricts(district,stateId){
+	var distArrTemp = [];
+	    distArrTemp.push(district);
+		var jsObj={				
+			districtId:distArrTemp,
+			stateId:stateId,
+			task:"getConstituenciesForDistricts"				
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getConstituenciesOfDistrictWithSplittedAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   
+		   $("#filterManTowDivId  option").remove();
+	 $("#filterConstituencyId  option").remove();
+	 $("#filterManTowDivId").append('<option value="0">Select Mandal/Muncipality/Corporation</option>');
+	 $("#filterConstituencyId").append('<option value="0">Select Constituency</option>');
+	 if(result !=null && result.length>0){
+		 for(var i in result){			  
+			$("#filterConstituencyId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+		   }
+		}	
+		$("#filterConstituencyId").dropkick();
+		 var select = new Dropkick("#filterConstituencyId");
+		 select.refresh();
+		});
+	}
 $(document).on("change","#filterConstituencyId",function(){
 	var constituencyId=$(this).val();
 	var stateId = $("#filterStateId").val();
@@ -2217,3 +2247,83 @@ function getEducationalQualifications(divId){
 		}
 	});
 }
+function getConstituenciesBydistrictForReferPopup(index){
+	 var districtId = $("#referdistrictId"+index).val();
+	var jobj = {
+		districtId : districtId
+	}
+		$.ajax({
+			type : "POST",
+			url  : "getConstituenciesByDistrictAction.action",
+			data : {task:JSON.stringify(jobj)}
+		}).done(function(result){
+			var constiStr='';
+			if(result != null && result.length > 0){
+			    constiStr +='<option value="0">Select Assembly</option>';
+				for(var i in result){
+					constiStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+					}
+			 $("#referconstituencyId"+index).html(constiStr);
+			 $("#referconstituencyId"+index).dropkick();
+			var select = new Dropkick("#referconstituencyId"+index);
+			 select.refresh();
+			}
+		});
+ }
+function getMandalsByConstituencyForReferPopup(index){
+	 var constituencyId = $('#referconstituencyId'+index).val();
+	 var jobj = {
+		constituencyId : constituencyId
+	 }
+		$.ajax({
+			type : "POST",
+			url  : "getMandalsByConstituencyAction.action",
+			data : {task:JSON.stringify(jobj)}
+		}).done(function(result){
+			var mandalStr='';
+			if(result != null && result.length > 0){
+			    mandalStr +='<option value="0">Select Mandal/ Municipality</option>';
+				for(var i in result){
+					mandalStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+					}
+			 $("#refermandalNameId"+index).html(mandalStr);
+			 $("#refermandalNameId"+index).dropkick();
+			 var select = new Dropkick("#refermandalNameId"+index);
+			 select.refresh();
+			}
+		});
+ }
+ function getPanchayatsForReferPopup(index){
+	 $("#referpanchayatId"+index).find('option').not(':first').remove();
+	 var mandalId = $('#refermandalNameId'+index).val();
+	 var  type = $("#refermandalNameId"+index+" option:selected").text();
+			   
+			 if(type.indexOf("Mandal") == -1) 
+				type = "muncipality" ;
+			else
+				type = "mandal" ; 
+			  var jsObj={
+						mandalId :mandalId,
+						type:type,
+						task:""
+						
+					}
+			 $.ajax({
+						type:"POST",
+						url :"getPanchayatDetailsAction.action",
+						 dataType: 'json',
+						data: {task:JSON.stringify(jsObj)}
+					}).done(function(result){
+						var panchyatStr='';
+						if(result!=null && result.length>0){
+							panchyatStr +='<option value="0">Select Panchayat</option>';
+			            for(var i in result){
+				 panchyatStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+			 }
+			    $("#referpanchayatId"+index).html(panchyatStr);
+			    $("#referpanchayatId"+index).dropkick();
+			 var select = new Dropkick("#referpanchayatId"+index);
+			 select.refresh();
+			}
+		   });
+		}
