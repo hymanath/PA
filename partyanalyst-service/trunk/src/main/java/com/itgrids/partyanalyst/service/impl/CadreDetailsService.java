@@ -31,7 +31,6 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.CountryDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
@@ -69,6 +68,7 @@ import com.itgrids.partyanalyst.dao.IIvrSurveyCandidateQuestionDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyEntityDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyQuestionOptionDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyServiceDAO;
+import com.itgrids.partyanalyst.dao.IKaizalaLocationAddressDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -108,7 +108,6 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO;
-import com.itgrids.partyanalyst.dao.hibernate.WardBoothDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityInviteeDAO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
@@ -159,6 +158,7 @@ import com.itgrids.partyanalyst.model.EnrollmentYear;
 import com.itgrids.partyanalyst.model.GovtSchemes;
 import com.itgrids.partyanalyst.model.ImportantLeaders;
 import com.itgrids.partyanalyst.model.ImportantLeadersType;
+import com.itgrids.partyanalyst.model.KaizalaLocationAddress;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.StudentAddress;
@@ -281,6 +281,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IActivityMemberAccessTypeDAO activityMemberAccessTypeDAO;
 	private ICadreDetailsService cadreDetailsService;
 	private IEnrollmentYearDAO enrollmentYearDAO;
+	private IKaizalaLocationAddressDAO kaizalaLocationAddressDAO;
 	
 	
 	
@@ -13204,4 +13205,128 @@ public RegisteredMembershipCountVO setElectionPerformanceDetailsForCadreLocation
 		}
 		return userAddressId;
 	}
+
+public Long kaizalaLocationAddressIdSaving(final Long locationScopeId, final Long locationValue){
+	Long userAddressId = 0L;
+	try {
+		  userAddressId = (Long) transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus arg0) {
+				KaizalaLocationAddress user = null;
+				if(locationScopeId != null && locationScopeId.longValue()>0L){
+					KaizalaLocationAddress address = new KaizalaLocationAddress();
+					
+					if(locationScopeId.longValue()==2L){
+						
+						address.setState(stateDAO.get(locationValue));
+						
+					}else if(locationScopeId.longValue()==3L){
+						
+						address.setDistrict(districtDAO.get(locationValue));
+						address.setState(address.getDistrict().getState());
+						
+					}else if(locationScopeId.longValue()==4L || locationScopeId.longValue()==10L){
+						if(locationScopeId.longValue()==4L){
+							address.setAssembly(constituencyDAO.get(locationValue));
+						List<Long> parliamentsIds = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(locationValue);
+						if(commonMethodsUtilService.isListOrSetValid(parliamentsIds))
+							address.setParliament(constituencyDAO.get(parliamentsIds.get(0)));
+							address.setDistrict(address.getAssembly().getDistrict());
+						}else{
+							address.setParliament(constituencyDAO.get(locationValue));					
+						}
+						
+						address.setState(address.getDistrict().getState());
+						
+					}else if(locationScopeId.longValue()==5L){
+						
+						address.setTehsil(tehsilDAO.get(locationValue));
+						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(locationValue);
+						if(commonMethodsUtilService.isListOrSetValid(assemblyList)){
+							address.setAssembly(assemblyList.get(0));
+							List<Long> parliamentsIds = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(address.getAssembly().getConstituencyId());
+							if(commonMethodsUtilService.isListOrSetValid(parliamentsIds))
+								address.setParliament(constituencyDAO.get(parliamentsIds.get(0)));
+							
+							address.setDistrict(address.getAssembly().getDistrict());
+							address.setState(address.getDistrict().getState());
+						}
+						
+					}else if(locationScopeId.longValue()==6L){
+						
+						address.setPanchayat(panchayatDAO.get(locationValue));
+						address.setTehsil(address.getPanchayat().getTehsil());
+						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(address.getTehsil().getTehsilId());
+						if(commonMethodsUtilService.isListOrSetValid(assemblyList)){
+							address.setAssembly(assemblyList.get(0));
+							List<Long> parliamentsIds = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(address.getAssembly().getConstituencyId());
+							if(commonMethodsUtilService.isListOrSetValid(parliamentsIds))
+								address.setParliament(constituencyDAO.get(parliamentsIds.get(0)));
+							
+							address.setDistrict(address.getAssembly().getDistrict());
+							address.setState(address.getDistrict().getState());
+						}
+						
+					}else if(locationScopeId.longValue()==7L){
+						
+						address.setLocalElectionBody(localElectionBodyDAO.get(locationValue));
+						address.setTehsil(address.getLocalElectionBody().getTehsil());
+						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(address.getTehsil().getTehsilId());
+						if(commonMethodsUtilService.isListOrSetValid(assemblyList)){
+							address.setAssembly(assemblyList.get(0));
+							List<Long> parliamentsIds = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(address.getAssembly().getConstituencyId());
+							if(commonMethodsUtilService.isListOrSetValid(parliamentsIds))
+								address.setParliament(constituencyDAO.get(parliamentsIds.get(0)));
+							
+							address.setDistrict(address.getAssembly().getDistrict());
+							address.setState(address.getDistrict().getState());
+						}
+						
+					}else if(locationScopeId.longValue()==8L){
+						
+						//address.setWard(constituencyDAO.get(locationValue));
+						address.setLocalElectionBody(address.getLocalElectionBody());
+						address.setTehsil(address.getLocalElectionBody().getTehsil());
+						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(address.getTehsil().getTehsilId());
+						if(commonMethodsUtilService.isListOrSetValid(assemblyList)){
+							address.setAssembly(assemblyList.get(0));
+							List<Long> parliamentsIds = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(address.getAssembly().getConstituencyId());
+							if(commonMethodsUtilService.isListOrSetValid(parliamentsIds))
+								address.setParliament(constituencyDAO.get(parliamentsIds.get(0)));
+							
+							address.setDistrict(address.getAssembly().getDistrict());
+							address.setState(address.getDistrict().getState());
+						}
+						
+					}else if(locationScopeId.longValue()==9L){
+						
+						//address.setBooth(boothDAO.get(locationValue));
+						//address.setLocalElectionBody(address.getBooth().getLocalBody());
+						
+						address.setTehsil(address.getLocalElectionBody().getTehsil());
+						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(address.getTehsil().getTehsilId());
+						if(commonMethodsUtilService.isListOrSetValid(assemblyList)){
+							address.setAssembly(assemblyList.get(0));
+							List<Long> parliamentsIds = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(address.getAssembly().getConstituencyId());
+							if(commonMethodsUtilService.isListOrSetValid(parliamentsIds))
+								address.setParliament(constituencyDAO.get(parliamentsIds.get(0)));
+							
+							address.setDistrict(address.getAssembly().getDistrict());
+							address.setState(address.getDistrict().getState());
+						}
+						
+					}
+					user = kaizalaLocationAddressDAO.save(address);
+				}
+				if(user != null)
+					return user.getKaizalaLocationAddressId();
+				else
+					return 0;
+			}
+		});
+	} catch (Exception e) {
+		LOG.error(" Exception Occured in saveUserAddressDetails() method, Exception - ",e);
+	}
+	return userAddressId;
+}
+
 }

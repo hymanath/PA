@@ -5426,12 +5426,23 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 	}
 	
-	public Long getAddressId(Long locationScopeId, Long locationValue){
+	/*public Long getAddressId(Long locationScopeId, Long locationValue){
 		try{
 			return cadreDetailsService.saveUserAddressDetails(locationScopeId, locationValue);
 		}catch (Exception e) {
 			log.error("Exception raised at getAddressId for kaizala user addressId", e);
 		}
 		return null;
+	}*/
+	
+	
+	public Long getKaizalaAddressId(Long locationScopeId, Long locationValue){
+		try{
+			return cadreDetailsService.kaizalaLocationAddressIdSaving(locationScopeId, locationValue);
+		}catch (Exception e) {
+			log.error("Exception raised at getAddressId for kaizala user addressId", e);
+		}
+		return null;
 	}
+
 }
