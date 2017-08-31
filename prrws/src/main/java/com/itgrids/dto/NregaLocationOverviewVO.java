@@ -21,7 +21,60 @@ public class NregaLocationOverviewVO {
 		 private String percentage;
 		 private List<NregaLocationOverviewVO> subList1;
 		 private List<NregaLocationOverviewVO> subList2;
+		 private String totalFTO;
+		 private String totalAmount;
+		 private String paidFTO;
+		 private String paidAmount;
+		 private String pendingFTO;
+		 private String pendingAmount;
+		 private String districtId;
+		 private String constituencyId;
+		 private String mandalId;
+		 private String panchayatId;
+		 private Double ttlAmt;
+		 private Double paidAmt;
+		 private Double pndgAmt;
+		 private Double ttlFTO;
+		 private Double PaiidFTO;
+		 private Double pndgFTO;
+		 
 	  
+		public Double getTtlAmt() {
+			return ttlAmt;
+		}
+		public void setTtlAmt(Double ttlAmt) {
+			this.ttlAmt = ttlAmt;
+		}
+		public Double getPaidAmt() {
+			return paidAmt;
+		}
+		public void setPaidAmt(Double paidAmt) {
+			this.paidAmt = paidAmt;
+		}
+		public Double getPndgAmt() {
+			return pndgAmt;
+		}
+		public void setPndgAmt(Double pndgAmt) {
+			this.pndgAmt = pndgAmt;
+		}
+		public Double getTtlFTO() {
+			return ttlFTO;
+		}
+		public void setTtlFTO(Double ttlFTO) {
+			this.ttlFTO = ttlFTO;
+		}
+		public Double getPaiidFTO() {
+			return PaiidFTO;
+		}
+		public void setPaiidFTO(Double paiidFTO) {
+			PaiidFTO = paiidFTO;
+		}
+		public Double getPndgFTO() {
+			return pndgFTO;
+		}
+		public void setPndgFTO(Double pndgFTO) {
+			this.pndgFTO = pndgFTO;
+		}
 		public String getUniqueId() {
 			return uniqueId;
 		}
@@ -123,6 +176,66 @@ public class NregaLocationOverviewVO {
 		}
 		public void setSubList2(List<NregaLocationOverviewVO> subList2) {
 			this.subList2 = subList2;
+		}
+		public String getTotalFTO() {
+			return totalFTO;
+		}
+		public void setTotalFTO(String totalFTO) {
+			this.totalFTO = totalFTO;
+		}
+		public String getTotalAmount() {
+			return totalAmount;
+		}
+		public void setTotalAmount(String totalAmount) {
+			this.totalAmount = totalAmount;
+		}
+		public String getPaidFTO() {
+			return paidFTO;
+		}
+		public void setPaidFTO(String paidFTO) {
+			this.paidFTO = paidFTO;
+		}
+		public String getPaidAmount() {
+			return paidAmount;
+		}
+		public void setPaidAmount(String paidAmount) {
+			this.paidAmount = paidAmount;
+		}
+		public String getPendingFTO() {
+			return pendingFTO;
+		}
+		public void setPendingFTO(String pendingFTO) {
+			this.pendingFTO = pendingFTO;
+		}
+		public String getPendingAmount() {
+			return pendingAmount;
+		}
+		public void setPendingAmount(String pendingAmount) {
+			this.pendingAmount = pendingAmount;
+		}
+		public String getDistrictId() {
+			return districtId;
+		}
+		public void setDistrictId(String districtId) {
+			this.districtId = districtId;
+		}
+		public String getConstituencyId() {
+			return constituencyId;
+		}
+		public void setConstituencyId(String constituencyId) {
+			this.constituencyId = constituencyId;
+		}
+		public String getMandalId() {
+			return mandalId;
+		}
+		public void setMandalId(String mandalId) {
+			this.mandalId = mandalId;
+		}
+		public String getPanchayatId() {
+			return panchayatId;
+		}
+		public void setPanchayatId(String panchayatId) {
+			this.panchayatId = panchayatId;
 		}
 	  
 	  

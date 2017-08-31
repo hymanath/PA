@@ -191,7 +191,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row m_top10">
 					<div class="col-sm-3" style="padding-right: 5px;">
 						<div class="white-block">
 							<h5 style="padding:5px"><span class="chartTitleAlign">Key Performance Indicators<br/><small style="margin-left:30px;">Habitations through Schemes</small></span></h5>
@@ -217,7 +217,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row m_top10">
 					<div class="col-sm-5" style="padding-right: 5px;">
 						<div class="white-block">
 							<h5 style="padding:5px"><span class="chartTitleAlign">Alert Status - Jalavani</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#FC5049"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
@@ -237,11 +237,17 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row m_top10">
 					<div class="col-sm-3" >
 						<div class="white-block">
 							<h5 style="padding:5px;text-align:center;"><span class="chartTitleAlign overViewDtlsSwatchBharatCls" style="cursor:pointer;">Swatch Bharat - IHHL</span></h5>
 							<div class="chart" id="swatchBharatDivId"></div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="white-block">
+							<h5 style="padding:5px;text-align:center;"><span class="chartTitleAlign overViewDtlsSwatchBharatPaymentCls" style="cursor:pointer;">Swatch Bharat - PAYMENTS</span></h5>
+							<div class="chart" id="swatchBharatPaymentsDivId"></div>
 						</div>
 					</div>
 				</div>
@@ -355,11 +361,11 @@
 			</div>
 		</div>
 	</section>
-	<section>
+	<!-- <section>
 		<div class="container-fluid m_top20">
 			<div id="sbmIhhlBlockId"></div>
 		</div>
-	</section>
+	</section> -->
 </main>
 <div class="modal fade" id="modalDivId" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document" style="width: 95%;">
@@ -394,6 +400,33 @@
 				<div class="paginationId"></div>
 			</div>
 		</div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="sbModalDivId" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width: 95%;">
+    <div class="modal-content modal-custom">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#fff">&times;</span></button>
+        <h4 class="modal-title" id="">Swatch Bharat - IHHL</h4>
+      </div>
+      <div class="modal-body">
+        <div id="sbDataDivId"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="sbPaymentModalDivId" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width: 95%;">
+    <div class="modal-content modal-custom">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#fff">&times;</span></button>
+        <h4 class="modal-title" id="">Swatch Bharat Payments</h4>
+      </div>
+      <div class="modal-body">
+        <div id="sbPaymentDataDivId"></div>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

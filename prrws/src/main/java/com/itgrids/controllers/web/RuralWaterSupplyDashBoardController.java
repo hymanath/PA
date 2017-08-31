@@ -415,4 +415,24 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return null;
 	}
+	
+	@PostMapping("/getSBPaymentsAbstract")
+	public @ResponseBody NregaLocationOverviewVO getSBPaymentsAbstract(@RequestBody InputVO inputVO) {
+		try {
+			return rWSNICService.getSBPaymentsAbstract(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSBPaymentsAbstract - RuralWaterSupplyDashBoardController controller", e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getSBPaymentsLevelsWiseData")
+	public @ResponseBody List<NregaLocationOverviewVO> getSBPaymentsLevelsWiseData(@RequestBody InputVO inputVO) {
+		try {
+			return rWSNICService.getSBPaymentsLevelsWiseData(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSBPaymentsLevelsWiseData - RuralWaterSupplyDashBoardController controller", e);
+		}
+		return null;
+	}
 }

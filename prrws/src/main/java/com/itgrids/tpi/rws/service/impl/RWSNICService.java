@@ -2301,5 +2301,174 @@ public class RWSNICService implements IRWSNICService{
 		}
 		return resultList;
 	}
+	/**
+	  * @param  InputVO inputVO which contain fromDate,toDate,location,locationId and subLocationType
+	  * @return NregaLocationOverviewVO
+	  * @author Nandhini 
+	  * @Description :This Service Method is used to get SwachaBharat(Payments) Abstract(MGNREGSTCS Service).
+	  * @since 30/08/19
+	  */
+	public NregaLocationOverviewVO getSBPaymentsAbstract(InputVO inputVO){
+		NregaLocationOverviewVO resultVO = new NregaLocationOverviewVO();
+		try {
+			
+			String str = cvertingIpVOToStringFrSBPayments(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverviewMonthWise/GetPayOverviewMonthWiseDetails", str);
+			
+		    if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject jsonObject = new JSONObject(output);
+	 	    		JSONArray abstArr = jsonObject.getJSONArray("PayOverviewDetailsMonthWiseData");
+	 	    		//JSONArray overViewArr = jsonObject.getJSONArray("MinisterDashBoardLocOverView");
+	 	    		//Abstarct
+	 	    		if(abstArr != null && abstArr.length() > 0){
+	 	    			for(int i=0;i<abstArr.length();i++){
+	 	    				JSONObject jObj = (JSONObject) abstArr.get(i);
+		 	    				resultVO.setTotalFTO(jObj.getString("TOTAL_FTOS"));
+		 	    				resultVO.setTotalAmount(convertRupeesIntoLakhes(jObj.getString("TOTAL_AMOUNT")));
+		 	    				resultVO.setPaidFTO(jObj.getString("PAID_FTOS"));
+		 	    				resultVO.setPaidAmount(convertRupeesIntoLakhes(jObj.getString("PAID_AMOUNT")));
+		 	    				resultVO.setPendingFTO(jObj.getString("YETTOBE_PAID_FTOS"));
+		 	    				resultVO.setPendingAmount(convertRupeesIntoLakhes(jObj.getString("YETTOBE_PAID_AMOUNT")));
+		 	    				
+		 	    				resultVO.setTtlAmt(jObj.getDouble("TOTAL_AMOUNT"));
+		 	    				resultVO.setPaidAmt(jObj.getDouble("PAID_AMOUNT"));
+		 	    				resultVO.setPndgAmt(jObj.getDouble("YETTOBE_PAID_AMOUNT"));
+		 	    				resultVO.setTtlFTO(jObj.getDouble("TOTAL_FTOS"));
+		 	    				resultVO.setPaiidFTO(jObj.getDouble("PAID_FTOS"));
+		 	    				resultVO.setPndgFTO(jObj.getDouble("YETTOBE_PAID_FTOS"));
+	 	    			}	
+	 	    		}
+	 	    	}
+	 	      }  
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getSBPaymentsAbstract() method, Exception - ",e);
+		}
+		return resultVO;
+	}
+	
+	public String cvertingIpVOToStringFrSBPayments(InputVO inputVO){
+		String str = "";
+		try {
+			/*if(inputVO.getLocationId() != null)
+				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
+					if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
+						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+				}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+					if(inputVO.getLocationId().longValue() > 0l)
+						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+				}*/
+				
+			str = "{";
+			
+			if(inputVO.getFromDate() != null )
+				str += "\"FROMDATE\" : \""+inputVO.getFromDate()+"\",";
+			if(inputVO.getToDate() != null)
+				str += "\"TODATE\" : \""+inputVO.getToDate()+"\",";
+			if(inputVO.getLocation() != null)
+				str += "\"Location\" : \""+inputVO.getLocation()+"\",";
+			/*if(inputVO.getLocationIdStr() != null)
+				str += "\"locationId\" : \""+inputVO.getLocationIdStr()+"\",";else*/
+			 if(inputVO.getLocationId() != null)
+				str += "\"LocationID\" : \""+inputVO.getLocationId()+"\",";
+			if(inputVO.getSubLocation() != null)
+				str += "\"SUBLOCATION\" : \""+inputVO.getSubLocation()+"\",";
+			
+			if(str.length() > 1)
+				str = str.substring(0,str.length()-1);
+			
+			str += "}";
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in cvertingIpVOToStringFrSBPayments() method, Exception - ",e);
+		}
+		return str;
+	}
+	public String convertRupeesIntoLakhes(String value){
+		String returnVal = null;
+		try {
+			if(value != null){
+				returnVal = new BigDecimal(Long.valueOf(value)/100000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				returnVal = returnVal+" L";
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at convertRupeesIntoLakhes - NREGSTCSService service", e);
+		}
+		return returnVal;
+	}
+	
+	/**
+	  * @param  InputVO inputVO which contain fromDate,toDate,location,locationId and subLocationType
+	  * @return List<NregaLocationOverviewVO>
+	  * @author Nandhini 
+	  * @Description :This Service Method is used to get SwachaBharat(Payments) LevelsData(MGNREGSTCS Service).
+	  * @since 30/08/19
+	  */
+	public List<NregaLocationOverviewVO> getSBPaymentsLevelsWiseData(InputVO inputVO){
+		List<NregaLocationOverviewVO> returnList = new ArrayList<NregaLocationOverviewVO>();
+		try {
+			
+			String str = cvertingIpVOToStringFrSBPayments(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverviewMonthWise/GetPayOverviewMonthWiseDetails", str);
+			
+		    if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject jsonObject = new JSONObject(output);
+	 	    		JSONArray dataArr = jsonObject.getJSONArray("PayOverviewDetailsMonthWiseData");
+	 	    		if(dataArr != null && dataArr.length() > 0){
+	 	    			for(int i=0;i<dataArr.length();i++){
+	 	    				JSONObject jObj = (JSONObject) dataArr.get(i);
+	 	    				NregaLocationOverviewVO vo = new NregaLocationOverviewVO();
+	 	    				if(inputVO.getSubLocation() != null && !inputVO.getSubLocation().trim().equalsIgnoreCase("state")){
+	 	    					vo.setDistrictId(jObj.getString("DID"));
+	 	    					vo.setDistrict(jObj.getString("DNAME"));
+	 	    				}
+	 	    				if(inputVO.getSubLocation() != null && !(inputVO.getSubLocation().trim().equalsIgnoreCase("state") || inputVO.getSubLocation().trim().equalsIgnoreCase("district"))){
+	 	    					vo.setConstituencyId(jObj.getString("ACODE"));
+	 	    					vo.setConstituency(jObj.getString("ANAME"));
+	 	    				}
+	 	    				if(inputVO.getSubLocation() != null && !(inputVO.getSubLocation().trim().equalsIgnoreCase("state") || inputVO.getSubLocation().trim().equalsIgnoreCase("district") || inputVO.getSubLocation().trim().equalsIgnoreCase("constituency"))){
+	 	    					vo.setMandalId(jObj.getString("MID"));
+	 	    					vo.setMandal(jObj.getString("MNAME"));
+	 	    				}
+	 	    				if(inputVO.getSubLocation() != null && inputVO.getSubLocation().trim().equalsIgnoreCase("panchayat")){
+	 	    					vo.setPanchayatId(jObj.getString("PID"));
+	 	    					vo.setPanchayt(jObj.getString("GRAMPANCHAYATNAMEENG"));
+	 	    				}
+	 	    				
+	 	    				vo.setTotalFTO(jObj.getString("TOTAL_FTOS"));
+	 	    				if(jObj.getString("TOTAL_AMOUNT") != null && jObj.getString("TOTAL_AMOUNT").length() >= 6)
+	 	    					vo.setTotalAmount(convertRupeesIntoLakhes(jObj.getString("TOTAL_AMOUNT")));
+	 	    				else
+	 	    					vo.setTotalAmount(jObj.getString("TOTAL_AMOUNT"));
+	 	    				vo.setPaidFTO(jObj.getString("PAID_FTOS"));
+	 	    				if(jObj.getString("PAID_AMOUNT") != null && jObj.getString("PAID_AMOUNT").length() >= 6)
+	 	    					vo.setPaidAmount(convertRupeesIntoLakhes(jObj.getString("PAID_AMOUNT")));
+	 	    				else
+	 	    					vo.setPaidAmount(jObj.getString("PAID_AMOUNT"));
+	 	    				vo.setPendingFTO(jObj.getString("YETTOBE_PAID_FTOS"));
+	 	    				if(jObj.getString("YETTOBE_PAID_AMOUNT") != null && jObj.getString("YETTOBE_PAID_AMOUNT").length() >= 6)
+	 	    					vo.setPendingAmount(convertRupeesIntoLakhes(jObj.getString("YETTOBE_PAID_AMOUNT")));
+	 	    				else
+	 	    					vo.setPendingAmount(jObj.getString("YETTOBE_PAID_AMOUNT"));
+	 	    				
+	 	    				returnList.add(vo);
+	 	    			}	
+	 	    		}
+	 	    	}
+	 	      }  
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getSBPaymentsLevelsWiseData() method, Exception - ",e);
+		}
+		return returnList;
+	}
 	
  }
