@@ -47,28 +47,28 @@
 	<div class="container">
 		<div class="row">
 		 	<div class="col-md-12 col-xs-12 col-sm-12">
-				<h2><span id="selectedMenuName" class="text-capitalize">Kavali Constituency</span> Information</h2>
-				<ol class="breadcrumb" id="getMenuLocations" menu-location-state="1" menu-location-districts="19" menu-location-constituencys="232" menu-location-mandals="" menu-location-panchayats="" menu-location-levelId="4" menu-location-levelName="constituency" >
+				<h2><span id="selectedMenuName" class="text-capitalize">Nellore District</span> Information</h2>
+				<ol class="breadcrumb" id="getMenuLocations" menu-location-state="1" menu-location-district="19" menu-location-constituency="232" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="3" menu-location-levelName="district" >
 					<!--<li>State : <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>-->
-					<li>District : <span menu-name="districts" levelId="3" locationId="01" class="districtsMenuName text-capital">Nellore</span></li>
+					<li>District : <span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capital">Nellore</span></li>
 					<li style="display:none">Constituency :<span menu-name="constituency" levelId="4" locationId="01" class="constituencyMenuName text-capital"> Andhra Pradesh</span></li>
-					<li style="display:none">Mandal :<span menu-name="mandals" levelId="5" locationId="01" class="mandalsMenuName text-capital"> Andhra Pradesh</span></li>
-					<li style="display:none">Panchayat :<span menu-name="panchayats" levelId="6" locationId="01" class="panchayatsMenuName text-capital"> Andhra Pradesh</span></li>
+					<li style="display:none">Mandal :<span menu-name="mandal" levelId="5" locationId="01" class="mandalsMenuName text-capital"> Andhra Pradesh</span></li>
+					<li style="display:none">Panchayat :<span menu-name="panchayat" levelId="6" locationId="01" class="panchayatMenuName text-capital"> Andhra Pradesh</span></li>
 				</ol>
 				<div class="menu-dropdown" style="display:none;">
 					<div class="row">
 						<div class="col-sm-3">
-							<div id="districtsMenu"></div>
-							<div id="parliamentsMenu" class="m_top20"></div>
+							<div id="districtMenu"></div>
+							<div id="parliamentMenu" class="m_top20"></div>
 						</div>
 						<div class="col-sm-3">
 							<div id="constituencyMenu"></div>
 						</div>
 						<div class="col-sm-3">
-							<div id="mandalsMenu"></div>
+							<div id="mandalMenu"></div>
 						</div>
 						<div class="col-sm-3">
-							<div id="panchayatsMenu"></div>
+							<div id="panchayatMenu"></div>
 						</div>
 						<div class="col-sm-12 text-right" style="border-top:1px solid #ddd;padding-top:10px;margin-top:10px;">
 							<button class="btn btn-success" id="getLocationDetails">GET DETAILS</button>
@@ -78,44 +78,13 @@
 			</div>
 		</div>
 		<div class="row m_top20">
-		 	<div class="col-md-12 col-xs-12 col-sm-12">
+		 	<div class="col-sm-12">
+				<h3>Member Of Parliament (MP)</h3>
 				<div class="block">
-					<div class="row">
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div id="assemblyMemberId">
-								<div class="media media-profile">
-									<div class="media-left">
-										<img src="coreApi/img/profile.jpg" class="media-object profile-image img-border" alt="profile"/>
-										<span class="border-image img-border">
-											<img src="coreApi/img/BJP.png" alt="party"/>
-										</span>
-									</div>
-									<div class="media-body">
-										<h4 class="m_top20 text-success text-capital"> - </h4>
-										<p class="text-muted">MLA<span class="text-capitalize"> [Member of legislative assembly]</span></p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div id="parliamentMemberId">
-								<div class="media media-profile">
-									<div class="media-left">
-										<img src="coreApi/img/profile.jpg" class="media-object profile-image img-border" alt="profile"/>
-										<span class="border-image img-border">
-											<img src="coreApi/img/BJP.png" alt="party"/>
-										</span>
-									</div>
-									<div class="media-body">
-										<h4 class="m_top20 text-success text-capital"> - </h4>
-										<p class="text-muted">MP<span class="text-capitalize"> [Member of Parliament]</span></p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					<div id="parliamentMemberId"></div>
 				</div>
 			</div>
+			<div id="assemblyMemberId"></div>
 		 	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 				<div id="levelWiseCountDivId"></div>
 			</div>
@@ -230,27 +199,27 @@
 						
 							<div class="row">
 								<div class="col-sm-6">
-									<h4 class="panel-title text-capital">main committee formation</h4>
+									<h4 class="panel-title text-capital"><b>main committee formation</b></h4>
 									<div class="row m_top15">
 										<div class="col-sm-6">
-											<h4 class="panel-title text-capital">mandal/town/division level</h4>
+											<h4 class="panel-title text-capitalize">mandal/town/division level</h4>
 											<div id="mandalLevelGraph" style="height:200px;"></div>
 										</div>
 										<div class="col-sm-6">
-											<h4 class="panel-title text-capital">vilalge/ward level</h4>
+											<h4 class="panel-title text-capital">village/ward level</h4>
 											<div id="villageLevelGraph" style="height:200px;"></div>
 										</div>
 									</div>
 								</div>
 								<div class="col-sm-6">
-									<h4 class="panel-title text-capital">affliated committee formation</h4>
+									<h4 class="panel-title text-capital"><b>affliated committee formation</b></h4>
 									<div class="row m_top15">
 										<div class="col-sm-6">
 											<h4 class="panel-title text-capital">mandal/town/division level</h4>
 											<div id="affMandalLevelGraph" style="height:200px;"></div>
 										</div>
 										<div class="col-sm-6">
-											<h4 class="panel-title text-capital">vilalge/ward level</h4>
+											<h4 class="panel-title text-capital">village/ward level</h4>
 											<div id="affVillageLevelGraph" style="height:200px;"></div>
 										</div>
 									</div>
@@ -306,14 +275,14 @@
 							<h5 class="m_left10">Posts</h5>
 							<div id="nominatedPostStatusWiseCount"></div>
 						</div>
-						<!--<div class="col-md-6 col-xs-12 col-sm-6">
+						<div class="col-md-6 col-xs-12 col-sm-6">
 							<h5 class="m_left10">Applications</h5>
 							<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									<div id="nominatedPostApplicationDetails"></div>
 								</div>
 							</div>
-						</div>-->
+						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
@@ -357,7 +326,6 @@
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
-
 <script src="coreApi/js/constituencyPage.js" type="text/javascript"></script>
 </body>
 </html>
