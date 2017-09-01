@@ -13423,24 +13423,7 @@ public Long kaizalaCommitteeLevelAddressSaving(final Long locationScopeId, final
 							address.setState(address.getDistrict().getState());
 						}
 						
-					}/*else if(locationScopeId.longValue()==9L){
-						
-						address.setBooth(boothDAO.get(locationValue));
-						address.setLocalElectionBody(address.getBooth().getLocalBody());
-						
-						address.setTehsil(address.getLocalElectionBody().getTehsil());
-						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(address.getTehsil().getTehsilId());
-						if(commonMethodsUtilService.isListOrSetValid(assemblyList)){
-							address.setAssembly(assemblyList.get(0));
-							List<Long> parliamentsIds = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(address.getAssembly().getConstituencyId());
-							if(commonMethodsUtilService.isListOrSetValid(parliamentsIds))
-								address.setParliament(constituencyDAO.get(parliamentsIds.get(0)));
-							
-							address.setDistrict(address.getAssembly().getDistrict());
-							address.setState(address.getDistrict().getState());
-						}
-						
-					}*/
+					}
 					user = kaizalaLocationAddressDAO.save(address);
 				}
 				if(user != null)
@@ -13450,7 +13433,7 @@ public Long kaizalaCommitteeLevelAddressSaving(final Long locationScopeId, final
 			}
 		});
 	} catch (Exception e) {
-		LOG.error(" Exception Occured in saveUserAddressDetails() method, Exception - ",e);
+		LOG.error(" Exception Occured in kaizalaCommitteeLevelAddressSaving() method, Exception - ",e);
 	}
 	return locationAddressId;
 }
