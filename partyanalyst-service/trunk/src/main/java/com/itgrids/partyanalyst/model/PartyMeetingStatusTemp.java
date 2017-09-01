@@ -21,7 +21,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name="party_meeting_status_temp")
+@Table(name="party_meeting_status_temp2")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PartyMeetingStatusTemp implements Serializable{
 	
