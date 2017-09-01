@@ -615,6 +615,10 @@ label
 	position:relative;
 	cursor:pointer;
 }
+.menu-dropdown ul li[menu-levelname="panchayat"].active:after
+{
+	content:' ';
+}
 .menu-dropdown ul li.active:after
 {
 	content:'\e127' !important;
@@ -632,6 +636,7 @@ label
 	border-top: 1px solid #ddd;
 	border-bottom: 1px solid #ddd;
 }
+
 span[menu-name]
 {
 	cursor:pointer;
@@ -648,5 +653,18 @@ span[menu-name].active
 	z-index: 99;
 }
 .m_top40{
-margin-top:40px;
+	margin-top:40px;
+}
+.assembly-members-view
+{
+	max-height: 200px;
+    transition: max-height 0.5s ease-out;
+	overflow: hidden;
+	box-shadow:inset 0px -13px 17px -8px;
+}
+.assembly-members-view:hover
+{
+	max-height: 1500px;
+    transition: max-height 0.5s ease-in;
+	box-shadow: none;
 }
