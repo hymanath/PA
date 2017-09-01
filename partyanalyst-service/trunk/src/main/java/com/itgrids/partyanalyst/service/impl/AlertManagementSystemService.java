@@ -16002,7 +16002,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				String locationName = "";
 				if(locationId ==7l || locationId== 5l){
 					locationId= 5l;
-					locationName="Madal/Muncipality";
+					locationName="Mandal/Municipality";
 				} else if(locationId == 8l || locationId == 6l){
 					locationId= 6l;
 					locationName="Village/Ward";
