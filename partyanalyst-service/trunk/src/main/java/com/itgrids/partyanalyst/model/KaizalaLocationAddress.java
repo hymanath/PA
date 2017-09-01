@@ -25,6 +25,7 @@ public class KaizalaLocationAddress {
 	private Long panchayatId;
 	private Long hamletId;
 	private Long wardId;
+	private Long boothId;
 	
 	private State state;
 	private District district;
@@ -35,6 +36,7 @@ public class KaizalaLocationAddress {
 	private Hamlet hamlet;
 	private LocalElectionBody localElectionBody;
 	private Constituency ward;
+	private Booth booth;
 	
 	@Id
 	@Column(name="kaizala_location_address_id")
@@ -179,6 +181,21 @@ public class KaizalaLocationAddress {
 	}
 	public void setWard(Constituency ward) {
 		this.ward = ward;
+	}
+	@Column(name = "booth_id", insertable = false, updatable = false)
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "booth_id")
+	public Booth getBooth() {
+		return booth;
+	}
+	public void setBooth(Booth booth) {
+		this.booth = booth;
 	}
 	
 	
