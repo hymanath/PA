@@ -478,7 +478,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	 public String getLocationWiseCommitteesCount(){
 		 try{
 			 jObj = new JSONObject(getTask());
-			 committeeBasicVO = locationDashboardService.getLocationWiseCommitteesCount(jObj.getString("locationTypeId"), jObj.getLong("locationId"), jObj.getLong("enrollmentId"));
+			 committeeBasicVO = locationDashboardService.getLocationWiseCommitteesCount(jObj.getString("locationType"), jObj.getLong("locationId"), jObj.getLong("enrollmentId"));
 		 }catch(Exception e){
 			 LOG.error("Exception raised at getLocationWiseCommitteesCount() of LocationDashboardAction{}",e);
 		 }
