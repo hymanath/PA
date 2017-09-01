@@ -294,71 +294,10 @@
 				<div class="block pad_0" id ="activitesId">
 				</div>
 			</div>
-			<!--<div class="col-md-12 col-xs-12 col-ms-12 m_top20" navbar-index="alerts">
+			<div class="col-md-12 col-xs-12 col-ms-12 m_top20" navbar-index="alerts">
 				<h3>Alerts <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
-				<div class="block">
-					<div class="row">
-						<div class="col-md-6 col-xs-12 col-sm-6">
-							<div class="block">
-								<ul class="list-inline list-border">
-									<li>
-										<h4>100</h4>
-										<p>Total Alerts</p>
-									</li>
-									<li>
-										<h4>100</h4>
-										<p>Total Alerts</p>
-									</li>
-									<li>
-										<h4>100</h4>
-										<p>Total Alerts</p>
-									</li>
-								</ul>
-							</div>
-							<div class="row m_top15">
-								<div class="col-md-5 col-xs-12 col-sm-5">
-									<div id="overallAlerts" style="height:200px"></div>
-								</div>
-								<div class="col-md-7 col-xs-12 col-sm-7">
-									
-								  <select class="form-control" role="tabListMobile">
-									  <option tab_id="alerts1">OC</option>
-									  <option tab_id="alerts2">BC</option>
-									  <option tab_id="alerts3">SC</option>
-								  </select>
-								  <ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">
-									<li role="presentation" class="active"><a href="#alerts1" aria-controls="alerts1" role="tab" data-toggle="tab">OC</a></li>
-									<li role="presentation"><a href="#alerts2" aria-controls="alerts1" role="tab" data-toggle="tab">BC</a></li>
-									<li role="presentation"><a href="#alerts3" aria-controls="alerts1" role="tab" data-toggle="tab">SC</a></li>
-								  </ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6 pad_left0">
-							<div>
-							  
-							  <div class="tab-content">
-								<div role="tabpanel" class="tab-pane active pad_10" id="alerts1">
-									<table class="table table-noborder">
-										<thead class="text-capitalize bg-E9">
-											<th>alert status</th>
-											<th>total</th>
-										</thead>
-									</table>
-								</div>
-								<div role="tabpanel" class="tab-pane pad_10" id="alerts2">
-									
-								</div>
-								<div role="tabpanel" class="tab-pane pad_10" id="alerts3">
-									  
-								</div>
-							  </div>
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>-->
+				<div id="alertsBlockDivId"></div>
+			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="nominatedPosts">
 				<h3>Nominated Post <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="nominatedPosts"></i></span></h3>
 				<div class="block">
