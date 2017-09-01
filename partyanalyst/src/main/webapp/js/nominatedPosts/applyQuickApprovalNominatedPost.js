@@ -31,14 +31,17 @@ $(document).on('click','#searchbtn',function(){
 	
 })
 $(document).on('change','#deptBoardPostnId',function(){
+	var selPosition = $(this).find(":selected").text();
+	var postionArr = selPosition.split("(");
+	selPosition = postionArr[0];
 	$("#searchResultsBlock").html("");
 	$("#searchBy").val("");
-	
-	
-})
-$(document).on('change','#deptBoardPostnId',function(){
 	$("#showSearchResult").show();
+	if($(this).val()!=0 && !(globalPositionsArr.indexOf(selPosition) > -1)){
+		globalMembersCount = 0;
+	}
 })
+
 getBoardLevels("boardLvlId");	
 function getBoardLevels(id){
 	$("#searchResultsBlock").html("");
@@ -129,14 +132,13 @@ var globalMemAddedCunt = 0;
 $(document).on('click','.selectMember',function(){
 	$("#errMessageId").html('');
 	var positionCount = $(this).attr("attr_postion_count");
-	
 	if(positionCount != globalMembersCount ){
 		var departmentId=$("#depmtsId").val();
 		var boardId = $("#deptBoardId").val();
 		var positionId = $("#deptBoardPostnId").val();
 		var selPosition = $(this).attr("attr_position_type");
-		globalMembersCount++;
-		globalMemAddedCunt = globalMemAddedCunt+1;
+		
+		
 		$("#addmember"+selPosition.replace(/\s+/g, '')).closest(".panel-group").parent().show();
 			if($(this).is(':checked')){
 				var appendBlock = $(this).closest("li").html();
@@ -147,11 +149,13 @@ $(document).on('click','.selectMember',function(){
 				if(globalCadreIds.indexOf(cadreId) > -1){
 					$("#errMessageId").html('Duplicate person adding.');
 				}else{
+					globalCadreIds.push(cadreId);
+					globalMemAddedCunt = globalMemAddedCunt+1;
 					if(globalPositionsArr == null || globalPositionsArr == ""){
+						globalMembersCount++;
 						buildPanelBlock(selPosition,appendBlock,cadreId);
 						$("#addmember"+selPosition.replace(/\s+/g, '')).find("li div.panel-footer").remove();
 					}else{
-						//if(globalPositionsArr.indexOf(selPosition) > -1){
 						if(globalPositionsArr.indexOf(selPosition) > -1 || $("[attr_selected_position="+selPosition.replace(/\s+/g, '')+"]").length != 0){
 							var count = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_member_count");
 							var posiCnt = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_posi_count");
@@ -165,12 +169,13 @@ $(document).on('click','.selectMember',function(){
 							
 							$("#addmember"+selPosition.replace(/\s+/g, '')).find("li div.panel-footer").remove();
 						}else{
+							globalMembersCount++;
 							buildPanelBlock(selPosition,appendBlock,cadreId);
 							$("#addmember"+selPosition.replace(/\s+/g, '')).find("li div.panel-footer").remove();
 						}
 					}
 				}
-				globalCadreIds.push(cadreId);
+				
 			}
 		}else{
 			alert("Posts Are completed");
@@ -334,10 +339,12 @@ $(document).on('click','.removeMember-icon',function(){
 	$(this).closest("li").remove();
 	$(".selectMember").prop("checked",false);
 	var cadreId = $(this).attr("attr_cadre_id");
-	if(globalMembersCount >= 1)
+	if(globalMembersCount >= 1){
 		globalMembersCount--;
-	if(globalMemAddedCunt >= 1)
+	}
+	if(globalMemAddedCunt >= 1){
 		globalMemAddedCunt--;
+	}
 	for(var i in globalCadreIds){
 		if(globalCadreIds[i] == cadreId)
 		globalCadreIds.splice(i, 1);
@@ -579,7 +586,7 @@ function getDepartments(){
 	   $("#searchDataImgForPos").hide();
     $("#deptBoardPostnId").empty();
    if(result != null && result.length >0){
-	  $("#deptBoardPostnId").append('<option value="" >Select Board Position</option>');
+	  $("#deptBoardPostnId").append('<option value="0" >Select Board Position</option>');
 	 
 	  
 	   /* if(result[0].status != "Applied"){
@@ -1436,9 +1443,9 @@ function disableByLevel(index)
 		str+='<option value="0">All</option>';
 		if(result != null && result.length > 0){
 			for(var i in result){
-				if(result[i].id != 517){
+				//if(result[i].id != 517){
 					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
-				}
+				//}
 			}
 		}
 		$("#referdistrictId"+index).html(str);
@@ -1952,11 +1959,7 @@ function getDetailsBySrch()
 		select.refresh();
 		var select = new Dropkick("#referpanchayatId"+index);
 		select.refresh();
-  }
-
-$(document).on("change","#deptBoardPostnId",function(){
-	globalMembersCount = 0;
-}); 
+  } 
 function getLevelByDesignation()
  {
   
@@ -2327,3 +2330,109 @@ function getMandalsByConstituencyForReferPopup(index){
 			}
 		   });
 		}
+		
+		function getSearchDetailsByFilter(){
+	var searchType;
+	var searchValue = 0;
+	var locationType;
+	var locationVal;
+	var gender = "";
+	
+	var stateId = $("#filterStateId").val();
+	var districtId = $("#filterDistrictId").val();
+	var constiId = $("#filterConstituencyId").val();
+	var manMunId = $("#filterManTowDivId").val();
+	if(stateId == 0){
+		$("#errorDivId").html("Select State");
+		return;
+	}
+	else if(districtId == 0){
+		$("#errorDivId").html("Select District");
+		return;
+	}
+	else if(constiId == 0){
+		$("#errorDivId").html("Select Constituency");
+		return;
+	}
+	else if(manMunId == 0){
+		$("#errorDivId").html("Select Mandal/Muncipality");
+		return;
+	}
+	
+	if(manMunId > 0){
+		if(manMunId.substr(0,1) == 1){
+			  locationType = "mandal";
+		}
+		else if(manMunId.substr(0,1) == 2){
+			 locationType = "muncipality";
+			 
+		}								
+		locationVal = manMunId.substr(1);
+	}
+	
+	var advanceSearchType = $("#advanceSearchTypeId").val();
+	if(advanceSearchType == 4){
+		searchType = "caste";
+		searchValue = $("#filterCasteId").val();
+		if(searchValue == 0){
+			$("#errorDivId").html("Select Caste");
+			return;
+		}
+	}
+	else if(advanceSearchType == 5){
+		searchType = "gender";
+		gender = $("#filterGenderId").val();
+		if(gender == 0){
+			$("#errorDivId").html("Select Gender");
+			return;
+		}
+	}
+	else if(advanceSearchType == 6){
+		searchType = "age";
+		searchValue = $("#filterAgeId").val();
+		if(searchValue == 0){
+			$("#errorDivId").html("Select Age");
+			return;
+		}
+	}
+	else if(advanceSearchType == 7){
+		searchType = "casteGroup";
+		searchValue = $("#filterCasteGroupId").val();
+		if(searchValue == 0){
+			$("#errorDivId").html("Select Caste Group");
+			return;
+		}
+	}
+	else if(advanceSearchType == 8){
+		searchType = "education";
+		searchValue = $("#filterEducationId").val();
+		if(searchValue == 0){
+			$("#errorDivId").html("Select Education");
+			return;
+		}
+	}
+	$("#searchMemberAjax").css("display","block");
+	var jsObj={
+		searchType:searchType,
+		searchValue:searchValue,
+		locationType:locationType,
+		locationVal:locationVal,
+		gender:gender
+	}
+	$("#apptmemberDetailsDiv").html('');
+		$.ajax({
+			type : 'POST',
+			url : 'getNewCadreSearchBySearchTypeAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#searchMemberAjax").css("display","none");
+			$("#apptmemberDetailsDiv").html("");
+			if(result !=null && result.length>0){
+			buildapptmemberDetails(result);
+			
+			}else{
+				$("#apptmemberDetailsDiv").html("<center><h4>No Data Available</h4></center>");
+			}
+	  }); 
+}
