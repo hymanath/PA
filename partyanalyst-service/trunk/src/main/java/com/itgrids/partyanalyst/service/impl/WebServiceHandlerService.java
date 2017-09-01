@@ -5444,5 +5444,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		return null;
 	}
+	public Long kaizalaCommitteeLevelAddressSaving(Long locationScopeId, Long locationValue){
+		try{
+			return cadreDetailsService.kaizalaCommitteeLevelAddressSaving(locationScopeId, locationValue);
+		}catch (Exception e) {
+			log.error("Exception raised at kaizalaCommitteeLevelAddressSaving method in WebServiceHandlerService Class", e);
+		}
+		return null;
+	}
 
 }
