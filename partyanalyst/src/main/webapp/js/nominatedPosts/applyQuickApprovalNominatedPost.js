@@ -98,7 +98,7 @@ function searchResultBlock(myresult){
 			
 			if(myresult.previousElections != null && myresult.previousElections.length>0){
 				for(var s in myresult.previousElections){
-					block+=''+parseInt(parseInt(s)+1)+') <label>'+myresult.previousElections[s].casteName+' &nbsp&nbsp&nbsp<i class="fa fa-info" style="cursor:pointer;" title="'+myresult.previousElections[s].electionType+':'+myresult.previousElections[s].roleName+' --> '+myresult.previousElections[s].occupation+' Dept --> '+myresult.previousElections[s].role+' --> '+myresult.previousElections[s].casteCategory+'"> </i></label> <br> ';
+					block+=''+parseInt(parseInt(s)+1)+') <label>'+myresult.previousElections[s].casteName+' &nbsp&nbsp&nbsp<i class="fa fa-info tooltipClass" style="cursor:pointer;" title="'+myresult.previousElections[s].electionType+':'+myresult.previousElections[s].roleName+' --> '+myresult.previousElections[s].occupation+' Dept --> '+myresult.previousElections[s].role+' --> '+myresult.previousElections[s].casteCategory+'"> </i></label> <br> ';
 				}
 			}else{
 				 block+='<label class="checkbox-inline" ><input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+position+'" attr_postion_count="'+postitonCunt+'">Select Member</label>';
@@ -113,7 +113,7 @@ function searchResultBlock(myresult){
 	block+='<div class="clearfix"></div>';
 	block+='<p class="m_top20">Note:   1) Please select matches profile     2) You Can add Multiple members to above selected Post Name</p>';
     $("#searchResultsBlock").html(block);
-	
+	$(".tooltipClass").tooltip();
 	
 }
 
@@ -151,8 +151,8 @@ $(document).on('click','.selectMember',function(){
 						buildPanelBlock(selPosition,appendBlock,cadreId);
 						$("#addmember"+selPosition.replace(/\s+/g, '')).find("li div.panel-footer").remove();
 					}else{
-						
-						if(globalPositionsArr.indexOf(selPosition) > -1){
+						//if(globalPositionsArr.indexOf(selPosition) > -1){
+						if(globalPositionsArr.indexOf(selPosition) > -1 || $("[attr_selected_position="+selPosition.replace(/\s+/g, '')+"]").length != 0){
 							var count = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_member_count");
 							var posiCnt = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_posi_count");
 							count++;
@@ -200,34 +200,34 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
 					collapse+='<div class="col-sm-9" style="border-right:1px solid grey" id="buildPositionWiseBlock'+globalPosiDivs+'">';
 						collapse+='<h5 ><span style="color:#FF0000">STEP-3</span></h5>';
 						
-		collapse+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition.replace(/\s+/g, '')+'">';
-        collapse+='<div class="panel-group m_top20" id="accordion'+selPosition.replace(/\s+/g, '')+'" role="tablist" aria-multiselectable="true">';
-            collapse+='<div class="panel panel-default">';
-                collapse+='<div class="panel-heading" role="tab" id="headingOne'+selPosition.replace(/\s+/g, '')+'" style="background-color:transparent">';
-                        collapse+='<a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordion'+selPosition.replace(/\s+/g, '')+'" href="#collapseOne'+selPosition.replace(/\s+/g, '')+'" aria-expanded="true" aria-controls="collapseOne'+selPosition.replace(/\s+/g, '')+'">';
-						collapse+='<h4 class="panel-title">'+selPosition.replace(/\s+/g, '')+' -<span id="posiMemCnt'+selPosition.replace(/\s+/g, '')+'">1</span> Members Added</h4>';
-                    collapse+='</a>';
-                collapse+='</div>';
-					collapse+=' <div id="collapseOne'+selPosition.replace(/\s+/g, '')+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+selPosition.replace(/\s+/g, '')+'">';
-                
-                    collapse+='<div class="panel-body" id="show'+selPosition.replace(/\s+/g, '')+'">';
-						collapse+='<ul class="nav navbar-nav membersSelectionDivCls" id="addmember'+selPosition.replace(/\s+/g, '')+'" attr_remove_member="remove-member" attr_member_count="'+count+'" attr_posi_count="'+globalPosiDivs+'">';
-						collapse+='<li style="margin:2px 5px;">';
-							collapse+='<i class="fa fa-times removeMember-icon" attr_posi_text="'+selPosition.replace(/\s+/g, '')+'" attr_cadre_id="'+cadreId+'"  aria-hidden="true"></i>';
-							collapse+='<input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].tdpCadreId">';
-							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].departmentId" value="'+departmentId+'">';
-							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].boardId" value="'+boardId+'">';
-							collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].positionId" value="'+positionId+'">';
-							collapse+=appendBlock;
-							collapse+='</li>';
-						collapse+='</ul>';
-                    collapse+='</div>';
-                collapse+='</div>';
-            collapse+='</div>';
-        collapse+='</div>';
-    collapse+='</div>';
-	 
-	collapse+='</div>';
+						collapse+='<div class="col-sm-12 m_top20" style="border:1px solid grey;" attr_selected_position="'+selPosition.replace(/\s+/g, '')+'">';
+						collapse+='<div class="panel-group m_top20" id="accordion'+selPosition.replace(/\s+/g, '')+'" role="tablist" aria-multiselectable="true">';
+							collapse+='<div class="panel panel-default">';
+								collapse+='<div class="panel-heading" role="tab" id="headingOne'+selPosition.replace(/\s+/g, '')+'" style="background-color:transparent">';
+										collapse+='<a role="button" class="panelCollapseIconChange" data-toggle="collapse" data-parent="#accordion'+selPosition.replace(/\s+/g, '')+'" href="#collapseOne'+selPosition.replace(/\s+/g, '')+'" aria-expanded="true" aria-controls="collapseOne'+selPosition.replace(/\s+/g, '')+'">';
+										collapse+='<h4 class="panel-title">'+selPosition.replace(/\s+/g, '')+' -<span id="posiMemCnt'+selPosition.replace(/\s+/g, '')+'">1</span> Members Added</h4>';
+									collapse+='</a>';
+								collapse+='</div>';
+									collapse+=' <div id="collapseOne'+selPosition.replace(/\s+/g, '')+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+selPosition.replace(/\s+/g, '')+'">';
+								
+									collapse+='<div class="panel-body" id="show'+selPosition.replace(/\s+/g, '')+'">';
+										collapse+='<ul class="nav navbar-nav membersSelectionDivCls" id="addmember'+selPosition.replace(/\s+/g, '')+'" attr_remove_member="remove-member" attr_member_count="'+count+'" attr_posi_count="'+globalPosiDivs+'">';
+										collapse+='<li style="margin:2px 5px;">';
+											collapse+='<i class="fa fa-times removeMember-icon" attr_posi_text="'+selPosition.replace(/\s+/g, '')+'" attr_cadre_id="'+cadreId+'"  aria-hidden="true"></i>';
+											collapse+='<input type="hidden" value="'+cadreId+'" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].tdpCadreId">';
+											collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].departmentId" value="'+departmentId+'">';
+											collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].boardId" value="'+boardId+'">';
+											collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].positionId" value="'+positionId+'">';
+											collapse+=appendBlock;
+											collapse+='</li>';
+										collapse+='</ul>';
+									collapse+='</div>';
+								collapse+='</div>';
+							collapse+='</div>';
+						collapse+='</div>';
+					collapse+='</div>';
+					 
+					collapse+='</div>';
 	
 	
 					collapse+='<div class="col-sm-3">';
