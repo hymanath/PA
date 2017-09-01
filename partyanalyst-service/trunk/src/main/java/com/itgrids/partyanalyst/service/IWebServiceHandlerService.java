@@ -276,4 +276,5 @@ public interface IWebServiceHandlerService {
     public void saveKaizalAnswerInfo(String anserObj);
     //public Long getAddressId(Long locationScopeId, Long locationValue);
     public Long getKaizalaAddressId(Long locationScopeId, Long locationValue);
+    public Long kaizalaCommitteeLevelAddressSaving(Long locationScopeId, Long locationValue);
 }

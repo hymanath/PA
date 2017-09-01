@@ -161,4 +161,5 @@ public interface ICadreDetailsService {
 	public String calculatePercentage(Long totalVoters,Long count);
 	public Long saveUserAddressDetails(Long locationScopeId, Long locationValue);
 	public Long kaizalaLocationAddressIdSaving(final Long locationScopeId, final Long locationValue);
+	public Long kaizalaCommitteeLevelAddressSaving(final Long locationScopeId, final Long locationValue);
 }
