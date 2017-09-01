@@ -2922,11 +2922,104 @@ function getDetailedElectionInformaction(){
       url : "getTotalAlertDetailsForConstituencyInfoAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){  
+    }).done(function(result){
+			
     	return buildAlertsTable(result);
 	});	
 	function buildAlertsTable(result){
+		var str='';
+		if(result !=null){
+			var locationNamesArr={'CONSTITUENCY':'#FFA522','Mandal/Municipality':'#8E4552','Village/Ward':'#F16283'};
+			str+='<div class="block">';
+				str+='<div class="row">';
+					str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+						str+='<div class="block">';
+							str+='<ul class="list-inline list-border">';
+								str+='<li>';
+									str+='<h4>'+result.totalAlertCount+'</h4>';
+									str+='<p>Total Alerts</p>';
+								str+='</li>';
+								str+='<li>';
+									str+='<h4>'+result.involveMemberCount+'</h4>';
+									str+='<p>Involved Memberes</p>';
+								str+='</li>';
+								str+='<li>';
+									str+='<h4>'+result.assignedMemberCount+'</h4>';
+									str+='<p>Assigned Memberes</p>';
+								str+='</li>';
+							str+='</ul>';
+						str+='</div>';
+						str+='<div class="row m_top15">';
+							str+='<div class="col-md-5 col-xs-12 col-sm-5">';
+								str+='<div id="overallAlerts" style="height:200px"></div>';
+							str+='</div>';
+							str+='<div class="col-md-7 col-xs-12 col-sm-7">';
+							  str+='<select class="form-control" role="tabListMobile">';
+							  if(result !=null && result.subList !=null && result.subList.length>0){
+								for(var i in result.subList){
+									str+='<option tab_id="alerts'+i+'">'+result.subList[i].locationName+'</option>';
+								}
+							  }
+							  str+='</select>';
+							  str+='<ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">';
+							  if(result !=null && result.subList !=null && result.subList.length>0){
+								for(var i in result.subList){
+									if(i==0){
+										str+='<li role="presentation" class="active"><a href="#alerts'+i+'" aria-controls="alerts1" role="tab" data-toggle="tab"><p class="alertsColorCls" style="background-color:'+locationNamesArr[result.subList[i].locationName]+'">&nbsp;&nbsp;&nbsp;<span>'+result.subList[i].locationName+'</span></p></a></li>';
+									}else{
+										str+='<li role="presentation" class=""><a href="#alerts'+i+'" aria-controls="alerts1" role="tab" data-toggle="tab"><p class="alertsColorCls" style="background-color:'+locationNamesArr[result.subList[i].locationName]+'">&nbsp;&nbsp;&nbsp;<span>'+result.subList[i].locationName+'</span></p></a></li>';
+									}
+									
+								}
+							  }
+							 str+='</ul>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-md-6 col-xs-12 col-sm-6 pad_left0">';
+						  str+='<div class="tab-content">';
+						   if(result !=null && result.subList !=null && result.subList.length>0){
+								for(var i in result.subList){
+									if(i == 0){
+										str+='<div role="tabpanel" class="tab-pane active pad_10" id="alerts'+i+'">';
+									}else{
+										str+='<div role="tabpanel" class="tab-pane pad_10" id="alerts'+i+'">';
+									}
+									
+										str+='<table class="table table-noborder">';
+											str+='<thead class="text-capitalize bg-E9">';
+												str+='<th>alert status</th>';
+												str+='<th>total</th>';
+												for(var k in result.subList[0].subList[0].subList){
+													str+='<th>'+result.subList[0].subList[0].subList[k].alertType+'</th>';
+												}
+												
+											str+='</thead>';
+											str+='<tbody>';
+											for(var j in result.subList[i].subList){
+												str+='<tr>';
+												str+='<td>'+result.subList[i].subList[j].status+'</td>';
+												str+='<td>'+result.subList[i].subList[j].count+'</td>';
+												for(var k in result.subList[i].subList[j].subList){
+													str+='<td>'+result.subList[i].subList[j].subList[k].count+'</td>';
+												}	
+												str+='</tr>';
+											}
+												
+													
+												
+											str+='</tbody>';
+										str+='</table>';
+									str+='</div>';
+								}
+						   }
+						 str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		}
 		
-		
+		$("#alertsBlockDivId").html(str);
+		responsiveTabs();
 	}
 }
