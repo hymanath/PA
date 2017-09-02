@@ -51,6 +51,7 @@
 				<ol class="breadcrumb" id="getMenuLocations" menu-location-state="1" menu-location-district="19" menu-location-constituency="232" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="3" menu-location-levelName="district" >
 					<!--<li>State : <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>-->
 					<li>District : <span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capital">Nellore</span></li>
+					<li style="display:none">Parliament : <span menu-name="parliament" levelId="10" locationId="01" class="parliamentMenuName text-capital">Nellore</span></li>
 					<li style="display:none">Constituency :<span menu-name="constituency" levelId="4" locationId="01" class="constituencyMenuName text-capital"> Andhra Pradesh</span></li>
 					<li style="display:none">Mandal :<span menu-name="mandal" levelId="5" locationId="01" class="mandalsMenuName text-capital"> Andhra Pradesh</span></li>
 					<li style="display:none">Panchayat :<span menu-name="panchayat" levelId="6" locationId="01" class="panchayatMenuName text-capital"> Andhra Pradesh</span></li>
@@ -78,20 +79,15 @@
 			</div>
 		</div>
 		<div class="row m_top20">
-		 	<div class="col-sm-12">
-				<h3>Member Of Parliament (MP)</h3>
-				<div class="block">
-					<div id="parliamentMemberId"></div>
-				</div>
-			</div>
+		 	<div id="parliamentMemberId"></div>
 			<div id="assemblyMemberId"></div>
 		 	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 				<div id="levelWiseCountDivId"></div>
 			</div>
-			<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="election">
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="election">
 				 <h3 class="text-capitalize">Election Information Assembly Constituency</h3>
 				 <h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>
-				 <div class="block">
+				 <!--<div class="block">
 					 <div class="row">
 						 <div class="col-md-12 col-xs-12 col-sm-12">
 							 <label class="text-capital m_left5">
@@ -107,7 +103,7 @@
 							 <div id="test"></div>
 						 </div>
 					 </div>
-				 </div>
+				 </div>-->
 				 <div class="block">
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12">
@@ -122,7 +118,7 @@
 						</div>
 					</div>
 				 </div>
-			</div>-->
+			</div>
 			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="constituencyVoters">
 				 <h3 class="text-capitalize">constituency voters information</h3>
 			</div>
@@ -182,19 +178,18 @@
 				</div>
 			</div>
 			
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="committees">
+			<div class="col-sm-12 m_top20" navbar-index="committees">
 				<div class="row">
-					<div class="col-md-6 col-xs-12 col-sm-6">
+					<div class="col-sm-10">
 						<h3>Committees <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="committees"></i></span></h3>						
 					</div>
-					<div class="col-md-6 col-xs-12 col-sm-6 text-right">
-						<select>
+					<div class="col-sm-2">
+						<select id="enrolmentYears">
 							<option>2015-2016</option>
 							<option>2015-2016</option>
 						</select>
 					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12">
-						<div id="committees"></div>
+					<div class="col-sm-12">
 						<div class="block">
 						
 							<div class="row">
@@ -202,24 +197,24 @@
 									<h4 class="panel-title text-capital"><b>main committee formation</b></h4>
 									<div class="row m_top15">
 										<div class="col-sm-6">
-											<h4 class="panel-title text-capitalize">mandal/town/division level</h4>
+											<p class="panel-title text-capitalize">mandal / town / division level</p>
 											<div id="mandalLevelGraph" style="height:200px;"></div>
 										</div>
 										<div class="col-sm-6">
-											<h4 class="panel-title text-capital">village/ward level</h4>
+											<p class="panel-title text-capitalize">village / ward level</p>
 											<div id="villageLevelGraph" style="height:200px;"></div>
 										</div>
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-sm-6" style="border-left:1px solid #ddd">
 									<h4 class="panel-title text-capital"><b>affliated committee formation</b></h4>
 									<div class="row m_top15">
 										<div class="col-sm-6">
-											<h4 class="panel-title text-capital">mandal/town/division level</h4>
+											<p class="panel-title text-capitalize">mandal / town / division level</p>
 											<div id="affMandalLevelGraph" style="height:200px;"></div>
 										</div>
 										<div class="col-sm-6">
-											<h4 class="panel-title text-capital">village/ward level</h4>
+											<p class="panel-title text-capitalize">village / ward level</p>
 											<div id="affVillageLevelGraph" style="height:200px;"></div>
 										</div>
 									</div>
@@ -251,7 +246,7 @@
 			
 			
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="benefits">
-				<h3>Benefits</h3>
+				<h3>Benefits<span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="benefits"></i></span></h3>
 				<div class="block pad_0">
 					<div class="row">
 						<div id="benefitsBlockId"></div>
@@ -264,7 +259,7 @@
 				</div>
 			</div>
 			<div class="col-md-12 col-xs-12 col-ms-12 m_top20" navbar-index="alerts">
-				<h3>Alerts <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<h3>Alerts <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="alerts"></i></span></h3>
 				<div id="alertsBlockDivId"></div>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="nominatedPosts">
@@ -296,7 +291,7 @@
 				</div>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20"  navbar-index="grievance">
-				<h3>Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>
+				<h3>Grievance & Insurance <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14" refresh="grievance"></i></span></h3>
 				<div class="block">
 					<div class="row">
 						<div class="col-md-4 col-xs-12 col-sm-4">
