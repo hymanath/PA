@@ -43,8 +43,8 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	private List<SelectOptionVO> allElectionYears;
 	private Boolean resultsFlag;
 	private String chartName;
-	private List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>();
-	private List<ConstituencyElectionResultsVO> subList = new ArrayList<ConstituencyElectionResultsVO>();
+	private List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> subList = new ArrayList<SelectOptionVO>(0);
 	private Set<String> participatedParties;
 	private Double censusReportPercent = 0.0;
 	
@@ -53,11 +53,11 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 		return electionId;
 	}
 	
-	public List<ConstituencyElectionResultsVO> getSubList() {
+	public List<SelectOptionVO> getSubList() {
 		return subList;
 	}
 
-	public void setSubList(List<ConstituencyElectionResultsVO> subList) {
+	public void setSubList(List<SelectOptionVO> subList) {
 		this.subList = subList;
 	}
 

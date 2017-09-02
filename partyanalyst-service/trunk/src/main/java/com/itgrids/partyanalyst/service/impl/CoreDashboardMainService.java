@@ -3316,7 +3316,7 @@ String committeType){
 			}
 			
 	  }catch (Exception e) {
-		// TODO: handle exception
+		  LOG.error("Error occured at setAttendedMembersCntToMap in CoreDashboardMainService ",e);
 	}
 	  return batchMemdaysMap;
   }
@@ -3438,7 +3438,7 @@ String committeType){
 					 if(cadreIds.contains(commonMethodsUtilService.getLongValueForObject(obj[0]))){
 						 Long maxDayForAtt = memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
 						 
-						 TrainingCampProgramVO dayVO = getMatchVOList(vo.getLocationList(), maxDayForAtt);
+						 TrainingCampProgramVO dayVO = getMatchVOList1(vo.getLocationList(), maxDayForAtt);
 						 if(dayVO != null){
 							 if(levelId.longValue()==0L && (levelId != 5L && levelId != 7L && levelId != 9L && levelId != 6L && levelId != 8L)){
 									dayVO.getOthersIds().add(commonMethodsUtilService.getLongValueForObject(obj[0]));
@@ -6499,7 +6499,7 @@ try{
 								  // eligibleAndAttendedVO.setTotalAttenedCount(commonMethodsUtilService.getLongValueForObject(param[1]));
 								   Long attendedDaysforBatch = memMaxDayCnt.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 								   Long levelId = commonMethodsUtilService.getLongValueForObject(param[4]);
-								    	TrainingCampProgramVO dayVO = getMatchVOList(eligibleAndAttendedVO.getLocationList(),attendedDaysforBatch);
+								    	TrainingCampProgramVO dayVO = getMatchVOList1(eligibleAndAttendedVO.getLocationList(),attendedDaysforBatch);
 								    		if(dayVO != null){
 								    			
 								    			if(levelId.longValue()==0L && (levelId != 5L && levelId != 7L && levelId != 9L && levelId != 6L && levelId != 8L)){
@@ -6544,7 +6544,7 @@ try{
 		    				 Long nonInviteeAttnd = 0l;
 		    				 Long totalAttnd = 0l;
 		    				 for(TrainingCampProgramVO locDayVO :eligibleAndAttendedVO.getLocationList()){
-		    					 TrainingCampProgramVO memDayVo = getMatchVOList(vo.getDaysList(), locDayVO.getId());
+		    					 TrainingCampProgramVO memDayVo = getMatchVOList1(vo.getDaysList(), locDayVO.getId());
 		    					 if(memDayVo != null){
 		    						 inviteeAttended = inviteeAttended+locDayVO.getInviteeAttended();
 		    						 nonInviteeAttnd = nonInviteeAttnd+locDayVO.getNonInviteeAttended();
@@ -6624,7 +6624,7 @@ public List<TrainingCampProgramVO> getDaysList(){
 	daysList.add(day3);
 	return daysList;
 }
-public TrainingCampProgramVO getMatchVOList(List<TrainingCampProgramVO> returnList,Long dayId){
+public TrainingCampProgramVO getMatchVOList1(List<TrainingCampProgramVO> returnList,Long dayId){
 		if(returnList == null )
 			return null;
 		for(TrainingCampProgramVO dayVO:returnList){
