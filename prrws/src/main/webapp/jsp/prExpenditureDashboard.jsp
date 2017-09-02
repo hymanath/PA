@@ -17,6 +17,9 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/SlickSliderNew/slick.less" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/SlickSliderNew/slick-theme.less" type="text/less" rel="stylesheet"/>
+
+<link href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css" type="text/less" rel="stylesheet"/>     
+    
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
 <style>	  
@@ -79,8 +82,120 @@
 
 </style>
 </head>
+<header style = "box-shadow:none;background-color:#fff;">
+	<nav>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-1 col-xs-3 pad_left0">
+					<img src="Assests/images/aplogo.png" class="logo"/>
+				</div>
+				<div class="col-sm-4 m_top10 col-xs-9">
+					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
+					<p>PR-EXPENDITURE - Dashboard</p>
+				</div>
+				
+				<div class="col-sm-3 col-xs-12 pull-right">
+					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
+					<div class="menu-data-cls">
+						<div class="arrow_box_top">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="menu-block" style="background-color:#FFBA00">
+										<a href="newfundManagementDashboard">
+											<h3>FMS</h3>
+											<p>Fund Management System</p>
+										</a>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="menu-block" style="background-color:#56A3C5">
+										<a href="ruralWaterSupplyDashBoard">
+											<h3>RWS</h3>
+											<p>Rural Water Supply</p>
+										</a>
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>PANCHAYATI RAJ</h4>
+										<div class="row">
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#0F685C">
+													<a href="prisDashBoard">
+														<h3>PRIS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#31B8B7">
+													<a href="drainDashBoard">
+														<h3>DRAINS</h3>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#2C546C">
+													<a href="#">
+														<h3>ENC</h3>
+														<p>Engineering Dept</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#512507">
+													<a href="getdailySpikeReport">
+														<h3>SA</h3>
+														<p>Spike Analysis</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#888420">
+													<a href="getlightsMonitoringDashboard">
+														<h3>LED</h3>
+														<p>Light Monitoring Dashboard</p>
+													</a>
+												</div>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-heading-block">
+										<h4>RURAL DEVELOPMENT</h4>
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#88186B">
+													<a href="MGNREGSDashboard">
+														<h3>MGNREGS</h3>
+														<p>Mahatma Gandhi Rural employement guarantee scheme</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#ff1c5e">
+													<a href="RuralDevelopmentDashboard">
+														<h3>RD</h3>
+														<p>Rural Development Dashboard</p>
+													</a>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	
+</header>
 <body class="bg_color" ng-app="prexpenditureApp" ng-controller="PrexpenditureController as cntrl">
-	<div class="container ">
+	<div class="container m_top20">
 	   <div class="row">
 		  <div class="col-sm-12">
 			 <h4>STATE LEVEL OVER-VIEW</h4>
@@ -145,140 +260,6 @@
 				<div class="range-slider m_top20">
 				   <input type="text" class="range_03" value=""/>
 				</div>
-				<div class="blockHeightsScroll m_top20" style="overflow:scroll;height:325px;">
-				   <table class="table">
-					  <thead class="bg_color">
-						 <tr>
-							<th>District</th>
-							<th>Panchayat</th>
-							<th>Gross Amount</th>
-							<th>Deductions</th>
-							<th>Net Amount</th>
-							<th>Total Transations</th>
-							<th>Last Transation Amount & Date</th>
-						 </tr>
-					  </thead>
-					  <tbody>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-						 <tr>
-							<td>Srikakulam</td>
-							<td>Ahmedguda</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>44000</td>
-							<td>6</td>
-							<td>44000(15-08-2015)</td>
-						 </tr>
-					  </tbody>
-				   </table>
-				</div>
 			 </div>
 		  </div>
 	   </div>	
@@ -297,27 +278,25 @@
 						</div>
 						<div id="collapseConsolidatedDistrict" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingConsolidatedDistrict">
 						   <div class="panel-body">
+								<div class="row pull-right">
+									<div class="col-sm-12">
+										<div class="form-group">
+											<label for="search">Search</label>
+											<input type="text" ng-model="cntrl.globalSearchTerm" ng-change="cntrl.textSearchDist('$',cntrl.globalSearchTerm);" class="form-control" placeholder="Search" id="search"> 
+										</div>  
+								  </div>
+							  </div>
 							  <div class="row">
 								 <div class="col-sm-12">
 									<div id="collapseConsolidatedViewDistrict">
-									   <table class="table table-condensed table-striped" id="datatableDistrict" style="width:100%;">
-										  <thead>
-											 <tr>
-												<th> DISTRICT</th>
-												<th><img src="Assests/img/Gross_Amount_icon.png"><br>Grossamount</th>
-												<th><img src="Assests/img/Deductions_icon.png"><br>Deductions</th>
-												<th><img src="Assests/img/Netamount_icon.png"><br>Netamount</th>
-											 </tr>
-										  </thead>
-										  <tbody>
-											 <tr ng-repeat="district in cntrl.districtData">
-												<td>{{district.locationName}}</td>
-												<td><i class="fa fa-inr"></i>{{district.grossAmount}}</td>
-												<td><i class="fa fa-inr"></i>{{district.deductions}}</td>
-												<td><i class="fa fa-inr"></i>{{district.netAmount}}</td>
-											 </tr>
-										  </tbody>
-									   </table>
+									   <table ng-table="cntrl.districtParams" class="table table-condensed table-bordered table-striped" show-filter="false">
+											<tr ng-repeat="district in $data">   
+												<td title="'LocationName'" filter="{ locationName: 'text'}" sortable="'locationName'">{{district.locationName}}</td>   
+												<td title="'Grossamount'"  filter="{ grossAmount: 'number'}" sortable="'grossAmount'">{{district.grossAmount}}</td>
+												<td title="'Deductions'"   filter="{ deductions: 'number'}" sortable="'deductions'"> {{district.deductions}}</td>
+												<td title="'Netamount'"    filter="{ netAmount: 'number'}" sortable="'netAmount'"> {{district.netAmount}}</td>
+											</tr>
+										</table>
 									</div>
 								 </div>
 							  </div>
@@ -325,33 +304,31 @@
 						</div>
 						<div class="panel panel-default panel-black">
 						   <div class="panel-heading" role="tab" id="headingConsolidatedDivision">
-							  <a role="button" class="panelCollapseIcon collapsed" overview-level="Division" data-toggle="collapse" data-parent="#accordionOverview" href="#collapseConsolidatedDivision" aria-expanded="true" aria-controls="collapseConsolidatedDivision">
+							  <a role="button" class="panelCollapseIcon" overview-level="Division" data-toggle="collapse" data-parent="#accordionOverview" href="#collapseConsolidatedDivision" aria-expanded="true" aria-controls="collapseConsolidatedDivision">
 								 <h4 class="panel-title text-capital">Division level - overview</h4>
 							  </a>
 						   </div>
 						   <div id="collapseConsolidatedDivision" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingConsolidatedDivision">
 							  <div class="panel-body">
-								 <div class="row">
+								  <div class="row pull-right">
+									  <div class="col-sm-12">
+										<div class="form-group">
+											<label for="search">Search</label>
+											<input type="text" ng-model="cntrl.globalSearchTerm" ng-change="cntrl.textSearchDiv('$',cntrl.globalSearchTerm);" class="form-control" placeholder="Search" id="search"> 
+										</div>  
+									  </div>
+								  </div>
+								 <div class="row m_top10">
 									<div class="col-sm-12">
 									   <div id="collapseConsolidatedViewDivision">
-										  <table class="table table-condensed table-striped" id="datatableDivision" style="width:100%;">
-											 <thead>
-												<tr>
-												   <th>DIVISION</th>
-												   <th><img src="Assests/img/Gross_Amount_icon.png"><br>Grossamount</th>
-												   <th><img src="Assests/img/Deductions_icon.png"><br>Deductions</th>
-												   <th><img src="Assests/img/Netamount_icon.png"><br>Netamount</th>
+										   <table ng-table="cntrl.divisionParams" class="table table-condensed table-bordered table-striped" show-filter="false">
+												<tr ng-repeat="division in $data">   
+													<td title="'LocationName'" filter="{ locationName: 'text'}" sortable="'locationName'">{{division.locationName}}</td>   
+													<td title="'Grossamount'"  filter="{ grossAmount: 'number'}" sortable="'grossAmount'">{{division.grossAmount}}</td>
+													<td title="'Deductions'"   filter="{ deductions: 'number'}" sortable="'deductions'"> {{division.deductions}}</td>
+													<td title="'Netamount'"    filter="{ netAmount: 'number'}" sortable="'netAmount'"> {{division.netAmount}}</td>
 												</tr>
-											 </thead>
-											 <tbody>
-												 <tr ng-repeat="district in cntrl.divisionData">
-													<td>{{district.locationName}}</td>
-													<td><i class="fa fa-inr"></i>{{district.grossAmount}}</td>
-													<td><i class="fa fa-inr"></i>{{district.deductions}}</td>
-													<td><i class="fa fa-inr"></i>{{district.netAmount}}</td>
-											     </tr>
-											 </tbody>
-										  </table>
+											</table>
 									   </div>
 									</div>
 								 </div>
@@ -462,11 +439,14 @@
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="Assests/Plugins/SlickSliderNew/slick.min.js" type="text/javascript"></script>   
 <script src="Assests/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>   
-<script src="Assests/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>   
-<!--<script src="Assests/PRExpenditure/prExpenditureDashboard.js" type="text/javascript"></script>-->
+<script src="Assests/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script> 
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.min.js" type="text/javascript"></script>     
+<!--<script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js" type="text/javascript"></script>     
+<script src="Assests/PRExpenditure/prExpenditureDashboard.js" type="text/javascript"></script>-->
 <script src="Assests/PRExpenditure/prexpenditureApp.js" type="text/javascript"></script> 
-<script src="Assests/PRExpenditure/service/prexpenditure_service.js" type="text/javascript"></script> 
 <script src="Assests/PRExpenditure/controller/prexpenditure_controller.js" type="text/javascript"></script> 
+<script src="Assests/PRExpenditure/service/prexpenditure_service.js" type="text/javascript"></script> 
+
 
 <script type="text/javascript">
 /* $(".range_03").ionRangeSlider({

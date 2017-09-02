@@ -1,6 +1,6 @@
 'use strict';
- angular.module('prexpenditureApp').controller('PrexpenditureController', ['$scope', 'PrexpenditureService', function($scope, PrexpenditureService) {
-    var self = this;
+ angular.module('prexpenditureApp').controller('PrexpenditureController', ['$scope','PrexpenditureService','NgTableParams', function($scope,PrexpenditureService,NgTableParams) {  
+    var cntrl = this;
     var url = 'getTotalAmountForOverview';
 	var  data = {
 		"filterType":"",
@@ -11,9 +11,9 @@
 		PrexpenditureService.postData(url,data).
 		then(
 		function(responceData){
-		    self.grossAmount=responceData.grossAmount;
-			self.deductions=responceData.deductions;
-			self.netAmount=responceData.netAmount;
+		    cntrl.grossAmount=responceData.grossAmount;
+			cntrl.deductions=responceData.deductions;
+			cntrl.netAmount=responceData.netAmount;
 		},
 		function(errResponse){
 			console.error("Error While fetching data from server.");
@@ -39,14 +39,55 @@
 		then(
 		function(responceData){
 		    if (locationType == "district") {
-				 self.districtData = responceData;
+				 cntrl.districtData = responceData;
+				 cntrl.districtParams = new NgTableParams({}, {dataset: cntrl.districtData});
+				 cntrl.districtParams = createUsingFullOptions(cntrl.districtData);
 			} else if (locationType == "division") {
-				self.divisionData = responceData;
+				cntrl.divisionData = responceData;		
+	            cntrl.divisionParams = new NgTableParams({}, {dataset: cntrl.divisionData});
+				cntrl.divisionParams = createUsingFullOptions(cntrl.divisionData);
 			}
+			
+			function createUsingFullOptions(dataList) {
+				  var initialParams = {
+					count: 5 // initial page size
+				  };
+				  var initialSettings = {
+					// page size buttons (right set of buttons in demo)
+					
+					counts: [5,10,25,50,100],
+					// determines the pager buttons (left set of buttons in demo)
+					paginationMaxBlocks: 3,
+					paginationMinBlocks: 2,
+					dataset: dataList
+				  };
+				  return new NgTableParams(initialParams, initialSettings);
+			}  
+			
 		},
 		function(errResponse){
 			console.error("Error While fetching data from server.");
 		});
 	}
 	
+	cntrl.textSearchDiv = textSearchDiv;
+	function textSearchDiv(field, value) {
+		var filter = {};
+		filter[field] = value;
+		angular.extend(cntrl.divisionParams.filter(), filter);
+	}
+	
+	cntrl.textSearchDist = textSearchDist;
+	function textSearchDist(field, value) {
+		var filter = {};
+		filter[field] = value;
+		angular.extend(cntrl.districtParams.filter(), filter);
+	}
 }]);
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
