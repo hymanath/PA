@@ -23,6 +23,7 @@ import org.jfree.util.Log;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dao.IActivityDAO;
+import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
@@ -118,7 +119,14 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 	private IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO;
 	private IBoothInchargeDAO boothInchargeDAO;
 	 
+	private IApplicationStatusDAO applicationStatusDAO;
 
+	public IApplicationStatusDAO getApplicationStatusDAO() {
+		return applicationStatusDAO;
+	}
+	public void setApplicationStatusDAO(IApplicationStatusDAO applicationStatusDAO) {
+		this.applicationStatusDAO = applicationStatusDAO;
+	}
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
 	}
@@ -1499,19 +1507,26 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				endDate = sdf.parse(toDateStr);
 			}
 			List<Object[]> nominatedPostApplicationList = nominatedPostApplicationDAO.getNominatedPostApplicationStatusWiseCount(locationTypeId,locationValuesList,startDate,endDate);
+			List<Object[]> applcicationStatusList = applicationStatusDAO.getAllApplicationStatusList();
 			List<KeyValueVO> keyValueVOs = new CopyOnWriteArrayList<KeyValueVO>();
 			KeyValueVO keyValueVO = null;
 			Long totalCount=0l;
-			
+			for (Object[] statusList : applcicationStatusList) {
+				keyValueVO = new KeyValueVO();
+				keyValueVO.setId(commonMethodsUtilService.getLongValueForObject(statusList[0]));
+				keyValueVO.setName(commonMethodsUtilService.getStringValueForObject(statusList[1]).toUpperCase());
+				keyValueVO.setCount(0l);
+				keyValueVO.setTotalCount(0l);
+				keyValueVOs.add(keyValueVO);
+			}
 			if(nominatedPostApplicationList != null && nominatedPostApplicationList.size() > 0){
 				for(Object[] param : nominatedPostApplicationList){
-					keyValueVO = new KeyValueVO();
-					keyValueVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					keyValueVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]).toUpperCase());
-					keyValueVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					keyValueVOs.add(keyValueVO);
-					totalCount= totalCount+commonMethodsUtilService.getLongValueForObject(param[2]);
-				}
+						KeyValueVO vo = getMactchedKeyValueVO(keyValueVOs,commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(vo!=null){
+						vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+						}
+						totalCount= totalCount+commonMethodsUtilService.getLongValueForObject(param[2]);
+					}
 			}
 			//combine :Rejected,Rejected in Final Review,Rejected in Finalized
 			if(keyValueVOs != null && keyValueVOs.size() > 0){
@@ -1519,7 +1534,7 @@ public class LocationDashboardService  implements ILocationDashboardService  {
 				keyValueVO.setId(2L);
 				keyValueVO.setName("REJECTED");
 				for(KeyValueVO param : keyValueVOs){
-					if(param.getId().longValue() == 2L || param.getId().longValue() == 4L || param.getId().longValue() == 8L){
+					if(param.getId().longValue() == 2L || param.getId().longValue() == 4L || param.getId().longValue() == 8L || param.getId().longValue() == 9L){
 						keyValueVO.setCount(keyValueVO.getCount()+param.getCount());
 						keyValueVOs.remove(param);
 					}
