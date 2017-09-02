@@ -2345,7 +2345,7 @@ function getMandalWiseBenefitMembersCount(id,locationLevelId,locationLevelVal){
 	$("#benefits"+id).html(spinner);
 	
 	jsObj={
-		locationType:locationLevelId,
+		locationTypeId:locationLevelId,
 		locationValue:locationLevelVal,
 		govtSchemeId:id
 	}
