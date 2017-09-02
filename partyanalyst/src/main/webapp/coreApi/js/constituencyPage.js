@@ -1975,7 +1975,7 @@ function getLocationWiseCommitteesCount(yearId){
 		locationLevelVal = panchayatId 		
 	}
 	var jsObj={
-			locationTypeId : locationLevelName,
+			locationType : locationLevelName,
 			locationId 	   : locationLevelVal,
 			enrollmentId   : yearId
 		}
