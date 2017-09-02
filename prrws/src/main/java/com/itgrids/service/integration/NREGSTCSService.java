@@ -408,7 +408,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public String convertingInputVOToString(InputVO inputVO){
 		String str = "";
 		try {
-			if(inputVO.getLocationId() != null)
+			if(inputVO.getLocationId() != null){
 				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
 					if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
 						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
@@ -418,6 +418,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
 					}
 				}
+			}
+				
 			str = "{";
 			
 			if(inputVO.getFromDate() != null )
