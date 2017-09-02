@@ -11,31 +11,23 @@ $(document).on('click','#searchbtn',function(){
 	$("#searchResultsBlock").show();
 	$("#errMessageId").html('');
 	var searchValue = $("#searchBy").val() ;
-	var selOption = $("#deptBoardPostnId option:selected").val();
-	if(selOption == null || selOption == 0){
-		$("#errdeptBoardPostnId").html("Please Select Position");
-		return;
-	}else{
-		$("#errdeptBoardPostnId").html(" ");
-		
-	}
 	if(searchValue.length == 0 || searchValue == null || searchValue == " ")
 			{
 				$('#notCadreErrMsg').html('Please Enter Value.');
 				return;
 			}else{
 				$('#notCadreErrMsg').html('');
-				var type = $("input[type='radio']:checked").attr("attr_type");
-				if(type == 'memberShipNumber'){
-					getNominatedPostApplication();
-				}else if(type == 'voterId'){
-					getSearchDetails("mainSearch");
-				}
-				
+				getNominatedPostApplication();
 			}
 	
 	//$("#addedRefferalsDiv").hide();
-	
+	var selOption = $("#deptBoardPostnId option:selected").val();
+	if(selOption == null || selOption == 0){
+		$("#errdeptBoardPostnId").html("Please Select Position");
+	}else{
+		$("#errdeptBoardPostnId").html(" ");
+		
+	}
 	
 })
 $(document).on('change','#deptBoardPostnId',function(){
@@ -45,9 +37,9 @@ $(document).on('change','#deptBoardPostnId',function(){
 	$("#searchResultsBlock").html("");
 	$("#searchBy").val("");
 	$("#showSearchResult").show();
-	if($(this).val()!=0 && !(globalPositionsArr.indexOf(selPosition.replace(/\s+/g, '')) > -1)){
+	if($(this).val()!=0 && !(globalPositionsArr.indexOf(selPosition) > -1)){
 		globalMembersCount = 0;
-	} 
+	}
 	if($(this).val() !=0 ){
 		$("#errdeptBoardPostnId").html(" ");
 	}
@@ -83,13 +75,11 @@ $('.chosenSelect').chosen({width:'100%'});
 
 function searchResultBlock(myresult){
 	var result = myresult.previousRoles;
-	var postitonCunt =  "";
+	
 	var position = $("#deptBoardPostnId option:selected").text();
 	var postionArr = position.split("(");
-	if(postionArr != "Select Board Position"){
-		position = postionArr[0];
-		postitonCunt = postionArr[1].trim().replace(")", "");
-	}
+	position = postionArr[0];
+	var postitonCunt = postionArr[1].trim().replace(")", "");
 	var block='';
 	
 	block+='<h5 style="font-weight:600">SEARCH RESULTS  <span style="font-size:12px;font-weight:normal">   -Found '+result.length+' Results</span></h5>';
@@ -169,7 +159,7 @@ $(document).on('click','.selectMember',function(){
 						buildPanelBlock(selPosition,appendBlock,cadreId);
 						$("#addmember"+selPosition.replace(/\s+/g, '')).find("li div.panel-footer").remove();
 					}else{
-						if(globalPositionsArr.indexOf(selPosition.replace(/\s+/g, '')) > -1 || $("[attr_selected_position="+selPosition.replace(/\s+/g, '')+"]").length != 0){
+						if(globalPositionsArr.indexOf(selPosition) > -1 || $("[attr_selected_position="+selPosition.replace(/\s+/g, '')+"]").length != 0){
 							var count = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_member_count");
 							var posiCnt = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_posi_count");
 							count++;
@@ -336,14 +326,10 @@ $(document).on('click','.removeMember-icon',function(){
 	if(ulLength == 1)
 	{
 		globalPosiDivs--;
-		$(this).closest(".panel-group").parent().remove();
+		$(this).closest(".panel-group").parent().hide();
 		for(var i in globalPositionsArr){
-			if(globalPositionsArr[i] == selPosition){
+			if(globalPositionsArr[i] == selPosition)
 			globalPositionsArr.splice(i, 1);
-				if(globalMembersCount >= 1){
-					globalMembersCount--;
-				}
-			}
 		}
 	}
 	
@@ -353,12 +339,8 @@ $(document).on('click','.removeMember-icon',function(){
 	$(this).closest("li").remove();
 	$(".selectMember").prop("checked",false);
 	var cadreId = $(this).attr("attr_cadre_id");
-	for(var i in globalPositionsArr){
-		if(globalPositionsArr[i] == selPosition){
-			if(globalMembersCount >= 1){
-				globalMembersCount--;
-			}
-		}
+	if(globalMembersCount >= 1){
+		globalMembersCount--;
 	}
 	if(globalMemAddedCunt >= 1){
 		globalMemAddedCunt--;
@@ -1019,6 +1001,8 @@ function getNominatedPostApplication()
 		var type = $("input[type='radio']:checked").attr("attr_type");
 		if(type == 'memberShipNumber'){
 			memberShipCardNo=$("#searchBy").val();
+		}else if(type == 'voterId'){
+			voterCardNo=$("#searchBy").val();
 		}
 		var jsObj =
 		{
@@ -1622,22 +1606,16 @@ function getDetailsBySrch()
 		if(errStr){
 			return;
 		}else{
-				getSearchDetails("refferSearch");
+				getSearchDetails();
 			}
 		
 	}
-	function getSearchDetails(type){
-		$('#searchResultsBlock').html(spinner);
+	function getSearchDetails(){
+	  
+	  $("#searchMemberAjax").css("display","block");
+	  var searchType = $("#advanceSearchTypeId").val();
+	  var searchValue = $("#advanceSearchValueId").val();
 	  var aptUserId = 0;
-	  if(type == "mainSearch"){
-		  var searchType = "votercardno";
-		 var searchValue = $("#searchBy").val();
-	  }else{
-		  $("#searchMemberAjax").css("display","block");
-		  var searchType = $("#advanceSearchTypeId").val();
-		  var searchValue = $("#advanceSearchValueId").val();
-		  
-	  }
 		
 		var jsObj={
 			searchType:searchType,
@@ -1651,79 +1629,16 @@ function getDetailsBySrch()
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				if(type == "mainSearch"){
-					if(result !=null && result.length>0){
-						voterSearchResultBlock(result);
-					}else
-					{
-						$('#searchResultsBlock').html('');
-						$('#textId').html("");
-						  $("#searchResultsBlock").html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
-					} 					
+				 $("#searchMemberAjax").css("display","none");
+				
+				if(result !=null && result.length>0){
+					buildapptmemberDetails(result);
+				
 				}else{
-					$("#searchMemberAjax").css("display","none");
-					
-					if(result !=null && result.length>0){
-						buildapptmemberDetails(result);
-					
-					}else{
-						$("#apptmemberDetailsDiv").html("<center><h4>No Data Available</h4></center>");
-					}
-					
+					$("#apptmemberDetailsDiv").html("<center><h4>No Data Available</h4></center>");
 				}
 		  }); 
-	 }
-function voterSearchResultBlock(result){
-	var position = $("#deptBoardPostnId option:selected").text();
-	var postitonCunt = "";
-	var postionArr = position.split("(");
-	
-	if(postionArr != "Select Board Position"){
-	position = postionArr[0];
-	var postitonCunt = postionArr[1].trim().replace(")", "");
-	}
-	var block='';
-	
-	block+='<h5 style="font-weight:600">SEARCH RESULTS  <span style="font-size:12px;font-weight:normal">   -Found '+result.length+' Results</span></h5>';
-	block+='<ul class="nav navbar-nav col-sm-12"  style="margin-top:15px !important">';
-	for(var i in result){
-	block+='<li class="">';
-        block+='<div class="panel panel-default">';
-            block+='<div class="panel-heading">';
-				/*block+='<div class="deleteMember"><i class="fa fa-times" aria-hidden="true" style="padding: 0px 6px 5px;"></i></div>';*/
-                block+='<div class="text-center"><p class="iconBlock memberDetails"><img src="http://www.mytdp.com/'+result[i].imageURL+'" style="width: 50px; height: 50px; margin-left: -2px; margin-top: -6px;border-radius:50%;"></p></div>';
-            block+='</div>';
-            block+='<div class="panel-body">';
-				block+='<p class="memberDetails cadreName" value="5" data-toggle="tooltip" data-placement="top" title="Cadre Name"><span>N</span>'+result[i].name+'</p>';
-				
-                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Voter Id"><span style="padding:4px 8px">V</span>'+result[i].voterCardNo+'</p>';
-                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="MemberShip Number"><span style="padding:4px 6px">M</span>'+result[i].memberShipId+'</p>';
-                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Mobile Number"><span style="padding:4px 6px">M</span>'+result[i].mobileNo+'</p>';
-                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Constituency Name"><span>A</span>'+result[i].constituency+'</p>';
-                block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Enrollment Years"><span>C</span>'+result[i].enrollmentYears+'</p>';
-			block+='</div>';
-            block+='<div class="panel-footer">';
-			
-			if(result[i].previousElections != null && result[i].previousElections.length>0){
-				for(var s in result[i].previousElections){
-					block+=''+parseInt(parseInt(s)+1)+') <label>'+result[i].previousElections[s].casteName+' &nbsp&nbsp&nbsp<i class="fa fa-info tooltipClass" style="cursor:pointer;" title="'+result[i].previousElections[s].electionType+':'+result[i].previousElections[s].roleName+' --> '+result[i].previousElections[s].occupation+' Dept --> '+result[i].previousElections[s].role+' --> '+result[i].previousElections[s].casteCategory+'"> </i></label> <br> ';
-				}
-			}else{
-				 block+='<label class="checkbox-inline" ><input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+position+'" attr_postion_count="'+postitonCunt+'">Select Member</label>';
-			}
-               
-				
-            block+='</div>';
-        block+='</div>';
-    block+='</li>';
-	}
-	block+='<ul>';
-	block+='<div class="clearfix"></div>';
-	block+='<p class="m_top20">Note:   1) Please select matches profile     2) You Can add Multiple members to above selected Post Name</p>';
-    $("#searchResultsBlock").html(block);
-	$(".tooltipClass").tooltip();
-	
-}	 
+	 }	
 	 function handleBySearchType()
 	{
 		getAdvancedSearchDetails();
@@ -2135,7 +2050,8 @@ $(document).on("change","#filterDistrictId",function(){
 	var districtId = $(this).val();
 	var stateId = $("#filterStateId").val();
 	//getConstituenciesForDistrictsOfAddChnge(districtId,stateId);
-	getConstituenciesForDistricts(districtId,stateId)
+	//getConstituenciesForDistricts(districtId,stateId);
+	getConstituenciesBydistrictForReferPopup('','filterType');
 });
 
 function getConstituenciesForDistrictsOfAddChnge(district,stateId){
@@ -2178,7 +2094,7 @@ function getConstituenciesForDistricts(district,stateId){
 	   }).done(function(result){
 		   
 		   $("#filterManTowDivId  option").remove();
-	 $("#filterConstituencyId  option").remove();
+	 $("#filterConstituencyId  option").getConstituenciesOfDistrictWithSplittedAction();
 	 $("#filterManTowDivId").append('<option value="0">Select Mandal/Muncipality/Corporation</option>');
 	 $("#filterConstituencyId").append('<option value="0">Select Constituency</option>');
 	 if(result !=null && result.length>0){
@@ -2336,8 +2252,13 @@ function getEducationalQualifications(divId){
 		}
 	});
 }
-function getConstituenciesBydistrictForReferPopup(index){
+function getConstituenciesBydistrictForReferPopup(index,type){
+	 if(type == "refferType")
 	 var districtId = $("#referdistrictId"+index).val();
+	
+ else
+	 var districtId = $("#filterDistrictId"+index).val();
+	 
 	var jobj = {
 		districtId : districtId
 	}
@@ -2355,6 +2276,10 @@ function getConstituenciesBydistrictForReferPopup(index){
 			 $("#referconstituencyId"+index).html(constiStr);
 			 $("#referconstituencyId"+index).dropkick();
 			var select = new Dropkick("#referconstituencyId"+index);
+			 select.refresh();
+			 $("#filterConstituencyId"+index).html(constiStr);
+			 $("#filterConstituencyId"+index).dropkick();
+			var select = new Dropkick("#filterConstituencyId"+index);
 			 select.refresh();
 			}
 		});
