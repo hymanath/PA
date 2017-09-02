@@ -1,2 +1,2 @@
 'use strict';
-var preexpenditureApp = angular.module("prexpenditureApp", []); 
+var preexpenditureApp = angular.module("prexpenditureApp", ["ngTable"]);

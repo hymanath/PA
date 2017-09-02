@@ -1,12 +1,10 @@
 'use strict';
-
 angular.module('prexpenditureApp').factory('PrexpenditureService', ['$http', function($http){
     var factory = {
     	postData:postData
     };
     return factory;
-	
-    function postData(url, data) {
+    function postData(url, data) {   
 		var config = {
 			headers : {
 				'Content-Type': 'application/json'
@@ -29,3 +27,4 @@ angular.module('prexpenditureApp').factory('PrexpenditureService', ['$http', fun
 		}
 	}
 }]);
+  
