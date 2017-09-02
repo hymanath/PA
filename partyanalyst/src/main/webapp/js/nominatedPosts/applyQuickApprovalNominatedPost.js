@@ -22,7 +22,8 @@ $(document).on('click','#searchbtn',function(){
 	
 	//$("#addedRefferalsDiv").hide();
 	var selOption = $("#deptBoardPostnId option:selected").val();
-	if(selOption == null || selOption.length == 0){
+	alert(selOption);
+	if(selOption == null || selOption == 0){
 		$("#errdeptBoardPostnId").html("Please Select Position");
 	}else{
 		$("#errdeptBoardPostnId").html(" ");
@@ -39,6 +40,9 @@ $(document).on('change','#deptBoardPostnId',function(){
 	$("#showSearchResult").show();
 	if($(this).val()!=0 && !(globalPositionsArr.indexOf(selPosition) > -1)){
 		globalMembersCount = 0;
+	}
+	if($(this).val() !=0 ){
+		$("#errdeptBoardPostnId").html(" ");
 	}
 })
 
@@ -546,6 +550,7 @@ function getDepartments(){
 	   var searchLevelValue=1;
 	   if(boardLevelId == 1){
 		   searchLevelValue = 1;
+		   
 	   }
 	   else if(boardLevelId == 2){
 			searchLevelValue = $('#nominatedStaeId').val();	;
