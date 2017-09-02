@@ -22,7 +22,6 @@ $(document).on('click','#searchbtn',function(){
 	
 	//$("#addedRefferalsDiv").hide();
 	var selOption = $("#deptBoardPostnId option:selected").val();
-	alert(selOption);
 	if(selOption == null || selOption == 0){
 		$("#errdeptBoardPostnId").html("Please Select Position");
 	}else{
