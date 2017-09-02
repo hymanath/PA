@@ -1919,7 +1919,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						}
 						List<LocationWiseBoothDetailsVO> list = null;
 						if(constituencyIds != null && constituencyIds.size() > 0){
-						 list = cadreCommitteeService.getMandalMunicCorpDetailsOfConstituencies(constituencyIds);
+						 list = cadreCommitteeService.getMandalMunicCorpDetailsOfConstituencies(constituencyIds,"nominatedPostFilter");
 						}
 						
 						if(commonMethodsUtilService.isListOrSetValid(list))
@@ -5991,7 +5991,11 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			
 			Set<Long> applicationIds = new LinkedHashSet<Long>();
 			
-			
+			if(levelValue != null && levelValue.longValue() >0l){
+				levelValue = Long.parseLong(levelValue.toString().substring(1));
+			}else{
+				levelValue = levelValue;
+			}
 			List<Object[]> list = nominatedPostFinalDAO.getAllReferredMemberDetailsForPosition(levelId, levelValue, departmentId, boardId, positionId,statusId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"nominatedPostFinalId","nominatedPostCandidateId","tdpCadreId","voterId","voterName","voterMoblie","voterGender","age",

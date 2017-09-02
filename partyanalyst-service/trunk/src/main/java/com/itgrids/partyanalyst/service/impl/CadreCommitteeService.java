@@ -17201,7 +17201,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		
 		try{
 			if(locationLevelId.equals(4l)){
-				return getMandalMunicCorpDetailsOfConstituencies(constiIds);
+				return getMandalMunicCorpDetailsOfConstituencies(constiIds,"");
 			}else{
 				return getPanchayatWardDivisionDetailsOfSubLocation(constiIds, mandalIds, localBodyIds);
 			}
@@ -17213,8 +17213,12 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	
 	
 	// TO GET MANDAL/LOCAL BODY/ DIVISION DETAILS OF CONSTITUENCIES
-	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsOfConstituencies(List<Long> constituencyIds){
+	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsOfConstituencies(List<Long> constituencyIds,String type){
 		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
+		List<Long> corporationIds = new ArrayList<Long>();
+		corporationIds.add(20l);
+		corporationIds.add(124l);
+		corporationIds.add(119l);
 		LocationWiseBoothDetailsVO vo = null;
 		List<Long> greaterCorpIds = new ArrayList<Long>();
 		List<SelectOptionVO> locations = regionServiceDataImp.getAllMandalsByAllConstituencies(constituencyIds);
@@ -17227,12 +17231,12 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	        }
 	        for(Object[] localBodi:localBodies){
 	        	Long localBdyId = (Long)localBodi[0];
-	        	if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
+	        	if(!(corporationIds.contains(localBdyId)) || type.equalsIgnoreCase("nominatedPostFilter")){
 	        		vo = new LocationWiseBoothDetailsVO();
 		        	vo.setLocationId(Long.valueOf("5"+localBodi[0].toString()));
 		        	vo.setLocationName(localBodi[4].toString() +" "+ localBodi[2].toString());
 		        	locationsList.add(vo);
-	        	}else{
+	        	}else if(type.equalsIgnoreCase("")){
 	        		if(!greaterCorpIds.contains(localBdyId)){
 	        			greaterCorpIds.add(localBdyId);
 	        		}
@@ -17268,7 +17272,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		List<Long> localBodyIds = new ArrayList<Long>();
 		
 		if(constituencyIds!=null && constituencyIds.size()>0){
-			List<LocationWiseBoothDetailsVO> mandalsList = getMandalMunicCorpDetailsOfConstituencies(constituencyIds);
+			List<LocationWiseBoothDetailsVO> mandalsList = getMandalMunicCorpDetailsOfConstituencies(constituencyIds,"");
 			
 	        for(LocationWiseBoothDetailsVO location:mandalsList){        	
 	        	if(location.getLocationId().toString().substring(0,1).trim().equalsIgnoreCase("5")){
@@ -20375,7 +20379,7 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 			
 			
 			if(locationLevelId.equals(5l)){
-				finaVoList =  getMandalMunicCorpDetailsOfConstituencies(constiIds);
+				finaVoList =  getMandalMunicCorpDetailsOfConstituencies(constiIds,"nominatedPostFilter");
 			}
 			
 		}catch (Exception e) {
