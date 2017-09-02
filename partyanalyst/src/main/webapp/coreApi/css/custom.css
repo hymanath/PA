@@ -668,3 +668,9 @@ span[menu-name].active
     transition: max-height 0.5s ease-in;
 	box-shadow: none;
 }
+.ColorView{
+  width:10px;
+  height:10px;
+  display:inline-block;
+  margin-right:5px;
+}
