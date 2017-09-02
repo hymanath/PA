@@ -48,7 +48,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private List<CandidateDetailsForConstituencyTypesVO> candidateDetailsForConstituencyTypesVO;
 	private ConstituencyInfoVO constituencyDetails;
 	private IConstituencyPageService constituencyPageService;
-	private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
+	private List<ConstituencyElectionResultsVO> constituencyElectionResultsVOList = new ArrayList<ConstituencyElectionResultsVO>();
 	private List<LocationVotersVO> locationVotersVOList;
 	private List<KeyValueVO> keyValueVOList;
 	private List<ToursBasicVO> tourDesignationList;
@@ -134,12 +134,13 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setLocationVotersVOList(List<LocationVotersVO> locationVotersVOList) {
 		this.locationVotersVOList = locationVotersVOList;
 	}
-	public List<ConstituencyElectionResultsVO> getConstituencyElectionResultsVO() {
-		return constituencyElectionResultsVO;
+	
+	public List<ConstituencyElectionResultsVO> getConstituencyElectionResultsVOList() {
+		return constituencyElectionResultsVOList;
 	}
-	public void setConstituencyElectionResultsVO(
-			List<ConstituencyElectionResultsVO> constituencyElectionResultsVO) {
-		this.constituencyElectionResultsVO = constituencyElectionResultsVO;
+	public void setConstituencyElectionResultsVOList(
+			List<ConstituencyElectionResultsVO> constituencyElectionResultsVOList) {
+		this.constituencyElectionResultsVOList = constituencyElectionResultsVOList;
 	}
 	public IConstituencyPageService getConstituencyPageService() {
 		return constituencyPageService;
@@ -276,7 +277,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		  try{
 			  jObj=new JSONObject(getTask());
 			  Long constituencyId = jObj.getLong("constituencyId");
-			  constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId);
+			  constituencyElectionResultsVOList = constituencyPageService.getConstituencyElectionResults(constituencyId);
 			  
 		  }catch(Exception e){
 			  LOG.error("Entered into getDetailedElectionInformatiopn method in locationDashboardAction....");
