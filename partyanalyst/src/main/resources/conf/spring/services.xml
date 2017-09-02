@@ -4386,6 +4386,7 @@
   		<property name="electionTypeDAO" ref="electionTypeDAO"></property>
   		<property name="publicationDateDAO" ref="publicationDateDAO"></property>
   		<property name="boothInchargeCommitteeDAO" ref="boothInchargeCommitteeDAO"></property>
+  		<property name="applicationStatusDAO" ref="applicationStatusDAO"></property>
   		
   </bean>
   <bean name="cadrePartyMeetingManagementService" class="com.itgrids.partyanalyst.meeting.service.impl.CadrePartyMeetingManagementService" >
