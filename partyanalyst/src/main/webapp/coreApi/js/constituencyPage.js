@@ -2263,11 +2263,27 @@ function getLocationWiseTourMembersComplainceDtls(){
 }
 function getGovtSchemeWiseBenefitMembersCount(){
 	$("#benefitsBlockId").html(spinner);
-	var userAccessLevelId=locationLevelId;
+	var locationLevelVal = '';
+	if(locationLevelId == '2')
+	{
+		locationLevelVal = stateId 
+	}else if(locationLevelId == '3')
+	{
+		locationLevelVal = districtId 
+	}else if(locationLevelId == '4')
+	{
+		locationLevelVal = constituencyId 		
+	}else if(locationLevelId == '5')
+	{
+		locationLevelVal = mandalId 		
+	}else if(locationLevelId == '6')
+	{
+		locationLevelVal = panchayatId 		
+	}
 	
 	jsObj={
-		locationTypeId:userAccessLevelId,
-		locationValue:constituencyId
+		locationTypeId	:locationLevelId,
+		locationValue	:locationLevelVal
 	}
 	 $.ajax({
       type : "POST",
@@ -2277,12 +2293,12 @@ function getGovtSchemeWiseBenefitMembersCount(){
     }).done(function(result){  
 		//console.log(result);
 		if(result!=null && result.length>0){
-			return buildTabs(result);
+			return buildTabs(result,locationLevelId,locationLevelVal);
 		}else{
 			$("#benefitsBlockId").html("NO DATA");
 		}
 	});	
-	function buildTabs(result)
+	function buildTabs(result,locationLevelId,locationLevelVal)
 	{
 		var navTabs = '';
 		navTabs+='';
@@ -2321,16 +2337,16 @@ function getGovtSchemeWiseBenefitMembersCount(){
 		navTabs+='</div>';
 		$("#benefitsBlockId").html(navTabs);
 		responsiveTabs();
-		getMandalWiseBenefitMembersCount(result[0].id)
+		getMandalWiseBenefitMembersCount(result[0].id,locationLevelId,locationLevelVal)
 	}
 }
 
-function getMandalWiseBenefitMembersCount(id){
+function getMandalWiseBenefitMembersCount(id,locationLevelId,locationLevelVal){
 	$("#benefits"+id).html(spinner);
-	var userAccessLevelId=locationLevelId;
+	
 	jsObj={
-		locationType:userAccessLevelId,
-		locationValue:constituencyId,
+		locationType:locationLevelId,
+		locationValue:locationLevelVal,
 		govtSchemeId:id
 	}
 	$.ajax({
