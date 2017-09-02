@@ -304,11 +304,8 @@ function buildPanelBlock(selPosition,appendBlock,cadreId){
             collapse1+='</div>';
         collapse1+='</div>';
     collapse1+='</div>';
-	if(globalPosiDivs != 0){
-		var currentDiv = globalPosiDivs-1;
-	}else{
-		var currentDiv = globalPosiDivs;
-	}
+	
+	var currentDiv=1;
 	$("#buildPositionWiseBlock"+currentDiv).append(collapse1);
 	
 	}
