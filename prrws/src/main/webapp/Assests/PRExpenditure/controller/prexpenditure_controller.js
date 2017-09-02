@@ -65,7 +65,7 @@
 				if(responceData != null && responceData.length > 0){
 					 cntrl.districtData = responceData;
 					 cntrl.districtParams = new NgTableParams({}, {dataset: cntrl.districtData});
-					 cntrl.districtParams = createUsingFullOptions(cntrl.districtData);
+					 cntrl.districtParams = createUsingFullOptions(cntrl.districtData,"district");
 					 cntrl.showHideDistrictSpinner=false;
 					 cntrl.showHideDistrictSearchSpinner = true;
 					 cntrl.showHideDivisionTable=true;
@@ -77,7 +77,7 @@
 				if(responceData != null && responceData.length > 0){
 					cntrl.divisionData = responceData;		
 					cntrl.divisionParams = new NgTableParams({}, {dataset: cntrl.divisionData});
-					cntrl.divisionParams = createUsingFullOptions(cntrl.divisionData);
+					cntrl.divisionParams = createUsingFullOptions(cntrl.divisionData,"division");
 					cntrl.showHideDivisionSpinner=false;  
 					cntrl.showHideDivisionSearchSpinner = true;
 					cntrl.showHideDistrictTable=true;
@@ -87,20 +87,30 @@
 				} 
 			}
 			
-			function createUsingFullOptions(dataList) {
-				  var initialParams = {
+			function createUsingFullOptions(dataList,blockLevel) {
+				if(blockLevel == 'district'){
+					var initialParams = {};
+					var initialSettings = {
+							counts: [],
+							dataset: dataList
+						};
+					return new NgTableParams(initialParams, initialSettings);
+				}else{
+					var initialParams = {
 					count: 5 // initial page size
-				  };
-				  var initialSettings = {
+					};
+					var initialSettings = {
 					// page size buttons (right set of buttons in demo)
-					
+
 					counts: [5,10,25,50,100],
 					// determines the pager buttons (left set of buttons in demo)
 					paginationMaxBlocks: 3,
 					paginationMinBlocks: 2,
 					dataset: dataList
-				  };
-				  return new NgTableParams(initialParams, initialSettings);
+					};
+					return new NgTableParams(initialParams, initialSettings);
+				}
+				
 			}  
 			
 		},
