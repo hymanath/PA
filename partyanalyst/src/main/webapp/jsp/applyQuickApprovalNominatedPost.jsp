@@ -354,7 +354,7 @@
 				   
 						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls distCls">
 							 <label>District</label>
-							 <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
+							 <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('','refferType');" >
 							 <option value="0">All</option></select>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls constiCls">
@@ -588,7 +588,6 @@ var gsId = 0;
 				}
 				 if( xindex == 3){
 					str+='</tr>';
-					xindex = 0;
 				} 
 			  }
 			}
