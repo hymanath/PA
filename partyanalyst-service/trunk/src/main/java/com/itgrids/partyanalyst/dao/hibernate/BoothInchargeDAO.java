@@ -1234,7 +1234,7 @@ public List<Object[]> getActiveBoothMemeberDetails(Long boothId){
 			" model.boothInchargeRoleConditionMapping.boothInchargeRoleCondition.boothInchargeRoleId from BoothIncharge model " +
 			  " where model.boothInchargeRoleConditionMapping.boothInchargeCommittee.boothId =:boothId" +
 			  " and model.tdpCadre.isDeleted ='N'" +
-			  " and model.isActive = 'Y'  ");
+			  " and model.isActive = 'Y' and model.isDeleted= 'N' ");
 	
 	 Query qry = getSession().createQuery(sb.toString());
 	 if(boothId != null && boothId.longValue() >0l){
