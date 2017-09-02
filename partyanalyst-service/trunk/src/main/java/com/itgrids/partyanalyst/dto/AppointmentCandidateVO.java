@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppointmentCandidateVO implements Serializable{
      
@@ -21,11 +23,22 @@ public class AppointmentCandidateVO implements Serializable{
     private String aptName;
     private boolean isAptExists;
     private String aptStatus;
+    private String enrollmentYears;
+    List<CadreCommitteeVO> previousElections = new ArrayList<CadreCommitteeVO>();
     
     
-    
-    
-    
+    public List<CadreCommitteeVO> getPreviousElections() {
+		return previousElections;
+	}
+	public void setPreviousElections(List<CadreCommitteeVO> previousElections) {
+		this.previousElections = previousElections;
+	}
+	public String getEnrollmentYears() {
+		return enrollmentYears;
+	}
+	public void setEnrollmentYears(String enrollmentYears) {
+		this.enrollmentYears = enrollmentYears;
+	}
 	public String getAptStatus() {
 		return aptStatus;
 	}
