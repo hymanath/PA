@@ -54,7 +54,25 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Long inchargeId;
 	private Long serialNo;
 	private String originalLocation;
+	private String votingPercentage;
+	private List<SelectOptionVO> subList = new ArrayList<SelectOptionVO>(0);
 	private Long locationId;
+	public String getVotingPercentage() {
+		return votingPercentage;
+	}
+
+	public void setVotingPercentage(String votingPercentage) {
+		this.votingPercentage = votingPercentage;
+	}
+
+	public List<SelectOptionVO> getSubList() {
+		return subList;
+	}
+
+	public void setSubList(List<SelectOptionVO> subList) {
+		this.subList = subList;
+	}
+
 	public String getOriginalLocation() {
 		return originalLocation;
 	}

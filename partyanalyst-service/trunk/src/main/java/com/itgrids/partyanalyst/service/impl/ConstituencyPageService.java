@@ -482,13 +482,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	{
 		try
 		{
+			String searchFor ="chart";
 			List<ConstituencyElectionResult> constituencyElectionResults = constituencyElectionResultDAO.findByConstituency(constituencyId);
 			List<ConstituencyElectionResultsVO> constituencyElectionResultList = new ArrayList<ConstituencyElectionResultsVO>(0);
 			List<ConstituencyElectionResultsVO> returnList = new ArrayList<ConstituencyElectionResultsVO>(0);
 			ConstituencyElectionResultsVO constElecResultVO = null;
 			Map<Long,SelectOptionVO> partiesList = new HashMap<Long,SelectOptionVO>();
 			Map<Long,SelectOptionVO> electionYearMap = new TreeMap<Long, SelectOptionVO>();
-			Map<Long,ConstituencyElectionResultsVO> partyMap = new HashMap<Long, ConstituencyElectionResultsVO>(0);
+			Map<Long,SelectOptionVO> partyMap = new HashMap<Long, SelectOptionVO>(0);
 			Election election = null;
 		
 			if(constituencyElectionResults != null)
@@ -541,12 +542,12 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				Collections.sort(constituencyElectionResultList,new ElectionDetailsVOComparator());
 				getPartyResultsOverviewForChart(partiesList,constituencyElectionResultList);
 				
-				if(commonMethodsUtilService.isMapValid(partiesList))
+				if(searchFor != null && searchFor.trim().equalsIgnoreCase("chart") && commonMethodsUtilService.isMapValid(partiesList))
 				{
 					for (Long partyId : partiesList.keySet()) {
-						ConstituencyElectionResultsVO partyVO = partyMap.get(partyId);
+						SelectOptionVO partyVO = partyMap.get(partyId);
 						if(partyVO == null){
-							partyVO = new ConstituencyElectionResultsVO();
+							partyVO = new SelectOptionVO();
 							SelectOptionVO mainPartyVO = partiesList.get(partyId);
 							partyVO.setId(mainPartyVO.getId());
 							partyVO.setName(mainPartyVO.getName());
@@ -555,7 +556,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 								for (Long year : electionYearMap.keySet()) {
 									SelectOptionVO tempVO = electionYearMap.get(year);
 									
-									ConstituencyElectionResultsVO yearVO = new ConstituencyElectionResultsVO();
+									SelectOptionVO yearVO = new SelectOptionVO();
 									yearVO.setId(tempVO.getId());// election Year 
 									yearVO.setName(tempVO.getName()); // election Year
 									yearVO.setVotingPercentage("0.0");
@@ -575,6 +576,20 @@ public class ConstituencyPageService implements IConstituencyPageService {
 						}
 					}
 				}
+				
+				/*if(searchFor != null && searchFor.trim().equalsIgnoreCase("chart")){
+					constituencyElectionResultList.clear();
+					if(!partiesList.isEmpty())
+					{
+						Set<Long> partyIds = partiesList.keySet();
+						for(Long partyId:partyIds)
+						{
+						 ConstituencyElectionResultsVO partyVO = partyMap.get(partyId);
+						 constituencyElectionResultList.add(partyVO);
+						}
+					}
+				}
+				else */
 				if(!partiesList.isEmpty())
 				{
 					List<SelectOptionVO> partysListVO = new ArrayList<SelectOptionVO>();
@@ -584,7 +599,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					 SelectOptionVO optionVO = partiesList.get(partyId);
 					 partysListVO.add(optionVO);
 					 
-					 ConstituencyElectionResultsVO partyVO = partyMap.get(partyId);
+					 SelectOptionVO partyVO = partyMap.get(partyId);
 					 constituencyElectionResultList.get(0).getSubList().add(partyVO);
 					}
 					constituencyElectionResultList.get(0).setPartiesList(partysListVO);
@@ -604,7 +619,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		try {
 			if(commonMethodsUtilService.isListOrSetValid(returnList)){
 				for (ConstituencyElectionResultsVO electionVO : returnList) {
-					if(electionVO != null && electionVO.getElectionYear() != null && electionVO.getId().longValue() == id.longValue()){
+					if(electionVO != null && electionVO.getElectionYear() != null && Long.valueOf(electionVO.getElectionYear()) == id.longValue()){
 						return electionVO;
 					}
 				}
