@@ -1258,7 +1258,7 @@ public String getCountsForLevel()
 	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 	//Long userId =  regVO.getRegistrationID();
 	Long userId = null;
-	if(regVO.getParentUserId()!=null)
+	if(regVO != null && regVO.getParentUserId()!=null)
 	{
 	  userId = regVO.getMainAccountId();
 	}
