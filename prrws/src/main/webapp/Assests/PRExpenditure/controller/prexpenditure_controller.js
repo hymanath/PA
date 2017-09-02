@@ -1,6 +1,23 @@
 'use strict';
  angular.module('prexpenditureApp').controller('PrexpenditureController', ['$scope','PrexpenditureService','NgTableParams', function($scope,PrexpenditureService,NgTableParams) {  
     var cntrl = this;
+	cntrl.showHideDistrictSpinner=true;
+	cntrl.showHideDivisionSpinner=true;
+	cntrl.showHideDistrictSearchSpinner = false;
+	cntrl.showHideDivisionSearchSpinner = false;
+	cntrl.showHideDivisionTable=false;
+	cntrl.showHideDistrictTable=false;
+	
+	cntrl.showHideDistrictBlockDataAvailable = false;
+	cntrl.showHideDivisionBlockDataAvailable = false;
+	
+	cntrl.showHideGrossAmountSpinner = true;
+	cntrl.showHideGrossAmount = false;
+	cntrl.showHideDeductionsSpinner = true;
+	cntrl.showHiDedeductions = false;
+	cntrl.showHideNetAmountSpinner = true;
+	cntrl.showHiNetAmount = false;
+	
     var url = 'getTotalAmountForOverview';
 	var  data = {
 		"filterType":"",
@@ -11,6 +28,12 @@
 		PrexpenditureService.postData(url,data).
 		then(
 		function(responceData){
+			cntrl.showHideGrossAmountSpinner = false;  
+			cntrl.showHideGrossAmount = true;
+			cntrl.showHideDeductionsSpinner = false;
+			cntrl.showHiDedeductions = true;
+			cntrl.showHideNetAmountSpinner = false;
+			cntrl.showHiNetAmount = true;   
 		    cntrl.grossAmount=responceData.grossAmount;
 			cntrl.deductions=responceData.deductions;
 			cntrl.netAmount=responceData.netAmount;
@@ -39,13 +62,29 @@
 		then(
 		function(responceData){
 		    if (locationType == "district") {
-				 cntrl.districtData = responceData;
-				 cntrl.districtParams = new NgTableParams({}, {dataset: cntrl.districtData});
-				 cntrl.districtParams = createUsingFullOptions(cntrl.districtData);
+				if(responceData != null && responceData.length > 0){
+					 cntrl.districtData = responceData;
+					 cntrl.districtParams = new NgTableParams({}, {dataset: cntrl.districtData});
+					 cntrl.districtParams = createUsingFullOptions(cntrl.districtData);
+					 cntrl.showHideDistrictSpinner=false;
+					 cntrl.showHideDistrictSearchSpinner = true;
+					 cntrl.showHideDivisionTable=true;
+				}else{
+					cntrl.showHideDistrictSpinner=false;
+					cntrl.showHideDistrictBlockDataAvailable = true;
+				}
 			} else if (locationType == "division") {
-				cntrl.divisionData = responceData;		
-	            cntrl.divisionParams = new NgTableParams({}, {dataset: cntrl.divisionData});
-				cntrl.divisionParams = createUsingFullOptions(cntrl.divisionData);
+				if(responceData != null && responceData.length > 0){
+					cntrl.divisionData = responceData;		
+					cntrl.divisionParams = new NgTableParams({}, {dataset: cntrl.divisionData});
+					cntrl.divisionParams = createUsingFullOptions(cntrl.divisionData);
+					cntrl.showHideDivisionSpinner=false;  
+					cntrl.showHideDivisionSearchSpinner = true;
+					cntrl.showHideDistrictTable=true;
+				}else{
+					cntrl.showHideDivisionSpinner=false; 
+					cntrl.showHideDivisionBlockDataAvailable = true;
+				} 
 			}
 			
 			function createUsingFullOptions(dataList) {

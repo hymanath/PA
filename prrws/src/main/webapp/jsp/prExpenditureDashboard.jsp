@@ -79,7 +79,21 @@
 		background-color:#F9F9F9;
 		box-shadow:0px 0px 3px 3px #ABABAB
 	}
-
+	.spinner .dot1, .spinner .dot2 {
+		animation: 2s ease-in-out 0s normal none infinite running sk-chasingDotsBounce;
+		background-color: #1abc9c;
+		border-radius: 100%;
+		display: inline-block;
+		height: 60%;
+		position: absolute;
+		top: 0;
+		width: 60%;
+	}
+	.spinner .dot2 {
+		animation-delay: -1s;
+		bottom: 0;
+		top: auto;
+	}
 </style>
 </head>
 <header style = "box-shadow:none;background-color:#fff;">
@@ -212,7 +226,13 @@
 				   </div>
 				   <div class="media-body">
 					  <h4>Gross-Amount</h4>
-					  <h4><i class="fa fa-inr"></i> <div id="grossId">{{cntrl.grossAmount}}</div></h4>
+						<h4>
+							<i class="fa fa-inr"></i> 
+							<div ng-show="cntrl.showHideGrossAmountSpinner">
+								<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
+							</div>
+							<div ng-show="cntrl.showHideGrossAmount" id="grossId">{{cntrl.grossAmount}}</div>
+						</h4>
 				   </div>
 				</div>
 			 </div>
@@ -227,7 +247,13 @@
 				   </div>
 				   <div class="media-body">   
 					  <h4>DEDUCTIONS</h4>
-					  <h4><i class="fa fa-inr"></i> <div id="deductionId">{{cntrl.deductions}}</div></h4>
+					  <h4>
+						<i class="fa fa-inr"></i> 
+						<div ng-show="cntrl.showHideDeductionsSpinner">
+							<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
+						</div>	
+						<div ng-show="cntrl.showHiDedeductions" id="deductionId">{{cntrl.deductions}}</div>
+					  </h4>
 				   </div>
 				</div>
 			 </div>
@@ -242,11 +268,17 @@
 				   </div>
 				   <div class="media-body">
 					  <h4>NET AMOUNT</h4>
-					  <h4><i class="fa fa-inr"></i> <div id="netId">{{cntrl.netAmount}}</div></h4>
+					  <h4>
+						<i class="fa fa-inr"></i>
+						<div ng-show="cntrl.showHideNetAmountSpinner">
+							<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
+						</div>
+						<div ng-show="cntrl.showHiNetAmount" id="netId">{{cntrl.netAmount}}</div>
+					  </h4>
 				   </div>
 				</div>
 			 </div>
-		  </div>
+		  </div>  
 	   </div>
 	   <div class="block-border m_top20" style="display:none;">
 		  <div class="row">
@@ -278,7 +310,10 @@
 						</div>
 						<div id="collapseConsolidatedDistrict" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingConsolidatedDistrict">
 						   <div class="panel-body">
-								<div class="row pull-right">
+								<div ng-show="cntrl.showHideDistrictBlockDataAvailable" class="col-sm-12">
+									<h3>No Data Available.....</h3>
+								</div>
+								<div ng-show="cntrl.showHideDistrictSearchSpinner" class="row pull-right">
 									<div class="col-sm-12">
 										<div class="form-group">
 											<label for="search">Search</label>
@@ -288,7 +323,10 @@
 							  </div>
 							  <div class="row">
 								 <div class="col-sm-12">
-									<div id="collapseConsolidatedViewDistrict">
+								 <div ng-show="cntrl.showHideDistrictSpinner">
+									<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
+								 </div>
+									<div ng-show="cntrl.showHideDistrictTable" id="collapseConsolidatedViewDistrict">
 									   <table ng-table="cntrl.districtParams" class="table table-condensed table-bordered table-striped" show-filter="false">
 											<tr ng-repeat="district in $data">   
 												<td title="'LocationName'" filter="{ locationName: 'text'}" sortable="'locationName'">{{district.locationName}}</td>   
@@ -310,7 +348,10 @@
 						   </div>
 						   <div id="collapseConsolidatedDivision" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingConsolidatedDivision">
 							  <div class="panel-body">
-								  <div class="row pull-right">
+								<div ng-show="cntrl.showHideDivisionBlockDataAvailable" class="col-sm-12">
+									<h3>No Data Available.....</h3>
+								</div>  
+								  <div ng-show="cntrl.showHideDivisionSearchSpinner" class="row pull-right">
 									  <div class="col-sm-12">
 										<div class="form-group">
 											<label for="search">Search</label>
@@ -320,7 +361,10 @@
 								  </div>
 								 <div class="row m_top10">
 									<div class="col-sm-12">
-									   <div id="collapseConsolidatedViewDivision">
+									   <div ng-show="cntrl.showHideDivisionSpinner">
+								       <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
+								       </div>
+									   <div ng-show="cntrl.showHideDivisionTable" id="collapseConsolidatedViewDivision">
 										   <table ng-table="cntrl.divisionParams" class="table table-condensed table-bordered table-striped" show-filter="false">
 												<tr ng-repeat="division in $data">   
 													<td title="'LocationName'" filter="{ locationName: 'text'}" sortable="'locationName'">{{division.locationName}}</td>   
