@@ -3483,6 +3483,7 @@
 		<property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO" />
 		<property name="districtConstituenciesDAO" ref="districtConstituenciesDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+		<property name="nominatedPostDAO" ref="nominatedPostDAO" />
 	</bean>
 	<bean name="locationService" class="com.itgrids.partyanalyst.utils.LocationService">
 		<property name="constituencyDAO" ref="constituencyDAO"/>
