@@ -48,7 +48,7 @@
 		<div class="row">
 		 	<div class="col-md-12 col-xs-12 col-sm-12">
 				<h2><span id="selectedMenuName" class="text-capitalize">Nellore District</span> Information</h2>
-				<ol class="breadcrumb" id="getMenuLocations" menu-location-state="1" menu-location-district="19" menu-location-constituency="232" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="3" menu-location-levelName="district" >
+				<ol class="breadcrumb" id="getMenuLocations" menu-location-state="1" menu-location-district="19" menu-location-constituency="232" menu-location-mandal="" menu-location-panchayat="" menu-location-levelId="3" menu-location-parliament="" menu-location-levelName="district" >
 					<!--<li>State : <span menu-name="state" class="stateMenuName">Andhra Pradesh</span></li>-->
 					<li>District : <span menu-name="district" levelId="3" locationId="01" class="districtMenuName text-capital">Nellore</span></li>
 					<li style="display:none">Parliament : <span menu-name="parliament" levelId="10" locationId="01" class="parliamentMenuName text-capital">Nellore</span></li>
