@@ -8368,11 +8368,18 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  				      else
  				    	  membersList =  tdpMemberDAO.searchTdpMemberByCriteria(searchType,searchValue,null);
  
+ 				      Map<Long,AppointmentCandidateVO> uniqueCadres = new HashMap<Long,AppointmentCandidateVO>();
  				    	  if(membersList!=null && membersList.size()>0){
  				    		  finalList = new ArrayList<AppointmentCandidateVO>(); 
  				    		  for(Object[] obj: membersList){
- 				    			  AppointmentCandidateVO vo =new AppointmentCandidateVO();
- 					    		  vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+ 				    			 AppointmentCandidateVO vo = uniqueCadres.get((Long)obj[0]);
+ 				    			 if(vo == null){
+ 				    				vo =new AppointmentCandidateVO();
+ 				    				uniqueCadres.put((Long)obj[0], vo);
+ 				    				finalList.add(vo);
+ 				    			 }
+ 				    			  vo.setTdpCadreId(obj[0]!=null?(Long)obj[0]:0l);
+ 				    			  vo.setId(obj[0]!=null?(Long)obj[0]:0l);
  					    		  vo.setCandidateType("cadre");
  					    		  vo.setName(obj[1]!=null?obj[1].toString():"");
  					    		  vo.setCadre(true);
@@ -8384,7 +8391,7 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  					    		  vo.setEnrollmentYears(obj[7]!=null?obj[7].toString():"");
  					    		  if(!tdpCadreIds.contains(vo.getId()))
  					    			  tdpCadreIds.add(vo.getId());
- 					    		  finalList.add(vo);
+ 					    		  
  				    		  }
  				    	 // }
  				    	  
