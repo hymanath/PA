@@ -168,12 +168,13 @@ $(document).on('click','.selectMember',function(){
 						buildPanelBlock(selPosition,appendBlock,cadreId);
 						$("#addmember"+selPosition.replace(/\s+/g, '')).find("li div.panel-footer").remove();
 					}else{
-						if(globalPositionsArr.indexOf(selPosition.replace(/\s+/g, '')) > -1 || $("[attr_selected_position="+selPosition.replace(/\s+/g, '')+"]").length != 0){
+						var posiMemCnt = $("#posiMemCnt"+selPosition.replace(/\s+/g, '')).text();
+						if(globalPositionsArr.indexOf(selPosition.replace(/\s+/g, '')) > -1 || $("[attr_selected_position="+selPosition.replace(/\s+/g, '')+"]").length != 0 && (posiMemCnt < positionCount)){
 							var count = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_member_count");
 							var posiCnt = $("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_posi_count");
 							count++;
 							updateAddedPosiAndAddedMemCnt();
-							var posiMemCnt = $("#posiMemCnt"+selPosition.replace(/\s+/g, '')).text();
+							
 							posiMemCnt++;
 							$("#posiMemCnt"+selPosition.replace(/\s+/g, '')).text(posiMemCnt);
 							$("#addmember"+selPosition.replace(/\s+/g, '')).attr("attr_member_count",count);
