@@ -871,11 +871,11 @@ getAllDepartments();
 					globalLocationLevelTypeId = globalLocationLevelTypeId
 					globalLocationId = globalLocationId
 				}
-				emptyProgramSubProgramDistVal()
-				getAllSubLocationsBySuperLocationId(11,'distLevelParliamentNames',3);
 				$(".distLevelparliamentCls").show();
 				$(".distLevelCls").hide();
-				 getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload',0);
+				emptyProgramSubProgramDistVal()
+				getAllSubLocationsBySuperLocationId(11,'distLevelParliamentNames',3);
+				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload',0);
 			}else{
 				if(globalLevelId == 0){
 					globalLocationLevelTypeId=3;
@@ -884,11 +884,11 @@ getAllDepartments();
 					globalLocationLevelTypeId = globalLocationLevelTypeId
 					globalLocationId = globalLocationId
 				}
+				$(".distLevelCls").show();
 				$("#distLevelDistrictNames").val(0);
 				$("#distLevelDistrictNames").trigger('chosen:updated');
 				emptyProgramSubProgramDistVal()
 				$(".distLevelparliamentCls").hide();
-				$(".distLevelCls").show();
 				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload',0);
 			}
 			
@@ -992,6 +992,7 @@ getAllDepartments();
 				getSchemeWiseLocationWiseAmountDetails(6,'villageLevlOvervw','count','desc',globalLocationId,globalLocationLevelTypeId,0,0,"cumulative",'onload',0);
 			}
 		}
+		
 		// hiding select box in the case of MGNREGS department.
 		  var deptIdArr = $("#DepartmentsId").val();
 		  var deptId = 0;
@@ -1000,10 +1001,16 @@ getAllDepartments();
 		  }
 		  if (deptId == 3){//In the case MGNREGS we are hiding select box.
 			 $(".selectBoxCommonCls").hide();
-		  }else {
-			 $(".selectBoxCommonCls").show();
+		  }else{
+			  if(blockName == 'distLevel'){
+				  if(blockType == "parliamentType"){
+					  $("#distLevelDistrictNames_chosen").hide();
+				  }else{
+					  $("#distLevelParliamentNames_chosen").show();
+					  $("#distLevelDistrictNames_chosen").show();
+				  }
+			  }
 		  }
-		
 	});
 	var overviewSelectBoxData = '';
 	function getGovtSchemesDetails(divId){
@@ -1316,166 +1323,21 @@ getAllDepartments();
 		//financialArrGlob = values;
 		
 	});
+	/* $("#DepartmentsId").chosen().on("change", function(event, params) {
+	  var value = $(this).val();
+	  var changedValue = params.selected || params.deselected;
+     console.log(value);
+     console.log("Selected Value"+params.selected);
+     console.log("previous selected Value"+);
+	}); */
+	
 	var departmentArrGlob =[];
 	departmentArrGlob.push("0");
 	var departmentArrGlob1 =[];
 	departmentArrGlob1.push("3");
 	$(document).on("change","#DepartmentsId",function(){//ara1
 		var values = $(this).val();//debugger;
-		/* $('#tabVill a[href="#villageLevelTable"]').trigger('click');
-		$('#tabMan a[href="#mandalLevelTable"]').trigger('click');
-		$('#tabSt a[href="#stateLevelTable"]').trigger('click');
-		$('#tabDis a[href="#distLevelTable"]').trigger('click');
-		$('#tabCons a[href="#consLevelTable"]').trigger('click'); */
-		$(".tabCummulativeDistrict li").removeClass("active");
-		$(".ActiveDistrictCls").addClass("active"); 
-		$(".tabCummulativeVillage li").removeClass("active");
-		$(".ActiveVillageCls").addClass("active"); 
-		$(".tabCummulativeConstituency li").removeClass("active");
-		$(".ActiveConstituencyCls").addClass("active"); 
-		$(".tabCummulativeStateCls li").removeClass("active");
-		$(".ActiveStateCls").addClass("active"); 
-		
-		$(".distLevelActive li").removeClass("active");
-		$(".districtActiveCls").addClass("active"); 
-		
-		$(".consLevelActive li").removeClass("active");
-		$(".constituencyActiveCls").addClass("active"); 
-		
-		$(".mandalLevelActive li").removeClass("active");
-		$(".mandalActiveCls").addClass("active"); 
-		
-		$(".villageLevelActive li").removeClass("active");
-		$(".villageActiveCls").addClass("active"); 
-		$(".showHideConstituencyPgramsCls").hide();
-		$(".showHideDistrictPgramsCls").hide();
-		$(".showHideVillagePgramsCls").hide();
-		$(".showHideMandalPgramsCls").hide();
-		
-		var firstIndexVal=0;
-		var secondIndexVal=0;
-		if(values !=null){
-			if(values.length == 2 || values.length==1){
-				if(values.length == 2){
-					for(var i in values){
-						if(i == 0){
-							firstIndexVal=values[i];
-						}else{
-							secondIndexVal=values[i];
-						}
-					} 
-					
-					if(firstIndexVal == 0 && secondIndexVal == 3){
-						$(".advancedSearchStyle").hide();
-						$(".comaprisionViewShow").hide();
-						$(".showHideStatePgramsCls").hide();
-						$(".showHideDistrictPgramsCls").hide();
-						$(".showHideConstituencyPgramsCls").hide();
-						$(".showHideMandalPgramsCls").hide();
-						$(".showHideVillagePgramsCls").hide();
-						$(".selectBoxCommonCls").hide();
-						$("#financialYearId").html('');
-						var finalYearArr =[{"financialYearId":"4","financialYear":"2017-2018"}];
-						buildFinancialYearRlst(finalYearArr);
-					}else {
-					   $(".advancedSearchStyle").show();	
-					   $(".comaprisionViewShow").show();
-						$(".showHideStatePgramsCls").show();
-						$(".showHideDistrictPgramsCls").show();
-						$(".showHideConstituencyPgramsCls").show();
-						$(".showHideMandalPgramsCls").show();
-						$(".showHideVillagePgramsCls").show();
-						$(".selectBoxCommonCls").show();
-						getAllFiniancialYears();
-					}
-				}
-			
-				if(values.length == 1){
-					for(var i in values){
-					  firstIndexVal=values[i];
-					} 
-					if(firstIndexVal == 3){
-							$(".advancedSearchStyle").hide();
-							$(".comaprisionViewShow").hide();
-							$(".showHideStatePgramsCls").hide();
-							$(".showHideDistrictPgramsCls").hide();
-							$(".showHideConstituencyPgramsCls").hide();
-							$(".showHideMandalPgramsCls").hide();
-							$(".showHideVillagePgramsCls").hide();
-							$(".selectBoxCommonCls").hide();
-							$("#financialYearId").html('');
-							var finalYearArr =[{"financialYearId":"4","financialYear":"2017-2018"}];
-						      buildFinancialYearRlst(finalYearArr);
-					}else {
-							 $(".advancedSearchStyle").show();
-							 $(".comaprisionViewShow").show();
-							 $(".showHideStatePgramsCls").show();
-							 $(".showHideDistrictPgramsCls").show();
-							 $(".showHideConstituencyPgramsCls").show();
-							 $(".showHideMandalPgramsCls").show();
-							 $(".showHideVillagePgramsCls").show();
-							$(".selectBoxCommonCls").show();
-							getAllFiniancialYears();
-					}
-				}
-			
-			} else {
-					$(".advancedSearchStyle").show();
-					$(".comaprisionViewShow").show();
-					$(".showHideStatePgramsCls").show();
-					$(".showHideDistrictPgramsCls").show();
-					$(".showHideConstituencyPgramsCls").show();
-					$(".showHideMandalPgramsCls").show();
-					$(".showHideVillagePgramsCls").show();
-					$(".selectBoxCommonCls").show();
-					getAllFiniancialYears();
-			}
-		}
-		
-		
-	
-		
-		
-		//district
-		$(".distLevelparliamentCls").hide();
-		getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
-		
-		//Constituency
-		$(".parlaiLevelDistCls").hide();
-		$("#constLevelConstNames").html('');
-		$("#constLevelConstNames").trigger("chosen:updated");
-		getAllSubLocationsBySuperLocationId(21,'constLevelDistNames',4);
-			
-		
-		//mandal
-		$(".levelparliamentConstiCls").hide();
-		getAllSubLocationsBySuperLocationId(21,'mandalLevelDistNames',5);
-		$("#mandalLevelConstNames").html('');
-		$("#mandalLevelConstNames").trigger("chosen:updated");
-		
-		$("#mandalLevelMandalNames").html('');
-		$("#mandalLevelMandalNames").trigger("chosen:updated");
-		
-		//VILLAGE
-		$(".villageLevelParliCls").hide();
-		getAllSubLocationsBySuperLocationId(21,'villageLevelDistNames',6);	
-		$("#villageLevelConstNames").html('');
-		$("#villageLevelConstNames").trigger("chosen:updated");
-		
-		$("#villageLevelMandalNames").html('');
-		$("#villageLevelMandalNames").trigger("chosen:updated");
-		
-		$("#villageLevelNames").html('');
-		$("#villageLevelNames").trigger("chosen:updated");
-			
-		$(".collapseActiveVillageCls").addClass("collapsed");
-		$(".collapseActiveMandalCls").addClass("collapsed");
-		$(".collapseActiveConstCls").addClass("collapsed");
-		$(".collapseActiveDistCls").addClass("collapsed");		
-		$("#collapseTwo").removeClass("in");		
-		$("#collapseThree").removeClass("in");		
-		$("#collapseFour").removeClass("in");		
-		$("#collapseFive").removeClass("in");		
+				
 		
 		if(values != null && values.length > 0){
 			for(var i=0; i<values.length; i++) {
@@ -1500,6 +1362,164 @@ getAllDepartments();
 				}
 				
 			 }
+			 /* $('#tabVill a[href="#villageLevelTable"]').trigger('click');
+			$('#tabMan a[href="#mandalLevelTable"]').trigger('click');
+			$('#tabSt a[href="#stateLevelTable"]').trigger('click');
+			$('#tabDis a[href="#distLevelTable"]').trigger('click');
+			$('#tabCons a[href="#consLevelTable"]').trigger('click'); */
+			$(".tabCummulativeDistrict li").removeClass("active");
+			$(".ActiveDistrictCls").addClass("active"); 
+			$(".tabCummulativeVillage li").removeClass("active");
+			$(".ActiveVillageCls").addClass("active"); 
+			$(".tabCummulativeConstituency li").removeClass("active");
+			$(".ActiveConstituencyCls").addClass("active"); 
+			$(".tabCummulativeStateCls li").removeClass("active");
+			$(".ActiveStateCls").addClass("active"); 
+			
+			$(".distLevelActive li").removeClass("active");
+			$(".districtActiveCls").addClass("active"); 
+			
+			$(".consLevelActive li").removeClass("active");
+			$(".constituencyActiveCls").addClass("active"); 
+			
+			$(".mandalLevelActive li").removeClass("active");
+			$(".mandalActiveCls").addClass("active"); 
+			
+			$(".villageLevelActive li").removeClass("active");
+			$(".villageActiveCls").addClass("active"); 
+			$(".showHideConstituencyPgramsCls").hide();
+			$(".showHideDistrictPgramsCls").hide();
+			$(".showHideVillagePgramsCls").hide();
+			$(".showHideMandalPgramsCls").hide();
+			
+			var firstIndexVal=0;
+			var secondIndexVal=0;
+			
+			if(values !=null){
+				if(values.length == 2 || values.length==1){
+					if(values.length == 2){
+						for(var i in values){
+							if(i == 0){
+								firstIndexVal=values[i];
+							}else{
+								secondIndexVal=values[i];
+							}
+						} 
+						if(firstIndexVal == 0 && secondIndexVal == 3){
+							$(".advancedSearchStyle").hide();
+							$(".comaprisionViewShow").hide();
+							$(".showHideStatePgramsCls").hide();
+							$(".showHideDistrictPgramsCls").hide();
+							$(".showHideConstituencyPgramsCls").hide();
+							$(".showHideMandalPgramsCls").hide();
+							$(".showHideVillagePgramsCls").hide();
+							$(".selectBoxCommonCls").hide();
+							$(".panchyatLevelYearWiseViewCls").hide();
+							$("#financialYearId").html('');
+							//var finalYearArr =[{"financialYearId":"4","financialYear":"2017-2018"}];
+							//buildFinancialYearRlst(finalYearArr);
+							getAllFiniancialYears();
+						}else {
+						   $(".advancedSearchStyle").show();	
+						   $(".comaprisionViewShow").show();
+							$(".showHideStatePgramsCls").show();
+							$(".showHideDistrictPgramsCls").show();
+							$(".showHideConstituencyPgramsCls").show();
+							$(".showHideMandalPgramsCls").show();
+							$(".showHideVillagePgramsCls").show();
+							$(".selectBoxCommonCls").show();
+							$(".panchyatLevelYearWiseViewCls").show();
+							getAllFiniancialYears();
+						}
+					}
+				
+					if(values.length == 1){
+						for(var i in values){
+						  firstIndexVal=values[i];
+						} 
+						if(firstIndexVal == 3){
+								$(".advancedSearchStyle").hide();
+								$(".comaprisionViewShow").hide();
+								$(".showHideStatePgramsCls").hide();
+								$(".showHideDistrictPgramsCls").hide();
+								$(".showHideConstituencyPgramsCls").hide();
+								$(".showHideMandalPgramsCls").hide();
+								$(".showHideVillagePgramsCls").hide();
+								$(".selectBoxCommonCls").hide();
+								$(".panchyatLevelYearWiseViewCls").hide();
+								$("#financialYearId").html('');
+								var finalYearArr =[{"financialYearId":"4","financialYear":"2017-2018"}];
+								  buildFinancialYearRlst(finalYearArr);
+						}else {
+								 $(".advancedSearchStyle").show();
+								 $(".comaprisionViewShow").show();
+								 $(".showHideStatePgramsCls").show();
+								 $(".showHideDistrictPgramsCls").show();
+								 $(".showHideConstituencyPgramsCls").show();
+								 $(".showHideMandalPgramsCls").show();
+								 $(".showHideVillagePgramsCls").show();
+								$(".selectBoxCommonCls").show();
+								$(".panchyatLevelYearWiseViewCls").show();
+								getAllFiniancialYears();
+						}
+					}
+				
+				} else {
+					//console.log("other department");
+						$(".advancedSearchStyle").show();
+						$(".comaprisionViewShow").show();
+						$(".showHideStatePgramsCls").show();
+						$(".showHideDistrictPgramsCls").show();
+						$(".showHideConstituencyPgramsCls").show();
+						$(".showHideMandalPgramsCls").show();
+						$(".showHideVillagePgramsCls").show();
+						$(".selectBoxCommonCls").show();
+						$(".panchyatLevelYearWiseViewCls").show();
+						getAllFiniancialYears();
+				}
+			}
+			
+			
+			//district
+			$(".distLevelparliamentCls").hide();
+			getAllSubLocationsBySuperLocationId(21,'distLevelDistrictNames',3);
+			
+			//Constituency
+			$(".parlaiLevelDistCls").hide();
+			$("#constLevelConstNames").html('');
+			$("#constLevelConstNames").trigger("chosen:updated");
+			getAllSubLocationsBySuperLocationId(21,'constLevelDistNames',4);
+				
+			
+			//mandal
+			$(".levelparliamentConstiCls").hide();
+			getAllSubLocationsBySuperLocationId(21,'mandalLevelDistNames',5);
+			$("#mandalLevelConstNames").html('');
+			$("#mandalLevelConstNames").trigger("chosen:updated");
+			
+			$("#mandalLevelMandalNames").html('');
+			$("#mandalLevelMandalNames").trigger("chosen:updated");
+			
+			//VILLAGE
+			$(".villageLevelParliCls").hide();
+			getAllSubLocationsBySuperLocationId(21,'villageLevelDistNames',6);	
+			$("#villageLevelConstNames").html('');
+			$("#villageLevelConstNames").trigger("chosen:updated");
+			
+			$("#villageLevelMandalNames").html('');
+			$("#villageLevelMandalNames").trigger("chosen:updated");
+			
+			$("#villageLevelNames").html('');
+			$("#villageLevelNames").trigger("chosen:updated");
+				
+			$(".collapseActiveVillageCls").addClass("collapsed");
+			$(".collapseActiveMandalCls").addClass("collapsed");
+			$(".collapseActiveConstCls").addClass("collapsed");
+			$(".collapseActiveDistCls").addClass("collapsed");		
+			$("#collapseTwo").removeClass("in");		
+			$("#collapseThree").removeClass("in");		
+			$("#collapseFour").removeClass("in");		
+			$("#collapseFive").removeClass("in");
 			 onLoadInitialisations();
 		}
 		
@@ -1571,7 +1591,6 @@ getAllDepartments();
 					$("#DepartmentsId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
 				}
 			}
-			//$("#DepartmentsId").append("<option value='3'>MGNREGS</option>");
 			$("#DepartmentsId").val(0)
 			$("#DepartmentsId").trigger("chosen:updated");
 		});
@@ -1641,10 +1660,7 @@ getAllDepartments();
 			fromDateStr : glStartDate,       
 			toDateStr : glEndDate,		
 			searchLevelId:globalLocationLevelTypeId,
-			searchLvlVals:glSearchLevelValue,
-			year : "2017", //For MGNREGS SERVICE
-			fromDate : getDateInRequiredFormat(glStartDate),
-			toDate : getDateInRequiredFormat(glEndDate)
+			searchLvlVals:glSearchLevelValue
 			
 		}
 		$.ajax({
@@ -1781,9 +1797,6 @@ getAllDepartments();
 			glSearchLevelId :1,
 			viewType :viewType,
 			grantTypeIdsList:grantTypeIdsList,
-			year : "2017", //For MGNREGS SERVICE
-			fromDate : getDateInRequiredFormat(glStartDate),
-			toDate : getDateInRequiredFormat(glEndDate),
 			subFilterType:"parliament"
 		}
 		$.ajax({
@@ -1873,7 +1886,7 @@ getAllDepartments();
 							table+='<th>DISTRICT</th>';
 							if(departmentId != 1 && departmentId != 3)
 							table+='<th></th>';
-							if(blockType == "parliamentType"){
+							if(blockType == "parliamentType"){ 
 								table+='<th>PARLIAMENT</th>';
 							}
 							table+='<th>CONSTITUENCY</th>';
@@ -1922,9 +1935,10 @@ getAllDepartments();
 				table+='</thead>';
 				table+='<tbody>';
 				for(var i in result){
+					    
 					var schmeIdstr = '';
 					
-					for(var j in result[0].subList)
+					for(var j in result[i].subList)
 					{
 						for(var m in result[i].subList[j].subList)
 						{
@@ -2087,7 +2101,7 @@ getAllDepartments();
 										}
 								
 							}
-							table+='<td class="text-center">'+result[0].subList[j].year+'</td>';
+							table+='<td class="text-center">'+result[i].subList[j].year+'</td>';
 							for(var k in result[i].subList[j].subList)
 							{
 								if(result[i].subList[j].yearId != 0){
@@ -2420,30 +2434,45 @@ getAllDepartments();
 								if(countAvailable){
 									var locationId;
 									if(levelId == 3){
-										locationId=result[i].subList[j].addressVO.id;
-										locationName =result[i].subList[j].addressVO.districtName;
+										//locationId=result[i].subList[j].addressVO.id;
+										locationId=result[i].addressVO.id;
+										//locationName =result[i].subList[j].addressVO.districtName;
+										locationName =result[i].addressVO.districtName;
 										levelName = "DISTRICT";
-										assemblyShemeNameArr.push(result[i].subList[j].addressVO.districtName+"<br/>("+result[i].subList[j].year+")")
+										//assemblyShemeNameArr.push(result[i].subList[j].addressVO.districtName+"<br/>("+result[i].subList[j].year+")")
+										assemblyShemeNameArr.push(result[i].addressVO.districtName+"<br/>("+result[i].subList[j].year+")")
 									}else if(levelId == 4){
-										locationId=result[i].subList[j].addressVO.id;
-										locationName =result[i].subList[j].addressVO.assemblyName;
+										//locationId=result[i].subList[j].addressVO.id;
+										locationId=result[i].addressVO.id;
+									//	locationName =result[i].subList[j].addressVO.assemblyName;
+										locationName =result[i].addressVO.assemblyName;
 										levelName = "CONSTITUENCY";
-										assemblyShemeNameArr.push(result[i].subList[j].addressVO.assemblyName+"<br/>("+result[i].subList[j].year+")")
+										//assemblyShemeNameArr.push(result[i].subList[j].addressVO.assemblyName+"<br/>("+result[i].subList[j].year+")")
+										assemblyShemeNameArr.push(result[i].addressVO.assemblyName+"<br/>("+result[i].subList[j].year+")")
 									}else if(levelId == 5){
-										locationId=result[i].subList[j].addressVO.id;
-										locationName =result[i].subList[j].addressVO.name;
+										//locationId=result[i].subList[j].addressVO.id;
+										locationId=result[i].addressVO.id;
+										//locationName =result[i].subList[j].addressVO.name;
+										locationName =result[i].addressVO.name;
 										levelName = "MANDAL";
-										assemblyShemeNameArr.push(result[i].subList[j].addressVO.name+"<br/>("+result[i].subList[j].year+")")
+										//assemblyShemeNameArr.push(result[i].subList[j].addressVO.name+"<br/>("+result[i].subList[j].year+")")
+										assemblyShemeNameArr.push(result[i].addressVO.name+"<br/>("+result[i].subList[j].year+")")
 									}else if(levelId == 6){
-										locationId=result[i].subList[j].addressVO.id;
-										locationName =result[i].subList[j].addressVO.panchayatName;
+										//locationId=result[i].subList[j].addressVO.id;
+										locationId=result[i].addressVO.id;
+										//locationName =result[i].subList[j].addressVO.panchayatName;
+										locationName =result[i].addressVO.panchayatName;
 										levelName = "VILLAGE";
-										assemblyShemeNameArr.push(result[i].subList[j].addressVO.panchayatName+"<br/>("+result[i].subList[j].year+")")
+										//assemblyShemeNameArr.push(result[i].subList[j].addressVO.panchayatName+"<br/>("+result[i].subList[j].year+")")
+										assemblyShemeNameArr.push(result[i].addressVO.panchayatName+"<br/>("+result[i].subList[j].year+")")
 									}else if(levelId == 9){
-										locationId=result[i].subList[j].addressVO.id;
-										locationName =result[i].subList[j].addressVO.parliamentName;
+										//locationId=result[i].subList[j].addressVO.id;
+										locationId=result[i].addressVO.id;
+										//locationName =result[i].subList[j].addressVO.parliamentName;
+										locationName =result[i].addressVO.parliamentName;
 										levelName = "PARLIAMENT";
-										assemblyShemeNameArr.push(result[i].subList[j].addressVO.parliamentName+"<br/>("+result[i].subList[j].year+")")
+										//assemblyShemeNameArr.push(result[i].subList[j].addressVO.parliamentName+"<br/>("+result[i].subList[j].year+")")
+										assemblyShemeNameArr.push(result[i].addressVO.parliamentName+"<br/>("+result[i].subList[j].year+")")
 									}
 								}
 								
@@ -2708,12 +2737,7 @@ getAllDepartments();
 			schemeIdsList:schemeIdsList,
 			subProgIds:subProgIds,
 			searchLevelId:globalLocationLevelTypeId,
-			searchLvlVals:glSearchLevelValue,
-			year : "2017", //For MGNREGS SERVICE
-			fromDate : getDateInRequiredFormat(glStartDate),
-			toDate : getDateInRequiredFormat(glEndDate)
-			
-		
+			searchLvlVals:glSearchLevelValue
 			
 		}
 		$.ajax({
@@ -2860,7 +2884,7 @@ getAllDepartments();
 			locationLevelType = 3;
 			locationId =$("#distLevelDistrictNames").val();
 		}
-		if(cummulativeType == "normalView"){
+		if(cummulativeType == "normalView"){//aaaa
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"",'change',grantType);
 		}else if(cummulativeType == "cummulativeView"){
 			getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw',sortingType,orderType,locationId,locationLevelType,programId,subProgramId,"cumulative",'change',grantType);
@@ -2946,7 +2970,7 @@ getAllDepartments();
 		var constituencyId =$("#constLevelConstNames").val();
 		var locationId=0;
 		var locationLevelType = 0;
-		if(constituencyId !=0 && parliamentId !=0){
+		if((constituencyId !=0 && parliamentId !=0) || constituencyId == null){
 			locationId = parliamentId;
 			locationLevelType=9;
 		}else if(constituencyId !=0 && parliamentId ==0){
@@ -3702,6 +3726,10 @@ function compareFundsBetweenFinancialYears(levelId,divId,globalLocationId,global
 	});
 	
 	function getLocationWiseFundSanctionDetails(blockLvlId,levlValue,financialYrId,schemeId,deptId,locationName,levelName){ 
+	if (schemeId == 0) {// MGNREGS
+		return ;
+	}
+	
 	$("#fundModal").modal('show');
 	$("#diptNameId").html('<h4 class="text-capital"><b>'+locationName+'&nbsp;&nbsp; '+levelName+' &nbsp;&nbsp;  Location Wise Fund Overview</b></h4>');
 	$("#fundSanctionModal").html(spinner);

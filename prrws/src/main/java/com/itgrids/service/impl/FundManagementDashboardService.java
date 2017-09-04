@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
@@ -130,6 +131,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			List<Long> sourceIdsList,List<Long> schemeIdsList,String startDateStr,String endDateStr,Long searchScopeId,List<Long> searchScopeValuesList,String order,String sortingType,Long searchLevelId,
 			List<Long> govtSchmeIdsList,List<Long> subProgramIdsList,Long glSearchLevelId,List<Long> glSearchLevelValue,String viewType, List<Long> grantTypeIdsList,InputVO inputVO){
 		List<FundSchemeVO> returnList = new ArrayList<FundSchemeVO>(0);
+		Map<Long,FundSchemeVO> schemesMap = new HashMap<Long,FundSchemeVO>(0);
 		try {
 			Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd/MM/yyyy","");
 			Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd/MM/yyyy","");
@@ -144,7 +146,6 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			Map<Long,FundSchemeVO> locationMap = new HashMap<Long,FundSchemeVO>(0);
 			Map<Long,FundSchemeVO> yearsMap = new TreeMap<Long,FundSchemeVO>();
 			//Map<Long,FundSchemeVO> deptsMap = new HashMap<Long,FundSchemeVO>(0);
-			Map<Long,FundSchemeVO> schemesMap = new HashMap<Long,FundSchemeVO>(0);
 			
 			if(commonMethodsUtilService.isListOrSetValid(result)){
 				
@@ -313,7 +314,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			updateAmountAndCountForYearWise(returnList);
 		}
 		 /* MEARGINING MGNREGS DATA LOCATION WISE START */
-		     mergeMgnregsLocationWiseData(returnList,inputVO);
+		     mergeMgnregsLocationWiseData(returnList,inputVO,schemesMap);
 		  /* END */
 	     try {
 			  if(commonMethodsUtilService.isListOrSetValid(returnList)){
@@ -2825,7 +2826,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			}
 			
 			 /* MEARGINING MGNREGS DATA START */
-			   if((inputVO.getDeptIdsList() == null ||  inputVO.getDeptIdsList().size() == 0 || inputVO.getDeptIdsList().contains(3l)) && (inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().contains(-1l))){
+			   if((inputVO.getDeptIdsList() == null ||  inputVO.getDeptIdsList().size() == 0 || inputVO.getDeptIdsList().contains(3l)) && (inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().contains(-1l))){//-1 we are sending scheme id for mgnregs from ui for identification purpose
 				  returnVO = getMgnregsTopLowAverageLocation(inputVO);
 			   }
 			   /* END */
@@ -2920,10 +2921,19 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
     
     /* Author:Santosh */
     /* MGNEREGS Service Start */ 
-    public void mergeMgnregsLocationWiseData(List<FundSchemeVO> returnList,InputVO inputVO) {
+    public void mergeMgnregsLocationWiseData(List<FundSchemeVO> returnList,InputVO inputVO,Map<Long,FundSchemeVO> subProgramMap) {
+    	  if (inputVO.getViewType().trim().length() == 0) {
+    		  inputVO.setViewType("yearwise");
+    	  }
 		  try {
-				boolean flag = false;
+			   if (inputVO.getFinancialYrIdList() != null && inputVO.getFinancialYrIdList().size()==1 && inputVO.getFinancialYrIdList().contains(0l)){
+				   inputVO.getFinancialYrIdList().clear();
+			   }
+			   String finalcialYear = getFinancilalYear(inputVO).getRangeType();//getting financial year min and max year 
+			  
+			     boolean flag = false;
 				List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
+				
 				if (deptIdsList == null) {
 					deptIdsList = new ArrayList<Long>(0);
 				}
@@ -2931,9 +2941,9 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				if (!flag) {
 					flag = (deptIdsList.size() == 0);
 				}
-			if (flag) {
-				Map<Long, String> mgneregsLocationMap = getMgneregslocationMappingIds(inputVO);
-				Map<String, FundSchemeVO> locationMap = getLocationWiseMgnregsData(inputVO);
+			if (flag) { /* Merging MGNEREGS data into FMS in the case of multiple department selected */
+				Map<Long, String> mgneregsLocationMap = getMgneregslocationMappingIds(inputVO).getSubMap1();//getting mgregs location code
+				List<FundSchemeVO> locationDtlsList = getLocationWiseMgnregsData(inputVO);
 				if (returnList != null && returnList.size() > 0) {
 					for (FundSchemeVO fundSchemeVO : returnList) {
 						AddressVO addressVO = fundSchemeVO.getAddressVO();
@@ -2944,54 +2954,146 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 							locationId = addressVO.getId();
 						}
 						addressVO.setLocationIdStr(mgneregsLocationMap.get(locationId));
-						FundSchemeVO mgnregsLocationVO = locationMap.get(addressVO.getLocationIdStr());
 						DecimalFormat f = new DecimalFormat("##.000");
 						if (inputVO.getViewType() != null && inputVO.getViewType().trim().equalsIgnoreCase("cumulative")) {
+							fundSchemeVO.getSubList().get(0).setYear(finalcialYear);//setting cumulative financial year
+							FundSchemeVO mgnregsLocationVO = getMatchVO(locationDtlsList,addressVO.getLocationIdStr());
 							if (mgnregsLocationVO != null) {
+								 //setting mgnregs location id
+								fundSchemeVO.setLocationIdStr(mgnregsLocationVO.getLocationIdStr());
+								
 								if (fundSchemeVO.getSubList().size() > 0) {
 									FundSchemeVO mgneregsVO = mgnregsLocationVO.getSubList().get(0).getSubList().get(0);
 									for (FundSchemeVO fundSchemeVO2 : fundSchemeVO.getSubList()) {
 										fundSchemeVO2.getSubList().add(0,mgneregsVO);
 										fundSchemeVO.setAmount(f.format(Double.valueOf(fundSchemeVO.getAmount())+ Double.valueOf(mgneregsVO.getAmount())));
+										fundSchemeVO.setCount((fundSchemeVO.getCount() != null ? fundSchemeVO.getCount():0l)+ mgneregsVO.getCount());
 									}
 								}
+								locationDtlsList.remove(mgnregsLocationVO);//removing object once added into result list
 							} else {
 								for (FundSchemeVO fundSchemeVO2 : fundSchemeVO.getSubList()) {
 									fundSchemeVO2.getSubList().add(0,getStaticTemplate());
 								}
 							}
 						} else {
-							if (mgnregsLocationVO != null) {
-								setYearWiseMgneresData(fundSchemeVO,fundSchemeVO.getSubList(),mgnregsLocationVO.getSubList().get(0));
-							} else {
-								for (FundSchemeVO fundVO : fundSchemeVO.getSubList()) {
+							for (FundSchemeVO fundVO : fundSchemeVO.getSubList()) {
+								FundSchemeVO mgnregsLocationVO = getLocationIdAndYearMatchVO(locationDtlsList,addressVO.getLocationIdStr(),fundVO.getYear());
+								if (mgnregsLocationVO != null) {
+									//setting mgnregs location id
+									fundSchemeVO.setLocationIdStr(mgnregsLocationVO.getLocationIdStr());
+									
+									fundVO.getSubList().add(0,mgnregsLocationVO.getSubList().get(0).getSubList().get(0));
+									fundSchemeVO.setAmount(f.format(Double.valueOf(fundVO.getAmount()) + Double.valueOf(mgnregsLocationVO.getSubList().get(0).getAmount())));
+									locationDtlsList.remove(mgnregsLocationVO);//removing object once added into result list
+								} else {
 									fundVO.getSubList().add(0,getStaticTemplate());
 								}
 							}
 						}
 					}
 				}
+				//Adding Mgnregs location data into result list.Which location don't exist in fms result list but in mgnregs data is there. 
+				if (locationDtlsList != null && locationDtlsList.size() > 0) {
+					 Map<String, Long> locationMap = null;
+					 Map<Long, Long> constituencyDistrictIdMap = null;
+					 Map<Long, Long> mandalConstituenyMap = null;
+					 
+					  locationMap = getMgneregslocationMappingIds(inputVO).getSubMap2();//getting location based on UI selection
+						
+			         if(inputVO.getBlockLevelId().longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID || inputVO.getBlockLevelId().longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){
+	        			 constituencyDistrictIdMap = getLocationIdsDetails("constituency");
+	        		 }
+	    			 if(inputVO.getBlockLevelId().longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){		
+	    				 mandalConstituenyMap = getLocationIdsDetails("mandal");
+	    			 }
+					
+					
+					for (FundSchemeVO fundSchemeVO : locationDtlsList) {
+						
+						fundSchemeVO.getSubList().get(0).getSubList().addAll(subProgramMap.values());
+						 /* Mapping prrws location id*/
+						 if(inputVO.getBlockLevelId().longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID) {
+							
+							 fundSchemeVO.getAddressVO().setDistrictId(locationMap.get(fundSchemeVO.getLocationIdStr()));
+							 fundSchemeVO.getAddressVO().setId(fundSchemeVO.getAddressVO().getDistrictId());
+							 
+							 
+				         } else if(inputVO.getBlockLevelId().longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+		        			
+				        	 fundSchemeVO.getAddressVO().setAssemblyId(locationMap.get(fundSchemeVO.getLocationIdStr()));
+		        			 fundSchemeVO.getAddressVO().setId(fundSchemeVO.getAddressVO().getAssemblyId());
+							 
+		        			 fundSchemeVO.getAddressVO().setDistrictId(constituencyDistrictIdMap.get(fundSchemeVO.getAddressVO().getAssemblyId()));
+		        		 } else if(inputVO.getBlockLevelId().longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){		
+		    				
+		        			 fundSchemeVO.getAddressVO().setTehsilId(locationMap.get(fundSchemeVO.getLocationIdStr()));
+		    				 fundSchemeVO.getAddressVO().setId(fundSchemeVO.getAddressVO().getTehsilId());
+							 
+		    				 fundSchemeVO.getAddressVO().setAssemblyId(mandalConstituenyMap.get(fundSchemeVO.getAddressVO().getTehsilId()));
+		    				 fundSchemeVO.getAddressVO().setDistrictId(constituencyDistrictIdMap.get(fundSchemeVO.getAddressVO().getAssemblyId()));
+		    			 }
+						returnList.add(fundSchemeVO);
+					}
+				}
 			}
+			
+			/* Sending only MGNEREGS data once only MGNEREGS has selected */
 		   if (deptIdsList != null && deptIdsList.size() == 1 && deptIdsList.contains(3l)) {
-			   Map<String,FundSchemeVO> locationMap =  getLocationWiseMgnregsData(inputVO);
-			   returnList.clear();
-			   returnList.addAll(locationMap.values());
+			    List<FundSchemeVO> finalList =  getLocationWiseMgnregsData(inputVO);
+			    returnList.clear();
+			   returnList.addAll(finalList);
 		   }
 		 } catch (Exception e) {
-			  LOG.error(" Exception occured in FundManagementDashboardService ,mergeMgnregsLocationWiseData() ",e);
+			  LOG.error(" Exception occured at mergeMgnregsLocationWiseData() in  FundManagementDashboardService class ",e);
 		}
    }
 
-	public Map<String, FundSchemeVO> getLocationWiseMgnregsData(InputVO inputVO) {
-		Map<String, FundSchemeVO> locationMap = new HashMap<>();
+     public Map<Long,Long> getLocationIdsDetails(String type) {
+    	 Map<Long,Long> locationIdMap = new HashMap<>();
+    	  try {
+    		  List<Object[]> objList = null;
+    		  if (type.equalsIgnoreCase("constituency")) {
+    			  objList = constituencyDAO.getConstituencyDistrictId();
+    		  } else if (type.equalsIgnoreCase("mandal")) {
+    			  objList = prTehsilDAO.getTehsilConstituencyId();
+    		  }
+    		  if (objList != null && objList.size() > 0){
+    			   for (Object[] param : objList) {
+    				   locationIdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+    		  }
+    	  } catch (Exception e) {
+    		  LOG.error(" Exception occured at getLocationIdsDetails() in FundManagementDashboardService class",e);  
+    	  }
+    	  return locationIdMap;
+     }
+     public FundSchemeVO getLocationIdAndYearMatchVO(List<FundSchemeVO> resultList,String locationIdStr,String year) {
+    	  try {
+    		   if (resultList == null || resultList.size() == 0 )
+    			   return null;
+    		   for (FundSchemeVO locationVO:resultList) {
+    			    if (locationVO.getLocationIdStr().equalsIgnoreCase(locationIdStr) && locationVO.getYear().equalsIgnoreCase(year)) {
+    			    	return locationVO;
+    			    }
+    		   }
+    		  
+    	  } catch (Exception e) {
+    		  LOG.error(" Exception occured at getLocationIdAndYearMatchVO() in FundManagementDashboardService class ",e);
+    	  }
+    	  return null;
+     }
+	public List<FundSchemeVO> getLocationWiseMgnregsData(InputVO inputVO) {
+		 List<FundSchemeVO> locationList = new ArrayList<>(0);
 		try {
 			prpareRquiredParameter(inputVO, "");
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew",str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew",str);
 
 			Map<String, String> cnstuncyPrlmntIdNameMap = null;
 			Map<String, String> nregaPanchayatMandalCodeMap = null;
 			Map<String, String> nregaMandalConsituencyCodeMap = null;
+			Map<String,Long> yearIdMap = getFinancilalYear(inputVO).getSubMap(); //getting financialYear and id
 
 			/* taking location details in the case of parliament based on  requirement */
 			 if (inputVO.getSubFilterType() !=  null && inputVO.getSubFilterType().equalsIgnoreCase("parliament")) {
@@ -3018,18 +3120,46 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 					if (finalArray != null && finalArray.length() > 0) {
 						for (int i = 0; i < finalArray.length(); i++) {
 							JSONObject jObj = (JSONObject) finalArray.get(i);
+							String subLocationType = inputVO.getSublocationType() != null ? inputVO.getSublocationType():"";
+							String year = "";
+							if(inputVO.getViewType() != null && inputVO.getViewType().trim().equalsIgnoreCase("cumulative")) {
+								year = inputVO.getRangeType();//this key contain cumulative year
+							} else {
+								year = jObj.getString("FIN_YEAR");
+							}
+							
 							FundSchemeVO locationVO = new FundSchemeVO();
-							locationVO.setLocationIdStr(jObj.getString("UNIQUEID"));
-							locationVO.setCount(0l);
-							locationVO.setAmount(cnvrtLakhIntoCrores(jObj.getString("TOTALEXPENDITURE")));
-							locationVO.setTotalCount(Long.valueOf(f.format(Double.valueOf(jObj.getString("TOTALEXPENDITURE")))));
-
+							if (subLocationType.equalsIgnoreCase("state")) {
+								locationVO.setLocationIdStr("01");								
+							} else {
+								locationVO.setLocationIdStr(jObj.getString("UNIQUEID"));	
+							}
+							
+							locationVO.setCount(jObj.getLong("WORKS"));
+							locationVO.setAmount(cnvrtLakhIntoCrores(jObj.getString("TOT")));
+							locationVO.setTotalCount(Long.valueOf(f.format(Double.valueOf(jObj.getString("TOT")))));
+							locationVO.setYear(year);
+							locationVO.setYearId(yearIdMap.get(year));
 							AddressVO addressVO = new AddressVO();
 
-							addressVO.setDistrictName(jObj.getString("DISTRICT"));
-							addressVO.setAssemblyName(jObj.getString("CONSTITUENCY"));
-							addressVO.setTehsilName(jObj.getString("MANDAL"));
-							addressVO.setPanchayatName(jObj.getString("PANCHAYAT"));
+					
+							
+							if (subLocationType.equalsIgnoreCase("district") || subLocationType.equalsIgnoreCase("constituency") || subLocationType.equalsIgnoreCase("mandal") || subLocationType.equalsIgnoreCase("panchayat")) {
+								addressVO.setDistrictName(jObj.getString("DISTRICT"));
+								addressVO.setName(addressVO.getDistrictName());//this #Name key is only used for sorting purpose only 
+	 	    				}
+	 	    				if (subLocationType.equalsIgnoreCase("constituency") || subLocationType.equalsIgnoreCase("mandal") || subLocationType.equalsIgnoreCase("panchayat")) {
+	 	    					addressVO.setAssemblyName(jObj.getString("CONSTITUENCY"));
+	 	    					addressVO.setName(addressVO.getAssemblyName());
+	 	    				}
+	 	    				if (subLocationType.equalsIgnoreCase("mandal") || subLocationType.equalsIgnoreCase("panchayat")) {
+	 	    					addressVO.setTehsilName(jObj.getString("MANDAL"));
+	 	    					addressVO.setName(addressVO.getTehsilName());
+	 	    				}
+	 	    				if (subLocationType.equalsIgnoreCase("panchayat")) {
+	 	    					addressVO.setPanchayatName(jObj.getString("PANCHAYAT"));
+	 	    					addressVO.setName(addressVO.getPanchayatName());
+	 	    				}
 							
 							/* Setting locationCode in the case of parliament to do some operation by locationCode.*/
 							
@@ -3066,10 +3196,12 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 							locationVO.setAddressVO(addressVO);
 
 							FundSchemeVO mgneregsTemplateVO = new FundSchemeVO();
-							mgneregsTemplateVO.setYear("2017-2018");
-							mgneregsTemplateVO.setAmount(cnvrtLakhIntoCrores(jObj.getString("TOTALEXPENDITURE")));
-							mgneregsTemplateVO.setTotalCount(Long.valueOf(f.format(Double.valueOf(jObj.getString("TOTALEXPENDITURE")))));
-							mgneregsTemplateVO.setCount(0l);
+							mgneregsTemplateVO.setYear(year);
+							mgneregsTemplateVO.setYearId(yearIdMap.get(year));
+							mgneregsTemplateVO.setName("MGNREGS");
+							mgneregsTemplateVO.setAmount(cnvrtLakhIntoCrores(jObj.getString("TOT")));
+							mgneregsTemplateVO.setTotalCount(Long.valueOf(f.format(Double.valueOf(jObj.getString("TOT")))));
+							mgneregsTemplateVO.setCount(jObj.getLong("WORKS"));
 							mgneregsTemplateVO.setAddressVO(addressVO);
 
 							FundSchemeVO deptVO = new FundSchemeVO();
@@ -3077,12 +3209,12 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 							deptVO.setName("MGNREGS");
 							deptVO.setAmount(mgneregsTemplateVO.getAmount());
 							deptVO.setTotalCount(mgneregsTemplateVO.getTotalCount());
-							deptVO.setCount(0l);
+							deptVO.setCount(mgneregsTemplateVO.getCount());
 
 							mgneregsTemplateVO.getSubList().add(deptVO);
 
 							locationVO.getSubList().add(mgneregsTemplateVO);
-							locationMap.put(locationVO.getLocationIdStr(),locationVO);
+							locationList.add(locationVO);
 						}
 					}
 				}
@@ -3095,33 +3227,36 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				boolean flag2 = ((inputVO.getBlockLevelId() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID || inputVO.getBlockLevelId() == IConstants.MANDAL_LEVEL_SCOPE_ID || inputVO.getBlockLevelId() == IConstants.VILLAGE_LEVEL_SCOPE_ID) 
 						        && (inputVO.getSearchLevelId() == IConstants.TEMP_PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID));
 				if (flag1) {
-					locationMap = getParliamentWiseDataForDistrictLevelBlock(inputVO, locationMap);
-					return locationMap;
+					if(inputVO.getViewType() != null && inputVO.getViewType().trim().equalsIgnoreCase("cumulative")) {
+						locationList = getParliamentWiseDataForDistrictLevelBlock(inputVO, locationList);
+					} else {
+						locationList = getParliamentWiseDataForDistrictLevelBlockYearWise(inputVO, locationList);
+					}
+					return locationList;
 				} else if (flag2) {
-					if (inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() == 1 && inputVO.getDeptIdsList().contains(3l) && inputVO.getLevelValues().size() > 0) {
+					//if (inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() == 1 && inputVO.getDeptIdsList().contains(3l) && inputVO.getLevelValues().size() > 0) {
 						Map<String, String> cnstuncyCodeMap = getConstituencyParliamentNameMapping(inputVO.getLevelValues() != null ? inputVO.getLevelValues().get(0):0l);
-						Iterator<Map.Entry<String, FundSchemeVO>> iter = locationMap.entrySet().iterator();
+						Iterator<FundSchemeVO> iter = locationList.iterator();
 						/*
 						 * in the case of parliament selection for we are removing
 						 * those location which do not belong in that parliament
 						 */
 						while (iter.hasNext()) {
-							Map.Entry<String, FundSchemeVO> entry = iter.next();
-							AddressVO addressVO = entry.getValue().getAddressVO();
+							FundSchemeVO locationVO = iter.next();
+							AddressVO addressVO = locationVO.getAddressVO();
 							if (!cnstuncyCodeMap.containsKey(addressVO.getAssemblyIdStr())) {
 								iter.remove();
 							}
 						}
-					}
+					//}
 				}
 			}
-			
 		} catch (Exception e) {
-			LOG.error(" Exception raised in getLocationWiseMgnregsData (); ");
+			LOG.error(" Exception raised at getLocationWiseMgnregsData () in FundManagementDashboardService class ",e);
 		}
-		return locationMap;
+		return locationList;
 	}
-    public Map<String,FundSchemeVO> getParliamentWiseDataForDistrictLevelBlock(InputVO inputVO,Map<String,FundSchemeVO> locationMap) {
+    public List<FundSchemeVO> getParliamentWiseDataForDistrictLevelBlock(InputVO inputVO,List<FundSchemeVO> locationDtlsList) {
     	Map<String,FundSchemeVO> paraliamentMap = new HashMap<>(0);
     	try {
     		
@@ -3136,16 +3271,21 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		  if (inputVO.getLevelValues().size() > 0){
 			  locationId = inputVO.getLevelValues().get(0);
 		  }
-    	  List<Object[]>  parliamentConstituencyObjLst = parliamentAssemblyDAO.getParliamentWiseConstituency(locationId);
+		  String filterType=null;
+		  if (inputVO.getBlockLevelId().longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID) {
+			  filterType = "district";
+		  } else {
+			  filterType = "parliament";
+		  }
+    	  List<Object[]>  parliamentConstituencyObjLst = parliamentAssemblyDAO.getParliamentWiseConstituency(locationId,filterType);
     	 if (parliamentConstituencyObjLst != null && parliamentConstituencyObjLst.size() > 0 ) {
-    		 DecimalFormat f = new DecimalFormat("##");
-    		 DecimalFormat f1 = new DecimalFormat("##.###");
     		 for (Object[] param : parliamentConstituencyObjLst) {
     			 String parliamentId = commonMethodsUtilService.getStringValueForObject(param[0]);
     			 Long constituencyId = commonMethodsUtilService.getLongValueForObject(param[2]);
     			 FundSchemeVO parliamentVO = paraliamentMap.get(parliamentId);
     			  if (parliamentVO == null ){//this Empty VO setting with location for parliament as template
     				    parliamentVO = new FundSchemeVO();
+    				    parliamentVO.setLocationIdStr(parliamentId);
     				    parliamentVO.setCount(0l);
     				    parliamentVO.setAmount("0.0");
     				    parliamentVO.setTotalCount(0l);
@@ -3158,7 +3298,6 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	    				parliamentVO.setAddressVO(addressVO);
 	    				
 	    				FundSchemeVO mgneregsTemplateVO = new FundSchemeVO();
-	    				mgneregsTemplateVO.setYear("2017-2018");
 	    				mgneregsTemplateVO.setCount(0l);
 	    				mgneregsTemplateVO.setAmount(parliamentVO.getAmount());
 	    				mgneregsTemplateVO.setTotalCount(parliamentVO.getTotalCount());
@@ -3175,43 +3314,179 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
     				    paraliamentMap.put(parliamentId, parliamentVO);
     			  }
     			  if (paCnsttncyIdAndNrgCnsttuncyCodeMap.get(constituencyId) != null ){
-    				   FundSchemeVO constituencyVO = locationMap.get(paCnsttncyIdAndNrgCnsttuncyCodeMap.get(constituencyId));
+    				   FundSchemeVO constituencyVO = getMatchVO(locationDtlsList,paCnsttncyIdAndNrgCnsttuncyCodeMap.get(constituencyId));
 	       			   if (constituencyVO != null ){
-	       				   
-	       				   parliamentVO.setTotalCount(Long.valueOf(f.format(parliamentVO.getTotalCount()+constituencyVO.getTotalCount())));
-	       				   parliamentVO.setAmount(f1.format(Double.valueOf(parliamentVO.getAmount())+Double.valueOf(constituencyVO.getAmount())));
-	       				 
-	       				   parliamentVO.getSubList().get(0).setTotalCount(Long.valueOf(f.format(parliamentVO.getSubList().get(0).getTotalCount()+constituencyVO.getTotalCount())));
-	       				   parliamentVO.getSubList().get(0).setAmount(f1.format(Double.valueOf(parliamentVO.getSubList().get(0).getAmount())+Double.valueOf(constituencyVO.getAmount())));
-	       				   
-	       				   parliamentVO.getSubList().get(0).getSubList().get(0).setTotalCount(Long.valueOf(f.format(parliamentVO.getSubList().get(0).getSubList().get(0).getTotalCount()+constituencyVO.getTotalCount())));;
-	       				   parliamentVO.getSubList().get(0).getSubList().get(0).setAmount(f1.format(Double.valueOf(parliamentVO.getSubList().get(0).getSubList().get(0).getAmount())+Double.valueOf(constituencyVO.getAmount())));
+	       				   parliamentVO.getSubList().get(0).setYear(constituencyVO.getYear());
+	       				   setRequiredValueToVO(parliamentVO,constituencyVO);//setting parliamentwise value
+	       				   locationDtlsList.remove(constituencyVO);//once data is push we are removing object from list to reduce loop in the case of match vo
 	       			   }
     			  }
-    			
     		}
     	 }
     	 //we are replacing with parliament data
-    	 locationMap.clear();
-    	 locationMap.putAll(paraliamentMap);
+    	 locationDtlsList.clear();
+    	 locationDtlsList.addAll(paraliamentMap.values());
     		
     	} catch (Exception e){
-    		LOG.error(" Exception raised in getParliamentWiseDataForStateLevelBlock (); ");
+    		LOG.error(" Exception raised at getParliamentWiseDataForStateLevelBlock () in FundManagementDashboardService class ",e);
     	}
-    	return locationMap;
+    	return locationDtlsList;
+    }
+    
+    public List<FundSchemeVO> getParliamentWiseDataForDistrictLevelBlockYearWise(InputVO inputVO,List<FundSchemeVO> locationDtlsList) {
+    	  Map<String,FundSchemeVO> paraliamentMap = new HashMap<>(0);
+    	  List<FundSchemeVO> parliamentList = new ArrayList<>(0);
+    	try {
+    		
+    	Map<Long,String> paCnsttncyIdAndNrgCnsttuncyCodeMap = new HashMap<>(0); 
+		List<Object[]>	constituencyobjLst = constituencyDAO.getMgnregsConstituencyMappingCode(null);
+		 if (constituencyobjLst != null && constituencyobjLst.size() > 0){
+			  for (Object[] param : constituencyobjLst) {
+				  paCnsttncyIdAndNrgCnsttuncyCodeMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+			}
+		 }
+		  Long locationId = 0l;
+		  if (inputVO.getLevelValues().size() > 0){
+			  locationId = inputVO.getLevelValues().get(0);
+		  }
+		  String filterType=null;
+		  if (inputVO.getBlockLevelId().longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID) {
+			  filterType = "district";
+		  } else {
+			  filterType = "parliament";
+		  }
+    	  List<Object[]>  parliamentConstituencyObjLst = parliamentAssemblyDAO.getParliamentWiseConstituency(locationId,filterType);
+    	 if (parliamentConstituencyObjLst != null && parliamentConstituencyObjLst.size() > 0 ) {
+    		 for (Object[] param : parliamentConstituencyObjLst) {
+    			 String parliamentId = commonMethodsUtilService.getStringValueForObject(param[0]);
+    			 Long constituencyId = commonMethodsUtilService.getLongValueForObject(param[2]);
+    			 FundSchemeVO parliamentVO = paraliamentMap.get(parliamentId);
+    			  if (parliamentVO == null ){//this Empty VO setting with location for parliament as template
+    				    parliamentVO = new FundSchemeVO();
+    				    parliamentVO.setLocationIdStr(parliamentId);
+    				    parliamentVO.setLocationIdSet(new HashSet<Long>());
+    				   
+    				    AddressVO addressVO = new AddressVO();
+	    				addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[5]));
+	    				addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[3]));
+	    				addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[0]));
+	    				addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[1]));
+	    				parliamentVO.setAddressVO(addressVO);
+	    				
+	    			   paraliamentMap.put(parliamentId, parliamentVO);
+    			  }
+    			  parliamentVO.getLocationIdSet().add(constituencyId);
+    		}
+    	 }
+    	  Map<String,Long> yearIdMap = getFinancilalYear(inputVO).getSubMap(); 
+    	
+    	 
+    	   if (yearIdMap != null && yearIdMap.size() > 0) {
+    		  for(Entry<String,Long> entry:yearIdMap.entrySet()) {
+    			  if (paraliamentMap != null && paraliamentMap.size() > 0){
+    				  
+    				   for(Entry<String, FundSchemeVO> parliamentEntry:paraliamentMap.entrySet()) {
+    					   
+    					   FundSchemeVO  parliamentYearVO = new FundSchemeVO();
+    					     parliamentYearVO.setYear(entry.getKey());
+    		    			 parliamentYearVO.setYearId(entry.getValue());
+    		    			 parliamentYearVO.setLocationIdStr(parliamentEntry.getValue().getLocationIdStr());
+    		    			 parliamentYearVO.setCount(0l);
+    		    			 parliamentYearVO.setAmount("0.0");
+    		    			 parliamentYearVO.setTotalCount(0l);
+    		    			 parliamentYearVO.setAddressVO(new AddressVO());
+    		    			 parliamentYearVO.getAddressVO().setDistrictName(parliamentEntry.getValue().getAddressVO().getDistrictName());
+    		    			 parliamentYearVO.getAddressVO().setAssemblyName(parliamentEntry.getValue().getAddressVO().getAssemblyName());
+    		    			 parliamentYearVO.getAddressVO().setParliamentId(parliamentEntry.getValue().getAddressVO().getParliamentId());
+    		    			 parliamentYearVO.getAddressVO().setParliamentName(parliamentEntry.getValue().getAddressVO().getParliamentName());
+    		    			
+		    			    FundSchemeVO mgneregsTemplateVO = new FundSchemeVO();
+		    				mgneregsTemplateVO.setCount(0l);
+		    				mgneregsTemplateVO.setYear(entry.getKey());
+		    				mgneregsTemplateVO.setYearId(entry.getValue());
+		    				mgneregsTemplateVO.setAmount(parliamentEntry.getValue().getAmount());
+		    				mgneregsTemplateVO.setTotalCount(parliamentEntry.getValue().getTotalCount());
+		    				mgneregsTemplateVO.setAddressVO(parliamentYearVO.getAddressVO());
+		    				
+		    				FundSchemeVO deptVO = new FundSchemeVO();
+		    				deptVO.setId(0l);
+		    				deptVO.setName("MGNREGS");
+		    				deptVO.setAmount(parliamentEntry.getValue().getAmount());
+		    				deptVO.setTotalCount(parliamentEntry.getValue().getTotalCount());
+		    				deptVO.setCount(0l);
+		    				mgneregsTemplateVO.getSubList().add(deptVO);
+		    				parliamentYearVO.getSubList().add(mgneregsTemplateVO);
+		    				//setting year wise mgnregs values
+		    				if (parliamentEntry.getValue().getLocationIdSet() != null && parliamentEntry.getValue().getLocationIdSet().size() > 0) {
+		    					for (Long constituencyId : parliamentEntry.getValue().getLocationIdSet()) {
+		    						FundSchemeVO constituencyVO = getLocationIdAndYearMatchVO(locationDtlsList,paCnsttncyIdAndNrgCnsttuncyCodeMap.get(constituencyId).toString(),parliamentYearVO.getYear());
+		    						 if (constituencyVO != null ) {
+		    							 setRequiredValueToVO(parliamentYearVO,constituencyVO);//setting parliamentwise value
+		    							 locationDtlsList.remove(constituencyVO);//once data is push we are removing object from list to reduce loop in the case of match vo
+		    						 }
+								}
+		    				}
+		    				parliamentList.add(parliamentYearVO);	 
+    				   }
+    			  }
+    		  }
+    	   }
+    	 locationDtlsList.clear();
+    	} catch (Exception e){
+    		LOG.error(" Exception raised at getParliamentWiseDataForStateLevelBlock() in FundManagementDashboardService class",e);
+    	}
+    	return parliamentList;
+    }
+    
+    private void setRequiredValueToVO(FundSchemeVO parliamentVO,FundSchemeVO constituencyVO) {
+    	 try {
+    		       DecimalFormat f = new DecimalFormat("##");
+    	 		   DecimalFormat f1 = new DecimalFormat("##.###");
+    		       
+    	 		   parliamentVO.setTotalCount(Long.valueOf(f.format(parliamentVO.getTotalCount()+constituencyVO.getTotalCount())));
+				   parliamentVO.setCount(parliamentVO.getCount()+constituencyVO.getCount());
+				   parliamentVO.setAmount(f1.format(Double.valueOf(parliamentVO.getAmount())+Double.valueOf(constituencyVO.getAmount())));
+				 
+				   parliamentVO.getSubList().get(0).setTotalCount(Long.valueOf(f.format(parliamentVO.getSubList().get(0).getTotalCount()+constituencyVO.getTotalCount())));
+				   parliamentVO.getSubList().get(0).setAmount(f1.format(Double.valueOf(parliamentVO.getSubList().get(0).getAmount())+Double.valueOf(constituencyVO.getAmount())));
+				   parliamentVO.getSubList().get(0).setCount(parliamentVO.getSubList().get(0).getCount()+constituencyVO.getCount());
+				   
+				   parliamentVO.getSubList().get(0).getSubList().get(0).setTotalCount(Long.valueOf(f.format(parliamentVO.getSubList().get(0).getSubList().get(0).getTotalCount()+constituencyVO.getTotalCount())));;
+				   parliamentVO.getSubList().get(0).getSubList().get(0).setAmount(f1.format(Double.valueOf(parliamentVO.getSubList().get(0).getSubList().get(0).getAmount())+Double.valueOf(constituencyVO.getAmount())));
+				   parliamentVO.getSubList().get(0).getSubList().get(0).setCount(parliamentVO.getSubList().get(0).getSubList().get(0).getCount()+constituencyVO.getCount());
+				 
+    		 
+    	 } catch (Exception e) {
+    		 LOG.error(" Exception raised at setRequiredValueToVO () in FundManagementDashboardService class ",e);
+    	 }
+    }
+    
+    private FundSchemeVO getMatchVO(List<FundSchemeVO> list,String locationIdStr) {
+    	 try {
+    		 if (list == null || list.size() == 0 )
+    			 return null;
+    		 for(FundSchemeVO locationVO:list) {
+    			 if (locationVO.getLocationIdStr().equalsIgnoreCase(locationIdStr)) {
+    				 return locationVO;
+    			 }
+    		 }
+    	 } catch (Exception e) {
+    		 LOG.error(" Exception raised at getMatchVO () in FundManagementDashboardService class  ",e); 
+    	 }
+    	 return null;
     }
     
 	public Map<String, String> getConstituencyParliamentNameMapping(Long parliamentId) {// getting nrega constituencyCode and parliamentName
 		Map<String, String> cnstuncyPrlmntIdNameMap = new HashMap<>();
 		try {
-			List<Object[]> parliamentConstituencyObjNameObjLst = parliamentAssemblyDAO.getParliamentWiseConstituency(parliamentId);
+			List<Object[]> parliamentConstituencyObjNameObjLst = parliamentAssemblyDAO.getParliamentWiseConstituency(parliamentId,"parliament");
 			if (parliamentConstituencyObjNameObjLst != null && parliamentConstituencyObjNameObjLst.size() > 0) {
 				for (Object[] param : parliamentConstituencyObjNameObjLst) {
 					cnstuncyPrlmntIdNameMap.put(commonMethodsUtilService.getStringValueForObject(param[6]),commonMethodsUtilService.getStringValueForObject(param[1]));
 				}
 			}
 		} catch (Exception e) {
-			LOG.error(" Exception raised in getLocationWiseMgnregsData (); ");
+			LOG.error(" Exception raised at getConstituencyParliamentNameMapping () in FundManagementDashboardService class",e);
 		}
 		return cnstuncyPrlmntIdNameMap;
 	}
@@ -3231,7 +3506,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				}
 			}
 		} catch (Exception e) {
-			LOG.error(" Exception raised in getLocationDetailsByLocationType (); ");
+			LOG.error(" Exception raised at getLocationDetailsByLocationType() in FundManagementDashboardService class ",e);
 		}
 		return locationMap;
 	}
@@ -3244,32 +3519,29 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				deptVO.setTotalCount(0l);
 				deptVO.setCount(0l);
 		 } catch (Exception e) {
-    		 LOG.error(" Exception raised in getStaticTemplate (); ");
+    		 LOG.error(" Exception raised at getStaticTemplate () in FundManagementDashboardService class ",e);
     	 }
     	return deptVO;
     }
-    public void setYearWiseMgneresData(FundSchemeVO locationVO,List<FundSchemeVO> yearVOList,FundSchemeVO mgneresVO) {
+    public void setYearWiseMgneresData(FundSchemeVO locationVO,FundSchemeVO yearVO,FundSchemeVO mgneresVO) {
 		try {
-			DecimalFormat f = new DecimalFormat("##.000");
-			 for (FundSchemeVO fundSchemeVO : yearVOList) {
-				 if (fundSchemeVO.getYear().equalsIgnoreCase(mgneresVO.getYear())) {
-					 fundSchemeVO.getSubList().add(0,mgneresVO.getSubList().get(0));
-					 locationVO.setAmount(f.format(Double.valueOf(fundSchemeVO.getAmount())+Double.valueOf(mgneresVO.getSubList().get(0).getAmount())));
-				 }else {
-					 fundSchemeVO.getSubList().add(0,getStaticTemplate());
- 	    		 }
-			}
+			         DecimalFormat f = new DecimalFormat("##.000");
+					 yearVO.getSubList().add(0,mgneresVO.getSubList().get(0));
+					 locationVO.setAmount(f.format(Double.valueOf(yearVO.getAmount())+Double.valueOf(mgneresVO.getSubList().get(0).getAmount())));
 		} catch (Exception e) {
-			LOG.error(" Exception occured in getYearMatchVO () ",e);
+			LOG.error(" Exception occured at setYearWiseMgneresData () in FundManagementDashboardService class ",e);
 		}
 	}
-    public Map<Long,String> getMgneregslocationMappingIds(InputVO inputVO) {
-    	Map<Long,String> mgneregsLocationMap = new HashMap<>(); 
+    public FundSchemeVO getMgneregslocationMappingIds(InputVO inputVO) {
+    	FundSchemeVO resultVO = new FundSchemeVO();
+    	Map<Long,String> prrwsLocationIdAndMgnregsLocationCodeMap = new HashMap<>(); 
+    	Map<String,Long> MgnregsLocationCodeAndprrwsLocationIdMap = new HashMap<>();  
     	try {
     		List<Object[]> objList  = null;
     		if (inputVO.getBlockLevelId() != null ){
     			 if(inputVO.getBlockLevelId().longValue() == 0l || inputVO.getBlockLevelId().longValue() == IConstants.STATE_LEVEL_SCOPE_ID){ // FOR STATE
-        			 mgneregsLocationMap.put(1l, "01");
+    				 prrwsLocationIdAndMgnregsLocationCodeMap.put(1l, "01");
+    				 MgnregsLocationCodeAndprrwsLocationIdMap.put("01", 1l);
         		 }else if(inputVO.getBlockLevelId().longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
         			   objList = districtDAO.getMgnregsDistrictMappingCode(null);
     			 }else if(inputVO.getBlockLevelId().longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
@@ -3284,13 +3556,16 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
         	}
     		if (objList != null && objList.size() > 0) {
     			 for (Object[] param : objList) {
-    				 mgneregsLocationMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+    				 MgnregsLocationCodeAndprrwsLocationIdMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[0]));
+    				 prrwsLocationIdAndMgnregsLocationCodeMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
 				}
     		 }
+    		resultVO.setSubMap1(prrwsLocationIdAndMgnregsLocationCodeMap);
+    		resultVO.setSubMap2(MgnregsLocationCodeAndprrwsLocationIdMap);
     	 } catch (Exception e) {
-    		 LOG.error(" Exception raised in getMgneregslocationMappingIds (); ");
+    		 LOG.error(" Exception raised at getMgneregslocationMappingIds () in FundManagementDashboardService class ",e);
     	 }
-    	return mgneregsLocationMap;
+    	return resultVO;
     }
     public Map<Long,String> getLocationMappingBasedOnFilterSelection(InputVO inputVO) {
     	Map<Long,String> mgneregsLocationMap = new HashMap<>(); 
@@ -3321,7 +3596,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				}
     		 }
     	 } catch (Exception e) {
-    		 LOG.error(" Exception raised in getLocationMappingBasedOnFilterSelection (); ");
+    		 LOG.error(" Exception raised at getLocationMappingBasedOnFilterSelection () in in FundManagementDashboardService class ",e);
     	 }
     	return mgneregsLocationMap;
     }
@@ -3330,6 +3605,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
     	LocationFundDetailsVO  resultVO = new LocationFundDetailsVO();
     	 try {
     		    prpareRquiredParameter(inputVO,"overview");
+    		    inputVO.setViewType("cumulative");
     		    String str = "";
     		    ClientResponse districtResponse = null;
     		    ClientResponse constituencyResponse = null;
@@ -3337,13 +3613,14 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
     		    LocationFundDetailsVO topPerformancMandalVO = null;
 			    LocationFundDetailsVO poorPerformancMandalVO = null;
 			    List<FundVO> locationList = new ArrayList<FundVO>(0);
+			    String URL = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew";
 			    
 				if(inputVO.getSearchLevelId() == 0l || inputVO.getSearchLevelId()==IConstants.DISTRICT_LEVEL_SCOPE_ID) //0-state or district 
 				{
 				   inputVO.setSublocationType("district");
 				   str = convertingInputVOToString(inputVO);
-				   districtResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew", str);
-				   List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(districtResponse);
+				   districtResponse = webServiceUtilService.callWebService(URL, str);
+				   List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(districtResponse,inputVO.getSublocationType());
 				    if (list.size() > 0 ){
 						 topPerformancMandalVO = list.get(0);
 				    	 poorPerformancMandalVO = list.get(list.size()-1);
@@ -3357,8 +3634,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				{
 					 inputVO.setSublocationType("constituency");
 					 str = convertingInputVOToString(inputVO);
-					 constituencyResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew", str);
-					 List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(constituencyResponse);
+					 constituencyResponse = webServiceUtilService.callWebService(URL, str);
+					 List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(constituencyResponse,inputVO.getSublocationType());
 					 if (list.size() > 0 ){
 						 topPerformancMandalVO = list.get(0);
 				    	 poorPerformancMandalVO = list.get(list.size()-1);
@@ -3377,8 +3654,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				{
 					 inputVO.setSublocationType("mandal");
 					 str = convertingInputVOToString(inputVO);
-					 mandalResponceResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew", str);
-				     List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(mandalResponceResponse);
+					 mandalResponceResponse = webServiceUtilService.callWebService(URL, str);
+				     List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(mandalResponceResponse,inputVO.getSublocationType());
 				     if(list.size() > 0){
 				    	 topPerformancMandalVO = list.get(0);
 				    	 poorPerformancMandalVO = list.get(list.size()-1);
@@ -3408,7 +3685,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				}
 				
 		 } catch (Exception e) {
-    	    LOG.error(" Exception raised in getMgnregsTopLowAverageLocation () in FundManagementDashboardService class; ");
+    	    LOG.error(" Exception raised at getMgnregsTopLowAverageLocation () in FundManagementDashboardService class; ",e);
   		 
     	 }
     	 return resultVO;
@@ -3427,10 +3704,10 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	    	 locationVO.setAvgCroreAmt(cnvrtLakhIntoCrores(aveRageAmt));	 
 	    	 resultList.add(locationVO);
     	} catch (Exception e ) {
-    		LOG.error(" Exception raised in setResultToFinalList () in FundManagementDashboardService class; ");
+    		LOG.error(" Exception raised at setResultToFinalList () in FundManagementDashboardService class; ",e);
     	}
     } 
-    public List<LocationFundDetailsVO> getPerformanceWiseMgneregesLocationDtls( ClientResponse responce) {
+    public List<LocationFundDetailsVO> getPerformanceWiseMgneregesLocationDtls( ClientResponse responce,String locationType) {
     	List<LocationFundDetailsVO> resultList = new ArrayList<>();
     	try {
     		   Double totalAmountExpenditur=0.0d;
@@ -3448,13 +3725,22 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 		 	    				LocationFundDetailsVO vo = new LocationFundDetailsVO();
 		 	    				vo.setId(jObj.getLong("UNIQUEID"));
-		 	    				vo.setDistrictName(jObj.getString("DISTRICT"));
-		 	    				vo.setConstituencyName(jObj.getString("CONSTITUENCY"));
-		 	    				vo.setMandalName(jObj.getString("MANDAL"));
-		 	    				vo.setTotalExpenditure(Double.valueOf(jObj.getString("TOTALEXPENDITURE")));
+		 	    				
+		 	    				if (locationType.equalsIgnoreCase("district") || locationType.equalsIgnoreCase("constituency") || locationType.equalsIgnoreCase("mandal")) {
+		 	    					vo.setDistrictName(jObj.getString("DISTRICT"));	
+		 	    				}
+		 	    				if (locationType.equalsIgnoreCase("constituency") || locationType.equalsIgnoreCase("mandal")) {
+		 	    					vo.setConstituencyName(jObj.getString("CONSTITUENCY"));
+		 	    				}
+		 	    				if (locationType.equalsIgnoreCase("mandal")) {
+		 	    					vo.setMandalName(jObj.getString("MANDAL"));	
+		 	    				}
+		 	    				
+		 	    				vo.setTotalExpenditure(Double.valueOf(jObj.getString("TOT")));
+		 	    				vo.setTotalWorks(Double.valueOf(jObj.getString("WORKS")));
 		 	    				totalAmountExpenditur = totalAmountExpenditur + vo.getTotalExpenditure();
-		 	    				totalWageExpenditure = totalWageExpenditure + Double.valueOf(jObj.getString("WAGEEXPENDITURE"));
-		 	    				totalMaterialExpenditure = totalMaterialExpenditure + Double.valueOf(jObj.getString("MATERIALEXPENDITURE"));
+		 	    				totalWageExpenditure = totalWageExpenditure + Double.valueOf(jObj.getString("WAGE"));
+		 	    				totalMaterialExpenditure = totalMaterialExpenditure + Double.valueOf(jObj.getString("MATERIAL"));
 		 	    				resultList.add(vo);
 		 	    		}
 		 	    	}
@@ -3469,7 +3755,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
     			resultList.get(0).getSubList().add(new IdNameVO(3l, "MATERIAL EXP", cnvrtLakhIntoCrores(totalMaterialExpenditure.toString())));//MATERIALEXPENDITURE
     		}
     	} catch (Exception e) {
-    		   LOG.error(" Exception raised in getPerformanceWiseMgneregesLocationDtls () in FundManagementDashboardService class; ");
+    		   LOG.error(" Exception raised at getPerformanceWiseMgneregesLocationDtls () in FundManagementDashboardService class; ",e);
     	}
     	return resultList;
     }
@@ -3480,13 +3766,77 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	   				return o2.getTotalExpenditure().compareTo(o1.getTotalExpenditure());
 	   			}
 	   		  }catch(Exception e){
-	   			  LOG.error(" Exception occured in totalExpenditureWiseDescendingOrder ",e);
+	   			  LOG.error(" Exception occured at totalExpenditureWiseDescendingOrder ",e);
 	   			}
 	   			return 0;
 	   		}
 	 };
 
-	public void prpareRquiredParameter(InputVO inputVO, String type) {
+    public  LocationFundDetailsVO getMgnregsOverviewData(InputVO inputVO) {
+    	 LocationFundDetailsVO mgnresDtlsVO = new LocationFundDetailsVO();
+    	 try {
+    		    inputVO.setBlockLevelId(inputVO.getSearchLevelId());
+    		    inputVO.setViewType("cumulative");
+    		    prpareRquiredParameter(inputVO,"overview");
+    		    String str = convertingInputVOToString(inputVO);
+				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew", str);
+		        
+		        if (response.getStatus() != 200) {
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	     } else {
+		 	    	String output = response.getEntity(String.class);
+		 	    	mgnresDtlsVO.setId(0l);
+		 	    	mgnresDtlsVO.setName("MGNREGS");
+		 	    	mgnresDtlsVO.setCount(0l);
+		 	    	mgnresDtlsVO.setSubList(getMgnresTemplate());
+		 	    	if (output != null && !output.isEmpty()){
+		 	    		JSONArray finalArray = new JSONArray(output);
+		 	    		if (finalArray!=null && finalArray.length()>0){
+		 	    			for (int i=0;i<finalArray.length();i++){
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				mgnresDtlsVO.setTtlAmt(cnvrtLakhIntoCrores(String.valueOf(Double.valueOf(jObj.getString("TOT")))));
+		 	    				mgnresDtlsVO.setTotalWorks(Double.valueOf(jObj.getString("WORKS")));
+		 	    				Long count = Math.round(Double.valueOf(jObj.getString("TOT")));
+		 	    				mgnresDtlsVO.setCount(mgnresDtlsVO.getCount()+count);
+		 	    				for (IdNameVO typeVO : mgnresDtlsVO.getSubList()) {
+									if (typeVO.getId().longValue() == 1l) {
+										typeVO.setTotl(cnvrtLakhIntoCrores(String.valueOf(Double.valueOf(jObj.getString("WAGE")))));
+									} else {
+										typeVO.setTotl(cnvrtLakhIntoCrores(String.valueOf(Double.valueOf(jObj.getString("MATERIAL")))));
+									}
+								}
+		 	    			}
+		 	    		}
+		 	    	}
+		 	    } 
+    	 } catch (Exception e ){
+    		 LOG.error(" Exception occured at getMgnregsOverviewData() in FundManagementDashboardService class ", e);
+    	 }
+    	 return mgnresDtlsVO;
+    }
+    
+	public List<IdNameVO> getMgnresTemplate() {
+		List<IdNameVO> resultList = new ArrayList<IdNameVO>(0);
+		try {
+			resultList.add(new IdNameVO(1l, "WAGE EXP","0.0"));
+			resultList.add(new IdNameVO(2l, "MATERIAL EXP","0.0"));
+		} catch (Exception e) {
+		  LOG.error(" Exception occured at getMgnresTemplate() in FundManagementDashboardService class ",e);
+		}
+		return resultList;
+	}
+    public String cnvrtLakhIntoCrores(String value){
+		String returnVal = "0";
+		try {
+			if(value != null) {
+				returnVal = new BigDecimal(Double.valueOf(value)/100.00d).setScale(3, BigDecimal.ROUND_HALF_UP).toString();
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at cnvrtLakhIntoCrores - FundManagementDashboardService service", e);
+		}
+		return returnVal.trim();
+	}
+    public void prpareRquiredParameter(InputVO inputVO, String type) {
 		try {
 			if (type.equalsIgnoreCase("overview")) {
 				if (inputVO.getSearchLvlVals() != null && inputVO.getSearchLvlVals().size() > 0) {
@@ -3546,91 +3896,56 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			}
 
 		} catch (Exception e) {
-			LOG.error(" Exception raised in prpareRquiredParameter () in FundManagementDashboardService class; ");
+			LOG.error(" Exception raised at prpareRquiredParameter () in FundManagementDashboardService class; ",e);
 		}
-	}
+	 }
+     private InputVO getFinancilalYear(InputVO inputVO) {
+    	 String financialYear="";
+    	 InputVO finanCialYearVO = new InputVO();
+    	  try {
+    		  List<Object[]> finalYearObjLst = financialYearDAO.getAllFiniancialYearsByIds(inputVO.getFinancialYrIdList());
+  	    	  Map<Long,String> financialYearMap = new HashMap<Long, String>();
+  	    	  Map<String,Long> yearIdMap = new HashMap<String, Long>();
+  	    	 if (finalYearObjLst != null && finalYearObjLst.size() > 0 ) {
+  	    		 for (Object[] param : finalYearObjLst) {
+  	    			 financialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+  	    			yearIdMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[0]));
+  				}
+  	    	 }
+  	    	
+  		    int count = 0;	
+  		    TreeSet<String> financialYearSet = new TreeSet<String>();
+  		    if (financialYearMap.size() > 0 ) {
+  		    	for (Entry<Long, String> entry : financialYearMap.entrySet()) {
+  		    		financialYearSet.add(entry.getValue().split("-")[0]);
+  		    		financialYearSet.add(entry.getValue().split("-")[1]);
+  					count += 1;
+  					String tempStr ="\'"+entry.getValue()+"\'";
+  					tempStr += ( count != financialYearMap.size() ? ",":"");
+  					financialYear += tempStr;
+  				}
+  		    }
+  		    if (financialYearSet.size() > 0 ) {
+  		    	finanCialYearVO.setRangeType(financialYearSet.first()+"-"+financialYearSet.last());//contain cumulative year
+  		    }
+  		       finanCialYearVO.setYear(financialYear);
+  		       finanCialYearVO.setSubMap(yearIdMap);
+    	  } catch (Exception e) {
+    		  LOG.error("Exception raised at convertingInputVOToString - getFinancilalYearMinAndMaxYear service", e);
+    	  }
+    	  return finanCialYearVO;
+     }
     
-    public  LocationFundDetailsVO getMgnregsOverviewData(InputVO inputVO) {
-    	 LocationFundDetailsVO mgnresDtlsVO = new LocationFundDetailsVO();
-    	 try {
-    		    inputVO.setBlockLevelId(inputVO.getSearchLevelId());
-    		    prpareRquiredParameter(inputVO,"overview");
-    		    String str = convertingInputVOToString(inputVO);
-				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew", str);
-		        
-		        if (response.getStatus() != 200) {
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-		 	     } else {
-		 	    	String output = response.getEntity(String.class);
-		 	    	mgnresDtlsVO.setId(0l);
-		 	    	mgnresDtlsVO.setName("MGNREGS");
-		 	    	mgnresDtlsVO.setCount(0l);
-		 	    	mgnresDtlsVO.setSubList(getMgnresTemplate());
-		 	    	if (output != null && !output.isEmpty()){
-		 	    		JSONArray finalArray = new JSONArray(output);
-		 	    		if (finalArray!=null && finalArray.length()>0){
-		 	    			for (int i=0;i<finalArray.length();i++){
-		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-		 	    				mgnresDtlsVO.setTtlAmt(cnvrtLakhIntoCrores(String.valueOf(Double.valueOf(mgnresDtlsVO.getTtlAmt())+Double.valueOf(jObj.getString("TOTALEXPENDITURE")))));
-		 	    				Long count = Math.round(Double.valueOf(mgnresDtlsVO.getCount())+Double.valueOf(jObj.getString("TOTALEXPENDITURE")));
-		 	    				mgnresDtlsVO.setCount(mgnresDtlsVO.getCount()+count);
-		 	    				for (IdNameVO typeVO : mgnresDtlsVO.getSubList()) {
-									if (typeVO.getId().longValue() == 1l) {
-										typeVO.setTotl(cnvrtLakhIntoCrores(String.valueOf(Double.valueOf(typeVO.getTotl())+Double.valueOf(jObj.getString("WAGEEXPENDITURE")))));
-									} else {
-										typeVO.setTotl(cnvrtLakhIntoCrores(String.valueOf(Double.valueOf(typeVO.getTotl())+Double.valueOf(jObj.getString("MATERIALEXPENDITURE")))));
-									}
-								}
-		 	    			}
-		 	    		}
-		 	    	}
-		 	    } 
-    	 } catch (Exception e ){
-    		 LOG.error(" Exception occured at getMgnregsOverviewData() in FundManagementDashboardService class ", e);
-    	 }
-    	 return mgnresDtlsVO;
-    }
-    
-	public List<IdNameVO> getMgnresTemplate() {
-		List<IdNameVO> resultList = new ArrayList<IdNameVO>(0);
-		try {
-			resultList.add(new IdNameVO(1l, "WAGE EXP","0.0"));
-			resultList.add(new IdNameVO(2l, "MATERIAL EXP","0.0"));
-		} catch (Exception e) {LOG.error(" Exception occured at getMgnresTemplate() in FundManagementDashboardService class ",e);
-		}
-		return resultList;
-	}
-    public String cnvrtLakhIntoCrores(String value){
-		String returnVal = "0";
-		try {
-			if(value != null) {
-				returnVal = new BigDecimal(Double.valueOf(value)/100.00d).setScale(3, BigDecimal.ROUND_HALF_UP).toString();
-			}
-		} catch (Exception e) {
-			LOG.error("Exception raised at cnvrtLakhIntoCrores - NREGSTCSService service", e);
-		}
-		return returnVal.trim();
-	}
     public String convertingInputVOToString(InputVO inputVO){
-		String str = "";
-		try {
-			if(inputVO.getLocationId() != null)
-				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
-					if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
-						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
-				}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
-					if(inputVO.getLocationId().longValue() > 0l)
-						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
-				}
-				
-			str = "{";
+    	String str = "";
+    	 try {
 			
-			if(inputVO.getFromDate() != null )
-				str += "\"fromDate\" : \""+inputVO.getFromDate()+"\",";
-			if(inputVO.getToDate() != null)
-				str += "\"toDate\" : \""+inputVO.getToDate()+"\",";
-			if(inputVO.getYear() != null)
-				str += "\"year\" : \""+inputVO.getYear()+"\",";
+			InputVO finanCialYearVO = getFinancilalYear(inputVO);
+			inputVO.setRangeType(finanCialYearVO.getRangeType());//min max year
+			
+			str = "{";
+			if(finanCialYearVO.getYear().trim().length() > 0)
+				str += "\"year\" : \""+finanCialYearVO.getYear()+"\",";
 			if(inputVO.getLocationType() != null)
 				str += "\"locationType\" : \""+inputVO.getLocationType()+"\",";
 			if(inputVO.getLocationIdStr() != null)
@@ -3639,12 +3954,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				str += "\"locationId\" : \""+inputVO.getLocationId()+"\",";
 			if(inputVO.getSublocationType() != null)
 				str += "\"SublocationType\" : \""+inputVO.getSublocationType()+"\",";
-			if(inputVO.getFromRange() != null)
-				str += "\"FromRange\" : \""+inputVO.getFromRange()+"\",";
-			if(inputVO.getToRange() != null)
-				str += "\"ToRange\" : \""+inputVO.getToRange()+"\",";
-			if(inputVO.getType() != null)
-				str += "\"type\" : \""+inputVO.getType()+"\",";
+			if(inputVO.getViewType() != null)
+				str += "\"ReportType\" : \""+inputVO.getViewType()+"\",";
 			
 			if(str.length() > 1)
 				str = str.substring(0,str.length()-1);
@@ -3652,7 +3963,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			str += "}";
 			
 		} catch (Exception e) {
-			LOG.error("Exception raised at convertingInputVOToString - NREGSTCSService service", e);
+			LOG.error("Exception raised at convertingInputVOToString - FundManagementDashboardService service", e);
 		}
 		return str;
 	}

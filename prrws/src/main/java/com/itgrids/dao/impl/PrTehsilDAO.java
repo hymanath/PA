@@ -33,5 +33,11 @@ public class PrTehsilDAO extends GenericDaoHibernate<PrTehsil, Long> implements 
 	   
 	    return query.list();
 	}
+	public List<Object[]> getTehsilConstituencyId(){
+	    StringBuilder sb = new StringBuilder();
+	    sb.append(" select distinct TC.tehsilId,TC.constituencyId from TehsilConstituency TC ");
+	    Query query = getSession().createQuery(sb.toString());
+	    return query.list();
+	}
 	
 }

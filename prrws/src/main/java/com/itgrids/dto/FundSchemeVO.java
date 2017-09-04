@@ -2,6 +2,7 @@ package com.itgrids.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class FundSchemeVO implements java.io.Serializable{
@@ -13,10 +14,13 @@ public class FundSchemeVO implements java.io.Serializable{
 	private String perc;
 	private Long yearId;
 	private String year;
-	private String amount;
+	private String amount="0.0";
 	private AddressVO addressVO;
 	private List<FundSchemeVO> subList = new ArrayList<FundSchemeVO>(0);
 	private String locationIdStr;
+	private Map<Long,String> subMap1;
+	private Map<String,Long> subMap2;
+	private Set<Long> locationIdSet;
 	
 	public String getAmount() {
 		return amount;
@@ -84,4 +88,23 @@ public class FundSchemeVO implements java.io.Serializable{
 	public void setLocationIdStr(String locationIdStr) {
 		this.locationIdStr = locationIdStr;
 	}
+	public Map<Long, String> getSubMap1() {
+		return subMap1;
+	}
+	public void setSubMap1(Map<Long, String> subMap1) {
+		this.subMap1 = subMap1;
+	}
+	public Map<String, Long> getSubMap2() {
+		return subMap2;
+	}
+	public void setSubMap2(Map<String, Long> subMap2) {
+		this.subMap2 = subMap2;
+	}
+	public Set<Long> getLocationIdSet() {
+		return locationIdSet;
+	}
+	public void setLocationIdSet(Set<Long> locationIdSet) {
+		this.locationIdSet = locationIdSet;
+	}	
+	
 }

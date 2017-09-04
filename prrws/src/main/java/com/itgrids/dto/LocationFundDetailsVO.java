@@ -36,6 +36,7 @@ public class LocationFundDetailsVO implements Serializable{
 	private String constituencyName;
 	private String mandalName;
 	private Double totalExpenditure=0.0d;
+	private Double totalWorks;
 	
 	public Long getTotSchemes() {
 		return totSchemes;
@@ -193,6 +194,12 @@ public class LocationFundDetailsVO implements Serializable{
 	}
 	public void setTotalExpenditure(Double totalExpenditure) {
 		this.totalExpenditure = totalExpenditure;
+	}
+	public Double getTotalWorks() {
+		return totalWorks;
+	}
+	public void setTotalWorks(Double totalWorks) {
+		this.totalWorks = totalWorks;
 	}
 	
 	
