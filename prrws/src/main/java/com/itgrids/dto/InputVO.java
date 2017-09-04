@@ -3,6 +3,7 @@ package com.itgrids.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class InputVO implements Serializable {
 	private Long blockLevelId;
@@ -88,6 +89,7 @@ public class InputVO implements Serializable {
 	private Long maxVal;
 	private Long locationValue;
 	private List<Long> locationIds;
+	private Map<String,Long> subMap;
 	
 	public List<Long> getSearchLevelValues() {
 		return searchLevelValues;
@@ -555,6 +557,12 @@ public class InputVO implements Serializable {
 	}
 	public void setLocationIds(List<Long> locationIds) {
 		this.locationIds = locationIds;
+	}
+	public Map<String, Long> getSubMap() {
+		return subMap;
+	}
+	public void setSubMap(Map<String, Long> subMap) {
+		this.subMap = subMap;
 	}
 	
    	
