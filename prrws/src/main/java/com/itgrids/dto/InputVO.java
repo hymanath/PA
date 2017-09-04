@@ -91,6 +91,22 @@ public class InputVO implements Serializable {
 	private List<Long> locationIds;
 	private Map<String,Long> subMap;
 	
+	private String reportType;
+	private String category;
+	
+	
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getReportType() {
+		return reportType;
+	}
+	public void setReportType(String reportType) {
+		this.reportType = reportType;
+	}
 	public List<Long> getSearchLevelValues() {
 		return searchLevelValues;
 	}

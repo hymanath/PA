@@ -50,6 +50,7 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.NregsFmsWorksVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.model.GovtScheme;
 import com.itgrids.model.GrantType;
@@ -3956,6 +3957,10 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				str += "\"SublocationType\" : \""+inputVO.getSublocationType()+"\",";
 			if(inputVO.getViewType() != null)
 				str += "\"ReportType\" : \""+inputVO.getViewType()+"\",";
+			if(inputVO.getReportType() != null)
+				str += "\"ReportType\" : \""+inputVO.getReportType()+"\",";
+			if(inputVO.getCategory() != null)
+				str += "\"cat\" : \""+inputVO.getCategory()+"\",";
 			
 			if(str.length() > 1)
 				str = str.substring(0,str.length()-1);
@@ -3968,5 +3973,94 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		return str;
 	}
     /* End */ 
-  
+    public  List<NregsFmsWorksVO> getMgnregsFMSWorksDetails(InputVO inputVO) {
+    	List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>();
+   	 try {
+   		    
+   		    String str = convertingInputVOToString(inputVO);
+				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureService/FMSExpenditureData", str);
+		        
+		        if (response.getStatus() != 200) {
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	     } else {
+		 	    	String output = response.getEntity(String.class);
+		 	    	if(output != null && !output.isEmpty()){
+		 	    		JSONArray finalArray = new JSONArray(output);
+		 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    			for(int i=0;i<finalArray.length();i++){
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				NregsFmsWorksVO vo = new NregsFmsWorksVO();
+		 	    				
+		 	    				vo.setUniqueId(jObj.getString("UNIQUE_ID"));
+		 	    				vo.setDistrict(jObj.getString("DNAME"));
+		 	    				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
+		 	    					vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
+		 	    				else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("mandal")){
+		 	    					vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
+		 	    					vo.setMandal(jObj.getString("MNAME"));
+		 	    				}
+		 	    				else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("panchayat")){
+		 	    					vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
+		 	    					vo.setMandal(jObj.getString("MNAME"));
+		 	    					vo.setPanchayat(jObj.getString("PNAME"));
+		 	    				}
+		 	    				vo.setCategory(jObj.getString("CAT_NAME"));
+		 	    				vo.setWorks(jObj.getString("WORKS"));
+		 	    				vo.setWage(jObj.getString("WAGE"));
+		 	    				vo.setMaterial(jObj.getString("MATERIAL"));
+		 	    				vo.setTotal(jObj.getString("TOTAL"));
+		 	    				
+		 	    				returnList.add(vo);
+		 	    			}
+		 	    		}
+		 	    	}
+		 	    } 
+   	 } catch (Exception e ){
+   		 LOG.error(" Exception occured at getMgnregsFMSWorksDetails() in FundManagementDashboardService class ", e);
+   	 }
+   	 return returnList;
+   }
+    
+    public  List<NregsFmsWorksVO> getMgnregsFMSWorksDetailsByCategory(InputVO inputVO) {
+    	List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>();
+   	 try {
+   		    
+   		    String str = convertingInputVOToString(inputVO);
+				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureService/FMSExpenditureFinalData", str);
+		        
+		        if (response.getStatus() != 200) {
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	     } else {
+		 	    	String output = response.getEntity(String.class);
+		 	    	if(output != null && !output.isEmpty()){
+		 	    		JSONArray finalArray = new JSONArray(output);
+		 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    			for(int i=0;i<finalArray.length();i++){
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				NregsFmsWorksVO vo = new NregsFmsWorksVO();
+		 	    				
+		 	    				vo.setProgram(jObj.getString("PROGRAM"));
+		 	    				vo.setHabitationName(jObj.getString("HABITATION_NAME"));
+		 	    				vo.setWorkCode(jObj.getString("WORK_CODE"));
+		 	    				vo.setWorkName(jObj.getString("WORK_NAME"));
+		 	    				vo.setDescription(jObj.getString("DESCRIPTION"));
+		 	    				vo.setAmountUnSkilled(jObj.getString("AMOUNT_UNSKILLED"));
+		 	    				vo.setAmountMaterial(jObj.getString("AMOUNT_MATERIAL"));
+		 	    				vo.setTotalCost(jObj.getString("TOTAL_COST"));
+		 	    				vo.setTotalManDays(jObj.getString("TOTAL_MANDAYS"));
+		 	    				vo.setWage(jObj.getString("WAGE"));
+		 	    				vo.setMaterial(jObj.getString("MAT"));
+		 	    				vo.setTotal(jObj.getString("TOTAL"));
+		 	    				vo.setDays(jObj.getString("DAYS"));
+		 	    				
+		 	    				returnList.add(vo);
+		 	    			}
+		 	    		}
+		 	    	}
+		 	    } 
+   	 } catch (Exception e ){
+   		 LOG.error(" Exception occured at getMgnregsFMSWorksDetailsByCategory() in FundManagementDashboardService class ", e);
+   	 }
+   	 return returnList;
+   }
 }
