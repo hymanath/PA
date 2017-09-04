@@ -18,7 +18,7 @@
 <link href="Assests/Plugins/SlickSliderNew/slick.less" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/SlickSliderNew/slick-theme.less" type="text/less" rel="stylesheet"/>
 
-<link href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css" type="text/less" rel="stylesheet"/>     
+<link href="Assests/Plugins/ngTable/ng-table.min.css" type="text/less" rel="stylesheet"/>     
     
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
@@ -317,8 +317,8 @@
 									<div class="col-sm-12">
 										<div class="form-group">
 											<label for="search">Search</label>
-											<input type="text" ng-model="cntrl.globalSearchTerm" ng-change="cntrl.textSearchDist('$',cntrl.globalSearchTerm);" class="form-control" placeholder="Search" id="search"> 
-										</div>  
+											<input type="text" ng-model="cntrl.globalSearchTermDist" ng-change="cntrl.textSearchDist('$',cntrl.globalSearchTermDist);" class="form-control" placeholder="Search"> 
+										</div>     
 								  </div>
 							  </div>
 							  <div class="row">
@@ -355,8 +355,8 @@
 									  <div class="col-sm-12">
 										<div class="form-group">
 											<label for="search">Search</label>
-											<input type="text" ng-model="cntrl.globalSearchTerm" ng-change="cntrl.textSearchDiv('$',cntrl.globalSearchTerm);" class="form-control" placeholder="Search" id="search"> 
-										</div>  
+											<input type="text" ng-model="cntrl.globalSearchTermDivision" ng-change="cntrl.textSearchDiv('$',cntrl.globalSearchTermDivision);" class="form-control" placeholder="Search"> 
+										</div>      
 									  </div>
 								  </div>
 								 <div class="row m_top10">
@@ -484,9 +484,8 @@
 <script src="Assests/Plugins/SlickSliderNew/slick.min.js" type="text/javascript"></script>   
 <script src="Assests/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>   
 <script src="Assests/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script> 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.min.js" type="text/javascript"></script>     
-<!--<script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js" type="text/javascript"></script>     
-<script src="Assests/PRExpenditure/prExpenditureDashboard.js" type="text/javascript"></script>-->
+<script src="Assests/Plugins/ngTable/ng-table.min.js" type="text/javascript"></script>     
+<!--<script src="Assests/PRExpenditure/prExpenditureDashboard.js" type="text/javascript"></script>-->
 <script src="Assests/PRExpenditure/prexpenditureApp.js" type="text/javascript"></script> 
 <script src="Assests/PRExpenditure/controller/prexpenditure_controller.js" type="text/javascript"></script> 
 <script src="Assests/PRExpenditure/service/prexpenditure_service.js" type="text/javascript"></script> 
