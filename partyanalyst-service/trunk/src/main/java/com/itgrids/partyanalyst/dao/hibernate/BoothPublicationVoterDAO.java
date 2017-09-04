@@ -8615,7 +8615,7 @@ public List<Object[]> getVoterLocationDetailsByVotersIdsList(List<Long> voterIds
 			"       left join model.booth.localBody leb " +
 			"       left join model.booth.panchayat panchayat " +
 			"       left join model.booth.localBodyWard ward " +
-			" WHERE model.voter.voterId in (:voterIdsList) AND  model.booth.publicationDate.publicationDateId = "+IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
+			" WHERE model.voter.voterId in (:voterIdsList) AND  model.booth.publicationDate.publicationDateId >= "+IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
 	query.setParameterList("voterIdsList",voterIdsList);
 	return query.list();
 }
@@ -8884,6 +8884,33 @@ public Long getDivisionWiseVoters(Long locationId,Long levelId, Long publication
 	/*if(!(userType.contains("All")))
 		query.setParameterList("userType", userType);*/
 	return (Long) query.uniqueResult();
+}
+public Long getPublicationDateIdByVoterIDCardNo(String voterCardNo){
+	
+	StringBuilder sb = new StringBuilder();
+	sb.append("select model.booth.publicationDate.publicationDateId " +
+					" from BoothPublicationVoter model " +
+					" where model.voter.voterIDCardNo = :voterCardNo  and model.booth.publicationDate.publicationDateId >= "+IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
+
+	Query query = getSession().createQuery(sb.toString());
+	
+	query.setParameter("voterCardNo", voterCardNo);
+	
+	return (Long)query.uniqueResult();
+}
+
+public Long getPublicationDateIdByVoterID(Long voterId){
+	
+	StringBuilder sb = new StringBuilder();
+	sb.append("select model.booth.publicationDate.publicationDateId " +
+					" from BoothPublicationVoter model " +
+					" where model.voter.voterId = :voterId  and model.booth.publicationDate.publicationDateId >= "+IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
+
+	Query query = getSession().createQuery(sb.toString());
+	
+	query.setParameter("voterId", voterId);
+	
+	return (Long)query.uniqueResult();
 }
 
 }

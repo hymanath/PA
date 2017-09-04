@@ -511,7 +511,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  		String houseNo=null;
 	  		Long boothId=null;
 	  		List<String> relationTypes= new ArrayList<String>();
-	  		Long publicatioDateId = IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID;
+	  		//Long publicatioDateId = IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID;
+	  		Long publicatioDateId = boothPublicationVoterDAO.getPublicationDateIdByVoterID(voterId);
 	  		List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterDetails(voterId,publicatioDateId);
 	  		String voterCardNo ="";
 	  		if(voterDetails!=null && voterDetails.size()>0)
@@ -697,7 +698,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				List<Object[]> tdpCadreList = tdpCadreDAO.getRegisteredDetailsByCadreId(tdpCadreId,voterId,familyVoterId,status);
 				setCadreDetailsToVO(returnVO,tdpCadreList,familyVoterId,voterId);
 			}else if(voterId != null && voterId.longValue() >0l){
-				Long publicationDateId = IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID;
+				//Long publicationDateId = IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID;
+				Long publicationDateId = boothPublicationVoterDAO.getPublicationDateIdByVoterID(voterId);
 				List<Object[]> voterList = voterDAO.getVoterDetailsByVoterId(voterId,publicationDateId);
 				setVoterDetailsToVO(returnVO,voterList);
 			} 
