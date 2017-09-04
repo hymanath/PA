@@ -24,10 +24,18 @@ public class AppointmentCandidateVO implements Serializable{
     private boolean isAptExists;
     private String aptStatus;
     private String enrollmentYears;
+    private Long tdpCadreId;
     List<CadreCommitteeVO> previousElections = new ArrayList<CadreCommitteeVO>();
     
     
-    public List<CadreCommitteeVO> getPreviousElections() {
+    
+    public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	public List<CadreCommitteeVO> getPreviousElections() {
 		return previousElections;
 	}
 	public void setPreviousElections(List<CadreCommitteeVO> previousElections) {
