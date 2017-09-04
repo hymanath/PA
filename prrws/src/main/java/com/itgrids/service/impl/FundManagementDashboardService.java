@@ -3236,7 +3236,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 					return locationList;
 				} else if (flag2) {
 					//if (inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() == 1 && inputVO.getDeptIdsList().contains(3l) && inputVO.getLevelValues().size() > 0) {
-						Map<String, String> cnstuncyCodeMap = getConstituencyParliamentNameMapping(inputVO.getLevelValues() != null ? inputVO.getLevelValues().get(0):0l);
+					if (inputVO.getLevelValues() != null && inputVO.getLevelValues().size()>0) {
+						Map<String, String> cnstuncyCodeMap = getConstituencyParliamentNameMapping((inputVO.getLevelValues().get(0)));
 						Iterator<FundSchemeVO> iter = locationList.iterator();
 						/*
 						 * in the case of parliament selection for we are removing
@@ -3249,6 +3250,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 								iter.remove();
 							}
 						}
+					}
 					//}
 				}
 			}
