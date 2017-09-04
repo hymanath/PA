@@ -295,7 +295,7 @@
 			 </div>
 		  </div>
 	   </div>	
-		<section>
+<section>
 	<div class="m_top20">
 				<!--<div id="projectDataOverview" class="m_top20"></div>-->
 				<div class="m_top20">
@@ -385,92 +385,92 @@
 			</div>
 		</div>
 	</div>
-		</section>
-	   <div class="modal fade" id="modalGsDivId" tabindex="-1" role="dialog">
-		  <div class="modal-dialog" role="document" style="width: 95%;">
-			 <div class="modal-content modal-custom">
-				<div class="modal-header">
-				   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#000000">&times;</span></button>
-				   <h4 class="modal-title" id="modalGsHeadingId">Modal title</h4>
-				</div>
-				<div class="modal-body">
-				   <div id="modalGsTable"></div>
-				</div>
-			 </div>
-			 <!-- /.modal-content -->
-		  </div>
-		  <!-- /.modal-dialog -->
-	   </div>
-	   <div class="modal fade" id="modalGramPanchayatDivId" tabindex="-1" role="dialog">
-		  <div class="modal-dialog" role="document" style="width: 95%;">
-			 <div class="modal-content modal-custom">
-				<div class="modal-header">
-				   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#000000">&times;</span></button>
-				   <h4 class="modal-title" id="modalGramPanchayatHeadingId"></h4>
-				</div>
-				<div class="modal-body">
-				   <div class="media">
-					  <div class="media-left">
-						 <p id="gramPanchayatcode"></p>
-						 <p id="gramPanchayataccno"></p>
-						 <p id="gramPanchayatisfc"></p>
-					  </div>
-					  <div class="media-body">
-						 <div class="col-sm-4 ">
-							<div class="text-center block-border">
-							   <div class="media">
-								  <div class="media-left">
-									 <div class="img-circle" style="padding-top: 14px;">
-										<img src="Assests/img/Gross_Amount_icon.png" >
-									 </div>
-								  </div>
-								  <div class="media-body">
-									 <h4>Gross-Amount</h4>
-									 <h4 id="gramPanchayatGrossAmount"><i class="fa fa-inr"></i> </h4>
-								  </div>
-							   </div>
-							</div>
-						 </div>
-						 <div class="col-sm-4 ">
-							<div class="text-center block-border">
-							   <div class="media">
-								  <div class="media-left">
-									 <div class="img-circle" style="padding-top: 14px; padding-left: 10px;">
-										<img  src="Assests/img/Deductions_icon.png">
-									 </div>
-								  </div>
-								  <div class="media-body">
-									 <h4>DEDUCTIONS</h4>
-									 <h4 id="gramPanchayatDeduction"><i class="fa fa-inr"></i> </h4>
-								  </div>
-							   </div>
-							</div>
-						 </div>
-						 <div class="col-sm-4 ">
-							<div class="text-center block-border">  
-							   <div class="media">
-								  <div class="media-left">     
-									 <div class="img-circle"style="padding-top: 13px; padding-left: 20px;">
-										<img src="Assests/img/Netamount_icon.png">
-									 </div>
-								  </div>
-								  <div class="media-body">
-									 <h4>NET AMOUNT</h4>
-									 <h4 id="gramPanchayatNetAmount"><i class="fa fa-inr"></i></h4>
-								  </div>
-							   </div>
-							</div>
-						 </div>
-					  </div>
-				   </div>
-				   <div id="modalGramPanchayatTable"></div>
-				</div>
-			 </div>
-			 <!-- /.modal-content -->
-		  </div>
-		  <!-- /.modal-dialog -->
-	   </div>
+</section>
+<div class="modal fade" id="modalGsDivId" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width: 95%;">
+		<div class="modal-content modal-custom">
+			<div class="modal-header">
+			   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#000000">&times;</span></button>
+			   <h4 class="modal-title" id="modalGsHeadingId">Modal title</h4>
+			</div>
+			<div class="modal-body">
+			   <div id="modalGsTable"></div>
+			</div>
+		</div>
+		<!-- /.modal-content -->
 	</div>
+	<!-- /.modal-dialog -->
+</div>
+   <div class="modal fade" id="modalGramPanchayatDivId" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document" style="width: 95%;">
+		 <div class="modal-content modal-custom">
+			<div class="modal-header">
+			   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#000000">&times;</span></button>
+			   <h4 class="modal-title" id="modalGramPanchayatHeadingId"></h4>
+			</div>
+			<div class="modal-body">
+			   <div class="media">
+				  <div class="media-left">
+					 <p id="gramPanchayatcode"></p>
+					 <p id="gramPanchayataccno"></p>
+					 <p id="gramPanchayatisfc"></p>
+				  </div>
+				  <div class="media-body">
+					 <div class="col-sm-4 ">
+						<div class="text-center block-border">
+						   <div class="media">
+							  <div class="media-left">
+								 <div class="img-circle" style="padding-top: 14px;">
+									<img src="Assests/img/Gross_Amount_icon.png" >
+								 </div>
+							  </div>
+							  <div class="media-body">
+								 <h4>Gross-Amount</h4>
+								 <h4 id="gramPanchayatGrossAmount"><i class="fa fa-inr"></i> </h4>
+							  </div>
+						   </div>
+						</div>
+					 </div>
+					 <div class="col-sm-4 ">
+						<div class="text-center block-border">
+						   <div class="media">
+							  <div class="media-left">
+								 <div class="img-circle" style="padding-top: 14px; padding-left: 10px;">
+									<img  src="Assests/img/Deductions_icon.png">
+								 </div>
+							  </div>
+							  <div class="media-body">
+								 <h4>DEDUCTIONS</h4>
+								 <h4 id="gramPanchayatDeduction"><i class="fa fa-inr"></i> </h4>
+							  </div>
+						   </div>
+						</div>
+					 </div>
+					 <div class="col-sm-4 ">
+						<div class="text-center block-border">  
+						   <div class="media">
+							  <div class="media-left">     
+								 <div class="img-circle"style="padding-top: 13px; padding-left: 20px;">
+									<img src="Assests/img/Netamount_icon.png">
+								 </div>
+							  </div>
+							  <div class="media-body">
+								 <h4>NET AMOUNT</h4>
+								 <h4 id="gramPanchayatNetAmount"><i class="fa fa-inr"></i></h4>
+							  </div>
+						   </div>
+						</div>
+					 </div>
+				  </div>
+			   </div>
+			   <div id="modalGramPanchayatTable"></div>
+			</div>
+		 </div>
+		 <!-- /.modal-content -->
+	  </div>
+	  <!-- /.modal-dialog -->
+   </div>
+</div>
 <script type="text/javascript" src="Assests/js/jquery-1.11.3.js"></script>        
 <script type="text/javascript" src="Assests/js/angular.js"></script>        
 <script type="text/javascript" src="Assests/js/bootstrap.js"></script>
