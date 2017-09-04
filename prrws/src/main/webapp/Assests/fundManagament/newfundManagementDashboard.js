@@ -2970,7 +2970,7 @@ getAllDepartments();
 		var constituencyId =$("#constLevelConstNames").val();
 		var locationId=0;
 		var locationLevelType = 0;
-		if((constituencyId !=0 && parliamentId !=0) || constituencyId == null){
+		if((constituencyId !=0 && parliamentId !=0) || constituencyId == null || constituencyId==0){
 			locationId = parliamentId;
 			locationLevelType=9;
 		}else if(constituencyId !=0 && parliamentId ==0){
