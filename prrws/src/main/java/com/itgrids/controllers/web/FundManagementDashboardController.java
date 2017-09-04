@@ -23,6 +23,7 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.NregsFmsWorksVO;
 import com.itgrids.service.IFundManagementDashboardService;
 import com.itgrids.service.IFundSanctionMatrixReportService;
 import com.itgrids.service.IUserService;
@@ -281,5 +282,16 @@ public class FundManagementDashboardController {
 		     List<LocationFundDetailsVO>  govtSubProgramsList=fundManagementDashboardService.getGovtSchemsTypeDetails(map.get("programId"), map.get("grantTypeId"));
 		     return govtSubProgramsList;
 		}
-
+		
+		@PostMapping("/getMgnregsFMSWorksDetails")
+		public @ResponseBody List<NregsFmsWorksVO> getMgnregsFMSWorksDetails(@RequestBody InputVO inputVO){
+			List<NregsFmsWorksVO> fmsWorksVOList = fundManagementDashboardService.getMgnregsFMSWorksDetails(inputVO);
+			return fmsWorksVOList;
+		}
+		
+		@PostMapping("/getMgnregsFMSWorksDetailsByCategory")
+		public @ResponseBody List<NregsFmsWorksVO> getMgnregsFMSWorksDetailsByCategory(@RequestBody InputVO inputVO){
+			List<NregsFmsWorksVO> fmsWorksVOList = fundManagementDashboardService.getMgnregsFMSWorksDetailsByCategory(inputVO);
+			return fmsWorksVOList;
+		}
 }

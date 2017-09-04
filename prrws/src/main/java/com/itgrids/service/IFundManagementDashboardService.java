@@ -8,6 +8,7 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.NregsFmsWorksVO;
 
 public interface IFundManagementDashboardService {
 	public List<LocationVO> getLocationLevelInfo();
@@ -41,4 +42,7 @@ public interface IFundManagementDashboardService {
 	public List<LocationFundDetailsVO> getAllSubLocationsOnsuperLocation(InputVO inputVO);
 	public List<LocationFundDetailsVO> getGovtGrantTypeDetails(Long programId,Long govtSchemesId);
 	public List<LocationFundDetailsVO> getGovtSchemsTypeDetails(Long programId, Long grantTypeId);
+	
+	public  List<NregsFmsWorksVO> getMgnregsFMSWorksDetails(InputVO inputVO);
+	public  List<NregsFmsWorksVO> getMgnregsFMSWorksDetailsByCategory(InputVO inputVO);
 }
