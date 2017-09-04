@@ -366,6 +366,7 @@ var globalStateId=1;
 			  buildgUserTypeWiseConductedAndMayBeTopFivePoorPerResults(globalUserWiseMeetingMemberRslt);
 			 }
 		});
+		
 		var globalMeetingMembersResult = '';
 		$(document).on("click",".getCmtMemDtls,.getCmtMemDtlsDesgClick",function(){
 			globalCount = 0;
@@ -2287,7 +2288,7 @@ function buildMeetingMemberDtls(result,position,isNonInvitee,status,desgSearchRe
 	str+='<div class="row m_top10">';
 	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 	  str+='<div class="table-responsive">';
-	  str+='<table class="table border_top_apply" id="cmtMemberDtlsTableId">';
+	  str+='<table class="table border_top_apply" id="cmtMemberDtlsTableId2">';
 		str+='<thead>';
 			str+='<tr>';
 				str+='<th>District Name</th>';
@@ -2373,13 +2374,14 @@ function buildMeetingMemberDtls(result,position,isNonInvitee,status,desgSearchRe
 	   str+='</table>';
 	str+='</div>';
 	str+='</div>';
+	str+='</div>';
 	
 	if(position == "overview"){
 		$("#meetingMemDetailsBodyId").html(str);
-		$("#cmtMemberDtlsTableId").dataTable();   
+		$("#cmtMemberDtlsTableId2").dataTable();   
 	}else{
 		$("#meetingMemDetailsBodyId").html(str);     
-		$("#cmtMemberDtlsTableId").dataTable();
+		$("#cmtMemberDtlsTableId2").dataTable();
 	}
    
 }
