@@ -397,9 +397,9 @@ public class Scheduler {
 	{	
 		
 		ResultStatus rs = new ResultStatus();
-		//if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
-			//return rs;
-		//}
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return rs;
+		}
 			
 		try{
 			rs = schedulerService.pushDataToPartyMeetingStatusTable();
