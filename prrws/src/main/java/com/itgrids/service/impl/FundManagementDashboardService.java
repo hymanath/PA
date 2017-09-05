@@ -4049,10 +4049,10 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 										workMap.put(jObj.getString("CAT_NAME").trim(), vo);
 									}
 									else{
-										vo.setWorks(String.valueOf(Double.valueOf(vo.getWorks())+Double.valueOf(jObj.getString("WORKS"))));
-										vo.setWage(String.valueOf(Double.valueOf(vo.getWage())+Double.valueOf(jObj.getString("WAGE"))));
-										vo.setMaterial(String.valueOf(Double.valueOf(vo.getMaterial())+Double.valueOf(jObj.getString("MATERIAL"))));
-										vo.setTotal(String.valueOf(Double.valueOf(vo.getTotal())+Double.valueOf(jObj.getString("TOTAL"))));
+										vo.setWorks(new BigDecimal(Double.valueOf(vo.getWorks())+Double.valueOf(jObj.getString("WORKS"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+										vo.setWage(new BigDecimal(Double.valueOf(vo.getWage())+Double.valueOf(jObj.getString("WAGE"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+										vo.setMaterial(new BigDecimal(Double.valueOf(vo.getMaterial())+Double.valueOf(jObj.getString("MATERIAL"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+										vo.setTotal(new BigDecimal(Double.valueOf(vo.getTotal())+Double.valueOf(jObj.getString("TOTAL"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 									}
 								}
 							}
