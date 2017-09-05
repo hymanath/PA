@@ -84,11 +84,19 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-12 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#888420">
 													<a href="getlightsMonitoringDashboard">
 														<h3>LED</h3>
 														<p>Light Monitoring Dashboard</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#ff5e1c">
+													<a href="prExpenditureDashboard">
+														<h3>PR EXP</h3>
+														<p>Panchayat Raj Expenditure</p>
 													</a>
 												</div>
 											</div>
