@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -58,6 +60,7 @@ import com.itgrids.service.IFundManagementDashboardService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.IConstants;
+import com.itgrids.utils.NREGSCumulativeThread;
 import com.itgrids.utils.SetterAndGetterUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 /*
@@ -3912,7 +3915,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
   	    	 if (finalYearObjLst != null && finalYearObjLst.size() > 0 ) {
   	    		 for (Object[] param : finalYearObjLst) {
   	    			 financialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
-  	    			yearIdMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[0]));
+   	    			yearIdMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[0]));
   				}
   	    	 }
   	    	
@@ -3984,17 +3987,18 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("parliament")) {
 				Map<String, String> cnstuncyCodeMap = getConstituencyParliamentNameMapping(Long.valueOf(inputVO.getLocationIdStr()));
 				if (cnstuncyCodeMap != null && cnstuncyCodeMap.size() > 0) {
+					ExecutorService executor = Executors.newFixedThreadPool(10);
 					for (Entry<String, String> entry : cnstuncyCodeMap.entrySet()) {
 					        String strNew = "";
 							 strNew = str.replace(inputVO.getLocationIdStr(), entry.getKey());
 							 strNew = strNew.replace("parliament", "constituency");
-							ClientResponse response = webServiceUtilService.callWebService(URL, strNew);
-							if (response.getStatus() != 200) {
-								throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-							} else {
-								clientResponseList.add(response);
-							}
+						     Runnable worker = new NREGSCumulativeThread(URL,clientResponseList,strNew);
+							 executor.execute(worker);
 					}
+					executor.shutdown();
+					while(!executor.isTerminated()) {}
+					
+					System.out.println("All work has finished "+clientResponseList);
 				}
 				returnList = getMgnregsParliamentWiseCombinedDetails(clientResponseList);
 			} else {
@@ -4020,40 +4024,43 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			
 			if (responseList != null && responseList.size() > 0) {
 				for (ClientResponse response : responseList) {
-					String output = response.getEntity(String.class);
-					if (output != null && !output.isEmpty()) {
-						JSONArray finalArray = new JSONArray(output);
-						if (finalArray != null && finalArray.length() > 0) {
-							for (int i = 0; i < finalArray.length(); i++) {
-								JSONObject jObj = (JSONObject) finalArray.get(i);
-								
-								NregsFmsWorksVO vo = workMap.get(jObj.getString("CAT_NAME").trim());
-								if(vo == null){
-									vo = new NregsFmsWorksVO();
-									//vo.setUniqueId(jObj.getString("UNIQUE_ID"));
-									//vo.setDistrict(jObj.getString("DNAME"));
-									//vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
-									vo.setCategory(jObj.getString("CAT_NAME"));
-									vo.setWorks(jObj.getString("WORKS"));
-									vo.setWage(jObj.getString("WAGE"));
-									vo.setMaterial(jObj.getString("MATERIAL"));
-									vo.setTotal(jObj.getString("TOTAL"));
+					if(response == null || response.getStatus() != 200){
+						throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+					} else {
+						String output = response.getEntity(String.class);
+						if (output != null && !output.isEmpty()) {
+							JSONArray finalArray = new JSONArray(output);
+							if (finalArray != null && finalArray.length() > 0) {
+								for (int i = 0; i < finalArray.length(); i++) {
+									JSONObject jObj = (JSONObject) finalArray.get(i);
 									
-									workMap.put(jObj.getString("CAT_NAME").trim(), vo);
-								}
-								else{
-									vo.setWorks(String.valueOf(Double.valueOf(vo.getWorks())+Double.valueOf(jObj.getString("WORKS"))));
-									vo.setWage(String.valueOf(Double.valueOf(vo.getWage())+Double.valueOf(jObj.getString("WAGE"))));
-									vo.setMaterial(String.valueOf(Double.valueOf(vo.getMaterial())+Double.valueOf(jObj.getString("MATERIAL"))));
-									vo.setTotal(String.valueOf(Double.valueOf(vo.getTotal())+Double.valueOf(jObj.getString("TOTAL"))));
+									NregsFmsWorksVO vo = workMap.get(jObj.getString("CAT_NAME").trim());
+									if(vo == null){
+										vo = new NregsFmsWorksVO();
+										//vo.setUniqueId(jObj.getString("UNIQUE_ID"));
+										//vo.setDistrict(jObj.getString("DNAME"));
+										//vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
+										vo.setCategory(jObj.getString("CAT_NAME"));
+										vo.setWorks(jObj.getString("WORKS"));
+										vo.setWage(jObj.getString("WAGE"));
+										vo.setMaterial(jObj.getString("MATERIAL"));
+										vo.setTotal(jObj.getString("TOTAL"));
+										
+										workMap.put(jObj.getString("CAT_NAME").trim(), vo);
+									}
+									else{
+										vo.setWorks(String.valueOf(Double.valueOf(vo.getWorks())+Double.valueOf(jObj.getString("WORKS"))));
+										vo.setWage(String.valueOf(Double.valueOf(vo.getWage())+Double.valueOf(jObj.getString("WAGE"))));
+										vo.setMaterial(String.valueOf(Double.valueOf(vo.getMaterial())+Double.valueOf(jObj.getString("MATERIAL"))));
+										vo.setTotal(String.valueOf(Double.valueOf(vo.getTotal())+Double.valueOf(jObj.getString("TOTAL"))));
+									}
 								}
 							}
 						}
 					}
 				}
 			}
-			
-			if(workMap != null)
+			if(workMap.size() > 0)
 				returnList = new ArrayList<NregsFmsWorksVO>(workMap.values());
 			
 		} catch (Exception e) {
