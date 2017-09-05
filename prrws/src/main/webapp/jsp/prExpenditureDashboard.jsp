@@ -320,26 +320,26 @@
 											<input type="text" ng-model="cntrl.globalSearchTermDist" ng-change="cntrl.textSearchDist('$',cntrl.globalSearchTermDist);" class="form-control" placeholder="Search"> 
 										</div>     
 								  </div>
-							  </div>
-							  <div class="row">
-								 <div class="col-sm-12">
-								 <div ng-show="cntrl.showHideDistrictSpinner">
-									<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
-								 </div>
-									<div ng-show="cntrl.showHideDistrictTable" id="collapseConsolidatedViewDistrict">
-									   <table ng-table="cntrl.districtParams" class="table table-condensed table-bordered table-striped" show-filter="false">
-											<tr ng-repeat="district in $data">   
-												<td title="'LocationName'" filter="{ locationName: 'text'}" sortable="'locationName'">{{district.locationName}}</td>   
-												<td title="'Grossamount'"  filter="{ grossAmount: 'number'}" sortable="'grossAmount'">{{district.grossAmount}}</td>
-												<td title="'Deductions'"   filter="{ deductions: 'number'}" sortable="'deductions'"> {{district.deductions}}</td>
-												<td title="'Netamount'"    filter="{ netAmount: 'number'}" sortable="'netAmount'"> {{district.netAmount}}</td>
-											</tr>
-										</table>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<div ng-show="cntrl.showHideDistrictSpinner">
+											<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
+										</div>
+										<div ng-show="cntrl.showHideDistrictTable" id="collapseConsolidatedViewDistrict">
+											<table ng-table="cntrl.districtParams" class="table table-condensed table-bordered table-striped" show-filter="false">
+												<tr ng-repeat="district in $data">   
+													<td title="'LocationName'" filter="{ locationName: 'text'}" sortable="'locationName'">{{district.locationName}}</td>   
+													<td title="'Grossamount'"  filter="{ grossAmount: 'number'}" sortable="'grossAmount'">{{district.grossAmount}}</td>
+													<td title="'Deductions'"   filter="{ deductions: 'number'}" sortable="'deductions'"> {{district.deductions}}</td>
+													<td title="'Netamount'"    filter="{ netAmount: 'number'}" sortable="'netAmount'"> {{district.netAmount}}</td>
+													</tr>
+												</table>
+											</div>
+										</div>
 									</div>
-								 </div>
-							  </div>
-						   </div>
-						</div>
+								</div>
+							</div>
 						</div>
 						<div class="panel panel-default panel-black">
 						   <div class="panel-heading" role="tab" id="headingConsolidatedDivision">
