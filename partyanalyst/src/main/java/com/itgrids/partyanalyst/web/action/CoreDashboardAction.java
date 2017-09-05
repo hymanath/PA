@@ -1844,7 +1844,14 @@ public String getPartyWiseTotalDebateDetails(){
 	
 	try{
 		jObj = new JSONObject(getTask());
-		codeDebateVoList = coreDashboardMainService.getPartyWiseTotalDebateDetails(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),jObj.getLong("stateId"));
+		JSONArray debateLocationIdArry = jObj.getJSONArray("debateLocationIdArry");  
+		List<Long> debateLocationIdList = new ArrayList<Long>();
+		if(debateLocationIdArry != null && debateLocationIdArry.length() > 0){
+			for (int i = 0; i < debateLocationIdArry.length(); i++){
+				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getPartyWiseTotalDebateDetails(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),debateLocationIdList);
 		
 	}catch (Exception e) {
 		LOG.error("Exception raised at getPartyWiseTotalDebateDetails() method of CoreDashBoardAction", e);
@@ -1857,7 +1864,14 @@ public String getSpokesPersonWiseDebate(){
 	try{
 		
 		jObj = new JSONObject(getTask());
-		codeDebateVoList = coreDashboardMainService.getSpokesPersonWiseDebate(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"),jObj.getString("state"),jObj.getLong("stateId"));
+		JSONArray debateParticipantLocIdArry = jObj.getJSONArray("debateParticipantLocIdArry");  
+		List<Long> debateParticipantLocationIdList = new ArrayList<Long>();
+		if(debateParticipantLocIdArry != null && debateParticipantLocIdArry.length() > 0){
+			for (int i = 0; i < debateParticipantLocIdArry.length(); i++){
+				debateParticipantLocationIdList.add(Long.parseLong(debateParticipantLocIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getSpokesPersonWiseDebate(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"),jObj.getString("state"),debateParticipantLocationIdList);
 		
 	}catch (Exception e) {
 		LOG.error("Exception raised at getSpokesPersonWiseDebate() method of CoreDashBoardAction", e);
@@ -1870,7 +1884,14 @@ public String getScaleBasedPerformanceCohort(){
 	try{
 		
 		jObj = new JSONObject(getTask());
-		codeDebateVoList = coreDashboardMainService.getScaleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),jObj.getLong("stateId"));
+		JSONArray debateLocationIdArry = jObj.getJSONArray("debateLocationIdArry");  
+		List<Long> debateLocationIdList = new ArrayList<Long>();
+		if(debateLocationIdArry != null && debateLocationIdArry.length() > 0){
+			for (int i = 0; i < debateLocationIdArry.length(); i++){
+				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getScaleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),debateLocationIdList);
 		
 	}catch (Exception e) {
 		LOG.error("Exception raised at getScaleBasedPerformanceCohort() method of CoreDashBoardAction", e);
@@ -1882,7 +1903,14 @@ public String getCandidateOverAllPerformanceCohort(){
 	try{
 		
 		jObj = new JSONObject(getTask());
-		codeDebateVoList = coreDashboardMainService.getCandidateOverAllPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),jObj.getLong("stateId"));
+		JSONArray participantLocIdArry = jObj.getJSONArray("participantLocIdArry");  
+		List<Long> participantLocationIdList = new ArrayList<Long>();
+		if(participantLocIdArry != null && participantLocIdArry.length() > 0){
+			for (int i = 0; i < participantLocIdArry.length(); i++){
+				participantLocationIdList.add(Long.parseLong(participantLocIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getCandidateOverAllPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),participantLocationIdList);
 		
 	}catch (Exception e) {
 		LOG.error("Exception raised at getCandidateOverAllPerformanceCohort() method of CoreDashBoardAction", e);
@@ -1895,7 +1923,14 @@ public String getChannelAndPartyWiseDetails(){
 	try{
 		
 		jObj = new JSONObject(getTask());
-		codeDebateVoList = coreDashboardMainService.getChannelAndPartyWiseDetails(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),jObj.getLong("stateId"));
+		JSONArray debateLocationIdArry = jObj.getJSONArray("debateLocationIdArry");  
+		List<Long> debateLocationIdList = new ArrayList<Long>();
+		if(debateLocationIdArry != null && debateLocationIdArry.length() > 0){
+			for (int i = 0; i < debateLocationIdArry.length(); i++){
+				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getChannelAndPartyWiseDetails(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),debateLocationIdList);
 		
 	}catch (Exception e) {
 		LOG.error("Exception raised at getChannelAndPartyWiseDetails() method of CoreDashBoardAction", e);
@@ -1907,7 +1942,14 @@ public String getRoleBasedPerformanceCohort(){
 	try{
 		
 		jObj = new JSONObject(getTask());
-		codeDebateVoList = coreDashboardMainService.getRoleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),jObj.getLong("stateId"));
+		JSONArray debateLocationIdArry = jObj.getJSONArray("debateLocationIdArry");  
+		List<Long> debateLocationIdList = new ArrayList<Long>();
+		if(debateLocationIdArry != null && debateLocationIdArry.length() > 0){
+			for (int i = 0; i < debateLocationIdArry.length(); i++){
+				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getRoleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),debateLocationIdList);
 				
 	}catch (Exception e) {
 		LOG.error("Exception raised at getRoleBasedPerformanceCohort() method of CoreDashBoardAction", e);
@@ -2106,8 +2148,14 @@ public String getRolesPerformanceOfCandidate(){
 			if(roleId !=null && roleId>0l){
 				roles.add(roleId);
 			}
-			
-			codeDebateVoList = coreDashboardMainService.getRolesPerformanceOfCandidate(jObj.getString("startDate"),jObj.getString("endDate"),roles,jObj.getString("state"),jObj.getLong("stateId"));
+			JSONArray participantLocIdArry = jObj.getJSONArray("participantLocIdArry");  
+			List<Long> participantLocationIdList = new ArrayList<Long>();
+			if(participantLocIdArry != null && participantLocIdArry.length() > 0){
+				for (int i = 0; i < participantLocIdArry.length(); i++){
+					participantLocationIdList.add(Long.parseLong(participantLocIdArry.getString(i)));          
+				}  
+			}
+			codeDebateVoList = coreDashboardMainService.getRolesPerformanceOfCandidate(jObj.getString("startDate"),jObj.getString("endDate"),roles,jObj.getString("state"),participantLocationIdList);
 					
 		}catch (Exception e) {
 			LOG.error("Exception raised at getRolesPerformanceOfCandidate() method of CoreDashBoardAction", e);
@@ -3005,8 +3053,14 @@ public String getDateWisePresentAbsentDtlsForEmployee(){
 public String getCoreDebateBasicDetailsOfParty(){
 	try{
 		jObj = new JSONObject(getTask()); 
-		
-		codeDebateVoList = coreDashboardMainService.getCoreDebateBasicDetailsOfParty(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"),jObj.getLong("candidateId"),jObj.getLong("stateId"));
+		JSONArray popupLocationIdArry = jObj.getJSONArray("popupLocationIdArry");  
+		List<Long> debateLocationIdList = new ArrayList<Long>();
+		if(popupLocationIdArry != null && popupLocationIdArry.length() > 0){
+			for (int i = 0; i < popupLocationIdArry.length(); i++){
+				debateLocationIdList.add(Long.parseLong(popupLocationIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getCoreDebateBasicDetailsOfParty(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"),jObj.getLong("candidateId"),debateLocationIdList);
 		
 	}catch(Exception e){
 		LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
@@ -4138,8 +4192,14 @@ public String getCandidateWiseDebateDetailsOfCore(){
 	try {
 		
 		jObj = new JSONObject(getTask()); 
-		
-		codeDebateVoList = coreDashboardMainService.getCandidateWiseDebateDetailsOfCore(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getLong("candidateId"),jObj.getLong("stateId"));
+		JSONArray debateLocationIdArry = jObj.getJSONArray("debateLocationIdArry");  
+		List<Long> debateLocationIdList = new ArrayList<Long>();
+		if(debateLocationIdArry != null && debateLocationIdArry.length() > 0){
+			for (int i = 0; i < debateLocationIdArry.length(); i++){
+				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getCandidateWiseDebateDetailsOfCore(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getLong("candidateId"),debateLocationIdList);
 		
 	} catch (Exception e) {
 		LOG.info("\n\n getCandidateWiseDebateDetailsOfCore ");
