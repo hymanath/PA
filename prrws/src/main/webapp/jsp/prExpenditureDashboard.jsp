@@ -340,6 +340,7 @@
 							  </div>
 						   </div>
 						</div>
+						</div>
 						<div class="panel panel-default panel-black">
 						   <div class="panel-heading" role="tab" id="headingConsolidatedDivision">
 							  <a role="button" class="panelCollapseIcon" overview-level="Division" data-toggle="collapse" data-parent="#accordionOverview" href="#collapseConsolidatedDivision" aria-expanded="true" aria-controls="collapseConsolidatedDivision">
@@ -379,7 +380,6 @@
 							  </div>
 						   </div>
 						</div>
-					 </div>
 				  </div>
 			   </div>
 			</div>
