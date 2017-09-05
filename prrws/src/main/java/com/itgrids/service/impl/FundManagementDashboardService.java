@@ -3996,6 +3996,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 							}
 					}
 				}
+				returnList = getMgnregsParliamentWiseCombinedDetails(clientResponseList);
 			} else {
 				ClientResponse response = webServiceUtilService.callWebService(URL, str);
 				if (response.getStatus() != 200) {
@@ -4003,10 +4004,60 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				} else {
 					clientResponseList.add(response);
 				}
+				returnList = getMgnregsWorkDetailsLocationWise(clientResponseList,inputVO);
 			}
-			returnList = getMgnregsWorkDetailsLocationWise(clientResponseList,inputVO);
+			
 		} catch (Exception e) {
 			LOG.error(" Exception occured at getMgnregsFMSWorksDetails() in FundManagementDashboardService class ",e);
+		}
+		return returnList;
+	}
+	
+	private List<NregsFmsWorksVO> getMgnregsParliamentWiseCombinedDetails(List<ClientResponse> responseList){
+		List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>();
+		try {
+			Map<String,NregsFmsWorksVO> workMap = new LinkedHashMap<String,NregsFmsWorksVO>(0);
+			
+			if (responseList != null && responseList.size() > 0) {
+				for (ClientResponse response : responseList) {
+					String output = response.getEntity(String.class);
+					if (output != null && !output.isEmpty()) {
+						JSONArray finalArray = new JSONArray(output);
+						if (finalArray != null && finalArray.length() > 0) {
+							for (int i = 0; i < finalArray.length(); i++) {
+								JSONObject jObj = (JSONObject) finalArray.get(i);
+								
+								NregsFmsWorksVO vo = workMap.get(jObj.getString("CAT_NAME").trim());
+								if(vo == null){
+									vo = new NregsFmsWorksVO();
+									//vo.setUniqueId(jObj.getString("UNIQUE_ID"));
+									//vo.setDistrict(jObj.getString("DNAME"));
+									//vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
+									vo.setCategory(jObj.getString("CAT_NAME"));
+									vo.setWorks(jObj.getString("WORKS"));
+									vo.setWage(jObj.getString("WAGE"));
+									vo.setMaterial(jObj.getString("MATERIAL"));
+									vo.setTotal(jObj.getString("TOTAL"));
+									
+									workMap.put(jObj.getString("CAT_NAME").trim(), vo);
+								}
+								else{
+									vo.setWorks(String.valueOf(Double.valueOf(vo.getWorks())+Double.valueOf(jObj.getString("WORKS"))));
+									vo.setWage(String.valueOf(Double.valueOf(vo.getWage())+Double.valueOf(jObj.getString("WAGE"))));
+									vo.setMaterial(String.valueOf(Double.valueOf(vo.getMaterial())+Double.valueOf(jObj.getString("MATERIAL"))));
+									vo.setTotal(String.valueOf(Double.valueOf(vo.getTotal())+Double.valueOf(jObj.getString("TOTAL"))));
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			if(workMap != null)
+				returnList = new ArrayList<NregsFmsWorksVO>(workMap.values());
+			
+		} catch (Exception e) {
+			LOG.error(" Exception occured at getMgnregsParliamentWiseCombinedDetails() in FundManagementDashboardService class ",e);
 		}
 		return returnList;
 	}
