@@ -1027,7 +1027,7 @@
 </div><!--  /.modal -->
 </div><!--  /.modal -->
 <div class="modal fade" id="fundCategoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
-	<div class="modal-dialog" role="document" style="width:80%;margin:auto">
+	<div class="modal-dialog" role="document" style="width:98%;margin:auto">
 		<div class="modal-content">
 			<div class="modal-header bg_EE">
 				<div class="row">

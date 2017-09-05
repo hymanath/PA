@@ -5231,7 +5231,7 @@ $(document).on("click",".categoryClickCls",function(){
 function getMgnregsFMSWorksDetailsByCategory(locationStrIdsForMgnregs,levelName,financialYrId,viewType,blockLvlId,locationName,categoryName){ 
 	
 	$("#fundCategoryModal").modal('show');
-	$("#diptCatNameId").html('<h4 class="text-capital"><b>'+categoryName+'&nbsp;&nbsp; - Category Wise Details</b></h4>');
+	$("#diptCatNameId").html('<h5 class="text-capital"><b>'+categoryName+'&nbsp;&nbsp; - Category Wise Details</b></h5>');
 	$("#fundSanctionCategoryModal").html(spinner);
 	
 	var financialYrIdList = [];
@@ -5277,12 +5277,13 @@ function getMgnregsFMSWorksDetailsByCategory(locationStrIdsForMgnregs,levelName,
   
   function buildMgnregsFMSWorksDetailsByCategory(result,blockLvlId){
 	  var str = '';
-	if($windowWidth < 768)
-	{
+	//if($windowWidth < 500)
+	//{
 		str+='<div class="table-responsive">';
-	}
-	str+='<table class="table table-condensed table-bordered table-striped" id="tableCategoryMgrnesId">';
+	//}
+	str+='<table class="table table-condensed table-bordered table-striped tableStyledCategory" id="tableCategoryMgrnesId">';
 		str+='<thead>';
+			str+='<tr>'; 
 			str+='<th class="text-capital">PROGRAM</th>';
 			str+='<th class="text-capital">HABITATION_NAME</th>'; 
 			str+='<th class="text-capital">WORK_NAME</th>';
@@ -5295,56 +5296,72 @@ function getMgnregsFMSWorksDetailsByCategory(locationStrIdsForMgnregs,levelName,
 			str+='<th class="text-capital">MATERIAL</th>';
 			str+='<th class="text-capital">TOTAL</th>';
 			str+='<th class="text-capital">DAYS</th>';
+			str+='</tr>'; 
 		str+='</thead>';
 		str+='<tbody>';
 	for(var i in result){
 		str+='<tr>'; 
-		if(result[i].program != null){
+		if(result[i].program != null && typeof(result[i].program) != "undefined"){
 			str+='<td>'+result[i].program+'</td>';
 		}else{
 			 str+='<td>-</td>';
 		}
-		if(result[i].habitationName != null){
+		if(result[i].habitationName != null && typeof(result[i].habitationName) != "undefined"){
 			str+='<td>'+result[i].habitationName+'</td>';
 		}else{
 			 str+='<td>-</td>';
 		}
-		if(result[i].workName != null){
-			str+='<td>'+result[i].workName+'</td>';
+		if(result[i].workName != null && typeof(result[i].workName) != "undefined"){
+			if(result[i].workName !=null && result[i].workName.length>14){
+				str+='<td><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" class="tooltipCategoryCls" title="'+result[i].workName+'" >'+result[i].workName.substring(0,14)+'...</span></td>';
+			}else{
+				str+='<td>'+result[i].workName+'</td>';
+			}
+			
 		}else{
 			 str+='<td>-</td>';
 		}
-		if(result[i].description != null){
+		if(result[i].description != null && typeof(result[i].description) != "undefined"){
 			str+='<td>'+result[i].description+'</td>';
 		}else{
 			 str+='<td>-</td>';
 		}
-		if(result[i].amountUnSkilled != null && result[i].amountUnSkilled>0){
+		if(result[i].amountUnSkilled != null && result[i].amountUnSkilled>0 && typeof(result[i].amountUnSkilled) != "undefined"){
 			 str+='<td>'+result[i].amountUnSkilled+'</td>';
 		}else{
 			 str+='<td>-</td>';
 		}    
-		if(result[i].amountMaterial != null && result[i].amountMaterial>0){
+		if(result[i].amountMaterial != null && result[i].amountMaterial>0 && typeof(result[i].amountMaterial) != "undefined"){
 			 str+='<td>'+result[i].amountMaterial+'</td>';
 		}else{
 			 str+='<td>-</td>';
 		}  
-		if(result[i].wage != null && result[i].wage>0){
+		if(result[i].totalCost != null && result[i].totalCost>0 && typeof(result[i].totalCost) != "undefined"){
+			 str+='<td>'+result[i].totalCost+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		} 
+		if(result[i].totalManDays != null && result[i].totalManDays>0 && typeof(result[i].totalManDays) != "undefined"){
+			 str+='<td>'+result[i].totalManDays+'</td>';
+		}else{
+			 str+='<td>-</td>';
+		} 		
+		if(result[i].wage != null && result[i].wage>0 && typeof(result[i].wage) != "undefined"){
 			 str+='<td>'+result[i].wage+'</td>';
 		}else{
 			 str+='<td>-</td>';
 		}
-		if(result[i].material != null && result[i].material>0){
+		if(result[i].material != null && result[i].material>0 && typeof(result[i].material) != "undefined"){
 			 str+='<td>'+result[i].material+'</td>';
 		}else{
 			 str+='<td>-</td>';
 		}
-		if(result[i].total != null && result[i].total>0){
+		if(result[i].total != null && result[i].total>0 && typeof(result[i].total) != "undefined"){
 			 str+='<td>'+result[i].total+'</td>';
 		}else{
 			 str+='<td>-</td>';
 		}
-		if(result[i].days != null && result[i].days>0){
+		if(result[i].days != null && result[i].days>0 && typeof(result[i].days) != "undefined"){
 			 str+='<td>'+result[i].days+'</td>';
 		}else{
 			 str+='<td>-</td>';
@@ -5353,11 +5370,12 @@ function getMgnregsFMSWorksDetailsByCategory(locationStrIdsForMgnregs,levelName,
 	}
 	str+='</tbody>';  
 	str+='</table>';  
-	if($windowWidth < 768)
-	{
+	//if($windowWidth < 768)
+	//{
 		str+='</div>';
-	}
-	$("#fundSanctionCategoryModal").html(str);   
+	//}
+	$("#fundSanctionCategoryModal").html(str); 
+	$(".tooltipCategoryCls").tooltip();	
 	$("#tableCategoryMgrnesId").dataTable({
 		"iDisplayLength": 15,
 		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
