@@ -3974,60 +3974,92 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		}
 		return str;
 	}
-    /* End */ 
-    public  List<NregsFmsWorksVO> getMgnregsFMSWorksDetails(InputVO inputVO) {
-    	List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>();
-   	 try {
-   		    
-   		    String str = convertingInputVOToString(inputVO);
-				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureService/FMSExpenditureData", str);
-		        
-		        if (response.getStatus() != 200) {
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-		 	     } else {
-		 	    	String output = response.getEntity(String.class);
-		 	    	if(output != null && !output.isEmpty()){
-		 	    		JSONArray finalArray = new JSONArray(output);
-		 	    		if(finalArray!=null && finalArray.length()>0){
-		 	    			for(int i=0;i<finalArray.length();i++){
-		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-		 	    				NregsFmsWorksVO vo = new NregsFmsWorksVO();
-		 	    				
-		 	    				vo.setUniqueId(jObj.getString("UNIQUE_ID"));
-		 	    				vo.setDistrict(jObj.getString("DNAME"));
-		 	    				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
-		 	    					vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
-		 	    				else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("mandal")){
-		 	    					vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
-		 	    					vo.setMandal(jObj.getString("MNAME"));
-		 	    				}
-		 	    				else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("panchayat")){
-		 	    					vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
-		 	    					vo.setMandal(jObj.getString("MNAME"));
-		 	    					vo.setPanchayat(jObj.getString("PNAME"));
-		 	    				}
-		 	    				vo.setCategory(jObj.getString("CAT_NAME"));
-		 	    				vo.setWorks(jObj.getString("WORKS"));
-		 	    				vo.setWage(jObj.getString("WAGE"));
-		 	    				vo.setMaterial(jObj.getString("MATERIAL"));
-		 	    				vo.setTotal(jObj.getString("TOTAL"));
-		 	    				
-		 	    				returnList.add(vo);
-		 	    			}
-		 	    		}
-		 	    	}
-		 	    } 
-   	 } catch (Exception e ){
-   		 LOG.error(" Exception occured at getMgnregsFMSWorksDetails() in FundManagementDashboardService class ", e);
-   	 }
-   	 return returnList;
-   }
+   
+	public List<NregsFmsWorksVO> getMgnregsFMSWorksDetails(InputVO inputVO) {
+		List<NregsFmsWorksVO> returnList = null;
+		try {
+			List<ClientResponse> clientResponseList = new ArrayList<>(0);
+			String str = convertingInputVOToString(inputVO);
+			String URL = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureService/FMSExpenditureData";
+			if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("parliament")) {
+				Map<String, String> cnstuncyCodeMap = getConstituencyParliamentNameMapping(Long.valueOf(inputVO.getLocationIdStr()));
+				if (cnstuncyCodeMap != null && cnstuncyCodeMap.size() > 0) {
+					for (Entry<String, String> entry : cnstuncyCodeMap.entrySet()) {
+					        String strNew = "";
+							 strNew = str.replace(inputVO.getLocationIdStr(), entry.getKey());
+							 strNew = strNew.replace("parliament", "constituency");
+							ClientResponse response = webServiceUtilService.callWebService(URL, strNew);
+							if (response.getStatus() != 200) {
+								throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+							} else {
+								clientResponseList.add(response);
+							}
+					}
+				}
+			} else {
+				ClientResponse response = webServiceUtilService.callWebService(URL, str);
+				if (response.getStatus() != 200) {
+					throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+				} else {
+					clientResponseList.add(response);
+				}
+			}
+			returnList = getMgnregsWorkDetailsLocationWise(clientResponseList,inputVO);
+		} catch (Exception e) {
+			LOG.error(" Exception occured at getMgnregsFMSWorksDetails() in FundManagementDashboardService class ",e);
+		}
+		return returnList;
+	}
+
+	private List<NregsFmsWorksVO> getMgnregsWorkDetailsLocationWise(List<ClientResponse> responseList, InputVO inputVO) {
+		List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>();
+		try {
+			if (responseList != null && responseList.size() > 0) {
+				for (ClientResponse response : responseList) {
+					String output = response.getEntity(String.class);
+					if (output != null && !output.isEmpty()) {
+						JSONArray finalArray = new JSONArray(output);
+						if (finalArray != null && finalArray.length() > 0) {
+							for (int i = 0; i < finalArray.length(); i++) {
+								JSONObject jObj = (JSONObject) finalArray.get(i);
+								NregsFmsWorksVO vo = new NregsFmsWorksVO();
+
+								vo.setUniqueId(jObj.getString("UNIQUE_ID"));
+								vo.setDistrict(jObj.getString("DNAME"));
+								if (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
+									vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
+								else if (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("mandal")) {
+									vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
+									vo.setMandal(jObj.getString("MNAME"));
+								} else if (inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("panchayat")) {
+									vo.setConstituency(jObj.getString("ASSEMBLY_NAME"));
+									vo.setMandal(jObj.getString("MNAME"));
+									vo.setPanchayat(jObj.getString("PNAME"));
+								}
+								vo.setCategory(jObj.getString("CAT_NAME"));
+								vo.setWorks(jObj.getString("WORKS"));
+								vo.setWage(jObj.getString("WAGE"));
+								vo.setMaterial(jObj.getString("MATERIAL"));
+								vo.setTotal(jObj.getString("TOTAL"));
+
+								returnList.add(vo);
+							}
+						}
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error(" Exception occured at getMgnregsWorkDetailsLocationWise() in FundManagementDashboardService class ",e);
+		}
+		return returnList;
+	}
     
     public  List<NregsFmsWorksVO> getMgnregsFMSWorksDetailsByCategory(InputVO inputVO) {
     	List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>();
    	 try {
    		    
-   		    String str = convertingInputVOToString(inputVO);
+   		        String str = convertingInputVOToString(inputVO);
 				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureService/FMSExpenditureFinalData", str);
 		        
 		        if (response.getStatus() != 200) {
@@ -4065,4 +4097,5 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
    	 }
    	 return returnList;
    }
+   /* End */ 
 }
