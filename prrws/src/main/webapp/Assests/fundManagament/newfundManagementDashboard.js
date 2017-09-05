@@ -5037,8 +5037,8 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
 	  return dateStr;
  }
  function getMgnregsFMSWorksDetails(locationStrIdsForMgnregs,levelName,financialYrId,viewType,blockLvlId,locationName){ 
-	
-	$("#fundModal").modal('show');
+
+    $("#fundModal").modal('show');
 	$("#diptNameId").html('<h4 class="text-capital"><b>'+locationName+'&nbsp;&nbsp; '+levelName+' &nbsp;&nbsp; - Category Wise Fund Overview</b></h4>');
 	$("#fundSanctionModal").html(spinner);
 	var financialYrIdList = [];
@@ -5087,8 +5087,9 @@ function getGovtGrantTypeDetails(programId,subProgramId,divId){
 		}
 	}
 	
-	
-	
+	if (levelName != null && levelName=="village") {
+		levelName = "panchayat";
+	}
 	
     var json = {
           locationType : levelName, 
@@ -5247,9 +5248,7 @@ function getMgnregsFMSWorksDetailsByCategory(locationStrIdsForMgnregs,levelName,
 	}else{
 		ReportType = "yearwise";
 	}
-	if (levelName != null && levelName=="village") {
-		levelName == "panchayat";
-	}
+	
 	var json = {
           locationType : levelName, 
           locationIdStr : locationStrIdsForMgnregs,
