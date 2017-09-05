@@ -5,7 +5,7 @@
 	cntrl.showHideDivisionSpinner=true;
 	cntrl.showHideDistrictSearchSpinner = false;
 	cntrl.showHideDivisionSearchSpinner = false;
-	cntrl.showHideDivisionTable=false;
+	cntrl.showHideDivisionTable=false;  
 	cntrl.showHideDistrictTable=false;
 	
 	cntrl.showHideDistrictBlockDataAvailable = false;
@@ -68,7 +68,7 @@
 					 cntrl.districtParams = createUsingFullOptions(cntrl.districtData,"district");
 					 cntrl.showHideDistrictSpinner=false;
 					 cntrl.showHideDistrictSearchSpinner = true;
-					 cntrl.showHideDivisionTable=true;
+					 cntrl.showHideDistrictTable=true;
 				}else{
 					cntrl.showHideDistrictSpinner=false;
 					cntrl.showHideDistrictBlockDataAvailable = true;
@@ -80,7 +80,7 @@
 					cntrl.divisionParams = createUsingFullOptions(cntrl.divisionData,"division");
 					cntrl.showHideDivisionSpinner=false;  
 					cntrl.showHideDivisionSearchSpinner = true;
-					cntrl.showHideDistrictTable=true;
+					cntrl.showHideDivisionTable=true;
 				}else{
 					cntrl.showHideDivisionSpinner=false; 
 					cntrl.showHideDivisionBlockDataAvailable = true;
