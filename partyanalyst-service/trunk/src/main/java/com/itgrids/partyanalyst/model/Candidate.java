@@ -78,6 +78,8 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<NewsFlag> newsFlags = new HashSet<NewsFlag>(0);
 	
 	private String isDebateCandidate;
+	private State state;
+	private Long stateId;
  
 	// Constructors
 
@@ -402,6 +404,25 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 
 	public void setIsDebateCandidate(String isDebateCandidate) {
 		this.isDebateCandidate = isDebateCandidate;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "state_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+	@Column(name = "state_id")
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
 	}
 	
 	

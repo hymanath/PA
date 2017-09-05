@@ -64,7 +64,7 @@ public interface IDebateService {
 	
 	 public List<SelectOptionVO> getDebateSMSQuestions(String fromDateStr , String toDateStr,Long stateId);
 	 
-	 public ResultStatus createCandidate(Long partyId,String name);
+	 public ResultStatus createCandidate(Long partyId,String name,Long stateId);
 	 
 	 public String deleteSelectedDEbate(Long debateId);
 	 public List<DebateVO> getTotalAttendedDebatesOfCadre(Long tdpCadreId,Long stateId);
