@@ -18,5 +18,5 @@ public interface IDebateSubjectDAO extends GenericDao<DebateSubject, Long>{
 	public List<Object[]> getDebateDetalsForSelectedCriteria(Date fromDate,Date toDate,List<Long> channelIds,List<Long> partyIds,List<Long> candidateIds,String sortBy,String sort,int startIndex,int maxIndex,String isCount,Long stateId);
 	
 	public List<Object[]> searchCriteriaForDebateSearch(String searchString);
-	public List<Object[]> getDebateSubjectDetailsOfList(Set<Long> debateIds,Long stateId);
+	public List<Object[]> getDebateSubjectDetailsOfList(Set<Long> debateIds);
 }

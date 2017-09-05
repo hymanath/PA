@@ -392,28 +392,8 @@ public class DebateService implements IDebateService{
 									
 								}
 							  }
-							  //srujana
-							  /*List<SelectOptionVO> candidatesList = debateDetailsVO.getCandidatesList();
-							  //if(candidatesList != null && candidatesList.size() > 0)
-							  //{
-								  DebateParticipantLocation debateParticipantLocation  =null;
-								 // for (SelectOptionVO selectOptionVO : candidatesList) {
-									  
-									 debateParticipantLocation =new DebateParticipantLocation();
-									 debateParticipantLocation.setDebateParticipantId(debateParticipant.getDebateParticipantId());
-									 if(selectOptionVO.getName().equalsIgnoreCase("1")){
-										 debateParticipantLocation.setAddressId(20441102l);
-									 }else if(selectOptionVO.getName().equalsIgnoreCase("36")){
-										  debateParticipantLocation.setAddressId(20441103l);
-									  }
-									 debateParticipantLocation.setIsDeleted("N");
-									 debateParticipantLocation = debateParticipantLocationDAO.save(debateParticipantLocation);
-								//}
-								  
-							 // }*/
-							  
-							  
-							  DebateParticipantLocation debateParticipantLocation  =new DebateParticipantLocation();
+							 
+							 DebateParticipantLocation debateParticipantLocation  = new DebateParticipantLocation();
 							   debateParticipantLocation.setDebateParticipantId(debateParticipant.getDebateParticipantId());
 		                    if(participantVO.getLocationId() == 1L){
 		                	   debateParticipantLocation.setAddressId(20441102l);
@@ -2102,7 +2082,7 @@ public class DebateService implements IDebateService{
 	 }
 		
 	 
-	 public ResultStatus createCandidate(Long partyId,String name)
+	 public ResultStatus createCandidate(Long partyId,String name,Long stateId)
 	 {
 		 ResultStatus resultStatus = new ResultStatus();
 		 try {
@@ -2115,6 +2095,7 @@ public class DebateService implements IDebateService{
 				 candidate.setParty(party);
 				 candidate.setLastname(name);
 				 candidate.setIsDebateCandidate("Y");
+				 candidate.setStateId(stateId);
 				 candidate = candidateDAO.save(candidate);
 				 if(candidate != null)
 				 {

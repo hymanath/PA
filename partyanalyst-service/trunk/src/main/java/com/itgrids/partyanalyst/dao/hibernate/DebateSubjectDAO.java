@@ -70,7 +70,7 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 			sb.append("select distinct model.debate.debateId,model.subject,model.debate.startTime from DebateSubject model ");	
 		}
 		if(stateId != null && stateId.longValue() > 0){
-		      sb.append(" , DebateParticipantLocation model3 ");
+		      sb.append(" , DebateParticipant model3 ");
 		    }
 		if(channelIds != null || candidateIds != null || partyIds != null)
 		{
@@ -82,12 +82,12 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 		}
 		 
 		if(stateId != null && stateId.longValue() > 0){
-		      sb.append("  model.debate.debateId = model3.debateParticipant.debateId and  model3.isDeleted ='N' ");
+		      sb.append("  model.debate.debateId = model3.debateId ");
 		    }
 		 if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 1L){
-		      sb.append(" and model3.address.state.stateId = " +IConstants.DEBATE_AP_STATE_ID+ " and ");
+		      sb.append(" and model3.candidate.state.stateId = " +IConstants.DEBATE_AP_STATE_ID+ " and ");
 		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
-		      sb.append(" and model3.address.state.stateId = "+IConstants.DEBATE_TS_STATE_ID+" and ");
+		      sb.append(" and model3.candidate.state.stateId = "+IConstants.DEBATE_TS_STATE_ID+" and ");
 		    }
 		sb.append(" date(model.debate.startTime) >= :fromDate and date(model.debate.startTime) <= :toDate " +
 				" and model.debate.isDeleted = 'N' ");
@@ -198,26 +198,13 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 			
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getDebateSubjectDetailsOfList(Set<Long> debateIds,Long stateId)
+	public List<Object[]> getDebateSubjectDetailsOfList(Set<Long> debateIds)
 	{
 		StringBuilder str =new StringBuilder();
 		str.append("select  model.debate.debateId,model.debateSubjectId,model.subject from DebateSubject model " );
-		if(stateId != null && stateId.longValue() > 0){
-		      str.append(" , Debate model3 ");
-		    }
 		str.append(" where " );
 		if(debateIds != null && debateIds.size()>0)
 		   str.append(" model.debate.debateId in (:debateIds)");
-		if(stateId != null && stateId.longValue() > 0){
-		      str.append(" and model.debate.debateId = model3.debateId  and model3.isDeleted ='N' ");
-		    }
-		   if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 1L){
-		      str.append(" and model3.address.state.stateId ="+IConstants.DEBATE_AP_STATE_ID);
-		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
-		      str.append(" and model3.address.state.stateId="+IConstants.DEBATE_TS_STATE_ID);
-		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 2L){
-		    	str.append(" and model3.address.state.stateId="+IConstants.DEBATE_OTHERS_ID);
-		    }
 		Query query = getSession().createQuery(str.toString());
 		if(debateIds != null && debateIds.size()>0)
 		query.setParameterList("debateIds", debateIds);

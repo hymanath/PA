@@ -67,7 +67,7 @@ public class DebateSmsQuestionOptionDAO extends GenericDaoHibernate<DebateSmsQue
 		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
 		      sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_TS_STATE_ID);
 		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 2L){
-		    	sb.append(" and model3.address.state.stateId="+IConstants.DEBATE_OTHERS_ID);
+		    	sb.append(" and model3.address.state.stateId is null ");
 		    }
 		sb.append(" order by model.debateSmsQuestion.debateSmsQuestionId desc ");
 		Query query = getSession().createQuery(sb.toString());
