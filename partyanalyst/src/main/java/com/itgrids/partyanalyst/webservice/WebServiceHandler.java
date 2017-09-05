@@ -3349,4 +3349,17 @@ public class WebServiceHandler {
 		return null;
 	}
 	
+	@GET
+	@Path("/kaizalaCommitteeLevelAddressSaving/{locationScopeId}/{locationValue}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Long kaizalaCommitteeLevelAddressSaving(@PathParam("locationScopeId") Long locationScopeId , @PathParam("locationValue") Long locationValue ){
+		try {			
+			return webServiceHandlerService.kaizalaCommitteeLevelAddressSaving(locationScopeId,locationValue);			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in kaizalaCommitteeLevelAddressSaving() Method, Exception is ",e);
+		}
+		return null;
+	}
+	
 }
