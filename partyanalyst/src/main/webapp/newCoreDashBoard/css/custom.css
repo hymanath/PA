@@ -2959,3 +2959,7 @@ color: rgb(51, 122, 183);
 {
 	position:relative;
 }
+.glyphicon-star-empty , .glyphicon-star
+{
+	font-size:12px;
+}
