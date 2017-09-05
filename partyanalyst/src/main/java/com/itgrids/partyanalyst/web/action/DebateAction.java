@@ -1043,7 +1043,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			return Action.ERROR;
 			
 			jObj = new JSONObject(getTask());
-			resultStatus = debateService.createCandidate(jObj.getLong("partyId"), jObj.getString("name"));
+			resultStatus = debateService.createCandidate(jObj.getLong("partyId"), jObj.getString("name"),jObj.getLong("stateId"));
 		}
 		catch (Exception e)
 		{
