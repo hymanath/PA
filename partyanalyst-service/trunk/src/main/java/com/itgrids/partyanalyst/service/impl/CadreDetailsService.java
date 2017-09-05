@@ -13366,7 +13366,8 @@ public Long kaizalaCommitteeLevelAddressSaving(final Long locationScopeId, final
 					}else if(locationScopeId.longValue()==5L){ //tehsil
 						
 						address.setTehsil(tehsilDAO.get(locationValue));
-						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(locationValue);
+						//List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(locationValue);
+						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilOfYear(locationValue);
 						if(commonMethodsUtilService.isListOrSetValid(assemblyList)){
 							address.setAssembly(assemblyList.get(0));
 							List<Long> parliamentsIds = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(address.getAssembly().getConstituencyId());
@@ -13381,7 +13382,8 @@ public Long kaizalaCommitteeLevelAddressSaving(final Long locationScopeId, final
 						
 						address.setPanchayat(panchayatDAO.get(locationValue));
 						address.setTehsil(address.getPanchayat().getTehsil());
-						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(address.getTehsil().getTehsilId());
+						//List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(address.getTehsil().getTehsilId());
+						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilOfYear(address.getTehsil().getTehsilId());
 						if(commonMethodsUtilService.isListOrSetValid(assemblyList)){
 							address.setAssembly(assemblyList.get(0));
 							List<Long> parliamentsIds = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(address.getAssembly().getConstituencyId());
@@ -13396,7 +13398,8 @@ public Long kaizalaCommitteeLevelAddressSaving(final Long locationScopeId, final
 						
 						address.setLocalElectionBody(localElectionBodyDAO.get(locationValue));
 						address.setTehsil(address.getLocalElectionBody().getTehsil());
-						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(address.getTehsil().getTehsilId());
+						//List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(address.getTehsil().getTehsilId());
+						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilOfYear(address.getTehsil().getTehsilId());
 						if(commonMethodsUtilService.isListOrSetValid(assemblyList)){
 							address.setAssembly(assemblyList.get(0));
 							List<Long> parliamentsIds = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(address.getAssembly().getConstituencyId());
@@ -13412,7 +13415,8 @@ public Long kaizalaCommitteeLevelAddressSaving(final Long locationScopeId, final
 						address.setWard(constituencyDAO.get(locationValue));
 						address.setLocalElectionBody(address.getWard().getLocalElectionBody());
 						address.setTehsil(address.getLocalElectionBody().getTehsil());
-						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(address.getTehsil().getTehsilId());
+						//List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilId(address.getTehsil().getTehsilId());
+						List<Constituency> assemblyList = delimitationConstituencyMandalDAO.getConstituencyByTehsilOfYear(address.getTehsil().getTehsilId());
 						if(commonMethodsUtilService.isListOrSetValid(assemblyList)){
 							address.setAssembly(assemblyList.get(0));
 							List<Long> parliamentsIds = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(address.getAssembly().getConstituencyId());
