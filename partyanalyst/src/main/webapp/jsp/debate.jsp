@@ -182,7 +182,7 @@ $(function () {
 	
 });
 
-
+var flag = true;
 $( document ).ready(function() {
 	$('#debateTabId').addClass('menuActive');
 		$('#pcConstituencyRow').hide();
@@ -200,12 +200,11 @@ $( document ).ready(function() {
 	$("#createCandidateId").live("click",function(){
 		
 		$("#errorMsgDiv").html('');
-		//$("input:radio:checked").previous("name", "stateSelection").attr("name","stateSelection1");
-		//$("input:radio:checked").attr("name","stateSelection1");
 		//var partyId = $("#partySelectNewList").val();
 		var candidateName = $.trim($("#newCandidateName").val());
 		//var designationId = $("#designationsList").val();
 		candidteName = $.trim($("#newCandidateName").val());
+		var stateId =1;
 		/* if(isValid(candidateName)){
 			$('#errorMsgDiv').html('<b style="color:red;margin-left:-125px;">Candidate Name should not contain #,$,%,& Special characters</b>');
 			return false;
@@ -243,12 +242,23 @@ $( document ).ready(function() {
 		{
 			locationValue = $('#locationId option:selected').val();
 		} */
-
+		var stateId =0;
+     $(".radioDebateDetailsStateCls1").each(function(){
+				if($(this).prop('checked')==true){
+					     stateId = $(this).val();
+				}
+				
+			});
+		       if(stateId == 0 || stateId<0 || stateId =="undefined" || stateId == null){
+							 $("#errorMsgDiv").html("Candidate location required");
+							 return;
+						 }
 		var jsObj =
 			{ 
 				partyId : debateNewCandiPartyId,
 				name:candidateName,
 				divId :partyDiv,
+				stateId:stateId,
 				task:"saveCandidateForDebate"
 			};
 
@@ -798,7 +808,7 @@ window.location.href = uri + base64(format(template, ctx))
 	
 		<div id="createCandidateDiv" style="display:none;">
 				
-				<div id="errorMsgDiv"></div>
+				<!--<div id="errorMsgDiv"></div>-->
 				<div id="dHintDiv"> Note: Candidate Name should not contain #,$,%,& And Alphanumeric characters.
 				</div>
 				<table style="margin-top: 24px;"><tr>
@@ -821,7 +831,7 @@ window.location.href = uri + base64(format(template, ctx))
 				</tr>
 				</table>
 				<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
-
+                 <div id="errorMsgDiv"></div>
 			</div>
 </div>
 <script>

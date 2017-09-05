@@ -555,16 +555,16 @@
 									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
 									debates - <small class="text-muted debatesDate">today</small>
 									<!--<label class="radio-inline">
-								<input type="radio" name="stateSelection" value="0" checked type="radio" class="radioStateCls"/>All
+								<input  name="stateSelection" value="0" checked type="radio" class="radioStateCls"/>All
 							   </label>
 							  <label class="radio-inline">
-								<input type="radio" name="stateSelection" value="1" type="radio" class="radioStateCls"/>AP
+								<input  name="stateSelection" value="1" type="radio" class="radioStateCls"/>AP
 							  </label>
 							  <label class="radio-inline">
-								<input type="radio" name="stateSelection" value="36" type="radio" class="radioStateCls"/>TS
+								<input name="stateSelection" value="36" type="radio" class="radioStateCls"/>TS
 							 </label>
 							 <label class="radio-inline">
-								<input type="radio" name="stateSelection" value="2" type="radio" class="radioStateCls"/>Others
+								<input  name="stateSelection" value="2" type="radio" class="radioStateCls"/>Others
 							 </label>-->
 								</h4>
 								<div class="col-md-3 col-sm-3 col-xs-12">
@@ -573,7 +573,7 @@
 							</div>
 							
 							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="debates">
-								<span class="settingsIcon pull-right">
+								<span class="debatesSettingsIcon pull-right">
 								   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 								 </span>
 								<span class="notesIconDebates pull-right">
@@ -591,7 +591,64 @@
 										<i class="glyphicon glyphicon-calendar"></i>
 									</span>
 								</span>
-								
+								<div class="debatesSettingsBody" style="display:none;top:15px;">
+									<div class="row">
+										<div class="col-sm-12">
+										 <i class="glyphicon glyphicon-remove debatesSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;"></i>
+											<h4 class="panel-title text-center">Debate Location</h4>
+										</div>
+										<div class="col-sm-6">
+											<!-- Nav tabs -->
+											<ul class="nav nav-tabs tabViewSelectionDebates" role="tablist">
+												<li class="active" role="presentation"><a href="#debatesTabViewDebate" aria-controls="debatesTabViewDebate" role="tab" data-toggle="tab">Debate</a></li>
+												<li role="presentation"><a href="#debatesTabViewParticipant" aria-controls="debatesTabViewParticipant" role="tab" data-toggle="tab">Debate Participant</a></li>
+											</ul>
+										</div>
+										<!-- Tab panes -->
+										<div class="col-sm-6">
+											<div class="tab-content">
+												<div role="tabpanel" class="tab-pane active" id="debatesTabViewDebate">
+													<ul class="debatesViewList">
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" class="radioStateCls" name="debatesRadio"  value="1" checked />AP
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox"  class="radioStateCls" name="debatesRadio"  value="36" checked />TS
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox"  class="radioStateCls" name="debatesRadio" value="2" checked />Others
+															</label>
+														</li>
+													</ul>
+												</div>
+												<div role="tabpanel" class="tab-pane" id="debatesTabViewParticipant">
+													<ul class="debatesViewList">
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox"  class="radioStateCls1" name="debatesParticipantRadio" value="1" checked />AP
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox"  class="radioStateCls1" name="debatesParticipantRadio"  value="36" checked />TS
+															</label>
+														</li>
+														<!--<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" name="debatesParticipantRadio" checked/>AP
+															</label>
+														</li>-->
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					   <div class="notesDropDown notesArrow">

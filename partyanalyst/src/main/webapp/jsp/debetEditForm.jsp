@@ -91,20 +91,18 @@
 	<td> Party Name </td>
 	<td><!-- <select id="partySelectNewList"> --><span id="presentParty"></span>
 	</select></td>
-	<!--<td><div class="span4">
-					   <label class="radio inline">
-							<input type="radio" name="stateSelection6"  checked value="0"   class="radioDebateLoctionDetailsStateCls"/>All
-						</label>
-						<label class="radio inline">
-							<input type="radio" name="stateSelection6" value="1"  class="radioDebateLoctionDetailsStateCls"/>AP
-						</label>
-						<label class="radio inline">
-							<input type="radio" name="stateSelection6" value="36"  class="radioDebateLoctionDetailsStateCls"/>TS
-						</label>
-				   </div></td>--></tr>
-
 	<tr><td>Candidate Name</td>
 	<td><input type="text" id="newCandidateName" onkeypress="return onlyAlphabets(event,this);"/></td></tr>
+	<tr><td>Candidate Location</td>
+				<td>
+					   <label class="radio inline">
+							<input type="radio" name="stateSelection" value="1"  class="radioDebateDetailsStateCls1"/>AP
+						</label>
+						<label class="radio inline">
+							<input type="radio" name="stateSelection" value="36"  class="radioDebateDetailsStateCls1"/>TS
+						</label>
+				</td>
+	</tr>
 	</table>
 	<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
 
@@ -145,6 +143,7 @@ $( document ).ready(function() {
 
 		$('#pcConstituencyRow').hide();
 		$('#acConstituencyRow').hide();
+		$('input[name=stateSelection]').attr('checked',false);
 	$("#createCandidateId").on("click",function(){
 		
 		$("#errorMsgDiv").html('');
@@ -160,18 +159,30 @@ $( document ).ready(function() {
 		 $("#errorMsgDiv").html("Please Enter Candidate Name.");
 		  return;
 		}
-		
+		var stateId =0;
+     $(".radioDebateDetailsStateCls1").each(function(){
+				if($(this).prop('checked')==true){
+					     stateId = $(this).val();
+				}
+				
+			});
+			
+			if(stateId == 0 || stateId<0 || stateId =="undefined" || stateId == null){
+				$("#errorMsgDiv").html("Candidate location required");
+							 return;
+					}
 		var jsObj =
 			{ 
 				partyId : debateNewCandiPartyId,
 				name:candidateName,
 				divId :partyDiv,
+				stateId:stateId,
 				task:"saveCandidateForDebate"
 			};
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "createCandidateAction.action?"+rparam;						
-		callAjax(jsObj,url);
+		var url = "createCandidateAction.action?"+rparam;
+		callAjax(jsObj,url);	
 			
 	});
 	
@@ -362,7 +373,7 @@ function prepopulateDebateForm(result)
 	str += '<div id="participantInnerDiv1"  class="participantDetailsClass scrollit">';
 	
 	str +='<table id="participantTable" class="table table-bordered particepatedTable" style="width: 100%;overflow-x: scroll;">';
-	str +='<thead><tr><th>Party</th><th> Candidate</th><th style="min-width: 140px;"> Candidate Location</th>';
+	str +='<thead><tr><th>Party</th><th> Candidate</th>';
 	for(var i in charsArray){
 		str +='<th>'+charsArray[i].name+'</th>';
 	}
@@ -388,9 +399,9 @@ function prepopulateDebateForm(result)
 		//str+='<option value="'+result.participantsList[p].id+'"> '+result.participantsList[p].name+'</option>';
 		str +='</select>';
 		str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="img/user.png" class="createNewCandidate" id="candidate'+candCunt+'"></span></a><span id="candidate'+candCunt+'Err" class="errDiv"></span></td>';
-		str +='<td>';
+		/*str +='<td>';
 		str +='<span id="debateCandidateLocationErrDiv" class="errDiv clearErrCls"></span>';
-			str+='<select class="form-control radioDebateDetailsStateCls1" id="stateSelection'+candCunt+'">';
+			/*str+='<select class="form-control radioDebateDetailsStateCls1" id="stateSelection'+candCunt+'">';
 				str+='<option value="0">All</option>';
 				str+='<option value="1">AP</option>';
 				str+='<option value="36">TS</option>';
@@ -620,6 +631,7 @@ function prepopulateDebateForm(result)
 				
 	str += '<div align="center" style="margin-bottom: 15px; margin-top: 10px;">';
 	str += '<a class="btn btn-success" onClick="submitForm(\'edit\');">Submit</a>';
+	str += '<img src="images/Loading-data.gif"  id="loadingImgForSaveId" style="width:40px;height:40px;display:none;"/>';
 	str += '</div>';
 
 	str += '</div>';
@@ -635,13 +647,19 @@ function prepopulateDebateForm(result)
 	{
 		$('#observer').val(result.observerList[i].id);
 	}
+	$(".radioDebateStateCls").each(function(){
+		if($(this).val() == result.debateLocId){
+		   $(this).prop('checked', true);
+		}else if(result.debateLocId == 0){
+			$( 'input[name="stateSelection9"][value="2"]').prop('checked', true);
+		}
+	});
 	
 	var pCount = 1;
 	for(var p in result.participantsList)
 	{
 		$('#party'+pCount+'').val(result.participantsList[p].partyId);
-		$('#candidate'+pCount+'').val(result.participantsList[p].id);
-	    $('#stateSelection'+pCount+'').val(result.candidateSummery[p].locationId);	
+		$('#candidate'+pCount+'').val(result.participantsList[p].id);	
 		$('#participantRoles'+pCount+'').multiselect({	
 			multiple: true,
 			selectedList: 1,
@@ -730,7 +748,7 @@ function addMoreCandidatesForEdit()
 	str +='<option value="0"> Select </option>';
 	str +='</select>  <span id="candidate'+candCunt+'Err" class="errDiv"></span>';
 	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate'+candCunt+'\',\'party'+candCunt+'\','+candCunt+')"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="img/user.png" class="createNewCandidate" id="candidate'+candCunt+'"></span></a></td>';
-	str +='<td>';
+	/*str +='<td>';
 	str+='<select class="form-control radioDebateDetailsStateCls1" id="stateSelection'+candCunt+'">';
 				str+='<option value="0">All</option>';
 				str+='<option value="1">AP</option>';
@@ -744,8 +762,8 @@ function addMoreCandidatesForEdit()
 					str +='</label>';
 					str +='<label class="radio inline">';
 					str +='<input type="radio" name="stateSelection'+candCunt+'" value="36"  class="radioDebateDetailsStateCls1"/>TS';
-					str +='</label>'; */
-				str +='</td>';
+					str +='</label>';
+				str +='</td>';*/
 	for(var i in charsArray){
 		var myclass =charsArray[i].name+''+candCunt;
 		str +='<td>';
@@ -1039,17 +1057,17 @@ function validateFieldsForEdit(){
 		}
 		//srujana validations
      var count=1;
-	 var debateCandidateLocationId =0;
+	 //var debateCandidateLocationId =0;
 	 var sateId=0;
-			for(var i = 0;i < $("#participantTable tbody tr").length ; i++)
+			/*for(var i = 0;i < $("#participantTable tbody tr").length ; i++)
 			{
 			   debateCandidateLocationId = $('#stateSelection'+count+'').val();
 			if(debateCandidateLocationId<0 || debateCandidateLocationId == "undefined" || debateCandidateLocationId == null || debateCandidateLocationId == 0){
-					$("#debateCandidateLocationErrDiv").html(" Candidate Location required ");
+					//$("#debateCandidateLocationErrDiv").html(" Candidate Location required ");
 					flag = false;
 				}
 				count = count+1;
-			}
+			}*/
 		$(".radioDebateStateCls").each(function(){
 			var stateId = $('input[name=stateSelection9]:checked').val();
 						 if(stateId == 0 || stateId<0 || stateId =="undefined" || stateId == null){
@@ -1060,22 +1078,10 @@ function validateFieldsForEdit(){
 			});		
 	return flag;
 
-	//return flag;
-
 }
 $(document).on("keypress",".participntRoles",function(event){
          return isNumberAndDecimal(event, this);
 });
-/* $(document).ready(function() {
-$(".radioDebateStateCls").each(function(){
-	alert(456);
-	if($(this).val() == stateId){
-		alert(10);
-      $(this).checked = true;  
-	}
-  });
-}); */
-
 </script>
 </body>
 </html>
