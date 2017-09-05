@@ -276,4 +276,13 @@ IDelimitationConstituencyMandalDAO {
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
+	public List<Constituency> getConstituencyByTehsilOfYear(Long tehsilId){
+		
+		Query query = getSession().createQuery("select model.delimitationConstituency.constituency " +
+				" from DelimitationConstituencyMandal model where " +
+				"model.delimitationConstituency.year =:year and model.tehsil.tehsilId=:tehsilId ");
+		query.setParameter("year",IConstants.DELIMITATION_YEAR);
+		query.setParameter("tehsilId",tehsilId);
+		 return query.list();	
+	}
 }
